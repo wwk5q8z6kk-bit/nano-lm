@@ -1,0 +1,15 @@
+loaded ../nano-posttrain-2026-07-16/dpo.pt; params=3.15M
+12000 examples, 1125 steps, 3 epochs, batch 32
+step     1/1125  scribe_loss 6.611  gnorm 17.51  lr 4.5e-06  52k tok/s
+step   100/1125  scribe_loss 0.007  gnorm 0.08  lr 1.5e-04  88k tok/s
+step   200/1125  scribe_loss 0.004  gnorm 0.34  lr 1.4e-04  88k tok/s
+step   300/1125  scribe_loss 0.000  gnorm 0.00  lr 1.3e-04  85k tok/s
+step   400/1125  scribe_loss 0.000  gnorm 0.00  lr 1.2e-04  84k tok/s
+step   500/1125  scribe_loss 0.000  gnorm 0.00  lr 9.8e-05  83k tok/s
+step   600/1125  scribe_loss 0.000  gnorm 0.00  lr 7.8e-05  82k tok/s
+step   700/1125  scribe_loss 0.000  gnorm 0.00  lr 5.9e-05  81k tok/s
+step   800/1125  scribe_loss 0.000  gnorm 0.00  lr 4.2e-05  79k tok/s
+step   900/1125  scribe_loss 0.000  gnorm 0.00  lr 2.9e-05  75k tok/s
+step  1000/1125  scribe_loss 0.000  gnorm 0.00  lr 1.9e-05  70k tok/s
+step  1100/1125  scribe_loss 0.000  gnorm 0.00  lr 1.5e-05  66k tok/s
+scribe SFT done in 4.7 min -> scribe.pt

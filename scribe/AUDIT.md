@@ -78,3 +78,34 @@ thin refusal slice: insufficient diversity → surface anchoring instead of the 
    values remain excluded. Med list 8→18.
 4. Train size 8000→12000 to cover the wider template space; epochs unchanged.
 - Re-measure ONCE on the same 40-dialogue eval set, same bars. Result below, either way.
+
+### v2 — trained 2026-07-16 (12000 ex, 204-value CC space, 4.7 min), GATE FAIL — stage CLOSED
+
+Greedy (primary): **parse 98% ✅  recall 81% ✅ (bar 80)  hallucination 11.5% ❌ (bar ≤10)**.
+Sampled diagnostic agrees (81% / 11.9%) — not a decoding artifact. Base control still 0%.
+
+Every metric improved (recall 74→81, halluc 14.0→11.5, omissions 25→10, seen-value recall
+82→94, held-out-value recall 65→72) — the diversity levers worked — but the hallucination
+bar was missed by 1.5 points. **Per the pre-registered protocol (one sweep, one re-measure),
+the stage closes at FAIL.** No further tuning inside this stage; a third run against the
+same bars would be bar-chasing, and the protocol's integrity is the deliverable.
+
+**Where the remaining 11.5% lives:** errors concentrate on the CC field for held-out
+values under held-out openers (e.g. "neck pain" under "Come in, have a seat." still →
+`CC: seat`; seen-value recall is 94%). The model's copy-from-context skill improved with
+value-space diversity but is not fully general at 3.15M params — consistent with a
+capacity wall on content-addressed copying (no attention head has been given an
+induction-friendly curriculum).
+
+**Legitimate continuation (would be a NEW stage with fresh pre-registration, not a v3
+of this one):** (a) copy-curriculum pretraining slice (synthetic key→value copy tasks)
+to induce induction-head behavior before scribe SFT; (b) scale test at ~10M params to
+measure the capacity hypothesis directly; (c) constrained decoding for the CC field
+(grammar-restricted to dialogue n-grams) — an inference-time guardrail, reported
+separately from model capability.
+
+**Meta-lesson for the vault:** the faithfulness gate did its job — it caught a model
+that LOOKS excellent (98% parse, fluent output, 94% on familiar content) but hallucinates
+above tolerance exactly where inputs leave its training distribution. That failure shape
+(great on-distribution, unsafe on the tail) is the clinically dangerous one, and only
+the held-out-value axis of the gate exposed it.

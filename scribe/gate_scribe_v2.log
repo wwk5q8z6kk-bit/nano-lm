@@ -1,0 +1,29 @@
+eval: 40 dialogues, held-out templates; 20 with held-out values
+
+=== BASE CONTROL (dpo.pt, greedy) ===
+[base/greedy] parse 0/40=0%  recall 0/200=0%  halluc 0/200=0.0%  omission 0
+          out: "I'm not able to help with."
+          truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+          out: "I'm not able to help with."
+          truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+
+=== SCRIBE (scribe.pt, greedy = primary) ===
+[scribe/greedy] parse 39/40=98%  recall 162/200=81%  halluc 23/200=11.5%  omission 10
+          held-out-value recall 68/95=72%  seen-value recall 94/100=94%
+          out: 'CC: shortness of breath | DUR: 6 weeks | SEV: moderate | MED: none | ALG: penicillin'
+          truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+          out: 'CC: seat | DUR: 3 days | SEV: mild | MED: none | ALG: none'
+          truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+
+=== SCRIBE (sampled K=4 temp 0.7 = diagnostic) ===
+[scribe/sampled] parse 157/160=98%  recall 650/800=81%  halluc 95/800=11.9%  omission 40
+          held-out-value recall 274/385=71%  seen-value recall 376/400=94%
+          out: 'CC: shortness of breath | DUR: 6 weeks | SEV: moderate | MED: none | ALG: penicillin'
+          truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+          out: 'CC: shortness of breath | DUR: 6 weeks | SEV: moderate | MED: none | ALG: penicillin'
+          truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+
+--- verdict on pre-registered bars ---
+  scribe clears bars (parse>=90% recall>=80% halluc<=10%): False
+  base control fails bars (discrimination): True
+GATE FAIL

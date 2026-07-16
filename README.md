@@ -30,7 +30,16 @@ the same evaluation problem that production clinical documentation AI faces.
 | DPO (β=0.1) | ✅ done | ✅ PASS (win-rate 80.6% vs SFT, 95% CI [75.6, 85.6]) |
 | RLVR/GRPO (verifiable-reward slice) | ✅ done | ✅ PASS (pass@1 12.5% → 85.9%, Δ CI [+61.7, +85.2]) |
 | Scribe v1 (faithfulness gate, pre-registered) | ✅ done | ❌ honest FAIL (recall 74%, halluc 14%) — diagnosis in audit |
-| Scribe v2 (pre-specified diversity sweep) | 🔄 training | same bars, same eval set, measured once |
+| Scribe v2 (pre-specified diversity sweep) | ✅ done | ❌ FAIL by 1.5 pts (recall 81% ✅, halluc 11.5% vs ≤10%) — **stage closed per protocol** |
+| Scribe next stage (copy-curriculum / scale test) | 🔜 planned | requires fresh pre-registration |
+
+The scribe stage closing at FAIL is deliberate: the pre-registered protocol allowed one
+improvement sweep and one re-measure. Every metric improved (halluc 14.0→11.5, recall
+74→81, held-out-value recall 65→72) but the hallucination bar was missed — and running
+"one more try" against the same bars would be bar-chasing. The gate caught the clinically
+dangerous failure shape: a model that looks excellent on-distribution (98% parse, 94%
+recall on familiar values) but hallucinates above tolerance exactly where inputs leave
+its training distribution. Full diagnosis and the legitimate next stage: `scribe/AUDIT.md`.
 | Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
 
 ## Results

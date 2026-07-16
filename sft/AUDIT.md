@@ -1,6 +1,6 @@
 # Guided-build execution audit — Recipe ③ Post-Training on the nano base (2026-07-16)
 Rule: every step follows ONLY vault instructions; every outside-the-vault reach = STALL logged.
-Base model: `~/AI-builds/nano-pretrain-2026-07-15/ckpt.pt` (3.15M params, V=4096, S=512, loss 3.70/val 3.95).
+Base model: `../pretrain/ckpt.pt` (3.15M params, V=4096, S=512, loss 3.70/val 3.95).
 Recipe under test: Build Recipe ③ — Post-Training and Alignment (+ pages it routes to).
 
 ## Stage 0 · Orientation
