@@ -49,4 +49,32 @@ Honest-reporting rule (unchanged from prior stages): if v1 fails, the failure an
 diagnosis are published; one pre-specified improvement sweep, re-measured once.
 
 ## Execution log
-- (to be filled as stages run)
+
+### v1 — trained 2026-07-16, GATE FAIL (honest, on pre-registered bars)
+- Train: 8000 examples, 750 steps, 3.1 min; loss → ~0 by step 200 (task is templated;
+  near-zero train loss expected — generalization is what the gate measures).
+- Base control (dpo.pt): parse 0% — emits refusal boilerplate. Discrimination clean.
+- Scribe greedy (primary): **parse 100% ✅, recall 74% ❌ (bar 80), halluc 14.0% ❌ (bar 10)**.
+- Held-out-value recall 65% vs seen-value 82% — 17-pt gap (under the 20-pt memorization
+  flag, but consistent with partial label-memorization instead of copying).
+- Sampled diagnostic agrees (72% / 14.2%) — not a decoding artifact.
+
+**Diagnosis (from failure cases):** `CC: stopped` for "shortness of breath" (grabbed from
+"hasn't stopped" in an unseen patient template); `CC: seat` for "neck pain" (grabbed from
+"have a seat" in an unseen opener). The model learned POSITION-ANCHORED extraction —
+"the noun after the phrases I saw in training" — because template diversity was too low
+(5 openers, 5 complaint phrasings, fixed section order). Same failure class as SFT v1's
+thin refusal slice: insufficient diversity → surface anchoring instead of the skill.
+
+### Pre-specified improvement sweep (written BEFORE v2 training; bars unchanged)
+1. **Template diversity ↑**: every family roughly doubled-to-tripled (openers 5→12,
+   complaint phrasings 5→12, all Q/A families 2-3→6-8). Held-out families untouched.
+2. **Structural variation**: med/allergy question order randomized; optional doctor
+   acknowledgments; complaint+duration sometimes fused in one utterance — breaks
+   positional anchoring, forces semantic extraction.
+3. **Value-space diversity ↑ (anti-memorization)**: complaint pool augmented with
+   ~190 compositional values (body-part × sensation) so CC cannot be solved as a
+   14-way classification — copying becomes the only viable strategy. Eval held-out
+   values remain excluded. Med list 8→18.
+4. Train size 8000→12000 to cover the wider template space; epochs unchanged.
+- Re-measure ONCE on the same 40-dialogue eval set, same bars. Result below, either way.
