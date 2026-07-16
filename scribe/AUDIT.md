@@ -109,3 +109,41 @@ that LOOKS excellent (98% parse, fluent output, 94% on familiar content) but hal
 above tolerance exactly where inputs leave its training distribution. That failure shape
 (great on-distribution, unsafe on the tail) is the clinically dangerous one, and only
 the held-out-value axis of the gate exposed it.
+
+---
+
+# Stage G — grounding-verifier guardrail (NEW stage, fresh pre-registration, 2026-07-16)
+
+Reframe: scribe v2 measured MODEL hallucination (11.5%). A deployed scribe is a SYSTEM:
+draft → per-field grounding verification → present verified fields, FLAG unverifiable
+ones for human review. This stage measures whether a simple verifier can drive
+hallucination-as-presented near zero, and at what human-review cost. (This mirrors the
+draft-plus-clinician-verification architecture of production clinical documentation AI.)
+
+## Verifier (fixed before measurement)
+
+For each parsed field value v:
+- v == "none" → PRESENT (absence claims are unverifiable by substring; documented limitation)
+- else → PRESENT iff v appears (case-insensitive substring) in a **Patient utterance**
+  of the dialogue; otherwise FLAG for review.
+The patient-line restriction is deliberate: v1/v2 failures included copying doctor-line
+words ("have a seat" → `CC: seat`); source-role awareness is part of grounding.
+
+## Pre-registered bars (WRITTEN BEFORE MEASUREMENT — system requirements for a
+draft-for-review scribe, not reverse-engineered from results)
+
+Over the same 40-dialogue eval set, greedy primary, model = scribe.pt (v2), 200 fields:
+1. **Residual hallucination (hallucinated fields among PRESENTED) ≤ 2.5%**
+2. **Presented-field precision ≥ 95%**
+3. **Review load (flagged fields) ≤ 25%** — a guardrail that flags everything is useless
+4. Report (no bar): verifier catch-rate on the 23 known v2 hallucinations; recall among
+   presented fields; per-field breakdown.
+
+Known risk, stated in advance: substitutions whose wrong value DOES occur in a patient
+line (e.g. "hasn't stopped" → `CC: stopped`; a medication read into CC) will PASS the
+verifier — substring grounding cannot catch wrong-field-right-source errors. If those
+alone exceed bar 1, the honest conclusion is "naive grounding verification is
+insufficient," which is itself the finding. One measurement, no tuning after seeing it.
+
+## Result
+- (to be filled after the single measurement run)
