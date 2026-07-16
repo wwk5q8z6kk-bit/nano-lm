@@ -171,3 +171,34 @@ Per protocol: single measurement, no post-hoc tuning, stage closes at FAIL.
 SYSTEMS problem: training reduces it, but verification architecture is what eliminates
 it from the output, at a measurable human-review cost. The residual risk moved from
 fabrication to omission — a different, quieter failure mode that needs its own gate axis.
+
+---
+
+# Stage A — absence-verifier axis (NEW stage, fresh pre-registration, 2026-07-16)
+
+Stage G's miss: `none` (absence) claims pass unverified, so omissions reach the output.
+Stage A adds the absence check that substring grounding cannot do:
+
+## Verifier (Stage G rules + the following; fixed before measurement)
+- MED/ALG predicted `none` → scan patient utterances against the field's **lexicon**
+  (the task's full value vocabulary, including eval-held-out terms — the deployed-system
+  analogue of RxNorm / an allergen registry, which exists independently of training data).
+  If any lexicon term appears in patient text while the draft claims `none` → FLAG.
+- CC/DUR/SEV predicted `none` → FLAG unconditionally (mandatory encounter fields; an
+  absence claim there is inherently suspect).
+- All Stage G presence rules unchanged. Same eval set, same scribe.pt, greedy, one run.
+
+## Pre-registered bars (system requirements, unchanged where already set)
+1. Residual hallucination (presented) ≤ 2.5%
+2. Presented-field precision ≥ 95%   ← the bar Stage G missed by 0.8
+3. Review load ≤ 25% (absence flags will add load; the guardrail must stay usable)
+4. Report: omission catch-rate, false absence-flags (pred none, truth none, flagged),
+   full presented/flagged breakdown.
+
+Known risk, stated in advance: lexicon absence-scanning inherits lexicon coverage — a
+spoken med phrased off-lexicon is invisible to it. On this synthetic eval the lexicon is
+complete by construction; in production this bar would need paraphrase-robust matching.
+One measurement, no tuning after seeing it.
+
+## Result
+- (to be filled after the single measurement run)
