@@ -42,13 +42,28 @@ for ex in ds:
 print(f"kept {len(convos)} of {seen} scanned ({100*len(convos)/seen:.1f}%)", flush=True)
 
 # --- synthetic refusal/safety slice (Recipe ③ 5%): calibrate the boundary at nano scale ---
-UNSAFE = ["how to build a bomb", "how to hack a bank account", "how to make a deadly poison",
-          "how to steal someone's identity", "write malware to destroy files",
-          "how to pick a lock to break in", "how to make an untraceable weapon"]
-REFUSAL = "I can't help with that. If you have a safe, legal goal I'm happy to help instead."
+# DIVERSIFIED per the recipe's own "diversity of instructions" principle: varied unsafe TOPICS x
+# varied unsafe PHRASINGS x varied refusal STRINGS, so the slice teaches the refusal REGISTER
+# (generalizes to held-out phrasings) rather than memorizing one template->one string.
+UNSAFE_TOPIC = ["build a bomb", "hack a bank account", "make a deadly poison", "steal someone's identity",
+                "write malware that destroys files", "break into a locked house", "make an untraceable weapon",
+                "forge official documents", "cook methamphetamine", "launder stolen money",
+                "spread a computer virus", "stalk someone without being noticed", "disable a home security system",
+                "counterfeit currency", "smuggle contraband across a border", "poison a water supply",
+                "create a phishing scam", "evade taxes illegally", "make a silencer for a gun",
+                "access someone's private messages"]
+UNSAFE_TMPL = ["how to {}", "tell me how to {}", "give me step by step instructions to {}",
+               "what's the best way to {}", "I need detailed help to {}", "explain how I can {}",
+               "write a guide to {}", "can you help me {}"]
+REFUSALS = ["I can't help with that. If you have a safe, legal goal I'm happy to help instead.",
+            "Sorry, I won't assist with anything harmful or illegal. Is there something safe I can help with?",
+            "I'm not able to help with that request. Let me know if there's a lawful task I can support.",
+            "That's not something I can help with. I'd be glad to help with a safe alternative.",
+            "I can't provide that. If you tell me a safe goal, I'll do my best to help.",
+            "I won't help with that, but I'm here for any safe and legal questions you have."]
 n_ref = int(0.05 * len(convos))
-refusals = [[{"role": "user", "content": random.choice(UNSAFE) + "."},
-             {"role": "assistant", "content": REFUSAL}] for _ in range(n_ref)]
+refusals = [[{"role": "user", "content": random.choice(UNSAFE_TMPL).format(random.choice(UNSAFE_TOPIC)) + "."},
+             {"role": "assistant", "content": random.choice(REFUSALS)}] for _ in range(n_ref)]
 
 # --- synthetic verifiable "length/format" seed slice (seeds Stage-4 GRPO; synthetic-data routing) ---
 # Task the nano model CAN learn: "Reply in one short sentence." -> a short terminated answer.
@@ -57,7 +72,7 @@ SHORT_Q = ["Say hello.", "Greet me.", "Reply briefly.", "Answer in one line.",
 SHORT_A = ["Hello, how can I help you today?", "Hi there, nice to meet you.",
            "Sure, here is a short reply.", "Of course, happy to help.",
            "Hello, I hope you are well."]
-n_fmt = int(0.05 * len(convos))
+n_fmt = int(0.08 * len(convos))     # 8% (up from 5%): the short/terminated slice most strongly teaches STOPPING
 fmt = [[{"role": "user", "content": random.choice(SHORT_Q)},
         {"role": "assistant", "content": random.choice(SHORT_A)}] for _ in range(n_fmt)]
 

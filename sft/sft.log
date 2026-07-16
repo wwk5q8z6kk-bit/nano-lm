@@ -1,18 +1,27 @@
 loaded base, resized emb (4096, 192) -> (4098, 192) (new rows <- <|endoftext|>); params=3.15M
-23685 examples, 1480 steps, 2 epochs, batch 32
-step     1/1480  sft_loss 3.966  gnorm 2.05  lr 6.8e-06  39k tok/s
-step   100/1480  sft_loss 2.323  gnorm 0.65  lr 3.0e-04  54k tok/s
-step   200/1480  sft_loss 2.247  gnorm 0.79  lr 2.9e-04  52k tok/s
-step   300/1480  sft_loss 2.260  gnorm 0.79  lr 2.8e-04  53k tok/s
-step   400/1480  sft_loss 1.786  gnorm 0.75  lr 2.6e-04  53k tok/s
-step   500/1480  sft_loss 1.689  gnorm 0.73  lr 2.4e-04  53k tok/s
-step   600/1480  sft_loss 1.917  gnorm 0.74  lr 2.1e-04  53k tok/s
-step   700/1480  sft_loss 1.713  gnorm 0.68  lr 1.8e-04  53k tok/s
-step   800/1480  sft_loss 1.510  gnorm 0.74  lr 1.5e-04  53k tok/s
-step   900/1480  sft_loss 1.864  gnorm 0.72  lr 1.2e-04  53k tok/s
-step  1000/1480  sft_loss 1.542  gnorm 0.65  lr 9.8e-05  53k tok/s
-step  1100/1480  sft_loss 1.541  gnorm 0.73  lr 7.4e-05  53k tok/s
-step  1200/1480  sft_loss 1.667  gnorm 0.66  lr 5.5e-05  53k tok/s
-step  1300/1480  sft_loss 1.479  gnorm 0.69  lr 4.0e-05  53k tok/s
-step  1400/1480  sft_loss 1.568  gnorm 0.72  lr 3.2e-05  53k tok/s
-SFT done in 7.6 min -> sft.pt
+25519 examples, 2391 steps, 3 epochs, batch 32
+step     1/2391  sft_loss 4.039  gnorm 2.89  lr 4.2e-06  26k tok/s
+step   100/2391  sft_loss 2.607  gnorm 0.83  lr 3.0e-04  81k tok/s
+step   200/2391  sft_loss 1.934  gnorm 0.72  lr 3.0e-04  82k tok/s
+step   300/2391  sft_loss 1.948  gnorm 0.76  lr 2.9e-04  81k tok/s
+step   400/2391  sft_loss 1.873  gnorm 0.85  lr 2.9e-04  81k tok/s
+step   500/2391  sft_loss 2.071  gnorm 0.73  lr 2.8e-04  80k tok/s
+step   600/2391  sft_loss 1.896  gnorm 0.70  lr 2.7e-04  77k tok/s
+step   700/2391  sft_loss 2.187  gnorm 0.75  lr 2.5e-04  70k tok/s
+step   800/2391  sft_loss 2.179  gnorm 0.92  lr 2.4e-04  64k tok/s
+step   900/2391  sft_loss 1.664  gnorm 0.68  lr 2.2e-04  59k tok/s
+step  1000/2391  sft_loss 1.831  gnorm 0.71  lr 2.1e-04  57k tok/s
+step  1100/2391  sft_loss 1.445  gnorm 0.70  lr 1.9e-04  57k tok/s
+step  1200/2391  sft_loss 1.664  gnorm 0.77  lr 1.7e-04  57k tok/s
+step  1300/2391  sft_loss 1.427  gnorm 0.75  lr 1.5e-04  56k tok/s
+step  1400/2391  sft_loss 1.557  gnorm 0.71  lr 1.3e-04  56k tok/s
+step  1500/2391  sft_loss 1.626  gnorm 0.81  lr 1.2e-04  56k tok/s
+step  1600/2391  sft_loss 1.956  gnorm 0.90  lr 1.0e-04  56k tok/s
+step  1700/2391  sft_loss 1.302  gnorm 0.81  lr 8.5e-05  56k tok/s
+step  1800/2391  sft_loss 1.451  gnorm 0.77  lr 7.1e-05  56k tok/s
+step  1900/2391  sft_loss 2.037  gnorm 0.89  lr 5.9e-05  56k tok/s
+step  2000/2391  sft_loss 1.652  gnorm 0.85  lr 4.8e-05  56k tok/s
+step  2100/2391  sft_loss 1.455  gnorm 0.70  lr 4.0e-05  56k tok/s
+step  2200/2391  sft_loss 1.335  gnorm 0.77  lr 3.4e-05  56k tok/s
+step  2300/2391  sft_loss 1.381  gnorm 0.68  lr 3.1e-05  56k tok/s
+SFT done in 11.7 min -> sft.pt

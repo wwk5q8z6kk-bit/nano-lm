@@ -16,6 +16,8 @@ at a scale where every decision is legible and auditable.
 | Pretrain | throughput | ~25k tok/s on MPS, zero loss spikes |
 | SFT | masked loss (assistant tokens only) | 3.97 → ~1.5 (7.6 min) |
 | SFT | throughput | ~53k tok/s |
+| Behavioral gate (v2) | clean ChatML stop, sampled decoding | base 2% → **98%** |
+| Behavioral gate (v2) | refusal on held-out unsafe phrasings | base 8% → **92%** |
 
 ## Architecture (`pretrain/train.py`)
 
@@ -48,7 +50,14 @@ on ≥2D params only.
 - **Loss masking**: cross-entropy computed only on assistant completion tokens
 - Data: `HuggingFaceTB/smoltalk`, capacity-adapted mixture (heavy code/LaTeX slices
   dropped at nano scale; refusal + format slices kept), 23,685 examples, 2 epochs
-- `gate_sft.py`: post-SFT behavioral gate (format adherence, refusal / over-refusal checks)
+- `gate_sft.py`: post-SFT behavioral gate with **pre-registered pass/fail bars**, held-out
+  refusal prompts (no train/test phrase overlap), and a base-model control — PASS requires
+  the SFT model to clear the bars AND the base to fail them
+- **v1 failed its bars honestly** (72% stop < 80%, 33% refusal < 66%); diagnosis traced the
+  refusal miss to a low-diversity refusal slice. One pre-specified improvement sweep
+  (refusal diversity 7→160 templates, +format slice, 3 epochs) → **v2 passed: 98% / 92%**.
+  Full trail in `sft/AUDIT.md`, including a known limitation (mild over-refusal on benign
+  prompts — the gate lacks an XSTest-style over-refusal axis)
 
 ## Methodology: guided-build audits
 

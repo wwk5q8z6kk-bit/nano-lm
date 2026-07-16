@@ -10,7 +10,7 @@ BASE = "../pretrain/ckpt.pt"
 V_OLD, V = 4096, 4098
 d, L, H, KV, hd, ff, S = 192, 6, 6, 2, 32, 512, 512
 # Recipe ③ Stage 1 config, nano-scaled (STALL #3: recipe LR assumes >=7B; scaled from nano 3e-3 pretrain peak)
-EPOCHS, PEAK_LR, WARM_FRAC, FLOOR, WD, CLIP = 2, 3e-4, 0.03, 0.1, 0.1, 1.0
+EPOCHS, PEAK_LR, WARM_FRAC, FLOOR, WD, CLIP = 3, 3e-4, 0.03, 0.1, 0.1, 1.0   # 3 = recipe ceiling (1-3)
 BATCH = 32
 
 def rope(q, k):
