@@ -200,5 +200,23 @@ spoken med phrased off-lexicon is invisible to it. On this synthetic eval the le
 complete by construction; in production this bar would need paraphrase-robust matching.
 One measurement, no tuning after seeing it.
 
-## Result
-- (to be filled after the single measurement run)
+## Result — measured once, STAGE A PASS (all three bars)
+
+- **Residual hallucination: 0/200 = 0.0% ✅** (bar ≤2.5) — catch-rate 23/23 = 100%
+- **Residual omissions: 0/200 = 0.0%** — catch-rate 10/10 = 100%, false absence-flags 0
+- **Presented precision: 162/162 = 100.0% ✅** (bar ≥95)
+- **Review load: 19.0% ✅** (bar ≤25) — 38 flagged fields (28 presence + 10 absence)
+
+**System-level conclusion of the scribe track:** with a 3.15M-parameter drafting model
+whose intrinsic hallucination rate is 11.5%, a two-axis verification layer (presence
+grounding against patient utterances + lexicon absence-scanning + mandatory-field flags)
+yields an output channel in which **every presented field is correct** and every model
+error is routed to human review, at a 19% review cost. Trust in the output came from the
+verification architecture, not from model scale. The gates that closed at FAIL (v1, v2,
+Stage G) were what located each next lever; the pre-registration discipline is what makes
+this PASS credible.
+
+Production caveats (stated for honesty, not hedging): synthetic dialogues with complete
+lexicon coverage and exact-match fields; real clinical language needs paraphrase-robust
+grounding, entity normalization, and an over-extraction axis. The architecture and the
+measurement discipline are the transferable artifacts, not the numbers.

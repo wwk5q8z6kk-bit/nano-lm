@@ -1,0 +1,15 @@
+eval fields 200 (unparsed drafts: 1 -> fully flagged)
+model hallucination (pre-guardrail): 23/200 = 11.5%
+model omissions (pre-guardrail): 10/200 = 5.0%
+presented 162  flagged 38  review load 19.0%
+residual hallucination (presented): 0/200 = 0.0%
+residual omissions (presented): 0/200 = 0.0%
+presented precision: 162/162 = 100.0%
+hallucination catch-rate: 23/23 = 100%
+omission catch-rate: 10/10 = 100%
+false absence-flags (pred none, truth none, flagged): 0
+recall among all fields (presented & correct): 162/200 = 81.0%
+
+--- verdict on pre-registered Stage-A bars ---
+  residual halluc <=2.5%: True   presented precision >=95%: True   review load <=25%: True
+STAGE A PASS

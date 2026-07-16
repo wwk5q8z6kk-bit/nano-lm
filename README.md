@@ -32,17 +32,19 @@ the same evaluation problem that production clinical documentation AI faces.
 | Scribe v1 (faithfulness gate, pre-registered) | ✅ done | ❌ honest FAIL (recall 74%, halluc 14%) — diagnosis in audit |
 | Scribe v2 (pre-specified diversity sweep) | ✅ done | ❌ FAIL by 1.5 pts (recall 81% ✅, halluc 11.5% vs ≤10%) — **stage closed per protocol** |
 | Stage G: grounding-verifier guardrail | ✅ done | ❌ FAIL by 0.8 pts — but **0.0% residual hallucination** (23/23 caught, 14% review load); miss = unverifiable absence claims |
-| Absence-verifier axis / copy-curriculum / scale test | 🔜 planned | each requires fresh pre-registration |
+| Stage A: absence-verifier axis | ✅ done | ✅ **PASS — presented precision 100%** (0.0% residual halluc AND omissions, 33/33 errors caught, 19% review load) |
+| Copy-curriculum / ~10M scale test | 🔜 planned | each requires fresh pre-registration |
 
-The scribe stages closing at FAIL is deliberate: each protocol allowed one measurement
-(plus, for v1→v2, one pre-specified sweep) — running "one more try" against seen results
-would be bar-chasing. The cumulative arc is the finding: model hallucination 14.0% (v1)
-→ 11.5% (v2, training-side diversity) → **0.0% as presented** (Stage G, verification-side
-guardrail, 100% catch at 14% review load). Hallucination in high-stakes drafting is a
-*systems* problem — training reduces it; verification architecture removes it from the
-output at a measured human-review cost. Stage G's residual risk moved from fabrication
-to omission (unverifiable `none` claims), a quieter failure mode needing its own gate
-axis. Full trail: `scribe/AUDIT.md`.
+The scribe track's arc is the finding. Three stages closed at honest FAIL — each protocol
+allowed one measurement (plus, for v1→v2, one pre-specified sweep), and "one more try"
+against seen results would be bar-chasing. Each FAIL located the next lever: v1's
+position-anchored extraction → template diversity; v2's out-of-distribution hallucination
+→ verification architecture; Stage G's unverifiable absence claims → the lexicon axis.
+Stage A then passed everything: with a drafting model whose intrinsic hallucination rate
+is 11.5%, the two-axis verification layer yields an output channel where **every presented
+field is correct (100% precision), every model error is routed to human review, at 19%
+review cost**. Trust came from verification architecture, not model scale — and the git
+history proves every bar preceded every result. Full trail: `scribe/AUDIT.md`.
 | Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
 
 ## Results
