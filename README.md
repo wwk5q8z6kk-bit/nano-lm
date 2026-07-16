@@ -31,15 +31,18 @@ the same evaluation problem that production clinical documentation AI faces.
 | RLVR/GRPO (verifiable-reward slice) | ✅ done | ✅ PASS (pass@1 12.5% → 85.9%, Δ CI [+61.7, +85.2]) |
 | Scribe v1 (faithfulness gate, pre-registered) | ✅ done | ❌ honest FAIL (recall 74%, halluc 14%) — diagnosis in audit |
 | Scribe v2 (pre-specified diversity sweep) | ✅ done | ❌ FAIL by 1.5 pts (recall 81% ✅, halluc 11.5% vs ≤10%) — **stage closed per protocol** |
-| Scribe next stage (copy-curriculum / scale test) | 🔜 planned | requires fresh pre-registration |
+| Stage G: grounding-verifier guardrail | ✅ done | ❌ FAIL by 0.8 pts — but **0.0% residual hallucination** (23/23 caught, 14% review load); miss = unverifiable absence claims |
+| Absence-verifier axis / copy-curriculum / scale test | 🔜 planned | each requires fresh pre-registration |
 
-The scribe stage closing at FAIL is deliberate: the pre-registered protocol allowed one
-improvement sweep and one re-measure. Every metric improved (halluc 14.0→11.5, recall
-74→81, held-out-value recall 65→72) but the hallucination bar was missed — and running
-"one more try" against the same bars would be bar-chasing. The gate caught the clinically
-dangerous failure shape: a model that looks excellent on-distribution (98% parse, 94%
-recall on familiar values) but hallucinates above tolerance exactly where inputs leave
-its training distribution. Full diagnosis and the legitimate next stage: `scribe/AUDIT.md`.
+The scribe stages closing at FAIL is deliberate: each protocol allowed one measurement
+(plus, for v1→v2, one pre-specified sweep) — running "one more try" against seen results
+would be bar-chasing. The cumulative arc is the finding: model hallucination 14.0% (v1)
+→ 11.5% (v2, training-side diversity) → **0.0% as presented** (Stage G, verification-side
+guardrail, 100% catch at 14% review load). Hallucination in high-stakes drafting is a
+*systems* problem — training reduces it; verification architecture removes it from the
+output at a measured human-review cost. Stage G's residual risk moved from fabrication
+to omission (unverifiable `none` claims), a quieter failure mode needing its own gate
+axis. Full trail: `scribe/AUDIT.md`.
 | Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
 
 ## Results

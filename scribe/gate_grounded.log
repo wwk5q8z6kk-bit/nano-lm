@@ -1,0 +1,11 @@
+eval fields 200 (unparsed drafts: 1 -> fully flagged)
+model hallucination (pre-guardrail): 23/200 = 11.5%
+presented 172  flagged 28  review load 14.0%
+residual hallucination (presented): 0/200 = 0.0%
+presented precision: 162/172 = 94.2%
+verifier catch-rate on hallucinations: 23/23 = 100%
+recall among all fields (presented & correct): 162/200 = 81.0%
+
+--- verdict on pre-registered Stage-G bars ---
+  residual halluc <=2.5%: True   presented precision >=95%: False   review load <=25%: True
+STAGE G FAIL

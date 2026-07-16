@@ -145,5 +145,29 @@ verifier — substring grounding cannot catch wrong-field-right-source errors. I
 alone exceed bar 1, the honest conclusion is "naive grounding verification is
 insufficient," which is itself the finding. One measurement, no tuning after seeing it.
 
-## Result
-- (to be filled after the single measurement run)
+## Result — measured once, STAGE G FAIL (by 0.8 pts on precision), stage CLOSED
+
+- **Residual hallucination: 0/200 = 0.0% ✅** (bar ≤2.5) — the verifier caught **all 23**
+  model hallucinations (catch-rate 100%). The pre-stated risk (wrong-field-right-source
+  survivors) did not materialize on this eval set.
+- **Review load: 14.0% ✅** (bar ≤25) — 28 flagged fields incl. one unparseable draft.
+- **Presented precision: 162/172 = 94.2% ❌** (bar ≥95) — missed by 0.8 points.
+
+**Where the miss lives:** all 10 presented-but-wrong fields are OMISSIONS — the model
+claimed `none` where the dialogue contained a medication/allergy. The verifier's
+pass-through rule for absence claims (documented as a limitation in the pre-registration)
+is precisely where the bar was lost. Substring grounding can verify presence; it cannot
+verify absence.
+
+**System-level finding (the stage's real product):** hallucination-as-presented can be
+driven to zero with a simple source-role-aware grounding verifier at modest review cost —
+but a trustworthy scribe system ALSO needs an absence-verifier (e.g., lexicon scan of
+patient utterances: if any known medication term appears while the draft claims
+`MED: none`, flag it). That is a legitimate next stage with its own pre-registration.
+Per protocol: single measurement, no post-hoc tuning, stage closes at FAIL.
+
+**Cumulative arc of the scribe track:** model halluc 14.0% (v1) → 11.5% (v2, diversity)
+→ 0.0% presented (Stage G, verification) — hallucination in high-stakes drafting is a
+SYSTEMS problem: training reduces it, but verification architecture is what eliminates
+it from the output, at a measurable human-review cost. The residual risk moved from
+fabrication to omission — a different, quieter failure mode that needs its own gate axis.
