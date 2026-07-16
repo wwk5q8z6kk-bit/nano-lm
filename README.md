@@ -7,6 +7,31 @@ no cloud GPUs. Total pretraining wall-clock: **20 minutes**.
 The point is not the model's size — it's exercising the *entire* modern LLM build stack
 at a scale where every decision is legible and auditable.
 
+## Purpose
+
+nano-lm is a **testbed for evaluation-gated model development**: every capability the
+model gains must pass a pre-registered behavioral gate (held-out prompts, base-model
+control, honest failure reporting) before the next stage begins. At this scale a full
+train-evaluate-gate-iterate cycle takes minutes, so evaluation *design* — what to
+measure, how to prevent contamination, when a pass is real — can be prototyped and
+stress-tested far faster than at production scale. The end goal is a miniature
+**ambient-scribe** task: converting short dialogue transcripts into structured summaries,
+gated on *faithfulness* (no content in the summary that isn't grounded in the dialogue) —
+the same evaluation problem that production clinical documentation AI faces.
+
+## Progression
+
+| Stage | Status | Gate result |
+|---|---|---|
+| Pretrain (FineWeb, Chinchilla-scaled) | ✅ done | val loss 3.96, zero spikes |
+| SFT v1 (SmolTalk, ChatML) | ✅ done | ❌ honest FAIL (72% stop, 33% refusal) |
+| SFT v2 (diversified refusal slice, +format) | ✅ done | ✅ PASS (98% stop, 92% held-out refusal) |
+| Preference pairs (best-of-n + rubric judge) | ✅ done | 163 pairs, margin ≥ 0.6 |
+| DPO (β=0.1) | ✅ done | held-out win-rate gate in progress |
+| RLVR/GRPO (verifiable-reward slice) | 🔜 planned | — |
+| Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
+| Ambient-scribe task + faithfulness gate | 🔜 planned | — |
+
 ## Results
 
 | Stage | Metric | Value |
