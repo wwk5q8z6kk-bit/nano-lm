@@ -27,10 +27,10 @@ the same evaluation problem that production clinical documentation AI faces.
 | SFT v1 (SmolTalk, ChatML) | ✅ done | ❌ honest FAIL (72% stop, 33% refusal) |
 | SFT v2 (diversified refusal slice, +format) | ✅ done | ✅ PASS (98% stop, 92% held-out refusal) |
 | Preference pairs (best-of-n + rubric judge) | ✅ done | 163 pairs, margin ≥ 0.6 |
-| DPO (β=0.1) | ✅ done | held-out win-rate gate in progress |
-| RLVR/GRPO (verifiable-reward slice) | 🔜 planned | — |
+| DPO (β=0.1) | ✅ done | ✅ PASS (win-rate 80.6% vs SFT, 95% CI [75.6, 85.6]) |
+| RLVR/GRPO (verifiable-reward slice) | 🔄 training | — |
+| Ambient-scribe task + faithfulness gate | 🔄 in progress | bars **pre-registered before training** (`scribe/AUDIT.md`) |
 | Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
-| Ambient-scribe task + faithfulness gate | 🔜 planned | — |
 
 ## Results
 
