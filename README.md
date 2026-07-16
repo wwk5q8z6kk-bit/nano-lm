@@ -28,8 +28,9 @@ the same evaluation problem that production clinical documentation AI faces.
 | SFT v2 (diversified refusal slice, +format) | ✅ done | ✅ PASS (98% stop, 92% held-out refusal) |
 | Preference pairs (best-of-n + rubric judge) | ✅ done | 163 pairs, margin ≥ 0.6 |
 | DPO (β=0.1) | ✅ done | ✅ PASS (win-rate 80.6% vs SFT, 95% CI [75.6, 85.6]) |
-| RLVR/GRPO (verifiable-reward slice) | 🔄 training | — |
-| Ambient-scribe task + faithfulness gate | 🔄 in progress | bars **pre-registered before training** (`scribe/AUDIT.md`) |
+| RLVR/GRPO (verifiable-reward slice) | ✅ done | ✅ PASS (pass@1 12.5% → 85.9%, Δ CI [+61.7, +85.2]) |
+| Scribe v1 (faithfulness gate, pre-registered) | ✅ done | ❌ honest FAIL (recall 74%, halluc 14%) — diagnosis in audit |
+| Scribe v2 (pre-specified diversity sweep) | 🔄 training | same bars, same eval set, measured once |
 | Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
 
 ## Results
