@@ -14,7 +14,7 @@ at a scale where every decision is legible and auditable.
 | Pretrain | train loss | 8.35 (= ln V, init sanity) → 3.70 |
 | Pretrain | val loss (held-out stream) | 3.96 |
 | Pretrain | throughput | ~25k tok/s on MPS, zero loss spikes |
-| SFT | masked loss (assistant tokens only) | 3.97 → ~1.5 |
+| SFT | masked loss (assistant tokens only) | 3.97 → ~1.5 (7.6 min) |
 | SFT | throughput | ~53k tok/s |
 
 ## Architecture (`pretrain/train.py`)
