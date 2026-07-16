@@ -1,0 +1,27 @@
+params=3.15M  device=mps  budget: 6ND=0.62 PFLOPs
+step     1  loss 8.349  gnorm 2.39  lr 3.0e-05  2k tok/s
+step   200  loss 5.441  gnorm 0.41  lr 3.0e-03  36k tok/s
+step   400  loss 5.000  gnorm 0.39  lr 3.0e-03  23k tok/s
+step   600  loss 4.765  gnorm 0.37  lr 2.9e-03  19k tok/s
+step   800  loss 4.548  gnorm 0.40  lr 2.8e-03  20k tok/s
+step  1000  loss 4.491  gnorm 0.39  lr 2.7e-03  21k tok/s
+  == val loss 4.535 (held-out stream) ==
+step  1200  loss 4.261  gnorm 0.39  lr 2.5e-03  21k tok/s
+step  1400  loss 4.350  gnorm 0.39  lr 2.3e-03  21k tok/s
+step  1600  loss 4.258  gnorm 0.36  lr 2.1e-03  22k tok/s
+step  1800  loss 4.016  gnorm 0.40  lr 1.9e-03  22k tok/s
+step  2000  loss 4.109  gnorm 0.42  lr 1.7e-03  22k tok/s
+  == val loss 4.198 (held-out stream) ==
+step  2200  loss 4.071  gnorm 0.39  lr 1.5e-03  23k tok/s
+step  2400  loss 4.013  gnorm 0.42  lr 1.3e-03  23k tok/s
+step  2600  loss 3.937  gnorm 0.43  lr 1.1e-03  24k tok/s
+step  2800  loss 3.715  gnorm 0.46  lr 8.8e-04  24k tok/s
+step  3000  loss 3.863  gnorm 0.44  lr 7.1e-04  25k tok/s
+  == val loss 4.015 (held-out stream) ==
+step  3200  loss 3.817  gnorm 0.44  lr 5.7e-04  25k tok/s
+step  3400  loss 3.749  gnorm 0.47  lr 4.5e-04  25k tok/s
+step  3600  loss 3.638  gnorm 0.46  lr 3.7e-04  25k tok/s
+step  3800  loss 3.765  gnorm 0.47  lr 3.2e-04  26k tok/s
+step  4000  loss 3.702  gnorm 0.49  lr 3.0e-04  27k tok/s
+  == val loss 3.962 (held-out stream) ==
+done in 20.4 min; trained 32.8M tokens (~3.1 epochs)

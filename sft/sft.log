@@ -1,0 +1,18 @@
+loaded base, resized emb (4096, 192) -> (4098, 192) (new rows <- <|endoftext|>); params=3.15M
+23685 examples, 1480 steps, 2 epochs, batch 32
+step     1/1480  sft_loss 3.966  gnorm 2.05  lr 6.8e-06  39k tok/s
+step   100/1480  sft_loss 2.323  gnorm 0.65  lr 3.0e-04  54k tok/s
+step   200/1480  sft_loss 2.247  gnorm 0.79  lr 2.9e-04  52k tok/s
+step   300/1480  sft_loss 2.260  gnorm 0.79  lr 2.8e-04  53k tok/s
+step   400/1480  sft_loss 1.786  gnorm 0.75  lr 2.6e-04  53k tok/s
+step   500/1480  sft_loss 1.689  gnorm 0.73  lr 2.4e-04  53k tok/s
+step   600/1480  sft_loss 1.917  gnorm 0.74  lr 2.1e-04  53k tok/s
+step   700/1480  sft_loss 1.713  gnorm 0.68  lr 1.8e-04  53k tok/s
+step   800/1480  sft_loss 1.510  gnorm 0.74  lr 1.5e-04  53k tok/s
+step   900/1480  sft_loss 1.864  gnorm 0.72  lr 1.2e-04  53k tok/s
+step  1000/1480  sft_loss 1.542  gnorm 0.65  lr 9.8e-05  53k tok/s
+step  1100/1480  sft_loss 1.541  gnorm 0.73  lr 7.4e-05  53k tok/s
+step  1200/1480  sft_loss 1.667  gnorm 0.66  lr 5.5e-05  53k tok/s
+step  1300/1480  sft_loss 1.479  gnorm 0.69  lr 4.0e-05  53k tok/s
+step  1400/1480  sft_loss 1.568  gnorm 0.72  lr 3.2e-05  53k tok/s
+SFT done in 7.6 min -> sft.pt

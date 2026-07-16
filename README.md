@@ -1,0 +1,71 @@
+# nano-lm — a language model pretrained and instruction-tuned from scratch on a MacBook
+
+A 3.15M-parameter decoder-only transformer built end-to-end: data pipeline, tokenizer,
+pretraining, and supervised fine-tuning (SFT) — all trained locally on Apple Silicon (MPS),
+no cloud GPUs. Total pretraining wall-clock: **20 minutes**.
+
+The point is not the model's size — it's exercising the *entire* modern LLM build stack
+at a scale where every decision is legible and auditable.
+
+## Results
+
+| Stage | Metric | Value |
+|---|---|---|
+| Pretrain | train loss | 8.35 (= ln V, init sanity) → 3.70 |
+| Pretrain | val loss (held-out stream) | 3.96 |
+| Pretrain | throughput | ~25k tok/s on MPS, zero loss spikes |
+| SFT | masked loss (assistant tokens only) | 3.97 → ~1.5 |
+| SFT | throughput | ~53k tok/s |
+
+## Architecture (`pretrain/train.py`)
+
+- Decoder-only transformer, **3.15M params**, d=192, seq len 512
+- RMSNorm (pre-norm), **SwiGLU** MLP (ff = 8/3·d), **RoPE** (base 1e4)
+- **Grouped-query attention** 6q:2kv, tied input/output embeddings
+- No dropout; init 0.02 depth-scaled; z-loss 1e-4
+
+## Data & tokenizer
+
+- Corpus: `HuggingFaceFW/fineweb` (sample-10BT), 12,000 docs streamed
+- Filtering: Gopher/C4 heuristics; dedup via exact SHA-1 + MinHash (5-gram, 112 hashes, 14×8 bands)
+- Tokenizer: byte-level BPE (HF `tokenizers`) + digit pre-tokenization, **V=4096**
+  (sized by the 2·V·d embedding-budget rule); measured fertility 1.84 tok/word
+- Tokenize-once → uint16 shards: **10.96M unique tokens**
+
+## Compute budgeting
+
+Chinchilla-style arithmetic drove the model size, not vibes:
+10.96M unique tokens × ≤4-epoch cap → D≈33M tokens → **N≈3M params** (D≈20N).
+Trained 4,000 steps / 32.8M tokens (~3.1 epochs). Optimizer: AdamW(0.9, 0.95),
+peak LR 3e-3, linear warmup → cosine decay to 10% floor, grad clip 1.0, wd 0.1
+on ≥2D params only.
+
+## SFT (`sft/`)
+
+- Chat format: ChatML (`<|im_start|>` / `<|im_end|>`); the pretrain tokenizer lacked
+  role tokens, so embeddings were **resized 4096 → 4098** with new rows initialized
+  from the `<|endoftext|>` embedding
+- **Loss masking**: cross-entropy computed only on assistant completion tokens
+- Data: `HuggingFaceTB/smoltalk`, capacity-adapted mixture (heavy code/LaTeX slices
+  dropped at nano scale; refusal + format slices kept), 23,685 examples, 2 epochs
+- `gate_sft.py`: post-SFT behavioral gate (format adherence, refusal / over-refusal checks)
+
+## Methodology: guided-build audits
+
+Each stage was executed strictly from my own research-vault recipes, with an audit log
+(`pretrain/AUDIT.md`, `sft/AUDIT.md`) recording every decision's source — and every
+**STALL**: a point where the documentation was insufficient and outside knowledge was
+required. Each stall becomes a documentation fix. The build validates the knowledge
+base as much as the knowledge base drives the build.
+
+## Reproduce
+
+```bash
+pip install torch tokenizers datasets
+cd pretrain && python train.py     # ~20 min on Apple Silicon
+python generate.py                 # sample from the checkpoint
+cd ../sft && python build_sft_data.py && python sft.py
+```
+
+Checkpoints and tokenized shards are excluded from the repo (see `.gitignore`);
+the trained checkpoints are attached as release assets.
