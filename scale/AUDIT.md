@@ -77,3 +77,13 @@ the inputs that leave its training distribution, same as the 3M one, just less o
 This is why the Stage G/A verification layer is not retired by scale: at any scale
 tested here, trust in the presented output still comes from verification architecture.
 The gates passed; the guardrail stays.
+
+## Artifacts
+
+Checkpoints published as v0.1 release assets
+(https://github.com/wwk5q8z6kk-bit/nano-lm/releases/tag/v0.1):
+
+- `scale10m_pretrain.pt` (120 MB) — 10M pretrain, val loss 3.284
+  sha256 `892180f02d09cacd2d129ba041dcbcca7635594bc98d8402203af64afc2fc88d`
+- `scale10m_scribe.pt` (40 MB) — scribe finetune, the gate-passing model
+  sha256 `f5aca5f04bd1045cc158d46a27b84024bb94baa349ed330933631c8b8d5acf0d`
