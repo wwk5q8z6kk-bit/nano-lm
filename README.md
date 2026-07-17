@@ -34,7 +34,7 @@ the same evaluation problem that production clinical documentation AI faces.
 | Stage G: grounding-verifier guardrail | ✅ done | ❌ FAIL by 0.8 pts — but **0.0% residual hallucination** (23/23 caught, 14% review load); miss = unverifiable absence claims |
 | Stage A: absence-verifier axis | ✅ done | ✅ **PASS — presented precision 100%** (0.0% residual halluc AND omissions, 33/33 errors caught, 19% review load) |
 | Stage C: copy-curriculum hypothesis test | ✅ done | ❌ FAIL — **hypothesis decided**: held-out gap unchanged (22 pts) → capacity, not curriculum; omissions (10→0) converted into fabrications (11.5→17.5%) |
-| ~10M scale test (cloud GPU) | 🔜 planned | the direct test of the surviving capacity hypothesis; fresh pre-registration |
+| Stage S: ~10M scale test (Kaggle T4) | 🔄 pre-registered | `scale/` — decision rule: held-out gap <10 pts confirms capacity hypothesis (nano baseline: 22 pts) |
 
 The scribe track's arc is the finding. Three stages closed at honest FAIL — each protocol
 allowed one measurement (plus, for v1→v2, one pre-specified sweep), and "one more try"
