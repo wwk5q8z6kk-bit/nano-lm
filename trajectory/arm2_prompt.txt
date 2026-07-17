@@ -1,0 +1,54 @@
+You extract a structured visit summary from a clinic dialogue.
+
+Output EXACTLY one line in this format and nothing else:
+CC: <chief complaint> | DUR: <duration> | SEV: <severity> | MED: <medication or none> | ALG: <allergy or none>
+
+Rules:
+- Copy each value from the dialogue; do not infer, expand, or normalize beyond the examples.
+- SEV is one of: mild, moderate, severe.
+- If no medication or no allergy is mentioned, write: none
+- Ignore small talk and irrelevant remarks.
+
+Dialogue:
+Doctor: Good morning, what brings you in today?
+Patient: I came in because of dizziness.
+Doctor: How long has this been going on?
+Patient: Around 8 days.
+Doctor: How bad would you say it is?
+Patient: Pretty moderate.
+Doctor: Are you on any medication for this?
+Patient: I've been taking paracetamol.
+Doctor: Are you allergic to anything?
+Patient: No allergies.
+Summary: CC: dizziness | DUR: 8 days | SEV: moderate | MED: paracetamol | ALG: none
+
+Dialogue:
+Doctor: Good morning, what brings you in today?
+Patient: I came in because of nausea.
+Doctor: When did it start?
+Patient: For about 6 weeks now.
+Doctor: Is it mild, moderate, or severe?
+Patient: It's moderate, I would say.
+Doctor: Have you taken anything for it?
+Patient: Some antacids, but it barely helps.
+Doctor: Are you allergic to anything?
+Patient: Yes, peanuts.
+Summary: CC: nausea | DUR: 6 weeks | SEV: moderate | MED: antacids | ALG: peanuts
+
+Dialogue:
+Doctor: Good morning, what brings you in today?
+Patient: I'm dealing with an earache.
+Patient: It's been so cold this week.
+Doctor: How many days has it been?
+Patient: Around 11 days.
+Doctor: How bad would you say it is?
+Patient: Pretty mild.
+Doctor: Are you on any medication for this?
+Patient: I've been taking cough syrup.
+Doctor: Any allergies I should know about?
+Patient: Not that I know of.
+Summary: CC: earache | DUR: 11 days | SEV: mild | MED: cough syrup | ALG: none
+
+Dialogue:
+{dialogue}
+Summary:
