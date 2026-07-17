@@ -1,22 +1,29 @@
 # Stage T — pre-registered equivalence check FAILED at 410m (STOP-PER-PREREG)
 
-Status: **PRELIMINARY** (1b rung + pulled JSONs pending; conclusion not expected
-to change — see below). Recorded before any re-registration.
+Status: **FINAL** (all three Pythia rungs measured; JSONs archived). Recorded
+before any re-registration.
 
 ## What fired
 
 `kaggle_arm1.py`'s equivalence gate (the PREREG contamination-control check:
 same model scored on instance 0 vs instance T, per-metric |diff| < 5 pts) hard-
-exited nonzero at 410m. Console measurements:
+exited nonzero at 410m. All three rungs, archived JSONs:
 
-| rung | inst0 gap (95% CI) | instT gap (95% CI) | |diff| | verdict |
-|---|---|---|---|---|
-| 160m | 7.0 [3.0, 11.0] | 2.0 [0.0, 5.0] | 5.0 | pass (float boundary) |
-| 410m | 8.0 [4.0, 12.0] | 2.0 [0.0, 5.0] | 6.0 | **FAIL** |
+| rung | params | inst0 gap (95% CI) | instT gap (95% CI) | |diff| | verdict |
+|---|---|---|---|---|---|
+| 160m | 160M | 7.0 [3.0, 11.0] | 2.0 [0.0, 5.0] | ~5.0 | pass (float boundary) |
+| 410m | 410M | 8.0 [4.0, 12.0] | 2.0 [0.0, 5.0] | 6.0 | **FAIL** |
+| 1b   | 1B   | 5.0 [1.0, 9.0]  | 1.0 [0.0, 3.0] | 4.0 | pass |
 
-parse / recall / halluc / omission all passed equivalence at both rungs; only the
-GAP metric failed. The gate did exactly what F3 hardened it to do: it stopped the
+parse / recall / halluc / omission passed equivalence at all three rungs; only the
+GAP metric flapped. The gate did exactly what F3 hardened it to do: it stopped the
 run instead of letting a non-equivalent instrument pass silently.
+
+The three gap-diffs — ~5.0, 6.0, 4.0 — cluster tightly around the 5-pt threshold.
+That is the signature of a threshold set AT the signal magnitude: the true
+inst0-harder-than-instT effect is ~5 pts, the threshold is 5 pts, so measurements
+scatter to both sides and the pass/fail verdict is effectively a coin-flip. This is
+under-powered instrumentation, confirmed now by three datapoints, not a one-off.
 
 ## Diagnosis (the direction rules out the actual threat)
 
@@ -37,24 +44,42 @@ dependent, so single-instance gap has instance-level variance LARGER than the 5-
 threshold. The threshold was under-powered for the estimator's noise — an
 instrument-design miss, caught (as intended) before it corrupted a trajectory claim.
 
-Cross-size consistency (inst0≈7-8, instT≈2 at BOTH 160m and 410m) confirms this is
-fixed instance difficulty, not random per-run noise.
+Cross-size consistency confirms this is fixed instance difficulty, not random per-
+run noise: inst0 gap > instT gap at ALL THREE rungs (7>2, 8>2, 5>1). Instance 0 is
+reliably harder on held values regardless of model size — so the contamination-
+direction argument (inst0 harder, not memorized) holds at every rung.
 
 ## What survives and what does not
 
 SURVIVES (robust to the instance variance):
-- The QUALITATIVE trajectory. Anchors: 22 pts (3M), 23 pts (10M). Pythia 160m/410m:
-  gap in the 2-8 pt range on either instance. The drop (~15-21 pts) dwarfs the ~5-6
-  pt instance variance. "The held-out copying gap collapses from 10M to 160M+" holds.
-- Model-side quality: parse 100%, recall 96-99%, halluc 1-4% at both rungs — all
-  beat every nano-stack result, on both instances.
-- Contamination ruled out (direction argument above).
+- The QUALITATIVE collapse. Anchors: 22 pts (3M), 23 pts (10M). Pythia 160M-1B: gap
+  1-8 pts on either instance (near ZERO on the fresh instance T: 2, 2, 1). The drop
+  (~15-22 pts) dwarfs the ~5-6 pt instance variance. "The held-out copying gap
+  collapses moving from the 3-10M nano stack to Pythia 160M+" holds decisively.
+- Model-side quality: parse 100%, recall 96-100%, halluc 0.5-4% across all three
+  rungs — all beat every nano-stack result, on both instances.
+- Contamination ruled out (direction argument holds at all three rungs).
 
 DOES NOT survive without re-instrumentation:
-- Any PRECISE per-rung gap value or fine-grained gap-vs-scale shape. Single-instance
-  gap at n=20 held dialogues is too noisy (±4-5 pt CIs; 5-6 pt inter-instance swing)
-  to place rungs on a curve. The PERSISTS/THRESHOLD band call (which needs the gap
-  CI, not just the point) is NOT yet supportable.
+- Any PRECISE per-rung gap value or fine-grained gap-vs-scale shape WITHIN Pythia.
+  Single-instance gap at n=20 held dialogues is too noisy (±4-5 pt CIs; 4-6 pt
+  inter-instance swing) to place the 160M/410M/1B rungs on a curve relative to each
+  other. The formal PERSISTS/THRESHOLD band call (needs the gap CI) is NOT yet
+  supportable — though it leans THRESHOLD: the top-rung (1b) gap CI lower bounds are
+  1.0 (inst0) and 0.0 (instT), nowhere near the ≥10 PERSISTS floor.
+
+CONFOUND (pre-registered, now load-bearing): the collapse coincides with the
+nano-stack → Pythia-stack change (different pretraining data, tokenizer, and
+full-FT → LoRA), not scale alone. WITHIN Pythia the gap is already near-floor at
+160M and shows no clean monotonic scale trend (inst0: 7, 8, 5). So the transition
+happened at or below 160M / is stack-driven; this ladder captured the post-
+transition floor, not the transition itself. Separating scale from stack needs
+either a nano-stack model at ~160M or a Pythia model well below 160M.
+
+RELATION TO STAGE S: Stage S found the gap unmoved 3M→10M ("capacity WEAKENED").
+Stage T shows it largely GONE by 160M. Consistent: the 3M→10M step (3.2×) was too
+small to cross it; the 10M→160M step (16×), or the stack change, does. The gap is a
+property of the sub-10M / nano-stack regime, not a capacity-invariant tail failure.
 
 ## Re-registration proposal (cheap — it is a SCORING fix, not a training fix)
 
@@ -71,10 +96,19 @@ Recommended default: (1)+(2) — regenerate a larger, multi-instance held-eval
 estimator + equivalence threshold with the measured instance-variance as the
 power target. Raw 160m/410m/1b measurements from this run are retained as-is.
 
-## Immediate actions (in flight)
+## Reproducibility note
 
-- 410m and 1b headless jobs are running/finishing; their raw JSONs will be pulled
-  and archived (410m headless reproduces the interactive result deterministically;
-  1b adds the third equivalence datapoint — expected inst0>instT again).
-- No trajectory/band claim is made until the gap estimator is re-registered and the
-  adapters re-scored.
+The headless-T4 410m run reproduced the interactive-T4 410m run byte-for-byte on
+every metric (gap 8.0/2.0, recall 96/99, etc.) — a free confirmation that the
+headless API path and the interactive path are the same instrument.
+
+## Status of Stage T
+
+- Arm 1 raw measurements: COMPLETE and archived (160m/410m/1b JSONs + retained
+  adapters for 410m/1b; 160m adapters regenerable in ~7 min).
+- Gap trajectory: NOT claimed pending re-instrumentation (Stage T-v2, below).
+- Arm 2 (frontier prompted probe): still pending; its value is now reframed — given
+  the collapse, it would confirm the gap is absent at frontier scale (supporting
+  THRESHOLD), not adjudicate PERSISTS.
+- No band call, no paper claim, until the gap estimator is re-registered and the
+  retained adapters re-scored on the larger multi-instance eval.
