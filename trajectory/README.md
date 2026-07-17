@@ -42,3 +42,15 @@ supported"). We do not use torchao; removing it makes peft's probe return
 False cleanly. Discovered 2026-07-17 on the first 160m attempt — instrument
 failure before the finetune began; no measurement spent (base control is
 deterministic and reproduces identically).
+
+Headless runs (Kaggle API, `kaggle kernels push`) must pin the GPU in
+kernel-metadata.json: `"machine_shape": "NvidiaTeslaT4"`. Without it the job
+takes the default GPU, which can be a P100 (sm_60); the current torch build
+(2.10+cu128) has no sm_60 kernels and fails with "CUDA error: no kernel image
+is available for execution on the device" during the first generate() call.
+Do NOT also copy the `docker_image` pin from an older kernel — that would lock
+the environment to a different torch/transformers stack than the interactive
+rungs and break cross-rung comparability. Omit docker_image → current default
+image → same stack as the interactive T4 runs (verified working on T4).
+Discovered 2026-07-17 on the first headless 1b attempt (P100 assigned); no
+measurement spent (died in base-control scoring before finetuning).
