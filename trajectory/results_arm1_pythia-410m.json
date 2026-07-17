@@ -1,0 +1,211 @@
+{
+ "stage": "T-arm1",
+ "model": "EleutherAI/pythia-410m",
+ "prereg": "trajectory/PREREG.md",
+ "seeds": {
+  "harness": 20260717,
+  "data_recipe": 11,
+  "instanceT": 20260717,
+  "dev": 20260718
+ },
+ "hparams": {
+  "lr": 0.0001,
+  "epochs": 3,
+  "micro_batch": 8,
+  "accum": 4,
+  "max_len": 448,
+  "max_new": 64,
+  "clip": 1.0,
+  "betas": [
+   0.9,
+   0.95
+  ],
+  "wd": 0.0,
+  "precision": "fp16-autocast",
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.0,
+   "targets": [
+    "query_key_value",
+    "dense",
+    "dense_h_to_4h",
+    "dense_4h_to_h"
+   ]
+  },
+  "trainable_params": 6291456
+ },
+ "decoding": "greedy, stop on EOS only (no newline stop; parity with gate_scribe), max_new 64",
+ "bootstrap_resamples": 10000,
+ "data": {
+  "examples": 12000,
+  "dropped": 0
+ },
+ "versions": {
+  "torch": "2.10.0+cu128",
+  "transformers": "5.0.0",
+  "peft": "0.19.1",
+  "python": "3.12.13"
+ },
+ "gpu": "Tesla T4",
+ "train_wall_secs": 1042,
+ "ckpt_every": 187,
+ "n_ckpt_target": 6,
+ "base_control": {
+  "parse": 0.0,
+  "recall": 0.0,
+  "halluc": 0.0,
+  "omission": 0,
+  "omission_rate": 0.0,
+  "seen_recall": null,
+  "held_recall": null,
+  "held_parsed": 0,
+  "seen_parsed": 0,
+  "gap_pts": null,
+  "gap_ci_pts": null
+ },
+ "final_inst0": {
+  "parse": 1.0,
+  "recall": 0.96,
+  "halluc": 0.04,
+  "omission": 0,
+  "omission_rate": 0.0,
+  "seen_recall": 1.0,
+  "held_recall": 0.92,
+  "held_parsed": 20,
+  "seen_parsed": 20,
+  "gap_pts": 7.9999999999999964,
+  "gap_ci_pts": [
+   4.0000000000000036,
+   12.0
+  ]
+ },
+ "final_instT": {
+  "parse": 1.0,
+  "recall": 0.99,
+  "halluc": 0.01,
+  "omission": 0,
+  "omission_rate": 0.0,
+  "seen_recall": 1.0,
+  "held_recall": 0.98,
+  "held_parsed": 20,
+  "seen_parsed": 20,
+  "gap_pts": 2.0000000000000018,
+  "gap_ci_pts": [
+   0.0,
+   5.000000000000004
+  ]
+ },
+ "equivalence": {
+  "parse": true,
+  "recall": true,
+  "halluc": true,
+  "omission_rate": true,
+  "gap": false
+ },
+ "equivalence_ok": false,
+ "ckpt_trajectory": [
+  {
+   "step": 187,
+   "parse": 1.0,
+   "recall": 0.96,
+   "halluc": 0.04,
+   "omission": 0,
+   "omission_rate": 0.0,
+   "seen_recall": 1.0,
+   "held_recall": 0.92,
+   "held_parsed": 20,
+   "seen_parsed": 20,
+   "gap_pts": 7.9999999999999964,
+   "gap_ci_pts": [
+    4.0000000000000036,
+    12.0
+   ]
+  },
+  {
+   "step": 374,
+   "parse": 1.0,
+   "recall": 0.96,
+   "halluc": 0.04,
+   "omission": 0,
+   "omission_rate": 0.0,
+   "seen_recall": 1.0,
+   "held_recall": 0.92,
+   "held_parsed": 20,
+   "seen_parsed": 20,
+   "gap_pts": 7.9999999999999964,
+   "gap_ci_pts": [
+    4.0000000000000036,
+    12.0
+   ]
+  },
+  {
+   "step": 561,
+   "parse": 1.0,
+   "recall": 0.96,
+   "halluc": 0.04,
+   "omission": 0,
+   "omission_rate": 0.0,
+   "seen_recall": 1.0,
+   "held_recall": 0.92,
+   "held_parsed": 20,
+   "seen_parsed": 20,
+   "gap_pts": 7.9999999999999964,
+   "gap_ci_pts": [
+    4.0000000000000036,
+    12.0
+   ]
+  },
+  {
+   "step": 748,
+   "parse": 1.0,
+   "recall": 0.96,
+   "halluc": 0.04,
+   "omission": 0,
+   "omission_rate": 0.0,
+   "seen_recall": 1.0,
+   "held_recall": 0.92,
+   "held_parsed": 20,
+   "seen_parsed": 20,
+   "gap_pts": 7.9999999999999964,
+   "gap_ci_pts": [
+    4.0000000000000036,
+    12.0
+   ]
+  },
+  {
+   "step": 935,
+   "parse": 1.0,
+   "recall": 0.96,
+   "halluc": 0.04,
+   "omission": 0,
+   "omission_rate": 0.0,
+   "seen_recall": 1.0,
+   "held_recall": 0.92,
+   "held_parsed": 20,
+   "seen_parsed": 20,
+   "gap_pts": 7.9999999999999964,
+   "gap_ci_pts": [
+    4.0000000000000036,
+    12.0
+   ]
+  },
+  {
+   "step": 1122,
+   "parse": 1.0,
+   "recall": 0.96,
+   "halluc": 0.04,
+   "omission": 0,
+   "omission_rate": 0.0,
+   "seen_recall": 1.0,
+   "held_recall": 0.92,
+   "held_parsed": 20,
+   "seen_parsed": 20,
+   "gap_pts": 7.9999999999999964,
+   "gap_ci_pts": [
+    4.0000000000000036,
+    12.0
+   ]
+  }
+ ]
+}
