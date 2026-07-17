@@ -79,9 +79,12 @@ transition floor, not the transition itself. Separating scale from stack needs
 either a nano-stack model at ~160M or a Pythia model well below 160M.
 
 RELATION TO STAGE S: Stage S found the gap unmoved 3M→10M ("capacity WEAKENED").
-Stage T shows it largely GONE by 160M. Consistent: the 3M→10M step (3.2×) was too
-small to cross it; the 10M→160M step (16×), or the stack change, does. The gap is a
-property of the sub-10M / nano-stack regime, not a capacity-invariant tail failure.
+Stage T shows it substantially smaller in the tested Pythia models. Consistent with
+either (a) the 3M→10M step (3.2×) being too small to cross a transition the 10M→160M
+step (16×) does cross, or (b) the stack change doing the work. These are not
+separated by this data. The defensible statement is "the gap is much smaller under
+the Pythia pipeline," NOT "the gap is intrinsic to the nano regime" — the latter is
+a hypothesis for a within-family scaling run, not a demonstrated conclusion.
 
 ## Re-registration proposal (cheap — it is a SCORING fix, not a training fix)
 
