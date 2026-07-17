@@ -34,19 +34,26 @@ and Arm 2 disagree, that disagreement is reported, not reconciled post-hoc.
 ## Instrument and contamination control
 
 - **The benchmark is the generator, not any single instance.** The scientific object
-  is the distribution defined by `scribe/build_scribe_data_v2.py` (eval mode) at a
-  fixed version; eval sets are seeded samples from it. Changing the generator is a
-  benchmark version bump (v2 → v3), never a silent patch. Cross-stage comparability
-  = same generator version + reported instance seed.
+  is the eval distribution defined by `scribe/build_scribe_data.py` (v1), lines
+  119–130: 40 dialogues, first 20 with held-out slot VALUES, all 40 with held-out
+  TEMPLATE families. (Corrected in Amendment 1: v2 changes the TRAINING recipe only
+  and reuses the v1 eval set byte-identical — the eval generator has been v1 at all
+  stages.) Eval sets are seeded samples from this distribution. Changing the
+  generator is a benchmark version bump, never a silent patch. Cross-stage
+  comparability = same generator version + reported instance seed.
 - Instance 0: `scribe/scribe_eval.json` (40 dialogues, 200 fields, seen/held-out
   value split) — the historical instance, byte-identical to all prior stages,
   retained for cross-stage anchoring.
 - **Contamination hazard, stated:** the repo became public 2026-07-16/17. Any model
   with training data past that date may have seen instance 0, corrupting the
   seen/held-out distinction — the exact metric under study.
-- Control: generate instance T (`scribe_eval_T.json`, new seed, recorded) —
-  distribution-identical, byte-different, values freshly sampled. Equivalence check:
-  one cutoff-clean model (any Arm-1 Pythia; The Pile predates the repo) is scored on
+- Control: instance T (`trajectory/scribe_eval_T.json`) — GENERATED 2026-07-17,
+  seed **20260717** (date-derived, fixed before generation), via
+  `trajectory/gen_eval_instance.py` (execs v1 definitions verbatim, re-runs only
+  the eval loop; training build never executed). QA at generation: schema identical
+  to instance 0; 40 items, 20 held-value; **0/40 byte-identical dialogue collisions**
+  vs instance 0. Equivalence check still required before measurement: one
+  cutoff-clean model (any Arm-1 Pythia; The Pile predates the repo) is scored on
   BOTH instances; per-metric difference must be < 5 pts, else the generator is
   seed-sensitive — stop, diagnose, re-register.
 - **Residual channel, acknowledged:** publishing the generator publishes the
@@ -124,6 +131,20 @@ Arm 1: Pythia finetunes ≤ 1B fit Kaggle T4 free tier (scribe finetune at 10M t
 3.3 min; 1B est. < 2 h with LoRA fallback if full finetune OOMs — if LoRA is used it
 is used for ALL Pythia rungs, never mixed). Arm 2: ~6 runs × 40 dialogues, trivial
 API cost. Total wall-clock estimate: 1–2 days.
+
+**Run-logging contract (every Arm-1 run):** GPU type and wall-clock hours, all
+random seeds, exact hyperparameters (and LoRA rank/alpha/targets if used),
+intermediate checkpoint cadence — intermediate checkpoints RETAINED, not just
+final (emergence timing of the seen/held-out gap along the training trajectory is
+a free secondary observable, reported descriptively, no bars).
+
+## Amendments (all before any measurement)
+
+**Amendment 1 (2026-07-17, pre-measurement):** instrument reference corrected —
+the eval generator is `build_scribe_data.py` (v1), not v2; v2's own header states
+the eval set is reused byte-identical from v1. Discovered during instance-T
+implementation. No bars, bands, arms, or metrics changed. Instance-T seed
+(20260717), generation script, and QA results recorded in the instrument section.
 
 ## What would falsify the design itself
 
