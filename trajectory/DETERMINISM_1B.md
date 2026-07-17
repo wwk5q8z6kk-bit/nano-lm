@@ -44,8 +44,10 @@ from that distribution; the point estimate is not identified without more seeds.
 - 410m: gap 4.2 ± 0.9 — determinism verified, trustworthy.
 - 1b: gap is SMALL and training-run-dependent — both runs agree it is in [0, 5],
   i.e. consistent with 160m/410m or lower. NOT precisely identified.
-- The qualitative collapse — 22/23 pts (3-10M nano) → ≤5 pts (Pythia 160M-1B) — is
-  robust to every noise source found (eval-instance AND training-run).
+- The direction — 22/23 pts (3-10M nano) → single-digit (Pythia 160M-1B) — holds
+  across BOTH noise sources characterized here (eval-instance AND training-run):
+  the reduction is far larger than either. "Substantially reduced," not
+  "eliminated," and not attributed to scale per se (stack confound stands).
 
 ## Bearing on the paper
 

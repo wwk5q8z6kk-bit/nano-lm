@@ -51,11 +51,13 @@ direction argument (inst0 harder, not memorized) holds at every rung.
 
 ## What survives and what does not
 
-SURVIVES (robust to the instance variance):
-- The QUALITATIVE collapse. Anchors: 22 pts (3M), 23 pts (10M). Pythia 160M-1B: gap
-  1-8 pts on either instance (near ZERO on the fresh instance T: 2, 2, 1). The drop
-  (~15-22 pts) dwarfs the ~5-6 pt instance variance. "The held-out copying gap
-  collapses moving from the 3-10M nano stack to Pythia 160M+" holds decisively.
+SURVIVES (given the instance variance):
+- The QUALITATIVE direction. Anchors: 22 pts (3M), 23 pts (10M). Pythia 160M-1B: gap
+  1-8 pts on either instance. The reduction (~15-22 pts) is far larger than the
+  ~5-6 pt instance variance, so the DIRECTION is not in doubt: the severe sub-10M
+  gap is SUBSTANTIALLY SMALLER in the tested Pythia models. The CAUSE is not
+  established — the stack confound (below) is unresolved; this is not a claim that
+  scaling per se removes the gap.
 - Model-side quality: parse 100%, recall 96-100%, halluc 0.5-4% across all three
   rungs — all beat every nano-stack result, on both instances.
 - Contamination ruled out (direction argument holds at all three rungs).
