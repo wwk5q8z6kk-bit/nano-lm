@@ -253,5 +253,26 @@ model as diagnostics.
 
 Single measurement, no post-hoc tuning. Result below, either way.
 
-## Result
-- (to be filled after the single measurement run)
+## Result — measured once, STAGE C GATE FAIL; hypothesis test DECIDED
+
+Greedy (primary): parse 95% ✅  recall 78% ❌ (bar 80)  hallucination 17.5% ❌ (bar ≤10)
+omissions 0 (was 10). Sampled diagnostic agrees (80% / 16.6%). Base control still 0%.
+
+**Hypothesis verdict: the CURRICULUM explanation is refuted at this scale; the CAPACITY
+explanation stands.** The held-out-value gap did not move: 71% vs 93% seen (22 pts) —
+v2 was 72% vs 94% (22 pts). Making memorization impossible in 25% of training did not
+induce reliable content-addressed copying at 3.15M params.
+
+**Secondary finding (worth the stage by itself):** the copy slice eliminated omissions
+entirely (10 → 0) but converted them into fabrications (halluc 11.5% → 17.5%, incl.
+degenerate outputs like `ALG: sir, sir`). Teaching a capacity-limited model to always
+commit doesn't create the missing skill — it relocates the error from the quiet failure
+mode (omission) into the dangerous one (confident fabrication). For clinical drafting
+systems the implication is directional: under capacity pressure, prefer models tuned to
+abstain (omit) over models tuned to commit, because the verification layer (Stage G/A)
+catches absent-and-flagged more cheaply than plausible-and-wrong.
+
+**Next motivated stage:** the ~10M-parameter scale test — now the direct test of the
+surviving capacity hypothesis. Appropriate venue: cloud GPU (Colab/Kaggle free tier),
+where bf16 + larger batch make the run tractable; local MPS fp32 was sized for nano.
+Requires fresh pre-registration.

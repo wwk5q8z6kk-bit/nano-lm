@@ -33,7 +33,8 @@ the same evaluation problem that production clinical documentation AI faces.
 | Scribe v2 (pre-specified diversity sweep) | ✅ done | ❌ FAIL by 1.5 pts (recall 81% ✅, halluc 11.5% vs ≤10%) — **stage closed per protocol** |
 | Stage G: grounding-verifier guardrail | ✅ done | ❌ FAIL by 0.8 pts — but **0.0% residual hallucination** (23/23 caught, 14% review load); miss = unverifiable absence claims |
 | Stage A: absence-verifier axis | ✅ done | ✅ **PASS — presented precision 100%** (0.0% residual halluc AND omissions, 33/33 errors caught, 19% review load) |
-| Copy-curriculum / ~10M scale test | 🔜 planned | each requires fresh pre-registration |
+| Stage C: copy-curriculum hypothesis test | ✅ done | ❌ FAIL — **hypothesis decided**: held-out gap unchanged (22 pts) → capacity, not curriculum; omissions (10→0) converted into fabrications (11.5→17.5%) |
+| ~10M scale test (cloud GPU) | 🔜 planned | the direct test of the surviving capacity hypothesis; fresh pre-registration |
 
 The scribe track's arc is the finding. Three stages closed at honest FAIL — each protocol
 allowed one measurement (plus, for v1→v2, one pre-specified sweep), and "one more try"
