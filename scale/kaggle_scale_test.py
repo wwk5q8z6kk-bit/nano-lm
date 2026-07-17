@@ -11,6 +11,10 @@ import torch, torch.nn as nn, torch.nn.functional as F
 torch.manual_seed(0); random.seed(0)
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 assert dev == "cuda", "No GPU — enable the accelerator (Kaggle: Settings > Accelerator > GPU)"
+_cap = torch.cuda.get_device_capability()
+assert _cap >= (7, 0), (f"{torch.cuda.get_device_name()} has CUDA capability {_cap} — this PyTorch build "
+                        f"needs >=7.0 (P100 is 6.0 and unsupported). Switch Accelerator to GPU T4 x2.")
+print(f"GPU: {torch.cuda.get_device_name()} (capability {_cap})", flush=True)
 
 RAW = "https://raw.githubusercontent.com/wwk5q8z6kk-bit/nano-lm/master"
 for path, url in [("tokenizer.json", f"{RAW}/sft/tokenizer.json"),
