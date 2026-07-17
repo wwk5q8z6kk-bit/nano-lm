@@ -220,3 +220,38 @@ Production caveats (stated for honesty, not hedging): synthetic dialogues with c
 lexicon coverage and exact-match fields; real clinical language needs paraphrase-robust
 grounding, entity normalization, and an over-extraction axis. The architecture and the
 measurement discipline are the transferable artifacts, not the numbers.
+
+---
+
+# Stage C — copy-curriculum test (NEW stage, fresh pre-registration, 2026-07-16)
+
+## Hypothesis under test
+
+Scribe v2's residual hallucination concentrates on held-out values (recall 72% vs 94%
+seen), attributed in the v2 closure to "a capacity wall on content-addressed copying."
+Stage C tests the rival explanation: it is a CURRICULUM problem, not capacity — the
+model memorizes values because memorization was always available. If a training slice
+makes memorization impossible, copying should emerge at the same parameter count.
+
+## Intervention (fixed before training)
+
+- v2 data recipe unchanged EXCEPT: 25% of training examples draw CC/MED/ALG values from
+  **random gibberish strings** (pronounceable nonsense, e.g. "flumbar toxen") sampled
+  fresh per example — unmemorizable by construction; copying is the only strategy.
+- Same base (dpo.pt), same hyperparameters as v2 (LR 1.5e-4, 3 epochs, batch 32),
+  N=12000. One training run.
+
+## Pre-registered evaluation (same eval set, byte-identical; greedy primary; ONE run)
+
+Primary bars — the ORIGINAL scribe faithfulness bars, still never passed by a model:
+1. parse ≥ 90%   2. recall ≥ 80%   3. hallucination ≤ 10%   4. base control fails
+Hypothesis-specific report (no bar): held-out-value recall vs seen-value recall gap —
+v2 baseline is 72% vs 94% (22-pt gap). If the gap closes below 10 pts, the curriculum
+explanation wins; if it persists, the capacity explanation stands.
+Also report: Stage A system metrics (review load / presented precision) with the new
+model as diagnostics.
+
+Single measurement, no post-hoc tuning. Result below, either way.
+
+## Result
+- (to be filled after the single measurement run)
