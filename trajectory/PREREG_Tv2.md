@@ -7,12 +7,17 @@ three rungs (diffs ~5.0/6.0/4.0). The qualitative collapse (22/23 pts at 3-10M �
 1-8 pts at Pythia 160M-1B) is robust, but no PRECISE per-rung gap or formal band
 call is supportable on the v1 instrument. This stage fixes the ESTIMATOR only.
 
-## Key property: this is a re-SCORING, not a re-TRAINING
+## Key property: this is a re-SCORING, not a re-TRAINING (implemented via
+## deterministic regeneration)
 
-The finetuned LoRA adapters are retained for 410m and 1b (all 6 intermediate + final
-checkpoints each, pulled locally); 160m regenerates deterministically in ~7 min.
-No model is retrained. Only the eval set and the gap estimator change. This makes
-the fix cheap and keeps the trained models byte-identical to v1.
+The scientific point is that the MODELS do not change — only the eval set and gap
+estimator do. Implementation: rather than upload the locally-retained adapters back
+to Kaggle, the v2 kernel re-finetunes at the fixed seed. This is equivalent because
+the pipeline is deterministic on T4 — the headless-T4 410m reproduced the
+interactive-T4 410m byte-for-byte on every metric. The re-run therefore regenerates
+the frozen v1 adapter exactly, verified in-band: v2 re-scores inst0 and instT too,
+and those gaps must match the v1 JSONs (determinism cross-check). No hyperparameter,
+seed, or data changes; the trained model is byte-identical to v1.
 
 ## What changes (fixed before any re-scoring)
 
