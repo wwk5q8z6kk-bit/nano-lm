@@ -168,6 +168,23 @@ train-template exemplars mirror Arm 1's training exposure; sanity targets are
 held-template. Seed 20260718 recorded. Frozen prompt file recorded
 (`trajectory/arm2_prompt.txt`). No bars, bands, arms, or metrics changed.
 
+**Amendment 3 (2026-07-17, pre-measurement):** (a) LoRA invoked for ALL Arm-1
+rungs pre-emptively under the existing all-or-none fallback: adversarial code
+review established by arithmetic that pythia-1b full finetune needs ~16.2 GB
+optimizer+gradient state vs ~15 GB usable on T4 — waiting for the observed OOM
+would have wasted two already-measured rungs. Config recorded: r=16, alpha=32,
+dropout 0, targets query_key_value/dense/dense_h_to_4h/dense_4h_to_h, LR 1e-4
+retained per recipe; adapter-only checkpoints (also resolves output-disk quota).
+Anchor-join caveat gains one clause: nano/scale anchors were full finetunes;
+the within-Pythia trend remains the clean comparison. (b) Decoding rule pinned
+before measurement: greedy, stop on EOS only (no newline stop), max_new 64 —
+exact parity with gate_scribe stopping semantics. (c) Review also found the
+scorer port divergent from gate_scribe on held/seen stratification (must be
+conditional on parse — anchor semantics) and the equivalence check missing the
+gap metric and a hard stop; both fixed in `kaggle_arm1.py` pre-measurement.
+These implement existing prereg bindings rather than change them. No bars,
+bands, arms, or metrics changed.
+
 ## What would falsify the design itself
 
 - Regeneration equivalence check fails (> 5 pt drift) → generator is
