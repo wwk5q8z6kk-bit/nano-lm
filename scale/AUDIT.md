@@ -47,5 +47,33 @@ Hypothesis decision rule (report + interpretation, fixed now):
   the objective/data (e.g., needs longer training or an extraction-specific head).
 - 10–15 pts → inconclusive; report as such.
 
-## Result
-- (to be filled after the single Kaggle run)
+## Result — measured once on Kaggle T4, STAGE S GATE PASS; hypothesis verdict: WEAKENED
+
+Run notes: first attempt on P100 failed fast (sm_60 unsupported by Kaggle's PyTorch —
+capability guard added to the script from the live lesson). T4 run: 81k tok/s, 200M
+tokens / 12,207 steps in ~75 min, val loss 8.49 → **3.284** (nano: 3.96). Scribe
+finetune 3.3 min.
+
+**Gate (greedy, same 40-dialogue eval set):**
+- parse 40/40 = **100%** ✅  recall 177/200 = **88%** ✅ (bar 80)  halluc 15/200 = **7.5%** ✅ (bar ≤10)
+- omissions 8; base control (10M pretrain): parse 0% — discrimination clean
+- **First MODEL to pass the pre-registered faithfulness bars** (nano v1 72/14.0, v2 81/11.5)
+
+**Hypothesis decision rule, applied as pre-registered:**
+- held-out-value recall 77% vs seen **100%** → **GAP 23 pts** (nano-v2 baseline: 22)
+- Rule said: <10 pts = capacity CONFIRMED; ≥15 pts = capacity WEAKENED → **WEAKENED.**
+
+**Interpretation (the finding of the whole track):** 3.2× parameters bought complete
+on-distribution mastery (seen-value recall 94% → 100%) and enough overall hallucination
+reduction to pass the bars — but did NOT move the out-of-distribution gap at all
+(22 → 23 pts). Combined with Stage C (copy-curriculum refuted at 3M), the OOD copying
+failure is now robust to BOTH interventions tested: curriculum and modest scale. Next
+suspects are much larger scale, an architectural copy mechanism (pointer/induction
+capacity), or the objective itself.
+
+**Systems conclusion, strengthened:** a model can PASS a well-designed average-case
+gate while retaining its tail failure mode — the 10M scribe hallucinates on exactly
+the inputs that leave its training distribution, same as the 3M one, just less often.
+This is why the Stage G/A verification layer is not retired by scale: at any scale
+tested here, trust in the presented output still comes from verification architecture.
+The gates passed; the guardrail stays.

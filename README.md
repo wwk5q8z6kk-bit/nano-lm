@@ -34,7 +34,7 @@ the same evaluation problem that production clinical documentation AI faces.
 | Stage G: grounding-verifier guardrail | ✅ done | ❌ FAIL by 0.8 pts — but **0.0% residual hallucination** (23/23 caught, 14% review load); miss = unverifiable absence claims |
 | Stage A: absence-verifier axis | ✅ done | ✅ **PASS — presented precision 100%** (0.0% residual halluc AND omissions, 33/33 errors caught, 19% review load) |
 | Stage C: copy-curriculum hypothesis test | ✅ done | ❌ FAIL — **hypothesis decided**: held-out gap unchanged (22 pts) → capacity, not curriculum; omissions (10→0) converted into fabrications (11.5→17.5%) |
-| Stage S: ~10M scale test (Kaggle T4) | 🔄 pre-registered | `scale/` — decision rule: held-out gap <10 pts confirms capacity hypothesis (nano baseline: 22 pts) |
+| Stage S: ~10M scale test (Kaggle T4) | ✅ done | ✅ **GATE PASS — first model to clear the bars** (parse 100%, recall 88%, halluc 7.5%) — but held-out GAP 23 pts, unchanged → capacity hypothesis **weakened** |
 
 The scribe track's arc is the finding. Three stages closed at honest FAIL — each protocol
 allowed one measurement (plus, for v1→v2, one pre-specified sweep), and "one more try"
@@ -46,6 +46,12 @@ is 11.5%, the two-axis verification layer yields an output channel where **every
 field is correct (100% precision), every model error is routed to human review, at 19%
 review cost**. Trust came from verification architecture, not model scale — and the git
 history proves every bar preceded every result. Full trail: `scribe/AUDIT.md`.
+
+Stage S (10M params, Kaggle T4) sharpened the conclusion: the larger model became the
+first to PASS the model-side bars (halluc 7.5%) — yet its out-of-distribution gap didn't
+move (23 pts vs 22 at 3M). A model can pass a well-designed average-case gate while
+keeping its tail failure mode, which is exactly why the verification guardrail is not
+retired by scale. Full trail: `scale/AUDIT.md`.
 | Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
 
 ## Results
