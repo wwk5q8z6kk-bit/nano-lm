@@ -1,0 +1,177 @@
+{
+ "stage": "T-v2",
+ "model": "EleutherAI/pythia-410m",
+ "prereg": "trajectory/PREREG_Tv2.md",
+ "seeds": {
+  "harness": 20260717,
+  "fresh_instances": [
+   20260720,
+   20260721,
+   20260722,
+   20260723,
+   20260724
+  ]
+ },
+ "hparams": {
+  "lr": 0.0001,
+  "epochs": 3,
+  "micro_batch": 8,
+  "accum": 4,
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.0,
+   "targets": [
+    "query_key_value",
+    "dense",
+    "dense_h_to_4h",
+    "dense_4h_to_h"
+   ]
+  },
+  "trainable_params": 6291456,
+  "precision": "fp16-autocast"
+ },
+ "decoding": "greedy, stop on EOS only, max_new 64",
+ "bootstrap_resamples": 10000,
+ "versions": {
+  "torch": "2.10.0+cu128",
+  "transformers": "5.0.0",
+  "peft": "0.19.1",
+  "python": "3.12.13"
+ },
+ "gpu": "Tesla T4",
+ "train_wall_secs": 923,
+ "base_control": {
+  "parse": 0.0,
+  "recall": 0.0,
+  "halluc": 0.0,
+  "seen_recall": null,
+  "held_recall": null,
+  "held_parsed": 0,
+  "seen_parsed": 0,
+  "gap_pts": null,
+  "gap_ci_pts": null,
+  "n": 40
+ },
+ "inst0": {
+  "parse": 1.0,
+  "recall": 0.96,
+  "halluc": 0.04,
+  "seen_recall": 1.0,
+  "held_recall": 0.92,
+  "held_parsed": 20,
+  "seen_parsed": 20,
+  "gap_pts": 7.9999999999999964,
+  "gap_ci_pts": [
+   4.0000000000000036,
+   12.0
+  ],
+  "n": 40
+ },
+ "instT": {
+  "parse": 1.0,
+  "recall": 0.99,
+  "halluc": 0.01,
+  "seen_recall": 1.0,
+  "held_recall": 0.98,
+  "held_parsed": 20,
+  "seen_parsed": 20,
+  "gap_pts": 2.0000000000000018,
+  "gap_ci_pts": [
+   0.0,
+   5.000000000000004
+  ],
+  "n": 40
+ },
+ "fresh_instances": [
+  {
+   "parse": 1.0,
+   "recall": 0.983,
+   "halluc": 0.017,
+   "seen_recall": 1.0,
+   "held_recall": 0.966,
+   "held_parsed": 100,
+   "seen_parsed": 100,
+   "gap_pts": 3.400000000000003,
+   "gap_ci_pts": [
+    2.0000000000000018,
+    5.000000000000004
+   ],
+   "n": 200
+  },
+  {
+   "parse": 1.0,
+   "recall": 0.975,
+   "halluc": 0.025,
+   "seen_recall": 1.0,
+   "held_recall": 0.95,
+   "held_parsed": 100,
+   "seen_parsed": 100,
+   "gap_pts": 5.000000000000004,
+   "gap_ci_pts": [
+    3.400000000000003,
+    6.599999999999994
+   ],
+   "n": 200
+  },
+  {
+   "parse": 1.0,
+   "recall": 0.984,
+   "halluc": 0.016,
+   "seen_recall": 1.0,
+   "held_recall": 0.968,
+   "held_parsed": 100,
+   "seen_parsed": 100,
+   "gap_pts": 3.200000000000003,
+   "gap_ci_pts": [
+    1.8000000000000016,
+    4.600000000000004
+   ],
+   "n": 200
+  },
+  {
+   "parse": 1.0,
+   "recall": 0.978,
+   "halluc": 0.022,
+   "seen_recall": 1.0,
+   "held_recall": 0.956,
+   "held_parsed": 100,
+   "seen_parsed": 100,
+   "gap_pts": 4.400000000000004,
+   "gap_ci_pts": [
+    2.8000000000000025,
+    6.000000000000005
+   ],
+   "n": 200
+  },
+  {
+   "parse": 1.0,
+   "recall": 0.974,
+   "halluc": 0.026,
+   "seen_recall": 1.0,
+   "held_recall": 0.948,
+   "held_parsed": 100,
+   "seen_parsed": 100,
+   "gap_pts": 5.200000000000005,
+   "gap_ci_pts": [
+    3.600000000000003,
+    6.999999999999995
+   ],
+   "n": 200
+  }
+ ],
+ "fresh_gaps": [
+  3.400000000000003,
+  5.000000000000004,
+  3.200000000000003,
+  4.400000000000004,
+  5.200000000000005
+ ],
+ "gap_mean": 4.240000000000004,
+ "gap_sd": 0.9099450532861868,
+ "gap_2sd_band": [
+  2.42010989342763,
+  6.059890106572377
+ ],
+ "contamination_flag": false
+}
