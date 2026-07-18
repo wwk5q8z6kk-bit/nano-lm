@@ -92,6 +92,25 @@ Ranked by expected reviewer severity (from the 10-model consult, 2026-07-18):
   field-localized failure mode and the instrument to measure it".
 - ☐ 1B multi-seed decision (⚠); Pythia fieldwise (appendix); §2/§4/§5-vs-Methods de-dup.
 
+## Council decision — submission readiness (DWA, 2026-07-18)
+
+5-member Debate-Weighted-Aggregation council (methodologist, skeptical reviewer,
+statistician, PI/strategist, interp specialist). DWA scores: **SUBMIT_AS_IS 1.278** >
+PYTHIA_FIELDWISE 1.041 > OWNSTACK_160M 0.580 > (1B_MULTISEED, STAGE_M_PILOT = 0).
+Aggregate confidence 44% (low → venue-conditional, not incoherent); HHI 0.363.
+
+**Decision: submit as-is now to a workshop / *ACL-Findings / short-paper venue.**
+Riders:
+- Main-conference target → run OWNSTACK_160M (pre-registered deconfounder) first; it is
+  the natural Paper 2.
+- Cheapest freeze-and-write-compatible strengthener = PYTHIA_FIELDWISE (re-score frozen
+  adapters; tests the titular "field-localized" claim on the Pythia side; Kaggle-gated).
+- Rejected: 1B_MULTISEED (misrepresents the bistable [0,5], weakens the nondeterminism
+  contribution — the 1B gap is 0-or-5, so the interval is the correct representation) and
+  STAGE_M_PILOT (premature under the confound).
+- Free writing follow-through (optional): one-sentence hedge that the n=2 1B interval
+  lower-bounds training-variance magnitude but cannot characterize its distribution.
+
 ## Open owner decisions (⚠)
 
 - ⚠ **1B representation**: interval [0,5] vs a point from added seeds. Affects the abstract.

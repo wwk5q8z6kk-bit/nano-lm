@@ -215,7 +215,11 @@ of a 1B model that sits at the boundary of perfect held-out copying — the tool
 nondeterminism documented by Zhuang et al. (2022) (cf. Picard, 2021, on seed variance
 exceeding effect sizes), here surfacing in a downstream faithfulness metric rather than
 top-line accuracy. The right instrument for the 1B gap is therefore multiple training
-seeds, not multiple evaluation instances; we report an interval.
+seeds, not multiple evaluation instances; we report an interval. With only two retrains
+we bound the *magnitude* of training-run variance at this rung (it is large — comparable
+to the whole residual gap) but cannot characterize its distribution; the interval spans
+the two observed outcomes rather than a modelled spread, and a fuller characterization
+(how often a run tips to perfect held-out copying) would need more seeds.
 
 ## Methods (consolidated protocol)
 
