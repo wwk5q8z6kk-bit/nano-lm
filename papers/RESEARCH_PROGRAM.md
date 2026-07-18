@@ -57,7 +57,7 @@ capacity ──▶ representation ──▶ retrieval/copy circuits ──▶ he
 |---|---|---|---|
 | **P1** | Observation — the gap collapses; near-total on real held-out values | *What is the phenomenon?* | **submission-ready** (Reviewer-#2 clean; workshop/Findings) |
 | **P2** | Causality — scale vs. training stack | *Does scale alone explain it?* | kernel built (`trajectory/kaggle_ownstack_160m.py`), pre-registered, awaiting a T4 run |
-| **P3** | Mechanism — *why?* | *Which circuits replace copying?* | Stage M pre-reg pending (gated on P2 deconfounding) |
+| **P3** | Mechanism — *why?* | *Which circuits replace copying?* | design drafted (`trajectory/PREREG_stageM.md`): the non-gated within-stack *failure* mechanism Q(M) is specced + locally runnable; the gated scale-collapse contrast is a post-P2 slot |
 | **P4** | Generality | *Does it hold across data/arch/tokenizer/objective?* | future (Stage F/O/R matrix, paper §8) |
 | **P5** | Theory | Unified capacity→abstraction account with predictive power | the end goal |
 
