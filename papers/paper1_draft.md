@@ -308,6 +308,28 @@ single-instance anchor with a multi-instance Pythia number would have overstated
 contrast; on the consistent instrument the gap is still large but the anchors read
 ~18, not ~22–23.
 
+**Where the gap lives (fieldwise).** Breaking the own-stack anchor gap down by field
+(re-scored on the same five instances) localizes it sharply:
+
+| Field | held-out values? | nano gap | scale gap |
+|---|---|---|---|
+| cc (chief complaint) | yes (3 held) | 45.3 ± 8.1 | 58.2 ± 3.5 |
+| med (medication) | yes (2 held) | 23.8 ± 4.8 | 14.2 ± 2.3 |
+| alg (allergy) | yes (1 held) | 22.5 ± 4.5 | 21.2 ± 4.5 |
+| dur (duration) | no (numeric) | 0.0 | 0.0 |
+| sev (severity) | no (closed 3-set) | 0.0 | 0.0 |
+
+The entire gap sits in the three fields that *have* held-out vocabulary values (cc, med,
+alg) and is **exactly zero** in the two whose values are all in-distribution (dur is
+numeric; sev is the closed set {mild, moderate, severe}). The two zero-gap fields are an
+internal control: under the *same* held-out templates, fields without held-out values
+show no gap, so the effect is specific to copying novel lexical values rather than a
+generic degradation on unfamiliar phrasing. It also explains the anchors' aggregate
+near-identity (18.3 vs 18.7) masking field-level differences — nano and scale trade off
+cc against med — and identifies the chief-complaint field, with its ~190 compositional
+values, as the hardest copy. (Fieldwise breakdown for the Pythia rungs would need a
+re-score with the adapters; a candidate appendix analysis.)
+
 ![Held-out copying gap vs scale on one consistent instrument. Own-stack anchors
 (3.15M, 10M) sit at ~18 pts; the tested Pythia rungs (160M, 410M) at 3.5–4.2 pts;
 1B is a training-run–bounded interval [0,5]. The shaded band marks the own→Pythia

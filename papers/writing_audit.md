@@ -67,11 +67,12 @@ Ranked by expected reviewer severity (from the 10-model consult, 2026-07-18):
    bad". (Lives in PREREG_ownstack_160m.md; note here so the paper's future-work text
    pre-empts it.)
 7. ☐ **Single task / single generator / single scale family** — generality untested (§7).
-8. ☐ **Field heterogeneity** — is the aggregate gap driven by 1–2 of the 5 fields? A
-   likely reviewer question. NOTE: current JSONs store only aggregate held/seen recall,
-   so this needs a re-score with per-field tracking (cheap & local for the own-stack
-   anchors via rescore_anchors.py; Pythia would need the adapters/Kaggle). Candidate
-   appendix analysis — no new *training* runs.
+8. ☑ **Field heterogeneity** — RESOLVED for the anchors (`fieldwise_anchors.py`,
+   `results_fieldwise_anchors.json`, added to §6.1). The gap is entirely in the three
+   open-vocabulary fields (cc/med/alg) and **exactly 0** in the two closed-value fields
+   (dur/sev) — a built-in control confirming the effect is held-out-*value* copying, not
+   generic template degradation. Strengthens, not weakens, the phenomenon. Pythia
+   fieldwise still open (needs adapters) — appendix candidate.
 
 ## Drafting progress (write-first plan)
 
@@ -83,7 +84,8 @@ Ranked by expected reviewer severity (from the 10-model consult, 2026-07-18):
   framing the owner asked for, developed as independently-surviving takeaways.
 - ☐ Introduction + Abstract — tighten LAST (per plan), once sections settle.
 - ☐ De-duplicate §2/§4/§5 narrative against the consolidated Methods (formatting pass).
-- ☐ Optional: fieldwise breakdown (item 8); 1B multi-seed decision (⚠).
+- ☑ Fieldwise breakdown (item 8) — done for anchors, folded into §6.1.
+- ☐ 1B multi-seed decision (⚠); Pythia fieldwise (appendix); §2/§4/§5-vs-Methods de-dup.
 
 ## Open owner decisions (⚠)
 
