@@ -77,11 +77,17 @@ def batches(data, bs):
 
 RE = re.compile(r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$")
 FIELDS = ["cc", "dur", "sev", "med", "alg"]
+# CLEAN metric (AAEA A2): held-out-VALUE sets; split by the actual value, not the
+# dialogue-level flag. Gives the undiluted per-field gap comparable to undilute_anchors.py.
+HELD = {"cc": {"toothache", "neck pain", "heartburn"},
+        "med": {"melatonin", "throat lozenges"}, "alg": {"sulfa drugs"}}
+VALFIELDS = ["cc", "med", "alg"]
 
 @torch.no_grad()
 def fieldwise(model, items):
     model.eval(); tok.padding_side = "left"
-    acc = {f: [0, 0, 0, 0] for f in FIELDS}          # held_correct, held_total, seen_correct, seen_total
+    acc = {f: [0, 0, 0, 0] for f in FIELDS}          # DILUTED: held_c, held_t, seen_c, seen_t (dialogue-level)
+    cln = {f: [0, 0, 0, 0] for f in VALFIELDS}       # CLEAN: split by actual value, value-bearing only
     parsed = 0
     for i in range(0, len(items), MICRO_BATCH):
         chunk = items[i:i + MICRO_BATCH]
@@ -99,7 +105,13 @@ def fieldwise(model, items):
                 hit = int(pred[f] == it["tuple"][f])
                 if it["held_values"]: acc[f][0] += hit; acc[f][1] += 1
                 else: acc[f][2] += hit; acc[f][3] += 1
-    return acc, parsed
+            for f in VALFIELDS:                       # clean split by actual value
+                t = it["tuple"][f]
+                if t == "none": continue
+                h = int(pred[f] == t)
+                if t in HELD[f]: cln[f][0] += h; cln[f][1] += 1
+                else: cln[f][2] += h; cln[f][3] += 1
+    return acc, cln, parsed
 
 fresh = [json.load(open(os.path.join(REPO, "trajectory", f"scribe_eval_m{k}.json"))) for k in range(5)]
 
@@ -126,15 +138,29 @@ for ep in range(EPOCHS):
             if step % 200 == 0: print(f"  ep{ep} step {step}/{total_steps} loss {out.loss.item():.3f}", flush=True)
 train_secs = time.time() - t0
 
-# ---- per-field measurement over the 5 fresh instances ----
+# ---- per-field measurement over the 5 fresh instances (DILUTED + CLEAN, one pass) ----
 print(f"\n=== FIELDWISE ({TAG}) ===", flush=True)
-per_inst = []
+per_inst = []                    # diluted per-field gaps
+clean_inst = []                  # clean per-field gaps
+clean_agg = []                   # clean pooled aggregate over cc+med+alg
 for k in range(5):
-    acc, parsed = fieldwise(model, fresh[k])
+    acc, cln, parsed = fieldwise(model, fresh[k])
     gaps = {f: (acc[f][2] / max(1, acc[f][3]) - acc[f][0] / max(1, acc[f][1])) * 100 for f in FIELDS}
-    per_inst.append(gaps)
-    print(f"  m{k} parsed {parsed}/{len(fresh[k])}  " +
-          " ".join(f"{f}:{gaps[f]:.1f}" for f in FIELDS), flush=True)
+    cgaps = {f: (cln[f][2] / max(1, cln[f][3]) - cln[f][0] / max(1, cln[f][1])) * 100 for f in VALFIELDS}
+    hc = sum(cln[f][0] for f in VALFIELDS); ht = sum(cln[f][1] for f in VALFIELDS)
+    sc = sum(cln[f][2] for f in VALFIELDS); st = sum(cln[f][3] for f in VALFIELDS)
+    per_inst.append(gaps); clean_inst.append(cgaps)
+    clean_agg.append((sc / max(1, st) - hc / max(1, ht)) * 100)
+    print(f"  m{k} parsed {parsed}/{len(fresh[k])}  diluted[" +
+          " ".join(f"{f}:{gaps[f]:.1f}" for f in FIELDS) + "]  clean[" +
+          " ".join(f"{f}:{cgaps[f]:.1f}" for f in VALFIELDS) + f"] cleanAgg:{clean_agg[-1]:.1f}", flush=True)
+
+clean_out = {f: {"gap_mean": float(np.mean([ci[f] for ci in clean_inst])),
+                 "gap_sd": float(np.std([ci[f] for ci in clean_inst], ddof=1))} for f in VALFIELDS}
+clean_agg_mean = float(np.mean(clean_agg)); clean_agg_sd = float(np.std(clean_agg, ddof=1))
+print(f"  CLEAN (held-VALUE vs seen-VALUE): " +
+      " ".join(f"{f} {clean_out[f]['gap_mean']:.1f}±{clean_out[f]['gap_sd']:.1f}" for f in VALFIELDS) +
+      f"  | agg {clean_agg_mean:.1f}±{clean_agg_sd:.1f}", flush=True)
 
 out = {}
 for f in FIELDS:
@@ -174,10 +200,13 @@ else:
 
 results = {
     "stage": "T-v2-fieldwise", "model": MODEL, "tag": TAG,
-    "note": "per-field held-out gap (seen-value recall - held-value recall) over 5 fresh instances",
+    "note": ("DILUTED per_field = dialogue-level held vs seen (comparable to the paper's "
+             "aggregate ladder). CLEAN = held-VALUE vs seen-VALUE recall among value-bearing "
+             "items (AAEA A2; comparable to undilute_anchors.py: nano clean_agg 87.3, scale 79.5)."),
     "seeds": {"harness": SEED, "fresh_instances": [20260720, 20260721, 20260722, 20260723, 20260724]},
     "hparams": {"lr": LR, "epochs": EPOCHS, "micro_batch": MICRO_BATCH, "accum": ACCUM, "lora": LORA},
     "per_field": out, "per_instance": per_inst,
+    "clean_per_field": clean_out, "clean_aggregate": {"gap_mean": clean_agg_mean, "gap_sd": clean_agg_sd, "per_instance": clean_agg},
     "comparability_check": cross, "input_fingerprints": fingerprints,
     "versions": {"torch": torch.__version__, "transformers": transformers.__version__,
                  "peft": peft.__version__, "python": sys.version.split()[0]},
