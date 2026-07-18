@@ -9,9 +9,9 @@ Update as the draft evolves. Legend: ☐ open · ☑ handled · ⚠ needs owner 
 
 - ☑ "order of magnitude larger than any noise source" (§6.1) — quantified: reduction
   ~14–15 pt vs anchor SD ~1.3–1.5 and Pythia SD ~0.7–0.9 (≈10×). Keep as the ratio.
-- ☐ Model-side quality ranges "recall 96–100%, hallucination 0.5–4%" (Pythia) and
-  "80–91% / 7–12%" (own-stack) (§6.1) — verify each number against the per-rung JSONs
-  before submission (currently paraphrased from run logs).
+- ☑ Model-side quality ranges (§6.1) — verified against per-rung JSONs (inst0+fresh);
+  corrected own-stack parse 95→**94**–100% and Pythia hallucination 0.5→**0**–4% (1B is
+  0.0%). Recall 80–91% (own) and 96–100% (Pythia), hallucination 7–12% (own) confirmed.
 - ☐ Companion verification architecture "at measured precision/review-load" (§1, §7) —
   those metrics live in the companion write-up, not this paper; ensure the sentence
   doesn't imply they are measured *here*. Either cite the companion or soften.
@@ -68,8 +68,22 @@ Ranked by expected reviewer severity (from the 10-model consult, 2026-07-18):
    pre-empts it.)
 7. ☐ **Single task / single generator / single scale family** — generality untested (§7).
 8. ☐ **Field heterogeneity** — is the aggregate gap driven by 1–2 of the 5 fields? A
-   likely reviewer question; check whether the JSONs support a fieldwise breakdown (cheap
-   analysis, no new runs) and add if so.
+   likely reviewer question. NOTE: current JSONs store only aggregate held/seen recall,
+   so this needs a re-score with per-field tracking (cheap & local for the own-stack
+   anchors via rescore_anchors.py; Pythia would need the adapters/Kaggle). Candidate
+   appendix analysis — no new *training* runs.
+
+## Drafting progress (write-first plan)
+
+- ☑ Related work (verified refs, relevance notes) + References — committed b5ff27f.
+- ☑ Methods (consolidated protocol: datasets, held-out, model families, metric,
+  multi-instance, determinism, statistics) — the objective section.
+- ☑ Results numbers verified against JSONs; §6.1 quality ranges corrected.
+- ☑ Discussion §6.3 "Two distinct lessons" — the models-vs-measurement two-contributions
+  framing the owner asked for, developed as independently-surviving takeaways.
+- ☐ Introduction + Abstract — tighten LAST (per plan), once sections settle.
+- ☐ De-duplicate §2/§4/§5 narrative against the consolidated Methods (formatting pass).
+- ☐ Optional: fieldwise breakdown (item 8); 1B multi-seed decision (⚠).
 
 ## Open owner decisions (⚠)
 

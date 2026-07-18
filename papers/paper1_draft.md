@@ -213,6 +213,71 @@ exceeding effect sizes), here surfacing in a downstream faithfulness metric rath
 top-line accuracy. The right instrument for the 1B gap is therefore multiple training
 seeds, not multiple evaluation instances; we report an interval.
 
+## Methods (consolidated protocol)
+
+*Authoritative, objective protocol; §2/§4/§5 give the motivation and the instrument's
+evolution. Final section placement/de-duplication is a formatting pass (see
+writing_audit.md). Every artifact below is content-addressed in `REPRODUCIBILITY.md`.*
+
+**Datasets (a seeded generator).** Each example is a synthetic doctor–patient dialogue
+rendered from a fact tuple of five fields — chief complaint (cc), duration (dur),
+severity (sev), medication (med), allergy (alg) — paired with the target summary
+`CC: … | DUR: … | SEV: … | MED: … | ALG: …`. Training values (seen): a fixed complaint
+pool plus a compositional body-part×sensation pool (~190 complaints, so cc cannot be
+solved as closed-set classification), 18 medications, 5 allergies, 3 severities.
+Finetuning data: 12,000 examples, full supervised finetune, 3 epochs, LR 1e-4 (own
+stack); the eval distribution is a separate v1 generator.
+
+**Held-out protocol (two axes).** Evaluation dialogues are held-out along two
+independent axes. (i) *Held template families*: doctor/patient surface phrasings never
+seen in finetuning — used by **all** eval dialogues. (ii) *Held slot values*: six
+specific values excluded from all finetuning data (complaints {toothache, neck pain,
+heartburn}, medications {melatonin, throat lozenges}, allergy {sulfa drugs}) — used by
+**half** the eval dialogues; the other half draw seen values. The **held-out copying
+gap** = seen-value recall − held-out-value recall, both measured under held templates,
+isolating value copying from phrasing familiarity.
+
+**Model families and finetuning.** *Own stack*: from-scratch GPT (RoPE, GQA, SwiGLU,
+RMSNorm pre-norm, tied embeddings, 4098-vocab BPE, 512 ctx) at 3.15M (d=192, L=6, H=6,
+KV=2, ff=512) and 10M (d=320, L=8, H=8, KV=2, ff=864), pretrained on ~200M FineWeb
+tokens (D≈20N; Hoffmann et al., 2022) and full-FT on the scribe task; the two anchor
+checkpoints are the frozen v0.1 release assets (`scribe.pt`, `scale10m_scribe.pt`).
+*Pythia*: EleutherAI/pythia-{160m,410m,1b}, adapted with LoRA (r=16, α=32, dropout 0,
+targets {query_key_value, dense, dense_h_to_4h, dense_4h_to_h}), LR 1e-4, 3 epochs.
+
+**Evaluation metric.** Greedy decoding; the output is parsed against the fixed field
+template. A field is a *hit* (exact match), an *omission* ("none" for a present value),
+or a *hallucination* (otherwise). Held/seen recalls are computed over the fields of
+**parsed** dialogues only (identical convention across stacks). Two decode paths, each
+matched to its stack's native format: own stack uses ChatML (`<|im_start|>…`) with a
+token-by-token argmax loop stopping on `<|im_end|>`, max 64 new tokens; Pythia uses raw
+text with Hugging Face greedy `generate`, EOS stop, max 64 — these are the checkpoints'
+own inference formats, not a shared decoder.
+
+**Multi-instance evaluation.** The powered instrument is K=5 fresh evaluation instances
+(seeds 20260720–20260724), each 100 held + 100 seen dialogues from the v1 distribution.
+A model's gap is the mean over the five instances; its uncertainty is the across-instance
+SD. The single public instance (inst0, seed 7, 40 dialogues) and an auxiliary instance
+(instT, seed 20260717) are retained for the cross-checks below.
+
+**Determinism checks (why "re-score", not "re-run").** All measurements are re-scorings
+of frozen models. Before the multi-instance pass, each model is re-scored on the
+canonical single instance and required to reproduce its archived reference: own-stack
+nano reproduced `gate_scribe_v2.log` byte-for-byte (held 68/95, seen 94/100, gap 22.4)
+and scale reproduced Stage S exactly (parse 100%, recall 88%, gap 23.0) — the latter
+even across a CUDA-T4→MPS device change. For Pythia, re-finetuning at the fixed seed
+regenerates the frozen adapter (headless-T4 reproduced interactive-T4 byte-for-byte),
+verified in-band by requiring the re-scored inst0/instT gaps to match the archived v1
+JSONs. A check that fails (as at 1B) is treated as a finding, not smoothed over.
+
+**Statistical reporting.** Powered rungs report gap mean ± across-instance SD (ddof=1);
+each Pythia instance additionally carries a 95% bootstrap CI (10,000 resamples over
+dialogues). The contamination check is direction-aware — it flags only if the public
+instance gap is *below* the fresh-instance mean by more than 2 SD (memorization would
+make the public instance easier); a higher public gap is a hard draw, not contamination.
+The 1B rung is reported as an interval [0,5] from two fixed-seed training-run retrains,
+not as a point.
+
 ## 6. Results
 
 ### 6.1 The gap across the ladder
@@ -230,9 +295,9 @@ provenance.
 | pythia-410m | 410M | Pythia | **4.2 ± 0.9 pts** | 8.0 | determinism verified |
 | pythia-1b | 1B | Pythia | **[0, 5] pts** | 5.0 / 0.0 | training-run–bounded |
 
-Model-side quality is high at every rung (own-stack anchors parse 95–100%, recall
+Model-side quality is high at every rung (own-stack anchors parse 94–100%, recall
 80–91%, hallucination 7–12%; Pythia rungs parse 100%, recall 96–100%, hallucination
-0.5–4%), on both the public and fresh instances. On this single consistent instrument
+0–4%), on both the public and fresh instances. On this single consistent instrument
 the large held-out copying gap **observed in our own-stack models (~18 points) was
 substantially smaller in the tested Pythia models (3.5–4.2 points).** The reduction
 (~14–15 points) is an order of magnitude larger than any noise source identified
@@ -266,6 +331,34 @@ step to 160M, **or** the stack change, coincides with a much smaller gap — the
 not separated here. The
 formal band is not PERSISTS (the top-rung interval reaches 0, far from the ≥10 that
 PERSISTS requires); it is consistent with a small residual or none.
+
+### 6.3 Two distinct lessons
+
+The paper carries two takeaways that are worth keeping separate, because they are
+supported by different evidence and would survive independently.
+
+**What we learned about language models.** The held-out copying gap is a *pronounced
+small-model phenomenon*: ~18 points in from-scratch models at 3–10M, essentially flat
+across that 3.2× scale step, and only single-digit points in the tested Pythia models
+at 160M and above. What we do **not** get to say is *why* it shrinks — the nano→Pythia
+step changes scale together with pretraining data, tokenizer, architecture, and
+finetuning method (§7), so the honest claim is "the gap largely disappears by the
+Pythia pipeline," not "parameter count removes it." The one clean causal statement is
+negative and comes from the controlled within-stack step: at this recipe, going from
+3M to 10M did not move the gap.
+
+**What we learned about measurement.** Independently of the model result, estimating a
+gap like this reliably required two corrections that the data forced on us. (i)
+*Single-instance evaluation was underpowered, and worse, biased*: the public instance
+is not merely noisy but *systematically hard* — its gap exceeds the multi-instance mean
+at every rung — so a fixed public instance can skew an effect size even when it is
+content-addressed and reproducible. (ii) *The precision floor moves with the regime*:
+in the high-gap regime the dominant uncertainty is across evaluation instances, but by
+1B the gap is small and the dominant uncertainty becomes the *training run* (two
+fixed-seed retrains split 5/0), so the right replication unit changes from eval-instance
+to training-seed. Both lessons are prescriptive for anyone measuring faithfulness gaps
+in small models and hold regardless of how the scale-vs-stack question is eventually
+resolved.
 
 ## 7. Limitations
 
