@@ -20,7 +20,13 @@ shrink with scale *within one stack*, or does it persist (implicating the stack)
 4098-vocab BPE, 512 ctx) at **~160M first**, then ~40M and ~80M only if 160M is
 ambiguous (see decision rule). 160M is the decisive rung because it matches the Pythia
 rung where the gap collapsed (3.5 ± 0.7); it dominates 40M/80M on information gain.
-Exact layer dims to be pinned to hit the param targets and recorded before training.
+
+**Pinned 160M dims (recorded 2026-07-18, before training):** `d=1024, L=14, H=16, KV=4,
+hd=64, ff=2752` → **159.3M** params (verified by the exact param formula that reproduces
+nano 3.15M at d=192/L=6/H=6/KV=2/hd=32/ff=512 and scale 10.0M at d=320/L=8/H=8/KV=2/hd=40/
+ff=864). This is a within-family scale-up: same RoPE/GQA/SwiGLU/RMSNorm/tied-emb recipe,
+GQA 4:1 (matching scale), hd grown 40→64, ff/d ≈ 2.7 held. If 40M/80M are added, pin
+their dims by the same formula before training (e.g. ~40M ≈ d=640/L=10, ~80M ≈ d=768/L=12).
 
 **Finetuning-method control (2×2 at 160M).** Because full-FT vs LoRA is a first-class
 confound (the consult panel's most-flagged under-controlled variable), run BOTH at 160M:
