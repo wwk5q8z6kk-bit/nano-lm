@@ -438,7 +438,9 @@ resolved.
 - **Scale vs. stack confound (primary).** The nano→Pythia comparison changes parameter
   count *and* at least four other variables simultaneously, each a plausible alternative
   cause of the reduction: (i) **pretraining data quantity** (~200M own-stack tokens vs.
-  Pythia's ~300B — a ~1500× difference), (ii) **tokenizer** (4098-vocab BPE vs. ~50k;
+  Pythia's ~300B — a ~1500× difference; the own-stack is roughly compute-optimal for its
+  size per Hoffmann et al. (2022), whereas Pythia is heavily over-trained), (ii)
+  **tokenizer** (4098-vocab BPE vs. ~50k;
   larger vocabularies fragment field values like "ibuprofen" into fewer sub-tokens,
   which could itself change copy success), (iii) **architecture family**, and (iv)
   **finetuning method** (own-stack full fine-tune vs. Pythia LoRA r=16 — LoRA may
