@@ -121,6 +121,36 @@ Riders:
 - Free writing follow-through (optional): one-sentence hedge that the n=2 1B interval
   lower-bounds training-variance magnitude but cannot characterize its distribution.
 
+## AAEA code-correctness audit (2026-07-18)
+
+Two parallel correctness reviewers on the paper-critical scripts (931 LOC). **No
+arithmetic bug found** — numbers reproduce; anchor↔Pythia gap conventions consistent;
+rescore reproduces gate_scribe_v2.log byte-exact; the two Pythia scripts are
+finetune-equivalent (byte-diff of training constants + stage-t-v2↔master inputs = 0).
+Findings were validity/methodology, now addressed:
+
+- ☑ **A1 (HIGH, validity):** dur/sev "exactly 0" is partly structural (no held-out
+  dur/sev values exist). Fixed §6.1 to frame them as a **template-vs-value control**
+  (they undergo the held-*template* shift but show no gap → gap driven by held *values*,
+  not phrasing), explicitly NOT a value-robustness claim.
+- ☑ **A2 (MEDIUM, validity):** dialogue-level seen/held split dilutes the held bucket —
+  VERIFIED directly: only **68% cc / 30% med / 21% alg** of held-bucket items carry a
+  real held-out value. So per-field gaps are conservative, not cross-field comparable;
+  aggregate ~18 is a lower bound. Added to §6.1 + a §7 limitations bullet. (Caught &
+  corrected a wrong "≈50%" figure I'd first written for med/alg.)
+- ☑ **A3 (MEDIUM):** parsed-only + nano's differential held/seen parse rate → conservative
+  bound. Folded into the same §7 bullet.
+- ☑ **B2 (MEDIUM, code):** hardened kaggle_pythia_fieldwise.py with a comparability
+  self-check (emits `agg_from_fieldwise` per instance + asserts == published fresh_gaps;
+  input fingerprints) so the pending run self-validates instead of silently drifting.
+  B1/B3/B4 (RNG order, model.train, max(1,·)) verified benign; added model.train() for
+  hygiene.
+
+**High-value candidate the audit surfaced (owner call — changes the headline number):**
+a CLEAN per-field held-out-value gap restricted to items *actually carrying* a held value
+(local + cheap for the anchors) would give the true, undiluted magnitude (larger than 18)
+and make fields comparable. Deferred because it changes the central number.
+
 ## Open owner decisions (⚠)
 
 - ⚠ **1B representation**: interval [0,5] vs a point from added seeds. Affects the abstract.

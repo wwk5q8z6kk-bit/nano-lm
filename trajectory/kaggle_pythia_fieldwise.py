@@ -19,7 +19,7 @@
 #   pip install -q peft && pip uninstall -y -q torchao
 #   python trajectory/kaggle_pythia_fieldwise.py EleutherAI/pythia-160m   # then 410m, 1b
 #   # headless: pin "machine_shape": "NvidiaTeslaT4" in kernel-metadata.json
-import json, os, random, re, sys, time
+import hashlib, json, os, random, re, sys, time
 import numpy as np
 import torch, transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -110,6 +110,7 @@ model = get_peft_model(model, LoraConfig(r=LORA["r"], lora_alpha=LORA["alpha"],
 opt = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad),
                         lr=LR, betas=(0.9, 0.95), weight_decay=0.0)
 scaler = torch.amp.GradScaler("cuda")
+model.train()
 t0 = time.time(); step = 0
 total_steps = (len(examples) // (MICRO_BATCH * ACCUM)) * EPOCHS
 for ep in range(EPOCHS):
@@ -144,12 +145,40 @@ print("\n  per-field gap (mean +/- SD over m0-m4):", flush=True)
 for f in FIELDS:
     print(f"    {f:4s}  {out[f]['gap_mean']:6.1f} +/- {out[f]['gap_sd']:4.1f}", flush=True)
 
+# ---- comparability self-check (audit finding B2) ----
+# Algebraic identity: mean over fields of the per-field gap == the aggregate gap for that
+# instance (held_total/seen_total are constant across fields for a parsed item). So this
+# per-instance vector MUST equal kaggle_arm1_v2's published fresh_gaps if the regenerated
+# adapter, data, and instances are byte-identical. A mismatch loudly flags adapter/data/
+# version drift instead of silently emitting non-comparable numbers.
+agg_from_fieldwise = [float(np.mean([gaps[f] for f in FIELDS])) for gaps in per_inst]
+def _fp(obj): return hashlib.sha256(json.dumps(obj, sort_keys=True).encode()).hexdigest()[:16]
+fingerprints = {"convos": _fp(convos), **{f"m{k}": _fp(fresh[k]) for k in range(5)}}
+cross = {"agg_from_fieldwise": agg_from_fieldwise}
+pub_path = os.path.join(REPO, "trajectory", f"results_arm1_v2_{TAG}.json")
+if os.path.exists(pub_path):
+    pub = json.load(open(pub_path)).get("fresh_gaps")
+    if pub and len(pub) == len(agg_from_fieldwise):
+        diffs = [abs(a - b) for a, b in zip(agg_from_fieldwise, pub)]
+        cross.update({"published_fresh_gaps": pub, "max_abs_diff": max(diffs),
+                      "MATCH": bool(max(diffs) < 0.05)})
+        print(f"\n  COMPARABILITY vs published fresh_gaps {pub}:", flush=True)
+        print(f"    agg_from_fieldwise {[round(x,1) for x in agg_from_fieldwise]}  "
+              f"max_diff {max(diffs):.3f} -> {'PASS' if max(diffs) < 0.05 else 'FAIL — adapter/data drift, numbers NOT comparable'}",
+              flush=True)
+    else:
+        print(f"\n  (published fresh_gaps unavailable/mismatched in {pub_path}; agg_from_fieldwise "
+              f"{[round(x,1) for x in agg_from_fieldwise]})", flush=True)
+else:
+    print(f"\n  (no {pub_path} to cross-check; agg_from_fieldwise {[round(x,1) for x in agg_from_fieldwise]})", flush=True)
+
 results = {
     "stage": "T-v2-fieldwise", "model": MODEL, "tag": TAG,
     "note": "per-field held-out gap (seen-value recall - held-value recall) over 5 fresh instances",
     "seeds": {"harness": SEED, "fresh_instances": [20260720, 20260721, 20260722, 20260723, 20260724]},
     "hparams": {"lr": LR, "epochs": EPOCHS, "micro_batch": MICRO_BATCH, "accum": ACCUM, "lora": LORA},
     "per_field": out, "per_instance": per_inst,
+    "comparability_check": cross, "input_fingerprints": fingerprints,
     "versions": {"torch": torch.__version__, "transformers": transformers.__version__,
                  "peft": peft.__version__, "python": sys.version.split()[0]},
     "gpu": torch.cuda.get_device_name(0), "train_wall_secs": round(train_secs),

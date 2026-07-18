@@ -329,14 +329,25 @@ contrast; on the consistent instrument the gap is still large but the anchors re
 
 The entire gap sits in the three fields that *have* held-out vocabulary values (cc, med,
 alg) and is **exactly zero** in the two whose values are all in-distribution (dur is
-numeric; sev is the closed set {mild, moderate, severe}). The two zero-gap fields are an
-internal control: under the *same* held-out templates, fields without held-out values
-show no gap, so the effect is specific to copying novel lexical values rather than a
-generic degradation on unfamiliar phrasing. It also explains the anchors' aggregate
-near-identity (18.3 vs 18.7) masking field-level differences — nano and scale trade off
-cc against med — and identifies the chief-complaint field, with its ~190 compositional
-values, as the hardest copy. (Fieldwise breakdown for the Pythia rungs would need a
-re-score with the adapters; a candidate appendix analysis.)
+numeric; sev is the closed set {mild, moderate, severe}). The two zero-gap fields are a
+**template-vs-value control**: dur and sev undergo the *same* held-out template shift as
+every other field (all eval dialogues use held-out phrasings) yet show no gap, so the gap
+is driven by held-out *values*, not unfamiliar phrasing. (This is not a claim that the
+model is robust to held-out dur/sev *values* — there are none; the closed fields isolate
+the template axis from the value axis.) Two magnitude caveats follow from the fact that
+the seen/held split is at the *dialogue* level: (i) within a "held" dialogue only ~68% of
+cc fields actually carry a held-out value, and just ~30% of med and ~21% of alg fields do
+(the rest are seen values or "none"), so the held buckets for cc/med/alg are *diluted*
+with seen values — the reported per-field gaps are therefore conservative and **not
+directly comparable across fields** (the true held-out-value gap is larger, and most
+diluted for med/alg); and (ii) for the same reason the aggregate ~18 is a lower bound on
+the pure held-out-value effect. Neither caveat affects the
+cross-model comparison, since every rung is scored on the identical instrument. The
+split still explains the anchors' aggregate near-identity (18.3 vs 18.7) masking
+field-level differences — nano and scale trade off cc against med — and identifies chief
+complaint, with its ~190 compositional values, as the hardest copy. (Fieldwise breakdown
+for the Pythia rungs would need a re-score with the adapters; a candidate appendix
+analysis — `trajectory/kaggle_pythia_fieldwise.py`.)
 
 ![Held-out copying gap vs scale on one consistent instrument. Own-stack anchors
 (3.15M, 10M) sit at ~18 pts; the tested Pythia rungs (160M, 410M) at 3.5–4.2 pts;
@@ -415,6 +426,13 @@ resolved.
 - **Exact-match metric.** The gap is a difference of exact-match recalls; per Schaeffer
   et al. (2023) such metrics can exaggerate scale-linked transitions, which is part of
   why we report across-instance SD and, at 1B, a training-run interval.
+- **Gap-definition subtleties (conservative direction).** The seen/held split is at the
+  dialogue level, so the held bucket mixes in seen field-values (a "held" dialogue draws
+  a held-out value only per-field-probabilistically); and recalls are computed over
+  parsed dialogues only, where at the nano rung the held split parses slightly less often
+  than the seen split. Both push the *measured* gap toward zero, so reported gaps
+  (aggregate and per-field) are conservative lower bounds on the pure held-out-value
+  effect; neither biases the cross-model comparison, which uses the identical instrument.
 - **Single task and single scale family.** One synthetic clinical-summarization task;
   one scaling family. Generality across domains and families is untested here.
 - **Anchor precision (resolved).** The 3M/10M anchors were re-scored on the same
