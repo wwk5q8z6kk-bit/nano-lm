@@ -32,8 +32,10 @@ Update as the draft evolves. Legend: ☐ open · ☑ handled · ⚠ needs owner 
 - ☑ Contamination framing / generator benchmark (§5.1, Related work) → Xu et al., 2024.
 - ☐ Chinchilla D≈20N pretraining budget (Related work "pretraining data quantity",
   PREREG) → Hoffmann et al., 2022 — add in-text where token/param ratios are discussed.
-- ☐ Verify author lists + exact arXiv IDs for all References entries (esp. Pham et al.
-  2020 ASE, Zhuang et al. 2022 MLSys, Wu et al. 2024, Xu et al. 2024) before submission.
+- ☑ Author lists + arXiv IDs verified against primary sources (2026-07-18). All four
+  uncertain entries confirmed CORRECT as written: Pham/Qian/Wang… (ASE'20), Zhuang/Zhang/
+  Song/Hooker (MLSys'22, added arXiv:2106.11872), Wu/Wang/Xiao/Peng/Fu (2404.15574),
+  Xu/Guan/Greene/Kechadi (2406.04244). No citation errors found.
 
 ## 3. Hypotheses — must be labeled as hypotheses, NOT conclusions
 
@@ -108,7 +110,11 @@ Riders:
   ☑ KERNEL PREPARED: trajectory/kaggle_pythia_fieldwise.py (parses; v2-prefix exec
   verified; same deterministic finetune as arm1_v2, per-field scorer over m0-m4). Run
   on Kaggle T4 per its header cell — no local creds, so owner launches. Emits
-  results_fieldwise_pythia_{160m,410m,1b}.json.
+  results_fieldwise_pythia_{160m,410m,1b}.json. PREREQUISITE (owner): this session's
+  commits are LOCAL only (origin/master still at e8c6f05); the kernel checks out `master`
+  (NOT the frozen stage-t-v2 tag, which lacks the script), so `git push origin master`
+  is required before the run — and it publishes the draft to the public repo, an owner
+  call. Finetune inputs are byte-identical to stage-t-v2 so the adapter regenerates.
 - Rejected: 1B_MULTISEED (misrepresents the bistable [0,5], weakens the nondeterminism
   contribution — the 1B gap is 0-or-5, so the interval is the correct representation) and
   STAGE_M_PILOT (premature under the confound).

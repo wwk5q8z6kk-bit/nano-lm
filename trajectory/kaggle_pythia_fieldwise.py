@@ -7,11 +7,15 @@
 # finetune regenerate the same adapter (headless-T4 reproduces byte-for-byte). Only the
 # final measurement differs: per-field held/seen recall over the 5 fresh instances.
 #
-# Venue: Kaggle T4, Internet on. Cell (per REPRODUCIBILITY.md / trajectory/README.md):
+# Venue: Kaggle T4, Internet on. NOTE: this script lives on `master`, not the frozen
+# stage-t-v2 tag, so check out master (push master to origin first — this script is not
+# yet on the remote). The finetune inputs (build_scribe_data_v2.py, the m0-m4 eval
+# instances, SEED, LoRA config) are byte-identical to stage-t-v2, so the adapter
+# regenerates exactly; only added paper/analysis files differ. Cell:
 #   %%bash
 #   cd /kaggle/working && rm -rf nano-lm
 #   git clone -q https://github.com/wwk5q8z6kk-bit/nano-lm
-#   cd nano-lm && git checkout -q stage-t-v2
+#   cd nano-lm && git checkout -q master
 #   pip install -q peft && pip uninstall -y -q torchao
 #   python trajectory/kaggle_pythia_fieldwise.py EleutherAI/pythia-160m   # then 410m, 1b
 #   # headless: pin "machine_shape": "NvidiaTeslaT4" in kernel-metadata.json

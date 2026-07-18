@@ -506,4 +506,4 @@ lists and exact arXiv IDs to be double-checked before submission (see writing_au
 - Xu, C., Guan, S., Greene, D., Kechadi, M.-T. (2024). Benchmark Data Contamination of
   Large Language Models: A Survey. arXiv:2406.04244.
 - Zhuang, D., Zhang, X., Song, S. L., Hooker, S. (2022). Randomness in Neural Network
-  Training: Characterizing the Impact of Tooling. *MLSys 2022.*
+  Training: Characterizing the Impact of Tooling. *MLSys 2022.* arXiv:2106.11872.
