@@ -154,6 +154,29 @@ ladder spine) and §6.3, per the approved plan option A — diluted ladder kept 
 clean reported anchor-only, clean *ladder* deferred to O3 (kaggle_pythia_fieldwise.py now
 emits both metrics). No clean-anchor-vs-diluted-Pythia comparison (S2 discipline).
 
+## T1.5 — internal Reviewer #2 pass (2026-07-18)
+
+Fresh-eyes full-draft review (subagent, no author-blindness) + spot-check vs JSONs.
+**Verdict: submission-worthy AS-IS for workshop / *ACL-Findings / short-paper** after
+text-only fixes — the contribution stands without OWNSTACK_160M (legs (a) clean anchor
+phenomenon and (c) measurement lessons are unconfounded; (b) is labeled confounded).
+All headline numbers traced to JSONs and confirmed. Fixes applied:
+
+- ☑ **MUST-FIX:** §6.1/§6.3 said "≈0% on held-out medication AND allergy" — contradicted
+  by the clean table (scale med = 47.1). Corrected: ≈0% on held-out allergy (both) and
+  held-out med (nano); scale recovers ~half its held-out meds. Also dropped the
+  apples-to-oranges "~4–5×" ratio (3-field clean vs 5-field diluted) for "substantially
+  understates" + both numbers.
+- ☑ §1 broken "referenced in §7" companion cross-ref → "(companion paper, in preparation)".
+- ☑ Hypothesis labeling: §5.1 "Diagnosis:" → "We attribute this to"; §5.2 "sits at the
+  boundary" → "we conjecture, sits near".
+- ☑ Stale References caveat ("to be double-checked") → "verified (2026-07-18)".
+
+**Deferred to submission/camera-ready time (SHOULD/NICE, not blocking):** strip draft
+scaffolding (italic meta-notes, "Status: draft" block); de-dup §2/§4/§5 vs Methods;
+final section renumbering; footnote the ~68/30/21% denominator; add Hoffmann cite at the
+§7 token-ratio line. These are LaTeX-template-time tasks; the working draft keeps them.
+
 ## Open owner decisions (⚠)
 
 - ⚠ **1B representation**: interval [0,5] vs a point from added seeds. Affects the abstract.

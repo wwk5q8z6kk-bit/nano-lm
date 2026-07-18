@@ -50,7 +50,7 @@ The contribution is threefold and we keep the parts distinct:
    estimate at the top of the ladder (§5.2).
 3. **Engineering (companion).** A verification architecture that routes model errors
    to human review; its precision/review-load trade-off is measured in a companion
-   write-up (not in this paper), referenced in §7.
+   write-up (in preparation), not in this paper.
 
 ## Related work
 
@@ -187,7 +187,7 @@ The instrument evolved because the data demanded it. We present this as a result
 
 The pre-registered contamination check (score the same model on the public instance
 vs. a fresh instance; require per-metric agreement within 5 points) **flapped** at
-the threshold across rungs (gap differences ≈5, 6, 4). Diagnosis: the gap rides on a
+the threshold across rungs (gap differences ≈5, 6, 4). We attribute this to the gap riding on a
 handful of hard held tokens, so a single 20-dialogue instance carries ±5–6 points of
 sampling variance. Crucially, the *direction* of the discrepancy (the public instance
 was **harder**, not easier) is the opposite of the contamination signature the check
@@ -211,7 +211,7 @@ and checking the gaps match (a **determinism cross-check**). At 160M and 410M th
 match was exact. At 1B it **failed**: on the byte-identical instance, one training run
 gave a 5-point gap and another gave 0. With evaluation held constant, the difference
 is training-run variance — fp16 with non-associative GPU reductions over ~1125 steps
-of a 1B model that sits at the boundary of perfect held-out copying — the tooling-level
+of a 1B model that, we conjecture, sits near the boundary of perfect held-out copying — the tooling-level
 nondeterminism documented by Zhuang et al. (2022) (cf. Picard, 2021, on seed variance
 exceeding effect sizes), here surfacing in a downstream faithfulness metric rather than
 top-line accuracy. The right instrument for the 1B gap is therefore multiple training
@@ -360,10 +360,13 @@ template held fixed — gives the *pure* held-out-value copying gap, and it is s
 | alg | **100.0 ± 0.0** | 100.0 ± 0.0 |
 | **aggregate (cc+med+alg)** | **87.3 ± 2.7** | **79.5 ± 2.1** |
 
-On *actual* held-out medication and allergy values the models recall ≈0% while copying
-seen values ~perfectly — a ~100-point gap, a near-total copy failure that the
-dialogue-level metric diluted ~4–5× down to 18. The pure held-out-value gap is therefore
-~80–87 points, not 18. To keep this honest we **distinguish two metrics** and do not mix
+On *actual* held-out **allergy** values (both anchors) and held-out **medications** at
+3M, the models recall ≈0% while copying seen values ~perfectly — a ~100-point gap; the
+10M model is the one place scale visibly helps, recovering about half of its held-out
+medications (a 47-point gap). Aggregated over the value fields the pure held-out-value
+gap is **~80–87 points**, not the diluted 18 — a near-total copy failure the
+dialogue-level metric substantially understates. To keep this honest we **distinguish
+two metrics** and do not mix
 them: the *dialogue-level* ("diluted") gap is the ladder spine — it is available for every
 rung on the identical instrument — while this *value-level* ("clean") gap is reported for
 the own-stack anchors only. A clean *ladder* would require re-scoring the Pythia adapters
@@ -408,9 +411,9 @@ the closed-value fields, so what these small models fail at is specifically **co
 held-out lexical value into an open slot**, not being unfaithful in general — and the
 closed-value fields are a within-task control for that claim. Measured on the actual
 held-out values (§6.1, the value-level metric), the failure is not merely large but
-**near-total**: ~80–87 points aggregate, with ≈0% recall on held-out medication and
-allergy values against ~100% on seen ones — the 18-point dialogue-level number is a
-~4–5× conservative proxy. What we do **not** get to
+**near-total**: ~80–87 points aggregate, with ≈0% recall on held-out allergy values
+(and on held-out medications at 3M) against ~100% on seen ones — the 18-point
+dialogue-level number substantially understates it. What we do **not** get to
 say is *why* it shrinks with the ladder — the nano→Pythia step changes scale together
 with pretraining data, tokenizer, architecture, and finetuning method (§7), so the
 honest claim is "the gap largely disappears by the Pythia pipeline," not "parameter
@@ -515,8 +518,8 @@ tightened last (per plan); final section numbering/placement of Related work.*
 
 ## References
 
-*Draft bibliography — titles/venues/years verified against primary sources; author
-lists and exact arXiv IDs to be double-checked before submission (see writing_audit.md).*
+*Bibliography — titles, venues, years, author lists, and arXiv IDs verified against
+primary sources (2026-07-18).*
 
 - Biderman, S., Schoelkopf, H., Anthony, Q., et al. (2023). Pythia: A Suite for
   Analyzing Large Language Models Across Training and Scaling. *ICML 2023.* arXiv:2304.01373.
