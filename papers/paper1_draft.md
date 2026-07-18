@@ -40,7 +40,7 @@ behave as model capability increases?**
 
 The contribution is threefold and we keep the parts distinct:
 1. **Empirical.** A large held-out copying gap in sub-10M models is much smaller in
-   the tested Pythia models (§6.1).
+   the tested Pythia models, and localizes cleanly to the open-vocabulary fields (§6.1).
 2. **Measurement.** Two lessons about estimating such a gap reliably: single-instance
    evaluation was under-powered (§5.1), and training nondeterminism bounds the
    estimate at the top of the ladder (§5.2).
@@ -124,24 +124,24 @@ even when content-addressed and reproducible.
 
 ## 2. Task and benchmark
 
-**Construction.** Synthetic clinic dialogues are rendered from a known fact tuple of
-five fields (chief complaint, duration, severity, medication, allergy). Because the
-generating tuple is known, faithfulness is exact — a model summary is scored field-
-by-field against the tuple with no judge model. A field is a hit if it matches, an
-*omission* if the model writes "none" for a present value, and a *hallucination*
-otherwise.
+*This section motivates the design; the precise protocol (generator, held-out split,
+metric) is in Methods.*
 
-**Contamination controls (two axes).** Evaluation dialogues use (i) held-out
-*template families* — surface phrasings never seen in finetuning — and (ii) for half
-the dialogues, held-out *slot values* (specific complaints/medications/allergies
-excluded from all finetuning data). The **held-out copying gap** is
-seen-value-recall minus held-out-value-recall, both measured under held-out
-templates. It isolates value copying from phrasing familiarity.
+**Faithfulness is exact by construction.** Synthetic clinic dialogues are rendered from
+a known fact tuple of five fields (chief complaint, duration, severity, medication,
+allergy), so each summary is scored field-by-field against ground truth with no judge
+model — a noise-free faithfulness signal, traded against ecological realism.
 
-**The benchmark is a generator.** The scientific object is the eval distribution
-(a seeded generator), not any fixed set of dialogues. This matters after public
-release: fresh instances can be drawn to defend against memorization of any specific
-instance (§5.1), and the instance-difficulty distribution can be measured directly.
+**The held-out copying gap.** Evaluation dialogues are held-out along two axes — held-out
+*template families* (all dialogues) and held-out *slot values* (half the dialogues) — and
+the central object is the **held-out copying gap**: seen-value recall minus
+held-out-value recall under held-out templates, which isolates value copying from
+phrasing familiarity.
+
+**The benchmark is a generator.** The scientific object is the eval *distribution* (a
+seeded generator), not any fixed set of dialogues. Fresh instances can be drawn to
+defend against memorization of any specific instance (§5.1), and the instance-difficulty
+distribution can be measured directly — a property we exploit in both measurement lessons.
 
 ## 3. Prior stages (setup)
 
