@@ -33,7 +33,7 @@ arose from empirical failures of the prior instrument, not from foresight.
 Production language systems for structured summarization (e.g. clinical scribing)
 are judged not on average-case benchmark scores but on faithfulness under
 distribution shift: whether the output contains only content grounded in the input,
-including on inputs unlike the training data. We isolate one tractable component of
+including on inputs unlike the training data (Maynez et al., 2020; Ji et al., 2023). We isolate one tractable component of
 this — value copying — in a setting where faithfulness is measurable by
 construction, and ask a single pre-registered question: **how does the copying gap
 behave as model capability increases?**
@@ -47,6 +47,80 @@ The contribution is threefold and we keep the parts distinct:
 3. **Engineering (companion).** A verification architecture that routes model errors
    to human review at measured precision/review-load; reported separately, referenced
    in §7.
+
+## Related work
+
+*Draft section — citations verified against primary sources (§ References); final
+placement/numbering is a formatting pass. Each paragraph notes the relation to this
+work.*
+
+**Scaling laws and emergence.** Language-model loss follows smooth power laws in
+parameters, data, and compute (Kaplan et al., 2020; Hoffmann et al., 2022), yet
+specific *task* behaviors can change sharply with scale: Wei et al. (2022) catalogue
+"emergent abilities" absent in small models and present in large ones. Schaeffer et
+al. (2023) argue much apparent emergence is a *measurement artifact* of discontinuous
+metrics (exact-match, multiple-choice) rather than a property of the model. Our study
+runs in the opposite direction — a behavior (the held-out copying gap) that is *large*
+in small models and *smaller* at larger scale — but Schaeffer et al.'s caution applies
+directly, since our gap is an exact-match recall difference; we therefore report it
+with across-instance error bars and, at 1B, separate metric behavior from training-run
+variance (§5.2). Where the emergence literature asks "does scale switch an ability
+*on*?", we ask "does scale switch a faithfulness failure *off*?", and find the honest
+answer is confounded with the training stack (§7).
+
+**The Pythia platform.** Biderman et al. (2023) release Pythia, 16 models spanning
+70M–12B trained on identical data in identical order, expressly to make scale a
+controlled variable. We use the 160M/410M/1B rungs as our scaling axis for exactly
+this property — within Pythia, architecture, tokenizer, pretraining corpus, and data
+order are fixed across sizes. The limitation we foreground (§7) is that our own-stack
+anchors are *not* in that controlled family, so the nano→Pythia step moves the stack
+as well as the scale — a confound Pythia's internal control cannot remove.
+
+**Copying, pointer, and retrieval mechanisms.** The behavior we measure is value
+*copying*: reproducing a field value present verbatim in the input. Explicit copy
+pathways have a long lineage in sequence-to-sequence models — CopyNet (Gu et al.,
+2016) and pointer-generator networks (See et al., 2017) add input-copying to
+abstractive generation. In transformers, induction heads implement a pattern-completion
+copy (given "…[A][B]…[A]", attend to the first A and predict B; Elhage et al., 2021;
+Olsson et al., 2022), and *retrieval heads* — a sparse (<5%), apparently universal set
+of attention heads — copy tokens from context into the output and mechanistically
+explain long-context factuality (Wu et al., 2024). These are the natural mechanistic
+hypotheses for our gap: a model that copies *seen* values but fails on *held-out*
+values under held-out phrasing may have copy/retrieval circuitry that generalizes
+poorly off-distribution. We deliberately defer this question (Stage M, §8) until the
+behavioral phenomenon is deconfounded, so any circuit we implicate is attached to a
+clean empirical contrast rather than a stack difference.
+
+**Faithfulness and hallucination.** Faithfulness — output grounded only in the input —
+is a central failure mode of abstractive summarization; Maynez et al. (2020)
+distinguish intrinsic (misrepresenting source content) from extrinsic (unsupported)
+hallucination, and Ji et al. (2023) survey the phenomenon across NLG. Most such work
+relies on human judgment or model-based entailment scoring. Our task is constructed so
+faithfulness is *exact*: because each dialogue is rendered from a known fact tuple, a
+summary is scored field-by-field against ground truth with no judge model, and our
+"hallucination" is precisely an extrinsic fabrication of a field value. This trades
+ecological realism for a noise-free, reproducible faithfulness signal.
+
+**Reproducibility and training nondeterminism.** Run-to-run variation from seeds and
+low-level tooling can be large enough to reverse method rankings (Picard, 2021; Pham et
+al., 2020), and even fixed-seed training is nondeterministic through non-associative
+GPU reductions and library tooling (Zhuang et al., 2022); the standard prescription is
+to report mean ± SD over multiple runs. Our 1B result is a concrete downstream
+instance: two fixed-seed retrains of the same model produced gaps of 5 and 0 on the
+byte-identical evaluation, so at that rung the *unit of uncertainty* shifts from the
+evaluation instance to the training run, and we report an interval (§5.2). This
+connects the reproducibility literature to a specific measured behavior (a faithfulness
+gap) rather than to top-line accuracy.
+
+**Evaluation reliability and contamination.** Public benchmarks risk contamination —
+memorized test content inflating scores (Xu et al., 2024) — with held-out or rolling
+test data the standard defense. Our benchmark is a *seeded generator* rather than a
+fixed set, so fresh evaluation instances can be drawn at will, and our pre-registered
+contamination check compares the public instance against fresh draws. We find the
+public instance is *harder* (higher gap) than fresh draws at every rung — the opposite
+of the contamination signature — which both rules out memorization and surfaces a
+distinct hazard: a fixed public instance can be a systematically biased difficulty draw
+even when content-addressed and reproducible.
 
 ## 2. Task and benchmark
 
@@ -88,10 +162,10 @@ cross the failure — motivating a wider ladder.
 recipe with LoRA (r=16, α=32, LR 1e-4, 3 epochs), scored by the identical
 faithfulness scorer.
 
-**Why Pythia.** The question is scaling behavior, not model ranking. Pythia holds
-architecture, tokenizer, pretraining corpus, and recipe fixed across sizes, so within
-the family relatively few variables move with parameter count — the property a scaling
-study needs. This choice does not isolate scale from the nano→Pythia *stack* change
+**Why Pythia.** The question is scaling behavior, not model ranking. Pythia (Biderman
+et al., 2023) holds architecture, tokenizer, pretraining corpus, and data order fixed
+across sizes, so within the family relatively few variables move with parameter count —
+the property a scaling study needs. This choice does not isolate scale from the nano→Pythia *stack* change
 (§7); it is the reference family for that axis, not a claim that scale is the cause.
 
 **Pre-registration and falsifiers.** Bars, bands (PERSISTS/THRESHOLD/DIVERGENT),
@@ -133,9 +207,11 @@ and checking the gaps match (a **determinism cross-check**). At 160M and 410M th
 match was exact. At 1B it **failed**: on the byte-identical instance, one training run
 gave a 5-point gap and another gave 0. With evaluation held constant, the difference
 is training-run variance — fp16 with non-associative GPU reductions over ~1125 steps
-of a 1B model that sits at the boundary of perfect held-out copying. The right
-instrument for the 1B gap is therefore multiple training seeds, not multiple
-evaluation instances; we report an interval.
+of a 1B model that sits at the boundary of perfect held-out copying — the tooling-level
+nondeterminism documented by Zhuang et al. (2022) (cf. Picard, 2021, on seed variance
+exceeding effect sizes), here surfacing in a downstream faithfulness metric rather than
+top-line accuracy. The right instrument for the 1B gap is therefore multiple training
+seeds, not multiple evaluation instances; we report an interval.
 
 ## 6. Results
 
@@ -193,12 +269,25 @@ PERSISTS requires); it is consistent with a small residual or none.
 
 ## 7. Limitations
 
-- **Scale vs. family confound (primary).** The nano→Pythia comparison changes
-  parameter count *and* pretraining corpus, tokenizer, architecture, and finetuning
-  method simultaneously. We therefore claim only that the gap is much smaller under
-  the Pythia pipeline, not that scale per se removes it. Isolating scale needs a
-  within-family run (below).
+- **Scale vs. stack confound (primary).** The nano→Pythia comparison changes parameter
+  count *and* at least four other variables simultaneously, each a plausible alternative
+  cause of the reduction: (i) **pretraining data quantity** (~200M own-stack tokens vs.
+  Pythia's ~300B — a ~1500× difference), (ii) **tokenizer** (4098-vocab BPE vs. ~50k;
+  larger vocabularies fragment field values like "ibuprofen" into fewer sub-tokens,
+  which could itself change copy success), (iii) **architecture family**, and (iv)
+  **finetuning method** (own-stack full fine-tune vs. Pythia LoRA r=16 — LoRA may
+  preserve pretrained copying while suppressing the memorization pathway full FT
+  exploits). We therefore claim only that the gap is much smaller under the Pythia
+  *pipeline*, not that scale per se removes it. The pre-registered own-stack scale ladder
+  (`PREREG_ownstack_160m.md`) is designed to separate scale from the stack bundle.
+- **Transition point unobserved.** The gap drops somewhere between own-stack 10M (18.7)
+  and Pythia-160M (3.5), but those endpoints are on different stacks; within Pythia the
+  gap is already low at 160M with no monotonic trend, so "by Pythia scale" is safe while
+  "as models scale up" is not yet supported.
 - **1B point estimate.** Bounded, not identified, by training nondeterminism (§5.2).
+- **Exact-match metric.** The gap is a difference of exact-match recalls; per Schaeffer
+  et al. (2023) such metrics can exaggerate scale-linked transitions, which is part of
+  why we report across-instance SD and, at 1B, a training-run interval.
 - **Single task and single scale family.** One synthetic clinical-summarization task;
   one scaling family. Generality across domains and families is untested here.
 - **Anchor precision (resolved).** The 3M/10M anchors were re-scored on the same
@@ -226,7 +315,9 @@ reduction tracks size or pipeline. **Frontier models** (GPT/Claude/Gemini) belon
 systems?" — not as ladder rungs, since they change every variable at once. **Stage M**
 (mechanism) is deliberately deferred until the behavioral phenomenon is fully frozen,
 so it asks "why does this residual occur?" rather than carrying the burden of
-justifying Stage T.
+justifying Stage T; the natural hypotheses are copy/retrieval circuitry — induction
+heads (Olsson et al., 2022) and retrieval heads (Wu et al., 2024) — that generalize
+poorly from seen to held-out values.
 
 ## 9. Conclusion
 
@@ -244,8 +335,47 @@ limitations into its conclusions rather than explaining them away.
 *Status: draft. The anchors are now re-scored on the multi-instance instrument
 (`results_anchors_v2_{nano,scale}.json`), so the whole ladder shares one instrument
 and the public-instance-hard-draw holds at every rung (single-instance gap ≥
-multi-instance mean at all five). Open manuscript decisions before submission —
-precise abstract numbers pending a decision on multi-seed 1B; **figures produced**
-(`papers/figures/`, regenerable via `papers/make_figures.py` — Fig 1 gap-vs-scale
-with error bars/interval and the stack-change band, Fig 2 the public-instance hard
-draw; LaTeX table in `table_gap_ladder.tex`); related-work section to be written.*
+multi-instance mean at all five). Figures produced (`papers/figures/`, regenerable via
+`papers/make_figures.py`). Related-work drafted (§ Related work) with verified
+citations. Running writing audit (unsupported claims, citations-needed, hypotheses,
+reviewer limitations) in `papers/writing_audit.md`. Open decisions before submission —
+precise abstract numbers pending a decision on multi-seed 1B; intro/abstract to be
+tightened last (per plan); final section numbering/placement of Related work.*
+
+## References
+
+*Draft bibliography — titles/venues/years verified against primary sources; author
+lists and exact arXiv IDs to be double-checked before submission (see writing_audit.md).*
+
+- Biderman, S., Schoelkopf, H., Anthony, Q., et al. (2023). Pythia: A Suite for
+  Analyzing Large Language Models Across Training and Scaling. *ICML 2023.* arXiv:2304.01373.
+- Elhage, N., Nanda, N., Olsson, C., et al. (2021). A Mathematical Framework for
+  Transformer Circuits. *Transformer Circuits Thread (Anthropic).*
+- Gu, J., Lu, Z., Li, H., Li, V. O. K. (2016). Incorporating Copying Mechanism in
+  Sequence-to-Sequence Learning. *ACL 2016.* arXiv:1603.06393.
+- Hoffmann, J., Borgeaud, S., Mensch, A., et al. (2022). Training Compute-Optimal Large
+  Language Models (Chinchilla). arXiv:2203.15556.
+- Ji, Z., Lee, N., Frieske, R., et al. (2023). Survey of Hallucination in Natural
+  Language Generation. *ACM Computing Surveys 55(12).* arXiv:2202.03629.
+- Kaplan, J., McCandlish, S., Henighan, T., et al. (2020). Scaling Laws for Neural
+  Language Models. arXiv:2001.08361.
+- Maynez, J., Narayan, S., Bohnet, B., McDonald, R. (2020). On Faithfulness and
+  Factuality in Abstractive Summarization. *ACL 2020.* aclanthology 2020.acl-main.173.
+- Olsson, C., Elhage, N., Nanda, N., et al. (2022). In-context Learning and Induction
+  Heads. *Transformer Circuits Thread (Anthropic).* arXiv:2209.11895.
+- Pham, H. V., Qian, S., Wang, J., et al. (2020). Problems and Opportunities in Training
+  Deep Learning Software Systems: An Analysis of Variance. *ASE 2020.*
+- Picard, D. (2021). torch.manual_seed(3407) is all you need: On the influence of random
+  seeds in deep learning. arXiv:2109.08203.
+- Schaeffer, R., Miranda, B., Koyejo, S. (2023). Are Emergent Abilities of Large Language
+  Models a Mirage? *NeurIPS 2023.* arXiv:2304.15004.
+- See, A., Liu, P. J., Manning, C. D. (2017). Get To The Point: Summarization with
+  Pointer-Generator Networks. *ACL 2017.* arXiv:1704.04368.
+- Wei, J., Tay, Y., Bommasani, R., et al. (2022). Emergent Abilities of Large Language
+  Models. *TMLR.* arXiv:2206.07682.
+- Wu, W., Wang, Y., Xiao, G., et al. (2024). Retrieval Head Mechanistically Explains
+  Long-Context Factuality. arXiv:2404.15574.
+- Xu, C., Guan, S., Greene, D., Kechadi, M.-T. (2024). Benchmark Data Contamination of
+  Large Language Models: A Survey. arXiv:2406.04244.
+- Zhuang, D., Zhang, X., Song, S. L., Hooker, S. (2022). Randomness in Neural Network
+  Training: Characterizing the Impact of Tooling. *MLSys 2022.*
