@@ -12,11 +12,11 @@ Update as the draft evolves. Legend: ☐ open · ☑ handled · ⚠ needs owner 
 - ☑ Model-side quality ranges (§6.1) — verified against per-rung JSONs (inst0+fresh);
   corrected own-stack parse 95→**94**–100% and Pythia hallucination 0.5→**0**–4% (1B is
   0.0%). Recall 80–91% (own) and 96–100% (Pythia), hallucination 7–12% (own) confirmed.
-- ☐ Companion verification architecture "at measured precision/review-load" (§1, §7) —
-  those metrics live in the companion write-up, not this paper; ensure the sentence
-  doesn't imply they are measured *here*. Either cite the companion or soften.
-- ☐ "first model to pass the pre-registered faithfulness bars" (Stage S, §3) — true
-  within this project's own bars; make sure it doesn't read as a field-wide claim.
+- ☑ Companion verification architecture (§1) — softened: now reads "its precision/
+  review-load trade-off is measured in a companion write-up (not in this paper)".
+- ☑ "first model to pass..." — N/A: that phrasing is in scale/AUDIT.md, NOT in the
+  manuscript; the paper says only "passed the average-case faithfulness gate" (§3),
+  which is scoped to the project's own bars. No field-wide claim to fix.
 - ☐ Abstract point numbers (18.3±1.3 etc.) are final for the anchors/160M/410M but the
   1B representation (interval vs point) is still an open decision (⚠ below).
 
@@ -105,6 +105,10 @@ Riders:
   the natural Paper 2.
 - Cheapest freeze-and-write-compatible strengthener = PYTHIA_FIELDWISE (re-score frozen
   adapters; tests the titular "field-localized" claim on the Pythia side; Kaggle-gated).
+  ☑ KERNEL PREPARED: trajectory/kaggle_pythia_fieldwise.py (parses; v2-prefix exec
+  verified; same deterministic finetune as arm1_v2, per-field scorer over m0-m4). Run
+  on Kaggle T4 per its header cell — no local creds, so owner launches. Emits
+  results_fieldwise_pythia_{160m,410m,1b}.json.
 - Rejected: 1B_MULTISEED (misrepresents the bistable [0,5], weakens the nondeterminism
   contribution — the 1B gap is 0-or-5, so the interval is the correct representation) and
   STAGE_M_PILOT (premature under the confound).

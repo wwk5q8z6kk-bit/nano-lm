@@ -49,8 +49,8 @@ The contribution is threefold and we keep the parts distinct:
    evaluation was under-powered (§5.1), and training nondeterminism bounds the
    estimate at the top of the ladder (§5.2).
 3. **Engineering (companion).** A verification architecture that routes model errors
-   to human review at measured precision/review-load; reported separately, referenced
-   in §7.
+   to human review; its precision/review-load trade-off is measured in a companion
+   write-up (not in this paper), referenced in §7.
 
 ## Related work
 
