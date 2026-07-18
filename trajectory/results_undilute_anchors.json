@@ -1,0 +1,114 @@
+{
+ "nano": {
+  "tag": "nano",
+  "per_field_clean": {
+   "cc": {
+    "gap_mean": 71.83661843454483,
+    "gap_sd": 4.932222097662286,
+    "avg_held_n": 60,
+    "avg_seen_n": 129,
+    "per_instance": [
+     79.36507936507937,
+     70.63492063492063,
+     70.99236641221374,
+     65.67164179104478,
+     72.51908396946564
+    ]
+   },
+   "med": {
+    "gap_mean": 100.0,
+    "gap_sd": 0.0,
+    "avg_held_n": 21,
+    "avg_seen_n": 86,
+    "per_instance": [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ]
+   },
+   "alg": {
+    "gap_mean": 100.0,
+    "gap_sd": 0.0,
+    "avg_held_n": 20,
+    "avg_seen_n": 72,
+    "per_instance": [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ]
+   }
+  },
+  "clean_aggregate": {
+   "gap_mean": 87.25433029046728,
+   "gap_sd": 2.7121828324735606,
+   "per_instance": [
+    91.06529209621993,
+    86.92579505300353,
+    87.03071672354949,
+    83.45323741007195,
+    87.79661016949153
+   ]
+  },
+  "note": "held-value vs seen-value recall among value-bearing items (excl 'none'), under held templates; dur/sev omitted (no held-out values)"
+ },
+ "scale": {
+  "tag": "scale",
+  "per_field_clean": {
+   "cc": {
+    "gap_mean": 87.39732065316954,
+    "gap_sd": 3.498750659646119,
+    "avg_held_n": 67,
+    "avg_seen_n": 132,
+    "per_instance": [
+     84.17582417582419,
+     91.98439241917504,
+     90.29289642015486,
+     85.47008547008546,
+     85.06340478060824
+    ]
+   },
+   "med": {
+    "gap_mean": 47.14814021560649,
+    "gap_sd": 3.9527800654836978,
+    "avg_held_n": 30,
+    "avg_seen_n": 86,
+    "per_instance": [
+     47.82608695652174,
+     50.0,
+     42.85714285714286,
+     43.333333333333336,
+     51.72413793103448
+    ]
+   },
+   "alg": {
+    "gap_mean": 100.0,
+    "gap_sd": 0.0,
+    "avg_held_n": 21,
+    "avg_seen_n": 75,
+    "per_instance": [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ]
+   }
+  },
+  "clean_aggregate": {
+   "gap_mean": 79.4971644728655,
+   "gap_sd": 2.059701038028834,
+   "per_instance": [
+    79.33110367892976,
+    82.4676724137931,
+    77.6271186440678,
+    77.58352758352758,
+    80.47640004400924
+   ]
+  },
+  "note": "held-value vs seen-value recall among value-bearing items (excl 'none'), under held templates; dur/sev omitted (no held-out values)"
+ }
+}
