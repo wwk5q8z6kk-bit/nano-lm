@@ -15,10 +15,14 @@ held-out values under held-out phrasings, even though both are present verbatim 
 the input. In our own from-scratch models (3.15M and 10M parameters) this gap is
 large — **18.3±1.3 and 18.7±1.5 points** of recall on the same multi-instance
 instrument used for the rest of the ladder (22–23 points on the single public
-instance the anchors were first scored on; §6.1). Finetuning the Pythia open-weight
-family (160M/410M/1B) on the identical task, the gap observed is **substantially
-smaller** (single-digit points; 3.5±0.7 at 160M, 4.2±0.9 at 410M, and an interval of
-[0,5] at 1B). We deliberately do **not** claim scale as the cause: the comparison also
+instance the anchors were first scored on; §6.1). The failure is not diffuse: it
+localizes *entirely* to the three open-vocabulary fields (complaint, medication,
+allergy) and is **exactly zero** in the two closed-value fields (duration, severity),
+which act as a built-in control showing the effect is specifically held-out-*value*
+copying in open slots, not a generic degradation under unfamiliar phrasing. Finetuning
+the Pythia open-weight family (160M/410M/1B) on the identical task, the gap observed is
+**substantially smaller** (single-digit points; 3.5±0.7 at 160M, 4.2±0.9 at 410M, and
+an interval of [0,5] at 1B). We deliberately do **not** claim scale as the cause: the comparison also
 changes pretraining corpus, tokenizer, architecture, and finetuning method. The
 measurement itself is a second contribution. A pre-registered contamination check
 caught that our initial single-instance evaluation was under-powered for the gap;
@@ -362,12 +366,16 @@ supported by different evidence and would survive independently.
 **What we learned about language models.** The held-out copying gap is a *pronounced
 small-model phenomenon*: ~18 points in from-scratch models at 3–10M, essentially flat
 across that 3.2× scale step, and only single-digit points in the tested Pythia models
-at 160M and above. What we do **not** get to say is *why* it shrinks — the nano→Pythia
-step changes scale together with pretraining data, tokenizer, architecture, and
-finetuning method (§7), so the honest claim is "the gap largely disappears by the
-Pythia pipeline," not "parameter count removes it." The one clean causal statement is
-negative and comes from the controlled within-stack step: at this recipe, going from
-3M to 10M did not move the gap.
+at 160M and above. The fieldwise breakdown makes the phenomenon precise rather than
+diffuse: the gap lives *entirely* in the open-vocabulary fields and is exactly zero in
+the closed-value fields, so what these small models fail at is specifically **copying a
+held-out lexical value into an open slot**, not being unfaithful in general — and the
+closed-value fields are a within-task control for that claim. What we do **not** get to
+say is *why* it shrinks with the ladder — the nano→Pythia step changes scale together
+with pretraining data, tokenizer, architecture, and finetuning method (§7), so the
+honest claim is "the gap largely disappears by the Pythia pipeline," not "parameter
+count removes it." The one clean causal statement is negative and comes from the
+controlled within-stack step: at this recipe, going from 3M to 10M did not move the gap.
 
 **What we learned about measurement.** Independently of the model result, estimating a
 gap like this reliably required two corrections that the data forced on us. (i)
@@ -436,11 +444,12 @@ poorly from seen to held-out values.
 
 ## 9. Conclusion
 
-A severe held-out copying gap in sub-10M models was substantially smaller in the
-tested Pythia models; the cause (scale vs. pipeline) is left open by design. The
-measurement story is inseparable from the result: single-instance evaluation was
-under-powered, and at the top of the ladder training nondeterminism — not evaluation
-noise — sets the precision floor. Both were surfaced by pre-registered checks
+A severe held-out copying gap in sub-10M models — specifically a failure to copy
+held-out lexical values into open slots, with the closed-value fields a zero-gap
+internal control — was substantially smaller in the tested Pythia models; the cause
+(scale vs. pipeline) is left open by design. The measurement story is inseparable from
+the result: single-instance evaluation was under-powered, and at the top of the ladder
+training nondeterminism — not evaluation noise — sets the precision floor. Both were surfaced by pre-registered checks
 (equivalence, determinism) that failed productively. The contribution is less any
 single number than a research unit that repeatedly incorporated its own measurement
 limitations into its conclusions rather than explaining them away.

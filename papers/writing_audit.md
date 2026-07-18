@@ -85,6 +85,10 @@ Ranked by expected reviewer severity (from the 10-model consult, 2026-07-18):
 - ☐ Introduction + Abstract — tighten LAST (per plan), once sections settle.
 - ☐ De-duplicate §2/§4/§5 narrative against the consolidated Methods (formatting pass).
 - ☑ Fieldwise breakdown (item 8) — done for anchors, folded into §6.1.
+- ☑ Open/closed control ELEVATED (owner-recommended reframing) — the phenomenon is now
+  framed as "held-out-value copying into open slots, with closed-value fields as a
+  built-in control" consistently across abstract, §6.1, §6.3, and §9. Candidate: sharpen
+  the title toward this framing (owner call).
 - ☐ 1B multi-seed decision (⚠); Pythia fieldwise (appendix); §2/§4/§5-vs-Methods de-dup.
 
 ## Open owner decisions (⚠)
