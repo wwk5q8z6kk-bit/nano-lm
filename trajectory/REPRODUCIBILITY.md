@@ -29,6 +29,24 @@ ede686b6…  trajectory/scribe_eval_m3.json   (seed 20260723)
 66e7600d…  trajectory/kaggle_arm1_v2.py     (finetune + powered scorer)
 ```
 
+## Anchor re-scoring (nano/scale on the multi-instance instrument)
+
+Added 2026-07-17 (`PREREG_anchors.md`). The 3.15M/10M own-stack anchors were re-scored
+on the same five fresh instances (m0–m4) as the Pythia rungs, using their native
+ChatML/greedy scorer (`trajectory/rescore_anchors.py`), device MPS. Re-scoring only —
+frozen v0.1 release checkpoints:
+
+```
+0e4f348e…  scribe.pt           (nano scribe v2, 3.15M)   — v0.1 release asset
+f5aca5f0…  scale10m_scribe.pt  (scale scribe, ~10M)      — v0.1 release asset (matches scale/AUDIT.md)
+```
+
+Determinism cross-check passed before the multi-instance pass: nano inst0 reproduced
+`gate_scribe_v2.log` byte-for-byte (parse 39/40, recall 81%, held 68/95, seen 94/100,
+gap 22.4); scale inst0 reproduced Stage S exactly (parse 100%, recall 88%, gap 23.0)
+despite the CUDA→MPS device change. Results: `results_anchors_v2_{nano,scale}.json`
+(nano 18.3±1.3, scale 18.7±1.5 across m0–m4).
+
 ## Model provenance
 
 Base models: EleutherAI/pythia-{160m,410m,1b} from HF Hub. Finetune is

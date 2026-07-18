@@ -13,10 +13,12 @@ convert short clinical dialogues into structured summaries: a **held-out copying
 gap** — the model copies field values it saw during finetuning but errs on
 held-out values under held-out phrasings, even though both are present verbatim in
 the input. In our own from-scratch models (3.15M and 10M parameters) this gap is
-large (~22–23 points of recall). Finetuning the Pythia open-weight family
-(160M/410M/1B) on the identical task, the gap observed is **substantially smaller**
-(single-digit points; 3.5±0.7 at 160M, 4.2±0.9 at 410M, and an interval of [0,5] at
-1B). We deliberately do **not** claim scale as the cause: the comparison also
+large — **18.3±1.3 and 18.7±1.5 points** of recall on the same multi-instance
+instrument used for the rest of the ladder (22–23 points on the single public
+instance the anchors were first scored on; §6.1). Finetuning the Pythia open-weight
+family (160M/410M/1B) on the identical task, the gap observed is **substantially
+smaller** (single-digit points; 3.5±0.7 at 160M, 4.2±0.9 at 410M, and an interval of
+[0,5] at 1B). We deliberately do **not** claim scale as the cause: the comparison also
 changes pretraining corpus, tokenizer, architecture, and finetuning method. The
 measurement itself is a second contribution. A pre-registered contamination check
 caught that our initial single-instance evaluation was under-powered for the gap;
@@ -74,14 +76,17 @@ training-curriculum artifact by adding an unmemorizable-value training slice; th
 held-out gap was unmoved, refuting the curriculum explanation. **Stage S** scaled our
 own stack from 3.15M to 10M parameters: the larger model passed the average-case
 faithfulness gate (parse 100%, recall 88%, hallucination 7.5%) yet its held-out gap
-was essentially unchanged (≈23 vs ≈22 points). Stage S concluded that a 3.2× scale
-step does not cross the failure — motivating a wider ladder.
+was essentially unchanged (≈23 vs ≈22 points single-instance; **18.7±1.5 vs 18.3±1.3
+on the multi-instance instrument**, §6.1 — the near-identity now measured with error
+bars, not two single points). Stage S concluded that a 3.2× scale step does not
+cross the failure — motivating a wider ladder.
 
 ## 4. Stage T design (pre-registered)
 
-**Ladder.** Own models at 3.15M/10M (single-instance anchors) plus the Pythia family
-at 160M/410M/1B, finetuned on the identical scribe recipe with LoRA (r=16, α=32,
-LR 1e-4, 3 epochs), scored by the identical faithfulness scorer.
+**Ladder.** Own models at 3.15M/10M (re-scored on the multi-instance instrument,
+§6.1) plus the Pythia family at 160M/410M/1B, finetuned on the identical scribe
+recipe with LoRA (r=16, α=32, LR 1e-4, 3 epochs), scored by the identical
+faithfulness scorer.
 
 **Why Pythia.** The question is scaling behavior, not model ranking. Pythia holds
 architecture, tokenizer, pretraining corpus, and recipe fixed across sizes, so within
@@ -110,7 +115,15 @@ sampling variance. Crucially, the *direction* of the discrepancy (the public ins
 was **harder**, not easier) is the opposite of the contamination signature the check
 was built to detect — ruling out memorization. The fix (T-v2) re-scores the same
 frozen models on **five instances of 100 held dialogues each** and reports the gap as
-a mean ± across-instance SD. This cut the SD to ~0.7–0.9 points at 160M/410M.
+a mean ± across-instance SD. This cut the SD to ~0.7–0.9 points at 160M/410M. We
+applied the identical re-scoring to the own-stack anchors so the whole ladder shares
+one instrument (`PREREG_anchors.md`, re-scoring only — frozen v0.1 checkpoints, their
+native ChatML/greedy scorer; both anchors reproduced their canonical single-instance
+readings byte-for-byte before the multi-instance pass). The anchors' single
+public-instance gaps (22.4, 23.0) were themselves modestly hard draws — ~4 points
+above their multi-instance means (18.3, 18.7) — the **same direction** (public
+instance harder, not easier) found at the Pythia rungs, so the public instance is a
+systematically hard draw across the entire ladder.
 
 ### 5.2 Training nondeterminism bounds the 1B estimate
 
@@ -128,26 +141,40 @@ evaluation instances; we report an interval.
 
 ### 6.1 The gap across the ladder
 
-| Model | Params | Stack | Held-out gap | Basis |
-|---|---|---|---|---|
-| nano | 3.15M | own | ~22 pts | single instance |
-| scale | 10M | own | ~23 pts | single instance |
-| pythia-160m | 160M | Pythia | **3.5 ± 0.7 pts** | 5×100 held; determinism verified |
-| pythia-410m | 410M | Pythia | **4.2 ± 0.9 pts** | 5×100 held; determinism verified |
-| pythia-1b | 1B | Pythia | **[0, 5] pts** | training-run–bounded |
+All five rungs are scored on the **same multi-instance instrument** (five instances
+of 100 held + 100 seen dialogues, v1 eval distribution, gap = mean ± across-instance
+SD). The own-stack anchors' original single-instance readings are shown alongside for
+provenance.
 
-Model-side quality is high at every Pythia rung (parse 100%, recall 96–100%,
-hallucination 0.5–4%), on both the public and fresh instances. The large held-out
-copying gap **observed in our nano models was substantially smaller in the tested
-Pythia models.** The reduction (~15–22 points) is far larger than any noise source
-identified, so the direction is not in question.
+| Model | Params | Stack | Held-out gap (5×100 held) | Single-instance (inst0) | Basis |
+|---|---|---|---|---|---|
+| nano | 3.15M | own | **18.3 ± 1.3 pts** | 22.4 | determinism verified |
+| scale | 10M | own | **18.7 ± 1.5 pts** | 23.0 | determinism verified |
+| pythia-160m | 160M | Pythia | **3.5 ± 0.7 pts** | 7.0 | determinism verified |
+| pythia-410m | 410M | Pythia | **4.2 ± 0.9 pts** | 8.0 | determinism verified |
+| pythia-1b | 1B | Pythia | **[0, 5] pts** | 5.0 / 0.0 | training-run–bounded |
+
+Model-side quality is high at every rung (own-stack anchors parse 95–100%, recall
+80–91%, hallucination 7–12%; Pythia rungs parse 100%, recall 96–100%, hallucination
+0.5–4%), on both the public and fresh instances. On this single consistent instrument
+the large held-out copying gap **observed in our own-stack models (~18 points) was
+substantially smaller in the tested Pythia models (3.5–4.2 points).** The reduction
+(~14–15 points) is an order of magnitude larger than any noise source identified
+(anchor SD ≈1.3–1.5, Pythia SD ≈0.7–0.9), so the direction is not in question. Note
+that the single-instance column — the basis of the earlier headline — is a
+uniformly hard draw (higher gap at every rung), which is precisely why mixing a
+single-instance anchor with a multi-instance Pythia number would have overstated the
+contrast; on the consistent instrument the gap is still large but the anchors read
+~18, not ~22–23.
 
 ### 6.2 What the result does and does not establish
 
 Within Pythia the gap is already small at 160M with no clean monotonic trend, so the
 ladder captured a low-gap regime rather than a transition. Reconciling with Stage S:
-the 3.2× step (3M→10M) did not move the gap; the 16× step to 160M, **or** the stack
-change, coincides with a much smaller gap — these are not separated here. The
+the 3.2× step (3M→10M) did not move the gap (18.3±1.3 → 18.7±1.5 — a 0.4-point change
+inside one SD, now measured rather than inferred from two single points); the 16×
+step to 160M, **or** the stack change, coincides with a much smaller gap — these are
+not separated here. The
 formal band is not PERSISTS (the top-rung interval reaches 0, far from the ≥10 that
 PERSISTS requires); it is consistent with a small residual or none.
 
@@ -161,8 +188,10 @@ PERSISTS requires); it is consistent with a small residual or none.
 - **1B point estimate.** Bounded, not identified, by training nondeterminism (§5.2).
 - **Single task and single scale family.** One synthetic clinical-summarization task;
   one scaling family. Generality across domains and families is untested here.
-- **Small held strata at the anchors.** The 3M/10M anchors are single-instance; their
-  gap magnitudes are approximate.
+- **Anchor precision (resolved).** The 3M/10M anchors were re-scored on the same
+  multi-instance instrument as the rest of the ladder (18.3±1.3, 18.7±1.5); the whole
+  ladder now shares one instrument, and the anchor gaps carry across-instance SD like
+  the Pythia rungs.
 
 ## 8. Future work (axes, not replacements)
 
@@ -199,7 +228,11 @@ limitations into its conclusions rather than explaining them away.
 
 ---
 
-*Status: draft. Open manuscript decisions before submission — precise abstract
-numbers pending a decision on multi-seed 1B; figures (gap-vs-params with error
-bars/interval; instance-difficulty histogram showing the public instance as a hard
-draw) to be produced from the archived JSONs; related-work section to be written.*
+*Status: draft. The anchors are now re-scored on the multi-instance instrument
+(`results_anchors_v2_{nano,scale}.json`), so the whole ladder shares one instrument
+and the public-instance-hard-draw holds at every rung (single-instance gap ≥
+multi-instance mean at all five). Open manuscript decisions before submission —
+precise abstract numbers pending a decision on multi-seed 1B; figures (gap-vs-params
+with error bars/interval; instance-difficulty histogram showing the public instance
+as a hard draw) to be produced from the archived JSONs; related-work section to be
+written.*

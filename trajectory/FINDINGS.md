@@ -13,18 +13,28 @@ finetuned on the same scribe recipe, scored by the same faithfulness scorer.
 
 ## Result
 
-| Model | Params | Stack | Held-out gap | Instrument |
-|---|---|---|---|---|
-| nano | 3.15M | own | ~22 pts | single instance |
-| scale | 10M | own | ~23 pts | single instance |
-| pythia-160m | 160M | Pythia | 3.5 ± 0.7 pts | 5 instances × 100 held; determinism verified |
-| pythia-410m | 410M | Pythia | 4.2 ± 0.9 pts | 5 instances × 100 held; determinism verified |
-| pythia-1b | 1B | Pythia | [0, 5] pts, not point-identified | training nondeterminism dominates |
+| Model | Params | Stack | Held-out gap (multi-instance) | inst0 | Instrument |
+|---|---|---|---|---|---|
+| nano | 3.15M | own | 18.3 ± 1.3 pts | 22.4 | 5 instances × 100 held; determinism verified (byte-exact vs gate_scribe_v2.log) |
+| scale | 10M | own | 18.7 ± 1.5 pts | 23.0 | 5 instances × 100 held; determinism verified (exact vs Stage S, even CUDA→MPS) |
+| pythia-160m | 160M | Pythia | 3.5 ± 0.7 pts | 7.0 | 5 instances × 100 held; determinism verified |
+| pythia-410m | 410M | Pythia | 4.2 ± 0.9 pts | 8.0 | 5 instances × 100 held; determinism verified |
+| pythia-1b | 1B | Pythia | [0, 5] pts, not point-identified | 5.0/0.0 | training nondeterminism dominates |
+
+All five rungs are now on one instrument (5×(100 held + 100 seen), v1 distribution,
+gap_mean ± across-instance SD). The anchors were re-scored from their frozen v0.1
+checkpoints (`PREREG_anchors.md`; re-scoring only, native ChatML/greedy scorer). The
+single public instance (inst0) is a **uniformly hard draw** — its gap exceeds the
+multi-instance mean at every rung — so the earlier headline (single-instance anchor
+~22–23 vs multi-instance Pythia 3.5) mixed instruments at the two ends and overstated
+the contrast. On the consistent instrument the anchors read ~18 and the gap is still
+an order of magnitude above the Pythia rungs.
 
 ## Three findings (kept distinct)
 
 ### Empirical
-The large held-out copying gap seen in the 3–10M nano models (~22–23 pts) is
+The large held-out copying gap seen in the 3–10M nano models (**18.3±1.3 / 18.7±1.5
+pts** on the consistent multi-instance instrument; 22–23 single-instance) is
 **substantially smaller** in the tested Pythia models (single-digit; 3.5/4.2 pts at
 160M/410M, [0,5] at 1B). This is a statement about the models measured, not a causal
 claim about scale: the comparison changes parameter count AND base-model family,
@@ -33,6 +43,11 @@ tokenizer, pretraining corpus, and finetuning method (full-FT → LoRA) simultan
 clean monotonic trend, so this ladder captured a low-gap regime, not a transition.
 Isolating scale would require a nano-stack model at ~160M or a Pythia model well
 below 160M — a separate experiment, not attempted here.
+
+Re-scoring the anchors on the powered instrument also **sharpened Stage S**: the
+3M→10M step moves the gap by 0.4 pts (18.3±1.3 → 18.7±1.5), i.e. inside one SD — the
+"scale did not move the gap" conclusion, originally read off two single-instance
+points (22 vs 23), now holds with error bars.
 
 ### Methodological (two, and they are part of the result)
 1. **Single-instance evaluation was under-powered.** The pre-registered
@@ -68,8 +83,8 @@ distribution shift is not settled by whether a model passes an average-case gate
 
 Report 1B as the interval [0,5] and proceed to write-up. Additional 1B training
 seeds would refine the point estimate but every plausible outcome still supports
-"substantially reduced from ~22 pts," so seeds are a precision follow-up, not a
-prerequisite for the main claim (owner call, recorded).
+"substantially reduced from the ~18-pt anchor," so seeds are a precision follow-up,
+not a prerequisite for the main claim (owner call, recorded).
 
 ## Reproducibility
 

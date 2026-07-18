@@ -1,0 +1,123 @@
+{
+ "stage": "T-v2-anchors",
+ "tag": "nano",
+ "checkpoint": "scribe.pt",
+ "sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+ "prereg": "trajectory/PREREG_anchors.md",
+ "device": "mps",
+ "cross_check": {
+  "log": "gate_scribe_v2.log",
+  "gap": 22.0,
+  "recall": 0.81,
+  "observed_inst0_gap": 22.42105263157894,
+  "observed_inst0_recall": 0.81,
+  "observed_inst0_parse": 0.975
+ },
+ "decoding": "greedy argmax, ChatML, stop on <|im_end|>, max_new 64",
+ "instrument": "5x(100 held+100 seen), seeds 20260720-20260724; inst0 v1 40-dlg cross-check",
+ "inst0": {
+  "n": 40,
+  "parse": 0.975,
+  "recall": 0.81,
+  "halluc": 0.115,
+  "omission": 10,
+  "held_correct": 68,
+  "held_total": 95,
+  "seen_correct": 94,
+  "seen_total": 100,
+  "held_recall": 0.7157894736842105,
+  "seen_recall": 0.94,
+  "gap_pts": 22.42105263157894
+ },
+ "fresh_instances": [
+  {
+   "n": 200,
+   "parse": 0.95,
+   "recall": 0.828,
+   "halluc": 0.094,
+   "omission": 28,
+   "held_correct": 350,
+   "held_total": 450,
+   "seen_correct": 478,
+   "seen_total": 500,
+   "held_recall": 0.7777777777777778,
+   "seen_recall": 0.956,
+   "gap_pts": 17.822222222222216
+  },
+  {
+   "n": 200,
+   "parse": 0.94,
+   "recall": 0.795,
+   "halluc": 0.105,
+   "omission": 40,
+   "held_correct": 328,
+   "held_total": 440,
+   "seen_correct": 467,
+   "seen_total": 500,
+   "held_recall": 0.7454545454545455,
+   "seen_recall": 0.934,
+   "gap_pts": 18.85454545454546
+  },
+  {
+   "n": 200,
+   "parse": 0.955,
+   "recall": 0.815,
+   "halluc": 0.11,
+   "omission": 30,
+   "held_correct": 342,
+   "held_total": 455,
+   "seen_correct": 473,
+   "seen_total": 500,
+   "held_recall": 0.7516483516483516,
+   "seen_recall": 0.946,
+   "gap_pts": 19.43516483516483
+  },
+  {
+   "n": 200,
+   "parse": 0.95,
+   "recall": 0.805,
+   "halluc": 0.11,
+   "omission": 35,
+   "held_correct": 343,
+   "held_total": 450,
+   "seen_correct": 462,
+   "seen_total": 500,
+   "held_recall": 0.7622222222222222,
+   "seen_recall": 0.924,
+   "gap_pts": 16.17777777777778
+  },
+  {
+   "n": 200,
+   "parse": 0.955,
+   "recall": 0.814,
+   "halluc": 0.102,
+   "omission": 39,
+   "held_correct": 342,
+   "held_total": 455,
+   "seen_correct": 472,
+   "seen_total": 500,
+   "held_recall": 0.7516483516483516,
+   "seen_recall": 0.944,
+   "gap_pts": 19.23516483516483
+  }
+ ],
+ "fresh_gaps": [
+  17.822222222222216,
+  18.85454545454546,
+  19.43516483516483,
+  16.17777777777778,
+  19.23516483516483
+ ],
+ "gap_mean": 18.304975024975022,
+ "gap_sd": 1.3418856270324673,
+ "gap_2sd_band": [
+  15.621203770910087,
+  20.988746279039958
+ ],
+ "contamination_flag": false,
+ "versions": {
+  "torch": "2.11.0",
+  "numpy": "2.5.0",
+  "python": "3.14.5"
+ }
+}

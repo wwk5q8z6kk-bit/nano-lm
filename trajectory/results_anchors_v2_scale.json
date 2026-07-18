@@ -1,0 +1,123 @@
+{
+ "stage": "T-v2-anchors",
+ "tag": "scale",
+ "checkpoint": "scale10m_scribe.pt",
+ "sha256": "f5aca5f04bd1045cc158d46a27b84024bb94baa349ed330933631c8b8d5acf0d",
+ "prereg": "trajectory/PREREG_anchors.md",
+ "device": "mps",
+ "cross_check": {
+  "log": "scale/AUDIT.md Stage S",
+  "gap": 23.0,
+  "recall": 0.88,
+  "observed_inst0_gap": 23.0,
+  "observed_inst0_recall": 0.885,
+  "observed_inst0_parse": 1.0
+ },
+ "decoding": "greedy argmax, ChatML, stop on <|im_end|>, max_new 64",
+ "instrument": "5x(100 held+100 seen), seeds 20260720-20260724; inst0 v1 40-dlg cross-check",
+ "inst0": {
+  "n": 40,
+  "parse": 1.0,
+  "recall": 0.885,
+  "halluc": 0.075,
+  "omission": 8,
+  "held_correct": 77,
+  "held_total": 100,
+  "seen_correct": 100,
+  "seen_total": 100,
+  "held_recall": 0.77,
+  "seen_recall": 1.0,
+  "gap_pts": 23.0
+ },
+ "fresh_instances": [
+  {
+   "n": 200,
+   "parse": 1.0,
+   "recall": 0.91,
+   "halluc": 0.073,
+   "omission": 17,
+   "held_correct": 412,
+   "held_total": 500,
+   "seen_correct": 498,
+   "seen_total": 500,
+   "held_recall": 0.824,
+   "seen_recall": 0.996,
+   "gap_pts": 17.200000000000003
+  },
+  {
+   "n": 200,
+   "parse": 0.995,
+   "recall": 0.888,
+   "halluc": 0.082,
+   "omission": 25,
+   "held_correct": 394,
+   "held_total": 500,
+   "seen_correct": 494,
+   "seen_total": 495,
+   "held_recall": 0.788,
+   "seen_recall": 0.997979797979798,
+   "gap_pts": 20.997979797979795
+  },
+  {
+   "n": 200,
+   "parse": 1.0,
+   "recall": 0.907,
+   "halluc": 0.077,
+   "omission": 16,
+   "held_correct": 408,
+   "held_total": 500,
+   "seen_correct": 499,
+   "seen_total": 500,
+   "held_recall": 0.816,
+   "seen_recall": 0.998,
+   "gap_pts": 18.200000000000006
+  },
+  {
+   "n": 200,
+   "parse": 1.0,
+   "recall": 0.905,
+   "halluc": 0.073,
+   "omission": 22,
+   "held_correct": 408,
+   "held_total": 500,
+   "seen_correct": 497,
+   "seen_total": 500,
+   "held_recall": 0.816,
+   "seen_recall": 0.994,
+   "gap_pts": 17.800000000000004
+  },
+  {
+   "n": 200,
+   "parse": 1.0,
+   "recall": 0.899,
+   "halluc": 0.075,
+   "omission": 26,
+   "held_correct": 401,
+   "held_total": 500,
+   "seen_correct": 498,
+   "seen_total": 500,
+   "held_recall": 0.802,
+   "seen_recall": 0.996,
+   "gap_pts": 19.399999999999995
+  }
+ ],
+ "fresh_gaps": [
+  17.200000000000003,
+  20.997979797979795,
+  18.200000000000006,
+  17.800000000000004,
+  19.399999999999995
+ ],
+ "gap_mean": 18.719595959595956,
+ "gap_sd": 1.5065516207353136,
+ "gap_2sd_band": [
+  15.706492718125329,
+  21.732699201066584
+ ],
+ "contamination_flag": false,
+ "versions": {
+  "torch": "2.11.0",
+  "numpy": "2.5.0",
+  "python": "3.14.5"
+ }
+}
