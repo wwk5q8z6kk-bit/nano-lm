@@ -146,10 +146,13 @@ Findings were validity/methodology, now addressed:
   B1/B3/B4 (RNG order, model.train, max(1,·)) verified benign; added model.train() for
   hygiene.
 
-**High-value candidate the audit surfaced (owner call — changes the headline number):**
-a CLEAN per-field held-out-value gap restricted to items *actually carrying* a held value
-(local + cheap for the anchors) would give the true, undiluted magnitude (larger than 18)
-and make fields comparable. Deferred because it changes the central number.
+**RESOLVED (plan T1-A / O1, 2026-07-18):** the CLEAN per-field held-out-value gap was
+computed (`undilute_anchors.py` → `results_undilute_anchors.json`): nano **87.3±2.7**,
+scale **79.5±2.1** aggregate; med/alg **≈0% recall on real held-out values** (100-pt gap).
+Folded into §6.1 (distinctly labeled "value-level/clean" vs the "dialogue-level/diluted"
+ladder spine) and §6.3, per the approved plan option A — diluted ladder kept as the spine,
+clean reported anchor-only, clean *ladder* deferred to O3 (kaggle_pythia_fieldwise.py now
+emits both metrics). No clean-anchor-vs-diluted-Pythia comparison (S2 discipline).
 
 ## Open owner decisions (⚠)
 

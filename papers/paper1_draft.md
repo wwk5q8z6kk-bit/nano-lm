@@ -349,6 +349,27 @@ complaint, with its ~190 compositional values, as the hardest copy. (Fieldwise b
 for the Pythia rungs would need a re-score with the adapters; a candidate appendix
 analysis — `trajectory/kaggle_pythia_fieldwise.py`.)
 
+**The undiluted failure (clean metric).** Removing the dilution — scoring each field's
+*value-bearing* items by whether the value is actually held-out vs. seen, with the
+template held fixed — gives the *pure* held-out-value copying gap, and it is severe:
+
+| Field | nano clean gap | scale clean gap |
+|---|---|---|
+| cc | 71.8 ± 4.9 | 87.4 ± 3.5 |
+| med | **100.0 ± 0.0** | 47.1 ± 4.0 |
+| alg | **100.0 ± 0.0** | 100.0 ± 0.0 |
+| **aggregate (cc+med+alg)** | **87.3 ± 2.7** | **79.5 ± 2.1** |
+
+On *actual* held-out medication and allergy values the models recall ≈0% while copying
+seen values ~perfectly — a ~100-point gap, a near-total copy failure that the
+dialogue-level metric diluted ~4–5× down to 18. The pure held-out-value gap is therefore
+~80–87 points, not 18. To keep this honest we **distinguish two metrics** and do not mix
+them: the *dialogue-level* ("diluted") gap is the ladder spine — it is available for every
+rung on the identical instrument — while this *value-level* ("clean") gap is reported for
+the own-stack anchors only. A clean *ladder* would require re-scoring the Pythia adapters
+with the same value-level metric (the extended `kaggle_pythia_fieldwise.py` emits both);
+we leave it to a follow-up rather than compare a clean anchor against a diluted Pythia rung.
+
 ![Held-out copying gap vs scale on one consistent instrument. Own-stack anchors
 (3.15M, 10M) sit at ~18 pts; the tested Pythia rungs (160M, 410M) at 3.5–4.2 pts;
 1B is a training-run–bounded interval [0,5]. The shaded band marks the own→Pythia
@@ -385,7 +406,11 @@ at 160M and above. The fieldwise breakdown makes the phenomenon precise rather t
 diffuse: the gap lives *entirely* in the open-vocabulary fields and is exactly zero in
 the closed-value fields, so what these small models fail at is specifically **copying a
 held-out lexical value into an open slot**, not being unfaithful in general — and the
-closed-value fields are a within-task control for that claim. What we do **not** get to
+closed-value fields are a within-task control for that claim. Measured on the actual
+held-out values (§6.1, the value-level metric), the failure is not merely large but
+**near-total**: ~80–87 points aggregate, with ≈0% recall on held-out medication and
+allergy values against ~100% on seen ones — the 18-point dialogue-level number is a
+~4–5× conservative proxy. What we do **not** get to
 say is *why* it shrinks with the ladder — the nano→Pythia step changes scale together
 with pretraining data, tokenizer, architecture, and finetuning method (§7), so the
 honest claim is "the gap largely disappears by the Pythia pipeline," not "parameter
