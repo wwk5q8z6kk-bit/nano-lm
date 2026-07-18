@@ -1,4 +1,4 @@
-# A held-out copying gap in small language models, and what it takes to measure it
+# Held-out value copying in small language models: a field-localized failure mode and the instrument to measure it
 
 *Working manuscript draft — Paper 1 (empirical + measurement). Claims are held to
 what was measured; the causal question (scale vs. model family) is left open by
