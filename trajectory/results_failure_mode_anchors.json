@@ -1,0 +1,72 @@
+{
+ "nano": {
+  "tag": "nano",
+  "per_field": {
+   "cc": {
+    "sub": 7,
+    "omit": 0,
+    "other": 295,
+    "miss_total": 302,
+    "held_total": 302
+   },
+   "med": {
+    "sub": 0,
+    "omit": 71,
+    "other": 36,
+    "miss_total": 107,
+    "held_total": 107
+   },
+   "alg": {
+    "sub": 0,
+    "omit": 101,
+    "other": 0,
+    "miss_total": 101,
+    "held_total": 101
+   }
+  },
+  "pooled": {
+   "sub": 7,
+   "omit": 172,
+   "other": 331,
+   "miss_total": 510
+  },
+  "substitution_rate": 0.013725490196078431,
+  "omission_rate": 0.33725490196078434,
+  "other_rate": 0.6490196078431373
+ },
+ "scale": {
+  "tag": "scale",
+  "per_field": {
+   "cc": {
+    "sub": 258,
+    "omit": 0,
+    "other": 42,
+    "miss_total": 300,
+    "held_total": 338
+   },
+   "med": {
+    "sub": 0,
+    "omit": 0,
+    "other": 71,
+    "miss_total": 71,
+    "held_total": 151
+   },
+   "alg": {
+    "sub": 0,
+    "omit": 106,
+    "other": 0,
+    "miss_total": 106,
+    "held_total": 106
+   }
+  },
+  "pooled": {
+   "sub": 258,
+   "omit": 106,
+   "other": 113,
+   "miss_total": 477
+  },
+  "substitution_rate": 0.5408805031446541,
+  "omission_rate": 0.2222222222222222,
+  "other_rate": 0.23689727463312368
+ }
+}
