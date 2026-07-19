@@ -22,7 +22,7 @@ new (size, stack, objective), whether held-out copying will be near-total or nea
 Not "does the copying gap shrink?" but **"what governs the transition from copying to
 abstraction?"** The first framing yields one number; the second generates hypotheses.
 
-## Core hypothesis
+## Core hypothesis (refined 2026-07-19 by the Pythia fieldwise data)
 
 A **capacity/representation threshold** exists. Below it: memorization and literal copying
 dominate, representations are local, and held-out values fail to copy (we measure a
@@ -30,6 +30,18 @@ near-total ~80–87-pt value-level gap at 3–10M). Above it: abstraction become
 reusable copy/retrieval features emerge, and the held-out gap collapses (single digits by
 Pythia-160M). Paper 1 is *evidence consistent with* this hypothesis — not proof, because
 the nano→Pythia step also changes the training stack.
+
+**Refinement — the threshold is per-slot, set by training diversity.** The clean ladder
+(2026-07-19) shows the transition is not one capability switching on: Pythia solves the
+~190-value complaint slot and the 18-value medication slot outright (clean gap 0.0) yet
+fails the 5-value allergy slot *totally* (100% at 410M — identical to the 3M anchor).
+Copy-vs-classify is settled slot-by-slot: a slot whose training-value diversity is low
+enough to memorize as a closed set never induces a copy mechanism, at any tested scale.
+This upgrades the hypothesis from "capacity buys abstraction" to **"abstraction is
+induced per-slot when diversity makes memorization uncompetitive, given sufficient
+capacity"** — and it makes P4 concrete: vary slot diversity at fixed scale and find the
+diversity threshold curve; predict the allergy failure persists in much larger models on
+this recipe (a cheap frontier-model external-validation test).
 
 ## Null hypotheses (stated up front)
 
