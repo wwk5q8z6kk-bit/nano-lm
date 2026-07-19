@@ -60,8 +60,14 @@ own-stack curve is flat across **50× of scale** (18.3 → 18.7 → 16.9) where 
 reads 3.5 — the decision rule fires STACK-dominant. **H0a is thereby also strongly
 supported within-stack** (scale alone does not move the gap under this recipe). Caveats:
 single training run; ~16× under-Chinchilla for 160M (the PREREG's "within this recipe"
-framing applies); the stack bundle (pretraining breadth / tokenizer / FT method) is not
-yet internally separated — that is Paper 2's decomposition work (LoRA arm next).
+framing applies); the 2×2 method arm (2026-07-19) then DECOMPOSED the stack effect: LoRA on the same
+checkpoint reads 7.1 ± 1.2 — the finetuning method alone carries ~73% of the
+own-fullFT→Pythia difference; pretraining breadth/tokenizer carry the residual ~27%
+(own-LoRA 7.1 vs Pythia-LoRA 3.5). Both methods reach ≈0 train loss — an
+implicit-regularization account: full FT's fit destroys the pretrained copy pathway,
+LoRA's preserves it. The 5-value allergy slot fails under EVERY tested configuration
+(both stacks × three scales × both methods) — slot diversity is the binding constraint.
+Next decomposition: LoRA at the 3–10M anchors (does the method effect need capacity?).
 
 ## Theory tree (separate theory from evidence; each arrow needs its own evidence)
 

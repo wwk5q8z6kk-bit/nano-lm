@@ -44,7 +44,12 @@ copy-vs-classify hypothesis (labeled, falsifiable) is in P1 §6.1 and RESEARCH_P
 - Quota used this week ≈ 16h of ~30.
 
 ## Next steps, in order (updated after the LoRA-arm launch)
-1. **LoRA arm ⏳ RUNNING** (`nano-lm-ownstack-160m-lora` v2): peft wrap VALIDATED locally
+1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
+   7.1±1.2, clean 29.6±3.7 → METHOD carries ~73% of the stack effect; both methods
+   memorize (≈0 train loss) but only full-FT destroys the copy pathway; LoRA@160M solves
+   cc (clean 0.0), alg still 100 (7/7 configs). Folded into paper2_draft + P1 addendum.
+   NEXT best run: LoRA at the 3.15M/10M anchors (~1h total, completes scale×method grid).
+1b. (was) **LoRA arm ⏳ RUNNING** (`nano-lm-ownstack-160m-lora` v2): peft wrap VALIDATED locally
    (98 modules, 4.028M trainables; scratchpad venv `venv-peft`, peft 0.19.1); kernel
    reuses the fullft pretrain ckpt via kernel_sources — NOTE: mounts land under
    `/kaggle/input/notebooks/...`, use a recursive glob (v1 failed fast on this, ~10 min).

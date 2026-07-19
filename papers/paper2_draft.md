@@ -19,9 +19,15 @@ measured on the identical instrument. The gap **does not close: 16.9 ± 1.7** di
 **50× of within-stack scale** (3.15M → 10M → 160M) the copying gap is flat
 (18.3 → 18.7 → 16.9), while Pythia at the *same parameter count* reads 3.5. The
 pre-registered decision rule fires **stack-dominant**: parameter count alone does not
-produce the collapse; properties of the training stack do. A second arm holds the
-checkpoint fixed and swaps only the finetuning method (full FT → LoRA r=16):
-⏳ *LoRA-arm result pending — completes the 2×2*. Per-slot structure sharpens the
+produce the collapse; properties of the training stack do. A second arm then holds the
+checkpoint fixed and swaps only the finetuning method (full FT → LoRA r=16, 4.03M
+trainables): the gap **more than halves — 7.1 ± 1.2** diluted (29.6 ± 3.7 value-level).
+Decomposing the own-fullFT → Pythia difference, the **finetuning method alone accounts
+for ~73%** of it; the remaining pretraining/tokenizer bundle ~27%. Strikingly, both
+methods drive training loss to ≈0 — both *memorize* the finetuning set — but full
+finetuning's fit destroys the pretrained copy pathway while LoRA's low-rank fit
+preserves it: the copying failure is installed by the *adaptation*, not only by
+capacity or data. Per-slot structure sharpens the
 attribution: at every scale, in both stacks, the failure concentrates in low-diversity
 slots (the 5-value allergy slot fails totally even in Pythia-410M), consistent with a
 per-slot competition between memorization and copying that capacity alone does not settle.
@@ -70,17 +76,31 @@ scale (87.3 → 79.5 → 66.6) — capacity helps at the margin — but at 160M 
 pure held-out-value failure is still **4.5×** the Pythia-160M value; per-field, the
 allergy slot remains at **100.0** (clean) at all three own-stack scales.
 
-### 3.2 The 2×2 method control ⏳
+### 3.2 The 2×2 method control — the method carries most of it
 
-| | full FT | LoRA r=16 |
+| diluted gap | full FT | LoRA r=16 |
 |---|---|---|
-| own-stack 160M | 16.9 ± 1.7 | ⏳ |
+| own-stack 160M | 16.9 ± 1.7 | **7.1 ± 1.2** |
 | pythia-160m | (not run) | 3.5 ± 0.7 |
 
-Reading (pre-specified): LoRA ≈ full-FT → the finetuning method is innocent and the
-remaining stack bundle (pretraining breadth/content, tokenizer) carries the effect;
-LoRA ≪ full-FT → parameter-efficient adaptation itself suppresses the memorization
-pathway and is part of the explanation.
+(clean/value-level: own-160M full-FT 66.6 ± 5.0 → LoRA **29.6 ± 3.7**; Pythia-160M 14.7.)
+
+The pre-specified reading fires **LoRA ≪ full-FT**: swapping only the adaptation method,
+on the same pretrained checkpoint and data, removes more than half the gap. In the
+decomposition of the own-fullFT → Pythia-LoRA difference (16.9 → 3.5), the method step
+(16.9 → 7.1) accounts for **~73%** and the remaining stack bundle (7.1 → 3.5;
+pretraining breadth ~1500×, tokenizer) **~27%**. Two sharpening observations:
+
+1. **Both methods memorize.** Full FT and LoRA both reach ≈0 training loss and 100%
+   parse — the difference is not *whether* the finetuning set is fit but *how*: the
+   full-parameter fit overwrites the pretrained copy pathway; the 4M-parameter low-rank
+   fit reaches the same training loss while leaving it intact — an implicit-regularization
+   account of the failure, not a capacity account.
+2. **The slot gradient survives the method change.** Under LoRA at 160M, clean per-field:
+   cc **0.0** (solved — so the complaint-copy pathway *exists* in the own-stack pretrained
+   model and full FT was destroying it), med ~52, alg **100.0** (the 5-training-value slot
+   fails under every configuration tested — both stacks, three scales, both methods).
+   Slot diversity remains the binding constraint that no tested intervention lifts.
 
 ### 3.3 Familiar structure at the new rung
 
@@ -97,19 +117,28 @@ collapse Paper 1 measured is a **stack effect**, not a scale effect, under the t
 conditions. Combined with the slot structure, the natural reading is that copying is
 induced by *pressure* (slot diversity) and *pretraining breadth*, not by capacity alone.
 
-**Not established:** *which* stack member carries the effect. The bundle still contains
-pretraining data quantity/breadth (~200M vs ~300B tokens — and our 160M is ~16× under
-compute-optimal; a Chinchilla-scaled control run is the designed follow-up), tokenizer
-granularity, and architecture-family details; the LoRA arm ⏳ isolates the finetuning
-method. Single training run at 160M (no duplicate-finetune variance probe yet).
+**Established by the 2×2:** the finetuning *method* is the dominant single component
+(~73% of the difference at 160M); pretraining breadth/tokenizer carry the residual ~27%
+(own-LoRA 7.1 is still 2× Pythia-LoRA 3.5).
+
+**Not established:** the method decomposition at the *small* anchors (does LoRA rescue
+3–10M models too, or does the method effect require 160M-scale capacity? — the cheapest,
+most informative next run); which member of the residual bundle carries the last 2×
+(Chinchilla-scaled pretraining vs tokenizer — designed follow-ups); training-run variance
+at 160M (single run per cell).
 
 ## 5. Next decompositions (designed, not run)
 
-1. **Chinchilla control** — same 160M, TARGET_TOKENS ≈ 3.2B: is it data *quantity*?
-2. **Tokenizer swap** — own-stack with a ~50k vocab: is it value fragmentation?
-3. **Slot-diversity intervention** — vary the allergy slot's training diversity at fixed
-   scale: the direct test of the per-slot hypothesis (also Paper 1 §8's prediction).
-4. **Duplicate 160M finetune** — training-run variance at the new rung.
+1. **LoRA at the anchors** — LoRA-finetune the frozen 3.15M/10M pretrains: does the
+   method effect require capacity, or does it rescue tiny models too? (Cheapest and most
+   informative: completes the scale × method grid.)
+2. **Chinchilla control** — same 160M, TARGET_TOKENS ≈ 3.2B: is the residual 2× data
+   *quantity*?
+3. **Tokenizer swap** — own-stack with a ~50k vocab: is it value fragmentation?
+4. **Slot-diversity intervention** — vary the allergy slot's training diversity at fixed
+   scale: the direct test of the per-slot hypothesis, now binding under every tested
+   configuration.
+5. **Duplicate finetunes** — training-run variance per 2×2 cell (single run each).
 
 ---
 *All artifacts: `results_ownstack_v2_160m_fullft.json` (immutable), kernels

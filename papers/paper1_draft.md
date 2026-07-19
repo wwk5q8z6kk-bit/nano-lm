@@ -513,8 +513,10 @@ resolved.
   *(Post-freeze addendum: that control has since been run once — an own-stack 160M model
   on the identical recipe and instrument retains a **16.9 ± 1.7** diluted gap, so the
   own-stack curve is flat across 50× of scale where Pythia-160M reads 3.5, and the
-  pre-registered decision rule fires **stack-dominant**. Single training run, ~16×
-  under-Chinchilla for 160M; full report in follow-up work.)*
+  pre-registered decision rule fires **stack-dominant**. A method arm on the same
+  checkpoint (full FT → LoRA r=16) then halves the gap (16.9 → 7.1), indicating the
+  finetuning method itself carries much of the stack effect. Single training run per
+  cell, ~16× under-Chinchilla for 160M; full report in follow-up work.)*
 - **Transition point unobserved.** The gap drops somewhere between own-stack 10M (18.7)
   and Pythia-160M (3.5), but those endpoints are on different stacks; within Pythia the
   gap is already low at 160M with no monotonic trend, so "by Pythia scale" is safe while
