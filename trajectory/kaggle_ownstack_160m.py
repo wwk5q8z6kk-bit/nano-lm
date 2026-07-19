@@ -28,7 +28,7 @@
 #   cd /kaggle/working && rm -rf nano-lm && git clone -q https://github.com/wwk5q8z6kk-bit/nano-lm
 #   cd nano-lm && git checkout -q master && pip install -q datasets tokenizers
 #   python trajectory/kaggle_ownstack_160m.py
-import json, math, os, random, re, time
+import json, math, os, random, re, sys, time
 import numpy as np
 import torch, torch.nn as nn, torch.nn.functional as F
 from tokenizers import Tokenizer
@@ -146,6 +146,9 @@ if start_step < STEPS:
     torch.save({"m": m.state_dict(), "o": opt.state_dict(), "s": scaler.state_dict(), "step": STEPS}, CKPT)
     print("pretrain done", flush=True)
 base_sd = {k: v.clone() for k, v in m.state_dict().items()}
+if os.environ.get("PHASE") == "pretrain":          # phase-split / throughput-probe support
+    print("PHASE=pretrain complete — exiting before scribe FT (ckpt saved)", flush=True)
+    sys.exit(0)
 
 # ---------------- phase 2: scribe full-FT (v2 recipe via exec — identical to the anchors) ----------------
 v2_src = open(os.path.join(REPO, "scribe", "build_scribe_data_v2.py")).read()
