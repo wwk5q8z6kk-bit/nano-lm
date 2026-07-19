@@ -163,8 +163,8 @@ cross the failure — motivating a wider ladder.
 
 **Ladder.** Own models at 3.15M/10M (re-scored on the multi-instance instrument,
 §6.1) plus the Pythia family at 160M/410M/1B, finetuned on the identical scribe
-recipe with LoRA (r=16, α=32, LR 1e-4, 3 epochs), scored by the identical
-faithfulness scorer.
+recipe with LoRA and scored by the identical faithfulness scorer (full configuration
+in Methods).
 
 **Why Pythia.** The question is scaling behavior, not model ranking. Pythia (Biderman
 et al., 2023) holds architecture, tokenizer, pretraining corpus, and data order fixed
@@ -337,7 +337,8 @@ model is robust to held-out dur/sev *values* — there are none; the closed fiel
 the template axis from the value axis.) Two magnitude caveats follow from the fact that
 the seen/held split is at the *dialogue* level: (i) within a "held" dialogue only ~68% of
 cc fields actually carry a held-out value, and just ~30% of med and ~21% of alg fields do
-(the rest are seen values or "none"), so the held buckets for cc/med/alg are *diluted*
+(the rest are seen values or "none"; fractions are P(field carries a held-out value |
+held dialogue), measured over m0–m4), so the held buckets for cc/med/alg are *diluted*
 with seen values — the reported per-field gaps are therefore conservative and **not
 directly comparable across fields** (the true held-out-value gap is larger, and most
 diluted for med/alg); and (ii) for the same reason the aggregate ~18 is a lower bound on
