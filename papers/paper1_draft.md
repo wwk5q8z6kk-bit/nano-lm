@@ -22,7 +22,10 @@ which act as a built-in control showing the effect is specifically held-out-*val
 copying in open slots, not a generic degradation under unfamiliar phrasing. Finetuning
 the Pythia open-weight family (160M/410M/1B) on the identical task, the gap observed is
 **substantially smaller** (single-digit points; 3.5±0.7 at 160M, 4.2±0.9 at 410M, and
-an interval of [0,5] at 1B). We deliberately do **not** claim scale as the cause: the comparison also
+an interval of [0,5] at 1B) — and that residual is itself field-localized: per-field
+re-scoring shows Pythia fully solves held-out complaints and medications, while its
+entire remaining gap is the one open slot with only five training values (allergy),
+where even 410M fails totally on the held-out value. We deliberately do **not** claim scale as the cause: the comparison also
 changes pretraining corpus, tokenizer, architecture, and finetuning method. The
 measurement itself is a second contribution. A pre-registered contamination check
 caught that our initial single-instance evaluation was under-powered for the gap;
@@ -346,20 +349,43 @@ the pure held-out-value effect. Neither caveat affects the
 cross-model comparison, since every rung is scored on the identical instrument. The
 split still explains the anchors' aggregate near-identity (18.3 vs 18.7) masking
 field-level differences — nano and scale trade off cc against med — and identifies chief
-complaint, with its ~190 compositional values, as the hardest copy. (Fieldwise breakdown
-for the Pythia rungs would need a re-score with the adapters; a candidate appendix
-analysis — `trajectory/kaggle_pythia_fieldwise.py`.)
+complaint, with its ~190 compositional values, as the hardest copy.
+
+**The Pythia residual is also field-localized — to a single field.** Re-scoring the
+Pythia rungs per-field on the same instrument (adapters regenerated deterministically;
+the built-in comparability check reproduced the published per-instance gaps **exactly**,
+max diff 0.0; `results_fieldwise_pythia_pythia-{160m,410m}.json`) shows the diluted
+per-field gap is ≈0 for cc, dur, sev, *and med* at both rungs — the **entire** residual
+sits in allergy (160m: 17.6 ± 3.3; 410m: 21.2 ± 4.5; divided over the five fields these
+reproduce the 3.5/4.2 aggregates). On the clean value-level metric the contrast is stark:
+cc **0.0** and med **0.0** at both rungs — held-out-value copying for complaints and
+medications is *solved* — while the single held-out allergy value fails **83.6 ± 4.6%**
+of the time at 160M and **100.0 ± 0.0%** at 410M, the same total failure as the anchors,
+and it does not improve with scale within Pythia (it worsens slightly). The clean ladder
+is therefore: anchors 87.3/79.5 → Pythia **14.7 ± 2.1** (160M) / **17.7 ± 3.2** (410M),
+with the residual now *interpretable* rather than diffuse.
+
+**A slot-diversity hypothesis (labeled as such).** The three open slots differ sharply in
+training-value diversity — ~190 complaints, 18 medications, 5 allergies — and the failure
+tracks it inversely at every scale tested: the 3M anchor fails all three; the 10M anchor
+partially recovers medications; Pythia solves complaints and medications yet still fails
+the allergy slot totally. A slot with only five training values is learnable as a
+closed-set classifier, so no copy mechanism need ever be induced for it — whereas ~190
+compositional complaints force copying. We advance this as a hypothesis (*per-slot
+training diversity, not model capability alone, governs whether copy or classify wins*),
+directly testable by varying slot diversity at fixed scale; it also predicts the
+allergy-slot failure would persist in far larger models trained on this recipe.
 
 **The undiluted failure (clean metric).** Removing the dilution — scoring each field's
 *value-bearing* items by whether the value is actually held-out vs. seen, with the
 template held fixed — gives the *pure* held-out-value copying gap, and it is severe:
 
-| Field | nano clean gap | scale clean gap |
-|---|---|---|
-| cc | 71.8 ± 4.9 | 87.4 ± 3.5 |
-| med | **100.0 ± 0.0** | 47.1 ± 4.0 |
-| alg | **100.0 ± 0.0** | 100.0 ± 0.0 |
-| **aggregate (cc+med+alg)** | **87.3 ± 2.7** | **79.5 ± 2.1** |
+| Field | nano 3.15M | scale 10M | pythia-160m | pythia-410m |
+|---|---|---|---|---|
+| cc | 71.8 ± 4.9 | 87.4 ± 3.5 | **0.0 ± 0.0** | **0.0 ± 0.0** |
+| med | **100.0 ± 0.0** | 47.1 ± 4.0 | **0.0 ± 0.0** | **0.0 ± 0.0** |
+| alg | **100.0 ± 0.0** | 100.0 ± 0.0 | **83.6 ± 4.6** | **100.0 ± 0.0** |
+| **aggregate (cc+med+alg)** | **87.3 ± 2.7** | **79.5 ± 2.1** | **14.7 ± 2.1** | **17.7 ± 3.2** |
 
 On *actual* held-out **allergy** values (both anchors) and held-out **medications** at
 3M, the models recall ≈0% while copying seen values ~perfectly — a ~100-point gap; the
@@ -367,12 +393,11 @@ On *actual* held-out **allergy** values (both anchors) and held-out **medication
 medications (a 47-point gap). Aggregated over the value fields the pure held-out-value
 gap is **~80–87 points**, not the diluted 18 — a near-total copy failure the
 dialogue-level metric substantially understates. To keep this honest we **distinguish
-two metrics** and do not mix
-them: the *dialogue-level* ("diluted") gap is the ladder spine — it is available for every
-rung on the identical instrument — while this *value-level* ("clean") gap is reported for
-the own-stack anchors only. A clean *ladder* would require re-scoring the Pythia adapters
-with the same value-level metric (the extended `kaggle_pythia_fieldwise.py` emits both);
-we leave it to a follow-up rather than compare a clean anchor against a diluted Pythia rung.
+two metrics** and do not mix them: the *dialogue-level* ("diluted") gap is the ladder
+spine — it is available for every rung on the identical instrument — while the
+*value-level* ("clean") gap is reported wherever the per-field re-score has run: the
+anchors here and the Pythia 160M/410M rungs below (1B pending); clean is only ever
+compared with clean, diluted with diluted.
 
 **What the models output instead (failure modes).** Classifying every miss on an actual
 held-out value against the training value sets (pooled over the five instances;
@@ -404,8 +429,10 @@ mean.](figures/fig2_instance_difficulty.pdf)
 
 ### 6.2 What the result does and does not establish
 
-Within Pythia the gap is already small at 160M with no clean monotonic trend, so the
-ladder captured a low-gap regime rather than a transition. Reconciling with Stage S:
+Within Pythia the gap is already small at 160M with no clean monotonic trend — and the
+fieldwise re-score explains why: the 160M→410M flatness is a *single-field* residual
+(allergy) that scale does not repair, so the ladder captured a low-gap regime rather
+than a transition. Reconciling with Stage S:
 the 3.2× step (3M→10M) did not move the gap (18.3±1.3 → 18.7±1.5 — a 0.4-point change
 inside one SD, now measured rather than inferred from two single points); the 16×
 step to 160M, **or** the stack change, coincides with a much smaller gap — these are
@@ -433,7 +460,13 @@ dialogue-level number substantially understates it. The misses are not random no
 at 10M the dominant error on held-out complaints is **substituting a memorized training
 complaint** (86% of misses), while held-out allergies are omitted rather than fabricated
 — memorization overriding the input in the most literal sense, and a failure mode that
-*changes shape* with scale (nano garbles where scale substitutes). What we do **not** get to
+*changes shape* with scale (nano garbles where scale substitutes). The Pythia fieldwise
+re-score then sharpens the picture at the other end of the ladder: the residual Pythia
+gap is *entirely* the allergy slot — the one open slot with only five training values —
+where even 410M fails totally on the held-out value while having fully solved complaints
+and medications; on the slot-diversity hypothesis (§6.1), what the ladder measures is not
+one capability switching on but a per-slot competition between classify-and-memorize and
+copy, settled slot-by-slot by training diversity. What we do **not** get to
 say is *why* it shrinks with the ladder — the nano→Pythia step changes scale together
 with pretraining data, tokenizer, architecture, and finetuning method (§7), so the
 honest claim is "the gap largely disappears by the Pythia pipeline," not "parameter

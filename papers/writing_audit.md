@@ -196,3 +196,17 @@ final section renumbering; footnote the ~68/30/21% denominator; add Hoffmann cit
   (renumbering cascade) — a formatting pass, deferred.
 - ⚠ **Confound experiment before submission?** Owner chose freeze-and-write; pre-reg is
   drafted and ready (`PREREG_ownstack_160m.md`) as the highest-priority follow-up.
+
+## Pythia fieldwise landed (2026-07-19, Kaggle runs complete)
+
+- ☑ Comparability self-check EXACT on both rungs (max_abs_diff 0.0) — regenerated
+  adapters reproduce the published fresh_gaps; numbers fully ladder-comparable.
+- ☑ HEADLINE ENRICHMENT folded into md+tex (abstract, §6.1 incl. extended clean-ladder
+  table, §6.2, §6.3): the entire Pythia residual is the ALLERGY slot (diluted alg
+  17.6/21.2, all other fields ≈0; clean alg 83.6→100.0 at 160m→410m) while cc/med are
+  SOLVED (clean 0.0). Clean ladder: 87.3/79.5 → 14.7±2.1/17.7±3.2.
+- ☑ Slot-diversity hypothesis added, labeled as hypothesis (~190/18/5 training values;
+  copy-vs-classify settled per-slot by diversity; predicts alg failure persists at
+  larger scale on this recipe). Falsifiable via varying slot diversity at fixed scale.
+- NOTE: these additions post-date the T1.5 review — flag for one extra read.
+- ⏳ 1b fieldwise kernel running (nano-lm-fieldwise-1b-run).
