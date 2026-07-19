@@ -39,15 +39,17 @@ copy-vs-classify hypothesis (labeled, falsifiable) is in P1 §6.1 and RESEARCH_P
   verify against the log timeline before believing an early exit.
 - Quota used this week ≈ 16h of ~30.
 
-## Next steps, in order
-1. **LoRA arm of the 2×2** (O4 completion): own-stack 160M + LoRA r=16. BEFORE spending
-   quota: validate peft wrapping of the custom GPT module locally (target_modules
-   ["q","k","v","o","g","u","dn"]; verify trainable-param count + a CPU forward). The
-   pretrain ckpt exists in the fullft kernel's output (pull `ownstack160m_pretrain.pt`
-   or mount via kernel_sources) — do NOT re-pretrain.
-2. **Paper 2 drafting** (`papers/paper2_draft.md`): headline = stack-dominant flat 50×
-   own-stack curve + the slot-diversity structure; decomposition experiments (LoRA arm,
-   Chinchilla-control TARGET_TOKENS≈3.2B, tokenizer swap) as its experimental program.
+## Next steps, in order (updated after the LoRA-arm launch)
+1. **LoRA arm ⏳ RUNNING** (`nano-lm-ownstack-160m-lora` v2): peft wrap VALIDATED locally
+   (98 modules, 4.028M trainables; scratchpad venv `venv-peft`, peft 0.19.1); kernel
+   reuses the fullft pretrain ckpt via kernel_sources — NOTE: mounts land under
+   `/kaggle/input/notebooks/...`, use a recursive glob (v1 failed fast on this, ~10 min).
+   On completion: fold the cell into paper2_draft.md §3.2, archive
+   `results_ownstack_v2_160m_lora.json`, interpret the 2×2.
+2. **Paper 2 drafting**: skeleton EXISTS (`papers/paper2_draft.md`, commit 26c0128) with
+   the LoRA cell marked ⏳; after the cell lands, tighten abstract + §4 and add related
+   work by reference to P1. Remaining decompositions designed in §5 (Chinchilla control,
+   tokenizer swap, slot-diversity intervention, duplicate finetune).
 3. **P1 submission**: replace `[Author]` placeholder in `papers/latex/paper1.tex`
    (owner identity needed), arXiv upload, then workshop/*ACL-Findings per the council
    decision. P1 §7 carries a clearly-marked post-freeze addendum re: stack-dominant.
