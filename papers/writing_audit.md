@@ -219,3 +219,14 @@ final section renumbering; footnote the ~68/30/21% denominator; add Hoffmann cit
   ladder — the §5.2 lesson operating live. Pattern robust: clean cc/med 0.0, residual
   entirely alg (24.6±10.3). Single-slot localization is training-draw-stable.
 - All three fieldwise runs complete; the Kaggle arc for Paper 1 is done.
+
+## P2 deconfounder landed (2026-07-19) — STACK-dominant
+
+- ☑ OWNSTACK_160M full-FT ran (7.0h T4; probe caught OOM first, micro8×accum4 fix):
+  diluted 16.9±1.7, clean 66.6±5.0, alg clean still 100. Decision rule ≥14 →
+  STACK-dominant. Own-stack flat across 50× scale (18.3→18.7→16.9) vs Pythia-160M 3.5.
+- ☑ P1 §7 post-freeze addendum added (md+tex, one paragraph, clearly marked): the
+  pre-registered control has run once and fires stack-dominant; full report = Paper 2.
+- ☑ RESEARCH_PROGRAM: H0b SUPPORTED (single run), H0a supported within-stack.
+- Next: LoRA arm (2×2, needs peft-wrap validation), then Paper 2 drafting. inst0
+  hard-draw now 6/6 rungs (28.0 > 16.9).

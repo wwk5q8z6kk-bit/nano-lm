@@ -53,8 +53,15 @@ this recipe (a cheap frontier-model external-validation test).
 Status: **H0c and H0d are substantially rejected** — the multi-instance instrument, the
 determinism cross-checks, and the dilution correction each made the phenomenon *sharper*,
 not smaller (single-instance was a biased hard draw; the clean value-level gap is ~80–87,
-larger than the diluted 18). **H0b is the live one** — the OWNSTACK_160M experiment (below)
-is designed to test it. **H0a** is only partially addressed (3M→10M flat within-stack).
+larger than the diluted 18). **H0b is now SUPPORTED (2026-07-19, one training run):** the
+pre-registered OWNSTACK_160M experiment ran — own-stack 160M, identical recipe, same
+instrument: diluted gap **16.9 ± 1.7** (clean 66.6 ± 5.0; alg clean still 100). The
+own-stack curve is flat across **50× of scale** (18.3 → 18.7 → 16.9) where Pythia-160M
+reads 3.5 — the decision rule fires STACK-dominant. **H0a is thereby also strongly
+supported within-stack** (scale alone does not move the gap under this recipe). Caveats:
+single training run; ~16× under-Chinchilla for 160M (the PREREG's "within this recipe"
+framing applies); the stack bundle (pretraining breadth / tokenizer / FT method) is not
+yet internally separated — that is Paper 2's decomposition work (LoRA arm next).
 
 ## Theory tree (separate theory from evidence; each arrow needs its own evidence)
 
