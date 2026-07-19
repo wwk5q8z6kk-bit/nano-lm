@@ -210,3 +210,12 @@ final section renumbering; footnote the ~68/30/21% denominator; add Hoffmann cit
   larger scale on this recipe). Falsifiable via varying slot diversity at fixed scale.
 - NOTE: these additions post-date the T1.5 review — flag for one extra read.
 - ⏳ 1b fieldwise kernel running (nano-lm-fieldwise-1b-run).
+
+## 1B fieldwise landed (2026-07-19)
+
+- ☑ Comparability check FAILED AS DESIGNED (max diff 2.2): regenerated 1B adapter is a
+  different training draw (aggregates 0.6–2.2 vs published all-zeros; inside [0,5]).
+  Folded into §6.1 (md+tex) as a THIRD TRAINING DRAW, explicitly not placed in the
+  ladder — the §5.2 lesson operating live. Pattern robust: clean cc/med 0.0, residual
+  entirely alg (24.6±10.3). Single-slot localization is training-draw-stable.
+- All three fieldwise runs complete; the Kaggle arc for Paper 1 is done.

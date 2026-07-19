@@ -365,6 +365,15 @@ and it does not improve with scale within Pythia (it worsens slightly). The clea
 is therefore: anchors 87.3/79.5 → Pythia **14.7 ± 2.1** (160M) / **17.7 ± 3.2** (410M),
 with the residual now *interpretable* rather than diffuse.
 
+At 1B the comparability self-check **failed exactly as §5.2 predicts**: the regenerated
+adapter is a *different training draw* (per-instance aggregates 0.6–2.2 vs. the published
+draw's all-zeros — inside the [0,5] interval), so its fieldwise numbers describe a third
+training draw, not the published 1B rung, and we do not place them in the ladder. The
+pattern, however, is unchanged: clean cc and med are 0.0 in this draw too, with the
+entire residual again in allergy (clean 24.6 ± 10.3; diluted 5.4 ± 3.2). The single-slot
+localization is thus stable across training draws even in the nondeterministic regime —
+and the self-check's loud failure is the §5.2 lesson operating as designed.
+
 **A slot-diversity hypothesis (labeled as such).** The three open slots differ sharply in
 training-value diversity — ~190 complaints, 18 medications, 5 allergies — and the failure
 tracks it inversely at every scale tested: the 3M anchor fails all three; the 10M anchor
@@ -396,8 +405,8 @@ dialogue-level metric substantially understates. To keep this honest we **distin
 two metrics** and do not mix them: the *dialogue-level* ("diluted") gap is the ladder
 spine — it is available for every rung on the identical instrument — while the
 *value-level* ("clean") gap is reported wherever the per-field re-score has run: the
-anchors here and the Pythia 160M/410M rungs below (1B pending); clean is only ever
-compared with clean, diluted with diluted.
+anchors here and the Pythia 160M/410M rungs below (the 1B re-score landed a different
+training draw — see below); clean is only ever compared with clean, diluted with diluted.
 
 **What the models output instead (failure modes).** Classifying every miss on an actual
 held-out value against the training value sets (pooled over the five instances;
