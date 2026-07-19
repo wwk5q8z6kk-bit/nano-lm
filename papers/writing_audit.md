@@ -177,6 +177,17 @@ scaffolding (italic meta-notes, "Status: draft" block); de-dup §2/§4/§5 vs Me
 final section renumbering; footnote the ~68/30/21% denominator; add Hoffmann cite at the
 §7 token-ratio line. These are LaTeX-template-time tasks; the working draft keeps them.
 
+## Post-review addition (2026-07-18, after the T1.5 pass)
+
+- ☑ **Failure-mode characterization folded into §6.1 + §6.3** (owner-authorized resume of
+  the offered option). Source: `results_failure_mode_anchors.json`; numbers verified
+  internally consistent with the clean metric (scale-med 71/151 misses ↔ clean gap 47.1).
+  Claim strength: behavioral characterization only, hedged ("consistent with"), circuit
+  account explicitly deferred to §8/Stage M. NOTE: this text post-dates the Reviewer #2
+  pass — give it one extra read at submission time (numbers: alg 100% omission both;
+  cc@10M 86% substitution 258/300; cc@3M 98% other; med 66% omit @3M / 100% other @10M;
+  pooled sub rates nano 1% vs scale 54%).
+
 ## Open owner decisions (⚠)
 
 - ⚠ **1B representation**: interval [0,5] vs a point from added seeds. Affects the abstract.

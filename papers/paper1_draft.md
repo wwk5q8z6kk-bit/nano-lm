@@ -373,6 +373,21 @@ the own-stack anchors only. A clean *ladder* would require re-scoring the Pythia
 with the same value-level metric (the extended `kaggle_pythia_fieldwise.py` emits both);
 we leave it to a follow-up rather than compare a clean anchor against a diluted Pythia rung.
 
+**What the models output instead (failure modes).** Classifying every miss on an actual
+held-out value against the training value sets (pooled over the five instances;
+`results_failure_mode_anchors.json`) shows the failure mode is field- and
+scale-dependent. On held-out *allergies*, both anchors **omit** — they output "none"
+100% of the time, a safe decline rather than a fabrication. On held-out *complaints*,
+the 10M model **substitutes a memorized training complaint in 86% of misses** (258/300),
+while the 3.15M model instead produces garbled or novel strings (98% of misses);
+held-out *medications* draw omissions at 3M (66%) and garbled output at 10M.
+Substitution is the memorization signature in its most literal form — copying the wrong,
+*familiar* value in place of the right, *novel* one — and it **emerges with scale**
+(1% of nano misses vs. 54% of scale misses are substitutions), consistent with the 10M
+model having learned the complaint-slot distribution well enough for that prior to
+override the input. We report this as behavioral characterization; the circuit-level
+account is deferred to the mechanism stage (§8).
+
 ![Held-out copying gap vs scale on one consistent instrument. Own-stack anchors
 (3.15M, 10M) sit at ~18 pts; the tested Pythia rungs (160M, 410M) at 3.5–4.2 pts;
 1B is a training-run–bounded interval [0,5]. The shaded band marks the own→Pythia
@@ -413,7 +428,11 @@ closed-value fields are a within-task control for that claim. Measured on the ac
 held-out values (§6.1, the value-level metric), the failure is not merely large but
 **near-total**: ~80–87 points aggregate, with ≈0% recall on held-out allergy values
 (and on held-out medications at 3M) against ~100% on seen ones — the 18-point
-dialogue-level number substantially understates it. What we do **not** get to
+dialogue-level number substantially understates it. The misses are not random noise:
+at 10M the dominant error on held-out complaints is **substituting a memorized training
+complaint** (86% of misses), while held-out allergies are omitted rather than fabricated
+— memorization overriding the input in the most literal sense, and a failure mode that
+*changes shape* with scale (nano garbles where scale substitutes). What we do **not** get to
 say is *why* it shrinks with the ladder — the nano→Pythia step changes scale together
 with pretraining data, tokenizer, architecture, and finetuning method (§7), so the
 honest claim is "the gap largely disappears by the Pythia pipeline," not "parameter
