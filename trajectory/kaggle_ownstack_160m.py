@@ -88,7 +88,11 @@ class GPT(nn.Module):
 
 # ---------------- phase 1: pretrain (FineWeb; resume-safe; identical recipe) ----------------
 TARGET_TOKENS = int(os.environ.get("TARGET_TOKENS", 200_000_000))   # 200M default; set ~3.2B for Chinchilla control
-BATCH, WARM_FRAC, FLOOR = 32, 0.03, 0.1
+# Effective batch 32 as pre-registered; realized as micro 8 x accum 4 (T4 OOM at
+# 159M params with a full 32x512 activation set — the batch/grad-accum deviation the
+# PREREG explicitly allows and requires noting; optimizer trajectory unchanged).
+MICRO, ACCUM = 8, 4
+BATCH, WARM_FRAC, FLOOR = MICRO * ACCUM, 0.03, 0.1
 PEAK_LR = 3e-3 * 192 / d      # width-scaling rule (nano 3e-3@d192 -> scale 1.8e-3@d320 -> 160M 5.6e-4@d1024)
 STEPS = TARGET_TOKENS // (BATCH * S)
 CKPT = "ownstack160m_pretrain.pt"; SHARD = "shard_ownstack.npy"
@@ -120,8 +124,8 @@ WARM = int(WARM_FRAC * STEPS)
 def lr_at(t):
     if t < WARM: return PEAK_LR * t / max(1, WARM)
     p = (t - WARM) / max(1, STEPS - WARM); return PEAK_LR * (FLOOR + (1 - FLOOR) * 0.5 * (1 + math.cos(math.pi * p)))
-def batch_from(ids_t):
-    i = torch.randint(0, len(ids_t) - S - 1, (BATCH,)); return torch.stack([ids_t[j:j+S] for j in i]).to(dev)
+def batch_from(ids_t, n=None):
+    i = torch.randint(0, len(ids_t) - S - 1, (n or BATCH,)); return torch.stack([ids_t[j:j+S] for j in i]).to(dev)
 def ce_loss(logits, tgt):
     ce = F.cross_entropy(logits.reshape(-1, V), tgt.reshape(-1)); z = torch.logsumexp(logits.float(), -1)
     return ce + 1e-4 * (z ** 2).mean()
@@ -129,10 +133,12 @@ if start_step < STEPS:
     t0 = time.time()
     for step in range(start_step + 1, STEPS + 1):
         for g in opt.param_groups: g["lr"] = lr_at(step)
-        x = batch_from(train_ids)
-        with torch.autocast("cuda", dtype=torch.float16):
-            loss = ce_loss(m(x)[:, :-1], x[:, 1:])
-        opt.zero_grad(set_to_none=True); scaler.scale(loss).backward()
+        opt.zero_grad(set_to_none=True)
+        for _ in range(ACCUM):                                   # micro-batched; effective batch = MICRO*ACCUM
+            x = batch_from(train_ids, MICRO)
+            with torch.autocast("cuda", dtype=torch.float16):
+                loss = ce_loss(m(x)[:, :-1], x[:, 1:])
+            scaler.scale(loss / ACCUM).backward()
         scaler.unscale_(opt); gn = torch.nn.utils.clip_grad_norm_(m.parameters(), 1.0)
         scaler.step(opt); scaler.update()
         if step % 200 == 0:
@@ -140,7 +146,8 @@ if start_step < STEPS:
             print(f"step {step}/{STEPS} loss {loss.item():.3f} gnorm {gn.item():.2f} {tput:.0f}k tok/s", flush=True)
         if step % 1000 == 0:
             with torch.no_grad(), torch.autocast("cuda", dtype=torch.float16):
-                vl = ce_loss(m(batch_from(val_ids))[:, :-1], batch_from(val_ids)[:, 1:]).item()
+                vx = batch_from(val_ids, MICRO)
+                vl = ce_loss(m(vx)[:, :-1], vx[:, 1:]).item()
             print(f"  == val loss {vl:.3f} ==", flush=True)
             torch.save({"m": m.state_dict(), "o": opt.state_dict(), "s": scaler.state_dict(), "step": step}, CKPT)
     torch.save({"m": m.state_dict(), "o": opt.state_dict(), "s": scaler.state_dict(), "step": STEPS}, CKPT)
@@ -182,12 +189,15 @@ if not os.path.exists("ownstack160m_scribe.pt"):
     for step in range(1, FSTEPS + 1):
         for g in opt.param_groups: g["lr"] = flr_at(step)
         i0 = (step * BATCH) % (N - BATCH); idx = perm[i0:i0 + BATCH]
-        x, msk = X[idx].to(dev), M[idx].to(dev)
-        with torch.autocast("cuda", dtype=torch.float16):
-            logits = m(x)[:, :-1]; tgt = x[:, 1:]; mtgt = msk[:, 1:]
-            ce = F.cross_entropy(logits.reshape(-1, V), tgt.reshape(-1), reduction="none").reshape(tgt.shape)
-            loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)
-        opt.zero_grad(set_to_none=True); scaler.scale(loss).backward()
+        opt.zero_grad(set_to_none=True)
+        for a in range(ACCUM):                                   # micro-batched (same 32 examples/step)
+            sub = idx[a * MICRO:(a + 1) * MICRO]
+            x, msk = X[sub].to(dev), M[sub].to(dev)
+            with torch.autocast("cuda", dtype=torch.float16):
+                logits = m(x)[:, :-1]; tgt = x[:, 1:]; mtgt = msk[:, 1:]
+                ce = F.cross_entropy(logits.reshape(-1, V), tgt.reshape(-1), reduction="none").reshape(tgt.shape)
+                loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)
+            scaler.scale(loss / ACCUM).backward()
         scaler.unscale_(opt); torch.nn.utils.clip_grad_norm_(m.parameters(), 1.0)
         scaler.step(opt); scaler.update()
         if step % 200 == 0: print(f"scribe {step}/{FSTEPS} loss {loss.item():.3f}", flush=True)
