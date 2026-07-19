@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
+\usepackage[round]{natbib}
+\graphicspath{{../figures/}}
+
+\title{Held-out value copying in small language models:\\ a field-localized failure mode and the instrument to measure it}
+% TODO(owner): replace author placeholder before arXiv upload
+\author{[Author]\\ \texttt{summer.say3y@icloud.com}}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study a specific faithfulness failure in small language models finetuned to convert short clinical dialogues into structured summaries: a \textbf{held-out copying gap} --- the model copies field values it saw during finetuning but errs on held-out values under held-out phrasings, even though both are present verbatim in the input. In our own from-scratch models (3.15M and 10M parameters) this gap is large --- $18.3\pm1.3$ and $18.7\pm1.5$ points of recall on the same multi-instance instrument used for the rest of the ladder (22--23 points on the single public instance the anchors were first scored on; \S\ref{sec:results}). The failure is not diffuse: it localizes \emph{entirely} to the three open-vocabulary fields (complaint, medication, allergy) and is \textbf{exactly zero} in the two closed-value fields (duration, severity), which act as a built-in control showing the effect is specifically held-out-\emph{value} copying in open slots, not a generic degradation under unfamiliar phrasing. Finetuning the Pythia open-weight family (160M/410M/1B) on the identical task, the gap observed is \textbf{substantially smaller} (single-digit points; $3.5\pm0.7$ at 160M, $4.2\pm0.9$ at 410M, and an interval of $[0,5]$ at 1B). We deliberately do \textbf{not} claim scale as the cause: the comparison also changes pretraining corpus, tokenizer, architecture, and finetuning method. The measurement itself is a second contribution. A pre-registered contamination check caught that our initial single-instance evaluation was under-powered for the gap; averaging over five larger evaluation instances resolved the middle rungs to sub-point precision. At 1B, a determinism cross-check then revealed that \textbf{training-run nondeterminism} --- not evaluation noise --- dominates the residual, so we report the top rung as an interval rather than a point. Both measurement lessons arose from empirical failures of the prior instrument, not from foresight.
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+Production language systems for structured summarization (e.g.\ clinical scribing) are judged not on average-case benchmark scores but on faithfulness under distribution shift: whether the output contains only content grounded in the input, including on inputs unlike the training data \citep{maynez2020faithfulness,ji2023hallucination}. We isolate one tractable component of this --- value copying --- in a setting where faithfulness is measurable by construction, and ask a single pre-registered question: \textbf{how does the copying gap behave as model capability increases?}
+
+The contribution is threefold and we keep the parts distinct:
+\begin{enumerate}
+\item \textbf{Empirical.} A large held-out copying gap in sub-10M models is much smaller in the tested Pythia models, and localizes cleanly to the open-vocabulary fields (\S\ref{sec:results}).
+\item \textbf{Measurement.} Two lessons about estimating such a gap reliably: single-instance evaluation was under-powered (\S\ref{sec:underpowered}), and training nondeterminism bounds the estimate at the top of the ladder (\S\ref{sec:nondet}).
+\item \textbf{Engineering (companion).} A verification architecture that routes model errors to human review; its precision/review-load trade-off is measured in a companion write-up (in preparation), not in this paper.
+\end{enumerate}
+
+\section{Related work}\label{sec:related}
+\paragraph{Scaling laws and emergence.}
+Language-model loss follows smooth power laws in parameters, data, and compute \citep{kaplan2020scaling,hoffmann2022chinchilla}, yet specific \emph{task} behaviors can change sharply with scale: \citet{wei2022emergent} catalogue ``emergent abilities'' absent in small models and present in large ones. \citet{schaeffer2023mirage} argue much apparent emergence is a \emph{measurement artifact} of discontinuous metrics (exact-match, multiple-choice) rather than a property of the model. Our study runs in the opposite direction --- a behavior (the held-out copying gap) that is \emph{large} in small models and \emph{smaller} at larger scale --- but the caution applies directly, since our gap is an exact-match recall difference; we therefore report it with across-instance error bars and, at 1B, separate metric behavior from training-run variance (\S\ref{sec:nondet}). Where the emergence literature asks ``does scale switch an ability \emph{on}?'', we ask ``does scale switch a faithfulness failure \emph{off}?'', and find the honest answer is confounded with the training stack (\S\ref{sec:limitations}).
+
+\paragraph{The Pythia platform.}
+\citet{biderman2023pythia} release Pythia, 16 models spanning 70M--12B trained on identical data in identical order, expressly to make scale a controlled variable. We use the 160M/410M/1B rungs as our scaling axis for exactly this property --- within Pythia, architecture, tokenizer, pretraining corpus, and data order are fixed across sizes. The limitation we foreground (\S\ref{sec:limitations}) is that our own-stack anchors are \emph{not} in that controlled family, so the nano$\rightarrow$Pythia step moves the stack as well as the scale --- a confound Pythia's internal control cannot remove.
+
+\paragraph{Copying, pointer, and retrieval mechanisms.}
+The behavior we measure is value \emph{copying}: reproducing a field value present verbatim in the input. Explicit copy pathways have a long lineage in sequence-to-sequence models --- CopyNet \citep{gu2016copynet} and pointer-generator networks \citep{see2017pointer} add input-copying to abstractive generation. In transformers, induction heads implement a pattern-completion copy \citep{elhage2021mathematical,olsson2022induction}, and \emph{retrieval heads} --- a sparse ($<$5\%), apparently universal set of attention heads --- copy tokens from context into the output and mechanistically explain long-context factuality \citep{wu2024retrieval}. These are the natural mechanistic hypotheses for our gap: a model that copies \emph{seen} values but fails on \emph{held-out} values under held-out phrasing may have copy/retrieval circuitry that generalizes poorly off-distribution. We deliberately defer this question (\S\ref{sec:future}) until the behavioral phenomenon is deconfounded, so any circuit we implicate is attached to a clean empirical contrast rather than a stack difference.
+
+\paragraph{Faithfulness and hallucination.}
+Faithfulness --- output grounded only in the input --- is a central failure mode of abstractive summarization; \citet{maynez2020faithfulness} distinguish intrinsic from extrinsic hallucination, and \citet{ji2023hallucination} survey the phenomenon across NLG. Most such work relies on human judgment or model-based entailment scoring. Our task is constructed so faithfulness is \emph{exact}: because each dialogue is rendered from a known fact tuple, a summary is scored field-by-field against ground truth with no judge model, and our ``hallucination'' is precisely an extrinsic fabrication of a field value. This trades ecological realism for a noise-free, reproducible faithfulness signal.
+
+\paragraph{Reproducibility and training nondeterminism.}
+Run-to-run variation from seeds and low-level tooling can be large enough to reverse method rankings \citep{picard2021seed,pham2020variance}, and even fixed-seed training is nondeterministic through non-associative GPU reductions and library tooling \citep{zhuang2022randomness}; the standard prescription is to report mean~$\pm$~SD over multiple runs. Our 1B result is a concrete downstream instance: two fixed-seed retrains of the same model produced gaps of 5 and 0 on the byte-identical evaluation, so at that rung the \emph{unit of uncertainty} shifts from the evaluation instance to the training run, and we report an interval (\S\ref{sec:nondet}). This connects the reproducibility literature to a specific measured behavior (a faithfulness gap) rather than to top-line accuracy.
+
+\paragraph{Evaluation reliability and contamination.}
+Public benchmarks risk contamination --- memorized test content inflating scores \citep{xu2024contamination} --- with held-out or rolling test data the standard defense. Our benchmark is a \emph{seeded generator} rather than a fixed set, so fresh evaluation instances can be drawn at will, and our pre-registered contamination check compares the public instance against fresh draws. We find the public instance is \emph{harder} (higher gap) than fresh draws at every rung --- the opposite of the contamination signature --- which both rules out memorization and surfaces a distinct hazard: a fixed public instance can be a systematically biased difficulty draw even when content-addressed and reproducible.
+
+\section{Task and benchmark}\label{sec:task}
+\paragraph{Faithfulness is exact by construction.}
+Synthetic clinic dialogues are rendered from a known fact tuple of five fields (chief complaint, duration, severity, medication, allergy), so each summary is scored field-by-field against ground truth with no judge model --- a noise-free faithfulness signal, traded against ecological realism.
+
+\paragraph{The held-out copying gap.}
+Evaluation dialogues are held-out along two axes --- held-out \emph{template families} (all dialogues) and held-out \emph{slot values} (half the dialogues) --- and the central object is the \textbf{held-out copying gap}: seen-value recall minus held-out-value recall under held-out templates, which isolates value copying from phrasing familiarity.
+
+\paragraph{The benchmark is a generator.}
+The scientific object is the eval \emph{distribution} (a seeded generator), not any fixed set of dialogues. Fresh instances can be drawn to defend against memorization of any specific instance (\S\ref{sec:underpowered}), and the instance-difficulty distribution can be measured directly --- a property we exploit in both measurement lessons.
+
+\section{Prior stages (setup)}\label{sec:prior}
+Two earlier results frame the question. \textbf{Stage C} tested whether the gap is a training-curriculum artifact by adding an unmemorizable-value training slice; the held-out gap was unmoved, refuting the curriculum explanation. \textbf{Stage S} scaled our own stack from 3.15M to 10M parameters: the larger model passed the average-case faithfulness gate (parse 100\%, recall 88\%, hallucination 7.5\%) yet its held-out gap was essentially unchanged ($\approx$23 vs.\ $\approx$22 points single-instance; $18.7\pm1.5$ vs.\ $18.3\pm1.3$ on the multi-instance instrument, \S\ref{sec:results} --- the near-identity now measured with error bars, not two single points). Stage S concluded that a $3.2\times$ scale step does not cross the failure --- motivating a wider ladder.
+
+\section{Stage T design (pre-registered)}\label{sec:design}
+\paragraph{Ladder.}
+Own models at 3.15M/10M (re-scored on the multi-instance instrument, \S\ref{sec:results}) plus the Pythia family at 160M/410M/1B, finetuned on the identical scribe recipe with LoRA and scored by the identical faithfulness scorer (full configuration in \S\ref{sec:methods}).
+
+\paragraph{Why Pythia.}
+The question is scaling behavior, not model ranking. Pythia \citep{biderman2023pythia} holds architecture, tokenizer, pretraining corpus, and data order fixed across sizes, so within the family relatively few variables move with parameter count --- the property a scaling study needs. This choice does not isolate scale from the nano$\rightarrow$Pythia \emph{stack} change (\S\ref{sec:limitations}); it is the reference family for that axis, not a claim that scale is the cause.
+
+\paragraph{Pre-registration and falsifiers.}
+Bars, bands (PERSISTS/THRESHOLD/DIVERGENT), seeds, and decision rules were fixed before measurement (three pre-measurement amendments). A base-model control (un-finetuned model must fail parse $<50\%$) guards against a trivially-solvable task; it passed at every rung (base parse 0\%). The measured code was adversarially reviewed before any run; three measurement-invalidating defects were fixed pre-measurement.
+
+\section{The measurement instrument, and why it changed}\label{sec:instrument}
+The instrument evolved because the data demanded it. We present this as a result.
+
+\subsection{Single-instance evaluation was under-powered}\label{sec:underpowered}
+The pre-registered contamination check (score the same model on the public instance vs.\ a fresh instance; require per-metric agreement within 5 points) \textbf{flapped} at the threshold across rungs (gap differences $\approx$5, 6, 4). We attribute this to the gap riding on a handful of hard held tokens, so a single 20-dialogue instance carries $\pm$5--6 points of sampling variance. Crucially, the \emph{direction} of the discrepancy (the public instance was \textbf{harder}, not easier) is the opposite of the contamination signature the check was built to detect --- ruling out memorization. The fix re-scores the same frozen models on \textbf{five instances of 100 held dialogues each} and reports the gap as a mean $\pm$ across-instance SD. This cut the SD to ${\sim}0.7$--$0.9$ points at 160M/410M. We applied the identical re-scoring to the own-stack anchors so the whole ladder shares one instrument (re-scoring only --- frozen checkpoints, their native ChatML/greedy scorer; both anchors reproduced their canonical single-instance readings byte-for-byte before the multi-instance pass). The anchors' single public-instance gaps (22.4, 23.0) were themselves modestly hard draws --- ${\sim}4$ points above their multi-instance means (18.3, 18.7) --- the \textbf{same direction} (public instance harder, not easier) found at the Pythia rungs, so the public instance is a systematically hard draw across the entire ladder.
+
+\subsection{Training nondeterminism bounds the 1B estimate}\label{sec:nondet}
+The re-scoring re-generates each frozen adapter by re-finetuning at the fixed seed; we verify this reproduces the original model by re-scoring the byte-identical original instances and checking the gaps match (a \textbf{determinism cross-check}). At 160M and 410M the match was exact. At 1B it \textbf{failed}: on the byte-identical instance, one training run gave a 5-point gap and another gave 0. With evaluation held constant, the difference is training-run variance --- fp16 with non-associative GPU reductions over ${\sim}1125$ steps of a 1B model that, we conjecture, sits near the boundary of perfect held-out copying --- the tooling-level nondeterminism documented by \citet{zhuang2022randomness} (cf.\ \citealp{picard2021seed}, on seed variance exceeding effect sizes), here surfacing in a downstream faithfulness metric rather than top-line accuracy. The right instrument for the 1B gap is therefore multiple training seeds, not multiple evaluation instances; we report an interval. With only two retrains we bound the \emph{magnitude} of training-run variance at this rung (it is large --- comparable to the whole residual gap) but cannot characterize its distribution; the interval spans the two observed outcomes rather than a modelled spread, and a fuller characterization (how often a run tips to perfect held-out copying) would need more seeds.
+
+\section{Methods (consolidated protocol)}\label{sec:methods}
+\paragraph{Datasets (a seeded generator).}
+Each example is a synthetic doctor--patient dialogue rendered from a fact tuple of five fields --- chief complaint (cc), duration (dur), severity (sev), medication (med), allergy (alg) --- paired with the target summary \texttt{CC: \ldots\ | DUR: \ldots\ | SEV: \ldots\ | MED: \ldots\ | ALG: \ldots}. Training values (seen): a fixed complaint pool plus a compositional body-part$\times$sensation pool (${\sim}190$ complaints, so cc cannot be solved as closed-set classification), 18 medications, 5 allergies, 3 severities. Finetuning data: 12{,}000 examples, full supervised finetune, 3 epochs, LR $10^{-4}$ (own stack); the eval distribution is a separate generator.
+
+\paragraph{Held-out protocol (two axes).}
+Evaluation dialogues are held-out along two independent axes. (i)~\emph{Held template families}: doctor/patient surface phrasings never seen in finetuning --- used by \textbf{all} eval dialogues. (ii)~\emph{Held slot values}: six specific values excluded from all finetuning data (complaints \{toothache, neck pain, heartburn\}, medications \{melatonin, throat lozenges\}, allergy \{sulfa drugs\}) --- used by \textbf{half} the eval dialogues; the other half draw seen values. The \textbf{held-out copying gap} $=$ seen-value recall $-$ held-out-value recall, both measured under held templates, isolating value copying from phrasing familiarity.
+
+\paragraph{Model families and finetuning.}
+\emph{Own stack}: from-scratch GPT (RoPE, GQA, SwiGLU, RMSNorm pre-norm, tied embeddings, 4098-vocab BPE, 512 ctx) at 3.15M ($d{=}192, L{=}6, H{=}6, KV{=}2, \mathit{ff}{=}512$) and 10M ($d{=}320, L{=}8, H{=}8, KV{=}2, \mathit{ff}{=}864$), pretrained on ${\sim}200$M FineWeb tokens ($D \approx 20N$; \citealp{hoffmann2022chinchilla}) and full-finetuned on the scribe task; the two anchor checkpoints are frozen release assets. \emph{Pythia}: EleutherAI pythia-\{160m,410m,1b\}, adapted with LoRA ($r{=}16$, $\alpha{=}32$, dropout 0, targets \{query\_key\_value, dense, dense\_h\_to\_4h, dense\_4h\_to\_h\}), LR $10^{-4}$, 3 epochs.
+
+\paragraph{Evaluation metric.}
+Greedy decoding; the output is parsed against the fixed field template. A field is a \emph{hit} (exact match), an \emph{omission} (``none'' for a present value), or a \emph{hallucination} (otherwise). Held/seen recalls are computed over the fields of \textbf{parsed} dialogues only (identical convention across stacks). Two decode paths, each matched to its stack's native format: own stack uses ChatML with a token-by-token argmax loop stopping on the end token, max 64 new tokens; Pythia uses raw text with greedy \texttt{generate}, EOS stop, max 64 --- these are the checkpoints' own inference formats, not a shared decoder.
+
+\paragraph{Multi-instance evaluation.}
+The powered instrument is $K{=}5$ fresh evaluation instances (fixed seeds), each 100 held $+$ 100 seen dialogues. A model's gap is the mean over the five instances; its uncertainty is the across-instance SD. The single public instance (40 dialogues) and an auxiliary instance are retained for the cross-checks below.
+
+\paragraph{Determinism checks (why ``re-score'', not ``re-run'').}
+All measurements are re-scorings of frozen models. Before the multi-instance pass, each model is re-scored on the canonical single instance and required to reproduce its archived reference: the own-stack anchors reproduced their reference logs exactly (one even across a CUDA$\rightarrow$MPS device change). For Pythia, re-finetuning at the fixed seed regenerates the frozen adapter (headless-GPU reproduced interactive-GPU byte-for-byte), verified in-band by requiring the re-scored instance gaps to match the archived originals. A check that fails (as at 1B) is treated as a finding, not smoothed over.
+
+\paragraph{Statistical reporting.}
+Powered rungs report gap mean $\pm$ across-instance SD (ddof$=$1); each Pythia instance additionally carries a 95\% bootstrap CI (10{,}000 resamples over dialogues). The contamination check is direction-aware --- it flags only if the public instance gap is \emph{below} the fresh-instance mean by more than 2 SD (memorization would make the public instance easier); a higher public gap is a hard draw, not contamination. The 1B rung is reported as an interval $[0,5]$ from two fixed-seed training-run retrains, not as a point.
+
+\section{Results}\label{sec:results}
+\subsection{The gap across the ladder}\label{sec:ladder}
+All five rungs are scored on the \textbf{same multi-instance instrument} (five instances of 100 held $+$ 100 seen dialogues, gap $=$ mean $\pm$ across-instance SD). The own-stack anchors' original single-instance readings are shown alongside for provenance.
+
+\begin{table}[t]\centering
+\begin{tabular}{lrlrr}
+\toprule
+Model & Params & Stack & Gap (5$\times$100 held) & inst0 \\
+\midrule
+nano        & 3.15M & own    & $18.3 \pm 1.3$ & 22.4 \\
+scale       & 10M   & own    & $18.7 \pm 1.5$ & 23.0 \\
+pythia-160m & 160M  & Pythia & $3.5 \pm 0.7$  & 7.0 \\
+pythia-410m & 410M  & Pythia & $4.2 \pm 0.9$  & 8.0 \\
+pythia-1b   & 1B    & Pythia & $[0, 5]$\,$^\dagger$ & 5.0/0.0 \\
+\bottomrule
+\end{tabular}
+\caption{Held-out copying gap across the ladder on one multi-instance instrument (mean $\pm$ across-instance SD over five 100-held instances). inst0 is the single public instance. $^\dagger$1B is bounded by training-run nondeterminism, not eval noise.}
+\label{tab:ladder}
+\end{table}
+
+Model-side quality is high at every rung (own-stack anchors parse 94--100\%, recall 80--91\%, hallucination 7--12\%; Pythia rungs parse 100\%, recall 96--100\%, hallucination 0--4\%), on both the public and fresh instances. On this single consistent instrument the large held-out copying gap \textbf{observed in our own-stack models (${\sim}18$ points) was substantially smaller in the tested Pythia models (3.5--4.2 points).} The reduction (${\sim}14$--15 points) is an order of magnitude larger than any noise source identified (anchor SD ${\approx}1.3$--1.5, Pythia SD ${\approx}0.7$--0.9), so the direction is not in question. Note that the single-instance column --- the basis of the earlier headline --- is a uniformly hard draw (higher gap at every rung), which is precisely why mixing a single-instance anchor with a multi-instance Pythia number would have overstated the contrast; on the consistent instrument the gap is still large but the anchors read ${\sim}18$, not ${\sim}22$--23.
+
+\paragraph{Where the gap lives (fieldwise).}
+Breaking the own-stack anchor gap down by field (re-scored on the same five instances) localizes it sharply (Table~\ref{tab:fieldwise}).
+
+\begin{table}[t]\centering
+\begin{tabular}{llrr}
+\toprule
+Field & held-out values? & nano gap & scale gap \\
+\midrule
+cc (chief complaint) & yes (3 held) & $45.3 \pm 8.1$ & $58.2 \pm 3.5$ \\
+med (medication)     & yes (2 held) & $23.8 \pm 4.8$ & $14.2 \pm 2.3$ \\
+alg (allergy)        & yes (1 held) & $22.5 \pm 4.5$ & $21.2 \pm 4.5$ \\
+dur (duration)       & no (numeric) & $0.0$ & $0.0$ \\
+sev (severity)       & no (closed 3-set) & $0.0$ & $0.0$ \\
+\bottomrule
+\end{tabular}
+\caption{Dialogue-level (``diluted'') per-field gap, mean $\pm$ SD over the five instances.}
+\label{tab:fieldwise}
+\end{table}
+
+The entire gap sits in the three fields that \emph{have} held-out vocabulary values (cc, med, alg) and is \textbf{exactly zero} in the two whose values are all in-distribution (dur is numeric; sev is the closed set \{mild, moderate, severe\}). The two zero-gap fields are a \textbf{template-vs-value control}: dur and sev undergo the \emph{same} held-out template shift as every other field (all eval dialogues use held-out phrasings) yet show no gap, so the gap is driven by held-out \emph{values}, not unfamiliar phrasing. (This is not a claim that the model is robust to held-out dur/sev \emph{values} --- there are none; the closed fields isolate the template axis from the value axis.) Two magnitude caveats follow from the fact that the seen/held split is at the \emph{dialogue} level: (i)~within a ``held'' dialogue only ${\sim}68\%$ of cc fields actually carry a held-out value, and just ${\sim}30\%$ of med and ${\sim}21\%$ of alg fields do (the rest are seen values or ``none''; fractions are $P(\text{field carries a held-out value} \mid \text{held dialogue})$, measured over the five instances), so the held buckets for cc/med/alg are \emph{diluted} with seen values --- the reported per-field gaps are therefore conservative and \textbf{not directly comparable across fields} (the true held-out-value gap is larger, and most diluted for med/alg); and (ii)~for the same reason the aggregate ${\sim}18$ is a lower bound on the pure held-out-value effect. Neither caveat affects the cross-model comparison, since every rung is scored on the identical instrument. The split still explains the anchors' aggregate near-identity (18.3 vs.\ 18.7) masking field-level differences --- nano and scale trade off cc against med --- and identifies chief complaint, with its ${\sim}190$ compositional values, as the hardest copy. (Fieldwise breakdown for the Pythia rungs would need a re-score with the adapters; a planned appendix analysis.)
+
+\paragraph{The undiluted failure (clean metric).}
+Removing the dilution --- scoring each field's \emph{value-bearing} items by whether the value is actually held-out vs.\ seen, with the template held fixed --- gives the \emph{pure} held-out-value copying gap, and it is severe (Table~\ref{tab:clean}).
+
+\begin{table}[t]\centering
+\begin{tabular}{lrr}
+\toprule
+Field & nano clean gap & scale clean gap \\
+\midrule
+cc  & $71.8 \pm 4.9$ & $87.4 \pm 3.5$ \\
+med & $\mathbf{100.0 \pm 0.0}$ & $47.1 \pm 4.0$ \\
+alg & $\mathbf{100.0 \pm 0.0}$ & $\mathbf{100.0 \pm 0.0}$ \\
+\midrule
+\textbf{aggregate (cc$+$med$+$alg)} & $\mathbf{87.3 \pm 2.7}$ & $\mathbf{79.5 \pm 2.1}$ \\
+\bottomrule
+\end{tabular}
+\caption{Value-level (``clean'') per-field gap among value-bearing items, mean $\pm$ SD over the five instances.}
+\label{tab:clean}
+\end{table}
+
+On \emph{actual} held-out \textbf{allergy} values (both anchors) and held-out \textbf{medications} at 3M, the models recall ${\approx}0\%$ while copying seen values ${\sim}$perfectly --- a ${\sim}100$-point gap; the 10M model is the one place scale visibly helps, recovering about half of its held-out medications (a 47-point gap). Aggregated over the value fields the pure held-out-value gap is \textbf{${\sim}80$--87 points}, not the diluted 18 --- a near-total copy failure the dialogue-level metric substantially understates. To keep this honest we \textbf{distinguish two metrics} and do not mix them: the \emph{dialogue-level} (``diluted'') gap is the ladder spine --- it is available for every rung on the identical instrument --- while this \emph{value-level} (``clean'') gap is reported for the own-stack anchors only. A clean \emph{ladder} would require re-scoring the Pythia adapters with the same value-level metric; we leave it to a follow-up rather than compare a clean anchor against a diluted Pythia rung.
+
+\paragraph{What the models output instead (failure modes).}
+Classifying every miss on an actual held-out value against the training value sets (pooled over the five instances) shows the failure mode is field- and scale-dependent. On held-out \emph{allergies}, both anchors \textbf{omit} --- they output ``none'' 100\% of the time, a safe decline rather than a fabrication. On held-out \emph{complaints}, the 10M model \textbf{substitutes a memorized training complaint in 86\% of misses} (258/300), while the 3.15M model instead produces garbled or novel strings (98\% of misses); held-out \emph{medications} draw omissions at 3M (66\%) and garbled output at 10M. Substitution is the memorization signature in its most literal form --- copying the wrong, \emph{familiar} value in place of the right, \emph{novel} one --- and it \textbf{emerges with scale} (1\% of nano misses vs.\ 54\% of scale misses are substitutions), consistent with the 10M model having learned the complaint-slot distribution well enough for that prior to override the input. We report this as behavioral characterization; the circuit-level account is deferred to the mechanism stage (\S\ref{sec:future}).
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.85\linewidth]{fig1_gap_vs_scale.pdf}
+\caption{Held-out copying gap vs.\ scale on one consistent instrument. Own-stack anchors (3.15M, 10M) sit at ${\sim}18$ pts; the tested Pythia rungs (160M, 410M) at 3.5--4.2 pts; 1B is a training-run--bounded interval $[0,5]$. The shaded band marks the own$\rightarrow$Pythia stack change --- the x-axis is not a pure scale axis (\S\ref{sec:limitations}).}
+\label{fig:ladder}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.85\linewidth]{fig2_instance_difficulty.pdf}
+\caption{Per-rung instance difficulty. The single public instance (inst0, $\times$) exceeds the five-instance mean $\pm$ SD at every rung; at 1B the two training runs (0 and 5) bracket the interval. This is why a single-instance anchor read higher than the powered mean.}
+\label{fig:difficulty}
+\end{figure}
+
+\subsection{What the result does and does not establish}\label{sec:establish}
+Within Pythia the gap is already small at 160M with no clean monotonic trend, so the ladder captured a low-gap regime rather than a transition. Reconciling with Stage S: the $3.2\times$ step (3M$\rightarrow$10M) did not move the gap ($18.3\pm1.3 \rightarrow 18.7\pm1.5$ --- a 0.4-point change inside one SD, now measured rather than inferred from two single points); the $16\times$ step to 160M, \textbf{or} the stack change, coincides with a much smaller gap --- these are not separated here. The formal band is not PERSISTS (the top-rung interval reaches 0, far from the $\geq$10 that PERSISTS requires); it is consistent with a small residual or none.
+
+\subsection{Two distinct lessons}\label{sec:lessons}
+The paper carries two takeaways that are worth keeping separate, because they are supported by different evidence and would survive independently.
+
+\paragraph{What we learned about language models.}
+The held-out copying gap is a \emph{pronounced small-model phenomenon}: ${\sim}18$ points in from-scratch models at 3--10M, essentially flat across that $3.2\times$ scale step, and only single-digit points in the tested Pythia models at 160M and above. The fieldwise breakdown makes the phenomenon precise rather than diffuse: the gap lives \emph{entirely} in the open-vocabulary fields and is exactly zero in the closed-value fields, so what these small models fail at is specifically \textbf{copying a held-out lexical value into an open slot}, not being unfaithful in general --- and the closed-value fields are a within-task control for that claim. Measured on the actual held-out values (\S\ref{sec:ladder}, the value-level metric), the failure is not merely large but \textbf{near-total}: ${\sim}80$--87 points aggregate, with ${\approx}0\%$ recall on held-out allergy values (and on held-out medications at 3M) against ${\sim}100\%$ on seen ones --- the 18-point dialogue-level number substantially understates it. The misses are not random noise: at 10M the dominant error on held-out complaints is \textbf{substituting a memorized training complaint} (86\% of misses), while held-out allergies are omitted rather than fabricated --- memorization overriding the input in the most literal sense, and a failure mode that \emph{changes shape} with scale (nano garbles where scale substitutes). What we do \textbf{not} get to say is \emph{why} it shrinks with the ladder --- the nano$\rightarrow$Pythia step changes scale together with pretraining data, tokenizer, architecture, and finetuning method (\S\ref{sec:limitations}), so the honest claim is ``the gap largely disappears by the Pythia pipeline,'' not ``parameter count removes it.'' The one clean causal statement is negative and comes from the controlled within-stack step: at this recipe, going from 3M to 10M did not move the gap.
+
+\paragraph{What we learned about measurement.}
+Independently of the model result, estimating a gap like this reliably required two corrections that the data forced on us. (i)~\emph{Single-instance evaluation was underpowered, and worse, biased}: the public instance is not merely noisy but \emph{systematically hard} --- its gap exceeds the multi-instance mean at every rung --- so a fixed public instance can skew an effect size even when it is content-addressed and reproducible. (ii)~\emph{The precision floor moves with the regime}: in the high-gap regime the dominant uncertainty is across evaluation instances, but by 1B the gap is small and the dominant uncertainty becomes the \emph{training run} (two fixed-seed retrains split 5/0), so the right replication unit changes from eval-instance to training-seed. Both lessons are prescriptive for anyone measuring faithfulness gaps in small models and hold regardless of how the scale-vs-stack question is eventually resolved.
+
+\section{Limitations}\label{sec:limitations}
+\begin{itemize}
+\item \textbf{Scale vs.\ stack confound (primary).} The nano$\rightarrow$Pythia comparison changes parameter count \emph{and} at least four other variables simultaneously, each a plausible alternative cause of the reduction: (i)~\textbf{pretraining data quantity} (${\sim}200$M own-stack tokens vs.\ Pythia's ${\sim}300$B --- a ${\sim}1500\times$ difference; the own-stack is roughly compute-optimal for its size per \citealp{hoffmann2022chinchilla}, whereas Pythia is heavily over-trained), (ii)~\textbf{tokenizer} (4098-vocab BPE vs.\ ${\sim}50$k; larger vocabularies fragment field values like ``ibuprofen'' into fewer sub-tokens, which could itself change copy success), (iii)~\textbf{architecture family}, and (iv)~\textbf{finetuning method} (own-stack full fine-tune vs.\ Pythia LoRA $r{=}16$ --- LoRA may preserve pretrained copying while suppressing the memorization pathway full FT exploits). We therefore claim only that the gap is much smaller under the Pythia \emph{pipeline}, not that scale per se removes it. A pre-registered own-stack scale ladder is designed to separate scale from the stack bundle.
+\item \textbf{Transition point unobserved.} The gap drops somewhere between own-stack 10M (18.7) and Pythia-160M (3.5), but those endpoints are on different stacks; within Pythia the gap is already low at 160M with no monotonic trend, so ``by Pythia scale'' is safe while ``as models scale up'' is not yet supported.
+\item \textbf{1B point estimate.} Bounded, not identified, by training nondeterminism (\S\ref{sec:nondet}).
+\item \textbf{Exact-match metric.} The gap is a difference of exact-match recalls; per \citet{schaeffer2023mirage} such metrics can exaggerate scale-linked transitions, which is part of why we report across-instance SD and, at 1B, a training-run interval.
+\item \textbf{Gap-definition subtleties (conservative direction).} The seen/held split is at the dialogue level, so the held bucket mixes in seen field-values (a ``held'' dialogue draws a held-out value only per-field-probabilistically); and recalls are computed over parsed dialogues only, where at the nano rung the held split parses slightly less often than the seen split. Both push the \emph{measured} gap toward zero, so reported gaps (aggregate and per-field) are conservative lower bounds on the pure held-out-value effect; neither biases the cross-model comparison, which uses the identical instrument.
+\item \textbf{Single task and single scale family.} One synthetic clinical-summarization task; one scaling family. Generality across domains and families is untested here.
+\item \textbf{Anchor precision (resolved).} The 3M/10M anchors were re-scored on the same multi-instance instrument as the rest of the ladder ($18.3\pm1.3$, $18.7\pm1.5$); the whole ladder now shares one instrument, and the anchor gaps carry across-instance SD like the Pythia rungs.
+\end{itemize}
+
+\section{Future work (axes, not replacements)}\label{sec:future}
+The program extends as a matrix of one-variable-at-a-time questions, keeping Pythia as the reference scaling family: \textbf{Stage F} (family) holds capability ${\sim}$fixed (${\sim}160$--500M) and varies the family (Pythia vs.\ SmolLM/OLMo/TinyLlama) to ask whether the reduction tracks size or pipeline --- the direct test of \S\ref{sec:limitations}'s primary confound, alongside the pre-registered own-stack scale ladder. \textbf{Stage O} (objective) varies the finetuning objective at fixed model; \textbf{Stage R} (retrieval) adds RAG/pointer/copy-head mechanisms. \textbf{Frontier models} belong as \emph{external validation} --- ``does the phenomenon still appear in production-grade systems?'' --- not as ladder rungs, since they change every variable at once. \textbf{Stage M} (mechanism) is deliberately deferred until the behavioral phenomenon is fully deconfounded, so it asks ``why does this residual occur?'' rather than carrying the burden of justifying the ladder; the natural hypotheses are copy/retrieval circuitry --- induction heads \citep{olsson2022induction} and retrieval heads \citep{wu2024retrieval} --- that generalize poorly from seen to held-out values, with the behavioral failure-mode split (omission vs.\ memorized substitution, \S\ref{sec:ladder}) as its starting evidence.
+
+\section{Conclusion}\label{sec:conclusion}
+A severe held-out copying gap in sub-10M models --- specifically a failure to copy held-out lexical values into open slots, with the closed-value fields a zero-gap internal control --- was substantially smaller in the tested Pythia models; the cause (scale vs.\ pipeline) is left open by design. The measurement story is inseparable from the result: single-instance evaluation was under-powered, and at the top of the ladder training nondeterminism --- not evaluation noise --- sets the precision floor. Both were surfaced by pre-registered checks (equivalence, determinism) that failed productively. The contribution is less any single number than a research unit that repeatedly incorporated its own measurement limitations into its conclusions rather than explaining them away.
+
+\paragraph{Reproducibility.}
+All eval instances, recipes, scorers, per-run result files, and library versions are content-addressed and archived in the public repository (\url{https://github.com/wwk5q8z6kk-bit/nano-lm}); every number in this paper regenerates from committed artifacts.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
