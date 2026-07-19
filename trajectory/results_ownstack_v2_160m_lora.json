@@ -1,0 +1,112 @@
+{
+ "stage": "ownstack-160m-lora",
+ "trainable_params": 4028416,
+ "dims": {
+  "d": 1024,
+  "L": 14,
+  "H": 16,
+  "KV": 4,
+  "hd": 64,
+  "ff": 2752
+ },
+ "lora": {
+  "r": 16,
+  "alpha": 32,
+  "dropout": 0.0,
+  "targets": [
+   "q",
+   "k",
+   "v",
+   "o",
+   "g",
+   "u",
+   "dn"
+  ]
+ },
+ "prereg": "trajectory/PREREG_ownstack_160m.md",
+ "inst0": {
+  "parse": 1.0,
+  "diluted_gap": 9.999999999999998,
+  "clean_gap": 35.71428571428571,
+  "clean_per_field": {
+   "cc": 0.0,
+   "med": 66.66666666666667,
+   "alg": 100.0
+  }
+ },
+ "fresh_instances": [
+  {
+   "parse": 1.0,
+   "diluted_gap": 5.600000000000005,
+   "clean_gap": 25.454545454545453,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 47.82608695652174,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 8.399999999999997,
+   "clean_gap": 32.8125,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 50.0,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 6.2000000000000055,
+   "clean_gap": 26.271186440677962,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 42.85714285714286,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 6.999999999999995,
+   "clean_gap": 29.91452991452992,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 43.333333333333336,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 8.199999999999996,
+   "clean_gap": 33.606557377049185,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 51.72413793103448,
+    "alg": 100.0
+   }
+  }
+ ],
+ "diluted_fresh": [
+  5.600000000000005,
+  8.399999999999997,
+  6.2000000000000055,
+  6.999999999999995,
+  8.199999999999996
+ ],
+ "clean_fresh": [
+  25.454545454545453,
+  32.8125,
+  26.271186440677962,
+  29.91452991452992,
+  33.606557377049185
+ ],
+ "diluted_gap_mean": 7.08,
+ "diluted_gap_sd": 1.2214745187681935,
+ "clean_gap_mean": 29.611863837360506,
+ "clean_gap_sd": 3.699211966104838,
+ "fullft_reference": {
+  "diluted": 16.9,
+  "clean": 66.6
+ },
+ "gpu": "Tesla T4"
+}
