@@ -58,8 +58,12 @@ CORNER LANDED (seed-0): 3.2B+LoRA = 4.2±0.9 (clean 17.7) — Q1 fires COMPOUND/
 innocent; grid 16.9 -> ~7 -> 4.2 ≈ Pythia 3.5; per-slot fingerprint identical to
 Pythia's (cc 0, med 0, alg 100). inst0 hard-draw 9/9. SEED-1 LANDED |delta|=0.00 (behavioral determinism at
 the corner; per-instance vector IDENTICAL to pythia-410m — composition arithmetic over
-shared categorical state). POD DELETED, RunPod empty. PHASE A CLOSED. Next: Phase C-1
-(PREREG_token_coverage.md, committed) -> pools -> instances -> kernel -> ~1.5h GPU.
+shared categorical state). POD DELETED, RunPod empty. PHASE A/0 CLOSED. Owner Master Plan captured (papers/MASTER_PLAN.md) + invariants
+lockfile (papers/EMPIRICAL_FOUNDATION.md). NEXT BUILD: Phase 1 minimal vertical slice
+(Intent->Control->nano-lm->Evidence Ledger->Verifier->Risk->typed Memory on the scribe
+task; gate = equal-or-better clean metric + full provenance). C-1b (interference) runs
+AFTER the slice is measured, per owner ordering. C-1 coverage axis falsified pre-run —
+see PREREG_token_coverage.md AMENDMENT 1.
 
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
