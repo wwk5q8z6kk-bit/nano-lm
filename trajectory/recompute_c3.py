@@ -50,8 +50,12 @@ def majority_flip(rt, t):
     votes = [rt[t].get(s, 0.0) >= 0.5 for s in range(3)]
     return sum(votes) >= 2, votes
 
-def cell_rate(types, rt, pred):
-    sel = [t for t in types if pred(t)]
+def cell_rate(types, rt, pred, unstable=frozenset()):
+    # PREREG (line 92-93): "3-way-unstable types are reported separately and
+    # excluded from contrasts." The kernel's own cell_rate() implements this
+    # ("t not in unstable"); this harness must match or it silently computes a
+    # different quantity than the frozen rule specifies.
+    sel = [t for t in types if pred(t) and t not in unstable]
     if not sel: return None, 0
     return sum(majority_flip(rt, t)[0] for t in sel) / len(sel) * 100, len(sel)
 
@@ -59,14 +63,14 @@ def verdict(delta):
     if delta is None: return "UNRESOLVED (empty cell)"
     return "SUPPORTED" if delta >= 40 else ("REFUTED" if delta <= 15 else "UNRESOLVED")
 
-def contrast(rt, types, split_key, a, b):
+def contrast(rt, types, split_key, a, b, unstable=frozenset()):
     """mean over the other-two-factor strata of rate(split=a) - rate(split=b)."""
     others = [k for k in ("T", "B", "L") if k != split_key]
     diffs = []
     strata = set((LABEL[t][others[0]], LABEL[t][others[1]]) for t in types)
     for s0, s1 in strata:
-        ra, _ = cell_rate(types, rt, lambda t: LABEL[t][split_key] == a and LABEL[t][others[0]] == s0 and LABEL[t][others[1]] == s1)
-        rb, _ = cell_rate(types, rt, lambda t: LABEL[t][split_key] == b and LABEL[t][others[0]] == s0 and LABEL[t][others[1]] == s1)
+        ra, _ = cell_rate(types, rt, lambda t: LABEL[t][split_key] == a and LABEL[t][others[0]] == s0 and LABEL[t][others[1]] == s1, unstable)
+        rb, _ = cell_rate(types, rt, lambda t: LABEL[t][split_key] == b and LABEL[t][others[0]] == s0 and LABEL[t][others[1]] == s1, unstable)
         if ra is not None and rb is not None: diffs.append(ra - rb)
     return sum(diffs) / len(diffs) if diffs else None
 
@@ -83,9 +87,13 @@ def main():
     cell_types = [t for t in LABEL if MAN[t].get("T") in ("T-avail", "T-sep")
                   and MAN[t]["B"] in ("B-sub", "B-space") and MAN[t]["L"] in ("short", "long")]
 
-    dT = contrast(rt, cell_types, "T", "T-avail", "T-sep")
-    dB = contrast(rt, cell_types, "B", "B-sub", "B-space")
-    dL = contrast(rt, cell_types, "L", "short", "long")
+    # seed stability computed BEFORE contrasts -- the frozen rule excludes
+    # 3-way-unstable types from contrasts, it does not merely report them
+    unstable = set(t for t in cell_types if len(set(majority_flip(rt, t)[1])) > 1)
+
+    dT = contrast(rt, cell_types, "T", "T-avail", "T-sep", unstable)
+    dB = contrast(rt, cell_types, "B", "B-sub", "B-space", unstable)
+    dL = contrast(rt, cell_types, "L", "short", "long", unstable)
     print("\n== FROZEN CONTRASTS (independent recompute) ==")
     for name, dv in (("H-transition (T-avail - T-sep)", dT),
                      ("H-boundary  (B-sub - B-space)", dB),
@@ -129,11 +137,15 @@ def main():
           + ("(graded on transition frequency)" if abs(rho) >= 0.4 else "(flat: binary seen/unseen, not dose-graded)"))
     overlap = False  # intrinsic to the factor definition; recorded for the output JSON
 
-    # (2) type-level bootstrap CI (resample TYPES within cells, deterministic LCG)
+    # (2) type-level bootstrap CI (resample TYPES within cells, deterministic LCG).
+    # Resamples only stable types -- the frozen rule excludes unstable types from
+    # contrasts, so a CI on the contrast must be built from the same population.
     print("\n== TYPE-BOOTSTRAP 90% CI on H-transition (resample types, 2000 draws) ==")
     rng = LCG(20260750)
     by_cell = collections.defaultdict(list)
-    for t in cell_types: by_cell[(LABEL[t]["T"], LABEL[t]["B"], LABEL[t]["L"])].append(t)
+    for t in cell_types:
+        if t in unstable: continue
+        by_cell[(LABEL[t]["T"], LABEL[t]["B"], LABEL[t]["L"])].append(t)
     boots = []
     for _ in range(2000):
         resampled = {c: [rng.choice(ts) for _ in ts] for c, ts in by_cell.items()}
@@ -151,8 +163,7 @@ def main():
     lo, hi = boots[int(0.05 * len(boots))], boots[int(0.95 * len(boots))]
     print(f"  dT = {dT:+.1f}  90% CI [{lo:+.1f}, {hi:+.1f}]  (n={len(boots)} bootstraps)")
 
-    # seed stability
-    unstable = [t for t in cell_types if len(set(majority_flip(rt, t)[1])) > 1]
+    # seed stability (unstable set computed above, before the contrasts that exclude it)
     print(f"\n== SEED STABILITY == {len(unstable)}/{len(cell_types)} cell types seed-unstable "
           f"({len(unstable)/len(cell_types):.0%})")
 
