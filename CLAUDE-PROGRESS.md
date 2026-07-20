@@ -48,7 +48,12 @@ copy-vs-classify hypothesis (labeled, falsifiable) is in P1 §6.1 and RESEARCH_P
    7.1±1.2, clean 29.6±3.7 → METHOD carries ~73% of the stack effect; both methods
    memorize (≈0 train loss) but only full-FT destroys the copy pathway; LoRA@160M solves
    cc (clean 0.0), alg still 100 (7/7 configs). Folded into paper2_draft + P1 addendum.
-   NEXT best run: LoRA at the 3.15M/10M anchors (~1.5h, completes the scale×method grid).
+   CHINCHILLA CONTROL DONE (peer session, RunPod H100, ~$37): 3.2B tokens + full FT =
+   7.0±1.0 / 29.4±4.0 — IDENTICAL to 200M+LoRA → data & method are SUBSTITUTES
+   (interaction account replaces 73/27; papers + program updated). Base ckpt preserved
+   at checkpoints/chinchilla-160m/ (gitignored, 2.5GB).
+   NEXT best run: the missing factorial corner 3.2B+LoRA (~30 min on the preserved base);
+   then LoRA at the anchors (~1.5h).
    DESIGN NOTE (base-matching): nano scribe.pt was finetuned from dpo.pt (chat lineage),
    scale from scale10m_pretrain.pt (raw pretrain) — the LoRA cells must use the SAME base
    per anchor (nano-LoRA from dpo.pt, scale-LoRA from scale10m_pretrain.pt; all v0.1

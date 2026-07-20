@@ -60,14 +60,16 @@ own-stack curve is flat across **50× of scale** (18.3 → 18.7 → 16.9) where 
 reads 3.5 — the decision rule fires STACK-dominant. **H0a is thereby also strongly
 supported within-stack** (scale alone does not move the gap under this recipe). Caveats:
 single training run; ~16× under-Chinchilla for 160M (the PREREG's "within this recipe"
-framing applies); the 2×2 method arm (2026-07-19) then DECOMPOSED the stack effect: LoRA on the same
-checkpoint reads 7.1 ± 1.2 — the finetuning method alone carries ~73% of the
-own-fullFT→Pythia difference; pretraining breadth/tokenizer carry the residual ~27%
-(own-LoRA 7.1 vs Pythia-LoRA 3.5). Both methods reach ≈0 train loss — an
-implicit-regularization account: full FT's fit destroys the pretrained copy pathway,
-LoRA's preserves it. The 5-value allergy slot fails under EVERY tested configuration
-(both stacks × three scales × both methods) — slot diversity is the binding constraint.
-Next decomposition: LoRA at the 3–10M anchors (does the method effect need capacity?).
+framing applies); the factor isolations (2026-07-19) then revealed the stack effect's STRUCTURE: LoRA on
+the same checkpoint reads 7.1 ± 1.2, and — run by a peer session on an H100 — the
+Chinchilla control (3.2B tokens, full FT retained) reads 7.0 ± 1.0: statistically
+identical. Data and method are SUBSTITUTES, not additive components — the large gap is
+the interaction of an under-trained base with full-parameter adaptation; either escape
+recovers the same ~10 pts. Both finetuning methods reach ≈0 train loss (memorization is
+not the differentiator; destroying the copy pathway is). The 5-value allergy slot fails
+under NINE configurations (stacks × scales × methods × data budgets) — slot diversity is
+the binding constraint. Missing factorial corner: 3.2B+LoRA (base preserved, ~30 min) —
+do the escapes compound toward Pythia's 3.5 or floor at ~7?
 
 ## Theory tree (separate theory from evidence; each arrow needs its own evidence)
 

@@ -19,15 +19,19 @@ measured on the identical instrument. The gap **does not close: 16.9 ± 1.7** di
 **50× of within-stack scale** (3.15M → 10M → 160M) the copying gap is flat
 (18.3 → 18.7 → 16.9), while Pythia at the *same parameter count* reads 3.5. The
 pre-registered decision rule fires **stack-dominant**: parameter count alone does not
-produce the collapse; properties of the training stack do. A second arm then holds the
-checkpoint fixed and swaps only the finetuning method (full FT → LoRA r=16, 4.03M
-trainables): the gap **more than halves — 7.1 ± 1.2** diluted (29.6 ± 3.7 value-level).
-Decomposing the own-fullFT → Pythia difference, the **finetuning method alone accounts
-for ~73%** of it; the remaining pretraining/tokenizer bundle ~27%. Strikingly, both
-methods drive training loss to ≈0 — both *memorize* the finetuning set — but full
-finetuning's fit destroys the pretrained copy pathway while LoRA's low-rank fit
-preserves it: the copying failure is installed by the *adaptation*, not only by
-capacity or data. Per-slot structure sharpens the
+produce the collapse; properties of the training stack do. Two further arms then vary one factor each: swapping only the finetuning method
+(full FT → LoRA r=16 on the same checkpoint) drops the gap to **7.1 ± 1.2** diluted
+(29.6 ± 3.7 value-level); separately, scaling only the pretraining data to
+Chinchilla-optimal (200M → 3.2B tokens, full FT retained) drops it to **7.0 ± 1.0**
+(29.4 ± 4.0) — *statistically identical outcomes from two entirely different
+interventions*. Data quantity and adaptation method are therefore **substitutes, not
+additive components**: the large gap is specifically the interaction of an
+*under-trained base* with *aggressive full-parameter adaptation*, and fixing either
+factor alone recovers the same ~10 points. Both finetuning methods drive training loss
+to ≈0 — the difference is not whether the finetuning set is memorized but whether the
+fit destroys the pretrained copy pathway (full FT on a weak base) or leaves it intact
+(LoRA, or full FT on a robust base). A residual ~2× versus Pythia-160M (3.5 ± 0.7)
+remains for the still-unseparated breadth/tokenizer bundle. Per-slot structure sharpens the
 attribution: at every scale, in both stacks, the failure concentrates in low-diversity
 slots (the 5-value allergy slot fails totally even in Pythia-410M), consistent with a
 per-slot competition between memorization and copying that capacity alone does not settle.
@@ -76,31 +80,40 @@ scale (87.3 → 79.5 → 66.6) — capacity helps at the margin — but at 160M 
 pure held-out-value failure is still **4.5×** the Pythia-160M value; per-field, the
 allergy slot remains at **100.0** (clean) at all three own-stack scales.
 
-### 3.2 The 2×2 method control — the method carries most of it
+### 3.2 Factor isolation — data and method are substitutes
 
-| diluted gap | full FT | LoRA r=16 |
+| own-stack 160M, diluted (clean) | 200M tokens | 3.2B tokens (Chinchilla) |
 |---|---|---|
-| own-stack 160M | 16.9 ± 1.7 | **7.1 ± 1.2** |
-| pythia-160m | (not run) | 3.5 ± 0.7 |
+| **full FT** | 16.9 ± 1.7 (66.6 ± 5.0) | **7.0 ± 1.0 (29.4 ± 4.0)** |
+| **LoRA r=16** | **7.1 ± 1.2 (29.6 ± 3.7)** | *(missing cell — base preserved)* |
 
-(clean/value-level: own-160M full-FT 66.6 ± 5.0 → LoRA **29.6 ± 3.7**; Pythia-160M 14.7.)
+Reference: pythia-160m (~300B tokens, LoRA) 3.5 ± 0.7 (14.7 ± 2.1).
 
-The pre-specified reading fires **LoRA ≪ full-FT**: swapping only the adaptation method,
-on the same pretrained checkpoint and data, removes more than half the gap. In the
-decomposition of the own-fullFT → Pythia-LoRA difference (16.9 → 3.5), the method step
-(16.9 → 7.1) accounts for **~73%** and the remaining stack bundle (7.1 → 3.5;
-pretraining breadth ~1500×, tokenizer) **~27%**. Two sharpening observations:
+Each single-factor intervention was run against the 200M+full-FT corner, and the result
+is striking: **7.1 ± 1.2 vs 7.0 ± 1.0** — LoRA-on-a-weak-base and full-FT-on-a-strong-base
+land on statistically identical gaps, though they change *entirely different* variables.
+A naïve additive reading of the method arm alone would have attributed ~73% of the
+own→Pythia difference to the finetuning method; the Chinchilla control refutes
+additivity — data quantity alone recovers the *same* ~10 points. The correct structure is
+an **interaction**: the large gap lives specifically in the under-trained-base ×
+full-parameter-adaptation cell, and either escape route out of that corner recovers most
+of it. (The 3.2B+LoRA cell — both escapes at once — is the missing factorial corner; the
+Chinchilla base checkpoint is preserved, making it a ~30-minute finetune.) Two
+sharpening observations:
 
 1. **Both methods memorize.** Full FT and LoRA both reach ≈0 training loss and 100%
    parse — the difference is not *whether* the finetuning set is fit but *how*: the
    full-parameter fit overwrites the pretrained copy pathway; the 4M-parameter low-rank
    fit reaches the same training loss while leaving it intact — an implicit-regularization
    account of the failure, not a capacity account.
-2. **The slot gradient survives the method change.** Under LoRA at 160M, clean per-field:
-   cc **0.0** (solved — so the complaint-copy pathway *exists* in the own-stack pretrained
-   model and full FT was destroying it), med ~52, alg **100.0** (the 5-training-value slot
-   fails under every configuration tested — both stacks, three scales, both methods).
-   Slot diversity remains the binding constraint that no tested intervention lifts.
+2. **The slot gradient survives every intervention.** Under LoRA at 160M, clean
+   per-field: cc **0.0** (solved — the complaint-copy pathway *exists* in the own-stack
+   pretrained model; full FT on the weak base was destroying it), med ~52, alg **100.0**.
+   Under Chinchilla pretraining with full FT: cc 4.5 (nearly solved by data alone),
+   med 34.5, alg **100.0** again. The 5-training-value allergy slot has now failed under
+   **nine** configurations (both stacks × three scales × both methods × both data
+   budgets) — slot diversity remains the binding constraint that no tested intervention
+   lifts, exactly as the slot-diversity hypothesis predicts.
 
 ### 3.3 Familiar structure at the new rung
 
@@ -117,28 +130,32 @@ collapse Paper 1 measured is a **stack effect**, not a scale effect, under the t
 conditions. Combined with the slot structure, the natural reading is that copying is
 induced by *pressure* (slot diversity) and *pretraining breadth*, not by capacity alone.
 
-**Established by the 2×2:** the finetuning *method* is the dominant single component
-(~73% of the difference at 160M); pretraining breadth/tokenizer carry the residual ~27%
-(own-LoRA 7.1 is still 2× Pythia-LoRA 3.5).
+**Established by the factor isolations:** the large gap is an **interaction** — it
+requires *both* an under-trained base *and* full-parameter adaptation; removing either
+(LoRA, or Chinchilla-scaled data) recovers the same ~10 points to ≈7. Additive
+attributions ("X% method, Y% data") are refuted by the substitutability. A ~2× residual
+versus Pythia persists under every single-factor fix.
 
-**Not established:** the method decomposition at the *small* anchors (does LoRA rescue
-3–10M models too, or does the method effect require 160M-scale capacity? — the cheapest,
-most informative next run); which member of the residual bundle carries the last 2×
-(Chinchilla-scaled pretraining vs tokenizer — designed follow-ups); training-run variance
-at 160M (single run per cell).
+**Not established:** the missing factorial corner (3.2B + LoRA — do the two escapes
+compound toward Pythia's 3.5, or floor at ~7? base checkpoint preserved, ~30-min run);
+the method effect at the *small* anchors (does LoRA rescue 3–10M models, or does escape
+require 160M-scale capacity?); which member of the remaining breadth/tokenizer bundle
+carries the final 2×; training-run variance (single run per cell; the Chinchilla cell
+also changes venue — H100 vs T4).
 
 ## 5. Next decompositions (designed, not run)
 
-1. **LoRA at the anchors** — LoRA-finetune the frozen 3.15M/10M pretrains: does the
-   method effect require capacity, or does it rescue tiny models too? (Cheapest and most
-   informative: completes the scale × method grid.)
-2. **Chinchilla control** — same 160M, TARGET_TOKENS ≈ 3.2B: is the residual 2× data
-   *quantity*?
-3. **Tokenizer swap** — own-stack with a ~50k vocab: is it value fragmentation?
+1. **The missing factorial corner: 3.2B + LoRA** — the preserved Chinchilla base makes
+   this a ~30-minute finetune. Compounding (→ ~3.5–5) would reduce the entire own↔Pythia
+   difference to data×method with the tokenizer innocent; flooring (≈7) would implicate
+   the breadth/tokenizer bundle as a hard residual.
+2. **LoRA at the anchors** — LoRA-finetune the frozen 3.15M/10M bases (base-matched:
+   nano from dpo.pt, scale from scale10m_pretrain.pt): does escape require capacity?
+3. **Tokenizer swap** — own-stack with a ~50k vocab: is the residual value fragmentation?
 4. **Slot-diversity intervention** — vary the allergy slot's training diversity at fixed
-   scale: the direct test of the per-slot hypothesis, now binding under every tested
-   configuration.
-5. **Duplicate finetunes** — training-run variance per 2×2 cell (single run each).
+   scale: the direct test of the hypothesis now binding in nine configurations.
+5. **Duplicate finetunes** — training-run variance per cell (single run each; Chinchilla
+   cell additionally changes venue, H100 vs T4).
 
 ---
 *All artifacts: `results_ownstack_v2_160m_fullft.json` (immutable), kernels
