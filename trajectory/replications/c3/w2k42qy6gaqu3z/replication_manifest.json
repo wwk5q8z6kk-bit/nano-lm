@@ -26,5 +26,16 @@
  "output_dir": "trajectory/replications/c3/w2k42qy6gaqu3z/",
  "retrieval": "scp results_c3_10m.json + outputs_c3_seed{0,1,2}.jsonl + c3_run.log -> output_dir",
  "teardown": "runpodctl pod delete w2k42qy6gaqu3z; runpodctl pod list",
- "isolation": "by directory; canonical filenames inside output_dir so the frozen scorer (recompute_c3.py) runs byte-identically on primary vs replication; primary artifacts in trajectory/ are never written"
+ "isolation": "by directory; canonical filenames inside output_dir so the frozen scorer (recompute_c3.py) runs byte-identically on primary vs replication; primary artifacts in trajectory/ are never written",
+ "utc_end": "2026-07-20T14:30:57Z",
+ "estimated_cost_usd": 0.3,
+ "cost_note": "estimate: ~35min pod lifetime x $0.49/hr; billing API not queried post-delete",
+ "result_hashes_sha256": {
+  "results_c3_10m.json": "e22393bda2f12be80d0c99be6ae6977e3592f3819d80420ad4982d5d4b45fc09",
+  "outputs_c3_seed0.jsonl": "96fea39a3cbc456f3864aa8945f2772ca1774246097107913ad28ab2d8430aed",
+  "outputs_c3_seed1.jsonl": "9e357592e16a37eea837c8b912b1f46c04d529b7893fb73ea27286a4523c6764",
+  "outputs_c3_seed2.jsonl": "bb35d69bd379f0eb744c3a2abcd1c17752726d82144735437130b4c13ee81eca"
+ },
+ "remote_local_hash_match": true,
+ "pod_deleted": true
 }

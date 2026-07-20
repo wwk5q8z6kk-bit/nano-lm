@@ -1,0 +1,40 @@
+PRELAUNCH_C3_SAFETY_CHECK: max observed response 47 tok, max_new=64, margin=17 tok -- OK
+downloading frozen base...
+
+=== FT seed 0 (D80 arm) ===
+  ft 400/1125 loss 0.000
+  ft 800/1125 loss 0.000
+  seed0 m0 done (393/400 parsed)
+  seed0 m1 done (788/800 parsed)
+  seed0 m2 done (1182/1200 parsed)
+  seed0 m3 done (1575/1600 parsed)
+  seed0 m4 done (1970/2000 parsed)
+  seed0: parse 98% seen-alg 100%
+
+=== FT seed 1 (D80 arm) ===
+  ft 400/1125 loss 0.000
+  ft 800/1125 loss 0.000
+  seed1 m0 done (398/400 parsed)
+  seed1 m1 done (795/800 parsed)
+  seed1 m2 done (1193/1200 parsed)
+  seed1 m3 done (1589/1600 parsed)
+  seed1 m4 done (1987/2000 parsed)
+  seed1: parse 99% seen-alg 100%
+
+=== FT seed 2 (D80 arm) ===
+  ft 400/1125 loss 0.000
+  ft 800/1125 loss 0.000
+  seed2 m0 done (388/400 parsed)
+  seed2 m1 done (774/800 parsed)
+  seed2 m2 done (1163/1200 parsed)
+  seed2 m3 done (1552/1600 parsed)
+  seed2 m4 done (1942/2000 parsed)
+  seed2: parse 97% seen-alg 100%
+
+RUN_VOID: False (T-full retrodiction 100.0)
+H-transition: -2.5 -> REFUTED
+H-boundary:   -7.5 -> REFUTED
+H-length:     22.5 -> UNRESOLVED
+truncation-locus: 8.51063829787234% (>=60 confirms)
+seed-unstable: 27% ; H-stochastic supported: False
+results -> results_c3_10m.json

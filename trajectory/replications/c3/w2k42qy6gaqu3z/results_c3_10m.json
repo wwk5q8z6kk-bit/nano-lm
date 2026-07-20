@@ -1,0 +1,1566 @@
+{
+ "seeds": {
+  "0": {
+   "per_type": {
+    "allergy pills": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "amantadine": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "antacids": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "apigenin": {
+     "hits": 0,
+     "n": 15,
+     "recall": 0.0
+    },
+    "ash fiber": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "ash fumes": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "ash gel": {
+     "hits": 13,
+     "n": 15,
+     "recall": 0.8666666666666667
+    },
+    "ash ointment": {
+     "hits": 12,
+     "n": 15,
+     "recall": 0.8
+    },
+    "azelate": {
+     "hits": 0,
+     "n": 15,
+     "recall": 0.0
+    },
+    "basil fiber": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "basil fumes": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "basil gel": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "basil ointment": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "bee stings": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "blue dye": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "borneol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "bromamine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "camphor": {
+     "hits": 4,
+     "n": 10,
+     "recall": 0.4
+    },
+    "cane fiber": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cane fumes": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cane gel": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cane ointment": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cane sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "capsaicin": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "catechin": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cetirizine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "chia seeds": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "chloramine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "citrate": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "clonidine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "coal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cocaine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cough syrup": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "coumarin": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "daisy seed": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "deer dander": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "desloratadine": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "dynamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "elm pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "eye drops": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "famotidine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "fennel sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "fexofenadine": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "fluoramine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "food additives": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "food coloring": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "generic drugs": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ginger sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "goat milk": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "gum arabic": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "hazel pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "henna": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "hesperidin": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "hibiscus fiber": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "hornet stings": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "hydrocortisone cream": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ibuprofen": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "iodine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "loratadine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "magnesium": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "maple pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "maple sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "melon rind": {
+     "hits": 1,
+     "n": 10,
+     "recall": 0.1
+    },
+    "naproxen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "nasal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "nerolidol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "novamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "olopatadine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "opal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "palm sting": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "paracetamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "pentamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "pet food": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "pine resin": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "ptomaine": {
+     "hits": 7,
+     "n": 10,
+     "recall": 0.7
+    },
+    "pumpkin seeds": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "quinoa": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ragweed pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "rice milk": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "ropinidine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "rose hips": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "rye sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "saline rinse": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "sap sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "sisal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "spider mites": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "strawberries": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "sulfa drugs": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "vitamin c": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "willow pollen": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "wool": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "xylocaine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "zinc tablets": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    }
+   },
+   "parse": 0.985,
+   "seen_alg_recall": 1.0,
+   "wall_secs": 568
+  },
+  "1": {
+   "per_type": {
+    "allergy pills": {
+     "hits": 0,
+     "n": 15,
+     "recall": 0.0
+    },
+    "amantadine": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "antacids": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "apigenin": {
+     "hits": 0,
+     "n": 15,
+     "recall": 0.0
+    },
+    "ash fiber": {
+     "hits": 12,
+     "n": 15,
+     "recall": 0.8
+    },
+    "ash fumes": {
+     "hits": 13,
+     "n": 15,
+     "recall": 0.8666666666666667
+    },
+    "ash gel": {
+     "hits": 13,
+     "n": 15,
+     "recall": 0.8666666666666667
+    },
+    "ash ointment": {
+     "hits": 7,
+     "n": 15,
+     "recall": 0.4666666666666667
+    },
+    "azelate": {
+     "hits": 0,
+     "n": 15,
+     "recall": 0.0
+    },
+    "basil fiber": {
+     "hits": 10,
+     "n": 15,
+     "recall": 0.6666666666666666
+    },
+    "basil fumes": {
+     "hits": 12,
+     "n": 15,
+     "recall": 0.8
+    },
+    "basil gel": {
+     "hits": 13,
+     "n": 15,
+     "recall": 0.8666666666666667
+    },
+    "basil ointment": {
+     "hits": 11,
+     "n": 15,
+     "recall": 0.7333333333333333
+    },
+    "bee stings": {
+     "hits": 4,
+     "n": 15,
+     "recall": 0.26666666666666666
+    },
+    "blue dye": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "borneol": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "bromamine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "camphor": {
+     "hits": 5,
+     "n": 10,
+     "recall": 0.5
+    },
+    "cane fiber": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "cane fumes": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "cane gel": {
+     "hits": 4,
+     "n": 10,
+     "recall": 0.4
+    },
+    "cane ointment": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "cane sting": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "capsaicin": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "catechin": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "cetirizine": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "chia seeds": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "chloramine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "citrate": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "clonidine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "coal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cocaine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cough syrup": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "coumarin": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "daisy seed": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "deer dander": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "desloratadine": {
+     "hits": 7,
+     "n": 10,
+     "recall": 0.7
+    },
+    "dynamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "elm pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "eye drops": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "famotidine": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "fennel sting": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "fexofenadine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "fluoramine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "food additives": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "food coloring": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "generic drugs": {
+     "hits": 7,
+     "n": 10,
+     "recall": 0.7
+    },
+    "ginger sting": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "goat milk": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "gum arabic": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "hazel pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "henna": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "hesperidin": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "hibiscus fiber": {
+     "hits": 1,
+     "n": 10,
+     "recall": 0.1
+    },
+    "hornet stings": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "hydrocortisone cream": {
+     "hits": 5,
+     "n": 10,
+     "recall": 0.5
+    },
+    "ibuprofen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "iodine": {
+     "hits": 4,
+     "n": 10,
+     "recall": 0.4
+    },
+    "loratadine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "magnesium": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "maple pollen": {
+     "hits": 5,
+     "n": 10,
+     "recall": 0.5
+    },
+    "maple sting": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "melon rind": {
+     "hits": 3,
+     "n": 10,
+     "recall": 0.3
+    },
+    "naproxen": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "nasal spray": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "nerolidol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "novamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "olopatadine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "opal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "palm sting": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "paracetamol": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "pentamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "pet food": {
+     "hits": 7,
+     "n": 10,
+     "recall": 0.7
+    },
+    "pine resin": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ptomaine": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "pumpkin seeds": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "quinoa": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ragweed pollen": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "rice milk": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "ropinidine": {
+     "hits": 3,
+     "n": 10,
+     "recall": 0.3
+    },
+    "rose hips": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "rye sting": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "saline rinse": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "sap sting": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "sisal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "spider mites": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "strawberries": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "sulfa drugs": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "vitamin c": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "willow pollen": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "wool": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "xylocaine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "zinc tablets": {
+     "hits": 7,
+     "n": 10,
+     "recall": 0.7
+    }
+   },
+   "parse": 0.9935,
+   "seen_alg_recall": 1.0,
+   "wall_secs": 556
+  },
+  "2": {
+   "per_type": {
+    "allergy pills": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "amantadine": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "antacids": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "apigenin": {
+     "hits": 0,
+     "n": 15,
+     "recall": 0.0
+    },
+    "ash fiber": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "ash fumes": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "ash gel": {
+     "hits": 13,
+     "n": 15,
+     "recall": 0.8666666666666667
+    },
+    "ash ointment": {
+     "hits": 10,
+     "n": 15,
+     "recall": 0.6666666666666666
+    },
+    "azelate": {
+     "hits": 0,
+     "n": 15,
+     "recall": 0.0
+    },
+    "basil fiber": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "basil fumes": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "basil gel": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "basil ointment": {
+     "hits": 14,
+     "n": 15,
+     "recall": 0.9333333333333333
+    },
+    "bee stings": {
+     "hits": 15,
+     "n": 15,
+     "recall": 1.0
+    },
+    "blue dye": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "borneol": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "bromamine": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "camphor": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "cane fiber": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cane fumes": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cane gel": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cane ointment": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "cane sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "capsaicin": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "catechin": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cetirizine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "chia seeds": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "chloramine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "citrate": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "clonidine": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "coal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "cocaine": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "cough syrup": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "coumarin": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "daisy seed": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "deer dander": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "desloratadine": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "dynamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "elm pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "eye drops": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "famotidine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "fennel sting": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "fexofenadine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "fluoramine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "food additives": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "food coloring": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "generic drugs": {
+     "hits": 7,
+     "n": 10,
+     "recall": 0.7
+    },
+    "ginger sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "goat milk": {
+     "hits": 5,
+     "n": 10,
+     "recall": 0.5
+    },
+    "gum arabic": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "hazel pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "henna": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "hesperidin": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "hibiscus fiber": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "hornet stings": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "hydrocortisone cream": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ibuprofen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "iodine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "loratadine": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "magnesium": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "maple pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "maple sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "melon rind": {
+     "hits": 3,
+     "n": 10,
+     "recall": 0.3
+    },
+    "naproxen": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "nasal spray": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "nerolidol": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "novamol": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "olopatadine": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "opal spray": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "palm sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "paracetamol": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "pentamol": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "pet food": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "pine resin": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ptomaine": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "pumpkin seeds": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "quinoa": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "ragweed pollen": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "rice milk": {
+     "hits": 1,
+     "n": 10,
+     "recall": 0.1
+    },
+    "ropinidine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "rose hips": {
+     "hits": 0,
+     "n": 10,
+     "recall": 0.0
+    },
+    "rye sting": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "saline rinse": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "sap sting": {
+     "hits": 8,
+     "n": 10,
+     "recall": 0.8
+    },
+    "sisal spray": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "spider mites": {
+     "hits": 6,
+     "n": 10,
+     "recall": 0.6
+    },
+    "strawberries": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "sulfa drugs": {
+     "hits": 3,
+     "n": 10,
+     "recall": 0.3
+    },
+    "vitamin c": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "willow pollen": {
+     "hits": 9,
+     "n": 10,
+     "recall": 0.9
+    },
+    "wool": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "xylocaine": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    },
+    "zinc tablets": {
+     "hits": 10,
+     "n": 10,
+     "recall": 1.0
+    }
+   },
+   "parse": 0.971,
+   "seen_alg_recall": 1.0,
+   "wall_secs": 554
+  }
+ },
+ "base_checkpoint_sha256": "892180f02d09cacd2d129ba041dcbcca7635594bc98d8402203af64afc2fc88d",
+ "base_checkpoint_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/releases/download/v0.1/scale10m_pretrain.pt",
+ "decisions": {
+  "H_transition": {
+   "delta_pts": -2.5,
+   "verdict": "REFUTED",
+   "per_BL": [
+    [
+     "B-sub",
+     "short",
+     100.0,
+     80.0,
+     20.0
+    ],
+    [
+     "B-sub",
+     "long",
+     80.0,
+     60.0,
+     20.0
+    ],
+    [
+     "B-space",
+     "short",
+     100.0,
+     100.0,
+     0.0
+    ],
+    [
+     "B-space",
+     "long",
+     50.0,
+     100.0,
+     -50.0
+    ]
+   ]
+  },
+  "H_boundary": {
+   "delta_pts": -7.5,
+   "verdict": "REFUTED",
+   "per_TL": [
+    [
+     "T-avail",
+     "short",
+     100.0,
+     100.0,
+     0.0
+    ],
+    [
+     "T-avail",
+     "long",
+     80.0,
+     50.0,
+     30.0
+    ],
+    [
+     "T-sep",
+     "short",
+     80.0,
+     100.0,
+     -20.0
+    ],
+    [
+     "T-sep",
+     "long",
+     60.0,
+     100.0,
+     -40.0
+    ]
+   ]
+  },
+  "H_length": {
+   "delta_pts": 22.5,
+   "verdict": "UNRESOLVED",
+   "per_TB": [
+    [
+     "T-avail",
+     "B-sub",
+     100.0,
+     80.0,
+     20.0
+    ],
+    [
+     "T-avail",
+     "B-space",
+     100.0,
+     50.0,
+     50.0
+    ],
+    [
+     "T-sep",
+     "B-sub",
+     80.0,
+     60.0,
+     20.0
+    ],
+    [
+     "T-sep",
+     "B-space",
+     100.0,
+     100.0,
+     0.0
+    ]
+   ]
+  },
+  "T_full_control": {
+   "rate_pct": 100.0,
+   "n": 8,
+   "run_void": false
+  },
+  "truncation_locus_check": {
+   "rate_pct": 8.51063829787234,
+   "n_misses": 188,
+   "cap_confound_excluded": 0,
+   "confirms_boundary_locus": false
+  },
+  "seed_unstable_pct": 26.881720430107524,
+  "seed_unstable_types": [
+   "allergy pills",
+   "ash ointment",
+   "bee stings",
+   "borneol",
+   "camphor",
+   "cane gel",
+   "cane ointment",
+   "cane sting",
+   "capsaicin",
+   "fennel sting",
+   "ginger sting",
+   "goat milk",
+   "hibiscus fiber",
+   "maple sting",
+   "naproxen",
+   "nasal spray",
+   "palm sting",
+   "ragweed pollen",
+   "ropinidine",
+   "rose hips",
+   "rye sting",
+   "sap sting",
+   "spider mites",
+   "strawberries",
+   "willow pollen"
+  ],
+  "H_stochastic_supported": false
+ }
+}

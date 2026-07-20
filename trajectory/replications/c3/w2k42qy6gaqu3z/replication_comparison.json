@@ -1,0 +1,47 @@
+{
+ "primary": {
+  "dT": 1.6666666666666643,
+  "dB": -8.333333333333336,
+  "dL": 25.000000000000007,
+  "vT": "REFUTED",
+  "vB": "REFUTED",
+  "vL": "UNRESOLVED",
+  "tfull_pct": 100.0,
+  "n_unstable": 12,
+  "err": {
+   "morphological_near_miss": 173,
+   "truncation": 47,
+   "tail_only": 26,
+   "parse_failure": 38,
+   "substitution": 84,
+   "exact_copy": 14,
+   "garble": 6,
+   "omission": 8
+  }
+ },
+ "replication": {
+  "dT": -2.5,
+  "dB": -7.5,
+  "dL": 22.5,
+  "vT": "REFUTED",
+  "vB": "REFUTED",
+  "vL": "UNRESOLVED",
+  "tfull_pct": 100.0,
+  "n_unstable": 14,
+  "err": {
+   "morphological_near_miss": 166,
+   "truncation": 47,
+   "parse_failure": 60,
+   "substitution": 75,
+   "exact_copy": 6,
+   "omission": 27,
+   "tail_only": 26
+  }
+ },
+ "flip_changed_types": [
+  "desloratadine",
+  "ptomaine"
+ ],
+ "verdicts_reproduce": true,
+ "note": "compare-without-merge; primary result at 0359c22 is unchanged"
+}
