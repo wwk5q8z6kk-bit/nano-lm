@@ -78,24 +78,41 @@ boundaries (38% of misses; ragweed→"ragweed" keeps the NOVEL half). I-xslot 10
 seeds (trained token-transitions copy regardless of slot). 8/34 types seed-boundary-
 variant (ragweed flips 0→100 across venue/seed). Full census:
 results_interference_modes.json; verdict recorded in PREREG_token_coverage.md RESULT.
-C-3 (transition/boundary/length) is FULLY BUILT and committed (another session, commits
-943b446 pools / 2e6c0ce eval / 93db8d1+45531e2 kernel): T×B×L factorial, 48 cell types
-(6 per cell, all 8 cells filled) + 11 T-full controls + 34 C-1b bridges = 93 held types,
-orthogonality hard gate PASS, retrodiction PASS, generation-cap guard verified sound
-(asserts maxlen+margin<max_new pre-launch; cap_confound excluded from truncation metric).
-A LIVE C-3 RUN is executing on RunPod pod tgfwywwxwdyww1 ("c3-...-4", rented 12:43 UTC
-2026-07-20, $0.69/hr) — owned by another session; NOT duplicated per single-owner-contract
-collision rule. My contributions this session (committed 058758e): independent recompute
-harness trajectory/recompute_c3.py (reads only raw logs + frozen manifest, no kernel
-import = evidence level 2; adds within-T-avail junction-count dose-response + type-level
-bootstrap CI) with 6/6 fixture tests (test_recompute_c3.py), and a pre-result scoping note
-in PREREG_C3 (T-avail≥20 vs T-sep=0 are junction-frequency-DISJOINT by the factor's
-definition, so a SUPPORTED H-transition must read as "junction-observed vs -unobserved,
-individual tokens frequency-matched", NOT "cannot predict tails"; the run's balance report
-SMD 2.42 is this same disjointness, non-blocking). NEXT: when the live run's
-outputs_c3_seed{0,1,2}.jsonl land (peer commit, or adopt if the pod orphans), run
-recompute_c3.py to cross-check results_c3_10m.json and apply the frozen verdict.
+C-3 (transition/boundary/length) EXECUTED AND CLOSED (2026-07-20, RunPod RTX 4090, pod
+tgfwywwxwdyww1, ~$0.35, pod deleted, billing confirmed stopped; commits 943b446 pools /
+2e6c0ce eval / 93db8d1+45531e2 kernel / a07862d RESULT artifacts / a547f33 RESULT writeup):
+T×B×L factorial, 48 cell types (6/cell, all 8 cells filled) + 11 T-full controls + 34 C-1b
+bridges = 93 held types. Mechanical verdicts: **H-transition REFUTED** (+1.67pts, rule ≤15),
+**H-boundary REFUTED** (−8.33pts), **H-length UNRESOLVED** (+25pts, band 15-40, Wilson-CI
+shows this is noise-dominated at n=2-6/cell, not a suppressed trend). T-full control 100%
+(run valid, not void). Truncation-locus 12.36% — does NOT confirm the boundary-as-locus
+mechanism (rule ≥60%). Seed-unstable 24.7% (23/93). **H-stochastic NOT SUPPORTED** (AND-gate
+needs all three REFUTED; H-length is UNRESOLVED). Dominant failure mode is a genuine new
+finding: **morphological re-inflection** (chiefly singular/plural suffix variation, ~44% of
+cell-type misses), NOT truncation — a marked departure from C-1b's descriptive framing.
+Triple-independently cross-checked (kernel + this session's from-scratch recompute + the
+peer's recompute_c3.py after a real bug was found and fixed there — see below); all three
+agree exactly on every frozen number. Full RESULT + uncertainty context + error census +
+frequency-SMD caveat in PREREG_C3_binding_probe.md RESULT section.
+COLLISION NOTE: peer cag7e0y5 believed they still owned C-3 execution and reported
+relaunching on a separate pod (v3kbk067tfusc2) unaware this run had already completed —
+messaged them immediately with the closed result to stop duplicate spend; no reply yet as
+of this write.
+BUG FOUND + FIXED (commit 823e1ca): trajectory/recompute_c3.py (peer-built, commit 058758e)
+computed the seed-unstable type set but never applied it as an exclusion filter before the
+three frozen contrasts, contradicting PREREG_C3's own text ("3-way-unstable types are
+excluded from contrasts") and the kernel's implementation — silently reported +0.0/−16.7
+instead of the correct +1.7/−8.3. Verdicts happened to land REFUTED either way so the
+conclusion was unaffected, but point estimates and the CI built on them were wrong. Fixed;
+peer's 6/6 fixture tests still pass. Its two supplementary analyses are valid and kept:
+within-T-avail dose-response Spearman rho=+0.47 (junction count 25-425 vs recall — a
+modest graded signal even though the binary T-avail-vs-T-sep contrast is refuted) and
+type-bootstrap 90% CI on H-transition [-19.2, +23.3] (spans zero, consistent with REFUTED).
 Also this session: fabric slice extended to all 6 instruments (24 cells GATE PASS).
+NEXT (owner-level choice, not mandated by C-3's own decision rule since H-stochastic did
+not fire): (a) better-powered length-focused follow-up, (b) a probe targeting the
+morphological re-inflection finding itself, or (c) close the lexical-mechanism line and
+move to a representation-level probe. Paper 2 reconciliation for C-3 not yet done.
 
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
