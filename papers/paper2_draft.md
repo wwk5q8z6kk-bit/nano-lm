@@ -281,13 +281,25 @@ also changes venue — H100 vs T4).
 (junction-transition availability, boundary type, value length) explain residual
 completion failures at the ≥40pt threshold this program requires before naming a cause.
 C-1b's own motivating descriptive pattern (word-boundary truncation) does not survive
-controlled factorial manipulation. **Not established by Phase C:** what does explain the
-residual — the dominant failure mode (morphological re-inflection, chiefly pluralization)
-was not one of the three registered factors, so no pre-registered account currently
-covers it; whether it reflects a genuine model-level default (e.g. a frequency-driven
-inflectional prior) or an artifact of the eval's plural-heavy candidate vocabulary is
-untested. H-length remains formally UNRESOLVED (not REFUTED) but the Wilson-band evidence
-argues the design was underpowered there, not that a real length effect is being masked.
+controlled factorial manipulation. H-length remains formally UNRESOLVED (not REFUTED) but
+the Wilson-band evidence argues the design was underpowered there, not that a real length
+effect is being masked.
+
+A post-hoc (not pre-registered) corpus check on the dominant unpredicted failure mode —
+morphological re-inflection, chiefly pluralization — found a specific, concrete candidate
+mechanism: the held phrases themselves never appear in training in either grammatical
+form (properly held out), but their bare stems do, asymmetrically, via *unrelated*
+genuinely-trained values sharing the same stem ("sting" 0× / "stings" 64× via the trained
+value "wasp stings"; "seed" 0× / "seeds" 145× via "poppy seeds"/"sunflower seeds"; "hip"
+304× / "hips" 0× via incidental complaint-text mentions). In 3 of 4 testable stems, the
+model's emitted (wrong) inflection is exactly the corpus-majority bare-word form,
+regardless of the held value's true number — consistent with a word-level (not
+phrase-level) inflectional prior from incidental stem exposure overriding faithful
+reproduction. Descriptive and hypothesis-generating (n=4 stems), not a confirmed causal
+claim requiring its own decision rule. **Not established by Phase C:** whether this
+generalizes beyond the 4 stems checked, or whether it is itself a cause or a downstream
+symptom of the same representational bottleneck the three refuted factors were trying to
+locate.
 
 ## 5. Next decompositions (designed, not run)
 
@@ -303,12 +315,14 @@ argues the design was underpowered there, not that a real length effect is being
 5. **Duplicate finetunes** — training-run variance per cell (single run each; Chinchilla
    cell additionally changes venue, H100 vs T4).
 6. **Morphological re-inflection follow-up (Phase C successor, not yet pre-registered)** —
-   C-3's dominant unpredicted failure mode. Candidate first step: check whether D80's
-   training-output stream is disproportionately plural for the affected types (a cheap,
-   no-run corpus-statistics check before any new finetune); if not, a targeted probe of
-   whether the model has a per-type default inflectional form independent of the held
-   value's actual number. C-3's own decision rule does not mandate this — H-stochastic
-   did not fire — so this is an owner-level choice, not a promoted next stage.
+   C-3's dominant unpredicted failure mode. The cheap no-run corpus-statistics check is
+   done (§3.5/§4): 3 of 4 testable stems show the model defaulting to the corpus-majority
+   bare inflected form via incidental exposure through unrelated trained values, not a
+   candidate-vocabulary artifact. Next: a registered probe testing whether this
+   generalizes beyond the 4 stems checked, and whether it is upstream cause or downstream
+   symptom of the same bottleneck the three refuted T/B/L factors were targeting. C-3's
+   own decision rule does not mandate this — H-stochastic did not fire — so pursuing it
+   is an owner-level choice, not a promoted next stage.
 
 ---
 *All artifacts: `results_ownstack_v2_160m_fullft.json` (immutable), kernels

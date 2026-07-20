@@ -257,6 +257,28 @@ back to under uncertainty?), or (c) closing the lexical-mechanism line of inquir
 here and moving to a representation-level probe — none of which C-3's own decision
 rule mandates, since H-stochastic was not supported.
 
+**Post-hoc exploratory follow-up (2026-07-20, not pre-registered, no new run, no
+threshold): does D80's training corpus explain the morphological re-inflection
+finding?** For every morphological_near_miss case involving a simple trailing-"s"
+inflection (4 stems: hip↔hips, rind↔rinds, seed↔seeds, sting↔stings), checked
+bare-word occurrence counts (word-boundary regex) in the exact D80 assistant-output
+text used for finetuning. The full held phrases themselves never appear in either
+form (they are properly held out — a hygiene-gate sanity check, not a finding).
+But the bare stems tell a clean story: "sting" appears 0× / "stings" 64× (via the
+genuinely-trained ALG value "wasp stings"); "seed" 0× / "seeds" 145× (via "poppy
+seeds", "sunflower seeds"); "hip" 304× / "hips" 0× (incidental complaint-text
+mentions, e.g. "hip pain"). In 3 of 4 testable cases (the 4th, rind/rinds, has zero
+corpus occurrences for both forms — uninformative, not contradictory), **the
+model's emitted (wrong) inflection is exactly the corpus-majority bare-word form**,
+regardless of the held value's true grammatical number. This is consistent with a
+concrete, specific mechanism: the model has learned a strong word-level (not
+phrase-level) inflectional prior from incidental exposure to the same stem via
+unrelated trained values, and defaults to that prior over faithfully reproducing
+the held value's actual form. This is exploratory and descriptive (n=4 stems,
+hypothesis-generating, no decision rule), not a confirmed causal claim — but it is
+a substantially more specific account than "morphological_near_miss" as a residual
+category, and a plausible target for a future registered probe.
+
 ## INTERPRETIVE NOTE (2026-07-20, pre-result — frozen design property, no threshold changed)
 
 Recorded before C-3 results exist, from the committed pool manifest alone; changes no
