@@ -70,3 +70,13 @@ residual. Updated causal table (owner):
 | **Residual floor** | **Real and shared** | ~15–18 clean pts, alg-dominated — **the target** |
 
 Directive: Phase C-1 (token-coverage continuum) is the next experiment, stack-independent.
+
+## Amendment to the account (2026-07-20, pre-run dry-run of C-1)
+
+"Token coverage secondary" is REVISED: cross-checking coverage against the sweep's known
+flips refutes both fraction and weakest-link forms (wool flips with novel tokens; bee
+stings flips at constant coverage; equal-novel types split 0%/100%). The residual's
+leading candidate is now **lexical interference** (held values colliding with trained
+values or template vocabulary — containment-substitution predicted), which is a
+*binding*-class explanation, strengthening the owner's deeper-binding instinct. C-1 is
+amended to an interference-class design (C-1b) with mandatory per-item output logging.

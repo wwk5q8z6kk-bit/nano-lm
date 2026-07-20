@@ -1,0 +1,241 @@
+{
+ "bands": {
+  "B100": [
+   {
+    "value": "cough drops",
+    "n_tokens": 4,
+    "coverage": 1.0,
+    "tokens": [
+     "c",
+     "ough",
+     " dro",
+     "ps"
+    ],
+    "novel": []
+   },
+   {
+    "value": "elm pollen",
+    "n_tokens": 5,
+    "coverage": 1.0,
+    "tokens": [
+     "el",
+     "m",
+     " po",
+     "ll",
+     "en"
+    ],
+    "novel": []
+   },
+   {
+    "value": "eye drops",
+    "n_tokens": 5,
+    "coverage": 1.0,
+    "tokens": [
+     "e",
+     "y",
+     "e",
+     " dro",
+     "ps"
+    ],
+    "novel": []
+   },
+   {
+    "value": "nasal spray",
+    "n_tokens": 5,
+    "coverage": 1.0,
+    "tokens": [
+     "n",
+     "as",
+     "al",
+     " sp",
+     "ray"
+    ],
+    "novel": []
+   }
+  ],
+  "Bhi": [
+   {
+    "value": "blue dye",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "tokens": [
+     "bl",
+     "ue",
+     " d",
+     "y",
+     "e"
+    ],
+    "novel": [
+     "bl"
+    ]
+   },
+   {
+    "value": "buckwheat",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "tokens": [
+     "b",
+     "uck",
+     "w",
+     "he",
+     "at"
+    ],
+    "novel": [
+     "uck"
+    ]
+   },
+   {
+    "value": "cinnamon",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "tokens": [
+     "c",
+     "in",
+     "n",
+     "am",
+     "on"
+    ],
+    "novel": [
+     "on"
+    ]
+   },
+   {
+    "value": "coconut oil",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "tokens": [
+     "c",
+     "oc",
+     "on",
+     "ut",
+     " oil"
+    ],
+    "novel": [
+     "on"
+    ]
+   }
+  ],
+  "Blo": [
+   {
+    "value": "cane sugar",
+    "n_tokens": 4,
+    "coverage": 0.25,
+    "tokens": [
+     "c",
+     "ane",
+     " su",
+     "gar"
+    ],
+    "novel": [
+     "ane",
+     " su",
+     "gar"
+    ]
+   },
+   {
+    "value": "cherry stones",
+    "n_tokens": 5,
+    "coverage": 0.4,
+    "tokens": [
+     "c",
+     "her",
+     "ry",
+     " st",
+     "ones"
+    ],
+    "novel": [
+     "her",
+     "ry",
+     "ones"
+    ]
+   },
+   {
+    "value": "chili powder",
+    "n_tokens": 4,
+    "coverage": 0.25,
+    "tokens": [
+     "ch",
+     "ili",
+     " pow",
+     "der"
+    ],
+    "novel": [
+     "ili",
+     " pow",
+     "der"
+    ]
+   },
+   {
+    "value": "corn starch",
+    "n_tokens": 4,
+    "coverage": 0.5,
+    "tokens": [
+     "c",
+     "orn",
+     " st",
+     "arch"
+    ],
+    "novel": [
+     "orn",
+     "arch"
+    ]
+   }
+  ],
+  "B0": [
+   {
+    "value": "garlic powder",
+    "n_tokens": 4,
+    "coverage": 0.0,
+    "tokens": [
+     "gar",
+     "lic",
+     " pow",
+     "der"
+    ],
+    "novel": [
+     "gar",
+     "lic",
+     " pow",
+     "der"
+    ]
+   }
+  ]
+ },
+ "bridges": [
+  {
+   "value": "sulfa drugs",
+   "n_tokens": 6,
+   "coverage": 0.8333,
+   "tokens": [
+    "s",
+    "ul",
+    "f",
+    "a",
+    " drug",
+    "s"
+   ],
+   "novel": [
+    " drug"
+   ]
+  },
+  {
+   "value": "ragweed pollen",
+   "n_tokens": 7,
+   "coverage": 0.8571,
+   "tokens": [
+    "ra",
+    "g",
+    "we",
+    "ed",
+    " po",
+    "ll",
+    "en"
+   ],
+   "novel": [
+    "we"
+   ]
+  }
+ ],
+ "d80_output_token_count": 304,
+ "selection": "len in [3,6], closest to 4.5, alphabetical tiebreak; committed pre-run"
+}

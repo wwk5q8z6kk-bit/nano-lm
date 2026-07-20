@@ -73,3 +73,34 @@ this venue) ≈ **~1.5 h GPU total**. Venue: RunPod (A6000-class) or Kaggle T4.
 
 Pre-registered. Next artifacts, in order, each committed before the next step: candidate
 list + band assignment (computed pools), eval instances, kernel. Nothing has been run.
+
+## AMENDMENT 1 (2026-07-20, pre-run — design falsified at the dry-run stage)
+
+Band construction against the real D80 output-token set, cross-checked against the
+sweep's KNOWN flips, refutes both coverage formulations before any GPU was spent:
+- wool flipped to 100% at D80 WITH a never-emitted token ('ool'); strawberries with two.
+- bee stings: identical coverage (0.75) at D20 vs D80 gives 15% vs 100% (diversity, not
+  coverage, moved it).
+- sulfa (1 novel) = 0% vs bee stings (1 novel) = 100% at D80.
+**H-coverage (fraction AND weakest-link forms) is refuted as the residual's driver by
+existing data.** The discriminating pattern among D80 types is **lexical interference**:
+the never-flippers collide with trained material — "ragweed pollen" CONTAINS the trained
+value "pollen" (plus four trained "X pollen" siblings); "sulfa drugs" shares its head
+with the question template's "drug allergies" — while all flippers are lexically
+isolated. Redesign (C-1b): the primary axis becomes **interference class** at fixed
+diversity (D80) and fixed length:
+- **I-iso** — lexically isolated novel values (no content-token shared with any trained
+  value or template vocabulary);
+- **I-contain** — held value CONTAINS a trained value as head/substring ("X pollen"-form
+  constructions with novel X);
+- **I-template** — held value shares a content token with question-template vocabulary
+  but no trained value;
+- **I-cov** — retained coverage gradient WITHIN the isolated class (coverage as
+  covariate, no longer the primary axis).
+**Mandatory instrumentation change:** per-item model OUTPUTS logged for every held item
+(the sweep saved only counts), enabling failure-mode classification per type —
+substitution-by-contained-value is the predicted signature of I-contain failures.
+Decision rule (fixed now): flip-rate(I-iso) − flip-rate(I-contain) ≥ 50 pts with
+substitution-dominated failure modes in I-contain → interference account CONFIRMED;
+≤ 15 pts → refuted, minimal binding probe (C-3) promoted. Bridges retained; predictions:
+sulfa/ragweed pattern with I-template/I-contain respectively.
