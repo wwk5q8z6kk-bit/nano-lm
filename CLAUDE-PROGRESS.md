@@ -54,7 +54,9 @@ copy-vs-classify hypothesis (labeled, falsifiable) is in P1 §6.1 and RESEARCH_P
 Owner's decision: verification-first cognitive fabric (not multi-agent). C1 already
 measured (P2 LoRA result); first ungated build = V1 typed claim/evidence packets with
 its own gates (100% schema validity/span traceability, no presented-error increase).
-Corner run (3.2B+LoRA, 2 seeds) finishing on RunPod A6000 -> Q1 rule -> pod delete.
+CORNER LANDED (seed-0): 3.2B+LoRA = 4.2±0.9 (clean 17.7) — Q1 fires COMPOUND/tokenizer-
+innocent; grid 16.9 -> ~7 -> 4.2 ≈ Pythia 3.5; per-slot fingerprint identical to
+Pythia's (cc 0, med 0, alg 100). inst0 hard-draw 9/9. Seed-1 running -> then POD DELETE.
 
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
