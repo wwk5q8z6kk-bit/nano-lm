@@ -39,7 +39,10 @@ Copy-vs-classify is settled slot-by-slot: a slot whose training-value diversity 
 enough to memorize as a closed set never induces a copy mechanism, at any tested scale.
 This upgrades the hypothesis from "capacity buys abstraction" to **"abstraction is
 induced per-slot when diversity makes memorization uncompetitive, given sufficient
-capacity"** — and it makes P4 concrete: vary slot diversity at fixed scale and find the
+capacity"** — **now directly supported (2026-07-19): the pre-registered type-controlled
+sweep fired H-slot SUPPORTED (diversity effect 66.7 pts, monotonic, position innocent,
+categorical per-type flips; two types never flip → token-coverage second factor at the
+margin)** — and it makes P4 concrete: vary slot diversity at fixed scale and find the
 diversity threshold curve; predict the allergy failure persists in much larger models on
 this recipe (a cheap frontier-model external-validation test).
 

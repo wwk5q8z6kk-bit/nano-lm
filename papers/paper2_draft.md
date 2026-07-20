@@ -35,8 +35,14 @@ remains for the still-unseparated breadth/tokenizer bundle. Per-slot structure s
 attribution: the residual failure concentrates in the lowest-diversity slot in every
 own-stack configuration and at Pythia-410M (total failure on the single held allergy
 type), though not universally — one Pythia-1B training draw largely solves it — a
-pattern consistent with a per-slot competition between memorization and copying,
-advanced as a hypothesis pending a type-controlled diversity sweep.
+pattern consistent with a per-slot competition between memorization and copying. A
+pre-registered, type-controlled diversity sweep then tested this directly: raising one
+slot's training diversity from 5 → 80 values, at fixed everything-else, lifts held-type
+recall by **66.7 points** with categorical per-type flips (position controlled; the
+fully-token-covered probe type flips earliest) — the slot-diversity hypothesis is
+**supported**, with a residual token-coverage factor at the margin. A training-seed
+duplicate bounds per-cell run variance at ±~1.3 pts, inside the pre-registered rule, so
+the single-run cells stand.
 
 ## 1. The question Paper 1 left open
 
@@ -97,10 +103,11 @@ Reference: pythia-160m (~300B tokens, LoRA) 3.5 ± 0.7 (14.7 ± 2.1).
 Each single-factor intervention was run against the 200M+full-FT corner, and the result
 is striking: **7.1 ± 1.2 vs 7.0 ± 1.0** — LoRA-on-a-weak-base and full-FT-on-a-strong-base
 land on indistinguishable gaps — though they change *entirely different* variables. (A
-caution our own §5.2-style lesson demands: each cell is a single training run, and
-per-cell training-run variance at 160M is not yet measured; the *identity* of the two
-~7s is provisional until duplicate finetunes bound the seed noise — a designed run —
-while the far larger 16.9 → ~7 separation is unlikely to be seed noise.)
+caution our own §5.2-style lesson demanded a seed bound, and it has now been measured:
+a pre-registered duplicate of the 200M+LoRA cell at a different training seed reads
+5.76 ± 1.31 vs. the original 7.08 ± 1.22 — |Δ| = 1.32 pts, inside the pre-registered
+≤2-pt rule, so **single-run cells stand** with a ±~1.3-pt training-seed band. The two
+~7s are "equal" at that resolution; the 16.9 → ~7 separation is far outside it.)
 A naïve additive reading of the method arm alone would have attributed ~73% of the
 own→Pythia difference to the finetuning method; the Chinchilla control refutes
 additivity — data quantity alone recovers the *same* ~10 points. The correct structure is
@@ -152,6 +159,32 @@ sharpening observations:
 The public instance is again the hard draw (inst0 28.0 vs fresh 16.9 — now 6/6 rungs),
 and the per-slot pattern replicates (clean means: cc 64.4 ± 7.1, med 47.1 ± 4.0, alg
 100.0 ± 0.0) — the slot gradient shapes the failure at 159M as at 3M.
+
+### 3.4 The slot-diversity sweep — diversity causally induces copying
+
+The pre-registered type-controlled sweep (`PREREG_slot_diversity.md`; scale-10M frozen
+base, full FT per arm, 6 fixed held types, ~83 items/type) delivered its verdict:
+**H-slot SUPPORTED** — diversity effect D80−D5 = **66.7 pts** (rule required ≥30),
+monotonic (0 → 24.5 → 66.7), position innocent (|D20pos−D20| = 3.1 ≤ 5).
+
+| held type | D5 | D20 | D80 |
+|---|---|---|---|
+| bee stings | 0 | 15 | **100** |
+| ibuprofen (token-probe) | 0 | **69** | **100** |
+| wool | 0 | 0 | **100** |
+| strawberries | 0 | 62 | **100** |
+| sulfa drugs | 0 | 0 | **0** |
+| ragweed pollen | 0 | 0 | **0** |
+
+Three readings. (i) Raising ONE slot's training diversity, at fixed scale, data size,
+method, and eval, causally induces held-out copying on that slot — and the flips are
+**categorical per type**, as the type-flip account predicts. (ii) D5's zero across all
+six types kills the "sulfa-drugs-specific string" alternative for the baseline regime.
+(iii) Two types never flip even at 80 training values, while the ibuprofen probe (whose
+tokens are fully train-output-covered) flips earliest — consistent with a *second*,
+token-coverage factor at the margin (hypothesis; analyzable from this data without new
+runs). The position control also localizes: mean-level position effects are excluded,
+though individual type flips vary across arms/draws (type-level draw sensitivity, noted).
 
 ## 4. What this establishes, and what it doesn't
 
