@@ -35,7 +35,10 @@ remains for the still-unseparated breadth/tokenizer bundle. Per-slot structure s
 attribution: the residual failure concentrates in the lowest-diversity slot in every
 own-stack configuration and at Pythia-410M (total failure on the single held allergy
 type), though not universally — one Pythia-1B training draw largely solves it — a
-pattern consistent with a per-slot competition between memorization and copying. A
+pattern consistent with a per-slot competition between memorization and copying — a
+**binding-and-coverage** account: reliable copying requires both sufficient slot
+diversity and adequate token coverage, with the allergy slot the strongest instance of
+the mechanism rather than its definition. A
 pre-registered, type-controlled diversity sweep then tested this directly: raising one
 slot's training diversity from 5 → 80 values, at fixed everything-else, lifts held-type
 recall by **66.7 points** with categorical per-type flips (position controlled; the
