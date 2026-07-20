@@ -134,7 +134,12 @@ sharpening observations:
    instance-by-instance to the last digit). Copy competence at this granularity is
    *categorical per held type*, and the ±4.0 "SD" is composition noise, not behavioral
    variance; the Chinchilla cell breaks the composition function (25.5 ± 6.1),
-   i.e. data-scaling partially rescues lozenges. (ii) The
+   i.e. data-scaling partially rescues lozenges. The same composition function holds
+   *bit-identically* at the 10M anchor — so across the whole own stack the med story is
+   a single **type flip**: melatonin fails at 3.15M (med = 100.0), becomes categorically
+   solved by 10M, and stays solved under every own-stack configuration, while
+   throat-lozenges never flips in-stack under any scale, method, or (fully) data budget.
+   Copy competence appears to be acquired *per lexical type*, discretely. (ii) The
    diversity gradient (190/18/5) is three correlated points, confounded with held-type
    count, subword fragmentation (every held value contains ≥1 token never emitted in
    any training output), and field position (alg is template-final). The slot-diversity
