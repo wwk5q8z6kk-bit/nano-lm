@@ -56,7 +56,10 @@ measured (P2 LoRA result); first ungated build = V1 typed claim/evidence packets
 its own gates (100% schema validity/span traceability, no presented-error increase).
 CORNER LANDED (seed-0): 3.2B+LoRA = 4.2±0.9 (clean 17.7) — Q1 fires COMPOUND/tokenizer-
 innocent; grid 16.9 -> ~7 -> 4.2 ≈ Pythia 3.5; per-slot fingerprint identical to
-Pythia's (cc 0, med 0, alg 100). inst0 hard-draw 9/9. Seed-1 running -> then POD DELETE.
+Pythia's (cc 0, med 0, alg 100). inst0 hard-draw 9/9. SEED-1 LANDED |delta|=0.00 (behavioral determinism at
+the corner; per-instance vector IDENTICAL to pythia-410m — composition arithmetic over
+shared categorical state). POD DELETED, RunPod empty. PHASE A CLOSED. Next: Phase C-1
+(PREREG_token_coverage.md, committed) -> pools -> instances -> kernel -> ~1.5h GPU.
 
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted

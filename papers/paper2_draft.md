@@ -123,7 +123,14 @@ entire own-stack↔Pythia difference is attributable to **data quantity + adapta
 method, with tokenizer and architecture ~innocent**. The grid reads 16.9 (neither) →
 7.0/7.1 (either) → 4.2 (both). Most strikingly, the corner's per-slot fingerprint is
 *identical to Pythia's* — cc 0.0, med 0.0, alg 100.0: a fully "Pythia-like" own-stack
-model, down to the residual's identity. (Seed duplicate of the corner in progress.) Two
+model, down to the residual's identity. The corner's seed duplicate returned
+**behaviorally identical** results (|Δ| = 0.00; verified distinct finetune) — and its
+per-instance vector is *identical to pythia-410m's*: three models, two stacks, different
+seeds, metrically indistinguishable because they occupy the same categorical flip state
+(cc ✓, med ✓, alg ✗) and aggregate metrics are composition arithmetic over that state.
+Contrasted with |Δ| = 1.32 at the weak-base 200M+LoRA cell (boundary types present),
+this confirms **variance is boundary-localized at both poles** — and that the flip
+matrix, not the scalar gap, is the fundamental object. Two
 sharpening observations:
 
 1. **Both methods memorize.** Full FT and LoRA both reach ≈0 training loss and 100%
