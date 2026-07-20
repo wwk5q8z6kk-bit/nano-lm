@@ -78,10 +78,24 @@ boundaries (38% of misses; ragweed→"ragweed" keeps the NOVEL half). I-xslot 10
 seeds (trained token-transitions copy regardless of slot). 8/34 types seed-boundary-
 variant (ragweed flips 0→100 across venue/seed). Full census:
 results_interference_modes.json; verdict recorded in PREREG_token_coverage.md RESULT.
-NEXT BUILD: **C-3 minimal binding probe** (promoted by the prereg rule) — design must
-separate head→tail transition availability vs token/word count vs boundary width;
-design inputs listed at the end of PREREG RESULT section. Prereg to be written BEFORE
-any pool/kernel work, per discipline.
+C-3 (transition/boundary/length) is FULLY BUILT and committed (another session, commits
+943b446 pools / 2e6c0ce eval / 93db8d1+45531e2 kernel): T×B×L factorial, 48 cell types
+(6 per cell, all 8 cells filled) + 11 T-full controls + 34 C-1b bridges = 93 held types,
+orthogonality hard gate PASS, retrodiction PASS, generation-cap guard verified sound
+(asserts maxlen+margin<max_new pre-launch; cap_confound excluded from truncation metric).
+A LIVE C-3 RUN is executing on RunPod pod tgfwywwxwdyww1 ("c3-...-4", rented 12:43 UTC
+2026-07-20, $0.69/hr) — owned by another session; NOT duplicated per single-owner-contract
+collision rule. My contributions this session (committed 058758e): independent recompute
+harness trajectory/recompute_c3.py (reads only raw logs + frozen manifest, no kernel
+import = evidence level 2; adds within-T-avail junction-count dose-response + type-level
+bootstrap CI) with 6/6 fixture tests (test_recompute_c3.py), and a pre-result scoping note
+in PREREG_C3 (T-avail≥20 vs T-sep=0 are junction-frequency-DISJOINT by the factor's
+definition, so a SUPPORTED H-transition must read as "junction-observed vs -unobserved,
+individual tokens frequency-matched", NOT "cannot predict tails"; the run's balance report
+SMD 2.42 is this same disjointness, non-blocking). NEXT: when the live run's
+outputs_c3_seed{0,1,2}.jsonl land (peer commit, or adopt if the pod orphans), run
+recompute_c3.py to cross-check results_c3_10m.json and apply the frozen verdict.
+Also this session: fabric slice extended to all 6 instruments (24 cells GATE PASS).
 
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
