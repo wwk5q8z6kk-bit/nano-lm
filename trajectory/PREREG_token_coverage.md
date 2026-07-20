@@ -104,3 +104,51 @@ Decision rule (fixed now): flip-rate(I-iso) − flip-rate(I-contain) ≥ 50 pts 
 substitution-dominated failure modes in I-contain → interference account CONFIRMED;
 ≤ 15 pts → refuted, minimal binding probe (C-3) promoted. Bridges retained; predictions:
 sulfa/ragweed pattern with I-template/I-contain respectively.
+
+## AMENDMENT 2 (2026-07-20, pre-pool — classifier refined by two vocabulary discoveries)
+
+Mechanical inspection of the D80 pool and the v2 template vocabulary, done BEFORE any
+candidate pool was computed, falsifies AMENDMENT 1's binary isolated/interfering split:
+
+- **"wasp stings" ∈ D80** — so the flipper "bee stings" SHARES its head word with a
+  trained value, yet flipped to 100%. Word-sharing alone does not block copying.
+  (Recheck: `python3 -c "import sys;sys.path.insert(0,'trajectory');from
+  slot_diversity_pools import ALG_TRAIN_80;print('wasp stings' in ALG_TRAIN_80)"`)
+- **"ibuprofen" ∈ MED_TRAIN** — the flipper "ibuprofen" IS a trained value of the med
+  slot in the same dialogues, yet flipped to 100% as a held allergy. Cross-slot
+  trained-value identity does not block copying.
+
+The surviving discriminator among the six sweep types is **within-slot containment of a
+FULL trained value**: "ragweed pollen" ⊃ "pollen" (a standalone D80 value) failed;
+everything short of full-value containment flipped. The class taxonomy is accordingly
+refined to five classes, each anchored by ≥1 existing bridge type:
+
+| class | definition (deterministic, word-level) | bridge | predicted |
+|---|---|---|---|
+| I-contain | held value contains a complete trained alg value as contiguous word-subsequence | ragweed pollen | FAIL |
+| I-template | no trained-word share; shares a content word with template vocabulary (strip-s) | sulfa drugs | FAIL |
+| I-sib | shares ≥1 word with a trained alg value but contains no full value | bee stings | FLIP |
+| I-xslot | is (or contains) a trained value of the med slot | ibuprofen | FLIP |
+| I-iso | none of the above | wool, strawberries | FLIP |
+
+Classifier precedence: I-contain > I-sib > I-xslot > I-template > I-iso. Trained set =
+ALG_TRAIN_80; template vocabulary = all D_*/P_*/DISTRACT literal strings in
+build_scribe_data_v2.py, content words only (function-word stoplist), singular/plural
+normalized by strip-s on both sides. Coverage (vs the D80-arm output-token set) and
+token count recorded for every type as covariates (I-cov = the gradient within I-iso).
+
+**Decision rules (fixed now, before pools exist):**
+- Primary (unchanged from AMENDMENT 1): flip(I-iso) − flip(I-contain) ≥ 50 pts with
+  substitution-dominated failures in I-contain → containment-interference CONFIRMED;
+  ≤ 15 pts → refuted, C-3 binding probe promoted.
+- Secondary contrasts: I-sib vs I-contain separates containment from word-overlap;
+  I-xslot vs I-iso tests slot-specificity of the trained-value effect; I-template vs
+  I-iso tests the sulfa pattern's generality.
+- Per the flip-matrix account, per-type flip states (both FT seeds agreeing) are
+  primary; class rates are compositions. Seed-disagreeing types are reported as
+  boundary variance and excluded from class rates.
+
+Candidate hygiene rules (mechanical, enforced by the pool generator): no modifier word
+reused across classes; no candidate sharing words with MED_TRAIN except in I-xslot; no
+candidate in any training pool or existing held set; classifier must reproduce all six
+sweep types' known classes and flip states or the pools are INVALID.
