@@ -45,6 +45,25 @@ def test_boundary_contrast_isolated_from_T():
     dL = rc.contrast(rt, CELL, "L", "short", "long")
     assert dB == 100.0 and abs(dT) <= 1e-9 and abs(dL) <= 1e-9, (dB, dT, dL)
 
+def test_seed_unstable_types_are_excluded():
+    # Regression pin for the bug fixed in 823e1ca: the seed-unstable set was computed
+    # for reporting but never applied as an exclusion before the frozen contrasts, which
+    # PREREG_C3 requires ("3-way-unstable types are reported separately and excluded").
+    avail = [t for t in CELL if rc.LABEL[t]["T"] == "T-avail"
+             and rc.LABEL[t]["B"] == "B-sub" and rc.LABEL[t]["L"] == "short"]
+    assert len(avail) >= 2
+    # all T-avail-in-cell miss, EXCEPT one made seed-unstable but majority-flip [T,T,F]
+    rt = {t: {0: 0.0, 1: 0.0, 2: 0.0} for t in rc.LABEL}
+    u = avail[0]
+    rt[u] = {0: 1.0, 1: 1.0, 2: 0.0}          # votes T,T,F -> majority flip, but unstable
+    unstable = set(t for t in CELL if len(set(rc.majority_flip(rt, t)[1])) > 1)
+    assert u in unstable, "unstable type not detected"
+    rate_incl, n_incl = rc.cell_rate(avail, rt, lambda t: True)              # bug behaviour
+    rate_excl, n_excl = rc.cell_rate(avail, rt, lambda t: True, unstable)    # frozen rule
+    assert n_excl == n_incl - 1, "exactly the unstable type must be excluded"
+    assert rate_incl != rate_excl, "exclusion must change the estimand here"
+    assert rate_excl == 0.0, f"with u excluded, no cell type flips -> 0%, got {rate_excl}"
+
 def test_cell_coverage():
     # every registered cell is non-empty in the frozen manifest (design constructible)
     import collections
