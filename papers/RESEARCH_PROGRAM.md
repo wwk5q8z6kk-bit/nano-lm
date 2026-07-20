@@ -66,9 +66,10 @@ Chinchilla control (3.2B tokens, full FT retained) reads 7.0 ± 1.0: indistingui
 variance unmeasured — duplicate finetunes designed). Data and method are SUBSTITUTES, not additive components — the large gap is
 the interaction of an under-trained base with full-parameter adaptation; either escape
 recovers the same ~10 pts. Both finetuning methods reach ≈0 train loss (memorization is
-not the differentiator; destroying the copy pathway is). The 5-value allergy slot fails
-under NINE configurations (stacks × scales × methods × data budgets) — slot diversity is
-the binding constraint. Missing factorial corner: 3.2B+LoRA (base preserved, ~30 min) —
+not the differentiator; destroying the copy pathway is). The 5-value allergy slot is at TOTAL failure in all five own-stack configs and
+pythia-410m, 83.6 at pythia-160m — but 24.6 (largely solved) in the pythia-1b third
+draw: NOT universal, and every alg number is type-level n=1 ('sulfa drugs' is the only
+held allergy type). Slot diversity stays a hypothesis pending the type-controlled sweep. Missing factorial corner: 3.2B+LoRA (base preserved, ~30 min) —
 do the escapes compound toward Pythia's 3.5 or floor at ~7?
 
 ## Theory tree (separate theory from evidence; each arrow needs its own evidence)

@@ -3,8 +3,8 @@
 *Working draft — Paper 2 (causality). Companion and sequel to Paper 1 ("Held-out value
 copying in small language models"). All numbers trace to immutable JSONs under
 `trajectory/`; instrument identical to Paper 1 (5×(100 held + 100 seen), gap = seen −
-held recall, mean ± across-instance SD). Status: skeleton with the full-FT arm landed;
-LoRA arm running — its cell is marked ⏳.*
+held recall, mean ± across-instance SD). Status: full-FT, LoRA, and Chinchilla arms landed; the
+3.2B+LoRA factorial corner and seed-variance duplicates are pre-registered, not run.*
 
 ## Abstract (draft)
 
@@ -32,9 +32,11 @@ to ≈0 — the difference is not whether the finetuning set is memorized but wh
 fit destroys the pretrained copy pathway (full FT on a weak base) or leaves it intact
 (LoRA, or full FT on a robust base). A residual ~2× versus Pythia-160M (3.5 ± 0.7)
 remains for the still-unseparated breadth/tokenizer bundle. Per-slot structure sharpens the
-attribution: at every scale, in both stacks, the failure concentrates in low-diversity
-slots (the 5-value allergy slot fails totally even in Pythia-410M), consistent with a
-per-slot competition between memorization and copying that capacity alone does not settle.
+attribution: the residual failure concentrates in the lowest-diversity slot in every
+own-stack configuration and at Pythia-410M (total failure on the single held allergy
+type), though not universally — one Pythia-1B training draw largely solves it — a
+pattern consistent with a per-slot competition between memorization and copying,
+advanced as a hypothesis pending a type-controlled diversity sweep.
 
 ## 1. The question Paper 1 left open
 
@@ -60,7 +62,7 @@ ladder (40M/80M).
   (T4 memory); optimizer trajectory unchanged.
 - **Method arm (2×2):** the same pretrained 160M checkpoint finetuned with LoRA r=16
   α=32 (98 wrapped modules, 4.03M trainables) instead of full FT — isolating the
-  finetuning-method member of the stack bundle. ⏳ running.
+  finetuning-method member of the stack bundle.
 
 ## 3. Results
 
@@ -110,14 +112,24 @@ sharpening observations:
    full-parameter fit overwrites the pretrained copy pathway; the 4M-parameter low-rank
    fit reaches the same training loss while leaving it intact — an implicit-regularization
    account of the failure, not a capacity account.
-2. **The slot gradient survives every intervention.** Under LoRA at 160M, clean
-   per-field: cc **0.0** (solved — the complaint-copy pathway *exists* in the own-stack
-   pretrained model; full FT on the weak base was destroying it), med ~52, alg **100.0**.
-   Under Chinchilla pretraining with full FT: cc 4.5 (nearly solved by data alone),
-   med 34.5, alg **100.0** again. The 5-training-value allergy slot has now failed under
-   **nine** configurations (both stacks × three scales × both methods × both data
-   budgets) — slot diversity remains the binding constraint that no tested intervention
-   lifts, exactly as the slot-diversity hypothesis predicts.
+2. **The slot gradient survives the own-stack interventions — with one important
+   exception elsewhere.** Under LoRA at 160M, clean per-field: cc **0.0** (solved — the
+   complaint-copy pathway *exists* in the own-stack pretrained model; full FT on the
+   weak base was destroying it), med ~52, alg **100.0 ± 0.0**. Under Chinchilla
+   pretraining with full FT: cc 4.5, med 34.5, alg **100.0 ± 0.0** again. The allergy
+   slot is at total failure in **all five own-stack configurations** and at pythia-410m;
+   pythia-160m reads 83.6 ± 4.6; but the pythia-1b *third training draw* reads
+   **24.6 ± 10.3 — largely solved**, and the Pythia sequence (83.6 → 100.0 → 24.6) is
+   non-monotonic. Two honesty notes follow. (i) Every alg number is a *type-level n=1*
+   measurement — "sulfa drugs" is the only held allergy type, so the ±0.0 instance-SDs
+   are repeated measures of one string, not precision about the slot; med has two held
+   types (its ~52 at LoRA is plausibly one type solved, one not) and cc three. (ii) The
+   diversity gradient (190/18/5) is three correlated points, confounded with held-type
+   count, subword fragmentation (every held value contains ≥1 token never emitted in
+   any training output), and field position (alg is template-final). The slot-diversity
+   hypothesis therefore remains a *hypothesis*: the designed sweep must vary held-type
+   identity and control position/tokenization before "diversity governs copy-vs-classify"
+   can be asserted.
 
 ### 3.3 Familiar structure at the new rung
 
@@ -157,7 +169,7 @@ also changes venue — H100 vs T4).
    nano from dpo.pt, scale from scale10m_pretrain.pt): does escape require capacity?
 3. **Tokenizer swap** — own-stack with a ~50k vocab: is the residual value fragmentation?
 4. **Slot-diversity intervention** — vary the allergy slot's training diversity at fixed
-   scale: the direct test of the hypothesis now binding in nine configurations.
+   scale: the direct test of the hypothesis (type-controlled: multiple held types per condition, position varied).
 5. **Duplicate finetunes** — training-run variance per cell (single run each; Chinchilla
    cell additionally changes venue, H100 vs T4).
 

@@ -47,7 +47,7 @@ copy-vs-classify hypothesis (labeled, falsifiable) is in P1 §6.1 and RESEARCH_P
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
    7.1±1.2, clean 29.6±3.7 → METHOD carries ~73% of the stack effect; both methods
    memorize (≈0 train loss) but only full-FT destroys the copy pathway; LoRA@160M solves
-   cc (clean 0.0), alg still 100 (7/7 configs). Folded into paper2_draft + P1 addendum.
+   cc (clean 0.0), alg 100 in own-stack configs (NOT universal: py-1b draw3 = 24.6; type-level n=1 caveat). Folded into paper2_draft + P1 addendum.
    CHINCHILLA CONTROL DONE (peer session, RunPod H100, ~$37): 3.2B tokens + full FT =
    7.0±1.0 / 29.4±4.0 — IDENTICAL to 200M+LoRA → data & method are SUBSTITUTES
    (interaction account replaces 73/27; papers + program updated). Base ckpt preserved
