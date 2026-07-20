@@ -1,0 +1,30 @@
+{
+ "run_kind": "replication",
+ "purpose": "venue-robustness check of the frozen primary C-3 verdict on different hardware (primary: RTX 4090; replication: RTX A6000). Cannot alter the frozen primary decision rule unless it uncovers an implementation/provenance defect.",
+ "primary_result_commit": "0359c22",
+ "replication_pod_id": "w2k42qy6gaqu3z",
+ "pool_sha256": "39435e2eb2a4b237f81775ef43dfc810cf5aa1c29650954f93c93ea4fe4b5136",
+ "eval_m0_sha256": "52a4b6f7e1e799da79dd962f0df4a56c621ca3334e5cdceef374821686302bec",
+ "kernel_sha256": "382b3f8df48ca6c64b1103a3d9ff67d6d4952bfcc6e4648e00db0b032df87692",
+ "recompute_sha256": "0dab515a9c3b3c48da6a8fd27ab7eb4bdf60e55cd4eda4bb59b48e0590a143ac",
+ "prereg_sha256": "8e97179dbfebb624d38871ebae780cdb5a7931db1d7da1550975b43ee97c8ad4",
+ "primary_result_sha256": "1db3582020e82edb5683a18644fda4ff99d046703f73ef4bee2568eeed9d63de",
+ "code_git_sha": "5234367f356894c417d8105f033d92c95f74f421",
+ "seeds_ft": [
+  0,
+  1,
+  2
+ ],
+ "gpu_model": "NVIDIA RTX A6000",
+ "cuda_version": "12.8",
+ "pytorch_version": "2.8.0.dev20250319+cu128",
+ "host_provider": "RunPod secure cloud",
+ "utc_start": "2026-07-20T14:03:14Z",
+ "hourly_rate_usd": 0.49,
+ "max_cost_ceiling_usd": 0.6,
+ "auto_relaunch": false,
+ "output_dir": "trajectory/replications/c3/w2k42qy6gaqu3z/",
+ "retrieval": "scp results_c3_10m.json + outputs_c3_seed{0,1,2}.jsonl + c3_run.log -> output_dir",
+ "teardown": "runpodctl pod delete w2k42qy6gaqu3z; runpodctl pod list",
+ "isolation": "by directory; canonical filenames inside output_dir so the frozen scorer (recompute_c3.py) runs byte-identically on primary vs replication; primary artifacts in trajectory/ are never written"
+}
