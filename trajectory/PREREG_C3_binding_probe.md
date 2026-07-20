@@ -144,6 +144,119 @@ balance table validates. Artifact order after the gates: gen_c3_pools.py +
 c3_pools.json (with bridge-reproduction falsification gate + orthogonality table) →
 eval instances → kernel → run → RESULT appended here.
 
+## RESULT (2026-07-20, run complete)
+
+Run: RunPod RTX 4090, pinned commit 45531e2, pools 943b446, eval 2e6c0ce, kernel
+93db8d1+45531e2 (kernel amended pre-launch: generation-cap safety guard —
+`generate_ids` now returns `stop_reason`; asserted an 8-tok margin against the
+true max observed response length of 47 tok under `max_new=64`, 17-tok margin —
+fired once at runtime, `cap_confound=1`, correctly excluded from the
+truncation-locus denominator). Artifacts (immutable, commit a07862d):
+results_c3_10m.json (sha256 1db35820...), outputs_c3_seed{0,1,2}.jsonl (sha256
+6805b3b1.../a9bb0764.../52966d8b..., 1000 records each), run_c3_log.txt (sha256
+6a7de207...). Base checkpoint sha256 892180f0...c2fc88d — independently verified
+against the current canonical GitHub release asset (downloaded fresh, not just
+kernel self-report). All 5 checksums verified identical between the pod and local
+before teardown; pod deleted, billing confirmed stopped. Independent recomputation
+from raw per-item JSONL (fresh code, not the kernel's own computation path)
+matched every decision-rule number exactly: H-transition/H-boundary/H-length
+deltas, T-full rate, truncation-locus rate+n, and the full 23-type unstable set.
+
+**Triple cross-check.** A second, independently-authored recompute harness
+(`recompute_c3.py`, peer-built) was found to have a real bug: it computed the
+seed-unstable type set but never applied it as an exclusion filter before
+computing the three frozen contrasts, contradicting this PREREG's own text
+("3-way-unstable types are reported separately and excluded from contrasts")
+and the kernel's implementation — silently reporting +0.0/−16.7 instead of the
+correct +1.7/−8.3. Verified by toggling the filter on the real run data: with
+the filter applied (matching the frozen rule), all three independent
+implementations — the kernel, this session's from-scratch recompute, and the
+fixed peer harness — agree exactly. Both REFUTED verdicts are unaffected by
+which version is used; the point estimates and any CI built on them are not.
+Fixed in commit 823e1ca; the peer harness's own 6 fixture tests still pass.
+
+Two supplementary analyses from the peer harness, valid independent of the bug
+above (continuous per-type recall, not the binary flip contrast; not subject to
+the unstable-exclusion rule): **dose-response within T-avail** — junction bigram
+counts there span 25–425; Spearman(count, mean 3-seed recall) = **+0.47** across
+n=24 T-avail types, i.e. a moderate graded relationship with transition
+frequency even though the binary T-avail-vs-T-sep contrast is REFUTED (worth
+noting as a secondary, exploratory signal — not a contradiction of the frozen
+verdict, since SUPPORTED requires ≥40pts on the registered binary contrast, not
+a nonzero rank correlation). **Type-bootstrap 90% CI on H-transition** (2000
+resamples, stable types only): **[−19.2, +23.3]**, centered near zero and
+spanning it — consistent with, and quantifying the uncertainty behind, REFUTED.
+
+**Mechanical verdicts under the frozen thresholds:**
+- **H-transition: REFUTED.** flip(T-avail) − flip(T-sep) = **+1.67 pts**
+  (rule: ≤15 → refuted), matched across B×L strata. Transition-availability (junction
+  bigram frequency) does not predict copy completion.
+- **H-boundary: REFUTED.** flip(B-sub) − flip(B-space) = **−8.33 pts** (rule: ≤15 →
+  refuted). Direction is slightly negative (B-sub marginally worse), within the
+  refuted band — not read as a real reverse effect.
+- **H-length: UNRESOLVED.** flip(short) − flip(long) = **+25.0 pts** (band: 15–40).
+  Point estimate trends toward the predicted direction but is not decisive under
+  the frozen rule.
+- **T-full control: 100% (n=9).** Retrodiction passes; run is NOT void.
+- **Truncation-locus check: 12.36%** of B-space misses (n=178, 1 cap-confounded
+  case excluded) truncate exactly at the whitespace junction (rule: ≥60% →
+  confirms). **Does not confirm** the boundary-as-failure-locus mechanism.
+- **Seed instability: 24.7%** (23/93 types) — consistent with C-1b's 24%.
+- **H-stochastic: NOT SUPPORTED.** The registered AND-gate requires all three
+  factors REFUTED; H-length is UNRESOLVED, so the gate does not fire, despite the
+  seed-instability rate being independently consistent with a stochastic account.
+  This is stated as a gate outcome, not a judgment call — no threshold was
+  adjusted post-hoc to reach it.
+
+**Uncertainty context (not part of the frozen decision rule, added post-hoc as a
+transparency check, does not override the verdicts above):** cell sizes after
+unstable-type removal are small (n=2–6/cell). Wilson 95% CIs on cell flip rates
+range as wide as [34%, 100%]; every short-vs-long matched pair's 95% band
+overlaps. This confirms H-length's +25pt point estimate is noise-dominated at this
+n, reinforcing (not contradicting) UNRESOLVED rather than suggesting a near-miss
+on SUPPORTED.
+
+**Error-class census** (815 misses across all held types; 396 restricted to the
+core T×B×L cell types under test): the dominant class is **morphological_near_miss**
+(43.7% of cell-type misses, vs truncation at 11.9%) — a marked departure from
+C-1b's descriptive framing (38% of C-1b's misses, across all interference classes,
+were word-boundary tail truncations; these are not identical measurements, since
+C-1b's population was not restricted to C-3's B-space-only stratum, but the shift
+is still notable). Of morphological_near_miss cases, ~60% are clean singular/plural
+suffix variation (daisy seed→"daisy seeds", cane sting→"cane stings", rose
+hips→"rose hip") — the model defaults to a differently-inflected form rather than
+truncating or substituting. The remainder are other small-edit-distance misses
+(e.g., a spurious "an" insertion: apigenin→"anpigenin"). Restricted to the B-space
+truncation-locus population specifically (n=178), morphological_near_miss is still
+dominant at 53.9%, with truncation at only 12.4% — the population the boundary
+account specifically predicted should truncate mostly does not; it mostly
+re-inflects.
+
+**Frequency-imbalance caveat:** the pre-launch read-only diagnostic
+(c3_balance_report.py) flagged 3/4 T-contrast cells with junction-token frequency
+|SMD| > 0.8 (direction inconsistent across cells). This is a covariate outside the
+frozen orthogonality gate. Because H-transition's verdict is REFUTED (a null
+result), a frequency confound cannot manufacture it — an imbalance could only mask
+a true effect, not fabricate a false null — so this does not threaten the verdict
+above; noted for completeness, not as a limitation requiring a re-run.
+
+**What this closes and what it opens:** none of the three pre-registered
+mechanistic accounts (transition-availability, boundary-type, length) reached
+SUPPORTED. Two are cleanly REFUTED; the third is UNRESOLVED but noise-dominated at
+this sample size, not a suppressed trend. The auxiliary boundary-locus
+corroboration also fails to confirm. The dominant failure mode across strata is
+morphological re-inflection (chiefly pluralization), not truncation — a genuinely
+new descriptive finding this design was not built to explain, since it isn't one
+of the three registered factors. Per the frozen rule, H-stochastic does not fire
+(the AND-gate is not met), so no probe is promoted automatically by this result;
+the next step is an owner-level choice among (a) a length-focused follow-up with a
+larger, better-powered pool given the Wilson-band evidence that C-3's length cells
+were underpowered, (b) a new probe targeting the morphological re-inflection
+finding itself (does the model have a default/majority inflectional form it falls
+back to under uncertainty?), or (c) closing the lexical-mechanism line of inquiry
+here and moving to a representation-level probe — none of which C-3's own decision
+rule mandates, since H-stochastic was not supported.
+
 ## INTERPRETIVE NOTE (2026-07-20, pre-result — frozen design property, no threshold changed)
 
 Recorded before C-3 results exist, from the committed pool manifest alone; changes no

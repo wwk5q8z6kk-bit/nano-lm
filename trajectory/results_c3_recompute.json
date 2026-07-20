@@ -1,0 +1,23 @@
+{
+ "independent_recompute": true,
+ "source_dir": "/Users/mac/Projects/nano-lm/trajectory",
+ "n_records": 3000,
+ "cap_confound_excluded": 1,
+ "contrasts": {
+  "H_transition": 1.6666666666666643,
+  "H_boundary": -8.333333333333336,
+  "H_length": 25.000000000000007
+ },
+ "verdicts": {
+  "H_transition": "REFUTED",
+  "H_boundary": "REFUTED",
+  "H_length": "UNRESOLVED"
+ },
+ "T_freq_disjoint_by_design": true,
+ "within_Tavail_dose_rho": 0.4702379983386791,
+ "bootstrap_dT_90ci": [
+  -19.16666666666667,
+  23.333333333333332
+ ],
+ "seed_unstable_frac": 0.25
+}
