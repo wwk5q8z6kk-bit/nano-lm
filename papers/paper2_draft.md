@@ -96,7 +96,7 @@ allergy slot remains at **100.0** (clean) at all three own-stack scales.
 | own-stack 160M, diluted (clean) | 200M tokens | 3.2B tokens (Chinchilla) |
 |---|---|---|
 | **full FT** | 16.9 ± 1.7 (66.6 ± 5.0) | **7.0 ± 1.0 (29.4 ± 4.0)** |
-| **LoRA r=16** | **7.1 ± 1.2 (29.6 ± 3.7)** | *(missing cell — base preserved)* |
+| **LoRA r=16** | **7.1 ± 1.2 (29.6 ± 3.7)** | **4.2 ± 0.9 (17.7 ± 3.2)** |
 
 Reference: pythia-160m (~300B tokens, LoRA) 3.5 ± 0.7 (14.7 ± 2.1).
 
@@ -113,8 +113,14 @@ own→Pythia difference to the finetuning method; the Chinchilla control refutes
 additivity — data quantity alone recovers the *same* ~10 points. The correct structure is
 an **interaction**: the large gap lives specifically in the under-trained-base ×
 full-parameter-adaptation cell, and either escape route out of that corner recovers most
-of it. (The 3.2B+LoRA cell — both escapes at once — is the missing factorial corner; the
-Chinchilla base checkpoint is preserved, making it a ~30-minute finetune.) Two
+of it. The factorial corner — both escapes at once — completes the grid: **3.2B + LoRA
+reads 4.2 ± 0.9** (clean 17.7 ± 3.2), firing the pre-registered ≤4.5 rule: the two
+escapes *compound to the Pythia level itself* (3.5 ± 0.7; clean 14.7 ± 2.1), so the
+entire own-stack↔Pythia difference is attributable to **data quantity + adaptation
+method, with tokenizer and architecture ~innocent**. The grid reads 16.9 (neither) →
+7.0/7.1 (either) → 4.2 (both). Most strikingly, the corner's per-slot fingerprint is
+*identical to Pythia's* — cc 0.0, med 0.0, alg 100.0: a fully "Pythia-like" own-stack
+model, down to the residual's identity. (Seed duplicate of the corner in progress.) Two
 sharpening observations:
 
 1. **Both methods memorize.** Full FT and LoRA both reach ≈0 training loss and 100%
