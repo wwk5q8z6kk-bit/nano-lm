@@ -1,0 +1,353 @@
+{
+ "amendment": 2,
+ "pools": {
+  "I-contain": [
+   {
+    "value": "willow pollen",
+    "class": "I-contain",
+    "why": "contains trained 'pollen'",
+    "n_tokens": 6,
+    "coverage": 1.0,
+    "novel_tokens": []
+   },
+   {
+    "value": "maple pollen",
+    "class": "I-contain",
+    "why": "contains trained 'pollen'",
+    "n_tokens": 6,
+    "coverage": 1.0,
+    "novel_tokens": []
+   },
+   {
+    "value": "hazel pollen",
+    "class": "I-contain",
+    "why": "contains trained 'pollen'",
+    "n_tokens": 6,
+    "coverage": 0.8333,
+    "novel_tokens": [
+     "az"
+    ]
+   },
+   {
+    "value": "elm pollen",
+    "class": "I-contain",
+    "why": "contains trained 'pollen'",
+    "n_tokens": 5,
+    "coverage": 1.0,
+    "novel_tokens": []
+   },
+   {
+    "value": "goat milk",
+    "class": "I-contain",
+    "why": "contains trained 'milk'",
+    "n_tokens": 4,
+    "coverage": 1.0,
+    "novel_tokens": []
+   },
+   {
+    "value": "rice milk",
+    "class": "I-contain",
+    "why": "contains trained 'milk'",
+    "n_tokens": 4,
+    "coverage": 0.75,
+    "novel_tokens": [
+     "ice"
+    ]
+   }
+  ],
+  "I-sib": [
+   {
+    "value": "blue dye",
+    "class": "I-sib",
+    "why": "shares word ['dye'] with trained value",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "novel_tokens": [
+     "bl"
+    ]
+   },
+   {
+    "value": "pumpkin seeds",
+    "class": "I-sib",
+    "why": "shares word ['seeds'] with trained value",
+    "n_tokens": 6,
+    "coverage": 0.8333,
+    "novel_tokens": [
+     "ump"
+    ]
+   },
+   {
+    "value": "chia seeds",
+    "class": "I-sib",
+    "why": "shares word ['seeds'] with trained value",
+    "n_tokens": 4,
+    "coverage": 0.75,
+    "novel_tokens": [
+     "ia"
+    ]
+   },
+   {
+    "value": "spider mites",
+    "class": "I-sib",
+    "why": "shares word ['mites'] with trained value",
+    "n_tokens": 4,
+    "coverage": 0.5,
+    "novel_tokens": [
+     "sp",
+     "ider"
+    ]
+   },
+   {
+    "value": "hornet stings",
+    "class": "I-sib",
+    "why": "shares word ['stings'] with trained value",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "novel_tokens": [
+     "orn"
+    ]
+   },
+   {
+    "value": "deer dander",
+    "class": "I-sib",
+    "why": "shares word ['dander'] with trained value",
+    "n_tokens": 5,
+    "coverage": 1.0,
+    "novel_tokens": []
+   }
+  ],
+  "I-xslot": [
+   {
+    "value": "cough syrup",
+    "class": "I-xslot",
+    "why": "is/contains trained med 'cough syrup'",
+    "n_tokens": 5,
+    "coverage": 1.0,
+    "novel_tokens": []
+   },
+   {
+    "value": "antacids",
+    "class": "I-xslot",
+    "why": "is/contains trained med 'antacids'",
+    "n_tokens": 3,
+    "coverage": 0.6667,
+    "novel_tokens": [
+     "ant"
+    ]
+   },
+   {
+    "value": "loratadine",
+    "class": "I-xslot",
+    "why": "is/contains trained med 'loratadine'",
+    "n_tokens": 5,
+    "coverage": 1.0,
+    "novel_tokens": []
+   },
+   {
+    "value": "paracetamol",
+    "class": "I-xslot",
+    "why": "is/contains trained med 'paracetamol'",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "novel_tokens": [
+     "par"
+    ]
+   }
+  ],
+  "I-template": [
+   {
+    "value": "food additives",
+    "class": "I-template",
+    "why": "shares template word ['food']",
+    "n_tokens": 5,
+    "coverage": 0.4,
+    "novel_tokens": [
+     "ood",
+     " add",
+     "ives"
+    ]
+   },
+   {
+    "value": "food coloring",
+    "class": "I-template",
+    "why": "shares template word ['food']",
+    "n_tokens": 4,
+    "coverage": 0.5,
+    "novel_tokens": [
+     "ood",
+     " color"
+    ]
+   },
+   {
+    "value": "generic drugs",
+    "class": "I-template",
+    "why": "shares template word ['drugs']",
+    "n_tokens": 5,
+    "coverage": 0.6,
+    "novel_tokens": [
+     "ener",
+     " drug"
+    ]
+   },
+   {
+    "value": "pet food",
+    "class": "I-template",
+    "why": "shares template word ['food']",
+    "n_tokens": 3,
+    "coverage": 0.6667,
+    "novel_tokens": [
+     " food"
+    ]
+   }
+  ],
+  "I-iso": [
+   {
+    "value": "camphor",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 3,
+    "coverage": 0.6667,
+    "novel_tokens": [
+     "hor"
+    ]
+   },
+   {
+    "value": "henna",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 2,
+    "coverage": 0.0,
+    "novel_tokens": [
+     "hen",
+     "na"
+    ]
+   },
+   {
+    "value": "iodine",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 2,
+    "coverage": 0.5,
+    "novel_tokens": [
+     "iod"
+    ]
+   },
+   {
+    "value": "quinoa",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 3,
+    "coverage": 0.3333,
+    "novel_tokens": [
+     "qu",
+     "ino"
+    ]
+   },
+   {
+    "value": "gum arabic",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 6,
+    "coverage": 0.6667,
+    "novel_tokens": [
+     "um",
+     " a"
+    ]
+   },
+   {
+    "value": "rose hips",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 4,
+    "coverage": 0.75,
+    "novel_tokens": [
+     "ips"
+    ]
+   },
+   {
+    "value": "melon rind",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 5,
+    "coverage": 0.8,
+    "novel_tokens": [
+     "on"
+    ]
+   },
+   {
+    "value": "pine resin",
+    "class": "I-iso",
+    "why": "no lexical relation to trained or template vocabulary",
+    "n_tokens": 4,
+    "coverage": 0.75,
+    "novel_tokens": [
+     " res"
+    ]
+   }
+  ]
+ },
+ "bridges": {
+  "ragweed pollen": {
+   "value": "ragweed pollen",
+   "class": "I-contain",
+   "why": "contains trained 'pollen'",
+   "n_tokens": 7,
+   "coverage": 0.8571,
+   "novel_tokens": [
+    "we"
+   ]
+  },
+  "sulfa drugs": {
+   "value": "sulfa drugs",
+   "class": "I-template",
+   "why": "shares template word ['drugs']",
+   "n_tokens": 6,
+   "coverage": 0.8333,
+   "novel_tokens": [
+    " drug"
+   ]
+  },
+  "bee stings": {
+   "value": "bee stings",
+   "class": "I-sib",
+   "why": "shares word ['stings'] with trained value",
+   "n_tokens": 4,
+   "coverage": 0.75,
+   "novel_tokens": [
+    "be"
+   ]
+  },
+  "ibuprofen": {
+   "value": "ibuprofen",
+   "class": "I-xslot",
+   "why": "is/contains trained med 'ibuprofen'",
+   "n_tokens": 5,
+   "coverage": 1.0,
+   "novel_tokens": []
+  },
+  "wool": {
+   "value": "wool",
+   "class": "I-iso",
+   "why": "no lexical relation to trained or template vocabulary",
+   "n_tokens": 2,
+   "coverage": 0.5,
+   "novel_tokens": [
+    "ool"
+   ]
+  },
+  "strawberries": {
+   "value": "strawberries",
+   "class": "I-iso",
+   "why": "no lexical relation to trained or template vocabulary",
+   "n_tokens": 5,
+   "coverage": 0.6,
+   "novel_tokens": [
+    "ber",
+    "ries"
+   ]
+  }
+ },
+ "d80_output_token_count": 304,
+ "valid": true,
+ "classifier": "contain>sib>xslot>template>iso; word-level; strip-s for template"
+}
