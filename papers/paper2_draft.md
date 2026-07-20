@@ -77,7 +77,10 @@ ladder (40M/80M).
 
 Model quality scales normally — pretrain val loss 2.86 (vs 3.28 at 10M, 3.96 at 3.15M),
 scribe parse 100%, base control parse 0% — yet the copying gap barely moves. The
-pre-registered rule fires **stack-dominant**. The clean metric declines modestly with
+pre-registered rule fires **stack-dominant**. (The same N=1 caution as §3.2 applies to
+this verdict itself: the 16.9 cell is a single training run — the pre-registered
+duplicate-finetune study bounds this; the *direction* is safe at ~6 instance-SDs from
+Pythia's 3.5, but the point value is provisional.) The clean metric declines modestly with
 scale (87.3 → 79.5 → 66.6) — capacity helps at the margin — but at 160M own-stack the
 pure held-out-value failure is still **4.5×** the Pythia-160M value; per-field, the
 allergy slot remains at **100.0** (clean) at all three own-stack scales.
@@ -113,17 +116,25 @@ sharpening observations:
    fit reaches the same training loss while leaving it intact — an implicit-regularization
    account of the failure, not a capacity account.
 2. **The slot gradient survives the own-stack interventions — with one important
-   exception elsewhere.** Under LoRA at 160M, clean per-field: cc **0.0** (solved — the
-   complaint-copy pathway *exists* in the own-stack pretrained model; full FT on the
-   weak base was destroying it), med ~52, alg **100.0 ± 0.0**. Under Chinchilla
-   pretraining with full FT: cc 4.5, med 34.5, alg **100.0 ± 0.0** again. The allergy
+   exception elsewhere.** Under LoRA at 160M, clean per-field (means ± SD over the five
+   instances): cc **0.0 ± 0.0** (solved — the complaint-copy pathway *exists* in the
+   own-stack pretrained model; full FT on the weak base was destroying it: full FT reads
+   cc 64.4 ± 7.1), med 47.1 ± 4.0, alg **100.0 ± 0.0**. Under Chinchilla pretraining
+   with full FT: cc 9.2 ± 4.4, med 25.5 ± 6.1, alg **100.0 ± 0.0** again. The allergy
    slot is at total failure in **all five own-stack configurations** and at pythia-410m;
    pythia-160m reads 83.6 ± 4.6; but the pythia-1b *third training draw* reads
    **24.6 ± 10.3 — largely solved**, and the Pythia sequence (83.6 → 100.0 → 24.6) is
    non-monotonic. Two honesty notes follow. (i) Every alg number is a *type-level n=1*
    measurement — "sulfa drugs" is the only held allergy type, so the ±0.0 instance-SDs
-   are repeated measures of one string, not precision about the slot; med has two held
-   types (its ~52 at LoRA is plausibly one type solved, one not) and cc three. (ii) The
+   are repeated measures of one string, not precision about the slot. For med (two held
+   types) this is now *proven*, not surmised: LoRA's and full FT's per-instance med gaps
+   are **bit-identical on all five instances** — because both models copy melatonin 100%
+   and throat-lozenges 0%, making each instance's med gap exactly
+   100 × share(lozenges), a pure function of eval-instance composition (verified
+   instance-by-instance to the last digit). Copy competence at this granularity is
+   *categorical per held type*, and the ±4.0 "SD" is composition noise, not behavioral
+   variance; the Chinchilla cell breaks the composition function (25.5 ± 6.1),
+   i.e. data-scaling partially rescues lozenges. (ii) The
    diversity gradient (190/18/5) is three correlated points, confounded with held-type
    count, subword fragmentation (every held value contains ≥1 token never emitted in
    any training output), and field position (alg is template-final). The slot-diversity
@@ -134,9 +145,8 @@ sharpening observations:
 ### 3.3 Familiar structure at the new rung
 
 The public instance is again the hard draw (inst0 28.0 vs fresh 16.9 — now 6/6 rungs),
-and the per-slot pattern replicates (clean: cc 73.1, med 51.7, alg 100.0 at m4) — the
-slot-diversity gradient (~190/18/5 training values) shapes the failure identically at
-159M as at 3M.
+and the per-slot pattern replicates (clean means: cc 64.4 ± 7.1, med 47.1 ± 4.0, alg
+100.0 ± 0.0) — the slot gradient shapes the failure at 159M as at 3M.
 
 ## 4. What this establishes, and what it doesn't
 
