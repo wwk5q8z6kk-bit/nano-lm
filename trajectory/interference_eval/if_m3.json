@@ -1,0 +1,4602 @@
+[
+ {
+  "tuple": {
+   "cc": "fever",
+   "dur": "5 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "antacids"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "antacids",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a fever has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 antacids.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fever | DUR: 5 days | SEV: severe | MED: none | ALG: antacids"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "ibuprofen",
+   "alg": "bee stings"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "bee stings",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only ibuprofen so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 bee stings.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 2 weeks | SEV: moderate | MED: ibuprofen | ALG: bee stings"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "2 days",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "blue dye"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "blue dye",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as heartburn and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 blue dye.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 2 days | SEV: severe | MED: melatonin | ALG: blue dye"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "12 days",
+   "sev": "moderate",
+   "med": "vitamin c",
+   "alg": "camphor"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "camphor",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, heartburn has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 12 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only vitamin c so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 camphor.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 12 days | SEV: moderate | MED: vitamin c | ALG: camphor"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "2 weeks",
+   "sev": "mild",
+   "med": "vitamin c",
+   "alg": "chia seeds"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "chia seeds",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only vitamin c so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 chia seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 2 weeks | SEV: mild | MED: vitamin c | ALG: chia seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "14 days",
+   "sev": "mild",
+   "med": "melatonin",
+   "alg": "cough syrup"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "cough syrup",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as neck pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 14 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 cough syrup.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 14 days | SEV: mild | MED: melatonin | ALG: cough syrup"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "1 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "deer dander"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "deer dander",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a toothache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 1 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 deer dander.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 1 weeks | SEV: mild | MED: none | ALG: deer dander"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "1 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "elm pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "elm pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 1 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 elm pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 1 weeks | SEV: mild | MED: none | ALG: elm pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "chest pain",
+   "dur": "10 days",
+   "sev": "mild",
+   "med": "melatonin",
+   "alg": "food additives"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "food additives",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as chest pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 10 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 food additives.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: chest pain | DUR: 10 days | SEV: mild | MED: melatonin | ALG: food additives"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "6 weeks",
+   "sev": "severe",
+   "med": "throat lozenges",
+   "alg": "food coloring"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "food coloring",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as dizziness and hasn't stopped.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 food coloring.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 6 weeks | SEV: severe | MED: throat lozenges | ALG: food coloring"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "6 weeks",
+   "sev": "moderate",
+   "med": "melatonin",
+   "alg": "generic drugs"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "generic drugs",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, a toothache has been troubling me.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 generic drugs.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 6 weeks | SEV: moderate | MED: melatonin | ALG: generic drugs"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "3 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "goat milk"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "goat milk",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a toothache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 goat milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 3 days | SEV: severe | MED: none | ALG: goat milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "4 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "gum arabic"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "gum arabic",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as neck pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 gum arabic.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 4 days | SEV: severe | MED: none | ALG: gum arabic"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "9 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "hazel pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "hazel pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 9 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 hazel pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 9 days | SEV: mild | MED: none | ALG: hazel pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "5 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "henna"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "henna",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 henna.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 5 weeks | SEV: mild | MED: none | ALG: henna"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "throat lozenges",
+   "alg": "hornet stings"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "hornet stings",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, joint pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 hornet stings.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 2 weeks | SEV: moderate | MED: throat lozenges | ALG: hornet stings"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "10 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "ibuprofen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "ibuprofen",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a toothache and hasn't stopped.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 10 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 ibuprofen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 10 days | SEV: severe | MED: none | ALG: ibuprofen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "7 days",
+   "sev": "moderate",
+   "med": "throat lozenges",
+   "alg": "iodine"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "iodine",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, back pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 7 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 iodine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 7 days | SEV: moderate | MED: throat lozenges | ALG: iodine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "7 days",
+   "sev": "mild",
+   "med": "throat lozenges",
+   "alg": "loratadine"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "loratadine",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, heartburn has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 7 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 loratadine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 7 days | SEV: mild | MED: throat lozenges | ALG: loratadine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "5 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "maple pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "maple pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a toothache and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 maple pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 5 weeks | SEV: severe | MED: none | ALG: maple pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "6 weeks",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "melon rind"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "melon rind",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 melon rind.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 6 weeks | SEV: severe | MED: melatonin | ALG: melon rind"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "throat lozenges",
+   "alg": "paracetamol"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "paracetamol",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 paracetamol.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 2 weeks | SEV: severe | MED: throat lozenges | ALG: paracetamol"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "throat lozenges",
+   "alg": "pet food"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pet food",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pet food.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 3 weeks | SEV: moderate | MED: throat lozenges | ALG: pet food"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "pine resin"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pine resin",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a headache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pine resin.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 2 weeks | SEV: severe | MED: none | ALG: pine resin"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "5 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "pumpkin seeds"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pumpkin seeds",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a rash and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pumpkin seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 5 weeks | SEV: severe | MED: none | ALG: pumpkin seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "6 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "quinoa"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "quinoa",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, a toothache has been troubling me.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 quinoa.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 6 weeks | SEV: mild | MED: none | ALG: quinoa"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "ragweed pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "ragweed pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a rash and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 1 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 ragweed pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 1 weeks | SEV: severe | MED: none | ALG: ragweed pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "6 days",
+   "sev": "severe",
+   "med": "throat lozenges",
+   "alg": "rice milk"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "rice milk",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a toothache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 rice milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 6 days | SEV: severe | MED: throat lozenges | ALG: rice milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "rose hips"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "rose hips",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 rose hips.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 2 weeks | SEV: severe | MED: none | ALG: rose hips"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "3 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "spider mites"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "spider mites",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as neck pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 spider mites.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 3 days | SEV: moderate | MED: none | ALG: spider mites"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "12 days",
+   "sev": "moderate",
+   "med": "vitamin c",
+   "alg": "strawberries"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "strawberries",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as neck pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 12 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only vitamin c so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 strawberries.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 12 days | SEV: moderate | MED: vitamin c | ALG: strawberries"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "sulfa drugs"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "sulfa drugs",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, heartburn has been troubling me.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 sulfa drugs.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 3 weeks | SEV: moderate | MED: none | ALG: sulfa drugs"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "aspirin",
+   "alg": "willow pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "willow pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a toothache and hasn't stopped.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only aspirin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 willow pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 3 weeks | SEV: moderate | MED: aspirin | ALG: willow pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "11 days",
+   "sev": "severe",
+   "med": "throat lozenges",
+   "alg": "wool"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "wool",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as heartburn and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 11 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 wool.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 11 days | SEV: severe | MED: throat lozenges | ALG: wool"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "10 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "antacids"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "antacids",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as neck pain and hasn't stopped.\nPatient: I almost rescheduled twice.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 10 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 antacids.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 10 days | SEV: severe | MED: none | ALG: antacids"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "4 days",
+   "sev": "mild",
+   "med": "throat lozenges",
+   "alg": "bee stings"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "bee stings",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as heartburn and hasn't stopped.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 bee stings.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 4 days | SEV: mild | MED: throat lozenges | ALG: bee stings"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "14 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "blue dye"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "blue dye",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a rash and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 14 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 blue dye.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 14 days | SEV: moderate | MED: none | ALG: blue dye"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "10 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "camphor"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "camphor",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, a toothache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 10 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 camphor.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 10 days | SEV: mild | MED: none | ALG: camphor"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "6 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "chia seeds"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "chia seeds",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a toothache and hasn't stopped.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 chia seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 6 weeks | SEV: severe | MED: none | ALG: chia seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "13 days",
+   "sev": "severe",
+   "med": "ibuprofen",
+   "alg": "cough syrup"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "cough syrup",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 13 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only ibuprofen so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 cough syrup.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 13 days | SEV: severe | MED: ibuprofen | ALG: cough syrup"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "9 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "deer dander"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "deer dander",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a rash and hasn't stopped.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 9 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 deer dander.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 9 days | SEV: moderate | MED: none | ALG: deer dander"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "8 days",
+   "sev": "mild",
+   "med": "paracetamol",
+   "alg": "elm pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "elm pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as heartburn and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 8 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only paracetamol so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 elm pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 8 days | SEV: mild | MED: paracetamol | ALG: elm pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "shortness of breath",
+   "dur": "10 days",
+   "sev": "moderate",
+   "med": "allergy pills",
+   "alg": "food additives"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "food additives",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, shortness of breath has been troubling me.\nPatient: I almost rescheduled twice.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 10 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only allergy pills so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 food additives.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: shortness of breath | DUR: 10 days | SEV: moderate | MED: allergy pills | ALG: food additives"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "5 days",
+   "sev": "severe",
+   "med": "throat lozenges",
+   "alg": "food coloring"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "food coloring",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, heartburn has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 food coloring.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 5 days | SEV: severe | MED: throat lozenges | ALG: food coloring"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "4 days",
+   "sev": "severe",
+   "med": "aspirin",
+   "alg": "generic drugs"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "generic drugs",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as heartburn and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only aspirin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 generic drugs.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 4 days | SEV: severe | MED: aspirin | ALG: generic drugs"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "goat milk"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "goat milk",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 goat milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 3 weeks | SEV: moderate | MED: none | ALG: goat milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "6 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "gum arabic"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "gum arabic",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nPatient: I almost rescheduled twice.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 gum arabic.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 6 weeks | SEV: severe | MED: none | ALG: gum arabic"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "throat lozenges",
+   "alg": "hazel pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "hazel pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 hazel pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 3 weeks | SEV: moderate | MED: throat lozenges | ALG: hazel pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "2 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "henna"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "henna",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as neck pain and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 henna.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 2 days | SEV: severe | MED: none | ALG: henna"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "13 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "hornet stings"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "hornet stings",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as neck pain and hasn't stopped.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 13 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 hornet stings.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 13 days | SEV: mild | MED: none | ALG: hornet stings"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "3 weeks",
+   "sev": "severe",
+   "med": "aspirin",
+   "alg": "ibuprofen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "ibuprofen",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, heartburn has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only aspirin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 ibuprofen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 3 weeks | SEV: severe | MED: aspirin | ALG: ibuprofen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "14 days",
+   "sev": "mild",
+   "med": "melatonin",
+   "alg": "iodine"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "iodine",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a rash and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 14 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 iodine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 14 days | SEV: mild | MED: melatonin | ALG: iodine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "4 weeks",
+   "sev": "moderate",
+   "med": "allergy pills",
+   "alg": "loratadine"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "loratadine",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a rash has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only allergy pills so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 loratadine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 4 weeks | SEV: moderate | MED: allergy pills | ALG: loratadine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "6 weeks",
+   "sev": "mild",
+   "med": "naproxen",
+   "alg": "maple pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "maple pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as neck pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only naproxen so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 maple pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 6 weeks | SEV: mild | MED: naproxen | ALG: maple pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "5 days",
+   "sev": "moderate",
+   "med": "aspirin",
+   "alg": "melon rind"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "melon rind",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as heartburn and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only aspirin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 melon rind.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 5 days | SEV: moderate | MED: aspirin | ALG: melon rind"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "paracetamol"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "paracetamol",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, neck pain has been troubling me.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 paracetamol.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 2 weeks | SEV: moderate | MED: none | ALG: paracetamol"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "4 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "pet food"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pet food",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pet food.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 4 weeks | SEV: severe | MED: none | ALG: pet food"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "13 days",
+   "sev": "moderate",
+   "med": "aspirin",
+   "alg": "pine resin"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pine resin",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, stomach pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 13 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only aspirin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pine resin.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 13 days | SEV: moderate | MED: aspirin | ALG: pine resin"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "12 days",
+   "sev": "moderate",
+   "med": "melatonin",
+   "alg": "pumpkin seeds"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pumpkin seeds",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 12 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pumpkin seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 12 days | SEV: moderate | MED: melatonin | ALG: pumpkin seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "8 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "quinoa"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "quinoa",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 8 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 quinoa.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 8 days | SEV: severe | MED: none | ALG: quinoa"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "12 days",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "ragweed pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "ragweed pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as neck pain and hasn't stopped.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 12 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 ragweed pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 12 days | SEV: severe | MED: melatonin | ALG: ragweed pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "14 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "rice milk"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "rice milk",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a toothache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 14 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 rice milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 14 days | SEV: moderate | MED: none | ALG: rice milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "6 weeks",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "rose hips"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "rose hips",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 rose hips.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 6 weeks | SEV: severe | MED: melatonin | ALG: rose hips"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "12 days",
+   "sev": "severe",
+   "med": "paracetamol",
+   "alg": "spider mites"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "spider mites",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as heartburn and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 12 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only paracetamol so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 spider mites.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 12 days | SEV: severe | MED: paracetamol | ALG: spider mites"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "earache",
+   "dur": "6 days",
+   "sev": "mild",
+   "med": "ibuprofen",
+   "alg": "strawberries"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "strawberries",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, an earache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only ibuprofen so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 strawberries.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: earache | DUR: 6 days | SEV: mild | MED: ibuprofen | ALG: strawberries"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "3 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "sulfa drugs"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "sulfa drugs",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 sulfa drugs.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 3 weeks | SEV: severe | MED: none | ALG: sulfa drugs"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "6 days",
+   "sev": "severe",
+   "med": "throat lozenges",
+   "alg": "willow pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "willow pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, joint pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 willow pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 6 days | SEV: severe | MED: throat lozenges | ALG: willow pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "wool"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "wool",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 1 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 wool.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 1 weeks | SEV: severe | MED: none | ALG: wool"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "3 weeks",
+   "sev": "severe",
+   "med": "cough syrup",
+   "alg": "antacids"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "antacids",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only cough syrup so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 antacids.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 3 weeks | SEV: severe | MED: cough syrup | ALG: antacids"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "3 days",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "bee stings"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "bee stings",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a toothache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 bee stings.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 3 days | SEV: severe | MED: melatonin | ALG: bee stings"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "vitamin c",
+   "alg": "blue dye"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "blue dye",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as heartburn and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only vitamin c so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 blue dye.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 2 weeks | SEV: severe | MED: vitamin c | ALG: blue dye"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "6 days",
+   "sev": "mild",
+   "med": "melatonin",
+   "alg": "camphor"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "camphor",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, nausea has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 camphor.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 6 days | SEV: mild | MED: melatonin | ALG: camphor"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "4 days",
+   "sev": "moderate",
+   "med": "naproxen",
+   "alg": "chia seeds"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "chia seeds",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, heartburn has been troubling me.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only naproxen so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 chia seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 4 days | SEV: moderate | MED: naproxen | ALG: chia seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "2 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "cough syrup"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "cough syrup",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 cough syrup.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 2 weeks | SEV: mild | MED: none | ALG: cough syrup"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "2 days",
+   "sev": "severe",
+   "med": "allergy pills",
+   "alg": "deer dander"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "deer dander",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a toothache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only allergy pills so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 deer dander.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 2 days | SEV: severe | MED: allergy pills | ALG: deer dander"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "5 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "elm pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "elm pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a toothache and hasn't stopped.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 elm pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 5 weeks | SEV: severe | MED: none | ALG: elm pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "6 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "food additives"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "food additives",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 food additives.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 6 days | SEV: mild | MED: none | ALG: food additives"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "1 weeks",
+   "sev": "moderate",
+   "med": "allergy pills",
+   "alg": "food coloring"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "food coloring",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, joint pain has been troubling me.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 1 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only allergy pills so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 food coloring.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 1 weeks | SEV: moderate | MED: allergy pills | ALG: food coloring"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "generic drugs"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "generic drugs",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 generic drugs.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 3 weeks | SEV: moderate | MED: none | ALG: generic drugs"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "melatonin",
+   "alg": "goat milk"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "goat milk",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as neck pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 goat milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 2 weeks | SEV: moderate | MED: melatonin | ALG: goat milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "5 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "gum arabic"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "gum arabic",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 gum arabic.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 5 weeks | SEV: severe | MED: none | ALG: gum arabic"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "5 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "hazel pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "hazel pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a toothache and hasn't stopped.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 hazel pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 5 weeks | SEV: severe | MED: none | ALG: hazel pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "10 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "henna"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "henna",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 10 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 henna.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 10 days | SEV: moderate | MED: none | ALG: henna"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "4 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "hornet stings"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "hornet stings",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a toothache and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 hornet stings.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 4 weeks | SEV: moderate | MED: none | ALG: hornet stings"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "2 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "ibuprofen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "ibuprofen",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 ibuprofen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 2 days | SEV: mild | MED: none | ALG: ibuprofen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "5 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "iodine"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "iodine",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 iodine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 5 weeks | SEV: severe | MED: none | ALG: iodine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "4 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "loratadine"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "loratadine",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as neck pain and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 loratadine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 4 weeks | SEV: moderate | MED: none | ALG: loratadine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "13 days",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "maple pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "maple pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 13 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 maple pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 13 days | SEV: severe | MED: melatonin | ALG: maple pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "2 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "melon rind"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "melon rind",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as nausea and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 melon rind.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 2 weeks | SEV: mild | MED: none | ALG: melon rind"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "4 weeks",
+   "sev": "severe",
+   "med": "antacids",
+   "alg": "paracetamol"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "paracetamol",
+  "interference_class": "I-xslot",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as a toothache and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only antacids so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 paracetamol.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 4 weeks | SEV: severe | MED: antacids | ALG: paracetamol"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "6 days",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "pet food"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pet food",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: Honestly, neck pain has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 6 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pet food.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 6 days | SEV: severe | MED: melatonin | ALG: pet food"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "2 days",
+   "sev": "severe",
+   "med": "melatonin",
+   "alg": "pine resin"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pine resin",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as nausea and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pine resin.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 2 days | SEV: severe | MED: melatonin | ALG: pine resin"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "neck pain",
+   "dur": "1 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "pumpkin seeds"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "pumpkin seeds",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as neck pain and hasn't stopped.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 1 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 pumpkin seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: neck pain | DUR: 1 weeks | SEV: moderate | MED: none | ALG: pumpkin seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "aspirin",
+   "alg": "quinoa"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "quinoa",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as fatigue and hasn't stopped.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Only aspirin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 quinoa.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 3 weeks | SEV: moderate | MED: aspirin | ALG: quinoa"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "9 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "ragweed pollen"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "ragweed pollen",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as heartburn and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 9 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 ragweed pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 9 days | SEV: mild | MED: none | ALG: ragweed pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "10 days",
+   "sev": "severe",
+   "med": "ibuprofen",
+   "alg": "rice milk"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "rice milk",
+  "interference_class": "I-contain",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a sore throat and hasn't stopped.\nPatient: It's been so cold this week.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 10 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only ibuprofen so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 rice milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 10 days | SEV: severe | MED: ibuprofen | ALG: rice milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "4 days",
+   "sev": "mild",
+   "med": "allergy pills",
+   "alg": "rose hips"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "rose hips",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 4 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only allergy pills so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 rose hips.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 4 days | SEV: mild | MED: allergy pills | ALG: rose hips"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "spider mites"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "spider mites",
+  "interference_class": "I-sib",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as a cough and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 spider mites.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 2 weeks | SEV: moderate | MED: none | ALG: spider mites"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "heartburn",
+   "dur": "7 days",
+   "sev": "mild",
+   "med": "melatonin",
+   "alg": "strawberries"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "strawberries",
+  "interference_class": "I-iso",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: Honestly, heartburn has been troubling me.\nPatient: The waiting room was quite full.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 7 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only melatonin so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 strawberries.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: heartburn | DUR: 7 days | SEV: mild | MED: melatonin | ALG: strawberries"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "3 weeks",
+   "sev": "severe",
+   "med": "allergy pills",
+   "alg": "sulfa drugs"
+  },
+  "held_values": true,
+  "arm": "d80",
+  "held_alg_type": "sulfa drugs",
+  "interference_class": "I-template",
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning \u2014 what's been bothering you?\nPatient: It started as dizziness and hasn't stopped.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 3 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Only allergy pills so far.\nDoctor: Do you have any known allergies?\nPatient: I do \u2014 sulfa drugs.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 3 weeks | SEV: severe | MED: allergy pills | ALG: sulfa drugs"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "chest pain",
+   "dur": "9 days",
+   "sev": "severe",
+   "med": "vitamin c",
+   "alg": "cats"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I'm dealing with chest pain.\nDoctor: When did it start?\nPatient: Around 9 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: Some vitamin c, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to cats.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: chest pain | DUR: 9 days | SEV: severe | MED: vitamin c | ALG: cats"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "3 days",
+   "sev": "mild",
+   "med": "aspirin",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I came in because of nausea.\nDoctor: How long has this been going on?\nPatient: Around 3 days.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: Some aspirin, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 3 days | SEV: mild | MED: aspirin | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "aspirin",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: Well, I've got a sore throat that won't go away.\nPatient: My cousin drove me here this morning.\nDoctor: How long has this been going on?\nPatient: It started 1 weeks ago.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: Some aspirin, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 1 weeks | SEV: severe | MED: aspirin | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "7 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: Well, I've got back pain that won't go away.\nDoctor: How long has this been going on?\nPatient: It started 7 days ago.\nDoctor: How bad would you say it is?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 7 days | SEV: mild | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "5 days",
+   "sev": "severe",
+   "med": "paracetamol",
+   "alg": "cashews"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: It's a cough, doctor.\nDoctor: When did it start?\nPatient: Around 5 days.\nDoctor: How bad would you say it is?\nPatient: It's severe, I would say.\nDoctor: Have you taken anything for it?\nPatient: I've been taking paracetamol.\nDoctor: Any allergies I should know about?\nPatient: Yes, cashews.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 5 days | SEV: severe | MED: paracetamol | ALG: cashews"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "4 weeks",
+   "sev": "mild",
+   "med": "antacids",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I came in because of fatigue.\nDoctor: When did it start?\nPatient: For about 4 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Are you on any medication for this?\nPatient: I've been taking antacids.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 4 weeks | SEV: mild | MED: antacids | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fever",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I've been having a fever.\nDoctor: How long has this been going on?\nPatient: Around 2 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fever | DUR: 2 weeks | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "13 days",
+   "sev": "moderate",
+   "med": "cough syrup",
+   "alg": "sesame"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: It's a headache, doctor.\nDoctor: When did it start?\nPatient: For about 13 days now.\nDoctor: How bad would you say it is?\nPatient: It's moderate, I would say.\nDoctor: Have you taken anything for it?\nPatient: Some cough syrup, but it barely helps.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to sesame.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 13 days | SEV: moderate | MED: cough syrup | ALG: sesame"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "3 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "oak pollen"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: It's fatigue, doctor.\nPatient: The waiting room was quite full.\nDoctor: When did it start?\nPatient: Around 3 days.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: Just oak pollen.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 3 days | SEV: severe | MED: none | ALG: oak pollen"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "vitamin c",
+   "alg": "hair dye"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I've been having a sore throat.\nPatient: The parking here was terrible today.\nDoctor: When did it start?\nPatient: It started 1 weeks ago.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: Just vitamin c.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to hair dye.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 1 weeks | SEV: severe | MED: vitamin c | ALG: hair dye"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "shortness of breath",
+   "dur": "6 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "adhesive bandages"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I've been having shortness of breath.\nDoctor: How many days has it been?\nPatient: It started 6 days ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Are you allergic to anything?\nPatient: Yes, adhesive bandages.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: shortness of breath | DUR: 6 days | SEV: severe | MED: none | ALG: adhesive bandages"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fever",
+   "dur": "8 days",
+   "sev": "severe",
+   "med": "ibuprofen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I've been having a fever.\nPatient: I almost rescheduled twice.\nDoctor: When did it start?\nPatient: It started 8 days ago.\nDoctor: How bad would you say it is?\nPatient: It's severe, I would say.\nDoctor: Are you on any medication for this?\nPatient: Just ibuprofen.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fever | DUR: 8 days | SEV: severe | MED: ibuprofen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "4 days",
+   "sev": "mild",
+   "med": "cough syrup",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: It's dizziness, doctor.\nPatient: I almost rescheduled twice.\nDoctor: How long has this been going on?\nPatient: It started 4 days ago.\nDoctor: How bad would you say it is?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: Just cough syrup.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 4 days | SEV: mild | MED: cough syrup | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "shortness of breath",
+   "dur": "10 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "msg"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I've been having shortness of breath.\nPatient: The waiting room was quite full.\nDoctor: How long has this been going on?\nPatient: Around 10 days.\nDoctor: How bad would you say it is?\nPatient: It's severe, I would say.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: Just msg.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: shortness of breath | DUR: 10 days | SEV: severe | MED: none | ALG: msg"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "3 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "peanuts"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with stomach pain.\nPatient: The parking here was terrible today.\nDoctor: How many days has it been?\nPatient: For about 3 days now.\nDoctor: How bad would you say it is?\nPatient: Pretty moderate.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: Yes, peanuts.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 3 days | SEV: moderate | MED: none | ALG: peanuts"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "14 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I came in because of fatigue.\nDoctor: How many days has it been?\nPatient: It started 14 days ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it moderate.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 14 days | SEV: moderate | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "aspirin",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: Well, I've got joint pain that won't go away.\nDoctor: How long has this been going on?\nPatient: Around 2 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty severe.\nDoctor: Have you taken anything for it?\nPatient: Just aspirin.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 2 weeks | SEV: severe | MED: aspirin | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "9 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: It's a cough, doctor.\nDoctor: How long has this been going on?\nPatient: For about 9 days now.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 9 days | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "chest pain",
+   "dur": "6 weeks",
+   "sev": "moderate",
+   "med": "allergy pills",
+   "alg": "milk"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: It's chest pain, doctor.\nDoctor: How long has this been going on?\nPatient: Around 6 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it moderate.\nDoctor: Are you on any medication for this?\nPatient: I've been taking allergy pills.\nDoctor: Any allergies I should know about?\nPatient: Just milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: chest pain | DUR: 6 weeks | SEV: moderate | MED: allergy pills | ALG: milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "earache",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "naproxen",
+   "alg": "cockroaches"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: I came in because of an earache.\nPatient: It's been so cold this week.\nDoctor: When did it start?\nPatient: It started 3 weeks ago.\nDoctor: How bad would you say it is?\nPatient: Pretty moderate.\nDoctor: Have you taken anything for it?\nPatient: Just naproxen.\nDoctor: Any allergies I should know about?\nPatient: Just cockroaches.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: earache | DUR: 3 weeks | SEV: moderate | MED: naproxen | ALG: cockroaches"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "4 weeks",
+   "sev": "severe",
+   "med": "cough syrup",
+   "alg": "shellfish"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: It's nausea, doctor.\nDoctor: When did it start?\nPatient: For about 4 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: I've been taking cough syrup.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to shellfish.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 4 weeks | SEV: severe | MED: cough syrup | ALG: shellfish"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "9 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "almonds"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with a headache.\nDoctor: How long has this been going on?\nPatient: For about 9 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to almonds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 9 days | SEV: severe | MED: none | ALG: almonds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "5 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "crab"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I'm dealing with back pain.\nPatient: My cousin drove me here this morning.\nDoctor: How many days has it been?\nPatient: Around 5 weeks.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to crab.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 5 weeks | SEV: mild | MED: none | ALG: crab"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "13 days",
+   "sev": "mild",
+   "med": "antacids",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I came in because of back pain.\nDoctor: How long has this been going on?\nPatient: Around 13 days.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking antacids.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 13 days | SEV: mild | MED: antacids | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "3 weeks",
+   "sev": "severe",
+   "med": "antacids",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: Well, I've got nausea that won't go away.\nDoctor: When did it start?\nPatient: Around 3 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty severe.\nDoctor: Are you on any medication for this?\nPatient: I've been taking antacids.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 3 weeks | SEV: severe | MED: antacids | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "chest pain",
+   "dur": "6 days",
+   "sev": "moderate",
+   "med": "paracetamol",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I'm dealing with chest pain.\nDoctor: When did it start?\nPatient: It started 6 days ago.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: Just paracetamol.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: chest pain | DUR: 6 days | SEV: moderate | MED: paracetamol | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "5 weeks",
+   "sev": "mild",
+   "med": "paracetamol",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with back pain.\nDoctor: How long has this been going on?\nPatient: For about 5 weeks now.\nDoctor: How bad would you say it is?\nPatient: Pretty mild.\nDoctor: Are you on any medication for this?\nPatient: Some paracetamol, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 5 weeks | SEV: mild | MED: paracetamol | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "4 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I've been having dizziness.\nPatient: The waiting room was quite full.\nDoctor: How many days has it been?\nPatient: It started 4 days ago.\nDoctor: How bad would you say it is?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 4 days | SEV: mild | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "1 weeks",
+   "sev": "moderate",
+   "med": "ibuprofen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I'm dealing with dizziness.\nPatient: I almost rescheduled twice.\nDoctor: How long has this been going on?\nPatient: It started 1 weeks ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's moderate, I would say.\nDoctor: Have you taken anything for it?\nPatient: I've been taking ibuprofen.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 1 weeks | SEV: moderate | MED: ibuprofen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "7 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "pecans"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: It's joint pain, doctor.\nPatient: The waiting room was quite full.\nDoctor: How many days has it been?\nPatient: It started 7 days ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty severe.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: Just pecans.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 7 days | SEV: severe | MED: none | ALG: pecans"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "6 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I'm dealing with stomach pain.\nDoctor: When did it start?\nPatient: For about 6 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 6 weeks | SEV: mild | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "novocaine"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: It's a rash, doctor.\nDoctor: How long has this been going on?\nPatient: It started 3 weeks ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it moderate.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: Yes, novocaine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 3 weeks | SEV: moderate | MED: none | ALG: novocaine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "2 weeks",
+   "sev": "mild",
+   "med": "allergy pills",
+   "alg": "wasp stings"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: Well, I've got fatigue that won't go away.\nDoctor: How long has this been going on?\nPatient: Around 2 weeks.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: Just allergy pills.\nDoctor: Any allergies I should know about?\nPatient: Just wasp stings.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 2 weeks | SEV: mild | MED: allergy pills | ALG: wasp stings"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "7 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: Well, I've got a cough that won't go away.\nDoctor: How long has this been going on?\nPatient: Around 7 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty mild.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 7 days | SEV: mild | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "4 weeks",
+   "sev": "severe",
+   "med": "ibuprofen",
+   "alg": "hay"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I've been having a cough.\nDoctor: When did it start?\nPatient: It started 4 weeks ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's severe, I would say.\nDoctor: Are you on any medication for this?\nPatient: I've been taking ibuprofen.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to hay.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 4 weeks | SEV: severe | MED: ibuprofen | ALG: hay"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "13 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with dizziness.\nDoctor: When did it start?\nPatient: Around 13 days.\nDoctor: How bad would you say it is?\nPatient: Pretty mild.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 13 days | SEV: mild | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fever",
+   "dur": "14 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "oysters"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: Well, I've got a fever that won't go away.\nPatient: The parking here was terrible today.\nDoctor: When did it start?\nPatient: For about 14 days now.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: Just oysters.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fever | DUR: 14 days | SEV: moderate | MED: none | ALG: oysters"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "4 days",
+   "sev": "mild",
+   "med": "allergy pills",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: It's fatigue, doctor.\nDoctor: How many days has it been?\nPatient: For about 4 days now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking allergy pills.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 4 days | SEV: mild | MED: allergy pills | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "2 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I came in because of a headache.\nPatient: I almost rescheduled twice.\nDoctor: How many days has it been?\nPatient: Around 2 weeks.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 2 weeks | SEV: mild | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "2 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: Well, I've got dizziness that won't go away.\nDoctor: How many days has it been?\nPatient: It started 2 days ago.\nDoctor: How bad would you say it is?\nPatient: It's severe, I would say.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 2 days | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "paracetamol",
+   "alg": "mustard"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I've been having nausea.\nDoctor: How long has this been going on?\nPatient: Around 3 weeks.\nDoctor: How bad would you say it is?\nPatient: Pretty moderate.\nDoctor: Are you on any medication for this?\nPatient: Some paracetamol, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: Yes, mustard.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 3 weeks | SEV: moderate | MED: paracetamol | ALG: mustard"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "2 days",
+   "sev": "severe",
+   "med": "allergy pills",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I came in because of a rash.\nPatient: My cousin drove me here this morning.\nDoctor: How many days has it been?\nPatient: For about 2 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: Just allergy pills.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 2 days | SEV: severe | MED: allergy pills | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "4 weeks",
+   "sev": "severe",
+   "med": "vitamin c",
+   "alg": "shellfish"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I've been having a headache.\nDoctor: When did it start?\nPatient: For about 4 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty severe.\nDoctor: Have you taken anything for it?\nPatient: Just vitamin c.\nDoctor: Any allergies I should know about?\nPatient: Yes, shellfish.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 4 weeks | SEV: severe | MED: vitamin c | ALG: shellfish"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "14 days",
+   "sev": "moderate",
+   "med": "naproxen",
+   "alg": "mussels"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with dizziness.\nPatient: The parking here was terrible today.\nDoctor: How long has this been going on?\nPatient: For about 14 days now.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's moderate, I would say.\nDoctor: Have you taken anything for it?\nPatient: Just naproxen.\nDoctor: Are you allergic to anything?\nPatient: Just mussels.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 14 days | SEV: moderate | MED: naproxen | ALG: mussels"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "6 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "cobalt"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I've been having a cough.\nPatient: The waiting room was quite full.\nDoctor: When did it start?\nPatient: For about 6 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it moderate.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to cobalt.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 6 weeks | SEV: moderate | MED: none | ALG: cobalt"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "12 days",
+   "sev": "mild",
+   "med": "aspirin",
+   "alg": "hazelnuts"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: I've been having fatigue.\nDoctor: How long has this been going on?\nPatient: Around 12 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's mild, I would say.\nDoctor: Have you taken anything for it?\nPatient: Just aspirin.\nDoctor: Are you allergic to anything?\nPatient: Yes, hazelnuts.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 12 days | SEV: mild | MED: aspirin | ALG: hazelnuts"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "shortness of breath",
+   "dur": "5 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: It's shortness of breath, doctor.\nPatient: The waiting room was quite full.\nDoctor: How many days has it been?\nPatient: Around 5 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it moderate.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: shortness of breath | DUR: 5 weeks | SEV: moderate | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "2 weeks",
+   "sev": "mild",
+   "med": "allergy pills",
+   "alg": "morphine"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: Well, I've got nausea that won't go away.\nPatient: The waiting room was quite full.\nDoctor: How long has this been going on?\nPatient: For about 2 weeks now.\nDoctor: How bad would you say it is?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: I've been taking allergy pills.\nDoctor: Are you allergic to anything?\nPatient: Just morphine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 2 weeks | SEV: mild | MED: allergy pills | ALG: morphine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "6 weeks",
+   "sev": "severe",
+   "med": "antacids",
+   "alg": "oysters"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I'm dealing with stomach pain.\nDoctor: How long has this been going on?\nPatient: For about 6 weeks now.\nDoctor: How bad would you say it is?\nPatient: Pretty severe.\nDoctor: Have you taken anything for it?\nPatient: I've been taking antacids.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to oysters.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 6 weeks | SEV: severe | MED: antacids | ALG: oysters"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "shortness of breath",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "paracetamol",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with shortness of breath.\nDoctor: How many days has it been?\nPatient: For about 2 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: Some paracetamol, but it barely helps.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: shortness of breath | DUR: 2 weeks | SEV: severe | MED: paracetamol | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fever",
+   "dur": "6 weeks",
+   "sev": "mild",
+   "med": "naproxen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: It's a fever, doctor.\nPatient: It's been so cold this week.\nDoctor: When did it start?\nPatient: For about 6 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty mild.\nDoctor: Are you on any medication for this?\nPatient: Some naproxen, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fever | DUR: 6 weeks | SEV: mild | MED: naproxen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "5 days",
+   "sev": "mild",
+   "med": "allergy pills",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I've been having joint pain.\nDoctor: When did it start?\nPatient: Around 5 days.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Are you on any medication for this?\nPatient: Some allergy pills, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 5 days | SEV: mild | MED: allergy pills | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "earache",
+   "dur": "3 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "clams"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with an earache.\nPatient: My cousin drove me here this morning.\nDoctor: How many days has it been?\nPatient: Around 3 weeks.\nDoctor: How bad would you say it is?\nPatient: It's mild, I would say.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: Just clams.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: earache | DUR: 3 weeks | SEV: mild | MED: none | ALG: clams"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "5 weeks",
+   "sev": "mild",
+   "med": "naproxen",
+   "alg": "cockroaches"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I came in because of joint pain.\nPatient: The waiting room was quite full.\nDoctor: How many days has it been?\nPatient: For about 5 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: Just naproxen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to cockroaches.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 5 weeks | SEV: mild | MED: naproxen | ALG: cockroaches"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "3 weeks",
+   "sev": "mild",
+   "med": "vitamin c",
+   "alg": "bananas"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: It's a sore throat, doctor.\nPatient: The waiting room was quite full.\nDoctor: How long has this been going on?\nPatient: Around 3 weeks.\nDoctor: How bad would you say it is?\nPatient: Pretty mild.\nDoctor: Have you taken anything for it?\nPatient: Some vitamin c, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: Just bananas.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 3 weeks | SEV: mild | MED: vitamin c | ALG: bananas"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "3 weeks",
+   "sev": "moderate",
+   "med": "naproxen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I came in because of fatigue.\nPatient: The waiting room was quite full.\nDoctor: When did it start?\nPatient: Around 3 weeks.\nDoctor: How bad would you say it is?\nPatient: It's moderate, I would say.\nDoctor: Are you on any medication for this?\nPatient: Just naproxen.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 3 weeks | SEV: moderate | MED: naproxen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "chest pain",
+   "dur": "3 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with chest pain.\nDoctor: When did it start?\nPatient: It started 3 weeks ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's severe, I would say.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: chest pain | DUR: 3 weeks | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "8 days",
+   "sev": "mild",
+   "med": "cough syrup",
+   "alg": "sulfites"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with back pain.\nDoctor: How long has this been going on?\nPatient: It started 8 days ago.\nDoctor: How bad would you say it is?\nPatient: Pretty mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking cough syrup.\nDoctor: Any allergies I should know about?\nPatient: Yes, sulfites.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 8 days | SEV: mild | MED: cough syrup | ALG: sulfites"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "4 weeks",
+   "sev": "moderate",
+   "med": "naproxen",
+   "alg": "sunflower seeds"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: Well, I've got a sore throat that won't go away.\nDoctor: When did it start?\nPatient: It started 4 weeks ago.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Are you on any medication for this?\nPatient: I've been taking naproxen.\nDoctor: Any allergies I should know about?\nPatient: Just sunflower seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 4 weeks | SEV: moderate | MED: naproxen | ALG: sunflower seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "9 days",
+   "sev": "mild",
+   "med": "vitamin c",
+   "alg": "erythromycin"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: Well, I've got a headache that won't go away.\nPatient: The waiting room was quite full.\nDoctor: When did it start?\nPatient: Around 9 days.\nDoctor: How bad would you say it is?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: I've been taking vitamin c.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to erythromycin.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 9 days | SEV: mild | MED: vitamin c | ALG: erythromycin"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "5 weeks",
+   "sev": "moderate",
+   "med": "paracetamol",
+   "alg": "amoxicillin"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I came in because of stomach pain.\nDoctor: When did it start?\nPatient: For about 5 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty moderate.\nDoctor: Have you taken anything for it?\nPatient: Some paracetamol, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to amoxicillin.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 5 weeks | SEV: moderate | MED: paracetamol | ALG: amoxicillin"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "hazelnuts"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I've been having dizziness.\nDoctor: How many days has it been?\nPatient: For about 2 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's moderate, I would say.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: Yes, hazelnuts.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 2 weeks | SEV: moderate | MED: none | ALG: hazelnuts"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "13 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: It's fatigue, doctor.\nDoctor: How many days has it been?\nPatient: For about 13 days now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty moderate.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 13 days | SEV: moderate | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "paracetamol",
+   "alg": "crab"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: It's joint pain, doctor.\nPatient: My cousin drove me here this morning.\nDoctor: How many days has it been?\nPatient: Around 1 weeks.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: Some paracetamol, but it barely helps.\nDoctor: Any allergies I should know about?\nPatient: Yes, crab.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 1 weeks | SEV: severe | MED: paracetamol | ALG: crab"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "8 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: It's a headache, doctor.\nDoctor: How many days has it been?\nPatient: For about 8 days now.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 8 days | SEV: mild | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "5 days",
+   "sev": "severe",
+   "med": "antacids",
+   "alg": "codeine"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I came in because of dizziness.\nPatient: My cousin drove me here this morning.\nDoctor: How many days has it been?\nPatient: Around 5 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty severe.\nDoctor: Are you on any medication for this?\nPatient: Some antacids, but it barely helps.\nDoctor: Any allergies I should know about?\nPatient: Just codeine.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 5 days | SEV: severe | MED: antacids | ALG: codeine"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "1 weeks",
+   "sev": "mild",
+   "med": "ibuprofen",
+   "alg": "milk"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: I've been having back pain.\nDoctor: How long has this been going on?\nPatient: For about 1 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: Some ibuprofen, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: Just milk.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 1 weeks | SEV: mild | MED: ibuprofen | ALG: milk"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "5 weeks",
+   "sev": "severe",
+   "med": "ibuprofen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: It's a sore throat, doctor.\nDoctor: How long has this been going on?\nPatient: It started 5 weeks ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's severe, I would say.\nDoctor: Are you on any medication for this?\nPatient: I've been taking ibuprofen.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 5 weeks | SEV: severe | MED: ibuprofen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "chest pain",
+   "dur": "7 days",
+   "sev": "mild",
+   "med": "vitamin c",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: It's chest pain, doctor.\nDoctor: How many days has it been?\nPatient: It started 7 days ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty mild.\nDoctor: Are you on any medication for this?\nPatient: Some vitamin c, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: chest pain | DUR: 7 days | SEV: mild | MED: vitamin c | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "5 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with stomach pain.\nDoctor: When did it start?\nPatient: It started 5 weeks ago.\nDoctor: How bad would you say it is?\nPatient: Pretty moderate.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 5 weeks | SEV: moderate | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "earache",
+   "dur": "2 weeks",
+   "sev": "mild",
+   "med": "none",
+   "alg": "wheat"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: Well, I've got an earache that won't go away.\nDoctor: When did it start?\nPatient: For about 2 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty mild.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to wheat.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: earache | DUR: 2 weeks | SEV: mild | MED: none | ALG: wheat"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "4 weeks",
+   "sev": "mild",
+   "med": "paracetamol",
+   "alg": "eggs"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: It's back pain, doctor.\nDoctor: When did it start?\nPatient: For about 4 weeks now.\nDoctor: How bad would you say it is?\nPatient: Pretty mild.\nDoctor: Are you on any medication for this?\nPatient: I've been taking paracetamol.\nDoctor: Are you allergic to anything?\nPatient: Just eggs.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 4 weeks | SEV: mild | MED: paracetamol | ALG: eggs"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "aspirin",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with joint pain.\nPatient: The waiting room was quite full.\nDoctor: How many days has it been?\nPatient: Around 1 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: I've been taking aspirin.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 1 weeks | SEV: severe | MED: aspirin | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "1 weeks",
+   "sev": "mild",
+   "med": "aspirin",
+   "alg": "lentils"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I'm dealing with a sore throat.\nPatient: The parking here was terrible today.\nDoctor: How long has this been going on?\nPatient: For about 1 weeks now.\nDoctor: How bad would you say it is?\nPatient: Pretty mild.\nDoctor: Have you taken anything for it?\nPatient: Some aspirin, but it barely helps.\nDoctor: Are you allergic to anything?\nPatient: Yes, lentils.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 1 weeks | SEV: mild | MED: aspirin | ALG: lentils"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "7 days",
+   "sev": "severe",
+   "med": "vitamin c",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with a headache.\nPatient: It's been so cold this week.\nDoctor: How many days has it been?\nPatient: For about 7 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: I've been taking vitamin c.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 7 days | SEV: severe | MED: vitamin c | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "ibuprofen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: Well, I've got stomach pain that won't go away.\nPatient: The parking here was terrible today.\nDoctor: How long has this been going on?\nPatient: For about 2 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: Some ibuprofen, but it barely helps.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 2 weeks | SEV: moderate | MED: ibuprofen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fever",
+   "dur": "2 days",
+   "sev": "moderate",
+   "med": "antacids",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I came in because of a fever.\nDoctor: How many days has it been?\nPatient: Around 2 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty moderate.\nDoctor: Have you taken anything for it?\nPatient: Just antacids.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fever | DUR: 2 days | SEV: moderate | MED: antacids | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "6 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: It's back pain, doctor.\nDoctor: When did it start?\nPatient: Around 6 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 6 days | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "13 days",
+   "sev": "severe",
+   "med": "ibuprofen",
+   "alg": "sunflower seeds"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: Well, I've got fatigue that won't go away.\nDoctor: How many days has it been?\nPatient: It started 13 days ago.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: I've been taking ibuprofen.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to sunflower seeds.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 13 days | SEV: severe | MED: ibuprofen | ALG: sunflower seeds"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "ibuprofen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with fatigue.\nPatient: I almost rescheduled twice.\nDoctor: How many days has it been?\nPatient: Around 2 weeks.\nDoctor: How bad would you say it is?\nPatient: It's moderate, I would say.\nDoctor: Are you on any medication for this?\nPatient: Just ibuprofen.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 2 weeks | SEV: moderate | MED: ibuprofen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "4 days",
+   "sev": "severe",
+   "med": "paracetamol",
+   "alg": "tetracycline"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I'm dealing with fatigue.\nPatient: I almost rescheduled twice.\nDoctor: How long has this been going on?\nPatient: For about 4 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: Just paracetamol.\nDoctor: Are you allergic to anything?\nPatient: Just tetracycline.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 4 days | SEV: severe | MED: paracetamol | ALG: tetracycline"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: Well, I've got a cough that won't go away.\nDoctor: How long has this been going on?\nPatient: For about 1 weeks now.\nDoctor: How bad would you say it is?\nPatient: Pretty severe.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 1 weeks | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "6 weeks",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "latex"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: It's a cough, doctor.\nDoctor: How long has this been going on?\nPatient: It started 6 weeks ago.\nDoctor: How bad would you say it is?\nPatient: It's moderate, I would say.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: Yes, latex.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 6 weeks | SEV: moderate | MED: none | ALG: latex"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "1 weeks",
+   "sev": "mild",
+   "med": "naproxen",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: It's a headache, doctor.\nPatient: My cousin drove me here this morning.\nDoctor: How long has this been going on?\nPatient: It started 1 weeks ago.\nDoctor: How bad would you say it is?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: I've been taking naproxen.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 1 weeks | SEV: mild | MED: naproxen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "3 weeks",
+   "sev": "severe",
+   "med": "cough syrup",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I've been having joint pain.\nDoctor: How long has this been going on?\nPatient: Around 3 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's severe, I would say.\nDoctor: Are you on any medication for this?\nPatient: I've been taking cough syrup.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 3 weeks | SEV: severe | MED: cough syrup | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "cough",
+   "dur": "6 weeks",
+   "sev": "mild",
+   "med": "vitamin c",
+   "alg": "sesame"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I've been having a cough.\nPatient: My cousin drove me here this morning.\nDoctor: How many days has it been?\nPatient: Around 6 weeks.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's mild, I would say.\nDoctor: Are you on any medication for this?\nPatient: I've been taking vitamin c.\nDoctor: Are you allergic to anything?\nPatient: Yes, sesame.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: cough | DUR: 6 weeks | SEV: mild | MED: vitamin c | ALG: sesame"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "peanuts"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Good morning, what brings you in today?\nPatient: I've been having joint pain.\nPatient: The parking here was terrible today.\nDoctor: How long has this been going on?\nPatient: For about 2 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty severe.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: Yes, peanuts.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 2 weeks | SEV: severe | MED: none | ALG: peanuts"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "stomach pain",
+   "dur": "6 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: So, tell me what's going on.\nPatient: I'm dealing with stomach pain.\nDoctor: When did it start?\nPatient: For about 6 weeks now.\nDoctor: Is it mild, moderate, or severe?\nPatient: Pretty severe.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: stomach pain | DUR: 6 weeks | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "2 weeks",
+   "sev": "moderate",
+   "med": "aspirin",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I've been having back pain.\nPatient: My cousin drove me here this morning.\nDoctor: How long has this been going on?\nPatient: Around 2 weeks.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: Some aspirin, but it barely helps.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 2 weeks | SEV: moderate | MED: aspirin | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "13 days",
+   "sev": "severe",
+   "med": "allergy pills",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: It's dizziness, doctor.\nDoctor: How many days has it been?\nPatient: Around 13 days.\nDoctor: How bad would you say it is?\nPatient: Pretty severe.\nDoctor: Are you on any medication for this?\nPatient: Just allergy pills.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 13 days | SEV: severe | MED: allergy pills | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "5 weeks",
+   "sev": "mild",
+   "med": "aspirin",
+   "alg": "citrus fruits"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I came in because of dizziness.\nDoctor: How many days has it been?\nPatient: It started 5 weeks ago.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it mild.\nDoctor: Are you on any medication for this?\nPatient: Just aspirin.\nDoctor: Are you allergic to anything?\nPatient: Yes, citrus fruits.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 5 weeks | SEV: mild | MED: aspirin | ALG: citrus fruits"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "earache",
+   "dur": "6 days",
+   "sev": "mild",
+   "med": "aspirin",
+   "alg": "latex"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with an earache.\nDoctor: How long has this been going on?\nPatient: Around 6 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it mild.\nDoctor: Are you on any medication for this?\nPatient: I've been taking aspirin.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to latex.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: earache | DUR: 6 days | SEV: mild | MED: aspirin | ALG: latex"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "rash",
+   "dur": "1 weeks",
+   "sev": "severe",
+   "med": "aspirin",
+   "alg": "mustard"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I came in because of a rash.\nDoctor: How many days has it been?\nPatient: Around 1 weeks.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: I've been taking aspirin.\nDoctor: Any allergies I should know about?\nPatient: Just mustard.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: rash | DUR: 1 weeks | SEV: severe | MED: aspirin | ALG: mustard"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "5 days",
+   "sev": "mild",
+   "med": "aspirin",
+   "alg": "red dye"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hi there, what seems to be the trouble?\nPatient: I came in because of a sore throat.\nPatient: It's been so cold this week.\nDoctor: How long has this been going on?\nPatient: Around 5 days.\nDoctor: How bad would you say it is?\nPatient: Pretty mild.\nDoctor: Are you on any medication for this?\nPatient: I've been taking aspirin.\nDoctor: Are you allergic to anything?\nPatient: I'm allergic to red dye.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 5 days | SEV: mild | MED: aspirin | ALG: red dye"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "back pain",
+   "dur": "1 weeks",
+   "sev": "mild",
+   "med": "antacids",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I came in because of back pain.\nPatient: The parking here was terrible today.\nDoctor: When did it start?\nPatient: It started 1 weeks ago.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: Just antacids.\nDoctor: Are you allergic to anything?\nPatient: Not that I know of.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: back pain | DUR: 1 weeks | SEV: mild | MED: antacids | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "nausea",
+   "dur": "3 days",
+   "sev": "severe",
+   "med": "paracetamol",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: I'm dealing with nausea.\nPatient: It's been so cold this week.\nDoctor: How long has this been going on?\nPatient: Around 3 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: I've been taking paracetamol.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: nausea | DUR: 3 days | SEV: severe | MED: paracetamol | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "sore throat",
+   "dur": "6 days",
+   "sev": "severe",
+   "med": "paracetamol",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I came in because of a sore throat.\nDoctor: How many days has it been?\nPatient: For about 6 days now.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it severe.\nDoctor: Are you on any medication for this?\nPatient: Just paracetamol.\nDoctor: Any allergies I should know about?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: sore throat | DUR: 6 days | SEV: severe | MED: paracetamol | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "11 days",
+   "sev": "mild",
+   "med": "none",
+   "alg": "lentils"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: Well, I've got joint pain that won't go away.\nDoctor: When did it start?\nPatient: Around 11 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: Yes, lentils.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 11 days | SEV: mild | MED: none | ALG: lentils"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "dizziness",
+   "dur": "6 days",
+   "sev": "severe",
+   "med": "none",
+   "alg": "none"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Hello, what can I do for you?\nPatient: I've been having dizziness.\nPatient: The parking here was terrible today.\nDoctor: How many days has it been?\nPatient: Around 6 days.\nDoctor: Is it mild, moderate, or severe?\nPatient: It's severe, I would say.\nDoctor: Are you on any medication for this?\nPatient: No, nothing yet.\nDoctor: Are you allergic to anything?\nPatient: No allergies.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: dizziness | DUR: 6 days | SEV: severe | MED: none | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "fatigue",
+   "dur": "7 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "kiwi"
+  },
+  "held_values": false,
+  "arm": "d80",
+  "held_alg_type": null,
+  "interference_class": null,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: What brings you to the clinic today?\nPatient: It's fatigue, doctor.\nDoctor: How many days has it been?\nPatient: For about 7 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Are you on any medication for this?\nPatient: I haven't taken anything.\nDoctor: Are you allergic to anything?\nPatient: Just kiwi.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: fatigue | DUR: 7 days | SEV: moderate | MED: none | ALG: kiwi"
+   }
+  ]
+ }
+]
