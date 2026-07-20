@@ -1,0 +1,113 @@
+{
+ "stage": "ownstack-160m-lora",
+ "trainable_params": 4028416,
+ "dims": {
+  "d": 1024,
+  "L": 14,
+  "H": 16,
+  "KV": 4,
+  "hd": 64,
+  "ff": 2752
+ },
+ "lora": {
+  "r": 16,
+  "alpha": 32,
+  "dropout": 0.0,
+  "targets": [
+   "q",
+   "k",
+   "v",
+   "o",
+   "g",
+   "u",
+   "dn"
+  ]
+ },
+ "prereg": "trajectory/PREREG_ownstack_160m.md",
+ "ft_seed": 0,
+ "inst0": {
+  "parse": 1.0,
+  "diluted_gap": 7.9999999999999964,
+  "clean_gap": 28.57142857142857,
+  "clean_per_field": {
+   "cc": 0.0,
+   "med": 0.0,
+   "alg": 100.0
+  }
+ },
+ "fresh_instances": [
+  {
+   "parse": 1.0,
+   "diluted_gap": 3.400000000000003,
+   "clean_gap": 15.454545454545453,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 0.0,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 5.000000000000004,
+   "clean_gap": 19.53125,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 0.0,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 3.200000000000003,
+   "clean_gap": 13.559322033898303,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 0.0,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 4.400000000000004,
+   "clean_gap": 18.803418803418804,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 0.0,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 5.200000000000005,
+   "clean_gap": 21.311475409836067,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 0.0,
+    "alg": 100.0
+   }
+  }
+ ],
+ "diluted_fresh": [
+  3.400000000000003,
+  5.000000000000004,
+  3.200000000000003,
+  4.400000000000004,
+  5.200000000000005
+ ],
+ "clean_fresh": [
+  15.454545454545453,
+  19.53125,
+  13.559322033898303,
+  18.803418803418804,
+  21.311475409836067
+ ],
+ "diluted_gap_mean": 4.240000000000004,
+ "diluted_gap_sd": 0.9099450532861868,
+ "clean_gap_mean": 17.732002340339726,
+ "clean_gap_sd": 3.154200518349113,
+ "fullft_reference": {
+  "diluted": 16.9,
+  "clean": 66.6
+ },
+ "gpu": "NVIDIA RTX A6000"
+}
