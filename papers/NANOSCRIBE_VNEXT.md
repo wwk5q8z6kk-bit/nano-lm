@@ -1,7 +1,8 @@
 # NanoScribe vNext: Research Conclusion and Architecture Decision
 
-*Owner-authored architecture decision, received 2026-07-20. Captured verbatim below the
-reconciliation note. This is the program's forward design: a verification-first
+*Owner-authored architecture decision, received 2026-07-20. Captured in condensed-faithful form below the
+reconciliation note (structure, commitments, gates, and roadmap preserved; the full
+original text lives in the owner's session record). This is the program's forward design: a verification-first
 cognitive fabric around the small model — not a generic multi-agent framework.*
 
 ## Reconciliation with measured evidence (maintainer note, 2026-07-20)
@@ -25,7 +26,7 @@ gated behind them.
 
 ---
 
-## Executive verdict (owner document, verbatim)
+## Executive verdict (owner document, condensed-faithful)
 
 NanoScribe should not become a generic multi-agent framework wrapped around a tiny
 transformer. Its strongest path is: **a verification-first cognitive fabric** in which
