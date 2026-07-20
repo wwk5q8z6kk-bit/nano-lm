@@ -51,3 +51,22 @@ persists in both stacks. Phase C-1 therefore proceeds regardless of stack.
 Finish and absorb the corner; freeze P2 around binding-and-coverage (diversity primary,
 coverage secondary, regime interaction); allergy = strongest instance; architecture
 resumes only after the empirical core locks.
+
+## Owner clarification (post-corner-seed-0): the residual is the central object
+
+Both branches are true at once: the own↔Pythia gap was **largely eliminable** (strong
+base + LoRA reaches the reference level; tokenizer/architecture largely innocent), AND a
+**shared hard floor** (~15–18 clean points, alg-dominated) survives strong pretraining,
+parameter-efficient adaptation, and cross-stack transfer — the true binding-and-coverage
+residual. Updated causal table (owner):
+
+| Layer | Status | Notes |
+|---|---|---|
+| Field localization | Solid | open-vocab only |
+| Slot diversity | Strong causal | 66.7-pt effect |
+| Token coverage | Secondary but real | leading candidate for the residual |
+| Base quality × adaptation | Interaction real | explains most of the own-stack penalty |
+| Tokenizer / architecture | Largely innocent | cross-stack gap mostly closed |
+| **Residual floor** | **Real and shared** | ~15–18 clean pts, alg-dominated — **the target** |
+
+Directive: Phase C-1 (token-coverage continuum) is the next experiment, stack-independent.
