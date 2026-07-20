@@ -27,7 +27,10 @@ inst0 (public instance) is the hard draw at **6/6** rungs. Slot diversity ~190/1
 copy-vs-classify hypothesis (labeled, falsifiable) is in P1 §6.1 and RESEARCH_PROGRAM.
 
 ## Kaggle operational knowledge (hard-won tonight)
-- CLI auth: OAuth as `hassaneljesr` (no kaggle.json needed). Push pattern: dirs in
+- CLI auth: OAuth as `hassaneljesr` (no kaggle.json needed). RunPod ALSO available
+  locally: /opt/homebrew/bin/runpodctl + ~/.runpod/config.toml (authenticated; peer's
+  Chinchilla pod deleted, nothing billing) — check tooling before claiming a venue is
+  unavailable (this claim was wrong twice: kaggle.json, runpod). Push pattern: dirs in
   scratchpad `kk/`, metadata cloned from `tpl/` (the tv2 kernel: docker_image pin +
   machine_shape NvidiaTeslaT4 — KEEP the pin for env comparability).
 - Kernel slugs ending in bare `-1b` get "Notebook not found" — append `-run`.
