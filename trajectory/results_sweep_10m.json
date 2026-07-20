@@ -1,0 +1,792 @@
+{
+ "d5": {
+  "pool_size": 5,
+  "pos_swap": false,
+  "ft_seed": 0,
+  "per_type_pooled": {
+   "sulfa drugs": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "ragweed pollen": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "bee stings": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "ibuprofen": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "wool": {
+    "hits": 0,
+    "n": 80,
+    "recall": 0.0
+   },
+   "strawberries": {
+    "hits": 0,
+    "n": 80,
+    "recall": 0.0
+   }
+  },
+  "mean_held_type_recall_pct": 0.0,
+  "per_instance": [
+   {
+    "parse": 1.0,
+    "diluted_gap": 36.0,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 0,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 36.4,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 0,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 37.2,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 0,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 34.4,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 0,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 36.6,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 0,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   }
+  ],
+  "wall_secs": 547
+ },
+ "d20": {
+  "pool_size": 20,
+  "pos_swap": false,
+  "ft_seed": 0,
+  "per_type_pooled": {
+   "sulfa drugs": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "ragweed pollen": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "bee stings": {
+    "hits": 13,
+    "n": 85,
+    "recall": 0.15294117647058825
+   },
+   "ibuprofen": {
+    "hits": 59,
+    "n": 85,
+    "recall": 0.6941176470588235
+   },
+   "wool": {
+    "hits": 0,
+    "n": 80,
+    "recall": 0.0
+   },
+   "strawberries": {
+    "hits": 50,
+    "n": 80,
+    "recall": 0.625
+   }
+  },
+  "mean_held_type_recall_pct": 24.534313725490197,
+  "per_instance": [
+   {
+    "parse": 1.0,
+    "diluted_gap": 22.199999999999996,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 3,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 12,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 11,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 23.2,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 2,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 13,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 8,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 27.200000000000003,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 1,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 9,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 6,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 20.199999999999996,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 6,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 12,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 14,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 21.999999999999996,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 1,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 13,
+      "n": 17
+     },
+     "wool": {
+      "hits": 0,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 11,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   }
+  ],
+  "wall_secs": 559
+ },
+ "d80": {
+  "pool_size": 80,
+  "pos_swap": false,
+  "ft_seed": 0,
+  "per_type_pooled": {
+   "sulfa drugs": {
+    "hits": 0,
+    "n": 80,
+    "recall": 0.0
+   },
+   "ragweed pollen": {
+    "hits": 0,
+    "n": 80,
+    "recall": 0.0
+   },
+   "bee stings": {
+    "hits": 84,
+    "n": 84,
+    "recall": 1.0
+   },
+   "ibuprofen": {
+    "hits": 77,
+    "n": 77,
+    "recall": 1.0
+   },
+   "wool": {
+    "hits": 74,
+    "n": 74,
+    "recall": 1.0
+   },
+   "strawberries": {
+    "hits": 73,
+    "n": 73,
+    "recall": 1.0
+   }
+  },
+  "mean_held_type_recall_pct": 66.66666666666666,
+  "per_instance": [
+   {
+    "parse": 0.97,
+    "diluted_gap": 11.063829787234047,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 15
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 17,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 16,
+      "n": 16
+     },
+     "wool": {
+      "hits": 14,
+      "n": 14
+     },
+     "strawberries": {
+      "hits": 15,
+      "n": 15
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 0.985,
+    "diluted_gap": 11.340206185567014,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 16
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 16
+     },
+     "bee stings": {
+      "hits": 17,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 17,
+      "n": 17
+     },
+     "wool": {
+      "hits": 16,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 15,
+      "n": 15
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 0.955,
+    "diluted_gap": 13.406593406593403,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 16
+     },
+     "bee stings": {
+      "hits": 16,
+      "n": 16
+     },
+     "ibuprofen": {
+      "hits": 14,
+      "n": 14
+     },
+     "wool": {
+      "hits": 15,
+      "n": 15
+     },
+     "strawberries": {
+      "hits": 13,
+      "n": 13
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 0.95,
+    "diluted_gap": 10.666666666666668,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 16
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 14
+     },
+     "bee stings": {
+      "hits": 17,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 14,
+      "n": 14
+     },
+     "wool": {
+      "hits": 14,
+      "n": 14
+     },
+     "strawberries": {
+      "hits": 15,
+      "n": 15
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 0.98,
+    "diluted_gap": 11.041666666666671,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 16
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 17,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 16,
+      "n": 16
+     },
+     "wool": {
+      "hits": 15,
+      "n": 15
+     },
+     "strawberries": {
+      "hits": 15,
+      "n": 15
+     }
+    },
+    "seen_alg_recall": 1.0
+   }
+  ],
+  "wall_secs": 549
+ },
+ "d20pos": {
+  "pool_size": 20,
+  "pos_swap": true,
+  "ft_seed": 0,
+  "per_type_pooled": {
+   "sulfa drugs": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "ragweed pollen": {
+    "hits": 0,
+    "n": 85,
+    "recall": 0.0
+   },
+   "bee stings": {
+    "hits": 0,
+    "n": 84,
+    "recall": 0.0
+   },
+   "ibuprofen": {
+    "hits": 56,
+    "n": 85,
+    "recall": 0.6588235294117647
+   },
+   "wool": {
+    "hits": 80,
+    "n": 80,
+    "recall": 1.0
+   },
+   "strawberries": {
+    "hits": 0,
+    "n": 80,
+    "recall": 0.0
+   }
+  },
+  "mean_held_type_recall_pct": 27.64705882352941,
+  "per_instance": [
+   {
+    "parse": 1.0,
+    "diluted_gap": 25.4,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 12,
+      "n": 17
+     },
+     "wool": {
+      "hits": 16,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 0.995,
+    "diluted_gap": 24.64646464646465,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 16
+     },
+     "ibuprofen": {
+      "hits": 11,
+      "n": 17
+     },
+     "wool": {
+      "hits": 16,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 28.400000000000002,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 9,
+      "n": 17
+     },
+     "wool": {
+      "hits": 16,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 23.599999999999998,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 14,
+      "n": 17
+     },
+     "wool": {
+      "hits": 16,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   },
+   {
+    "parse": 1.0,
+    "diluted_gap": 23.799999999999997,
+    "per_type": {
+     "sulfa drugs": {
+      "hits": 0,
+      "n": 17
+     },
+     "ragweed pollen": {
+      "hits": 0,
+      "n": 17
+     },
+     "bee stings": {
+      "hits": 0,
+      "n": 17
+     },
+     "ibuprofen": {
+      "hits": 10,
+      "n": 17
+     },
+     "wool": {
+      "hits": 16,
+      "n": 16
+     },
+     "strawberries": {
+      "hits": 0,
+      "n": 16
+     }
+    },
+    "seen_alg_recall": 1.0
+   }
+  ],
+  "wall_secs": 550
+ },
+ "decisions": {
+  "diversity_effect_pts": 66.66666666666666,
+  "verdict": "H-slot SUPPORTED",
+  "position_delta_pts": 3.1127450980392126,
+  "monotonic_ish": true
+ }
+}

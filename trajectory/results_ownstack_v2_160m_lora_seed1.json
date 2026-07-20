@@ -1,0 +1,113 @@
+{
+ "stage": "ownstack-160m-lora",
+ "trainable_params": 4028416,
+ "dims": {
+  "d": 1024,
+  "L": 14,
+  "H": 16,
+  "KV": 4,
+  "hd": 64,
+  "ff": 2752
+ },
+ "lora": {
+  "r": 16,
+  "alpha": 32,
+  "dropout": 0.0,
+  "targets": [
+   "q",
+   "k",
+   "v",
+   "o",
+   "g",
+   "u",
+   "dn"
+  ]
+ },
+ "prereg": "trajectory/PREREG_ownstack_160m.md",
+ "ft_seed": 1,
+ "inst0": {
+  "parse": 1.0,
+  "diluted_gap": 8.999999999999996,
+  "clean_gap": 32.14285714285714,
+  "clean_per_field": {
+   "cc": 0.0,
+   "med": 33.333333333333336,
+   "alg": 100.0
+  }
+ },
+ "fresh_instances": [
+  {
+   "parse": 1.0,
+   "diluted_gap": 4.400000000000004,
+   "clean_gap": 19.999999999999996,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 21.739130434782606,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 7.199999999999996,
+   "clean_gap": 28.125,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 32.35294117647059,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 4.600000000000004,
+   "clean_gap": 19.491525423728817,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 19.999999999999996,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 5.600000000000005,
+   "clean_gap": 23.931623931623935,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 19.999999999999996,
+    "alg": 100.0
+   }
+  },
+  {
+   "parse": 1.0,
+   "diluted_gap": 6.999999999999995,
+   "clean_gap": 28.688524590163933,
+   "clean_per_field": {
+    "cc": 0.0,
+    "med": 31.034482758620683,
+    "alg": 100.0
+   }
+  }
+ ],
+ "diluted_fresh": [
+  4.400000000000004,
+  7.199999999999996,
+  4.600000000000004,
+  5.600000000000005,
+  6.999999999999995
+ ],
+ "clean_fresh": [
+  19.999999999999996,
+  28.125,
+  19.491525423728817,
+  23.931623931623935,
+  28.688524590163933
+ ],
+ "diluted_gap_mean": 5.760000000000001,
+ "diluted_gap_sd": 1.3069047402163587,
+ "clean_gap_mean": 24.04733478910334,
+ "clean_gap_sd": 4.339288628706462,
+ "fullft_reference": {
+  "diluted": 16.9,
+  "clean": 66.6
+ },
+ "gpu": "Tesla T4"
+}
