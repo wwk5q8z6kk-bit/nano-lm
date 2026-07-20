@@ -185,21 +185,24 @@ def decide(result):
     return DecisionAction.QUALIFY, "cannot verify; surfaced as unconfirmed"
 
 
-def run_slice(tag, verifier="v1", model_cache={}):
+INSTRUMENTS = {"inst0": lambda: ra.inst0, **{f"m{k}": (lambda k=k: ra.fresh[k]) for k in range(5)}}
+
+def run_slice(tag, verifier="v1", instrument="inst0", model_cache={}):
     if tag not in model_cache:
         model_cache[tag] = ra.load(tag)[0]
     m = model_cache[tag]
+    items_src = INSTRUMENTS[instrument]()
     vv, va = VERIFIERS[verifier]
-    ledger_path = os.path.join(HERE, f"ledger_{tag}_inst0_{verifier}.jsonl")
+    ledger_path = os.path.join(HERE, f"ledger_{tag}_{instrument}_{verifier}.jsonl")
     stats = {"parsed": 0, "review": 0, "raw_pred": 0, "raw_err": 0,
              "presented": 0, "presented_err": 0, "abstained": 0, "qualified": 0,
              "caught_err": 0, "lost_correct": 0, "present_no_span": 0,
              "contradicted": 0, "absent_verified": 0, "absent_unverifiable": 0}
     t0 = time.time()
     with open(ledger_path, "w") as ledger:
-        for idx, it in enumerate(ra.inst0):
+        for idx, it in enumerate(items_src):
             content = it["convo"][0]["content"]
-            src = f"inst0/{idx}"
+            src = f"{instrument}/{idx}"
             pids = ra.prompt_ids(content)
             out = ra.generate(m, pids)
             text = ra.tok.decode(out[len(pids):]).strip()
@@ -243,11 +246,11 @@ def run_slice(tag, verifier="v1", model_cache={}):
     raw_rate = stats["raw_err"] / max(1, stats["raw_pred"])
     pres_rate = stats["presented_err"] / max(1, stats["presented"])
     gate = (pres_rate <= raw_rate) and stats["present_no_span"] == 0
-    rep = {"model": tag, "verifier": verifier, "instrument": "inst0 (scribe_eval.json, 40 dlg)",
+    rep = {"model": tag, "verifier": verifier, "instrument": instrument,
            "raw_error_rate": round(raw_rate, 4), "presented_error_rate": round(pres_rate, 4),
            "provenance_complete": stats["present_no_span"] == 0,
            "gate_pass": gate, "runtime_s": round(dt, 1), **stats}
-    print(f"[{tag}/{verifier}] raw_err {stats['raw_err']}/{stats['raw_pred']} ({raw_rate:.1%})  "
+    print(f"[{tag}/{verifier}/{instrument}] raw_err {stats['raw_err']}/{stats['raw_pred']} ({raw_rate:.1%})  "
           f"presented_err {stats['presented_err']}/{stats['presented']} ({pres_rate:.1%})  "
           f"caught {stats['caught_err']}  lost_correct {stats['lost_correct']}  "
           f"contradicted {stats['contradicted']}  "
@@ -259,7 +262,8 @@ def run_slice(tag, verifier="v1", model_cache={}):
 
 if __name__ == "__main__":
     tags = sys.argv[1:] or ["nano", "scale"]
-    reps = [run_slice(t, v) for t in tags for v in ("v1", "v2")]
+    insts = os.environ.get("FABRIC_INSTRUMENTS", "inst0").split(",")
+    reps = [run_slice(t, v, ins) for t in tags for ins in insts for v in ("v1", "v2")]
     json.dump({"slice": "V1", "gates": "presented<=raw error, 100% span provenance, "
                "absence never inferred from silence", "reports": reps},
               open(os.path.join(HERE, "results_slice_v1.json"), "w"), indent=1)
