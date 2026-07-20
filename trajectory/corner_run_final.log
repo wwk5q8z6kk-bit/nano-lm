@@ -1,0 +1,32 @@
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+=== corner FT_SEED=0 ===
+loaded pretrain ckpt (step 195312); params 159.28M
+LoRA trainables: 4.028M (expect ~4.028M)
+lora-scribe 200/1125 loss 0.104
+lora-scribe 400/1125 loss 0.103
+lora-scribe 600/1125 loss 0.102
+lora-scribe 800/1125 loss 0.105
+lora-scribe 1000/1125 loss 0.102
+LoRA finetune done in 10.3 min
+
+=== OWN-STACK 160M (LoRA r=16) ===
+inst0 parse 100% diluted 8.0 clean 28.6
+m0-m4 DILUTED gap 4.2 ± 0.9  |  CLEAN gap 17.7 ± 3.2
+2x2 read (vs full-FT 16.9±1.7): method-effect visible
+results -> results_ownstack_v2_160m_lora.json
+=== corner FT_SEED=1 ===
+loaded pretrain ckpt (step 195312); params 159.28M
+LoRA trainables: 4.028M (expect ~4.028M)
+lora-scribe 200/1125 loss 0.101
+lora-scribe 400/1125 loss 0.103
+lora-scribe 600/1125 loss 0.100
+lora-scribe 800/1125 loss 0.102
+lora-scribe 1000/1125 loss 0.104
+LoRA finetune done in 10.3 min
+
+=== OWN-STACK 160M (LoRA r=16) ===
+inst0 parse 100% diluted 8.0 clean 28.6
+m0-m4 DILUTED gap 4.2 ± 0.9  |  CLEAN gap 17.7 ± 3.2
+2x2 read (vs full-FT 16.9±1.7): method-effect visible
+results -> results_ownstack_v2_160m_lora.json
+=== CORNER DONE ===
