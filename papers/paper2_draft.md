@@ -3,8 +3,11 @@
 *Working draft — Paper 2 (causality). Companion and sequel to Paper 1 ("Held-out value
 copying in small language models"). All numbers trace to immutable JSONs under
 `trajectory/`; instrument identical to Paper 1 (5×(100 held + 100 seen), gap = seen −
-held recall, mean ± across-instance SD). Status: full-FT, LoRA, Chinchilla, the 200M+LoRA seed duplicate, and the
-diversity sweep have all landed; the 3.2B+LoRA factorial corner is launching (RunPod).*
+held recall, mean ± across-instance SD). Status: full-FT, LoRA, Chinchilla, the 200M+LoRA seed duplicate, the diversity
+sweep, and the 3.2B+LoRA factorial corner (both training seeds) have all landed —
+Phase A is closed. The corner compounds the two escapes to ≈Pythia level
+(4.2 ± 0.9 diluted), while a shared ~15–18-pt clean residual persists in both
+stacks; Phase C (residual mechanism, C-1b lexical interference) is next.*
 
 ## Abstract (draft)
 
