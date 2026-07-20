@@ -1,0 +1,1359 @@
+GPU NVIDIA H100 NVL cap (9, 0)
+streaming FineWeb...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  20000 docs, 19M tok
+  40000 docs, 38M tok
+  60000 docs, 57M tok
+  80000 docs, 75M tok
+  100000 docs, 94M tok
+  120000 docs, 113M tok
+  140000 docs, 132M tok
+  160000 docs, 151M tok
+  180000 docs, 170M tok
+  200000 docs, 188M tok
+  220000 docs, 207M tok
+  240000 docs, 226M tok
+  260000 docs, 245M tok
+  280000 docs, 263M tok
+  300000 docs, 282M tok
+  320000 docs, 300M tok
+  340000 docs, 319M tok
+  360000 docs, 338M tok
+  380000 docs, 356M tok
+  400000 docs, 376M tok
+  420000 docs, 395M tok
+  440000 docs, 413M tok
+  460000 docs, 431M tok
+  480000 docs, 450M tok
+  500000 docs, 468M tok
+  520000 docs, 487M tok
+  540000 docs, 506M tok
+  560000 docs, 524M tok
+  580000 docs, 543M tok
+  600000 docs, 562M tok
+  620000 docs, 580M tok
+  640000 docs, 599M tok
+  660000 docs, 618M tok
+  680000 docs, 636M tok
+  700000 docs, 655M tok
+  720000 docs, 674M tok
+  740000 docs, 692M tok
+  760000 docs, 711M tok
+  780000 docs, 730M tok
+  800000 docs, 748M tok
+  820000 docs, 767M tok
+  840000 docs, 786M tok
+  860000 docs, 805M tok
+  880000 docs, 824M tok
+  900000 docs, 842M tok
+  920000 docs, 860M tok
+  940000 docs, 879M tok
+  960000 docs, 898M tok
+  980000 docs, 916M tok
+  1000000 docs, 935M tok
+  1020000 docs, 953M tok
+  1040000 docs, 972M tok
+  1060000 docs, 991M tok
+  1080000 docs, 1010M tok
+  1100000 docs, 1028M tok
+  1120000 docs, 1047M tok
+  1140000 docs, 1065M tok
+  1160000 docs, 1084M tok
+  1180000 docs, 1103M tok
+  1200000 docs, 1121M tok
+  1220000 docs, 1139M tok
+  1240000 docs, 1158M tok
+  1260000 docs, 1176M tok
+  1280000 docs, 1195M tok
+  1300000 docs, 1214M tok
+  1320000 docs, 1233M tok
+  1340000 docs, 1251M tok
+  1360000 docs, 1270M tok
+  1380000 docs, 1289M tok
+  1400000 docs, 1308M tok
+  1420000 docs, 1327M tok
+  1440000 docs, 1346M tok
+  1460000 docs, 1364M tok
+  1480000 docs, 1383M tok
+  1500000 docs, 1402M tok
+  1520000 docs, 1421M tok
+  1540000 docs, 1440M tok
+  1560000 docs, 1459M tok
+  1580000 docs, 1478M tok
+  1600000 docs, 1496M tok
+  1620000 docs, 1515M tok
+  1640000 docs, 1533M tok
+  1660000 docs, 1552M tok
+  1680000 docs, 1571M tok
+  1700000 docs, 1590M tok
+  1720000 docs, 1609M tok
+  1740000 docs, 1627M tok
+  1760000 docs, 1646M tok
+  1780000 docs, 1665M tok
+  1800000 docs, 1684M tok
+  1820000 docs, 1703M tok
+  1840000 docs, 1722M tok
+  1860000 docs, 1741M tok
+  1880000 docs, 1759M tok
+  1900000 docs, 1778M tok
+  1920000 docs, 1797M tok
+  1940000 docs, 1816M tok
+  1960000 docs, 1835M tok
+  1980000 docs, 1853M tok
+  2000000 docs, 1872M tok
+  2020000 docs, 1891M tok
+  2040000 docs, 1910M tok
+  2060000 docs, 1929M tok
+  2080000 docs, 1948M tok
+  2100000 docs, 1966M tok
+  2120000 docs, 1985M tok
+  2140000 docs, 2004M tok
+  2160000 docs, 2022M tok
+  2180000 docs, 2041M tok
+  2200000 docs, 2060M tok
+  2220000 docs, 2078M tok
+  2240000 docs, 2097M tok
+  2260000 docs, 2115M tok
+  2280000 docs, 2134M tok
+  2300000 docs, 2153M tok
+  2320000 docs, 2172M tok
+  2340000 docs, 2191M tok
+  2360000 docs, 2210M tok
+  2380000 docs, 2229M tok
+  2400000 docs, 2247M tok
+  2420000 docs, 2266M tok
+  2440000 docs, 2285M tok
+  2460000 docs, 2304M tok
+  2480000 docs, 2323M tok
+  2500000 docs, 2342M tok
+  2520000 docs, 2361M tok
+  2540000 docs, 2380M tok
+  2560000 docs, 2399M tok
+  2580000 docs, 2418M tok
+  2600000 docs, 2436M tok
+  2620000 docs, 2455M tok
+  2640000 docs, 2474M tok
+  2660000 docs, 2493M tok
+  2680000 docs, 2511M tok
+  2700000 docs, 2530M tok
+  2720000 docs, 2549M tok
+  2740000 docs, 2568M tok
+  2760000 docs, 2587M tok
+  2780000 docs, 2605M tok
+  2800000 docs, 2624M tok
+  2820000 docs, 2642M tok
+  2840000 docs, 2661M tok
+  2860000 docs, 2680M tok
+  2880000 docs, 2699M tok
+  2900000 docs, 2718M tok
+  2920000 docs, 2736M tok
+  2940000 docs, 2755M tok
+  2960000 docs, 2773M tok
+  2980000 docs, 2792M tok
+  3000000 docs, 2811M tok
+  3020000 docs, 2830M tok
+  3040000 docs, 2848M tok
+  3060000 docs, 2867M tok
+  3080000 docs, 2886M tok
+  3100000 docs, 2904M tok
+  3120000 docs, 2923M tok
+  3140000 docs, 2942M tok
+  3160000 docs, 2961M tok
+  3180000 docs, 2979M tok
+  3200000 docs, 2998M tok
+  3220000 docs, 3016M tok
+  3240000 docs, 3035M tok
+  3260000 docs, 3054M tok
+  3280000 docs, 3072M tok
+  3300000 docs, 3091M tok
+  3320000 docs, 3110M tok
+  3340000 docs, 3128M tok
+  3360000 docs, 3146M tok
+  3380000 docs, 3165M tok
+  3400000 docs, 3184M tok
+shard 3202M tok
+params=159.28M  steps=195312  peak_lr=5.63e-04
+step 200/195312 loss 6.161 gnorm 1.60 106k tok/s
+step 400/195312 loss 5.365 gnorm 2.95 108k tok/s
+step 600/195312 loss 4.901 gnorm 1.80 109k tok/s
+step 800/195312 loss 4.613 gnorm 1.83 109k tok/s
+step 1000/195312 loss 4.349 gnorm 1.66 110k tok/s
+  == val loss 4.476 ==
+step 1200/195312 loss 4.280 gnorm 1.50 108k tok/s
+step 1400/195312 loss 4.130 gnorm 1.33 109k tok/s
+step 1600/195312 loss 4.196 gnorm 1.18 110k tok/s
+step 1800/195312 loss 3.757 gnorm 1.05 111k tok/s
+step 2000/195312 loss 3.879 gnorm 0.97 110k tok/s
+  == val loss 3.898 ==
+step 2200/195312 loss 3.941 gnorm 0.97 108k tok/s
+step 2400/195312 loss 3.722 gnorm 0.83 108k tok/s
+step 2600/195312 loss 3.691 gnorm 0.75 108k tok/s
+step 2800/195312 loss 3.675 gnorm 0.76 109k tok/s
+step 3000/195312 loss 3.795 gnorm 0.69 109k tok/s
+  == val loss 3.740 ==
+step 3200/195312 loss 3.748 gnorm 0.66 108k tok/s
+step 3400/195312 loss 3.386 gnorm 0.65 109k tok/s
+step 3600/195312 loss 3.324 gnorm 0.61 109k tok/s
+step 3800/195312 loss 3.660 gnorm 0.58 109k tok/s
+step 4000/195312 loss 3.595 gnorm 0.62 109k tok/s
+  == val loss 3.679 ==
+step 4200/195312 loss 3.566 gnorm 0.60 109k tok/s
+step 4400/195312 loss 3.626 gnorm 0.55 108k tok/s
+step 4600/195312 loss 3.605 gnorm 0.53 109k tok/s
+step 4800/195312 loss 3.371 gnorm 0.53 109k tok/s
+step 5000/195312 loss 3.466 gnorm 0.53 109k tok/s
+  == val loss 3.456 ==
+step 5200/195312 loss 3.355 gnorm 0.51 109k tok/s
+step 5400/195312 loss 3.320 gnorm 0.48 109k tok/s
+step 5600/195312 loss 3.331 gnorm 0.66 109k tok/s
+step 5800/195312 loss 3.388 gnorm 0.49 109k tok/s
+step 6000/195312 loss 3.335 gnorm 0.47 109k tok/s
+  == val loss 3.387 ==
+step 6200/195312 loss 3.315 gnorm 0.45 108k tok/s
+step 6400/195312 loss 3.187 gnorm 0.45 109k tok/s
+step 6600/195312 loss 3.524 gnorm 0.43 109k tok/s
+step 6800/195312 loss 3.465 gnorm 0.48 109k tok/s
+step 7000/195312 loss 3.087 gnorm 0.43 109k tok/s
+  == val loss 3.436 ==
+step 7200/195312 loss 3.239 gnorm 0.42 109k tok/s
+step 7400/195312 loss 3.221 gnorm 0.42 109k tok/s
+step 7600/195312 loss 3.437 gnorm 0.42 109k tok/s
+step 7800/195312 loss 3.282 gnorm 0.43 110k tok/s
+step 8000/195312 loss 3.291 gnorm 0.40 110k tok/s
+  == val loss 3.407 ==
+step 8200/195312 loss 3.169 gnorm 0.40 109k tok/s
+step 8400/195312 loss 3.169 gnorm 0.41 109k tok/s
+step 8600/195312 loss 3.322 gnorm 0.40 109k tok/s
+step 8800/195312 loss 3.384 gnorm 0.40 109k tok/s
+step 9000/195312 loss 3.120 gnorm 0.41 109k tok/s
+  == val loss 3.238 ==
+step 9200/195312 loss 3.299 gnorm 0.40 109k tok/s
+step 9400/195312 loss 3.290 gnorm 0.41 109k tok/s
+step 9600/195312 loss 3.224 gnorm 0.40 109k tok/s
+step 9800/195312 loss 3.137 gnorm 0.41 109k tok/s
+step 10000/195312 loss 3.197 gnorm 0.47 109k tok/s
+  == val loss 3.332 ==
+step 10200/195312 loss 3.038 gnorm 0.40 109k tok/s
+step 10400/195312 loss 3.165 gnorm 0.67 109k tok/s
+step 10600/195312 loss 3.117 gnorm 0.41 109k tok/s
+step 10800/195312 loss 3.000 gnorm 0.43 109k tok/s
+step 11000/195312 loss 3.141 gnorm 0.39 109k tok/s
+  == val loss 3.346 ==
+step 11200/195312 loss 3.163 gnorm 0.40 109k tok/s
+step 11400/195312 loss 3.281 gnorm 0.39 109k tok/s
+step 11600/195312 loss 3.106 gnorm 0.40 109k tok/s
+step 11800/195312 loss 3.225 gnorm 0.39 109k tok/s
+step 12000/195312 loss 3.429 gnorm 0.39 109k tok/s
+  == val loss 3.089 ==
+step 12200/195312 loss 3.245 gnorm 0.39 109k tok/s
+step 12400/195312 loss 3.247 gnorm 0.40 109k tok/s
+step 12600/195312 loss 3.079 gnorm 0.40 109k tok/s
+step 12800/195312 loss 3.207 gnorm 0.41 109k tok/s
+step 13000/195312 loss 2.836 gnorm 0.39 110k tok/s
+  == val loss 3.413 ==
+step 13200/195312 loss 2.909 gnorm 0.40 109k tok/s
+step 13400/195312 loss 3.253 gnorm 0.40 110k tok/s
+step 13600/195312 loss 3.167 gnorm 0.39 110k tok/s
+step 13800/195312 loss 3.050 gnorm 0.41 110k tok/s
+step 14000/195312 loss 3.110 gnorm 0.40 110k tok/s
+  == val loss 3.083 ==
+step 14200/195312 loss 3.167 gnorm 0.40 110k tok/s
+step 14400/195312 loss 3.101 gnorm 0.38 110k tok/s
+step 14600/195312 loss 3.068 gnorm 0.42 110k tok/s
+step 14800/195312 loss 3.140 gnorm 0.40 110k tok/s
+step 15000/195312 loss 3.004 gnorm 0.40 110k tok/s
+  == val loss 2.965 ==
+step 15200/195312 loss 3.190 gnorm 0.41 110k tok/s
+step 15400/195312 loss 3.085 gnorm 0.39 110k tok/s
+step 15600/195312 loss 3.149 gnorm 0.41 110k tok/s
+step 15800/195312 loss 3.018 gnorm 0.40 110k tok/s
+step 16000/195312 loss 3.000 gnorm 0.40 110k tok/s
+  == val loss 2.936 ==
+step 16200/195312 loss 3.048 gnorm 0.40 110k tok/s
+step 16400/195312 loss 3.176 gnorm 0.40 110k tok/s
+step 16600/195312 loss 3.012 gnorm 0.40 110k tok/s
+step 16800/195312 loss 3.003 gnorm 0.39 110k tok/s
+step 17000/195312 loss 3.043 gnorm 0.39 110k tok/s
+  == val loss 3.201 ==
+step 17200/195312 loss 2.845 gnorm 0.40 109k tok/s
+step 17400/195312 loss 3.087 gnorm 0.38 109k tok/s
+step 17600/195312 loss 2.618 gnorm 0.39 110k tok/s
+step 17800/195312 loss 3.158 gnorm 0.39 110k tok/s
+step 18000/195312 loss 3.013 gnorm 0.37 110k tok/s
+  == val loss 3.106 ==
+step 18200/195312 loss 3.316 gnorm 0.40 109k tok/s
+step 18400/195312 loss 3.130 gnorm 0.39 109k tok/s
+step 18600/195312 loss 2.965 gnorm 0.38 109k tok/s
+step 18800/195312 loss 2.968 gnorm 0.39 110k tok/s
+step 19000/195312 loss 3.236 gnorm 0.38 110k tok/s
+  == val loss 2.865 ==
+step 19200/195312 loss 2.967 gnorm 0.42 109k tok/s
+step 19400/195312 loss 2.939 gnorm 0.40 109k tok/s
+step 19600/195312 loss 2.961 gnorm 0.40 110k tok/s
+step 19800/195312 loss 2.844 gnorm 0.39 110k tok/s
+step 20000/195312 loss 3.197 gnorm 0.39 110k tok/s
+  == val loss 3.147 ==
+step 20200/195312 loss 3.252 gnorm 0.41 109k tok/s
+step 20400/195312 loss 2.948 gnorm 0.38 109k tok/s
+step 20600/195312 loss 3.054 gnorm 0.38 109k tok/s
+step 20800/195312 loss 2.937 gnorm 0.39 109k tok/s
+step 21000/195312 loss 2.940 gnorm 0.41 110k tok/s
+  == val loss 3.092 ==
+step 21200/195312 loss 2.837 gnorm 0.39 109k tok/s
+step 21400/195312 loss 3.216 gnorm 0.39 109k tok/s
+step 21600/195312 loss 2.901 gnorm 0.40 109k tok/s
+step 21800/195312 loss 3.185 gnorm 0.38 109k tok/s
+step 22000/195312 loss 2.914 gnorm 0.38 109k tok/s
+  == val loss 2.896 ==
+step 22200/195312 loss 2.964 gnorm 0.38 109k tok/s
+step 22400/195312 loss 2.801 gnorm 0.38 109k tok/s
+step 22600/195312 loss 3.047 gnorm 0.39 109k tok/s
+step 22800/195312 loss 3.027 gnorm 0.39 109k tok/s
+step 23000/195312 loss 2.951 gnorm 0.40 109k tok/s
+  == val loss 2.903 ==
+step 23200/195312 loss 2.999 gnorm 0.38 109k tok/s
+step 23400/195312 loss 3.126 gnorm 0.39 109k tok/s
+step 23600/195312 loss 3.226 gnorm 0.39 109k tok/s
+step 23800/195312 loss 2.869 gnorm 0.39 110k tok/s
+step 24000/195312 loss 2.994 gnorm 0.40 110k tok/s
+  == val loss 2.986 ==
+step 24200/195312 loss 2.985 gnorm 0.39 109k tok/s
+step 24400/195312 loss 3.067 gnorm 0.39 110k tok/s
+step 24600/195312 loss 3.236 gnorm 0.39 110k tok/s
+step 24800/195312 loss 3.077 gnorm 0.40 110k tok/s
+step 25000/195312 loss 2.994 gnorm 0.38 110k tok/s
+  == val loss 2.982 ==
+step 25200/195312 loss 3.078 gnorm 0.41 110k tok/s
+step 25400/195312 loss 3.042 gnorm 0.40 110k tok/s
+step 25600/195312 loss 3.086 gnorm 0.40 110k tok/s
+step 25800/195312 loss 2.871 gnorm 0.39 110k tok/s
+step 26000/195312 loss 3.191 gnorm 0.40 110k tok/s
+  == val loss 2.670 ==
+step 26200/195312 loss 2.977 gnorm 0.42 110k tok/s
+step 26400/195312 loss 3.157 gnorm 0.39 110k tok/s
+step 26600/195312 loss 2.789 gnorm 0.38 110k tok/s
+step 26800/195312 loss 3.016 gnorm 0.39 110k tok/s
+step 27000/195312 loss 3.106 gnorm 0.40 110k tok/s
+  == val loss 3.057 ==
+step 27200/195312 loss 3.037 gnorm 0.40 110k tok/s
+step 27400/195312 loss 2.819 gnorm 0.40 110k tok/s
+step 27600/195312 loss 2.808 gnorm 0.38 110k tok/s
+step 27800/195312 loss 2.977 gnorm 0.40 110k tok/s
+step 28000/195312 loss 2.911 gnorm 0.40 110k tok/s
+  == val loss 2.851 ==
+step 28200/195312 loss 2.914 gnorm 0.39 110k tok/s
+step 28400/195312 loss 3.229 gnorm 0.39 110k tok/s
+step 28600/195312 loss 2.940 gnorm 0.39 110k tok/s
+step 28800/195312 loss 2.995 gnorm 0.37 110k tok/s
+step 29000/195312 loss 2.871 gnorm 0.39 110k tok/s
+  == val loss 2.785 ==
+step 29200/195312 loss 2.979 gnorm 0.39 110k tok/s
+step 29400/195312 loss 2.919 gnorm 0.37 110k tok/s
+step 29600/195312 loss 2.958 gnorm 0.39 110k tok/s
+step 29800/195312 loss 3.073 gnorm 0.39 110k tok/s
+step 30000/195312 loss 2.846 gnorm 0.40 110k tok/s
+  == val loss 3.132 ==
+step 30200/195312 loss 3.162 gnorm 0.38 110k tok/s
+step 30400/195312 loss 2.835 gnorm 0.38 110k tok/s
+step 30600/195312 loss 2.716 gnorm 0.41 110k tok/s
+step 30800/195312 loss 2.859 gnorm 0.39 110k tok/s
+step 31000/195312 loss 3.017 gnorm 0.38 110k tok/s
+  == val loss 2.817 ==
+step 31200/195312 loss 3.068 gnorm 0.41 110k tok/s
+step 31400/195312 loss 2.788 gnorm 0.39 110k tok/s
+step 31600/195312 loss 2.780 gnorm 0.40 110k tok/s
+step 31800/195312 loss 3.247 gnorm 0.38 110k tok/s
+step 32000/195312 loss 2.936 gnorm 0.41 110k tok/s
+  == val loss 3.297 ==
+step 32200/195312 loss 2.920 gnorm 0.39 110k tok/s
+step 32400/195312 loss 3.068 gnorm 0.39 110k tok/s
+step 32600/195312 loss 2.987 gnorm 0.38 110k tok/s
+step 32800/195312 loss 2.776 gnorm 0.40 110k tok/s
+step 33000/195312 loss 2.924 gnorm 0.40 110k tok/s
+  == val loss 2.816 ==
+step 33200/195312 loss 2.995 gnorm 0.39 110k tok/s
+step 33400/195312 loss 3.056 gnorm 0.38 110k tok/s
+step 33600/195312 loss 2.966 gnorm 0.41 110k tok/s
+step 33800/195312 loss 2.843 gnorm 0.40 110k tok/s
+step 34000/195312 loss 2.850 gnorm 0.39 110k tok/s
+  == val loss 2.738 ==
+step 34200/195312 loss 2.781 gnorm 0.39 110k tok/s
+step 34400/195312 loss 2.981 gnorm 0.40 110k tok/s
+step 34600/195312 loss 2.900 gnorm 0.39 110k tok/s
+step 34800/195312 loss 3.100 gnorm 0.55 110k tok/s
+step 35000/195312 loss 2.971 gnorm 0.38 110k tok/s
+  == val loss 3.140 ==
+step 35200/195312 loss 2.889 gnorm 0.38 110k tok/s
+step 35400/195312 loss 3.144 gnorm 0.39 110k tok/s
+step 35600/195312 loss 2.914 gnorm 0.41 110k tok/s
+step 35800/195312 loss 3.116 gnorm 0.40 110k tok/s
+step 36000/195312 loss 2.970 gnorm 0.38 110k tok/s
+  == val loss 3.038 ==
+step 36200/195312 loss 3.124 gnorm 0.40 110k tok/s
+step 36400/195312 loss 2.966 gnorm 0.39 110k tok/s
+step 36600/195312 loss 2.874 gnorm 0.39 110k tok/s
+step 36800/195312 loss 3.039 gnorm 0.39 110k tok/s
+step 37000/195312 loss 3.023 gnorm 0.39 110k tok/s
+  == val loss 2.855 ==
+step 37200/195312 loss 2.885 gnorm 0.40 110k tok/s
+step 37400/195312 loss 3.052 gnorm 0.42 110k tok/s
+step 37600/195312 loss 2.958 gnorm 0.40 110k tok/s
+step 37800/195312 loss 2.816 gnorm 0.38 110k tok/s
+step 38000/195312 loss 2.962 gnorm 0.40 110k tok/s
+  == val loss 2.549 ==
+step 38200/195312 loss 3.004 gnorm 0.40 110k tok/s
+step 38400/195312 loss 2.861 gnorm 0.40 110k tok/s
+step 38600/195312 loss 2.829 gnorm 0.39 110k tok/s
+step 38800/195312 loss 2.926 gnorm 0.41 110k tok/s
+step 39000/195312 loss 2.963 gnorm 0.40 110k tok/s
+  == val loss 2.832 ==
+step 39200/195312 loss 2.754 gnorm 0.41 110k tok/s
+step 39400/195312 loss 3.212 gnorm 0.40 110k tok/s
+step 39600/195312 loss 2.929 gnorm 0.38 110k tok/s
+step 39800/195312 loss 2.732 gnorm 0.39 110k tok/s
+step 40000/195312 loss 2.848 gnorm 0.41 110k tok/s
+  == val loss 2.897 ==
+step 40200/195312 loss 3.068 gnorm 0.39 110k tok/s
+step 40400/195312 loss 2.763 gnorm 0.39 110k tok/s
+step 40600/195312 loss 2.929 gnorm 0.40 110k tok/s
+step 40800/195312 loss 2.661 gnorm 0.39 110k tok/s
+step 41000/195312 loss 2.961 gnorm 0.41 110k tok/s
+  == val loss 2.944 ==
+step 41200/195312 loss 2.890 gnorm 0.41 110k tok/s
+step 41400/195312 loss 3.005 gnorm 0.39 110k tok/s
+step 41600/195312 loss 2.892 gnorm 0.41 110k tok/s
+step 41800/195312 loss 2.893 gnorm 0.40 110k tok/s
+step 42000/195312 loss 2.862 gnorm 0.38 110k tok/s
+  == val loss 2.886 ==
+step 42200/195312 loss 3.060 gnorm 0.39 110k tok/s
+step 42400/195312 loss 3.088 gnorm 0.40 110k tok/s
+step 42600/195312 loss 2.503 gnorm 0.41 110k tok/s
+step 42800/195312 loss 2.860 gnorm 0.40 110k tok/s
+step 43000/195312 loss 2.792 gnorm 0.40 110k tok/s
+  == val loss 2.906 ==
+step 43200/195312 loss 2.805 gnorm 0.39 110k tok/s
+step 43400/195312 loss 2.909 gnorm 0.41 110k tok/s
+step 43600/195312 loss 2.909 gnorm 0.42 110k tok/s
+step 43800/195312 loss 3.051 gnorm 0.39 110k tok/s
+step 44000/195312 loss 2.842 gnorm 0.41 110k tok/s
+  == val loss 2.775 ==
+step 44200/195312 loss 2.967 gnorm 0.41 110k tok/s
+step 44400/195312 loss 2.985 gnorm 0.41 110k tok/s
+step 44600/195312 loss 2.845 gnorm 0.42 110k tok/s
+step 44800/195312 loss 2.897 gnorm 0.42 110k tok/s
+step 45000/195312 loss 2.736 gnorm 0.41 110k tok/s
+  == val loss 3.102 ==
+step 45200/195312 loss 2.679 gnorm 0.39 110k tok/s
+step 45400/195312 loss 3.143 gnorm 0.42 110k tok/s
+step 45600/195312 loss 2.925 gnorm 0.40 110k tok/s
+step 45800/195312 loss 2.868 gnorm 0.41 110k tok/s
+step 46000/195312 loss 2.946 gnorm 0.41 110k tok/s
+  == val loss 2.999 ==
+step 46200/195312 loss 2.997 gnorm 0.40 110k tok/s
+step 46400/195312 loss 2.874 gnorm 0.41 110k tok/s
+step 46600/195312 loss 2.895 gnorm 0.39 110k tok/s
+step 46800/195312 loss 2.830 gnorm 0.42 110k tok/s
+step 47000/195312 loss 2.862 gnorm 0.39 110k tok/s
+  == val loss 3.049 ==
+step 47200/195312 loss 2.817 gnorm 0.41 110k tok/s
+step 47400/195312 loss 2.894 gnorm 0.40 110k tok/s
+step 47600/195312 loss 2.956 gnorm 0.40 110k tok/s
+step 47800/195312 loss 2.924 gnorm 0.40 110k tok/s
+step 48000/195312 loss 2.706 gnorm 0.40 110k tok/s
+  == val loss 3.250 ==
+step 48200/195312 loss 2.835 gnorm 0.39 110k tok/s
+step 48400/195312 loss 2.950 gnorm 0.42 110k tok/s
+step 48600/195312 loss 2.786 gnorm 0.39 110k tok/s
+step 48800/195312 loss 2.875 gnorm 0.40 110k tok/s
+step 49000/195312 loss 3.200 gnorm 0.39 110k tok/s
+  == val loss 2.760 ==
+step 49200/195312 loss 3.068 gnorm 0.41 110k tok/s
+step 49400/195312 loss 3.095 gnorm 0.40 110k tok/s
+step 49600/195312 loss 2.874 gnorm 0.40 110k tok/s
+step 49800/195312 loss 2.903 gnorm 0.41 110k tok/s
+step 50000/195312 loss 2.861 gnorm 0.39 110k tok/s
+  == val loss 2.863 ==
+step 50200/195312 loss 2.954 gnorm 0.41 109k tok/s
+step 50400/195312 loss 2.858 gnorm 0.39 109k tok/s
+step 50600/195312 loss 2.718 gnorm 0.41 109k tok/s
+step 50800/195312 loss 3.077 gnorm 0.42 109k tok/s
+step 51000/195312 loss 3.103 gnorm 0.43 109k tok/s
+  == val loss 2.835 ==
+step 51200/195312 loss 2.834 gnorm 0.40 109k tok/s
+step 51400/195312 loss 2.936 gnorm 0.40 109k tok/s
+step 51600/195312 loss 2.976 gnorm 0.42 109k tok/s
+step 51800/195312 loss 2.854 gnorm 0.42 109k tok/s
+step 52000/195312 loss 2.921 gnorm 0.39 109k tok/s
+  == val loss 3.034 ==
+step 52200/195312 loss 2.805 gnorm 0.42 109k tok/s
+step 52400/195312 loss 2.803 gnorm 0.40 109k tok/s
+step 52600/195312 loss 2.588 gnorm 0.43 109k tok/s
+step 52800/195312 loss 2.696 gnorm 0.41 109k tok/s
+step 53000/195312 loss 2.767 gnorm 0.41 109k tok/s
+  == val loss 2.946 ==
+step 53200/195312 loss 2.917 gnorm 0.41 109k tok/s
+step 53400/195312 loss 2.822 gnorm 0.40 109k tok/s
+step 53600/195312 loss 2.715 gnorm 0.41 109k tok/s
+step 53800/195312 loss 2.922 gnorm 0.42 109k tok/s
+step 54000/195312 loss 2.983 gnorm 0.41 109k tok/s
+  == val loss 2.998 ==
+step 54200/195312 loss 3.086 gnorm 0.41 109k tok/s
+step 54400/195312 loss 2.886 gnorm 0.41 109k tok/s
+step 54600/195312 loss 2.830 gnorm 0.63 109k tok/s
+step 54800/195312 loss 2.855 gnorm 0.41 109k tok/s
+step 55000/195312 loss 2.935 gnorm 0.41 109k tok/s
+  == val loss 3.102 ==
+step 55200/195312 loss 2.776 gnorm 0.43 109k tok/s
+step 55400/195312 loss 3.086 gnorm 0.41 109k tok/s
+step 55600/195312 loss 3.122 gnorm 0.42 109k tok/s
+step 55800/195312 loss 2.867 gnorm 0.41 109k tok/s
+step 56000/195312 loss 2.790 gnorm 0.42 109k tok/s
+  == val loss 2.606 ==
+step 56200/195312 loss 3.074 gnorm 0.42 109k tok/s
+step 56400/195312 loss 2.779 gnorm 0.41 109k tok/s
+step 56600/195312 loss 2.989 gnorm 0.42 109k tok/s
+step 56800/195312 loss 2.856 gnorm 0.42 109k tok/s
+step 57000/195312 loss 3.122 gnorm 0.42 109k tok/s
+  == val loss 2.668 ==
+step 57200/195312 loss 2.983 gnorm 0.42 109k tok/s
+step 57400/195312 loss 2.876 gnorm 0.42 109k tok/s
+step 57600/195312 loss 2.794 gnorm 0.40 109k tok/s
+step 57800/195312 loss 2.837 gnorm 0.42 109k tok/s
+step 58000/195312 loss 2.854 gnorm 0.42 109k tok/s
+  == val loss 2.896 ==
+step 58200/195312 loss 3.100 gnorm 0.42 109k tok/s
+step 58400/195312 loss 2.906 gnorm 0.44 109k tok/s
+step 58600/195312 loss 2.749 gnorm 0.43 109k tok/s
+step 58800/195312 loss 2.953 gnorm 0.42 109k tok/s
+step 59000/195312 loss 2.831 gnorm 0.45 109k tok/s
+  == val loss 2.855 ==
+step 59200/195312 loss 2.994 gnorm 0.43 109k tok/s
+step 59400/195312 loss 3.007 gnorm 0.42 109k tok/s
+step 59600/195312 loss 2.829 gnorm 0.43 109k tok/s
+step 59800/195312 loss 3.033 gnorm 0.43 109k tok/s
+step 60000/195312 loss 2.909 gnorm 0.43 109k tok/s
+  == val loss 3.071 ==
+step 60200/195312 loss 2.732 gnorm 0.41 109k tok/s
+step 60400/195312 loss 2.948 gnorm 0.40 109k tok/s
+step 60600/195312 loss 2.974 gnorm 0.41 109k tok/s
+step 60800/195312 loss 2.596 gnorm 0.42 109k tok/s
+step 61000/195312 loss 2.910 gnorm 0.42 109k tok/s
+  == val loss 3.073 ==
+step 61200/195312 loss 2.836 gnorm 0.43 109k tok/s
+step 61400/195312 loss 2.802 gnorm 0.41 109k tok/s
+step 61600/195312 loss 3.009 gnorm 0.44 109k tok/s
+step 61800/195312 loss 2.797 gnorm 0.42 109k tok/s
+step 62000/195312 loss 3.018 gnorm 0.45 109k tok/s
+  == val loss 2.999 ==
+step 62200/195312 loss 2.739 gnorm 0.43 109k tok/s
+step 62400/195312 loss 2.796 gnorm 0.44 109k tok/s
+step 62600/195312 loss 2.764 gnorm 0.44 109k tok/s
+step 62800/195312 loss 2.855 gnorm 0.41 109k tok/s
+step 63000/195312 loss 2.858 gnorm 0.43 109k tok/s
+  == val loss 2.940 ==
+step 63200/195312 loss 2.690 gnorm 0.43 109k tok/s
+step 63400/195312 loss 3.016 gnorm 0.43 109k tok/s
+step 63600/195312 loss 2.981 gnorm 0.42 109k tok/s
+step 63800/195312 loss 2.795 gnorm 0.42 109k tok/s
+step 64000/195312 loss 2.788 gnorm 0.46 109k tok/s
+  == val loss 2.851 ==
+step 64200/195312 loss 2.808 gnorm 0.43 109k tok/s
+step 64400/195312 loss 2.795 gnorm 0.43 109k tok/s
+step 64600/195312 loss 2.658 gnorm 0.42 109k tok/s
+step 64800/195312 loss 2.780 gnorm 0.43 109k tok/s
+step 65000/195312 loss 3.256 gnorm 0.43 110k tok/s
+  == val loss 2.925 ==
+step 65200/195312 loss 2.783 gnorm 0.45 109k tok/s
+step 65400/195312 loss 2.834 gnorm 0.43 110k tok/s
+step 65600/195312 loss 2.985 gnorm 0.43 110k tok/s
+step 65800/195312 loss 2.654 gnorm 0.43 110k tok/s
+step 66000/195312 loss 2.818 gnorm 0.44 110k tok/s
+  == val loss 2.494 ==
+step 66200/195312 loss 2.895 gnorm 0.45 110k tok/s
+step 66400/195312 loss 3.022 gnorm 0.42 110k tok/s
+step 66600/195312 loss 2.867 gnorm 0.43 110k tok/s
+step 66800/195312 loss 2.774 gnorm 0.42 110k tok/s
+step 67000/195312 loss 3.032 gnorm 0.44 110k tok/s
+  == val loss 2.745 ==
+step 67200/195312 loss 2.938 gnorm 0.43 109k tok/s
+step 67400/195312 loss 2.572 gnorm 0.42 110k tok/s
+step 67600/195312 loss 2.817 gnorm 0.42 110k tok/s
+step 67800/195312 loss 2.769 gnorm 0.44 110k tok/s
+step 68000/195312 loss 2.786 gnorm 0.43 110k tok/s
+  == val loss 2.930 ==
+step 68200/195312 loss 2.824 gnorm 0.47 110k tok/s
+step 68400/195312 loss 2.909 gnorm 0.43 110k tok/s
+step 68600/195312 loss 2.768 gnorm 0.47 110k tok/s
+step 68800/195312 loss 2.738 gnorm 0.42 110k tok/s
+step 69000/195312 loss 2.940 gnorm 0.45 110k tok/s
+  == val loss 2.703 ==
+step 69200/195312 loss 2.739 gnorm 0.44 110k tok/s
+step 69400/195312 loss 2.748 gnorm 0.44 110k tok/s
+step 69600/195312 loss 3.031 gnorm 0.44 110k tok/s
+step 69800/195312 loss 2.745 gnorm 0.44 110k tok/s
+step 70000/195312 loss 2.998 gnorm 0.43 110k tok/s
+  == val loss 2.756 ==
+step 70200/195312 loss 2.847 gnorm 0.41 110k tok/s
+step 70400/195312 loss 2.709 gnorm 0.44 110k tok/s
+step 70600/195312 loss 2.810 gnorm 0.46 110k tok/s
+step 70800/195312 loss 2.812 gnorm 0.47 110k tok/s
+step 71000/195312 loss 2.735 gnorm 0.45 110k tok/s
+  == val loss 2.798 ==
+step 71200/195312 loss 2.924 gnorm 0.45 110k tok/s
+step 71400/195312 loss 2.858 gnorm 0.46 110k tok/s
+step 71600/195312 loss 2.817 gnorm 0.46 110k tok/s
+step 71800/195312 loss 2.900 gnorm 0.46 110k tok/s
+step 72000/195312 loss 2.823 gnorm 0.50 110k tok/s
+  == val loss 3.247 ==
+step 72200/195312 loss 2.643 gnorm 0.46 109k tok/s
+step 72400/195312 loss 2.932 gnorm 0.44 109k tok/s
+step 72600/195312 loss 3.053 gnorm 0.44 109k tok/s
+step 72800/195312 loss 2.824 gnorm 0.44 109k tok/s
+step 73000/195312 loss 2.774 gnorm 0.45 109k tok/s
+  == val loss 2.873 ==
+step 73200/195312 loss 3.112 gnorm 0.46 109k tok/s
+step 73400/195312 loss 2.788 gnorm 0.45 109k tok/s
+step 73600/195312 loss 2.636 gnorm 0.44 109k tok/s
+step 73800/195312 loss 2.635 gnorm 0.45 109k tok/s
+step 74000/195312 loss 2.957 gnorm 0.49 109k tok/s
+  == val loss 2.914 ==
+step 74200/195312 loss 2.760 gnorm 0.45 109k tok/s
+step 74400/195312 loss 2.719 gnorm 0.44 109k tok/s
+step 74600/195312 loss 2.789 gnorm 0.46 109k tok/s
+step 74800/195312 loss 2.720 gnorm 0.46 109k tok/s
+step 75000/195312 loss 3.089 gnorm 0.43 109k tok/s
+  == val loss 2.615 ==
+step 75200/195312 loss 2.737 gnorm 0.45 109k tok/s
+step 75400/195312 loss 2.996 gnorm 0.45 109k tok/s
+step 75600/195312 loss 3.106 gnorm 0.45 109k tok/s
+step 75800/195312 loss 3.027 gnorm 0.45 109k tok/s
+step 76000/195312 loss 2.874 gnorm 0.44 109k tok/s
+  == val loss 2.694 ==
+step 76200/195312 loss 2.787 gnorm 0.44 109k tok/s
+step 76400/195312 loss 2.806 gnorm 0.47 109k tok/s
+step 76600/195312 loss 2.883 gnorm 0.47 109k tok/s
+step 76800/195312 loss 2.884 gnorm 0.46 109k tok/s
+step 77000/195312 loss 2.772 gnorm 0.45 110k tok/s
+  == val loss 2.802 ==
+step 77200/195312 loss 2.807 gnorm 0.44 109k tok/s
+step 77400/195312 loss 2.792 gnorm 0.45 109k tok/s
+step 77600/195312 loss 2.946 gnorm 0.45 109k tok/s
+step 77800/195312 loss 2.857 gnorm 0.46 109k tok/s
+step 78000/195312 loss 2.793 gnorm 0.48 110k tok/s
+  == val loss 2.925 ==
+step 78200/195312 loss 2.780 gnorm 0.45 109k tok/s
+step 78400/195312 loss 2.761 gnorm 0.46 109k tok/s
+step 78600/195312 loss 2.655 gnorm 0.46 109k tok/s
+step 78800/195312 loss 2.897 gnorm 0.46 110k tok/s
+step 79000/195312 loss 2.845 gnorm 0.47 110k tok/s
+  == val loss 2.778 ==
+step 79200/195312 loss 2.766 gnorm 0.46 109k tok/s
+step 79400/195312 loss 2.742 gnorm 0.46 109k tok/s
+step 79600/195312 loss 2.758 gnorm 0.46 109k tok/s
+step 79800/195312 loss 2.891 gnorm 0.45 109k tok/s
+step 80000/195312 loss 2.930 gnorm 0.45 109k tok/s
+  == val loss 2.767 ==
+step 80200/195312 loss 3.196 gnorm 0.45 109k tok/s
+step 80400/195312 loss 2.718 gnorm 0.47 109k tok/s
+step 80600/195312 loss 2.568 gnorm 0.45 109k tok/s
+step 80800/195312 loss 2.680 gnorm 0.47 109k tok/s
+step 81000/195312 loss 3.040 gnorm 0.47 109k tok/s
+  == val loss 2.776 ==
+step 81200/195312 loss 2.573 gnorm 0.45 109k tok/s
+step 81400/195312 loss 2.641 gnorm 0.46 109k tok/s
+step 81600/195312 loss 2.762 gnorm 0.47 109k tok/s
+step 81800/195312 loss 2.776 gnorm 0.45 109k tok/s
+step 82000/195312 loss 2.808 gnorm 0.46 109k tok/s
+  == val loss 2.808 ==
+step 82200/195312 loss 2.700 gnorm 0.48 109k tok/s
+step 82400/195312 loss 2.893 gnorm 0.47 109k tok/s
+step 82600/195312 loss 2.945 gnorm 0.46 109k tok/s
+step 82800/195312 loss 2.793 gnorm 0.47 109k tok/s
+step 83000/195312 loss 2.956 gnorm 0.47 109k tok/s
+  == val loss 2.854 ==
+step 83200/195312 loss 3.025 gnorm 0.47 109k tok/s
+step 83400/195312 loss 2.750 gnorm 0.46 109k tok/s
+step 83600/195312 loss 2.744 gnorm 0.44 109k tok/s
+step 83800/195312 loss 2.704 gnorm 0.45 109k tok/s
+step 84000/195312 loss 2.651 gnorm 0.48 109k tok/s
+  == val loss 3.028 ==
+step 84200/195312 loss 2.948 gnorm 0.46 109k tok/s
+step 84400/195312 loss 2.815 gnorm 0.47 109k tok/s
+step 84600/195312 loss 2.777 gnorm 0.47 109k tok/s
+step 84800/195312 loss 2.948 gnorm 0.47 109k tok/s
+step 85000/195312 loss 2.750 gnorm 0.46 110k tok/s
+  == val loss 2.742 ==
+step 85200/195312 loss 2.909 gnorm 0.48 109k tok/s
+step 85400/195312 loss 2.889 gnorm 0.47 109k tok/s
+step 85600/195312 loss 2.750 gnorm 0.47 109k tok/s
+step 85800/195312 loss 2.740 gnorm 0.46 109k tok/s
+step 86000/195312 loss 2.795 gnorm 0.47 109k tok/s
+  == val loss 2.801 ==
+step 86200/195312 loss 3.110 gnorm 0.48 109k tok/s
+step 86400/195312 loss 2.870 gnorm 0.50 109k tok/s
+step 86600/195312 loss 2.741 gnorm 0.48 109k tok/s
+step 86800/195312 loss 2.961 gnorm 0.48 109k tok/s
+step 87000/195312 loss 2.791 gnorm 0.47 110k tok/s
+  == val loss 2.820 ==
+step 87200/195312 loss 2.701 gnorm 0.46 109k tok/s
+step 87400/195312 loss 2.888 gnorm 0.47 109k tok/s
+step 87600/195312 loss 2.677 gnorm 0.47 110k tok/s
+step 87800/195312 loss 2.830 gnorm 0.48 110k tok/s
+step 88000/195312 loss 2.840 gnorm 0.46 110k tok/s
+  == val loss 2.851 ==
+step 88200/195312 loss 2.885 gnorm 0.47 110k tok/s
+step 88400/195312 loss 2.685 gnorm 0.48 110k tok/s
+step 88600/195312 loss 2.645 gnorm 0.49 110k tok/s
+step 88800/195312 loss 2.700 gnorm 0.47 110k tok/s
+step 89000/195312 loss 2.518 gnorm 0.47 110k tok/s
+  == val loss 2.805 ==
+step 89200/195312 loss 2.947 gnorm 0.48 109k tok/s
+step 89400/195312 loss 2.775 gnorm 0.47 109k tok/s
+step 89600/195312 loss 2.892 gnorm 0.48 110k tok/s
+step 89800/195312 loss 2.673 gnorm 0.49 110k tok/s
+step 90000/195312 loss 2.607 gnorm 0.49 110k tok/s
+  == val loss 2.923 ==
+step 90200/195312 loss 2.780 gnorm 0.52 109k tok/s
+step 90400/195312 loss 2.747 gnorm 0.48 109k tok/s
+step 90600/195312 loss 2.843 gnorm 0.50 109k tok/s
+step 90800/195312 loss 3.110 gnorm 0.48 110k tok/s
+step 91000/195312 loss 3.154 gnorm 0.50 110k tok/s
+  == val loss 2.667 ==
+step 91200/195312 loss 2.788 gnorm 0.51 109k tok/s
+step 91400/195312 loss 2.781 gnorm 0.48 109k tok/s
+step 91600/195312 loss 2.854 gnorm 0.48 109k tok/s
+step 91800/195312 loss 2.603 gnorm 0.49 109k tok/s
+step 92000/195312 loss 2.948 gnorm 0.50 109k tok/s
+  == val loss 2.853 ==
+step 92200/195312 loss 2.619 gnorm 0.51 109k tok/s
+step 92400/195312 loss 2.809 gnorm 0.49 109k tok/s
+step 92600/195312 loss 2.904 gnorm 0.48 109k tok/s
+step 92800/195312 loss 2.676 gnorm 0.49 109k tok/s
+step 93000/195312 loss 2.875 gnorm 0.49 109k tok/s
+  == val loss 2.703 ==
+step 93200/195312 loss 2.761 gnorm 0.48 109k tok/s
+step 93400/195312 loss 2.852 gnorm 0.50 109k tok/s
+step 93600/195312 loss 2.813 gnorm 0.49 109k tok/s
+step 93800/195312 loss 3.003 gnorm 0.50 109k tok/s
+step 94000/195312 loss 2.710 gnorm 0.50 109k tok/s
+  == val loss 2.851 ==
+step 94200/195312 loss 2.645 gnorm 0.48 109k tok/s
+step 94400/195312 loss 2.981 gnorm 0.49 109k tok/s
+step 94600/195312 loss 2.684 gnorm 0.50 109k tok/s
+step 94800/195312 loss 2.712 gnorm 0.50 109k tok/s
+step 95000/195312 loss 2.750 gnorm 0.52 109k tok/s
+  == val loss 2.820 ==
+step 95200/195312 loss 2.758 gnorm 0.49 109k tok/s
+step 95400/195312 loss 3.021 gnorm 0.52 109k tok/s
+step 95600/195312 loss 2.908 gnorm 0.49 109k tok/s
+step 95800/195312 loss 2.863 gnorm 0.51 109k tok/s
+step 96000/195312 loss 2.964 gnorm 0.51 109k tok/s
+  == val loss 2.889 ==
+step 96200/195312 loss 2.879 gnorm 0.52 109k tok/s
+step 96400/195312 loss 3.064 gnorm 0.51 109k tok/s
+step 96600/195312 loss 2.699 gnorm 0.48 109k tok/s
+step 96800/195312 loss 2.688 gnorm 0.50 109k tok/s
+step 97000/195312 loss 2.930 gnorm 0.51 109k tok/s
+  == val loss 2.772 ==
+step 97200/195312 loss 2.729 gnorm 0.51 109k tok/s
+step 97400/195312 loss 2.810 gnorm 0.50 109k tok/s
+step 97600/195312 loss 2.681 gnorm 0.55 109k tok/s
+step 97800/195312 loss 2.767 gnorm 0.50 109k tok/s
+step 98000/195312 loss 2.827 gnorm 0.50 109k tok/s
+  == val loss 3.017 ==
+step 98200/195312 loss 2.561 gnorm 0.51 109k tok/s
+step 98400/195312 loss 2.767 gnorm 0.51 109k tok/s
+step 98600/195312 loss 2.853 gnorm 0.53 109k tok/s
+step 98800/195312 loss 2.644 gnorm 0.51 109k tok/s
+step 99000/195312 loss 2.769 gnorm 0.51 109k tok/s
+  == val loss 2.916 ==
+step 99200/195312 loss 2.647 gnorm 0.52 109k tok/s
+step 99400/195312 loss 2.701 gnorm 0.51 109k tok/s
+step 99600/195312 loss 2.834 gnorm 0.52 109k tok/s
+step 99800/195312 loss 2.978 gnorm 0.51 109k tok/s
+step 100000/195312 loss 2.891 gnorm 0.51 109k tok/s
+  == val loss 2.601 ==
+step 100200/195312 loss 2.851 gnorm 0.52 109k tok/s
+step 100400/195312 loss 2.718 gnorm 0.54 109k tok/s
+step 100600/195312 loss 2.440 gnorm 0.51 110k tok/s
+step 100800/195312 loss 2.753 gnorm 0.52 109k tok/s
+step 101000/195312 loss 2.933 gnorm 0.51 109k tok/s
+  == val loss 2.695 ==
+step 101200/195312 loss 2.840 gnorm 0.51 109k tok/s
+step 101400/195312 loss 2.651 gnorm 0.52 109k tok/s
+step 101600/195312 loss 2.667 gnorm 0.51 109k tok/s
+step 101800/195312 loss 2.645 gnorm 0.52 110k tok/s
+step 102000/195312 loss 2.724 gnorm 0.52 110k tok/s
+  == val loss 2.549 ==
+step 102200/195312 loss 2.631 gnorm 0.51 109k tok/s
+step 102400/195312 loss 2.819 gnorm 0.52 109k tok/s
+step 102600/195312 loss 2.708 gnorm 0.53 109k tok/s
+step 102800/195312 loss 2.850 gnorm 0.53 109k tok/s
+step 103000/195312 loss 2.643 gnorm 0.53 109k tok/s
+  == val loss 2.838 ==
+step 103200/195312 loss 2.564 gnorm 0.52 109k tok/s
+step 103400/195312 loss 2.800 gnorm 0.54 109k tok/s
+step 103600/195312 loss 2.748 gnorm 0.52 109k tok/s
+step 103800/195312 loss 2.491 gnorm 0.53 109k tok/s
+step 104000/195312 loss 2.911 gnorm 0.51 109k tok/s
+  == val loss 2.772 ==
+step 104200/195312 loss 2.845 gnorm 0.53 109k tok/s
+step 104400/195312 loss 2.707 gnorm 0.52 109k tok/s
+step 104600/195312 loss 2.713 gnorm 0.53 109k tok/s
+step 104800/195312 loss 2.718 gnorm 0.54 109k tok/s
+step 105000/195312 loss 2.793 gnorm 0.53 109k tok/s
+  == val loss 2.711 ==
+step 105200/195312 loss 2.739 gnorm 0.54 109k tok/s
+step 105400/195312 loss 2.725 gnorm 0.53 109k tok/s
+step 105600/195312 loss 2.701 gnorm 0.54 109k tok/s
+step 105800/195312 loss 2.777 gnorm 0.52 109k tok/s
+step 106000/195312 loss 2.951 gnorm 0.53 109k tok/s
+  == val loss 2.814 ==
+step 106200/195312 loss 2.918 gnorm 0.55 109k tok/s
+step 106400/195312 loss 2.956 gnorm 0.55 109k tok/s
+step 106600/195312 loss 2.785 gnorm 0.55 109k tok/s
+step 106800/195312 loss 2.753 gnorm 0.53 109k tok/s
+step 107000/195312 loss 2.818 gnorm 0.53 109k tok/s
+  == val loss 2.742 ==
+step 107200/195312 loss 2.583 gnorm 0.55 109k tok/s
+step 107400/195312 loss 2.782 gnorm 0.54 109k tok/s
+step 107600/195312 loss 2.585 gnorm 0.53 109k tok/s
+step 107800/195312 loss 2.845 gnorm 0.54 109k tok/s
+step 108000/195312 loss 2.699 gnorm 0.54 109k tok/s
+  == val loss 2.830 ==
+step 108200/195312 loss 2.771 gnorm 0.53 109k tok/s
+step 108400/195312 loss 2.595 gnorm 0.54 109k tok/s
+step 108600/195312 loss 3.028 gnorm 0.54 109k tok/s
+step 108800/195312 loss 2.758 gnorm 0.56 109k tok/s
+step 109000/195312 loss 2.709 gnorm 0.55 109k tok/s
+  == val loss 3.077 ==
+step 109200/195312 loss 2.922 gnorm 0.55 109k tok/s
+step 109400/195312 loss 2.913 gnorm 0.55 109k tok/s
+step 109600/195312 loss 2.789 gnorm 0.55 109k tok/s
+step 109800/195312 loss 2.793 gnorm 0.56 109k tok/s
+step 110000/195312 loss 2.815 gnorm 0.54 109k tok/s
+  == val loss 2.615 ==
+step 110200/195312 loss 2.625 gnorm 0.55 109k tok/s
+step 110400/195312 loss 2.701 gnorm 0.54 109k tok/s
+step 110600/195312 loss 2.908 gnorm 0.55 109k tok/s
+step 110800/195312 loss 2.774 gnorm 0.55 109k tok/s
+step 111000/195312 loss 2.681 gnorm 0.55 109k tok/s
+  == val loss 2.675 ==
+step 111200/195312 loss 2.730 gnorm 0.55 109k tok/s
+step 111400/195312 loss 2.503 gnorm 0.56 109k tok/s
+step 111600/195312 loss 2.577 gnorm 0.54 109k tok/s
+step 111800/195312 loss 2.879 gnorm 0.57 109k tok/s
+step 112000/195312 loss 2.725 gnorm 0.55 109k tok/s
+  == val loss 2.750 ==
+step 112200/195312 loss 2.577 gnorm 0.55 109k tok/s
+step 112400/195312 loss 2.712 gnorm 0.53 109k tok/s
+step 112600/195312 loss 2.895 gnorm 0.56 109k tok/s
+step 112800/195312 loss 2.821 gnorm 0.55 109k tok/s
+step 113000/195312 loss 2.830 gnorm 0.57 109k tok/s
+  == val loss 2.969 ==
+step 113200/195312 loss 3.057 gnorm 0.57 109k tok/s
+step 113400/195312 loss 2.907 gnorm 0.62 109k tok/s
+step 113600/195312 loss 2.680 gnorm 0.57 109k tok/s
+step 113800/195312 loss 2.661 gnorm 0.57 109k tok/s
+step 114000/195312 loss 2.862 gnorm 0.59 109k tok/s
+  == val loss 3.028 ==
+step 114200/195312 loss 2.617 gnorm 0.56 109k tok/s
+step 114400/195312 loss 2.741 gnorm 0.57 109k tok/s
+step 114600/195312 loss 2.603 gnorm 0.58 109k tok/s
+step 114800/195312 loss 2.569 gnorm 0.65 109k tok/s
+step 115000/195312 loss 2.830 gnorm 0.56 109k tok/s
+  == val loss 2.886 ==
+step 115200/195312 loss 2.710 gnorm 0.58 109k tok/s
+step 115400/195312 loss 2.515 gnorm 0.58 109k tok/s
+step 115600/195312 loss 2.652 gnorm 0.56 109k tok/s
+step 115800/195312 loss 2.514 gnorm 0.61 109k tok/s
+step 116000/195312 loss 2.600 gnorm 0.60 109k tok/s
+  == val loss 2.883 ==
+step 116200/195312 loss 2.549 gnorm 0.59 109k tok/s
+step 116400/195312 loss 2.893 gnorm 0.57 109k tok/s
+step 116600/195312 loss 2.718 gnorm 0.60 109k tok/s
+step 116800/195312 loss 2.617 gnorm 0.58 109k tok/s
+step 117000/195312 loss 2.782 gnorm 0.60 109k tok/s
+  == val loss 2.703 ==
+step 117200/195312 loss 2.761 gnorm 0.61 109k tok/s
+step 117400/195312 loss 2.877 gnorm 0.57 109k tok/s
+step 117600/195312 loss 2.819 gnorm 0.58 109k tok/s
+step 117800/195312 loss 2.674 gnorm 0.58 109k tok/s
+step 118000/195312 loss 2.650 gnorm 0.59 109k tok/s
+  == val loss 2.620 ==
+step 118200/195312 loss 2.736 gnorm 0.57 109k tok/s
+step 118400/195312 loss 2.672 gnorm 0.59 109k tok/s
+step 118600/195312 loss 2.910 gnorm 0.59 109k tok/s
+step 118800/195312 loss 2.876 gnorm 0.59 109k tok/s
+step 119000/195312 loss 2.927 gnorm 0.58 109k tok/s
+  == val loss 2.767 ==
+step 119200/195312 loss 2.769 gnorm 0.59 109k tok/s
+step 119400/195312 loss 2.788 gnorm 0.57 109k tok/s
+step 119600/195312 loss 2.746 gnorm 0.60 109k tok/s
+step 119800/195312 loss 2.675 gnorm 0.59 109k tok/s
+step 120000/195312 loss 2.658 gnorm 0.61 109k tok/s
+  == val loss 2.553 ==
+step 120200/195312 loss 2.834 gnorm 0.58 109k tok/s
+step 120400/195312 loss 2.973 gnorm 0.59 109k tok/s
+step 120600/195312 loss 2.560 gnorm 0.60 109k tok/s
+step 120800/195312 loss 2.732 gnorm 0.59 109k tok/s
+step 121000/195312 loss 2.842 gnorm 0.58 109k tok/s
+  == val loss 3.079 ==
+step 121200/195312 loss 2.854 gnorm 0.61 109k tok/s
+step 121400/195312 loss 2.645 gnorm 0.60 109k tok/s
+step 121600/195312 loss 2.543 gnorm 0.60 109k tok/s
+step 121800/195312 loss 2.804 gnorm 0.58 110k tok/s
+step 122000/195312 loss 2.886 gnorm 0.62 110k tok/s
+  == val loss 2.928 ==
+step 122200/195312 loss 2.606 gnorm 0.59 110k tok/s
+step 122400/195312 loss 2.703 gnorm 0.59 110k tok/s
+step 122600/195312 loss 2.653 gnorm 0.61 110k tok/s
+step 122800/195312 loss 2.746 gnorm 0.62 110k tok/s
+step 123000/195312 loss 2.688 gnorm 0.61 110k tok/s
+  == val loss 2.929 ==
+step 123200/195312 loss 2.672 gnorm 0.63 110k tok/s
+step 123400/195312 loss 2.893 gnorm 0.60 110k tok/s
+step 123600/195312 loss 2.606 gnorm 0.60 110k tok/s
+step 123800/195312 loss 2.661 gnorm 0.61 110k tok/s
+step 124000/195312 loss 2.923 gnorm 0.62 110k tok/s
+  == val loss 2.821 ==
+step 124200/195312 loss 2.819 gnorm 0.60 109k tok/s
+step 124400/195312 loss 2.854 gnorm 0.60 109k tok/s
+step 124600/195312 loss 2.739 gnorm 0.60 109k tok/s
+step 124800/195312 loss 2.848 gnorm 0.60 110k tok/s
+step 125000/195312 loss 2.621 gnorm 0.63 110k tok/s
+  == val loss 2.892 ==
+step 125200/195312 loss 2.654 gnorm 0.62 109k tok/s
+step 125400/195312 loss 2.672 gnorm 0.60 109k tok/s
+step 125600/195312 loss 2.735 gnorm 0.61 109k tok/s
+step 125800/195312 loss 2.657 gnorm 0.62 109k tok/s
+step 126000/195312 loss 2.502 gnorm 0.61 109k tok/s
+  == val loss 3.009 ==
+step 126200/195312 loss 2.745 gnorm 0.60 109k tok/s
+step 126400/195312 loss 2.433 gnorm 0.62 109k tok/s
+step 126600/195312 loss 2.987 gnorm 0.63 109k tok/s
+step 126800/195312 loss 2.922 gnorm 0.62 109k tok/s
+step 127000/195312 loss 2.592 gnorm 0.61 109k tok/s
+  == val loss 2.530 ==
+step 127200/195312 loss 2.701 gnorm 0.66 109k tok/s
+step 127400/195312 loss 2.769 gnorm 0.62 109k tok/s
+step 127600/195312 loss 2.626 gnorm 0.63 109k tok/s
+step 127800/195312 loss 2.649 gnorm 0.61 109k tok/s
+step 128000/195312 loss 2.536 gnorm 0.61 109k tok/s
+  == val loss 2.790 ==
+step 128200/195312 loss 2.768 gnorm 0.62 109k tok/s
+step 128400/195312 loss 2.571 gnorm 0.62 109k tok/s
+step 128600/195312 loss 2.815 gnorm 0.66 109k tok/s
+step 128800/195312 loss 3.067 gnorm 0.64 109k tok/s
+step 129000/195312 loss 2.713 gnorm 0.64 109k tok/s
+  == val loss 2.493 ==
+step 129200/195312 loss 2.914 gnorm 0.63 109k tok/s
+step 129400/195312 loss 2.681 gnorm 0.63 109k tok/s
+step 129600/195312 loss 2.655 gnorm 0.63 109k tok/s
+step 129800/195312 loss 2.637 gnorm 0.63 109k tok/s
+step 130000/195312 loss 2.783 gnorm 0.63 109k tok/s
+  == val loss 2.742 ==
+step 130200/195312 loss 2.850 gnorm 0.67 109k tok/s
+step 130400/195312 loss 2.774 gnorm 0.66 109k tok/s
+step 130600/195312 loss 2.707 gnorm 0.64 109k tok/s
+step 130800/195312 loss 2.394 gnorm 0.64 109k tok/s
+step 131000/195312 loss 2.547 gnorm 0.65 109k tok/s
+  == val loss 2.734 ==
+step 131200/195312 loss 2.690 gnorm 0.65 109k tok/s
+step 131400/195312 loss 2.804 gnorm 0.65 109k tok/s
+step 131600/195312 loss 2.589 gnorm 0.64 109k tok/s
+step 131800/195312 loss 2.841 gnorm 0.65 109k tok/s
+step 132000/195312 loss 2.844 gnorm 0.64 109k tok/s
+  == val loss 2.961 ==
+step 132200/195312 loss 2.905 gnorm 0.64 109k tok/s
+step 132400/195312 loss 2.634 gnorm 0.65 109k tok/s
+step 132600/195312 loss 2.823 gnorm 0.65 109k tok/s
+step 132800/195312 loss 2.720 gnorm 0.65 110k tok/s
+step 133000/195312 loss 2.942 gnorm 0.65 110k tok/s
+  == val loss 2.769 ==
+step 133200/195312 loss 2.633 gnorm 0.65 109k tok/s
+step 133400/195312 loss 2.909 gnorm 0.65 110k tok/s
+step 133600/195312 loss 2.696 gnorm 0.66 110k tok/s
+step 133800/195312 loss 2.586 gnorm 0.64 110k tok/s
+step 134000/195312 loss 2.853 gnorm 0.67 110k tok/s
+  == val loss 2.806 ==
+step 134200/195312 loss 2.680 gnorm 0.68 110k tok/s
+step 134400/195312 loss 2.592 gnorm 0.66 110k tok/s
+step 134600/195312 loss 2.824 gnorm 0.67 110k tok/s
+step 134800/195312 loss 2.573 gnorm 0.64 110k tok/s
+step 135000/195312 loss 2.663 gnorm 0.66 110k tok/s
+  == val loss 2.973 ==
+step 135200/195312 loss 2.439 gnorm 0.64 110k tok/s
+step 135400/195312 loss 2.581 gnorm 0.65 110k tok/s
+step 135600/195312 loss 2.757 gnorm 0.66 110k tok/s
+step 135800/195312 loss 2.503 gnorm 0.66 110k tok/s
+step 136000/195312 loss 2.596 gnorm 0.65 110k tok/s
+  == val loss 2.618 ==
+step 136200/195312 loss 2.657 gnorm 0.66 110k tok/s
+step 136400/195312 loss 2.728 gnorm 0.67 110k tok/s
+step 136600/195312 loss 2.821 gnorm 0.67 110k tok/s
+step 136800/195312 loss 2.533 gnorm 0.71 110k tok/s
+step 137000/195312 loss 2.591 gnorm 0.67 110k tok/s
+  == val loss 2.722 ==
+step 137200/195312 loss 2.729 gnorm 0.69 110k tok/s
+step 137400/195312 loss 2.818 gnorm 0.67 109k tok/s
+step 137600/195312 loss 2.741 gnorm 0.66 109k tok/s
+step 137800/195312 loss 2.479 gnorm 0.67 109k tok/s
+step 138000/195312 loss 2.434 gnorm 0.67 109k tok/s
+  == val loss 2.392 ==
+step 138200/195312 loss 2.661 gnorm 0.68 109k tok/s
+step 138400/195312 loss 2.670 gnorm 0.68 109k tok/s
+step 138600/195312 loss 2.706 gnorm 0.67 109k tok/s
+step 138800/195312 loss 2.610 gnorm 0.68 110k tok/s
+step 139000/195312 loss 3.063 gnorm 0.66 110k tok/s
+  == val loss 2.687 ==
+step 139200/195312 loss 2.850 gnorm 0.73 110k tok/s
+step 139400/195312 loss 2.593 gnorm 0.67 110k tok/s
+step 139600/195312 loss 2.500 gnorm 0.70 110k tok/s
+step 139800/195312 loss 2.743 gnorm 0.69 110k tok/s
+step 140000/195312 loss 2.812 gnorm 0.69 110k tok/s
+  == val loss 2.461 ==
+step 140200/195312 loss 2.748 gnorm 0.68 110k tok/s
+step 140400/195312 loss 2.727 gnorm 0.68 110k tok/s
+step 140600/195312 loss 2.837 gnorm 0.71 109k tok/s
+step 140800/195312 loss 2.715 gnorm 0.68 109k tok/s
+step 141000/195312 loss 2.650 gnorm 0.71 109k tok/s
+  == val loss 2.742 ==
+step 141200/195312 loss 2.762 gnorm 0.70 109k tok/s
+step 141400/195312 loss 2.592 gnorm 0.69 109k tok/s
+step 141600/195312 loss 2.517 gnorm 0.72 109k tok/s
+step 141800/195312 loss 2.532 gnorm 0.71 109k tok/s
+step 142000/195312 loss 2.739 gnorm 0.73 109k tok/s
+  == val loss 2.720 ==
+step 142200/195312 loss 2.685 gnorm 0.70 109k tok/s
+step 142400/195312 loss 2.786 gnorm 0.70 109k tok/s
+step 142600/195312 loss 2.684 gnorm 0.69 109k tok/s
+step 142800/195312 loss 2.686 gnorm 0.70 109k tok/s
+step 143000/195312 loss 2.868 gnorm 0.69 109k tok/s
+  == val loss 2.654 ==
+step 143200/195312 loss 2.641 gnorm 0.72 109k tok/s
+step 143400/195312 loss 2.886 gnorm 0.71 109k tok/s
+step 143600/195312 loss 2.963 gnorm 0.70 109k tok/s
+step 143800/195312 loss 2.517 gnorm 0.72 109k tok/s
+step 144000/195312 loss 2.606 gnorm 0.72 109k tok/s
+  == val loss 2.598 ==
+step 144200/195312 loss 2.497 gnorm 0.71 109k tok/s
+step 144400/195312 loss 2.584 gnorm 0.70 109k tok/s
+step 144600/195312 loss 2.834 gnorm 0.71 109k tok/s
+step 144800/195312 loss 2.860 gnorm 0.71 109k tok/s
+step 145000/195312 loss 2.636 gnorm 0.74 109k tok/s
+  == val loss 3.062 ==
+step 145200/195312 loss 3.140 gnorm 0.70 109k tok/s
+step 145400/195312 loss 2.745 gnorm 0.71 109k tok/s
+step 145600/195312 loss 2.523 gnorm 0.70 109k tok/s
+step 145800/195312 loss 2.751 gnorm 0.73 109k tok/s
+step 146000/195312 loss 2.567 gnorm 0.70 109k tok/s
+  == val loss 2.752 ==
+step 146200/195312 loss 2.572 gnorm 0.69 109k tok/s
+step 146400/195312 loss 2.531 gnorm 0.72 109k tok/s
+step 146600/195312 loss 2.417 gnorm 0.73 109k tok/s
+step 146800/195312 loss 2.770 gnorm 0.69 109k tok/s
+step 147000/195312 loss 2.732 gnorm 0.72 109k tok/s
+  == val loss 2.827 ==
+step 147200/195312 loss 2.620 gnorm 0.73 109k tok/s
+step 147400/195312 loss 2.632 gnorm 0.75 109k tok/s
+step 147600/195312 loss 2.662 gnorm 0.70 109k tok/s
+step 147800/195312 loss 2.418 gnorm 0.71 109k tok/s
+step 148000/195312 loss 2.575 gnorm 0.73 109k tok/s
+  == val loss 2.554 ==
+step 148200/195312 loss 2.437 gnorm 0.73 109k tok/s
+step 148400/195312 loss 2.799 gnorm 0.73 109k tok/s
+step 148600/195312 loss 2.687 gnorm 0.71 109k tok/s
+step 148800/195312 loss 2.548 gnorm 0.73 109k tok/s
+step 149000/195312 loss 2.488 gnorm 0.71 109k tok/s
+  == val loss 2.898 ==
+step 149200/195312 loss 2.679 gnorm 0.72 109k tok/s
+step 149400/195312 loss 2.447 gnorm 0.73 109k tok/s
+step 149600/195312 loss 2.735 gnorm 0.77 109k tok/s
+step 149800/195312 loss 2.277 gnorm 0.75 109k tok/s
+step 150000/195312 loss 2.545 gnorm 0.80 109k tok/s
+  == val loss 2.509 ==
+step 150200/195312 loss 2.631 gnorm 0.74 109k tok/s
+step 150400/195312 loss 2.757 gnorm 0.72 109k tok/s
+step 150600/195312 loss 2.695 gnorm 0.73 109k tok/s
+step 150800/195312 loss 2.587 gnorm 0.74 109k tok/s
+step 151000/195312 loss 2.801 gnorm 0.75 109k tok/s
+  == val loss 2.565 ==
+step 151200/195312 loss 2.518 gnorm 0.73 109k tok/s
+step 151400/195312 loss 2.603 gnorm 0.74 109k tok/s
+step 151600/195312 loss 2.616 gnorm 0.73 109k tok/s
+step 151800/195312 loss 2.663 gnorm 0.75 109k tok/s
+step 152000/195312 loss 2.726 gnorm 0.74 109k tok/s
+  == val loss 2.498 ==
+step 152200/195312 loss 2.745 gnorm 0.76 109k tok/s
+step 152400/195312 loss 2.703 gnorm 0.74 109k tok/s
+step 152600/195312 loss 2.521 gnorm 0.74 109k tok/s
+step 152800/195312 loss 2.871 gnorm 0.90 109k tok/s
+step 153000/195312 loss 2.557 gnorm 0.76 109k tok/s
+  == val loss 2.747 ==
+step 153200/195312 loss 2.916 gnorm 0.76 109k tok/s
+step 153400/195312 loss 2.569 gnorm 0.75 109k tok/s
+step 153600/195312 loss 2.739 gnorm 0.76 109k tok/s
+step 153800/195312 loss 2.630 gnorm 0.76 109k tok/s
+step 154000/195312 loss 2.698 gnorm 0.76 109k tok/s
+  == val loss 2.731 ==
+step 154200/195312 loss 2.775 gnorm 0.78 109k tok/s
+step 154400/195312 loss 2.768 gnorm 0.75 109k tok/s
+step 154600/195312 loss 2.708 gnorm 0.77 109k tok/s
+step 154800/195312 loss 2.390 gnorm 0.75 109k tok/s
+step 155000/195312 loss 2.745 gnorm 0.74 109k tok/s
+  == val loss 2.681 ==
+step 155200/195312 loss 2.628 gnorm 0.76 109k tok/s
+step 155400/195312 loss 2.576 gnorm 0.76 109k tok/s
+step 155600/195312 loss 2.239 gnorm 0.74 109k tok/s
+step 155800/195312 loss 2.810 gnorm 0.76 109k tok/s
+step 156000/195312 loss 2.288 gnorm 0.76 109k tok/s
+  == val loss 2.735 ==
+step 156200/195312 loss 2.472 gnorm 0.75 109k tok/s
+step 156400/195312 loss 2.591 gnorm 0.77 109k tok/s
+step 156600/195312 loss 2.585 gnorm 0.78 109k tok/s
+step 156800/195312 loss 2.642 gnorm 0.76 109k tok/s
+step 157000/195312 loss 2.575 gnorm 0.77 109k tok/s
+  == val loss 2.632 ==
+step 157200/195312 loss 2.886 gnorm 0.76 109k tok/s
+step 157400/195312 loss 2.356 gnorm 0.77 109k tok/s
+step 157600/195312 loss 2.702 gnorm 0.75 109k tok/s
+step 157800/195312 loss 2.546 gnorm 0.80 109k tok/s
+step 158000/195312 loss 2.708 gnorm 0.80 109k tok/s
+  == val loss 2.580 ==
+step 158200/195312 loss 2.972 gnorm 0.82 109k tok/s
+step 158400/195312 loss 2.593 gnorm 0.77 109k tok/s
+step 158600/195312 loss 2.657 gnorm 0.80 109k tok/s
+step 158800/195312 loss 2.782 gnorm 0.77 109k tok/s
+step 159000/195312 loss 2.507 gnorm 0.80 109k tok/s
+  == val loss 2.720 ==
+step 159200/195312 loss 2.605 gnorm 0.79 109k tok/s
+step 159400/195312 loss 2.603 gnorm 0.78 109k tok/s
+step 159600/195312 loss 2.591 gnorm 0.81 109k tok/s
+step 159800/195312 loss 2.634 gnorm 0.79 109k tok/s
+step 160000/195312 loss 2.381 gnorm 0.76 109k tok/s
+  == val loss 2.494 ==
+step 160200/195312 loss 2.876 gnorm 0.80 109k tok/s
+step 160400/195312 loss 2.646 gnorm 0.79 109k tok/s
+step 160600/195312 loss 2.882 gnorm 0.79 109k tok/s
+step 160800/195312 loss 2.614 gnorm 0.80 109k tok/s
+step 161000/195312 loss 2.463 gnorm 0.78 109k tok/s
+  == val loss 2.466 ==
+step 161200/195312 loss 2.702 gnorm 0.78 109k tok/s
+step 161400/195312 loss 2.678 gnorm 0.81 109k tok/s
+step 161600/195312 loss 2.576 gnorm 0.81 109k tok/s
+step 161800/195312 loss 2.624 gnorm 0.78 109k tok/s
+step 162000/195312 loss 2.690 gnorm 0.79 109k tok/s
+  == val loss 2.736 ==
+step 162200/195312 loss 2.386 gnorm 0.78 109k tok/s
+step 162400/195312 loss 2.587 gnorm 0.81 109k tok/s
+step 162600/195312 loss 2.651 gnorm 0.80 109k tok/s
+step 162800/195312 loss 2.626 gnorm 0.79 109k tok/s
+step 163000/195312 loss 2.487 gnorm 0.80 109k tok/s
+  == val loss 2.824 ==
+step 163200/195312 loss 2.845 gnorm 0.81 109k tok/s
+step 163400/195312 loss 2.774 gnorm 0.79 109k tok/s
+step 163600/195312 loss 2.615 gnorm 0.78 109k tok/s
+step 163800/195312 loss 2.698 gnorm 0.81 109k tok/s
+step 164000/195312 loss 2.382 gnorm 0.81 109k tok/s
+  == val loss 2.844 ==
+step 164200/195312 loss 2.516 gnorm 0.81 109k tok/s
+step 164400/195312 loss 2.704 gnorm 0.78 109k tok/s
+step 164600/195312 loss 2.430 gnorm 0.79 109k tok/s
+step 164800/195312 loss 2.562 gnorm 0.80 109k tok/s
+step 165000/195312 loss 2.359 gnorm 0.82 109k tok/s
+  == val loss 2.768 ==
+step 165200/195312 loss 2.649 gnorm 0.81 109k tok/s
+step 165400/195312 loss 2.525 gnorm 0.79 109k tok/s
+step 165600/195312 loss 2.596 gnorm 0.83 109k tok/s
+step 165800/195312 loss 2.678 gnorm 0.81 109k tok/s
+step 166000/195312 loss 2.286 gnorm 0.80 109k tok/s
+  == val loss 2.441 ==
+step 166200/195312 loss 2.610 gnorm 0.82 109k tok/s
+step 166400/195312 loss 2.508 gnorm 0.84 109k tok/s
+step 166600/195312 loss 2.714 gnorm 0.82 109k tok/s
+step 166800/195312 loss 2.521 gnorm 0.86 109k tok/s
+step 167000/195312 loss 2.626 gnorm 0.82 109k tok/s
+  == val loss 2.574 ==
+step 167200/195312 loss 2.658 gnorm 0.84 109k tok/s
+step 167400/195312 loss 2.351 gnorm 0.84 109k tok/s
+step 167600/195312 loss 3.043 gnorm 0.87 109k tok/s
+step 167800/195312 loss 2.748 gnorm 0.82 109k tok/s
+step 168000/195312 loss 2.588 gnorm 0.84 109k tok/s
+  == val loss 2.601 ==
+step 168200/195312 loss 2.737 gnorm 0.82 109k tok/s
+step 168400/195312 loss 2.462 gnorm 0.82 109k tok/s
+step 168600/195312 loss 2.858 gnorm 0.81 109k tok/s
+step 168800/195312 loss 2.762 gnorm 0.82 109k tok/s
+step 169000/195312 loss 2.479 gnorm 0.81 109k tok/s
+  == val loss 2.671 ==
+step 169200/195312 loss 2.577 gnorm 0.81 109k tok/s
+step 169400/195312 loss 2.523 gnorm 0.82 109k tok/s
+step 169600/195312 loss 2.675 gnorm 0.83 109k tok/s
+step 169800/195312 loss 2.738 gnorm 0.83 109k tok/s
+step 170000/195312 loss 2.567 gnorm 0.83 109k tok/s
+  == val loss 2.671 ==
+step 170200/195312 loss 2.660 gnorm 0.84 109k tok/s
+step 170400/195312 loss 2.617 gnorm 0.84 109k tok/s
+step 170600/195312 loss 2.608 gnorm 0.83 109k tok/s
+step 170800/195312 loss 2.585 gnorm 0.84 109k tok/s
+step 171000/195312 loss 2.697 gnorm 0.83 109k tok/s
+  == val loss 2.500 ==
+step 171200/195312 loss 2.675 gnorm 0.85 109k tok/s
+step 171400/195312 loss 2.597 gnorm 0.84 109k tok/s
+step 171600/195312 loss 2.730 gnorm 0.84 109k tok/s
+step 171800/195312 loss 2.520 gnorm 0.85 109k tok/s
+step 172000/195312 loss 2.664 gnorm 0.86 109k tok/s
+  == val loss 2.911 ==
+step 172200/195312 loss 2.570 gnorm 0.85 109k tok/s
+step 172400/195312 loss 2.520 gnorm 0.84 109k tok/s
+step 172600/195312 loss 2.522 gnorm 0.84 109k tok/s
+step 172800/195312 loss 2.744 gnorm 0.87 109k tok/s
+step 173000/195312 loss 2.500 gnorm 0.84 109k tok/s
+  == val loss 2.608 ==
+step 173200/195312 loss 2.579 gnorm 0.84 109k tok/s
+step 173400/195312 loss 2.766 gnorm 0.84 109k tok/s
+step 173600/195312 loss 2.581 gnorm 0.86 109k tok/s
+step 173800/195312 loss 2.483 gnorm 0.86 109k tok/s
+step 174000/195312 loss 2.430 gnorm 0.85 109k tok/s
+  == val loss 2.732 ==
+step 174200/195312 loss 2.501 gnorm 0.85 109k tok/s
+step 174400/195312 loss 2.666 gnorm 0.84 109k tok/s
+step 174600/195312 loss 2.584 gnorm 0.86 109k tok/s
+step 174800/195312 loss 2.367 gnorm 0.86 109k tok/s
+step 175000/195312 loss 2.550 gnorm 0.86 109k tok/s
+  == val loss 2.568 ==
+step 175200/195312 loss 2.528 gnorm 0.86 109k tok/s
+step 175400/195312 loss 2.874 gnorm 0.85 109k tok/s
+step 175600/195312 loss 2.683 gnorm 0.86 109k tok/s
+step 175800/195312 loss 2.668 gnorm 0.92 109k tok/s
+step 176000/195312 loss 2.832 gnorm 0.88 109k tok/s
+  == val loss 2.575 ==
+step 176200/195312 loss 2.691 gnorm 0.86 109k tok/s
+step 176400/195312 loss 2.454 gnorm 0.84 109k tok/s
+step 176600/195312 loss 2.417 gnorm 0.87 109k tok/s
+step 176800/195312 loss 2.562 gnorm 0.85 109k tok/s
+step 177000/195312 loss 2.432 gnorm 0.85 109k tok/s
+  == val loss 2.545 ==
+step 177200/195312 loss 2.835 gnorm 0.85 109k tok/s
+step 177400/195312 loss 2.663 gnorm 0.87 109k tok/s
+step 177600/195312 loss 2.490 gnorm 0.85 109k tok/s
+step 177800/195312 loss 2.464 gnorm 0.86 109k tok/s
+step 178000/195312 loss 2.597 gnorm 0.88 109k tok/s
+  == val loss 2.493 ==
+step 178200/195312 loss 2.264 gnorm 0.85 109k tok/s
+step 178400/195312 loss 2.400 gnorm 0.87 109k tok/s
+step 178600/195312 loss 2.566 gnorm 0.87 109k tok/s
+step 178800/195312 loss 2.717 gnorm 0.88 109k tok/s
+step 179000/195312 loss 2.468 gnorm 0.89 109k tok/s
+  == val loss 2.540 ==
+step 179200/195312 loss 2.708 gnorm 0.89 109k tok/s
+step 179400/195312 loss 2.744 gnorm 0.87 109k tok/s
+step 179600/195312 loss 2.770 gnorm 0.87 109k tok/s
+step 179800/195312 loss 2.746 gnorm 0.87 109k tok/s
+step 180000/195312 loss 2.545 gnorm 0.85 109k tok/s
+  == val loss 2.785 ==
+step 180200/195312 loss 2.597 gnorm 0.88 109k tok/s
+step 180400/195312 loss 2.480 gnorm 0.87 109k tok/s
+step 180600/195312 loss 2.496 gnorm 0.85 109k tok/s
+step 180800/195312 loss 2.530 gnorm 0.89 109k tok/s
+step 181000/195312 loss 2.804 gnorm 0.89 109k tok/s
+  == val loss 2.658 ==
+step 181200/195312 loss 2.589 gnorm 0.90 109k tok/s
+step 181400/195312 loss 2.522 gnorm 0.91 109k tok/s
+step 181600/195312 loss 2.653 gnorm 0.90 109k tok/s
+step 181800/195312 loss 2.444 gnorm 0.87 109k tok/s
+step 182000/195312 loss 2.518 gnorm 0.87 109k tok/s
+  == val loss 2.590 ==
+step 182200/195312 loss 2.539 gnorm 0.89 109k tok/s
+step 182400/195312 loss 2.754 gnorm 0.90 109k tok/s
+step 182600/195312 loss 2.585 gnorm 0.91 109k tok/s
+step 182800/195312 loss 2.360 gnorm 0.87 109k tok/s
+step 183000/195312 loss 2.722 gnorm 0.90 109k tok/s
+  == val loss 2.612 ==
+step 183200/195312 loss 2.836 gnorm 0.89 109k tok/s
+step 183400/195312 loss 2.752 gnorm 0.92 109k tok/s
+step 183600/195312 loss 2.535 gnorm 0.91 109k tok/s
+step 183800/195312 loss 2.694 gnorm 0.89 109k tok/s
+step 184000/195312 loss 2.472 gnorm 0.91 109k tok/s
+  == val loss 2.314 ==
+step 184200/195312 loss 2.313 gnorm 0.87 109k tok/s
+step 184400/195312 loss 2.641 gnorm 0.89 109k tok/s
+step 184600/195312 loss 2.812 gnorm 0.92 109k tok/s
+step 184800/195312 loss 2.614 gnorm 0.89 109k tok/s
+step 185000/195312 loss 2.686 gnorm 0.90 109k tok/s
+  == val loss 2.530 ==
+step 185200/195312 loss 2.700 gnorm 0.89 109k tok/s
+step 185400/195312 loss 2.348 gnorm 0.93 109k tok/s
+step 185600/195312 loss 2.585 gnorm 0.91 109k tok/s
+step 185800/195312 loss 2.433 gnorm 0.91 109k tok/s
+step 186000/195312 loss 2.637 gnorm 0.91 109k tok/s
+  == val loss 2.284 ==
+step 186200/195312 loss 2.647 gnorm 0.94 109k tok/s
+step 186400/195312 loss 2.658 gnorm 0.92 109k tok/s
+step 186600/195312 loss 2.496 gnorm 0.89 109k tok/s
+step 186800/195312 loss 2.735 gnorm 0.91 109k tok/s
+step 187000/195312 loss 2.601 gnorm 0.92 109k tok/s
+  == val loss 2.843 ==
+step 187200/195312 loss 2.533 gnorm 0.91 109k tok/s
+step 187400/195312 loss 2.584 gnorm 0.93 109k tok/s
+step 187600/195312 loss 2.576 gnorm 0.91 109k tok/s
+step 187800/195312 loss 2.687 gnorm 0.91 109k tok/s
+step 188000/195312 loss 2.566 gnorm 0.96 109k tok/s
+  == val loss 2.752 ==
+step 188200/195312 loss 2.692 gnorm 0.92 109k tok/s
+step 188400/195312 loss 2.614 gnorm 0.92 109k tok/s
+step 188600/195312 loss 2.477 gnorm 0.93 109k tok/s
+step 188800/195312 loss 2.681 gnorm 0.90 109k tok/s
+step 189000/195312 loss 2.529 gnorm 0.92 109k tok/s
+  == val loss 2.609 ==
+step 189200/195312 loss 2.712 gnorm 0.92 109k tok/s
+step 189400/195312 loss 2.524 gnorm 0.95 109k tok/s
+step 189600/195312 loss 2.562 gnorm 0.93 109k tok/s
+step 189800/195312 loss 2.514 gnorm 0.94 109k tok/s
+step 190000/195312 loss 2.429 gnorm 0.90 109k tok/s
+  == val loss 2.539 ==
+step 190200/195312 loss 2.572 gnorm 0.91 109k tok/s
+step 190400/195312 loss 2.827 gnorm 0.94 109k tok/s
+step 190600/195312 loss 2.521 gnorm 0.90 109k tok/s
+step 190800/195312 loss 2.638 gnorm 0.92 109k tok/s
+step 191000/195312 loss 2.523 gnorm 0.93 109k tok/s
+  == val loss 2.519 ==
+step 191200/195312 loss 2.389 gnorm 0.90 109k tok/s
+step 191400/195312 loss 2.628 gnorm 0.94 109k tok/s
+step 191600/195312 loss 2.558 gnorm 0.94 109k tok/s
+step 191800/195312 loss 2.627 gnorm 0.93 109k tok/s
+step 192000/195312 loss 2.417 gnorm 0.95 109k tok/s
+  == val loss 2.869 ==
+step 192200/195312 loss 2.646 gnorm 0.93 109k tok/s
+step 192400/195312 loss 2.685 gnorm 0.93 109k tok/s
+step 192600/195312 loss 2.483 gnorm 0.95 109k tok/s
+step 192800/195312 loss 2.399 gnorm 0.94 109k tok/s
+step 193000/195312 loss 2.671 gnorm 0.94 109k tok/s
+  == val loss 2.629 ==
+step 193200/195312 loss 2.378 gnorm 0.93 109k tok/s
+step 193400/195312 loss 2.624 gnorm 0.94 109k tok/s
+step 193600/195312 loss 2.613 gnorm 0.94 109k tok/s
+step 193800/195312 loss 2.746 gnorm 0.91 109k tok/s
+step 194000/195312 loss 2.415 gnorm 0.94 109k tok/s
+  == val loss 2.726 ==
+step 194200/195312 loss 2.269 gnorm 0.96 109k tok/s
+step 194400/195312 loss 2.386 gnorm 0.96 109k tok/s
+step 194600/195312 loss 2.421 gnorm 0.94 109k tok/s
+step 194800/195312 loss 2.603 gnorm 0.95 109k tok/s
+step 195000/195312 loss 2.634 gnorm 0.94 109k tok/s
+  == val loss 2.674 ==
+step 195200/195312 loss 2.643 gnorm 0.93 109k tok/s
+pretrain done
+scribe 200/1125 loss 0.000
+scribe 400/1125 loss 0.000
+scribe 600/1125 loss 0.000
+scribe 800/1125 loss 0.000
+scribe 1000/1125 loss 0.000
+
+=== OWN-STACK 160M (full FT) ===
+base control parse 0% (must be <50%)
+inst0 parse 100% diluted 9.0 clean 32.1
+m0-m4 DILUTED gap 7.0 ± 1.0  |  CLEAN gap 29.4 ± 4.0
+DECISION (diluted gap_mean 7.0): MIXED (6-14): add 40M/80M
+results -> results_ownstack_v2_160m_fullft.json

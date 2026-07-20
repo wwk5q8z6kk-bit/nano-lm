@@ -59,11 +59,19 @@ innocent; grid 16.9 -> ~7 -> 4.2 ≈ Pythia 3.5; per-slot fingerprint identical 
 Pythia's (cc 0, med 0, alg 100). inst0 hard-draw 9/9. SEED-1 LANDED |delta|=0.00 (behavioral determinism at
 the corner; per-instance vector IDENTICAL to pythia-410m — composition arithmetic over
 shared categorical state). POD DELETED, RunPod empty. PHASE A/0 CLOSED. Owner Master Plan captured (papers/MASTER_PLAN.md) + invariants
-lockfile (papers/EMPIRICAL_FOUNDATION.md). NEXT BUILD: Phase 1 minimal vertical slice
-(Intent->Control->nano-lm->Evidence Ledger->Verifier->Risk->typed Memory on the scribe
-task; gate = equal-or-better clean metric + full provenance). C-1b (interference) runs
-AFTER the slice is measured, per owner ordering. C-1 coverage axis falsified pre-run —
-see PREREG_token_coverage.md AMENDMENT 1.
+lockfile (papers/EMPIRICAL_FOUNDATION.md). PHASE 1 SLICE SHIPPED 2026-07-20 (fabric/):
+typed Claim/EvidenceSpan/VerificationResult/Decision packets (content-addressed IDs,
+absence-never-from-silence + provenance gates enforced in code), slice runner on inst0,
+8 model-free regression pins. MEASURED (2 models x 2 verifiers, all gates PASS):
+nano 18.4% raw -> 1.9% (v1 grounding) -> 0.0% presented error (v2 template-anchored);
+scale 11.5% -> 1.1% -> 0.0%; zero correct claims lost; 100% span provenance; scale's
+errors 100% held-side. v1's entire residual = binding failures (cross-slot "moderate",
+template-word "troubling", partial "throat"⊂"throat lozenges") — grounding≠binding
+reproduced at the verifier layer. v2 = rules-perfect reference extractor (caveat
+documented in fabric/README.md). Anchor ckpts staged at checkpoints/anchors/ (gitignored;
+durable sources ~/AI-builds/nano-{scribe,scale}-*). NEXT BUILD: C-1b lexical-interference
+experiment (PREREG_token_coverage.md AMENDMENT 1) — the fabric ledger provides the
+mandatory per-item output logging C-1b requires. C-1 coverage axis falsified pre-run.
 
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted

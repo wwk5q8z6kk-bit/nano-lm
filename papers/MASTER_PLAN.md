@@ -46,7 +46,7 @@ abstention) → human reviews residual → memory stores only validated state.
 - **Phase 0 — freeze empirical core: DONE 2026-07-20** (corner seeds landed |Δ|=0.00;
   factorial frozen; binding account named; papers carry it; regression suite = the
   existing instruments).
-- **Phase 1 — minimal vertical slice (NEXT BUILD):** smallest end-to-end path on the
+- **Phase 1 — minimal vertical slice (DONE 2026-07-20, fabric/):** smallest end-to-end path on the
   existing scribe task — Intent → Control → nano-lm → Evidence Ledger (per-type
   coverage/diversity metadata) → Verifier (detects known copying failures) → Risk
   decision → typed Memory write. Success gate: equal-or-better clean-metric failure
@@ -69,6 +69,10 @@ track must continuously pass the empirical tests.
 
 ## Immediate next actions (owner-ordered)
 1. ✅ corner frozen (Phase A/0 closed).
-2. → EMPIRICAL_FOUNDATION.md (the invariants lockfile) — companion doc, this commit.
-3. → Phase 1 minimal vertical slice (next build unit).
-4. C-1b + further modules only after the slice is measured and stable.
+2. ✅ EMPIRICAL_FOUNDATION.md (the invariants lockfile).
+3. ✅ Phase 1 minimal vertical slice (fabric/, 2026-07-20 — all gates PASS: nano
+   18.4%→0.0% and scale 11.5%→0.0% presented error under v2, 0 correct claims lost,
+   100% provenance; v1's residual = exactly the binding-failure classes; see
+   fabric/README.md + fabric/results_slice_v1.json).
+4. → C-1b (interference) — next build unit; the fabric ledger supplies its mandatory
+   per-item output logging.
