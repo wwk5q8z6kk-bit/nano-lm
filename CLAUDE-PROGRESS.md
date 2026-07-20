@@ -41,6 +41,10 @@ copy-vs-classify hypothesis (labeled, falsifiable) is in P1 §6.1 and RESEARCH_P
   0.10.0; peft's LoRA dispatcher hard-fails probing it). Documented for the Pythia
   kernels — bit again on the own-stack LoRA arm (v2, ~10 min lost). Generalize: it is
   a peft trap, not a Pythia trap.
+- Batched scorer (trajectory/batched_scorer.py) validated BYTE-IDENTICAL vs native on
+  BOTH anchors' inst0 (nano pre-commit, scale post-commit, same session; 0/40 string
+  mismatches each) — CUDA fast path for future scoring; native stays the reference;
+  re-verify once per new model size.
 - ALWAYS run the ~$0 throughput probe first (`PHASE=pretrain` + tiny TARGET_TOKENS);
   it caught the OOM in 53s. `kaggle kernels status` can flicker COMPLETE mid-run —
   verify against the log timeline before believing an early exit.
