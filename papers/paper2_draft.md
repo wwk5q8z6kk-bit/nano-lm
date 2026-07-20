@@ -131,7 +131,12 @@ sharpening observations:
    slot is at total failure in **all five own-stack configurations** and at pythia-410m;
    pythia-160m reads 83.6 ± 4.6; but the pythia-1b *third training draw* reads
    **24.6 ± 10.3 — largely solved**, and the Pythia sequence (83.6 → 100.0 → 24.6) is
-   non-monotonic. Two honesty notes follow. (i) Every alg number is a *type-level n=1*
+   non-monotonic — and a fourth 1B training draw (peer-run, comparability again
+   failed-as-designed: another distinct draw inside [0,5]) reads alg clean **15.8**
+   with every other field at 0.0. Across four 1B draws the allergy slot spans ~0–25
+   while cc/med sit at 0.0 in all of them: **training-run variance concentrates in the
+   hardest slot** — the "copying boundary" behind §5.2-style bistability is per-slot,
+   and at 1B it is specifically the allergy slot. Two honesty notes follow. (i) Every alg number is a *type-level n=1*
    measurement — "sulfa drugs" is the only held allergy type, so the ±0.0 instance-SDs
    are repeated measures of one string, not precision about the slot. For med (two held
    types) this is now *proven*, not surmised: LoRA's and full FT's per-instance med gaps

@@ -1,0 +1,186 @@
+{
+ "stage": "T-v2-fieldwise",
+ "model": "EleutherAI/pythia-1b",
+ "tag": "pythia-1b",
+ "note": "DILUTED per_field = dialogue-level held vs seen (comparable to the paper's aggregate ladder). CLEAN = held-VALUE vs seen-VALUE recall among value-bearing items (AAEA A2; comparable to undilute_anchors.py: nano clean_agg 87.3, scale 79.5).",
+ "seeds": {
+  "harness": 20260717,
+  "fresh_instances": [
+   20260720,
+   20260721,
+   20260722,
+   20260723,
+   20260724
+  ]
+ },
+ "hparams": {
+  "lr": 0.0001,
+  "epochs": 3,
+  "micro_batch": 8,
+  "accum": 4,
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.0,
+   "targets": [
+    "query_key_value",
+    "dense",
+    "dense_h_to_4h",
+    "dense_4h_to_h"
+   ]
+  }
+ },
+ "per_field": {
+  "cc": {
+   "gap_mean": 0.0,
+   "gap_sd": 0.0,
+   "per_instance": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "dur": {
+   "gap_mean": 0.0,
+   "gap_sd": 0.0,
+   "per_instance": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "sev": {
+   "gap_mean": 0.0,
+   "gap_sd": 0.0,
+   "per_instance": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "med": {
+   "gap_mean": 0.0,
+   "gap_sd": 0.0,
+   "per_instance": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  "alg": {
+   "gap_mean": 3.400000000000001,
+   "gap_sd": 2.3021728866442652,
+   "per_instance": [
+    1.0000000000000009,
+    3.0000000000000027,
+    4.0000000000000036,
+    2.0000000000000018,
+    6.999999999999995
+   ]
+  }
+ },
+ "per_instance": [
+  {
+   "cc": 0.0,
+   "dur": 0.0,
+   "sev": 0.0,
+   "med": 0.0,
+   "alg": 1.0000000000000009
+  },
+  {
+   "cc": 0.0,
+   "dur": 0.0,
+   "sev": 0.0,
+   "med": 0.0,
+   "alg": 3.0000000000000027
+  },
+  {
+   "cc": 0.0,
+   "dur": 0.0,
+   "sev": 0.0,
+   "med": 0.0,
+   "alg": 4.0000000000000036
+  },
+  {
+   "cc": 0.0,
+   "dur": 0.0,
+   "sev": 0.0,
+   "med": 0.0,
+   "alg": 2.0000000000000018
+  },
+  {
+   "cc": 0.0,
+   "dur": 0.0,
+   "sev": 0.0,
+   "med": 0.0,
+   "alg": 6.999999999999995
+  }
+ ],
+ "clean_per_field": {
+  "cc": {
+   "gap_mean": 0.0,
+   "gap_sd": 0.0
+  },
+  "med": {
+   "gap_mean": 0.0,
+   "gap_sd": 0.0
+  },
+  "alg": {
+   "gap_mean": 15.779267791032499,
+   "gap_sd": 9.567814733836567
+  }
+ },
+ "clean_aggregate": {
+  "gap_mean": 2.8179556089999958,
+  "gap_sd": 1.867451744940625,
+  "per_instance": [
+   0.9090909090909038,
+   2.34375,
+   3.3898305084745783,
+   1.7094017094017144,
+   5.737704918032782
+  ]
+ },
+ "comparability_check": {
+  "agg_from_fieldwise": [
+   0.20000000000000018,
+   0.6000000000000005,
+   0.8000000000000007,
+   0.40000000000000036,
+   1.399999999999999
+  ],
+  "published_fresh_gaps": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "max_abs_diff": 1.399999999999999,
+  "MATCH": false
+ },
+ "input_fingerprints": {
+  "convos": "f229ce8931612ca7",
+  "m0": "60f5916fde2639c7",
+  "m1": "2f0d58c0ae4eb300",
+  "m2": "2f82ed9b42d106ea",
+  "m3": "5971a632bb325f56",
+  "m4": "34f1100ee5609640"
+ },
+ "versions": {
+  "torch": "2.10.0+cu128",
+  "transformers": "5.0.0",
+  "peft": "0.19.1",
+  "python": "3.12.13"
+ },
+ "gpu": "Tesla T4",
+ "train_wall_secs": 1712
+}
