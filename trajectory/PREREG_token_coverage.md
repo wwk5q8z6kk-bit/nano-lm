@@ -152,3 +152,43 @@ Candidate hygiene rules (mechanical, enforced by the pool generator): no modifie
 reused across classes; no candidate sharing words with MED_TRAIN except in I-xslot; no
 candidate in any training pool or existing held set; classifier must reproduce all six
 sweep types' known classes and flip states or the pools are INVALID.
+
+## RESULT (2026-07-20, run complete — C-1b executed as amended)
+
+Run: RunPod A6000, kernel commit 0af53b1, pools a56eb0a, eval 8e659cd. Artifacts:
+results_interference_10m.json (md5 35871b6c), outputs_if_seed{0,1}.jsonl (md5
+4961e3b9 / a509d1aa, 500 records each), c1b_run.log (md5 7decaf41). Independent
+recomputation from raw per-item records matched the kernel 1000/1000.
+
+**Mechanical verdict under the frozen thresholds: REFUTED.** flip(I-iso) −
+flip(I-contain) = 71% − 75% = **−4 pts** (rule: ≤15 → refuted) on the 26/34
+seed-agreeing types. Containment substitution signature: **0/77** I-contain misses
+output the contained value. The C-3 minimal binding probe is promoted per the rule.
+
+Class flip rates (seed-agreeing types): I-xslot 100% (5/5) · I-contain 75% (n=4) ·
+I-iso 71% (n=7) · I-sib 60% (n=5) · I-template 40% (n=5). Boundary-variance
+(seed-disagreeing, excluded): goat milk, hornet stings, iodine, ragweed pollen,
+rose hips, spider mites, strawberries, willow pollen — 8/34 = 24% of types sit on
+the flip boundary across FT seeds; note ragweed pollen (sweep never-flipper, T4)
+flips at 100% in seed 0 here (A6000), so flip states are venue/seed-fragile at the
+boundary, consistent with the flip-boundary variance account.
+
+**Failure-mode census** (analyze_interference.py, 402 misses): tail truncation at
+word boundaries 38% (rice milk→"rice"×30, sulfa drugs→"sulfa"×30, pumpkin
+seeds→"pumpkin"×28, ragweed pollen→"ragweed"×15 — the NOVEL half survives, the
+trained half is dropped: opposite of the interference prediction) · omission 13% ·
+substitution-of-trained 11% (blue dye→"red dye"×30 is the single clean sibling
+substitution) · morphological near-miss 10% (rose hips→"rose hip",
+melon rind→"melon rinds") · format-doubling containing the CORRECT value 3+3%
+(camphor → "camphor | ALG: camphor" — instrument-level, not copy failure) ·
+garble 6% (strawberries→"whewberries") · unparsed 4%.
+
+Independent secondary observations: I-xslot (trained med values as held allergies)
+is the only perfect class both seeds — trained token-transitions copy regardless of
+slot; henna flips at 93% with 0.00 token coverage (further coverage refutation).
+
+**What C-3 must now separate** (design inputs, not conclusions): multi-word novel
+compounds truncate at the word boundary while single-word novels largely flip —
+candidate factors: availability of the head→tail token transition in training
+output statistics (I-xslot's perfection and blue→red dye both fit), token count,
+word count, and boundary width (24% seed-variant types).

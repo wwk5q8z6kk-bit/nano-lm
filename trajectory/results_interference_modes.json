@@ -1,0 +1,206 @@
+{
+ "per_class": {
+  "I-xslot": {
+   "hit": 144,
+   "unparsed": 1,
+   "substitution_other": 3,
+   "omission": 2
+  },
+  "I-sib": {
+   "hit": 114,
+   "substitution_trained": 38,
+   "tail_truncation": 40,
+   "garble_of_truth": 10,
+   "unparsed": 2,
+   "omission": 5,
+   "substitution_other": 1
+  },
+  "I-iso": {
+   "format_double_correct": 13,
+   "format_double_other": 13,
+   "hit": 162,
+   "unparsed": 13,
+   "morph_near_miss": 36,
+   "garble_of_truth": 10,
+   "substitution_other": 23,
+   "tail_truncation": 15,
+   "omission": 5
+  },
+  "I-contain": {
+   "hit": 123,
+   "tail_truncation": 45,
+   "unparsed": 2,
+   "garble_of_truth": 3,
+   "omission": 15,
+   "substitution_other": 9,
+   "substitution_trained": 3
+  },
+  "I-template": {
+   "tail_truncation": 52,
+   "substitution_trained": 4,
+   "hit": 55,
+   "garble_of_truth": 3,
+   "substitution_other": 8,
+   "omission": 25,
+   "morph_near_miss": 3
+  }
+ },
+ "per_type": {
+  "antacids": {
+   "hit": 29,
+   "substitution_other": 1
+  },
+  "bee stings": {
+   "hit": 24,
+   "omission": 5,
+   "substitution_other": 1
+  },
+  "blue dye": {
+   "substitution_trained": 30
+  },
+  "camphor": {
+   "format_double_correct": 13,
+   "hit": 17
+  },
+  "chia seeds": {
+   "hit": 30
+  },
+  "cough syrup": {
+   "hit": 30
+  },
+  "deer dander": {
+   "hit": 30
+  },
+  "elm pollen": {
+   "hit": 29,
+   "unparsed": 1
+  },
+  "food additives": {
+   "tail_truncation": 14,
+   "substitution_other": 2,
+   "omission": 14
+  },
+  "food coloring": {
+   "substitution_trained": 4,
+   "tail_truncation": 8,
+   "garble_of_truth": 3,
+   "substitution_other": 4,
+   "omission": 11
+  },
+  "generic drugs": {
+   "hit": 27,
+   "morph_near_miss": 3
+  },
+  "goat milk": {
+   "hit": 15,
+   "omission": 11,
+   "substitution_other": 3,
+   "substitution_trained": 1
+  },
+  "gum arabic": {
+   "format_double_other": 13,
+   "garble_of_truth": 2,
+   "tail_truncation": 15
+  },
+  "hazel pollen": {
+   "hit": 30
+  },
+  "henna": {
+   "hit": 27,
+   "unparsed": 1,
+   "substitution_other": 2
+  },
+  "hornet stings": {
+   "hit": 22,
+   "substitution_trained": 8
+  },
+  "ibuprofen": {
+   "hit": 29,
+   "unparsed": 1
+  },
+  "iodine": {
+   "unparsed": 12,
+   "hit": 11,
+   "substitution_other": 2,
+   "omission": 5
+  },
+  "loratadine": {
+   "hit": 30
+  },
+  "maple pollen": {
+   "hit": 27,
+   "substitution_other": 3
+  },
+  "melon rind": {
+   "morph_near_miss": 19,
+   "garble_of_truth": 8,
+   "hit": 3
+  },
+  "paracetamol": {
+   "hit": 26,
+   "omission": 2,
+   "substitution_other": 2
+  },
+  "pet food": {
+   "hit": 28,
+   "substitution_other": 2
+  },
+  "pine resin": {
+   "hit": 30
+  },
+  "pumpkin seeds": {
+   "tail_truncation": 28,
+   "unparsed": 2
+  },
+  "quinoa": {
+   "hit": 27,
+   "substitution_other": 3
+  },
+  "ragweed pollen": {
+   "hit": 15,
+   "tail_truncation": 15
+  },
+  "rice milk": {
+   "tail_truncation": 30
+  },
+  "rose hips": {
+   "morph_near_miss": 17,
+   "hit": 13
+  },
+  "spider mites": {
+   "hit": 8,
+   "garble_of_truth": 10,
+   "tail_truncation": 12
+  },
+  "strawberries": {
+   "hit": 14,
+   "substitution_other": 16
+  },
+  "sulfa drugs": {
+   "tail_truncation": 30
+  },
+  "willow pollen": {
+   "hit": 7,
+   "garble_of_truth": 3,
+   "omission": 4,
+   "substitution_other": 3,
+   "substitution_trained": 2,
+   "unparsed": 1
+  },
+  "wool": {
+   "hit": 20
+  }
+ },
+ "modes": [
+  "hit",
+  "tail_truncation",
+  "morph_near_miss",
+  "format_double_correct",
+  "format_double_other",
+  "omission",
+  "substitution_trained",
+  "substitution_other",
+  "garble_of_truth",
+  "unparsed"
+ ]
+}

@@ -1,0 +1,37 @@
+downloading frozen base...
+
+=== FT seed 0 (D80 arm) ===
+  ft 400/1125 loss 0.000
+  ft 800/1125 loss 0.000
+  seed0 m0 done (198/200 parsed)
+  seed0 m1 done (391/400 parsed)
+  seed0 m2 done (588/600 parsed)
+  seed0 m3 done (786/800 parsed)
+  seed0 m4 done (984/1000 parsed)
+  seed0: parse 98% seen-alg 100%
+  I-contain  : elm pollen:93  goat milk:100  hazel pollen:100  maple pollen:100  ragweed pollen:100  rice milk:0  willow pollen:70
+  I-sib      : bee stings:100  blue dye:0  chia seeds:100  deer dander:100  hornet stings:100  pumpkin seeds:0  spider mites:53
+  I-xslot    : antacids:100  cough syrup:100  ibuprofen:93  loratadine:100  paracetamol:100
+  I-template : food additives:0  food coloring:0  generic drugs:100  pet food:100  sulfa drugs:0
+  I-iso      : camphor:53  gum arabic:0  henna:93  iodine:20  melon rind:0  pine resin:100  quinoa:100  rose hips:0  strawberries:93  wool:100
+
+=== FT seed 1 (D80 arm) ===
+  ft 400/1125 loss 0.000
+  ft 800/1125 loss 0.000
+  seed1 m0 done (200/200 parsed)
+  seed1 m1 done (399/400 parsed)
+  seed1 m2 done (599/600 parsed)
+  seed1 m3 done (799/800 parsed)
+  seed1 m4 done (998/1000 parsed)
+  seed1: parse 100% seen-alg 100%
+  I-contain  : elm pollen:100  goat milk:0  hazel pollen:100  maple pollen:80  ragweed pollen:0  rice milk:0  willow pollen:0
+  I-sib      : bee stings:60  blue dye:0  chia seeds:100  deer dander:100  hornet stings:47  pumpkin seeds:0  spider mites:0
+  I-xslot    : antacids:93  cough syrup:100  ibuprofen:100  loratadine:100  paracetamol:73
+  I-template : food additives:0  food coloring:0  generic drugs:80  pet food:87  sulfa drugs:0
+  I-iso      : camphor:60  gum arabic:0  henna:87  iodine:53  melon rind:20  pine resin:100  quinoa:80  rose hips:87  strawberries:0  wool:100
+
+CLASS FLIP RATES: {'I-contain': 75.0, 'I-sib': 60.0, 'I-xslot': 100.0, 'I-template': 40.0, 'I-iso': 71.42857142857143}
+PRIMARY (iso - contain): -4 pts -> REFUTED -> C-3 binding probe promoted
+boundary-variance types: ['goat milk', 'hornet stings', 'iodine', 'ragweed pollen', 'rose hips', 'spider mites', 'strawberries', 'willow pollen']
+I-contain substitution signature: 0/77 misses = contained value
+results -> results_interference_10m.json
