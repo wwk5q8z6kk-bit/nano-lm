@@ -230,3 +230,13 @@ final section renumbering; footnote the ~68/30/21% denominator; add Hoffmann cit
 - ☑ RESEARCH_PROGRAM: H0b SUPPORTED (single run), H0a supported within-stack.
 - Next: LoRA arm (2×2, needs peft-wrap validation), then Paper 2 drafting. inst0
   hard-draw now 6/6 rungs (28.0 > 16.9).
+
+## Dissection additions (2026-07-20)
+
+- ☑ inst0 hard-draw RESOLVED: composition (held-alg 40% vs 21%, cc 85% vs 68%,
+  lozenges-tilted) — folded into P2 §3.3; P1 §5.1 camera-ready should gain one
+  explanatory clause (currently says "systematically hard" without the why).
+- Dissection thesis for P2 restructure (owner call): organize results around the
+  per-type FLIP MATRIX (types × configs), aggregates derived; variance-at-boundaries
+  unification (§5.2 + seed study); flip surface = f(diversity, coverage, base quality,
+  method, draw) with the 1B-flips-sulfa vs D80@10M-doesn't tension stated.

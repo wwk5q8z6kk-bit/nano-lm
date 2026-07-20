@@ -167,7 +167,12 @@ sharpening observations:
 
 ### 3.3 Familiar structure at the new rung
 
-The public instance is again the hard draw (inst0 28.0 vs fresh 16.9 — now 6/6 rungs),
+The public instance is again the hard draw (inst0 28.0 vs fresh 16.9; by the corner
+run the streak reached 9/9 rungs) — and the type-composition lens *explains* it: inst0's
+held dialogues over-sample exactly the never-flipping types (held-allergy 40% vs the
+fresh instances' 21%, held-cc 85% vs 68%, lozenges-heavy med), so its gap is
+mechanically elevated at every rung. The "systematically hard draw" of Paper 1 §5.1 is
+composition, not chance —
 and the per-slot pattern replicates (clean means: cc 64.4 ± 7.1, med 47.1 ± 4.0, alg
 100.0 ± 0.0) — the slot gradient shapes the failure at 159M as at 3M.
 
