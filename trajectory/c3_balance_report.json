@@ -1,0 +1,41 @@
+{
+ "diagnostic": "junction_token_frequency_smd",
+ "purpose": "detect frequency confound not covered by the frozen hard gate",
+ "rows": [
+  {
+   "B": "B-sub",
+   "L": "short",
+   "smd": -0.9420334722337292,
+   "n_avail": 6,
+   "n_sep": 6,
+   "flag": "LARGE SMD -- investigate"
+  },
+  {
+   "B": "B-sub",
+   "L": "long",
+   "smd": -0.7900948332884653,
+   "n_avail": 6,
+   "n_sep": 6,
+   "flag": "OK"
+  },
+  {
+   "B": "B-space",
+   "L": "short",
+   "smd": 2.4248414233243754,
+   "n_avail": 6,
+   "n_sep": 6,
+   "flag": "LARGE SMD -- investigate"
+  },
+  {
+   "B": "B-space",
+   "L": "long",
+   "smd": 1.03110545840067,
+   "n_avail": 6,
+   "n_sep": 6,
+   "flag": "LARGE SMD -- investigate"
+  }
+ ],
+ "max_abs_smd": 2.4248414233243754,
+ "blocking": false,
+ "note": "This report cannot invalidate c3_pools.json; it supplements the frozen hard gate with one additional covariate check per advisor guidance."
+}

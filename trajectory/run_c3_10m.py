@@ -48,6 +48,27 @@ BRIDGE_TYPES = [v for v in HELD_TYPES if LABEL_OF[v]["kind"] == "bridge"]
 tok = Tokenizer.from_file(os.path.join(REPO, "sft", "tokenizer.json"))
 IMS, IME = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
 
+# ---------------- pre-launch generation-budget safety check -------------------------
+# C-3's primary metric is whether the model TRUNCATES the held ALG value. If max_new
+# were too small, the evaluator itself would truncate long responses before <|im_end|>,
+# and that artifact would be indistinguishable from the phenomenon under study unless
+# checked up front. Computed from the actual committed eval data (not an assumed
+# worst case) and asserted before any GPU spend -- fail fast, not after a paid run.
+_GEN_MAX_NEW = 64
+_margin = 8  # tokens of slack required beyond the observed max, since FT can shift lengths slightly
+_maxlen = 0
+for _k in range(5):
+    for _it in json.load(open(os.path.join(REPO, "trajectory", "c3_eval", f"c3_m{_k}.json"))):
+        _n = len(tok.encode(_it["convo"][1]["content"], add_special_tokens=False).ids)
+        _maxlen = max(_maxlen, _n)
+assert _maxlen + _margin < _GEN_MAX_NEW, (
+    f"PRELAUNCH_C3_SAFETY_CHECK FAILED: observed max assistant-response length "
+    f"{_maxlen} tokens + {_margin}-token margin >= max_new={_GEN_MAX_NEW}. "
+    f"Raise max_new in generate_ids before launching -- otherwise cap-induced "
+    f"truncation would contaminate the truncation-rate metric.")
+print(f"PRELAUNCH_C3_SAFETY_CHECK: max observed response {_maxlen} tok, "
+      f"max_new={_GEN_MAX_NEW}, margin={_GEN_MAX_NEW - _maxlen} tok -- OK", flush=True)
+
 # ---------------- scale-10M model (verbatim, byte-identical to C-1b) ----------------
 V = 4098
 d, L, H, KV, hd, ff, S = 320, 8, 8, 2, 40, 864, 512
@@ -152,14 +173,23 @@ def prompt_ids(user_content):
 
 @torch.no_grad()
 def generate_ids(m, ids, max_new=64):
+    """Returns (ids, stop_reason). stop_reason in {"im_end","max_new_cap","seq_limit"}.
+    C-3's primary metric is truncation of the ALG value -- a generation that hits
+    max_new/seq_limit before emitting <|im_end|> must be distinguishable from a
+    genuine model-produced truncation, or an evaluator artifact would masquerade
+    as the phenomenon under study. See PRELAUNCH_C3_SAFETY_CHECK below for the
+    margin assertion this instruments."""
     ids = list(ids)
+    stop_reason = "max_new_cap"
     for _ in range(max_new):
-        if len(ids) >= S: break
+        if len(ids) >= S:
+            stop_reason = "seq_limit"; break
         x = torch.tensor([ids + [0] * (S - len(ids))], device=dev)
         nxt = int(m(x)[0, len(ids) - 1].argmax())
-        if nxt == IME: break
+        if nxt == IME:
+            stop_reason = "im_end"; break
         ids.append(nxt)
-    return ids
+    return ids, stop_reason
 
 RE_ = re.compile(r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$")
 FLDS = ["cc", "dur", "sev", "med", "alg"]
@@ -217,7 +247,7 @@ def score_seed(m, ft_seed, out_f):
         for idx, it in enumerate(items):
             total += 1
             pids = prompt_ids(it["convo"][0]["content"])
-            gen = generate_ids(m, pids)
+            gen, stop_reason = generate_ids(m, pids)
             gen_new = gen[len(pids):]
             text = tok.decode(gen_new).strip()
             mm = RE_.match(text)
@@ -234,13 +264,23 @@ def score_seed(m, ft_seed, out_f):
                 alg_str = pred["alg"] if pred else None
                 alg_ids = tok.encode(" " + alg_str, add_special_tokens=False).ids if alg_str else []
                 err_class, trunc_pos = (None, None) if hit else classify_output(t, alg_str, alg_ids)
+                # An unparsed output (mm is None, pred is None) where generation
+                # stopped on max_new_cap/seq_limit rather than im_end cannot be
+                # mechanically distinguished from a genuine model truncation by
+                # classify_output alone (it only sees the regex-matched ALG span,
+                # which doesn't exist when the whole response failed to parse).
+                # Flag it explicitly so the decision-rule stage can exclude it from
+                # the tail-truncation-rate metric rather than silently miscounting
+                # an evaluator artifact as the phenomenon under study.
+                cap_confound = (not hit) and stop_reason in ("max_new_cap", "seq_limit")
                 out_f.write(json.dumps({
                     "seed": ft_seed, "inst": k, "idx": idx, "type": t,
                     "kind": LABEL_OF[t]["kind"], "T": LABEL_OF[t]["T"],
                     "B": LABEL_OF[t]["B"], "Lb": LABEL_OF[t]["L"],
                     "hit": hit, "pred_alg": alg_str, "raw": text,
                     "gen_token_ids": gen_new, "error_class": err_class,
-                    "truncation_token_pos": trunc_pos}) + "\n")
+                    "truncation_token_pos": trunc_pos,
+                    "stop_reason": stop_reason, "cap_confound": cap_confound}) + "\n")
             elif (not it["held_values"]) and t != "none" and pred:
                 seen_alg[0] += int(pred["alg"] == t); seen_alg[1] += 1
         print(f"  seed{ft_seed} m{k} done ({parsed}/{total} parsed)", flush=True)
@@ -317,12 +357,21 @@ H_length_delta = (sum(d[4] for d in length_deltas) / len(length_deltas)) if leng
 tfull_rate, tfull_n = cell_rate(lambda t: LABEL_OF[t]["kind"] == "tfull")
 run_void = tfull_rate is not None and tfull_rate < 90
 
-# truncation-locus check: >=60% of B-space misses truncate exactly at the ws junction
-b_space_misses_trunc = b_space_misses_total = 0
+# truncation-locus check: >=60% of B-space misses truncate exactly at the ws junction.
+# Misses where generation stopped on max_new_cap/seq_limit (cap_confound) are excluded
+# from this count -- a cap-induced cutoff is an evaluator artifact, not the model
+# behavior (learned transition strength) this metric is measuring. They are reported
+# separately as a diagnostic; a nonzero count here would need investigation before
+# trusting the truncation-locus rate, but PRELAUNCH_C3_SAFETY_CHECK below establishes
+# this should be ~0 given the actual eval data's max response length.
+b_space_misses_trunc = b_space_misses_total = cap_confound_excluded = 0
 for sd in range(3):
     for line in open(f"outputs_c3_seed{sd}.jsonl"):
         r = json.loads(line)
         if r["hit"] or r["B"] != "B-space":
+            continue
+        if r.get("cap_confound"):
+            cap_confound_excluded += 1
             continue
         b_space_misses_total += 1
         if r["error_class"] in ("truncation", "head_only"):
@@ -339,6 +388,7 @@ results["decisions"] = {
     "H_length": {"delta_pts": H_length_delta, "verdict": verdict(H_length_delta), "per_TB": length_deltas},
     "T_full_control": {"rate_pct": tfull_rate, "n": tfull_n, "run_void": run_void},
     "truncation_locus_check": {"rate_pct": trunc_locus_rate, "n_misses": b_space_misses_total,
+                               "cap_confound_excluded": cap_confound_excluded,
                                "confirms_boundary_locus": (trunc_locus_rate or 0) >= 60},
     "seed_unstable_pct": seed_unstable_pct, "seed_unstable_types": unstable,
     "H_stochastic_supported": h_stochastic,
