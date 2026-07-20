@@ -3,8 +3,8 @@
 *Working draft — Paper 2 (causality). Companion and sequel to Paper 1 ("Held-out value
 copying in small language models"). All numbers trace to immutable JSONs under
 `trajectory/`; instrument identical to Paper 1 (5×(100 held + 100 seen), gap = seen −
-held recall, mean ± across-instance SD). Status: full-FT, LoRA, and Chinchilla arms landed; the
-3.2B+LoRA factorial corner and seed-variance duplicates are pre-registered, not run.*
+held recall, mean ± across-instance SD). Status: full-FT, LoRA, Chinchilla, the 200M+LoRA seed duplicate, and the
+diversity sweep have all landed; the 3.2B+LoRA factorial corner is launching (RunPod).*
 
 ## Abstract (draft)
 
@@ -102,8 +102,8 @@ Reference: pythia-160m (~300B tokens, LoRA) 3.5 ± 0.7 (14.7 ± 2.1).
 
 Each single-factor intervention was run against the 200M+full-FT corner, and the result
 is striking: **7.1 ± 1.2 vs 7.0 ± 1.0** — LoRA-on-a-weak-base and full-FT-on-a-strong-base
-land on indistinguishable gaps — though they change *entirely different* variables. (A
-caution our own §5.2-style lesson demanded a seed bound, and it has now been measured:
+land on indistinguishable gaps — though they change *entirely different* variables.
+(Our own §5.2-style lesson demanded a seed bound, and it has now been measured:
 a pre-registered duplicate of the 200M+LoRA cell at a different training seed reads
 5.76 ± 1.31 vs. the original 7.08 ± 1.22 — |Δ| = 1.32 pts, inside the pre-registered
 ≤2-pt rule, so **single-run cells stand** with a ±~1.3-pt training-seed band. The two
