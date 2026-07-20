@@ -513,7 +513,7 @@ resolved.
   *(Post-freeze addendum: that control has since been run once — an own-stack 160M model
   on the identical recipe and instrument retains a **16.9 ± 1.7** diluted gap, so the
   own-stack curve is flat across 50× of scale where Pythia-160M reads 3.5, and the
-  pre-registered decision rule fires **stack-dominant**. Two single-factor arms then each halve the gap *identically* — LoRA on the same
+  pre-registered decision rule fires **stack-dominant**. Two single-factor arms then each halve the gap to the same level (one training run per cell) — LoRA on the same
   checkpoint: 7.1 ± 1.2; Chinchilla-scaled pretraining (3.2B tokens) with full FT
   retained: 7.0 ± 1.0 — so the large gap is the *interaction* of an under-trained base
   with full-parameter adaptation, with data and method acting as substitutes. Single

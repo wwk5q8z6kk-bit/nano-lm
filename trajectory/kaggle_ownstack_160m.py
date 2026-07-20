@@ -33,7 +33,8 @@ import numpy as np
 import torch, torch.nn as nn, torch.nn.functional as F
 from tokenizers import Tokenizer
 
-torch.manual_seed(0); random.seed(0)
+SEED = int(os.environ.get("FT_SEED", 0))          # seed-variance study support
+torch.manual_seed(SEED); random.seed(SEED)
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 assert dev == "cuda", "enable the GPU accelerator"
 _cap = torch.cuda.get_device_capability()
@@ -271,7 +272,7 @@ print(f"DECISION (diluted gap_mean {dmean:.1f}): {band}", flush=True)
 
 results = {"stage": "ownstack-160m-fullft", "params_M": round(sum(p.numel() for p in m.parameters())/1e6, 2),
            "dims": {"d": d, "L": L, "H": H, "KV": KV, "hd": hd, "ff": ff}, "target_tokens": TARGET_TOKENS,
-           "prereg": "trajectory/PREREG_ownstack_160m.md", "base_parse": base_parse,
+           "prereg": "trajectory/PREREG_ownstack_160m.md", "ft_seed": SEED, "base_parse": base_parse,
            "inst0": m0, "fresh_instances": fr, "diluted_fresh": dg, "clean_fresh": cg,
            "diluted_gap_mean": dmean, "diluted_gap_sd": dsd, "clean_gap_mean": cmean, "clean_gap_sd": csd,
            "decision": band, "gpu": torch.cuda.get_device_name(0)}

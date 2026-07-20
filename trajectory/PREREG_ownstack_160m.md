@@ -81,3 +81,25 @@ notes inherit REPRODUCIBILITY.md (T4 pin, torchao uninstall, etc.).
 
 Drafted, not executed. Frozen design; execution (if chosen) runs headless on Kaggle T4
 and appends `results_ownstack_v2_160m_{fullft,lora}.json` in the results_anchors schema.
+
+## Addendum (2026-07-19, pre-registered before running): factorial corner + seed variance
+
+**Q1 — the missing corner (3.2B + LoRA).** Does fixing *both* factors compound toward
+Pythia, or floor? Prediction (interaction account): partial compounding at most (~5–7),
+since either escape alone already recovers most of the gap. Measurement: LoRA kernel on
+the preserved Chinchilla base, FT_SEED=0, same instrument. Decision rule: diluted ≤ 4.5
+→ the own↔Pythia difference is attributable to data+method with the tokenizer ~innocent;
+≥ 6 → a hard breadth/tokenizer residual exists; between → report the band, no forcing.
+
+**Q2 — per-cell training-run variance at 160M.** The substitutes claim (7.1 ≈ 7.0)
+rests on single runs; our own §5.2 lesson demands a seed bound. Prediction: seed SD ≤
+~1.5 pts diluted (160M is not at a copying boundary, unlike 1B). Measurement: duplicate
+finetunes at FT_SEED=1 for (a) the corner cell and (b) the 200M+LoRA cell (same mounted
+bases as their seed-0 runs). Decision rule: |Δseed| ≤ 2 pts on both duplicated cells →
+single-run cells stand with a ±seed-band caveat; > 4 pts on either → demote all
+single-run cells to intervals and re-evaluate the substitutes claim.
+
+Venue: corner cells on whatever GPU mounts the uploaded Chinchilla base (Kaggle
+dataset); the 200M+LoRA duplicate reuses its original kernel_sources mount (T4,
+venue-consistent with its seed 0). FT_SEED env is plumbed in both kernels; results
+JSONs carry `ft_seed`.

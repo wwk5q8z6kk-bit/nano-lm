@@ -62,8 +62,8 @@ supported within-stack** (scale alone does not move the gap under this recipe). 
 single training run; ~16× under-Chinchilla for 160M (the PREREG's "within this recipe"
 framing applies); the factor isolations (2026-07-19) then revealed the stack effect's STRUCTURE: LoRA on
 the same checkpoint reads 7.1 ± 1.2, and — run by a peer session on an H100 — the
-Chinchilla control (3.2B tokens, full FT retained) reads 7.0 ± 1.0: statistically
-identical. Data and method are SUBSTITUTES, not additive components — the large gap is
+Chinchilla control (3.2B tokens, full FT retained) reads 7.0 ± 1.0: indistinguishable at single-run resolution (per-cell seed
+variance unmeasured — duplicate finetunes designed). Data and method are SUBSTITUTES, not additive components — the large gap is
 the interaction of an under-trained base with full-parameter adaptation; either escape
 recovers the same ~10 pts. Both finetuning methods reach ≈0 train loss (memorization is
 not the differentiator; destroying the copy pathway is). The 5-value allergy slot fails

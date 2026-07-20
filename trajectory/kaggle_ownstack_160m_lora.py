@@ -13,7 +13,8 @@ import torch, torch.nn as nn, torch.nn.functional as F
 from tokenizers import Tokenizer
 from peft import LoraConfig, inject_adapter_in_model
 
-torch.manual_seed(0); random.seed(0)
+SEED = int(os.environ.get("FT_SEED", 0))          # seed-variance study support
+torch.manual_seed(SEED); random.seed(SEED)
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 assert dev == "cuda", "enable the GPU accelerator"
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -187,7 +188,7 @@ print(f"2x2 read (vs full-FT 16.9±1.7): " +
 results = {"stage": "ownstack-160m-lora", "trainable_params": trainable,
            "dims": {"d": d, "L": L, "H": H, "KV": KV, "hd": hd, "ff": ff},
            "lora": {"r": 16, "alpha": 32, "dropout": 0.0, "targets": ["q","k","v","o","g","u","dn"]},
-           "prereg": "trajectory/PREREG_ownstack_160m.md",
+           "prereg": "trajectory/PREREG_ownstack_160m.md", "ft_seed": SEED,
            "inst0": m0, "fresh_instances": fr, "diluted_fresh": dg, "clean_fresh": cg,
            "diluted_gap_mean": dmean, "diluted_gap_sd": dsd, "clean_gap_mean": cmean, "clean_gap_sd": csd,
            "fullft_reference": {"diluted": 16.9, "clean": 66.6},

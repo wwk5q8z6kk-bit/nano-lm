@@ -23,8 +23,8 @@ produce the collapse; properties of the training stack do. Two further arms then
 (full FT → LoRA r=16 on the same checkpoint) drops the gap to **7.1 ± 1.2** diluted
 (29.6 ± 3.7 value-level); separately, scaling only the pretraining data to
 Chinchilla-optimal (200M → 3.2B tokens, full FT retained) drops it to **7.0 ± 1.0**
-(29.4 ± 4.0) — *statistically identical outcomes from two entirely different
-interventions*. Data quantity and adaptation method are therefore **substitutes, not
+(29.4 ± 4.0) — *indistinguishable at our current resolution (one training run per
+cell), from two entirely different interventions*. Data quantity and adaptation method are therefore **substitutes, not
 additive components**: the large gap is specifically the interaction of an
 *under-trained base* with *aggressive full-parameter adaptation*, and fixing either
 factor alone recovers the same ~10 points. Both finetuning methods drive training loss
@@ -91,7 +91,11 @@ Reference: pythia-160m (~300B tokens, LoRA) 3.5 ± 0.7 (14.7 ± 2.1).
 
 Each single-factor intervention was run against the 200M+full-FT corner, and the result
 is striking: **7.1 ± 1.2 vs 7.0 ± 1.0** — LoRA-on-a-weak-base and full-FT-on-a-strong-base
-land on statistically identical gaps, though they change *entirely different* variables.
+land on indistinguishable gaps — though they change *entirely different* variables. (A
+caution our own §5.2-style lesson demands: each cell is a single training run, and
+per-cell training-run variance at 160M is not yet measured; the *identity* of the two
+~7s is provisional until duplicate finetunes bound the seed noise — a designed run —
+while the far larger 16.9 → ~7 separation is unlikely to be seed noise.)
 A naïve additive reading of the method arm alone would have attributed ~73% of the
 own→Pythia difference to the finetuning method; the Chinchilla control refutes
 additivity — data quantity alone recovers the *same* ~10 points. The correct structure is
