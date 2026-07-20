@@ -7,7 +7,9 @@ held recall, mean ± across-instance SD). Status: full-FT, LoRA, Chinchilla, the
 sweep, and the 3.2B+LoRA factorial corner (both training seeds) have all landed —
 Phase A is closed. The corner compounds the two escapes to ≈Pythia level
 (4.2 ± 0.9 diluted), while a shared ~15–18-pt clean residual persists in both
-stacks; Phase C (residual mechanism, C-1b lexical interference) is next.*
+stacks. Phase C (residual mechanism) is also closed: C-1b (lexical interference)
+REFUTED; its follow-up C-3 (transition/boundary/length) REFUTED two of three
+registered factors and left the third UNRESOLVED but noise-dominated — see §3.5.*
 
 ## Abstract (draft)
 
@@ -215,6 +217,45 @@ token-coverage factor at the margin (hypothesis; analyzable from this data witho
 runs). The position control also localizes: mean-level position effects are excluded,
 though individual type flips vary across arms/draws (type-level draw sensitivity, noted).
 
+### 3.5 Phase C — residual mechanism: lexical interference, then transition/boundary/length
+
+Two pre-registered follow-ups asked *why* a held value, once diversity makes copying
+possible, still sometimes fails to complete. Both are mechanically closed.
+
+**C-1b (lexical interference, `PREREG_token_coverage.md`):** REFUTED. flip(I-iso) −
+flip(I-contain) = 71% − 75% = **−4 pts** (rule ≤15). Containment substitution signature
+0/77. Failure-mode census (402 misses) found the dominant pattern was **tail truncation
+at word boundaries** (38%) — and specifically that the *novel* half of a compound value
+survives while the *trained* half is dropped (e.g. ragweed pollen → "ragweed"), the
+opposite of what the interference account predicted. This motivated C-3.
+
+**C-3 (transition/boundary/length, `PREREG_C3_binding_probe.md`):** a T×B×L factorial
+(8 cells × ≥5 types, 3 FT seeds, orthogonality hard-gated) tested three named mechanistic
+accounts against C-1b's truncation pattern. **None reached SUPPORTED.** H-transition
+(does junction-bigram availability predict completion) REFUTED, +1.7pts. H-boundary
+(does a subword vs. whitespace junction predict completion) REFUTED, −8.3pts. H-length
+(short vs. long) UNRESOLVED at +25pts, but Wilson intervals on the underlying cell rates
+(n=2–6/cell) overlap for every matched short/long pair — the point estimate is
+noise-dominated at this sample size, not a suppressed trend. A dedicated truncation-locus
+check (does a B-space miss actually truncate at the whitespace junction, the mechanism
+C-1b's descriptive pattern implied) confirmed only 12.4% of cases (rule ≥60%) — **C-1b's
+truncation pattern did not survive controlled factorial manipulation** at this
+resolution. Because H-length is UNRESOLVED rather than REFUTED, the pre-registered
+H-stochastic gate (all three REFUTED + ≥20% seed-unstable ⇒ promote a representation-level
+probe) does not fire, despite 24.7% seed instability being independently consistent with
+it — stated as a frozen-rule outcome, not a judgment call.
+
+The mechanistic result instead points somewhere the design wasn't built to test: across
+strata, the dominant miss is not truncation but **morphological re-inflection** — chiefly
+the model emitting a differently-inflected form of the correct value (daisy seed →
+"daisy seeds", rose hips → "rose hip"; ~44% of core-cell misses, ~54% restricted to the
+truncation-locus population specifically) rather than truncating, substituting, or
+omitting. Full verdict table, uncertainty bands, and error census in
+`PREREG_C3_binding_probe.md` RESULT (independently triple-cross-checked: the kernel, a
+from-scratch recompute, and a second independently-authored harness, `recompute_c3.py`,
+all agree exactly on every frozen number after a bug in the latter — an unstable-type
+exclusion that was computed but never applied — was found and fixed).
+
 ## 4. What this establishes, and what it doesn't
 
 **Established:** within this stack and recipe, parameter count from 3.15M to 159M does
@@ -236,6 +277,18 @@ require 160M-scale capacity?); which member of the remaining breadth/tokenizer b
 carries the final 2×; training-run variance (single run per cell; the Chinchilla cell
 also changes venue — H100 vs T4).
 
+**Established by Phase C (§3.5):** none of the three named lexical/positional mechanisms
+(junction-transition availability, boundary type, value length) explain residual
+completion failures at the ≥40pt threshold this program requires before naming a cause.
+C-1b's own motivating descriptive pattern (word-boundary truncation) does not survive
+controlled factorial manipulation. **Not established by Phase C:** what does explain the
+residual — the dominant failure mode (morphological re-inflection, chiefly pluralization)
+was not one of the three registered factors, so no pre-registered account currently
+covers it; whether it reflects a genuine model-level default (e.g. a frequency-driven
+inflectional prior) or an artifact of the eval's plural-heavy candidate vocabulary is
+untested. H-length remains formally UNRESOLVED (not REFUTED) but the Wilson-band evidence
+argues the design was underpowered there, not that a real length effect is being masked.
+
 ## 5. Next decompositions (designed, not run)
 
 1. **The missing factorial corner: 3.2B + LoRA** — the preserved Chinchilla base makes
@@ -249,6 +302,13 @@ also changes venue — H100 vs T4).
    scale: the direct test of the hypothesis (type-controlled: multiple held types per condition, position varied).
 5. **Duplicate finetunes** — training-run variance per cell (single run each; Chinchilla
    cell additionally changes venue, H100 vs T4).
+6. **Morphological re-inflection follow-up (Phase C successor, not yet pre-registered)** —
+   C-3's dominant unpredicted failure mode. Candidate first step: check whether D80's
+   training-output stream is disproportionately plural for the affected types (a cheap,
+   no-run corpus-statistics check before any new finetune); if not, a targeted probe of
+   whether the model has a per-type default inflectional form independent of the held
+   value's actual number. C-3's own decision rule does not mandate this — H-stochastic
+   did not fire — so this is an owner-level choice, not a promoted next stage.
 
 ---
 *All artifacts: `results_ownstack_v2_160m_fullft.json` (immutable), kernels
