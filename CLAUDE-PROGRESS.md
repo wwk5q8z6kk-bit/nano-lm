@@ -69,9 +69,19 @@ errors 100% held-side. v1's entire residual = binding failures (cross-slot "mode
 template-word "troubling", partial "throat"⊂"throat lozenges") — grounding≠binding
 reproduced at the verifier layer. v2 = rules-perfect reference extractor (caveat
 documented in fabric/README.md). Anchor ckpts staged at checkpoints/anchors/ (gitignored;
-durable sources ~/AI-builds/nano-{scribe,scale}-*). NEXT BUILD: C-1b lexical-interference
-experiment (PREREG_token_coverage.md AMENDMENT 1) — the fabric ledger provides the
-mandatory per-item output logging C-1b requires. C-1 coverage axis falsified pre-run.
+durable sources ~/AI-builds/nano-{scribe,scale}-*). Slice extended to m0-m4: all 24
+cells GATE PASS (v2 0.0% presented error everywhere, 0 lost correct).
+C-1b EXECUTED AND CLOSED (2026-07-20, RunPod A6000 ~$0.34, pod deleted): mechanical
+verdict **REFUTED** (iso−contain = −4 pts, rule ≤15; 0/77 containment substitutions;
+independent recompute = kernel 1000/1000). Dominant failure = TAIL TRUNCATION at word
+boundaries (38% of misses; ragweed→"ragweed" keeps the NOVEL half). I-xslot 100% both
+seeds (trained token-transitions copy regardless of slot). 8/34 types seed-boundary-
+variant (ragweed flips 0→100 across venue/seed). Full census:
+results_interference_modes.json; verdict recorded in PREREG_token_coverage.md RESULT.
+NEXT BUILD: **C-3 minimal binding probe** (promoted by the prereg rule) — design must
+separate head→tail transition availability vs token/word count vs boundary width;
+design inputs listed at the end of PREREG RESULT section. Prereg to be written BEFORE
+any pool/kernel work, per discipline.
 
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
