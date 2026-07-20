@@ -143,3 +143,33 @@ cited above; (2) the orthogonality proof procedure above is implemented and its
 balance table validates. Artifact order after the gates: gen_c3_pools.py +
 c3_pools.json (with bridge-reproduction falsification gate + orthogonality table) →
 eval instances → kernel → run → RESULT appended here.
+
+## INTERPRETIVE NOTE (2026-07-20, pre-result — frozen design property, no threshold changed)
+
+Recorded before C-3 results exist, from the committed pool manifest alone; changes no
+threshold and no pool. The T factor is operationalized as junction-bigram count ≥ 20
+(T-avail) vs = 0 (T-sep). These are therefore **frequency-disjoint by construction** —
+they cannot overlap, so a frequency-matched median-split of the H-transition contrast is
+impossible. This is not a confound to remove; it is the definition of "transition
+availability" in this world. The design correctly controls the alternative account
+(T-sep's individual junction tokens satisfy the frequency floor — only their *adjacency*
+is unseen), so the contrast isolates the junction transition rather than token rarity.
+
+Consequences for the eventual verdict language (binding now):
+- A SUPPORTED H-transition must be reported as **"held values whose internal head→tail
+  junction was observed ≥20× in training outputs copy better than those whose junction
+  was never observed (individual tokens frequency-matched)"** — NOT as "the model cannot
+  predict unseen tails" (broader than the evidence) and NOT as "junction frequency is
+  irrelevant."
+- The supporting graded evidence is the **within-T-avail dose-response** (junction counts
+  span 25–425; `recompute_c3.py` reports Spearman(count, recall)). A positive rho grades
+  the effect on transition frequency; a flat rho supports a binary seen/unseen threshold.
+- The run's own `c3_balance_report.json` flags junction-frequency SMD up to 2.42 in the
+  B-space cells: this is the same intrinsic disjointness surfacing per-cell, correctly
+  marked non-blocking (it cannot invalidate the frozen pool). It is a scoping caveat, not
+  a defect.
+
+Independent recompute harness: `trajectory/recompute_c3.py` (reads only raw
+outputs_c3_seed{0,1,2}.jsonl + the frozen manifest; imports no kernel code; applies the
+frozen rules; adds the dose-response + type-level bootstrap CI the kernel does not). Run
+it against the retrieved logs to cross-check `results_c3_10m.json` (evidence level 2 vs 3).
