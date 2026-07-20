@@ -5,3 +5,4 @@ raw_corpus*
 clean_corpus*
 sft_convos.json
 __pycache__/
+checkpoints/
