@@ -7,7 +7,7 @@
 #   - add special tokens <|im_start|> <|im_end|> (tokenizer-training §4) then resize embeddings (LLM.md)
 # Nano scale adaptation (logged): drop heavy-LaTeX/code (nano web-BPE vocab under-tokenizes them);
 #   keep short general + multi-turn + format + refusal; seed a verifiable "length" slice for Stage 4.
-import json, re, random
+import json, random
 from datasets import load_dataset
 from tokenizers import Tokenizer
 
