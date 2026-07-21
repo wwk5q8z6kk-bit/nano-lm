@@ -44,15 +44,18 @@ random.seed(SEED); np.random.seed(SEED); torch.manual_seed(SEED)
 tok = AutoTokenizer.from_pretrained(MODEL); tok.pad_token = tok.eos_token
 EOS = tok.eos_token_id
 
-def encode_example(convo):
-    p_ids = tok.encode(convo[0]["content"] + "\n")
-    t_ids = tok.encode(convo[1]["content"]) + [EOS]
-    return p_ids + t_ids, [-100] * len(p_ids) + t_ids
+p_texts = [c[0]["content"] + "\n" for c in convos]
+t_texts = [c[1]["content"] for c in convos]
+
+p_ids_batch = tok(p_texts, add_special_tokens=False)["input_ids"]
+t_ids_batch = tok(t_texts, add_special_tokens=False)["input_ids"]
 
 examples, dropped = [], 0
-for c in convos:
-    ids, labels = encode_example(c)
+for p_ids, t_ids in zip(p_ids_batch, t_ids_batch):
+    t_ids = t_ids + [EOS]
+    ids = p_ids + t_ids
     if len(ids) > MAX_LEN: dropped += 1; continue
+    labels = [-100] * len(p_ids) + t_ids
     examples.append((ids, labels))
 print(f"train examples {len(examples)} (dropped {dropped})", flush=True)
 
