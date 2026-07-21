@@ -3,7 +3,7 @@
 # Judge = a programmatic RLAIF-lite rubric (no strong judge model at nano; the recipe's RLAIF
 # path with a rubric/constitution, scaled down). Reward rewards concise, terminated, non-repetitive
 # assistant turns; chosen = argmax, rejected = argmin; keep only well-separated pairs (hard pairs).
-import json, random, numpy as np
+import json, random
 import model_nano as M
 
 random.seed(0)
