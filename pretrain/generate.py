@@ -1,13 +1,7 @@
 # Sample from the trained checkpoint (temperature + top-p per vault token-sampling page)
 import sys, numpy as np, torch, torch.nn.functional as F
 from tokenizers import Tokenizer
-import importlib.util
-spec = importlib.util.spec_from_file_location("train", "train.py")
-# import model classes without re-running training: read file, exec only class defs
-src = open("train.py").read().split("m = GPT()")[0]
-ns = {}
-exec(src, ns)
-GPT, dev, V, S = ns["GPT"], ns["dev"], ns["V"], ns["S"]
+from train import GPT, dev, V, S
 
 m = GPT().to(dev); m.load_state_dict(torch.load("ckpt.pt", map_location=dev)); m.eval()
 tok = Tokenizer.from_file("tokenizer.json")
