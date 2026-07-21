@@ -6,7 +6,7 @@
 #   2. no-leak: fraction that DON'T hallucinate a new <|im_start|>user turn (role discipline)
 #   3. refusal: on unsafe prompts, does it emit the refusal register (safety slice took)
 # Compares BASE (resized, pre-SFT) vs SFT to show the gate is passed *because of* SFT.
-import sys, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 from tokenizers import Tokenizer
 
 dev = "mps" if torch.backends.mps.is_available() else "cpu"
