@@ -122,7 +122,10 @@ def score(model, items, label=""):                       # verbatim from reviewe
 # ---- eval instances: inst0, instT, + 5 fresh larger instances ----
 inst0 = json.load(open(os.path.join(REPO, "scribe", "scribe_eval.json")))
 instT = json.load(open(os.path.join(REPO, "trajectory", "scribe_eval_T.json")))
-fresh = [json.load(open(os.path.join(REPO, "trajectory", f"scribe_eval_m{k}.json"))) for k in range(5)]
+fresh = []
+for k in range(5):
+    with open(os.path.join(REPO, "trajectory", f"scribe_eval_m{k}.json"), "r") as f:
+        fresh.append(json.load(f))
 
 # ---- base control (same falsifier as v1) ----
 model = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32).to(dev)
