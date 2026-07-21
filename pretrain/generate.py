@@ -1,5 +1,5 @@
 # Sample from the trained checkpoint (temperature + top-p per vault token-sampling page)
-import sys, numpy as np, torch, torch.nn.functional as F
+import sys, torch, torch.nn.functional as F
 from tokenizers import Tokenizer
 import importlib.util
 spec = importlib.util.spec_from_file_location("train", "train.py")
