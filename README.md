@@ -35,6 +35,7 @@ the same evaluation problem that production clinical documentation AI faces.
 | Stage A: absence-verifier axis | ✅ done | ✅ **PASS — presented precision 100%** (0.0% residual halluc AND omissions, 33/33 errors caught, 19% review load) |
 | Stage C: copy-curriculum hypothesis test | ✅ done | ❌ FAIL — **hypothesis decided**: held-out gap unchanged (22 pts) → capacity, not curriculum; omissions (10→0) converted into fabrications (11.5→17.5%) |
 | Stage S: ~10M scale test (Kaggle T4) | ✅ done | ✅ **GATE PASS — first model to clear the bars** (parse 100%, recall 88%, halluc 7.5%) — but held-out GAP 23 pts, unchanged → capacity hypothesis **weakened** |
+| Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
 
 The scribe track's arc is the finding. Three stages closed at honest FAIL — each protocol
 allowed one measurement (plus, for v1→v2, one pre-specified sweep), and "one more try"
@@ -52,7 +53,58 @@ first to PASS the model-side bars (halluc 7.5%) — yet its out-of-distribution 
 move (23 pts vs 22 at 3M). A model can pass a well-designed average-case gate while
 keeping its tail failure mode, which is exactly why the verification guardrail is not
 retired by scale. Full trail: `scale/AUDIT.md`.
-| Over-refusal gate axis (XSTest-style) | 🔜 planned | known gap, documented in audit |
+
+## Research track: why does a gated model still fail held-out copying? (`trajectory/`, `papers/`)
+
+Stage S ended on a puzzle: a model can pass every model-side gate and keep a ~23-point
+held-out gap. The research track turned that puzzle into a measured, pre-registered
+program. Every number below traces to immutable per-run JSONs under `trajectory/`,
+with pre-registrations frozen before results.
+
+**Paper 1 — the failure mode and the instrument** (`papers/latex/paper1.pdf`, 13 pp,
+manuscript — not yet submitted): the gap is **held-out value copying** — the model
+copies field values it saw during finetuning but errs on held-out values under held-out
+phrasings, even though both are verbatim in the input. Measured on a 5-instance
+instrument (100 held + 100 seen prompts each): **18.3±1.3 pts** at 3.15M and
+**18.7±1.5** at 10M. The failure localizes *entirely* to the three open-vocabulary
+fields; the two closed-value fields sit at exactly zero — a built-in control showing
+this is held-out-*value* copying, not generic degradation. Pythia (160M/410M/1B)
+finetuned on the identical task reads single digits (3.5±0.7 at 160M); at 1B a
+determinism cross-check revealed training-run nondeterminism dominates the residual,
+so that rung is honestly reported as the interval [0,5] rather than a point.
+
+**Paper 2 — the cause** (`papers/paper2_draft.md`, draft): the pre-registered
+within-stack control — 160M params, same architecture family, tokenizer, and recipe —
+reads **16.9±1.7**: flat across 50× of scale, while Pythia at the same parameter count
+reads 3.5. The frozen decision rule fires **stack-dominant**: parameter count alone
+does not close the gap. Two single-factor arms then each cut it by more than half —
+LoRA instead of full finetuning (**7.1±1.2**) and Chinchilla-scale pretraining data,
+200M→3.2B tokens (**7.0±1.0**) — near-identical effects, i.e. substitutes, not
+independent factors. The factorial corner (3.2B tokens + LoRA) lands at **4.2±0.9**,
+≈ Pythia level, and is behaviorally deterministic across training seeds (|Δ|=0.00).
+
+**Mechanism probes — both closed at pre-registered verdicts:** C-1b (lexical
+interference) — **REFUTED** (−4 pts against a ≤15 rule; 0/77 predicted substitutions).
+C-3 (transition × boundary × length factorial, 93 held types) — H-transition
+**REFUTED**, H-boundary **REFUTED**, H-length UNRESOLVED (noise-dominated at per-cell
+n). The error census surfaced a genuinely new dominant failure mode: **morphological
+re-inflection** (chiefly singular/plural suffix flips, ~44% of cell-type misses), not
+truncation. Results are triple-cross-checked (kernel, from-scratch recompute,
+independent harness — which surfaced and fixed a real bug in the harness itself) and
+**replicated on a second GPU venue** with verdicts reproducing
+(`trajectory/replications/`).
+
+**Fabric — the verification layer** (`fabric/`): typed Claim / EvidenceSpan /
+VerificationResult / Decision packets with content-addressed IDs; grounding,
+provenance, and absence-never-from-silence gates enforced in code, not prompts.
+Measured across all 24 model × verifier × instrument cells: presented-error rate
+**18.4% → 0.0%** (3.15M) and **11.5% → 0.0%** (10M), zero correct claims lost, 100%
+span provenance. (The v2 verifier is a rules-perfect reference extractor on this
+synthetic task — caveat documented in `fabric/README.md`.)
+
+Compute venues: local Apple Silicon (MPS), Kaggle T4, RunPod (A6000 / RTX 4090 /
+H100 NVL); largest single run ≈ $37 (the 3.2B-token Chinchilla control). Program map:
+`papers/RESEARCH_PROGRAM.md` · writing audit: `papers/writing_audit.md`.
 
 ## Results
 
