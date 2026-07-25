@@ -116,10 +116,29 @@ def batches(data, bs):
 RE = re.compile(r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$")
 FIELDS = ["cc", "dur", "sev", "med", "alg"]
 
-@torch.no_grad()
-def score(model, items, label=""):
-    model.eval()
-    tok.padding_side = "left"
+def _compute_gap_metrics(held, seen):
+    if len(held) >= 2 and len(seen) >= 2:
+        held_rec = sum(d[1] for d in held) / (5 * len(held))
+        seen_rec = sum(d[1] for d in seen) / (5 * len(seen))
+        gap = seen_rec - held_rec
+        # Bootstrap reseeds default_rng(SEED) on every call DELIBERATELY: the
+        # reported CI is a deterministic function of the measurements. Not a bug.
+        rng = np.random.default_rng(SEED)
+        h_hits = np.array([d[1] for d in held]); s_hits = np.array([d[1] for d in seen])
+        gaps = []
+        for _ in range(BOOT):
+            hb = rng.choice(h_hits, len(h_hits), replace=True).sum() / (5 * len(h_hits))
+            sb = rng.choice(s_hits, len(s_hits), replace=True).sum() / (5 * len(s_hits))
+            gaps.append(sb - hb)
+        lo, hi = np.percentile(gaps, [2.5, 97.5])
+        gap_pts, ci = gap * 100, [lo * 100, hi * 100]
+        held_pct, seen_pct = held_rec, seen_rec
+    else:                       # e.g. base control: nothing parses; None -> JSON null (not NaN)
+        held_pct = seen_pct = gap_pts = ci = None
+    return held_pct, seen_pct, gap_pts, ci
+
+
+def _generate_and_parse(model, items):
     per_dialogue = []          # (held_values, hits_of_5, halluc, omission, parsed)
     outs = []
     for i in range(0, len(items), MICRO_BATCH):
@@ -142,6 +161,14 @@ def score(model, items, label=""):
                 elif p == "none" and t != "none": omission += 1
                 else: halluc += 1
             per_dialogue.append((it["held_values"], hits, halluc, omission, 1))
+    return per_dialogue, outs
+
+
+@torch.no_grad()
+def score(model, items, label=""):
+    model.eval()
+    tok.padding_side = "left"
+    per_dialogue, outs = _generate_and_parse(model, items)
     n = len(items)
     parsed = sum(d[4] for d in per_dialogue)
     recall = sum(d[1] for d in per_dialogue) / (5 * n)          # unconditional, per gate_scribe
@@ -151,24 +178,7 @@ def score(model, items, label=""):
     # (the nano/scale anchor gaps were computed this way). F1 fix.
     held = [d for d in per_dialogue if d[0] and d[4]]
     seen = [d for d in per_dialogue if (not d[0]) and d[4]]
-    if len(held) >= 2 and len(seen) >= 2:
-        held_rec = sum(d[1] for d in held) / (5 * len(held))
-        seen_rec = sum(d[1] for d in seen) / (5 * len(seen))
-        gap = seen_rec - held_rec
-        # Bootstrap reseeds default_rng(SEED) on every call DELIBERATELY: the
-        # reported CI is a deterministic function of the measurements. Not a bug.
-        rng = np.random.default_rng(SEED)
-        h_hits = np.array([d[1] for d in held]); s_hits = np.array([d[1] for d in seen])
-        gaps = []
-        for _ in range(BOOT):
-            hb = rng.choice(h_hits, len(h_hits), replace=True).sum() / (5 * len(h_hits))
-            sb = rng.choice(s_hits, len(s_hits), replace=True).sum() / (5 * len(s_hits))
-            gaps.append(sb - hb)
-        lo, hi = np.percentile(gaps, [2.5, 97.5])
-        gap_pts, ci = gap * 100, [lo * 100, hi * 100]
-        held_pct, seen_pct = held_rec, seen_rec
-    else:                       # e.g. base control: nothing parses; None -> JSON null (not NaN)
-        held_pct = seen_pct = gap_pts = ci = None
+    held_pct, seen_pct, gap_pts, ci = _compute_gap_metrics(held, seen)
     print(f"[{label}] parse {parsed}/{n}={parsed/n:.0%}  recall {recall:.0%}  halluc {hal:.1%}  "
           f"omission {omi}", flush=True)
     if gap_pts is not None:
