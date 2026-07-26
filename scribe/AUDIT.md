@@ -276,3 +276,32 @@ catches absent-and-flagged more cheaply than plausible-and-wrong.
 surviving capacity hypothesis. Appropriate venue: cloud GPU (Colab/Kaggle free tier),
 where bf16 + larger batch make the run tractable; local MPS fp32 was sized for nano.
 Requires fresh pre-registration.
+
+---
+
+# Stage P — explicit pointer/copy head (NEW stage, fresh pre-registration, 2026-07-26)
+
+Full pre-registration + result: `scribe/pointer/PREREG_pointer_head.md`. This is the direct
+architectural attack on the OOD copying gap that survived BOTH Stage C (curriculum) and
+Stage S (3.2× scale) — the "architectural copy mechanism" Stage S's audit named as the
+next suspect. Mechanism: `P = p_gen·P_vocab + (1−p_gen)·P_copy` (pointer-generator), +24.57k
+params (~0.78%) on the nano trunk, full-FT from `dpo.pt` on seed-11 v2 data.
+
+## Result — measured once, verdict **VOID (failed manipulation check)**, stage's run-1 CLOSED
+
+- **Arm B (baseline-repro) PASS** — reproduced scribe v2's OOD gap under this harness:
+  ITEM gap 21 pts (held 71 / seen 92; v2 = 22). Delta attributable. VALUE gap 92 pts
+  (held **0%** / seen 92) — the clean metric shows held-out field values missed 100%.
+- **Arm P (pointer) GATE FAIL + VOID** — parse 90 / recall 76 / halluc 12; ITEM gap 24,
+  VALUE gap 83 (held 10 / seen 93). **Manipulation check: M=0.18<0.2, p_gen=0.83,
+  copy-mass=0.05 ⇒ copy pathway UNUSED.**
+- **Interpretation:** training templates are fully memorizable (train loss→0.000), so the
+  objective never rewarded copying; the unsupervised copy head collapsed to the vocab
+  channel and never learned to point. H-copy is **neither confirmed nor refuted** — the
+  mechanism was not put at risk. The manipulation check prevented a false REFUTE (the 24-pt
+  item-gap would have read as "mechanism insufficient").
+- **Durable lesson:** an *unsupervised* copy head under full-FT on a memorizable distribution
+  is insufficient; the pathway must be *supervised* or *made necessary*. Motivates **Stage P2**
+  (copy-supervision aux loss and/or unmemorizable-value slice), pre-authorized in the Stage P
+  PREREG as a manipulation fix, NOT bar-chasing. Runtime note: copy attention is ~30× slower
+  on MPS; P2 optimizes the (B,S,S) copy op (restrict keys to the source region) first.

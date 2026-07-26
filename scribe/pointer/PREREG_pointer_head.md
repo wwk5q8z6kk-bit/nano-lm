@@ -133,3 +133,51 @@ Arm B (same base/data, no head) is the param-free reference under the identical 
 Single measurement per arm on the frozen eval set. No post-hoc tuning after seeing a result.
 Whatever the gate and the decision rule say — CONFIRMED, REFUTED, WEAKENED, or VOID — is
 recorded here in a RESULT section and in `scribe/AUDIT.md`, and the artifacts are frozen.
+
+---
+
+## RESULT — measured once 2026-07-26, verdict: **VOID (failed manipulation check)**
+
+Build dir `~/AI-builds/nano-scribe-pointer-2026-07-25/`; seed-11 v2 data (12000 ex);
+both arms full-FT from `dpo.pt`, identical batch order. Added params +24.57k (~0.78%),
+as pre-registered. Frozen artifacts: `result_baseline.json`, `result_pointer.json`,
+`train_*.log`, `gate_*.log`. (Operational note, PREREG-pre-authorized: the copy head's
+(B,S,S) attention runs ~30× slower on MPS than the plain trunk — 143 min/train vs ~5 min;
+this is a runtime cost, not a result confound. Optimization is the first task of any re-run.)
+
+**Arm B (baseline-repro / harness validity) — PASS.** greedy: parse 98%, recall 80%,
+halluc 13%, omission 10. ITEM gap **21 pts** (held 71 / seen 92) — within the pre-registered
+22 ± 6 of scribe v2 (22 pts). The harness reproduces the OOD gap ⇒ any pointer delta is
+attributable. VALUE-level gap **92 pts** (held **0%** / seen 92%) — the specific held-out
+field values are missed 100% of the time; the item-level number dilutes this with
+always-correct DUR/SEV.
+
+**Arm P (pointer) — GATE FAIL, and VOID by the manipulation check.** greedy mixture:
+parse 90%, recall 76%, halluc 12%, omission 4. ITEM gap **24 pts** (held 71 / seen 95);
+VALUE gap **83 pts** (held **10%** / seen 93%). Raw, this reads like the ≥15-pt REFUTE band.
+
+**But the BLOCKING manipulation check fires VOID:** at n=118 held-out value target tokens,
+**M (copy-share) = 0.18 < 0.2**, mean **p_gen = 0.83**, mean copy-mass on the correct source
+id = **0.05**. The copy pathway was **essentially unused** — full-FT drove `p_gen → 0.83`
+(vocab-dominant) and the copy attention never learned to point (5% mass on the right token).
+
+**Why (diagnosed, not tuned):** the training templates are fully memorizable (train loss
+→ 0.000 by step 100; on-batch copy_share held ~0.07 throughout). Vocab memorization is
+always available on the training distribution, so the objective **never rewarded copying** —
+the copy head got no gradient to learn pointing. This is the same "memorization was always
+available" mechanism Stage C found, now surfacing at the head level. The value-level held
+recall barely moved (0% → 10%, noise-level), consistent with a mechanism that never engaged.
+
+**Verdict per the pre-registration:** M < 0.2 ⇒ **VOID, not FAIL/REFUTED.** H-copy is
+**neither confirmed nor refuted** — the experiment did not put the hypothesis at risk
+because the mechanism was not exercised. The manipulation check did exactly its job: it
+prevented a false "pointer head refuted, gap unchanged" conclusion (item-gap 24 pts would
+have read as REFUTE). The pre-registered remedy — a re-run that engages the copy pathway
+(copy-supervision aux loss and/or lower gate-bias init) — is a failed manipulation being
+fixed, explicitly **not** bar-chasing. That re-run is **Stage P2** (fresh pre-registration).
+
+**What transferred (the durable lesson):** on a memorizable training distribution, adding
+an *unsupervised* copy head under full-FT is insufficient — the pathway must be *supervised*
+or *made necessary* (unmemorizable values) or it collapses to the vocab channel. This is
+itself a finding about how to induce copy mechanisms in small models, and it directly
+motivates P2's design.
