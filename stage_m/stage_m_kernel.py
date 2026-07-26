@@ -13,8 +13,8 @@ import os, sys, json, math, time, random, io, subprocess, urllib.request
 def _ensure(pkg, imp=None):
     try: __import__(imp or pkg)
     except ImportError: subprocess.run([sys.executable,"-m","pip","install","-q",pkg], check=True)
-for _p, _i in [("numpy","numpy"),("torch","torch"),("tokenizers","tokenizers"),("datasets","datasets")]:
-    _ensure(_p, _i)
+for _p, _i in [("numpy","numpy"),("torch","torch"),("tokenizers","tokenizers")]:
+    _ensure(_p, _i)   # datasets is bootstrapped lazily inside base_corpus() only if streaming
 import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 
 SMOKE = os.environ.get("SMOKE", "0") == "1"
@@ -87,6 +87,7 @@ def base_corpus():
     if os.path.exists("shard_000.npy"):                        # local smoke reuse
         a = np.load("shard_000.npy"); return a[:BASE_TOKENS] if SMOKE else a
     print("streaming FineWeb...", flush=True)
+    _ensure("datasets", "datasets")
     from datasets import load_dataset
     ds = load_dataset("HuggingFaceFW/fineweb", name="sample-10BT", split="train", streaming=True)
     ids = []
