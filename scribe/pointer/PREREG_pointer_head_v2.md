@@ -59,3 +59,55 @@ Single measurement on the frozen eval set. λ and gate-bias were fixed before th
 are not tuned after. Whatever the decision rule + manipulation check say is recorded in a
 RESULT section here and in `scribe/AUDIT.md`; artifacts frozen. A third run would require
 a genuinely new, separately-motivated hypothesis — not another turn of the same knob.
+
+---
+
+## RESULT — measured once 2026-07-26, verdict: **H-copy REFUTED** (manipulation PASSED)
+
+Train 5.8 min (source-key restriction: 53k tok/s, 16× P1). Frozen artifacts:
+`result_pointer2.json`, `train_pointer2.log`, `gate_pointer2.log`, `tf_diagnostic.py`.
+
+**Manipulation check PASSED — the copy pathway was genuinely engaged this time:**
+at n=118 held-out value target tokens, **M (copy-share) = 0.97 ≥ 0.5**, mean **p_gen = 0.09**
+(copy-dominant), copy-mass on the correct source id = 0.40. The fix worked: from P1's
+M=0.18 (unused) to P2's M=0.97 (dominant). ⇒ **the gap decision rule is now BINDING.**
+
+**Gate (greedy, primary): FAIL.** parse 90%, recall 71%, halluc 16%, omission 6.
+**ITEM gap = 25 pts** (held 65 / seen 90) ≥ 15 ⇒ **H-copy REFUTED.** VALUE gap 82 pts
+(held 10 / seen 92).
+
+**Confound-free headline evidence (same free-running regime, cross-run):** driving copy
+engagement from ~0 (P1, M=0.18) to dominant (P2, M=0.97) moved free-running held value-recall
+**10% → 10% — zero points.** (The 10% is the model's noise floor: P1 with the copy channel
+*unused* also read 10% at n=28 held field-decisions; it is NOT a copy effect and is not
+credited to the head. Baseline arm B without the head read 0%.) An explicit, supervised,
+copy-dominant pointer head does not close the OOD gap.
+
+**Why (now MEASURED via the teacher-forced top-1 diagnostic, not inferred — `tf_diagnostic.py`):**
+the failure is dominated by **content-addressed source selection that does not generalize
+OOD**, with free-running exposure bias as a secondary compounder.
+- Teacher-forced top-1 at held-value tokens (clean gold prefix, copy-dominant): **41% all
+  tokens / 21% first-token** — vs ~92% for seen values. Even handed a clean prefix and a
+  copy-dominant gate, the head selects the correct held-out source token only ~1/5 of the
+  time. Addressing genuinely fails to generalize; this is not merely a decoding artifact.
+- Free-running greedy (10%) < teacher-forced (41%) ⇒ exposure bias DOES compound the
+  addressing errors on multi-token spans (e.g. `neck pain → "trou pain"`, `sulfa drugs → sild`)
+  — but it is secondary: the teacher-forced ceiling itself (21% first-token) is far below
+  closing the gap, so decoding is not the primary cause.
+
+**Scope of the claim (do not overclaim):** this REFUTES *"a supervised copy-dominant pointer
+head (gate-bias −2, λ=1, p_gen≈0.09) closes the OOD gap"* — one corner of the design space.
+Forcing copy-dominance also made the model globally worse (recall 71 vs baseline 80, halluc
+16 vs 13), so this is not a free lunch even ignoring generalization. It does not claim
+"copy mechanisms cannot help" in general.
+
+**Program implication (the durable finding):** the scribe OOD copying gap is **not an
+output-mixture problem** — an explicit copy channel, fully engaged, relocates the failure
+into the copy-attention's query–key addressing, which fails to generalize the *same way*
+the implicit mechanism did (scribe v1's position-anchored extraction). Combined with Stage C
+(curriculum refuted) and Stage S (scale left the gap unmoved), the surviving suspects narrow
+to **content-addressed retrieval/induction-circuit capacity, much-larger scale, or the
+objective** — sharpening the Stage M (mechanism) / Paper-3 direction. And it re-confirms the
+systems conclusion: no cheap architectural output-side fix eliminates the tail, so the
+Stage G/A verification layer stays load-bearing. Per protocol: no third run (that needs a
+new hypothesis, e.g. an induction-head-pretraining curriculum, not another knob-turn here).

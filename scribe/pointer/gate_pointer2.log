@@ -1,0 +1,35 @@
+=== P2 training final ===
+step   800/1125  nll 0.000  Lcopy 0.000  copy_share 0.52  gnorm 0.00  55k tok/s
+step   900/1125  nll 0.000  Lcopy 0.000  copy_share 0.50  gnorm 0.00  54k tok/s
+step  1000/1125  nll 0.000  Lcopy 0.000  copy_share 0.50  gnorm 0.00  53k tok/s
+step  1100/1125  nll 0.000  Lcopy 0.000  copy_share 0.52  gnorm 0.00  53k tok/s
+pointer2 done in 5.8 min -> pointer2.pt
+
+=== GATE ARM P2 (copy-supervised pointer) ===
+eval: 40 dialogues; 20 held-value items
+
+=== BASE CONTROL (dpo.pt, greedy plain) ===
+[base] parse 0/40=0%  recall 0/200=0%  halluc 0/200=0.0%  omission 0
+        ITEM-level: held 0% seen 0%  -> gap 0 pts   VALUE-level(held fields): held 0% seen 0% -> gap 0 pts
+        out: "I'm not able to help with."
+        truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+        out: "I'm not able to help with."
+        truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+
+=== ARM P pointer (pointer2.pt, greedy mixture) ===
+[pointer] parse 36/40=90%  recall 142/200=71%  halluc 32/200=16.0%  omission 6
+        ITEM-level: held 65% seen 90%  -> gap 25 pts   VALUE-level(held fields): held 10% seen 92% -> gap 82 pts
+        out: 'CC: shortness of breath | DUR: 6 weeks | SEV: moderate | MED: none | ALG: penicillin'
+        truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+        out: 'CC: trou pain | DUR: 3 days | SEV: severe | MED: sild | ALG: none'
+        truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+[manipulation] held-value tokens n=118  M(copy-share)=0.97  mean p_gen=0.09  mean copy-mass(correct id)=0.40
+[manipulation] M=0.97 -> copy pathway EXERCISED  (>=0.5 exercised, <0.2 VOID)
+
+--- pre-registered bars ---
+  arm clears bars (parse>=90 recall>=80 halluc<=10): False
+  base control fails (discrimination): True
+  GATE FAIL
+  OOD item-gap=25 pts (ref v2=22, scale=23) | value-gap=82 pts
+  wrote result_pointer.json
+=== DONE ===

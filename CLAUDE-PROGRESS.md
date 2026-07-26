@@ -1,4 +1,27 @@
-# nano-lm — session progress (updated 2026-07-19)
+# nano-lm — session progress (updated 2026-07-26)
+
+## STAGE P / P2 (2026-07-26): explicit pointer/copy head — H-copy REFUTED (measured)
+The scribe OOD copying gap survived Stage C (curriculum) and Stage S (scale); Stage S's audit
+named "an architectural copy mechanism" as the next suspect. Built it: pointer/copy head
+`P = p_gen·P_vocab + (1−p_gen)·P_copy` (+0.78% params) on the nano trunk, both arms full-FT
+from dpo.pt, seed-11 v2 data, frozen 40-dialogue eval. Two pre-registrations, each committed
+before its run (`scribe/pointer/PREREG_pointer_head*.md`), with a BLOCKING manipulation check.
+- **P1 (unsupervised head): VOID** — copy pathway never engaged (M=0.18, p_gen=0.83). Full-FT
+  on memorizable templates never rewarded copying. The manipulation check prevented a false
+  REFUTE. Pre-authorized a fix (not bar-chasing).
+- **P2 (copy-supervised, gate-bias −2, λ=1): H-copy REFUTED** — manipulation PASSED (M=0.97,
+  p_gen=0.09, copy-dominant), so the gap rule is binding; item-gap **25 pts** ≥15 ⇒ REFUTED.
+  Confound-free: engagement 0→dominant moved free-running held value-recall **10%→10%**.
+  Mechanism MEASURED (teacher-forced top-1 held-value = 21% first-token vs 92% seen):
+  content-addressed **source selection does not generalize OOD**; the copy channel just
+  relocates v1's position-anchoring into the copy-attention's query–key addressing. Exposure
+  bias compounds on multi-token spans but is secondary.
+- **Takeaway:** the OOD gap is NOT an output-mixture problem. With curriculum + scale +
+  architecture all failing to move it, suspects narrow to retrieval/induction-circuit capacity,
+  much-larger scale, or the objective (→ Stage M / Paper 3). Stage G/A verification stays
+  load-bearing. Full trail: `scribe/AUDIT.md` (Stage P / P2), `scribe/pointer/`.
+  Runtime lesson: copy attn is ~30× slower on MPS; restricting keys to the source region → 16×.
+
 
 ## Where the program stands (one paragraph)
 Paper 1 is complete and camera-ready (13pp PDF, `papers/latex/paper1.pdf`): the held-out

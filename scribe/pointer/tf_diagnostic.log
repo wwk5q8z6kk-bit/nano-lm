@@ -1,0 +1,2 @@
+teacher-forced top-1 held-value tokens: all 48/118=41%  first 6/28=21%
+vs free-running greedy held value-recall 10% (P1 unused AND P2 dominant); seen ~92%

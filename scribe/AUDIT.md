@@ -305,3 +305,30 @@ params (~0.78%) on the nano trunk, full-FT from `dpo.pt` on seed-11 v2 data.
   (copy-supervision aux loss and/or unmemorizable-value slice), pre-authorized in the Stage P
   PREREG as a manipulation fix, NOT bar-chasing. Runtime note: copy attention is ~30× slower
   on MPS; P2 optimizes the (B,S,S) copy op (restrict keys to the source region) first.
+
+## Stage P2 — copy-SUPERVISED pointer head (the pre-authorized P1-VOID fix), measured once
+
+Full pre-registration + result: `scribe/pointer/PREREG_pointer_head_v2.md`. Delta vs P1:
+copy-supervision aux loss (L_copy=-log P_copy_tgt, λ=1), copy-favoring gate init (Wg.bias=-2),
+source-key-restricted copy attn (behaviour-equivalent, 16× faster). Everything else frozen.
+
+### Result — verdict **H-copy REFUTED** (manipulation check PASSED this time), stage CLOSED
+- **Manipulation PASS:** M=0.97 (≥0.5), p_gen=0.09 (copy-dominant), copy-mass 0.40 — the copy
+  pathway was genuinely exercised (P1 was M=0.18 unused). ⇒ gap rule now BINDING.
+- **Gate FAIL:** parse 90 / recall 71 / halluc 16. ITEM gap **25 pts** ≥15 ⇒ **REFUTED.**
+- **Confound-free evidence (same free-running regime):** engagement M 0.18→0.97, free-running
+  held value-recall **10%→10% (unmoved)**. Driving copy from ~0 to dominant closed 0 points.
+  (10% is the noise floor — P1 *unused* also read 10% at n=28; not a copy effect. Baseline=0%.)
+- **Mechanism, MEASURED (`tf_diagnostic.py`):** teacher-forced top-1 at held-value tokens =
+  41% all / **21% first-token** vs ~92% seen ⇒ content-addressed **source selection does not
+  generalize OOD** even with a clean prefix + copy-dominance. Free-running 10% < TF 41% ⇒
+  exposure bias compounds on multi-token spans (neck pain→"trou pain") but is secondary.
+- **Scope:** refutes *a supervised copy-DOMINANT pointer head closes the gap* (one corner;
+  forcing copy-dominance also hurt overall: recall 71<80, halluc 16>13). Not "copy can't help".
+- **Program implication:** the OOD gap is NOT an output-mixture problem — an explicit copy
+  channel relocates the failure into copy-attention addressing, which fails the same way the
+  implicit mechanism did (v1 position-anchoring). With Stage C (curriculum) + Stage S (scale)
+  + Stage P/P2 (architecture) all failing to move the gap, surviving suspects narrow to
+  retrieval/induction-circuit capacity, much-larger scale, or the objective (→ Stage M / P3).
+  The Stage G/A verification layer stays load-bearing: no cheap output-side architectural fix
+  eliminates the tail.
