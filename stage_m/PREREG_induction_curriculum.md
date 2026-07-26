@@ -97,6 +97,28 @@ feasibility gate and the *within-experiment* I−C control (both arms pay the sa
 cost; only ρ differs). The probe's generality + two-checkpoint design guard the two ways a
 null could be a false REFUTE. Item-gap dilution (n≈28) is why top-1 is co-primary.
 
+## Build-time amendment (2026-07-26, BEFORE any Stage-M measurement)
+
+During pre-run build validation (local MPS, no Stage-M result seen), the pre-registered
+`k1:v1;k2:v2;…` curriculum form **empirically failed to induce copy** — 0% on the induction
+probe even *in-distribution* after 1200 steps. Diagnosis: variable-length multi-token values
+made the copy boundary ambiguous. This is a methodological feasibility fix analogous to Stage
+P's tokenization precondition and Stage S's capability guard — corrected *before* measurement,
+not tuned after a result. Frozen replacements (validated locally):
+
+- **Curriculum → canonical block-repeat:** a random block (len 4–10) immediately repeated, so
+  every 2nd-copy token is induction-predictable. Validated: induces a strong copy circuit
+  (99% 2nd-copy next-token accuracy at 1500 steps) where the k:v form induced none.
+- **Induction probe → cued single-token key→value retrieval** (`k1 v1 k2 v2 … kq` → predict
+  v_q). Structurally *unlike* the contiguous block-repeat curriculum (non-contiguous, cued),
+  so probe-pass still licenses a **general** copy circuit — validated: the block-repeat model
+  scores 50% here (vs ~0% chance), confirming transfer across surface form.
+
+Unchanged: hypothesis, ρ=0.30, two-checkpoint probe, I−C ≥ 30-pt induction threshold, the
+Arm-C feasibility gate, the co-primary readouts, and the entire VOID/CONFIRM/REFUTE/full-FT-
+destroys decision tree. Only the curriculum surface form and the probe surface form changed,
+both to *validated-learnable* variants of the same content-addressed-copy construct.
+
 ## Honest-reporting rule
 
 ρ, curriculum form, probe form, and the decision tree are fixed here and not tuned after any
