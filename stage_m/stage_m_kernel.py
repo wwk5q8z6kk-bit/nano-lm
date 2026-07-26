@@ -9,7 +9,12 @@
 #   - induction probe at BOTH raw-pretrain AND post-SFT checkpoints (C1: full-FT destroys copy).
 #   - probe on NOVEL tokens AND novel surface form (generality; else probe-pass is the game).
 #   - co-primary readout: teacher-forced held-value first-token top-1 (P2 baseline 21% vs 92%).
-import os, sys, json, math, time, random, io, urllib.request
+import os, sys, json, math, time, random, io, subprocess, urllib.request
+def _ensure(pkg, imp=None):
+    try: __import__(imp or pkg)
+    except ImportError: subprocess.run([sys.executable,"-m","pip","install","-q",pkg], check=True)
+for _p, _i in [("numpy","numpy"),("torch","torch"),("tokenizers","tokenizers"),("datasets","datasets")]:
+    _ensure(_p, _i)
 import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 
 SMOKE = os.environ.get("SMOKE", "0") == "1"
