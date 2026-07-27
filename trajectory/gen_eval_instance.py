@@ -9,7 +9,7 @@
 #
 # Instance-T seed: 20260717 (date-derived, fixed before generation, recorded
 # in trajectory/PREREG.md).
-import json, random, sys, os
+import json, random, os
 
 V1 = os.path.join(os.path.dirname(__file__), "..", "scribe", "build_scribe_data.py")
 SEED = 20260717
