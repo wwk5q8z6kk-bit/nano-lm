@@ -7,15 +7,15 @@
 **Active wedge:** `papers/WEDGE_V1.md`
 
 ```text
-PROGRAM_EXECUTION_STATUS: WEDGE_V1_CLASSICAL_BASELINE_COMPLETE
-AUTHORIZED_WORK: AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE
-RESULT: wedge_v1/results_wedge_v1_classical.json
-OWNER_TRIGGER: proceed (2026-07-31T18:12:37.114478+00:00)
-BENCHMARK_PROGRAM0_STATUS: DONE
+PROGRAM_EXECUTION_STATUS: IDLE_AFTER_WEDGE_V1_PHASE3_ECLASS
+AUTHORIZED_NONEXECUTION_WORK: NONE
+PHASE2_RESULT: wedge_v1/results_wedge_v1_classical.json
+PHASE3_ECLASS_RESULT: wedge_v1/results_wedge_v1_phase3_eclass.json
+PHASE3_ECLASS_VERDICT: ECLASS_CLOSED_WITHOUT_LM
+LM_PROBE: NOT_INDICATED
 TRAINING: NOT_AUTHORIZED
-LM_SOLVERS: NOT_AUTHORIZED
+A_D_LM_REOPEN: FORBIDDEN
 E4_EXECUTION_STATUS: BLOCKED
-E4_RSTAR_V2_EXECUTE: NOT_AUTHORIZED
 NANOSCRIBE_PRODUCT_EXPANSION: STOP
 OLD_TASK_RUNS_UNDER_OLD_TASK_U: FORBIDDEN
 ```
@@ -24,17 +24,17 @@ OLD_TASK_RUNS_UNDER_OLD_TASK_U: FORBIDDEN
 
 | Priority | Item | Auth | Type | Notes |
 |----------|------|------|------|-------|
-| 0 | Freeze tag integrity | Standing | Ops | Do not move premature freeze tag |
-| 1 | Wedge v1 Phase 1 lock | `WEDGE_V1` | Docs | Done |
-| 2 | Classical baseline (clean track) | `AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE` | Measure | **DONE** — U≈0.891; Q=1.0 on 50 checks |
-| — | Phase 3 LM solvers | — | — | Needs separate auth + ΔU expectation |
+| 0 | Freeze integrity | Standing | Ops | Do not move premature freeze tag |
+| 1 | Wedge Phase 1–2 classical | Done | Measure | Clean-track baseline |
+| 2 | Phase 3 E-class non-LM | Done | Measure | `ECLASS_CLOSED_WITHOUT_LM`; ΔU≈0.0090 < δ; LM not invoked |
+| — | Phase 3 LM probe | — | — | **Empty** — `lm_still_needed=false` |
+| — | General LM productization | — | — | Forbidden |
 
 ## Explicitly not queued
 
-- Program A1 / E4-prime / R★ v2 execute  
-- Training / paid compute / NanoScribe / Fabric V2 / agents / memory  
-- Old-task generative revival under `OLD_TASK_U`  
+- `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` (not indicated)  
+- Reopening A–D with LM · training · E4′ · NanoScribe · agents/memory  
 
-## Standing hygiene
+## How items enter this queue
 
-`FIRST_PRINCIPLES_RISK_MITIGATION.md` §5; `scripts/lint_claim_auth.py`.
+Only via `DECISION_GATES.md` + explicit owner authorization string.
