@@ -146,7 +146,7 @@ Packs: synthetic ✓ · papers dogfood ✓ · owner harness ✓ (`--demo`); real
 ## 8. Exact next coding task
 
 ```text
-TASK: owner-corpus dogfood harness (no PHI in git)
+DONE: owner-corpus dogfood harness (`wedge_v1 owner-dogfood`)\n\nNEXT TASK: run against real $OWNER_CORPUS (no PHI in git)
 
 1. wedge_v1/run_owner_dogfood.py (or extend run_dogfood.py):
    - accept --corpus PATH (gitignored / outside repo)

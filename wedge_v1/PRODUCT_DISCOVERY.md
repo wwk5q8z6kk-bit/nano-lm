@@ -129,7 +129,7 @@ Report U and risk–coverage. Keep LM only if ΔU > δ=0.05. A–D classical win
 | ask_folder_v0 (BM25 + JSON schema + optional PDF) | Done |
 | ingest CLI (recursive md/txt/pdf) | Done |
 | compare / contradiction across docs | Done (CLI + nearby banners) |
-| **owner-corpus contact path (gitignored)** | **Next coding task** |
+| owner-corpus contact path (gitignored) | **DONE** — `owner-dogfood --demo` / `$OWNER_CORPUS` |
 | Validated memory (confirmed only) | After slice U stable |
 
 ---
@@ -146,14 +146,13 @@ Kill or narrow A if:
 
 ## 11. Exact next coding task
 
-**Done this session:** BM25 `top_paragraphs` unblocked; `wedge_v1 compare` wired; smoke green.
+**Done:** `python -m wedge_v1 owner-smoke` — 5-task ask+compare over example/owner corpus; writes gitignored `results_owner_smoke.json`.
 
 ```text
-NEXT — owner-corpus vertical slice (Active Frontier):
-  1. Point ingest at a gitignored private folder (md/txt/pdf)
-  2. Run ask + compare on 5 real questions; write gitignored results_owner_smoke.json
-  3. Keep classical-first; no LM probe; no Evidence Core / freeze-tag edits
+NEXT — real private folder contact:
+  export WEDGE_OWNER_CORPUS=/path/to/your/notes
+  python -m wedge_v1 ingest "$WEDGE_OWNER_CORPUS"
+  python -m wedge_v1 owner-smoke --corpus "$WEDGE_OWNER_CORPUS"
+  Review accuracy; only then consider U_FREEZE / LM probe with explicit owner auth.
+No Evidence Core edits. No freeze-tag moves.
 ```
-
-**Try now:**
-`python -m wedge_v1 compare "metformin" --corpus wedge_v1/data/corpus`

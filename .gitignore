@@ -55,4 +55,12 @@ experiments/**/runs/**
 # Active Frontier local owner artifacts
 .wedge_manifest.json
 **/results_owner_smoke.json
+**/results_owner_dogfood.json
+**/results_owner_failure_gallery.json
+**/results_owner_failure_gallery.md
 wedge_v1/data/owner_corpus/
+**/results_owner_dogfood_gallery.md
+wedge_v1/results_owner_dogfood.json
+**/results_owner_dogfood.md
+wedge_v1/results_owner_*.json
+wedge_v1/results_owner_*.md

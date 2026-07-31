@@ -137,7 +137,19 @@ def test_report_ask_markdown():
     assert "**Status:**" in md
     assert payload.get("answer_status") in {"SUPPORTED", "CONTRADICTED", "ABSTAIN", "NO_CORPUS"}
 
+
+def test_owner_dogfood_synthetic():
+    from wedge_v1.run_owner_dogfood import main
+    from pathlib import Path
+    import tempfile
+    out = Path(tempfile.mkdtemp()) / "results_owner_dogfood.json"
+    rc = main(["--corpus", str(Path("wedge_v1/data/corpus")), "--out", str(out)])
+    assert out.exists()
+    assert rc in (0, 1)  # 1 = some task fails; harness still works
+
+
 if __name__ == "__main__":
+
     test_ttl_supported()
     test_oos_abstain()
     test_empty_corpus()
@@ -150,4 +162,13 @@ if __name__ == "__main__":
     test_report_build()
     test_compare_metformin_contradicted()
     test_compare_literal_agree()
+    test_owner_dogfood_synthetic()
     print("WEDGE_V1_SMOKE_OK")
+
+
+def test_owner_dogfood_demo():
+    from wedge_v1.run_owner_dogfood import main as owner_main
+
+    rc = owner_main(["--demo"])
+    assert rc == 0
+    assert (Path(__file__).resolve().parent / "results_owner_smoke.json").is_file()

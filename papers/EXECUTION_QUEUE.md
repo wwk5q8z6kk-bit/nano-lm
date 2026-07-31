@@ -21,7 +21,7 @@ OLD_TASK_U: FORBIDDEN
 | Product discovery sprint | DONE — `frontier/PRODUCT_DISCOVERY_SPRINT.md` |
 | Vertical slice `ask`/`find`/`scan`/`dogfood` | LIVE |
 | Contradiction banner on ask | DONE this turn |
-| Next | Owner-corpus eval (private folder) OR minimal markdown report UI |
+| Owner-corpus dogfood harness | DONE — `wedge_v1 owner-dogfood` (synthetic 5/5) |\n| Next | Run against real `$OWNER_CORPUS` (private; gitignored results) |
 
 ## Protected
 

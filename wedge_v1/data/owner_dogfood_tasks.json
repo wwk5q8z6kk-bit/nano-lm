@@ -1,0 +1,70 @@
+{
+  "schema": "nano-lm.wedge_v1.owner_dogfood.v1",
+  "note": "Template pack for owner-local corpora. Defaults target synthetic wedge corpus for harness smoke. Not Layer-1.",
+  "default_corpus_hint": "wedge_v1/data/corpus OR $OWNER_CORPUS (gitignored)",
+  "tasks": [
+    {
+      "id": "O01",
+      "mode": "ask",
+      "query": "How long before cached entries expire?",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600",
+        "TTL",
+        "ttl",
+        "seconds"
+      ]
+    },
+    {
+      "id": "O02",
+      "mode": "compare",
+      "query": "TTL",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED",
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    },
+    {
+      "id": "O03",
+      "mode": "ask",
+      "query": "What is the metformin dose?",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "mg",
+        "metformin",
+        "500",
+        "1000",
+        "dose"
+      ]
+    },
+    {
+      "id": "O04",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    },
+    {
+      "id": "O05",
+      "mode": "find",
+      "query": "TTL as 300 seconds",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "300"
+      ]
+    }
+  ]
+}
