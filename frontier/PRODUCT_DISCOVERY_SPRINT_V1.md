@@ -161,15 +161,23 @@ Stop or pivot the wedge if any hold after honest owner-corpus contact:
 
 ## 8. Exact next coding task
 
+### Done
+- Markdown `report` surface
+- `contact` protocol with corpus_class labels
+
+### Contact results (this branch)
+- `PAPERS_DOGFOOD` on `papers/` (n≥20): see `wedge_v1/results_corpus_contact_papers.json`
+- `SYNTHETIC_MINI`: see `wedge_v1/results_corpus_contact_synthetic.json`
+
+### Next
 ```text
-TASK: wedge_v1 markdown report surface
-FILES: wedge_v1/runtime.py (helpers), wedge_v1/cli.py, wedge_v1/test_runtime_smoke.py
-DONE WHEN:
-  - `python -m wedge_v1 report ask "…"` prints markdown with status, claims, evidence spans
-  - `python -m wedge_v1 report find "…"` and `report scan` work
-  - smoke test covers report path
-  - JSON subcommands unchanged
-OUT OF SCOPE: LM, tags, evidence ledger, paid compute
+TASK: OWNER_PRIVATE corpus contact
+NEED: owner points --corpus at a real private folder (N≥20 docs, no PHI in git)
+CMD: python -m wedge_v1 contact --corpus <path> --class OWNER_PRIVATE \
+        --useful "..." --not-useful "..." -o wedge_v1/results_corpus_contact_owner.json
+DONE WHEN: RESULT JSON + honest useful/not sentences exist locally (not committed if private)
+THEN: decide keep / pivot using kill criteria §7
+OUT OF SCOPE: LM, tags, evidence ledger, paid compute, committing private docs
 ```
 
 ---

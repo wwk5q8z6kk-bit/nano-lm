@@ -110,7 +110,7 @@ U = Q - 0.5\,E - 0.3\,R - 0.02\,L - 0.05\,C
 | C3 \(U_{\mathrm{hybrid+verify}}\) | Best routing + verify-on | Product target |
 
 Admit heavier arm only if \(\Delta U > \delta\) (default 0.05) on the same pack.  
-Packs: synthetic ✓ · papers dogfood ✓ · **owner private folder** ← next.
+Packs: synthetic ✓ · papers dogfood ✓ · owner harness ✓ (`--demo`); real `$OWNER_CORPUS` ← owner.
 
 ---
 
@@ -125,7 +125,7 @@ Packs: synthetic ✓ · papers dogfood ✓ · **owner private folder** ← next.
 | S4 | `ingest` inventory CLI | **Done** |
 | S5 | `compare` + contradiction banners | **Done** |
 | S6 | Markdown `report ask|find|scan|compare` | **Done** |
-| S7 | Owner-corpus dogfood (private; no PHI) | **Next** |
+| S7 | Owner-corpus dogfood (private; no PHI) | **Done** (`owner-dogfood --demo`) |
 | S8 | Measure \(U_{\mathrm{classical}}\); LM iff ΔU > δ | After S7 |
 
 ---
@@ -184,4 +184,25 @@ OUT OF SCOPE: training, vectors, Evidence Core edits, paid GPU, public claims
 - More governance constitutions / speech-act expansions  
 - Program 1 census / NanoScribe OS / reopen E2 or E4 as product  
 - Public “product ready” claims from synthetic U  
-- Silently rewrite Evidence Core or protected tags  
+- Silently rewrite Evidence Core or protected tags
+
+## 8. Exact next coding task
+
+### Done
+- Markdown `report` surface
+- `contact` protocol with corpus_class labels
+
+### Contact results (this branch)
+- `PAPERS_DOGFOOD` on `papers/` (n≥20): see `wedge_v1/results_corpus_contact_papers.json`
+- `SYNTHETIC_MINI`: see `wedge_v1/results_corpus_contact_synthetic.json`
+
+### Next
+```text
+TASK: OWNER_PRIVATE corpus contact
+NEED: owner points --corpus at a real private folder (N≥20 docs, no PHI in git)
+CMD: python -m wedge_v1 contact --corpus <path> --class OWNER_PRIVATE \
+        --useful "..." --not-useful "..." -o wedge_v1/results_corpus_contact_owner.json
+DONE WHEN: RESULT JSON + honest useful/not sentences exist locally (not committed if private)
+THEN: decide keep / pivot using kill criteria §7
+OUT OF SCOPE: LM, tags, evidence ledger, paid compute, committing private docs
+```

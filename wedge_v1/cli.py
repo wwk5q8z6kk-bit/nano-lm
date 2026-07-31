@@ -53,6 +53,11 @@ def main(argv: list[str] | None = None) -> int:
     rep.add_argument("--json", action="store_true", help="Emit JSON instead of markdown")
 
     sub.add_parser("dogfood", help="Score dogfood tasks on papers/ corpus")
+    od = sub.add_parser("owner-dogfood", help="Score tasks on owner/private corpus (gitignored results)")
+    od.add_argument("--corpus", type=Path, default=None)
+    od.add_argument("--tasks", type=Path, default=None)
+    od.add_argument("--out", type=Path, default=None)
+    od.add_argument("--gallery", type=Path, default=None)
     sub.add_parser("smoke", help="Run runtime regression pins")
     contact = sub.add_parser("contact", help="Labeled corpus contact probe (product eval)")
     contact.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
@@ -116,6 +121,28 @@ def main(argv: list[str] | None = None) -> int:
 
         dogfood_main()
         return 0
+
+    if args.cmd == "owner-smoke":
+        from wedge_v1.run_owner_smoke import run as owner_run
+
+        out = owner_run(args.corpus, args.output)
+        json.dump({"n_ok": out["n_ok"], "n_tasks": out["n_tasks"], "accuracy": out["accuracy"], "corpus": out["corpus"], "written": out["written"]}, sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        return 0 if out["n_ok"] == out["n_tasks"] else 1
+
+    if args.cmd == "owner-dogfood":
+        from wedge_v1.run_owner_dogfood import main as owner_main
+
+        argv = []
+        if args.corpus:
+            argv += ["--corpus", str(args.corpus)]
+        if args.tasks:
+            argv += ["--tasks", str(args.tasks)]
+        if args.out:
+            argv += ["--out", str(args.out)]
+        if args.gallery:
+            argv += ["--gallery", str(args.gallery)]
+        return owner_main(argv)
 
     if args.cmd == "smoke":
         from wedge_v1 import test_runtime_smoke as smoke
