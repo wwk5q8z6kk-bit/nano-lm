@@ -138,13 +138,60 @@ def test_report_ask_markdown():
     assert payload.get("answer_status") in {"SUPPORTED", "CONTRADICTED", "ABSTAIN", "NO_CORPUS"}
 
 def test_owner_dogfood_synthetic():
-    from wedge_v1.run_owner_dogfood import main
-    from pathlib import Path
-    import tempfile
-    out = Path(tempfile.mkdtemp()) / "results_owner_dogfood.json"
-    rc = main(["--corpus", str(Path("wedge_v1/data/corpus")), "--out", str(out),
-               "--tasks", "wedge_v1/data/owner_dogfood_tasks.example.json"])
-    assert out.exists()
+    from wedge_v1.run_owner_dogfood import main as owner_main
+
+    rc = owner_main(["--demo"])
     assert rc in (0, 1)
 
 
+
+def test_owner_dogfood_fixture():
+    """Public fixture corpus proves owner-dogfood path (no PHI)."""
+    from wedge_v1.run_owner_dogfood import EXAMPLE_CORPUS as FIXTURE_CORPUS, run
+
+    out = run(FIXTURE_CORPUS)
+    assert out.get("error") != "NO_CORPUS"
+    assert out["n_tasks"] == 5
+    assert out["n_ok"] == out["n_tasks"], out["rows"]
+    assert Path(out["out"]).is_file()
+
+
+def test_measure_dogfood_u():
+    from wedge_v1.eval.dogfood_utility import measure_dogfood_u
+
+    u = measure_dogfood_u(
+        {
+            "schema": "test",
+            "n_tasks": 2,
+            "n_ok": 2,
+            "rows": [
+                {"ok": True, "got_status": "SUPPORTED", "latency_s": 0.01},
+                {"ok": True, "got_status": "ABSTAIN", "latency_s": 0.01},
+            ],
+        },
+        corpus_class="SYNTHETIC_MINI",
+    )
+    assert u["Q"] == 1.0
+    assert u["R"] == 0.5
+    assert u["U_status"] == "DRAFT_NOT_SCORING_FROZEN"
+    assert isinstance(u["U"], float)
+
+if __name__ == "__main__":
+    test_ttl_supported()
+    test_oos_abstain()
+    test_empty_corpus()
+    test_scan_docs()
+    test_find_ttl_phrase()
+    test_bm25_hits_ttl_doc()
+    test_bm25_span_supported()
+    test_ingest_md_corpus()
+    test_ingest_pdf_fixture()
+    test_compare_metformin_contradicted()
+    test_compare_literal_agree()
+    test_failure_gallery()
+    test_report_build()
+    test_report_ask_markdown()
+    test_owner_dogfood_synthetic()
+    test_owner_dogfood_corpus_flag()
+    test_measure_dogfood_u()
+    print("WEDGE_V1_SMOKE_OK")

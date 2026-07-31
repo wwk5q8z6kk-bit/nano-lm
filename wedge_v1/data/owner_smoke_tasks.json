@@ -1,0 +1,65 @@
+{
+  "schema": "nano-lm.wedge_v1.owner_smoke_tasks.v1",
+  "NONCLAIM": "Example/owner_corpus contact (synthetic stand-ins). Not Layer-1.",
+  "default_corpus": "wedge_v1/data/owner_corpus.example",
+  "tasks": [
+    {
+      "id": "O01",
+      "mode": "ask",
+      "query": "How long before cached entries expire?",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600",
+        "TTL"
+      ]
+    },
+    {
+      "id": "O02",
+      "mode": "compare",
+      "query": "TTL",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600"
+      ]
+    },
+    {
+      "id": "O03",
+      "mode": "compare",
+      "query": "metformin",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "500",
+        "850"
+      ]
+    },
+    {
+      "id": "O04",
+      "mode": "compare",
+      "query": "12000",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "12000"
+      ]
+    },
+    {
+      "id": "O05",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    }
+  ]
+}

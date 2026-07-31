@@ -1,0 +1,63 @@
+{
+  "schema": "nano-lm.wedge_v1.owner_smoke_tasks.v1",
+  "NONCLAIM": "Optional dry-run over repo papers/.",
+  "tasks": [
+    {
+      "id": "P1",
+      "mode": "find",
+      "query": "BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1"
+      ]
+    },
+    {
+      "id": "P2",
+      "mode": "ask",
+      "query": "What does Paper \u03b1 conclude about E1?",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "E1"
+      ]
+    },
+    {
+      "id": "P3",
+      "mode": "ask",
+      "query": "What is Wedge v1?",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "Wedge",
+        "wedge"
+      ]
+    },
+    {
+      "id": "P4",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    },
+    {
+      "id": "P5",
+      "mode": "compare",
+      "query": "\u03b4",
+      "expect_status": [
+        "CONTRADICTED",
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "0.05"
+      ]
+    }
+  ]
+}
