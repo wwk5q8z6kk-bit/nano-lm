@@ -300,7 +300,7 @@ When autonomous CLI credits fail but `consult_gateway` works, treat that as **le
 4. ~~`trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md`~~ present — deepen formulas; land decision/cost split design note.  
 5. Owner one-liner on E4 surface: `RATIFY_E4_EXECUTE` | `VOID_E4_AUTH` | `PARK_AS_EXPLORATORY`.  
 6. Keep freeze tags immutable; hybrid tag **deferred** until OWNER_TAG_OK (clean lineage or verdict annotation).  
-7. Wedge: freeze mini-corpus + metrics doc before any baseline run auth.  
+7. Wedge: Phase 2 classical DONE; Phase 3 design at `wedge_v1/PHASE3_LM_PROBE_DESIGN.md` (no execute).  
 8. Document B15: consult-gateway = intended verification path; do not chase CLI credits for science.  
 9. Add `context_of_use` field proposal for GATE_VERDICT rows (B16) — ledger migration needs owner commit.  
 10. Path-restricted commits only; never launder strategic-reset dirt into freeze packaging.
@@ -328,8 +328,8 @@ Mitigation has worked when:
 5. Research portfolio stays large while claims stay tiny.
 
 ```text
-NEXT_DEFAULT = IDLE_AFTER_HYBRID + M0_HYGIENE (this map)
-NEXT_PRODUCT = AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE (owner; classical-first)
+NEXT_DEFAULT = IDLE_ON_WEDGE_CLASSICAL + M0_HYGIENE
+NEXT_OPTIONAL_PRODUCT = AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE (owner; E-class only; design ready)
 NEXT_SCIENCE = owner-picked from B18/B3/B5/B6 only
 NEXT_TAG = OWNER_TAG_OK → clean-lineage cherry-pick OR verdict/* annotation OR remain deferred
 ATOM_RULE = no new blocker ID without an enforcing gate
