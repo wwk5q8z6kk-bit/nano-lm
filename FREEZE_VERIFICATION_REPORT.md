@@ -1,7 +1,7 @@
 # FREEZE_VERIFICATION_REPORT
 
 *Generated 2026-07-31T14:05:23.760984+00:00*
-*HEAD `0e01d73205e9c35ea32925fd4d6c7e5fceb61137`*
+*HEAD `b43680a0a909331ebf1dfc93e09aa7f586440a91`*
 *Proposed tag (NOT created): `post-alpha-evidence-freeze-2026-07-31`*
 
 ## Checks

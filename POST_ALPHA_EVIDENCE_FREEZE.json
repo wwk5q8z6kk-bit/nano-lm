@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-07-31T14:04:33.413228+00:00",
-  "head_commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+  "generated_at_utc": "2026-07-31T14:06:12.102298+00:00",
+  "head_commit": "b43680a0a909331ebf1dfc93e09aa7f586440a91",
   "proposed_tag": "post-alpha-evidence-freeze-2026-07-31",
   "tag_created": false,
   "verdict": "FREEZE_CANDIDATE_READY",
@@ -38,5 +38,12 @@
     "E2",
     "E4"
   ],
-  "e4_recommended": false
+  "e4_recommended": false,
+  "commits": [
+    "f458905 audit: reconcile token budgets and scale claims",
+    "6d26b06 docs: correct E1 and E3 claim scope",
+    "faed7a3 docs: reconcile E2, metrics, fabric, and NanoScribe status",
+    "360bd2a artifacts: add post-alpha evidence manifests",
+    "b43680a docs: create post-alpha evidence freeze candidate"
+  ]
 }
