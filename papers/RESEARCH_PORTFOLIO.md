@@ -77,6 +77,14 @@ Status tags for each program (portfolio hygiene, not evidence):
 **Status:** `PARTIALLY_TOUCHED` (diversity effects; undertrained 160M/200M cell)  
 **Questions:** Data curricula, active learning for hard types, tokens-per-parameter interactions without overclaiming scale laws.
 
+
+## Program P — Benchmark infrastructure (inside nano-lm)
+**Status:** `ACTIVE_DESIGN` (Program 0 only; Program 1 not authorized)  
+**Questions:** Can nano-lm run one pinned, reproducible, per-item-logged benchmark path (Gate 0)? Later: where do existing checkpoints lose under fair eval?  
+**Does not require:** a separate research institution; NanoScribe; training.  
+**Non-claim:** Program 0 smoke ≠ leadership on any public suite.
+
+
 ## Program O — Compiler-assisted reasoning / runtime
 **Status:** `OPEN`  
 **Questions:** Lowering typed plans to deterministic runtimes; replay; observability; deterministic debugging of cognitive stacks.
@@ -101,4 +109,4 @@ Each domain may host multiple programs. Domains do **not** inherit evidence from
 ## Anti-timidity note
 
 An empty **execution queue** is compatible with a full **research portfolio**.  
-Do not delete programs A–O because the laboratory is idle on experiments.
+Do not delete programs A–P because the laboratory is idle on experiments.

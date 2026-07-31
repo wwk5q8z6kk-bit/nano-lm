@@ -1,0 +1,9 @@
+{
+  "mode": "deterministic",
+  "exact_match": 1.0,
+  "n": 4,
+  "decision": "INFRA_SMOKE_PASS",
+  "promote": false,
+  "leaderboard_eligible": false,
+  "evidence_ledger_eligible": false
+}

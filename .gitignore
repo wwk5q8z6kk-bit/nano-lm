@@ -40,3 +40,14 @@ papers/latex/*.blg
 # Durable raw evidence (explicitly tracked; overrides *.jsonl ignore)
 !artifacts/durable_raw/
 !artifacts/durable_raw/**
+
+
+# Benchmark lab generated runs (Program 0+)
+experiments/**/runs/
+experiments/**/runs/**
+!experiments/**/runs/.gitkeep
+# Allow committed golden fixtures under adapters
+!benchmarks/adapters/**/fixtures/**
+!benchmarks/adapters/**/fixtures/**/*.json
+
+.venv-bench/

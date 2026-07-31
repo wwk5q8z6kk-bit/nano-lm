@@ -8,16 +8,17 @@
 
 **License (this manuscript):** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Code and other repository assets follow the repository license.
 
-## Laboratory document layers
+## Laboratory document layers (inside nano-lm)
 
 | Doc | Role |
 |-----|------|
-| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | Separates evidence / ambition / execution |
+| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | In-repo research governance (not an institution) |
 | [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Layer 1 — what is demonstrated |
 | [`RESEARCH_PORTFOLIO.md`](RESEARCH_PORTFOLIO.md) | Layer 3 — long-horizon questions |
 | [`TECHNOLOGY_ROADMAP.md`](TECHNOLOGY_ROADMAP.md) | Layer 2 — conditional build vision |
-| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Authorized now (currently idle + E4 design-only) |
+| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Authorized now (Program 0 + E4 design-only) |
 | [`DECISION_GATES.md`](DECISION_GATES.md) | Promotion rules |
+| [`../benchmarks/BENCHMARK_CONSTITUTION.md`](../benchmarks/BENCHMARK_CONSTITUTION.md) | Program 0 / harness rules |
 
 
 ## Abstract

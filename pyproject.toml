@@ -7,7 +7,7 @@ requires-python = ">=3.10"
 # Runtime pins live in requirements.txt (torch stack is environment-specific).
 
 [tool.pytest.ini_options]
-testpaths = ["fabric", "trajectory"]
+testpaths = ["fabric", "trajectory", "benchmarks/adapters/lm_eval/tests"]
 python_files = ["test_*.py"]
 addopts = "-q"
 

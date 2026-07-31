@@ -63,3 +63,13 @@ Interfaces ──► Intent / Policy ──► Planning / Routing
 
 `MASTER_PLAN.md` and `NANOSCRIBE_VNEXT.md` retain historical architecture prose.  
 This file is the **living Layer-2 catalog**. Legacy phases 3–4 remain `STOP` as execution, not as imagination.
+
+
+## Benchmark infrastructure (aspirational; not queued beyond Program 0)
+
+Conditional modules for **this repo’s** harness — not a separate institution:
+
+1. Pinned adapters + content-addressed runs (Program 0).
+2. Later (separate auth): checkpoint census, broader suites, multi-axis boards.
+
+Explicit non-claim: `benchmarks/` scaffolding ≠ leadership or Layer-1 evidence.

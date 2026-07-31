@@ -62,3 +62,12 @@ Skipping layers is forbidden. Ambition may exist at Layer 2/3 without Layer 1 su
 | E4 KILL (future) | Stop gen-substrate for that R★ (≤1 revision) | Portfolio does not collapse |
 
 Negative evidence **narrows claims**. It does **not** delete the laboratory’s right to ask bigger questions.
+
+
+## Benchmark lab gates (companion)
+
+See `benchmarks/BENCHMARK_CONSTITUTION.md` gates 0–8 and `benchmarks/BENCHMARK_RESULT_POLICY.md`.
+
+- A completed smoke or leaderboard row is **not** a Layer-1 ledger claim.
+- Promotion into `EVIDENCE_LEDGER.md` still requires laboratory G0–G3 (measurement auth) plus contamination/OOD/claim scoping.
+- Program 0 may only emit `INFRA_SMOKE_PASS` / `INFRA_SMOKE_FAIL`.

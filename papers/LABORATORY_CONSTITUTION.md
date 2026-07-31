@@ -1,92 +1,126 @@
 # Laboratory Constitution
 
+**Scope:** Research governance **inside the `nano-lm` repository** — not a separate institution, company, or multi-lab organization.  
 **Adopted:** 2026-07-31  
-**Purpose:** Separate *what is true*, *what we may dream*, *what we might build someday*, and *what we do next* so ambition and evidence never compete.
+**Does not:** authorize unpaid compute, amend Layer-1 evidence, or invent product platforms.
 
 ```text
+PROJECT: nano-lm
 PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE
-AUTHORIZED_NONEXECUTION_WORK: E4_DESIGN_ONLY  # protocol docs only; not experiments
-EVIDENCE_STANDARDS: CONSERVATIVE  # unchanged by this constitution
-VISION_STANDARDS: EXPANSIVE       # allowed here without becoming a claim
+AUTHORIZED_NOW: E4_DESIGN_ONLY | BENCHMARK_SUPREMACY_LAB_PROGRAM0_INFRA
+PROGRAM1: DEFERRED_PENDING_GATE0
+TRAINING: NOT_AUTHORIZED
+E4_EXECUTION: BLOCKED
+LAYER1_FREEZE: UNTOUCHED
+NANOSCRIBE_PRODUCT_EXPANSION: STOP
+OLD_TASK_RUNS_UNDER_OLD_TASK_U: FORBIDDEN
+EVIDENCE_STANDARDS: CONSERVATIVE
+VISION_STANDARDS: EXPANSIVE   # ambition allowed in portfolio/roadmap docs only
 ```
 
-## The three layers (plus two operating docs)
+---
 
-| Layer | Question | Document | Standard |
-|-------|----------|----------|----------|
-| **1. Scientific evidence** | What have we demonstrated? | `EVIDENCE_LEDGER.md` (+ Paper α, preregs, artifacts) | **Conservative.** No ambition. |
-| **2. Engineering / technology roadmap** | If unlimited evidence eventually supported it, what *could* we build? | `TECHNOLOGY_ROADMAP.md` | **Ambitious.** Explicitly non-evidential. |
-| **3. Research agenda / portfolio** | What is actually true? What questions are worth 5–10 years? | `RESEARCH_PORTFOLIO.md` | **Expansive.** Hypotheses to destroy one by one. |
-| Operating: **Execution queue** | What are we authorized to build/run *now*? | `EXECUTION_QUEUE.md` | Tiny. Gate-bound. |
-| Operating: **Decision gates** | What evidence promotes an idea into implementation? | `DECISION_GATES.md` | Strict promotion rules. |
+## What this project is
 
-**Constitutional rule:** Negative evidence kills **hypotheses**, not **curiosity**.  
-E1 KILL falsifies “generative extraction is preferred for *this* closed task under *this* \(U\)”.  
-It does **not** falsify memory, verification theory, planning, collaboration, compilers, or world models.
+`nano-lm` currently contains four real surfaces:
 
-## Long-term mission (aspirational — not a claim)
+1. **Empirical research** — held-out copying, Paper α, E1–E4 gates, trajectory results.  
+2. **Evidence packaging** — Evidence Ledger, freeze manifests, claim discipline.  
+3. **Verification fabric** — scoped propose→verify→abstain slice (`fabric/`); not NanoScribe / not a cognitive OS.  
+4. **Benchmark infrastructure** — Benchmark Supremacy Program **0 only** (`benchmarks/`); a trustworthy harness for this repo, not a new product.
 
-Build a factorized, evidence-first, verification-gated cognitive laboratory and (eventually, if evidence warrants) systems stack in which:
+Do **not** invent additional “labs” (Discovery, Theory, AI Scientist, Hardware, Product, …). Portfolio questions may exist as bullets in `RESEARCH_PORTFOLIO.md`; they are not organizations and are not authorized work.
 
-- learning, memory, retrieval, planning, execution, and collaboration are first-class;
-- every claim carries provenance and uncertainty;
-- verification and abstention are engineered, not hoped;
-- classical, generative, hybrid, and tool-using methods compete under explicit utilities;
-- failure modes remain permanent regression instruments.
+---
 
-This mission is a **north star**. It is not licensed by current results.
+## Separation of concerns (keep these mixed things apart)
 
-## Research map (expansive)
+| Concern | Question | Document | Standard |
+|---------|----------|----------|----------|
+| **Truth (Layer 1)** | What have we demonstrated? | `EVIDENCE_LEDGER.md`, Paper α, freeze `artifacts/` | Conservative |
+| **Ambition (Layer 2/3)** | What might we ask / build someday? | `RESEARCH_PORTFOLIO.md`, `TECHNOLOGY_ROADMAP.md` | Expansive; non-evidential |
+| **Execution** | What is authorized *now*? | `EXECUTION_QUEUE.md` | Tiny; gate-bound |
+| **Promotion rules** | How does an idea earn a run or claim? | `DECISION_GATES.md` | Strict |
+| **Benchmarks** | How do we score reproducibly? | `benchmarks/` + `BENCHMARK_RESULT_POLICY.md` | Infra ≠ ledger |
+| **Products** | What may ship? | Default **STOP** until gated | Not the organizer of the repo |
 
-```
-Long-term Mission
-        │
-        ▼
-Research Programs  (see RESEARCH_PORTFOLIO.md)
-        │
-        ├── Learning
-        ├── Memory
-        ├── Verification
-        ├── Retrieval
-        ├── Planning
-        ├── Execution
-        ├── Collaboration
-        ├── Interfaces
-        ├── Hardware
-        ├── Human factors
-        ├── Evaluation / Benchmarks
-        ├── Tool ecosystems
-        ├── Security / Alignment
-        ├── Compilers / Runtime
-        ├── Distributed systems
-        └── Theory
+```text
+Benchmark result  ≠  evidence-ledger claim  ≠  product authorization
 ```
 
-Experiments only **move evidence** within this map. They do not redefine the map by shrinking it after a kill gate.
+**Constitutional rule:** Negative evidence kills **hypotheses**, not **curiosity** — but curiosity does not create fake org charts or queue entries.
+
+**Post-E1 rule:** Generation is not the default solver. Prefer cheapest sufficient solver → verify → abstain → provenance. E1 KILL applies to the old closed scribe task under frozen \(U\); it does not license NanoScribe expansion.
+
+---
+
+## How research is conducted in this repository
+
+### Hypotheses
+
+Write competing explanations in preregs or `research/hypotheses/` when useful. Prefer questions that a small experiment can kill.
+
+### Preregistration
+
+Freeze: intervention, controls, primary estimand, success/kill thresholds, cost ceiling — before the load-bearing run.
+
+### Evidence classification
+
+Only Layer-1 documents and freeze artifacts may claim measured truth. Use `CLAIM_GLOSSARY.md`. Leaderboard rows and Program 0 smokes do **not** enter the Evidence Ledger automatically.
+
+### Benchmark reproduction
+
+Pin harness version + commit, task YAML hash, source instrument digest, model/solver manifest, config hash, code commit. Content-addressed `run_id`. Per-item logs required. See `benchmarks/BENCHMARK_CONSTITUTION.md` (Program 0 charter for this repo’s harness).
+
+### From result to claim
+
+```text
+Prereg → authorized run → audit (hashes, recompute, contamination as needed)
+  → optional Layer-1 ledger update (owner + gates)
+  → optional paper claim
+```
+
+### Authorization of implementation
+
+Portfolio/roadmap items do **not** auto-enter the queue. Only `DECISION_GATES.md` + explicit owner auth strings on `EXECUTION_QUEUE.md`.
+
+---
 
 ## Document authority
 
-| Doc | May claim “is true / measured”? | May describe future systems? | Authorizes build/run? |
-|-----|----------------------------------|------------------------------|------------------------|
-| `EVIDENCE_LEDGER.md` | **Yes** (scoped) | No | No |
+| Doc | Measured truth? | Future systems? | Authorizes run? |
+|-----|-----------------|-----------------|-----------------|
+| `EVIDENCE_LEDGER.md` | Yes (scoped) | No | No |
 | `RESEARCH_PORTFOLIO.md` | No | Questions only | No |
-| `TECHNOLOGY_ROADMAP.md` | No | **Yes** (conditional) | No |
-| `EXECUTION_QUEUE.md` | Only by citing ledger | No | **Yes** (current auth only) |
+| `TECHNOLOGY_ROADMAP.md` | No | Conditional | No |
+| `EXECUTION_QUEUE.md` | Cite ledger only | No | **Yes** |
 | `DECISION_GATES.md` | Process | No | Defines promotion |
-| `MASTER_PLAN.md` / `NANOSCRIBE_VNEXT.md` | Historical + pointers | Legacy architecture prose | **No** — not the queue |
-| `AMBITION.md` | Bridge note | Narrow R★ framing | Design-only carve-out |
+| `benchmarks/BENCHMARK_CONSTITUTION.md` | No | Harness rules | No |
+| `MASTER_PLAN.md` / `NANOSCRIBE_VNEXT.md` | Historical | Legacy | **No** |
 
-## Anti-contamination rules
+---
+
+## Anti-contamination
 
 1. Do not put roadmap modules into the Evidence Ledger until measured.  
-2. Do not delete research programs because a product thesis died.  
-3. Do not treat `EXECUTION_QUEUE` emptiness as “stop dreaming.”  
-4. Do not treat Technology Roadmap items as “next sprint.”  
-5. Promote Layer 2→queue only through `DECISION_GATES.md`.
+2. Do not treat empty queue as “stop thinking,” or full portfolio as “start building.”  
+3. Do not move immutable evidence tags (`paper-alpha-v1`, `post-alpha-evidence-freeze-2026-07-31`).  
+4. Do not expand Fabric/NanoScribe/memory/agents/product work without queue auth.  
+5. Do not grow organizational scaffolding instead of finishing authorized programs.
 
-## Companions
+---
 
-- Evidence: `EVIDENCE_LEDGER.md`, `EMPIRICAL_FOUNDATION.md`, `CLAIM_GLOSSARY.md`  
-- Freeze: `post-alpha-evidence-freeze-2026-07-31` (immutable)  
-- Current R★ design: `trajectory/REGIME_P1_…`, `trajectory/PREREG_E4_…`  
-- Status: `audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`
+## Authorized work now
+
+| Item | Auth | Notes |
+|------|------|-------|
+| Freeze integrity | Standing | Do not rewrite Layer-1 / tags |
+| E4 design docs only | `AUTHORIZE_E4_DESIGN_ONLY` | No world/data/GPU/result |
+| Benchmark Program 0 | `BENCHMARK_SUPREMACY_LAB_PROGRAM0_INFRA` | One reproducible path; Gate 0; **no** Program 1 census |
+
+**Program 0 purpose:** one task → one solver/model → one reproducible run → per-item outputs → deterministic score → manifests/hashes → Gate 0.  
+Not a laboratory empire.
+
+**Explicitly not authorized:** Program 1 world census; training; E4 execute; NanoScribe; autonomous scientist; distributed agents; long-term memory product; multi-lab org design; large suites (MMLU/HELM/MLPerf).
+
+Gate 0 report: `benchmarks/reports/GATE0_PROGRAM0.md`.

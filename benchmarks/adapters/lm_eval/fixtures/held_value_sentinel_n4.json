@@ -1,0 +1,82 @@
+[
+ {
+  "tuple": {
+   "cc": "toothache",
+   "dur": "5 days",
+   "sev": "mild",
+   "med": "naproxen",
+   "alg": "none"
+  },
+  "held_values": true,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning — what's been bothering you?\nPatient: Honestly, a toothache has been troubling me.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 5 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only naproxen so far.\nDoctor: Do you have any known allergies?\nPatient: None whatsoever.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: toothache | DUR: 5 days | SEV: mild | MED: naproxen | ALG: none"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "joint pain",
+   "dur": "13 days",
+   "sev": "mild",
+   "med": "throat lozenges",
+   "alg": "latex"
+  },
+  "held_values": true,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as joint pain and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 13 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely mild.\nDoctor: Did you try any medicine?\nPatient: Only throat lozenges so far.\nDoctor: Do you have any known allergies?\nPatient: I do — latex.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: joint pain | DUR: 13 days | SEV: mild | MED: throat lozenges | ALG: latex"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "earache",
+   "dur": "11 days",
+   "sev": "moderate",
+   "med": "none",
+   "alg": "peanuts"
+  },
+  "held_values": false,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Come in, have a seat. What's the issue today?\nPatient: It started as an earache and hasn't stopped.\nPatient: My cousin drove me here this morning.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 11 days.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely moderate.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do — peanuts.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: earache | DUR: 11 days | SEV: moderate | MED: none | ALG: peanuts"
+   }
+  ]
+ },
+ {
+  "tuple": {
+   "cc": "headache",
+   "dur": "2 weeks",
+   "sev": "severe",
+   "med": "none",
+   "alg": "shellfish"
+  },
+  "held_values": false,
+  "convo": [
+   {
+    "role": "user",
+    "content": "Doctor: Morning — what's been bothering you?\nPatient: Honestly, a headache has been troubling me.\nPatient: The parking here was terrible today.\nDoctor: Since when have you had it?\nPatient: I'd say it's been 2 weeks.\nDoctor: On a scale from mild to severe, where is it?\nPatient: Definitely severe.\nDoctor: Did you try any medicine?\nPatient: Nothing at all.\nDoctor: Do you have any known allergies?\nPatient: I do — shellfish.\nSummarize the visit."
+   },
+   {
+    "role": "assistant",
+    "content": "CC: headache | DUR: 2 weeks | SEV: severe | MED: none | ALG: shellfish"
+   }
+  ]
+ }
+]
