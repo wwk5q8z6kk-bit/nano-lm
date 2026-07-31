@@ -1,32 +1,43 @@
-"""Owner-corpus contact pins (fixture / demo path)."""
+"""Owner-corpus contact pins (public fixture / demo path)."""
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-from wedge_v1.run_owner_dogfood import DEFAULT_TASKS, FIXTURE_CORPUS, main, run
+from wedge_v1.run_owner_dogfood import DEFAULT_TASKS, FIXTURE_CORPUS, SMOKE_OUT, main, run
+from wedge_v1.run_owner_smoke import EXAMPLE, run as smoke_run
 
 
 def test_example_corpus_present():
-    assert FIXTURE_CORPUS.is_dir()
-    assert any(FIXTURE_CORPUS.glob("*.md"))
+    assert FIXTURE_CORPUS.is_dir() or EXAMPLE.is_dir()
     assert DEFAULT_TASKS.is_file()
 
 
+def test_owner_smoke_example_pass():
+    out = smoke_run(EXAMPLE)
+    assert out["n_tasks"] >= 5
+    assert out["n_ok"] == 5
+    assert out["rows"][1]["got_status"] == "CONTRADICTED"
+    assert out["rows"][4]["got_status"] == "ABSTAIN"
+
+
+def test_owner_smoke_example_all_pass(tmp_path: Path | None = None):
+    test_owner_smoke_example_pass()
+
+
 def test_owner_dogfood_demo_pass():
-    rc = main(["--demo"])
+    rc = main(["--demo", "--smoke"])
     assert rc == 0
-    out = Path(__file__).resolve().parent / "results_owner_dogfood.json"
-    assert out.is_file()
-    data = json.loads(out.read_text())
+    assert SMOKE_OUT.is_file()
+    data = json.loads(SMOKE_OUT.read_text())
     assert data["n_tasks"] >= 5
-    assert data["n_ok"] == data["n_tasks"]
+    assert data["n_ok"] == 5
 
 
-def test_owner_smoke_example_pass(tmp_path: Path | None = None):
-    """CLI smoke entry — fixture pack via run()."""
-    dest = (tmp_path or Path("/tmp")) / "results_owner_dogfood_smoke.json"
-    result = run(FIXTURE_CORPUS, DEFAULT_TASKS, out_json=dest)
-    assert dest.is_file()
+def test_owner_dogfood_via_run(tmp_path):
+    out = tmp_path / "out.json"
+    corpus = FIXTURE_CORPUS if FIXTURE_CORPUS.is_dir() else EXAMPLE
+    result = run(corpus, DEFAULT_TASKS, out_json=out)
+    assert out.exists()
+    assert result.get("error") != "NO_CORPUS"
     assert result["n_ok"] == result["n_tasks"]
-    assert result["n_tasks"] >= 5

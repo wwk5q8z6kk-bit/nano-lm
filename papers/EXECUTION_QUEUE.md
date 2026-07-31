@@ -18,10 +18,11 @@ OLD_TASK_U: FORBIDDEN
 
 | Item | Status |
 |------|--------|
-| Product discovery sprint | DONE — `frontier/PRODUCT_DISCOVERY_SPRINT.md` |
-| Vertical slice `ask`/`find`/`scan`/`dogfood` | LIVE |
-| Contradiction banner on ask | DONE this turn |
-| Owner-corpus dogfood harness | DONE — `wedge_v1 owner-dogfood` (synthetic 5/5) |\n| Next | Run against real `$OWNER_CORPUS` (private; gitignored results) |
+| Product discovery sprint | DONE |
+| Vertical slice ask/find/scan/compare/ingest/report/dogfood | LIVE |
+| Owner-corpus dogfood harness | DONE (`owner-dogfood --demo`) |
+| Draft \(U\) from dogfood packs | DONE (`wedge_v1 measure-u`) — synthetic dogfood \(U\approx 0.889\) |
+| **Next** | Owner points `$OWNER_CORPUS` / `$WEDGE_OWNER_CORPUS` at real private folder → `owner-dogfood` + `contact --class OWNER_PRIVATE` + `measure-u` |
 
 ## Protected
 

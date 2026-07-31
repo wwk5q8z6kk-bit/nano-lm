@@ -487,9 +487,9 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
 
     pattern = re.compile(re.escape(needle), re.I)
     hits: list[dict] = []
-    # Field-like: "TTL as 300 seconds", "metformin 500 mg"
+    # Field-like: "TTL as 300 seconds", "metformin 500 mg", "QPS is/remains 12000"
     field_re = re.compile(
-        rf"(?:{re.escape(needle)}\s+(?:as\s+)?(\d+(?:\.\d+)?)\s*(?:seconds|mg|sec)?|"
+        rf"(?:{re.escape(needle)}\s+(?:as\s+|is\s+|remains\s+|=\s*)?(\d+(?:\.\d+)?)\s*(?:seconds|mg|sec|qps)?|"
         rf"{re.escape(needle)}\s+(\d+(?:\.\d+)?))",
         re.I,
     )
@@ -505,8 +505,21 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
             # Closest number outside the term span (skip when term is the number).
             closest = None
             if not re.fullmatch(r"\d+(?:\.\d+)?", needle):
-                closest = _closest_number(text, (i + j) // 2, window=window)
-                # Ignore the term's own digits if any
+                line_lo = text.rfind("\n", 0, i) + 1
+                line_hi = text.find("\n", j)
+                if line_hi < 0:
+                    line_hi = len(text)
+                line = text[line_lo:line_hi]
+                # Prefer number after the term on the same line (avoids year/header noise).
+                after = re.search(
+                    rf"{re.escape(needle)}\s*(?:as|is|remains|=|:)?\s*(\d+(?:\.\d+)?)",
+                    line,
+                    re.I,
+                )
+                if after:
+                    closest = after.group(1)
+                else:
+                    closest = _closest_number(text, (i + j) // 2, window=window)
                 if closest is not None:
                     closest_by_doc.setdefault(did, set()).add(closest)
             hits.append(

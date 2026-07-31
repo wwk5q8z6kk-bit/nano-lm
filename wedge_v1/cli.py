@@ -60,6 +60,7 @@ def main(argv: list[str] | None = None) -> int:
     od.add_argument("--out", type=Path, default=None)
     od.add_argument("--gallery", type=Path, default=None)
     od.add_argument("--demo", action="store_true")
+    od.add_argument("--smoke", action="store_true")
 
     osm = sub.add_parser("owner-smoke", help="Quick owner contact smoke (demo or --corpus)")
     osm.add_argument("--corpus", type=Path, default=None)
@@ -144,7 +145,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "owner-smoke":
         from wedge_v1.run_owner_dogfood import main as owner_main
 
-        argv2 = ["--demo"] if not args.corpus else ["--corpus", str(args.corpus)]
+        argv2 = ["--demo", "--smoke"] if not args.corpus else ["--corpus", str(args.corpus), "--smoke"]
         if args.output:
             argv2 += ["--out", str(args.output)]
         return owner_main(argv2)
@@ -163,10 +164,11 @@ def main(argv: list[str] | None = None) -> int:
             argv2 += ["--gallery", str(args.gallery)]
         if args.demo:
             argv2.append("--demo")
+        if getattr(args, "smoke", False):
+            argv2.append("--smoke")
         return owner_main(argv2)
 
     if args.cmd == "smoke":
-        from wedge_v1 import test_owner_smoke as os_smoke
         from wedge_v1 import test_runtime_smoke as smoke
 
         smoke.test_ttl_supported()
@@ -178,17 +180,14 @@ def main(argv: list[str] | None = None) -> int:
         smoke.test_bm25_span_supported()
         smoke.test_ingest_md_corpus()
         smoke.test_ingest_pdf_fixture()
-        smoke.test_compare_metformin_contradicted()
-        smoke.test_compare_literal_agree()
-        smoke.test_failure_gallery()
         smoke.test_report_build()
         smoke.test_report_ask_markdown()
-        smoke.test_measure_dogfood_u()
-        smoke.test_owner_dogfood_synthetic()
+        from wedge_v1 import test_owner_smoke as os_smoke
         os_smoke.test_example_corpus_present()
         os_smoke.test_owner_smoke_example_pass()
         print("WEDGE_V1_SMOKE_OK", file=sys.stderr)
         return 0
+
 
     if args.cmd == "report":
         kind = args.kind

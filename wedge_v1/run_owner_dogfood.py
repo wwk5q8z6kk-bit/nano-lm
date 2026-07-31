@@ -1,6 +1,7 @@
-"""Owner-corpus dogfood harness — private folder eval; results gitignored.
+"""Owner-corpus dogfood harness — classical only; results gitignored.
 
-Active Frontier product measurement. Not Layer-1 evidence.
+Accepts --corpus outside the repo (or gitignored). Never commits PHI.
+Not Layer-1 evidence. No LM. No training.
 """
 from __future__ import annotations
 
@@ -13,13 +14,17 @@ from wedge_v1.ingest import corpus_stats, load_corpus
 from wedge_v1.runtime import DEFAULT_CORPUS, ask, compare, find_spans
 
 ROOT = Path(__file__).resolve().parent
-EXAMPLE_CORPUS = ROOT / "data" / "owner_corpus.example"
-EXAMPLE_TASKS = ROOT / "data" / "owner_dogfood_tasks.example.json"
+FIXTURE_CORPUS = ROOT / "fixtures" / "owner_corpus"
+EXAMPLE_CORPUS = FIXTURE_CORPUS  # public synthetic stand-in
+LEGACY_EXAMPLE = ROOT / "data" / "owner_corpus.example"
 DEFAULT_TASKS = ROOT / "data" / "owner_dogfood_tasks.json"
+EXAMPLE_TASKS = ROOT / "data" / "owner_dogfood_tasks.example.json"
 if not DEFAULT_TASKS.is_file():
     DEFAULT_TASKS = EXAMPLE_TASKS
 DEFAULT_OUT = ROOT / "results_owner_dogfood.json"
 SMOKE_OUT = ROOT / "results_owner_smoke.json"
+DEFAULT_GALLERY_MD = ROOT / "results_owner_failure_gallery.md"
+DEFAULT_GALLERY_JSON = ROOT / "results_owner_failure_gallery.json"
 OWNER_DIR = ROOT / "data" / "owner_corpus"
 
 
@@ -28,10 +33,15 @@ def _blob(result: dict) -> str:
 
 
 def resolve_corpus(*, corpus: Path | None = None, demo: bool = False) -> Path:
+    """Prefer explicit path, then OWNER_CORPUS, then gitignored folder, then fixture."""
     if demo:
-        return EXAMPLE_CORPUS if EXAMPLE_CORPUS.is_dir() else DEFAULT_CORPUS
+        if FIXTURE_CORPUS.is_dir() and any(FIXTURE_CORPUS.glob("*.md")):
+            return FIXTURE_CORPUS
+        if LEGACY_EXAMPLE.is_dir() and any(LEGACY_EXAMPLE.glob("*.md")):
+            return LEGACY_EXAMPLE
+        return DEFAULT_CORPUS
     if corpus is not None:
-        return Path(corpus)
+        return Path(corpus).expanduser()
     env = (os.environ.get("OWNER_CORPUS") or os.environ.get("WEDGE_OWNER_CORPUS") or "").strip()
     if env:
         return Path(env).expanduser()
@@ -43,8 +53,8 @@ def resolve_corpus(*, corpus: Path | None = None, demo: bool = False) -> Path:
         ]
         if files:
             return OWNER_DIR
-    if EXAMPLE_CORPUS.is_dir() and any(EXAMPLE_CORPUS.glob("*.md")):
-        return EXAMPLE_CORPUS
+    if FIXTURE_CORPUS.is_dir() and any(FIXTURE_CORPUS.glob("*.md")):
+        return FIXTURE_CORPUS
     return DEFAULT_CORPUS
 
 
@@ -131,12 +141,24 @@ def failure_gallery_md(rows: list[dict], corpus: Path) -> str:
 
 def run(
     corpus: Path,
-    tasks_path: Path,
+    tasks_path: Path = DEFAULT_TASKS,
     out_json: Path | None = None,
     *,
     write_smoke: bool = False,
+    gallery_md: Path | None = None,
 ) -> dict:
     docs = load_corpus(corpus)
+    if not docs:
+        return {
+            "schema": "nano-lm.wedge_v1.owner_dogfood_result.v1",
+            "error": "NO_CORPUS",
+            "corpus": str(corpus),
+            "n_tasks": 0,
+            "n_ok": 0,
+            "accuracy": 0.0,
+            "rows": [],
+        }
+
     pack = json.loads(Path(tasks_path).read_text(encoding="utf-8"))
     rows = [score_task(t, corpus) for t in pack.get("tasks") or []]
     n_ok = sum(1 for r in rows if r["ok"])
@@ -144,13 +166,14 @@ def run(
     out = {
         "schema": "nano-lm.wedge_v1.owner_dogfood_result.v1",
         "corpus": str(Path(corpus).resolve()),
+        "tasks_path": str(tasks_path),
         "n_docs": len(docs),
         "ingest": stats,
         "n_tasks": len(rows),
         "n_ok": n_ok,
         "accuracy": n_ok / max(1, len(rows)),
         "rows": rows,
-        "note": "Owner/local corpus product eval; gitignored; not Layer-1 ledger claim.",
+        "note": "Owner/local dogfood; gitignored results; not Layer-1 ledger claim.",
     }
     dest = out_json or DEFAULT_OUT
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -158,45 +181,88 @@ def run(
     dest.write_text(payload, encoding="utf-8")
     if write_smoke:
         SMOKE_OUT.write_text(payload, encoding="utf-8")
-    gal_path = ROOT / "results_owner_failure_gallery.md"
-    gal_path.write_text(failure_gallery_md(rows, Path(corpus)), encoding="utf-8")
-    out["written"] = [str(dest), str(gal_path)]
+
+    gal_body = failure_gallery_md(rows, Path(corpus))
+    gal_path = gallery_md or DEFAULT_GALLERY_MD
+    gal_path.write_text(gal_body, encoding="utf-8")
+    DEFAULT_GALLERY_JSON.write_text(
+        json.dumps(
+            {
+                "schema": "nano-lm.wedge_v1.failure_gallery.v1",
+                "source": str(dest),
+                "n_tasks": len(rows),
+                "n_ok": n_ok,
+                "accuracy": out["accuracy"],
+                "rows": [
+                    {
+                        "id": r["id"],
+                        "ok": r["ok"],
+                        "fail_kind": r.get("fail_kind"),
+                        "got_status": r["got_status"],
+                        "expect_status": r["expect_status"],
+                        "query": r["query"],
+                    }
+                    for r in rows
+                ],
+                "note": "Product failure gallery; not Layer-1.",
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    out["written"] = [str(dest), str(gal_path), str(DEFAULT_GALLERY_JSON)]
     if write_smoke:
         out["written"].append(str(SMOKE_OUT))
+    out["out"] = str(dest)
+    out["gallery_md"] = str(gal_path)
     return out
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Owner-corpus dogfood (gitignored results)")
-    ap.add_argument("--corpus", type=Path, default=None)
-    ap.add_argument("--tasks", type=Path, default=DEFAULT_TASKS)
-    ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
-    ap.add_argument("--gallery", type=Path, default=None)
+    ap = argparse.ArgumentParser(
+        description="Owner-corpus classical dogfood (gitignored outputs; no PHI in git)"
+    )
+    ap.add_argument(
+        "--corpus",
+        type=Path,
+        default=None,
+        help="Private folder outside git (default: $OWNER_CORPUS or fixture)",
+    )
     ap.add_argument(
         "--demo",
         action="store_true",
-        help="Use tracked owner_corpus.example stand-in",
+        help="Force public synthetic fixture at wedge_v1/fixtures/owner_corpus",
     )
+    ap.add_argument("--tasks", type=Path, default=DEFAULT_TASKS)
+    ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument("--gallery", type=Path, default=None, help="Failure gallery markdown path")
     ap.add_argument("--smoke", action="store_true", help="Also write results_owner_smoke.json")
     args = ap.parse_args(argv)
 
     corpus = resolve_corpus(corpus=args.corpus, demo=args.demo)
-    docs = load_corpus(corpus)
-    if not docs:
-        print(json.dumps({"error": "NO_CORPUS", "corpus": str(corpus)}, indent=2))
-        return 2
-
-    tasks_path = EXAMPLE_TASKS if args.demo and args.tasks == DEFAULT_TASKS else args.tasks
     out = run(
         corpus,
-        tasks_path,
+        args.tasks,
         out_json=args.out,
-        write_smoke=bool(args.smoke or args.demo),
+        write_smoke=bool(args.smoke),
+        gallery_md=args.gallery,
     )
-    if args.gallery:
-        Path(args.gallery).write_text(
-            failure_gallery_md(out["rows"], Path(corpus)), encoding="utf-8"
+    if out.get("error") == "NO_CORPUS":
+        print(
+            json.dumps(
+                {
+                    "error": "NO_CORPUS",
+                    "corpus": out["corpus"],
+                    "hint": (
+                        "Pass --corpus ~/path/to/private/docs, set OWNER_CORPUS, "
+                        "or use --demo for wedge_v1/fixtures/owner_corpus"
+                    ),
+                },
+                indent=2,
+            )
         )
+        return 2
 
     print(
         json.dumps(
@@ -205,9 +271,15 @@ def main(argv: list[str] | None = None) -> int:
                 "n_ok": out["n_ok"],
                 "n_tasks": out["n_tasks"],
                 "corpus": out["corpus"],
-                "out": str(args.out),
+                "out": out.get("out"),
+                "gallery": out.get("gallery_md"),
                 "rows": [
-                    {"id": r["id"], "ok": r["ok"], "got": r["got_status"], "fail": r["fail_kind"]}
+                    {
+                        "id": r["id"],
+                        "ok": r["ok"],
+                        "got": r["got_status"],
+                        "fail": r.get("fail_kind"),
+                    }
                     for r in out["rows"]
                 ],
             },

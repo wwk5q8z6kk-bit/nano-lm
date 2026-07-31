@@ -1,3 +1,3 @@
-# Unrelated Notes
+# Unrelated
 
-Chemistry notes about sodium chloride. No clinical product claims.
+Sodium chloride notes only.

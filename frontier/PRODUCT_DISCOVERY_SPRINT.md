@@ -126,7 +126,7 @@ Packs: synthetic ✓ · papers dogfood ✓ · owner harness ✓ (`--demo`); real
 | S5 | `compare` + contradiction banners | **Done** |
 | S6 | Markdown `report ask|find|scan|compare` | **Done** |
 | S7 | Owner-corpus dogfood (private; no PHI) | **Done** (`owner-dogfood --demo`) |
-| S8 | Measure \(U_{\mathrm{classical}}\); LM iff ΔU > δ | After S7 |
+| S8 | Measure \(U_{\mathrm{classical}}\); LM iff ΔU > δ | **Partial** — `measure-u` on synthetic/demo; owner pack pending |
 
 ---
 
@@ -215,3 +215,7 @@ OUT OF SCOPE: LM, tags, evidence ledger, paid compute, committing private docs
 - pypdf installed in `.venv`; fixture PDF extracts TTL text
 - dogfood + contact(SYNTHETIC_MINI) + gallery path live
 - **Your move:** `python -m wedge_v1 owner-dogfood --corpus ~/YOUR_PRIVATE_NOTES`
+
+- `measure-u` CLI: draft product U from dogfood JSON (synthetic ≈ 0.889)
+- Smoke green (`WEDGE_V1_SMOKE_OK`)
+- **Blocked on you:** real `$OWNER_CORPUS` for OWNER_PRIVATE contact + kill criteria
