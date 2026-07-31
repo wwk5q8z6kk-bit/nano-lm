@@ -19,6 +19,7 @@ from wedge_v1.arch.failure_codes import FailureCode
 from wedge_v1.arch.trace import AskTrace, classify_abstain_failures
 from wedge_v1.classical.verifier import verify_claim
 from wedge_v1.classical.merge import predicate_claims_for_domains
+from wedge_v1.plugins.cascade import run_cascade
 from wedge_v1.coe.predicates import (
     decompose,
     evaluate_predicates,
@@ -463,20 +464,20 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         trace.event("bm25_margin_gate", "review_hits", n=len(bm25_review))
 
     ql = q.lower()
-    if any(k in ql for k in ("expire", "ttl", "cached", "cache")):
-        claims.append(_expand_ttl_ask(docs, q))
-        solver_path.append("eclass_query_expand")
-        trace.add_solver("eclass_query_expand")
+    # W4: pluggable cascade (synonym/ocr/coref) — no fixture doc-id gates
+    cascade = run_cascade(docs, q)
+    claims.extend(cascade.claims)
+    for mod in cascade.modules_run:
+        name = f"plugin.{mod}"
+        solver_path.append(name)
+        trace.add_solver(name)
+    if cascade.modules_run:
+        trace.event("plugin_cascade", "ran", modules=cascade.modules_run, n=len(cascade.claims))
     if "dose" in ql or "metformin" in ql:
         claims.append(S.symbolic_dose_change(docs))
         claims.append(S.union_dosages(docs))
         solver_path.append("eclass_symbolic_dose+union")
         trace.add_solver("eclass_symbolic_dose+union")
-    if any(k in ql for k in ("binding", "coref", "antecedent", "pronoun")) or re.search(r"\bit\b", ql):
-        if "binding_coref" in docs:
-            claims.append(S.coref_binding("binding_coref", docs["binding_coref"]))
-            solver_path.append("eclass_coref_lite")
-            trace.add_solver("eclass_coref_lite")
 
     # Optional decidable verifier pass (records rejects; presentation still uses evidence gate)
     verified = [verify_claim(c) for c in claims]
@@ -663,13 +664,13 @@ def scan(corpus_dir: Path | None = None) -> dict:
     claims.append(S.union_dosages(docs))
     claims.append(S.symbolic_dose_change(docs))
     claims.append(S.flag_entity_collision(docs))
-    if "binding_coref" in docs:
-        claims.append(S.coref_binding("binding_coref", docs["binding_coref"]))
+    casc = run_cascade(docs, want={"synonym", "ocr", "coref"})
+    claims.extend(casc.claims)
 
     return {
         "answer_status": "SUPPORTED",
         "claims": [claim_to_dict(c) for c in claims if c.status not in {"MISSING"}],
-        "solver_path": ["scan_classical+eclass"],
+        "solver_path": ["scan_classical+eclass", "plugin_cascade"],
         "n_docs": len(docs),
         "n_claims": len(claims),
     }

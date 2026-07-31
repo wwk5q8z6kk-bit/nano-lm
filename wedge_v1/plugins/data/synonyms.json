@@ -1,0 +1,42 @@
+{
+  "schema": "nano-lm.wedge_v1.synonym_map.v1",
+  "expand": {
+    "expire": [
+      "ttl",
+      "timeout",
+      "seconds",
+      "invalidation"
+    ],
+    "expiration": [
+      "ttl",
+      "timeout",
+      "seconds"
+    ],
+    "expires": [
+      "ttl",
+      "timeout",
+      "seconds"
+    ],
+    "cached": [
+      "cache",
+      "ttl"
+    ],
+    "entries": [
+      "cache"
+    ],
+    "long": [
+      "ttl",
+      "seconds",
+      "duration"
+    ],
+    "how long": [
+      "ttl",
+      "seconds"
+    ],
+    "cached entries": [
+      "cache",
+      "ttl"
+    ]
+  },
+  "note": "Frozen lexical expand map \u2014 not LM embeddings."
+}

@@ -100,3 +100,10 @@ Implementation: `wedge_v1/coe/` · see `frontier/COE_SLICE_REPORT.md`.
 - `wedge_v1/coe/predicates.py` — conjunction → atomic predicates (incl. `open`)
 - `wedge_v1/classical/merge.py` — field merge with spans; DISPUTED on conflict
 - `ask()` gate emits `COE_INCOMPLETE_CONJUNCTION` when any conjunct unsupported
+
+
+### W4 slice notes
+
+- `wedge_v1/plugins/` — synonym / OCR / coref modules
+- Lexicons: `plugins/data/{synonyms,ocr_substitutions,coref_entities}.json`
+- `ask()`/`scan()` call `run_cascade` — coref works after renaming `binding_coref`

@@ -8,6 +8,8 @@ from __future__ import annotations
 import re
 
 from .solvers import Claim, _find
+from wedge_v1.plugins import coref as coref_plugin
+from wedge_v1.plugins import synonym as synonym_plugin
 
 
 QUERY_EXPAND = {
@@ -29,6 +31,16 @@ def expand_query_terms(query: str) -> set[str]:
 
 def probe_t35(docs: dict[str, str]) -> Claim:
     query = "How long before cached entries expire?"
+    plug = synonym_plugin.probe_ttl(docs, query)
+    if plug.status == "PRESENT":
+        return Claim(
+            "T35",
+            plug.doc_id,
+            {"query": query, "answer": plug.value, "method": "query_expand"},
+            evidence=plug.evidence,
+            status="CONFIRMED",
+            notes="eclass_query_expand",
+        )
     terms = expand_query_terms(query)
     best = None
     best_score = 0
@@ -76,35 +88,15 @@ def probe_t36(docs: dict[str, str]) -> Claim:
 
 
 def probe_t39(docs: dict[str, str]) -> Claim:
-    text = docs.get("binding_coref", "")
-    if not text:
-        return Claim("T39", "binding_coref", {"bindings": []}, status="ABSTAIN", notes="eclass_coref_lite")
-    body_lines = []
-    for ln in text.splitlines():
-        s = ln.strip()
-        if not s or s.startswith("#") or s.startswith("Authors:") or s.startswith("Year:"):
-            continue
-        body_lines.append(s)
-    body = " ".join(body_lines)
-    sents = [s.strip() for s in re.split(r"(?<=[.!?])\s+", body) if s.strip()]
-    bindings = []
-    entity_re = re.compile(r"\b(Metformin|Placebo)\b")
-    for i, sent in enumerate(sents):
-        if not re.match(r"^It\b", sent) or i == 0:
-            continue
-        ents = entity_re.findall(sents[i - 1])
-        if len(ents) == 1:
-            bindings.append({"pronoun_sent": sent, "antecedent": ents[0], "prev": sents[i - 1]})
-    if bindings:
-        return Claim(
-            "T39",
-            "binding_coref",
-            {"bindings": bindings, "method": "coref_lite"},
-            evidence=[{"doc_id": "binding_coref", "text": bindings[0]["antecedent"]}],
-            status="CONFIRMED",
-            notes="eclass_coref_lite",
-        )
-    return Claim("T39", "binding_coref", {"bindings": [], "method": "coref_lite"}, status="ABSTAIN", notes="eclass_coref_lite")
+    # W4: any doc via plugin; prefer first PRESENT
+    found = coref_plugin.probe_docs(docs)
+    if found:
+        c = found[0]
+        c.notes = "eclass_coref_lite"
+        if c.status == "PRESENT":
+            c.status = "CONFIRMED"
+        return c
+    return Claim("T39", None, {"bindings": []}, status="ABSTAIN", notes="eclass_coref_lite")
 
 
 def apply_eclass_overrides(claims: list[Claim], docs: dict[str, str]) -> list[Claim]:
