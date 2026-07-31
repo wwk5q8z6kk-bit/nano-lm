@@ -21,6 +21,10 @@ ALLOW_EXACT = {
     "papers/EXECUTION_QUEUE.md",
     "papers/DECISION_GATES.md",
     "papers/FIRST_PRINCIPLES_RISK_MITIGATION.md",
+    "papers/OWNER_SPEECH_ACTS.md",
+    "papers/PUBLIC_ONE_PAGER.md",
+    "papers/MITIGATION_STATUS_SCORECARD.md",
+    "papers/PAPER_ALPHA_CORRECTION_NOTE.md",
     "papers/AMBITION.md",
     "AGENTS.md",
     "audit/discussion-to-implementation/SWARM_QUEEN_SYNTHESIS_2026-07-31.md",
@@ -32,6 +36,7 @@ DOC_MENTION_ALLOW = ALLOW_EXACT | {
     "papers/LABORATORY_CONSTITUTION.md",
     "papers/CLAIM_GLOSSARY.md",
     "scripts/lint_claim_auth.py",
+    "scripts/classify_owner_speech_act.py",
     "trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md",
 }
 
@@ -50,6 +55,9 @@ FORBIDDEN_PHRASE_ALLOW = {
     "papers/EVIDENCE_LEDGER.md",
     "papers/EVIDENCE_LEDGER.json",
     "papers/FIRST_PRINCIPLES_RISK_MITIGATION.md",
+    "papers/PUBLIC_ONE_PAGER.md",
+    "papers/MITIGATION_STATUS_SCORECARD.md",
+    "papers/PAPER_ALPHA_CORRECTION_NOTE.md",
     "papers/ANOMALY_LOG.md",
     "papers/CLAIM_GLOSSARY.md",
     "audit/discussion-to-implementation/WITHDRAWAL_SPEC.md",
@@ -61,6 +69,26 @@ FORBIDDEN_PHRASE_ALLOW = {
     "trajectory/E1_DECISION_VS_COST_SPLIT.md",
     "scripts/lint_claim_auth.py",
     "AGENTS.md",
+}
+
+
+# B7 — nano 3.15M must not be paired with ~200M without correction/errata path
+TOKEN_ERRATA_ALLOW = {
+    "papers/PAPER_ALPHA_CORRECTION_NOTE.md",
+    "papers/FIRST_PRINCIPLES_RISK_MITIGATION.md",
+    "papers/PUBLIC_ONE_PAGER.md",
+    "papers/MITIGATION_STATUS_SCORECARD.md",
+    "papers/PAPER_ALPHA_CORRECTION_NOTE.md",
+    "papers/MITIGATION_STATUS_SCORECARD.md",
+    "papers/PUBLIC_ONE_PAGER.md",
+    "papers/EMPIRICAL_FOUNDATION.md",
+    "papers/EVIDENCE_LEDGER.md",
+    "papers/EVIDENCE_LEDGER.json",
+    "pretrain/AUDIT.md",
+    "scale/AUDIT.md",
+    "AGENTS.md",
+    "scripts/lint_claim_auth.py",
+    "trajectory/E1_DECISION_VS_COST_SPLIT.md",
 }
 
 def _phrase_allowed(rel: str, line: str) -> bool:
@@ -125,6 +153,27 @@ def main() -> int:
         if rel.endswith("AUTH_RECORD.md"):
             if "AUTHORIZE_" in text and "valid_only_if_queued" not in text and "VALID_ONLY_IF_QUEUED" not in text:
                 errors.append(f"{rel}: AUTH_RECORD contains AUTHORIZE_* without valid_only_if_queued marker")
+
+
+        # B7: false methods claim — both own-stack anchors ~200M (nano is 32.8M)
+        # Enforce on public-facing claim surfaces only; preregs/code may mention both budgets.
+        b7_surfaces = (
+            rel.startswith("papers/paper1")
+            or rel.startswith("papers/latex/")
+            or rel in {"README.md", "papers/RESEARCH_PROGRAM.md", "papers/writing_audit.md"}
+        )
+        if b7_surfaces and rel not in TOKEN_ERRATA_ALLOW:
+            low = text.lower()
+            if ("3.15" in low) and ("200m" in low or "~200m" in low or "~200 m" in low):
+                if "32.8" not in low and "correction" not in low and "errata" not in low:
+                    errors.append(
+                        f"{rel}: public methods surface pairs 3.15M with ~200M without 32.8M/correction (B7)"
+                    )
+
+        # B14: AUTH_RECORD with AUTHORIZE_ should declare scope_bits
+        if rel.endswith("AUTH_RECORD.md") and "AUTHORIZE_" in text:
+            if "scope_bits" not in text and "SCOPE_BITS" not in text:
+                errors.append(f"{rel}: AUTH_RECORD missing scope_bits[] (B14 least privilege)")
 
     if errors:
         print("lint_claim_auth: FAIL")

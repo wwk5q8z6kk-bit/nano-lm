@@ -22,4 +22,7 @@ Generated 2026-07-31. Start at `EXECUTIVE_SUMMARY.md`.
 | WITHDRAWAL_SPEC.json                     | Machine-readable companion |
 | CANONICAL_STATUS_TABLE.md                | Status authority          |
 
+## Freeze / evidence classes
 
+See `STRATIGRAPHY.md` (paper-alpha-v1 → premature freeze tag → proposed reconciled tag) and root `EVIDENCE_CURRENT.md`.
+See `POST_ALPHA_EVIDENCE_FREEZE.md` (PUBLIC-ANCHORED / LOCAL-DOCUMENTARY / ASPIRATIONAL), `REVISED_DISCOVERY_PASS_ACCEPTANCE.md`, and `.autonomous/post-alpha-evidence-freeze/READY_FOR_OWNER.md`.

@@ -112,3 +112,34 @@ FINAL_FREEZE_READY_FOR_OWNER_TAG_AUTHORIZATION
 
 Idle pending explicit authorization to create annotated tag  
 `post-alpha-reconciled-evidence-freeze-2026-07-31` at `b5898ce4bdf3`.
+
+---
+
+## Addendum — hybrid pointer (2026-07-31T15:31Z)
+
+Tip advanced after original report. Current `origin/master` / proposed tag target:
+
+`48026772fa2913a28a6063e92b66c91c2fd6e37e`
+
+Root pointer draft: `EVIDENCE_CURRENT.md`. Stratigraphy: `STRATIGRAPHY.md`.  
+Annotated tag still **not** created. Prior proposed target `b5898ce` is superseded by tip advance (constitution docs commit).
+
+---
+
+## Addendum — tag DEFER (2026-07-31T18:12Z)
+
+Council hybrid Phase 3: **DEFER** `post-alpha-reconciled-evidence-freeze-2026-07-31`.
+
+- `origin/master` now `71004232992dd09139b39b5a719d1373f4a9f0e3` (not the older proposed tips `b5898ce` / `4802677`)
+- E4 execute commit `6af178d` is ancestor of origin: **YES**
+- Reconciled freeze tag remains **ABSENT**
+- See `COUNCIL_HYBRID_CLOSEOUT.md` Phase 3–4; root `EVIDENCE_CURRENT.md` refreshed to DEFER
+
+---
+
+## Addendum — hybrid executor refresh (2026-07-31T18:13Z)
+
+Pointer/stratigraphy refreshed with residual honesty block (E2/E4/FABRIC/E3-human/tokenizer_hash).
+`PUBLIC_EVIDENCE_FREEZE` remains **HISTORICAL_TAG_ONLY / INCOMPLETE** — reconciled tag ABSENT.
+No commit/tag performed (`OWNER_COMMIT_OK`/`OWNER_TAG_OK` absent under `.autonomous/post-alpha-freeze-hybrid/`).
+Immutable tags verified unmoved.
