@@ -2,7 +2,7 @@
 
 *Generated 2026-07-31T14:05:23.760984+00:00*
 *HEAD `b43680a0a909331ebf1dfc93e09aa7f586440a91`*
-*Proposed tag (NOT created): `post-alpha-evidence-freeze-2026-07-31`*
+*Premature public tag (EXISTS; preserve): `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb1c456…`*
 
 ## Checks
 

@@ -1,3 +1,5 @@
+> **Evidence-class note (2026-07-31T15:27:41.980781+00:00):** E1/E3 primaries are PUBLIC-ANCHORED at `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb1c456`. C3 replication JSONL is DURABLE_TRACKED under `artifacts/durable_raw/`. Untracked post-α narrative is obsolete for those primaries. See discovery labels PUBLIC-ANCHORED / LOCAL-DOCUMENTARY / ASPIRATIONAL.
+
 # Archival Artifact Inventory
 
 *Regenerated 2026-07-31 (Phase 1 baseline recorded before freeze edits).
@@ -84,7 +86,7 @@ Paper α methods claiming both anchors pretrained on ~200M is **false for 3.15M*
 1. Git commit of UNTRACKED_LOCAL primary E1/E3 JSON + manifests + freeze docs.
 2. GitHub Release `post-alpha-raw-jsonl` attaching `artifacts/local_raw_archive/*` (esp. replication JSONL).
 3. Or Git LFS for ignored replication/fabric JSONL.
-4. Proposed tag after commit: `post-alpha-evidence-freeze-2026-07-31` (**not created**).
+4. Premature public tag `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` (**EXISTS**; PRESERVE / DO NOT RECREATE). Future final tag = **new distinct name** only.
 
 ## Machine-readable
 

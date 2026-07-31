@@ -28,4 +28,4 @@ Audit target: `papers/paper1_draft.md` + `papers/latex/paper1.tex` (post DIFF H/
 - E1/E3 primary JSON currently LOCAL_UNTRACKED until freeze commits.
 - C-1b/C-3 raw JSONL: local archive present; gitignored; RESULT_ACCEPTED_WITH_REPRODUCIBILITY_LIMITATION if not durably published.
 - Camera-ready PDF not rebuilt in this remediation pass.
-- Owner must authorize tag `post-alpha-evidence-freeze-2026-07-31`.
+- Premature tag `post-alpha-evidence-freeze-2026-07-31` already exists at `a9d12cb` — preserve; authorize only a **new distinct** final tag if desired.
