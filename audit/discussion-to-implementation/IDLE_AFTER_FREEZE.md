@@ -1,13 +1,15 @@
 # IDLE After E4 KILL — Governance Note
 
-**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_E4_KILL`  
+**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_NOISY_DIAGNOSTIC` (operating; supersedes bare `IDLE_AFTER_E4_KILL`)  
+**SCIENCE_TRACK_STATUS:** `IDLE_AFTER_E4_KILL`  
 **AUTHORIZED_NONEXECUTION_WORK:** `NONE`  
 **E4_PROTOCOL_STATUS:** `EXECUTED`  
 **E4_RESULT:** `KILL`  
+**PRODUCT_WEDGE_V1:** runtime live; Phases 1–3 + noisy done; LM not indicated  
 **Evidence freeze tag (immutable):** `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb1c456f6c465284e1d469c6326cb14d329`  
 **E4 auth:** `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31) — `trajectory/e4/AUTH_RECORD.md`  
 **Date:** 2026-07-31  
-**Companions:** `CANONICAL_STATUS_TABLE.md`, `papers/AMBITION.md`, `trajectory/PREREG_E4_Rstar_killgate.md`
+**Companions:** `CANONICAL_STATUS_TABLE.md`, `papers/AMBITION.md`, `papers/LABORATORY_CONSTITUTION.md`, `trajectory/PREREG_E4_Rstar_killgate.md`
 
 ## What idle means now
 

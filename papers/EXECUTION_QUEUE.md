@@ -1,36 +1,42 @@
 # Execution Queue
 
-**Operating doc — what we are authorized to do *now*.**
-**Adopted:** 2026-07-31
+**Operating doc — what we are authorized to do *now*.**  
+**Adopted:** 2026-07-31  
+**Constitution:** `LABORATORY_CONSTITUTION.md`  
+**Strategic center:** `papers/STRATEGIC_RESET.md`  
 **Active wedge:** `papers/WEDGE_V1.md`
 
 ```text
-PROGRAM_EXECUTION_STATUS: IDLE_AFTER_NOISY_DIAGNOSTIC
-PRIMARY_U: clean-track classical (≈0.891)
-PHASE3: ECLASS_CLOSED_WITHOUT_LM
-NOISY_TRACK: NOISY_INGEST_NORMALIZE_SUFFICIENT
+PROGRAM_EXECUTION_STATUS: IDLE_AFTER_DOGFOOD
+AUTHORIZED_NONEXECUTION_WORK: NONE
+RUNTIME_SLICE: LIVE
+DOGFOOD_RESULT: wedge_v1/results_wedge_v1_dogfood.json
+DOGFOOD_ACCURACY: 1.0 (8/8)
 LM_PROBE: NOT_INDICATED
 TRAINING: NOT_AUTHORIZED
-NANOSCRIBE: STOP
-E4_EXECUTE: BLOCKED
-NEXT: IDLE — or owner auth for real private corpus / product packaging
+NANOSCRIBE_PRODUCT_EXPANSION: STOP
+OLD_TASK_RUNS_UNDER_OLD_TASK_U: FORBIDDEN
 ```
 
 ## Queue
 
-| Priority | Item | Status |
-|----------|------|--------|
-| 0 | Freeze integrity | Standing |
-| 1–3 | Wedge Phases 1–3 | DONE |
-| 4 | Noisy-track diagnostic | **DONE** — normalize recovers (gap≈0.032≤δ); raw U collapses |
-| — | LM / training / NanoScribe | Not authorized |
+| Priority | Item | Auth | Type | Notes |
+|----------|------|------|------|-------|
+| 0 | Freeze integrity | Standing | Ops | Do not move premature freeze tag |
+| 1 | Classical + E-class | Done | Measure | LM not indicated |
+| 2 | Runtime CLI | Done | Build | `ask|find|scan|smoke|dogfood` |
+| 3 | Papers dogfood | Done | Measure | 8/8 classical; fail-closed OOS |
+| — | LM / memory / NanoScribe | — | — | Forbidden |
 
-## Results
+## Explicitly not queued
 
-| Artifact | Role |
-|----------|------|
-| `wedge_v1/results_wedge_v1_classical.json` | Primary clean U |
-| `wedge_v1/results_wedge_v1_phase3.json` | E-class closed without LM |
-| `wedge_v1/results_wedge_v1_noisy_diagnostic.json` | Diagnostic noisy raw vs normalized |
+- LM probe · training · E4′ · agents · memory · Fabric v2  
 
-Idle is valid.
+## How items enter this queue
+
+Only via `DECISION_GATES.md` + explicit owner authorization string.
+
+## Speech-act note
+
+Owner `continue` ⇒ `CONTINUE_SESSION` (`papers/OWNER_SPEECH_ACTS.md`): ungated M0 only.  
+Does **not** authorize `U_FREEZE`, `OWNER_CORPUS`, commit, tag, push, or LM.

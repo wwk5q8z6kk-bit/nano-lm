@@ -7,14 +7,14 @@
 | | |
 |---|---|
 | **Freeze tag** | `post-alpha-evidence-freeze-2026-07-31` |
-| **Program state** | `IDLE_AFTER_E4_KILL` — E4 **KILL** on R★ (`AUTHORIZE_E4_BUILDER_AND_EXECUTE`); no E2 / fabric / NanoScribe expansion; R★ revision budget 1 |
+| **Program state** | Science: `IDLE_AFTER_E4_KILL` (E4 **KILL** on R★). Product: `IDLE_AFTER_NOISY_DIAGNOSTIC` + runtime CLI live; next needs typed `AUTHORIZE_WEDGE_V1_*`. No E2/fabric/NanoScribe expansion; R★ revision budget 1 |
 | **In-tree** | Paper α measurement spine (`paper-alpha-v1`) **plus** post-α E1/E3 evidence bundle archived at the freeze tag |
 | **Not claimed by tag** | Retroactive proof of pre-run preregistration chronology; full CUDA bit-identical fine-tuning; dual-clinician human evaluation |
 | **E3** | Agent-applied rubric audit (`agent-rubric-pass-1`) — **not** human/clinician evaluation; dual-clinician IAA **open** |
 | **ρ in E1 \(U\)** | **Review load** (flagged fields / \(n\)), **not** hallucination |
 | **Fabric** | Scoped verification / regression harness — **≠** NanoScribe architecture |
 
-**Hybrid closeout:** [`audit/discussion-to-implementation/COUNCIL_HYBRID_CLOSEOUT.md`](audit/discussion-to-implementation/COUNCIL_HYBRID_CLOSEOUT.md) · **Evidence map:** [`papers/EVIDENCE_MANIFEST.json`](papers/EVIDENCE_MANIFEST.json) · [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md) · [`papers/EMPIRICAL_FOUNDATION.md`](papers/EMPIRICAL_FOUNDATION.md) · soft-claim withdrawals: [`audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`](audit/discussion-to-implementation/WITHDRAWAL_SPEC.md). Distinguish **Paper α** (`paper-alpha-v1`) from the **post-α freeze bundle** (E1 KILL + E3 construct artifacts).
+**Outsider entry:** [`papers/PUBLIC_ONE_PAGER.md`](papers/PUBLIC_ONE_PAGER.md) · **Speech acts:** [`papers/OWNER_SPEECH_ACTS.md`](papers/OWNER_SPEECH_ACTS.md) (`continue` = M0 only) · **Hybrid closeout:** [`audit/discussion-to-implementation/COUNCIL_HYBRID_CLOSEOUT.md`](audit/discussion-to-implementation/COUNCIL_HYBRID_CLOSEOUT.md) · **Evidence map:** [`papers/EVIDENCE_MANIFEST.json`](papers/EVIDENCE_MANIFEST.json) · [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md) · [`papers/EMPIRICAL_FOUNDATION.md`](papers/EMPIRICAL_FOUNDATION.md) · soft-claim withdrawals: [`audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`](audit/discussion-to-implementation/WITHDRAWAL_SPEC.md). Distinguish **Paper α** (`paper-alpha-v1`) from the **post-α freeze bundle** (E1 KILL + E3 construct artifacts).
 
 A 3.15M-parameter decoder-only transformer built end-to-end: data pipeline, tokenizer,
 pretraining, and supervised fine-tuning (SFT) — all trained locally on Apple Silicon (MPS),

@@ -1,11 +1,11 @@
 # nano-lm — Public one-pager
 
 **Status:** NONCLAIM packaging for outsiders (editors/funders). Not Layer-1 evidence.  
-**Companions:** `EVIDENCE_LEDGER.md`, `STRATEGIC_RESET.md`, `FIRST_PRINCIPLES_RISK_MITIGATION.md`
+**Companions:** `EVIDENCE_LEDGER.md`, `STRATEGIC_RESET.md`, `FIRST_PRINCIPLES_RISK_MITIGATION.md`, `MITIGATION_STATUS_SCORECARD.md`
 
 ## One sentence
 
-**Proven:** under a frozen closed synthetic scribe task and frozen utility, a template extractor (M1) beats the tested generative refs; **frozen:** Paper α + E1 KILL (E4 blocked; do not reopen old \(U\)); **next:** classical verification-gated wedge on useful tasks — not NanoScribe, not E4 substrate revival.
+**Proven (scoped):** under a frozen closed synthetic scribe task and frozen utility, classical template extraction beats the tested generative refs (E1 KILL). **Product path now:** classical + verify + abstain on local research docs (Wedge v1) — not NanoScribe, not E4 substrate revival, not “tiny LM leaderboard.”
 
 ## Proven (scoped)
 
@@ -15,24 +15,29 @@
 | Diversity / adaptation / field localization alter the profile | Paper α |
 | On old-task frozen \(U\), M1 dominates official M0 (KILL) | E1; generative not preferred for that task |
 | Fabric slice can drive presented error→0 under decidable \(R\) on synthetic v2 | Stage G/A; ≠ open-world zero hallucination |
+| Wedge v1 classical+E-class on **synthetic mini-corpus** | `SYNTHETIC_MINI`; draft U; LM not indicated |
+| Papers-folder dogfood (8/8 classical ask/find) | In-repo docs only — **not** owner private corpus / clinical |
 
 ## Frozen / stopped
 
 - `paper-alpha-v1` and premature `post-alpha-evidence-freeze-2026-07-31` — **do not retarget**
 - Old-task runs under `OLD_TASK_U` — **FORBIDDEN**
 - E2 — **GATED/STOP** (no RESULT)
-- E4 generative resurrection — **BLOCKED** until separate owner auth against anti-rigging protocol
-- NanoScribe / fabric-as-OS — **STOP** (fabric = thin verify slice only)
+- E4 generative resurrection — **BLOCKED** until separate owner disposition
+- NanoScribe / fabric-as-OS — **STOP**
+- Owner utterance `continue` — **CONTINUE_SESSION** (M0 hygiene only); does **not** authorize execute/commit/tag/push (`OWNER_SPEECH_ACTS.md`)
 
 ## Explicitly not claimed
 
-See ledger FORBIDDEN / unresolved rows (clinical deployment, open-world zero-error, NanoScribe-as-product, parameter-only scale law, clinician IAA). Also not claimed: that no generative-value regime exists anywhere.
+Clinical deployment, open-world zero-error, NanoScribe-as-product, parameter-only scale law, clinician IAA, production readiness from synthetic or papers-dogfood U.
 
 ## Corrections outsiders must see
 
 Nano 3.15M pretrain tokens = **32.8M** (not ~200M). See `PAPER_ALPHA_CORRECTION_NOTE.md`.  
 E3 Stage-1 = **agent-rubric** audit, not clinicians.
 
-## What we want attention for next
+## What we want attention for next (typed auth only)
 
-A small **classical + verify + abstain** system that wins on useful local tasks (Wedge v1), measured under frozen utility — LM only if an authorized E-class probe shows positive \(\Delta U\).
+1. `AUTHORIZE_WEDGE_V1_U_FREEZE` — freeze draft utility weights  
+2. `AUTHORIZE_WEDGE_V1_OWNER_CORPUS` — classical contact on owner-local docs (no PHI in git)  
+3. Or idle / science packaging (`authorize commit` for ledger context_of_use split)
