@@ -1,6 +1,9 @@
 # Ambition — program continues under design discipline
 
 **Authority date:** 2026-07-31  
+**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_FREEZE`  
+**AUTHORIZED_NONEXECUTION_WORK:** `E4_DESIGN_ONLY`  
+**E4_PROTOCOL_STATUS:** `DESIGN_DRAFT` / `EXECUTION_BLOCKED`  
 **Owner authorization in force:** `AUTHORIZE_E4_DESIGN_ONLY`  
 **Public evidence freeze:** `post-alpha-evidence-freeze-2026-07-31`  
 **Companions:** `RESEARCH_PROGRAM.md`, `EMPIRICAL_FOUNDATION.md`,
@@ -51,8 +54,8 @@ cherry-pick by observing classical failure after the fact.
 
 | Object | Status |
 |--------|--------|
-| E4 | `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` |
-| R★ | `DESIGN_HARDENED` (protocol); no eval world frozen |
+| E4 | `DESIGN_DRAFT` / `EXECUTION_BLOCKED` / `WORLD_NOT_FROZEN` / `NO_DATA` / `NO_RESULT` |
+| R★ | `DESIGN_HARDENED` (protocol text); **world NOT_FROZEN** |
 | Stage 4 run | **Not authorized** |
 | Forbidden phrases | “next stage running”; “E4 authorized to execute”; “product path unlocked” |
 

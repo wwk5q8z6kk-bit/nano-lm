@@ -1,3 +1,5 @@
+**E4_WORLD_STATUS:** `NOT_FROZEN` · **E4_DATA_STATUS:** `NONE` · **E4_RESULT_STATUS:** `NONE`
+
 # P1 annex — Regime R★ (design-hardened)
 
 *Product-path boundary. Decision lock: `trajectory/DECISION_P1_program_lock.md`.
@@ -198,3 +200,17 @@ baselines, fairness matrix, consequences, builder checklist.
 
 **Product evolution may serve R★ only after a non-circular, precommitted kill gate;
 the E1 world remains a dead generative-substrate thesis under `OLD_TASK_U`.**
+
+
+## Admissibility rejects (design-only checklist)
+
+A candidate R★ is **inadmissible** if it relies on:
+
+- hidden labels available only to the generative model;
+- arbitrary prohibition of dictionaries, parsers, search, or retrieval without pricing that ban in U;
+- examples that leak the answer;
+- scoring that rewards verbosity or free-form style rather than task value;
+- cost terms omitted selectively across methods;
+- or construction chosen after observing model performance.
+
+Classical failure must be intrinsic to the task under information-parity, not an artifact of withholding classical capabilities.

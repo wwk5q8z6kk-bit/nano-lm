@@ -1,5 +1,8 @@
 # NanoScribe — Master Plan (owner rewrite, 2026-07-20)
 
+> **Not the active implementation queue (2026-07-31).** This document records architectural research and future hypotheses. It is not the active build queue. Components are unimplemented unless linked to code, tests, and measured artifacts. **Phases 3–4 = STOP** under `PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE` and `NANOSCRIBE_PRODUCT_EXPANSION: STOP`. Active program = evidence archive + optional E4 **design-only** protocol work.
+
+
 *Condensed-faithful capture of the owner's rewritten master plan; supersedes the
 roadmap portions of NANOSCRIBE_VNEXT.md (whose architectural content it absorbs).
 Crossing-note: the plan's ground-truth table was written concurrently with the C-1
@@ -56,9 +59,9 @@ abstention) → human reviews residual → memory stores only validated state.
   rates + full provenance per claim.
 - **Phase 2 — residual first-class:** ledger tracks slot diversity + coverage; run
   C-1b (interference); verifier flags binding failures, not just surface mismatches.
-- **Phase 3 — controlled expansion:** one bounded module at a time; each declares
+- **Phase 3 — controlled expansion: `STOP` (not authorized):** one bounded module at a time; each declares
   read/write contracts, passes the regression suite, shows no contamination increase.
-- **Phase 4 — functional scalability dashboard:** clean gap (primary), unverifiable-
+- **Phase 4 — functional scalability dashboard: `STOP` (not authorized):** clean gap (primary), unverifiable-
   claim rate, provenance completeness, contamination rate, failure recovery.
 
 ## Decision points

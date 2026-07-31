@@ -1,6 +1,7 @@
 # P2 / PREREG — E4 kill gate on regime R★
 
-**Status:** `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`  
+**Status:** `DESIGN_DRAFT` / `EXECUTION_BLOCKED` / `WORLD_NOT_FROZEN` / `NO_DATA` / `NO_RESULT`
+**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_FREEZE` · **AUTHORIZED_NONEXECUTION_WORK:** `E4_DESIGN_ONLY`  
 **Owner auth in force:** `AUTHORIZE_E4_DESIGN_ONLY` (2026-07-31) — **docs only**.  
 **Not authorized:** Stage 4 runs, R★ world freeze, GPU/paid compute, E2, fabric v2.  
 **Public freeze tag:** `post-alpha-evidence-freeze-2026-07-31` (evidence packaging; ≠ E4 execute).  
@@ -28,7 +29,7 @@ PAPER_α = FROZEN
 OLD_TASK_RUNS = FORBIDDEN            # under OLD_TASK_U / m0–m4 isomorphism
 E2_DEFAULT = GATED
 FABRIC_DEFAULT = GATED               # Fabric ≠ NanoScribe
-E4_STATUS = DESIGN_IN_PROGRESS / EXECUTION_BLOCKED
+E4_STATUS = DESIGN_DRAFT / EXECUTION_BLOCKED / WORLD_NOT_FROZEN / NO_DATA / NO_RESULT
 ```
 
 ---
@@ -235,14 +236,26 @@ On **default** \(U_{R★}^{\mathrm{draft}}\), mean over locked instances:
 
 | Verdict | Rule | Program will do |
 |---------|------|-----------------|
-| **KILL** | \(U^{\star}_{\mathrm{class}} \ge U^{\star}_{\mathrm{gen}} - \delta_{R★}\) | Generative **not** justified in R★ either → stop product path **or** at most **one** R★ revision then re-gate; else remain idle on product. **No** NanoScribe / fabric expansion. |
-| **SURVIVE** | \(U^{\star}_{\mathrm{gen}} > U^{\star}_{\mathrm{class}} + \delta_{R★}\) **and** no sensitivity flip | Generative value supported **in R★ only** → Stage 5b minimal stack for that regime; still **not** global NanoScribe authorization; still ≠ “E1 unkill.” |
-| **GRADED** | Margin inside \(\delta\), or sensitivity flips, or gen wins only on pre-registered subsets | Stage 5a routing along winning slices only; no blanket architecture claim; no fabric v2. |
-| **VOID** | Protocol/data/builder violation, leakage, failed probe, information-parity breach, or undecidable \(U\) | **No scientific update**; fix protocol/data; do **not** interpret as SURVIVE or as product unlock. |
+| **KILL** | \(U^{\star}_{\mathrm{class}} \ge U^{\star}_{\mathrm{gen}} - \delta_{R★}\) | **Stop** generative-substrate product track for tested R★. At most **one** preregistered R★ revision then re-gate; else idle. **No** automatic redesign loop. **No** NanoScribe / fabric expansion. |
+| **SURVIVE** | \(U^{\star}_{\mathrm{gen}} > U^{\star}_{\mathrm{class}} + \delta_{R★}\) **and** no sensitivity flip | Value **only in frozen R★**. Does **not** authorize NanoScribe/full product; separate feasibility gate required. Still ≠ “E1 unkill.” |
+| **GRADED** | Margin inside \(\delta\), or sensitivity flips, or gen wins only on pre-registered subsets | Only exact winning locked slice(s); no platform/NanoScribe inference; no fabric v2. |
+| **VOID** | Protocol/data/builder violation, leakage, failed probe, information-parity breach, or undecidable \(U\) | Correct the failed instrument. **Not** evidence for/against generative value. Do **not** interpret as SURVIVE. |
 
 **Precondition (VOID if failed):** inclusion I\* hold; exclusion X\* hold; classical
 probe shows ≥2 of {B1..B4}. Artifact:
 `trajectory/results_e4_classical_probe.json` with `in_Rstar: true/false`.
+
+
+## 3.1 Revision budget after KILL/VOID (design lock)
+
+```text
+RSTAR_REVISION_BUDGET = 1   # at most one preregistered R★ redesign after KILL or VOID
+UNLIMITED_REDESIGN = FORBIDDEN  # prevents substrate-rescue via repeated regime shopping
+```
+
+A revision, if used, must be written **before** re-running Stage 4, with new inclusion/exclusion
+hashes and a fresh owner `AUTHORIZE_E4_EXECUTE`. After the budget is spent, default remains
+`IDLE_AFTER_FREEZE` on the product track.
 
 **Secondary (does not override):** per-axis / per-field breakdown; ecology tag
 `general | generative-helps-binding | generative-helps-paraphrase | inconclusive`.
