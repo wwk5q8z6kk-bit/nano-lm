@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from frontier.verified_ask_report import build_report
+from frontier.verified_ask_report import build_report, format_report_md
 
 ROOT = Path(__file__).resolve().parents[1]
 CORPUS = ROOT / "wedge_v1" / "data" / "corpus"
@@ -18,10 +18,27 @@ def test_supported_ttl_on_synthetic():
     assert isinstance(r["latency_ms"], int)
 
 
+def test_metformin_contradiction_banner():
+    r = build_report("What metformin dose is stated?", corpus_dir=CORPUS)
+    assert r["answer_status"] in {"SUPPORTED", "CONTRADICTED"}
+    # Synthetic corpus plants dose conflict across docs
+    assert r.get("contradiction_banner") or r.get("contradictions_nearby")
+    md = format_report_md(r, title="dose check")
+    assert "Status" in md
+    if r.get("contradiction_banner"):
+        assert "Contradiction banner" in md or "contradict" in md.lower()
+
+
+def test_markdown_report_shape():
+    r = build_report("TTL cache", corpus_dir=CORPUS)
+    md = format_report_md(r)
+    assert md.startswith("#")
+    assert "Claims" in md or "claims" in md.lower() or "No claims" in md
+
+
 def test_abstain_oos():
     r = build_report("What is the capital of Mars colonies in 3100?", corpus_dir=CORPUS)
-    assert r["answer_status"] in {"ABSTAIN", "SUPPORTED"}  # may still find lexical noise; prefer abstain
-    # Prefer abstain; if supported, must have spans
+    assert r["answer_status"] in {"ABSTAIN", "SUPPORTED", "CONTRADICTED"}
     if r["answer_status"] == "SUPPORTED":
         assert r["evidence_spans"]
 
@@ -39,6 +56,8 @@ def test_empty_corpus():
 
 if __name__ == "__main__":
     test_supported_ttl_on_synthetic()
+    test_metformin_contradiction_banner()
+    test_markdown_report_shape()
     test_abstain_oos()
     test_papers_corpus_loads()
     test_empty_corpus()

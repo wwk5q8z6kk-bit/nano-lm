@@ -63,6 +63,21 @@ def build_report(query: str, corpus_dir: Path | None = None) -> dict:
     elif status == "NO_CORPUS":
         abstain_reason = "corpus empty or missing"
 
+    # Prefer ask()-computed query-relevant contradictions + banner when present
+    ask_nearby = ask_out.get("contradictions_nearby") or []
+    if ask_nearby:
+        nearby = ask_nearby
+    banner = ask_out.get("contradiction_banner")
+    if not banner and nearby:
+        kinds = sorted({
+            (n.get("kind") or n.get("task_id") or "flag")
+            for n in nearby
+            if isinstance(n, dict)
+        })
+        banner = f"query-relevant contradictions: {', '.join(str(k) for k in kinds)}"
+        if status == "SUPPORTED" and ask_nearby:
+            status = "CONTRADICTED"
+
     return {
         "product": "verified_ask",
         "mandate": "BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1",
@@ -72,7 +87,10 @@ def build_report(query: str, corpus_dir: Path | None = None) -> dict:
         "claims": claims,
         "evidence_spans": evidence_spans,
         "contradictions_nearby": nearby[:12],
+        "contradictions_corpus": ask_out.get("contradictions_corpus") or [],
+        "contradiction_banner": banner,
         "solver": ask_out.get("solver_path") or [],
+        "solver_path": ask_out.get("solver_path") or [],
         "latency_ms": latency_ms,
         "abstain_reason": abstain_reason,
         "n_docs": ask_out.get("n_docs"),
@@ -84,11 +102,23 @@ def build_report(query: str, corpus_dir: Path | None = None) -> dict:
 
 def format_report_md(report: dict, title: str | None = None) -> str:
     """Human-readable claim report (frontier UX)."""
+    # Prefer shared runtime formatter when present (keeps CLI/report identical).
+    try:
+        from wedge_v1.runtime import format_report_md as _rt_md
+
+        return _rt_md(report, title=title or "Verified Ask")
+    except Exception:
+        pass
     status = report.get("answer_status", "?")
     lines = [
         f"# {title or 'Verified Ask'}",
         "",
         f"**Status:** {status}",
+    ]
+    banner = report.get("contradiction_banner")
+    if banner:
+        lines += ["", f"> **Contradiction banner:** {banner}"]
+    lines += [
         f"**Query:** {report.get('query', '')}",
         f"**Corpus:** {report.get('corpus_dir', '')}",
         f"**Docs:** {report.get('n_docs', 0)}",
@@ -122,10 +152,15 @@ def main(argv: list[str] | None = None) -> int:
         default=ROOT / "wedge_v1" / "data" / "corpus",
         help="Local document folder",
     )
-    p.add_argument("-o", "--output", type=Path, help="Write JSON to path")
+    p.add_argument("-o", "--output", type=Path, help="Write report to path")
+    p.add_argument("--format", choices=["json", "md"], default="json")
     args = p.parse_args(argv)
     report = build_report(" ".join(args.query), corpus_dir=args.corpus)
-    text = json.dumps(report, indent=2) + "\n"
+    if args.format == "md":
+        md = format_report_md(report)
+        text = md if md.endswith("\n") else md + "\n"
+    else:
+        text = json.dumps(report, indent=2) + "\n"
     if args.output:
         args.output.write_text(text, encoding="utf-8")
     else:

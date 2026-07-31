@@ -54,6 +54,13 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("dogfood", help="Score dogfood tasks on papers/ corpus")
     sub.add_parser("smoke", help="Run runtime regression pins")
+    contact = sub.add_parser("contact", help="Labeled corpus contact probe (product eval)")
+    contact.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    contact.add_argument("--class", dest="corpus_class", required=True,
+                        choices=["SYNTHETIC_MINI", "PAPERS_DOGFOOD", "OWNER_PRIVATE"])
+    contact.add_argument("--useful", default=None)
+    contact.add_argument("--not-useful", dest="not_useful", default=None)
+    contact.add_argument("-o", "--output", type=Path, default=None)
     gal = sub.add_parser("gallery", help="Export failure gallery from dogfood JSON")
     gal.add_argument("--from", dest="from_path", type=Path, default=None)
     gal.add_argument("-o", "--output", type=Path, default=None, help="Optional extra md path")
@@ -170,6 +177,22 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write(chr(10))
         return 0 if not g.get("error") else 2
 
+
+    if args.cmd == "contact":
+        from wedge_v1.run_corpus_contact import run_contact
+
+        out = run_contact(
+            args.corpus,
+            corpus_class=args.corpus_class,
+            useful_sentence=args.useful,
+            not_useful_sentence=args.not_useful,
+        )
+        path = args.output or Path("wedge_v1/results_corpus_contact.json")
+        path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
+        json.dump(out, sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        print(f"WROTE {path}", file=sys.stderr)
+        return 0 if out.get("n_docs") else 2
     return 1
 
 

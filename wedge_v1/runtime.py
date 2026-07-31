@@ -606,6 +606,10 @@ def format_report_md(payload: dict, *, title: str | None = None) -> str:
     if payload.get("term"):
         lines.append(f"**Term:** `{payload['term']}`")
     lines.append(f"**Status:** `{status}`")
+    banner = payload.get("contradiction_banner")
+    if banner:
+        lines.append("")
+        lines.append(f"> **Contradiction banner:** {banner}")
     if "n_docs" in payload:
         lines.append(f"**Docs:** {payload['n_docs']}")
     if "n_hits" in payload:
