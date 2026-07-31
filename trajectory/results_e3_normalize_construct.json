@@ -1,0 +1,193 @@
+{
+  "prereg": "trajectory/PREREG_E3_faithfulness_construct.md",
+  "source_e1_items": "trajectory/results_e1_items_M0_scale_voff.json",
+  "normalize_rule": "trajectory/e1/common.py::normalize_value + PLURAL_MAP",
+  "seed": 20260730,
+  "stats_all_methods": {
+    "M0_scale|voff": {
+      "n_fields": 4995,
+      "exact_rate": 0.9027027027027027,
+      "norm_rate": 0.9027027027027027,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 486,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 380,
+        "omission": 106
+      }
+    },
+    "M0_scale|von": {
+      "n_fields": 4995,
+      "exact_rate": 0.9027027027027027,
+      "norm_rate": 0.9027027027027027,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 486,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 380,
+        "omission": 106
+      }
+    },
+    "M1_template|voff": {
+      "n_fields": 5000,
+      "exact_rate": 1.0,
+      "norm_rate": 1.0,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 0,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {}
+    },
+    "M1_template|von": {
+      "n_fields": 5000,
+      "exact_rate": 1.0,
+      "norm_rate": 1.0,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 0,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {}
+    },
+    "M2_dict_span|voff": {
+      "n_fields": 5000,
+      "exact_rate": 0.9252,
+      "norm_rate": 0.9252,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 374,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 374
+      }
+    },
+    "M2_dict_span|von": {
+      "n_fields": 5000,
+      "exact_rate": 0.9252,
+      "norm_rate": 0.9252,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 374,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 374
+      }
+    },
+    "M3_crf_lite|voff": {
+      "n_fields": 5000,
+      "exact_rate": 0.4618,
+      "norm_rate": 0.4618,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 2691,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 2265,
+        "omission": 129,
+        "fabrication": 297
+      }
+    },
+    "M3_crf_lite|von": {
+      "n_fields": 5000,
+      "exact_rate": 0.4618,
+      "norm_rate": 0.4618,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 2691,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 2265,
+        "omission": 129,
+        "fabrication": 297
+      }
+    },
+    "M4_constrained|voff": {
+      "n_fields": 5000,
+      "exact_rate": 0.881,
+      "norm_rate": 0.881,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 595,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 595
+      }
+    },
+    "M4_constrained|von": {
+      "n_fields": 5000,
+      "exact_rate": 0.881,
+      "norm_rate": 0.881,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 595,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "substitution": 595
+      }
+    },
+    "M5_span_clf|voff": {
+      "n_fields": 5000,
+      "exact_rate": 0.6822,
+      "norm_rate": 0.6822,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 1589,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "omission": 1370,
+        "substitution": 120,
+        "fabrication": 99
+      }
+    },
+    "M5_span_clf|von": {
+      "n_fields": 5000,
+      "exact_rate": 0.6822,
+      "norm_rate": 0.6822,
+      "norm_rescue_count": 0,
+      "norm_rescue_rate": 0.0,
+      "both_fail": 1589,
+      "gap_shrink_pts": 0.0,
+      "error_types_exact_fail": {
+        "omission": 1370,
+        "substitution": 120,
+        "fabrication": 99
+      }
+    }
+  },
+  "primary_m0_voff": {
+    "n_fields": 4995,
+    "exact_rate": 0.9027027027027027,
+    "norm_rate": 0.9027027027027027,
+    "norm_rescue_count": 0,
+    "norm_rescue_rate": 0.0,
+    "both_fail": 486,
+    "gap_shrink_pts": 0.0,
+    "error_types_exact_fail": {
+      "substitution": 380,
+      "omission": 106
+    }
+  },
+  "decision_auto": {
+    "norm_gap_shrink_pts": 0.0,
+    "norm_rescue_count": 0,
+    "threshold_collapse_pts": 10.0,
+    "falsifier_stable_pts": 5.0,
+    "verdict_auto": "EXACT_NOT_OVERSTATING_BY_NORMALIZE",
+    "rationale": "Normalize-then-match rescues 0 M0 exact field failures (gap shrink 0.0 pts < 5). Across M1-M5+M0 all arms, rescue_count=0."
+  },
+  "human_arm": {
+    "status": "EXECUTED_BOUNDED_STAGE1",
+    "planned_n": 100,
+    "disagreement_pool_size": 0,
+    "exact_error_pool_size": 486,
+    "amendment": "Disagreement pool empty under frozen normalize; sample 100 exact errors (AMENDMENT 1).",
+    "pack_path": "trajectory/e3_human_rating_pack.json",
+    "pack_sha256": "44c03f80dc6a86146ca325338c58ddf4ebe5e77a72b7f53a139efaa6a3641a77",
+    "results_path": "trajectory/results_e3_human.json",
+    "verdict": "EXACT_SURVIVES",
+    "faithful_rate": 0.0,
+    "limitation": "Single rubric pass (agent-rubric-pass-1); not dual clinician IAA.",
+    "supersedes": "BLOCKED_PENDING_RATER"
+  }
+}

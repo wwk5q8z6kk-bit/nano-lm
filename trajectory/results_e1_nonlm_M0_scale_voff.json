@@ -1,0 +1,161 @@
+{
+  "method": "M0_scale",
+  "verify_on": false,
+  "cost_C": 1.0,
+  "summary": {
+    "parse": 0.999,
+    "recall": 0.9018,
+    "halluc": 0.076,
+    "omission": 0.0212,
+    "held_recall": 0.8092,
+    "seen_recall": 0.9963959595959595,
+    "gap_pts": 18.71959595959596,
+    "P": 0.9026924623115578,
+    "M": 0.09819999999999998,
+    "rho": 0.001,
+    "L_p50": 0.2948630001861602,
+    "C": 1.0,
+    "U": 0.7973952023078346,
+    "liability_presented_bad": 14.2,
+    "correct_norm_rate": 0.9018,
+    "n_items": 200.0,
+    "n_fields": 1000.0,
+    "U_sensitivity": [
+      {
+        "weights": {
+          "alpha": 1.0,
+          "beta": 0.5,
+          "gamma": 0.3,
+          "lam": 0.02,
+          "kappa": 0.05
+        },
+        "U_mean": 0.7973952023078346
+      },
+      {
+        "weights": {
+          "alpha": 1.0,
+          "beta": 1.0,
+          "gamma": 0.3,
+          "lam": 0.02,
+          "kappa": 0.05
+        },
+        "U_mean": 0.7482952023078346
+      },
+      {
+        "weights": {
+          "alpha": 1.0,
+          "beta": 0.5,
+          "gamma": 0.6,
+          "lam": 0.02,
+          "kappa": 0.05
+        },
+        "U_mean": 0.7970952023078346
+      }
+    ]
+  },
+  "per_instance": [
+    {
+      "parse": 1.0,
+      "recall": 0.91,
+      "halluc": 0.073,
+      "omission": 0.017,
+      "held_recall": 0.824,
+      "seen_recall": 0.996,
+      "gap_pts": 17.200000000000003,
+      "P": 0.91,
+      "M": 0.08999999999999997,
+      "rho": 0.0,
+      "L_p50": 0.26991612499114126,
+      "C": 1.0,
+      "U": 0.8096016775001771,
+      "liability_presented_bad": 11,
+      "correct_norm_rate": 0.91,
+      "n_items": 200,
+      "n_fields": 1000,
+      "instance": "m0"
+    },
+    {
+      "parse": 0.995,
+      "recall": 0.888,
+      "halluc": 0.082,
+      "omission": 0.025,
+      "held_recall": 0.788,
+      "seen_recall": 0.997979797979798,
+      "gap_pts": 20.997979797979795,
+      "P": 0.892462311557789,
+      "M": 0.11199999999999999,
+      "rho": 0.005,
+      "L_p50": 0.28366304200608283,
+      "C": 1.0,
+      "U": 0.7792890507176673,
+      "liability_presented_bad": 17,
+      "correct_norm_rate": 0.888,
+      "n_items": 200,
+      "n_fields": 1000,
+      "instance": "m1"
+    },
+    {
+      "parse": 1.0,
+      "recall": 0.907,
+      "halluc": 0.077,
+      "omission": 0.016,
+      "held_recall": 0.816,
+      "seen_recall": 0.998,
+      "gap_pts": 18.200000000000006,
+      "P": 0.907,
+      "M": 0.09299999999999997,
+      "rho": 0.0,
+      "L_p50": 0.33245704194996506,
+      "C": 1.0,
+      "U": 0.8038508591610007,
+      "liability_presented_bad": 15,
+      "correct_norm_rate": 0.907,
+      "n_items": 200,
+      "n_fields": 1000,
+      "instance": "m2"
+    },
+    {
+      "parse": 1.0,
+      "recall": 0.905,
+      "halluc": 0.073,
+      "omission": 0.022,
+      "held_recall": 0.816,
+      "seen_recall": 0.994,
+      "gap_pts": 17.800000000000004,
+      "P": 0.905,
+      "M": 0.09499999999999997,
+      "rho": 0.0,
+      "L_p50": 0.29270450002513826,
+      "C": 1.0,
+      "U": 0.8016459099994973,
+      "liability_presented_bad": 13,
+      "correct_norm_rate": 0.905,
+      "n_items": 200,
+      "n_fields": 1000,
+      "instance": "m3"
+    },
+    {
+      "parse": 1.0,
+      "recall": 0.899,
+      "halluc": 0.075,
+      "omission": 0.026,
+      "held_recall": 0.802,
+      "seen_recall": 0.996,
+      "gap_pts": 19.399999999999995,
+      "P": 0.899,
+      "M": 0.10099999999999998,
+      "rho": 0.0,
+      "L_p50": 0.2955742919584736,
+      "C": 1.0,
+      "U": 0.7925885141608305,
+      "liability_presented_bad": 15,
+      "correct_norm_rate": 0.899,
+      "n_items": 200,
+      "n_fields": 1000,
+      "instance": "m4"
+    }
+  ],
+  "n_item_logs": 1000,
+  "prereg": "trajectory/PREREG_E1_nonlm_baseline.md",
+  "m0_note": "Provisional local M0=scale10m; official M0 awaits Pythia-160M LoRA / corner."
+}

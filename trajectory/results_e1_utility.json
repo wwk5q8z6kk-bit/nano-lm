@@ -1,0 +1,744 @@
+{
+  "prereg": "trajectory/PREREG_E1_nonlm_baseline.md",
+  "instrument": "trajectory/scribe_eval_m{0..4}.json",
+  "weights_default": {
+    "alpha": 1.0,
+    "beta": 0.5,
+    "gamma": 0.3,
+    "lam": 0.02,
+    "kappa": 0.05
+  },
+  "rows": [
+    {
+      "method": "M1_template",
+      "verify_on": true,
+      "U": 0.9989993963311425,
+      "P": 1.0,
+      "M": 0.0,
+      "rho": 0.0,
+      "L_p50": 3.018344286829233e-05,
+      "C": 0.02,
+      "recall": 1.0,
+      "halluc": 0.0,
+      "gap_pts": 0.0,
+      "held_recall": 1.0,
+      "seen_recall": 1.0,
+      "correct_norm_rate": 1.0,
+      "liability_presented_bad": 0.0,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9989993963311425
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9989993963311425
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9989993963311425
+        }
+      ]
+    },
+    {
+      "method": "M1_template",
+      "verify_on": false,
+      "U": 0.9989993843319827,
+      "P": 1.0,
+      "M": 0.0,
+      "rho": 0.0,
+      "L_p50": 3.0783400870859626e-05,
+      "C": 0.02,
+      "recall": 1.0,
+      "halluc": 0.0,
+      "gap_pts": 0.0,
+      "held_recall": 1.0,
+      "seen_recall": 1.0,
+      "correct_norm_rate": 1.0,
+      "liability_presented_bad": 0.0,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9989993843319827
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9989993843319827
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9989993843319827
+        }
+      ]
+    },
+    {
+      "method": "M2_dict_span",
+      "verify_on": true,
+      "U": 0.8862985693320633,
+      "P": 0.9252,
+      "M": 0.07479999999999995,
+      "rho": 0.0,
+      "L_p50": 7.153339684009551e-05,
+      "C": 0.03,
+      "recall": 0.9252,
+      "halluc": 0.0748,
+      "gap_pts": 12.64,
+      "held_recall": 0.8619999999999999,
+      "seen_recall": 0.9884000000000001,
+      "correct_norm_rate": 0.9252,
+      "liability_presented_bad": 74.8,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8862985693320633
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8488985693320632
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8862985693320633
+        }
+      ]
+    },
+    {
+      "method": "M2_dict_span",
+      "verify_on": false,
+      "U": 0.8862985678358937,
+      "P": 0.9252,
+      "M": 0.07479999999999995,
+      "rho": 0.0,
+      "L_p50": 7.160820532590151e-05,
+      "C": 0.03,
+      "recall": 0.9252,
+      "halluc": 0.0748,
+      "gap_pts": 12.64,
+      "held_recall": 0.8619999999999999,
+      "seen_recall": 0.9884000000000001,
+      "correct_norm_rate": 0.9252,
+      "liability_presented_bad": 74.8,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8862985678358937
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8488985678358937
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8862985678358937
+        }
+      ]
+    },
+    {
+      "method": "M4_constrained",
+      "verify_on": true,
+      "U": 0.8194994600038044,
+      "P": 0.881,
+      "M": 0.119,
+      "rho": 0.0,
+      "L_p50": 2.699980977922678e-05,
+      "C": 0.04,
+      "recall": 0.881,
+      "halluc": 0.119,
+      "gap_pts": 23.8,
+      "held_recall": 0.762,
+      "seen_recall": 1.0,
+      "correct_norm_rate": 0.881,
+      "liability_presented_bad": 119.0,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8194994600038044
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.7599994600038045
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8194994600038044
+        }
+      ]
+    },
+    {
+      "method": "M4_constrained",
+      "verify_on": false,
+      "U": 0.8194994808319025,
+      "P": 0.881,
+      "M": 0.119,
+      "rho": 0.0,
+      "L_p50": 2.5958404876291752e-05,
+      "C": 0.04,
+      "recall": 0.881,
+      "halluc": 0.119,
+      "gap_pts": 23.8,
+      "held_recall": 0.762,
+      "seen_recall": 1.0,
+      "correct_norm_rate": 0.881,
+      "liability_presented_bad": 119.0,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8194994808319025
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.7599994808319025
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8194994808319025
+        }
+      ]
+    },
+    {
+      "method": "M3_crf_lite",
+      "verify_on": true,
+      "U": 0.2484762860178173,
+      "P": 0.5908050053495885,
+      "M": 0.5382,
+      "rho": 0.2184,
+      "L_p50": 0.010435966588556767,
+      "C": 0.15,
+      "recall": 0.46180000000000004,
+      "halluc": 0.5124000000000001,
+      "gap_pts": 3.7999999999999994,
+      "held_recall": 0.44279999999999997,
+      "seen_recall": 0.4808,
+      "correct_norm_rate": 0.46180000000000004,
+      "liability_presented_bad": 319.8,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.2484762860178173
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": -0.0206237139821827
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.1829562860178173
+        }
+      ]
+    },
+    {
+      "method": "M3_crf_lite",
+      "verify_on": false,
+      "U": 0.1849896591643803,
+      "P": 0.46180000000000004,
+      "M": 0.5382,
+      "rho": 0.0,
+      "L_p50": 0.010517041780985892,
+      "C": 0.15,
+      "recall": 0.46180000000000004,
+      "halluc": 0.5124000000000001,
+      "gap_pts": 3.7999999999999994,
+      "held_recall": 0.44279999999999997,
+      "seen_recall": 0.4808,
+      "correct_norm_rate": 0.46180000000000004,
+      "liability_presented_bad": 319.8,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.1849896591643803
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": -0.08411034083561972
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.1849896591643803
+        }
+      ]
+    },
+    {
+      "method": "M5_span_clf",
+      "verify_on": true,
+      "U": 0.6885453884944915,
+      "P": 0.9396785701627508,
+      "M": 0.31779999999999997,
+      "rho": 0.274,
+      "L_p50": 0.0016590834129601717,
+      "C": 0.2,
+      "recall": 0.6822,
+      "halluc": 0.0438,
+      "gap_pts": 4.999999999999998,
+      "held_recall": 0.6572,
+      "seen_recall": 0.7072,
+      "correct_norm_rate": 0.6822,
+      "liability_presented_bad": 43.8,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.6885453884944915
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.5296453884944916
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.6063453884944916
+        }
+      ]
+    },
+    {
+      "method": "M5_span_clf",
+      "verify_on": false,
+      "U": 0.5132668118357658,
+      "P": 0.6822,
+      "M": 0.31779999999999997,
+      "rho": 0.0,
+      "L_p50": 0.0016594082117080688,
+      "C": 0.2,
+      "recall": 0.6822,
+      "halluc": 0.0438,
+      "gap_pts": 4.999999999999998,
+      "held_recall": 0.6572,
+      "seen_recall": 0.7072,
+      "correct_norm_rate": 0.6822,
+      "liability_presented_bad": 43.8,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.5132668118357658
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.35436681183576585
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.5132668118357658
+        }
+      ]
+    },
+    {
+      "method": "M0_scale",
+      "verify_on": true,
+      "U": 0.8539283563496702,
+      "P": 0.9844860701811656,
+      "M": 0.09819999999999998,
+      "rho": 0.08399999999999999,
+      "L_p50": 0.3128856915747747,
+      "C": 1.0,
+      "recall": 0.9018,
+      "halluc": 0.076,
+      "gap_pts": 18.71959595959596,
+      "held_recall": 0.8092,
+      "seen_recall": 0.9963959595959595,
+      "correct_norm_rate": 0.9018,
+      "liability_presented_bad": 14.2,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8539283563496702
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8048283563496703
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8287283563496702
+        }
+      ]
+    },
+    {
+      "method": "M0_scale",
+      "verify_on": false,
+      "U": 0.7973952023078346,
+      "P": 0.9026924623115578,
+      "M": 0.09819999999999998,
+      "rho": 0.001,
+      "L_p50": 0.2948630001861602,
+      "C": 1.0,
+      "recall": 0.9018,
+      "halluc": 0.076,
+      "gap_pts": 18.71959595959596,
+      "held_recall": 0.8092,
+      "seen_recall": 0.9963959595959595,
+      "correct_norm_rate": 0.9018,
+      "liability_presented_bad": 14.2,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.7973952023078346
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.7482952023078346
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.7970952023078346
+        }
+      ]
+    },
+    {
+      "method": "M0_ownstack_chinchilla_lora",
+      "verify_on": true,
+      "U": 0.8984580063518905,
+      "P": 0.9793867602808426,
+      "M": 0.021200000000000017,
+      "rho": 0.0006000000000000001,
+      "L_p50": 0.757437696447596,
+      "C": 1.1,
+      "recall": 0.9788,
+      "halluc": 0.0206,
+      "gap_pts": 4.240000000000004,
+      "held_recall": 0.9576,
+      "seen_recall": 1.0,
+      "correct_norm_rate": 0.9788,
+      "liability_presented_bad": 20.6,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8984580063518905
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8878580063518905
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.8982780063518906
+        }
+      ]
+    },
+    {
+      "method": "M0_pythia160m_lora",
+      "verify_on": true,
+      "U": 0.9252173639550433,
+      "P": 1.0,
+      "M": 0.013200000000000012,
+      "rho": 0.0132,
+      "L_p50": 0.21113180224783717,
+      "C": 1.2,
+      "recall": 0.9868,
+      "halluc": 0.0132,
+      "gap_pts": 2.6400000000000023,
+      "held_recall": 0.9736,
+      "seen_recall": 1.0,
+      "correct_norm_rate": 0.9868,
+      "liability_presented_bad": 0.0,
+      "U_sensitivity": [
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9252173639550433
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 1.0,
+            "gamma": 0.3,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9186173639550432
+        },
+        {
+          "weights": {
+            "alpha": 1.0,
+            "beta": 0.5,
+            "gamma": 0.6,
+            "lam": 0.02,
+            "kappa": 0.05
+          },
+          "U_mean": 0.9212573639550431
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "verdict": "KILL",
+    "m0": "M0_pythia160m_lora",
+    "U_m0": 0.9252173639550433,
+    "best_nonlm": "M1_template",
+    "U_best_nonlm": 0.9989993963311425,
+    "delta": 0.05,
+    "margin": 0.07378203237609926,
+    "sensitivity_flip": false,
+    "U_all": {
+      "M1_template": 0.9989993963311425,
+      "M2_dict_span": 0.8862985693320633,
+      "M4_constrained": 0.8194994600038044,
+      "M3_crf_lite": 0.2484762860178173,
+      "M5_span_clf": 0.6885453884944915,
+      "M0_scale": 0.8539283563496702,
+      "M0_ownstack_chinchilla_lora": 0.8984580063518905,
+      "M0_pythia160m_lora": 0.9252173639550433
+    },
+    "official_m0_candidates": {
+      "M0_pythia160m_lora": 0.9252173639550433,
+      "M0_ownstack_chinchilla_lora": 0.8984580063518905
+    },
+    "provisional_m0_scale": 0.8539283563496702,
+    "venue": "runpod-cuda"
+  },
+  "note": "Official M0 = argmax U(Pythia-160M LoRA, ownstack Chinchilla+LoRA) on RunPod CUDA fp16; KILL/SURVIVE under PREREG_E1.",
+  "weight_sensitivity": {
+    "artifact": "trajectory/results_e1_utility_sensitivity.json",
+    "conclusion": "KILL is robust under moderate and wide one-at-a-time re-weighting of \u03b1 (M), \u03b2 (\u03c1), \u03b3 (L), \u03b4 (C). Across all surveyed OAT cells, kill_prereg stays true; official M0 never beats M1 on U. Default margin M1\u2212official \u2248 +0.074. Even U=P (all penalties zero) yields M1=official=1.0, still KILL under \u03b4=0.05. Raising cost or review-load (ρ) weight widens M1's lead. No flip threshold found inside plausible ranges [\u03b1\u22080\u20132, \u03b2\u22080\u20132, \u03b3\u22080\u20130.2, \u03b4\u22080\u20131]; KILL would require deforming U outside normal utility design.",
+    "kill_stable_across_all_OAT_cells": true,
+    "default_margin_m1_minus_official": 0.07378203237609948,
+    "methods": [
+      "one-at-a-time (OAT) sweeps",
+      "tornado (\u00b1 local steps on each weight)",
+      "threshold-of-flip grids on each weight",
+      "coarse \u03b1\u00d7\u03b4 grid",
+      "dominance / component-gap (Pareto-style) inspection"
+    ]
+  },
+  "construct_validity": {
+    "artifact": "trajectory/results_e1_construct_validity_note.json",
+    "bounded_new_human_check": "SKIPPED",
+    "limitation": "Primary science metrics use exact string match on field values. Automated normalize-then-match does not rescue M0 exact failures (0/486), but exact-match has not been validated against human-accepted equivalence. Reported gaps may overstate failure relative to a soft/human rubric; this is an explicit limitation pending a bounded human study."
+  }
+}

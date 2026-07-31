@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "pointer_P2",
+  "verdict_summary": "H-copy REFUTED (this implementation)",
+  "reproducibility_status": "RESULT_TRACKED",
+  "artifacts": [
+    {
+      "schema_version": "1.0",
+      "experiment_id": "pointer_P2",
+      "artifact_id": "pointer_P2:preregistration:PREREG_pointer_head_v2.md",
+      "artifact_role": "preregistration",
+      "filename": "scribe/pointer/PREREG_pointer_head_v2.md",
+      "status": "TRACKED",
+      "size_bytes": 7309,
+      "sha256": "154cb2217591b574fa64f3a7c24d31473383077375ad9124b868a7be1f818ebd",
+      "record_count": null,
+      "producing_git_commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+      "preregistration_commit": null,
+      "checkpoint_sha256": null,
+      "tokenizer_sha256": null,
+      "seed": null,
+      "provider": null,
+      "created_at_utc": "2026-07-26T11:46:52.022191+00:00",
+      "storage_location": "local_workspace",
+      "retrieval_instructions": "Tracked in git at path.",
+      "verified_at_utc": "2026-07-31T13:50:17.600933+00:00"
+    },
+    {
+      "schema_version": "1.0",
+      "experiment_id": "pointer_P2",
+      "artifact_id": "pointer_P2:result_json:result_pointer2.json",
+      "artifact_role": "result_json",
+      "filename": "scribe/pointer/result_pointer2.json",
+      "status": "TRACKED",
+      "size_bytes": 628,
+      "sha256": "ed5a3dfae51333c845a4bfb232358050c5c8c2b78a748e5b64636052e687e8b8",
+      "record_count": null,
+      "producing_git_commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+      "preregistration_commit": null,
+      "checkpoint_sha256": null,
+      "tokenizer_sha256": null,
+      "seed": null,
+      "provider": null,
+      "created_at_utc": "2026-07-26T11:41:27.916574+00:00",
+      "storage_location": "local_workspace",
+      "retrieval_instructions": "Tracked in git at path.",
+      "verified_at_utc": "2026-07-31T13:50:17.600933+00:00"
+    }
+  ],
+  "generated_at_utc": "2026-07-31T13:50:17.600933+00:00",
+  "git_head_at_inventory": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137"
+}
