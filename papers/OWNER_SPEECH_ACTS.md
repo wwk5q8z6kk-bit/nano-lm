@@ -36,20 +36,23 @@ EVIDENCE_STANDARDS: UNCHANGED
 | `idle` / `park` / `stop` | `IDLE` | none | Stop; write park note; no further hybrid bookkeeping. |
 | `authorize commit` | `AUTHORIZE_COMMIT` | `commit` | Write/respect `OWNER_COMMIT_OK` with listed paths; additive commit only. |
 | `proceed` (lab convention) | `AUTHORIZE_COMMIT` | `commit` | Same as authorize commit for a **path-restricted** ready commit; does **not** grant push/tag/execute. |
-| `authorize push` | `AUTHORIZE_PUSH` | `push` | Push only listed refs; never force-push protected tags. |
-| `authorize tag` + tip policy | `AUTHORIZE_TAG` | `tag` (+ optional `tag_push`) | Require tip policy: `defer` \| `clean-lineage` \| `non-freeze-snapshot` \| `verdict-annotation`. |
+| `authorize push` | `AUTHORIZE_PUSH` | `push` | Push **only when local is ahead** of the listed ref(s); never force-push protected tags. If already synced → noop. |
+| `authorize tag` + **one** tip policy | `AUTHORIZE_TAG` | `tag` (default **local only**; `tag_push` needs separate authorize) | Exactly **one** tip policy per act: `defer` \| `clean-lineage` \| `non-freeze-snapshot` \| `verdict-annotation`. Policies are **exclusive** (not a concurrent menu). |
 | `AUTHORIZE_*` in `EXECUTION_QUEUE` / typed AUTH_RECORD | `AUTHORIZE_EXECUTE` | `execute` (+ listed recipe) | Run only that recipe; fail-closed if SHA drift. |
 | `RATIFY_E4_EXECUTE` \| `VOID_E4_AUTH` \| `PARK_AS_EXPLORATORY` | `DISPOSE_E4` | none (disposition) | Sync status docs; still no freeze fold-in. |
 | Ambiguous / novel prose | `UNTYPED` | none | Ask for one force ID from this table; do not invent markers. |
+| `Begin ACTIVE FRONTIER` / research-envelope mandate block | `ACTIVE_MANDATE` | `research` `prototype` `local_eval` `frontier_commit` | Work inside envelope; never silently rewrite Evidence Core / protected tags. |
 
 ### Tip policies for `AUTHORIZE_TAG` (B17)
 
-| Policy | Meaning |
-|--------|---------|
-| `defer` | Remain deferred; log reason (current default for E4-contaminated tip). |
-| `clean-lineage` | Branch from premature freeze tag; cherry-pick non-E4 freeze docs; tag that tip. |
-| `non-freeze-snapshot` | Tag HEAD only if name **does not** claim freeze. |
-| `verdict-annotation` | Additive `verdict/<claim>@<sha>` disclosing ancestry + context-of-use. |
+| Policy | Agent MUST | Agent MUST NOT |
+|--------|------------|----------------|
+| `defer` | Log that **freeze-brand** tip stays deferred (reason + protected SHAs). | Mint any tag; retarget freeze tags. |
+| `clean-lineage` | Run **only** the clean-lineage recipe (`CLEAN_LINEAGE_FREEZE_RECIPE.md`). | Also mint HEAD non-freeze/verdict tags in the same act; move protected freeze tags. |
+| `non-freeze-snapshot` | Create a **local** annotated tag on HEAD whose name does **not** claim freeze. | Push the tag (needs separate push/`tag_push`); use freeze-brand names. |
+| `verdict-annotation` | Create **local** additive `verdict/<claim>@<sha>` tag(s) with ancestry + context-of-use. | Push tags; retarget freeze; claim freeze-era status for E4. |
+
+**Multi-line owner messages:** If several tip policies appear **and** the message ends in `idle` / `park`, treat tip lines as **scope glossary / future single-act licenses** unless the owner says `execute now` for one policy. Immediate disposition = **defer** + **park**.
 
 ---
 
@@ -90,3 +93,32 @@ Helper: `scripts/classify_owner_speech_act.py`
 - Does not move freeze tags.
 - Does not reopen E2/E4/fabric/NanoScribe.
 - Does not replace `EVIDENCE_LEDGER` with aspirations.
+
+---
+
+## 6. Authorization receipts (single-use)
+
+Typed forces that grant bits SHOULD write a receipt (`wedge_v1/OWNER_COMMIT_OK`, `OWNER_PUSH_OK`, `OWNER_TAG_OK`, or an AUTH_RECORD).
+
+Invariant:
+
+```text
+ACTIVE + unexpired + unused  →  may grant the named force once
+CONSUMED / REUSABLE=false    →  MUST fail any later authorization check
+```
+
+After successful execution, mark the receipt:
+
+```text
+STATUS: CONSUMED
+REUSABLE: false
+AUTHORIZED_RESULT_COMMIT: <sha>   # for commit forces
+CONSUMED_AT: <UTC>
+GRANTS_PUSH: false
+GRANTS_TAG: false
+GRANTS_EXECUTION: false
+scope_bits: []
+```
+
+Helper: `scripts/check_owner_receipt.py` (`--expect-consumed` to audit).
+

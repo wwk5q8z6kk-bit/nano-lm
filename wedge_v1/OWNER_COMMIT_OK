@@ -1,15 +1,7 @@
-authorize_commit: true
-authorize_push: false
-authorize_tag: false
-tag_push: false
-scope_bits: [commit]
-owner_force: AUTHORIZE_COMMIT
-owner_locution: |
-  Authorize one documentation/status reconciliation commit only.
-  Commit message: docs: reconcile DIFF E and post-E4 program status
-  Do not push; do not create or move tags.
-created_at: 2026-07-31T18:37:52Z
-path_allowlist:
+FORCE_ID: AUTHORIZE_COMMIT
+STATUS: CONSUMED
+REUSABLE: false
+AUTHORIZED_PATHS:
   - papers/EVIDENCE_LEDGER.json
   - papers/EVIDENCE_LEDGER.md
   - audit/discussion-to-implementation/EVIDENCE_LEDGER_PROPOSED.json
@@ -30,5 +22,19 @@ path_allowlist:
   - papers/PARK_NOTE_2026-07-31.md
   - wedge_v1/PARK_IDLE.md
   - wedge_v1/OWNER_COMMIT_OK
+AUTHORIZED_RESULT_COMMIT: 9fe5b6b6f8746005a0f0608b5440a6138bdd458b
+CREATED_AT: 2026-07-31T18:37:52Z
+CONSUMED_AT: 2026-07-31T18:41:04Z
+EXPIRES_AT: 2026-07-31T18:41:04Z
+GRANTS_PUSH: false
+GRANTS_TAG: false
+GRANTS_EXECUTION: false
+authorize_commit: false
+authorize_push: false
+authorize_tag: false
+tag_push: false
+scope_bits: []
 note: |
-  Narrow factual status reconciliation only. Reconciled freeze tag stays local.
+  Single-use receipt. Consumed by commit 9fe5b6b6f8746005a0f0608b5440a6138bdd458b.
+  MUST NOT authorize any future commit/push/tag/execute.
+  A later AUTHORIZE_COMMIT requires a new ACTIVE receipt.

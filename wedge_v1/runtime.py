@@ -369,10 +369,21 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             relevant_nearby.append(n)
         elif kind == "numeric_ttl" and any(k in ql_local for k in ("ttl", "cache", "expire", "cached")):
             relevant_nearby.append(n)
-        elif kind == "entity_collision" and any(
-            str(v).lower() in ql_local for v in (n.get("value") or {}).values() if isinstance(n.get("value"), dict)
-        ):
-            relevant_nearby.append(n)
+        elif kind == "entity_collision":
+            val = n.get("value")
+            strings: list[str] = []
+            if isinstance(val, dict):
+                strings = [str(v) for v in val.values()]
+            elif isinstance(val, list):
+                for item in val:
+                    if isinstance(item, dict):
+                        strings.append(str(item.get("string") or ""))
+                    else:
+                        strings.append(str(item))
+            elif val is not None:
+                strings = [str(val)]
+            if any(s.lower() in ql_local for s in strings if s):
+                relevant_nearby.append(n)
     status = "CONTRADICTED" if (disputed or relevant_nearby) else "SUPPORTED"
     banner = None
     if nearby:
@@ -505,6 +516,7 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
                     "text": text[i:j],
                     "context": ctx[:240],
                     "closest_number": closest,
+                    "numeric": float(closest) if closest is not None else None,
                 }
             )
         fm = field_re.search(text)
@@ -576,6 +588,103 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
         "unsupported": [],
         "solver_path": ["compare"],
         "n_docs": len(docs),
+        "n_docs_hit": len({h["doc_id"] for h in hits}),
         "n_hits": len(hits),
         "latency_s": round(time.perf_counter() - t0, 4),
     }
+
+
+def format_report_md(payload: dict, *, title: str | None = None) -> str:
+    """Human-readable markdown for ask/find/scan/compare JSON payloads (product UX)."""
+    lines: list[str] = []
+    status = payload.get("answer_status", "?")
+    lines.append(f"# {title or 'wedge_v1 report'}")
+    lines.append("")
+    if payload.get("query"):
+        lines.append(f"**Query:** {payload['query']}")
+    if payload.get("term"):
+        lines.append(f"**Term:** `{payload['term']}`")
+    lines.append(f"**Status:** `{status}`")
+    if "n_docs" in payload:
+        lines.append(f"**Docs:** {payload['n_docs']}")
+    if "n_hits" in payload:
+        lines.append(f"**Hits:** {payload['n_hits']}")
+    if "latency_s" in payload:
+        lines.append(f"**Latency:** {payload['latency_s']}s")
+    if "latency_ms" in payload:
+        lines.append(f"**Latency:** {payload['latency_ms']}ms")
+    path = payload.get("solver_path") or payload.get("solver") or []
+    if path:
+        lines.append("**Solver path:** " + " → ".join(str(p) for p in path))
+    lines.append("")
+    claims = payload.get("claims") or []
+    if not claims:
+        lines.append("_No claims._")
+        lines.append("")
+    else:
+        lines.append(f"## Claims ({len(claims)})")
+        lines.append("")
+        for i, c in enumerate(claims, 1):
+            if not isinstance(c, dict):
+                continue
+            val = c.get("value")
+            st = c.get("status", "")
+            tid = c.get("task_id", "")
+            doc = c.get("doc_id", "")
+            lines.append(f"### {i}. `{tid}` — {st}")
+            lines.append(f"- **Doc:** `{doc}`")
+            lines.append(f"- **Value:** `{val}`")
+            for e in (c.get("evidence") or [])[:5]:
+                if not isinstance(e, dict):
+                    continue
+                span = e.get("text") or e.get("line") or ""
+                ctx = e.get("context")
+                start_i, end_i = e.get("start"), e.get("end")
+                loc = f" [{start_i}:{end_i}]" if start_i is not None else ""
+                lines.append(f"- **Evidence{loc}:** {span}")
+                if ctx:
+                    lines.append(f"  - context: {ctx}")
+            notes = c.get("notes")
+            if notes:
+                lines.append(f"- _notes:_ {notes}")
+            lines.append("")
+    unsupported = payload.get("unsupported") or []
+    if unsupported:
+        lines.append("## Unsupported / abstain reasons")
+        for u in unsupported:
+            lines.append(f"- {u}")
+        lines.append("")
+    if payload.get("abstain_reason"):
+        lines.append(f"**Abstain reason:** {payload['abstain_reason']}")
+        lines.append("")
+    contradictions = (
+        payload.get("contradictions_nearby")
+        or payload.get("contradictions")
+        or payload.get("disputes")
+        or []
+    )
+    if contradictions:
+        lines.append("## Contradictions")
+        for item in contradictions[:20]:
+            if isinstance(item, dict):
+                kind = item.get("kind") or item.get("task_id") or "flag"
+                doc = item.get("doc_id", "")
+                val = item.get("value")
+                lines.append(f"- `{kind}` doc=`{doc}` value=`{val}`")
+            else:
+                lines.append(f"- `{item}`")
+        lines.append("")
+    spans = payload.get("evidence_spans") or []
+    if spans:
+        lines.append(f"## Evidence spans ({len(spans)})")
+        for e in spans[:12]:
+            if not isinstance(e, dict):
+                continue
+            lines.append(
+                f"- `{e.get('doc_id')}` [{e.get('start')}:{e.get('end')}] {str(e.get('text', ''))[:160]}"
+            )
+        lines.append("")
+    lines.append("---")
+    lines.append("_Verification-first local slice. No generative fill-in._")
+    lines.append("")
+    return chr(10).join(lines)

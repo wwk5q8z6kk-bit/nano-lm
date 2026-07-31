@@ -80,6 +80,39 @@ def build_report(query: str, corpus_dir: Path | None = None) -> dict:
     }
 
 
+
+
+def format_report_md(report: dict, title: str | None = None) -> str:
+    """Human-readable claim report (frontier UX)."""
+    status = report.get("answer_status", "?")
+    lines = [
+        f"# {title or 'Verified Ask'}",
+        "",
+        f"**Status:** {status}",
+        f"**Query:** {report.get('query', '')}",
+        f"**Corpus:** {report.get('corpus_dir', '')}",
+        f"**Docs:** {report.get('n_docs', 0)}",
+        f"**Latency_ms:** {report.get('latency_ms', '')}",
+        "",
+        "## Claims",
+    ]
+    claims = report.get("claims") or []
+    if not claims:
+        lines.append("_none_")
+    for c in claims:
+        ev = c.get("evidence") or []
+        span = ev[0].get("text", "") if ev else ""
+        lines.append(f"- `{c.get('task_id')}` {c.get('value')} — _{span}_")
+    nearby = report.get("contradictions_nearby") or []
+    if nearby:
+        lines += ["", "## Contradictions nearby"]
+        for c in nearby[:8]:
+            lines.append(f"- {c.get('doc_id')}: {c.get('value')} ({c.get('status')})")
+    if report.get("abstain_reason"):
+        lines += ["", f"**Abstain:** {report['abstain_reason']}"]
+    lines.append("")
+    return "\n".join(lines)
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Verified Ask JSON claim report (frontier)")
     p.add_argument("query", nargs="+", help="Question text")

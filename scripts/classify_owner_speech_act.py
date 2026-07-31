@@ -17,6 +17,7 @@ RULES: list[tuple[re.Pattern[str], str, list[str]]] = [
     (re.compile(r"authorize\s+commit", re.I), "AUTHORIZE_COMMIT", ["commit"]),
     # Lab convention (OWNER_SPEECH_ACTS.md): bare "proceed" == AUTHORIZE_COMMIT only
     (re.compile(r"^\s*proceed\s*$", re.I), "AUTHORIZE_COMMIT", ["commit"]),
+    (re.compile(r"active\s+frontier|ACTIVE_MANDATE|BUILD_SMALL_POWERFUL", re.I), "ACTIVE_MANDATE", ["research", "prototype", "local_eval", "frontier_commit"]),
     (re.compile(r"authorize\s+push", re.I), "AUTHORIZE_PUSH", ["push"]),
     (re.compile(r"authorize\s+tag", re.I), "AUTHORIZE_TAG", ["tag"]),
     (re.compile(r"\bRATIFY_E4_EXECUTE\b"), "DISPOSE_E4", []),
