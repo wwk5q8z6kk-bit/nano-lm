@@ -14,3 +14,11 @@
 
 Original local/prereg texts remain recoverable via git history and
 `wip/pre-freeze-snapshot-20260731(-dirty)`.
+
+
+## Gate after this correction set
+
+Working-tree application of H/H′/I/J does **not** clear archival remediation.
+Gate remains `AUDIT_REMEDIATION_REQUIRED` until the E1/E3 primary bundle is
+committed and raw JSONL is durably published with hashes. Do not create a
+post-α evidence tag until then; do not force-move `paper-alpha-v1`.

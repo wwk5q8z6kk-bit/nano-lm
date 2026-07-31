@@ -32,8 +32,11 @@ Across the evaluated own-stack configurations (3.15M → 10M → 160M) the copyi
 did **not** decrease monotonically with parameter count (18.3 → 18.7 → 16.9). Because
 parameter count and pretraining exposure were not fully isolated, this is descriptive
 rather than a parameter-only causal result. Pythia at the *same parameter count* reads
-3.5. The pre-registered decision rule fires **stack-dominant**: the evaluated configs
-do not show a within-stack parameter-only collapse; properties of the training stack do. Two further arms then vary one factor each: swapping only the finetuning method
+3.5. The pre-registered decision rule fires **stack-dominant** for the 159M/200M
+full-FT cell versus Pythia at matched size: the evaluated configs do not show a
+within-stack parameter-only collapse. That gate label does **not** by itself prove
+that tokenizer or architecture caused the cross-stack difference (schedules and
+adaptation regime also differ). Two further arms then vary one factor each: swapping only the finetuning method
 (full FT → LoRA r=16 on the same checkpoint) drops the gap to **7.1 ± 1.2** diluted
 (29.6 ± 3.7 value-level); separately, scaling only the pretraining data to
 Chinchilla-optimal (200M → 3.2B tokens, full FT retained) drops it to **7.0 ± 1.0**
@@ -104,7 +107,7 @@ ladder (40M/80M).
 
 Model quality scales normally — pretrain val loss 2.86 (vs 3.28 at 10M, 3.96 at 3.15M),
 scribe parse 100%, base control parse 0% — yet the copying gap barely moves. The
-pre-registered rule fires **stack-dominant**. (The same N=1 caution as §3.2 applies to
+pre-registered rule fires **stack-dominant** as the historical gate label for this cell (not proof of tokenizer/architecture causation). (The same N=1 caution as §3.2 applies to
 this verdict itself: the 16.9 cell is a single training run — the pre-registered
 duplicate-finetune study bounds this; the *direction* is safe at ~6 instance-SDs from
 Pythia's 3.5, but the point value is provisional.) The clean metric declines modestly with

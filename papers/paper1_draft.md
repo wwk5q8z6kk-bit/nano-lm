@@ -49,8 +49,10 @@ adaptation×data **interaction**, not a pure scale law. Separately, a pre-regist
 slot-diversity sweep lifts held-type recall on that open slot by **+66.7** points
 (D5→D80) at fixed scale. On a pre-registered utility, the generator-aligned
 non-generative baseline **M1** scored **0.998999** and exceeded the best evaluated
-generative reference, official M0 at **0.925217** (§0; **KILL**); this paper reports
-that result honestly and does not advocate a generative substrate. Primary metrics
+generative reference, official M0 at **0.925217** (§0; **KILL**); **M2** (0.886)
+is within the pre-registered δ=0.05 non-necessity margin and also triggers the
+LM-non-necessity rule without dominating M0. This paper reports that result
+honestly and does not advocate a generative substrate. Primary metrics
 are exact string match; dual-clinician / human-accepted equivalence is unvalidated
 (§0, §8; a bounded agent-applied rubric audit is reported there). Measurement
 reliability is a second contribution: single-instance evaluation was under-powered,
@@ -87,10 +89,12 @@ measurements do not depend on \(U\).
 match on field values. Automated normalize-then-match does not rescue M0 exact
 failures (0/486; `trajectory/results_e3_normalize_construct.json`). A bounded
 **agent-applied rubric audit** of 100 sampled errors
-(`trajectory/results_e3_human.json`, rater `agent-rubric-pass-1`) classified
-**0/100** as acceptable semantic equivalents. This result does **not** substitute
-for independent clinician annotation, inter-rater agreement, or validation of a
-synonym ontology. Reported gaps may overstate failure relative to a soft/human
+(`trajectory/results_e3_human.json`, rater `agent-rubric-pass-1`) assigned the
+frozen label `faithful` to **0/100**. This single agent pass does **not**
+establish independent human or clinician acceptability, inter-rater agreement,
+or synonym-equivalence validity. The agent-rubric audit is complete; independent
+human/clinician validation, IAA, and broader semantic-equivalence validation
+remain unresolved. Reported gaps may overstate failure relative to a soft/human
 rubric. This is an explicit limitation of Paper α. No open-world verification
 claims are made here.
 
@@ -622,9 +626,9 @@ fixed-seed retrains split 5/0), so the right replication unit changes from eval-
 to training-seed. Both lessons are prescriptive for anyone measuring faithfulness gaps
 in small models and hold regardless of how the scale-vs-stack question is eventually
 resolved. Separately, our primary metric is exact string match: an agent-applied
-rubric audit found 0/100 acceptable equivalents, but exact match has still not been
-validated against human-accepted equivalence (clinician/IAA open), so reported gaps
-may overstate failure relative to a soft/human rubric (§0, §8).
+rubric audit assigned `faithful` to 0/100 sampled exact errors, but exact match has
+still not been validated against human-accepted equivalence (clinician/IAA open), so
+reported gaps may overstate failure relative to a soft/human rubric (§0, §8).
 
 ## 8. Limitations
 
@@ -650,8 +654,8 @@ may overstate failure relative to a soft/human rubric (§0, §8).
 - **Exact-match construct (explicit).** Primary science metrics are exact string
   match. Normalize-then-match rescues 0/486 M0 exact failures (E3 auto), but
   exact-match has **not** been validated against human-accepted equivalence (an
-  agent-applied rubric audit of 100 sampled errors found 0/100 acceptable; this is
-  not clinician/IAA validation); gaps may overstate failure vs a soft/human rubric
+  agent-applied rubric audit assigned `faithful` to 0/100 sampled exact errors; this
+  is not clinician/IAA validation); gaps may overstate failure vs a soft/human rubric
   (§0). Discontinuous metrics can also
   exaggerate transitions (Schaeffer et al., 2023); we report across-instance SD and,
   at 1B, a training-run interval.
