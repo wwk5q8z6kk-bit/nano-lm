@@ -1,13 +1,13 @@
 {
   "verdict": "FINAL_FREEZE_READY_FOR_OWNER_TAG_AUTHORIZATION",
-  "head": "ea001d4f9c62ab6c2ab9a36de6ef7c9988b41936",
-  "origin_master": "ea001d4f9c62ab6c2ab9a36de6ef7c9988b41936",
+  "head": "b5898ce4bdf326712c16728177e8267390e8ca10",
+  "origin_master": "b5898ce4bdf326712c16728177e8267390e8ca10",
   "correction_commit": "1fc8eea8df19a5631411ded864c7760e97d740c4",
   "durable_raw_commit": "ea001d4f9c62ab6c2ab9a36de6ef7c9988b41936",
   "paper_alpha_v1": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
   "premature_post_alpha_tag_target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
   "proposed_tag": "post-alpha-reconciled-evidence-freeze-2026-07-31",
-  "proposed_tag_target": "ea001d4f9c62ab6c2ab9a36de6ef7c9988b41936",
+  "proposed_tag_target": "b5898ce4bdf326712c16728177e8267390e8ca10",
   "tag_created": false,
   "program_state": "AUDIT_REMEDIATION_REQUIRED",
   "public_evidence_freeze": "INCOMPLETE",
@@ -16,5 +16,6 @@
     "e1_e3": "PASS",
     "fabric": "PASS",
     "c3_recompute": "PASS"
-  }
+  },
+  "note": "Proposed annotated tag should point at tip including readiness report."
 }
