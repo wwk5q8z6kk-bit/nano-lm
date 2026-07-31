@@ -1,26 +1,32 @@
 # Execution Queue
 
-**Operating doc — what we are authorized to do *now*.**  
-**Adopted:** 2026-07-31  
-**Park:** `papers/PARK_NOTE_2026-07-31.md`
+**Strategic center:** `papers/STRATEGIC_RESET.md`  
+**Mandate:** `frontier/ACTIVE_MANDATE.md`  
+**Discovery:** `frontier/PRODUCT_DISCOVERY_SPRINT.md`
 
 ```text
-PROGRAM_EXECUTION_STATUS: IDLE_PARKED
-AUTHORIZED_WORK: NONE
-LAST_PUSH: origin/master @2ad06d24c4f7
-RECONCILED_FREEZE_TAG: post-alpha-reconciled-evidence-freeze-2026-07-31 @67bf87b1f968
-PREMATURE_FREEZE_TAG: post-alpha-evidence-freeze-2026-07-31 UNMOVED
-LM_PROBE: NOT_INDICATED
-TRAINING: NOT_AUTHORIZED
-E4_RESULT: KILL  # EXECUTED; not blocked/untested
+PROGRAM_EXECUTION_STATUS: ACTIVE_FRONTIER
+ACTIVE_MANDATE: BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1
+WEDGE: A — local verified research assistant
+EVIDENCE_CORE: PROTECTED
+TRAINING: NOT_DEFAULT
 NANOSCRIBE: STOP
+OLD_TASK_U: FORBIDDEN
 ```
 
-## Queue
+## Active (free within mandate)
 
-| Priority | Item | Status |
-|----------|------|--------|
-| 0 | Freeze integrity | Standing — protected tags unmoved |
-| — | All execute recipes | Empty until typed `AUTHORIZE_*` |
+| Item | Status |
+|------|--------|
+| Product discovery sprint | DONE — `frontier/PRODUCT_DISCOVERY_SPRINT.md` |
+| Vertical slice `ask`/`find`/`scan`/`dogfood` | LIVE |
+| Contradiction banner on ask | DONE this turn |
+| Next | Owner-corpus eval (private folder) OR minimal markdown report UI |
 
-Idle is the default. Owner speech acts: `papers/OWNER_SPEECH_ACTS.md`.
+## Protected
+
+Evidence ledger · Paper α · freeze tags · durable raw artifacts
+
+## Owner-gated
+
+Public claims · protected tags · paid compute · product launch

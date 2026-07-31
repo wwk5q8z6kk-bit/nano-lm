@@ -10,7 +10,11 @@ import re
 from dataclasses import asdict
 from pathlib import Path
 
+import time
+
 from wedge_v1.classical import solvers as S
+from wedge_v1.classical.bm25 import index_docs
+from wedge_v1.classical.bm25 import top_paragraphs
 
 
 ROOT = Path(__file__).resolve().parent
@@ -18,14 +22,12 @@ DEFAULT_CORPUS = ROOT / "data" / "corpus"
 GOLD_PATH = ROOT / "data" / "gold" / "gold.json"
 
 
+
 def load_corpus(corpus_dir: Path | None = None) -> dict[str, str]:
+    from wedge_v1.ingest import load_corpus as _ingest
+
     path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
-    if not path.exists():
-        return {}
-    docs = S.load_docs(path)
-    for p in sorted(path.glob("*.txt")):
-        docs[p.stem] = p.read_text(encoding="utf-8")
-    return docs
+    return _ingest(path)
 
 
 def _load_gold() -> dict | None:
@@ -181,15 +183,46 @@ def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) 
     }
 
 
+
+def nearby_contradictions(docs: dict[str, str]) -> list[dict]:
+    """Light contradiction surface for ask() banners (classical only)."""
+    out: list[dict] = []
+    dose = S.symbolic_dose_change(docs)
+    if dose.status in {"PRESENT", "DISPUTED", "CONFIRMED"} and isinstance(dose.value, dict):
+        if dose.value.get("from") != dose.value.get("to"):
+            out.append({
+                "kind": "numeric_dose",
+                "field": "metformin_dose_mg",
+                "values": dose.value.get("values", dose.value),
+                "status": "DISPUTED",
+            })
+    ttl = {}
+    for did, body in docs.items():
+        m = re.search(r"TTL as (\d+) seconds", body)
+        if m:
+            ttl[did] = int(m.group(1))
+    if len(set(ttl.values())) > 1:
+        out.append({"kind": "numeric_ttl", "field": "ttl_seconds", "values": ttl, "status": "DISPUTED"})
+    coll = S.flag_entity_collision(docs)
+    if coll.status == "DISPUTED":
+        out.append({"kind": "entity_collision", "value": coll.value, "status": "DISPUTED"})
+    return out
+
+
 def ask(query: str, corpus_dir: Path | None = None) -> dict:
     """Span-first Q&A over a local folder. Never invents unsupported claims."""
+    t0 = time.perf_counter()
+    corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
     docs = load_corpus(corpus_dir)
     if not docs:
         return {
+            "query": query,
+            "corpus_dir": str(corpus_path),
             "answer_status": "NO_CORPUS",
             "claims": [],
             "unsupported": ["corpus empty or missing"],
             "solver_path": ["load_corpus"],
+            "latency_s": round(time.perf_counter() - t0, 4),
         }
 
     q = query.strip()
@@ -266,6 +299,26 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
                     )
     solver_path.append("numeric+literal_spans")
 
+    # BM25 paragraph retrieve (ask_folder_v0) — evidence-bearing passages only
+    for hit in top_paragraphs(docs, q, k=5):
+        claims.append(
+            S.Claim(
+                "T19",
+                hit["doc_id"],
+                hit["text"][:500],
+                evidence=[{
+                    "start": hit["start"],
+                    "end": hit["end"],
+                    "text": hit["text"][:240],
+                    "bm25": hit["bm25"],
+                }],
+                status="PRESENT",
+                notes="bm25_paragraph",
+            )
+        )
+    if any(c.task_id == "T19" for c in claims):
+        solver_path.append("bm25_paragraphs")
+
     ql = q.lower()
     gold = _load_gold()
     if any(k in ql for k in ("expire", "ttl", "cached", "cache")):
@@ -293,22 +346,38 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
 
     if not presented_sorted:
         return {
+            "query": q,
+            "corpus_dir": str(corpus_path),
             "answer_status": "ABSTAIN",
             "claims": [],
             "unsupported": [q],
             "solver_path": solver_path,
             "note": "no span-supported claim under classical+eclass cascade",
             "n_docs": len(docs),
+            "contradictions_nearby": nearby_contradictions(docs),
+            "latency_s": round(time.perf_counter() - t0, 4),
+            "latency_ms": int(round((time.perf_counter() - t0) * 1000)),
         }
 
     disputed = [c for c in presented_sorted if c.status == "DISPUTED"]
-    status = "CONTRADICTED" if disputed else "SUPPORTED"
+    nearby = nearby_contradictions(docs)
+    status = "CONTRADICTED" if (disputed or nearby) else "SUPPORTED"
+    banner = None
+    if nearby:
+        kinds = sorted({n["kind"] for n in nearby})
+        banner = f"corpus has unresolved contradictions: {', '.join(kinds)}"
     return {
+        "query": q,
+        "corpus_dir": str(corpus_path),
         "answer_status": status,
         "claims": [claim_to_dict(c) for c in presented_sorted[:12]],
         "unsupported": [],
         "solver_path": solver_path,
         "n_docs": len(docs),
+        "contradictions_nearby": nearby,
+        "contradiction_banner": banner,
+        "latency_s": round(time.perf_counter() - t0, 4),
+        "latency_ms": int(round((time.perf_counter() - t0) * 1000)),
     }
 
 
@@ -343,3 +412,219 @@ def scan(corpus_dir: Path | None = None) -> dict:
         "n_docs": len(docs),
         "n_claims": len(claims),
     }
+
+
+
+_NUM_NEAR = re.compile(r"(?<![A-Za-z])(\d+(?:\.\d+)?)(?![A-Za-z])")
+
+
+def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dict:
+    """Cross-doc compare for TERM: spans + nearby-number disagreement → CONTRADICTED.
+
+    Classical only. Does not invent values outside corpus spans.
+    """
+    t0 = time.perf_counter()
+    corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
+    docs = load_corpus(corpus_dir)
+    if not docs:
+        return {
+            "term": term,
+            "corpus_dir": str(corpus_path),
+            "answer_status": "NO_CORPUS",
+            "claims": [],
+            "solver_path": ["load_corpus"],
+            "latency_s": round(time.perf_counter() - t0, 4),
+        }
+
+    needle = term.strip()
+    if not needle:
+        return {
+            "term": term,
+            "corpus_dir": str(corpus_path),
+            "answer_status": "ABSTAIN",
+            "claims": [],
+            "unsupported": ["empty term"],
+            "solver_path": ["compare"],
+            "latency_s": round(time.perf_counter() - t0, 4),
+        }
+
+    pattern = re.compile(re.escape(needle), re.I)
+    hits: list[dict] = []
+    values_by_doc: dict[str, set[str]] = {}
+
+    for did, text in docs.items():
+        for m in pattern.finditer(text):
+            i, j = m.start(), m.end()
+            lo = max(0, i - window)
+            hi = min(len(text), j + window)
+            ctx = text[lo:hi].replace("\n", " ")
+            near = _NUM_NEAR.findall(text[lo:hi])
+            vals = {n for n in near}
+            if vals:
+                values_by_doc.setdefault(did, set()).update(vals)
+            hits.append(
+                {
+                    "doc_id": did,
+                    "start": i,
+                    "end": j,
+                    "text": text[i:j],
+                    "context": ctx[:240],
+                    "nearby_numbers": sorted(vals, key=lambda x: float(x)),
+                }
+            )
+
+    if not hits:
+        return {
+            "term": needle,
+            "corpus_dir": str(corpus_path),
+            "answer_status": "ABSTAIN",
+            "claims": [],
+            "unsupported": [needle],
+            "solver_path": ["compare"],
+            "n_docs": len(docs),
+            "n_hits": 0,
+            "latency_s": round(time.perf_counter() - t0, 4),
+        }
+
+    all_vals = sorted({v for s in values_by_doc.values() for v in s}, key=lambda x: float(x))
+    disputed = False
+    if len(values_by_doc) >= 2 and len(all_vals) >= 2:
+        doc_for_val: dict[str, set[str]] = {}
+        for did, s in values_by_doc.items():
+            for v in s:
+                doc_for_val.setdefault(v, set()).add(did)
+        # Distinct values with non-identical supporting doc sets → CONTRADICTED
+        # Primary signal: ≥2 docs each contribute a different singleton primary value,
+        # or the frozensets of nearby numbers disagree across docs.
+        sets = [frozenset(s) for s in values_by_doc.values() if s]
+        if len(set(sets)) >= 2:
+            disputed = True
+        else:
+            # Same set in every doc but set size ≥2 can still be multi-number agreement
+            # (e.g. TTL 300 and QPS 12000 both near "cache") — only dispute when
+            # docs disagree. Already covered by len(set(sets)) >= 2.
+            disputed = False
+
+    # Tight numeric field: if each doc has exactly one nearby number and they differ
+    singletons = {did: next(iter(s)) for did, s in values_by_doc.items() if len(s) == 1}
+    if len(set(singletons.values())) >= 2:
+        disputed = True
+
+    # Prefer field-like patterns: "TTL as N" / "metformin N mg"
+    field_vals: dict[str, str] = {}
+    field_re = re.compile(
+        rf"(?:{re.escape(needle)}\s+(?:as\s+)?(\d+(?:\.\d+)?)\s*(?:seconds|mg|sec)?|"
+        rf"{re.escape(needle)}\s+(\d+(?:\.\d+)?))",
+        re.I,
+    )
+    for did, text in docs.items():
+        m = field_re.search(text)
+        if m:
+            field_vals[did] = m.group(1) or m.group(2)
+    if len(set(field_vals.values())) >= 2:
+        disputed = True
+        values_by_doc = {k: {v} for k, v in field_vals.items()}
+        all_vals = sorted(set(field_vals.values()), key=lambda x: float(x))
+
+    status = "CONTRADICTED" if disputed else "SUPPORTED"
+    claim = S.Claim(
+        "COMPARE",
+        None,
+        {
+            "term": needle,
+            "values_by_doc": {k: sorted(v, key=lambda x: float(x)) for k, v in values_by_doc.items()},
+            "all_values": all_vals,
+            "n_hits": len(hits),
+            "field_values": field_vals,
+        },
+        evidence=[
+            {
+                "doc_id": h["doc_id"],
+                "start": h["start"],
+                "end": h["end"],
+                "text": h["text"],
+                "context": h["context"],
+            }
+            for h in hits[:24]
+        ],
+        status="DISPUTED" if disputed else "PRESENT",
+        notes="cross_doc_compare",
+    )
+
+    return {
+        "term": needle,
+        "corpus_dir": str(corpus_path),
+        "answer_status": status,
+        "claims": [claim_to_dict(claim)],
+        "hits": hits[:24],
+        "values_by_doc": {k: sorted(v, key=lambda x: float(x)) for k, v in values_by_doc.items()},
+        "field_values": field_vals,
+        "unsupported": [],
+        "solver_path": ["compare"],
+        "n_docs": len(docs),
+        "n_hits": len(hits),
+        "latency_s": round(time.perf_counter() - t0, 4),
+    }
+
+
+def format_report_md(payload: dict, *, title: str | None = None) -> str:
+    """Human-readable markdown for ask/find/scan JSON payloads (product UX)."""
+    lines: list[str] = []
+    status = payload.get("answer_status", "?")
+    lines.append(f"# {title or 'wedge_v1 report'}")
+    lines.append("")
+    lines.append(f"**Status:** `{status}`")
+    if "n_docs" in payload:
+        lines.append(f"**Docs:** {payload['n_docs']}")
+    if "n_hits" in payload:
+        lines.append(f"**Hits:** {payload['n_hits']}")
+    path = payload.get("solver_path") or []
+    if path:
+        lines.append("**Solver path:** " + " → ".join(str(p) for p in path))
+    lines.append("")
+    claims = payload.get("claims") or []
+    if not claims:
+        lines.append("_No claims._")
+    else:
+        lines.append(f"## Claims ({len(claims)})")
+        lines.append("")
+        for i, c in enumerate(claims, 1):
+            if not isinstance(c, dict):
+                continue
+            val = c.get("value")
+            st = c.get("status", "")
+            tid = c.get("task_id", "")
+            doc = c.get("doc_id", "")
+            lines.append(f"### {i}. `{tid}` — {st}")
+            lines.append(f"- **Doc:** `{doc}`")
+            lines.append(f"- **Value:** `{val}`")
+            for e in (c.get("evidence") or [])[:5]:
+                if not isinstance(e, dict):
+                    continue
+                span = e.get("text") or e.get("line") or ""
+                ctx = e.get("context")
+                start, end = e.get("start"), e.get("end")
+                loc = f" [{start}:{end}]" if start is not None else ""
+                lines.append(f"- **Evidence{loc}:** {span}")
+                if ctx:
+                    lines.append(f"  - context: {ctx}")
+            notes = c.get("notes")
+            if notes:
+                lines.append(f"- _notes:_ {notes}")
+            lines.append("")
+    unsupported = payload.get("unsupported") or []
+    if unsupported:
+        lines.append("## Unsupported / abstain reasons")
+        for u in unsupported:
+            lines.append(f"- {u}")
+        lines.append("")
+    contradictions = payload.get("contradictions") or payload.get("disputes") or []
+    if contradictions:
+        lines.append("## Contradictions")
+        for item in contradictions[:20]:
+            lines.append(f"- `{item}`" if not isinstance(item, dict) else f"- {item}")
+        lines.append("")
+    lines.append("---")
+    lines.append("_Verification-first local slice. No generative fill-in._")
+    lines.append("")
+    return "\n".join(lines)
