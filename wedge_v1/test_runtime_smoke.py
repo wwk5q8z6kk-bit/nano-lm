@@ -88,6 +88,36 @@ def test_compare_literal_agree():
     assert "12000" in str(r)
 
 
+def test_failure_gallery():
+    from wedge_v1.failure_gallery import build_gallery, classify_outcome, gallery_to_markdown
+
+    assert classify_outcome({"ok": True, "got_status": "SUPPORTED"}) == "ok_supported"
+    assert classify_outcome({"ok": False, "expect_status": ["SUPPORTED"], "got_status": "ABSTAIN", "ok_status": False}) == "over_abstain"
+    g = build_gallery(
+        dogfood={
+            "n_tasks": 2,
+            "n_ok": 1,
+            "accuracy": 0.5,
+            "rows": [
+                {"id": "a", "ok": True, "got_status": "SUPPORTED", "expect_status": ["SUPPORTED"]},
+                {
+                    "id": "b",
+                    "ok": False,
+                    "got_status": "ABSTAIN",
+                    "expect_status": ["SUPPORTED"],
+                    "ok_status": False,
+                    "ok_needles": True,
+                },
+            ],
+        },
+        path=Path("synthetic"),
+    )
+    assert "over_abstain" in g["buckets"]
+    assert "ok_supported" in g["buckets"]
+    md = gallery_to_markdown(g)
+    assert "failure gallery" in md
+
+
 def test_report_build():
     from frontier.verified_ask_report import build_report, format_report_md
 

@@ -1,191 +1,187 @@
-# Product & Research Discovery Sprint
+# Product Discovery Sprint — Active Frontier
 
-**Mandate:** `papers/ACTIVE_MANDATE.md`  
 **Date:** 2026-07-31  
-**Mode:** Active Frontier — not an evidence freeze; not Layer-1 claims.
+**Branch:** `frontier/active-v1`  
+**Mandate:** `ACTIVE_MANDATE = BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1`  
+**Not Layer-1 evidence. Not a constitution.**  
+**Runtime:** `wedge_v1/` · strategy: `papers/STRATEGIC_RESET.md` · shape: `papers/WEDGE_V1.md`  
+**Also see:** `frontier/PRODUCT_DISCOVERY_SPRINT_V1.md` (earlier draft), `wedge_v1/PRODUCT_DISCOVERY.md`
 
 ---
 
 ## 1. Product opportunity map
 
-### The job to be done
+### Job to be done
 
-Researchers and technical builders drown in **private** PDFs, notes, and repos. Cloud notebooks (e.g. NotebookLM) are excellent UX but: data leaves the machine, citations can still drift, and “chat over docs” rarely enforces **structured, abstaining, measurable** answers.
+A researcher points a tool at a **private** folder of papers/notes and gets **structured, citable answers** that **abstain** when unsupported — without uploading the corpus to a cloud chat product.
 
-nano-lm’s unfair advantage is not “another local RAG.” It is:
+### Pain / market (2025–26)
 
-| Asset | Product meaning |
-|-------|-----------------|
-| E1 / E4 KILL (scoped) | Generation is **not** the default solver — classical + verify first |
-| Exact-match / span discipline | Answers carry **char-offset evidence** or **ABSTAIN** |
-| Utility thinking (\(Q,E,R,L,C\)) | Ship only solvers that improve \(U\), not vibes |
-| Existing `wedge_v1` CLI | Vertical slice already runs: `ask` / `find` / `scan` / `dogfood` |
-| Fabric patterns | Typed claims + verify/abstain (library, not OS) |
+| Pain | Common fix | Failure |
+|------|------------|---------|
+| Private corpus + trust | NotebookLM / ChatGPT upload | Egress; fluent wrong answers |
+| Local chat-over-docs | AnythingLLM + Ollama, PrivateGPT | LM-centric; soft citations; weak hard abstain |
+| Vault RAG | Obsidian plugins, DocAgent Studio | Embeddings+LLM first; little solver ladder |
+| “Verified RAG” OSS | AuditRAG, CITECHECKAI, GroundTruth, CodaCite | Faithfulness via second model / prompt — still gen-default |
+| Paid local desktop | PrivateDocs AI (~$149 lifetime) | Polished UX; still model-centric |
+
+### nano-lm asymmetric edge
+
+1. **Classical-first solver cascade** (E1/E4 as design constraint)  
+2. **Fail-closed char-offset spans** or ABSTAIN  
+3. **ΔU admission** for heavier solvers  
+4. **Contradiction as status** (DISPUTED / CONTRADICTED)  
+5. **Working CLI** — ask / find / scan / compare / ingest / report / dogfood  
+
+### Personas
+
+1. **Solo technical researcher** — notes + PDFs; exact numbers, version diffs.  
+2. **Biomed / methods reader** — dosages / \(n\) / outcomes with spans; no PHI in public builds.  
+3. **Founder dogfooding nano-lm** — “what did we claim?” on project docs.
+
+### Workflows
+
+1. Folder Q&A → claims + spans or ABSTAIN  
+2. Cross-doc disagree on field F → CONTRADICTED + both sides  
+3. Schema fill → typed fields + missing  
+4. Quote definition sentence → extractive only  
 
 ### Value hypotheses
 
-1. **H-privacy:** Users with sensitive notes/papers will pay (money or friction) for local-first over NotebookLM.  
-2. **H-trust:** Fail-closed abstention + span evidence beats fluent RAG that invents.  
-3. **H-hybrid:** Small/local LM only where classical fails — lower cost/latency than always-on 70B.  
-4. **H-habit:** One command on a folder becomes a daily research habit (Competitor-PM “feared asset”).
-
-### Market / OSS gaps (2026 scan, indicative)
-
-| System | Strength | Gap vs nano-lm wedge |
-|--------|----------|----------------------|
-| NotebookLM | UX, multi-doc synthesis | Cloud; weak formal abstain/utility |
-| Obsidian + Lumen / Knowledge AI / Kwipu / Neural Composer | Local vault RAG, citations | Usually LM-centric; little classical-first registry + \(U\) kill gates |
-| Plain vector RAG kits | Easy to stand up | Citation theater; no solver ladder |
-| Enterprise search | Scale | Not local-personal; heavy |
-
-**Gap we own:** *classical-first solver registry + evidence spans + abstain + utility kill*, starting from a working CLI on a folder — then add LM only where \(\Delta U > \delta\).
+| ID | Hypothesis |
+|----|------------|
+| H-privacy | Sensitive-corpus users prefer local-first over NotebookLM |
+| H-trust | Fail-closed abstain + spans beats fluent RAG |
+| H-hybrid | Small LM only where classical fails (ΔU > δ) |
+| H-habit | One folder CLI becomes a weekly research habit |
 
 ---
 
-## 2. Top three wedges
+## 2. Top three wedges (A / B / C)
 
-### A. Local verified research assistant *(recommended)*
+| ID | Wedge | Feasibility now | Differentiation | Main risk |
+|----|-------|-----------------|-----------------|-----------|
+| **A** | Local verified research assistant | **High** — runtime live | Classical-first + ΔU + spans | Synthetic ≠ real corpus |
+| **B** | Small workflow automation engine | Medium | Weaker vs RPA+LLM | Scope creep |
+| **C** | Local developer/research agent | Lower | Crowded (Cursor/Claude Code) | Agent theater |
 
-**User:** researcher / MD-adjacent / technical founder with a private paper+notes pile.  
-**Workflow:** folder → ask structured questions → claims + spans → abstain/contradict → optional escalate.  
-**Why nano-lm:** already `wedge_v1`; aligns Evidence Core lessons; MindVault-adjacent.
-
-### B. Small workflow automation engine
-
-**User:** ops / analyst with repeated extract→validate→route tasks.  
-**Workflow:** schema-bound extraction, tools, review routing.  
-**Why later:** needs customer schema inventory; less differentiation from RPA + LLM wrappers until A proves habit.
-
-### C. Local developer/research agent
-
-**User:** solo researcher in a git repo.  
-**Workflow:** search, test, evidence-backed patches, experiment logs.  
-**Why later:** overlaps Cursor/Claude Code; harder to differentiate; higher blast radius.
+**Fair note:** B wins if first users are ops/schema people; C wins if the habit is “edit my repo.” No evidence for either yet → defer.
 
 ---
 
 ## 3. Recommended wedge + rationale
 
-**Choose A — Local verified research assistant.**
+**Recommend A — Local verified research document intelligence.**
 
-| Criterion | A | B | C |
-|-----------|---|---|---|
-| Reuses in-tree assets | **High** (`wedge_v1`, fabric patterns) | Medium | Medium |
-| Differentiator vs OSS RAG | **High** (classical-first + \(U\)) | Medium | Low |
-| Privacy value | **High** | Medium | High |
-| Path to “someone uses it this week” | **Short** (CLI exists) | Medium | Long |
-| Risk of governance relapse | Lower if we *ship dogfood* | Medium | High (agent theater) |
+nano-lm uniquely owns *classical-first, verification-gated answers over a private corpus*—not another Ollama chat wrapper. E1/E4 showed generative necessity failed on tested scribe regimes; that constrains routing (hybrid/classical-first), it does not forbid building. Wedge A reuses the live `wedge_v1` runtime, maps to researcher pain and MindVault-adjacent vision, and has a crisp kill: if classical+verify cannot earn habit on a real private folder, park before spending on models.
 
-**Personas (A):**
-
-1. **Solo biomedical reader** — 20–100 PDFs + notes; needs drug/dose/compare facts with quotes.  
-2. **Technical founder** — design docs + papers; needs “what did we claim?” with spans.  
-3. **Thesis / lit-review student** — vault of MD + PDF; needs contradiction flags, not essays.
+**Not now:** NanoScribe OS, general chatbot, clinical product, reopen E2/E4 as product.
 
 ---
 
-## 4. Technical architecture (baseline)
+## 4. Technical architecture
 
 ```text
-documents (folder)
-   → ingest (md/txt now; PDF text layer next)
-   → index (keyword / BM25; vectors optional later)
-   → task classify (deterministic)
-   → solver registry (classical → e-class → optional LM)
-   → claims {value, evidence spans, status}
-   → verifier (span must support value; else ABSTAIN)
-   → answer JSON / CLI
-   → (later) validated memory of verified claims only
+local folder (md/txt/pdf→text)
+    → ingest + doc_id index (+ optional .wedge_manifest.json)
+    → task route (metadata | span-fact | retrieve-QA | compare)
+    → solver cascade: deterministic → dict/span → BM25 → (optional LM later)
+    → typed Claim {task_id, value, evidence[], status}
+    → verify (evidence required for PRESENT; else ABSTAIN/DISPUTED)
+    → answer JSON / markdown report
 ```
 
-**Reuse:** `wedge_v1/runtime.py`, classical solvers, e-class probes, fabric claim/verify ideas as library.  
-**Do not start with:** new pretrain, NanoScribe OS, E4 R★ revision.
+**Reuse:** `wedge_v1/runtime.py`, `ingest.py`, `classical/{solvers,bm25}.py`, Fabric-style claim invariants.  
+**Do not start with:** training, vectors-as-default, agent IDE.
 
 ---
 
 ## 5. Baseline comparison plan
 
-Freeze a **product** utility (may match wedge draft \(U\); not Layer-1 until promoted):
-
 \[
-U = Q - 0.5 E - 0.3 R - 0.02 L - 0.05 C
+U = Q - 0.5\,E - 0.3\,R - 0.02\,L - 0.05\,C
 \]
 
-| Arm | Meaning | When |
-|-----|---------|------|
-| \(U_{\mathrm{classical}}\) | Current registry (no LM) | **Now** — dogfood + owner folder |
-| \(U_{\mathrm{classical+small}}\) | + local small LM on abstain/E-class only | After classical plateaus |
-| \(U_{\mathrm{classical+large}}\) | + API large model escalate | Optional; cost tracked |
-| \(U_{\mathrm{hybrid+verify}}\) | Best routing + verify-on | Product target |
+| Arm | Stack | When |
+|-----|-------|------|
+| C0 \(U_{\mathrm{classical}}\) | Classical + verify | **Always first** |
+| C1 \(U_{\mathrm{classical+small}}\) | + small local LM on gaps | After classical plateau |
+| C2 \(U_{\mathrm{classical+large}}\) | + large/cloud escalate | Owner spend OK |
+| C3 \(U_{\mathrm{hybrid+verify}}\) | Best routing + verify-on | Product target |
 
-**Protocol:** same corpus, same question pack, same schema; report \(Q,E,R,L,C\) and failure gallery (wrong span / silent miss / over-abstain).  
-**Preregister only** when claiming a confirmatory science result — product dogfood can stay exploratory under the mandate.
+Admit heavier arm only if \(\Delta U > \delta\) (default 0.05) on the same pack.  
+Packs: synthetic ✓ · papers dogfood ✓ · **owner private folder** ← next.
 
 ---
 
-## 6. First vertical-slice implementation plan
+## 6. Vertical-slice status (`ask_folder_v0`)
 
-**Slice name:** `wedge_v1` → “folder Q&A with fail-closed evidence”
-
-| Step | Work | Done? |
-|------|------|-------|
-| S0 | CLI ask/find/scan/smoke/dogfood | **Yes** |
-| S1 | Robust `--corpus` on arbitrary MD/TXT folder | Partial |
-| S2 | PDF text-layer ingest (pypdf/pdfminer) | **Next coding** |
-| S3 | BM25 / better retrieval over naive keyword | Next |
-| S4 | Failure gallery exporter (JSON→md) | Next |
-| S5 | Owner-corpus dogfood pack (private; no commit of PHI) | Owner |
-| S6 | Measure \(U_{\mathrm{classical}}\) on owner pack | After S5 |
-| S7 | LM only on measured E-class gaps | Only if \(\Delta U>\delta\) |
+| Step | Work | Status |
+|------|------|--------|
+| S0 | CLI ask/find/scan/smoke/dogfood | **Done** |
+| S1 | `--corpus` + JSON schema | **Done** |
+| S2 | Stdlib BM25 in ask | **Done** |
+| S3 | PDF text extract (optional pypdf) | **Done** (dep optional) |
+| S4 | `ingest` inventory CLI | **Done** |
+| S5 | `compare` + contradiction banners | **Done** |
+| S6 | Markdown `report ask|find|scan|compare` | **Done** |
+| S7 | Owner-corpus dogfood (private; no PHI) | **Next** |
+| S8 | Measure \(U_{\mathrm{classical}}\); LM iff ΔU > δ | After S7 |
 
 ---
 
 ## 7. Kill criteria
 
-| Kill | Condition |
-|------|-----------|
-| **K1 Product habit** | After 2 weeks of owner use, <3 real questions/week → park wedge A |
-| **K2 Utility** | On owner pack, classical \(U\) worse than “grep + human” time proxy → redesign ingest/retrieval before any LM |
-| **K3 Differentiation** | If product equals “Ollama + RAG” with no abstain/span discipline users notice → stop branding nano-lm |
-| **K4 Evidence bleed** | Any change that silently edits Evidence Core / tags → immediate stop + revert |
-| **K5 Spend** | Any path requiring > compute ceiling without owner → stop |
-
-Science kills (E1/E4) stay historical; they **inform routing**, they do not freeze product discovery.
+| ID | Kill if |
+|----|---------|
+| K1 Habit | <3 real questions/week after 2 weeks owner use |
+| K2 Utility | Classical+verify loses to “grep + human” time proxy |
+| K3 Gen-only | Only path to usefulness is unconstrained generation |
+| K4 Privacy | Default cloud / PHI in git |
+| K5 Differentiation | Users experience “just Ollama RAG” |
+| K6 Spend | Substantial cloud spend without owner |
 
 ---
 
 ## 8. Exact next coding task
 
 ```text
-TASK: wedge_v1 PDF text-layer ingest + corpus listing
+TASK: owner-corpus dogfood harness (no PHI in git)
 
-Implement in wedge_v1/:
-1. ingest.py — load .md/.txt/.pdf (text layer) from --corpus into {doc_id: text}
-2. Wire runtime.ask/scan/find to use ingest (fallback to current md-only)
-3. CLI: `python -m wedge_v1 ingest --corpus DIR` prints doc counts / char totals
-4. Test: unit test on a tiny fixture PDF or skip-if-no-pdf; md fixtures must pass
-5. Update README one-liner
+1. wedge_v1/run_owner_dogfood.py (or extend run_dogfood.py):
+   - accept --corpus PATH (gitignored / outside repo)
+   - fixed question pack JSON (queries + expected status class:
+     SUPPORTED | ABSTAIN | CONTRADICTED | any)
+   - write results_owner_dogfood.json locally (gitignored)
+2. Failure gallery: wrong span / miss / over-abstain markdown snippet
+3. README one-liner; do not commit private docs
+4. Smoke on synthetic corpus path still passes
 
-OUT OF SCOPE: training, vectors, Obsidian plugin, Evidence Core edits, paid GPU
+OUT OF SCOPE: training, vectors, Evidence Core edits, paid GPU, public claims
 ```
 
----
-
-## Competitive matrix (compact)
-
-| Dimension | NotebookLM | Obsidian local RAG | **nano wedge A** |
-|-----------|------------|--------------------|------------------|
-| Local/private | No | Yes | **Yes** |
-| Classical-first | No | Rare | **Yes** |
-| Span evidence + abstain | Soft | Varies | **Hard fail-closed** |
-| Utility kill for solvers | No | No | **Yes** |
-| UX polish | High | Medium | **Low (CLI-first)** |
-| Near-term ship | — | Plugin | **Extend existing CLI** |
+**Commands after:**  
+`python3 -m wedge_v1 report ask --corpus "$OWNER_CORPUS" "…"`  
+`python3 -m wedge_v1 ingest --corpus "$OWNER_CORPUS"`
 
 ---
 
-## Bottom line
+## Competitive matrix
 
-Evidence Core stays frozen. Active Frontier builds **A** by making `wedge_v1` something a stranger can point at a messy folder and trust.
+| System | Local | Citations | Hard refuse | Classical-first | ΔU gate |
+|--------|-------|-----------|-------------|-----------------|---------|
+| NotebookLM | ✗ | soft | weak | ✗ | ✗ |
+| AnythingLLM | ✓ | soft | weak | ✗ | ✗ |
+| PrivateDocs AI | ✓ | page/row | weak | ✗ | ✗ |
+| AuditRAG / CITECHECKAI / GroundTruth | ✓/hybrid | chunk/page | model/prompt | ✗ | ✗ |
+| DocAgent / CodaCite | ✓ | strongish | varies | partial | ✗ |
+| **nano-lm Wedge A** | ✓ | **char spans** | **fail-closed** | **✓** | **✓** |
 
-**Next action:** execute coding task §8 (PDF ingest), then owner dogfood on a private corpus.
+---
+
+## What we will not do in this sprint
+
+- More governance constitutions / speech-act expansions  
+- Program 1 census / NanoScribe OS / reopen E2 or E4 as product  
+- Public “product ready” claims from synthetic U  
+- Silently rewrite Evidence Core or protected tags  

@@ -1,0 +1,184 @@
+{
+  "schema": "nano-lm.wedge_v1.failure_gallery.v1",
+  "source": "/Users/mac/Projects/nano-lm/wedge_v1/results_wedge_v1_dogfood.json",
+  "n_tasks": 10,
+  "n_ok": 10,
+  "accuracy": 1.0,
+  "buckets": {
+    "ok_abstain": [
+      "D04",
+      "D07"
+    ],
+    "ok_contradicted": [
+      "D09"
+    ],
+    "ok_supported": [
+      "D01",
+      "D02",
+      "D03",
+      "D05",
+      "D06",
+      "D08",
+      "D10"
+    ]
+  },
+  "rows": [
+    {
+      "id": "D01",
+      "class": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "note": null,
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs"
+      ],
+      "n_claims": 5
+    },
+    {
+      "id": "D02",
+      "class": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "note": "fallback_find:KILL",
+      "solver_path": [
+        "find_spans"
+      ],
+      "n_claims": 20
+    },
+    {
+      "id": "D03",
+      "class": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "note": null,
+      "solver_path": [
+        "find_spans"
+      ],
+      "n_claims": 13
+    },
+    {
+      "id": "D04",
+      "class": "ok_abstain",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "got_status": "ABSTAIN",
+      "ok": true,
+      "note": "no span-supported claim under classical+eclass cascade",
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs"
+      ],
+      "n_claims": 0
+    },
+    {
+      "id": "D05",
+      "class": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "note": "fallback_find:review load",
+      "solver_path": [
+        "find_spans"
+      ],
+      "n_claims": 9
+    },
+    {
+      "id": "D06",
+      "class": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "note": null,
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs"
+      ],
+      "n_claims": 4
+    },
+    {
+      "id": "D07",
+      "class": "ok_abstain",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "got_status": "ABSTAIN",
+      "ok": true,
+      "note": "no span-supported claim under classical+eclass cascade",
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs"
+      ],
+      "n_claims": 0
+    },
+    {
+      "id": "D08",
+      "class": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "note": "fallback_find:smallest sufficient",
+      "solver_path": [
+        "find_spans"
+      ],
+      "n_claims": 4
+    },
+    {
+      "id": "D09",
+      "class": "ok_contradicted",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "got_status": "CONTRADICTED",
+      "ok": true,
+      "note": null,
+      "solver_path": [
+        "compare"
+      ],
+      "n_claims": 1
+    },
+    {
+      "id": "D10",
+      "class": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "note": null,
+      "solver_path": [
+        "compare"
+      ],
+      "n_claims": 1
+    }
+  ],
+  "note": "Product failure gallery; not Layer-1 ledger claim."
+}

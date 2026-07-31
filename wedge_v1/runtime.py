@@ -386,9 +386,9 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
                 relevant_nearby.append(n)
     status = "CONTRADICTED" if (disputed or relevant_nearby) else "SUPPORTED"
     banner = None
-    if nearby:
-        kinds = sorted({n["kind"] for n in nearby})
-        banner = f"corpus has unresolved contradictions: {', '.join(kinds)}"
+    if relevant_nearby:
+        kinds = sorted({n["kind"] for n in relevant_nearby})
+        banner = f"query-relevant contradictions: {', '.join(kinds)}"
     return {
         "query": q,
         "corpus_dir": str(corpus_path),
@@ -397,7 +397,8 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         "unsupported": [],
         "solver_path": solver_path,
         "n_docs": len(docs),
-        "contradictions_nearby": nearby,
+        "contradictions_nearby": relevant_nearby,
+        "contradictions_corpus": nearby,
         "contradiction_banner": banner,
         "latency_s": round(time.perf_counter() - t0, 4),
         "latency_ms": int(round((time.perf_counter() - t0) * 1000)),
@@ -669,7 +670,7 @@ def format_report_md(payload: dict, *, title: str | None = None) -> str:
             if isinstance(item, dict):
                 kind = item.get("kind") or item.get("task_id") or "flag"
                 doc = item.get("doc_id", "")
-                val = item.get("value")
+                val = item.get("values", item.get("value"))
                 lines.append(f"- `{kind}` doc=`{doc}` value=`{val}`")
             else:
                 lines.append(f"- `{item}`")

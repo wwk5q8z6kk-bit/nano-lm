@@ -54,6 +54,9 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("dogfood", help="Score dogfood tasks on papers/ corpus")
     sub.add_parser("smoke", help="Run runtime regression pins")
+    gal = sub.add_parser("gallery", help="Export failure gallery from dogfood JSON")
+    gal.add_argument("--from", dest="from_path", type=Path, default=None)
+    gal.add_argument("-o", "--output", type=Path, default=None, help="Optional extra md path")
 
     args = p.parse_args(argv)
 
@@ -154,6 +157,18 @@ def main(argv: list[str] | None = None) -> int:
         else:
             sys.stdout.write(body)
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
+
+
+    if args.cmd == "gallery":
+        from wedge_v1.failure_gallery import DEFAULT_DOGFOOD, write_gallery, gallery_to_markdown
+
+        g = write_gallery(path=args.from_path or DEFAULT_DOGFOOD)
+        md = gallery_to_markdown(g)
+        if args.output:
+            args.output.write_text(md, encoding="utf-8")
+        json.dump({"buckets": g.get("buckets"), "accuracy": g.get("accuracy"), "n_ok": g.get("n_ok")}, sys.stdout, indent=2)
+        sys.stdout.write(chr(10))
+        return 0 if not g.get("error") else 2
 
     return 1
 
