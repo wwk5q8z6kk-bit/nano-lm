@@ -47,12 +47,57 @@ This closeout adds **documentation only**. No AAEA P2 implementation. No new exp
 
 ## Tag gate
 
-Proposed reconciled freeze tag remains **owner-only** (see `EVIDENCE_CURRENT.md`).  
-**Not created** by this hybrid run. Existing immutable tags:
+Proposed reconciled freeze tag remains **owner-only**.
+**Not created** by hybrid run. Existing immutable tags:
 
 - `paper-alpha-v1` — do not move
 - `post-alpha-evidence-freeze-2026-07-31` — do not move
 
-## Program state after this file
 
-`IDLE_AFTER_HYBRID_DOCS` — waiting on owner for optional `OWNER_TAG_OK` / commit of this card; otherwise remain idle.
+## Phase 3 — Tag decision (2026-07-31T18:09Z)
+
+**Decision: DEFER new freeze tag.**
+
+Reason (Contrarian / Architect): hybrid commit `a61ba41c21b0` sits on HEAD `71004232992d` whose ancestry **includes** E4 (`6af178d8d27d` ancestor=YES). Tagging HEAD as `council-hybrid-freeze-*` would mislabel an E4-containing tree as a freeze.
+
+Honest alternatives left open for owner:
+1. **Remain deferred** (default) — this closeout doc is the freeze act.
+2. **Clean lineage** — branch from `post-alpha-evidence-freeze-2026-07-31`, cherry-pick `a61ba41c21b0`, tag there (`OWNER_TAG_OK` required).
+3. **Non-freeze snapshot tag** on HEAD — allowed only if name does **not** claim freeze (`OWNER_TAG_OK` required).
+
+Protected tags remain immutable: `paper-alpha-v1`, `post-alpha-evidence-freeze-2026-07-31`.
+
+## Phase 4 — IDLE; parked dirty tree (2026-07-31T18:09Z)
+
+Uncommitted paths left in place (not stash-dropped):
+
+```
+ M artifacts/POST_ALPHA_EVIDENCE_FREEZE.json
+ M artifacts/POST_ALPHA_EVIDENCE_FREEZE.md
+ M artifacts/SHA256SUMS
+ M audit/discussion-to-implementation/EXECUTIVE_SUMMARY.md
+ M audit/discussion-to-implementation/FINAL_FREEZE_READINESS_REPORT.md
+ M audit/discussion-to-implementation/POST_ALPHA_EVIDENCE_FREEZE.json
+ M audit/discussion-to-implementation/POST_ALPHA_EVIDENCE_FREEZE.md
+ M audit/discussion-to-implementation/README.md
+ M audit/discussion-to-implementation/SHA256SUMS
+ M benchmarks/BENCHMARK_CONSTITUTION.md
+ M papers/EMPIRICAL_FOUNDATION.md
+?? EVIDENCE_CURRENT.md
+?? audit/discussion-to-implementation/STRATIGRAPHY.md
+?? audit/discussion-to-implementation/SWARM_QUEEN_SYNTHESIS_2026-07-31.md
+?? papers/STRATEGIC_RESET.md
+?? papers/WEDGE_V1.md
+?? papers/WEDGE_W1.md
+?? papers/WEDGE_W1_CORPUS_MANIFEST.json
+?? research/decision_records/2026-07-31-owner-accept-A1-design.md
+?? research/decision_records/2026-07-31-strategic-reset-choose-A.md
+?? research/decision_records/2026-07-31-wedge-v1-lock.md
+?? trajectory/PROGRAM_A1_rstar_revision_design.md
+?? wedge_v1/README.md
+?? wedge_v1/inclusion_predicates.md
+```
+
+Gated tracks unchanged: E2 / fabric V2 / NanoScribe / curiosity E4 reopen — **STOP**.
+
+**Program state:** `IDLE_AFTER_HYBRID_COMMIT` — await optional `push` and/or `OWNER_TAG_OK` (clean-lineage cherry-pick). No further hybrid bookkeeping required.
