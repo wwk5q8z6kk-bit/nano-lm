@@ -21,6 +21,9 @@
 | [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Authorized now (wedge selection; freeze integrity) |
 | [`DECISION_GATES.md`](DECISION_GATES.md) | Promotion rules |
 | [`FIRST_PRINCIPLES_RISK_MITIGATION.md`](FIRST_PRINCIPLES_RISK_MITIGATION.md) | Blocker atoms → research-backed mitigations |
+| [`PUBLIC_ONE_PAGER.md`](PUBLIC_ONE_PAGER.md) | Outsider proven/frozen/next |
+| [`OWNER_SPEECH_ACTS.md`](OWNER_SPEECH_ACTS.md) | Typed owner chat forces (`continue` ≠ execute) |
+| [`MITIGATION_STATUS_SCORECARD.md`](MITIGATION_STATUS_SCORECARD.md) | Blocker CLOSED/PARTIAL/OPEN |
 | [`ANOMALY_LOG.md`](ANOMALY_LOG.md) | Kill/stop → expand questions |
 | [`../benchmarks/BENCHMARK_CONSTITUTION.md`](../benchmarks/BENCHMARK_CONSTITUTION.md) | Program 0 / harness rules |
 

@@ -2,8 +2,9 @@
 
 **Date:** 2026-07-31  
 **Auth:** `OWNER_STRATEGIC_RESET_OK` · `NEXT_UNIT = WEDGE_V1` · trigger: owner “proceed”  
-**Status:** `WEDGE_LOCKED` + `RISK_REGISTER_CLOSED` + `PHASE2_CLASSICAL_COMPLETE` — RESULT `wedge_v1/results_wedge_v1_classical.json` (U≈0.926, 40/40); LM/Nano Runtime expansion needs new auth  
+**Status:** `IDLE_AFTER_DOGFOOD` — runtime CLI live; papers dogfood 8/8; LM not indicated
 **Center:** `papers/STRATEGIC_RESET.md`  
+**Phase 3:** E-class closed without LM (`results_wedge_v1_phase3_eclass.json`); LM probe design parked (`PHASE3_LM_PROBE_DESIGN.md`, not indicated)  
 **Supersedes:** A/B/C research-unit choice; `research/decision_records/2026-07-31-strategic-reset-choose-A.md`; Program A1 as default next
 
 ---
@@ -175,6 +176,8 @@ verdict under frozen \(R\). Free generation that skips P4–P5 is out of scope f
 ---
 
 ## Blockers, risks, and first-principles mitigations
+
+> **Namespace:** IDs below are `WED.B*` (wedge product). Lab-wide blockers are `LAB.B*` in `papers/FIRST_PRINCIPLES_RISK_MITIGATION.md` §9. Do not cite bare “B13” across maps.
 
 Each row: **blocker** → root cause (first principles) → **mitigation** (design + research
 backing) → **acceptance test**.
@@ -447,7 +450,11 @@ Every irreducible problem maps to mitigations. **Phase 1 risk register = CLOSED*
 
 ```text
 PHASE1_RISK_REGISTER = CLOSED
-NEXT = OWNER_AUTH_FOR_PHASE3_OR_EXPAND  # Phase 2 DONE
+PHASE3_ECLASS = ECLASS_CLOSED_WITHOUT_LM
+NOISY_DIAGNOSTIC = NOISY_INGEST_NORMALIZE_SUFFICIENT
+LM_PROBE = NOT_INDICATED
+NEXT_OPTIONAL = AUTHORIZE_WEDGE_V1_U_FREEZE | AUTHORIZE_WEDGE_V1_OWNER_CORPUS
+ALTERNATE = IDLE_AFTER_NOISY_DIAGNOSTIC
 NO_NEW_LAB_STRUCTURE
 ```
 
@@ -458,8 +465,8 @@ NO_NEW_LAB_STRUCTURE
 | Phase | Work | Status after this lock |
 |-------|------|------------------------|
 | **1** | Wedge + 40 tasks | **DONE (this doc)** |
-| **2** | Classical baseline on frozen mini-corpus | **DONE** — `wedge_v1/results_wedge_v1_classical.json` (U≈0.926, 40/40 on clean synthetic track) |
-| **3** | Add small model only where baseline fails | **Not authorized** — needs `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE`; classical abstains on T35/T36/T39 |
+| **2** | Classical baseline on frozen mini-corpus | **DONE** — `wedge_v1/results_wedge_v1_classical.json` (draft U≈0.891 on clean synthetic track) |
+| **3** | E-class residual (T35/T36/T39) | **DONE without LM** — expand/symbolic/coref; `results_wedge_v1_phase3_eclass.json` |
 | **4+** | Memory / efficiency / expand | Blocked |
 
 ---
