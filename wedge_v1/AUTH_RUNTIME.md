@@ -47,3 +47,16 @@ python -m wedge_v1 ask "How long before cached entries expire?"
 python -m wedge_v1 ask "What is the clinical accuracy of NanoScribe in hospitals?"  # ABSTAIN
 python -m wedge_v1 scan
 ```
+
+
+## Dogfood RESULT (2026-07-31)
+
+```text
+DOGFOOD_ACCURACY = 1.0
+N = 8/8
+SMOKE = PASS
+LM = NOT_INDICATED
+```
+
+Fail-closed OOS (NanoScribe clinical accuracy; GPT-4 E1 score) → ABSTAIN.  
+Numeric/tag locate on research docs → SUPPORTED with spans.
