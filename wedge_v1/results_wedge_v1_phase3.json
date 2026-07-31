@@ -1,10 +1,10 @@
 {
   "schema": "nano-lm.wedge_v1.phase3.v1",
-  "auth": "AUTHORIZE_WEDGE_V1_PHASE3_ECLASS_PROBE",
+  "auth": "AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE",
   "track": "clean",
   "classical_U": 0.891248347826087,
-  "hybrid_U": 0.8906712432432433,
-  "delta_U": -0.0005771045828436572,
+  "hybrid_U": 0.8904672432432432,
+  "delta_U": -0.0007811045828437502,
   "delta": 0.05,
   "summary": {
     "n_checks": 50,
@@ -12,9 +12,9 @@
     "Q": 1.0,
     "E": 0.0,
     "R": 0.1891891891891892,
-    "L": 0.0036,
+    "L": 0.0138,
     "C": 1.05,
-    "U": 0.8906712432432433,
+    "U": 0.8904672432432432,
     "checks": [
       {
         "task_id": "T01",
@@ -349,6 +349,5 @@
     "First-principles cascade: cheapest non-LM probes before any LM.",
     "LM not invoked; E-class closed without generation.",
     "A\u2013D remain classical-only. Not a Layer-1 ledger claim until promoted."
-  ],
-  "owner_trigger": "continue"
+  ]
 }
