@@ -120,9 +120,11 @@ Deliverable:
 
 ## Stage 4 — New kill gate (E4)
 
-**Goal:** Does generative add utility **in R★**?
+**Status:** `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` under `AUTHORIZE_E4_DESIGN_ONLY`.
 
-Run only what Stage 3 listed. No extra methods mid-flight.
+**Goal:** Does generative+verify add utility **in R★** under draft \(U_{R★}\)?
+
+Run only what Stage 3 listed — **and only after separate execute authorization**. No extra methods mid-flight. No paid compute under design-only.
 
 ### Gate 4 (main product branch)
 
@@ -205,15 +207,16 @@ Only after Stage 5 shows positive \(U\):
 
 ```text
 Stage 0: DONE (Gate 0 PASS)
-Stage 1: DONE (Gate 1 PASS — E3 bounded human EXECUTED; EXACT_SURVIVES)
+Stage 1: DONE (Gate 1 PASS — E3 agent-applied rubric audit EXECUTED; EXACT_SURVIVES on instrument; dual-clinician IAA open)
 Stage 2: DONE (Gate 2 PASS — R★ hardened / testable)
 Stage 3: DONE (Gate 3 PASS — P2 / PREREG_E4_Rstar_killgate.md frozen)
-Stage 4: E4 BLOCKED until owner authorizes run against frozen P2   ← NEXT DECISION
+Stage 4: E4 DESIGN_IN_PROGRESS / EXECUTION_BLOCKED (design-only auth)   ← EXECUTE needs separate auth
 ```
 
 **Next owner/agent line (pick one):**
 
-- `Stage 4: authorize E4 — implement R★ builder + run kill gate per PREREG_E4_Rstar_killgate.md`  
+- `Stage 4 execute: separate owner auth — implement R★ builder + run kill gate per PREREG_E4_Rstar_killgate.md`
+- `Design-only (authorized): harden R★/U/fairness/consequences — papers/AMBITION.md`  
 - `Idle` — leave E4 blocked; protocol stays frozen  
 
 Do **not** edit \(U_{R★}\) or baselines after seeing scores. Do **not** reopen old-task runs.

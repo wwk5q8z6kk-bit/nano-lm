@@ -2,6 +2,7 @@
   "schema": "nano-lm.canonical_status_table.v1",
   "updated": "2026-07-31",
   "authority": "audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md",
+  "owner_auth": "AUTHORIZE_E4_DESIGN_ONLY",
   "objects": {
     "paper_alpha_core": {
       "status": "PUBLIC_FROZEN_CORRECTED",
@@ -12,7 +13,7 @@
       "status": "PUBLIC_EVIDENCE_ARCHIVED",
       "prior": "LOCAL_RESULT_REPORTED",
       "verdict": "KILL",
-      "notes": "M1 dominates official M0; M2 within delta=0.05"
+      "notes": "M1 dominates official M0; M2 within delta=0.05; scoped to OLD_TASK_U"
     },
     "E2": {
       "status": [
@@ -46,17 +47,26 @@
       "notes": "Thin synthetic regression harness != NanoScribe"
     },
     "R_star": {
-      "status": "LOCAL_PROTOCOL",
-      "notes": "Hardened regime definition only"
+      "status": "DESIGN_HARDENED",
+      "prior": "LOCAL_PROTOCOL",
+      "notes": "Anti-circular I*/X*/B*; no E4 data world"
     },
     "E4": {
       "status": [
-        "BLOCKED",
+        "DESIGN_IN_PROGRESS",
+        "EXECUTION_BLOCKED",
         "NO_BUILDER",
         "NO_DATA",
         "NO_RESULT"
       ],
-      "notes": "Owner authorization absent; IDLE after freeze"
+      "notes": "AUTHORIZE_E4_DESIGN_ONLY; execution requires separate auth"
+    },
+    "program_posture": {
+      "status": [
+        "IDLE_AFTER_FREEZE",
+        "E4_DESIGN_CARVE_OUT"
+      ],
+      "notes": "Freeze complete; ambition via design track only; see papers/AMBITION.md"
     }
   }
 }

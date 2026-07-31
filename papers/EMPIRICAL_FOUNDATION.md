@@ -15,11 +15,11 @@ and systems object are entangled; do not sell them as one story.*
   utility or materially different problem formulation.
 - **Residual doubt mass (ordered):** external validity / synthetic world; oracle
   verifier → open-world overclaim; clinician faithfulness (E3 agent-rubric done; dual-clinician/IAA pending);
-  LoRA mechanism unidentified (E2 blocked); seed/factorial underpower; morphology
+  LoRA mechanism unidentified (E2 GATED/STOP, no RESULT); seed/factorial underpower; morphology
   residual; train nondeterminism. Classical baseline **executed** (E1).
 - **Kill threats status:** T5 wrong substrate **FIRED (E1 KILL)** · T3 exact-match
   construct **provisionally stable** under normalize + agent-rubric (dual-clinician/IAA pending) ·
-  H4 wrong objective open · LoRA U1–U4 unidentified (E2 blocked) · oracle verifier
+  H4 wrong objective open · LoRA U1–U4 unidentified (E2 GATED/STOP) · oracle verifier
   overclaim open.
 
 ## The measured foundation (immutable JSONs in trajectory/)
@@ -181,8 +181,9 @@ experiment that cannot change the roadmap. **E1 already KILL — do not rerun Da
 | `papers/EVIDENCE_LEDGER.md` | Proven / supported / plausible / speculation / falsified |
 | `papers/CLAIM_GLOSSARY.md` | Forbidden claims + approved hedges |
 | `trajectory/DECISION_P1_program_lock.md` | E1/E3/E2 decision lock |
-| `trajectory/REGIME_P1_where_classical_fails.md` | Product regime **R★** definition (**protocol only**; no E4 measurement) |
-| `trajectory/PREREG_E4_Rstar_killgate.md` | **P2 protocol frozen** — \(U_{R★}\), baselines, E4 decision rule (**no `results_e4_*`**) |
+| `trajectory/REGIME_P1_where_classical_fails.md` | Product regime **R★** (design-hardened; anti-circular I*/X*/B*; no E4 data) |
+| `trajectory/PREREG_E4_Rstar_killgate.md` | **E4 design package** — draft \(U_{R★}\) with Q/E/R/L/C/M, fairness, consequences (**no `results_e4_*`**; EXECUTION_BLOCKED) |
+| `papers/AMBITION.md` | IDLE ≠ halt; design-only ambition framing |
 | `papers/EVIDENCE_MANIFEST.json` | Machine-readable claim → prereg → code → outputs → tag map |
 
 **Position:** Phase 0–1 **DONE** (Outcome 1: non-LM wins). Paper α frozen.
@@ -194,8 +195,9 @@ wedge). Path C = pure research sequence (E3→E2→generalization→interp). See
 `papers/AZ_EXECUTION_PLAN.md`.
 
 **E4** = Stage 4 new-regime kill gate (only product-unlocking experiment).
-**Cursor:** Gate 3 PASS — protocol frozen at `trajectory/PREREG_E4_Rstar_killgate.md`;
-E4 **BLOCKED** until owner authorizes Stage 4. Gates 0–3 PASS. Log:
+**Cursor:** Gate 3 PASS — design package at `trajectory/PREREG_E4_Rstar_killgate.md`;
+E4 = `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` under `AUTHORIZE_E4_DESIGN_ONLY`
+(not authorized to execute). Gates 0–3 PASS. Ambition: `papers/AMBITION.md`. Log:
 `trajectory/PIPELINE_GATE_LOG.md`.
 
 ## P1 decision lock (2026-07-31) — docs only
@@ -211,19 +213,20 @@ residual continua. No Paper α reopen. No additional LM scaling.**
   required before any product experiment.
 - Paper α public freeze and E1 KILL for *this* task remain in force.
 
-## Immediate next actions (owner-ordered) — FREEZE AND WRITE
+## Immediate next actions (owner-ordered)
 
 1. ~~Execute E1~~ **DONE — KILL** (official M0 closed 2026-07-31, RunPod CUDA).
 2. ~~Lock Paper α prose~~ **DONE** (camera-ready + GitHub `paper-alpha-v1`).
 3. ~~E3 bounded agent-rubric audit~~ **DONE** (EXACT_SURVIVES on instrument; IAA/dual-clinician still open).
 4. **E2 / fabric / residual continua: STOP** until an explicit written re-scope.
    No LoRA mechanism sentences. No product revival on the E1 task.
-5. ~~P1 decision lock~~ **DONE** (`trajectory/DECISION_P1_program_lock.md` +
-   regime annex). Product path (if any): **P2 protocol frozen**; **E4 measurement
-   absent / aspirational** until owner authorizes Stage 4 — still no runs from curiosity.
-6. **Public packaging:** commit the E1/E3 evidence bundle listed in
-   `papers/EVIDENCE_MANIFEST.json` so KILL / EXACT_SURVIVES are repository-reproducible
-   (local files exist; were untracked vs `paper-alpha-v1`).
+5. ~~P1 decision lock + P2 protocol~~ **DONE** (design-hardened under
+   `AUTHORIZE_E4_DESIGN_ONLY`). E4 = `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` —
+   measurement absent; **no runs**.
+6. ~~Public packaging / evidence freeze~~ **DONE** at tag
+   `post-alpha-evidence-freeze-2026-07-31`.
+7. **Authorized now:** harden E4 design only (`papers/AMBITION.md`, R★, \(U_{R★}\) draft,
+   fairness, consequences). **Not authorized:** E4 execute / builder world freeze / GPU.
 
 ## E1 result (2026-07-30; official M0 2026-07-31) — KILL
 
@@ -270,12 +273,13 @@ Hallucination rates are outside \(U\) v1. Sensitivity coefficient names
 ho,L,C)\); decision
 margin \(\delta=0.05\) is separate.
 
-## E3 result — auto + Stage 1 human (2026-07-31)
+## E3 result — auto + Stage 1 agent-rubric audit (2026-07-31)
 
 **Auto:** normalize rescues **0**/486 M0 exact failures (gap shrink **0.0 pts**).
-**Human (bounded pack n=100):** faithful-rate **0.00**; human-acceptable **0/100**;
-qualitative open-slot gap does **not** shrink materially.
-**Verdict:** **EXACT_SURVIVES** (prereg). Gate 1 PASS.
+**Agent-applied rubric audit (bounded pack n=100, rater `agent-rubric-pass-1`):**
+faithful-rate **0.00**; acceptable **0/100**; qualitative open-slot gap does **not**
+shrink materially. This is **not** dual-clinician / human-accepted equivalence.
+**Verdict:** **EXACT_SURVIVES** (prereg numerical band on this instrument). Gate 1 PASS.
 Artifacts: `results_e3_normalize_construct.json`, `results_e3_human.json`,
 `STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md`.
 Prereg: `trajectory/PREREG_E3_faithfulness_construct.md`.
@@ -298,10 +302,11 @@ counts as errors. That can inflate the reported gap vs a soft/human rubric, but
 does not by itself invent the qualitative pattern (closed fields ≈0 gap; open
 low-diversity slots fail).
 
-**Bounded empirical check:** **DONE** (Stage 1) on frozen pack n=100 —
-faithful-rate 0.00; EXACT_SURVIVES. **Paper α must still keep** the limitation that
-exact-match ≠ dual-clinician / synonym-ontology equivalence (IAA absent; H4 open),
-but must **not** imply failures are mostly formatting noise.
+**Bounded empirical check:** **DONE** (Stage 1 **agent-rubric**) on frozen pack n=100 —
+faithful-rate 0.00; EXACT_SURVIVES on that instrument. **Paper α must still keep**
+the limitation that exact-match ≠ dual-clinician / synonym-ontology equivalence
+(IAA absent; H4 open; human arm NOT_RUN), and must **not** imply failures are
+mostly formatting noise or that construct validity is closed.
 
 **Future minimal human study (if ever):** n≈100 frozen items from
 `e3_human_rating_pack.json`; rubric {exact, normalized, acceptable paraphrase};
@@ -315,12 +320,13 @@ Prereg written (`trajectory/PREREG_E2_lora_universes.md`). **GATED / STOP** unde
 post-E1 freeze. No U3/U1–U4 runs until written re-scope. No `results_e2_*.json`.
 Stray `e2-u3-earlystop` pod terminated 2026-07-31. Do not claim RUNNING.
 
-## R★ / E4 status (measurement absent)
+## R★ / E4 status (`DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`)
 
-Regime definition and E4 protocol exist as **docs only**:
-`trajectory/REGIME_P1_where_classical_fails.md`, `trajectory/PREREG_E4_Rstar_killgate.md`.
-**No** `results_e4_*` artifacts. Generative-value claims under R★ are **aspirational /
-untested** until Stage 4 is owner-authorized. Not part of Paper α.
+Regime definition and E4 protocol are **design-hardened docs**:
+`trajectory/REGIME_P1_where_classical_fails.md`, `trajectory/PREREG_E4_Rstar_killgate.md`,
+`papers/AMBITION.md`. **No** `results_e4_*` artifacts. Generative-value claims under
+R★ remain **untested** until Stage 4 **execution** is separately owner-authorized.
+Not part of Paper α. IDLE_AFTER_FREEZE ≠ program halted.
 
 ## Public vs local evidence packaging
 

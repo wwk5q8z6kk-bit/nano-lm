@@ -5,7 +5,7 @@
 | | |
 |---|---|
 | **Freeze tag** | `post-alpha-evidence-freeze-2026-07-31` |
-| **Program state** | `IDLE_AFTER_FREEZE` — **E4 BLOCKED**; no E2 / fabric / NanoScribe expansion |
+| **Program state** | `IDLE_AFTER_FREEZE` + `AUTHORIZE_E4_DESIGN_ONLY` — E4 `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`; no E2 / fabric / NanoScribe expansion |
 | **In-tree** | Paper α measurement spine (`paper-alpha-v1`) **plus** post-α E1/E3 evidence bundle archived at the freeze tag |
 | **Not claimed by tag** | Retroactive proof of pre-run preregistration chronology; full CUDA bit-identical fine-tuning; dual-clinician human evaluation |
 | **E3** | Agent-applied rubric audit (`agent-rubric-pass-1`) — **not** human/clinician evaluation; dual-clinician IAA **open** |
@@ -106,7 +106,7 @@ Presented precision **100%** at ~19% review load (Stage A) and fabric presented-
 (**≠** NanoScribe). After E1 KILL: product/architecture expansion **STOP**; E3
 agent-rubric audit done (**EXACT_SURVIVES**; dual-clinician IAA open — not human
 eval); E2 **GATED/STOP** (no results JSON). R★/E4 protocol docs may exist; **no**
-E4 measurement; program is **`IDLE_AFTER_FREEZE`** with E4 **BLOCKED**.
+E4 measurement; program is **`IDLE_AFTER_FREEZE`** with E4 **`DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`** (see `papers/AMBITION.md`).
 
 Reproduce artifacts / env / CI: `trajectory/REPRODUCIBILITY.md`. Compute venues: local
 Apple Silicon (MPS), Kaggle T4, RunPod; largest single run ≈ $37.

@@ -2,8 +2,8 @@
   "schema": "nano-lm.withdrawal_spec.v1",
   "updated": "2026-07-31",
   "freeze_tag": "post-alpha-evidence-freeze-2026-07-31",
-  "program_posture": "IDLE_AFTER_FREEZE",
-  "e4": "BLOCKED",
+  "program_posture": "IDLE_AFTER_FREEZE+AUTHORIZE_E4_DESIGN_ONLY",
+  "e4": "DESIGN_IN_PROGRESS/EXECUTION_BLOCKED",
   "withdrawals": [
     {
       "id": "W-E3-HUMAN",
@@ -78,15 +78,16 @@
     },
     {
       "id": "W-RSTAR-NEXT",
-      "claim": "R\u2605 / sequential pipeline \u2192 E4 is the next product stage / generative value expected",
-      "evidence_bound": "R\u2605 + PREREG_E4 protocol docs only; no results_e4_*; owner auth absent",
-      "expires_when": "Owner authorizes Stage 4 and E4 RESULT exists",
-      "replace_with": "R\u2605/E4 protocol-only; untested; E4 BLOCKED; default IDLE_AFTER_FREEZE",
+      "claim": "E4 is authorized to execute / next stage running / generative value in R\u2605 expected",
+      "evidence_bound": "Design track authorized; no results_e4_*; execution auth absent",
+      "expires_when": "Owner authorizes Stage 4 execute and E4 RESULT exists",
+      "replace_with": "E4 DESIGN_IN_PROGRESS / EXECUTION_BLOCKED; ambition continues under design-only (AMBITION.md); generative value in R\u2605 untested",
       "forbidden_rephrase": [
-        "next: harden R\u2605 then ship",
+        "E4 authorized to execute",
+        "next stage running",
         "product path unlocked",
-        "Stage 4 is queued",
-        "Path-B tease as current work"
+        "Stage 4 queued for runs",
+        "Path-B as shipping work"
       ]
     }
   ],

@@ -89,9 +89,11 @@ Kill-gate status (2026-07-31 freeze):
 3. **E2** — prereg frozen, **GATED / STOP** (no RESULT)
    (`trajectory/PREREG_E2_lora_universes.md`).
 
-Fabric/v2 / NanoScribe architecture expansion remains **STOP**. R★/E4 protocol docs
-are not a product roadmap commitment; **E4 BLOCKED**; program posture
-**`IDLE_AFTER_FREEZE`**. Details: `papers/EMPIRICAL_FOUNDATION.md`,
+Fabric/v2 / NanoScribe architecture expansion remains **STOP**. R★/E4 are under
+**`AUTHORIZE_E4_DESIGN_ONLY`**: E4 = `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`
+(not “next stage running”). Evidence posture remains **`IDLE_AFTER_FREEZE`**
+(IDLE ≠ halted — see `papers/AMBITION.md`). Details:
+`papers/EMPIRICAL_FOUNDATION.md`,
 `audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`.
 
 ## Null hypotheses (status)
@@ -126,12 +128,20 @@ morphology descriptive; external validity of synthetic world open; E1 KILL demot
 - **L4 — adaptation-mechanism discrimination.** E2 GATED/STOP (no RESULT)
 - **L5 — predictive theory of reliability regimes.** destination, after L3–L4
 
+## Ambition (post-freeze)
+
+`IDLE_AFTER_FREEZE` completes evidence packaging; it does **not** end the program.
+Ambition: find whether ∃ R★ with \(U_{\mathrm{gen+verify}}(R★) > U_{\mathrm{classical}}(R★)\)
+under matched Q/E/R/L/C/M — **not** “build NanoScribe anyway.” Authorized work:
+E4 **design** (`REGIME_P1`, `PREREG_E4`, `AMBITION.md`). Execution requires separate
+owner authorization. See `papers/AMBITION.md`.
+
 ## Resource allocation (post-freeze)
 
-≈ **60% writing / claim hygiene (Paper 1 sync + Paper 2 β draft) ·
-30% reproducibility packaging · 10% idle buffer.** E1/E3 measurement closed for
-this freeze. Fabric / NanoScribe / E2 / E4 are **out of budget** unless the owner
-explicitly re-authorizes a written re-scope (default: idle).
+≈ **50% E4 design hardening (regime / utility / fairness / consequences) ·
+30% writing / claim hygiene · 20% reproducibility / packaging.** E1/E3 measurement
+closed for the freeze. Fabric / NanoScribe / E2 / E4 **execution** remain **out of
+budget** until separate owner auth.
 
 ## Pointers
 

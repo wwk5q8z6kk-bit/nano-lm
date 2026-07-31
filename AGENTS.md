@@ -15,13 +15,13 @@
 ## Learned Workspace Facts
 
 - nano-lm is a small decoder-only LM research program on exact OOD span emission / deterministic extraction failures and propose→verify→abstain systems guarantees.
-- The SRC/council audit is the locked program baseline: the empirical core is stronger than current packaging and claims; packaging must not outrun evidence (claim sync applied for freeze; see `CANONICAL_STATUS_TABLE.md`; E4 still BLOCKED).
+- The SRC/council audit is the locked program baseline: the empirical core is stronger than current packaging and claims; packaging must not outrun evidence (claim sync applied for freeze; see `CANONICAL_STATUS_TABLE.md`; E4 = DESIGN_IN_PROGRESS / EXECUTION_BLOCKED).
 - Official E1 kill gate FIRED (KILL H-substrate): under frozen \(U = P - 0.5M - 0.3\rho - 0.02L - 0.05C\) (\(\delta=0.05\)), max official M0 U ≈ 0.925 (Pythia-160M LoRA) lost to M1 ≈ 0.999; generative LM is not the preferred substrate for this closed scribe task.
 - Old-task runs under `OLD_TASK_U` are forbidden; Paper α is frozen/public (`paper-alpha-v1`); no reopen of the old substrate claim.
-- Post-E1 sequential product pipeline: Stage 1 E3 construct residual → harden regime R★ → P2 freeze \(U_{R★}\) + baselines + KILL/SURVIVE → E4 new-regime classical-vs-generative kill gate; E2/fabric remain gated; E4 stays BLOCKED until authorized; `IDLE_AFTER_FREEZE` after tag `post-alpha-evidence-freeze-2026-07-31`; E4 remains BLOCKED.
+- Post-E1 sequential product pipeline: Stage 1 E3 construct residual → harden regime R★ → P2 draft \(U_{R★}\) + baselines + KILL/SURVIVE → E4 design package; E2/fabric remain gated; `IDLE_AFTER_FREEZE` after tag `post-alpha-evidence-freeze-2026-07-31` means evidence freeze complete (not program halt); `AUTHORIZE_E4_DESIGN_ONLY` in force; E4 = DESIGN_IN_PROGRESS / EXECUTION_BLOCKED until separate execute auth.
 - Paper 1/α is the empirical foundation (held-out copying failures, field localization, diversity, scaling/adaptation, reproducible instrument) with no architecture thesis.
 - Paper 2/β is the verification/systems track (soundness conditions, abstention economics, adversarial verifier evaluation) with no transformer mechanism dependency.
 - Surviving contribution framing: under low-diversity extraction regimes, small transformers can converge to closed-set prediction strategies that fail held-out symbolic emission; diversity, adaptation regime, and deterministic verification change the reliability profile.
-- Product question after E1 KILL: when do generative models add value over structured extraction (templates/dicts) in regimes where classical methods fail.
+- Product question after E1 KILL: whether ∃ R★ with U_generative+verify(R★) > U_classical(R★) under matched Q/E/R/L/C/M — not “build NanoScribe anyway” (`papers/AMBITION.md`).
 - Fabric is a verification vertical slice / regression harness (typed claims, literal/rules verifiers, abstention)—not NanoScribe architecture; ledger files are per-run rewritten JSONL, not an append-only transactional DB.
 - Post-α E1/E3 primary artifacts were local-untracked vs `paper-alpha-v1`; packaging map is `papers/EVIDENCE_MANIFEST.json`. ρ in E1 \(U\) is review load, not hallucination. E3 Stage-1 is an agent-applied rubric audit (EXACT_SURVIVES); raw `*.jsonl` is gitignored with local archive manifests under `artifacts/`.

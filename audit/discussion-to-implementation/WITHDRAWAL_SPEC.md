@@ -2,7 +2,7 @@
 
 **Authority:** Council-of-Five hybrid honesty surface, 2026-07-31  
 **Freeze tag:** `post-alpha-evidence-freeze-2026-07-31`  
-**Program posture:** `IDLE_AFTER_FREEZE` (E4 **BLOCKED**)  
+**Program posture:** `IDLE_AFTER_FREEZE` + `AUTHORIZE_E4_DESIGN_ONLY` (E4 `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`)  
 **Companions:** `CLAIM_GLOSSARY.md`, `CANONICAL_STATUS_TABLE.md`, `EVIDENCE_MANIFEST.json`, `papers/EVIDENCE_LEDGER.md`  
 **Machine-readable:** `WITHDRAWAL_SPEC.json`
 
@@ -17,7 +17,7 @@ reintroduced via synonym, implication, or “everyone knows” framing.
 | W-50X-FLAT | “50× parameter scale leaves the gap flat” (parameter-only law) | Own-stack configs unequal token budgets (nano **32.8M** vs ~200M / 3.2B); descriptive non-monotonic gap | Equal-token / isolated-N prereg + RESULT overturns descriptive reading | “Across evaluated own-stack full-FT configs (unequal token budgets), gap did not collapse monotonically with N” | “scale does nothing”; “flatness proves capacity ceiling”; bare “50× flat” |
 | W-BASELINES-PLURAL | “Non-generative baselines dominate” (plural) | Under frozen E1 \(U\), **M1** strictly dominates official M0; **M2** is within \(\delta=0.05\) of M0 but does **not** beat it | New utility / methods table where ≥2 non-LM methods each beat official generative refs | “M1 (hand-template/rules) wins under frozen \(U\); M2 is near but does not dominate M0” | “classical methods all win”; “templates and dicts beat LMs” (unscoped) |
 | W-KILL-UNIVERSAL | “E1 KILL falsifies generative LMs / verification / all scribe products universally” | KILL is under frozen closed-task \(U\) on this instrument; new \(U\) or regime may re-rank | New preregistered utility/regime measurement (e.g. authorized E4) changes decision | “KILL H-substrate for this closed scribe task under frozen \(U\) (\(\delta=0.05\))” | “LMs can’t extract”; “verification is useless”; “product is dead forever” |
-| W-RSTAR-NEXT | “R★ / sequential pipeline → E4 is the next product stage” / “∃R★ generative value is expected” | R★ + PREREG_E4 are protocol docs only; no `results_e4_*`; owner auth absent | Owner explicitly authorizes Stage 4 **and** E4 RESULT exists | “R★/E4 protocol-only; untested; E4 BLOCKED; default IDLE_AFTER_FREEZE” | “next: harden R★ then ship”; “product path unlocked”; “Stage 4 is queued”; Path-B tease as current work |
+| W-RSTAR-NEXT | “E4 is authorized to execute / next stage running / ∃R★ generative value is expected” | Design track authorized; no `results_e4_*`; execution auth absent | Owner explicitly authorizes Stage 4 **execute** **and** E4 RESULT exists | “E4 `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`; ambition continues under design-only (`AMBITION.md`); generative value in R★ untested” | “E4 authorized to execute”; “next stage running”; “product path unlocked”; “Stage 4 queued for runs”; Path-B as shipping work |
 
 ## Cross-cuts (always true at this freeze)
 

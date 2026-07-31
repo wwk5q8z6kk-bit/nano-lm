@@ -73,7 +73,7 @@ E1 = KILL. Generative LM is **not** the preferred substrate *for this closed tas
 |------|--------|--------|--------|
 | **P1** | Write the regime where templates/dictionaries fail | **DONE** | `trajectory/REGIME_P1_where_classical_fails.md` (regime **R★**) |
 | **P2** | Write utility + kill-gate protocol **for that regime** | **DONE** | `trajectory/PREREG_E4_Rstar_killgate.md` |
-| **P3 / E4** | Kill-gate classical vs generative *in that regime* | **BLOCKED** | Awaits owner authorize Stage 4 against frozen P2 |
+| **P3 / E4** | Kill-gate classical vs generative *in that regime* | **DESIGN_IN_PROGRESS** / **EXECUTION_BLOCKED** | Design package hardening authorized; execute needs separate auth |
 | **P4** | Branch | After P3 | Generative wins → build/verify; classical still wins → classical product, selective generative help, or stop |
 
 Rules for Phase 3 (same discipline as E1):
@@ -126,7 +126,7 @@ If you do **not** want to write P2 yet: **Idle**. Correct and allowed.
 | **E1** | Old-task substrate kill gate | **Done — KILL** |
 | **E3** | Construct validity (exact vs soft/human) | Optional; improves Paper α interpretation; **does not unlock product** |
 | **E2** | LoRA / mechanism discrimination | Only if you still care *scientifically* why LoRA helped on the old stack — **not** for product on the closed task |
-| **E4** | New-regime kill gate (classical vs generative **where templates break**) | **The real next product experiment** — only after regime (**P1**, done) + utility/protocol (**P2**) are written |
+| **E4** | New-regime kill gate (classical vs generative **in R★**) | **Only product-unlocking experiment** — design package in progress; **execution blocked** until separate owner auth (`AMBITION.md`) |
 
 “After E2 E3 E4” is meaningless without choosing a branch. E2/E3/E4 only make sense on specific branches below.
 
@@ -156,7 +156,7 @@ Forbidden: fabric revival on E1 world; treating E2 as product unlock.
 | Kill-gate protocol (baselines + decision rule) | **P2 NEXT** |
 
 ### Stage 2 — E4 (new kill gate)
-Run classical vs generative **in regime R★** under \(U_{R★}\).
+**Execution blocked.** When authorized: run classical vs generative **in regime R★** under draft \(U_{R★}\).
 
 | E4 outcome | What comes next |
 |------------|-----------------|
@@ -211,7 +211,7 @@ Not a product unlock:
 - **E1** is over.  
 - **E3** is optional construct cleanup.  
 - **E2** is optional old-task mechanism science.  
-- **E4** (new-regime kill gate) is the only experiment that can unlock a product.  
+- **E4** (new-regime kill gate) is the only experiment that can unlock a product — currently `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`, not “next stage running.”  
 
 Nothing after that should be “more experiments on the old closed task.”  
 Everything after is **idle**, **science on open residual questions**, or **product in a regime where classical methods actually fail**.
