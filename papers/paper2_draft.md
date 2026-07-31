@@ -7,7 +7,7 @@ Under the locked paper split, **Paper 1 = empirical measurement** (this draft +
 (Stage G/A + `fabric/` — separate manuscript, no transformer-mechanism dependency).
 Do not cite this file as an architecture or verification thesis.*
 
-*All numbers trace to immutable JSONs under `trajectory/`; instrument identical to
+*Paper-α / committed measurement numbers trace to content-addressed JSONs under `trajectory/` (immutability is archival after tag, not a property of an uncommitted working tree); instrument identical to
 Paper 1 (5×(100 held + 100 seen), gap = seen − held recall, mean ± across-instance SD).
 Status: full-FT, LoRA, Chinchilla, the 200M+LoRA seed duplicate, the diversity sweep,
 and the 3.2B+LoRA factorial corner (both training seeds) have all landed — Phase A is

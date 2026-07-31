@@ -10,6 +10,9 @@ quantification slot is filled by C-1b (interference classes), not the coverage
 continuum.*
 
 ## Vision (protected from drift)
+
+> **Architecture truth:** NanoScribe is an architectural research program. Beyond the fabric vertical slice, its control plane, memory, routing, tools, permissions, distributed execution, and user interface remain unimplemented unless separately evidenced. Fabric vertical slice ≠ NanoScribe architecture.
+
 NanoScribe is a **factorized, evidence-first, verification-gated cognitive system**
 whose linguistic core is a small model; memory, routing, verification, tools, and claim
 management are bounded, typed, auditable modules. nano-lm's empirical results are the

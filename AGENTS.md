@@ -15,10 +15,10 @@
 ## Learned Workspace Facts
 
 - nano-lm is a small decoder-only LM research program on exact OOD span emission / deterministic extraction failures and propose→verify→abstain systems guarantees.
-- The SRC/council audit is the locked program baseline: the empirical core is stronger than current packaging and claims; packaging must not outrun evidence (`DOCUMENTATION_OVERSTATES_REALITY` until freeze remediation clears).
+- The SRC/council audit is the locked program baseline: the empirical core is stronger than current packaging and claims; packaging must not outrun evidence (claim sync applied for freeze; see `CANONICAL_STATUS_TABLE.md`; E4 still BLOCKED).
 - Official E1 kill gate FIRED (KILL H-substrate): under frozen \(U = P - 0.5M - 0.3\rho - 0.02L - 0.05C\) (\(\delta=0.05\)), max official M0 U ≈ 0.925 (Pythia-160M LoRA) lost to M1 ≈ 0.999; generative LM is not the preferred substrate for this closed scribe task.
 - Old-task runs under `OLD_TASK_U` are forbidden; Paper α is frozen/public (`paper-alpha-v1`); no reopen of the old substrate claim.
-- Post-E1 sequential product pipeline: Stage 1 E3 construct residual → harden regime R★ → P2 freeze \(U_{R★}\) + baselines + KILL/SURVIVE → E4 new-regime classical-vs-generative kill gate; E2/fabric remain gated; E4 stays BLOCKED until authorized; `AUDIT_REMEDIATION_REQUIRED` before a meaningful post-α freeze tag.
+- Post-E1 sequential product pipeline: Stage 1 E3 construct residual → harden regime R★ → P2 freeze \(U_{R★}\) + baselines + KILL/SURVIVE → E4 new-regime classical-vs-generative kill gate; E2/fabric remain gated; E4 stays BLOCKED until authorized; `IDLE_AFTER_FREEZE` after tag `post-alpha-evidence-freeze-2026-07-31`; E4 remains BLOCKED.
 - Paper 1/α is the empirical foundation (held-out copying failures, field localization, diversity, scaling/adaptation, reproducible instrument) with no architecture thesis.
 - Paper 2/β is the verification/systems track (soundness conditions, abstention economics, adversarial verifier evaluation) with no transformer mechanism dependency.
 - Surviving contribution framing: under low-diversity extraction regimes, small transformers can converge to closed-set prediction strategies that fail held-out symbolic emission; diversity, adaptation regime, and deterministic verification change the reliability profile.

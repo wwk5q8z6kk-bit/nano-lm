@@ -720,7 +720,7 @@
       "L_p50": 0.2111016188049689,
       "C": 1.18
     },
-    "note": "M1 is near-Pareto dominant on P/M/rho/C; only L_p50 is worse for M1 than some arms. Official M0 cannot beat M1 on U unless cost/hallucination penalties are driven near zero AND residual M/rho of M0 are ignored \u2014 or P of M1 is somehow discounted (not in U)."
+    "note": "M1 is near-Pareto dominant on P/M/rho/C; only L_p50 is worse for M1 than some arms. Official M0 cannot beat M1 on U unless cost/review-load (\u03c1) penalties are driven near zero AND residual M/rho of M0 are ignored \u2014 or P of M1 is somehow discounted (not in U)."
   },
   "component_gaps_official_minus_M1": {
     "dM": 0.013200000000000012,
@@ -731,7 +731,7 @@
   },
   "conclusion": {
     "stable": true,
-    "summary": "KILL is robust under moderate and wide one-at-a-time re-weighting of \u03b1 (M), \u03b2 (\u03c1), \u03b3 (L), \u03b4 (C). Across all surveyed OAT cells, kill_prereg stays true; official M0 never beats M1 on U. Default margin M1\u2212official \u2248 +0.074. Even U=P (all penalties zero) yields M1=official=1.0, still KILL under \u03b4=0.05. Raising cost or review-load (ρ) weight widens M1's lead. No flip threshold found inside plausible ranges [\u03b1\u22080\u20132, \u03b2\u22080\u20132, \u03b3\u22080\u20130.2, \u03b4\u22080\u20131]; KILL would require deforming U outside normal utility design.",
+    "summary": "KILL is robust under moderate and wide one-at-a-time re-weighting of \u03b1 (M), \u03b2 (\u03c1), \u03b3 (L), \u03b4 (C). Across all surveyed OAT cells, kill_prereg stays true; official M0 never beats M1 on U. Default margin M1\u2212official \u2248 +0.074. Even U=P (all penalties zero) yields M1=official=1.0, still KILL under \u03b4=0.05. Raising cost or review-load (\u03c1) weight widens M1's lead. No flip threshold found inside plausible ranges [\u03b1\u22080\u20132, \u03b2\u22080\u20132, \u03b3\u22080\u20130.2, \u03b4\u22080\u20131]; KILL would require deforming U outside normal utility design.",
     "key_flip_thresholds": {
       "kill_prereg_false": {
         "a": {

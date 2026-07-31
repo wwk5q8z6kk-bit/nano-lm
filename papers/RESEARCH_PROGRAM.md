@@ -121,7 +121,7 @@ morphology descriptive; external validity of synthetic world open; E1 KILL demot
 - **L2 — empirical laws under boundary conditions.** ~here (diversity causality;
   descriptive own-stack scale/config comparison; adaptation×data interaction; shared residual floor)
 - **L3 — substrate / construct validation.** E1 **KILL** · E3 auto + agent-rubric done · dual-clinician/IAA pending
-- **L4 — adaptation-mechanism discrimination.** E2 blocked (GPU)
+- **L4 — adaptation-mechanism discrimination.** E2 GATED/STOP (no RESULT)
 - **L5 — predictive theory of reliability regimes.** destination, after L3–L4
 
 ## Resource allocation

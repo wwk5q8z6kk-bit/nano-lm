@@ -45,5 +45,10 @@
     "faed7a3 docs: reconcile E2, metrics, fabric, and NanoScribe status",
     "360bd2a artifacts: add post-alpha evidence manifests",
     "b43680a docs: create post-alpha evidence freeze candidate"
-  ]
+  ],
+  "decision_gate": "IDLE_AFTER_FREEZE",
+  "f0_f3": "PASS",
+  "e4": "BLOCKED",
+  "tag": "post-alpha-evidence-freeze-2026-07-31",
+  "push": "NOT_DONE_OWNER_MUST_PUSH"
 }

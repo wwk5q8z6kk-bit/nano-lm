@@ -12,7 +12,8 @@
   "public_freeze": {
     "tag": "paper-alpha-v1",
     "commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
-    "note": "Anchors Paper \u03b1 measurement spine. Post-\u03b1 E1/E3 primary files were absent from this tag at discovery; local workspace holds them untracked until owner commit."
+    "note": "Anchors Paper \u03b1 measurement spine. Post-\u03b1 E1/E3 primary files were absent from this tag at discovery; local workspace holds them untracked until owner commit.",
+    "post_alpha_note": "Post-\u03b1 E1/E3 primary files archived at post-alpha-evidence-freeze-2026-07-31; paper-alpha-v1 remains the Paper \u03b1 measurement spine anchor."
   },
   "utility_symbols_E1": {
     "form_prereg_code": "U = alpha*P - beta*M - gamma*rho - lam*L - kappa*C",
@@ -39,7 +40,7 @@
     {
       "id": "E1_KILL_H_substrate",
       "claim": "Under frozen E1 U, best non-LM (M1) beats official M0; generative LM not preferred substrate for this closed scribe task",
-      "status": "KILL verified against local JSON; public-repo unanchored until bundle commit",
+      "status": "KILL verified; PUBLIC_EVIDENCE_ARCHIVED",
       "prereg": "trajectory/PREREG_E1_nonlm_baseline.md",
       "code": [
         "trajectory/e1/common.py",
@@ -71,17 +72,19 @@
         "kill_stable_across_all_OAT_cells": true
       },
       "m1_information_constraint": "M1 uses fabric._extract hand templates (rules-perfect for this synthetic generator). Not a train-lexicon-only baseline; M2 is the train-dict + span baseline.",
-      "paper_location": "papers/EMPIRICAL_FOUNDATION.md \u00a7E1; papers/latex/paper1.tex \u00a70 if present",
-      "tag_at_discovery": "MISSING from paper-alpha-v1"
+      "paper_location": "papers/EMPIRICAL_FOUNDATION.md; papers/latex/paper1.tex; papers/paper1_draft.md",
+      "tag_at_discovery": "MISSING from paper-alpha-v1",
+      "code_symbols": [
+        "trajectory/e1/common.py::normalize_value"
+      ]
     },
     {
       "id": "E3_normalize_0_of_486",
       "claim": "Normalize-then-match rescues 0/486 M0 exact field failures",
-      "status": "Verified against local JSON",
+      "status": "Verified; PUBLIC_EVIDENCE_ARCHIVED",
       "prereg": "trajectory/PREREG_E3_faithfulness_construct.md",
       "code": [
-        "trajectory/e3/run_e3_normalize.py",
-        "trajectory/e1/common.py::normalize_value"
+        "trajectory/e3/run_e3_normalize.py"
       ],
       "outputs": [
         "trajectory/results_e3_normalize_construct.json"
@@ -91,12 +94,15 @@
         "both_fail": 486,
         "verdict_auto": "EXACT_NOT_OVERSTATING_BY_NORMALIZE"
       },
-      "tag_at_discovery": "MISSING from paper-alpha-v1"
+      "tag_at_discovery": "MISSING from paper-alpha-v1",
+      "code_symbols": [
+        "trajectory/e1/common.py::normalize_value"
+      ]
     },
     {
       "id": "E3_human_EXACT_SURVIVES",
-      "claim": "Bounded Stage-1 human pack faithful-rate 0.00 \u2192 EXACT_SURVIVES",
-      "status": "Verified against local JSON; rater=agent-rubric-pass-1; IAA absent \u2014 not dual clinician",
+      "claim": "Bounded Stage-1 agent-applied rubric audit: faithful-rate 0.00 \u2192 EXACT_SURVIVES (not human/clinician evaluation)",
+      "status": "AGENT_SINGLE_PASS / NO_IAA; pack archived; human arm NOT_RUN",
       "prereg": "trajectory/PREREG_E3_faithfulness_construct.md",
       "outputs": [
         "trajectory/e3_human_rating_pack.json",
@@ -114,7 +120,7 @@
     {
       "id": "E2_lora_universes",
       "claim": "LoRA mechanism universe discrimination",
-      "status": "GATED/STOP \u2014 no results JSON; do not claim RUNNING",
+      "status": "GATED_STOP / NO_RESULT \u2014 do not claim RUNNING",
       "prereg": "trajectory/PREREG_E2_lora_universes.md",
       "code": [
         "trajectory/e2/run_u3_earlystop.py"
@@ -125,7 +131,7 @@
     {
       "id": "RSTAR_E4",
       "claim": "Generative adds value under regime R\u2605",
-      "status": "Protocol only / aspirational \u2014 no results_e4_*; not measured",
+      "status": "BLOCKED / NO_BUILDER / NO_DATA / NO_RESULT \u2014 protocol only; owner auth absent",
       "prereg": [
         "trajectory/REGIME_P1_where_classical_fails.md",
         "trajectory/PREREG_E4_Rstar_killgate.md"
@@ -168,7 +174,8 @@
     "papers/CLAIM_GLOSSARY.md",
     "papers/SEQUENTIAL_PIPELINE.md",
     "papers/AZ_EXECUTION_PLAN.md",
-    "AGENTS.md"
+    "AGENTS.md",
+    "trajectory/results_e1_runtime_components.json"
   ],
   "exclude_from_scientific_commit": [
     "trajectory/runpod_partial/",
@@ -183,5 +190,18 @@
   "gitignore": {
     "blocks_e1_json": false,
     "note": "*.jsonl and checkpoints ignored; trajectory/results_*.json are NOT ignored \u2014 gap was never-committed, not ignore rules"
-  }
+  },
+  "canonical_status_table": "audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.json",
+  "post_alpha_freeze": {
+    "tag": "post-alpha-evidence-freeze-2026-07-31",
+    "note": "Archives post-\u03b1 E1/E2/E3 evidence and synchronized claims. Does not retroactively prove pre-run preregistration chronology.",
+    "push_status": "LOCAL_ONLY_UNTIL_OWNER_PUSH"
+  },
+  "reproducibility_limitations": [
+    "Official M0 adapter binaries / CUDA bit-identical retrain not archived",
+    "Raw RunPod logs optional; L/C in results_e1_runtime_components.json",
+    "Large *.jsonl gitignored; hashed local archive under artifacts/local_raw_archive/",
+    "E3 dual-clinician IAA NOT_RUN",
+    "Tag does not retroactively prove preregistration chronology"
+  ]
 }

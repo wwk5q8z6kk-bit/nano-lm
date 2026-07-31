@@ -2,7 +2,9 @@
 
 ## 6. Decision gate
 
-# AUDIT_REMEDIATION_REQUIRED
+# IDLE_AFTER_FREEZE
+
+(Prior gate was AUDIT_REMEDIATION_REQUIRED; cleared after F0–F3 pass + authorized claim sync.)
 
 Owner must approve lockfile/Paper α diffs (incl. nano **32.8M** token correction),
 commit untracked primary E1/E3 artifacts + `artifacts/` manifests, and authorize
@@ -28,7 +30,7 @@ Do **not** execute E4.
 | `audit/.../EVIDENCE_LEDGER_PROPOSED.md` | Strengthened ledger form (proposal) |
 | `audit/.../POST_ALPHA_EVIDENCE_FREEZE.md/.json` + `SHA256SUMS` | Freeze package |
 
-**Not applied (owner-controlled):** `EMPIRICAL_FOUNDATION.md`, `RESEARCH_PROGRAM.md`, Paper α LaTeX/draft, `REGIME_P1`, `EVIDENCE_LEDGER.md`, NanoScribe banners — see `OWNER_APPROVAL_REQUIRED_DIFFS.md`.
+**Applied under 2026-07-31 freeze ruling:** `EMPIRICAL_FOUNDATION.md`, `RESEARCH_PROGRAM.md`, Paper α LaTeX/draft, `REGIME_P1`, `EVIDENCE_LEDGER.md`, NanoScribe banners — see `OWNER_APPROVAL_REQUIRED_DIFFS.md`.
 
 **Already correct before this pass (re-verified):** `PREREG_E2` GATED/STOP; `DECISION_P1` ρ = review load matching `e1/common.py`; no active pods.
 

@@ -1,9 +1,10 @@
 # Owner Approval Required — Exact Proposed Diffs
 
-> **Status 2026-07-31:** DIFF H / I / J **applied** in working tree (Paper α md+tex, ledger, foundation, research program, decision lock, FINDINGS/preregs as applicable). Remaining owner action: review commits, authorize tag `post-alpha-evidence-freeze-2026-07-31`, optional PDF rebuild.
-
-*Do not apply these to owner-controlled lockfiles / Paper α until approved.
-Ordinary factual patches already applied are listed in the final report separately.*
+> **Status 2026-07-31 (freeze ruling):** Owner discovery ruling authorized applying the full
+> claim-synchronization patch set. DIFF A–J / H′ / C′ treated as **applied** under that
+> authorization during `post-alpha-evidence-freeze-2026-07-31` preparation. Remaining owner
+> action: review local commits + tag, then `git push && git push --tags` when ready.
+> E4 remains BLOCKED.
 
 ---
 

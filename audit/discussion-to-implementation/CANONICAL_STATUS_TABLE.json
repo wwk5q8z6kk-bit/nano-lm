@@ -1,0 +1,62 @@
+{
+  "schema": "nano-lm.canonical_status_table.v1",
+  "updated": "2026-07-31",
+  "authority": "audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md",
+  "objects": {
+    "paper_alpha_core": {
+      "status": "PUBLIC_FROZEN_CORRECTED",
+      "prior": "PUBLIC_FROZEN_WITH_CORRECTIONS_PENDING",
+      "notes": "paper-alpha-v1 plus claim-sync (32.8M nano tokens; schedule-aware scale; E3 agent-rubric limitation)"
+    },
+    "E1": {
+      "status": "PUBLIC_EVIDENCE_ARCHIVED",
+      "prior": "LOCAL_RESULT_REPORTED",
+      "verdict": "KILL",
+      "notes": "M1 dominates official M0; M2 within delta=0.05"
+    },
+    "E2": {
+      "status": [
+        "GATED_STOP",
+        "NO_RESULT"
+      ],
+      "notes": "Prereg frozen; no results JSON"
+    },
+    "E3_normalize": {
+      "status": "PUBLIC_EVIDENCE_ARCHIVED",
+      "prior": "LOCAL_RESULT_REPORTED",
+      "notes": "0/486 rescues"
+    },
+    "E3_agent_audit": {
+      "status": [
+        "AGENT_SINGLE_PASS",
+        "NO_IAA"
+      ],
+      "rater": "agent-rubric-pass-1",
+      "notes": "0/100 faithful; not clinician evaluation"
+    },
+    "E3_human_arm": {
+      "status": "NOT_RUN",
+      "notes": "Dual-clinician IAA + synonym ontology open"
+    },
+    "fabric": {
+      "status": [
+        "PUBLIC_SCOPED_SLICE",
+        "NOT_PRODUCT"
+      ],
+      "notes": "Thin synthetic regression harness != NanoScribe"
+    },
+    "R_star": {
+      "status": "LOCAL_PROTOCOL",
+      "notes": "Hardened regime definition only"
+    },
+    "E4": {
+      "status": [
+        "BLOCKED",
+        "NO_BUILDER",
+        "NO_DATA",
+        "NO_RESULT"
+      ],
+      "notes": "Owner authorization absent; IDLE after freeze"
+    }
+  }
+}

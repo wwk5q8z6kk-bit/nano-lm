@@ -1,6 +1,6 @@
 # NanoScribe vNext: Research Conclusion and Architecture Decision
 
-> **Implementation boundary (2026-07-31 freeze):** NanoScribe is an architectural research program. Beyond the measured Fabric slice, the control plane, memory system, routing, tools, permissions, distributed execution, observability, and user interface remain unimplemented unless separately evidenced.
+> **Implementation boundary (2026-07-31 freeze):** NanoScribe is an architectural research program. Beyond the measured Fabric slice, the control plane, memory system, routing, tools, permissions, distributed execution, observability, and user interface remain unimplemented unless separately evidenced. Fabric vertical slice ≠ NanoScribe architecture.
 
 
 > **OVERRIDE 2026-07-30 (Scientific Research Council — accepted baseline).**

@@ -65,12 +65,13 @@ to closed-set prediction strategies that fail held-out symbolic emission; divers
 adaptation regime, and deterministic verification change the reliability profile.
 
 Numbers in the **Paper α / `paper-alpha-v1` measurement spine** (anchors, Stage T/T-v2,
-own-stack, diversity, C-3, pointer, fabric) trace to immutable per-run JSONs already
-committed under `trajectory/`. **Post-α E1/E3 utility and construct artifacts** exist
-locally and are listed in `papers/EVIDENCE_MANIFEST.json` — they are the authority for
-KILL / EXACT_SURVIVES claims and must be committed before those claims are treated as
-public-repo-reproducible. Program lockfile: `papers/EMPIRICAL_FOUNDATION.md` · map:
-`papers/RESEARCH_PROGRAM.md` · packaging: `trajectory/REPRODUCIBILITY.md`.
+own-stack, diversity, C-3, pointer, fabric) trace to content-addressed per-run JSONs
+under `trajectory/`. **Post-α E1/E3** utility/construct artifacts are archived under
+tag `post-alpha-evidence-freeze-2026-07-31` and mapped in `papers/EVIDENCE_MANIFEST.json`
+plus `audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`. “Immutable” means
+tagged archival state — not that every working-tree lockfile edit is frozen. Program
+lockfile: `papers/EMPIRICAL_FOUNDATION.md` · map: `papers/RESEARCH_PROGRAM.md` ·
+packaging: `trajectory/REPRODUCIBILITY.md`.
 
 **Paper 1 — measurement** (`papers/latex/paper1.pdf` + empirical companion historically
 in `papers/paper2_draft.md`): held-out value copying on a 5-instance instrument —

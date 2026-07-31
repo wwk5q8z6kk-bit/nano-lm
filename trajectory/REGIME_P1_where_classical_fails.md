@@ -14,7 +14,7 @@ until Stage 3 (P2) freezes \(U_{R★}\).*
 | Gate 2 | **PASS** — R★ non-empty and testable |
 | Next | Stage 3 / **P2** — write \(U_{R★}\) + baselines + KILL/SURVIVE/GRADED rule |
 | Forbidden until Gate 3 | Any E4 run, E2, fabric, old-task runs under `OLD_TASK_U` |
-| Paper α | FROZEN; exact-match limitation remains (Stage 1 bounded human done; IAA open) |
+| Paper α | FROZEN; Stage 1 **agent-applied rubric audit** executed (Gate 1 PASS); dual-clinician IAA + synonym ontology open |
 | E4 measurement | **Not present** — protocol aspirational until Stage 4 authorized |
 
 ## Why this note exists
