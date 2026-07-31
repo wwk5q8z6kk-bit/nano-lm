@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "generated_at_utc": "2026-07-31T14:04:33.413228+00:00",
+  "head_commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+  "proposed_tag": "post-alpha-evidence-freeze-2026-07-31",
+  "tag_created": false,
+  "verdict": "FREEZE_CANDIDATE_READY",
+  "paper_alpha_status": "READY_AFTER_OWNER_APPROVAL",
+  "next_decision": "OWNER_APPROVAL_REQUIRED",
+  "corrected_claims": [
+    "methods token budgets 32.8M vs ~200M",
+    "scale claim descriptive not parameter-only",
+    "E1 M1-specific dominance",
+    "E3 agent-rubric not human/clinician",
+    "E2 GATED/STOP",
+    "rho = review load",
+    "Fabric = verification slice not OS/append-only DB",
+    "NanoScribe = research program beyond Fabric slice"
+  ],
+  "weakened_claims": [
+    "flat across 50\u00d7 scale Proven \u2192 Supported descriptive",
+    "plural non-generative baselines dominate"
+  ],
+  "preserved_claims": [
+    "held-vs-seen gap",
+    "field localization",
+    "slot diversity +66.7",
+    "C-1b REFUTED",
+    "C-3 T/B REFUTED L UNRESOLVED",
+    "E1 M1 KILL under frozen U",
+    "E3 auto 0/486",
+    "Fabric scoped slice"
+  ],
+  "missing_raw_evidence": "C-1b/C-3 JSONL local-archived/gitignored; not durably published externally",
+  "unresolved_construct_validation": "dual-clinician/IAA/synonym ontology",
+  "implementation_boundaries": "Fabric slice only; NanoScribe control plane unimplemented",
+  "stopped_experiments": [
+    "E2",
+    "E4"
+  ],
+  "e4_recommended": false
+}

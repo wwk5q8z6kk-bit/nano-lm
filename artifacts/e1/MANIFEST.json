@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "experiment_id": "E1_nonlm_utility_killgate",
-  "generated_at_utc": "2026-07-31T14:04:33.413228+00:00",
-  "head_commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+  "generated_at_utc": "2026-07-31T14:06:01.581870+00:00",
+  "head_commit": "360bd2a1900526a76db5c5f668aefc0f56f5c1bf",
   "verdict_summary": "KILL (M1 U\u22480.999 > official M0 U\u22480.925 under frozen U)",
-  "reproducibility_status": "RESULT_ACCEPTED_LOCAL_UNTRACKED_PENDING_COMMIT",
+  "reproducibility_status": "RESULT_COMMITTED_PENDING_TAG",
   "artifacts": [
     {
       "filename": "trajectory/PREREG_E1_nonlm_baseline.md",
@@ -22,7 +22,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/PREREG_E1_nonlm_baseline.md && shasum -a 256 trajectory/PREREG_E1_nonlm_baseline.md",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/PREREG_E1_nonlm_baseline.md"
     },
     {
       "filename": "trajectory/results_e1_utility.json",
@@ -40,7 +41,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_utility.json && shasum -a 256 trajectory/results_e1_utility.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_utility.json"
     },
     {
       "filename": "trajectory/results_e1_utility_sensitivity.json",
@@ -58,7 +60,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_utility_sensitivity.json && shasum -a 256 trajectory/results_e1_utility_sensitivity.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_utility_sensitivity.json"
     },
     {
       "filename": "trajectory/e1/common.py",
@@ -76,7 +79,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/e1/common.py && shasum -a 256 trajectory/e1/common.py",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/e1/common.py"
     },
     {
       "filename": "trajectory/results_e1_construct_validity_note.json",
@@ -94,7 +98,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_construct_validity_note.json && shasum -a 256 trajectory/results_e1_construct_validity_note.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_construct_validity_note.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json",
@@ -112,7 +117,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json",
@@ -130,7 +136,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json && shasum -a 256 trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M0_pythia160m_lora_voff.json",
@@ -148,7 +155,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M0_pythia160m_lora_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M0_pythia160m_lora_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M0_pythia160m_lora_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M0_pythia160m_lora_von.json",
@@ -166,7 +174,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M0_pythia160m_lora_von.json && shasum -a 256 trajectory/results_e1_nonlm_M0_pythia160m_lora_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M0_pythia160m_lora_von.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M0_scale_voff.json",
@@ -184,7 +193,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M0_scale_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M0_scale_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M0_scale_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M0_scale_von.json",
@@ -202,7 +212,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M0_scale_von.json && shasum -a 256 trajectory/results_e1_nonlm_M0_scale_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M0_scale_von.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M1_template_voff.json",
@@ -220,7 +231,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M1_template_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M1_template_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M1_template_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M1_template_von.json",
@@ -238,7 +250,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M1_template_von.json && shasum -a 256 trajectory/results_e1_nonlm_M1_template_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M1_template_von.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M2_dict_span_voff.json",
@@ -256,7 +269,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M2_dict_span_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M2_dict_span_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M2_dict_span_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M2_dict_span_von.json",
@@ -274,7 +288,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M2_dict_span_von.json && shasum -a 256 trajectory/results_e1_nonlm_M2_dict_span_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M2_dict_span_von.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M3_crf_lite_voff.json",
@@ -292,7 +307,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M3_crf_lite_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M3_crf_lite_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M3_crf_lite_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M3_crf_lite_von.json",
@@ -310,7 +326,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M3_crf_lite_von.json && shasum -a 256 trajectory/results_e1_nonlm_M3_crf_lite_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M3_crf_lite_von.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M4_constrained_voff.json",
@@ -328,7 +345,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M4_constrained_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M4_constrained_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M4_constrained_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M4_constrained_von.json",
@@ -346,7 +364,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M4_constrained_von.json && shasum -a 256 trajectory/results_e1_nonlm_M4_constrained_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M4_constrained_von.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M5_span_clf_voff.json",
@@ -364,7 +383,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M5_span_clf_voff.json && shasum -a 256 trajectory/results_e1_nonlm_M5_span_clf_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M5_span_clf_voff.json"
     },
     {
       "filename": "trajectory/results_e1_nonlm_M5_span_clf_von.json",
@@ -382,7 +402,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_nonlm_M5_span_clf_von.json && shasum -a 256 trajectory/results_e1_nonlm_M5_span_clf_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_nonlm_M5_span_clf_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M0_ownstack_chinchilla_lora_voff.json",
@@ -400,7 +421,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M0_ownstack_chinchilla_lora_voff.json && shasum -a 256 trajectory/results_e1_items_M0_ownstack_chinchilla_lora_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M0_ownstack_chinchilla_lora_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M0_ownstack_chinchilla_lora_von.json",
@@ -418,7 +440,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M0_ownstack_chinchilla_lora_von.json && shasum -a 256 trajectory/results_e1_items_M0_ownstack_chinchilla_lora_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M0_ownstack_chinchilla_lora_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M0_pythia160m_lora_voff.json",
@@ -436,7 +459,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M0_pythia160m_lora_voff.json && shasum -a 256 trajectory/results_e1_items_M0_pythia160m_lora_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M0_pythia160m_lora_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M0_pythia160m_lora_von.json",
@@ -454,7 +478,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M0_pythia160m_lora_von.json && shasum -a 256 trajectory/results_e1_items_M0_pythia160m_lora_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M0_pythia160m_lora_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M0_scale_voff.json",
@@ -472,7 +497,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M0_scale_voff.json && shasum -a 256 trajectory/results_e1_items_M0_scale_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M0_scale_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M0_scale_von.json",
@@ -490,7 +516,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M0_scale_von.json && shasum -a 256 trajectory/results_e1_items_M0_scale_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M0_scale_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M1_template_voff.json",
@@ -508,7 +535,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M1_template_voff.json && shasum -a 256 trajectory/results_e1_items_M1_template_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M1_template_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M1_template_von.json",
@@ -526,7 +554,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M1_template_von.json && shasum -a 256 trajectory/results_e1_items_M1_template_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M1_template_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M2_dict_span_voff.json",
@@ -544,7 +573,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M2_dict_span_voff.json && shasum -a 256 trajectory/results_e1_items_M2_dict_span_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M2_dict_span_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M2_dict_span_von.json",
@@ -562,7 +592,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M2_dict_span_von.json && shasum -a 256 trajectory/results_e1_items_M2_dict_span_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M2_dict_span_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M3_crf_lite_voff.json",
@@ -580,7 +611,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M3_crf_lite_voff.json && shasum -a 256 trajectory/results_e1_items_M3_crf_lite_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M3_crf_lite_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M3_crf_lite_von.json",
@@ -598,7 +630,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M3_crf_lite_von.json && shasum -a 256 trajectory/results_e1_items_M3_crf_lite_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M3_crf_lite_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M4_constrained_voff.json",
@@ -616,7 +649,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M4_constrained_voff.json && shasum -a 256 trajectory/results_e1_items_M4_constrained_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M4_constrained_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M4_constrained_von.json",
@@ -634,7 +668,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M4_constrained_von.json && shasum -a 256 trajectory/results_e1_items_M4_constrained_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M4_constrained_von.json"
     },
     {
       "filename": "trajectory/results_e1_items_M5_span_clf_voff.json",
@@ -652,7 +687,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M5_span_clf_voff.json && shasum -a 256 trajectory/results_e1_items_M5_span_clf_voff.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M5_span_clf_voff.json"
     },
     {
       "filename": "trajectory/results_e1_items_M5_span_clf_von.json",
@@ -670,7 +706,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e1_items_M5_span_clf_von.json && shasum -a 256 trajectory/results_e1_items_M5_span_clf_von.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e1_items_M5_span_clf_von.json"
     }
   ]
 }

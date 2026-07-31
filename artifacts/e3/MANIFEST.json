@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "experiment_id": "E3_faithfulness_construct",
-  "generated_at_utc": "2026-07-31T14:04:33.413228+00:00",
-  "head_commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+  "generated_at_utc": "2026-07-31T14:06:01.581870+00:00",
+  "head_commit": "360bd2a1900526a76db5c5f668aefc0f56f5c1bf",
   "verdict_summary": "EXACT_SURVIVES (auto 0/486; agent-rubric 0/100; dual-clinician unperformed)",
-  "reproducibility_status": "RESULT_ACCEPTED_LOCAL_UNTRACKED_PENDING_COMMIT",
+  "reproducibility_status": "RESULT_COMMITTED_PENDING_TAG",
   "artifacts": [
     {
       "filename": "trajectory/PREREG_E3_faithfulness_construct.md",
@@ -22,7 +22,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/PREREG_E3_faithfulness_construct.md && shasum -a 256 trajectory/PREREG_E3_faithfulness_construct.md",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/PREREG_E3_faithfulness_construct.md"
     },
     {
       "filename": "trajectory/results_e3_normalize_construct.json",
@@ -40,7 +41,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e3_normalize_construct.json && shasum -a 256 trajectory/results_e3_normalize_construct.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e3_normalize_construct.json"
     },
     {
       "filename": "trajectory/results_e3_human.json",
@@ -58,7 +60,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/results_e3_human.json && shasum -a 256 trajectory/results_e3_human.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/results_e3_human.json"
     },
     {
       "filename": "trajectory/e3_human_rating_pack.json",
@@ -76,7 +79,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/e3_human_rating_pack.json && shasum -a 256 trajectory/e3_human_rating_pack.json",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/e3_human_rating_pack.json"
     },
     {
       "filename": "trajectory/STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md",
@@ -94,7 +98,8 @@
       "current_storage": "local_workspace",
       "intended_durable_storage": "git_commit",
       "retrieval_command": "test -f trajectory/STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md && shasum -a 256 trajectory/STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md",
-      "status": "LOCAL_UNTRACKED"
+      "status": "TRACKED",
+      "retrieval_instructions": "git show HEAD:trajectory/STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md"
     }
   ]
 }
