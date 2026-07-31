@@ -1,0 +1,123 @@
+{
+  "seed": 20260731,
+  "n_docs": 8,
+  "docs": [
+    {
+      "doc_id": "tech_note_cache",
+      "path": "data/corpus/tech_note_cache.md",
+      "title": "Cache Invalidation Notes",
+      "authors": [
+        "Ada Lovelace",
+        "Grace Hopper"
+      ],
+      "year": 2024,
+      "doc_type": "note",
+      "doi": null,
+      "sha256": "2e7bf7174f53a0d4ee0d69253dd42e9cf6ca14aac27fd42f89a135386f4c63b9",
+      "n_chars": 378
+    },
+    {
+      "doc_id": "tech_note_cache_v2",
+      "path": "data/corpus/tech_note_cache_v2.md",
+      "title": "Cache Invalidation Follow-up",
+      "authors": [
+        "Ada Lovelace"
+      ],
+      "year": 2025,
+      "doc_type": "note",
+      "doi": null,
+      "sha256": "bfcf12c13b2a876be0c9339228a1b985f4444277bc818b87bf64c93d9552a6a4",
+      "n_chars": 195
+    },
+    {
+      "doc_id": "bio_abs_metformin",
+      "path": "data/corpus/bio_abs_metformin.md",
+      "title": "Metformin Kinetics in Synthetic Cohort",
+      "authors": [
+        "Alan Turing",
+        "Joan Clarke"
+      ],
+      "year": 2023,
+      "doc_type": "abstract",
+      "doi": "10.0000/fake.metformin.2023",
+      "sha256": "8ba79e76d87bb6ddbff08570ec27be8004452bf13dbc3a2e860b3a96c2c2a3aa",
+      "n_chars": 471
+    },
+    {
+      "doc_id": "bio_abs_metformin_conflict",
+      "path": "data/corpus/bio_abs_metformin_conflict.md",
+      "title": "Metformin Kinetics Replication",
+      "authors": [
+        "Alan Turing"
+      ],
+      "year": 2024,
+      "doc_type": "abstract",
+      "doi": "10.0000/fake.metformin.2024",
+      "sha256": "2888912fddb9a2428dae0c3b3aac60464a53556e2e90ce36f3b31dd822477c76",
+      "n_chars": 207
+    },
+    {
+      "doc_id": "semi_structured_lab",
+      "path": "data/corpus/semi_structured_lab.md",
+      "title": "Lab Instrument Log",
+      "authors": [
+        "Katherine Johnson"
+      ],
+      "year": 2022,
+      "doc_type": "note",
+      "doi": null,
+      "sha256": "2b115e3341a70cb341c74916bb1e68f09cff4cb41e739c052d909156088990c4",
+      "n_chars": 249
+    },
+    {
+      "doc_id": "tableish_throughput",
+      "path": "data/corpus/tableish_throughput.md",
+      "title": "Throughput Table Dump",
+      "authors": [
+        "Claude Shannon"
+      ],
+      "year": 2021,
+      "doc_type": "table_dump",
+      "doi": null,
+      "sha256": "91dd76aa4e4eaf8049956ec0856f942ddb5409e9ea32f3ba843cdf567b201fbd",
+      "n_chars": 153
+    },
+    {
+      "doc_id": "noisy_ocr_line",
+      "path": "data/corpus/noisy_ocr_line.md",
+      "title": "OCR Recovery Fixture",
+      "authors": [
+        "Noisy Bot"
+      ],
+      "year": 2020,
+      "doc_type": "note",
+      "doi": null,
+      "sha256": "8c7fa37bee212ca087f326c3c326f7c1596489c5a19e9e29c3d148d3fb0bedb9",
+      "n_chars": 90
+    },
+    {
+      "doc_id": "binding_coref",
+      "path": "data/corpus/binding_coref.md",
+      "title": "Entity Binding Note",
+      "authors": [
+        "Binding Author"
+      ],
+      "year": 2024,
+      "doc_type": "note",
+      "doi": null,
+      "sha256": "798e108536ce526f151d0230dc8d78db9b96d977d63572255d9303068174659a",
+      "n_chars": 176
+    }
+  ],
+  "gold_sha256": "2a09fc220c174769d77396251eb8cacbf5d113182188c1033d9b29146432f6f5",
+  "inclusion": "wedge_v1/inclusion_predicates.md",
+  "auth": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
+  "track": "clean",
+  "probe_flags": {
+    "B1": true,
+    "B2": true,
+    "B3": true,
+    "B4": true
+  },
+  "probe_ok": true
+}

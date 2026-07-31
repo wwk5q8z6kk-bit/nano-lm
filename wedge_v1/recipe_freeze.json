@@ -1,0 +1,12 @@
+{
+  "auth": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
+  "wedge": "papers/WEDGE_V1.md",
+  "seed": 20260731,
+  "track": "clean",
+  "U": "Q - 0.5*E - 0.3*R - 0.02*L - 0.05*C",
+  "delta": 0.05,
+  "solvers": "classical_only",
+  "lm": false,
+  "inclusion": "wedge_v1/inclusion_predicates.md",
+  "mid_stream_U_edits": "FORBIDDEN_VOID"
+}

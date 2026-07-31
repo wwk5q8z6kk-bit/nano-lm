@@ -5,8 +5,10 @@ doc_type: auth_record
 valid_only_if_queued: true
 queue_path: papers/EXECUTION_QUEUE.md
 auth_ids: [AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE]
-governance_status: PENDING_QUEUE_ROW  # queue currently says NEXT_REQUIRES_AUTH for this string
-may_authorize_execution: false  # becomes true only when EXECUTION_QUEUE lists this auth_id as live
+governance_status: OWNER_PROCEED_2026-07-31
+may_authorize_execution: true
+owner_trigger: "proceed"
+activated_at: 2026-07-31T18:10:47.503234+00:00
 ```
 
 

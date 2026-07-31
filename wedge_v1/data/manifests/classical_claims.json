@@ -1,0 +1,2519 @@
+[
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "binding_coref",
+      "title": "Entity Binding Note"
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 2,
+        "end": 21,
+        "text": "Entity Binding Note"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "binding_coref",
+      "authors": [
+        "Binding Author"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 23,
+        "end": 31,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "binding_coref",
+      "year": 2024
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 53,
+        "end": 57,
+        "text": "2024"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "binding_coref",
+      "doc_type": "note"
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 0,
+        "end": 20,
+        "text": "# Entity Binding Not"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "binding_coref",
+      "headings": []
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "binding_coref",
+      "n_chars": 176,
+      "n_words": 28
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "binding_coref",
+      "toc": []
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "title": "Metformin Kinetics in Synthetic Cohort"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 2,
+        "end": 40,
+        "text": "Metformin Kinetics in Synthetic Cohort"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "authors": [
+        "Alan Turing",
+        "Joan Clarke"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 42,
+        "end": 50,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "year": 2023
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 82,
+        "end": 86,
+        "text": "2023"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "doc_type": "abstract"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 20,
+        "text": "# Metformin Kinetics"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "headings": [
+        "Abstract",
+        "Captions"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T06",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "doi": "10.0000/fake.metformin.2023"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 92,
+        "end": 119,
+        "text": "10.0000/fake.metformin.2023"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_doi",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "n_chars": 471,
+      "n_words": 65
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "toc": [
+        "Abstract",
+        "Captions"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "title": "Metformin Kinetics Replication"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 2,
+        "end": 32,
+        "text": "Metformin Kinetics Replication"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "authors": [
+        "Alan Turing"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 34,
+        "end": 42,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "year": 2024
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 61,
+        "end": 65,
+        "text": "2024"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "doc_type": "abstract"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 20,
+        "text": "# Metformin Kinetics"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "headings": [
+        "Abstract"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T06",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "doi": "10.0000/fake.metformin.2024"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 71,
+        "end": 98,
+        "text": "10.0000/fake.metformin.2024"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_doi",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "n_chars": 207,
+      "n_words": 26
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "toc": [
+        "Abstract"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "title": "OCR Recovery Fixture"
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 2,
+        "end": 22,
+        "text": "OCR Recovery Fixture"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "authors": [
+        "Noisy Bot"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 24,
+        "end": 32,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "year": 2020
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 49,
+        "end": 53,
+        "text": "2020"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "doc_type": "note"
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 0,
+        "end": 20,
+        "text": "# OCR Recovery Fixtu"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "headings": []
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "n_chars": 90,
+      "n_words": 16
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "toc": []
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "title": "Lab Instrument Log"
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 2,
+        "end": 20,
+        "text": "Lab Instrument Log"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "authors": [
+        "Katherine Johnson"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 22,
+        "end": 30,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "year": 2022
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 55,
+        "end": 59,
+        "text": "2022"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "doc_type": "note"
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 0,
+        "end": 20,
+        "text": "# Lab Instrument Log"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "headings": []
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "n_chars": 249,
+      "n_words": 33
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "toc": []
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "tableish_throughput",
+      "title": "Throughput Table Dump"
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 2,
+        "end": 23,
+        "text": "Throughput Table Dump"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "tableish_throughput",
+      "authors": [
+        "Claude Shannon"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 25,
+        "end": 33,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "tableish_throughput",
+      "year": 2021
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 55,
+        "end": 59,
+        "text": "2021"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "tableish_throughput",
+      "doc_type": "table_dump"
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 0,
+        "end": 20,
+        "text": "# Throughput Table D"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "tableish_throughput",
+      "headings": []
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "tableish_throughput",
+      "n_chars": 153,
+      "n_words": 29
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "tableish_throughput",
+      "toc": []
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "title": "Cache Invalidation Notes"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 2,
+        "end": 26,
+        "text": "Cache Invalidation Notes"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "authors": [
+        "Ada Lovelace",
+        "Grace Hopper"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 28,
+        "end": 36,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "year": 2024
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 70,
+        "end": 74,
+        "text": "2024"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "doc_type": "note"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 0,
+        "end": 20,
+        "text": "# Cache Invalidation"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "headings": [
+        "Summary",
+        "Definition",
+        "Results",
+        "Notes"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "n_chars": 378,
+      "n_words": 55
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "toc": [
+        "Summary",
+        "Definition",
+        "Results",
+        "Notes"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T01",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "title": "Cache Invalidation Follow-up"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 2,
+        "end": 30,
+        "text": "Cache Invalidation Follow-up"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_title",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T02",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "authors": [
+        "Ada Lovelace"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 32,
+        "end": 40,
+        "text": "Authors:"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_authors",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T03",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "year": 2025
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 60,
+        "end": 64,
+        "text": "2025"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_year",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T04",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "doc_type": "note"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 20,
+        "text": "# Cache Invalidation"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "rules_doctype",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T05",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "headings": [
+        "Summary",
+        "Results"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_headings",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T07",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "n_chars": 195,
+      "n_words": 32
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "deterministic_count",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T08",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "toc": [
+        "Summary",
+        "Results"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 1,
+        "text": "#"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_toc",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T10",
+    "value": {
+      "doc_id": "binding_coref",
+      "compound": "metformin"
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 59,
+        "end": 68,
+        "text": "Metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "dict_compound",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T10",
+    "value": {
+      "doc_id": "binding_coref",
+      "compound": "placebo"
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 130,
+        "end": 137,
+        "text": "Placebo"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "dict_compound",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T09",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "dosage": "500 mg"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 208,
+        "end": 214,
+        "text": "500 mg"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_dosage",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T09",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "dosage": "500 mg"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 208,
+        "end": 214,
+        "text": "500 mg"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_dosage",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T10",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "compound": "metformin"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 105,
+        "end": 114,
+        "text": "metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "dict_compound",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T10",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "compound": "placebo"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 330,
+        "end": 337,
+        "text": "placebo"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "dict_compound",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T13",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "n": 512
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 379,
+        "end": 384,
+        "text": "n=512"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_n",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T14",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "affiliation": "Institute for Imaginary Medicine"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 133,
+        "end": 165,
+        "text": "Institute for Imaginary Medicine"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_affil",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T16",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "caption": "Figure 1: Plasma concentration over 24h."
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 400,
+        "end": 440,
+        "text": "Figure 1: Plasma concentration over 24h."
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_caption",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T16",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "caption": "Table 1: Baseline covariates."
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 441,
+        "end": 470,
+        "text": "Table 1: Baseline covariates."
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "structure_caption",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T17",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "kv": {
+        "Affiliation": "Institute for Imaginary Medicine"
+      }
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": ":"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "parser_kv",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T09",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "dosage": "850 mg"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 141,
+        "end": 147,
+        "text": "850 mg"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_dosage",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T10",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "compound": "metformin"
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 84,
+        "end": 93,
+        "text": "metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "dict_compound",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T13",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "n": 480
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 173,
+        "end": 178,
+        "text": "n=480"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_n",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T17",
+    "value": {
+      "doc_id": "noisy_ocr_line",
+      "kv": {
+        "dose": "5O0 mg"
+      }
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 0,
+        "end": 1,
+        "text": ":"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "parser_kv",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T10",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "compound": "ibuprofen"
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 136,
+        "end": 145,
+        "text": "ibuprofen"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "dict_compound",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T17",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "kv": {
+        "device": "spectrometer-7",
+        "wavelength_nm": "532",
+        "operator": "KJ",
+        "status": "calibrated",
+        "Missing": "patient_id intentionally absent."
+      }
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 0,
+        "end": 1,
+        "text": ":"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "parser_kv",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T11",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "numeric": "18%"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 300,
+        "end": 303,
+        "text": "18%"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_numeric",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T12",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "definition": "Latency is the end-to-end response time measured at p50."
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 188,
+        "end": 244,
+        "text": "Latency is the end-to-end response time measured at p50."
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "pattern_def",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T13",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "n": 240
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 270,
+        "end": 275,
+        "text": "n=240"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_n",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T15",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "email": "ada@example.org"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 84,
+        "end": 99,
+        "text": "ada@example.org"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_email",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T18",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "url": "https://example.org/cache-rfc"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 320,
+        "end": 349,
+        "text": "https://example.org/cache-rfc"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_url",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T18",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "citation_key": "CACHE2024"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 367,
+        "end": 376,
+        "text": "CACHE2024"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_citekey",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T13",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "n": 240
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 163,
+        "end": 168,
+        "text": "n=240"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "regex_n",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T19",
+    "value": {
+      "doc_id": "tech_note_cache",
+      "paragraph": "We define cache TTL as 300 seconds. The peak QPS is 12000."
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 113,
+        "end": 153,
+        "text": "We define cache TTL as 300 seconds. The "
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "bm25_lite_keyword",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T19",
+    "value": {
+      "doc_id": "tech_note_cache_v2",
+      "paragraph": "We revise cache TTL as 600 seconds. Peak QPS remains 12000."
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 78,
+        "end": 118,
+        "text": "We revise cache TTL as 600 seconds. Peak"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "bm25_lite_keyword",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T20",
+    "value": {
+      "doc_id": "binding_coref",
+      "sentence": "# Entity Binding Note\n\nAuthors: Binding Author\nYear: 2024\n\nMetformin was administered in the morning."
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 0,
+        "end": 30,
+        "text": "# Entity Binding Note\n\nAuthors"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "search_sentence",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T20",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "sentence": "# Metformin Kinetics in Synthetic Cohort\n\nAuthors: Alan Turing, Joan Clarke\nYear: 2023\nDOI: 10.0000/fake.metformin.2023\nAffiliation: Institute for Imaginary Medicine\n\n## Abstract\n\nPatients received metformin 500 mg twice daily."
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 30,
+        "text": "# Metformin Kinetics in Synthe"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "search_sentence",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T20",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "sentence": "# Metformin Kinetics Replication\n\nAuthors: Alan Turing\nYear: 2024\nDOI: 10.0000/fake.metformin.2024\n\n## Abstract\n\nPatients received metformin 850 mg twice daily."
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 30,
+        "text": "# Metformin Kinetics Replicati"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "search_sentence",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T21",
+    "value": {
+      "entity": "metformin",
+      "mentioned": true,
+      "docs": [
+        "binding_coref",
+        "bio_abs_metformin",
+        "bio_abs_metformin_conflict"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 59,
+        "end": 68,
+        "text": "Metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "search_mention",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T21",
+    "value": {
+      "entity": "unicornium",
+      "mentioned": false,
+      "docs": []
+    },
+    "evidence": [],
+    "status": "ABSTAIN",
+    "solver": "search_mention",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T22",
+    "value": {
+      "doc_id": "binding_coref",
+      "sentences": [
+        "# Entity Binding Note\n\nAuthors: Binding Author\nYear: 2024\n\nMetformin was administered in the morning."
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 0,
+        "end": 1,
+        "text": "metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "search_list",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T22",
+    "value": {
+      "doc_id": "bio_abs_metformin",
+      "sentences": [
+        "# Metformin Kinetics in Synthetic Cohort\n\nAuthors: Alan Turing, Joan Clarke\nYear: 2023\nDOI: 10.0000/fake.metformin.2023\nAffiliation: Institute for Imaginary Medicine\n\n## Abstract\n\nPatients received metformin 500 mg twice daily.",
+        "Compound list: metformin, placebo."
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "search_list",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T22",
+    "value": {
+      "doc_id": "bio_abs_metformin_conflict",
+      "sentences": [
+        "# Metformin Kinetics Replication\n\nAuthors: Alan Turing\nYear: 2024\nDOI: 10.0000/fake.metformin.2024\n\n## Abstract\n\nPatients received metformin 850 mg twice daily.",
+        "Compound list: metformin."
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "search_list",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T23",
+    "value": {
+      "query": "sample size",
+      "doc_id": "tech_note_cache_v2",
+      "score": 2
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 1,
+        "text": "n="
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "bm25_lite",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T23",
+    "value": {
+      "query": "sample size",
+      "doc_id": "tech_note_cache",
+      "score": 2
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 0,
+        "end": 1,
+        "text": "n="
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "bm25_lite",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T23",
+    "value": {
+      "query": "sample size",
+      "doc_id": "bio_abs_metformin_conflict",
+      "score": 2
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "n="
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "bm25_lite",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T24",
+    "value": {
+      "question": "ttl_seconds",
+      "answer": 300,
+      "doc_id": "tech_note_cache"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 129,
+        "end": 147,
+        "text": "TTL as 300 seconds"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "retrieve_entail_lite",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T24",
+    "value": {
+      "question": "ttl_seconds",
+      "answer": 600,
+      "doc_id": "tech_note_cache_v2"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 94,
+        "end": 112,
+        "text": "TTL as 600 seconds"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "retrieve_entail_lite",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T25",
+    "value": {
+      "entity": "metformin",
+      "docs": [
+        "binding_coref",
+        "bio_abs_metformin",
+        "bio_abs_metformin_conflict"
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "binding_coref",
+        "start": 0,
+        "end": 1,
+        "text": "metformin"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "inverted_index",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T26",
+    "value": {
+      "dosages": [
+        {
+          "doc_id": "bio_abs_metformin",
+          "dosage": "500 mg"
+        },
+        {
+          "doc_id": "bio_abs_metformin",
+          "dosage": "500 mg"
+        },
+        {
+          "doc_id": "bio_abs_metformin_conflict",
+          "dosage": "850 mg"
+        }
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "500 mg"
+      },
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "500 mg"
+      },
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "850 mg"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "dict_span_union",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T27",
+    "value": {
+      "doc_id": "semi_structured_lab",
+      "schema": {
+        "device": "spectrometer-7",
+        "wavelength_nm": "532",
+        "operator": "KJ",
+        "patient_id": null
+      }
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 0,
+        "end": 1,
+        "text": "device"
+      }
+    ],
+    "status": "PROBABLE",
+    "solver": "hybrid_schema",
+    "meta": {
+      "abstain_fields": [
+        "patient_id"
+      ],
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T28",
+    "value": {
+      "field": "ttl_seconds",
+      "values": {
+        "tech_note_cache": 300,
+        "tech_note_cache_v2": 600
+      },
+      "relation": "differ"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 0,
+        "end": 1,
+        "text": "300"
+      },
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 1,
+        "text": "600"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "extract_diff",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T29",
+    "value": {
+      "field": "metformin_dose_mg",
+      "values": {
+        "bio_abs_metformin": 500,
+        "bio_abs_metformin_conflict": 850
+      },
+      "contradiction": true
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "500"
+      },
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "850"
+      }
+    ],
+    "status": "DISPUTED",
+    "solver": "numeric_compare",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T30",
+    "value": {
+      "string": "ibuprofen",
+      "doc_id": "semi_structured_lab",
+      "collision_risk": "reagent_vs_allergy",
+      "action": "DISPUTED"
+    },
+    "evidence": [
+      {
+        "doc_id": "semi_structured_lab",
+        "start": 136,
+        "end": 145,
+        "text": "ibuprofen"
+      }
+    ],
+    "status": "DISPUTED",
+    "solver": "dict_collision",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T31",
+    "value": {
+      "merge": "metformin_dose",
+      "state": "DISPUTED",
+      "values": {
+        "bio_abs_metformin": 500,
+        "bio_abs_metformin_conflict": 850
+      }
+    },
+    "evidence": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "start": 0,
+        "end": 1,
+        "text": "500"
+      },
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "start": 0,
+        "end": 1,
+        "text": "850"
+      }
+    ],
+    "status": "DISPUTED",
+    "solver": "symbolic_merge",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T32",
+    "value": {
+      "summary_line": "device=spectrometer-7|wavelength_nm=532|operator=KJ"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 1,
+        "text": "spectrometer-7"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "template_summary",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T33",
+    "value": {
+      "bogus": "unverified free text"
+    },
+    "evidence": [],
+    "status": "REJECTED",
+    "solver": "negative_control_no_evidence",
+    "meta": {
+      "expect_reject": true,
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "fail_no_evidence"
+    }
+  },
+  {
+    "task_id": "T34",
+    "value": {
+      "field": "ttl_seconds",
+      "reason": "multi_conflict"
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 0,
+        "end": 1,
+        "text": "300"
+      },
+      {
+        "doc_id": "tech_note_cache_v2",
+        "start": 0,
+        "end": 1,
+        "text": "600"
+      }
+    ],
+    "status": "ABSTAIN",
+    "solver": "conflict_abstain",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T34",
+    "value": {
+      "field": "patient_id",
+      "doc_id": "semi_structured_lab",
+      "reason": "missing"
+    },
+    "evidence": [],
+    "status": "ABSTAIN",
+    "solver": "missing_abstain",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T35",
+    "value": {
+      "query": "How long before cached entries expire?",
+      "docs": [
+        "tech_note_cache",
+        "tech_note_cache_v2"
+      ],
+      "note": "classical_no_paraphrase"
+    },
+    "evidence": [],
+    "status": "ABSTAIN",
+    "solver": "retrieve_no_paraphrase",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T36",
+    "value": {
+      "relation": "implies_dose_change",
+      "from": "500",
+      "to": "850"
+    },
+    "evidence": [],
+    "status": "ABSTAIN",
+    "solver": "implicit_default_abstain",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T37",
+    "value": {
+      "dosage": "500 mg",
+      "normalized": true
+    },
+    "evidence": [
+      {
+        "doc_id": "noisy_ocr_line",
+        "start": 0,
+        "end": 1,
+        "text": "500 mg"
+      }
+    ],
+    "status": "PROBABLE",
+    "solver": "ocr_normalize_lite",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T38",
+    "value": {
+      "rows": [
+        {
+          "region": "us-east",
+          "qps": "1000",
+          "error_rate": "0.01"
+        },
+        {
+          "region": "eu-west",
+          "qps": "800",
+          "error_rate": "0.02"
+        },
+        {
+          "region": "ap-south",
+          "qps": "600",
+          "error_rate": "0.015"
+        }
+      ]
+    },
+    "evidence": [
+      {
+        "doc_id": "tableish_throughput",
+        "start": 0,
+        "end": 1,
+        "text": "qps"
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "parser_table",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  },
+  {
+    "task_id": "T39",
+    "value": {
+      "doc_id": "binding_coref",
+      "bindings": []
+    },
+    "evidence": [],
+    "status": "ABSTAIN",
+    "solver": "coref_lite_abstain",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309
+    }
+  },
+  {
+    "task_id": "T40",
+    "value": {
+      "explanation": "Latency is the end-to-end response time measured at p50."
+    },
+    "evidence": [
+      {
+        "doc_id": "tech_note_cache",
+        "start": 188,
+        "end": 244,
+        "text": "Latency is the end-to-end response time measured at p50."
+      }
+    ],
+    "status": "CONFIRMED",
+    "solver": "extractive_only",
+    "meta": {
+      "suite_latency_s": 0.001348624937236309,
+      "verify": "pass"
+    }
+  }
+]
