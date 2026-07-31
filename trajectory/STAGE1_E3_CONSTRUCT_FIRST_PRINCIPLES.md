@@ -1,7 +1,7 @@
 # Stage 1 — E3 construct validity (first principles)
 
-*Bounded human arm executed (not skipped). Docs + labels only.
-No E2, fabric, or old-task substrate runs. 2026-07-31.*
+*Bounded **agent-applied rubric audit** executed (not skipped; not dual-clinician).
+Docs + labels only. No E2, fabric, or old-task substrate runs. 2026-07-31.*
 
 **Artifacts**
 
@@ -26,7 +26,7 @@ Three nested evaluation layers (from first principles):
 |-------|----------|----------------------------|
 | **Exact** | Is `pred == truth`? | Pack = 100 exact failures by construction |
 | **Normalized** | Same after case/punct/plural strip? | Auto: **0/486** M0 rescues; on pack: **0/100** |
-| **Human-acceptable** | Same clinically relevant fact? | **This arm:** 0/100 acceptable under frozen rubric |
+| **Agent-rubric “acceptable”** | Same fact under frozen written rubric (proxy)? | **This Stage 1:** 0/100 acceptable (`agent-rubric-pass-1`); dual-clinician IAA **NOT_RUN** |
 
 If many exact failures were still normalized-equal or human-acceptable, reported
 gaps would **overstate** failure. If almost none are, exact-match is a **harsh but

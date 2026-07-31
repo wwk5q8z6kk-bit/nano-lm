@@ -11,7 +11,7 @@ for Paper α measurement claims.
 **Automated arm executed 2026-07-30.** Artifact:
 `trajectory/results_e3_normalize_construct.json`.
 
-**Human arm EXECUTED (Stage 1, 2026-07-31)** — bounded pack labeling.
+**Agent-applied rubric audit EXECUTED (Stage 1, 2026-07-31)** — bounded pack labeling (`agent-rubric-pass-1`). Dual-clinician / human arm remains **NOT_RUN**.
 Artifact: `trajectory/results_e3_human.json`. Analysis:
 `trajectory/STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md`. Pack frozen at
 `trajectory/e3_human_rating_pack.json`.

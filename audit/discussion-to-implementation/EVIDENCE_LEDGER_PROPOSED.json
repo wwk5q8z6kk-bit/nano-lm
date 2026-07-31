@@ -1,7 +1,7 @@
 {
-  "schema": "nano-lm.evidence_ledger.v2",
+  "schema": "nano-lm.evidence_ledger_proposed.v2",
   "disposition": "DIFF_E = OWNER_APPROVED_APPLIED_TO_LIVE_LEDGER",
-  "do_not_replace_live_ledger_until_owner_approval": false,
+  "do_not_replace_live_ledger_until_owner_approval": true,
   "live_ledger": "papers/EVIDENCE_LEDGER.md",
   "review_snapshot": {
     "review_snapshot_id": "review-2026-07-31-02",
@@ -809,7 +809,5 @@
     "C_E3_RUBRIC": "prefer C_E3_AGENT_AUDIT + C_E3_HUMAN_STATUS",
     "C_E3_HUMAN_VALIDITY": "replaced by C_E3_HUMAN_STATUS",
     "C_NANOSCRIBE_IMPL": "prefer C_NANOSCRIBE_STATE"
-  },
-  "approved_at_utc": "2026-07-31T15:19:14.437016+00:00",
-  "approval_marker": ".autonomous/post-alpha-evidence-freeze/OWNER_APPROVED_DIFF_E"
+  }
 }

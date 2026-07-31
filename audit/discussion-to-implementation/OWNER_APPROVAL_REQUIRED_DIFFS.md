@@ -1,10 +1,15 @@
 # Owner Approval Required — Exact Proposed Diffs
 
-> **Status 2026-07-31 (freeze ruling):** Owner discovery ruling authorized applying the full
-> claim-synchronization patch set. DIFF A–J / H′ / C′ treated as **applied** under that
-> authorization during `post-alpha-evidence-freeze-2026-07-31` preparation. Remaining owner
-> action: review local commits + tag, then `git push && git push --tags` when ready.
-> E4 remains BLOCKED.
+> **Status 2026-07-31 (owner decision):** **H / H′ / I / J approved and applied** in the
+> working tree (factual/scope corrections only). Gate remains
+> **`AUDIT_REMEDIATION_REQUIRED`** until (1) claim/status checks pass on the correction
+> commit, (2) primary E1/E3 bundle is committed, and (3) raw JSONL is durably published
+> with hashes. **Do not** create the post-α tag yet; **do not** force-move `paper-alpha-v1`.
+> No E2 / E4 / fabric expansion / Stage M / old-task runs. `EVIDENCE_LEDGER_PROPOSED.md`
+> is **not** wholesale-approved (`DIFF E = READY_FOR_OWNER_APPROVAL` (minor schema remediation applied; still proposal-only until owner replaces live ledger); revised proposal
+> rewritten 2026-07-31 — still proposal-only). E4 remains BLOCKED. Pre-existing tag
+> `post-alpha-evidence-freeze-2026-07-31` audited as PREMATURE_PUBLIC_EVIDENCE_TAG
+> (`TAG_AUDIT_POST_ALPHA.md`); do not move or reuse as final freeze.
 
 ---
 
