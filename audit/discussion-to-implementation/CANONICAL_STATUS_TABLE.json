@@ -1,7 +1,7 @@
 {
   "schema": "nano-lm.canonical_status_table.v3",
-  "updated": "2026-07-31T15:34:20.153554+00:00",
-  "program_execution_status": "IDLE_AFTER_E4_KILL",
+  "updated": "2026-07-31",
+  "program_execution_status": "IDLE_AFTER_DOGFOOD",
   "authorized_nonexecution_work": "NONE",
   "evidence_freeze_tag": {
     "name": "post-alpha-evidence-freeze-2026-07-31",
@@ -49,9 +49,7 @@
         "EXECUTED",
         "KILL"
       ],
-      "U_star_class": 0.638,
-      "U_star_gen": -1.623,
-      "best_classical": "C-M2"
+      "verdict": "KILL"
     },
     "nanoscribe": {
       "status": "ARCHITECTURAL_RESEARCH_PROGRAM"
@@ -71,5 +69,8 @@
     "string": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
     "date": "2026-07-31",
     "record": "trajectory/e4/AUTH_RECORD.md"
-  }
+  },
+  "science_track_status": "IDLE_AFTER_E4_KILL",
+  "product_wedge_v1": "RUNTIME_SLICE_LIVE",
+  "wedge_progress": "PHASES_1_3+NOISY+DOGFOOD_8_8"
 }

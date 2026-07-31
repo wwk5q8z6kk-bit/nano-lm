@@ -6,8 +6,8 @@
 Sequential plan: `papers/SEQUENTIAL_PIPELINE.md`. Ambition frame: `papers/AMBITION.md`.*
 
 *Not part of Paper α. Gate 2 PASS recorded 2026-07-31 in `PIPELINE_GATE_LOG.md`.
-Under `AUTHORIZE_E4_DESIGN_ONLY` (2026-07-31): design hardening only — **no** E4
-execution, **no** R★ world freeze, **no** dataset generation that constitutes eval lock.*
+`AUTHORIZE_E4_DESIGN_ONLY` (2026-07-31) was superseded same day by
+`AUTHORIZE_E4_BUILDER_AND_EXECUTE` → Gate 4 **KILL**. World/data frozen; RESULT archived.*
 
 ## Status
 

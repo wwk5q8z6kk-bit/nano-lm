@@ -181,24 +181,24 @@ experiment that cannot change the roadmap. **E1 already KILL — do not rerun Da
 | `papers/EVIDENCE_LEDGER.md` | Proven / supported / plausible / speculation / falsified |
 | `papers/CLAIM_GLOSSARY.md` | Forbidden claims + approved hedges |
 | `trajectory/DECISION_P1_program_lock.md` | E1/E3/E2 decision lock |
-| `trajectory/REGIME_P1_where_classical_fails.md` | Product regime **R★** (design-hardened; anti-circular I*/X*/B*; no E4 data) |
-| `trajectory/PREREG_E4_Rstar_killgate.md` | **E4 design package** — draft \(U_{R★}\) with Q/E/R/L/C/M, fairness, consequences (**no `results_e4_*`**; EXECUTION_BLOCKED) |
-| `papers/AMBITION.md` | IDLE ≠ halt; design-only ambition framing |
+| `trajectory/REGIME_P1_where_classical_fails.md` | Product regime **R★** (`WORLD_FROZEN`; anti-circular I*/X*/B*) |
+| `trajectory/PREREG_E4_Rstar_killgate.md` | **E4 protocol** — \(U_{R★}\) with Q/E/R/L/C/M; **EXECUTED / KILL** (`results_e4_utility.json`) |
+| `papers/AMBITION.md` | IDLE_AFTER_DOGFOOD (ops) / IDLE_AFTER_E4_KILL (science); revision budget 1 |
+| `audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md` | **Authoritative** posture / object statuses |
 | `papers/EVIDENCE_MANIFEST.json` | Machine-readable claim → prereg → code → outputs → tag map |
 
 **Position:** Phase 0–1 **DONE** (Outcome 1: non-LM wins). Paper α frozen.
-E2/fabric/old-task continua **STOP**.
+Path B E4 on tested R★ **DONE — KILL**. E2/fabric/old-task continua **STOP**.
+`PROGRAM_EXECUTION_STATUS = IDLE_AFTER_DOGFOOD`; science track `IDLE_AFTER_E4_KILL`; `AUTHORIZED_NONEXECUTION_WORK = NONE`.
 
-**Branches:** Path A = Idle/science (optional E3, optional E2). Path B = product
-(**P2** docs → **E4** kill gate on R★ → classical / mixed-routing / generative
-wedge). Path C = pure research sequence (E3→E2→generalization→interp). See
-`papers/AZ_EXECUTION_PLAN.md`.
+**Branches:** Path A = Idle/science (optional dual-clinician E3; E2 still gated).
+Path B = product **closed for tested R★**; at most **one** preregistered R★ revision
++ fresh owner auth, else idle / classical product. Path C = pure research sequence
+(optional). Prefer this lockfile + canonical status table over lagging overlays.
 
-**E4** = Stage 4 new-regime kill gate (only product-unlocking experiment).
-**Cursor:** Gate 3 PASS — design package at `trajectory/PREREG_E4_Rstar_killgate.md`;
-E4 = `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` under `AUTHORIZE_E4_DESIGN_ONLY`
-(not authorized to execute). Gates 0–3 PASS. Ambition: `papers/AMBITION.md`. Log:
-`trajectory/PIPELINE_GATE_LOG.md`.
+**E4** = Stage 4 — **Gate 4 KILL** (2026-07-31).
+**Cursor:** Gates 0–4 in `trajectory/PIPELINE_GATE_LOG.md`. Status: `IDLE_AFTER_DOGFOOD` (E4 science: KILL).
+Ambition: `papers/AMBITION.md`.
 
 ## P1 decision lock (2026-07-31) — docs only
 
@@ -220,13 +220,14 @@ residual continua. No Paper α reopen. No additional LM scaling.**
 3. ~~E3 bounded agent-rubric audit~~ **DONE** (EXACT_SURVIVES on instrument; IAA/dual-clinician still open).
 4. **E2 / fabric / residual continua: STOP** until an explicit written re-scope.
    No LoRA mechanism sentences. No product revival on the E1 task.
-5. ~~P1 decision lock + P2 protocol~~ **DONE** (design-hardened under
-   `AUTHORIZE_E4_DESIGN_ONLY`). E4 = `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` —
-   measurement absent; **no runs**.
+5. ~~P1 + P2 + E4 execute~~ **DONE — Gate 4 KILL** under
+   `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31). Artifacts:
+   `trajectory/results_e4_utility.json`, `trajectory/e4/data/`.
 6. ~~Public packaging / evidence freeze~~ **DONE** at tag
    `post-alpha-evidence-freeze-2026-07-31`.
-7. **Authorized now:** harden E4 design only (`papers/AMBITION.md`, R★, \(U_{R★}\) draft,
-   fairness, consequences). **Not authorized:** E4 execute / builder world freeze / GPU.
+7. **Authorized now:** **NONE** (`IDLE_AFTER_DOGFOOD`). Optional later only with
+   fresh owner auth: (a) one R★ revision; (b) dual-clinician E3; (c) packaging sync.
+   **Not authorized:** same-world E4 redo, old-task bakeoffs, fabric/NanoScribe expansion.
 
 ## E1 result (2026-07-30; official M0 2026-07-31) — KILL
 
@@ -246,6 +247,99 @@ ownstack Chinchilla+LoRA) = **0.925** (Pythia). Best non-LM M1 = 0.999 → margi
 +0.074 vs official M0 under $\delta=0.05$; M2 = 0.886 also $\ge U(M0)-\delta$.
 Sensitivity: no flip. Ecology: **general**. Artifacts:
 `trajectory/results_e1_utility.json`.
+
+### Post-E1 program lock (owner, 2026-07-31) — FINAL
+
+E1 is **closed**, not provisional. Official M0 used the identical frozen harness
+on RunPod CUDA/fp16; sensitivity did not reverse the decision; the pod was
+terminated.
+
+\[
+U_{\mathrm{M1}}=0.998999 \;>\; U_{\mathrm{official\,M0}}=0.925217
+\quad(\mathrm{margin}\approx 0.073782)
+\]
+
+**What E1 decisively kills.** The claim: *a generative small-LM proposer plus
+verification is the preferred substrate for this closed, template-isomorphic
+extraction task under frozen \(U\).* Do **not** revive that product thesis via
+a bigger LM, another LoRA recipe, more verifier engineering, a pointer head,
+Fabric expansion, or NanoScribe architecture work on the **same** task. M1 is
+the appropriate stress test: the DGP permits a deterministic extractor, and it
+wins nearly perfectly.
+
+\[
+\boxed{\text{Generation is no longer the default}}
+\]
+
+Generation must earn its place only where classical methods fail under fair
+comparison.
+
+**What E1 does not kill.** Verification as a systems principle; abstention;
+provenance; contradiction detection; evidence ledgers; hybrid classical–neural
+systems; generative systems on non-isomorphic tasks; research into memory,
+planning, reasoning, agents, or tool use; NanoScribe as a long-term research
+hypothesis; the broader nano-lm program. Scientific conclusion: **narrow and
+final**. Research ambition: **broad but newly conditional**.
+
+**Post-E1 architecture principle.** Do not begin with `LM proposes → verifier
+checks`. Begin with capability routing:
+
+```text
+Task analysis
+→ cheapest sufficient solver
+    ├── deterministic parser
+    ├── dictionary/span system
+    ├── constrained classifier
+    ├── retrieval
+    ├── symbolic program
+    └── generative model only when justified
+→ verification
+→ abstain/review
+→ provenance
+```
+
+The generative model is one optional operator inside a verified computational
+fabric—not the substrate around which the system is organized.
+
+**Research question (E4 answered for tested R★ v1):**
+
+\[
+\boxed{\text{When does generation add positive marginal utility over the best classical system?}}
+\]
+
+\[
+\Delta U_{\mathrm{gen}}
+=
+U(\text{classical}+\text{generation}+\text{verification})
+-
+U(\text{best classical}+\text{verification})
+\]
+
+**Measured on frozen R★ under \(U_{R★}\):** \(\Delta U_{\mathrm{gen}} \not> \delta\) —
+Gate 4 **KILL** (\(U^\star_{\mathrm{class}}\approx 0.638\) C-M2 vs
+\(U^\star_{\mathrm{gen}}\approx -1.623\) G-ref verify-on). Dominant drivers include
+high generative \(C\) and residual classical solvability (C-M2 \(Q\approx 0.93\)).
+Further product-path work requires a **new** I*/X* revision (budget 1) or idle /
+classical product — not a silent reopen.
+
+| Track | Correct state |
+| --- | --- |
+| Paper α measurement science | Strong and preserved |
+| E1 | **Closed KILL** |
+| Old-task generative product thesis | **Falsified** |
+| Fabric verification slice | Valid, narrowly scoped |
+| Fabric expansion on old task | **Stopped** |
+| NanoScribe as implemented product | Unsupported |
+| NanoScribe as research architecture | Preserved as hypothesis |
+| E2 mechanism work | GATED / STOP |
+| E4 / tested R★ | **EXECUTED / KILL**; product track STOP |
+| Program execution | **IDLE_AFTER_DOGFOOD** (science: IDLE_AFTER_E4_KILL) |
+| R★ revision budget | **1** remaining (needs fresh auth) |
+| General systems ambition | Open only via authorized revision or idle |
+
+\[
+\boxed{\text{Do not build generation where deterministic extraction already wins}}
+\]
 
 
 ## E1 utility-weight sensitivity (2026-07-31) — analysis only
@@ -320,13 +414,15 @@ Prereg written (`trajectory/PREREG_E2_lora_universes.md`). **GATED / STOP** unde
 post-E1 freeze. No U3/U1–U4 runs until written re-scope. No `results_e2_*.json`.
 Stray `e2-u3-earlystop` pod terminated 2026-07-31. Do not claim RUNNING.
 
-## R★ / E4 status (`DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`)
+## R★ / E4 status (`EXECUTED` / `KILL` / science `IDLE_AFTER_E4_KILL`)
 
-Regime definition and E4 protocol are **design-hardened docs**:
-`trajectory/REGIME_P1_where_classical_fails.md`, `trajectory/PREREG_E4_Rstar_killgate.md`,
-`papers/AMBITION.md`. **No** `results_e4_*` artifacts. Generative-value claims under
-R★ remain **untested** until Stage 4 **execution** is separately owner-authorized.
-Not part of Paper α. IDLE_AFTER_FREEZE ≠ program halted.
+E4 ran under `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31). World frozen;
+classical probe `in_Rstar=true`. Under frozen \(U_{R★}\): best classical C-M2
+\(U\approx 0.638\) ≥ G-ref verify-on \(U\approx -1.623\) − δ; sensitivity flip false.
+Artifacts: `trajectory/results_e4_utility.json`, `trajectory/results_e4_classical_probe.json`,
+`trajectory/e4/data/`. Authority: `CANONICAL_STATUS_TABLE.md`, `PIPELINE_GATE_LOG.md` Gate 4,
+`AMBITION.md`. **Not** part of Paper α. Product track for tested R★ **STOP**;
+revision budget **1**; `AUTHORIZED_NONEXECUTION_WORK = NONE`.
 
 ## Public vs local evidence packaging
 

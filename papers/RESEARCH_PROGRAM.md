@@ -89,12 +89,12 @@ Kill-gate status (2026-07-31 freeze):
 3. **E2** — prereg frozen, **GATED / STOP** (no RESULT)
    (`trajectory/PREREG_E2_lora_universes.md`).
 
-Fabric/v2 / NanoScribe architecture expansion remains **STOP**. R★/E4 are under
-**`AUTHORIZE_E4_DESIGN_ONLY`**: E4 = `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`
-(not “next stage running”). Evidence posture remains **`IDLE_AFTER_FREEZE`**
-(IDLE ≠ halted — see `papers/AMBITION.md`). Details:
-`papers/EMPIRICAL_FOUNDATION.md`,
-`audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`.
+Fabric/v2 / NanoScribe architecture expansion remains **STOP**. R★/E4:
+**`EXECUTED` / `KILL`** under `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (Gate 4).
+Program posture **`IDLE_AFTER_DOGFOOD`** (science: `IDLE_AFTER_E4_KILL`); `AUTHORIZED_NONEXECUTION_WORK = NONE`;
+R★ revision budget **1**. Details: `papers/EMPIRICAL_FOUNDATION.md`,
+`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`,
+`papers/AMBITION.md`.
 
 ## Null hypotheses (status)
 
@@ -130,7 +130,7 @@ morphology descriptive; external validity of synthetic world open; E1 KILL demot
 
 ## Ambition (post-freeze)
 
-`IDLE_AFTER_FREEZE` completes evidence packaging; it does **not** end the program.
+`IDLE_AFTER_E4_KILL` / `IDLE_AFTER_DOGFOOD` completes a gate; it does **not** end the program.
 Ambition: find whether ∃ R★ with \(U_{\mathrm{gen+verify}}(R★) > U_{\mathrm{classical}}(R★)\)
 under matched Q/E/R/L/C/M — **not** “build NanoScribe anyway.” Authorized work:
 E4 **design** (`REGIME_P1`, `PREREG_E4`, `AMBITION.md`). Execution requires separate

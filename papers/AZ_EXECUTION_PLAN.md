@@ -73,7 +73,7 @@ E1 = KILL. Generative LM is **not** the preferred substrate *for this closed tas
 |------|--------|--------|--------|
 | **P1** | Write the regime where templates/dictionaries fail | **DONE** | `trajectory/REGIME_P1_where_classical_fails.md` (regime **R★**) |
 | **P2** | Write utility + kill-gate protocol **for that regime** | **DONE** | `trajectory/PREREG_E4_Rstar_killgate.md` |
-| **P3 / E4** | Kill-gate classical vs generative *in that regime* | **DESIGN_IN_PROGRESS** / **EXECUTION_BLOCKED** | Design package hardening authorized; execute needs separate auth |
+| **P3 / E4** | Kill-gate classical vs generative *in that regime* | **DONE — KILL** | `results_e4_utility.json`; Gate 4; product track STOP for tested R★ |
 | **P4** | Branch | After P3 | Generative wins → build/verify; classical still wins → classical product, selective generative help, or stop |
 
 Rules for Phase 3 (same discipline as E1):
@@ -211,7 +211,7 @@ Not a product unlock:
 - **E1** is over.  
 - **E3** is optional construct cleanup.  
 - **E2** is optional old-task mechanism science.  
-- **E4** (new-regime kill gate) is the only experiment that can unlock a product — currently `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`, not “next stage running.”  
+- **E4** (new-regime kill gate) **EXECUTED — KILL** on tested R★; product track STOP; revision budget 1; program `IDLE_AFTER_E4_KILL`.  
 
 Nothing after that should be “more experiments on the old closed task.”  
 Everything after is **idle**, **science on open residual questions**, or **product in a regime where classical methods actually fail**.

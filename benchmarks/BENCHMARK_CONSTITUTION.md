@@ -1,6 +1,8 @@
-# Benchmark Supremacy Lab
+# Evaluation infrastructure (inside nano-lm)
 
-**Subtitle:** Pareto-aware, contamination-resistant, research-driven evaluation and improvement infrastructure.
+**Was labeled:** Benchmark Supremacy Lab — **reframe:** supporting evaluation harness for the nano-lm research vehicle, not the project identity.
+
+**Subtitle:** Pareto-aware, contamination-resistant evaluation infrastructure.
 
 > **Parent:** [`papers/LABORATORY_CONSTITUTION.md`](../papers/LABORATORY_CONSTITUTION.md) — research governance for **this repo**. This file is the Program 0 / harness charter for nano-lm’s benchmark infrastructure only.
 
@@ -14,14 +16,15 @@ MISSION = COMPREHENSIVE_BENCHMARK_SUPREMACY
 METHOD = FIRST_PRINCIPLES_RESEARCH_AND_ENGINEERING
 EVALUATION = PUBLIC + HIDDEN + DYNAMIC + OOD + PRODUCT
 PARETO_ROLE = FAIRNESS_AND_SEARCH_METHOD
-PROGRAM0 = AUTHORIZED_INFRA_ONLY
-PROGRAM1 = DEFERRED_PENDING_GATE0
+PROGRAM0 = INFRA_COMPLETE_STOP_EXPANSION
+PROGRAM1 = NOT_AUTHORIZED
 TRAINING = NOT_AUTHORIZED
-E4_EXECUTION = BLOCKED
+E4_RESULT = KILL
 LAYER1_FREEZE = UNTOUCHED
-PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE
-AUTHORIZED_NONEXECUTION_WORK: BENCHMARK_SUPREMACY_LAB_PROGRAM0_INFRA
+PROGRAM_EXECUTION_STATUS: IDLE_AFTER_DOGFOOD
+AUTHORIZED_NONEXECUTION_WORK: NONE
 BENCHMARK_LAB_STATUS: INFRASTRUCTURE_ONLY
+PARENT_POSTURE: see papers/LABORATORY_CONSTITUTION.md
 ```
 
 ## Dual mandate (both required)

@@ -2,8 +2,8 @@
   "schema": "nano-lm.withdrawal_spec.v1",
   "updated": "2026-07-31",
   "freeze_tag": "post-alpha-evidence-freeze-2026-07-31",
-  "program_posture": "IDLE_AFTER_FREEZE+AUTHORIZE_E4_DESIGN_ONLY",
-  "e4": "DESIGN_IN_PROGRESS/EXECUTION_BLOCKED",
+  "program_posture": "IDLE_AFTER_DOGFOOD+AUTHORIZED_NONEXECUTION_WORK_NONE",
+  "e4": "EXECUTED/KILL",
   "withdrawals": [
     {
       "id": "W-E3-HUMAN",
@@ -79,15 +79,18 @@
     {
       "id": "W-RSTAR-NEXT",
       "claim": "E4 is authorized to execute / next stage running / generative value in R\u2605 expected",
-      "evidence_bound": "Design track authorized; no results_e4_*; execution auth absent",
-      "expires_when": "Owner authorizes Stage 4 execute and E4 RESULT exists",
-      "replace_with": "E4 DESIGN_IN_PROGRESS / EXECUTION_BLOCKED; ambition continues under design-only (AMBITION.md); generative value in R\u2605 untested",
+      "evidence_bound": "E4 RESULT exists: results_e4_utility.json \u2192 KILL; Gate 4 logged",
+      "expires_when": "N/A (expired as design-block claim; do not revive as still pending)",
+      "replace_with": "E4 EXECUTED / KILL on tested R\u2605 (IDLE_AFTER_E4_KILL); revision budget \u22641 needs fresh owner auth; generative+verify did not beat classical under frozen U_R\u2605",
       "forbidden_rephrase": [
-        "E4 authorized to execute",
-        "next stage running",
-        "product path unlocked",
+        "E4 still design-blocked",
+        "no results_e4_*",
+        "product path unlocked by E4",
         "Stage 4 queued for runs",
-        "Path-B as shipping work"
+        "Path-B as shipping work",
+        "generative value expected on this R\u2605",
+        "E4 authorized to execute",
+        "next stage running"
       ]
     }
   ],
