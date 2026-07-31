@@ -18,5 +18,8 @@ Generated 2026-07-31. Start at `EXECUTIVE_SUMMARY.md`.
 | PRIORITIZED_MISSING_WORK.md              | Phase 10                |
 | PROPOSED_OWNER_LOCKFILE_PATCHES.md       | Patch proposals         |
 | VERIFICATION_COMMAND_LOG.md              | Commands/outputs        |
+| WITHDRAWAL_SPEC.md                       | Soft-claim withdrawals  |
+| WITHDRAWAL_SPEC.json                     | Machine-readable companion |
+| CANONICAL_STATUS_TABLE.md                | Status authority          |
 
 

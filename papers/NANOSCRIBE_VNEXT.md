@@ -4,12 +4,14 @@
 
 
 > **OVERRIDE 2026-07-30 (Scientific Research Council — accepted baseline).**
-> This document is retained as an architecture *sketch*, not an active build queue.
-> Do **not** expand fabric/v2 or NanoScribe product claims until E1–E3 clear
-> (`papers/EMPIRICAL_FOUNDATION.md`). Science object ⊥ systems object: Paper 1 =
-> measurement; Paper 2 = verification under decidable \(R\). Surviving scientific
-> contribution is boundary-condition reliability under low diversity — not
-> "transformers cannot extract" and not "mechanism solved."
+> Retained as a historical architecture *sketch*, **not** an active build queue and
+> **not** the next sequential product stage. E1 **KILL** demoted the generative
+> substrate thesis for the closed E1 task; E2 **GATED/STOP**; E4 **BLOCKED**;
+> program posture **`IDLE_AFTER_FREEZE`**. Do **not** expand fabric/v2 or NanoScribe
+> product claims (`papers/EMPIRICAL_FOUNDATION.md`). Science object ⊥ systems object:
+> Paper 1 = measurement; Paper 2 = verification under decidable \(R\). Surviving
+> scientific contribution is boundary-condition reliability under low diversity —
+> not "transformers cannot extract" and not "mechanism solved."
 >
 > Soften reconciliation language below: LoRA vs full-FT is a **measured behavioral
 > delta**; "destroys/preserves the copy pathway" is **banned mechanism language** (E2 GATED/STOP; no RESULT).
@@ -17,8 +19,8 @@
 
 *Owner-authored architecture decision, received 2026-07-20. Captured in condensed-faithful form below the
 reconciliation note (structure, commitments, gates, and roadmap preserved; the full
-original text lives in the owner's session record). This is the program's forward design: a verification-first
-cognitive fabric around the small model — not a generic multi-agent framework.*
+original text lives in the owner's session record). Historical design notes only —
+not a commitment to build NanoScribe or treat R★/E4 as authorized next work.*
 
 ## Reconciliation with measured evidence (maintainer note, 2026-07-20)
 
