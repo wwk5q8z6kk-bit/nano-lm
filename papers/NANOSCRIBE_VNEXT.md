@@ -1,5 +1,20 @@
 # NanoScribe vNext: Research Conclusion and Architecture Decision
 
+> **Implementation boundary (2026-07-31 freeze):** NanoScribe is an architectural research program. Beyond the measured Fabric slice, the control plane, memory system, routing, tools, permissions, distributed execution, observability, and user interface remain unimplemented unless separately evidenced.
+
+
+> **OVERRIDE 2026-07-30 (Scientific Research Council — accepted baseline).**
+> This document is retained as an architecture *sketch*, not an active build queue.
+> Do **not** expand fabric/v2 or NanoScribe product claims until E1–E3 clear
+> (`papers/EMPIRICAL_FOUNDATION.md`). Science object ⊥ systems object: Paper 1 =
+> measurement; Paper 2 = verification under decidable \(R\). Surviving scientific
+> contribution is boundary-condition reliability under low diversity — not
+> "transformers cannot extract" and not "mechanism solved."
+>
+> Soften reconciliation language below: LoRA vs full-FT is a **measured behavioral
+> delta**; "destroys/preserves the copy pathway" is provisional pending E2.
+
+
 *Owner-authored architecture decision, received 2026-07-20. Captured in condensed-faithful form below the
 reconciliation note (structure, commitments, gates, and roadmap preserved; the full
 original text lives in the owner's session record). This is the program's forward design: a verification-first
@@ -12,9 +27,9 @@ directly supported by this repo's pre-registered results:
 
 | vNext element | Status in evidence |
 |---|---|
-| **Stage C1 (copy-preserving adaptation: LoRA vs full FT)** | **Already measured** (P2 2×2): full FT on the under-trained 160M base reads 16.9±1.7; LoRA on the same checkpoint 7.1±1.2 (seed band ±1.3, pre-registered PASS) — full-parameter adaptation destroys the copy pathway that LoRA preserves. The doc's "highest-priority model-side experiment" is P2's landed result. |
+| **Stage C1 (copy-preserving adaptation: LoRA vs full FT)** | **Already measured** (P2 2×2): full FT on the under-trained 160M base reads 16.9±1.7; LoRA on the same checkpoint 7.1±1.2 (seed band ±1.3, pre-registered PASS) — full-parameter adaptation yields a much larger held-out gap than LoRA on the same checkpoint (mechanism unidentified; E2). The doc's "highest-priority model-side experiment" is P2's landed result. |
 | "Slots behave differently by value diversity" | **Directly supported** (slot-diversity sweep, H-slot SUPPORTED: diversity effect 66.7 pts, categorical per-type flips, position innocent; token-coverage secondary factor). |
-| Stage V-line (verification-first, abstention, review routing) | Grounded in Stage G/A: 23/23 hallucinated fields caught, absence verifier +10 omissions, 100% presented precision at 19% review load. |
+| Stage V-line (verification-first, abstention, review routing) | Grounded in Stage G/A on this distribution: 23/23 hallucinated fields caught, absence verifier +10 omissions, 100% presented precision at 19% review load — **scoped to measured \(R\), not open-world**. |
 | Stage C2 (pointer/copy head) | Aligned with Stage M PREREG hypotheses (induction/retrieval circuitry); sequenced post-P2 as the doc's roadmap also implies. |
 | Priority D (batched verification / inference engineering) | Batched scorer implemented and validated **byte-identical** on both anchors (0/40 mismatches each); adopted as CUDA fast path, native path remains reference. |
 | "Every architectural claim must survive a pre-registered experiment" | The operating rule of this repo (PREREGs, decision rules fixed pre-run, honest-FAIL reporting — e.g. the 1B comparability failure reported as a finding). |

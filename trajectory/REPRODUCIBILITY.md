@@ -78,3 +78,93 @@ torch 2.10.0+cu128 · transformers 5.0.0 · peft 0.19.1 · python 3.12.13 · Tes
   no effect on the experiment — Kaggle jobs run server-side independently and all
   completed artifacts are pulled and archived. Recovery of any rung is by
   re-pulling the completed kernel output, not re-running.
+
+
+---
+
+## Program-wide reproducibility packaging (2026-07-30 SRC baseline)
+
+### Dependencies and environment
+
+| File | Role |
+|---|---|
+| `requirements.txt` | CPU CI: pytest + numpy |
+| `requirements-ml.txt` | Training / scoring stack (torch, transformers, peft, …) |
+| `environment.yml` | Conda env skeleton (Python 3.12 + CPU deps) |
+| `pyproject.toml` | Project metadata + pytest discovery |
+| `LICENSE` | MIT |
+
+Recorded GPU scoring env (Stage T / own-stack kernels; see JSON `env` fields when present):
+torch 2.10.0+cu128 · transformers 5.0.0 · peft 0.19.1 · python 3.12.13 · Tesla T4
+(and venue-specific H100 / A6000 / RTX 4090 / MPS runs noted in respective PREREGs).
+
+### Deterministic evaluation entry points (no new GPU work required to *check*)
+
+| Check | Command | Needs GPU? |
+|---|---|---|
+| Fabric regression pins | `pytest fabric/test_fabric.py` or `python3 fabric/test_fabric.py` | No |
+| C-3 recompute harness fixtures | `pytest trajectory/test_recompute_c3.py` | No |
+| CI | `.github/workflows/ci.yml` runs both above on Python 3.12 | No |
+| Anchor re-score (native) | `python trajectory/rescore_anchors.py` | Yes (or MPS) |
+| Batched scorer parity | `trajectory/batched_scorer.py` (byte-identical vs native on anchors) | Yes |
+| Own-stack / Pythia / sweep kernels | `trajectory/kaggle_*.py`, RunPod scripts in PREREGs | Yes |
+
+### How to obtain / verify result artifacts
+
+1. **Immutable JSONs live in-repo** under `trajectory/results_*.json`,
+   `trajectory/sweep_eval/`, `trajectory/c3_eval/`, `trajectory/interference_eval/`,
+   `trajectory/replications/`, and `fabric/results_slice_v1.json`.
+2. **Do not overwrite** result JSONs; new runs write new files or
+   `trajectory/replications/<slug>/`.
+3. **Content-addressed eval inputs** — SHA-256 pins above (m0–m4, inst0, recipes).
+4. **Git tags** (scientific freezes): `stage-t-v1`, `stage-t-v2` (commit `101e429`).
+   Prefer tagging subsequent freezes the same way before mutating instruments.
+5. **Verify a claim** by (a) finding the JSON path cited in the paper/program doc,
+   (b) reading `diluted_gap_mean` / `clean_gap_mean` / `decisions` / fabric
+   `presented_error_rate`, (c) confirming the matching PREREG RESULT section.
+6. **Corner cells (established):**
+   `results_corner_3p2b_lora_seed0.json` and `..._seed1.json` both report
+   `diluted_gap_mean = 4.24`, `diluted_gap_sd ≈ 0.91` (|Δ|=0.00).
+7. Checkpoints (`.pt`) are **not** in git (`.gitignore`); use release assets /
+   documented mounts. Scoring code + frozen eval JSON is enough to re-derive
+   metrics from a mounted checkpoint.
+
+### Claim discipline reminder
+
+Reproducing a number does not authorize a broader mechanism or product claim.
+See `papers/EMPIRICAL_FOUNDATION.md` and `papers/RESEARCH_PROGRAM.md`.
+
+---
+
+## Post-α E1 / E3 evidence bundle (packaging, 2026-07-31)
+
+Machine-readable map: `papers/EVIDENCE_MANIFEST.json`.
+
+### Authority for KILL / construct claims
+
+| Claim | Prereg | Primary outputs | Local verify |
+|-------|--------|-----------------|--------------|
+| E1 KILL (H-substrate) | `PREREG_E1_nonlm_baseline.md` | `results_e1_utility.json`, `results_e1_utility_sensitivity.json` | `decision.verdict=KILL`; M1 U≈0.999 vs official M0 U≈0.925; margin≈+0.074; `sensitivity_flip=false` |
+| E3 normalize | `PREREG_E3_faithfulness_construct.md` | `results_e3_normalize_construct.json` | `norm_rescue_count=0`, `both_fail=486` |
+| E3 human (bounded) | same | `e3_human_rating_pack.json` + `results_e3_human.json` | faithful 0/100; EXACT_SURVIVES; IAA absent |
+| E2 | `PREREG_E2_lora_universes.md` | *(none)* | **GATED/STOP** |
+| R★ / E4 | `REGIME_P1_…`, `PREREG_E4_…` | *(none)* | **Protocol only; not measured** |
+
+### Utility symbols (E1)
+
+Authoritative definitions: PREREG_E1 + `trajectory/e1/common.py` (`rho = flagged / n_fields` = **review load**).
+Do not read ρ as hallucination. Decision margin δ=0.05 ≠ sensitivity cost weight δ_C.
+
+### M1 information constraint
+
+M1 is a **rules-perfect template extractor** (`fabric._extract`) for this synthetic dialogue
+generator — not a train-lexicon-only method. M2 is the train-dict + span baseline.
+KILL remains valid under the frozen prereg; interpret M1 as classical/symbolic ceiling
+for this world, not as a weak heuristic.
+
+### Git packaging note
+
+These E1/E3 files were **present locally and untracked**, not gitignored. Tag
+`paper-alpha-v1` therefore could not anchor KILL/E3 until an owner commit adds the
+bundle. Prefer committing the `commit_ready_bundle_globs` from the manifest; omit
+`exclude_from_scientific_commit` logs/partials.

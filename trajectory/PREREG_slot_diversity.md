@@ -83,6 +83,22 @@ generality (Pythia arms would be a follow-up); seed variance (Q2's lane).
 
 ## Status
 
-Pre-registered; data-variant generator, eval generator, and kernels to be built next.
-Nothing has been run. Estimated cost: 4 arms × (~5-min FT + ~30-min scoring at 10M) ≈
-~2.5 h GPU total for the primary tier.
+**EXECUTED** (primary 10M tier). Original locked design above is unchanged.
+Generators/kernels were built after preregistration (as planned) and then run;
+this RESULT does not amend the decision rule.
+
+Artifacts: `trajectory/results_sweep_10m.json`, `trajectory/sweep_eval/`,
+runner `trajectory/kaggle_sweep_10m.py`.
+
+## RESULT (scoped summary)
+
+| Arm | mean held-type recall % |
+|-----|-------------------------|
+| D5 | 0.00 |
+| D20 | 24.53 |
+| D80 | 66.67 |
+| D20-pos | 27.65 |
+
+- Diversity effect D80−D5 = **66.7 pts** → decision **H-slot SUPPORTED** (≥30 pts threshold).
+- Position Δ (D20-pos − D20) = **3.11 pts** (≤5 → position innocent under prereg).
+- Causal license: behavioral effect of slot training diversity on held-type recall under this instrument. **Not** a circuit/mechanism claim.

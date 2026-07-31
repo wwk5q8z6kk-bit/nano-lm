@@ -1,6 +1,6 @@
 # PREREG — own-stack scale ladder to separate SCALE from STACK (planned follow-up)
 
-**Pre-registered 2026-07-18. Not executed.** This is the documented follow-up that
+**Pre-registered 2026-07-18.** Header historically said "Not executed"; **primary 160M cells and later addenda were subsequently executed** (see RESULT). This is the documented follow-up that
 resolves Paper 1's primary limitation (§7 scale-vs-stack confound). Owner chose
 freeze-and-write; this is the highest-priority extension, to be run if reviewers press
 on the confound or if drafting shows it is needed. Design fixed here *before* any run,
@@ -79,8 +79,18 @@ notes inherit REPRODUCIBILITY.md (T4 pin, torchao uninstall, etc.).
 
 ## Status
 
-Drafted, not executed. Frozen design; execution (if chosen) runs headless on Kaggle T4
-and appends `results_ownstack_v2_160m_{fullft,lora}.json` in the results_anchors schema.
+**Executed** (Kaggle T4; results committed under `paper-alpha-v1` / `origin/master`).
+Frozen design stood; artifacts:
+
+| Cell | Artifact | diluted_gap_mean (approx) |
+|------|----------|---------------------------|
+| 160M full-FT | `results_ownstack_v2_160m_fullft.json` | 16.9 |
+| 160M LoRA | `results_ownstack_v2_160m_lora.json` | 7.1 |
+| 160M Chinchilla full-FT | `results_ownstack_v2_160m_chinchilla.json` | 7.0 |
+| 160M LoRA seed1 | `results_ownstack_v2_160m_lora_seed1.json` | 5.8 |
+| Corner 3.2B+LoRA | `results_corner_3p2b_lora_seed{0,1}.json` | 4.2 (|Δseed|=0.00) |
+
+Status line "Drafted, not executed" is **obsolete** and must not be quoted.
 
 ## Addendum (2026-07-19, pre-registered before running): factorial corner + seed variance
 
@@ -103,3 +113,20 @@ Venue: corner cells on whatever GPU mounts the uploaded Chinchilla base (Kaggle
 dataset); the 200M+LoRA duplicate reuses its original kernel_sources mount (T4,
 venue-consistent with its seed 0). FT_SEED env is plumbed in both kernels; results
 JSONs carry `ft_seed`.
+
+
+## RESULT (execution pointer; does not rewrite original protocol)
+
+Executed after preregistration. **Original design** (within-stack 160M scale probe +
+decision bands) remains above. **Later addenda** (LoRA arm, Chinchilla-scale data,
+3.2B+LoRA corner, seed-1) are factorial extensions recorded in JSON — treat as
+addenda, not as if they were in the first frozen paragraph.
+
+| Cell | Artifact | Note |
+|------|----------|------|
+| 160M full-FT | `results_ownstack_v2_160m_fullft.json` | diluted 16.9±1.7; STACK-dominant |
+| 160M LoRA | `results_ownstack_v2_160m_lora.json` (+ seed1) | ~7.1 |
+| Chinchilla data full-FT | `results_ownstack_v2_160m_chinchilla.json` | ~7.0 |
+| Corner 3.2B+LoRA | `results_corner_3p2b_lora_seed0.json`, `..._seed1.json` | 4.24±0.91; seed delta 0.00 |
+
+Mechanism of LoRA advantage: **unidentified** (E2 GATED/STOP).
