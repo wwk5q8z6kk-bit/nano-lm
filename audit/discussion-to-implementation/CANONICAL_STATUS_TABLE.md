@@ -1,7 +1,7 @@
 # Canonical Status Table
 
 **Authority:** this file + `CANONICAL_STATUS_TABLE.json`  
-**Updated:** 2026-07-31 (POST-FREEZE DESIGN-CLOSURE)  
+**Updated:** 2026-07-31 (LABORATORY_CONSTITUTION)  
 **Rule:** every status-bearing doc must derive from this table.
 
 ## Program posture (exact separation)
@@ -38,6 +38,12 @@ NANOSCRIBE_PRODUCT_EXPANSION: STOP
 | E4 | `DESIGN_DRAFT` / `EXECUTION_BLOCKED` / `WORLD_NOT_FROZEN` / `NO_DATA` / `NO_RESULT` | Committed design ≠ freeze |
 | Program execution | `IDLE_AFTER_FREEZE` | |
 | Authorized nonexecution work | `E4_DESIGN_ONLY` | |
+| Laboratory constitution | `ACTIVE` | `papers/LABORATORY_CONSTITUTION.md` — three layers |
+| Research portfolio | `ACTIVE_EXPANSIVE` | Layer 3; Programs A–O; not evidence |
+| Technology roadmap | `ACTIVE_AMBITIOUS` | Layer 2; conditional; not queue |
+| Execution queue | `IDLE_PLUS_E4_DESIGN` | Layer operating; tiny |
+| Decision gates | `ACTIVE` | Promotion Layer 3→2→1→queue |
+| MASTER_PLAN | `HISTORICAL_POINTER` | Not constitution; not queue |
 
 ## Transition log
 
@@ -46,3 +52,4 @@ NANOSCRIBE_PRODUCT_EXPANSION: STOP
 | Freeze tag | Evidence boundary at `a9d12cb1c456f6c465284e1d469c6326cb14d329` |
 | AUTHORIZE_E4_DESIGN_ONLY | Design carve-out; execution blocked |
 | POST-FREEZE DESIGN-CLOSURE | Split PROGRAM_EXECUTION vs AUTHORIZED_NONEXECUTION_WORK; E4=DESIGN_DRAFT |
+| LABORATORY_CONSTITUTION | Separated evidence / roadmap / portfolio / queue / gates; MASTER_PLAN demoted from queue |

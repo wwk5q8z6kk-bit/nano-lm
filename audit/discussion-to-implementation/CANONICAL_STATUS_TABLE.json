@@ -1,6 +1,6 @@
 {
   "schema": "nano-lm.canonical_status_table.v2",
-  "updated": "2026-07-31T15:20:33.520884+00:00",
+  "updated": "2026-07-31T15:27:31.728128+00:00",
   "program_execution_status": "IDLE_AFTER_FREEZE",
   "authorized_nonexecution_work": "E4_DESIGN_ONLY",
   "evidence_freeze_tag": {
@@ -61,6 +61,30 @@
     },
     "nanoscribe_product_expansion": {
       "status": "STOP"
+    },
+    "laboratory_constitution": {
+      "status": "ACTIVE",
+      "path": "papers/LABORATORY_CONSTITUTION.md"
+    },
+    "research_portfolio": {
+      "status": "ACTIVE_EXPANSIVE",
+      "path": "papers/RESEARCH_PORTFOLIO.md"
+    },
+    "technology_roadmap": {
+      "status": "ACTIVE_AMBITIOUS",
+      "path": "papers/TECHNOLOGY_ROADMAP.md"
+    },
+    "execution_queue": {
+      "status": "IDLE_PLUS_E4_DESIGN",
+      "path": "papers/EXECUTION_QUEUE.md"
+    },
+    "decision_gates": {
+      "status": "ACTIVE",
+      "path": "papers/DECISION_GATES.md"
+    },
+    "master_plan": {
+      "status": "HISTORICAL_POINTER",
+      "path": "papers/MASTER_PLAN.md"
     }
   }
 }

@@ -8,6 +8,18 @@
 
 **License (this manuscript):** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Code and other repository assets follow the repository license.
 
+## Laboratory document layers
+
+| Doc | Role |
+|-----|------|
+| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | Separates evidence / ambition / execution |
+| [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Layer 1 — what is demonstrated |
+| [`RESEARCH_PORTFOLIO.md`](RESEARCH_PORTFOLIO.md) | Layer 3 — long-horizon questions |
+| [`TECHNOLOGY_ROADMAP.md`](TECHNOLOGY_ROADMAP.md) | Layer 2 — conditional build vision |
+| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Authorized now (currently idle + E4 design-only) |
+| [`DECISION_GATES.md`](DECISION_GATES.md) | Promotion rules |
+
+
 ## Abstract
 
 We study a specific faithfulness failure in small language models finetuned to convert short clinical dialogues into structured summaries: a **held-out copying gap** — the model copies field values it saw during finetuning but errs on held-out values under held-out phrasings, even though both are present verbatim in the input. In our own from-scratch models (3.15M and 10M parameters) this gap is large — **18.3±1.3 and 18.7±1.5 points** of recall on the same multi-instance instrument. The failure localizes entirely to open-vocabulary fields and is exactly zero in closed-value fields. On the Pythia ladder the observed gap is substantially smaller, with a field-localized residual on the lowest-diversity open slot; a within-stack control and a pre-registered diversity sweep separate stack/adaptation/data effects from a pure scale story. Across evaluated own-stack configurations the gap did not collapse monotonically with parameter count; pretraining exposure was not fully isolated (3.15M used 32.8M tokens vs ~200M / 3.2B later). On a pre-registered utility, **M1** exceeds the best evaluated generative reference under frozen \(U\) (**KILL**); this paper reports that result honestly and does not advocate a generative substrate. Primary metrics are exact string match; dual-clinician equivalence is unvalidated (agent-rubric audit reported).

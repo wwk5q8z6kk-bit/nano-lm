@@ -78,3 +78,19 @@ against the then-current frozen design package — not implied by this design tr
 
 **The program remains ambitious; freeze completes evidence packaging; the only
 authorized next work is designing the R★/E4 kill-gate path — execution stays blocked.**
+
+---
+
+## Three-layer separation (mandatory)
+
+| Layer | Doc | Standard |
+|-------|-----|----------|
+| Scientific evidence | `EVIDENCE_LEDGER.md` | Conservative — no ambition |
+| Engineering roadmap | `TECHNOLOGY_ROADMAP.md` | Ambitious — conditional, non-claim |
+| Research portfolio | `RESEARCH_PORTFOLIO.md` | Expansive — questions for 5–10 years |
+| Execution now | `EXECUTION_QUEUE.md` | Tiny / idle-compatible |
+| Promotion | `DECISION_GATES.md` | Strict |
+
+E1 KILL shrinks **Layer 1 product claims**. It must **not** shrink Layers 2–3.  
+Constitution: `LABORATORY_CONSTITUTION.md`.
+

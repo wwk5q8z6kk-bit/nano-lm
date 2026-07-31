@@ -1,7 +1,16 @@
-# NanoScribe — Master Plan (owner rewrite, 2026-07-20)
+# NanoScribe — Master Plan (historical architecture note)
 
-> **Not the active implementation queue (2026-07-31).** This document records architectural research and future hypotheses. It is not the active build queue. Components are unimplemented unless linked to code, tests, and measured artifacts. **Phases 3–4 = STOP** under `PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE` and `NANOSCRIBE_PRODUCT_EXPANSION: STOP`. Active program = evidence archive + optional E4 **design-only** protocol work.
-
+> **Constitutional role (from 2026-07-31):** This file is **not** the laboratory constitution and **not** the execution queue.  
+> Use instead:  
+> - `LABORATORY_CONSTITUTION.md` — layer separation  
+> - `EVIDENCE_LEDGER.md` — Layer 1 (conservative)  
+> - `RESEARCH_PORTFOLIO.md` — Layer 3 (expansive questions)  
+> - `TECHNOLOGY_ROADMAP.md` — Layer 2 (ambitious conditional build vision)  
+> - `EXECUTION_QUEUE.md` — authorized now  
+> - `DECISION_GATES.md` — promotion rules  
+>  
+> Historical Phases 3–4 remain **`STOP` as execution**. Imagination lives in the Technology Roadmap and Research Portfolio.  
+> `PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE`.
 
 *Condensed-faithful capture of the owner's rewritten master plan; supersedes the
 roadmap portions of NANOSCRIBE_VNEXT.md (whose architectural content it absorbs).

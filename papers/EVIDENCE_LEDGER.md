@@ -1,5 +1,7 @@
 # Evidence ledger
 
+> **Layer boundary:** This ledger is Layer 1 only (demonstrated claims). Long-term vision and research programs live in `LABORATORY_CONSTITUTION.md`, `RESEARCH_PORTFOLIO.md`, and `TECHNOLOGY_ROADMAP.md` — they must not be read as evidence.
+
 Single source of truth for claim strength. Docs/evidence layer only.
 Aligned with `trajectory/DECISION_P1_program_lock.md`, Paper α (`paper-alpha-v1`),
 and post-α primary bundle (`post-alpha-evidence-freeze-2026-07-31` → `a9d12cb`).
