@@ -1,72 +1,66 @@
 {
-  "schema": "nano-lm.canonical_status_table.v1",
-  "updated": "2026-07-31",
-  "authority": "audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md",
-  "owner_auth": "AUTHORIZE_E4_DESIGN_ONLY",
+  "schema": "nano-lm.canonical_status_table.v2",
+  "updated": "2026-07-31T15:20:33.520884+00:00",
+  "program_execution_status": "IDLE_AFTER_FREEZE",
+  "authorized_nonexecution_work": "E4_DESIGN_ONLY",
+  "evidence_freeze_tag": {
+    "name": "post-alpha-evidence-freeze-2026-07-31",
+    "target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
+    "status": "IMMUTABLE_HISTORICAL"
+  },
   "objects": {
     "paper_alpha_core": {
-      "status": "PUBLIC_FROZEN_CORRECTED",
-      "prior": "PUBLIC_FROZEN_WITH_CORRECTIONS_PENDING",
-      "notes": "paper-alpha-v1 plus claim-sync (32.8M nano tokens; schedule-aware scale; E3 agent-rubric limitation)"
+      "status": "PUBLIC_FROZEN_CORRECTED"
     },
     "E1": {
       "status": "PUBLIC_EVIDENCE_ARCHIVED",
-      "prior": "LOCAL_RESULT_REPORTED",
-      "verdict": "KILL",
-      "notes": "M1 dominates official M0; M2 within delta=0.05; scoped to OLD_TASK_U"
+      "verdict": "KILL"
     },
     "E2": {
       "status": [
         "GATED_STOP",
         "NO_RESULT"
-      ],
-      "notes": "Prereg frozen; no results JSON"
+      ]
     },
     "E3_normalize": {
-      "status": "PUBLIC_EVIDENCE_ARCHIVED",
-      "prior": "LOCAL_RESULT_REPORTED",
-      "notes": "0/486 rescues"
+      "status": "PUBLIC_EVIDENCE_ARCHIVED"
     },
     "E3_agent_audit": {
       "status": [
         "AGENT_SINGLE_PASS",
         "NO_IAA"
       ],
-      "rater": "agent-rubric-pass-1",
-      "notes": "0/100 faithful; not clinician evaluation"
+      "rater": "agent-rubric-pass-1"
     },
     "E3_human_arm": {
-      "status": "NOT_RUN",
-      "notes": "Dual-clinician IAA + synonym ontology open"
+      "status": "NOT_RUN"
     },
     "fabric": {
       "status": [
-        "PUBLIC_SCOPED_SLICE",
+        "SCOPED_VERIFICATION_SLICE",
         "NOT_PRODUCT"
-      ],
-      "notes": "Thin synthetic regression harness != NanoScribe"
+      ]
     },
     "R_star": {
-      "status": "DESIGN_HARDENED",
-      "prior": "LOCAL_PROTOCOL",
-      "notes": "Anti-circular I*/X*/B*; no E4 data world"
+      "status": "DESIGN_HARDENED"
     },
     "E4": {
       "status": [
-        "DESIGN_IN_PROGRESS",
+        "DESIGN_DRAFT",
         "EXECUTION_BLOCKED",
-        "NO_BUILDER",
+        "WORLD_NOT_FROZEN",
         "NO_DATA",
         "NO_RESULT"
-      ],
-      "notes": "AUTHORIZE_E4_DESIGN_ONLY; execution requires separate auth"
+      ]
     },
-    "program_posture": {
-      "status": [
-        "IDLE_AFTER_FREEZE",
-        "E4_DESIGN_CARVE_OUT"
-      ],
-      "notes": "Freeze complete; ambition via design track only; see papers/AMBITION.md"
+    "nanoscribe": {
+      "status": "ARCHITECTURAL_RESEARCH_PROGRAM"
+    },
+    "old_task_generative_substrate": {
+      "status": "FALSIFIED_UNDER_FROZEN_U"
+    },
+    "nanoscribe_product_expansion": {
+      "status": "STOP"
     }
   }
 }

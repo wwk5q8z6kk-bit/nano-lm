@@ -16,9 +16,18 @@
 | Contains E1/E3 primaries? | YES (`results_e1_utility.json`, `results_e3_*.json`, PREREG_E1/E2/E3) |
 | Contains H/H′/I/J overlay? | NO (working-tree / later commits only) |
 | Contains durable C3 replication JSONL? | NO (replication remains gitignored; local_raw_archive only) |
-| Role | **PREMATURE_PUBLIC_EVIDENCE_TAG** — public archival of an earlier post-α sync; **not** the final freeze after H/H′/I/J + raw durable publish |
+| Role | **IMMUTABLE_HISTORICAL_EVIDENCE_BOUNDARY** — public archival at sync commit; later hygiene/design commits are separate states; do **not** move this tag |
 | Relation to `paper-alpha-v1` | Distinct; `paper-alpha-v1` → `0e01d73` unchanged |
 
 ## Archival rule
 
 Preserve this tag as historical. After remaining remediation (H/H′/I/J correction commit, durable raw publish, clean-clone verify), create a **new differently named** annotated tag if needed. Do **not** force-move `paper-alpha-v1` or this freeze tag.
+
+
+## Three repository states
+
+1. **Evidence freeze (this tag)** — immutable at `a9d12cb1c456f6c465284e1d469c6326cb14d329`.
+2. **Post-freeze hygiene** — later commits on master (tests/AAEA/polish/design auth).
+3. **Design drafts** — E4 protocol text may advance under DESIGN_ONLY; never retarget this tag for that purpose.
+
+Optional future non-evidence tag name: `e4-design-draft-YYYY-MM-DD` (not automatic).
