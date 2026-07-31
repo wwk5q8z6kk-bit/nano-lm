@@ -1,18 +1,18 @@
 {
   "schema": "nano-lm.evidence_ledger_proposed.v2",
-  "disposition": "DIFF_E = OWNER_APPROVED_APPLIED_TO_LIVE_LEDGER",
+  "disposition": "OWNER_APPROVED_REMEDIATIONS",
   "do_not_replace_live_ledger_until_owner_approval": true,
   "live_ledger": "papers/EVIDENCE_LEDGER.md",
   "review_snapshot": {
-    "review_snapshot_id": "review-2026-07-31-02",
-    "head_commit": "6f3a82362027d5e1bef22417f49a12ad8db90c30",
+    "review_snapshot_id": "review-2026-07-31-03",
+    "head_commit": "2e03e0df564008cf51c4309e9dbdf01a59c3c7b5",
     "paper_alpha_tag": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
     "premature_post_alpha_tag": "post-alpha-evidence-freeze-2026-07-31",
     "premature_post_alpha_tag_target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
-    "note": "worktree_manifest_sha256 filled after writing ledger files",
-    "worktree_manifest_sha256": "8b4d9b2941d09e84e156314bc782ee5612871e780545961a40f340aa922d820b",
-    "worktree_manifest_sha256_excluding_json": "5e74907f9e5946a565bed0038b8deb7c7091532fbd49f445f9f4fac4942449f3",
-    "proposed_json_sha256": "eb1b77da761214a2a3710e2f42b0d84f87c2bba2d3880a9015252b4aaa7f30bf"
+    "worktree_manifest_sha256": "bf7114f3864a4996697b4c13c378a917290ef1e8d2873dbc43765a9ebe4044aa",
+    "worktree_manifest_sha256_excluding_json": "a1f537eafe76ba389db21246befeea9d9309d8bf6f67681f6b27617943d515ee",
+    "proposed_json_sha256": "7b6e3e5e667a019e6b50dfccaefb3b7c630b5c4448497ffbe224e50289efbfb8",
+    "note": "DIFF E schema/status remediation acceptance; premature tag preserved"
   },
   "enums": {
     "epistemic": [
@@ -104,15 +104,15 @@
         "trajectory/results_anchors_v2_*.json",
         "trajectory/results_arm1_v2_*.json"
       ],
-      "limitations": "construct ≠ clinic",
+      "limitations": "construct \u2260 clinic",
       "invalidation_condition": "protocol VOID / construct collapse for this estimand",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_FIELD_LOC",
-      "exact_wording": "Under m0–m4 fieldwise scoring, open-vocabulary fields (cc/med/alg) carry the held/seen gap; closed-value fields (dur/sev) ≈ 0",
+      "exact_wording": "Under m0\u2013m4 fieldwise scoring, open-vocabulary fields (cc/med/alg) carry the held/seen gap; closed-value fields (dur/sev) \u2248 0",
       "claim_type": "MEASUREMENT",
       "epistemic": "SUPPORTED",
       "gate_verdict": "N/A",
@@ -133,12 +133,12 @@
       "limitations": "template-vs-value control only",
       "invalidation_condition": "closed-field nonzero under same protocol",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_DIVERSITY",
-      "exact_wording": "On the preregistered 10M allergy-slot D5→D80 sweep (+ position control), mean held-type recall rose +66.7 points",
+      "exact_wording": "On the preregistered 10M allergy-slot D5\u2192D80 sweep (+ position control), mean held-type recall rose +66.7 points",
       "claim_type": "MEASUREMENT",
       "epistemic": "SUPPORTED",
       "gate_verdict": "PASS",
@@ -159,12 +159,12 @@
       "limitations": "one family/seed/slot; type identity changes with D",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "replication across pools/seeds/families",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_SCALE_OBSERVED",
-      "exact_wording": "Across tested own-stack configs with unequal pretraining schedules, diluted gaps were 18.3±1.3 (3.15M/32.8M tok), 18.7±1.5 (10M/~200M), 16.9±1.7 (159M/~200M full-FT)",
+      "exact_wording": "Across tested own-stack configs with unequal pretraining schedules, diluted gaps were 18.3\u00b11.3 (3.15M/32.8M tok), 18.7\u00b11.5 (10M/~200M), 16.9\u00b11.7 (159M/~200M full-FT)",
       "claim_type": "MEASUREMENT",
       "epistemic": "SUPPORTED",
       "gate_verdict": "N/A",
@@ -187,7 +187,7 @@
       "limitations": "unequal tok/param; sparse training-run replication",
       "invalidation_condition": "artifact corruption / recompute mismatch",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -204,19 +204,19 @@
       "result_state": "ABSENT_EXPECTED",
       "reproducibility": "NO_RESULT",
       "wording_policy": "HEDGE_REQUIRED",
-      "wording_note": "no matched parameter-only ladder across 3.15M→10M→159M",
+      "wording_note": "no matched parameter-only ladder across 3.15M\u219210M\u2192159M",
       "scope": "interpretation of scale cells",
       "protocol": "none isolating N alone",
       "artifacts": [],
       "limitations": "parameters not isolated from token budgets",
       "invalidation_condition": null,
       "future_status_update_condition": "matched equal-token parameter intervention + RESULT",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_OWNSTACK_200M_FULLFT_GATE",
-      "exact_wording": "Under the frozen own-stack rule, 159M/200M/full-FT diluted gap 16.9≥14 → historical label STACK-dominant vs Pythia-160M",
+      "exact_wording": "Under the frozen own-stack rule, 159M/200M/full-FT diluted gap 16.9\u226514 \u2192 historical label STACK-dominant vs Pythia-160M",
       "claim_type": "GATE_VERDICT",
       "epistemic": "SUPPORTED",
       "gate_verdict": "PASS",
@@ -228,7 +228,7 @@
       "result_state": "PRESENT",
       "reproducibility": "PUBLIC_REPRODUCIBLE",
       "wording_policy": "HEDGE_REQUIRED",
-      "wording_note": "gate label ≠ tokenizer/architecture causation",
+      "wording_note": "gate label \u2260 tokenizer/architecture causation",
       "scope": "159M/200M/full-FT cell",
       "protocol": "PREREG_ownstack",
       "artifacts": [
@@ -237,7 +237,7 @@
       "limitations": "historical gate label for one cell",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -255,7 +255,7 @@
       "reproducibility": "PUBLIC_REPRODUCIBLE",
       "wording_policy": "APPROVED",
       "wording_note": null,
-      "scope": "own-stack 160M 2×2",
+      "scope": "own-stack 160M 2\u00d72",
       "protocol": "PREREG_ownstack",
       "artifacts": [
         "trajectory/results_ownstack_v2_*.json",
@@ -264,12 +264,12 @@
       "limitations": "few runs/cell; venue mix",
       "invalidation_condition": "recompute mismatch",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_ADAPT_DATA_INTERP",
-      "exact_wording": "The observed 2×2 cell pattern is consistent with a weak-base × full-FT interaction. Whether additional pretraining and LoRA are mechanistic substitutes is unresolved.",
+      "exact_wording": "The observed 2\u00d72 cell pattern is consistent with a weak-base \u00d7 full-FT interaction. Whether additional pretraining and LoRA are mechanistic substitutes is unresolved.",
       "claim_type": "INTERPRETATION",
       "epistemic": "PLAUSIBLE",
       "gate_verdict": "N/A",
@@ -282,18 +282,18 @@
       "reproducibility": "NO_RESULT",
       "wording_policy": "HEDGE_REQUIRED",
       "wording_note": "mechanism unidentified; E2 gated",
-      "scope": "interpretation of 2×2 endpoints",
+      "scope": "interpretation of 2\u00d72 endpoints",
       "protocol": "none mechanistic",
       "artifacts": [],
       "limitations": "E2 unidentified",
       "invalidation_condition": null,
       "future_status_update_condition": "valid E2 RESULT after owner re-scope",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_INTERFERENCE",
-      "exact_wording": "The preregistered isolated-versus-contained lexical-interference contrast produces an effect ≥ the C1b support threshold",
+      "exact_wording": "The preregistered isolated-versus-contained lexical-interference contrast produces an effect \u2265 the C1b support threshold",
       "claim_type": "GATE_VERDICT",
       "epistemic": "FALSIFIED",
       "gate_verdict": "REFUTED",
@@ -316,12 +316,12 @@
       "limitations": "general lexical/morph effects remain open; primary JSONL TRACKED",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "new registered lexical contrast",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_C3_TB",
-      "exact_wording": "Transition availability and boundary type each produce effects ≥ the preregistered 40-pt support threshold in C3",
+      "exact_wording": "Transition availability and boundary type each produce effects \u2265 the preregistered 40-pt support threshold in C3",
       "claim_type": "GATE_VERDICT",
       "epistemic": "FALSIFIED",
       "gate_verdict": "REFUTED",
@@ -343,12 +343,12 @@
       "limitations": "replication JSONL IGNORED_LOCAL + local_raw_archive; wide intervals/imbalance",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "equivalence-powered redesign",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_C3_L",
-      "exact_wording": "Length factor drives residual (≥ support threshold) in C3",
+      "exact_wording": "Length factor drives residual (\u2265 support threshold) in C3",
       "claim_type": "GATE_VERDICT",
       "epistemic": "UNRESOLVED",
       "gate_verdict": "UNRESOLVED",
@@ -369,7 +369,7 @@
       "limitations": "underpowered",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "decisive length arm under amended prereg",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -393,7 +393,7 @@
       "limitations": "post-hoc classification",
       "invalidation_condition": "re-label mismatch under same census definition",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -417,7 +417,7 @@
       "limitations": "exploratory only",
       "invalidation_condition": null,
       "future_status_update_condition": "preregistered causal RESULT",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -443,7 +443,7 @@
       "limitations": "manipulation check failed",
       "invalidation_condition": null,
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -469,12 +469,12 @@
       "limitations": "this impl only",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "new implementation gets a new claim ID",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_E1_MEASUREMENT",
-      "exact_wording": "Under frozen E1 U, reported utilities: M1≈0.999, official M0≈0.925, M2≈0.886 (margin M1−M0≈+0.074); ρ = review load",
+      "exact_wording": "Under frozen E1 U, reported utilities: M1\u22480.999, official M0\u22480.925, M2\u22480.886 (margin M1\u2212M0\u2248+0.074); \u03c1 = review load",
       "claim_type": "MEASUREMENT",
       "epistemic": "SUPPORTED",
       "gate_verdict": "N/A",
@@ -497,12 +497,12 @@
       "limitations": "M1 generator-aligned; L/C device-normalization audit residual",
       "invalidation_condition": "recompute mismatch / protocol VOID",
       "future_status_update_condition": "none; new U receives a new claim ID",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_E1_GATE",
-      "exact_wording": "Frozen E1 rule returns KILL (M1 exceeds M0; M2 within δ=0.05 non-necessity margin)",
+      "exact_wording": "Frozen E1 rule returns KILL (M1 exceeds M0; M2 within \u03b4=0.05 non-necessity margin)",
       "claim_type": "GATE_VERDICT",
       "epistemic": "SUPPORTED",
       "gate_verdict": "KILL",
@@ -520,10 +520,10 @@
       "artifacts": [
         "trajectory/results_e1_utility.json"
       ],
-      "limitations": "decision-layer prior embedded in δ/weights",
+      "limitations": "decision-layer prior embedded in \u03b4/weights",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -544,10 +544,10 @@
       "scope": "old task only",
       "protocol": "PREREG_E1 + lockfiles",
       "artifacts": [],
-      "limitations": "new U or R★ create new claim IDs; do not withdraw this scoped result",
+      "limitations": "new U or R\u2605 create new claim IDs; do not withdraw this scoped result",
       "invalidation_condition": "protocol/U VOID for this estimand",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02"
+      "last_reviewed_snapshot_id": "review-2026-07-31-03"
     },
     {
       "claim_id": "C_E3_NORMALIZE_RESULT",
@@ -569,10 +569,10 @@
       "artifacts": [
         "trajectory/results_e3_normalize_construct.json"
       ],
-      "limitations": "thin normalize ≠ synonyms/paraphrase",
+      "limitations": "thin normalize \u2260 synonyms/paraphrase",
       "invalidation_condition": "recompute mismatch",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -599,7 +599,7 @@
       "limitations": "single agent pass; no IAA; historical filename says human",
       "invalidation_condition": "recompute / label-file corruption",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -620,15 +620,15 @@
       "scope": "human/clinician construct arm",
       "protocol": "PREREG_E3 human arm",
       "artifacts": [],
-      "limitations": "agent audit ≠ human validation",
+      "limitations": "agent audit \u2260 human validation",
       "invalidation_condition": "repository inventory error (if arm actually exists)",
       "future_status_update_condition": "completed independent human/clinician study with recorded agreement",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_FABRIC_SLICE",
-      "exact_wording": "On closed synthetic inst0, propose→verify→abstain under rules-strong v2 drove presented-error → 0",
+      "exact_wording": "On closed synthetic inst0, propose\u2192verify\u2192abstain under rules-strong v2 drove presented-error \u2192 0",
       "claim_type": "MEASUREMENT",
       "epistemic": "SUPPORTED",
       "gate_verdict": "PASS",
@@ -640,7 +640,7 @@
       "result_state": "PRESENT",
       "reproducibility": "PUBLIC_REPRODUCIBLE",
       "wording_policy": "HEDGE_REQUIRED",
-      "wording_note": "v2 may solve task; ≠ OS",
+      "wording_note": "v2 may solve task; \u2260 OS",
       "scope": "fabric grounding.v2 / inst0",
       "protocol": "fabric slice",
       "artifacts": [
@@ -649,7 +649,7 @@
       "limitations": "closed world; ledger = per-run rewritten JSONL",
       "invalidation_condition": "protocol VOID / recomputation mismatch",
       "future_status_update_condition": "independently evaluated imperfect/open-world verifier (new claim ID)",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -673,10 +673,10 @@
         "fabric/",
         "papers/NANOSCRIBE_VNEXT.md"
       ],
-      "limitations": "absence in audited repo ≠ proof no private impl",
+      "limitations": "absence in audited repo \u2260 proof no private impl",
       "invalidation_condition": "repository inventory error",
       "future_status_update_condition": "evidenced modules are implemented",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02"
+      "last_reviewed_snapshot_id": "review-2026-07-31-03"
     },
     {
       "claim_id": "C_LORA_GEOM",
@@ -699,12 +699,12 @@
       "limitations": "no results_e2_*",
       "invalidation_condition": null,
       "future_status_update_condition": "valid E2 RESULT after owner re-scope",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
       "claim_id": "C_E2_STATUS",
-      "exact_wording": "E2 U1–U4 universe discrimination has not produced a RESULT; E2 is GATED/STOP.",
+      "exact_wording": "E2 U1\u2013U4 universe discrimination has not produced a RESULT; E2 is GATED/STOP.",
       "claim_type": "IMPLEMENTATION_STATE",
       "epistemic": "SUPPORTED",
       "gate_verdict": "GATED_STOP",
@@ -725,11 +725,11 @@
       "limitations": "terminated U3 residue is not a measurement",
       "invalidation_condition": "status prose invents a RESULT",
       "future_status_update_condition": "owner-authorized re-scope followed by a valid RESULT",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02"
+      "last_reviewed_snapshot_id": "review-2026-07-31-03"
     },
     {
       "claim_id": "C_RSTAR_VALUE",
-      "exact_wording": "Generative proposers add value in regime R★ under U_R★",
+      "exact_wording": "Generative proposers add value in regime R\u2605 under U_R\u2605",
       "claim_type": "FUTURE_HYPOTHESIS",
       "epistemic": "SPECULATION",
       "gate_verdict": "BLOCKED",
@@ -751,7 +751,7 @@
       "limitations": "no builder/world/scores",
       "invalidation_condition": null,
       "future_status_update_condition": "E4 RESULT under owner authorization",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02"
+      "last_reviewed_snapshot_id": "review-2026-07-31-03"
     },
     {
       "claim_id": "C_ZERO_HALLUC_OPEN",
@@ -774,7 +774,7 @@
       "limitations": "only zero accepted violations of R if ever proven for that R",
       "invalidation_condition": null,
       "future_status_update_condition": "soundness proof for a specified R",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02"
+      "last_reviewed_snapshot_id": "review-2026-07-31-03"
     },
     {
       "claim_id": "C_CLINICAL_DEPLOYMENT",
@@ -797,17 +797,19 @@
       "limitations": "synthetic task; no clinical validation, workflow study, risk study, or deployment evidence",
       "invalidation_condition": null,
       "future_status_update_condition": "clinical validation program with recorded evidence",
-      "last_reviewed_snapshot_id": "review-2026-07-31-02",
+      "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     }
   ],
   "retired_ids": {
-    "C_SCALE_FLAT": "split → C_SCALE_OBSERVED + C_PARAMETER_ONLY_EFFECT + C_OWNSTACK_200M_FULLFT_GATE",
-    "C_ADAPT_DATA": "split → C_ADAPT_DATA_CELLS + C_ADAPT_DATA_INTERP",
-    "C_E1_KILL": "split → C_E1_MEASUREMENT + C_E1_GATE + C_E1_PRODUCT_THESIS",
+    "C_SCALE_FLAT": "split \u2192 C_SCALE_OBSERVED + C_PARAMETER_ONLY_EFFECT + C_OWNSTACK_200M_FULLFT_GATE",
+    "C_ADAPT_DATA": "split \u2192 C_ADAPT_DATA_CELLS + C_ADAPT_DATA_INTERP",
+    "C_E1_KILL": "split \u2192 C_E1_MEASUREMENT + C_E1_GATE + C_E1_PRODUCT_THESIS",
     "C_E3_NORM": "prefer C_E3_NORMALIZE_RESULT",
     "C_E3_RUBRIC": "prefer C_E3_AGENT_AUDIT + C_E3_HUMAN_STATUS",
     "C_E3_HUMAN_VALIDITY": "replaced by C_E3_HUMAN_STATUS",
     "C_NANOSCRIBE_IMPL": "prefer C_NANOSCRIBE_STATE"
-  }
+  },
+  "diff_e_status": "OWNER_APPROVED_REMEDIATIONS",
+  "owner_approved_diff_e_remediation_at": "2026-07-31T18:06:56.335095+00:00"
 }

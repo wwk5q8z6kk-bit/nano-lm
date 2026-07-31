@@ -5,30 +5,32 @@
 ## Disposition
 
 ```text
-DIFF_E = OWNER_APPROVED_APPLIED_TO_LIVE_LEDGER
-# after minor schema/status remediation 2026-07-31-02
+DIFF_E = OWNER_APPROVED_REMEDIATIONS
+# approved via OWNER_APPROVED_DIFF_E_REMEDIATION (20260731T180656Z)
+# nine schema/status remediations + enum validation PASS
 ```
 
 Machine-readable twin: `EVIDENCE_LEDGER_PROPOSED.json` (schema `nano-lm.evidence_ledger_proposed.v2`).
 Enum validation: **PASS** (literal vocabulary members only).
+Remediation checklist: `DIFF_E_REMEDIATION_ACCEPTANCE.md`.
 
 ## Review snapshot
 
 ```json
 {
-  "review_snapshot_id": "review-2026-07-31-02",
-  "head_commit": "6f3a82362027d5e1bef22417f49a12ad8db90c30",
+  "review_snapshot_id": "review-2026-07-31-03",
+  "head_commit": "2e03e0df564008cf51c4309e9dbdf01a59c3c7b5",
   "paper_alpha_tag": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
   "premature_post_alpha_tag": "post-alpha-evidence-freeze-2026-07-31",
   "premature_post_alpha_tag_target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
-  "note": "worktree_manifest_sha256 filled after writing ledger files",
-  "worktree_manifest_sha256": "8b4d9b2941d09e84e156314bc782ee5612871e780545961a40f340aa922d820b",
-  "worktree_manifest_sha256_excluding_json": "5e74907f9e5946a565bed0038b8deb7c7091532fbd49f445f9f4fac4942449f3",
-  "proposed_json_sha256": "eb1b77da761214a2a3710e2f42b0d84f87c2bba2d3880a9015252b4aaa7f30bf"
+  "worktree_manifest_sha256": "bf7114f3864a4996697b4c13c378a917290ef1e8d2873dbc43765a9ebe4044aa",
+  "worktree_manifest_sha256_excluding_json": "a1f537eafe76ba389db21246befeea9d9309d8bf6f67681f6b27617943d515ee",
+  "proposed_json_sha256": "7b6e3e5e667a019e6b50dfccaefb3b7c630b5c4448497ffbe224e50289efbfb8",
+  "note": "DIFF E schema/status remediation acceptance; premature tag preserved"
 }
 ```
 
-Each row carries `last_reviewed_snapshot_id = review-2026-07-31-02`.
+Each row carries `last_reviewed_snapshot_id = review-2026-07-31-03`.
 
 ## Vocabularies (orthogonal; compound strings forbidden)
 
@@ -113,5 +115,10 @@ Invalidation vs future updates are separate columns.
 
 ## Owner approval
 
-Approve this DIFF E revision to replace `papers/EVIDENCE_LEDGER.md` (and optionally commit `EVIDENCE_LEDGER_PROPOSED.json` as the machine twin). Until then: proposal-only.
+```text
+STATUS = OWNER_APPROVED_REMEDIATIONS
+MARKER = OWNER_APPROVED_DIFF_E_REMEDIATION (20260731T180656Z)
+CONSTRAINT = Do not recreate/move post-alpha-evidence-freeze-2026-07-31
+```
 
+Remediations approved. Live ledger status banners synced; claim table already matched remediations.

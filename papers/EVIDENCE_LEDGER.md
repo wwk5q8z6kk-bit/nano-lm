@@ -4,7 +4,7 @@ Single source of truth for claim strength. Docs/evidence layer only.
 Aligned with `trajectory/DECISION_P1_program_lock.md`, Paper α (`paper-alpha-v1`),
 and post-α primary bundle (`post-alpha-evidence-freeze-2026-07-31` → `a9d12cb`).
 
-**Authority:** Owner-approved DIFF E (20260731T151914Z).
+**Authority:** Prior DIFF E apply (20260731T151914Z) + schema/status remediations; remediations approved `20260731T180656Z` (`OWNER_APPROVED_DIFF_E_REMEDIATION`).
 Machine twin: `papers/EVIDENCE_LEDGER.json` (schema `nano-lm.evidence_ledger.v2`).
 Proposal provenance: `audit/discussion-to-implementation/EVIDENCE_LEDGER_PROPOSED.md`.
 Pre-replace snapshot: `audit/discussion-to-implementation/snapshots/EVIDENCE_LEDGER.md.pre-diff-e-20260731T151914Z`.
@@ -16,7 +16,9 @@ Amended only by owner-facing commit. Do not invent measurement results here.
 ## Status
 
 ```text
-DIFF_E = OWNER_APPROVED_APPLIED_TO_LIVE_LEDGER
+DIFF_E = OWNER_APPROVED_REMEDIATIONS
+MARKER = OWNER_APPROVED_DIFF_E_REMEDIATION (20260731T180656Z)
+# Schema/status remediations approved; premature freeze tag preserved.
 ```
 
 Machine-readable twin: `papers/EVIDENCE_LEDGER.json` (schema `nano-lm.evidence_ledger.v2`).
@@ -26,19 +28,19 @@ Enum validation: **PASS** (literal vocabulary members only).
 
 ```json
 {
-  "review_snapshot_id": "review-2026-07-31-02",
-  "head_commit": "6f3a82362027d5e1bef22417f49a12ad8db90c30",
+  "review_snapshot_id": "review-2026-07-31-03",
+  "head_commit": "2e03e0df564008cf51c4309e9dbdf01a59c3c7b5",
   "paper_alpha_tag": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
   "premature_post_alpha_tag": "post-alpha-evidence-freeze-2026-07-31",
   "premature_post_alpha_tag_target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
-  "note": "worktree_manifest_sha256 filled after writing ledger files",
-  "worktree_manifest_sha256": "8b4d9b2941d09e84e156314bc782ee5612871e780545961a40f340aa922d820b",
-  "worktree_manifest_sha256_excluding_json": "5e74907f9e5946a565bed0038b8deb7c7091532fbd49f445f9f4fac4942449f3",
-  "proposed_json_sha256": "eb1b77da761214a2a3710e2f42b0d84f87c2bba2d3880a9015252b4aaa7f30bf"
+  "worktree_manifest_sha256": "bf7114f3864a4996697b4c13c378a917290ef1e8d2873dbc43765a9ebe4044aa",
+  "worktree_manifest_sha256_excluding_json": "a1f537eafe76ba389db21246befeea9d9309d8bf6f67681f6b27617943d515ee",
+  "proposed_json_sha256": "7b6e3e5e667a019e6b50dfccaefb3b7c630b5c4448497ffbe224e50289efbfb8",
+  "note": "DIFF E schema/status remediation acceptance; premature tag preserved"
 }
 ```
 
-Each row carries `last_reviewed_snapshot_id = review-2026-07-31-02`.
+Each row carries `last_reviewed_snapshot_id = review-2026-07-31-03`.
 
 ## Vocabularies (orthogonal; compound strings forbidden)
 

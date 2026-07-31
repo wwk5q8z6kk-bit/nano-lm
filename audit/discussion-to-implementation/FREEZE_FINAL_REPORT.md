@@ -97,7 +97,7 @@ generative-value regime R★ exists.
 | Working tree | **Dirty** — freeze overlays + many untracked research files |
 | Ignored evidence | Replication C-3 JSONL + fabric ledgers IGNORED_LOCAL; archived under `artifacts/local_raw_archive/` |
 | Inventory counts | `{"IGNORED_LOCAL": 31, "PARTIAL": 6, "REFERENCED_BUT_MISSING": 1, "TRACKED": 50, "UNTRACKED_LOCAL": 44}` |
-| Proposed tag | `post-alpha-evidence-freeze-2026-07-31` — **not created** |
+| Premature public tag | `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` — **EXISTS; preserve; do not recreate** |
 | Git commit | **not performed** (user did not ask) |
 
 ### Proposed commit contents (when authorized)
@@ -107,7 +107,7 @@ generative-value regime R★ exists.
 - E1/E3 result JSON + harness (`trajectory/e1/`, `trajectory/e3/`, `results_e1_*`, `results_e3_*`)
 - Ordinary doc corrections listed in §1
 - **After approval:** owner lockfile/Paper α diffs from `OWNER_APPROVAL_REQUIRED_DIFFS.md`
-- Then tag `post-alpha-evidence-freeze-2026-07-31`
+- Do **not** recreate `post-alpha-evidence-freeze-2026-07-31`; optional **new distinct** reconciled tag only with authorize_tag
 
 ### E2 confirmation (P1–P3)
 
@@ -218,3 +218,15 @@ generative-value regime R★ exists.
 ?? trajectory/tokenizer.json
 
 ```
+
+
+## Evidence classes (folded from discovery)
+
+See `POST_ALPHA_EVIDENCE_FREEZE.md` evidence-class table and `.autonomous/post-alpha-evidence-freeze/evidence_status_matrix.json`.
+
+E1/E3 primaries: **PUBLIC-ANCHORED** at freeze tag `a9d12cb1c456`.  
+C3 durable raw: **PUBLIC-ANCHORED** under `artifacts/durable_raw/`.  
+E4/R★ world: **ASPIRATIONAL** / BLOCKED.  
+Dual-clinician IAA: **ASPIRATIONAL** / NOT_RUN.
+
+Executor refresh HEAD `48026772fa2913a28a6063e92b66c91c2fd6e37e` (2026-07-31T15:27:41.980781+00:00).
