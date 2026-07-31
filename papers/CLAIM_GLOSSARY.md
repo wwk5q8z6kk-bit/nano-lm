@@ -19,7 +19,7 @@ Pairs with `papers/EVIDENCE_LEDGER.md`. 2026-07-31.*
 | “M1 is a train-only lexicon baseline” | M1 uses rules-perfect `fabric._extract` templates for this synthetic world | “M1 is a hand-template / rules extractor (oracle-grade for this generator); M2 is train-lexicon + span” |
 | “E2 is running” / fabricated E2 U | No `results_e2_*` | “E2 GATED/STOP; no RESULT” |
 | “E3 human / clinician evaluation complete” | Agent-rubric only | “Agent-applied rubric audit; dual-clinician IAA open” |
-| “R★ / E4 shows generative value” | No E4 measurement | “R★/E4 protocol only; untested” |
+| “R★ / E4 shows generative value” | No E4 measurement | “R★/E4 protocol only; E4 v1 executed KILL; further execute BLOCKED; no generative-value claim” |
 
 ## Approved hedges (prefer these)
 

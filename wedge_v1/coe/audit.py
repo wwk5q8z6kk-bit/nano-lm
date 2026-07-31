@@ -39,6 +39,8 @@ def audit_payload(payload: dict, docs: dict[str, str] | None = None) -> dict:
                     missing_src += 1
                     continue
                 body = docs.get(did or "", "")
+                if atom.get("relation") == "UNSUPPORTED":
+                    continue
                 start, end, text = atom.get("start"), atom.get("end"), atom.get("text") or ""
                 if start is not None and end is not None and body:
                     slice_ = body[int(start) : int(end)]

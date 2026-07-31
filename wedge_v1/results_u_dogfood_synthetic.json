@@ -1,0 +1,23 @@
+{
+  "schema": "nano-lm.wedge_v1.dogfood_utility.v1",
+  "corpus_class": "SYNTHETIC_MINI",
+  "source_schema": "nano-lm.wedge_v1.dogfood_result.v1",
+  "n_tasks": 10,
+  "n_ok": 10,
+  "Q": 1.0,
+  "E": 0.0,
+  "R": 0.2,
+  "L": 0.05,
+  "C": 1.0,
+  "U": 0.8889999999999999,
+  "delta": 0.05,
+  "weights": {
+    "beta_E": 0.5,
+    "gamma_R": 0.3,
+    "lam_L": 0.02,
+    "kappa_C": 0.05
+  },
+  "U_status": "DRAFT_NOT_SCORING_FROZEN",
+  "note": "Product draft U from dogfood pack; not Evidence Ledger.",
+  "source": "/Users/mac/Projects/nano-lm/wedge_v1/results_wedge_v1_dogfood.json"
+}

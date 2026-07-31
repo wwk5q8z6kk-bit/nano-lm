@@ -30,13 +30,17 @@ Failure-driven registry live: `arch-registry` · traces on `ask` · `adversarial
 
 
 P3 contact loop: `review`, `habit` session, fine `gallery`, `owner-ready`.
-Real `$OWNER_CORPUS` usefulness = **external pending dependency**.
+Gate 0 runner: `scripts/gate0_contact.sh` (set `WEDGE_OWNER_CORPUS` first).
 
+**Session 2026-07-31:** Harness green on gitignored `wedge_v1/data/owner_corpus` (6 synthetic stand-ins).
+Dogfood 5/5 · draft U≈0.890 · adversarial 6/6 · evolve → **W3**.
+**Blocker:** real private folder (≥10 docs) + owner usefulness sentence + review labels.
 
-1. **W1** BM25 retrieval-margin gating in `ask()`
-2. **W2** Evidence-atom hard gate
-3. `python -m wedge_v1 evolve` — recommend next workstream from galleries
-4. Re-run dogfood + smoke; watch `low_margin_review` / empty-span rates
+1. **W1** BM25 retrieval-margin gating in `ask()` — **DONE**
+2. **W2** Evidence-atom hard gate — **DONE**
+3. **W3** Multi-doc epistemic merge — **NEXT** (`evolve` vote)
+4. `python -m wedge_v1 evolve` — recommend next workstream from galleries
+5. Re-run `./scripts/gate0_contact.sh` after owner corpus swap
 
 ## Next
 

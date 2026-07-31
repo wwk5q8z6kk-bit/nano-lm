@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Auth / claim lint (B1/B7/B10/B14)
+        run: python3 scripts/lint_claim_auth.py
+      - name: Owner speech-act classifier tests (B23)
+        run: python3 scripts/test_classify_owner_speech_act.py
+      - name: M0 consistency audit
+        run: python3 scripts/m0_consistency_audit.py

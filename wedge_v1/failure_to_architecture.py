@@ -13,6 +13,18 @@ ARCH_DOC = ROOT.parent / "frontier" / "ARCHITECTURE_EVOLUTION.md"
 
 # bucket → workstream IDs
 BUCKET_TO_WS: dict[str, list[str]] = {
+    "UNSUPPORTED_COMPOSITION": ["W1", "W3"],
+    "unsupported_composition": ["W1", "W3"],
+    "RETRIEVAL_MISS": ["W1"],
+    "WRONG_SPAN_RETRIEVAL": ["W1", "W2"],
+    "LOW_MARGIN_RETRIEVAL": ["W1"],
+    "OVER_ABSTENTION": ["W1", "W4"],
+    "CORRECT_ABSTENTION": [],
+    "MULTI_DOC_CONTRADICTION": ["W3"],
+    "NUMERIC_CONTRADICTION": ["W3"],
+    "EVIDENCE_ABSENT": ["W1", "W5"],
+    "EMPTY_EVIDENCE_REJECTED": ["W2"],
+
     "low_margin_review": ["W1"],
     "ok_with_low_margin_review": ["W1"],
     "over_abstain": ["W1", "W4"],
@@ -43,6 +55,11 @@ def recommend(gallery: dict[str, Any]) -> dict[str, Any]:
     if "buckets" in gallery and not tallies:
         for k, ids in (gallery.get("buckets") or {}).items():
             tallies[k] = len(ids) if isinstance(ids, list) else int(ids or 0)
+    # fine_counts + failure_code tallies
+    for k, n in (gallery.get("fine_counts") or {}).items():
+        tallies[k] = tallies.get(k, 0) + int(n or 0)
+    for k, n in (gallery.get("failure_code_tallies") or {}).items():
+        tallies[k] = tallies.get(k, 0) + int(n or 0)
     votes: dict[str, int] = {w: 0 for w in WS_BLURB}
     for bucket, n in tallies.items():
         for ws in BUCKET_TO_WS.get(bucket, []):

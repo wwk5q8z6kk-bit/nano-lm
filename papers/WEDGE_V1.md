@@ -2,8 +2,8 @@
 
 **Date:** 2026-07-31  
 **Auth:** `OWNER_STRATEGIC_RESET_OK` · `NEXT_UNIT = WEDGE_V1` · trigger: owner “proceed”  
-**Status:** `IDLE_AFTER_DOGFOOD` — runtime CLI live; papers dogfood 8/8; LM not indicated
-**Center:** `papers/STRATEGIC_RESET.md`  
+**Status:** `ACTIVE_FRONTIER` — discovery sprint `frontier/PRODUCT_DISCOVERY_SPRINT.md`; runtime CLI live; LM not indicated
+**Center:** `frontier/DEVELOPMENT_PLAN.md` (active) · thesis: `papers/STRATEGIC_RESET.md` · authority: `papers/PROGRAM_AUTHORITY.md`  
 **Phase 3:** E-class closed without LM (`results_wedge_v1_phase3_eclass.json`); LM probe design parked (`PHASE3_LM_PROBE_DESIGN.md`, not indicated)  
 **Supersedes:** A/B/C research-unit choice; `research/decision_records/2026-07-31-strategic-reset-choose-A.md`; Program A1 as default next
 
@@ -170,7 +170,7 @@ verdict under frozen \(R\). Free generation that skips P4–P5 is out of scope f
 | Generation is not the default | E1 KILL | Classical solvers own A–D unless \(\Delta U_{\mathrm{LM}}>\delta\) |
 | Template-isomorphic worlds are classical-won | E1 M1 | Do not recreate scribe templates as the corpus DGP |
 | Exact-match ≠ clinical faithfulness | E3 | Soft-match / human rubric only as secondary arms |
-| R★ shopping is banned | E4 KILL + anti-circular I* | Corpus inclusion by process predicates, not gen-win filters |
+| R★ shopping is banned | Post-α E4 Gate 4 **KILL** on tested R★ v1 (`trajectory/results_e4_utility.json`; outside Paper α) + anti-circular I* | Corpus inclusion by process predicates, not gen-win filters |
 | Fabric verify works under decidable \(R\) | fabric slice | Reuse span/schema/absence checks; do not claim open-world truth |
 
 ---
@@ -305,7 +305,7 @@ backing) → **acceptance test**.
 
 | | |
 |--|--|
-| **Root cause** | Real corpora contain superseded claims (e.g. glossary "E4 untested" vs ambition "E4 KILL"). Silent "latest file wins" invents false consensus. |
+| **Root cause** | Real corpora contain superseded claims (e.g. stale glossary "E4 untested" vs post-α `results_e4_utility.json` Gate 4 KILL). Silent "latest file wins" invents false consensus. Paper α does not claim E4. |
 | **Mitigation** | Authority tiers for nano-lm dogfood: T0 Evidence Ledger → T1 freeze tags → T2 ambition/queue/reset → T3 calibrated findings → T4 drafts/glossary/plans. Conflicts → `DISPUTED`/`CONTRADICTED` with both spans + tier note; never silent pick. |
 | **Research** | Lab claim discipline; epistemic merge states (B7); belief revision without generative reconciliation. |
 | **Accept** | Planted stale-vs-current traps recovered; false auto-resolve = 0. |

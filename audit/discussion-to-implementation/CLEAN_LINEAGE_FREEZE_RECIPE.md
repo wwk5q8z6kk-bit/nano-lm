@@ -1,21 +1,23 @@
 # Clean-lineage freeze recipe (B17)
 
-**Status:** M0/M1 design only. **Do not run** without `OWNER_TAG_OK` + tip policy `clean-lineage`.  
-**Updated:** 2026-07-31T18:17Z  
+**Status:** EXECUTED / VERIFIED under `AUTHORIZE_TAG` tip_policy=`clean-lineage` (2026-07-31T18:31Z).  
+**Tip:** `post-alpha-reconciled-evidence-freeze-2026-07-31` @ `67bf87b1f968` · E4 `6af178d` not ancestor · protected tags unmoved.  
+**Tag push:** not authorized this turn.
+
 **Companions:** `COUNCIL_HYBRID_CLOSEOUT.md`, `OWNER_SPEECH_ACTS.md`, `FIRST_PRINCIPLES_RISK_MITIGATION.md` §3.9
 
 ## Problem atom
 
 `origin/master` ancestry includes E4 execute (`6af178d`). Naming that tip a **freeze** misrepresents stratified publication (P8).
 
-## Admissible tip policies
+## Admissible tip policies (exclusive; see `OWNER_SPEECH_ACTS.md`)
 
-| Policy | When |
-|--------|------|
-| `defer` | Default; log reason (current) |
-| `clean-lineage` | This recipe |
-| `non-freeze-snapshot` | Snapshot HEAD; name must not claim freeze |
-| `verdict-annotation` | Additive `verdict/<claim>@<sha>` with ancestry disclosure |
+| Policy | When | Scope |
+|--------|------|-------|
+| `defer` | Freeze-brand stays deferred | **Log only** |
+| `clean-lineage` | This recipe **alone** | New branch+tag; protected freeze tags unmoved |
+| `non-freeze-snapshot` | Snapshot HEAD | **Local** tag only; name must not claim freeze |
+| `verdict-annotation` | Honesty annotation | **Local** `verdict/<claim>@<sha>` only |
 
 ## Recipe (clean-lineage)
 

@@ -1,0 +1,21 @@
+FORCE_ID: AUTHORIZE_TAG
+STATUS: CONSUMED
+REUSABLE: false
+TIP_POLICIES_EXECUTED:
+  - defer
+  - clean-lineage (local reconciled tag)
+  - non-freeze-snapshot
+  - verdict-annotation
+TAG_PUSH: false
+CREATED_AT: 2026-07-31T18:32Z
+CONSUMED_AT: 2026-07-31T18:41:04Z
+EXPIRES_AT: 2026-07-31T18:41:04Z
+GRANTS_PUSH: false
+GRANTS_TAG: false
+GRANTS_COMMIT: false
+GRANTS_EXECUTION: false
+authorize_tag: false
+tag_push: false
+scope_bits: []
+note: |
+  Single-use. Local tags already created. Not reusable for further tagging.

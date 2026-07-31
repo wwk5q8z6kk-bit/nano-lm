@@ -83,4 +83,6 @@ def require_auth(
     else:
         raise SystemExit(f"AUTH_GATE_FAIL: unknown mode {mode}")
 
+    # Refuse if a sibling OWNER_* receipt exists and is CONSUMED-only for this force.
+    # (Wedge AUTH_RECORD path remains primary; OWNER_* receipts are speech-act scoped.)
     return {"auth_id": auth_id, "scope_bits": sorted(bits), "mode": mode, "queue": qstate}

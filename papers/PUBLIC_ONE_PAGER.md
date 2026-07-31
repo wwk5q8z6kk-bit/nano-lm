@@ -1,7 +1,7 @@
 # nano-lm — Public one-pager
 
 **Status:** NONCLAIM packaging for outsiders (editors/funders). Not Layer-1 evidence.  
-**Companions:** `EVIDENCE_LEDGER.md`, `STRATEGIC_RESET.md`, `FIRST_PRINCIPLES_RISK_MITIGATION.md`, `MITIGATION_STATUS_SCORECARD.md`
+**Companions:** `PROGRAM_AUTHORITY.md`, `EVIDENCE_LEDGER.md`, `STRATEGIC_RESET.md`, `WEDGE_V1.md`, `../frontier/DEVELOPMENT_PLAN.md`
 
 ## One sentence
 
@@ -23,7 +23,7 @@
 - `paper-alpha-v1` and premature `post-alpha-evidence-freeze-2026-07-31` — **do not retarget**
 - Old-task runs under `OLD_TASK_U` — **FORBIDDEN**
 - E2 — **GATED/STOP** (no RESULT)
-- E4 generative resurrection — **BLOCKED** until separate owner disposition
+- Post-α E4 Gate 4 **KILL** on tested R★ v1 (`trajectory/results_e4_utility.json`; outside Paper α); further E4 execute **BLOCKED** without new auth
 - NanoScribe / fabric-as-OS — **STOP**
 - Owner utterance `continue` — **CONTINUE_SESSION** (M0 hygiene only); does **not** authorize execute/commit/tag/push (`OWNER_SPEECH_ACTS.md`)
 
@@ -35,6 +35,10 @@ Clinical deployment, open-world zero-error, NanoScribe-as-product, parameter-onl
 
 Nano 3.15M pretrain tokens = **32.8M** (not ~200M). See `PAPER_ALPHA_CORRECTION_NOTE.md`.  
 E3 Stage-1 = **agent-rubric** audit, not clinicians.
+
+## Authority (do not collapse)
+
+Paper α = frozen publication. Active engineering = `frontier/active-v1` / Wedge v1. `NANOLM_CORE_V2_RESET.md` = superseded alternative (not current center).
 
 ## What we want attention for next (typed auth only)
 

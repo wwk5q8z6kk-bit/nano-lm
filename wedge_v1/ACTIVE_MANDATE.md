@@ -41,3 +41,9 @@ REQUIRES_OWNER:
 - Unblocked BM25 `top_paragraphs` + query expand; runtime smoke green.
 - `wedge_v1 compare` live: cross-doc numeric disagreement → CONTRADICTED.
 - Next: owner-corpus smoke (gitignored), not more governance.
+
+## Progress
+
+- Owner-corpus contact live: `wedge_v1 owner-smoke` / `owner-dogfood --demo` (5/5 on example).
+- Tracked template: `data/owner_corpus.example/`; private path gitignored.
+- Next: real private folder via `WEDGE_OWNER_CORPUS`.

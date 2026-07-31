@@ -1,5 +1,24 @@
 # Active Frontier
 
+## Current development state
+
+Active development is underway on `frontier/active-v1` under
+`DEVELOPMENT_PLAN.md`.
+
+The current product frontier is Nano Runtime’s local research-document
+intelligence wedge: a local-first, verification-gated system that uses the
+smallest sufficient solver for each task.
+
+P0 Discovery and P1 Verified Ask CLI are complete. P2 is green on the
+fixture corpus but still requires owner-corpus validation. P3 has started
+with contact evaluation and the initial habit surface.
+
+Small-language-model work is not the current default. It may be considered
+only after real P2–P3 use identifies repeated, evidence-backed
+over-abstention cases that cheaper solvers cannot resolve.
+
+**Authority:** [`../papers/PROGRAM_AUTHORITY.md`](../papers/PROGRAM_AUTHORITY.md) · Paper α landing: [`../papers/README.md`](../papers/README.md) (publication only)
+
 **Mandate:** `BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1` (see `ACTIVE_MANDATE.md`)
 
 | Path | Role |

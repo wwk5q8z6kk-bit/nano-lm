@@ -51,8 +51,8 @@
     "n_abstain": 2,
     "meets_n20": false
   },
-  "useful_sentence": "TTL and dose probes return span-supported or contradicted statuses on the mini pack.",
-  "not_useful_sentence": "Nine-file synthetic pack cannot stand in for real private research corpora.",
-  "timestamp_utc": "2026-07-31T18:47:17Z",
+  "useful_sentence": "TTL+dose extract works with spans",
+  "not_useful_sentence": null,
+  "timestamp_utc": "2026-07-31T18:48:04Z",
   "note": "Product contact only. Not Layer-1. OWNER_PRIVATE requires owner folder path."
 }

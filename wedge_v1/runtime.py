@@ -20,6 +20,7 @@ from wedge_v1.arch.trace import AskTrace, classify_abstain_failures
 from wedge_v1.classical.verifier import verify_claim
 from wedge_v1.classical.merge import predicate_claims_for_domains
 from wedge_v1.plugins.cascade import run_cascade
+from wedge_v1.plugins.lexicon import synonyms as _synonym_map
 from wedge_v1.coe.predicates import (
     decompose,
     evaluate_predicates,
@@ -121,6 +122,24 @@ def _content_tokens(q: str) -> list[str]:
     return out
 
 
+def _token_equivalence_groups(tokens: list[str]) -> list[set[str]]:
+    """Lexical synonym groups for relevance (W4 expand map; not LM)."""
+    syn = _synonym_map()
+    groups: list[set[str]] = []
+    for tok in tokens:
+        low = tok.lower()
+        group = {low}
+        for src, dsts in syn.items():
+            src_l = src.lower()
+            dst_l = {d.lower() for d in dsts}
+            if low == src_l or low in dst_l or src_l in low or low in src_l:
+                group.add(src_l)
+                group.update(dst_l)
+                group.update(re.findall(r"[a-z0-9]+", src_l))
+        groups.append(group)
+    return groups
+
+
 def _relevant_claim(c: S.Claim, tokens: list[str]) -> bool:
     """Reject weak lexical coincidences (one stop-ish content token in a huge corpus)."""
     if not tokens:
@@ -138,7 +157,7 @@ def _relevant_claim(c: S.Claim, tokens: list[str]) -> bool:
         # A single token hit is not an answer to a multi-token question.
         # Require the same coverage rule as passage claims (falls through).
         pass
-    hits = sum(1 for tok in tokens if tok.lower() in blob)
+    hits = sum(1 for group in _token_equivalence_groups(tokens) if any(t in blob for t in group))
     # Short queries: majority. Longer (>=3 content tokens): require all tokens in evidence
     # so governance prose mentioning NanoScribe cannot "answer" clinical-accuracy questions.
     if len(tokens) >= 3:

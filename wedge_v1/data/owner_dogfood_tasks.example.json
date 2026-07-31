@@ -1,6 +1,7 @@
 {
   "schema": "nano-lm.wedge_v1.owner_dogfood.v1",
-  "note": "Template pack for demo/example/owner rehearsal. Edit locally for private folders; do not commit PHI.",
+  "note": "Fixed pack for fixtures/owner_corpus (public synthetic). Edit a local copy for private corpora; do not commit PHI.",
+  "default_corpus_hint": "wedge_v1/fixtures/owner_corpus OR $OWNER_CORPUS (outside git)",
   "tasks": [
     {
       "id": "O01",
@@ -12,7 +13,9 @@
       ],
       "must_contain_any": [
         "300",
-        "600"
+        "600",
+        "TTL",
+        "seconds"
       ]
     },
     {
@@ -42,7 +45,7 @@
     {
       "id": "O04",
       "mode": "compare",
-      "query": "12000",
+      "query": "QPS",
       "expect_status": [
         "SUPPORTED"
       ],

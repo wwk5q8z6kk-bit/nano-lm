@@ -1,6 +1,8 @@
 # Execution Queue
 
-**Strategic center:** `papers/STRATEGIC_RESET.md`  
+**Active plan:** `frontier/DEVELOPMENT_PLAN.md`  
+**Authority:** `papers/PROGRAM_AUTHORITY.md`  
+**Product thesis:** `papers/STRATEGIC_RESET.md` / `papers/WEDGE_V1.md`  
 **Mandate:** `frontier/ACTIVE_MANDATE.md`  
 **Discovery:** `frontier/PRODUCT_DISCOVERY_SPRINT.md`
 

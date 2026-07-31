@@ -35,17 +35,22 @@ def _atom_from_evidence(doc_id: str | None, docs: dict[str, str], e: dict) -> Ev
         try:
             start_i, end_i = int(start), int(end)
             slice_ = body[start_i:end_i]
-            if text and slice_ and slice_ != text and text not in body:
-                # invalid offset — still record atom with failure relation
-                return EvidenceAtom(
-                    atom_id=new_id("atom"),
-                    doc_id=doc_id,
-                    doc_digest=digest_text(body) if body else None,
-                    start=start_i,
-                    end=end_i,
-                    text=text or slice_,
-                    relation=EvidenceRelation.UNSUPPORTED,
-                )
+            if text and slice_ != text:
+                if text in body:
+                    start_i = body.find(text)
+                    end_i = start_i + len(text)
+                    slice_ = body[start_i:end_i]
+                elif text not in body:
+                    # invalid offset — still record atom with failure relation
+                    return EvidenceAtom(
+                        atom_id=new_id("atom"),
+                        doc_id=doc_id,
+                        doc_digest=digest_text(body) if body else None,
+                        start=start_i,
+                        end=end_i,
+                        text=text or slice_,
+                        relation=EvidenceRelation.UNSUPPORTED,
+                    )
             if not text:
                 text = slice_
         except (TypeError, ValueError):

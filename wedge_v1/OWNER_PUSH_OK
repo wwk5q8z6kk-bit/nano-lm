@@ -1,0 +1,19 @@
+FORCE_ID: AUTHORIZE_PUSH
+STATUS: CONSUMED
+REUSABLE: false
+AUTHORIZED_REFS:
+  - refs/heads/master
+AUTHORIZED_RESULT: Everything up-to-date @ 2ad06d2
+CREATED_AT: 2026-07-31T18:31:05Z
+CONSUMED_AT: 2026-07-31T18:41:04Z
+EXPIRES_AT: 2026-07-31T18:41:04Z
+GRANTS_PUSH: false
+GRANTS_TAG: false
+GRANTS_COMMIT: false
+GRANTS_EXECUTION: false
+authorize_push: false
+force_push: false
+tag_push: false
+scope_bits: []
+note: |
+  Single-use. Push already executed (noop). Not reusable.

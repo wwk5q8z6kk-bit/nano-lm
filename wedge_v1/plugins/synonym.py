@@ -22,7 +22,7 @@ def probe_ttl(docs: dict[str, str], query: str) -> Claim:
     terms = expand_terms(query)
     best = None
     best_score = 0
-    pat = re.compile("TTL as (" + r"\d+" + ") seconds")
+    pat = re.compile(r"TTL\s+(?:as|is)\s+(\d+)\s+seconds", re.I)
     for doc_id, text in docs.items():
         low = text.lower()
         score = sum(1 for t in terms if t in low)

@@ -1,184 +1,249 @@
 {
   "schema": "nano-lm.wedge_v1.failure_gallery.v1",
-  "source": "/Users/mac/Projects/nano-lm/wedge_v1/results_wedge_v1_dogfood.json",
-  "n_tasks": 10,
-  "n_ok": 10,
+  "source": "wedge_v1/results_owner_dogfood.json",
+  "n_tasks": 5,
+  "n_ok": 5,
   "accuracy": 1.0,
   "buckets": {
     "ok_abstain": [
-      "D04",
-      "D07"
+      "O05"
     ],
     "ok_contradicted": [
-      "D09"
+      "O01",
+      "O02",
+      "O03"
     ],
     "ok_supported": [
-      "D01",
-      "D02",
-      "D03",
-      "D05",
-      "D06",
-      "D08",
-      "D10"
+      "O04"
     ]
+  },
+  "fine_buckets": {
+    "evidence_absent": [],
+    "retrieval_miss": [],
+    "wrong_span_retrieval": [],
+    "verifier_rejection": [],
+    "correct_abstention": [
+      "O05"
+    ],
+    "over_abstention": [],
+    "entity_type_collision": [],
+    "multi_document_contradiction": [
+      "O01",
+      "O02",
+      "O03"
+    ],
+    "unsupported_composition": [],
+    "ingestion_layout_failure": [],
+    "ok_supported": [
+      "O04"
+    ],
+    "other": []
+  },
+  "fine_counts": {
+    "evidence_absent": 0,
+    "retrieval_miss": 0,
+    "wrong_span_retrieval": 0,
+    "verifier_rejection": 0,
+    "correct_abstention": 1,
+    "over_abstention": 0,
+    "entity_type_collision": 0,
+    "multi_document_contradiction": 3,
+    "unsupported_composition": 0,
+    "ingestion_layout_failure": 0,
+    "ok_supported": 1,
+    "other": 0
+  },
+  "failure_code_tallies": {
+    "CORRECT_ABSTENTION": 1,
+    "MULTI_DOC_CONTRADICTION": 3
+  },
+  "examples": {
+    "multi_document_contradiction": {
+      "id": "O01",
+      "class": "ok_contradicted",
+      "fine_bucket": "multi_document_contradiction",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "got_status": "CONTRADICTED",
+      "ok": true,
+      "query": "How long before cached entries expire?",
+      "note": null,
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs",
+        "bm25_low_margin_review",
+        "plugin.synonym",
+        "plugin.ocr"
+      ],
+      "n_claims": 1,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+    },
+    "ok_supported": {
+      "id": "O04",
+      "class": "ok_supported",
+      "fine_bucket": "ok_supported",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok": true,
+      "query": "QPS",
+      "note": null,
+      "solver_path": [
+        "compare"
+      ],
+      "n_claims": 1,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+    },
+    "correct_abstention": {
+      "id": "O05",
+      "class": "ok_abstain",
+      "fine_bucket": "correct_abstention",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "got_status": "ABSTAIN",
+      "ok": true,
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "note": "no span-supported claim under classical+eclass cascade",
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs",
+        "plugin.ocr"
+      ],
+      "n_claims": 0,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+    }
+  },
+  "repro_commands": {
+    "evidence_absent": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus  # check claims[].evidence",
+    "retrieval_miss": "python -m wedge_v1 find NEEDLE --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "wrong_span_retrieval": "python -m wedge_v1 report ask --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus \"\u2026\"",
+    "verifier_rejection": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus  # status ABSTAIN/unsupported",
+    "correct_abstention": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "over_abstention": "python -m wedge_v1 review --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus --interactive  # label OVER_ABSTENTION",
+    "entity_type_collision": "python -m wedge_v1 scan --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "multi_document_contradiction": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "unsupported_composition": "python -m wedge_v1 ask \"multi-hop \u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "ingestion_layout_failure": "python -m wedge_v1 ingest --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "ok_supported": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "other": "python -m wedge_v1 gallery --from PATH"
   },
   "rows": [
     {
-      "id": "D01",
-      "class": "ok_supported",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "got_status": "SUPPORTED",
-      "ok": true,
-      "note": null,
-      "solver_path": [
-        "load_corpus",
-        "keyword_paragraph+quote",
-        "mention+yes_no",
-        "numeric+literal_spans",
-        "bm25_paragraphs"
-      ],
-      "n_claims": 5
-    },
-    {
-      "id": "D02",
-      "class": "ok_supported",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "got_status": "SUPPORTED",
-      "ok": true,
-      "note": "fallback_find:KILL",
-      "solver_path": [
-        "find_spans"
-      ],
-      "n_claims": 20
-    },
-    {
-      "id": "D03",
-      "class": "ok_supported",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "got_status": "SUPPORTED",
-      "ok": true,
-      "note": null,
-      "solver_path": [
-        "find_spans"
-      ],
-      "n_claims": 13
-    },
-    {
-      "id": "D04",
-      "class": "ok_abstain",
-      "expect_status": [
-        "ABSTAIN"
-      ],
-      "got_status": "ABSTAIN",
-      "ok": true,
-      "note": "no span-supported claim under classical+eclass cascade",
-      "solver_path": [
-        "load_corpus",
-        "keyword_paragraph+quote",
-        "mention+yes_no",
-        "numeric+literal_spans",
-        "bm25_paragraphs"
-      ],
-      "n_claims": 0
-    },
-    {
-      "id": "D05",
-      "class": "ok_supported",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "got_status": "SUPPORTED",
-      "ok": true,
-      "note": "fallback_find:review load",
-      "solver_path": [
-        "find_spans"
-      ],
-      "n_claims": 9
-    },
-    {
-      "id": "D06",
-      "class": "ok_supported",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "got_status": "SUPPORTED",
-      "ok": true,
-      "note": null,
-      "solver_path": [
-        "load_corpus",
-        "keyword_paragraph+quote",
-        "mention+yes_no",
-        "numeric+literal_spans",
-        "bm25_paragraphs"
-      ],
-      "n_claims": 4
-    },
-    {
-      "id": "D07",
-      "class": "ok_abstain",
-      "expect_status": [
-        "ABSTAIN"
-      ],
-      "got_status": "ABSTAIN",
-      "ok": true,
-      "note": "no span-supported claim under classical+eclass cascade",
-      "solver_path": [
-        "load_corpus",
-        "keyword_paragraph+quote",
-        "mention+yes_no",
-        "numeric+literal_spans",
-        "bm25_paragraphs"
-      ],
-      "n_claims": 0
-    },
-    {
-      "id": "D08",
-      "class": "ok_supported",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "got_status": "SUPPORTED",
-      "ok": true,
-      "note": "fallback_find:smallest sufficient",
-      "solver_path": [
-        "find_spans"
-      ],
-      "n_claims": 4
-    },
-    {
-      "id": "D09",
+      "id": "O01",
       "class": "ok_contradicted",
+      "fine_bucket": "multi_document_contradiction",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "got_status": "CONTRADICTED",
+      "ok": true,
+      "query": "How long before cached entries expire?",
+      "note": null,
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs",
+        "bm25_low_margin_review",
+        "plugin.synonym",
+        "plugin.ocr"
+      ],
+      "n_claims": 1,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+    },
+    {
+      "id": "O02",
+      "class": "ok_contradicted",
+      "fine_bucket": "multi_document_contradiction",
       "expect_status": [
         "CONTRADICTED"
       ],
       "got_status": "CONTRADICTED",
       "ok": true,
+      "query": "metformin",
       "note": null,
       "solver_path": [
         "compare"
       ],
-      "n_claims": 1
+      "n_claims": 1,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
     },
     {
-      "id": "D10",
+      "id": "O03",
+      "class": "ok_contradicted",
+      "fine_bucket": "multi_document_contradiction",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "got_status": "CONTRADICTED",
+      "ok": true,
+      "query": "TTL",
+      "note": null,
+      "solver_path": [
+        "compare"
+      ],
+      "n_claims": 1,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+    },
+    {
+      "id": "O04",
       "class": "ok_supported",
+      "fine_bucket": "ok_supported",
       "expect_status": [
         "SUPPORTED"
       ],
       "got_status": "SUPPORTED",
       "ok": true,
+      "query": "QPS",
       "note": null,
       "solver_path": [
         "compare"
       ],
-      "n_claims": 1
+      "n_claims": 1,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+    },
+    {
+      "id": "O05",
+      "class": "ok_abstain",
+      "fine_bucket": "correct_abstention",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "got_status": "ABSTAIN",
+      "ok": true,
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "note": "no span-supported claim under classical+eclass cascade",
+      "solver_path": [
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "bm25_paragraphs",
+        "plugin.ocr"
+      ],
+      "n_claims": 0,
+      "fail_kind": null,
+      "repro": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
     }
   ],
-  "note": "Product failure gallery; not Layer-1 ledger claim."
+  "note": "Product failure gallery; not Layer-1. Zero count \u21d2 unobserved on this corpus, not solved."
 }

@@ -11,7 +11,7 @@
 - A full NanoScribe cognitive architecture (kernel, memory, routing, tools, UI).
 - An append-only, transactional evidence fabric with Intent→Control.
 - Integrated OSS stacks (Outlines/Guidance/LangExtract/etc.).
-- E2 in flight; E3 human pending or blocked depending on doc; locks “immutable.”
+- ~~E2 in flight; E3 human pending~~ **SUPERSEDED:** E2=GATED_STOP (no RESULT); E3=agent-rubric EXACT_SURVIVES, clinician/IAA open.
 - Post-α decision pipeline fully frozen in the archival record.
 
 ## What actually exists
@@ -21,7 +21,7 @@
 - E1 KILL under frozen U with official M0 scored; sensitivity stable.
 - E3 normalize 0/486; Stage 1 “human” = **agent rubric** n=100, not clinicians.
 - E2: script + partial RunPod residue; **no RESULT**; **no active pods**.
-- E4/R★: protocol text only; no builder/data.
+- ~~E4/R★: protocol text only; no builder/data.~~ **SUPERSEDED:** post-α `trajectory/results_e4_utility.json` exists (Gate 4 KILL on tested R★ v1); outside Paper α; further E4 execute BLOCKED.
 - NanoScribe beyond fabric: **documents**.
 - OSS integrations named in this audit list: **absent**.
 
@@ -61,3 +61,17 @@
 ## Single highest-value next authorized work unit
 
 **Documentation/archival reconciliation only (no experiments):** apply owner-approved patches from `PROPOSED_OWNER_LOCKFILE_PATCHES.md` items P1–P7 + decide commit-vs-declare for post-α artifacts (P9). Then choose explicitly: **Idle** or **authorize Stage 4 E4** against frozen P2 — nothing in between.
+
+
+## Evidence classes (discovery discipline)
+
+Labels from `REVISED_DISCOVERY_PASS_ACCEPTANCE.md` (retrievability, not confidence):
+
+| Class | Definition | Qualifies | Example | Does **not** imply |
+|-------|------------|-----------|---------|---------------------|
+| PUBLIC-ANCHORED | Committed/tagged and publicly retrievable | Tagged commit contains the artifact | E1/E3 primaries at `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` | Later local overlays are public; clinical readiness |
+| LOCAL-DOCUMENTARY | Exists locally / in working tree or conversation archive but is not the public archival story for that claim | Untracked or dirty packaging notes | Session `READY_FOR_OWNER.md`, some freeze packaging churn | Public freeze completeness |
+| RAW-UNINSPECTED | Bytes exist but have not been human-audited as a claim basis | Large raw dumps pending review | Some local raw archives before inventory | Scientific endorsement |
+| ASPIRATIONAL | Protocol/design/product text without a measured RESULT | Roadmaps, ambition, NanoScribe visions | `TECHNOLOGY_ROADMAP.md` NanoScribe modules | Implementation or evidence |
+| DECISION-GOVERNANCE | Program lock / kill / product-thesis scoping | Decision records, utility kill rules | E1 product thesis KILL row | New regime unlocks |
+| STALE-CONTRADICTORY | Text that conflicts with measured/public state and must not be reused as current status | Old “E2 running”, “E4 untested” as present tense | Pre-remediation narrative residues | Current program authorization |

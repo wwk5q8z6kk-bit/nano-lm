@@ -220,13 +220,16 @@ generative-value regime R★ exists.
 ```
 
 
-## Evidence classes (folded from discovery)
+## Evidence classes (discovery discipline)
 
-See `POST_ALPHA_EVIDENCE_FREEZE.md` evidence-class table and `.autonomous/post-alpha-evidence-freeze/evidence_status_matrix.json`.
+Labels from `REVISED_DISCOVERY_PASS_ACCEPTANCE.md` (retrievability, not confidence):
 
-E1/E3 primaries: **PUBLIC-ANCHORED** at freeze tag `a9d12cb1c456`.  
-C3 durable raw: **PUBLIC-ANCHORED** under `artifacts/durable_raw/`.  
-E4/R★ world: **ASPIRATIONAL** / BLOCKED.  
-Dual-clinician IAA: **ASPIRATIONAL** / NOT_RUN.
+| Class | Definition | Qualifies | Example | Does **not** imply |
+|-------|------------|-----------|---------|---------------------|
+| PUBLIC-ANCHORED | Committed/tagged and publicly retrievable | Tagged commit contains the artifact | E1/E3 primaries at `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` | Later local overlays are public; clinical readiness |
+| LOCAL-DOCUMENTARY | Exists locally / in working tree or conversation archive but is not the public archival story for that claim | Untracked or dirty packaging notes | Session `READY_FOR_OWNER.md`, some freeze packaging churn | Public freeze completeness |
+| RAW-UNINSPECTED | Bytes exist but have not been human-audited as a claim basis | Large raw dumps pending review | Some local raw archives before inventory | Scientific endorsement |
+| ASPIRATIONAL | Protocol/design/product text without a measured RESULT | Roadmaps, ambition, NanoScribe visions | `TECHNOLOGY_ROADMAP.md` NanoScribe modules | Implementation or evidence |
+| DECISION-GOVERNANCE | Program lock / kill / product-thesis scoping | Decision records, utility kill rules | E1 product thesis KILL row | New regime unlocks |
+| STALE-CONTRADICTORY | Text that conflicts with measured/public state and must not be reused as current status | Old “E2 running”, “E4 untested” as present tense | Pre-remediation narrative residues | Current program authorization |
 
-Executor refresh HEAD `48026772fa2913a28a6063e92b66c91c2fd6e37e` (2026-07-31T15:27:41.980781+00:00).

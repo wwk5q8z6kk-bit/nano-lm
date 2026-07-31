@@ -63,3 +63,17 @@ E2, E4
 
 ## Next decision
 `OWNER_APPROVAL_REQUIRED` until tag+idle authorized; after successful owner freeze: `IDLE_AFTER_FREEZE`.
+
+
+## Evidence classes (discovery discipline)
+
+Labels from `REVISED_DISCOVERY_PASS_ACCEPTANCE.md` (retrievability, not confidence):
+
+| Class | Definition | Qualifies | Example | Does **not** imply |
+|-------|------------|-----------|---------|---------------------|
+| PUBLIC-ANCHORED | Committed/tagged and publicly retrievable | Tagged commit contains the artifact | E1/E3 primaries at `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` | Later local overlays are public; clinical readiness |
+| LOCAL-DOCUMENTARY | Exists locally / in working tree or conversation archive but is not the public archival story for that claim | Untracked or dirty packaging notes | Session `READY_FOR_OWNER.md`, some freeze packaging churn | Public freeze completeness |
+| RAW-UNINSPECTED | Bytes exist but have not been human-audited as a claim basis | Large raw dumps pending review | Some local raw archives before inventory | Scientific endorsement |
+| ASPIRATIONAL | Protocol/design/product text without a measured RESULT | Roadmaps, ambition, NanoScribe visions | `TECHNOLOGY_ROADMAP.md` NanoScribe modules | Implementation or evidence |
+| DECISION-GOVERNANCE | Program lock / kill / product-thesis scoping | Decision records, utility kill rules | E1 product thesis KILL row | New regime unlocks |
+| STALE-CONTRADICTORY | Text that conflicts with measured/public state and must not be reused as current status | Old “E2 running”, “E4 untested” as present tense | Pre-remediation narrative residues | Current program authorization |

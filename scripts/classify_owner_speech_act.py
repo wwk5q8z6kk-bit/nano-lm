@@ -24,6 +24,7 @@ RULES: list[tuple[re.Pattern[str], str, list[str]]] = [
     (re.compile(r"\bVOID_E4_AUTH\b"), "DISPOSE_E4", []),
     (re.compile(r"\bPARK_AS_EXPLORATORY\b"), "DISPOSE_E4", []),
     (re.compile(r"AUTHORIZE_[A-Z0-9_]+"), "AUTHORIZE_EXECUTE_CANDIDATE", ["execute"]),
+    (re.compile(r"^\s*start\b", re.I), "ACTIVE_FRONTIER_RESUME", []),
     (re.compile(r"^\s*continue\b", re.I), "CONTINUE_SESSION", []),
     (re.compile(r"keep\s+going", re.I), "CONTINUE_SESSION", []),
     (re.compile(r"/autonomous-skill", re.I), "CONTINUE_SESSION", []),
@@ -51,7 +52,11 @@ def classify(text: str) -> dict:
                 "note": (
                     "CONTINUE_SESSION: ungated M0 only; never commit/tag/push/execute"
                     if force == "CONTINUE_SESSION"
-                    else None
+                    else (
+                        "ACTIVE_FRONTIER_RESUME: work under papers/ACTIVE_MANDATE.md; protect Evidence Core"
+                        if force == "ACTIVE_FRONTIER_RESUME"
+                        else None
+                    )
                 ),
             }
     return {

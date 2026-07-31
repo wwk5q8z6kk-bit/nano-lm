@@ -7,7 +7,7 @@
 | | |
 |---|---|
 | **Freeze tag** | `post-alpha-evidence-freeze-2026-07-31` |
-| **Program state** | Science: `IDLE_AFTER_E4_KILL` (E4 **KILL** on R★). Product: `IDLE_AFTER_DOGFOOD` + runtime CLI live; next needs typed `AUTHORIZE_WEDGE_V1_*`. No E2/fabric/NanoScribe expansion; R★ revision budget 1 |
+| **Program state** | **Active:** `frontier/active-v1` / Nano Runtime Wedge v1 (`papers/PROGRAM_AUTHORITY.md`). Paper α frozen (`paper-alpha-v1`). Post-α E4 Gate 4 KILL archived outside Paper α (`trajectory/results_e4_utility.json`); further E4 execute BLOCKED. No E2/fabric/NanoScribe expansion. Small-LM training not default. |
 | **In-tree** | Paper α measurement spine (`paper-alpha-v1`) **plus** post-α E1/E3 evidence bundle archived at the freeze tag |
 | **Not claimed by tag** | Retroactive proof of pre-run preregistration chronology; full CUDA bit-identical fine-tuning; dual-clinician human evaluation |
 | **E3** | Agent-applied rubric audit (`agent-rubric-pass-1`) — **not** human/clinician evaluation; dual-clinician IAA **open** |
@@ -105,10 +105,11 @@ propose→verify→abstain under a decidable verifier relation on this distribut
 Presented precision **100%** at ~19% review load (Stage A) and fabric presented-error
 **18.4%→0.0% / 11.5%→0.0%** under a rules-strong verifier — **scoped to this task and
 \(R\)**, not open-world hallucination elimination. Fabric is a regression harness
-(**≠** NanoScribe). After E1 KILL: product/architecture expansion **STOP**; E3
+(**≠** NanoScribe). After E1 KILL: product/architecture expansion **STOP** for the old scribe thesis; E3
 agent-rubric audit done (**EXACT_SURVIVES**; dual-clinician IAA open — not human
-eval); E2 **GATED/STOP** (no results JSON). R★/E4 protocol docs may exist; **no**
-E4 **KILL** on locked R★; operating posture **`IDLE_AFTER_DOGFOOD`** (science: `IDLE_AFTER_E4_KILL`; see `papers/AMBITION.md`).
+eval); E2 **GATED/STOP** (no results JSON). Post-α R★/E4 Gate 4 **KILL** is archived
+in `trajectory/results_e4_utility.json` (outside Paper α); further E4 execute **BLOCKED**.
+Active engineering: Nano Runtime Wedge v1 on `frontier/active-v1` (see `papers/PROGRAM_AUTHORITY.md`).
 
 Reproduce artifacts / env / CI: `trajectory/REPRODUCIBILITY.md`. Compute venues: local
 Apple Silicon (MPS), Kaggle T4, RunPod; largest single run ≈ $37.

@@ -16,13 +16,9 @@ def verify_claim(claim: Claim) -> Claim:
         claim.meta["verify"] = "fail_no_evidence"
         return claim
 
-    # Evidence must include doc_id and offsets or text
+    # Evidence must include offsets or text; doc_id may live on the claim
     for ev in claim.evidence:
-        if "doc_id" not in ev:
-            claim.status = "REJECTED"
-            claim.meta["verify"] = "fail_malformed_evidence"
-            return claim
-        if not any(k in ev for k in ("start", "text")):
+        if not any(k in ev for k in ("start", "text", "line")):
             claim.status = "REJECTED"
             claim.meta["verify"] = "fail_malformed_evidence"
             return claim

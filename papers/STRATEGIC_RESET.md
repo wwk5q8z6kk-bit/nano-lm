@@ -1,8 +1,11 @@
 # nano-lm — Strategic Reset
 
 **Date:** 2026-07-31  
-**Status:** Owner decision document (not Layer-1 evidence; not a new constitution)  
-**Context:** Program 0 done. E1/E4 KILL stand. Stop infrastructure expansion. Re-center on useful capability, not "tiny LM scores better."
+**Status:** Product thesis document — **not** sole execution authority  
+**Active execution:** `frontier/active-v1` + `frontier/DEVELOPMENT_PLAN.md`  
+**Authority map:** `papers/PROGRAM_AUTHORITY.md`  
+**Supersedes competing center:** `papers/NANOLM_CORE_V2_RESET.md` (`SUPERSEDED_PROPOSAL`)  
+**Context:** Program 0 done. E1 KILL stands. Post-α E4 Gate 4 KILL on tested R★ v1 is archived outside Paper α (`trajectory/results_e4_utility.json`); further E4 execute BLOCKED. Stop infrastructure expansion. Re-center on useful capability, not "tiny LM scores better."
 
 ---
 

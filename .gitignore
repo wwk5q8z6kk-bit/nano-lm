@@ -64,3 +64,11 @@ wedge_v1/results_owner_dogfood.json
 **/results_owner_dogfood.md
 wedge_v1/results_owner_*.json
 wedge_v1/results_owner_*.md
+wedge_v1/results_owner_habit.json
+wedge_v1/results_review_state.json
+wedge_v1/results_saved_questions.json
+wedge_v1/results_habit_session.json
+wedge_v1/results_owner_ready.json
+**/results_review_state.json
+**/results_saved_questions.json
+wedge_v1/results_adversarial_suite.json
