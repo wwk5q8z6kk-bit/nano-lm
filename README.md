@@ -1,5 +1,19 @@
 # nano-lm — a language model pretrained and instruction-tuned from scratch on a MacBook
 
+## Public status (2026-07-31)
+
+| | |
+|---|---|
+| **Freeze tag** | `post-alpha-evidence-freeze-2026-07-31` |
+| **Program state** | `IDLE_AFTER_FREEZE` — **E4 BLOCKED**; no E2 / fabric / NanoScribe expansion |
+| **In-tree** | Paper α measurement spine (`paper-alpha-v1`) **plus** post-α E1/E3 evidence bundle archived at the freeze tag |
+| **Not claimed by tag** | Retroactive proof of pre-run preregistration chronology; full CUDA bit-identical fine-tuning; dual-clinician human evaluation |
+| **E3** | Agent-applied rubric audit (`agent-rubric-pass-1`) — **not** human/clinician evaluation; dual-clinician IAA **open** |
+| **ρ in E1 \(U\)** | **Review load** (flagged fields / \(n\)), **not** hallucination |
+| **Fabric** | Scoped verification / regression harness — **≠** NanoScribe architecture |
+
+**Evidence map:** [`papers/EVIDENCE_MANIFEST.json`](papers/EVIDENCE_MANIFEST.json) · [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md) · [`papers/EMPIRICAL_FOUNDATION.md`](papers/EMPIRICAL_FOUNDATION.md) · soft-claim withdrawals: [`audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`](audit/discussion-to-implementation/WITHDRAWAL_SPEC.md). Distinguish **Paper α** (`paper-alpha-v1`) from the **post-α freeze bundle** (E1 KILL + E3 construct artifacts).
+
 A 3.15M-parameter decoder-only transformer built end-to-end: data pipeline, tokenizer,
 pretraining, and supervised fine-tuning (SFT) — all trained locally on Apple Silicon (MPS),
 no cloud GPUs. Total pretraining wall-clock: **20 minutes**.
@@ -88,11 +102,11 @@ mechanisms).
 propose→verify→abstain under a decidable verifier relation on this distribution.
 Presented precision **100%** at ~19% review load (Stage A) and fabric presented-error
 **18.4%→0.0% / 11.5%→0.0%** under a rules-strong verifier — **scoped to this task and
-\(R\)**, not open-world hallucination elimination. Fabric is a regression harness;
-product/architecture expansion STOP after E1 KILL; E3 agent-rubric audit done (dual-clinician open)
-(EXACT_SURVIVES; IAA/dual-clinician still a limitation); E2 **GATED/STOP**
-(`PREREG_E2_*` — no results JSON). Regime R★ / E4 are protocol-only until Stage 4
-is authorized (no E4 measurement artifacts).
+\(R\)**, not open-world hallucination elimination. Fabric is a regression harness
+(**≠** NanoScribe). After E1 KILL: product/architecture expansion **STOP**; E3
+agent-rubric audit done (**EXACT_SURVIVES**; dual-clinician IAA open — not human
+eval); E2 **GATED/STOP** (no results JSON). R★/E4 protocol docs may exist; **no**
+E4 measurement; program is **`IDLE_AFTER_FREEZE`** with E4 **BLOCKED**.
 
 Reproduce artifacts / env / CI: `trajectory/REPRODUCIBILITY.md`. Compute venues: local
 Apple Silicon (MPS), Kaggle T4, RunPod; largest single run ≈ $37.
@@ -177,4 +191,5 @@ cd ../sft && python build_sft_data.py && python sft.py
 
 Checkpoints and tokenized shards are excluded from the repo (see `.gitignore`);
 trained checkpoints are release assets. Result JSONs under `trajectory/` are the
-immutable scientific record — verify against `trajectory/REPRODUCIBILITY.md`.
+content-addressed scientific record at freeze tags — verify against
+`trajectory/REPRODUCIBILITY.md` (tagged archival state ≠ “every lockfile edit is frozen”).

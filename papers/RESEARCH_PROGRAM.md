@@ -79,7 +79,7 @@ research stages gated by E1–E3, not Paper-2 content.
 
 ## Kill-gate priority order
 
-Kill-gate status (2026-07-30):
+Kill-gate status (2026-07-31 freeze):
 
 1. **E1** — **KILL** (`trajectory/PREREG_E1_nonlm_baseline.md`, `results_e1_utility.json`).
    Generative nano core optional; α+β must be substrate-agnostic in product claims.
@@ -89,8 +89,10 @@ Kill-gate status (2026-07-30):
 3. **E2** — prereg frozen, **GATED / STOP** (no RESULT)
    (`trajectory/PREREG_E2_lora_universes.md`).
 
-Fabric/v2 / NanoScribe architecture expansion remains **STOP**. Details:
-`papers/EMPIRICAL_FOUNDATION.md`.
+Fabric/v2 / NanoScribe architecture expansion remains **STOP**. R★/E4 protocol docs
+are not a product roadmap commitment; **E4 BLOCKED**; program posture
+**`IDLE_AFTER_FREEZE`**. Details: `papers/EMPIRICAL_FOUNDATION.md`,
+`audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`.
 
 ## Null hypotheses (status)
 
@@ -124,24 +126,28 @@ morphology descriptive; external validity of synthetic world open; E1 KILL demot
 - **L4 — adaptation-mechanism discrimination.** E2 GATED/STOP (no RESULT)
 - **L5 — predictive theory of reliability regimes.** destination, after L3–L4
 
-## Resource allocation
+## Resource allocation (post-freeze)
 
-≈ **40% writing (Paper 1 sync + Paper 2 β draft) · 30% E1/E3 experiments ·
-20% theory/claim hygiene · 10% reproducibility packaging.** Fabric expansion is
-not in the budget until kill-gates clear.
+≈ **60% writing / claim hygiene (Paper 1 sync + Paper 2 β draft) ·
+30% reproducibility packaging · 10% idle buffer.** E1/E3 measurement closed for
+this freeze. Fabric / NanoScribe / E2 / E4 are **out of budget** unless the owner
+explicitly re-authorizes a written re-scope (default: idle).
 
 ## Pointers
 
 - Lockfile / kill-gates: `papers/EMPIRICAL_FOUNDATION.md`
+- Evidence map / status: `papers/EVIDENCE_MANIFEST.json`,
+  `audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`
+- Soft-claim withdrawals: `audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`
 - Master plan (with council override): `papers/MASTER_PLAN.md`
 - Artifacts + env + CI: `trajectory/REPRODUCIBILITY.md`, root `README.md`
 - E1 prereg + results: `trajectory/PREREG_E1_nonlm_baseline.md`, `results_e1_utility.json`
 - E3 prereg + results: `trajectory/PREREG_E3_faithfulness_construct.md`
-- E2 prereg (blocked): `trajectory/PREREG_E2_lora_universes.md`
+- E2 prereg (gated/stop): `trajectory/PREREG_E2_lora_universes.md`
 
 ## One-sentence annual target
 
 > We measure reproducible boundary conditions under which small transformers fail
-> held-out symbolic emission, show how diversity, adaptation regime, and
-> deterministic verification change the reliability profile, and validate whether
-> the LM substrate is necessary before any architecture product claim.
+> held-out symbolic emission, and show how diversity, adaptation regime, and
+> deterministic verification change the reliability profile on this instrument —
+> without treating untested regimes or architecture sketches as next product stages.
