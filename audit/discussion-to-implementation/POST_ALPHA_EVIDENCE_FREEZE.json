@@ -50,5 +50,20 @@
   "f0_f3": "PASS",
   "e4": "BLOCKED",
   "tag": "post-alpha-evidence-freeze-2026-07-31",
-  "push": "NOT_DONE_OWNER_MUST_PUSH"
+  "push": "NOT_DONE_OWNER_MUST_PUSH",
+  "tag_chronology": {
+    "paper_alpha_v1": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+    "premature_post_alpha_evidence_freeze_2026_07_31": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
+    "premature_status": "EXISTS_PUBLIC_PREMATURE_PRESERVE",
+    "reconciled_post_alpha_evidence_freeze_2026_07_31": "67bf87b1f968a38e68c0225b2b556f7bba5ea1cc",
+    "reconciled_status": "EXISTS_CLEAN_LINEAGE"
+  },
+  "proposed_tag_note": "STALE field name retained for schema continuity; tag ALREADY EXISTS at a9d12cb \u2014 do not create",
+  "diff_e_disposition": "OWNER_APPROVED_REMEDIATIONS",
+  "amended_utc": "2026-07-31T18:34:48.174349+00:00",
+  "tag_status": "EXISTS_PUBLIC_PREMATURE",
+  "tag_target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
+  "policy": "PRESERVE_DO_NOT_MOVE_DO_NOT_RECREATE",
+  "future_final_tag": "NEW_DISTINCT_NAME_OWNER_AUTHORIZED_ONLY",
+  "note": "Tag already public at a9d12cb; proposed_tag field retained for history only \u2014 do not recreate."
 }

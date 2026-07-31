@@ -1,18 +1,23 @@
 {
   "schema": "nano-lm.evidence_ledger_proposed.v2",
-  "disposition": "OWNER_APPROVED_REMEDIATIONS",
-  "do_not_replace_live_ledger_until_owner_approval": true,
+  "disposition": "READY_FOR_OWNER_APPROVAL",
+  "do_not_replace_live_ledger_until_owner_approval": false,
   "live_ledger": "papers/EVIDENCE_LEDGER.md",
   "review_snapshot": {
-    "review_snapshot_id": "review-2026-07-31-03",
-    "head_commit": "2e03e0df564008cf51c4309e9dbdf01a59c3c7b5",
+    "review_snapshot_id": "review-2026-07-31-04",
+    "head_commit": "2ad06d24c4f72b292f73ef098fdcc0ce2a008659",
     "paper_alpha_tag": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
     "premature_post_alpha_tag": "post-alpha-evidence-freeze-2026-07-31",
     "premature_post_alpha_tag_target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
     "worktree_manifest_sha256": "bf7114f3864a4996697b4c13c378a917290ef1e8d2873dbc43765a9ebe4044aa",
     "worktree_manifest_sha256_excluding_json": "a1f537eafe76ba389db21246befeea9d9309d8bf6f67681f6b27617943d515ee",
     "proposed_json_sha256": "7b6e3e5e667a019e6b50dfccaefb3b7c630b5c4448497ffbe224e50289efbfb8",
-    "note": "DIFF E schema/status remediation acceptance; premature tag preserved"
+    "note": "DIFF E re-audit + E4 KILL row sync; premature tag preserved; live posture IDLE_PARKED",
+    "reconciled_freeze_tag_target": "67bf87b1f968a38e68c0225b2b556f7bba5ea1cc",
+    "discovery_disposition_reaffirmed_utc": "2026-07-31T18:34:48.174349+00:00",
+    "ledger_pair_sha256": "418d998e7c23e8056a27640c3c6f0c2bd54e3b9b9e38f974fbd31a7005dced62",
+    "updated_at": "2026-07-31T18:34:58Z",
+    "claims_sha256": "3c609d2bb9fdb3376cca89b1884e6fb247577cbe45c4ae9480250e56c307a88e"
   },
   "enums": {
     "epistemic": [
@@ -107,7 +112,7 @@
       "limitations": "construct \u2260 clinic",
       "invalidation_condition": "protocol VOID / construct collapse for this estimand",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -133,7 +138,7 @@
       "limitations": "template-vs-value control only",
       "invalidation_condition": "closed-field nonzero under same protocol",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -159,7 +164,7 @@
       "limitations": "one family/seed/slot; type identity changes with D",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "replication across pools/seeds/families",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -187,7 +192,7 @@
       "limitations": "unequal tok/param; sparse training-run replication",
       "invalidation_condition": "artifact corruption / recompute mismatch",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -211,7 +216,7 @@
       "limitations": "parameters not isolated from token budgets",
       "invalidation_condition": null,
       "future_status_update_condition": "matched equal-token parameter intervention + RESULT",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -237,7 +242,7 @@
       "limitations": "historical gate label for one cell",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -264,7 +269,7 @@
       "limitations": "few runs/cell; venue mix",
       "invalidation_condition": "recompute mismatch",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -288,7 +293,7 @@
       "limitations": "E2 unidentified",
       "invalidation_condition": null,
       "future_status_update_condition": "valid E2 RESULT after owner re-scope",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -316,7 +321,7 @@
       "limitations": "general lexical/morph effects remain open; primary JSONL TRACKED",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "new registered lexical contrast",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -343,7 +348,7 @@
       "limitations": "replication JSONL IGNORED_LOCAL + local_raw_archive; wide intervals/imbalance",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "equivalence-powered redesign",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -369,7 +374,7 @@
       "limitations": "underpowered",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "decisive length arm under amended prereg",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -393,7 +398,7 @@
       "limitations": "post-hoc classification",
       "invalidation_condition": "re-label mismatch under same census definition",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -417,7 +422,7 @@
       "limitations": "exploratory only",
       "invalidation_condition": null,
       "future_status_update_condition": "preregistered causal RESULT",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -443,7 +448,7 @@
       "limitations": "manipulation check failed",
       "invalidation_condition": null,
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -469,7 +474,7 @@
       "limitations": "this impl only",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": "new implementation gets a new claim ID",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -497,7 +502,7 @@
       "limitations": "M1 generator-aligned; L/C device-normalization audit residual",
       "invalidation_condition": "recompute mismatch / protocol VOID",
       "future_status_update_condition": "none; new U receives a new claim ID",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -523,7 +528,7 @@
       "limitations": "decision-layer prior embedded in \u03b4/weights",
       "invalidation_condition": "protocol VOID",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -547,7 +552,7 @@
       "limitations": "new U or R\u2605 create new claim IDs; do not withdraw this scoped result",
       "invalidation_condition": "protocol/U VOID for this estimand",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03"
+      "last_reviewed_snapshot_id": "review-2026-07-31-04"
     },
     {
       "claim_id": "C_E3_NORMALIZE_RESULT",
@@ -572,7 +577,7 @@
       "limitations": "thin normalize \u2260 synonyms/paraphrase",
       "invalidation_condition": "recompute mismatch",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -599,7 +604,7 @@
       "limitations": "single agent pass; no IAA; historical filename says human",
       "invalidation_condition": "recompute / label-file corruption",
       "future_status_update_condition": null,
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -623,7 +628,7 @@
       "limitations": "agent audit \u2260 human validation",
       "invalidation_condition": "repository inventory error (if arm actually exists)",
       "future_status_update_condition": "completed independent human/clinician study with recorded agreement",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -649,7 +654,7 @@
       "limitations": "closed world; ledger = per-run rewritten JSONL",
       "invalidation_condition": "protocol VOID / recomputation mismatch",
       "future_status_update_condition": "independently evaluated imperfect/open-world verifier (new claim ID)",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -676,7 +681,7 @@
       "limitations": "absence in audited repo \u2260 proof no private impl",
       "invalidation_condition": "repository inventory error",
       "future_status_update_condition": "evidenced modules are implemented",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03"
+      "last_reviewed_snapshot_id": "review-2026-07-31-04"
     },
     {
       "claim_id": "C_LORA_GEOM",
@@ -699,7 +704,7 @@
       "limitations": "no results_e2_*",
       "invalidation_condition": null,
       "future_status_update_condition": "valid E2 RESULT after owner re-scope",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     },
     {
@@ -725,33 +730,87 @@
       "limitations": "terminated U3 residue is not a measurement",
       "invalidation_condition": "status prose invents a RESULT",
       "future_status_update_condition": "owner-authorized re-scope followed by a valid RESULT",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03"
+      "last_reviewed_snapshot_id": "review-2026-07-31-04"
+    },
+    {
+      "claim_id": "C_E4_RESULT",
+      "exact_wording": "Under frozen U_R\u2605 on locked R\u2605 v1, best classical U\u22480.638 (C-M2) and best generative+verify U\u2248\u22121.623 (G-ref verify-on); sensitivity flip false.",
+      "claim_type": "MEASUREMENT",
+      "epistemic": "SUPPORTED",
+      "gate_verdict": "N/A",
+      "gate_label": null,
+      "gate_note": "descriptive utilities from results_e4_utility.json",
+      "evidence_class": "PUBLIC-ANCHORED",
+      "claim_record_publication": "PUBLIC_UNTAGGED",
+      "supporting_evidence_publication": "PUBLIC_UNTAGGED",
+      "result_state": "PRESENT",
+      "reproducibility": "PUBLIC_PARTIAL",
+      "wording_policy": "APPROVED",
+      "wording_note": "committed on master after premature post-\u03b1 freeze tag; not inside a9d12cb freeze brand",
+      "scope": "tested R\u2605 v1 only",
+      "protocol": "trajectory/PREREG_E4_Rstar_killgate.md",
+      "artifacts": [
+        "trajectory/results_e4_utility.json",
+        "trajectory/results_e4_classical_probe.json",
+        "trajectory/PIPELINE_GATE_LOG.md"
+      ],
+      "limitations": "regime-scoped; not universal LM falsification",
+      "invalidation_condition": "recompute mismatch / protocol VOID",
+      "future_status_update_condition": "none; new regime gets a new claim ID",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04"
+    },
+    {
+      "claim_id": "C_E4_GATE",
+      "exact_wording": "E4 Gate 4 decision under frozen \u03b4=0.05 is KILL for generative substrate on tested R\u2605 v1.",
+      "claim_type": "GATE_VERDICT",
+      "epistemic": "SUPPORTED",
+      "gate_verdict": "KILL",
+      "gate_label": "E4",
+      "gate_note": null,
+      "evidence_class": "PUBLIC-ANCHORED",
+      "claim_record_publication": "PUBLIC_UNTAGGED",
+      "supporting_evidence_publication": "PUBLIC_UNTAGGED",
+      "result_state": "PRESENT",
+      "reproducibility": "PUBLIC_PARTIAL",
+      "wording_policy": "APPROVED",
+      "wording_note": null,
+      "scope": "tested R\u2605 v1 / frozen U_R\u2605",
+      "protocol": "PREREG_E4 \u00a73",
+      "artifacts": [
+        "trajectory/results_e4_utility.json",
+        "trajectory/e4/AUTH_RECORD.md"
+      ],
+      "limitations": "does not spend revision budget; does not authorize NanoScribe/fabric expansion",
+      "invalidation_condition": "protocol VOID",
+      "future_status_update_condition": null,
+      "last_reviewed_snapshot_id": "review-2026-07-31-04"
     },
     {
       "claim_id": "C_RSTAR_VALUE",
-      "exact_wording": "Generative proposers add value in regime R\u2605 under U_R\u2605",
+      "exact_wording": "Whether some preregistered R\u2605 revision can yield generative+verify utility above classical remains open; revision budget remaining \u22641 and requires fresh owner authorization.",
       "claim_type": "FUTURE_HYPOTHESIS",
-      "epistemic": "SPECULATION",
-      "gate_verdict": "BLOCKED",
-      "gate_label": "E4",
-      "gate_note": "PROTOCOL_ONLY",
-      "evidence_class": "ASPIRATIONAL",
-      "claim_record_publication": "PUBLIC_TAGGED",
-      "supporting_evidence_publication": "PUBLIC_TAGGED",
+      "epistemic": "UNRESOLVED",
+      "gate_verdict": "N/A",
+      "gate_label": "RSTAR_REVISION",
+      "gate_note": "tested R\u2605 v1 already KILL under E4; do not restate as untested",
+      "evidence_class": "DECISION-GOVERNANCE",
+      "claim_record_publication": "PUBLIC_UNTAGGED",
+      "supporting_evidence_publication": "PUBLIC_UNTAGGED",
       "result_state": "ABSENT_EXPECTED",
       "reproducibility": "NO_RESULT",
-      "wording_policy": "FORBIDDEN",
-      "wording_note": "may be stated only as untested hypothesis",
-      "scope": "future E4",
-      "protocol": "REGIME_P1 + PREREG_E4",
+      "wording_policy": "HEDGE_REQUIRED",
+      "wording_note": "FORBIDDEN to claim generative value on tested R\u2605 v1; FORBIDDEN to imply E4 still blocked/unrun",
+      "scope": "optional single R\u2605 revision after E4 KILL",
+      "protocol": "PREREG_E4 consequences table + AMBITION.md",
       "artifacts": [
-        "trajectory/REGIME_P1_where_classical_fails.md",
-        "trajectory/PREREG_E4_Rstar_killgate.md"
+        "trajectory/results_e4_utility.json",
+        "trajectory/PREREG_E4_Rstar_killgate.md",
+        "papers/AMBITION.md"
       ],
-      "limitations": "no builder/world/scores",
+      "limitations": "unlimited redesign loops forbidden; same-world redo forbidden",
       "invalidation_condition": null,
-      "future_status_update_condition": "E4 RESULT under owner authorization",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03"
+      "future_status_update_condition": "owner AUTHORIZE_RSTAR_REVISION + new prereg + RESULT",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04"
     },
     {
       "claim_id": "C_ZERO_HALLUC_OPEN",
@@ -774,7 +833,7 @@
       "limitations": "only zero accepted violations of R if ever proven for that R",
       "invalidation_condition": null,
       "future_status_update_condition": "soundness proof for a specified R",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03"
+      "last_reviewed_snapshot_id": "review-2026-07-31-04"
     },
     {
       "claim_id": "C_CLINICAL_DEPLOYMENT",
@@ -797,7 +856,7 @@
       "limitations": "synthetic task; no clinical validation, workflow study, risk study, or deployment evidence",
       "invalidation_condition": null,
       "future_status_update_condition": "clinical validation program with recorded evidence",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
+      "last_reviewed_snapshot_id": "review-2026-07-31-04",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
     }
   ],
@@ -811,5 +870,7 @@
     "C_NANOSCRIBE_IMPL": "prefer C_NANOSCRIBE_STATE"
   },
   "diff_e_status": "OWNER_APPROVED_REMEDIATIONS",
-  "owner_approved_diff_e_remediation_at": "2026-07-31T18:06:56.335095+00:00"
+  "owner_approved_diff_e_remediation_at": "2026-07-31T18:06:56.335095+00:00",
+  "prior_disposition": "OWNER_APPROVED_REMEDIATIONS",
+  "reaudit_disposition": "MINOR_SCHEMA_AND_STATUS_REMEDIATION_REQUIRED\u2192nine_fixes_verified; E4_row_delta_applied"
 }

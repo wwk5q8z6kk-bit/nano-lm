@@ -18,7 +18,7 @@ Remediation checklist: `DIFF_E_REMEDIATION_ACCEPTANCE.md`.
 
 ```json
 {
-  "review_snapshot_id": "review-2026-07-31-03",
+  "review_snapshot_id": "review-2026-07-31-04",
   "head_commit": "2e03e0df564008cf51c4309e9dbdf01a59c3c7b5",
   "paper_alpha_tag": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
   "premature_post_alpha_tag": "post-alpha-evidence-freeze-2026-07-31",
@@ -30,7 +30,7 @@ Remediation checklist: `DIFF_E_REMEDIATION_ACCEPTANCE.md`.
 }
 ```
 
-Each row carries `last_reviewed_snapshot_id = review-2026-07-31-03`.
+Each row carries `last_reviewed_snapshot_id = review-2026-07-31-04`.
 
 ## Vocabularies (orthogonal; compound strings forbidden)
 
@@ -84,7 +84,9 @@ Invalidation vs future updates are separate columns.
 | C_NANOSCRIBE_STATE | Repo evidences fabric vertical slice; does not evidence NanoScribe control plane, durable memory, routing, tools, permissions, distribution, or UI | IMPLEMENTATION_STATE | SUPPORTED | N/A | — | PUBLIC-ANCHORED | PUBLIC_TAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | APPROVED | absence in audited repo ≠ proof no private impl | repository inventory error | evidenced modules are implemented |
 | C_LORA_GEOM | LoRA preserves copy-circuit geometry | INTERPRETATION | SPECULATION | GATED_STOP | E2 | ASPIRATIONAL | PUBLIC_UNTAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | no results_e2_* | — | valid E2 RESULT after owner re-scope |
 | C_E2_STATUS | E2 U1–U4 universe discrimination has not produced a RESULT; E2 is GATED/STOP. | IMPLEMENTATION_STATE | SUPPORTED | GATED_STOP | E2 | PUBLIC-ANCHORED | PUBLIC_TAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | APPROVED | terminated U3 residue is not a measurement | status prose invents a RESULT | owner-authorized re-scope followed by a valid RESULT |
-| C_RSTAR_VALUE | Generative proposers add value in regime R★ under U_R★ | FUTURE_HYPOTHESIS | SPECULATION | BLOCKED | E4 | ASPIRATIONAL | PUBLIC_TAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | no builder/world/scores | — | E4 RESULT under owner authorization |
+| C_E4_RESULT | Under frozen U_R★ on locked R★ v1, best classical U≈0.638 (C-M2) and best generative+verify U≈−1.623 (G-ref verify-on); sensitivity flip false. | MEASUREMENT | SUPPORTED | N/A | — | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | regime-scoped; after premature freeze tag | recompute mismatch / protocol VOID | — |
+| C_E4_GATE | E4 Gate 4 decision under frozen δ=0.05 is KILL for generative substrate on tested R★ v1. | GATE_VERDICT | SUPPORTED | KILL | E4 | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | does not authorize NanoScribe/fabric expansion | protocol VOID | — |
+| C_RSTAR_VALUE | Whether some preregistered R★ revision can yield generative+verify utility above classical remains open; revision budget ≤1 needs fresh owner auth. | FUTURE_HYPOTHESIS | UNRESOLVED | N/A | RSTAR_REVISION | DECISION-GOVERNANCE | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | ABSENT_EXPECTED | NO_RESULT | HEDGE_REQUIRED | tested R★ v1 already KILL; no silent redesign | — | AUTHORIZE_RSTAR_REVISION + new prereg + RESULT |
 | C_ZERO_HALLUC_OPEN | Zero hallucination in the open world | PRODUCT_THESIS | SPECULATION | N/A | — | ASPIRATIONAL | PUBLIC_TAGGED | ABSENT_EXPECTED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | only zero accepted violations of R if ever proven for that R | — | soundness proof for a specified R |
 | C_CLINICAL_DEPLOYMENT | The current nano-lm evidence supports clinical deployment readiness. | PRODUCT_THESIS | SPECULATION | N/A | — | ASPIRATIONAL | PUBLIC_UNTAGGED | ABSENT_EXPECTED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | synthetic task; no clinical validation, workflow study, risk study, or deployment evidence | — | clinical validation program with recorded evidence |
 
@@ -122,3 +124,12 @@ CONSTRAINT = Do not recreate/move post-alpha-evidence-freeze-2026-07-31
 ```
 
 Remediations approved. Live ledger status banners synced; claim table already matched remediations.
+
+## Re-audit note (DIFF E disposition re-issued)
+
+**When:** 2026-07-31T18:35:26Z  
+**Owner boxed disposition:** `DIFF_E = MINOR_SCHEMA_AND_STATUS_REMEDIATION_REQUIRED`  
+**Verification:** nine schema/status corrections already present (enum check PASS).  
+**Delta this pass:** added `C_E4_RESULT` + `C_E4_GATE` (KILL); rewrote `C_RSTAR_VALUE` as open revision hypothesis (not “E4 blocked/untested”).  
+**Premature tag:** `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` PRESERVE.  
+**Live replace policy:** proposal mirrors live; further owner approval only for claim-surface freezes/tags.

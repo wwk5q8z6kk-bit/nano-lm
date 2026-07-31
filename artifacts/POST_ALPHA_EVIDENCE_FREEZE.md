@@ -1,8 +1,17 @@
-# Post-α Evidence Freeze Candidate
+# Post-α Evidence Freeze Candidate (historical packaging)
 
-*Generated 2026-07-31T14:04:33.413228+00:00*
-*HEAD `b43680a0a909331ebf1dfc93e09aa7f586440a91`*
-*Proposed tag (NOT created): `post-alpha-evidence-freeze-2026-07-31`*
+*Originally generated 2026-07-31T14:04:33Z · HEAD then `b43680a`*
+*Amended 2026-07-31T18:34:48.174349+00:00 after discovery disposition + tag audit*
+
+```text
+paper-alpha-v1                         -> 0e01d73205e9c35ea32925fd4d6c7e5fceb61137   (PRESERVE)
+post-alpha-evidence-freeze-2026-07-31  -> a9d12cb1c456f6c465284e1d469c6326cb14d329   (PREMATURE_PUBLIC_EVIDENCE_TAG; EXISTS; PRESERVE; DO NOT MOVE/RECREATE)
+post-alpha-reconciled-evidence-freeze-2026-07-31 -> 67bf87b1f968a38e68c0225b2b556f7bba5ea1cc   (clean-lineage; E4 not ancestor)
+DIFF_E                                 = OWNER_APPROVED_REMEDIATIONS (nine schema/status corrections)
+PUBLIC_EVIDENCE_FREEZE                 = INCOMPLETE relative to full intended final packaging honesty
+```
+
+**Do not** treat the premature tag name as “proposed / not created.” It is public operational evidence.
 
 ## Verdict
 

@@ -77,14 +77,15 @@ DURABLE_RAW_COMMIT = ea001d4 (on origin; current tip)
 
 ---
 
-## 6. Proposed tag (NOT created)
+## 6. Tags (chronology)
 
 ```text
-NAME:    post-alpha-reconciled-evidence-freeze-2026-07-31
-TARGET:  b5898ce4bdf326712c16728177e8267390e8ca10
-TYPE:    annotated
-ACTION:  OWNER AUTHORIZATION REQUIRED — do not auto-create
+paper-alpha-v1                        -> 0e01d73205e9…  PRESERVE
+post-alpha-evidence-freeze-2026-07-31 -> a9d12cb1c456…  PREMATURE_PUBLIC; PRESERVE; DO NOT MOVE/RECREATE
+post-alpha-reconciled-evidence-freeze-2026-07-31 -> 67bf87b1f968…  clean-lineage EXISTS (E4 not ancestor)
 ```
+
+Any *further* freeze-brand tag still requires a **new distinct name** + owner tag auth.
 
 Suggested annotation substance:
 
@@ -143,3 +144,43 @@ Pointer/stratigraphy refreshed with residual honesty block (E2/E4/FABRIC/E3-huma
 `PUBLIC_EVIDENCE_FREEZE` remains **HISTORICAL_TAG_ONLY / INCOMPLETE** — reconciled tag ABSENT.
 No commit/tag performed (`OWNER_COMMIT_OK`/`OWNER_TAG_OK` absent under `.autonomous/post-alpha-freeze-hybrid/`).
 Immutable tags verified unmoved.
+
+---
+
+## Addendum — OWNER authorize tag defer (2026-07-31T18:31Z)
+
+Owner force `AUTHORIZE_TAG` / tip_policy=`defer`.
+
+- **No new freeze-brand tag created** under this receipt.
+- Preexisting clean-lineage tag `post-alpha-reconciled-evidence-freeze-2026-07-31` → peeled `67bf87b1f968a38e68c0225b2b556f7bba5ea1cc` left **unmoved**.
+- Protected tags unmoved. `origin/master` not freeze-branded.
+- PROGRAM_STATE → `IDLE_AFTER_TAG_DEFER`
+
+---
+
+## Addendum — OWNER authorize tag clean-lineage (ratify) (2026-07-31T18:32Z)
+
+Owner `AUTHORIZE_TAG` / tip_policy=`clean-lineage`.
+
+- Existing tag `post-alpha-reconciled-evidence-freeze-2026-07-31` @ `67bf87b1f968a38e68c0225b2b556f7bba5ea1cc` **verified** (E4 not ancestor) and **ratified** — not recreated/moved.
+- Protected tags unmoved. `authorize_tag_push=false` (already on remote from prior create).
+- PROGRAM_STATE → `IDLE_AFTER_CLEAN_LINEAGE_TAG_RATIFY`
+
+---
+
+## Addendum — OWNER authorize tag non-freeze-snapshot (2026-07-31T18:33Z)
+
+Owner `AUTHORIZE_TAG` / tip_policy=`non-freeze-snapshot`.
+
+- Local tag `snapshot/master-2ad06d2-2026-07-31` @ `2ad06d24c4f72b292f73ef098fdcc0ce2a008659` **ratified** (name does not claim freeze).
+- Not pushed. Protected freeze tags + reconciled freeze tag **unmoved**.
+- Not a fourth freeze brand / not a stratigraphy layer.
+
+---
+
+## Addendum — OWNER authorize tag verdict-annotation (2026-07-31T18:33Z)
+
+Owner `AUTHORIZE_TAG` / tip_policy=`verdict-annotation`.
+
+- Local additive `verdict/reconciled-freeze-clean-lineage@67bf87b` @ `67bf87b1f968a38e68c0225b2b556f7bba5ea1cc` created/ratified.
+- Not a freeze brand; not pushed; protected + reconciled freeze tags unmoved.

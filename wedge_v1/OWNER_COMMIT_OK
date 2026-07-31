@@ -1,41 +1,34 @@
 authorize_commit: true
 authorize_push: false
 authorize_tag: false
+tag_push: false
 scope_bits: [commit]
 owner_force: AUTHORIZE_COMMIT
-owner_locution: proceed
-prior_commit: 125b30b
-created_at: 2026-07-31T18:26Z
-include:
-  - wedge_v1/__main__.py
-  - wedge_v1/cli.py
-  - wedge_v1/runtime.py
-  - wedge_v1/run_dogfood.py
-  - wedge_v1/test_runtime_smoke.py
-  - wedge_v1/data/dogfood_tasks.json
-  - wedge_v1/results_wedge_v1_dogfood.json
-  - wedge_v1/README.md
-  - wedge_v1/AUTH_RUNTIME.md
-  - wedge_v1/CONTINUE_SESSION_REFUSE_LOG.md
-  - wedge_v1/OWNER_SPEECH_ACT_LOG.md
-  - wedge_v1/OWNER_COMMIT_OK
-  - trajectory/results_wedge_v1_dogfood.json
+owner_locution: |
+  Authorize one documentation/status reconciliation commit only.
+  Commit message: docs: reconcile DIFF E and post-E4 program status
+  Do not push; do not create or move tags.
+created_at: 2026-07-31T18:37:52Z
+path_allowlist:
+  - papers/EVIDENCE_LEDGER.json
+  - papers/EVIDENCE_LEDGER.md
+  - audit/discussion-to-implementation/EVIDENCE_LEDGER_PROPOSED.json
+  - audit/discussion-to-implementation/EVIDENCE_LEDGER_PROPOSED.md
+  - audit/discussion-to-implementation/DIFF_E_REMEDIATION_ACCEPTANCE.md
+  - audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md
+  - audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.json
   - papers/EXECUTION_QUEUE.md
-  - papers/WEDGE_V1.md
-  - papers/README.md
-  - papers/M0_CONSISTENCY_AUDIT.md
-  - scripts/m0_consistency_audit.py
-exclude:
-  - artifacts/**
-  - audit/discussion-to-implementation/POST_ALPHA*
-  - papers/EMPIRICAL_FOUNDATION.md
-  - papers/EVIDENCE_LEDGER*
-  - papers/STRATEGIC_RESET.md
-  - papers/AMBITION.md
-  - wedge_v1/data/corpus_noisy/**
-  - wedge_v1/results_wedge_v1_noisy*
-  - wedge_v1/run_noisy_track.py
-  - tag/push
+  - AGENTS.md
+  - EVIDENCE_CURRENT.md
+  - POST_ALPHA_EVIDENCE_FREEZE.json
+  - artifacts/POST_ALPHA_EVIDENCE_FREEZE.json
+  - artifacts/POST_ALPHA_EVIDENCE_FREEZE.md
+  - audit/discussion-to-implementation/POST_ALPHA_EVIDENCE_FREEZE.json
+  - audit/discussion-to-implementation/POST_ALPHA_EVIDENCE_FREEZE.md
+  - audit/discussion-to-implementation/STRATIGRAPHY.md
+  - audit/discussion-to-implementation/FINAL_FREEZE_READINESS_REPORT.md
+  - papers/PARK_NOTE_2026-07-31.md
+  - wedge_v1/PARK_IDLE.md
+  - wedge_v1/OWNER_COMMIT_OK
 note: |
-  Path-restricted proceed commit: wedge runtime CLI + papers dogfood (8/8) + M0 audit helpers.
-  Does not touch freeze artifacts. Does not authorize push.
+  Narrow factual status reconciliation only. Reconciled freeze tag stays local.

@@ -1,7 +1,7 @@
 {
   "schema": "nano-lm.canonical_status_table.v3",
   "updated": "2026-07-31",
-  "program_execution_status": "IDLE_AFTER_DOGFOOD",
+  "program_execution_status": "IDLE_PARKED",
   "authorized_nonexecution_work": "NONE",
   "evidence_freeze_tag": {
     "name": "post-alpha-evidence-freeze-2026-07-31",
@@ -72,5 +72,7 @@
   },
   "science_track_status": "IDLE_AFTER_E4_KILL",
   "product_wedge_v1": "RUNTIME_SLICE_LIVE",
-  "wedge_progress": "PHASES_1_3+NOISY+DOGFOOD_8_8"
+  "wedge_progress": "PHASES_1_3+NOISY+DOGFOOD_8_8",
+  "e4_v1_result": "KILL",
+  "execution_authorization": "NONE"
 }
