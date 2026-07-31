@@ -115,8 +115,9 @@ The contribution is measurement-only and we keep the parts distinct:
 2. **Measurement lessons.** Single-instance evaluation was under-powered (§6.1);
    training nondeterminism bounds the top rung (§6.2); exact-match is an explicit
    construct limitation (§0, §8).
-3. **Substrate note (§0).** Under a pre-registered utility, non-generative methods
-   dominate official generative LM references on this task (**KILL**). Recorded
+3. **Substrate note (§0).** Under a pre-registered utility, the best tested
+   non-generative baseline **M1** outperforms the official generative reference
+   (**KILL**); M2 is within δ and also triggers LM-non-necessity. Recorded
    honestly; not a product or architecture claim.
 
 ## 2. Related work (measurement context)
@@ -620,17 +621,19 @@ in the high-gap regime the dominant uncertainty is across evaluation instances, 
 fixed-seed retrains split 5/0), so the right replication unit changes from eval-instance
 to training-seed. Both lessons are prescriptive for anyone measuring faithfulness gaps
 in small models and hold regardless of how the scale-vs-stack question is eventually
-resolved. Separately, our primary metric is exact string match: it has not been
-validated against human-accepted equivalence, so reported gaps may overstate failure
-relative to a soft/human rubric (§0, §8).
+resolved. Separately, our primary metric is exact string match: an agent-applied
+rubric audit found 0/100 acceptable equivalents, but exact match has still not been
+validated against human-accepted equivalence (clinician/IAA open), so reported gaps
+may overstate failure relative to a soft/human rubric (§0, §8).
 
 ## 8. Limitations
 
 - **Scale vs. stack confound (primary).** The nano→Pythia comparison changes parameter
   count *and* at least four other variables simultaneously, each a plausible alternative
-  cause of the reduction: (i) **pretraining data quantity** (~200M own-stack tokens vs.
-  Pythia's ~300B — a ~1500× difference; the own-stack is roughly compute-optimal for its
-  size per Hoffmann et al. (2022), whereas Pythia is heavily over-trained), (ii)
+  cause of the reduction: (i) **pretraining data quantity** (own-stack anchors used
+  **32.8M** at 3.15M and **~200M** at 10M; later 160M cells used ~200M or 3.2B — vs
+  Pythia's ~300B; schedules are unequal and are not a single ~200M “own-stack”
+  budget), (ii)
   **tokenizer** (4098-vocab BPE vs. ~50k;
   larger vocabularies fragment field values like "ibuprofen" into fewer sub-tokens,
   which could itself change copy success), (iii) **architecture family**, and (iv)
@@ -646,8 +649,10 @@ relative to a soft/human rubric (§0, §8).
 - **1B point estimate.** Bounded, not identified, by training nondeterminism (§6.2).
 - **Exact-match construct (explicit).** Primary science metrics are exact string
   match. Normalize-then-match rescues 0/486 M0 exact failures (E3 auto), but
-  exact-match has **not** been validated against human-accepted equivalence; gaps may
-  overstate failure vs a soft/human rubric (§0). Discontinuous metrics can also
+  exact-match has **not** been validated against human-accepted equivalence (an
+  agent-applied rubric audit of 100 sampled errors found 0/100 acceptable; this is
+  not clinician/IAA validation); gaps may overstate failure vs a soft/human rubric
+  (§0). Discontinuous metrics can also
   exaggerate transitions (Schaeffer et al., 2023); we report across-instance SD and,
   at 1B, a training-run interval.
 - **Gap-definition subtleties (conservative direction).** The seen/held split is at the
