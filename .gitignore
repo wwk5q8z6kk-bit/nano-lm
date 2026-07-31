@@ -1,8 +1,38 @@
+# Large / local training artifacts
 *.pt
 *.npy
 *.jsonl
 raw_corpus*
 clean_corpus*
 sft_convos.json
-__pycache__/
 checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Editor / OS
+.DS_Store
+.cursor/
+.idea/
+.vscode/
+*.swp
+
+# Local agent scratch (not evidence)
+.autonomous/
+audit/**/PRE_EDIT_SNAPSHOT.*
+
+# LaTeX intermediates (PDF tracked when rebuilt)
+papers/latex/*.aux
+papers/latex/*.log
+papers/latex/*.out
+papers/latex/*.toc
+papers/latex/*.blg
