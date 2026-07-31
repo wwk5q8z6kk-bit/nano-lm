@@ -1,0 +1,14 @@
+accelerate==1.14.0
+datasets==4.8.4
+filelock==3.28.0
+fsspec==2026.2.0
+numpy==2.5.0
+packaging==26.1
+peft==0.20.0
+pytest==9.0.2
+regex==2026.4.4
+safetensors==0.7.0
+tokenizers==0.22.2
+torch==2.11.0
+tqdm==4.67.3
+transformers==5.5.3
