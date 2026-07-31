@@ -1,10 +1,20 @@
 # Held-out value copying in small language models: a field-localized failure mode and the instrument to measure it
 
-*Working manuscript draft — Paper 1 (empirical + measurement). Claims are held to
+*Working manuscript draft — **Paper α** (empirical + measurement; scope-locked).
+Claims are held to
 what was measured; the causal question (scale vs. model family) is left open by
 design. All numbers trace to archived per-run JSONs under `trajectory/` at git tag
 `stage-t-v2-results`; instrument inputs are content-addressed in
 `REPRODUCIBILITY.md`.*
+
+> **SRC baseline (2026-07-30; scope lock 2026-07-31):** this manuscript is **Paper α
+> — measurement only**. Surviving contribution: under low-diversity extraction
+> regimes, small transformers can converge to closed-set prediction strategies that
+> fail held-out symbolic emission; diversity and adaptation regime change the
+> measured reliability profile. **Not** an architecture or product thesis; **not** a
+> claim that generative LM + verify is the right substrate. Mechanism language in
+> related-work is hypothesis framing only. Systems/verification claims (if any) are
+> out of scope here. See `papers/EMPIRICAL_FOUNDATION.md`.
 
 ## Abstract
 
@@ -15,7 +25,7 @@ held-out values under held-out phrasings, even though both are present verbatim 
 the input. In our own from-scratch models (3.15M and 10M parameters) this gap is
 large — **18.3±1.3 and 18.7±1.5 points** of recall on the same multi-instance
 instrument used for the rest of the ladder (22–23 points on the single public
-instance the anchors were first scored on; §6.1). The failure is not diffuse: it
+instance the anchors were first scored on; §7.1). The failure is not diffuse: it
 localizes *entirely* to the three open-vocabulary fields (complaint, medication,
 allergy) and is **exactly zero** in the two closed-value fields (duration, severity),
 which act as a built-in control showing the effect is specifically held-out-*value*
@@ -26,40 +36,81 @@ an interval of [0,5] at 1B) — and that residual is itself field-localized: per
 re-scoring shows Pythia fully solves held-out complaints and medications, while its
 entire remaining gap is the one open slot with only five training values (allergy),
 where even 410M fails totally on the held-out value. We deliberately do **not** claim scale as the cause: the comparison also
-changes pretraining corpus, tokenizer, architecture, and finetuning method. The
-measurement itself is a second contribution. A pre-registered contamination check
-caught that our initial single-instance evaluation was under-powered for the gap;
-averaging over five larger evaluation instances resolved the middle rungs to
-sub-point precision. At 1B, a determinism cross-check then revealed that
-**training-run nondeterminism** — not evaluation noise — dominates the residual, so
-we report the top rung as an interval rather than a point. Both measurement lessons
-arose from empirical failures of the prior instrument, not from foresight.
+changes pretraining corpus, tokenizer, architecture, and finetuning method. A
+within-stack control at ~160M keeps that stack fixed and finds the diluted gap still
+**16.9±1.7** across ~50× of own-stack scale (flat), while LoRA or Chinchilla-scale
+data each reduce it to ~7 and both together to **4.2±0.9** — an adaptation×data
+**interaction**, not a pure scale law. Separately, a pre-registered slot-diversity
+sweep lifts held-type recall on that open slot by **+66.7** points (D5→D80) at fixed scale. On a
+pre-registered utility, non-generative baselines dominate official generative LM
+references on this task (§0; **KILL**); this paper reports that result honestly and
+does not advocate a generative substrate. Primary metrics are exact string match;
+human-accepted equivalence is unvalidated (§0, §8). Measurement reliability is a
+second contribution: single-instance evaluation was under-powered, and at 1B
+**training-run nondeterminism** dominates the residual. Both lessons arose from
+empirical failures of the prior instrument, not from foresight.
+
+## 0. Non-generative baselines dominate utility on this task (E1; locked)
+
+On the pre-registered utility
+\(U = P - 0.5 M - 0.3\rho - 0.02 L - 0.05 C\) with decision margin
+\(\delta=0.05\), scored methods include official generative LM references on
+RunPod CUDA fp16 (frozen recipes) and classical/constrained baselines on the same
+harness (`trajectory/results_e1_utility.json`):
+
+| Method | \(U\) (verify-on) |
+|---|---|
+| M1 template / rules | 0.999 |
+| Official M0 (Pythia-160M LoRA) | **0.925** |
+| Own-stack Chinchilla + LoRA | 0.898 |
+| M2 dict + span | 0.886 |
+| Local M0 (scale-10M) | 0.854 |
+
+**Verdict: KILL (H-substrate).** Best generative LM reference loses to the
+deterministic template extractor by a clear margin; sensitivity did not flip.
+Paper α therefore continues strictly as **measurement** of when small LMs fail
+held-out emission — not as advocacy for a generative substrate. A different
+utility could re-rank methods; the field-localization / diversity / scaling
+measurements do not depend on \(U\).
+
+**Exact-match construct limitation.** Primary science metrics use exact string
+match on field values. Automated normalize-then-match does not rescue M0 exact
+failures (0/486; `trajectory/results_e3_normalize_construct.json`), but
+exact-match has **not** been validated against human-accepted equivalence.
+Reported gaps may overstate failure relative to a soft/human rubric. This is an
+explicit limitation of Paper α pending a bounded human study (see foundation
+lockfile). No open-world verification claims are made here.
+
+**Out of scope here:** LoRA mechanism (unidentified); E2/fabric/product claims;
+token-coverage effect sizes beyond description; open-world verifier guarantees.
 
 ## 1. Introduction
 
-Production language systems for structured summarization (e.g. clinical scribing)
-are judged not on average-case benchmark scores but on faithfulness under
-distribution shift: whether the output contains only content grounded in the input,
-including on inputs unlike the training data (Maynez et al., 2020; Ji et al., 2023). We isolate one tractable component of
-this — value copying — in a setting where faithfulness is measurable by
+Structured summarization is often judged not on average-case benchmark scores but on
+faithfulness under distribution shift: whether the output contains only content
+grounded in the input, including on inputs unlike the training data (Maynez et al.,
+2020; Ji et al., 2023). We isolate one tractable component of this — value copying —
+in a synthetic structured-summarization task where faithfulness is measurable by
 construction, and ask a single pre-registered question: **how does the copying gap
 behave as model capability increases?**
 
-The contribution is threefold and we keep the parts distinct:
-1. **Empirical.** A large held-out copying gap in sub-10M models is much smaller in
-   the tested Pythia models, and localizes cleanly to the open-vocabulary fields (§6.1).
-2. **Measurement.** Two lessons about estimating such a gap reliably: single-instance
-   evaluation was under-powered (§5.1), and training nondeterminism bounds the
-   estimate at the top of the ladder (§5.2).
-3. **Engineering (companion).** A verification architecture that routes model errors
-   to human review; its precision/review-load trade-off is measured in a companion
-   write-up (in preparation), not in this paper.
+The contribution is measurement-only and we keep the parts distinct:
+1. **Empirical core.** Field-localized held-out copying failure in small models;
+   within-stack scale flatness and base×method interaction (§7.2); causal
+   slot-diversity effect (+66.7; §7.3); residual floor on the hardest low-diversity
+   open slot (§7.2–7.3).
+2. **Measurement lessons.** Single-instance evaluation was under-powered (§6.1);
+   training nondeterminism bounds the top rung (§6.2); exact-match is an explicit
+   construct limitation (§0, §8).
+3. **Substrate note (§0).** Under a pre-registered utility, non-generative methods
+   dominate official generative LM references on this task (**KILL**). Recorded
+   honestly; not a product or architecture claim.
 
-## Related work
+## 2. Related work (measurement context)
 
-*Draft section — citations verified against primary sources (§ References); final
-placement/numbering is a formatting pass. Each paragraph notes the relation to this
-work.*
+*Citations verified against primary sources (§ References). Framed only as context for
+the measured copying gap and evaluation reliability — not as architecture or substrate
+advocacy.*
 
 **Scaling laws and emergence.** Language-model loss follows smooth power laws in
 parameters, data, and compute (Kaplan et al., 2020; Hoffmann et al., 2022), yet
@@ -71,32 +122,25 @@ runs in the opposite direction — a behavior (the held-out copying gap) that is
 in small models and *smaller* at larger scale — but Schaeffer et al.'s caution applies
 directly, since our gap is an exact-match recall difference; we therefore report it
 with across-instance error bars and, at 1B, separate metric behavior from training-run
-variance (§5.2). Where the emergence literature asks "does scale switch an ability
+variance (§6.2). Where the emergence literature asks "does scale switch an ability
 *on*?", we ask "does scale switch a faithfulness failure *off*?", and find the honest
-answer is confounded with the training stack (§7).
+answer is confounded with the training stack (§8).
 
 **The Pythia platform.** Biderman et al. (2023) release Pythia, 16 models spanning
 70M–12B trained on identical data in identical order, expressly to make scale a
 controlled variable. We use the 160M/410M/1B rungs as our scaling axis for exactly
 this property — within Pythia, architecture, tokenizer, pretraining corpus, and data
-order are fixed across sizes. The limitation we foreground (§7) is that our own-stack
+order are fixed across sizes. The limitation we foreground (§8) is that our own-stack
 anchors are *not* in that controlled family, so the nano→Pythia step moves the stack
 as well as the scale — a confound Pythia's internal control cannot remove.
 
-**Copying, pointer, and retrieval mechanisms.** The behavior we measure is value
-*copying*: reproducing a field value present verbatim in the input. Explicit copy
-pathways have a long lineage in sequence-to-sequence models — CopyNet (Gu et al.,
-2016) and pointer-generator networks (See et al., 2017) add input-copying to
-abstractive generation. In transformers, induction heads implement a pattern-completion
-copy (given "…[A][B]…[A]", attend to the first A and predict B; Elhage et al., 2021;
-Olsson et al., 2022), and *retrieval heads* — a sparse (<5%), apparently universal set
-of attention heads — copy tokens from context into the output and mechanistically
-explain long-context factuality (Wu et al., 2024). These are the natural mechanistic
-hypotheses for our gap: a model that copies *seen* values but fails on *held-out*
-values under held-out phrasing may have copy/retrieval circuitry that generalizes
-poorly off-distribution. We deliberately defer this question (Stage M, §8) until the
-behavioral phenomenon is deconfounded, so any circuit we implicate is attached to a
-clean empirical contrast rather than a stack difference.
+**Copying behavior (context only).** The behavior we measure is value *copying*:
+reproducing a field value present verbatim in the input. Prior seq2seq copy modules
+(CopyNet, Gu et al., 2016; pointer-generator, See et al., 2017) and transformer
+copy/retrieval hypotheses (Elhage et al., 2021; Olsson et al., 2022; Wu et al., 2024)
+are cited only as background for *what was measured*. This paper does not identify
+circuits, compare substrates for product choice, or claim a generative architecture
+is preferable; mechanism work remains gated (`papers/EMPIRICAL_FOUNDATION.md`).
 
 **Faithfulness and hallucination.** Faithfulness — output grounded only in the input —
 is a central failure mode of abstractive summarization; Maynez et al. (2020)
@@ -115,7 +159,7 @@ GPU reductions and library tooling (Zhuang et al., 2022); the standard prescript
 to report mean ± SD over multiple runs. Our 1B result is a concrete downstream
 instance: two fixed-seed retrains of the same model produced gaps of 5 and 0 on the
 byte-identical evaluation, so at that rung the *unit of uncertainty* shifts from the
-evaluation instance to the training run, and we report an interval (§5.2). This
+evaluation instance to the training run, and we report an interval (§6.2). This
 connects the reproducibility literature to a specific measured behavior (a faithfulness
 gap) rather than to top-line accuracy.
 
@@ -129,7 +173,7 @@ of the contamination signature — which both rules out memorization and surface
 distinct hazard: a fixed public instance can be a systematically biased difficulty draw
 even when content-addressed and reproducible.
 
-## 2. Task and benchmark
+## 3. Task and benchmark
 
 *This section motivates the design; the precise protocol (generator, held-out split,
 metric) is in Methods.*
@@ -147,10 +191,10 @@ phrasing familiarity.
 
 **The benchmark is a generator.** The scientific object is the eval *distribution* (a
 seeded generator), not any fixed set of dialogues. Fresh instances can be drawn to
-defend against memorization of any specific instance (§5.1), and the instance-difficulty
+defend against memorization of any specific instance (§6.1), and the instance-difficulty
 distribution can be measured directly — a property we exploit in both measurement lessons.
 
-## 3. Prior stages (setup)
+## 4. Prior stages (setup)
 
 Two earlier results frame the question. **Stage C** tested whether the gap is a
 training-curriculum artifact by adding an unmemorizable-value training slice; the
@@ -158,22 +202,22 @@ held-out gap was unmoved, refuting the curriculum explanation. **Stage S** scale
 own stack from 3.15M to 10M parameters: the larger model passed the average-case
 faithfulness gate (parse 100%, recall 88%, hallucination 7.5%) yet its held-out gap
 was essentially unchanged (≈23 vs ≈22 points single-instance; **18.7±1.5 vs 18.3±1.3
-on the multi-instance instrument**, §6.1 — the near-identity now measured with error
+on the multi-instance instrument**, §7.1 — the near-identity now measured with error
 bars, not two single points). Stage S concluded that a 3.2× scale step does not
 cross the failure — motivating a wider ladder.
 
-## 4. Stage T design (pre-registered)
+## 5. Stage T design (pre-registered)
 
 **Ladder.** Own models at 3.15M/10M (re-scored on the multi-instance instrument,
-§6.1) plus the Pythia family at 160M/410M/1B, finetuned on the identical scribe
+§7.1) plus the Pythia family at 160M/410M/1B, finetuned on the identical scribe
 recipe with LoRA and scored by the identical faithfulness scorer (full configuration
-in Methods).
+in §6.3).
 
 **Why Pythia.** The question is scaling behavior, not model ranking. Pythia (Biderman
 et al., 2023) holds architecture, tokenizer, pretraining corpus, and data order fixed
 across sizes, so within the family relatively few variables move with parameter count —
 the property a scaling study needs. This choice does not isolate scale from the nano→Pythia *stack* change
-(§7); it is the reference family for that axis, not a claim that scale is the cause.
+(§8); it is the reference family for that axis, not a claim that scale is the cause.
 
 **Pre-registration and falsifiers.** Bars, bands (PERSISTS/THRESHOLD/DIVERGENT),
 seeds, and decision rules were fixed before measurement (`PREREG.md`, three
@@ -182,11 +226,11 @@ pre-measurement amendments). A base-model control (un-finetuned model must fail 
 0%). The measured code was adversarially reviewed before any run; three
 measurement-invalidating defects were fixed pre-measurement.
 
-## 5. The measurement instrument, and why it changed
+## 6. The measurement instrument, and why it changed
 
 The instrument evolved because the data demanded it. We present this as a result.
 
-### 5.1 Single-instance evaluation was under-powered
+### 6.1 Single-instance evaluation was under-powered
 
 The pre-registered contamination check (score the same model on the public instance
 vs. a fresh instance; require per-metric agreement within 5 points) **flapped** at
@@ -206,7 +250,7 @@ above their multi-instance means (18.3, 18.7) — the **same direction** (public
 instance harder, not easier) found at the Pythia rungs, so the public instance is a
 systematically hard draw across the entire ladder.
 
-### 5.2 Training nondeterminism bounds the 1B estimate
+### 6.2 Training nondeterminism bounds the 1B estimate
 
 T-v2 re-generates each frozen adapter by re-finetuning at the fixed seed; we verify
 this reproduces the original model by re-scoring the byte-identical original instances
@@ -224,11 +268,9 @@ to the whole residual gap) but cannot characterize its distribution; the interva
 the two observed outcomes rather than a modelled spread, and a fuller characterization
 (how often a run tips to perfect held-out copying) would need more seeds.
 
-## Methods (consolidated protocol)
+### 6.3 Consolidated protocol
 
-*Authoritative, objective protocol; §2/§4/§5 give the motivation and the instrument's
-evolution. Final section placement/de-duplication is a formatting pass (see
-writing_audit.md). Every artifact below is content-addressed in `REPRODUCIBILITY.md`.*
+*Authoritative protocol; §3/§5/§6 give motivation and instrument evolution. Every artifact below is content-addressed in `REPRODUCIBILITY.md`.*
 
 **Datasets (a seeded generator).** Each example is a synthetic doctor–patient dialogue
 rendered from a fact tuple of five fields — chief complaint (cc), duration (dur),
@@ -289,9 +331,8 @@ make the public instance easier); a higher public gap is a hard draw, not contam
 The 1B rung is reported as an interval [0,5] from two fixed-seed training-run retrains,
 not as a point.
 
-## 6. Results
-
-### 6.1 The gap across the ladder
+## 7. Results
+### 7.1 The gap across the ladder
 
 All five rungs are scored on the **same multi-instance instrument** (five instances
 of 100 held + 100 seen dialogues, v1 eval distribution, gap = mean ± across-instance
@@ -365,25 +406,25 @@ and it does not improve with scale within Pythia (it worsens slightly). The clea
 is therefore: anchors 87.3/79.5 → Pythia **14.7 ± 2.1** (160M) / **17.7 ± 3.2** (410M),
 with the residual now *interpretable* rather than diffuse.
 
-At 1B the comparability self-check **failed exactly as §5.2 predicts**: the regenerated
+At 1B the comparability self-check **failed exactly as §6.2 predicts**: the regenerated
 adapter is a *different training draw* (per-instance aggregates 0.6–2.2 vs. the published
 draw's all-zeros — inside the [0,5] interval), so its fieldwise numbers describe a third
 training draw, not the published 1B rung, and we do not place them in the ladder. The
 pattern, however, is unchanged: clean cc and med are 0.0 in this draw too, with the
 entire residual again in allergy (clean 24.6 ± 10.3; diluted 5.4 ± 3.2). The single-slot
 localization is thus stable across training draws even in the nondeterministic regime —
-and the self-check's loud failure is the §5.2 lesson operating as designed.
+and the self-check's loud failure is the §6.2 lesson operating as designed.
 
 **A slot-diversity hypothesis (labeled as such).** The three open slots differ sharply in
 training-value diversity — ~190 complaints, 18 medications, 5 allergies — and the failure
 tracks it inversely at every scale tested: the 3M anchor fails all three; the 10M anchor
 partially recovers medications; Pythia solves complaints and medications yet still fails
 the allergy slot totally. A slot with only five training values is learnable as a
-closed-set classifier, so no copy mechanism need ever be induced for it — whereas ~190
+closed-set classifier, so success there does not require open-vocab copying — whereas ~190
 compositional complaints force copying. We advance this as a hypothesis (*per-slot
 training diversity, not model capability alone, governs whether copy or classify wins*),
-directly testable by varying slot diversity at fixed scale; it also predicts the
-allergy-slot failure would persist in far larger models trained on this recipe.
+directly testable by varying slot diversity at fixed scale (§7.3). Persistence in
+far larger models on this recipe is an open hypothesis, not a result of this paper.
 
 **The undiluted failure (clean metric).** Removing the dilution — scoring each field's
 *value-bearing* items by whether the value is actually held-out vs. seen, with the
@@ -420,13 +461,13 @@ Substitution is the memorization signature in its most literal form — copying 
 *familiar* value in place of the right, *novel* one — and it **emerges with scale**
 (1% of nano misses vs. 54% of scale misses are substitutions), consistent with the 10M
 model having learned the complaint-slot distribution well enough for that prior to
-override the input. We report this as behavioral characterization; the circuit-level
-account is deferred to the mechanism stage (§8).
+override the input. We report this as behavioral characterization only; no circuit
+claim is made.
 
 ![Held-out copying gap vs scale on one consistent instrument. Own-stack anchors
 (3.15M, 10M) sit at ~18 pts; the tested Pythia rungs (160M, 410M) at 3.5–4.2 pts;
 1B is a training-run–bounded interval [0,5]. The shaded band marks the own→Pythia
-stack change — the x-axis is not a pure scale axis (§7).](figures/fig1_gap_vs_scale.pdf)
+stack change — the x-axis is not a pure scale axis (§8).](figures/fig1_gap_vs_scale.pdf)
 *Figure 1. `papers/figures/fig1_gap_vs_scale.pdf` — generated by `papers/make_figures.py`
 from the committed result JSONs.*
 
@@ -436,20 +477,82 @@ the interval. This is why a single-instance anchor read higher than the powered
 mean.](figures/fig2_instance_difficulty.pdf)
 *Figure 2. `papers/figures/fig2_instance_difficulty.pdf` — same generator.*
 
-### 6.2 What the result does and does not establish
+### 7.2 Within-stack scale flatness and adaptation×data interaction
+
+§7.1’s ladder confounds scale with stack. Here we hold the own-stack fixed and vary
+adaptation and data (§7.2); §7.3 then varies slot diversity at fixed scale; §7.4–§7.5
+interpret what is and is not established. The nano→Pythia comparison confounds scale with stack. A pre-registered own-stack
+control at ~160M (`PREREG_ownstack_160m.md` and factorial extensions) keeps tokenizer,
+architecture family, and task fixed:
+
+| own-stack 160M, diluted gap (clean) | 200M tokens | 3.2B tokens |
+|---|---|---|
+| full FT | **16.9 ± 1.7** (66.6 ± 5.0) | **7.0 ± 1.0** (29.4 ± 4.0) |
+| LoRA r=16 | **7.1 ± 1.2** (29.6 ± 3.7) | **4.2 ± 0.9** (17.7 ± 3.2) |
+
+Reference: Pythia-160M (LoRA) 3.5 ± 0.7 (clean 14.7 ± 2.1). Own-stack full-FT at
+200M remains large at 160M (16.9) — flat versus 3M/10M (~18) across ~50× parameters —
+so the pre-registered rule reads **stack-dominant**, not a smooth within-stack scale
+collapse. LoRA on the weak base and full FT on Chinchilla-scale data land on
+indistinguishable ~7-point diluted gaps (seed band ~±1.3 at the 200M+LoRA cell);
+combining both escapes yields **4.2 ± 0.9**, near the Pythia-160M reference. We report
+this as a **behavioral interaction** (weak base × full-parameter adaptation). LoRA
+*mechanism* is unidentified and not claimed here.
+
+Across these cells the hardest low-diversity open slot (allergy under the default
+five-value train set) remains near-total failure in own-stack configurations and in
+Pythia-410M; Pythia-160M/1B show run-dependent partial rescue on that slot. Allergy
+is the strongest *instance* of the low-diversity residual, not the definition of the
+phenomenon. Shared residual floor after escapes: roughly **15–18 clean points** on
+hard low-diversity types in both stacks (descriptive).
+
+*Table (above): own-stack 160M factorial, diluted (clean) gaps. Extends the ladder in
+Figure 1 — own-stack remains elevated at 160M under full FT; escapes are adaptation×data.
+Figure 1: `papers/figures/fig1_gap_vs_scale.pdf` (stack change shaded; not a pure scale axis).*
+
+### 7.3 Slot diversity causally induces held-out copying
+
+A pre-registered type-controlled sweep (`PREREG_slot_diversity.md`; frozen scale-10M
+base, full FT; six fixed held types) varies only allergy-slot training diversity
+(D5 / D20 / D80) with a position control. Decision: **H-slot SUPPORTED** —
+diversity effect D80−D5 = **+66.7** points held-type recall (rule ≥30), monotonic
+(0 → 24.5 → 66.7), position innocent (|D20pos−D20| = 3.1 ≤ 5). 
+
+| held type | D5 | D20 | D80 |
+|---|---|---|---|
+| bee stings | 0 | 15 | **100** |
+| ibuprofen (token-probe) | 0 | **69** | **100** |
+| wool | 0 | 0 | **100** |
+| strawberries | 0 | 62 | **100** |
+| sulfa drugs | 0 | 0 | **0** |
+| ragweed pollen | 0 | 0 | **0** |
+
+*Table: per-type held recall (%) in the slot-diversity sweep (scale-10M frozen base).
+Residual floor: sulfa drugs and ragweed pollen remain 0 at D80 — hardest low-diversity
+types, descriptive. No separate diversity figure is shipped; this table is the primary
+display.*
+
+Flips are categorical
+per lexical type; D5 is zero across all six held types. Two types remain unsolved
+even at D80; token-coverage effects at the margin are **descriptive only** here, not
+quantified as a separate causal claim. Integrity of the frozen base checkpoint is
+pinned in the sweep kernel (`results_sweep_10m.json` provenance when run under the
+pinned recipe).
+
+### 7.4 What the result does and does not establish
 
 Within Pythia the gap is already small at 160M with no clean monotonic trend — and the
 fieldwise re-score explains why: the 160M→410M flatness is a *single-field* residual
-(allergy) that scale does not repair, so the ladder captured a low-gap regime rather
-than a transition. Reconciling with Stage S:
-the 3.2× step (3M→10M) did not move the gap (18.3±1.3 → 18.7±1.5 — a 0.4-point change
-inside one SD, now measured rather than inferred from two single points); the 16×
-step to 160M, **or** the stack change, coincides with a much smaller gap — these are
-not separated here. The
-formal band is not PERSISTS (the top-rung interval reaches 0, far from the ≥10 that
-PERSISTS requires); it is consistent with a small residual or none.
+on the lowest-diversity open slot that scale does not reliably repair. The 3.2×
+own-stack step (3M→10M) did not move the diluted gap (18.3±1.3 → 18.7±1.5). §7.2
+separates stack from scale at 160M: own-stack stays large under full FT; escapes are
+adaptation×data, not parameter count alone. §7.3 shows training diversity on one slot
+is causally sufficient for large held-type recall gains at fixed scale. We do **not**
+claim generative substrate superiority (§0), LoRA mechanism, or open-world
+verification. The cross-stack ladder band is not PERSISTS (top-rung interval reaches
+0); it is consistent with a small residual or none under the Pythia pipeline.
 
-### 6.3 Two distinct lessons
+### 7.5 Two distinct lessons
 
 The paper carries two takeaways that are worth keeping separate, because they are
 supported by different evidence and would survive independently.
@@ -462,7 +565,7 @@ diffuse: the gap lives *entirely* in the open-vocabulary fields and is exactly z
 the closed-value fields, so what these small models fail at is specifically **copying a
 held-out lexical value into an open slot**, not being unfaithful in general — and the
 closed-value fields are a within-task control for that claim. Measured on the actual
-held-out values (§6.1, the value-level metric), the failure is not merely large but
+held-out values (§7.1, the value-level metric), the failure is not merely large but
 **near-total**: ~80–87 points aggregate, with ≈0% recall on held-out allergy values
 (and on held-out medications at 3M) against ~100% on seen ones — the 18-point
 dialogue-level number substantially understates it. The misses are not random noise:
@@ -473,14 +576,17 @@ complaint** (86% of misses), while held-out allergies are omitted rather than fa
 re-score then sharpens the picture at the other end of the ladder: the residual Pythia
 gap is *entirely* the allergy slot — the one open slot with only five training values —
 where even 410M fails totally on the held-out value while having fully solved complaints
-and medications; on the slot-diversity hypothesis (§6.1), what the ladder measures is not
-one capability switching on but a per-slot competition between classify-and-memorize and
-copy, settled slot-by-slot by training diversity. What we do **not** get to
+and medications — consistent with the low-diversity residual in §7.2–§7.3 (allergy is
+the strongest *instance*, not the definition of the phenomenon). On the slot-diversity
+result (§7.3), what the ladder measures is not one capability switching on but a
+per-slot competition between classify-and-memorize and copy, settled slot-by-slot by
+training diversity. What we do **not** get to
 say is *why* it shrinks with the ladder — the nano→Pythia step changes scale together
-with pretraining data, tokenizer, architecture, and finetuning method (§7), so the
+with pretraining data, tokenizer, architecture, and finetuning method (§8), so the
 honest claim is "the gap largely disappears by the Pythia pipeline," not "parameter
-count removes it." The one clean causal statement is negative and comes from the
-controlled within-stack step: at this recipe, going from 3M to 10M did not move the gap.
+count removes it." The clean causal statements are: at this recipe, going from 3M to 10M did not move
+the gap; at 160M own-stack full FT the gap remains large (§7.2); and raising one slot's
+training diversity causally lifts held-type recall (§7.3).
 
 **What we learned about measurement.** Independently of the model result, estimating a
 gap like this reliably required two corrections that the data forced on us. (i)
@@ -493,9 +599,11 @@ in the high-gap regime the dominant uncertainty is across evaluation instances, 
 fixed-seed retrains split 5/0), so the right replication unit changes from eval-instance
 to training-seed. Both lessons are prescriptive for anyone measuring faithfulness gaps
 in small models and hold regardless of how the scale-vs-stack question is eventually
-resolved.
+resolved. Separately, our primary metric is exact string match: it has not been
+validated against human-accepted equivalence, so reported gaps may overstate failure
+relative to a soft/human rubric (§0, §8).
 
-## 7. Limitations
+## 8. Limitations
 
 - **Scale vs. stack confound (primary).** The nano→Pythia comparison changes parameter
   count *and* at least four other variables simultaneously, each a plausible alternative
@@ -505,27 +613,22 @@ resolved.
   **tokenizer** (4098-vocab BPE vs. ~50k;
   larger vocabularies fragment field values like "ibuprofen" into fewer sub-tokens,
   which could itself change copy success), (iii) **architecture family**, and (iv)
-  **finetuning method** (own-stack full fine-tune vs. Pythia LoRA r=16 — LoRA may
-  preserve pretrained copying while suppressing the memorization pathway full FT
-  exploits). We therefore claim only that the gap is much smaller under the Pythia
-  *pipeline*, not that scale per se removes it. The pre-registered own-stack scale ladder
-  (`PREREG_ownstack_160m.md`) is designed to separate scale from the stack bundle.
-  *(Post-freeze addendum: that control has since been run once — an own-stack 160M model
-  on the identical recipe and instrument retains a **16.9 ± 1.7** diluted gap, so the
-  own-stack curve is flat across 50× of scale where Pythia-160M reads 3.5, and the
-  pre-registered decision rule fires **stack-dominant**. Two single-factor arms then each halve the gap to the same level (one training run per cell) — LoRA on the same
-  checkpoint: 7.1 ± 1.2; Chinchilla-scaled pretraining (3.2B tokens) with full FT
-  retained: 7.0 ± 1.0 — so the large gap is the *interaction* of an under-trained base
-  with full-parameter adaptation, with data and method acting as substitutes. Single
-  training run per cell; full report in follow-up work.)*
+  **finetuning method** (own-stack full fine-tune vs. Pythia LoRA r=16 — a
+  behavioral adaptation-regime difference; mechanism unidentified). We therefore claim
+  only that the gap is much smaller under the Pythia
+  *pipeline*, not that scale per se removes it. The within-stack / factorial separation
+  of scale from that stack bundle is reported in §7.2.
 - **Transition point unobserved.** The gap drops somewhere between own-stack 10M (18.7)
   and Pythia-160M (3.5), but those endpoints are on different stacks; within Pythia the
   gap is already low at 160M with no monotonic trend, so "by Pythia scale" is safe while
   "as models scale up" is not yet supported.
-- **1B point estimate.** Bounded, not identified, by training nondeterminism (§5.2).
-- **Exact-match metric.** The gap is a difference of exact-match recalls; per Schaeffer
-  et al. (2023) such metrics can exaggerate scale-linked transitions, which is part of
-  why we report across-instance SD and, at 1B, a training-run interval.
+- **1B point estimate.** Bounded, not identified, by training nondeterminism (§6.2).
+- **Exact-match construct (explicit).** Primary science metrics are exact string
+  match. Normalize-then-match rescues 0/486 M0 exact failures (E3 auto), but
+  exact-match has **not** been validated against human-accepted equivalence; gaps may
+  overstate failure vs a soft/human rubric (§0). Discontinuous metrics can also
+  exaggerate transitions (Schaeffer et al., 2023); we report across-instance SD and,
+  at 1B, a training-run interval.
 - **Gap-definition subtleties (conservative direction).** The seen/held split is at the
   dialogue level, so the held bucket mixes in seen field-values (a "held" dialogue draws
   a held-out value only per-field-probabilistically); and recalls are computed over
@@ -539,54 +642,29 @@ resolved.
   multi-instance instrument as the rest of the ladder (18.3±1.3, 18.7±1.5); the whole
   ladder now shares one instrument, and the anchor gaps carry across-instance SD like
   the Pythia rungs.
-
-## 8. Future work (axes, not replacements)
-
-The program extends as a matrix of one-variable-at-a-time questions, keeping Pythia as
-the reference scaling family:
-
-| Stage | Variable changed | Held fixed |
-|---|---|---|
-| T (done) | scale | Pythia family |
-| F (family) | model family | ~similar size |
-| O (objective) | SFT / DPO / RL / continual pretrain | model + size |
-| R (retrieval) | RAG / pointer / copy head | model |
-| M (mechanism) | — (ask *why*) | model + task |
-
-**Stage F** is the direct test of §7's primary confound: hold capability ~fixed
-(~160–500M) and vary the family (Pythia vs. SmolLM/OLMo/TinyLlama) to ask whether the
-reduction tracks size or pipeline. **Frontier models** (GPT/Claude/Gemini) belong as
-*external validation* — "does the phenomenon still appear in production-grade
-systems?" — not as ladder rungs, since they change every variable at once. **Stage M**
-(mechanism) is deliberately deferred until the behavioral phenomenon is fully frozen,
-so it asks "why does this residual occur?" rather than carrying the burden of
-justifying Stage T; the natural hypotheses are copy/retrieval circuitry — induction
-heads (Olsson et al., 2022) and retrieval heads (Wu et al., 2024) — that generalize
-poorly from seen to held-out values.
+- **Out of scope (gated).** LoRA mechanism identification, fabric/product work, and
+  further residual continua are out of scope here (`papers/EMPIRICAL_FOUNDATION.md`).
+  No mechanism, product, or open-world verification claims are advanced.
 
 ## 9. Conclusion
 
-A severe held-out copying gap in sub-10M models — specifically a failure to copy
-held-out lexical values into open slots, with the closed-value fields a zero-gap
-internal control — was substantially smaller in the tested Pythia models; the cause
-(scale vs. pipeline) is left open by design. The measurement story is inseparable from
-the result: single-instance evaluation was under-powered, and at the top of the ladder
-training nondeterminism — not evaluation noise — sets the precision floor. Both were surfaced by pre-registered checks
-(equivalence, determinism) that failed productively. The contribution is less any
-single number than a research unit that repeatedly incorporated its own measurement
-limitations into its conclusions rather than explaining them away.
+A severe held-out copying gap in sub-10M models — failure to copy held-out lexical
+values into open slots, with closed-value fields a zero-gap control — is much smaller
+under the tested Pythia pipeline; within own-stack the diluted gap stays large across
+~50× scale, and adaptation×data (not parameter count alone) accounts for most of the
+escape to Pythia-like levels. Slot training diversity causally raises held-type recall
+(+66.7). On a pre-registered utility, non-generative baselines dominate official
+generative LM references on this task (§0) — recorded as a kill-gate result, not a
+product pitch. Exact-match remains an explicit construct limitation. The measurement
+story is inseparable from the result: single-instance evaluation was under-powered,
+and at the top of the ladder training nondeterminism sets the precision floor. The
+contribution is a careful empirical account of when small LMs fail held-out emission,
+with limitations kept visible rather than explained away.
 
 ---
 
-*Status: draft. The anchors are now re-scored on the multi-instance instrument
-(`results_anchors_v2_{nano,scale}.json`), so the whole ladder shares one instrument
-and the public-instance-hard-draw holds at every rung (single-instance gap ≥
-multi-instance mean at all five). Figures produced (`papers/figures/`, regenerable via
-`papers/make_figures.py`). Related-work drafted (§ Related work) with verified
-citations. Running writing audit (unsupported claims, citations-needed, hypotheses,
-reviewer limitations) in `papers/writing_audit.md`. Open decisions before submission —
-precise abstract numbers pending a decision on multi-seed 1B; intro/abstract to be
-tightened last (per plan); final section numbering/placement of Related work.*
+*Status: Paper α markdown draft **review edits E1–E3,E5–E10 applied** (E4 skipped).
+Scope-locked; ready for LaTeX/camera-ready (B) on confirmation. No new experiments.*
 
 ## References
 
