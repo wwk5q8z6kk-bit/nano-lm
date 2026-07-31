@@ -137,38 +137,14 @@ def test_report_ask_markdown():
     assert "**Status:**" in md
     assert payload.get("answer_status") in {"SUPPORTED", "CONTRADICTED", "ABSTAIN", "NO_CORPUS"}
 
-
 def test_owner_dogfood_synthetic():
     from wedge_v1.run_owner_dogfood import main
     from pathlib import Path
     import tempfile
     out = Path(tempfile.mkdtemp()) / "results_owner_dogfood.json"
-    rc = main(["--corpus", str(Path("wedge_v1/data/corpus")), "--out", str(out)])
+    rc = main(["--corpus", str(Path("wedge_v1/data/corpus")), "--out", str(out),
+               "--tasks", "wedge_v1/data/owner_dogfood_tasks.example.json"])
     assert out.exists()
-    assert rc in (0, 1)  # 1 = some task fails; harness still works
+    assert rc in (0, 1)
 
 
-if __name__ == "__main__":
-
-    test_ttl_supported()
-    test_oos_abstain()
-    test_empty_corpus()
-    test_scan_docs()
-    test_find_ttl_phrase()
-    test_bm25_hits_ttl_doc()
-    test_bm25_span_supported()
-    test_ingest_md_corpus()
-    test_ingest_pdf_fixture()
-    test_report_build()
-    test_compare_metformin_contradicted()
-    test_compare_literal_agree()
-    test_owner_dogfood_synthetic()
-    print("WEDGE_V1_SMOKE_OK")
-
-
-def test_owner_dogfood_demo():
-    from wedge_v1.run_owner_dogfood import main as owner_main
-
-    rc = owner_main(["--demo"])
-    assert rc == 0
-    assert (Path(__file__).resolve().parent / "results_owner_smoke.json").is_file()

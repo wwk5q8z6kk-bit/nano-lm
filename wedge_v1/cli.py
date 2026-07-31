@@ -58,6 +58,12 @@ def main(argv: list[str] | None = None) -> int:
     od.add_argument("--tasks", type=Path, default=None)
     od.add_argument("--out", type=Path, default=None)
     od.add_argument("--gallery", type=Path, default=None)
+    od.add_argument("--demo", action="store_true")
+    od.add_argument("--smoke", action="store_true")
+    os_p = sub.add_parser("owner-smoke", help="5-task owner contact smoke (example or $WEDGE_OWNER_CORPUS)")
+    os_p.add_argument("--corpus", type=Path, default=None)
+    os_p.add_argument("--tasks", type=Path, default=None)
+    os_p.add_argument("-o", "--output", type=Path, default=None)
     sub.add_parser("smoke", help="Run runtime regression pins")
     contact = sub.add_parser("contact", help="Labeled corpus contact probe (product eval)")
     contact.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
@@ -69,6 +75,12 @@ def main(argv: list[str] | None = None) -> int:
     gal = sub.add_parser("gallery", help="Export failure gallery from dogfood JSON")
     gal.add_argument("--from", dest="from_path", type=Path, default=None)
     gal.add_argument("-o", "--output", type=Path, default=None, help="Optional extra md path")
+
+    mu = sub.add_parser("measure-u", help="Draft U from dogfood/owner-dogfood JSON (not Layer-1)")
+    mu.add_argument("path", type=Path, nargs="?", default=Path("wedge_v1/results_wedge_v1_dogfood.json"))
+    mu.add_argument("--class", dest="corpus_class", default="UNKNOWN",
+                    choices=["SYNTHETIC_MINI", "PAPERS_DOGFOOD", "OWNER_PRIVATE", "UNKNOWN"])
+    mu.add_argument("-o", "--output", type=Path, default=None)
 
     args = p.parse_args(argv)
 
@@ -125,8 +137,20 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "owner-smoke":
         from wedge_v1.run_owner_smoke import run as owner_run
 
-        out = owner_run(args.corpus, args.output)
-        json.dump({"n_ok": out["n_ok"], "n_tasks": out["n_tasks"], "accuracy": out["accuracy"], "corpus": out["corpus"], "written": out["written"]}, sys.stdout, indent=2)
+        out = owner_run(args.corpus, getattr(args, "output", None), getattr(args, "tasks", None))
+        json.dump(
+            {
+                "n_ok": out["n_ok"],
+                "n_tasks": out["n_tasks"],
+                "accuracy": out["accuracy"],
+                "abstain_rate": out.get("abstain_rate"),
+                "corpus": out["corpus"],
+                "written": out.get("written"),
+                "task_ok": {r["id"]: r["ok"] for r in out["rows"]},
+            },
+            sys.stdout,
+            indent=2,
+        )
         sys.stdout.write("\n")
         return 0 if out["n_ok"] == out["n_tasks"] else 1
 
@@ -142,7 +166,12 @@ def main(argv: list[str] | None = None) -> int:
             argv += ["--out", str(args.out)]
         if args.gallery:
             argv += ["--gallery", str(args.gallery)]
+        if getattr(args, "demo", False):
+            argv.append("--demo")
+        if getattr(args, "smoke", False):
+            argv.append("--smoke")
         return owner_main(argv)
+
 
     if args.cmd == "smoke":
         from wedge_v1 import test_runtime_smoke as smoke
@@ -158,6 +187,10 @@ def main(argv: list[str] | None = None) -> int:
         smoke.test_ingest_pdf_fixture()
         smoke.test_report_build()
         smoke.test_report_ask_markdown()
+        smoke.test_measure_dogfood_u()
+        from wedge_v1 import test_owner_smoke as os_smoke
+        os_smoke.test_example_corpus_present()
+        os_smoke.test_owner_smoke_example_pass()
         print("WEDGE_V1_SMOKE_OK", file=sys.stderr)
         return 0
 
@@ -204,6 +237,16 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write(chr(10))
         return 0 if not g.get("error") else 2
 
+
+    if args.cmd == "measure-u":
+        from wedge_v1.eval.dogfood_utility import measure_path
+
+        out = measure_path(args.path, corpus_class=args.corpus_class)
+        if args.output:
+            args.output.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
+        json.dump(out, sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        return 0
 
     if args.cmd == "contact":
         from wedge_v1.run_corpus_contact import run_contact

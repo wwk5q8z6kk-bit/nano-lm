@@ -146,13 +146,13 @@ Kill or narrow A if:
 
 ## 11. Exact next coding task
 
-**Done:** `python -m wedge_v1 owner-smoke` — 5-task ask+compare over example/owner corpus; writes gitignored `results_owner_smoke.json`.
-
 ```text
-NEXT — real private folder contact:
-  export WEDGE_OWNER_CORPUS=/path/to/your/notes
-  python -m wedge_v1 ingest "$WEDGE_OWNER_CORPUS"
-  python -m wedge_v1 owner-smoke --corpus "$WEDGE_OWNER_CORPUS"
-  Review accuracy; only then consider U_FREEZE / LM probe with explicit owner auth.
-No Evidence Core edits. No freeze-tag moves.
+STATUS = owner-smoke 5/5 on owner_corpus.example
+NEXT:
+  export WEDGE_OWNER_CORPUS=/path/to/private/folder
+  python3 -m wedge_v1 ingest "$WEDGE_OWNER_CORPUS"
+  python3 -m wedge_v1 owner-smoke --corpus "$WEDGE_OWNER_CORPUS"
+Optional papers dry-run:
+  python3 -m wedge_v1.run_owner_smoke --corpus papers --tasks wedge_v1/data/owner_smoke_tasks_papers.json
 ```
+

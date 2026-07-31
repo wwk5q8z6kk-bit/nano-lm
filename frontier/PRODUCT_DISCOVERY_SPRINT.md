@@ -206,3 +206,12 @@ DONE WHEN: RESULT JSON + honest useful/not sentences exist locally (not committe
 THEN: decide keep / pivot using kill criteria §7
 OUT OF SCOPE: LM, tags, evidence ledger, paid compute, committing private docs
 ```
+
+---
+
+## Session progress (frontier/active-v1)
+
+- `start` → `ACTIVE_FRONTIER_RESUME` under `ACTIVE_MANDATE`
+- pypdf installed in `.venv`; fixture PDF extracts TTL text
+- dogfood + contact(SYNTHETIC_MINI) + gallery path live
+- **Your move:** `python -m wedge_v1 owner-dogfood --corpus ~/YOUR_PRIVATE_NOTES`
