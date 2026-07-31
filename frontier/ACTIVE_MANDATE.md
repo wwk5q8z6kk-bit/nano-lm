@@ -52,3 +52,5 @@ NEVER:
 
 Discovery deliverable: `frontier/PRODUCT_DISCOVERY_SPRINT.md`  
 Existing product slice: `wedge_v1/` + `papers/WEDGE_V1.md` + `papers/STRATEGIC_RESET.md`
+
+Canonical envelope also at `papers/ACTIVE_MANDATE.md`. Discovery: `PRODUCT_DISCOVERY_SPRINT.md`.

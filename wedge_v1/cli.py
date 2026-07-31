@@ -6,7 +6,8 @@ import json
 import sys
 from pathlib import Path
 
-from wedge_v1.runtime import ask, scan, find_spans, format_report_md, DEFAULT_CORPUS, load_corpus
+from wedge_v1.runtime import ask, scan, find_spans, compare, format_report_md, DEFAULT_CORPUS, load_corpus
+from wedge_v1.ingest import corpus_stats
 
 
 def _corpus(args) -> Path | None:
@@ -38,10 +39,15 @@ def main(argv: list[str] | None = None) -> int:
     ingest_p.add_argument("src", type=Path, help="Source folder")
     ingest_p.add_argument("--out", type=Path, default=None, help="Manifest path (default: <src>/.wedge_manifest.json)")
 
+    cmp_p = sub.add_parser("compare", help="Compare TERM across docs; CONTRADICTED if numeric values disagree")
+    cmp_p.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    cmp_p.add_argument("term", nargs="+", help="Term / field to compare")
+
     rep = sub.add_parser("report", help="Verified Ask JSON claim report (frontier)")
     rep.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
     rep.add_argument("query", nargs="+", help="Question text")
     rep.add_argument("-o", "--output", type=Path, default=None)
+    rep.add_argument("--json", action="store_true", help="Emit JSON instead of markdown")
 
     args = p.parse_args(argv)
     if args.cmd == "ask":
@@ -59,14 +65,23 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
+    if args.cmd == "compare":
+        out = compare(" ".join(args.term), corpus_dir=args.corpus)
+        json.dump(out, sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        return 0 if out.get("answer_status") != "NO_CORPUS" else 2
     if args.cmd == "ingest":
         docs = load_corpus(args.src)
+        stats = corpus_stats(args.src)
         man = {
             "schema": "nano-lm.wedge_v1.ingest_manifest.v1",
             "src": str(args.src.resolve()),
             "n_docs": len(docs),
+            "n_chars": stats.get("n_chars"),
             "doc_ids": sorted(docs.keys()),
-            "note": "Local index only; not Layer-1 evidence.",
+            "n_pdf_files_on_disk": stats.get("n_pdf_files_on_disk"),
+            "pypdf_available": stats.get("pypdf_available"),
+            "note": stats.get("note") or "Local index only; not Layer-1 evidence.",
         }
         out_path = args.out or (args.src / ".wedge_manifest.json")
         out_path.write_text(json.dumps(man, indent=2) + "\n", encoding="utf-8")
@@ -86,14 +101,22 @@ def main(argv: list[str] | None = None) -> int:
         smoke.test_empty_corpus()
         smoke.test_scan_docs()
         smoke.test_find_ttl_phrase()
+        smoke.test_bm25_hits_ttl_doc()
         smoke.test_bm25_span_supported()
+        smoke.test_report_ask_markdown()
+        smoke.test_ingest_md_corpus()
+        smoke.test_ingest_pdf_fixture()
         print("WEDGE_V1_SMOKE_OK", file=sys.stderr)
         return 0
     if args.cmd == "report":
         from frontier.verified_ask_report import build_report
 
         out = build_report(" ".join(args.query), corpus_dir=args.corpus)
-        text = json.dumps(out, indent=2) + "\n"
+        if getattr(args, "json", False):
+            text = json.dumps(out, indent=2) + "
+"
+        else:
+            text = format_report_md(out, title="ask: " + " ".join(args.query))
         if args.output:
             args.output.write_text(text, encoding="utf-8")
         else:

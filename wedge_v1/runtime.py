@@ -361,7 +361,19 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
 
     disputed = [c for c in presented_sorted if c.status == "DISPUTED"]
     nearby = nearby_contradictions(docs)
-    status = "CONTRADICTED" if (disputed or nearby) else "SUPPORTED"
+    ql_local = q.lower()
+    relevant_nearby = []
+    for n in nearby:
+        kind = n.get("kind", "")
+        if kind == "numeric_dose" and ("dose" in ql_local or "metformin" in ql_local):
+            relevant_nearby.append(n)
+        elif kind == "numeric_ttl" and any(k in ql_local for k in ("ttl", "cache", "expire", "cached")):
+            relevant_nearby.append(n)
+        elif kind == "entity_collision" and any(
+            str(v).lower() in ql_local for v in (n.get("value") or {}).values() if isinstance(n.get("value"), dict)
+        ):
+            relevant_nearby.append(n)
+    status = "CONTRADICTED" if (disputed or relevant_nearby) else "SUPPORTED"
     banner = None
     if nearby:
         kinds = sorted({n["kind"] for n in nearby})
@@ -418,8 +430,21 @@ def scan(corpus_dir: Path | None = None) -> dict:
 _NUM_NEAR = re.compile(r"(?<![A-Za-z])(\d+(?:\.\d+)?)(?![A-Za-z])")
 
 
+def _closest_number(text: str, center: int, window: int = 100) -> str | None:
+    lo = max(0, center - window)
+    hi = min(len(text), center + window)
+    best, best_d = None, None
+    for m in _NUM_NEAR.finditer(text, lo, hi):
+        d = min(abs(m.start() - center), abs(m.end() - center))
+        # Prefer numbers outside the match span itself when term is non-numeric.
+        if best_d is None or d < best_d:
+            best_d = d
+            best = m.group(1)
+    return best
+
+
 def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dict:
-    """Cross-doc compare for TERM: spans + nearby-number disagreement → CONTRADICTED.
+    """Cross-doc compare for TERM: spans + associated-number disagreement → CONTRADICTED.
 
     Classical only. Does not invent values outside corpus spans.
     """
@@ -450,7 +475,14 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
 
     pattern = re.compile(re.escape(needle), re.I)
     hits: list[dict] = []
-    values_by_doc: dict[str, set[str]] = {}
+    # Field-like: "TTL as 300 seconds", "metformin 500 mg"
+    field_re = re.compile(
+        rf"(?:{re.escape(needle)}\s+(?:as\s+)?(\d+(?:\.\d+)?)\s*(?:seconds|mg|sec)?|"
+        rf"{re.escape(needle)}\s+(\d+(?:\.\d+)?))",
+        re.I,
+    )
+    field_vals: dict[str, str] = {}
+    closest_by_doc: dict[str, set[str]] = {}
 
     for did, text in docs.items():
         for m in pattern.finditer(text):
@@ -458,10 +490,13 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
             lo = max(0, i - window)
             hi = min(len(text), j + window)
             ctx = text[lo:hi].replace("\n", " ")
-            near = _NUM_NEAR.findall(text[lo:hi])
-            vals = {n for n in near}
-            if vals:
-                values_by_doc.setdefault(did, set()).update(vals)
+            # Closest number outside the term span (skip when term is the number).
+            closest = None
+            if not re.fullmatch(r"\d+(?:\.\d+)?", needle):
+                closest = _closest_number(text, (i + j) // 2, window=window)
+                # Ignore the term's own digits if any
+                if closest is not None:
+                    closest_by_doc.setdefault(did, set()).add(closest)
             hits.append(
                 {
                     "doc_id": did,
@@ -469,9 +504,12 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
                     "end": j,
                     "text": text[i:j],
                     "context": ctx[:240],
-                    "nearby_numbers": sorted(vals, key=lambda x: float(x)),
+                    "closest_number": closest,
                 }
             )
+        fm = field_re.search(text)
+        if fm:
+            field_vals[did] = fm.group(1) or fm.group(2)
 
     if not hits:
         return {
@@ -486,53 +524,29 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
             "latency_s": round(time.perf_counter() - t0, 4),
         }
 
-    all_vals = sorted({v for s in values_by_doc.values() for v in s}, key=lambda x: float(x))
-    disputed = False
-    if len(values_by_doc) >= 2 and len(all_vals) >= 2:
-        doc_for_val: dict[str, set[str]] = {}
-        for did, s in values_by_doc.items():
-            for v in s:
-                doc_for_val.setdefault(v, set()).add(did)
-        # Distinct values with non-identical supporting doc sets → CONTRADICTED
-        # Primary signal: ≥2 docs each contribute a different singleton primary value,
-        # or the frozensets of nearby numbers disagree across docs.
-        sets = [frozenset(s) for s in values_by_doc.values() if s]
-        if len(set(sets)) >= 2:
-            disputed = True
-        else:
-            # Same set in every doc but set size ≥2 can still be multi-number agreement
-            # (e.g. TTL 300 and QPS 12000 both near "cache") — only dispute when
-            # docs disagree. Already covered by len(set(sets)) >= 2.
-            disputed = False
+    # Prefer structured field extraction when ≥2 docs expose a value.
+    values_by_doc: dict[str, list[str]]
+    if len(field_vals) >= 2:
+        values_by_doc = {k: [v] for k, v in field_vals.items()}
+        disputed = len(set(field_vals.values())) >= 2
+    elif re.fullmatch(r"\d+(?:\.\d+)?", needle):
+        # Term is a literal number: presence agreement only (no nearby-number dispute).
+        values_by_doc = {h["doc_id"]: [needle] for h in hits}
+        disputed = False
+    else:
+        values_by_doc = {k: sorted(v, key=float) for k, v in closest_by_doc.items()}
+        # One representative per doc (closest); dispute if docs disagree.
+        reps = {did: vals[0] for did, vals in values_by_doc.items() if vals}
+        disputed = len(set(reps.values())) >= 2
 
-    # Tight numeric field: if each doc has exactly one nearby number and they differ
-    singletons = {did: next(iter(s)) for did, s in values_by_doc.items() if len(s) == 1}
-    if len(set(singletons.values())) >= 2:
-        disputed = True
-
-    # Prefer field-like patterns: "TTL as N" / "metformin N mg"
-    field_vals: dict[str, str] = {}
-    field_re = re.compile(
-        rf"(?:{re.escape(needle)}\s+(?:as\s+)?(\d+(?:\.\d+)?)\s*(?:seconds|mg|sec)?|"
-        rf"{re.escape(needle)}\s+(\d+(?:\.\d+)?))",
-        re.I,
-    )
-    for did, text in docs.items():
-        m = field_re.search(text)
-        if m:
-            field_vals[did] = m.group(1) or m.group(2)
-    if len(set(field_vals.values())) >= 2:
-        disputed = True
-        values_by_doc = {k: {v} for k, v in field_vals.items()}
-        all_vals = sorted(set(field_vals.values()), key=lambda x: float(x))
-
+    all_vals = sorted({v for vs in values_by_doc.values() for v in vs}, key=float)
     status = "CONTRADICTED" if disputed else "SUPPORTED"
     claim = S.Claim(
         "COMPARE",
         None,
         {
             "term": needle,
-            "values_by_doc": {k: sorted(v, key=lambda x: float(x)) for k, v in values_by_doc.items()},
+            "values_by_doc": values_by_doc,
             "all_values": all_vals,
             "n_hits": len(hits),
             "field_values": field_vals,
@@ -557,7 +571,7 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
         "answer_status": status,
         "claims": [claim_to_dict(claim)],
         "hits": hits[:24],
-        "values_by_doc": {k: sorted(v, key=lambda x: float(x)) for k, v in values_by_doc.items()},
+        "values_by_doc": values_by_doc,
         "field_values": field_vals,
         "unsupported": [],
         "solver_path": ["compare"],
@@ -565,66 +579,3 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
         "n_hits": len(hits),
         "latency_s": round(time.perf_counter() - t0, 4),
     }
-
-
-def format_report_md(payload: dict, *, title: str | None = None) -> str:
-    """Human-readable markdown for ask/find/scan JSON payloads (product UX)."""
-    lines: list[str] = []
-    status = payload.get("answer_status", "?")
-    lines.append(f"# {title or 'wedge_v1 report'}")
-    lines.append("")
-    lines.append(f"**Status:** `{status}`")
-    if "n_docs" in payload:
-        lines.append(f"**Docs:** {payload['n_docs']}")
-    if "n_hits" in payload:
-        lines.append(f"**Hits:** {payload['n_hits']}")
-    path = payload.get("solver_path") or []
-    if path:
-        lines.append("**Solver path:** " + " → ".join(str(p) for p in path))
-    lines.append("")
-    claims = payload.get("claims") or []
-    if not claims:
-        lines.append("_No claims._")
-    else:
-        lines.append(f"## Claims ({len(claims)})")
-        lines.append("")
-        for i, c in enumerate(claims, 1):
-            if not isinstance(c, dict):
-                continue
-            val = c.get("value")
-            st = c.get("status", "")
-            tid = c.get("task_id", "")
-            doc = c.get("doc_id", "")
-            lines.append(f"### {i}. `{tid}` — {st}")
-            lines.append(f"- **Doc:** `{doc}`")
-            lines.append(f"- **Value:** `{val}`")
-            for e in (c.get("evidence") or [])[:5]:
-                if not isinstance(e, dict):
-                    continue
-                span = e.get("text") or e.get("line") or ""
-                ctx = e.get("context")
-                start, end = e.get("start"), e.get("end")
-                loc = f" [{start}:{end}]" if start is not None else ""
-                lines.append(f"- **Evidence{loc}:** {span}")
-                if ctx:
-                    lines.append(f"  - context: {ctx}")
-            notes = c.get("notes")
-            if notes:
-                lines.append(f"- _notes:_ {notes}")
-            lines.append("")
-    unsupported = payload.get("unsupported") or []
-    if unsupported:
-        lines.append("## Unsupported / abstain reasons")
-        for u in unsupported:
-            lines.append(f"- {u}")
-        lines.append("")
-    contradictions = payload.get("contradictions") or payload.get("disputes") or []
-    if contradictions:
-        lines.append("## Contradictions")
-        for item in contradictions[:20]:
-            lines.append(f"- `{item}`" if not isinstance(item, dict) else f"- {item}")
-        lines.append("")
-    lines.append("---")
-    lines.append("_Verification-first local slice. No generative fill-in._")
-    lines.append("")
-    return "\n".join(lines)
