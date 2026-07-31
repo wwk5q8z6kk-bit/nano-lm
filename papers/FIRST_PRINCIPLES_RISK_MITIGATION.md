@@ -167,12 +167,63 @@ B
 ### B13 — Wedge execution without repeating E1 failure
 **Atoms:** Building LM features before classical baseline; skipping verify.  
 **Invariants:** P3, P4, P10.  
-**Today:** Queue wants `AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE`.  
+**Today:** Phase 2 classical RESULT exists (U≈0.926). Phase 3 design ready; execute not authorized.  
 **Mitigations:**
-- **M1:** Freeze mini-corpus hashes, metrics, cost model *before* any LM component.
-- **M2 (auth):** Classical baseline only; success = useful task completion under cost/reliability utility — not “tiny LM BLEU.”  
-**Innovation:** Utility includes maintenance \(M\) and review load \(\rho\) from day one (E1 schema reused, new task IDs).  
-**Exit:** Phase-2 auth only after classical numbers exist.
+- **M1:** Freeze mini-corpus hashes, metrics, cost model *before* any LM component. **DONE** for Phase 2.
+- **M2 (auth):** Classical baseline measured. LM only behind `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` on E-class allowlist.  
+**Innovation:** Utility includes review load from day one; Phase 3 dual estimands \(U_{dep}/U_{cap}\).  
+**Exit:** Phase 2 measured ✓; Phase 3 optional.
+
+
+### B14 — Auth capability-scope overgrant
+**Atoms:** A valid `AUTHORIZE_*` string grants broader rights than the task (e.g. execute+push+tag bundled); chat “proceed” interpreted as execute.  
+**Invariants:** P5, P7.  
+**Mitigations:**
+- **M0:** Capability bits on auth receipts: `{commit, tag, push, execute, rescope}` with explicit expiry and `valid_only_if_queued`.
+- **M0:** Lint: AUTH_RECORD must list `scope_bits[]`; runners refuse bits not present.
+- **Innovation:** Treat auth as a *capability token* (least privilege), not a mood. Gateway-only consult ≠ execute auth.  
+**Exit:** Every runner checks `scope_bits`; missing bit → fail-closed. *(Atom ships with gate or it is theater — Contrarian rule.)*
+
+### B15 — Verification/action path asymmetry (NOT a breakage)
+**Atoms:** `claude -p` / autonomous credits fail while `consult_gateway` works; agents treat this as outage and stall science.  
+**Invariants:** P7.  
+**Today:** Observed 2026-07-31; consult gateway succeeded for hybrid + this map.  
+**Mitigations:**
+- **M0:** Document as **typed authority working**: verification consults allowed; autonomous execute path denied-by-design when credits/keys differ.
+- **M0:** Do not spend cycles “fixing” CLI credits to unlock experiments.  
+**Exit:** AGENTS.md + this map state gateway-only as intended for consult; execute still requires queue+bits.
+
+### B16 — Context-of-use drift on PUBLIC_PARTIAL kills
+**Atoms:** Readers treat E1 KILL as global “LMs never useful”; ignore task/\(U\)/world bounds; upgrade PARTIAL to FULL by vibes.  
+**Invariants:** P1, P2, P9.  
+**Mitigations:**
+- **M0:** Every GATE_VERDICT row must carry `context_of_use` (task, \(U\), world, venue) in ledger JSON.
+- **M0:** Split E1 packaging (below): decision-admissible vs cost-plausible.
+- **M0:** Forbidden public wording without scope clause (already partially in H1/E3).  
+**Exit:** Validation rejects GATE_VERDICT without `context_of_use`; PUBLIC_PARTIAL cannot be paraphrased as global.
+
+### B17 — Freeze-tag honesty vs E4-contaminated HEAD
+**Atoms:** HEAD ancestry includes E4; tagging HEAD as “freeze” mislabels; indefinite deferral leaves tip unanchored.  
+**Invariants:** P8, P5.  
+**Today:** Council hybrid deferred tag (`COUNCIL_HYBRID_CLOSEOUT.md`); protected tags unmoved.  
+**Mitigations:**
+- **M0:** Never retarget `paper-alpha-v1` or `post-alpha-evidence-freeze-2026-07-31`.
+- **M0:** Prefer **detached verdict annotations** (docs or `verdict/*` tags) that *disclose* ancestry + context-of-use — additive honesty, not retargeting.
+- **M1 (OWNER_TAG_OK):** Either (a) cherry-pick hybrid onto freeze tip then tag, or (b) annotated `verdict/E1-kill@<sha>` with E4-ancestry note, or (c) remain deferred with logged reason (current).  
+**Innovation:** Ancestry ≠ endorsement — but **undisclosed** ancestry under a freeze name *is* misrepresentation. Disclosure > void.  
+**Exit:** Chosen option recorded; protected tags SHA-stable.
+
+### B18 — Decision reproducibility ≠ cost-term reproducibility (E1)
+**Atoms:** Single ledger atom mixes KILL (re-derivable from public utilities) with \(L,C\) (device/timer dependent → PUBLIC_PARTIAL).  
+**Invariants:** P1, P6.  
+**Research pattern:** Neuro-symbolic split — **admissibility** (symbolic gate fires) vs **plausibility** (magnitudes look right).  
+**Mitigations:**
+- **M0:** Keep C_E1_GATE KILL intact; do not “upgrade” PARTIAL by wishing.
+- **M0/M1:** Design split (no kill deleted):
+  - `C_E1_DECISION_REPRO` — recompute \(U\) from published \(P,M,\rho,L,C\) rows + `aggregate_decision` → KILL (offline pytest already pins this).
+  - `C_E1_COST_REPRO` — clean-clone \(L,C\) reconstruction (see `trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md`).
+- **M2 (auth):** Optional L/C replay job only.  
+**Exit:** Two claim IDs with honest epistemic/repro fields; decision path green offline today.
 
 ---
 
@@ -206,31 +257,53 @@ This is the engineering expression of P3+P4; promotion still needs gates.
 Separate roles: question framing · retrieval · extraction · QA/artefact · synthesis · uncertainty.  
 No single agent both proposes and authorizes.
 
+### 3.5 Decision vs cost atoms (admissibility / plausibility)
+Borrow the neuro-symbolic distinction used in hybrid AI systems:
+- **Admissible** — a symbolic/decision gate re-fires from published artefacts (E1 KILL from utility rows + `aggregate_decision`).
+- **Plausible** — numeric auxiliaries (\(L\), \(C\)) look right but are device-bound until reconstructed.
+
+Never collapse these into one “reproducibility” upgrade. Offline pytest pins admissibility; L/C protocol pins plausibility.
+
+### 3.6 Detached verdict annotations (stratified publication)
+Immutable freeze tags are historical boundaries (P8). Honesty about later HEAD state uses **additive** annotations:
+- docs under `audit/.../COUNCIL_HYBRID_CLOSEOUT.md`, or
+- optional owner-authorized `verdict/<claim>@<sha>` tags carrying context-of-use + ancestry disclosure.
+
+Retargeting protected tags is forbidden. Undisclosed “freeze” names on contaminated tips are also forbidden.
+
+### 3.7 Consult-gateway as typed verification path
+When autonomous CLI credits fail but `consult_gateway` works, treat that as **least-privilege verification** (P7), not an outage. Consults may advise; they never mint `AUTHORIZE_*` or execute compute.
+
 ---
 
 ## 4. Priority order (mitigate first what falsifies the lab)
 
 | Priority | Blocker | Why first | Needs auth? |
 |----------|---------|-----------|-------------|
-| 0 | B1 Auth forgery | Prevents false science | No (M0 lint) |
-| 1 | B2/B11 Freeze/dirty contamination | Protects public record | No (process) |
-| 2 | B13 Wedge classical baseline design | Product path without LM theater | Design now; run needs auth |
-| 3 | B3 E1 L/C protocol | Upgrades honesty of past KILL packaging | Protocol M1; replay M2 |
-| 4 | B5 E3 human protocol (design) | Unlocks clinical-adjacent language later | Design; run needs humans |
-| 5 | B6 E4 disposition (RATIFY/VOID/PARK) | Ends split-brain | Owner one-liner |
-| 6 | B4/B8 Optional science | Only if curiosity budget remains | Owner |
+| 0 | B1 + B14 Auth forgery/scope | Prevents false science | No (M0 lint + scope bits) |
+| 1 | B2/B11/B17 Freeze honesty + dirty tree | Protects public record | Process now; tag needs OWNER_TAG_OK |
+| 2 | B18 / B3 E1 decision vs cost split | Honest packaging of past KILL | M0 design; L/C replay M2 |
+| 3 | B16 Context-of-use on GATE_VERDICT | Stops global misread of scoped kills | M0 schema field |
+| 4 | B13 Wedge classical baseline design | Product path without LM theater | Design now; run needs auth |
+| 5 | B15 Gateway-only verification posture | Stops credit-chase as fake blocker | Docs only |
+| 6 | B5 E3 human protocol (design) | Clinical-adjacent language later | Design; humans later |
+| 7 | B6 E4 disposition | Ends split-brain | Owner one-liner |
+| 8 | B4/B8 Optional science | Curiosity budget only | Owner |
 
 ---
 
 ## 5. Immediate M0 checklist (no experiments)
 
-1. Add `scripts/lint_claim_auth.py` + wire to CI/pre-commit.  
+1. ~~`scripts/lint_claim_auth.py`~~ present — keep PASS in CI/dev loops; extend forbidden clinical/zero-halluc strings.  
 2. NONCLAIM banners on portfolio/roadmap/ambition (if missing).  
-3. Create `papers/ANOMALY_LOG.md` (E1/E2/E3/E4 → expand questions).  
-4. Write `trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md` (design only).  
+3. ~~`papers/ANOMALY_LOG.md`~~ present — keep expand_allowed rules.  
+4. ~~`trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md`~~ present — deepen formulas; land decision/cost split design note.  
 5. Owner one-liner on E4 surface: `RATIFY_E4_EXECUTE` | `VOID_E4_AUTH` | `PARK_AS_EXPLORATORY`.  
-6. Keep freeze tag immutable; commit allowlists for freeze packaging.  
-7. Wedge: freeze mini-corpus + metrics doc before any baseline run auth.
+6. Keep freeze tags immutable; hybrid tag **deferred** until OWNER_TAG_OK (clean lineage or verdict annotation).  
+7. Wedge: freeze mini-corpus + metrics doc before any baseline run auth.  
+8. Document B15: consult-gateway = intended verification path; do not chase CLI credits for science.  
+9. Add `context_of_use` field proposal for GATE_VERDICT rows (B16) — ledger migration needs owner commit.  
+10. Path-restricted commits only; never launder strategic-reset dirt into freeze packaging.
 
 ---
 
@@ -255,7 +328,21 @@ Mitigation has worked when:
 5. Research portfolio stays large while claims stay tiny.
 
 ```text
-NEXT_DEFAULT = IDLE_AFTER_FREEZE + M0_HYGIENE
-NEXT_PRODUCT = AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE (owner)
-NEXT_SCIENCE = owner-picked from B3/B5/B6 only
+NEXT_DEFAULT = IDLE_AFTER_HYBRID + M0_HYGIENE (this map)
+NEXT_PRODUCT = AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE (owner; classical-first)
+NEXT_SCIENCE = owner-picked from B18/B3/B5/B6 only
+NEXT_TAG = OWNER_TAG_OK → clean-lineage cherry-pick OR verdict/* annotation OR remain deferred
+ATOM_RULE = no new blocker ID without an enforcing gate
 ```
+
+### Research anchors (methods literature patterns — not results)
+
+| Pattern | Use here |
+|---------|----------|
+| Preregistration + kill/artefact gates | P5, B1, B5 |
+| Admissibility vs plausibility (neuro-symbolic / NeSy hybrids) | B18, §3.5 |
+| Context-of-use / evidence-based AI validity | P9, B10, B16 |
+| Capability-based security / least privilege | B14, B15, P7 |
+| CI-as-policy (policy-as-code) | §3.2, B1 |
+| Stratified publication / immutable releases | P8, B2, B17 |
+

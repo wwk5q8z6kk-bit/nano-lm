@@ -32,12 +32,45 @@ DOC_MENTION_ALLOW = ALLOW_EXACT | {
     "papers/LABORATORY_CONSTITUTION.md",
     "papers/CLAIM_GLOSSARY.md",
     "scripts/lint_claim_auth.py",
+    "trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md",
 }
 
 FORBIDDEN_CREATE_TAG = re.compile(
     r"create(?:\s+annotated)?\s+tag\s+`?post-alpha-evidence-freeze-2026-07-31`?",
     re.I,
 )
+
+# Product-thesis bans (B10) — allow only inside ledger/withdrawal/mitigation docs that mark FORBIDDEN
+FORBIDDEN_PHRASES = [
+    re.compile(r"\bclinically validated\b", re.I),
+    re.compile(r"\bclinical deployment ready\b", re.I),
+    re.compile(r"\bzero hallucination\b(?!.*FORBIDDEN)", re.I),
+]
+FORBIDDEN_PHRASE_ALLOW = {
+    "papers/EVIDENCE_LEDGER.md",
+    "papers/EVIDENCE_LEDGER.json",
+    "papers/FIRST_PRINCIPLES_RISK_MITIGATION.md",
+    "papers/ANOMALY_LOG.md",
+    "papers/CLAIM_GLOSSARY.md",
+    "audit/discussion-to-implementation/WITHDRAWAL_SPEC.md",
+    "audit/discussion-to-implementation/EVIDENCE_LEDGER_PROPOSED.md",
+    "audit/discussion-to-implementation/EVIDENCE_LEDGER_PROPOSED.json",
+    "audit/discussion-to-implementation/METRIC_DEFINITION_CROSSWALK.md",
+    "trajectory/REGIME_P1_where_classical_fails.md",
+    "trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md",
+    "trajectory/E1_DECISION_VS_COST_SPLIT.md",
+    "scripts/lint_claim_auth.py",
+    "AGENTS.md",
+}
+
+def _phrase_allowed(rel: str, line: str) -> bool:
+    if rel in FORBIDDEN_PHRASE_ALLOW or rel.startswith("audit/discussion-to-implementation/snapshots/"):
+        return True
+    # Negation / ban context
+    low = line.lower()
+    if any(x in low for x in ("forbidden", "do not", "≠", "!=", "not ", "never ", "ban")):
+        return True
+    return False
 
 
 def iter_text_files():
@@ -70,6 +103,12 @@ def main() -> int:
 
         if rel in DOC_MENTION_ALLOW or rel.startswith("papers/") and rel.endswith("DECISION_GATES.md"):
             continue
+
+        # Forbidden product theses outside allowlisted policy docs (B10)
+        for i, line in enumerate(text.splitlines(), 1):
+            for pat in FORBIDDEN_PHRASES:
+                if pat.search(line) and not _phrase_allowed(rel, line):
+                    errors.append(f"{rel}:{i}: forbidden product phrase: {line.strip()[:120]}")
 
         # Ambition / roadmap / portfolio must not contain AUTHORIZE_ execute tokens
         if rel in {
