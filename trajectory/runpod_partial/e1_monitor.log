@@ -1,0 +1,139 @@
+[04:15:19] poll 1
+[ownstack] 1100/1125 loss=0.106 (10.4 min)
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+ALIVE
+=== monitor restart Fri Jul 31 04:17:00 UTC 2026 ===
+[04:17:00] poll 1
+[ownstack] 1000/1125 loss=0.101 (9.5 min)
+[ownstack] 1100/1125 loss=0.106 (10.4 min)
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+ALIVE
+[04:19:01] poll 2
+[ownstack] 1000/1125 loss=0.101 (9.5 min)
+[ownstack] 1100/1125 loss=0.106 (10.4 min)
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+ALIVE
+[04:21:02] poll 3
+[ownstack] 1000/1125 loss=0.101 (9.5 min)
+[ownstack] 1100/1125 loss=0.106 (10.4 min)
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+ALIVE
+[04:23:02] poll 4
+[ownstack] 1000/1125 loss=0.101 (9.5 min)
+[ownstack] 1100/1125 loss=0.106 (10.4 min)
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+ALIVE
+[04:25:03] poll 5
+=== ARM 2: Pythia-160M LoRA ===
+[pythia] examples 12000 dropped 0
+[pythia] ep0 1/1125 loss=4.923 (0.0 min)
+[pythia] ep0 100/1125 loss=0.001 (0.2 min)
+[pythia] ep0 200/1125 loss=0.000 (0.5 min)
+[pythia] ep0 300/1125 loss=0.000 (0.7 min)
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_items_M0_ownstack_chinchilla_lora_von.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json
+ALIVE
+[04:27:04] poll 6
+[pythia] ep2 800/1125 loss=0.000 (1.9 min)
+[pythia] ep2 900/1125 loss=0.000 (2.1 min)
+[pythia] ep2 1000/1125 loss=0.000 (2.3 min)
+[pythia] ep2 1100/1125 loss=0.000 (2.6 min)
+[pythia] done 2.6 min
+E1 M0_pythia160m_lora verify=off
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_items_M0_ownstack_chinchilla_lora_von.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json
+ALIVE
+[04:29:05] poll 7
+[pythia] ep2 800/1125 loss=0.000 (1.9 min)
+[pythia] ep2 900/1125 loss=0.000 (2.1 min)
+[pythia] ep2 1000/1125 loss=0.000 (2.3 min)
+[pythia] ep2 1100/1125 loss=0.000 (2.6 min)
+[pythia] done 2.6 min
+E1 M0_pythia160m_lora verify=off
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_items_M0_ownstack_chinchilla_lora_von.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json
+ALIVE
+[04:31:06] poll 8
+[pythia] ep2 1000/1125 loss=0.000 (2.3 min)
+[pythia] ep2 1100/1125 loss=0.000 (2.6 min)
+[pythia] done 2.6 min
+E1 M0_pythia160m_lora verify=off
+  U=0.9160 P=0.987 rec=0.987 gap=2.64 rho=0.000
+E1 M0_pythia160m_lora verify=on
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_items_M0_ownstack_chinchilla_lora_von.json
+results_e1_items_M0_pythia160m_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json
+results_e1_nonlm_M0_pythia160m_lora_voff.json
+ALIVE
+[04:33:06] poll 9
+[pythia] ep2 1000/1125 loss=0.000 (2.3 min)
+[pythia] ep2 1100/1125 loss=0.000 (2.6 min)
+[pythia] done 2.6 min
+E1 M0_pythia160m_lora verify=off
+  U=0.9160 P=0.987 rec=0.987 gap=2.64 rho=0.000
+E1 M0_pythia160m_lora verify=on
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_items_M0_ownstack_chinchilla_lora_von.json
+results_e1_items_M0_pythia160m_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json
+results_e1_nonlm_M0_pythia160m_lora_voff.json
+ALIVE
+[04:35:07] poll 10
+    "M0_ownstack_chinchilla_lora": 0.8984580063518905
+  },
+  "provisional_m0_scale": 0.8539283563496702,
+  "venue": "runpod-cuda"
+}
+E1_OFFICIAL_M0_DONE
+---
+results_e1_items_M0_ownstack_chinchilla_lora_voff.json
+results_e1_items_M0_ownstack_chinchilla_lora_von.json
+results_e1_items_M0_pythia160m_lora_voff.json
+results_e1_items_M0_pythia160m_lora_von.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+results_e1_nonlm_M0_ownstack_chinchilla_lora_von.json
+results_e1_nonlm_M0_pythia160m_lora_voff.json
+results_e1_nonlm_M0_pythia160m_lora_von.json
+ALIVE
+DONE
