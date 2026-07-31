@@ -1,0 +1,187 @@
+{
+  "schema": "nano-lm.evidence_manifest.v1",
+  "updated": "2026-07-31",
+  "authority_hierarchy": [
+    "prereg (frozen design + decision rule)",
+    "code (harness implementing the prereg)",
+    "inputs (content-addressed eval / recipes)",
+    "outputs (results_*.json)",
+    "decision lock / ledger (interpretation)",
+    "paper / tag (public freeze)"
+  ],
+  "public_freeze": {
+    "tag": "paper-alpha-v1",
+    "commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+    "note": "Anchors Paper \u03b1 measurement spine. Post-\u03b1 E1/E3 primary files were absent from this tag at discovery; local workspace holds them untracked until owner commit."
+  },
+  "utility_symbols_E1": {
+    "form_prereg_code": "U = alpha*P - beta*M - gamma*rho - lam*L - kappa*C",
+    "defaults": {
+      "alpha": 1.0,
+      "beta": 0.5,
+      "gamma": 0.3,
+      "lam": 0.02,
+      "kappa": 0.05
+    },
+    "shorthand_lockfile": "U = P - 0.5*M - 0.3*rho - 0.02*L - 0.05*C",
+    "decision_margin_delta": 0.05,
+    "definitions": {
+      "P": "Presented precision under deployment presenter",
+      "M": "Miss rate = 1 - field recall",
+      "rho": "Review load = flagged_fields / n_fields (NOT hallucination)",
+      "L": "p50 latency seconds (L_p50)",
+      "C": "Relative compute cost vs 10M greedy scribe",
+      "halluc": "Reported outside U v1"
+    },
+    "sensitivity_rename_warning": "results_e1_utility_sensitivity.json uses (alpha,beta,gamma,delta) as weights on (M,rho,L,C); delta_C != decision margin delta"
+  },
+  "claims": [
+    {
+      "id": "E1_KILL_H_substrate",
+      "claim": "Under frozen E1 U, best non-LM (M1) beats official M0; generative LM not preferred substrate for this closed scribe task",
+      "status": "KILL verified against local JSON; public-repo unanchored until bundle commit",
+      "prereg": "trajectory/PREREG_E1_nonlm_baseline.md",
+      "code": [
+        "trajectory/e1/common.py",
+        "trajectory/e1/methods.py",
+        "trajectory/e1/run_e1.py",
+        "trajectory/e1/runpod_official_m0.py",
+        "trajectory/e1/score_official_m0.py"
+      ],
+      "inputs": [
+        "trajectory/scribe_eval_m0.json",
+        "trajectory/scribe_eval_m1.json",
+        "trajectory/scribe_eval_m2.json",
+        "trajectory/scribe_eval_m3.json",
+        "trajectory/scribe_eval_m4.json"
+      ],
+      "outputs": [
+        "trajectory/results_e1_utility.json",
+        "trajectory/results_e1_utility_sensitivity.json",
+        "trajectory/results_e1_nonlm_*.json",
+        "trajectory/results_e1_items_*.json"
+      ],
+      "verified_local": {
+        "verdict": "KILL",
+        "U_M1": 0.9989993963311425,
+        "U_official_M0": 0.9252173639550433,
+        "margin": 0.07378203237609926,
+        "delta": 0.05,
+        "sensitivity_flip": false,
+        "kill_stable_across_all_OAT_cells": true
+      },
+      "m1_information_constraint": "M1 uses fabric._extract hand templates (rules-perfect for this synthetic generator). Not a train-lexicon-only baseline; M2 is the train-dict + span baseline.",
+      "paper_location": "papers/EMPIRICAL_FOUNDATION.md \u00a7E1; papers/latex/paper1.tex \u00a70 if present",
+      "tag_at_discovery": "MISSING from paper-alpha-v1"
+    },
+    {
+      "id": "E3_normalize_0_of_486",
+      "claim": "Normalize-then-match rescues 0/486 M0 exact field failures",
+      "status": "Verified against local JSON",
+      "prereg": "trajectory/PREREG_E3_faithfulness_construct.md",
+      "code": [
+        "trajectory/e3/run_e3_normalize.py",
+        "trajectory/e1/common.py::normalize_value"
+      ],
+      "outputs": [
+        "trajectory/results_e3_normalize_construct.json"
+      ],
+      "verified_local": {
+        "norm_rescue_count": 0,
+        "both_fail": 486,
+        "verdict_auto": "EXACT_NOT_OVERSTATING_BY_NORMALIZE"
+      },
+      "tag_at_discovery": "MISSING from paper-alpha-v1"
+    },
+    {
+      "id": "E3_human_EXACT_SURVIVES",
+      "claim": "Bounded Stage-1 human pack faithful-rate 0.00 \u2192 EXACT_SURVIVES",
+      "status": "Verified against local JSON; rater=agent-rubric-pass-1; IAA absent \u2014 not dual clinician",
+      "prereg": "trajectory/PREREG_E3_faithfulness_construct.md",
+      "outputs": [
+        "trajectory/e3_human_rating_pack.json",
+        "trajectory/results_e3_human.json",
+        "trajectory/STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md"
+      ],
+      "verified_local": {
+        "n": 100,
+        "label_faithful": 0,
+        "label_unfaithful": 100,
+        "verdict": "EXACT_SURVIVES"
+      },
+      "tag_at_discovery": "MISSING from paper-alpha-v1"
+    },
+    {
+      "id": "E2_lora_universes",
+      "claim": "LoRA mechanism universe discrimination",
+      "status": "GATED/STOP \u2014 no results JSON; do not claim RUNNING",
+      "prereg": "trajectory/PREREG_E2_lora_universes.md",
+      "code": [
+        "trajectory/e2/run_u3_earlystop.py"
+      ],
+      "outputs": [],
+      "tag_at_discovery": "MISSING from paper-alpha-v1"
+    },
+    {
+      "id": "RSTAR_E4",
+      "claim": "Generative adds value under regime R\u2605",
+      "status": "Protocol only / aspirational \u2014 no results_e4_*; not measured",
+      "prereg": [
+        "trajectory/REGIME_P1_where_classical_fails.md",
+        "trajectory/PREREG_E4_Rstar_killgate.md"
+      ],
+      "outputs": [],
+      "tag_at_discovery": "MISSING from paper-alpha-v1"
+    },
+    {
+      "id": "PAPER_ALPHA_SPINE",
+      "claim": "Held-out copying / field localization / diversity / own-stack / C3 / pointer / fabric measurement spine",
+      "status": "Anchored in paper-alpha-v1 committed trajectory/results_*.json",
+      "prereg": [
+        "trajectory/PREREG.md",
+        "trajectory/PREREG_Tv2.md",
+        "trajectory/PREREG_ownstack_160m.md",
+        "trajectory/PREREG_slot_diversity.md",
+        "trajectory/PREREG_C3_binding_probe.md"
+      ],
+      "outputs_glob": "trajectory/results_{anchors,arm1,ownstack,sweep,c3,fieldwise,corner,interference}_*.json",
+      "tag": "paper-alpha-v1"
+    }
+  ],
+  "commit_ready_bundle_globs": [
+    "trajectory/PREREG_E1_nonlm_baseline.md",
+    "trajectory/PREREG_E2_lora_universes.md",
+    "trajectory/PREREG_E3_faithfulness_construct.md",
+    "trajectory/PREREG_E4_Rstar_killgate.md",
+    "trajectory/DECISION_P1_program_lock.md",
+    "trajectory/REGIME_P1_where_classical_fails.md",
+    "trajectory/PIPELINE_GATE_LOG.md",
+    "trajectory/STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md",
+    "trajectory/e1/",
+    "trajectory/e3/",
+    "trajectory/e2/",
+    "trajectory/results_e1_*.json",
+    "trajectory/results_e3_*.json",
+    "trajectory/e3_human_rating_pack.json",
+    "papers/EVIDENCE_LEDGER.md",
+    "papers/EVIDENCE_MANIFEST.json",
+    "papers/CLAIM_GLOSSARY.md",
+    "papers/SEQUENTIAL_PIPELINE.md",
+    "papers/AZ_EXECUTION_PLAN.md",
+    "AGENTS.md"
+  ],
+  "exclude_from_scientific_commit": [
+    "trajectory/runpod_partial/",
+    "trajectory/e1_official_m0.log",
+    "trajectory/e1_official_m0_ownstack.log",
+    "trajectory/tokenizer.json",
+    "trajectory/e1/__pycache__/",
+    "trajectory/e2/__pycache__/",
+    ".DS_Store",
+    ".autonomous/"
+  ],
+  "gitignore": {
+    "blocks_e1_json": false,
+    "note": "*.jsonl and checkpoints ignored; trajectory/results_*.json are NOT ignored \u2014 gap was never-committed, not ignore rules"
+  }
+}

@@ -1,148 +1,147 @@
-# Research Program — from a copying gap to a theory of abstraction
+# Research Program — boundary conditions for reliable held-out copying
 
-*Written 2026-07-18. The organizing frame for the nano-lm work: every experiment is a
-consequence of this program, not the other way around. Paper 1 is the first test of a
-broader idea, not the destination.*
+*Baseline frozen 2026-07-30 by Scientific Research Council audit (accepted).
+Operating lockfile for priorities and claim discipline:
+`papers/EMPIRICAL_FOUNDATION.md`. This file is the organizing frame; every experiment
+is a consequence of that lockfile, not the other way around.*
+
+## Surviving contribution (interpretation lock)
+
+**Not claimed:** "Transformers cannot perform deterministic extraction."
+
+**Claimed:** Under low-diversity extraction regimes, small transformers can converge
+to closed-set prediction strategies that fail held-out symbolic emission; diversity,
+adaptation regime, and deterministic verification change the reliability profile.
+
+Roadmap goal: isolate **boundary conditions** under which each approach works —
+not prove a broad architectural thesis.
+
+## Claim discipline (non-negotiable)
+
+1. **No mechanism claim beyond measured evidence.** Behavioral deltas are facts;
+   circuit/pathway stories need their own preregistered tests (E2 for LoRA
+   universes; Stage M only after E1–E3).
+2. **Morphology remains descriptive** until a preregistered causal analysis
+   (C-3 surfaced morphological re-inflection as the dominant miss pattern; causal
+   status open).
+3. **Pointer results** = "this implementation does not close the OOD gap," not
+   evidence against all copy mechanisms (`scribe/pointer/`).
+4. **Verification claims** are scoped to the verifier relation \(R\) and the
+   measured distribution — not open-world hallucination elimination. Fabric is a
+   regression harness until E1–E3 land.
+5. **Science object ⊥ systems object** in claims (Paper 1 vs Paper 2).
 
 ## Mission
 
-**Understand when and why language models transition from memorizing surface forms to
-learning reusable representations.** The held-out *value-copying* failure we measure is
-one observable of that deeper phenomenon — a window into representation learning, not an
-isolated benchmark.
+Measure when and why small LMs fail held-out *value copying* on a structured
+extraction task, and characterize which interventions (diversity, adaptation,
+data scale, deterministic verification) change the reliability profile — with
+pre-registered decision rules and immutable JSON artifacts.
 
-## Long-term objective
+## Measured foundation (grounded in `trajectory/` JSONs)
 
-A **predictive theory** of how representational capacity, optimization, and data interact
-to produce *abstraction* instead of *memorization* — stated well enough to predict, for a
-new (size, stack, objective), whether held-out copying will be near-total or near-solved.
+| Fact | Status | Artifact anchors |
+|---|---|---|
+| Field localization (open-vocab only; closed fields = 0) | Established | anchors / fieldwise JSONs |
+| Own-stack full-FT configs: no monotonic diluted-gap collapse with N (18.3 → 18.7 → 16.9; unequal token budgets) | Supported (descriptive) | `pretrain/AUDIT.md`; `scale/AUDIT.md`; `results_ownstack_v2_160m_fullft.json` |
+| Stack-dominant vs Pythia at matched size | Established | fullft vs `results_arm1_v2_pythia-160m.json` |
+| Weak-base × full-FT interaction; LoRA / Chinchilla substitutes | Established | lora / chinchilla JSONs |
+| Factorial corner 3.2B+LoRA → 4.2±0.9 (≈Pythia); seed \|Δ\|=0.00 | **Established** | `results_corner_3p2b_lora_seed{0,1}.json` |
+| Slot diversity causal (+66.7 pts, H-slot SUPPORTED) | Established | `results_sweep_10m.json` / sweep_eval/ |
+| Lexical interference (C-1b) | **REFUTED** | `results_interference_10m.json` |
+| C-3 T/B/L mechanistic factors | T/B **REFUTED**; L UNRESOLVED | `results_c3_10m.json` |
+| Morphology residual | Descriptive only | C-3 error census |
+| Fabric presented-error → 0 under rules-strong \(R\) | Existence proof (scoped) | `fabric/results_slice_v1.json` |
+| Pointer/copy head (supervised) | H-copy **REFUTED** for this impl | `scribe/pointer/` |
+| E1 non-LM utility kill-gate | **KILL** (H-substrate); ecology general | `results_e1_utility.json` |
+| E3 normalize construct | Auto: exact **not** overstated (0 rescues); agent-rubric 0/100; dual-clinician open | `results_e3_normalize_construct.json`; `results_e3_human.json` |
+| E2 LoRA universes | **GATED / STOP** (no RESULT) | `PREREG_E2_lora_universes.md` |
 
-## The scientific question
+## Paper split (mandatory)
 
-Not "does the copying gap shrink?" but **"what governs the transition from copying to
-abstraction?"** The first framing yields one number; the second generates hypotheses.
+| Paper | Scope | Must not claim |
+|---|---|---|
+| **Paper 1 (α) — measurement** | Held-out copying failures; field localization; diversity effects; scaling/adaptation interactions; reproducible benchmark/instrument | Architecture thesis; fabric-as-product; LoRA "geometry preservation"; mechanism-solved language |
+| **Paper 2 (β) — verification** | Deterministic verification framework; soundness conditions under decidable \(R\); abstention/review economics; adversarial verifier evaluation | Transformer mechanism dependency; open-world zero-hallucination |
 
-## Core hypothesis (refined 2026-07-19 by the Pythia fieldwise data)
+Manuscript map:
 
-A **capacity/representation threshold** exists. Below it: memorization and literal copying
-dominate, representations are local, and held-out values fail to copy (we measure a
-near-total ~80–87-pt value-level gap at 3–10M). Above it: abstraction becomes cheaper,
-reusable copy/retrieval features emerge, and the held-out gap collapses (single digits by
-Pythia-160M). Paper 1 is *evidence consistent with* this hypothesis — not proof, because
-the nano→Pythia step also changes the training stack.
+- Paper 1 core: `papers/latex/paper1.tex` / `papers/paper1_draft.md`
+- Paper 1 empirical companion (within-stack / factorial / diversity / Phase C):
+  historically drafted as `papers/paper2_draft.md` — **reclassified as Paper-1
+  measurement extension** under this baseline (filename retained for git history)
+- Paper 2 (verification systems): Stage G/A + `fabric/` evidence; draft still to
+  be written under β scope — do not sell as mechanism paper
 
-**Refinement — the threshold is per-slot, set by training diversity.** The clean ladder
-(2026-07-19) shows the transition is not one capability switching on: Pythia solves the
-~190-value complaint slot and the 18-value medication slot outright (clean gap 0.0) yet
-fails the 5-value allergy slot *totally* (100% at 410M — identical to the 3M anchor).
-Copy-vs-classify is settled slot-by-slot: a slot whose training-value diversity is low
-enough to memorize as a closed set never induces a copy mechanism, at any tested scale.
-This upgrades the hypothesis from "capacity buys abstraction" to **"abstraction is
-induced per-slot when diversity makes memorization uncompetitive, given sufficient
-capacity"** — **now directly supported (2026-07-19): the pre-registered type-controlled
-sweep fired H-slot SUPPORTED (diversity effect 66.7 pts, monotonic, position innocent,
-categorical per-type flips; two types never flip → token-coverage second factor at the
-margin)** — and it makes P4 concrete: vary slot diversity at fixed scale and find the
-diversity threshold curve; predict the allergy failure persists in much larger models on
-this recipe (a cheap frontier-model external-validation test).
+Legacy P2/P3/P4/P5 labels in older notes meant "causality / mechanism / generality /
+theory." Those are **retired as paper IDs**. Mechanism and generality remain
+research stages gated by E1–E3, not Paper-2 content.
 
-## Null hypotheses (stated up front)
+## Kill-gate priority order
 
-- **H0a** — the gap is independent of model size.
-- **H0b** — the gap is entirely a training-stack effect (data/tokenizer/architecture/FT).
-- **H0c** — the gap is an evaluation artifact.
-- **H0d** — the gap disappears under proper measurement.
+Kill-gate status (2026-07-30):
 
-Status: **H0c and H0d are substantially rejected** — the multi-instance instrument, the
-determinism cross-checks, and the dilution correction each made the phenomenon *sharper*,
-not smaller (single-instance was a biased hard draw; the clean value-level gap is ~80–87,
-larger than the diluted 18). **H0b is now SUPPORTED (2026-07-19, one training run):** the
-pre-registered OWNSTACK_160M experiment ran — own-stack 160M, identical recipe, same
-instrument: diluted gap **16.9 ± 1.7** (clean 66.6 ± 5.0; alg clean still 100). The
-own-stack curve is flat across **50× of scale** (18.3 → 18.7 → 16.9) where Pythia-160M
-reads 3.5 — the decision rule fires STACK-dominant. **H0a is thereby also strongly
-supported within-stack** (scale alone does not move the gap under this recipe). Caveats:
-single training run; ~16× under-Chinchilla for 160M (the PREREG's "within this recipe"
-framing applies); the factor isolations (2026-07-19) then revealed the stack effect's STRUCTURE: LoRA on
-the same checkpoint reads 7.1 ± 1.2, and — run by a peer session on an H100 — the
-Chinchilla control (3.2B tokens, full FT retained) reads 7.0 ± 1.0: indistinguishable at single-run resolution (per-cell seed
-variance unmeasured — duplicate finetunes designed). Data and method are SUBSTITUTES, not additive components — the large gap is
-the interaction of an under-trained base with full-parameter adaptation; either escape
-recovers the same ~10 pts. Both finetuning methods reach ≈0 train loss (memorization is
-not the differentiator; destroying the copy pathway is). The 5-value allergy slot is at TOTAL failure in all five own-stack configs and
-pythia-410m, 83.6 at pythia-160m — but 24.6 (largely solved) in the pythia-1b third
-draw: NOT universal, and every alg number is type-level n=1 ('sulfa drugs' is the only
-held allergy type). Slot diversity stays a hypothesis pending the type-controlled sweep. Missing factorial corner: 3.2B+LoRA (base preserved, ~30 min) —
-do the escapes compound toward Pythia's 3.5 or floor at ~7?
+1. **E1** — **KILL** (`trajectory/PREREG_E1_nonlm_baseline.md`, `results_e1_utility.json`).
+   Generative nano core optional; α+β must be substrate-agnostic in product claims.
+2. **E3** — auto arm **EXACT_NOT_OVERSTATING_BY_NORMALIZE**; agent-rubric
+   **EXACT_SURVIVES**; dual-clinician/IAA open
+   (`trajectory/PREREG_E3_faithfulness_construct.md`).
+3. **E2** — prereg frozen, **GATED / STOP** (no RESULT)
+   (`trajectory/PREREG_E2_lora_universes.md`).
 
-## Theory tree (separate theory from evidence; each arrow needs its own evidence)
+Fabric/v2 / NanoScribe architecture expansion remains **STOP**. Details:
+`papers/EMPIRICAL_FOUNDATION.md`.
 
-```
-capacity ──▶ representation ──▶ retrieval/copy circuits ──▶ held-out copying ──▶ the gap
-   (P2)          (P3)                  (P3)                       (P1 ✓)          (P1 ✓)
-```
+## Null hypotheses (status)
 
-## Paper roadmap
+- **H0c / H0d** (eval artifact / measurement error): substantially rejected —
+  multi-instance instrument and clean metric sharpened the phenomenon.
+- **H0b** (stack / recipe, not raw param count alone): **SUPPORTED** within this
+  recipe — own-stack 160M full-FT flat; corner closes most of the cross-stack diluted
+  gap via data×method.
+- **H0a** (gap independent of size within-stack): supported only as a **descriptive**
+  observation under evaluated recipes (no monotonic collapse); parameter count was
+  not isolated from pretraining exposure (nano 32.8M vs ~200M / 3.2B).
 
-| Paper | Claim | Question | State |
-|---|---|---|---|
-| **P1** | Observation — the gap collapses; near-total on real held-out values | *What is the phenomenon?* | **submission-ready** (Reviewer-#2 clean; workshop/Findings) |
-| **P2** | Causality — scale vs. training stack | *Does scale alone explain it?* | kernel built (`trajectory/kaggle_ownstack_160m.py`), pre-registered, awaiting a T4 run |
-| **P3** | Mechanism — *why?* | *Which circuits replace copying?* | design drafted (`trajectory/PREREG_stageM.md`): the non-gated within-stack *failure* mechanism Q(M) is specced + locally runnable; the gated scale-collapse contrast is a post-P2 slot |
-| **P4** | Generality | *Does it hold across data/arch/tokenizer/objective?* | future (Stage F/O/R matrix, paper §8) |
-| **P5** | Theory | Unified capacity→abstraction account with predictive power | the end goal |
+Caveats remain: seed/factorial underpower on some cells; LoRA mechanism unidentified;
+morphology descriptive; external validity of synthetic world open; E1 KILL demotes LM-product frame; E3 dual-clinician pending.
 
-## The experimental ladder (every experiment answers exactly one question)
+## Measurement principles
 
-> **Question → Prediction → Measurement → Decision.**
+1. Consistency — one instrument across rungs.
+2. Reproducibility — content-addressed inputs, frozen tags, byte-exact re-score checks.
+3. Power — mean ± across-instance SD; multi-instance over single hard draws.
+4. Calibration — clean vs diluted; template-vs-value control.
+5. Independent validation — adversarial audit + fresh-eyes review before claims ship.
+6. Claim discipline — see above; science ⊥ systems.
 
-Worked example (P2): *Does scale alone explain the collapse?* → Prediction: an own-stack
-160M, same recipe, also collapses (gap → single digits). → Measurement: diluted + clean
-gap on m0–m4. → Decision (pre-registered): gap ≥14 ⇒ STACK-dominant; ≤6 ⇒ scale plausible
-within the family; 6–14 ⇒ add 40M/80M. No experiment runs without this four-line spec.
+## Success ladder (recalibrated)
 
-## Measurement principles (discovered the hard way; now non-negotiable)
+- **L1 — robust observation.** ✅ (gap; field localization; instrument)
+- **L2 — empirical laws under boundary conditions.** ~here (diversity causality;
+  within-stack flatness; adaptation×data interaction; shared residual floor)
+- **L3 — substrate / construct validation.** E1 **KILL** · E3 auto provisional · E3 human pending
+- **L4 — adaptation-mechanism discrimination.** E2 blocked (GPU)
+- **L5 — predictive theory of reliability regimes.** destination, after L3–L4
 
-1. **Consistency** — one instrument across all rungs (the single→multi-instance fix).
-2. **Reproducibility** — content-addressed inputs, frozen tags, byte-exact re-score checks.
-3. **Power** — mean ± across-instance SD; enough held items that a few hard tokens don't
-   swing the estimate.
-4. **Calibration** — the metric measures what it names (the diluted→clean value-level fix;
-   the template-vs-value control).
-5. **Independent validation** — adversarial audit + a fresh-eyes Reviewer pass before any
-   claim ships (AAEA audit and the T1.5 review both caught real errors here).
+## Resource allocation
 
-## Decision framework (gate every proposed experiment)
-
-Run it only if it does at least one of: **improve measurement · test causality · test
-mechanism · test generality.** If it does none, it does not run — this is what keeps the
-program from drifting into infrastructure or one-more-model churn.
-
-## Success ladder (do not define success as "publish")
-
-- **L1 — interesting observation.** ✅ reached (the gap; the field-localization).
-- **L2 — robust empirical law.** ~here (consistent instrument, near-total clean gap,
-  measurement lessons) — completed by P1 submission + P2's within-stack curve.
-- **L3 — causal explanation.** P2 (scale vs. stack).
-- **L4 — mechanistic explanation.** P3 (Stage M).
-- **L5 — predictive theory.** P5 — the destination.
-
-## Resource allocation (guard against infrastructure-heaviness)
-
-≈ **40% writing · 30% experiments · 20% theory · 10% infrastructure.** Theory is
-under-weighted in most projects and is the highest-leverage under-investment here.
+≈ **40% writing (Paper 1 sync + Paper 2 β draft) · 30% E1/E3 experiments ·
+20% theory/claim hygiene · 10% reproducibility packaging.** Fabric expansion is
+not in the budget until kill-gates clear.
 
 ## Pointers
 
-- Tactical roadmap + dates: `~/.claude/plans/calm-frolicking-newell.md` (O1–O5, M1–M5).
-- P1 manuscript: `papers/paper1_draft.md`; running audit: `papers/writing_audit.md`.
-- P2 design + kernel: `trajectory/PREREG_ownstack_160m.md`, `trajectory/kaggle_ownstack_160m.py`.
-- P4 axes matrix: paper §8 (Stage F/O/R/M).
+- Lockfile / kill-gates: `papers/EMPIRICAL_FOUNDATION.md`
+- Master plan (with council override): `papers/MASTER_PLAN.md`
+- Artifacts + env + CI: `trajectory/REPRODUCIBILITY.md`, root `README.md`
+- E1 prereg + results: `trajectory/PREREG_E1_nonlm_baseline.md`, `results_e1_utility.json`
+- E3 prereg + results: `trajectory/PREREG_E3_faithfulness_construct.md`
+- E2 prereg (blocked): `trajectory/PREREG_E2_lora_universes.md`
 
-## The one-sentence annual target
+## One-sentence annual target
 
-> *We identify a reproducible transition in held-out copying behavior between nano-scale
-> and larger language models, show it is robust to measurement artifacts, disentangle
-> scaling from training-stack effects, characterize its mechanistic basis, and develop a
-> predictive framework linking capacity to abstraction* — a statement that progresses
-> observation → causality → mechanism → theory, which is the whole program in one line.
+> We measure reproducible boundary conditions under which small transformers fail
+> held-out symbolic emission, show how diversity, adaptation regime, and
+> deterministic verification change the reliability profile, and validate whether
+> the LM substrate is necessary before any architecture product claim.

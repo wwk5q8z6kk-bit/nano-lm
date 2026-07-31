@@ -10,13 +10,13 @@
 
 ## Abstract
 
-We study a specific faithfulness failure in small language models finetuned to convert short clinical dialogues into structured summaries: a **held-out copying gap** — the model copies field values it saw during finetuning but errs on held-out values under held-out phrasings, even though both are present verbatim in the input. In our own from-scratch models (3.15M and 10M parameters) this gap is large — **18.3±1.3 and 18.7±1.5 points** of recall on the same multi-instance instrument. The failure localizes entirely to open-vocabulary fields and is exactly zero in closed-value fields. On the Pythia ladder the observed gap is substantially smaller, with a field-localized residual on the lowest-diversity open slot; a within-stack control and a pre-registered diversity sweep separate stack/adaptation/data effects from a pure scale story. On a pre-registered utility, non-generative baselines dominate official generative LM references (**KILL**); this paper reports that result honestly and does not advocate a generative substrate. Primary metrics are exact string match; human-accepted equivalence is an explicit unvalidated limitation.
+We study a specific faithfulness failure in small language models finetuned to convert short clinical dialogues into structured summaries: a **held-out copying gap** — the model copies field values it saw during finetuning but errs on held-out values under held-out phrasings, even though both are present verbatim in the input. In our own from-scratch models (3.15M and 10M parameters) this gap is large — **18.3±1.3 and 18.7±1.5 points** of recall on the same multi-instance instrument. The failure localizes entirely to open-vocabulary fields and is exactly zero in closed-value fields. On the Pythia ladder the observed gap is substantially smaller, with a field-localized residual on the lowest-diversity open slot; a within-stack control and a pre-registered diversity sweep separate stack/adaptation/data effects from a pure scale story. Across evaluated own-stack configurations the gap did not collapse monotonically with parameter count; pretraining exposure was not fully isolated (3.15M used 32.8M tokens vs ~200M / 3.2B later). On a pre-registered utility, **M1** exceeds the best evaluated generative reference under frozen \(U\) (**KILL**); this paper reports that result honestly and does not advocate a generative substrate. Primary metrics are exact string match; dual-clinician equivalence is unvalidated (agent-rubric audit reported).
 
 ## Scope (locked)
 
 This is **measurement only** — an empirical / negative-result account of when small LMs fail held-out emission, plus instrument lessons (under-powered single-instance eval; training nondeterminism at 1B).
 
-- **§0 kill-gate** is part of the paper (non-generative baselines dominate utility).
+- **§0 kill-gate** is part of the paper (M1 exceeds best generative reference under frozen \(U\)).
 - **Exact-match construct limitation** is stated in §0 and Limitations.
 - **Not** a systems, architecture, product, or “generative substrate wins” paper.
 - E2 / fabric / residual continua remain **gated** and are not part of this release.
@@ -50,3 +50,20 @@ GitHub: https://github.com/wwk5q8z6kk-bit/nano-lm
 ```
 
 When an arXiv identifier exists, replace the GitHub line with the arXiv URL in this README and in citations.
+
+## Research data map
+
+For the post-E1 decision pipeline and claim→evidence index, start here:
+
+| Doc | Role |
+|-----|------|
+| [`SEQUENTIAL_PIPELINE.md`](SEQUENTIAL_PIPELINE.md) | Staged gates (cursor) |
+| [`AZ_EXECUTION_PLAN.md`](AZ_EXECUTION_PLAN.md) | Path A/B/C overlay |
+| [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Proven / supported / speculation |
+| [`CLAIM_GLOSSARY.md`](CLAIM_GLOSSARY.md) | Forbidden claims |
+| [`EMPIRICAL_FOUNDATION.md`](EMPIRICAL_FOUNDATION.md) | Owner lockfile |
+
+**E1 KILL evidence:** `../trajectory/results_e1_utility.json`  
+**Diversity +66.7:** `../trajectory/results_sweep_10m.json`  
+**E3 construct:** `../trajectory/results_e3_normalize_construct.json`, `../trajectory/results_e3_human.json`  
+**E4 status:** BLOCKED (protocol frozen; no run)

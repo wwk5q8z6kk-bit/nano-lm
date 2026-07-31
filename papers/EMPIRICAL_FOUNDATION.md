@@ -14,15 +14,19 @@ and systems object are entangled; do not sell them as one story.*
   **falsified** (E1 KILL; official M0 closed 2026-07-31). Do not revive without a new
   utility or materially different problem formulation.
 - **Residual doubt mass (ordered):** external validity / synthetic world; oracle
-  verifier → open-world overclaim; human faithfulness (E3 human arm pending);
+  verifier → open-world overclaim; clinician faithfulness (E3 agent-rubric done; dual-clinician/IAA pending);
   LoRA mechanism unidentified (E2 blocked); seed/factorial underpower; morphology
   residual; train nondeterminism. Classical baseline **executed** (E1).
 - **Kill threats status:** T5 wrong substrate **FIRED (E1 KILL)** · T3 exact-match
-  construct **provisionally stable** under normalize (E3 auto; human pending) ·
+  construct **provisionally stable** under normalize + agent-rubric (dual-clinician/IAA pending) ·
   H4 wrong objective open · LoRA U1–U4 unidentified (E2 blocked) · oracle verifier
   overclaim open.
 
 ## The measured foundation (immutable JSONs in trajectory/)
+
+> **Packaging:** Paper α spine JSONs are in `paper-alpha-v1`. E1/E3 utility/construct
+> primary files are mapped in `papers/EVIDENCE_MANIFEST.json` and must be committed
+> for public-repo reproducibility of KILL / EXACT_SURVIVES.
 
 *Mechanism-neutral facts. Do not read mechanism into these rows.*
 
@@ -74,9 +78,9 @@ or “precision” marketing without reference to \(U\).
 
 ## Paper split (mandatory)
 
-- **Paper 1 / α — measurement:** field localization, within-stack scale flatness,
-  diversity causality, scaling/adaptation interactions, residual description,
-  reproducible instrument. **No** architecture thesis, **no** systems punchline,
+- **Paper 1 / α — measurement:** field localization, descriptive own-stack
+  scale/config comparison (not parameter-only 50× law), diversity causality,
+  scaling/adaptation interactions, residual description, reproducible instrument. **No** architecture thesis, **no** systems punchline,
   **no** LoRA geometry story.
 - **Paper 2 / β — verification:** may continue only as a narrow soundness /
   economics note under decidable \(R\). **Not** entitled to sell a generative
@@ -85,7 +89,7 @@ or “precision” marketing without reference to \(U\).
 ## Paper α scope lock (2026-07-31) — FINAL
 
 **Paper α IS:** field localization; diversity effect (+66.7 held-type recall,
-D5→D80); within-stack scale flatness; base×method interaction at measured
+D5→D80); descriptive own-stack scale/config comparison; base×method interaction at measured
 resolution; residual floor on low-diversity open slots; measurement lessons
 (multi-instance eval, clean vs diluted, seed/determinism checks); honest E1
 kill-gate placement (§0 of `paper1_draft.md`, option **A** — short subsection
@@ -99,13 +103,13 @@ token-coverage effect-size claims beyond description; any revival of the killed
 product frame on this task without a new utility/problem.
 
 **E1 placement (locked):** option **A** — short subsection inside Paper α
-(“Non-generative baselines dominate utility on this task”).
+(“Non-generative baseline M1 exceeds generative references under frozen U”).
 
 **Exact-match limitation (locked):** primary metrics are exact string match;
-normalize-then-match rescues 0/486 M0 exact failures (E3 auto) but human-accepted
-equivalence is **unvalidated**. Gaps may overstate failure vs a soft/human rubric.
-Bounded human study remains optional future work; if skipped, this limitation
-stays explicit in Paper α.
+normalize-then-match rescues 0/486 M0 exact failures (E3 auto); agent-rubric audit
+0/100 acceptable (`agent-rubric-pass-1`). Dual-clinician / human-accepted
+equivalence remains **unvalidated**. Gaps may overstate failure vs a soft/human
+rubric. This limitation stays explicit in Paper α.
 
 **Soft-spot bans:** LoRA mechanism = unidentified · token coverage = descriptive
 or deferred · open-world verify claims = none in α · seed variance = report only
@@ -117,7 +121,7 @@ problem), not a reopen of the killed substrate claim.
 
 ## What survives cleanly (α-eligible)
 
-Field localization · within-stack scale flatness (~50×) · diversity +66.7 ·
+Field localization · descriptive own-stack scale/config comparison · diversity +66.7 ·
 weak-base × full-FT interaction at measured resolution · shared residual floor on
 hardest low-diversity slot · multi-instance / clean-vs-diluted discipline.
 
@@ -165,15 +169,61 @@ instrument. Do not reopen gated tracks without a new written objective.
 | Clear regime where generative proposals beat classical methods under a *new* written \(U\) | “When do generative proposals add value?” program |
 | Information bound: copy needs SNR > prior gap, measured | Theory+experiment program |
 
+## Decision pipeline index (A→Z overlay)
+
+*Council rule: uncertainty is framing, not missing experiments. Never run an
+experiment that cannot change the roadmap. **E1 already KILL — do not rerun Days 1–7.***
+
+| Doc | Role |
+|-----|------|
+| `papers/SEQUENTIAL_PIPELINE.md` | **Authoritative** staged plan: constants + Gate 0–7 if/else |
+| `papers/AZ_EXECUTION_PLAN.md` | Path A/B/C overlay; E2/E3/E4 roles |
+| `papers/EVIDENCE_LEDGER.md` | Proven / supported / plausible / speculation / falsified |
+| `papers/CLAIM_GLOSSARY.md` | Forbidden claims + approved hedges |
+| `trajectory/DECISION_P1_program_lock.md` | E1/E3/E2 decision lock |
+| `trajectory/REGIME_P1_where_classical_fails.md` | Product regime **R★** definition (**protocol only**; no E4 measurement) |
+| `trajectory/PREREG_E4_Rstar_killgate.md` | **P2 protocol frozen** — \(U_{R★}\), baselines, E4 decision rule (**no `results_e4_*`**) |
+| `papers/EVIDENCE_MANIFEST.json` | Machine-readable claim → prereg → code → outputs → tag map |
+
+**Position:** Phase 0–1 **DONE** (Outcome 1: non-LM wins). Paper α frozen.
+E2/fabric/old-task continua **STOP**.
+
+**Branches:** Path A = Idle/science (optional E3, optional E2). Path B = product
+(**P2** docs → **E4** kill gate on R★ → classical / mixed-routing / generative
+wedge). Path C = pure research sequence (E3→E2→generalization→interp). See
+`papers/AZ_EXECUTION_PLAN.md`.
+
+**E4** = Stage 4 new-regime kill gate (only product-unlocking experiment).
+**Cursor:** Gate 3 PASS — protocol frozen at `trajectory/PREREG_E4_Rstar_killgate.md`;
+E4 **BLOCKED** until owner authorizes Stage 4. Gates 0–3 PASS. Log:
+`trajectory/PIPELINE_GATE_LOG.md`.
+
+## P1 decision lock (2026-07-31) — docs only
+
+**Status:** documentation/evidence layer only. **No runs. No E2 / fabric /
+residual continua. No Paper α reopen. No additional LM scaling.**
+
+- **Decision document:** `trajectory/DECISION_P1_program_lock.md`
+  — freezes claims + confidence; records E1 kill gate precisely; states E3
+  construct requirements; keeps E2 gated; prioritizes information per unit effort.
+- **Product annex (optional path):** `trajectory/REGIME_P1_where_classical_fails.md`
+  — regime **R★** only; excludes E1 world; **P2** (utility + kill-gate on R★)
+  required before any product experiment.
+- Paper α public freeze and E1 KILL for *this* task remain in force.
+
 ## Immediate next actions (owner-ordered) — FREEZE AND WRITE
 
 1. ~~Execute E1~~ **DONE — KILL** (official M0 closed 2026-07-31, RunPod CUDA).
-2. ~~Lock Paper α prose~~ **MARKDOWN POLISH COMPLETE** (`papers/paper1_draft.md`;
-   §0–§10; Results §7.1–§7.5; ready for LaTeX/camera-ready or review).
-3. E3 human ratings: optional/bounded only; if skipped, keep exact-match limitation
-   explicit (do not block α on a full re-eval campaign).
+2. ~~Lock Paper α prose~~ **DONE** (camera-ready + GitHub `paper-alpha-v1`).
+3. ~~E3 bounded agent-rubric audit~~ **DONE** (EXACT_SURVIVES on instrument; IAA/dual-clinician still open).
 4. **E2 / fabric / residual continua: STOP** until an explicit written re-scope.
-   No LoRA mechanism sentences. No product revival on this task.
+   No LoRA mechanism sentences. No product revival on the E1 task.
+5. ~~P1 decision lock~~ **DONE** (`trajectory/DECISION_P1_program_lock.md` +
+   regime annex). Product path (if any): **P2 protocol frozen**; **E4 measurement
+   absent / aspirational** until owner authorizes Stage 4 — still no runs from curiosity.
+6. **Public packaging:** commit the E1/E3 evidence bundle listed in
+   `papers/EVIDENCE_MANIFEST.json` so KILL / EXACT_SURVIVES are repository-reproducible
+   (local files exist; were untracked vs `paper-alpha-v1`).
 
 ## E1 result (2026-07-30; official M0 2026-07-31) — KILL
 
@@ -207,17 +257,30 @@ Artifact: `trajectory/results_e1_utility_sensitivity.json`.
 non-LM and the prereg KILL rule stays true vs official M0 (\(U=0.925\)).
 Official M0 never overtakes M1 on \(U\). Default margin M1−official ≈ **+0.074**.
 Even zeroing all penalties (\(U=P\)) leaves M1 and official M0 tied at 1.0, which
-still satisfies KILL under \(\delta=0.05\). Increasing cost or hallucination
-penalties *widens* M1's lead. KILL would require deforming \(U\) outside
+still satisfies KILL under \(\delta=0.05\). Increasing cost (\(C\)) or review-load
+(\(
+ho\)) penalties *widens* M1's lead. KILL would require deforming \(U\) outside
 plausible design (e.g. rewarding compute, or discarding precision) — not moderate
 re-weighting.
 
-## E3 result (2026-07-30) — auto arm
+**Symbol note:** \(
+ho\) is **review load** (fields flagged / \(n\)), not hallucination.
+Hallucination rates are outside \(U\) v1. Sensitivity coefficient names
+\((lpha,eta,\gamma,\delta)_C\) are penalty weights on \((M,
+ho,L,C)\); decision
+margin \(\delta=0.05\) is separate.
 
-Normalize rescues **0**/486 M0 exact failures (gap shrink **0.0 pts**). Verdict
-auto: `EXACT_NOT_OVERSTATING_BY_NORMALIZE` → provisional **EXACT_SURVIVES**.
-Human pack frozen (`e3_human_rating_pack.json`, n=100) — **BLOCKED** on rater.
+## E3 result — auto + Stage 1 human (2026-07-31)
+
+**Auto:** normalize rescues **0**/486 M0 exact failures (gap shrink **0.0 pts**).
+**Human (bounded pack n=100):** faithful-rate **0.00**; human-acceptable **0/100**;
+qualitative open-slot gap does **not** shrink materially.
+**Verdict:** **EXACT_SURVIVES** (prereg). Gate 1 PASS.
+Artifacts: `results_e3_normalize_construct.json`, `results_e3_human.json`,
+`STAGE1_E3_CONSTRUCT_FIRST_PRINCIPLES.md`.
 Prereg: `trajectory/PREREG_E3_faithfulness_construct.md`.
+Limitation remains: single-pass/synthetic rubric ≠ dual clinician IAA; synonym
+ontology (H4) untested. Does **not** unlock product or old-task runs.
 
 
 ## Exact-match construct validity (2026-07-31) — limitation locked
@@ -235,10 +298,10 @@ counts as errors. That can inflate the reported gap vs a soft/human rubric, but
 does not by itself invent the qualitative pattern (closed fields ≈0 gap; open
 low-diversity slots fail).
 
-**Bounded empirical check:** SKIPPED as a new campaign (human pack exists but is
-rater-blocked; no new annotation infrastructure in this freeze). Existing E3 auto
-normalize pass stands as the cheap bounded check already run. **Paper α must keep
-the explicit limitation** that exact-match ≠ validated human equivalence.
+**Bounded empirical check:** **DONE** (Stage 1) on frozen pack n=100 —
+faithful-rate 0.00; EXACT_SURVIVES. **Paper α must still keep** the limitation that
+exact-match ≠ dual-clinician / synonym-ontology equivalence (IAA absent; H4 open),
+but must **not** imply failures are mostly formatting noise.
 
 **Future minimal human study (if ever):** n≈100 frozen items from
 `e3_human_rating_pack.json`; rubric {exact, normalized, acceptable paraphrase};
@@ -249,5 +312,19 @@ this synthetic world.
 ## E2 status
 
 Prereg written (`trajectory/PREREG_E2_lora_universes.md`). **GATED / STOP** under
-post-E1 freeze. No U3/U1–U4 runs until written re-scope. Stray `e2-u3-earlystop`
-pod terminated 2026-07-31.
+post-E1 freeze. No U3/U1–U4 runs until written re-scope. No `results_e2_*.json`.
+Stray `e2-u3-earlystop` pod terminated 2026-07-31. Do not claim RUNNING.
+
+## R★ / E4 status (measurement absent)
+
+Regime definition and E4 protocol exist as **docs only**:
+`trajectory/REGIME_P1_where_classical_fails.md`, `trajectory/PREREG_E4_Rstar_killgate.md`.
+**No** `results_e4_*` artifacts. Generative-value claims under R★ are **aspirational /
+untested** until Stage 4 is owner-authorized. Not part of Paper α.
+
+## Public vs local evidence packaging
+
+Tag `paper-alpha-v1` (= `0e01d73` = current `origin/master` as of packaging pass)
+anchors the measurement spine JSONs. Post-α **E1 KILL** and **E3 construct** primary
+files were local-untracked at discovery time; authority for those claims is the local
+bundle mapped in `papers/EVIDENCE_MANIFEST.json` pending an owner commit.

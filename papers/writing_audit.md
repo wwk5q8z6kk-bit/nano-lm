@@ -1,3 +1,9 @@
+> **SRC baseline 2026-07-30:** Paper IDs re-split — Paper 1 measurement / Paper 2
+> verification. Historical "Paper 2 causality" draft is Paper-1 companion. Stale
+> "awaiting T4 / missing corner" checklist items below are historical; corner and
+> own-stack cells are established in `trajectory/results_*.json`. Prefer
+> `papers/RESEARCH_PROGRAM.md` for current status.
+
 # Paper 1 — writing audit (running list)
 
 Maintained during drafting per the write-first plan. Four lists: unsupported claims,
@@ -224,7 +230,7 @@ final section renumbering; footnote the ~68/30/21% denominator; add Hoffmann cit
 
 - ☑ OWNSTACK_160M full-FT ran (7.0h T4; probe caught OOM first, micro8×accum4 fix):
   diluted 16.9±1.7, clean 66.6±5.0, alg clean still 100. Decision rule ≥14 →
-  STACK-dominant. Own-stack flat across 50× scale (18.3→18.7→16.9) vs Pythia-160M 3.5.
+  STACK-dominant. Own-stack configs show no monotonic gap collapse with N (18.3→18.7→16.9; unequal token budgets) vs Pythia-160M 3.5.
 - ☑ P1 §7 post-freeze addendum added (md+tex, one paragraph, clearly marked): the
   pre-registered control has run once and fires stack-dominant; full report = Paper 2.
 - ☑ RESEARCH_PROGRAM: H0b SUPPORTED (single run), H0a supported within-stack.

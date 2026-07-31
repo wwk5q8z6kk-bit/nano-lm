@@ -1,15 +1,21 @@
 # Scale doesn't buy copying: a within-stack control isolates the training stack in a held-out value-copying failure
 
-*Working draft — Paper 2 (causality). Companion and sequel to Paper 1 ("Held-out value
-copying in small language models"). All numbers trace to immutable JSONs under
-`trajectory/`; instrument identical to Paper 1 (5×(100 held + 100 seen), gap = seen −
-held recall, mean ± across-instance SD). Status: full-FT, LoRA, Chinchilla, the 200M+LoRA seed duplicate, the diversity
-sweep, and the 3.2B+LoRA factorial corner (both training seeds) have all landed —
-Phase A is closed. The corner compounds the two escapes to ≈Pythia level
-(4.2 ± 0.9 diluted), while a shared ~15–18-pt clean residual persists in both
-stacks. Phase C (residual mechanism) is also closed: C-1b (lexical interference)
-REFUTED; its follow-up C-3 (transition/boundary/length) REFUTED two of three
-registered factors and left the third UNRESOLVED but noise-dominated — see §3.5.*
+*Working draft — **Paper 1 measurement extension** (historically titled "Paper 2
+(causality)"; reclassified 2026-07-30 under the Scientific Research Council baseline).
+Under the locked paper split, **Paper 1 = empirical measurement** (this draft +
+`paper1_draft.md` / `latex/paper1.tex`); **Paper 2 = deterministic verification**
+(Stage G/A + `fabric/` — separate manuscript, no transformer-mechanism dependency).
+Do not cite this file as an architecture or verification thesis.*
+
+*All numbers trace to immutable JSONs under `trajectory/`; instrument identical to
+Paper 1 (5×(100 held + 100 seen), gap = seen − held recall, mean ± across-instance SD).
+Status: full-FT, LoRA, Chinchilla, the 200M+LoRA seed duplicate, the diversity sweep,
+and the 3.2B+LoRA factorial corner (both training seeds) have all landed — Phase A is
+closed. The corner compounds the two escapes to ≈Pythia level (4.2 ± 0.9 diluted),
+while a shared ~15–18-pt clean residual persists in both stacks. Phase C residual
+probes are closed: C-1b (lexical interference) REFUTED; C-3 (transition/boundary/length)
+REFUTED two of three registered factors and left the third UNRESOLVED but
+noise-dominated — see §3.5. Morphology residual is **descriptive only**.*
 
 ## Abstract (draft)
 
@@ -18,13 +24,16 @@ models (~18 points diluted, ~80–87 points on the value-level metric at 3–10M
 far smaller under the Pythia pipeline (3.5–4.2 points at 160M–410M) — but the comparison
 confounded parameter count with the entire training stack. Here we run the pre-registered
 within-stack control: a **160M-parameter model in the same architecture family, tokenizer,
-pretraining recipe (~200M FineWeb tokens), and finetuning method** as the small anchors,
+pretraining recipe (~200M FineWeb tokens for the 10M/160M weak-data cells; the 3.15M
+nano anchor used **32.8M** tokens), and finetuning method** as the small anchors,
 measured on the identical instrument. The gap **does not close: 16.9 ± 1.7** diluted
-(66.6 ± 5.0 value-level) — statistically indistinguishable from the 3.15M anchor. Across
-**50× of within-stack scale** (3.15M → 10M → 160M) the copying gap is flat
-(18.3 → 18.7 → 16.9), while Pythia at the *same parameter count* reads 3.5. The
-pre-registered decision rule fires **stack-dominant**: parameter count alone does not
-produce the collapse; properties of the training stack do. Two further arms then vary one factor each: swapping only the finetuning method
+(66.6 ± 5.0 value-level) — statistically indistinguishable from the 3.15M anchor.
+Across the evaluated own-stack configurations (3.15M → 10M → 160M) the copying gap
+did **not** decrease monotonically with parameter count (18.3 → 18.7 → 16.9). Because
+parameter count and pretraining exposure were not fully isolated, this is descriptive
+rather than a parameter-only causal result. Pythia at the *same parameter count* reads
+3.5. The pre-registered decision rule fires **stack-dominant**: the evaluated configs
+do not show a within-stack parameter-only collapse; properties of the training stack do. Two further arms then vary one factor each: swapping only the finetuning method
 (full FT → LoRA r=16 on the same checkpoint) drops the gap to **7.1 ± 1.2** diluted
 (29.6 ± 3.7 value-level); separately, scaling only the pretraining data to
 Chinchilla-optimal (200M → 3.2B tokens, full FT retained) drops it to **7.0 ± 1.0**
@@ -33,17 +42,20 @@ cell), from two entirely different interventions*. Data quantity and adaptation 
 additive components**: the large gap is specifically the interaction of an
 *under-trained base* with *aggressive full-parameter adaptation*, and fixing either
 factor alone recovers the same ~10 points. Both finetuning methods drive training loss
-to ≈0 — the difference is not whether the finetuning set is memorized but whether the
-fit destroys the pretrained copy pathway (full FT on a weak base) or leaves it intact
-(LoRA, or full FT on a robust base). A residual ~2× versus Pythia-160M (3.5 ± 0.7)
+to ≈0 — the difference is not whether the finetuning set is memorized but which
+adaptation regime is used on which base (full FT on a weak base vs LoRA, or full FT
+on a robust base). **LoRA mechanism alternatives (geometry vs ease vs early-stop vs
+module) are not identified here** — gated behind E2. A residual ~2× versus Pythia-160M (3.5 ± 0.7)
 remains for the still-unseparated breadth/tokenizer bundle. Per-slot structure sharpens the
 attribution: the residual failure concentrates in the lowest-diversity slot in every
 own-stack configuration and at Pythia-410M (total failure on the single held allergy
 type), though not universally — one Pythia-1B training draw largely solves it — a
 pattern consistent with a per-slot competition between memorization and copying — a
-**binding-and-coverage** account: reliable copying requires both sufficient slot
-diversity and adequate token coverage, with the allergy slot the strongest instance of
-the mechanism rather than its definition. A
+**binding-and-coverage** working account (behavioral): reliable copying tracks both
+sufficient slot diversity and residual hard cases under low diversity, with the allergy
+slot the strongest *instance* of the failure pattern rather than its definition.
+Token-coverage-as-driver was later revised/refuted in forms tested (C-1b); morphology
+residual is descriptive only. A
 pre-registered, type-controlled diversity sweep then tested this directly: raising one
 slot's training diversity from 5 → 80 values, at fixed everything-else, lifts held-type
 recall by **66.7 points** with categorical per-type flips (position controlled; the
@@ -68,8 +80,9 @@ ladder (40M/80M).
 
 - **Model:** own-stack GPT family (RoPE, GQA 4:1, SwiGLU, RMSNorm, tied embeddings,
   4098-vocab BPE, 512 ctx) at d=1024, L=14, H=16, KV=4, hd=64, ff=2752 → **159.3M**.
-- **Held identical to the anchors:** pretraining recipe (~200M FineWeb tokens, D≈20N for
-  the anchors; deliberately *not* rescaled — the "identical recipe" comparison), scribe
+- **Held identical to the 10M scale recipe:** pretraining ~200M FineWeb tokens (D≈20N
+  for the 10M anchor; the 3.15M nano anchor used 32.8M — not matched); deliberately
+  *not* rescaled for 160M — the "identical recipe" comparison to scale-10M), scribe
   finetune (v2 data, byte-identical generator, full FT, 3 epochs, LR 1e-4), scorer,
   eval instances (m0–m4 + inst0), both metrics (diluted + clean).
 - **Deviation (pre-authorized):** effective batch 32 realized as micro-8 × accum-4
@@ -80,7 +93,7 @@ ladder (40M/80M).
 
 ## 3. Results
 
-### 3.1 The within-stack curve is flat across 50×
+### 3.1 Own-stack configs: no monotonic gap collapse with parameter count
 
 | model | params | diluted gap | clean (value-level) gap |
 |---|---|---|---|
@@ -140,14 +153,13 @@ sharpening observations:
 
 1. **Both methods memorize.** Full FT and LoRA both reach ≈0 training loss and 100%
    parse — the difference is not *whether* the finetuning set is fit but *how*: the
-   full-parameter fit overwrites the pretrained copy pathway; the 4M-parameter low-rank
-   fit reaches the same training loss while leaving it intact — an implicit-regularization
-   account of the failure, not a capacity account.
+   full-parameter fit and the 4M-parameter low-rank fit reach the same training loss
+   with sharply different held-out gaps — a behavioral adaptation-regime effect, not a
+   settled circuit account (E2 required before "pathway preservation" language).
 2. **The slot gradient survives the own-stack interventions — with one important
    exception elsewhere.** Under LoRA at 160M, clean per-field (means ± SD over the five
-   instances): cc **0.0 ± 0.0** (solved — the complaint-copy pathway *exists* in the
-   own-stack pretrained model; full FT on the weak base was destroying it: full FT reads
-   cc 64.4 ± 7.1), med 47.1 ± 4.0, alg **100.0 ± 0.0**. Under Chinchilla pretraining
+   instances): cc **0.0 ± 0.0** (solved under LoRA — behavioral competence present; full FT on the
+   same weak base reads cc 64.4 ± 7.1). Do not read as identified copy-circuit induction, med 47.1 ± 4.0, alg **100.0 ± 0.0**. Under Chinchilla pretraining
    with full FT: cc 9.2 ± 4.4, med 25.5 ± 6.1, alg **100.0 ± 0.0** again. The allergy
    slot is at total failure in **all five own-stack configurations** and at pythia-410m;
    pythia-160m reads 83.6 ± 4.6; but the pythia-1b *third training draw* reads
@@ -270,12 +282,24 @@ requires *both* an under-trained base *and* full-parameter adaptation; removing 
 attributions ("X% method, Y% data") are refuted by the substitutability. A ~2× residual
 versus Pythia persists under every single-factor fix.
 
-**Not established:** the missing factorial corner (3.2B + LoRA — do the two escapes
-compound toward Pythia's 3.5, or floor at ~7? base checkpoint preserved, ~30-min run);
-the method effect at the *small* anchors (does LoRA rescue 3–10M models, or does escape
-require 160M-scale capacity?); which member of the remaining breadth/tokenizer bundle
-carries the final 2×; training-run variance (single run per cell; the Chinchilla cell
-also changes venue — H100 vs T4).
+**Established by the factorial corner (both seeds):** 3.2B + LoRA reads **4.2 ± 0.9**
+diluted (clean 17.7 ± 3.2); seed duplicate \|Δ\| = 0.00. Pre-registered ≤4.5 rule fires:
+escapes compound to ≈Pythia diluted level; tokenizer/architecture ~innocent *for the
+cross-stack diluted gap*. Shared clean residual (~15–18) remains in both stacks.
+
+**Not established:** the method effect at the *small* anchors (does LoRA rescue 3–10M
+models, or does escape require 160M-scale capacity?); which member of the remaining
+breadth/tokenizer bundle carries any residual beyond data×method; LoRA's causal
+mechanism (E2 GATED/STOP, no RESULT); agent-rubric faithfulness audit EXACT_SURVIVES
+(normalize 0 rescues; dual-clinician IAA open); training-run variance on every cell (Chinchilla also changes venue
+— H100 vs T4). Morphology residual causal status (descriptive only).
+
+**Established by E1 (2026-07-30):** under frozen utility \(U\), a rules/template
+extractor and a dictionary+span method beat the local 10M LM on expected utility
+(**KILL** / H-substrate). Generative LM is not necessary for this closed world.
+Verification lifts \(U\) more for error-prone proposers (M0/M3/M5) than for
+already-grounded ones (M1/M2/M4) — systems claims should be framed
+**substrate-agnostic**. Artifacts: `trajectory/results_e1_utility.json`.
 
 **Established by Phase C (§3.5):** none of the three named lexical/positional mechanisms
 (junction-transition availability, boundary type, value length) explain residual
@@ -301,28 +325,31 @@ generalizes beyond the 4 stems checked, or whether it is itself a cause or a dow
 symptom of the same representational bottleneck the three refuted factors were trying to
 locate.
 
-## 5. Next decompositions (designed, not run)
+## 5. Next decompositions (council priority order)
 
-1. **The missing factorial corner: 3.2B + LoRA** — the preserved Chinchilla base makes
-   this a ~30-minute finetune. Compounding (→ ~3.5–5) would reduce the entire own↔Pythia
-   difference to data×method with the tokenizer innocent; flooring (≈7) would implicate
-   the breadth/tokenizer bundle as a hard residual.
-2. **LoRA at the anchors** — LoRA-finetune the frozen 3.15M/10M bases (base-matched:
-   nano from dpo.pt, scale from scale10m_pretrain.pt): does escape require capacity?
-3. **Tokenizer swap** — own-stack with a ~50k vocab: is the residual value fragmentation?
-4. **Slot-diversity intervention** — vary the allergy slot's training diversity at fixed
-   scale: the direct test of the hypothesis (type-controlled: multiple held types per condition, position varied).
-5. **Duplicate finetunes** — training-run variance per cell (single run each; Chinchilla
-   cell additionally changes venue, H100 vs T4).
-6. **Morphological re-inflection follow-up (Phase C successor, not yet pre-registered)** —
-   C-3's dominant unpredicted failure mode. The cheap no-run corpus-statistics check is
-   done (§3.5/§4): 3 of 4 testable stems show the model defaulting to the corpus-majority
-   bare inflected form via incidental exposure through unrelated trained values, not a
-   candidate-vocabulary artifact. Next: a registered probe testing whether this
-   generalizes beyond the 4 stems checked, and whether it is upstream cause or downstream
-   symptom of the same bottleneck the three refuted T/B/L factors were targeting. C-3's
-   own decision rule does not mandate this — H-stochastic did not fire — so pursuing it
-   is an owner-level choice, not a promoted next stage.
+*SRC baseline + gate update (2026-07-30). See `papers/EMPIRICAL_FOUNDATION.md`.*
+
+1. ~~**E1**~~ **DONE — KILL** (`PREREG_E1_nonlm_baseline.md`, `results_e1_utility.json`).
+2. ~~**E3 construct residual**~~ **DONE — EXACT_SURVIVES** (normalize 0/486; agent-rubric
+   audit n=100; clinician IAA open). Prereg: `PREREG_E3_faithfulness_construct.md`.
+3. **E2 — LoRA universe discrimination** — prereg frozen, **GATED/STOP** (no RESULT;
+   post-KILL). (`PREREG_E2_lora_universes.md`); ban "geometry preservation" as product path.
+4. **Paper 2 / β draft** — substrate-agnostic verification (soundness under decidable
+   \(R\); abstention/review economics using E1 \(\rho,P,U\); adversarial verifier eval).
+   No transformer-mechanism dependency.
+5. **LoRA at the anchors** (optional) — capacity question at 3–10M; not mechanism.
+6. **Morphological re-inflection** — descriptive only until its own prereg.
+
+Completed: factorial corner; diversity; C-1b; C-3; **E1 KILL**; E3 normalize auto.
+
+## 5.1 Paper 2 / β outline notes (from E1 systems metrics)
+
+| β topic | E1/E3 measured hook | Must not claim |
+|---|---|---|
+| Soundness under decidable \(R\) | Stage-A verify flags; presented precision \(P\) | Open-world zero-hallucination |
+| Abstention / review economics | \(\rho\) and \(U\) under \(\gamma\in\{0.3,0.6\}\) | LM-specific necessity |
+| Adversarial verifier eval | (not yet run) | Fabric-as-product |
+| Proposer-agnostic verify | Verify lifts M0/M3/M5 more than M1/M2/M4 | Entangle β with LoRA geometry |
 
 ---
 *All artifacts: `results_ownstack_v2_160m_fullft.json` (immutable), kernels

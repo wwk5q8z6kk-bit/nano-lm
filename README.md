@@ -42,11 +42,11 @@ allowed one measurement (plus, for v1→v2, one pre-specified sweep), and "one m
 against seen results would be bar-chasing. Each FAIL located the next lever: v1's
 position-anchored extraction → template diversity; v2's out-of-distribution hallucination
 → verification architecture; Stage G's unverifiable absence claims → the lexicon axis.
-Stage A then passed everything: with a drafting model whose intrinsic hallucination rate
-is 11.5%, the two-axis verification layer yields an output channel where **every presented
-field is correct (100% precision), every model error is routed to human review, at 19%
-review cost**. Trust came from verification architecture, not model scale — and the git
-history proves every bar preceded every result. Full trail: `scribe/AUDIT.md`.
+Stage A then passed its bars on this synthetic distribution: with a drafting model
+whose intrinsic hallucination rate is 11.5%, the two-axis verification layer yields
+**100% presented precision at 19% review load** under the measured verifier relation —
+scoped to this task, not open-world hallucination elimination. Full trail:
+`scribe/AUDIT.md`.
 
 Stage S (10M params, Kaggle T4) sharpened the conclusion: the larger model became the
 first to PASS the model-side bars (halluc 7.5%) — yet its out-of-distribution gap didn't
@@ -54,57 +54,47 @@ move (23 pts vs 22 at 3M). A model can pass a well-designed average-case gate wh
 keeping its tail failure mode, which is exactly why the verification guardrail is not
 retired by scale. Full trail: `scale/AUDIT.md`.
 
-## Research track: why does a gated model still fail held-out copying? (`trajectory/`, `papers/`)
+## Research track: boundary conditions for held-out copying (`trajectory/`, `papers/`)
 
 Stage S ended on a puzzle: a model can pass every model-side gate and keep a ~23-point
-held-out gap. The research track turned that puzzle into a measured, pre-registered
-program. Every number below traces to immutable per-run JSONs under `trajectory/`,
-with pre-registrations frozen before results.
+held-out gap. The research track turned that into a measured, pre-registered program.
+**Baseline (2026-07-30, Scientific Research Council):** no architecture thesis; no
+mechanism claim beyond evidence; fabric/v2 expansion gated behind E1–E3. Surviving
+contribution: under low-diversity extraction regimes, small transformers can converge
+to closed-set prediction strategies that fail held-out symbolic emission; diversity,
+adaptation regime, and deterministic verification change the reliability profile.
 
-**Paper 1 — the failure mode and the instrument** (`papers/latex/paper1.pdf`, 13 pp,
-manuscript — not yet submitted): the gap is **held-out value copying** — the model
-copies field values it saw during finetuning but errs on held-out values under held-out
-phrasings, even though both are verbatim in the input. Measured on a 5-instance
-instrument (100 held + 100 seen prompts each): **18.3±1.3 pts** at 3.15M and
-**18.7±1.5** at 10M. The failure localizes *entirely* to the three open-vocabulary
-fields; the two closed-value fields sit at exactly zero — a built-in control showing
-this is held-out-*value* copying, not generic degradation. Pythia (160M/410M/1B)
-finetuned on the identical task reads single digits (3.5±0.7 at 160M); at 1B a
-determinism cross-check revealed training-run nondeterminism dominates the residual,
-so that rung is honestly reported as the interval [0,5] rather than a point.
+Numbers in the **Paper α / `paper-alpha-v1` measurement spine** (anchors, Stage T/T-v2,
+own-stack, diversity, C-3, pointer, fabric) trace to immutable per-run JSONs already
+committed under `trajectory/`. **Post-α E1/E3 utility and construct artifacts** exist
+locally and are listed in `papers/EVIDENCE_MANIFEST.json` — they are the authority for
+KILL / EXACT_SURVIVES claims and must be committed before those claims are treated as
+public-repo-reproducible. Program lockfile: `papers/EMPIRICAL_FOUNDATION.md` · map:
+`papers/RESEARCH_PROGRAM.md` · packaging: `trajectory/REPRODUCIBILITY.md`.
 
-**Paper 2 — the cause** (`papers/paper2_draft.md`, draft): the pre-registered
-within-stack control — 160M params, same architecture family, tokenizer, and recipe —
-reads **16.9±1.7**: flat across 50× of scale, while Pythia at the same parameter count
-reads 3.5. The frozen decision rule fires **stack-dominant**: parameter count alone
-does not close the gap. Two single-factor arms then each cut it by more than half —
-LoRA instead of full finetuning (**7.1±1.2**) and Chinchilla-scale pretraining data,
-200M→3.2B tokens (**7.0±1.0**) — near-identical effects, i.e. substitutes, not
-independent factors. The factorial corner (3.2B tokens + LoRA) lands at **4.2±0.9**,
-≈ Pythia level, and is behaviorally deterministic across training seeds (|Δ|=0.00).
+**Paper 1 — measurement** (`papers/latex/paper1.pdf` + empirical companion historically
+in `papers/paper2_draft.md`): held-out value copying on a 5-instance instrument —
+**18.3±1.3** (3.15M) / **18.7±1.5** (10M); failure localizes to open-vocabulary fields
+(closed fields = 0). Within-stack 160M full-FT reads **16.9±1.7** (stack-dominant vs
+Pythia 3.5±0.7). LoRA (**7.1±1.2**) and Chinchilla data (**7.0±1.0**) are substitutes;
+factorial corner 3.2B+LoRA **4.2±0.9** (seed |Δ|=0.00). Slot diversity causal
+(**+66.7 pts**, H-slot SUPPORTED). C-1b interference **REFUTED**; C-3 T/B **REFUTED**,
+L UNRESOLVED; morphology residual **descriptive only**. Pointer head: this
+implementation does **not** close the OOD gap (not a claim against all copy
+mechanisms).
 
-**Mechanism probes — both closed at pre-registered verdicts:** C-1b (lexical
-interference) — **REFUTED** (−4 pts against a ≤15 rule; 0/77 predicted substitutions).
-C-3 (transition × boundary × length factorial, 93 held types) — H-transition
-**REFUTED**, H-boundary **REFUTED**, H-length UNRESOLVED (noise-dominated at per-cell
-n). The error census surfaced a genuinely new dominant failure mode: **morphological
-re-inflection** (chiefly singular/plural suffix flips, ~44% of cell-type misses), not
-truncation. Results are triple-cross-checked (kernel, from-scratch recompute,
-independent harness — which surfaced and fixed a real bug in the harness itself) and
-**replicated on a second GPU venue** with verdicts reproducing
-(`trajectory/replications/`).
+**Paper 2 — deterministic verification** (Stage G/A + `fabric/`; β manuscript TBD):
+propose→verify→abstain under a decidable verifier relation on this distribution.
+Presented precision **100%** at ~19% review load (Stage A) and fabric presented-error
+**18.4%→0.0% / 11.5%→0.0%** under a rules-strong verifier — **scoped to this task and
+\(R\)**, not open-world hallucination elimination. Fabric is a regression harness;
+product/architecture expansion STOP after E1 KILL; E3 agent-rubric audit done (dual-clinician open)
+(EXACT_SURVIVES; IAA/dual-clinician still a limitation); E2 **GATED/STOP**
+(`PREREG_E2_*` — no results JSON). Regime R★ / E4 are protocol-only until Stage 4
+is authorized (no E4 measurement artifacts).
 
-**Fabric — the verification layer** (`fabric/`): typed Claim / EvidenceSpan /
-VerificationResult / Decision packets with content-addressed IDs; grounding,
-provenance, and absence-never-from-silence gates enforced in code, not prompts.
-Measured across all 24 model × verifier × instrument cells: presented-error rate
-**18.4% → 0.0%** (3.15M) and **11.5% → 0.0%** (10M), zero correct claims lost, 100%
-span provenance. (The v2 verifier is a rules-perfect reference extractor on this
-synthetic task — caveat documented in `fabric/README.md`.)
-
-Compute venues: local Apple Silicon (MPS), Kaggle T4, RunPod (A6000 / RTX 4090 /
-H100 NVL); largest single run ≈ $37 (the 3.2B-token Chinchilla control). Program map:
-`papers/RESEARCH_PROGRAM.md` · writing audit: `papers/writing_audit.md`.
+Reproduce artifacts / env / CI: `trajectory/REPRODUCIBILITY.md`. Compute venues: local
+Apple Silicon (MPS), Kaggle T4, RunPod; largest single run ≈ $37.
 
 ## Results
 
@@ -168,12 +158,22 @@ base as much as the knowledge base drives the build.
 
 ## Reproduce
 
+Pinned deps: `requirements.txt` (CPU CI subset) and `requirements-ml.txt` (training/eval).
+Environment notes + artifact SHA/tag instructions: `trajectory/REPRODUCIBILITY.md`.
+License: MIT (`LICENSE`).
+
 ```bash
-pip install torch tokenizers datasets
-cd pretrain && python train.py     # ~20 min on Apple Silicon
-python generate.py                 # sample from the checkpoint
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt          # fabric + recompute CI
+pytest fabric/test_fabric.py trajectory/test_recompute_c3.py -q
+
+# Full ML stack (GPU/MPS training and scoring — not required for CI):
+pip install -r requirements-ml.txt
+cd pretrain && python train.py           # ~20 min on Apple Silicon
+python generate.py
 cd ../sft && python build_sft_data.py && python sft.py
 ```
 
 Checkpoints and tokenized shards are excluded from the repo (see `.gitignore`);
-the trained checkpoints are attached as release assets.
+trained checkpoints are release assets. Result JSONs under `trajectory/` are the
+immutable scientific record — verify against `trajectory/REPRODUCIBILITY.md`.

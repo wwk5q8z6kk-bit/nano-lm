@@ -38,19 +38,26 @@ entire remaining gap is the one open slot with only five training values (allerg
 where even 410M fails totally on the held-out value. We deliberately do **not** claim scale as the cause: the comparison also
 changes pretraining corpus, tokenizer, architecture, and finetuning method. A
 within-stack control at ~160M keeps that stack fixed and finds the diluted gap still
-**16.9±1.7** across ~50× of own-stack scale (flat), while LoRA or Chinchilla-scale
-data each reduce it to ~7 and both together to **4.2±0.9** — an adaptation×data
-**interaction**, not a pure scale law. Separately, a pre-registered slot-diversity
-sweep lifts held-type recall on that open slot by **+66.7** points (D5→D80) at fixed scale. On a
-pre-registered utility, non-generative baselines dominate official generative LM
-references on this task (§0; **KILL**); this paper reports that result honestly and
-does not advocate a generative substrate. Primary metrics are exact string match;
-human-accepted equivalence is unvalidated (§0, §8). Measurement reliability is a
-second contribution: single-instance evaluation was under-powered, and at 1B
-**training-run nondeterminism** dominates the residual. Both lessons arose from
-empirical failures of the prior instrument, not from foresight.
+**16.9±1.7** under full FT on ~200M pretraining tokens. Across the evaluated
+own-stack configurations, the held-value copying gap did not decrease monotonically
+with parameter count. Parameter count was not isolated from total pretraining
+exposure across all configurations (3.15M used **32.8M** tokens; 10M and the weak
+160M cell used **~200M**; the Chinchilla 160M cell used **3.2B**), so this result is
+descriptive and does not establish a parameter-only scale law. LoRA or Chinchilla-scale
+data each reduce the diluted gap to ~7 and both together to **4.2±0.9** — an
+adaptation×data **interaction**, not a pure scale law. Separately, a pre-registered
+slot-diversity sweep lifts held-type recall on that open slot by **+66.7** points
+(D5→D80) at fixed scale. On a pre-registered utility, the generator-aligned
+non-generative baseline **M1** scored **0.998999** and exceeded the best evaluated
+generative reference, official M0 at **0.925217** (§0; **KILL**); this paper reports
+that result honestly and does not advocate a generative substrate. Primary metrics
+are exact string match; dual-clinician / human-accepted equivalence is unvalidated
+(§0, §8; a bounded agent-applied rubric audit is reported there). Measurement
+reliability is a second contribution: single-instance evaluation was under-powered,
+and at 1B **training-run nondeterminism** dominates the residual. Both lessons arose
+from empirical failures of the prior instrument, not from foresight.
 
-## 0. Non-generative baselines dominate utility on this task (E1; locked)
+## 0. Non-generative baseline M1 exceeds generative references under frozen \(U\) (E1; locked)
 
 On the pre-registered utility
 \(U = P - 0.5 M - 0.3\rho - 0.02 L - 0.05 C\) with decision margin
@@ -66,8 +73,11 @@ harness (`trajectory/results_e1_utility.json`):
 | M2 dict + span | 0.886 |
 | Local M0 (scale-10M) | 0.854 |
 
-**Verdict: KILL (H-substrate).** Best generative LM reference loses to the
-deterministic template extractor by a clear margin; sensitivity did not flip.
+**Verdict: KILL (H-substrate).** Under frozen \(U\), the generator-aligned
+non-generative baseline **M1** scored **0.998999** and exceeded the best evaluated
+generative reference, official M0 at **0.925217**. M2 (\(U\approx0.886\)) does
+**not** meet the registered dominance criterion versus official M0 (it is within
+\(\delta=0.05\) but does not beat it). Sensitivity did not flip the M1 kill.
 Paper α therefore continues strictly as **measurement** of when small LMs fail
 held-out emission — not as advocacy for a generative substrate. A different
 utility could re-rank methods; the field-localization / diversity / scaling
@@ -75,11 +85,14 @@ measurements do not depend on \(U\).
 
 **Exact-match construct limitation.** Primary science metrics use exact string
 match on field values. Automated normalize-then-match does not rescue M0 exact
-failures (0/486; `trajectory/results_e3_normalize_construct.json`), but
-exact-match has **not** been validated against human-accepted equivalence.
-Reported gaps may overstate failure relative to a soft/human rubric. This is an
-explicit limitation of Paper α pending a bounded human study (see foundation
-lockfile). No open-world verification claims are made here.
+failures (0/486; `trajectory/results_e3_normalize_construct.json`). A bounded
+**agent-applied rubric audit** of 100 sampled errors
+(`trajectory/results_e3_human.json`, rater `agent-rubric-pass-1`) classified
+**0/100** as acceptable semantic equivalents. This result does **not** substitute
+for independent clinician annotation, inter-rater agreement, or validation of a
+synonym ontology. Reported gaps may overstate failure relative to a soft/human
+rubric. This is an explicit limitation of Paper α. No open-world verification
+claims are made here.
 
 **Out of scope here:** LoRA mechanism (unidentified); E2/fabric/product claims;
 token-coverage effect sizes beyond description; open-world verifier guarantees.
@@ -96,9 +109,9 @@ behave as model capability increases?**
 
 The contribution is measurement-only and we keep the parts distinct:
 1. **Empirical core.** Field-localized held-out copying failure in small models;
-   within-stack scale flatness and base×method interaction (§7.2); causal
-   slot-diversity effect (+66.7; §7.3); residual floor on the hardest low-diversity
-   open slot (§7.2–7.3).
+   descriptive own-stack scale/config comparison and base×method interaction (§7.2);
+   causal slot-diversity effect (+66.7; §7.3); residual floor on the hardest
+   low-diversity open slot (§7.2–7.3).
 2. **Measurement lessons.** Single-instance evaluation was under-powered (§6.1);
    training nondeterminism bounds the top rung (§6.2); exact-match is an explicit
    construct limitation (§0, §8).
@@ -292,11 +305,15 @@ isolating value copying from phrasing familiarity.
 
 **Model families and finetuning.** *Own stack*: from-scratch GPT (RoPE, GQA, SwiGLU,
 RMSNorm pre-norm, tied embeddings, 4098-vocab BPE, 512 ctx) at 3.15M (d=192, L=6, H=6,
-KV=2, ff=512) and 10M (d=320, L=8, H=8, KV=2, ff=864), pretrained on ~200M FineWeb
-tokens (D≈20N; Hoffmann et al., 2022) and full-FT on the scribe task; the two anchor
-checkpoints are the frozen v0.1 release assets (`scribe.pt`, `scale10m_scribe.pt`).
-*Pythia*: EleutherAI/pythia-{160m,410m,1b}, adapted with LoRA (r=16, α=32, dropout 0,
-targets {query_key_value, dense, dense_h_to_4h, dense_4h_to_h}), LR 1e-4, 3 epochs.
+KV=2, ff=512; pretrained on **32.8M** FineWeb tokens over ~3.1 epochs of a 10.96M-token
+shard; `pretrain/AUDIT.md`) and 10M (d=320, L=8, H=8, KV=2, ff=864; pretrained on
+**~200M** tokens, D≈20N; `scale/AUDIT.md`; Hoffmann et al., 2022), full-FT on the
+scribe task; the two anchor checkpoints are the frozen v0.1 release assets
+(`scribe.pt`, `scale10m_scribe.pt`). Later own-stack 160M configurations used
+approximately **200M** or **3.2B** pretraining tokens depending on the registered data
+condition. *Pythia*: EleutherAI/pythia-{160m,410m,1b}, adapted with LoRA (r=16, α=32,
+dropout 0, targets {query_key_value, dense, dense_h_to_4h, dense_4h_to_h}), LR 1e-4,
+3 epochs.
 
 **Evaluation metric.** Greedy decoding; the output is parsed against the fixed field
 template. A field is a *hit* (exact match), an *omission* ("none" for a present value),
@@ -477,7 +494,7 @@ the interval. This is why a single-instance anchor read higher than the powered
 mean.](figures/fig2_instance_difficulty.pdf)
 *Figure 2. `papers/figures/fig2_instance_difficulty.pdf` — same generator.*
 
-### 7.2 Within-stack scale flatness and adaptation×data interaction
+### 7.2 Own-stack scale/config comparison and adaptation×data interaction
 
 §7.1’s ladder confounds scale with stack. Here we hold the own-stack fixed and vary
 adaptation and data (§7.2); §7.3 then varies slot diversity at fixed scale; §7.4–§7.5
@@ -491,13 +508,17 @@ architecture family, and task fixed:
 | LoRA r=16 | **7.1 ± 1.2** (29.6 ± 3.7) | **4.2 ± 0.9** (17.7 ± 3.2) |
 
 Reference: Pythia-160M (LoRA) 3.5 ± 0.7 (clean 14.7 ± 2.1). Own-stack full-FT at
-200M remains large at 160M (16.9) — flat versus 3M/10M (~18) across ~50× parameters —
-so the pre-registered rule reads **stack-dominant**, not a smooth within-stack scale
-collapse. LoRA on the weak base and full FT on Chinchilla-scale data land on
-indistinguishable ~7-point diluted gaps (seed band ~±1.3 at the 200M+LoRA cell);
-combining both escapes yields **4.2 ± 0.9**, near the Pythia-160M reference. We report
-this as a **behavioral interaction** (weak base × full-parameter adaptation). LoRA
-*mechanism* is unidentified and not claimed here.
+200M remains large at 160M (16.9). Relative to the 3.15M / 10M anchors
+(~18 diluted; pretrained on **32.8M** and **~200M** tokens respectively), **no
+monotonic gap collapse was observed** across the evaluated configurations. Because
+parameter count and pretraining exposure were not fully controlled across all
+configurations, this is **descriptive** rather than a parameter-only causal result;
+the pre-registered rule still reads **stack-dominant** versus Pythia at matched size,
+not a smooth within-stack parameter-scale collapse. LoRA on the weak base and full FT
+on Chinchilla-scale data land on indistinguishable ~7-point diluted gaps (seed band
+~±1.3 at the 200M+LoRA cell); combining both escapes yields **4.2 ± 0.9**, near the
+Pythia-160M reference. We report this as a **behavioral interaction** (weak base ×
+full-parameter adaptation). LoRA *mechanism* is unidentified and not claimed here.
 
 Across these cells the hardest low-diversity open slot (allergy under the default
 five-value train set) remains near-total failure in own-stack configurations and in
@@ -650,12 +671,15 @@ relative to a soft/human rubric (§0, §8).
 
 A severe held-out copying gap in sub-10M models — failure to copy held-out lexical
 values into open slots, with closed-value fields a zero-gap control — is much smaller
-under the tested Pythia pipeline; within own-stack the diluted gap stays large across
-~50× scale, and adaptation×data (not parameter count alone) accounts for most of the
-escape to Pythia-like levels. Slot training diversity causally raises held-type recall
-(+66.7). On a pre-registered utility, non-generative baselines dominate official
-generative LM references on this task (§0) — recorded as a kill-gate result, not a
-product pitch. Exact-match remains an explicit construct limitation. The measurement
+under the tested Pythia pipeline. Across the evaluated own-stack configurations, the
+diluted gap did not decrease monotonically with parameter count; parameter count was
+not isolated from total pretraining exposure, so this is descriptive rather than a
+parameter-only scale law. Adaptation×data accounts for most of the escape to
+Pythia-like levels. Slot training diversity causally raises held-type recall (+66.7).
+On a pre-registered utility, **M1** exceeds the best evaluated generative reference
+under frozen \(U\) (§0) — recorded as a kill-gate result, not a product pitch.
+Exact-match remains an explicit construct limitation (automated normalize +
+agent-applied rubric audit; dual-clinician validation unperformed). The measurement
 story is inseparable from the result: single-instance evaluation was under-powered,
 and at the top of the ladder training nondeterminism sets the precision floor. The
 contribution is a careful empirical account of when small LMs fail held-out emission,
