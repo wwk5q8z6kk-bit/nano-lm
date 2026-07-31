@@ -2,12 +2,20 @@
 
 **Operating doc — what we are authorized to do *now*.**  
 **Adopted:** 2026-07-31  
-**Constitution:** `LABORATORY_CONSTITUTION.md` (in-repo governance; Program 0 = authorized benchmark infra)
+**Constitution:** `LABORATORY_CONSTITUTION.md`  
+**Strategic center:** `papers/STRATEGIC_RESET.md`
 
 ```text
-PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE
-AUTHORIZED_NONEXECUTION_WORK: E4_DESIGN_ONLY | BENCHMARK_SUPREMACY_LAB_PROGRAM0_INFRA
-BENCHMARK_LAB_STATUS: INFRASTRUCTURE_ONLY
+PROGRAM_EXECUTION_STATUS: PROGRAM_A_A1_ACCEPTED
+AUTHORIZED_NONEXECUTION_WORK: OWNER_ACCEPT_A1_DESIGN
+BENCHMARK_PROGRAM0_STATUS: DONE
+EVAL_INFRA_STATUS: AVAILABLE
+PROGRAM_CHOICE: A
+UNIT: A1_RSTAR_REVISION_DESIGN
+A1_STATUS: OWNER_ACCEPTED
+PROGRAM1: NOT_AUTHORIZED
+TRAINING: NOT_AUTHORIZED
+E4_RSTAR_V2_EXECUTE: NOT_AUTHORIZED
 E4_EXECUTION_STATUS: BLOCKED
 NANOSCRIBE_PRODUCT_EXPANSION: STOP
 OLD_TASK_RUNS_UNDER_OLD_TASK_U: FORBIDDEN
@@ -17,38 +25,30 @@ OLD_TASK_RUNS_UNDER_OLD_TASK_U: FORBIDDEN
 
 | Priority | Item | Auth | Type | Notes |
 |----------|------|------|------|-------|
-| 0 | Maintain evidence freeze integrity | Standing | Ops | Do not move `post-alpha-evidence-freeze-2026-07-31` |
-| 1 | E4/R★ **design docs only** | `AUTHORIZE_E4_DESIGN_ONLY` | Docs | No world, data, GPU, result |
-| 2 | Benchmark Program 0 | `BENCHMARK_SUPREMACY_LAB_PROGRAM0_INFRA` | Infra | One reproducible benchmark path inside nano-lm; Program 1 NOT included |
-| — | *(empty for measurement experiments)* | — | — | Idle is valid |
+| 0 | Maintain evidence freeze integrity | Standing | Ops | Do not move freeze / alpha tags; leave unrelated dirty freeze/audit files alone |
+| 1 | A1 design (closed) | `OWNER_ACCEPT_A1_DESIGN` | Docs | Accepted; see decision record |
+| — | E4′ / R★ v2 execute | — | — | **Empty** until `AUTHORIZE_E4_RSTAR_V2_EXECUTE` |
 
 ## Explicitly not queued
 
-- E4 Stage 4 execution  
-- E2 runs  
-- Fabric V2 / NanoScribe control plane / memory/routing/UI  
+- `AUTHORIZE_E4_RSTAR_V2_EXECUTE` (world rebuild, G-ref train, E4′ score)  
+- Program 1 world census  
+- E2 · Fabric V2 · NanoScribe  
+- Training / paid compute  
 - Old-task generative revival under `OLD_TASK_U`  
-- “Implement the Technology Roadmap”
 
 ## How items enter this queue
 
-Only via `DECISION_GATES.md` + explicit owner authorization string.  
-Portfolio and Roadmap items do **not** auto-enter.
+Only via `DECISION_GATES.md` + explicit owner authorization string.
 
-## Idle ≠ stop dreaming
+## Standing hygiene (not experiments)
 
-An empty experiment queue is the correct state when no gate is passed.  
-See `RESEARCH_PORTFOLIO.md` and `TECHNOLOGY_ROADMAP.md` for ambition.
+See `FIRST_PRINCIPLES_RISK_MITIGATION.md` §5 M0 checklist:
 
+- Auth lint / allowlist (B1)
+- Freeze tag preserve (B2)
+- Dirty-tree allowlists (B11)
+- Anomaly log / NONCLAIM banners (B12)
 
-## Explicitly not queued (benchmark lab)
+These do **not** replace `AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE`.
 
-- Program 1 world benchmark census
-- MMLU / HELM / MLPerf / full Tier-B suites
-- Leaderboard promotion or Evidence Ledger rows from Program 0
-- Training, paid compute, E4 execute
-
-
-```text
-PROGRAM1 = DEFERRED_PENDING_GATE0
-```

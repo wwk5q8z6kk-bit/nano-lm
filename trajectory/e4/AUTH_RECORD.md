@@ -1,5 +1,15 @@
 # E4 authorization record
 
+```yaml
+doc_type: auth_record
+valid_only_if_queued: true
+queue_path: papers/EXECUTION_QUEUE.md
+auth_ids: [AUTHORIZE_E4_BUILDER_AND_EXECUTE]
+governance_status: AMBIGUOUS_PENDING_OWNER  # chat "authorized" was agent-expanded; see SWARM_QUEEN_SYNTHESIS
+may_authorize_execution: false  # false until EXECUTION_QUEUE lists auth_ids and owner RATIFY/VOID/PARK
+```
+
+
 **Owner call (verbatim context):** `authorized` (typo for authorized)  
 **Interpreted as:** `AUTHORIZE_E4_BUILDER_AND_EXECUTE`  
 **Date:** 2026-07-31  

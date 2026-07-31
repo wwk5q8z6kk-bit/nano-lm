@@ -4,6 +4,10 @@
 **Adopted:** 2026-07-31  
 **Constitution:** `LABORATORY_CONSTITUTION.md`
 
+
+> **NONCLAIM** — Vision / portfolio only. Not evidence. Not authorization to build, ship, or deploy.
+> Negative results falsify scoped hypotheses only. Cite `EVIDENCE_LEDGER.md` for what is measured.
+
 > Dream extremely big. Then destroy hypotheses one by one.  
 > This file lists **questions worth answering**, not results and not a build queue.
 

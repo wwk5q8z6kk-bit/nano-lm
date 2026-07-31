@@ -97,8 +97,14 @@ Portfolio/roadmap items do **not** auto-enter the queue. Only `DECISION_GATES.md
 | `DECISION_GATES.md` | Process | No | Defines promotion |
 | `benchmarks/BENCHMARK_CONSTITUTION.md` | No | Harness rules | No |
 | `MASTER_PLAN.md` / `NANOSCRIBE_VNEXT.md` | Historical | Legacy | **No** |
+| `FIRST_PRINCIPLES_RISK_MITIGATION.md` | No | Mitigation design | **No** |
+| `ANOMALY_LOG.md` | No | Kill→expand questions | **No** |
 
 ---
+
+## Risk mitigation
+
+Blockers are decomposed to first principles in `FIRST_PRINCIPLES_RISK_MITIGATION.md`. Kill/stop events expand questions via `ANOMALY_LOG.md`. Neither document authorizes execution.
 
 ## Anti-contamination
 
