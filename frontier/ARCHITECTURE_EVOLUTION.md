@@ -107,3 +107,10 @@ Implementation: `wedge_v1/coe/` · see `frontier/COE_SLICE_REPORT.md`.
 - `wedge_v1/plugins/` — synonym / OCR / coref modules
 - Lexicons: `plugins/data/{synonyms,ocr_substitutions,coref_entities}.json`
 - `ask()`/`scan()` call `run_cascade` — coref works after renaming `binding_coref`
+
+
+### W5 slice notes
+
+- `wedge_v1/ingest_sla.py` — field recovery + optional U recover_gap
+- Shared OCR lexicon with W4 plugin; `load_corpus(..., normalize=True)`
+- CLI: `python -m wedge_v1 ingest-sla [--with-u]`

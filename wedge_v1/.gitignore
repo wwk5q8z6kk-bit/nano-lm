@@ -1,2 +1,3 @@
 *.wedge_manifest.json
 .coe_runs/
+results_ingest_sla.json

@@ -18,6 +18,7 @@ from wedge_v1.build_corpus import build
 from wedge_v1.classical import solvers as S
 from wedge_v1.run_classical_baseline import score as score_classical
 from wedge_v1.run_phase3_eclass import collect_claims, eclass_gate
+from wedge_v1.plugins.ocr import normalize_text as _plugin_normalize
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
@@ -27,27 +28,9 @@ SEED = 20260731
 
 
 def normalize_ocr_text(text: str) -> str:
-    t = text
-    reps = [
-        ("Auth0rs:", "Authors:"),
-        ("secands", "seconds"),
-        ("TTL  i5  ", "TTL as "),
-        ("TTL i5 ", "TTL as "),
-        ("5O0", "500"),
-        ("85O", "850"),
-        ("metf0rmin", "metformin"),
-        ("Metf0rmin", "Metformin"),
-        ("P1acebo", "Placebo"),
-        ("p1acebo", "placebo"),
-        ("ibupr0fen", "ibuprofen"),
-        ("ca1ibrated", "calibrated"),
-        ("spectr0meter-7", "spectrometer-7"),
-        ("Affi1iation:", "Affiliation:"),
-        ("Samp1e", "Sample"),
-    ]
-    for a, b in reps:
-        t = t.replace(a, b)
-    return t
+    """Delegate to W4/W5 OCR plugin lexicon (single source of truth)."""
+    fixed, _edits = _plugin_normalize(text)
+    return fixed
 
 
 def build_noisy() -> dict:

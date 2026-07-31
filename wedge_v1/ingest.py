@@ -26,7 +26,7 @@ def _read_pdf(path: Path) -> str | None:
         return None
 
 
-def load_corpus(corpus_dir: Path) -> dict[str, str]:
+def load_corpus(corpus_dir: Path, *, normalize: bool = False) -> dict[str, str]:
     """Load documents from a folder into {doc_id: text}.
 
     doc_id = file stem. Later files of the same stem overwrite earlier ones
@@ -60,6 +60,10 @@ def load_corpus(corpus_dir: Path) -> dict[str, str]:
             continue
         docs[p.stem] = body
 
+    if normalize and docs:
+        from wedge_v1.plugins.ocr import normalize_text
+
+        docs = {k: normalize_text(v)[0] for k, v in docs.items()}
     return docs
 
 

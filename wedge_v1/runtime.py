@@ -33,11 +33,11 @@ GOLD_PATH = ROOT / "data" / "gold" / "gold.json"
 
 
 
-def load_corpus(corpus_dir: Path | None = None) -> dict[str, str]:
+def load_corpus(corpus_dir: Path | None = None, *, normalize: bool = False) -> dict[str, str]:
     from wedge_v1.ingest import load_corpus as _ingest
 
     path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
-    return _ingest(path)
+    return _ingest(path, normalize=normalize)
 
 
 def _load_gold() -> dict | None:

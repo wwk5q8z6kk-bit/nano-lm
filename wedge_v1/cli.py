@@ -74,6 +74,11 @@ def main(argv: list[str] | None = None) -> int:
     osm.add_argument("-o", "--output", type=Path, default=None)
 
     sub.add_parser("smoke", help="Run runtime regression pins")
+    isla = sub.add_parser("ingest-sla", help="Ingest SLA / OCR recover_gap (W5)")
+    isla.add_argument("--clean", type=Path, default=None)
+    isla.add_argument("--noisy", type=Path, default=None)
+    isla.add_argument("--with-u", action="store_true")
+    isla.add_argument("-o", "--output", type=Path, default=None)
 
     contact = sub.add_parser("contact", help="Labeled corpus contact probe (product eval)")
     contact.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
@@ -493,6 +498,21 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(summary, sys.stdout, indent=2)
         sys.stdout.write(chr(10))
         return 0 if out["audit"].get("ok") else 2
+
+
+    if args.cmd == "ingest-sla":
+        from wedge_v1.ingest_sla import main as sla_main
+
+        argv = []
+        if args.clean:
+            argv += ["--clean", str(args.clean)]
+        if args.noisy:
+            argv += ["--noisy", str(args.noisy)]
+        if args.with_u:
+            argv.append("--with-u")
+        if args.output:
+            argv += ["-o", str(args.output)]
+        return sla_main(argv)
 
     return 1
 
