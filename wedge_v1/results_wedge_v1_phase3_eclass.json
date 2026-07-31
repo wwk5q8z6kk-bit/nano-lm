@@ -1,53 +1,301 @@
 {
-  "schema": "nano-lm.wedge_v1.phase3_eclass.v1",
-  "auth": "AUTHORIZE_WEDGE_V1_PHASE3_ECLASS_PROBE",
+  "schema": "nano-lm.wedge_v1.phase3.v1",
+  "auth": "AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE",
   "track": "clean",
-  "classical_U": 0.891248347826087,
-  "hybrid_U": 0.900236988764045,
-  "delta_U": 0.008988640937958037,
+  "classical_U": 0.891236347826087,
+  "hybrid_U": 0.8702349887640449,
+  "delta_U": -0.021001359062042035,
   "delta": 0.05,
-  "components_hybrid": {
-    "Q": 1.0,
-    "E": 0.0,
+  "summary": {
+    "n_checks": 50,
+    "n_ok": 49,
+    "Q": 0.98,
+    "E": 0.020000000000000018,
     "R": 0.15730337078651685,
-    "L": 0.0036,
-    "C": 1.05
-  },
-  "eclass_accuracy": 1.0,
-  "eclass_detail": {
-    "T39": {
-      "status": "CONFIRMED",
-      "notes": "eclass_coref_lite",
-      "value": {
-        "bindings": [
-          {
-            "pronoun_sent": "It reduced fasting glucose.",
-            "antecedent": "Metformin",
-            "prev": "Metformin was administered in the morning."
-          },
-          {
-            "pronoun_sent": "It had no effect.",
-            "antecedent": "Placebo",
-            "prev": "Placebo was given at night."
-          }
-        ],
-        "method": "coref_lite"
+    "L": 0.0037,
+    "C": 1.05,
+    "U": 0.8702349887640449,
+    "checks": [
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "tech_note_cache"
       },
-      "doc_id": "binding_coref"
-    },
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "tech_note_cache_v2"
+      },
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "bio_abs_metformin"
+      },
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "bio_abs_metformin_conflict"
+      },
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "semi_structured_lab"
+      },
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "tableish_throughput"
+      },
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "noisy_ocr_line"
+      },
+      {
+        "task_id": "T01",
+        "ok": true,
+        "detail": "binding_coref"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "tech_note_cache"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "tech_note_cache_v2"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "bio_abs_metformin"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "bio_abs_metformin_conflict"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "semi_structured_lab"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "tableish_throughput"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "noisy_ocr_line"
+      },
+      {
+        "task_id": "T02",
+        "ok": true,
+        "detail": "binding_coref"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "tech_note_cache"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "tech_note_cache_v2"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "bio_abs_metformin"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "bio_abs_metformin_conflict"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "semi_structured_lab"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "tableish_throughput"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "noisy_ocr_line"
+      },
+      {
+        "task_id": "T03",
+        "ok": true,
+        "detail": "binding_coref"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "tech_note_cache"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "tech_note_cache_v2"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "bio_abs_metformin"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "bio_abs_metformin_conflict"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "semi_structured_lab"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "tableish_throughput"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "noisy_ocr_line"
+      },
+      {
+        "task_id": "T04",
+        "ok": true,
+        "detail": "binding_coref"
+      },
+      {
+        "task_id": "T09",
+        "ok": true,
+        "detail": "bio_abs_metformin"
+      },
+      {
+        "task_id": "T09",
+        "ok": true,
+        "detail": "bio_abs_metformin_conflict"
+      },
+      {
+        "task_id": "T13",
+        "ok": true,
+        "detail": "tech_note_cache"
+      },
+      {
+        "task_id": "T13",
+        "ok": true,
+        "detail": "bio_abs_metformin"
+      },
+      {
+        "task_id": "T13",
+        "ok": true,
+        "detail": "bio_abs_metformin_conflict"
+      },
+      {
+        "task_id": "T15",
+        "ok": true,
+        "detail": "tech_note_cache"
+      },
+      {
+        "task_id": "T17",
+        "ok": true,
+        "detail": "device"
+      },
+      {
+        "task_id": "T17",
+        "ok": true,
+        "detail": "wavelength_nm"
+      },
+      {
+        "task_id": "T17",
+        "ok": true,
+        "detail": "operator"
+      },
+      {
+        "task_id": "T17",
+        "ok": true,
+        "detail": "status"
+      },
+      {
+        "task_id": "T38",
+        "ok": true,
+        "detail": "rows"
+      },
+      {
+        "task_id": "T29",
+        "ok": true,
+        "detail": "numeric"
+      },
+      {
+        "task_id": "T30",
+        "ok": true,
+        "detail": "ibuprofen reagent"
+      },
+      {
+        "task_id": "T34",
+        "ok": true,
+        "detail": "patient_id"
+      },
+      {
+        "task_id": "T25",
+        "ok": true,
+        "detail": "metformin docs"
+      },
+      {
+        "task_id": "T35",
+        "ok": false,
+        "detail": "paraphrastic"
+      },
+      {
+        "task_id": "T37",
+        "ok": true,
+        "detail": "ocr"
+      },
+      {
+        "task_id": "T33",
+        "ok": true,
+        "detail": "violations=[]"
+      }
+    ],
+    "evidence_violations": []
+  },
+  "eclass_ok": {
+    "T35": true,
+    "T36": true,
+    "T39": true
+  },
+  "eclass_detail": {
     "T35": {
-      "status": "CONFIRMED",
-      "notes": "eclass_query_expand",
+      "task_id": "T35",
+      "doc_id": "tech_note_cache",
       "value": {
         "query": "How long before cached entries expire?",
         "answer": "300 seconds",
         "method": "query_expand"
       },
-      "doc_id": "tech_note_cache"
+      "evidence": [
+        {
+          "start": 129,
+          "end": 147,
+          "text": "TTL as 300 seconds"
+        }
+      ],
+      "status": "CONFIRMED",
+      "notes": "eclass_query_expand"
     },
     "T36": {
-      "status": "CONFIRMED",
-      "notes": "eclass_symbolic_dose_change",
+      "task_id": "T36",
+      "doc_id": null,
       "value": {
         "relation": "implies_dose_change",
         "from": 500,
@@ -58,253 +306,20 @@
         },
         "method": "symbolic_compare"
       },
-      "doc_id": null
-    }
-  },
-  "eclass_gold_ok": {
-    "T35": true,
-    "T36": true,
-    "T39": true
-  },
-  "lm_still_needed": false,
-  "lm_invoked": false,
-  "verdict": "ECLASS_CLOSED_WITHOUT_LM",
-  "n_checks": 52,
-  "n_ok": 52,
-  "claims": [
-    {
-      "task_id": "T01",
-      "doc_id": "binding_coref",
-      "value": "Entity Binding Note",
       "evidence": [
         {
-          "start": 2,
-          "end": 21,
-          "text": "Entity Binding Note"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "binding_coref",
-      "value": [
-        "Binding Author"
-      ],
-      "evidence": [
-        {
-          "start": 23,
-          "end": 46,
-          "text": "Authors: Binding Author"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "binding_coref",
-      "value": 2024,
-      "evidence": [
-        {
-          "start": 53,
-          "end": 57,
-          "text": "2024"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "binding_coref",
-      "value": "note",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "binding_coref",
-      "value": [
-        "Entity Binding Note"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "binding_coref",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "binding_coref",
-      "value": 28,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "binding_coref",
-      "value": [
-        "Entity Binding Note"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "binding_coref",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "binding_coref",
-      "value": [
-        {
-          "text": "Metformin",
-          "start": 59,
-          "end": 68
+          "doc_id": "bio_abs_metformin",
+          "text": "500 mg"
         },
         {
-          "text": "Placebo",
-          "start": 130,
-          "end": 137
+          "doc_id": "bio_abs_metformin_conflict",
+          "text": "850 mg"
         }
       ],
-      "evidence": [
-        {
-          "text": "Metformin",
-          "start": 59,
-          "end": 68
-        },
-        {
-          "text": "Placebo",
-          "start": 130,
-          "end": 137
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
+      "status": "CONFIRMED",
+      "notes": "eclass_symbolic_dose_change"
     },
-    {
-      "task_id": "T13",
-      "doc_id": "binding_coref",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "binding_coref",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "binding_coref",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "binding_coref",
-      "value": {
-        "urls": [],
-        "keys": []
-      },
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "binding_coref",
-      "value": {
-        "Authors": "Binding Author",
-        "Year": "2024"
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "binding_coref",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "binding_coref",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "binding_coref",
-      "value": true,
-      "evidence": [
-        {
-          "start": 59,
-          "end": 68,
-          "text": "Metformin"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "binding_coref",
-      "value": "# Entity Binding Note\n\nAuthors: Binding Author\nYear: 2024\n\nMetformin was administered in the morning.",
-      "evidence": [
-        {
-          "start": 0,
-          "end": 101,
-          "text": "# Entity Binding Note\n\nAuthors: Binding Author\nYear: 2024\n\nMetformin was administered in the morning."
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "binding_coref",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "binding_coref",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
+    "T39": {
       "task_id": "T39",
       "doc_id": "binding_coref",
       "value": {
@@ -330,1765 +345,37 @@
       ],
       "status": "CONFIRMED",
       "notes": "eclass_coref_lite"
-    },
-    {
-      "task_id": "T01",
-      "doc_id": "bio_abs_metformin",
-      "value": "Metformin Kinetics in Synthetic Cohort",
-      "evidence": [
-        {
-          "start": 2,
-          "end": 40,
-          "text": "Metformin Kinetics in Synthetic Cohort"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "bio_abs_metformin",
-      "value": [
-        "Alan Turing",
-        "Joan Clarke"
-      ],
-      "evidence": [
-        {
-          "start": 42,
-          "end": 75,
-          "text": "Authors: Alan Turing, Joan Clarke"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "bio_abs_metformin",
-      "value": 2023,
-      "evidence": [
-        {
-          "start": 82,
-          "end": 86,
-          "text": "2023"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "bio_abs_metformin",
-      "value": "abstract",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "bio_abs_metformin",
-      "value": [
-        "Metformin Kinetics in Synthetic Cohort",
-        "Abstract",
-        "Captions"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "bio_abs_metformin",
-      "value": "10.0000/fake.metformin.2023",
-      "evidence": [
-        {
-          "start": 92,
-          "end": 119,
-          "text": "10.0000/fake.metformin.2023"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "bio_abs_metformin",
-      "value": 65,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "bio_abs_metformin",
-      "value": [
-        "Metformin Kinetics in Synthetic Cohort",
-        "Abstract",
-        "Captions"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "bio_abs_metformin",
-      "value": [
-        {
-          "text": "500 mg",
-          "start": 208,
-          "end": 214
-        },
-        {
-          "text": "500 mg",
-          "start": 355,
-          "end": 361
-        }
-      ],
-      "evidence": [
-        {
-          "text": "500 mg",
-          "start": 208,
-          "end": 214
-        },
-        {
-          "text": "500 mg",
-          "start": 355,
-          "end": 361
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "bio_abs_metformin",
-      "value": [
-        {
-          "text": "Metformin",
-          "start": 2,
-          "end": 11
-        },
-        {
-          "text": "placebo",
-          "start": 330,
-          "end": 337
-        }
-      ],
-      "evidence": [
-        {
-          "text": "Metformin",
-          "start": 2,
-          "end": 11
-        },
-        {
-          "text": "placebo",
-          "start": 330,
-          "end": 337
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T13",
-      "doc_id": "bio_abs_metformin",
-      "value": 512,
-      "evidence": [
-        {
-          "start": 379,
-          "end": 384,
-          "text": "n=512"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "bio_abs_metformin",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "bio_abs_metformin",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "bio_abs_metformin",
-      "value": {
-        "urls": [],
-        "keys": []
-      },
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "bio_abs_metformin",
-      "value": {
-        "Authors": "Alan Turing, Joan Clarke",
-        "Year": "2023",
-        "DOI": "10.0000/fake.metformin.2023",
-        "Affiliation": "Institute for Imaginary Medicine"
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "bio_abs_metformin",
-      "value": [
-        "Figure 1: Plasma concentration over 24h.",
-        "Table 1: Baseline covariates."
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "bio_abs_metformin",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "bio_abs_metformin",
-      "value": true,
-      "evidence": [
-        {
-          "start": 2,
-          "end": 11,
-          "text": "Metformin"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "bio_abs_metformin",
-      "value": "# Metformin Kinetics in Synthetic Cohort\n\nAuthors: Alan Turing, Joan Clarke\nYear: 2023\nDOI: 10.0000/fake.metformin.2023\nAffiliation: Institute for Imaginary Medicine\n\n## Abstract\n\nPatients received metformin 500 mg twice daily.",
-      "evidence": [
-        {
-          "start": 0,
-          "end": 227,
-          "text": "# Metformin Kinetics in Synthetic Cohort\n\nAuthors: Alan Turing, Joan Clarke\nYear: 2023\nDOI: 10.0000/fake.metformin.2023\nAffiliation: Institute for Imaginary Medicine\n\n## Abstract\n\nPatients received metformin 500 mg twice daily."
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "bio_abs_metformin",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "bio_abs_metformin",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T01",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": "Metformin Kinetics Replication",
-      "evidence": [
-        {
-          "start": 2,
-          "end": 32,
-          "text": "Metformin Kinetics Replication"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": [
-        "Alan Turing"
-      ],
-      "evidence": [
-        {
-          "start": 34,
-          "end": 54,
-          "text": "Authors: Alan Turing"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": 2024,
-      "evidence": [
-        {
-          "start": 61,
-          "end": 65,
-          "text": "2024"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": "abstract",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": [
-        "Metformin Kinetics Replication",
-        "Abstract"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": "10.0000/fake.metformin.2024",
-      "evidence": [
-        {
-          "start": 71,
-          "end": 98,
-          "text": "10.0000/fake.metformin.2024"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": 26,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": [
-        "Metformin Kinetics Replication",
-        "Abstract"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": [
-        {
-          "text": "850 mg",
-          "start": 141,
-          "end": 147
-        }
-      ],
-      "evidence": [
-        {
-          "text": "850 mg",
-          "start": 141,
-          "end": 147
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": [
-        {
-          "text": "Metformin",
-          "start": 2,
-          "end": 11
-        }
-      ],
-      "evidence": [
-        {
-          "text": "Metformin",
-          "start": 2,
-          "end": 11
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T13",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": 480,
-      "evidence": [
-        {
-          "start": 173,
-          "end": 178,
-          "text": "n=480"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": {
-        "urls": [],
-        "keys": []
-      },
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": {
-        "Authors": "Alan Turing",
-        "Year": "2024",
-        "DOI": "10.0000/fake.metformin.2024"
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": true,
-      "evidence": [
-        {
-          "start": 2,
-          "end": 11,
-          "text": "Metformin"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": "# Metformin Kinetics Replication\n\nAuthors: Alan Turing\nYear: 2024\nDOI: 10.0000/fake.metformin.2024\n\n## Abstract\n\nPatients received metformin 850 mg twice daily.",
-      "evidence": [
-        {
-          "start": 0,
-          "end": 160,
-          "text": "# Metformin Kinetics Replication\n\nAuthors: Alan Turing\nYear: 2024\nDOI: 10.0000/fake.metformin.2024\n\n## Abstract\n\nPatients received metformin 850 mg twice daily."
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "bio_abs_metformin_conflict",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T01",
-      "doc_id": "noisy_ocr_line",
-      "value": "OCR Recovery Fixture",
-      "evidence": [
-        {
-          "start": 2,
-          "end": 22,
-          "text": "OCR Recovery Fixture"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "noisy_ocr_line",
-      "value": [
-        "Noisy Bot"
-      ],
-      "evidence": [
-        {
-          "start": 24,
-          "end": 42,
-          "text": "Authors: Noisy Bot"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "noisy_ocr_line",
-      "value": 2020,
-      "evidence": [
-        {
-          "start": 49,
-          "end": 53,
-          "text": "2020"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "noisy_ocr_line",
-      "value": "note",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "noisy_ocr_line",
-      "value": [
-        "OCR Recovery Fixture"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "noisy_ocr_line",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "noisy_ocr_line",
-      "value": 16,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "noisy_ocr_line",
-      "value": [
-        "OCR Recovery Fixture"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "noisy_ocr_line",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "noisy_ocr_line",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T13",
-      "doc_id": "noisy_ocr_line",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "noisy_ocr_line",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "noisy_ocr_line",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "noisy_ocr_line",
-      "value": {
-        "urls": [],
-        "keys": []
-      },
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "noisy_ocr_line",
-      "value": {
-        "Authors": "Noisy Bot",
-        "Year": "2020",
-        "dose": "5O0 mg"
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "noisy_ocr_line",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "noisy_ocr_line",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "noisy_ocr_line",
-      "value": false,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": "no:metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "noisy_ocr_line",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "noisy_ocr_line",
-      "value": "TTL  i5  250  secands\ndose: 5O0 mg",
-      "evidence": [
-        {
-          "start": 55,
-          "end": 90,
-          "text": "TTL  i5  250  secands\ndose: 5O0 mg"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "noisy_ocr_line",
-      "value": {
-        "ttl_seconds": 250,
-        "dose_mg": 500
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T01",
-      "doc_id": "semi_structured_lab",
-      "value": "Lab Instrument Log",
-      "evidence": [
-        {
-          "start": 2,
-          "end": 20,
-          "text": "Lab Instrument Log"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "semi_structured_lab",
-      "value": [
-        "Katherine Johnson"
-      ],
-      "evidence": [
-        {
-          "start": 22,
-          "end": 48,
-          "text": "Authors: Katherine Johnson"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "semi_structured_lab",
-      "value": 2022,
-      "evidence": [
-        {
-          "start": 55,
-          "end": 59,
-          "text": "2022"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "semi_structured_lab",
-      "value": "note",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "semi_structured_lab",
-      "value": [
-        "Lab Instrument Log"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "semi_structured_lab",
-      "value": 33,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "semi_structured_lab",
-      "value": [
-        "Lab Instrument Log"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "semi_structured_lab",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "semi_structured_lab",
-      "value": [
-        {
-          "text": "ibuprofen",
-          "start": 136,
-          "end": 145
-        }
-      ],
-      "evidence": [
-        {
-          "text": "ibuprofen",
-          "start": 136,
-          "end": 145
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T13",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "semi_structured_lab",
-      "value": {
-        "urls": [],
-        "keys": []
-      },
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "semi_structured_lab",
-      "value": {
-        "Authors": "Katherine Johnson",
-        "Year": "2022",
-        "device": "spectrometer-7",
-        "wavelength_nm": "532",
-        "operator": "KJ",
-        "status": "calibrated",
-        "Missing": "patient_id intentionally absent."
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "semi_structured_lab",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "semi_structured_lab",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "semi_structured_lab",
-      "value": false,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": "no:metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T34",
-      "doc_id": "semi_structured_lab",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "patient_id absent"
-    },
-    {
-      "task_id": "T01",
-      "doc_id": "tableish_throughput",
-      "value": "Throughput Table Dump",
-      "evidence": [
-        {
-          "start": 2,
-          "end": 23,
-          "text": "Throughput Table Dump"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "tableish_throughput",
-      "value": [
-        "Claude Shannon"
-      ],
-      "evidence": [
-        {
-          "start": 25,
-          "end": 48,
-          "text": "Authors: Claude Shannon"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "tableish_throughput",
-      "value": 2021,
-      "evidence": [
-        {
-          "start": 55,
-          "end": 59,
-          "text": "2021"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "tableish_throughput",
-      "value": "table_dump",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "tableish_throughput",
-      "value": [
-        "Throughput Table Dump"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "tableish_throughput",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "tableish_throughput",
-      "value": 29,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "tableish_throughput",
-      "value": [
-        "Throughput Table Dump"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "tableish_throughput",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "tableish_throughput",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T13",
-      "doc_id": "tableish_throughput",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "tableish_throughput",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "tableish_throughput",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "tableish_throughput",
-      "value": {
-        "urls": [],
-        "keys": []
-      },
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "tableish_throughput",
-      "value": {
-        "Authors": "Claude Shannon",
-        "Year": "2021"
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "tableish_throughput",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "tableish_throughput",
-      "value": [
-        {
-          "region": "us-east",
-          "qps": "1000",
-          "error_rate": "0.01"
-        },
-        {
-          "region": "eu-west",
-          "qps": "800",
-          "error_rate": "0.02"
-        },
-        {
-          "region": "ap-south",
-          "qps": "600",
-          "error_rate": "0.015"
-        }
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "tableish_throughput",
-      "value": false,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": "no:metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "tableish_throughput",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "tableish_throughput",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "tableish_throughput",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T01",
-      "doc_id": "tech_note_cache",
-      "value": "Cache Invalidation Notes",
-      "evidence": [
-        {
-          "start": 2,
-          "end": 26,
-          "text": "Cache Invalidation Notes"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "tech_note_cache",
-      "value": [
-        "Ada Lovelace",
-        "Grace Hopper"
-      ],
-      "evidence": [
-        {
-          "start": 28,
-          "end": 63,
-          "text": "Authors: Ada Lovelace, Grace Hopper"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "tech_note_cache",
-      "value": 2024,
-      "evidence": [
-        {
-          "start": 70,
-          "end": 74,
-          "text": "2024"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "tech_note_cache",
-      "value": "note",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "tech_note_cache",
-      "value": [
-        "Cache Invalidation Notes",
-        "Summary",
-        "Definition",
-        "Results",
-        "Notes"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "tech_note_cache",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "tech_note_cache",
-      "value": 55,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "tech_note_cache",
-      "value": [
-        "Cache Invalidation Notes",
-        "Summary",
-        "Definition",
-        "Results",
-        "Notes"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "tech_note_cache",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "tech_note_cache",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T13",
-      "doc_id": "tech_note_cache",
-      "value": 240,
-      "evidence": [
-        {
-          "start": 270,
-          "end": 275,
-          "text": "n=240"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "tech_note_cache",
-      "value": "Latency is the end-to-end response time measured at p50.",
-      "evidence": [
-        {
-          "start": 188,
-          "end": 244,
-          "text": "Latency is the end-to-end response time measured at p50."
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "tech_note_cache",
-      "value": "ada@example.org",
-      "evidence": [
-        {
-          "start": 84,
-          "end": 99,
-          "text": "ada@example.org"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "tech_note_cache",
-      "value": {
-        "urls": [
-          {
-            "text": "https://example.org/cache-rfc",
-            "start": 320,
-            "end": 349
-          }
-        ],
-        "keys": [
-          "CACHE2024"
-        ]
-      },
-      "evidence": [
-        {
-          "text": "https://example.org/cache-rfc",
-          "start": 320,
-          "end": 349
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "tech_note_cache",
-      "value": {
-        "Authors": "Ada Lovelace, Grace Hopper",
-        "Year": "2024",
-        "Contact": "ada@example.org"
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "tech_note_cache",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "tech_note_cache",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "tech_note_cache",
-      "value": false,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": "no:metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "tech_note_cache",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "tech_note_cache",
-      "value": "We define cache TTL as 300 seconds. The peak QPS is 12000.",
-      "evidence": [
-        {
-          "start": 113,
-          "end": 171,
-          "text": "We define cache TTL as 300 seconds. The peak QPS is 12000."
-        }
-      ],
-      "status": "PRESENT",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "tech_note_cache",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T01",
-      "doc_id": "tech_note_cache_v2",
-      "value": "Cache Invalidation Follow-up",
-      "evidence": [
-        {
-          "start": 2,
-          "end": 30,
-          "text": "Cache Invalidation Follow-up"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T02",
-      "doc_id": "tech_note_cache_v2",
-      "value": [
-        "Ada Lovelace"
-      ],
-      "evidence": [
-        {
-          "start": 32,
-          "end": 53,
-          "text": "Authors: Ada Lovelace"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T03",
-      "doc_id": "tech_note_cache_v2",
-      "value": 2025,
-      "evidence": [
-        {
-          "start": 60,
-          "end": 64,
-          "text": "2025"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T04",
-      "doc_id": "tech_note_cache_v2",
-      "value": "note",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T05",
-      "doc_id": "tech_note_cache_v2",
-      "value": [
-        "Cache Invalidation Follow-up",
-        "Summary",
-        "Results"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T06",
-      "doc_id": "tech_note_cache_v2",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T07",
-      "doc_id": "tech_note_cache_v2",
-      "value": 32,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T08",
-      "doc_id": "tech_note_cache_v2",
-      "value": [
-        "Cache Invalidation Follow-up",
-        "Summary",
-        "Results"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T09",
-      "doc_id": "tech_note_cache_v2",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T10",
-      "doc_id": "tech_note_cache_v2",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T13",
-      "doc_id": "tech_note_cache_v2",
-      "value": 240,
-      "evidence": [
-        {
-          "start": 163,
-          "end": 168,
-          "text": "n=240"
-        }
-      ],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T12",
-      "doc_id": "tech_note_cache_v2",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T15",
-      "doc_id": "tech_note_cache_v2",
-      "value": null,
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T18",
-      "doc_id": "tech_note_cache_v2",
-      "value": {
-        "urls": [],
-        "keys": []
-      },
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T17",
-      "doc_id": "tech_note_cache_v2",
-      "value": {
-        "Authors": "Ada Lovelace",
-        "Year": "2025"
-      },
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T16",
-      "doc_id": "tech_note_cache_v2",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T38",
-      "doc_id": "tech_note_cache_v2",
-      "value": [],
-      "evidence": [],
-      "status": "MISSING",
-      "notes": ""
-    },
-    {
-      "task_id": "T21",
-      "doc_id": "tech_note_cache_v2",
-      "value": false,
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": "no:metformin"
-    },
-    {
-      "task_id": "T20",
-      "doc_id": "tech_note_cache_v2",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T19",
-      "doc_id": "tech_note_cache_v2",
-      "value": "We revise cache TTL as 600 seconds. Peak QPS remains 12000.",
-      "evidence": [
-        {
-          "start": 78,
-          "end": 137,
-          "text": "We revise cache TTL as 600 seconds. Peak QPS remains 12000."
-        }
-      ],
-      "status": "PRESENT",
-      "notes": "cache TTL seconds"
-    },
-    {
-      "task_id": "T37",
-      "doc_id": "tech_note_cache_v2",
-      "value": null,
-      "evidence": [],
-      "status": "ABSTAIN",
-      "notes": ""
-    },
-    {
-      "task_id": "T25",
-      "doc_id": null,
-      "value": [
-        "binding_coref",
-        "bio_abs_metformin",
-        "bio_abs_metformin_conflict"
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": "metformin"
-    },
-    {
-      "task_id": "T26",
-      "doc_id": null,
-      "value": [
-        {
-          "doc_id": "bio_abs_metformin",
-          "text": "500 mg",
-          "start": 208,
-          "end": 214
-        },
-        {
-          "doc_id": "bio_abs_metformin",
-          "text": "500 mg",
-          "start": 355,
-          "end": 361
-        },
-        {
-          "doc_id": "bio_abs_metformin_conflict",
-          "text": "850 mg",
-          "start": 141,
-          "end": 147
-        }
-      ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T29",
-      "doc_id": null,
-      "value": {
-        "bio_abs_metformin": 500,
-        "bio_abs_metformin_conflict": 850
-      },
-      "evidence": [],
-      "status": "DISPUTED",
-      "notes": "planted numeric contradiction"
-    },
-    {
-      "task_id": "T30",
-      "doc_id": null,
-      "value": [
-        {
-          "doc_id": "semi_structured_lab",
-          "string": "ibuprofen",
-          "type": "reagent"
-        }
-      ],
-      "evidence": [],
-      "status": "DISPUTED",
-      "notes": ""
-    },
-    {
-      "task_id": "T33",
-      "doc_id": null,
-      "value": "verifier_requires_evidence",
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
-    },
-    {
-      "task_id": "T35",
-      "doc_id": "tech_note_cache",
-      "value": {
-        "query": "How long before cached entries expire?",
-        "answer": "300 seconds",
-        "method": "query_expand"
-      },
-      "evidence": [
-        {
-          "start": 129,
-          "end": 147,
-          "text": "TTL as 300 seconds"
-        }
-      ],
-      "status": "CONFIRMED",
-      "notes": "eclass_query_expand"
-    },
-    {
-      "task_id": "T28",
-      "doc_id": null,
-      "value": {
-        "tech_note_cache": 2024,
-        "tech_note_cache_v2": 2025
-      },
-      "evidence": [],
-      "status": "DISPUTED",
-      "notes": "year compare"
-    },
-    {
-      "task_id": "T36",
-      "doc_id": null,
-      "value": {
-        "relation": "implies_dose_change",
-        "from": 500,
-        "to": 850,
-        "values": {
-          "bio_abs_metformin": 500,
-          "bio_abs_metformin_conflict": 850
-        },
-        "method": "symbolic_compare"
-      },
-      "evidence": [
-        {
-          "doc_id": "bio_abs_metformin",
-          "text": "500 mg"
-        },
-        {
-          "doc_id": "bio_abs_metformin_conflict",
-          "text": "850 mg"
-        }
-      ],
-      "status": "CONFIRMED",
-      "notes": "eclass_symbolic_dose_change"
     }
+  },
+  "eclass_accuracy": 1.0,
+  "lm_still_needed": false,
+  "lm_invoked": false,
+  "verdict": "ECLASS_CLOSED_WITHOUT_LM",
+  "allowlist": [
+    "T35",
+    "T36",
+    "T39"
   ],
-  "note": "Phase 3 uses query expansion + symbolic compare + sentence coref. Frozen LM not invoked unless lm_still_needed.",
-  "owner_trigger": "continue"
+  "methods": {
+    "T35": "query_synonym_expansion",
+    "T36": "symbolic_multi_doc_compare",
+    "T39": "sentence_level_coref"
+  },
+  "notes": [
+    "First-principles cascade: cheapest non-LM probes before any LM.",
+    "LM not invoked; E-class closed without generation.",
+    "A\u2013D remain classical-only. Not a Layer-1 ledger claim until promoted."
+  ],
+  "corpus_class": "SYNTHETIC_MINI",
+  "U_status": "DRAFT_NOT_SCORING_FROZEN",
+  "integrity_note": "LAB.B25 prediction/scoring firewall remediation 2026-07-31",
+  "context_of_use": {
+    "task": "local_research_document_intelligence",
+    "track": "clean_synthetic",
+    "not": [
+      "clinical",
+      "open_world",
+      "production_ready"
+    ]
+  }
 }

@@ -8,6 +8,8 @@ from pathlib import Path
 
 from wedge_v1.build_corpus import build
 from wedge_v1.classical import solvers as S
+from wedge_v1.auth_gate import require_auth
+from wedge_v1.eval.claim_report import claim_level_report
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "results_wedge_v1_classical.json"
@@ -139,6 +141,12 @@ def score(claims: list[S.Claim], gold: dict, docs: dict) -> dict:
 
 
 def main():
+    gate = require_auth(
+        auth_id=AUTH,
+        auth_record=ROOT / "AUTH_RECORD.md",
+        need_bits={"execute_eval"},
+        mode="integrity_remediation",
+    )
     t0 = time.perf_counter()
     manifest = build()
     gold = json.loads((ROOT / "data" / "gold" / "gold.json").read_text(encoding="utf-8"))
@@ -175,7 +183,7 @@ def main():
 
     claims.append(S.mention_docs(docs, "metformin"))
     claims.append(S.union_dosages(docs))
-    claims.append(S.flag_numeric_contradiction(gold["planted"]))
+    claims.append(S.flag_numeric_contradiction(docs))
     claims.append(S.flag_entity_collision(docs))
     claims.append(S.reject_ungrounded())
     claims.append(S.paraphrastic_ttl(docs, gold))
@@ -214,6 +222,10 @@ def main():
         "summary": summary,
         "claims": [asdict(c) for c in claims],
         "probe_flags": gold["probe_flags"],
+        "auth_gate": gate,
+        "claim_level": claim_level_report(claims),
+        "corpus_class": "SYNTHETIC_MINI",
+        "U_status": "DRAFT_NOT_SCORING_FROZEN",
         "notes": [
             "Classical-only; no LM solvers.",
             "U uses draft WEDGE_V1 weights; L is wall-clock for this harness run.",

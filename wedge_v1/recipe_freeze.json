@@ -8,5 +8,14 @@
   "solvers": "classical_only",
   "lm": false,
   "inclusion": "wedge_v1/inclusion_predicates.md",
-  "mid_stream_U_edits": "FORBIDDEN_VOID"
+  "mid_stream_U_edits": "FORBIDDEN_VOID",
+  "U_status": "DRAFT_NOT_SCORING_FROZEN",
+  "corpus_class": "SYNTHETIC_MINI",
+  "hashes": {
+    "inclusion_predicates.md": "c9829e3624c1753e1def163a2a9de4f4e2bc3441a372ec23a8c6c6d38c680f65",
+    "classical/solvers.py": "c69cdee94cc1a7e12ef2439e1a4b61a776003dca3e1be5a6c95b397db3c7a9d2",
+    "classical/eclass_probes.py": "fa40c36550e848f01062703bb410a5d3eafcf3fc7e41914cc3d327830605629f",
+    "classical/verifier.py": "f38eff54f0ff49636dddc63e7c0f209efd4cbb41c568437454193d59894a6cfe"
+  },
+  "namespace_rule": "LAB.B* for lab map; WED.B* for WEDGE_V1.md"
 }

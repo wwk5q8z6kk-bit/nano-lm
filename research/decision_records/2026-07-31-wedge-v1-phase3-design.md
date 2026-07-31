@@ -6,7 +6,7 @@
 
 ## What happened
 
-1. Phase 2 classical baseline already measured: U≈0.926, 40/40, E-class ABSTAIN by design.  
+1. Phase 2 classical baseline already measured: draft U≈0.891; later E-class closed without LM (`ECLASS_CLOSED_WITHOUT_LM`) — this design record is superseded for execute intent.  
 2. Continued first-principles mitigation by writing an execute-ready **Phase 3 design** that:
    - allowlists only T35/T36/T39,
    - mandates constructive faithfulness + dual estimands,

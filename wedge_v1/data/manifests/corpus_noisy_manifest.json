@@ -1,0 +1,70 @@
+{
+  "track": "noisy",
+  "auth": "AUTHORIZE_WEDGE_V1_NOISY_TRACK",
+  "seed": 20260731,
+  "n_docs": 8,
+  "docs": [
+    {
+      "doc_id": "binding_coref",
+      "path": "data/corpus_noisy/binding_coref.md",
+      "sha256": "bbcc37730885a4e1af5a498140a3385a55e0d1b79b45dd28cbfc55d9d4e25bc7",
+      "n_chars": 176,
+      "parent_clean_sha256": "798e108536ce526f151d0230dc8d78db9b96d977d63572255d9303068174659a"
+    },
+    {
+      "doc_id": "bio_abs_metformin",
+      "path": "data/corpus_noisy/bio_abs_metformin.md",
+      "sha256": "fe25b50fa13c8a1afdfadacf23d4d48112fc0b1d7a069c3da60a7a9a1ac662cd",
+      "n_chars": 471,
+      "parent_clean_sha256": "8ba79e76d87bb6ddbff08570ec27be8004452bf13dbc3a2e860b3a96c2c2a3aa"
+    },
+    {
+      "doc_id": "bio_abs_metformin_conflict",
+      "path": "data/corpus_noisy/bio_abs_metformin_conflict.md",
+      "sha256": "8538a29413ccc71f9887113f5e53a3f8d995d668ae5475e141e62ae69d8d5309",
+      "n_chars": 207,
+      "parent_clean_sha256": "2888912fddb9a2428dae0c3b3aac60464a53556e2e90ce36f3b31dd822477c76"
+    },
+    {
+      "doc_id": "noisy_ocr_line",
+      "path": "data/corpus_noisy/noisy_ocr_line.md",
+      "sha256": "1ece2ba1512781112cbb231652c48370b91eb84d2c99d40bedbb362822de2698",
+      "n_chars": 90,
+      "parent_clean_sha256": "8c7fa37bee212ca087f326c3c326f7c1596489c5a19e9e29c3d148d3fb0bedb9"
+    },
+    {
+      "doc_id": "semi_structured_lab",
+      "path": "data/corpus_noisy/semi_structured_lab.md",
+      "sha256": "38c7389b8e93356fff1f5b57e4c081e3779bc084304dba337b65569f6d8be304",
+      "n_chars": 249,
+      "parent_clean_sha256": "2b115e3341a70cb341c74916bb1e68f09cff4cb41e739c052d909156088990c4"
+    },
+    {
+      "doc_id": "tableish_throughput",
+      "path": "data/corpus_noisy/tableish_throughput.md",
+      "sha256": "570ebfb9f1a1299c3b7bcf2feb47c64777332b14c5d96df9f42809c6456b4ed7",
+      "n_chars": 153,
+      "parent_clean_sha256": "91dd76aa4e4eaf8049956ec0856f942ddb5409e9ea32f3ba843cdf567b201fbd"
+    },
+    {
+      "doc_id": "tech_note_cache",
+      "path": "data/corpus_noisy/tech_note_cache.md",
+      "sha256": "bb81fa0611ec69b4c3feedb7ed93868b8d4624107188e614f075f0d5b3a92c71",
+      "n_chars": 380,
+      "parent_clean_sha256": "2e7bf7174f53a0d4ee0d69253dd42e9cf6ca14aac27fd42f89a135386f4c63b9"
+    },
+    {
+      "doc_id": "tech_note_cache_v2",
+      "path": "data/corpus_noisy/tech_note_cache_v2.md",
+      "sha256": "2b82c3a3b1cbd38ef458c1cb6d14ff23bbbeb84aebbcd70f0bcd7257ec3d5ac3",
+      "n_chars": 197,
+      "parent_clean_sha256": "bfcf12c13b2a876be0c9339228a1b985f4444277bc818b87bf64c93d9552a6a4"
+    }
+  ],
+  "noise_process": [
+    "glyph swaps in body lines (0/O, 1/l patterns)",
+    "TTL as -> TTL i5; seconds -> secands",
+    "Authors -> Auth0rs; drug name OCR forms",
+    "headings and Year lines preserved"
+  ]
+}

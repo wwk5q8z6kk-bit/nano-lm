@@ -1,9 +1,10 @@
 # Wedge v1 Phase 3 — LM probe design (prep only)
 
-**Status:** `DESIGN_READY_AWAITING_AUTH`  
-**Auth required:** `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` — **NOT GRANTED**  
+**Status:** `DESIGN_SUPERSEDED_BY_ECLASS_NON_LM` — E-class closed without LM; LM probe **not indicated**  
+**Auth required:** `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` — **NOT GRANTED** / **NOT INDICATED**  
 **Prerequisite RESULT:** Phase 2 classical baseline  
-  (`wedge_v1/results_wedge_v1_classical.json`, U≈0.926, 40/40 on clean synthetic track)  
+  (`wedge_v1/results_wedge_v1_classical.json`, draft U≈0.891 on clean synthetic track)  
+**E-class RESULT:** `wedge_v1/results_wedge_v1_phase3_eclass.json` (`ECLASS_CLOSED_WITHOUT_LM`)  
 **Companions:** `papers/WEDGE_V1.md`, `papers/FIRST_PRINCIPLES_RISK_MITIGATION.md`,  
   `trajectory/PROGRAM_A_FIRST_PRINCIPLES_MITIGATIONS.md` (science lessons only; Program A **superseded** as product default)
 
@@ -32,8 +33,8 @@ That is **not** “beat classical on A–D.” A–D classical wins are load-bea
 
 | Fact | Implication |
 |------|-------------|
-| U≈0.926, Q=1.0, E=0, R≈0.079, C=1.0 | Classical is the **reference** solver; LM must beat *this* under frozen \(U\) |
-| T35 / T36 / T39 = ABSTAIN (by design) | Only these (plus optional T37 if classical saturates) are probe candidates |
+| Draft U≈0.891 (see classical RESULT JSON) | Classical is the **reference** solver |
+| T35/T36/T39 closed by non-LM E-class probes | LM probe not indicated (`lm_still_needed=false`) |
 | Liability presented_bad = 0 | LM must not raise presented fabrications |
 | Probe flags B1–B4 true | World inclusion OK; do not rewrite gold after scores |
 | Clean track only | Noisy OCR track stays diagnostic |

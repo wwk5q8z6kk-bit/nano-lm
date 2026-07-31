@@ -1,6 +1,6 @@
 # NanoScribe — Master Plan (historical architecture note)
 
-> **Constitutional role (from 2026-07-31):** This file is **not** the laboratory constitution and **not** the execution queue.  
+> **NONCLAIM / Constitutional role (from 2026-07-31):** Historical architecture note only — **not** Layer-1 evidence, **not** the laboratory constitution, and **not** the execution queue.  
 > Use instead:  
 > - `LABORATORY_CONSTITUTION.md` — layer separation  
 > - `EVIDENCE_LEDGER.md` — Layer 1 (conservative)  
@@ -10,7 +10,7 @@
 > - `DECISION_GATES.md` — promotion rules  
 >  
 > Historical Phases 3–4 remain **`STOP` as execution**. Imagination lives in the Technology Roadmap and Research Portfolio.  
-> `PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE`.
+> Science: `IDLE_AFTER_E4_KILL`. Operating posture: see `LABORATORY_CONSTITUTION.md` / `EXECUTION_QUEUE.md`.
 
 *Condensed-faithful capture of the owner's rewritten master plan; supersedes the
 roadmap portions of NANOSCRIBE_VNEXT.md (whose architectural content it absorbs).

@@ -6,12 +6,16 @@
 
 ```text
 PROJECT: nano-lm
-PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE
-AUTHORIZED_NOW: E4_DESIGN_ONLY | BENCHMARK_SUPREMACY_LAB_PROGRAM0_INFRA
-PROGRAM1: DEFERRED_PENDING_GATE0
+PROGRAM_EXECUTION_STATUS: IDLE_AFTER_DOGFOOD
+AUTHORIZED_NOW: NONE  # typed AUTHORIZE_* + queue receipt required
+AUTHORIZED_NONEXECUTION: CONTINUE_SESSION_M0  # docs/lint only; see OWNER_SPEECH_ACTS.md
+PROGRAM0_BENCHMARK_INFRA: DONE
+WEDGE_V1: PHASES_1_3_DONE + NOISY_DIAGNOSTIC_DONE + DOGFOOD_8_8
+LM_PROBE: NOT_INDICATED
+PROGRAM1: NOT_AUTHORIZED
 TRAINING: NOT_AUTHORIZED
-E4_EXECUTION: BLOCKED
-LAYER1_FREEZE: UNTOUCHED
+E4_RESULT: KILL  # EXECUTED; product track stop for tested R★
+LAYER1_FREEZE: UNTOUCHED  # post-alpha-evidence-freeze-2026-07-31 immutable
 NANOSCRIBE_PRODUCT_EXPANSION: STOP
 OLD_TASK_RUNS_UNDER_OLD_TASK_U: FORBIDDEN
 EVIDENCE_STANDARDS: CONSERVATIVE
@@ -104,7 +108,7 @@ Portfolio/roadmap items do **not** auto-enter the queue. Only `DECISION_GATES.md
 
 ## Risk mitigation
 
-Blockers are decomposed to first principles in `FIRST_PRINCIPLES_RISK_MITIGATION.md`. Kill/stop events expand questions via `ANOMALY_LOG.md`. Neither document authorizes execution.
+Blockers are decomposed to first principles in `FIRST_PRINCIPLES_RISK_MITIGATION.md`. Live status: `MITIGATION_STATUS_SCORECARD.md`. Outsider entry: `PUBLIC_ONE_PAGER.md`. Kill/stop events expand questions via `ANOMALY_LOG.md`. Neither document authorizes execution.
 
 ## Anti-contamination
 

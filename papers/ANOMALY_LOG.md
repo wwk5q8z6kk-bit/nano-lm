@@ -27,6 +27,8 @@ product claims, NanoScribe, or “unlocked” architecture. Cite EVIDENCE_LEDGER
 | A_C3_L | C3 | UNRESOLVED | C_C3_L | Length as residual driver | — | true | Powered length arm under amended prereg? |
 | A_MORPH | C3 | SPECULATION_BAN | C_MORPH, C_MORPH_DESC | Morph as proven causal residual | — | true | Preregistered causal morph RESULT? |
 | A_FABRIC_SCOPE | Fabric | SCOPE | C_FABRIC_SLICE, C_NANOSCRIBE_STATE | Fabric slice ≠ NanoScribe OS | C, E, O | true | Open-world verifier under imperfect R (new claim ID)? |
+| A_WEDGE_SYNTH | Wedge v1 | SCOPE | — | Synthetic mini-corpus U ≠ real-workflow readiness | Nano Runtime | true | Does classical+verify remain useful on owner private corpus under matched U?; Where does ingest/OCR create false LM necessity? |
+| A_WEDGE_ECLASS | Wedge v1 | CLOSED_WITHOUT_LM | — | E-class needed LM on this pack | Nano Runtime | true | On harder paraphrase/coref packs, when does ΔU_LM exceed δ under dual estimands? |
 
 ## Hard rule
 

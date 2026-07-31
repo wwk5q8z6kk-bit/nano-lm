@@ -134,9 +134,9 @@
     "Q": 1.0,
     "E": 0.0,
     "R": 0.1956521739130435,
-    "L": 0.0028,
+    "L": 0.0034,
     "C": 1.0,
-    "U": 0.891248347826087,
+    "U": 0.891236347826087,
     "checks": [
       {
         "task_id": "T01",
@@ -2428,38 +2428,21 @@
     "B3": true,
     "B4": true
   },
-  "auth_gate": {
-    "auth_id": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
-    "scope_bits": [
-      "execute_eval"
-    ],
-    "mode": "integrity_remediation",
-    "queue": {
-      "queued_active": false,
-      "queued_done": false,
-      "idle": true
-    }
-  },
-  "claim_level": {
-    "n_claims": 184,
-    "by_status": {
-      "PRESENT": 100,
-      "MISSING": 48,
-      "ABSTAIN": 33,
-      "DISPUTED": 3
-    },
-    "n_presented": 100,
-    "n_presented_with_evidence": 48,
-    "n_abstain": 33,
-    "n_disputed": 3,
-    "n_missing": 48,
-    "note": "Instrument layer; official U remains DRAFT until AUTHORIZE_WEDGE_V1_U_FREEZE"
-  },
-  "corpus_class": "SYNTHETIC_MINI",
-  "U_status": "DRAFT_NOT_SCORING_FROZEN",
   "notes": [
     "Classical-only; no LM solvers.",
     "U uses draft WEDGE_V1 weights; L is wall-clock for this harness run.",
     "Not a Layer-1 Evidence Ledger claim until owner promotes."
-  ]
+  ],
+  "corpus_class": "SYNTHETIC_MINI",
+  "context_of_use": {
+    "task": "local_research_document_intelligence",
+    "track": "clean_synthetic",
+    "not": [
+      "clinical",
+      "open_world",
+      "production_ready"
+    ]
+  },
+  "U_status": "DRAFT_NOT_SCORING_FROZEN",
+  "integrity_note": "LAB.B25 prediction/scoring firewall remediation 2026-07-31"
 }

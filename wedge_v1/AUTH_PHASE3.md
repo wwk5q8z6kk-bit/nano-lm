@@ -2,7 +2,8 @@
 ## Capability scope (B14)
 
 ```text
-scope_bits: [execute_eval, commit]
+scope_bits: [execute_eval]
+# commit/tag/push require separate AUTHORIZE_COMMIT / speech-act — not bundled
 valid_only_if_queued: true
 ```
 
@@ -15,6 +16,11 @@ valid_only_if_queued: true
 **cheapest sufficient** probes. LM inference only if non-LM probes fail.
 
 ```yaml
+doc_type: auth_record
+valid_only_if_queued: true
+queue_path: papers/EXECUTION_QUEUE.md
+auth_ids: [AUTHORIZE_WEDGE_V1_PHASE3_ECLASS_PROBE]
+scope_bits: [execute_eval]
 governance_status: OWNER_PROCEED_2026-07-31
 may_authorize_execution: true
 owner_trigger: "proceed"

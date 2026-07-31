@@ -209,10 +209,11 @@ LAB_STRUCTURE_EXPANSION = STOP
 
 1. ~~Select the first concrete workflow (Phase 1)~~ **DONE** — `papers/WEDGE_V1.md`  
    (`local_research_document_intelligence`, task pack n=40).
-2. ~~Phase 2 classical baseline~~ **DONE** — `AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE`; artifact `wedge_v1/results_wedge_v1_classical.json` (draft U≈0.926, 40/40 on clean synthetic track).
-3. Standing: protect Layer-1 freeze / tags; do not casually commit remaining dirty freeze/audit files.
+2. ~~Phase 2 classical baseline~~ **DONE** — `AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE`; artifact `wedge_v1/results_wedge_v1_classical.json` (draft U≈0.891 on clean synthetic track).
+3. ~~Phase 3 E-class cheapest-sufficient probes~~ **DONE** — `AUTHORIZE_WEDGE_V1_PHASE3_ECLASS_PROBE`; verdict `ECLASS_CLOSED_WITHOUT_LM` (acc=1.0, ΔU≈+0.009 < δ; LM not invoked).
+4. Standing: protect Layer-1 freeze / tags; do not casually commit remaining dirty freeze/audit files.
 
-**Next (requires new auth):** one of `AUTHORIZE_WEDGE_V1_U_FREEZE` | `AUTHORIZE_WEDGE_V1_OWNER_CORPUS` | `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` (E-class abstentions only; not LM-first productization).
+**Next (optional auth):** `AUTHORIZE_WEDGE_V1_U_FREEZE` | `AUTHORIZE_WEDGE_V1_OWNER_CORPUS` | `AUTHORIZE_WEDGE_V1_NOISY_TRACK` | idle/hygiene. Owner `continue` = `CONTINUE_SESSION` (M0 only), not execute. `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` is **not indicated**.
 
 **Not authorized:** Program 1 census; new governance layers; training runs; E4 execute; NanoScribe / fabric-v2 / agents / memory product builds; expanding "Benchmark Supremacy Lab" identity; Nano Runtime component builds without Phase 3/expand auth.
 

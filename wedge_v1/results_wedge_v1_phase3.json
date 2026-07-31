@@ -2,19 +2,19 @@
   "schema": "nano-lm.wedge_v1.phase3.v1",
   "auth": "AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE",
   "track": "clean",
-  "classical_U": 0.891248347826087,
-  "hybrid_U": 0.8904672432432432,
-  "delta_U": -0.0007811045828437502,
+  "classical_U": 0.891236347826087,
+  "hybrid_U": 0.8702349887640449,
+  "delta_U": -0.021001359062042035,
   "delta": 0.05,
   "summary": {
     "n_checks": 50,
-    "n_ok": 50,
-    "Q": 1.0,
-    "E": 0.0,
-    "R": 0.1891891891891892,
-    "L": 0.0138,
+    "n_ok": 49,
+    "Q": 0.98,
+    "E": 0.020000000000000018,
+    "R": 0.15730337078651685,
+    "L": 0.0037,
     "C": 1.05,
-    "U": 0.8904672432432432,
+    "U": 0.8702349887640449,
     "checks": [
       {
         "task_id": "T01",
@@ -253,7 +253,7 @@
       },
       {
         "task_id": "T35",
-        "ok": true,
+        "ok": false,
         "detail": "paraphrastic"
       },
       {
@@ -278,7 +278,11 @@
     "T35": {
       "task_id": "T35",
       "doc_id": "tech_note_cache",
-      "value": "300 seconds",
+      "value": {
+        "query": "How long before cached entries expire?",
+        "answer": "300 seconds",
+        "method": "query_expand"
+      },
       "evidence": [
         {
           "start": 129,
@@ -286,49 +290,61 @@
           "text": "TTL as 300 seconds"
         }
       ],
-      "status": "PRESENT",
-      "notes": "query_expand"
+      "status": "CONFIRMED",
+      "notes": "eclass_query_expand"
     },
     "T36": {
       "task_id": "T36",
       "doc_id": null,
       "value": {
+        "relation": "implies_dose_change",
         "from": 500,
         "to": 850,
         "values": {
           "bio_abs_metformin": 500,
           "bio_abs_metformin_conflict": 850
-        }
+        },
+        "method": "symbolic_compare"
       },
       "evidence": [
         {
           "doc_id": "bio_abs_metformin",
-          "text": "500"
+          "text": "500 mg"
         },
         {
           "doc_id": "bio_abs_metformin_conflict",
-          "text": "850"
+          "text": "850 mg"
         }
       ],
-      "status": "PRESENT",
-      "notes": "symbolic_compare"
+      "status": "CONFIRMED",
+      "notes": "eclass_symbolic_dose_change"
     },
     "T39": {
       "task_id": "T39",
       "doc_id": "binding_coref",
-      "value": [
+      "value": {
+        "bindings": [
+          {
+            "pronoun_sent": "It reduced fasting glucose.",
+            "antecedent": "Metformin",
+            "prev": "Metformin was administered in the morning."
+          },
+          {
+            "pronoun_sent": "It had no effect.",
+            "antecedent": "Placebo",
+            "prev": "Placebo was given at night."
+          }
+        ],
+        "method": "coref_lite"
+      },
+      "evidence": [
         {
-          "pronoun_sentence": "It reduced fasting glucose.",
-          "antecedent": "metformin"
-        },
-        {
-          "pronoun_sentence": "It had no effect.",
-          "antecedent": "placebo"
+          "doc_id": "binding_coref",
+          "text": "Metformin"
         }
       ],
-      "evidence": [],
-      "status": "PRESENT",
-      "notes": ""
+      "status": "CONFIRMED",
+      "notes": "eclass_coref_lite"
     }
   },
   "eclass_accuracy": 1.0,
@@ -349,5 +365,17 @@
     "First-principles cascade: cheapest non-LM probes before any LM.",
     "LM not invoked; E-class closed without generation.",
     "A\u2013D remain classical-only. Not a Layer-1 ledger claim until promoted."
-  ]
+  ],
+  "corpus_class": "SYNTHETIC_MINI",
+  "U_status": "DRAFT_NOT_SCORING_FROZEN",
+  "integrity_note": "LAB.B25 prediction/scoring firewall remediation 2026-07-31",
+  "context_of_use": {
+    "task": "local_research_document_intelligence",
+    "track": "clean_synthetic",
+    "not": [
+      "clinical",
+      "open_world",
+      "production_ready"
+    ]
+  }
 }

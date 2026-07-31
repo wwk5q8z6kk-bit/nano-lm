@@ -1,7 +1,10 @@
 # Ambition — program continues under decision discipline
 
+> **NONCLAIM** — Ambition / program narrative only. Not Layer-1 evidence. Not authorization to build, ship, train, or deploy. Cite `EVIDENCE_LEDGER.md` / freeze tags for measured claims.
+
+
 **Authority date:** 2026-07-31  
-**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_E4_KILL`  
+**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_DOGFOOD` (wedge Phases 1–3 + noisy + dogfood 8/8; E4 **KILL** archived; ≤1 R★ revision needs fresh auth)  
 **AUTHORIZED_NONEXECUTION_WORK:** `NONE`  
 **E4_PROTOCOL_STATUS:** `EXECUTED`  
 **E4_RESULT:** `KILL`  
