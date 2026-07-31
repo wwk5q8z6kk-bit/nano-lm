@@ -34,6 +34,14 @@ def test_authorize_tag_requires_policy_field():
     assert out["tip_policy"] == "clean-lineage"
 
 
+def test_proceed_is_authorize_commit():
+    """Lab convention (OWNER_SPEECH_ACTS.md): bare proceed ⇒ commit-only, not push/tag/execute."""
+    out = mod.classify("proceed")
+    assert out["force"] == "AUTHORIZE_COMMIT"
+    assert out["scope_bits"] == ["commit"]
+    assert out["may_mint_owner_marker"] is True
+
+
 def test_untyped():
     out = mod.classify("please just do the freeze thing")
     assert out["force"] == "UNTYPED"
@@ -48,6 +56,7 @@ if __name__ == "__main__":
     test_continue_grants_no_bits()
     test_authorize_commit()
     test_authorize_tag_requires_policy_field()
+    test_proceed_is_authorize_commit()
     test_untyped()
     test_dispose_e4()
     print("PASS")
