@@ -81,7 +81,7 @@ DURABLE_RAW_COMMIT = ea001d4 (on origin; current tip)
 
 ```text
 NAME:    post-alpha-reconciled-evidence-freeze-2026-07-31
-TARGET:  ea001d4f9c62ab6c2ab9a36de6ef7c9988b41936
+TARGET:  b5898ce4bdf326712c16728177e8267390e8ca10
 TYPE:    annotated
 ACTION:  OWNER AUTHORIZATION REQUIRED — do not auto-create
 ```
@@ -111,4 +111,4 @@ FINAL_FREEZE_READY_FOR_OWNER_TAG_AUTHORIZATION
 ```
 
 Idle pending explicit authorization to create annotated tag  
-`post-alpha-reconciled-evidence-freeze-2026-07-31` at `ea001d4`.
+`post-alpha-reconciled-evidence-freeze-2026-07-31` at `b5898ce4bdf3`.
