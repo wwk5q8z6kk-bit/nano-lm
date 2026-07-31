@@ -67,3 +67,14 @@ NANOSCRIBE_PRODUCT_EXPANSION: STOP
 ```
 
 Optional distinct (non-evidence) tag after push: `e4-design-draft-2026-07-31` — **not** created automatically.
+
+
+## Closure verification
+
+| Check | Value |
+|-------|-------|
+| Final HEAD (pre-push) | `c2475c73169b983ee3c9c17888f0a9c7dada3c62` |
+| Evidence freeze tag target | `a9d12cb1c456f6c465284e1d469c6326cb14d329` (unchanged) |
+| Tag moved? | NO |
+| E4 world/data/result added? | NO |
+| Tests | see push verification |
