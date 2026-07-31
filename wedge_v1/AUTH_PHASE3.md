@@ -1,3 +1,11 @@
+
+## Capability scope (B14)
+
+```text
+scope_bits: [execute_eval, commit]
+valid_only_if_queued: true
+```
+
 # Wedge v1 Phase 3 — Authorization Record
 
 **Date:** 2026-07-31

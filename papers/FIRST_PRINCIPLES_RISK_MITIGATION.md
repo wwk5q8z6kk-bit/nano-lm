@@ -167,7 +167,7 @@ B
 ### B13 — Wedge execution without repeating E1 failure
 **Atoms:** Building LM features before classical baseline; skipping verify.  
 **Invariants:** P3, P4, P10.  
-**Today:** Phase 2 classical RESULT exists (U≈0.926). Phase 3 design ready; execute not authorized.  
+**Today:** Phase 2+3 done; E-class `ECLASS_CLOSED_WITHOUT_LM` (LM not indicated). Queue idle.  
 **Mitigations:**
 - **M1:** Freeze mini-corpus hashes, metrics, cost model *before* any LM component. **DONE** for Phase 2.
 - **M2 (auth):** Classical baseline measured. LM only behind `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` on E-class allowlist.  
@@ -300,7 +300,7 @@ When autonomous CLI credits fail but `consult_gateway` works, treat that as **le
 4. ~~`trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md`~~ present — deepen formulas; land decision/cost split design note.  
 5. Owner one-liner on E4 surface: `RATIFY_E4_EXECUTE` | `VOID_E4_AUTH` | `PARK_AS_EXPLORATORY`.  
 6. Keep freeze tags immutable; hybrid tag **deferred** until OWNER_TAG_OK (clean lineage or verdict annotation).  
-7. Wedge: Phase 2 classical DONE; Phase 3 design at `wedge_v1/PHASE3_LM_PROBE_DESIGN.md` (no execute).  
+7. Wedge: Phase 2 classical DONE; Phase 3 E-class **CLOSED without LM** (`results_wedge_v1_phase3_eclass.json`).  
 8. Document B15: consult-gateway = intended verification path; do not chase CLI credits for science.  
 9. Add `context_of_use` field proposal for GATE_VERDICT rows (B16) — ledger migration needs owner commit.  
 10. Path-restricted commits only; never launder strategic-reset dirt into freeze packaging.
@@ -328,8 +328,8 @@ Mitigation has worked when:
 5. Research portfolio stays large while claims stay tiny.
 
 ```text
-NEXT_DEFAULT = IDLE_ON_WEDGE_CLASSICAL + M0_HYGIENE
-NEXT_OPTIONAL_PRODUCT = AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE (owner; E-class only; design ready)
+NEXT_DEFAULT = IDLE_AFTER_WEDGE_V1_PHASE3_ECLASS + M0_HYGIENE
+NEXT_OPTIONAL_PRODUCT = AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE (not indicated; E-class closed without LM)
 NEXT_SCIENCE = owner-picked from B18/B3/B5/B6 only
 NEXT_TAG = OWNER_TAG_OK → clean-lineage cherry-pick OR verdict/* annotation OR remain deferred
 ATOM_RULE = no new blocker ID without an enforcing gate
