@@ -33,6 +33,15 @@ MISSION = evolve Active Frontier architecture via failure-driven R&D
 
 ## Core rules
 
+```text
+EVIDENCE MUST BE CREATED WITH THE CLAIM,
+NOT RECONSTRUCTED AFTER THE CLAIM.
+```
+
+CoE module: `wedge_v1/coe/` · Audit: `python -m wedge_v1 coe-audit` · Replay: `python -m wedge_v1 coe-replay`
+
+## Core rules (continued)
+
 1. New work may proceed aggressively as long as it does not silently rewrite old evidence.
 2. **Wedge is the proving ground**, not the product ceiling — CLI polish is necessary but insufficient.
 3. Failures become architecture: gallery buckets → workstream → measured ΔU on the wedge.

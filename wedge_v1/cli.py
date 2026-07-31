@@ -7,7 +7,13 @@ import sys
 from pathlib import Path
 
 from wedge_v1.ingest import corpus_stats
-from wedge_v1.habit import record as habit_record, weekly_summary
+from wedge_v1.habit import (
+    format_session_md,
+    record as habit_record,
+    save_question,
+    session as habit_session,
+    weekly_summary,
+)
 from wedge_v1.runtime import (
     DEFAULT_CORPUS,
     ask,
@@ -81,8 +87,38 @@ def main(argv: list[str] | None = None) -> int:
     contact.add_argument("--not-useful", dest="not_useful", default=None)
     contact.add_argument("-o", "--output", type=Path, default=None)
 
-    sub.add_parser("habit", help="Show local weekly ask/find/compare habit counts (gitignored)")
+    habit_p = sub.add_parser("habit", help="Daily/session habit workflow (gitignored state)")
+    habit_p.add_argument("--corpus", type=Path, default=None)
+    habit_p.add_argument("--json", action="store_true")
+    habit_p.add_argument("--rerun", action="store_true", help="Rerun saved questions sample")
+    habit_p.add_argument("--save", nargs="+", default=None, help="Save a question for later rerun")
+
+    rev = sub.add_parser("review", help="Usefulness label loop (no hand-edited JSON)")
+    rev.add_argument("--corpus", type=Path, default=None)
+    rev.add_argument("--demo", action="store_true", help="Use fixture corpus + owner task pack")
+    rev.add_argument("--tasks", type=Path, default=None)
+    rev.add_argument("--from-dogfood", type=Path, default=None)
+    rev.add_argument("--interactive", action="store_true")
+    rev.add_argument("--next", action="store_true", help="Show next unlabeled card")
+    rev.add_argument("--label", action="append", default=[], help="ID:LABEL batch apply")
+    rev.add_argument("--summary", action="store_true")
+    rev.add_argument("--limit", type=int, default=None)
+
+    ready = sub.add_parser("owner-ready", help="Validate private-corpus path readiness (no PHI dump)")
+    ready.add_argument("--corpus", type=Path, default=None)
+    ready.add_argument("--demo", action="store_true")
+
+    sub.add_parser("arch-registry", help="Print failure-driven architecture registry snapshot")
+    sub.add_parser("adversarial", help="Run synthetic adversarial failure packs")
     sub.add_parser("evolve", help="Map failure galleries → architecture workstreams (W1–W6)")
+    ca = sub.add_parser("coe-audit", help="Chain-of-Evidence audit on ask payload / record")
+    ca.add_argument("query", nargs="*", help="Query to ask+audit (default synthetic TTL)")
+    ca.add_argument("--corpus", type=Path, default=None)
+    ca.add_argument("--record", type=Path, default=None, help="Audit existing JSONL record")
+    cr = sub.add_parser("coe-replay", help="Replay verified-ask and compare digests")
+    cr.add_argument("query", nargs="+")
+    cr.add_argument("--corpus", type=Path, default=None)
+    cr.add_argument("--prior", type=Path, default=None, help="Prior ask JSON to compare")
     gal = sub.add_parser("gallery", help="Export failure gallery from dogfood JSON")
     gal.add_argument("--from", dest="from_path", type=Path, default=None)
     gal.add_argument("-o", "--output", type=Path, default=None)
@@ -98,7 +134,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "ask":
         out = ask(" ".join(args.query), corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         try:
             habit_record("ask")
         except Exception:
@@ -108,7 +144,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "find":
         out = find_spans(" ".join(args.needle), corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         try:
             habit_record("find")
         except Exception:
@@ -118,7 +154,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "scan":
         out = scan(corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         try:
             habit_record("scan")
         except Exception:
@@ -128,7 +164,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "compare":
         out = compare(" ".join(args.term), corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         try:
             habit_record("compare")
         except Exception:
@@ -152,7 +188,7 @@ def main(argv: list[str] | None = None) -> int:
         out_path = args.out or (Path(src) / ".wedge_manifest.json")
         out_path.write_text(json.dumps(man, indent=2) + "\n", encoding="utf-8")
         json.dump(man, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         return 0 if docs else 2
 
     if args.cmd == "dogfood":
@@ -239,9 +275,115 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "habit":
-        json.dump(weekly_summary(), sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        if args.save:
+            q = " ".join(args.save)
+            save_question(q)
+            habit_record("save_question", note=q[:80])
+            json.dump({"saved": q}, sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+            return 0
+        sess = habit_session(args.corpus)
+        if args.rerun:
+            habit_record("rerun")
+        if args.json:
+            json.dump(sess, sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+        else:
+            sys.stdout.write(format_session_md(sess))
         return 0
+
+    if args.cmd == "review":
+        from wedge_v1.review import (
+            LABELS,
+            batch_label,
+            cards_from_dogfood,
+            cards_from_task_pack,
+            format_card,
+            interactive_review,
+            label_summary,
+            load_state,
+            merge_prior_labels,
+            save_state,
+            unlabeled,
+        )
+        from wedge_v1.run_owner_dogfood import DEFAULT_TASKS, FIXTURE_CORPUS, resolve_corpus
+
+        if args.summary:
+            json.dump(label_summary(load_state()), sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+            return 0
+
+        use_demo = bool(args.demo or (args.corpus is None and not args.from_dogfood))
+        corpus = resolve_corpus(corpus=args.corpus, demo=use_demo)
+        if args.demo and FIXTURE_CORPUS.is_dir():
+            corpus = FIXTURE_CORPUS
+        state = load_state()
+        if args.from_dogfood:
+            cards = cards_from_dogfood(args.from_dogfood, corpus, limit=args.limit)
+        else:
+            tasks = args.tasks or DEFAULT_TASKS
+            cards = cards_from_task_pack(tasks, corpus, limit=args.limit)
+        cards = merge_prior_labels(cards, state)
+        for c in cards:
+            state.setdefault("cards", {}).setdefault(c["id"], c)
+        save_state(state)
+
+        if args.label:
+            batch_label(state, cards, args.label)
+            json.dump(label_summary(state), sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+            habit_record("review_label")
+            return 0
+        if args.next:
+            queue = unlabeled(cards)
+            if not queue:
+                sys.stdout.write("REVIEW_QUEUE_EMPTY\n")
+                json.dump(label_summary(state), sys.stdout, indent=2)
+                sys.stdout.write(chr(10))
+                return 0
+            sys.stdout.write(format_card(queue[0], index=1, total=len(queue)) + "\n")
+            sys.stdout.write("labels: " + ", ".join(LABELS) + "\n")
+            return 0
+        if args.interactive:
+            interactive_review(cards, state)
+            json.dump(label_summary(load_state()), sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+            habit_record("review_interactive")
+            return 0
+        queue = unlabeled(cards)
+        json.dump(
+            {
+                "corpus": str(corpus),
+                "n_cards": len(cards),
+                "n_unlabeled": len(queue),
+                "labels": list(LABELS),
+                "next": "python -m wedge_v1 review --demo --interactive",
+                "queue": [
+                    {
+                        "id": c.get("task_id"),
+                        "query": c.get("query"),
+                        "status": c.get("answer_status"),
+                        "doc": c.get("document"),
+                        "span": (c.get("evidence_span") or "")[:80],
+                    }
+                    for c in queue
+                ],
+            },
+            sys.stdout,
+            indent=2,
+        )
+        sys.stdout.write(chr(10))
+        return 0
+
+    if args.cmd == "owner-ready":
+        from wedge_v1.owner_ready import main as ready_main
+
+        argv_ready = []
+        if args.corpus:
+            argv_ready += ["--corpus", str(args.corpus)]
+        if args.demo:
+            argv_ready.append("--demo")
+        return ready_main(argv_ready)
 
     if args.cmd == "evolve":
         from wedge_v1.failure_to_architecture import main as evolve_main
@@ -256,11 +398,17 @@ def main(argv: list[str] | None = None) -> int:
         if args.output:
             args.output.write_text(md, encoding="utf-8")
         json.dump(
-            {"buckets": g.get("buckets"), "accuracy": g.get("accuracy"), "n_ok": g.get("n_ok")},
+            {
+                "buckets": g.get("buckets"),
+                "fine_counts": g.get("fine_counts"),
+                "accuracy": g.get("accuracy"),
+                "n_ok": g.get("n_ok"),
+                "note": g.get("note"),
+            },
             sys.stdout,
             indent=2,
         )
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         return 0 if not g.get("error") else 2
 
     if args.cmd == "measure-u":
@@ -270,7 +418,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.output:
             args.output.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
         json.dump(out, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         return 0
 
     if args.cmd == "contact":
@@ -285,9 +433,66 @@ def main(argv: list[str] | None = None) -> int:
         path = args.output or Path("wedge_v1/results_corpus_contact.json")
         path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
         json.dump(out, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(chr(10))
         print(f"WROTE {path}", file=sys.stderr)
         return 0 if out.get("n_docs") else 2
+
+    if args.cmd == "arch-registry":
+        from wedge_v1.arch.registry import registry_snapshot
+
+        json.dump(registry_snapshot(), sys.stdout, indent=2)
+        sys.stdout.write(chr(10))
+        return 0
+
+    if args.cmd == "adversarial":
+        from wedge_v1.eval.adversarial import main as adv_main
+
+        return adv_main([])
+
+
+    if args.cmd == "coe-audit":
+        from wedge_v1.coe.audit import audit_payload, audit_record
+
+        if args.record:
+            out = audit_record(args.record)
+            json.dump(out, sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+            return 0 if out.get("ok") else 2
+        corpus = args.corpus or DEFAULT_CORPUS
+        q = " ".join(args.query) if args.query else "How long before cache entries expire?"
+        docs = load_corpus(corpus)
+        payload = ask(q, corpus_dir=corpus)
+        out = audit_payload(payload, docs)
+        out["answer_status"] = payload.get("answer_status")
+        out["coe"] = payload.get("coe")
+        json.dump(out, sys.stdout, indent=2)
+        sys.stdout.write(chr(10))
+        return 0 if out.get("ok") else 2
+
+    if args.cmd == "coe-replay":
+        from wedge_v1.coe.replay import replay_ask
+
+        prior = None
+        if args.prior:
+            prior = json.loads(args.prior.read_text(encoding="utf-8"))
+        out = replay_ask(
+            query=" ".join(args.query),
+            corpus_dir=args.corpus or DEFAULT_CORPUS,
+            prior=prior,
+            persist_coe=False,
+        )
+        # trim huge payload for stdout summary
+        summary = {
+            "schema": out["schema"],
+            "query": out["query"],
+            "audit": out["audit"],
+            "comparison": out["comparison"],
+            "answer_status": out["payload"].get("answer_status"),
+            "coe": out["payload"].get("coe"),
+        }
+        json.dump(summary, sys.stdout, indent=2)
+        sys.stdout.write(chr(10))
+        return 0 if out["audit"].get("ok") else 2
 
     return 1
 

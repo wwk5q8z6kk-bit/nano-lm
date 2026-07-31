@@ -56,6 +56,13 @@ CLI: `python -m wedge_v1 evolve` (prints recommended next deltas from latest gal
 
 ---
 
+## Registry + traces
+
+Machine-readable registry: `python -m wedge_v1 arch-registry` → `wedge_v1/arch/registry.py`  
+Typed codes: `wedge_v1/arch/failure_codes.py`  
+Traces: `payload["trace"]` schema `nano-lm.wedge_v1.ask_trace.v1`  
+Adversarial packs: `python -m wedge_v1 adversarial`
+
 ## Current delta (this iteration)
 
 **W1+W2:** BM25 margin gating + reject empty-evidence PRESENT in `ask()`.
@@ -64,3 +71,25 @@ CLI: `python -m wedge_v1 evolve` (prints recommended next deltas from latest gal
 - low-margin hits → `REVIEW` (not PRESENT)
 - presentable claims require non-empty evidence atoms
 - gallery class: `low_margin_review`
+
+
+### Delta — failure-driven registry + composition/TTL (architecture lab)
+
+- Structured `AskTrace` on `ask()` with `failure_codes[]` and layer tags
+- Composition gate: multi-domain AND → `UNSUPPORTED_COMPOSITION` abstain
+- TTL expand patterns generalized beyond fixture `TTL as N seconds`
+- Adversarial suite 6/6 on synthetic packs (≠ owner usefulness)
+- Bottleneck fixed: rule-brittleness over-abstention on paraphrased TTL
+
+
+---
+
+## W7 — Native Chain-of-Evidence (from Science One principles)
+
+**Invariant:** evidence created with the claim, never reconstructed after.
+
+Adopted (not cloned): claim–artifact binding, immutable evaluator/run records, independent audit, method–execution alignment.
+
+Rejected for now: autonomous paper writer, literature fleets, parallel discovery swarms.
+
+Implementation: `wedge_v1/coe/` · see `frontier/COE_SLICE_REPORT.md`.

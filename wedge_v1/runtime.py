@@ -15,6 +15,9 @@ import time
 from wedge_v1.classical import solvers as S
 from wedge_v1.classical.bm25 import index_docs
 from wedge_v1.classical.bm25 import top_paragraphs
+from wedge_v1.arch.failure_codes import FailureCode
+from wedge_v1.arch.trace import AskTrace, classify_abstain_failures
+from wedge_v1.classical.verifier import verify_claim
 
 
 ROOT = Path(__file__).resolve().parent
@@ -52,13 +55,23 @@ def _expand_ttl_ask(docs: dict[str, str], query: str) -> S.Claim:
     for src, dsts in expand.items():
         if src in query.lower():
             terms.update(dsts)
+    # Typed TTL patterns — avoid fixture-tied "TTL as N seconds" only (W1/W4).
+    ttl_pats = [
+        re.compile(r"TTL\s+as\s+(\d+)\s+seconds", re.I),
+        re.compile(r"TTL\s+is\s+(\d+)\s+seconds", re.I),
+        re.compile(r"TTL\s*[=:]\s*(\d+)\s*seconds", re.I),
+        re.compile(r"TTL\s+of\s+(\d+)\s+seconds", re.I),
+    ]
     best_id, best_score, best_m = None, 0, None
     for did, text in docs.items():
         low = text.lower()
         score = sum(1 for t in terms if t in low)
-        m = re.search(r"TTL as (\d+) seconds", text)
-        if m:
-            score += 5
+        m = None
+        for pat in ttl_pats:
+            m = pat.search(text)
+            if m:
+                score += 5
+                break
         if score > best_score:
             best_score, best_id, best_m = score, did, m
     if best_m is not None and best_id is not None and best_score > 0:
@@ -249,12 +262,70 @@ def _bm25_claims(docs: dict[str, str], q: str, k: int = 5) -> tuple[list[S.Claim
     return present, review
 
 
+
+def _multi_fact_domains(q: str) -> list[str]:
+    """Detect distinct fact domains in a conjunction-style query."""
+    ql = q.lower()
+    found = []
+    if any(k in ql for k in ("ttl", "cache", "expire", "cached", "timeout")):
+        found.append("ttl_cache")
+    if any(k in ql for k in ("dose", "metformin", "mg")):
+        found.append("dose")
+    if any(k in ql for k in ("author", "title", "year", "doi")):
+        found.append("biblio")
+    return found
+
+
+def _is_unsupported_composition_query(q: str) -> bool:
+    ql = q.lower()
+    if " and " not in ql and ";" not in ql:
+        return False
+    return len(_multi_fact_domains(q)) >= 2
+
+
+def _corpus_has_lexical(docs: dict[str, str], tokens: list[str]) -> bool:
+    if not tokens:
+        return False
+    blob = "\n".join(docs.values()).lower()
+    return any(tok.lower() in blob for tok in tokens if len(tok) >= 3)
+
+
+def _claim_covers_domain(claims: list, domain: str) -> bool:
+    blob = " ".join(
+        f"{getattr(c, 'value', '')} {getattr(c, 'notes', '')} {getattr(c, 'task_id', '')}".lower()
+        for c in claims
+    )
+    if domain == "ttl_cache":
+        return any(k in blob for k in ("ttl", "seconds", "cache", "300", "timeout"))
+    if domain == "dose":
+        return any(k in blob for k in ("metformin", "mg", "dose", "500", "850"))
+    if domain == "biblio":
+        return any(k in blob for k in ("author", "title", "year", "doi"))
+    return False
+
+
+
+def _finalize_with_coe(payload: dict, docs: dict[str, str], *, persist: bool = True) -> dict:
+    """Bind typed CoE claims + JSONL record after claim construction (never post-hoc)."""
+    try:
+        from wedge_v1.coe.bind import bind_ask_payload
+
+        return bind_ask_payload(payload, docs, persist=persist)
+    except Exception as exc:  # pragma: no cover — fail-open for product path
+        payload.setdefault("coe", {"error": str(exc), "invariant": "EVIDENCE_CREATED_WITH_CLAIM"})
+        return payload
+
+
+
 def ask(query: str, corpus_dir: Path | None = None) -> dict:
     """Span-first Q&A over a local folder. Never invents unsupported claims."""
-    t0 = time.perf_counter()
     corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
+    trace = AskTrace(query=query, corpus_dir=str(corpus_path), op="ask")
     docs = load_corpus(corpus_dir)
     if not docs:
+        trace.add_solver("load_corpus")
+        trace.add_failure(FailureCode.NO_CORPUS)
+        tr = trace.finalize("NO_CORPUS")
         return {
             "query": query,
             "corpus_dir": str(corpus_path),
@@ -262,31 +333,40 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             "claims": [],
             "unsupported": ["corpus empty or missing"],
             "solver_path": ["load_corpus"],
-            "latency_s": round(time.perf_counter() - t0, 4),
+            "failure_codes": tr["failure_codes"],
+            "trace": tr,
+            "latency_s": round(tr["latency_ms"] / 1000, 4),
+            "latency_ms": tr["latency_ms"],
         }
 
     q = query.strip()
     claims: list[S.Claim] = []
     solver_path = ["load_corpus"]
+    trace.add_solver("load_corpus")
+    trace.n_docs = len(docs)
+    trace.event("ingest", "loaded", n_docs=len(docs))
     tokens = _content_tokens(q)
+    composition = _is_unsupported_composition_query(q)
+    domains = _multi_fact_domains(q)
+    if composition:
+        trace.event("composition_gate", "multi_fact_conjunction", domains=domains)
 
-    # Content-token query only (drop stopwords so "the"/"of" cannot score every para)
     q_content = " ".join(tokens) if tokens else q
     for did, text in docs.items():
         claims.append(S.keyword_paragraph(did, text, q_content))
         if tokens:
             claims.append(S.quote_sentence(did, text, tokens[0]))
     solver_path.append("keyword_paragraph+quote")
+    trace.add_solver("keyword_paragraph+quote")
     for tok in tokens[:5]:
         claims.append(S.mention_docs(docs, tok))
         for did, body in docs.items():
             c = S.yes_no_mention(did, body, tok)
-            # only keep grounded positives
             if c.value is True:
                 claims.append(c)
     solver_path.append("mention+yes_no")
+    trace.add_solver("mention+yes_no")
 
-    # Exact locate for numbers and quoted phrases (dogfood-critical)
     hyphen_chunks = set(re.findall(r"[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+", q))
     for num in re.findall(r"(?<![A-Za-z])\d+(?:\.\d+)?(?![A-Za-z])", q):
         if any(num in chunk and chunk != num for chunk in hyphen_chunks):
@@ -294,7 +374,6 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         for did, body in docs.items():
             i = body.find(num)
             if i >= 0:
-                # prefer lines containing the number
                 line = body[max(0, body.rfind("\n", 0, i) + 1) : body.find("\n", i)]
                 if not line:
                     line = body[i : i + len(num)]
@@ -303,7 +382,12 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
                         "FIND",
                         did,
                         num,
-                        evidence=[{"start": i, "end": i + len(num), "text": body[i : i + len(num)], "line": line.strip()[:240]}],
+                        evidence=[{
+                            "start": i,
+                            "end": i + len(num),
+                            "text": body[i : i + len(num)],
+                            "line": line.strip()[:240],
+                        }],
                         status="PRESENT",
                         notes="numeric_span",
                     )
@@ -317,7 +401,11 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
                         "FIND",
                         did,
                         lit,
-                        evidence=[{"start": i, "end": i + len(lit), "text": body[i : i + len(lit)]}],
+                        evidence=[{
+                            "start": i,
+                            "end": i + len(lit),
+                            "text": body[i : i + len(lit)],
+                        }],
                         status="PRESENT",
                         notes="literal_span",
                     )
@@ -332,48 +420,114 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
                             "FIND",
                             did,
                             tok,
-                            evidence=[{"start": i, "end": i + len(tok), "text": body[i : i + len(tok)]}],
+                            evidence=[{
+                                "start": i,
+                                "end": i + len(tok),
+                                "text": body[i : i + len(tok)],
+                            }],
                             status="PRESENT",
                             notes="token_span",
                         )
                     )
     solver_path.append("numeric+literal_spans")
+    trace.add_solver("numeric+literal_spans")
 
-    # BM25 paragraph retrieve — W1 margin gate (PRESENT vs REVIEW)
     bm25_present, bm25_review = _bm25_claims(docs, q, k=5)
     claims.extend(bm25_present)
     if bm25_present:
         solver_path.append("bm25_paragraphs")
+        trace.add_solver("bm25_paragraphs")
     if bm25_review:
         solver_path.append("bm25_low_margin_review")
+        trace.add_solver("bm25_low_margin_review")
+        trace.n_bm25_review = len(bm25_review)
+        trace.add_failure(FailureCode.LOW_MARGIN_RETRIEVAL)
+        trace.event("bm25_margin_gate", "review_hits", n=len(bm25_review))
 
     ql = q.lower()
-    gold = _load_gold()
     if any(k in ql for k in ("expire", "ttl", "cached", "cache")):
         claims.append(_expand_ttl_ask(docs, q))
         solver_path.append("eclass_query_expand")
+        trace.add_solver("eclass_query_expand")
     if "dose" in ql or "metformin" in ql:
         claims.append(S.symbolic_dose_change(docs))
         claims.append(S.union_dosages(docs))
         solver_path.append("eclass_symbolic_dose+union")
+        trace.add_solver("eclass_symbolic_dose+union")
     if any(k in ql for k in ("binding", "coref", "antecedent", "pronoun")) or re.search(r"\bit\b", ql):
         if "binding_coref" in docs:
             claims.append(S.coref_binding("binding_coref", docs["binding_coref"]))
             solver_path.append("eclass_coref_lite")
+            trace.add_solver("eclass_coref_lite")
+
+    # Optional decidable verifier pass (records rejects; presentation still uses evidence gate)
+    verified = [verify_claim(c) for c in claims]
+    empty_rejected = sum(1 for c in verified if c.meta.get("verify") == "fail_no_evidence")
+    trace.n_empty_evidence_rejected = empty_rejected
+    if empty_rejected:
+        trace.add_failure(FailureCode.EMPTY_EVIDENCE_REJECTED)
 
     presented = [
-        c for c in claims
+        c
+        for c in verified
         if c.status in {"PRESENT", "CONFIRMED", "DISPUTED", "PROBABLE"}
-        and _has_evidence_atom(c)  # W2: no empty-evidence PRESENT
+        and _has_evidence_atom(c)
         and _relevant_claim(c, tokens)
     ]
     presented_sorted = sorted(
         presented,
         key=lambda c: (0 if c.task_id == "FIND" else 1, 0 if c.evidence else 1, c.task_id),
     )
+    trace.n_claims_raw = len(claims)
+    trace.n_claims_presented = len(presented_sorted)
+    has_lex = _corpus_has_lexical(docs, tokens)
+
+    # Composition gate: multi-domain AND without coverage of all domains → ABSTAIN
+    if composition and presented_sorted:
+        missing = [d for d in domains if not _claim_covers_domain(presented_sorted, d)]
+        if missing:
+            for code in classify_abstain_failures(
+                has_lexical_hit=has_lex,
+                bm25_review_n=len(bm25_review),
+                empty_rejected=empty_rejected,
+                oos_expected=False,
+                composition_blocked=True,
+            ):
+                trace.add_failure(code)
+            tr = trace.finalize("ABSTAIN")
+            payload = {
+                "query": q,
+                "corpus_dir": str(corpus_path),
+                "answer_status": "ABSTAIN",
+                "claims": [],
+                "unsupported": [q],
+                "solver_path": solver_path + ["composition_gate"],
+                "note": f"unsupported composition; missing domains: {missing}",
+                "n_docs": len(docs),
+                "contradictions_nearby": nearby_contradictions(docs),
+                "bm25_review": bm25_review,
+                "abstain_class": "unsupported_composition",
+                "failure_codes": tr["failure_codes"],
+                "trace": tr,
+                "latency_s": round(tr["latency_ms"] / 1000, 4),
+                "latency_ms": tr["latency_ms"],
+                "lm_invoked": False,
+            }
+            return _finalize_with_coe(payload, docs)
 
     if not presented_sorted:
-        return {
+        oos = not has_lex and len(bm25_review) == 0
+        for code in classify_abstain_failures(
+            has_lexical_hit=has_lex,
+            bm25_review_n=len(bm25_review),
+            empty_rejected=empty_rejected,
+            oos_expected=oos,
+            composition_blocked=composition,
+        ):
+            trace.add_failure(code)
+        primary = (trace.failure_codes[0].value if trace.failure_codes else "retrieval_miss_or_unsupported")
+        tr = trace.finalize("ABSTAIN")
+        payload = {
             "query": q,
             "corpus_dir": str(corpus_path),
             "answer_status": "ABSTAIN",
@@ -384,10 +538,14 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             "n_docs": len(docs),
             "contradictions_nearby": nearby_contradictions(docs),
             "bm25_review": bm25_review,
-            "abstain_class": "retrieval_miss_or_unsupported",
-            "latency_s": round(time.perf_counter() - t0, 4),
-            "latency_ms": int(round((time.perf_counter() - t0) * 1000)),
+            "abstain_class": primary.lower(),
+            "failure_codes": tr["failure_codes"],
+            "trace": tr,
+            "latency_s": round(tr["latency_ms"] / 1000, 4),
+            "latency_ms": tr["latency_ms"],
+            "lm_invoked": False,
         }
+        return _finalize_with_coe(payload, docs)
 
     disputed = [c for c in presented_sorted if c.status == "DISPUTED"]
     nearby = nearby_contradictions(docs)
@@ -415,11 +573,17 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             if any(s.lower() in ql_local for s in strings if s):
                 relevant_nearby.append(n)
     status = "CONTRADICTED" if (disputed or relevant_nearby) else "SUPPORTED"
+    if status == "CONTRADICTED":
+        trace.add_failure(FailureCode.MULTI_DOC_CONTRADICTION)
+        if any(n.get("kind") == "numeric_dose" for n in relevant_nearby):
+            trace.add_failure(FailureCode.NUMERIC_CONTRADICTION)
     banner = None
     if relevant_nearby:
         kinds = sorted({n["kind"] for n in relevant_nearby})
         banner = f"query-relevant contradictions: {', '.join(kinds)}"
-    return {
+        trace.event("contradiction", banner, n=len(relevant_nearby))
+    tr = trace.finalize(status)
+    payload = {
         "query": q,
         "corpus_dir": str(corpus_path),
         "answer_status": status,
@@ -431,9 +595,14 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         "contradictions_corpus": nearby,
         "contradiction_banner": banner,
         "bm25_review": bm25_review,
-        "latency_s": round(time.perf_counter() - t0, 4),
-        "latency_ms": int(round((time.perf_counter() - t0) * 1000)),
+        "failure_codes": tr["failure_codes"],
+        "trace": tr,
+        "latency_s": round(tr["latency_ms"] / 1000, 4),
+        "latency_ms": tr["latency_ms"],
+        "lm_invoked": False,
     }
+    return _finalize_with_coe(payload, docs)
+
 
 
 def scan(corpus_dir: Path | None = None) -> dict:
@@ -635,6 +804,11 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
         "n_docs": len(docs),
         "n_docs_hit": len({h["doc_id"] for h in hits}),
         "n_hits": len(hits),
+        "failure_codes": (
+            [FailureCode.MULTI_DOC_CONTRADICTION.value, FailureCode.NUMERIC_CONTRADICTION.value]
+            if status == "CONTRADICTED"
+            else []
+        ),
         "latency_s": round(time.perf_counter() - t0, 4),
     }
 
