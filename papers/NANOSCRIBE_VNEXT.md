@@ -12,7 +12,7 @@
 > "transformers cannot extract" and not "mechanism solved."
 >
 > Soften reconciliation language below: LoRA vs full-FT is a **measured behavioral
-> delta**; "destroys/preserves the copy pathway" is provisional pending E2.
+> delta**; "destroys/preserves the copy pathway" is **banned mechanism language** (E2 GATED/STOP; no RESULT).
 
 
 *Owner-authored architecture decision, received 2026-07-20. Captured in condensed-faithful form below the

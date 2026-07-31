@@ -39,3 +39,9 @@ See `POST_ALPHA_EVIDENCE_FREEZE.md`.
 - Freeze: **FREEZE_CANDIDATE_READY**
 - Next decision: **OWNER_APPROVAL_REQUIRED** (tag + idle); default after owner freeze: **IDLE_AFTER_FREEZE**
 - E4: **not recommended** as momentum continuation
+
+## PDF rebuild
+
+`papers/latex/paper1.pdf` rebuilt 2026-07-31T14:10:52.429273+00:00 from remediated `paper1.tex` (pdflatex+bibtex). Text extract: 32.8M present; false matched-200M absent; M1 + agent-rubric present; 'baselines dominate' / 'flat across 50' absent.
+
+Parent HEAD at note time: `f96705eecfc0e7beda07b3c29864dc40762908a2` (pre-cleanup-commit).

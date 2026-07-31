@@ -30,7 +30,7 @@ field-localized via the open/closed control, sharpened by the clean value-level 
 (~80–87 pts at the anchors), failure-mode-characterized (omission vs memorized
 substitution), and — as of tonight — **deconfounded**: the pre-registered own-stack 160M
 control ran (7h Kaggle T4) and fired **STACK-dominant** (diluted 16.9±1.7; own-stack flat
-across 50× scale while Pythia-160M reads 3.5). The Pythia fieldwise runs completed too:
+across evaluated own-stack configs (unequal token budgets; not a parameter-only 50× law) while Pythia-160M reads 3.5). The Pythia fieldwise runs completed too:
 the entire Pythia residual is the 5-training-value allergy slot (clean cc/med 0.0, alg
 83.6→100), grounding the slot-diversity hypothesis. All results immutable in
 `trajectory/results_*.json`; everything pushed to origin/master.
@@ -140,7 +140,7 @@ move to a representation-level probe. Paper 2 reconciliation for C-3 not yet don
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
    7.1±1.2, clean 29.6±3.7 → METHOD carries ~73% of the stack effect; both methods
-   memorize (≈0 train loss) but only full-FT destroys the copy pathway; LoRA@160M solves
+   memorize (≈0 train loss) but full-FT on the weak base leaves a large gap; LoRA@160M reduces it (mechanism unidentified; E2 STOP)
    cc (clean 0.0), alg 100 in own-stack configs (NOT universal: py-1b draw3 = 24.6; type-level n=1 caveat). Folded into paper2_draft + P1 addendum.
    CHINCHILLA CONTROL DONE (peer session, RunPod H100, ~$37): 3.2B tokens + full FT =
    7.0±1.0 / 29.4±4.0 — IDENTICAL to 200M+LoRA → data & method are SUBSTITUTES
@@ -152,7 +152,7 @@ move to a representation-level probe. Paper 2 reconciliation for C-3 not yet don
    scale from scale10m_pretrain.pt (raw pretrain) — the LoRA cells must use the SAME base
    per anchor (nano-LoRA from dpo.pt, scale-LoRA from scale10m_pretrain.pt; all v0.1
    release assets, downloadable in-kernel). Write a short PREREG paragraph before running.
-1b. (was) **LoRA arm ⏳ RUNNING** (`nano-lm-ownstack-160m-lora` v2): peft wrap VALIDATED locally
+1b. (was) **LoRA arm** (`nano-lm-ownstack-160m-lora` v2; historical RUNNING note superseded): peft wrap VALIDATED locally
    (98 modules, 4.028M trainables; scratchpad venv `venv-peft`, peft 0.19.1); kernel
    reuses the fullft pretrain ckpt via kernel_sources — NOTE: mounts land under
    `/kaggle/input/notebooks/...`, use a recursive glob (v1 failed fast on this, ~10 min).
