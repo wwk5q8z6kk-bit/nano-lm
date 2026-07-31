@@ -1,11 +1,10 @@
 # ACTIVE_MANDATE
 
 Canonical: [`frontier/ACTIVE_MANDATE.md`](frontier/ACTIVE_MANDATE.md)  
-Discovery: [`frontier/PRODUCT_DISCOVERY_SPRINT.md`](frontier/PRODUCT_DISCOVERY_SPRINT.md)  
-Detail: [`frontier/PRODUCT_DISCOVERY_SPRINT_V1.md`](frontier/PRODUCT_DISCOVERY_SPRINT_V1.md)
+Architecture: [`frontier/ARCHITECTURE_EVOLUTION.md`](frontier/ARCHITECTURE_EVOLUTION.md)
 
 ```text
 ACTIVE_MANDATE = BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1
 MODE = ACTIVE_FRONTIER
-PRIMARY_WEDGE = A_LOCAL_VERIFIED_RESEARCH_ASSISTANT
+MISSION = evolve architecture via failure-driven R&D on wedge proving ground
 ```

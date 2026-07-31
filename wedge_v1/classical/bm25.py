@@ -119,18 +119,41 @@ def index_docs(docs: dict[str, str]) -> BM25Index:
     return BM25Index(passages)
 
 
-def top_paragraphs(corpus: dict[str, str], query: str, k: int = 5) -> list[dict]:
-    """Product-facing BM25 hits as dicts for Claim evidence."""
+# Default margin below which BM25 hits are REVIEW, not PRESENT (W1).
+BM25_MARGIN_TAU = 0.5
+
+
+def top_paragraphs(
+    corpus: dict[str, str],
+    query: str,
+    k: int = 5,
+    *,
+    margin_tau: float | None = None,
+) -> list[dict]:
+    """Product-facing BM25 hits as dicts for Claim evidence.
+
+    Each hit includes bm25, rank, top2_bm25, margin, and promote flag
+    (margin >= tau → eligible for PRESENT).
+    """
+    tau = BM25_MARGIN_TAU if margin_tau is None else margin_tau
     idx = index_docs(corpus)
+    # Fetch k+1 so margin vs next is defined for the k-th hit when possible
+    ranked = idx.top_k(query, k=max(k + 1, 2))
     out: list[dict] = []
-    for score, p in idx.top_k(query, k=k):
+    for i, (score, p) in enumerate(ranked[:k]):
+        next_score = ranked[i + 1][0] if i + 1 < len(ranked) else 0.0
+        margin = float(score) - float(next_score)
         out.append(
             {
                 "doc_id": p.doc_id,
                 "start": p.start,
                 "end": p.end,
                 "text": p.text,
-                "bm25": round(score, 4),
+                "bm25": round(float(score), 4),
+                "top2_bm25": round(float(next_score), 4),
+                "margin": round(margin, 4),
+                "rank": i + 1,
+                "promote": margin >= tau,
             }
         )
     return out

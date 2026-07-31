@@ -1,56 +1,55 @@
 # ACTIVE_MANDATE — BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1
 
 **Status:** Operating mandate (product/engineering). Not Layer-1 evidence.  
-**Opened:** 2026-07-31  
+**Opened:** 2026-07-31 · **Widened:** 2026-07-31 (architecture evolution)  
 **Mode:** `ACTIVE_FRONTIER`
 
 ```text
 ACTIVE_MANDATE = BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1
-
-AUTHORIZED:
-- repository research
-- web and literature research
-- prototype implementation
-- local experiments
-- benchmark integration
-- tests
-- exploratory GPU work under a fixed cost ceiling (default: $0 unpaid local only)
-- new branches and commits inside this mandate
-- product evaluation on synthetic / owner-local corpora
-
-PROTECTED (do not rewrite silently):
-- Evidence Core: Paper α, EVIDENCE_LEDGER, frozen experiments
-- protected tags (paper-alpha-v1, post-alpha-evidence-freeze-2026-07-31, reconciled freeze)
-- immutable raw artifacts under durable_raw /
-
-REQUIRES_OWNER:
-- public claims / marketing
-- protected-tag moves or force-updates
-- large compute spend (>$0 cloud by default)
-- destructive git ops
-- product launch / shipping release
-
-NEVER:
-- silently rewrite old evidence
-- fold exploratory results into freeze brand
-- clinical deployment claims
+MODE = ACTIVE_FRONTIER
+PRIMARY_WEDGE = A_LOCAL_VERIFIED_RESEARCH_ASSISTANT  # empirical proving ground
+MISSION = evolve Active Frontier architecture via failure-driven R&D
 ```
 
-## Risk split (use this, not universal gates)
+## Authorized
 
-| Level | Examples | Control |
-|-------|----------|---------|
-| Evidence / publication | verdicts, prereg after results, tags, raw artifacts, confirmatory science | Strict |
-| Research / prototype | new components, cheap sandbox experiments, benchmarks | Disciplined, free to move |
-| Ordinary engineering | code, tests, refactors, docs, branches, smoke | Free within mandate |
+- repository / web / literature research
+- **architecture evolution** (routing, retrieval, evidence atoms, ingest, merge)
+- prototype implementation + local experiments + tests
+- convert failures (Paper α, E1/E3/E4 lessons, wedge dogfood, owner galleries) → design deltas
+- benchmark *integration for the product* (not Program 1 census revival)
+- new branches and commits inside this mandate
+- bounded exploratory compute (default ceiling: $0 unpaid local)
 
-## Core rule
+## Protected (never silent rewrite)
 
-> New work may proceed aggressively as long as it does not silently rewrite old evidence.
+- Evidence Core: Paper α, EVIDENCE_LEDGER, frozen experiments
+- protected tags + immutable raw artifacts
 
-## Companion
+## Requires owner
 
-Discovery deliverable: `frontier/PRODUCT_DISCOVERY_SPRINT.md`  
-Existing product slice: `wedge_v1/` + `papers/WEDGE_V1.md` + `papers/STRATEGIC_RESET.md`
+- public claims · protected-tag moves · large spend · destructive ops · product launch
+- training framed as confirmatory science without prereg
 
-Canonical envelope also at `papers/ACTIVE_MANDATE.md`. Discovery: `PRODUCT_DISCOVERY_SPRINT.md`.
+## Core rules
+
+1. New work may proceed aggressively as long as it does not silently rewrite old evidence.
+2. **Wedge is the proving ground**, not the product ceiling — CLI polish is necessary but insufficient.
+3. Failures become architecture: gallery buckets → workstream → measured ΔU on the wedge.
+4. Classical-first; LM only when measured ΔU > δ on a hard failure bucket.
+
+## Anti-patterns (banned under this mandate)
+
+- Treating `continue` / momentum as only markdown/banner/formatting work
+- Reopening OLD_TASK_U generative substrate as default
+- New governance constitutions instead of product/architecture code
+- Folding exploratory results into freeze brand
+
+## Companions
+
+| Doc | Role |
+|-----|------|
+| `ARCHITECTURE_EVOLUTION.md` | Failure→workstream map + current deltas |
+| `PRODUCT_DISCOVERY_SPRINT.md` | Why wedge A |
+| `DEVELOPMENT_PLAN.md` | Phase backlog |
+| `../wedge_v1/` | Proving-ground runtime |

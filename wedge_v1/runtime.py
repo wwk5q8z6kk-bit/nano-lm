@@ -209,6 +209,46 @@ def nearby_contradictions(docs: dict[str, str]) -> list[dict]:
     return out
 
 
+
+def _has_evidence_atom(c: S.Claim) -> bool:
+    """W2: presentable claims need at least one evidence atom with text or offsets."""
+    for e in c.evidence or []:
+        if not isinstance(e, dict):
+            continue
+        if e.get("text") or e.get("line") or (e.get("start") is not None and e.get("end") is not None):
+            return True
+    return False
+
+
+def _bm25_claims(docs: dict[str, str], q: str, k: int = 5) -> tuple[list[S.Claim], list[dict]]:
+    """W1: promote only margin-gated BM25 hits; return (present_claims, review_hits)."""
+    present: list[S.Claim] = []
+    review: list[dict] = []
+    for hit in top_paragraphs(docs, q, k=k):
+        ev = [{
+            "start": hit["start"],
+            "end": hit["end"],
+            "text": hit["text"][:240],
+            "bm25": hit["bm25"],
+            "margin": hit.get("margin"),
+            "rank": hit.get("rank"),
+        }]
+        if hit.get("promote"):
+            present.append(
+                S.Claim(
+                    "T19",
+                    hit["doc_id"],
+                    hit["text"][:500],
+                    evidence=ev,
+                    status="PRESENT",
+                    notes="bm25_paragraph",
+                )
+            )
+        else:
+            review.append({**hit, "status": "REVIEW", "reason": "low_bm25_margin"})
+    return present, review
+
+
 def ask(query: str, corpus_dir: Path | None = None) -> dict:
     """Span-first Q&A over a local folder. Never invents unsupported claims."""
     t0 = time.perf_counter()
@@ -299,25 +339,13 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
                     )
     solver_path.append("numeric+literal_spans")
 
-    # BM25 paragraph retrieve (ask_folder_v0) — evidence-bearing passages only
-    for hit in top_paragraphs(docs, q, k=5):
-        claims.append(
-            S.Claim(
-                "T19",
-                hit["doc_id"],
-                hit["text"][:500],
-                evidence=[{
-                    "start": hit["start"],
-                    "end": hit["end"],
-                    "text": hit["text"][:240],
-                    "bm25": hit["bm25"],
-                }],
-                status="PRESENT",
-                notes="bm25_paragraph",
-            )
-        )
-    if any(c.task_id == "T19" for c in claims):
+    # BM25 paragraph retrieve — W1 margin gate (PRESENT vs REVIEW)
+    bm25_present, bm25_review = _bm25_claims(docs, q, k=5)
+    claims.extend(bm25_present)
+    if bm25_present:
         solver_path.append("bm25_paragraphs")
+    if bm25_review:
+        solver_path.append("bm25_low_margin_review")
 
     ql = q.lower()
     gold = _load_gold()
@@ -336,7 +364,7 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
     presented = [
         c for c in claims
         if c.status in {"PRESENT", "CONFIRMED", "DISPUTED", "PROBABLE"}
-        and (c.evidence or c.task_id in {"T25", "T26", "T29", "T30", "T36", "T39", "FIND"})
+        and _has_evidence_atom(c)  # W2: no empty-evidence PRESENT
         and _relevant_claim(c, tokens)
     ]
     presented_sorted = sorted(
@@ -355,6 +383,8 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             "note": "no span-supported claim under classical+eclass cascade",
             "n_docs": len(docs),
             "contradictions_nearby": nearby_contradictions(docs),
+            "bm25_review": bm25_review,
+            "abstain_class": "retrieval_miss_or_unsupported",
             "latency_s": round(time.perf_counter() - t0, 4),
             "latency_ms": int(round((time.perf_counter() - t0) * 1000)),
         }
@@ -400,6 +430,7 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         "contradictions_nearby": relevant_nearby,
         "contradictions_corpus": nearby,
         "contradiction_banner": banner,
+        "bm25_review": bm25_review,
         "latency_s": round(time.perf_counter() - t0, 4),
         "latency_ms": int(round((time.perf_counter() - t0) * 1000)),
     }

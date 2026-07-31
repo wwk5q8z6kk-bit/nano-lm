@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from wedge_v1.ingest import corpus_stats
+from wedge_v1.habit import record as habit_record, weekly_summary
 from wedge_v1.runtime import (
     DEFAULT_CORPUS,
     ask,
@@ -80,6 +81,8 @@ def main(argv: list[str] | None = None) -> int:
     contact.add_argument("--not-useful", dest="not_useful", default=None)
     contact.add_argument("-o", "--output", type=Path, default=None)
 
+    sub.add_parser("habit", help="Show local weekly ask/find/compare habit counts (gitignored)")
+    sub.add_parser("evolve", help="Map failure galleries → architecture workstreams (W1–W6)")
     gal = sub.add_parser("gallery", help="Export failure gallery from dogfood JSON")
     gal.add_argument("--from", dest="from_path", type=Path, default=None)
     gal.add_argument("-o", "--output", type=Path, default=None)
@@ -96,24 +99,40 @@ def main(argv: list[str] | None = None) -> int:
         out = ask(" ".join(args.query), corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
+        try:
+            habit_record("ask")
+        except Exception:
+            pass
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "find":
         out = find_spans(" ".join(args.needle), corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
+        try:
+            habit_record("find")
+        except Exception:
+            pass
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "scan":
         out = scan(corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
+        try:
+            habit_record("scan")
+        except Exception:
+            pass
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "compare":
         out = compare(" ".join(args.term), corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
+        try:
+            habit_record("compare")
+        except Exception:
+            pass
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "ingest":
@@ -182,6 +201,9 @@ def main(argv: list[str] | None = None) -> int:
         smoke.test_ingest_pdf_fixture()
         smoke.test_report_build()
         smoke.test_report_ask_markdown()
+        smoke.test_bm25_margin_fields()
+        smoke.test_ask_no_empty_evidence_present()
+        smoke.test_evolve_recommends_workstreams()
         from wedge_v1 import test_owner_smoke as os_smoke
         os_smoke.test_example_corpus_present()
         os_smoke.test_owner_smoke_example_pass()
@@ -215,6 +237,16 @@ def main(argv: list[str] | None = None) -> int:
         else:
             sys.stdout.write(body)
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
+
+    if args.cmd == "habit":
+        json.dump(weekly_summary(), sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        return 0
+
+    if args.cmd == "evolve":
+        from wedge_v1.failure_to_architecture import main as evolve_main
+
+        return evolve_main([])
 
     if args.cmd == "gallery":
         from wedge_v1.failure_gallery import DEFAULT_DOGFOOD, gallery_to_markdown, write_gallery

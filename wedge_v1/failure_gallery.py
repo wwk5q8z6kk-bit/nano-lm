@@ -48,6 +48,8 @@ def classify_outcome(result_or_row: dict) -> str:
     if status == "NO_CORPUS":
         return "no_corpus"
     if status == "ABSTAIN":
+        if result.get("bm25_review"):
+            return "low_margin_review"
         return "over_abstain_or_unsupported"
     if status == "CONTRADICTED":
         return "contradicted"
@@ -57,6 +59,8 @@ def classify_outcome(result_or_row: dict) -> str:
     if status == "SUPPORTED":
         if any(not (c.get("evidence") or []) for c in claims):
             return "wrong_or_empty_span"
+        if result.get("bm25_review"):
+            return "ok_with_low_margin_review"
         return "ok"
     return f"other:{status}"
 
@@ -76,6 +80,8 @@ def run_gallery(questions: list[str], corpus_dir: Path | None = None) -> dict:
                 "n_claims": len(r.get("claims") or []),
                 "claims": r.get("claims") or [],
                 "contradiction_banner": r.get("contradiction_banner"),
+                "bm25_review_n": len(r.get("bm25_review") or []),
+                "abstain_class": r.get("abstain_class"),
             }
         )
     return {

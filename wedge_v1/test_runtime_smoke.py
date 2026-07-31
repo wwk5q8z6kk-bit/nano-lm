@@ -196,3 +196,31 @@ if __name__ == "__main__":
     test_owner_dogfood_synthetic()
     test_owner_dogfood_corpus_flag()
     print("WEDGE_V1_SMOKE_OK")
+
+
+def test_bm25_margin_fields():
+    from wedge_v1.classical.bm25 import top_paragraphs
+    from wedge_v1.runtime import DEFAULT_CORPUS, load_corpus
+
+    docs = load_corpus(DEFAULT_CORPUS)
+    hits = top_paragraphs(docs, "How long before cache entries expire?", k=3)
+    assert hits
+    assert "margin" in hits[0]
+    assert "promote" in hits[0]
+
+
+def test_ask_no_empty_evidence_present():
+    from wedge_v1.runtime import ask
+
+    r = ask("How long before cache entries expire?")
+    for c in r.get("claims") or []:
+        if c.get("status") in {"PRESENT", "CONFIRMED", "DISPUTED"}:
+            assert c.get("evidence"), f"empty evidence: {c.get('task_id')}"
+
+
+def test_evolve_recommends_workstreams():
+    from wedge_v1.failure_to_architecture import recommend
+
+    out = recommend({"tallies": {"low_margin_review": 2, "wrong_or_empty_span": 1}})
+    assert "W1" in out["recommended_next"]
+    assert "W2" in out["recommended_next"]
