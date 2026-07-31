@@ -51,3 +51,8 @@ experiments/**/runs/**
 !benchmarks/adapters/**/fixtures/**/*.json
 
 .venv-bench/
+
+# Active Frontier local owner artifacts
+.wedge_manifest.json
+**/results_owner_smoke.json
+wedge_v1/data/owner_corpus/

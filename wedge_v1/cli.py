@@ -7,7 +7,15 @@ import sys
 from pathlib import Path
 
 from wedge_v1.ingest import corpus_stats
-from wedge_v1.runtime import DEFAULT_CORPUS, ask, find_spans, load_corpus, scan
+from wedge_v1.runtime import (
+    DEFAULT_CORPUS,
+    ask,
+    compare,
+    find_spans,
+    format_report_md,
+    load_corpus,
+    scan,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -28,18 +36,24 @@ def main(argv: list[str] | None = None) -> int:
     scan_p = sub.add_parser("scan", help="Inventory extract + contradictions over corpus")
     scan_p.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
 
-    ingest_p = sub.add_parser("ingest", help="Index a folder (md/txt/pdf→text); writes local manifest")
-    ingest_p.add_argument("src", type=Path, help="Source folder")
+    cmp_p = sub.add_parser("compare", help="Cross-doc term compare; flags numeric disputes")
+    cmp_p.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    cmp_p.add_argument("term", nargs="+")
+
+    ingest_p = sub.add_parser("ingest", help="Index a folder (md/txt/pdf→text); write local manifest")
+    ingest_p.add_argument("--corpus", type=Path, default=None, help="Alias for positional src")
+    ingest_p.add_argument("src", nargs="?", type=Path, default=None)
     ingest_p.add_argument("--out", type=Path, default=None)
+
+    rep = sub.add_parser("report", help="Markdown (default) or JSON report for ask/find/scan/compare")
+    rep.add_argument("kind", choices=["ask", "find", "scan", "compare", "verified"])
+    rep.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    rep.add_argument("text", nargs="*", help="Query / needle / term (unused for scan)")
+    rep.add_argument("-o", "--output", type=Path, default=None)
+    rep.add_argument("--json", action="store_true", help="Emit JSON instead of markdown")
 
     sub.add_parser("dogfood", help="Score dogfood tasks on papers/ corpus")
     sub.add_parser("smoke", help="Run runtime regression pins")
-
-    rep = sub.add_parser("report", help="Verified Ask JSON/markdown claim report (frontier)")
-    rep.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
-    rep.add_argument("query", nargs="+")
-    rep.add_argument("-o", "--output", type=Path, default=None)
-    rep.add_argument("--json", action="store_true", help="Emit JSON instead of markdown")
 
     args = p.parse_args(argv)
 
@@ -60,6 +74,7 @@ def main(argv: list[str] | None = None) -> int:
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
+
     if args.cmd == "compare":
         out = compare(" ".join(args.term), corpus_dir=args.corpus)
         json.dump(out, sys.stdout, indent=2)
@@ -67,11 +82,12 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "ingest":
-        docs = load_corpus(args.src)
-        stats = corpus_stats(args.src)
+        src = args.corpus or args.src or DEFAULT_CORPUS
+        docs = load_corpus(src)
+        stats = corpus_stats(src)
         man = {
             "schema": "nano-lm.wedge_v1.ingest_manifest.v1",
-            "src": str(args.src.resolve()),
+            "src": str(Path(src).resolve()),
             "n_docs": len(docs),
             "n_chars": stats.get("n_chars"),
             "doc_ids": sorted(docs.keys()),
@@ -79,7 +95,7 @@ def main(argv: list[str] | None = None) -> int:
             "pypdf_available": stats.get("pypdf_available"),
             "note": stats.get("note") or "Local index only; not Layer-1 evidence.",
         }
-        out_path = args.out or (args.src / ".wedge_manifest.json")
+        out_path = args.out or (Path(src) / ".wedge_manifest.json")
         out_path.write_text(json.dumps(man, indent=2) + "\n", encoding="utf-8")
         json.dump(man, sys.stdout, indent=2)
         sys.stdout.write("\n")
@@ -104,21 +120,39 @@ def main(argv: list[str] | None = None) -> int:
         smoke.test_ingest_md_corpus()
         smoke.test_ingest_pdf_fixture()
         smoke.test_report_build()
+        smoke.test_report_ask_markdown()
         print("WEDGE_V1_SMOKE_OK", file=sys.stderr)
         return 0
 
     if args.cmd == "report":
-        from frontier.verified_ask_report import build_report, format_report_md
+        kind = args.kind
+        text = " ".join(args.text)
+        if kind == "ask":
+            out = ask(text, corpus_dir=args.corpus)
+            title = f"ask: {text}"
+        elif kind == "find":
+            out = find_spans(text, corpus_dir=args.corpus)
+            title = f"find: {text}"
+        elif kind == "scan":
+            out = scan(corpus_dir=args.corpus)
+            title = "scan"
+        elif kind == "compare":
+            out = compare(text, corpus_dir=args.corpus)
+            title = f"compare: {text}"
+        else:
+            from frontier.verified_ask_report import build_report
 
-        out = build_report(" ".join(args.query), corpus_dir=args.corpus)
-        if args.json:
-            text = json.dumps(out, indent=2) + "\n"
-        else:
-            text = format_report_md(out)
+            out = build_report(text, corpus_dir=args.corpus)
+            title = f"verified ask: {text}"
+        body = (
+            json.dumps(out, indent=2) + "\n"
+            if args.json
+            else format_report_md(out, title=title)
+        )
         if args.output:
-            args.output.write_text(text, encoding="utf-8")
+            args.output.write_text(body, encoding="utf-8")
         else:
-            sys.stdout.write(text)
+            sys.stdout.write(body)
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     return 1

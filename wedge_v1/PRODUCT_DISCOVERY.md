@@ -146,21 +146,14 @@ Kill or narrow A if:
 
 ## 11. Exact next coding task
 
+**Done this session:** BM25 `top_paragraphs` unblocked; `wedge_v1 compare` wired; smoke green.
+
 ```text
-Owner-corpus contact path (no PHI in git):
-  1. python -m wedge_v1 ingest <local_dir>  # writes .wedge_manifest.json (gitignored)
-  2. local-only tasks.json for that folder
-  3. Compare classical U / abstain rate on real folder vs synthetic dogfood
-  Keep smoke green. No LM. No Evidence Core / freeze-tag edits.
+NEXT — owner-corpus vertical slice (Active Frontier):
+  1. Point ingest at a gitignored private folder (md/txt/pdf)
+  2. Run ask + compare on 5 real questions; write gitignored results_owner_smoke.json
+  3. Keep classical-first; no LM probe; no Evidence Core / freeze-tag edits
 ```
 
-**Verify now:**
-`python3 -m wedge_v1 compare TTL --corpus wedge_v1/data/corpus`
-`python3 -m wedge_v1 smoke`
-
----
-
-## Research notes (methods → product, not ledger)
-
-- Local RAG market is crowded on **LM-first chat** (AnythingLLM, PrivateGPT, Open WebUI). Gap: **classical-first + fail-closed abstain + ΔU admission**.
-- Citation verification literature (VeriCite, VeReaFine, FVA-RAG) reinforces: span/NLI checks and falsification beats “chat with citations.” Our product surface is already closer to verify/abstain than to fluent RAG.
+**Try now:**
+`python -m wedge_v1 compare "metformin" --corpus wedge_v1/data/corpus`

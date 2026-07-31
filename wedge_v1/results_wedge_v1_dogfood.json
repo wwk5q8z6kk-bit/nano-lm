@@ -1,8 +1,8 @@
 {
   "schema": "nano-lm.wedge_v1.dogfood_result.v1",
   "corpus": "/Users/mac/Projects/nano-lm/papers",
-  "n_tasks": 8,
-  "n_ok": 8,
+  "n_tasks": 10,
+  "n_ok": 10,
   "accuracy": 1.0,
   "rows": [
     {
@@ -14,12 +14,13 @@
       "got_status": "SUPPORTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 3,
+      "n_claims": 5,
       "solver_path": [
         "load_corpus",
         "keyword_paragraph+quote",
         "mention+yes_no",
-        "numeric+literal_spans"
+        "numeric+literal_spans",
+        "bm25_paragraphs"
       ],
       "note": null
     },
@@ -47,7 +48,7 @@
       "got_status": "SUPPORTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 11,
+      "n_claims": 13,
       "solver_path": [
         "find_spans"
       ],
@@ -67,7 +68,8 @@
         "load_corpus",
         "keyword_paragraph+quote",
         "mention+yes_no",
-        "numeric+literal_spans"
+        "numeric+literal_spans",
+        "bm25_paragraphs"
       ],
       "note": "no span-supported claim under classical+eclass cascade"
     },
@@ -95,12 +97,13 @@
       "got_status": "SUPPORTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 2,
+      "n_claims": 4,
       "solver_path": [
         "load_corpus",
         "keyword_paragraph+quote",
         "mention+yes_no",
-        "numeric+literal_spans"
+        "numeric+literal_spans",
+        "bm25_paragraphs"
       ],
       "note": null
     },
@@ -118,7 +121,8 @@
         "load_corpus",
         "keyword_paragraph+quote",
         "mention+yes_no",
-        "numeric+literal_spans"
+        "numeric+literal_spans",
+        "bm25_paragraphs"
       ],
       "note": "no span-supported claim under classical+eclass cascade"
     },
@@ -136,6 +140,36 @@
         "find_spans"
       ],
       "note": "fallback_find:smallest sufficient"
+    },
+    {
+      "id": "D09",
+      "ok": true,
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "got_status": "CONTRADICTED",
+      "ok_status": true,
+      "ok_needles": true,
+      "n_claims": 1,
+      "solver_path": [
+        "compare"
+      ],
+      "note": null
+    },
+    {
+      "id": "D10",
+      "ok": true,
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "got_status": "SUPPORTED",
+      "ok_status": true,
+      "ok_needles": true,
+      "n_claims": 1,
+      "solver_path": [
+        "compare"
+      ],
+      "note": null
     }
   ],
   "note": "Classical dogfood; not Layer-1 ledger claim."

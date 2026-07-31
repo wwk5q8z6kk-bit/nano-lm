@@ -35,3 +35,9 @@ REQUIRES_OWNER:
 **Recommended wedge (starting):** A — Local verified research assistant (extends `wedge_v1`).
 
 **Deliverable home:** `wedge_v1/PRODUCT_DISCOVERY.md`
+
+## Progress (Active Frontier)
+
+- Unblocked BM25 `top_paragraphs` + query expand; runtime smoke green.
+- `wedge_v1 compare` live: cross-doc numeric disagreement → CONTRADICTED.
+- Next: owner-corpus smoke (gitignored), not more governance.

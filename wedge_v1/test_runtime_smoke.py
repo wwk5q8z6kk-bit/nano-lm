@@ -5,7 +5,7 @@ from pathlib import Path
 
 from wedge_v1.classical.bm25 import top_paragraphs, tokenize
 from wedge_v1.ingest import corpus_stats, load_corpus
-from wedge_v1.runtime import DEFAULT_CORPUS, ask, find_spans, scan
+from wedge_v1.runtime import DEFAULT_CORPUS, ask, compare, find_spans, scan
 
 
 def test_ttl_supported():
@@ -74,6 +74,20 @@ def test_ingest_pdf_fixture():
     assert "plain" in docs
 
 
+def test_compare_metformin_contradicted():
+    r = compare("metformin", corpus_dir=DEFAULT_CORPUS)
+    assert r["answer_status"] == "CONTRADICTED"
+    assert r["n_docs_hit"] >= 2
+    blob = str(r)
+    assert "500" in blob and "850" in blob
+
+
+def test_compare_literal_agree():
+    r = compare("12000", corpus_dir=DEFAULT_CORPUS)
+    assert r["answer_status"] == "SUPPORTED"
+    assert "12000" in str(r)
+
+
 def test_report_build():
     from frontier.verified_ask_report import build_report, format_report_md
 
@@ -82,6 +96,16 @@ def test_report_build():
     md = format_report_md(r)
     assert "**Status:**" in md
 
+
+
+
+def test_report_ask_markdown():
+    from wedge_v1.runtime import ask, format_report_md
+
+    payload = ask("How long before cached entries expire?")
+    md = format_report_md(payload, title="ask smoke")
+    assert "**Status:**" in md
+    assert payload.get("answer_status") in {"SUPPORTED", "CONTRADICTED", "ABSTAIN", "NO_CORPUS"}
 
 if __name__ == "__main__":
     test_ttl_supported()
@@ -94,4 +118,6 @@ if __name__ == "__main__":
     test_ingest_md_corpus()
     test_ingest_pdf_fixture()
     test_report_build()
+    test_compare_metformin_contradicted()
+    test_compare_literal_agree()
     print("WEDGE_V1_SMOKE_OK")
