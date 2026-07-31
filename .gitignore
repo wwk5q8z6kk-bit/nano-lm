@@ -36,3 +36,7 @@ papers/latex/*.log
 papers/latex/*.out
 papers/latex/*.toc
 papers/latex/*.blg
+
+# Durable raw evidence (explicitly tracked; overrides *.jsonl ignore)
+!artifacts/durable_raw/
+!artifacts/durable_raw/**
