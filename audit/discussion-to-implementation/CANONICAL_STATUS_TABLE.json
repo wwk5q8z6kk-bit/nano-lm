@@ -1,8 +1,8 @@
 {
-  "schema": "nano-lm.canonical_status_table.v2",
-  "updated": "2026-07-31T15:27:31.728128+00:00",
-  "program_execution_status": "IDLE_AFTER_FREEZE",
-  "authorized_nonexecution_work": "E4_DESIGN_ONLY",
+  "schema": "nano-lm.canonical_status_table.v3",
+  "updated": "2026-07-31T15:34:20.153554+00:00",
+  "program_execution_status": "IDLE_AFTER_E4_KILL",
+  "authorized_nonexecution_work": "NONE",
   "evidence_freeze_tag": {
     "name": "post-alpha-evidence-freeze-2026-07-31",
     "target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
@@ -42,16 +42,16 @@
       ]
     },
     "R_star": {
-      "status": "DESIGN_HARDENED"
+      "status": "WORLD_FROZEN"
     },
     "E4": {
       "status": [
-        "DESIGN_DRAFT",
-        "EXECUTION_BLOCKED",
-        "WORLD_NOT_FROZEN",
-        "NO_DATA",
-        "NO_RESULT"
-      ]
+        "EXECUTED",
+        "KILL"
+      ],
+      "U_star_class": 0.638,
+      "U_star_gen": -1.623,
+      "best_classical": "C-M2"
     },
     "nanoscribe": {
       "status": "ARCHITECTURAL_RESEARCH_PROGRAM"
@@ -62,29 +62,14 @@
     "nanoscribe_product_expansion": {
       "status": "STOP"
     },
-    "laboratory_constitution": {
-      "status": "ACTIVE",
-      "path": "papers/LABORATORY_CONSTITUTION.md"
-    },
-    "research_portfolio": {
-      "status": "ACTIVE_EXPANSIVE",
-      "path": "papers/RESEARCH_PORTFOLIO.md"
-    },
-    "technology_roadmap": {
-      "status": "ACTIVE_AMBITIOUS",
-      "path": "papers/TECHNOLOGY_ROADMAP.md"
-    },
-    "execution_queue": {
-      "status": "IDLE_PLUS_E4_DESIGN",
-      "path": "papers/EXECUTION_QUEUE.md"
-    },
-    "decision_gates": {
-      "status": "ACTIVE",
-      "path": "papers/DECISION_GATES.md"
-    },
-    "master_plan": {
-      "status": "HISTORICAL_POINTER",
-      "path": "papers/MASTER_PLAN.md"
+    "rstar_product_track": {
+      "status": "STOP_FOR_TESTED_RSTAR",
+      "revision_budget_remaining": 1
     }
+  },
+  "auth": {
+    "string": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
+    "date": "2026-07-31",
+    "record": "trajectory/e4/AUTH_RECORD.md"
   }
 }

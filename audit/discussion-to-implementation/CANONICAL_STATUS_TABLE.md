@@ -1,26 +1,30 @@
 # Canonical Status Table
 
 **Authority:** this file + `CANONICAL_STATUS_TABLE.json`  
-**Updated:** 2026-07-31 (LABORATORY_CONSTITUTION)  
+**Updated:** 2026-07-31 (E4 EXECUTE → KILL)  
 **Rule:** every status-bearing doc must derive from this table.
 
 ## Program posture (exact separation)
 
 ```text
-PROGRAM_EXECUTION_STATUS: IDLE_AFTER_FREEZE
-AUTHORIZED_NONEXECUTION_WORK: E4_DESIGN_ONLY
-E4_PROTOCOL_STATUS: DESIGN_DRAFT
-E4_EXECUTION_STATUS: BLOCKED
-E4_WORLD_STATUS: NOT_FROZEN
-E4_DATA_STATUS: NONE
-E4_RESULT_STATUS: NONE
+PROGRAM_EXECUTION_STATUS: IDLE_AFTER_E4_KILL
+AUTHORIZED_NONEXECUTION_WORK: NONE
+E4_PROTOCOL_STATUS: EXECUTED
+E4_EXECUTION_STATUS: COMPLETE
+E4_WORLD_STATUS: FROZEN
+E4_DATA_STATUS: LOCKED
+E4_RESULT_STATUS: KILL
 FABRIC_STATUS: SCOPED_VERIFICATION_SLICE
 NANOSCRIBE_STATUS: ARCHITECTURAL_RESEARCH_PROGRAM
 OLD_TASK_GENERATIVE_SUBSTRATE: FALSIFIED_UNDER_FROZEN_U
 NANOSCRIBE_PRODUCT_EXPANSION: STOP
+RSTAR_PRODUCT_TRACK: STOP_FOR_TESTED_RSTAR
+RSTAR_REVISION_BUDGET_REMAINING: 1
 ```
 
-**Meaning:** program **execution** is idle. Documentation and protocol design are allowed under `E4_DESIGN_ONLY`. No experiment is authorized.
+**Meaning:** E4 executed under `AUTHORIZE_E4_BUILDER_AND_EXECUTE`. Verdict **KILL**.
+Generative+verify does not beat classical under frozen \(U_{R★}\) on locked R★.
+No NanoScribe/fabric expansion. At most one preregistered R★ revision then re-gate.
 
 ## Object table
 
@@ -34,16 +38,10 @@ NANOSCRIBE_PRODUCT_EXPANSION: STOP
 | E3 agent audit | `AGENT_SINGLE_PASS` / `NO_IAA` | agent-rubric-pass-1; not clinician |
 | E3 human arm | `NOT_RUN` | Dual-clinician/IAA open |
 | Fabric | `SCOPED_VERIFICATION_SLICE` / `NOT_PRODUCT` | ≠ NanoScribe |
-| R★ | `DESIGN_HARDENED` (protocol text) | World NOT_FROZEN |
-| E4 | `DESIGN_DRAFT` / `EXECUTION_BLOCKED` / `WORLD_NOT_FROZEN` / `NO_DATA` / `NO_RESULT` | Committed design ≠ freeze |
-| Program execution | `IDLE_AFTER_FREEZE` | |
-| Authorized nonexecution work | `E4_DESIGN_ONLY` | |
-| Laboratory constitution | `ACTIVE` | `papers/LABORATORY_CONSTITUTION.md` — three layers |
-| Research portfolio | `ACTIVE_EXPANSIVE` | Layer 3; Programs A–O; not evidence |
-| Technology roadmap | `ACTIVE_AMBITIOUS` | Layer 2; conditional; not queue |
-| Execution queue | `IDLE_PLUS_E4_DESIGN` | Layer operating; tiny |
-| Decision gates | `ACTIVE` | Promotion Layer 3→2→1→queue |
-| MASTER_PLAN | `HISTORICAL_POINTER` | Not constitution; not queue |
+| R★ | `WORLD_FROZEN` | `trajectory/e4/data/rstar_world_manifest.json` |
+| E4 | `EXECUTED` / `KILL` | `results_e4_utility.json`; U_class≈0.638 (C-M2) vs U_gen≈−1.623 |
+| Program execution | `IDLE_AFTER_E4_KILL` | |
+| Authorized nonexecution work | `NONE` | |
 
 ## Transition log
 
@@ -52,4 +50,5 @@ NANOSCRIBE_PRODUCT_EXPANSION: STOP
 | Freeze tag | Evidence boundary at `a9d12cb1c456f6c465284e1d469c6326cb14d329` |
 | AUTHORIZE_E4_DESIGN_ONLY | Design carve-out; execution blocked |
 | POST-FREEZE DESIGN-CLOSURE | Split PROGRAM_EXECUTION vs AUTHORIZED_NONEXECUTION_WORK; E4=DESIGN_DRAFT |
-| LABORATORY_CONSTITUTION | Separated evidence / roadmap / portfolio / queue / gates; MASTER_PLAN demoted from queue |
+| AUTHORIZE_E4_BUILDER_AND_EXECUTE | Builder+Stage 4 unlocked 2026-07-31 |
+| E4 KILL | Gate 4 KILL; R★ product track STOP; revision budget 1 remaining |

@@ -1,0 +1,19 @@
+{
+  "recipe_id": "G-ref-nano-rstar-sft-v1",
+  "base_checkpoint": "checkpoints/anchors/scribe.pt",
+  "base_sha256": "38d1f56415e59de3670d27e453a1e61759967da5eac72a2de7089538f9bc1524",
+  "out_checkpoint": "trajectory/e4/checkpoints/gref_nano_rstar_sft_v1.pt",
+  "out_sha256": "6711aea7fe00aad3ce666a786916fd52fe9e8225020405b2a33f831c6de3056b",
+  "venue": "mps",
+  "hardware_class": "apple-mps",
+  "epochs": 2,
+  "steps": 100,
+  "batch": 16,
+  "peak_lr": 0.0001,
+  "seed": 7,
+  "train_n": 800,
+  "dropped": 0,
+  "train_split_sha256": "0c0065c3f01d93a7850d93ab7cb29de8a100a386191401beaf04652ca84e4d13",
+  "wall_s": 10.502632856369019,
+  "note": "G-ref for E4 only; not NanoScribe; not old-task M0"
+}

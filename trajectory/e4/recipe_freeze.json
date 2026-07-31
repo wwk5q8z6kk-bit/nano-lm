@@ -1,0 +1,91 @@
+{
+  "schema": "nano-lm.e4.recipe_freeze.v1",
+  "auth": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
+  "auth_date": "2026-07-31",
+  "auth_record": "trajectory/e4/AUTH_RECORD.md",
+  "prereg": "trajectory/PREREG_E4_Rstar_killgate.md",
+  "prereg_sha256": "cc19ee8ecde1dba843bb126a836f0386a2c1b42798bcb85358a06f8e0d8e0ab0",
+  "regime": "trajectory/REGIME_P1_where_classical_fails.md",
+  "regime_sha256": "a46094e9bf12d3154fc1db344a08b89103d3e8c282031852687bc20707d1e1da",
+  "ambition": "papers/AMBITION.md",
+  "ambition_sha256": "3cdf2469f384c0ae85aabb8fb354e956da0dc887f407bdd42df5f68820cd129a",
+  "U_Rstar": {
+    "formula": "Q - 0.5*E - 0.3*R - 0.02*L - 0.05*C - 0.15*M",
+    "delta": 0.05,
+    "weights": {
+      "Q": 1.0,
+      "E": 0.5,
+      "R": 0.3,
+      "L": 0.02,
+      "C": 0.05,
+      "M": 0.15
+    },
+    "primary_arm": "verify-on",
+    "construct_primary": "exact",
+    "frozen_at_auth": true,
+    "mid_stream_edits": "FORBIDDEN_VOID"
+  },
+  "M_rubric_preassigned": {
+    "C-M1": 0.2,
+    "C-M2": 0.35,
+    "C-M4": 0.4,
+    "G-ref": 0.75,
+    "G-ref|verify-on": 0.8
+  },
+  "probe_tau": {
+    "cue": 0.6,
+    "span": 0.5,
+    "bind": 0.2,
+    "dict": 0.5
+  },
+  "g_ref_recipe": {
+    "id": "G-ref-nano-rstar-sft-v1",
+    "base_checkpoint": "checkpoints/anchors/scribe.pt",
+    "base_checkpoint_sha256": "38d1f56415e59de3670d27e453a1e61759967da5eac72a2de7089538f9bc1524",
+    "arch": "nano",
+    "dims": {
+      "d": 192,
+      "L": 6,
+      "H": 6,
+      "KV": 2,
+      "hd": 32,
+      "ff": 512,
+      "V": 4098,
+      "S": 512
+    },
+    "tokenizer": "sft/tokenizer.json",
+    "train_split": "rstar_train",
+    "venue_preferred": "local-mps",
+    "venue_fallback": "runpod-cheapest-cuda",
+    "note": "Small generative proposer; FT on R\u2605 train only; base SHA pinned at train time"
+  },
+  "classical_freeze_set": [
+    "C-M1",
+    "C-M2",
+    "C-M4"
+  ],
+  "minimum_valid": [
+    "C-M1",
+    "C-M2",
+    "G-ref"
+  ],
+  "seeds": {
+    "generator": 20260731,
+    "split": 424242,
+    "gref_train": 7
+  },
+  "scale_minimums": {
+    "eval_docs": 200,
+    "multi_candidate_docs": 40,
+    "non_verbatim_open_gold_frac": 0.3
+  },
+  "hardware_protocol": {
+    "L": "p50 wall-clock seconds per document on stated device",
+    "C": "relative compute vs frozen C-M1 on same hardware class",
+    "class_local": "apple-mps"
+  },
+  "rstar_revision_budget": 1,
+  "old_task_u": "FORBIDDEN",
+  "e2": "GATED",
+  "fabric_equals_nanoscribe": false
+}

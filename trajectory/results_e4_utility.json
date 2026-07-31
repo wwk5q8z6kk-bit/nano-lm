@@ -1,0 +1,462 @@
+{
+  "schema": "nano-lm.e4.utility.v1",
+  "prereg": "trajectory/PREREG_E4_Rstar_killgate.md",
+  "auth": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
+  "auth_record": "trajectory/e4/AUTH_RECORD.md",
+  "recipe_freeze": "trajectory/e4/recipe_freeze.json",
+  "world_manifest": "trajectory/e4/data/rstar_world_manifest.json",
+  "classical_probe": "trajectory/results_e4_classical_probe.json",
+  "U_definition": {
+    "formula": "Q - 0.5*E - 0.3*R - 0.02*L - 0.05*C - 0.15*M",
+    "delta": 0.05,
+    "weights": {
+      "Q": 1.0,
+      "E": 0.5,
+      "R": 0.3,
+      "L": 0.02,
+      "C": 0.05,
+      "M": 0.15
+    },
+    "primary_arm": "verify-on",
+    "construct_primary": "exact",
+    "frozen_at_auth": true,
+    "mid_stream_edits": "FORBIDDEN_VOID"
+  },
+  "g_ref_recipe": {
+    "id": "G-ref-nano-rstar-sft-v1",
+    "base_checkpoint": "checkpoints/anchors/scribe.pt",
+    "base_checkpoint_sha256": "38d1f56415e59de3670d27e453a1e61759967da5eac72a2de7089538f9bc1524",
+    "arch": "nano",
+    "dims": {
+      "d": 192,
+      "L": 6,
+      "H": 6,
+      "KV": 2,
+      "hd": 32,
+      "ff": 512,
+      "V": 4098,
+      "S": 512
+    },
+    "tokenizer": "sft/tokenizer.json",
+    "train_split": "rstar_train",
+    "venue_preferred": "local-mps",
+    "venue_fallback": "runpod-cheapest-cuda",
+    "note": "Small generative proposer; FT on R\u2605 train only; base SHA pinned at train time"
+  },
+  "g_ref_meta": {
+    "recipe_id": "G-ref-nano-rstar-sft-v1",
+    "base_checkpoint": "checkpoints/anchors/scribe.pt",
+    "base_sha256": "38d1f56415e59de3670d27e453a1e61759967da5eac72a2de7089538f9bc1524",
+    "out_checkpoint": "trajectory/e4/checkpoints/gref_nano_rstar_sft_v1.pt",
+    "out_sha256": "6711aea7fe00aad3ce666a786916fd52fe9e8225020405b2a33f831c6de3056b",
+    "venue": "mps",
+    "hardware_class": "apple-mps",
+    "epochs": 2,
+    "steps": 100,
+    "batch": 16,
+    "peak_lr": 0.0001,
+    "seed": 7,
+    "train_n": 800,
+    "dropped": 0,
+    "train_split_sha256": "0c0065c3f01d93a7850d93ab7cb29de8a100a386191401beaf04652ca84e4d13",
+    "wall_s": 10.502632856369019,
+    "note": "G-ref for E4 only; not NanoScribe; not old-task M0"
+  },
+  "hardware": {
+    "class": "apple-mps",
+    "cost_C": {
+      "C-M1": 1.0,
+      "C-M2": 1.2,
+      "C-M4": 1.5,
+      "G-ref": 40.0
+    },
+    "latency_p50_diag": {
+      "C-M1": 6.4999330788850784e-06,
+      "C-M2": 4.6874978579580784e-05,
+      "C-M4": 5.300005432218313e-05,
+      "G-ref": 0.16476520791184157
+    }
+  },
+  "rows": [
+    {
+      "method": "C-M1",
+      "verify_on": false,
+      "Q": 0.14909090909090908,
+      "E": 0.850909090909091,
+      "R": 0.0,
+      "L_p50": 4.66697383671999e-06,
+      "C": 1.0,
+      "M": 0.2,
+      "U": -0.35636372970311314,
+      "recall": 0.14909090909090908,
+      "beta_bind": 0.0,
+      "correct_norm_rate": 0.14909090909090908,
+      "liability_presented_bad": 0,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.850909090909091,
+      "halluc": 0.0,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": -0.35636372970311314
+        },
+        {
+          "name": "high_miss",
+          "U": -0.7818182751576587
+        },
+        {
+          "name": "high_review",
+          "U": -0.35636372970311314
+        },
+        {
+          "name": "no_maintenance",
+          "U": -0.3263637297031131
+        },
+        {
+          "name": "binding_heavy",
+          "U": -0.35636372970311314
+        },
+        {
+          "name": "e1_shaped",
+          "U": -0.3263637297031131
+        }
+      ]
+    },
+    {
+      "method": "C-M1",
+      "verify_on": true,
+      "Q": 0.7735849056603774,
+      "E": 0.850909090909091,
+      "R": 0.8072727272727273,
+      "L_p50": 4.666042514145374e-06,
+      "C": 1.0,
+      "M": 0.2,
+      "U": 0.025948448703163485,
+      "recall": 0.14909090909090908,
+      "beta_bind": 0.0,
+      "correct_norm_rate": 0.14909090909090908,
+      "liability_presented_bad": 0,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.850909090909091,
+      "halluc": 0.0,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": 0.025948448703163485
+        },
+        {
+          "name": "high_miss",
+          "U": -0.39950609675138193
+        },
+        {
+          "name": "high_review",
+          "U": -0.21623336947865465
+        },
+        {
+          "name": "no_maintenance",
+          "U": 0.055948448703163484
+        },
+        {
+          "name": "binding_heavy",
+          "U": 0.025948448703163485
+        },
+        {
+          "name": "e1_shaped",
+          "U": 0.055948448703163484
+        }
+      ]
+    },
+    {
+      "method": "C-M2",
+      "verify_on": false,
+      "Q": 0.7581818181818182,
+      "E": 0.24181818181818182,
+      "R": 0.0,
+      "L_p50": 5.595793481916189e-05,
+      "C": 1.2,
+      "M": 0.35,
+      "U": 0.5247716081140308,
+      "recall": 0.7581818181818182,
+      "beta_bind": 0.6458333333333334,
+      "correct_norm_rate": 0.7581818181818182,
+      "liability_presented_bad": 45,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.2009090909090909,
+      "halluc": 0.04090909090909091,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": 0.5247716081140308
+        },
+        {
+          "name": "high_miss",
+          "U": 0.40386251720494
+        },
+        {
+          "name": "high_review",
+          "U": 0.5247716081140308
+        },
+        {
+          "name": "no_maintenance",
+          "U": 0.5772716081140308
+        },
+        {
+          "name": "binding_heavy",
+          "U": 0.39560494144736413
+        },
+        {
+          "name": "e1_shaped",
+          "U": 0.5772716081140308
+        }
+      ]
+    },
+    {
+      "method": "C-M2",
+      "verify_on": true,
+      "Q": 0.925638179800222,
+      "E": 0.24181818181818182,
+      "R": 0.1809090909090909,
+      "L_p50": 4.912493750452995e-05,
+      "C": 1.2,
+      "M": 0.35,
+      "U": 0.6379553791196537,
+      "recall": 0.7581818181818182,
+      "beta_bind": 0.6458333333333334,
+      "correct_norm_rate": 0.7581818181818182,
+      "liability_presented_bad": 45,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.2009090909090909,
+      "halluc": 0.04090909090909091,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": 0.6379553791196537
+        },
+        {
+          "name": "high_miss",
+          "U": 0.5170462882105629
+        },
+        {
+          "name": "high_review",
+          "U": 0.5836826518469265
+        },
+        {
+          "name": "no_maintenance",
+          "U": 0.6904553791196537
+        },
+        {
+          "name": "binding_heavy",
+          "U": 0.5087887124529871
+        },
+        {
+          "name": "e1_shaped",
+          "U": 0.6904553791196537
+        }
+      ]
+    },
+    {
+      "method": "C-M4",
+      "verify_on": false,
+      "Q": 0.7963636363636364,
+      "E": 0.20363636363636362,
+      "R": 0.0,
+      "L_p50": 5.766702815890312e-05,
+      "C": 1.5,
+      "M": 0.4,
+      "U": 0.5595443012048913,
+      "recall": 0.7963636363636364,
+      "beta_bind": 0.6875,
+      "correct_norm_rate": 0.7963636363636364,
+      "liability_presented_bad": 166,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.05272727272727273,
+      "halluc": 0.1509090909090909,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": 0.5595443012048913
+        },
+        {
+          "name": "high_miss",
+          "U": 0.45772611938670954
+        },
+        {
+          "name": "high_review",
+          "U": 0.5595443012048913
+        },
+        {
+          "name": "no_maintenance",
+          "U": 0.6195443012048913
+        },
+        {
+          "name": "binding_heavy",
+          "U": 0.4220443012048913
+        },
+        {
+          "name": "e1_shaped",
+          "U": 0.6195443012048913
+        }
+      ]
+    },
+    {
+      "method": "C-M4",
+      "verify_on": true,
+      "Q": 0.8334919124643198,
+      "E": 0.20363636363636362,
+      "R": 0.04454545454545455,
+      "L_p50": 5.5832904763519764e-05,
+      "C": 1.5,
+      "M": 0.4,
+      "U": 0.5833089776244063,
+      "recall": 0.7963636363636364,
+      "beta_bind": 0.6875,
+      "correct_norm_rate": 0.7963636363636364,
+      "liability_presented_bad": 166,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.05272727272727273,
+      "halluc": 0.1509090909090909,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": 0.5833089776244063
+        },
+        {
+          "name": "high_miss",
+          "U": 0.4814907958062245
+        },
+        {
+          "name": "high_review",
+          "U": 0.5699453412607698
+        },
+        {
+          "name": "no_maintenance",
+          "U": 0.6433089776244063
+        },
+        {
+          "name": "binding_heavy",
+          "U": 0.44580897762440624
+        },
+        {
+          "name": "e1_shaped",
+          "U": 0.6433089776244063
+        }
+      ]
+    },
+    {
+      "method": "G-ref",
+      "verify_on": false,
+      "Q": 0.6391061452513966,
+      "E": 0.48,
+      "R": 0.18636363636363637,
+      "L_p50": 0.17114729201421142,
+      "C": 40.0,
+      "M": 0.75,
+      "U": -1.7727258914979787,
+      "recall": 0.52,
+      "beta_bind": 0.7560975609756098,
+      "correct_norm_rate": 0.52,
+      "liability_presented_bad": 308,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.013636363636363636,
+      "halluc": 0.28,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": -1.7727258914979787
+        },
+        {
+          "name": "high_miss",
+          "U": -2.012725891497978
+        },
+        {
+          "name": "high_review",
+          "U": -1.8286349824070693
+        },
+        {
+          "name": "no_maintenance",
+          "U": -1.6602258914979786
+        },
+        {
+          "name": "binding_heavy",
+          "U": -1.9239454036931005
+        },
+        {
+          "name": "e1_shaped",
+          "U": -1.6602258914979786
+        }
+      ]
+    },
+    {
+      "method": "G-ref",
+      "verify_on": true,
+      "Q": 0.8588588588588588,
+      "E": 0.48,
+      "R": 0.39454545454545453,
+      "L_p50": 0.18965700000990182,
+      "C": 40.0,
+      "M": 0.8,
+      "U": -1.6232979175049755,
+      "recall": 0.52,
+      "beta_bind": 0.7560975609756098,
+      "correct_norm_rate": 0.52,
+      "liability_presented_bad": 93,
+      "n_items": 220,
+      "n_fields": 1100,
+      "omission": 0.013636363636363636,
+      "halluc": 0.28,
+      "U_sensitivity": [
+        {
+          "name": "default",
+          "U": -1.6232979175049755
+        },
+        {
+          "name": "high_miss",
+          "U": -1.8632979175049758
+        },
+        {
+          "name": "high_review",
+          "U": -1.741661553868612
+        },
+        {
+          "name": "no_maintenance",
+          "U": -1.5032979175049754
+        },
+        {
+          "name": "binding_heavy",
+          "U": -1.7745174297000976
+        },
+        {
+          "name": "e1_shaped",
+          "U": -1.5032979175049754
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "verdict": "KILL",
+    "U_star_class": 0.6379553791196537,
+    "best_classical": "C-M2",
+    "U_star_gen": -1.6232979175049755,
+    "delta": 0.05,
+    "margin_gen_minus_class": -2.2612532966246293,
+    "sensitivity_flip": false,
+    "U_all": {
+      "C-M1": 0.025948448703163485,
+      "C-M2": 0.6379553791196537,
+      "C-M4": 0.5833089776244063,
+      "G-ref": -1.6232979175049755
+    },
+    "rule": "KILL if U_class >= U_gen - delta; SURVIVE if U_gen > U_class + delta and no sens flip; else GRADED"
+  },
+  "consequences_table": "trajectory/PREREG_E4_Rstar_killgate.md \u00a73",
+  "not_nanoscribe": true,
+  "not_old_task": true,
+  "e3_not_human": true
+}

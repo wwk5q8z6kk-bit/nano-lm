@@ -1,0 +1,61 @@
+{
+  "schema": "nano-lm.e4.rstar_world.v1",
+  "seed": 20260731,
+  "split_hashes": {
+    "train": "0c0065c3f01d93a7850d93ab7cb29de8a100a386191401beaf04652ca84e4d13",
+    "dev": "57321d1b729a48944e575df6226ec9ce1a0a05a5c100069c05ee54a78fcb52e6",
+    "eval": "37e96ff94bff41d25e5b06f22b4d941fc7a2c6067540148e88022779e8fc2ff7"
+  },
+  "train_lexicon_sha256": "732587cc696abcd4745be691cf91a33e436f009c496f1b723a15d6184216129d",
+  "inclusion": {
+    "I1_disjoint_families": true,
+    "I1_eval_families": [
+      "eval_asr_noisy",
+      "eval_multi_candidate",
+      "eval_note_free",
+      "eval_para_disfluent",
+      "eval_weak_cue"
+    ],
+    "I1_cm1_families": [
+      "cm1_canonical_qa"
+    ],
+    "I2_open_needs_norm_frac": 0.5625,
+    "I2": true,
+    "I3_open_absent_from_train_lex_frac": 0.5080645161290323,
+    "I3": true,
+    "I4_multi_candidate_doc_frac": 0.21818181818181817,
+    "I4": true,
+    "I5_weak_or_none_cue_frac": 1.0,
+    "I5": true,
+    "strong_axes": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "inclusion_pass": true,
+    "n_eval": 220,
+    "n_multi": 48,
+    "non_verbatim_open_or_dur_doc_frac": 0.8045454545454546,
+    "n_open_cells": 496
+  },
+  "exclusion": {
+    "X1_not_old_task_isomorphism": true,
+    "X2_no_full_ehr_product_claim": true,
+    "X3_english_text_primary": true,
+    "X4_old_task_u_untouched": true,
+    "X5_schema_fixed": true,
+    "X6_no_score_filtering": true,
+    "exclusion_pass": true
+  },
+  "cm1_rule_family_ids": [
+    "cm1_canonical_qa"
+  ],
+  "world_frozen": true,
+  "n": {
+    "train": 800,
+    "dev": 100,
+    "eval": 220
+  }
+}

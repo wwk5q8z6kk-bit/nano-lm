@@ -120,7 +120,7 @@ Deliverable:
 
 ## Stage 4 — New kill gate (E4)
 
-**Status:** `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` under `AUTHORIZE_E4_DESIGN_ONLY`.
+**Status:** `EXECUTED` / **KILL** under `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31).
 
 **Goal:** Does generative+verify add utility **in R★** under draft \(U_{R★}\)?
 
@@ -210,7 +210,7 @@ Stage 0: DONE (Gate 0 PASS)
 Stage 1: DONE (Gate 1 PASS — E3 agent-applied rubric audit EXECUTED; EXACT_SURVIVES on instrument; dual-clinician IAA open)
 Stage 2: DONE (Gate 2 PASS — R★ hardened / testable)
 Stage 3: DONE (Gate 3 PASS — P2 / PREREG_E4_Rstar_killgate.md frozen)
-Stage 4: E4 DESIGN_IN_PROGRESS / EXECUTION_BLOCKED (design-only auth)   ← EXECUTE needs separate auth
+Stage 4: E4 EXECUTED / KILL (2026-07-31)   ← product track STOP for tested R★; revision budget 1
 ```
 
 **Next owner/agent line (pick one):**

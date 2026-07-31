@@ -1,4 +1,4 @@
-**E4_WORLD_STATUS:** `NOT_FROZEN` · **E4_DATA_STATUS:** `NONE` · **E4_RESULT_STATUS:** `NONE`
+**E4_WORLD_STATUS:** `FROZEN` · **E4_DATA_STATUS:** `LOCKED` · **E4_RESULT_STATUS:** `KILL`
 
 # P1 annex — Regime R★ (design-hardened)
 
@@ -15,11 +15,11 @@ execution, **no** R★ world freeze, **no** dataset generation that constitutes 
 |-------|--------|
 | Artifact class | Design-hardened regime definition |
 | Gate 2 | **PASS** — R★ non-empty and testable (protocol) |
-| E4 | `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED` |
-| Next authorized | Harden P2 design (`PREREG_E4_Rstar_killgate.md`); **not** Stage 4 runs |
-| Forbidden | E4 execution, E2, fabric/NanoScribe expansion, old-task runs under `OLD_TASK_U`, paid compute for E4 |
+| E4 | `EXECUTED` / **KILL** |
+| Next authorized | None (IDLE_AFTER_E4_KILL); ≤1 R★ revision requires fresh owner auth |
+| Forbidden | E2, fabric/NanoScribe expansion, old-task runs under `OLD_TASK_U`, silent redesign loops |
 | Paper α | FROZEN; Stage 1 **agent-applied rubric audit** (Gate 1 PASS); dual-clinician IAA open |
-| E4 measurement | **Absent** — no `results_e4_*` |
+| E4 measurement | `results_e4_utility.json` — KILL; world `trajectory/e4/data/` |
 
 ## Why this note exists
 
@@ -185,7 +185,7 @@ max **one** R★ revision after a failed E4 KILL per sequential plan.
 
 - No fabric / NanoScribe revival on old task
 - No E2 prose as product unlock
-- No E4 execution under design-only auth
+- E4 executed 2026-07-31 → KILL; no further Stage 4 without revision auth
 - No old-task runs under `OLD_TASK_U`
 - No claiming R★ generative value without RESULT
 

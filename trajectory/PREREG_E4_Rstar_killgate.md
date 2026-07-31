@@ -1,11 +1,10 @@
 # P2 / PREREG — E4 kill gate on regime R★
 
-**Status:** `DESIGN_DRAFT` / `EXECUTION_BLOCKED` / `WORLD_NOT_FROZEN` / `NO_DATA` / `NO_RESULT`
-**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_FREEZE` · **AUTHORIZED_NONEXECUTION_WORK:** `E4_DESIGN_ONLY`  
-**Owner auth in force:** `AUTHORIZE_E4_DESIGN_ONLY` (2026-07-31) — **docs only**.  
-**Not authorized:** Stage 4 runs, R★ world freeze, GPU/paid compute, E2, fabric v2.  
-**Public freeze tag:** `post-alpha-evidence-freeze-2026-07-31` (evidence packaging; ≠ E4 execute).  
-**Ambition:** `papers/AMBITION.md`
+**Status:** `EXECUTED` / `KILL` / `WORLD_FROZEN` / `DATA_LOCKED` / `HAS_RESULT`  
+**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_E4_KILL` · **AUTHORIZED_NONEXECUTION_WORK:** `NONE`  
+**Owner auth:** `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31) — see `trajectory/e4/AUTH_RECORD.md`.  
+**Public freeze tag:** `post-alpha-evidence-freeze-2026-07-31` (immutable evidence packaging; separate from E4).  
+**Ambition:** `papers/AMBITION.md` — R★ product track **STOP** for tested regime; revision budget 1.
 
 This document is the **design-complete** E4 package candidate. Marked
 **DESIGN DRAFT** wherever weights/thresholds remain amendable *until* a separate
@@ -29,7 +28,7 @@ PAPER_α = FROZEN
 OLD_TASK_RUNS = FORBIDDEN            # under OLD_TASK_U / m0–m4 isomorphism
 E2_DEFAULT = GATED
 FABRIC_DEFAULT = GATED               # Fabric ≠ NanoScribe
-E4_STATUS = DESIGN_DRAFT / EXECUTION_BLOCKED / WORLD_NOT_FROZEN / NO_DATA / NO_RESULT
+E4_STATUS = EXECUTED / KILL / WORLD_FROZEN / DATA_LOCKED / HAS_RESULT
 ```
 
 ---
@@ -309,11 +308,9 @@ If false → **STOP** (rebuild or end product path).
 
 ### 4.7 Builder status
 
-**Not implemented. Not authorized under DESIGN_ONLY.**
-
-Building R★ data is **implementation of the frozen spec**, still requiring
-`AUTHORIZE_E4_EXECUTE` (or a narrower `AUTHORIZE_E4_BUILDER` if the owner splits
-phases). Design-only must not create the locked eval world.
+**Implemented under `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31).**  
+Artifacts: `trajectory/e4/build_rstar.py`, `trajectory/e4/data/rstar_{train,dev,eval}.json`,
+`rstar_world_manifest.json` (inclusion_pass=true).
 
 ---
 
@@ -335,9 +332,9 @@ list an owner should see before authorizing execution:
 | B9 | \(M\) rubric pre-assigned to each method | Decision |
 | B10 | Hardware class + L/C measurement protocol | Decision |
 | B11 | Precommitted consequences table unchanged | Decision |
-| B12 | Explicit owner auth string for execution | Unlock Stage 4 |
-| B13 | Budget estimate (compute $ / GPU hours) accepted | Unlock Stage 4 |
-| B14 | No mid-stream weight edits after scores | Integrity |
+| B12 | Explicit owner auth string for execution | **DONE** — `AUTHORIZE_E4_BUILDER_AND_EXECUTE` |
+| B13 | Budget estimate (compute $ / GPU hours) accepted | **DONE** — local MPS; $0 paid GPU |
+| B14 | No mid-stream weight edits after scores | **DONE** — weights from recipe_freeze |
 
 ---
 
@@ -387,26 +384,40 @@ When owner authorizes E4 **execute** (not design):
 
 ---
 
-## 9. Design-completeness checklist (this track)
+---
+
+## RESULT (2026-07-31) — KILL
+
+| Field | Value |
+|-------|-------|
+| Auth | `AUTHORIZE_E4_BUILDER_AND_EXECUTE` → `trajectory/e4/AUTH_RECORD.md` |
+| World | `trajectory/e4/data/rstar_world_manifest.json` (eval n=220; I\* pass) |
+| Probe | `trajectory/results_e4_classical_probe.json` — `in_Rstar=true` (B1,B3,B4) |
+| Utility | `trajectory/results_e4_utility.json` |
+| \(U^\star_{\mathrm{class}}\) | **0.638** (C-M2 verify-on) |
+| \(U^\star_{\mathrm{gen}}\) | **−1.623** (G-ref-nano-rstar-sft-v1 verify-on) |
+| δ | 0.05 |
+| Margin (gen−class) | **−2.261** |
+| Sensitivity flip | **false** |
+| **Verdict** | **KILL** |
+| Venue | local Apple MPS; C = preassigned relative indices (C-M1=1, G-ref=40); L = measured p50 |
+| Q/E/R-only (diag) | C-M2≈0.751 > G-ref≈0.501 — KILL not solely from C/M terms |
+| Not claimed | NanoScribe; E1 reopen; E3 human; fabric=product |
+
+**Consequence applied:** Stop generative-substrate product track for tested R★.
+`RSTAR_REVISION_BUDGET` remaining = 1. No automatic redesign. No fabric/NanoScribe expansion.
+
+## Design-completeness checklist (historical — track closed by RESULT)
 
 | Criterion | Status |
 |-----------|--------|
-| Ambition framing (IDLE ≠ halt) | **Yes** — `papers/AMBITION.md` |
-| Anti-circular I\*/X\*/B\* | **Yes** — `REGIME_P1` |
-| \(U_{R★}\) with Q,E,R,L,C,M | **Yes — DESIGN DRAFT** (§1) |
-| Information-parity matrix | **Yes** (§2.5) |
-| Consequences KILL/GRADED/SURVIVE/VOID | **Yes** (§3) |
-| Non-goals / old-task ban | **Yes** (§6) |
-| Builder checklist (no build) | **Yes** (§5) |
-| E4 measurement artifacts | **No** — EXECUTION_BLOCKED |
-| Gate 3 protocol completeness | **PASS** (design package) |
-| Stage 4 authorization | **Absent** |
-
-**E4 = `DESIGN_IN_PROGRESS` / `EXECUTION_BLOCKED`.**  
-Not “next stage running.” Not authorized to execute.
+| Ambition framing (IDLE ≠ halt) | Yes |
+| Anti-circular I\*/X\*/B\* | Yes — instantiated |
+| \(U_{R★}\) with Q,E,R,L,C,M | Frozen at auth; scored |
+| E4 measurement artifacts | **Yes** — KILL |
+| Stage 4 authorization | **Present** — executed |
 
 ## One-sentence freeze
 
-**E4 may only ask whether generative+verify adds utility inside a non-circular R★
-under this draft \(U_{R★}\); design may proceed now; execution may not; the E1
-world stays closed.**
+**E4 KILL: under frozen \(U_{R★}\) on locked non-circular R★, classical (C-M2) dominates
+G-ref+verify; E1 world stays closed; product track stops for this R★.**
