@@ -2,6 +2,8 @@
 
 ## Public status (2026-07-31)
 
+**E1 (one sentence):** Under the frozen E1 utility, classical/rules methods beat official LoRA-160M on this closed scribe task (**KILL**; M1 U≈0.999 vs official M0 U≈0.925, δ=0.05).
+
 | | |
 |---|---|
 | **Freeze tag** | `post-alpha-evidence-freeze-2026-07-31` |
@@ -12,7 +14,7 @@
 | **ρ in E1 \(U\)** | **Review load** (flagged fields / \(n\)), **not** hallucination |
 | **Fabric** | Scoped verification / regression harness — **≠** NanoScribe architecture |
 
-**Evidence map:** [`papers/EVIDENCE_MANIFEST.json`](papers/EVIDENCE_MANIFEST.json) · [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md) · [`papers/EMPIRICAL_FOUNDATION.md`](papers/EMPIRICAL_FOUNDATION.md) · soft-claim withdrawals: [`audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`](audit/discussion-to-implementation/WITHDRAWAL_SPEC.md). Distinguish **Paper α** (`paper-alpha-v1`) from the **post-α freeze bundle** (E1 KILL + E3 construct artifacts).
+**Hybrid closeout:** [`audit/discussion-to-implementation/COUNCIL_HYBRID_CLOSEOUT.md`](audit/discussion-to-implementation/COUNCIL_HYBRID_CLOSEOUT.md) · **Evidence map:** [`papers/EVIDENCE_MANIFEST.json`](papers/EVIDENCE_MANIFEST.json) · [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md) · [`papers/EMPIRICAL_FOUNDATION.md`](papers/EMPIRICAL_FOUNDATION.md) · soft-claim withdrawals: [`audit/discussion-to-implementation/WITHDRAWAL_SPEC.md`](audit/discussion-to-implementation/WITHDRAWAL_SPEC.md). Distinguish **Paper α** (`paper-alpha-v1`) from the **post-α freeze bundle** (E1 KILL + E3 construct artifacts).
 
 A 3.15M-parameter decoder-only transformer built end-to-end: data pipeline, tokenizer,
 pretraining, and supervised fine-tuning (SFT) — all trained locally on Apple Silicon (MPS),
