@@ -93,3 +93,10 @@ Adopted (not cloned): claim–artifact binding, immutable evaluator/run records,
 Rejected for now: autonomous paper writer, literature fleets, parallel discovery swarms.
 
 Implementation: `wedge_v1/coe/` · see `frontier/COE_SLICE_REPORT.md`.
+
+
+### W3 slice notes
+
+- `wedge_v1/coe/predicates.py` — conjunction → atomic predicates (incl. `open`)
+- `wedge_v1/classical/merge.py` — field merge with spans; DISPUTED on conflict
+- `ask()` gate emits `COE_INCOMPLETE_CONJUNCTION` when any conjunct unsupported

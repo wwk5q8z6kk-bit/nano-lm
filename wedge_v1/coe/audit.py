@@ -120,6 +120,26 @@ def audit_payload(payload: dict, docs: dict[str, str] | None = None) -> dict:
         )
     )
 
+    # Incomplete conjunction signal from ask()
+    if (payload.get("abstain_class") == "coe_incomplete_conjunction"
+            or "incomplete conjunction" in str(payload.get("note") or "").lower()):
+        checks.append(
+            _check(
+                "complete_conjunction",
+                False,
+                str(payload.get("note") or "incomplete"),
+            )
+        )
+    elif payload.get("predicate_support") and len(payload.get("predicate_support") or []) >= 2:
+        incomplete = any(not s.get("supported") for s in payload["predicate_support"])
+        checks.append(
+            _check(
+                "complete_conjunction",
+                not incomplete,
+                "all predicates supported" if not incomplete else "partial support",
+            )
+        )
+
     fails = [c for c in checks if c["result"] == "fail"]
     return {
         "schema": "nano-lm.wedge_v1.coe_audit.v1",
@@ -144,6 +164,7 @@ def _codes_from_checks(fails: list[dict]) -> list[str]:
         "spec_classical_only": "COE_UNREGISTERED_SOLVER",
         "citation_faithfulness_binding": "COE_POSTHOC_CITATION",
         "contradiction_not_ignored": "COE_CONTRADICTION_IGNORED",
+        "complete_conjunction": "COE_INCOMPLETE_CONJUNCTION",
     }
     return [m.get(c["check"], "COE_DERIVATION_UNKNOWN") for c in fails]
 

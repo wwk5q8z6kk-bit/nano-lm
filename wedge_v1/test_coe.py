@@ -136,7 +136,14 @@ def test_adversarial_compound_query_has_coe_binding():
             assert c.get("claim_id")
 
 
+def test_adversarial_incomplete_conjunction_mars_live():
+    r = ask("What is the cache TTL and the capital of Mars colonies in 3100?")
+    assert r["answer_status"] == "ABSTAIN"
+    assert "COE_INCOMPLETE_CONJUNCTION" in (r.get("failure_codes") or [])
+
+
 def test_adversarial_incomplete_conjunction_audit_code():
+
     """Compound claim with only partial atom support → COE_INCOMPLETE_CONJUNCTION via audit map."""
     docs = load_corpus(DEFAULT_CORPUS)
     # Simulate incomplete conjunction: status SUPPORTED but only one of two required predicates evidenced
@@ -214,6 +221,7 @@ if __name__ == "__main__":
     test_adversarial_posthoc_citation_fails_binding_check()
     test_adversarial_contradiction_ignored()
     test_adversarial_compound_query_has_coe_binding()
+    test_adversarial_incomplete_conjunction_mars_live()
     test_adversarial_incomplete_conjunction_audit_code()
     test_record_jsonl_append_and_audit()
     test_replay_digest_stable()

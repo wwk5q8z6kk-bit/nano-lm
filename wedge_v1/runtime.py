@@ -18,6 +18,12 @@ from wedge_v1.classical.bm25 import top_paragraphs
 from wedge_v1.arch.failure_codes import FailureCode
 from wedge_v1.arch.trace import AskTrace, classify_abstain_failures
 from wedge_v1.classical.verifier import verify_claim
+from wedge_v1.classical.merge import predicate_claims_for_domains
+from wedge_v1.coe.predicates import (
+    decompose,
+    evaluate_predicates,
+    incomplete_conjunction,
+)
 
 
 ROOT = Path(__file__).resolve().parent
@@ -122,7 +128,7 @@ def _relevant_claim(c: S.Claim, tokens: list[str]) -> bool:
         str(e.get("text", "")) + " " + str(e.get("line", "")) for e in (c.evidence or [])
     ).lower()
     # E-class structural probes: accepted when triggered
-    if c.task_id in {"T35", "T36", "T39", "T26", "T29", "T30"} and c.status in {
+    if c.task_id in {"T35", "T36", "T39", "T26", "T29", "T30", "MERGE"} and c.status in {
         "PRESENT", "CONFIRMED", "DISPUTED"
     }:
         return True
@@ -346,10 +352,22 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
     trace.n_docs = len(docs)
     trace.event("ingest", "loaded", n_docs=len(docs))
     tokens = _content_tokens(q)
-    composition = _is_unsupported_composition_query(q)
-    domains = _multi_fact_domains(q)
+    predicates = decompose(q)
+    domains = [p.domain for p in predicates]
+    composition = len(predicates) >= 2
     if composition:
-        trace.event("composition_gate", "multi_fact_conjunction", domains=domains)
+        trace.event(
+            "predicate_decompose",
+            "atomic_conjunction",
+            n=len(predicates),
+            domains=domains,
+        )
+        # Seed cascade with corpus-agnostic merge claims for known domains
+        merge_seed = predicate_claims_for_domains(docs, domains)
+        claims.extend(merge_seed)
+        if merge_seed:
+            solver_path.append("merge_atomic_predicates")
+            trace.add_solver("merge_atomic_predicates")
 
     q_content = " ".join(tokens) if tokens else q
     for did, text in docs.items():
@@ -482,38 +500,53 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
     trace.n_claims_presented = len(presented_sorted)
     has_lex = _corpus_has_lexical(docs, tokens)
 
-    # Composition gate: multi-domain AND without coverage of all domains → ABSTAIN
-    if composition and presented_sorted:
-        missing = [d for d in domains if not _claim_covers_domain(presented_sorted, d)]
-        if missing:
-            for code in classify_abstain_failures(
-                has_lexical_hit=has_lex,
-                bm25_review_n=len(bm25_review),
-                empty_rejected=empty_rejected,
-                oos_expected=False,
-                composition_blocked=True,
-            ):
-                trace.add_failure(code)
-            tr = trace.finalize("ABSTAIN")
-            payload = {
-                "query": q,
-                "corpus_dir": str(corpus_path),
-                "answer_status": "ABSTAIN",
-                "claims": [],
-                "unsupported": [q],
-                "solver_path": solver_path + ["composition_gate"],
-                "note": f"unsupported composition; missing domains: {missing}",
-                "n_docs": len(docs),
-                "contradictions_nearby": nearby_contradictions(docs),
-                "bm25_review": bm25_review,
-                "abstain_class": "unsupported_composition",
-                "failure_codes": tr["failure_codes"],
-                "trace": tr,
-                "latency_s": round(tr["latency_ms"] / 1000, 4),
-                "latency_ms": tr["latency_ms"],
-                "lm_invoked": False,
-            }
-            return _finalize_with_coe(payload, docs)
+    # W3/CoE: atomic predicates — compound answers require full conjunction support
+    pred_support = evaluate_predicates(predicates, docs, presented_sorted)
+    pred_payload = {
+        "predicates": [p.to_dict() for p in predicates],
+        "predicate_support": [s.to_dict() for s in pred_support],
+    }
+    if incomplete_conjunction(pred_support):
+        missing = [s.domain for s in pred_support if not s.supported]
+        trace.add_failure(FailureCode.UNSUPPORTED_COMPOSITION)
+        trace.add_failure(FailureCode.COE_INCOMPLETE_CONJUNCTION)
+        trace.event("incomplete_conjunction", "missing_predicates", missing=missing)
+        for code in classify_abstain_failures(
+            has_lexical_hit=has_lex,
+            bm25_review_n=len(bm25_review),
+            empty_rejected=empty_rejected,
+            oos_expected=False,
+            composition_blocked=True,
+        ):
+            trace.add_failure(code)
+        tr = trace.finalize("ABSTAIN")
+        # Present only claims that support *supported* predicates (optional transparency)
+        supported_domains = {s.domain for s in pred_support if s.supported}
+        partial = [
+            c for c in presented_sorted
+            if _claim_covers_domain([c], next(iter(supported_domains), ""))
+            or any(d in str(c.value).lower() + c.notes.lower() for d in supported_domains)
+        ][:6]
+        payload = {
+            "query": q,
+            "corpus_dir": str(corpus_path),
+            "answer_status": "ABSTAIN",
+            "claims": [claim_to_dict(c) for c in partial],
+            "unsupported": [q],
+            "solver_path": solver_path + ["predicate_conjunction_gate"],
+            "note": f"incomplete conjunction; unsupported predicates: {missing}",
+            "n_docs": len(docs),
+            "contradictions_nearby": nearby_contradictions(docs),
+            "bm25_review": bm25_review,
+            "abstain_class": "coe_incomplete_conjunction",
+            "failure_codes": tr["failure_codes"],
+            "trace": tr,
+            "latency_s": round(tr["latency_ms"] / 1000, 4),
+            "latency_ms": tr["latency_ms"],
+            "lm_invoked": False,
+            **pred_payload,
+        }
+        return _finalize_with_coe(payload, docs)
 
     if not presented_sorted:
         oos = not has_lex and len(bm25_review) == 0
@@ -544,6 +577,8 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             "latency_s": round(tr["latency_ms"] / 1000, 4),
             "latency_ms": tr["latency_ms"],
             "lm_invoked": False,
+            "predicates": [p.to_dict() for p in predicates],
+            "predicate_support": [s.to_dict() for s in evaluate_predicates(predicates, docs, [])],
         }
         return _finalize_with_coe(payload, docs)
 
@@ -600,6 +635,8 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         "latency_s": round(tr["latency_ms"] / 1000, 4),
         "latency_ms": tr["latency_ms"],
         "lm_invoked": False,
+        "predicates": [p.to_dict() for p in predicates],
+        "predicate_support": [s.to_dict() for s in evaluate_predicates(predicates, docs, presented_sorted)],
     }
     return _finalize_with_coe(payload, docs)
 
