@@ -92,7 +92,9 @@ def test_failure_gallery():
     from wedge_v1.failure_gallery import build_gallery, classify_outcome, gallery_to_markdown
 
     assert classify_outcome({"ok": True, "got_status": "SUPPORTED"}) == "ok_supported"
-    assert classify_outcome({"ok": False, "expect_status": ["SUPPORTED"], "got_status": "ABSTAIN", "ok_status": False}) == "over_abstain"
+    assert classify_outcome(
+        {"ok": False, "expect_status": ["SUPPORTED"], "got_status": "ABSTAIN", "ok_status": False}
+    ) == "over_abstain"
     g = build_gallery(
         dogfood={
             "n_tasks": 2,
@@ -127,8 +129,6 @@ def test_report_build():
     assert "**Status:**" in md
 
 
-
-
 def test_report_ask_markdown():
     from wedge_v1.runtime import ask, format_report_md
 
@@ -136,24 +136,6 @@ def test_report_ask_markdown():
     md = format_report_md(payload, title="ask smoke")
     assert "**Status:**" in md
     assert payload.get("answer_status") in {"SUPPORTED", "CONTRADICTED", "ABSTAIN", "NO_CORPUS"}
-
-def test_owner_dogfood_synthetic():
-    from wedge_v1.run_owner_dogfood import main as owner_main
-
-    rc = owner_main(["--demo"])
-    assert rc in (0, 1)
-
-
-
-def test_owner_dogfood_fixture():
-    """Public example corpus proves owner-dogfood path (no PHI)."""
-    from wedge_v1.run_owner_dogfood import DEFAULT_TASKS, EXAMPLE_CORPUS, run
-
-    out = run(EXAMPLE_CORPUS, DEFAULT_TASKS)
-    assert out.get("error") != "NO_CORPUS"
-    assert out["n_tasks"] >= 5
-    assert out["n_ok"] >= 4
-
 
 
 def test_measure_dogfood_u():
@@ -176,6 +158,25 @@ def test_measure_dogfood_u():
     assert u["U_status"] == "DRAFT_NOT_SCORING_FROZEN"
     assert isinstance(u["U"], float)
 
+
+def test_owner_dogfood_synthetic():
+    from wedge_v1.run_owner_dogfood import main as owner_main
+
+    rc = owner_main(["--demo"])
+    assert rc == 0
+
+
+def test_owner_dogfood_corpus_flag():
+    import tempfile
+
+    from wedge_v1.run_owner_dogfood import FIXTURE_CORPUS, main as owner_main
+
+    out = Path(tempfile.mkdtemp()) / "results_owner_dogfood.json"
+    rc = owner_main(["--corpus", str(FIXTURE_CORPUS), "--out", str(out)])
+    assert out.is_file()
+    assert rc == 0
+
+
 if __name__ == "__main__":
     test_ttl_supported()
     test_oos_abstain()
@@ -191,7 +192,7 @@ if __name__ == "__main__":
     test_failure_gallery()
     test_report_build()
     test_report_ask_markdown()
+    test_measure_dogfood_u()
     test_owner_dogfood_synthetic()
     test_owner_dogfood_corpus_flag()
-    test_measure_dogfood_u()
     print("WEDGE_V1_SMOKE_OK")

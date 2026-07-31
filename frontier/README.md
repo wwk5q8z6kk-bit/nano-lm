@@ -10,3 +10,20 @@
 | Product runtime | `../wedge_v1/` |
 
 Evidence Core (Paper α, ledger, protected tags) is **out of scope** for edits here.
+
+## Owner-corpus dogfood
+
+Prove the harness on the public fixture (no private docs needed):
+
+```bash
+PYTHONPATH=. python3 -m wedge_v1 owner-dogfood --demo
+```
+
+Run against a private folder **outside git** (never commit PHI):
+
+```bash
+PYTHONPATH=. python3 -m wedge_v1 owner-dogfood --corpus ~/path/to/private/docs
+# or: export OWNER_CORPUS=~/path/to/private/docs && python3 -m wedge_v1 owner-dogfood
+```
+
+Writes gitignored `wedge_v1/results_owner_dogfood.json` + failure gallery. Classical-only; not Layer-1 evidence.
