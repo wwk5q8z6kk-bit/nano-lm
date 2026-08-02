@@ -8,8 +8,11 @@ V, d, L, H, KV, hd, ff, S = 4096, 192, 6, 6, 2, 32, 512, 512
 BATCH, STEPS, WARM, PEAK_LR, FLOOR = 16, 4000, 100, 3e-3, 0.1
 WD, CLIP, ZL = 0.1, 1.0, 1e-4
 
-ids = np.load("shard_000.npy"); n_val = len(ids) // 50
-train_ids, val_ids = torch.tensor(ids[:-n_val].astype(np.int64)), torch.tensor(ids[-n_val:].astype(np.int64))
+try:
+    ids = np.load("shard_000.npy"); n_val = len(ids) // 50
+    train_ids, val_ids = torch.tensor(ids[:-n_val].astype(np.int64)), torch.tensor(ids[-n_val:].astype(np.int64))
+except FileNotFoundError:
+    train_ids, val_ids = torch.tensor([]), torch.tensor([])
 def batch(src, bs=BATCH):
     ix = torch.randint(len(src) - S - 1, (bs,))
     x = torch.stack([src[i:i+S] for i in ix]); y = torch.stack([src[i+1:i+S+1] for i in ix])
@@ -53,33 +56,34 @@ class GPT(nn.Module):
         for b in s.blocks: h = b(h)
         return F.linear(s.nf(h), s.emb.weight)                               # tied head
 
-m = GPT().to(dev)
-n_params = sum(p.numel() for p in m.parameters())
-print(f"params={n_params/1e6:.2f}M  device={dev}  budget: 6ND={6*n_params*BATCH*S*STEPS/1e15:.2f} PFLOPs", flush=True)
-decay = [p for p in m.parameters() if p.dim() >= 2]; nodecay = [p for p in m.parameters() if p.dim() < 2]
-opt = torch.optim.AdamW([{"params": decay, "weight_decay": WD}, {"params": nodecay, "weight_decay": 0.0}],
-                        lr=PEAK_LR, betas=(0.9, 0.95), eps=1e-8)
-def lr_at(t):  # linear warmup -> cosine to 10% floor (Recipe 2 §3)
-    if t < WARM: return PEAK_LR * t / WARM
-    p = (t - WARM) / (STEPS - WARM)
-    return PEAK_LR * (FLOOR + (1 - FLOOR) * 0.5 * (1 + math.cos(math.pi * p)))
+if __name__ == "__main__":
+    m = GPT().to(dev)
+    n_params = sum(p.numel() for p in m.parameters())
+    print(f"params={n_params/1e6:.2f}M  device={dev}  budget: 6ND={6*n_params*BATCH*S*STEPS/1e15:.2f} PFLOPs", flush=True)
+    decay = [p for p in m.parameters() if p.dim() >= 2]; nodecay = [p for p in m.parameters() if p.dim() < 2]
+    opt = torch.optim.AdamW([{"params": decay, "weight_decay": WD}, {"params": nodecay, "weight_decay": 0.0}],
+                            lr=PEAK_LR, betas=(0.9, 0.95), eps=1e-8)
+    def lr_at(t):  # linear warmup -> cosine to 10% floor (Recipe 2 §3)
+        if t < WARM: return PEAK_LR * t / WARM
+        p = (t - WARM) / (STEPS - WARM)
+        return PEAK_LR * (FLOOR + (1 - FLOOR) * 0.5 * (1 + math.cos(math.pi * p)))
 
-t0 = time.time()
-for step in range(1, STEPS + 1):
-    for g in opt.param_groups: g["lr"] = lr_at(step)
-    x, y = batch(train_ids)
-    logits = m(x)
-    loss = F.cross_entropy(logits.view(-1, V), y.view(-1))
-    zloss = ZL * (torch.logsumexp(logits.float(), -1) ** 2).mean()          # z-loss (Recipe 2 §3)
-    opt.zero_grad(set_to_none=True); (loss + zloss).backward()
-    gn = torch.nn.utils.clip_grad_norm_(m.parameters(), CLIP)               # grad-norm watch (§7)
-    opt.step()
-    if step % 200 == 0 or step == 1:
-        tps = step * BATCH * S / (time.time() - t0)
-        print(f"step {step:5d}  loss {loss.item():.3f}  gnorm {gn.item():.2f}  lr {lr_at(step):.1e}  {tps/1e3:.0f}k tok/s", flush=True)
-    if step % 1000 == 0 or step == STEPS:
-        with torch.no_grad():
-            vl = sum(F.cross_entropy(m(bx).view(-1,V), by.view(-1)).item() for bx, by in [batch(val_ids, 8) for _ in range(8)]) / 8
-        print(f"  == val loss {vl:.3f} (held-out stream) ==", flush=True)
-        torch.save(m.state_dict(), "ckpt.pt")                               # checkpoint cadence (§7)
-print(f"done in {(time.time()-t0)/60:.1f} min; trained {STEPS*BATCH*S/1e6:.1f}M tokens (~{STEPS*BATCH*S/len(train_ids):.1f} epochs)", flush=True)
+    t0 = time.time()
+    for step in range(1, STEPS + 1):
+        for g in opt.param_groups: g["lr"] = lr_at(step)
+        x, y = batch(train_ids)
+        logits = m(x)
+        loss = F.cross_entropy(logits.view(-1, V), y.view(-1))
+        zloss = ZL * (torch.logsumexp(logits.float(), -1) ** 2).mean()          # z-loss (Recipe 2 §3)
+        opt.zero_grad(set_to_none=True); (loss + zloss).backward()
+        gn = torch.nn.utils.clip_grad_norm_(m.parameters(), CLIP)               # grad-norm watch (§7)
+        opt.step()
+        if step % 200 == 0 or step == 1:
+            tps = step * BATCH * S / (time.time() - t0)
+            print(f"step {step:5d}  loss {loss.item():.3f}  gnorm {gn.item():.2f}  lr {lr_at(step):.1e}  {tps/1e3:.0f}k tok/s", flush=True)
+        if step % 1000 == 0 or step == STEPS:
+            with torch.no_grad():
+                vl = sum(F.cross_entropy(m(bx).view(-1,V), by.view(-1)).item() for bx, by in [batch(val_ids, 8) for _ in range(8)]) / 8
+            print(f"  == val loss {vl:.3f} (held-out stream) ==", flush=True)
+            torch.save(m.state_dict(), "ckpt.pt")                               # checkpoint cadence (§7)
+    print(f"done in {(time.time()-t0)/60:.1f} min; trained {STEPS*BATCH*S/1e6:.1f}M tokens (~{STEPS*BATCH*S/len(train_ids):.1f} epochs)", flush=True)
