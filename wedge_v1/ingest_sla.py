@@ -26,7 +26,7 @@ MAX_CHAR_CORRUPTION = 0.35  # raw vs clean char disagreement before normalize ex
 
 
 FIELD_PATTERNS: dict[str, re.Pattern[str]] = {
-    "ttl_seconds": re.compile(r"TTL\s+(?:as|is)\s+(\d+)\s+seconds", re.I),
+    "ttl_seconds": re.compile(r"TTL(?:\s+as|\s+is|\s*[=:]\s*|\s+of)\s+(\d+)\s+seconds", re.I),
     "metformin_dose_mg": re.compile(r"metformin\s+(\d+)\s*mg", re.I),
     "authors": re.compile(r"^Authors:\s*(.+)$", re.M | re.I),
     "year": re.compile(r"^Year:\s*(\d{4})\s*$", re.M),
@@ -37,7 +37,7 @@ def _fix_field_patterns() -> None:
     # Ensure patterns compiled correctly even if escapes got doubled in writers
     global FIELD_PATTERNS
     FIELD_PATTERNS = {
-        "ttl_seconds": re.compile("TTL" + r"\s+(?:as|is)\s+(\d+)\s+seconds", re.I),
+        "ttl_seconds": re.compile(r"TTL(?:\s+as|\s+is|\s*[=:]\s*|\s+of)\s+(\d+)\s+seconds", re.I),
         "metformin_dose_mg": re.compile(r"metformin\s+(\d+)\s*mg", re.I),
         "authors": re.compile(r"^Authors:\s*(.+)$", re.M | re.I),
         "year": re.compile(r"^Year:\s*(\d{4})\s*$", re.M),
@@ -189,6 +189,9 @@ def measure_ingest_sla(
         "sla_field_ok": sla_field_ok,
         "lm_invoked": False,
         "latency_ms": latency_ms,
+        "lexicon_sha256": hashlib.sha256(
+            (ROOT / "plugins" / "data" / "ocr_substitutions.json").read_bytes()
+        ).hexdigest()[:16],
         "note": "Normalize is ingest preprocessing; primary U remains clean-track.",
     }
 
@@ -220,7 +223,6 @@ def main(argv: list[str] | None = None) -> int:
         u_noisy_raw=u_raw,
         u_noisy_norm=u_norm,
     )
-    text = json.dumps(out, indent=2) + "\n"
     text = json.dumps(out, indent=2) + chr(10)
     if args.output:
         args.output.write_text(text, encoding="utf-8")

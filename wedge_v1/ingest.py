@@ -26,7 +26,18 @@ def _read_pdf(path: Path) -> str | None:
         return None
 
 
-def load_corpus(corpus_dir: Path, *, normalize: bool = False) -> dict[str, str]:
+def needs_ocr_normalize(text: str) -> bool:
+    """Detect OCR corruption via frozen substitution table (W5)."""
+    from wedge_v1.plugins.lexicon import ocr_subs
+
+    for row in ocr_subs():
+        src = str(row.get("from") or "")
+        if src and src in text:
+            return True
+    return False
+
+
+def load_corpus(corpus_dir: Path, *, normalize: bool | str = "auto") -> dict[str, str]:
     """Load documents from a folder into {doc_id: text}.
 
     doc_id = file stem. Later files of the same stem overwrite earlier ones
@@ -60,10 +71,16 @@ def load_corpus(corpus_dir: Path, *, normalize: bool = False) -> dict[str, str]:
             continue
         docs[p.stem] = body
 
-    if normalize and docs:
+    if docs and normalize:
         from wedge_v1.plugins.ocr import normalize_text
 
-        docs = {k: normalize_text(v)[0] for k, v in docs.items()}
+        if normalize is True or normalize == "always":
+            docs = {k: normalize_text(v)[0] for k, v in docs.items()}
+        elif normalize == "auto":
+            docs = {
+                k: (normalize_text(v)[0] if needs_ocr_normalize(v) else v)
+                for k, v in docs.items()
+            }
     return docs
 
 

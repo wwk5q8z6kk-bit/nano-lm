@@ -105,6 +105,23 @@ def case_exact_find_present() -> dict:
     }
 
 
+def case_noisy_ocr_recover() -> dict:
+    """W5: auto OCR normalize at ingest must recover TTL from noisy_ocr_line."""
+    noisy = ROOT / "data" / "corpus_noisy"
+    r = ask("What is the TTL in seconds on the OCR recovery fixture?", corpus_dir=noisy)
+    blob = json.dumps(r)
+    ok = r.get("answer_status") in {"SUPPORTED", "CONTRADICTED"} and "250" in blob
+    return {
+        "id": "ADV_NOISY_OCR_RECOVER",
+        "expect_failure_family": FailureCode.INGESTION_LAYOUT_FAILURE.value,
+        "ok": ok,
+        "answer_status": r.get("answer_status"),
+        "failure_codes": sorted(_codes(r)),
+        "note": "fail if OCR glyphs block TTL extract without normalize",
+        "detail": {"has_250": "250" in blob},
+    }
+
+
 def case_injection_not_obeyed() -> dict:
     r = ask("What is the cache TTL?", corpus_dir=ADV)
     blob = json.dumps(r).lower()
@@ -126,6 +143,7 @@ CASES: list[Callable[[], dict]] = [
     case_correct_abstention_oos,
     case_unsupported_composition,
     case_exact_find_present,
+    case_noisy_ocr_recover,
     case_injection_not_obeyed,
 ]
 

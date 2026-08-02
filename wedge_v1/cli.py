@@ -113,9 +113,25 @@ def main(argv: list[str] | None = None) -> int:
     ready.add_argument("--corpus", type=Path, default=None)
     ready.add_argument("--demo", action="store_true")
 
+    sub.add_parser("plugin-registry", help="Print W4 lexicon-driven plugin registry")
     sub.add_parser("arch-registry", help="Print failure-driven architecture registry snapshot")
     sub.add_parser("adversarial", help="Run synthetic adversarial failure packs")
+    st = sub.add_parser("status", help="Active Frontier rollup (owner-ready, evolve, lm-admit, ingest SLA)")
+    st.add_argument("--corpus", type=Path, default=None)
+    st.add_argument("--demo", action="store_true")
+    st.add_argument("-o", "--output", type=Path, default=None)
     sub.add_parser("evolve", help="Map failure galleries → architecture workstreams (W1–W6)")
+    la = sub.add_parser("lm-admit", help="W6 admission gate — is marginal LM probe indicated?")
+    la.add_argument("--gallery", type=Path, default=None)
+    la.add_argument("--corpus", type=Path, default=None)
+    la.add_argument("--min-irreducible", type=int, default=2)
+    la.add_argument("--owner-corpus", action="store_true")
+    lp = sub.add_parser("lm-probe", help="W6 marginal stub probe (no external LM by default)")
+    lp.add_argument("--gallery", type=Path, default=None)
+    lp.add_argument("--corpus", type=Path, default=None)
+    lp.add_argument("--min-irreducible", type=int, default=2)
+    lp.add_argument("--owner-corpus", action="store_true")
+    lp.add_argument("--no-persist", action="store_true")
     ca = sub.add_parser("coe-audit", help="Chain-of-Evidence audit on ask payload / record")
     ca.add_argument("query", nargs="*", help="Query to ask+audit (default synthetic TTL)")
     ca.add_argument("--corpus", type=Path, default=None)
@@ -245,6 +261,11 @@ def main(argv: list[str] | None = None) -> int:
         smoke.test_bm25_margin_fields()
         smoke.test_ask_no_empty_evidence_present()
         smoke.test_evolve_recommends_workstreams()
+        from wedge_v1 import test_w5_ingest_sla as w5_smoke
+        w5_smoke.test_auto_normalize_noisy_corpus()
+        w5_smoke.test_normalize_improves_synthetic_noisy()
+        from wedge_v1 import test_w6_lm as w6_smoke
+        w6_smoke.test_admission_not_indicated_on_clean_eclass()
         from wedge_v1 import test_owner_smoke as os_smoke
         os_smoke.test_example_corpus_present()
         os_smoke.test_owner_smoke_example_pass()
@@ -390,6 +411,45 @@ def main(argv: list[str] | None = None) -> int:
             argv_ready.append("--demo")
         return ready_main(argv_ready)
 
+
+    if args.cmd == "status":
+        from wedge_v1.frontier_status import main as status_main
+
+        argv_st = []
+        if args.corpus:
+            argv_st += ["--corpus", str(args.corpus)]
+        if args.demo:
+            argv_st.append("--demo")
+        if args.output:
+            argv_st += ["-o", str(args.output)]
+        return status_main(argv_st)
+
+    if args.cmd == "lm-admit":
+        from wedge_v1.run_w6_marginal import main as w6_main
+
+        argv2 = ["--admit-only", "--min-irreducible", str(args.min_irreducible)]
+        if args.gallery:
+            argv2 += ["--gallery", str(args.gallery)]
+        if args.corpus:
+            argv2 += ["--corpus", str(args.corpus)]
+        if args.owner_corpus:
+            argv2.append("--owner-corpus")
+        return w6_main(argv2)
+
+    if args.cmd == "lm-probe":
+        from wedge_v1.run_w6_marginal import main as w6_main
+
+        argv2 = ["--min-irreducible", str(args.min_irreducible)]
+        if args.gallery:
+            argv2 += ["--gallery", str(args.gallery)]
+        if args.corpus:
+            argv2 += ["--corpus", str(args.corpus)]
+        if args.owner_corpus:
+            argv2.append("--owner-corpus")
+        if args.no_persist:
+            argv2.append("--no-persist")
+        return w6_main(argv2)
+
     if args.cmd == "evolve":
         from wedge_v1.failure_to_architecture import main as evolve_main
 
@@ -441,6 +501,13 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write(chr(10))
         print(f"WROTE {path}", file=sys.stderr)
         return 0 if out.get("n_docs") else 2
+
+    if args.cmd == "plugin-registry":
+        from wedge_v1.plugins.cascade import plugin_registry
+
+        json.dump(plugin_registry(), sys.stdout, indent=2)
+        sys.stdout.write(chr(10))
+        return 0
 
     if args.cmd == "arch-registry":
         from wedge_v1.arch.registry import registry_snapshot

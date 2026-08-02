@@ -34,6 +34,18 @@ def test_normalize_improves_synthetic_noisy():
     }
 
 
+def test_auto_normalize_noisy_corpus():
+    noisy = Path(__file__).resolve().parent / "data" / "corpus_noisy"
+    raw = load_corpus(noisy, normalize=False)
+    auto = load_corpus(noisy, normalize="auto")
+    from wedge_v1.ingest import needs_ocr_normalize
+
+    assert needs_ocr_normalize(raw.get("noisy_ocr_line", ""))
+    assert "secands" not in auto.get("noisy_ocr_line", "")
+    fields = extract_fields(auto)
+    assert fields.get("noisy_ocr_line", {}).get("ttl_seconds") == "250"
+
+
 def test_load_corpus_normalize_flag():
     docs = load_corpus(DEFAULT_CORPUS, normalize=True)
     assert docs
@@ -53,6 +65,7 @@ def test_ingest_sla_cli_main():
 if __name__ == "__main__":
     test_ocr_lexicon_recovers_ttl_glyphs()
     test_field_extract_on_clean()
+    test_auto_normalize_noisy_corpus()
     test_normalize_improves_synthetic_noisy()
     test_load_corpus_normalize_flag()
     test_ingest_sla_cli_main()

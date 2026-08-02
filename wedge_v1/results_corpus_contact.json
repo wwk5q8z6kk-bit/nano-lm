@@ -39,7 +39,7 @@
       "kind": "compare",
       "text": "TTL",
       "answer_status": "CONTRADICTED",
-      "n_claims": 1,
+      "n_claims": 2,
       "note": []
     }
   ],
@@ -53,6 +53,6 @@
   },
   "useful_sentence": null,
   "not_useful_sentence": null,
-  "timestamp_utc": "2026-07-31T21:41:41Z",
+  "timestamp_utc": "2026-07-31T21:45:51Z",
   "note": "Product contact only. Not Layer-1. OWNER_PRIVATE requires owner folder path."
 }

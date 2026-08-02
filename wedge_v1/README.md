@@ -28,7 +28,7 @@ python -m wedge_v1 gallery --from wedge_v1/results_owner_dogfood.json
 # python -m wedge_v1 owner-dogfood --corpus "$OWNER_CORPUS" && python -m wedge_v1 review --corpus "$OWNER_CORPUS" --interactive
 ```
 
-`LM_PROBE = NOT_INDICATED` until repeated gallery evidence meets the admission rule.
+`LM_PROBE = NOT_INDICATED` on clean synthetic until owner-corpus irreducible abstain meets admission (`lm-admit`).
 
 ## Architecture lab
 
@@ -36,4 +36,6 @@ python -m wedge_v1 gallery --from wedge_v1/results_owner_dogfood.json
 python -m wedge_v1 arch-registry
 python -m wedge_v1 adversarial
 python -m wedge_v1 evolve
+python -m wedge_v1 lm-admit
+python -m wedge_v1 lm-probe
 ```

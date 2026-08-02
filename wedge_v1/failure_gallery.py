@@ -291,6 +291,43 @@ def gallery_to_markdown(gallery: dict) -> str:
     return "\n".join(lines)
 
 
+
+def load_gallery_file(path: Path) -> dict:
+    """Load dogfood JSON or gallery JSON into a normalized gallery dict."""
+    p = Path(path)
+    raw = json.loads(p.read_text(encoding="utf-8"))
+    schema = str(raw.get("schema") or "")
+    if "owner_dogfood_result" in schema:
+        return build_gallery(dogfood=raw, path=p)
+    if raw.get("rows") and raw.get("n_tasks") is not None and "fine_counts" not in raw:
+        return build_gallery(dogfood=raw, path=p)
+    if raw.get("fine_buckets") and "fine_counts" not in raw:
+        raw = {
+            **raw,
+            "fine_counts": {
+                k: len(v) if isinstance(v, list) else int(v or 0)
+                for k, v in (raw.get("fine_buckets") or {}).items()
+            },
+        }
+    return raw
+
+
+def resolve_default_gallery() -> Path:
+    """Prefer owner dogfood when present, else synthetic dogfood gallery."""
+    import os
+
+    owner_df = ROOT / "results_owner_dogfood.json"
+    if os.environ.get("WEDGE_OWNER_CORPUS") and owner_df.is_file():
+        return owner_df
+    owner_g = ROOT / "results_owner_failure_gallery.json"
+    if owner_g.is_file():
+        return owner_g
+    syn = ROOT / "results_wedge_v1_failure_gallery.json"
+    if syn.is_file():
+        return syn
+    return DEFAULT_DOGFOOD
+
+
 def write_gallery(path: Path | None = None) -> dict:
     g = build_gallery(path=path)
     out_json = ROOT / "results_wedge_v1_failure_gallery.json"

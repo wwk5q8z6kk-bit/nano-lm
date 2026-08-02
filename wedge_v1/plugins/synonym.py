@@ -22,7 +22,7 @@ def probe_ttl(docs: dict[str, str], query: str) -> Claim:
     terms = expand_terms(query)
     best = None
     best_score = 0
-    pat = re.compile(r"TTL\s+(?:as|is)\s+(\d+)\s+seconds", re.I)
+    pat = re.compile(r"TTL(?:\s+as|\s+is|\s*[=:]\s*|\s+of)\s+(\d+)\s+seconds", re.I)
     for doc_id, text in docs.items():
         low = text.lower()
         score = sum(1 for t in terms if t in low)
@@ -45,3 +45,8 @@ def probe_ttl(docs: dict[str, str], query: str) -> Claim:
             meta={"plugin": "synonym", "score": best_score},
         )
     return Claim("T35", None, None, status="ABSTAIN", notes="plugin.synonym.ttl")
+
+
+def probe_paraphrase(docs: dict[str, str], query: str) -> Claim:
+    """Lexicon-driven paraphrase locate (synonym expand + typed TTL pattern)."""
+    return probe_ttl(docs, query)

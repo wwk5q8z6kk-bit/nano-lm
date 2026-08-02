@@ -27,12 +27,12 @@
 
 | ID | Workstream | Failure modes addressed | Status |
 |----|------------|-------------------------|--------|
-| **W1** | Retrieval-margin + miss taxonomy | wrong-span, silent miss, over-abstain | **IN PROGRESS** |
-| **W2** | Evidence-atom hard gate | empty-evidence PRESENT | **IN PROGRESS** |
-| **W3** | Corpus-agnostic multi-doc merge | fixture-tied dose/TTL compare | NEXT |
-| **W4** | Pluggable E-class cascade | hardcoded doc ids / OCR literals | NEXT |
-| **W5** | Ingest SLA before intelligence | OCR/layout masquerading as need-LM | NEXT |
-| **W6** | Marginal model value (gated) | only after W1–W5 expose irreducible abstain | LATER |
+| **W1** | Retrieval-margin + miss taxonomy | wrong-span, silent miss, over-abstain | **DONE** |
+| **W2** | Evidence-atom hard gate | empty-evidence PRESENT | **DONE** |
+| **W3** | Corpus-agnostic multi-doc merge | fixture-tied dose/TTL compare | **DONE** |
+| **W4** | Pluggable E-class cascade | hardcoded doc ids / OCR literals | **DONE** |
+| **W5** | Ingest SLA before intelligence | OCR/layout masquerading as need-LM | **DONE** |
+| **W6** | Marginal model value (gated) | only after W1–W5 expose irreducible abstain | **IN PROGRESS** (admission+stub) |
 
 ---
 
@@ -114,3 +114,37 @@ Implementation: `wedge_v1/coe/` · see `frontier/COE_SLICE_REPORT.md`.
 - `wedge_v1/ingest_sla.py` — field recovery + optional U recover_gap
 - Shared OCR lexicon with W4 plugin; `load_corpus(..., normalize=True)`
 - CLI: `python -m wedge_v1 ingest-sla [--with-u]`
+
+
+### Delta — W3 epistemic merge (2026-07-31)
+
+- `classical/merge.py`: `fields_for_term`, `merge_for_term`, `epistemic_entry`
+- `compare()` emits `epistemic_merge[]` with per-doc values + both spans
+- `nearby_contradictions()` uses `merge_all` (no fixture TTL regex)
+- Reports render **Epistemic merge** section; term-unrelated fields do not false-dispute
+
+
+### Delta — W4 plugin registry (2026-07-31)
+
+- `plugins/registry.py`: lexicon-driven `should_run` + ordered probes
+- `plugins/cascade.py` delegates to registry (no hardcoded TTL keyword list)
+- Removed dead `_expand_ttl_ask` duplicate from `runtime.py`
+- CLI: `python -m wedge_v1 plugin-registry`
+
+
+### W6 slice notes
+
+- `wedge_v1/lm/admission.py` — irreducible abstain admission gate (`LM_PROBE_INDICATED` vs `NOT_INDICATED`)
+- `wedge_v1/lm/probe.py` — constructive-faithfulness stub backend; allowlist T35/T36/T39 only
+- `wedge_v1/lm/marginal.py` — classical vs +stub ΔU diagnostic; `NOT_APPLICABLE` when E-class closed
+- CLI: `python -m wedge_v1 lm-admit` · `python -m wedge_v1 lm-probe`
+- Execute auth unchanged: `AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE` (no external LM wired)
+- Clean synthetic verdict today: **NOT_INDICATED** / **NOT_APPLICABLE**
+
+
+### Delta — W5 ingest SLA (2026-07-31)
+
+- `load_corpus(normalize="auto")` applies OCR table only when corruption detected
+- Runtime default: auto-normalize at ingest (preprocessing, not intelligence)
+- `ingest-sla` pins field recovery ≥90%; recover_gap U ≤0.05 on noisy track
+- Adversarial: `ADV_NOISY_OCR_RECOVER` (7-case suite)

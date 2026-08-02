@@ -1,14 +1,14 @@
 """Ordered classical plugin cascade (W4).
 
 synonym → ocr → coref → (callers may add merge/symbolic).
-No LM. No fixture doc-id switches.
+No LM. No fixture doc-id switches. Routing via plugins/registry.py.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 
 from wedge_v1.classical.solvers import Claim
-from wedge_v1.plugins import coref, ocr, synonym
+from wedge_v1.plugins.registry import registry_snapshot, run_cascade_registered
 
 
 @dataclass
@@ -22,41 +22,9 @@ class CascadeResult:
 
 def run_cascade(docs: dict[str, str], query: str = "", *, want: set[str] | None = None) -> CascadeResult:
     """Run selected plugins. want ⊆ {synonym, ocr, coref}; default all."""
-    want = want or {"synonym", "ocr", "coref"}
-    out = CascadeResult()
-    ql = (query or "").lower()
-
-    if "synonym" in want and (
-        not query
-        or any(k in ql for k in ("expire", "ttl", "cached", "cache", "timeout", "long"))
-    ):
-        out.modules_run.append("synonym")
-        if query:
-            c = synonym.probe_ttl(docs, query)
-            if c.status != "ABSTAIN":
-                out.claims.append(c)
-        else:
-            # scan-style: expand using a canonical paraphrastic query
-            c = synonym.probe_ttl(docs, "How long before cached entries expire?")
-            if c.status != "ABSTAIN":
-                out.claims.append(c)
-
-    if "ocr" in want:
-        out.modules_run.append("ocr")
-        out.claims.extend(ocr.probe_docs(docs))
-
-    if "coref" in want and (
-        not query
-        or any(k in ql for k in ("binding", "coref", "antecedent", "pronoun"))
-        or re_search_it(ql)
-    ):
-        out.modules_run.append("coref")
-        out.claims.extend(coref.probe_docs(docs))
-
-    return out
+    claims, modules_run = run_cascade_registered(docs, query, want=want)
+    return CascadeResult(claims=claims, modules_run=modules_run)
 
 
-def re_search_it(ql: str) -> bool:
-    import re
-
-    return bool(re.search(r"it", ql))
+def plugin_registry() -> dict:
+    return registry_snapshot()

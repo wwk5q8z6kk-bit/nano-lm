@@ -1,7 +1,10 @@
 """W4 pluggable cascade pins — no fixture doc-id control flow."""
 from __future__ import annotations
 
-from wedge_v1.plugins.cascade import run_cascade
+from pathlib import Path
+
+from wedge_v1.plugins.cascade import plugin_registry, run_cascade
+from wedge_v1.plugins.registry import run_cascade_registered
 from wedge_v1.plugins import coref, synonym
 from wedge_v1.runtime import DEFAULT_CORPUS, ask, load_corpus, scan
 
@@ -51,8 +54,22 @@ def test_scan_runs_plugins():
     )
 
 
-def test_ocr_plugin_emits_evidence():
+def test_registry_skips_synonym_on_unrelated():
     docs = load_corpus(DEFAULT_CORPUS)
+    _, mods = run_cascade_registered(docs, "What is QPS?", want={"synonym", "ocr", "coref"})
+    assert "synonym" not in mods
+
+
+def test_plugin_registry_snapshot():
+    snap = plugin_registry()
+    assert snap["schema"].endswith(".v1")
+    ids = {p["id"] for p in snap["plugins"]}
+    assert ids == {"synonym", "ocr", "coref"}
+
+
+def test_ocr_plugin_emits_evidence():
+    noisy = Path(__file__).resolve().parent / "data" / "corpus_noisy"
+    docs = load_corpus(noisy, normalize=False)
     casc = run_cascade(docs, want={"ocr"})
     ocr_claims = [c for c in casc.claims if c.task_id == "T37"]
     assert ocr_claims
@@ -65,5 +82,7 @@ if __name__ == "__main__":
     test_ask_uses_plugin_cascade_not_fixture_gate()
     test_ask_coref_without_binding_coref_id()
     test_scan_runs_plugins()
+    test_registry_skips_synonym_on_unrelated()
+    test_plugin_registry_snapshot()
     test_ocr_plugin_emits_evidence()
     print("W4_PLUGINS_OK")

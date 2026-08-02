@@ -43,6 +43,12 @@ echo
 "${PY}" -m wedge_v1 evolve
 echo
 
+"${PY}" -m wedge_v1 lm-admit --gallery wedge_v1/results_owner_dogfood.json --owner-corpus
+echo
+
+"${PY}" -m wedge_v1 status --corpus "${CORPUS}"
+echo
+
 "${PY}" -m wedge_v1 measure-u wedge_v1/results_owner_dogfood.json --class OWNER_PRIVATE
 echo
 
@@ -54,6 +60,9 @@ if [[ -n "${NOT_USEFUL:-}" ]]; then
   CONTACT_ARGS+=(--not-useful "${NOT_USEFUL}")
 fi
 "${PY}" -m wedge_v1 "${CONTACT_ARGS[@]}"
+echo
+
+"${PY}" -m wedge_v1 ingest-sla --with-u
 echo
 
 "${PY}" -m wedge_v1 adversarial

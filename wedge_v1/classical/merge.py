@@ -91,7 +91,7 @@ def fields_for_term(term: str) -> tuple[FieldSpec, ...]:
         if low in hints or any(h in low for h in hints):
             matched.add(field_id)
     if not matched:
-        return DEFAULT_FIELDS
+        return ()
     return tuple(spec for spec in DEFAULT_FIELDS if spec.field_id in matched)
 
 

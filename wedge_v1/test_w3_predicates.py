@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from wedge_v1.classical.merge import merge_all
 from wedge_v1.coe.predicates import decompose, evaluate_predicates, incomplete_conjunction
-from wedge_v1.runtime import DEFAULT_CORPUS, ask, load_corpus
+from wedge_v1.runtime import DEFAULT_CORPUS, ask, compare, load_corpus
 from wedge_v1.arch.failure_codes import FailureCode
 
 
@@ -44,6 +44,17 @@ def test_merge_detects_conflicts_without_fixture_ids():
             assert c.evidence and all("doc_id" in e for e in c.evidence)
 
 
+def test_compare_epistemic_merge_both_spans():
+    r = compare("TTL", corpus_dir=DEFAULT_CORPUS)
+    assert r["answer_status"] == "CONTRADICTED"
+    em = r.get("epistemic_merge") or []
+    assert em, "expected epistemic_merge rows"
+    ttl = next(x for x in em if x.get("field_id") == "ttl_seconds")
+    assert ttl.get("disputed") is True
+    assert len(ttl.get("evidence_spans") or []) >= 2
+    assert "300" in str(ttl.get("unique_values")) and "600" in str(ttl.get("unique_values"))
+
+
 def test_evaluate_incomplete_helper():
     docs = load_corpus(DEFAULT_CORPUS)
     preds = decompose("TTL and capital of Mars")
@@ -57,5 +68,6 @@ if __name__ == "__main__":
     test_incomplete_conjunction_mars()
     test_complete_conjunction_ttl_dose()
     test_merge_detects_conflicts_without_fixture_ids()
+    test_compare_epistemic_merge_both_spans()
     test_evaluate_incomplete_helper()
     print("W3_PREDICATES_OK")

@@ -18,7 +18,8 @@ BUCKET_TO_WS: dict[str, list[str]] = {
     "RETRIEVAL_MISS": ["W1"],
     "WRONG_SPAN_RETRIEVAL": ["W1", "W2"],
     "LOW_MARGIN_RETRIEVAL": ["W1"],
-    "OVER_ABSTENTION": ["W1", "W4"],
+    "OVER_ABSTENTION": ["W1", "W4", "W6"],
+    "over_abstention": ["W1", "W4", "W6"],
     "CORRECT_ABSTENTION": [],
     "MULTI_DOC_CONTRADICTION": ["W3"],
     "NUMERIC_CONTRADICTION": ["W3"],
@@ -27,8 +28,8 @@ BUCKET_TO_WS: dict[str, list[str]] = {
 
     "low_margin_review": ["W1"],
     "ok_with_low_margin_review": ["W1"],
-    "over_abstain": ["W1", "W4"],
-    "over_abstain_or_unsupported": ["W1", "W4"],
+    "over_abstain": ["W1", "W4", "W6"],
+    "over_abstain_or_unsupported": ["W1", "W4", "W6"],
     "wrong_or_miss_needle": ["W1", "W2"],
     "wrong_or_empty_span": ["W2"],
     "silent_miss": ["W1", "W2"],
@@ -37,6 +38,7 @@ BUCKET_TO_WS: dict[str, list[str]] = {
     "contradicted": ["W3"],
     "ok_contradicted": ["W3"],
     "no_corpus": ["W5"],
+    "ingestion_layout_failure": ["W5"],
 }
 
 WS_BLURB = {
@@ -69,19 +71,38 @@ def recommend(gallery: dict[str, Any]) -> dict[str, Any]:
     next_ws = [w for w, v in ranked if v > 0]
     if not next_ws:
         next_ws = ["W3", "W4", "W5"]  # structural evolution when galleries are all-green
+    from wedge_v1.classical.eclass_probes import lm_still_needed, probe_t35, probe_t36, probe_t39
+    from wedge_v1.lm.admission import evaluate_admission
+    from wedge_v1.runtime import DEFAULT_CORPUS, load_corpus
+
+    docs = load_corpus(DEFAULT_CORPUS)
+    still = lm_still_needed([probe_t35(docs), probe_t36(docs), probe_t39(docs)])
+    adm = evaluate_admission(gallery, eclass_lm_still_needed=still)
+    if adm.get("lm_probe_indicated") and "W6" not in next_ws:
+        next_ws = (["W6"] + next_ws)[:4]
+    elif not next_ws or (next_ws[0] in {"W3", "W4", "W5"} and not any(votes[w] > 0 for w in ("W1", "W2", "W4", "W5", "W6"))):
+        next_ws = ["W6" if adm.get("lm_probe_indicated") else next_ws[0], *next_ws[1:3]]
     return {
         "schema": "nano-lm.frontier.failure_to_architecture.v1",
         "tallies": tallies,
         "workstream_votes": votes,
         "recommended_next": next_ws[:3],
         "blurbs": {w: WS_BLURB[w] for w in next_ws[:3]},
+        "lm_admission": {
+            "verdict": adm.get("verdict"),
+            "lm_probe_indicated": adm.get("lm_probe_indicated"),
+            "reasons": adm.get("reasons"),
+            "execute_auth": adm.get("execute_auth"),
+        },
         "architecture_doc": str(ARCH_DOC),
         "note": "Proving-ground recommendation — not a Layer-1 claim.",
     }
 
 
 def load_gallery(path: Path) -> dict:
-    return json.loads(path.read_text(encoding="utf-8"))
+    from wedge_v1.failure_gallery import load_gallery_file
+
+    return load_gallery_file(path)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -92,19 +113,20 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument(
         "--gallery",
         type=Path,
-        default=ROOT / "results_wedge_v1_failure_gallery.json",
+        default=None,
         help="Dogfood or live gallery JSON",
     )
     p.add_argument("--live", nargs="*", help="Optional live questions to classify via ask()")
     p.add_argument("--corpus", type=Path, default=None)
     args = p.parse_args(argv)
+    from wedge_v1.failure_gallery import resolve_default_gallery
 
     if args.live is not None and len(args.live) > 0:
         from wedge_v1.failure_gallery import run_gallery
 
         g = run_gallery(args.live, corpus_dir=args.corpus)
-    elif args.gallery.exists():
-        g = load_gallery(args.gallery)
+    elif (args.gallery or resolve_default_gallery()).exists():
+        g = load_gallery(args.gallery or resolve_default_gallery())
     else:
         # default live probes on synthetic corpus
         from wedge_v1.failure_gallery import run_gallery

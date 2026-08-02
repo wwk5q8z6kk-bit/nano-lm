@@ -77,10 +77,9 @@
         "numeric+literal_spans",
         "bm25_paragraphs",
         "bm25_low_margin_review",
-        "plugin.synonym",
-        "plugin.ocr"
+        "plugin.synonym"
       ],
-      "n_claims": 1,
+      "n_claims": 2,
       "fail_kind": null,
       "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
     },
@@ -118,8 +117,7 @@
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs",
-        "plugin.ocr"
+        "bm25_paragraphs"
       ],
       "n_claims": 0,
       "fail_kind": null,
@@ -160,10 +158,9 @@
         "numeric+literal_spans",
         "bm25_paragraphs",
         "bm25_low_margin_review",
-        "plugin.synonym",
-        "plugin.ocr"
+        "plugin.synonym"
       ],
-      "n_claims": 1,
+      "n_claims": 2,
       "fail_kind": null,
       "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
     },
@@ -179,9 +176,10 @@
       "query": "metformin",
       "note": null,
       "solver_path": [
-        "compare"
+        "compare",
+        "epistemic_merge"
       ],
-      "n_claims": 1,
+      "n_claims": 2,
       "fail_kind": null,
       "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
     },
@@ -197,9 +195,10 @@
       "query": "TTL",
       "note": null,
       "solver_path": [
-        "compare"
+        "compare",
+        "epistemic_merge"
       ],
-      "n_claims": 1,
+      "n_claims": 2,
       "fail_kind": null,
       "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
     },
@@ -237,8 +236,7 @@
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs",
-        "plugin.ocr"
+        "bm25_paragraphs"
       ],
       "n_claims": 0,
       "fail_kind": null,

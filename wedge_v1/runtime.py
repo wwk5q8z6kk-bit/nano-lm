@@ -18,7 +18,12 @@ from wedge_v1.classical.bm25 import top_paragraphs
 from wedge_v1.arch.failure_codes import FailureCode
 from wedge_v1.arch.trace import AskTrace, classify_abstain_failures
 from wedge_v1.classical.verifier import verify_claim
-from wedge_v1.classical.merge import predicate_claims_for_domains
+from wedge_v1.classical.merge import (
+    epistemic_entry,
+    merge_all,
+    merge_for_term,
+    predicate_claims_for_domains,
+)
 from wedge_v1.plugins.cascade import run_cascade
 from wedge_v1.plugins.lexicon import synonyms as _synonym_map
 from wedge_v1.coe.predicates import (
@@ -34,7 +39,7 @@ GOLD_PATH = ROOT / "data" / "gold" / "gold.json"
 
 
 
-def load_corpus(corpus_dir: Path | None = None, *, normalize: bool = False) -> dict[str, str]:
+def load_corpus(corpus_dir: Path | None = None, *, normalize: bool | str = "auto") -> dict[str, str]:
     from wedge_v1.ingest import load_corpus as _ingest
 
     path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
@@ -49,49 +54,6 @@ def _load_gold() -> dict | None:
 
 def claim_to_dict(c: S.Claim) -> dict:
     return asdict(c)
-
-
-def _expand_ttl_ask(docs: dict[str, str], query: str) -> S.Claim:
-    """T35-style expand without requiring gold (runtime path)."""
-    expand = {
-        "expire": ["ttl", "seconds", "invalidation", "timeout"],
-        "cached": ["cache", "ttl"],
-        "entries": ["cache"],
-        "long": ["ttl", "seconds"],
-    }
-    terms = set(re.findall(r"[a-z0-9]+", query.lower()))
-    for src, dsts in expand.items():
-        if src in query.lower():
-            terms.update(dsts)
-    # Typed TTL patterns — avoid fixture-tied "TTL as N seconds" only (W1/W4).
-    ttl_pats = [
-        re.compile(r"TTL\s+as\s+(\d+)\s+seconds", re.I),
-        re.compile(r"TTL\s+is\s+(\d+)\s+seconds", re.I),
-        re.compile(r"TTL\s*[=:]\s*(\d+)\s*seconds", re.I),
-        re.compile(r"TTL\s+of\s+(\d+)\s+seconds", re.I),
-    ]
-    best_id, best_score, best_m = None, 0, None
-    for did, text in docs.items():
-        low = text.lower()
-        score = sum(1 for t in terms if t in low)
-        m = None
-        for pat in ttl_pats:
-            m = pat.search(text)
-            if m:
-                score += 5
-                break
-        if score > best_score:
-            best_score, best_id, best_m = score, did, m
-    if best_m is not None and best_id is not None and best_score > 0:
-        span = S._find(docs[best_id], best_m.group(0))
-        return S.Claim(
-            "T35",
-            best_id,
-            f"{best_m.group(1)} seconds",
-            evidence=[span or {"text": best_m.group(0)}],
-            notes="query_expand_runtime",
-        )
-    return S.Claim("T35", None, None, status="ABSTAIN", notes=query)
 
 
 STOP = {
@@ -224,24 +186,26 @@ def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) 
 
 
 def nearby_contradictions(docs: dict[str, str]) -> list[dict]:
-    """Light contradiction surface for ask() banners (classical only)."""
+    """Light contradiction surface for ask() banners (W3 merge; classical only)."""
     out: list[dict] = []
-    dose = S.symbolic_dose_change(docs)
-    if dose.status in {"PRESENT", "DISPUTED", "CONFIRMED"} and isinstance(dose.value, dict):
-        if dose.value.get("from") != dose.value.get("to"):
-            out.append({
-                "kind": "numeric_dose",
-                "field": "metformin_dose_mg",
-                "values": dose.value.get("values", dose.value),
+    kind_map = {
+        "ttl_seconds": "numeric_ttl",
+        "metformin_dose_mg": "numeric_dose",
+        "sample_n": "numeric_sample_n",
+    }
+    for claim in merge_all(docs):
+        if claim.status != "DISPUTED" or not isinstance(claim.value, dict):
+            continue
+        field = claim.value.get("field") or "unknown"
+        out.append(
+            {
+                "kind": kind_map.get(field, f"numeric_{field}"),
+                "field": field,
+                "values": claim.value.get("values", {}),
                 "status": "DISPUTED",
-            })
-    ttl = {}
-    for did, body in docs.items():
-        m = re.search(r"TTL as (\d+) seconds", body)
-        if m:
-            ttl[did] = int(m.group(1))
-    if len(set(ttl.values())) > 1:
-        out.append({"kind": "numeric_ttl", "field": "ttl_seconds", "values": ttl, "status": "DISPUTED"})
+                "evidence_spans": epistemic_entry(claim).get("evidence_spans") or [],
+            }
+        )
     coll = S.flag_entity_collision(docs)
     if coll.status == "DISPUTED":
         out.append({"kind": "entity_collision", "value": coll.value, "status": "DISPUTED"})
@@ -823,7 +787,10 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
         disputed = len(set(reps.values())) >= 2
 
     all_vals = sorted({v for vs in values_by_doc.values() for v in vs}, key=float)
-    status = "CONTRADICTED" if disputed else "SUPPORTED"
+    merge_claims = merge_for_term(docs, needle)
+    epistemic_merge = [epistemic_entry(c) for c in merge_claims if c.status != "ABSTAIN"]
+    merge_disputed = any(c.status == "DISPUTED" for c in merge_claims)
+    status = "CONTRADICTED" if (disputed or merge_disputed) else "SUPPORTED"
     claim = S.Claim(
         "COMPARE",
         None,
@@ -844,20 +811,28 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
             }
             for h in hits[:24]
         ],
-        status="DISPUTED" if disputed else "PRESENT",
+        status="DISPUTED" if status == "CONTRADICTED" else "PRESENT",
         notes="cross_doc_compare",
     )
+    claims_out = [claim_to_dict(claim)]
+    for mc in merge_claims:
+        if mc.status != "ABSTAIN":
+            claims_out.append(claim_to_dict(mc))
+    solver_path = ["compare"]
+    if merge_claims:
+        solver_path.append("epistemic_merge")
 
     return {
         "term": needle,
         "corpus_dir": str(corpus_path),
         "answer_status": status,
-        "claims": [claim_to_dict(claim)],
+        "claims": claims_out,
+        "epistemic_merge": epistemic_merge,
         "hits": hits[:24],
         "values_by_doc": values_by_doc,
         "field_values": field_vals,
         "unsupported": [],
-        "solver_path": ["compare"],
+        "solver_path": solver_path,
         "n_docs": len(docs),
         "n_docs_hit": len({h["doc_id"] for h in hits}),
         "n_hits": len(hits),
@@ -937,6 +912,29 @@ def format_report_md(payload: dict, *, title: str | None = None) -> str:
     if payload.get("abstain_reason"):
         lines.append(f"**Abstain reason:** {payload['abstain_reason']}")
         lines.append("")
+    epistemic = payload.get("epistemic_merge") or []
+    if epistemic:
+        lines.append("## Epistemic merge (typed fields, both spans)")
+        for row in epistemic[:12]:
+            if not isinstance(row, dict):
+                continue
+            fid = row.get("field_id", "?")
+            st = row.get("status", "?")
+            vals = row.get("values_by_doc") or {}
+            lines.append(f"### `{fid}` — {st}")
+            for doc_id, val in sorted(vals.items()):
+                lines.append(f"- **{doc_id}:** `{val}`")
+            for sp in (row.get("evidence_spans") or [])[:8]:
+                if not isinstance(sp, dict):
+                    continue
+                loc = ""
+                if sp.get("start") is not None:
+                    loc = f" [{sp.get('start')}:{sp.get('end')}]"
+                lines.append(
+                    f"  - span `{sp.get('doc_id')}`{loc}: {sp.get('text', '')}"
+                )
+            lines.append("")
+
     contradictions = (
         payload.get("contradictions_nearby")
         or payload.get("contradictions")
