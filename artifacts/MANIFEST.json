@@ -1,8 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-07-31T14:04:33.413228+00:00",
-  "head_commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
-  "note": "Top-level post-alpha evidence manifest index",
+  "updated": "2026-08-03",
+  "note": "Index of retained experiment manifests and durable raw-data archives.",
   "children": [
     "artifacts/c1b/MANIFEST.json",
     "artifacts/c3_primary/MANIFEST.json",
@@ -10,14 +9,14 @@
     "artifacts/e1/MANIFEST.json",
     "artifacts/e3/MANIFEST.json",
     "artifacts/local_raw_archive/MANIFEST.json",
+    "artifacts/nano_h2/MANIFEST.json",
+    "artifacts/nano_h3/MANIFEST.json",
+    "artifacts/nano_h4/MANIFEST.json",
+    "artifacts/nano_h5/MANIFEST.json",
     "artifacts/ownstack_corner/MANIFEST.json",
     "artifacts/pointer_p1/MANIFEST.json",
     "artifacts/pointer_p2/MANIFEST.json",
     "artifacts/slot_diversity/MANIFEST.json",
     "artifacts/stage_t_v2/MANIFEST.json"
-  ],
-  "e1_count": 37,
-  "e3_count": 5,
-  "token_budget": "audit/discussion-to-implementation/TOKEN_BUDGET_RECONCILIATION.md",
-  "scale_claim_audit": "audit/discussion-to-implementation/SCALE_CLAIM_AUDIT.md"
+  ]
 }

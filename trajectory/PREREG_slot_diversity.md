@@ -1,7 +1,8 @@
 # PREREG — type-controlled slot-diversity sweep (the program's flagship test)
 
 **Pre-registered 2026-07-19, before any variant training data, eval instances, or runs
-exist.** Direct test of the core refined hypothesis (RESEARCH_PROGRAM.md): *abstraction
+exist.** Direct test of the refined hypothesis recorded in
+`papers/EMPIRICAL_FOUNDATION.md`: *abstraction
 (copy competence) is induced per-slot when training-value diversity makes memorization
 uncompetitive, given sufficient capacity.* Designed to survive the two adversarial
 audits' objections: type-level n, string-identity confound, field position, tokenization.

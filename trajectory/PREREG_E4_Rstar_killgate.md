@@ -1,24 +1,20 @@
 # P2 / PREREG — E4 kill gate on regime R★
 
 **Status:** `EXECUTED` / `KILL` / `WORLD_FROZEN` / `DATA_LOCKED` / `HAS_RESULT`  
-**PROGRAM_EXECUTION_STATUS:** `IDLE_AFTER_E4_KILL` · **AUTHORIZED_NONEXECUTION_WORK:** `NONE`  
-**Owner auth:** `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31) — see `trajectory/e4/AUTH_RECORD.md`.  
 **Public freeze tag:** `post-alpha-evidence-freeze-2026-07-31` (immutable evidence packaging; separate from E4).  
-**Ambition:** `papers/AMBITION.md` — R★ product track **STOP** for tested regime; revision budget 1.
+**Product scope:** `papers/WEDGE_V1.md` — R★ product track **STOP** for tested regime; revision budget 1.
 
-This document is the **design-complete** E4 package candidate. Marked
-**DESIGN DRAFT** wherever weights/thresholds remain amendable *until* a separate
-`AUTHORIZE_E4_EXECUTE` freezes them without mid-stream edits after scores.
+This document records the design-complete E4 package. The recipe, weights, and
+thresholds were frozen before scoring; changing them after seeing scores voids the decision.
 
 | Link | Role |
 |------|------|
-| `papers/AMBITION.md` | IDLE ≠ halt; ambition framing |
-| `papers/SEQUENTIAL_PIPELINE.md` | Stages / gates |
+| `papers/WEDGE_V1.md` | Product scope and current direction |
+| `papers/DECISION_GATES.md` | Decision criteria and consequences |
+| `papers/EMPIRICAL_FOUNDATION.md` | Calibrated scientific interpretation |
+| `papers/EVIDENCE_LEDGER.md` | Evidence status and provenance |
 | `trajectory/REGIME_P1_where_classical_fails.md` | R★ I\*/X\*/B\* (anti-circular) |
 | `trajectory/PREREG_E1_nonlm_baseline.md` | Old-task kill gate (**DONE — KILL**; do not reopen) |
-| `trajectory/PIPELINE_GATE_LOG.md` | Gate status |
-| `audit/discussion-to-implementation/WITHDRAWAL_SPEC.md` | Soft-claim withdrawals |
-| `audit/discussion-to-implementation/IDLE_AFTER_FREEZE.md` | Freeze posture + design carve-out |
 
 **Constants (immutable mid-stream once execution starts):**
 
@@ -43,16 +39,15 @@ E4_STATUS = EXECUTED / KILL / WORLD_FROZEN / DATA_LOCKED / HAS_RESULT
 E1 answered the analogous question for the **non-regime** (closed isomorphic task):
 classical wins. E4 asks it only inside R★.
 
-**Ambition (not a prediction):** find whether
+**Decision question (not a prediction):** determine whether
 \(U_{\mathrm{gen+verify}}(R★) > U_{\mathrm{classical}}(R★)\) under matched Q/E/R/L/C/M.
 
 ---
 
-## 1. DESIGN DRAFT — freeze \(U_{R★}\)
+## 1. Frozen \(U_{R★}\)
 
-> **DESIGN DRAFT:** weights below are the candidate freeze for a future execution
-> authorization. Changing any weight after seeing E4 scores **VOIDs** the decision.
-> Pre-execution amendments require an explicit owner note before unlock.
+> The weights below were frozen before execution. Changing any weight after seeing
+> E4 scores **VOIDS** the decision; amendments were allowed only before scoring began.
 
 ### 1.1 Decision the utility encodes
 
@@ -182,7 +177,7 @@ C-M1 and C-M2 **mandatory**. C-M3 (CRF/BIO) optional if alignments exist.
 with span provenance where applicable). Primary decision: **verify-on** \(U_{R★}\).
 
 Fabric remains a regression harness — **≠** NanoScribe; using verify-on does not
-authorize fabric v2 / product architecture.
+justify fabric v2 or a product-architecture claim.
 
 ### 2.4 Forbidden mid-flight
 
@@ -236,7 +231,7 @@ On **default** \(U_{R★}^{\mathrm{draft}}\), mean over locked instances:
 | Verdict | Rule | Program will do |
 |---------|------|-----------------|
 | **KILL** | \(U^{\star}_{\mathrm{class}} \ge U^{\star}_{\mathrm{gen}} - \delta_{R★}\) | **Stop** generative-substrate product track for tested R★. At most **one** preregistered R★ revision then re-gate; else idle. **No** automatic redesign loop. **No** NanoScribe / fabric expansion. |
-| **SURVIVE** | \(U^{\star}_{\mathrm{gen}} > U^{\star}_{\mathrm{class}} + \delta_{R★}\) **and** no sensitivity flip | Value **only in frozen R★**. Does **not** authorize NanoScribe/full product; separate feasibility gate required. Still ≠ “E1 unkill.” |
+| **SURVIVE** | \(U^{\star}_{\mathrm{gen}} > U^{\star}_{\mathrm{class}} + \delta_{R★}\) **and** no sensitivity flip | Value **only in frozen R★**. Does **not** justify NanoScribe/full product; separate feasibility gate required. Still ≠ “E1 unkill.” |
 | **GRADED** | Margin inside \(\delta\), or sensitivity flips, or gen wins only on pre-registered subsets | Only exact winning locked slice(s); no platform/NanoScribe inference; no fabric v2. |
 | **VOID** | Protocol/data/builder violation, leakage, failed probe, information-parity breach, or undecidable \(U\) | Correct the failed instrument. **Not** evidence for/against generative value. Do **not** interpret as SURVIVE. |
 
@@ -252,16 +247,16 @@ RSTAR_REVISION_BUDGET = 1   # at most one preregistered R★ redesign after KILL
 UNLIMITED_REDESIGN = FORBIDDEN  # prevents substrate-rescue via repeated regime shopping
 ```
 
-A revision, if used, must be written **before** re-running Stage 4, with new inclusion/exclusion
-hashes and a fresh owner `AUTHORIZE_E4_EXECUTE`. After the budget is spent, default remains
-`IDLE_AFTER_FREEZE` on the product track.
+A revision, if used, must be preregistered **before** re-running Stage 4, with new
+inclusion/exclusion hashes and a new frozen recipe. After the budget is spent, the
+product track remains stopped.
 
 **Secondary (does not override):** per-axis / per-field breakdown; ecology tag
 `general | generative-helps-binding | generative-helps-paraphrase | inconclusive`.
 
 ---
 
-## 4. R★ data definition (design only — no world freeze)
+## 4. Frozen R★ data definition
 
 ### 4.1 Schema
 
@@ -285,7 +280,7 @@ See `REGIME_P1_where_classical_fails.md` (I1–I5, X1–X6). Copied constraints:
 4. ≥20% docs have ≥2 competing values for ≥1 open slot.  
 5. ≥30% docs lack canonical C-M1 cue strings.
 
-### 4.4 Scale (minimum for a future E4)
+### 4.4 Scale (minimum for E4)
 
 | Item | Minimum |
 |------|---------|
@@ -304,20 +299,19 @@ If false → **STOP** (rebuild or end product path).
 - Not m0–m4 / v1–v2 isomorphic dialogues under old M1  
 - Not production EHR dumps without schema  
 - Not multilingual / OCR-as-primary in v1  
-- Not a dataset generated under design-only auth as if it were the frozen world  
+- Not a provisional dataset represented as the frozen world
 
 ### 4.7 Builder status
 
-**Implemented under `AUTHORIZE_E4_BUILDER_AND_EXECUTE` (2026-07-31).**  
+**Implemented and frozen before scoring on 2026-07-31.**
 Artifacts: `trajectory/e4/build_rstar.py`, `trajectory/e4/data/rstar_{train,dev,eval}.json`,
 `rstar_world_manifest.json` (inclusion_pass=true).
 
 ---
 
-## 5. Builder / data requirements checklist (for later execution auth)
+## 5. Builder / data requirements checklist at execution freeze
 
-Do **not** check these off by running work under design-only. This is the gate
-list an owner should see before authorizing execution:
+These requirements were checked against the frozen artifacts before scoring:
 
 | # | Requirement | Needed before |
 |---|-------------|---------------|
@@ -332,7 +326,7 @@ list an owner should see before authorizing execution:
 | B9 | \(M\) rubric pre-assigned to each method | Decision |
 | B10 | Hardware class + L/C measurement protocol | Decision |
 | B11 | Precommitted consequences table unchanged | Decision |
-| B12 | Explicit owner auth string for execution | **DONE** — `AUTHORIZE_E4_BUILDER_AND_EXECUTE` |
+| B12 | Execution recipe and data freeze recorded | **DONE** — `trajectory/e4/recipe_freeze.json` |
 | B13 | Budget estimate (compute $ / GPU hours) accepted | **DONE** — local MPS; $0 paid GPU |
 | B14 | No mid-stream weight edits after scores | **DONE** — weights from recipe_freeze |
 
@@ -344,13 +338,13 @@ list an owner should see before authorizing execution:
 |----------|-----|
 | Reopen E1 substrate thesis | KILL stands under `OLD_TASK_U` |
 | Old-task runs / isomorphism bakeoffs | Dead product world |
-| “Build NanoScribe anyway” | Ambition is regime utility, not architecture revival |
+| “Build NanoScribe anyway” | The decision is about regime utility, not architecture revival |
 | Fabric = product / NanoScribe | Fabric is harness (`W-FABRIC-NS`) |
 | E3 as human/clinician eval | Agent-rubric only; IAA open (`W-E3-HUMAN`) |
 | Universal “LMs can’t extract” | `W-KILL-UNIVERSAL` |
-| Claiming design track = execution queued | `EXECUTION_BLOCKED` |
+| Treating draft design as executed evidence | Only frozen result artifacts establish execution |
 | E2 LoRA mechanism work | GATED/STOP |
-| Paid compute / GPU under design-only | Ban |
+| Unrecorded paid compute / GPU use | Ban |
 
 ---
 
@@ -365,21 +359,21 @@ list an owner should see before authorizing execution:
 6. **Single G-ref may be weak/strong.** Pre-commit recipes; no post-hoc hunting.  
 7. **Verifier \(R\) may be harder on R★.** Report both arms; result not a bug.  
 8. **Does not unkill E1.** Win on R★ → Stage 5 wedge **only in R★**.  
-9. **E2/fabric remain gated** until Gate 4 ∈ {SURVIVE, GRADED} *and* separate auth.  
+9. **E2/fabric remain gated** unless Gate 4 ∈ {SURVIVE, GRADED} *and* a separate preregistered feasibility assessment supports them.
 10. **No bit-level FT determinism claimed.** Pins reduce wrong-artifact risk only.
 
 ---
 
-## 8. Execution checklist (Stage 4 — blocked now)
+## 8. Historical execution checklist (Stage 4 — completed)
 
-When owner authorizes E4 **execute** (not design):
+The completed execution followed this sequence:
 
 1. Implement / lock R★ builder → content-addressed eval JSON  
 2. Freeze C-M1 rule file + C-M2 lexicon hashes + \(M\) assignments  
 3. Run classical probe → confirm `in_Rstar`  
 4. Train/score frozen baselines only  
 5. Write `trajectory/results_e4_utility.json` + per-method items  
-6. Apply §3 decision rule; update `PIPELINE_GATE_LOG.md` Gate 4  
+6. Apply §3 decision rule; record the verdict in the utility result
 7. **Stop** or branch to Stage 5 per verdict — no fabric expansion  
 
 ---
@@ -390,7 +384,7 @@ When owner authorizes E4 **execute** (not design):
 
 | Field | Value |
 |-------|-------|
-| Auth | `AUTHORIZE_E4_BUILDER_AND_EXECUTE` → `trajectory/e4/AUTH_RECORD.md` |
+| Recipe freeze | `trajectory/e4/recipe_freeze.json` — frozen before scoring |
 | World | `trajectory/e4/data/rstar_world_manifest.json` (eval n=220; I\* pass) |
 | Probe | `trajectory/results_e4_classical_probe.json` — `in_Rstar=true` (B1,B3,B4) |
 | Utility | `trajectory/results_e4_utility.json` |
@@ -411,11 +405,11 @@ When owner authorizes E4 **execute** (not design):
 
 | Criterion | Status |
 |-----------|--------|
-| Ambition framing (IDLE ≠ halt) | Yes |
+| Product-scope framing | Yes |
 | Anti-circular I\*/X\*/B\* | Yes — instantiated |
-| \(U_{R★}\) with Q,E,R,L,C,M | Frozen at auth; scored |
+| \(U_{R★}\) with Q,E,R,L,C,M | Frozen before scoring; scored |
 | E4 measurement artifacts | **Yes** — KILL |
-| Stage 4 authorization | **Present** — executed |
+| Stage 4 execution | **Complete** |
 
 ## One-sentence freeze
 

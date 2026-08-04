@@ -1,6 +1,5 @@
 {
   "schema": "nano-lm.wedge_v1.phase3.v1",
-  "auth": "AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE",
   "track": "clean",
   "classical_U": 0.891236347826087,
   "hybrid_U": 0.8702349887640449,

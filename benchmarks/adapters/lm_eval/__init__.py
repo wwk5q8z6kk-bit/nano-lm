@@ -1,1 +1,1 @@
-"""Program 0 lm-eval adapter package (infrastructure only)."""
+"""lm-eval adapter for the held-value regression sentinel."""

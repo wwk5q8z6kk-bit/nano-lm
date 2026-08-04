@@ -5,7 +5,8 @@
 
 ## Two mechanism questions — one is gated, one is not
 
-The program (RESEARCH_PROGRAM.md, S4) gates Stage M on P2 deconfounding. That gate applies
+The empirical foundation (`papers/EMPIRICAL_FOUNDATION.md`) defers Stage M until P2
+deconfounding. That constraint applies
 to the **scale-collapse** question — *why does the gap collapse nano→Pythia?* — because
 a circuit found on the confounded nano→Pythia contrast is entangled with the stack change
 (a smallness / tokenizer / full-FT artifact could masquerade as the cause). That stays

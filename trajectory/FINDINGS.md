@@ -1,8 +1,8 @@
 # Stage T — Findings (calibrated write-up)
 
 > **SRC baseline note (2026-07-30):** this file remains the calibrated Stage T
-> write-up. Program-level interpretation lock and paper split live in
-> `papers/RESEARCH_PROGRAM.md` / `papers/EMPIRICAL_FOUNDATION.md`. Subsequent
+> write-up. Program-level interpretation and evidence status live in
+> `papers/EMPIRICAL_FOUNDATION.md` / `papers/EVIDENCE_LEDGER.md`. Subsequent
 > within-stack / diversity / corner / Phase C results are summarized there and in
 > the Paper-1 measurement companion (`papers/paper2_draft.md`, reclassified).
 
@@ -91,7 +91,7 @@ distribution shift is not settled by whether a model passes an average-case gate
 Report 1B as the interval [0,5] and proceed to write-up. Additional 1B training
 seeds would refine the point estimate but every plausible outcome still supports
 "substantially reduced from the ~18-pt anchor," so seeds are a precision follow-up,
-not a prerequisite for the main claim (owner call, recorded).
+not a prerequisite for the main claim under the recorded decision criteria.
 
 ## Reproducibility
 
@@ -130,8 +130,8 @@ synonym ontology. Prereg: `PREREG_E3_faithfulness_construct.md`.
 ### E2 — LoRA universes: **GATED / STOP** (no RESULT)
 
 Design frozen in `PREREG_E2_lora_universes.md`. Implementation present
-(`trajectory/e2/run_u3_earlystop.py`). Partial RunPod residue exists under
-`trajectory/runpod_partial/e2_*` (empty monitor log). **No**
-`results_e2_*.json`. No complete external U3 artifact found in local search.
-Active RunPod pods: none (checked 2026-07-31). Stopped after E1 KILL: mechanism
-ID does not restore the killed product frame without written re-scope.
+(`trajectory/e2/run_u3_earlystop.py`). **No** `results_e2_*.json` or complete
+external U3 artifact exists. The partial setup residue was removed because it
+contained no measurement. Active RunPod pods: none (checked 2026-07-31).
+Stopped after E1 KILL: mechanism identification would not restore the killed
+product frame without a new decision-relevant question.

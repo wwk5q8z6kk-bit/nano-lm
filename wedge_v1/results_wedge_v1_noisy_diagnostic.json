@@ -1,11 +1,9 @@
 {
   "schema": "nano-lm.wedge_v1.noisy_diagnostic.v1",
-  "auth": "AUTHORIZE_WEDGE_V1_NOISY_TRACK",
   "primary_track": "clean",
   "primary_U_clean": 0.891248347826087,
   "noisy_manifest": {
     "track": "noisy",
-    "auth": "AUTHORIZE_WEDGE_V1_NOISY_TRACK",
     "seed": 20260731,
     "n_docs": 8,
     "docs": [

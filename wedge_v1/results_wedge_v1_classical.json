@@ -1,6 +1,5 @@
 {
   "schema": "nano-lm.wedge_v1.classical_baseline.v1",
-  "auth": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
   "track": "clean",
   "seed": 20260731,
   "manifest": {
@@ -116,7 +115,6 @@
     ],
     "gold_sha256": "2a09fc220c174769d77396251eb8cacbf5d113182188c1033d9b29146432f6f5",
     "inclusion": "wedge_v1/inclusion_predicates.md",
-    "auth": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
     "track": "clean",
     "probe_flags": {
       "B1": true,
@@ -2428,18 +2426,6 @@
     "B3": true,
     "B4": true
   },
-  "auth_gate": {
-    "auth_id": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
-    "scope_bits": [
-      "execute_eval"
-    ],
-    "mode": "integrity_remediation",
-    "queue": {
-      "queued_active": false,
-      "queued_done": false,
-      "idle": true
-    }
-  },
   "claim_level": {
     "n_claims": 184,
     "by_status": {
@@ -2453,13 +2439,13 @@
     "n_abstain": 33,
     "n_disputed": 3,
     "n_missing": 48,
-    "note": "Instrument layer; official U remains DRAFT until AUTHORIZE_WEDGE_V1_U_FREEZE"
+    "note": "Instrument-layer diagnostic; U is not frozen for scoring."
   },
   "corpus_class": "SYNTHETIC_MINI",
   "U_status": "DRAFT_NOT_SCORING_FROZEN",
   "notes": [
     "Classical-only; no LM solvers.",
     "U uses draft WEDGE_V1 weights; L is wall-clock for this harness run.",
-    "Not a Layer-1 Evidence Ledger claim until owner promotes."
+    "Product diagnostic; not a Layer-1 Evidence Ledger claim."
   ]
 }

@@ -48,7 +48,7 @@
   },
   "n_item_logs": 220,
   "prereg": "trajectory/PREREG_E4_Rstar_killgate.md",
-  "auth": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
+  "execution_anchor": "verdict/E4-kill@6af178d",
   "hardware": {
     "class": "apple-mps",
     "gref_venue": "mps",

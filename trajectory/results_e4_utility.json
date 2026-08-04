@@ -1,8 +1,7 @@
 {
   "schema": "nano-lm.e4.utility.v1",
   "prereg": "trajectory/PREREG_E4_Rstar_killgate.md",
-  "auth": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
-  "auth_record": "trajectory/e4/AUTH_RECORD.md",
+  "execution_anchor": "verdict/E4-kill@6af178d",
   "recipe_freeze": "trajectory/e4/recipe_freeze.json",
   "world_manifest": "trajectory/e4/data/rstar_world_manifest.json",
   "classical_probe": "trajectory/results_e4_classical_probe.json",
@@ -19,7 +18,7 @@
     },
     "primary_arm": "verify-on",
     "construct_primary": "exact",
-    "frozen_at_auth": true,
+    "frozen_before_scoring": true,
     "mid_stream_edits": "FORBIDDEN_VOID"
   },
   "g_ref_recipe": {

@@ -1,4 +1,4 @@
-"""Run Wedge v1 classical baseline under AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE."""
+"""Run the Wedge v1 classical baseline."""
 from __future__ import annotations
 
 import json
@@ -8,12 +8,10 @@ from pathlib import Path
 
 from wedge_v1.build_corpus import build
 from wedge_v1.classical import solvers as S
-from wedge_v1.auth_gate import require_auth
 from wedge_v1.eval.claim_report import claim_level_report
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "results_wedge_v1_classical.json"
-AUTH = "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE"
 
 
 def claim_ok_evidence(c: S.Claim) -> bool:
@@ -141,12 +139,6 @@ def score(claims: list[S.Claim], gold: dict, docs: dict) -> dict:
 
 
 def main():
-    gate = require_auth(
-        auth_id=AUTH,
-        auth_record=ROOT / "AUTH_RECORD.md",
-        need_bits={"execute_eval"},
-        mode="integrity_remediation",
-    )
     t0 = time.perf_counter()
     manifest = build()
     gold = json.loads((ROOT / "data" / "gold" / "gold.json").read_text(encoding="utf-8"))
@@ -213,7 +205,6 @@ def main():
 
     out = {
         "schema": "nano-lm.wedge_v1.classical_baseline.v1",
-        "auth": AUTH,
         "track": "clean",
         "seed": gold["seed"],
         "manifest": manifest,
@@ -222,18 +213,16 @@ def main():
         "summary": summary,
         "claims": [asdict(c) for c in claims],
         "probe_flags": gold["probe_flags"],
-        "auth_gate": gate,
         "claim_level": claim_level_report(claims),
         "corpus_class": "SYNTHETIC_MINI",
         "U_status": "DRAFT_NOT_SCORING_FROZEN",
         "notes": [
             "Classical-only; no LM solvers.",
             "U uses draft WEDGE_V1 weights; L is wall-clock for this harness run.",
-            "Not a Layer-1 Evidence Ledger claim until owner promotes.",
+            "Wedge engineering diagnostic; not a Layer-1 Evidence Ledger claim.",
         ],
     }
     OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
-    # also repo-root convenience copy under trajectory? keep in wedge_v1/
     print(json.dumps({"ok": True, "U": summary["U"], "Q": summary["Q"], "n_ok": summary["n_ok"], "n_checks": summary["n_checks"], "out": str(OUT)}, indent=2))
 
 

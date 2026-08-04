@@ -1,4 +1,4 @@
-"""Noisy-track diagnostic for Wedge v1 (AUTH: AUTHORIZE_WEDGE_V1_NOISY_TRACK).
+"""Noisy-track diagnostic for Wedge v1.
 
 Primary U remains clean-track. This scores:
   A) raw noisy docs (ingestion failure visible)
@@ -20,8 +20,6 @@ from wedge_v1.run_classical_baseline import score as score_classical
 from wedge_v1.run_phase3_eclass import collect_claims, eclass_gate
 
 ROOT = Path(__file__).resolve().parent
-REPO = ROOT.parent
-AUTH = "AUTHORIZE_WEDGE_V1_NOISY_TRACK"
 OUT = ROOT / "results_wedge_v1_noisy_diagnostic.json"
 SEED = 20260731
 
@@ -91,7 +89,6 @@ def build_noisy() -> dict:
         )
     man = {
         "track": "noisy",
-        "auth": AUTH,
         "seed": SEED,
         "n_docs": len(meta),
         "docs": meta,
@@ -159,7 +156,6 @@ def main() -> None:
 
     out = {
         "schema": "nano-lm.wedge_v1.noisy_diagnostic.v1",
-        "auth": AUTH,
         "primary_track": "clean",
         "primary_U_clean": U_clean,
         "noisy_manifest": man,
@@ -175,9 +171,6 @@ def main() -> None:
         ],
     }
     OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
-    (REPO / "trajectory" / "results_wedge_v1_noisy_diagnostic.json").write_text(
-        json.dumps(out, indent=2), encoding="utf-8"
-    )
     print(
         json.dumps(
             {

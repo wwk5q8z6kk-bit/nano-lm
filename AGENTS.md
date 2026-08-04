@@ -1,31 +1,25 @@
-## Learned User Preferences
+# Repository guidance
 
-- Prefer adversarial research-council mode (“what have we forgotten,” competing explanatory universes) over passive review that accepts the project’s framing.
-- Enforce strict claim discipline: no mechanism claims beyond measured evidence; morphology stays descriptive until preregistered causal analysis; pointer results mean only that this implementation does not close the OOD gap; verification claims stay scoped to the verifier relation and distribution.
-- Keep scientific, systems, and product claims separated; Layer-1 evidence stays conservative while the engineering roadmap and research agenda stay expansive—negative evidence kills hypotheses, not long-term vision or curiosity. Treat the program’s primary risk as uncertainty about research/product framing, not missing experiments.
-- Prefer the opening question “what useful capability can a small system deliver better than larger, more expensive, less controllable systems?” over “how do we make a tiny LM score better?”; treat nano-lm as a system (compact models + tools + retrieval + memory + verification), not a model-score chase; use the smallest sufficient solver and verify consequential outputs.
-- Do not expand fabric/v2, NanoScribe, or mechanism narratives until validation gates update the posterior; a fabric vertical slice is not NanoScribe; packaging/documentation overclaim blocks architecture expansion.
-- Prefer RunPod/CUDA with frozen recipes for official LoRA/M0 E1 arms over local MPS when matching the official harness.
-- After decisive experimental results, treat them as load-bearing and freeze next measurement actions; idle or empty experiment queue ≠ program halted—the evidence freeze is the foundation, not the ambition ceiling.
-- Never run an experiment that cannot change the roadmap; prefer a sequential decision pipeline (premise → regime → utility → kill gate) over “do everything.”
-- When the owner says be thorough or not to skip stages, complete construct/first-principles Stage work before advancing; do not skip Gate 1 residuals by default; reconcile → audit → archive before tagging an immutable evidence freeze.
-- Never label an agent-applied E3 rubric audit as human or clinician evaluation; dual-clinician IAA remains open until completed.
-- Do not overclaim integrity pins: base checkpoint SHA-256 fail-closed is the real lock; recipe fingerprints are logged, not fail-closed to a fixed digest; not full CUDA bit-identical fine-tuning.
-- Benchmark result ≠ evidence-ledger claim ≠ product authorization; keep nano-lm as one project—not an institutional multi-lab org; do not optimize governance/process docs over the research/product objective; Program 1 census stays unauthorized.
+## Working style
 
-## Learned Workspace Facts
+- Work from the project goal, current evidence, and active plan. Do not add process for its own sake.
+- Keep scientific results, engineering ideas, and AI capability claims separate.
+- State only what the evidence supports. Preserve limitations and negative results.
+- Prefer the smallest sufficient solver and verify consequential outputs.
+- Run experiments only when their result can change the roadmap.
+- Research exists to improve Nano. Each study must inform a concrete next step in data, training, architecture, grounding, verification, or abstention; it is not a separate destination.
+- Never describe an agent-applied rubric as human or clinician evaluation.
+- Preserve existing evidence tags and user-owned working-tree changes.
 
-- nano-lm is one first-principles research + product vehicle for small, efficient, verification-gated AI systems—not a laboratory franchise, benchmark company, or NanoScribe; strategic center is `papers/STRATEGIC_RESET.md`.
-- The SRC/council audit is the locked program baseline: the empirical core is stronger than packaging; packaging must not outrun evidence (see `CANONICAL_STATUS_TABLE.md`).
-- Official E1 kill gate FIRED (KILL H-substrate): under frozen \(U = P - 0.5M - 0.3\rho - 0.02L - 0.05C\) (\(\delta=0.05\)), max official M0 U ≈ 0.925 (Pythia-160M LoRA) lost to M1 ≈ 0.999; generative LM is not the preferred substrate for this closed scribe task; generation is not the default solver.
-- Old-task runs under `OLD_TASK_U` are forbidden; Paper α is frozen/public (`paper-alpha-v1`); no reopen of the old substrate claim.
-- Program: `PROGRAM_EXECUTION_STATUS: IDLE_PARKED`; master synced; reconciled freeze tag `post-alpha-reconciled-evidence-freeze-2026-07-31` @67bf87b1f968 (E4-free); premature freeze tag unmoved; LM not indicated; next needs typed owner force (`OWNER_SPEECH_ACTS.md`).
-- Paper 1/α is the empirical foundation (held-out copying failures, field localization, diversity, scaling/adaptation, reproducible instrument) with no architecture thesis; Paper 2/β is the verification/systems track (soundness, abstention economics, adversarial verifier evaluation) with no transformer mechanism dependency.
-- Active product path: Nano Runtime via Wedge v1 — local research document intelligence (private corpus → structured answers with evidence spans + abstention); classical-first; generation only if it beats classical under matched utility on this workflow (`papers/WEDGE_V1.md`).
-- E1/E4 closed the tested generative-substrate theses; surviving product question is whether a verification-gated small system beats larger model-only approaches on useful tasks—not “build NanoScribe anyway”; classical baselines remain mandatory for extraction-like tasks.
-- Fabric is a verification vertical slice / regression harness (typed claims, literal/rules verifiers, abstention)—not NanoScribe architecture; ledger files are per-run rewritten JSONL, not an append-only transactional DB.
-- Post-α E1/E3 primary artifacts were local-untracked vs `paper-alpha-v1`; packaging map is `papers/EVIDENCE_MANIFEST.json`. ρ in E1 \(U\) is review load, not hallucination. E3 Stage-1 is an agent-applied rubric audit (EXACT_SURVIVES); raw `*.jsonl` is gitignored with local archive manifests under `artifacts/`.
-- In-repo governance spine: `LABORATORY_CONSTITUTION.md` (how research is run here); `EVIDENCE_LEDGER.md`; portfolio/roadmap (non-evidential); `EXECUTION_QUEUE.md`; `DECISION_GATES.md`. No Laboratory Charter / multi-lab org chart.
-- Program 0 benchmark infra is `DONE` (one pinned reproducible sentinel path + Gate 0); serves Nano Runtime evaluation; Program 1 deferred; smoke ≠ leadership or ledger claims; do not reopen Program 0 as the project identity.
-- Risk mitigation map: `papers/FIRST_PRINCIPLES_RISK_MITIGATION.md` (§9 atomization; `LAB.B*` vs `WED.B*` namespaces); live scorecard: `papers/MITIGATION_STATUS_SCORECARD.md` (B1–B18 + B23 speech-act atoms→M0/M1/M2); E1 decision vs cost split: `trajectory/E1_DECISION_VS_COST_SPLIT.md` + `trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md`; anomaly expand: `papers/ANOMALY_LOG.md`. Auth lint: `scripts/lint_claim_auth.py` (also bans clinical/zero-halluc product phrases). Consult-gateway = intended verification path when CLI credits fail (B15); not an execute license.
-- Owner chat is typed by speech act (`papers/OWNER_SPEECH_ACTS.md`; `scripts/classify_owner_speech_act.py`): `continue` = `CONTINUE_SESSION` (ungated M0 only) — never mint commit/tag/push/execute from it; high-consequence acts need exact `authorize commit|push|tag` (plus tip policy for tags).
+## Current project state
+
+- The strategic center is `papers/STRATEGIC_RESET.md`.
+- Paper alpha is the empirical foundation and remains frozen at `paper-alpha-v1`.
+- E1 found that classical/rules methods beat the tested generative references on the closed scribe task under the frozen utility. This is scoped evidence, not a universal architecture claim.
+- The active build target is Nano itself: a small, trainable, local-first, verification-gated AI scribe core that turns a supplied conversation transcript into an evidence-bound structured representation and abstains when support is insufficient.
+- This repository builds and evaluates the AI, not an end-user product, app, service, UI, or commercial workflow. Audio capture, transcription, deployment, and distribution are outside the active scope.
+- Wedge v1 is supporting document-evidence and validation infrastructure. Its purpose is to reveal mechanisms and measurements that can improve Nano, not to replace Nano or become a separate AI target.
+- Classical baselines are mandatory for extraction-like tasks as performance floors, diagnostics, and possible verification scaffolds. They do not replace the goal of improving Nano's trained intelligence. Generation must earn its place under matched utility.
+- Fabric is a closed-world verification regression harness, not the complete Nano AI or a general cognitive architecture.
+- E3 Stage 1 was an agent-applied rubric audit; independent human and clinician validation remain open.
+- Core project documents are `papers/STRATEGIC_RESET.md`, `papers/WEDGE_V1.md`, `papers/EVIDENCE_LEDGER.md`, `papers/EXECUTION_QUEUE.md`, and `papers/DECISION_GATES.md`.

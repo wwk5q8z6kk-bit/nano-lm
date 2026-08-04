@@ -1,4 +1,4 @@
-"""Claim-level reporting layer (LAB.B26) — instrument health ≠ decision utility."""
+"""Claim-level reporting: instrument health is not decision utility."""
 from __future__ import annotations
 
 from collections import Counter
@@ -20,5 +20,5 @@ def claim_level_report(claims: list[Any]) -> dict:
         "n_abstain": statuses.get("ABSTAIN", 0),
         "n_disputed": statuses.get("DISPUTED", 0),
         "n_missing": statuses.get("MISSING", 0),
-        "note": "Instrument layer; official U remains DRAFT until AUTHORIZE_WEDGE_V1_U_FREEZE",
+        "note": "Instrument layer; this report is not an Evidence Ledger claim.",
     }

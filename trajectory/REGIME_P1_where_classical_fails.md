@@ -2,12 +2,11 @@
 
 # P1 annex — Regime R★ (design-hardened)
 
-*Product-path boundary. Decision lock: `trajectory/DECISION_P1_program_lock.md`.
-Sequential plan: `papers/SEQUENTIAL_PIPELINE.md`. Ambition frame: `papers/AMBITION.md`.*
+*Product-path boundary. Decision criteria: `papers/DECISION_GATES.md`.
+Product scope: `papers/WEDGE_V1.md`.*
 
-*Not part of Paper α. Gate 2 PASS recorded 2026-07-31 in `PIPELINE_GATE_LOG.md`.
-`AUTHORIZE_E4_DESIGN_ONLY` (2026-07-31) was superseded same day by
-`AUTHORIZE_E4_BUILDER_AND_EXECUTE` → Gate 4 **KILL**. World/data frozen; RESULT archived.*
+*Not part of Paper α. Gate 2 PASS and the subsequent Gate 4 **KILL** are recorded
+in `papers/EVIDENCE_LEDGER.md`. The world and data were frozen before scoring.*
 
 ## Status
 
@@ -16,7 +15,7 @@ Sequential plan: `papers/SEQUENTIAL_PIPELINE.md`. Ambition frame: `papers/AMBITI
 | Artifact class | Design-hardened regime definition |
 | Gate 2 | **PASS** — R★ non-empty and testable (protocol) |
 | E4 | `EXECUTED` / **KILL** |
-| Next authorized | None (IDLE_AFTER_E4_KILL); ≤1 R★ revision requires fresh owner auth |
+| Next scientific step | Product track stopped; ≤1 preregistered R★ revision remains available |
 | Forbidden | E2, fabric/NanoScribe expansion, old-task runs under `OLD_TASK_U`, silent redesign loops |
 | Paper α | FROZEN; Stage 1 **agent-applied rubric audit** (Gate 1 PASS); dual-clinician IAA open |
 | E4 measurement | `results_e4_utility.json` — KILL; world `trajectory/e4/data/` |
@@ -26,10 +25,10 @@ Sequential plan: `papers/SEQUENTIAL_PIPELINE.md`. Ambition frame: `papers/AMBITI
 E1 **KILL**: on the closed scribe task, M1 templates dominate generative refs under
 `OLD_TASK_U`. Product work *on that world* is empty.
 
-Ambition continues elsewhere: define a **different** input regime **R★** where
+The product question moved to a **different** input regime **R★** where
 classical methods are *expected* (by construction of delivery process) to be
 stressed enough that a generative proposer *could* matter. Expectation ≠ proof.
-Win/loss is **E4** only after separate execution authorization against frozen P2.
+Win/loss is **E4**, scored only after the P2 protocol and data were frozen.
 
 ## Anti-circularity (load-bearing)
 
@@ -59,11 +58,11 @@ the set; **do not** drop instances after seeing G-ref outcomes.
 
 **Ban:** no E1-world re-bakeoff under `OLD_TASK_U`. E1 KILL stays scoped to that
 frozen U and world — not a universal “LMs never extract” claim
-(`WITHDRAWAL_SPEC` W-KILL-UNIVERSAL).
+(`papers/EMPIRICAL_FOUNDATION.md`).
 
 ## Classical = freeze-set for later E4 evaluation
 
-When E4 *execution* is authorized (later), classical means at least:
+For E4 evaluation, the classical freeze-set contains at least:
 
 | ID | Class | Freeze rule |
 |----|-------|-------------|
@@ -117,7 +116,7 @@ Classical **probe** (not the bakeoff) on locked slice \(S\) with frozen C-M1/C-M
 | B3 | Binding error rate (wrong candidate among ≥2 present) \(\ge \tau_{\mathrm{bind}}\) | Multiplicity stress |
 | B4 | Train-dict coverage of gold open values \(< \tau_{\mathrm{dict}}\) **and** cue-hit low | Ontology lag |
 
-**Default τ (design draft — may be amended only before execution auth):**
+**Default τ (frozen before execution):**
 
 ```text
 τ_cue  = 0.60
@@ -153,7 +152,7 @@ isomorphism breaks. Open slots stressed: **CC, MED, ALG**. DUR/SEV = controls.
 | English clinical-ish dialogue or short note → five fields | Arbitrary documents, no schema |
 | Stress on open slots under I1–I5 | Claiming DUR/SEV difficulty as the product thesis |
 | Frozen classical budgets + information parity | Post-hoc rule writing after eval reveal |
-| Later: verifier relation \(R\) only if execution authorized | Open-world “zero hallucination” |
+| Verifier relation \(R\) only under the frozen protocol | Open-world “zero hallucination” |
 
 ---
 
@@ -165,8 +164,8 @@ isomorphism breaks. Open slots stressed: **CC, MED, ALG**. DUR/SEV = controls.
 | Is R★ testable? | **Yes** — builder constraints + probe B\* + fixed schema |
 | Circular? | **Mitigated** — inclusion ≠ observed classical failure |
 
-**Gate 2: PASS** (protocol). Instantiation still requires a builder under later
-execution auth.
+**Gate 2: PASS** (protocol). The later builder instantiation and E4 execution are
+recorded in `trajectory/results_e4_utility.json`.
 
 **Falsifier:** good-faith slice built to I\*/X\* but probe fires fewer than 2 of B\* → not R★;
 max **one** R★ revision after a failed E4 KILL per sequential plan.
@@ -185,7 +184,7 @@ max **one** R★ revision after a failed E4 KILL per sequential plan.
 
 - No fabric / NanoScribe revival on old task
 - No E2 prose as product unlock
-- E4 executed 2026-07-31 → KILL; no further Stage 4 without revision auth
+- E4 executed 2026-07-31 → KILL; no further Stage 4 without a preregistered revision
 - No old-task runs under `OLD_TASK_U`
 - No claiming R★ generative value without RESULT
 
@@ -194,7 +193,7 @@ max **one** R★ revision after a failed E4 KILL per sequential plan.
 P2 design package (`PREREG_E4_Rstar_killgate.md`) freezes draft \(U_{R★}\),
 baselines, fairness matrix, consequences, builder checklist.
 
-**Executing** that protocol = Stage 4 / E4 — requires separate owner authorization.
+**Execution record:** Stage 4 / E4 was run only after the protocol and data freeze.
 
 ## One-sentence freeze
 

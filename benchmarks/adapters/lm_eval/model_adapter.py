@@ -1,4 +1,4 @@
-"""Model and deterministic solver adapters for Program 0 smoke (no GPU)."""
+"""Model and deterministic solver adapters for the CPU regression sentinel."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ class MockedModel:
 class DeterministicTemplateSolver:
     """Classical baseline: rebuild target line from gold tuple fields.
 
-    For Program 0 infrastructure smoke this is intentionally perfect on the
+    For the infrastructure regression this is intentionally perfect on the
     bound fixture (information-parity with gold labels). It exists to prove
     classical-baseline wiring, not to claim a new scientific result.
     """
@@ -83,7 +83,7 @@ def mocked_model_manifest() -> ModelManifest:
         quantization="none",
         backend="python_mock",
         decoding_configuration={"temperature": 0.0, "max_new_tokens": 0},
-        resource_class_ids=["rc_micro"],
+        resource_class_ids=["rc_local_cpu"],
     )
 
 
@@ -98,9 +98,9 @@ def deterministic_solver_manifest() -> SolverManifest:
         solver_family="classical_template",
         method="format_target_from_tuple",
         implementation_hash=sha256_hex(impl_src),
-        resource_class_ids=["rc_classical_baseline"],
+        resource_class_ids=["rc_local_cpu"],
         notes=(
-            "Program 0 classical baseline wiring. Not a scientific claim; "
+            "Regression-only classical baseline wiring. Not a scientific claim; "
             "uses gold tuple fields for exact reconstruction."
         ),
     )

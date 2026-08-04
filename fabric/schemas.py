@@ -1,11 +1,13 @@
-# NanoScribe fabric — Stage V1: typed claim/evidence packets (Master Plan Phase 1).
-# The cognitive fabric's data layer. Enforces the invariants in code:
+# Fabric verification regression harness: typed claim/evidence packets.
+# Scope is defined in fabric/README.md; evidence status is tracked in
+# papers/EMPIRICAL_FOUNDATION.md and papers/EVIDENCE_LEDGER.md. This module
+# enforces the invariants in code:
 #   (3) every claim carries provenance + uncertainty fields
 #   (4) contradiction is a first-class verification state
 #   (7) decisions are traceable (immutable content-addressed IDs, full lineage)
 #   hard rule: absence must never be inferred from lack of evidence alone
 #     (an ABSENT-kind claim cannot be VERIFIED by an empty evidence set).
-# V1 gates (PREREG'd in NANOSCRIBE_VNEXT/MASTER_PLAN): 100% schema validity, 100%
+# V1 validation targets: 100% schema validity, 100%
 # source-span traceability for presented non-absence claims, no presented-error
 # increase, <5% serialization failures. This module is the schema+validation half;
 # the ledger/verifier wiring is the next slice artifact.

@@ -28,7 +28,6 @@ build/
 
 # Local agent scratch (not evidence)
 .autonomous/
-audit/**/PRE_EDIT_SNAPSHOT.*
 
 # LaTeX intermediates (PDF tracked when rebuilt)
 papers/latex/*.aux
@@ -41,8 +40,7 @@ papers/latex/*.blg
 !artifacts/durable_raw/
 !artifacts/durable_raw/**
 
-
-# Benchmark lab generated runs (Program 0+)
+# Generated benchmark regression runs
 experiments/**/runs/
 experiments/**/runs/**
 !experiments/**/runs/.gitkeep
@@ -51,3 +49,18 @@ experiments/**/runs/**
 !benchmarks/adapters/**/fixtures/**/*.json
 
 .venv-bench/
+
+# Nano Runtime local/private state
+**/.wedge_manifest.json
+wedge_v1/data/owner_corpus/
+wedge_v1/data/owner_tasks/
+wedge_v1/.private/
+wedge_v1/.studies/
+wedge_v1/results_owner_*.json
+wedge_v1/results_owner_*.md
+wedge_v1/results_review_state.json
+wedge_v1/results_saved_questions.json
+wedge_v1/results_habit_session.json
+wedge_v1/results_adversarial_suite.json
+wedge_v1/results_ingest_sla.json
+wedge_v1/.coe_runs/

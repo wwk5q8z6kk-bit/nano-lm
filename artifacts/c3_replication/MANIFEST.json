@@ -85,7 +85,7 @@
       "provider": null,
       "created_at_utc": "2026-07-20T14:30:18.257620+00:00",
       "storage_location": "local_workspace",
-      "retrieval_instructions": "Gitignored; see artifacts/local_raw_archive/ and SHA256SUMS; publish via Release/LFS only with owner auth.",
+      "retrieval_instructions": "Gitignored; see artifacts/local_raw_archive/ and SHA256SUMS; publish via Release/LFS only after an explicit release decision.",
       "verified_at_utc": "2026-07-31T13:50:00.784482+00:00"
     },
     {
@@ -106,7 +106,7 @@
       "provider": null,
       "created_at_utc": "2026-07-20T14:30:20.150863+00:00",
       "storage_location": "local_workspace",
-      "retrieval_instructions": "Gitignored; see artifacts/local_raw_archive/ and SHA256SUMS; publish via Release/LFS only with owner auth.",
+      "retrieval_instructions": "Gitignored; see artifacts/local_raw_archive/ and SHA256SUMS; publish via Release/LFS only after an explicit release decision.",
       "verified_at_utc": "2026-07-31T13:50:00.784482+00:00"
     },
     {
@@ -127,7 +127,7 @@
       "provider": null,
       "created_at_utc": "2026-07-20T14:30:22.039233+00:00",
       "storage_location": "local_workspace",
-      "retrieval_instructions": "Gitignored; see artifacts/local_raw_archive/ and SHA256SUMS; publish via Release/LFS only with owner auth.",
+      "retrieval_instructions": "Gitignored; see artifacts/local_raw_archive/ and SHA256SUMS; publish via Release/LFS only after an explicit release decision.",
       "verified_at_utc": "2026-07-31T13:50:00.784482+00:00"
     }
   ],

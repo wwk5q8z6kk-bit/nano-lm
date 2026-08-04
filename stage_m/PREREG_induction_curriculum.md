@@ -1,8 +1,8 @@
 # Stage M — induction-head pretraining curriculum (PRE-REGISTRATION)
 
 *Written 2026-07-26, BEFORE any Stage-M training. Committed as its own commit before
-"Stage M measured once". Owner-sequenced next stage (vNext roadmap sequences the
-induction/retrieval-circuit probe after the pointer head, now done: Stage P2). Venue:
+"Stage M measured once". The scientific sequence places the induction/retrieval-circuit
+probe after the pointer head, now done as Stage P2 (`papers/DECISION_GATES.md`). Venue:
 RunPod GPU (CUDA). Frozen constants inherit the nano recipe unless named below.*
 
 ## What Stage M tests, and why now
@@ -39,7 +39,7 @@ the seed-11 v2 recipe (12000 ex, LR 1.5e-4, 3 epochs). Frozen eval = the byte-id
 
 Rationale for raw→scribe (not dpo lineage): keeps both arms a clean single pretrain differing
 only in ρ; the comparison is the **within-experiment I−C delta**, not a match to the
-dpo-lineage anchor. (Base-matching note from CLAUDE-PROGRESS acknowledged.)
+dpo-lineage anchor. (The prior base-matching constraint is retained.)
 
 ## Feasibility pre-gate (BLOCKING — run Arm C first, cheap, before Arm I)
 
@@ -124,4 +124,5 @@ both to *validated-learnable* variants of the same content-addressed-copy constr
 ρ, curriculum form, probe form, and the decision tree are fixed here and not tuned after any
 result. One measurement per arm on the frozen eval + probe. Whatever the tree returns —
 VOID / CONFIRM / REFUTE / full-FT-destroys / WEAKENED — is recorded in a RESULT section here,
-in `scribe/AUDIT.md`, and `CLAUDE-PROGRESS.md`; artifacts + pod cost frozen. Commit + push.
+in `scribe/AUDIT.md`, and in `papers/EVIDENCE_LEDGER.md`; artifacts and compute cost remain
+part of the frozen record.

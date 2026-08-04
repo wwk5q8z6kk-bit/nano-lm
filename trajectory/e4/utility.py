@@ -1,4 +1,4 @@
-"""U_R★ scorer + decision rule (frozen at AUTHORIZE_E4_BUILDER_AND_EXECUTE)."""
+"""U_R★ scorer and decision rule frozen before E4 scoring."""
 from __future__ import annotations
 
 import json

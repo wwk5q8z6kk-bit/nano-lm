@@ -1,1 +1,1 @@
-"""Benchmark Supremacy Lab scaffolding (non-evidential)."""
+"""Small, reproducible benchmark regression utilities."""

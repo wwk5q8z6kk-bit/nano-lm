@@ -1,4 +1,4 @@
-# lm-evaluation-harness pin (Program 0)
+# lm-evaluation-harness pin
 
 | Field | Value |
 |-------|-------|
@@ -9,7 +9,7 @@
 | Python | `>=3.10` (repo requires-python) |
 | License | MIT (upstream) |
 | Dependency scope | **optional / benchmark-only** via `requirements-bench.txt` |
-| Default runtime / CI | **not** installed until smoke green and owner opts in |
+| Default runtime / CI | Optional; only needed for external harness validation |
 
 Install:
 
@@ -25,4 +25,6 @@ lm-eval validate \
   --include_path benchmarks/adapters/lm_eval/tasks
 ```
 
-**Warning (upstream):** task-version changes can make results incomparable even under the same package version. Program 0 therefore pins package version **and** source commit **and** task YAML SHA-256 **and** instrument SHA-256.
+**Warning:** task-version changes can make results incomparable even under the
+same package version. This adapter therefore pins the package version, source
+commit, task YAML digest, and instrument digest.

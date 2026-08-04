@@ -76,14 +76,39 @@
     },
     {
       "id": "D08",
-      "query": "Nano Runtime smallest sufficient solver",
+      "query": "Wedge v1 smallest sufficient solver",
       "expect_status": [
         "SUPPORTED"
       ],
       "must_contain_any": [
         "smallest sufficient",
-        "Nano Runtime",
+        "Wedge v1",
         "verification"
+      ]
+    },
+    {
+      "id": "D09",
+      "mode": "compare",
+      "corpus": "default",
+      "query": "metformin",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "500",
+        "850"
+      ]
+    },
+    {
+      "id": "D10",
+      "mode": "compare",
+      "corpus": "default",
+      "query": "12000",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "12000"
       ]
     }
   ]

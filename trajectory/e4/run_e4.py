@@ -77,7 +77,7 @@ def main():
             res = evaluate_method(name, fn, eval_items, verify_on=verify_on, cost_c=c_use, M=M_use)
             out = {k: v for k, v in res.items() if k != "item_logs"}
             out["prereg"] = "trajectory/PREREG_E4_Rstar_killgate.md"
-            out["auth"] = "AUTHORIZE_E4_BUILDER_AND_EXECUTE"
+            out["execution_anchor"] = "verdict/E4-kill@6af178d"
             out["hardware"] = {
                 "class": "apple-mps",
                 "gref_venue": getattr(gref, "venue", "mps"),
@@ -112,8 +112,7 @@ def main():
     util = {
         "schema": "nano-lm.e4.utility.v1",
         "prereg": "trajectory/PREREG_E4_Rstar_killgate.md",
-        "auth": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
-        "auth_record": "trajectory/e4/AUTH_RECORD.md",
+        "execution_anchor": "verdict/E4-kill@6af178d",
         "recipe_freeze": "trajectory/e4/recipe_freeze.json",
         "world_manifest": "trajectory/e4/data/rstar_world_manifest.json",
         "classical_probe": "trajectory/results_e4_classical_probe.json",

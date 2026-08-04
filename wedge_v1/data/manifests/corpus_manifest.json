@@ -111,7 +111,6 @@
   ],
   "gold_sha256": "2a09fc220c174769d77396251eb8cacbf5d113182188c1033d9b29146432f6f5",
   "inclusion": "wedge_v1/inclusion_predicates.md",
-  "auth": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
   "track": "clean",
   "probe_flags": {
     "B1": true,

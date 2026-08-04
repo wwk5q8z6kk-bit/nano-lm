@@ -1,4 +1,4 @@
-"""CLI for Program 0 adapter: validate + smoke."""
+"""CLI for validating and running the held-value regression sentinel."""
 
 from __future__ import annotations
 
@@ -12,8 +12,8 @@ from pathlib import Path
 from .runner import DEFAULT_TASK_YAML, REPO_ROOT, run_smoke
 from .task_adapter import load_and_bind_instrument
 from .runner import (
-    PROGRAM0_EXPECTED_N,
-    PROGRAM0_EXPECTED_SHA256,
+    SENTINEL_EXPECTED_N,
+    SENTINEL_EXPECTED_SHA256,
     DEFAULT_FIXTURE,
     git_commit,
 )
@@ -28,8 +28,8 @@ def cmd_validate(_: argparse.Namespace) -> int:
     bound = load_and_bind_instrument(
         DEFAULT_FIXTURE,
         git_commit=git_commit(),
-        expected_sha256=PROGRAM0_EXPECTED_SHA256,
-        expected_record_count=PROGRAM0_EXPECTED_N,
+        expected_sha256=SENTINEL_EXPECTED_SHA256,
+        expected_record_count=SENTINEL_EXPECTED_N,
     )
     print(
         json.dumps(
@@ -86,11 +86,11 @@ def cmd_smoke(args: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="benchmark_lab_lm_eval")
+    parser = argparse.ArgumentParser(prog="nano_lm_benchmark")
     sub = parser.add_subparsers(dest="cmd", required=True)
     p_val = sub.add_parser("validate", help="Validate held-value sentinel task")
     p_val.set_defaults(func=cmd_validate)
-    p_smoke = sub.add_parser("smoke", help="Run Program 0 smoke")
+    p_smoke = sub.add_parser("smoke", help="Run the held-value regression")
     p_smoke.add_argument("--mode", choices=["mock", "deterministic"], required=True)
     p_smoke.add_argument("--fail", action="store_true", help="Force FAILED path")
     p_smoke.set_defaults(func=cmd_smoke)

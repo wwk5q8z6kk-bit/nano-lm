@@ -12,9 +12,8 @@ No `trajectory/results_e2_*.json` exists. Do **not** claim RUNNING publicly.
 Historical note (operational, superseded): a U3 early-stop pod
 (`e2-u3-earlystop` / `kuq4gy63yuaeke`) was started then **terminated 2026-07-31**
 under the post-KILL freeze (`papers/EMPIRICAL_FOUNDATION.md` §E2 status). Script
-`trajectory/e2/run_u3_earlystop.py` is present for a future written re-scope only —
-**not authorized to execute** without owner re-scope that names which ledger row
-the run could change.
+`trajectory/e2/run_u3_earlystop.py` remains as a reproducibility artifact. The arm is
+inactive unless a future research question identifies a decision it could change.
 
 ## Why this gate still matters after E1 KILL
 

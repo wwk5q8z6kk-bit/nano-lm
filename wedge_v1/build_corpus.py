@@ -337,7 +337,6 @@ def build() -> dict:
         "docs": corpus_meta,
         "gold_sha256": _sha(gold_path.read_text(encoding="utf-8")),
         "inclusion": "wedge_v1/inclusion_predicates.md",
-        "auth": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
         "track": "clean",
         "probe_flags": gold["probe_flags"],
         "probe_ok": sum(1 for v in gold["probe_flags"].values() if v) >= 2,

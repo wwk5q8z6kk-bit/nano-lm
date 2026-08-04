@@ -1,8 +1,11 @@
-# fabric/ — NanoScribe Phase 1 minimal vertical slice
+# fabric/ — closed-world verification regression harness
 
-Master Plan action #3: the smallest end-to-end verification-first path on the existing
-scribe task — nano-lm generator → typed Claims → Verifier → Risk decision →
-per-run ledger serialization — measured on the frozen inst0 instrument.
+Fabric is a closed-world verification regression harness over the existing scribe
+prototype: supplied synthetic clinic-dialogue transcripts and five structured
+fields. It exercises the smallest end-to-end verification-first path — nano-lm
+generator → typed Claims → Verifier → Risk decision → per-run ledger serialization
+— measured on the frozen inst0 instrument.
+It is not the complete Nano AI or a general Nano architecture.
 
 **Boundary (2026-07-31 evidence freeze):** The repository contains a measured
 verification vertical slice with typed claims, source-grounding rules, contradiction
@@ -10,8 +13,9 @@ states, abstention behavior, and content-addressed identifiers. It is **not** an
 append-only transactional database or a complete cognitive operating system.
 Ledger `*.jsonl` files are **per-run rewritten** artifacts (open mode `"w"`), not an
 append-only store. Intent/control-kernel stages in older plan prose are **not
-implemented** in this directory. NanoScribe beyond this slice remains unimplemented
-unless separately evidenced.
+implemented** in this directory. It does not implement Nano's full scribe
+intelligence; any broader scribe capability remains unimplemented unless separately
+evidenced.
 
 ## Results (2026-07-20, frozen anchors, inst0 = scribe_eval.json, 40 dialogues)
 
@@ -72,13 +76,13 @@ variant per slot in eval: "Nothing at all." / "None whatsoever.").
 
 Presented-error → 0.0% under **grounding.v2** is an existence proof for
 propose→verify→abstain on this synthetic task under a **rules-strong, decidable**
-verifier relation. It does **not** license open-world zero-hallucination or
-fabric-as-product claims. v2 could solve the task alone (documented above).
+verifier relation. It does **not** license open-world zero-hallucination, Nano
+AI generalization, or broader scribe-capability claims. v2 could solve the task
+alone (documented above).
 
-**Expansion gated:** fabric/v2 and NanoScribe architecture expansion remain **STOP**
-after E1 KILL; E2 is GATED/STOP with no RESULT; E4 blocked until owner authorization —
-see `papers/EMPIRICAL_FOUNDATION.md`. This directory is a **regression harness** for
-measured failure classes (`test_fabric.py`, CI).
+E1 and E4 do not support expanding this slice into a Nano architecture; E2
+has no result. See `papers/EMPIRICAL_FOUNDATION.md`. This directory remains a
+**regression harness** for measured failure classes (`test_fabric.py`, CI).
 
 ## Status of prior "next"
 

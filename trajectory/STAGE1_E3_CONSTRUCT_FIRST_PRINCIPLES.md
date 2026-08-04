@@ -11,7 +11,7 @@ Docs + labels only. No E2, fabric, or old-task substrate runs. 2026-07-31.*
 | `e3_human_rating_pack.json` | Frozen n=100 exact-error pack |
 | `results_e3_normalize_construct.json` | Auto arm (0/486 rescues) |
 | `results_e3_human.json` | This Stage 1 labeling + verdict |
-| `PIPELINE_GATE_LOG.md` | Gate 1 result |
+| `papers/EVIDENCE_LEDGER.md` | Evidence status and scoped verdict |
 
 ---
 

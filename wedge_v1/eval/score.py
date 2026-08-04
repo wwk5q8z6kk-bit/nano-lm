@@ -163,7 +163,6 @@ def score(claims: list[Claim]) -> dict:
 
     return {
         "schema": "nano-lm.wedge_v1.classical.v1",
-        "auth": "AUTHORIZE_WEDGE_V1_CLASSICAL_BASELINE",
         "track": "clean",
         "weights": w.__dict__,
         "U": U,

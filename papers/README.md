@@ -1,89 +1,79 @@
-# Paper α — Held-out value copying in small language models
+# Paper α — held-out value copying in small language models
 
-**Title:** Held-out value copying in small language models: a field-localized failure mode and the instrument to measure it
+**Title:** *Held-out value copying in small language models: a field-localized
+failure mode and the instrument to measure it*
+**Author:** Hassan El Jesr
+**Status:** Camera-ready draft; public repository release; arXiv pending
+**Manuscript license:** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-**Author:** Hassan El Jesr (<summer.say3y@icloud.com>)
+## Scope
 
-**Status:** Camera-ready draft — public GitHub release; arXiv pending (endorsement / category). Intended as a short empirical / negative-result paper (workshop or Findings-style venue).
+Paper α is an empirical negative-result paper about held-out exact value copying
+in small language models trained to convert short synthetic clinical dialogues
+into structured summaries.
 
-**License (this manuscript):** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Code and other repository assets follow the repository license.
+On the multi-instance instrument, the measured held-out versus seen exact-copy
+gaps were 18.3 ± 1.3 points for the 3.15M model and
+18.7 ± 1.5 for the 10M model. The measured gap localized to
+open-vocabulary fields; closed-value fields were approximately zero. The
+repository also records within-stack, adaptation, data-diversity,
+interference, binding, and pointer-head tests.
 
-## Laboratory document layers (inside nano-lm)
+The paper includes the E1 result: under frozen utility, the classical M1
+baseline beat the official generative M0, so the generative-substrate
+hypothesis received a scoped **KILL** for that closed task.
 
-| Doc | Role |
-|-----|------|
-| [`STRATEGIC_RESET.md`](STRATEGIC_RESET.md) | **Current center:** Nano Runtime product thesis |
-| [`WEDGE_V1.md`](WEDGE_V1.md) | **Phase 1 lock:** local research document intelligence (40 tasks) |
-| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | In-repo research governance (not an institution) |
-| [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Layer 1 — what is demonstrated |
-| [`RESEARCH_PORTFOLIO.md`](RESEARCH_PORTFOLIO.md) | Layer 3 — long-horizon questions |
-| [`TECHNOLOGY_ROADMAP.md`](TECHNOLOGY_ROADMAP.md) | Layer 2 — conditional build vision |
-| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Authorized now (wedge selection; freeze integrity) |
-| [`DECISION_GATES.md`](DECISION_GATES.md) | Promotion rules |
-| [`FIRST_PRINCIPLES_RISK_MITIGATION.md`](FIRST_PRINCIPLES_RISK_MITIGATION.md) | Blocker atoms → research-backed mitigations |
-| [`PUBLIC_ONE_PAGER.md`](PUBLIC_ONE_PAGER.md) | Outsider proven/frozen/next |
-| [`OWNER_SPEECH_ACTS.md`](OWNER_SPEECH_ACTS.md) | Typed owner chat forces (`continue` ≠ execute) |
-| [`MITIGATION_STATUS_SCORECARD.md`](MITIGATION_STATUS_SCORECARD.md) | Blocker CLOSED/PARTIAL/OPEN |
-| [`ANOMALY_LOG.md`](ANOMALY_LOG.md) | Kill/stop → expand questions |
-| [`../benchmarks/BENCHMARK_CONSTITUTION.md`](../benchmarks/BENCHMARK_CONSTITUTION.md) | Program 0 / harness rules |
+This is not a clinical-validity, deployment-readiness, universal scaling, or
+general anti-generation claim. Exact match is the primary construct.
+Independent human or clinician validation and inter-rater agreement have not
+been completed; E3 was a bounded agent-applied rubric audit only.
 
-
-## Abstract
-
-We study a specific faithfulness failure in small language models finetuned to convert short clinical dialogues into structured summaries: a **held-out copying gap** — the model copies field values it saw during finetuning but errs on held-out values under held-out phrasings, even though both are present verbatim in the input. In our own from-scratch models (3.15M and 10M parameters) this gap is large — **18.3±1.3 and 18.7±1.5 points** of recall on the same multi-instance instrument. The failure localizes entirely to open-vocabulary fields and is exactly zero in closed-value fields. On the Pythia ladder the observed gap is substantially smaller, with a field-localized residual on the lowest-diversity open slot; a within-stack control and a pre-registered diversity sweep separate stack/adaptation/data effects from a pure scale story. Across evaluated own-stack configurations the gap did not collapse monotonically with parameter count; pretraining exposure was not fully isolated (3.15M used 32.8M tokens vs ~200M / 3.2B later). On a pre-registered utility, **M1** exceeds the best evaluated generative reference under frozen \(U\) (**KILL**); this paper reports that result honestly and does not advocate a generative substrate. Primary metrics are exact string match; dual-clinician equivalence is unvalidated (agent-rubric audit reported).
-
-## Scope (locked)
-
-This is **measurement only** — an empirical / negative-result account of when small LMs fail held-out emission, plus instrument lessons (under-powered single-instance eval; training nondeterminism at 1B).
-
-- **§0 kill-gate** is part of the paper (M1 exceeds best generative reference under frozen \(U\)).
-- **Exact-match construct limitation** is stated in §0 and Limitations.
-- **Not** a systems, architecture, product, or “generative substrate wins” paper.
-- E2 / fabric / residual continua remain **gated** and are not part of this release.
-
-See `EMPIRICAL_FOUNDATION.md` for the lockfile.
-
-## Artifacts
+## Manuscript artifacts
 
 | Path | Role |
-|------|------|
-| [`latex/paper1.pdf`](latex/paper1.pdf) | Camera-ready PDF (14 pages) |
+|---|---|
+| [`latex/paper1.pdf`](latex/paper1.pdf) | Camera-ready PDF |
 | [`latex/paper1.tex`](latex/paper1.tex) | LaTeX source |
 | [`latex/refs.bib`](latex/refs.bib) | Bibliography |
-| [`figures/`](figures/) | Figures used by the PDF |
-| [`paper1_draft.md`](paper1_draft.md) | Locked markdown source of truth |
-| [`EMPIRICAL_FOUNDATION.md`](EMPIRICAL_FOUNDATION.md) | Scope / evidence lockfile |
+| [`figures/`](figures/) | Manuscript figures |
+| [`paper1_draft.md`](paper1_draft.md) | Markdown manuscript source |
+| [`EMPIRICAL_FOUNDATION.md`](EMPIRICAL_FOUNDATION.md) | Scope and evidence lock |
+| [`../trajectory/REPRODUCIBILITY.md`](../trajectory/REPRODUCIBILITY.md) | Artifact and environment reproduction notes |
 
-Build (from `papers/latex/`):
+Build from `papers/latex/`:
 
 ```bash
-pdflatex paper1.tex && bibtex paper1 && pdflatex paper1.tex && pdflatex paper1.tex
+pdflatex paper1.tex
+bibtex paper1
+pdflatex paper1.tex
+pdflatex paper1.tex
 ```
+
+## Project documents
+
+| Document | Purpose |
+|---|---|
+| [`STRATEGIC_RESET.md`](STRATEGIC_RESET.md) | Nano AI capability contract and current strategy |
+| [`WEDGE_V1.md`](WEDGE_V1.md) | Supporting document-evidence component contract |
+| [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Canonical supported claims and limitations |
+| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Current scribe-first work |
+| [`DECISION_GATES.md`](DECISION_GATES.md) | Experiment and promotion criteria |
+| [`CLAIM_GLOSSARY.md`](CLAIM_GLOSSARY.md) | Required claim scoping |
+
+AI engineering and Paper α share evidence discipline, but they are not the same
+claim surface. Nano is the small local scribe AI; Wedge is supporting validation
+infrastructure. Wedge evaluations remain component-development results unless
+they receive a separate traceable scientific promotion.
+
+The research record exists to guide Nano's successive improvement. Each result
+should inform a bounded change to its data, training, architecture, inference,
+grounding, verification, or abstention, followed by a held-out comparison and
+an integrate-or-reject decision.
 
 ## Citation
 
 ```text
-Hassan El Jesr. Held-out value copying in small language models: a field-localized
-failure mode and the instrument to measure it. 2026.
-GitHub: https://github.com/wwk5q8z6kk-bit/nano-lm
-(tag: paper-alpha-v1).
+Hassan El Jesr. Held-out value copying in small language models: a
+field-localized failure mode and the instrument to measure it. 2026.
+https://github.com/wwk5q8z6kk-bit/nano-lm (tag: paper-alpha-v1).
 ```
-
-When an arXiv identifier exists, replace the GitHub line with the arXiv URL in this README and in citations.
-
-## Research data map
-
-For the post-E1 decision pipeline and claim→evidence index, start here:
-
-| Doc | Role |
-|-----|------|
-| [`SEQUENTIAL_PIPELINE.md`](SEQUENTIAL_PIPELINE.md) | Staged gates (cursor) |
-| [`AZ_EXECUTION_PLAN.md`](AZ_EXECUTION_PLAN.md) | Path A/B/C overlay |
-| [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Proven / supported / speculation |
-| [`CLAIM_GLOSSARY.md`](CLAIM_GLOSSARY.md) | Forbidden claims |
-| [`EMPIRICAL_FOUNDATION.md`](EMPIRICAL_FOUNDATION.md) | Owner lockfile |
-
-**E1 KILL evidence:** `../trajectory/results_e1_utility.json`  
-**Diversity +66.7:** `../trajectory/results_sweep_10m.json`  
-**E3 construct:** `../trajectory/results_e3_normalize_construct.json`, `../trajectory/results_e3_human.json`  
-**E4 status:** BLOCKED (protocol frozen; no run)

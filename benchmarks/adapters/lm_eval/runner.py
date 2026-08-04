@@ -1,4 +1,4 @@
-"""Program 0 smoke runner: content-addressed runs, three manifests, no promotion."""
+"""Content-addressed held-value regression runner with no claim promotion."""
 
 from __future__ import annotations
 
@@ -43,21 +43,21 @@ ADAPTER_ROOT = Path(__file__).resolve().parent
 DEFAULT_FIXTURE = "benchmarks/adapters/lm_eval/fixtures/held_value_sentinel_n4.json"
 DEFAULT_TASK_YAML = "benchmarks/adapters/lm_eval/tasks/held_value_sentinel.yaml"
 DEFAULT_RUNS = (
-    REPO_ROOT / "experiments/verification/program0_smoke/runs"
+    REPO_ROOT / "experiments/verification/sentinel/runs"
 )
 
-# Frozen Program 0 instrument binding (fixture is authoritative for infra smoke).
-PROGRAM0_EXPECTED_SHA256 = (
+# Frozen sentinel binding; the fixture is authoritative for this regression only.
+SENTINEL_EXPECTED_SHA256 = (
     "ed5e8171cf13a4e802ecc6635740e8ad3977064eea7e4149b331a20792dee0a2"
 )
-PROGRAM0_EXPECTED_N = 4
+SENTINEL_EXPECTED_N = 4
 TASK_ID = "nano_held_value_sentinel"
 TASK_VERSION = "0.1.0"
 SUITE_ID = "suite_sentinel"
 
 
 def git_commit() -> str:
-    env = os.environ.get("BENCHMARK_LAB_CODE_GIT_COMMIT")
+    env = os.environ.get("NANO_LM_CODE_GIT_COMMIT")
     if env:
         return env.strip()
     try:
@@ -176,15 +176,15 @@ def run_smoke(
     code_commit: str | None = None,
     fail: bool = False,
 ) -> dict[str, Any]:
-    """Execute one Program 0 smoke. mode in {mock, deterministic}."""
+    """Execute one regression smoke. ``mode`` is mock or deterministic."""
     runs_root = runs_root or DEFAULT_RUNS
     commit = code_commit or git_commit()
     task_yaml = REPO_ROOT / DEFAULT_TASK_YAML
     bound = load_and_bind_instrument(
         DEFAULT_FIXTURE,
         git_commit=commit,
-        expected_sha256=PROGRAM0_EXPECTED_SHA256,
-        expected_record_count=PROGRAM0_EXPECTED_N,
+        expected_sha256=SENTINEL_EXPECTED_SHA256,
+        expected_record_count=SENTINEL_EXPECTED_N,
     )
     docs = docs_from_instrument(bound)
     bench = build_benchmark_manifest(bound, task_yaml)
@@ -207,7 +207,7 @@ def run_smoke(
         "task_id": TASK_ID,
         "task_version": TASK_VERSION,
         "suite_id": SUITE_ID,
-        "program": "BENCHMARK_SUPREMACY_LAB_PROGRAM0",
+        "program": "NANO_RUNTIME_REGRESSION",
         "promote": False,
         "leaderboard_eligible": False,
         "evidence_ledger_eligible": False,
@@ -267,7 +267,7 @@ def run_smoke(
         "currency": "USD",
         "amount": 0.0,
         "measurement_state": "not_measured",
-        "units_note": "Program 0 local CPU smoke; cost unknown/zero",
+        "units_note": "Local CPU regression smoke; cost not measured",
     }
     hashes["cost.json"] = write_json(run_dir / "cost.json", cost)
     decision_obj = {
@@ -281,7 +281,7 @@ def run_smoke(
     hashes["decision.json"] = write_json(run_dir / "decision.json", decision_obj)
 
     report = (
-        f"# Program 0 smoke report\n\n"
+        f"# Held-value regression report\n\n"
         f"- mode: `{mode}`\n"
         f"- run_id: `{run_id}`\n"
         f"- decision: `{decision.value}`\n"

@@ -1,14 +1,11 @@
 {
   "schema": "nano-lm.e4.recipe_freeze.v1",
-  "auth": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
-  "auth_date": "2026-07-31",
-  "auth_record": "trajectory/e4/AUTH_RECORD.md",
+  "execution_date": "2026-07-31",
   "prereg": "trajectory/PREREG_E4_Rstar_killgate.md",
-  "prereg_sha256": "cc19ee8ecde1dba843bb126a836f0386a2c1b42798bcb85358a06f8e0d8e0ab0",
+  "prereg_sha256_at_execution": "cc19ee8ecde1dba843bb126a836f0386a2c1b42798bcb85358a06f8e0d8e0ab0",
   "regime": "trajectory/REGIME_P1_where_classical_fails.md",
-  "regime_sha256": "a46094e9bf12d3154fc1db344a08b89103d3e8c282031852687bc20707d1e1da",
-  "ambition": "papers/AMBITION.md",
-  "ambition_sha256": "3cdf2469f384c0ae85aabb8fb354e956da0dc887f407bdd42df5f68820cd129a",
+  "regime_sha256_at_execution": "a46094e9bf12d3154fc1db344a08b89103d3e8c282031852687bc20707d1e1da",
+  "product_scope": "papers/WEDGE_V1.md",
   "U_Rstar": {
     "formula": "Q - 0.5*E - 0.3*R - 0.02*L - 0.05*C - 0.15*M",
     "delta": 0.05,
@@ -22,7 +19,7 @@
     },
     "primary_arm": "verify-on",
     "construct_primary": "exact",
-    "frozen_at_auth": true,
+    "frozen_before_scoring": true,
     "mid_stream_edits": "FORBIDDEN_VOID"
   },
   "M_rubric_preassigned": {

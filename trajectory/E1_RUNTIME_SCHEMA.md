@@ -51,6 +51,6 @@ pytest trajectory/test_e1_utility_recompute.py trajectory/test_e3_normalize.py
 
 This validates arithmetic and locked decision numbers from committed JSON. It does **not** re-time models or re-derive `C`.
 
-## Gap / future (not authorized here)
+## Gap / future
 
-A dedicated `results_e1_runtime.json` with per-method device, CUDA version, n_warmup, raw latency vector SHA, and explicit `C` formula would strengthen auditability. Collecting it is optional packaging work, not an E4 unlock.
+A dedicated `results_e1_runtime.json` with per-method device, CUDA version, n_warmup, raw latency vector SHA, and explicit `C` formula would strengthen auditability. It was not collected for the frozen run; collecting it later would be optional packaging work, not a reason to reopen E4.

@@ -1,15 +1,21 @@
 [project]
 name = "nano-lm"
 version = "0.1.0"
-description = "Measurement research: held-out value copying in small LMs + Fabric verification slice"
+description = "Research and engineering for Nano, a small, local-first, privacy-first, verification-gated AI scribe"
 readme = "README.md"
 requires-python = ">=3.10"
 # Runtime pins live in requirements.txt (torch stack is environment-specific).
 
 [tool.pytest.ini_options]
-testpaths = ["fabric", "trajectory", "benchmarks/adapters/lm_eval/tests"]
+testpaths = ["nano_ai/tests", "fabric", "trajectory", "benchmarks/adapters/lm_eval/tests", "wedge_v1"]
 python_files = ["test_*.py"]
 addopts = "-q"
 
 [tool.setuptools]
 py-modules = []
+
+[tool.setuptools.packages.find]
+include = ["nano_ai*"]
+
+[tool.setuptools.package-data]
+nano_ai = ["fixtures/v0/*.json"]

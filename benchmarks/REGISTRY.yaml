@@ -1,9 +1,10 @@
-# Benchmark Supremacy Lab — living registry (Program 0)
-# Non-evidential. Operational task: held-value sentinel only.
+# Reproducible infrastructure sentinel. This registry does not authorize
+# leaderboard or evidence-ledger claims.
 
-registry_version: "0.1.0"
+registry_version: "0.2.0"
 schema: benchmarks/REGISTRY.schema.json
-program: BENCHMARK_SUPREMACY_LAB_PROGRAM0
+program: NANO_RUNTIME_REGRESSION
+
 harness_pin:
   package: lm-eval
   version: "0.4.12"
@@ -11,90 +12,20 @@ harness_pin:
   pin_doc: benchmarks/adapters/lm_eval/LM_EVAL_PIN.md
 
 resource_classes:
-  - id: rc_micro
-    name: Micro
-    definition_status: stub
-    parameter_bounds: {max_params: 100000000}
-    hardware_bounds: null
-    budget_units: parameters
-    version: "0.1.0"
-  - id: rc_tiny
-    name: Tiny
-    definition_status: stub
-    parameter_bounds: {min_params: 100000000, max_params: 500000000}
-    hardware_bounds: null
-    budget_units: parameters
-    version: "0.1.0"
-  - id: rc_small
-    name: Small
-    definition_status: stub
-    parameter_bounds: {min_params: 500000000, max_params: 3000000000}
-    hardware_bounds: null
-    budget_units: parameters
-    version: "0.1.0"
-  - id: rc_compact
-    name: Compact
-    definition_status: stub
-    parameter_bounds: {min_params: 3000000000, max_params: 10000000000}
-    hardware_bounds: null
-    budget_units: parameters
-    version: "0.1.0"
-  - id: rc_local
-    name: Local
-    definition_status: stub
-    parameter_bounds: null
-    hardware_bounds: {target: consumer_local}
-    budget_units: hardware_fit
-    version: "0.1.0"
-  - id: rc_edge
-    name: Edge
-    definition_status: stub
-    parameter_bounds: null
-    hardware_bounds: {target: edge_device}
-    budget_units: hardware_fit
-    version: "0.1.0"
-  - id: rc_train_budget_smoke
-    name: training-budget-smoke
-    definition_status: stub
-    parameter_bounds: null
-    hardware_bounds: null
-    budget_units: training_tokens
-    version: "0.1.0"
-  - id: rc_infer_budget_smoke
-    name: inference-budget-smoke
-    definition_status: stub
-    parameter_bounds: null
-    hardware_bounds: null
-    budget_units: inference_tokens
-    version: "0.1.0"
-  - id: rc_mem_budget_smoke
-    name: memory-budget-smoke
-    definition_status: stub
-    parameter_bounds: null
-    hardware_bounds: null
-    budget_units: gigabytes
-    version: "0.1.0"
-  - id: rc_hw_cpu
-    name: hardware-cpu
-    definition_status: stub
-    parameter_bounds: null
-    hardware_bounds: {device: cpu}
-    budget_units: hardware_class
-    version: "0.1.0"
-  - id: rc_classical_baseline
-    name: classical-baseline
+  - id: rc_local_cpu
+    name: local-cpu
     definition_status: operational
     parameter_bounds: null
-    hardware_bounds: null
-    budget_units: solver
-    version: "0.1.0"
+    hardware_bounds: {device: cpu}
+    budget_units: execution_environment
+    version: "0.2.0"
 
 suites:
   - id: suite_sentinel
     family: sentinel
-    version: "0.1.0"
+    version: "0.2.0"
     status: operational
-    owner: benchmark_lab
+    owner: nano_runtime
     task_ids: [nano_held_value_sentinel]
     required_metrics: [exact_match, exact_match_held, exact_match_seen]
     protected_metrics: [exact_match, exact_match_held]
@@ -102,66 +33,6 @@ suites:
     license: research-internal-sentinel
     contamination_status: not_applicable_synthetic_fixture
     visibility: public_fixture
-  - id: suite_capability
-    family: capability
-    version: "0.0.0"
-    status: planned
-    owner: benchmark_lab
-    task_ids: []
-    required_metrics: []
-    protected_metrics: []
-    source: null
-    license: TBD
-    contamination_status: unknown
-    visibility: planned
-  - id: suite_robustness
-    family: robustness
-    version: "0.0.0"
-    status: planned
-    owner: benchmark_lab
-    task_ids: []
-    required_metrics: []
-    protected_metrics: []
-    source: null
-    license: TBD
-    contamination_status: unknown
-    visibility: planned
-  - id: suite_dynamic
-    family: dynamic
-    version: "0.0.0"
-    status: planned
-    owner: benchmark_lab
-    task_ids: []
-    required_metrics: []
-    protected_metrics: []
-    source: null
-    license: TBD
-    contamination_status: unknown
-    visibility: planned
-  - id: suite_systems
-    family: systems
-    version: "0.0.0"
-    status: planned
-    owner: benchmark_lab
-    task_ids: []
-    required_metrics: []
-    protected_metrics: []
-    source: null
-    license: TBD
-    contamination_status: unknown
-    visibility: planned
-  - id: suite_product
-    family: product
-    version: "0.0.0"
-    status: planned
-    owner: benchmark_lab
-    task_ids: []
-    required_metrics: []
-    protected_metrics: []
-    source: null
-    license: TBD
-    contamination_status: unknown
-    visibility: planned
 
 tasks:
   - id: nano_held_value_sentinel
@@ -176,6 +47,4 @@ tasks:
     classical_baseline_required: true
     evidence_ledger_eligible: false
     leaderboard_eligible: false
-    note: >
-      Infrastructure sentinel. Fixture is digest-bound for Program 0.
-      Does not amend Paper α instruments under trajectory/.
+    note: Infrastructure regression fixture only; it does not amend Paper alpha.

@@ -1,4 +1,4 @@
-# Program 0 infrastructure sentinel — not a scientific claim.
+# Infrastructure regression sentinel — not a scientific claim.
 # Ground truth is bound by digest in the Python task_adapter / runner;
 # this YAML is the harness registration surface.
 task: nano_held_value_sentinel
@@ -6,7 +6,7 @@ task_alias: nano_held_value_sentinel
 tag:
   - sentinel
   - held_value
-  - program0
+  - regression
 dataset_path: json
 dataset_name: null
 dataset_kwargs:
@@ -28,7 +28,7 @@ metric_list:
     higher_is_better: true
 metadata:
   version: 0.1.0
-  nano_lm_program: BENCHMARK_SUPREMACY_LAB_PROGRAM0
+  nano_lm_program: NANO_RUNTIME_REGRESSION
   source_instrument: benchmarks/adapters/lm_eval/fixtures/held_value_sentinel_n4.json
   source_instrument_sha256: ed5e8171cf13a4e802ecc6635740e8ad3977064eea7e4149b331a20792dee0a2
   record_count: 4

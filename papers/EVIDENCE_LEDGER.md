@@ -1,70 +1,18 @@
 # Evidence ledger
 
-> **Layer boundary:** This ledger is Layer 1 only (demonstrated claims). Long-term vision and research programs live in `LABORATORY_CONSTITUTION.md`, `RESEARCH_PORTFOLIO.md`, and `TECHNOLOGY_ROADMAP.md` — they must not be read as evidence.
+This is the canonical boundary between measured evidence and project ambition. A
+claim belongs here only when its wording, result, limitations, and supporting
+artifact agree. Product plans are not evidence.
 
-Single source of truth for claim strength. Docs/evidence layer only.
-Aligned with `trajectory/DECISION_P1_program_lock.md`, Paper α (`paper-alpha-v1`),
-and post-α primary bundle (`post-alpha-evidence-freeze-2026-07-31` → `a9d12cb`).
+Evidence anchors:
 
-**Authority:** Prior DIFF E apply (20260731T151914Z) + schema/status remediations; remediations approved `20260731T180656Z` (`OWNER_APPROVED_DIFF_E_REMEDIATION`).
-Machine twin: `papers/EVIDENCE_LEDGER.json` (schema `nano-lm.evidence_ledger.v2`).
-Proposal provenance: `audit/discussion-to-implementation/EVIDENCE_LEDGER_PROPOSED.md`.
-Pre-replace snapshot: `audit/discussion-to-implementation/snapshots/EVIDENCE_LEDGER.md.pre-diff-e-20260731T151914Z`.
+- Paper α: tag `paper-alpha-v1` at `0e01d73205e9c35ea32925fd4d6c7e5fceb61137`
+- Premature post-α tag, retained for history: `post-alpha-evidence-freeze-2026-07-31` at `a9d12cb1c456f6c465284e1d469c6326cb14d329`
+- Reconciled post-α evidence: `post-alpha-reconciled-evidence-freeze-2026-07-31` at `67bf87b1f968a38e68c0225b2b556f7bba5ea1cc`
+- Machine-readable claim-to-artifact map: `papers/EVIDENCE_MANIFEST.json`
 
-**Review snapshot:** `review-2026-07-31-04` · HEAD `2ad06d24c4f7` · premature tag target `a9d12cb1c456` · reconciled `67bf87b1f968`
-
-Amended only by owner-facing commit. Do not invent measurement results here.
-
-## Status
-
-```text
-DIFF_E = OWNER_APPROVED_REMEDIATIONS
-MARKER = OWNER_APPROVED_DIFF_E_REMEDIATION (20260731T180656Z)
-# Schema/status remediations approved; premature freeze tag preserved.
-```
-
-Machine-readable twin: `papers/EVIDENCE_LEDGER.json` (schema `nano-lm.evidence_ledger.v2`).
-Enum validation: **PASS** (literal vocabulary members only).
-
-## Review snapshot
-
-```json
-{
-  "review_snapshot_id": "review-2026-07-31-04",
-  "head_commit": "2ad06d24c4f72b292f73ef098fdcc0ce2a008659",
-  "paper_alpha_tag": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
-  "premature_post_alpha_tag": "post-alpha-evidence-freeze-2026-07-31",
-  "premature_post_alpha_tag_target": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
-  "reconciled_freeze_tag": "post-alpha-reconciled-evidence-freeze-2026-07-31",
-  "reconciled_freeze_tag_target": "67bf87b1f968a38e68c0225b2b556f7bba5ea1cc",
-  "note": "DIFF E nine corrections complete; premature tag preserved; discovery disposition reaffirmed"
-}
-```
-
-Each row carries `last_reviewed_snapshot_id = review-2026-07-31-04`.
-
-## Vocabularies (orthogonal; compound strings forbidden)
-
-| Field | Allowed values |
-|-------|----------------|
-| epistemic | FALSIFIED \| PLAUSIBLE \| PROVEN \| SPECULATION \| SUPPORTED \| UNRESOLVED \| VOID |
-| claim_type | FUTURE_HYPOTHESIS \| GATE_VERDICT \| IMPLEMENTATION_STATE \| INTERPRETATION \| MEASUREMENT \| POLICY_BAN \| PRODUCT_THESIS |
-| gate_verdict | BLOCKED \| GATED_STOP \| KILL \| N/A \| PASS \| REFUTED \| UNRESOLVED \| VOID |
-| evidence_class | ASPIRATIONAL \| DECISION-GOVERNANCE \| LOCAL-DOCUMENTARY \| PUBLIC-ANCHORED \| RAW-UNINSPECTED \| STALE-CONTRADICTORY |
-| claim_record_publication / supporting_evidence_publication | ABSENT_EXPECTED \| ABSENT_UNEXPLAINED \| COMMITTED_LOCAL \| IGNORED_LOCAL \| PUBLIC_TAGGED \| PUBLIC_UNTAGGED \| RELEASE_ASSET_PLANNED \| UNTRACKED_LOCAL |
-| result_state | ABSENT_EXPECTED \| ABSENT_UNEXPLAINED \| NO_RESULT \| PRESENT |
-| reproducibility | LOCAL_UNPUBLISHED \| LOCAL_VERIFIED \| NO_RESULT \| PUBLIC_PARTIAL \| PUBLIC_REPRODUCIBLE \| RAW_NOT_DURABLE |
-| wording_policy | APPROVED \| FORBIDDEN \| HEDGE_REQUIRED \| N/A |
-
-Optional free-text (not enums): `gate_label`, `gate_note`, `wording_note`, `repro_note`.
-
-Publication semantics:
-
-- `claim_record_publication` — where **this ledger row text** is published (proposal remains `PUBLIC_UNTAGGED` until approved+pushed)
-- `supporting_evidence_publication` — where **supporting artifacts** live
-- `result_state` — whether a measurement RESULT exists
-
-Invalidation vs future updates are separate columns.
+Do not strengthen a claim beyond the table below. New experiments either add a
+new claim ID or explicitly replace one with traceable evidence.
 
 ## Claims
 
@@ -77,7 +25,7 @@ Invalidation vs future updates are separate columns.
 | C_PARAMETER_ONLY_EFFECT | Parameter count alone is insufficient to reduce the held-out copying gap | INTERPRETATION | UNRESOLVED | N/A | — | DECISION-GOVERNANCE | PUBLIC_UNTAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | HEDGE_REQUIRED | parameters not isolated from token budgets | — | matched equal-token parameter intervention + RESULT |
 | C_OWNSTACK_200M_FULLFT_GATE | Under the frozen own-stack rule, 159M/200M/full-FT diluted gap 16.9≥14 → historical label STACK-dominant vs Pythia-160M | GATE_VERDICT | SUPPORTED | PASS | STACK_DOMINANT | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | HEDGE_REQUIRED | historical gate label for one cell | protocol VOID | — |
 | C_ADAPT_DATA_CELLS | At 159M own-stack, measured diluted gaps: ~16.9 (200M/full-FT), ~7.1 (200M/LoRA), ~7.0 (3.2B/full-FT), ~4.2 (3.2B/LoRA) | MEASUREMENT | SUPPORTED | N/A | — | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | APPROVED | few runs/cell; venue mix | recompute mismatch | — |
-| C_ADAPT_DATA_INTERP | The observed 2×2 cell pattern is consistent with a weak-base × full-FT interaction. Whether additional pretraining and LoRA are mechanistic substitutes is unresolved. | INTERPRETATION | PLAUSIBLE | N/A | — | DECISION-GOVERNANCE | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | NO_RESULT | HEDGE_REQUIRED | E2 unidentified | — | valid E2 RESULT after owner re-scope |
+| C_ADAPT_DATA_INTERP | The observed 2×2 cell pattern is consistent with a weak-base × full-FT interaction. Whether additional pretraining and LoRA are mechanistic substitutes is unresolved. | INTERPRETATION | PLAUSIBLE | N/A | — | DECISION-GOVERNANCE | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | NO_RESULT | HEDGE_REQUIRED | E2 unidentified | — | valid E2 result under a new preregistered design |
 | C_INTERFERENCE | The preregistered isolated-versus-contained lexical-interference contrast produces an effect ≥ the C1b support threshold | GATE_VERDICT | FALSIFIED | REFUTED | C1B_ISOLATED_VS_CONTAINED | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | general lexical/morph effects remain open; primary JSONL TRACKED | protocol VOID | new registered lexical contrast |
 | C_C3_TB | Transition availability and boundary type each produce effects ≥ the preregistered 40-pt support threshold in C3 | GATE_VERDICT | FALSIFIED | REFUTED | C3_TRANSITION_BOUNDARY | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | replication JSONL IGNORED_LOCAL + local_raw_archive; wide intervals/imbalance | protocol VOID | equivalence-powered redesign |
 | C_C3_L | Length factor drives residual (≥ support threshold) in C3 | GATE_VERDICT | UNRESOLVED | UNRESOLVED | C3_LENGTH | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | underpowered | protocol VOID | decisive length arm under amended prereg |
@@ -85,6 +33,10 @@ Invalidation vs future updates are separate columns.
 | C_MORPH | Morphological re-inflection is the causal residual mechanism | INTERPRETATION | SPECULATION | N/A | — | ASPIRATIONAL | PUBLIC_UNTAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | exploratory only | — | preregistered causal RESULT |
 | C_POINTER_P1 | Explicit pointer/copy head closes OOD gap (P1) | GATE_VERDICT | VOID | VOID | POINTER_P1 | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | APPROVED | manipulation check failed | — | — |
 | C_POINTER_P2 | Copy-supervised pointer head closes OOD gap for this preregistered implementation | GATE_VERDICT | FALSIFIED | REFUTED | POINTER_P2 | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | APPROVED | this impl only | protocol VOID | new implementation gets a new claim ID |
+| C_NANO_H2_POINTER_DEV | On sealed synthetic development data, the best of six H2 direct state/pointer checkpoints scored raw 61.82% overall, 64.75% held-value, and 88.40% missing-target accuracy, but 0% absence, 24.80% conflict, 21.60% uncertain, and 1,707 wrong-presented fields; post-verification it scored 65.74% overall and zero false-presented fields, so H2 failed its frozen raw-plus-final quality gate and was rejected | GATE_VERDICT | SUPPORTED | REJECT | H2_NATIVE_POINTER_SPAN | CONTENT-ADDRESSED | PUBLIC_UNTAGGED | TRACKED_SUMMARY_LOCAL_LARGE | PRESENT | LOCAL_CONTENT_ADDRESSED | APPROVED | sealed development used for model selection; two seeds/six checkpoints; exact architecture/recipe only; no latency; `fresh-v1` sealed; large row/checkpoint artifacts local | artifact/hash mismatch or protocol VOID | bounded H3 receives a new claim ID and requires a frozen contract |
+| C_NANO_H3_EVIDENCE_QUERY_DEV | On known synthetic development data, the training-only-selected H3 evidence-query checkpoint scored raw 56.42% overall, 72.55% held-value, 85.20% missing-target, 45.52% absence, 37.60% conflict, and 38.80% uncertain accuracy, with zero decode failures and 1,264 wrong-presented fields; it failed frozen uncalibrated admission and was rejected before threshold, verifier, latency, or `fresh-v1` | GATE_VERDICT | SUPPORTED | REJECT | H3_EVIDENCE_QUERY_POINTER | CONTENT-ADDRESSED | PUBLIC_UNTAGGED | TRACKED_SUMMARY_LOCAL_LARGE | PRESENT | LOCAL_CONTENT_ADDRESSED | APPROVED | known synthetic development; two seeds/six checkpoints; perfect training-only calibration; exact architecture-plus-training-family intervention only; downstream stages intentionally null; `fresh-v1` sealed; large row/checkpoint artifacts local | artifact/hash mismatch or protocol VOID | completed H4 has its own claim ID; subsequent interventions require a new claim ID and frozen contract |
+| C_NANO_H4_SURFACE_TRANSFER_DEV | On known synthetic development data, the training-only-selected H4 surface-transfer candidate scored raw 44.96% overall, 38.03% held-value, 53.60% missing-target, 7.99% absence, 22.80% conflict, and 33.60% uncertain accuracy, with zero decode failures and 2,141 wrong-presented fields; it failed frozen uncalibrated admission and was rejected before threshold, verifier, latency, or sealed confirmation | GATE_VERDICT | SUPPORTED | REJECT | H4_SURFACE_TRANSFER_DATA_ONLY | CONTENT-ADDRESSED | PUBLIC_UNTAGGED | TRACKED_SUMMARY_LOCAL_LARGE | PRESENT | LOCAL_CONTENT_ADDRESSED | APPROVED | known adaptive synthetic development; two seeds/six checkpoints; exact data-only recipe; evidence order, distractors, and long-context distance were not changed; downstream stages intentionally null; large row/checkpoint artifacts local | artifact/hash mismatch or protocol VOID | completed H5 has its own claim ID; subsequent interventions require a new claim ID and frozen contract |
+| C_NANO_H5_BALANCED_REPLAY_DEV | On known synthetic development data, the training-only-selected H5 fixed 50:50 replay candidate scored raw 78.18% overall, 74.32% held-value, 100% missing-target, 67.80% absence, 59.60% conflict, and 64.80% uncertain accuracy, with zero decode failures and 1,013 wrong-presented fields; it failed frozen absence, conflict, and uncertainty admission gates and was rejected before threshold, verifier, latency, or sealed confirmation | GATE_VERDICT | SUPPORTED | REJECT | H5_BALANCED_REPLAY_DATA_ONLY | CONTENT-ADDRESSED | PUBLIC_UNTAGGED | TRACKED_SUMMARY_LOCAL_LARGE | PRESENT | LOCAL_CONTENT_ADDRESSED | APPROVED | known adaptive synthetic development; two seeds/six checkpoints; exact 50:50 replay recipe only; state/span localization descriptive not causal; downstream stages intentionally null; large row/checkpoint artifacts local | artifact/hash mismatch or protocol VOID | H6 representation-only coupling test requires its own claim ID and frozen contract |
 | C_E1_MEASUREMENT | Under frozen E1 U, reported utilities: M1≈0.999, official M0≈0.925, M2≈0.886 (margin M1−M0≈+0.074); ρ = review load | MEASUREMENT | SUPPORTED | N/A | — | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | M1 generator-aligned; L/C device-normalization audit residual | recompute mismatch / protocol VOID | none; new U receives a new claim ID |
 | C_E1_GATE | Frozen E1 rule returns KILL (M1 exceeds M0; M2 within δ=0.05 non-necessity margin) | GATE_VERDICT | SUPPORTED | KILL | E1_KILL | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | decision-layer prior embedded in δ/weights | protocol VOID | — |
 | C_E1_PRODUCT_THESIS | A generative LM is necessary/preferred proposer substrate for the old synthetic task under frozen E1 U | PRODUCT_THESIS | FALSIFIED | KILL | E1_KILL | DECISION-GOVERNANCE | PUBLIC_TAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_PARTIAL | HEDGE_REQUIRED | new U or R★ create new claim IDs; do not withdraw this scoped result | protocol/U VOID for this estimand | — |
@@ -93,11 +45,11 @@ Invalidation vs future updates are separate columns.
 | C_E3_HUMAN_STATUS | Independent human or clinician validation of exact match has not been completed; IAA is absent. | IMPLEMENTATION_STATE | SUPPORTED | N/A | — | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | APPROVED | agent audit ≠ human validation | repository inventory error (if arm actually exists) | completed independent human/clinician study with recorded agreement |
 | C_FABRIC_SLICE | On closed synthetic inst0, propose→verify→abstain under rules-strong v2 drove presented-error → 0 | MEASUREMENT | SUPPORTED | PASS | FABRIC_SLICE_V1 | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | HEDGE_REQUIRED | closed world; ledger = per-run rewritten JSONL | protocol VOID / recomputation mismatch | independently evaluated imperfect/open-world verifier (new claim ID) |
 | C_NANOSCRIBE_STATE | Repo evidences fabric vertical slice; does not evidence NanoScribe control plane, durable memory, routing, tools, permissions, distribution, or UI | IMPLEMENTATION_STATE | SUPPORTED | N/A | — | PUBLIC-ANCHORED | PUBLIC_TAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | APPROVED | absence in audited repo ≠ proof no private impl | repository inventory error | evidenced modules are implemented |
-| C_LORA_GEOM | LoRA preserves copy-circuit geometry | INTERPRETATION | SPECULATION | GATED_STOP | E2 | ASPIRATIONAL | PUBLIC_UNTAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | no results_e2_* | — | valid E2 RESULT after owner re-scope |
-| C_E2_STATUS | E2 U1–U4 universe discrimination has not produced a RESULT; E2 is GATED/STOP. | IMPLEMENTATION_STATE | SUPPORTED | GATED_STOP | E2 | PUBLIC-ANCHORED | PUBLIC_TAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | APPROVED | terminated U3 residue is not a measurement | status prose invents a RESULT | owner-authorized re-scope followed by a valid RESULT |
+| C_LORA_GEOM | LoRA preserves copy-circuit geometry | INTERPRETATION | SPECULATION | GATED_STOP | E2 | ASPIRATIONAL | PUBLIC_UNTAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | no results_e2_* | — | valid E2 result under a new preregistered design |
+| C_E2_STATUS | E2 U1–U4 universe discrimination has not produced a RESULT; E2 is GATED/STOP. | IMPLEMENTATION_STATE | SUPPORTED | GATED_STOP | E2 | PUBLIC-ANCHORED | PUBLIC_TAGGED | PUBLIC_TAGGED | ABSENT_EXPECTED | NO_RESULT | APPROVED | terminated U3 residue is not a measurement | status prose invents a RESULT | completed preregistered E2 measurement |
 | C_E4_RESULT | Under frozen U_R★ on locked R★ v1, best classical U≈0.638 (C-M2) and best generative+verify U≈−1.623 (G-ref verify-on); sensitivity flip false. | MEASUREMENT | SUPPORTED | N/A | — | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | regime-scoped; after premature freeze tag | recompute mismatch / protocol VOID | — |
-| C_E4_GATE | E4 Gate 4 decision under frozen δ=0.05 is KILL for generative substrate on tested R★ v1. | GATE_VERDICT | SUPPORTED | KILL | E4 | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | does not authorize NanoScribe/fabric expansion | protocol VOID | — |
-| C_RSTAR_VALUE | Whether some preregistered R★ revision can yield generative+verify utility above classical remains open; revision budget ≤1 needs fresh owner auth. | FUTURE_HYPOTHESIS | UNRESOLVED | N/A | RSTAR_REVISION | DECISION-GOVERNANCE | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | ABSENT_EXPECTED | NO_RESULT | HEDGE_REQUIRED | tested R★ v1 already KILL; no silent redesign | — | AUTHORIZE_RSTAR_REVISION + new prereg + RESULT |
+| C_E4_GATE | E4 Gate 4 decision under frozen δ=0.05 is KILL for generative substrate on tested R★ v1. | GATE_VERDICT | SUPPORTED | KILL | E4 | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | PRESENT | PUBLIC_PARTIAL | APPROVED | does not support NanoScribe/fabric expansion | protocol VOID | — |
+| C_RSTAR_VALUE | Whether some preregistered R★ revision can yield generative+verify utility above classical remains open; revision budget ≤1 requires a new preregistered design. | FUTURE_HYPOTHESIS | UNRESOLVED | N/A | RSTAR_REVISION | DECISION-GOVERNANCE | PUBLIC_UNTAGGED | PUBLIC_UNTAGGED | ABSENT_EXPECTED | NO_RESULT | HEDGE_REQUIRED | tested R★ v1 already KILL; no silent redesign | — | new preregistration and result |
 | C_ZERO_HALLUC_OPEN | Zero hallucination in the open world | PRODUCT_THESIS | SPECULATION | N/A | — | ASPIRATIONAL | PUBLIC_TAGGED | ABSENT_EXPECTED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | only zero accepted violations of R if ever proven for that R | — | soundness proof for a specified R |
 | C_CLINICAL_DEPLOYMENT | The current nano-lm evidence supports clinical deployment readiness. | PRODUCT_THESIS | SPECULATION | N/A | — | ASPIRATIONAL | PUBLIC_UNTAGGED | ABSENT_EXPECTED | ABSENT_EXPECTED | NO_RESULT | FORBIDDEN | synthetic task; no clinical validation, workflow study, risk study, or deployment evidence | — | clinical validation program with recorded evidence |
 
@@ -107,18 +59,48 @@ Invalidation vs future updates are separate columns.
 - **C_E2_STATUS:** supported status fact that measurement was **not** completed; not an inconclusive measurement.
 - **C_E3_HUMAN_STATUS:** negative current-state row (replaces positive unresolved validation sentence).
 - **C_ADAPT_DATA_INTERP:** no “substitutes” hardening.
+- **C_NANO_H2_POINTER_DEV:** raw metrics describe the learned model proposal
+  before transcript verification. The post-verification zero false-presented
+  result came from verifier acceptance/rejection behavior and does not satisfy
+  the failed raw-model gate. The tracked summary is SHA-256
+  `f61bb7f0f3401dfbaff8a5ab7e987d313a4811442f790b1d03f0883b403806cc`;
+  the 34,000,758-byte row-level evaluation remains local at SHA-256
+  `641c08f826a5669220cd7fda8c52fbd2a682a352c8be36a97f93a099ecfe3833`.
+  H2 stopped at quality: latency was intentionally not measured and
+  `fresh-v1` was not read.
+- **C_NANO_H3_EVIDENCE_QUERY_DEV:** all six H3 checkpoints scored 4,000/4,000
+  on training-only calibration; the frozen tie-break selected
+  `seed-20260805-epoch-1`. The tracked summary is SHA-256
+  `cbd23c6a5799179b487119e9bee6e181dd328e691ee5388b12d03689f538ec82`;
+  the 1,790,093-byte row-level evaluation remains local at SHA-256
+  `df6896855980172aabd03149affffca8352c2ef9732fb860a79b3f50d854c831`.
+  Failed uncalibrated admission correctly left calibrated raw, verifier-final,
+  latency, and `fresh-v1` unassessed. Perfect calibration versus poor
+  development is evidence for a data-transfer repair, not proof that data is
+  the only possible cause.
+- **C_NANO_H4_SURFACE_TRANSFER_DEV:** training-owned calibration selected
+  `seed-20260806-epoch-2`, checkpoint SHA-256
+  `6408524c43b6ada8249aeb83e440b6aa0f64512006219663be4105f6d586e13f`.
+  The 1,855,164-byte development evaluation remains local at SHA-256
+  `b8f8b350f4ad772b06a292c5e156d097e549f62e15be09c3c55c608574c0ed82`.
+  Allergy emitted `absent` on all 1,000 rows; medication had 832/1,000 correct
+  states but only 194/1,000 exact spans; all 413 absent fields had the correct
+  state but only 33 exact evidence spans. These post-hoc observations motivate
+  replay and failure localization; they do not prove a causal mechanism.
+- **C_NANO_H5_BALANCED_REPLAY_DEV:** training-owned calibration selected
+  `seed-20260805-epoch-3`, checkpoint SHA-256
+  `04ba7b4d0dc876ca3d8de7fe7d809ca16796e5bf55249ad93ba1dd3557c394fe`.
+  The 1,836,514-byte development evaluation remains local at SHA-256
+  `c67393962299470fc6b5026031b61617bbae85a2883105b8b8abfcdb30820c47`;
+  the complete result archive is SHA-256
+  `bab5327e900597a083cb04631e645f2e0f500f14f01ec7db195e754b34620749`.
+  H5 passed overall, held-value, missing, failure, and state-balance gates but
+  failed absence, conflict, and uncertainty. The frozen stop left calibrated,
+  verifier-final, latency, and sealed-confirmation stages null. Its 727
+  state-correct/span-wrong and 270 span-correct/state-wrong fields motivate a
+  coupling test but do not prove the cause.
 - **C_CLINICAL_DEPLOYMENT:** restored policy-ban / forbidden public wording row.
-- **Existing premature tag:** `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` (PUBLIC; preserve; do not recreate). See `TAG_AUDIT_POST_ALPHA.md`.
-
-### Retired IDs
-
-- `C_SCALE_FLAT` → split → C_SCALE_OBSERVED + C_PARAMETER_ONLY_EFFECT + C_OWNSTACK_200M_FULLFT_GATE
-- `C_ADAPT_DATA` → split → C_ADAPT_DATA_CELLS + C_ADAPT_DATA_INTERP
-- `C_E1_KILL` → split → C_E1_MEASUREMENT + C_E1_GATE + C_E1_PRODUCT_THESIS
-- `C_E3_NORM` → prefer C_E3_NORMALIZE_RESULT
-- `C_E3_RUBRIC` → prefer C_E3_AGENT_AUDIT + C_E3_HUMAN_STATUS
-- `C_E3_HUMAN_VALIDITY` → replaced by C_E3_HUMAN_STATUS
-- `C_NANOSCRIBE_IMPL` → prefer C_NANOSCRIBE_STATE
+- **Existing premature tag:** `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` is historical and must not be moved or recreated.
 
 ## Required public wording for E3 (H1)
 
@@ -126,15 +108,8 @@ Invalidation vs future updates are separate columns.
 
 > The agent-rubric audit is complete. Independent human or clinician validation, IAA, and broader semantic-equivalence validation remain unresolved.
 
-## Owner approval
+## Use
 
-**Applied** to `papers/EVIDENCE_LEDGER.md` under owner `approved` (2026-07-31). Correction commit / tag / push remain separately gated by `OWNER_COMMIT_OK`.
-
-## Re-audit note (DIFF E disposition re-issued)
-
-**When:** 2026-07-31T18:35:26Z  
-**Owner boxed disposition:** `DIFF_E = MINOR_SCHEMA_AND_STATUS_REMEDIATION_REQUIRED`  
-**Verification:** nine schema/status corrections already present (enum check PASS).  
-**Delta this pass:** added `C_E4_RESULT` + `C_E4_GATE` (KILL); rewrote `C_RSTAR_VALUE` as open revision hypothesis (not “E4 blocked/untested”).  
-**Premature tag:** `post-alpha-evidence-freeze-2026-07-31` → `a9d12cb` PRESERVE.  
-**Live replace policy:** proposal mirrors live; further owner approval only for claim-surface freezes/tags.
+For a compact narrative of the same evidence, see
+`papers/EMPIRICAL_FOUNDATION.md`. For exact files and hashes, use
+`papers/EVIDENCE_MANIFEST.json` and `artifacts/MANIFEST.json`.

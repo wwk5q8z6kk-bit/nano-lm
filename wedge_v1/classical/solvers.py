@@ -12,8 +12,9 @@ class Claim:
     doc_id: str | None
     value: object
     evidence: list = field(default_factory=list)
-    status: str = "PRESENT"  # PRESENT | ABSTAIN | DISPUTED | MISSING
+    status: str = "PRESENT"  # PRESENT | ABSTAIN | DISPUTED | MISSING | REVIEW | REJECTED
     notes: str = ""
+    meta: dict = field(default_factory=dict)
 
 
 def _find(text: str, needle: str):

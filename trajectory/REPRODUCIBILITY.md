@@ -74,7 +74,7 @@ torch 2.10.0+cu128 · transformers 5.0.0 · peft 0.19.1 · python 3.12.13 · Tes
 - Headless kernels must pin `machine_shape: NvidiaTeslaT4`; the default GPU can be
   a P100 (sm_60) which the torch build cannot run.
 - Kaggle caps batch GPU sessions at 2; the third rung waits for a free slot.
-- Local watcher processes were repeatedly reaped by the session harness; this had
+- Local watcher processes exited intermittently; this had
   no effect on the experiment — Kaggle jobs run server-side independently and all
   completed artifacts are pulled and archived. Recovery of any rung is by
   re-pulling the completed kernel output, not re-running.
@@ -131,8 +131,8 @@ torch 2.10.0+cu128 · transformers 5.0.0 · peft 0.19.1 · python 3.12.13 · Tes
 
 ### Claim discipline reminder
 
-Reproducing a number does not authorize a broader mechanism or product claim.
-See `papers/EMPIRICAL_FOUNDATION.md` and `papers/RESEARCH_PROGRAM.md`.
+Reproducing a number does not support a broader mechanism or product claim.
+See `papers/EMPIRICAL_FOUNDATION.md` and `papers/EVIDENCE_LEDGER.md`.
 
 ---
 
@@ -140,7 +140,7 @@ See `papers/EMPIRICAL_FOUNDATION.md` and `papers/RESEARCH_PROGRAM.md`.
 
 Machine-readable map: `papers/EVIDENCE_MANIFEST.json`.
 
-### Authority for KILL / construct claims
+### Evidence basis for KILL / construct claims
 
 | Claim | Prereg | Primary outputs | Local verify |
 |-------|--------|-----------------|--------------|
@@ -165,6 +165,6 @@ for this world, not as a weak heuristic.
 ### Git packaging note
 
 These E1/E3 files were **present locally and untracked**, not gitignored. Tag
-`paper-alpha-v1` therefore could not anchor KILL/E3 until an owner commit adds the
-bundle. Prefer committing the `commit_ready_bundle_globs` from the manifest; omit
-`exclude_from_scientific_commit` logs/partials.
+`paper-alpha-v1` therefore predates the E1/E3 bundle. Use the current
+`papers/EVIDENCE_MANIFEST.json` and repository history to locate the packaged evidence;
+exclude transient logs and partial outputs from scientific bundles.

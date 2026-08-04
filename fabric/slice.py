@@ -1,6 +1,6 @@
-# NanoScribe fabric — Phase 1 minimal vertical slice (Master Plan action #3).
-# Intent -> Control -> nano-lm generator -> Claims -> Verifier -> Risk decision ->
-# typed Ledger, on the existing scribe task, measured on the frozen inst0 instrument.
+# Fabric closed-world verification regression slice.
+# nano-lm generator -> Claims -> Verifier -> Risk decision -> typed Ledger, on the
+# existing synthetic five-field scribe task, measured on the frozen inst0 instrument.
 #
 # Success gate (EMPIRICAL_FOUNDATION / vNext V1): presented-claim error rate <= the raw
 # generator's error rate (the verifier must catch the known copying failures), AND 100%

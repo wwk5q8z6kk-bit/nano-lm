@@ -1,4 +1,4 @@
-"""Typed manifest schemas and content-addressed run identity for Program 0."""
+"""Typed manifests and content-addressed identity for benchmark regressions."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from enum import Enum
 from typing import Any
 
 
-SCHEMA_VERSION = "benchmark_lab.manifest.v1"
+SCHEMA_VERSION = "nano_lm.benchmark_manifest.v1"
 
 
 class RunStatus(str, Enum):

@@ -7,15 +7,12 @@ from dataclasses import asdict
 from pathlib import Path
 
 from wedge_v1.build_corpus import build
-from wedge_v1.auth_gate import require_auth
 from wedge_v1.eval.claim_report import claim_level_report
 from wedge_v1.classical import solvers as S
 from wedge_v1.classical.eclass_probes import apply_eclass_overrides, lm_still_needed
 from wedge_v1.run_classical_baseline import score as score_classical
 
 ROOT = Path(__file__).resolve().parent
-REPO = ROOT.parent
-AUTH = "AUTHORIZE_WEDGE_V1_PHASE3_LM_PROBE"
 OUT = ROOT / "results_wedge_v1_phase3.json"
 
 
@@ -150,7 +147,6 @@ def main() -> None:
 
     out = {
         "schema": "nano-lm.wedge_v1.phase3.v1",
-        "auth": AUTH,
         "track": "clean",
         "classical_U": U_c,
         "hybrid_U": U_h,
@@ -177,9 +173,6 @@ def main() -> None:
         ],
     }
     OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
-    (REPO / "trajectory" / "results_wedge_v1_phase3.json").write_text(
-        json.dumps(out, indent=2), encoding="utf-8"
-    )
     print(json.dumps({
         "verdict": verdict,
         "classical_U": U_c,
