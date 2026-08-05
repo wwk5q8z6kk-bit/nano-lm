@@ -1,0 +1,34 @@
+{
+  "schema": "nano.h6.runtime-admission-failure.v1",
+  "observed_at_utc": "2026-08-04T23:29:33Z",
+  "run_id": "h6-evaluation-ro1-retry-20260804",
+  "operation_id": "0cb268aa-e1fe-4d4f-af87-598fc90b84cc",
+  "provider": "runpod",
+  "destination": {
+    "pod_id": "iqy9is1l8hjsty",
+    "data_center_id": "EU-RO-1",
+    "cloud_tier": "secure",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_count": 1,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "workspace_mount_path": "/workspace",
+    "network_volume_id": "04himzqxbm"
+  },
+  "matched_runtime": {
+    "python": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "cuda": "12.8",
+    "tokenizers": "0.22.2",
+    "gpu": "NVIDIA GeForce RTX 5090"
+  },
+  "mismatch": {
+    "field": "platform",
+    "required": "Linux-6.8.0-90-generic-x86_64-with-glibc2.39",
+    "observed": "Linux-6.8.0-134-generic-x86_64-with-glibc2.39"
+  },
+  "development_released": false,
+  "development_opened": false,
+  "scientific_evaluation_started": false,
+  "decision": "Fail the pre-development destination attempt rather than claim an invalid immutable runtime attestation.",
+  "follow_up": "Repair the operational admission design so provider-controlled host-kernel drift cannot silently invalidate an otherwise exact frozen userspace runtime. Any later H6 attempt requires a fresh no-clobber authority."
+}

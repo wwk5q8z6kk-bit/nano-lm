@@ -1,0 +1,11 @@
+{
+  "schema": "nano.h6.recovery-cost-baseline.v1",
+  "observed_at_utc": "2026-08-03T21:47:28Z",
+  "source": "runpodctl_user_official_api",
+  "client_balance_usd": "54.3124480987",
+  "current_spend_per_hour_usd": "0.006",
+  "account_spend_limit_usd": "80",
+  "recovery_incremental_compute_usd_at_baseline": "0",
+  "recovery_incremental_storage_usd_at_baseline": "0",
+  "derivation": "Future recovery spend is measured as the nonnegative decrease from this provider balance; the existing stopped-pod storage rate continues independently."
+}

@@ -1,0 +1,80 @@
+{
+  "observed_at_utc": "2026-08-04T19:44:00Z",
+  "source": "runpodctl",
+  "sanitization": "Credentials, account identifiers, email, SSH material, and dataset contents omitted.",
+  "account": {
+    "balance_usd": 53.8450320458,
+    "current_spend_per_hour_usd": 0.01
+  },
+  "pods": {
+    "active": [],
+    "preserved_source": {
+      "id": "oad0zdviuzjq9q",
+      "name": "nano-h6-state-boundary-20260803",
+      "desired_status": "EXITED",
+      "live_gpu_count": 0,
+      "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+      "volume_mount_path": "/workspace",
+      "volume_size_gb": 20
+    },
+    "planned_destination": {
+      "name": "nano-h6-evaluation-cz1-20260804",
+      "state": "not_found",
+      "live_gpu_count": 0
+    }
+  },
+  "network_volumes": [
+    {
+      "id": "04himzqxbm",
+      "name": "nano-h6-evaluation-20260804",
+      "data_center_id": "EU-RO-1",
+      "size_gb": 20,
+      "retained": true
+    },
+    {
+      "id": "r9eibv5dan",
+      "name": "nano-h6-evaluation-cz1-20260804",
+      "data_center_id": "EU-CZ-1",
+      "size_gb": 20,
+      "retained": true
+    }
+  ],
+  "required_gpu": {
+    "model": "NVIDIA GeForce RTX 5090",
+    "secure_price_per_hour_usd": 0.99,
+    "data_center_availability": [
+      {
+        "data_center_id": "EU-CZ-1",
+        "stock_status": "Low"
+      },
+      {
+        "data_center_id": "EU-RO-1",
+        "stock_status": "Low"
+      }
+    ],
+    "other_reported_locations": [
+      {
+        "data_center_id": "EUR-IS-1",
+        "stock_status": "Low"
+      },
+      {
+        "data_center_id": "EUR-IS-2",
+        "stock_status": "Low"
+      },
+      {
+        "data_center_id": "EUR-NO-1",
+        "stock_status": "none"
+      },
+      {
+        "data_center_id": "US-IL-1",
+        "stock_status": "none"
+      }
+    ]
+  },
+  "decision": {
+    "provider_mutation": "none",
+    "reason": "No Medium or High exact RTX 5090 capacity was reported. The preceding Low-stock allocation failed before pod creation, and its single pre-development attempt authority is exhausted.",
+    "development_released": false,
+    "development_opened": false
+  }
+}

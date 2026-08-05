@@ -1,0 +1,33 @@
+{
+  "observed_at_utc": "2026-08-04T23:21:22Z",
+  "source": "runpodctl",
+  "sanitization": "Credentials, account identifiers, email, SSH material, and dataset contents omitted.",
+  "operation_id": "0cb268aa-e1fe-4d4f-af87-598fc90b84cc",
+  "destination": {
+    "id": "iqy9is1l8hjsty",
+    "name": "nano-h6-evaluation-ro1-retry-20260804",
+    "desired_status": "RUNNING",
+    "startup_state": "pod_not_ready",
+    "uptime_seconds": 0,
+    "configured_gpu_count": 1,
+    "live_gpu_count": 1,
+    "gpu_model": "RTX_5090",
+    "data_center_id": "EU-RO-1",
+    "cloud_tier": "secure",
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "workspace_mount_path": "/workspace",
+    "workspace_state": "inaccessible",
+    "network_volume_id": "04himzqxbm",
+    "compute_per_hour_usd": 0.99,
+    "network_volume_per_hour_usd": 0.00175,
+    "auto_stop_at_utc": "2026-08-05T02:16:19Z"
+  },
+  "account": {
+    "current_spend_per_hour_usd": 1.002
+  },
+  "scientific_state": {
+    "development_released": false,
+    "development_opened": false,
+    "runtime_attested": false
+  }
+}

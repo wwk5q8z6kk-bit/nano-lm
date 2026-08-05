@@ -1,0 +1,47 @@
+{
+  "schema": "nano.h6.sanitized-provider-observation.v1",
+  "observed_at_utc": "2026-08-03T23:50:59Z",
+  "source": "runpodctl_official_rest_and_prior_official_machine_binding",
+  "status": "ok",
+  "pod": {
+    "id": "oad0zdviuzjq9q",
+    "name": "nano-h6-state-boundary-20260803",
+    "desired_status": "RUNNING",
+    "last_status_change": "Resumed by as transfer pod by user: Mon Aug 03 2026 22:51:45 GMT+0000 (Coordinated Universal Time)",
+    "mode": "transfer_pod_cpu_only",
+    "machine_id": "3dlh25j3vwp9",
+    "machine_id_source": "prior same-pod official API observation",
+    "machine_data_center_id": null,
+    "machine_location": "US",
+    "secure_cloud": true,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "original_configured_gpu_count": 1,
+    "configured_gpu_model": "NVIDIA GeForce RTX 5090",
+    "runtime_gpu_count": 0,
+    "actual_compute_hourly_usd": "0.495",
+    "configured_compute_hourly_usd": "0.99",
+    "volume_mount_path": "/workspace",
+    "volume_size_gb": 20,
+    "network_volume_id": null,
+    "ssh_endpoint_host": "74.2.96.27",
+    "ssh_endpoint_port": 16630,
+    "ssh_key_fingerprint": "SHA256:rG4/ql2aHn6iQQsn1POmeexDxzUKg+KkFR5Nl2u7dL8"
+  },
+  "workspace": {
+    "state": "accessible",
+    "corrected_source_root": "/workspace/nano-h6-input/nano-h6-runpod",
+    "source_root_correction": "The frozen allowlist omitted the nano-h6-input extraction directory; prior upload, extraction, training, and hash-command provenance establishes the corrected root.",
+    "allowlisted_artifacts_attested": 6,
+    "allowlisted_artifacts_total_bytes": 26683824,
+    "all_expected_sizes_and_sha256_match": true,
+    "remote_artifact_attestation_sha256": "67e6f494750beb1772b92b7bad1640ef2d827887b03193ac2d12bc70ce585c03",
+    "frozen_allowlist_authority_sha256": "61dc435248b601680630b161f53e34f24870a0aae4a2c32eda80f0fcf60a609d",
+    "corrected_operational_allowlist_sha256": "97347f51d1743cf8d46e77e07aac089918e2bb2c61a2cfc707a0460999b90713"
+  },
+  "sanitized_configuration_sha256": "761300795fbce4a910a9c3c5a918bd2aa9299bbe929359bcaf089c0a5d6e8c66",
+  "prior_machine_binding_evidence_sha256": "3da7fdb45faaeddcb9915cd28398d6cf25398f0ab4b5858ed8261ff9b4724476",
+  "operation_id": "e68ec26b-13c1-4dad-b384-28e65b553418",
+  "sensitive_fields_omitted": [
+    "env.PUBLIC_KEY"
+  ]
+}

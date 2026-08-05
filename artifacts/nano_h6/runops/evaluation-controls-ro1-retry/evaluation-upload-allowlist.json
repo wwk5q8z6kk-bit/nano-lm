@@ -1,0 +1,149 @@
+{
+  "schema": "nano.h6.evaluation-upload-policy.v1",
+  "policy_id": "nano-h6-evaluation-upload-h6-evaluation-ro1-retry-20260804-v1",
+  "scope": {
+    "continuation_id": "h6-evaluation-ro1-retry-20260804",
+    "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1"
+  },
+  "authorities": {
+    "destination_selection_sha256": "124788539c502fb72902b4e616ad24b2efa57836a780096ee738abb1e40c3345",
+    "predecessor_binding_sha256": "11db01a6f5b95f0ca331f65e1a542eca61bb97671b993a19fab6f2311175ac3c",
+    "required_artifacts_manifest_sha256": "430f33bff844905d1e20e19d16c20305cdeeb8b17e7734f460dad6ec122a85c9",
+    "runtime_authority_sha256": "ff5db4aa0fe350d889ba32b211f2859c6c1f071eca5fa4905823f415d0533109"
+  },
+  "dynamic_authenticated_files": {
+    "authorization_envelope": {
+      "relative_path": "controls/evaluation-continuation-authorization.json",
+      "sha256_source": "run_spec.authorization_envelope_sha256"
+    },
+    "destination_attestation": {
+      "relative_path": "controls/destination-attestation.json",
+      "sha256_source": "ledger_final_provider_snapshot.observation_evidence_sha256"
+    },
+    "predecessor_run_events": {
+      "relative_path": "runops/predecessor/RUN_EVENTS.jsonl",
+      "sha256_source": "predecessor_binding.predecessor.run_events_sha256",
+      "tail_sha256_source": "predecessor_binding.predecessor.ledger_tail_sha256"
+    },
+    "predecessor_run_spec": {
+      "relative_path": "runops/predecessor/RUN_SPEC.json",
+      "sha256_source": "predecessor_binding.predecessor.run_spec_sha256"
+    },
+    "run_events": {
+      "relative_path": "runops/current/RUN_EVENTS.jsonl",
+      "tail_sha256_source": "admission_sync_prepared_ledger_tail"
+    },
+    "run_spec": {
+      "relative_path": "runops/current/RUN_SPEC.json",
+      "sha256_source": "ledger_first_event.run_spec_sha256"
+    },
+    "upload_policy": {
+      "relative_path": "controls/evaluation-upload-allowlist.json",
+      "sha256_source": "run_spec.upload_allowlist_sha256"
+    }
+  },
+  "exact_static_files": [
+    {
+      "bytes": 12481062,
+      "relative_path": "inputs/nano-h6-runpod-input.tar.gz",
+      "role": "package",
+      "sha256": "b1eff7c9ccb06f05e46f0639c88a7e74daeb0880dc8ecbb0641359d74b5ea505"
+    },
+    {
+      "bytes": 13529,
+      "relative_path": "controls/PREREGISTRATION.json",
+      "role": "preregistration",
+      "sha256": "986edc638267f1531da63ac7cb678aac552e18ac977387c2c325482d981085d2"
+    },
+    {
+      "bytes": 2034,
+      "relative_path": "controls/TRAINING_REPORT_FREEZE.json",
+      "role": "training_report_freeze",
+      "sha256": "d4c9e28bae2d464298fc329c1e76beb71be740c5fda88593131e53729032ed2c"
+    },
+    {
+      "bytes": 2538,
+      "relative_path": "controls/READINESS.json",
+      "role": "readiness",
+      "sha256": "19a26e8b4502769e9cddb469a79d37a09a06fec4d8c71b80db68d66fc16083ee"
+    },
+    {
+      "bytes": 1547,
+      "relative_path": "controls/evaluation-runtime-authority.json",
+      "role": "runtime_authority",
+      "sha256": "ff5db4aa0fe350d889ba32b211f2859c6c1f071eca5fa4905823f415d0533109"
+    },
+    {
+      "bytes": 2902,
+      "relative_path": "controls/destination-selection-20260804T231619Z.json",
+      "role": "destination_selection",
+      "sha256": "124788539c502fb72902b4e616ad24b2efa57836a780096ee738abb1e40c3345"
+    },
+    {
+      "bytes": 1659,
+      "relative_path": "controls/predecessor-recovery-binding.json",
+      "role": "predecessor_binding",
+      "sha256": "11db01a6f5b95f0ca331f65e1a542eca61bb97671b993a19fab6f2311175ac3c"
+    },
+    {
+      "bytes": 1625,
+      "relative_path": "controls/required-artifacts.json",
+      "role": "required_artifacts",
+      "sha256": "430f33bff844905d1e20e19d16c20305cdeeb8b17e7734f460dad6ec122a85c9"
+    },
+    {
+      "bytes": 142579,
+      "relative_path": "nano-h6-runpod/nano_ai/training/admit_evidence_query_h6.py",
+      "role": "admission_program",
+      "sha256": "4abe19110692cb86ac6d5e3f3e2527c16b0d1c72e27502cde9a973eace759d49"
+    },
+    {
+      "bytes": 103684,
+      "relative_path": "nano-h6-runpod/nano_ai/training/h6_terminal_result.py",
+      "role": "terminal_wrapper",
+      "sha256": "5eac84b1e4c7ace55f9c7fddbbea479dc89fb6b2ebddab2cfc71a3848ef83164"
+    },
+    {
+      "bytes": 41461,
+      "relative_path": "nano-h6-runpod/results/seed-20260805/training_report.json",
+      "role": "training_report_seed_20260805",
+      "sha256": "9b7bfe0be903d7f43b36d22dc61ecd2ae4c9cf3deb5e9f1a993733bf18d09932"
+    },
+    {
+      "bytes": 13168916,
+      "relative_path": "nano-h6-runpod/results/seed-20260805/epoch-3.pt",
+      "role": "selected_checkpoint_seed_20260805",
+      "sha256": "4ca7b2513ae8b0cf8b9c525a853144d1b75b422b560a71818caa70d981c30472"
+    },
+    {
+      "bytes": 41467,
+      "relative_path": "nano-h6-runpod/results/seed-20260806/training_report.json",
+      "role": "training_report_seed_20260806",
+      "sha256": "2d5bb2e95913f46c181f9273677e9ec3ad482dbf31d0111b2bc9433e15379d8f"
+    },
+    {
+      "bytes": 13168916,
+      "relative_path": "nano-h6-runpod/results/seed-20260806/epoch-2.pt",
+      "role": "selected_checkpoint_seed_20260806",
+      "sha256": "40611c2733e731bdd0eeb827f852fb2f14312445c05cd293a5533296e2ce982f"
+    },
+    {
+      "bytes": 218,
+      "relative_path": "nano-h6-runpod/results/TRAINING_REPORT_SHA256SUMS",
+      "role": "training_report_checksum_manifest",
+      "sha256": "e1509af3f11b03ad68131876aa591fe3998a8a7e8e2a4f9c4d271e738302b464"
+    },
+    {
+      "bytes": 262846,
+      "relative_path": "nano-h6-runpod/sft/tokenizer.json",
+      "role": "vocabulary",
+      "sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+    }
+  ],
+  "no_extra_files": true,
+  "prohibited_before_dev_release": [
+    "dev",
+    "fresh",
+    "private"
+  ]
+}

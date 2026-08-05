@@ -1,0 +1,24 @@
+{
+  "schema": "nano.h6.sanitized-provider-observation.v1",
+  "observed_at_utc": "2026-08-03T22:52:20Z",
+  "source": "runpod_rest_get_pod_and_console",
+  "status": "ok",
+  "pod": {
+    "id": "oad0zdviuzjq9q",
+    "name": "nano-h6-state-boundary-20260803",
+    "desired_status": "RUNNING",
+    "last_status_change": "Resumed by as transfer pod by user: Mon Aug 03 2026 22:51:45 GMT+0000 (Coordinated Universal Time)",
+    "mode": "transfer_pod_cpu_only",
+    "machine_id": "3dlh25j3vwp9",
+    "machine_data_center_id": null,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "original_configured_gpu_count": 1,
+    "runtime_gpu_count": 0,
+    "compute_display": "RTX 5090 x0",
+    "actual_compute_hourly_usd": "0.495",
+    "volume_mount_path": "/workspace",
+    "volume_size_gb": 20,
+    "network_volume_id": null
+  },
+  "operation_id": "e68ec26b-13c1-4dad-b384-28e65b553418"
+}

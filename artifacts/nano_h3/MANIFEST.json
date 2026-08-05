@@ -1,0 +1,72 @@
+{
+  "schema_version": "nano.h3.evidence-query-evidence-manifest.v0",
+  "experiment_id": "h3-evidence-query-pointer-v1",
+  "status": "REJECTED_ON_KNOWN_DEVELOPMENT",
+  "decision": {
+    "quality_gate_passed": false,
+    "uncalibrated_semantic_admission_passed": false,
+    "threshold_applied": false,
+    "verifier_assessed": false,
+    "latency_assessed": false,
+    "fresh_v1_read": false
+  },
+  "tracked_artifacts": [
+    {
+      "filename": "artifacts/nano_h3/RESULT_SUMMARY.json",
+      "role": "bounded machine-readable H3 result summary",
+      "bytes": 6972,
+      "sha256": "cbd23c6a5799179b487119e9bee6e181dd328e691ee5388b12d03689f538ec82"
+    },
+    {
+      "filename": "artifacts/nano_h3/RUN_METADATA.json",
+      "role": "RunPod execution and preservation metadata",
+      "bytes": 2214,
+      "sha256": "68d8691ed6f88039a21cc0fba4ef315d156f7b8b96169ca4fe4b47753ad592de"
+    },
+    {
+      "filename": "artifacts/nano_h3/CLOSEOUT.json",
+      "role": "post-run storage and provider closeout observation",
+      "bytes": 769,
+      "sha256": "9880bec52e40ed4f72bc701a49f73415b7bc12d23dfb907c584a4cb598e1e670"
+    }
+  ],
+  "content_addressed_local_evidence": {
+    "locked_result_directory": "checkpoints/candidates/evidence_query_pointer_v1_locked",
+    "transfer_manifest_sha256": "23f7c61d8a166a54d4a9d38ce201e36debfb802d280504f064ed24525446262e",
+    "development_evaluation": {
+      "bytes": 1790093,
+      "sha256": "df6896855980172aabd03149affffca8352c2ef9732fb860a79b3f50d854c831"
+    },
+    "input_archive": {
+      "bytes": 12385998,
+      "sha256": "c6769dce1dbe77219c7902ccf8c281b379de6111c997c55a2fa047e5ba95be81"
+    },
+    "training_reports": {
+      "seed_20260805_sha256": "cfddc38810a50cf211f71fd1644911e2d7301e64d046f79c41156f56df84a977",
+      "seed_20260806_sha256": "517879d965c25f616d0ebb9ccfdc4761cc72854b542027e26f829bdf57d35498"
+    },
+    "checkpoints": [
+      "6477888bc8058a3dd747d292c3593385d8fb8148672161f5389f9685762ab477",
+      "92e22fadbc7dc1d6d0398a862da27312c255feb47d74ea9f1168813b42993803",
+      "540035f256334d0db7faf961a4e918318122f7ad06a27248cd485c0a40e5af37",
+      "7bcd079a2393d97c77d47608aec06cd3834dd06590bae9f041049ee711e4961d",
+      "90ee4b2f4ceca6d4bde6ab870fee0ab5007ae14685852754be3f574e617acb81",
+      "43493b41aa5227cb7df1235a7eea2f1111938a509037b0c3db814cef85bd8313"
+    ]
+  },
+  "independent_backup": {
+    "storage": "local backup outside the repository",
+    "result_archive_bytes": 73241551,
+    "result_archive_sha256": "2c2d400a5476090d96e39427e8e8e6c880f5a3535f18c94d0561d6c6d9fcda29",
+    "input_archive_bytes": 12385998,
+    "input_archive_sha256": "c6769dce1dbe77219c7902ccf8c281b379de6111c997c55a2fa047e5ba95be81",
+    "gzip_tested": true
+  },
+  "limitations": [
+    "The measured partition is known synthetic development data, not an independent test.",
+    "The result rejects this exact architecture-plus-training-family intervention, not evidence-query mechanisms or Nano generally.",
+    "Calibration, verifier, and latency stages were intentionally skipped after uncalibrated admission failed.",
+    "fresh-v1 remained sealed and unread.",
+    "Large checkpoints and row-level evaluation remain local and are referenced by digest rather than tracked in Git."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "observed_at_utc": "2026-08-04T23:20:15Z",
+  "source": "runpodctl",
+  "sanitization": "Credentials, account identifiers, email, SSH material, and dataset contents omitted.",
+  "account": {
+    "balance_usd": 53.8100320442,
+    "current_spend_per_hour_usd": 0.01
+  },
+  "active_pods": [],
+  "preserved_source": {
+    "id": "oad0zdviuzjq9q",
+    "required_state": "stopped",
+    "mutation_authorized": false
+  },
+  "destination": {
+    "name": "nano-h6-evaluation-ro1-retry-20260804",
+    "data_center_id": "EU-RO-1",
+    "required_gpu_id": "NVIDIA GeForce RTX 5090",
+    "reported_stock_status": "Low",
+    "cloud_tier": "secure",
+    "secure_price_per_hour_usd": 0.99,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "network_volume_id": "04himzqxbm",
+    "network_volume_size_gb": 20,
+    "network_volume_state": "retained_and_previously_content_verified"
+  },
+  "authorization": {
+    "max_total_usd": 5.0,
+    "max_predevelopment_attempts": 1,
+    "development_released": false,
+    "development_opened": false
+  }
+}

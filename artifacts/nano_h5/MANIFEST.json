@@ -1,0 +1,103 @@
+{
+  "schema_version": "nano.h5.replay-mixture-evidence-manifest.v1",
+  "experiment_id": "h5-balanced-replay-data-only-v1",
+  "status": "REJECTED_ON_KNOWN_DEVELOPMENT",
+  "decision": {
+    "quality_gate_passed": false,
+    "uncalibrated_admission_passed": false,
+    "threshold_applied": false,
+    "verifier_assessed": false,
+    "latency_assessed": false,
+    "fresh_v1_read": false,
+    "provider_pod_closed": true
+  },
+  "tracked_artifacts": [
+    {
+      "filename": "artifacts/nano_h5/PREREGISTRATION.json",
+      "role": "frozen H5 replay-only protocol and recorded review incident",
+      "bytes": 10457,
+      "sha256": "0dd45a1acbc47a71f722a731f2dea07fdee18d1a363863c47d855092ec85fdb2"
+    },
+    {
+      "filename": "artifacts/nano_h5/data/manifest.json",
+      "role": "deterministic H5 replay data and partition audit manifest",
+      "bytes": 31213,
+      "sha256": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31"
+    },
+    {
+      "filename": "artifacts/nano_h5/runpod-input/READINESS.json",
+      "role": "authenticated RunPod input readiness record",
+      "bytes": 2526,
+      "sha256": "4278c1674dc1311c3e0c97af976a966727adca527685d1e3625f3c837ac96ae7"
+    },
+    {
+      "filename": "artifacts/nano_h5/TRAINING_REPORT_FREEZE.json",
+      "role": "training-report checksum freeze before development transfer",
+      "bytes": 690,
+      "sha256": "8a6922546b470032c0bb208329659fa06215b24dac5969e0c8fe507d52475166"
+    },
+    {
+      "filename": "artifacts/nano_h5/RESULT_SUMMARY.json",
+      "role": "bounded machine-readable H5 result and failure localization summary",
+      "bytes": 7062,
+      "sha256": "b7c804bf7c094bb3085023a0edef90456cbda38f15733cc0260582b4485c40e8"
+    },
+    {
+      "filename": "artifacts/nano_h5/CLOSEOUT.json",
+      "role": "post-run storage and provider closeout observation",
+      "bytes": 750,
+      "sha256": "e2551487775c0751634d1c1b0b2d18e0db2b4dc8ae7291d07ad3188c95661cf5"
+    },
+    {
+      "filename": "artifacts/nano_h5/runpod-input/nano-h5-runpod-input.tar.gz",
+      "role": "deterministic authenticated RunPod input archive",
+      "bytes": 12473343,
+      "sha256": "930cac784c694a010edbffc092b1484f887ba2fd5c428b5c3bbb5aa2419e4f4b"
+    }
+  ],
+  "content_addressed_local_evidence": {
+    "locked_result_directory": "checkpoints/candidates/evidence_query_replay_mixture_v1_locked",
+    "result_manifest_sha256": "64c730ee137f4854ed57556344c11ba25fde298468155cf8147675670315c24c",
+    "training_report_checksum_file_sha256": "8672ac4110b1cfda4cc4b6af4c44869443217e019ce1b8e2b67217e7decb0822",
+    "development_evaluation": {
+      "bytes": 1836514,
+      "sha256": "c67393962299470fc6b5026031b61617bbae85a2883105b8b8abfcdb30820c47"
+    },
+    "input_archive": {
+      "bytes": 12473343,
+      "sha256": "930cac784c694a010edbffc092b1484f887ba2fd5c428b5c3bbb5aa2419e4f4b"
+    },
+    "result_archive": {
+      "bytes": 73258386,
+      "sha256": "bab5327e900597a083cb04631e645f2e0f500f14f01ec7db195e754b34620749",
+      "storage": "local ignored checkpoint store",
+      "external_signed_digest": false
+    },
+    "training_data": {
+      "manifest_sha256": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31",
+      "fit_sha256": "79f7581efbd989f48a474bdd2079e7ca163c2a2682bb48fb8398bd99febe22fb",
+      "calibration_sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70"
+    },
+    "training_reports": {
+      "seed_20260805_sha256": "0c3b0e78e1fe504c6ca41afdd770aaf9b04e6ecf295b90c5fd19c2599c3acaf8",
+      "seed_20260806_sha256": "7cb83d98e50eac5b7bb4cde89033602b863ead3607f89db0fffc078ef87c8112"
+    },
+    "checkpoints": [
+      "78889dda55e76747acafebf34d8505f33fdcc278b6db50788b36b803fbf5e607",
+      "147bf1bbafb87f58ab708a4fac0ce191cde0112821f71411483eca3f0440e41b",
+      "04ba7b4d0dc876ca3d8de7fe7d809ca16796e5bf55249ad93ba1dd3557c394fe",
+      "9c320d909275eeae0d7bf183a304f87c4ffd28214bd97c27efa40162980da839",
+      "bbc580053e4f671b8b5cfa2078e66427537d5620b2c31d6d34a7df4fd576aa0e",
+      "0c0e13d1c3e4f9af0763686d3d18a9d57737b49b74ced77f9cc981a8ba128bfc"
+    ]
+  },
+  "limitations": [
+    "The partition is known adaptive synthetic development data, not an independent test or clinical corpus.",
+    "Only two seeds and six checkpoints were evaluated under one frozen 50:50 replay intervention.",
+    "H5 rejects this exact mixture, not replay generally, the evidence-query architecture generally, or Nano.",
+    "The observed state/span disagreement is descriptive, not causal.",
+    "Threshold, verifier, latency, and fresh-v1 stages were intentionally skipped after uncalibrated admission failed.",
+    "The preregistration preserves the post-freeze historical fresh_v0 metadata review incident; that review was outside the H5 evaluator decision path.",
+    "Large checkpoints and row-level evaluation remain local and are referenced by digest."
+  ]
+}

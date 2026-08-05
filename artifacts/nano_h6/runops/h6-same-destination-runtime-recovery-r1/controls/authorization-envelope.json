@@ -1,0 +1,26 @@
+{
+  "schema": "nano.h6.same-destination-replication-authorization.v1",
+  "authorized_at_utc": "2026-08-04T23:35:33Z",
+  "authority": "project_founder_delegation_in_current_codex_task",
+  "objective": "Run the byte-exact frozen H6 package from training through evaluation on one uninterrupted persistent-storage destination, opening development only if both selected checkpoint hashes reproduce exactly.",
+  "authorized_actions": [
+    "reuse retained RunPod network volume 04himzqxbm in EU-RO-1",
+    "create one secure RTX 5090 pod with the frozen image",
+    "stage the frozen development-free H6 package in a no-clobber isolated root",
+    "run the frozen two-seed H6 training recipe",
+    "back up and authenticate training artifacts before development release",
+    "release development once only after both selected checkpoint hashes match the original freeze",
+    "run the unchanged evaluator on the same uninterrupted pod",
+    "back up the terminal result twice and terminate compute"
+  ],
+  "prohibited_actions": [
+    "modify the H6 model, data, recipe, selector, evaluator, verifier, or gates",
+    "open development after any checkpoint hash mismatch",
+    "restart the original stopped source pod",
+    "access fresh-v1, sealed confirmation, benchmarks, or private corpus data",
+    "run product, app, UI, service, or deployment work",
+    "push, tag, or release"
+  ],
+  "max_total_runpod_usd": "5.00",
+  "termination_rule": "The new compute pod is terminated after failure evidence or two verified terminal-result backups. Persistent storage remains until off-provider verification is complete."
+}

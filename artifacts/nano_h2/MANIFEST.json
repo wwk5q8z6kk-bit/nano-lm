@@ -1,0 +1,66 @@
+{
+  "schema_version": "nano.h2.pointer-evidence-manifest.v0",
+  "experiment_id": "h2-native-pointer-span-v0",
+  "status": "REJECTED_ON_SEALED_DEVELOPMENT",
+  "decision": {
+    "quality_gate_passed": false,
+    "passing_candidates": 0,
+    "evaluated_candidates": 6,
+    "latency_assessed": false,
+    "fresh_v1_read": false
+  },
+  "tracked_artifacts": [
+    {
+      "filename": "artifacts/nano_h2/RESULT_SUMMARY.json",
+      "role": "bounded machine-readable result summary",
+      "bytes": 65223,
+      "sha256": "f61bb7f0f3401dfbaff8a5ab7e987d313a4811442f790b1d03f0883b403806cc"
+    },
+    {
+      "filename": "artifacts/nano_h2/RUN_METADATA.json",
+      "role": "immutable RunPod execution and preservation metadata",
+      "bytes": 1265,
+      "sha256": "5d42f3ce8c43236ad062281ea6a79e1ecf89afbfb9dc655348c0aac782b3a711"
+    },
+    {
+      "filename": "artifacts/nano_h2/CLOSEOUT.json",
+      "role": "post-run storage and provider closeout observation",
+      "bytes": 492,
+      "sha256": "42e75191717fc2c4d452fc0ae7fc37cdd66359f9777eaa3baf334e438edab258"
+    }
+  ],
+  "content_addressed_local_evidence": {
+    "locked_result_directory": "checkpoints/candidates/native_pointer_span_v0_locked",
+    "transfer_manifest_sha256": "d2f7551560df34f6a1ecb2591a918c9ac35dcca84a7f767de18d43f7d9ae4fef",
+    "development_evaluation": {
+      "bytes": 34000758,
+      "sha256": "641c08f826a5669220cd7fda8c52fbd2a682a352c8be36a97f93a099ecfe3833"
+    },
+    "input_archive_sha256": "5ad485e76e89c50a14e9d30051f14f1e034e8c18457ae69d4e1cb2f99a036919",
+    "training_reports": {
+      "seed_20260805_sha256": "f87ddad270756b1238662801dd1d8146384b33d55897a227c75efffcd625cf9b",
+      "seed_20260806_sha256": "01bf6c583b984401201bc8fc6f9d0b9598cc57e17c6dfbccfe7a82677a181070"
+    },
+    "checkpoints": [
+      "cf587eee56545c79798803aa1e83436b7917aaa0d8159caed1b30eebef10578a",
+      "60e38c6bd10547c8711fab826c8446eef897b01e87635334ab6ec967606e36d8",
+      "4cc1619c02d1740e2bcf3c5f3744419f8366295ea039ec72a92e649f6d174ee0",
+      "f2ab0f2c4ef0e8053b5477739449bc9c71e61e2f64f90df03bc9d823311336ab",
+      "57755a445c7de1f2774b0667cbdfd689b4f9b73654934cc498ba4a72a522c8a2",
+      "eb0b55c4e890d4f33cee09507a9d5b11574ead0afe8530e6aedd1b4811d9d2f2"
+    ]
+  },
+  "independent_backup": {
+    "storage": "local backup outside the repository",
+    "bytes": 84080280,
+    "sha256": "88420f2644e25a2acdcaaffccb244bc3383a519b47622f74bb197034e37e46e6",
+    "gzip_tested": true
+  },
+  "limitations": [
+    "The measured partition is sealed synthetic development data used for model selection.",
+    "The result rejects this exact architecture and training recipe, not pointer mechanisms or Nano generally.",
+    "Latency was intentionally not measured because no candidate passed the quality gate.",
+    "The fresh-v1 confirmation partition remained sealed and unread.",
+    "Large checkpoints and the row-level evaluation remain local and are referenced by digest rather than tracked in Git."
+  ]
+}

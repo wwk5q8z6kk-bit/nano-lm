@@ -1,0 +1,44 @@
+{
+  "schema": "nano.h6.sanitized-provider-observation.v1",
+  "observed_at_utc": "2026-08-04T00:01:12Z",
+  "source": "runpodctl_official_rest_and_prior_official_machine_binding",
+  "status": "ok",
+  "purpose": "post_stop_reconciliation",
+  "pod": {
+    "id": "oad0zdviuzjq9q",
+    "name": "nano-h6-state-boundary-20260803",
+    "desired_status": "EXITED",
+    "lifecycle_state": "stopped",
+    "last_status_change": "Exited by user: Tue Aug 04 2026 00:00:53 GMT+0000 (Coordinated Universal Time)",
+    "machine_id": "3dlh25j3vwp9",
+    "machine_id_source": "prior same-pod official API observation",
+    "machine_data_center_id": null,
+    "machine_location": "US",
+    "secure_cloud": true,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "configured_gpu_count": 1,
+    "runtime_gpu_count": 0,
+    "actual_compute_hourly_usd": "0",
+    "last_running_transfer_rate_usd": "0.495",
+    "volume_mount_path": "/workspace",
+    "volume_size_gb": 20,
+    "network_volume_id": null
+  },
+  "workspace": {
+    "state": "inaccessible_while_stopped",
+    "source_root": "/workspace/nano-h6-input/nano-h6-runpod",
+    "termination_performed": false
+  },
+  "backups": {
+    "training_complete": true,
+    "result_complete": true,
+    "recovery_required": false,
+    "internal_copy_receipt_sha256": "18338d8fb315f62090d04e43bab371f038b333480184879f15f79bb4acf9587d",
+    "external_copy_receipt_sha256": "1ec647376459c7a5e684a7f0d25be4ccf5bc1bff20b775539c9041d744cc780c"
+  },
+  "operation_id": "e2d13124-d203-444e-a827-94ab77b4c83c",
+  "sanitized_configuration_sha256": "761300795fbce4a910a9c3c5a918bd2aa9299bbe929359bcaf089c0a5d6e8c66",
+  "sensitive_fields_omitted": [
+    "env.PUBLIC_KEY"
+  ]
+}

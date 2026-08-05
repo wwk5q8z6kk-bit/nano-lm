@@ -1,0 +1,18 @@
+{
+  "schema_version": "nano.h3.runpod-closeout.v0",
+  "experiment_id": "h3-evidence-query-pointer-v1",
+  "observed_at_utc": "2026-08-03T08:24:14Z",
+  "provider": "runpod",
+  "pod_id": "c69b7qdtov4dqe",
+  "pod_list_stdout": "[]",
+  "pod_absent": true,
+  "billing_stopped": true,
+  "network_volume_used": false,
+  "locked_result_manifest_verified": true,
+  "result_archive_bytes": 73241551,
+  "result_archive_sha256": "2c2d400a5476090d96e39427e8e8e6c880f5a3535f18c94d0561d6c6d9fcda29",
+  "independent_backup_sha256": "2c2d400a5476090d96e39427e8e8e6c880f5a3535f18c94d0561d6c6d9fcda29",
+  "independent_backup_gzip_tested": true,
+  "input_archive_backup_bytes": 12385998,
+  "input_archive_backup_sha256": "c6769dce1dbe77219c7902ccf8c281b379de6111c997c55a2fa047e5ba95be81"
+}

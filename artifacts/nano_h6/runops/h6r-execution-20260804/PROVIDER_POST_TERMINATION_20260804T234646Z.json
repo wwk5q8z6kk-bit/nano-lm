@@ -1,0 +1,22 @@
+{
+  "schema": "nano.h6r.provider-post-termination.v1",
+  "observed_at_utc": "2026-08-04T23:46:46Z",
+  "source": "runpodctl",
+  "operation_id": "da321d4f-5728-49a2-8738-ffd87e5497b2",
+  "destination": {
+    "pod_id": "5xvs95bqcynzn2",
+    "lifecycle_state": "not_found",
+    "active_pod_count": 0
+  },
+  "retained_network_volume": {
+    "id": "04himzqxbm",
+    "name": "nano-h6-evaluation-20260804",
+    "data_center_id": "EU-RO-1",
+    "size_gb": 20,
+    "lifecycle_state": "retained"
+  },
+  "package_uploaded": false,
+  "training_started": false,
+  "development_released": false,
+  "development_opened": false
+}

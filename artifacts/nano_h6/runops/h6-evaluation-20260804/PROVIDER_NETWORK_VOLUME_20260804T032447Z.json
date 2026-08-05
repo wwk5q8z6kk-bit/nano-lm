@@ -1,0 +1,1 @@
+{"data_center_id":"EU-RO-1","lifecycle_state":"available","observed_at_utc":"2026-08-04T03:24:47Z","operation_id":"3cc93e92-b186-47af-8463-dd1695816184","resource_id":"04himzqxbm","resource_name":"nano-h6-evaluation-20260804","schema":"nano.h6.runpod-network-volume-observation.v1","size_gb":20,"source":"runpodctl"}

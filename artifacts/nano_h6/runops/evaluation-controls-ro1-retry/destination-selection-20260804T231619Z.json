@@ -1,0 +1,62 @@
+{
+  "schema": "nano.h6.destination-selection-evidence.v1",
+  "observed_at_utc": "2026-08-04T23:16:19Z",
+  "provider": "runpod",
+  "observation_source": "runpodctl gpu list",
+  "source_identity": {
+    "pod_id": "oad0zdviuzjq9q",
+    "machine_id": "3dlh25j3vwp9",
+    "lifecycle_state": "stopped",
+    "provider_location": "US",
+    "data_center_id": null
+  },
+  "provider_limitation": "RunPod does not expose a non-empty exact data-center ID for the stopped recovered source. No source data-center ID is inferred or fabricated.",
+  "scientific_constraint": "H6 continuation is content-addressed and retains the exact frozen RTX 5090 runtime. No substitute GPU is authorized for the H6 terminal evaluation.",
+  "prior_attempts": [
+    {
+      "run_id": "h6-evaluation-20260804",
+      "data_center_id": "EU-RO-1",
+      "outcome": "provider_startup_failure_before_runtime_attestation",
+      "development_released": false,
+      "terminated": true,
+      "final_ledger_tail_sha256": "3191dcf982b5238424ac36e562d717ab4a9a881eec8165361bca69b2fd35b8a4"
+    },
+    {
+      "run_id": "h6-evaluation-cz1-20260804",
+      "data_center_id": "EU-CZ-1",
+      "outcome": "capacity_rejection_before_pod_creation",
+      "development_released": false,
+      "pod_created": false,
+      "final_ledger_tail_sha256": "e3a2ec55303dac1de1bec3631189762d0f3d202b9f3621d124fa9909cdf44ba2"
+    }
+  ],
+  "observed_destination_candidates": [
+    {
+      "data_center_id": "EU-RO-1",
+      "gpu_id": "NVIDIA GeForce RTX 5090",
+      "stock_status": "Low",
+      "priority": 1,
+      "network_volume_id": "04himzqxbm",
+      "volume_state": "retained_and_previously_content_verified"
+    },
+    {
+      "data_center_id": "EU-CZ-1",
+      "gpu_id": "NVIDIA GeForce RTX 5090",
+      "stock_status": "Low",
+      "priority": 2,
+      "network_volume_id": "r9eibv5dan",
+      "volume_state": "retained_empty"
+    }
+  ],
+  "decision": {
+    "selected_first": "EU-RO-1",
+    "reason": "EU-RO-1 has newly returned Low exact RTX 5090 stock and already contains the independently rehashed frozen H6 package on network volume 04himzqxbm. This avoids re-upload and changes no scientific control.",
+    "authorized_for_this_continuation": [
+      "EU-RO-1"
+    ],
+    "fallback_rule": "There is no in-ledger fallback. Capacity or exact-runtime admission failure ends this continuation before development release. Any later attempt requires fresh provider evidence and a new no-clobber continuation authority.",
+    "hard_gate": "No development artifact may be transferred until the destination passes exact frozen runtime and content admission."
+  },
+  "data_classification": "public synthetic Nano evidence only; no private corpus",
+  "network_volume_encryption_disclosure": "RunPod network volumes are not encrypted. This continuation permits them only because every pre-development artifact is non-private synthetic project evidence."
+}

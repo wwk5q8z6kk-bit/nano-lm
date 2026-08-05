@@ -1,0 +1,293 @@
+{
+  "schema_version": "nano.h6-preregistration.v1",
+  "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1",
+  "frozen_at_utc": "2026-08-03T18:02:31Z",
+  "status": "FROZEN_BEFORE_GPU_TRAINING",
+  "objective": "Test whether Nano's predicted semantic-state distribution can improve evidence-boundary localization when it is allowed to add only a small, detached residual to the existing H5 start and end queries.",
+  "hypothesis": "If a material part of H5's one-component state/span mismatch comes from boundary queries that cannot adapt to Nano's own semantic-state belief, then a zero-initialized detached soft-state boundary-query residual will improve the frozen known-development quality measures without state collapse. Failure of the first applicable gate rejects this exact coupling and stops the run; it does not reject state-conditioned localization in general.",
+  "experiment_character": {
+    "diagnostic_not_causal": true,
+    "single_architecture_delta": true,
+    "pass_interpretation": "Evidence that this exact detached state-to-boundary-query residual is useful under the frozen H5 data, training, selection, and evaluation protocol.",
+    "failure_interpretation": "Reject this exact global detached coupling and return to diagnosis without automatically running another architecture.",
+    "universal_architecture_claim_allowed": false
+  },
+  "intervention": {
+    "changed_axis": "boundary_query_parameterization_only",
+    "architecture_version": "nano_evidence_query_state_boundary_residual_v1",
+    "base_architecture_version": "nano_evidence_query_pointer_v1",
+    "parameter": {
+      "name": "state_boundary_query_offsets",
+      "shape": [
+        5,
+        2,
+        64
+      ],
+      "axes": [
+        "semantic_state",
+        "boundary_start_or_end",
+        "query_dimension"
+      ],
+      "parameter_count": 640,
+      "initialization": "all_zeros",
+      "shared_across_fields": true,
+      "broadcast_across_both_evidence_slots": true,
+      "field_specific_parameters": false,
+      "slot_specific_parameters": false
+    },
+    "mechanism": {
+      "state_posterior": "softmax_of_existing_shared_state_logits",
+      "state_posterior_detached": true,
+      "gold_state_teacher_forced": false,
+      "query_update": "existing_projected_start_or_end_query_plus_posterior_weighted_boundary_offset",
+      "location": "immediately_before_the_existing_query_key_dot_product",
+      "added_bias": false,
+      "added_normalization": false,
+      "added_nonlinearity": false,
+      "added_hidden_fusion": false,
+      "pointer_loss_reaches_shared_state_head_through_new_path": false,
+      "shared_trunk_remains_trainable_through_existing_paths": true
+    },
+    "initialization_identity": {
+      "same_seed_fresh_h6_is_functionally_exact_h5_at_step_zero": true,
+      "same_seed_constructor_rng_state_matches_h5": true,
+      "trained_h5_checkpoint_resumed": false,
+      "warm_start_from_trained_h5": false,
+      "claim_scope": "fresh_same_seed_initialization_only"
+    },
+    "optimizer_membership": {
+      "optimizer": "AdamW",
+      "group": "unchanged_weight_decay_group_for_multidimensional_parameters",
+      "weight_decay": 0.1,
+      "special_learning_rate": false,
+      "special_schedule": false
+    },
+    "known_limitations": [
+      "The offset table is global across fields and evidence slots; only each field's predicted state posterior and its existing query distinguish uses.",
+      "An inaccurate state posterior can miscondition start and end localization.",
+      "Detachment isolates the new pointer-to-state-head path but does not make the shared trainable trunk causally independent.",
+      "A pass or failure speaks only to this exact 640-parameter residual under the frozen H5 protocol."
+    ]
+  },
+  "pre_freeze_alternative_rejected": {
+    "design": "five learned hidden-state embeddings plus fusion and RMSNorm",
+    "proposed_added_parameters": 1152,
+    "reasons": [
+      "It changed H5 geometry even with zero context contribution.",
+      "It introduced a new pointer-loss gradient path into the state head.",
+      "It confounded the intended state-conditioned-boundary mechanism with hidden fusion and normalization."
+    ],
+    "executed": false
+  },
+  "preserved_axes": {
+    "architecture_identity": "d192-l6-h6-kv2-hd32-ff512-v4098-ctx512",
+    "h5_parameter_count": 3286469,
+    "h6_parameter_count": 3287109,
+    "h6_trunk_parameter_count": 3148608,
+    "h6_evidence_query_head_parameter_count": 138501,
+    "base_checkpoint_sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+    "tokenizer_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9",
+    "target_grammar": "nano.state-span-target.v0",
+    "training_dataset": "byte_exact_h5_balanced_replay_v1",
+    "training_seeds": [
+      20260805,
+      20260806
+    ],
+    "batch_size": 32,
+    "epochs": 3,
+    "steps_per_epoch": 350,
+    "steps_per_seed": 1050,
+    "fit_world_exposure": 2800,
+    "fit_record_exposure": 11200,
+    "paired_variants_per_world": 4,
+    "peak_learning_rate": 0.00015,
+    "warmup_fraction": 0.03,
+    "cosine_floor": 0.1,
+    "weight_decay": 0.1,
+    "gradient_clip": 1.0,
+    "adam_betas": [
+      0.9,
+      0.95
+    ],
+    "adam_epsilon": 1e-08,
+    "state_class_order": [
+      "supported",
+      "absent",
+      "missing",
+      "uncertain",
+      "conflicting"
+    ],
+    "state_class_source_counts": [
+      46050,
+      4950,
+      3000,
+      3000,
+      3000
+    ],
+    "state_class_weights": [
+      0.26058631921824105,
+      2.4242424242424243,
+      4.0,
+      4.0,
+      4.0
+    ],
+    "state_loss_weight": 1.0,
+    "pointer_loss_weight": 1.0,
+    "state_loss_definition": "train_inverse_frequency_weighted_cross_entropy_mean_by_weight_mass",
+    "pointer_loss_definition": "mean_of_start_and_end_cross_entropy_active_slots",
+    "prompt_objective_inference_calibration_selection_verifier_and_quality_gates": "unchanged_from_h5",
+    "full_trunk_trainable": true,
+    "deterministic_algorithms": true,
+    "world_grouped_batches": true
+  },
+  "selection": {
+    "development_used": false,
+    "order": [
+      "uncalibrated_training_calibration_macro_joint_desc",
+      "uncalibrated_training_calibration_overall_joint_desc",
+      "earlier_epoch",
+      "seed_20260805"
+    ],
+    "both_training_report_sha256_values_frozen_externally_before_development_transfer": true,
+    "selected_checkpoint_strictly_loaded_before_development_open": true,
+    "tokenizer_authenticated_before_development_open": true,
+    "known_development_open_once_after_training_only_selection": true,
+    "post_development_tuning_allowed": false
+  },
+  "calibration_overlap_limitation": {
+    "source": "unchanged_byte_exact_h5_calibration_originally_introduced_in_h4",
+    "familiar_legacy_values_present": true,
+    "unseen_h4_surfaces_and_templates": true,
+    "open_value_disjoint": false,
+    "selection_role": "surface_and_template_transfer_ranking_only",
+    "quality_decision_partition": "known_development"
+  },
+  "known_development_admission_gates": {
+    "partition_id": "native-state-span-dev-v0",
+    "manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "development_absent_during_training": true,
+    "overall_joint_exact_minimum": "3041/5000",
+    "held_value_joint_exact_minimum": "2167/2987",
+    "missing_target_joint_exact_minimum": "219/250",
+    "absence_joint_exact_minimum": "383/413",
+    "conflict_target_joint_exact_minimum": "236/250",
+    "uncertain_target_joint_exact_minimum": "228/250",
+    "evaluation_failures_maximum": "10/1000",
+    "uncalibrated_raw_modal_state_maximum_per_field": "949/1000",
+    "uncalibrated_raw_modal_state_failure_boundary": "950/1000",
+    "uncalibrated_wrong_presented": "reported_not_gated",
+    "calibrated_wrong_presented_maximum": 0,
+    "verifier_final_wrong_presented_maximum": 0,
+    "calibrated_and_verifier_rate_floors_identical_to_uncalibrated": true,
+    "all_gates_required": true
+  },
+  "staged_stop_policy": {
+    "on_uncalibrated_admission_failure": "stop_before_threshold_verifier_latency_and_sealed_confirmation",
+    "on_uncalibrated_admission_pass": "apply_only_the_training_calibration_threshold_then_require_all_quality_gates_and_zero_wrong_presented",
+    "on_calibrated_failure": "stop_before_verifier_latency_and_sealed_confirmation",
+    "on_calibrated_pass": "run_the_unchanged_closed_world_verifier_then_require_all_quality_gates_and_zero_false_presented",
+    "on_verifier_failure": "stop_before_latency_and_sealed_confirmation",
+    "on_full_quality_pass": "preserve_candidate_then_measure_matched_latency_in_a_separate_stage",
+    "latency_p50_maximum_relative_to_h1": "1.2x",
+    "sealed_confirmation_authorized_before_quality_and_latency_pass": false,
+    "automatic_next_architecture_authorized_after_failure": false
+  },
+  "prohibited_access": {
+    "fresh_v1_accessed_in_this_run": false,
+    "historical_fresh_v0_accessed_in_this_run": false,
+    "legacy_h2_h3_train_jsonl_accessed_in_this_run": false,
+    "private_corpus_accessed_in_this_run": false,
+    "wedge_private_data_accessed_in_this_run": false,
+    "benchmark_executed_in_this_run": false,
+    "sealed_confirmation_executed_in_this_run": false
+  },
+  "frozen_inputs": {
+    "training_manifest": {
+      "filename": "manifest.json",
+      "bytes": 31213,
+      "sha256": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31"
+    },
+    "fit": {
+      "filename": "fit.jsonl",
+      "bytes": 9134638,
+      "sha256": "79f7581efbd989f48a474bdd2079e7ca163c2a2682bb48fb8398bd99febe22fb",
+      "records": 11200,
+      "worlds": 2800,
+      "gradient_bearing": true
+    },
+    "calibration": {
+      "filename": "calibration.jsonl",
+      "bytes": 734627,
+      "sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70",
+      "records": 800,
+      "worlds": 200,
+      "gradient_bearing": false
+    },
+    "base_checkpoint": {
+      "bytes": 12609917,
+      "sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b"
+    },
+    "tokenizer": {
+      "bytes": 262846,
+      "sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+    },
+    "authenticated_loader_verified": true,
+    "h5_files_reused_without_regeneration_or_modification": true,
+    "legacy_record_artifact_accessed": false
+  },
+  "frozen_source_sha256": {
+    "state_conditioned_evidence_query_model": "78b4a5f779d3a8059ae59d25ab46c6748e9bcc14d8c1caefa0d90396ff4cd754",
+    "train_evidence_query_h6": "5a326f17eda4400b2b15907dc44a29149729bf8b97411946500328c6802a8ef9",
+    "evaluate_evidence_query_h6": "c796c2e150aaae50b4f80e50296bf89d4cfdc3ebf105d02e447e2580d37cfa39",
+    "package_evidence_query_h6": "b5d89800cca887913044a2e8ae24b33069bfdf18c15c99843f394699f43f8eb7",
+    "replay_mixture_data": "5f036831ac7385c49177d9b724f6939049873179654072bc19dc178144e2af40",
+    "runpod_requirements": "3c90d0cda8456819325e2a2bec62ca0ddc7a43d4868d92f4453ddc87d0e0f073",
+    "tests": {
+      "state_conditioned_model": "3be8512f4320694bd107f6017923f3363df699ac9ebcd987a9d96a3be18bb97a",
+      "training": "0b7a62561ff84f8f89ac99885b562add5271cc525fe81b904a244342b9ed4cf0",
+      "evaluation": "cd3b543fad8d101ea149765d58e28f1eea2e41f8320e1801cf1b255286e050ef",
+      "package": "3437863197236b33fdcbe0686af1f20280c4d2a03bdc133b7ca7b749f28600fe"
+    }
+  },
+  "preserved_h3_source_sha256": {
+    "base_model": "3089b7e0e7b527ef08d7251d0b84cd064f0c6f2d6330050936e8d55a55e5702c",
+    "data_generator": "2d3fd33d694893aea5aa80b514e34256e9f6046f71b13f6410dbabec1278d707",
+    "evidence_query_inference": "58a141a5f091f5b4733d082b9d3d65002afbb4ec6b1d8942f34c685e4544875d",
+    "evidence_query_model": "6e7e666e48b06f6ed53ead4996982ac052bf0dd446cc6945d2eb506c52aaefbc",
+    "h1_training_loader": "11056fe0773e5a64fa4dc143a01725d3d472b97c0945a3419adf45e153964f57",
+    "h2_objective": "6e12d8b5f9650c6e4b8af4fa93303eae111adf8fc94d5c756c392bb51e6b6d72",
+    "pointer_data": "9719b435b8b58b7e516539153fb75eac0c172e293af652b3fcccd06849579b1e",
+    "pointer_decoder": "e226bab817c93ca54906deb825b1a6ee8fb9ae2e95f37044f893de48783a6a24",
+    "state_span_adapter": "b0ffd2a6cf9909e919a12311077d47b8426567b239e8dde52794dc5aef0a86f5",
+    "training": "2674d52f51dac5b9c8ef09e4bf2be6bbdd497418b3cfdf479886c1e0e85c0cfb"
+  },
+  "runtime": {
+    "provider": "runpod",
+    "cloud_tier": "secure",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "container_image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "python": "3.12.x",
+    "torch": "2.8.0+cu128",
+    "tokenizers": "0.22.2",
+    "cuda": "12.8",
+    "cublas_workspace_config": ":4096:8",
+    "deterministic_algorithms": true,
+    "larger_gpu_or_model_scaling_authorized": false
+  },
+  "local_preflight": {
+    "focused_h6_tests": "51 passed",
+    "ruff": "passed",
+    "ruff_format": "passed",
+    "python_compile": "passed",
+    "diff_check": "passed",
+    "same_seed_rng_parity": "passed",
+    "zero_initialization_functional_identity": "passed",
+    "pointer_loss_state_head_gradient_isolation": "passed",
+    "optimizer_group_membership": "passed",
+    "strict_checkpoint_validation_precedes_development": "passed",
+    "two_independent_package_dry_runs_byte_exact": "passed_before_final_freeze",
+    "implementation_independent_p0_p1_review": "clear_before_preregistration",
+    "training_or_evaluation_process_prohibited_partition_access": false
+  }
+}

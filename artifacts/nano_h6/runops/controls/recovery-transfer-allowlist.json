@@ -1,0 +1,55 @@
+{
+  "schema": "nano.h6.recovery-transfer-allowlist.v1",
+  "created_at_utc": "2026-08-03T21:44:03Z",
+  "source_root": "/workspace/nano-h6-input/nano-h6-runpod",
+  "source_root_corrected_at_utc": "2026-08-03T23:46:11Z",
+  "source_root_correction_evidence": "Recorded upload, extraction, training, and prior hash commands all used /workspace/nano-h6-input/nano-h6-runpod; the earlier allowlist omitted the nano-h6-input extraction directory.",
+  "artifacts": [
+    {
+      "path": "results/seed-20260805/training_report.json",
+      "bytes": 41461,
+      "sha256": "9b7bfe0be903d7f43b36d22dc61ecd2ae4c9cf3deb5e9f1a993733bf18d09932"
+    },
+    {
+      "path": "results/seed-20260805/epoch-3.pt",
+      "bytes": 13168916,
+      "sha256": "4ca7b2513ae8b0cf8b9c525a853144d1b75b422b560a71818caa70d981c30472"
+    },
+    {
+      "path": "results/seed-20260806/training_report.json",
+      "bytes": 41467,
+      "sha256": "2d5bb2e95913f46c181f9273677e9ec3ad482dbf31d0111b2bc9433e15379d8f"
+    },
+    {
+      "path": "results/seed-20260806/epoch-2.pt",
+      "bytes": 13168916,
+      "sha256": "40611c2733e731bdd0eeb827f852fb2f14312445c05cd293a5533296e2ce982f"
+    },
+    {
+      "path": "results/TRAINING_REPORT_SHA256SUMS",
+      "bytes": 218,
+      "sha256": "e1509af3f11b03ad68131876aa591fe3998a8a7e8e2a4f9c4d271e738302b464"
+    },
+    {
+      "path": "sft/tokenizer.json",
+      "bytes": 262846,
+      "sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+    }
+  ],
+  "total_bytes": 26683824,
+  "path_policy": "Exact relative paths only; no directory traversal, glob expansion, recursive discovery, or content inspection.",
+  "excluded": [
+    "development data",
+    "fresh-v0 and fresh-v1 data or tests",
+    "private corpus",
+    "Wedge data",
+    "benchmark data",
+    "legacy training records"
+  ],
+  "copy_policy": {
+    "required_verified_failure_domains": 2,
+    "internal_destination": "/Users/mac/Projects/nano-lm/artifacts/nano_h6/recovered/h6-recovery-20260803",
+    "external_destination": "/Volumes/Express4M2/NanoBackups/h6-recovery-20260803",
+    "external_destination_encrypted": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "nano.h6.predecessor-recovery-binding.v1",
+  "created_at_utc": "2026-08-04T00:35:54Z",
+  "predecessor": {
+    "run_id": "h6-recovery-20260803",
+    "phase": "REPORTS_FROZEN",
+    "run_spec_sha256": "171a9d17f649517c8d40bff6a5d9bf66cf08bf0272d147fed4befbca95eb43d3",
+    "run_events_sha256": "119a65e15e753220eea70d42166e97c0fbd180a595958206483902ec68650e9e",
+    "ledger_tail_sha256": "66467be5f2cb515276a4e7d30d260d74255b014b1798e167e0bcc6d08fe4c6c8"
+  },
+  "source": {
+    "pod_id": "oad0zdviuzjq9q",
+    "machine_id": "3dlh25j3vwp9",
+    "required_state": "stopped",
+    "post_stop_evidence_sha256": "c93a3b53d87ce7aebda695b99ce62ebbb2f28e09e8cdafce28d700fc9c85c19f",
+    "access_policy_for_continuation": "lineage_only_no_restart"
+  },
+  "completed_recovery": {
+    "recovery_operation_evidence_sha256": "67e6f494750beb1772b92b7bad1640ef2d827887b03193ac2d12bc70ce585c03",
+    "workspace_sentinel_evidence_sha256": "61dc435248b601680630b161f53e34f24870a0aae4a2c32eda80f0fcf60a609d",
+    "zero_compute_billing_evidence_sha256": "ad6985c34bacc24a9a3110aa49a8cfd6df34cde803fcc9f244ee699a30e3547d"
+  },
+  "durable_copies": {
+    "internal_receipt_sha256": "18338d8fb315f62090d04e43bab371f038b333480184879f15f79bb4acf9587d",
+    "external_receipt_sha256": "1ec647376459c7a5e684a7f0d25be4ccf5bc1bff20b775539c9041d744cc780c",
+    "required_failure_domains": 2,
+    "source_restart_required": false
+  },
+  "continuation_rule": "The predecessor ledger remains the sole authority for the recovered source. The evaluation continuation may authenticate its imported evidence but may not operate on, restart, stop, modify, or terminate the source pod."
+}

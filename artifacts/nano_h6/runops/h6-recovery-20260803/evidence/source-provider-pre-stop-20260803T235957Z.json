@@ -1,0 +1,48 @@
+{
+  "schema": "nano.h6.sanitized-provider-observation.v1",
+  "observed_at_utc": "2026-08-03T23:59:57Z",
+  "source": "runpodctl_official_rest_and_prior_official_machine_binding",
+  "status": "ok",
+  "purpose": "pre_stop",
+  "pod": {
+    "id": "oad0zdviuzjq9q",
+    "name": "nano-h6-state-boundary-20260803",
+    "desired_status": "RUNNING",
+    "last_status_change": "Resumed by as transfer pod by user: Mon Aug 03 2026 22:51:45 GMT+0000 (Coordinated Universal Time)",
+    "mode": "transfer_pod_cpu_only",
+    "machine_id": "3dlh25j3vwp9",
+    "machine_id_source": "prior same-pod official API observation",
+    "machine_data_center_id": null,
+    "machine_location": "US",
+    "secure_cloud": true,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "original_configured_gpu_count": 1,
+    "runtime_gpu_count": 0,
+    "actual_compute_hourly_usd": "0.495",
+    "configured_compute_hourly_usd": "0.99",
+    "volume_mount_path": "/workspace",
+    "volume_size_gb": 20,
+    "ssh_endpoint_host": "74.2.96.27",
+    "ssh_endpoint_port": 16630
+  },
+  "workspace": {
+    "state": "accessible",
+    "source_root": "/workspace/nano-h6-input/nano-h6-runpod",
+    "all_six_remote_artifacts_attested": true,
+    "remote_artifact_attestation_sha256": "67e6f494750beb1772b92b7bad1640ef2d827887b03193ac2d12bc70ce585c03"
+  },
+  "backups": {
+    "training_complete": true,
+    "result_complete": true,
+    "recovery_required": false,
+    "internal_device_id": 16777227,
+    "external_device_id": 16777258,
+    "device_ids_distinct": true,
+    "internal_copy_receipt_sha256": "18338d8fb315f62090d04e43bab371f038b333480184879f15f79bb4acf9587d",
+    "external_copy_receipt_sha256": "1ec647376459c7a5e684a7f0d25be4ccf5bc1bff20b775539c9041d744cc780c"
+  },
+  "sanitized_configuration_sha256": "761300795fbce4a910a9c3c5a918bd2aa9299bbe929359bcaf089c0a5d6e8c66",
+  "sensitive_fields_omitted": [
+    "env.PUBLIC_KEY"
+  ]
+}

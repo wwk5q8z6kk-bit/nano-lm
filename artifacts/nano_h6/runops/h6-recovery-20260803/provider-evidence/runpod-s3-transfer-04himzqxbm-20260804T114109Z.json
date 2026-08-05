@@ -1,0 +1,59 @@
+{
+  "status": "verified",
+  "completed_at_utc": "2026-08-04T11:41:09Z",
+  "provider": "runpod",
+  "transfer_method": "s3_compatible_api",
+  "source_root": "/Volumes/Express4M2/NanoBackups/h6-recovery-20260803",
+  "volume_id": "04himzqxbm",
+  "data_center_id": "EU-RO-1",
+  "endpoint": "https://s3api-eu-ro-1.runpod.io/",
+  "remote_prefix": "nano-h6-runpod/",
+  "workspace_mount_equivalent": "/workspace/nano-h6-runpod/",
+  "file_count": 6,
+  "total_size_bytes": 26683824,
+  "verification": {
+    "local_source_hashes_matched_frozen_manifest": true,
+    "remote_objects_were_downloaded_to_a_fresh_directory": true,
+    "downloaded_hashes_matched_frozen_manifest": true
+  },
+  "files": [
+    {
+      "relative_path": "results/TRAINING_REPORT_SHA256SUMS",
+      "remote_key": "nano-h6-runpod/results/TRAINING_REPORT_SHA256SUMS",
+      "size_bytes": 218,
+      "sha256": "e1509af3f11b03ad68131876aa591fe3998a8a7e8e2a4f9c4d271e738302b464"
+    },
+    {
+      "relative_path": "results/seed-20260805/epoch-3.pt",
+      "remote_key": "nano-h6-runpod/results/seed-20260805/epoch-3.pt",
+      "size_bytes": 13168916,
+      "sha256": "4ca7b2513ae8b0cf8b9c525a853144d1b75b422b560a71818caa70d981c30472"
+    },
+    {
+      "relative_path": "results/seed-20260805/training_report.json",
+      "remote_key": "nano-h6-runpod/results/seed-20260805/training_report.json",
+      "size_bytes": 41461,
+      "sha256": "9b7bfe0be903d7f43b36d22dc61ecd2ae4c9cf3deb5e9f1a993733bf18d09932"
+    },
+    {
+      "relative_path": "results/seed-20260806/epoch-2.pt",
+      "remote_key": "nano-h6-runpod/results/seed-20260806/epoch-2.pt",
+      "size_bytes": 13168916,
+      "sha256": "40611c2733e731bdd0eeb827f852fb2f14312445c05cd293a5533296e2ce982f"
+    },
+    {
+      "relative_path": "results/seed-20260806/training_report.json",
+      "remote_key": "nano-h6-runpod/results/seed-20260806/training_report.json",
+      "size_bytes": 41467,
+      "sha256": "2d5bb2e95913f46c181f9273677e9ec3ad482dbf31d0111b2bc9433e15379d8f"
+    },
+    {
+      "relative_path": "sft/tokenizer.json",
+      "remote_key": "nano-h6-runpod/sft/tokenizer.json",
+      "size_bytes": 262846,
+      "sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+    }
+  ],
+  "credentials_included": false,
+  "gpu_pod_started": false
+}

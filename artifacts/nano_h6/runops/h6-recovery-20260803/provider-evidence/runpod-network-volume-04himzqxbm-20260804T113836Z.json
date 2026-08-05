@@ -1,0 +1,17 @@
+{
+  "provider": "runpod",
+  "source": "runpodctl",
+  "observed_at_utc": "2026-08-04T11:38:36Z",
+  "resource_role": "destination",
+  "resource_type": "network_volume",
+  "resource_id": "04himzqxbm",
+  "resource_name": "nano-h6-evaluation-20260804",
+  "size_gb": 20,
+  "data_center_id": "EU-RO-1",
+  "lifecycle_state": "retained",
+  "workspace_state": "unknown",
+  "s3_endpoint": "https://s3api-eu-ro-1.runpod.io/",
+  "compute_hourly_usd": 0,
+  "storage_hourly_usd": 0.00175,
+  "credentials_included": false
+}

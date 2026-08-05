@@ -1,0 +1,13 @@
+{
+  "schema_version": "nano.h5.training-report-freeze.v1",
+  "experiment_id": "h5-balanced-replay-data-only-v1",
+  "frozen_before_development_transfer": true,
+  "development_records_used": 0,
+  "pod_id": "wr843jarxwls3c",
+  "input_bundle_sha256": "930cac784c694a010edbffc092b1484f887ba2fd5c428b5c3bbb5aa2419e4f4b",
+  "report_checksums": {
+    "results/seed-20260805/training_report.json": "0c3b0e78e1fe504c6ca41afdd770aaf9b04e6ecf295b90c5fd19c2599c3acaf8",
+    "results/seed-20260806/training_report.json": "7cb83d98e50eac5b7bb4cde89033602b863ead3607f89db0fffc078ef87c8112"
+  },
+  "training_report_checksum_file_sha256": "8672ac4110b1cfda4cc4b6af4c44869443217e019ce1b8e2b67217e7decb0822"
+}

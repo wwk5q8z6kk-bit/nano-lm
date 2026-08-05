@@ -1,0 +1,35 @@
+{
+  "schema_version": "nano.pointer-span-run-preservation.v0",
+  "run_id": "h2-pointer-20260803",
+  "preserved_at": "2026-08-03T06:55:23Z",
+  "provider": {
+    "pod_id": "stk7bwmoqswlr0",
+    "template": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "secure_cloud": true,
+    "cost_per_hour_usd": 0.99,
+    "network_volume_used": false
+  },
+  "integrity": {
+    "input_archive_sha256": "5ad485e76e89c50a14e9d30051f14f1e034e8c18457ae69d4e1cb2f99a036919",
+    "development_evaluation_sha256": "641c08f826a5669220cd7fda8c52fbd2a682a352c8be36a97f93a099ecfe3833",
+    "training_report_sha256": {
+      "20260805": "f87ddad270756b1238662801dd1d8146384b33d55897a227c75efffcd625cf9b",
+      "20260806": "01bf6c583b984401201bc8fc6f9d0b9598cc57e17c6dfbccfe7a82677a181070"
+    }
+  },
+  "decision": {
+    "fresh_v1_assessed": false,
+    "latency_assessed": false,
+    "next_step": "reject H2; do not measure latency or open fresh-v1",
+    "quality_gate_passed": false,
+    "quality_gate_passed_candidates": []
+  },
+  "preservation": {
+    "contains_source_snapshot": true,
+    "contains_all_six_checkpoints": true,
+    "contains_training_and_evaluation_logs": true,
+    "fresh_v1_read": false,
+    "latency_assessed": false
+  }
+}

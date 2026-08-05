@@ -1,0 +1,13 @@
+{
+  "schema": "nano.h6.source-sanitized-configuration.v1",
+  "provider": "runpod",
+  "pod_id": "oad0zdviuzjq9q",
+  "machine_id": "3dlh25j3vwp9",
+  "storage": {
+    "class": "host_local",
+    "mount_path": "/workspace",
+    "size_gb": 20,
+    "network_volume_id": null
+  },
+  "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404"
+}

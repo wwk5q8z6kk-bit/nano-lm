@@ -1,0 +1,14 @@
+{
+  "schema_version": "nano.h2.runpod-closeout.v0",
+  "experiment_id": "h2-native-pointer-span-v0",
+  "observed_at_utc": "2026-08-03T07:05:21Z",
+  "provider": "runpod",
+  "pod_id": "stk7bwmoqswlr0",
+  "pod_list_stdout": "[]",
+  "pod_absent": true,
+  "billing_stopped": true,
+  "network_volume_used": false,
+  "locked_result_manifest_verified": true,
+  "independent_backup_sha256": "88420f2644e25a2acdcaaffccb244bc3383a519b47622f74bb197034e37e46e6",
+  "independent_backup_gzip_tested": true
+}

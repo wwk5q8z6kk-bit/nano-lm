@@ -1,0 +1,18 @@
+{
+  "schema_version": "nano.h5.runpod-closeout.v1",
+  "experiment_id": "h5-balanced-replay-data-only-v1",
+  "observed_at_utc": "2026-08-03T17:01:51Z",
+  "provider": "runpod",
+  "pod_id": "wr843jarxwls3c",
+  "pod_list_stdout": "[]",
+  "pod_absent": true,
+  "billing_stopped": true,
+  "network_volume_used": false,
+  "result_manifest_verified": true,
+  "result_archive_bytes": 73258386,
+  "result_archive_sha256": "bab5327e900597a083cb04631e645f2e0f500f14f01ec7db195e754b34620749",
+  "development_evaluation_sha256": "c67393962299470fc6b5026031b61617bbae85a2883105b8b8abfcdb30820c47",
+  "input_archive_bytes": 12473343,
+  "input_archive_sha256": "930cac784c694a010edbffc092b1484f887ba2fd5c428b5c3bbb5aa2419e4f4b",
+  "sealed_confirmation_read": false
+}

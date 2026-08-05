@@ -1,0 +1,203 @@
+{
+  "schema_version": "nano.evidence-query-result-summary.v0",
+  "experiment_id": "h3-evidence-query-pointer-v1",
+  "status": "REJECTED_ON_KNOWN_DEVELOPMENT",
+  "architecture": {
+    "version": "nano_evidence_query_pointer_v1",
+    "architecture_identity": "d192-l6-h6-kv2-hd32-ff512-v4098-ctx512",
+    "parameter_count": 3286469,
+    "trunk_parameter_count": 3148608,
+    "evidence_query_head_parameter_count": 137861,
+    "base_checkpoint_sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+    "tokenizer_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+  },
+  "partition": {
+    "partition_id": "native-state-span-dev-v0",
+    "role": "known_adaptive_development_quality_only",
+    "worlds": 250,
+    "records": 1000,
+    "fields": 5000,
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "used_for_epoch_selection": false,
+    "used_for_seed_selection": false,
+    "used_for_threshold_selection": false,
+    "fresh_v1_read": false
+  },
+  "selection": {
+    "primary_label": "seed-20260805-epoch-1",
+    "checkpoint_sha256": "6477888bc8058a3dd747d292c3593385d8fb8148672161f5389f9685762ab477",
+    "training_report_sha256": "cfddc38810a50cf211f71fd1644911e2d7301e64d046f79c41156f56df84a977",
+    "global_threshold": 0.0,
+    "threshold_applied_to_development": false,
+    "selection_source": "training_only_calibration",
+    "selection_rule": [
+      "uncalibrated_calibration_macro_joint_desc",
+      "uncalibrated_calibration_overall_joint_desc",
+      "earlier_epoch",
+      "seed_20260805"
+    ],
+    "calibration_result": {
+      "seed_20260805_all_epochs_overall": "4000/4000",
+      "seed_20260806_all_epochs_overall": "4000/4000",
+      "all_epochs_macro_joint": 1.0,
+      "all_epochs_wrong_presented": 0
+    }
+  },
+  "uncalibrated_raw": {
+    "metrics": {
+      "overall": {
+        "numerator": 2821,
+        "denominator": 5000,
+        "rate": 0.5642,
+        "minimum_numerator": 3041,
+        "passed": false
+      },
+      "held_value": {
+        "numerator": 2167,
+        "denominator": 2987,
+        "rate": 0.7254770672915969,
+        "minimum_numerator": 1905,
+        "passed": true
+      },
+      "missing_target": {
+        "numerator": 213,
+        "denominator": 250,
+        "rate": 0.852,
+        "minimum_numerator": 219,
+        "passed": false
+      },
+      "absence": {
+        "numerator": 188,
+        "denominator": 413,
+        "rate": 0.4552058111380145,
+        "minimum_numerator": 383,
+        "passed": false
+      },
+      "conflict_target": {
+        "numerator": 94,
+        "denominator": 250,
+        "rate": 0.376,
+        "minimum_numerator": 236,
+        "passed": false
+      },
+      "uncertain_target": {
+        "numerator": 97,
+        "denominator": 250,
+        "rate": 0.388,
+        "minimum_numerator": 228,
+        "passed": false
+      },
+      "failures": {
+        "numerator": 0,
+        "denominator": 1000,
+        "rate": 0.0,
+        "maximum_numerator": 10,
+        "passed": true
+      },
+      "wrong_presented": {
+        "numerator": 1264,
+        "denominator": 3681,
+        "rate": 0.34338494974191797,
+        "admission_requirement": "reported but zero is required only after calibrated admission",
+        "passed": null
+      }
+    },
+    "by_field": {
+      "chief_complaint": {
+        "joint_exact": 378,
+        "total": 1000,
+        "state_correct": 883,
+        "wrong_presented": 622
+      },
+      "duration": {
+        "joint_exact": 957,
+        "total": 1000,
+        "state_correct": 958,
+        "wrong_presented": 0
+      },
+      "severity": {
+        "joint_exact": 172,
+        "total": 1000,
+        "state_correct": 172,
+        "wrong_presented": 34
+      },
+      "medication": {
+        "joint_exact": 628,
+        "total": 1000,
+        "state_correct": 880,
+        "wrong_presented": 372
+      },
+      "allergy": {
+        "joint_exact": 686,
+        "total": 1000,
+        "state_correct": 932,
+        "wrong_presented": 236
+      }
+    },
+    "by_gold_state": {
+      "supported": {
+        "joint_exact": 2229,
+        "total": 3837,
+        "state_correct": 3020,
+        "wrong_presented": 791
+      },
+      "absent": {
+        "joint_exact": 188,
+        "total": 413,
+        "state_correct": 346,
+        "wrong_presented": 222
+      },
+      "missing": {
+        "joint_exact": 213,
+        "total": 250,
+        "state_correct": 213,
+        "wrong_presented": 37
+      },
+      "uncertain": {
+        "joint_exact": 97,
+        "total": 250,
+        "state_correct": 102,
+        "wrong_presented": 114
+      },
+      "conflicting": {
+        "joint_exact": 94,
+        "total": 250,
+        "state_correct": 144,
+        "wrong_presented": 100
+      }
+    }
+  },
+  "downstream_stages": {
+    "uncalibrated_semantic_admission_passed": false,
+    "calibrated_raw": null,
+    "verifier_final": null,
+    "latency_assessed": false,
+    "fresh_v1_assessed": false,
+    "stop_reason": "Uncalibrated semantic and retention admission failed, so the frozen protocol forbade threshold application, verifier evaluation, latency, and fresh-v1 access."
+  },
+  "comparison_to_h2_raw": {
+    "overall_percentage_point_change": -5.4,
+    "held_value_percentage_point_change": 7.8007,
+    "missing_target_percentage_point_change": -3.2,
+    "absence_percentage_point_change": 45.5206,
+    "conflict_target_percentage_point_change": 12.8,
+    "uncertain_target_percentage_point_change": 17.2,
+    "wrong_presented_count_change": -443,
+    "interpretation": "The shared full-context head produced a more balanced state profile and stronger held-value transfer than H2, but it did not meet the frozen quality or safety requirements."
+  },
+  "decision": {
+    "quality_gate_passed": false,
+    "promoted": false,
+    "next_step": "Reject H3 and freeze a data-distribution repair while keeping the H3 architecture, objective, compute envelope, and evaluation gates fixed.",
+    "rationale": "Perfect training-only calibration with poor known-development performance is evidence of a synthetic-family transfer failure; it does not support buying a larger GPU or scaling the model as the next intervention."
+  },
+  "limitations": [
+    "The measured partition is known synthetic development data, not an independent test or a clinical corpus.",
+    "Only two seeds and six checkpoints were evaluated under one frozen training family.",
+    "Calibration and development differ sharply; the result localizes a transfer problem but does not by itself identify every causal data feature.",
+    "The result rejects this exact architecture-plus-training-family intervention, not evidence-query mechanisms or Nano generally.",
+    "Latency and verifier-final behavior were intentionally not measured because uncalibrated quality failed.",
+    "fresh-v1 remained sealed and unread."
+  ]
+}

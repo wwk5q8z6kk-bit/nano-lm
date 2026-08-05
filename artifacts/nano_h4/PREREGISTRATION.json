@@ -1,0 +1,143 @@
+{
+  "schema_version": "nano.h4-preregistration.v1",
+  "experiment_id": "h4-surface-transfer-data-only-v1",
+  "frozen_at_utc": "2026-08-03T14:10:09Z",
+  "status": "FROZEN_BEFORE_GPU_TRAINING",
+  "objective": "Test whether a deterministic, independently surfaced training distribution repairs H3's synthetic-family transfer failure without changing Nano's model, objective, exposure, inference, verifier, or quality gates.",
+  "hypothesis": "If H3 failed primarily because its training surfaces admitted family-specific shortcuts, then training the same Nano evidence-query scribe on the H4 surface-transfer family will pass every frozen uncalibrated known-development admission gate. Failure of any admission gate rejects this exact data-only intervention.",
+  "intervention": {
+    "changed_axis": "training_data_only",
+    "generator": "nano.surface-transfer-dataset.v1",
+    "recipe": "nano-evidence-query-data-only-v1",
+    "fit": {
+      "worlds": 2800,
+      "records": 11200,
+      "variants_per_world": 4,
+      "variants": [
+        "normal",
+        "missing",
+        "uncertain",
+        "conflicting"
+      ]
+    },
+    "training_only_calibration": {
+      "worlds": 200,
+      "records": 800,
+      "variants_per_world": 4,
+      "gradient_bearing": false
+    },
+    "surface_controls": {
+      "fit_calibration_namespaces_disjoint": true,
+      "fit_calibration_open_values_disjoint_except_severity": true,
+      "fit_calibration_templates_disjoint": true,
+      "known_development_used_only_for_post_design_leakage_rejection": true,
+      "all_transcripts_unique": true,
+      "all_supported_conflict_corrections_deranged": true,
+      "fit_questions_per_supported_value": 12,
+      "fit_answer_templates_per_supported_value": 12,
+      "calibration_questions_per_supported_value": 4,
+      "calibration_answer_templates_per_supported_value": 4,
+      "answer_boundaries_per_supported_value": 4
+    },
+    "fit_state_class_counts": [
+      42980,
+      4620,
+      2800,
+      2800,
+      2800
+    ],
+    "calibration_state_class_counts": [
+      3070,
+      330,
+      200,
+      200,
+      200
+    ]
+  },
+  "preserved_axes": {
+    "architecture": "nano_evidence_query_pointer_v1",
+    "architecture_identity": "d192-l6-h6-kv2-hd32-ff512-v4098-ctx512",
+    "parameter_count": 3286469,
+    "base_checkpoint_sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+    "tokenizer_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9",
+    "target_grammar": "nano.state-span-target.v0",
+    "training_seeds": [
+      20260805,
+      20260806
+    ],
+    "batch_size": 32,
+    "epochs": 3,
+    "steps_per_epoch": 350,
+    "steps_per_seed": 1050,
+    "optimizer_schedule_objective_prompt_inference_calibration_selection_verifier_and_gates": "identical_to_h3_by_literal_source_pins"
+  },
+  "selection": {
+    "development_used": false,
+    "order": [
+      "uncalibrated_training_calibration_macro_joint_desc",
+      "uncalibrated_training_calibration_overall_joint_desc",
+      "earlier_epoch",
+      "seed_20260805"
+    ],
+    "selection_frozen_before_known_development_open": true,
+    "post_development_tuning_allowed": false
+  },
+  "known_development_admission_gates": {
+    "partition_id": "native-state-span-dev-v0",
+    "manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "overall_joint_exact_minimum": "3041/5000",
+    "held_value_joint_exact_minimum": "1905/2987",
+    "missing_target_joint_exact_minimum": "219/250",
+    "absence_joint_exact_minimum": "383/413",
+    "conflict_target_joint_exact_minimum": "236/250",
+    "uncertain_target_joint_exact_minimum": "228/250",
+    "evaluation_failures_maximum": "10/1000",
+    "uncalibrated_wrong_presented": "reported_not_gated",
+    "all_gates_required": true
+  },
+  "staged_stop_policy": {
+    "on_uncalibrated_admission_failure": "stop_before_threshold_verifier_latency_and_sealed_confirmation",
+    "on_uncalibrated_admission_pass": "apply_only_the_training_calibration_threshold_then_require_all_quality_gates_and_zero_wrong_presented",
+    "on_calibrated_or_verifier_failure": "stop_before_latency_and_sealed_confirmation",
+    "on_full_quality_pass": "preserve_candidate_then_measure_matched_latency_in_a_separate_stage",
+    "fresh_v1_access_in_this_run": false,
+    "historical_fresh_v0_access_in_this_run": false
+  },
+  "frozen_inputs": {
+    "training_manifest_sha256": "444c5d6dcb613959a28ee3ce2e1dd7e25e2fabc2603ba4192d445ed3bedb406f",
+    "fit_sha256": "8e019b5ee827facd179bcda521838849e2053b02fed0e392e322c5691fda3ae1",
+    "calibration_sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70",
+    "fit_max_tokens": 255,
+    "calibration_max_tokens": 252,
+    "byte_exact_regeneration_verified": true
+  },
+  "frozen_source_sha256": {
+    "surface_transfer_data": "29ef84d44ecbf1af5d3f3e08960abe21173e4f5a756dc2c6a7082edaae408508",
+    "train_evidence_query_h4": "064699619916dc72e2ee954faf060d45cdcd508b97f78e75153e227525fc0c4b",
+    "evaluate_evidence_query_h4": "1dce10081c02a4783b09acce702ac61f05c800dbe7872d9d9cc1ea70399d3e46",
+    "package_evidence_query_h4": "06cdb2c50d2789fd55d3a4a5a8706ed463f7c18106875b7c0f16855228cf8e4c",
+    "runpod_requirements": "3c90d0cda8456819325e2a2bec62ca0ddc7a43d4868d92f4453ddc87d0e0f073"
+  },
+  "runtime": {
+    "provider": "runpod",
+    "cloud_tier": "secure",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "container_image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "python": "3.12.x",
+    "torch": "2.8.0+cu128",
+    "tokenizers": "0.22.2",
+    "cublas_workspace_config": ":4096:8",
+    "deterministic_algorithms": true,
+    "larger_gpu_or_model_scaling_authorized": false
+  },
+  "local_preflight": {
+    "focused_h4_tests": "32 passed",
+    "isolated_runpod_bundle_tests": "32 passed",
+    "nano_regression_tests_excluding_two_prohibited_fresh_suites": "275 passed",
+    "ruff": "passed",
+    "python_compile": "passed",
+    "diff_check": "passed",
+    "two_stage_archive_boundary_audit": "passed"
+  }
+}

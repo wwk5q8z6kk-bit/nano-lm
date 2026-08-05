@@ -1,0 +1,34 @@
+{
+  "schema": "nano.h6.evaluation-runtime-authority.v1",
+  "created_at_utc": "2026-08-04T00:21:02Z",
+  "scope": "one_shot_known_development_evaluation",
+  "provider": "runpod",
+  "cloud_tier": "secure",
+  "storage_class": "runpod_network_volume",
+  "allowed_data_center_ids": [
+    "EU-RO-1"
+  ],
+  "required_destination": {
+    "configured_gpu_id": "NVIDIA GeForce RTX 5090",
+    "runtime_gpu_name": "NVIDIA GeForce RTX 5090",
+    "runtime_gpu_count": 1,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "workspace_mount_path": "/workspace",
+    "python": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "cuda": "12.8",
+    "tokenizers": "0.22.2",
+    "platform": "Linux-6.8.0-90-generic-x86_64-with-glibc2.39",
+    "cublas_workspace_config": ":4096:8"
+  },
+  "attestation_rule": "All required runtime values must be measured on the running destination and match exactly before development release. Image or GPU labels alone are insufficient.",
+  "rehydration_rule": "Only content-addressed non-development artifacts may be present before admission.",
+  "development_rule": "Development remains absent until a no-clobber admission receipt authenticates this authority, the destination, the current ledger tail, the frozen H6 package, both checkpoints, both reports, the tokenizer, and the training-only primary selection.",
+  "source_policy": {
+    "pod_id": "oad0zdviuzjq9q",
+    "required_state": "stopped",
+    "restart_authorized": false,
+    "termination_authorized": false
+  },
+  "fresh_or_private_data_authorized": false
+}

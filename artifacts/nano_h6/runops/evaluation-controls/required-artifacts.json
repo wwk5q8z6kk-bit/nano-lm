@@ -1,0 +1,47 @@
+{
+  "schema": "nano.required-artifacts.v1",
+  "artifacts": [
+    {
+      "artifact_id": "h6_checkpoint_seed_20260805_epoch_3",
+      "class": "training",
+      "role": "selected_checkpoint_seed_20260805",
+      "expected_sha256": "4ca7b2513ae8b0cf8b9c525a853144d1b75b422b560a71818caa70d981c30472"
+    },
+    {
+      "artifact_id": "h6_checkpoint_seed_20260806_epoch_2",
+      "class": "training",
+      "role": "selected_checkpoint_seed_20260806",
+      "expected_sha256": "40611c2733e731bdd0eeb827f852fb2f14312445c05cd293a5533296e2ce982f"
+    },
+    {
+      "artifact_id": "h6_report_checksum_manifest",
+      "class": "training",
+      "role": "training_report_checksum_manifest",
+      "expected_sha256": "e1509af3f11b03ad68131876aa591fe3998a8a7e8e2a4f9c4d271e738302b464"
+    },
+    {
+      "artifact_id": "h6_report_seed_20260805",
+      "class": "training",
+      "role": "training_report_seed_20260805",
+      "expected_sha256": "9b7bfe0be903d7f43b36d22dc61ecd2ae4c9cf3deb5e9f1a993733bf18d09932"
+    },
+    {
+      "artifact_id": "h6_report_seed_20260806",
+      "class": "training",
+      "role": "training_report_seed_20260806",
+      "expected_sha256": "2d5bb2e95913f46c181f9273677e9ec3ad482dbf31d0111b2bc9433e15379d8f"
+    },
+    {
+      "artifact_id": "h6_sft_vocabulary_json",
+      "class": "training",
+      "role": "vocabulary",
+      "expected_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+    },
+    {
+      "artifact_id": "h6_terminal_evaluation_bundle",
+      "class": "result",
+      "role": "one_shot_terminal_evaluation_evidence",
+      "expected_sha256": null
+    }
+  ]
+}

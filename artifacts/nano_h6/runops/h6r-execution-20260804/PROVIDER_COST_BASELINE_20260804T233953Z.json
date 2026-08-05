@@ -1,0 +1,11 @@
+{
+  "schema": "nano.h6r.provider-cost-baseline.v1",
+  "observed_at_utc": "2026-08-04T23:39:53Z",
+  "source": "runpodctl",
+  "run_compute_usd": "0",
+  "run_storage_usd": "0",
+  "account_current_spend_per_hour_usd": "0.01",
+  "active_pod_count": 0,
+  "selected_volume_storage_hourly_usd": "0.00175",
+  "sensitive_account_fields_omitted": true
+}

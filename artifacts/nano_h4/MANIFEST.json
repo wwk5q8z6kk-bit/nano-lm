@@ -1,0 +1,109 @@
+{
+  "schema_version": "nano.h4.surface-transfer-evidence-manifest.v1",
+  "experiment_id": "h4-evidence-query-data-only-v1",
+  "preregistration_experiment_id": "h4-surface-transfer-data-only-v1",
+  "status": "REJECTED_ON_KNOWN_DEVELOPMENT",
+  "decision": {
+    "quality_gate_passed": false,
+    "uncalibrated_semantic_admission_passed": false,
+    "threshold_applied": false,
+    "verifier_assessed": false,
+    "latency_assessed": false,
+    "fresh_v1_read": false,
+    "provider_pod_closed": true
+  },
+  "tracked_artifacts": [
+    {
+      "filename": "artifacts/nano_h4/PREREGISTRATION.json",
+      "role": "frozen H4 data-only protocol",
+      "bytes": 6133,
+      "sha256": "352c68b5e6eb2087babbc0ae940c585c8cd22a74618e96375893b1cf37d55d08"
+    },
+    {
+      "filename": "artifacts/nano_h4/data/manifest.json",
+      "role": "deterministic H4 data and partition audit manifest",
+      "bytes": 35767,
+      "sha256": "444c5d6dcb613959a28ee3ce2e1dd7e25e2fabc2603ba4192d445ed3bedb406f"
+    },
+    {
+      "filename": "artifacts/nano_h4/runpod-input/READINESS.json",
+      "role": "authenticated RunPod input readiness record",
+      "bytes": 2419,
+      "sha256": "b1750d31c9a6e6869617bc9b28c9a83e085ff08e550a697048b75ca3c1e3f9ee"
+    },
+    {
+      "filename": "artifacts/nano_h4/TRAINING_REPORT_FREEZE.json",
+      "role": "training-report checksum freeze before development transfer",
+      "bytes": 533,
+      "sha256": "aea329b6565b0622fb62d752c5fcbbaea48e23f90854ff6f1a3d7fedf4ed6070"
+    },
+    {
+      "filename": "artifacts/nano_h4/RESULT_SUMMARY.json",
+      "role": "bounded machine-readable H4 result and row-level localization summary",
+      "bytes": 7338,
+      "sha256": "6dee4cb1999ebab75ce7a19b2f8c07ff0b36be3af72606987c300b837e31f473"
+    },
+    {
+      "filename": "artifacts/nano_h4/CLOSEOUT.json",
+      "role": "post-run storage and provider closeout observation",
+      "bytes": 749,
+      "sha256": "330677974d70707c99db512810fd77bc3866074b97182859e2b7e18a91fada78"
+    },
+    {
+      "filename": "artifacts/nano_h4/runpod-input/nano-h4-runpod-input.tar.gz",
+      "role": "deterministic authenticated RunPod input archive",
+      "bytes": 12424054,
+      "sha256": "ffddc5b37693bf10b5066f06bece18d58f031be0bac89d79d4f0ee550a293664"
+    }
+  ],
+  "content_addressed_local_evidence": {
+    "locked_result_directory": "checkpoints/candidates/evidence_query_surface_transfer_v1_locked",
+    "result_manifest_sha256": "9b914dffcd165af114b7ec800ba843774f0968db62683866c3b5d9e8e9939c81",
+    "training_report_checksum_file_sha256": "6bf79532fcd3c1c7f8cb146cd4c9735879c4b24938dd44d1a451c75b0fcc501b",
+    "development_evaluation": {
+      "bytes": 1855164,
+      "sha256": "b8f8b350f4ad772b06a292c5e156d097e549f62e15be09c3c55c608574c0ed82"
+    },
+    "input_archive": {
+      "bytes": 12424054,
+      "sha256": "ffddc5b37693bf10b5066f06bece18d58f031be0bac89d79d4f0ee550a293664"
+    },
+    "result_archive": {
+      "bytes": 73268344,
+      "sha256": "69c2fa4b3b9c5a82141d1c1661b62f7af3b2ba828a0f06ecf47f9be36f909cae"
+    },
+    "training_data": {
+      "manifest_sha256": "444c5d6dcb613959a28ee3ce2e1dd7e25e2fabc2603ba4192d445ed3bedb406f",
+      "fit_sha256": "8e019b5ee827facd179bcda521838849e2053b02fed0e392e322c5691fda3ae1",
+      "calibration_sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70"
+    },
+    "training_reports": {
+      "seed_20260805_sha256": "25f5e8672035f073dc250cd5db5c41582624cd2013534aa7b84ef1ef2d463016",
+      "seed_20260806_sha256": "14680948cee3aea9d682ed5bd21a52df77a814d55db93d80e214d449a891b1f4"
+    },
+    "checkpoints": [
+      "36969012a6197712a14c6db0029a3cc83472480be20829dbe4567678e586e782",
+      "610e5084ecb69514691fed7ee7a5432214b3f3192dae274c888af87deb1a1109",
+      "72a3f5e7f7a104e297ad2305713d763fb91a47052311e560a2760a39613b15bc",
+      "7071e2a9b144388165ced63d55eb58456786a5ecb1afc91eae2248c7ebc4e2f5",
+      "6408524c43b6ada8249aeb83e440b6aa0f64512006219663be4105f6d586e13f",
+      "e93709f8090d35346e8f1e1d453b02cd2763bc762ffeed664415559d94a9ebba"
+    ]
+  },
+  "independent_backup": {
+    "storage": "local backup outside the repository",
+    "result_archive_bytes": 73268344,
+    "result_archive_sha256": "69c2fa4b3b9c5a82141d1c1661b62f7af3b2ba828a0f06ecf47f9be36f909cae",
+    "gzip_tested": true
+  },
+  "limitations": [
+    "The measured partition is known adaptive synthetic development data, not an independent test or clinical corpus.",
+    "Only two seeds and six checkpoints were evaluated under one frozen data-only intervention.",
+    "H4 did not test evidence-order, distractor, evidence-distance, or long-context changes.",
+    "The row-level localization is descriptive and does not prove a causal mechanism.",
+    "The result rejects this exact surface/value-family intervention, not broader data work, evidence-query mechanisms, or Nano generally.",
+    "Threshold, verifier-final behavior, and latency were intentionally not measured after uncalibrated admission failed.",
+    "fresh-v1 remained sealed and unread.",
+    "Large checkpoints and row-level evaluation remain local and are referenced by digest."
+  ]
+}

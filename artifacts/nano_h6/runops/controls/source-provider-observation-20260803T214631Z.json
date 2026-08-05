@@ -1,0 +1,23 @@
+{
+  "schema": "nano.h6.sanitized-provider-observation.v1",
+  "observed_at_utc": "2026-08-03T21:46:31Z",
+  "source": "runpod_rest_get_pod",
+  "status": "ok",
+  "pod": {
+    "id": "oad0zdviuzjq9q",
+    "name": "nano-h6-state-boundary-20260803",
+    "desired_status": "EXITED",
+    "last_status_change": "Exited by user: Mon Aug 03 2026 18:33:30 GMT+0000 (Coordinated Universal Time)",
+    "machine_id": "3dlh25j3vwp9",
+    "machine_data_center_id": null,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "configured_gpu_count": 1,
+    "configured_compute_hourly_usd": "0.99",
+    "runtime_gpu_count": 0,
+    "actual_compute_hourly_usd": "0",
+    "volume_mount_path": "/workspace",
+    "volume_size_gb": 20,
+    "network_volume_id": null
+  },
+  "interpretation": "The pod is stopped. Configured GPU count and nominal GPU rate are configuration fields, not an active runtime allocation or active compute billing."
+}

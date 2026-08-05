@@ -1,0 +1,37 @@
+{
+  "schema": "nano.h6.recovery-authorization.v1",
+  "authorized_at_utc": "2026-08-03T21:44:03Z",
+  "authority": "project_founder_delegation_in_current_codex_task",
+  "objective": "Recover the completed H6 training evidence without opening development data or changing the scientific result.",
+  "source": {
+    "provider": "runpod",
+    "pod_id": "oad0zdviuzjq9q",
+    "machine_id": "3dlh25j3vwp9",
+    "volume_mount_path": "/workspace",
+    "volume_size_gb": 20
+  },
+  "authorized_actions": [
+    "record sanitized read-only provider observations",
+    "start the exact source pod only through the documented Console Start with zero GPUs action",
+    "inspect only path presence, byte count, and SHA-256 for the six allowlisted artifacts",
+    "transfer only the six allowlisted artifacts",
+    "create and verify one internal-disk copy and one external-disk copy",
+    "stop the exact source pod after recovery or for emergency cost containment"
+  ],
+  "prohibited_actions": [
+    "normal GPU start",
+    "retraining",
+    "evaluation",
+    "development transfer or access",
+    "fresh-suite access",
+    "private-corpus access",
+    "benchmark access",
+    "pod reset",
+    "pod migration",
+    "pod termination",
+    "network-volume substitution",
+    "push, tag, or release"
+  ],
+  "max_additional_runpod_usd_from_recovery_baseline": "5.00",
+  "termination_gate": "Termination remains forbidden until both off-RunPod copies pass exact byte and SHA-256 verification and a later explicit decision authorizes termination."
+}

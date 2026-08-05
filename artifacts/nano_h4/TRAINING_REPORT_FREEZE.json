@@ -1,0 +1,10 @@
+{
+  "bundle_sha256": "ffddc5b37693bf10b5066f06bece18d58f031be0bac89d79d4f0ee550a293664",
+  "frozen_at": "2026-08-03T14:42:20Z",
+  "pod_id": "99sp6eodjyi981",
+  "report_checksums": {
+    "results/seed-20260805/training_report.json": "25f5e8672035f073dc250cd5db5c41582624cd2013534aa7b84ef1ef2d463016",
+    "results/seed-20260806/training_report.json": "14680948cee3aea9d682ed5bd21a52df77a814d55db93d80e214d449a891b1f4"
+  },
+  "training_report_checksum_file_sha256": "6bf79532fcd3c1c7f8cb146cd4c9735879c4b24938dd44d1a451c75b0fcc501b"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "nano.h6r.provider-startup-failure.v1",
+  "observed_at_utc": "2026-08-04T23:45:43Z",
+  "source": "runpodctl",
+  "operation_id": "29bcbabf-2171-4e1e-ac19-5c52732680a9",
+  "destination": {
+    "pod_id": "5xvs95bqcynzn2",
+    "name": "nano-h6r-same-pod-20260804",
+    "desired_status": "RUNNING",
+    "provider_uptime_seconds": 0,
+    "ssh_status": "pod_not_ready",
+    "workspace_state": "inaccessible",
+    "network_volume_id": "04himzqxbm"
+  },
+  "elapsed_startup_minutes": 5,
+  "package_uploaded": false,
+  "training_started": false,
+  "development_released": false,
+  "development_opened": false,
+  "decision": "Classify this exact destination as a provider startup failure and terminate the compute pod for cost containment. Retain the persistent network volume."
+}

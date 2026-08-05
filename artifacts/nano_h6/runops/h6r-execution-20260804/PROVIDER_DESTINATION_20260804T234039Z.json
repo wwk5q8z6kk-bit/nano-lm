@@ -1,0 +1,24 @@
+{
+  "schema": "nano.h6r.provider-destination.v1",
+  "observed_at_utc": "2026-08-04T23:40:39Z",
+  "source": "runpodctl",
+  "operation_id": "29bcbabf-2171-4e1e-ac19-5c52732680a9",
+  "destination": {
+    "pod_id": "5xvs95bqcynzn2",
+    "name": "nano-h6r-same-pod-20260804",
+    "lifecycle_state": "running_startup",
+    "cloud_tier": "secure",
+    "data_center_id": "EU-RO-1",
+    "gpu_model": "RTX_5090",
+    "gpu_count": 1,
+    "image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "workspace_mount_path": "/workspace",
+    "network_volume_id": "04himzqxbm",
+    "compute_hourly_usd": "0.99",
+    "storage_hourly_usd": "0.00175",
+    "auto_terminate_at_utc": "2026-08-05T00:40:00Z"
+  },
+  "workspace_accessible": false,
+  "development_released": false,
+  "sensitive_connection_fields_omitted": true
+}

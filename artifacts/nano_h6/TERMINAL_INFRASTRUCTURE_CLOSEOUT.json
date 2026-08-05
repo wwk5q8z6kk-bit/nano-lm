@@ -1,0 +1,72 @@
+{
+  "schema_version": "nano.h6-infrastructure-closeout.v1",
+  "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1",
+  "closed_at_utc": "2026-08-04T23:35:33Z",
+  "status": "INCONCLUSIVE_INFRASTRUCTURE_NO_DEVELOPMENT_ACCESS",
+  "scientific_result": null,
+  "capability_claim_allowed": false,
+  "training": {
+    "completed": true,
+    "training_report_freeze_sha256": "d4c9e28bae2d464298fc329c1e76beb71be740c5fda88593131e53729032ed2c",
+    "selected_checkpoint_sha256_by_seed": {
+      "20260805": "4ca7b2513ae8b0cf8b9c525a853144d1b75b422b560a71818caa70d981c30472",
+      "20260806": "40611c2733e731bdd0eeb827f852fb2f14312445c05cd293a5533296e2ce982f"
+    },
+    "recovered_and_backed_up": true
+  },
+  "evaluation": {
+    "development_released": false,
+    "development_opened": false,
+    "scientific_evaluation_started": false,
+    "one_shot_consumed": false,
+    "failure_stage": "pre_development_runtime_admission"
+  },
+  "terminal_reason": {
+    "field": "platform",
+    "required": "Linux-6.8.0-90-generic-x86_64-with-glibc2.39",
+    "observed": "Linux-6.8.0-134-generic-x86_64-with-glibc2.39",
+    "matched": {
+      "python": "3.12.3",
+      "torch": "2.8.0+cu128",
+      "cuda": "12.8",
+      "tokenizers": "0.22.2",
+      "gpu": "NVIDIA GeForce RTX 5090"
+    },
+    "provider_constraint": "RunPod containers share the provider host kernel, and the Pod creation interface does not expose a host-kernel selector. A fresh destination therefore cannot guarantee the frozen platform string."
+  },
+  "operational_findings": [
+    {
+      "mistake": "Training and evaluation were separated across provider hosts while the evaluator required exact equality for a provider-controlled host-kernel string.",
+      "repair": "Any recovery replication must train and evaluate on one uninterrupted destination."
+    },
+    {
+      "mistake": "Persistent storage was treated as sufficient continuity even though it preserves files, not the provider host kernel.",
+      "repair": "Use persistent storage for artifacts and same-destination continuity for runtime identity."
+    },
+    {
+      "mistake": "Continuation controls were reconstructed manually after the original run and diverged from hashes and schemas embedded in the frozen admission program.",
+      "repair": "Validate the complete authority chain locally before creating paid compute; do not hand-edit content-addressed controls."
+    },
+    {
+      "mistake": "A new exact-runtime destination was assumed discoverable even though the provider cannot select the required kernel.",
+      "repair": "Do not spend on additional destination lotteries. Retrain under the frozen recipe and require byte-identical selected checkpoints before development can open."
+    }
+  ],
+  "provider_closeout": {
+    "failed_destination_terminated": true,
+    "active_pod_count": 0,
+    "persistent_volume_retained": true,
+    "persistent_volume_data_center": "EU-RO-1"
+  },
+  "evidence": {
+    "runtime_admission_failure_sha256": "b90049f09c2a6851c26c39c60630902a738681e220d96c6d045e0a69101f24aa",
+    "post_termination_observation_sha256": "8dc579b47aa80c419c75f476206e54334e91f1d3b73a00a6b28f8a5c175796f5",
+    "terminal_run_state_sha256": "57871de499e9c083fe80545647c111fe65c9a5036455a22d2c4c4619e2f9b42b",
+    "run_ledger_tail_sha256": "63af5ed5d6f7e1c161914af84c20edd165219a9136ec68c3f214d9886758d441",
+    "provider_documentation": [
+      "https://docs.runpod.io/tutorials/introduction/containers",
+      "https://docs.runpod.io/api-reference/pods/POST/pods"
+    ]
+  },
+  "decision": "Close the original separated-host continuation as infrastructure-inconclusive. Preserve all H6 training evidence. Do not change the frozen evaluator and do not interpret this closeout as a model result."
+}

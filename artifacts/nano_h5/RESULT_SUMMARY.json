@@ -1,0 +1,128 @@
+{
+  "schema_version": "nano.evidence-query-h5-result-summary.v1",
+  "experiment_id": "h5-balanced-replay-data-only-v1",
+  "status": "REJECTED_ON_KNOWN_DEVELOPMENT",
+  "intervention": "fixed_50_50_fit_replay_mixture_only",
+  "architecture": {
+    "version": "nano_evidence_query_pointer_v1",
+    "architecture_identity": "d192-l6-h6-kv2-hd32-ff512-v4098-ctx512",
+    "parameter_count": 3286469,
+    "trunk_parameter_count": 3148608,
+    "evidence_query_head_parameter_count": 137861,
+    "base_checkpoint_sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+    "tokenizer_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+  },
+  "training_data": {
+    "generator": "nano.replay-mixture-dataset.v1",
+    "recipe": "nano-evidence-query-replay-mixture-v1",
+    "fit_worlds": 2800,
+    "fit_legacy_worlds": 1400,
+    "fit_surface_worlds": 1400,
+    "fit_records": 11200,
+    "calibration_records": 800,
+    "fit_sha256": "79f7581efbd989f48a474bdd2079e7ca163c2a2682bb48fb8398bd99febe22fb",
+    "calibration_sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70",
+    "manifest_sha256": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31",
+    "development_records_used": 0,
+    "calibration_scope": "unseen H4 surfaces and templates with familiar legacy values; not open-value-disjoint"
+  },
+  "partition": {
+    "partition_id": "native-state-span-dev-v0",
+    "role": "known_adaptive_development_quality_only",
+    "records": 1000,
+    "fields": 5000,
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "used_for_epoch_selection": false,
+    "used_for_seed_selection": false,
+    "used_for_threshold_selection": false,
+    "fresh_v1_read": false
+  },
+  "selection": {
+    "primary_label": "seed-20260805-epoch-3",
+    "checkpoint_sha256": "04ba7b4d0dc876ca3d8de7fe7d809ca16796e5bf55249ad93ba1dd3557c394fe",
+    "training_report_sha256": "0c3b0e78e1fe504c6ca41afdd770aaf9b04e6ecf295b90c5fd19c2599c3acaf8",
+    "selection_source": "training_only_calibration",
+    "calibration_overall": 0.96075,
+    "calibration_macro_joint": 0.9128030303030303,
+    "global_threshold": 0.9999715089797974,
+    "threshold_applied_to_development": false
+  },
+  "uncalibrated_raw": {
+    "overall": {"numerator": 3909, "denominator": 5000, "minimum_numerator": 3041, "passed": true},
+    "held_value": {"numerator": 2220, "denominator": 2987, "minimum_numerator": 2167, "passed": true},
+    "missing_target": {"numerator": 250, "denominator": 250, "minimum_numerator": 219, "passed": true},
+    "absence": {"numerator": 280, "denominator": 413, "minimum_numerator": 383, "passed": false},
+    "conflict_target": {"numerator": 149, "denominator": 250, "minimum_numerator": 236, "passed": false},
+    "uncertain_target": {"numerator": 162, "denominator": 250, "minimum_numerator": 228, "passed": false},
+    "failures": {"numerator": 0, "denominator": 1000, "maximum_numerator": 10, "passed": true},
+    "wrong_presented": {"numerator": 1013, "denominator": 4361, "passed": null},
+    "field_state_balance": {"maximum_modal_count": 922, "maximum_allowed": 949, "passed": true},
+    "by_field": {
+      "chief_complaint": {"joint_exact": 479, "state_exact": 928, "span_exact": 501, "wrong_presented": 521, "denominator": 1000},
+      "duration": {"joint_exact": 979, "state_exact": 979, "span_exact": 979, "wrong_presented": 0, "denominator": 1000},
+      "severity": {"joint_exact": 979, "state_exact": 979, "span_exact": 1000, "wrong_presented": 19, "denominator": 1000},
+      "medication": {"joint_exact": 953, "state_exact": 985, "span_exact": 968, "wrong_presented": 46, "denominator": 1000},
+      "allergy": {"joint_exact": 519, "state_exact": 765, "span_exact": 731, "wrong_presented": 427, "denominator": 1000}
+    },
+    "state_span_decoupling": {
+      "state_correct_span_wrong": 727,
+      "span_correct_state_wrong": 270,
+      "either_component_correct_but_joint_wrong": 997,
+      "status": "DESCRIPTIVE_NOT_CAUSAL"
+    }
+  },
+  "comparison_percentage_point_change": {
+    "versus_h3": {
+      "overall": 21.76,
+      "held_value": 1.7744,
+      "missing_target": 14.8,
+      "absence": 22.276,
+      "conflict_target": 22.0,
+      "uncertain_target": 26.0,
+      "wrong_presented_count_change": -251
+    },
+    "versus_h4": {
+      "overall": 33.22,
+      "held_value": 36.2906,
+      "missing_target": 46.4,
+      "absence": 59.8063,
+      "conflict_target": 36.8,
+      "uncertain_target": 31.2,
+      "wrong_presented_count_change": -1128
+    },
+    "interpretation": "Balanced replay restored retention and most field accuracy but did not reach the frozen absence, conflict, or uncertainty floors. The exact mixture is rejected; neither a general replay failure nor a causal representation defect is established."
+  },
+  "downstream_stages": {
+    "uncalibrated_admission_passed": false,
+    "calibrated_raw": null,
+    "verifier_final": null,
+    "latency_assessed": false,
+    "fresh_v1_assessed": false
+  },
+  "provenance": {
+    "development_evaluation_bytes": 1836514,
+    "development_evaluation_sha256": "c67393962299470fc6b5026031b61617bbae85a2883105b8b8abfcdb30820c47",
+    "result_archive_bytes": 73258386,
+    "result_archive_sha256": "bab5327e900597a083cb04631e645f2e0f500f14f01ec7db195e754b34620749",
+    "result_manifest_sha256": "64c730ee137f4854ed57556344c11ba25fde298468155cf8147675670315c24c",
+    "all_archive_manifest_members_verified": true,
+    "independent_result_audit": "clear",
+    "external_signed_digest": false
+  },
+  "decision": {
+    "quality_gate_passed": false,
+    "promoted": false,
+    "next_step": "Freeze one representation-only experiment that couples semantic state and evidence selection; do not tune replay ratios, scale the model, change data, or relax gates.",
+    "rationale": "H5 passed retention, missing-target, failure, and state-balance gates but failed absence, conflict, and uncertainty; 997 fields had exactly one of state or span correct, making coupling the smallest reversible hypothesis rather than a proven cause."
+  },
+  "limitations": [
+    "The measured partition is known adaptive synthetic development data, not an independent test or clinical corpus.",
+    "Only two seeds and six checkpoints were evaluated under one frozen 50:50 replay intervention.",
+    "The result rejects this exact replay mixture, not replay generally, the evidence-query architecture generally, or Nano.",
+    "The state/span mismatch is descriptive and does not prove that coupling is causal.",
+    "Threshold, verifier-final behavior, latency, and sealed confirmation were intentionally not assessed because uncalibrated admission failed.",
+    "The preregistration records a separate post-freeze historical fresh_v0 metadata review incident; the H5 evaluator path did not read that benchmark.",
+    "The result archive is checksum-authenticated but has no independently supplied signed digest."
+  ]
+}

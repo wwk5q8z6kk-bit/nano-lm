@@ -1,0 +1,16 @@
+{
+  "schema": "nano.h6r.provider-preflight.v1",
+  "observed_at_utc": "2026-08-04T23:39:12Z",
+  "source": "runpodctl",
+  "active_pods": [],
+  "selected_network_volume": {
+    "id": "04himzqxbm",
+    "name": "nano-h6-evaluation-20260804",
+    "data_center_id": "EU-RO-1",
+    "size_gb": 20,
+    "lifecycle_state": "retained"
+  },
+  "other_retained_volume_count": 1,
+  "development_released": false,
+  "development_opened": false
+}

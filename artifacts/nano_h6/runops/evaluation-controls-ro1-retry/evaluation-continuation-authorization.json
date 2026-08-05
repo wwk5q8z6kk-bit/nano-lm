@@ -1,0 +1,81 @@
+{
+  "schema": "nano.h6.evaluation-continuation-authorization.v1",
+  "authority": "project_founder_delegation_in_current_codex_task",
+  "authorized_at_utc": "2026-08-04T23:16:19Z",
+  "objective": "Execute H6's frozen, one-shot known-development evaluation solely to decide whether the state-conditioned boundary residual improves Nano, the trainable AI scribe.",
+  "max_total_runpod_usd": "5.00",
+  "max_predevelopment_destination_attempts": 1,
+  "authorized_actions": [
+    "reuse the retained populated RunPod network volume 04himzqxbm in EU-RO-1",
+    "provision one secure-cloud RTX 5090 destination using the exact frozen image",
+    "authenticate only the content-addressed non-development H6 artifacts already on the volume",
+    "run development-free destination admission and retrieve its receipt",
+    "release and transfer exactly the frozen known-development partition once",
+    "open and execute the frozen evaluator exactly once",
+    "download, hash, and preserve the evaluation result on two off-RunPod failure domains",
+    "stop the evaluation destination after result recovery or for cost containment"
+  ],
+  "destination_policy": {
+    "allowed_data_center_ids": [
+      "EU-RO-1"
+    ],
+    "cloud_tier": "secure",
+    "reason": "EU-RO-1 has newly returned Low exact RTX 5090 stock and contains the previously verified frozen H6 package on retained network volume 04himzqxbm. Exact destination runtime and content attestation remain mandatory.",
+    "selection_evidence": "destination-selection-20260804T231619Z.json",
+    "source_data_center_required": false
+  },
+  "failed_admission_rule": "The two prior destinations failed before development release: the first after provider assignment but before runtime attestation, the second before pod creation. This authority grants exactly one fresh EU-RO-1 pre-development attempt. Capacity or exact-runtime admission failure ends this continuation without development release; any later attempt requires fresh provider evidence and another no-clobber continuation authority.",
+  "frozen_scientific_identity": {
+    "evaluation_authority_id": "nano-h6-dev-one-shot-v1",
+    "preregistration_sha256": "986edc638267f1531da63ac7cb678aac552e18ac977387c2c325482d981085d2",
+    "training_report_freeze_sha256": "d4c9e28bae2d464298fc329c1e76beb71be740c5fda88593131e53729032ed2c",
+    "package_sha256": "b1eff7c9ccb06f05e46f0639c88a7e74daeb0880dc8ecbb0641359d74b5ea505",
+    "evaluator_sha256": "c796c2e150aaae50b4f80e50296bf89d4cfdc3ebf105d02e447e2580d37cfa39",
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "admission_program_sha256": "4abe19110692cb86ac6d5e3f3e2527c16b0d1c72e27502cde9a973eace759d49",
+    "terminal_wrapper_sha256": "5eac84b1e4c7ace55f9c7fddbbea479dc89fb6b2ebddab2cfc71a3848ef83164",
+    "required_artifacts_manifest_sha256": "430f33bff844905d1e20e19d16c20305cdeeb8b17e7734f460dad6ec122a85c9",
+    "upload_policy_sha256": "c418191d922b37201668334624bbb9349106d15b5ba3febb7cb9d94e8078e78b"
+  },
+  "isolated_execution_contract": {
+    "schema": "nano.h6.isolated-execution-contract.v1",
+    "interpreter_relative_path": ".h6-venv/bin/python",
+    "python_flags": [
+      "-I",
+      "-S"
+    ],
+    "admission_program_relative_path": "nano_ai/training/admit_evidence_query_h6.py",
+    "evaluator_launcher_shell": "/bin/bash",
+    "evaluator_launcher_flags": [
+      "--noprofile",
+      "--norc"
+    ],
+    "evaluator_launcher_relative_path": "RUN_H6_EVALUATE.sh",
+    "terminal_wrapper_bridge": "module_only_v1",
+    "terminal_wrapper_relative_path": "nano_ai/training/h6_terminal_result.py"
+  },
+  "predecessor": {
+    "run_id": "h6-recovery-20260803",
+    "phase": "REPORTS_FROZEN",
+    "ledger_tail_sha256": "66467be5f2cb515276a4e7d30d260d74255b014b1798e167e0bcc6d08fe4c6c8",
+    "recovery_binding_sha256": "11db01a6f5b95f0ca331f65e1a542eca61bb97671b993a19fab6f2311175ac3c",
+    "source_pod_id": "oad0zdviuzjq9q",
+    "source_machine_id": "3dlh25j3vwp9",
+    "source_required_state": "stopped",
+    "source_access_policy": "lineage_only_no_restart"
+  },
+  "prohibited_actions": [
+    "restart, modify, or terminate the recovered source pod",
+    "retrain or alter H6",
+    "substitute another GPU for the frozen H6 evaluation",
+    "change the preregistration, gates, selector, evaluator, checkpoints, reports, tokenizer, or development partition",
+    "transfer or inspect development before development-free admission succeeds",
+    "run more than one development evaluation attempt",
+    "access fresh-v1, sealed confirmation, benchmarks, or private corpus data",
+    "start H7 before H6 produces a terminal result or terminal no-retry conclusion",
+    "start product, app, UI, service, or deployment work",
+    "push, tag, or release"
+  ],
+  "future_compute_delegation": "The founder's authorization to choose more capable compute applies to separately preregistered future Nano training. It does not modify H6's frozen runtime or one-shot evaluation.",
+  "termination_gate": "Destination deletion is permitted only before development release after failed capacity/runtime admission, or after two verified result backups. Source termination remains forbidden."
+}

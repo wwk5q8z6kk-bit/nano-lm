@@ -1,0 +1,68 @@
+{
+  "schema_version": "nano.h6-runtime-recovery-replication.v1",
+  "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1",
+  "replication_id": "h6-same-destination-runtime-recovery-r1",
+  "frozen_at_utc": "2026-08-04T23:35:33Z",
+  "status": "AUTHORIZED_BEFORE_REPLICATION_TRAINING",
+  "objective": "Recover an evaluable byte-identical H6 candidate without changing the frozen scientific intervention, data, training recipe, selector, evaluator, verifier, or quality gates.",
+  "scientific_change": "none",
+  "authorities": {
+    "original_preregistration_sha256": "986edc638267f1531da63ac7cb678aac552e18ac977387c2c325482d981085d2",
+    "original_input_bundle_sha256": "b1eff7c9ccb06f05e46f0639c88a7e74daeb0880dc8ecbb0641359d74b5ea505",
+    "original_training_report_freeze_sha256": "d4c9e28bae2d464298fc329c1e76beb71be740c5fda88593131e53729032ed2c",
+    "original_infrastructure_closeout": "TERMINAL_INFRASTRUCTURE_CLOSEOUT.json"
+  },
+  "runtime_policy": {
+    "provider": "runpod",
+    "cloud_tier": "secure",
+    "data_center_id": "EU-RO-1",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_count": 1,
+    "image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "python": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "cuda": "12.8",
+    "tokenizers": "0.22.2",
+    "continuity": "one_uninterrupted_destination_from_training_start_through_terminal_evaluation_backup",
+    "platform_rule": "The observed training platform becomes the required evaluation platform because both stages must run on the same uninterrupted destination; no preselected host-kernel value is claimed."
+  },
+  "storage_and_backup": {
+    "persistent_network_volume_required": true,
+    "workspace_mount": "/workspace",
+    "isolated_root": "/workspace/h6-same-destination-runtime-recovery-r1",
+    "no_clobber": true,
+    "training_artifacts_backed_up_before_development_release": true,
+    "minimum_independent_training_copies_before_development_release": 2
+  },
+  "checkpoint_identity_gate": {
+    "required": true,
+    "selected_checkpoint_sha256_by_seed": {
+      "20260805": "4ca7b2513ae8b0cf8b9c525a853144d1b75b422b560a71818caa70d981c30472",
+      "20260806": "40611c2733e731bdd0eeb827f852fb2f14312445c05cd293a5533296e2ce982f"
+    },
+    "on_exact_match": "Freeze the new training reports, authenticate both backups, release the known-development files once, and run the unchanged evaluator on the same destination.",
+    "on_any_mismatch": "Stop before development release. Record replication divergence and terminate compute after artifact backup."
+  },
+  "development_policy": {
+    "development_absent_during_training": true,
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "development_manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "open_count_maximum": 1,
+    "post_development_tuning_allowed": false,
+    "fresh_v1_allowed": false,
+    "private_corpus_allowed": false
+  },
+  "compute_decision": {
+    "larger_gpu_authorized_by_owner": true,
+    "larger_gpu_selected": false,
+    "reason": "The original H6 training completed on one RTX 5090 in minutes. More capacity would not repair runtime continuity or add decision-relevant evidence, while changing GPU identity would defeat the byte-identical checkpoint gate.",
+    "maximum_total_run_cost_usd": 5
+  },
+  "terminal_policy": {
+    "quality_gate_order": "unchanged_from_original_h6_preregistration",
+    "frozen_evaluator_may_be_modified": false,
+    "automatic_follow_on_experiment": false,
+    "compute_terminated_after_verified_terminal_backup": true,
+    "persistent_volume_retained_until_local_and_offsite_verification": true
+  }
+}

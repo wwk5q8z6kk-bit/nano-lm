@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-08-03T22:48:10Z",
+  "provider": "runpod",
+  "console_url": "https://console.runpod.io/pods",
+  "source_pod": {
+    "id": "oad0zdviuzjq9q",
+    "name": "nano-h6-state-boundary-20260803",
+    "machine_id": "3dlh25j3vwp9",
+    "desired_status_before_action": "EXITED",
+    "runtime_gpu_count_before_action": 0
+  },
+  "live_modal": {
+    "title": "Your Pod's GPUs are no longer available.",
+    "selected_authorized_action": "Start Pod using CPUs",
+    "action_description": "If GPUs aren't essential, you can start this existing Pod using CPU hardware.",
+    "rejected_actions": [
+      "Automatically migrate your Pod data",
+      "Do nothing"
+    ]
+  },
+  "implementation_evidence": {
+    "public_asset_url": "https://console.runpod.io/_next/static/chunks/2_4vg2vo4i6ac.js",
+    "public_asset_sha256": "29e57c0c1d03ef8451c7597c9ffef5432a431a6d4fecc0978daf22a4b7193ac9",
+    "verified_behavior": "The Start Pod using CPUs control calls RunPod's dedicated zero-GPU resume mutation for the existing pod; the migration control is a separate code path."
+  },
+  "authorization_match": {
+    "operation": "recover_cpu",
+    "same_source_pod_required": true,
+    "zero_gpu_required": true,
+    "migration_allowed": false,
+    "normal_gpu_start_allowed": false
+  }
+}

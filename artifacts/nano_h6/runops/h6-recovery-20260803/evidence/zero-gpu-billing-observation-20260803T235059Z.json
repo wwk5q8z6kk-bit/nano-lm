@@ -1,0 +1,16 @@
+{
+  "schema": "nano.h6.zero-gpu-transfer-billing-observation.v1",
+  "observed_at_utc": "2026-08-03T23:50:59Z",
+  "source": "runpodctl_official_rest",
+  "pod_id": "oad0zdviuzjq9q",
+  "desired_status": "RUNNING",
+  "runtime_gpu_count": 0,
+  "configured_gpu_count": 1,
+  "configured_gpu_model": "NVIDIA GeForce RTX 5090",
+  "provider_cost_per_hour_usd": "0.495",
+  "configured_compute_ceiling_usd": "0.99",
+  "within_configured_compute_ceiling": true,
+  "interpretation": "RunPod reports zero allocated GPUs and a disclosed CPU-only transfer-pod rate; zero GPU allocation does not imply a zero total compute rate.",
+  "last_status_change": "Resumed by as transfer pod by user: Mon Aug 03 2026 22:51:45 GMT+0000 (Coordinated Universal Time)",
+  "operation_id": "e68ec26b-13c1-4dad-b384-28e65b553418"
+}

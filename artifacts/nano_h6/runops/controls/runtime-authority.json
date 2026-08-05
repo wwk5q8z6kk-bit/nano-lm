@@ -1,0 +1,21 @@
+{
+  "schema": "nano.h6.recovery-runtime-authority.v1",
+  "created_at_utc": "2026-08-03T21:44:03Z",
+  "scope": "recovery_only",
+  "provider": "runpod",
+  "cloud_tier": "secure",
+  "source_pod_id": "oad0zdviuzjq9q",
+  "source_machine_id": "3dlh25j3vwp9",
+  "source_volume_mount_path": "/workspace",
+  "source_volume_size_gb": 20,
+  "allowed_configured_gpu_model": "NVIDIA GeForce RTX 5090",
+  "allowed_image_id": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+  "required_recovery_actual_gpu_count": 0,
+  "required_recovery_compute_hourly_usd": "0",
+  "configured_gpu_count_is_not_runtime_allocation": true,
+  "configured_compute_rate_is_not_runtime_billing": true,
+  "data_center_policy": "deferred_until_observable_then_bind_exactly",
+  "evaluation_destination_authorized": false,
+  "development_access_authorized": false,
+  "termination_authorized": false
+}

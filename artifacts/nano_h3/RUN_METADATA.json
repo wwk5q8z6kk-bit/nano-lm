@@ -1,0 +1,56 @@
+{
+  "schema_version": "nano.evidence-query-run-preservation.v0",
+  "run_id": "h3-evidence-query-20260803",
+  "preserved_at_utc": "2026-08-03T08:24:14Z",
+  "provider": {
+    "name": "runpod",
+    "pod_id": "c69b7qdtov4dqe",
+    "pod_name": "nano-h3-evidence-query",
+    "template": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_memory_mib": 32607,
+    "secure_cloud": true,
+    "cost_per_hour_usd": 0.99,
+    "created_at_utc": "2026-08-03T08:09:34Z",
+    "estimated_elapsed_minutes": 11,
+    "estimated_gpu_cost_usd": 0.18,
+    "estimate_note": "Elapsed time and GPU cost are approximate; provider billing is authoritative.",
+    "workspace_volume_gb": 20,
+    "network_volume_used": false
+  },
+  "runtime": {
+    "python": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "cuda": "12.8",
+    "tokenizers": "0.22.2",
+    "pytest": "9.0.2",
+    "nvidia_driver": "580.126.09",
+    "batch_size": 32,
+    "cublas_workspace_config": ":4096:8",
+    "deterministic_algorithms": true
+  },
+  "integrity": {
+    "input_archive_sha256": "c6769dce1dbe77219c7902ccf8c281b379de6111c997c55a2fa047e5ba95be81",
+    "development_evaluation_sha256": "df6896855980172aabd03149affffca8352c2ef9732fb860a79b3f50d854c831",
+    "training_report_sha256": {
+      "20260805": "cfddc38810a50cf211f71fd1644911e2d7301e64d046f79c41156f56df84a977",
+      "20260806": "517879d965c25f616d0ebb9ccfdc4761cc72854b542027e26f829bdf57d35498"
+    },
+    "result_archive_sha256": "2c2d400a5476090d96e39427e8e8e6c880f5a3535f18c94d0561d6c6d9fcda29",
+    "locked_transfer_manifest_sha256": "23f7c61d8a166a54d4a9d38ce201e36debfb802d280504f064ed24525446262e"
+  },
+  "preservation": {
+    "locked_result_directory": "checkpoints/candidates/evidence_query_pointer_v1_locked",
+    "contains_all_six_checkpoints": true,
+    "contains_both_training_reports": true,
+    "contains_training_and_evaluation_logs": true,
+    "contains_environment_identity": true,
+    "independent_backup_outside_repository": true,
+    "fresh_v1_read": false,
+    "latency_assessed": false
+  },
+  "decision": {
+    "quality_gate_passed": false,
+    "next_step": "reject H3; freeze a data-distribution repair without scaling model or GPU"
+  }
+}

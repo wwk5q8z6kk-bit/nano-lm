@@ -1,0 +1,151 @@
+{
+  "schema_version": "nano.evidence-query-h4-result-summary.v1",
+  "experiment_id": "h4-evidence-query-data-only-v1",
+  "status": "REJECTED_ON_KNOWN_DEVELOPMENT",
+  "intervention": "training_data_only",
+  "architecture": {
+    "version": "nano_evidence_query_pointer_v1",
+    "architecture_identity": "d192-l6-h6-kv2-hd32-ff512-v4098-ctx512",
+    "parameter_count": 3286469,
+    "trunk_parameter_count": 3148608,
+    "evidence_query_head_parameter_count": 137861,
+    "base_checkpoint_sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+    "tokenizer_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+  },
+  "training_data": {
+    "generator": "nano.surface-transfer-dataset.v1",
+    "fit_records": 11200,
+    "calibration_records": 800,
+    "fit_sha256": "8e019b5ee827facd179bcda521838849e2053b02fed0e392e322c5691fda3ae1",
+    "calibration_sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70",
+    "manifest_sha256": "444c5d6dcb613959a28ee3ce2e1dd7e25e2fabc2603ba4192d445ed3bedb406f",
+    "development_records_used": 0,
+    "changed_dimensions": [
+      "surface and dialogue-template families",
+      "open-value families",
+      "state-realization families",
+      "fit/calibration family separation"
+    ],
+    "unchanged_dimensions": [
+      "five-field dialogue structure",
+      "evidence order and distance",
+      "distractor-turn policy",
+      "long-context regime"
+    ]
+  },
+  "partition": {
+    "partition_id": "native-state-span-dev-v0",
+    "role": "known_adaptive_development_quality_only",
+    "records": 1000,
+    "fields": 5000,
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "used_for_epoch_selection": false,
+    "used_for_seed_selection": false,
+    "used_for_threshold_selection": false,
+    "fresh_v1_read": false
+  },
+  "selection": {
+    "primary_label": "seed-20260806-epoch-2",
+    "checkpoint_sha256": "6408524c43b6ada8249aeb83e440b6aa0f64512006219663be4105f6d586e13f",
+    "training_report_sha256": "14680948cee3aea9d682ed5bd21a52df77a814d55db93d80e214d449a891b1f4",
+    "selection_source": "training_only_calibration",
+    "calibration_overall": {
+      "numerator": 3027,
+      "denominator": 4000,
+      "rate": 0.75675
+    },
+    "calibration_macro_joint": 0.8131818181818182,
+    "global_threshold": 0.9998703002929688,
+    "threshold_applied_to_development": false
+  },
+  "uncalibrated_raw": {
+    "overall": {"numerator": 2248, "denominator": 5000, "minimum_numerator": 3041, "passed": false},
+    "held_value": {"numerator": 1136, "denominator": 2987, "minimum_numerator": 1905, "passed": false},
+    "missing_target": {"numerator": 134, "denominator": 250, "minimum_numerator": 219, "passed": false},
+    "absence": {"numerator": 33, "denominator": 413, "minimum_numerator": 383, "passed": false},
+    "conflict_target": {"numerator": 57, "denominator": 250, "minimum_numerator": 236, "passed": false},
+    "uncertain_target": {"numerator": 84, "denominator": 250, "minimum_numerator": 228, "passed": false},
+    "failures": {"numerator": 0, "denominator": 1000, "maximum_numerator": 10, "passed": true},
+    "wrong_presented": {"numerator": 2141, "denominator": 4114, "passed": null},
+    "by_field_joint_exact": {
+      "chief_complaint": {"numerator": 260, "denominator": 1000},
+      "duration": {"numerator": 913, "denominator": 1000},
+      "severity": {"numerator": 885, "denominator": 1000},
+      "medication": {"numerator": 157, "denominator": 1000},
+      "allergy": {"numerator": 33, "denominator": 1000}
+    }
+  },
+  "comparison_to_h3_raw": {
+    "overall_percentage_point_change": -11.46,
+    "held_value_percentage_point_change": -34.5162,
+    "missing_target_percentage_point_change": -31.6,
+    "absence_percentage_point_change": -37.5303,
+    "conflict_target_percentage_point_change": -14.8,
+    "uncertain_target_percentage_point_change": -5.2,
+    "wrong_presented_count_change": 877,
+    "interpretation": "The independently partitioned surface/value family did not repair transfer and regressed every gated semantic category relative to H3 on known development."
+  },
+  "posthoc_row_level_localization": {
+    "status": "DESCRIPTIVE_NOT_CAUSAL",
+    "field_joint_exact_h3_to_h4": {
+      "chief_complaint": {"h3": 378, "h4": 260, "delta": -118, "denominator": 1000},
+      "duration": {"h3": 957, "h4": 913, "delta": -44, "denominator": 1000},
+      "severity": {"h3": 172, "h4": 885, "delta": 713, "denominator": 1000},
+      "medication": {"h3": 628, "h4": 157, "delta": -471, "denominator": 1000},
+      "allergy": {"h3": 686, "h4": 33, "delta": -653, "denominator": 1000}
+    },
+    "h4_state_span_decoupling": {
+      "allergy": {
+        "predicted_absent": 1000,
+        "state_correct_span_wrong": 167,
+        "span_correct_state_wrong": 50,
+        "joint_exact": 33
+      },
+      "medication": {
+        "state_correct_span_wrong": 675,
+        "span_correct_state_wrong": 37,
+        "joint_exact": 157
+      },
+      "absent_gold_state": {
+        "state_correct_span_wrong": 380,
+        "joint_exact": 33,
+        "denominator": 413
+      },
+      "uncertain_gold_state": {
+        "state_correct_span_wrong": 11,
+        "span_correct_state_wrong": 128,
+        "joint_exact": 84,
+        "denominator": 250
+      }
+    },
+    "interpretation": "H3 and H4 show complementary field-specific behavior, while H4 also separates state and evidence-span failures. This supports a distribution-substitution and coupling hypothesis; it does not prove either mechanism or justify model scaling."
+  },
+  "downstream_stages": {
+    "uncalibrated_semantic_admission_passed": false,
+    "calibrated_raw": null,
+    "verifier_final": null,
+    "latency_assessed": false,
+    "fresh_v1_assessed": false
+  },
+  "provenance": {
+    "development_evaluation_sha256": "b8f8b350f4ad772b06a292c5e156d097e549f62e15be09c3c55c608574c0ed82",
+    "result_archive_sha256": "69c2fa4b3b9c5a82141d1c1661b62f7af3b2ba828a0f06ecf47f9be36f909cae",
+    "all_archive_manifest_members_verified": true
+  },
+  "decision": {
+    "quality_gate_passed": false,
+    "promoted": false,
+    "next_step": "Preregister one fixed-budget H3/H4 replay-mixture H5 intervention before any further development evaluation; keep architecture, objective, compute, evaluator, and gates fixed.",
+    "rationale": "The exact data-only repair regressed known-development utility; current evidence does not justify a larger model or GPU."
+  },
+  "limitations": [
+    "The measured partition is known synthetic development data, not an independent test or clinical corpus.",
+    "Only two seeds and six checkpoints were evaluated under one frozen data-only intervention.",
+    "The exact H4 intervention did not vary evidence order, distance, distractor turns, or long-context structure.",
+    "The field and evidence-boundary patterns localize hypotheses but do not prove a causal mechanism.",
+    "The result rejects this exact H4 data-only intervention, not broader data work, evidence-query mechanisms, or Nano generally.",
+    "Threshold, verifier-final behavior, and latency were intentionally not measured because uncalibrated admission failed.",
+    "fresh-v1 remained sealed and unread."
+  ]
+}

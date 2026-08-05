@@ -1,0 +1,226 @@
+{
+  "schema_version": "nano.h5-preregistration.v1",
+  "experiment_id": "h5-balanced-replay-data-only-v1",
+  "frozen_at_utc": "2026-08-03T16:07:24Z",
+  "status": "FROZEN_BEFORE_GPU_TRAINING_WITH_RECORDED_REVIEW_INCIDENT",
+  "objective": "Test whether a fixed balanced replay mixture of H3's legacy training family and H4's independently surfaced family improves Nano's evidence-bound scribe transfer without changing its model, objective, exposure, inference, verifier, or quality gates.",
+  "hypothesis": "If H4's regression came from replacing the familiar training family rather than from an incapable Nano architecture, then exact 50:50 replay will preserve the useful legacy behavior while adding surface diversity and will pass every frozen uncalibrated known-development admission gate. Failure of any admission gate rejects this exact replay intervention.",
+  "intervention": {
+    "changed_axis": "fit_composition_only",
+    "generator": "nano.replay-mixture-dataset.v1",
+    "recipe": "nano-evidence-query-h5-balanced-replay-v1",
+    "selection_policy": "deterministic_family_sha_ordering",
+    "ratio_schedule": false,
+    "ratio_sweep": false,
+    "curriculum": false,
+    "source_reweighting": false,
+    "fit": {
+      "worlds": 2800,
+      "records": 11200,
+      "variants_per_world": 4,
+      "variants": [
+        "normal",
+        "missing",
+        "uncertain",
+        "conflicting"
+      ],
+      "sources": {
+        "legacy_h3_replay": {
+          "candidate_index_range": [
+            0,
+            2799
+          ],
+          "candidate_worlds": 2800,
+          "selected_worlds": 1400,
+          "selected_records": 5600,
+          "role": "regenerated_in_memory_from_frozen_generator_and_seed",
+          "legacy_train_jsonl_read": false,
+          "state_class_counts": {
+            "supported": 21490,
+            "absent": 2310,
+            "missing": 1400,
+            "uncertain": 1400,
+            "conflicting": 1400
+          }
+        },
+        "surface_h4_replay": {
+          "candidate_index_range": [
+            0,
+            2799
+          ],
+          "candidate_worlds": 2800,
+          "selected_worlds": 1400,
+          "selected_records": 5600,
+          "role": "authenticated_h4_fit_replay",
+          "state_class_counts": {
+            "supported": 21490,
+            "absent": 2310,
+            "missing": 1400,
+            "uncertain": 1400,
+            "conflicting": 1400
+          }
+        }
+      },
+      "combined_state_class_counts": {
+        "supported": 42980,
+        "absent": 4620,
+        "missing": 2800,
+        "uncertain": 2800,
+        "conflicting": 2800
+      },
+      "stratum_policy": "Each source contributes exactly half of every frozen target-field and absence stratum: 210 of each 420-world full stratum and 70 of each 140-world absent stratum."
+    },
+    "training_only_calibration": {
+      "source": "unchanged_byte_exact_h4_calibration",
+      "worlds": 200,
+      "records": 800,
+      "variants_per_world": 4,
+      "gradient_bearing": false,
+      "state_class_counts": {
+        "supported": 3070,
+        "absent": 330,
+        "missing": 200,
+        "uncertain": 200,
+        "conflicting": 200
+      }
+    }
+  },
+  "calibration_overlap_limitation": {
+    "policy": "recorded_nonblocking_and_not_used_for_selection",
+    "literal_substring_method": "unicode_nfkc_then_casefold_literal_substring_in_any_family_transcript",
+    "legacy_candidate_worlds": 2800,
+    "literal_substring_disjoint_candidate_worlds": 1053,
+    "balanced_literal_substring_disjoint_limit": 890,
+    "exact_value_identity_disjoint_candidate_worlds": 1164,
+    "selected_legacy_worlds": 1400,
+    "selected_literal_substring_disjoint_worlds": 539,
+    "selected_worlds_with_literal_substring_occurrence": 861,
+    "fully_value_disjoint_claimed": false,
+    "substring_metric_is_conservative": true,
+    "substring_examples": [
+      "2 days may match within 12 days",
+      "wheat may match within buckwheat"
+    ],
+    "calibration_interpretation": "The unchanged H4 calibration contains familiar legacy values but unseen H4 surfaces and templates. It may select and calibrate checkpoints but cannot establish open-value generalization by itself.",
+    "hard_partition_intersections_zero": [
+      "world_ids",
+      "record_ids",
+      "exact_transcripts",
+      "value_placeholder_whole_transcript_templates",
+      "value_placeholder_component_line_templates",
+      "normalized_component_line_skeletons"
+    ]
+  },
+  "preserved_axes": {
+    "architecture": "nano_evidence_query_pointer_v1",
+    "architecture_identity": "d192-l6-h6-kv2-hd32-ff512-v4098-ctx512",
+    "parameter_count": 3286469,
+    "base_checkpoint_sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+    "tokenizer_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9",
+    "target_grammar": "nano.state-span-target.v0",
+    "training_seeds": [
+      20260805,
+      20260806
+    ],
+    "batch_size": 32,
+    "epochs": 3,
+    "steps_per_epoch": 350,
+    "steps_per_seed": 1050,
+    "fit_world_exposure": 2800,
+    "fit_record_exposure": 11200,
+    "optimizer_schedule_objective_prompt_inference_calibration_selection_verifier_and_quality_gates": "identical_to_h4_except_for_the_explicit_h5_held_value_floor_and_state_collapse_gate"
+  },
+  "selection": {
+    "development_used": false,
+    "order": [
+      "uncalibrated_training_calibration_macro_joint_desc",
+      "uncalibrated_training_calibration_overall_joint_desc",
+      "earlier_epoch",
+      "seed_20260805"
+    ],
+    "selection_frozen_before_known_development_open": true,
+    "known_development_open_once_after_training_only_selection": true,
+    "post_development_tuning_allowed": false
+  },
+  "known_development_admission_gates": {
+    "partition_id": "native-state-span-dev-v0",
+    "manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "development_absent_during_training": true,
+    "overall_joint_exact_minimum": "3041/5000",
+    "held_value_joint_exact_minimum": "2167/2987",
+    "missing_target_joint_exact_minimum": "219/250",
+    "absence_joint_exact_minimum": "383/413",
+    "conflict_target_joint_exact_minimum": "236/250",
+    "uncertain_target_joint_exact_minimum": "228/250",
+    "evaluation_failures_maximum": "10/1000",
+    "uncalibrated_raw_modal_state_maximum_per_field": "949/1000",
+    "uncalibrated_raw_modal_state_failure_boundary": "950/1000",
+    "uncalibrated_wrong_presented": "reported_not_gated",
+    "calibrated_wrong_presented_maximum": 0,
+    "verifier_final_wrong_presented_maximum": 0,
+    "all_gates_required": true
+  },
+  "staged_stop_policy": {
+    "on_uncalibrated_admission_failure": "stop_before_threshold_verifier_latency_and_sealed_confirmation",
+    "on_uncalibrated_admission_pass": "apply_only_the_training_calibration_threshold_then_require_all_quality_gates_and_zero_wrong_presented",
+    "on_calibrated_failure": "stop_before_verifier_latency_and_sealed_confirmation",
+    "on_verifier_failure": "stop_before_latency_and_sealed_confirmation",
+    "on_full_quality_pass": "preserve_candidate_then_measure_matched_latency_in_a_separate_stage",
+    "fresh_v1_access_in_this_run": false,
+    "historical_fresh_v0_access_in_this_run": true,
+    "historical_fresh_v0_access_scope": "After this experiment's data, gates, code, and bundle were frozen, an invalidated read-only review used an overly broad repository search that printed one historical fresh_v0 partition metadata file. The benchmark was not run, transferred, reported to the experiment decision path, or used to tune H5. The reviewer was interrupted and its post-freeze audit is not relied upon.",
+    "private_corpus_access_in_this_run": false,
+    "sealed_confirmation_authorized_before_quality_and_latency_pass": false
+  },
+  "frozen_inputs": {
+    "training_manifest_sha256": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31",
+    "fit_sha256": "79f7581efbd989f48a474bdd2079e7ca163c2a2682bb48fb8398bd99febe22fb",
+    "calibration_sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70",
+    "fit_records": 11200,
+    "calibration_records": 800,
+    "byte_exact_regeneration_verified_twice": true,
+    "authenticated_loader_verified": true,
+    "legacy_authority_manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "legacy_record_artifact_accessed": false,
+    "h4_authority": {
+      "manifest_sha256": "444c5d6dcb613959a28ee3ce2e1dd7e25e2fabc2603ba4192d445ed3bedb406f",
+      "fit_sha256": "8e019b5ee827facd179bcda521838849e2053b02fed0e392e322c5691fda3ae1",
+      "calibration_sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70"
+    }
+  },
+  "frozen_source_sha256": {
+    "legacy_generator": "2d3fd33d694893aea5aa80b514e34256e9f6046f71b13f6410dbabec1278d707",
+    "surface_transfer_generator": "29ef84d44ecbf1af5d3f3e08960abe21173e4f5a756dc2c6a7082edaae408508",
+    "replay_mixture_data": "5f036831ac7385c49177d9b724f6939049873179654072bc19dc178144e2af40",
+    "train_evidence_query_h5": "ef414884bf19e381d5c22e2048b3ced8326df796194dba785e7cd1842170dea0",
+    "evaluate_evidence_query_h5": "dc93bf33cd0385e4aafb6bdaea8a77293692c86692e905d69915debdfa419ed7",
+    "package_evidence_query_h5": "97c8e18be2a8c9aeff81f2f08d827f851fbaa8e100c248a3378650145e041e3f",
+    "runpod_requirements": "3c90d0cda8456819325e2a2bec62ca0ddc7a43d4868d92f4453ddc87d0e0f073"
+  },
+  "runtime": {
+    "provider": "runpod",
+    "cloud_tier": "secure",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "container_image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "python": "3.12.x",
+    "torch": "2.8.0+cu128",
+    "tokenizers": "0.22.2",
+    "cuda": "12.8",
+    "cublas_workspace_config": ":4096:8",
+    "deterministic_algorithms": true,
+    "larger_gpu_or_model_scaling_authorized": false
+  },
+  "local_preflight": {
+    "focused_h5_tests": "35 passed",
+    "ruff": "passed",
+    "ruff_format": "passed",
+    "python_compile": "passed",
+    "diff_check": "passed",
+    "two_independent_dataset_generations_byte_exact": "passed",
+    "authenticated_dataset_loader": "passed",
+    "implementation_independent_p0_p1_review": "clear_before_preregistration",
+    "training_or_evaluation_process_prohibited_partition_access": false,
+    "post_freeze_review_incident_recorded": true
+  }
+}

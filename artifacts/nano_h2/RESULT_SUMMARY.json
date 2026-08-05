@@ -1,0 +1,2083 @@
+{
+  "schema_version": "nano.pointer-span-result-summary.v0",
+  "decision": {
+    "fresh_v1_assessed": false,
+    "latency_assessed": false,
+    "next_step": "reject H2; do not measure latency or open fresh-v1",
+    "quality_gate_passed": false,
+    "quality_gate_passed_candidates": []
+  },
+  "partition": {
+    "development_sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290",
+    "fresh_v1_read": false,
+    "historical_benchmark_read": false,
+    "manifest_sha256": "47ee157ac037c0771100b8546c90da91dbd2006198700bb642f1561d2124c1a3",
+    "partition_id": "native-state-span-dev-v0",
+    "records": 1000,
+    "role": "sealed_development_model_selection_only",
+    "target_grammar": "nano-state-span-grammar-v0",
+    "worlds": 250
+  },
+  "artifacts": {
+    "architecture_identity": "d192-l6-h6-kv2-hd32-ff512-v4098-ctx512",
+    "frozen_base_checkpoint_sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b",
+    "parameter_count": 3157273,
+    "pointer_head_parameter_count": 8665,
+    "tokenizer_sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9",
+    "trunk_parameter_count": 3148608
+  },
+  "runtime": {
+    "cublas_workspace_config": ":4096:8",
+    "deterministic_algorithms": true,
+    "device": "cuda",
+    "python": "3.12.3",
+    "tokenizers": "0.22.2",
+    "torch": "2.8.0+cu128"
+  },
+  "frozen_base": {
+    "h1_development_report_sha256": "04fecee1339719d08d6ab8f2f5228a9d64dbe05ef02ca0baffa888a99a70571d",
+    "acceptance": {
+      "definitions": {
+        "absence": "grounded exact on every gold-absent development field",
+        "conflict_target": "grounded exact on the designated target field of conflicting variants",
+        "failures": "item-level inference failures over all development items",
+        "false_presented": "standard evaluator false-presented fields over final presented fields",
+        "held_value": "grounded exact on gold-supported chief complaint, duration, medication, and allergy fields; closed severity is excluded",
+        "missing_target": "grounded exact on the designated target field of missing variants",
+        "overall": "grounded exact over every development field"
+      },
+      "held_value_split_note": "The development open-value lexicons are disjoint from training.",
+      "metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 387,
+          "rate": 0.937046004842615
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 238,
+          "rate": 0.952
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 53,
+          "rate": 0.053
+        },
+        "false_presented": {
+          "denominator": 2034,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 844,
+          "rate": 0.28255775025108804
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 2502,
+          "rate": 0.5004
+        }
+      }
+    }
+  },
+  "candidates": [
+    {
+      "label": "seed-20260805-epoch-1",
+      "checkpoint_sha256": "cf587eee56545c79798803aa1e83436b7917aaa0d8159caed1b30eebef10578a",
+      "provenance": {
+        "training_seed": 20260805,
+        "epoch": 1,
+        "dev_loss": 4.044725120201789,
+        "training_report_sha256": "f87ddad270756b1238662801dd1d8146384b33d55897a227c75efffcd625cf9b"
+      },
+      "raw_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 50,
+          "rate": 0.2
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 4495,
+          "numerator": 1897,
+          "rate": 0.42202447163515017
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1942,
+          "rate": 0.6501506528289254
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 195,
+          "rate": 0.78
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 2885,
+          "rate": 0.577
+        },
+        "uncertain_target": {
+          "denominator": 250,
+          "numerator": 42,
+          "rate": 0.168
+        }
+      },
+      "final_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 50,
+          "rate": 0.2
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 2598,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1942,
+          "rate": 0.6501506528289254
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 195,
+          "rate": 0.78
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 3093,
+          "rate": 0.6186
+        }
+      },
+      "raw_target_challenge": {
+        "conflicting": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 50,
+          "joint_exact_accuracy": 0.2,
+          "presented": 151,
+          "span_exact": 50,
+          "span_exact_accuracy": 0.2,
+          "state_accuracy": 0.396,
+          "state_correct": 99,
+          "total": 250,
+          "wrong_presented": 151,
+          "wrong_presented_rate": 1.0
+        },
+        "missing": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 195,
+          "joint_exact_accuracy": 0.78,
+          "presented": 55,
+          "span_exact": 195,
+          "span_exact_accuracy": 0.78,
+          "state_accuracy": 0.78,
+          "state_correct": 195,
+          "total": 250,
+          "wrong_presented": 55,
+          "wrong_presented_rate": 1.0
+        },
+        "uncertain": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 42,
+          "joint_exact_accuracy": 0.168,
+          "presented": 196,
+          "span_exact": 193,
+          "span_exact_accuracy": 0.772,
+          "state_accuracy": 0.216,
+          "state_correct": 54,
+          "total": 250,
+          "wrong_presented": 196,
+          "wrong_presented_rate": 1.0
+        }
+      },
+      "final_target_challenge": {
+        "conflicting": {
+          "grounded_exact": 50,
+          "grounded_exact_accuracy": 0.2,
+          "presented": 0,
+          "state_accuracy": 0.2,
+          "state_correct": 50,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "missing": {
+          "grounded_exact": 195,
+          "grounded_exact_accuracy": 0.78,
+          "presented": 0,
+          "state_accuracy": 0.78,
+          "state_correct": 195,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "uncertain": {
+          "grounded_exact": 250,
+          "grounded_exact_accuracy": 1.0,
+          "presented": 0,
+          "state_accuracy": 1.0,
+          "state_correct": 250,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        }
+      },
+      "raw_eligibility": {
+        "gate_evidence": {
+          "raw_absence_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 413,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_base_rate": -0.937046004842615,
+            "candidate_minus_threshold_rate": -0.927046004842615,
+            "frozen_base": {
+              "denominator": 413,
+              "numerator": 387,
+              "rate": 0.937046004842615
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.927046004842615
+          },
+          "raw_conflict_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 50,
+              "rate": 0.2
+            },
+            "candidate_minus_base_rate": -0.752,
+            "candidate_minus_threshold_rate": -0.742,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 238,
+              "rate": 0.952
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.942
+          },
+          "raw_decode_failure_rate_at_most_1pct": {
+            "candidate": {
+              "denominator": 1000,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_threshold_rate": -0.01,
+            "frozen_base": {
+              "denominator": 1000,
+              "numerator": 53,
+              "rate": 0.053
+            },
+            "passed": true,
+            "threshold_rate": 0.01
+          },
+          "raw_held_value_gain_at_least_10pp": {
+            "candidate": {
+              "denominator": 2987,
+              "numerator": 1942,
+              "rate": 0.6501506528289254
+            },
+            "candidate_minus_base_rate": 0.36759290257783733,
+            "candidate_minus_threshold_rate": 0.2675929025778373,
+            "frozen_base": {
+              "denominator": 2987,
+              "numerator": 844,
+              "rate": 0.28255775025108804
+            },
+            "passed": true,
+            "required_delta": 0.1,
+            "threshold_rate": 0.38255775025108807
+          },
+          "raw_missing_target_gain_at_least_50pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 195,
+              "rate": 0.78
+            },
+            "candidate_minus_base_rate": 0.78,
+            "candidate_minus_threshold_rate": 0.28,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": true,
+            "required_delta": 0.5,
+            "threshold_rate": 0.5
+          },
+          "raw_overall_gain_at_least_5pp": {
+            "candidate": {
+              "denominator": 5000,
+              "numerator": 2885,
+              "rate": 0.577
+            },
+            "candidate_minus_base_rate": 0.0766,
+            "candidate_minus_threshold_rate": 0.026599999999999957,
+            "frozen_base": {
+              "denominator": 5000,
+              "numerator": 2502,
+              "rate": 0.5004
+            },
+            "passed": true,
+            "required_delta": 0.05,
+            "threshold_rate": 0.5504
+          },
+          "raw_uncertain_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 42,
+              "rate": 0.168
+            },
+            "candidate_minus_base_rate": -0.752,
+            "candidate_minus_threshold_rate": -0.742,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 230,
+              "rate": 0.92
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.91
+          },
+          "zero_raw_wrong_presented": {
+            "candidate": {
+              "denominator": 4495,
+              "numerator": 1897,
+              "rate": 0.42202447163515017
+            },
+            "candidate_minus_threshold_numerator": 1897,
+            "frozen_base": {
+              "denominator": 2034,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": false,
+            "threshold_numerator": 0
+          }
+        },
+        "gates": {
+          "all_raw_eligibility_gates_pass": false,
+          "raw_absence_regression_no_more_than_1pp": false,
+          "raw_conflict_target_regression_no_more_than_1pp": false,
+          "raw_decode_failure_rate_at_most_1pct": true,
+          "raw_held_value_gain_at_least_10pp": true,
+          "raw_missing_target_gain_at_least_50pp": true,
+          "raw_overall_gain_at_least_5pp": true,
+          "raw_uncertain_target_regression_no_more_than_1pp": false,
+          "zero_raw_wrong_presented": false
+        },
+        "scope_note": "Raw gates score model-owned state and exact span proposals before PointerSpanSolver verification; decode failures remain incorrect in every applicable denominator."
+      },
+      "final_gates": {
+        "absence_regression_no_more_than_1pp": false,
+        "all_measured_quality_gates_pass": false,
+        "conflict_target_regression_no_more_than_1pp": false,
+        "failure_rate_at_most_1pct": true,
+        "fresh_v1_confirmation_assessed": false,
+        "held_value_gain_at_least_10pp": true,
+        "latency_gate_assessed": false,
+        "missing_target_gain_at_least_50pp": true,
+        "overall_gain_at_least_5pp": true,
+        "zero_false_presented": true
+      },
+      "quality_eligibility": {
+        "all_quality_gates_pass": false,
+        "final_all": false,
+        "fresh_v1_confirmation_assessed": false,
+        "latency_gate_assessed": false,
+        "raw_all": false
+      }
+    },
+    {
+      "label": "seed-20260805-epoch-2",
+      "checkpoint_sha256": "60e38c6bd10547c8711fab826c8446eef897b01e87635334ab6ec967606e36d8",
+      "provenance": {
+        "training_seed": 20260805,
+        "epoch": 2,
+        "dev_loss": 6.300798828845676,
+        "training_report_sha256": "f87ddad270756b1238662801dd1d8146384b33d55897a227c75efffcd625cf9b"
+      },
+      "raw_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 48,
+          "rate": 0.192
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 4523,
+          "numerator": 1998,
+          "rate": 0.44174220650011053
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1886,
+          "rate": 0.631402745229327
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 144,
+          "rate": 0.576
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 2782,
+          "rate": 0.5564
+        },
+        "uncertain_target": {
+          "denominator": 250,
+          "numerator": 65,
+          "rate": 0.26
+        }
+      },
+      "final_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 48,
+          "rate": 0.192
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 2525,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1886,
+          "rate": 0.631402745229327
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 144,
+          "rate": 0.576
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 2967,
+          "rate": 0.5934
+        }
+      },
+      "raw_target_challenge": {
+        "conflicting": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 48,
+          "joint_exact_accuracy": 0.192,
+          "presented": 152,
+          "span_exact": 48,
+          "span_exact_accuracy": 0.192,
+          "state_accuracy": 0.392,
+          "state_correct": 98,
+          "total": 250,
+          "wrong_presented": 152,
+          "wrong_presented_rate": 1.0
+        },
+        "missing": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 144,
+          "joint_exact_accuracy": 0.576,
+          "presented": 106,
+          "span_exact": 144,
+          "span_exact_accuracy": 0.576,
+          "state_accuracy": 0.576,
+          "state_correct": 144,
+          "total": 250,
+          "wrong_presented": 106,
+          "wrong_presented_rate": 1.0
+        },
+        "uncertain": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 65,
+          "joint_exact_accuracy": 0.26,
+          "presented": 180,
+          "span_exact": 204,
+          "span_exact_accuracy": 0.816,
+          "state_accuracy": 0.28,
+          "state_correct": 70,
+          "total": 250,
+          "wrong_presented": 180,
+          "wrong_presented_rate": 1.0
+        }
+      },
+      "final_target_challenge": {
+        "conflicting": {
+          "grounded_exact": 48,
+          "grounded_exact_accuracy": 0.192,
+          "presented": 0,
+          "state_accuracy": 0.192,
+          "state_correct": 48,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "missing": {
+          "grounded_exact": 144,
+          "grounded_exact_accuracy": 0.576,
+          "presented": 0,
+          "state_accuracy": 0.576,
+          "state_correct": 144,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "uncertain": {
+          "grounded_exact": 250,
+          "grounded_exact_accuracy": 1.0,
+          "presented": 0,
+          "state_accuracy": 1.0,
+          "state_correct": 250,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        }
+      },
+      "raw_eligibility": {
+        "gate_evidence": {
+          "raw_absence_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 413,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_base_rate": -0.937046004842615,
+            "candidate_minus_threshold_rate": -0.927046004842615,
+            "frozen_base": {
+              "denominator": 413,
+              "numerator": 387,
+              "rate": 0.937046004842615
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.927046004842615
+          },
+          "raw_conflict_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 48,
+              "rate": 0.192
+            },
+            "candidate_minus_base_rate": -0.76,
+            "candidate_minus_threshold_rate": -0.75,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 238,
+              "rate": 0.952
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.942
+          },
+          "raw_decode_failure_rate_at_most_1pct": {
+            "candidate": {
+              "denominator": 1000,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_threshold_rate": -0.01,
+            "frozen_base": {
+              "denominator": 1000,
+              "numerator": 53,
+              "rate": 0.053
+            },
+            "passed": true,
+            "threshold_rate": 0.01
+          },
+          "raw_held_value_gain_at_least_10pp": {
+            "candidate": {
+              "denominator": 2987,
+              "numerator": 1886,
+              "rate": 0.631402745229327
+            },
+            "candidate_minus_base_rate": 0.348844994978239,
+            "candidate_minus_threshold_rate": 0.24884499497823898,
+            "frozen_base": {
+              "denominator": 2987,
+              "numerator": 844,
+              "rate": 0.28255775025108804
+            },
+            "passed": true,
+            "required_delta": 0.1,
+            "threshold_rate": 0.38255775025108807
+          },
+          "raw_missing_target_gain_at_least_50pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 144,
+              "rate": 0.576
+            },
+            "candidate_minus_base_rate": 0.576,
+            "candidate_minus_threshold_rate": 0.07599999999999996,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": true,
+            "required_delta": 0.5,
+            "threshold_rate": 0.5
+          },
+          "raw_overall_gain_at_least_5pp": {
+            "candidate": {
+              "denominator": 5000,
+              "numerator": 2782,
+              "rate": 0.5564
+            },
+            "candidate_minus_base_rate": 0.05600000000000005,
+            "candidate_minus_threshold_rate": 0.006000000000000005,
+            "frozen_base": {
+              "denominator": 5000,
+              "numerator": 2502,
+              "rate": 0.5004
+            },
+            "passed": true,
+            "required_delta": 0.05,
+            "threshold_rate": 0.5504
+          },
+          "raw_uncertain_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 65,
+              "rate": 0.26
+            },
+            "candidate_minus_base_rate": -0.66,
+            "candidate_minus_threshold_rate": -0.65,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 230,
+              "rate": 0.92
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.91
+          },
+          "zero_raw_wrong_presented": {
+            "candidate": {
+              "denominator": 4523,
+              "numerator": 1998,
+              "rate": 0.44174220650011053
+            },
+            "candidate_minus_threshold_numerator": 1998,
+            "frozen_base": {
+              "denominator": 2034,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": false,
+            "threshold_numerator": 0
+          }
+        },
+        "gates": {
+          "all_raw_eligibility_gates_pass": false,
+          "raw_absence_regression_no_more_than_1pp": false,
+          "raw_conflict_target_regression_no_more_than_1pp": false,
+          "raw_decode_failure_rate_at_most_1pct": true,
+          "raw_held_value_gain_at_least_10pp": true,
+          "raw_missing_target_gain_at_least_50pp": true,
+          "raw_overall_gain_at_least_5pp": true,
+          "raw_uncertain_target_regression_no_more_than_1pp": false,
+          "zero_raw_wrong_presented": false
+        },
+        "scope_note": "Raw gates score model-owned state and exact span proposals before PointerSpanSolver verification; decode failures remain incorrect in every applicable denominator."
+      },
+      "final_gates": {
+        "absence_regression_no_more_than_1pp": false,
+        "all_measured_quality_gates_pass": false,
+        "conflict_target_regression_no_more_than_1pp": false,
+        "failure_rate_at_most_1pct": true,
+        "fresh_v1_confirmation_assessed": false,
+        "held_value_gain_at_least_10pp": true,
+        "latency_gate_assessed": false,
+        "missing_target_gain_at_least_50pp": true,
+        "overall_gain_at_least_5pp": true,
+        "zero_false_presented": true
+      },
+      "quality_eligibility": {
+        "all_quality_gates_pass": false,
+        "final_all": false,
+        "fresh_v1_confirmation_assessed": false,
+        "latency_gate_assessed": false,
+        "raw_all": false
+      }
+    },
+    {
+      "label": "seed-20260805-epoch-3",
+      "checkpoint_sha256": "4cc1619c02d1740e2bcf3c5f3744419f8366295ea039ec72a92e649f6d174ee0",
+      "provenance": {
+        "training_seed": 20260805,
+        "epoch": 3,
+        "dev_loss": 6.446656552857041,
+        "training_report_sha256": "f87ddad270756b1238662801dd1d8146384b33d55897a227c75efffcd625cf9b"
+      },
+      "raw_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 50,
+          "rate": 0.2
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 4497,
+          "numerator": 2091,
+          "rate": 0.46497665110073383
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1853,
+          "rate": 0.6203548711081353
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 181,
+          "rate": 0.724
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 2703,
+          "rate": 0.5406
+        },
+        "uncertain_target": {
+          "denominator": 250,
+          "numerator": 66,
+          "rate": 0.264
+        }
+      },
+      "final_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 50,
+          "rate": 0.2
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 2406,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1853,
+          "rate": 0.6203548711081353
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 181,
+          "rate": 0.724
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 2887,
+          "rate": 0.5774
+        }
+      },
+      "raw_target_challenge": {
+        "conflicting": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 50,
+          "joint_exact_accuracy": 0.2,
+          "presented": 150,
+          "span_exact": 50,
+          "span_exact_accuracy": 0.2,
+          "state_accuracy": 0.4,
+          "state_correct": 100,
+          "total": 250,
+          "wrong_presented": 150,
+          "wrong_presented_rate": 1.0
+        },
+        "missing": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 181,
+          "joint_exact_accuracy": 0.724,
+          "presented": 69,
+          "span_exact": 181,
+          "span_exact_accuracy": 0.724,
+          "state_accuracy": 0.724,
+          "state_correct": 181,
+          "total": 250,
+          "wrong_presented": 69,
+          "wrong_presented_rate": 1.0
+        },
+        "uncertain": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 66,
+          "joint_exact_accuracy": 0.264,
+          "presented": 182,
+          "span_exact": 197,
+          "span_exact_accuracy": 0.788,
+          "state_accuracy": 0.272,
+          "state_correct": 68,
+          "total": 250,
+          "wrong_presented": 182,
+          "wrong_presented_rate": 1.0
+        }
+      },
+      "final_target_challenge": {
+        "conflicting": {
+          "grounded_exact": 50,
+          "grounded_exact_accuracy": 0.2,
+          "presented": 0,
+          "state_accuracy": 0.2,
+          "state_correct": 50,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "missing": {
+          "grounded_exact": 181,
+          "grounded_exact_accuracy": 0.724,
+          "presented": 0,
+          "state_accuracy": 0.724,
+          "state_correct": 181,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "uncertain": {
+          "grounded_exact": 250,
+          "grounded_exact_accuracy": 1.0,
+          "presented": 0,
+          "state_accuracy": 1.0,
+          "state_correct": 250,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        }
+      },
+      "raw_eligibility": {
+        "gate_evidence": {
+          "raw_absence_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 413,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_base_rate": -0.937046004842615,
+            "candidate_minus_threshold_rate": -0.927046004842615,
+            "frozen_base": {
+              "denominator": 413,
+              "numerator": 387,
+              "rate": 0.937046004842615
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.927046004842615
+          },
+          "raw_conflict_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 50,
+              "rate": 0.2
+            },
+            "candidate_minus_base_rate": -0.752,
+            "candidate_minus_threshold_rate": -0.742,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 238,
+              "rate": 0.952
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.942
+          },
+          "raw_decode_failure_rate_at_most_1pct": {
+            "candidate": {
+              "denominator": 1000,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_threshold_rate": -0.01,
+            "frozen_base": {
+              "denominator": 1000,
+              "numerator": 53,
+              "rate": 0.053
+            },
+            "passed": true,
+            "threshold_rate": 0.01
+          },
+          "raw_held_value_gain_at_least_10pp": {
+            "candidate": {
+              "denominator": 2987,
+              "numerator": 1853,
+              "rate": 0.6203548711081353
+            },
+            "candidate_minus_base_rate": 0.3377971208570472,
+            "candidate_minus_threshold_rate": 0.23779712085704718,
+            "frozen_base": {
+              "denominator": 2987,
+              "numerator": 844,
+              "rate": 0.28255775025108804
+            },
+            "passed": true,
+            "required_delta": 0.1,
+            "threshold_rate": 0.38255775025108807
+          },
+          "raw_missing_target_gain_at_least_50pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 181,
+              "rate": 0.724
+            },
+            "candidate_minus_base_rate": 0.724,
+            "candidate_minus_threshold_rate": 0.22399999999999998,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": true,
+            "required_delta": 0.5,
+            "threshold_rate": 0.5
+          },
+          "raw_overall_gain_at_least_5pp": {
+            "candidate": {
+              "denominator": 5000,
+              "numerator": 2703,
+              "rate": 0.5406
+            },
+            "candidate_minus_base_rate": 0.040200000000000014,
+            "candidate_minus_threshold_rate": -0.009800000000000031,
+            "frozen_base": {
+              "denominator": 5000,
+              "numerator": 2502,
+              "rate": 0.5004
+            },
+            "passed": false,
+            "required_delta": 0.05,
+            "threshold_rate": 0.5504
+          },
+          "raw_uncertain_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 66,
+              "rate": 0.264
+            },
+            "candidate_minus_base_rate": -0.656,
+            "candidate_minus_threshold_rate": -0.646,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 230,
+              "rate": 0.92
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.91
+          },
+          "zero_raw_wrong_presented": {
+            "candidate": {
+              "denominator": 4497,
+              "numerator": 2091,
+              "rate": 0.46497665110073383
+            },
+            "candidate_minus_threshold_numerator": 2091,
+            "frozen_base": {
+              "denominator": 2034,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": false,
+            "threshold_numerator": 0
+          }
+        },
+        "gates": {
+          "all_raw_eligibility_gates_pass": false,
+          "raw_absence_regression_no_more_than_1pp": false,
+          "raw_conflict_target_regression_no_more_than_1pp": false,
+          "raw_decode_failure_rate_at_most_1pct": true,
+          "raw_held_value_gain_at_least_10pp": true,
+          "raw_missing_target_gain_at_least_50pp": true,
+          "raw_overall_gain_at_least_5pp": false,
+          "raw_uncertain_target_regression_no_more_than_1pp": false,
+          "zero_raw_wrong_presented": false
+        },
+        "scope_note": "Raw gates score model-owned state and exact span proposals before PointerSpanSolver verification; decode failures remain incorrect in every applicable denominator."
+      },
+      "final_gates": {
+        "absence_regression_no_more_than_1pp": false,
+        "all_measured_quality_gates_pass": false,
+        "conflict_target_regression_no_more_than_1pp": false,
+        "failure_rate_at_most_1pct": true,
+        "fresh_v1_confirmation_assessed": false,
+        "held_value_gain_at_least_10pp": true,
+        "latency_gate_assessed": false,
+        "missing_target_gain_at_least_50pp": true,
+        "overall_gain_at_least_5pp": true,
+        "zero_false_presented": true
+      },
+      "quality_eligibility": {
+        "all_quality_gates_pass": false,
+        "final_all": false,
+        "fresh_v1_confirmation_assessed": false,
+        "latency_gate_assessed": false,
+        "raw_all": false
+      }
+    },
+    {
+      "label": "seed-20260806-epoch-1",
+      "checkpoint_sha256": "f2ab0f2c4ef0e8053b5477739449bc9c71e61e2f64f90df03bc9d823311336ab",
+      "provenance": {
+        "training_seed": 20260806,
+        "epoch": 1,
+        "dev_loss": 3.374528490380282,
+        "training_report_sha256": "01bf6c583b984401201bc8fc6f9d0b9598cc57e17c6dfbccfe7a82677a181070"
+      },
+      "raw_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 49,
+          "rate": 0.196
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 4385,
+          "numerator": 1674,
+          "rate": 0.38175598631698976
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1985,
+          "rate": 0.6645463675929025
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 230,
+          "rate": 0.92
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 3046,
+          "rate": 0.6092
+        },
+        "uncertain_target": {
+          "denominator": 250,
+          "numerator": 56,
+          "rate": 0.224
+        }
+      },
+      "final_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 49,
+          "rate": 0.196
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 2711,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1985,
+          "rate": 0.6645463675929025
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 230,
+          "rate": 0.92
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 3240,
+          "rate": 0.648
+        }
+      },
+      "raw_target_challenge": {
+        "conflicting": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 49,
+          "joint_exact_accuracy": 0.196,
+          "presented": 169,
+          "span_exact": 49,
+          "span_exact_accuracy": 0.196,
+          "state_accuracy": 0.324,
+          "state_correct": 81,
+          "total": 250,
+          "wrong_presented": 169,
+          "wrong_presented_rate": 1.0
+        },
+        "missing": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 230,
+          "joint_exact_accuracy": 0.92,
+          "presented": 20,
+          "span_exact": 230,
+          "span_exact_accuracy": 0.92,
+          "state_accuracy": 0.92,
+          "state_correct": 230,
+          "total": 250,
+          "wrong_presented": 20,
+          "wrong_presented_rate": 1.0
+        },
+        "uncertain": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 56,
+          "joint_exact_accuracy": 0.224,
+          "presented": 138,
+          "span_exact": 159,
+          "span_exact_accuracy": 0.636,
+          "state_accuracy": 0.448,
+          "state_correct": 112,
+          "total": 250,
+          "wrong_presented": 138,
+          "wrong_presented_rate": 1.0
+        }
+      },
+      "final_target_challenge": {
+        "conflicting": {
+          "grounded_exact": 49,
+          "grounded_exact_accuracy": 0.196,
+          "presented": 0,
+          "state_accuracy": 0.196,
+          "state_correct": 49,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "missing": {
+          "grounded_exact": 230,
+          "grounded_exact_accuracy": 0.92,
+          "presented": 0,
+          "state_accuracy": 0.92,
+          "state_correct": 230,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "uncertain": {
+          "grounded_exact": 250,
+          "grounded_exact_accuracy": 1.0,
+          "presented": 0,
+          "state_accuracy": 1.0,
+          "state_correct": 250,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        }
+      },
+      "raw_eligibility": {
+        "gate_evidence": {
+          "raw_absence_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 413,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_base_rate": -0.937046004842615,
+            "candidate_minus_threshold_rate": -0.927046004842615,
+            "frozen_base": {
+              "denominator": 413,
+              "numerator": 387,
+              "rate": 0.937046004842615
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.927046004842615
+          },
+          "raw_conflict_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 49,
+              "rate": 0.196
+            },
+            "candidate_minus_base_rate": -0.756,
+            "candidate_minus_threshold_rate": -0.746,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 238,
+              "rate": 0.952
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.942
+          },
+          "raw_decode_failure_rate_at_most_1pct": {
+            "candidate": {
+              "denominator": 1000,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_threshold_rate": -0.01,
+            "frozen_base": {
+              "denominator": 1000,
+              "numerator": 53,
+              "rate": 0.053
+            },
+            "passed": true,
+            "threshold_rate": 0.01
+          },
+          "raw_held_value_gain_at_least_10pp": {
+            "candidate": {
+              "denominator": 2987,
+              "numerator": 1985,
+              "rate": 0.6645463675929025
+            },
+            "candidate_minus_base_rate": 0.3819886173418145,
+            "candidate_minus_threshold_rate": 0.28198861734181446,
+            "frozen_base": {
+              "denominator": 2987,
+              "numerator": 844,
+              "rate": 0.28255775025108804
+            },
+            "passed": true,
+            "required_delta": 0.1,
+            "threshold_rate": 0.38255775025108807
+          },
+          "raw_missing_target_gain_at_least_50pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 230,
+              "rate": 0.92
+            },
+            "candidate_minus_base_rate": 0.92,
+            "candidate_minus_threshold_rate": 0.42000000000000004,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": true,
+            "required_delta": 0.5,
+            "threshold_rate": 0.5
+          },
+          "raw_overall_gain_at_least_5pp": {
+            "candidate": {
+              "denominator": 5000,
+              "numerator": 3046,
+              "rate": 0.6092
+            },
+            "candidate_minus_base_rate": 0.10880000000000001,
+            "candidate_minus_threshold_rate": 0.05879999999999996,
+            "frozen_base": {
+              "denominator": 5000,
+              "numerator": 2502,
+              "rate": 0.5004
+            },
+            "passed": true,
+            "required_delta": 0.05,
+            "threshold_rate": 0.5504
+          },
+          "raw_uncertain_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 56,
+              "rate": 0.224
+            },
+            "candidate_minus_base_rate": -0.6960000000000001,
+            "candidate_minus_threshold_rate": -0.686,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 230,
+              "rate": 0.92
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.91
+          },
+          "zero_raw_wrong_presented": {
+            "candidate": {
+              "denominator": 4385,
+              "numerator": 1674,
+              "rate": 0.38175598631698976
+            },
+            "candidate_minus_threshold_numerator": 1674,
+            "frozen_base": {
+              "denominator": 2034,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": false,
+            "threshold_numerator": 0
+          }
+        },
+        "gates": {
+          "all_raw_eligibility_gates_pass": false,
+          "raw_absence_regression_no_more_than_1pp": false,
+          "raw_conflict_target_regression_no_more_than_1pp": false,
+          "raw_decode_failure_rate_at_most_1pct": true,
+          "raw_held_value_gain_at_least_10pp": true,
+          "raw_missing_target_gain_at_least_50pp": true,
+          "raw_overall_gain_at_least_5pp": true,
+          "raw_uncertain_target_regression_no_more_than_1pp": false,
+          "zero_raw_wrong_presented": false
+        },
+        "scope_note": "Raw gates score model-owned state and exact span proposals before PointerSpanSolver verification; decode failures remain incorrect in every applicable denominator."
+      },
+      "final_gates": {
+        "absence_regression_no_more_than_1pp": false,
+        "all_measured_quality_gates_pass": false,
+        "conflict_target_regression_no_more_than_1pp": false,
+        "failure_rate_at_most_1pct": true,
+        "fresh_v1_confirmation_assessed": false,
+        "held_value_gain_at_least_10pp": true,
+        "latency_gate_assessed": false,
+        "missing_target_gain_at_least_50pp": true,
+        "overall_gain_at_least_5pp": true,
+        "zero_false_presented": true
+      },
+      "quality_eligibility": {
+        "all_quality_gates_pass": false,
+        "final_all": false,
+        "fresh_v1_confirmation_assessed": false,
+        "latency_gate_assessed": false,
+        "raw_all": false
+      }
+    },
+    {
+      "label": "seed-20260806-epoch-2",
+      "checkpoint_sha256": "57755a445c7de1f2774b0667cbdfd689b4f9b73654934cc498ba4a72a522c8a2",
+      "provenance": {
+        "training_seed": 20260806,
+        "epoch": 2,
+        "dev_loss": 4.450611941362692,
+        "training_report_sha256": "01bf6c583b984401201bc8fc6f9d0b9598cc57e17c6dfbccfe7a82677a181070"
+      },
+      "raw_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 62,
+          "rate": 0.248
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 4461,
+          "numerator": 1707,
+          "rate": 0.38264963012777403
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1934,
+          "rate": 0.647472380314697
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 221,
+          "rate": 0.884
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 3091,
+          "rate": 0.6182
+        },
+        "uncertain_target": {
+          "denominator": 250,
+          "numerator": 54,
+          "rate": 0.216
+        }
+      },
+      "final_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 62,
+          "rate": 0.248
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 2754,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1934,
+          "rate": 0.647472380314697
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 221,
+          "rate": 0.884
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 3287,
+          "rate": 0.6574
+        }
+      },
+      "raw_target_challenge": {
+        "conflicting": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 62,
+          "joint_exact_accuracy": 0.248,
+          "presented": 154,
+          "span_exact": 62,
+          "span_exact_accuracy": 0.248,
+          "state_accuracy": 0.384,
+          "state_correct": 96,
+          "total": 250,
+          "wrong_presented": 154,
+          "wrong_presented_rate": 1.0
+        },
+        "missing": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 221,
+          "joint_exact_accuracy": 0.884,
+          "presented": 29,
+          "span_exact": 221,
+          "span_exact_accuracy": 0.884,
+          "state_accuracy": 0.884,
+          "state_correct": 221,
+          "total": 250,
+          "wrong_presented": 29,
+          "wrong_presented_rate": 1.0
+        },
+        "uncertain": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 54,
+          "joint_exact_accuracy": 0.216,
+          "presented": 144,
+          "span_exact": 161,
+          "span_exact_accuracy": 0.644,
+          "state_accuracy": 0.424,
+          "state_correct": 106,
+          "total": 250,
+          "wrong_presented": 144,
+          "wrong_presented_rate": 1.0
+        }
+      },
+      "final_target_challenge": {
+        "conflicting": {
+          "grounded_exact": 62,
+          "grounded_exact_accuracy": 0.248,
+          "presented": 0,
+          "state_accuracy": 0.248,
+          "state_correct": 62,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "missing": {
+          "grounded_exact": 221,
+          "grounded_exact_accuracy": 0.884,
+          "presented": 0,
+          "state_accuracy": 0.884,
+          "state_correct": 221,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "uncertain": {
+          "grounded_exact": 250,
+          "grounded_exact_accuracy": 1.0,
+          "presented": 0,
+          "state_accuracy": 1.0,
+          "state_correct": 250,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        }
+      },
+      "raw_eligibility": {
+        "gate_evidence": {
+          "raw_absence_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 413,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_base_rate": -0.937046004842615,
+            "candidate_minus_threshold_rate": -0.927046004842615,
+            "frozen_base": {
+              "denominator": 413,
+              "numerator": 387,
+              "rate": 0.937046004842615
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.927046004842615
+          },
+          "raw_conflict_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 62,
+              "rate": 0.248
+            },
+            "candidate_minus_base_rate": -0.704,
+            "candidate_minus_threshold_rate": -0.694,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 238,
+              "rate": 0.952
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.942
+          },
+          "raw_decode_failure_rate_at_most_1pct": {
+            "candidate": {
+              "denominator": 1000,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_threshold_rate": -0.01,
+            "frozen_base": {
+              "denominator": 1000,
+              "numerator": 53,
+              "rate": 0.053
+            },
+            "passed": true,
+            "threshold_rate": 0.01
+          },
+          "raw_held_value_gain_at_least_10pp": {
+            "candidate": {
+              "denominator": 2987,
+              "numerator": 1934,
+              "rate": 0.647472380314697
+            },
+            "candidate_minus_base_rate": 0.36491463006360897,
+            "candidate_minus_threshold_rate": 0.26491463006360894,
+            "frozen_base": {
+              "denominator": 2987,
+              "numerator": 844,
+              "rate": 0.28255775025108804
+            },
+            "passed": true,
+            "required_delta": 0.1,
+            "threshold_rate": 0.38255775025108807
+          },
+          "raw_missing_target_gain_at_least_50pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 221,
+              "rate": 0.884
+            },
+            "candidate_minus_base_rate": 0.884,
+            "candidate_minus_threshold_rate": 0.384,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": true,
+            "required_delta": 0.5,
+            "threshold_rate": 0.5
+          },
+          "raw_overall_gain_at_least_5pp": {
+            "candidate": {
+              "denominator": 5000,
+              "numerator": 3091,
+              "rate": 0.6182
+            },
+            "candidate_minus_base_rate": 0.11780000000000002,
+            "candidate_minus_threshold_rate": 0.06779999999999997,
+            "frozen_base": {
+              "denominator": 5000,
+              "numerator": 2502,
+              "rate": 0.5004
+            },
+            "passed": true,
+            "required_delta": 0.05,
+            "threshold_rate": 0.5504
+          },
+          "raw_uncertain_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 54,
+              "rate": 0.216
+            },
+            "candidate_minus_base_rate": -0.7040000000000001,
+            "candidate_minus_threshold_rate": -0.6940000000000001,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 230,
+              "rate": 0.92
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.91
+          },
+          "zero_raw_wrong_presented": {
+            "candidate": {
+              "denominator": 4461,
+              "numerator": 1707,
+              "rate": 0.38264963012777403
+            },
+            "candidate_minus_threshold_numerator": 1707,
+            "frozen_base": {
+              "denominator": 2034,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": false,
+            "threshold_numerator": 0
+          }
+        },
+        "gates": {
+          "all_raw_eligibility_gates_pass": false,
+          "raw_absence_regression_no_more_than_1pp": false,
+          "raw_conflict_target_regression_no_more_than_1pp": false,
+          "raw_decode_failure_rate_at_most_1pct": true,
+          "raw_held_value_gain_at_least_10pp": true,
+          "raw_missing_target_gain_at_least_50pp": true,
+          "raw_overall_gain_at_least_5pp": true,
+          "raw_uncertain_target_regression_no_more_than_1pp": false,
+          "zero_raw_wrong_presented": false
+        },
+        "scope_note": "Raw gates score model-owned state and exact span proposals before PointerSpanSolver verification; decode failures remain incorrect in every applicable denominator."
+      },
+      "final_gates": {
+        "absence_regression_no_more_than_1pp": false,
+        "all_measured_quality_gates_pass": false,
+        "conflict_target_regression_no_more_than_1pp": false,
+        "failure_rate_at_most_1pct": true,
+        "fresh_v1_confirmation_assessed": false,
+        "held_value_gain_at_least_10pp": true,
+        "latency_gate_assessed": false,
+        "missing_target_gain_at_least_50pp": true,
+        "overall_gain_at_least_5pp": true,
+        "zero_false_presented": true
+      },
+      "quality_eligibility": {
+        "all_quality_gates_pass": false,
+        "final_all": false,
+        "fresh_v1_confirmation_assessed": false,
+        "latency_gate_assessed": false,
+        "raw_all": false
+      }
+    },
+    {
+      "label": "seed-20260806-epoch-3",
+      "checkpoint_sha256": "eb0b55c4e890d4f33cee09507a9d5b11574ead0afe8530e6aedd1b4811d9d2f2",
+      "provenance": {
+        "training_seed": 20260806,
+        "epoch": 3,
+        "dev_loss": 5.143428848832464,
+        "training_report_sha256": "01bf6c583b984401201bc8fc6f9d0b9598cc57e17c6dfbccfe7a82677a181070"
+      },
+      "raw_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 1,
+          "rate": 0.002421307506053269
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 63,
+          "rate": 0.252
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 4389,
+          "numerator": 1694,
+          "rate": 0.38596491228070173
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1853,
+          "rate": 0.6203548711081353
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 242,
+          "rate": 0.968
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 3058,
+          "rate": 0.6116
+        },
+        "uncertain_target": {
+          "denominator": 250,
+          "numerator": 58,
+          "rate": 0.232
+        }
+      },
+      "final_metrics": {
+        "absence": {
+          "denominator": 413,
+          "numerator": 1,
+          "rate": 0.002421307506053269
+        },
+        "conflict_target": {
+          "denominator": 250,
+          "numerator": 63,
+          "rate": 0.252
+        },
+        "failures": {
+          "denominator": 1000,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "false_presented": {
+          "denominator": 2695,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "held_value": {
+          "denominator": 2987,
+          "numerator": 1853,
+          "rate": 0.6203548711081353
+        },
+        "missing_target": {
+          "denominator": 250,
+          "numerator": 242,
+          "rate": 0.968
+        },
+        "overall": {
+          "denominator": 5000,
+          "numerator": 3250,
+          "rate": 0.65
+        }
+      },
+      "raw_target_challenge": {
+        "conflicting": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 63,
+          "joint_exact_accuracy": 0.252,
+          "presented": 150,
+          "span_exact": 63,
+          "span_exact_accuracy": 0.252,
+          "state_accuracy": 0.4,
+          "state_correct": 100,
+          "total": 250,
+          "wrong_presented": 150,
+          "wrong_presented_rate": 1.0
+        },
+        "missing": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 242,
+          "joint_exact_accuracy": 0.968,
+          "presented": 8,
+          "span_exact": 242,
+          "span_exact_accuracy": 0.968,
+          "state_accuracy": 0.968,
+          "state_correct": 242,
+          "total": 250,
+          "wrong_presented": 8,
+          "wrong_presented_rate": 1.0
+        },
+        "uncertain": {
+          "decode_rate": 1.0,
+          "decoded": 250,
+          "joint_exact": 58,
+          "joint_exact_accuracy": 0.232,
+          "presented": 140,
+          "span_exact": 148,
+          "span_exact_accuracy": 0.592,
+          "state_accuracy": 0.432,
+          "state_correct": 108,
+          "total": 250,
+          "wrong_presented": 140,
+          "wrong_presented_rate": 1.0
+        }
+      },
+      "final_target_challenge": {
+        "conflicting": {
+          "grounded_exact": 63,
+          "grounded_exact_accuracy": 0.252,
+          "presented": 0,
+          "state_accuracy": 0.252,
+          "state_correct": 63,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "missing": {
+          "grounded_exact": 242,
+          "grounded_exact_accuracy": 0.968,
+          "presented": 0,
+          "state_accuracy": 0.968,
+          "state_correct": 242,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        },
+        "uncertain": {
+          "grounded_exact": 250,
+          "grounded_exact_accuracy": 1.0,
+          "presented": 0,
+          "state_accuracy": 1.0,
+          "state_correct": 250,
+          "total": 250,
+          "wrong_presented": 0,
+          "wrong_presented_rate": null
+        }
+      },
+      "raw_eligibility": {
+        "gate_evidence": {
+          "raw_absence_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 413,
+              "numerator": 1,
+              "rate": 0.002421307506053269
+            },
+            "candidate_minus_base_rate": -0.9346246973365617,
+            "candidate_minus_threshold_rate": -0.9246246973365617,
+            "frozen_base": {
+              "denominator": 413,
+              "numerator": 387,
+              "rate": 0.937046004842615
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.927046004842615
+          },
+          "raw_conflict_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 63,
+              "rate": 0.252
+            },
+            "candidate_minus_base_rate": -0.7,
+            "candidate_minus_threshold_rate": -0.69,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 238,
+              "rate": 0.952
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.942
+          },
+          "raw_decode_failure_rate_at_most_1pct": {
+            "candidate": {
+              "denominator": 1000,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "candidate_minus_threshold_rate": -0.01,
+            "frozen_base": {
+              "denominator": 1000,
+              "numerator": 53,
+              "rate": 0.053
+            },
+            "passed": true,
+            "threshold_rate": 0.01
+          },
+          "raw_held_value_gain_at_least_10pp": {
+            "candidate": {
+              "denominator": 2987,
+              "numerator": 1853,
+              "rate": 0.6203548711081353
+            },
+            "candidate_minus_base_rate": 0.3377971208570472,
+            "candidate_minus_threshold_rate": 0.23779712085704718,
+            "frozen_base": {
+              "denominator": 2987,
+              "numerator": 844,
+              "rate": 0.28255775025108804
+            },
+            "passed": true,
+            "required_delta": 0.1,
+            "threshold_rate": 0.38255775025108807
+          },
+          "raw_missing_target_gain_at_least_50pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 242,
+              "rate": 0.968
+            },
+            "candidate_minus_base_rate": 0.968,
+            "candidate_minus_threshold_rate": 0.46799999999999997,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": true,
+            "required_delta": 0.5,
+            "threshold_rate": 0.5
+          },
+          "raw_overall_gain_at_least_5pp": {
+            "candidate": {
+              "denominator": 5000,
+              "numerator": 3058,
+              "rate": 0.6116
+            },
+            "candidate_minus_base_rate": 0.11120000000000008,
+            "candidate_minus_threshold_rate": 0.06120000000000003,
+            "frozen_base": {
+              "denominator": 5000,
+              "numerator": 2502,
+              "rate": 0.5004
+            },
+            "passed": true,
+            "required_delta": 0.05,
+            "threshold_rate": 0.5504
+          },
+          "raw_uncertain_target_regression_no_more_than_1pp": {
+            "candidate": {
+              "denominator": 250,
+              "numerator": 58,
+              "rate": 0.232
+            },
+            "candidate_minus_base_rate": -0.6880000000000001,
+            "candidate_minus_threshold_rate": -0.678,
+            "frozen_base": {
+              "denominator": 250,
+              "numerator": 230,
+              "rate": 0.92
+            },
+            "passed": false,
+            "required_delta": -0.01,
+            "threshold_rate": 0.91
+          },
+          "zero_raw_wrong_presented": {
+            "candidate": {
+              "denominator": 4389,
+              "numerator": 1694,
+              "rate": 0.38596491228070173
+            },
+            "candidate_minus_threshold_numerator": 1694,
+            "frozen_base": {
+              "denominator": 2034,
+              "numerator": 0,
+              "rate": 0.0
+            },
+            "passed": false,
+            "threshold_numerator": 0
+          }
+        },
+        "gates": {
+          "all_raw_eligibility_gates_pass": false,
+          "raw_absence_regression_no_more_than_1pp": false,
+          "raw_conflict_target_regression_no_more_than_1pp": false,
+          "raw_decode_failure_rate_at_most_1pct": true,
+          "raw_held_value_gain_at_least_10pp": true,
+          "raw_missing_target_gain_at_least_50pp": true,
+          "raw_overall_gain_at_least_5pp": true,
+          "raw_uncertain_target_regression_no_more_than_1pp": false,
+          "zero_raw_wrong_presented": false
+        },
+        "scope_note": "Raw gates score model-owned state and exact span proposals before PointerSpanSolver verification; decode failures remain incorrect in every applicable denominator."
+      },
+      "final_gates": {
+        "absence_regression_no_more_than_1pp": false,
+        "all_measured_quality_gates_pass": false,
+        "conflict_target_regression_no_more_than_1pp": false,
+        "failure_rate_at_most_1pct": true,
+        "fresh_v1_confirmation_assessed": false,
+        "held_value_gain_at_least_10pp": true,
+        "latency_gate_assessed": false,
+        "missing_target_gain_at_least_50pp": true,
+        "overall_gain_at_least_5pp": true,
+        "zero_false_presented": true
+      },
+      "quality_eligibility": {
+        "all_quality_gates_pass": false,
+        "final_all": false,
+        "fresh_v1_confirmation_assessed": false,
+        "latency_gate_assessed": false,
+        "raw_all": false
+      }
+    }
+  ]
+}
