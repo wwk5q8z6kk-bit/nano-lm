@@ -1,0 +1,49 @@
+nano-lm
+Copyright 2026 Hassan El Jesr
+
+Licensed under the Apache License, Version 2.0 (the "License"); see LICENSE.
+
+--------------------------------------------------------------------------
+Scope of this license
+--------------------------------------------------------------------------
+
+Apache-2.0 covers the source code in this repository (nano_ai/, wedge_v1/,
+fabric/, scribe/, sft/, pretrain/, scale/, benchmarks/, trajectory/).
+
+Prose and manuscripts under papers/ -- including papers/latex/paper1.tex and
+its built PDF -- are offered under Creative Commons Attribution 4.0
+(CC-BY-4.0). Cite the paper rather than the repository when referring to its
+results.
+
+--------------------------------------------------------------------------
+Third-party data attribution
+--------------------------------------------------------------------------
+
+This project's data-authority records pin external corpora that carry their
+own terms. No corpus is redistributed here; only pinned revisions, per-file
+SHA-256 inventories, and license records appear in the repository.
+
+  HuggingFaceFW/fineweb-edu  -- ODC-By v1.0, plus Common Crawl Terms of Use.
+      Attribution to Hugging Face is required when the dataset or a
+      substantial derivative is publicly distributed. Recorded in
+      papers/DATA_LICENSES.md and nano_ai/pretraining/sources.py.
+
+  roneneldan/TinyStories      -- CDLA-Sharing-1.0. Redistribution of the data
+      carries the same license and attribution requirements.
+
+  HuggingFaceFW/fineweb       -- ODC-By v1.0. Used by the July 2026 anchor
+      pretraining runs, whose provenance is only partially reconstructable;
+      see papers/PRETRAINING_PROVENANCE.md for an honest record of what was
+      and was not preserved.
+
+--------------------------------------------------------------------------
+What the evidence in this repository does and does not support
+--------------------------------------------------------------------------
+
+Results here are measured on synthetic clinic dialogue under frozen,
+preregistered protocols. They are not evidence of clinical validity, of
+open-world generalization, or of fitness for patient care. Negative results
+are retained deliberately; six consecutive improvement hypotheses (H1-H6) were
+rejected under their own gates and those records are part of the evidence, not
+an omission. See papers/EVIDENCE_MANIFEST.json for per-claim status and
+known absences.
