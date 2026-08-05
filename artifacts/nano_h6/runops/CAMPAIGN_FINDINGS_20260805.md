@@ -116,10 +116,17 @@ the FIRST resume step now — it cleanly separates "CLI create-path bug"
 (fix: REST API / console path / CLI update, then run H6 immediately) from
 "provider fleet outage" (action: ticket).
 
+**REST-path test (04:30 UTC): also down.** Pod `5860wh5ix6m8k0` created via
+`POST https://rest.runpod.io/v1/pods` (the modern REST API, not the CLI's
+legacy GraphQL mutation) — zero uptime through a 7-minute window, terminated.
+Refuted hypothesis (10): CLI create-path/version. Both API surfaces produce
+identical non-booting pods.
+
 Updated resume order: (1) console-UI deploy of any cheap GPU, watch
-utilization 3 min; (2) if console boots → recreate H6 pod via REST/console
-path and execute; (3) if console also 0% → send the ticket; (4) also try
-`runpodctl` update if available. Campaign spend after sweep ≈ **$3.60**.
+utilization 3 min (last untested path, cosmetically unlikely to differ);
+(2) send the prepared ticket — the case is airtight; (3) re-run the
+boot-health precheck after some hours; when any pod boots, H6 executes in
+~20 minutes under the amendment. Campaign spend after all tests ≈ **$3.70**.
 
 ## Provider status-page check (2026-08-05 01:55 UTC)
 
