@@ -78,3 +78,37 @@ regardless of its recovery number.
 Whether the 2-token conjunction should also become two-scope. That needs its
 own preregistration and, ideally, a corpus with more than ten tasks — the
 open-licensed dogfood corpus in `PRODUCT_THESIS.md` §5b.
+
+---
+
+## 6. RESULT — ACCEPTED (2026-08-05)
+
+Measured against the criteria frozen in §3, on the frozen r4 pack:
+
+| metric | requirement | observed | |
+|---|---|---|---|
+| in-scope recovery | 1 of 1 | **1 of 1** | pass |
+| held (CORRECT_ABSTENTION) | 4 of 4 | **4 of 4** | pass |
+| regressions (USEFUL) | 3 of 3 | **3 of 3** | pass |
+| out-of-scope unchanged | 2 of 2 | **2 of 2** | pass |
+| `wedge_v1` suite | ≥355 passing | **355 passed** | pass |
+
+**ACCEPTED.** `Nano Runtime smallest sufficient solver` now returns SUPPORTED
+with span-bound claims; it previously abstained while retrieval had already
+promoted the answering paragraph at margin 3.728. No correct abstention was
+lost, no useful answer regressed, and the two out-of-scope 2-token cards are
+bit-for-bit unchanged — confirming the scope claim in §2 rather than assuming it.
+
+### What this does and does not establish
+
+**Establishes:** the conjunctive span filter was a real over-abstention
+mechanism for multi-token queries, and two-scope relevance fixes it without
+weakening the anti-false-positive property the filter exists for.
+
+**Does not establish:** that over-abstention is fixed. n=1 in scope, labels are
+agent-applied, and the product-level evidence remains **3/10 useful** on the
+only real corpus ever tested. The 2-token conjunction (`E4 KILL 0.638`, terms
+present verbatim, still abstaining) is untouched and remains open per §5.
+
+The honest summary: one mechanism identified, fixed, and pinned — out of a
+failure class that is not yet closed.
