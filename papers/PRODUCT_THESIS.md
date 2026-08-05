@@ -96,7 +96,41 @@ the private path — but it is the *engine*, not the product.
 - Therefore: no commercial claim, no deployment, and no external pilot until
   §5 produces real-corpus evidence.
 
-## 5. The single highest-information next action
+## 5. CORRECTION — the dogfood already ran, and it failed
+
+*(Added 2026-08-05 after review. The paragraph below this one proposed running
+a real-document dogfood as "the fastest possible disproof." That experiment
+had already been run and its result was sitting on disk, unread by me.)*
+
+`.studies/p5-repo-papers-20260802-r3` and `-r4`: 10 real markdown documents
+(this repo's own `papers/`, ~125 KB), 10 tasks, full identity freezing, zero
+audit failures. Results:
+
+| run | USEFUL | CORRECT_ABSTENTION | OVER_ABSTENTION |
+|---|---|---|---|
+| r3 (first contact) | **0** | 4 | 6 |
+| r4 (after fix) | **3** | 4 | 3 |
+
+Recorded decision: **`FIX_REPEATED_FAILURE`**, `first_repeated_failure_class:
+OVER_ABSTENTION`, `representative_ready: false`, `manual_baseline:
+time_saved_claim_supported: false`. The queries were keyword strings authored
+by the same agent that then labeled its own output — so even 3/10 is generous.
+
+**Therefore the measured failure mode of the product is over-abstention.** The
+verification layer is real and fail-closed (that part is earned), but on the
+only non-fixture corpus ever tested it withheld far more than it should have.
+A scribe that abstains on 3–6 of 10 answerable questions is not yet useful,
+however trustworthy its abstentions are.
+
+**The real next action is diagnosis, not another dogfood run:** read
+`.studies/p5-repo-papers-20260802-r4/`, classify each OVER_ABSTENTION by
+cause (retrieval margin too strict? evidence-atom binding too narrow?
+predicate decomposition refusing on partial support?), and fix the top cause.
+That work is free, local, and it is the gate everything else sits behind.
+A *second* corpus (open-licensed, per the rule below) is worth running only
+after the known failure class is understood.
+
+## 5b. The follow-on corpus (after diagnosis)
 
 **Dogfood on real, OPEN-SOURCE documents** (see the standing data rule below).
 Point `wedge_v1` at a corpus of genuinely third-party, openly licensed
