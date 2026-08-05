@@ -30,6 +30,10 @@ class DatasetPreparationError(RuntimeError):
 class TextTokenizer(Protocol):
     def encode(self, text: str) -> Any: ...
 
+    def get_vocab_size(self, with_added_tokens: bool = True) -> int:  # pragma: no cover
+        """Optional; when absent the manifest records vocabulary_size as null."""
+        ...
+
 
 def _sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -106,6 +110,7 @@ def _prepare_split(
         "empty_or_invalid_documents": 0,
         "exact_duplicates_removed": 0,
         "contamination_matches_removed": 0,
+        "eod_collision_documents_removed": 0,
         "tokens_written": 0,
     }
     for value in documents:
@@ -123,7 +128,16 @@ def _prepare_split(
         if document_hash in seen_hashes:
             stats["exact_duplicates_removed"] += 1
             continue
-        ids = _token_ids(tokenizer, value) + [EOD_TOKEN_ID]
+        body_ids = _token_ids(tokenizer, value)
+        if EOD_TOKEN_ID in body_ids:
+            # Sanitation: `<|endoftext|>` is a registered added token, so source
+            # text containing that literal tokenizes to the same id used as the
+            # document boundary and would inject a phantom split. Web corpora do
+            # contain it. Dropping the document is recorded; silently rewriting
+            # source text would be worse.
+            stats["eod_collision_documents_removed"] += 1
+            continue
+        ids = body_ids + [EOD_TOKEN_ID]
         remaining = token_budget - stats["tokens_written"]
         ids = ids[:remaining]
         if not ids:
@@ -139,6 +153,17 @@ def _prepare_split(
             f"tokens before the {token_budget:,}-token budget"
         )
     return stats
+
+
+def _vocabulary_size(tokenizer: TextTokenizer) -> int | None:
+    """Derive vocabulary size; 4096 was hardcoded while sft/tokenizer.json is 4098."""
+    getter = getattr(tokenizer, "get_vocab_size", None)
+    if getter is None:
+        return None
+    try:
+        return int(getter(with_added_tokens=True))
+    except TypeError:
+        return int(getter())
 
 
 def _read_exclusion_hashes(path: Path | None) -> tuple[set[str], dict[str, Any]]:
@@ -228,7 +253,7 @@ def prepare_dataset(
                 "path": str(tokenizer_path),
                 "sha256": _sha256_file(tokenizer_path),
                 "procedure": "existing Nano byte-level BPE; no text normalization; append EOD token 0 after each document",
-                "vocabulary_size": 4096,
+                "vocabulary_size": _vocabulary_size(tokenizer),
                 "eod_token_id": EOD_TOKEN_ID,
                 "output_dtype": "uint16",
             },
@@ -263,8 +288,14 @@ def prepare_dataset(
         (staging / "manifest.sha256").write_text(
             f"{_sha256_file(manifest_path)}  manifest.json\n", encoding="utf-8"
         )
+        # Verify BEFORE publishing. Publishing first meant a failed verification
+        # left a broken dataset at its real name, and the cleanup below then
+        # rmtree'd a staging path that os.replace had already consumed -- so
+        # nothing was removed and the corrupt directory survived under the name
+        # callers trust.
+        verified = verify_prepared_dataset(staging)
         os.replace(staging, output_directory)
-        return verify_prepared_dataset(output_directory)
+        return verified
     except Exception:
         shutil.rmtree(staging, ignore_errors=True)
         raise

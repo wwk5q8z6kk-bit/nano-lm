@@ -133,3 +133,88 @@ def test_manifest_hash_detects_metadata_tampering(tmp_path):
 
     with pytest.raises(DatasetPreparationError, match="manifest SHA-256 mismatch"):
         verify_prepared_dataset(output)
+
+
+def test_failed_verification_never_publishes_the_output_directory(tmp_path, monkeypatch):
+    """B1: a failed verification must leave no dataset at the real name.
+
+    Publishing before verifying meant a corrupt dataset survived under the path
+    callers trust, and the cleanup branch then removed a staging directory that
+    os.replace had already consumed.
+    """
+    from nano_ai.pretraining import DatasetPreparationError, prepare
+    from nano_ai.pretraining import prepare_dataset
+
+    def _always_fails(directory):
+        raise DatasetPreparationError("synthetic verification failure")
+
+    monkeypatch.setattr(prepare, "verify_prepared_dataset", _always_fails)
+
+    output = tmp_path / "smoke"
+    with pytest.raises(DatasetPreparationError, match="synthetic verification failure"):
+        prepare_dataset(
+            dataset_name="tinystories",
+            train_documents=["hello world " * 40],
+            validation_documents=["goodbye world " * 40],
+            tokenizer=_Tokenizer(),
+            tokenizer_path=_tokenizer_file(tmp_path),
+            output_directory=output,
+            train_token_budget=32,
+            validation_token_budget=16,
+        )
+
+    assert not output.exists(), "a failed verification must not publish the dataset"
+    leftovers = [p for p in tmp_path.iterdir() if p.name.startswith(".smoke.")]
+    assert leftovers == [], f"staging directory was not cleaned up: {leftovers}"
+
+
+class _EodCollidingTokenizer:
+    """Emits the boundary id for the literal a real tokenizer registers.
+
+    The existing double (`ord(c) % 251 + 1`) can never emit 0, so the suite
+    structurally could not catch this class of bug.
+    """
+
+    def encode(self, text):
+        if "<|endoftext|>" in text:
+            return [7, 0, 9]
+        return [(ord(c) % 251) + 1 for c in text]
+
+    def get_vocab_size(self, with_added_tokens: bool = True) -> int:
+        return 4098
+
+
+def test_documents_containing_the_boundary_literal_are_dropped_not_silently_split(tmp_path):
+    """B2: a body token equal to EOD_TOKEN_ID would inject a phantom boundary."""
+    from nano_ai.pretraining import prepare_dataset
+
+    manifest = prepare_dataset(
+        dataset_name="tinystories",
+        # poisoned document first, so the budget cannot be filled before it is reached
+        train_documents=["poisoned <|endoftext|> text", "clean text here " * 40],
+        validation_documents=["validation text" * 5],
+        tokenizer=_EodCollidingTokenizer(),
+        tokenizer_path=_tokenizer_file(tmp_path),
+        output_directory=tmp_path / "eod",
+        train_token_budget=40,
+        validation_token_budget=16,
+    )
+    removed = manifest["splits"]["train"]["eod_collision_documents_removed"]
+    assert removed >= 1, "document containing the boundary literal must be dropped"
+
+
+def test_vocabulary_size_is_derived_not_hardcoded(tmp_path):
+    """B3: 4096 was written literally; sft/tokenizer.json is 4098."""
+    from nano_ai.pretraining import prepare_dataset
+
+    manifest = prepare_dataset(
+        dataset_name="tinystories",
+        train_documents=["alpha beta gamma " * 20],
+        validation_documents=["delta epsilon " * 20],
+        tokenizer=_EodCollidingTokenizer(),
+        tokenizer_path=_tokenizer_file(tmp_path),
+        output_directory=tmp_path / "vocab",
+        train_token_budget=32,
+        validation_token_budget=16,
+    )
+    assert manifest["tokenizer"]["vocabulary_size"] == 4098
