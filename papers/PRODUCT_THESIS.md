@@ -36,18 +36,31 @@ grounded or explicitly absent*.
 
 **A scribe whose every asserted value is bound to evidence — or withheld.**
 
-- Every field carries one or more **source spans**; unsupported values are
-  never presented.
-- **Absence is not inference**: ¬Found(x) ⇏ ¬x — an unevidenced absence is
-  UNVERIFIABLE and routes to QUALIFY, never to a confident "no".
-- **Contradictions surface** as DISPUTED with both spans, instead of being
-  silently resolved.
-- **Structure is machine-valid**: tables parse, Mermaid compiles, or it is not
-  emitted.
-- **Local-first**: runs on a laptop against a private folder; nothing leaves
-  the machine unless the operator says so.
-- **Model-agnostic**: the layer wraps a deterministic extractor, a small local
-  model, or a frontier API. Nano is the private path, not the only path.
+*(Claim status corrected 2026-08-05 after a code-level verification pass.
+BUILT = verified in code; SEAM = interface only; NOT BUILT = does not exist.)*
+
+- **BUILT — every field carries one or more source spans**; unsupported values
+  are never presented. `wedge_v1/coe/bind.py:bind_ask_payload` resolves every
+  evidence dict to an atom and re-checks `body[start:end] == text`;
+  `runtime.py:_finalize_public_payload` is a single mandatory boundary and
+  `_fail_closed_coe` blanks the payload and re-audits the abstention.
+- **BUILT — absence is not inference**: the system structurally cannot assert
+  a negative; every unevidenced path returns **ABSTAIN**. (Corrected: the
+  earlier draft named `UNVERIFIABLE`/`QUALIFY` states — those exist in
+  `fabric/schemas.py`, **not** in wedge. Wedge's vocabulary is ABSTAIN.)
+- **PARTIAL — contradictions surface as DISPUTED with both spans**
+  (`classical/merge.py:merge_field`) — but only for **three hardcoded fields**
+  (`ttl_seconds`, `metformin_dose_mg`, `sample_n`). On an arbitrary corpus this
+  marquee differentiator is effectively inert. Generalizing it is L2 work.
+- **NOT BUILT — machine-valid structure** (tables/Mermaid compile-or-withhold).
+  Zero occurrences of `mermaid` in `wedge_v1/`. This is an L2 **target**, not a
+  current property. The earlier draft asserted it; that was wrong.
+- **BUILT — local-first**: zero network imports in the package (no `requests`/
+  `urllib`/`httpx`/`socket`/model-API clients); stdlib-only runtime.
+- **SEAM ONLY — model-agnostic**: `lm/probe.py:LMBackend` is a Protocol whose
+  sole implementation is a deterministic stub gated to three allowlisted task
+  IDs. There is no local-model adapter, no API adapter, no config surface. The
+  architecture permits it; nothing is pluggable today.
 
 Why this is defensible: every vendor has an LLM scribe; none can tell a buyer
 *which sentences are true*. Hallucination — not capability — is what stalls
