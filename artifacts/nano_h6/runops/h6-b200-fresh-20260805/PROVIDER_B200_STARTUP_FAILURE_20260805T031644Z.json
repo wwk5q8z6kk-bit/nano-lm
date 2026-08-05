@@ -1,0 +1,36 @@
+{
+  "containerDiskInGb": 40,
+  "costPerHr": 6.79,
+  "createdAt": "2026-08-05 03:05:19.651 +0000 UTC",
+  "desiredStatus": "RUNNING",
+  "env": {
+    "PUBLIC_KEY": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNIOjxcq0UUJFqalPklaEkTs5WTJf4uiNhYsgpN/FC6vGsysMQgk6aT2P4/E887Lhqaz2b+IzNXc+iSFTNTthqxt0rRffRnk3KyKnPr2HFBmzpRKghbcC1dXofdBhBtApYesCHGjDLeheco32y5IN0DRVaHDs5kYRBlCSkPnhmxRWB88rpTOhe17FHOWK4vX7WBr9j/l2g2JUtmn2AXo0PCiKKYgAxOt8HFzLNk7LImClHenFg+pSqICU93hHkng7dudpWMqpFKvXMhNk78cdCczUo2Q8DFMCaV5UsENKgyP8Uiqwj5/aDwoCuEkC5XXbKsEPZElNRNB2E9zZ5ciKx runpodctl-ssh-key"
+  },
+  "gpuCount": 1,
+  "id": "5n12str0kcxb4i",
+  "imageName": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+  "lastStatusChange": "Rented by User: Wed Aug 05 2026 03:05:19 GMT+0000 (Coordinated Universal Time)",
+  "memoryInGb": 283,
+  "name": "nano-h6-b200-fresh-20260805",
+  "ports": [
+    "22/tcp"
+  ],
+  "ssh": {
+    "id": "5n12str0kcxb4i",
+    "ip": "213.173.111.134",
+    "name": "nano-h6-b200-fresh-20260805",
+    "port": 27295,
+    "ssh_command": "ssh -i /Users/mac/.runpod/ssh/runpodctl-ssh-key root@213.173.111.134 -p 27295",
+    "ssh_key": {
+      "exists": true,
+      "fingerprint": "SHA256:rG4/ql2aHn6iQQsn1POmeexDxzUKg+KkFR5Nl2u7dL8",
+      "in_account": true,
+      "path": "/Users/mac/.runpod/ssh/runpodctl-ssh-key",
+      "source": "runpodctl doctor"
+    }
+  },
+  "uptimeSeconds": 0,
+  "vcpuCount": 28,
+  "volumeInGb": 0,
+  "volumeMountPath": "/workspace"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "nano.required-artifacts.v1",
+  "artifacts": [
+    {
+      "artifact_id": "h6r_replication_authority",
+      "class": "control",
+      "role": "same_destination_replication_authority",
+      "expected_sha256": "a19272804ef0053164886480ea0ca38e403be81d90d35eebc76232f76b469d1d"
+    },
+    {
+      "artifact_id": "h6r_input_bundle",
+      "class": "training",
+      "role": "frozen_development_free_package",
+      "expected_sha256": "b1eff7c9ccb06f05e46f0639c88a7e74daeb0880dc8ecbb0641359d74b5ea505"
+    },
+    {
+      "artifact_id": "h6r_checkpoint_seed_20260805_epoch_3",
+      "class": "training",
+      "role": "byte_identical_selected_checkpoint_seed_20260805",
+      "expected_sha256": "4ca7b2513ae8b0cf8b9c525a853144d1b75b422b560a71818caa70d981c30472"
+    },
+    {
+      "artifact_id": "h6r_checkpoint_seed_20260806_epoch_2",
+      "class": "training",
+      "role": "byte_identical_selected_checkpoint_seed_20260806",
+      "expected_sha256": "40611c2733e731bdd0eeb827f852fb2f14312445c05cd293a5533296e2ce982f"
+    },
+    {
+      "artifact_id": "h6r_training_report_bundle",
+      "class": "result",
+      "role": "replication_training_reports_and_checksums",
+      "expected_sha256": null
+    },
+    {
+      "artifact_id": "h6r_terminal_evaluation_bundle",
+      "class": "result",
+      "role": "one_shot_terminal_evaluation_evidence",
+      "expected_sha256": null
+    }
+  ]
+}
