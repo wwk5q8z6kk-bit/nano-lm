@@ -101,9 +101,17 @@ which private files never could be.
 ### STANDING DATA RULE (owner directive, 2026-08-05)
 
 > **No private data is used for training, evaluation, or dogfooding on this
-> machine. All corpora must be open-source / openly licensed, acquired through
-> `nano_ai/pretraining/` with pinned revisions, hashes, and a recorded
+> machine. ALL material — text, code, transcripts, documents, structured
+> examples, anything — must be open-source / openly licensed, acquired through
+> `nano_ai/pretraining/` with pinned revisions, per-file hashes, and a recorded
 > license.**
+
+Applies to every modality and every stage: pretraining text (fineweb-edu,
+ODC-By), code corpora (Stack-v2 slices — permissive-licensed subsets only),
+dialogue/summarization sets (license-checked per source), structured/Mermaid
+examples (permissive repos only), reasoning corpora (GSM8K MIT, LogiQA), and
+dogfood documents. If a source's license cannot be verified and recorded, it
+is not used — no exceptions, no "just for testing".
 
 This supersedes the earlier owner-corpus dogfood gate in
 `frontier/DEVELOPMENT_PLAN.md` ("a real private folder of ≥10 docs"), which is
