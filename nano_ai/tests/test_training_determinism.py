@@ -21,7 +21,8 @@ import hashlib
 
 import torch
 
-from nano_ai.training.model import NanoGPT, initialize_weights
+from nano_ai.training.init_weights import initialize_weights
+from nano_ai.training.model import NanoGPT
 
 
 def _state_digest(model: torch.nn.Module) -> str:

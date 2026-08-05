@@ -12,7 +12,8 @@ from __future__ import annotations
 import pytest
 import torch
 
-from nano_ai.training.model import NANO_MODEL_CONFIG, NanoGPT, initialize_weights
+from nano_ai.training.init_weights import initialize_weights
+from nano_ai.training.model import NANO_MODEL_CONFIG, NanoGPT
 
 
 def _init(seed: int) -> NanoGPT:
