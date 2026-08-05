@@ -298,3 +298,52 @@ __all__ = [
     "load_frozen_nano_state_dict",
     "load_verified_nano_state_dict",
 ]
+
+
+def initialize_weights(model: nn.Module, *, generator: torch.Generator | None = None) -> nn.Module:
+    """Apply the recorded from-scratch initialization: normal(0, 0.02), depth-scaled.
+
+    `pretrain/AUDIT.md` records the July scheme as "init 0.02 depth-scaled" and
+    its step-1 loss of 8.35 ~= ln(4096) as the sanity check. That scheme lived
+    only in the historical pretraining script; `NanoModel.__init__` performs no
+    initialization at all, which is invisible today because every current path
+    warm-starts from an anchor checkpoint and `load_state_dict` overwrites the
+    PyTorch defaults. A from-scratch rung-1 pretrain would silently use those
+    defaults instead.
+
+    This is **explicit and opt-in on purpose**. It is not called from any
+    constructor, so no warm-start path, no frozen recipe, and no SHA-pinned
+    module changes behaviour. In particular H6's `state_boundary_query_offsets`
+    is deliberately zero-initialized; callers that add such parameters must
+    apply this before creating them, or exclude them explicitly.
+
+    Residual output projections (`o`, `dn`) are additionally scaled by
+    1/sqrt(2 * layer_count) so residual-stream variance does not grow with depth.
+    """
+
+    config = getattr(model, "config", None)
+    layer_count = getattr(config, "layer_count", None)
+    if not isinstance(layer_count, int) or layer_count <= 0:
+        raise ValueError("model must expose config.layer_count to depth-scale init")
+    depth_scale = (2.0 * layer_count) ** -0.5
+
+    def _normal(tensor: Tensor, std: float) -> None:
+        with torch.no_grad():
+            tensor.normal_(mean=0.0, std=std, generator=generator)
+
+    for module in model.modules():
+        if isinstance(module, nn.Linear):
+            _normal(module.weight, 0.02)
+            if module.bias is not None:
+                with torch.no_grad():
+                    module.bias.zero_()
+        elif isinstance(module, nn.Embedding):
+            _normal(module.weight, 0.02)
+
+    for block in getattr(model, "blocks", []):
+        for name in ("o", "dn"):
+            projection = getattr(block, name, None)
+            if isinstance(projection, nn.Linear):
+                _normal(projection.weight, 0.02 * depth_scale)
+
+    return model
