@@ -1,0 +1,3 @@
+{"observed_at_utc":"2026-08-05T01:37:22Z","source":"runpodctl","pods":
+[]
+,"history":"nano-h6r2-no1-20260805 (glam332vdpmy00) held zero uptime for 15 minutes in EUR-NO-1 without volume attachment, then was terminated; EU-CZ-1 rejected allocation outright"}

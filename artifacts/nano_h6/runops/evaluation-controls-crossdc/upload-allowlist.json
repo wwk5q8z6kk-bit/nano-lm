@@ -1,0 +1,44 @@
+{
+  "schema": "nano.h6.same-destination-upload-policy.v1",
+  "policy_id": "nano-h6-same-destination-runtime-recovery-r1",
+  "scope": {
+    "replication_id": "h6-same-destination-runtime-recovery-r1",
+    "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1",
+    "development_allowed": false
+  },
+  "exact_files": [
+    {
+      "relative_path": "inputs/nano-h6-runpod-input.tar.gz",
+      "role": "frozen_development_free_package",
+      "bytes": 12481062,
+      "sha256": "b1eff7c9ccb06f05e46f0639c88a7e74daeb0880dc8ecbb0641359d74b5ea505"
+    },
+    {
+      "relative_path": "controls/H6_RUNTIME_RECOVERY_REPLICATION.json",
+      "role": "replication_authority",
+      "sha256": "a19272804ef0053164886480ea0ca38e403be81d90d35eebc76232f76b469d1d"
+    },
+    {
+      "relative_path": "controls/authorization-envelope.json",
+      "role": "authorization",
+      "sha256": "96dc2b1305295a7da084af439841d27897bf63c7829864c5e7fe0aa575e92428"
+    },
+    {
+      "relative_path": "controls/runtime-authority.json",
+      "role": "runtime_authority",
+      "sha256": "48edee1526593c09d491f64727b6b69b0698a6e9deb1ecf5418cb49c5f669a1f"
+    },
+    {
+      "relative_path": "controls/required-artifacts.json",
+      "role": "required_artifacts",
+      "sha256": "97a1d6b069dff7be99acec9e650ab3b0fcdd125f3bb339dcdaf88b9e45ec201f"
+    }
+  ],
+  "prohibited_before_checkpoint_identity_and_backup_gates": [
+    "h2_development",
+    "dev",
+    "fresh",
+    "private"
+  ],
+  "no_extra_files": true
+}

@@ -1,0 +1,14 @@
+{"observed_at_utc":"2026-08-05T00:10:14Z","source":"runpodctl","user":
+{
+  "clientBalance": 53.5381984798,
+  "currentSpendPerHr": 0.01,
+  "email": "rill-mud-9i@icloud.com",
+  "id": "user_3Gipqdtq5P6GQgrqGiAJ2FIWvPJ",
+  "notifyLowBalance": true,
+  "notifyPodsGeneral": true,
+  "notifyPodsStale": true,
+  "spendLimit": 80
+}
+,"pods":
+[]
+,"note":"zero active pods; storage-only accrual on two 20GB volumes"}

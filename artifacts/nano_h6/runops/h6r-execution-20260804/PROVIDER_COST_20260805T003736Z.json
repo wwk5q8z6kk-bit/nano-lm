@@ -1,0 +1,3 @@
+{"observed_at_utc":"2026-08-05T00:37:36Z","source":"runpodctl","pods":
+[]
+,"stock":"EU-RO-1 RTX5090 Medium","hypothesis":"prior 5-11 min observation windows may be shorter than a cold image pull; this attempt observes 35 min"}

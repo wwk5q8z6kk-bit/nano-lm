@@ -1,0 +1,21 @@
+{"observed_at_utc":"2026-08-05T00:23:11Z","source":"runpodctl","pods":
+[]
+,"deleted_pod_get":
+{"error":"failed to get pod: pod not found","code":"not_found","status":404}
+
+,"volumes":
+[
+  {
+    "dataCenterId": "EU-RO-1",
+    "id": "04himzqxbm",
+    "name": "nano-h6-evaluation-20260804",
+    "size": 20
+  },
+  {
+    "dataCenterId": "EU-CZ-1",
+    "id": "r9eibv5dan",
+    "name": "nano-h6-evaluation-cz1-20260804",
+    "size": 20
+  }
+]
+}
