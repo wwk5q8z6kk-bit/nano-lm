@@ -390,13 +390,16 @@ def main() -> None:
             from tokenizers import Tokenizer
         except ImportError as exc:
             raise DatasetPreparationError("install the project's tokenizers dependency first") from exc
-        source = source_record("tinystories")
+        dataset_key = "fineweb-edu" if args.command == "prepare-fineweb-edu" else "tinystories"
+        source = source_record(dataset_key)
         args.cache_dir.mkdir(parents=True, exist_ok=True)
         tokenizer = Tokenizer.from_file(str(args.tokenizer))
+        _stream = (_stream_fineweb_edu if dataset_key == "fineweb-edu"
+                   else _stream_hugging_face)
         manifest = prepare_dataset(
-            dataset_name="tinystories",
-            train_documents=_stream_hugging_face(source, "train", args.cache_dir),
-            validation_documents=_stream_hugging_face(source, "validation", args.cache_dir),
+            dataset_name=dataset_key,
+            train_documents=_stream(source, "train", args.cache_dir),
+            validation_documents=_stream(source, "validation", args.cache_dir),
             tokenizer=tokenizer,
             tokenizer_path=args.tokenizer,
             output_directory=args.output,
