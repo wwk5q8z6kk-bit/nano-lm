@@ -60,8 +60,13 @@ disclosure = {
     "python": platform.python_version(),
     "platform": platform.platform(),
 }
-run([sys.executable, "-m", "venv", "--system-site-packages", ".h6-venv"])
-VPY = os.path.join(ROOT, ".h6-venv", "bin", "python")
+# Kaggle's image cannot bootstrap venv pip (ensurepip fails); the kernel
+# container is disposable, so direct installs are the disclosed equivalent.
+VPY = sys.executable
+pre = subprocess.run([VPY, "-c", "import torch; print(torch.__version__)"],
+                     capture_output=True, text=True)
+pre_ver = pre.stdout.strip() if pre.returncode == 0 else None
+print("PREINSTALLED_TORCH:", pre_ver, flush=True)
 exact_ok = False
 try:
     run([VPY, "-m", "pip", "install", "--no-cache-dir", "--quiet",
@@ -78,10 +83,10 @@ try:
         print("EXACT PIN SMOKE FAILED:", smoke.stderr[-500:], flush=True)
 except Exception as e:  # noqa: BLE001
     print("EXACT PIN INSTALL FAILED:", e, flush=True)
-if not exact_ok:
-    # Disclosed fallback: rebuild venv on the Kaggle-preinstalled torch.
-    run(["rm", "-rf", ".h6-venv"])
-    run([sys.executable, "-m", "venv", "--system-site-packages", ".h6-venv"])
+if not exact_ok and pre_ver:
+    # Disclosed fallback: restore the Kaggle-preinstalled torch build.
+    run([VPY, "-m", "pip", "install", "--no-cache-dir", "--quiet",
+         f"torch=={pre_ver.split('+')[0]}"])
 run([VPY, "-m", "pip", "install", "--no-cache-dir", "--quiet",
      "pytest==9.0.2", "tokenizers==0.22.2"])
 
