@@ -24,6 +24,21 @@ zero lost-correct answers** under `grounding.v2`, with 100% provenance. The
 trust came from the verifier architecture. The same instrument shows a 3.2×
 larger model buys only a modest raw-error improvement. (`fabric/README.md`)
 
+> **DENOMINATOR CAVEAT (added 2026-08-05 after review — never quote the 0.0%
+> without it).** `fabric/slice.py:247` computes `presented_err / max(1,
+> presented)`, so a verifier that abstained on *everything* would report 0.0%
+> error and **PASS the gate** — it cannot distinguish a perfect verifier from a
+> mute one. Recomputed from `fabric/results_slice_v1.json`, v2's 0.0% runs at
+> **81.5–91.0% field coverage** and **76.2–91.0% end-to-end yield**: roughly
+> one field in ten is withheld, and that withholding is counted nowhere in the
+> headline. Unparseable generations at `slice.py:210-214` are written as
+> untyped dicts that enter neither numerator nor denominator. Fix = backlog B3
+> (`papers/ARCHITECTURE_ENHANCEMENT_PLAN.md`).
+>
+> This *strengthens* §5 rather than weakening the thesis: fabric's uncounted
+> withholding and wedge's measured OVER_ABSTENTION are the same disease in two
+> code bodies. Over-abstention is the project's real adversary.
+
 **H1–H5 — the model-training path is the slow path.** Five consecutive
 preregistered attempts to make the small model do this natively were rejected
 under their own gates. (H6 pending.)
