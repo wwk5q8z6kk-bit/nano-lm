@@ -116,8 +116,7 @@ def batches(data, bs):
 RE = re.compile(r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$")
 FIELDS = ["cc", "dur", "sev", "med", "alg"]
 
-@torch.no_grad()
-def score(model, items, label=""):
+def _generate_and_parse(model, items):
     model.eval()
     tok.padding_side = "left"
     per_dialogue = []          # (held_values, hits_of_5, halluc, omission, parsed)
@@ -142,7 +141,9 @@ def score(model, items, label=""):
                 elif p == "none" and t != "none": omission += 1
                 else: halluc += 1
             per_dialogue.append((it["held_values"], hits, halluc, omission, 1))
-    n = len(items)
+    return per_dialogue, outs
+
+def _compute_metrics(per_dialogue, n):
     parsed = sum(d[4] for d in per_dialogue)
     recall = sum(d[1] for d in per_dialogue) / (5 * n)          # unconditional, per gate_scribe
     hal = sum(d[2] for d in per_dialogue) / (5 * n)
@@ -169,19 +170,34 @@ def score(model, items, label=""):
         held_pct, seen_pct = held_rec, seen_rec
     else:                       # e.g. base control: nothing parses; None -> JSON null (not NaN)
         held_pct = seen_pct = gap_pts = ci = None
-    print(f"[{label}] parse {parsed}/{n}={parsed/n:.0%}  recall {recall:.0%}  halluc {hal:.1%}  "
-          f"omission {omi}", flush=True)
-    if gap_pts is not None:
-        print(f"          seen {seen_pct:.0%} ({len(seen)} parsed)  held {held_pct:.0%} "
-              f"({len(held)} parsed)  GAP {gap_pts:.1f} pts (95% CI [{ci[0]:.1f}, {ci[1]:.1f}])", flush=True)
+
+    return {
+        "parsed": parsed, "recall": recall, "hal": hal, "omi": omi,
+        "held": held, "seen": seen, "gap_pts": gap_pts, "ci": ci,
+        "held_pct": held_pct, "seen_pct": seen_pct
+    }
+
+@torch.no_grad()
+def score(model, items, label=""):
+    per_dialogue, outs = _generate_and_parse(model, items)
+    n = len(items)
+
+    m = _compute_metrics(per_dialogue, n)
+
+    print(f"[{label}] parse {m['parsed']}/{n}={m['parsed']/n:.0%}  recall {m['recall']:.0%}  halluc {m['hal']:.1%}  "
+          f"omission {m['omi']}", flush=True)
+    if m["gap_pts"] is not None:
+        print(f"          seen {m['seen_pct']:.0%} ({len(m['seen'])} parsed)  held {m['held_pct']:.0%} "
+              f"({len(m['held'])} parsed)  GAP {m['gap_pts']:.1f} pts (95% CI [{m['ci'][0]:.1f}, {m['ci'][1]:.1f}])", flush=True)
     else:
-        print(f"          held/seen strata too small among parsed ({len(held)}/{len(seen)}) — gap undefined", flush=True)
+        print(f"          held/seen strata too small among parsed ({len(m['held'])}/{len(m['seen'])}) — gap undefined", flush=True)
     print(f"          sample out: {outs[0]!r}", flush=True)
-    return {"parse": parsed / n, "recall": recall, "halluc": hal,
-            "omission": omi, "omission_rate": omi / (5 * n),
-            "seen_recall": seen_pct, "held_recall": held_pct,
-            "held_parsed": len(held), "seen_parsed": len(seen),
-            "gap_pts": gap_pts, "gap_ci_pts": ci}
+
+    return {"parse": m["parsed"] / n, "recall": m["recall"], "halluc": m["hal"],
+            "omission": m["omi"], "omission_rate": m["omi"] / (5 * n),
+            "seen_recall": m["seen_pct"], "held_recall": m["held_pct"],
+            "held_parsed": len(m["held"]), "seen_parsed": len(m["seen"]),
+            "gap_pts": m["gap_pts"], "gap_ci_pts": m["ci"]}
 
 inst0 = json.load(open(os.path.join(REPO, "scribe", "scribe_eval.json")))
 instT = json.load(open(os.path.join(REPO, "trajectory", "scribe_eval_T.json")))
