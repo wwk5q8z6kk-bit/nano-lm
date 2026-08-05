@@ -76,8 +76,8 @@ SOURCES: dict[str, dict] = {
         "license": {
             "identifier": "odc-by-1.0",
             "publisher_declared": True,
-            "permitted_use": "proposal-stage internal research, subject to ODC-By, Common Crawl terms, and source-content rights",
-            "commercial_clearance": "blocked_pending_review",
+            "permitted_use": "internal Nano research and model training; commercial use approved by owner 2026-08-05 under ODC-By v1.0 with attribution obligation (papers/DATA_LICENSES.md section 4)",
+            "commercial_clearance": "approved_with_attribution",
             "notice": "The dataset card warns that source web content can carry separate rights and harmful or biased material.",
         },
         "provenance": "English Common Crawl pages filtered by the publisher's educational-quality classifier (score >= 3)",
@@ -104,10 +104,10 @@ SOURCES: dict[str, dict] = {
             "validation": "documents with sha256(UTF-8 text) modulo 1000 < 10",
             "test": "none; frozen Nano/H6 and all development evaluation artifacts are excluded",
         },
-        "authorization_state": "proposal_only",
+        "authorization_state": "approved_for_bounded_local_smoke",
         "blocking_gates": [
             "approve source-content and commercial-use risk"
-            " [OWNER-BLOCKED; question recorded in papers/DATA_LICENSES.md section 4]",
+            " [CLEARED 2026-08-05: owner approved research+commercial under ODC-By v1.0, attribution recorded in papers/DATA_LICENSES.md section 4]",
             "freeze a contamination exclusion digest set"
             " [POLICY DEFINED 2026-08-04 in papers/DATA_LICENSES.md section 3;"
             " digest computation deferred to the authorized preparation run"
@@ -116,7 +116,7 @@ SOURCES: dict[str, dict] = {
             " [SATISFIED 2026-08-04: 14 parquet files with per-file sha256"
             " recorded in this declaration]",
             "complete a bounded local preparation run and verify its manifest"
-            " [BLOCKED BEHIND the owner gate; prepare.py refuses proposal_only]",
+            " [SATISFIED 2026-08-05: smoke-1m prepared and verified - 1,100,000 tokens, manifest 2-file verify clean]",
         ],
         "private_or_development_data": False,
     },

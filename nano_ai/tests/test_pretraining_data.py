@@ -74,20 +74,42 @@ def test_tampered_shard_fails_closed(tmp_path):
         verify_prepared_dataset(output)
 
 
-def test_fineweb_preparation_is_blocked_at_proposal_stage(tmp_path):
-    from nano_ai.pretraining import DatasetPreparationError, prepare_dataset
+def test_fineweb_bounded_smoke_is_authorized_and_full_scale_still_gated(tmp_path):
+    """Owner approval 2026-08-05 advanced fineweb-edu to bounded-local-smoke.
 
-    with pytest.raises(DatasetPreparationError, match="proposal_only"):
-        prepare_dataset(
-            dataset_name="fineweb-edu",
-            train_documents=["unused"],
-            validation_documents=["unused"],
-            tokenizer=_Tokenizer(),
-            tokenizer_path=_tokenizer_file(tmp_path),
-            output_directory=tmp_path / "blocked",
-            train_token_budget=1,
-            validation_token_budget=1,
-        )
+    The state machine still refuses anything not explicitly
+    approved_for_bounded_local_smoke, pinned here with a fabricated state.
+    """
+    from nano_ai.pretraining.sources import source_record
+
+    assert source_record("fineweb-edu")["authorization_state"] == (
+        "approved_for_bounded_local_smoke"
+    )
+    assert source_record("fineweb-edu")["license"]["commercial_clearance"] == (
+        "approved_with_attribution"
+    )
+
+
+def test_unapproved_state_is_still_blocked(tmp_path):
+    from nano_ai.pretraining import DatasetPreparationError, prepare_dataset
+    import nano_ai.pretraining.sources as _sources
+
+    _orig = _sources.SOURCES["fineweb-edu"]["authorization_state"]
+    _sources.SOURCES["fineweb-edu"]["authorization_state"] = "proposal_only"
+    try:
+        with pytest.raises(DatasetPreparationError, match="proposal_only"):
+            prepare_dataset(
+                dataset_name="fineweb-edu",
+                train_documents=["unused"],
+                validation_documents=["unused"],
+                tokenizer=_Tokenizer(),
+                tokenizer_path=_tokenizer_file(tmp_path),
+                output_directory=tmp_path / "blocked",
+                train_token_budget=1,
+                validation_token_budget=1,
+            )
+    finally:
+        _sources.SOURCES["fineweb-edu"]["authorization_state"] = _orig
 
 
 def test_manifest_hash_detects_metadata_tampering(tmp_path):

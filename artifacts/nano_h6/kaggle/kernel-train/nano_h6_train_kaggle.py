@@ -67,11 +67,11 @@ pre = subprocess.run([VPY, "-c", "import torch; print(torch.__version__)"],
                      capture_output=True, text=True)
 pre_ver = pre.stdout.strip() if pre.returncode == 0 else None
 print("PREINSTALLED_TORCH:", pre_ver, flush=True)
-    # DISCLOSED DELTA (v6): torch is NEVER reinstalled. Kernel v4/v5 proved the
-    # exact 2.8.0+cu128 pin has no kernel image for Kaggle's GPU, and installing
-    # any torch from the default index yields a wheel that also lacks it. The
-    # Kaggle-preinstalled build is the only working one, so it is used as-is and
-# recorded. Device is chosen by an actual CUDA matmul smoke test.
+# DISCLOSED DELTA (v6): torch is NEVER reinstalled. Kernels v4/v5 proved the
+# exact 2.8.0+cu128 pin has no kernel image for Kaggle's GPU, and installing any
+# torch from the default index yields a wheel that also lacks it. The
+# Kaggle-preinstalled build is the only working one: used as-is and recorded.
+# Device is chosen by an actual CUDA matmul smoke test.
 exact_ok = False
 run([VPY, "-m", "pip", "install", "--no-cache-dir", "--quiet",
      "pytest==9.0.2", "tokenizers==0.22.2"])
@@ -87,17 +87,21 @@ if DEVICE == "cpu":
 
 probe = subprocess.run(
     [VPY, "-c",
-     "import json, torch, tokenizers, platform;"
-     "p=torch.cuda.get_device_properties(0);"
+     "import json, torch, tokenizers;"
+     "cu=torch.cuda.is_available();"
+     "p=torch.cuda.get_device_properties(0) if cu else None;"
      "print(json.dumps({'torch': torch.__version__,"
      "'cuda': torch.version.cuda,"
      "'tokenizers': tokenizers.__version__,"
-     "'gpu': torch.cuda.get_device_name(0),"
-     "'gpu_mem_gb': round(p.total_memory/2**30, 1)}))"],
+     "'gpu': torch.cuda.get_device_name(0) if cu else 'cpu',"
+     "'gpu_mem_gb': round(p.total_memory/2**30, 1) if cu else 0.0}))"],
     capture_output=True, text=True, check=True)
 disclosure.update(json.loads(probe.stdout.strip().splitlines()[-1]))
 disclosure["exact_torch_pin_used"] = exact_ok
-assert disclosure["gpu_mem_gb"] >= 14, f"GPU too small: {disclosure}"
+disclosure["device"] = DEVICE
+disclosure["torch_reinstalled"] = False
+if DEVICE == "cuda":
+    assert disclosure["gpu_mem_gb"] >= 14, f"GPU too small: {disclosure}"
 assert disclosure["tokenizers"] == "0.22.2", disclosure
 print("RUNTIME_DISCLOSURE:", json.dumps(disclosure), flush=True)
 
@@ -123,7 +127,7 @@ for seed in ("20260805", "20260806"):
              "--base-checkpoint", "checkpoints/anchors/nano_v01_scribe.pt",
              "--tokenizer", "sft/tokenizer.json",
              "--output-dir", f"results/seed-{seed}",
-             "--seed", seed, "--device", "cuda"],
+             "--seed", seed, "--device", DEVICE],
             env=env, stdout=log, stderr=subprocess.STDOUT)
     if proc.returncode != 0:
         with open(f"results/seed-{seed}.log") as log:

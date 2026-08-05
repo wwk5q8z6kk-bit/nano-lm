@@ -1,0 +1,14 @@
+{
+  "id": "hassaneljesr/nano-h6-train-disclosed",
+  "title": "nano-h6-train-disclosed",
+  "code_file": "nano_h6_train_kaggle.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_internet": "true",
+  "dataset_sources": ["hassaneljesr/nano-h6-frozen-input"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
