@@ -67,28 +67,23 @@ pre = subprocess.run([VPY, "-c", "import torch; print(torch.__version__)"],
                      capture_output=True, text=True)
 pre_ver = pre.stdout.strip() if pre.returncode == 0 else None
 print("PREINSTALLED_TORCH:", pre_ver, flush=True)
+    # DISCLOSED DELTA (v6): torch is NEVER reinstalled. Kernel v4/v5 proved the
+    # exact 2.8.0+cu128 pin has no kernel image for Kaggle's GPU, and installing
+    # any torch from the default index yields a wheel that also lacks it. The
+    # Kaggle-preinstalled build is the only working one, so it is used as-is and
+# recorded. Device is chosen by an actual CUDA matmul smoke test.
 exact_ok = False
-try:
-    run([VPY, "-m", "pip", "install", "--no-cache-dir", "--quiet",
-         "torch==2.8.0", "--index-url", "https://download.pytorch.org/whl/cu128"])
-    smoke = subprocess.run(
-        [VPY, "-c",
-         "import torch; assert torch.__version__=='2.8.0+cu128';"
-         "assert torch.cuda.is_available();"
-         "a=torch.randn(64,64,device='cuda');"
-         "assert float((a@a).sum())==float((a@a).sum())"],
-        capture_output=True, text=True, timeout=300)
-    exact_ok = smoke.returncode == 0
-    if not exact_ok:
-        print("EXACT PIN SMOKE FAILED:", smoke.stderr[-500:], flush=True)
-except Exception as e:  # noqa: BLE001
-    print("EXACT PIN INSTALL FAILED:", e, flush=True)
-if not exact_ok and pre_ver:
-    # Disclosed fallback: restore the Kaggle-preinstalled torch build.
-    run([VPY, "-m", "pip", "install", "--no-cache-dir", "--quiet",
-         f"torch=={pre_ver.split('+')[0]}"])
 run([VPY, "-m", "pip", "install", "--no-cache-dir", "--quiet",
      "pytest==9.0.2", "tokenizers==0.22.2"])
+cuda_smoke = subprocess.run(
+    [VPY, "-c",
+     "import torch; assert torch.cuda.is_available();"
+     "a=torch.randn(64,64,device='cuda'); b=(a@a).sum().item(); print('CUDA_OK',b==b)"],
+    capture_output=True, text=True, timeout=300)
+DEVICE = "cuda" if cuda_smoke.returncode == 0 else "cpu"
+if DEVICE == "cpu":
+    print("CUDA SMOKE FAILED (training on CPU, disclosed):",
+          cuda_smoke.stderr[-400:], flush=True)
 
 probe = subprocess.run(
     [VPY, "-c",
