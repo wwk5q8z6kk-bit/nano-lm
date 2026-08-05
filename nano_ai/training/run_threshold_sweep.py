@@ -32,23 +32,32 @@ from nano_ai.training.threshold_sweep import sweep_thresholds
 
 def _load(checkpoint: Path, calibration: Path, tokenizer_path: Path, device: str):
     """Rebuild the exact objects `_calibrate_model` uses."""
-    from tokenizers import Tokenizer
-
     from nano_ai.training.evidence_query_inference import CalibrationGold
     from nano_ai.training.evidence_query_model import NanoEvidenceQueryPointerModel
-    from nano_ai.training.pointer_data import build_pointer_inference_inputs
-    from nano_ai.training.state_span_data import parse_state_span_summary
-    from nano_ai.training.train_evidence_query import load_state_span_examples
-    from nano_ai.training.train_pointer import encode_pointer_partition
+    from nano_ai.training.evaluate_pointer import build_pointer_inference_inputs
+    from nano_ai.adapters.state_span import parse_state_span_summary
+    from nano_ai.training import replay_mixture_data
+    from nano_ai.training.train_pointer import encode_pointer_partition, load_pointer_tokenizer
 
-    examples = load_state_span_examples(calibration)
-    tokenizer = Tokenizer.from_file(str(tokenizer_path))
-    records = encode_pointer_partition(tokenizer, examples)
+    # Same loader the H6 trainer uses; `calibration` is the dataset directory.
+    bundle = replay_mixture_data.load_replay_mixture_dataset(calibration)
+    examples = bundle.calibration
+    tokenizer = load_pointer_tokenizer(tokenizer_path)
+    records = encode_pointer_partition(tokenizer, examples, expected_split="train")
     inputs = build_pointer_inference_inputs(examples, records)
 
-    model = NanoEvidenceQueryPointerModel()
     state = torch.load(checkpoint, map_location=device, weights_only=True)
-    model.load_state_dict(state.get("model", state))
+    weights = state.get("model", state)
+    # H6 checkpoints carry the state-conditioned residual; H3/H5 do not.
+    if "state_boundary_query_offsets" in weights:
+        from nano_ai.training.state_conditioned_evidence_query_model import (
+            NanoStateConditionedEvidenceQueryPointerModel,
+        )
+
+        model = NanoStateConditionedEvidenceQueryPointerModel()
+    else:
+        model = NanoEvidenceQueryPointerModel()
+    model.load_state_dict(weights)
     model.to(device).eval()
 
     gold = tuple(
@@ -64,7 +73,7 @@ def _load(checkpoint: Path, calibration: Path, tokenizer_path: Path, device: str
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", type=Path, required=True)
-    parser.add_argument("--calibration", type=Path, required=True)
+    parser.add_argument("--calibration", type=Path, required=True, help="dataset DIRECTORY (contains fit/calibration/manifest)")
     parser.add_argument("--tokenizer", type=Path, default=Path("sft/tokenizer.json"))
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cpu")

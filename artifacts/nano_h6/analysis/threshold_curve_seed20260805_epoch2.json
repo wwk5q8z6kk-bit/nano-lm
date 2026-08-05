@@ -1,0 +1,4902 @@
+{
+  "attempts": 4000,
+  "aurc": 0.005096166661093861,
+  "best_zero_risk": {
+    "abstention_benefit": null,
+    "abstention_cost": null,
+    "attempts": 4000,
+    "coverage": 0.1345,
+    "is_degenerate": false,
+    "label": "t=0.999879",
+    "per_state": {
+      "absence": {
+        "denominator": 330,
+        "numerator": 47,
+        "rate": 0.14242424242424243
+      },
+      "conflicting_target": {
+        "denominator": 200,
+        "numerator": 175,
+        "rate": 0.875
+      },
+      "missing_target": {
+        "denominator": 200,
+        "numerator": 200,
+        "rate": 1.0
+      },
+      "overall": {
+        "denominator": 4000,
+        "numerator": 1091,
+        "rate": 0.27275
+      },
+      "uncertain_target": {
+        "denominator": 200,
+        "numerator": 178,
+        "rate": 0.89
+      }
+    },
+    "presented": 538,
+    "retained_correct": 538,
+    "selective_risk": 0.0,
+    "threshold": 0.9998786449432373,
+    "wrong_presented": 0
+  },
+  "calibration": "artifacts/nano_h5/data",
+  "checkpoint": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260805/epoch-2.pt",
+  "cost_of_zero_risk": {
+    "correct_given_up": 2722,
+    "coverage_after": 0.1345,
+    "coverage_before": 0.85075,
+    "coverage_delta": -0.71625,
+    "errors_removed": 143,
+    "presented_given_up": 2865,
+    "presented_given_up_fraction": 0.8419042021745519,
+    "retained_correct_after": 538,
+    "retained_correct_before": 3260
+  },
+  "partition": "calibration (threshold selection licensed here)",
+  "permissive": {
+    "abstention_benefit": null,
+    "abstention_cost": null,
+    "attempts": 4000,
+    "coverage": 0.85075,
+    "is_degenerate": false,
+    "label": "t=0.000000",
+    "per_state": {
+      "absence": {
+        "denominator": 330,
+        "numerator": 316,
+        "rate": 0.9575757575757575
+      },
+      "conflicting_target": {
+        "denominator": 200,
+        "numerator": 175,
+        "rate": 0.875
+      },
+      "missing_target": {
+        "denominator": 200,
+        "numerator": 200,
+        "rate": 1.0
+      },
+      "overall": {
+        "denominator": 4000,
+        "numerator": 3808,
+        "rate": 0.952
+      },
+      "uncertain_target": {
+        "denominator": 200,
+        "numerator": 173,
+        "rate": 0.865
+      }
+    },
+    "presented": 3403,
+    "retained_correct": 3260,
+    "selective_risk": 0.04202174551866,
+    "threshold": 0.0,
+    "wrong_presented": 143
+  },
+  "points": [
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.85075,
+      "is_degenerate": false,
+      "label": "t=0.000000",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 316,
+          "rate": 0.9575757575757575
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3808,
+          "rate": 0.952
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 173,
+          "rate": 0.865
+        }
+      },
+      "presented": 3403,
+      "retained_correct": 3260,
+      "selective_risk": 0.04202174551866,
+      "threshold": 0.0,
+      "wrong_presented": 143
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.84725,
+      "is_degenerate": false,
+      "label": "t=0.357380",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 308,
+          "rate": 0.9333333333333333
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3800,
+          "rate": 0.95
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 174,
+          "rate": 0.87
+        }
+      },
+      "presented": 3389,
+      "retained_correct": 3251,
+      "selective_risk": 0.04071997639421658,
+      "threshold": 0.35737982392311096,
+      "wrong_presented": 138
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.84075,
+      "is_degenerate": false,
+      "label": "t=0.484695",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 304,
+          "rate": 0.9212121212121213
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3796,
+          "rate": 0.949
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3363,
+      "retained_correct": 3245,
+      "selective_risk": 0.03508771929824561,
+      "threshold": 0.48469507694244385,
+      "wrong_presented": 118
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.835,
+      "is_degenerate": false,
+      "label": "t=0.534611",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 299,
+          "rate": 0.906060606060606
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3782,
+          "rate": 0.9455
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3340,
+      "retained_correct": 3231,
+      "selective_risk": 0.03263473053892216,
+      "threshold": 0.5346105098724365,
+      "wrong_presented": 109
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.8285,
+      "is_degenerate": false,
+      "label": "t=0.580234",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 291,
+          "rate": 0.8818181818181818
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3768,
+          "rate": 0.942
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3314,
+      "retained_correct": 3217,
+      "selective_risk": 0.029269764634882317,
+      "threshold": 0.5802338719367981,
+      "wrong_presented": 97
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.82325,
+      "is_degenerate": false,
+      "label": "t=0.632773",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 287,
+          "rate": 0.8696969696969697
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3757,
+          "rate": 0.93925
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3293,
+      "retained_correct": 3206,
+      "selective_risk": 0.026419678105071363,
+      "threshold": 0.6327731013298035,
+      "wrong_presented": 87
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.81725,
+      "is_degenerate": false,
+      "label": "t=0.662605",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 283,
+          "rate": 0.8575757575757575
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3741,
+          "rate": 0.93525
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3269,
+      "retained_correct": 3190,
+      "selective_risk": 0.02416641174671153,
+      "threshold": 0.6626048684120178,
+      "wrong_presented": 79
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.813,
+      "is_degenerate": false,
+      "label": "t=0.692415",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 281,
+          "rate": 0.8515151515151516
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3730,
+          "rate": 0.9325
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3252,
+      "retained_correct": 3179,
+      "selective_risk": 0.022447724477244774,
+      "threshold": 0.6924151182174683,
+      "wrong_presented": 73
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.80775,
+      "is_degenerate": false,
+      "label": "t=0.723641",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 278,
+          "rate": 0.8424242424242424
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3716,
+          "rate": 0.929
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3231,
+      "retained_correct": 3165,
+      "selective_risk": 0.02042711234911792,
+      "threshold": 0.7236405611038208,
+      "wrong_presented": 66
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.8015,
+      "is_degenerate": false,
+      "label": "t=0.757632",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 277,
+          "rate": 0.8393939393939394
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3698,
+          "rate": 0.9245
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 176,
+          "rate": 0.88
+        }
+      },
+      "presented": 3206,
+      "retained_correct": 3147,
+      "selective_risk": 0.018402994385527137,
+      "threshold": 0.757632315158844,
+      "wrong_presented": 59
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.79675,
+      "is_degenerate": false,
+      "label": "t=0.783162",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 274,
+          "rate": 0.8303030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3685,
+          "rate": 0.92125
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 177,
+          "rate": 0.885
+        }
+      },
+      "presented": 3187,
+      "retained_correct": 3133,
+      "selective_risk": 0.016943834326953247,
+      "threshold": 0.7831615805625916,
+      "wrong_presented": 54
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.79125,
+      "is_degenerate": false,
+      "label": "t=0.811240",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 270,
+          "rate": 0.8181818181818182
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3667,
+          "rate": 0.91675
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 177,
+          "rate": 0.885
+        }
+      },
+      "presented": 3165,
+      "retained_correct": 3115,
+      "selective_risk": 0.01579778830963665,
+      "threshold": 0.811240017414093,
+      "wrong_presented": 50
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.7865,
+      "is_degenerate": false,
+      "label": "t=0.841085",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 268,
+          "rate": 0.8121212121212121
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3652,
+          "rate": 0.913
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 3146,
+      "retained_correct": 3099,
+      "selective_risk": 0.014939605848696759,
+      "threshold": 0.8410851359367371,
+      "wrong_presented": 47
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.781,
+      "is_degenerate": false,
+      "label": "t=0.861745",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 265,
+          "rate": 0.803030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3633,
+          "rate": 0.90825
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 3124,
+      "retained_correct": 3080,
+      "selective_risk": 0.014084507042253521,
+      "threshold": 0.8617452383041382,
+      "wrong_presented": 44
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.77525,
+      "is_degenerate": false,
+      "label": "t=0.885140",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 263,
+          "rate": 0.796969696969697
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3616,
+          "rate": 0.904
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 3101,
+      "retained_correct": 3063,
+      "selective_risk": 0.012254111576910674,
+      "threshold": 0.8851396441459656,
+      "wrong_presented": 38
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.7685,
+      "is_degenerate": false,
+      "label": "t=0.901795",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 258,
+          "rate": 0.7818181818181819
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3594,
+          "rate": 0.8985
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 3074,
+      "retained_correct": 3041,
+      "selective_risk": 0.01073519843851659,
+      "threshold": 0.9017950892448425,
+      "wrong_presented": 33
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.763,
+      "is_degenerate": false,
+      "label": "t=0.915642",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 253,
+          "rate": 0.7666666666666667
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3572,
+          "rate": 0.893
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 3052,
+      "retained_correct": 3019,
+      "selective_risk": 0.010812581913499346,
+      "threshold": 0.9156419634819031,
+      "wrong_presented": 33
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.757,
+      "is_degenerate": false,
+      "label": "t=0.926625",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 248,
+          "rate": 0.7515151515151515
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3550,
+          "rate": 0.8875
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 3028,
+      "retained_correct": 2997,
+      "selective_risk": 0.01023778071334214,
+      "threshold": 0.9266250729560852,
+      "wrong_presented": 31
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.75125,
+      "is_degenerate": false,
+      "label": "t=0.936703",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 242,
+          "rate": 0.7333333333333333
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3530,
+          "rate": 0.8825
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 3005,
+      "retained_correct": 2977,
+      "selective_risk": 0.009317803660565723,
+      "threshold": 0.9367029666900635,
+      "wrong_presented": 28
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.7465,
+      "is_degenerate": false,
+      "label": "t=0.945514",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 241,
+          "rate": 0.7303030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3513,
+          "rate": 0.87825
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2986,
+      "retained_correct": 2960,
+      "selective_risk": 0.008707300736771601,
+      "threshold": 0.9455137252807617,
+      "wrong_presented": 26
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.74025,
+      "is_degenerate": false,
+      "label": "t=0.952621",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 237,
+          "rate": 0.7181818181818181
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3488,
+          "rate": 0.872
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2961,
+      "retained_correct": 2935,
+      "selective_risk": 0.008780817291455589,
+      "threshold": 0.9526208639144897,
+      "wrong_presented": 26
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.734,
+      "is_degenerate": false,
+      "label": "t=0.957198",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 235,
+          "rate": 0.7121212121212122
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3468,
+          "rate": 0.867
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2936,
+      "retained_correct": 2915,
+      "selective_risk": 0.00715258855585831,
+      "threshold": 0.9571979641914368,
+      "wrong_presented": 21
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.72775,
+      "is_degenerate": false,
+      "label": "t=0.963499",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 234,
+          "rate": 0.7090909090909091
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3445,
+          "rate": 0.86125
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2911,
+      "retained_correct": 2892,
+      "selective_risk": 0.006526966678117485,
+      "threshold": 0.9634992480278015,
+      "wrong_presented": 19
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.722,
+      "is_degenerate": false,
+      "label": "t=0.967890",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 230,
+          "rate": 0.696969696969697
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3425,
+          "rate": 0.85625
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2888,
+      "retained_correct": 2872,
+      "selective_risk": 0.00554016620498615,
+      "threshold": 0.9678903818130493,
+      "wrong_presented": 16
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.7165,
+      "is_degenerate": false,
+      "label": "t=0.971632",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 230,
+          "rate": 0.696969696969697
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3403,
+          "rate": 0.85075
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2866,
+      "retained_correct": 2850,
+      "selective_risk": 0.005582693649685973,
+      "threshold": 0.9716315269470215,
+      "wrong_presented": 16
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.71125,
+      "is_degenerate": false,
+      "label": "t=0.974682",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 229,
+          "rate": 0.693939393939394
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3384,
+          "rate": 0.846
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2845,
+      "retained_correct": 2831,
+      "selective_risk": 0.00492091388400703,
+      "threshold": 0.9746819734573364,
+      "wrong_presented": 14
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.70575,
+      "is_degenerate": false,
+      "label": "t=0.977610",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 226,
+          "rate": 0.6848484848484848
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3363,
+          "rate": 0.84075
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2823,
+      "retained_correct": 2810,
+      "selective_risk": 0.004605030109812256,
+      "threshold": 0.9776102900505066,
+      "wrong_presented": 13
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.69925,
+      "is_degenerate": false,
+      "label": "t=0.980427",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 222,
+          "rate": 0.6727272727272727
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3338,
+          "rate": 0.8345
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2797,
+      "retained_correct": 2785,
+      "selective_risk": 0.004290311047550947,
+      "threshold": 0.9804270267486572,
+      "wrong_presented": 12
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.69275,
+      "is_degenerate": false,
+      "label": "t=0.982146",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 215,
+          "rate": 0.6515151515151515
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3312,
+          "rate": 0.828
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2771,
+      "retained_correct": 2759,
+      "selective_risk": 0.004330566582461205,
+      "threshold": 0.9821462035179138,
+      "wrong_presented": 12
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.6865,
+      "is_degenerate": false,
+      "label": "t=0.983536",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 212,
+          "rate": 0.6424242424242425
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3287,
+          "rate": 0.82175
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2746,
+      "retained_correct": 2734,
+      "selective_risk": 0.004369992716678805,
+      "threshold": 0.9835357666015625,
+      "wrong_presented": 12
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.68025,
+      "is_degenerate": false,
+      "label": "t=0.984751",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 209,
+          "rate": 0.6333333333333333
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3262,
+          "rate": 0.8155
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2721,
+      "retained_correct": 2709,
+      "selective_risk": 0.004410143329658214,
+      "threshold": 0.984751284122467,
+      "wrong_presented": 12
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.6745,
+      "is_degenerate": false,
+      "label": "t=0.986367",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 206,
+          "rate": 0.6242424242424243
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3239,
+          "rate": 0.80975
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2698,
+      "retained_correct": 2686,
+      "selective_risk": 0.004447739065974796,
+      "threshold": 0.9863668084144592,
+      "wrong_presented": 12
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.66925,
+      "is_degenerate": false,
+      "label": "t=0.987470",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 202,
+          "rate": 0.6121212121212121
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3219,
+          "rate": 0.80475
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2677,
+      "retained_correct": 2666,
+      "selective_risk": 0.004109077325364214,
+      "threshold": 0.9874695539474487,
+      "wrong_presented": 11
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.663,
+      "is_degenerate": false,
+      "label": "t=0.988973",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 198,
+          "rate": 0.6
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3194,
+          "rate": 0.7985
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2652,
+      "retained_correct": 2641,
+      "selective_risk": 0.004147812971342383,
+      "threshold": 0.9889734387397766,
+      "wrong_presented": 11
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.65725,
+      "is_degenerate": false,
+      "label": "t=0.990311",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 193,
+          "rate": 0.5848484848484848
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3171,
+          "rate": 0.79275
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2629,
+      "retained_correct": 2618,
+      "selective_risk": 0.0041841004184100415,
+      "threshold": 0.9903111457824707,
+      "wrong_presented": 11
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.65175,
+      "is_degenerate": false,
+      "label": "t=0.991060",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 190,
+          "rate": 0.5757575757575758
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3149,
+          "rate": 0.78725
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2607,
+      "retained_correct": 2596,
+      "selective_risk": 0.004219409282700422,
+      "threshold": 0.991060197353363,
+      "wrong_presented": 11
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.64575,
+      "is_degenerate": false,
+      "label": "t=0.991773",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 186,
+          "rate": 0.5636363636363636
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3126,
+          "rate": 0.7815
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2583,
+      "retained_correct": 2573,
+      "selective_risk": 0.0038714672861014324,
+      "threshold": 0.9917733073234558,
+      "wrong_presented": 10
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.6405,
+      "is_degenerate": false,
+      "label": "t=0.992399",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 185,
+          "rate": 0.5606060606060606
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3105,
+          "rate": 0.77625
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2562,
+      "retained_correct": 2552,
+      "selective_risk": 0.0039032006245121,
+      "threshold": 0.9923990368843079,
+      "wrong_presented": 10
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.634,
+      "is_degenerate": false,
+      "label": "t=0.992947",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 180,
+          "rate": 0.5454545454545454
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3079,
+          "rate": 0.76975
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2536,
+      "retained_correct": 2526,
+      "selective_risk": 0.003943217665615142,
+      "threshold": 0.9929470419883728,
+      "wrong_presented": 10
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.628,
+      "is_degenerate": false,
+      "label": "t=0.993418",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 177,
+          "rate": 0.5363636363636364
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3055,
+          "rate": 0.76375
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2512,
+      "retained_correct": 2502,
+      "selective_risk": 0.003980891719745223,
+      "threshold": 0.9934176206588745,
+      "wrong_presented": 10
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.6215,
+      "is_degenerate": false,
+      "label": "t=0.993844",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 175,
+          "rate": 0.5303030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3029,
+          "rate": 0.75725
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2486,
+      "retained_correct": 2476,
+      "selective_risk": 0.004022526146419952,
+      "threshold": 0.9938439130783081,
+      "wrong_presented": 10
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.615,
+      "is_degenerate": false,
+      "label": "t=0.994372",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 173,
+          "rate": 0.5242424242424243
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 3003,
+          "rate": 0.75075
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2460,
+      "retained_correct": 2450,
+      "selective_risk": 0.0040650406504065045,
+      "threshold": 0.9943718910217285,
+      "wrong_presented": 10
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.6095,
+      "is_degenerate": false,
+      "label": "t=0.994751",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 170,
+          "rate": 0.5151515151515151
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2982,
+          "rate": 0.7455
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2438,
+      "retained_correct": 2429,
+      "selective_risk": 0.0036915504511894994,
+      "threshold": 0.9947509169578552,
+      "wrong_presented": 9
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.60275,
+      "is_degenerate": false,
+      "label": "t=0.995196",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 166,
+          "rate": 0.503030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2955,
+          "rate": 0.73875
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2411,
+      "retained_correct": 2402,
+      "selective_risk": 0.0037328909166321027,
+      "threshold": 0.9951961636543274,
+      "wrong_presented": 9
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.596,
+      "is_degenerate": false,
+      "label": "t=0.995615",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 165,
+          "rate": 0.5
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2928,
+          "rate": 0.732
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2384,
+      "retained_correct": 2375,
+      "selective_risk": 0.0037751677852348995,
+      "threshold": 0.9956153631210327,
+      "wrong_presented": 9
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.5895,
+      "is_degenerate": false,
+      "label": "t=0.996045",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 158,
+          "rate": 0.47878787878787876
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2902,
+          "rate": 0.7255
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2358,
+      "retained_correct": 2349,
+      "selective_risk": 0.003816793893129771,
+      "threshold": 0.9960454106330872,
+      "wrong_presented": 9
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.58275,
+      "is_degenerate": false,
+      "label": "t=0.996352",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 155,
+          "rate": 0.4696969696969697
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2876,
+          "rate": 0.719
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2331,
+      "retained_correct": 2323,
+      "selective_risk": 0.003432003432003432,
+      "threshold": 0.9963515996932983,
+      "wrong_presented": 8
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.5765,
+      "is_degenerate": false,
+      "label": "t=0.996702",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 154,
+          "rate": 0.4666666666666667
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2852,
+          "rate": 0.713
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2306,
+      "retained_correct": 2299,
+      "selective_risk": 0.003035559410234172,
+      "threshold": 0.9967018961906433,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.56975,
+      "is_degenerate": false,
+      "label": "t=0.996903",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 148,
+          "rate": 0.4484848484848485
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2825,
+          "rate": 0.70625
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2279,
+      "retained_correct": 2272,
+      "selective_risk": 0.00307152259763054,
+      "threshold": 0.996903121471405,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.56275,
+      "is_degenerate": false,
+      "label": "t=0.997098",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 146,
+          "rate": 0.44242424242424244
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2797,
+          "rate": 0.69925
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2251,
+      "retained_correct": 2244,
+      "selective_risk": 0.003109729009329187,
+      "threshold": 0.9970976114273071,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.55675,
+      "is_degenerate": false,
+      "label": "t=0.997290",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 142,
+          "rate": 0.4303030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2773,
+          "rate": 0.69325
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2227,
+      "retained_correct": 2220,
+      "selective_risk": 0.003143242029636282,
+      "threshold": 0.9972895383834839,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.55,
+      "is_degenerate": false,
+      "label": "t=0.997468",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 141,
+          "rate": 0.42727272727272725
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2746,
+          "rate": 0.6865
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2200,
+      "retained_correct": 2193,
+      "selective_risk": 0.003181818181818182,
+      "threshold": 0.9974683523178101,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.544,
+      "is_degenerate": false,
+      "label": "t=0.997709",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 138,
+          "rate": 0.41818181818181815
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2722,
+          "rate": 0.6805
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2176,
+      "retained_correct": 2169,
+      "selective_risk": 0.003216911764705882,
+      "threshold": 0.9977090358734131,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.537,
+      "is_degenerate": false,
+      "label": "t=0.997858",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 133,
+          "rate": 0.403030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2694,
+          "rate": 0.6735
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2148,
+      "retained_correct": 2141,
+      "selective_risk": 0.0032588454376163874,
+      "threshold": 0.9978576302528381,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.53,
+      "is_degenerate": false,
+      "label": "t=0.998034",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 130,
+          "rate": 0.3939393939393939
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2666,
+          "rate": 0.6665
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2120,
+      "retained_correct": 2113,
+      "selective_risk": 0.0033018867924528303,
+      "threshold": 0.9980338215827942,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.52375,
+      "is_degenerate": false,
+      "label": "t=0.998160",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 128,
+          "rate": 0.3878787878787879
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2641,
+          "rate": 0.66025
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2095,
+      "retained_correct": 2088,
+      "selective_risk": 0.003341288782816229,
+      "threshold": 0.998160183429718,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.51775,
+      "is_degenerate": false,
+      "label": "t=0.998304",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 126,
+          "rate": 0.38181818181818183
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2617,
+          "rate": 0.65425
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2071,
+      "retained_correct": 2064,
+      "selective_risk": 0.003380009657170449,
+      "threshold": 0.9983041286468506,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.51075,
+      "is_degenerate": false,
+      "label": "t=0.998414",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 124,
+          "rate": 0.37575757575757573
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2589,
+          "rate": 0.64725
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2043,
+      "retained_correct": 2036,
+      "selective_risk": 0.0034263338228095936,
+      "threshold": 0.9984139204025269,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.5045,
+      "is_degenerate": false,
+      "label": "t=0.998509",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 122,
+          "rate": 0.3696969696969697
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2564,
+          "rate": 0.641
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 2018,
+      "retained_correct": 2011,
+      "selective_risk": 0.003468780971258672,
+      "threshold": 0.998508870601654,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.498,
+      "is_degenerate": false,
+      "label": "t=0.998609",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 120,
+          "rate": 0.36363636363636365
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2538,
+          "rate": 0.6345
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1992,
+      "retained_correct": 1985,
+      "selective_risk": 0.0035140562248995983,
+      "threshold": 0.9986090064048767,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.49125,
+      "is_degenerate": false,
+      "label": "t=0.998694",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 118,
+          "rate": 0.3575757575757576
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2511,
+          "rate": 0.62775
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1965,
+      "retained_correct": 1958,
+      "selective_risk": 0.0035623409669211198,
+      "threshold": 0.9986940026283264,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.48375,
+      "is_degenerate": false,
+      "label": "t=0.998768",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 116,
+          "rate": 0.3515151515151515
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2481,
+          "rate": 0.62025
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1935,
+      "retained_correct": 1928,
+      "selective_risk": 0.0036175710594315244,
+      "threshold": 0.9987678527832031,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.4765,
+      "is_degenerate": false,
+      "label": "t=0.998845",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 116,
+          "rate": 0.3515151515151515
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2452,
+          "rate": 0.613
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1906,
+      "retained_correct": 1899,
+      "selective_risk": 0.0036726128016789086,
+      "threshold": 0.9988454580307007,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.47025,
+      "is_degenerate": false,
+      "label": "t=0.998899",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 115,
+          "rate": 0.3484848484848485
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2427,
+          "rate": 0.60675
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1881,
+      "retained_correct": 1874,
+      "selective_risk": 0.003721424774056353,
+      "threshold": 0.998898983001709,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.463,
+      "is_degenerate": false,
+      "label": "t=0.998965",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 114,
+          "rate": 0.34545454545454546
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2398,
+          "rate": 0.5995
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1852,
+      "retained_correct": 1845,
+      "selective_risk": 0.003779697624190065,
+      "threshold": 0.9989649057388306,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.45675,
+      "is_degenerate": false,
+      "label": "t=0.999028",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 112,
+          "rate": 0.3393939393939394
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2373,
+          "rate": 0.59325
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1827,
+      "retained_correct": 1820,
+      "selective_risk": 0.0038314176245210726,
+      "threshold": 0.9990276098251343,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.4495,
+      "is_degenerate": false,
+      "label": "t=0.999084",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 110,
+          "rate": 0.3333333333333333
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2344,
+          "rate": 0.586
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1798,
+      "retained_correct": 1791,
+      "selective_risk": 0.00389321468298109,
+      "threshold": 0.9990842342376709,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.44225,
+      "is_degenerate": false,
+      "label": "t=0.999132",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 107,
+          "rate": 0.3242424242424242
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2315,
+          "rate": 0.57875
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1769,
+      "retained_correct": 1762,
+      "selective_risk": 0.00395703787450537,
+      "threshold": 0.9991320967674255,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.43425,
+      "is_degenerate": false,
+      "label": "t=0.999184",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 105,
+          "rate": 0.3181818181818182
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2283,
+          "rate": 0.57075
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1737,
+      "retained_correct": 1730,
+      "selective_risk": 0.004029936672423719,
+      "threshold": 0.9991835951805115,
+      "wrong_presented": 7
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.42825,
+      "is_degenerate": false,
+      "label": "t=0.999219",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 105,
+          "rate": 0.3181818181818182
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2260,
+          "rate": 0.565
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1713,
+      "retained_correct": 1707,
+      "selective_risk": 0.0035026269702276708,
+      "threshold": 0.9992192983627319,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.42125,
+      "is_degenerate": false,
+      "label": "t=0.999277",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 105,
+          "rate": 0.3181818181818182
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2232,
+          "rate": 0.558
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1685,
+      "retained_correct": 1679,
+      "selective_risk": 0.0035608308605341245,
+      "threshold": 0.9992771744728088,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.41475,
+      "is_degenerate": false,
+      "label": "t=0.999310",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 104,
+          "rate": 0.3151515151515151
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2206,
+          "rate": 0.5515
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1659,
+      "retained_correct": 1653,
+      "selective_risk": 0.003616636528028933,
+      "threshold": 0.999309778213501,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.40675,
+      "is_degenerate": false,
+      "label": "t=0.999338",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 102,
+          "rate": 0.3090909090909091
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2174,
+          "rate": 0.5435
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1627,
+      "retained_correct": 1621,
+      "selective_risk": 0.0036877688998156115,
+      "threshold": 0.9993380904197693,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.4,
+      "is_degenerate": false,
+      "label": "t=0.999381",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 99,
+          "rate": 0.3
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2147,
+          "rate": 0.53675
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1600,
+      "retained_correct": 1594,
+      "selective_risk": 0.00375,
+      "threshold": 0.9993810653686523,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.39325,
+      "is_degenerate": false,
+      "label": "t=0.999416",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 98,
+          "rate": 0.296969696969697
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2120,
+          "rate": 0.53
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1573,
+      "retained_correct": 1567,
+      "selective_risk": 0.003814367450731087,
+      "threshold": 0.9994164705276489,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.3865,
+      "is_degenerate": false,
+      "label": "t=0.999449",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 97,
+          "rate": 0.29393939393939394
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2093,
+          "rate": 0.52325
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1546,
+      "retained_correct": 1540,
+      "selective_risk": 0.0038809831824062097,
+      "threshold": 0.9994494318962097,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.37975,
+      "is_degenerate": false,
+      "label": "t=0.999480",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 97,
+          "rate": 0.29393939393939394
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2066,
+          "rate": 0.5165
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1519,
+      "retained_correct": 1513,
+      "selective_risk": 0.003949967083607637,
+      "threshold": 0.9994803071022034,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.37175,
+      "is_degenerate": false,
+      "label": "t=0.999503",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 93,
+          "rate": 0.2818181818181818
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2034,
+          "rate": 0.5085
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1487,
+      "retained_correct": 1481,
+      "selective_risk": 0.004034969737726967,
+      "threshold": 0.999503493309021,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.36375,
+      "is_degenerate": false,
+      "label": "t=0.999532",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 93,
+          "rate": 0.2818181818181818
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 2002,
+          "rate": 0.5005
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1455,
+      "retained_correct": 1449,
+      "selective_risk": 0.004123711340206186,
+      "threshold": 0.999531626701355,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.35625,
+      "is_degenerate": false,
+      "label": "t=0.999554",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 92,
+          "rate": 0.2787878787878788
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1972,
+          "rate": 0.493
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1425,
+      "retained_correct": 1419,
+      "selective_risk": 0.004210526315789474,
+      "threshold": 0.9995538592338562,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.34825,
+      "is_degenerate": false,
+      "label": "t=0.999575",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 90,
+          "rate": 0.2727272727272727
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1940,
+          "rate": 0.485
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1393,
+      "retained_correct": 1387,
+      "selective_risk": 0.004307250538406317,
+      "threshold": 0.9995747208595276,
+      "wrong_presented": 6
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.341,
+      "is_degenerate": false,
+      "label": "t=0.999596",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 86,
+          "rate": 0.2606060606060606
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1912,
+          "rate": 0.478
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1364,
+      "retained_correct": 1359,
+      "selective_risk": 0.0036656891495601175,
+      "threshold": 0.9995960593223572,
+      "wrong_presented": 5
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.33325,
+      "is_degenerate": false,
+      "label": "t=0.999611",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 85,
+          "rate": 0.25757575757575757
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1882,
+          "rate": 0.4705
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1333,
+      "retained_correct": 1329,
+      "selective_risk": 0.003000750187546887,
+      "threshold": 0.999610960483551,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.325,
+      "is_degenerate": false,
+      "label": "t=0.999632",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 81,
+          "rate": 0.24545454545454545
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1849,
+          "rate": 0.46225
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1300,
+      "retained_correct": 1296,
+      "selective_risk": 0.003076923076923077,
+      "threshold": 0.9996321201324463,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.3175,
+      "is_degenerate": false,
+      "label": "t=0.999653",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 81,
+          "rate": 0.24545454545454545
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1819,
+          "rate": 0.45475
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1270,
+      "retained_correct": 1266,
+      "selective_risk": 0.0031496062992125984,
+      "threshold": 0.9996532201766968,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.31025,
+      "is_degenerate": false,
+      "label": "t=0.999669",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 80,
+          "rate": 0.24242424242424243
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1790,
+          "rate": 0.4475
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1241,
+      "retained_correct": 1237,
+      "selective_risk": 0.0032232070910556,
+      "threshold": 0.9996688365936279,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.30225,
+      "is_degenerate": false,
+      "label": "t=0.999686",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 78,
+          "rate": 0.23636363636363636
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1758,
+          "rate": 0.4395
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1209,
+      "retained_correct": 1205,
+      "selective_risk": 0.0033085194375516956,
+      "threshold": 0.9996856451034546,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.29425,
+      "is_degenerate": false,
+      "label": "t=0.999701",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 75,
+          "rate": 0.22727272727272727
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1726,
+          "rate": 0.4315
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1177,
+      "retained_correct": 1173,
+      "selective_risk": 0.0033984706881903144,
+      "threshold": 0.9997013211250305,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.28625,
+      "is_degenerate": false,
+      "label": "t=0.999713",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 72,
+          "rate": 0.21818181818181817
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1694,
+          "rate": 0.4235
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1145,
+      "retained_correct": 1141,
+      "selective_risk": 0.0034934497816593887,
+      "threshold": 0.9997134804725647,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.277,
+      "is_degenerate": false,
+      "label": "t=0.999728",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 72,
+          "rate": 0.21818181818181817
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1657,
+          "rate": 0.41425
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1108,
+      "retained_correct": 1104,
+      "selective_risk": 0.0036101083032490976,
+      "threshold": 0.9997275471687317,
+      "wrong_presented": 4
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.2685,
+      "is_degenerate": false,
+      "label": "t=0.999740",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 71,
+          "rate": 0.21515151515151515
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1624,
+          "rate": 0.406
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1074,
+      "retained_correct": 1071,
+      "selective_risk": 0.002793296089385475,
+      "threshold": 0.9997395873069763,
+      "wrong_presented": 3
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.2595,
+      "is_degenerate": false,
+      "label": "t=0.999752",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 70,
+          "rate": 0.21212121212121213
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1588,
+          "rate": 0.397
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1038,
+      "retained_correct": 1035,
+      "selective_risk": 0.002890173410404624,
+      "threshold": 0.9997523427009583,
+      "wrong_presented": 3
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.25125,
+      "is_degenerate": false,
+      "label": "t=0.999764",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 68,
+          "rate": 0.20606060606060606
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1555,
+          "rate": 0.38875
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 1005,
+      "retained_correct": 1002,
+      "selective_risk": 0.0029850746268656717,
+      "threshold": 0.9997637867927551,
+      "wrong_presented": 3
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.2415,
+      "is_degenerate": false,
+      "label": "t=0.999775",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 65,
+          "rate": 0.19696969696969696
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1517,
+          "rate": 0.37925
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 966,
+      "retained_correct": 964,
+      "selective_risk": 0.002070393374741201,
+      "threshold": 0.999775230884552,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.231,
+      "is_degenerate": false,
+      "label": "t=0.999789",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 64,
+          "rate": 0.19393939393939394
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1475,
+          "rate": 0.36875
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 924,
+      "retained_correct": 922,
+      "selective_risk": 0.0021645021645021645,
+      "threshold": 0.9997888207435608,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.22225,
+      "is_degenerate": false,
+      "label": "t=0.999801",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 63,
+          "rate": 0.19090909090909092
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1440,
+          "rate": 0.36
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 889,
+      "retained_correct": 887,
+      "selective_risk": 0.0022497187851518562,
+      "threshold": 0.9998007416725159,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.214,
+      "is_degenerate": false,
+      "label": "t=0.999811",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 62,
+          "rate": 0.18787878787878787
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1407,
+          "rate": 0.35175
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 856,
+      "retained_correct": 854,
+      "selective_risk": 0.002336448598130841,
+      "threshold": 0.9998112320899963,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.205,
+      "is_degenerate": false,
+      "label": "t=0.999820",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 60,
+          "rate": 0.18181818181818182
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1371,
+          "rate": 0.34275
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 820,
+      "retained_correct": 818,
+      "selective_risk": 0.0024390243902439024,
+      "threshold": 0.999819815158844,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.196,
+      "is_degenerate": false,
+      "label": "t=0.999829",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 60,
+          "rate": 0.18181818181818182
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1335,
+          "rate": 0.33375
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 784,
+      "retained_correct": 782,
+      "selective_risk": 0.002551020408163265,
+      "threshold": 0.9998286962509155,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.18725,
+      "is_degenerate": false,
+      "label": "t=0.999837",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 55,
+          "rate": 0.16666666666666666
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1300,
+          "rate": 0.325
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 749,
+      "retained_correct": 747,
+      "selective_risk": 0.0026702269692923898,
+      "threshold": 0.9998373985290527,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.17775,
+      "is_degenerate": false,
+      "label": "t=0.999844",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 52,
+          "rate": 0.15757575757575756
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1262,
+          "rate": 0.3155
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 711,
+      "retained_correct": 709,
+      "selective_risk": 0.0028129395218002813,
+      "threshold": 0.999843955039978,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.1705,
+      "is_degenerate": false,
+      "label": "t=0.999850",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 50,
+          "rate": 0.15151515151515152
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1233,
+          "rate": 0.30825
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 682,
+      "retained_correct": 680,
+      "selective_risk": 0.002932551319648094,
+      "threshold": 0.9998499155044556,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.1605,
+      "is_degenerate": false,
+      "label": "t=0.999857",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 50,
+          "rate": 0.15151515151515152
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1193,
+          "rate": 0.29825
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 642,
+      "retained_correct": 640,
+      "selective_risk": 0.003115264797507788,
+      "threshold": 0.9998574256896973,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.15175,
+      "is_degenerate": false,
+      "label": "t=0.999864",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 50,
+          "rate": 0.15151515151515152
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1158,
+          "rate": 0.2895
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 607,
+      "retained_correct": 605,
+      "selective_risk": 0.0032948929159802307,
+      "threshold": 0.9998636245727539,
+      "wrong_presented": 2
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.144,
+      "is_degenerate": false,
+      "label": "t=0.999871",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 48,
+          "rate": 0.14545454545454545
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1128,
+          "rate": 0.282
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 576,
+      "retained_correct": 575,
+      "selective_risk": 0.001736111111111111,
+      "threshold": 0.999870777130127,
+      "wrong_presented": 1
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.1345,
+      "is_degenerate": false,
+      "label": "t=0.999879",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 47,
+          "rate": 0.14242424242424243
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1091,
+          "rate": 0.27275
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 538,
+      "retained_correct": 538,
+      "selective_risk": 0.0,
+      "threshold": 0.9998786449432373,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.12475,
+      "is_degenerate": false,
+      "label": "t=0.999885",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 45,
+          "rate": 0.13636363636363635
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1052,
+          "rate": 0.263
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 499,
+      "retained_correct": 499,
+      "selective_risk": 0.0,
+      "threshold": 0.9998849630355835,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.11575,
+      "is_degenerate": false,
+      "label": "t=0.999891",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 40,
+          "rate": 0.12121212121212122
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 1016,
+          "rate": 0.254
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 463,
+      "retained_correct": 463,
+      "selective_risk": 0.0,
+      "threshold": 0.9998914003372192,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.1085,
+      "is_degenerate": false,
+      "label": "t=0.999897",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 38,
+          "rate": 0.11515151515151516
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 987,
+          "rate": 0.24675
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 434,
+      "retained_correct": 434,
+      "selective_risk": 0.0,
+      "threshold": 0.9998973608016968,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.09975,
+      "is_degenerate": false,
+      "label": "t=0.999904",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 34,
+          "rate": 0.10303030303030303
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 952,
+          "rate": 0.238
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 399,
+      "retained_correct": 399,
+      "selective_risk": 0.0,
+      "threshold": 0.9999035596847534,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.0915,
+      "is_degenerate": false,
+      "label": "t=0.999912",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 29,
+          "rate": 0.08787878787878788
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 919,
+          "rate": 0.22975
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 366,
+      "retained_correct": 366,
+      "selective_risk": 0.0,
+      "threshold": 0.9999117851257324,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.0815,
+      "is_degenerate": false,
+      "label": "t=0.999919",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 24,
+          "rate": 0.07272727272727272
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 879,
+          "rate": 0.21975
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 326,
+      "retained_correct": 326,
+      "selective_risk": 0.0,
+      "threshold": 0.9999189376831055,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.072,
+      "is_degenerate": false,
+      "label": "t=0.999926",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 20,
+          "rate": 0.06060606060606061
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 841,
+          "rate": 0.21025
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 288,
+      "retained_correct": 288,
+      "selective_risk": 0.0,
+      "threshold": 0.9999257326126099,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.06075,
+      "is_degenerate": false,
+      "label": "t=0.999932",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 14,
+          "rate": 0.04242424242424243
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 796,
+          "rate": 0.199
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 243,
+      "retained_correct": 243,
+      "selective_risk": 0.0,
+      "threshold": 0.999932050704956,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.05025,
+      "is_degenerate": false,
+      "label": "t=0.999938",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 12,
+          "rate": 0.03636363636363636
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 754,
+          "rate": 0.1885
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 201,
+      "retained_correct": 201,
+      "selective_risk": 0.0,
+      "threshold": 0.9999376535415649,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.038,
+      "is_degenerate": false,
+      "label": "t=0.999943",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 6,
+          "rate": 0.01818181818181818
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 705,
+          "rate": 0.17625
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 152,
+      "retained_correct": 152,
+      "selective_risk": 0.0,
+      "threshold": 0.9999430179595947,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.0295,
+      "is_degenerate": false,
+      "label": "t=0.999949",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 2,
+          "rate": 0.006060606060606061
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 671,
+          "rate": 0.16775
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 118,
+      "retained_correct": 118,
+      "selective_risk": 0.0,
+      "threshold": 0.9999494552612305,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.01875,
+      "is_degenerate": false,
+      "label": "t=0.999955",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 628,
+          "rate": 0.157
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 75,
+      "retained_correct": 75,
+      "selective_risk": 0.0,
+      "threshold": 0.9999547004699707,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.009,
+      "is_degenerate": false,
+      "label": "t=0.999962",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 589,
+          "rate": 0.14725
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 36,
+      "retained_correct": 36,
+      "selective_risk": 0.0,
+      "threshold": 0.9999624490737915,
+      "wrong_presented": 0
+    },
+    {
+      "abstention_benefit": null,
+      "abstention_cost": null,
+      "attempts": 4000,
+      "coverage": 0.0,
+      "is_degenerate": true,
+      "label": "t=0.999969",
+      "per_state": {
+        "absence": {
+          "denominator": 330,
+          "numerator": 0,
+          "rate": 0.0
+        },
+        "conflicting_target": {
+          "denominator": 200,
+          "numerator": 175,
+          "rate": 0.875
+        },
+        "missing_target": {
+          "denominator": 200,
+          "numerator": 200,
+          "rate": 1.0
+        },
+        "overall": {
+          "denominator": 4000,
+          "numerator": 553,
+          "rate": 0.13825
+        },
+        "uncertain_target": {
+          "denominator": 200,
+          "numerator": 178,
+          "rate": 0.89
+        }
+      },
+      "presented": 0,
+      "retained_correct": 0,
+      "selective_risk": 0.0,
+      "threshold": 0.9999688863754272,
+      "wrong_presented": 0
+    }
+  ],
+  "schema": "nano.threshold-risk-coverage-curve.v1",
+  "selects_nothing": true
+}
