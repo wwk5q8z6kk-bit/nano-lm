@@ -98,6 +98,19 @@ audit (H5's template), disjointness against `native-state-span-dev-v0` and
 and the generator itself content-addressed. No provider resource needed to
 build or verify.
 
+**Path C shortlist (added 2026-08-05 from owner research; ALL entries are
+proposal-only pending per-source license review through `sources.py`):**
+
+| Source | Task shape | Fit for Nano | License gate |
+|---|---|---|---|
+| **ACI-BENCH** | doctor-patient dialogue → clinical note | **Exactly Nano's task**; the natural Priority-12 external-validity corpus (independent labels, more representative transcripts) | Verify at source before pinning |
+| MTS-Dialog / MediQA-Chat | short medical dialogue → note section | Same task family, smaller | Verify shared-task terms |
+| MTSamples | clinical *notes* (no dialogues), scraped site | Weak fit; provenance/license murky | LOW priority |
+| SAMSum / MeetingBank / QMSum / MediaSum | generic dialogue → summary | Only if scope broadens beyond clinical scribing; SAMSum is **non-commercial** licensed | Per-source |
+| AMI / LibriSpeech / Common Voice / VoxConverse | audio → transcript (ASR) | **Out of current scope** — `STRATEGIC_RESET.md` excludes audio; a cascaded design would use an off-the-shelf ASR (Whisper-class), so Nano likely never trains ASR itself | N/A until scope amendment |
+| **MIMIC-IV** | real de-identified clinical notes | **DO NOT USE without a compliance review.** Requires credentialed PhysioNet access + a Data Use Agreement that prohibits sending the data to third-party services — the popular "prompt an LLM API to reverse-engineer dialogues from MIMIC notes" recipe **violates the DUA** unless run on a compliant local model. Recorded here as a standing prohibition, not a candidate. |
+| Synthetic via frontier-LLM APIs | scenario → messy dialogue | Legitimate scale path; must land as a versioned `sources.py` entry with generation prompts recorded and contamination digests, like every other corpus | API spend approval |
+
 **Path C — external / more-representative transcripts (owner-gated, do not
 start).** Corresponds to `papers/EXECUTION_QUEUE.md` Priority 12 ("Deferred
 until the core loop is stable"). Requires before anything else: source
