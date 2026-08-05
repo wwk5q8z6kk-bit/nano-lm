@@ -36,6 +36,31 @@ document, or stream of human working conversation, it can —
 | L4 | Breadth and robustness: messy multi-speaker transcripts, interruptions, noise injection, cross-domain transfer | noisy-instrument variants (the W5 ingest-SLA discipline, applied to transcripts) | rung 2+ |
 | L5 | Beyond: multi-document working memory, incremental/streaming scribing, self-verification loops | to be preregistered when L2–L4 evidence exists | vision |
 
+## Owner-research deltas adopted 2026-08-05 (second sweep)
+
+1. **Verifier-reward training (RLVR with syntactic critics)** at L2/L3: reuse
+   the July GRPO/RLVR machinery (`sft/gate_grpo.py` lineage) with
+   *programmatic* rewards — markdown-table parser and mermaid-cli compile as
+   reward functions. No human raters; rewards are exactly the validators we
+   already trust at data-generation time.
+2. **Rejection sampling for reasoning data**: generate N candidate
+   think+output pairs per transcript via frontier API, keep only rows whose
+   structured output passes the validators. Enters `sources.py` as a
+   versioned synthetic source with prompts + digests recorded.
+3. **Reasoning corpora for L3** (added to Path C shortlist, license review
+   each): GSM8K (MIT), MATH, LogiQA — not for arithmetic, but to train
+   conditional-logic token patterns before think-arm SFT.
+4. **Long-context discipline** (L4+): concatenated-transcript synthesis and
+   needle-style retrieval tasks once the base context window grows; not a
+   rung-1 concern.
+
+Test-time compute (verify-and-retry loops, MCTS-style) is recorded as an L5
+*inference-system* direction — note that Nano's verifier+abstention layer
+already is the critic; the delta is generative retry, not new philosophy.
+*(Caveat noted for the record: several citations in the source research were
+unrelated filler; the substance above was adopted on its own merits, not on
+the strength of those links.)*
+
 ## Standing rules carried into v2 (unchanged)
 
 Dataset gate (no training without a complete, verified, licensed path through
