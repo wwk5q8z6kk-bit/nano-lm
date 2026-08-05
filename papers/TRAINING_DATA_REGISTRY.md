@@ -40,9 +40,31 @@ Verified on disk 2026-08-04 (hashes recomputed this day).
 | Destination path on volume | Prior protocol: network volume mounted at `/workspace`, bundle unpacked under `nano-h6-runpod/`. A next run must declare its own destination in its own authorization; do not reuse H6 authority. |
 | Post-transfer verification | `shasum -a 256 -c` against the bundle manifest before any execution; destination admission program refuses to run otherwise (pattern: `nano_ai/training/admit_evidence_query_h6.py`). |
 
-**Known gap:** `artifacts/SHA256SUMS` currently covers nano_h2–h4 entries;
-H5/H6 data-file hashes are recorded here and in the run artifacts but should be
-folded into `artifacts/SHA256SUMS` when the in-flight restructure lands.
+**Known gap (closed 2026-08-04):** H5 data-file and H6 freeze hashes are now
+folded into `artifacts/SHA256SUMS` (41/41 verify; commit `470e20c`).
+
+## 1b. Pretraining data (historical + future path)
+
+**Historical (July 2026 anchors):** both anchors pretrained on *streamed*
+`HuggingFaceFW/fineweb` `sample-10BT` — nano 3.15M on 32.8M tokens (~3.1 epochs
+of a 10.96M-token shard), scale 10M on ~200M tokens. Provenance is prose-only:
+no dataset revision, stream seed, shard files, per-file hashes, or license
+record survive, and the shards themselves are gone. Full honest-gap record:
+`papers/PRETRAINING_PROVENANCE.md`. These runs are historically attested, not
+re-runnable.
+
+**Tokenizers — two distinct artifacts:**
+- `pretrain/tokenizer.json` — sha256 `7a302eaeb9d7aebcd91dc0133466a315eea66b6a0993e6e18902be665e1b2785`
+  (V=4096 byte-level BPE from the July pretraining; the new
+  `nano_ai/pretraining/prepare.py` pipeline pins this one).
+- `sft/tokenizer.json` — sha256 `bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9`
+  (the H-cycle finetuning tokenizer authenticated by H6; §1 above).
+
+**Future acquisitions:** the only sanctioned path is `nano_ai/pretraining/`
+(`sources.py` pinned revisions + hashed inventories → `prepare.py`
+manifest-verified staging → `dataset.py` verify-before-yield). Current sources:
+TinyStories smoke (approved, bounded local); `fineweb-edu` (proposal-only,
+gates in `papers/DATA_LICENSES.md` §3, owner question in §4).
 
 ## 2. Approval status for the next training run
 
