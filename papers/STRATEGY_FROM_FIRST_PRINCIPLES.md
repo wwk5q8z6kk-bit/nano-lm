@@ -253,3 +253,74 @@ research artifact into something a person can actually use, cost nothing, and
 are both already half-built. Everything else in the proposed plan is either
 unreachable at this scale, already refuted by this project's own evidence, or
 legally prohibited.
+
+---
+
+## Appendix — "Dataset-first vs distillation vs hybrid?"
+
+A follow-up proposal framed this as the key design decision and recommended a
+hybrid mix (50–60% general text, 15–25% instruction, 15–20% domain, 10–20%
+synthetic). **Under the inverted architecture the question mostly dissolves,
+and the recommended mix is wrong for this project.**
+
+### Why the question dissolves
+
+Distillation exists to move a capability you cannot afford *into* a model you
+can run. But the model-agnostic seam means the capability does not need to move
+at all — when policy allows, you **call the frontier model and verify its
+output**. Distilling frontier behavior into 160M to avoid an API call is paying
+a large price to get a much worse version of something already available.
+
+Distillation is therefore only relevant to the **privacy path**, where data
+cannot leave the building. And on that path the requirement is not
+conversational style, formatting, or tool-calling patterns — it is *narrow
+structured extraction with grounding*. Almost everything distillation is good
+at (per the proposal's own list: response style, formatting, organization) is
+irrelevant to it.
+
+### Why the recommended mix is wrong here
+
+**E1 already ran this experiment.** On a pre-registered utility, the
+deterministic solver scored **0.999** against the best generative reference at
+**0.925**. Distilling generative behavior into a small model, to perform a task
+where rules already beat generation, inverts the evidence.
+
+**Capacity allocation.** The proposal's own strongest argument — a small model's
+capacity should go to the skills you care about — argues *against* its own
+recommendation. Spending 50–60% of a 160M model's capacity on general web text,
+so it can be mediocre at everything, is the opposite of concentrating capacity
+on the one task it must do locally.
+
+**Teacher-output licensing is a real constraint, not a footnote.** Major
+providers' terms restrict using outputs to train competing models. This project
+has a standing open-source-only rule with pinned revisions and recorded
+licenses; "check the teacher's terms" is not a note in a table here, it is a
+gate. Open-weight teachers are the only clean option.
+
+### Where distillation genuinely fits — one narrow, valuable place
+
+**Generating training data for structured transformations, filtered by a
+validator.** Text → Mermaid, table → chart spec, transcript → structured note.
+
+The reason this is safe is not that the teacher is trustworthy. It is that the
+**validator is the filter**: a generated Mermaid block either compiles or it
+does not; a markdown table either parses or it does not; a claimed span either
+matches the source text or it does not. Rejection-sample the teacher, keep only
+rows that pass, and the teacher's errors never enter training.
+
+That is the same machinery as `nano_ai/selective.py` and the fabric gate, reused
+as a data filter — and it is the honest version of "use synthetic data for
+structured outputs." Recorded already in `papers/NANO_V2_AMBITION.md` as the
+rejection-sampling delta.
+
+### The answer, stated plainly
+
+- **Not dataset-first.** Broad corpora buy breadth this model cannot hold.
+- **Not distillation-for-capability.** The seam makes it unnecessary, and the
+  licensing is a genuine constraint.
+- **Yes to distillation-under-validation**, narrowly, to manufacture verified
+  structured-transformation pairs — where the validator, not the teacher, is
+  the source of trust.
+
+Build the validator first. It is 20 lines, it works with any backend today, and
+it is the precondition for the only kind of synthetic data worth generating.
