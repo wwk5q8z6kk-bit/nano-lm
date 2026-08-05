@@ -327,10 +327,48 @@ def _stream_hugging_face(source: dict[str, Any], split: str, cache_dir: Path) ->
         yield row["text"]
 
 
+def _stream_fineweb_edu(source: dict[str, Any], split: str, cache_dir: Path) -> Iterator[str]:
+    """Stream fineweb-edu documents routed by the declared hash-bucket rule.
+
+    Split definition (sources.py): train = sha256(UTF-8 text) mod 1000 >= 10,
+    validation = sha256(UTF-8 text) mod 1000 < 10.
+    """
+    try:
+        from datasets import load_dataset
+    except ImportError as exc:
+        raise DatasetPreparationError("install the project's datasets dependency first") from exc
+    files = [record["path"] for record in source["source_files"]]
+    dataset = load_dataset(
+        source["dataset_name"],
+        data_files={"train": files},
+        split="train",
+        revision=source["source_revision"],
+        streaming=True,
+        cache_dir=str(cache_dir),
+    )
+    want_validation = split == "validation"
+    for row in dataset:
+        text = row["text"]
+        bucket = int(hashlib.sha256(text.encode("utf-8")).hexdigest(), 16) % 1000
+        if (bucket < 10) == want_validation:
+            yield text
+
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
-    prepare_parser = subparsers.add_parser("prepare-tinystories")
+    for name in ("prepare-tinystories", "prepare-fineweb-edu"):
+        sp = subparsers.add_parser(name)
+        if name == "prepare-tinystories":
+            prepare_parser = sp
+            continue
+        sp.add_argument("--output", type=Path, required=True)
+        sp.add_argument("--tokenizer", type=Path, default=DEFAULT_TOKENIZER)
+        sp.add_argument("--cache-dir", type=Path, default=Path(".local-data/hf-cache"))
+        sp.add_argument("--train-tokens", type=int, default=1_000_000)
+        sp.add_argument("--validation-tokens", type=int, default=100_000)
+        sp.add_argument("--shard-tokens", type=int, default=1_000_000)
+        sp.add_argument("--contamination-hashes", type=Path)
     prepare_parser.add_argument("--output", type=Path, required=True)
     prepare_parser.add_argument("--tokenizer", type=Path, default=DEFAULT_TOKENIZER)
     prepare_parser.add_argument("--cache-dir", type=Path, default=Path(".local-data/hf-cache"))
