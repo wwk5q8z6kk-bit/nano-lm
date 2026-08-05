@@ -2,8 +2,8 @@
 
 **Terminal conclusion:** RunPod secure-cloud RTX 5090 pods are not booting
 tonight, independent of datacenter, network-volume attachment, and image.
-This is a provider-side fleet problem, not an H6/科学 problem and not a
-configuration problem on our side. Development remains sealed; the one-shot
+This is a provider-side fleet problem, not an H6 or science problem and not
+a configuration problem on our side. Development remains sealed; the one-shot
 gate is unconsumed; the frozen H6 science is untouched.
 
 ## Attempt table (all under guard ledgers unless noted)
