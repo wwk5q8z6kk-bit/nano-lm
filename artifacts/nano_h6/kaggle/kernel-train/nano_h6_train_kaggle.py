@@ -15,7 +15,15 @@ import platform
 import subprocess
 import sys
 
-BUNDLE = "/kaggle/input/nano-h6-frozen-input/nano-h6-input.bin"
+import glob
+
+_candidates = glob.glob("/kaggle/input/*/nano-h6-input.bin") or glob.glob(
+    "/kaggle/input/**/nano-h6-input.bin", recursive=True)
+if not _candidates:
+    for root, dirs, files in os.walk("/kaggle/input"):
+        print("INPUT:", root, dirs, files, flush=True)
+    raise SystemExit("nano-h6-input.bin not found in any mounted input")
+BUNDLE = _candidates[0]
 BUNDLE_SHA = "b1eff7c9ccb06f05e46f0639c88a7e74daeb0880dc8ecbb0641359d74b5ea505"
 MANIFEST_SHA = "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31"
 WORK = "/kaggle/working"
