@@ -45,12 +45,21 @@ not approve. Approval fields live in `sources.py` (`authorization_state`,
 | 3. Resolve and hash the exact pinned source-file inventory | **SATISFIED** | 14 parquet files, per-file bytes + sha256 in `sources.py`; total 28,518,193,415 bytes. |
 | 4. Bounded local preparation run + manifest verify | **Blocked behind gate 1** | `prepare.py` refuses any source not `approved_for_bounded_local_smoke`; `test_fineweb_preparation_is_blocked_at_proposal_stage` pins this. |
 
-## 4. The owner question (gate 1)
+## 4. The owner question (gate 1) — ANSWERED 2026-08-05
 
 > Do you approve `HuggingFaceFW/fineweb-edu` (ODC-BY 1.0 + CommonCrawl ToU,
 > pinned revision `87f09149…`) as a pretraining corpus for internal Nano
 > research — yes (research-internal only), yes (including future released
 > weights), or no?
 
-Until answered, `fineweb-edu` stays `proposal_only` and nothing downloads,
-prepares, or trains from it.
+**Owner answer (2026-08-05):** APPROVED for research **and** commercial use,
+citing ODC-By v1.0's terms directly ("free to use… use it commercially…
+share and distribute"). Standing obligations recorded:
+1. **Attribution** to Hugging Face (HuggingFaceFW/fineweb-edu) in any public
+   distribution of the dataset or heavily derived artifacts, noting changes.
+2. **Common Crawl Terms of Use** compliance (no re-identification; respect
+   source-site rights).
+
+`commercial_clearance` may advance to `approved_with_attribution`. The owner
+also locked the **$150 rung-1 budget** in the same authorization
+(`papers/SCALE_PROGRAM_PREREG.md` gate 2 → cleared).
