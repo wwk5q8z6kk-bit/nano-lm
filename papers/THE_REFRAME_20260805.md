@@ -52,7 +52,16 @@ The session's independent findings converge on one failure mode:
 |---|---|---|
 | **Model** (H-line) | H5 rejected on absence/conflict/uncertain while *passing* held-value | miscalibrated withholding |
 | **Product** (wedge_v1) | `.studies/…-r4`: 3/10 useful, `FIX_REPEATED_FAILURE`, `OVER_ABSTENTION` ×3 | withholds answers that are verbatim present |
-| **Instrument** (fabric) | gate is `presented_err / max(1, presented)` — abstain-on-everything scores 0.0% and PASSES; real coverage 81.5–91% | withholding is *uncounted* |
+| **Instrument** (fabric) | gate is `presented_err / max(1, presented)` — abstain-on-everything scores 0.0% and PASSES | **latent hazard only — see correction below** |
+
+> **CORRECTION (same day, after computing the numbers).** The fabric row above
+> originally claimed uncounted withholding. That is withdrawn. Across all 24
+> cells of `fabric/results_slice_v1.json`: **withheld = 2,642, caught_err =
+> 2,642, lost_correct = 0** — every withheld field was an error, and both
+> quantities are already recorded per cell. Fabric's *gate* is degenerate (a
+> mute verifier would pass it), which is a real structural flaw worth fixing;
+> fabric's *verifier* is not over-abstaining. The realised over-abstention is in
+> two places, not three: the model and wedge.
 
 The project optimized hard for "never assert what you cannot ground," and got
 it — that discipline is real and is the product's differentiator. The cost was

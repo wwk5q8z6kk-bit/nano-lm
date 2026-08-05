@@ -24,20 +24,32 @@ zero lost-correct answers** under `grounding.v2`, with 100% provenance. The
 trust came from the verifier architecture. The same instrument shows a 3.2×
 larger model buys only a modest raw-error improvement. (`fabric/README.md`)
 
-> **DENOMINATOR CAVEAT (added 2026-08-05 after review — never quote the 0.0%
-> without it).** `fabric/slice.py:247` computes `presented_err / max(1,
-> presented)`, so a verifier that abstained on *everything* would report 0.0%
-> error and **PASS the gate** — it cannot distinguish a perfect verifier from a
-> mute one. Recomputed from `fabric/results_slice_v1.json`, v2's 0.0% runs at
-> **81.5–91.0% field coverage** and **76.2–91.0% end-to-end yield**: roughly
-> one field in ten is withheld, and that withholding is counted nowhere in the
-> headline. Unparseable generations at `slice.py:210-214` are written as
-> untyped dicts that enter neither numerator nor denominator. Fix = backlog B3
-> (`papers/ARCHITECTURE_ENHANCEMENT_PLAN.md`).
+> **DENOMINATOR CAVEAT (added 2026-08-05; SUBSTANTIALLY CORRECTED the same day
+> after computing the actual numbers — read the correction, it matters).**
 >
-> This *strengthens* §5 rather than weakening the thesis: fabric's uncounted
-> withholding and wedge's measured OVER_ABSTENTION are the same disease in two
-> code bodies. Over-abstention is the project's real adversary.
+> **The gate is degenerate — this part stands.** `fabric/slice.py:247-248`
+> computes `presented_err / max(1, presented)` and passes when
+> `pres_rate <= raw_rate`, so a verifier abstaining on *everything* reports 0.0%
+> and **PASSES**. It cannot distinguish a perfect verifier from a mute one. Real
+> structural flaw; fixed by backlog B3 — port the coverage floor that
+> `scribe/gate_grounded.py:129-133` already gets right. Unparseable generations
+> at `slice.py:210-214` likewise enter neither numerator nor denominator.
+>
+> **But the inference I drew from it was wrong, and the data says so.** I
+> claimed the 0.0% hid an uncounted withholding cost. Computed across all 24
+> cells of `fabric/results_slice_v1.json`: **withheld = 2,642,
+> caught_err = 2,642, lost_correct = 0.** Every withheld field was an error.
+> Coverage is 81.5–91.0% *because the generator was wrong about 9–18% of
+> fields*, not because the verifier was timid — and `caught_err`/`lost_correct`
+> do count it, per cell, in the JSON. Comparing v1→v2 on the same instrument,
+> v2 buys 0.00% risk for ~1–2 pp of coverage, all of it error.
+>
+> **So fabric is NOT an instance of over-abstention, and that claim is
+> withdrawn.** What fabric has is a gate that *would not catch* over-abstention
+> if it occurred — a latent hazard, not a realised one. The realised
+> over-abstention is in the model (H6: absence 48.2%, conflict 57.2%,
+> uncertainty 76.0%) and in wedge (3/10 useful on real documents). Two places,
+> not three.
 
 **H1–H5 — the model-training path is the slow path.** Five consecutive
 preregistered attempts to make the small model do this natively were rejected
