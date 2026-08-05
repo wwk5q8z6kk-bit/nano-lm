@@ -12,11 +12,15 @@ H6 evaluation artifacts are **not** a training dataset.
 
 ---
 
-## 1. Current verified training dataset (the only one that exists)
+## 1. Current verified training dataset (finetuning lineage)
 
-All Nano training data is synthetically generated in-repo by deterministic,
-content-addressed generators. No external corpus, no scraped data, no PII, no
-real clinical data. Verified on disk 2026-08-04 (hashes recomputed this day).
+**Scope note (corrected 2026-08-04):** the statements in this section cover the
+**H-cycle finetuning lineage only** (H1–H6). That lineage is synthetically
+generated in-repo by deterministic, content-addressed generators — no external
+corpus, no PII, no real clinical data. The historical *pretraining* corpora
+(FineWeb, July 2026) were external and are covered in §1b below.
+
+Verified on disk 2026-08-04 (hashes recomputed this day).
 
 | Checklist item | Value |
 |---|---|
