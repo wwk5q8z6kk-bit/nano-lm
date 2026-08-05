@@ -246,17 +246,35 @@ def run_slice(tag, verifier="v1", instrument="inst0", model_cache={}):
     raw_rate = stats["raw_err"] / max(1, stats["raw_pred"])
     pres_rate = stats["presented_err"] / max(1, stats["presented"])
     gate = (pres_rate <= raw_rate) and stats["present_no_span"] == 0
+    # Coverage: the axis pres_rate cannot express. presented_error_rate divides
+    # by a quantity the verifier controls, so at presented == 0 it is 0.0 and
+    # gate v1 passes vacuously -- a mute verifier is indistinguishable from a
+    # perfect one. Reported per papers/SELECTIVE_VOCABULARY.md: never publish a
+    # selective risk without its coverage.
+    coverage = stats["presented"] / max(1, stats["raw_pred"])
+    withheld = stats["raw_pred"] - stats["presented"]
+    # Gate v2 is ADDITIVE: v1 is frozen evidence and its value is unchanged.
+    # The guard is deliberately constant-free -- a numeric coverage floor set
+    # from this one sample would be a threshold from a single observation.
+    # It denominates in raw_pred (attempts), the quantity the verifier cannot
+    # shrink, which is the shape scribe/gate_grounded.py:129-133 already uses.
+    non_degenerate = stats["raw_pred"] > 0 and stats["presented"] > 0
+    gate_v2 = gate and non_degenerate
     rep = {"model": tag, "verifier": verifier, "instrument": instrument,
            "raw_error_rate": round(raw_rate, 4), "presented_error_rate": round(pres_rate, 4),
+           "coverage": round(coverage, 4), "withheld": withheld,
            "provenance_complete": stats["present_no_span"] == 0,
-           "gate_pass": gate, "runtime_s": round(dt, 1), **stats}
+           "gate_pass": gate, "gate_pass_v2": gate_v2,
+           "gate_v2_degenerate": not non_degenerate,
+           "runtime_s": round(dt, 1), **stats}
     print(f"[{tag}/{verifier}/{instrument}] raw_err {stats['raw_err']}/{stats['raw_pred']} ({raw_rate:.1%})  "
-          f"presented_err {stats['presented_err']}/{stats['presented']} ({pres_rate:.1%})  "
+          f"presented_err {stats['presented_err']}/{stats['presented']} ({pres_rate:.1%} @ cov {coverage:.1%})  "
           f"caught {stats['caught_err']}  lost_correct {stats['lost_correct']}  "
           f"contradicted {stats['contradicted']}  "
           f"absence V/U {stats['absent_verified']}/{stats['absent_unverifiable']}  "
           f"provenance {'100%' if stats['present_no_span'] == 0 else 'INCOMPLETE'}  "
-          f"GATE {'PASS' if gate else 'FAIL'}  ({dt:.0f}s)")
+          f"GATE {'PASS' if gate else 'FAIL'}"
+          f"{'' if gate_v2 == gate else '  GATE_V2 FAIL (degenerate)'}  ({dt:.0f}s)")
     return rep
 
 

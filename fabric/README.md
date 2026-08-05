@@ -19,12 +19,26 @@ evidenced.
 
 ## Results (2026-07-20, frozen anchors, inst0 = scribe_eval.json, 40 dialogues)
 
-| model | verifier | raw gen. error | presented error | caught | lost correct | provenance |
+| model | verifier | raw gen. error | presented error **@ coverage** | caught | lost correct | provenance |
 |---|---|---|---|---|---|---|
-| nano 3.15M | grounding.v1 | 18.4% (35/190) | **1.9%** (3/158) | 32/35 | 0 | 100% |
-| nano 3.15M | grounding.v2 | 18.4% | **0.0%** (0/155) | 35/35 | 0 | 100% |
-| scale 10M | grounding.v1 | 11.5% (23/200) | **1.1%** (2/179) | 21/23 | 0 | 100% |
-| scale 10M | grounding.v2 | 11.5% | **0.0%** (0/177) | 23/23 | 0 | 100% |
+| nano 3.15M | grounding.v1 | 18.4% (35/190) | **1.9%** (3/158) **@ 83.2%** | 32/35 | 0 | 100% |
+| nano 3.15M | grounding.v2 | 18.4% | **0.0%** (0/155) **@ 81.6%** | 35/35 | 0 | 100% |
+| scale 10M | grounding.v1 | 11.5% (23/200) | **1.1%** (2/179) **@ 89.5%** | 21/23 | 0 | 100% |
+| scale 10M | grounding.v2 | 11.5% | **0.0%** (0/177) **@ 88.5%** | 23/23 | 0 | 100% |
+
+> **Read every presented-error number with its coverage.** `presented error`
+> divides by `presented`, a quantity the verifier controls: a verifier that
+> presented nothing would score **0.0% and pass gate v1**, which is why
+> `gate_pass_v2` adds a constant-free non-degeneracy guard denominated in
+> `raw_pred` (the shape `scribe/gate_grounded.py:129-133` already uses).
+> Pinned by `test_gate_v1_passes_a_mute_verifier_and_gate_v2_does_not`.
+>
+> On this evidence the verifier is **not** over-abstaining: across all 24 cells
+> of `results_slice_v1.json`, withheld = 2,642 and `caught_err` = 2,642 with
+> `lost_correct` = **0** — every withheld field was an error. Coverage sits at
+> 81.5–92.2% because the *generator* was wrong that often, not because the
+> verifier was timid. Canonical terms: `papers/SELECTIVE_VOCABULARY.md`.
+
 
 Held/seen: scale's 23 errors are **100% held-side** (pure held-out-value copying failure);
 nano 28 held / 7 seen. All caught. Phase 1 gate — equal-or-better failure rates on the

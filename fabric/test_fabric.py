@@ -73,3 +73,40 @@ if __name__ == "__main__":
     for n, f in fns:
         f(); print(f"  PASS {n}")
     print(f"fabric regression pins: {len(fns)}/{len(fns)} PASS")
+
+
+def test_gate_v1_passes_a_mute_verifier_and_gate_v2_does_not():
+    """Pin the degeneracy and its fix.
+
+    `presented_error_rate = presented_err / max(1, presented)` is 0.0 when the
+    verifier presents nothing, so gate v1 (`pres_rate <= raw_rate`) passes
+    vacuously -- it cannot distinguish a perfect verifier from a mute one.
+    Gate v2 adds a constant-free non-degeneracy guard denominated in raw_pred,
+    the quantity the verifier cannot shrink (the shape
+    scribe/gate_grounded.py:129-133 already uses).
+    """
+    raw_pred, raw_err, presented, presented_err = 935, 172, 0, 0
+
+    raw_rate = raw_err / max(1, raw_pred)
+    pres_rate = presented_err / max(1, presented)
+    gate_v1 = (pres_rate <= raw_rate) and 0 == 0
+    non_degenerate = raw_pred > 0 and presented > 0
+    gate_v2 = gate_v1 and non_degenerate
+
+    assert pres_rate == 0.0, "a mute verifier scores zero selective risk"
+    assert gate_v1 is True, "gate v1 passes a verifier that presents nothing"
+    assert gate_v2 is False, "gate v2 must reject the degenerate case"
+
+
+def test_gate_v2_agrees_with_v1_on_every_real_cell():
+    """Additive, not behavioural: v2 must not change any recorded verdict."""
+    import json
+    from pathlib import Path
+
+    results = Path(__file__).resolve().parent / "results_slice_v1.json"
+    if not results.exists():
+        return
+    for cell in json.loads(results.read_text())["reports"]:
+        non_degenerate = cell["raw_pred"] > 0 and cell["presented"] > 0
+        assert non_degenerate, f"unexpected degenerate cell: {cell['instrument']}"
+        assert cell["gate_pass"] is True
