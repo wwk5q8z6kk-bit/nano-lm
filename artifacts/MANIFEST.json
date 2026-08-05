@@ -1,7 +1,4 @@
 {
-  "schema_version": "1.0",
-  "updated": "2026-08-03",
-  "note": "Index of retained experiment manifests and durable raw-data archives.",
   "children": [
     "artifacts/c1b/MANIFEST.json",
     "artifacts/c3_primary/MANIFEST.json",
@@ -13,10 +10,14 @@
     "artifacts/nano_h3/MANIFEST.json",
     "artifacts/nano_h4/MANIFEST.json",
     "artifacts/nano_h5/MANIFEST.json",
+    "artifacts/nano_h6/MANIFEST.json",
     "artifacts/ownstack_corner/MANIFEST.json",
     "artifacts/pointer_p1/MANIFEST.json",
     "artifacts/pointer_p2/MANIFEST.json",
     "artifacts/slot_diversity/MANIFEST.json",
     "artifacts/stage_t_v2/MANIFEST.json"
-  ]
+  ],
+  "note": "Index of retained experiment manifests and durable raw-data archives.",
+  "schema_version": "1.0",
+  "updated": "2026-08-03"
 }

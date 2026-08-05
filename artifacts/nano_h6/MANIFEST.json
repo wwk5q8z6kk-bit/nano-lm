@@ -1,0 +1,140 @@
+{
+  "decision": {
+    "fresh_v1_read": false,
+    "latency_assessed": false,
+    "one_shot_consumed": true,
+    "provider_pod_closed": true,
+    "quality_gate_passed": false,
+    "threshold_applied": false,
+    "uncalibrated_admission_passed": false,
+    "verifier_assessed": false
+  },
+  "execution_note": "Trained and evaluated on Kaggle free tier after thirteen RunPod allocations failed to boot; total provider spend for the decisive run was $0. Runtime was CPU (Kaggle's P100 is sm_60, unsupported by torch 2.10+cu128) and is disclosed in the runtime records rather than hidden.",
+  "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1",
+  "schema_version": "nano.h6.state-conditioned-boundary-evidence-manifest.v1",
+  "status": "REJECTED_ON_KNOWN_DEVELOPMENT",
+  "tracked_artifacts": [
+    {
+      "bytes": 13529,
+      "filename": "artifacts/nano_h6/PREREGISTRATION.json",
+      "role": "frozen H6 protocol, gates, and rejected pre-freeze alternative",
+      "sha256": "986edc638267f1531da63ac7cb678aac552e18ac977387c2c325482d981085d2"
+    },
+    {
+      "bytes": 2034,
+      "filename": "artifacts/nano_h6/TRAINING_REPORT_FREEZE.json",
+      "role": "RunPod training freeze (2026-08-03), development absent",
+      "sha256": "d4c9e28bae2d464298fc329c1e76beb71be740c5fda88593131e53729032ed2c"
+    },
+    {
+      "bytes": 2943,
+      "filename": "artifacts/nano_h6/H6_TERMINAL_DECISION.json",
+      "role": "terminal REJECTED decision with the eight development gates",
+      "sha256": "297a7b7e914bd9be938479a726a8e690c56f1946a62bd02e6806ed243d3471e7"
+    },
+    {
+      "bytes": 3754,
+      "filename": "artifacts/nano_h6/TERMINAL_INFRASTRUCTURE_CLOSEOUT.json",
+      "role": "first closeout: inconclusive, host-kernel unobtainable",
+      "sha256": "71f677d7c9641132d8315c875ff722ddfbb7308e5f58c5bd6982711c79031511"
+    },
+    {
+      "bytes": 3688,
+      "filename": "artifacts/nano_h6/H6_RUNTIME_RECOVERY_REPLICATION.json",
+      "role": "same-pod replication authority (unconsumed)",
+      "sha256": "a19272804ef0053164886480ea0ca38e403be81d90d35eebc76232f76b469d1d"
+    },
+    {
+      "bytes": 1617,
+      "filename": "artifacts/nano_h6/kaggle/KAGGLE_ADDENDUM.json",
+      "role": "disclosed-hardware Kaggle execution addendum",
+      "sha256": "7831e78d73af8eb4f11fb7ee65d15622b9e6a91027ed260c5fbcda252f4e3eeb"
+    },
+    {
+      "bytes": 2865,
+      "filename": "artifacts/nano_h6/kaggle/TRAINING_FREEZE_KAGGLE.json",
+      "role": "Kaggle training freeze, CPU disclosed, selector result",
+      "sha256": "543e588480d499af42b3c7ba40fa71716e567b355faac901339b52bdffba78c4"
+    },
+    {
+      "bytes": 2037,
+      "filename": "artifacts/nano_h6/kaggle/DEVELOPMENT_TRANSFER_EVENT_20260805T1310Z.json",
+      "role": "honest record of a transfer whose evaluator refused to run",
+      "sha256": "8412745d64d4733ee4e83ae73076b4b4bde1f1ff9ff402ead264f7456f10715a"
+    },
+    {
+      "bytes": 218,
+      "filename": "artifacts/nano_h6/kaggle/results-20260805/results/TRAINING_REPORT_SHA256SUMS",
+      "role": "training report checksums, verified on two domains",
+      "sha256": "210f28df901e663be86b93b92ee58491aa86517f39e38f6deea0348e245e2763"
+    },
+    {
+      "bytes": 339,
+      "filename": "artifacts/nano_h6/kaggle/results-20260805/results/RUNTIME_DISCLOSURE.json",
+      "role": "training runtime disclosure (device cpu)",
+      "sha256": "4005c04eaeac623f5eef619a12c8caaec7dcd8a2a47c3c15d637384a9450b566"
+    },
+    {
+      "bytes": 1838532,
+      "filename": "artifacts/nano_h6/kaggle/eval-20260805/results/development_evaluation.json",
+      "role": "the one-shot development evaluation result",
+      "sha256": "cb612410bd9530062147c1ed36bdcd606f9292a77b750376baf7a9860639e11a"
+    },
+    {
+      "bytes": 218,
+      "filename": "artifacts/nano_h6/kaggle/eval-20260805/results/EVAL_RUNTIME_DISCLOSURE.json",
+      "role": "evaluation runtime disclosure",
+      "sha256": "221bd7b4e68331bd552abd2e3fc9d68a57b0ee90894610bcb185c92fa3a448ba"
+    },
+    {
+      "bytes": 121545,
+      "filename": "artifacts/nano_h6/analysis/threshold_curve_seed20260805_epoch2.json",
+      "role": "A4 risk-coverage curve on the calibration partition (selects nothing)",
+      "sha256": "7ccda19422160149b876edd95015801e20b918a525e63faf9cdd9fcee8d01b52"
+    }
+  ],
+  "untracked_ledgers": [
+    {
+      "bytes": 9496,
+      "filename": "artifacts/nano_h6/runops/h6-b200-fresh-20260805/RUN_EVENTS.jsonl",
+      "role": "hash-chained provider ledger (excluded from git by .gitignore:4 '*.jsonl'; hash recorded here so the chain is verifiable without tracking the file)",
+      "sha256": "b93067e656801f6baa12917c3bdff28f66be51158037f56185f4f5887baed017"
+    },
+    {
+      "bytes": 22879,
+      "filename": "artifacts/nano_h6/runops/h6-evaluation-20260804/RUN_EVENTS.jsonl",
+      "role": "hash-chained provider ledger (excluded from git by .gitignore:4 '*.jsonl'; hash recorded here so the chain is verifiable without tracking the file)",
+      "sha256": "806727a93cdbd1f600287ccb78b3a52d0b84713db4e557ebf9e4a4e9e67503a6"
+    },
+    {
+      "bytes": 12938,
+      "filename": "artifacts/nano_h6/runops/h6-evaluation-cz1-20260804/RUN_EVENTS.jsonl",
+      "role": "hash-chained provider ledger (excluded from git by .gitignore:4 '*.jsonl'; hash recorded here so the chain is verifiable without tracking the file)",
+      "sha256": "fa67ca01cd3c42ed969d3204486b1f1529196b5201344d3bc309f2891a880c54"
+    },
+    {
+      "bytes": 16217,
+      "filename": "artifacts/nano_h6/runops/h6-evaluation-ro1-retry-20260804/RUN_EVENTS.jsonl",
+      "role": "hash-chained provider ledger (excluded from git by .gitignore:4 '*.jsonl'; hash recorded here so the chain is verifiable without tracking the file)",
+      "sha256": "f7a3fffc308912a5195d14ec8bd04acee693e9b42297bb83f6b43278ef3205e7"
+    },
+    {
+      "bytes": 46985,
+      "filename": "artifacts/nano_h6/runops/h6-recovery-20260803/RUN_EVENTS.jsonl",
+      "role": "hash-chained provider ledger (excluded from git by .gitignore:4 '*.jsonl'; hash recorded here so the chain is verifiable without tracking the file)",
+      "sha256": "daca79c909b44c1a0a8707f9beede9bbdfd3404011762caa308529da104300d3"
+    },
+    {
+      "bytes": 50180,
+      "filename": "artifacts/nano_h6/runops/h6r-execution-20260804/RUN_EVENTS.jsonl",
+      "role": "hash-chained provider ledger (excluded from git by .gitignore:4 '*.jsonl'; hash recorded here so the chain is verifiable without tracking the file)",
+      "sha256": "d149d8b877674fd871f5f6c1db28d3513feb4b4dd99fb3278053980a0535af13"
+    },
+    {
+      "bytes": 9585,
+      "filename": "artifacts/nano_h6/runops/h6r2-cross-dc-20260805/RUN_EVENTS.jsonl",
+      "role": "hash-chained provider ledger (excluded from git by .gitignore:4 '*.jsonl'; hash recorded here so the chain is verifiable without tracking the file)",
+      "sha256": "51284e9d8d553af3528ec4f2bf4da4f8fb5dac15c40ad36d706618c29afd3b27"
+    }
+  ]
+}

@@ -1,31 +1,26 @@
 {
-  "schema": "nano-lm.evidence_manifest.v2",
-  "updated": "2026-08-03",
-  "purpose": "Canonical claim-to-artifact map. Product plans and work queues are not evidence.",
   "anchors": {
+    "e4_verdict": {
+      "commit": "6af178d8d27da161d687843e0b3ee8fb1a41f156",
+      "tag": "verdict/E4-kill@6af178d"
+    },
     "paper_alpha": {
-      "tag": "paper-alpha-v1",
-      "commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137"
+      "commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+      "tag": "paper-alpha-v1"
     },
     "post_alpha_premature_historical": {
-      "tag": "post-alpha-evidence-freeze-2026-07-31",
       "commit": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
-      "note": "Retained for history; do not move or recreate."
+      "note": "Retained for history; do not move or recreate.",
+      "tag": "post-alpha-evidence-freeze-2026-07-31"
     },
     "post_alpha_reconciled": {
-      "tag": "post-alpha-reconciled-evidence-freeze-2026-07-31",
-      "commit": "67bf87b1f968a38e68c0225b2b556f7bba5ea1cc"
-    },
-    "e4_verdict": {
-      "tag": "verdict/E4-kill@6af178d",
-      "commit": "6af178d8d27da161d687843e0b3ee8fb1a41f156"
+      "commit": "67bf87b1f968a38e68c0225b2b556f7bba5ea1cc",
+      "tag": "post-alpha-reconciled-evidence-freeze-2026-07-31"
     }
   },
+  "artifact_index": "artifacts/MANIFEST.json",
   "claims": [
     {
-      "id": "paper_alpha_spine",
-      "summary": "Small LM pipelines show held-out exact-copy failures on the synthetic scribe instrument; localization, diversity, scaling/adaptation, pointer, and residual findings remain scoped to their recorded protocols.",
-      "status": "SUPPORTED_WITH_RECORDED_LIMITATIONS",
       "design": [
         "trajectory/PREREG.md",
         "trajectory/PREREG_Tv2.md",
@@ -33,67 +28,80 @@
         "trajectory/PREREG_slot_diversity.md",
         "trajectory/PREREG_C3_binding_probe.md"
       ],
+      "id": "paper_alpha_spine",
+      "narrative": "papers/EMPIRICAL_FOUNDATION.md",
       "results_glob": "trajectory/results_{anchors,arm1,ownstack,sweep,c3,fieldwise,corner,interference}_*.json",
-      "narrative": "papers/EMPIRICAL_FOUNDATION.md"
+      "status": "SUPPORTED_WITH_RECORDED_LIMITATIONS",
+      "summary": "Small LM pipelines show held-out exact-copy failures on the synthetic scribe instrument; localization, diversity, scaling/adaptation, pointer, and residual findings remain scoped to their recorded protocols."
     },
     {
-      "id": "e1_old_task_substrate",
-      "summary": "Under frozen E1 utility, M1 utility is about 0.999 and official M0 utility about 0.925; the generative LM is not the preferred substrate for this closed task.",
-      "status": "KILL",
-      "design": "trajectory/PREREG_E1_nonlm_baseline.md",
+      "artifact_manifest": "artifacts/e1/MANIFEST.json",
       "code": "trajectory/e1/",
+      "design": "trajectory/PREREG_E1_nonlm_baseline.md",
+      "id": "e1_old_task_substrate",
+      "limitations": "M1 is generator-aligned; runtime/compute reconstruction is partial. The verdict is not a universal claim about language models.",
       "results": [
         "trajectory/results_e1_utility.json",
         "trajectory/results_e1_utility_sensitivity.json",
         "trajectory/results_e1_runtime_components.json"
       ],
-      "artifact_manifest": "artifacts/e1/MANIFEST.json",
-      "limitations": "M1 is generator-aligned; runtime/compute reconstruction is partial. The verdict is not a universal claim about language models."
+      "status": "KILL",
+      "summary": "Under frozen E1 utility, M1 utility is about 0.999 and official M0 utility about 0.925; the generative LM is not the preferred substrate for this closed task."
     },
     {
-      "id": "e3_exact_match_construct",
-      "summary": "Normalize-then-match rescued 0/486 exact failures. A bounded single-agent rubric pass labeled 0/100 sampled errors faithful.",
-      "status": "EXACT_SURVIVES_AGENT_AUDIT",
+      "artifact_manifest": "artifacts/e3/MANIFEST.json",
       "design": "trajectory/PREREG_E3_faithfulness_construct.md",
+      "id": "e3_exact_match_construct",
+      "limitations": "This was not independent human or clinician evaluation; inter-rater agreement and broader semantic-equivalence validity remain unmeasured.",
       "results": [
         "trajectory/results_e3_normalize_construct.json",
         "trajectory/results_e3_human.json",
         "trajectory/e3_human_rating_pack.json"
       ],
-      "artifact_manifest": "artifacts/e3/MANIFEST.json",
-      "limitations": "This was not independent human or clinician evaluation; inter-rater agreement and broader semantic-equivalence validity remain unmeasured."
+      "status": "EXACT_SURVIVES_AGENT_AUDIT",
+      "summary": "Normalize-then-match rescued 0/486 exact failures. A bounded single-agent rubric pass labeled 0/100 sampled errors faithful."
     },
     {
-      "id": "e4_rstar_v1_substrate",
-      "summary": "Under frozen R-star v1 utility, best classical utility is about 0.638 and generative-plus-verification utility about -1.623, with no sensitivity flip.",
-      "status": "KILL",
+      "code": "trajectory/e4/",
       "design": [
         "trajectory/REGIME_P1_where_classical_fails.md",
         "trajectory/PREREG_E4_Rstar_killgate.md",
         "trajectory/e4/recipe_freeze.json"
       ],
-      "code": "trajectory/e4/",
+      "id": "e4_rstar_v1_substrate",
+      "limitations": "This verdict is specific to R-star v1 and does not establish that generation has no value in other workflows.",
       "results": [
         "trajectory/results_e4_utility.json",
         "trajectory/results_e4_classical_probe.json"
       ],
-      "limitations": "This verdict is specific to R-star v1 and does not establish that generation has no value in other workflows."
+      "status": "KILL",
+      "summary": "Under frozen R-star v1 utility, best classical utility is about 0.638 and generative-plus-verification utility about -1.623, with no sensitivity flip."
     },
     {
-      "id": "fabric_vertical_slice",
-      "summary": "On the closed synthetic inst0 fixture, propose-verify-abstain with rules-strong v2 reduced presented error to zero.",
-      "status": "SUPPORTED_SCOPED",
-      "design": "fabric/README.md",
       "code": "fabric/",
+      "design": "fabric/README.md",
+      "id": "fabric_vertical_slice",
+      "limitations": "Closed synthetic verifier relation only; this is a regression slice, not an open-world soundness or product-readiness claim.",
       "results": "fabric/results_slice_v1.json",
-      "limitations": "Closed synthetic verifier relation only; this is a regression slice, not an open-world soundness or product-readiness claim."
+      "status": "SUPPORTED_SCOPED",
+      "summary": "On the closed synthetic inst0 fixture, propose-verify-abstain with rules-strong v2 reduced presented error to zero."
     },
     {
-      "id": "nano_h2_pointer_dev",
-      "summary": "On sealed synthetic development data, the best of six H2 direct state/pointer checkpoints scored raw 61.82% overall, 64.75% held-value, and 88.40% missing-target accuracy, but 0% absence, 24.80% conflict, 21.60% uncertain, and 1,707 wrong-presented fields. After verification it scored 65.74% overall and zero false-presented fields. H2 failed its frozen raw-plus-final quality gate and was rejected.",
-      "status": "REJECT",
-      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
-      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "artifact_manifest": "artifacts/nano_h2/MANIFEST.json",
+      "content_addressed_local_sha256": {
+        "best_checkpoint_seed_20260806_epoch_2": "57755a445c7de1f2774b0667cbdfd689b4f9b73654934cc498ba4a72a522c8a2",
+        "development_evaluation": "641c08f826a5669220cd7fda8c52fbd2a682a352c8be36a97f93a099ecfe3833",
+        "independent_backup": "88420f2644e25a2acdcaaffccb244bc3383a519b47622f74bb197034e37e46e6",
+        "input_archive": "5ad485e76e89c50a14e9d30051f14f1e034e8c18457ae69d4e1cb2f99a036919",
+        "training_report_seed_20260805": "f87ddad270756b1238662801dd1d8146384b33d55897a227c75efffcd625cf9b",
+        "training_report_seed_20260806": "01bf6c583b984401201bc8fc6f9d0b9598cc57e17c6dfbccfe7a82677a181070"
+      },
+      "decision": {
+        "fresh_v1_read": false,
+        "latency_assessed": false,
+        "provider_pod_closed": true,
+        "quality_gate_passed": false
+      },
       "design_and_code": [
         "nano_ai/training/pointer_model.py",
         "nano_ai/training/pointer_data.py",
@@ -101,30 +109,8 @@
         "nano_ai/training/evaluate_pointer.py",
         "nano_ai/adapters/pointer_span.py"
       ],
-      "results": "artifacts/nano_h2/RESULT_SUMMARY.json",
-      "run_metadata": "artifacts/nano_h2/RUN_METADATA.json",
-      "provider_closeout": "artifacts/nano_h2/CLOSEOUT.json",
-      "artifact_manifest": "artifacts/nano_h2/MANIFEST.json",
-      "tracked_sha256": {
-        "result_summary": "f61bb7f0f3401dfbaff8a5ab7e987d313a4811442f790b1d03f0883b403806cc",
-        "run_metadata": "5d42f3ce8c43236ad062281ea6a79e1ecf89afbfb9dc655348c0aac782b3a711",
-        "provider_closeout": "42e75191717fc2c4d452fc0ae7fc37cdd66359f9777eaa3baf334e438edab258",
-        "artifact_manifest": "d6497a516482817b86aee1e99ed168b6ae204cc88db4d2eb9c0eb90f5e5273cb"
-      },
-      "content_addressed_local_sha256": {
-        "best_checkpoint_seed_20260806_epoch_2": "57755a445c7de1f2774b0667cbdfd689b4f9b73654934cc498ba4a72a522c8a2",
-        "development_evaluation": "641c08f826a5669220cd7fda8c52fbd2a682a352c8be36a97f93a099ecfe3833",
-        "input_archive": "5ad485e76e89c50a14e9d30051f14f1e034e8c18457ae69d4e1cb2f99a036919",
-        "training_report_seed_20260805": "f87ddad270756b1238662801dd1d8146384b33d55897a227c75efffcd625cf9b",
-        "training_report_seed_20260806": "01bf6c583b984401201bc8fc6f9d0b9598cc57e17c6dfbccfe7a82677a181070",
-        "independent_backup": "88420f2644e25a2acdcaaffccb244bc3383a519b47622f74bb197034e37e46e6"
-      },
-      "decision": {
-        "quality_gate_passed": false,
-        "latency_assessed": false,
-        "fresh_v1_read": false,
-        "provider_pod_closed": true
-      },
+      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
+      "id": "nano_h2_pointer_dev",
       "limitations": [
         "The partition was sealed synthetic development data used for model selection, not an independent test.",
         "Only two seeds and six checkpoints were evaluated.",
@@ -132,14 +118,39 @@
         "The result rejects this exact H2 architecture and training recipe, not pointer mechanisms or Nano generally.",
         "Latency was intentionally not measured because quality failed, and fresh-v1 remained sealed and unread.",
         "Large checkpoints and row-level evaluation data remain local; no public tag or release anchor currently covers H2."
-      ]
+      ],
+      "provider_closeout": "artifacts/nano_h2/CLOSEOUT.json",
+      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "results": "artifacts/nano_h2/RESULT_SUMMARY.json",
+      "run_metadata": "artifacts/nano_h2/RUN_METADATA.json",
+      "status": "REJECT",
+      "summary": "On sealed synthetic development data, the best of six H2 direct state/pointer checkpoints scored raw 61.82% overall, 64.75% held-value, and 88.40% missing-target accuracy, but 0% absence, 24.80% conflict, 21.60% uncertain, and 1,707 wrong-presented fields. After verification it scored 65.74% overall and zero false-presented fields. H2 failed its frozen raw-plus-final quality gate and was rejected.",
+      "tracked_sha256": {
+        "artifact_manifest": "d6497a516482817b86aee1e99ed168b6ae204cc88db4d2eb9c0eb90f5e5273cb",
+        "provider_closeout": "42e75191717fc2c4d452fc0ae7fc37cdd66359f9777eaa3baf334e438edab258",
+        "result_summary": "f61bb7f0f3401dfbaff8a5ab7e987d313a4811442f790b1d03f0883b403806cc",
+        "run_metadata": "5d42f3ce8c43236ad062281ea6a79e1ecf89afbfb9dc655348c0aac782b3a711"
+      }
     },
     {
-      "id": "nano_h3_evidence_query_dev",
-      "summary": "The training-only-selected H3 evidence-query checkpoint scored raw 56.42% overall, 72.55% held-value, 85.20% missing-target, 45.52% absence, 37.60% conflict, and 38.80% uncertain accuracy on known synthetic development, with zero decode failures and 1,264 wrong-presented fields. It failed frozen uncalibrated admission and was rejected before threshold, verifier, latency, or fresh-v1.",
-      "status": "REJECT",
-      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
-      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "artifact_manifest": "artifacts/nano_h3/MANIFEST.json",
+      "content_addressed_local_sha256": {
+        "development_evaluation": "df6896855980172aabd03149affffca8352c2ef9732fb860a79b3f50d854c831",
+        "independent_backup": "2c2d400a5476090d96e39427e8e8e6c880f5a3535f18c94d0561d6c6d9fcda29",
+        "input_archive": "c6769dce1dbe77219c7902ccf8c281b379de6111c997c55a2fa047e5ba95be81",
+        "selected_checkpoint_seed_20260805_epoch_1": "6477888bc8058a3dd747d292c3593385d8fb8148672161f5389f9685762ab477",
+        "training_report_seed_20260805": "cfddc38810a50cf211f71fd1644911e2d7301e64d046f79c41156f56df84a977",
+        "training_report_seed_20260806": "517879d965c25f616d0ebb9ccfdc4761cc72854b542027e26f829bdf57d35498"
+      },
+      "decision": {
+        "fresh_v1_read": false,
+        "latency_assessed": false,
+        "provider_pod_closed": true,
+        "quality_gate_passed": false,
+        "threshold_applied": false,
+        "uncalibrated_semantic_admission_passed": false,
+        "verifier_assessed": false
+      },
       "design_and_code": [
         "nano_ai/training/evidence_query_model.py",
         "nano_ai/training/evidence_query_inference.py",
@@ -147,33 +158,8 @@
         "nano_ai/training/evaluate_evidence_query.py",
         "nano_ai/adapters/evidence_query_pointer.py"
       ],
-      "results": "artifacts/nano_h3/RESULT_SUMMARY.json",
-      "run_metadata": "artifacts/nano_h3/RUN_METADATA.json",
-      "provider_closeout": "artifacts/nano_h3/CLOSEOUT.json",
-      "artifact_manifest": "artifacts/nano_h3/MANIFEST.json",
-      "tracked_sha256": {
-        "result_summary": "cbd23c6a5799179b487119e9bee6e181dd328e691ee5388b12d03689f538ec82",
-        "run_metadata": "68d8691ed6f88039a21cc0fba4ef315d156f7b8b96169ca4fe4b47753ad592de",
-        "provider_closeout": "9880bec52e40ed4f72bc701a49f73415b7bc12d23dfb907c584a4cb598e1e670",
-        "artifact_manifest": "170200266b50714585a890a33c17b7be50ac202bcd988d51adcf352c40811b80"
-      },
-      "content_addressed_local_sha256": {
-        "selected_checkpoint_seed_20260805_epoch_1": "6477888bc8058a3dd747d292c3593385d8fb8148672161f5389f9685762ab477",
-        "development_evaluation": "df6896855980172aabd03149affffca8352c2ef9732fb860a79b3f50d854c831",
-        "input_archive": "c6769dce1dbe77219c7902ccf8c281b379de6111c997c55a2fa047e5ba95be81",
-        "training_report_seed_20260805": "cfddc38810a50cf211f71fd1644911e2d7301e64d046f79c41156f56df84a977",
-        "training_report_seed_20260806": "517879d965c25f616d0ebb9ccfdc4761cc72854b542027e26f829bdf57d35498",
-        "independent_backup": "2c2d400a5476090d96e39427e8e8e6c880f5a3535f18c94d0561d6c6d9fcda29"
-      },
-      "decision": {
-        "quality_gate_passed": false,
-        "uncalibrated_semantic_admission_passed": false,
-        "threshold_applied": false,
-        "verifier_assessed": false,
-        "latency_assessed": false,
-        "fresh_v1_read": false,
-        "provider_pod_closed": true
-      },
+      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
+      "id": "nano_h3_evidence_query_dev",
       "limitations": [
         "The partition was known synthetic development data, not an independent test.",
         "Only two seeds and six checkpoints were evaluated.",
@@ -181,14 +167,41 @@
         "The result rejects this exact H3 architecture-plus-training-family intervention, not evidence-query mechanisms or Nano generally.",
         "Threshold, verifier, latency, and fresh-v1 stages were intentionally skipped after uncalibrated admission failed.",
         "Large checkpoints and row-level evaluation data remain local; no public tag or release anchor currently covers H3."
-      ]
+      ],
+      "provider_closeout": "artifacts/nano_h3/CLOSEOUT.json",
+      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "results": "artifacts/nano_h3/RESULT_SUMMARY.json",
+      "run_metadata": "artifacts/nano_h3/RUN_METADATA.json",
+      "status": "REJECT",
+      "summary": "The training-only-selected H3 evidence-query checkpoint scored raw 56.42% overall, 72.55% held-value, 85.20% missing-target, 45.52% absence, 37.60% conflict, and 38.80% uncertain accuracy on known synthetic development, with zero decode failures and 1,264 wrong-presented fields. It failed frozen uncalibrated admission and was rejected before threshold, verifier, latency, or fresh-v1.",
+      "tracked_sha256": {
+        "artifact_manifest": "170200266b50714585a890a33c17b7be50ac202bcd988d51adcf352c40811b80",
+        "provider_closeout": "9880bec52e40ed4f72bc701a49f73415b7bc12d23dfb907c584a4cb598e1e670",
+        "result_summary": "cbd23c6a5799179b487119e9bee6e181dd328e691ee5388b12d03689f538ec82",
+        "run_metadata": "68d8691ed6f88039a21cc0fba4ef315d156f7b8b96169ca4fe4b47753ad592de"
+      }
     },
     {
-      "id": "nano_h4_surface_transfer_dev",
-      "summary": "The training-only-selected H4 surface-transfer candidate scored raw 44.96% overall, 38.03% held-value, 53.60% missing-target, 7.99% absence, 22.80% conflict, and 33.60% uncertain accuracy on known synthetic development, with zero decode failures and 2,141 wrong-presented fields. It failed frozen uncalibrated admission and was rejected before threshold, verifier, latency, or fresh-v1.",
-      "status": "REJECT",
-      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
-      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "artifact_manifest": "artifacts/nano_h4/MANIFEST.json",
+      "content_addressed_local_sha256": {
+        "development_evaluation": "b8f8b350f4ad772b06a292c5e156d097e549f62e15be09c3c55c608574c0ed82",
+        "independent_backup": "69c2fa4b3b9c5a82141d1c1661b62f7af3b2ba828a0f06ecf47f9be36f909cae",
+        "input_archive": "ffddc5b37693bf10b5066f06bece18d58f031be0bac89d79d4f0ee550a293664",
+        "result_archive": "69c2fa4b3b9c5a82141d1c1661b62f7af3b2ba828a0f06ecf47f9be36f909cae",
+        "selected_checkpoint_seed_20260806_epoch_2": "6408524c43b6ada8249aeb83e440b6aa0f64512006219663be4105f6d586e13f",
+        "training_report_seed_20260805": "25f5e8672035f073dc250cd5db5c41582624cd2013534aa7b84ef1ef2d463016",
+        "training_report_seed_20260806": "14680948cee3aea9d682ed5bd21a52df77a814d55db93d80e214d449a891b1f4"
+      },
+      "data_manifest": "artifacts/nano_h4/data/manifest.json",
+      "decision": {
+        "fresh_v1_read": false,
+        "latency_assessed": false,
+        "provider_pod_closed": true,
+        "quality_gate_passed": false,
+        "threshold_applied": false,
+        "uncalibrated_semantic_admission_passed": false,
+        "verifier_assessed": false
+      },
       "design_and_code": [
         "artifacts/nano_h4/PREREGISTRATION.json",
         "nano_ai/training/surface_transfer_data.py",
@@ -196,40 +209,8 @@
         "nano_ai/training/evaluate_evidence_query_h4.py",
         "nano_ai/training/package_evidence_query_h4.py"
       ],
-      "results": "artifacts/nano_h4/RESULT_SUMMARY.json",
-      "preregistration": "artifacts/nano_h4/PREREGISTRATION.json",
-      "data_manifest": "artifacts/nano_h4/data/manifest.json",
-      "readiness": "artifacts/nano_h4/runpod-input/READINESS.json",
-      "training_report_freeze": "artifacts/nano_h4/TRAINING_REPORT_FREEZE.json",
-      "provider_closeout": "artifacts/nano_h4/CLOSEOUT.json",
-      "artifact_manifest": "artifacts/nano_h4/MANIFEST.json",
-      "tracked_sha256": {
-        "result_summary": "6dee4cb1999ebab75ce7a19b2f8c07ff0b36be3af72606987c300b837e31f473",
-        "preregistration": "352c68b5e6eb2087babbc0ae940c585c8cd22a74618e96375893b1cf37d55d08",
-        "data_manifest": "444c5d6dcb613959a28ee3ce2e1dd7e25e2fabc2603ba4192d445ed3bedb406f",
-        "readiness": "b1750d31c9a6e6869617bc9b28c9a83e085ff08e550a697048b75ca3c1e3f9ee",
-        "training_report_freeze": "aea329b6565b0622fb62d752c5fcbbaea48e23f90854ff6f1a3d7fedf4ed6070",
-        "provider_closeout": "330677974d70707c99db512810fd77bc3866074b97182859e2b7e18a91fada78",
-        "artifact_manifest": "c6d37fcddfe72053d448b30425b266b27aeb5985b0c4e8801026ece308d72ec1"
-      },
-      "content_addressed_local_sha256": {
-        "selected_checkpoint_seed_20260806_epoch_2": "6408524c43b6ada8249aeb83e440b6aa0f64512006219663be4105f6d586e13f",
-        "development_evaluation": "b8f8b350f4ad772b06a292c5e156d097e549f62e15be09c3c55c608574c0ed82",
-        "input_archive": "ffddc5b37693bf10b5066f06bece18d58f031be0bac89d79d4f0ee550a293664",
-        "result_archive": "69c2fa4b3b9c5a82141d1c1661b62f7af3b2ba828a0f06ecf47f9be36f909cae",
-        "training_report_seed_20260805": "25f5e8672035f073dc250cd5db5c41582624cd2013534aa7b84ef1ef2d463016",
-        "training_report_seed_20260806": "14680948cee3aea9d682ed5bd21a52df77a814d55db93d80e214d449a891b1f4",
-        "independent_backup": "69c2fa4b3b9c5a82141d1c1661b62f7af3b2ba828a0f06ecf47f9be36f909cae"
-      },
-      "decision": {
-        "quality_gate_passed": false,
-        "uncalibrated_semantic_admission_passed": false,
-        "threshold_applied": false,
-        "verifier_assessed": false,
-        "latency_assessed": false,
-        "fresh_v1_read": false,
-        "provider_pod_closed": true
-      },
+      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
+      "id": "nano_h4_surface_transfer_dev",
       "limitations": [
         "The partition was known adaptive synthetic development data, not an independent test or clinical corpus.",
         "Only two seeds and six checkpoints were evaluated.",
@@ -238,14 +219,45 @@
         "The result rejects this exact H4 data-only intervention, not broader data work, evidence-query mechanisms, or Nano generally.",
         "Threshold, verifier, latency, and fresh-v1 stages were intentionally skipped after uncalibrated admission failed.",
         "Large checkpoints and row-level evaluation data remain local; no public tag or release anchor currently covers H4."
-      ]
+      ],
+      "preregistration": "artifacts/nano_h4/PREREGISTRATION.json",
+      "provider_closeout": "artifacts/nano_h4/CLOSEOUT.json",
+      "readiness": "artifacts/nano_h4/runpod-input/READINESS.json",
+      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "results": "artifacts/nano_h4/RESULT_SUMMARY.json",
+      "status": "REJECT",
+      "summary": "The training-only-selected H4 surface-transfer candidate scored raw 44.96% overall, 38.03% held-value, 53.60% missing-target, 7.99% absence, 22.80% conflict, and 33.60% uncertain accuracy on known synthetic development, with zero decode failures and 2,141 wrong-presented fields. It failed frozen uncalibrated admission and was rejected before threshold, verifier, latency, or fresh-v1.",
+      "tracked_sha256": {
+        "artifact_manifest": "c6d37fcddfe72053d448b30425b266b27aeb5985b0c4e8801026ece308d72ec1",
+        "data_manifest": "444c5d6dcb613959a28ee3ce2e1dd7e25e2fabc2603ba4192d445ed3bedb406f",
+        "preregistration": "352c68b5e6eb2087babbc0ae940c585c8cd22a74618e96375893b1cf37d55d08",
+        "provider_closeout": "330677974d70707c99db512810fd77bc3866074b97182859e2b7e18a91fada78",
+        "readiness": "b1750d31c9a6e6869617bc9b28c9a83e085ff08e550a697048b75ca3c1e3f9ee",
+        "result_summary": "6dee4cb1999ebab75ce7a19b2f8c07ff0b36be3af72606987c300b837e31f473",
+        "training_report_freeze": "aea329b6565b0622fb62d752c5fcbbaea48e23f90854ff6f1a3d7fedf4ed6070"
+      },
+      "training_report_freeze": "artifacts/nano_h4/TRAINING_REPORT_FREEZE.json"
     },
     {
-      "id": "nano_h5_balanced_replay_dev",
-      "summary": "The training-only-selected H5 fixed 50:50 replay candidate scored raw 78.18% overall, 74.32% held-value, 100% missing-target, 67.80% absence, 59.60% conflict, and 64.80% uncertain accuracy on known synthetic development, with zero decode failures and 1,013 wrong-presented fields. It failed frozen absence, conflict, and uncertainty gates and was rejected before threshold, verifier, latency, or fresh-v1.",
-      "status": "REJECT",
-      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
-      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "artifact_manifest": "artifacts/nano_h5/MANIFEST.json",
+      "content_addressed_local_sha256": {
+        "development_evaluation": "c67393962299470fc6b5026031b61617bbae85a2883105b8b8abfcdb30820c47",
+        "input_archive": "930cac784c694a010edbffc092b1484f887ba2fd5c428b5c3bbb5aa2419e4f4b",
+        "result_archive": "bab5327e900597a083cb04631e645f2e0f500f14f01ec7db195e754b34620749",
+        "selected_checkpoint_seed_20260805_epoch_3": "04ba7b4d0dc876ca3d8de7fe7d809ca16796e5bf55249ad93ba1dd3557c394fe",
+        "training_report_seed_20260805": "0c3b0e78e1fe504c6ca41afdd770aaf9b04e6ecf295b90c5fd19c2599c3acaf8",
+        "training_report_seed_20260806": "7cb83d98e50eac5b7bb4cde89033602b863ead3607f89db0fffc078ef87c8112"
+      },
+      "data_manifest": "artifacts/nano_h5/data/manifest.json",
+      "decision": {
+        "fresh_v1_read": false,
+        "latency_assessed": false,
+        "provider_pod_closed": true,
+        "quality_gate_passed": false,
+        "threshold_applied": false,
+        "uncalibrated_admission_passed": false,
+        "verifier_assessed": false
+      },
       "design_and_code": [
         "artifacts/nano_h5/PREREGISTRATION.json",
         "nano_ai/training/replay_mixture_data.py",
@@ -253,39 +265,8 @@
         "nano_ai/training/evaluate_evidence_query_h5.py",
         "nano_ai/training/package_evidence_query_h5.py"
       ],
-      "results": "artifacts/nano_h5/RESULT_SUMMARY.json",
-      "preregistration": "artifacts/nano_h5/PREREGISTRATION.json",
-      "data_manifest": "artifacts/nano_h5/data/manifest.json",
-      "readiness": "artifacts/nano_h5/runpod-input/READINESS.json",
-      "training_report_freeze": "artifacts/nano_h5/TRAINING_REPORT_FREEZE.json",
-      "provider_closeout": "artifacts/nano_h5/CLOSEOUT.json",
-      "artifact_manifest": "artifacts/nano_h5/MANIFEST.json",
-      "tracked_sha256": {
-        "result_summary": "b7c804bf7c094bb3085023a0edef90456cbda38f15733cc0260582b4485c40e8",
-        "preregistration": "0dd45a1acbc47a71f722a731f2dea07fdee18d1a363863c47d855092ec85fdb2",
-        "data_manifest": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31",
-        "readiness": "4278c1674dc1311c3e0c97af976a966727adca527685d1e3625f3c837ac96ae7",
-        "training_report_freeze": "8a6922546b470032c0bb208329659fa06215b24dac5969e0c8fe507d52475166",
-        "provider_closeout": "e2551487775c0751634d1c1b0b2d18e0db2b4dc8ae7291d07ad3188c95661cf5",
-        "artifact_manifest": "7b909f623d7cd6938d19ecfe937709d411739953a19a8dfadbe78f2102e6f46a"
-      },
-      "content_addressed_local_sha256": {
-        "selected_checkpoint_seed_20260805_epoch_3": "04ba7b4d0dc876ca3d8de7fe7d809ca16796e5bf55249ad93ba1dd3557c394fe",
-        "development_evaluation": "c67393962299470fc6b5026031b61617bbae85a2883105b8b8abfcdb30820c47",
-        "input_archive": "930cac784c694a010edbffc092b1484f887ba2fd5c428b5c3bbb5aa2419e4f4b",
-        "result_archive": "bab5327e900597a083cb04631e645f2e0f500f14f01ec7db195e754b34620749",
-        "training_report_seed_20260805": "0c3b0e78e1fe504c6ca41afdd770aaf9b04e6ecf295b90c5fd19c2599c3acaf8",
-        "training_report_seed_20260806": "7cb83d98e50eac5b7bb4cde89033602b863ead3607f89db0fffc078ef87c8112"
-      },
-      "decision": {
-        "quality_gate_passed": false,
-        "uncalibrated_admission_passed": false,
-        "threshold_applied": false,
-        "verifier_assessed": false,
-        "latency_assessed": false,
-        "fresh_v1_read": false,
-        "provider_pod_closed": true
-      },
+      "evidence_class": "TRACKED_SUMMARY_WITH_CONTENT_ADDRESSED_LOCAL_LARGE_ARTIFACTS",
+      "id": "nano_h5_balanced_replay_dev",
       "limitations": [
         "The partition was known adaptive synthetic development data, not an independent test or clinical corpus.",
         "Only two seeds and six checkpoints were evaluated under one frozen 50:50 replay intervention.",
@@ -294,14 +275,68 @@
         "Threshold, verifier, latency, and fresh-v1 stages were intentionally skipped after uncalibrated admission failed.",
         "The preregistration records a separate post-freeze historical fresh_v0 metadata review incident outside the H5 evaluator path.",
         "Large checkpoints and row-level evaluation data remain local; no public tag or release anchor currently covers H5."
-      ]
+      ],
+      "preregistration": "artifacts/nano_h5/PREREGISTRATION.json",
+      "provider_closeout": "artifacts/nano_h5/CLOSEOUT.json",
+      "readiness": "artifacts/nano_h5/runpod-input/READINESS.json",
+      "reproducibility": "LOCAL_CONTENT_ADDRESSED_NOT_PUBLIC_REPRODUCIBLE",
+      "results": "artifacts/nano_h5/RESULT_SUMMARY.json",
+      "status": "REJECT",
+      "summary": "The training-only-selected H5 fixed 50:50 replay candidate scored raw 78.18% overall, 74.32% held-value, 100% missing-target, 67.80% absence, 59.60% conflict, and 64.80% uncertain accuracy on known synthetic development, with zero decode failures and 1,013 wrong-presented fields. It failed frozen absence, conflict, and uncertainty gates and was rejected before threshold, verifier, latency, or fresh-v1.",
+      "tracked_sha256": {
+        "artifact_manifest": "7b909f623d7cd6938d19ecfe937709d411739953a19a8dfadbe78f2102e6f46a",
+        "data_manifest": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31",
+        "preregistration": "0dd45a1acbc47a71f722a731f2dea07fdee18d1a363863c47d855092ec85fdb2",
+        "provider_closeout": "e2551487775c0751634d1c1b0b2d18e0db2b4dc8ae7291d07ad3188c95661cf5",
+        "readiness": "4278c1674dc1311c3e0c97af976a966727adca527685d1e3625f3c837ac96ae7",
+        "result_summary": "b7c804bf7c094bb3085023a0edef90456cbda38f15733cc0260582b4485c40e8",
+        "training_report_freeze": "8a6922546b470032c0bb208329659fa06215b24dac5969e0c8fe507d52475166"
+      },
+      "training_report_freeze": "artifacts/nano_h5/TRAINING_REPORT_FREEZE.json"
+    },
+    {
+      "design": [
+        "artifacts/nano_h6/PREREGISTRATION.json",
+        "artifacts/nano_h6/kaggle/KAGGLE_ADDENDUM.json"
+      ],
+      "id": "nano_h6",
+      "narrative": "papers/THE_REFRAME_20260805.md",
+      "results_glob": "artifacts/nano_h6/**",
+      "status": "REJECT",
+      "summary": "H6's 640-parameter detached soft-state boundary-query residual was trained under the frozen recipe and evaluated once on the sealed development partition. Held-out VALUE COPYING passed its floor (2277/2987, above H5's 2220); all three failures were epistemic-state gates - absence 199/413, conflict 143/250, uncertainty 190/250. The residual traded states (uncertainty +11.2, absence -19.6) rather than lifting them."
+    },
+    {
+      "design": [
+        "papers/SELECTIVE_VOCABULARY.md",
+        "papers/PREREG_ABSTENTION_W2.md"
+      ],
+      "id": "selective_grounding_instrument",
+      "narrative": "papers/THRESHOLD_CURVE_FINDING.md",
+      "results_glob": "artifacts/nano_h6/analysis/**",
+      "status": "SUPPORTED_WITH_RECORDED_LIMITATIONS",
+      "summary": "Risk-coverage analysis for ternary evidence-bound prediction. Three independent mechanisms in this repo bound risk while leaving coverage unpriced: fabric/slice.py:248 (gate denominated in a system-controlled quantity - a mute verifier scores 0.0% and passes), wedge_v1 _relevant_claim (conjunctive span filter, no coverage term), and minimal_zero_wrong_presented_inclusive_v1 (one-line policy, two operating points, no curve). Fabric's verifier itself is NOT over-abstaining: across all 24 cells withheld=2642=caught_err with lost_correct=0."
+    },
+    {
+      "design": [
+        "papers/PRE_RUN_READINESS.md"
+      ],
+      "id": "threshold_operating_point",
+      "narrative": "papers/THRESHOLD_CURVE_FINDING.md",
+      "results_glob": "artifacts/nano_h6/analysis/threshold_curve_*.json",
+      "status": "SUPPORTED_SCOPED",
+      "summary": "On the calibration partition (4000 fields, 120 operating points, AURC 0.00510) the frozen zero-wrong-presented policy retains 538 correct answers at 13.5% coverage, while threshold 0.9747 retains 2831 at 71.1% coverage for 14 errors - accepting 14 errors recovers 2293 correct answers. Diagnostic only: it selects nothing, and does NOT re-litigate H5/H6, which were rejected at the uncalibrated gate before the threshold stage ran."
     }
   ],
   "known_absences": [
     "E2 produced no valid result.",
     "Independent human or clinician E3 validation and inter-rater agreement were not performed.",
-    "No current evidence supports clinical deployment or zero-error open-world claims."
+    "No current evidence supports clinical deployment or zero-error open-world claims.",
+    "The product's over-abstention is not fixed: 3/10 useful on the only real corpus; W-ABSTAIN-2 fixed one mechanism (n=1 in scope, agent-applied labels) and the 2-token conjunction remains open.",
+    "The H6 evaluation ran on CPU because Kaggle's P100 is unsupported by the pinned torch build; this is a disclosed hardware delta, not a byte-replication of the 2026-08-03 GPU training.",
+    "Rung-1 pretraining has not run; today's evidence indicates the residual copying gap is a finetune-data problem (one slot, five-value pool) rather than a scale problem."
   ],
-  "artifact_index": "artifacts/MANIFEST.json",
-  "raw_archive": "artifacts/local_raw_archive/MANIFEST.json"
+  "purpose": "Canonical claim-to-artifact map. Product plans and work queues are not evidence.",
+  "raw_archive": "artifacts/local_raw_archive/MANIFEST.json",
+  "schema": "nano-lm.evidence_manifest.v2",
+  "updated": "2026-08-05"
 }
