@@ -11,7 +11,7 @@
   },
   "destination": {
     "kind": "local_filesystem",
-    "root": "/Users/mac/Projects/nano-lm/artifacts/nano_h6/recovered/h6-recovery-20260803",
+    "root": "artifacts/nano_h6/recovered/h6-recovery-20260803",
     "storage_resource_id": "internal-apfs-dev-16777227",
     "device_id": 16777227,
     "failure_domain": "internal_system_storage"

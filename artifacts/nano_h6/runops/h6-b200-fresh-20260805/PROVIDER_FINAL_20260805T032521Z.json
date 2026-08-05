@@ -1,3 +1,3 @@
 {"observed_at_utc":"2026-08-05T03:25:21Z","source":"runpodctl","pods":
 []
-,"account":{"clientBalance":100.67,"currentSpendPerHr":0.01,"spendLimit":80},"flag_test":"bare 4090, current image, no flags, DC IE: zero uptime 7 min","conclusion":"account healthy; all client variables eliminated; provider-side startup outage"}
+,"account":{"clientBalance":"<redacted>","currentSpendPerHr":0.01,"spendLimit":80},"flag_test":"bare 4090, current image, no flags, DC IE: zero uptime 7 min","conclusion":"account healthy; all client variables eliminated; provider-side startup outage"}

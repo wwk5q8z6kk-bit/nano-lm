@@ -4,7 +4,7 @@
   "operation_id": "579ba683-b76d-4f34-ac54-809957b02619",
   "source": {
     "kind": "verified_internal_copy",
-    "root": "/Users/mac/Projects/nano-lm/artifacts/nano_h6/recovered/h6-recovery-20260803",
+    "root": "artifacts/nano_h6/recovered/h6-recovery-20260803",
     "storage_resource_id": "internal-apfs-dev-16777227",
     "internal_copy_receipt_sha256": "18338d8fb315f62090d04e43bab371f038b333480184879f15f79bb4acf9587d"
   },

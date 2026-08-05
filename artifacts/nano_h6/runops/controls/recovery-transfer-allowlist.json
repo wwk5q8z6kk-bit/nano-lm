@@ -48,7 +48,7 @@
   ],
   "copy_policy": {
     "required_verified_failure_domains": 2,
-    "internal_destination": "/Users/mac/Projects/nano-lm/artifacts/nano_h6/recovered/h6-recovery-20260803",
+    "internal_destination": "artifacts/nano_h6/recovered/h6-recovery-20260803",
     "external_destination": "/Volumes/Express4M2/NanoBackups/h6-recovery-20260803",
     "external_destination_encrypted": false
   }
