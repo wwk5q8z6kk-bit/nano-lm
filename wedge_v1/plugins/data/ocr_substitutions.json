@@ -1,0 +1,76 @@
+{
+  "schema": "nano-lm.wedge_v1.ocr_substitutions.v1",
+  "substitutions": [
+    {
+      "from": "Auth0rs:",
+      "to": "Authors:"
+    },
+    {
+      "from": "secands",
+      "to": "seconds"
+    },
+    {
+      "from": "TTL  i5  ",
+      "to": "TTL as "
+    },
+    {
+      "from": "TTL i5 ",
+      "to": "TTL as "
+    },
+    {
+      "from": "i5",
+      "to": "is"
+    },
+    {
+      "from": "5O0",
+      "to": "500"
+    },
+    {
+      "from": "85O",
+      "to": "850"
+    },
+    {
+      "from": "metf0rmin",
+      "to": "metformin"
+    },
+    {
+      "from": "Metf0rmin",
+      "to": "Metformin"
+    },
+    {
+      "from": "P1acebo",
+      "to": "Placebo"
+    },
+    {
+      "from": "p1acebo",
+      "to": "placebo"
+    },
+    {
+      "from": "ibupr0fen",
+      "to": "ibuprofen"
+    },
+    {
+      "from": "ca1ibrated",
+      "to": "calibrated"
+    },
+    {
+      "from": "spectr0meter-7",
+      "to": "spectrometer-7"
+    },
+    {
+      "from": "Affi1iation:",
+      "to": "Affiliation:"
+    },
+    {
+      "from": "Samp1e",
+      "to": "Sample"
+    },
+    {
+      "from": "rn",
+      "to": "m",
+      "context": "optional_aggressive",
+      "enabled": false
+    }
+  ],
+  "note": "Deterministic OCR normalize table \u2014 shared by plugin.ocr and ingest SLA (W5)."
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "nano-lm.wedge_v1.coref_entities.v1",
+  "entities": [
+    "Metformin",
+    "Placebo",
+    "Ibuprofen",
+    "Cache",
+    "TTL"
+  ],
+  "pronouns": [
+    "It",
+    "This",
+    "That"
+  ],
+  "note": "Entity lexicon for sentence-level coref lite; applies to any doc."
+}

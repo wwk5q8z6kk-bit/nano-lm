@@ -1,0 +1,66 @@
+{
+  "schema": "nano-lm.wedge_v1.owner_dogfood.v1",
+  "note": "Fixed pack for fixtures/owner_corpus (public synthetic). Edit a local copy for private corpora; do not commit PHI.",
+  "default_corpus_hint": "wedge_v1/fixtures/owner_corpus OR $OWNER_CORPUS (outside git)",
+  "tasks": [
+    {
+      "id": "O01",
+      "mode": "ask",
+      "query": "How long before cached entries expire?",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600",
+        "TTL",
+        "seconds"
+      ]
+    },
+    {
+      "id": "O02",
+      "mode": "compare",
+      "query": "metformin",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "500",
+        "850"
+      ]
+    },
+    {
+      "id": "O03",
+      "mode": "compare",
+      "query": "TTL",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600"
+      ]
+    },
+    {
+      "id": "O04",
+      "mode": "compare",
+      "query": "QPS",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "12000"
+      ]
+    },
+    {
+      "id": "O05",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    }
+  ]
+}

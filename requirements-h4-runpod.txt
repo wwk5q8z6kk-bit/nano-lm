@@ -1,0 +1,4 @@
+# The RunPod template supplies CUDA-enabled torch 2.8.0+cu128. Installing the
+# repository-wide requirements would replace it with a different torch build.
+pytest==9.0.2
+tokenizers==0.22.2
