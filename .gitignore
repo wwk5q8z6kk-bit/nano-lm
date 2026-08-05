@@ -6,6 +6,7 @@ raw_corpus*
 clean_corpus*
 sft_convos.json
 checkpoints/
+.local-data/
 
 # Python
 __pycache__/
@@ -64,3 +65,4 @@ wedge_v1/results_habit_session.json
 wedge_v1/results_adversarial_suite.json
 wedge_v1/results_ingest_sla.json
 wedge_v1/.coe_runs/
+.playwright-mcp/
