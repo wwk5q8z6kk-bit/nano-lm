@@ -85,12 +85,33 @@ the private path — but it is the *engine*, not the product.
 
 ## 5. The single highest-information next action
 
-**Dogfood on real documents.** Point `wedge_v1` at an actual private folder
-(the owner's own files), measure U, and find where the verification layer
-fails outside fixtures. It is free, local, private, needs no GPU and no
-provider, and it is the fastest possible disproof of the thesis in §2. Every
-other roadmap item — scale rungs, structured outputs, Mermaid, think-arm — is
-downstream of knowing whether the core holds on real data.
+**Dogfood on real, OPEN-SOURCE documents** (see the standing data rule below).
+Point `wedge_v1` at a corpus of genuinely third-party, openly licensed
+documents — public meeting minutes/transcripts, open-licensed case reports,
+public technical docs — measure U, and find where the verification layer fails
+outside its own fixtures. Free, local, no GPU, no provider, and the fastest
+possible disproof of the thesis in §2. "Real" here means *not authored by us
+and not in-distribution*; it does not require private data. Every other
+roadmap item — scale rungs, structured outputs, Mermaid, think-arm — is
+downstream of knowing whether the core holds on documents we did not write.
+
+Bonus: an openly licensed dogfood corpus is **reproducible and publishable**,
+which private files never could be.
+
+### STANDING DATA RULE (owner directive, 2026-08-05)
+
+> **No private data is used for training, evaluation, or dogfooding on this
+> machine. All corpora must be open-source / openly licensed, acquired through
+> `nano_ai/pretraining/` with pinned revisions, hashes, and a recorded
+> license.**
+
+This supersedes the earlier owner-corpus dogfood gate in
+`frontier/DEVELOPMENT_PLAN.md` ("a real private folder of ≥10 docs"), which is
+hereby **retired and replaced** by an open-licensed real-document corpus.
+It also reinforces the existing MIMIC-IV prohibition
+(`papers/TRAINING_DATA_REGISTRY.md`) and `.gitignore`'s private-path
+exclusions. Any future request to use private material requires an explicit,
+separately recorded owner authorization — silence is refusal.
 
 If the layer holds: that failure profile *is* the product roadmap, and the
 model rungs become the cost/privacy engine beneath it.
