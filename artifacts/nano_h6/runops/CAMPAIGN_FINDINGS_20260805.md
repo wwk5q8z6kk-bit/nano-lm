@@ -96,6 +96,31 @@ EU-RO-1/EUR-NO-1/EUR-IS; RTX 5090/4090/B200; multiple images; CLI-created)
 allocates, bills, and holds uptimeSeconds=0 with no SSH/logs indefinitely; a
 pod created 23:10Z booted normally. Status page shows no incident."
 
+## GPU-family sweep (2026-08-05 03:35–04:00 UTC, owner-directed)
+
+| # | Pod | Config | Outcome |
+|---|---|---|---|
+| 10 | pu7ul0j2otfbnx | 4090, frozen image, EU-CZ-1 | zero uptime 7 min → terminated |
+| 11 | (no resource) | A6000, no-DC then EU-SE-1 (Medium) | **both rejected at allocation** |
+| 12 | i2pcbl3r4xqdde | H100 SXM, frozen image, AP-IN | zero uptime ~6 min (console-confirmed 0% by owner) → terminated |
+
+Four GPU families (5090, 4090, B200, H100) across six datacenters now
+reproduce the hang. Refuted hypothesis (9): GPU-family-specific.
+
+**Last untested variable: the create path itself.** Every pod tonight was
+created by `runpodctl 2.8.1-b37383c`, which uses a legacy GraphQL create
+mutation (its own warning: "graphql api supports a single data center").
+A **console-UI deploy test** was requested of the owner at ~03:50 UTC; no
+console pod appeared within 12 minutes (owner likely asleep). This test is
+the FIRST resume step now — it cleanly separates "CLI create-path bug"
+(fix: REST API / console path / CLI update, then run H6 immediately) from
+"provider fleet outage" (action: ticket).
+
+Updated resume order: (1) console-UI deploy of any cheap GPU, watch
+utilization 3 min; (2) if console boots → recreate H6 pod via REST/console
+path and execute; (3) if console also 0% → send the ticket; (4) also try
+`runpodctl` update if available. Campaign spend after sweep ≈ **$3.60**.
+
 ## Provider status-page check (2026-08-05 01:55 UTC)
 
 `uptime.runpod.io` (checked 01:55 UTC, page updated 01:49 UTC): **"all
