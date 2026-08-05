@@ -3,7 +3,7 @@
 # order, acks, fused complaint+duration), compositional complaint pool (~190 values so
 # CC cannot be solved as classification), med list 8->18, N 8000->12000.
 # THE EVAL SET IS NOT REGENERATED — scribe_eval.json from v1 is reused byte-identical.
-import json, random
+import random
 import numpy as np
 from tokenizers import Tokenizer
 
