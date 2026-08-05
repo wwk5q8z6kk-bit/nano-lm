@@ -1,0 +1,13 @@
+{
+  "cuda": "12.8",
+  "device": "cpu",
+  "exact_torch_pin_used": false,
+  "gpu": "Tesla P100-PCIE-16GB",
+  "gpu_mem_gb": 15.9,
+  "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+  "python": "3.12.13",
+  "schema": "nano.h6.kaggle-runtime-disclosure.v1",
+  "tokenizers": "0.22.2",
+  "torch": "2.10.0+cu128",
+  "torch_reinstalled": false
+}
