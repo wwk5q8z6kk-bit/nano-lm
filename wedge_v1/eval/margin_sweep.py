@@ -41,9 +41,21 @@ def load_cards() -> tuple[list[dict], list[dict]]:
 
 
 def run_query(corpus: Path, query: str, tau: float) -> dict:
-    from wedge_v1 import runtime
+    """Run one ask at a given promotion margin.
 
-    return runtime.ask(str(corpus), query, margin_tau=tau, persist_coe=False)
+    `runtime.ask` exposes no tau parameter and `bm25.top_paragraphs` reads the
+    module constant at call time, so the diagnostic sets the constant rather
+    than altering runtime signatures.
+    """
+    from wedge_v1 import runtime
+    from wedge_v1.classical import bm25
+
+    original = bm25.BM25_MARGIN_TAU
+    try:
+        bm25.BM25_MARGIN_TAU = tau
+        return runtime.ask(query, corpus, persist_coe=False)
+    finally:
+        bm25.BM25_MARGIN_TAU = original
 
 
 def main() -> int:

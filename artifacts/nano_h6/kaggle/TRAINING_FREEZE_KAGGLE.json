@@ -1,0 +1,65 @@
+{
+  "addendum_sha256": "7831e78d73af8eb4f11fb7ee65d15622b9e6a91027ed260c5fbcda252f4e3eeb",
+  "backups_verified": [
+    {
+      "domain": "repo",
+      "path": "artifacts/nano_h6/kaggle/results-20260805/results",
+      "verify": "TRAINING_REPORT_SHA256SUMS OK"
+    },
+    {
+      "domain": "Express4M2",
+      "path": "/Volumes/Express4M2/NanoBackups/h6-kaggle-20260805/results",
+      "verify": "TRAINING_REPORT_SHA256SUMS OK"
+    }
+  ],
+  "byte_identity_vs_2026_08_03_gpu_freeze": {
+    "detail": "GPU freeze selected seed-20260805/epoch-3 (4ca7b251) and seed-20260806/epoch-2 (40611c27). CPU run selects epoch-2 for BOTH seeds. Different device class produces different numerics and therefore a different selection; this is why the amendment demoted byte-identity from gate to observation.",
+    "gate_status": "REPORTED_NOT_GATING (per disclosed-hardware amendment 38d15814)",
+    "status": "DIVERGED_AS_EXPECTED"
+  },
+  "completed_at_utc": "2026-08-05T08:10:00Z",
+  "development_present_at_freeze": false,
+  "development_status": {
+    "one_shot_consumed": false,
+    "opened": false,
+    "released": false,
+    "sha256": "9c893d8e64110287b433d567e0e9abb42c611ecba33b40de192741324d37e290"
+  },
+  "execution": "kaggle kernel hassaneljesr/nano-h6-train-disclosed v6",
+  "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1",
+  "frozen_before_development_transfer": true,
+  "frozen_selector_result": {
+    "primary": "seed-20260805/epoch-2.pt",
+    "rule": "uncalibrated macro_joint desc -> overall_joint desc -> earlier epoch -> seed 20260805",
+    "seed-20260805": {
+      "checkpoint": "epoch-2.pt",
+      "macro_joint": 0.92439,
+      "overall_joint": 0.952,
+      "sha256": "07547ec5c01b46fa87e8d53a40497a7c4b4a6bc92b596dddd67f4be4d18c89e0"
+    },
+    "seed-20260806": {
+      "checkpoint": "epoch-2.pt",
+      "macro_joint": 0.89545,
+      "overall_joint": 0.9313,
+      "sha256": "17d9bb693393863bef7c6b8f065583065d4e5937f9460d8bc703357c1694a0cf"
+    }
+  },
+  "input_bundle_sha256": "b1eff7c9ccb06f05e46f0639c88a7e74daeb0880dc8ecbb0641359d74b5ea505",
+  "next_step": "single evaluation kernel consuming the development partition exactly once",
+  "runtime_disclosure": {
+    "cuda": "12.8",
+    "device": "cpu",
+    "exact_torch_pin_used": false,
+    "gpu_present_but_unusable": "Tesla P100-PCIE-16GB (sm_60) - torch 2.10.0+cu128 has no kernel image; CUDA smoke test failed, disclosed CPU fallback engaged",
+    "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+    "python": "3.12.13",
+    "tokenizers": "0.22.2",
+    "torch": "2.10.0+cu128",
+    "torch_reinstalled": false
+  },
+  "schema": "nano.h6.kaggle-training-freeze.v1",
+  "training_reports_sha256": {
+    "seed-20260805": "9bf3d8281a50d8d85b01e7b72ff5180ba42a554e2f9092a42d37cdf395e572b8",
+    "seed-20260806": "87da86a5793e6ba04295bb52fe453a32aa924243711173eff54251bccaf06843"
+  }
+}
