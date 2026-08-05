@@ -64,5 +64,16 @@ h6r2-cross-dc-20260805: $0.31 (of $3.50). Off-ledger diagnostic probe:
 3. A RunPod support ticket about zero-uptime RTX 5090 secure-cloud pods is
    warranted if the state persists past ~12 h — owner-facing action.
 
+## Provider status-page check (2026-08-05 01:55 UTC)
+
+`uptime.runpod.io` (checked 01:55 UTC, page updated 01:49 UTC): **"all
+systems operational"** — the provider has NOT acknowledged the condition.
+Precedent for the symptom class exists in their own history: "May 25–26:
+Elevated image pull error rate" (19 h degraded, upstream systems). Timeline
+sharpening: the last successful boot of this account+config was ~23:10 UTC
+Aug 4 (ro1-retry pod); the first hang began 23:40 UTC — the regression
+window is ~23:10–23:40 UTC Aug 4, unannounced. This strengthens the
+support-ticket recommendation: they likely do not know.
+
 Nothing in tonight's failures spent the one-shot development gate, touched
 sealed data, or modified any frozen identity.
