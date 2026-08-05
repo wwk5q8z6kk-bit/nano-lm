@@ -86,3 +86,48 @@ gates, `nano_ai/`, or `fabric/`. Related but distinct: H6's rejection on
 absence/conflict/uncertainty is the same disease in the *model*
 (`papers/H6_TERMINAL_DECISION.json`, `papers/THE_REFRAME_20260805.md`); this
 preregistration does not address that and must not be cited as evidence about it.
+
+---
+
+## 6. RESULT — REJECTED as preregistered (2026-08-05)
+
+Measured on the frozen r4 pack after implementing two-scope relevance:
+
+| metric | requirement | observed | |
+|---|---|---|---|
+| recovered | ≥ 2 of 3 | **1 of 3** | **FAIL** |
+| held (CORRECT_ABSTENTION) | 4 of 4 | 4 of 4 | pass |
+| regressions (USEFUL) | 3 of 3 | 3 of 3 | pass |
+| wedge test suite | no new failures | 355 passed | pass |
+
+**Verdict: REJECTED under the rule frozen in §4.** The threshold is not moved.
+
+### 6a. Why it failed, and the defect in this preregistration
+
+The change alters behaviour only for queries with **≥3 content tokens** (§3
+explicitly leaves 1–2 token queries unchanged). The three OVER_ABSTENTION
+cards are:
+
+| card | content tokens | in scope? | outcome |
+|---|---|---|---|
+| `Nano Runtime smallest sufficient solver` | 5 | **yes** | recovered → SUPPORTED, 2 claims |
+| `E4 KILL 0.638` | 2 | no — unchanged by construction | still ABSTAIN |
+| `E1 KILL M1_template` | 2 | no — and unanswerable as written (`M1_template` occurs **0** times in the corpus; the text reads `M1 template`) | still ABSTAIN |
+
+So the denominator in §4 mixed queries the change targets with queries it
+**cannot affect by construction**. Within its actual scope the result is 1 of 1.
+
+This is a defect in the instrument, and it is demonstrable *without reference
+to the outcome* — token counts are a property of the queries, fixed before any
+measurement. That is the only reason it may be corrected rather than
+rationalised away.
+
+### 6b. What happens next (and what does not)
+
+The failing result stands and is retained. The change is **not** accepted under
+this preregistration. A corrected preregistration, `W-ABSTAIN-2`, is filed
+separately with (i) a scope-matched denominator and (ii) the 2-token case
+treated as its own question rather than folded in.
+
+Explicitly not done: relaxing §4's threshold, re-labelling the unanswerable
+card, or claiming success on a 1/3 result.

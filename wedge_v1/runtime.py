@@ -184,8 +184,22 @@ def _token_equivalence_groups(tokens: list[str]) -> list[set[str]]:
     return groups
 
 
-def _relevant_claim(c: S.Claim, tokens: list[str]) -> bool:
-    """Reject weak lexical coincidences (one stop-ish content token in a huge corpus)."""
+def _relevant_claim(
+    c: S.Claim, tokens: list[str], docs: dict[str, str] | None = None
+) -> bool:
+    """Reject weak lexical coincidences (one stop-ish content token in a huge corpus).
+
+    Two-scope relevance (W-ABSTAIN-1, papers/PREREG_ABSTENTION_W1.md). A claim is
+    relevant when the source DOCUMENT carries every query token -- which preserves
+    the anti-false-positive property this filter exists for -- and the presented
+    SPAN carries a majority of them, which keeps the answer anchored in the text
+    actually shown. Requiring every token inside one ~240-char span was the
+    measured cause of over-abstention: natural queries put the subject in a
+    heading and the predicate in the answering sentence.
+
+    `docs` is optional so existing callers and tests keep working; without it the
+    document scope is skipped and the original span-only rule applies.
+    """
     if not tokens:
         return False
     blob = json.dumps(c.value, default=str).lower() + " " + " ".join(
@@ -201,16 +215,24 @@ def _relevant_claim(c: S.Claim, tokens: list[str]) -> bool:
         # A single token hit is not an answer to a multi-token question.
         # Require the same coverage rule as passage claims (falls through).
         pass
-    hits = sum(1 for group in _token_equivalence_groups(tokens) if any(t in blob for t in group))
-    # Short queries: majority. Longer (>=3 content tokens): require all tokens in evidence
-    # so governance prose mentioning NanoScribe cannot "answer" clinical-accuracy questions.
-    if len(tokens) >= 3:
-        need = len(tokens)
-    elif len(tokens) == 2:
-        need = 2
-    else:
-        need = 1
-    return hits >= need
+    groups = _token_equivalence_groups(tokens)
+    hits = sum(1 for group in groups if any(t in blob for t in group))
+    if len(tokens) < 3:
+        # Short queries keep the original rule unchanged.
+        return hits >= (2 if len(tokens) == 2 else 1)
+
+    # Span scope: a majority of query tokens must appear in what is presented.
+    span_need = max(2, (len(tokens) + 1) // 2)
+    if hits < span_need:
+        return False
+
+    # Document scope: the source document must carry every query token.
+    if docs is None:
+        return hits >= len(tokens)
+    body = (docs.get(c.doc_id) or "").lower()
+    if not body:
+        return hits >= len(tokens)
+    return all(any(t.lower() in body for t in group) for group in groups)
 
 
 
@@ -1219,7 +1241,7 @@ def ask(
         for c in verified
         if c.status in {"PRESENT", "CONFIRMED", "DISPUTED", "PROBABLE"}
         and _has_evidence_atom(c)
-        and _relevant_claim(c, tokens)
+        and _relevant_claim(c, tokens, docs)
     ]
     presented_sorted = sorted(
         presented,
