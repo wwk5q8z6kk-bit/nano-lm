@@ -64,6 +64,38 @@ h6r2-cross-dc-20260805: $0.31 (of $3.50). Off-ledger diagnostic probe:
 3. A RunPod support ticket about zero-uptime RTX 5090 secure-cloud pods is
    warranted if the state persists past ~12 h — owner-facing action.
 
+## Post-rethink extension (2026-08-05 03:00–03:30 UTC)
+
+After the owner's "rethink everything" review, a **disclosed-hardware fresh-run
+amendment** was authorized (envelope `38d15814…`, ledger
+`h6-b200-fresh-20260805`): H6 decided by a fresh same-pod train+eval on
+disclosed hardware, byte-identity vs Aug 3 reported but not gating, one line
+of `RUN_H6_TRAIN.sh` amended (device-name assert → capture; before
+`06e66bfc…` / after `4d4a8bc4…`). Three further eliminations under it:
+
+| # | Pod | Config | Outcome |
+|---|---|---|---|
+| 8 | 5n12str0kcxb4i | **B200**, EU-RO-1, frozen image, $6.79/hr | zero uptime 10 min → terminated ($1.42) |
+| 9 | ajg4rmz0bs2axh (off-ledger) | **bare 4090**, DC IE, current image, **no --terminate-after, no --ports** | zero uptime 7 min → terminated (~$0.10) |
+| — | account check | `runpodctl user` | **healthy: $100.67 balance, $0.01/hr spend, $80 spend limit** |
+
+Additional refuted hypotheses: (6) GPU-class-specific (B200 hangs too);
+(7) CLI flags `--terminate-after`/`--ports` poisoning startup (bare create
+hangs too); (8) account balance/limits (healthy).
+
+**Final conclusion, strengthened:** every client-controllable variable is
+eliminated. Pods allocate and never start, fleet-wide, since ~23:40 UTC
+Aug 4, on a healthy account, while the status page reads operational.
+Campaign total ≈ **$3.06**. The H6 decision now waits only on the provider
+booting pods again; the amendment makes the run itself a ~20-minute task on
+any GPU the moment that happens.
+
+**Support-ticket one-liner (owner sends):** "Since 2026-08-04T23:40Z every
+pod created on account user_3Gipqdtq5P6GQgrqGiAJ2FIWvPJ (secure cloud;
+EU-RO-1/EUR-NO-1/EUR-IS; RTX 5090/4090/B200; multiple images; CLI-created)
+allocates, bills, and holds uptimeSeconds=0 with no SSH/logs indefinitely; a
+pod created 23:10Z booted normally. Status page shows no incident."
+
 ## Provider status-page check (2026-08-05 01:55 UTC)
 
 `uptime.runpod.io` (checked 01:55 UTC, page updated 01:49 UTC): **"all
