@@ -171,3 +171,23 @@ separately recorded owner authorization — silence is refusal.
 If the layer holds: that failure profile *is* the product roadmap, and the
 model rungs become the cost/privacy engine beneath it.
 If it breaks: we learn it for $0 instead of after a pilot.
+
+## 6. PUSH BLOCKER — do not push to GitHub until scrubbed
+
+The GitHub remote (`wwk5q8z6kk-bit/nano-lm`) is **PUBLIC**, and 39 local-only
+commits contain operational/personal data that would become permanent on push:
+
+- RunPod **account balance in USD** and spend rates — ~12 files under
+  `artifacts/nano_h6/runops/**` (`PROVIDER_COST_*.json`, `cost-observation-*`)
+- Account **email** `rill-mud-9i@icloud.com` (`PROVIDER_COST_20260805T001014Z.json`)
+- Real name ↔ email binding (`papers/SUBMISSION_PACKET.md`)
+- **SSH key path + pod IP/port** in 5 `PROVIDER_*` failure artifacts
+- `/Users/mac/...` local paths across 12+ ledger files
+
+Verified clean: **no credentials/secrets** in any of the 39 commit patches, and
+**no file >50 MB** (largest 11.9 MB; ~42 MB total). Also: the repo has **no
+LICENSE** despite being public, and **no CI** (so the 32 open bot PRs showing
+"CLEAN" means *no checks configured*, not *tests pass*).
+
+Safe to push right now with zero risk: the 4 local-only tags (all resolve to
+commits already on the remote). Everything else waits on a scrub pass.
