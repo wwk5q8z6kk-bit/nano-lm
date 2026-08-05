@@ -1,0 +1,32 @@
+{
+  "cause": {
+    "evaluation_runtime": {
+      "cuda": null,
+      "torch": "2.10.0+cpu"
+    },
+    "kind": "runtime-identity mismatch, infrastructure only",
+    "reason": "the evaluation kernel was created with enable_gpu:false, so Kaggle served a CPU-only image whose torch build string differs from the CUDA image used for training (which computed on CPU regardless)",
+    "training_runtime": {
+      "cuda": "12.8",
+      "torch": "2.10.0+cu128"
+    }
+  },
+  "guard_assessment": "The frozen evaluator's runtime check worked exactly as intended. It caught an infrastructure divergence that would otherwise have produced an unreproducible result, and it caught it before consuming the partition.",
+  "kernel": "hassaneljesr/nano-h6-eval-oneshot v1",
+  "occurred_at_utc": "2026-08-05T13:10:00Z",
+  "one_shot_accounting": {
+    "assessment": "The scientific property the one-shot seal protects - that no development-derived information can influence any decision - is INTACT, because the evaluator aborted before reading a single development record and produced no output. The transfer itself is recorded here rather than hidden.",
+    "development_derived_numbers_produced": 0,
+    "development_read_by_evaluator": false,
+    "development_transferred": true,
+    "gate_treated_as": "UNSPENT, with this transfer event disclosed",
+    "results_file_written": false
+  },
+  "remedy": {
+    "change": "recreate the evaluation kernel with enable_gpu:true so the image supplies torch 2.10.0+cu128 / cuda 12.8, while still passing --device cpu so the numerics match training exactly",
+    "changes_evaluator_gates_or_data": false,
+    "changes_science": false
+  },
+  "schema": "nano.h6.development-transfer-event.v1",
+  "what_happened": "The sealed development partition was transferred into the kernel and hash-authenticated (dev 9c893d8e..., manifest 47ee157a...). The frozen evaluator then REFUSED to run, raising EvidenceQueryEvaluationError('canonical H3 evaluation runtime must match training') before reading any development record."
+}

@@ -1,0 +1,85 @@
+{
+  "backups": [
+    "artifacts/nano_h6/kaggle/eval-20260805/results",
+    "/Volumes/Express4M2/NanoBackups/h6-kaggle-eval-20260805/results"
+  ],
+  "cost": {
+    "evaluation_usd": 0.0,
+    "note": "the decisive run cost nothing",
+    "platform": "Kaggle free tier",
+    "runpod_campaign_usd": 3.7
+  },
+  "decided_at_utc": "2026-08-05T13:20:00Z",
+  "decision": "REJECTED",
+  "evaluation": {
+    "cuda": "12.8",
+    "decode_failures": 0,
+    "device": "cpu",
+    "platform": "Kaggle kernel hassaneljesr/nano-h6-eval-oneshot v2",
+    "primary_checkpoint": "seed-20260805-epoch-2",
+    "result_sha256": "cb612410bd9530062147c1ed36bdcd606f9292a77b750376baf7a9860639e11a",
+    "runtime_identity_matched_training": true,
+    "torch": "2.10.0+cu128"
+  },
+  "experiment_id": "h6-detached-soft-state-boundary-query-residual-v1",
+  "gates_uncalibrated_development_n5000": {
+    "absence": {
+      "floor": 383,
+      "observed": "199/413",
+      "passed": false,
+      "rate": 0.4818
+    },
+    "conflict_target": {
+      "floor": 236,
+      "observed": "143/250",
+      "passed": false,
+      "rate": 0.572
+    },
+    "failures": {
+      "ceiling": 10,
+      "observed": 0,
+      "passed": true
+    },
+    "held_value": {
+      "floor": 2167,
+      "observed": "2277/2987",
+      "passed": true,
+      "rate": 0.7623
+    },
+    "missing_target": {
+      "floor": 219,
+      "observed": "250/250",
+      "passed": true,
+      "rate": 1.0
+    },
+    "overall": {
+      "floor": 3041,
+      "observed": "3901/5000",
+      "passed": true,
+      "rate": 0.7802
+    },
+    "state_balance": {
+      "all_five_fields": true,
+      "passed": true
+    },
+    "uncertain_target": {
+      "floor": 228,
+      "observed": "190/250",
+      "passed": false,
+      "rate": 0.76
+    }
+  },
+  "h5_comparison": {
+    "absence": "67.80% -> 48.18% (-19.6, REGRESSION)",
+    "conflict": "59.60% -> 57.20% (-2.4)",
+    "held_value": "74.32% -> 76.23% (+1.9)",
+    "note": "H6 vs H5 on the same gates - the 640-parameter state-conditioned boundary residual traded epistemic states against each other rather than lifting them",
+    "overall": "78.18% -> 78.02% (-0.2)",
+    "uncertain": "64.80% -> 76.00% (+11.2)"
+  },
+  "next_step_per_evaluator": "reject exact H6 coupling; return to diagnosis without automatically running another architecture",
+  "one_shot_consumed": true,
+  "schema": "nano.h6.terminal-decision.v1",
+  "scientific_reading": "Sixth consecutive rejection, and the third independent confirmation in one day of the same finding: held-out VALUE COPYING passes its floor (76.2%, above H5) while all three failures are epistemic-state gates - absence, conflict, uncertainty. The program's named central problem (copying) is not what blocks it. ABSTENTION CALIBRATION is. See papers/THE_REFRAME_20260805.md.",
+  "staged_stop": "uncalibrated admission failed -> threshold, verifier, latency, and sealed fresh-v1 confirmation NOT assessed, exactly as preregistered"
+}
