@@ -37,10 +37,19 @@ decided and frozen before launch, recorded in the manifest.
 3.2B-token control cost **$37 on an H100** (2026-07-19, peer session). Cap
 rung 1 at **$150** total (pretrain + finetune + eval + margin).
 
-**Finetune + evaluation (all frozen, reused verbatim):** the scribe finetune
-protocol, the held-out-value instruments (diluted AND clean metrics,
-multi-instance), fabric grounding.v1/v2 regression, and the fresh_v0-style
-contract evaluation. No new instruments; no gate edits.
+**Finetune + evaluation:** the scribe finetune protocol and the held-out-value
+instruments (diluted AND clean, multi-instance) are reused verbatim as the
+comparison spine, plus fabric grounding.v1/v2 regression. Per
+`papers/NANO_V2_AMBITION.md` (owner-set 2026-08-05), the finetune target
+broadens to **general structured contract v0** — field extraction +
+hierarchical notes + markdown tables (clinical as one profile) — with every
+structured training pair machine-validated at generation time. New-instrument
+additions are additive; the frozen clinical instruments still run unchanged
+so rung 1 stays comparable to all prior evidence.
+
+**Tokenizer (updated per ambition doc):** trained fresh for rung 1 with
+reserved special tokens (`<think>`, `</think>`, structural symbols) registered
+from day one, so later reasoning/structure rungs never force a retrain.
 
 **Runtime pins (lesson of 2026-08-04/05):** provider-controllable identities
 only — python/torch/CUDA/tokenizers versions, image digest, GPU model
