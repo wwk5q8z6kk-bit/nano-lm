@@ -122,14 +122,21 @@ for seed in ("20260805", "20260806"):
     assert not os.path.exists("h2_development")
     with open(f"results/seed-{seed}.log", "w") as log:
         print(f"=== training seed {seed} ===", flush=True)
-        subprocess.run(
+        proc = subprocess.run(
             [VPY, "-m", "nano_ai.training.train_evidence_query_h6",
              "--data-dir", "h6_data",
              "--base-checkpoint", "checkpoints/anchors/nano_v01_scribe.pt",
              "--tokenizer", "sft/tokenizer.json",
              "--output-dir", f"results/seed-{seed}",
              "--seed", seed, "--device", "cuda"],
-            check=True, env=env, stdout=log, stderr=subprocess.STDOUT)
+            env=env, stdout=log, stderr=subprocess.STDOUT)
+    if proc.returncode != 0:
+        with open(f"results/seed-{seed}.log") as log:
+            tail = log.readlines()[-50:]
+        print(f"TRAINING FAILED seed {seed}, log tail:", flush=True)
+        for line in tail:
+            print("  |", line.rstrip(), flush=True)
+        raise SystemExit(f"training failed for seed {seed}")
 assert not os.path.exists("h2_development")
 
 # Stage 5: checksums + disclosure into the kernel output
