@@ -209,7 +209,14 @@ def main() -> int:
 
 
 # The state each axis is designed to move.
-_PRIMARY = {"denial": "absent", "hedge": "uncertain", "value": "supported", "template": "supported"}
+_PRIMARY = {
+    "denial": "absent",
+    "hedge": "uncertain",
+    "value": "supported",
+    "template": "supported",
+    "conflicting_value": "conflicting",
+    "conflicting_structure": "conflicting",
+}
 
 # Axes whose arms only ever rewrite medication/allergy -- see `_score`'s
 # `fields` docstring for why chief_complaint/duration/severity must be
