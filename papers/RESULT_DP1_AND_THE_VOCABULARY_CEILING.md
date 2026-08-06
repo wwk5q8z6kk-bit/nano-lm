@@ -193,6 +193,11 @@ per arm, same frozen `epoch-2` checkpoint.
 
 Means: TRAIN **95.9%**, EXTERNAL **62.7%**, DEV 48.2%.
 
+> **These are seed-20260805 only.** §5 replicates every arm on a second seed and
+> finds the *arm-level* figures unstable (Kendall τ = 0.00 between seeds) while
+> the aggregates hold. Read the per-arm ordering below as one draw, not as a
+> property of the model; the two-seed numbers in §5 supersede it.
+
 **Three things follow, and the first one refutes what I wrote above.**
 
 **(a) The model did not merely memorise.** On eight phrasings it had never seen,
