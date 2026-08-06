@@ -16,6 +16,8 @@ The development partition's own wordings are the baseline arm (`DEV`).
 
 from __future__ import annotations
 
+from nano_ai.adapters.state_span import StateSpanFormatError, parse_state_span_summary
+from nano_ai.contract import FieldName, FieldState
 from nano_ai.surface import SurfaceArm
 
 # What the sealed development partition actually says, per concept. These are
