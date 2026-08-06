@@ -4,17 +4,21 @@ from __future__ import annotations
 
 import pytest
 
+from nano_ai.adapters.state_span import parse_state_span_summary
 from nano_ai.surface import (
     MIN_SEEDS_FOR_ARM_CLAIM,
     ArmObservation,
     SurfaceArm,
     SurfaceError,
     aggregate,
+    apply_arm,
     report_lines,
     substitute,
 )
 from nano_ai.surface_arms import (
     ALL_AXES,
+    CONFLICTING_STRUCTURE_ARMS,
+    CONFLICTING_VALUE_ARMS,
     DENIAL_ARMS,
     HEDGE_ARMS,
     TEMPLATE_ARMS,
@@ -23,6 +27,8 @@ from nano_ai.surface_arms import (
     _CALIBRATION_ALLERGY_VALUES,
     _CALIBRATION_MEDICATION_VALUES,
     _CALIBRATION_TEMPLATES,
+    _CONFLICTING_ALLERGY_PAIRS,
+    _CONFLICTING_MEDICATION_PAIRS,
     _DEV_ALLERGY_VALUES,
     _DEV_ALLERGY_TEMPLATE,
     _DEV_MEDICATION_VALUES,
