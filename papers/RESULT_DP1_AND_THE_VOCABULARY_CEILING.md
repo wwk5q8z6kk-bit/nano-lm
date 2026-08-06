@@ -217,11 +217,17 @@ recognises **none** of the eight external phrasings; the model handles them at
 > `ENHANCED_PLAN_20260805.md` §3, which proposed replacing composite model
 > judgements with deterministic ones, rests on exactly that inference.
 
-**(c) The two development strings are unrepresentatively hard.** DEV at 48.2%
-sits *below* six of eight independent phrasings. H6's absence gate required
-383/413 = 92.7%; on three of the four training-distribution phrasings the same
-checkpoint scores 93.2%, 99.0%, 99.3% — it clears that gate. The gate outcome
-turned on two specific strings.
+**(c) The two development strings are far harder than the training
+distribution.** DEV scores 48.2% against a TRAIN mean of 95.9% — and this is the
+comparison that replicates: on seed 20260806 it is 52.3% against 98.4%. H6's
+absence gate required 383/413 = 92.7%; **both seeds clear that gate on
+in-distribution phrasings** (seed 05: 93.2 / 99.0 / 99.3; seed 06: 99.8 / 99.8 /
+99.3). The gate outcome turned on two specific strings.
+
+*Not claimed:* that DEV is harder than the external phrasings. That was a
+single-seed rank statement, and §5 shows the external ranking has no
+seed-to-seed stability, so it does not survive. The stable reference is the
+training distribution, not the external arms.
 
 **This does not reverse H6's rejection.** The threshold was frozen in advance,
 the measurement was correct, and the verdict stands. What changes is the
