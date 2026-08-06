@@ -62,6 +62,26 @@ That is a different and cheaper hypothesis than H7-V, and it is the one the
 evidence supports. H7-V becomes secondary: worth doing, but as vocabulary
 insurance rather than as the primary fix.
 
+## 3b. Correction — the comparison is state-only, and Nano's number is joint
+
+**The two figures do not measure the same thing.** Nano's 60.0% is *joint* —
+state **and** spans exact, via `_proposal_exact`. The tuned 3B emits a bare
+label and produces **no span at all**, so 90.3% is state-only. A joint metric is
+strictly harder.
+
+How much does this matter? For gold-`absent` specifically, H6's diagnostics show
+that of 177 fields Nano mislabelled, **176 (99.4%) had the span exactly right**
+— Nano's span is almost always correct whether or not its state is. So for this
+state joint ≈ state, and the comparison is *approximately* fair. That is an
+inference from the error structure, **not a measurement**, and it holds only for
+`absent`; it should not be assumed for `conflicting`, whose span accuracy is
+0.572.
+
+**The deeper consequence is architectural, not numerical.** Nano's product value
+is evidence-bound extraction: a state *plus* the span that grounds it. The tuned
+3B did not do that job. It did the easier half. Nothing here shows a pretrained
+base can produce grounded spans under Nano's contract — see §4.
+
 ## 4. What is not established
 
 - **The tuned 3B is not a Nano candidate.** It is 230× the parameter budget and
