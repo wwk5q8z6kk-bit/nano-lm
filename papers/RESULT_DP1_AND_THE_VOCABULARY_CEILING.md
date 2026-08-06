@@ -233,6 +233,19 @@ path would each be tuned against that. Fix the benchmark first.
 
 ## 5. Honest limits of this result
 
+- **The substitution arms share a single frozen checkpoint and one seed.** The
+  71-point spread across phrasings is large enough that seed noise is unlikely to
+  explain it, but no confidence interval is offered and none should be inferred.
+- **The eight external phrasings are patient-voice sentences I constructed around
+  external triggers**, not sampled utterances. The triggers are independent; the
+  framing is mine. `Negative for …` and `Absence of …` are clinician register in
+  a patient's mouth, which plausibly explains their position at the bottom — a
+  register effect, not only a polarity effect.
+- **Substitution can perturb tokenisation.** The tokenizer was fit on the
+  synthetic corpus, so external wordings may fragment differently. This is part
+  of the phenomenon rather than a confound to remove, but it is not separated
+  here.
+
 - The 2.9% external-trigger figure uses utterances assembled by crossing
   external triggers with field nouns in fixed frames; some combinations are
   ungrammatical (`I absence of allergies.`), which is why the frame-independent
