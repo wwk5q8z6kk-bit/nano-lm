@@ -214,7 +214,12 @@ def main() -> int:
 
 
 # The state each axis is designed to move.
-_PRIMARY = {"denial": "absent", "hedge": "uncertain"}
+_PRIMARY = {"denial": "absent", "hedge": "uncertain", "value": "supported", "template": "supported"}
+
+# Axes whose arms only ever rewrite medication/allergy -- see `_score`'s
+# `fields` docstring for why chief_complaint/duration/severity must be
+# excluded rather than counted as unchanging noise.
+_FIELD_RESTRICTED_AXES = {"value", "template"}
 
 
 if __name__ == "__main__":
