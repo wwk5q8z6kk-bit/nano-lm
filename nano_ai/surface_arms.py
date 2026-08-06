@@ -400,6 +400,16 @@ def _order_swap_transform(transcript, target):
     if located is None:
         return None
     _field, first, second = located
+    # A denial answer ("Nothing at all." / "None whatsoever.") IS the whole
+    # patient line; a genuine value answer sits inside a frame ("Only {V} so
+    # far.", "I do -- {V}."). Splicing a denial's text into a framed slot
+    # produces a broken sentence ("Only Nothing at all. so far." -- confirmed
+    # on dev-0008-conflicting), not a meaningful order probe. Skip rather
+    # than silently measure noise; DISTANCE arms are unaffected since they
+    # never move a value's text.
+    denial_phrases = (DEV_DENIAL_MEDICATION, DEV_DENIAL_ALLERGY)
+    if (first.text in denial_phrases) != (second.text in denial_phrases):
+        return None
     new_transcript = _splice(transcript, first, second.text, second, first.text)
     # The gold set {first.text, second.text} is unchanged; `_proposal_exact`
     # compares spans as a set, so the target string does not need editing --
