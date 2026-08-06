@@ -95,10 +95,15 @@ pipeline is faithful.
 
 **`missing` is the only state that does not degrade — and the only state whose
 decision requires recognizing no surface form at all** (`∄ mention` → empty
-evidence). Every state that must locate and read a span loses accuracy when the
-vocabulary changes. That is a cleaner account than "accuracy tracks logical
-complexity" (`ENHANCED_PLAN_20260805.md` §2): complexity and lexical dependence
-were confounded, and this table separates them.
+evidence). That single observation is what the table supports, and it is worth
+having: it shows the degradation is tied to reading surface forms rather than to
+the state machinery.
+
+It does **not** support a general law. `conflicting` drops 30.3 points with no
+disjoint phrase pool at all — its cue is structural — so the four non-zero gaps
+do not rank by anything measured here. `ENHANCED_PLAN_20260805.md` §2 read this
+ordering as "accuracy tracks logical complexity"; complexity and lexical
+dependence are confounded in these numbers and neither reading is established.
 
 ### The vocabulary is ten strings
 
