@@ -55,6 +55,23 @@ Answer with exactly one word: STATED, DENIED, or NOT_MENTIONED."""
 
 _ANSWER = re.compile(r"\b(STATED|DENIED|NOT_MENTIONED)\b")
 
+# Second prompt mode. Variant D of the 2026-08-06 probe found the model quoting
+# the span correctly and explaining its meaning correctly ("has tried no
+# medication") while emitting the wrong label in the same sentence -- Nano's
+# exact failure. If asking for the meaning FIRST and the label SECOND recovers
+# accuracy, the deficit is in label assignment, not comprehension, and Nano's
+# remedy is an output-format change rather than (only) more vocabulary.
+_PROMPT_TWOSTAGE = """You are reading a clinic transcript.
+
+{transcript}
+
+Regarding {topic}:
+Step 1 - quote the patient's exact words that bear on it.
+Step 2 - paraphrase what those words mean.
+Step 3 - on the last line write exactly one word: STATED if the patient names a
+specific one, DENIED if the patient says there is none, NOT_MENTIONED if the
+topic never comes up."""
+
 # Gold state -> the answer a correct reader gives.
 _EXPECTED = {
     FieldState.SUPPORTED: "STATED",
@@ -70,6 +87,7 @@ def main() -> int:
         "--development", type=Path, default=Path("artifacts/nano_h6/kaggle/dataset-dev")
     )
     parser.add_argument("--limit", type=int, default=40, help="documents per arm")
+    parser.add_argument("--mode", choices=("direct", "twostage"), default="direct")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -111,17 +129,23 @@ def main() -> int:
                 continue
             transcript, _ = applied
             for field, topic in _FIELD_QUESTION.items():
+                template = _PROMPT if args.mode == "direct" else _PROMPT_TWOSTAGE
                 prompt = tokenizer.apply_chat_template(
-                    [{"role": "user", "content": _PROMPT.format(
+                    [{"role": "user", "content": template.format(
                         transcript=transcript, topic=topic)}],
                     add_generation_prompt=True,
                 )
-                out = generate(model, tokenizer, prompt=prompt, max_tokens=6, verbose=False)
-                match = _ANSWER.search(out.upper())
+                out = generate(
+                    model, tokenizer, prompt=prompt,
+                    max_tokens=6 if args.mode == "direct" else 120, verbose=False,
+                )
+                # Two-stage puts the label last; take the final occurrence.
+                found = _ANSWER.findall(out.upper())
+                match = found[-1] if found else None
                 total[field] += 1
                 if match is None:
                     unparsed += 1
-                elif match.group(1) == _EXPECTED[FieldState.ABSENT]:
+                elif match == _EXPECTED[FieldState.ABSENT]:
                     correct[field] += 1
         n = sum(total.values())
         c = sum(correct.values())
@@ -163,6 +187,7 @@ def main() -> int:
         "schema": "nano.crossmodel-surface.v1",
         "status": "EXPLORATORY -- control for the H7-V hypothesis; gates nothing",
         "model": args.model,
+        "mode": args.mode,
         "documents_per_arm": len(pool),
         "arms": results,
         "summary": summary,
