@@ -89,6 +89,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument("--max-examples", type=int, default=None,
+                        help="smoke-test only; truncates the document set")
     args = parser.parse_args()
 
     from nano_ai.training.evaluate_state_span import load_development_bundle
@@ -110,6 +112,8 @@ def main() -> int:
     base = load_development_bundle(
         args.development, expected_manifest_sha256=manifest_sha
     ).examples
+    if args.max_examples:
+        base = base[: args.max_examples]
 
     observations: list[ArmObservation] = []
     skipped: list[dict[str, object]] = []
