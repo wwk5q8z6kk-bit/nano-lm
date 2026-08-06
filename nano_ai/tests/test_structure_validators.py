@@ -22,12 +22,8 @@ class TestStructureValidationReward:
 
     def test_is_frozen(self) -> None:
         result = StructureValidation(True, "ok")
-        try:
+        with pytest.raises(dataclasses.FrozenInstanceError):
             result.valid = False  # type: ignore[misc]
-        except Exception:
-            pass
-        else:
-            raise AssertionError("StructureValidation should be immutable")
 
 
 class TestValidateMarkdownTable:
