@@ -161,29 +161,75 @@ The rule is a closed list matched end-to-end, not a polarity judgement.
 
 ---
 
-## 4. What this means
+## 4. The controlled experiment — and the claim it refuted
 
-**Neither component has learned polarity. Both have learned a list.**
+The three measurements above tempt an obvious conclusion: *neither component
+learned polarity, both learned a list.* That conclusion rests on **two** held-out
+strings for the model against **68** external triggers for the rule, and the
+two behave very differently (allergy 33.5%, medication 62.0%). n=2 cannot carry
+it. So I measured the model on the same independent vocabulary.
 
-- The model memorized 8 phrases and generalized to 2 unseen ones at 48%.
-- The regex enumerates ~10 phrases and generalizes to independent clinical
-  phrasing at 3%.
+**Design.** Hold the development transcripts, worlds, fields, and gold structure
+fixed. Substitute *only* the denial phrase, in both transcript and target. Any
+difference is then attributable to the surface form alone.
+`artifacts/nano_h6/analysis/lexical_substitution.json`, 413 gold-absent fields
+per arm, same frozen `epoch-2` checkpoint.
 
-The consequence is uncomfortable and load-bearing: **the H-cycle has been
-optimizing against a concept whose entire surface realization is ten strings.**
-H1 through H6 measured, gated, and rejected architectures on a benchmark that
-cannot distinguish learning the concept from learning the list. A model that
-scored 100% on `absent` here would tell us nothing about whether it recognizes
-`Denies medications.`
+| arm | denial phrasing | absent accuracy | rule recognises |
+|---|---|---|---|
+| TRAIN[2] | `I deny taking medications.` / `I deny allergies.` | **99.3%** | yes |
+| TRAIN[3] | `I denied taking medicine.` / `I denied any allergy.` | 99.0% | yes |
+| TRAIN[1] | `No nothing yet!` / `Not that I know of!` | 93.2% | yes |
+| TRAIN[0] | `No, nothing.` / `No allergies!` | 92.2% | yes |
+| EXTERNAL[6] | `I cannot take medications.` / `No signs of allergies.` | 93.2% | **no** |
+| EXTERNAL[2] | `I never took medications.` / `I never had allergies.` | 70.0% | **no** |
+| EXTERNAL[5] | `I didn't take medications.` / … | 69.2% | **no** |
+| EXTERNAL[1] | `I'm not on any medications.` / `I'm not allergic.` | 67.5% | **no** |
+| EXTERNAL[0] | `I don't take medications.` / `I don't have allergies.` | 67.1% | **no** |
+| EXTERNAL[3] | `I have no medications.` / `I have no allergies.` | 64.4% | **no** |
+| **DEV** | **`Nothing at all.` / `None whatsoever.`** | **48.2%** | yes |
+| EXTERNAL[7] | `Absence of medications.` / `Absence of allergies.` | 42.1% | **no** |
+| EXTERNAL[4] | `Negative for medications.` / `Negative for allergies.` | 28.1% | **no** |
 
-This does not invalidate the H-cycle's rejections — a rejection on a weak
-benchmark is still a rejection, and the copying results stand. It invalidates
-the *next* experiment, if that experiment is another architecture measured the
-same way. Scaling the model, adding a state head, or adopting the rule into the
-decision path would each be tuned against ten strings.
+Means: TRAIN **95.9%**, EXTERNAL **62.7%**, DEV 48.2%.
 
-**The binding constraint is the evaluation vocabulary, not the model, and not
-the architecture.** That is where the next work goes.
+**Three things follow, and the first one refutes what I wrote above.**
+
+**(a) The model did not merely memorise.** On eight phrasings it had never seen,
+drawn from a lexicon authored years earlier for another purpose, it averages
+62.7% — far above chance, and *higher than* its 48.2% on the two sealed
+development strings. Partial polarity generalisation is real. The strong claim
+is withdrawn.
+
+**(b) On independent vocabulary the model beats the rule outright.** The regex
+recognises **none** of the eight external phrasings; the model handles them at
+62.7%. In-distribution the ordering reverses — rule 100%, model 95.9%.
+
+> **The rule-versus-model comparison inverts under distribution shift, and every
+> in-repo comparison to date measured only in-distribution.** E1's headline
+> result — deterministic solver 0.999 against generative 0.925 — was a
+> closed-vocabulary measurement. It does not license "prefer rules", and
+> `ENHANCED_PLAN_20260805.md` §3, which proposed replacing composite model
+> judgements with deterministic ones, rests on exactly that inference.
+
+**(c) The two development strings are unrepresentatively hard.** DEV at 48.2%
+sits *below* six of eight independent phrasings. H6's absence gate required
+383/413 = 92.7%; on three of the four training-distribution phrasings the same
+checkpoint scores 93.2%, 99.0%, 99.3% — it clears that gate. The gate outcome
+turned on two specific strings.
+
+**This does not reverse H6's rejection.** The threshold was frozen in advance,
+the measurement was correct, and the verdict stands. What changes is the
+*diagnosis*: H6 was not rejected because a state-conditioned residual cannot
+represent absence. It was rejected because absence was scored on two adversarial
+surface forms, and no one — including me, until today — knew that was what the
+gate measured.
+
+**The binding constraint is the evaluation vocabulary.** Ten strings decide the
+verdict, a 71-point accuracy swing separates the best phrasing from the worst,
+and nothing in the H-cycle distinguished the concept from its surface forms.
+Scaling the model, adding a state head, or promoting the rule into the decision
+path would each be tuned against that. Fix the benchmark first.
 
 ## 5. Honest limits of this result
 
