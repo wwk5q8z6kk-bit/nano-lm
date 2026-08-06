@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import dataclasses
+
+import pytest
+
 from nano_ai.structure_validators import (
     StructureValidation,
     validate_markdown_table,
