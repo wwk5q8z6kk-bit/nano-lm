@@ -299,9 +299,216 @@ TEMPLATE_ARMS = (
 # read this to restrict scoring -- see `run_surface_harness.py::_PRIMARY_FIELDS`.
 VALUE_TEMPLATE_FIELDS = ("medication", "allergy")
 
+# ------------------------------------------------------------- conflicting arms
+#
+# `conflicting` documents are the one state whose 2026-08-05/06 held-out drop
+# (30.3 points) had NO disjoint phrase pool behind it -- the repeated-question
+# wording is drawn from the same `_QUESTIONS[split][field]` pool as every other
+# variant. So this is the strongest candidate for a genuinely structural
+# failure rather than a lexical one, and it needs two axes, not one:
+#
+#   conflicting_value      -- which two values conflict (a "value" axis for
+#                              this state, restricted to medication/allergy
+#                              the same way VALUE_ARMS is, for the same reason:
+#                              those are the only fields with an open,
+#                              calibration-sourced vocabulary to draw on).
+#   conflicting_structure  -- how the two mentions relate to each other:
+#                              their order, and the distance between them.
+#
+# Both need a per-document transform rather than a fixed (source, target)
+# string mapping: `substitute()` applies its pairs sequentially via
+# `str.replace`, so a literal order swap ("A"->"B", "B"->"A") would have its
+# second replacement immediately undo the first, or a stray occurrence of "B"
+# already in the document would corrupt into "A". A transform instead reads
+# the actual gold spans via `parse_state_span_summary` and splices text at
+# their real offsets in one pass.
+#
+# Checked against the H6 training generator, 2026-08-06
+# (`nano_ai/training/state_span_data.py::_variant_lines`, the `conflicting`
+# branch): the repeated question/answer is *always* appended immediately after
+# the base five-turn block, and the alternative value is *always* second
+# (`_alternate_value` is computed from, and placed after, the original). Every
+# document in every split shares this exact topology -- there is no
+# in-distribution variation in order or distance to draw a TRAIN arm from.
+# `conflicting_structure`'s arms are therefore ALL held out by construction,
+# which is why it is the one axis with no `in_distribution=True` arm (see the
+# documented exception in `test_every_axis_has_a_baseline_and_a_reference`).
+
+
+def _ordered_conflict_spans(transcript, target):
+    """Locate the one conflicting field's two spans, earliest first.
+
+    Returns (field, first_span, second_span), or None when `target` does not
+    name exactly one conflicting field with exactly two spans -- i.e. this
+    document is not a `conflicting`-variant document, or its target is
+    malformed. Both are "does not apply", not an error: the caller drops the
+    document for this arm exactly like an out-of-scope `denial`/`hedge` arm.
+    """
+    try:
+        proposals = parse_state_span_summary(target, transcript)
+    except StateSpanFormatError:
+        return None
+    conflicting = [p for p in proposals if p.state is FieldState.CONFLICTING]
+    if len(conflicting) != 1 or len(conflicting[0].spans) != 2:
+        return None
+    first, second = sorted(conflicting[0].spans, key=lambda span: span.start)
+    return conflicting[0].field, first, second
+
+
+def _splice(transcript, first, first_text, second, second_text):
+    """Rebuild `transcript` with `first`'s span replaced by `first_text` and
+    `second`'s span replaced by `second_text`, in one pass over the original
+    offsets -- safe against either replacement text containing the other."""
+    return (
+        transcript[: first.start]
+        + first_text
+        + transcript[first.end : second.start]
+        + second_text
+        + transcript[second.end :]
+    )
+
+
+def _order_swap_transform(transcript, target):
+    located = _ordered_conflict_spans(transcript, target)
+    if located is None:
+        return None
+    _field, first, second = located
+    new_transcript = _splice(transcript, first, second.text, second, first.text)
+    # The gold set {first.text, second.text} is unchanged; `_proposal_exact`
+    # compares spans as a set, so the target string does not need editing --
+    # re-parsing the swapped transcript finds both texts at their new offsets.
+    return new_transcript, target
+
+
+# Generic, clinically-neutral filler turns for the distance arms: no drug,
+# allergy, symptom, or duration/severity vocabulary, so they cannot coincide
+# with any field's gold text (defense in depth: `_apply` in
+# `run_surface_harness.py` re-parses and drops the document if one ever did).
+_FILLER_TURNS = (
+    ("Anything else on your mind today?", "Not that I can think of right now."),
+    ("How has your energy been generally?", "About the same as usual, I'd say."),
+    ("Are you following up with anyone else about this?", "Not at the moment, no."),
+    ("Do you have any questions before we continue?", "No, please go ahead."),
+    ("Is there anything you want me to note for next time?", "Nothing comes to mind."),
+    ("How are you feeling about today's visit so far?", "It's going fine, thanks."),
+)
+
+
+def _make_distance_transform(pairs):
+    def transform(transcript, target):
+        located = _ordered_conflict_spans(transcript, target)
+        if located is None:
+            return None
+        _field, first, second = located
+        insert_at = transcript.find("\n", first.end)
+        if insert_at == -1 or insert_at >= second.start:
+            return None  # no room between the two mentions to insert safely
+        insert_at += 1
+        filler = "".join(
+            f"Doctor: {q}\nPatient: {a}\n"
+            for q, a in (_FILLER_TURNS[i % len(_FILLER_TURNS)] for i in range(pairs))
+        )
+        new_transcript = transcript[:insert_at] + filler + transcript[insert_at:]
+        return new_transcript, target  # values and their order are untouched
+
+    return transform
+
+
+BASELINE_CONFLICTING_STRUCTURE = SurfaceArm(
+    label="DEV", axis="conflicting_structure", mapping=(),
+    provenance="sealed development partition",
+)
+
+CONFLICTING_STRUCTURE_ARMS = (
+    BASELINE_CONFLICTING_STRUCTURE,
+    SurfaceArm(
+        label="ORDER",
+        axis="conflicting_structure",
+        mapping=(),
+        provenance=(
+            "author constructed -- NOT independent; structural probe, swaps which "
+            "of the two existing values physically appears first"
+        ),
+        transform=_order_swap_transform,
+    ),
+    *(
+        SurfaceArm(
+            label=f"DISTANCE[{n}]",
+            axis="conflicting_structure",
+            mapping=(),
+            provenance=(
+                "author constructed -- NOT independent; structural probe, inserts "
+                f"{n} clinically-neutral filler turn(s) between the two mentions"
+            ),
+            transform=_make_distance_transform(n),
+        )
+        for n in (1, 3, 6)
+    ),
+)
+
+# `conflicting_value`: which two medication/allergy values conflict, holding
+# the repeated-question structure fixed. Four TRAIN arms, each covering both
+# fields (mirroring `_value`'s one-arm-per-field-pair convention); every pair
+# is drawn from the calibration partition and the two members of a pair are
+# guaranteed distinct because the pool itself has no duplicates.
+_CONFLICTING_MEDICATION_PAIRS = tuple(
+    (_CALIBRATION_MEDICATION_VALUES[i], _CALIBRATION_MEDICATION_VALUES[i + 1])
+    for i in range(0, 8, 2)
+)
+_CONFLICTING_ALLERGY_PAIRS = tuple(
+    (_CALIBRATION_ALLERGY_VALUES[i], _CALIBRATION_ALLERGY_VALUES[i + 1])
+    for i in range(0, 8, 2)
+)
+
+
+def _make_conflicting_value_transform(med_pair, alg_pair):
+    def transform(transcript, target):
+        located = _ordered_conflict_spans(transcript, target)
+        if located is None:
+            return None
+        field, first, second = located
+        if field is FieldName.MEDICATION:
+            value_a, value_b = med_pair
+        elif field is FieldName.ALLERGY:
+            value_a, value_b = alg_pair
+        else:
+            return None  # chief_complaint/duration/severity have no open pool
+        new_transcript = _splice(transcript, first, value_a, second, value_b)
+        new_target = target.replace(
+            f"[{first.text};{second.text}]", f"[{value_a};{value_b}]"
+        )
+        return new_transcript, new_target
+
+    return transform
+
+
+BASELINE_CONFLICTING_VALUE = SurfaceArm(
+    label="DEV", axis="conflicting_value", mapping=(),
+    provenance="sealed development partition",
+)
+
+CONFLICTING_VALUE_ARMS = (
+    BASELINE_CONFLICTING_VALUE,
+    *(
+        SurfaceArm(
+            label=f"TRAIN[{i}]",
+            axis="conflicting_value",
+            mapping=(),
+            provenance="calibration partition (training distribution, development not opened)",
+            in_distribution=True,
+            transform=_make_conflicting_value_transform(med_pair, alg_pair),
+        )
+        for i, (med_pair, alg_pair) in enumerate(
+            zip(_CONFLICTING_MEDICATION_PAIRS, _CONFLICTING_ALLERGY_PAIRS, strict=True)
+        )
+    ),
+)
+
 ALL_AXES = {
     "denial": DENIAL_ARMS,
     "hedge": HEDGE_ARMS,
     "value": VALUE_ARMS,
     "template": TEMPLATE_ARMS,
+    "conflicting_value": CONFLICTING_VALUE_ARMS,
+    "conflicting_structure": CONFLICTING_STRUCTURE_ARMS,
 }
