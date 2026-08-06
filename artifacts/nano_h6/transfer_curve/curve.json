@@ -63,6 +63,20 @@
       "status": "ok",
       "train_seconds": 340.1,
       "worst_class_recall": 0.4
+    },
+    {
+      "base": "SmolLM2-1.7B",
+      "clears_bar": false,
+      "control_accuracy": 0.5,
+      "dev_arm": 1.0,
+      "held_out_mean": 0.9972,
+      "in_distribution_mean": 0.975,
+      "interpretable": false,
+      "license": "Apache-2.0",
+      "repo": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "status": "ok",
+      "train_seconds": 412.5,
+      "worst_class_recall": 0.0
     }
   ],
   "preregistration": "papers/PREREG_TRANSFER_CURVE.md",
