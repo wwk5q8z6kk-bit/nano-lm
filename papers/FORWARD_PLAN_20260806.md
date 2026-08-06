@@ -89,8 +89,14 @@ Root cause *unknown*. Cheapest discriminating test: does the tuned 3B handle
 hedges? The hedge arms exist; the probe does not yet run them.
 
 **H-6. Everything is synthetic.** No claim transfers to real documents. The
-product side is worse than unproven — wedge over-abstains (3/10 useful on real
-documents). The open-licensed dogfood corpus is the only route.
+product side is worse than unproven — but **less is established than this repo
+has been claiming**. The "3/10 useful" figure is over *this project's own repo
+papers*, not third-party documents, and the `_relevant_claim` diagnosis is stale
+(already partly fixed; it accounts for one of three failures, and one of those is
+a spelling mismatch). Ablating the gate recovers 3 failures and creates 2
+ungrounded assertions, so it is load-bearing. See
+`papers/FINDING_WEDGE_ABSTENTION_AUDIT.md`. The open-licensed dogfood corpus is
+still the only route to a real-document claim.
 
 **H-7. Systematic weakness: denominator degeneracy.** Four instances this cycle
 (`fabric/slice.py:247`, DP-1's C1, the crossmodel probe v1, and its own v2

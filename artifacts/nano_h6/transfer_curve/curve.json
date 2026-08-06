@@ -35,6 +35,20 @@
       "status": "ok",
       "train_seconds": 193.1,
       "worst_class_recall": 0.0
+    },
+    {
+      "base": "Qwen2.5-0.5B",
+      "clears_bar": false,
+      "control_accuracy": 0.5,
+      "dev_arm": 0.0,
+      "held_out_mean": 0.0833,
+      "in_distribution_mean": 0.5,
+      "interpretable": false,
+      "license": "Apache-2.0",
+      "repo": "Qwen/Qwen2.5-0.5B-Instruct",
+      "status": "ok",
+      "train_seconds": 171.1,
+      "worst_class_recall": 0.0
     }
   ],
   "preregistration": "papers/PREREG_TRANSFER_CURVE.md",
