@@ -69,7 +69,7 @@ When to retire:    when evaluation moves to real documents with naturally
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Mapping, Sequence
+from typing import Callable, Mapping, Sequence
 
 # Below this many seeds, a single arm's accuracy is reported but must not be
 # compared against another arm's. Derived from the 2026-08-05 replication:
