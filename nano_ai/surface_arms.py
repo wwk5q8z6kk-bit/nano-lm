@@ -355,6 +355,33 @@ def _ordered_conflict_spans(transcript, target):
     return conflicting[0].field, first, second
 
 
+_FIELD_LABELS = {
+    FieldName.CHIEF_COMPLAINT: "CC",
+    FieldName.DURATION: "DUR",
+    FieldName.SEVERITY: "SEV",
+    FieldName.MEDICATION: "MED",
+    FieldName.ALLERGY: "ALG",
+}
+
+
+def _replace_conflict_payload(target, field, value_a, value_b):
+    """Rewrite `field`'s `C[...]` payload to `value_a;value_b`.
+
+    Bracket order in `target` reflects the *evidence* tuple the dataset
+    generator built (roughly: original value, then alternative), which is
+    independent of which value physically occurs first in the transcript --
+    confirmed by `dev-0008-conflicting`, where the physically-first mention is
+    "Nothing at all." (a denial) but that text is the *second* bracket entry.
+    Locating the field's own `C[` prefix and replacing everything up to the
+    matching `]` sidesteps that ordering entirely, rather than guessing which
+    of the two possible bracket orders `target` happens to use.
+    """
+    prefix = f"{_FIELD_LABELS[field]}:C["
+    start = target.index(prefix)
+    end = target.index("]", start)
+    return target[: start + len(prefix)] + f"{value_a};{value_b}" + target[end:]
+
+
 def _splice(transcript, first, first_text, second, second_text):
     """Rebuild `transcript` with `first`'s span replaced by `first_text` and
     `second`'s span replaced by `second_text`, in one pass over the original
