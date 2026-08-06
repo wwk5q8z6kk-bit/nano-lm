@@ -64,6 +64,13 @@ def main() -> int:
              "papers/DECISION_SPAN_PORT.md -- the v1 build parsed gold.spans and "
              "discarded them, which is why the tuned model emitted no span.",
     )
+    parser.add_argument(
+        "--balance", action="store_true",
+        help="downsample every label to the minority-class count. The v1 build "
+             "took the natural mix (supported 71.5%%, absent 22.9%%, missing 5.6%%) "
+             "and four of five bases in the transfer curve collapsed on exactly "
+             "the 5.6%% class -- see papers/RESULT_TRANSFER_CURVE.md.",
+    )
     args = parser.parse_args()
 
     from nano_ai.surface_arms import DENIAL_ARMS
@@ -82,6 +89,7 @@ def main() -> int:
     print(f"fit examples: {len(fit)}   (calibration and development NOT read)")
 
     rows: list[dict] = []
+    row_labels: list[str] = []
     states = Counter()
     for example in fit:
         for gold in parse_state_span_summary(example.target, example.transcript):
@@ -115,11 +123,26 @@ def main() -> int:
                     ]
                 }
             )
+            row_labels.append(gold.state.value)
             states[gold.state.value] += 1
 
     print(f"examples built: {len(rows)}   label mix: {dict(states)}")
     if len(states) < 2:
         raise SystemExit("refusing to train on a single-label dataset")
+
+    if args.balance:
+        by_label: dict[str, list] = {}
+        for row, label in zip(rows, row_labels):
+            by_label.setdefault(label, []).append(row)
+        keep = min(len(v) for v in by_label.values())
+        balanced_rng = random.Random(args.seed)
+        rows = []
+        for label in sorted(by_label):
+            pool = by_label[label]
+            balanced_rng.shuffle(pool)
+            rows.extend(pool[:keep])
+        states = Counter({k: keep for k in by_label})
+        print(f"balanced: {keep} per label x {len(by_label)} labels = {len(rows)} rows")
 
     rng = random.Random(args.seed)
     rng.shuffle(rows)
@@ -153,6 +176,7 @@ def main() -> int:
                               "development denial phrasings and all held-out arm "
                               "phrasings; build aborts on any match",
                 "label_mix": dict(states),
+                "balanced": bool(args.balance),
                 "target_format": "state_and_span_text" if args.with_spans else "state_label_only",
                 "seed": args.seed,
                 "files": written,
