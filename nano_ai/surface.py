@@ -82,6 +82,16 @@ class SurfaceError(ValueError):
     """A surface arm cannot be applied without guessing."""
 
 
+#: A structural transform: takes (transcript, target) and returns a rewritten
+#: (transcript, target), or None when the arm does not apply to this document
+#: (e.g. no conflicting field present). Unlike `mapping`, a transform can move
+#: text rather than only substitute it -- needed for arms that swap the order
+#: of two existing values or change the distance between them, neither of
+#: which a sequence of independent (source, target) string replacements can
+#: express without one replacement corrupting the text the other just wrote.
+ArmTransform = Callable[[str, str], "tuple[str, str] | None"]
+
+
 @dataclass(frozen=True, slots=True)
 class SurfaceArm:
     """One wording of a target concept, substituted into fixed documents."""
@@ -91,6 +101,7 @@ class SurfaceArm:
     mapping: tuple[tuple[str, str], ...]  # (original phrase, replacement)
     provenance: str  # where the wording came from; "training distribution" etc.
     in_distribution: bool = False
+    transform: ArmTransform | None = None
 
     def replacement_for(self, original: str) -> str | None:
         for source, target in self.mapping:
@@ -117,6 +128,34 @@ def substitute(text: str, arm: SurfaceArm, *, require_unique: bool = True) -> st
             )
         out = out.replace(source, target)
     return out
+
+
+def apply_arm(transcript: str, target: str, arm: SurfaceArm) -> tuple[str, str] | None:
+    """Rewrite one (transcript, target) pair under an arm.
+
+    Mapping-based arms (the common case) call `substitute` on the transcript
+    and mirror the same phrase pairs into the bracketed gold target string.
+    Transform-based arms delegate entirely to `arm.transform`, which owns
+    both strings and returns None when the arm does not apply to this
+    document -- the caller must treat None as "drop this document for this
+    arm", exactly like a `SurfaceError` from the mapping path.
+    """
+    if arm.transform is not None:
+        if arm.mapping:
+            raise SurfaceError(
+                f"{arm.label}: an arm cannot carry both a mapping and a transform"
+            )
+        return arm.transform(transcript, target)
+    try:
+        new_transcript = substitute(transcript, arm)
+    except SurfaceError:
+        return None
+    new_target = target
+    for source, replacement in arm.mapping:
+        new_target = new_target.replace(f"[{source}]", f"[{replacement}]")
+        new_target = new_target.replace(f"[{source};", f"[{replacement};")
+        new_target = new_target.replace(f";{source}]", f";{replacement}]")
+    return new_transcript, new_target
 
 
 @dataclass(frozen=True, slots=True)
