@@ -501,9 +501,7 @@ def _make_conflicting_value_transform(med_pair, alg_pair):
         else:
             return None  # chief_complaint/duration/severity have no open pool
         new_transcript = _splice(transcript, first, value_a, second, value_b)
-        new_target = target.replace(
-            f"[{first.text};{second.text}]", f"[{value_a};{value_b}]"
-        )
+        new_target = _replace_conflict_payload(target, field, value_a, value_b)
         return new_transcript, new_target
 
     return transform
