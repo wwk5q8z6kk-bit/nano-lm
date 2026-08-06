@@ -429,13 +429,6 @@ class TestConflictingArms:
 
     # -- conflicting_value ---------------------------------------------
 
-    def test_value_arm_rewrites_both_conflicting_values_and_the_target(self):
-        arm = next(a for a in CONFLICTING_VALUE_ARMS if a.label == "TRAIN[0]")
-        med_a, med_b = _CONFLICTING_MEDICATION_PAIRS[0]
-        out = apply_arm(self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm)
-        # duration is not medication/allergy -- out of this arm's scope
-        assert out is None
-
     def test_value_arm_is_a_no_op_for_fields_without_an_open_pool(self):
         for arm in CONFLICTING_VALUE_ARMS:
             if arm.label == "DEV":
