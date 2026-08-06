@@ -231,11 +231,49 @@ and nothing in the H-cycle distinguished the concept from its surface forms.
 Scaling the model, adding a state head, or promoting the rule into the decision
 path would each be tuned against that. Fix the benchmark first.
 
-## 5. Honest limits of this result
+## 5. The seed replication — the falsification partly succeeded
 
-- **The substitution arms share a single frozen checkpoint and one seed.** The
-  71-point spread across phrasings is large enough that seed noise is unlikely to
-  explain it, but no confidence interval is offered and none should be inferred.
+The §4 arms share one checkpoint and one seed, so the 71-point spread might be
+variance rather than sensitivity. H6 trained a second seed. Running the identical
+arms on `seed-20260806/epoch-2`:
+
+| arm | seed 20260805 | seed 20260806 | \|Δ\| |
+|---|---|---|---|
+| TRAIN[0..3] | 92.2 / 93.2 / 99.3 / 99.0 | 99.8 / 94.9 / 99.8 / 99.3 | **mean 2.5** |
+| DEV | 48.2 | 52.3 | 4.1 |
+| EXTERNAL[0..7] | 67.1 / 67.5 / 70.0 / 64.4 / 28.1 / 69.2 / 93.2 / 42.1 | 99.0 / 38.0 / 98.3 / 96.6 / 69.5 / 98.8 / 47.0 / 54.7 | **mean 31.5** |
+
+**Mean absolute seed-to-seed difference: 2.5 points in-distribution, 31.5 points
+out-of-distribution — a 12.6× ratio.** Individual arms swing as much as 46.2
+points. Seed 05's best external phrasing (`I cannot take medications.`, 93.2%) is
+seed 06's second-worst (47.0%); seed 05's worst (`Negative for…`, 28.1%) is
+mid-table on seed 06 (69.5%).
+
+Rank correlation between the two seeds across the eight external arms:
+**14 of 28 concordant pairs, Kendall τ = 0.00** — exactly chance.
+
+**The falsification succeeded in part and made the finding worse.** Per-arm
+out-of-distribution accuracy is *not* a stable property of the training recipe;
+at n=1 seed it is close to unmeasurable, so the §4 arm-level spread must not be
+read as a property of the model. What survives — and strengthens — is the
+aggregate, which replicates on both seeds:
+
+- in-distribution mean **95.9% / 98.4%**, out-of-distribution mean **62.7% /
+  75.2%**: a ~23-point gap present in both seeds;
+- the DEV arm is the low outlier under both seeds (48.2%, 52.3%);
+- both seeds clear H6's absence gate (92.7%) on in-distribution phrasings.
+
+So: two models differing only in seed agree on the phrasings they were trained
+on and are **uncorrelated** on the phrasings they were not. Any surface
+instrument must therefore aggregate over seeds *and* arms, and report no
+arm-level number from a single seed.
+
+*Sample caution: two seeds, eight arms, one scale, one synthetic corpus. τ over
+8 items from 2 seeds is itself a noisy statistic. The claim is that per-arm OOD
+accuracy is consistent with being seed-determined — not that τ is exactly 0 in
+the population.*
+
+## 6. Honest limits of this result
 - **The eight external phrasings are patient-voice sentences I constructed around
   external triggers**, not sampled utterances. The triggers are independent; the
   framing is mine. `Negative for …` and `Absence of …` are clinician register in
