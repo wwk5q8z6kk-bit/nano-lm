@@ -1,5 +1,11 @@
 # Result — DP-1, and the vocabulary ceiling it exposed
 
+> **Prior art.** The failure mode measured here is well established in
+> general NLP (HANS 2019, CheckList 2020, contrast sets 2020, shortcut
+> learning 2020). See `papers/PRIOR_ART.md` for what is ours and what is not —
+> the contribution is domain transfer and instrumentation, not the concept.
+
+
 **2026-08-05.** Reports `papers/PREREG_DENIAL_POLARITY.md` against its frozen
 criteria, then the investigation the result forced.
 

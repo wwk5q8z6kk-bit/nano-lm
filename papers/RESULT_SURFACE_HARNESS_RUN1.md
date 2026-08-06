@@ -1,5 +1,11 @@
 # Result — surface harness, run 1: `absent` and `uncertain` fail differently
 
+> **Prior art.** The failure mode measured here is well established in
+> general NLP (HANS 2019, CheckList 2020, contrast sets 2020, shortcut
+> learning 2020). See `papers/PRIOR_ART.md` for what is ours and what is not —
+> the contribution is domain transfer and instrumentation, not the concept.
+
+
 **2026-08-05/06.** First full run of the instrument built in
 `nano_ai/surface.py`. Two checkpoints (seeds 20260805, 20260806) × two axes
 (denial, hedge) × 30 arms = 60 inference passes over the 1,000 sealed

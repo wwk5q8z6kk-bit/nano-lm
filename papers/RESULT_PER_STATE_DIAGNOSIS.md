@@ -1,5 +1,11 @@
 # Result — per-state re-diagnosis: it is lexical unfamiliarity, in every state
 
+> **Prior art.** The failure mode measured here is well established in
+> general NLP (HANS 2019, CheckList 2020, contrast sets 2020, shortcut
+> learning 2020). See `papers/PRIOR_ART.md` for what is ours and what is not —
+> the contribution is domain transfer and instrumentation, not the concept.
+
+
 **2026-08-06.** Subtask 14. Synthesis of four harness runs over the sealed
 development documents, two frozen seeds, CPU, $0. Supersedes
 `ENHANCED_PLAN_20260805.md` §2.

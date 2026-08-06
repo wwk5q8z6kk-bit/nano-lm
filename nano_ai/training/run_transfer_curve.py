@@ -26,10 +26,15 @@ BAR = 0.75
 LORA = dict(num_layers=8, batch_size=4, iters=400, max_seq_length=768, seed=20260806)
 
 BASES = [
-    ("SmolLM2-135M", "mlx-community/SmolLM2-135M-Instruct-4bit", "Apache-2.0"),
-    ("SmolLM2-360M", "mlx-community/SmolLM2-360M-Instruct-4bit", "Apache-2.0"),
-    ("Qwen2.5-0.5B", "mlx-community/Qwen2.5-0.5B-Instruct-4bit", "Apache-2.0"),
-    ("SmolLM2-1.7B", "mlx-community/SmolLM2-1.7B-Instruct-4bit", "Apache-2.0"),
+    # All verified 2026-08-06: public, ungated, license apache-2.0 via the HF API.
+    # mlx_lm converts HF safetensors on load, so the canonical repos are used
+    # rather than mlx-community mirrors (the 4-bit mirror names I first guessed
+    # do not exist; recorded so the next session does not repeat it).
+    ("SmolLM2-135M", "HuggingFaceTB/SmolLM2-135M-Instruct", "Apache-2.0"),
+    ("SmolLM2-360M", "HuggingFaceTB/SmolLM2-360M-Instruct", "Apache-2.0"),
+    ("Qwen2.5-0.5B", "Qwen/Qwen2.5-0.5B-Instruct", "Apache-2.0"),
+    ("Qwen2.5-1.5B", "Qwen/Qwen2.5-1.5B-Instruct", "Apache-2.0"),
+    ("SmolLM2-1.7B", "HuggingFaceTB/SmolLM2-1.7B-Instruct", "Apache-2.0"),
 ]
 
 
