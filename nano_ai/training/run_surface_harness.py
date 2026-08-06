@@ -21,21 +21,16 @@ from pathlib import Path
 import torch
 
 from nano_ai.adapters.state_span import StateSpanFormatError, parse_state_span_summary
-from nano_ai.surface import ArmObservation, SurfaceError, aggregate, report_lines, substitute
+from nano_ai.surface import ArmObservation, aggregate, apply_arm, report_lines
 from nano_ai.surface_arms import ALL_AXES, VALUE_TEMPLATE_FIELDS
 
 
 def _apply(example, arm):
     """Rewrite one example under an arm, or None when it cannot be applied."""
-    try:
-        transcript = substitute(example.transcript, arm)
-    except SurfaceError:
+    rewritten = apply_arm(example.transcript, example.target, arm)
+    if rewritten is None:
         return None
-    target = example.target
-    for source, replacement in arm.mapping:
-        target = target.replace(f"[{source}]", f"[{replacement}]")
-        target = target.replace(f"[{source};", f"[{replacement};")
-        target = target.replace(f";{source}]", f";{replacement}]")
+    transcript, target = rewritten
     payload = example.to_dict()
     payload["transcript"] = transcript
     payload["target"] = target
