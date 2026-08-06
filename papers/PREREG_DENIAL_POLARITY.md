@@ -29,6 +29,24 @@ is changed, no confidence is altered, and the model is not retrained. The rule
 reuses `nano_ai/contract.py:93` verbatim — the same detector already used at
 `contract.py:313` to validate ABSENT claims.
 
+### Scope limit, recorded before measurement (amended pre-run)
+
+`_DENIAL_PATTERNS` (`contract.py:55`) has entries for **`medication` and
+`allergy` only**. For `chief_complaint`, `duration`, and `severity`,
+`_is_field_denial` returns `False` unconditionally, so the rule **cannot fire**
+and absent errors in those three fields are structurally unrecoverable by it.
+
+This bounds C1 in advance: if a material share of gold-`absent` fields on
+calibration are outside medication/allergy, C1 can fail for reasons that say
+nothing about polarity recognition. The probe therefore reports gold-`absent`
+counts and rule firings **per field**, so a C1 failure can be attributed to
+pattern coverage rather than to the mechanism. Attribution is a diagnosis, not
+an escape: C1 is not reinterpreted after the fact, and a fail is recorded as a
+fail.
+
+Also note `pattern.fullmatch(text)` — the *entire* span must be the denial
+phrase. A denial embedded in a longer span will not match.
+
 ## 3. Partition and procedure
 
 - **Partition:** calibration (`artifacts/nano_h5/data`, 800 examples / 4,000
