@@ -175,3 +175,97 @@ class TestArmDefinitions:
         for arms in ALL_AXES.values():
             baseline = next(a for a in arms if a.label == "DEV")
             assert baseline.in_distribution is False
+
+
+class TestValueTemplateArms:
+    """`value` and `template` vary the world (which name / which frame) rather
+    than a phrase's polarity. Their pools were verified against the actual
+    dev.jsonl / calibration.jsonl records this session (progress.md, session
+    3): dev's 24 medication + 24 allergy names and calibration's 16 + 16 match
+    these module constants exactly, disjointly, and the fixed templates cover
+    100% of both partitions' medication/allergy lines. These tests pin the
+    structural invariants that verification depended on, without requiring the
+    (untracked, regenerable) dataset files at test time.
+    """
+
+    def test_value_arms_cover_the_calibration_pool_one_arm_per_name_pair(self):
+        # BASELINE + one TRAIN arm per (medication, allergy) pair in the
+        # calibration partition -- zip(..., strict=True) in surface_arms.py
+        # would already raise at import time if the two pools disagreed in
+        # length, so this also pins that they didn't.
+        assert len(_CALIBRATION_MEDICATION_VALUES) == len(_CALIBRATION_ALLERGY_VALUES)
+        assert len(VALUE_ARMS) == 1 + len(_CALIBRATION_MEDICATION_VALUES)
+        assert sum(a.in_distribution for a in VALUE_ARMS) == len(_CALIBRATION_MEDICATION_VALUES)
+
+    def test_template_arms_cover_the_calibration_template_count(self):
+        assert len(TEMPLATE_ARMS) == 1 + len(_CALIBRATION_TEMPLATES)
+        assert sum(a.in_distribution for a in TEMPLATE_ARMS) == len(_CALIBRATION_TEMPLATES)
+
+    def test_dev_and_calibration_value_pools_are_disjoint(self):
+        # The property the axis depends on: swapping to a TRAIN value never
+        # coincidentally reproduces a development-partition name.
+        assert set(_DEV_MEDICATION_VALUES) & set(_CALIBRATION_MEDICATION_VALUES) == set()
+        assert set(_DEV_ALLERGY_VALUES) & set(_CALIBRATION_ALLERGY_VALUES) == set()
+
+    def test_value_and_template_arms_target_only_medication_and_allergy(self):
+        assert VALUE_TEMPLATE_FIELDS == ("medication", "allergy")
+
+    def test_value_train_arms_cite_the_calibration_partition(self):
+        for arm in VALUE_ARMS:
+            if arm.label == "DEV":
+                continue
+            assert "calibration partition" in arm.provenance
+            assert "development not opened" in arm.provenance
+
+    def test_template_train_arms_cite_the_calibration_partition(self):
+        for arm in TEMPLATE_ARMS:
+            if arm.label == "DEV":
+                continue
+            assert "calibration partition" in arm.provenance
+            assert "development not opened" in arm.provenance
+
+    def test_value_arm_rewrites_the_name_and_leaves_the_frame_alone(self):
+        # Development-style line: fixed frame ("Only {VALUE} so far."), one
+        # of the 24 dev medication names.
+        dev_value = _DEV_MEDICATION_VALUES[0]
+        line = _DEV_MEDICATION_TEMPLATE.replace("{VALUE}", dev_value)
+        arm = next(a for a in VALUE_ARMS if a.label == "TRAIN[0]")
+        cal_value = _CALIBRATION_MEDICATION_VALUES[0]
+        assert substitute(line, arm) == _DEV_MEDICATION_TEMPLATE.replace("{VALUE}", cal_value)
+
+    def test_value_arm_is_a_no_op_on_a_line_naming_a_different_value(self):
+        other_value = _DEV_MEDICATION_VALUES[1]
+        line = _DEV_MEDICATION_TEMPLATE.replace("{VALUE}", other_value)
+        arm = next(a for a in VALUE_ARMS if a.label == "TRAIN[0]")
+        # TRAIN[0]'s mapping only fires for _DEV_MEDICATION_VALUES[0]; a line
+        # naming a different dev value must pass through untouched.
+        assert substitute(line, arm) == line
+
+    def test_template_arm_rewrites_the_frame_and_leaves_the_name_alone(self):
+        dev_value = _DEV_ALLERGY_VALUES[0]
+        line = _DEV_ALLERGY_TEMPLATE.replace("{VALUE}", dev_value)
+        arm = next(a for a in TEMPLATE_ARMS if a.label == "TRAIN[2]")  # "[{VALUE}]"
+        assert substitute(line, arm) == f"[{dev_value}]"
+
+    def test_value_arm_mapping_has_no_ambiguous_substring_collisions(self):
+        # substitute() raises SurfaceError on >1 occurrence of a source phrase;
+        # a same-arm collision between two of its own source strings would
+        # make every real document unusable for that arm. Exercise every
+        # TRAIN arm against one full round of dev-template lines built from
+        # every dev value, for both fields.
+        for arm in VALUE_ARMS:
+            if arm.label == "DEV":
+                continue
+            for dev_value in _DEV_MEDICATION_VALUES:
+                substitute(_DEV_MEDICATION_TEMPLATE.replace("{VALUE}", dev_value), arm)
+            for dev_value in _DEV_ALLERGY_VALUES:
+                substitute(_DEV_ALLERGY_TEMPLATE.replace("{VALUE}", dev_value), arm)
+
+    def test_template_arm_mapping_has_no_ambiguous_substring_collisions(self):
+        for arm in TEMPLATE_ARMS:
+            if arm.label == "DEV":
+                continue
+            for dev_value in _DEV_MEDICATION_VALUES:
+                substitute(_DEV_MEDICATION_TEMPLATE.replace("{VALUE}", dev_value), arm)
+            for dev_value in _DEV_ALLERGY_VALUES:
+                substitute(_DEV_ALLERGY_TEMPLATE.replace("{VALUE}", dev_value), arm)
