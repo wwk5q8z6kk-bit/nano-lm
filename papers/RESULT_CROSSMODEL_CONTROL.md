@@ -82,12 +82,39 @@ first. If a vocabulary-rich model still shows 70+ points of surface sensitivity
 after task training, H7-V's premise is wrong and the experiment should not be run
 as written.
 
-## 6. Honest limits
+## 6. The degeneracy guard — two versions, both instructive
+
+The v1 probe scored `DENIED` only against gold-`absent` fields, so a model
+answering `DENIED` unconditionally would have scored 100%. Third instance of
+this anti-pattern in one cycle, after `fabric/slice.py:247` and DP-1's C1.
+
+**v2 fixed it wrongly.** It added a control block of never-rewritten fields and
+flagged collapse when ≥90% of control answers were one label. That control was
+93% gold-`supported`, so the model answered `STATED` 29/30, scored **96.7%
+correct**, and was flagged *collapsed*. A guard denominated in the raw answer
+distribution, without controlling for the gold distribution, fails a correct
+model. Fourth instance — this time in the guard itself.
+
+**v3 works.** The control block is **balanced** (15 gold-`supported`, 15
+gold-`missing`, never rewritten by any arm) and collapse is per-class recall
+below 0.20 — a model is collapsed when it cannot produce some label at all,
+which no gold skew can fake.
+
+Result: control accuracy **22/30 = 73.3%**, per-class recall `supported` **1.00**,
+`missing` 0.47, answers used `STATED` 23 / `NOT_MENTIONED` 7. **Not collapsed;
+the arm accuracies are interpretable.**
+
+And the confound resolves opposite to the worry: the model is not over-producing
+`DENIED`, it **essentially never produces it**. It holds both other labels and
+applies them correctly, then reads denial utterances as assertions. That is
+Nano's failure mode on a validated measurement, not an artifact of a
+one-sided score.
+
+## 7. Honest limits
 
 - One model, one quantisation, one prompt family, 15 documents per arm.
-- `DENIED` is scored only against gold-`absent` fields; the probe does not test
-  whether the model over-produces `DENIED` on gold-`supported` fields, so its
-  precision is unmeasured. A model answering `DENIED` always would score 100%
-  here — the same degeneracy this project has caught twice, and it is **not**
-  guarded against in this probe. That alone bars any positive claim about the
-  3B model's competence from these numbers.
+- **The zero-shot versus task-trained confound is untouched** by the guard fix
+  and remains the reason §4's fine-tuned control is required before H7-V.
+- `missing` recall of 0.47 on the control means the model is imperfect at the
+  *easy* class too, so its absolute accuracies understate what a tuned model
+  would reach. This bounds how much the arm figures can be pushed on.
