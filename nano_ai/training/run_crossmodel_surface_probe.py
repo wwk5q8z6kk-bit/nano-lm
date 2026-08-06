@@ -106,6 +106,10 @@ def main() -> int:
     )
     parser.add_argument("--limit", type=int, default=40, help="documents per arm")
     parser.add_argument("--mode", choices=("direct", "twostage"), default="direct")
+    parser.add_argument(
+        "--adapter-path", type=Path, default=None,
+        help="LoRA adapter to load; omit for the untuned base model",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -150,7 +154,11 @@ def main() -> int:
     print(f"control: {len(control)} never-rewritten fields, balanced "
           f"{per_class}/class ({[s.value for s in _CONTROL_STATES]})")
 
-    model, tokenizer = load(args.model)
+    model, tokenizer = load(
+        args.model,
+        **({"adapter_path": str(args.adapter_path)} if args.adapter_path else {}),
+    )
+    print(f"model: {args.model}   adapter: {args.adapter_path or '(none -- base)'}")
 
     def ask(transcript: str, topic: str) -> str | None:
         template = _PROMPT if args.mode == "direct" else _PROMPT_TWOSTAGE
@@ -248,6 +256,8 @@ def main() -> int:
         "schema": "nano.crossmodel-surface.v1",
         "status": "EXPLORATORY -- control for the H7-V hypothesis; gates nothing",
         "model": args.model,
+        "adapter_path": str(args.adapter_path) if args.adapter_path else None,
+        "task_trained": args.adapter_path is not None,
         "mode": args.mode,
         "control": {
             "n": control_n,
