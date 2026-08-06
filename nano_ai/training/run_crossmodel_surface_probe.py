@@ -131,7 +131,51 @@ def main() -> int:
     pool = pool[: args.limit]
     print(f"pool: {len(pool)} documents, both fields gold-absent")
 
+    # Control block: fields the arms never touch, covering the other answers.
+    control = []
+    for example in examples:
+        for gold in parse_state_span_summary(example.target, example.transcript):
+            if gold.field.value in _FIELD_QUESTION and gold.state in _CONTROL_STATES:
+                control.append((example.transcript, gold.field.value, gold.state))
+    control = control[: args.limit * 2]
+    print(f"control: {len(control)} never-rewritten fields "
+          f"({Counter(s.value for _, _, s in control)})")
+
     model, tokenizer = load(args.model)
+
+    def ask(transcript: str, topic: str) -> str | None:
+        template = _PROMPT if args.mode == "direct" else _PROMPT_TWOSTAGE
+        prompt = tokenizer.apply_chat_template(
+            [{"role": "user", "content": template.format(
+                transcript=transcript, topic=topic)}],
+            add_generation_prompt=True,
+        )
+        out = generate(
+            model, tokenizer, prompt=prompt,
+            max_tokens=6 if args.mode == "direct" else 120, verbose=False,
+        )
+        found = _ANSWER.findall(out.upper())
+        return found[-1] if found else None
+
+    # --- run the control FIRST; a collapsed model invalidates everything after
+    control_correct = 0
+    control_answers: Counter[str] = Counter()
+    for transcript, field, state in control:
+        answer = ask(transcript, _FIELD_QUESTION[field])
+        control_answers[answer or "UNPARSED"] += 1
+        if answer == _EXPECTED[state]:
+            control_correct += 1
+    control_n = len(control)
+    top_share = (
+        max(control_answers.values()) / control_n if control_n else 1.0
+    )
+    collapsed = top_share >= _COLLAPSE_SHARE
+    print(f"control accuracy: {control_correct}/{control_n} = "
+          f"{control_correct / control_n:.1%}   answers={dict(control_answers)}")
+    if collapsed:
+        print(f"  *** COLLAPSED: {top_share:.0%} of control answers are one label. "
+              "Arm accuracies below are NOT interpretable. ***")
+
     results = []
     for arm in DENIAL_ARMS:
         correct = Counter()
