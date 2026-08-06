@@ -99,11 +99,21 @@ evidence). That single observation is what the table supports, and it is worth
 having: it shows the degradation is tied to reading surface forms rather than to
 the state machinery.
 
-It does **not** support a general law. `conflicting` drops 30.3 points with no
-disjoint phrase pool at all — its cue is structural — so the four non-zero gaps
-do not rank by anything measured here. `ENHANCED_PLAN_20260805.md` §2 read this
-ordering as "accuracy tracks logical complexity"; complexity and lexical
-dependence are confounded in these numbers and neither reading is established.
+It does **not** support a general law. The four non-zero gaps do not rank by
+anything measured here. `ENHANCED_PLAN_20260805.md` §2 read this ordering as
+"accuracy tracks logical complexity"; complexity and lexical dependence are
+confounded in these numbers and neither reading is established.
+
+> **Correction (2026-08-06).** This section originally argued that `conflicting`
+> "drops 30.3 points with no disjoint phrase pool at all — its cue is
+> structural." **That was wrong**, and the harness refuted it. `conflicting` has
+> no disjoint *denial/hedge* pool, but the development manifest also declares
+> `open_value_lexicons_disjoint: true`, and `conflicting` is decided over two
+> *open values*. Substituting training-distribution values into the same
+> documents lifts it from 42.0% to **95.2%**, while structural interventions
+> (order swap, distance 1/3/6) move it 10.2 points against 17.3 points of seed
+> instability — no effect distinguishable from noise. `conflicting` is a lexical
+> failure too. See `papers/RESULT_PER_STATE_DIAGNOSIS.md`.
 
 ### The vocabulary is ten strings
 
