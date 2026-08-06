@@ -304,3 +304,230 @@ class TestValueTemplateArms:
                 substitute(_DEV_MEDICATION_TEMPLATE.replace("{VALUE}", dev_value), arm)
             for dev_value in _DEV_ALLERGY_VALUES:
                 substitute(_DEV_ALLERGY_TEMPLATE.replace("{VALUE}", dev_value), arm)
+
+
+class TestApplyArm:
+    """`apply_arm` is the pure entry point both the mapping path (denial,
+    hedge, value, template) and the transform path (conflicting_*) share.
+    """
+
+    def test_mapping_arm_behaves_exactly_like_substitute_plus_target_rewrite(self):
+        arm = SurfaceArm(
+            label="A", axis="denial",
+            mapping=(("Nothing at all.", "No, nothing."),),
+            provenance="test",
+        )
+        transcript = "Doctor: Meds?\nPatient: Nothing at all."
+        target = "MED:A[Nothing at all.]"
+        out = apply_arm(transcript, target, arm)
+        assert out == ("Doctor: Meds?\nPatient: No, nothing.", "MED:A[No, nothing.]")
+
+    def test_mapping_arm_returns_none_on_ambiguous_rewrite(self):
+        arm = SurfaceArm(
+            label="A", axis="denial", mapping=(("old", "new"),), provenance="test",
+        )
+        assert apply_arm("old and old", "X:A[old]", arm) is None
+
+    def test_transform_arm_delegates_to_the_transform(self):
+        def transform(transcript, target):
+            return transcript.upper(), target.upper()
+
+        arm = SurfaceArm(
+            label="T", axis="conflicting_structure", mapping=(), provenance="test",
+            transform=transform,
+        )
+        assert apply_arm("hi", "x:s[hi]", arm) == ("HI", "X:S[HI]")
+
+    def test_transform_arm_returning_none_is_a_drop(self):
+        arm = SurfaceArm(
+            label="T", axis="conflicting_structure", mapping=(), provenance="test",
+            transform=lambda transcript, target: None,
+        )
+        assert apply_arm("hi", "x:s[hi]", arm) is None
+
+    def test_an_arm_cannot_carry_both_a_mapping_and_a_transform(self):
+        arm = SurfaceArm(
+            label="Bad", axis="conflicting_structure",
+            mapping=(("a", "b"),), provenance="test",
+            transform=lambda transcript, target: (transcript, target),
+        )
+        with pytest.raises(SurfaceError, match="both a mapping and a transform"):
+            apply_arm("a", "x:s[a]", arm)
+
+
+class TestConflictingArms:
+    """`conflicting` is the one state whose 2026-08-05/06 held-out drop (30.3
+    points) had no disjoint phrase pool behind it, so it is the strongest
+    candidate for a genuinely structural failure. These fixtures mirror the
+    real dev.jsonl schema by hand (dev.jsonl itself is untracked, so tests
+    must not depend on reading it -- same discipline as TestValueTemplateArms).
+    """
+
+    # A conflicting-duration document: the base five-turn block, then the
+    # duration question repeated with a different answer at the end -- the
+    # exact topology `state_span_data.py::_variant_lines` always produces.
+    _DURATION_TRANSCRIPT = (
+        "Doctor: What's the issue today?\n"
+        "Patient: It started as knee pain and hasn't stopped.\n"
+        "Doctor: How many days has it been?\n"
+        "Patient: Started roughly 5 days prior.\n"
+        "Doctor: On a scale from mild to severe, where is it?\n"
+        "Patient: Pretty mild.\n"
+        "Doctor: Did you try any medicine?\n"
+        "Patient: Nothing at all.\n"
+        "Doctor: Do you have any known allergies?\n"
+        "Patient: None whatsoever.\n"
+        "Doctor: How many days has it been?\n"
+        "Patient: Started roughly 6 days prior."
+    )
+    _DURATION_TARGET = (
+        "CC:S[knee pain]|DUR:C[5 days;6 days]|SEV:S[mild]"
+        "|MED:A[Nothing at all.]|ALG:A[None whatsoever.]"
+    )
+
+    # A conflicting-medication document where one of the two conflicting
+    # values IS the denial phrase, and the target's bracket order is the
+    # REVERSE of physical transcript order -- the exact shape of the real
+    # `dev-0008-conflicting` record that caught the first version of
+    # `_make_conflicting_value_transform` guessing bracket order from
+    # physical position instead of reading it.
+    _MEDICATION_WITH_DENIAL_TRANSCRIPT = (
+        "Doctor: What's the issue today?\n"
+        "Patient: It started as knee pain and hasn't stopped.\n"
+        "Doctor: How many days has it been?\n"
+        "Patient: Started roughly 5 days prior.\n"
+        "Doctor: On a scale from mild to severe, where is it?\n"
+        "Patient: Pretty mild.\n"
+        "Doctor: Did you try any medicine?\n"
+        "Patient: Nothing at all.\n"
+        "Doctor: Do you have any known allergies?\n"
+        "Patient: None whatsoever.\n"
+        "Doctor: Did you try any medicine?\n"
+        "Patient: Only capsaicin cream so far."
+    )
+    _MEDICATION_WITH_DENIAL_TARGET = (
+        "CC:S[knee pain]|DUR:S[5 days]|SEV:S[mild]"
+        "|MED:C[capsaicin cream;Nothing at all.]|ALG:A[None whatsoever.]"
+    )
+
+    _NORMAL_TRANSCRIPT = (
+        "Doctor: What's the issue today?\n"
+        "Patient: It started as knee pain and hasn't stopped.\n"
+        "Doctor: How many days has it been?\n"
+        "Patient: Started roughly 5 days prior.\n"
+        "Doctor: On a scale from mild to severe, where is it?\n"
+        "Patient: Pretty mild.\n"
+        "Doctor: Did you try any medicine?\n"
+        "Patient: Nothing at all.\n"
+        "Doctor: Do you have any known allergies?\n"
+        "Patient: None whatsoever."
+    )
+    _NORMAL_TARGET = (
+        "CC:S[knee pain]|DUR:S[5 days]|SEV:S[mild]"
+        "|MED:A[Nothing at all.]|ALG:A[None whatsoever.]"
+    )
+
+    # -- conflicting_value ---------------------------------------------
+
+    def test_value_arm_rewrites_both_conflicting_values_and_the_target(self):
+        arm = next(a for a in CONFLICTING_VALUE_ARMS if a.label == "TRAIN[0]")
+        med_a, med_b = _CONFLICTING_MEDICATION_PAIRS[0]
+        out = apply_arm(self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm)
+        # duration is not medication/allergy -- out of this arm's scope
+        assert out is None
+
+    def test_value_arm_is_a_no_op_for_fields_without_an_open_pool(self):
+        for arm in CONFLICTING_VALUE_ARMS:
+            if arm.label == "DEV":
+                continue
+            assert apply_arm(self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm) is None
+
+    def test_value_arm_handles_denial_as_one_of_the_two_conflicting_values(self):
+        # Regression test: bracket order in `target` is the reverse of
+        # physical transcript order here. The fix reads the field's own
+        # C[...] segment directly instead of assuming an order.
+        arm = next(a for a in CONFLICTING_VALUE_ARMS if a.label == "TRAIN[0]")
+        med_a, med_b = _CONFLICTING_MEDICATION_PAIRS[0]
+        out = apply_arm(
+            self._MEDICATION_WITH_DENIAL_TRANSCRIPT,
+            self._MEDICATION_WITH_DENIAL_TARGET,
+            arm,
+        )
+        assert out is not None
+        transcript, target = out
+        assert f"Patient: {med_a}" in transcript  # replaced "Nothing at all."
+        assert f"Only {med_b} so far." in transcript  # replaced "capsaicin cream"
+        assert f"MED:C[{med_a};{med_b}]" in target
+        # Re-parsing must locate both spans uniquely -- the same defense the
+        # harness's `_apply` applies before ever scoring a rewritten example.
+        proposals = parse_state_span_summary(target, transcript)
+        conflicting = next(p for p in proposals if p.state.value == "conflicting")
+        assert {s.text for s in conflicting.spans} == {med_a, med_b}
+
+    def test_value_arm_is_a_no_op_on_a_document_with_no_conflicting_field(self):
+        for arm in CONFLICTING_VALUE_ARMS:
+            if arm.label == "DEV":
+                continue
+            assert apply_arm(self._NORMAL_TRANSCRIPT, self._NORMAL_TARGET, arm) is None
+
+    def test_value_arms_cover_the_calibration_pool_and_pairs_are_distinct(self):
+        assert len(CONFLICTING_VALUE_ARMS) == 1 + len(_CONFLICTING_MEDICATION_PAIRS)
+        assert len(_CONFLICTING_MEDICATION_PAIRS) == len(_CONFLICTING_ALLERGY_PAIRS)
+        for med_a, med_b in _CONFLICTING_MEDICATION_PAIRS:
+            assert med_a != med_b
+        for alg_a, alg_b in _CONFLICTING_ALLERGY_PAIRS:
+            assert alg_a != alg_b
+
+    # -- conflicting_structure -------------------------------------------
+
+    def test_order_swap_exchanges_the_two_physical_positions(self):
+        arm = next(a for a in CONFLICTING_STRUCTURE_ARMS if a.label == "ORDER")
+        transcript, target = apply_arm(
+            self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm
+        )
+        assert "Started roughly 6 days prior." in transcript.splitlines()[3]
+        assert "Started roughly 5 days prior." in transcript.splitlines()[-1]
+        # gold is a set -- the target string does not need to change
+        assert target == self._DURATION_TARGET
+        proposals = parse_state_span_summary(target, transcript)
+        conflicting = next(p for p in proposals if p.state.value == "conflicting")
+        assert {s.text for s in conflicting.spans} == {"5 days", "6 days"}
+
+    def test_order_swap_applies_to_fields_without_an_open_value_pool(self):
+        # Unlike conflicting_value, conflicting_structure works on ANY field
+        # -- it only moves existing text, never invents new values.
+        arm = next(a for a in CONFLICTING_STRUCTURE_ARMS if a.label == "ORDER")
+        assert apply_arm(self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm) is not None
+
+    def test_distance_arm_inserts_filler_and_preserves_values_and_target(self):
+        arm = next(a for a in CONFLICTING_STRUCTURE_ARMS if a.label == "DISTANCE[3]")
+        transcript, target = apply_arm(
+            self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm
+        )
+        assert len(transcript) > len(self._DURATION_TRANSCRIPT)
+        assert target == self._DURATION_TARGET
+        proposals = parse_state_span_summary(target, transcript)
+        conflicting = next(p for p in proposals if p.state.value == "conflicting")
+        assert {s.text for s in conflicting.spans} == {"5 days", "6 days"}
+
+    def test_distance_grows_with_the_requested_filler_count(self):
+        lengths = {}
+        for label in ("DISTANCE[1]", "DISTANCE[3]", "DISTANCE[6]"):
+            arm = next(a for a in CONFLICTING_STRUCTURE_ARMS if a.label == label)
+            transcript, _ = apply_arm(
+                self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm
+            )
+            lengths[label] = len(transcript)
+        assert lengths["DISTANCE[1]"] < lengths["DISTANCE[3]"] < lengths["DISTANCE[6]"]
+
+    def test_structure_arms_are_a_no_op_on_a_document_with_no_conflicting_field(self):
+        for arm in CONFLICTING_STRUCTURE_ARMS:
+            if arm.label == "DEV":
+                continue
+            assert apply_arm(self._NORMAL_TRANSCRIPT, self._NORMAL_TARGET, arm) is None
+
+    def test_dev_baseline_is_a_true_no_op_on_both_axes(self):
+        for arms in (CONFLICTING_VALUE_ARMS, CONFLICTING_STRUCTURE_ARMS):
+            arm = next(a for a in arms if a.label == "DEV")
+            out = apply_arm(self._DURATION_TRANSCRIPT, self._DURATION_TARGET, arm)
+            assert out == (self._DURATION_TRANSCRIPT, self._DURATION_TARGET)
