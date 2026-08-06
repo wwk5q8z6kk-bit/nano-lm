@@ -1,0 +1,923 @@
+{
+  "arm_provenance": {
+    "conflicting_structure": {
+      "DEV": "sealed development partition",
+      "DISTANCE[1]": "author constructed -- NOT independent; structural probe, inserts 1 clinically-neutral filler turn(s) between the two mentions",
+      "DISTANCE[3]": "author constructed -- NOT independent; structural probe, inserts 3 clinically-neutral filler turn(s) between the two mentions",
+      "DISTANCE[6]": "author constructed -- NOT independent; structural probe, inserts 6 clinically-neutral filler turn(s) between the two mentions",
+      "ORDER": "author constructed -- NOT independent; structural probe, swaps which of the two existing values physically appears first"
+    },
+    "conflicting_value": {
+      "DEV": "sealed development partition",
+      "TRAIN[0]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[1]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[2]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[3]": "calibration partition (training distribution, development not opened)"
+    }
+  },
+  "axes": [
+    "conflicting_value",
+    "conflicting_structure"
+  ],
+  "checkpoints": {
+    "seed05": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260805/epoch-2.pt",
+    "seed06": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260806/epoch-2.pt"
+  },
+  "observations": [
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 3119,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 199,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 190,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "conflicting_value",
+      "correct": 320,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "conflicting_value",
+      "correct": 87,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "conflicting_value",
+      "correct": 2,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "conflicting_value",
+      "correct": 321,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "conflicting_value",
+      "correct": 99,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "conflicting_value",
+      "correct": 2,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "conflicting_value",
+      "correct": 322,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "conflicting_value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "conflicting_value",
+      "correct": 0,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "conflicting_value",
+      "correct": 319,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "conflicting_value",
+      "correct": 84,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "conflicting_value",
+      "correct": 0,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 3119,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 199,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 190,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "ORDER",
+      "axis": "conflicting_structure",
+      "correct": 128,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "ORDER",
+      "axis": "conflicting_structure",
+      "correct": 734,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "ORDER",
+      "axis": "conflicting_structure",
+      "correct": 15,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 100
+    },
+    {
+      "arm": "DISTANCE[1]",
+      "axis": "conflicting_structure",
+      "correct": 144,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DISTANCE[1]",
+      "axis": "conflicting_structure",
+      "correct": 654,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "DISTANCE[1]",
+      "axis": "conflicting_structure",
+      "correct": 6,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 100
+    },
+    {
+      "arm": "DISTANCE[3]",
+      "axis": "conflicting_structure",
+      "correct": 136,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DISTANCE[3]",
+      "axis": "conflicting_structure",
+      "correct": 411,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "DISTANCE[3]",
+      "axis": "conflicting_structure",
+      "correct": 0,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 100
+    },
+    {
+      "arm": "DISTANCE[6]",
+      "axis": "conflicting_structure",
+      "correct": 113,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DISTANCE[6]",
+      "axis": "conflicting_structure",
+      "correct": 264,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "DISTANCE[6]",
+      "axis": "conflicting_structure",
+      "correct": 0,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 2991,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 109,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_value",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "conflicting_value",
+      "correct": 308,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "conflicting_value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "conflicting_value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "conflicting_value",
+      "correct": 308,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "conflicting_value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "conflicting_value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "conflicting_value",
+      "correct": 307,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "conflicting_value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "conflicting_value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "conflicting_value",
+      "correct": 307,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 387
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "conflicting_value",
+      "correct": 92,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "conflicting_value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 13
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 2991,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 109,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "conflicting_structure",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "ORDER",
+      "axis": "conflicting_structure",
+      "correct": 58,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "ORDER",
+      "axis": "conflicting_structure",
+      "correct": 689,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "ORDER",
+      "axis": "conflicting_structure",
+      "correct": 48,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 100
+    },
+    {
+      "arm": "DISTANCE[1]",
+      "axis": "conflicting_structure",
+      "correct": 98,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DISTANCE[1]",
+      "axis": "conflicting_structure",
+      "correct": 594,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "DISTANCE[1]",
+      "axis": "conflicting_structure",
+      "correct": 61,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 100
+    },
+    {
+      "arm": "DISTANCE[3]",
+      "axis": "conflicting_structure",
+      "correct": 107,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DISTANCE[3]",
+      "axis": "conflicting_structure",
+      "correct": 170,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "DISTANCE[3]",
+      "axis": "conflicting_structure",
+      "correct": 26,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 100
+    },
+    {
+      "arm": "DISTANCE[6]",
+      "axis": "conflicting_structure",
+      "correct": 128,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DISTANCE[6]",
+      "axis": "conflicting_structure",
+      "correct": 185,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 900
+    },
+    {
+      "arm": "DISTANCE[6]",
+      "axis": "conflicting_structure",
+      "correct": 21,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 100
+    }
+  ],
+  "schema": "nano.surface-harness.v1",
+  "skipped": [],
+  "status": "EXPLORATORY -- selects nothing, gates nothing",
+  "summaries": [
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "TRAIN[0]": 0.935,
+        "TRAIN[1]": 0.995,
+        "TRAIN[2]": 1.0,
+        "TRAIN[3]": 0.88
+      },
+      "arms": 4,
+      "axis": "conflicting_value",
+      "best_arm": "TRAIN[2]",
+      "scope": "in_distribution",
+      "seed_instability": 0.055,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.9525,
+      "surface_robust_accuracy": 0.88,
+      "surface_sensitivity": 0.12,
+      "worst_arm": "TRAIN[3]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.458
+      },
+      "arms": 1,
+      "axis": "conflicting_value",
+      "best_arm": "DEV",
+      "scope": "held_out",
+      "seed_instability": 0.228,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.458,
+      "surface_robust_accuracy": 0.458,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.458,
+        "TRAIN[0]": 0.935,
+        "TRAIN[1]": 0.995,
+        "TRAIN[2]": 1.0,
+        "TRAIN[3]": 0.88
+      },
+      "arms": 5,
+      "axis": "conflicting_value",
+      "best_arm": "TRAIN[2]",
+      "scope": "all",
+      "seed_instability": 0.0896,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.8536,
+      "surface_robust_accuracy": 0.458,
+      "surface_sensitivity": 0.542,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.5024,
+        "TRAIN[0]": 0.5769,
+        "TRAIN[1]": 0.5769,
+        "TRAIN[2]": 0.5,
+        "TRAIN[3]": 0.5
+      },
+      "arms": 5,
+      "axis": "conflicting_value",
+      "best_arm": "TRAIN[0]",
+      "scope": "cross_effect",
+      "seed_instability": 0.7467,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.5313,
+      "surface_robust_accuracy": 0.5,
+      "surface_sensitivity": 0.0769,
+      "worst_arm": "TRAIN[2]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 1.0
+      },
+      "arms": 1,
+      "axis": "conflicting_value",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.0,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "missing",
+      "surface_mean_accuracy": 1.0,
+      "surface_robust_accuracy": 1.0,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.7962,
+        "TRAIN[0]": 0.8114,
+        "TRAIN[1]": 0.8127,
+        "TRAIN[2]": 0.8127,
+        "TRAIN[3]": 0.8088
+      },
+      "arms": 5,
+      "axis": "conflicting_value",
+      "best_arm": "TRAIN[1]",
+      "scope": "cross_effect",
+      "seed_instability": 0.0335,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.8083,
+      "surface_robust_accuracy": 0.7962,
+      "surface_sensitivity": 0.0165,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.598
+      },
+      "arms": 1,
+      "axis": "conflicting_value",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.324,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.598,
+      "surface_robust_accuracy": 0.598,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.458,
+        "DISTANCE[1]": 0.484,
+        "DISTANCE[3]": 0.486,
+        "DISTANCE[6]": 0.482,
+        "ORDER": 0.372
+      },
+      "arms": 5,
+      "axis": "conflicting_structure",
+      "best_arm": "DISTANCE[3]",
+      "scope": "held_out",
+      "seed_instability": 0.1736,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.4564,
+      "surface_robust_accuracy": 0.372,
+      "surface_sensitivity": 0.114,
+      "worst_arm": "ORDER"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.458,
+        "DISTANCE[1]": 0.484,
+        "DISTANCE[3]": 0.486,
+        "DISTANCE[6]": 0.482,
+        "ORDER": 0.372
+      },
+      "arms": 5,
+      "axis": "conflicting_structure",
+      "best_arm": "DISTANCE[3]",
+      "scope": "all",
+      "seed_instability": 0.1736,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.4564,
+      "surface_robust_accuracy": 0.372,
+      "surface_sensitivity": 0.114,
+      "worst_arm": "ORDER"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.5024,
+        "DISTANCE[1]": 0.335,
+        "DISTANCE[3]": 0.13,
+        "DISTANCE[6]": 0.105,
+        "ORDER": 0.315
+      },
+      "arms": 5,
+      "axis": "conflicting_structure",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.2782,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.2775,
+      "surface_robust_accuracy": 0.105,
+      "surface_sensitivity": 0.3974,
+      "worst_arm": "DISTANCE[6]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 1.0
+      },
+      "arms": 1,
+      "axis": "conflicting_structure",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.0,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "missing",
+      "surface_mean_accuracy": 1.0,
+      "surface_robust_accuracy": 1.0,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.7962,
+        "DISTANCE[1]": 0.6933,
+        "DISTANCE[3]": 0.3228,
+        "DISTANCE[6]": 0.2494,
+        "ORDER": 0.7906
+      },
+      "arms": 5,
+      "axis": "conflicting_structure",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.1011,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.5705,
+      "surface_robust_accuracy": 0.2494,
+      "surface_sensitivity": 0.5468,
+      "worst_arm": "DISTANCE[6]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.598
+      },
+      "arms": 1,
+      "axis": "conflicting_structure",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.324,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.598,
+      "surface_robust_accuracy": 0.598,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    }
+  ]
+}
