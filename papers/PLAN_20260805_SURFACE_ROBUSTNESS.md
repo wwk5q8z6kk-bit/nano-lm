@@ -125,7 +125,16 @@ value phrasings each varied over K arms; `min`/`mean`/`spread` reported for
 every state. External inventories vendored with provenance, evaluation-only:
 negspacy `en_clinical` for negation (done — MIT, hashed), medspacy
 `POSSIBLE_EXISTENCE` (18 rules, MIT) for hedging.
-*Exit:* every accuracy in the repo carries its surface-sensitivity.
+
+**Multi-seed is a requirement, not a refinement.** The seed replication (§5 of
+the result) found mean |Δ| of 2.5 points in-distribution against 31.5 points
+out-of-distribution, with **Kendall τ = 0.00** between seeds on which novel
+phrasings the model handles. A single-seed arm-level number is not a
+measurement. The harness reports `mean over (arms × seeds)` with the per-arm
+figure marked unreliable below a stated seed count, and `min` is taken over arm
+means, never over single observations.
+*Exit:* every accuracy in the repo carries its surface-sensitivity and its seed
+count.
 
 **P1 — Re-diagnose all five states through P0 ($0).**
 `uncertain` (76.0%) and `conflicting` (57.2%) have never been separated into
