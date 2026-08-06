@@ -144,11 +144,28 @@ and its 0.572 span accuracy is a real retrieval problem that no lexical work
 touches.
 *Exit:* a defensible statement of what is actually broken, per state.
 
-**P2 — Retire the vacuous gates.** C1's shape (`before + fraction × recoverable`)
-exists elsewhere. Audit every threshold in the repo against the gate-design rule
-in §2 and add the data-sufficiency clause where it is missing. `fabric` gate v2
-already has the coverage floor; this extends the same discipline to the
-`nano_ai` selection slices.
+**P2 — Retire the vacuous gates. SHIPPED, and the audit came back mostly
+clean.** Every gate denominator in the repo was checked for C1's shape. The
+result is better than expected and worth recording precisely: **nano_ai's H6
+gates are not degenerate.** `zero_wrong_presented` *is* a count the model can
+zero by presenting nothing, but it is ANDed with six semantic gates that are
+absolute numerator floors over fixed gold denominators (3041/5000, 2167/2987,
+219/250, 383/413, 236/250, 228/250 — every floor ≥ 0.5 of gold). Abstaining
+zeroes those numerators, so the composite fails.
+
+That safety was structural and undocumented. `nano_ai/tests/test_gate_degeneracy_safety.py`
+now pins it in 20 tests, including the one that states *why*: the risk gate alone
+passes the abstain-everything case and only the semantic floors reject it. A
+refactor that relaxes those floors, or re-denominates them in anything the model
+controls, now fails there.
+
+Remaining sites are benign (LR schedules, gold-count denominators). One real
+instance stands: `wedge_v1/run_classical_baseline.py:122` denominates the
+abstention rate in `len(claims)`, which the extractor controls — noted, not
+changed, since it scores a baseline rather than gating a release.
+
+**So the only genuinely vacuous gate found in the audit was the one I wrote
+today.** The repo's discipline was better than the plan assumed.
 
 **P3 — Escalation on model/rule disagreement.** Cheap, measurable, and it
 converts the brittle rule from a liability into a signal. Measure the
