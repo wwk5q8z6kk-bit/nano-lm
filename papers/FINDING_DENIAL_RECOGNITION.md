@@ -2,7 +2,7 @@
 
 **2026-08-05. EXPLORATORY.** This analysis reads H6's development results,
 which are already spent. It characterizes a mechanism; it is **not** a
-confirmatory result and no gate may be claimed from it. Confirmation路 is
+confirmatory result and no gate may be claimed from it. Confirmation is
 specified in §5.
 
 ---
