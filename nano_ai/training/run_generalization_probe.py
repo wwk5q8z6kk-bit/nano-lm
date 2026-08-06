@@ -57,7 +57,7 @@ def _score(model, examples, tokenizer, device, batch_size, split):
     )
     from nano_ai.training.train_pointer import encode_pointer_partition
 
-    records = encode_pointer_partition(tokenizer, examples, expected_split="train")
+    records = encode_pointer_partition(tokenizer, examples, expected_split=split)
     inputs = build_pointer_inference_inputs(examples, records)
     with torch.inference_mode():
         inference = batched_evidence_query_inference(
@@ -126,10 +126,10 @@ def main() -> int:
     manifest_isolation = dict(dev_bundle.manifest.get("isolation", {}))
 
     id_correct, id_total, id_spans = _score(
-        model, in_dist, tokenizer, args.device, args.batch_size
+        model, in_dist, tokenizer, args.device, args.batch_size, "train"
     )
     ood_correct, ood_total, ood_spans = _score(
-        model, dev_bundle.examples, tokenizer, args.device, args.batch_size
+        model, dev_bundle.examples, tokenizer, args.device, args.batch_size, "dev"
     )
 
     rows = []

@@ -1,0 +1,72 @@
+{
+  "checkpoint": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260805/epoch-2.pt",
+  "criteria": {
+    "C1_absent_recovery": {
+      "after": 320,
+      "before": 316,
+      "of_total": 330,
+      "passed": true,
+      "recoverable_population": 4,
+      "required_at_least": 318.4
+    },
+    "C2_supported_no_regression": {
+      "after": 2944,
+      "before": 2944,
+      "false_flips": 0,
+      "of_total": 3070,
+      "passed": true
+    },
+    "C3_other_states_unchanged": {
+      "passed": true,
+      "states": {
+        "conflicting": {
+          "after": 175,
+          "before": 175
+        },
+        "missing": {
+          "after": 200,
+          "before": 200
+        },
+        "uncertain": {
+          "after": 173,
+          "before": 173
+        }
+      }
+    },
+    "C4_rule_specificity": {
+      "fired_total": 4,
+      "fired_with_gold_absent": 4,
+      "passed": true,
+      "required_at_least": 0.9,
+      "specificity": 1.0
+    }
+  },
+  "descriptive": {
+    "absent_gold_by_field": {
+      "allergy": 160,
+      "medication": 170
+    },
+    "fields_with_denial_patterns": [
+      "medication",
+      "allergy"
+    ],
+    "note": "reported for completeness; not part of the frozen criteria",
+    "overall_fields": 4000,
+    "overall_joint_after": 3812,
+    "overall_joint_before": 3808,
+    "rule_fired_by_field": {
+      "medication": 4
+    },
+    "totals_by_gold_state": {
+      "absent": 330,
+      "conflicting": 200,
+      "missing": 200,
+      "supported": 3070,
+      "uncertain": 200
+    }
+  },
+  "partition": "calibration (development not opened)",
+  "preregistration": "papers/PREREG_DENIAL_POLARITY.md",
+  "schema": "nano.denial-polarity-probe.v1",
+  "verdict": "ACCEPT"
+}

@@ -1,0 +1,137 @@
+{
+  "checkpoint": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260805/epoch-2.pt",
+  "denial_phrase_pools": {
+    "in_distribution": {
+      "allergy": {
+        "distinct_phrases": [
+          "I denied any allergy.",
+          "I deny allergies.",
+          "No allergies!",
+          "Not that I know of!"
+        ],
+        "occurrences": 160,
+        "regex_covers": 160
+      },
+      "medication": {
+        "distinct_phrases": [
+          "I denied taking medicine.",
+          "I deny taking medications.",
+          "No nothing yet!",
+          "No, nothing."
+        ],
+        "occurrences": 170,
+        "regex_covers": 170
+      }
+    },
+    "out_of_distribution": {
+      "allergy": {
+        "distinct_phrases": [
+          "None whatsoever."
+        ],
+        "occurrences": 200,
+        "regex_covers": 200
+      },
+      "medication": {
+        "distinct_phrases": [
+          "Nothing at all."
+        ],
+        "occurrences": 213,
+        "regex_covers": 213
+      }
+    }
+  },
+  "development_isolation": {
+    "answer_templates_disjoint": true,
+    "denial_phrases_disjoint": true,
+    "fresh_v0_read_by_generator": false,
+    "open_value_lexicons_disjoint": true,
+    "question_templates_disjoint": true,
+    "transcripts_disjoint": true,
+    "uncertainty_phrases_disjoint": true,
+    "worlds_disjoint": true
+  },
+  "per_state": [
+    {
+      "cue": "open value",
+      "cue_pool_disjoint_in_development": true,
+      "generalization_gap": 0.1461,
+      "in_distribution": {
+        "accuracy": 0.958957654723127,
+        "correct": 2944,
+        "total": 3070
+      },
+      "out_of_distribution": {
+        "accuracy": 0.8128746416471202,
+        "correct": 3119,
+        "total": 3837
+      },
+      "state": "supported"
+    },
+    {
+      "cue": "denial phrase",
+      "cue_pool_disjoint_in_development": true,
+      "generalization_gap": 0.4757,
+      "in_distribution": {
+        "accuracy": 0.9575757575757575,
+        "correct": 316,
+        "total": 330
+      },
+      "out_of_distribution": {
+        "accuracy": 0.48184019370460046,
+        "correct": 199,
+        "total": 413
+      },
+      "state": "absent"
+    },
+    {
+      "cue": "no mention",
+      "cue_pool_disjoint_in_development": false,
+      "generalization_gap": 0.0,
+      "in_distribution": {
+        "accuracy": 1.0,
+        "correct": 200,
+        "total": 200
+      },
+      "out_of_distribution": {
+        "accuracy": 1.0,
+        "correct": 250,
+        "total": 250
+      },
+      "state": "missing"
+    },
+    {
+      "cue": "hedge phrase",
+      "cue_pool_disjoint_in_development": true,
+      "generalization_gap": 0.105,
+      "in_distribution": {
+        "accuracy": 0.865,
+        "correct": 173,
+        "total": 200
+      },
+      "out_of_distribution": {
+        "accuracy": 0.76,
+        "correct": 190,
+        "total": 250
+      },
+      "state": "uncertain"
+    },
+    {
+      "cue": "two-span structure",
+      "cue_pool_disjoint_in_development": false,
+      "generalization_gap": 0.303,
+      "in_distribution": {
+        "accuracy": 0.875,
+        "correct": 175,
+        "total": 200
+      },
+      "out_of_distribution": {
+        "accuracy": 0.572,
+        "correct": 143,
+        "total": 250
+      },
+      "state": "conflicting"
+    }
+  ],
+  "schema": "nano.generalization-gap.v1",
+  "status": "EXPLORATORY -- diagnoses a decided experiment; selects nothing"
+}
