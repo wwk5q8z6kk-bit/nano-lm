@@ -79,6 +79,20 @@ _EXPECTED = {
     FieldState.MISSING: "NOT_MENTIONED",
 }
 
+# A model that answers DENIED unconditionally scores 100% on a probe that only
+# examines gold-absent fields. The v1 run of this probe had exactly that defect
+# -- the third instance of a gate denominated in something the system controls
+# (after `fabric/slice.py:247` and DP-1's C1). The arms can only rewrite denial
+# phrases, so the arm-varying measurement necessarily lives on absent fields;
+# the guard is a fixed CONTROL block of gold-supported and gold-missing fields,
+# never rewritten, scored every run. If the model cannot say STATED and
+# NOT_MENTIONED there, its DENIED accuracy is meaningless.
+_CONTROL_STATES = (FieldState.SUPPORTED, FieldState.MISSING)
+
+# Above this share of one answer across the control block, the model has
+# collapsed to a constant and no accuracy figure from this probe may be quoted.
+_COLLAPSE_SHARE = 0.90
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
