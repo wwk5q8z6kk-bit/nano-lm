@@ -145,11 +145,30 @@ class TestArmComparisonGuard:
 
 
 class TestArmDefinitions:
+    # `conflicting_structure` has no natural in-distribution counterpart: the
+    # H6 training generator (`state_span_data.py::_variant_lines`, the
+    # `conflicting` branch) always appends the repeated question/answer
+    # immediately after the base five-turn block, with the alternative value
+    # always second -- confirmed 2026-08-06 by reading the generator. Every
+    # arm on this axis (ORDER, DISTANCE[n]) is a held-out structural
+    # deviation by construction, not a sampling gap the way an unseen wording
+    # is for denial/hedge/value/template.
+    _AXES_WITHOUT_A_REFERENCE = {"conflicting_structure"}
+
     def test_every_axis_has_a_baseline_and_a_reference(self):
         for axis, arms in ALL_AXES.items():
             labels = [a.label for a in arms]
             assert "DEV" in labels, f"{axis} lacks the development baseline"
+            if axis in self._AXES_WITHOUT_A_REFERENCE:
+                continue
             assert any(a.in_distribution for a in arms), f"{axis} lacks a reference arm"
+
+    def test_conflicting_structure_is_documented_as_wholly_held_out(self):
+        # Pins the exception above: if this ever stops being true (a future
+        # generator variant introduces order/distance variety), the test
+        # suite -- not just the comment -- must fail so the exception gets
+        # revisited rather than silently going stale.
+        assert all(not a.in_distribution for a in CONFLICTING_STRUCTURE_ARMS)
 
     def test_arm_labels_are_unique_within_an_axis(self):
         for axis, arms in ALL_AXES.items():
