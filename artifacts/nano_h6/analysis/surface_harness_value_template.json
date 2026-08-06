@@ -1,0 +1,2409 @@
+{
+  "arm_provenance": {
+    "template": {
+      "DEV": "sealed development partition",
+      "TRAIN[0]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[1]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[2]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[3]": "calibration partition (training distribution, development not opened)"
+    },
+    "value": {
+      "DEV": "sealed development partition",
+      "TRAIN[0]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[10]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[11]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[12]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[13]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[14]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[15]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[1]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[2]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[3]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[4]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[5]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[6]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[7]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[8]": "calibration partition (training distribution, development not opened)",
+      "TRAIN[9]": "calibration partition (training distribution, development not opened)"
+    }
+  },
+  "axes": [
+    "value",
+    "template"
+  ],
+  "checkpoints": {
+    "seed05": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260805/epoch-2.pt",
+    "seed06": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260806/epoch-2.pt"
+  },
+  "observations": [
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 199,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 1021,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 81,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 49,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 200,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 1208,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 82,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 192,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 1213,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 77,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 1153,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 79,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 200,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 1211,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 80,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 196,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 1213,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 83,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 10,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 198,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 1209,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 82,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 8,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 194,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 1209,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 84,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 6,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 195,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 1213,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 80,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 10,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 193,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 1211,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 76,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 6,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 202,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 1168,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 84,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 0,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 198,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 1213,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 75,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 9,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 199,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 1129,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 82,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 12,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 199,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 1211,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 82,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 4,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 194,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 1207,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 82,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 199,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 1204,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 84,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 200,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 1205,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 82,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 2,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 199,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 1021,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 81,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 49,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 882,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 82,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 44,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 184,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 1143,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 79,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 45,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 170,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 981,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 77,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 35,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 202,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 1082,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 79,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 50,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 967,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 50,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "value",
+      "correct": 35,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 1104,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 203,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 1198,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 51,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "value",
+      "correct": 0,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 202,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 1154,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 48,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "value",
+      "correct": 4,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 203,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 1154,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 203,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 1194,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 44,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "value",
+      "correct": 3,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 1138,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 41,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "value",
+      "correct": 3,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 1127,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[6]",
+      "axis": "value",
+      "correct": 11,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 203,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 1157,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[7]",
+      "axis": "value",
+      "correct": 11,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 203,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 1192,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 41,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[8]",
+      "axis": "value",
+      "correct": 0,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 1188,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[9]",
+      "axis": "value",
+      "correct": 0,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 203,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 1124,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[10]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 957,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 51,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[11]",
+      "axis": "value",
+      "correct": 8,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 202,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 1095,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[12]",
+      "axis": "value",
+      "correct": 13,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 202,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 1171,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 45,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[13]",
+      "axis": "value",
+      "correct": 6,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 1106,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 50,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[14]",
+      "axis": "value",
+      "correct": 9,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 400
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 1135,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1213
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 52,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[15]",
+      "axis": "value",
+      "correct": 0,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 13
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 967,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 50,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "DEV",
+      "axis": "template",
+      "correct": 35,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 214,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 816,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 48,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "template",
+      "correct": 32,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 216,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 1137,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 38,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "template",
+      "correct": 42,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 215,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 1045,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 50,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "template",
+      "correct": 38,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 216,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 1118,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 1287
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 100,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 48,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 100
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "template",
+      "correct": 44,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 100
+    }
+  ],
+  "schema": "nano.surface-harness.v1",
+  "skipped": [],
+  "status": "EXPLORATORY -- selects nothing, gates nothing",
+  "summaries": [
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "TRAIN[0]": 0.953,
+        "TRAIN[10]": 0.9633,
+        "TRAIN[11]": 0.8599,
+        "TRAIN[12]": 0.9505,
+        "TRAIN[13]": 0.9802,
+        "TRAIN[14]": 0.9522,
+        "TRAIN[15]": 0.9646,
+        "TRAIN[1]": 0.9938,
+        "TRAIN[2]": 0.9509,
+        "TRAIN[3]": 0.9749,
+        "TRAIN[4]": 0.9922,
+        "TRAIN[5]": 0.9674,
+        "TRAIN[6]": 0.9629,
+        "TRAIN[7]": 0.9769,
+        "TRAIN[8]": 0.9905,
+        "TRAIN[9]": 0.9711
+      },
+      "arms": 16,
+      "axis": "value",
+      "best_arm": "TRAIN[1]",
+      "scope": "in_distribution",
+      "seed_instability": 0.0528,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.9628,
+      "surface_robust_accuracy": 0.8599,
+      "surface_sensitivity": 0.134,
+      "worst_arm": "TRAIN[11]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.7723
+      },
+      "arms": 1,
+      "axis": "value",
+      "best_arm": "DEV",
+      "scope": "held_out",
+      "seed_instability": 0.042,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.7723,
+      "surface_robust_accuracy": 0.7723,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.7723,
+        "TRAIN[0]": 0.953,
+        "TRAIN[10]": 0.9633,
+        "TRAIN[11]": 0.8599,
+        "TRAIN[12]": 0.9505,
+        "TRAIN[13]": 0.9802,
+        "TRAIN[14]": 0.9522,
+        "TRAIN[15]": 0.9646,
+        "TRAIN[1]": 0.9938,
+        "TRAIN[2]": 0.9509,
+        "TRAIN[3]": 0.9749,
+        "TRAIN[4]": 0.9922,
+        "TRAIN[5]": 0.9674,
+        "TRAIN[6]": 0.9629,
+        "TRAIN[7]": 0.9769,
+        "TRAIN[8]": 0.9905,
+        "TRAIN[9]": 0.9711
+      },
+      "arms": 17,
+      "axis": "value",
+      "best_arm": "TRAIN[1]",
+      "scope": "all",
+      "seed_instability": 0.0522,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.9516,
+      "surface_robust_accuracy": 0.7723,
+      "surface_sensitivity": 0.2215,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.5024,
+        "TRAIN[0]": 0.5012,
+        "TRAIN[10]": 0.5012,
+        "TRAIN[11]": 0.5,
+        "TRAIN[12]": 0.5012,
+        "TRAIN[13]": 0.495,
+        "TRAIN[14]": 0.5,
+        "TRAIN[15]": 0.5012,
+        "TRAIN[1]": 0.4937,
+        "TRAIN[2]": 0.5037,
+        "TRAIN[3]": 0.5037,
+        "TRAIN[4]": 0.4987,
+        "TRAIN[5]": 0.4987,
+        "TRAIN[6]": 0.4937,
+        "TRAIN[7]": 0.4975,
+        "TRAIN[8]": 0.495,
+        "TRAIN[9]": 0.5037
+      },
+      "arms": 17,
+      "axis": "value",
+      "best_arm": "TRAIN[2]",
+      "scope": "cross_effect",
+      "seed_instability": 0.0132,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.4995,
+      "surface_robust_accuracy": 0.4937,
+      "surface_sensitivity": 0.01,
+      "worst_arm": "TRAIN[1]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.42,
+        "TRAIN[0]": 1.0,
+        "TRAIN[10]": 0.8462,
+        "TRAIN[11]": 0.7692,
+        "TRAIN[12]": 0.6538,
+        "TRAIN[13]": 0.7308,
+        "TRAIN[14]": 0.8462,
+        "TRAIN[15]": 0.0769,
+        "TRAIN[1]": 0.5,
+        "TRAIN[2]": 0.6538,
+        "TRAIN[3]": 1.0,
+        "TRAIN[4]": 0.5,
+        "TRAIN[5]": 0.4231,
+        "TRAIN[6]": 0.6538,
+        "TRAIN[7]": 0.8077,
+        "TRAIN[8]": 0.2308,
+        "TRAIN[9]": 0.0
+      },
+      "arms": 17,
+      "axis": "value",
+      "best_arm": "TRAIN[0]",
+      "scope": "cross_effect",
+      "seed_instability": 0.3521,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.5948,
+      "surface_robust_accuracy": 0.0,
+      "surface_sensitivity": 1.0,
+      "worst_arm": "TRAIN[9]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 1.0,
+        "TRAIN[0]": 1.0,
+        "TRAIN[10]": 1.0,
+        "TRAIN[11]": 1.0,
+        "TRAIN[12]": 1.0,
+        "TRAIN[13]": 1.0,
+        "TRAIN[14]": 1.0,
+        "TRAIN[15]": 1.0,
+        "TRAIN[1]": 1.0,
+        "TRAIN[2]": 1.0,
+        "TRAIN[3]": 1.0,
+        "TRAIN[4]": 1.0,
+        "TRAIN[5]": 1.0,
+        "TRAIN[6]": 1.0,
+        "TRAIN[7]": 1.0,
+        "TRAIN[8]": 1.0,
+        "TRAIN[9]": 1.0
+      },
+      "arms": 17,
+      "axis": "value",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.0,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "missing",
+      "surface_mean_accuracy": 1.0,
+      "surface_robust_accuracy": 1.0,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.655,
+        "TRAIN[0]": 0.67,
+        "TRAIN[10]": 0.635,
+        "TRAIN[11]": 0.665,
+        "TRAIN[12]": 0.67,
+        "TRAIN[13]": 0.635,
+        "TRAIN[14]": 0.67,
+        "TRAIN[15]": 0.67,
+        "TRAIN[1]": 0.64,
+        "TRAIN[2]": 0.635,
+        "TRAIN[3]": 0.66,
+        "TRAIN[4]": 0.635,
+        "TRAIN[5]": 0.615,
+        "TRAIN[6]": 0.68,
+        "TRAIN[7]": 0.66,
+        "TRAIN[8]": 0.585,
+        "TRAIN[9]": 0.68
+      },
+      "arms": 17,
+      "axis": "value",
+      "best_arm": "TRAIN[6]",
+      "scope": "cross_effect",
+      "seed_instability": 0.3165,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.6506,
+      "surface_robust_accuracy": 0.585,
+      "surface_sensitivity": 0.095,
+      "worst_arm": "TRAIN[8]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "TRAIN[0]": 0.6597,
+        "TRAIN[1]": 0.8858,
+        "TRAIN[2]": 0.7871,
+        "TRAIN[3]": 0.8547
+      },
+      "arms": 4,
+      "axis": "template",
+      "best_arm": "TRAIN[1]",
+      "scope": "in_distribution",
+      "seed_instability": 0.0334,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.7968,
+      "surface_robust_accuracy": 0.6597,
+      "surface_sensitivity": 0.2261,
+      "worst_arm": "TRAIN[0]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.7723
+      },
+      "arms": 1,
+      "axis": "template",
+      "best_arm": "DEV",
+      "scope": "held_out",
+      "seed_instability": 0.042,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.7723,
+      "surface_robust_accuracy": 0.7723,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.7723,
+        "TRAIN[0]": 0.6597,
+        "TRAIN[1]": 0.8858,
+        "TRAIN[2]": 0.7871,
+        "TRAIN[3]": 0.8547
+      },
+      "arms": 5,
+      "axis": "template",
+      "best_arm": "TRAIN[1]",
+      "scope": "all",
+      "seed_instability": 0.0351,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.7919,
+      "surface_robust_accuracy": 0.6597,
+      "surface_sensitivity": 0.2261,
+      "worst_arm": "TRAIN[0]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.5024,
+        "TRAIN[0]": 0.5024,
+        "TRAIN[1]": 0.4843,
+        "TRAIN[2]": 0.4661,
+        "TRAIN[3]": 0.5061
+      },
+      "arms": 5,
+      "axis": "template",
+      "best_arm": "TRAIN[3]",
+      "scope": "cross_effect",
+      "seed_instability": 0.0586,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.4923,
+      "surface_robust_accuracy": 0.4661,
+      "surface_sensitivity": 0.04,
+      "worst_arm": "TRAIN[2]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.42,
+        "TRAIN[0]": 0.38,
+        "TRAIN[1]": 0.435,
+        "TRAIN[2]": 0.365,
+        "TRAIN[3]": 0.47
+      },
+      "arms": 5,
+      "axis": "template",
+      "best_arm": "TRAIN[3]",
+      "scope": "cross_effect",
+      "seed_instability": 0.076,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.414,
+      "surface_robust_accuracy": 0.365,
+      "surface_sensitivity": 0.105,
+      "worst_arm": "TRAIN[2]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 1.0,
+        "TRAIN[0]": 1.0,
+        "TRAIN[1]": 1.0,
+        "TRAIN[2]": 1.0,
+        "TRAIN[3]": 1.0
+      },
+      "arms": 5,
+      "axis": "template",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.0,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "missing",
+      "surface_mean_accuracy": 1.0,
+      "surface_robust_accuracy": 1.0,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.655,
+        "TRAIN[0]": 0.65,
+        "TRAIN[1]": 0.585,
+        "TRAIN[2]": 0.635,
+        "TRAIN[3]": 0.635
+      },
+      "arms": 5,
+      "axis": "template",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.328,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.632,
+      "surface_robust_accuracy": 0.585,
+      "surface_sensitivity": 0.07,
+      "worst_arm": "TRAIN[1]"
+    }
+  ]
+}
