@@ -89,9 +89,13 @@ _EXPECTED = {
 # NOT_MENTIONED there, its DENIED accuracy is meaningless.
 _CONTROL_STATES = (FieldState.SUPPORTED, FieldState.MISSING)
 
-# Above this share of one answer across the control block, the model has
-# collapsed to a constant and no accuracy figure from this probe may be quoted.
-_COLLAPSE_SHARE = 0.90
+# Collapse is per-class RECALL on a BALANCED control block, not raw answer
+# share. The v2 guard used raw share and produced a false positive: the control
+# was 93% gold-supported, so a model answering STATED 97% of the time scored
+# 96.7% correct and was still flagged "collapsed". Denominating a guard in a
+# quantity the *gold distribution* controls is the same defect it was written to
+# catch. A model is collapsed when it cannot produce some label at all.
+_MIN_CONTROL_CLASS_RECALL = 0.20
 
 
 def main() -> int:
@@ -132,14 +136,19 @@ def main() -> int:
     print(f"pool: {len(pool)} documents, both fields gold-absent")
 
     # Control block: fields the arms never touch, covering the other answers.
-    control = []
+    by_state: dict[FieldState, list] = {s: [] for s in _CONTROL_STATES}
     for example in examples:
         for gold in parse_state_span_summary(example.target, example.transcript):
             if gold.field.value in _FIELD_QUESTION and gold.state in _CONTROL_STATES:
-                control.append((example.transcript, gold.field.value, gold.state))
-    control = control[: args.limit * 2]
-    print(f"control: {len(control)} never-rewritten fields "
-          f"({Counter(s.value for _, _, s in control)})")
+                by_state[gold.state].append(
+                    (example.transcript, gold.field.value, gold.state)
+                )
+    # Balanced: equal count per control class, so the guard cannot be tripped by
+    # a skewed gold distribution.
+    per_class = min([len(v) for v in by_state.values()] + [args.limit])
+    control = [row for rows in by_state.values() for row in rows[:per_class]]
+    print(f"control: {len(control)} never-rewritten fields, balanced "
+          f"{per_class}/class ({[s.value for s in _CONTROL_STATES]})")
 
     model, tokenizer = load(args.model)
 
@@ -160,21 +169,27 @@ def main() -> int:
     # --- run the control FIRST; a collapsed model invalidates everything after
     control_correct = 0
     control_answers: Counter[str] = Counter()
+    class_hit: Counter[str] = Counter()
+    class_n: Counter[str] = Counter()
     for transcript, field, state in control:
         answer = ask(transcript, _FIELD_QUESTION[field])
         control_answers[answer or "UNPARSED"] += 1
+        class_n[state.value] += 1
         if answer == _EXPECTED[state]:
             control_correct += 1
+            class_hit[state.value] += 1
     control_n = len(control)
-    top_share = (
-        max(control_answers.values()) / control_n if control_n else 1.0
-    )
-    collapsed = top_share >= _COLLAPSE_SHARE
+    class_recall = {
+        k: round(class_hit[k] / class_n[k], 4) for k in class_n if class_n[k]
+    }
+    worst = min(class_recall.values()) if class_recall else 0.0
+    collapsed = worst < _MIN_CONTROL_CLASS_RECALL
     print(f"control accuracy: {control_correct}/{control_n} = "
-          f"{control_correct / control_n:.1%}   answers={dict(control_answers)}")
+          f"{control_correct / control_n:.1%}   per-class recall={class_recall}")
+    print(f"  answers={dict(control_answers)}")
     if collapsed:
-        print(f"  *** COLLAPSED: {top_share:.0%} of control answers are one label. "
-              "Arm accuracies below are NOT interpretable. ***")
+        print(f"  *** COLLAPSED: worst control-class recall {worst:.0%} < "
+              f"{_MIN_CONTROL_CLASS_RECALL:.0%}. Arm accuracies are NOT interpretable. ***")
 
     results = []
     for arm in DENIAL_ARMS:
@@ -187,19 +202,7 @@ def main() -> int:
                 continue
             transcript, _ = applied
             for field, topic in _FIELD_QUESTION.items():
-                template = _PROMPT if args.mode == "direct" else _PROMPT_TWOSTAGE
-                prompt = tokenizer.apply_chat_template(
-                    [{"role": "user", "content": template.format(
-                        transcript=transcript, topic=topic)}],
-                    add_generation_prompt=True,
-                )
-                out = generate(
-                    model, tokenizer, prompt=prompt,
-                    max_tokens=6 if args.mode == "direct" else 120, verbose=False,
-                )
-                # Two-stage puts the label last; take the final occurrence.
-                found = _ANSWER.findall(out.upper())
-                match = found[-1] if found else None
+                match = ask(transcript, topic)
                 total[field] += 1
                 if match is None:
                     unparsed += 1
@@ -246,6 +249,20 @@ def main() -> int:
         "status": "EXPLORATORY -- control for the H7-V hypothesis; gates nothing",
         "model": args.model,
         "mode": args.mode,
+        "control": {
+            "n": control_n,
+            "correct": control_correct,
+            "accuracy": round(control_correct / control_n, 4) if control_n else None,
+            "answer_distribution": dict(control_answers),
+            "per_class_recall": class_recall,
+            "worst_class_recall": round(worst, 4),
+            "balanced_per_class": per_class,
+            "collapsed": collapsed,
+            "note": "gold-supported and gold-missing fields, never rewritten by any "
+                    "arm. Guards against a model that answers DENIED unconditionally "
+                    "scoring 100% on an absent-only probe.",
+        },
+        "arm_accuracies_interpretable": not collapsed,
         "documents_per_arm": len(pool),
         "arms": results,
         "summary": summary,
