@@ -49,7 +49,7 @@ _CUE = {
 }
 
 
-def _score(model, examples, tokenizer, device, batch_size):
+def _score(model, examples, tokenizer, device, batch_size, split):
     from nano_ai.training.evaluate_pointer import build_pointer_inference_inputs
     from nano_ai.training.evidence_query_inference import (
         _proposal_exact,
