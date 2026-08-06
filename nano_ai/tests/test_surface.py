@@ -189,6 +189,11 @@ class TestArmDefinitions:
         for arm in HEDGE_ARMS:
             if arm.label.startswith("CONSTRUCTED"):
                 assert "NOT independent" in arm.provenance
+        # ORDER/DISTANCE are author-constructed structural probes, not drawn
+        # from any lexicon or the training distribution -- same obligation.
+        for arm in CONFLICTING_STRUCTURE_ARMS:
+            if arm.label != "DEV":
+                assert "NOT independent" in arm.provenance
 
     def test_external_denial_arms_cite_a_lexicon(self):
         external = [a for a in DENIAL_ARMS if a.label.startswith("EXTERNAL")]
