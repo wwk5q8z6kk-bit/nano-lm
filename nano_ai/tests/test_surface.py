@@ -13,7 +13,21 @@ from nano_ai.surface import (
     report_lines,
     substitute,
 )
-from nano_ai.surface_arms import ALL_AXES, DENIAL_ARMS, HEDGE_ARMS
+from nano_ai.surface_arms import (
+    ALL_AXES,
+    DENIAL_ARMS,
+    HEDGE_ARMS,
+    TEMPLATE_ARMS,
+    VALUE_ARMS,
+    VALUE_TEMPLATE_FIELDS,
+    _CALIBRATION_ALLERGY_VALUES,
+    _CALIBRATION_MEDICATION_VALUES,
+    _CALIBRATION_TEMPLATES,
+    _DEV_ALLERGY_VALUES,
+    _DEV_ALLERGY_TEMPLATE,
+    _DEV_MEDICATION_VALUES,
+    _DEV_MEDICATION_TEMPLATE,
+)
 
 
 def _arm(mapping=(("old", "new"),)) -> SurfaceArm:
