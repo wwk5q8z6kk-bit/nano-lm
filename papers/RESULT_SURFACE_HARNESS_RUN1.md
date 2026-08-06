@@ -109,6 +109,38 @@ The guard was not weakened to produce a cleaner story. Adding a third seed
 requires a free-tier training run (subtask 10); until then, arm-level claims
 remain unsupported and that is the honest state.
 
+## 4b. A third seed is blocked by design, and the block is correct
+
+The guard needs three seeds. Only two exist, and this is not a temporary gap —
+it is structural:
+
+- `train_evidence_query.py:554` rejects any seed outside `TRAINING_SEEDS =
+  (20260805, 20260806)` at runtime, not merely in argparse.
+- `train_evidence_query.py:136` pins **the trainer's own SHA** into every H6
+  report (`"training": Path(__file__).resolve()`).
+
+So widening the seed set means editing a SHA-pinned file, which breaks the H6
+evidence chain with `preserved H3 source hash mismatch` — the exact failure
+already hit once this cycle by adding a function to `model.py`.
+
+The tempting workaround — copy the trainer into an unpinned module and pass a
+third seed — is worse than useless here. **A seed replicate is only informative
+if the recipe is bit-identical**, and a duplicated trainer's equivalence cannot
+be verified by the hash chain. It would introduce exactly the confound the
+measurement exists to detect.
+
+Cost was never the obstacle: H6 trained on `device = cpu` in 1,301 seconds for
+three epochs, so a third seed is ~22 minutes and $0. The obstacle is
+preregistration integrity, and it should win.
+
+**Conclusion for subtask 10: arm-level claims remain unsupported, and will
+remain so for every checkpoint in the H6 family.** The remedy belongs in the
+*next* preregistration, which should specify **≥3 seeds from the outset** — now
+with a measured justification rather than a stylistic one: out-of-distribution
+per-arm accuracy moves 31.5 points between two seeds, with Kendall τ = 0.00
+between their arm rankings. Two seeds cannot separate a surface effect from a
+seed draw, and this run is the evidence.
+
 ## 5. Honest limits
 
 - **Two seeds.** Every instability figure is a spread over n=2, which is a point
