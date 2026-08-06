@@ -57,6 +57,13 @@ def main() -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--valid-fraction", type=float, default=0.05)
     parser.add_argument("--seed", type=int, default=20260806)
+    parser.add_argument(
+        "--with-spans", action="store_true",
+        help="v2 target: emit the grounding span text beside the state, so the "
+             "tuned model produces something relocatable. See "
+             "papers/DECISION_SPAN_PORT.md -- the v1 build parsed gold.spans and "
+             "discarded them, which is why the tuned model emitted no span.",
+    )
     args = parser.parse_args()
 
     from nano_ai.surface_arms import DENIAL_ARMS
@@ -92,11 +99,19 @@ def main() -> int:
                 transcript=example.transcript,
                 topic=_FIELD_QUESTION[gold.field.value],
             )
+            answer = _EXPECTED[gold.state]
+            if args.with_spans:
+                # Route (b): the span is emitted as TEXT and relocated later by
+                # `_locate_unique_patient_span`, which refuses a non-unique or
+                # absent match -- so a bad generation degrades to abstention
+                # rather than to a wrong answer.
+                quoted = " ".join(f'"{span.text}"' for span in gold.spans)
+                answer = f"{answer}: {quoted}" if quoted else answer
             rows.append(
                 {
                     "messages": [
                         {"role": "user", "content": prompt},
-                        {"role": "assistant", "content": _EXPECTED[gold.state]},
+                        {"role": "assistant", "content": answer},
                     ]
                 }
             )
@@ -138,6 +153,7 @@ def main() -> int:
                               "development denial phrasings and all held-out arm "
                               "phrasings; build aborts on any match",
                 "label_mix": dict(states),
+                "target_format": "state_and_span_text" if args.with_spans else "state_label_only",
                 "seed": args.seed,
                 "files": written,
             },
