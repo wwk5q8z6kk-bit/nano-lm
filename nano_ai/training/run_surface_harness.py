@@ -47,7 +47,16 @@ def _apply(example, arm):
     return rebuilt
 
 
-def _score(model, examples, tokenizer, device, batch_size):
+def _score(model, examples, tokenizer, device, batch_size, *, fields=None):
+    """Score joint-exact accuracy per gold state.
+
+    `fields` restricts which fields contribute, by `FieldName.value` (e.g.
+    "medication"). Needed for the `value`/`template` axes: they only ever
+    rewrite medication/allergy, so counting chief_complaint/duration/severity
+    -- untouched and identical across every arm -- would dilute sensitivity
+    toward zero rather than measure it. `denial`/`hedge` pass `fields=None`
+    (unrestricted), unchanged from prior behaviour.
+    """
     from nano_ai.training.evaluate_pointer import build_pointer_inference_inputs
     from nano_ai.training.evidence_query_inference import (
         _proposal_exact,
@@ -68,6 +77,8 @@ def _score(model, examples, tokenizer, device, batch_size):
         for index, gold in enumerate(
             parse_state_span_summary(example.target, example.transcript)
         ):
+            if fields is not None and gold.field.value not in fields:
+                continue
             key = gold.state.value
             total[key] = total.get(key, 0) + 1
             if bool(proposed) and _proposal_exact(proposed[index], gold):
