@@ -22,7 +22,7 @@ import torch
 
 from nano_ai.adapters.state_span import StateSpanFormatError, parse_state_span_summary
 from nano_ai.surface import ArmObservation, SurfaceError, aggregate, report_lines, substitute
-from nano_ai.surface_arms import ALL_AXES
+from nano_ai.surface_arms import ALL_AXES, VALUE_TEMPLATE_FIELDS
 
 
 def _apply(example, arm):
