@@ -220,8 +220,14 @@ _PRIMARY = {
 
 # Axes whose arms only ever rewrite medication/allergy -- see `_score`'s
 # `fields` docstring for why chief_complaint/duration/severity must be
-# excluded rather than counted as unchanging noise.
-_FIELD_RESTRICTED_AXES = {"value", "template"}
+# excluded rather than counted as unchanging noise. `conflicting_value`'s
+# TRAIN arms only apply to medication/allergy documents (dropped=150/250
+# elsewhere), but its DEV baseline is a no-op that applies to all 250 -- an
+# unrestricted DEV would be scored against a different, easier-on-average
+# field mix than TRAIN, confounding the value-swap effect with a field-type
+# effect. `conflicting_structure` needs no entry: all of its arms (DEV,
+# ORDER, DISTANCE[n]) apply to the same 250 documents already.
+_FIELD_RESTRICTED_AXES = {"value", "template", "conflicting_value"}
 
 
 if __name__ == "__main__":
