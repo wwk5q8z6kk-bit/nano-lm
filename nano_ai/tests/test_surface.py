@@ -233,13 +233,18 @@ class TestValueTemplateArms:
         cal_value = _CALIBRATION_MEDICATION_VALUES[0]
         assert substitute(line, arm) == _DEV_MEDICATION_TEMPLATE.replace("{VALUE}", cal_value)
 
-    def test_value_arm_is_a_no_op_on_a_line_naming_a_different_value(self):
-        other_value = _DEV_MEDICATION_VALUES[1]
-        line = _DEV_MEDICATION_TEMPLATE.replace("{VALUE}", other_value)
+    def test_value_arm_maps_every_dev_name_to_the_same_arm_value(self):
+        # Every arm carries one fixed calibration name per field; in any real
+        # document only one of the 24 dev source phrases is actually present,
+        # so the other 23 pairs are no-ops there -- but the mapping itself
+        # must send *any* dev name to that arm's value, not just the first.
         arm = next(a for a in VALUE_ARMS if a.label == "TRAIN[0]")
-        # TRAIN[0]'s mapping only fires for _DEV_MEDICATION_VALUES[0]; a line
-        # naming a different dev value must pass through untouched.
-        assert substitute(line, arm) == line
+        cal_value = _CALIBRATION_MEDICATION_VALUES[0]
+        for dev_value in _DEV_MEDICATION_VALUES:
+            line = _DEV_MEDICATION_TEMPLATE.replace("{VALUE}", dev_value)
+            assert substitute(line, arm) == _DEV_MEDICATION_TEMPLATE.replace(
+                "{VALUE}", cal_value
+            )
 
     def test_template_arm_rewrites_the_frame_and_leaves_the_name_alone(self):
         dev_value = _DEV_ALLERGY_VALUES[0]
