@@ -1,0 +1,61 @@
+{
+  "min_disagreements_for_claim": 30,
+  "per_seed": {
+    "seed05": {
+      "agree": {
+        "correct": 3888,
+        "error_rate": 0.1873,
+        "gold_states": {
+          "absent": 214,
+          "conflicting": 237,
+          "missing": 250,
+          "supported": 3837,
+          "uncertain": 246
+        },
+        "n": 4784
+      },
+      "claim_supported": true,
+      "disagree": {
+        "correct": 13,
+        "error_rate": 0.9398,
+        "gold_states": {
+          "absent": 199,
+          "conflicting": 13,
+          "uncertain": 4
+        },
+        "n": 216
+      },
+      "error_rate_lift": 5.02
+    },
+    "seed06": {
+      "agree": {
+        "correct": 3649,
+        "error_rate": 0.2279,
+        "gold_states": {
+          "absent": 216,
+          "conflicting": 247,
+          "missing": 250,
+          "supported": 3794,
+          "uncertain": 219
+        },
+        "n": 4726
+      },
+      "claim_supported": true,
+      "disagree": {
+        "correct": 3,
+        "error_rate": 0.9891,
+        "gold_states": {
+          "absent": 197,
+          "conflicting": 3,
+          "supported": 43,
+          "uncertain": 31
+        },
+        "n": 274
+      },
+      "error_rate_lift": 4.34
+    }
+  },
+  "question": "does model/rule disagreement predict error well enough to route on?",
+  "schema": "nano.model-rule-disagreement.v1",
+  "status": "EXPLORATORY -- selects nothing, gates nothing"
+}
