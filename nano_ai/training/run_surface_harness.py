@@ -143,7 +143,8 @@ def main() -> int:
                     skipped.append({"seed": seed_name, "axis": axis, "arm": arm.label})
                     continue
                 correct, total = _score(
-                    model, tuple(rewritten), tokenizer, args.device, args.batch_size
+                    model, tuple(rewritten), tokenizer, args.device, args.batch_size,
+                    fields=VALUE_TEMPLATE_FIELDS if axis in _FIELD_RESTRICTED_AXES else None,
                 )
                 for state, n in total.items():
                     observations.append(
