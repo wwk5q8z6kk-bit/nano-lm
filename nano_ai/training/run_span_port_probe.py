@@ -144,9 +144,10 @@ def main() -> int:
     }
     worst = min(class_recall.values()) if class_recall else 0.0
     interpretable = worst >= _MIN_CONTROL_CLASS_RECALL
+    control_accuracy = f"{control_correct / control_n:.1%}" if control_n else "n/a"
     print(
         f"control accuracy: {control_correct}/{control_n} = "
-        f"{control_correct / control_n:.1%}   per-class recall={class_recall}"
+        f"{control_accuracy}   per-class recall={class_recall}"
     )
     if not interpretable:
         print(
