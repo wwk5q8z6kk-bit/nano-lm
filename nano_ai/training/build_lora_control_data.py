@@ -33,12 +33,16 @@ from pathlib import Path
 
 from nano_ai.adapters.state_span import parse_state_span_summary
 from nano_ai.contract import FieldState
+from nano_ai.surface_arms import DEV_DENIAL_ALLERGY, DEV_DENIAL_MEDICATION
 from nano_ai.training.run_crossmodel_surface_probe import (
     _EXPECTED,
     _FIELD_QUESTION,
     _PROMPT,
 )
-from nano_ai.surface_arms import DEV_DENIAL_ALLERGY, DEV_DENIAL_MEDICATION
+from nano_ai.training.span_port_format import (
+    PROMPT_WITH_SPANS,
+    format_span_answer,
+)
 
 FIT_SHA256 = "79f7581efbd989f4"  # prefix; full value in the authority record
 
@@ -103,18 +107,19 @@ def main() -> int:
                     f"LEAK: fit transcript contains held-out phrasing {leak!r}. "
                     "Refusing to build training data."
                 )
-            prompt = _PROMPT.format(
+            template = PROMPT_WITH_SPANS if args.with_spans else _PROMPT
+            prompt = template.format(
                 transcript=example.transcript,
                 topic=_FIELD_QUESTION[gold.field.value],
             )
             answer = _EXPECTED[gold.state]
             if args.with_spans:
-                # Route (b): the span is emitted as TEXT and relocated later by
-                # `_locate_unique_patient_span`, which refuses a non-unique or
-                # absent match -- so a bad generation degrades to abstention
-                # rather than to a wrong answer.
-                quoted = " ".join(f'"{span.text}"' for span in gold.spans)
-                answer = f"{answer}: {quoted}" if quoted else answer
+                # Route (b): emit span TEXT; relocate later. Prompt and target
+                # must agree — the first v2 build kept the state-only "one word"
+                # prompt while writing quoted spans (measurement defect).
+                answer = format_span_answer(
+                    answer, tuple(span.text for span in gold.spans)
+                )
             rows.append(
                 {
                     "messages": [
@@ -178,6 +183,9 @@ def main() -> int:
                 "label_mix": dict(states),
                 "balanced": bool(args.balance),
                 "target_format": "state_and_span_text" if args.with_spans else "state_label_only",
+                "prompt_format": (
+                    "state_and_span_line" if args.with_spans else "state_label_one_word"
+                ),
                 "seed": args.seed,
                 "files": written,
             },
