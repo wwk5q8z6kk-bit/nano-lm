@@ -1,0 +1,3185 @@
+{
+  "arm_provenance": {
+    "denial": {
+      "DEV": "sealed development partition",
+      "EXTERNAL[0]": "external lexicon trigger \"don't\" (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[10]": "external lexicon trigger 'free of' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[11]": "external lexicon trigger 'ruled out' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[1]": "external lexicon trigger 'not' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[2]": "external lexicon trigger 'never' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[3]": "external lexicon trigger 'no' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[4]": "external lexicon trigger 'negative for' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[5]": "external lexicon trigger \"didn't\" (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[6]": "external lexicon trigger 'cannot' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[7]": "external lexicon trigger 'absence of' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[8]": "external lexicon trigger 'denies' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "EXTERNAL[9]": "external lexicon trigger 'without' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "TRAIN[0]": "training distribution",
+      "TRAIN[1]": "training distribution",
+      "TRAIN[2]": "training distribution",
+      "TRAIN[3]": "training distribution"
+    },
+    "hedge": {
+      "CONSTRUCTED[0]": "author constructed -- NOT independent",
+      "CONSTRUCTED[1]": "author constructed -- NOT independent",
+      "CONSTRUCTED[2]": "author constructed -- NOT independent",
+      "CONSTRUCTED[3]": "author constructed -- NOT independent",
+      "CONSTRUCTED[4]": "author constructed -- NOT independent",
+      "CONSTRUCTED[5]": "author constructed -- NOT independent",
+      "DEV": "sealed development partition",
+      "TRAIN[0]": "training distribution",
+      "TRAIN[1]": "training distribution",
+      "TRAIN[2]": "training distribution",
+      "TRAIN[3]": "training distribution",
+      "TRAIN[4]": "training distribution",
+      "TRAIN[5]": "training distribution"
+    }
+  },
+  "axes": [
+    "denial",
+    "hedge"
+  ],
+  "checkpoints": {
+    "seed05": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260805/epoch-2.pt",
+    "seed06": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260806/epoch-2.pt"
+  },
+  "observations": [
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 3119,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 199,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 190,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 3112,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 381,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 210,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 3113,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 385,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 209,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 3103,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 410,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 211,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 3105,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 409,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 212,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 3114,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 277,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 211,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 3111,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 279,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 212,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 3111,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 289,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 211,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 3110,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 266,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 212,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 3112,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 116,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 203,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 139,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 3114,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 286,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 211,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 3112,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 385,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 210,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 3111,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 174,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 205,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 138,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 3112,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 191,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 203,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 3113,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 35,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 211,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 132,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 3113,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 190,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 208,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 3107,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 4,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 201,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 173,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 130,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 3119,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 199,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 190,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 3125,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 169,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 200,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 3120,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 189,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 152,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 3098,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 190,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 213,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 3112,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 197,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 228,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 3116,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 168,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 200,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 3122,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 170,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 58,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": true,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 3133,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 177,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 52,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 3128,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 192,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 219,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 3127,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 202,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 232,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 3125,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 179,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 35,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 3129,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 171,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 0,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 3131,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 172,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 174,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 143,
+      "in_distribution": false,
+      "seed": "seed05",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 2991,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 109,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "denial",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 3041,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 412,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 147,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "denial",
+      "correct": 93,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 3018,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 392,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 149,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "denial",
+      "correct": 97,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 3040,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 412,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 150,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "denial",
+      "correct": 96,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 3047,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 410,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 149,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "denial",
+      "correct": 96,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 3042,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 409,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 155,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[0]",
+      "axis": "denial",
+      "correct": 91,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 3038,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 157,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 111,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[1]",
+      "axis": "denial",
+      "correct": 93,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 3047,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 406,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 153,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[2]",
+      "axis": "denial",
+      "correct": 93,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 3046,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 399,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 154,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[3]",
+      "axis": "denial",
+      "correct": 90,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 3043,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 287,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 131,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[4]",
+      "axis": "denial",
+      "correct": 100,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 3044,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 408,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 155,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[5]",
+      "axis": "denial",
+      "correct": 92,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 3043,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 194,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 152,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[6]",
+      "axis": "denial",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 3044,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 226,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 152,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[7]",
+      "axis": "denial",
+      "correct": 97,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 3039,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 237,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 137,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[8]",
+      "axis": "denial",
+      "correct": 100,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 3043,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 211,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 147,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[9]",
+      "axis": "denial",
+      "correct": 87,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 3043,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 403,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 147,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[10]",
+      "axis": "denial",
+      "correct": 99,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 3045,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 197,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 154,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "EXTERNAL[11]",
+      "axis": "denial",
+      "correct": 96,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 2991,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 109,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "DEV",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 2994,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 190,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[0]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 2984,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 203,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 108,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[1]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 2984,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 192,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[2]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 2988,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 209,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 140,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[3]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 2981,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 201,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[4]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 2986,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 148,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "TRAIN[5]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": true,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 2982,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 49,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[0]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 2993,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 197,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[1]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 2984,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 214,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[2]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 2990,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 42,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[3]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 2993,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 0,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[4]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 2979,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "supported",
+      "total": 3837
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 216,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "absent",
+      "total": 413
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 250,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "missing",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 166,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "uncertain",
+      "total": 250
+    },
+    {
+      "arm": "CONSTRUCTED[5]",
+      "axis": "hedge",
+      "correct": 86,
+      "in_distribution": false,
+      "seed": "seed06",
+      "state": "conflicting",
+      "total": 250
+    }
+  ],
+  "schema": "nano.surface-harness.v1",
+  "skipped": [],
+  "status": "EXPLORATORY -- selects nothing, gates nothing",
+  "summaries": [
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "TRAIN[0]": 0.96,
+        "TRAIN[1]": 0.9407,
+        "TRAIN[2]": 0.9952,
+        "TRAIN[3]": 0.9915
+      },
+      "arms": 4,
+      "axis": "denial",
+      "best_arm": "TRAIN[2]",
+      "scope": "in_distribution",
+      "seed_instability": 0.0248,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.9719,
+      "surface_robust_accuracy": 0.9407,
+      "surface_sensitivity": 0.0545,
+      "worst_arm": "TRAIN[1]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.5024,
+        "EXTERNAL[0]": 0.8305,
+        "EXTERNAL[10]": 0.7179,
+        "EXTERNAL[11]": 0.2433,
+        "EXTERNAL[1]": 0.5278,
+        "EXTERNAL[2]": 0.8414,
+        "EXTERNAL[3]": 0.8051,
+        "EXTERNAL[4]": 0.4879,
+        "EXTERNAL[5]": 0.8402,
+        "EXTERNAL[6]": 0.701,
+        "EXTERNAL[7]": 0.4843,
+        "EXTERNAL[8]": 0.5182,
+        "EXTERNAL[9]": 0.2978
+      },
+      "arms": 13,
+      "axis": "denial",
+      "best_arm": "EXTERNAL[2]",
+      "scope": "held_out",
+      "seed_instability": 0.3138,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.5998,
+      "surface_robust_accuracy": 0.2433,
+      "surface_sensitivity": 0.5981,
+      "worst_arm": "EXTERNAL[11]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.5024,
+        "EXTERNAL[0]": 0.8305,
+        "EXTERNAL[10]": 0.7179,
+        "EXTERNAL[11]": 0.2433,
+        "EXTERNAL[1]": 0.5278,
+        "EXTERNAL[2]": 0.8414,
+        "EXTERNAL[3]": 0.8051,
+        "EXTERNAL[4]": 0.4879,
+        "EXTERNAL[5]": 0.8402,
+        "EXTERNAL[6]": 0.701,
+        "EXTERNAL[7]": 0.4843,
+        "EXTERNAL[8]": 0.5182,
+        "EXTERNAL[9]": 0.2978,
+        "TRAIN[0]": 0.96,
+        "TRAIN[1]": 0.9407,
+        "TRAIN[2]": 0.9952,
+        "TRAIN[3]": 0.9915
+      },
+      "arms": 17,
+      "axis": "denial",
+      "best_arm": "TRAIN[2]",
+      "scope": "all",
+      "seed_instability": 0.2458,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.6874,
+      "surface_robust_accuracy": 0.2433,
+      "surface_sensitivity": 0.7518,
+      "worst_arm": "EXTERNAL[11]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.458,
+        "EXTERNAL[0]": 0.442,
+        "EXTERNAL[10]": 0.484,
+        "EXTERNAL[11]": 0.452,
+        "EXTERNAL[1]": 0.446,
+        "EXTERNAL[2]": 0.446,
+        "EXTERNAL[3]": 0.44,
+        "EXTERNAL[4]": 0.478,
+        "EXTERNAL[5]": 0.444,
+        "EXTERNAL[6]": 0.432,
+        "EXTERNAL[7]": 0.47,
+        "EXTERNAL[8]": 0.486,
+        "EXTERNAL[9]": 0.438,
+        "TRAIN[0]": 0.446,
+        "TRAIN[1]": 0.454,
+        "TRAIN[2]": 0.452,
+        "TRAIN[3]": 0.452
+      },
+      "arms": 17,
+      "axis": "denial",
+      "best_arm": "EXTERNAL[8]",
+      "scope": "cross_effect",
+      "seed_instability": 0.1591,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.4541,
+      "surface_robust_accuracy": 0.432,
+      "surface_sensitivity": 0.054,
+      "worst_arm": "EXTERNAL[6]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 1.0,
+        "EXTERNAL[0]": 1.0,
+        "EXTERNAL[10]": 1.0,
+        "EXTERNAL[11]": 0.902,
+        "EXTERNAL[1]": 1.0,
+        "EXTERNAL[2]": 1.0,
+        "EXTERNAL[3]": 1.0,
+        "EXTERNAL[4]": 1.0,
+        "EXTERNAL[5]": 1.0,
+        "EXTERNAL[6]": 1.0,
+        "EXTERNAL[7]": 1.0,
+        "EXTERNAL[8]": 1.0,
+        "EXTERNAL[9]": 1.0,
+        "TRAIN[0]": 1.0,
+        "TRAIN[1]": 1.0,
+        "TRAIN[2]": 1.0,
+        "TRAIN[3]": 1.0
+      },
+      "arms": 17,
+      "axis": "denial",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.0115,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "missing",
+      "surface_mean_accuracy": 0.9942,
+      "surface_robust_accuracy": 0.902,
+      "surface_sensitivity": 0.098,
+      "worst_arm": "EXTERNAL[11]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.7962,
+        "EXTERNAL[0]": 0.8022,
+        "EXTERNAL[10]": 0.8022,
+        "EXTERNAL[11]": 0.8017,
+        "EXTERNAL[1]": 0.8013,
+        "EXTERNAL[2]": 0.8024,
+        "EXTERNAL[3]": 0.8022,
+        "EXTERNAL[4]": 0.8021,
+        "EXTERNAL[5]": 0.8024,
+        "EXTERNAL[6]": 0.8021,
+        "EXTERNAL[7]": 0.8021,
+        "EXTERNAL[8]": 0.8015,
+        "EXTERNAL[9]": 0.8022,
+        "TRAIN[0]": 0.8018,
+        "TRAIN[1]": 0.7989,
+        "TRAIN[2]": 0.8005,
+        "TRAIN[3]": 0.8017
+      },
+      "arms": 17,
+      "axis": "denial",
+      "best_arm": "EXTERNAL[2]",
+      "scope": "cross_effect",
+      "seed_instability": 0.019,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.8014,
+      "surface_robust_accuracy": 0.7962,
+      "surface_sensitivity": 0.0063,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "DEV": 0.598,
+        "EXTERNAL[0]": 0.732,
+        "EXTERNAL[10]": 0.71,
+        "EXTERNAL[11]": 0.654,
+        "EXTERNAL[1]": 0.646,
+        "EXTERNAL[2]": 0.728,
+        "EXTERNAL[3]": 0.732,
+        "EXTERNAL[4]": 0.668,
+        "EXTERNAL[5]": 0.732,
+        "EXTERNAL[6]": 0.724,
+        "EXTERNAL[7]": 0.714,
+        "EXTERNAL[8]": 0.68,
+        "EXTERNAL[9]": 0.716,
+        "TRAIN[0]": 0.714,
+        "TRAIN[1]": 0.716,
+        "TRAIN[2]": 0.722,
+        "TRAIN[3]": 0.722
+      },
+      "arms": 17,
+      "axis": "denial",
+      "best_arm": "EXTERNAL[0]",
+      "scope": "cross_effect",
+      "seed_instability": 0.2471,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.7005,
+      "surface_robust_accuracy": 0.598,
+      "surface_sensitivity": 0.134,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "TRAIN[0]": 0.78,
+        "TRAIN[1]": 0.52,
+        "TRAIN[2]": 0.81,
+        "TRAIN[3]": 0.736,
+        "TRAIN[4]": 0.802,
+        "TRAIN[5]": 0.412
+      },
+      "arms": 6,
+      "axis": "hedge",
+      "best_arm": "TRAIN[2]",
+      "scope": "in_distribution",
+      "seed_instability": 0.1693,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.6767,
+      "surface_robust_accuracy": 0.412,
+      "surface_sensitivity": 0.398,
+      "worst_arm": "TRAIN[5]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "CONSTRUCTED[0]": 0.202,
+        "CONSTRUCTED[1]": 0.832,
+        "CONSTRUCTED[2]": 0.892,
+        "CONSTRUCTED[3]": 0.154,
+        "CONSTRUCTED[4]": 0.0,
+        "CONSTRUCTED[5]": 0.68,
+        "DEV": 0.598
+      },
+      "arms": 7,
+      "axis": "hedge",
+      "best_arm": "CONSTRUCTED[2]",
+      "scope": "held_out",
+      "seed_instability": 0.0794,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.4797,
+      "surface_robust_accuracy": 0.0,
+      "surface_sensitivity": 0.892,
+      "worst_arm": "CONSTRUCTED[4]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "CONSTRUCTED[0]": 0.202,
+        "CONSTRUCTED[1]": 0.832,
+        "CONSTRUCTED[2]": 0.892,
+        "CONSTRUCTED[3]": 0.154,
+        "CONSTRUCTED[4]": 0.0,
+        "CONSTRUCTED[5]": 0.68,
+        "DEV": 0.598,
+        "TRAIN[0]": 0.78,
+        "TRAIN[1]": 0.52,
+        "TRAIN[2]": 0.81,
+        "TRAIN[3]": 0.736,
+        "TRAIN[4]": 0.802,
+        "TRAIN[5]": 0.412
+      },
+      "arms": 13,
+      "axis": "hedge",
+      "best_arm": "CONSTRUCTED[2]",
+      "scope": "all",
+      "seed_instability": 0.1209,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "uncertain",
+      "surface_mean_accuracy": 0.5706,
+      "surface_robust_accuracy": 0.0,
+      "surface_sensitivity": 0.892,
+      "worst_arm": "CONSTRUCTED[4]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "CONSTRUCTED[0]": 0.4758,
+        "CONSTRUCTED[1]": 0.4939,
+        "CONSTRUCTED[2]": 0.5061,
+        "CONSTRUCTED[3]": 0.4782,
+        "CONSTRUCTED[4]": 0.4685,
+        "CONSTRUCTED[5]": 0.4697,
+        "DEV": 0.5024,
+        "TRAIN[0]": 0.4661,
+        "TRAIN[1]": 0.4746,
+        "TRAIN[2]": 0.4915,
+        "TRAIN[3]": 0.4915,
+        "TRAIN[4]": 0.4649,
+        "TRAIN[5]": 0.4673
+      },
+      "arms": 13,
+      "axis": "hedge",
+      "best_arm": "CONSTRUCTED[2]",
+      "scope": "cross_effect",
+      "seed_instability": 0.0769,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "absent",
+      "surface_mean_accuracy": 0.4808,
+      "surface_robust_accuracy": 0.4649,
+      "surface_sensitivity": 0.0412,
+      "worst_arm": "TRAIN[4]"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "CONSTRUCTED[0]": 0.458,
+        "CONSTRUCTED[1]": 0.458,
+        "CONSTRUCTED[2]": 0.458,
+        "CONSTRUCTED[3]": 0.458,
+        "CONSTRUCTED[4]": 0.458,
+        "CONSTRUCTED[5]": 0.458,
+        "DEV": 0.458,
+        "TRAIN[0]": 0.458,
+        "TRAIN[1]": 0.458,
+        "TRAIN[2]": 0.458,
+        "TRAIN[3]": 0.458,
+        "TRAIN[4]": 0.458,
+        "TRAIN[5]": 0.458
+      },
+      "arms": 13,
+      "axis": "hedge",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.228,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "conflicting",
+      "surface_mean_accuracy": 0.458,
+      "surface_robust_accuracy": 0.458,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "CONSTRUCTED[0]": 1.0,
+        "CONSTRUCTED[1]": 1.0,
+        "CONSTRUCTED[2]": 1.0,
+        "CONSTRUCTED[3]": 1.0,
+        "CONSTRUCTED[4]": 1.0,
+        "CONSTRUCTED[5]": 1.0,
+        "DEV": 1.0,
+        "TRAIN[0]": 1.0,
+        "TRAIN[1]": 1.0,
+        "TRAIN[2]": 1.0,
+        "TRAIN[3]": 1.0,
+        "TRAIN[4]": 1.0,
+        "TRAIN[5]": 1.0
+      },
+      "arms": 13,
+      "axis": "hedge",
+      "best_arm": "DEV",
+      "scope": "cross_effect",
+      "seed_instability": 0.0,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "missing",
+      "surface_mean_accuracy": 1.0,
+      "surface_robust_accuracy": 1.0,
+      "surface_sensitivity": 0.0,
+      "worst_arm": "DEV"
+    },
+    {
+      "arm_comparison_supported": false,
+      "arm_means": {
+        "CONSTRUCTED[0]": 0.7968,
+        "CONSTRUCTED[1]": 0.7976,
+        "CONSTRUCTED[2]": 0.7963,
+        "CONSTRUCTED[3]": 0.7968,
+        "CONSTRUCTED[4]": 0.7978,
+        "CONSTRUCTED[5]": 0.7962,
+        "DEV": 0.7962,
+        "TRAIN[0]": 0.7974,
+        "TRAIN[1]": 0.7954,
+        "TRAIN[2]": 0.7925,
+        "TRAIN[3]": 0.7949,
+        "TRAIN[4]": 0.7945,
+        "TRAIN[5]": 0.7959
+      },
+      "arms": 13,
+      "axis": "hedge",
+      "best_arm": "CONSTRUCTED[4]",
+      "scope": "cross_effect",
+      "seed_instability": 0.0352,
+      "seeds_per_arm": [
+        2
+      ],
+      "state": "supported",
+      "surface_mean_accuracy": 0.796,
+      "surface_robust_accuracy": 0.7925,
+      "surface_sensitivity": 0.0052,
+      "worst_arm": "TRAIN[2]"
+    }
+  ]
+}

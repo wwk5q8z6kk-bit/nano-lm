@@ -325,6 +325,52 @@
       "results_glob": "artifacts/nano_h6/analysis/threshold_curve_*.json",
       "status": "SUPPORTED_SCOPED",
       "summary": "On the calibration partition (4000 fields, 120 operating points, AURC 0.00510) the frozen zero-wrong-presented policy retains 538 correct answers at 13.5% coverage, while threshold 0.9747 retains 2831 at 71.1% coverage for 14 errors - accepting 14 errors recovers 2293 correct answers. Diagnostic only: it selects nothing, and does NOT re-litigate H5/H6, which were rejected at the uncalibrated gate before the threshold stage ran."
+    },
+    {
+      "answer": "yes; every span-carrying state recovers to 95-100% on familiar wording, and `missing` (no lexical dependency) has a zero gap",
+      "artifacts": [
+        "artifacts/nano_h6/analysis/INVALID_surface_harness_conflicting_prefix.json",
+        "artifacts/nano_h6/analysis/denial_probe_calibration.json",
+        "artifacts/nano_h6/analysis/disagreement.json",
+        "artifacts/nano_h6/analysis/external_denial_coverage.json",
+        "artifacts/nano_h6/analysis/generalization_gap.json",
+        "artifacts/nano_h6/analysis/lexical_substitution.json",
+        "artifacts/nano_h6/analysis/lexical_substitution_seed20260806.json",
+        "artifacts/nano_h6/analysis/surface_harness.json",
+        "artifacts/nano_h6/analysis/surface_harness_conflicting.json",
+        "artifacts/nano_h6/analysis/surface_harness_value_template.json",
+        "artifacts/nano_h6/analysis/threshold_curve_seed20260805_epoch2.json"
+      ],
+      "corrections_issued": [
+        "RESULT_DP1 s2: 'conflicting is structural' -- refuted by conflicting_structure (sensitivity 10.2% < instability 17.3%)",
+        "RESULT_DP1 s4: 'neither model nor rule learned polarity' -- refuted by the controlled substitution (model 62.7/75.2% external vs rule 0%)"
+      ],
+      "cycle": "surface-robustness (2026-08-05/06)",
+      "design": [
+        "papers/PREREG_DENIAL_POLARITY.md",
+        "papers/PLAN_20260805_SURFACE_ROBUSTNESS.md"
+      ],
+      "does_not_change": "H6 remains REJECTED; its threshold was frozen in advance and measured correctly. Only the diagnosis changed.",
+      "external_data": [
+        "data/external/negspacy/en_clinical_termset.json (MIT, evaluation-only)",
+        "data/external/medspacy/en_context_rules.json (MIT, evaluation-only)"
+      ],
+      "instrument": [
+        "nano_ai/surface.py",
+        "nano_ai/surface_arms.py",
+        "nano_ai/training/run_surface_harness.py",
+        "nano_ai/tests/test_surface.py",
+        "nano_ai/tests/test_gate_degeneracy_safety.py"
+      ],
+      "question": "does the benchmark's surface vocabulary confound every epistemic-state gate?",
+      "results": [
+        "papers/RESULT_DP1_AND_THE_VOCABULARY_CEILING.md",
+        "papers/RESULT_SURFACE_HARNESS_RUN1.md",
+        "papers/RESULT_DISAGREEMENT_ROUTER.md",
+        "papers/RESULT_PER_STATE_DIAGNOSIS.md",
+        "papers/DECISION_MEMO_20260806.md"
+      ],
+      "status": "EXPLORATORY -- selects nothing, gates nothing, moves no threshold"
     }
   ],
   "known_absences": [
@@ -338,5 +384,5 @@
   "purpose": "Canonical claim-to-artifact map. Product plans and work queues are not evidence.",
   "raw_archive": "artifacts/local_raw_archive/MANIFEST.json",
   "schema": "nano-lm.evidence_manifest.v2",
-  "updated": "2026-08-05"
+  "updated": "2026-08-06"
 }

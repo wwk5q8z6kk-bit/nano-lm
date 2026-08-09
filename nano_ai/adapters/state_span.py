@@ -94,6 +94,25 @@ def _locate_unique_patient_span(transcript: str, text: str) -> EvidenceSpan:
     return span
 
 
+def classify_patient_span_relocation(
+    transcript: str, text: str
+) -> str:
+    """Classify route-(b) generated span text against the unmodified locator.
+
+    Returns one of ``relocated``, ``no_match``, or ``ambiguous``. Used by the
+    span-port falsifier (`papers/PREREG_SPAN_PORT_B.md`) so probe code does not
+    re-implement or reinterpret the binder's refusal rules.
+    """
+    try:
+        _locate_unique_patient_span(transcript, text)
+    except StateSpanFormatError as exc:
+        message = str(exc)
+        if "ambiguous" in message:
+            return "ambiguous"
+        return "no_match"
+    return "relocated"
+
+
 def _payload_texts(code: str, payload: str | None) -> tuple[str, ...]:
     if code == "M":
         if payload is not None:

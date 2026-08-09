@@ -1,0 +1,451 @@
+{
+  "arms": [
+    {
+      "absent_accuracy": 0.4818,
+      "absent_correct": 199,
+      "absent_total": 413,
+      "arm": "DEV",
+      "examples_dropped": 0,
+      "examples_used": 1000,
+      "external_trigger": null,
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.335,
+          "correct": 67,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.6197,
+          "correct": 132,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "None whatsoever.",
+        "medication": "Nothing at all."
+      },
+      "predicted_state_mix": {
+        "absent": 199,
+        "conflicting": 15,
+        "missing": 14,
+        "supported": 177,
+        "uncertain": 8
+      },
+      "rule_recognises_phrase": {
+        "allergy": true,
+        "medication": true
+      }
+    },
+    {
+      "absent_accuracy": 0.9225,
+      "absent_correct": 381,
+      "absent_total": 413,
+      "arm": "TRAIN[0]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": null,
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.84,
+          "correct": 168,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 1.0,
+          "correct": 213,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "No allergies!",
+        "medication": "No, nothing."
+      },
+      "predicted_state_mix": {
+        "absent": 413
+      },
+      "rule_recognises_phrase": {
+        "allergy": true,
+        "medication": true
+      }
+    },
+    {
+      "absent_accuracy": 0.9322,
+      "absent_correct": 385,
+      "absent_total": 413,
+      "arm": "TRAIN[1]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": null,
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.86,
+          "correct": 172,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 1.0,
+          "correct": 213,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "Not that I know of!",
+        "medication": "No nothing yet!"
+      },
+      "predicted_state_mix": {
+        "absent": 413
+      },
+      "rule_recognises_phrase": {
+        "allergy": true,
+        "medication": true
+      }
+    },
+    {
+      "absent_accuracy": 0.9927,
+      "absent_correct": 410,
+      "absent_total": 413,
+      "arm": "TRAIN[2]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": null,
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.985,
+          "correct": 197,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 1.0,
+          "correct": 213,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "I deny allergies.",
+        "medication": "I deny taking medications."
+      },
+      "predicted_state_mix": {
+        "absent": 413
+      },
+      "rule_recognises_phrase": {
+        "allergy": true,
+        "medication": true
+      }
+    },
+    {
+      "absent_accuracy": 0.9903,
+      "absent_correct": 409,
+      "absent_total": 413,
+      "arm": "TRAIN[3]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": null,
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.98,
+          "correct": 196,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 1.0,
+          "correct": 213,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "I denied any allergy.",
+        "medication": "I denied taking medicine."
+      },
+      "predicted_state_mix": {
+        "absent": 413
+      },
+      "rule_recognises_phrase": {
+        "allergy": true,
+        "medication": true
+      }
+    },
+    {
+      "absent_accuracy": 0.6707,
+      "absent_correct": 277,
+      "absent_total": 413,
+      "arm": "EXTERNAL[0]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "don't",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.395,
+          "correct": 79,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.9296,
+          "correct": 198,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "I don't have allergies.",
+        "medication": "I don't take medications."
+      },
+      "predicted_state_mix": {
+        "absent": 277,
+        "conflicting": 54,
+        "supported": 81,
+        "uncertain": 1
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    },
+    {
+      "absent_accuracy": 0.6755,
+      "absent_correct": 279,
+      "absent_total": 413,
+      "arm": "EXTERNAL[1]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "not",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.395,
+          "correct": 79,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.939,
+          "correct": 200,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "I'm not allergic.",
+        "medication": "I'm not on any medications."
+      },
+      "predicted_state_mix": {
+        "absent": 279,
+        "conflicting": 25,
+        "supported": 13,
+        "uncertain": 96
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    },
+    {
+      "absent_accuracy": 0.6998,
+      "absent_correct": 289,
+      "absent_total": 413,
+      "arm": "EXTERNAL[2]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "never",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.445,
+          "correct": 89,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.939,
+          "correct": 200,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "I never had allergies.",
+        "medication": "I never took medications."
+      },
+      "predicted_state_mix": {
+        "absent": 289,
+        "conflicting": 36,
+        "supported": 29,
+        "uncertain": 59
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    },
+    {
+      "absent_accuracy": 0.6441,
+      "absent_correct": 266,
+      "absent_total": 413,
+      "arm": "EXTERNAL[3]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "no",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.33,
+          "correct": 66,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.939,
+          "correct": 200,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "I have no allergies.",
+        "medication": "I have no medications."
+      },
+      "predicted_state_mix": {
+        "absent": 299,
+        "conflicting": 61,
+        "supported": 15,
+        "uncertain": 38
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    },
+    {
+      "absent_accuracy": 0.2809,
+      "absent_correct": 116,
+      "absent_total": 413,
+      "arm": "EXTERNAL[4]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "negative for",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.19,
+          "correct": 38,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.3662,
+          "correct": 78,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "Negative for allergies.",
+        "medication": "Negative for medications."
+      },
+      "predicted_state_mix": {
+        "absent": 116,
+        "conflicting": 48,
+        "supported": 243,
+        "uncertain": 6
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    },
+    {
+      "absent_accuracy": 0.6925,
+      "absent_correct": 286,
+      "absent_total": 413,
+      "arm": "EXTERNAL[5]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "didn't",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.435,
+          "correct": 87,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.9343,
+          "correct": 199,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "I didn't have allergies.",
+        "medication": "I didn't take medications."
+      },
+      "predicted_state_mix": {
+        "absent": 286,
+        "conflicting": 48,
+        "supported": 75,
+        "uncertain": 4
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    },
+    {
+      "absent_accuracy": 0.9322,
+      "absent_correct": 385,
+      "absent_total": 413,
+      "arm": "EXTERNAL[6]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "cannot",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.915,
+          "correct": 183,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.9484,
+          "correct": 202,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "No signs of allergies.",
+        "medication": "I cannot take medications."
+      },
+      "predicted_state_mix": {
+        "absent": 402,
+        "supported": 5,
+        "uncertain": 6
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    },
+    {
+      "absent_accuracy": 0.4213,
+      "absent_correct": 174,
+      "absent_total": 413,
+      "arm": "EXTERNAL[7]",
+      "examples_dropped": 13,
+      "examples_used": 987,
+      "external_trigger": "absence of",
+      "per_field": {
+        "allergy": {
+          "accuracy": 0.195,
+          "correct": 39,
+          "total": 200
+        },
+        "medication": {
+          "accuracy": 0.6338,
+          "correct": 135,
+          "total": 213
+        }
+      },
+      "phrases": {
+        "allergy": "Absence of allergies.",
+        "medication": "Absence of medications."
+      },
+      "predicted_state_mix": {
+        "absent": 174,
+        "conflicting": 44,
+        "supported": 195
+      },
+      "rule_recognises_phrase": {
+        "allergy": false,
+        "medication": false
+      }
+    }
+  ],
+  "checkpoint": "artifacts/nano_h6/kaggle/results-20260805/results/seed-20260805/epoch-2.pt",
+  "design": "identical development transcripts; only the denial phrase varies",
+  "external_lexicon": "data/external/negspacy/en_clinical_termset.json (MIT)",
+  "schema": "nano.lexical-substitution.v1",
+  "status": "EXPLORATORY -- selects nothing, gates nothing"
+}

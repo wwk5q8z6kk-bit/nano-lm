@@ -1,0 +1,28 @@
+{
+  "authority_record": "papers/DATASET_AUTHORITY_LORA_CONTROL.md",
+  "calibration_partition_read": false,
+  "development_partition_read": false,
+  "external_lexicons_in_training_text": false,
+  "files": {
+    "train": {
+      "bytes": 17582675,
+      "records": 19152,
+      "sha256": "8d1040e83db2682770fc04158c7039bf32182468f1e65be53fb92003ad78b5ac"
+    },
+    "valid": {
+      "bytes": 921473,
+      "records": 1008,
+      "sha256": "754138948c89790facb6fa244a968e0e2fdc59231d0c625558964272efd06b4f"
+    }
+  },
+  "label_mix": {
+    "absent": 4620,
+    "missing": 1120,
+    "supported": 14420
+  },
+  "leak_guard": "every fit transcript checked against the two development denial phrasings and all held-out arm phrasings; build aborts on any match",
+  "purpose": "cross-model control -- holds task training constant, varies vocabulary exposure and scale",
+  "schema": "nano.lora-control-data.v1",
+  "seed": 20260806,
+  "source_partition": "artifacts/nano_h5/data/fit.jsonl (fit only)"
+}

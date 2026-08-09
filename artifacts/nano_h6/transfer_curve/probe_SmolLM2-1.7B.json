@@ -1,0 +1,199 @@
+{
+  "adapter_path": "artifacts/nano_h6/transfer_curve/adapters_SmolLM2-1.7B",
+  "arm_accuracies_interpretable": false,
+  "arms": [
+    {
+      "accuracy": 1.0,
+      "arm": "DEV",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "sealed development partition",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 0.9667,
+      "arm": "TRAIN[0]",
+      "correct": 29,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "provenance": "training distribution",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 0.9333,
+      "arm": "TRAIN[1]",
+      "correct": 28,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "provenance": "training distribution",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "TRAIN[2]",
+      "correct": 30,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "provenance": "training distribution",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "TRAIN[3]",
+      "correct": 30,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "provenance": "training distribution",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[0]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger \"don't\" (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[1]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'not' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[2]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'never' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[3]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'no' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[4]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'negative for' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[5]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger \"didn't\" (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[6]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'cannot' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[7]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'absence of' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[8]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'denies' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[9]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'without' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 0.9667,
+      "arm": "EXTERNAL[10]",
+      "correct": 29,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'free of' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[11]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "provenance": "external lexicon trigger 'ruled out' (negspacy en_clinical / medspacy NEGATED_EXISTENCE, both MIT)",
+      "unparsed": 0
+    }
+  ],
+  "control": {
+    "accuracy": 0.5,
+    "answer_distribution": {
+      "DENIED": 6,
+      "STATED": 24
+    },
+    "balanced_per_class": 15,
+    "collapsed": true,
+    "correct": 15,
+    "n": 30,
+    "note": "gold-supported and gold-missing fields, never rewritten by any arm. Guards against a model that answers DENIED unconditionally scoring 100% on an absent-only probe.",
+    "per_class_recall": {
+      "missing": 0.0,
+      "supported": 1.0
+    },
+    "worst_class_recall": 0.0
+  },
+  "documents_per_arm": 15,
+  "mode": "direct",
+  "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "schema": "nano.crossmodel-surface.v1",
+  "status": "EXPLORATORY -- control for the H7-V hypothesis; gates nothing",
+  "summary": {
+    "dev_arm": 1.0,
+    "nano_held_out_arms": {
+      "arms": 12,
+      "max": 1.0,
+      "mean": 0.9972,
+      "min": 0.9667,
+      "sensitivity": 0.0333
+    },
+    "nano_in_distribution_arms": {
+      "arms": 4,
+      "max": 1.0,
+      "mean": 0.975,
+      "min": 0.9333,
+      "sensitivity": 0.0667
+    }
+  },
+  "task_trained": true
+}

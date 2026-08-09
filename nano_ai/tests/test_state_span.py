@@ -197,6 +197,17 @@ Patient: pain"""
         parse_state_span_summary(summary, transcript)
 
 
+def test_classify_patient_span_relocation_public_api():
+    from nano_ai.adapters.state_span import classify_patient_span_relocation
+
+    unique = """Doctor: Any meds?
+Patient: No medication."""
+    repeated = unique + "\nPatient: No medication."
+    assert classify_patient_span_relocation(unique, "No medication.") == "relocated"
+    assert classify_patient_span_relocation(repeated, "No medication.") == "ambiguous"
+    assert classify_patient_span_relocation(unique, "penicillin") == "no_match"
+
+
 @pytest.mark.parametrize("prediction", [None, "free-form output"])
 def test_malformed_native_output_is_a_solver_exception(prediction):
     request = NanoInput(item_id="bad-output", transcript=MIXED_STATE_TRANSCRIPT)
