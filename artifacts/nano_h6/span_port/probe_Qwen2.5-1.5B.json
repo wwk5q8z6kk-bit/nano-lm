@@ -1,0 +1,192 @@
+{
+  "adapter_path": "artifacts/nano_h6/span_port/adapters_Qwen2.5-1.5B",
+  "arms": [
+    {
+      "accuracy": 0.9,
+      "arm": "DEV",
+      "correct": 27,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "TRAIN[0]",
+      "correct": 30,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "TRAIN[1]",
+      "correct": 30,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "TRAIN[2]",
+      "correct": 30,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "TRAIN[3]",
+      "correct": 30,
+      "in_distribution_for_nano": true,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[0]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[1]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[2]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[3]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 0.9667,
+      "arm": "EXTERNAL[4]",
+      "correct": 29,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[5]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[6]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[7]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 1.0,
+      "arm": "EXTERNAL[8]",
+      "correct": 30,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 0.7667,
+      "arm": "EXTERNAL[9]",
+      "correct": 23,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 0.8667,
+      "arm": "EXTERNAL[10]",
+      "correct": 26,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    },
+    {
+      "accuracy": 0.9333,
+      "arm": "EXTERNAL[11]",
+      "correct": 28,
+      "in_distribution_for_nano": false,
+      "n": 30,
+      "unparsed": 0
+    }
+  ],
+  "bars": {
+    "min_control_class_recall": 0.2,
+    "no_match_accept": 0.1,
+    "no_match_falsify": 0.25
+  },
+  "control": {
+    "accuracy": 0.8667,
+    "answers": {
+      "NOT_MENTIONED": 19,
+      "STATED": 11
+    },
+    "n": 30,
+    "per_class_recall": {
+      "missing": 1.0,
+      "supported": 0.7333
+    },
+    "worst_class_recall": 0.7333
+  },
+  "decision": "gray_zone",
+  "interpretable": true,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "preregistration": "papers/PREREG_SPAN_PORT_B.md",
+  "schema": "nano.span-port-probe.v1",
+  "span_relocation": {
+    "ambiguous_rate": 0.0,
+    "counts": {
+      "no_match": 107,
+      "relocated": 386
+    },
+    "emitted_spans": 493,
+    "missing_span_denominator": 510,
+    "missing_span_numerator": 17,
+    "missing_span_rate": 0.0333,
+    "no_match_rate": 0.217,
+    "relocated_rate": 0.783,
+    "unparsed_span_fields": 0
+  },
+  "state_summary": {
+    "nano_held_out_arms": {
+      "arms": 13,
+      "max": 1.0,
+      "mean": 0.9564,
+      "min": 0.7667
+    },
+    "nano_in_distribution_arms": {
+      "arms": 4,
+      "max": 1.0,
+      "mean": 1.0,
+      "min": 1.0
+    }
+  }
+}

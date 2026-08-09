@@ -1,0 +1,46 @@
+{
+  "base": "Qwen2.5-1.5B",
+  "control_worst_class_recall": 0.7333,
+  "data": "artifacts/nano_h6/lora_control/data_spans_balanced",
+  "data_provenance": {
+    "balanced": true,
+    "label_mix": {
+      "absent": 1120,
+      "missing": 1120,
+      "supported": 1120
+    },
+    "prompt_format": "state_and_span_line",
+    "target_format": "state_and_span_text"
+  },
+  "decision": "gray_zone",
+  "interpretable": true,
+  "license": "Apache-2.0",
+  "lora": {
+    "batch_size": 4,
+    "iters": 400,
+    "max_seq_length": 768,
+    "num_layers": 8,
+    "seed": 20260806
+  },
+  "preregistration": "papers/PREREG_SPAN_PORT_B.md",
+  "probe_path": "artifacts/nano_h6/span_port/probe_Qwen2.5-1.5B.json",
+  "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+  "schema": "nano.span-port-run.v1",
+  "span_relocation": {
+    "ambiguous_rate": 0.0,
+    "counts": {
+      "no_match": 107,
+      "relocated": 386
+    },
+    "emitted_spans": 493,
+    "missing_span_denominator": 510,
+    "missing_span_numerator": 17,
+    "missing_span_rate": 0.0333,
+    "no_match_rate": 0.217,
+    "relocated_rate": 0.783,
+    "unparsed_span_fields": 0
+  },
+  "state_held_out_mean": 0.9564,
+  "status": "ok",
+  "train_seconds": 404.0
+}
