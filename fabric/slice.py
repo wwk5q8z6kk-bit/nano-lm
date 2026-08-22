@@ -24,9 +24,6 @@ sys.path.insert(0, HERE)
 from schemas import (Claim, ClaimKind, Decision, DecisionAction, EvidenceSpan,
                      VerificationResult, VerificationState, to_json)
 
-spec = importlib.util.spec_from_file_location("ra", os.path.join(HERE, "..", "trajectory", "rescore_anchors.py"))
-ra = importlib.util.module_from_spec(spec); spec.loader.exec_module(ra)
-
 PRED = {"cc": "reports_cc", "dur": "has_duration", "sev": "has_severity",
         "med": "takes_med", "alg": "allergic_to"}
 SLOT_Q = {"med": "Did you try any medicine?", "alg": "Do you have any known allergies?"}
@@ -96,7 +93,12 @@ def verify_absent(claim, content, source_id):
 # extractor for this world; the slice measures the FABRIC, not verifier novelty.
 _src = open(os.path.join(HERE, "..", "scribe", "build_scribe_data.py")).read()
 _ns = {}
-exec(compile(_src.split("def sample_tuple")[0], "bsd[templates]", "exec"), _ns)
+_prefix = _src.split("def sample_tuple")[0]
+# Template lexicons are plain Python lists. Drop ML imports so verifier pins
+# stay stdlib-only; the generator itself still imports numpy/tokenizers.
+_prefix = re.sub(r"^import numpy as np\n", "", _prefix, flags=re.M)
+_prefix = re.sub(r"^from tokenizers import Tokenizer\n", "", _prefix, flags=re.M)
+exec(compile(_prefix, "bsd[templates]", "exec"), _ns)
 
 def _tpl_re(t):
     t = t.replace("{n} {unit}", "{v}").replace("{cc}", "{v}").replace("{sev}", "{v}") \
@@ -185,13 +187,26 @@ def decide(result):
     return DecisionAction.QUALIFY, "cannot verify; surfaced as unconfirmed"
 
 
-INSTRUMENTS = {"inst0": lambda: ra.inst0, **{f"m{k}": (lambda k=k: ra.fresh[k]) for k in range(5)}}
+def _anchors():
+    """Load the model-scoring stack only when a live slice run needs it."""
+    spec = importlib.util.spec_from_file_location(
+        "ra", os.path.join(HERE, "..", "trajectory", "rescore_anchors.py")
+    )
+    ra = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ra)
+    return ra
+
 
 def run_slice(tag, verifier="v1", instrument="inst0", model_cache={}):
+    ra = _anchors()
+    instruments = {
+        "inst0": lambda: ra.inst0,
+        **{f"m{k}": (lambda k=k: ra.fresh[k]) for k in range(5)},
+    }
     if tag not in model_cache:
         model_cache[tag] = ra.load(tag)[0]
     m = model_cache[tag]
-    items_src = INSTRUMENTS[instrument]()
+    items_src = instruments[instrument]()
     vv, va = VERIFIERS[verifier]
     ledger_path = os.path.join(HERE, f"ledger_{tag}_{instrument}_{verifier}.jsonl")
     stats = {"parsed": 0, "review": 0, "raw_pred": 0, "raw_err": 0,

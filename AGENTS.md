@@ -1,31 +1,77 @@
-## Learned User Preferences
+# Agent operating instructions
 
-- Prefer adversarial research-council mode (“what have we forgotten,” competing explanatory universes) over passive review that accepts the project’s framing.
-- Enforce strict claim discipline: no mechanism claims beyond measured evidence; morphology stays descriptive until preregistered causal analysis; pointer results mean only that this implementation does not close the OOD gap; verification claims stay scoped to the verifier relation and distribution.
-- Keep scientific, systems, and product claims separated; Layer-1 evidence stays conservative while the engineering roadmap and research agenda stay expansive—negative evidence kills hypotheses, not long-term vision or curiosity. Treat the program’s primary risk as uncertainty about research/product framing, not missing experiments.
-- Prefer the opening question “what useful capability can a small system deliver better than larger, more expensive, less controllable systems?” over “how do we make a tiny LM score better?”; treat nano-lm as a system (compact models + tools + retrieval + memory + verification), not a model-score chase; use the smallest sufficient solver and verify consequential outputs.
-- Do not expand fabric/v2, NanoScribe, or mechanism narratives until validation gates update the posterior; a fabric vertical slice is not NanoScribe; packaging/documentation overclaim blocks architecture expansion.
-- Prefer RunPod/CUDA with frozen recipes for official LoRA/M0 E1 arms over local MPS when matching the official harness.
-- After decisive experimental results, treat them as load-bearing and freeze next measurement actions; idle or empty experiment queue ≠ program halted—the evidence freeze is the foundation, not the ambition ceiling.
-- Never run an experiment that cannot change the roadmap; prefer a sequential decision pipeline (premise → regime → utility → kill gate) over “do everything.”
-- When the owner says be thorough or not to skip stages, complete construct/first-principles Stage work before advancing; do not skip Gate 1 residuals by default; reconcile → audit → archive before tagging an immutable evidence freeze.
-- Never label an agent-applied E3 rubric audit as human or clinician evaluation; dual-clinician IAA remains open until completed.
-- Do not overclaim integrity pins: base checkpoint SHA-256 fail-closed is the real lock; recipe fingerprints are logged, not fail-closed to a fixed digest; not full CUDA bit-identical fine-tuning.
-- Benchmark result ≠ evidence-ledger claim ≠ product authorization; keep nano-lm as one project—not an institutional multi-lab org; do not optimize governance/process docs over the research/product objective; Program 1 census stays unauthorized.
+## CURRENT PROGRAM
 
-## Learned Workspace Facts
+```text
+authority = docs/PROJECT_AUTHORITY.md
+mission = docs/PROJECT_CHARTER.md
+current_state = docs/ACTIVE_NOW.json + docs/ACTIVE_NOW.md
+execution = docs/EXECUTION_PLAN.md
 
-- nano-lm is one first-principles research + product vehicle for small, efficient, verification-gated AI systems—not a laboratory franchise, benchmark company, or NanoScribe; strategic center is `papers/STRATEGIC_RESET.md`.
-- The SRC/council audit is the locked program baseline: the empirical core is stronger than packaging; packaging must not outrun evidence (see `CANONICAL_STATUS_TABLE.md`).
-- Official E1 kill gate FIRED (KILL H-substrate): under frozen \(U = P - 0.5M - 0.3\rho - 0.02L - 0.05C\) (\(\delta=0.05\)), max official M0 U ≈ 0.925 (Pythia-160M LoRA) lost to M1 ≈ 0.999; generative LM is not the preferred substrate for this closed scribe task; generation is not the default solver.
-- Old-task runs under `OLD_TASK_U` are forbidden; Paper α is frozen/public (`paper-alpha-v1`); no reopen of the old substrate claim.
-- Program: `PROGRAM_EXECUTION_STATUS: IDLE_AFTER_DOGFOOD`; Phase 2 classical + Phase 3 E-class (`ECLASS_CLOSED_WITHOUT_LM`) + noisy + papers dogfood 8/8; LM not indicated; next needs typed owner auth (`U_FREEZE` | `OWNER_CORPUS` | idle); E4 = `EXECUTED` / `KILL`; freeze tag immutable; NanoScribe STOP; `continue` = CONTINUE_SESSION M0 only (`OWNER_SPEECH_ACTS.md`).
-- Paper 1/α is the empirical foundation (held-out copying failures, field localization, diversity, scaling/adaptation, reproducible instrument) with no architecture thesis; Paper 2/β is the verification/systems track (soundness, abstention economics, adversarial verifier evaluation) with no transformer mechanism dependency.
-- Active product path: Nano Runtime via Wedge v1 — local research document intelligence (private corpus → structured answers with evidence spans + abstention); classical-first; generation only if it beats classical under matched utility on this workflow (`papers/WEDGE_V1.md`).
-- E1/E4 closed the tested generative-substrate theses; surviving product question is whether a verification-gated small system beats larger model-only approaches on useful tasks—not “build NanoScribe anyway”; classical baselines remain mandatory for extraction-like tasks.
-- Fabric is a verification vertical slice / regression harness (typed claims, literal/rules verifiers, abstention)—not NanoScribe architecture; ledger files are per-run rewritten JSONL, not an append-only transactional DB.
-- Post-α E1/E3 primary artifacts were local-untracked vs `paper-alpha-v1`; packaging map is `papers/EVIDENCE_MANIFEST.json`. ρ in E1 \(U\) is review load, not hallucination. E3 Stage-1 is an agent-applied rubric audit (EXACT_SURVIVES); raw `*.jsonl` is gitignored with local archive manifests under `artifacts/`.
-- In-repo governance spine: `LABORATORY_CONSTITUTION.md` (how research is run here); `EVIDENCE_LEDGER.md`; portfolio/roadmap (non-evidential); `EXECUTION_QUEUE.md`; `DECISION_GATES.md`. No Laboratory Charter / multi-lab org chart.
-- Program 0 benchmark infra is `DONE` (one pinned reproducible sentinel path + Gate 0); serves Nano Runtime evaluation; Program 1 deferred; smoke ≠ leadership or ledger claims; do not reopen Program 0 as the project identity.
-- Risk mitigation map: `papers/FIRST_PRINCIPLES_RISK_MITIGATION.md` (§9 atomization; `LAB.B*` vs `WED.B*` namespaces); live scorecard: `papers/MITIGATION_STATUS_SCORECARD.md` (B1–B18 + B23 speech-act atoms→M0/M1/M2); E1 decision vs cost split: `trajectory/E1_DECISION_VS_COST_SPLIT.md` + `trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md`; anomaly expand: `papers/ANOMALY_LOG.md`. Auth lint: `scripts/lint_claim_auth.py` (also bans clinical/zero-halluc product phrases). Consult-gateway = intended verification path when CLI credits fail (B15); not an execute license.
-- Owner chat is typed by speech act (`papers/OWNER_SPEECH_ACTS.md`; `scripts/classify_owner_speech_act.py`): `continue` = `CONTINUE_SESSION` (ungated M0 only) — never mint commit/tag/push/execute from it; high-consequence acts need exact `authorize commit|push|tag` (plus tip policy for tags).
+capability_frontier = P1_SCRIBING
+product_frontier = NanoScribe
+
+macro_sequence =
+P1 faithful scribing
+→ P2 summarization
+→ P3 longitudinal charting
+→ P4–P9 intelligence expansion
+
+training_backend = RUNPOD
+training_status = ACTIVE
+
+routine_runpod_training =
+ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET
+
+materially_costly_run =
+EXPERIMENT_SCOPED_AUTHORIZATION
+
+confirmatory_evidential_run =
+PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION
+
+phi_or_private_data =
+NOT_AUTHORIZED
+
+Wedge = supporting verified-information subsystem
+
+H6 / Nano AI / span-port =
+CROSS_BRANCH_NOT_YET_INTEGRATED
+
+E1 / E4 =
+preserved scoped empirical verdicts,
+not current-program STOP instructions
+
+July-31 IDLE / NanoScribe STOP =
+HISTORICAL_PROGRAM_STATE
+```
+
+Canonical index: [`docs/README.md`](docs/README.md).
+
+## Typed authority
+
+[`docs/PROJECT_AUTHORITY.md`](docs/PROJECT_AUTHORITY.md) — empirical artifacts win over narrative; program charter wins over stale planning stubs. Superseded `papers/*` stubs → [`docs/archive/legacy/`](docs/archive/legacy/).
+
+## Durable scoped facts
+
+- E1 KILL = scoped to the old closed task under frozen \(U\) — not a full-program kill.
+- E4 KILL = scoped to the tested R★ regime — not a full-program kill.
+- Paper α = protected empirical foundation (`paper-alpha-v1`); do not reopen the old substrate claim.
+- Agent-applied rubric audit ≠ clinician / human dual-IAA evaluation.
+- `OLD_TASK_U` forbidden.
+- Doc-reset PRs must not modify Evidence Core / ledger / freeze artifacts.
+- No PHI / private owner material in current Nano experiments.
+
+## Hard gates
+
+- No freeze tag create/move/push; no B17 freeze-recipe execution (historical only).
+- No evidence-protected path edits in documentation-reset PRs.
+- Materially costly and confirmatory runs follow experiment-scoped authorization in the active plan. Routine RunPod training is in-workflow within the active experiment budget.
+
+## Verify
+
+```bash
+python3 scripts/check_active_now.py
+python3 scripts/check_docs_integrity.py
+python3 fabric/test_fabric.py
+python3 trajectory/test_recompute_c3.py
+```

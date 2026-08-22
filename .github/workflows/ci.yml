@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    branches: [master, 'docs/**']
+  pull_request:
+
+jobs:
+  canonical-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: ACTIVE_NOW consistency
+        run: python3 scripts/check_active_now.py
+
+      - name: Documentation integrity
+        run: python3 scripts/check_docs_integrity.py
+
+      - name: Fabric regression pins
+        run: python3 fabric/test_fabric.py
+
+      - name: C3 recompute regression pins
+        run: python3 trajectory/test_recompute_c3.py
