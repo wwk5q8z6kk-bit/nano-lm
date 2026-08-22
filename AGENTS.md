@@ -17,9 +17,9 @@ P1 faithful scribing
 → P3 longitudinal charting
 → P4–P9 intelligence expansion
 
-training_backend = RUNPOD
-training_status = ACTIVE
-paid_compute_policy = EXPERIMENT_SCOPED_AUTHORIZATION
+local_zero_cost_exploratory_training = ALLOWED
+paid_training = OWNER_GATED
+frozen_confirmatory_execution = PREREG_PLUS_OWNER_GATED
 
 Wedge = supporting verified-information subsystem
 
@@ -48,7 +48,7 @@ Canonical index: [`docs/README.md`](docs/README.md).
 - Agent-applied rubric audit ≠ clinician / human dual-IAA evaluation.
 - `OLD_TASK_U` forbidden.
 - Doc-reset PRs must not modify Evidence Core / ledger / freeze artifacts.
-- No PHI / private clinical data on RunPod or in git under the current program.
+- No PHI / private owner material in current Nano experiments.
 
 ## Hard gates
 
