@@ -12,20 +12,15 @@
 
 | Doc | Role |
 |-----|------|
-| [`STRATEGIC_RESET.md`](STRATEGIC_RESET.md) | **Current center:** Nano Runtime product thesis |
-| [`WEDGE_V1.md`](WEDGE_V1.md) | **Phase 1 lock:** local research document intelligence (40 tasks) |
-| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | In-repo research governance (not an institution) |
+| [`../docs/README.md`](../docs/README.md) | **Current program truth** — start here |
+| [`../docs/PROJECT_CHARTER.md`](../docs/PROJECT_CHARTER.md) | Mission and capability program |
+| [`STRATEGIC_RESET.md`](STRATEGIC_RESET.md) | *Superseded* → docs |
+| [`WEDGE_V1.md`](WEDGE_V1.md) | *Superseded* → [`../docs/subsystems/WEDGE.md`](../docs/subsystems/WEDGE.md) |
+| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | In-repo research governance |
 | [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Layer 1 — what is demonstrated |
-| [`RESEARCH_PORTFOLIO.md`](RESEARCH_PORTFOLIO.md) | Layer 3 — long-horizon questions |
-| [`TECHNOLOGY_ROADMAP.md`](TECHNOLOGY_ROADMAP.md) | Layer 2 — conditional build vision |
-| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Authorized now (wedge selection; freeze integrity) |
-| [`DECISION_GATES.md`](DECISION_GATES.md) | Promotion rules |
-| [`FIRST_PRINCIPLES_RISK_MITIGATION.md`](FIRST_PRINCIPLES_RISK_MITIGATION.md) | Blocker atoms → research-backed mitigations |
-| [`PUBLIC_ONE_PAGER.md`](PUBLIC_ONE_PAGER.md) | Outsider proven/frozen/next |
-| [`OWNER_SPEECH_ACTS.md`](OWNER_SPEECH_ACTS.md) | Typed owner chat forces (`continue` ≠ execute) |
-| [`MITIGATION_STATUS_SCORECARD.md`](MITIGATION_STATUS_SCORECARD.md) | Blocker CLOSED/PARTIAL/OPEN |
-| [`ANOMALY_LOG.md`](ANOMALY_LOG.md) | Kill/stop → expand questions |
-| [`../benchmarks/BENCHMARK_CONSTITUTION.md`](../benchmarks/BENCHMARK_CONSTITUTION.md) | Program 0 / harness rules |
+| [`EMPIRICAL_FOUNDATION.md`](EMPIRICAL_FOUNDATION.md) | Owner evidence lockfile |
+| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | *Superseded* → [`../docs/EXECUTION_PLAN.md`](../docs/EXECUTION_PLAN.md) |
+| [`AZ_EXECUTION_PLAN.md`](AZ_EXECUTION_PLAN.md) | *Superseded* → [`../docs/archive/`](../docs/archive/) |
 
 
 ## Abstract

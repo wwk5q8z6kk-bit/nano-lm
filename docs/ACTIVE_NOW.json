@@ -1,0 +1,25 @@
+{
+  "schema": "nano-lm.docs.active_now.v1",
+  "updated": "2026-08-22",
+  "program_execution_status": "DOC_RESET_AND_P1_SCRIBING",
+  "capability_frontier": "P1_SCRIBING",
+  "current_gate": "REPOSITORY_RECONCILIATION_AND_CANONICAL_DOC_AUTHORITY",
+  "evidence_core": "FROZEN",
+  "paid_compute": "NOT_AUTHORIZED",
+  "training": "NOT_AUTHORIZED",
+  "clinical_claims": "FORBIDDEN_WITHOUT_EXTERNAL_HUMAN_VALIDATION",
+  "bounded_work": [
+    "docs_canonical_tree_and_readme_rewrite",
+    "owner_review_before_master_merge",
+    "p1_encounter_representation_and_span_bottleneck"
+  ],
+  "owner_gates": [
+    "paid_runpod",
+    "phi_in_git",
+    "protected_tag_moves",
+    "publication_claims",
+    "master_merge_doc_reset"
+  ],
+  "next_engineering": "scribe_evidence_span_bottleneck",
+  "docs_authority": "docs/PROJECT_AUTHORITY.md"
+}
