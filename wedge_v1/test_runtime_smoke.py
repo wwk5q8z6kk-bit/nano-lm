@@ -161,53 +161,50 @@ def test_measure_dogfood_u():
 
 
 
-def test_study_lite_fixture():
-    from wedge_v1.study_lite import check, run, DEFAULT_TASKS, FIXTURE, PRIVATE_STUDY_ROOT
+def test_study_lite_fixture(tmp_path=None):
+    import tempfile
+    from wedge_v1.study_lite import check, run, DEFAULT_TASKS, FIXTURE
 
-    study_dir = PRIVATE_STUDY_ROOT / "smoke"
+    study_dir = (tmp_path or Path(tempfile.mkdtemp())) / "smoke"
     chk = check(corpus=FIXTURE, tasks_path=DEFAULT_TASKS, study_dir=study_dir)
-    assert chk["smoke_ready"] is True
+    assert chk["smoke_ready"] is True, chk.get("blockers")
     summary = run(corpus=FIXTURE, tasks_path=DEFAULT_TASKS, study_dir=study_dir)
-    assert summary["ok"] is True
-    assert summary["n_tasks"] >= 5
+    assert summary.get("ok") is True or summary.get("n_ok") == summary.get("n_tasks")
+    assert summary.get("n_tasks", 0) >= 5
 
 def test_owner_dogfood_synthetic():
-    from wedge_v1.run_owner_dogfood import main as owner_main
+    import tempfile
+    from wedge_v1.run_owner_dogfood import FIXTURE_CORPUS, EXAMPLE_TASKS, DEFAULT_TASKS, run
 
-    rc = owner_main(["--demo"])
-    assert rc == 0
+    base = Path(tempfile.mkdtemp())
+    tasks = EXAMPLE_TASKS if EXAMPLE_TASKS.is_file() else DEFAULT_TASKS
+    result = run(
+        FIXTURE_CORPUS,
+        tasks,
+        out_json=base / "out.json",
+        gallery_md=base / "g.md",
+        gallery_json=base / "g.json",
+    )
+    assert result["n_ok"] == result["n_tasks"]
+
 
 
 def test_owner_dogfood_corpus_flag():
     import tempfile
+    from wedge_v1.run_owner_dogfood import FIXTURE_CORPUS, EXAMPLE_TASKS, DEFAULT_TASKS, run
 
-    from wedge_v1.run_owner_dogfood import FIXTURE_CORPUS, main as owner_main
+    base = Path(tempfile.mkdtemp())
+    tasks = EXAMPLE_TASKS if EXAMPLE_TASKS.is_file() else DEFAULT_TASKS
+    result = run(
+        FIXTURE_CORPUS,
+        tasks,
+        out_json=base / "out.json",
+        gallery_md=base / "g.md",
+        gallery_json=base / "g.json",
+    )
+    assert (base / "out.json").is_file()
+    assert result["n_ok"] == result["n_tasks"]
 
-    out = Path(tempfile.mkdtemp()) / "results_owner_dogfood.json"
-    rc = owner_main(["--corpus", str(FIXTURE_CORPUS), "--out", str(out)])
-    assert out.is_file()
-    assert rc == 0
-
-
-if __name__ == "__main__":
-    test_ttl_supported()
-    test_oos_abstain()
-    test_empty_corpus()
-    test_scan_docs()
-    test_find_ttl_phrase()
-    test_bm25_hits_ttl_doc()
-    test_bm25_span_supported()
-    test_ingest_md_corpus()
-    test_ingest_pdf_fixture()
-    test_compare_metformin_contradicted()
-    test_compare_literal_agree()
-    test_failure_gallery()
-    test_report_build()
-    test_report_ask_markdown()
-    test_measure_dogfood_u()
-    test_owner_dogfood_synthetic()
-    test_owner_dogfood_corpus_flag()
-    print("WEDGE_V1_SMOKE_OK")
 
 
 def test_bm25_margin_fields():

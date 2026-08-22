@@ -1,0 +1,46 @@
+{
+  "schema": "nano-lm.wedge_v1.owner_dogfood_tasks.v1",
+  "NONCLAIM": "P5 over-abstention regression pack; requires p5_repo_papers snapshot.",
+  "corpus": "wedge_v1/data/owner_corpus/p5_repo_papers_20260802",
+  "tasks": [
+    {
+      "id": "P5_O11",
+      "mode": "ask",
+      "query": "E1 KILL M1_template",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "E1",
+        "KILL",
+        "M1"
+      ]
+    },
+    {
+      "id": "P5_O12",
+      "mode": "ask",
+      "query": "E4 KILL 0.638",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "0.638",
+        "E4",
+        "KILL"
+      ]
+    },
+    {
+      "id": "P5_O13",
+      "mode": "ask",
+      "query": "Nano Runtime smallest sufficient solver",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "Nano Runtime",
+        "smallest",
+        "solver"
+      ]
+    }
+  ]
+}

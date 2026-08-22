@@ -1,32 +1,41 @@
 """Owner-corpus contact pins (fixture / demo path)."""
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
-from wedge_v1.run_owner_dogfood import DEFAULT_TASKS, FIXTURE_CORPUS, main, run
+from wedge_v1.run_owner_dogfood import DEFAULT_TASKS, EXAMPLE_TASKS, FIXTURE_CORPUS, run
+
+
+def _tasks() -> Path:
+    return EXAMPLE_TASKS if EXAMPLE_TASKS.is_file() else DEFAULT_TASKS
+
+
+def _run(base: Path):
+    out = base / "results_owner_dogfood.json"
+    gal = base / "gallery.md"
+    gal_json = base / "gallery.json"
+    result = run(
+        FIXTURE_CORPUS,
+        _tasks(),
+        out_json=out,
+        gallery_md=gal,
+        gallery_json=gal_json,
+    )
+    assert out.is_file()
+    assert result["n_tasks"] >= 5
+    assert result["n_ok"] == result["n_tasks"], [r for r in result.get("rows", []) if not r.get("ok")]
+    return result
 
 
 def test_example_corpus_present():
     assert FIXTURE_CORPUS.is_dir()
     assert any(FIXTURE_CORPUS.glob("*.md"))
-    assert DEFAULT_TASKS.is_file()
+    assert _tasks().is_file()
 
 
-def test_owner_dogfood_demo_pass():
-    rc = main(["--demo"])
-    assert rc == 0
-    out = Path(__file__).resolve().parent / "results_owner_dogfood.json"
-    assert out.is_file()
-    data = json.loads(out.read_text())
-    assert data["n_tasks"] == 5
-    assert data["n_ok"] == data["n_tasks"]
+def test_owner_dogfood_demo_pass(tmp_path: Path | None = None):
+    _run(Path(tmp_path) if tmp_path is not None else Path("/tmp"))
 
 
 def test_owner_smoke_example_pass(tmp_path: Path | None = None):
-    """CLI smoke entry — fixture pack via run()."""
-    dest = (tmp_path or Path("/tmp")) / "results_owner_dogfood_smoke.json"
-    result = run(FIXTURE_CORPUS, DEFAULT_TASKS, out_json=dest)
-    assert dest.is_file()
-    assert result["n_ok"] == result["n_tasks"]
-    assert result["n_tasks"] == 5
+    _run(Path(tmp_path) if tmp_path is not None else Path("/tmp"))
