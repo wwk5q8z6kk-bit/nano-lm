@@ -20,6 +20,9 @@ def isolate_private_runtime_records(
 
     root = Path(__file__).resolve().parent
     protected_names = {
+        "results_owner_ready.json",
+        "results_habit_session.json",
+        "results_owner_habit.json",
         "results_habit_session.json",
         "results_review_state.json",
         "results_saved_questions.json",
@@ -86,6 +89,16 @@ def isolate_private_runtime_records(
         monkeypatch.setattr(
             owner_ready_module, "DEFAULT_PRIVATE_TASKS", task_root / "questions-v1.json"
         )
+
+    monkeypatch.setattr(habit_module, "HABIT_PATH", tmp_path / "results_owner_habit.json")
+    if hasattr(habit_module, "SAVED_QUESTIONS"):
+        monkeypatch.setattr(habit_module, "SAVED_QUESTIONS", tmp_path / "results_saved_questions.json")
+    monkeypatch.setattr(habit_module, "SESSION_PATH", tmp_path / "results_habit_session.json")
+    if hasattr(habit_module, "REVIEW_PATH"):
+        monkeypatch.setattr(habit_module, "REVIEW_PATH", tmp_path / "results_review_state.json")
+    monkeypatch.setattr(owner_ready_module, "READY_OUT", tmp_path / "results_owner_ready.json")
+    if hasattr(owner_ready_module, "REVIEW_PATH"):
+        monkeypatch.setattr(owner_ready_module, "REVIEW_PATH", tmp_path / "results_review_state.json")
 
     habit_path = tmp_path / "results_owner_habit.json"
 

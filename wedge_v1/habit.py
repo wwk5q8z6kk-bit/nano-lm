@@ -21,13 +21,15 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def load(path: Path = HABIT_PATH) -> dict:
+def load(path: Path | None = None) -> dict:
+    path = HABIT_PATH if path is None else path
     if not path.is_file():
         return {"schema": "nano-lm.wedge_v1.habit.v1", "events": []}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def record(kind: str, *, note: str = "", path: Path = HABIT_PATH) -> dict:
+def record(kind: str, *, note: str = "", path: Path | None = None) -> dict:
+    path = HABIT_PATH if path is None else path
     data = load(path)
     data.setdefault("schema", "nano-lm.wedge_v1.habit.v1")
     data.setdefault("events", [])
@@ -108,14 +110,16 @@ def recent_documents(corpus: Path, *, limit: int = 12) -> list[dict]:
     return files[:limit]
 
 
-def load_saved_questions(path: Path = SAVED_QUESTIONS) -> list[dict]:
+def load_saved_questions(path: Path | None = None) -> list[dict]:
+    path = SAVED_QUESTIONS if path is None else path
     if not path.is_file():
         return []
     data = json.loads(path.read_text(encoding="utf-8"))
     return list(data.get("questions") or [])
 
 
-def save_question(query: str, *, mode: str = "ask", path: Path = SAVED_QUESTIONS) -> dict:
+def save_question(query: str, *, mode: str = "ask", path: Path | None = None) -> dict:
+    path = SAVED_QUESTIONS if path is None else path
     data = {"schema": "nano-lm.wedge_v1.saved_questions.v1", "questions": load_saved_questions(path)}
     data["questions"] = [
         q for q in data["questions"] if not (q.get("query") == query and q.get("mode") == mode)

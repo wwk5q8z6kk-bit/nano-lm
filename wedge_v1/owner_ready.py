@@ -18,6 +18,20 @@ ROOT = Path(__file__).resolve().parent
 READY_OUT = ROOT / "results_owner_ready.json"
 
 
+
+def _ready_note(*, real_owner: bool, review_exists: bool) -> str:
+    if not real_owner:
+        return (
+            "Private usefulness validation PENDING until OWNER_CORPUS is set "
+            "and owner labels reviews. Fixture green ≠ owner usefulness."
+        )
+    from wedge_v1.review import load_state
+
+    if review_exists and load_state().get("labels"):
+        return "Owner contact active — continue usefulness loop (habit + label triage)."
+    return "Private corpus ready — run owner-dogfood + review labels + habit."
+
+
 def check(corpus: Path | None = None, *, demo: bool = False) -> dict:
     env = (os.environ.get("OWNER_CORPUS") or os.environ.get("WEDGE_OWNER_CORPUS") or "").strip()
     if demo:
@@ -66,24 +80,29 @@ def check(corpus: Path | None = None, *, demo: bool = False) -> dict:
         blockers.append("corpus_empty_or_unreadable")
     # Real private usefulness remains pending until OWNER_CORPUS env points
     # at a non-fixture folder. Demo/fixture green ≠ owner usefulness.
-    fixture_paths = {FIXTURE_CORPUS.resolve()}
+    fixture_paths = {FIXTURE_CORPUS.resolve(), OWNER_DIR.resolve()}
     if (ROOT / "fixtures" / "owner_corpus").exists():
         fixture_paths.add((ROOT / "fixtures" / "owner_corpus").resolve())
     if (ROOT / "data" / "corpus").exists():
         fixture_paths.add((ROOT / "data" / "corpus").resolve())
-    real_owner = bool(env) and path.resolve() not in fixture_paths
+    if (ROOT / "data" / "owner_corpus").exists():
+        fixture_paths.add((ROOT / "data" / "owner_corpus").resolve())
+    path_resolved = path.resolve() if exists else path
+    real_owner = (bool(env) or source == "cli") and path_resolved not in fixture_paths
     if demo or not real_owner:
         blockers.append("OWNER_CORPUS_PENDING")
 
     canonical = (
-        'python -m wedge_v1 study check --corpus "$OWNER_CORPUS" '
-        '--tasks wedge_v1/data/owner_tasks/questions-v1.json '
-        '--dir wedge_v1/.studies/first-use && '
-        'python -m wedge_v1 study run --corpus "$OWNER_CORPUS" '
-        '--tasks wedge_v1/data/owner_tasks/questions-v1.json '
-        '--dir wedge_v1/.studies/first-use'
+        'export OWNER_CORPUS="$PWD/.local-data/owner_corpus" && '
+        'python -m wedge_v1 owner-dogfood --corpus "$OWNER_CORPUS" && '
+        'python -m wedge_v1 review --corpus "$OWNER_CORPUS" '
+        '--from-dogfood wedge_v1/results_owner_dogfood.json --interactive && '
+        'python -m wedge_v1 habit --corpus "$OWNER_CORPUS"'
     )
-    demo_cmd = "python -m wedge_v1 study check --corpus wedge_v1/fixtures/owner_corpus --tasks wedge_v1/data/owner_tasks/questions-v1.json --dir wedge_v1/.studies/demo && python -m wedge_v1 study run --corpus wedge_v1/fixtures/owner_corpus --tasks wedge_v1/data/owner_tasks/questions-v1.json --dir wedge_v1/.studies/demo"
+    demo_cmd = (
+        "python -m wedge_v1 owner-dogfood --demo && "
+        "python -m wedge_v1 review --demo --next"
+    )
 
     report = {
         "schema": "nano-lm.wedge_v1.owner_ready.v1",
@@ -107,10 +126,7 @@ def check(corpus: Path | None = None, *, demo: bool = False) -> dict:
         "canonical_command": canonical,
         "demo_command": demo_cmd,
         "ready_for_private_run": bool(real_owner and exists and docs and "corpus_empty_or_unreadable" not in blockers and "corpus_path_missing" not in blockers),
-        "note": (
-            "Private usefulness validation PENDING until OWNER_CORPUS is set "
-            "and owner labels reviews. Fixture green ≠ owner usefulness."
-        ),
+        "note": _ready_note(real_owner=bool(real_owner and exists and docs), review_exists=review_exists),
     }
     READY_OUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return report

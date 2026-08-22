@@ -15,6 +15,23 @@ from wedge_v1.runtime import DEFAULT_CORPUS, load_corpus
 ROOT = Path(__file__).resolve().parent
 
 
+
+def _next_owner_action(owner_ready: dict | None) -> str:
+    if not (owner_ready and owner_ready.get("ready_for_private_run")):
+        return (
+            "Set OWNER_CORPUS to a real private folder (>=10 docs) and run "
+            "owner-dogfood + review labels"
+        )
+    from wedge_v1.review import load_state
+
+    if load_state().get("labels"):
+        return 'python -m wedge_v1 habit --corpus "$OWNER_CORPUS"'
+    return (
+        'python -m wedge_v1 review --corpus "$OWNER_CORPUS" '
+        '--from-dogfood wedge_v1/results_owner_dogfood.json --interactive'
+    )
+
+
 def build_status(*, corpus: Path | None = None, demo: bool = False) -> dict:
     corpus_path = corpus
     if demo:
@@ -63,11 +80,7 @@ def build_status(*, corpus: Path | None = None, demo: bool = False) -> dict:
             "recover_gap_u": sla.get("recover_gap_vs_clean_U"),
         },
         "workstreams": {"W1": "DONE", "W2": "DONE", "W3": "DONE", "W4": "DONE", "W5": "DONE", "W6": admission.get("verdict")},
-        "next_owner_action": (
-            "Set WEDGE_OWNER_CORPUS to real private folder (>=10 docs) and run ./scripts/gate0_contact.sh"
-            if not (owner_ready and owner_ready.get("ready_for_private_run"))
-            else 'python -m wedge_v1 review --corpus "$WEDGE_OWNER_CORPUS" --interactive'
-        ),
+        "next_owner_action": _next_owner_action(owner_ready),
         "note": "Product/architecture snapshot; not Evidence Ledger.",
     }
 

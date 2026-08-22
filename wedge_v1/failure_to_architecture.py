@@ -53,6 +53,25 @@ WS_BLURB = {
 }
 
 
+
+def _owner_contact_done() -> bool:
+    """True when env points at a usable private corpus and reviews have labels."""
+    import os
+    from wedge_v1.owner_ready import check as owner_check
+    from wedge_v1.review import REVIEW_PATH, load_state
+
+    env = (os.environ.get("OWNER_CORPUS") or os.environ.get("WEDGE_OWNER_CORPUS") or "").strip()
+    if not env:
+        return False
+    try:
+        ready = owner_check(Path(env))
+    except Exception:
+        return False
+    if not ready.get("ready_for_private_run"):
+        return False
+    state = load_state(REVIEW_PATH)
+    return bool(state.get("labels"))
+
 def recommend(gallery: dict[str, Any]) -> dict[str, Any]:
     tallies = dict(gallery.get("tallies") or {})
     # dogfood gallery uses buckets:{name:[ids]}
@@ -87,11 +106,23 @@ def recommend(gallery: dict[str, Any]) -> dict[str, Any]:
         "schema": "nano-lm.frontier.failure_to_architecture.v1",
         "tallies": tallies,
         "workstream_votes": votes,
-        "recommended_next": next_ws[:3] if next_ws else ["OWNER_CORPUS_CONTACT"],
+        "recommended_next": (
+            next_ws[:3]
+            if next_ws
+            else (
+                ["OWNER_USEFULNESS_LOOP"]
+                if _owner_contact_done()
+                else ["OWNER_CORPUS_CONTACT"]
+            )
+        ),
         "blurbs": (
             {w: WS_BLURB[w] for w in next_ws[:3]}
             if next_ws
-            else {"OWNER_CORPUS_CONTACT": "Real private folder (≥10 docs) + usefulness labels"}
+            else (
+                {"OWNER_USEFULNESS_LOOP": "Habit + label triage on private corpus; fix observed fails"}
+                if _owner_contact_done()
+                else {"OWNER_CORPUS_CONTACT": "Real private folder (≥10 docs) + usefulness labels"}
+            )
         ),
         "lm_admission": {
             "verdict": adm.get("verdict"),

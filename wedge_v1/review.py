@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from wedge_v1.private_output import require_private_output
 from wedge_v1.runtime import ask, compare, find_spans
 
 ROOT = Path(__file__).resolve().parent
@@ -63,6 +64,7 @@ def load_state(path: Path | None = None) -> dict:
 
 def save_state(state: dict, path: Path | None = None) -> None:
     path = path if path is not None else REVIEW_PATH
+    path = require_private_output(path, purpose="review state")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
 
@@ -140,23 +142,61 @@ def cards_from_dogfood(
     corpus: Path,
     *,
     limit: int | None = None,
+    rerun: bool = False,
 ) -> list[dict]:
+    """Build review cards from dogfood JSON.
+
+    Default reuses stored statuses (no solver re-run) for fast labeling.
+    Pass ``rerun=True`` to rebuild via ask/compare/find.
+    """
     pack = json.loads(dogfood_path.read_text(encoding="utf-8"))
-    # Prefer task queries from companion tasks file if present
     rows = pack.get("rows") or []
-    cards = []
+    cards: list[dict] = []
+    corpus_s = str(Path(corpus).resolve())
     for row in rows:
         q = row.get("query")
         if not q:
             continue
         mode = row.get("mode") or "ask"
-        card = build_card(
-            q,
-            corpus=corpus,
-            mode=mode,
-            task_id=row.get("id"),
-            expect_status=row.get("expect_status"),
-        )
+        tid = row.get("id") or row.get("task_id")
+        if rerun or row.get("got_status") is None:
+            card = build_card(
+                q,
+                corpus=corpus,
+                mode=mode,
+                task_id=tid,
+                expect_status=row.get("expect_status"),
+            )
+        else:
+            status = row.get("got_status")
+            cid = card_id(q, corpus_s, mode)
+            card = {
+                "id": cid,
+                "task_id": tid or cid,
+                "query": q,
+                "task_class": mode,
+                "corpus": corpus_s,
+                "answer_status": status,
+                "answer_or_abstention": status,
+                "evidence_span": None,
+                "evidence": {},
+                "document": None,
+                "solver_used": row.get("solver_path") or [],
+                "latency_s": row.get("latency_s"),
+                "latency_ms": None,
+                "verifier_outcome": status,
+                "contradiction_banner": None,
+                "abstain_reason": row.get("note"),
+                "n_claims": row.get("n_claims") or 0,
+                "expect_status": row.get("expect_status"),
+                "usefulness_label": None,
+                "failure_reason": None,
+                "suggested_correction": None,
+                "built_at": _now(),
+                "from_dogfood": True,
+                "dogfood_ok": row.get("ok"),
+                "fail_kind": row.get("fail_kind"),
+            }
         cards.append(card)
         if limit is not None and len(cards) >= limit:
             break
