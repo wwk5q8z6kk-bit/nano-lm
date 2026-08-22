@@ -1,0 +1,159 @@
+{
+  "schema": "nano-lm.wedge_v1.study_tasks.v1",
+  "storage_class": "OWNER_PRIVATE",
+  "note": "The owner confirmed this path by replying `Continue` to the proposed `papers/` + existing D01\u2013D10 recurring-question set. The resulting review is agent-applied. This remains owner-confirmed repository-corpus use, not private-corpus, representative-use, independent-human, clinician, scientific-validity, or product-superiority evidence.",
+  "tasks": [
+    {
+      "id": "D01",
+      "mode": "recall",
+      "query": "official M0 utility 0.925",
+      "doc_ids": [
+        "EMPIRICAL_FOUNDATION",
+        "EVIDENCE_LEDGER",
+        "paper1_draft"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ]
+    },
+    {
+      "id": "D02",
+      "mode": "ask",
+      "query": "E1 KILL M1",
+      "doc_ids": [
+        "DECISION_GATES",
+        "EVIDENCE_LEDGER",
+        "STRATEGIC_RESET",
+        "paper1_draft"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "KILL",
+        "M1",
+        "0.999"
+      ]
+    },
+    {
+      "id": "D03",
+      "mode": "ask",
+      "query": "post-alpha-evidence-freeze-2026-07-31",
+      "doc_ids": [
+        "EVIDENCE_LEDGER"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ]
+    },
+    {
+      "id": "D04",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "doc_ids": [
+        "CLAIM_GLOSSARY",
+        "EVIDENCE_LEDGER",
+        "STRATEGIC_RESET"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ]
+    },
+    {
+      "id": "D05",
+      "mode": "ask",
+      "query": "rho review load not hallucination",
+      "doc_ids": [
+        "CLAIM_GLOSSARY",
+        "EMPIRICAL_FOUNDATION",
+        "EVIDENCE_LEDGER",
+        "paper2_draft"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ]
+    },
+    {
+      "id": "D06",
+      "mode": "ask",
+      "query": "E4 KILL 0.638",
+      "doc_ids": [
+        "DECISION_GATES",
+        "EMPIRICAL_FOUNDATION",
+        "EVIDENCE_LEDGER",
+        "STRATEGIC_RESET"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ]
+    },
+    {
+      "id": "D07",
+      "mode": "ask",
+      "query": "What did GPT-4 score on the official E1 Pythia-160M LoRA arm?",
+      "doc_ids": [
+        "EMPIRICAL_FOUNDATION",
+        "EVIDENCE_LEDGER",
+        "paper1_draft",
+        "paper2_draft"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ]
+    },
+    {
+      "id": "D08",
+      "mode": "ask",
+      "query": "Nano Runtime smallest sufficient solver",
+      "doc_ids": [
+        "DECISION_GATES",
+        "EXECUTION_QUEUE",
+        "STRATEGIC_RESET",
+        "WEDGE_V1"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ]
+    },
+    {
+      "id": "D09",
+      "mode": "compare",
+      "query": "metformin",
+      "doc_ids": [
+        "CLAIM_GLOSSARY",
+        "DECISION_GATES",
+        "EMPIRICAL_FOUNDATION",
+        "EVIDENCE_LEDGER",
+        "EXECUTION_QUEUE",
+        "README",
+        "STRATEGIC_RESET",
+        "WEDGE_V1",
+        "paper1_draft",
+        "paper2_draft"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ]
+    },
+    {
+      "id": "D10",
+      "mode": "compare",
+      "query": "12000",
+      "doc_ids": [
+        "CLAIM_GLOSSARY",
+        "DECISION_GATES",
+        "EMPIRICAL_FOUNDATION",
+        "EVIDENCE_LEDGER",
+        "EXECUTION_QUEUE",
+        "README",
+        "STRATEGIC_RESET",
+        "WEDGE_V1",
+        "paper1_draft",
+        "paper2_draft"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ]
+    }
+  ]
+}

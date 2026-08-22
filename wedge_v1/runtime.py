@@ -102,26 +102,28 @@ def _token_equivalence_groups(tokens: list[str]) -> list[set[str]]:
     return groups
 
 
-def _relevant_claim(c: S.Claim, tokens: list[str]) -> bool:
+def _relevant_claim(c: S.Claim, tokens: list[str], query: str = "") -> bool:
     """Reject weak lexical coincidences (one stop-ish content token in a huge corpus)."""
     if not tokens:
         return False
     blob = json.dumps(c.value, default=str).lower() + " " + " ".join(
         str(e.get("text", "")) + " " + str(e.get("line", "")) for e in (c.evidence or [])
     ).lower()
-    # E-class structural probes: accepted when triggered
+    qlow = (query or "").lower()
     if c.task_id in {"T35", "T36", "T39", "T26", "T29", "T30", "MERGE"} and c.status in {
         "PRESENT", "CONFIRMED", "DISPUTED"
     }:
         return True
-    # Exact FIND of a query number/literal: value itself must be one of the tokens
-    if c.task_id == "FIND":
-        # A single token hit is not an answer to a multi-token question.
-        # Require the same coverage rule as passage claims (falls through).
-        pass
+    # Phrase FIND: keep multi-word spans that are literally part of the query.
+    if c.task_id == "FIND" and c.value:
+        val = str(c.value).strip().lower()
+        joined = " ".join(t.lower() for t in tokens)
+        # Multi-word phrases only — single tokens like Pythia-160M must not
+        # satisfy a different question (e.g. GPT-4 score) just by appearing in the query.
+        if " " in val and len(val) >= 8 and (val in qlow or val in joined):
+            return True
     hits = sum(1 for group in _token_equivalence_groups(tokens) if any(t in blob for t in group))
-    # Short queries: majority. Longer (>=3 content tokens): require all tokens in evidence
-    # so governance prose mentioning NanoScribe cannot "answer" clinical-accuracy questions.
+    # Passage claims stay strict: all content tokens for long queries (OOS safety).
     if len(tokens) >= 3:
         need = len(tokens)
     elif len(tokens) == 2:
@@ -307,6 +309,52 @@ def _finalize_with_coe(payload: dict, docs: dict[str, str], *, persist: bool = T
 
 
 
+
+def _phrase_locate_claims(docs: dict[str, str], query: str, tokens: list[str], limit: int = 8) -> list[S.Claim]:
+    """Exact multi-word phrase locate — recovers over-abstain when find() would hit."""
+    phrases: list[str] = []
+    q = query.strip()
+    if len(q) >= 8:
+        phrases.append(q)
+    if len(tokens) >= 2:
+        phrases.append(" ".join(tokens))
+    for n in range(min(len(tokens), 5), 2, -1):
+        for i in range(0, len(tokens) - n + 1):
+            phrases.append(" ".join(tokens[i : i + n]))
+    seen: set[str] = set()
+    uniq: list[str] = []
+    for p in phrases:
+        k = p.lower()
+        if len(k) >= 8 and k not in seen:
+            seen.add(k)
+            uniq.append(p)
+    out: list[S.Claim] = []
+    for phrase in uniq[:12]:
+        pl = phrase.lower()
+        for did, body in docs.items():
+            start = 0
+            bl = body.lower()
+            while True:
+                i = bl.find(pl, start)
+                if i < 0:
+                    break
+                span = body[i : i + len(phrase)]
+                out.append(
+                    S.Claim(
+                        "FIND",
+                        did,
+                        span,
+                        evidence=[{"start": i, "end": i + len(phrase), "text": span}],
+                        status="PRESENT",
+                        notes="phrase_span",
+                    )
+                )
+                start = i + max(1, len(phrase))
+                if len(out) >= limit:
+                    return out
+    return out
+
+
 def ask(query: str, corpus_dir: Path | None = None) -> dict:
     """Span-first Q&A over a local folder. Never invents unsupported claims."""
     corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
@@ -474,7 +522,7 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         for c in verified
         if c.status in {"PRESENT", "CONFIRMED", "DISPUTED", "PROBABLE"}
         and _has_evidence_atom(c)
-        and _relevant_claim(c, tokens)
+        and _relevant_claim(c, tokens, query=q)
     ]
     presented_sorted = sorted(
         presented,
@@ -533,16 +581,24 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         return _finalize_with_coe(payload, docs)
 
     if not presented_sorted:
-        oos = not has_lex and len(bm25_review) == 0
-        for code in classify_abstain_failures(
+        # Content tokens absent → OOS even if BM25 review ranked generic passages.
+        oos = not has_lex
+        final_codes = classify_abstain_failures(
             has_lexical_hit=has_lex,
             bm25_review_n=len(bm25_review),
             empty_rejected=empty_rejected,
             oos_expected=oos,
             composition_blocked=composition,
-        ):
-            trace.add_failure(code)
+        )
+        if oos:
+            trace.replace_failures(final_codes)
+            trace.event("oos_gate", "content_tokens_absent", n_review=len(bm25_review))
+        else:
+            for code in final_codes:
+                trace.add_failure(code)
         primary = (trace.failure_codes[0].value if trace.failure_codes else "retrieval_miss_or_unsupported")
+        merge_claims = merge_for_term(docs, q)
+        epistemic_merge = [epistemic_entry(c) for c in merge_claims if c.status != "ABSTAIN"]
         tr = trace.finalize("ABSTAIN")
         payload = {
             "query": q,
@@ -554,6 +610,7 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             "note": "no span-supported claim under classical+eclass cascade",
             "n_docs": len(docs),
             "contradictions_nearby": nearby_contradictions(docs),
+            "epistemic_merge": epistemic_merge,
             "bm25_review": bm25_review,
             "abstain_class": primary.lower(),
             "failure_codes": tr["failure_codes"],
@@ -601,6 +658,12 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         kinds = sorted({n["kind"] for n in relevant_nearby})
         banner = f"query-relevant contradictions: {', '.join(kinds)}"
         trace.event("contradiction", banner, n=len(relevant_nearby))
+    # W3: same typed merge surface as compare() (term-relevant fields + both spans)
+    merge_claims = merge_for_term(docs, q)
+    epistemic_merge = [epistemic_entry(c) for c in merge_claims if c.status != "ABSTAIN"]
+    if epistemic_merge:
+        solver_path.append("epistemic_merge")
+        trace.add_solver("epistemic_merge")
     tr = trace.finalize(status)
     payload = {
         "query": q,
@@ -613,6 +676,7 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         "contradictions_nearby": relevant_nearby,
         "contradictions_corpus": nearby,
         "contradiction_banner": banner,
+        "epistemic_merge": epistemic_merge,
         "bm25_review": bm25_review,
         "failure_codes": tr["failure_codes"],
         "trace": tr,
@@ -623,6 +687,8 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         "predicate_support": [s.to_dict() for s in evaluate_predicates(predicates, docs, presented_sorted)],
     }
     return _finalize_with_coe(payload, docs)
+
+
 
 
 

@@ -1,0 +1,159 @@
+{
+  "note": "The owner confirmed this path by replying `Continue` to the proposed `papers/` + existing D01\u2013D10 recurring-question set. The resulting review is agent-applied. This remains owner-confirmed repository-corpus use, not private-corpus, representative-use, independent-human, clinician, scientific-validity, or product-superiority evidence.",
+  "schema": "nano-lm.wedge_v1.study_tasks.v1",
+  "storage_class": "OWNER_PRIVATE",
+  "tasks": [
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/EMPIRICAL_FOUNDATION",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/paper1_draft"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "id": "D01",
+      "mode": "recall",
+      "query": "official M0 utility 0.925"
+    },
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/DECISION_GATES",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/STRATEGIC_RESET",
+        "p5_repo_papers_20260802/paper1_draft"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "id": "D02",
+      "mode": "ask",
+      "query": "E1 KILL M1",
+      "must_contain_any": [
+        "KILL",
+        "M1",
+        "0.999"
+      ]
+    },
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "id": "D03",
+      "mode": "ask",
+      "query": "post-alpha-evidence-freeze-2026-07-31"
+    },
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/CLAIM_GLOSSARY",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/STRATEGIC_RESET"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "id": "D04",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?"
+    },
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/CLAIM_GLOSSARY",
+        "p5_repo_papers_20260802/EMPIRICAL_FOUNDATION",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/paper2_draft"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "id": "D05",
+      "mode": "ask",
+      "query": "rho review load not hallucination"
+    },
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/DECISION_GATES",
+        "p5_repo_papers_20260802/EMPIRICAL_FOUNDATION",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/STRATEGIC_RESET"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "id": "D06",
+      "mode": "ask",
+      "query": "E4 KILL 0.638"
+    },
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/EMPIRICAL_FOUNDATION",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/paper1_draft",
+        "p5_repo_papers_20260802/paper2_draft"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "id": "D07",
+      "mode": "ask",
+      "query": "What did GPT-4 score on the official E1 Pythia-160M LoRA arm?"
+    },
+    {
+      "doc_ids": [
+        "p5_repo_papers_20260802/DECISION_GATES",
+        "p5_repo_papers_20260802/EXECUTION_QUEUE",
+        "p5_repo_papers_20260802/STRATEGIC_RESET",
+        "p5_repo_papers_20260802/WEDGE_V1"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "id": "D08",
+      "mode": "ask",
+      "query": "Nano Runtime smallest sufficient solver"
+    },
+    {
+      "doc_ids": [
+        "README",
+        "p5_repo_papers_20260802/CLAIM_GLOSSARY",
+        "p5_repo_papers_20260802/DECISION_GATES",
+        "p5_repo_papers_20260802/EMPIRICAL_FOUNDATION",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/EXECUTION_QUEUE",
+        "p5_repo_papers_20260802/STRATEGIC_RESET",
+        "p5_repo_papers_20260802/WEDGE_V1",
+        "p5_repo_papers_20260802/paper1_draft",
+        "p5_repo_papers_20260802/paper2_draft"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "id": "D09",
+      "mode": "compare",
+      "query": "metformin"
+    },
+    {
+      "doc_ids": [
+        "README",
+        "p5_repo_papers_20260802/CLAIM_GLOSSARY",
+        "p5_repo_papers_20260802/DECISION_GATES",
+        "p5_repo_papers_20260802/EMPIRICAL_FOUNDATION",
+        "p5_repo_papers_20260802/EVIDENCE_LEDGER",
+        "p5_repo_papers_20260802/EXECUTION_QUEUE",
+        "p5_repo_papers_20260802/STRATEGIC_RESET",
+        "p5_repo_papers_20260802/WEDGE_V1",
+        "p5_repo_papers_20260802/paper1_draft",
+        "p5_repo_papers_20260802/paper2_draft"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "id": "D10",
+      "mode": "compare",
+      "query": "12000"
+    }
+  ]
+}
