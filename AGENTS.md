@@ -1,31 +1,35 @@
+## Agent operating instructions
+
+**Canonical docs:** [`docs/README.md`](docs/README.md)
+
+**Typed authority** (no single stack overrides evidence): [`docs/PROJECT_AUTHORITY.md`](docs/PROJECT_AUTHORITY.md)
+
+```text
+empirical artifacts / ledger  →  wins over narrative docs
+PROJECT_CHARTER / CAPABILITY_LADDER  →  mission (not E1 verdicts)
+SYSTEM_ARCHITECTURE  →  structure
+ACTIVE_NOW.json + ACTIVE_NOW.md  →  current status (must agree exactly)
+EXECUTION_PLAN  →  tasks
+code + tests  →  implementation reality
+```
+
+**Current work:** [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md)
+
+**Do not treat as master plans:** superseded `papers/*` stubs — full text in [`docs/archive/legacy/`](docs/archive/legacy/).
+
 ## Learned User Preferences
 
-- Prefer adversarial research-council mode (“what have we forgotten,” competing explanatory universes) over passive review that accepts the project’s framing.
-- Enforce strict claim discipline: no mechanism claims beyond measured evidence; morphology stays descriptive until preregistered causal analysis; pointer results mean only that this implementation does not close the OOD gap; verification claims stay scoped to the verifier relation and distribution.
-- Keep scientific, systems, and product claims separated; Layer-1 evidence stays conservative while the engineering roadmap and research agenda stay expansive—negative evidence kills hypotheses, not long-term vision or curiosity. Treat the program’s primary risk as uncertainty about research/product framing, not missing experiments.
-- Prefer the opening question “what useful capability can a small system deliver better than larger, more expensive, less controllable systems?” over “how do we make a tiny LM score better?”; treat nano-lm as a system (compact models + tools + retrieval + memory + verification), not a model-score chase; use the smallest sufficient solver and verify consequential outputs.
-- Do not expand fabric/v2, NanoScribe, or mechanism narratives until validation gates update the posterior; a fabric vertical slice is not NanoScribe; packaging/documentation overclaim blocks architecture expansion.
-- Prefer RunPod/CUDA with frozen recipes for official LoRA/M0 E1 arms over local MPS when matching the official harness.
-- After decisive experimental results, treat them as load-bearing and freeze next measurement actions; idle or empty experiment queue ≠ program halted—the evidence freeze is the foundation, not the ambition ceiling.
-- Never run an experiment that cannot change the roadmap; prefer a sequential decision pipeline (premise → regime → utility → kill gate) over “do everything.”
-- When the owner says be thorough or not to skip stages, complete construct/first-principles Stage work before advancing; do not skip Gate 1 residuals by default; reconcile → audit → archive before tagging an immutable evidence freeze.
-- Never label an agent-applied E3 rubric audit as human or clinician evaluation; dual-clinician IAA remains open until completed.
-- Do not overclaim integrity pins: base checkpoint SHA-256 fail-closed is the real lock; recipe fingerprints are logged, not fail-closed to a fixed digest; not full CUDA bit-identical fine-tuning.
-- Benchmark result ≠ evidence-ledger claim ≠ product authorization; keep nano-lm as one project—not an institutional multi-lab org; do not optimize governance/process docs over the research/product objective; Program 1 census stays unauthorized.
+- Adversarial council mode; strict scoped claim discipline.
+- Separate Evidence Core from program docs — doc PRs must not modify ledger/freeze artifacts.
+- Smallest sufficient solver; failure-driven architecture over governance churn.
+- Local exploratory training allowed; paid/confirmatory owner-gated.
 
 ## Learned Workspace Facts
 
-- nano-lm is one first-principles research + product vehicle for small, efficient, verification-gated AI systems—not a laboratory franchise, benchmark company, or NanoScribe; strategic center is `papers/STRATEGIC_RESET.md`.
-- The SRC/council audit is the locked program baseline: the empirical core is stronger than packaging; packaging must not outrun evidence (see `CANONICAL_STATUS_TABLE.md`).
-- Official E1 kill gate FIRED (KILL H-substrate): under frozen \(U = P - 0.5M - 0.3\rho - 0.02L - 0.05C\) (\(\delta=0.05\)), max official M0 U ≈ 0.925 (Pythia-160M LoRA) lost to M1 ≈ 0.999; generative LM is not the preferred substrate for this closed scribe task; generation is not the default solver.
-- Old-task runs under `OLD_TASK_U` are forbidden; Paper α is frozen/public (`paper-alpha-v1`); no reopen of the old substrate claim.
-- Program: `PROGRAM_EXECUTION_STATUS: IDLE_AFTER_DOGFOOD`; Phase 2 classical + Phase 3 E-class (`ECLASS_CLOSED_WITHOUT_LM`) + noisy + papers dogfood 8/8; LM not indicated; next needs typed owner auth (`U_FREEZE` | `OWNER_CORPUS` | idle); E4 = `EXECUTED` / `KILL`; freeze tag immutable; NanoScribe STOP; `continue` = CONTINUE_SESSION M0 only (`OWNER_SPEECH_ACTS.md`).
-- Paper 1/α is the empirical foundation (held-out copying failures, field localization, diversity, scaling/adaptation, reproducible instrument) with no architecture thesis; Paper 2/β is the verification/systems track (soundness, abstention economics, adversarial verifier evaluation) with no transformer mechanism dependency.
-- Active product path: Nano Runtime via Wedge v1 — local research document intelligence (private corpus → structured answers with evidence spans + abstention); classical-first; generation only if it beats classical under matched utility on this workflow (`papers/WEDGE_V1.md`).
-- E1/E4 closed the tested generative-substrate theses; surviving product question is whether a verification-gated small system beats larger model-only approaches on useful tasks—not “build NanoScribe anyway”; classical baselines remain mandatory for extraction-like tasks.
-- Fabric is a verification vertical slice / regression harness (typed claims, literal/rules verifiers, abstention)—not NanoScribe architecture; ledger files are per-run rewritten JSONL, not an append-only transactional DB.
-- Post-α E1/E3 primary artifacts were local-untracked vs `paper-alpha-v1`; packaging map is `papers/EVIDENCE_MANIFEST.json`. ρ in E1 \(U\) is review load, not hallucination. E3 Stage-1 is an agent-applied rubric audit (EXACT_SURVIVES); raw `*.jsonl` is gitignored with local archive manifests under `artifacts/`.
-- In-repo governance spine: `LABORATORY_CONSTITUTION.md` (how research is run here); `EVIDENCE_LEDGER.md`; portfolio/roadmap (non-evidential); `EXECUTION_QUEUE.md`; `DECISION_GATES.md`. No Laboratory Charter / multi-lab org chart.
-- Program 0 benchmark infra is `DONE` (one pinned reproducible sentinel path + Gate 0); serves Nano Runtime evaluation; Program 1 deferred; smoke ≠ leadership or ledger claims; do not reopen Program 0 as the project identity.
-- Risk mitigation map: `papers/FIRST_PRINCIPLES_RISK_MITIGATION.md` (§9 atomization; `LAB.B*` vs `WED.B*` namespaces); live scorecard: `papers/MITIGATION_STATUS_SCORECARD.md` (B1–B18 + B23 speech-act atoms→M0/M1/M2); E1 decision vs cost split: `trajectory/E1_DECISION_VS_COST_SPLIT.md` + `trajectory/E1_LC_RECONSTRUCTION_PROTOCOL.md`; anomaly expand: `papers/ANOMALY_LOG.md`. Auth lint: `scripts/lint_claim_auth.py` (also bans clinical/zero-halluc product phrases). Consult-gateway = intended verification path when CLI credits fail (B15); not an execute license.
-- Owner chat is typed by speech act (`papers/OWNER_SPEECH_ACTS.md`; `scripts/classify_owner_speech_act.py`): `continue` = `CONTINUE_SESSION` (ungated M0 only) — never mint commit/tag/push/execute from it; high-consequence acts need exact `authorize commit|push|tag` (plus tip policy for tags).
+- Mission: Nano Core capability ladder; P1 scribing frontier ([`docs/PROJECT_CHARTER.md`](docs/PROJECT_CHARTER.md)).
+- Macro-phases: Foundation I (P1) → Foundation II (P2–P3) → Intelligence Expansion (P4–P9).
+- NanoScribe = P1 only; broader medical intelligence earned sequentially.
+- E1/E4: scoped routing evidence on tested tasks/regimes — not program kill.
+- Wedge: integrated [`docs/subsystems/WEDGE.md`](docs/subsystems/WEDGE.md).
+- H6/span-port/`nano_ai/`: cross-branch, not yet integrated on `origin/master` @ `2ad06d2`.
+- No PHI/private owner data in current program ([`docs/domains/medical/DATA_REGISTRY.md`](docs/domains/medical/DATA_REGISTRY.md)).

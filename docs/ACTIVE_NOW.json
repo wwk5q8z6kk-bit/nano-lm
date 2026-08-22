@@ -1,0 +1,38 @@
+{
+  "schema": "nano-lm.docs.active_now.v1",
+  "updated": "2026-08-22",
+  "program_execution_status": "DOC_RESET_V2_AND_P1_SCRIBING",
+  "capability_frontier": "P1_SCRIBING",
+  "current_gate": "REPOSITORY_RECONCILIATION_AND_CANONICAL_DOC_AUTHORITY",
+  "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
+  "training_backend": "RUNPOD",
+  "training_status": "ACTIVE",
+  "paid_compute_policy": "EXPERIMENT_SCOPED_AUTHORIZATION",
+  "frozen_confirmatory_execution": "PREREG_PLUS_EXPERIMENT_SCOPED",
+  "phi_on_cloud": "NOT_AUTHORIZED",
+  "phi_or_private_data": "NOT_AUTHORIZED",
+  "clinical_claims": "FORBIDDEN_WITHOUT_EXTERNAL_HUMAN_VALIDATION",
+  "compute_posture": {
+    "primary_gpu_training_backend": "RUNPOD",
+    "local_compute": "APPLE_SILICON_AND_CPU_FOR_DEV_SMOKE_ANALYSIS_PREPROCESS_EVAL_AND_SMALL_EXPERIMENTS",
+    "training": "ACTIVE_ON_RUNPOD",
+    "paid_experiment_policy": "INFRASTRUCTURE_ESTABLISHED_EXPERIMENT_SCOPED_BUDGET_AUTH",
+    "data": "NO_PHI_OR_PRIVATE_CLINICAL_DATA_ON_RUNPOD"
+  },
+  "bounded_work": [
+    "docs_canonical_tree_v2_from_origin_master",
+    "owner_review_before_master_merge",
+    "p1_encounter_representation_and_span_bottleneck"
+  ],
+  "owner_gates": [
+    "experiment_scoped_costly_or_confirmatory_runpod_runs",
+    "frozen_confirmatory_without_prereg_when_required",
+    "phi_or_private_clinical_data_on_cloud",
+    "protected_tag_moves",
+    "publication_claims",
+    "master_merge_doc_reset"
+  ],
+  "next_engineering": "scribe_evidence_span_bottleneck",
+  "docs_authority": "docs/PROJECT_AUTHORITY.md",
+  "integration_base_sha": "2ad06d24c4f72b292f73ef098fdcc0ce2a008659"
+}

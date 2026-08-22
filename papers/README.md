@@ -12,20 +12,14 @@
 
 | Doc | Role |
 |-----|------|
-| [`STRATEGIC_RESET.md`](STRATEGIC_RESET.md) | **Current center:** Nano Runtime product thesis |
-| [`WEDGE_V1.md`](WEDGE_V1.md) | **Phase 1 lock:** local research document intelligence (40 tasks) |
-| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | In-repo research governance (not an institution) |
+| [`../docs/README.md`](../docs/README.md) | **Current program truth** |
+| [`../docs/PROJECT_AUTHORITY.md`](../docs/PROJECT_AUTHORITY.md) | Typed authority |
+| [`STRATEGIC_RESET.md`](STRATEGIC_RESET.md) | *Superseded* → [archive](../docs/archive/legacy/STRATEGIC_RESET_20260731.md) |
+| [`WEDGE_V1.md`](WEDGE_V1.md) | *Superseded* → [subsystem](../docs/subsystems/WEDGE.md) |
+| [`LABORATORY_CONSTITUTION.md`](LABORATORY_CONSTITUTION.md) | Research governance |
 | [`EVIDENCE_LEDGER.md`](EVIDENCE_LEDGER.md) | Layer 1 — what is demonstrated |
-| [`RESEARCH_PORTFOLIO.md`](RESEARCH_PORTFOLIO.md) | Layer 3 — long-horizon questions |
-| [`TECHNOLOGY_ROADMAP.md`](TECHNOLOGY_ROADMAP.md) | Layer 2 — conditional build vision |
-| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | Authorized now (wedge selection; freeze integrity) |
-| [`DECISION_GATES.md`](DECISION_GATES.md) | Promotion rules |
-| [`FIRST_PRINCIPLES_RISK_MITIGATION.md`](FIRST_PRINCIPLES_RISK_MITIGATION.md) | Blocker atoms → research-backed mitigations |
-| [`PUBLIC_ONE_PAGER.md`](PUBLIC_ONE_PAGER.md) | Outsider proven/frozen/next |
-| [`OWNER_SPEECH_ACTS.md`](OWNER_SPEECH_ACTS.md) | Typed owner chat forces (`continue` ≠ execute) |
-| [`MITIGATION_STATUS_SCORECARD.md`](MITIGATION_STATUS_SCORECARD.md) | Blocker CLOSED/PARTIAL/OPEN |
-| [`ANOMALY_LOG.md`](ANOMALY_LOG.md) | Kill/stop → expand questions |
-| [`../benchmarks/BENCHMARK_CONSTITUTION.md`](../benchmarks/BENCHMARK_CONSTITUTION.md) | Program 0 / harness rules |
+| [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | *Superseded* → [execution plan](../docs/EXECUTION_PLAN.md) |
+| [`AZ_EXECUTION_PLAN.md`](AZ_EXECUTION_PLAN.md) | *Superseded* → [archive](../docs/archive/legacy/AZ_EXECUTION_PLAN_POST_E1_20260731.md) |
 
 
 ## Abstract
