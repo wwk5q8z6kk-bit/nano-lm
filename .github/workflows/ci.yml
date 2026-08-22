@@ -31,3 +31,6 @@ jobs:
 
       - name: Encounter Representation v0
         run: python3 nanoscribe/test_encounter_v0.py
+
+      - name: Evidence transport pins
+        run: python3 nanoscribe/test_evidence_transport.py

@@ -43,34 +43,34 @@
       "source_branch": "cursor/span-port-route-b-182e",
       "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
       "source_path": "nano_ai/training/span_snap.py",
-      "destination_path": "nanoscribe/evidence/",
-      "purpose": "Exact relocation / snap logic for Span Contract V2",
+      "destination_path": "nanoscribe/select.py",
+      "purpose": "Exact relocation / surface snap for unique turn spans",
       "dependencies": ["nanoscribe/encounter.py"],
-      "tests": [],
-      "disposition": "DEFER",
-      "reason": "PR2 evidence-transport target; do not import training stack now"
+      "tests": ["nanoscribe/test_evidence_transport.py"],
+      "disposition": "REWRITE",
+      "reason": "Lifted unique-match snap to all turns (not patient-only); no training imports"
     },
     {
       "source_branch": "cursor/span-port-route-b-182e",
       "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
       "source_path": "nano_ai/evaluation.py",
-      "destination_path": "nanoscribe/eval/",
-      "purpose": "Span evaluation metrics beyond no_match_rate",
-      "dependencies": ["nanoscribe/encounter.py"],
-      "tests": [],
-      "disposition": "DEFER",
-      "reason": "PR2/PR4; inspect metrics, do not port harness wholesale"
+      "destination_path": "nanoscribe/evaluate.py",
+      "purpose": "Separated span/state/abstention/critical metrics; no single utility",
+      "dependencies": ["nanoscribe/encounter.py", "nanoscribe/select.py"],
+      "tests": ["nanoscribe/test_evidence_transport.py"],
+      "disposition": "REWRITE",
+      "reason": "New evaluator on EncounterRecord; five-field NanoOutput harness not ported"
     },
     {
       "source_branch": "cursor/span-port-route-b-182e",
       "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
       "source_path": "nano_ai/training/constrained_decode.py",
-      "destination_path": "nanoscribe/decode/",
-      "purpose": "Constrained source-span selection interface (arm B)",
+      "destination_path": "nanoscribe/select.py",
+      "purpose": "Constrained source-span selection interface (arm B software half)",
       "dependencies": ["nanoscribe/encounter.py"],
-      "tests": [],
-      "disposition": "DEFER",
-      "reason": "PR2/PR4 after Encounter v0 is green"
+      "tests": ["nanoscribe/test_evidence_transport.py"],
+      "disposition": "REWRITE",
+      "reason": "Tokenizer-agnostic copy/relocate/snap only; no vocab-constrained decoder yet"
     },
     {
       "source_branch": "codex/p5-measurement-integrity",
