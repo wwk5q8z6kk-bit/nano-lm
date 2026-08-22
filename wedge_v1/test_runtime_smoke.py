@@ -159,6 +159,18 @@ def test_measure_dogfood_u():
     assert isinstance(u["U"], float)
 
 
+
+
+def test_study_lite_fixture():
+    from wedge_v1.study_lite import check, run, DEFAULT_TASKS, FIXTURE, PRIVATE_STUDY_ROOT
+
+    study_dir = PRIVATE_STUDY_ROOT / "smoke"
+    chk = check(corpus=FIXTURE, tasks_path=DEFAULT_TASKS, study_dir=study_dir)
+    assert chk["smoke_ready"] is True
+    summary = run(corpus=FIXTURE, tasks_path=DEFAULT_TASKS, study_dir=study_dir)
+    assert summary["ok"] is True
+    assert summary["n_tasks"] >= 5
+
 def test_owner_dogfood_synthetic():
     from wedge_v1.run_owner_dogfood import main as owner_main
 

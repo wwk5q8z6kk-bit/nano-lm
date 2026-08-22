@@ -1,0 +1,156 @@
+{
+  "schema": "nano-lm.wedge_v1.study_tasks.v1",
+  "storage_class": "FIXTURE",
+  "note": "Exactly-scoped fixture pack for study lite. Not private-corpus evidence.",
+  "tasks": [
+    {
+      "id": "S01",
+      "mode": "ask",
+      "query": "How long before cached entries expire?",
+      "doc_ids": [
+        "note_cache_policy",
+        "note_cache_policy_v2"
+      ],
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600"
+      ]
+    },
+    {
+      "id": "S02",
+      "mode": "compare",
+      "query": "TTL",
+      "doc_ids": [
+        "note_cache_policy",
+        "note_cache_policy_v2"
+      ],
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600"
+      ]
+    },
+    {
+      "id": "S03",
+      "mode": "compare",
+      "query": "metformin",
+      "doc_ids": [
+        "protocol_metformin",
+        "protocol_metformin_alt"
+      ],
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "500",
+        "850"
+      ]
+    },
+    {
+      "id": "S04",
+      "mode": "compare",
+      "query": "12000",
+      "doc_ids": [
+        "note_cache_policy",
+        "note_cache_policy_v2"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "12000"
+      ]
+    },
+    {
+      "id": "S05",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "doc_ids": [
+        "oos_placeholder"
+      ],
+      "expect_status": [
+        "ABSTAIN"
+      ]
+    },
+    {
+      "id": "S06",
+      "mode": "ask",
+      "query": "peak QPS",
+      "doc_ids": [
+        "note_cache_policy"
+      ],
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "12000"
+      ]
+    },
+    {
+      "id": "S07",
+      "mode": "find",
+      "query": "TTL as 300 seconds",
+      "doc_ids": [
+        "note_cache_policy"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "300"
+      ]
+    },
+    {
+      "id": "S08",
+      "mode": "ask",
+      "query": "metformin 850 mg",
+      "doc_ids": [
+        "protocol_metformin_alt"
+      ],
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "850"
+      ]
+    },
+    {
+      "id": "S09",
+      "mode": "ask",
+      "query": "sodium chloride",
+      "doc_ids": [
+        "oos_placeholder"
+      ],
+      "expect_status": [
+        "SUPPORTED",
+        "ABSTAIN"
+      ],
+      "must_contain_any": [
+        "sodium"
+      ]
+    },
+    {
+      "id": "S10",
+      "mode": "compare",
+      "query": "QPS",
+      "doc_ids": [
+        "note_cache_policy",
+        "note_cache_policy_v2"
+      ],
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "12000"
+      ]
+    }
+  ]
+}

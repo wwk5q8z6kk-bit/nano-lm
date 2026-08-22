@@ -72,3 +72,6 @@ wedge_v1/results_owner_ready.json
 **/results_review_state.json
 **/results_saved_questions.json
 wedge_v1/results_adversarial_suite.json
+
+# Active Frontier local studies
+wedge_v1/.studies/

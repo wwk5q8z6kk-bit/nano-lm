@@ -24,6 +24,7 @@ OLD_TASK_U: FORBIDDEN
 | Vertical slice ask/find/scan/compare/ingest/report/dogfood | LIVE |
 | Owner-corpus dogfood harness | DONE (`owner-dogfood --demo`) |
 | Draft \(U\) from dogfood packs | DONE (`wedge_v1 measure-u`) — synthetic dogfood \(U\approx 0.889\) |
+| Study lite check/run | DONE (`wedge_v1 study` on fixtures 10/10) |
 | **Next** | Owner points `$OWNER_CORPUS` / `$WEDGE_OWNER_CORPUS` at real private folder → `owner-dogfood` + `contact --class OWNER_PRIVATE` + `measure-u` |
 
 ## Protected

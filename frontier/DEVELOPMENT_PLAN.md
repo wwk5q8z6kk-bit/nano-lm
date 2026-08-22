@@ -38,6 +38,8 @@ Dogfood 5/5 · draft U≈0.890 · adversarial 6/6 · evolve → **W3**.
 
 **Next engineering:** real `$OWNER_CORPUS` contact (only remaining product gate).
 
+**Session 2026-08-22:** `wedge_v1 study check|run` lite path + `questions-v1.json` (10 scoped fixture tasks). Demo study 10/10.
+
 **Session 2026-08-21:** OOS abstain cleans BM25-noise codes; `ask()` emits `epistemic_merge`; evolve no longer re-queues W3 on handled contradictions (recommends `OWNER_CORPUS_CONTACT`).
 
 **CLI:** `python -m wedge_v1 status` · `lm-admit` · `./scripts/gate0_contact.sh`

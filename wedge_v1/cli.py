@@ -74,6 +74,14 @@ def main(argv: list[str] | None = None) -> int:
     osm.add_argument("-o", "--output", type=Path, default=None)
 
     sub.add_parser("smoke", help="Run runtime regression pins")
+    study_p = sub.add_parser("study", help="Lite usefulness study check/run")
+    study_sub = study_p.add_subparsers(dest="study_cmd", required=True)
+    for _sc in ("check", "run"):
+        sp = study_sub.add_parser(_sc)
+        sp.add_argument("--corpus", type=Path, default=None)
+        sp.add_argument("--tasks", type=Path, default=None)
+        sp.add_argument("--dir", type=Path, default=None)
+
     isla = sub.add_parser("ingest-sla", help="Ingest SLA / OCR recover_gap (W5)")
     isla.add_argument("--clean", type=Path, default=None)
     isla.add_argument("--noisy", type=Path, default=None)
@@ -92,6 +100,9 @@ def main(argv: list[str] | None = None) -> int:
     contact.add_argument("--not-useful", dest="not_useful", default=None)
     contact.add_argument("-o", "--output", type=Path, default=None)
 
+    oa = sub.add_parser("remeasure-oa", help="Remeasure p5 OVER_ABSTENTION probes")
+    oa.add_argument("--corpus", type=Path, default=None)
+    oa.add_argument("-o", "--output", type=Path, default=None)
     habit_p = sub.add_parser("habit", help="Daily/session habit workflow (gitignored state)")
     habit_p.add_argument("--corpus", type=Path, default=None)
     habit_p.add_argument("--json", action="store_true")
@@ -299,6 +310,15 @@ def main(argv: list[str] | None = None) -> int:
         else:
             sys.stdout.write(body)
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
+
+    if args.cmd == "remeasure-oa":
+        from wedge_v1.remeasure_oa import main as oa_main
+        argv = []
+        if getattr(args, "corpus", None):
+            argv += ["--corpus", str(args.corpus)]
+        if getattr(args, "output", None):
+            argv += ["-o", str(args.output)]
+        return oa_main(argv)
 
     if args.cmd == "habit":
         if args.save:
@@ -580,6 +600,19 @@ def main(argv: list[str] | None = None) -> int:
         if args.output:
             argv += ["-o", str(args.output)]
         return sla_main(argv)
+
+
+    if args.cmd == "study":
+        from wedge_v1.study_lite import main as study_main
+
+        argv2 = [args.study_cmd]
+        if args.corpus:
+            argv2 += ["--corpus", str(args.corpus)]
+        if args.tasks:
+            argv2 += ["--tasks", str(args.tasks)]
+        if args.dir:
+            argv2 += ["--dir", str(args.dir)]
+        return study_main(argv2)
 
     return 1
 

@@ -76,11 +76,14 @@ def check(corpus: Path | None = None, *, demo: bool = False) -> dict:
         blockers.append("OWNER_CORPUS_PENDING")
 
     canonical = (
-        'python -m wedge_v1 owner-dogfood --corpus "$OWNER_CORPUS" && '
-        'python -m wedge_v1 review --corpus "$OWNER_CORPUS" --interactive && '
-        'python -m wedge_v1 habit --corpus "$OWNER_CORPUS"'
+        'python -m wedge_v1 study check --corpus "$OWNER_CORPUS" '
+        '--tasks wedge_v1/data/owner_tasks/questions-v1.json '
+        '--dir wedge_v1/.studies/first-use && '
+        'python -m wedge_v1 study run --corpus "$OWNER_CORPUS" '
+        '--tasks wedge_v1/data/owner_tasks/questions-v1.json '
+        '--dir wedge_v1/.studies/first-use'
     )
-    demo_cmd = "python -m wedge_v1 owner-dogfood --demo && python -m wedge_v1 review --demo --next"
+    demo_cmd = "python -m wedge_v1 study check --corpus wedge_v1/fixtures/owner_corpus --tasks wedge_v1/data/owner_tasks/questions-v1.json --dir wedge_v1/.studies/demo && python -m wedge_v1 study run --corpus wedge_v1/fixtures/owner_corpus --tasks wedge_v1/data/owner_tasks/questions-v1.json --dir wedge_v1/.studies/demo"
 
     report = {
         "schema": "nano-lm.wedge_v1.owner_ready.v1",
