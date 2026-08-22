@@ -28,3 +28,6 @@ jobs:
 
       - name: C3 recompute regression pins
         run: python3 trajectory/test_recompute_c3.py
+
+      - name: Encounter Representation v0
+        run: python3 nanoscribe/test_encounter_v0.py
