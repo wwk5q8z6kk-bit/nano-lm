@@ -1,0 +1,117 @@
+{
+  "schema": "nano-lm.wedge_v1.owner_dogfood.v1",
+  "note": "Stand-in owner corpus with p5 papers snapshot + OVER_ABSTENTION regressions. Not OWNER_PRIVATE.",
+  "tasks": [
+    {
+      "id": "O01",
+      "mode": "ask",
+      "query": "How long before cached entries expire?",
+      "expect_status": [
+        "SUPPORTED",
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600",
+        "TTL",
+        "seconds"
+      ]
+    },
+    {
+      "id": "O02",
+      "mode": "compare",
+      "query": "metformin",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "500",
+        "850"
+      ]
+    },
+    {
+      "id": "O03",
+      "mode": "compare",
+      "query": "TTL",
+      "expect_status": [
+        "CONTRADICTED"
+      ],
+      "must_contain_any": [
+        "300",
+        "600"
+      ]
+    },
+    {
+      "id": "O04",
+      "mode": "compare",
+      "query": "QPS",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "12000"
+      ]
+    },
+    {
+      "id": "O05",
+      "mode": "ask",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    },
+    {
+      "id": "O06",
+      "mode": "ask",
+      "query": "E1 KILL M1_template",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "KILL",
+        "M1",
+        "0.999",
+        "0.925"
+      ],
+      "note": "p5 OVER_ABSTENTION regression"
+    },
+    {
+      "id": "O07",
+      "mode": "ask",
+      "query": "E4 KILL 0.638",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "0.638",
+        "KILL"
+      ],
+      "note": "p5 OVER_ABSTENTION regression"
+    },
+    {
+      "id": "O08",
+      "mode": "ask",
+      "query": "Nano Runtime smallest sufficient solver",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "smallest",
+        "sufficient",
+        "solver"
+      ],
+      "note": "p5 OVER_ABSTENTION regression"
+    },
+    {
+      "id": "O09",
+      "mode": "find",
+      "query": "BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": [],
+      "note": "mandate string absent from stand-in; correct abstain"
+    }
+  ]
+}

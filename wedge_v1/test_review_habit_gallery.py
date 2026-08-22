@@ -54,14 +54,22 @@ def test_interactive_review_stdin(tmp_path: Path):
     assert state.get("labels") or "labeled" in stdout.getvalue()
 
 
-def test_habit_session_fixture():
-    sess = session(FIXTURE_CORPUS)
+def test_habit_session_fixture(tmp_path: Path):
+    habit_path = tmp_path / "habit.json"
+    saved_path = tmp_path / "saved.json"
+    session_path = tmp_path / "session.json"
+    sess = session(
+        FIXTURE_CORPUS,
+        habit_path=habit_path,
+        saved_path=saved_path,
+        session_path=session_path,
+    )
     assert sess["ingest"]["n_docs"] >= 1
     assert sess["next_action"]
     assert sess.get("recent_documents") is not None
     md = format_session_md(sess)
     assert "habit session" in md
-    save_question("How long before cached entries expire?")
+    save_question("How long before cached entries expire?", path=saved_path)
 
 
 def test_gallery_fine_buckets_always_listed():

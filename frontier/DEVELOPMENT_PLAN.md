@@ -44,6 +44,15 @@ Dogfood 5/5 · draft U≈0.890 · adversarial 6/6 · evolve → **W3**.
 
 **Session 2026-08-21:** OOS abstain cleans BM25-noise codes; `ask()` emits `epistemic_merge`; evolve no longer re-queues W3 on handled contradictions (recommends `OWNER_CORPUS_CONTACT`).
 
+
+**Session 2026-08-22 (autonomous):** Continued without private corpus.
+- Closed p5 OVER_ABSTENTION class in `ask()`: phrase_span, short compound tokens, majority gate, numeric+keyword windows.
+- Guard: long snake_case IDs stay atomic (no false support).
+- Stand-in pack `owner_dogfood_tasks_standin.json` O01–O09 green on `data/owner_corpus`.
+- Fixture Gate0 script: `scripts/gate0_fixture.sh` (class OWNER_FIXTURE; not private usefulness).
+- Remeasure: `python -m wedge_v1 remeasure-oa` → 3/3 on p5 snapshot.
+**Still blocked for product gate:** real `$OWNER_CORPUS` / `$WEDGE_OWNER_CORPUS` + owner review labels via `./scripts/gate0_contact.sh`.
+
 **CLI:** `python -m wedge_v1 status` · `lm-admit` · `./scripts/gate0_contact.sh`
 
 1. **W1** BM25 retrieval-margin gating in `ask()` — **DONE**

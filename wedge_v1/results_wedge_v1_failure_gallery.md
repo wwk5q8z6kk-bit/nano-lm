@@ -25,17 +25,17 @@
 ### multi_document_contradiction
 - id: `O01` status=`CONTRADICTED` ok=True
 - query: How long before cached entries expire?
-- repro: `python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus`
+- repro: `python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus`
 
 ### ok_supported
 - id: `O04` status=`SUPPORTED` ok=True
 - query: QPS
-- repro: `python -m wedge_v1 ask "…" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus`
+- repro: `python -m wedge_v1 ask "…" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus`
 
 ### correct_abstention
 - id: `O05` status=`ABSTAIN` ok=True
 - query: What is the clinical accuracy of NanoScribe in hospitals?
-- repro: `python -m wedge_v1 ask "OOS clinical question" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus`
+- repro: `python -m wedge_v1 ask "OOS clinical question" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus`
 
 ## Coarse buckets
 

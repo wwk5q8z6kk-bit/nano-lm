@@ -172,3 +172,19 @@ def ablation_fails_support(claim: Claim, docs: dict[str, str]) -> bool:
     stripped = Claim(claim.task_id, claim.doc_id, claim.value, evidence=[], status="PRESENT")
     v = verify_claim(stripped)
     return v.status == "REJECTED" or v.meta.get("verify") == "fail_no_evidence"
+
+
+def get_backend(name: str = "stub") -> LMBackend:
+    """Resolve the single real backend or the stub.
+
+    Allowed names: stub | mlx | mlx_llama32_3b_spanbound
+    """
+    key = (name or "stub").strip().lower()
+    if key in {"stub", "stub_constructive"}:
+        return StubLMBackend()
+    if key in {"mlx", "mlx_llama", "mlx_llama32_3b_spanbound", "real"}:
+        from wedge_v1.lm.mlx_backend import MLXLlamaBackend
+
+        return MLXLlamaBackend()
+    raise ValueError(f"unknown LMBackend {name!r}; prove one before fan-out")
+

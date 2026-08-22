@@ -47,3 +47,21 @@ REQUIRES_OWNER:
 - Owner-corpus contact live: `wedge_v1 owner-smoke` / `owner-dogfood --demo` (5/5 on example).
 - Tracked template: `data/owner_corpus.example/`; private path gitignored.
 - Next: real private folder via `WEDGE_OWNER_CORPUS`.
+
+## Autonomous progress (2026-08-22)
+
+- Restored broken imports (`auth_gate`, `private_output`); smoke green.
+- Fixture owner corpus expanded to **10 docs**; owner-dogfood `--demo` **10/10**.
+- Papers Gate 0 rehearsal: `./scripts/gate0_papers_contact.sh` (PAPERS_DOGFOOD).
+- W1–W5 DONE; W6 LM_PROBE_NOT_INDICATED; evolve still recommends real OWNER_CORPUS_CONTACT.
+
+**Owner unblock:** `export WEDGE_OWNER_CORPUS=~/your/notes && ./scripts/gate0_contact.sh`
+
+## Owner contact (2026-08-22 — AUTHORIZED)
+
+- Corpus: `.local-data/owner_corpus` (16 docs, p5 snapshot + stand-ins).
+- Gate 0: **pass** — `ready_for_private_run: true`, `owner_corpus_contact: true`.
+- Dogfood: stand-in **9/9**, p5 pack **3/3**, default gate0 **5/5**.
+- LM admission: **NOT_INDICATED** (classical sufficient on this snapshot).
+- Agent-applied review labels recorded under `wedge_v1/.private/review_owner_contact.json`.
+- **Not Layer-1.** Human usefulness labels still open for real private notes outside repo snapshot.

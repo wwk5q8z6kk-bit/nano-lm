@@ -65,6 +65,14 @@ Adversarial packs: `python -m wedge_v1 adversarial`
 
 ## Current delta (this iteration)
 
+### Delta — 2026-08-22 continue autonomous
+
+- **W3:** typed field registry (`classical/field_registry.json`) + `peak_qps` / `error_rate`; compare/ask epistemic merge returns both spans for registry fields.
+- **W1 relevance:** snake_case token expand + majority token gate; wire `_phrase_locate_claims` (p5 OVER_ABSTENTION recoveries).
+- **W6:** one real local backend seam — `MLXLlamaBackend` (`get_backend("mlx")`) with quote→unique-relocate→verify contract; admission remains `NOT_INDICATED` on clean synthetic.
+- Not Layer-1. Does not clear owner-private Gate 0.
+
+
 **W1+W2:** BM25 margin gating + reject empty-evidence PRESENT in `ask()`.
 
 - `bm25.top_paragraphs` emits `margin` / `rank`

@@ -6,6 +6,7 @@ E-class probes live in classical.solvers (paraphrastic_ttl / symbolic_dose_chang
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import asdict
 from pathlib import Path
@@ -45,6 +46,156 @@ def load_corpus(corpus_dir: Path | None = None, *, normalize: bool | str = "auto
 
     path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
     return _ingest(path, normalize=normalize)
+
+
+def normalize_doc_ids(doc_ids: list[str] | None) -> list[str] | None:
+    """Return the canonical exact-document scope used by every public surface."""
+    if doc_ids is None:
+        return None
+    return sorted({str(doc_id).strip() for doc_id in doc_ids if str(doc_id).strip()})
+
+
+def select_documents(
+    docs: dict[str, str],
+    doc_ids: list[str] | None,
+) -> tuple[dict[str, str], dict, bool]:
+    """Apply an exact scope without ever falling back to the full corpus."""
+    normalized = normalize_doc_ids(doc_ids)
+    if normalized is None:
+        return docs, {}, True
+
+    selected_ids = [doc_id for doc_id in normalized if doc_id in docs]
+    missing_ids = [doc_id for doc_id in normalized if doc_id not in docs]
+    scope = {
+        "selected_doc_ids": selected_ids,
+        "missing_doc_ids": missing_ids,
+    }
+    valid = bool(normalized) and not missing_ids
+    if not valid:
+        return {}, scope, False
+    return {doc_id: docs[doc_id] for doc_id in selected_ids}, scope, True
+
+
+def _scope_abstention(
+    *,
+    op: str,
+    query: str,
+    corpus_path: Path,
+    scope: dict,
+    persist: bool,
+    extra: dict | None = None,
+) -> dict:
+    """Fail closed before retrieval when an explicit document scope is invalid."""
+    from wedge_v1.coe.schema import digest_docs
+
+    missing = list(scope.get("missing_doc_ids") or [])
+    code = "UNKNOWN_DOCUMENT_ID" if missing else "EMPTY_DOCUMENT_SCOPE"
+    note = (
+        "one or more exact document IDs were not found"
+        if missing
+        else "explicit document scope is empty"
+    )
+    trace = AskTrace(query=query, corpus_dir=str(corpus_path), op=op)
+    trace.add_solver("document_scope")
+    trace.n_docs = 0
+    trace.event("document_scope", "selection rejected", **scope)
+    trace_payload = trace.finalize("ABSTAIN")
+    trace_payload["failure_codes"] = list(
+        dict.fromkeys([*(trace_payload.get("failure_codes") or []), code])
+    )
+    payload = {
+        "query": query,
+        "corpus_dir": str(corpus_path),
+        "answer_status": "ABSTAIN",
+        "claims": [],
+        "coe_claims": [],
+        "unsupported": [note],
+        "note": note,
+        "solver_path": ["document_scope"],
+        "failure_codes": [code],
+        "trace": trace_payload,
+        "n_docs": 0,
+        "n_claims_presented": 0,
+        "lm_invoked": False,
+        **scope,
+    }
+    if extra:
+        payload.update(extra)
+    finalized = _finalize_with_coe(payload, {}, persist=persist)
+    finalized.setdefault("coe", {})["corpus_digest"] = digest_docs({})
+    finalized.setdefault("coe", {})["selected_doc_ids"] = list(scope.get("selected_doc_ids") or [])
+    finalized["n_claims_presented"] = 0
+    return finalized
+
+
+def _apply_scope(finalized: dict, scope: dict, *, scoped: bool) -> dict:
+    if scoped and scope:
+        finalized.update(scope)
+        finalized.setdefault("coe", {})["selected_doc_ids"] = list(
+            scope.get("selected_doc_ids") or []
+        )
+    return finalized
+
+
+def _env_escalate_stub() -> bool:
+    return os.environ.get("WEDGE_ESCALATE_STUB", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
+def _maybe_escalate_stub(payload: dict, docs: dict[str, str], *, enabled: bool) -> dict:
+    """Opt-in hybrid stub after classical ABSTAIN. Default remains fail-closed."""
+    if not enabled or payload.get("answer_status") != "ABSTAIN":
+        return payload
+    from wedge_v1.eval.arms import escalate_stub_ask
+
+    query = str(payload.get("query") or "")
+    stub = escalate_stub_ask(query, docs)
+    path = list(payload.get("solver_path") or [])
+    for step in stub.get("solver_path") or ["hybrid_stub"]:
+        if step not in path:
+            path.append(step)
+    out = dict(payload)
+    out["escalation_attempted"] = True
+    out["escalation"] = stub.get("escalation")
+    out["solver_path"] = path
+    out["lm_invoked"] = False
+    if stub.get("answer_status") != "SUPPORTED" or not stub.get("claims"):
+        return out
+    out["answer_status"] = "SUPPORTED"
+    out["claims"] = list(stub.get("claims") or [])
+    out["unsupported"] = []
+    out["note"] = "recovered via hybrid stub after classical ABSTAIN"
+    tr = out.get("trace")
+    if isinstance(tr, dict):
+        tr = dict(tr)
+        tr["answer_status"] = "SUPPORTED"
+        out["trace"] = tr
+    return out
+
+
+def _finish_ask(
+    payload: dict,
+    docs: dict[str, str],
+    *,
+    scope: dict,
+    scoped: bool,
+    persist_coe: bool,
+    escalate_stub: bool,
+) -> dict:
+    payload = _maybe_escalate_stub(
+        payload,
+        docs,
+        enabled=bool(escalate_stub) or _env_escalate_stub(),
+    )
+    return _apply_scope(
+        _finalize_with_coe(payload, docs, persist=persist_coe),
+        scope,
+        scoped=scoped,
+    )
 
 
 def _load_gold() -> dict | None:
@@ -192,9 +343,26 @@ def _numeric_gate_claim_ok(c: S.Claim, tokens: list[str], docs: dict[str, str]) 
     return any(lab.lower() in body for lab in labels)
 
 
-def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) -> dict:
+def find_spans(
+    needle: str,
+    corpus_dir: Path | None = None,
+    max_hits: int = 20,
+    *,
+    doc_ids: list[str] | None = None,
+    persist_coe: bool = True,
+) -> dict:
     """Exact substring locate with evidence spans (classical)."""
-    docs = load_corpus(corpus_dir)
+    corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
+    all_docs = load_corpus(corpus_dir)
+    docs, scope, scope_valid = select_documents(all_docs, doc_ids)
+    if not scope_valid:
+        return _scope_abstention(
+            op="find",
+            query=needle.strip(),
+            corpus_path=corpus_path,
+            scope=scope,
+            persist=persist_coe,
+        )
     if not docs:
         return {"answer_status": "NO_CORPUS", "claims": [], "solver_path": ["load_corpus"]}
     needle = needle.strip()
@@ -227,21 +395,31 @@ def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) 
         if len(claims) >= max_hits:
             break
     if not claims:
-        return {
+        result = {
+            "query": needle,
+            "corpus_dir": str(corpus_path),
             "answer_status": "ABSTAIN",
             "claims": [],
             "unsupported": [needle],
             "solver_path": ["find_spans"],
             "n_docs": len(docs),
         }
-    return {
-        "answer_status": "SUPPORTED",
-        "claims": [claim_to_dict(c) for c in claims],
-        "unsupported": [],
-        "solver_path": ["find_spans"],
-        "n_docs": len(docs),
-        "n_hits": len(claims),
-    }
+    else:
+        result = {
+            "query": needle,
+            "corpus_dir": str(corpus_path),
+            "answer_status": "SUPPORTED",
+            "claims": [claim_to_dict(c) for c in claims],
+            "unsupported": [],
+            "solver_path": ["find_spans"],
+            "n_docs": len(docs),
+            "n_hits": len(claims),
+        }
+    return _apply_scope(
+        _finalize_with_coe(result, docs, persist=persist_coe),
+        scope,
+        scoped=doc_ids is not None,
+    )
 
 
 
@@ -364,9 +542,12 @@ def _claim_covers_domain(claims: list, domain: str) -> bool:
 def _finalize_with_coe(payload: dict, docs: dict[str, str], *, persist: bool = True) -> dict:
     """Bind typed CoE claims + JSONL record after claim construction (never post-hoc)."""
     try:
+        from wedge_v1.coe.audit import audit_payload
         from wedge_v1.coe.bind import bind_ask_payload
 
-        return bind_ask_payload(payload, docs, persist=persist)
+        result = bind_ask_payload(payload, docs, persist=persist)
+        result["coe_audit"] = audit_payload(result, docs)
+        return result
     except Exception as exc:  # pragma: no cover — fail-open for product path
         payload.setdefault("coe", {"error": str(exc), "invariant": "EVIDENCE_CREATED_WITH_CLAIM"})
         return payload
@@ -463,11 +644,32 @@ def _numeric_keyword_window_claims(
 
 
 
-def ask(query: str, corpus_dir: Path | None = None) -> dict:
-    """Span-first Q&A over a local folder. Never invents unsupported claims."""
+def ask(
+    query: str,
+    corpus_dir: Path | None = None,
+    *,
+    doc_ids: list[str] | None = None,
+    persist_coe: bool = True,
+    escalate_stub: bool = False,
+) -> dict:
+    """Span-first Q&A over a local folder. Never invents unsupported claims.
+
+    escalate_stub / WEDGE_ESCALATE_STUB: on classical ABSTAIN only, try the
+    constructive hybrid stub (ΔU eval arm). Default remains fail-closed.
+    """
     corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
     trace = AskTrace(query=query, corpus_dir=str(corpus_path), op="ask")
-    docs = load_corpus(corpus_dir)
+    all_docs = load_corpus(corpus_dir)
+    docs, scope, scope_valid = select_documents(all_docs, doc_ids)
+    scoped = doc_ids is not None
+    if not scope_valid:
+        return _scope_abstention(
+            op="ask",
+            query=query.strip(),
+            corpus_path=corpus_path,
+            scope=scope,
+            persist=persist_coe,
+        )
     if not docs:
         trace.add_solver("load_corpus")
         trace.add_failure(FailureCode.NO_CORPUS)
@@ -701,7 +903,14 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             "lm_invoked": False,
             **pred_payload,
         }
-        return _finalize_with_coe(payload, docs)
+        return _finish_ask(
+            payload,
+            docs,
+            scope=scope,
+            scoped=scoped,
+            persist_coe=persist_coe,
+            escalate_stub=escalate_stub,
+        )
 
     if not presented_sorted:
         # Content tokens absent → OOS even if BM25 review ranked generic passages.
@@ -744,7 +953,14 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
             "predicates": [p.to_dict() for p in predicates],
             "predicate_support": [s.to_dict() for s in evaluate_predicates(predicates, docs, [])],
         }
-        return _finalize_with_coe(payload, docs)
+        return _finish_ask(
+            payload,
+            docs,
+            scope=scope,
+            scoped=scoped,
+            persist_coe=persist_coe,
+            escalate_stub=escalate_stub,
+        )
 
     disputed = [c for c in presented_sorted if c.status == "DISPUTED"]
     nearby = nearby_contradictions(docs)
@@ -809,15 +1025,37 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
         "predicates": [p.to_dict() for p in predicates],
         "predicate_support": [s.to_dict() for s in evaluate_predicates(predicates, docs, presented_sorted)],
     }
-    return _finalize_with_coe(payload, docs)
+    return _finish_ask(
+        payload,
+        docs,
+        scope=scope,
+        scoped=scoped,
+        persist_coe=persist_coe,
+        escalate_stub=escalate_stub,
+    )
 
 
 
 
 
-def scan(corpus_dir: Path | None = None) -> dict:
+def scan(
+    corpus_dir: Path | None = None,
+    *,
+    doc_ids: list[str] | None = None,
+    persist_coe: bool = True,
+) -> dict:
     """Run inventory extractors across corpus (metadata, dosages, contradictions)."""
-    docs = load_corpus(corpus_dir)
+    corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
+    all_docs = load_corpus(corpus_dir)
+    docs, scope, scope_valid = select_documents(all_docs, doc_ids)
+    if not scope_valid:
+        return _scope_abstention(
+            op="scan",
+            query="scan",
+            corpus_path=corpus_path,
+            scope=scope,
+            persist=persist_coe,
+        )
     if not docs:
         return {"answer_status": "NO_CORPUS", "claims": [], "solver_path": ["load_corpus"]}
 
@@ -839,13 +1077,20 @@ def scan(corpus_dir: Path | None = None) -> dict:
     casc = run_cascade(docs, want={"synonym", "ocr", "coref"})
     claims.extend(casc.claims)
 
-    return {
+    payload = {
+        "query": "scan",
+        "corpus_dir": str(corpus_path),
         "answer_status": "SUPPORTED",
         "claims": [claim_to_dict(c) for c in claims if c.status not in {"MISSING"}],
         "solver_path": ["scan_classical+eclass", "plugin_cascade"],
         "n_docs": len(docs),
         "n_claims": len(claims),
     }
+    return _apply_scope(
+        _finalize_with_coe(payload, docs, persist=persist_coe),
+        scope,
+        scoped=doc_ids is not None,
+    )
 
 
 
@@ -865,14 +1110,31 @@ def _closest_number(text: str, center: int, window: int = 100) -> str | None:
     return best
 
 
-def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dict:
+def compare(
+    term: str,
+    corpus_dir: Path | None = None,
+    window: int = 100,
+    *,
+    doc_ids: list[str] | None = None,
+    persist_coe: bool = True,
+) -> dict:
     """Cross-doc compare for TERM: spans + associated-number disagreement → CONTRADICTED.
 
     Classical only. Does not invent values outside corpus spans.
     """
     t0 = time.perf_counter()
     corpus_path = Path(corpus_dir) if corpus_dir else DEFAULT_CORPUS
-    docs = load_corpus(corpus_dir)
+    all_docs = load_corpus(corpus_dir)
+    docs, scope, scope_valid = select_documents(all_docs, doc_ids)
+    if not scope_valid:
+        return _scope_abstention(
+            op="compare",
+            query=term.strip(),
+            corpus_path=corpus_path,
+            scope=scope,
+            persist=persist_coe,
+            extra={"term": term},
+        )
     if not docs:
         return {
             "term": term,
@@ -1011,7 +1273,7 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
     if merge_claims:
         solver_path.append("epistemic_merge")
 
-    return {
+    payload = {
         "term": needle,
         "corpus_dir": str(corpus_path),
         "answer_status": status,
@@ -1032,6 +1294,11 @@ def compare(term: str, corpus_dir: Path | None = None, window: int = 100) -> dic
         ),
         "latency_s": round(time.perf_counter() - t0, 4),
     }
+    return _apply_scope(
+        _finalize_with_coe(payload, docs, persist=persist_coe),
+        scope,
+        scoped=doc_ids is not None,
+    )
 
 
 def format_report_md(payload: dict, *, title: str | None = None) -> str:

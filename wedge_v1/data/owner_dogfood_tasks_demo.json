@@ -1,7 +1,6 @@
 {
   "schema": "nano-lm.wedge_v1.owner_dogfood.v1",
   "note": "Fixed pack for fixtures/owner_corpus (public synthetic). Edit a local copy for private corpora; do not commit PHI.",
-  "default_corpus_hint": "wedge_v1/fixtures/owner_corpus OR $OWNER_CORPUS (outside git)",
   "tasks": [
     {
       "id": "O01",
@@ -61,58 +60,6 @@
         "ABSTAIN"
       ],
       "must_contain_any": []
-    },
-    {
-      "id": "O06",
-      "mode": "ask",
-      "query": "E1 KILL M1_template",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "must_contain_any": [
-        "KILL",
-        "M1",
-        "0.999",
-        "0.925"
-      ],
-      "note": "p5 OVER_ABSTENTION regression"
-    },
-    {
-      "id": "O07",
-      "mode": "ask",
-      "query": "E4 KILL 0.638",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "must_contain_any": [
-        "0.638",
-        "KILL"
-      ],
-      "note": "p5 OVER_ABSTENTION regression"
-    },
-    {
-      "id": "O08",
-      "mode": "ask",
-      "query": "Nano Runtime smallest sufficient solver",
-      "expect_status": [
-        "SUPPORTED"
-      ],
-      "must_contain_any": [
-        "smallest",
-        "sufficient",
-        "solver"
-      ],
-      "note": "p5 OVER_ABSTENTION regression"
-    },
-    {
-      "id": "O09",
-      "mode": "find",
-      "query": "BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1",
-      "expect_status": [
-        "ABSTAIN"
-      ],
-      "must_contain_any": [],
-      "note": "mandate string absent from stand-in; correct abstain"
     }
   ]
 }

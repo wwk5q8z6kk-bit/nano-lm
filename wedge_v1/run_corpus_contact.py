@@ -1,6 +1,6 @@
 """Corpus contact protocol — labeled usefulness probe (no LM).
 
-Corpus classes: SYNTHETIC_MINI | PAPERS_DOGFOOD | OWNER_PRIVATE
+Corpus classes: SYNTHETIC_MINI | PAPERS_DOGFOOD | OWNER_FIXTURE | OWNER_PRIVATE
 Not Layer-1 evidence. Product evaluation under ACTIVE_MANDATE.
 """
 from __future__ import annotations
@@ -19,6 +19,11 @@ PROBES = [
     ("find", "0.925"),
     ("ask", "What is TTL?"),
     ("compare", "TTL"),
+    ("find", "post-alpha-evidence-freeze-2026-07-31"),
+    ("ask", "What is the official M0 utility under E1?"),
+    ("ask", "What is Nano Runtime?"),
+    ("find", "ECLASS_CLOSED_WITHOUT_LM"),
+    ("ask", "Who won the 2099 Martian election?"),
 ]
 
 
@@ -70,7 +75,7 @@ def run_contact(
         "useful_sentence": useful_sentence,
         "not_useful_sentence": not_useful_sentence,
         "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "note": "Product contact only. Not Layer-1. OWNER_PRIVATE requires owner folder path.",
+        "note": "Product contact only. Not Layer-1. OWNER_FIXTURE = stand-in corpus; OWNER_PRIVATE requires real owner folder.",
     }
 
 
@@ -80,7 +85,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument(
         "--class",
         dest="corpus_class",
-        choices=["SYNTHETIC_MINI", "PAPERS_DOGFOOD", "OWNER_PRIVATE"],
+        choices=["SYNTHETIC_MINI", "PAPERS_DOGFOOD", "OWNER_FIXTURE", "OWNER_PRIVATE"],
         required=True,
     )
     p.add_argument("--useful", default=None, help="One sentence: why this was useful")

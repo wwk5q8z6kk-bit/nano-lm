@@ -4,6 +4,13 @@ from __future__ import annotations
 from pathlib import Path
 
 TEXT_SUFFIXES = {".md", ".txt", ".markdown"}
+SUPPORTED_SUFFIXES = TEXT_SUFFIXES | {".pdf"}
+
+
+def document_id(path: Path, corpus_dir: Path) -> str:
+    """Return a stable corpus-relative ID while preserving flat-corpus IDs."""
+    relative = Path(path).relative_to(Path(corpus_dir))
+    return relative.with_suffix("").as_posix()
 
 
 def _read_text_file(path: Path) -> str:
@@ -40,36 +47,43 @@ def needs_ocr_normalize(text: str) -> bool:
 def load_corpus(corpus_dir: Path, *, normalize: bool | str = "auto") -> dict[str, str]:
     """Load documents from a folder into {doc_id: text}.
 
-    doc_id = file stem. Later files of the same stem overwrite earlier ones
-    in deterministic suffix order (.md, .txt, .pdf).
+    IDs are extensionless paths relative to the corpus root. Top-level files
+    retain their historical stem IDs, while nested same-stem files remain
+    distinct. Two files that resolve to the same relative ID fail clearly
+    instead of silently replacing one another.
     """
     path = Path(corpus_dir)
     if not path.is_dir():
         return {}
 
-    docs: dict[str, str] = {}
-    pdf_skipped = 0
-
-    # Prefer markdown/text first, then PDF fill-in for unique stems
+    sources: dict[str, Path] = {}
     for p in sorted(path.rglob("*")):
         if not p.is_file():
             continue
         if any(part.startswith(".") for part in p.relative_to(path).parts):
             continue
         suf = p.suffix.lower()
-        if suf in TEXT_SUFFIXES:
-            docs[p.stem] = _read_text_file(p)
+        if suf not in SUPPORTED_SUFFIXES:
+            continue
+        doc_id = document_id(p, path)
+        prior = sources.get(doc_id)
+        if prior is not None:
+            prior_rel = prior.relative_to(path).as_posix()
+            current_rel = p.relative_to(path).as_posix()
+            raise ValueError(
+                f"duplicate document identity {doc_id!r}: "
+                f"{prior_rel!r} and {current_rel!r}"
+            )
+        sources[doc_id] = p
 
-    for p in sorted(path.rglob("*.pdf")):
-        if any(part.startswith(".") for part in p.relative_to(path).parts):
+    docs: dict[str, str] = {}
+    for doc_id, source in sources.items():
+        if source.suffix.lower() in TEXT_SUFFIXES:
+            docs[doc_id] = _read_text_file(source)
             continue
-        if p.stem in docs:
-            continue  # text wins over PDF for same stem
-        body = _read_pdf(p)
-        if body is None:
-            pdf_skipped += 1
-            continue
-        docs[p.stem] = body
+        body = _read_pdf(source)
+        if body is not None:
+            docs[doc_id] = body
 
     if docs and normalize:
         from wedge_v1.plugins.ocr import normalize_text
@@ -88,7 +102,11 @@ def corpus_stats(corpus_dir: Path) -> dict:
     docs = load_corpus(corpus_dir)
     n_chars = sum(len(v) for v in docs.values())
     path = Path(corpus_dir)
-    n_pdf = len(list(path.rglob("*.pdf"))) if path.is_dir() else 0
+    n_pdf = (
+        sum(1 for item in path.rglob("*") if item.is_file() and item.suffix.lower() == ".pdf")
+        if path.is_dir()
+        else 0
+    )
     try:
         import pypdf  # noqa: F401
 

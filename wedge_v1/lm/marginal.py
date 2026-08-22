@@ -8,7 +8,7 @@ from typing import Any
 from wedge_v1.classical.eclass_probes import lm_still_needed, probe_t35, probe_t36, probe_t39
 from wedge_v1.eval.utility import Weights, utility
 from wedge_v1.lm.admission import evaluate_admission
-from wedge_v1.lm.probe import ALLOWLIST_TASKS, StubLMBackend, ablation_fails_support, probe_eclass_task
+from wedge_v1.lm.probe import ALLOWLIST_TASKS, ablation_fails_support, get_backend, probe_eclass_task
 from wedge_v1.runtime import DEFAULT_CORPUS, load_corpus
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,7 +54,7 @@ def run_marginal_probe(
         owner_corpus_contact=owner_corpus_contact,
     )
 
-    backend = StubLMBackend()
+    backend = get_backend(backend_name)
     rows = []
     lm_present_gain = 0
     for tid in sorted(ALLOWLIST_TASKS):
@@ -85,7 +85,7 @@ def run_marginal_probe(
         "workstream": "W6",
         "dry_run": dry_run,
         "lm_invoked": any(r.get("lm_invoked") for r in rows),
-        "backend": backend.name if backend_name == "stub" else backend_name,
+        "backend": backend.name,
         "admission": admission,
         "eclass_classical": eclass,
         "eclass_lm_still_needed": still_needed,
@@ -99,7 +99,7 @@ def run_marginal_probe(
         "execute_auth": admission["execute_auth"],
         "corpus_dir": str(corpus_dir or DEFAULT_CORPUS),
         "note": (
-            "Stub backend only unless execute auth + real backend wired. "
+            "Use backend_name=mlx for local MLXLlamaBackend (span-bound). "
             "NOT_APPLICABLE when E-class closed without LM on this corpus."
         ),
     }

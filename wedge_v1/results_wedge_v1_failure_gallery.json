@@ -77,11 +77,12 @@
         "numeric+literal_spans",
         "bm25_paragraphs",
         "bm25_low_margin_review",
-        "plugin.synonym"
+        "plugin.synonym",
+        "epistemic_merge"
       ],
       "n_claims": 2,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     },
     "ok_supported": {
       "id": "O04",
@@ -95,11 +96,12 @@
       "query": "QPS",
       "note": null,
       "solver_path": [
-        "compare"
+        "compare",
+        "epistemic_merge"
       ],
-      "n_claims": 1,
+      "n_claims": 2,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     },
     "correct_abstention": {
       "id": "O05",
@@ -121,21 +123,21 @@
       ],
       "n_claims": 0,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     }
   },
   "repro_commands": {
-    "evidence_absent": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus  # check claims[].evidence",
-    "retrieval_miss": "python -m wedge_v1 find NEEDLE --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
-    "wrong_span_retrieval": "python -m wedge_v1 report ask --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus \"\u2026\"",
-    "verifier_rejection": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus  # status ABSTAIN/unsupported",
-    "correct_abstention": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
-    "over_abstention": "python -m wedge_v1 review --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus --interactive  # label OVER_ABSTENTION",
-    "entity_type_collision": "python -m wedge_v1 scan --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
-    "multi_document_contradiction": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
-    "unsupported_composition": "python -m wedge_v1 ask \"multi-hop \u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
-    "ingestion_layout_failure": "python -m wedge_v1 ingest --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
-    "ok_supported": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus",
+    "evidence_absent": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus  # check claims[].evidence",
+    "retrieval_miss": "python -m wedge_v1 find NEEDLE --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus",
+    "wrong_span_retrieval": "python -m wedge_v1 report ask --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus \"\u2026\"",
+    "verifier_rejection": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus  # status ABSTAIN/unsupported",
+    "correct_abstention": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus",
+    "over_abstention": "python -m wedge_v1 review --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus --interactive  # label OVER_ABSTENTION",
+    "entity_type_collision": "python -m wedge_v1 scan --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus",
+    "multi_document_contradiction": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus",
+    "unsupported_composition": "python -m wedge_v1 ask \"multi-hop \u2026\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus",
+    "ingestion_layout_failure": "python -m wedge_v1 ingest --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus",
+    "ok_supported": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus",
     "other": "python -m wedge_v1 gallery --from PATH"
   },
   "rows": [
@@ -158,11 +160,12 @@
         "numeric+literal_spans",
         "bm25_paragraphs",
         "bm25_low_margin_review",
-        "plugin.synonym"
+        "plugin.synonym",
+        "epistemic_merge"
       ],
       "n_claims": 2,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     },
     {
       "id": "O02",
@@ -181,7 +184,7 @@
       ],
       "n_claims": 2,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     },
     {
       "id": "O03",
@@ -200,7 +203,7 @@
       ],
       "n_claims": 2,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 compare TERM --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     },
     {
       "id": "O04",
@@ -214,11 +217,12 @@
       "query": "QPS",
       "note": null,
       "solver_path": [
-        "compare"
+        "compare",
+        "epistemic_merge"
       ],
-      "n_claims": 1,
+      "n_claims": 2,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 ask \"\u2026\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     },
     {
       "id": "O05",
@@ -240,7 +244,7 @@
       ],
       "n_claims": 0,
       "fail_kind": null,
-      "repro": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/wedge_v1/data/owner_corpus"
+      "repro": "python -m wedge_v1 ask \"OOS clinical question\" --corpus /Users/mac/Projects/nano-lm/.local-data/owner_corpus"
     }
   ],
   "note": "Product failure gallery; not Layer-1. Zero count \u21d2 unobserved on this corpus, not solved."

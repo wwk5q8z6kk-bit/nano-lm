@@ -22,6 +22,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--admit-only", action="store_true", help="Admission check only")
     p.add_argument("--min-irreducible", type=int, default=2)
     p.add_argument("--owner-corpus", action="store_true", help="Owner-corpus contact flag")
+    p.add_argument("--backend", default="stub")
     p.add_argument("--no-persist", action="store_true")
     args = p.parse_args(argv)
 
@@ -46,6 +47,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     out = run_marginal_probe(
+        backend_name=getattr(args, "backend", "stub"),
         gallery=gallery,
         corpus_dir=args.corpus,
         dry_run=True,

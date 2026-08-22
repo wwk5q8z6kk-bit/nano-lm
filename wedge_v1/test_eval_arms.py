@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from wedge_v1.eval.arms import DELTA, escalate_stub_ask, run_arms_eval
 from wedge_v1.eval.cite_pack import format_citation_md, pack_claim, pack_claims
-from wedge_v1.runtime import DEFAULT_CORPUS, format_report_md, load_corpus
+from wedge_v1.runtime import DEFAULT_CORPUS, ask, format_report_md, load_corpus
 
 
 def test_cite_pack_compacts_evidence():
@@ -56,6 +56,56 @@ def test_escalate_stub_refuses_oos():
     assert out["answer_status"] == "ABSTAIN"
 
 
+def test_ask_escalate_stub_default_off_keeps_oos():
+    out = ask(
+        "What is the clinical accuracy of NanoScribe in hospitals?",
+        DEFAULT_CORPUS,
+        persist_coe=False,
+        escalate_stub=False,
+    )
+    assert out["answer_status"] == "ABSTAIN"
+    assert out.get("escalation_attempted") is not True
+
+
+def test_ask_escalate_stub_oos_still_abstains():
+    out = ask(
+        "What is the clinical accuracy of NanoScribe in hospitals?",
+        DEFAULT_CORPUS,
+        persist_coe=False,
+        escalate_stub=True,
+    )
+    assert out["answer_status"] == "ABSTAIN"
+    assert out.get("escalation_attempted") is True
+    assert out.get("escalation") == "stub_miss"
+
+
+def test_ask_escalate_stub_recovers_forced_classical_miss(monkeypatch, tmp_path):
+    (tmp_path / "cache.md").write_text(
+        "Cache TTL as 300 seconds for entries.\n",
+        encoding="utf-8",
+    )
+    import wedge_v1.runtime as rt
+
+    monkeypatch.setattr(rt, "_relevant_claim", lambda *a, **k: False)
+    off = ask(
+        "How long before cached entries expire?",
+        tmp_path,
+        persist_coe=False,
+        escalate_stub=False,
+    )
+    assert off["answer_status"] == "ABSTAIN"
+    on = ask(
+        "How long before cached entries expire?",
+        tmp_path,
+        persist_coe=False,
+        escalate_stub=True,
+    )
+    assert on["answer_status"] == "SUPPORTED"
+    assert on.get("escalation_attempted") is True
+    assert on.get("claims")
+    assert any("hybrid_stub" in str(s) or "stub" in str(s) for s in on.get("solver_path") or [])
+
+
 def test_format_report_uses_packed_citations():
     payload = {
         "query": "ttl",
@@ -86,5 +136,7 @@ if __name__ == "__main__":
     test_eval_arms_fixture_keep_classical()
     test_escalate_stub_recovers_ttl_on_corpus()
     test_escalate_stub_refuses_oos()
+    test_ask_escalate_stub_default_off_keeps_oos()
+    test_ask_escalate_stub_oos_still_abstains()
     test_format_report_uses_packed_citations()
     print("EVAL_ARMS_OK")

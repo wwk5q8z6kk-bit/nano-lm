@@ -28,23 +28,63 @@ from wedge_v1.runtime import (
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(
         prog="wedge_v1",
-        description="Local verified research Q&A — classical + E-class solvers (no LM).",
+        description=(
+            "Wedge v1 internal evidence and validation pipeline — "
+            "not the Nano AI or its inference entry point."
+        ),
     )
     sub = p.add_subparsers(dest="cmd", required=True)
 
     ask_p = sub.add_parser("ask", help="Ask a question; returns span-supported claims or ABSTAIN")
     ask_p.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    ask_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope (repeatable); unknown/empty → fail-closed ABSTAIN",
+    )
+    ask_p.add_argument(
+        "--escalate-stub",
+        action="store_true",
+        help="On classical ABSTAIN, try constructive hybrid stub (also WEDGE_ESCALATE_STUB=1)",
+    )
     ask_p.add_argument("query", nargs="+")
 
     find_p = sub.add_parser("find", help="Exact substring locate with spans")
     find_p.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    find_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope (repeatable)",
+    )
     find_p.add_argument("needle", nargs="+")
 
     scan_p = sub.add_parser("scan", help="Inventory extract + contradictions over corpus")
     scan_p.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    scan_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope (repeatable)",
+    )
 
     cmp_p = sub.add_parser("compare", help="Cross-doc term compare; flags numeric disputes")
     cmp_p.add_argument("--corpus", type=Path, default=DEFAULT_CORPUS)
+    cmp_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope (repeatable)",
+    )
     cmp_p.add_argument("term", nargs="+")
 
     ingest_p = sub.add_parser("ingest", help="Index a folder (md/txt/pdf→text); write local manifest")
@@ -119,6 +159,19 @@ def main(argv: list[str] | None = None) -> int:
     rev.add_argument("--label", action="append", default=[], help="ID:LABEL batch apply")
     rev.add_argument("--summary", action="store_true")
     rev.add_argument("--limit", type=int, default=None)
+    rev.add_argument("--state", type=Path, default=None, help="Explicit local review-state path")
+    rev.add_argument(
+        "--undo",
+        action="append",
+        default=[],
+        metavar="ID",
+        help="Clear a prior label by task/card ID; append an audit event",
+    )
+    rev.add_argument(
+        "--reviewer",
+        choices=["agent_applied", "owner", "independent_human", "unspecified"],
+        default="unspecified",
+    )
 
     ready = sub.add_parser("owner-ready", help="Validate private-corpus path readiness (no PHI dump)")
     ready.add_argument("--corpus", type=Path, default=None)
@@ -182,7 +235,12 @@ def main(argv: list[str] | None = None) -> int:
     args = p.parse_args(argv)
 
     if args.cmd == "ask":
-        out = ask(" ".join(args.query), corpus_dir=args.corpus)
+        out = ask(
+            " ".join(args.query),
+            corpus_dir=args.corpus,
+            doc_ids=getattr(args, "doc_ids", None),
+            escalate_stub=bool(getattr(args, "escalate_stub", False)),
+        )
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write(chr(10))
         try:
@@ -192,7 +250,11 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "find":
-        out = find_spans(" ".join(args.needle), corpus_dir=args.corpus)
+        out = find_spans(
+            " ".join(args.needle),
+            corpus_dir=args.corpus,
+            doc_ids=getattr(args, "doc_ids", None),
+        )
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write(chr(10))
         try:
@@ -202,7 +264,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "scan":
-        out = scan(corpus_dir=args.corpus)
+        out = scan(corpus_dir=args.corpus, doc_ids=getattr(args, "doc_ids", None))
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write(chr(10))
         try:
@@ -212,7 +274,11 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
 
     if args.cmd == "compare":
-        out = compare(" ".join(args.term), corpus_dir=args.corpus)
+        out = compare(
+            " ".join(args.term),
+            corpus_dir=args.corpus,
+            doc_ids=getattr(args, "doc_ids", None),
+        )
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write(chr(10))
         try:
@@ -321,6 +387,8 @@ def main(argv: list[str] | None = None) -> int:
         except AssertionError as exc:
             print(f"WEDGE_V1_SMOKE_WARN eval_arms: {exc}", file=sys.stderr)
         arms_smoke.test_escalate_stub_refuses_oos()
+        arms_smoke.test_ask_escalate_stub_default_off_keeps_oos()
+        arms_smoke.test_ask_escalate_stub_oos_still_abstains()
         print("WEDGE_V1_SMOKE_OK", file=sys.stderr)
         return 0
 
@@ -383,6 +451,7 @@ def main(argv: list[str] | None = None) -> int:
         from wedge_v1.review import (
             LABELS,
             batch_label,
+            cards_from_state,
             cards_from_dogfood,
             cards_from_task_pack,
             format_card,
@@ -391,56 +460,131 @@ def main(argv: list[str] | None = None) -> int:
             load_state,
             merge_prior_labels,
             save_state,
+            undo_label,
             unlabeled,
         )
+        from wedge_v1.private_output import require_private_output
         from wedge_v1.run_owner_dogfood import DEFAULT_TASKS, FIXTURE_CORPUS, resolve_corpus
 
+        if args.tasks is not None and args.corpus is None:
+            p.error("review --tasks requires an explicit --corpus")
+        if args.from_dogfood is not None and args.corpus is None:
+            p.error("review --from-dogfood requires an explicit --corpus")
+        if args.corpus is not None and not args.tasks and not args.from_dogfood:
+            p.error("review with a real --corpus requires --tasks or --from-dogfood")
+        has_private_inputs = any(
+            value is not None for value in (args.corpus, args.tasks, args.from_dogfood)
+        )
+        if has_private_inputs and args.state is None:
+            p.error("review with private inputs requires an explicit local --state path")
+        if args.state is not None:
+            try:
+                require_private_output(args.state, purpose="review state")
+            except ValueError as exc:
+                p.error(str(exc))
+
+        state = load_state(args.state)
         if args.summary:
-            json.dump(label_summary(load_state()), sys.stdout, indent=2)
+            cards = cards_from_state(state)
+            if args.limit is not None:
+                cards = cards[: args.limit]
+            json.dump(
+                label_summary(state, cards=cards, path=args.state),
+                sys.stdout,
+                indent=2,
+            )
             sys.stdout.write(chr(10))
-            return 0
-
-        use_demo = bool(args.demo or (args.corpus is None and not args.from_dogfood))
-        corpus = resolve_corpus(corpus=args.corpus, demo=use_demo)
-        if args.demo and FIXTURE_CORPUS.is_dir():
-            corpus = FIXTURE_CORPUS
-        state = load_state()
-        if args.from_dogfood:
-            cards = cards_from_dogfood(args.from_dogfood, corpus, limit=args.limit)
-        else:
-            tasks = args.tasks or DEFAULT_TASKS
-            cards = cards_from_task_pack(tasks, corpus, limit=args.limit)
-        cards = merge_prior_labels(cards, state)
-        for c in cards:
-            state.setdefault("cards", {}).setdefault(c["id"], c)
-        save_state(state)
-
-        if args.label:
-            batch_label(state, cards, args.label)
-            json.dump(label_summary(state), sys.stdout, indent=2)
-            sys.stdout.write(chr(10))
-            habit_record("review_label")
             return 0
         if args.next:
+            cards = cards_from_state(state)
+            if not cards:
+                sys.stdout.write(
+                    "REVIEW_SNAPSHOT_MISSING: run --interactive once to freeze the queue\n"
+                )
+                return 0
             queue = unlabeled(cards)
             if not queue:
                 sys.stdout.write("REVIEW_QUEUE_EMPTY\n")
-                json.dump(label_summary(state), sys.stdout, indent=2)
+                json.dump(label_summary(state, cards=cards, path=args.state), sys.stdout, indent=2)
                 sys.stdout.write(chr(10))
                 return 0
             sys.stdout.write(format_card(queue[0], index=1, total=len(queue)) + "\n")
-            sys.stdout.write("labels: " + ", ".join(LABELS) + "\n")
+            return 0
+
+        if state.get("load_errors"):
+            p.error(
+                "review state is invalid and was left unchanged: "
+                + ", ".join(state["load_errors"])
+            )
+
+        cards = cards_from_state(state)
+        explicit_source = bool(args.demo or args.corpus or args.tasks or args.from_dogfood)
+        if explicit_source:
+            use_demo = bool(args.demo)
+            corpus = resolve_corpus(corpus=args.corpus, demo=use_demo)
+            if args.demo and FIXTURE_CORPUS.is_dir():
+                corpus = FIXTURE_CORPUS
+            if args.from_dogfood:
+                cards = cards_from_dogfood(
+                    args.from_dogfood,
+                    corpus,
+                    limit=args.limit,
+                    persist_coe=False,
+                )
+            else:
+                tasks = args.tasks or DEFAULT_TASKS
+                cards = cards_from_task_pack(
+                    tasks,
+                    corpus,
+                    limit=args.limit,
+                    persist_coe=False,
+                )
+            cards = merge_prior_labels(cards, state)
+
+        if not cards:
+            p.error("no persisted review queue; provide --demo or explicit --corpus/--tasks")
+        if args.undo:
+            for identifier in args.undo:
+                undo_label(
+                    state,
+                    cards,
+                    identifier,
+                    reviewer_kind=args.reviewer,
+                )
+            save_state(state, path=args.state)
+            json.dump(label_summary(state, cards=cards, path=args.state), sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+            return 0
+        if args.label:
+            batch_label(
+                state,
+                cards,
+                args.label,
+                state_path=args.state,
+                reviewer_kind=args.reviewer,
+            )
+            json.dump(label_summary(state, cards=cards, path=args.state), sys.stdout, indent=2)
+            sys.stdout.write(chr(10))
+            habit_record("review_label")
             return 0
         if args.interactive:
-            interactive_review(cards, state)
-            json.dump(label_summary(load_state()), sys.stdout, indent=2)
+            interactive_review(
+                cards,
+                state,
+                state_path=args.state,
+                reviewer_kind=args.reviewer,
+            )
+            json.dump(
+                label_summary(load_state(args.state), cards=cards, path=args.state),
+                sys.stdout,
+                indent=2,
+            )
             sys.stdout.write(chr(10))
             habit_record("review_interactive")
             return 0
         queue = unlabeled(cards)
         json.dump(
             {
-                "corpus": str(corpus),
                 "n_cards": len(cards),
                 "n_unlabeled": len(queue),
                 "labels": list(LABELS),
@@ -452,6 +596,7 @@ def main(argv: list[str] | None = None) -> int:
                         "status": c.get("answer_status"),
                         "doc": c.get("document"),
                         "span": (c.get("evidence_span") or "")[:80],
+                        "prior_label_status": c.get("prior_label_status"),
                     }
                     for c in queue
                 ],

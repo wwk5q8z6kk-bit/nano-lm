@@ -86,6 +86,32 @@ def test_evaluate_incomplete_helper():
     assert incomplete_conjunction(supports)
 
 
+
+
+def test_compare_epistemic_merge_qps():
+    """Registry field beyond the original TTL/dose/n triple."""
+    from wedge_v1.owner_ready import FIXTURE_CORPUS
+
+    r = compare("QPS", corpus_dir=FIXTURE_CORPUS)
+    assert r["answer_status"] in {"SUPPORTED", "CONTRADICTED"}
+    em = r.get("epistemic_merge") or []
+    qps = next((x for x in em if x.get("field_id") == "peak_qps"), None)
+    assert qps is not None, "QPS must resolve via typed field registry, not only BM25"
+    assert qps.get("disputed") is False
+    assert "12000" in {str(v) for v in (qps.get("unique_values") or [])}
+    assert len(qps.get("evidence_spans") or []) >= 2
+
+
+def test_field_registry_loads_more_than_three():
+    from wedge_v1.classical.merge import active_fields, load_field_registry
+
+    regs = load_field_registry()
+    assert len(regs) >= 4
+    ids = {s.field_id for s in active_fields()}
+    assert "peak_qps" in ids
+    assert "ttl_seconds" in ids
+
+
 if __name__ == "__main__":
     test_decompose_open_conjunct()
     test_incomplete_conjunction_mars()
@@ -93,6 +119,8 @@ if __name__ == "__main__":
     test_merge_detects_conflicts_without_fixture_ids()
     test_compare_epistemic_merge_both_spans()
     test_ask_epistemic_merge_ttl()
+    test_compare_epistemic_merge_qps()
+    test_field_registry_loads_more_than_three()
     test_oos_correct_abstention_codes()
     test_evaluate_incomplete_helper()
     print("W3_PREDICATES_OK")

@@ -2,8 +2,8 @@
   "schema": "nano-lm.wedge_v1.corpus_contact.v1",
   "corpus_class": "PAPERS_DOGFOOD",
   "corpus": "/Users/mac/Projects/nano-lm/papers",
-  "n_docs": 35,
-  "n_chars": 309153,
+  "n_docs": 107,
+  "n_chars": 797892,
   "probes": [
     {
       "kind": "ask",
@@ -23,7 +23,7 @@
       "kind": "find",
       "text": "0.925",
       "answer_status": "SUPPORTED",
-      "n_claims": 11,
+      "n_claims": 20,
       "note": []
     },
     {
@@ -36,21 +36,56 @@
     {
       "kind": "compare",
       "text": "TTL",
+      "answer_status": "CONTRADICTED",
+      "n_claims": 1,
+      "note": []
+    },
+    {
+      "kind": "find",
+      "text": "post-alpha-evidence-freeze-2026-07-31",
+      "answer_status": "SUPPORTED",
+      "n_claims": 13,
+      "note": []
+    },
+    {
+      "kind": "ask",
+      "text": "What is the official M0 utility under E1?",
       "answer_status": "SUPPORTED",
       "n_claims": 1,
       "note": []
+    },
+    {
+      "kind": "ask",
+      "text": "What is Nano Runtime?",
+      "answer_status": "SUPPORTED",
+      "n_claims": 12,
+      "note": []
+    },
+    {
+      "kind": "find",
+      "text": "ECLASS_CLOSED_WITHOUT_LM",
+      "answer_status": "SUPPORTED",
+      "n_claims": 4,
+      "note": []
+    },
+    {
+      "kind": "ask",
+      "text": "Who won the 2099 Martian election?",
+      "answer_status": "ABSTAIN",
+      "n_claims": 0,
+      "note": "no span-supported claim under classical+eclass cascade"
     }
   ],
   "scan_status": "SUPPORTED",
-  "scan_n_claims": 150,
+  "scan_n_claims": 463,
   "summary": {
-    "n_probes": 5,
-    "n_supported_or_contradicted": 3,
-    "n_abstain": 2,
+    "n_probes": 10,
+    "n_supported_or_contradicted": 7,
+    "n_abstain": 3,
     "meets_n20": true
   },
-  "useful_sentence": "Exact find and span-backed answers on governance docs beat scrolling when looking up known numbers like 0.925.",
-  "not_useful_sentence": "Natural-language research questions often abstain or contradict without a clear primary claim, so it does not yet replace reading.",
-  "timestamp_utc": "2026-07-31T18:47:17Z",
-  "note": "Product contact only. Not Layer-1. OWNER_PRIVATE requires owner folder path."
+  "useful_sentence": "Papers folder answers exact E1/E4 facts with spans; abstains on clinical fiction.",
+  "not_useful_sentence": null,
+  "timestamp_utc": "2026-08-22T04:16:29Z",
+  "note": "Product contact only. Not Layer-1. OWNER_FIXTURE = stand-in corpus; OWNER_PRIVATE requires real owner folder."
 }
