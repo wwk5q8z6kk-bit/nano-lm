@@ -1,7 +1,6 @@
 {
   "schema": "nano-lm.wedge_v1.owner_dogfood.v1",
   "note": "Fixed pack for fixtures/owner_corpus (public synthetic). Edit a local copy for private corpora; do not commit PHI.",
-  "default_corpus_hint": "wedge_v1/fixtures/owner_corpus OR $OWNER_CORPUS (outside git)",
   "tasks": [
     {
       "id": "O01",
