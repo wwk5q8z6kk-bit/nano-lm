@@ -1,9 +1,9 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
   "updated": "2026-08-22",
-  "program_execution_status": "DOC_RESET_V2_AND_P1_SCRIBING",
+  "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
-  "current_gate": "REPOSITORY_RECONCILIATION_AND_CANONICAL_DOC_AUTHORITY",
+  "current_gate": "P1_ENCOUNTER_REPRESENTATION_AND_EVIDENCE_TRANSPORT",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
   "training_backend": "RUNPOD",
   "training_status": "ACTIVE",
@@ -24,19 +24,16 @@
     "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
   },
   "bounded_work": [
-    "docs_canonical_tree_v2_from_origin_master",
-    "owner_review_before_master_merge",
-    "p1_encounter_representation_and_span_bottleneck"
+    "p1_encounter_representation_v0"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
     "confirmatory_evidential_runs_without_prereg",
     "phi_or_private_clinical_data",
     "protected_tag_moves",
-    "publication_claims",
-    "master_merge_doc_reset"
+    "publication_claims"
   ],
-  "next_engineering": "scribe_evidence_span_bottleneck",
+  "next_engineering": "ENCOUNTER_REPRESENTATION_V0",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
   "integration_base_sha": "2ad06d24c4f72b292f73ef098fdcc0ce2a008659"
 }

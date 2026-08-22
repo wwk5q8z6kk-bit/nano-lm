@@ -7,9 +7,9 @@
 
 | Field | Value |
 |-------|-------|
-| `program_execution_status` | `DOC_RESET_V2_AND_P1_SCRIBING` |
+| `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `REPOSITORY_RECONCILIATION_AND_CANONICAL_DOC_AUTHORITY` |
+| `current_gate` | `P1_ENCOUNTER_REPRESENTATION_AND_EVIDENCE_TRANSPORT` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
 | `training_backend` | `RUNPOD` |
 | `training_status` | `ACTIVE` |
@@ -49,11 +49,7 @@ The distinction is **cost / risk / evidential significance**, not “free local 
 ## Current gate sequence
 
 ```text
-REPOSITORY RECONCILIATION (docs v2, no Evidence Core diff)
-        ↓
-CANONICAL DOC AUTHORITY + CI integrity checks
-        ↓
-P1 — encounter representation + span/evidence bottleneck
+P1 — encounter representation + span/evidence transport
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓
@@ -78,7 +74,7 @@ Do not describe RunPod as a future or optional backend, and do not treat every p
 
 ## Owner gates (standing)
 
-Materially costly runs outside the active experiment budget, confirmatory evidential runs without required prereg, PHI/private clinical data, protected tag moves, clinical claims, merge of this doc reset to `master`.
+Materially costly runs outside the active experiment budget, confirmatory evidential runs without required prereg, PHI/private clinical data, protected tag moves, clinical claims.
 
 ## Links
 
