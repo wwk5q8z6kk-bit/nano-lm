@@ -18,6 +18,7 @@ FIXTURE_CORPUS = ROOT / "fixtures" / "owner_corpus"
 EXAMPLE_CORPUS = FIXTURE_CORPUS  # public synthetic stand-in
 LEGACY_EXAMPLE = ROOT / "data" / "owner_corpus.example"
 DEFAULT_TASKS = ROOT / "data" / "owner_dogfood_tasks.json"
+DEMO_TASKS = ROOT / "data" / "owner_dogfood_tasks_demo.json"
 EXAMPLE_TASKS = ROOT / "data" / "owner_dogfood_tasks.example.json"
 if not DEFAULT_TASKS.is_file():
     DEFAULT_TASKS = EXAMPLE_TASKS
@@ -30,6 +31,21 @@ OWNER_DIR = ROOT / "data" / "owner_corpus"
 
 def _blob(result: dict) -> str:
     return json.dumps(result, default=str).lower()
+
+
+def _scoped_corpus_dir(corpus: Path, doc_ids: list[str] | None) -> tuple[Path, Path | None]:
+    if not doc_ids:
+        return corpus, None
+    docs = load_corpus(corpus)
+    wanted = [d for d in doc_ids if d in docs]
+    if not wanted or len(wanted) == len(docs):
+        return corpus, None
+    import tempfile
+
+    tmp = Path(tempfile.mkdtemp(prefix="wedge_scope_"))
+    for did in wanted:
+        (tmp / f"{did}.md").write_text(docs[did], encoding="utf-8")
+    return tmp, tmp
 
 
 def resolve_corpus(*, corpus: Path | None = None, demo: bool = False) -> Path:
@@ -61,12 +77,18 @@ def resolve_corpus(*, corpus: Path | None = None, demo: bool = False) -> Path:
 def score_task(task: dict, corpus: Path) -> dict:
     q = task["query"]
     mode = task.get("mode") or "ask"
-    if mode == "compare":
-        result = compare(q, corpus_dir=corpus)
-    elif mode == "find":
-        result = find_spans(q, corpus_dir=corpus)
-    else:
-        result = ask(q, corpus_dir=corpus)
+    scoped, tmp = _scoped_corpus_dir(corpus, task.get("doc_ids"))
+    try:
+        if mode == "compare":
+            result = compare(q, corpus_dir=scoped)
+        elif mode == "find":
+            result = find_spans(q, corpus_dir=scoped)
+        else:
+            result = ask(q, corpus_dir=scoped)
+    finally:
+        if tmp is not None:
+            import shutil
+            shutil.rmtree(tmp, ignore_errors=True)
 
     status = result.get("answer_status")
     expect = task.get("expect_status") or ["any"]
@@ -108,6 +130,7 @@ def score_task(task: dict, corpus: Path) -> dict:
         "solver_path": result.get("solver_path"),
         "latency_s": result.get("latency_s"),
         "note": result.get("note"),
+        "scoped_doc_ids": task.get("doc_ids"),
     }
 
 
@@ -146,6 +169,7 @@ def run(
     *,
     write_smoke: bool = False,
     gallery_md: Path | None = None,
+    gallery_json: Path | None = None,
 ) -> dict:
     docs = load_corpus(corpus)
     if not docs:
@@ -185,7 +209,15 @@ def run(
     gal_body = failure_gallery_md(rows, Path(corpus))
     gal_path = gallery_md or DEFAULT_GALLERY_MD
     gal_path.write_text(gal_body, encoding="utf-8")
-    DEFAULT_GALLERY_JSON.write_text(
+    # When caller redirects markdown gallery (tests/tmp), keep JSON beside it
+    # so we never touch the protected default owner gallery path unintentionally.
+    if gallery_json is not None:
+        gal_json_path = gallery_json
+    elif gallery_md is not None:
+        gal_json_path = Path(gallery_md).with_suffix(".json")
+    else:
+        gal_json_path = DEFAULT_GALLERY_JSON
+    gal_json_path.write_text(
         json.dumps(
             {
                 "schema": "nano-lm.wedge_v1.failure_gallery.v1",
@@ -211,7 +243,7 @@ def run(
         + "\n",
         encoding="utf-8",
     )
-    out["written"] = [str(dest), str(gal_path), str(DEFAULT_GALLERY_JSON)]
+    out["written"] = [str(dest), str(gal_path), str(gal_json_path)]
     if write_smoke:
         out["written"].append(str(SMOKE_OUT))
     out["out"] = str(dest)
@@ -239,8 +271,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--gallery", type=Path, default=None, help="Failure gallery markdown path")
     ap.add_argument("--smoke", action="store_true", help="Also write results_owner_smoke.json")
     args = ap.parse_args(argv)
+    if args.demo and DEMO_TASKS.is_file() and Path(args.tasks) == DEFAULT_TASKS:
+        args.tasks = DEMO_TASKS
 
     corpus = resolve_corpus(corpus=args.corpus, demo=args.demo)
+    if args.demo and Path(args.tasks) == DEFAULT_TASKS and DEMO_TASKS.is_file():
+        args.tasks = DEMO_TASKS
     out = run(
         corpus,
         args.tasks,

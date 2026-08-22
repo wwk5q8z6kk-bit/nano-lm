@@ -1,3 +1,7 @@
 *.wedge_manifest.json
 .coe_runs/
 results_ingest_sla.json
+results_eval_arms.json
+results_owner_dogfood.json
+results_owner_failure_gallery.md
+results_owner_failure_gallery.json

@@ -46,3 +46,12 @@ PYTHONPATH=. python3 -m wedge_v1 owner-dogfood --corpus ~/path/to/private/docs
 ```
 
 Writes gitignored `wedge_v1/results_owner_dogfood.json` + failure gallery. Classical-only; not Layer-1 evidence.
+
+## Fixture ΔU arms (classical vs hybrid stub)
+
+```bash
+PYTHONPATH=. python3 -m wedge_v1 eval-arms --demo
+```
+
+Scores draft U on both arms and emits `KEEP_CLASSICAL` or `ADMIT_HYBRID_STUB` when ΔU > δ (default 0.05). No training; stub escalates only on classical ABSTAIN with verified spans.
+

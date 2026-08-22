@@ -126,7 +126,7 @@ Packs: synthetic ✓ · papers dogfood ✓ · owner harness ✓ (`--demo`); real
 | S5 | `compare` + contradiction banners | **Done** |
 | S6 | Markdown `report ask|find|scan|compare` | **Done** |
 | S7 | Owner-corpus dogfood (private; no PHI) | **Done** (`owner-dogfood --demo`) |
-| S8 | Measure \(U_{\mathrm{classical}}\); LM iff ΔU > δ | **Partial** — `measure-u` on synthetic/demo; owner pack pending |
+| S8 | Measure \(U_{\mathrm{classical}}\); LM iff ΔU > δ | **Done** (fixture) — `eval-arms` + `measure-u`; real OWNER_CORPUS still pending |
 
 ---
 
@@ -219,3 +219,6 @@ OUT OF SCOPE: LM, tags, evidence ledger, paid compute, committing private docs
 - `measure-u` CLI: draft product U from dogfood JSON (synthetic ≈ 0.889)
 - Smoke green (`WEDGE_V1_SMOKE_OK`)
 - **Blocked on you:** real `$OWNER_CORPUS` for OWNER_PRIVATE contact + kill criteria
+
+- `eval-arms` CLI: U_classical vs hybrid-stub under ΔU; clean demo → KEEP_CLASSICAL
+

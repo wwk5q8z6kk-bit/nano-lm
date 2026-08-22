@@ -38,6 +38,8 @@ Dogfood 5/5 · draft U≈0.890 · adversarial 6/6 · evolve → **W3**.
 
 **Next engineering:** real `$OWNER_CORPUS` contact (only remaining product gate).
 
+**Session 2026-08-22 (eval-arms):** Fixture `eval-arms` CLI — U_classical vs hybrid-stub under ΔU; citation packing in `report`. Clean demo → `KEEP_CLASSICAL`.
+
 **Session 2026-08-22:** `wedge_v1 study check|run` lite path + `questions-v1.json` (10 scoped fixture tasks). Demo study 10/10.
 
 **Session 2026-08-21:** OOS abstain cleans BM25-noise codes; `ask()` emits `epistemic_merge`; evolve no longer re-queues W3 on handled contradictions (recommends `OWNER_CORPUS_CONTACT`).
@@ -52,7 +54,7 @@ Dogfood 5/5 · draft U≈0.890 · adversarial 6/6 · evolve → **W3**.
 
 ## Next
 
-5. General multi-doc epistemic merge (typed fields, both spans)
+5. ~~General multi-doc epistemic merge (typed fields, both spans)~~ **DONE** (`field_registry.json` + QPS/error_rate; both spans)
 6. ~~Pluggable synonym/OCR/coref modules~~ **DONE** (`plugin-registry`)
 7. Real `$OWNER_CORPUS` gallery → feed W1–W4
 
@@ -64,3 +66,7 @@ Dogfood 5/5 · draft U≈0.890 · adversarial 6/6 · evolve → **W3**.
 ## Never
 
 - NanoScribe OS · OLD_TASK_U gen default · Evidence Core edits · unpaid→paid GPU without owner · governance-doc churn as substitute for architecture
+
+
+**Session 2026-08-22 (continue autonomous):** Restored `frontier/active-v1` after branch drift. Landed (a) OVER_ABSTENTION relevance/phrase-locate pins, (b) W3 field registry + QPS both-spans merge, (c) W6 `MLXLlamaBackend` span-binding seam via `get_backend`. Smoke/dogfood/adversarial green. LM still `NOT_INDICATED` on clean synthetic.
+
