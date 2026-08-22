@@ -21,6 +21,8 @@
 | [`EMPIRICAL_FOUNDATION.md`](EMPIRICAL_FOUNDATION.md) | Owner evidence lockfile |
 | [`EXECUTION_QUEUE.md`](EXECUTION_QUEUE.md) | *Superseded* → [`../docs/EXECUTION_PLAN.md`](../docs/EXECUTION_PLAN.md) |
 | [`AZ_EXECUTION_PLAN.md`](AZ_EXECUTION_PLAN.md) | *Superseded* → [`../docs/archive/`](../docs/archive/) |
+| [`PROGRAM_AUTHORITY.md`](PROGRAM_AUTHORITY.md) | *Superseded* → [`../docs/PROJECT_AUTHORITY.md`](../docs/PROJECT_AUTHORITY.md) |
+| [`PROJECT_EVOLUTION_PLAN.md`](PROJECT_EVOLUTION_PLAN.md) | *Superseded* → [`../docs/ROADMAP.md`](../docs/ROADMAP.md) |
 
 
 ## Abstract

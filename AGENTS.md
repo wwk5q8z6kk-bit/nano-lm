@@ -1,37 +1,67 @@
-## Learned User Preferences
+# Agent operating instructions
 
-- Prefer adversarial research-council mode over passive review that accepts the project's framing.
-- Enforce strict claim discipline: scope verdicts to tested regimes, utilities, and verifier relations.
-- Separate Evidence Core (frozen verdicts, tags, ledger) from Active Frontier (product/engineering under bounded mandate).
-- Optimize for the smallest sufficient solver; verify consequential outputs; escalate only when necessary.
-- Prefer failure-driven architecture evolution over CLI polish or governance doc churn.
-- When the owner says be thorough, complete construct/first-principles work before advancing.
-- Never label agent-applied rubric audits as human/clinician evaluation.
+**Canonical project truth:** [`docs/README.md`](docs/README.md)
 
-## Agent operating instructions
-
-**Canonical project truth:** [`docs/README.md`](docs/README.md) — read before planning or coding.
-
-**Authority order:** [`docs/PROJECT_AUTHORITY.md`](docs/PROJECT_AUTHORITY.md)
+Read in authority order when instructions conflict:
 
 ```text
-PROJECT_CHARTER → CAPABILITY_LADDER → SYSTEM_ARCHITECTURE
-→ ROADMAP → ACTIVE_NOW → EXECUTION_PLAN
+docs/PROJECT_CHARTER.md
+docs/CAPABILITY_LADDER.md
+docs/SYSTEM_ARCHITECTURE.md
+docs/ROADMAP.md
+docs/ACTIVE_NOW.md  (+ ACTIVE_NOW.json)
+docs/EXECUTION_PLAN.md
 ```
 
-**Current work:** [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md) + [`docs/EXECUTION_PLAN.md`](docs/EXECUTION_PLAN.md)
+## What Nano is
 
-**Do not treat as master plans:** superseded stubs under `papers/STRATEGIC_RESET.md`, `papers/AZ_EXECUTION_PLAN.md`, `papers/EXECUTION_QUEUE.md`, or `frontier/` branch notes.
+Nano is a research and engineering program for **compact, reliable intelligence** — not a single 3.15M LM, not Wedge alone, not a verification wrapper.
 
-## Learned Workspace Facts
+- **Current frontier:** P1 Master Scribing (medical DomainPack)
+- **Nano Core + DomainPack:** domain-general primitives + medical-first proving ground
+- **Governing rule:** smallest sufficient solver — software, retrieval, schemas, compact models, or hybrids
 
-- **Mission:** Build the smallest useful, reliable intelligence system for faithful evidence representation, compression, longitudinal state, and eventually reasoning/planning/action with provenance ([`docs/PROJECT_CHARTER.md`](docs/PROJECT_CHARTER.md)).
-- **Capability frontier:** P1 Master Scribing (medical DomainPack first) — P2–P9 specified but not current build priority ([`docs/CAPABILITY_LADDER.md`](docs/CAPABILITY_LADDER.md)).
-- **Architecture:** Nano Core + DomainPacks; model/software co-design ([`docs/SYSTEM_ARCHITECTURE.md`](docs/SYSTEM_ARCHITECTURE.md)).
-- **Historical foundation:** 3.15M from-scratch LM + Paper α measurement spine — not the project definition.
-- **E1 KILL:** Classical beats generative on **old closed scribe task** under frozen U — routing evidence, not program kill.
-- **E4 KILL:** Classical beats generative+verify on **tested R★** — scoped to that regime.
-- **Wedge (`wedge_v1/`):** Supporting verified local document intelligence — [`docs/subsystems/WEDGE.md`](docs/subsystems/WEDGE.md).
-- **Evidence-protected:** `papers/EMPIRICAL_FOUNDATION.md`, `papers/EVIDENCE_LEDGER.md`, `PREREG_*`, `RESULT_*`, freeze tags, primary `trajectory/results_*.json` — do not move or rewrite casually.
-- **Speech acts:** `continue` = M0 only; `start` / autonomous frontier = bounded product work without minting commit/tag/push/execute ([`papers/OWNER_SPEECH_ACTS.md`](papers/OWNER_SPEECH_ACTS.md)).
-- **Owner gates:** paid compute, PHI in git, protected tag moves, clinical claims, master merge of large doc resets.
+## Directory roles
+
+| Path | Role |
+|------|------|
+| `docs/` | Current program truth — **start here** |
+| `papers/` | Science — preregistrations, results, manuscripts (do not treat as master plan) |
+| `trajectory/` | Experimental records |
+| `wedge_v1/` | Supporting verified-information subsystem |
+| `nano_ai/` | Model / intelligence core |
+| `frontier/` | Branch-local notes only — **not canonical** |
+
+## Hard gates (never bypass)
+
+- Do **not** move or rewrite: `papers/EVIDENCE_LEDGER.*`, `papers/EMPIRICAL_FOUNDATION.md`, `PREREG_*`, `RESULT_*`, freeze tags, SHA manifests, tagged result JSON
+- Do **not** launch paid compute without explicit owner authorization
+- Do **not** use PHI or private owner corpus in git
+- Do **not** make clinical capability claims without external + human validation
+- Do **not** cite E1/E4 KILL as killing the full Nano program — scope to tested regime/utility
+- `OLD_TASK_U` runs are forbidden
+
+## Claim discipline
+
+- Separate science (Layer 1), systems, and product claims
+- No mechanism claims beyond measured evidence
+- Agent-applied rubric audits ≠ human/clinician evaluation
+- Benchmark result ≠ evidence-ledger claim ≠ product authorization
+
+## Execution
+
+1. Check [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md) for current gate and bounded work
+2. Follow [`docs/EXECUTION_PLAN.md`](docs/EXECUTION_PLAN.md) for tasks
+3. Run `python3 scripts/check_active_now.py` after editing ACTIVE_NOW files
+4. Owner speech acts: [`papers/OWNER_SPEECH_ACTS.md`](papers/OWNER_SPEECH_ACTS.md) — `continue` ≠ commit/push/tag/execute
+
+## Verification commands
+
+```bash
+python3 scripts/check_active_now.py
+python3 -m pytest fabric/test_fabric.py -q
+```
+
+## Historical docs
+
+Legacy planning paths (`papers/STRATEGIC_RESET.md`, `papers/AZ_EXECUTION_PLAN.md`, etc.) are **superseded stubs**. See [`docs/archive/LEGACY_STRATEGY_INDEX.md`](docs/archive/LEGACY_STRATEGY_INDEX.md).

@@ -2,17 +2,21 @@ name: ci
 
 on:
   push:
-    branches: [master, docs/**]
+    branches: [master, 'docs/**', 'frontier/**']
   pull_request:
+    branches: [master]
 
 jobs:
-  test:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - run: pip install -r requirements.txt
-      - run: python scripts/check_active_now.py
-      - run: pytest fabric/test_fabric.py -q
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: ACTIVE_NOW consistency
+        run: python3 scripts/check_active_now.py
+      - name: Fabric tests
+        run: python3 -m pytest fabric/test_fabric.py -q

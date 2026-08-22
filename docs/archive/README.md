@@ -6,6 +6,8 @@ Historical strategy and planning documents superseded by `docs/`.
 
 See [LEGACY_STRATEGY_INDEX.md](LEGACY_STRATEGY_INDEX.md).
 
+**Migration report:** [RECONCILIATION_REPORT_20260822.md](RECONCILIATION_REPORT_20260822.md)
+
 ## Banner convention
 
 Archived files retain original content with a header:

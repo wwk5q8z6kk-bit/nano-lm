@@ -6,13 +6,13 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 
 | ID | Task | Done when |
 |----|------|-----------|
-| A1 | Create `docs/` canonical set | All core files present; index in `docs/README.md` |
-| A2 | Rewrite root `README.md` | Opens with Nano mission, not 3.15M headline |
-| A3 | Supersede stubs at legacy planning paths | Stubs point to `docs/` |
-| A4 | Archive historical strategy copies | `docs/archive/` with explicit SUPERSEDED banners |
-| A5 | Rewrite `AGENTS.md` | Points agents to `docs/` authority |
-| A6 | `ACTIVE_NOW` JSON/Markdown consistency | `python scripts/check_active_now.py` passes |
-| A7 | Owner review | File map + README approved before `master` merge |
+| A1 | Create `docs/` canonical set | ✅ Done |
+| A2 | Rewrite root `README.md` | ✅ Done |
+| A3 | Supersede stubs at legacy planning paths | ✅ Done |
+| A4 | Archive historical strategy copies | ✅ Done |
+| A5 | Rewrite `AGENTS.md` | ✅ Done |
+| A6 | `ACTIVE_NOW` JSON/Markdown consistency | ✅ `check_active_now.py` passes |
+| A7 | Owner review | **Pending** — review file map + README before `master` merge |
 
 ## Phase B — P1 scribe (next, after A7)
 

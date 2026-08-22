@@ -1,3 +1,9 @@
+# Superseded — agent session chronology
+
+**Not project authority.** Current program truth: [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md) · [`docs/ROADMAP.md`](docs/ROADMAP.md)
+
+---
+
 # nano-lm — session progress (updated 2026-07-26)
 
 ## STAGE P / P2 (2026-07-26): explicit pointer/copy head — H-copy REFUTED (measured)

@@ -7,7 +7,8 @@
 | `papers/AMBITION.md` | Absorbed into charter | `docs/PROJECT_CHARTER.md` |
 | `papers/WEDGE_V1.md` | Subsystem spec (historical detail) | `docs/subsystems/WEDGE.md` |
 | `papers/EXECUTION_QUEUE.md` | Historical queue | `docs/EXECUTION_PLAN.md` |
-| `papers/TECHNOLOGY_ROADMAP.md` | Engineering vision (conditional) | `docs/SYSTEM_ARCHITECTURE.md` |
+| `papers/PROJECT_EVOLUTION_PLAN.md` | Frontier evolution plan | `docs/ROADMAP.md` |
+| `papers/PROGRAM_AUTHORITY.md` | Legacy authority | `docs/PROJECT_AUTHORITY.md` |
 | `papers/MASTER_PLAN.md` | Legacy | `docs/ROADMAP.md` |
 | `CLAUDE-PROGRESS.md` | Agent session chronology | `docs/ROADMAP.md` (narrative only) |
 | `frontier/*` (when present) | Branch notes | `docs/ACTIVE_NOW.md` |
