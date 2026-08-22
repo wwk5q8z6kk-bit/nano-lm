@@ -15,7 +15,7 @@ Future deployment
 → chosen independently from training infrastructure
 ```
 
-**RunPod** is the primary GPU training/adaptation/CUDA backend (`training_backend=RUNPOD`, `training_status=ACTIVE`). Local Apple Silicon remains for development, smoke, analysis, preprocessing, evaluation, and small mechanism experiments. Training on RunPod does **not** imply Nano must deploy in the cloud — compact/local/private deployment remains a long-term optimization axis. See [ACTIVE_NOW.md](../ACTIVE_NOW.md) and [infrastructure/RUNPOD.md](../infrastructure/RUNPOD.md).
+**RunPod** is the primary GPU training/adaptation/CUDA backend when **owner-gated** paid runs are authorized. Local zero-cost exploratory training on Apple Silicon/CPU is **ALLOWED**. Training on RunPod does **not** imply Nano must deploy in the cloud — compact/local/private deployment remains a long-term optimization axis. See [ACTIVE_NOW.md](../ACTIVE_NOW.md) and [infrastructure/RUNPOD.md](../infrastructure/RUNPOD.md).
 
 ## Integration status (this tree)
 

@@ -71,9 +71,8 @@ P4–P9  =  broader synthesis, reasoning, planning, action, adaptation
 
 - **Frontier:** P1 Master Scribing — [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md)
 - **Doc reset:** `docs/canonical-program-reset-v2` from `origin/master` @ `2ad06d2` (excludes `9fe5b6b6` evidence reconciliation)
-- **Compute:** RunPod = primary GPU training backend (`training_status=ACTIVE`); local Apple Silicon/CPU = development, smoke, analysis, preprocessing, evaluation, and small/cheap experiments
-- **Paid / confirmatory runs:** experiment-scoped authorization (infrastructure is established; individual costly runs follow the active plan)
-- **Data:** no PHI / private clinical data on RunPod or in git under the current program
+- **Compute:** local zero-cost exploratory training **ALLOWED**; paid RunPod/GPU training **OWNER_GATED**; frozen confirmatory **PREREG + OWNER_GATED**
+- **Data:** no PHI / private owner material in current Nano experiments
 
 ### Compute evolution
 

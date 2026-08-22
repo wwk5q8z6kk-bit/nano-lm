@@ -58,7 +58,7 @@ Medical scribing is **DomainPack #1** — high-consequence, structured, measurab
 
 ## Compute
 
-**RunPod is Nano’s primary GPU training and experimental-compute backend** (`training_status=ACTIVE`). Local Apple Silicon/CPU is for development, smoke tests, analysis, preprocessing, evaluation, and small/cheap experiments. Expensive or confirmatory runs may still be experiment-scoped; PHI/private clinical data must not go to RunPod. Training venue ≠ deployment venue — compact/local/private deployment remains a long-term axis. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md), [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
+**Local zero-cost exploratory training is ALLOWED** (Apple Silicon/CPU). **Paid RunPod/GPU training and frozen confirmatory runs are OWNER_GATED** (prereg + explicit authorization). PHI and private owner material are **NOT AUTHORIZED** in the current program. Training venue ≠ deployment venue — compact/local/private deployment remains a long-term axis. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md), [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
 
 ## Three research layers
 

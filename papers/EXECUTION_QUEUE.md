@@ -11,4 +11,4 @@
 
 The 2026-07-31 queue text (`TRAINING: NOT_AUTHORIZED`) is **historical packaging** from the post-E1/E4 idle posture. It must **not** be read as current policy.
 
-**Current compute posture:** RunPod is Nano’s primary GPU training backend (`training_backend=RUNPOD`, `training_status=ACTIVE`). Expensive or confirmatory runs remain experiment-scoped. No PHI/private clinical data on RunPod.
+**Current compute posture:** local zero-cost exploratory training **ALLOWED**; paid RunPod/GPU training **OWNER_GATED**; frozen confirmatory **PREREG + OWNER_GATED**. No PHI or private owner material in current Nano experiments.
