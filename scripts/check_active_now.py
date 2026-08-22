@@ -1,91 +1,40 @@
 #!/usr/bin/env python3
 """Verify docs/ACTIVE_NOW.md and ACTIVE_NOW.json agree exactly."""
 from __future__ import annotations
-
-import json
-import re
-import sys
+import json, re, sys
 from pathlib import Path
-
 ROOT = Path(__file__).resolve().parents[1]
-MD = ROOT / "docs" / "ACTIVE_NOW.md"
-JSON = ROOT / "docs" / "ACTIVE_NOW.json"
+MD, JSON = ROOT/"docs/ACTIVE_NOW.md", ROOT/"docs/ACTIVE_NOW.json"
+SYNCED = ("program_execution_status","capability_frontier","current_gate","evidence_core","local_zero_cost_exploratory_training","paid_training","frozen_confirmatory_execution","phi_on_cloud","phi_or_private_data","clinical_claims")
+REQ = SYNCED + ("schema","updated","owner_gates","integration_base_sha")
+BAD = frozenset({"9fe5b6b6","9fe5b6b6f8746005a0f0608b5440a6138bdd458b"})
 
-# Fields that must appear in both files with identical values.
-SYNCED_FIELDS = (
-    "program_execution_status",
-    "capability_frontier",
-    "current_gate",
-    "evidence_core",
-    "training_backend",
-    "training_status",
-    "paid_compute_policy",
-    "frozen_confirmatory_execution",
-    "phi_on_cloud",
-    "phi_or_private_data",
-    "clinical_claims",
-)
-
-
-def parse_status_table(md: str) -> dict[str, str]:
-    """Parse | `field` | value | rows under ## Status section."""
-    in_section = False
-    rows: dict[str, str] = {}
-    keys_seen: list[str] = []
+def parse_table(md: str) -> dict[str,str]:
+    rows, sec = {}, False
     for line in md.splitlines():
-        if line.startswith("## Status"):
-            in_section = True
-            continue
-        if in_section and line.startswith("## "):
-            break
-        if not in_section:
-            continue
-        m = re.match(r"^\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|", line)
-        if not m:
-            continue
-        key, val = m.group(1).strip(), m.group(2).strip()
-        keys_seen.append(key)
-        if key in rows:
-            raise ValueError(f"duplicate key in ACTIVE_NOW.md table: {key}")
-        rows[key] = val
-    if not rows:
-        raise ValueError("no status table rows parsed from ACTIVE_NOW.md")
+        if line.startswith("## Status"): sec=True; continue
+        if sec and line.startswith("## "): break
+        if sec and (m:=re.match(r"^\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|", line)):
+            k,v=m.group(1).strip(),m.group(2).strip()
+            if k in rows: raise ValueError(f"duplicate {k}")
+            rows[k]=v
+    if not rows: raise ValueError("no table")
     return rows
 
-
 def main() -> int:
-    if not MD.is_file() or not JSON.is_file():
-        print("MISSING docs/ACTIVE_NOW files", file=sys.stderr)
-        return 2
-    md = MD.read_text(encoding="utf-8")
-    data = json.loads(JSON.read_text(encoding="utf-8"))
-    errors: list[str] = []
-    try:
-        table = parse_status_table(md)
-    except ValueError as exc:
-        print(exc, file=sys.stderr)
-        return 1
-    for key in SYNCED_FIELDS:
-        if key not in data:
-            errors.append(f"json missing key: {key}")
-            continue
-        if key not in table:
-            errors.append(f"md table missing key: {key}")
-            continue
-        jv = str(data[key])
-        mv = table[key]
-        if jv != mv:
-            errors.append(f"mismatch {key}: json={jv!r} md={mv!r}")
-    extra_md = set(table) - set(SYNCED_FIELDS)
-    if extra_md:
-        errors.append(f"md table has unexpected keys: {sorted(extra_md)}")
-    if errors:
-        for e in errors:
-            print(e, file=sys.stderr)
-        return 1
-    print("ACTIVE_NOW_OK")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    data=json.loads(JSON.read_text()); table=parse_table(MD.read_text())
+    errs=[f"mismatch {k}" for k in SYNCED if str(data.get(k))!=table.get(k)]
+    errs+=[f"json missing {k}" for k in SYNCED if k not in data]
+    errs+=[f"md missing {k}" for k in SYNCED if k not in table]
+    if set(table)-set(SYNCED): errs.append(f"extra md keys {sorted(set(table)-set(SYNCED))}")
+    for k in REQ:
+        if k not in data: errs.append(f"json missing required {k}")
+    if not isinstance(data.get("owner_gates"),list) or not data["owner_gates"]: errs.append("owner_gates empty")
+    base=str(data.get("integration_base_sha",""))
+    if not base or base in BAD: errs.append(f"bad integration_base_sha {base!r}")
+    if data.get("local_zero_cost_exploratory_training")!="ALLOWED": errs.append("local must be ALLOWED")
+    if data.get("paid_training")!="OWNER_GATED": errs.append("paid must be OWNER_GATED")
+    if data.get("evidence_core")!="FROZEN_UNTOUCHED_BY_DOC_PR": errs.append("bad evidence_core")
+    if errs: print("\n".join(errs), file=sys.stderr); return 1
+    print("ACTIVE_NOW_OK"); return 0
+if __name__=="__main__": raise SystemExit(main())
