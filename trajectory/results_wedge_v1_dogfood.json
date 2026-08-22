@@ -14,13 +14,16 @@
       "got_status": "SUPPORTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 5,
+      "n_claims": 12,
       "solver_path": [
         "load_corpus",
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs"
+        "phrase_span",
+        "numeric_keyword_window",
+        "bm25_paragraphs",
+        "bm25_low_margin_review"
       ],
       "note": null
     },
@@ -33,11 +36,17 @@
       "got_status": "SUPPORTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 20,
+      "n_claims": 8,
       "solver_path": [
-        "find_spans"
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "phrase_span",
+        "bm25_paragraphs",
+        "bm25_low_margin_review"
       ],
-      "note": "fallback_find:KILL"
+      "note": null
     },
     {
       "id": "D03",
@@ -69,7 +78,8 @@
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs"
+        "bm25_paragraphs",
+        "bm25_low_margin_review"
       ],
       "note": "no span-supported claim under classical+eclass cascade"
     },
@@ -97,13 +107,16 @@
       "got_status": "SUPPORTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 4,
+      "n_claims": 12,
       "solver_path": [
         "load_corpus",
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs"
+        "phrase_span",
+        "numeric_keyword_window",
+        "bm25_paragraphs",
+        "bm25_low_margin_review"
       ],
       "note": null
     },
@@ -122,7 +135,8 @@
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs"
+        "bm25_paragraphs",
+        "bm25_low_margin_review"
       ],
       "note": "no span-supported claim under classical+eclass cascade"
     },
@@ -135,11 +149,17 @@
       "got_status": "SUPPORTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 4,
+      "n_claims": 12,
       "solver_path": [
-        "find_spans"
+        "load_corpus",
+        "keyword_paragraph+quote",
+        "mention+yes_no",
+        "numeric+literal_spans",
+        "phrase_span",
+        "bm25_paragraphs",
+        "bm25_low_margin_review"
       ],
-      "note": "fallback_find:smallest sufficient"
+      "note": null
     },
     {
       "id": "D09",
@@ -150,9 +170,10 @@
       "got_status": "CONTRADICTED",
       "ok_status": true,
       "ok_needles": true,
-      "n_claims": 1,
+      "n_claims": 2,
       "solver_path": [
-        "compare"
+        "compare",
+        "epistemic_merge"
       ],
       "note": null
     },
