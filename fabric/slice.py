@@ -93,7 +93,12 @@ def verify_absent(claim, content, source_id):
 # extractor for this world; the slice measures the FABRIC, not verifier novelty.
 _src = open(os.path.join(HERE, "..", "scribe", "build_scribe_data.py")).read()
 _ns = {}
-exec(compile(_src.split("def sample_tuple")[0], "bsd[templates]", "exec"), _ns)
+_prefix = _src.split("def sample_tuple")[0]
+# Template lexicons are plain Python lists. Drop ML imports so verifier pins
+# stay stdlib-only; the generator itself still imports numpy/tokenizers.
+_prefix = re.sub(r"^import numpy as np\n", "", _prefix, flags=re.M)
+_prefix = re.sub(r"^from tokenizers import Tokenizer\n", "", _prefix, flags=re.M)
+exec(compile(_prefix, "bsd[templates]", "exec"), _ns)
 
 def _tpl_re(t):
     t = t.replace("{n} {unit}", "{v}").replace("{cc}", "{v}").replace("{sev}", "{v}") \
