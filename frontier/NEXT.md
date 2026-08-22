@@ -1,26 +1,36 @@
 # Next coding task (frontier/active-v1)
 
-**Mandate:** `BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1` — wedge A
+**Mandate:** `BUILD_SMALL_POWERFUL_USEFUL_SYSTEM_V1` — wedge A  
+**Authorization:** owner `AUTHORIZED` (2026-08-22) — Active Frontier continues; Evidence Core frozen.
+
+## Shipped (this slice)
+
+- `ask(..., escalate_stub=)` + CLI `--escalate-stub` + `WEDGE_ESCALATE_STUB=1`
+- Classical ABSTAIN → optional `escalate_stub_ask` recovery; OOS still abstains
+- Tests: `wedge_v1/test_eval_arms.py` (8 pins including forced classical miss)
+- Owner contact: `.local-data/owner_corpus` gate0 + study check **pass**
 
 ## Exact next task
 
 ```text
-TASK: Wire ΔU-gated hybrid stub into live ask() escalation path (opt-in flag)
-WHY: eval-arms proves KEEP_CLASSICAL on clean fixtures; product still needs
-     an explicit --escalate-stub (or env) so over-abstain recoveries can be
-     tried per-query without changing default fail-closed behavior.
+TASK: Human usefulness review on owner-contact study (not agent-applied labels)
+WHY: Gate 0 proves classical contact; product value needs USEFUL / OVER_ABSTENTION labels
 DO:
-  1. Add ask(..., escalate_stub: bool = False) / CLI --escalate-stub
-  2. On classical ABSTAIN only, call wedge_v1.eval.arms.escalate_stub_ask
-  3. Keep OOS refuse (no TTL synonym on non-TTL queries) — covered by tests
-  4. Pin: owner-dogfood --demo still 5/5 with escalate off (default)
-  5. Optional: one fixture task where escalate on recovers a deliberate
-     classical miss, scored under eval-arms ADMIT path
-DONE WHEN: pytest wedge_v1/test_eval_arms.py + smoke + owner-dogfood --demo green
-OUT OF SCOPE: training, paid LM, Evidence Core, OWNER_CORPUS requirement
+  1. export WEDGE_OWNER_CORPUS=/path/to/real/private/notes  # outside repo
+  2. python -m wedge_v1 study run --corpus "$WEDGE_OWNER_CORPUS" \
+       --tasks wedge_v1/data/owner_tasks/questions-v1.json \
+       --dir wedge_v1/.studies/first-use
+  3. python -m wedge_v1 review --corpus "$WEDGE_OWNER_CORPUS" --interactive
+  4. If first_repeated_failure_class → fix classical (not LM) per evolve output
+DONE WHEN: >=10 tasks reviewed with human labels; summary decision not FIX_REPEATED_FAILURE
+OUT OF SCOPE: training, paid LM, public claims, Evidence Core edits
 ```
 
-## Just shipped
+## Commands (now)
 
-- `python -m wedge_v1 eval-arms` — U_classical vs hybrid-stub + ΔU gate
-- Dense citation packing in `report` markdown (+ compare values table)
+```bash
+python3 -m wedge_v1 smoke
+python3 -m wedge_v1 ask --escalate-stub --corpus wedge_v1/data/corpus "How long before cached entries expire?"
+python3 -m wedge_v1 eval-arms --demo
+export WEDGE_OWNER_CORPUS=.local-data/owner_corpus && ./scripts/gate0_contact.sh
+```
