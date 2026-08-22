@@ -24,9 +24,6 @@ sys.path.insert(0, HERE)
 from schemas import (Claim, ClaimKind, Decision, DecisionAction, EvidenceSpan,
                      VerificationResult, VerificationState, to_json)
 
-spec = importlib.util.spec_from_file_location("ra", os.path.join(HERE, "..", "trajectory", "rescore_anchors.py"))
-ra = importlib.util.module_from_spec(spec); spec.loader.exec_module(ra)
-
 PRED = {"cc": "reports_cc", "dur": "has_duration", "sev": "has_severity",
         "med": "takes_med", "alg": "allergic_to"}
 SLOT_Q = {"med": "Did you try any medicine?", "alg": "Do you have any known allergies?"}
@@ -185,13 +182,26 @@ def decide(result):
     return DecisionAction.QUALIFY, "cannot verify; surfaced as unconfirmed"
 
 
-INSTRUMENTS = {"inst0": lambda: ra.inst0, **{f"m{k}": (lambda k=k: ra.fresh[k]) for k in range(5)}}
+def _anchors():
+    """Load the model-scoring stack only when a live slice run needs it."""
+    spec = importlib.util.spec_from_file_location(
+        "ra", os.path.join(HERE, "..", "trajectory", "rescore_anchors.py")
+    )
+    ra = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ra)
+    return ra
+
 
 def run_slice(tag, verifier="v1", instrument="inst0", model_cache={}):
+    ra = _anchors()
+    instruments = {
+        "inst0": lambda: ra.inst0,
+        **{f"m{k}": (lambda k=k: ra.fresh[k]) for k in range(5)},
+    }
     if tag not in model_cache:
         model_cache[tag] = ra.load(tag)[0]
     m = model_cache[tag]
-    items_src = INSTRUMENTS[instrument]()
+    items_src = instruments[instrument]()
     vv, va = VERIFIERS[verifier]
     ledger_path = os.path.join(HERE, f"ledger_{tag}_{instrument}_{verifier}.jsonl")
     stats = {"parsed": 0, "review": 0, "raw_pred": 0, "raw_err": 0,
