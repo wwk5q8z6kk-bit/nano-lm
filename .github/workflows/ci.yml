@@ -2,20 +2,29 @@ name: ci
 
 on:
   push:
-    branches: [master, docs/**]
+    branches: [master, 'docs/**']
   pull_request:
 
 jobs:
-  test:
+  canonical-integrity:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install -r requirements.txt
-      - run: python scripts/check_active_now.py
-      - run: python scripts/check_docs_integrity.py
-      - run: pytest fabric/test_fabric.py trajectory/test_recompute_c3.py -q
+
+      - name: ACTIVE_NOW consistency
+        run: python3 scripts/check_active_now.py
+
+      - name: Documentation integrity
+        run: python3 scripts/check_docs_integrity.py
+
+      - name: Fabric regression pins
+        run: python3 fabric/test_fabric.py
+
+      - name: C3 recompute regression pins
+        run: python3 trajectory/test_recompute_c3.py

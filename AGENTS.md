@@ -17,9 +17,20 @@ P1 faithful scribing
 → P3 longitudinal charting
 → P4–P9 intelligence expansion
 
-local_zero_cost_exploratory_training = ALLOWED
-paid_training = OWNER_GATED
-frozen_confirmatory_execution = PREREG_PLUS_OWNER_GATED
+training_backend = RUNPOD
+training_status = ACTIVE
+
+routine_runpod_training =
+ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET
+
+materially_costly_run =
+EXPERIMENT_SCOPED_AUTHORIZATION
+
+confirmatory_evidential_run =
+PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION
+
+phi_or_private_data =
+NOT_AUTHORIZED
 
 Wedge = supporting verified-information subsystem
 
@@ -54,12 +65,13 @@ Canonical index: [`docs/README.md`](docs/README.md).
 
 - No freeze tag create/move/push; no B17 freeze-recipe execution (historical only).
 - No evidence-protected path edits in documentation-reset PRs.
-- Paid / confirmatory runs follow experiment-scoped authorization in the active plan.
+- Materially costly and confirmatory runs follow experiment-scoped authorization in the active plan. Routine RunPod training is in-workflow within the active experiment budget.
 
 ## Verify
 
 ```bash
 python3 scripts/check_active_now.py
 python3 scripts/check_docs_integrity.py
-python3 -m pytest fabric/test_fabric.py trajectory/test_recompute_c3.py -q
+python3 fabric/test_fabric.py
+python3 trajectory/test_recompute_c3.py
 ```

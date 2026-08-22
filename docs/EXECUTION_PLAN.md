@@ -35,7 +35,8 @@ RunPod is Nano’s **primary GPU training backend** and is **active** infrastruc
 ## Verification commands
 
 ```bash
-python scripts/check_active_now.py
-python scripts/check_docs_integrity.py
-pytest fabric/test_fabric.py trajectory/test_recompute_c3.py -q
+python3 scripts/check_active_now.py
+python3 scripts/check_docs_integrity.py
+python3 fabric/test_fabric.py
+python3 trajectory/test_recompute_c3.py
 ```

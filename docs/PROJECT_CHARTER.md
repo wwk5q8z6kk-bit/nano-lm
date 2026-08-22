@@ -58,7 +58,7 @@ Medical scribing is **DomainPack #1** — high-consequence, structured, measurab
 
 ## Compute
 
-**Local zero-cost exploratory training is ALLOWED** (Apple Silicon/CPU). **Paid RunPod/GPU training and frozen confirmatory runs are OWNER_GATED** (prereg + explicit authorization). PHI and private owner material are **NOT AUTHORIZED** in the current program. Training venue ≠ deployment venue — compact/local/private deployment remains a long-term axis. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md), [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
+**RunPod is the active primary GPU training backend.** Local zero-cost exploratory training on Apple Silicon/CPU is **ALLOWED**. Routine RunPod training is **ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require **EXPERIMENT_SCOPED_AUTHORIZATION**. Confirmatory evidential runs require **PREREG + EXPERIMENT_SCOPED_AUTHORIZATION**. PHI and private owner material are **NOT AUTHORIZED**. Training venue ≠ deployment venue — compact/local/private deployment remains a long-term axis. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md), [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
 
 ## Three research layers
 
