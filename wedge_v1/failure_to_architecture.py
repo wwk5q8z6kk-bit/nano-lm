@@ -21,8 +21,8 @@ BUCKET_TO_WS: dict[str, list[str]] = {
     "OVER_ABSTENTION": ["W1", "W4", "W6"],
     "over_abstention": ["W1", "W4", "W6"],
     "CORRECT_ABSTENTION": [],
-    "MULTI_DOC_CONTRADICTION": ["W3"],
-    "NUMERIC_CONTRADICTION": ["W3"],
+    "MULTI_DOC_CONTRADICTION": [],
+    "NUMERIC_CONTRADICTION": [],
     "EVIDENCE_ABSENT": ["W1", "W5"],
     "EMPTY_EVIDENCE_REJECTED": ["W2"],
 
@@ -35,8 +35,10 @@ BUCKET_TO_WS: dict[str, list[str]] = {
     "silent_miss": ["W1", "W2"],
     "under_abstain": ["W2", "W3"],
     "status_mismatch": ["W3", "W4"],
-    "contradicted": ["W3"],
-    "ok_contradicted": ["W3"],
+    "contradicted": [],
+    "ok_contradicted": [],
+    "ok_supported": [],
+    "ok_abstain": [],
     "no_corpus": ["W5"],
     "ingestion_layout_failure": ["W5"],
 }
@@ -69,8 +71,6 @@ def recommend(gallery: dict[str, Any]) -> dict[str, Any]:
     # Always keep W6 last unless abstain dominates
     ranked = sorted(votes.items(), key=lambda kv: (-kv[1], kv[0]))
     next_ws = [w for w, v in ranked if v > 0]
-    if not next_ws:
-        next_ws = ["W3", "W4", "W5"]  # structural evolution when galleries are all-green
     from wedge_v1.classical.eclass_probes import lm_still_needed, probe_t35, probe_t36, probe_t39
     from wedge_v1.lm.admission import evaluate_admission
     from wedge_v1.runtime import DEFAULT_CORPUS, load_corpus
@@ -78,16 +78,21 @@ def recommend(gallery: dict[str, Any]) -> dict[str, Any]:
     docs = load_corpus(DEFAULT_CORPUS)
     still = lm_still_needed([probe_t35(docs), probe_t36(docs), probe_t39(docs)])
     adm = evaluate_admission(gallery, eclass_lm_still_needed=still)
-    if adm.get("lm_probe_indicated") and "W6" not in next_ws:
-        next_ws = (["W6"] + next_ws)[:4]
-    elif not next_ws or (next_ws[0] in {"W3", "W4", "W5"} and not any(votes[w] > 0 for w in ("W1", "W2", "W4", "W5", "W6"))):
-        next_ws = ["W6" if adm.get("lm_probe_indicated") else next_ws[0], *next_ws[1:3]]
+    if adm.get("lm_probe_indicated"):
+        next_ws = (["W6"] + [w for w in next_ws if w != "W6"])[:3]
+    elif not next_ws:
+        # All-green synthetic gallery → owner-corpus contact, not endless W3.
+        next_ws = ["W6"] if still else []
     return {
         "schema": "nano-lm.frontier.failure_to_architecture.v1",
         "tallies": tallies,
         "workstream_votes": votes,
-        "recommended_next": next_ws[:3],
-        "blurbs": {w: WS_BLURB[w] for w in next_ws[:3]},
+        "recommended_next": next_ws[:3] if next_ws else ["OWNER_CORPUS_CONTACT"],
+        "blurbs": (
+            {w: WS_BLURB[w] for w in next_ws[:3]}
+            if next_ws
+            else {"OWNER_CORPUS_CONTACT": "Real private folder (≥10 docs) + usefulness labels"}
+        ),
         "lm_admission": {
             "verdict": adm.get("verdict"),
             "lm_probe_indicated": adm.get("lm_probe_indicated"),

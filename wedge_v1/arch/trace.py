@@ -46,6 +46,10 @@ class AskTrace:
         if code not in self.failure_codes:
             self.failure_codes.append(code)
 
+    def replace_failures(self, codes: list[FailureCode]) -> None:
+        """Replace provisional codes (e.g. BM25 noise) with final classification."""
+        self.failure_codes = list(dict.fromkeys(codes))
+
     def finalize(self, answer_status: str) -> dict:
         self.answer_status = answer_status
         latency_ms = int(round((time.perf_counter() - self.t0) * 1000))

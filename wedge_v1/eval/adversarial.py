@@ -56,15 +56,23 @@ def case_numeric_contradiction() -> dict:
 def case_correct_abstention_oos() -> dict:
     r = ask("What is the capital of Mars colonies in year 3100?", corpus_dir=ADV)
     codes = _codes(r)
-    ok = r.get("answer_status") == "ABSTAIN"
-    # Prefer correct abstention codes when present
+    noise = {
+        FailureCode.LOW_MARGIN_RETRIEVAL.value,
+        FailureCode.EMPTY_EVIDENCE_REJECTED.value,
+        FailureCode.RETRIEVAL_MISS.value,
+    }
+    ok = (
+        r.get("answer_status") == "ABSTAIN"
+        and FailureCode.CORRECT_ABSTENTION.value in codes
+        and not (codes & noise)
+    )
     return {
         "id": "ADV_OOS_ABSTAIN",
         "expect_failure_family": FailureCode.CORRECT_ABSTENTION.value,
         "ok": ok,
         "answer_status": r.get("answer_status"),
         "failure_codes": sorted(codes),
-        "note": "OOS must abstain; never invent",
+        "note": "OOS must abstain with CORRECT_ABSTENTION; no BM25-noise codes",
     }
 
 

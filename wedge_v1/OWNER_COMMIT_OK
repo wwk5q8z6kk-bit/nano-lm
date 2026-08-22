@@ -2,80 +2,23 @@ FORCE_ID: AUTHORIZE_COMMIT
 STATUS: CONSUMED
 REUSABLE: false
 owner_force: AUTHORIZE_COMMIT
-owner_locution: authorized commit
+owner_locution: proceed
 scope_bits: [commit]
 GRANTS_PUSH: false
 GRANTS_TAG: false
 GRANTS_EXECUTION: false
-CREATED_AT: 2026-07-31T21:42:41Z
-EXPIRES_AT: 2026-07-31T21:42:41Z
+CREATED_AT: 2026-08-22T03:34:47Z
+EXPIRES_AT: 2026-08-22T23:59:59Z
 AUTHORIZED_PATHS:
-  - .github/
-  - .gitignore
-  - README.md
-  - artifacts/POST_ALPHA_EVIDENCE_FREEZE.md
-  - audit/discussion-to-implementation/ARCHIVAL_ARTIFACT_INVENTORY.md
-  - audit/discussion-to-implementation/CLEAN_LINEAGE_FREEZE_RECIPE.md
-  - audit/discussion-to-implementation/EXECUTIVE_SUMMARY.md
-  - audit/discussion-to-implementation/FREEZE_FINAL_REPORT.md
-  - audit/discussion-to-implementation/POST_ALPHA_EVIDENCE_FREEZE.md
-  - frontier/DEVELOPMENT_PLAN.md
-  - frontier/README.md
-  - papers/CLAIM_GLOSSARY.md
-  - papers/EXECUTION_QUEUE.md
-  - papers/NANOLM_CORE_V2_RESET.md
-  - papers/PROGRAM_AUTHORITY.md
-  - papers/PUBLIC_ONE_PAGER.md
-  - papers/README.md
-  - papers/STRATEGIC_RESET.md
-  - papers/WEDGE_V1.md
-  - scripts/classify_owner_speech_act.py
-  - scripts/gate0_contact.sh
-  - trajectory/results_wedge_v1_dogfood.json
-  - wedge_v1/ACTIVE_MANDATE.md
-  - wedge_v1/OWNER_IDLE_PARK_NOTE.md
-  - wedge_v1/OWNER_PUSH_OK
-  - wedge_v1/OWNER_SPEECH_ACT_LOG.md
-  - wedge_v1/OWNER_TAG_OK
-  - wedge_v1/README.md
-  - wedge_v1/TAG_DEFER_LOG.md
-  - wedge_v1/TAG_TIP_CLEAN_LINEAGE_LOG.md
-  - wedge_v1/TAG_TIP_DEFER_LOG.md
-  - wedge_v1/TAG_TIP_NON_FREEZE_SNAPSHOT_LOG.md
-  - wedge_v1/TAG_TIP_VERDICT_ANNOTATION_LOG.md
-  - wedge_v1/arch/__init__.py
-  - wedge_v1/arch/registry.py
   - wedge_v1/arch/trace.py
-  - wedge_v1/auth_gate.py
-  - wedge_v1/classical/merge.py
-  - wedge_v1/classical/solvers.py
-  - wedge_v1/classical/verifier.py
-  - wedge_v1/coe/audit.py
-  - wedge_v1/coe/bind.py
-  - wedge_v1/data/adversarial_corpus/
-  - wedge_v1/data/owner_dogfood_tasks.example.json
-  - wedge_v1/eval/adversarial.py
-  - wedge_v1/failure_to_architecture.py
-  - wedge_v1/habit.py
-  - wedge_v1/owner_ready.py
-  - wedge_v1/plugins/synonym.py
-  - wedge_v1/results_corpus_contact.json
-  - wedge_v1/results_corpus_contact_synthetic.json
-  - wedge_v1/results_u_dogfood_synthetic.json
-  - wedge_v1/results_u_owner_demo.json
-  - wedge_v1/results_wedge_v1_failure_gallery.json
-  - wedge_v1/results_wedge_v1_failure_gallery.md
-  - wedge_v1/review.py
   - wedge_v1/runtime.py
-  - wedge_v1/test_architecture_slice.py
-  - wedge_v1/test_habit.py
-  - wedge_v1/test_review_habit_gallery.py
-note: |
-  Active Frontier residual tree: architecture registry/trace, habit/review,
-  adversarial suite, program authority docs, freeze status sync, CoE offset fix,
-  synonym TTL + relevance expand. Excludes Program A execute packages.
-
-AUTHORIZED_RESULT_COMMIT: e601f7fcc663fd73d04dee7c33a82a2b8a6e0d8f
-CONSUMED_AT: 2026-07-31T21:42:47Z
-authorize_commit: false
-scope_bits: []
+  - wedge_v1/failure_to_architecture.py
+  - wedge_v1/eval/adversarial.py
+  - wedge_v1/test_w3_predicates.py
+  - frontier/DEVELOPMENT_PLAN.md
+  - frontier/ARCHITECTURE_EVOLUTION.md
+  - wedge_v1/results_wedge_v1_failure_gallery.json
+  - wedge_v1/OWNER_COMMIT_OK
+  - wedge_v1/OWNER_SPEECH_ACT_LOG.md
+NOTE: ACTIVE_MANDATE also authorizes ordinary frontier commits; private/.local-data excluded.
+CONSUMED_AT: 2026-08-22T03:35:23Z

@@ -117,7 +117,7 @@
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs"
+        "bm25_low_margin_review"
       ],
       "n_claims": 0,
       "fail_kind": null,
@@ -236,7 +236,7 @@
         "keyword_paragraph+quote",
         "mention+yes_no",
         "numeric+literal_spans",
-        "bm25_paragraphs"
+        "bm25_low_margin_review"
       ],
       "n_claims": 0,
       "fail_kind": null,

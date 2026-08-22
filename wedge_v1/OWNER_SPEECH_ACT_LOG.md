@@ -27,3 +27,4 @@
 | 2026-07-31T18:41:04Z | receipt-consumption governance note | `UNTYPED` (no commit/push/tag) | reuse of OWNER_COMMIT_OK | working-tree CONSUMED rewrite + check_owner_receipt.py; HEAD blob still needs authorize commit |
 | 2026-07-31T18:43:23.922744+00:00 | Active Frontier mandate (owner prose) | `ACTIVE_MANDATE` | Evidence Core protected | envelope + discovery sprint |
 | 2026-07-31T18:47:31.590644+00:00 | `start` | `ACTIVE_FRONTIER_RESUME` (mandate) | Evidence Core protected | resume vertical slice under ACTIVE_MANDATE |
+| 2026-08-22T03:34:47Z | `proceed` | `AUTHORIZE_COMMIT` | push/tag/execute; private dirs | OOS+ask epistemic_merge + evolve fix; path-restricted commit |

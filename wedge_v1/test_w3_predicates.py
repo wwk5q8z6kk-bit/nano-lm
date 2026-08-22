@@ -3,7 +3,9 @@ from __future__ import annotations
 
 from wedge_v1.classical.merge import merge_all
 from wedge_v1.coe.predicates import decompose, evaluate_predicates, incomplete_conjunction
+from pathlib import Path
 from wedge_v1.runtime import DEFAULT_CORPUS, ask, compare, load_corpus
+ADV = Path(__file__).resolve().parent / "data" / "adversarial_corpus"
 from wedge_v1.arch.failure_codes import FailureCode
 
 
@@ -55,6 +57,27 @@ def test_compare_epistemic_merge_both_spans():
     assert "300" in str(ttl.get("unique_values")) and "600" in str(ttl.get("unique_values"))
 
 
+
+
+def test_ask_epistemic_merge_ttl():
+    r = ask("How long before cache entries expire?")
+    assert r["answer_status"] in {"SUPPORTED", "CONTRADICTED"}
+    em = r.get("epistemic_merge") or []
+    assert em, "ask() must expose epistemic_merge like compare()"
+    ttl = next(x for x in em if x.get("field_id") == "ttl_seconds")
+    assert len(ttl.get("evidence_spans") or []) >= 1
+
+
+def test_oos_correct_abstention_codes():
+    r = ask(
+        "What is the capital of Mars colonies in year 3100?",
+        corpus_dir=ADV,
+    )
+    assert r["answer_status"] == "ABSTAIN"
+    codes = set(r.get("failure_codes") or [])
+    assert FailureCode.CORRECT_ABSTENTION.value in codes
+    assert FailureCode.LOW_MARGIN_RETRIEVAL.value not in codes
+
 def test_evaluate_incomplete_helper():
     docs = load_corpus(DEFAULT_CORPUS)
     preds = decompose("TTL and capital of Mars")
@@ -69,5 +92,7 @@ if __name__ == "__main__":
     test_complete_conjunction_ttl_dose()
     test_merge_detects_conflicts_without_fixture_ids()
     test_compare_epistemic_merge_both_spans()
+    test_ask_epistemic_merge_ttl()
+    test_oos_correct_abstention_codes()
     test_evaluate_incomplete_helper()
     print("W3_PREDICATES_OK")

@@ -148,3 +148,9 @@ Implementation: `wedge_v1/coe/` · see `frontier/COE_SLICE_REPORT.md`.
 - Runtime default: auto-normalize at ingest (preprocessing, not intelligence)
 - `ingest-sla` pins field recovery ≥90%; recover_gap U ≤0.05 on noisy track
 - Adversarial: `ADV_NOISY_OCR_RECOVER` (7-case suite)
+
+### Delta — ask OOS + epistemic_merge (2026-08-21)
+
+- OOS: content-token absence → `CORRECT_ABSTENTION` (strip provisional LOW_MARGIN/EMPTY noise)
+- `ask()` attaches `epistemic_merge[]` (same W3 surface as `compare`)
+- `evolve`: handled MULTI_DOC / ok_contradicted no longer vote W3; all-green → OWNER_CORPUS_CONTACT
