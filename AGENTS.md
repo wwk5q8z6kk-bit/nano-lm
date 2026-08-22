@@ -1,35 +1,65 @@
-## Agent operating instructions
+# Agent operating instructions
 
-**Canonical docs:** [`docs/README.md`](docs/README.md)
-
-**Typed authority** (no single stack overrides evidence): [`docs/PROJECT_AUTHORITY.md`](docs/PROJECT_AUTHORITY.md)
+## CURRENT PROGRAM
 
 ```text
-empirical artifacts / ledger  →  wins over narrative docs
-PROJECT_CHARTER / CAPABILITY_LADDER  →  mission (not E1 verdicts)
-SYSTEM_ARCHITECTURE  →  structure
-ACTIVE_NOW.json + ACTIVE_NOW.md  →  current status (must agree exactly)
-EXECUTION_PLAN  →  tasks
-code + tests  →  implementation reality
+authority = docs/PROJECT_AUTHORITY.md
+mission = docs/PROJECT_CHARTER.md
+current_state = docs/ACTIVE_NOW.json + docs/ACTIVE_NOW.md
+execution = docs/EXECUTION_PLAN.md
+
+capability_frontier = P1_SCRIBING
+product_frontier = NanoScribe
+
+macro_sequence =
+P1 faithful scribing
+→ P2 summarization
+→ P3 longitudinal charting
+→ P4–P9 intelligence expansion
+
+training_backend = RUNPOD
+training_status = ACTIVE
+paid_compute_policy = EXPERIMENT_SCOPED_AUTHORIZATION
+
+Wedge = supporting verified-information subsystem
+
+H6 / Nano AI / span-port =
+CROSS_BRANCH_NOT_YET_INTEGRATED
+
+E1 / E4 =
+preserved scoped empirical verdicts,
+not current-program STOP instructions
+
+July-31 IDLE / NanoScribe STOP =
+HISTORICAL_PROGRAM_STATE
 ```
 
-**Current work:** [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md)
+Canonical index: [`docs/README.md`](docs/README.md).
 
-**Do not treat as master plans:** superseded `papers/*` stubs — full text in [`docs/archive/legacy/`](docs/archive/legacy/).
+## Typed authority
 
-## Learned User Preferences
+[`docs/PROJECT_AUTHORITY.md`](docs/PROJECT_AUTHORITY.md) — empirical artifacts win over narrative; program charter wins over stale planning stubs. Superseded `papers/*` stubs → [`docs/archive/legacy/`](docs/archive/legacy/).
 
-- Adversarial council mode; strict scoped claim discipline.
-- Separate Evidence Core from program docs — doc PRs must not modify ledger/freeze artifacts.
-- Smallest sufficient solver; failure-driven architecture over governance churn.
-- Local exploratory training allowed; paid/confirmatory owner-gated.
+## Durable scoped facts
 
-## Learned Workspace Facts
+- E1 KILL = scoped to the old closed task under frozen \(U\) — not a full-program kill.
+- E4 KILL = scoped to the tested R★ regime — not a full-program kill.
+- Paper α = protected empirical foundation (`paper-alpha-v1`); do not reopen the old substrate claim.
+- Agent-applied rubric audit ≠ clinician / human dual-IAA evaluation.
+- `OLD_TASK_U` forbidden.
+- Doc-reset PRs must not modify Evidence Core / ledger / freeze artifacts.
+- No PHI / private clinical data on RunPod or in git under the current program.
 
-- Mission: Nano Core capability ladder; P1 scribing frontier ([`docs/PROJECT_CHARTER.md`](docs/PROJECT_CHARTER.md)).
-- Macro-phases: Foundation I (P1) → Foundation II (P2–P3) → Intelligence Expansion (P4–P9).
-- NanoScribe = P1 only; broader medical intelligence earned sequentially.
-- E1/E4: scoped routing evidence on tested tasks/regimes — not program kill.
-- Wedge: integrated [`docs/subsystems/WEDGE.md`](docs/subsystems/WEDGE.md).
-- H6/span-port/`nano_ai/`: cross-branch, not yet integrated on `origin/master` @ `2ad06d2`.
-- No PHI/private owner data in current program ([`docs/domains/medical/DATA_REGISTRY.md`](docs/domains/medical/DATA_REGISTRY.md)).
+## Hard gates
+
+- No freeze tag create/move/push; no B17 freeze-recipe execution (historical only).
+- No evidence-protected path edits in documentation-reset PRs.
+- Paid / confirmatory runs follow experiment-scoped authorization in the active plan.
+
+## Verify
+
+```bash
+python3 scripts/check_active_now.py
+python3 scripts/check_docs_integrity.py
+python3 -m pytest fabric/test_fabric.py trajectory/test_recompute_c3.py -q
+```

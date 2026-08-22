@@ -11,12 +11,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 ACTIVE_JSON = DOCS / "ACTIVE_NOW.json"
+ARCHIVE_DIR = DOCS / "archive"
 
 PROTECTED_EVIDENCE_PREFIXES = (
     "papers/EVIDENCE_LEDGER",
     "papers/EMPIRICAL_FOUNDATION.md",
+    "papers/PREREG_",
+    "papers/RESULT_",
     "EVIDENCE_CURRENT.md",
     "POST_ALPHA_EVIDENCE_FREEZE",
+    "trajectory/results_",
+    "freeze/",
 )
 
 STUB_TO_ARCHIVE = {
@@ -28,12 +33,51 @@ STUB_TO_ARCHIVE = {
     "papers/PROGRAM_AUTHORITY.md": "docs/archive/legacy/PROGRAM_AUTHORITY_WEDGE_20260731.md",
 }
 
-# Paths that may be referenced only as cross-branch lineage on integration base.
 CROSS_BRANCH_PATHS = frozenset(
     {
         "artifacts/nano_h6/",
         "nano_ai/",
     }
+)
+
+STALE_AUTHORITY_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    (
+        "strategic center is papers/STRATEGIC_RESET.md",
+        re.compile(
+            r"strategic\s+center\s+is\s+[`']?papers/STRATEGIC_RESET\.md",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "PROGRAM_EXECUTION_STATUS: IDLE_AFTER_DOGFOOD",
+        re.compile(
+            r"PROGRAM_EXECUTION_STATUS\s*[:=]\s*`?IDLE_AFTER_DOGFOOD`?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "NanoScribe STOP",
+        re.compile(r"NanoScribe\s+STOP"),
+    ),
+    (
+        "Active product path: Nano Runtime via Wedge v1",
+        re.compile(
+            r"Active\s+product\s+path\s*:\s*Nano\s+Runtime\s+via\s+Wedge\s+v1",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "training = NOT_AUTHORIZED",
+        re.compile(
+            r"(?:training|TRAINING)\s*(?:=|:)\s*`?NOT_AUTHORIZED`?",
+        ),
+    ),
+)
+
+HISTORICAL_CONTEXT_RE = re.compile(
+    r"HISTORICAL(?:_PROGRAM_STATE)?|archived|archive/legacy|superseded|"
+    r"not\s+current|historical\s+only|July[- ]?31",
+    re.IGNORECASE,
 )
 
 LINK_RE = re.compile(r"\]\(([^)]+)\)")
@@ -54,8 +98,31 @@ def _resolve(from_file: Path, href: str) -> Path | None:
     return target
 
 
+def _is_under_archive(path: Path) -> bool:
+    try:
+        path.resolve().relative_to(ARCHIVE_DIR.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def _authority_md_files() -> list[Path]:
+    files: list[Path] = []
+    for candidate in (ROOT / "README.md", ROOT / "AGENTS.md"):
+        if candidate.is_file():
+            files.append(candidate)
+    if DOCS.is_dir():
+        for md in DOCS.rglob("*.md"):
+            if _is_under_archive(md):
+                continue
+            files.append(md)
+    return files
+
+
 def check_links(errors: list[str]) -> None:
     for md in DOCS.rglob("*.md"):
+        if _is_under_archive(md):
+            continue
         text = md.read_text(encoding="utf-8")
         for href in LINK_RE.findall(text):
             target = _resolve(md, href)
@@ -81,20 +148,17 @@ def check_stub_archives(errors: list[str]) -> None:
 
 
 def check_cross_branch_markers(errors: list[str]) -> None:
-    """Canonical docs must mark or avoid absent cross-branch paths."""
     for md in list(DOCS.rglob("*.md")) + [ROOT / "README.md"]:
-        if not md.is_file():
+        if not md.is_file() or _is_under_archive(md):
             continue
         text = md.read_text(encoding="utf-8")
         for prefix in CROSS_BRANCH_PATHS:
             if prefix not in text:
                 continue
-            # Allow if explicitly marked cross-branch / not integrated
             if "cross-branch" in text.lower() or "not yet integrated" in text.lower():
                 continue
             if "not yet integrated" in text or "CROSS_BRANCH" in text:
                 continue
-            # MODEL_RESEARCH and RUNPOD must contain integration table
             if md.name in {"MODEL_RESEARCH_PROGRAM.md", "RUNPOD.md"}:
                 if "not yet integrated" in text:
                     continue
@@ -103,8 +167,26 @@ def check_cross_branch_markers(errors: list[str]) -> None:
             )
 
 
+def check_stale_authority_phrases(errors: list[str]) -> None:
+    for path in _authority_md_files():
+        text = path.read_text(encoding="utf-8")
+        lines = text.splitlines()
+        for label, pattern in STALE_AUTHORITY_PATTERNS:
+            for match in pattern.finditer(text):
+                line_idx = text.count("\n", 0, match.start())
+                window_start = max(0, line_idx - 2)
+                window_end = min(len(lines), line_idx + 3)
+                window = "\n".join(lines[window_start:window_end])
+                if HISTORICAL_CONTEXT_RE.search(window):
+                    continue
+                rel = path.relative_to(ROOT)
+                snippet = lines[line_idx].strip() if line_idx < len(lines) else match.group(0)
+                errors.append(
+                    f"stale authority phrase in {rel}: {label!r} (line: {snippet})"
+                )
+
+
 def check_protected_diff(errors: list[str]) -> None:
-    """In a docs-reset PR, protected evidence paths must not change vs merge base."""
     try:
         merge_base = subprocess.check_output(
             ["git", "merge-base", "HEAD", "origin/master"],
@@ -129,7 +211,6 @@ def check_protected_diff(errors: list[str]) -> None:
 
 
 def check_single_authority_per_concern(errors: list[str]) -> None:
-    """ACTIVE_NOW.json is sole canonical source for synced status fields."""
     if not ACTIVE_JSON.is_file():
         errors.append("missing docs/ACTIVE_NOW.json")
         return
@@ -143,6 +224,7 @@ def main() -> int:
     check_links(errors)
     check_stub_archives(errors)
     check_cross_branch_markers(errors)
+    check_stale_authority_phrases(errors)
     check_protected_diff(errors)
     check_single_authority_per_concern(errors)
     if errors:
