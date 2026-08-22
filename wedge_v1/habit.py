@@ -752,8 +752,13 @@ def rerun_saved(
     *,
     limit: int = 5,
     path: Path = SAVED_QUESTIONS,
+    doc_ids: list[str] | None | object = _USE_SAVED_SCOPE,
 ) -> list[dict]:
-    """Re-verify saved questions and persist corpus/result digests."""
+    """Re-verify saved questions and persist corpus/result digests.
+
+    doc_ids: omit to keep each question's saved scope; pass a list (or None for
+    full corpus) to override scope for every rerun in this call.
+    """
     data = {
         "schema": "nano-lm.wedge_v1.saved_questions.v1",
         "questions": load_saved_questions(path),
@@ -762,13 +767,20 @@ def rerun_saved(
         all_docs = load_corpus(corpus)
     except Exception:
         all_docs = {}
+    scope_overridden = doc_ids is not _USE_SAVED_SCOPE
+    override_scope = (
+        normalize_doc_ids(doc_ids)  # type: ignore[arg-type]
+        if scope_overridden
+        else _USE_SAVED_SCOPE
+    )
     rows = []
     for q in data["questions"][:limit]:
         mode = q.get("mode") or "ask"
         if mode != "ask":
             continue
         task_id = _effective_task_id(q)
-        scope = normalize_doc_ids(q.get("doc_ids")) if "doc_ids" in q else None
+        saved_scope = normalize_doc_ids(q.get("doc_ids")) if "doc_ids" in q else None
+        scope = override_scope if scope_overridden else saved_scope
         current_corpus_digest = corpus_digest(corpus, doc_ids=scope)
         docs, scope_fields, scope_valid = select_documents(all_docs, scope)
         current_task_fingerprint = task_fingerprint(
@@ -873,6 +885,7 @@ def session(
     corpus: Path | None = None,
     *,
     rerun: bool = False,
+    doc_ids: list[str] | None | object = _USE_SAVED_SCOPE,
     habit_path: Path = HABIT_PATH,
     saved_path: Path = SAVED_QUESTIONS,
     session_path: Path = SESSION_PATH,
@@ -886,7 +899,11 @@ def session(
     rq = review_queue_summary(corpus_path)
     saved = load_saved_questions(saved_path)
     memory = saved_question_status(corpus_path, path=saved_path) if saved else []
-    rerun_rows = rerun_saved(corpus_path, limit=3, path=saved_path) if saved and rerun else []
+    rerun_rows = (
+        rerun_saved(corpus_path, limit=3, path=saved_path, doc_ids=doc_ids)
+        if saved and rerun
+        else []
+    )
     if rerun_rows:
         memory = saved_question_status(corpus_path, path=saved_path)
 
@@ -929,6 +946,23 @@ def session(
     session_path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
     record("habit_session", note=f"docs={stats.get('n_docs')}", path=habit_path)
     return out
+
+
+def format_saved_list_md(rows: list[dict]) -> str:
+    lines = ["# wedge_v1 saved questions", ""]
+    if not rows:
+        lines.append("_No saved questions._")
+        return "\n".join(lines) + "\n"
+    for row in rows:
+        scope = row.get("doc_ids")
+        scope_s = ",".join(scope) if scope else "(full corpus)"
+        lines.append(
+            f"- `{row.get('task_id')}` [{row.get('state')}/{row.get('reason')}] "
+            f"scope=`{scope_s}` — {row.get('query')}"
+        )
+    lines.append("")
+    lines.append("Rerun: `python -m wedge_v1 habit --rerun [--doc DOC_ID…]`")
+    return "\n".join(lines) + "\n"
 
 
 def format_session_md(sess: dict) -> str:

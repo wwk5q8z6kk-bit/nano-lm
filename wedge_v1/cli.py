@@ -8,9 +8,12 @@ from pathlib import Path
 
 from wedge_v1.ingest import corpus_stats
 from wedge_v1.habit import (
+    format_saved_list_md,
     format_session_md,
     record as habit_record,
+    resolve_session_corpus,
     save_question,
+    saved_question_status,
     session as habit_session,
     weekly_summary,
 )
@@ -146,8 +149,17 @@ def main(argv: list[str] | None = None) -> int:
     habit_p = sub.add_parser("habit", help="Daily/session habit workflow (gitignored state)")
     habit_p.add_argument("--corpus", type=Path, default=None)
     habit_p.add_argument("--json", action="store_true")
+    habit_p.add_argument("--list", action="store_true", help="List saved questions + scope/state")
     habit_p.add_argument("--rerun", action="store_true", help="Rerun saved questions sample")
     habit_p.add_argument("--save", nargs="+", default=None, help="Save a question for later rerun")
+    habit_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope for --save / --rerun (repeatable)",
+    )
 
     rev = sub.add_parser("review", help="Usefulness label loop (no hand-edited JSON)")
     rev.add_argument("--corpus", type=Path, default=None)
@@ -430,14 +442,49 @@ def main(argv: list[str] | None = None) -> int:
         return oa_main(argv)
 
     if args.cmd == "habit":
+        if args.list:
+            corpus = resolve_session_corpus(args.corpus)
+            rows = saved_question_status(corpus)
+            if args.json:
+                json.dump(
+                    {
+                        "schema": "nano-lm.wedge_v1.saved_questions_list.v1",
+                        "corpus": str(corpus),
+                        "n": len(rows),
+                        "questions": rows,
+                    },
+                    sys.stdout,
+                    indent=2,
+                )
+                sys.stdout.write(chr(10))
+            else:
+                sys.stdout.write(format_saved_list_md(rows))
+            return 0
         if args.save:
             q = " ".join(args.save)
-            save_question(q)
+            corpus = resolve_session_corpus(args.corpus)
+            saved = save_question(
+                q,
+                corpus=corpus,
+                doc_ids=getattr(args, "doc_ids", None),
+            )
             habit_record("save_question", note=q[:80])
-            json.dump({"saved": q}, sys.stdout, indent=2)
+            json.dump(
+                {
+                    "saved": q,
+                    "doc_ids": getattr(args, "doc_ids", None),
+                    "n_saved": len(saved.get("questions") or []),
+                    "task_id": (saved.get("questions") or [{}])[0].get("task_id"),
+                },
+                sys.stdout,
+                indent=2,
+            )
             sys.stdout.write(chr(10))
             return 0
-        sess = habit_session(args.corpus)
+        session_kwargs: dict = {"rerun": bool(args.rerun)}
+        if args.rerun and getattr(args, "doc_ids", None) is not None:
+            session_kwargs["doc_ids"] = args.doc_ids
+        sess = habit_session(args.corpus, **session_kwargs)
         if args.rerun:
             habit_record("rerun")
         if args.json:
