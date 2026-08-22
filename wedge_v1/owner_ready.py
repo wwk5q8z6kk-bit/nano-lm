@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 
+from wedge_v1.habit import load_saved_questions, saved_question_status
 from wedge_v1.ingest import corpus_stats, load_corpus
 from wedge_v1.review import REVIEW_PATH
 from wedge_v1.run_owner_dogfood import DEFAULT_OUT, DEFAULT_TASKS, FIXTURE_CORPUS, OWNER_DIR
@@ -17,6 +18,96 @@ from wedge_v1.run_owner_dogfood import DEFAULT_OUT, DEFAULT_TASKS, FIXTURE_CORPU
 ROOT = Path(__file__).resolve().parent
 READY_OUT = ROOT / "results_owner_ready.json"
 
+
+
+def _corpus_cli_ref(path: Path, *, exists: bool, env_set: bool) -> str:
+    if env_set:
+        return '--corpus "$OWNER_CORPUS"'
+    if exists:
+        return f'--corpus "{path.resolve()}"'
+    return '--corpus "$OWNER_CORPUS"'
+
+
+def _habit_commands(path: Path, *, exists: bool, env_set: bool) -> dict[str, str]:
+    corp = _corpus_cli_ref(path, exists=exists, env_set=env_set)
+    return {
+        "list": f"python -m wedge_v1 habit --list {corp}",
+        "save": f'python -m wedge_v1 habit --save "YOUR QUESTION" {corp}',
+        "save_scoped": f'python -m wedge_v1 habit --save "YOUR QUESTION" --doc DOC_ID {corp}',
+        "rerun": f"python -m wedge_v1 habit --rerun {corp}",
+        "session": f"python -m wedge_v1 habit {corp}",
+    }
+
+
+def _habit_memory(path: Path) -> dict:
+    if not path.is_dir():
+        return {"n_saved": 0, "states": {}, "questions": []}
+    rows = saved_question_status(path)
+    states: dict[str, int] = {}
+    for row in rows:
+        state = str(row.get("state") or "UNKNOWN")
+        states[state] = states.get(state, 0) + 1
+    return {
+        "n_saved": len(rows),
+        "states": states,
+        "questions": [
+            {
+                "task_id": row.get("task_id"),
+                "state": row.get("state"),
+                "reason": row.get("reason"),
+                "query": (row.get("query") or "")[:120],
+            }
+            for row in rows[:8]
+        ],
+    }
+
+
+def _weekly_k1_command(*, env_set: bool) -> str:
+    if env_set:
+        prefix = ""
+    else:
+        prefix = 'export OWNER_CORPUS="$PWD/.local-data/owner_corpus" && '
+    return (
+        f"{prefix}"
+        "python -m wedge_v1 owner-ready && "
+        'python -m wedge_v1 habit --list --corpus "$OWNER_CORPUS" && '
+        'python -m wedge_v1 habit --rerun --corpus "$OWNER_CORPUS" && '
+        'python -m wedge_v1 review --corpus "$OWNER_CORPUS" --interactive'
+    )
+
+
+def format_owner_ready_hints(rep: dict) -> str:
+    lines = [
+        "",
+        "--- owner-ready: weekly K1 habit ---",
+        f"Corpus: {rep.get('corpus')}",
+        f"Ready (private): {rep.get('ready_for_private_run')}",
+        f"Note: {rep.get('note')}",
+        "",
+        "Habit memory commands:",
+    ]
+    for key in ("list", "save", "save_scoped", "rerun", "session"):
+        cmd = (rep.get("habit_commands") or {}).get(key)
+        if cmd:
+            lines.append(f"  {cmd}")
+    mem = rep.get("habit_memory") or {}
+    if mem.get("n_saved"):
+        lines.append("")
+        lines.append(
+            f"Saved questions: {mem['n_saved']} states={mem.get('states') or {}}"
+        )
+    elif load_saved_questions():
+        lines.append("")
+        lines.append("Saved questions exist but none match this corpus scope.")
+    lines += [
+        "",
+        "One-liner:",
+        f"  {rep.get('weekly_k1_command')}",
+        "",
+        "Demo:",
+        f"  {rep.get('demo_command')}",
+    ]
+    return "\n".join(lines) + "\n"
 
 
 def _ready_note(*, real_owner: bool, review_exists: bool) -> str:
@@ -94,15 +185,21 @@ def check(corpus: Path | None = None, *, demo: bool = False) -> dict:
 
     canonical = (
         'export OWNER_CORPUS="$PWD/.local-data/owner_corpus" && '
-        'python -m wedge_v1 owner-dogfood --corpus "$OWNER_CORPUS" && '
-        'python -m wedge_v1 review --corpus "$OWNER_CORPUS" '
-        '--from-dogfood wedge_v1/results_owner_dogfood.json --interactive && '
-        'python -m wedge_v1 habit --corpus "$OWNER_CORPUS"'
+        "python -m wedge_v1 owner-ready && "
+        'python -m wedge_v1 habit --list --corpus "$OWNER_CORPUS" && '
+        'python -m wedge_v1 habit --save "YOUR QUESTION" --corpus "$OWNER_CORPUS" && '
+        'python -m wedge_v1 habit --rerun --corpus "$OWNER_CORPUS" && '
+        'python -m wedge_v1 review --corpus "$OWNER_CORPUS" --interactive'
     )
     demo_cmd = (
+        "python -m wedge_v1 owner-ready --demo && "
+        "python -m wedge_v1 habit --list && "
         "python -m wedge_v1 owner-dogfood --demo && "
         "python -m wedge_v1 review --demo --next"
     )
+    habit_commands = _habit_commands(path, exists=exists, env_set=bool(env))
+    habit_memory = _habit_memory(path)
+    weekly_k1 = _weekly_k1_command(env_set=bool(env))
 
     report = {
         "schema": "nano-lm.wedge_v1.owner_ready.v1",
@@ -125,6 +222,9 @@ def check(corpus: Path | None = None, *, demo: bool = False) -> dict:
         "blockers": blockers,
         "canonical_command": canonical,
         "demo_command": demo_cmd,
+        "weekly_k1_command": weekly_k1,
+        "habit_commands": habit_commands,
+        "habit_memory": habit_memory,
         "ready_for_private_run": bool(real_owner and exists and docs and "corpus_empty_or_unreadable" not in blockers and "corpus_path_missing" not in blockers),
         "note": _ready_note(real_owner=bool(real_owner and exists and docs), review_exists=review_exists),
     }
@@ -139,6 +239,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     rep = check(args.corpus, demo=args.demo)
     print(json.dumps(rep, indent=2))
+    print(format_owner_ready_hints(rep), end="")
     print("WEDGE_V1_OWNER_READY")
     if "corpus_path_missing" in rep["blockers"] or "corpus_empty_or_unreadable" in rep["blockers"]:
         return 2

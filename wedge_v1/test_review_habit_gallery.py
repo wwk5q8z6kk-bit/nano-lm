@@ -6,7 +6,7 @@ from pathlib import Path
 
 from wedge_v1.failure_gallery import FINE_BUCKETS, build_gallery, classify_fine, gallery_to_markdown
 from wedge_v1.habit import format_session_md, save_question, session
-from wedge_v1.owner_ready import check
+from wedge_v1.owner_ready import check, format_owner_ready_hints
 from wedge_v1.review import (
     LABELS,
     batch_label,
@@ -123,5 +123,15 @@ def test_owner_ready_demo():
     assert rep["exists"]
     assert rep["n_docs"] >= 1
     assert "canonical_command" in rep
+    assert "habit_commands" in rep
+    assert "list" in rep["habit_commands"]
+    assert "rerun" in rep["habit_commands"]
+    assert "habit --list" in rep["habit_commands"]["list"]
+    assert "habit --rerun" in rep["habit_commands"]["rerun"]
+    assert "weekly_k1_command" in rep
+    assert "habit_memory" in rep
+    hints = format_owner_ready_hints(rep)
+    assert "habit --list" in hints
+    assert "habit --rerun" in hints
     assert "OWNER_CORPUS_PENDING" in rep["blockers"]
     assert rep["ready_for_private_run"] is False
