@@ -1,0 +1,54 @@
+{
+  "schema": "nano.campaign.native_gate.v1",
+  "checked_at": "2026-08-23T20:04:30.145104+00:00",
+  "verdict": "PROMOTION_GATE_BLOCKED_DATA",
+  "failed_conditions": [
+    "9_code_committed"
+  ],
+  "conditions": {
+    "1_corpus_generator_exists": {
+      "pass": true,
+      "detail": "nanoscribe/native/corpus/generators.py"
+    },
+    "2_corpus_manifest_exists": {
+      "pass": true,
+      "detail": "artifacts/campaign/native_corpus_screen_v1_manifest.json"
+    },
+    "3_token_volume": {
+      "pass": true,
+      "detail": "14,693,267 char-level training tokens"
+    },
+    "4_partition_separation": {
+      "pass": true,
+      "detail": "leakage_pass=True partition_files=['DEV', 'INTERNAL_TEST', 'TRAIN']"
+    },
+    "5_axis_coverage": {
+      "pass": true,
+      "detail": "below_floor={}"
+    },
+    "6_dedupe_and_leakage_guards": {
+      "pass": true,
+      "detail": "duplicate_rate=0.0 reserved_hits=0"
+    },
+    "7_trainer_tests_pass": {
+      "pass": true,
+      "detail": "...............................................................          [100%]"
+    },
+    "8_ci_collects_nanoscribe": {
+      "pass": true,
+      "detail": "ci.yml runs the nanoscribe suite"
+    },
+    "9_code_committed": {
+      "pass": false,
+      "detail": "2 uncommitted path(s)"
+    },
+    "10_command_and_artifact_ready": {
+      "pass": true,
+      "detail": "9 runs, dest=artifacts/campaign/native30_revalidation_summary_v1.json"
+    },
+    "11_cost_within_budget": {
+      "pass": true,
+      "detail": "projected(2x)=$4.45 wallet=$145.7106021216"
+    }
+  }
+}
