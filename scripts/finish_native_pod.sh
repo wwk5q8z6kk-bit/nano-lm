@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Wait for native training, pull weights, verify, then terminate pod.
+# Wait for native training, pull weights (SCP-first when direct TCP exposed), verify, terminate.
+# Weight pull order: direct TCP scp via runpodctl port mapping, then ssh base64 chunks.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"

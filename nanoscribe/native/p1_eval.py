@@ -89,7 +89,13 @@ def _propose_case(
     raw_lines: dict[str, str] = {}
     for spec in case.atom_specs:
         prompt = build_span_port_prompt(case.model_input.source, spec)
-        raw_line = generate_target_line(model, prompt, cfg)
+        raw_line = generate_target_line(
+            model,
+            prompt,
+            cfg,
+            raw_value=spec.raw_value,
+            source=case.model_input.source,
+        )
         raw_lines[spec.atom_id] = raw_line
         atoms.append(
             candidate_from_span_port_line(
