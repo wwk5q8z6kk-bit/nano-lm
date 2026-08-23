@@ -34,3 +34,9 @@ jobs:
 
       - name: Evidence transport pins
         run: python3 nanoscribe/test_evidence_transport.py
+
+      - name: Model adapter pins
+        run: python3 nanoscribe/test_adapt.py
+
+      - name: Model adapter baseline smoke
+        run: python3 nanoscribe/benchmark.py
