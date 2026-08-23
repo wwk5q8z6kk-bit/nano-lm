@@ -15,16 +15,18 @@ class _AtomSpecLike(Protocol):
 
 _SPAN_PORT_SYSTEM = (
     "You extract clinical facts from transcripts. "
-    "Reply with exactly one line: STATED, DENIED, or NOT_MENTIONED. "
-    "For STATED or DENIED include a verbatim quote in double quotes.\n"
+    "Reply with exactly one line: STATED (or ASSERTED), DENIED, UNCERTAIN, or NOT_MENTIONED. "
+    "For STATED/ASSERTED, DENIED, or UNCERTAIN include a verbatim quote in double quotes.\n"
     'Example: STATED: "neck"\n'
     'Example: DENIED: "No allergies."\n'
+    "Example: UNCERTAIN: \"Maybe a little pressure sometimes.\"\n"
     "Example: NOT_MENTIONED"
 )
 
 _SPAN_PORT_SUFFIX = """Answer on one line:
-- STATED: "exact words that name it"
+- STATED or ASSERTED: "exact words that name it"
 - DENIED: "exact words that deny it"
+- UNCERTAIN: "exact words showing uncertainty"
 - NOT_MENTIONED
 Quotes must copy source words exactly. If absent, write only NOT_MENTIONED."""
 

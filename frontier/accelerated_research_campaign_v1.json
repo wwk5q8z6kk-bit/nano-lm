@@ -1,0 +1,71 @@
+{
+  "schema": "nano.accelerated_research_campaign.v1",
+  "campaign_id": "accelerated_research_campaign_v1",
+  "base_commit": "04a4ecb9",
+  "dataset_revision": "campaign_v1_20260823",
+  "budget": {
+    "absolute_max_usd": 200,
+    "normal_envelope_usd": 180,
+    "safety_margin_usd": 20,
+    "track_caps_usd": {
+      "frontier_teacher_managed": 25,
+      "qwen38_serverless": 15,
+      "large_student_distillation": 50,
+      "native_nano": 60,
+      "verifier_ablations": 15,
+      "adaptive_reserve": 15
+    },
+    "ledger": "artifacts/campaign/spend.json"
+  },
+  "tracks": {
+    "A_frontier_teacher": {
+      "role": "capability_ceiling",
+      "primary": "runpod_managed_kimi_k3_if_operational",
+      "fallback": "api/gpt-4o-mini-span-port",
+      "execution_surface": "managed_inference_or_api",
+      "cap_usd": 25
+    },
+    "B_strong_control": {
+      "role": "specialist_base",
+      "model": "Qwen/Qwen3.8-27B",
+      "endpoint_id": "tbnur4mac60i70",
+      "execution_surface": "runpod_serverless",
+      "workers_min": 0,
+      "cap_usd": 15
+    },
+    "C_large_student": {
+      "role": "distillation_target",
+      "model_class": "27B-80B",
+      "candidate": "Qwen/Qwen2.5-32B-Instruct",
+      "execution_surface": "raw_pod_training",
+      "cap_usd": 50
+    },
+    "D_native_nano": {
+      "role": "scratch_architecture_screen",
+      "variants": ["NATIVE_A_decoder_baseline", "NATIVE_B_evidence_heads"],
+      "scale_m": [30, 100],
+      "execution_surface": "raw_pod_or_flash",
+      "cap_usd": 60
+    },
+    "E_verifier": {
+      "role": "independent_semantic_check",
+      "execution_surface": "cheapest_gpu",
+      "cap_usd": 15
+    }
+  },
+  "execution_surfaces": {
+    "frontier_inference": "serverless_or_managed_api_not_raw_pod",
+    "training": "raw_b200_b300_when_prepared"
+  },
+  "harness": {
+    "entrypoint": "python3 scripts/p1_harness.py",
+    "suites": ["campaign_v1", "p1_core", "p1_adversarial"],
+    "output_dir": "artifacts/p1_runs/"
+  },
+  "forbidden": [
+    "empty_raw_gpu_inference_pods",
+    "self_host_multi_hundred_b_terabyte_frontier",
+    "continual_learning_during_campaign",
+    "agents_memory_updater_during_campaign"
+  ]
+}

@@ -1,8 +1,8 @@
 {
   "campaign_id": "p1_acceleration_campaign_v0",
-  "campaign_spend_actual": 0.37,
+  "campaign_spend_actual": 0.9451,
   "campaign_spend_committed": 0,
-  "campaign_spend_remaining": 179.63,
+  "campaign_spend_remaining": 179.0549,
   "entries": [
     {
       "amount_usd": 0.37,
@@ -15,6 +15,42 @@
       "rate_per_hr": 0.74,
       "started_at": "2026-08-23T01:21:10.268938+00:00",
       "status": "actual"
+    },
+    {
+      "amount_usd": 0.0051,
+      "description": "Serverless Qwen38 tiny_fixture harness baseline",
+      "ended_at": "2026-08-23T01:45:31.613740+00:00",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "lane": "serverless",
+      "notes": "",
+      "pod_id": null,
+      "rate_per_hr": 1.39,
+      "started_at": "2026-08-23T01:45:31.567487+00:00",
+      "status": "actual"
+    },
+    {
+      "amount_usd": 0.12,
+      "description": "Phase A API teacher eval suite=campaign_v1",
+      "ended_at": "2026-08-23T01:48:57.009690+00:00",
+      "gpu": null,
+      "lane": "frontier_teacher",
+      "notes": "api_token_estimate",
+      "pod_id": null,
+      "rate_per_hr": null,
+      "started_at": "2026-08-23T01:48:57.009683+00:00",
+      "status": "actual"
+    },
+    {
+      "amount_usd": 0.45,
+      "description": "Phase B serverless eval suite=campaign_v1",
+      "ended_at": "2026-08-23T01:48:57.009874+00:00",
+      "gpu": "A100-80GB-serverless",
+      "lane": "qwen38_serverless",
+      "notes": "execution-time estimate per encounter",
+      "pod_id": null,
+      "rate_per_hr": 1.39,
+      "started_at": "2026-08-23T01:48:57.009867+00:00",
+      "status": "actual"
     }
   ],
   "envelopes": {
@@ -24,6 +60,6 @@
   },
   "posture": "NORMAL",
   "schema": "nano.campaign.spend.v0",
-  "total_exposure": 0.37,
-  "updated_at": "2026-08-23T01:21:10.268943+00:00"
+  "total_exposure": 0.9451,
+  "updated_at": "2026-08-23T01:48:57.009872+00:00"
 }

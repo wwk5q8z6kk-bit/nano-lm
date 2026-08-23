@@ -33,7 +33,7 @@ from nanoscribe.select import ConstrainedSelector
 CANDIDATE_SCHEMA_VERSION = "nano.candidate.v0"
 
 _LABEL_RE = re.compile(
-    r"\b(STATED|DENIED|NOT_MENTIONED)\b(?:\s*:\s*(.*))?",
+    r"\b(STATED|ASSERTED|DENIED|UNCERTAIN|NOT_MENTIONED)\b(?:\s*:\s*(.*))?",
     re.IGNORECASE | re.DOTALL,
 )
 _QUOTED_RE = re.compile(r'"([^"]+)"')
@@ -56,7 +56,9 @@ _FORBIDDEN_CANDIDATE_KEYS = frozenset(
 
 _LABEL_TO_ASSERTION = {
     "STATED": AssertionState.ASSERTED,
+    "ASSERTED": AssertionState.ASSERTED,
     "DENIED": AssertionState.DENIED,
+    "UNCERTAIN": AssertionState.UNCERTAIN,
 }
 
 _DEFAULT_SPEAKER = Speaker.PATIENT
@@ -359,7 +361,11 @@ def candidate_from_span_port_line(
     if assertion is None:
         return CandidateAtom(atom_id=atom_id, malformed=True)
     certainty_value = certainty
-    if assertion is AssertionState.DENIED:
+    if assertion is AssertionState.UNCERTAIN:
+        certainty_value = certainty or Certainty.UNCERTAIN
+    elif assertion is AssertionState.DENIED:
+        certainty_value = certainty or Certainty.STATED
+    else:
         certainty_value = certainty or Certainty.STATED
     return CandidateAtom(
         atom_id=atom_id,

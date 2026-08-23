@@ -1,0 +1,57 @@
+{
+  "schema": "nano.campaign.checkpoint.v1",
+  "campaign_id": "accelerated_research_campaign_v1",
+  "timestamp": "2026-08-23T01:50:00Z",
+  "origin_master": "04a4ecb9",
+  "dataset_revision": "campaign_v1_20260823",
+  "spend": {
+    "actual_usd": 0.9451,
+    "remaining_usd": 179.0549,
+    "posture": "NORMAL"
+  },
+  "execution_surfaces": {
+    "frontier_teacher": "api/gpt-4o-mini (Kimi K3 managed not found on hub; API fallback)",
+    "strong_control": "RunPod Serverless Qwen/Qwen3.8-27B endpoint tbnur4mac60i70",
+    "raw_pods": "none active"
+  },
+  "phase_ab_campaign_v1": {
+    "suite": "campaign_v1",
+    "encounters": ["enc-1", "enc-2", "enc-3"],
+    "artifact": "artifacts/p1_runs/campaign_phase_ab_v1.json",
+    "api_teacher": {
+      "model": "gpt-4o-mini",
+      "enc1_span_f1": 0.5808,
+      "enc2_span_f1": 0.4444,
+      "enc3_span_f1": 0.4194,
+      "dominant_failure": "wrong_mention (over-long quotes, not minimal gold spans)"
+    },
+    "qwen38_serverless": {
+      "model": "Qwen/Qwen3.8-27B",
+      "enc1_span_f1": 0.3333,
+      "dominant_failure": "malformed_span_port_lines + wrong_mention"
+    }
+  },
+  "belief_updates": [
+    "API teacher beats Qwen3.8-27B zero-shot on span-port format at campaign_v1 scale",
+    "Frontier failures are mostly quote granularity (wrong_mention), not assertion parsing",
+    "Qwen3.8 needs span-port prompt/parser alignment; parser now accepts ASSERTED/UNCERTAIN aliases",
+    "Serverless scale-to-zero works; no idle raw inference pods",
+    "Kimi K3 managed endpoint not in hub search — continue API teacher within $25 cap"
+  ],
+  "bottleneck": "span-port output contract (minimal exact quotes + UNCERTAIN label), not infrastructure",
+  "next_high_value_experiments": [
+    "Re-run phase AB after ASSERTED/UNCERTAIN parser + prompt fix",
+    "Minimal-span few-shot in prompt for API teacher",
+    "Large-student QLoRA on span-port fixture data (B200 pod, prepared command)",
+    "Native-A/B short screen via native_screen_launch.sh",
+    "Verifier pilot on teacher-verified hard negatives"
+  ],
+  "tracks_status": {
+    "A_frontier_teacher": "BASELINE_API_COMPLETE",
+    "B_qwen38_serverless": "BASELINE_COMPLETE_NEEDS_PROMPT",
+    "C_large_student": "NOT_STARTED",
+    "D_native_nano": "DESIGN_ONLY",
+    "E_verifier": "NOT_STARTED"
+  },
+  "architecture_verdict_native": "CONTINUE_EXPLORATION"
+}
