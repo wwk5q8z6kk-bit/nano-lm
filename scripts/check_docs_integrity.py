@@ -40,6 +40,39 @@ CROSS_BRANCH_PATHS = frozenset(
     }
 )
 
+REQUIRED_CANONICAL_DOCS = (
+    "docs/PROJECT_AUTHORITY.md",
+    "docs/PROJECT_CHARTER.md",
+    "docs/ACTIVE_NOW.md",
+    "docs/ACTIVE_NOW.json",
+    "docs/EXECUTION_PLAN.md",
+    "docs/subsystems/NANOSCRIBE.md",
+    "docs/research/ACCELERATED_CAMPAIGN.md",
+    "docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md",
+    "docs/knowledge/PROGRAM_CHECKPOINTS.json",
+    "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
+)
+
+DOC_CODE_ANCHORS: dict[str, tuple[str, ...]] = {
+    "docs/subsystems/NANOSCRIBE.md": (
+        "nanoscribe/encounter.py",
+        "nanoscribe/adapt.py",
+        "nanoscribe/harness.py",
+        "nanoscribe/tracks.py",
+    ),
+    "docs/infrastructure/TOOL_CALLING.md": (
+        "nanoscribe/tool_calling.py",
+        "nanoscribe/structured_inference.py",
+        "nanoscribe/tool_inference.py",
+    ),
+    "docs/research/ACCELERATED_CAMPAIGN.md": (
+        "scripts/campaign_control_plane.py",
+        "artifacts/campaign/experiment_manifest.v1.schema.json",
+    ),
+}
+
+CHECKPOINT_STATUSES = frozenset({"done", "in_progress", "pending", "cancelled"})
+
 STALE_AUTHORITY_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     (
         "strategic center is papers/STRATEGIC_RESET.md",

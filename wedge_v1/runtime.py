@@ -6,11 +6,13 @@ E-class probes live in classical.solvers (paraphrastic_ttl / symbolic_dose_chang
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import asdict
 from pathlib import Path
 
 from wedge_v1.classical import solvers as S
+from wedge_v1.escalate_stub import escalate_stub_ask
 
 
 ROOT = Path(__file__).resolve().parent

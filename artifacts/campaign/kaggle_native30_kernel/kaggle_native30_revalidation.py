@@ -106,10 +106,7 @@ def main() -> int:
     from nanoscribe.native.model import build_native_model
     from nanoscribe.native.train import train_native
 
-    # Interleaved: a partial session still yields a complete seed-0 comparison
-    # across all three arms rather than three seeds of a single arm.
-    seeds = sorted({s for a in REVALIDATION_ARMS for s in a.seeds})
-    run_ids = [revalidation_run_id(a, s) for s in seeds for a in REVALIDATION_ARMS]
+    run_ids = [revalidation_run_id(a, s) for a in REVALIDATION_ARMS for s in a.seeds]
 
     # Construct EVERY arm before training ANY. A 9-run job once died three runs
     # in on an arm with a non-divisible head count, wasting the rest.

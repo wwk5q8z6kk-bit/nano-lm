@@ -1,8 +1,8 @@
 {
   "campaign_id": "p1_acceleration_campaign_v0",
   "campaign_spend_actual": 5.1568,
-  "campaign_spend_committed": 43.5805,
-  "campaign_spend_remaining": 136.2627,
+  "campaign_spend_committed": 44.1355,
+  "campaign_spend_remaining": 135.7077,
   "entries": [
     {
       "amount_usd": 0.37,
@@ -783,6 +783,18 @@
       "rate_per_hr": 1.59,
       "started_at": "2026-08-23T21:30:53.037446+00:00",
       "status": "committed"
+    },
+    {
+      "amount_usd": 0.555,
+      "description": "Native30 revalidation wave1 (9 runs)",
+      "ended_at": null,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "lane": "native_a100",
+      "notes": "",
+      "pod_id": "fxbfs00asc8cpp",
+      "rate_per_hr": 0.74,
+      "started_at": "2026-08-23T23:12:02.420089+00:00",
+      "status": "committed"
     }
   ],
   "envelopes": {
@@ -792,6 +804,6 @@
   },
   "posture": "NORMAL",
   "schema": "nano.campaign.spend.v0",
-  "total_exposure": 48.7373,
-  "updated_at": "2026-08-23T21:30:53.037451+00:00"
+  "total_exposure": 49.2923,
+  "updated_at": "2026-08-23T23:12:02.420092+00:00"
 }
