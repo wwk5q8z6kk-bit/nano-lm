@@ -25,6 +25,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | [EXECUTION_PLAN.md](EXECUTION_PLAN.md) | Bounded executable work |
 | [EVALUATION_FRAMEWORK.md](EVALUATION_FRAMEWORK.md) | How capabilities are measured |
 | [FAILURE_TO_ARCHITECTURE.md](FAILURE_TO_ARCHITECTURE.md) | Major failures → architectural lessons |
+| [ACCELERATED_RESEARCH_CAMPAIGN_V2.md](ACCELERATED_RESEARCH_CAMPAIGN_V2.md) | Active P1 research campaign plan (v2) |
 
 ## Research
 

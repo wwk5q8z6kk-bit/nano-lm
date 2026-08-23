@@ -3,9 +3,46 @@
     "native_extended_complete"
   ],
   "actual_spend": 6.45,
+  "agent_canary": {
+    "experiment_id": "nano_agent_canary_v1",
+    "gpt_oss_profile": {
+      "strong": {
+        "abstention": 0.7778,
+        "insufficient_info": 1.0,
+        "invalid_tool_args": 0.75,
+        "similar_tools": 0.75,
+        "state_update_recovery": 0.75,
+        "tool_not_needed": 0.75,
+        "verify_needed": 0.75
+      },
+      "weak": {
+        "multi_tool": 0.0,
+        "premature_stop": 0.0,
+        "recovery": 0.25,
+        "repeated_calls": 0.0,
+        "stop_accuracy": 0.375,
+        "timeout_error": 0.25
+      }
+    },
+    "model": "openai/gpt-oss-120b",
+    "n_tasks": 48,
+    "next": "benchmark Qwen3-Coder-Next-FP8 (briefing SS LXV item 14) then GLM-4.5-Air-FP8",
+    "outcome_mean": 0.5,
+    "parse_rate": 1.0,
+    "reading": "gpt-oss-120b looks like a strong abstention/knowing-when-not-to-act donor and a weak long-horizon stop/recovery/multi-tool donor - consistent with the briefing SS XIX hypothesis that Qwen3-Coder-Next / MiniMax should own long-horizon execution and recovery. Single teacher so far: this is a profile, not yet a per-capability ranking.",
+    "results": "artifacts/campaign/agent_canary_v1_results.json",
+    "root_cause_fixed": "content was empty on 9/12 tasks because reasoning tokens consumed the whole max_tokens=128 budget (finish_reason=length, completion_tokens=64/64). Fixed: max_tokens 1024, reasoning_effort=low, reasoning_content/tool_call extraction fallback. Parse rate 0.75 -> 1.00 over 48 tasks.",
+    "scoring_fix": "unparsed responses previously scored as capability failures - an empty prediction scored unnecessary_call_rate=1.0 (max badness). Unparsed rows now carry no scores and are excluded from per-capability means; every axis reports {mean, n} and parse_rate is tracked separately.",
+    "spend_usd": 0.0,
+    "status": "SCOREBOARD_VALID",
+    "surface": "managed_reference",
+    "teacher_id": "gpt_oss_120b"
+  },
+  "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE",
   "campaign_remaining": 149.0,
   "campaign_spend_start": 1.8211,
-  "commit_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
+  "checkpoint_authority": "artifacts/campaign/checkpoint_v4.json",
+  "commit_sha": "a6c44b3",
   "committed_spend": 1.39,
   "current_spend_per_hr": 0.004,
   "execution_authority": "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
@@ -54,37 +91,44 @@
       ],
       "status": "IDLE_PODS_CLEARED"
     },
-    "lane_native": {
-      "round2_gate": "UNBLOCKED",
-      "status": "EXTENDED_COMPLETE_WITH_WEIGHTS",
-      "extended_pod_id": "nrejxttt2nuxfa",
-      "extended_datacenter": "US-KS-2",
-      "extended_gpu": "NVIDIA A100-SXM4-80GB",
-      "extended_final_loss": 0.0488,
-      "extended_steps": 200,
-      "weights_local": true,
-      "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
-      "weights_bytes": 1188792509,
-      "torch_load_ok": true,
-      "weight_pull_method": "direct_tcp_scp",
-      "weight_pull_status": "COMPLETE",
-      "held_out_eval": "SMOKE_COMPLETE — coverage 0/8, assertion 0/0, malformed 8",
-      "live_runpod_balance": 154.47,
-      "experiment_id": "native100_round2_promotion_v1",
-      "pod_id": "6opxbt2tqphjrm",
-      "pod_name": "native100-r2-camtl",
-      "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
-      "datacenter": "CA-MTL-3",
-      "run_ids": [
-        "native100_evidence_bottleneck_s0",
-        "native100_evidence_bottleneck_s1",
-        "native100_span_port_s0",
-        "native100_span_port_s1"
+    "lane_agent_platform": {
+      "adapter": "Qwen3CoderInferenceAdapter",
+      "cases_passed": 3,
+      "cases_total": 3,
+      "encounter_ids": [
+        "enc-1",
+        "enc-2",
+        "enc-3"
       ],
-      "runs_completed": 4,
-      "steps_per_run": 6,
+      "include_agent_tools": true,
+      "live_endpoint": null,
+      "mode": "offline_mock",
+      "note": "No serverless endpoints; skipped ephemeral vLLM ($0 spend)",
+      "parser": "CapabilityToolParser",
+      "smoke_at": "2026-08-23T10:39:00+00:00",
+      "status": "OFFLINE_SMOKE_PASS",
+      "suite": "p1_contract_smoke_v1",
+      "test_file": "nanoscribe/test_agent_platform_smoke.py",
+      "use_tools": true,
+      "verdict": "PASS"
+    },
+    "lane_native": {
       "cost_per_hr": 1.39,
+      "datacenter": "CA-MTL-3",
+      "experiment_id": "native100_round2_promotion_v1",
+      "extended_datacenter": "US-KS-2",
+      "extended_final_loss": 0.0488,
+      "extended_gpu": "NVIDIA A100-SXM4-80GB",
+      "extended_launch": "COMPLETE",
+      "extended_manifest": "artifacts/campaign/manifests/native100_extended_v1.json",
+      "extended_pod_id": "nrejxttt2nuxfa",
+      "extended_steps": 200,
+      "extended_summary": "artifacts/campaign/native_extended_summary.json",
+      "extended_training_recommended": true,
       "gpu_util_peak_pct": 42,
+      "held_out_eval": "SCREENING_COMPLETE \u2014 coverage 84/150 (56%), assertion 68/84 (81%), exact_span 84/84, malformed 11",
+      "hybrid_warranted": false,
+      "live_runpod_balance": 154.47,
       "log_path": "/workspace/native100_train.log",
       "losses": {
         "native100_evidence_bottleneck_s0": 61.73,
@@ -92,28 +136,30 @@
         "native100_span_port_s0": 77.49,
         "native100_span_port_s1": 81.34
       },
-      "winner_run": "native100_evidence_bottleneck_s1",
-      "winner_arm": "evidence_bottleneck",
+      "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
+      "pod_id": "6opxbt2tqphjrm",
+      "pod_name": "native100-r2-camtl",
+      "round2_gate": "UNBLOCKED",
+      "run_ids": [
+        "native100_evidence_bottleneck_s0",
+        "native100_evidence_bottleneck_s1",
+        "native100_span_port_s0",
+        "native100_span_port_s1"
+      ],
+      "runs_completed": 4,
+      "screening_eval": "artifacts/campaign/native_extended_screening_eval.json",
+      "screening_vs_reference": "artifacts/campaign/native_vs_reference_screening_v1.json",
+      "status": "EXTENDED_COMPLETE_WITH_WEIGHTS",
+      "steps_per_run": 6,
       "summary": "artifacts/campaign/native_round2_summary.json",
-      "hybrid_warranted": false,
-      "extended_training_recommended": true,
-      "extended_manifest": "artifacts/campaign/manifests/native100_extended_v1.json",
-      "extended_launch": "COMPLETE",
-      "extended_summary": "artifacts/campaign/native_extended_summary.json"
-    },
-    "lane_teacher_collective": {
-      "lane": "P8_distillation",
-      "status": "FULL_SUITE_PARSED",
-      "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
-      "task_suite": "data/p1_agent_canary_v1.json",
-      "n_tasks": 48,
-      "canary_probe_tasks": 48,
-      "canary_results": "artifacts/campaign/agent_canary_v1_results.json",
-      "teacher_probe": "gpt_oss_120b_managed",
-      "parse_rate": 1.0,
-      "outcome_mean": 0.5,
-      "glm_endpoint_deleted": ["epfbo06vpbjy9k"],
-      "canary_gate": "UNBLOCKED"
+      "torch_load_ok": true,
+      "weight_pull_method": "direct_tcp_scp",
+      "weight_pull_status": "COMPLETE",
+      "weights_bytes": 1188792509,
+      "weights_local": true,
+      "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+      "winner_arm": "evidence_bottleneck",
+      "winner_run": "native100_evidence_bottleneck_s1"
     },
     "lane_qwen": {
       "deleted_endpoint_ids": [
@@ -130,22 +176,21 @@
       "status": "C1C2_COMPLETE",
       "surface": "hub_vllm_ephemeral"
     },
-    "lane_agent_platform": {
-      "status": "OFFLINE_SMOKE_PASS",
-      "suite": "p1_contract_smoke_v1",
-      "mode": "offline_mock",
-      "use_tools": true,
-      "include_agent_tools": true,
-      "cases_total": 3,
-      "cases_passed": 3,
-      "verdict": "PASS",
-      "encounter_ids": ["enc-1", "enc-2", "enc-3"],
-      "parser": "CapabilityToolParser",
-      "adapter": "Qwen3CoderInferenceAdapter",
-      "live_endpoint": null,
-      "note": "No serverless endpoints; skipped ephemeral vLLM ($0 spend)",
-      "test_file": "nanoscribe/test_agent_platform_smoke.py",
-      "smoke_at": "2026-08-23T10:39:00+00:00"
+    "lane_teacher_collective": {
+      "canary_gate": "UNBLOCKED",
+      "canary_probe_tasks": 48,
+      "canary_results": "artifacts/campaign/agent_canary_v1_results.json",
+      "glm_endpoint_deleted": [
+        "epfbo06vpbjy9k"
+      ],
+      "lane": "P8_distillation",
+      "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
+      "n_tasks": 48,
+      "outcome_mean": 0.5,
+      "parse_rate": 1.0,
+      "status": "FULL_SUITE_PARSED",
+      "task_suite": "data/p1_agent_canary_v1.json",
+      "teacher_probe": "gpt_oss_120b_managed"
     }
   },
   "launch_commit_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
@@ -157,7 +202,6 @@
   ],
   "ledger_remaining": 180.2668,
   "live_runpod_balance": 154.47,
-  "posture": "NO_ACTIVE_PODS",
   "mandate_baseline_usd": 185.0,
   "model_statuses": {
     "managed_reference": {
@@ -176,17 +220,68 @@
       "qlora_gate": "GAP_DOCUMENTED_NOT_UNLOCKED"
     }
   },
+  "native_extended": {
+    "commit_sha": "d0165d8",
+    "datacenter": "US-KS-2",
+    "final_train_loss": 0.048755865544080734,
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "loss_curve_monotonic": false,
+    "min_train_loss": 0.02656559832394123,
+    "min_train_loss_step": 160,
+    "pod_id": "nrejxttt2nuxfa",
+    "pod_name": "native100-ext-202608231031",
+    "run_id": "native100_evidence_bottleneck_s1",
+    "seed": 1,
+    "status": "COMPLETE_WEIGHTS_VERIFIED",
+    "steps_completed": 200,
+    "summary": "artifacts/campaign/native_extended_summary.json",
+    "superseded_value_note": "A prior campaign_status entry recorded final_loss=0.007259658 attributed to pod 3taen8m3jgcs7z/commit 55547c3. No surviving artifact supports that value: the live pod log, the local step_000200.json and the first committed native_extended_summary.json all report 0.048755866 for pod nrejxttt2nuxfa. Steps 6-160 are bit-identical across both records, so these are not two independent runs. Treat 0.048756 as the verified value and 0.007259 as unsupported.",
+    "weights_local": true,
+    "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+    "weights_verify": "VERIFY_OK torch.load payload.model_state present (1188792509 bytes)"
+  },
+  "native_extended_caution": {
+    "evidence": {
+      "batch_size": 16,
+      "dataset_n_examples": 96,
+      "epochs_completed": 34,
+      "final_vs_best_ratio": 1.84,
+      "loss_step_160": 0.02656559832394123,
+      "loss_step_200": 0.048755865544080734,
+      "steps_completed": 200,
+      "steps_per_epoch": 6
+    },
+    "implication": "200 steps over 96 examples is ~34 epochs; the curve is non-monotonic and the final checkpoint is 1.84x worse than the step-160 minimum. Final train loss in this regime measures memorization, not capability, and must not by itself decide evidence_bottleneck vs span_port promotion (briefing SS XIV/LV). Rank on held-out P1 eval, not train loss.",
+    "issue": "FINAL_TRAIN_LOSS_IS_NOT_A_SAFE_RANKING_METRIC",
+    "required_before_promotion": [
+      "held-out p1_screening_eval_v1 scoring of the verified checkpoint",
+      "seed variance estimate across >=2 genuinely independent seeds",
+      "early-stopping / best-checkpoint selection rather than last-step"
+    ]
+  },
   "native_round1": {
-    "schema": "nano.campaign.native_round1.v1",
-    "timestamp": "2026-08-23T05:39:22+00:00",
-    "commit_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
-    "pod_id": "6o3fj6clc5dcmo",
-    "marker": "NATIVE_DONE",
-    "runs_completed": 8,
     "checkpoints_local": true,
+    "commit_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+    "factorial_cells": {
+      "A": "evidence_bottleneck + span_port",
+      "B": "evidence_bottleneck + structured_json",
+      "C": "slot_router + span_port",
+      "D": "slot_router + structured_json"
+    },
+    "marker": "NATIVE_DONE",
     "metrics_local": true,
-    "verdict": "COMPLETE_RANKED",
+    "next_action": "Optional: rsync latest.pt from volume if weights needed locally; launch round2 100M on winning mechanisms",
+    "pod_id": "6o3fj6clc5dcmo",
     "reason": "Recovered final-step metrics from network volume via volume-recovery-http pod; val_loss not logged in native checkpoints \u2014 ranked on extra.loss (final_train_loss).",
+    "recovery": {
+      "campaign_native_checkpoints_on_volume": false,
+      "method": "network_volume_http_proxy",
+      "probe_pod_id": "iyyolshw3yj0u3",
+      "recovered_artifacts": "step_000006.json per run_id (weights remain on volume)",
+      "volume_id": "04himzqxbm",
+      "volume_path": "/workspace/nano-lm/artifacts/native_checkpoints"
+    },
+    "round2_100m_gate": "UNBLOCKED \u2014 promote evidence_bottleneck + top transport cells A/B to 100M screening",
     "run_ids": [
       "native30_bottleneck_span_s0",
       "native30_bottleneck_span_s1",
@@ -197,30 +292,40 @@
       "native30_decoder_struct_s0",
       "native30_decoder_struct_s1"
     ],
-    "factorial_cells": {
-      "A": "evidence_bottleneck + span_port",
-      "B": "evidence_bottleneck + structured_json",
-      "C": "slot_router + span_port",
-      "D": "slot_router + structured_json"
-    },
-    "top2_mechanisms": [
-      "evidence_bottleneck",
-      "span_port"
-    ],
+    "runs_completed": 8,
+    "schema": "nano.campaign.native_round1.v1",
+    "timestamp": "2026-08-23T05:39:22+00:00",
     "top2_cells": [
       "A",
       "B"
     ],
-    "round2_100m_gate": "UNBLOCKED \u2014 promote evidence_bottleneck + top transport cells A/B to 100M screening",
-    "next_action": "Optional: rsync latest.pt from volume if weights needed locally; launch round2 100M on winning mechanisms",
-    "recovery": {
-      "method": "network_volume_http_proxy",
-      "volume_id": "04himzqxbm",
-      "volume_path": "/workspace/nano-lm/artifacts/native_checkpoints",
-      "campaign_native_checkpoints_on_volume": false,
-      "probe_pod_id": "iyyolshw3yj0u3",
-      "recovered_artifacts": "step_000006.json per run_id (weights remain on volume)"
-    }
+    "top2_mechanisms": [
+      "evidence_bottleneck",
+      "span_port"
+    ],
+    "verdict": "COMPLETE_RANKED"
+  },
+  "native_round2": {
+    "commit_sha": "2094214",
+    "extended_training_recommended": true,
+    "hybrid_warranted": false,
+    "pod_id": "6opxbt2tqphjrm",
+    "status": "COMPLETE_RANKED",
+    "summary": "artifacts/campaign/native_round2_summary.json",
+    "winner": "native100_evidence_bottleneck_s1"
+  },
+  "native_round2_promotion": {
+    "assertion_state_rate": {
+      "majority_class": 0.7984,
+      "random_init": 0.8088,
+      "trained": 0.8095
+    },
+    "cost_usd": 0.0,
+    "evaluator_defect": "exact_gold_span_rate=1.0 is tautological \u2014 gold raw_value injected into candidate set",
+    "finding": "artifacts/campaign/native100_heldout_finding_v1.json",
+    "heldout_eval": "artifacts/campaign/native100_heldout_eval_v1.json",
+    "random_init_control": "artifacts/campaign/native100_randominit_control_v1.json",
+    "verdict": "BLOCKED_NO_MEASURABLE_HELDOUT_LEARNING"
   },
   "native_training": {
     "commit": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
@@ -241,29 +346,11 @@
   },
   "new_actual_spend": 2.9121,
   "new_committed_spend": 0,
-  "native_round2": {
-    "status": "COMPLETE_RANKED",
-    "pod_id": "6opxbt2tqphjrm",
-    "commit_sha": "2094214",
-    "summary": "artifacts/campaign/native_round2_summary.json",
-    "winner": "native100_evidence_bottleneck_s1",
-    "hybrid_warranted": false,
-    "extended_training_recommended": true
-  },
-  "native_extended": {
-    "status": "COMPLETE",
-    "pod_id": "3taen8m3jgcs7z",
-    "commit_sha": "55547c3",
-    "datacenter": "CA-MTL-3",
-    "run_id": "native100_evidence_bottleneck_s1",
-    "steps_completed": 200,
-    "final_loss": 0.007259658072143793,
-    "summary": "artifacts/campaign/native_extended_summary.json"
-  },
   "next_actions": [
-    "P1 encounter representation schema v0 (docs/EXECUTION_PLAN B1)",
-    "Span/evidence transport on managed student path (not native hash-LM decode yet)",
-    "Optional experiment-scoped: QLoRA assertion-gap canary, span_port native extended, Qwen3-Coder agent canary"
+    "Fix native p1_eval candidate construction (raw_value injection) \u2014 evidence transport is currently unmeasured",
+    "Add majority-class + random-init standing baselines to native eval harness",
+    "Benchmark Qwen3-Coder-Next-FP8 on agent canary v1 (48 tasks) for per-capability donor ranking",
+    "student_gap_v1 measurement before any QLoRA spend"
   ],
   "next_reallocations": [
     "inventory refresh only"
@@ -320,7 +407,5 @@
   "students": {
     "student_plane": "vllm_sglang_serverless_not_raw_a100"
   },
-  "timestamp": "2026-08-23T15:00:00+00:00",
-  "checkpoint_authority": "artifacts/campaign/checkpoint_v4.json",
-  "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE"
+  "timestamp": "2026-08-23T15:03:52.758163+00:00"
 }

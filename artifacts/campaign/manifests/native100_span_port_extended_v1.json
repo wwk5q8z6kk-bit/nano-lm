@@ -1,0 +1,32 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "native100_span_port_extended_v1",
+  "git_sha": "88030dc1d6482a049331226ad8145239ddbb0cd0",
+  "dataset_revision": "p1_distill_train_v1",
+  "command": "scripts/bootstrap_native100_span_port_extended.sh",
+  "surface": "pod_template",
+  "gpu_or_model": "NVIDIA A100-SXM4-80GB",
+  "hub_stable_locator": "runpod-torch-v240",
+  "hub_listing_id": "runpod-torch-v240",
+  "resolved_at": "2026-08-23T15:10:00+00:00",
+  "max_runtime_min": 90,
+  "max_cost_usd": 2.0,
+  "status": "LAUNCHING",
+  "parent_experiment": "native100_round2_promotion_v1",
+  "baseline_extended": "native100_evidence_bottleneck_s1",
+  "baseline_screening": "artifacts/campaign/native_extended_screening_eval.json",
+  "datacenter": "US-KS-2",
+  "termination_condition": "NATIVE100_EXTENDED_DONE + SCP weight pull + screening eval",
+  "init": "fresh_random",
+  "training_plan": {
+    "run_ids": [
+      "native100_span_port_s0",
+      "native100_span_port_s1"
+    ],
+    "max_steps": 200,
+    "batch_size": 16,
+    "peak_lr": 0.0003,
+    "epochs_note": "same token budget as evidence_bottleneck extended"
+  },
+  "compare_to": "native100_evidence_bottleneck_s1"
+}

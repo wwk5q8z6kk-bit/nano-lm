@@ -108,7 +108,7 @@ def test_resolve_direct_scp_from_ssh_command(monkeypatch: pytest.MonkeyPatch, tm
         return Result()
 
     monkeypatch.setattr(pull_mod.subprocess, "run", fake_run)
-    monkeypatch.setattr(pull_mod, "DEFAULT_SSH_KEY", key)
+    monkeypatch.setenv("RUNPOD_SSH_KEY", str(key))
     endpoint = pull_mod.resolve_direct_scp("pod123")
     assert endpoint == ("216.81.245.98", 48625, key)
 

@@ -41,7 +41,8 @@
       "verdict": "COMPLETE_WITH_WEIGHTS",
       "steps": 200,
       "final_loss": 0.048755865544080734,
-      "p1_smoke_viable": false,
+      "p1_smoke_viable": "partial",
+      "p1_smoke_coverage_rate": 0.5714,
       "artifact": "artifacts/campaign/native_extended_summary.json"
     },
     "agent_canary": {

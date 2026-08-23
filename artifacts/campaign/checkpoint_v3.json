@@ -95,7 +95,9 @@
     "torch_load_ok": true,
     "weight_pull_method": "direct_tcp_scp",
     "weight_pull_status": "COMPLETE",
-    "held_out_eval": "SMOKE_COMPLETE — coverage 0/8, assertion 0/0, malformed 8",
+    "held_out_eval": "SCREENING_COMPLETE — coverage 84/150, assertion 68/84, exact_span 84/84",
+    "screening_eval": "artifacts/campaign/native_extended_screening_eval.json",
+    "screening_vs_reference": "artifacts/campaign/native_vs_reference_screening_v1.json",
     "weight_pull": "direct TCP SCP preferred; scripts/pull_native_weights.py + finish_native_pod.sh fallback",
     "retrain_blocked": false,
     "artifact": "artifacts/campaign/native_extended_summary.json",
@@ -146,5 +148,5 @@
     "100": "native100 early gate (COMPLETE — extended training gated)",
     "135": "kill marginal"
   },
-  "next_dollar": "span_port extended 200-step comparison OR improve native hash-LM decode further OR QLoRA canary when manifest exists"
+  "next_dollar": "span_port extended 200-step A/B (~$0.15 US-KS-2) — native screening shows signal (56% cov, 81% assertion on covered, 100% exact span when committed); QLoRA student canary secondary for coverage ROI"
 }

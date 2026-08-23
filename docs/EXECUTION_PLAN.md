@@ -21,7 +21,7 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 | B4 | Qwen inference + three-track harness | PR #41 — `tracks.py`, serverless |
 | B5 | External eval protocol draft | [domains/medical/EVALUATION_PROTOCOL.md](domains/medical/EVALUATION_PROTOCOL.md) — draft exists |
 
-## Phase C — Accelerated research campaign (CURRENT)
+## Phase C — Accelerated research campaign (v1 CLOSED · v2 CURRENT)
 
 | ID | Task | Done when |
 |----|------|-----------|
@@ -32,6 +32,12 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 | C5 | Student C1/C2 serverless fan-out | Manifest + metrics JSON committed |
 | C6 | Harness regression on all active tracks | `nanoscribe/` test suite green |
 | C7 | Selective port to `master` | Owner review — no Evidence Core diff |
+
+**v1 checkpoint:** [`artifacts/campaign/checkpoint_v4.json`](../artifacts/campaign/checkpoint_v4.json)
+
+**Campaign v2 plan:** [ACCELERATED_RESEARCH_CAMPAIGN_V2.md](ACCELERATED_RESEARCH_CAMPAIGN_V2.md) · manifest [frontier/accelerated_research_campaign_v2.json](../frontier/accelerated_research_campaign_v2.json)
+
+**v2 next bounded tasks:** (1) B1 schema JSON export · (2) B2 span transport C2 re-run · (3) D1 note rendering v0 — see campaign doc §6.
 
 See [research/ACCELERATED_CAMPAIGN.md](research/ACCELERATED_CAMPAIGN.md) · [subsystems/NANOSCRIBE.md](subsystems/NANOSCRIBE.md).
 

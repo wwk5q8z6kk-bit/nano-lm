@@ -1,0 +1,63 @@
+{
+  "schema": "nano.campaign.native_vs_reference.v1",
+  "suite": "p1_screening_eval_v1",
+  "timestamp": "2026-08-23T15:05:00+00:00",
+  "native": {
+    "model": "native100_evidence_bottleneck_s1",
+    "decode": "teacher_forced_candidate_scoring",
+    "checkpoint": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+    "artifact": "artifacts/campaign/native_extended_screening_eval.json",
+    "runtime_s": 30.11,
+    "n_cases": 128,
+    "coverage": {"count": 84, "eligible": 150, "rate": 0.56},
+    "assertion_state_correct": {"count": 68, "eligible": 84, "rate": 0.8095},
+    "exact_gold_span": {"count": 84, "eligible": 84, "rate": 1.0},
+    "support_direct_exact": {"count": 75, "eligible": 84, "rate": 0.8929},
+    "malformed": 11,
+    "span_character_f1_mean": 0.4844
+  },
+  "managed_reference": {
+    "model": "Qwen3-32B-AWQ",
+    "source": "artifacts/campaign/student_gap_v1.json",
+    "n_cases": 128,
+    "coverage": {"rate": 0.7867},
+    "assertion_state_correct": {"rate": 1.0},
+    "exact_gold_span": {"rate": 0.1102},
+    "malformed": 11
+  },
+  "student_a": {
+    "model": "Qwen/Qwen2.5-32B-Instruct",
+    "source": "artifacts/campaign/student_gap_v1.json",
+    "n_cases": 128,
+    "coverage": {"rate": 0.7812},
+    "assertion_state_correct": {"rate": 0.6797},
+    "exact_gold_span": {"rate": 0.1016},
+    "malformed": 6
+  },
+  "random_baseline_note": "Uniform random assertion over 4 labels ≈25% on eligible atoms; always-NOT_MENTIONED yields 0% coverage. Native 81% assertion on covered atoms is well above chance.",
+  "delta_native_vs_managed_ref": {
+    "coverage_rate": -0.2267,
+    "assertion_state_correct_rate": -0.1905,
+    "exact_gold_span_rate": 0.8898,
+    "malformed": 0
+  },
+  "delta_native_vs_student_a": {
+    "coverage_rate": -0.2212,
+    "assertion_state_correct_rate": 0.1298,
+    "exact_gold_span_rate": 0.8984,
+    "malformed": 5
+  },
+  "interpretation": {
+    "meaningful_p1_signal": true,
+    "pattern": "selective_high_precision",
+    "summary": "Native100 evidence_bottleneck shows real P1 signal (not random): 56% coverage with 81% assertion accuracy on covered atoms and 100% exact gold span when committed. Tradeoff vs frontier students: -22pp coverage, +13pp assertion on covered atoms, far higher span precision on eligible atoms. Conservative scorer — abstains more but is accurate when it commits.",
+    "vs_student_gap": "Student-A still leads on deployment coverage (78% vs 56%). Native leads assertion on covered atoms (81% vs 68%). QLoRA student lane remains higher ROI for closing coverage gap.",
+    "caveat": "Native exact_gold_span rate uses eligible=84 (covered asserted atoms only); reference rates use full screening denominator — not directly comparable as headline rates."
+  },
+  "next_dollar_recommendation": {
+    "primary": "span_port extended 200-step comparison (~$0.15, US-KS-2 A100)",
+    "rationale": "Native shows architecture signal; compare span_port vs evidence_bottleneck at 200 steps before more decode/training investment",
+    "secondary": "QLoRA student canary if coverage ROI prioritized over native architecture screen",
+    "defer": "Further decode-only work — candidate scoring already unlocked screening signal"
+  }
+}

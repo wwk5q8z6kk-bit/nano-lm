@@ -1,0 +1,138 @@
+{
+  "schema": "nano.campaign.native_heldout_finding.v1",
+  "timestamp": "2026-08-23T15:07:06.502836+00:00",
+  "experiment_id": "native100_heldout_validation_v1",
+  "commit_sha": "a6c44b3",
+  "checkpoint": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+  "checkpoint_verify": "VERIFY_OK torch.load model_state present, 1188792509 bytes",
+  "suite": "p1_screening_eval_v1",
+  "n_cases": 128,
+  "n_gold_atoms": 150,
+  "cost_usd": 0.0,
+  "device": "cpu",
+  "headline": "native100 evidence_bottleneck shows NO measurable held-out learning of the assertion decision; it does not separate from an untrained control or from the majority class.",
+  "evidence": {
+    "assertion_state_correct": {
+      "trained": {
+        "count": 68,
+        "eligible": 84,
+        "rate": 0.8095,
+        "wilson95": [
+          0.7128,
+          0.8792
+        ]
+      },
+      "random_init_control": {
+        "count": 55,
+        "eligible": 68,
+        "rate": 0.8088,
+        "wilson95": [
+          0.6999,
+          0.8847
+        ]
+      },
+      "majority_class_always_asserted": {
+        "count": 103,
+        "eligible": 129,
+        "rate": 0.7984,
+        "wilson95": [
+          0.7211,
+          0.8586
+        ]
+      },
+      "trained_minus_random": 0.0007,
+      "trained_minus_majority": 0.0111,
+      "majority_inside_trained_ci": true,
+      "n_required_for_80pct_power_at_1.1pp": 20058,
+      "n_available": 84
+    },
+    "gold_assertion_distribution": {
+      "asserted": 103,
+      "denied": 13,
+      "uncertain": 13,
+      "total": 129,
+      "majority_share": 0.7984
+    }
+  },
+  "evaluator_defect": {
+    "metric": "exact_gold_span_rate",
+    "trained": 1.0,
+    "random_init_control": 0.6618,
+    "defect": "NOT A CAPABILITY MEASUREMENT \u2014 gold value is injected into the candidate set",
+    "mechanism": "p1_eval._propose_case passes raw_value=spec.raw_value into generate_target_line; inference.build_target_candidates then constructs 'ASSERTED: {raw_value}', 'DENIED: {raw_value}', 'UNCERTAIN: {raw_value}', 'NOT_MENTIONED'. The gold span is therefore present in the candidate set by construction and the model only selects an assertion prefix. exact_gold_span and support_direct_exact are near-tautological under this harness and must not be reported as evidence-transport capability (briefing SS VII, SS XLIX 'evaluator bug').",
+    "implication": "Native evidence-transport capability is currently UNMEASURED, not demonstrated."
+  },
+  "other_metrics": {
+    "coverage": {
+      "trained": {
+        "count": 84,
+        "eligible": 150,
+        "rate": 0.56
+      },
+      "random_init": {
+        "count": 68,
+        "eligible": 150,
+        "rate": 0.4533
+      }
+    },
+    "correct_abstention": {
+      "trained": {
+        "count": 0,
+        "eligible": 150,
+        "rate": 0.0
+      },
+      "random_init": {
+        "rate": 0.0
+      },
+      "note": "model never correctly abstains; 66/150 gold atoms are silently omitted rather than abstained \u2014 omission is not abstention (briefing SS L SELECTIVITY)"
+    },
+    "malformed": {
+      "trained": 11,
+      "random_init": 48,
+      "note": "the one clear training effect: well-formedness improved 48 -> 11"
+    },
+    "support_direct_exact_rate": {
+      "trained": 0.8929,
+      "random_init": 1.0,
+      "note": "trained is WORSE here; tautological metric, do not act on it"
+    }
+  },
+  "training_regime": {
+    "dataset": "p1_distill_train_v1",
+    "n_examples": 96,
+    "batch_size": 16,
+    "steps": 200,
+    "epochs": 34,
+    "final_train_loss": 0.048755866,
+    "min_train_loss": 0.026565598,
+    "min_loss_step": 160,
+    "note": "final train loss is 1.84x worse than the step-160 minimum; 34 epochs over 96 examples is a memorization regime. Low train loss here is not evidence of capability."
+  },
+  "what_training_did_and_did_not_do": {
+    "did": [
+      "reduced malformed output 48 -> 11",
+      "raised coverage 0.4533 -> 0.56"
+    ],
+    "did_not": [
+      "improve assertion-state accuracy above an untrained control (+0.0007)",
+      "improve assertion-state accuracy above majority class (+0.0111, inside CI)",
+      "produce any correct abstention (0/150 both before and after)"
+    ]
+  },
+  "decision": {
+    "promotion": "BLOCKED",
+    "rationale": "Briefing SS LV: promotion requires evidence a mechanism improves capability. The only held-out metric that reflects a model decision (assertion_state) is statistically indistinguishable from both an untrained control and majority-class guessing. Ranking evidence_bottleneck vs span_port on final train loss would be ranking memorization.",
+    "do_not": [
+      "promote to 300M",
+      "declare evidence_bottleneck the winner on train loss",
+      "report exact_gold_span_rate=1.0 as evidence transport capability"
+    ],
+    "required_next": [
+      "fix the evaluator so raw_value is not injected into the candidate set (free, local) \u2014 until then evidence transport is unmeasured",
+      "add majority-class and random-init controls as standing baselines in the native eval harness",
+      "select checkpoints by held-out metric, not last step (step 160 beat step 200 on train loss)",
+      "increase training data or reduce epochs \u2014 96 examples x 34 epochs cannot support a 100M model",
+      "power: 84 eligible atoms cannot detect a ~1pp effect; either enlarge the eval or target larger effects"
+    ]
+  }
+}

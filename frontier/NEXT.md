@@ -1,50 +1,34 @@
-# Frontier — `accelerated-research-campaign-v2`
+# Frontier branch notes
 
-**Not canonical.** Authority: [`docs/ACTIVE_NOW.md`](../docs/ACTIVE_NOW.md) · [`docs/EXECUTION_PLAN.md`](../docs/EXECUTION_PLAN.md)
+Not canonical authority. See [`docs/ACTIVE_NOW.md`](../docs/ACTIVE_NOW.md).
 
-## Branch intent
+## Active branch
 
-Evolve P1 from **foundation PRs on master** (#37–#41) into a **paid multi-track campaign** with:
+`frontier/accelerated-research-campaign-v2`
 
-- production tool-calling stack (`structured` + `tool` inference paths)
-- agent platform (`agent_canary`, sandboxed `coding_tools`)
-- Native Nano extended training + evidence-bottleneck variants
-- student C1/C2 vLLM serverless fan-out
+## Campaign v2
 
-## This branch adds (beyond `c4822b9`)
+- Plan: [`docs/ACCELERATED_RESEARCH_CAMPAIGN_V2.md`](../docs/ACCELERATED_RESEARCH_CAMPAIGN_V2.md)
+- Manifest: [`accelerated_research_campaign_v2.json`](accelerated_research_campaign_v2.json)
+- v1 checkpoint: [`artifacts/campaign/checkpoint_v4.json`](../artifacts/campaign/checkpoint_v4.json)
+- Paid compute authority: [`artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md`](../artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md)
 
-| Area | Paths |
-|------|-------|
-| Tool calling | `nanoscribe/tool_calling.py`, `tool_inference.py`, `tools.py` |
-| Qwen3 coder adapter | `nanoscribe/inference/qwen3_coder.py` |
-| Agent canary | `nanoscribe/agent_canary.py`, `scripts/agent_canary_bench.py` |
-| Campaign artifacts | `artifacts/campaign/agent_canary_v1_results.json`, native checkpoints |
-| Docs | `docs/subsystems/NANOSCRIBE.md`, `docs/research/ACCELERATED_CAMPAIGN.md` |
+## Next bounded tasks (local-first)
 
-## Campaign configs (branch-local)
+1. **B1** — `nanoscribe/schemas/encounter_v0.schema.json` + roundtrip tests (done); semantic validation remains `EncounterRecord.from_dict`
+2. **B2** — Span transport improvement + C2 re-run (RunPod serverless, routine budget)
+3. **B3** — `nanoscribe/render/encounter_note.py` verified record → note v0 (done); claim decomposition TBD
 
-- `frontier/accelerated_research_campaign_v1.json` — track budgets + surfaces
-- `frontier/p1_serverless_campaign_v0.json` — serverless wave
-- `frontier/p1_three_track_baseline_v0.json` — harness baseline
+## Cross-worktree (selective port only)
 
-## Before paid compute
+Integration worktree: `/Users/mac/Projects/nano-lm-nanoscribe` (`frontier/nanoscribe-core-v1`). Port policy: [`p1_integration_manifest.json`](p1_integration_manifest.json). Do not wholesale merge `nano_ai/` or P4 CUAD training.
 
-1. `python3 scripts/campaign_control_plane.py inventory`
-2. Confirm manifest under `artifacts/campaign/manifests/`
-3. Read [`artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md`](../artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md)
+## v1 empirical anchors
 
-## Merge posture
-
-Selective port to `master` after:
-
-- harness green on structured + tool paths
-- agent canary bench reproducible
-- campaign artifact summaries committed (not raw logs)
-- no Evidence Core diff
-
-## Quick verify
-
-```bash
-python3 scripts/check_active_now.py
-python3 -m pytest nanoscribe/test_tool_calling.py nanoscribe/test_agent_platform_smoke.py -q
-```
+| Metric | Value | Source |
+|--------|-------|--------|
+| Managed ref C2 exact gold span | 0.110 | `student_gap_v1.json` |
+| Student A assertion gap vs ref | −0.320 | `student_gap_v1.json` |
+| Native 100M extended smoke coverage | 4/7 (57%) | `native_smoke_eval_extended.json` |
+| Native 100M extended smoke malformed | 3/8 | candidate-scored decode (was 8/8 autoregressive) |
+| Verifier hard set accuracy | 1.0 @ n=500 | `checkpoint_v4.json` |

@@ -3,15 +3,17 @@
 set -euo pipefail
 cd /workspace/nano-lm
 export HF_HOME=/workspace/hf_cache
-RUN_ID="${NATIVE_EXTENDED_RUN_ID:-native100_evidence_bottleneck_s1}"
+RUN_IDS="${NATIVE_EXTENDED_RUN_IDS:-${NATIVE_EXTENDED_RUN_ID:-native100_evidence_bottleneck_s1}}"
 python3 scripts/train_native_nano.py --export-train-json
 if ! python3 -m nanoscribe.runpod_gpu_preflight; then
   echo "PREFLIGHT_WARN: preflight failed; checking nvidia-smi"
   nvidia-smi || { echo "PREFLIGHT_FATAL: no GPU"; exit 1; }
   echo "PREFLIGHT_OVERRIDE: nvidia-smi ok, continuing"
 fi
-echo "==> train ${RUN_ID} (max_steps=200)"
-python3 scripts/train_native_nano.py --run-id "${RUN_ID}"
+for RUN_ID in ${RUN_IDS}; do
+  echo "==> train ${RUN_ID} (max_steps=200)"
+  python3 scripts/train_native_nano.py --run-id "${RUN_ID}"
+done
 mkdir -p /workspace/campaign_native_checkpoints
 python3 - <<'PY'
 import shutil

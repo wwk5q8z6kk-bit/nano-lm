@@ -88,14 +88,15 @@
     "suite": "p1_contract_smoke_v1",
     "artifact": "artifacts/campaign/native_smoke_eval_extended.json",
     "n_cases": 3,
-    "coverage_rate": 0.0,
-    "coverage_eligible": 8,
-    "assertion_state_correct_rate": 0.0,
-    "assertion_state_correct_eligible": 0,
-    "exact_gold_span_rate": 0.0,
-    "exact_gold_span_eligible": 0,
-    "malformed": 8,
-    "note": "Hash-LM native inference produces garbled span-port lines; train loss converged but P1 structured decode not yet viable"
+    "coverage_rate": 0.5714,
+    "coverage_eligible": 7,
+    "assertion_state_correct_rate": 0.5,
+    "assertion_state_correct_eligible": 4,
+    "exact_gold_span_rate": 0.75,
+    "exact_gold_span_eligible": 4,
+    "malformed": 3,
+    "decode_method": "candidate_scoring_teacher_forced",
+    "note": "Finite candidate scoring replaces hash-LM autoregressive decode; partial P1 viability (57% coverage, 3/8 malformed). Not promotion-ready."
   },
   "round2_comparison": {
     "round2_step6_loss": 32.00298309326172,
@@ -109,5 +110,5 @@
     "volume_note": "CA-MTL-3 pod without volume mount; archive on pod at /workspace/campaign_native_checkpoints",
     "local_metrics": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/step_000{040,080,120,160,200}.json"
   },
-  "next_action": "Improve native hash-LM decode for P1 structured eval; optional span_port extended comparison"
+  "next_action": "Tune candidate scoring / training for assertion accuracy; optional span_port extended comparison"
 }
