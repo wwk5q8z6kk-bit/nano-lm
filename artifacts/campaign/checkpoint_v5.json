@@ -1,15 +1,15 @@
 {
   "schema": "nano.campaign.checkpoint.v5",
-  "timestamp": "2026-08-23T20:30:00+00:00",
+  "timestamp": "2026-08-23T20:42:56.207448+00:00",
   "commit_sha": "d637e26a2facc37ee931899207fbfbd45437eeff",
   "branch": "frontier/accelerated-research-campaign-v2",
   "supersedes": "artifacts/campaign/checkpoint_v4.json",
   "supersedes_note": "v4 optimistic winner language is historical only; v4 file preserved unchanged",
   "campaign_phase": "WAVE_0_MEASUREMENT_CORPUS_CI",
   "wallet": {
-    "live_runpod_balance_usd": 145.76,
-    "balance_note": "stale estimate — query runpodctl user before paid waves",
-    "current_spend_per_hr": 0.0,
+    "live_runpod_balance_usd": 145.0442299356,
+    "balance_note": "stale estimate \u2014 query runpodctl user before paid waves",
+    "current_spend_per_hr": 3.001,
     "campaign_remaining_est": 140.76,
     "session_new_spend_usd": 0.14
   },
@@ -38,9 +38,15 @@
       "status": "EXPLORATORY_UNDERPOWERED_RANKING",
       "promotion_status": "REVALIDATION_CANDIDATES",
       "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
-      "provisional_mechanisms": ["evidence_bottleneck", "span_port"],
+      "provisional_mechanisms": [
+        "evidence_bottleneck",
+        "span_port"
+      ],
       "artifact": "artifacts/campaign/native_round1_summary.json",
-      "invalid_for": ["confirmatory_promotion", "architecture_winner_claims"]
+      "invalid_for": [
+        "confirmatory_promotion",
+        "architecture_winner_claims"
+      ]
     },
     "native_round2": {
       "status": "INVALID_FOR_PROMOTION",
@@ -99,6 +105,35 @@
       "status": "STUB",
       "placeholder": "data/p1_screening_eval_v2.json",
       "generator": "scripts/generate_p1_screening_eval_v2.py"
+    },
+    "native30_revalidation": {
+      "status": "RUNNING",
+      "pod": "45zauz5xh1591w",
+      "datacenter": "CA-MTL-3",
+      "commit_sha": "6c98771",
+      "launched_at": "2026-08-23T20:42:56.207197+00:00",
+      "verification": {
+        "torch": "2.4.1+cu124 CUDA True (preserved through pip install)",
+        "corpus": "CORPUS_OK hash=de82e5d1... rows=19194",
+        "gpu_at_check": "96% util, 8367 MiB"
+      },
+      "design": "3 arms (decoder control / evidence_bottleneck / span_port) x 3 seeds, 1800 steps, batch 32, 3 epochs over 19,194 rows",
+      "corpus": "native_corpus_screen_v1_train (14,693,267 char-level tokens)",
+      "cost_projection_usd": 2.22,
+      "max_cost_usd": 6.45,
+      "artifact_dest": "artifacts/campaign/native30_revalidation_summary_v1.json",
+      "pass_criteria": [
+        "each arm scored on p1_screening_eval_v1 constrained AND free-generation",
+        "random-init and majority-class controls reported alongside",
+        "denominator-consistent yield per 150 gold atoms with 95% Wilson intervals",
+        "seed variance across 3 seeds",
+        "no winner unless it separates from the decoder control AND random-init"
+      ],
+      "attempts": {
+        "1_pod_9cg7kfpe4vlgzi": "ABORTED \u2014 pip installed torch 2.11.0+cu130 over the template torch; CUDA 12.4 driver could not run it, would have trained on CPU",
+        "2_pod_a46aeq9gdrq0g4": "ABORTED \u2014 train_native_nano.py --dataset defaulted to the unit fixture and applied unconditionally; corpus launch guard correctly refused",
+        "3_pod_45zauz5xh1591w": "RUNNING on GPU"
+      }
     }
   },
   "gates": {
@@ -113,7 +148,7 @@
   },
   "next_work_lanes": [
     "build + validate architecture-screen corpus (screen stage)",
-    "30M revalidation × 3 seeds on real corpus (Wave 1)",
+    "30M revalidation \u00d7 3 seeds on real corpus (Wave 1)",
     "QLoRA compatibility canary attempt 6 (unit fixture only)",
     "eval v2 design + power analysis",
     "pytest nanoscribe in CI with collection floor"
