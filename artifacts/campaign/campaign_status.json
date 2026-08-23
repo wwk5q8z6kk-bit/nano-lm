@@ -231,11 +231,21 @@
     "pod_id": "nrejxttt2nuxfa",
     "pod_name": "native100-ext-202608231031",
     "run_id": "native100_evidence_bottleneck_s1",
+    "run_variance_observation": {
+      "caveat": "n=2 on one config; this bounds nothing tightly, it flags that variance is unmeasured.",
+      "final_losses": [
+        0.007259658,
+        0.048755866
+      ],
+      "implication": "Two nominally identical 200-step runs differ 6.7x in final train loss. Briefing SS LV: 'IF seed variance exceeds architecture difference: increase seeds before concluding.' The round-2 ranking that promoted evidence_bottleneck over span_port rested on step-6 losses (32.0 vs 81.3) from single runs; that separation has not been shown to survive run-to-run noise. Strengthens the BLOCKED verdict.",
+      "same_run_id_and_seed": "native100_evidence_bottleneck_s1 / seed 1 / 200 steps",
+      "spread_ratio": 6.72
+    },
     "seed": 1,
     "status": "COMPLETE_WEIGHTS_VERIFIED",
     "steps_completed": 200,
     "summary": "artifacts/campaign/native_extended_summary.json",
-    "superseded_value_note": "A prior campaign_status entry recorded final_loss=0.007259658 attributed to pod 3taen8m3jgcs7z/commit 55547c3. No surviving artifact supports that value: the live pod log, the local step_000200.json and the first committed native_extended_summary.json all report 0.048755866 for pod nrejxttt2nuxfa. Steps 6-160 are bit-identical across both records, so these are not two independent runs. Treat 0.048756 as the verified value and 0.007259 as unsupported.",
+    "superseded_value_note": "TWO runs of the same run_id/seed exist across a training-loop change, both recorded in commit fb39282: (1) pod 3taen8m3jgcs7z @ 55547c3, final_loss 0.007259658, with its own runtime block (started 11:16:05, deleted 11:20:30, gpu_train_seconds 51, wallet 159.62->159.56); its weight pull hit CORRUPT_INTERRUPTED and the pod was deleted, so no weights survive. (2) pod nrejxttt2nuxfa @ d0165d8, final_loss 0.048755866, weights pulled and VERIFY_OK. The verified local checkpoint corresponds to run (2). Steps 6-160 are bit-identical across both records (same seed/data); only the tail diverges. Do NOT treat 0.007259 as unsupported - treat it as run (1), whose artifacts did not survive.",
     "weights_local": true,
     "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
     "weights_verify": "VERIFY_OK torch.load payload.model_state present (1188792509 bytes)"

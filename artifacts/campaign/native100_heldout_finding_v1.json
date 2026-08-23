@@ -157,5 +157,22 @@
       "ASSERTED: \"GERD flationt: tistin menstipatestinsyyyyyyyyyyyyyyyyy\""
     ],
     "interpretation": "The model learned the surface FORMAT of a span-port line (ASSERTED: \"...\") but not its CONTENT: emissions are degenerate character soup under the hash tokenizer. Coverage is 0/150. All apparent held-out performance in constrained mode was supplied by the candidate set, not the model. Native evidence-transport capability at this checkpoint is ZERO, not merely unmeasured."
-  }
+  },
+  "run_variance_observation": {
+    "same_run_id_and_seed": "native100_evidence_bottleneck_s1 / seed 1 / 200 steps",
+    "final_losses": [
+      0.007259658,
+      0.048755866
+    ],
+    "spread_ratio": 6.72,
+    "implication": "Two nominally identical 200-step runs differ 6.7x in final train loss. Briefing SS LV: 'IF seed variance exceeds architecture difference: increase seeds before concluding.' The round-2 ranking that promoted evidence_bottleneck over span_port rested on step-6 losses (32.0 vs 81.3) from single runs; that separation has not been shown to survive run-to-run noise. Strengthens the BLOCKED verdict.",
+    "caveat": "n=2 on one config; this bounds nothing tightly, it flags that variance is unmeasured."
+  },
+  "metric_inversion_tell": {
+    "metric": "support_direct_exact_rate",
+    "trained": 0.8929,
+    "random_init": 1.0,
+    "note": "The untrained control BEATS the trained model here. A metric on which a random-init model outperforms a trained one is diagnostic of the metric, not the model - further evidence that constrained-mode support/span metrics do not measure capability."
+  },
+  "native_extended_caution_scope": "final_vs_best_ratio 1.84 is a curve-shape observation (the last checkpoint is not the best checkpoint), NOT a ranking input. Train loss is not a valid ranking metric in this regime."
 }
