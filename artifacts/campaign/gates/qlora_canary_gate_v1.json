@@ -1,0 +1,30 @@
+{
+  "schema": "nano.campaign.gate.qlora_canary.v1",
+  "checked_at": "2026-08-23T20:27:48.949145+00:00",
+  "commit_sha": "d637e26a2facc37ee931899207fbfbd45437eeff",
+  "purpose": "PURPOSE_A_COMPATIBILITY_ONLY \u2014 supports NO model-quality claim",
+  "may_use_unit_fixture": true,
+  "fields": {
+    "code_committed": true,
+    "enable_input_require_grads_present": null,
+    "exact_manifest_ready": null,
+    "launch_authorized": false,
+    "live_wallet_usd": 145.3759541689,
+    "max_cost_usd": 2.0,
+    "wallet_above_projected": true,
+    "automatic_cleanup_defined": null,
+    "no_endpoint_before_job_ready": true
+  },
+  "tests_only": [
+    "model loads",
+    "QLoRA initializes",
+    "input gradients work",
+    "finite STEP_LOSS appears",
+    "optimizer updates",
+    "adapter writes",
+    "adapter reloads",
+    "endpoint terminates"
+  ],
+  "verdict": "PENDING_VERIFICATION",
+  "note": "attempt 5 reached MODEL_LOADED + QLORA_INIT_OK then crashed before STEP_LOSS. Verify the enable_input_require_grads() fix and manifest before authorizing attempt 6."
+}

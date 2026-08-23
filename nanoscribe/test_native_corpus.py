@@ -145,3 +145,57 @@ def test_corpus_build_is_deterministic() -> None:
         (root / "artifacts/campaign/native_corpus_smoke_v1_manifest.json").read_text()
     )["content_hash"]
     assert first == second, "corpus build is not deterministic; the manifest hash cannot be trusted"
+
+
+def test_guard_blocks_unit_fixture_from_scientific_use() -> None:
+    """The 4.5KB fixture must fail before launch, not after conclusions are drawn."""
+    import pytest as _pytest
+
+    from nanoscribe.native.corpus.guard import (
+        CorpusGuardError,
+        assert_usable,
+        classify,
+    )
+
+    fixture = {"corpus_id": "native_unit_overfit_fixture_v1", "training_tokens_char_level": 4516}
+    assert classify(fixture) == "NATIVE_UNIT_OVERFIT_FIXTURE"
+
+    # allowed fixture purposes pass
+    for purpose in ("trainer_smoke", "checkpoint_resume_test", "qlora_compatibility_canary"):
+        assert_usable(fixture, purpose)
+
+    # scientific purposes must raise
+    for purpose in ("architecture_ranking", "promotion", "held_out_generalization"):
+        with _pytest.raises(CorpusGuardError):
+            assert_usable(fixture, purpose)
+
+
+def test_guard_allows_real_corpus_for_science() -> None:
+    from nanoscribe.native.corpus.guard import assert_usable, classify
+
+    manifest_path = (
+        Path(__file__).resolve().parents[1]
+        / "artifacts/campaign/native_corpus_screen_v1_manifest.json"
+    )
+    if not manifest_path.is_file():
+        return
+    import json as _json
+
+    manifest = _json.loads(manifest_path.read_text())
+    assert classify(manifest) == "NATIVE_TRAINING_CORPUS"
+    assert_usable(manifest, "architecture_ranking")
+
+
+def test_guard_rejects_undersized_corpus_even_if_mislabelled() -> None:
+    """A label is not evidence — size is checked independently."""
+    import pytest as _pytest
+
+    from nanoscribe.native.corpus.guard import CorpusGuardError, assert_usable
+
+    lying = {
+        "corpus_id": "totally_a_real_corpus",
+        "corpus_class": "NATIVE_TRAINING_CORPUS",
+        "training_tokens_char_level": 4516,
+    }
+    with _pytest.raises(CorpusGuardError):
+        assert_usable(lying, "promotion")

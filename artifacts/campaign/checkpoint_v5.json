@@ -1,0 +1,136 @@
+{
+  "schema": "nano.campaign.checkpoint.v5",
+  "timestamp": "2026-08-23T20:27:26.084978+00:00",
+  "commit_sha": "d637e26a2facc37ee931899207fbfbd45437eeff",
+  "branch": "frontier/accelerated-research-campaign-v2",
+  "supersedes": "artifacts/campaign/checkpoint_v4.json (PRESERVED, not overwritten)",
+  "campaign_phase": "MEASUREMENT_REPAIR_AND_CORPUS_FACTORY",
+  "wallet": {
+    "live_runpod_balance_usd": 145.3759541689,
+    "current_spend_per_hr": 0.004,
+    "session_start_balance": 154.4742,
+    "session_spend_usd": 9.0982,
+    "this_lane_spend_usd": 0.14,
+    "this_lane_note": "agent canary ran entirely on free managed public endpoints; $0.14 is the aborted Wave-1 pod"
+  },
+  "active_resources": {
+    "pods": 0,
+    "serverless": 0,
+    "posture": "NO_ACTIVE_PAID_RESOURCES"
+  },
+  "superseded_claims": {
+    "checkpoint_v4.lanes_complete.managed_reference.c2_assertion_state_correct_rate=1.0": {
+      "status": "SUPERSEDED_BY_MEASUREMENT_REPAIR",
+      "defect": "D5_counts_averaged_as_rates",
+      "corrected": "118/150 = 0.7867, 95% CI [0.7144, 0.8446]",
+      "note": "the hardcoded 0.7867 sat in the coverage slot; true coverage is 129/150 = 0.8600"
+    },
+    "checkpoint_v4.lanes_complete.student_a.qlora_gate=UNLOCKED_SEMANTIC_GAP": {
+      "status": "INVALID_FOR_PROMOTION",
+      "defect": "D5",
+      "corrected": "gap vs managed ref -0.055, CIs overlap, NOT established; gate LOCKED. A real -0.152 gap remains vs Qwen3.8 (CIs disjoint) and may justify adaptation on that basis explicitly."
+    },
+    "native_round1 COMPLETE_RANKED / winner": {
+      "status": "EXPLORATORY_UNDERPOWERED",
+      "defects": [
+        "D3",
+        "D4",
+        "D6"
+      ],
+      "corrected": "provisional REVALIDATION_CANDIDATES: evidence_bottleneck, span_port"
+    },
+    "native_round2 COMPLETE_RANKED": {
+      "status": "INVALID_FOR_PROMOTION",
+      "defects": [
+        "D3",
+        "D4",
+        "D6"
+      ],
+      "corrected": "no arm separates from a random-init control"
+    },
+    "native_extended EXTENDED_COMPLETE_WITH_WEIGHTS": {
+      "status": "EXPLORATORY_UNDERPOWERED",
+      "defects": [
+        "D3",
+        "D4",
+        "D6"
+      ],
+      "corrected": "weights are real and VERIFY_OK, but held-out free-generation coverage is 0/150"
+    },
+    "qlora attempt 5": {
+      "status": "COMPATIBILITY_CANARY_FAILED",
+      "detail": "reached MODEL_LOADED and QLORA_INIT_OK, crashed before STEP_LOSS; likely PEFT + gradient checkpointing without input grads. enable_input_require_grads() has since landed.",
+      "note": "consumed paid compute without producing a training step"
+    }
+  },
+  "measurement_repair": {
+    "artifact": "artifacts/campaign/measurement_repair_v1.json",
+    "n_defects": 6,
+    "infrastructure_defects": 1,
+    "all_have_regression_tests": true
+  },
+  "corpus": {
+    "unit_fixture": {
+      "id": "native_unit_overfit_fixture_v1",
+      "path": "artifacts/campaign/p1_distill_train_v1.json",
+      "examples": 96,
+      "chars": 4516,
+      "status": "CURRENT_VALID for software correctness ONLY",
+      "forbidden_for": [
+        "architecture ranking",
+        "scale comparison",
+        "held-out generalization",
+        "30M winner claims",
+        "100M promotion",
+        "student adaptation quality",
+        "P1 capability claims"
+      ]
+    },
+    "R30": {
+      "id": "native_corpus_screen_v1",
+      "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+      "examples": 23977,
+      "training_tokens_char_level": 14693267,
+      "partitions": {
+        "TRAIN": 19194,
+        "DEV": 2397,
+        "INTERNAL_TEST": 2386
+      },
+      "leakage_pass": true,
+      "axis_coverage_pass": true,
+      "status": "CURRENT_VALID"
+    },
+    "P100": {
+      "id": "native_corpus_promotion_v1",
+      "content_hash": "89fb05149cec085326481b026a7bd0f912d6c5865cfc45fc56ce6ebd21d7b0be",
+      "examples": 59727,
+      "training_tokens_char_level": 36752357,
+      "status": "BUILT_NOT_YET_USED"
+    },
+    "not_in_git": "generated corpora are deterministic; generator + manifest content_hash are the durable artifacts"
+  },
+  "gates": {
+    "native_data_gate": "artifacts/campaign/gates/native_data_gate_v1.json",
+    "qlora_canary_gate": "artifacts/campaign/gates/qlora_canary_gate_v1.json",
+    "qlora_adaptation_gate": "artifacts/campaign/gates/qlora_adaptation_gate_v1.json",
+    "native_promotion_gate": "artifacts/campaign/native_gate_check_v1.json"
+  },
+  "in_flight": {
+    "native30_revalidation": {
+      "status": "LAUNCH_ABORTED_INFRA_DEFECT_FIXED_READY_TO_RELAUNCH",
+      "pod": "9cg7kfpe4vlgzi (deleted)",
+      "defect": "I1_torch_wheel_clobbers_cuda",
+      "corpus_verified_on_pod": "CORPUS_OK \u2014 content_hash matched",
+      "design": "3 arms (decoder control / evidence_bottleneck / span_port) x 3 seeds, 1800 steps, batch 32",
+      "cost_projection_usd": 2.22
+    }
+  },
+  "authoritative_next_work": [
+    "relaunch 30M revalidation with the torch-preserving bootstrap",
+    "build p1_screening_eval_v2 (256-512 cases, >=64 eligible per critical axis)",
+    "QLoRA Attempt 6 as a bounded ~$2 compatibility canary once its gate passes",
+    "student_gap_v2 with paired CIs",
+    "verifier hard-set expansion (500-2000 cases)"
+  ],
+  "authority": "NANO \u2014 CORPUS FACTORY, MEASUREMENT RECOVERY, AND MODEL-TRAINING ORDER"
+}

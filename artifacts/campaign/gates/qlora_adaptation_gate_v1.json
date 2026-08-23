@@ -1,0 +1,28 @@
+{
+  "schema": "nano.campaign.gate.qlora_adaptation.v1",
+  "checked_at": "2026-08-23T20:27:48.949145+00:00",
+  "commit_sha": "d637e26a2facc37ee931899207fbfbd45437eeff",
+  "purpose": "PURPOSE_B_ACTUAL_ADAPTATION",
+  "fields": {
+    "student_gap_report_complete": false,
+    "student_gap_note": "student_gap_v1 corrected; student_gap_v2 with paired CIs not yet built",
+    "real_disjoint_training_corpus": false,
+    "corpus_note": "the R30/P100 corpora target NATIVE span-port training; a student SFT corpus is a separate build",
+    "teacher_data_verified": false,
+    "baseline_metrics_denominator_correct": true,
+    "capability_gap_is_semantic": null,
+    "gap_vs_managed_ref": -0.0552,
+    "gap_vs_managed_ref_established": false,
+    "gap_vs_qwen38": -0.1521,
+    "gap_vs_qwen38_established": true,
+    "exact_adaptation_decision_exists": false
+  },
+  "verdict": "BLOCKED",
+  "blocking": [
+    "student_gap_report_complete",
+    "real_disjoint_training_corpus",
+    "teacher_data_verified",
+    "exact_adaptation_decision_exists"
+  ],
+  "warning": "canary success is NOT adaptation authorization"
+}
