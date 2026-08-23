@@ -1,7 +1,7 @@
 # Active Now
 
 **Updated:** 2026-08-22  
-**Integration base:** `origin/master` @ `2ad06d2` (excludes evidence-reconciliation `9fe5b6b6`)
+**Integration base:** `origin/master` @ `c4822b9` (PR #41 — Qwen inference + three-track harness)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
