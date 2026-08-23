@@ -5,11 +5,11 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 COMMIT_SHA="${WAVE1_COMMIT_SHA:-$(git rev-parse HEAD)}"
-DATA_CENTER="${RUNPOD_DATA_CENTER_IDS:-CA-MTL-3}"
-VOLUME_ID="${RUNPOD_VOLUME_ID:-}"
+DATA_CENTER="${RUNPOD_DATA_CENTER_IDS:-EU-RO-1}"
+VOLUME_ID="${RUNPOD_VOLUME_ID:-04himzqxbm}"
 LEDGER="${CAMPAIGN_LEDGER:-artifacts/campaign/spend.json}"
 EST_HOURS="${NATIVE_REVAL_HOURS:-0.75}"
-RATE="${NATIVE_REVAL_RATE:-4.59}"
+RATE="${NATIVE_REVAL_RATE:-1.39}"
 MANIFEST="artifacts/campaign/manifests/native30_revalidation_wave1_v1.json"
 # Right-sized from MEASURED footprint: a 30M arm peaked at 8.2GB of an A100's
 # 80GB — a 9.8x over-provision at $1.39-1.59/hr. An RTX A5000 (24GB, $0.27/hr)
@@ -18,7 +18,7 @@ MANIFEST="artifacts/campaign/manifests/native30_revalidation_wave1_v1.json"
 # Nine arms run CONCURRENTLY at ~8GB each, so the card is chosen for capacity
 # AND speed: 96GB fits all nine with headroom and finishes the screen in one
 # wall-clock batch instead of nine sequential ones.
-GPU_ID="${NATIVE_GPU_ID:-H200 SXM}"
+GPU_ID="${NATIVE_GPU_ID:-NVIDIA A100 80GB PCIe}"
 
 python3 scripts/campaign_spend.py --ledger "${LEDGER}" gate --amount "$(python3 -c "print(round(${RATE}*${EST_HOURS},4))")" >/dev/null
 
