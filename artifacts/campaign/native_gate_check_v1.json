@@ -1,6 +1,6 @@
 {
   "schema": "nano.campaign.native_gate.v1",
-  "checked_at": "2026-08-23T20:30:21.329302+00:00",
+  "checked_at": "2026-08-23T20:30:54.302221+00:00",
   "verdict": "PROMOTION_GATE_BLOCKED_DATA",
   "failed_conditions": [
     "9_code_committed"
@@ -32,7 +32,7 @@
     },
     "7_trainer_tests_pass": {
       "pass": true,
-      "detail": "........................................................................ [100%]"
+      "detail": "...                                                                      [100%]"
     },
     "8_ci_collects_nanoscribe": {
       "pass": true,
@@ -40,7 +40,7 @@
     },
     "9_code_committed": {
       "pass": false,
-      "detail": "4 uncommitted path(s): [' M artifacts/campaign/native_corpus_smoke_v1_manifest.json', ' M nanoscribe/native/trainer.py', ' M scripts/train_native_nano.py']"
+      "detail": "1 uncommitted path(s): ['?? artifacts/campaign/MEASUREMENT_REPAIR_V1.md']"
     },
     "10_command_and_artifact_ready": {
       "pass": true,
