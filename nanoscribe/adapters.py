@@ -197,3 +197,49 @@ class ApiTeacherAdapter:
             latency_s=latency_s,
             memory_bytes=memory_bytes,
         )
+
+
+@dataclass(frozen=True, slots=True)
+class ServerlessQwen38Adapter:
+    """Strong control lane — Qwen3.8-27B via RunPod Serverless OpenAI API."""
+
+    model_id: str = "serverless/qwen3.8-27b-strong-control"
+    api_model: str = "Qwen/Qwen3.8-27B"
+    endpoint_id: str | None = None
+    base_url: str | None = None
+    max_tokens: int = 64
+
+    def propose(
+        self,
+        model_input: ModelInput,
+        atom_specs: Sequence[AtomSpec],
+    ) -> ModelCandidateBatch:
+        from nanoscribe.serverless_inference import generate_serverless_span_port_lines
+
+        lines, latency_s, memory_bytes = generate_serverless_span_port_lines(
+            model_input,
+            atom_specs,
+            model=self.api_model,
+            endpoint_id=self.endpoint_id,
+            base_url=self.base_url,
+            max_tokens=self.max_tokens,
+        )
+        atoms: list[CandidateAtom] = []
+        for spec in atom_specs:
+            raw_line = lines.get(spec.atom_id, "NOT_MENTIONED")
+            atoms.append(
+                candidate_from_span_port_line(
+                    atom_id=spec.atom_id,
+                    atom_type=spec.atom_type,
+                    raw_value=spec.raw_value,
+                    raw_line=raw_line,
+                    speaker=spec.speaker,
+                    experiencer=spec.experiencer,
+                    temporality=spec.temporality,
+                )
+            )
+        return ModelCandidateBatch(
+            atoms=tuple(atoms),
+            latency_s=latency_s,
+            memory_bytes=memory_bytes,
+        )

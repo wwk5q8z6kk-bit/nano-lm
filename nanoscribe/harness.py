@@ -18,6 +18,7 @@ from nanoscribe.evaluate import EvalReport
 class ModelTrack(str, Enum):
     FIXTURE = "fixture"
     COMPACT = "compact"
+    SERVERLESS = "serverless"
     FRONTIER = "frontier"
 
 
