@@ -185,6 +185,28 @@ class ModelInput:
     prompt: str | None = None
 
 
+def _parse_candidate_temporality(value: object, path: str) -> TemporalState:
+    mapping = _require_mapping(value, path)
+    if "kind" not in mapping:
+        _fail("missing_key", "temporality.kind is required", path)
+    kind = _parse_enum(Temporality, mapping["kind"], f"{path}.kind")
+    onset = mapping.get("onset_raw")
+    duration = mapping.get("duration_raw")
+    time_expr = mapping.get("time_expression_raw")
+    if onset is not None and not isinstance(onset, str):
+        _fail("type_error", "onset_raw must be a string or null", f"{path}.onset_raw")
+    if duration is not None and not isinstance(duration, str):
+        _fail("type_error", "duration_raw must be a string or null", f"{path}.duration_raw")
+    if time_expr is not None and not isinstance(time_expr, str):
+        _fail("type_error", "time_expression_raw must be a string or null", f"{path}.time_expression_raw")
+    return TemporalState(
+        kind=kind,
+        onset_raw=onset,
+        duration_raw=duration,
+        time_expression_raw=time_expr,
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class CandidateEvidenceRequest:
     """A quote the model asks software to locate in the source."""
@@ -236,10 +258,17 @@ class CandidateAtom:
         _reject_forbidden_keys(mapping, path)
         if "schema_version" in mapping:
             _fail("forbidden_key", "candidate atoms must not carry schema_version", path)
-        quotes = mapping.get("quotes", ())
+        quotes = mapping.get("quotes")
+        evidence_quote = mapping.get("evidence_quote")
+        if evidence_quote is not None:
+            if not isinstance(evidence_quote, str) or not evidence_quote:
+                _fail("type_error", "evidence_quote must be a non-empty string", f"{path}.evidence_quote")
+            quotes = [evidence_quote]
         if quotes is None:
-            quotes = ()
-        if not isinstance(quotes, list) or any(not isinstance(item, str) for item in quotes):
+            quotes = []
+        elif not isinstance(quotes, list):
+            _fail("type_error", "quotes must be an array of strings", f"{path}.quotes")
+        if any(not isinstance(item, str) for item in quotes):
             _fail("type_error", "quotes must be an array of strings", f"{path}.quotes")
         temporality = mapping.get("temporality")
         return cls(
@@ -270,7 +299,7 @@ class CandidateAtom:
                 else None
             ),
             temporality=(
-                TemporalState.from_dict(temporality, path=f"{path}.temporality")
+                _parse_candidate_temporality(temporality, f"{path}.temporality")
                 if temporality is not None
                 else None
             ),

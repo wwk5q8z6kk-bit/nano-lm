@@ -342,6 +342,32 @@ def test_adapt_json_end_to_end() -> None:
     assert atom_result(report, "atom-neck").exact_gold_span
 
 
+def test_abstained_atom_without_quotes_parses() -> None:
+    batch = ModelCandidate.from_dict(
+        {
+            "schema_version": CANDIDATE_SCHEMA_VERSION,
+            "atoms": [
+                {
+                    "atom_id": "medication",
+                    "atom_type": "medication",
+                    "raw_value": "medication",
+                    "assertion_state": "uncertain",
+                    "speaker": "patient",
+                    "experiencer": "patient",
+                    "temporality": {"kind": "current"},
+                    "certainty": "uncertain",
+                    "review_required": False,
+                    "abstained": True,
+                    "malformed": False,
+                }
+            ],
+        }
+    )
+    assert len(batch.atoms) == 1
+    assert batch.atoms[0].abstained
+    assert batch.atoms[0].quotes == ()
+
+
 def test_model_cannot_emit_encounter_schema() -> None:
     expect(
         "schema_version",
@@ -394,6 +420,21 @@ def test_run_pipeline_smoke_with_encounter_probe() -> None:
     assert len(predicted.atoms) == 5
     assert atom_result(report, "atom-neck").exact_gold_span
     assert report.correct_abstention == 1
+
+
+def test_failure_layers_on_clean_baseline() -> None:
+    from nanoscribe.decompose import classify_report
+
+    gold = _gold()
+    model_input = _model_input(gold.sources[0])
+    batch = default_qwen_fixture_adapter().propose(model_input, default_baseline_specs())
+    _, report = run_pipeline(model_input, batch, gold=gold)
+    assert report is not None
+    layers = classify_report(report)
+    assert layers["layers"]["malformed"] == 0
+    assert layers["layers"]["commission"] == 0
+    assert layers["layers"]["transport"] == 0
+    assert layers["support_mix"]["direct_exact"] == 3
 
 
 if __name__ == "__main__":
