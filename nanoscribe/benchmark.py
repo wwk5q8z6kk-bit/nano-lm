@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from nanoscribe.adapt import run_pipeline
 from nanoscribe.adapters import default_baseline_specs, default_qwen_fixture_adapter
+from nanoscribe.decompose import classify_report
 from nanoscribe.test_adapt import _gold, _model_input
 
 
@@ -64,6 +65,7 @@ def run_baseline() -> dict[str, object]:
         "model_family": "qwen2.5-1.5b-style-one-liner",
         "note": "Software simulation of historical quote+label output; no weights loaded.",
         "aggregate": decomposition,
+        "layers": classify_report(report),
         "per_atom": per_atom,
     }
 

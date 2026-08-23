@@ -422,6 +422,21 @@ def test_run_pipeline_smoke_with_encounter_probe() -> None:
     assert report.correct_abstention == 1
 
 
+def test_failure_layers_on_clean_baseline() -> None:
+    from nanoscribe.decompose import classify_report
+
+    gold = _gold()
+    model_input = _model_input(gold.sources[0])
+    batch = default_qwen_fixture_adapter().propose(model_input, default_baseline_specs())
+    _, report = run_pipeline(model_input, batch, gold=gold)
+    assert report is not None
+    layers = classify_report(report)
+    assert layers["layers"]["malformed"] == 0
+    assert layers["layers"]["commission"] == 0
+    assert layers["layers"]["transport"] == 0
+    assert layers["support_mix"]["direct_exact"] == 3
+
+
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     for name, fn in fns:
