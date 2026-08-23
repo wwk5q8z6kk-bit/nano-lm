@@ -22,6 +22,7 @@ from pull_native_weights import resolve_direct_scp
 
 MANIFEST = ROOT / "artifacts/campaign/manifests/student_qlora_canary_v1.json"
 OUT_PATH = ROOT / "artifacts/campaign/student_qlora_canary_results.json"
+FAIL_LOG_PATH = ROOT / "artifacts/campaign/student_qlora_canary_last.log"
 ADAPTER_DIR = ROOT / "artifacts/campaign/student_qlora_canary_adapter"
 CHECKPOINT = ROOT / "artifacts/campaign/checkpoint_v3.json"
 LEDGER = ROOT / "artifacts/campaign/spend.json"
@@ -281,7 +282,13 @@ def _parse_log(text: str) -> dict[str, Any]:
     qlora_init = "QLORA_INIT_OK" in text
     adapter_saved = "ADAPTER_SAVED" in text
     train_done = "TRAIN_DONE" in text
-    fatal = any(x in text for x in ("MODEL_LOAD_FAIL", "Traceback", "CUDA out of memory", "RuntimeError"))
+    train_fail = "TRAIN_FAIL:" in text
+    fatal = (
+        "MODEL_LOAD_FAIL" in text
+        or "CUDA out of memory" in text
+        or train_fail
+        or ("Traceback" in text and "TRAIN_START" in text and not train_done and "STEP_LOSS" not in text)
+    )
 
     for match in STEP_LOSS_RE.finditer(text):
         step = int(match.group(1))
@@ -312,7 +319,18 @@ def _parse_log(text: str) -> dict[str, Any]:
     }
 
 
-def _poll_training(pod_id: str, *, timeout_s: int = 3600) -> dict[str, Any]:
+def _save_remote_log(pod_id: str) -> str | None:
+    try:
+        full = _ssh(pod_id, f"cat {REMOTE_LOG} 2>/dev/null || true")
+        if full.strip():
+            FAIL_LOG_PATH.write_text(full)
+            return str(FAIL_LOG_PATH)
+    except RuntimeError:
+        pass
+    return None
+
+
+def _poll_training(pod_id: str, *, timeout_s: int = 5400) -> dict[str, Any]:
     deadline = time.time() + timeout_s
     last_text = ""
     while time.time() < deadline:
@@ -326,8 +344,8 @@ def _poll_training(pod_id: str, *, timeout_s: int = 3600) -> dict[str, Any]:
         if parsed["train_done"] or parsed["fatal_error"]:
             full = _ssh(pod_id, f"cat {REMOTE_LOG} 2>/dev/null || true")
             return _parse_log(full)
-        if "TRAIN_START" in tail and not parsed["loss_curve"]:
-            time.sleep(30)
+        if "TRAIN_START" in tail:
+            time.sleep(45)
             continue
         time.sleep(25)
     return _parse_log(last_text)
@@ -433,6 +451,9 @@ def run_pod_canary(*, est_cost: float = 2.0, attempt: int = 5) -> dict[str, Any]
             if not adapter_ok:
                 reasons.append("adapter_pull_failed")
             result["error"] = ",".join(reasons) or "pass_criteria_unmet"
+            log_path = _save_remote_log(pod_id)
+            if log_path:
+                result["failure_log"] = log_path
         return result
     except Exception as exc:
         result.update({"status": "FAIL", "error": str(exc), "pass": False, "round1_adaptation_gate": "BLOCKED"})

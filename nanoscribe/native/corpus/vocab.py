@@ -148,6 +148,8 @@ _MODIFIERS: tuple[str, ...] = (
     "dull", "sharp", "throbbing", "aching", "burning", "stabbing", "cramping",
     "tingling", "pressing", "pulsing", "gnawing", "searing", "tight", "heavy",
     "prickling", "radiating", "intermittent", "constant", "worsening", "dull-edged",
+    "pinching", "shooting", "grinding", "flickering", "swelling", "stiffening",
+    "cold", "hot", "deep", "surface-level", "nagging", "sudden",
 )
 _SITES: tuple[str, ...] = (
     "left shoulder", "right shoulder", "lower back", "upper back", "left knee",
@@ -155,10 +157,13 @@ _SITES: tuple[str, ...] = (
     "right ankle", "left ankle", "right wrist", "left wrist", "mid spine",
     "right calf", "left calf", "right forearm", "left forearm", "right thigh",
     "left thigh", "upper abdomen", "lower abdomen", "right temple", "left temple",
+    "right jaw", "left jaw", "base of the skull", "right rib cage", "left rib cage",
+    "right heel", "left heel", "right shin", "left shin", "upper chest wall",
 )
 _QUALITIES: tuple[str, ...] = (
     "discomfort", "soreness", "ache", "sensation", "tightness", "irritation",
-    "throb", "twinge", "heaviness", "numbness",
+    "throb", "twinge", "heaviness", "numbness", "pulling", "stinging",
+    "weakness", "cramping", "pressure feeling", "tenderness",
 )
 
 

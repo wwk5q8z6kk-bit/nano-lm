@@ -84,6 +84,8 @@ def main() -> int:
     model = get_peft_model(model, lora)
     model.print_trainable_parameters()
     print("QLORA_INIT_OK", flush=True)
+    if hasattr(model, "enable_input_require_grads"):
+        model.enable_input_require_grads()
 
     def tokenize(batch: dict[str, list[str]]) -> dict[str, list[list[int]]]:
         return tokenizer(batch["text"], truncation=True, max_length=2048)
@@ -138,7 +140,14 @@ def main() -> int:
         callbacks=[logger_cb],
     )
     print("TRAIN_START", flush=True)
-    trainer.train()
+    try:
+        trainer.train()
+    except Exception as exc:
+        print(f"TRAIN_FAIL: {exc}", flush=True)
+        import traceback
+
+        traceback.print_exc()
+        return 1
     trainer.save_model(str(out_dir))
     tokenizer.save_pretrained(str(out_dir))
     print("ADAPTER_SAVED", flush=True)

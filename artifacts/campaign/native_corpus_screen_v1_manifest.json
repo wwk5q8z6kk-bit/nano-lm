@@ -1,0 +1,137 @@
+{
+  "schema": "nano.native.corpus.v1",
+  "corpus_id": "native_corpus_screen_v1",
+  "revision": "native_corpus_screen_v1",
+  "stage": "screen",
+  "built_at": "2026-08-23T19:56:30.326171+00:00",
+  "generator_commit_sha": "f3b69f07b9e608c51a37c258b4d456d49cb0ef06",
+  "seed_namespace": "native_corpus_v1",
+  "no_phi": true,
+  "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+  "generation_config": {
+    "composed_mech": 6000,
+    "composed_adv": 2000
+  },
+  "statistics": {
+    "n_examples": 23977,
+    "partition_sizes": {
+      "TRAIN": 19194,
+      "DEV": 2397,
+      "INTERNAL_TEST": 2386
+    },
+    "layer_sizes": {
+      "B_mechanism_curriculum": 17656,
+      "C_adversarial_curriculum": 6321
+    },
+    "axis_histogram": {
+      "exact_copy": 14128,
+      "open_vocab": 13268,
+      "not_mentioned": 8558,
+      "assertion": 8441,
+      "spurious_temptation": 5555,
+      "negation": 3688,
+      "wrong_source": 3423,
+      "uncertainty": 3187,
+      "temporality": 2667,
+      "abstention": 2161,
+      "conflict": 1291,
+      "multi_mention": 1263,
+      "experiencer": 1083,
+      "superspan": 860,
+      "speaker": 842
+    },
+    "template_histogram": {
+      "adv_wrong_source_records": 2581,
+      "unc_think": 1896,
+      "absent_other_topic": 1516,
+      "adv_self_contradiction": 1291,
+      "assert_have": 1265,
+      "assert_getting": 1264,
+      "assert_noticed": 1263,
+      "assert_dealing": 1263,
+      "multi_two_mentions": 1263,
+      "assert_bothering": 1263,
+      "assert_started": 1263,
+      "experiencer_family": 1083,
+      "temporality_historical": 947,
+      "adv_superspan_clause": 860,
+      "speaker_clinician_only": 842,
+      "adv_silence_not_denial": 645,
+      "deny_no": 633,
+      "deny_denies": 632,
+      "deny_not": 632,
+      "deny_never": 631,
+      "adv_plausible_unsupported": 515,
+      "adv_future_plan": 429
+    },
+    "unique_values": 7581,
+    "value_histogram_top20": {
+      "burning right ankle tightness": 9,
+      "dull left ankle throb": 8,
+      "dull right forearm tenderness": 8,
+      "dull left thigh pulling": 8,
+      "dull lower abdomen tightness": 8,
+      "dull left temple irritation": 8,
+      "dull right rib cage pulling": 8,
+      "dull left shin irritation": 8,
+      "sharp left knee tightness": 8,
+      "sharp right calf sensation": 8,
+      "sharp right calf irritation": 8,
+      "sharp left forearm discomfort": 8,
+      "sharp lower abdomen sensation": 8,
+      "sharp right jaw ache": 8,
+      "sharp right shin stinging": 8,
+      "sharp left shin heaviness": 8,
+      "throbbing upper back irritation": 8,
+      "throbbing left hip pressure feeling": 8,
+      "throbbing left wrist stinging": 8,
+      "throbbing left calf weakness": 8
+    },
+    "target_label_histogram": {
+      "ASSERTED": 9704,
+      "NOT_MENTIONED": 8558,
+      "UNCERTAIN": 3187,
+      "DENIED": 2528
+    },
+    "chars": {
+      "prompt_total": 13999225,
+      "target_total": 694042,
+      "total": 14693267,
+      "mean_prompt": 583.9
+    },
+    "training_tokens_char_level": 14693267
+  },
+  "dedupe": {
+    "input": 23977,
+    "kept": 23977,
+    "removed_exact_duplicates": 0,
+    "removed_near_duplicates": 0,
+    "duplicate_rate": 0.0
+  },
+  "leakage": {
+    "reserved_value_hits": [],
+    "n_reserved_value_hits": 0,
+    "eval_source_overlap_count": 0,
+    "eval_sources_indexed": 64,
+    "eval_index_error": null,
+    "train_dev_value_overlap": [],
+    "train_test_value_overlap": [],
+    "pass": true
+  },
+  "axis_coverage": {
+    "minimum_required": 64,
+    "below_floor": {},
+    "pass": true
+  },
+  "gates": {
+    "leakage_pass": true,
+    "axis_coverage_pass": true,
+    "nonzero": true,
+    "all_pass": true
+  },
+  "partition_files": {
+    "TRAIN": "artifacts/campaign/native_corpus_screen_v1_train.json",
+    "DEV": "artifacts/campaign/native_corpus_screen_v1_dev.json",
+    "INTERNAL_TEST": "artifacts/campaign/native_corpus_screen_v1_internal_test.json"
+  }
+}

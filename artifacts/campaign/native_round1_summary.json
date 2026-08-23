@@ -149,5 +149,23 @@
     "D": "slot_router + structured_json"
   },
   "round2_100m_gate": "UNBLOCKED \u2014 promote evidence_bottleneck + top transport cells A/B to 100M screening",
-  "next_action": "Optional: rsync latest.pt from volume if weights needed locally; launch round2 100M on winning mechanisms"
+  "next_action": "Optional: rsync latest.pt from volume if weights needed locally; launch round2 100M on winning mechanisms",
+  "verdict_reclassified": {
+    "verdict": "EXPLORATORY_SCREENING_RANKING",
+    "was": "COMPLETE_RANKED / winner language",
+    "why": "Ranking was produced on the 4,516-char fixture with n=4-15 eligible cases per axis and single seeds. Retained as a successive-halving signal for choosing which arms to revalidate \u2014 NOT a statistically established architectural conclusion.",
+    "reclassified_at": "2026-08-23T19:49:19.431428+00:00",
+    "authority": "NANO corpus/measurement/CI recovery order",
+    "allowed_verdict_labels": [
+      "UNIT_FIXTURE_PASS",
+      "EXPLORATORY_SCREENING_RANKING",
+      "PROMOTION_CANDIDATE",
+      "STATISTICALLY_UNDERPOWERED",
+      "PROMOTION_GATE_BLOCKED_DATA",
+      "PROMOTION_GATE_OPEN",
+      "CONFIRMATORY_RESULT"
+    ],
+    "successive_halving_value": "PRESERVED \u2014 provisional promotion candidates remain evidence_bottleneck and span_port",
+    "supersedes_nothing": "original fields left intact; this is an added label, not a rewrite"
+  }
 }

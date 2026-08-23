@@ -1,0 +1,137 @@
+{
+  "schema": "nano.native.corpus.v1",
+  "corpus_id": "native_corpus_smoke_v1",
+  "revision": "native_corpus_smoke_v1",
+  "stage": "smoke",
+  "built_at": "2026-08-23T19:54:58.136668+00:00",
+  "generator_commit_sha": "53664b0effd33e45e834f1a3ecfae91197487b92",
+  "seed_namespace": "native_corpus_v1",
+  "no_phi": true,
+  "content_hash": "7de5c643d35b666c38bd869a57a533b6b1ed615a4ceba613f9d0c95d5670def2",
+  "generation_config": {
+    "composed_mech": 40,
+    "composed_adv": 20
+  },
+  "statistics": {
+    "n_examples": 812,
+    "partition_sizes": {
+      "TRAIN": 462,
+      "DEV": 179,
+      "INTERNAL_TEST": 171
+    },
+    "layer_sizes": {
+      "B_mechanism_curriculum": 469,
+      "C_adversarial_curriculum": 343
+    },
+    "axis_histogram": {
+      "exact_copy": 401,
+      "open_vocab": 354,
+      "not_mentioned": 340,
+      "assertion": 248,
+      "spurious_temptation": 243,
+      "wrong_source": 163,
+      "negation": 130,
+      "uncertainty": 122,
+      "temporality": 118,
+      "abstention": 75,
+      "conflict": 71,
+      "superspan": 47,
+      "multi_mention": 34,
+      "experiencer": 28,
+      "speaker": 22
+    },
+    "template_histogram": {
+      "adv_wrong_source_records": 141,
+      "adv_self_contradiction": 71,
+      "unc_think": 51,
+      "adv_superspan_clause": 47,
+      "absent_other_topic": 40,
+      "adv_silence_not_denial": 35,
+      "assert_have": 34,
+      "assert_getting": 34,
+      "assert_noticed": 34,
+      "assert_dealing": 34,
+      "multi_two_mentions": 34,
+      "assert_bothering": 33,
+      "assert_started": 32,
+      "experiencer_family": 28,
+      "adv_plausible_unsupported": 27,
+      "temporality_historical": 25,
+      "speaker_clinician_only": 22,
+      "adv_future_plan": 22,
+      "deny_no": 17,
+      "deny_denies": 17,
+      "deny_not": 17,
+      "deny_never": 17
+    },
+    "unique_values": 201,
+    "value_histogram_top20": {
+      "itchy eyes": 7,
+      "hip soreness": 7,
+      "contact dermatitis": 7,
+      "rotator cuff irritation": 7,
+      "temporomandibular strain": 7,
+      "tamsulosin": 7,
+      "dull left shoulder sensation": 7,
+      "dull right shoulder throb": 7,
+      "dull lower back ache": 7,
+      "dull left thigh discomfort": 7,
+      "dull right temple numbness": 7,
+      "dull mid spine irritation": 7,
+      "dull right forearm throb": 7,
+      "heartburn": 6,
+      "numbness": 6,
+      "wheezing": 6,
+      "muscle cramps": 6,
+      "morning stiffness": 6,
+      "clammy skin": 6,
+      "orthostatic hypotension": 6
+    },
+    "target_label_histogram": {
+      "NOT_MENTIONED": 340,
+      "ASSERTED": 282,
+      "UNCERTAIN": 122,
+      "DENIED": 68
+    },
+    "chars": {
+      "prompt_total": 462360,
+      "target_total": 18573,
+      "total": 480933,
+      "mean_prompt": 569.4
+    },
+    "training_tokens_char_level": 480933
+  },
+  "dedupe": {
+    "input": 812,
+    "kept": 812,
+    "removed_exact_duplicates": 0,
+    "removed_near_duplicates": 0,
+    "duplicate_rate": 0.0
+  },
+  "leakage": {
+    "reserved_value_hits": [],
+    "n_reserved_value_hits": 0,
+    "eval_source_overlap_count": 0,
+    "eval_sources_indexed": 64,
+    "eval_index_error": null,
+    "train_dev_value_overlap": [],
+    "train_test_value_overlap": [],
+    "pass": true
+  },
+  "axis_coverage": {
+    "minimum_required": 64,
+    "below_floor": {
+      "multi_mention": 34,
+      "experiencer": 28,
+      "speaker": 22,
+      "superspan": 47
+    },
+    "pass": false
+  },
+  "gates": {
+    "leakage_pass": true,
+    "axis_coverage_pass": false,
+    "nonzero": true,
+    "all_pass": false
+  }
+}

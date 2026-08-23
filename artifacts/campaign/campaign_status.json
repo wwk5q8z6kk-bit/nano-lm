@@ -69,6 +69,7 @@
   "commit_sha": "a6c44b3",
   "committed_spend": 1.39,
   "current_spend_per_hr": 0.004,
+  "endpoint_churn_cost": "artifacts/campaign/endpoint_churn_cost_v1.json",
   "execution_authority": "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
   "fleet_audit": {
     "as_of": "2026-08-23T19:05:00+00:00",
@@ -543,5 +544,30 @@
   "students": {
     "student_plane": "vllm_sglang_serverless_not_raw_a100"
   },
-  "timestamp": "2026-08-23T19:05:00+00:00"
+  "timestamp": "2026-08-23T19:05:00+00:00",
+  "verdict_labels": {
+    "allowed": [
+      "UNIT_FIXTURE_PASS",
+      "EXPLORATORY_SCREENING_RANKING",
+      "PROMOTION_CANDIDATE",
+      "STATISTICALLY_UNDERPOWERED",
+      "PROMOTION_GATE_BLOCKED_DATA",
+      "PROMOTION_GATE_OPEN",
+      "CONFIRMATORY_RESULT"
+    ],
+    "banned": [
+      "WINNER (when the design cannot support it)"
+    ],
+    "current": {
+      "native_100m_promotion": "PROMOTION_GATE_BLOCKED_DATA",
+      "native_extended": "STATISTICALLY_UNDERPOWERED",
+      "native_round1": "EXPLORATORY_SCREENING_RANKING",
+      "native_round2": "STATISTICALLY_UNDERPOWERED",
+      "provisional_candidates": [
+        "evidence_bottleneck",
+        "span_port"
+      ],
+      "qlora": "PROMOTION_GATE_BLOCKED_DATA"
+    }
+  }
 }

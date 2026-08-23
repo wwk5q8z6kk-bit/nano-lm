@@ -20,12 +20,37 @@
   "epochs_completed": 34,
   "final_train_loss": 0.048755865544080734,
   "loss_curve": [
-    {"step": 6, "loss": 32.00298309326172, "source": "round2", "timestamp": "2026-08-23T10:51:54+00:00"},
-    {"step": 40, "loss": 5.885036945343018, "timestamp": "2026-08-23T11:18:47.840413+00:00"},
-    {"step": 80, "loss": 0.2848661541938782, "timestamp": "2026-08-23T11:18:59.952462+00:00"},
-    {"step": 120, "loss": 0.07124953716993332, "timestamp": "2026-08-23T11:19:09.273585+00:00"},
-    {"step": 160, "loss": 0.02656559832394123, "timestamp": "2026-08-23T11:19:19.477599+00:00"},
-    {"step": 200, "loss": 0.048755865544080734, "timestamp": "2026-08-23T14:34:55.514220+00:00"}
+    {
+      "step": 6,
+      "loss": 32.00298309326172,
+      "source": "round2",
+      "timestamp": "2026-08-23T10:51:54+00:00"
+    },
+    {
+      "step": 40,
+      "loss": 5.885036945343018,
+      "timestamp": "2026-08-23T11:18:47.840413+00:00"
+    },
+    {
+      "step": 80,
+      "loss": 0.2848661541938782,
+      "timestamp": "2026-08-23T11:18:59.952462+00:00"
+    },
+    {
+      "step": 120,
+      "loss": 0.07124953716993332,
+      "timestamp": "2026-08-23T11:19:09.273585+00:00"
+    },
+    {
+      "step": 160,
+      "loss": 0.02656559832394123,
+      "timestamp": "2026-08-23T11:19:19.477599+00:00"
+    },
+    {
+      "step": 200,
+      "loss": 0.048755865544080734,
+      "timestamp": "2026-08-23T14:34:55.514220+00:00"
+    }
   ],
   "loss_reduction": {
     "step6_to_step200": 31.99572343518958,
@@ -47,7 +72,7 @@
   "wallet": {
     "pre_launch_usd": 154.97,
     "post_terminate_usd": 154.47,
-    "delta_est_usd": 0.50
+    "delta_est_usd": 0.5
   },
   "verdict": "COMPLETE_WITH_WEIGHTS",
   "reason": "200/200 steps US-KS-2; weights pulled via direct TCP SCP; torch.load verified; smoke eval run",
@@ -77,9 +102,21 @@
     "weights_gap_reason": "Only step_*.json metadata pulled via SSH before terminate; .pt files (~1.1GB each) left on pod container disk. Pod 3taen8m3jgcs7z deleted; CA-MTL-3 had no volume mount.",
     "weights_recovery": "NOT_RECOVERABLE without re-train; pull_native_weights.py + finish_native_pod.sh added in ec98817",
     "retrain_attempts": [
-      {"pod_id": "l2zq2ldhwrzruw", "status": "CUDA_DRIVER_FAIL", "note": "torch.cuda unavailable, preflight blocked training"},
-      {"pod_id": "8rbzmha2htpqs6", "status": "CUDA_DRIVER_FAIL_CPU", "note": "preflight override but CPU-only training"},
-      {"pod_id": null, "status": "NO_STOCK", "note": "CA-MTL-3/EU-RO-1/any region A100 unavailable after CUDA gate added"}
+      {
+        "pod_id": "l2zq2ldhwrzruw",
+        "status": "CUDA_DRIVER_FAIL",
+        "note": "torch.cuda unavailable, preflight blocked training"
+      },
+      {
+        "pod_id": "8rbzmha2htpqs6",
+        "status": "CUDA_DRIVER_FAIL_CPU",
+        "note": "preflight override but CPU-only training"
+      },
+      {
+        "pod_id": null,
+        "status": "NO_STOCK",
+        "note": "CA-MTL-3/EU-RO-1/any region A100 unavailable after CUDA gate added"
+      }
     ],
     "local_dir_bytes": 24576
   },
@@ -110,5 +147,23 @@
     "volume_note": "CA-MTL-3 pod without volume mount; archive on pod at /workspace/campaign_native_checkpoints",
     "local_metrics": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/step_000{040,080,120,160,200}.json"
   },
-  "next_action": "Tune candidate scoring / training for assertion accuracy; optional span_port extended comparison"
+  "next_action": "Tune candidate scoring / training for assertion accuracy; optional span_port extended comparison",
+  "verdict_reclassified": {
+    "verdict": "STATISTICALLY_UNDERPOWERED",
+    "was": "COMPLETE",
+    "why": "200 steps over 96 examples is ~33 epochs of a 4.5KB fixture; final train loss reflects memorisation. Held-out free-generation coverage was 0/150.",
+    "reclassified_at": "2026-08-23T19:49:19.431428+00:00",
+    "authority": "NANO corpus/measurement/CI recovery order",
+    "allowed_verdict_labels": [
+      "UNIT_FIXTURE_PASS",
+      "EXPLORATORY_SCREENING_RANKING",
+      "PROMOTION_CANDIDATE",
+      "STATISTICALLY_UNDERPOWERED",
+      "PROMOTION_GATE_BLOCKED_DATA",
+      "PROMOTION_GATE_OPEN",
+      "CONFIRMATORY_RESULT"
+    ],
+    "successive_halving_value": "PRESERVED \u2014 provisional promotion candidates remain evidence_bottleneck and span_port",
+    "supersedes_nothing": "original fields left intact; this is an added label, not a rewrite"
+  }
 }

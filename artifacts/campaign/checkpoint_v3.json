@@ -134,11 +134,11 @@
     "student_gap": "artifacts/campaign/student_gap_v1.json",
     "qlora_gate": "UNLOCKED_SEMANTIC_GAP",
     "qlora_canary": "artifacts/campaign/student_qlora_canary_results.json",
-    "qlora_canary_status": "FAIL",
+    "qlora_canary_status": "FAIL_ATTEMPT_5_TRAIN_CRASH",
     "qlora_canary_attempt": 5,
     "qlora_canary_manifest": "artifacts/campaign/manifests/student_qlora_canary_v1.json",
-    "qlora_canary_note": "Attempt 4 failed ENOSPC (50GB disk) + dep/SSH issues; attempt 5 prep: 80GB disk, L40S>A100 PCIe>A100 SXM, pinned deps, direct TCP SCP",
-    "qlora_canary_prior": "attempts 1-3 Hub stream empty; attempt 4 raw pod 7 launches ~$3+ ops waste"
+    "qlora_canary_note": "Attempt 5: 80GB disk OK, MODEL_LOADED+QLORA_INIT_OK; train crashed before STEP_LOSS. Scripts fixed: enable_input_require_grads, TRAIN_FAIL marker, failure log pull, 90m poll. Attempt 6 deferred — Wave 0 corpus primary (NANO_MODEL_PROGRAM)",
+    "qlora_canary_prior": "attempts 1-3 Hub stream empty; attempt 4 ENOSPC/SSH; attempt 5 ~$1.08"
   },
   "disagreement_matrix": {
     "n_cases": 128,
