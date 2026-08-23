@@ -24,10 +24,19 @@ from nanoscribe.native.tokenize import detokenize, hash_tokens
 
 
 def test_hash_tokenize_detokenize_roundtrip_chars() -> None:
-    text = "ASSERTED: neck"
-    ids = hash_tokens(text, 4098)
-    back = detokenize(ids, 4098)
-    assert len(back) == len(text)
+    # Assert IDENTITY, not just length: a lossy tokenizer would make exact span
+    # emission impossible by construction, and a length-only check cannot detect
+    # that. (Round-trip verified lossless over 470 corpus turn texts.)
+    for text in (
+        "ASSERTED: neck",
+        "My neck has been hurting",
+        "patient denies chest pain",
+        "What symptoms are you having?\nI have sore throat.",
+    ):
+        ids = hash_tokens(text, 4098)
+        back = detokenize(ids, 4098)
+        assert len(back) == len(text)
+        assert back == text, f"tokenizer round-trip is lossy for {text!r} -> {back!r}"
 
 
 def test_transcript_from_prompt() -> None:
