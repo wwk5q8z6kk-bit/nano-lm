@@ -5,6 +5,7 @@ from __future__ import annotations
 from nanoscribe.adapt import ModelInput
 from nanoscribe.adapters import (
     AtomSpec,
+    ApiTeacherAdapter,
     Qwen25BaselineAdapter,
     default_baseline_specs,
     default_qwen_fixture_adapter,
@@ -15,8 +16,10 @@ from nanoscribe.test_adapt import _gold, _model_input
 # 2026-02 research: practical self-hostable open-weight instruct models for P1 probing.
 # COMPACT = single 24GB GPU; FRONTIER = 48–80GB or quantized 70B on one A100/H100.
 COMPACT_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
+STUDENT_MODEL = "Qwen/Qwen2.5-32B-Instruct"
 FRONTIER_MODEL = "Qwen/Qwen2.5-72B-Instruct"
 FRONTIER_ALT = "meta-llama/Llama-3.3-70B-Instruct"
+API_TEACHER_MODEL = "gpt-4o-mini"
 
 
 def tiny_fixture_case() -> HarnessCase:
@@ -52,6 +55,32 @@ def compact_track(
         ),
         cost_class="routine_runpod_4090",
         notes="Qwen2.5-1.5B span-port baseline on ~24GB GPU",
+    )
+
+
+def api_teacher_track(api_model: str = API_TEACHER_MODEL) -> TrackConfig:
+    return TrackConfig(
+        track=ModelTrack.FRONTIER,
+        model_id=f"api/{api_model}-span-port",
+        adapter_factory=lambda: ApiTeacherAdapter(api_model=api_model),
+        cost_class="api_teacher_low",
+        notes="Hosted frontier teacher — intelligence per dollar over self-host giants",
+    )
+
+
+def student_track(
+    weights_path: str = STUDENT_MODEL,
+) -> TrackConfig:
+    return TrackConfig(
+        track=ModelTrack.FRONTIER,
+        model_id=weights_path,
+        adapter_factory=lambda: Qwen25BaselineAdapter(
+            model_id=weights_path,
+            weights_path=weights_path,
+            max_new_tokens=96,
+        ),
+        cost_class="experiment_scoped_a100_80gb",
+        notes="30B-100B specialist student probe (Qwen2.5-32B on A100/L40S)",
     )
 
 

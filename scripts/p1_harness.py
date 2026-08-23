@@ -19,11 +19,15 @@ sys.path.insert(0, str(ROOT))
 
 from nanoscribe.harness import run_matrix, write_results
 from nanoscribe.tracks import (
+    API_TEACHER_MODEL,
     COMPACT_MODEL,
     FRONTIER_MODEL,
+    STUDENT_MODEL,
+    api_teacher_track,
     compact_track,
     fixture_track,
     frontier_track,
+    student_track,
     tiny_fixture_case,
 )
 
@@ -37,7 +41,7 @@ def main() -> None:
     parser.add_argument(
         "--tracks",
         default="fixture",
-        help="comma-separated: fixture, compact, frontier",
+        help="comma-separated: fixture, compact, frontier, api, student",
     )
     parser.add_argument(
         "--compact-weights",
@@ -49,7 +53,16 @@ def main() -> None:
         default=FRONTIER_MODEL,
         help="HF id or local path for frontier track",
     )
-    parser.add_argument("--device", default="cuda")
+    parser.add_argument(
+        "--api-model",
+        default=API_TEACHER_MODEL,
+        help="OpenAI model id for api track",
+    )
+    parser.add_argument(
+        "--student-weights",
+        default=STUDENT_MODEL,
+        help="HF id or local path for student track",
+    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -64,13 +77,13 @@ def main() -> None:
         if name == "fixture":
             tracks.append(fixture_track())
         elif name == "compact":
-            tracks.append(
-                compact_track(args.compact_weights, device=args.device)
-            )
+            tracks.append(compact_track(args.compact_weights))
+        elif name == "api":
+            tracks.append(api_teacher_track(args.api_model))
+        elif name == "student":
+            tracks.append(student_track(args.student_weights))
         elif name == "frontier":
-            tracks.append(
-                frontier_track(args.frontier_weights, device=args.device)
-            )
+            tracks.append(frontier_track(args.frontier_weights))
         else:
             raise SystemExit(f"unknown track: {name}")
 
@@ -83,7 +96,8 @@ def main() -> None:
             "tracks_requested": selected,
             "compact_weights": args.compact_weights,
             "frontier_weights": args.frontier_weights,
-            "device": args.device,
+            "student_weights": args.student_weights,
+            "api_model": args.api_model,
         },
     )
     print(json.dumps({"output": str(args.output), "n_results": len(results)}, indent=2))
