@@ -66,7 +66,7 @@
   "artifact_dest": "artifacts/campaign/student_qlora_canary_results.json",
   "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
   "status": "FAIL",
-  "attempt": 5,
+  "attempt": 7,
   "prior_attempts": {
     "1_3": "Axolotl Hub serverless \u2014 output capture broken",
     "4": "Raw pod \u2014 ENOSPC 50GB disk, SSH proxy hangs, dep pin failures"
@@ -74,5 +74,5 @@
   "launch_authorized": false,
   "launch_note": "PREP only this wave; launch when wallet >= ~$153 and owner approves",
   "container_disk_gb": 80,
-  "pod_id": "y5zfwrdlhf8qgh"
+  "pod_id": "qjzfvdafjzd71o"
 }
