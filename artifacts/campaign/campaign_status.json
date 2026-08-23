@@ -4,6 +4,12 @@
   ],
   "actual_spend": 6.45,
   "agent_canary": {
+    "clean_baseline": {
+      "gpt_oss_120b": 0.6875,
+      "n": 48,
+      "parse_rate": 1.0,
+      "qwen3_32b_awq": 0.7083
+    },
     "donor_matrix": "artifacts/campaign/agent_canary_donor_matrix_v1.json",
     "established_capability_winners": 0,
     "experiment_id": "nano_agent_canary_v1",
@@ -26,6 +32,8 @@
         "timeout_error": 0.25
       }
     },
+    "harness_sensitivity": "artifacts/campaign/agent_canary_harness_sensitivity_v1.json",
+    "harness_vs_model_effect": "harness moves score 9-13x more than teacher choice; teachers not distinguishable at n=48",
     "model": "openai/gpt-oss-120b",
     "n_tasks": 48,
     "next": "benchmark Qwen3-Coder-Next-FP8 (briefing SS LXV item 14) then GLM-4.5-Air-FP8",
@@ -35,6 +43,7 @@
       "qwen3_32b_awq": 0.6042
     },
     "paid_probe_hypothesis": "VOID \u2014 no long-horizon deficit measured; do not spend on Coder-Next for this question",
+    "paid_probe_status": "DEFERRED \u2014 stabilise and power the instrument first (free)",
     "parse_rate": 1.0,
     "reading": "gpt-oss-120b looks like a strong abstention/knowing-when-not-to-act donor and a weak long-horizon stop/recovery/multi-tool donor - consistent with the briefing SS XIX hypothesis that Qwen3-Coder-Next / MiniMax should own long-horizon execution and recovery. Single teacher so far: this is a profile, not yet a per-capability ranking.",
     "results": "artifacts/campaign/agent_canary_v1_results.json",
@@ -43,7 +52,7 @@
     "scoring_fix": "unparsed responses previously scored as capability failures - an empty prediction scored unnecessary_call_rate=1.0 (max badness). Unparsed rows now carry no scores and are excluded from per-capability means; every axis reports {mean, n} and parse_rate is tracked separately.",
     "spend_usd": 0.0,
     "status": "SCOREBOARD_VALID",
-    "suite_revision": "p1_agent_canary_v1.1",
+    "suite_revision": "p1_agent_canary_v1.3_semantics",
     "surface": "managed_reference",
     "teacher_id": "gpt_oss_120b",
     "teachers_benchmarked": [
@@ -54,7 +63,6 @@
     "underpowered": "4 tasks/family; ~63/axis needed to rank at 0.25 effect"
   },
   "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE",
-  "gpu_training_topology": "artifacts/campaign/gpu_training_topology_v1.json",
   "campaign_remaining": 149.0,
   "campaign_spend_start": 1.8211,
   "checkpoint_authority": "artifacts/campaign/checkpoint_v4.json",
@@ -62,6 +70,15 @@
   "committed_spend": 1.39,
   "current_spend_per_hr": 0.004,
   "execution_authority": "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
+  "fleet_audit": {
+    "as_of": "2026-08-23T19:05:00+00:00",
+    "note": "ed0n59peu3flly already absent at fleet check; no idle burn",
+    "pods_active": 0,
+    "terminated_this_wave": [
+      "ed0n59peu3flly"
+    ]
+  },
+  "gpu_training_topology": "artifacts/campaign/gpu_training_topology_v1.json",
   "hourly_exposure": 0.004,
   "hub_catalog": {
     "axolotl": "cma1ofy3e000008l7he7c764k",
@@ -189,13 +206,8 @@
       "status": "DELETED"
     },
     "lane_student": {
-      "status": "C1C2_COMPLETE",
-      "surface": "hub_vllm_ephemeral",
       "qlora_canary": {
         "attempt": 5,
-        "status": "PREP_COMPLETE",
-        "manifest": "artifacts/campaign/manifests/student_qlora_canary_v1.json",
-        "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
         "infra_fixes": [
           "container_disk_gb 80 (was 50, ENOSPC on Qwen2.5-32B HF download)",
           "gpu preference L40S $0.99 > A100 PCIe $1.39 > A100 SXM $1.59",
@@ -204,8 +216,13 @@
           "direct TCP SCP adapter pull"
         ],
         "launch_authorized": false,
-        "launch_threshold_wallet_usd": 153.0
-      }
+        "launch_threshold_wallet_usd": 153.0,
+        "manifest": "artifacts/campaign/manifests/student_qlora_canary_v1.json",
+        "status": "PREP_COMPLETE",
+        "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json"
+      },
+      "status": "C1C2_COMPLETE",
+      "surface": "hub_vllm_ephemeral"
     },
     "lane_teacher_collective": {
       "canary_gate": "UNBLOCKED",
@@ -299,6 +316,15 @@
       "seed variance estimate across >=2 genuinely independent seeds",
       "early-stopping / best-checkpoint selection rather than last-step"
     ]
+  },
+  "native_real_train_phase": {
+    "cost_est_usd": "12-35 minimum viable",
+    "launch_authorized": false,
+    "manifest": "artifacts/campaign/manifests/native_real_train_phase_v1.json",
+    "network_volume_id": "04himzqxbm",
+    "status": "STUB_PREP_ONLY",
+    "token_budget_target": "10M-100M tokens",
+    "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json"
   },
   "native_root_cause": {
     "arms_vs_random_init_control": "all overlap; no arm separates from untrained",
@@ -414,20 +440,10 @@
   },
   "new_actual_spend": 2.9121,
   "new_committed_spend": 0,
-  "native_real_train_phase": {
-    "status": "STUB_PREP_ONLY",
-    "manifest": "artifacts/campaign/manifests/native_real_train_phase_v1.json",
-    "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
-    "network_volume_id": "04himzqxbm",
-    "token_budget_target": "10M-100M tokens",
-    "cost_est_usd": "12-35 minimum viable",
-    "launch_authorized": false
-  },
   "next_actions": [
-    "QLoRA canary attempt 5 PREP complete — launch when wallet >= ~$153 and owner approves (~$2 cap)",
-    "OWNER DECISION: native training-corpus strategy — 4.5KB cannot support the task (binding constraint)",
-    "Decide whether STOP/TOOL_NONE/ABSTAIN are separable actions in a stateless single-action harness (repeated_calls scoring)",
-    "Power the donor suite (~63 tasks/capability axis) before any per-capability donor ranking or paid probe",
+    "OWNER DECISION: native training-corpus strategy \u2014 4.5KB cannot support the task (binding constraint)",
+    "Power the agent canary to ~63 tasks/capability axis, then re-baseline the two free teachers",
+    "Only then spend on ephemeral Qwen3-Coder-Next/GLM/MiniMax with a pre-registered hypothesis",
     "Re-derive native mechanism ranking from scratch after corpus fix; prior native results are invalid"
   ],
   "next_reallocations": [
@@ -496,11 +512,5 @@
   "students": {
     "student_plane": "vllm_sglang_serverless_not_raw_a100"
   },
-  "timestamp": "2026-08-23T19:05:00+00:00",
-  "fleet_audit": {
-    "as_of": "2026-08-23T19:05:00+00:00",
-    "pods_active": 0,
-    "terminated_this_wave": ["ed0n59peu3flly"],
-    "note": "ed0n59peu3flly already absent at fleet check; no idle burn"
-  }
+  "timestamp": "2026-08-23T19:05:00+00:00"
 }

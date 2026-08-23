@@ -1,0 +1,123 @@
+{
+  "schema": "nano.campaign.harness_dominates_signal.v1",
+  "timestamp": "2026-08-23T19:14:27.382734+00:00",
+  "experiment_id": "agent_canary_harness_sensitivity_v1",
+  "cost_usd": 0.0,
+  "headline": "Harness quality moves the agent-canary score 9-13x more than the choice of teacher does. Across four harness revisions with the SAME two models, scores rose +0.19 and +0.27 absolute, while the between-teacher difference is 0.021 and not statistically distinguishable.",
+  "harness_revisions": [
+    {
+      "rev": "v1",
+      "changes": "terse trajectory-style task prompts; action space enumerated but undefined; P1 scribing tools exposed",
+      "gpt_oss_120b": 0.5,
+      "qwen3_32b_awq": 0.4375,
+      "parse_rate": {
+        "gpt_oss": 1.0,
+        "qwen3": 1.0
+      }
+    },
+    {
+      "rev": "v1.1",
+      "changes": "12 long-horizon prompts rewritten to state prior execution state",
+      "gpt_oss_120b": 0.6875,
+      "qwen3_32b_awq": 0.6042
+    },
+    {
+      "rev": "v1.2",
+      "changes": "action space DEFINED in the system prompt (STOP vs TOOL_NONE vs ABSTAIN disambiguated)",
+      "gpt_oss_120b": 0.7209,
+      "qwen3_32b_awq": 0.7083,
+      "caveat": "gpt-oss parse_rate 0.8958 here \u2014 it answered the SCRIBING task with {'atoms':[...]} on 5/48; score is over reduced n and not directly comparable"
+    },
+    {
+      "rev": "v1.3",
+      "changes": "P1 scribing tools removed from the action-policy benchmark",
+      "gpt_oss_120b": 0.6875,
+      "qwen3_32b_awq": 0.7083,
+      "parse_rate": {
+        "gpt_oss": 1.0,
+        "qwen3": 1.0
+      },
+      "status": "clean measurement"
+    }
+  ],
+  "effect_sizes": {
+    "harness_effect_same_models": {
+      "gpt_oss_120b": {
+        "v1": 0.5,
+        "v1_3": 0.6875,
+        "delta": 0.1875,
+        "pct": 37.5
+      },
+      "qwen3_32b_awq": {
+        "v1": 0.4375,
+        "v1_3": 0.7083,
+        "delta": 0.2708,
+        "pct": 61.9
+      }
+    },
+    "model_effect_at_v1_3": {
+      "gpt_oss": {
+        "k": 33,
+        "n": 48,
+        "rate": 0.6875,
+        "wilson95": [
+          0.5467,
+          0.8005
+        ]
+      },
+      "qwen3": {
+        "k": 34,
+        "n": 48,
+        "rate": 0.7083,
+        "wilson95": [
+          0.5682,
+          0.8176
+        ]
+      },
+      "difference": 0.0208,
+      "significance": "OVERLAP \u2014 teachers not distinguishable"
+    },
+    "ratio": {
+      "qwen3": "13x",
+      "gpt_oss": "9x"
+    }
+  },
+  "defects_found_and_fixed": [
+    {
+      "id": "H1",
+      "defect": "task prompts named a trajectory but the harness asks for one action with no state",
+      "effect": "multi_tool and premature_stop scored 0.0 for BOTH teachers; caused a false 'no viable long-horizon donor' finding",
+      "after_fix": "both families 1.0 for both teachers"
+    },
+    {
+      "id": "H2",
+      "defect": "action space enumerated but never defined; STOP/TOOL_NONE/ABSTAIN mutually indistinguishable",
+      "effect": "teachers graded wrong for a distinction they were never told about",
+      "after_fix": "repeated_calls 0.0/0.25 -> 0.25 for both; tool_not_needed -> 1.0 for both"
+    },
+    {
+      "id": "H3",
+      "defect": "P1 scribing tools (submit_candidate_atoms/summary/table) exposed to an action-policy benchmark",
+      "effect": "gpt-oss answered the scribing task with clinical-atom JSON on 5/48 tasks and scored unparsed",
+      "after_fix": "parse_rate 0.8958 -> 1.0"
+    },
+    {
+      "id": "H4",
+      "defect": "--include-agent-tools was store_true with default=True and could never be disabled",
+      "after_fix": "BooleanOptionalAction, default off"
+    },
+    {
+      "id": "H5",
+      "defect": "_parse_action fell back to the first whitespace token, scoring '{' as an action",
+      "after_fix": "returns '' so the row is excluded from per-capability means"
+    }
+  ],
+  "implication_for_donor_collective": "The briefing SS XX donor matrix asks which model has the best policy per capability. At present the instrument cannot answer that: harness defects move scores an order of magnitude more than the teacher does, and at n=48 the two teachers are statistically indistinguishable overall and on every capability axis. Paying to self-host Qwen3-Coder-Next / GLM / MiniMax before the harness is stabilised and powered would buy numbers dominated by instrument noise. Fix and power the instrument first; it is free.",
+  "recommended_sequence": [
+    "1. Freeze the harness at v1.3 semantics and pin it with tests (done: 198 tests, CI now runs the suite)",
+    "2. Power the suite to ~63 tasks per capability axis before any per-capability ranking",
+    "3. Re-baseline the two free managed teachers on the powered suite",
+    "4. Only then spend on ephemeral self-hosted donors, with a pre-registered hypothesis"
+  ],
+  "spend_to_date_usd": 0.0
+}

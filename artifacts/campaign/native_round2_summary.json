@@ -7,6 +7,8 @@
   "pod_id": "6opxbt2tqphjrm",
   "datacenter": "CA-MTL-3",
   "marker": "NATIVE100_DONE",
+  "screening_status": "EXPLORATORY_UNDERPOWERED_CORPUS",
+  "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
   "runs_completed": 4,
   "checkpoints_local": true,
   "metrics_local": true,

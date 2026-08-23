@@ -16,7 +16,11 @@
     "recovered_artifacts": "step_000006.json per run_id (weights remain on volume)"
   },
   "verdict": "COMPLETE_RANKED",
-  "reason": "Recovered final-step metrics from network volume via volume-recovery-http pod; val_loss not logged in native checkpoints \u2014 ranked on extra.loss (final_train_loss).",
+  "screening_status": "EXPLORATORY_SCREENING_RANKING",
+  "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
+  "corpus_path": "artifacts/campaign/p1_distill_train_v1.json",
+  "revalidation_required": "Wave 1: 30M x 3 seeds on real architecture-screen corpus before confirmatory 100M",
+  "reason": "Recovered final-step metrics from network volume via volume-recovery-http pod; val_loss not logged in native checkpoints \u2014 ranked on extra.loss (final_train_loss). Corpus was unit fixture only.",
   "metric_note": "native checkpoints store final_train_loss in extra.loss only; val_loss field absent in nano.native.checkpoint.v1",
   "run_ids": [
     "native30_bottleneck_span_s0",

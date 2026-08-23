@@ -1,0 +1,86 @@
+{
+  "schema": "nano.model_program.v1",
+  "version": "1.0.0",
+  "timestamp": "2026-08-23T19:30:00+00:00",
+  "authority": "docs/NANO_MODEL_PROGRAM.md",
+  "tracks": {
+    "N_native": "random-init architecture; pretrain → post-train",
+    "S_student": "pretrained specialist controls and adaptation",
+    "T_teacher": "open-weight per-capability teacher collective",
+    "V_verifier": "deterministic → learned verification stack",
+    "P_product": "P1 scribing through P9 adaptation ladder"
+  },
+  "learning_eras": ["pretraining", "post_training", "continuous_improvement"],
+  "status_enums": {
+    "result": ["EXPLORATORY", "UNDERPOWERED", "SUPERSEDED_BY_MEASUREMENT_FIX", "VALID", "CONFIRMATORY"],
+    "corpus_class": ["NATIVE_UNIT_OVERFIT_FIXTURE", "ARCHITECTURE_SCREEN", "GENERAL_PRETRAIN", "TEACHER_VERIFIED", "REJECTED"]
+  },
+  "critical_corrections": {
+    "p1_distill_train_v1": {
+      "path": "artifacts/campaign/p1_distill_train_v1.json",
+      "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
+      "example_count": 96,
+      "valid_for": ["trainer_smoke", "overfit_regression", "checkpoint_resume"],
+      "invalid_for": ["architecture_ranking", "100m_promotion_claims", "open_vocab_generalization"]
+    },
+    "native_round1": {
+      "status": "EXPLORATORY_SCREENING_RANKING",
+      "artifact": "artifacts/campaign/native_round1_summary.json",
+      "provisional_leaders": ["evidence_bottleneck", "span_port"],
+      "note": "Trained on unit fixture; Wave 1 revalidation required"
+    },
+    "native_round2_100m": {
+      "status": "EXPLORATORY_UNDERPOWERED_CORPUS",
+      "note": "6-step epoch on unit fixture; not confirmatory promotion"
+    }
+  },
+  "master_gates": [
+    "G0_measurement_integrity",
+    "G1_corpus_validity",
+    "G2_evaluation_power",
+    "G3_tokenizer",
+    "G4_30m_revalidation",
+    "G5_100m_promotion",
+    "G6_300m",
+    "G7_base_pretrain",
+    "G8_continued_pretrain",
+    "G9_sft",
+    "G10_preference_rlvr",
+    "G11_tools",
+    "G12_verifier",
+    "G13_safety",
+    "G14_quantization",
+    "G15_shadow",
+    "G16_p1_human",
+    "G17_p1_exit",
+    "G18_p2_p3",
+    "G19_production",
+    "G20_flywheel"
+  ],
+  "current_wave": "WAVE_0",
+  "wave_0_lanes": {
+    "measurement_ci": "PENDING",
+    "corpus_factory": "PENDING",
+    "eval_v2": "PENDING",
+    "student_gap": "COMPLETE",
+    "verifier": "PARTIAL_hard_set_baseline_perfect",
+    "agent_canary": "COMPLETE_probe",
+    "p2_p3_probes": "PARTIAL"
+  },
+  "wave_1": {
+    "description": "30M decoder + evidence_bottleneck + span_port × 3 seeds × real architecture-screen corpus",
+    "blocked_until": ["G1", "G2", "G4"]
+  },
+  "principles": [
+    "DO_NOT_SCALE_INVALID_EXPERIMENT",
+    "DO_NOT_POST_TRAIN_WITHOUT_BASE",
+    "DO_NOT_TRAIN_ON_EVAL",
+    "DO_NOT_TRUST_TEACHER_OUTPUT_AUTOMATICALLY",
+    "SOFTWARE_GUARANTEES_WHERE_POSSIBLE"
+  ],
+  "refs": {
+    "gpu_topology": "artifacts/campaign/gpu_training_topology_v1.json",
+    "checkpoint": "artifacts/campaign/checkpoint_v3.json",
+    "data_registry": "data/REGISTRY.json"
+  }
+}

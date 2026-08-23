@@ -163,5 +163,20 @@
     "cost_est_usd": "12-35 minimum viable (10M-100M tokens); exceeds wallet for ideal pilot",
     "blocked_by": "expanded_disjoint_corpus + held-out transport verdict"
   },
-  "next_dollar": "QLoRA canary attempt-5 (fixed infra: 80GB disk, L40S>$1.39 PCIe>$1.59 SXM, US-KS-2, pinned deps, direct TCP SCP) — launch when wallet >= ~$153; OR native_real_train_phase_v1 stub ($12-35 min) pending corpus strategy"
+  "master_plan": {
+    "authority": "docs/NANO_MODEL_PROGRAM.md",
+    "current_wave": "WAVE_0",
+    "wave_0_lanes": {
+      "measurement_ci": "PENDING",
+      "corpus_factory": "PENDING",
+      "eval_v2": "PENDING",
+      "student_gap": "COMPLETE",
+      "verifier": "PARTIAL",
+      "agent_canary": "COMPLETE_PROBE",
+      "p2_p3_probes": "PARTIAL"
+    },
+    "wave_1_blocked_until": ["corpus_factory", "p1_screening_eval_v2", "30m_revalidation_manifest"],
+    "corpus_reclassification": "p1_distill_train_v1 → NATIVE_UNIT_OVERFIT_FIXTURE (data/REGISTRY.json)"
+  },
+  "next_dollar": "Wave 0 Lane 2: build real architecture-screen corpus + registry; then Wave 1 30M revalidation (NOT more 100M on unit fixture). Secondary: QLoRA attempt-5 when wallet >= ~$153 after corpus lane started."
 }
