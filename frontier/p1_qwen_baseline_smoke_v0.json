@@ -1,0 +1,40 @@
+{
+  "schema": "nano.p1.experiment_manifest.v0",
+  "experiment_id": "p1_qwen_baseline_smoke_v0",
+  "branch": "frontier/p1-qwen-baseline-smoke-v0",
+  "base_commit": "89a7939a6861b8e2b7125f93ae243a852a652101",
+  "status": "smoke_pending",
+  "pipeline": [
+    "SOURCE",
+    "Qwen25BaselineAdapter",
+    "CandidateAtom",
+    "ConstrainedSelector",
+    "PredictedEncounter",
+    "PR2_evaluator"
+  ],
+  "model": {
+    "family": "qwen2.5-1.5b-instruct",
+    "hf_id": "Qwen/Qwen2.5-1.5B-Instruct",
+    "adapter_class": "nanoscribe.adapters.Qwen25BaselineAdapter",
+    "ci_mode": "fixture_lines",
+    "weights_in_git": false,
+    "weights_env": "NANOSCIBE_QWEN_WEIGHTS"
+  },
+  "runpod": {
+    "backend": "RUNPOD",
+    "strategy": "gpu_pod_smoke",
+    "gpu_class": "NVIDIA GeForce RTX 3090",
+    "template_id": "runpod-torch-v280",
+    "cost_guard": "terminate-after"
+  },
+  "entrypoints": {
+    "unit_tests": "python3 nanoscribe/test_adapt.py",
+    "fixture_benchmark": "python3 nanoscribe/benchmark.py",
+    "gpu_smoke": "NANOSCIBE_QWEN_WEIGHTS=Qwen/Qwen2.5-1.5B-Instruct python3 nanoscribe/smoke_qwen_baseline.py"
+  },
+  "artifacts": {
+    "large_weights": "HF_DOWNLOAD_ON_POD",
+    "results": "frontier/p1_qwen_baseline_smoke_v0_results.json"
+  },
+  "metrics": {}
+}
