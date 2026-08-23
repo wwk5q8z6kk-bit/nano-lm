@@ -30,15 +30,20 @@
     "n_tasks": 48,
     "next": "benchmark Qwen3-Coder-Next-FP8 (briefing SS LXV item 14) then GLM-4.5-Air-FP8",
     "outcome_mean": 0.5,
-    "paid_probe_hypothesis": "does Qwen3-Coder-Next-FP8 beat the ~32% ceiling on the three long-horizon families?",
+    "outcome_mean_after_fix": {
+      "gpt_oss_120b": 0.6875,
+      "qwen3_32b_awq": 0.6042
+    },
+    "paid_probe_hypothesis": "VOID \u2014 no long-horizon deficit measured; do not spend on Coder-Next for this question",
     "parse_rate": 1.0,
     "reading": "gpt-oss-120b looks like a strong abstention/knowing-when-not-to-act donor and a weak long-horizon stop/recovery/multi-tool donor - consistent with the briefing SS XIX hypothesis that Qwen3-Coder-Next / MiniMax should own long-horizon execution and recovery. Single teacher so far: this is a profile, not yet a per-capability ranking.",
     "results": "artifacts/campaign/agent_canary_v1_results.json",
-    "robust_finding": "neither teacher viable long-horizon: 0/8 combined on multi_tool/premature_stop/repeated_calls, 95% CI [0,0.324]",
+    "robust_finding": "RETRACTED \u2014 was a task-design artifact; both teachers now 1.0 on multi_tool and premature_stop",
     "root_cause_fixed": "content was empty on 9/12 tasks because reasoning tokens consumed the whole max_tokens=128 budget (finish_reason=length, completion_tokens=64/64). Fixed: max_tokens 1024, reasoning_effort=low, reasoning_content/tool_call extraction fallback. Parse rate 0.75 -> 1.00 over 48 tasks.",
     "scoring_fix": "unparsed responses previously scored as capability failures - an empty prediction scored unnecessary_call_rate=1.0 (max badness). Unparsed rows now carry no scores and are excluded from per-capability means; every axis reports {mean, n} and parse_rate is tracked separately.",
     "spend_usd": 0.0,
     "status": "SCOREBOARD_VALID",
+    "suite_revision": "p1_agent_canary_v1.1",
     "surface": "managed_reference",
     "teacher_id": "gpt_oss_120b",
     "teachers_benchmarked": [
@@ -395,9 +400,9 @@
   "new_committed_spend": 0,
   "next_actions": [
     "OWNER DECISION: native training-corpus strategy \u2014 4.5KB cannot support the task (binding constraint)",
-    "Re-derive native mechanism ranking from scratch after corpus fix; all prior native results are invalid",
-    "Benchmark Qwen3-Coder-Next-FP8 on agent canary v1 \u2014 independent lane, unblocked",
-    "student_gap_v1 measurement before any QLoRA spend"
+    "Decide whether STOP/TOOL_NONE/ABSTAIN are separable actions in a stateless single-action harness (repeated_calls scoring)",
+    "Power the donor suite (~63 tasks/capability axis) before any per-capability donor ranking or paid probe",
+    "Re-derive native mechanism ranking from scratch after corpus fix; prior native results are invalid"
   ],
   "next_reallocations": [
     "inventory refresh only"

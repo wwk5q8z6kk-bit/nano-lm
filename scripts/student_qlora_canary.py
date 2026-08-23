@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -31,6 +32,15 @@ DATASET_URL = (
     "https://gist.githubusercontent.com/wwk5q8z6kk-bit/"
     "f3d11aa2463908190976f388b7b5afc1/raw/p1_distill_train_axolotl_v1.json"
 )
+CAPTURE_STRATEGY = "runsync_primary_stream_fallback"
+MILESTONE_STEPS = (1, 10, 25, 50)
+LOSS_RE = re.compile(r"""['"]loss['"]\s*:\s*([\d.eE+-]+)""")
+STEP_RE = re.compile(r"""['"]step['"]\s*:\s*(\d+)""")
+CHECKPOINT_RE = re.compile(
+    r"(?:Saving model checkpoint to|saved.*checkpoint|output_dir[:\s]+)([^\s'\"]+)",
+    re.IGNORECASE,
+)
+HUB_MODEL_RE = re.compile(r"(?:hub_model_id|push.*hub|https://huggingface\.co/)([^\s'\"]+)", re.IGNORECASE)
 
 
 def _resolve_hf_token() -> str:
@@ -131,23 +141,19 @@ def _delete_endpoint(endpoint_id: str) -> dict[str, Any]:
     return {"deleted": True, "endpoint_id": endpoint_id}
 
 
-def _build_axolotl_args(*, max_steps: int) -> dict[str, Any]:
-    return {
+def _build_axolotl_args(*, max_steps: int, run_id: str) -> dict[str, Any]:
+    hf_token = _resolve_hf_token()
+    args: dict[str, Any] = {
         "base_model": BASE_MODEL,
         "model_type": "AutoModelForCausalLM",
         "tokenizer_type": "AutoTokenizer",
         "trust_remote_code": True,
         "load_in_4bit": True,
         "adapter": "qlora",
-        "datasets": [
-            {
-                "path": DATASET_URL,
-                "type": "alpaca",
-            }
-        ],
+        "datasets": [{"path": DATASET_URL, "type": "alpaca"}],
         "dataset_prepared_path": "last_run_prepared",
         "val_set_size": 0.02,
-        "output_dir": "./outputs/student-qlora-canary",
+        "output_dir": f"./outputs/student-qlora-canary-{run_id}",
         "sequence_len": 2048,
         "sample_packing": False,
         "pad_to_sequence_len": True,
@@ -171,6 +177,10 @@ def _build_axolotl_args(*, max_steps: int) -> dict[str, Any]:
         "flash_attention": True,
         "weight_decay": 0.0,
     }
+    if hf_token:
+        args["hub_model_id"] = f"wwk5q8z6kk-bit/nano-student-qlora-canary-{run_id.lower()}"
+        args["push_to_hub"] = True
+    return args
 
 
 def _build_payload(*, max_steps: int, run_id: str) -> dict[str, Any]:
@@ -183,105 +193,329 @@ def _build_payload(*, max_steps: int, run_id: str) -> dict[str, Any]:
                 "wandb_api_key": os.environ.get("WANDB_API_KEY", ""),
                 "hf_token": _resolve_hf_token(),
             },
-            "args": _build_axolotl_args(max_steps=max_steps),
+            "args": _build_axolotl_args(max_steps=max_steps, run_id=run_id),
         }
     }
 
 
-def _extract_loss_curve(output: Any) -> list[dict[str, Any]]:
-    curve: list[dict[str, Any]] = []
-    if not isinstance(output, dict):
-        return curve
-    for key in ("loss_curve", "train_loss", "logs", "metrics"):
-        value = output.get(key)
-        if isinstance(value, list):
-            for item in value:
-                if isinstance(item, dict) and "loss" in item:
-                    curve.append(item)
-    history = output.get("history")
-    if isinstance(history, list):
-        for item in history:
-            if isinstance(item, dict) and "loss" in item:
-                curve.append(item)
-    return curve
-
-
-def _final_loss(output: Any) -> float | None:
-    curve = _extract_loss_curve(output)
-    if curve:
-        try:
-            return float(curve[-1].get("loss"))
-        except (TypeError, ValueError):
-            pass
+def _flatten_output(output: Any) -> list[str]:
+    lines: list[str] = []
+    if output is None:
+        return lines
+    if isinstance(output, str):
+        return [output]
+    if isinstance(output, list):
+        for item in output:
+            lines.extend(_flatten_output(item))
+        return lines
     if isinstance(output, dict):
-        for key in ("final_loss", "loss", "train_loss"):
+        if "output" in output:
+            lines.extend(_flatten_output(output["output"]))
+        if "text" in output:
+            lines.extend(_flatten_output(output["text"]))
+        for key in ("message", "result", "log", "logs"):
             if key in output:
-                try:
-                    return float(output[key])
-                except (TypeError, ValueError):
-                    continue
+                lines.extend(_flatten_output(output[key]))
+        if not lines:
+            lines.append(json.dumps(output))
+        return lines
+    lines.append(str(output))
+    return lines
+
+
+def _parse_training_logs(lines: list[str]) -> dict[str, Any]:
+    loss_points: list[dict[str, Any]] = []
+    adapter_paths: list[str] = []
+    hub_ids: list[str] = []
+    model_loaded = False
+    training_started = False
+    fatal_error = False
+
+    for raw in lines:
+        line = raw.strip()
+        lower = line.lower()
+        if "starting training" in lower:
+            training_started = True
+        if any(x in lower for x in ("loading weights", "loaded model", "trainable params", "trainable parameters")):
+            model_loaded = True
+        if any(x in lower for x in ("cuda out of memory", "traceback", "error:", "failed", "exception")):
+            if "loss_watchdog" not in lower:
+                fatal_error = True
+
+        for match in LOSS_RE.finditer(line):
+            step = None
+            step_match = STEP_RE.search(line)
+            if step_match:
+                step = int(step_match.group(1))
+            try:
+                loss = float(match.group(1))
+            except ValueError:
+                continue
+            point: dict[str, Any] = {"loss": loss}
+            if step is not None:
+                point["step"] = step
+            loss_points.append(point)
+
+        for match in CHECKPOINT_RE.finditer(line):
+            path = match.group(1).rstrip(",.")
+            if path and path not in adapter_paths:
+                adapter_paths.append(path)
+
+        for match in HUB_MODEL_RE.finditer(line):
+            hub = match.group(1).rstrip("/")
+            if hub and hub not in hub_ids:
+                hub_ids.append(hub)
+
+        if "adapter_model" in lower or "lora" in lower and "saved" in lower:
+            model_loaded = True
+
+    # Assign step indices when logging_steps=1 and step not in log line.
+    for idx, point in enumerate(loss_points, start=1):
+        point.setdefault("step", idx)
+
+    milestones: dict[str, float | None] = {}
+    for target in MILESTONE_STEPS:
+        hit = next((p for p in loss_points if p.get("step") == target), None)
+        if hit is None and len(loss_points) >= target:
+            hit = loss_points[target - 1]
+        milestones[f"step_{target}"] = float(hit["loss"]) if hit else None
+
+    final_loss = milestones.get("step_50")
+    if final_loss is None and loss_points:
+        final_loss = float(loss_points[-1]["loss"])
+
+    loss_decreased = False
+    s1 = milestones.get("step_1")
+    s50 = milestones.get("step_50") or final_loss
+    if s1 is not None and s50 is not None:
+        loss_decreased = s50 < s1
+
+    adapter_location = None
+    if hub_ids:
+        adapter_location = f"https://huggingface.co/{hub_ids[-1]}"
+    elif adapter_paths:
+        adapter_location = adapter_paths[-1]
+    elif training_started and loss_points:
+        adapter_location = "./outputs/student-qlora-canary (worker volume; see run_id output_dir)"
+
+    return {
+        "loss_curve": loss_points,
+        "loss_milestones": milestones,
+        "final_loss": final_loss,
+        "loss_decreased": loss_decreased,
+        "model_loaded": model_loaded or training_started,
+        "training_started": training_started,
+        "fatal_error": fatal_error,
+        "adapter_location": adapter_location,
+        "adapter_paths": adapter_paths,
+        "hub_model_ids": hub_ids,
+    }
+
+
+def _extract_output_payload(data: dict[str, Any]) -> Any:
+    for key in ("output", "result"):
+        if key in data and data[key] is not None:
+            return data[key]
     return None
 
 
-def _adapter_saved(output: Any) -> bool:
-    if not isinstance(output, dict):
-        return False
-    for key in ("adapter_saved", "adapter_path", "output_dir", "artifact_path"):
-        if output.get(key):
-            return True
-    artifacts = output.get("artifacts")
-    if isinstance(artifacts, dict):
-        return any(artifacts.values())
-    text = json.dumps(output).lower()
-    return "adapter_model" in text or "lora" in text and "saved" in text
-
-
-def _submit_and_poll(endpoint_id: str, payload: dict[str, Any], *, timeout_s: int = 5400) -> dict[str, Any]:
+def _submit_runsync(
+    endpoint_id: str,
+    payload: dict[str, Any],
+    *,
+    timeout_s: int = 7200,
+) -> dict[str, Any]:
     api_key = _resolve_api_key(None)
     urls = endpoint_native_urls(endpoint_id)
     headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-    with httpx.Client(timeout=60.0) as client:
+    with httpx.Client(timeout=httpx.Timeout(timeout_s, connect=60.0)) as client:
+        resp = client.post(urls["runsync"], headers=headers, json=payload)
+        resp.raise_for_status()
+        data = resp.json()
+        return {
+            "capture_mode": "runsync",
+            "status": str(data.get("status") or "UNKNOWN"),
+            "output": _extract_output_payload(data),
+            "raw_response": data,
+            "job_id": str(data.get("id") or ""),
+            "error": data.get("error"),
+        }
+
+
+def _collect_stream_chunks(
+    client: httpx.Client,
+    *,
+    stream_url: str,
+    headers: dict[str, str],
+    timeout_s: float = 30.0,
+) -> list[Any]:
+    chunks: list[Any] = []
+    try:
+        resp = client.get(stream_url, headers=headers, timeout=timeout_s)
+        if resp.status_code != 200:
+            return chunks
+        body = resp.json()
+        if isinstance(body, list):
+            for item in body:
+                out = item.get("output") if isinstance(item, dict) else item
+                if out is not None:
+                    chunks.append(out)
+        elif body:
+            chunks.append(body)
+    except (httpx.HTTPError, json.JSONDecodeError):
+        pass
+    return chunks
+
+
+def _submit_run_stream_poll(
+    endpoint_id: str,
+    payload: dict[str, Any],
+    *,
+    timeout_s: int = 7200,
+    poll_s: float = 20.0,
+) -> dict[str, Any]:
+    api_key = _resolve_api_key(None)
+    urls = endpoint_native_urls(endpoint_id)
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    stream_chunks: list[Any] = []
+    with httpx.Client(timeout=httpx.Timeout(120.0, connect=60.0)) as client:
         submit = client.post(urls["run"], headers=headers, json=payload)
         submit.raise_for_status()
         job_id = str(submit.json().get("id") or "")
         if not job_id:
             raise RuntimeError(f"missing job id: {submit.text}")
         status_url = f"{urls['run'].rsplit('/', 1)[0]}/status/{job_id}"
+        stream_url = f"{urls['run'].rsplit('/', 1)[0]}/stream/{job_id}"
         deadline = time.time() + timeout_s
-        last_status = ""
+        last_status = "IN_QUEUE"
+        raw_status: dict[str, Any] = {}
         while time.time() < deadline:
+            stream_chunks.extend(_collect_stream_chunks(client, stream_url=stream_url, headers=headers))
             status_resp = client.get(status_url, headers=headers)
             status_resp.raise_for_status()
-            data = status_resp.json()
-            last_status = str(data.get("status") or "")
+            raw_status = status_resp.json()
+            last_status = str(raw_status.get("status") or "")
+            output = _extract_output_payload(raw_status)
             if last_status == "COMPLETED":
+                if output is None and stream_chunks:
+                    output = stream_chunks
                 return {
+                    "capture_mode": "run_stream_poll",
                     "status": "COMPLETED",
-                    "output": data.get("output"),
-                    "raw_status": data,
+                    "output": output,
+                    "stream_chunks": stream_chunks,
+                    "raw_status": raw_status,
                     "job_id": job_id,
                 }
             if last_status in {"FAILED", "CANCELLED", "TIMED_OUT"}:
                 return {
+                    "capture_mode": "run_stream_poll",
                     "status": last_status,
-                    "error": data.get("error") or data.get("output"),
-                    "raw_status": data,
+                    "output": output or stream_chunks or None,
+                    "stream_chunks": stream_chunks,
+                    "error": raw_status.get("error") or output,
+                    "raw_status": raw_status,
                     "job_id": job_id,
                 }
-            time.sleep(15)
-    return {"status": "TIMEOUT", "error": f"poll exceeded {timeout_s}s", "job_id": job_id}
+            time.sleep(poll_s)
+        return {
+            "capture_mode": "run_stream_poll",
+            "status": "TIMEOUT",
+            "output": stream_chunks or None,
+            "stream_chunks": stream_chunks,
+            "error": f"poll exceeded {timeout_s}s",
+            "raw_status": raw_status,
+            "job_id": job_id,
+        }
 
 
-def run_canary(*, max_steps: int = 50, est_cost: float = 2.5) -> dict[str, Any]:
+def _submit_and_capture(endpoint_id: str, payload: dict[str, Any], *, timeout_s: int = 7200) -> dict[str, Any]:
+    runsync: dict[str, Any] = {"capture_mode": "runsync", "status": "SKIPPED", "output": None}
+    try:
+        runsync = _submit_runsync(endpoint_id, payload, timeout_s=timeout_s)
+        if runsync.get("output") is not None:
+            return runsync
+        job_id = str(runsync.get("job_id") or "")
+        if job_id and runsync.get("status") == "COMPLETED":
+            api_key = _resolve_api_key(None)
+            urls = endpoint_native_urls(endpoint_id)
+            headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+            status_url = f"{urls['run'].rsplit('/', 1)[0]}/status/{job_id}"
+            stream_url = f"{urls['run'].rsplit('/', 1)[0]}/stream/{job_id}"
+            with httpx.Client(timeout=httpx.Timeout(120.0, connect=60.0)) as client:
+                status_resp = client.get(status_url, headers=headers)
+                status_resp.raise_for_status()
+                raw_status = status_resp.json()
+                output = _extract_output_payload(raw_status)
+                stream_chunks = _collect_stream_chunks(client, stream_url=stream_url, headers=headers, timeout_s=120.0)
+                if output is not None or stream_chunks:
+                    return {
+                        "capture_mode": "runsync_status_stream_backfill",
+                        "status": "COMPLETED",
+                        "output": output or stream_chunks,
+                        "stream_chunks": stream_chunks,
+                        "raw_status": raw_status,
+                        "job_id": job_id,
+                        "runsync_attempt": runsync,
+                    }
+            return runsync
+    except httpx.HTTPError as exc:
+        runsync = {"capture_mode": "runsync", "status": "HTTP_ERROR", "error": str(exc), "output": None}
+
+    fallback = _submit_run_stream_poll(endpoint_id, payload, timeout_s=timeout_s)
+    fallback["runsync_attempt"] = runsync
+    return fallback
+
+
+def _evaluate_pass(
+    *,
+    job: dict[str, Any],
+    parsed: dict[str, Any],
+    max_steps: int,
+) -> dict[str, Any]:
+    output = job.get("output")
+    output_non_null = output is not None and (
+        bool(_flatten_output(output)) if not isinstance(output, (int, float)) else True
+    )
+    final_loss = parsed.get("final_loss")
+    finite_loss = (
+        final_loss is not None
+        and final_loss == final_loss
+        and 0 < float(final_loss) < 1e6
+    )
+    adapter_location = parsed.get("adapter_location")
+    passed = (
+        job.get("status") == "COMPLETED"
+        and output_non_null
+        and parsed.get("model_loaded")
+        and finite_loss
+        and parsed.get("loss_decreased")
+        and bool(adapter_location)
+        and not parsed.get("fatal_error")
+    )
+    return {
+        "model_loaded": bool(parsed.get("model_loaded")),
+        "finite_loss_at_step_50": finite_loss,
+        "loss_decreased_from_step_1": bool(parsed.get("loss_decreased")),
+        "adapter_location": adapter_location,
+        "job_output_non_null": output_non_null,
+        "pass": passed,
+        "max_steps": max_steps,
+    }
+
+
+def run_canary(*, max_steps: int = 50, est_cost: float = 1.0, attempt: int = 3) -> dict[str, Any]:
     wallet_before = _wallet()
     _spend_gate(est_cost)
     run_id = f"student_qlora_canary_{datetime.now(UTC).strftime('%Y%m%dT%H%M%SZ')}"
     endpoint_name = f"student-qlora-canary-{uuid.uuid4().hex[:8]}"
     result: dict[str, Any] = {
-        "schema": "nano.campaign.student_qlora_canary.v1",
+        "schema": "nano.campaign.student_qlora_canary.v2",
         "timestamp": datetime.now(UTC).isoformat(),
         "manifest": str(MANIFEST.relative_to(ROOT)),
         "run_id": run_id,
+        "attempt": attempt,
+        "capture_strategy": CAPTURE_STRATEGY,
         "base_model": BASE_MODEL,
         "dataset_revision": "p1_distill_train_v1",
         "dataset_url": DATASET_URL,
@@ -305,34 +539,40 @@ def run_canary(*, max_steps: int = 50, est_cost: float = 2.5) -> dict[str, Any]:
         result["endpoint_id"] = endpoint_id
         _commit_spend(est_cost, endpoint_id)
         payload = _build_payload(max_steps=max_steps, run_id=run_id)
-        job = _submit_and_poll(endpoint_id, payload)
+        job = _submit_and_capture(endpoint_id, payload)
         result["job_id"] = job.get("job_id")
         result["job_status"] = job.get("status")
-        result["raw_status"] = job.get("raw_status")
-        output = job.get("output")
-        if output is None and isinstance(job.get("raw_status"), dict):
-            output = job["raw_status"].get("output")
-        if isinstance(output, dict) and "output" in output and len(output) == 1:
-            output = output["output"]
-        result["raw_output"] = output
-        final_loss = _final_loss(output)
-        loss_curve = _extract_loss_curve(output)
-        adapter_saved = _adapter_saved(output)
-        finite_loss = final_loss is not None and final_loss == final_loss and final_loss < 1e6
-        passed = job.get("status") == "COMPLETED" and finite_loss and adapter_saved
+        result["capture_mode"] = job.get("capture_mode")
+        result["raw_status"] = job.get("raw_status") or job.get("raw_response")
+        result["raw_output"] = job.get("output")
+        lines = _flatten_output(job.get("output"))
+        if not lines and job.get("stream_chunks"):
+            lines = _flatten_output(job.get("stream_chunks"))
+        parsed = _parse_training_logs(lines)
+        eval_result = _evaluate_pass(job=job, parsed=parsed, max_steps=max_steps)
         result.update(
             {
-                "final_loss": final_loss,
-                "loss_curve": loss_curve,
-                "adapter_saved": adapter_saved,
-                "finite_loss": finite_loss,
-                "pass": passed,
-                "status": "PASS" if passed else ("FAIL" if job.get("status") == "COMPLETED" else str(job.get("status"))),
+                "log_lines_captured": len(lines),
+                "loss_curve": parsed.get("loss_curve", []),
+                "loss_milestones": parsed.get("loss_milestones", {}),
+                "final_loss": parsed.get("final_loss"),
+                "loss_decreased": parsed.get("loss_decreased"),
+                "model_loaded": eval_result["model_loaded"],
+                "finite_loss": eval_result["finite_loss_at_step_50"],
+                "adapter_saved": bool(eval_result["adapter_location"]),
+                "adapter_location": eval_result["adapter_location"],
+                "job_output_non_null": eval_result["job_output_non_null"],
+                "pass": eval_result["pass"],
+                "status": "PASS" if eval_result["pass"] else ("FAIL" if job.get("status") == "COMPLETED" else str(job.get("status"))),
                 "error": job.get("error"),
             }
         )
-        if passed:
-            result["round1_adaptation_gate"] = "UNLOCKED"
+        if eval_result["pass"]:
+            result["round1_adaptation_gate"] = "UNLOCKED_PENDING_LAUNCH"
+        else:
+            result["round1_adaptation_gate"] = "BLOCKED"
+            if not eval_result["job_output_non_null"]:
+                result.setdefault("error", "job_output_null")
         return result
     finally:
         if endpoint_id:
@@ -345,15 +585,18 @@ def run_canary(*, max_steps: int = 50, est_cost: float = 2.5) -> dict[str, Any]:
             manifest = json.loads(MANIFEST.read_text())
             manifest["status"] = result.get("status", "COMPLETE")
             manifest["endpoint_id"] = endpoint_id
+            manifest["capture_strategy"] = CAPTURE_STRATEGY
+            manifest["attempt"] = attempt
             MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Student QLoRA Axolotl canary")
     parser.add_argument("--max-steps", type=int, default=50)
-    parser.add_argument("--est-cost", type=float, default=2.5)
+    parser.add_argument("--est-cost", type=float, default=1.0)
+    parser.add_argument("--attempt", type=int, default=3)
     args = parser.parse_args()
-    payload = run_canary(max_steps=args.max_steps, est_cost=args.est_cost)
+    payload = run_canary(max_steps=args.max_steps, est_cost=args.est_cost, attempt=args.attempt)
     print(json.dumps(payload, indent=2))
     return 0 if payload.get("pass") else 1
 

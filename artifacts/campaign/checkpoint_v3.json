@@ -130,7 +130,9 @@
       "artifact": "artifacts/p1_runs/student_a_structured_c2_screening_20260823T052456Z.json"
     },
     "student_gap": "artifacts/campaign/student_gap_v1.json",
-    "qlora_gate": "UNLOCKED_SEMANTIC_GAP"
+    "qlora_gate": "UNLOCKED_SEMANTIC_GAP",
+    "qlora_canary": "artifacts/campaign/student_qlora_canary_results.json",
+    "qlora_canary_status": "FAIL_OUTPUT_CAPTURE"
   },
   "disagreement_matrix": {
     "n_cases": 128,
@@ -148,5 +150,5 @@
     "100": "native100 early gate (COMPLETE — extended training gated)",
     "135": "kill marginal"
   },
-  "next_dollar": "QLoRA student canary — native A/B complete (evidence_bottleneck 56% cov / span_port 94% assertion-on-covered); coverage gap vs student (-22pp) is binding ROI"
+  "next_dollar": "QLoRA canary re-run — use runsync + hub_model_id/wandb to capture loss@50 and adapter path (attempt-2 trained ~11min but output null)"
 }

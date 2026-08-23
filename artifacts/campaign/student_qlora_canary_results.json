@@ -12,6 +12,24 @@
   "endpoint_id": "kndjw1ao9wzg2z",
   "job_id": "2c83265d-7872-4c43-a9ec-22ffc3a257c5-u2",
   "job_status": "COMPLETED",
+  "execution_time_ms": 679871,
+  "delay_time_ms": 46760,
+  "attempts": [
+    {
+      "endpoint_id": "dnjbbgr8lmczon",
+      "job_id": "861311aa-3316-46a3-9bfe-2ac2d0ce44e3-u2",
+      "dataset_url": "https://raw.githubusercontent.com/wwk5q8z6kk-bit/nano-lm/96ae040e7ebfdbde9a492040077fbfeee27b2a9f/artifacts/campaign/p1_distill_train_v1.json",
+      "failure": "dataset_schema_mismatch_nested_entries_not_alpaca",
+      "execution_time_ms": null
+    },
+    {
+      "endpoint_id": "kndjw1ao9wzg2z",
+      "job_id": "2c83265d-7872-4c43-a9ec-22ffc3a257c5-u2",
+      "dataset_url": "https://gist.githubusercontent.com/wwk5q8z6kk-bit/f3d11aa2463908190976f388b7b5afc1/raw/p1_distill_train_axolotl_v1.json",
+      "execution_time_ms": 679871,
+      "note": "GPU job completed ~11.3min; RunPod /status returned no output payload"
+    }
+  ],
   "raw_status": {
     "delayTime": 46760,
     "executionTime": 679871,
@@ -25,7 +43,9 @@
   "adapter_saved": false,
   "finite_loss": false,
   "pass": false,
-  "error": null,
+  "error": "job_completed_but_output_null_via_async_status_poll",
+  "diagnosis": "Attempt-1 failed fast on nested p1_distill JSON. Attempt-2 used alpaca gist (96 rows); worker ran 679s on A100 but Axolotl hub did not return loss/adapter in /status output. Re-run with runsync + hub_model_id or wandb to capture artifacts.",
+  "round1_adaptation_gate": "BLOCKED",
   "endpoint_cleanup": {
     "deleted": true,
     "endpoint_id": "kndjw1ao9wzg2z"
