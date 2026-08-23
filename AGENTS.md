@@ -34,6 +34,10 @@ NOT_AUTHORIZED
 
 Wedge = supporting verified-information subsystem
 
+NanoScribe (P1) = nanoscribe/ encounter v0 + harness + campaign
+
+Accelerated campaign v2 = tool calling + agent platform + multi-track (frontier branch)
+
 H6 / Nano AI / span-port =
 CROSS_BRANCH_NOT_YET_INTEGRATED
 
@@ -72,8 +76,7 @@ Canonical index: [`docs/README.md`](docs/README.md).
 ```bash
 python3 scripts/check_active_now.py
 python3 scripts/check_docs_integrity.py
-python3 fabric/test_fabric.py
-python3 trajectory/test_recompute_c3.py
+python3 -m pytest fabric/test_fabric.py trajectory/test_recompute_c3.py nanoscribe/test_tool_calling.py -q
 ```
 
 ## Learned User Preferences

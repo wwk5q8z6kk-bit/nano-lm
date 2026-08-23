@@ -110,7 +110,7 @@ Full table: [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](aud
 ```bash
 python scripts/check_active_now.py
 python scripts/check_docs_integrity.py
-pytest fabric/test_fabric.py trajectory/test_recompute_c3.py -q
+pytest fabric/test_fabric.py trajectory/test_recompute_c3.py nanoscribe/test_encounter_v0.py nanoscribe/test_tool_calling.py -q
 ```
 
 Full reproduction of papers/training: [`trajectory/REPRODUCIBILITY.md`](trajectory/REPRODUCIBILITY.md)

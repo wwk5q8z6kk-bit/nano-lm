@@ -1,6 +1,6 @@
 # Active Now
 
-**Updated:** 2026-08-22  
+**Updated:** 2026-08-23  
 **Integration base:** `origin/master` @ `c4822b9` (PR #41 — Qwen inference + three-track harness)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
