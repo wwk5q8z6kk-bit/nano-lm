@@ -22,11 +22,14 @@ from nanoscribe.tracks import (
     API_TEACHER_MODEL,
     COMPACT_MODEL,
     FRONTIER_MODEL,
+    SERVERLESS_ENDPOINT_ID,
+    SERVERLESS_STRONG_MODEL,
     STUDENT_MODEL,
     api_teacher_track,
     compact_track,
     fixture_track,
     frontier_track,
+    serverless_strong_control_track,
     student_track,
     tiny_fixture_case,
 )
@@ -41,7 +44,7 @@ def main() -> None:
     parser.add_argument(
         "--tracks",
         default="fixture",
-        help="comma-separated: fixture, compact, frontier, api, student",
+        help="comma-separated: fixture, compact, serverless, frontier, api, student",
     )
     parser.add_argument(
         "--compact-weights",
@@ -64,6 +67,16 @@ def main() -> None:
         help="HF id or local path for student track",
     )
     parser.add_argument(
+        "--serverless-endpoint",
+        default=SERVERLESS_ENDPOINT_ID,
+        help="RunPod serverless endpoint id for serverless track",
+    )
+    parser.add_argument(
+        "--serverless-model",
+        default=SERVERLESS_STRONG_MODEL,
+        help="OpenAI model id on the serverless endpoint",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=ROOT / "artifacts" / "p1_runs" / "harness_latest.json",
@@ -78,6 +91,13 @@ def main() -> None:
             tracks.append(fixture_track())
         elif name == "compact":
             tracks.append(compact_track(args.compact_weights))
+        elif name == "serverless":
+            tracks.append(
+                serverless_strong_control_track(
+                    args.serverless_endpoint,
+                    args.serverless_model,
+                )
+            )
         elif name == "api":
             tracks.append(api_teacher_track(args.api_model))
         elif name == "student":
@@ -98,6 +118,8 @@ def main() -> None:
             "frontier_weights": args.frontier_weights,
             "student_weights": args.student_weights,
             "api_model": args.api_model,
+            "serverless_endpoint": args.serverless_endpoint,
+            "serverless_model": args.serverless_model,
         },
     )
     print(json.dumps({"output": str(args.output), "n_results": len(results)}, indent=2))

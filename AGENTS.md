@@ -75,3 +75,22 @@ python3 scripts/check_docs_integrity.py
 python3 fabric/test_fabric.py
 python3 trajectory/test_recompute_c3.py
 ```
+
+## Learned User Preferences
+
+- Operate autonomously on Nano P1: build, test, measure, and continue without routine owner prompts or stopping after a single PR or experiment.
+- Maximize intelligence gained per dollar and wall-clock hour; do not default to self-hosting the largest open-weight checkpoint available.
+- Treat B300 availability as a feasibility gate, not proof that arbitrary frontier checkpoints fit on one or two GPUs.
+- Prefer hosted API/inference for the frontier teacher when cheaper; reserve self-hosted B200/B300 for student training, distillation, Native Nano, and verifier work.
+- Enforce RunPod cost discipline: $180 autonomous spend envelope, $200 hard campaign cap, $20 owner reserve not for routine use; tear down idle pods promptly.
+- Use `origin/master` as development truth; never trust or push from a stale local `master`.
+- Do not reopen the documentation-reset program or turn work back into governance exercises when implementation can proceed.
+
+## Learned Workspace Facts
+
+- Current capability frontier is P1 faithful scribing; product frontier is NanoScribe; RunPod is the active GPU training backend within the active experiment budget.
+- P1 foundation PRs landed on master: #37 Encounter Representation v0, #38 constrained evidence transport/evaluation, #40 minimal model adapter and baseline bridge, #41 Qwen inference + three-track harness (`origin/master` ~c4822b9).
+- P1 model research runs four parallel tracks: frontier teacher (capability ceiling), large student, compact control (e.g. Qwen2.5-1.5B baseline adapter), and native Nano vNext screening (~30M–100M).
+- Qwen is a compact control / baseline adapter path, not Nano itself; Nano is the broader faithful-representation program, not merely a tiny LM, Qwen wrapper, or LoRA baseline.
+- Large frontier checkpoints may exceed practical self-host limits (e.g. 300B+ models often need multi-node serving); choose teacher modality by economics and fit, not checkpoint size alone.
+- Historical local `master` at `9fe5b6b6` diverged from canonical remote and must not be treated as push target.

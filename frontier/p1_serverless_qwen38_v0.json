@@ -1,0 +1,58 @@
+{
+  "schema": "nano.p1.experiment_manifest.v0",
+  "experiment_id": "p1_serverless_qwen38_v0",
+  "branch": "frontier/p1-serverless-qwen38-v0",
+  "base_commit": "3de6a057f26a3f2e14e630e4abc3670adb399661",
+  "role": "strong_control_lane",
+  "supersedes": {
+    "lane": "C_compact_control raw RTX-4090 pod inference",
+    "campaign_ref": "frontier/p1_acceleration_campaign_v0.json",
+    "owner": "agent-82a04724"
+  },
+  "model": {
+    "hf_id": "Qwen/Qwen3.8-27B",
+    "license": "Apache-2.0",
+    "approx_repo_gb": 55.6,
+    "adapter": "nanoscribe.adapters.ServerlessQwen38Adapter"
+  },
+  "runpod_serverless": {
+    "endpoint_id": "tbnur4mac60i70",
+    "endpoint_name": "p1-qwen38-27b-strong-control",
+    "template_id": "l5bzkl04uc",
+    "workers_min": 0,
+    "workers_max": 2,
+    "scaler": {
+      "type": "QUEUE_DELAY",
+      "value": 4
+    },
+    "idle_timeout_s": 300,
+    "urls": {
+      "health": "https://api.runpod.ai/v2/tbnur4mac60i70/health",
+      "run": "https://api.runpod.ai/v2/tbnur4mac60i70/run",
+      "runsync": "https://api.runpod.ai/v2/tbnur4mac60i70/runsync",
+      "openai_v1": "https://api.runpod.ai/v2/tbnur4mac60i70/openai/v1"
+    },
+    "auth": {
+      "api_key_env": "RUNPOD_API_KEY",
+      "endpoint_id_env": "RUNPOD_SERVERLESS_ENDPOINT_ID",
+      "notes": "Never commit API keys; use runpodctl config or env"
+    }
+  },
+  "deploy_steps": [
+    "runpodctl serverless create --help  # inspect model-reference flags",
+    "Create endpoint with model Qwen/Qwen3.8-27B, workersMin=0, bounded workersMax",
+    "Enable model caching / flashboot per RunPod docs",
+    "Record endpoint id in this manifest (not secrets)",
+    "Smoke: curl health URL with RUNPOD_API_KEY bearer",
+    "Harness: python3 scripts/p1_harness.py --tracks serverless --capture-raw"
+  ],
+  "harness": {
+    "entrypoint": "python3 scripts/p1_harness.py --tracks serverless",
+    "track_key": "serverless",
+    "test_sets": ["tiny_fixture"],
+    "evaluator": "nanoscribe.evaluate.evaluate",
+    "output_dir": "artifacts/p1_runs/"
+  },
+  "cost_class": "serverless_burst",
+  "do_not_launch": "RTX-4090 Nano inference pods for compact lane — use this serverless lane instead"
+}
