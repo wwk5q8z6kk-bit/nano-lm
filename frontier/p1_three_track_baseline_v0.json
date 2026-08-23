@@ -1,0 +1,56 @@
+{
+  "schema": "nano.p1.experiment_manifest.v0",
+  "experiment_id": "p1_three_track_baseline_v0",
+  "branch": "frontier/p1-three-track-baseline-v0",
+  "base_commit": "89a7939a6861b8e2b7125f93ae243a852a652101",
+  "cost_class": {
+    "fixture": "zero_local",
+    "compact": "routine_runpod_4090",
+    "frontier": "experiment_scoped_a100_80gb"
+  },
+  "model_tracks": {
+    "fixture": {
+      "adapter": "nanoscribe.adapters.FixtureSpanPortAdapter",
+      "weights": "inline_fixture_lines"
+    },
+    "compact": {
+      "adapter": "nanoscribe.adapters.Qwen25BaselineAdapter",
+      "weights": "Qwen/Qwen2.5-1.5B-Instruct",
+      "gpu_class": "ADA_24"
+    },
+    "frontier": {
+      "adapter": "nanoscribe.adapters.Qwen25BaselineAdapter",
+      "weights_primary": "Qwen/Qwen2.5-72B-Instruct",
+      "weights_alt": "meta-llama/Llama-3.3-70B-Instruct",
+      "gpu_class": "AMPERE_80",
+      "notes": "2026-02: Qwen2.5-72B and Llama-3.3-70B are strongest practical self-hostable instruct models; require 80GB+ or 4-bit quant on 48GB"
+    }
+  },
+  "pipeline": [
+    "SOURCE",
+    "MODEL_ADAPTER",
+    "CandidateAtom",
+    "ConstrainedSelector",
+    "EvidenceSpan",
+    "PredictedAtom",
+    "EncounterRecord_construction_probe",
+    "PR2_evaluator"
+  ],
+  "harness": {
+    "entrypoint": "python3 scripts/p1_harness.py",
+    "test_sets": ["tiny_fixture"],
+    "evaluator": "nanoscribe.evaluate.evaluate",
+    "output_dir": "artifacts/p1_runs/"
+  },
+  "runpod": {
+    "smoke_script": "scripts/p1_runpod_smoke.sh",
+    "gpu_smoke": "python3 nanoscribe/smoke_qwen_baseline.py",
+    "network_volume": "04himzqxbm",
+    "terminate_after_smoke": true
+  },
+  "native_nano": {
+    "status": "DESIGN_ONLY",
+    "module": "nanoscribe.native",
+    "param_screen_range_m": [30, 100]
+  }
+}

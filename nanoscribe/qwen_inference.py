@@ -78,10 +78,14 @@ def _atom_user_prompt(spec: AtomSpec, model_input) -> str:
 
 def _generate_line(loaded: _LoadedQwen, user_prompt: str, *, max_new_tokens: int) -> str:
     import torch
+    from nanoscribe.prompt import span_port_system_prompt
 
     tokenizer = loaded.tokenizer
     model = loaded.model
-    messages = [{"role": "user", "content": user_prompt}]
+    messages = [
+        {"role": "system", "content": span_port_system_prompt()},
+        {"role": "user", "content": user_prompt},
+    ]
     prompt = tokenizer.apply_chat_template(
         messages,
         tokenize=False,

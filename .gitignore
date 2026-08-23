@@ -51,3 +51,6 @@ experiments/**/runs/**
 !benchmarks/adapters/**/fixtures/**/*.json
 
 .venv-bench/
+
+# P1 harness outputs (external to git; summaries in frontier/*.json)
+artifacts/p1_runs/

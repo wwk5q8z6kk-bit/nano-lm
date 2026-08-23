@@ -13,12 +13,20 @@ class _AtomSpecLike(Protocol):
     raw_value: str
     speaker: Speaker
 
-_SPAN_PORT_INSTRUCTIONS = """Answer on one line:
+_SPAN_PORT_SYSTEM = (
+    "You extract clinical facts from transcripts. "
+    "Reply with exactly one line: STATED, DENIED, or NOT_MENTIONED. "
+    "For STATED or DENIED include a verbatim quote in double quotes.\n"
+    'Example: STATED: "neck"\n'
+    'Example: DENIED: "No allergies."\n'
+    "Example: NOT_MENTIONED"
+)
+
+_SPAN_PORT_SUFFIX = """Answer on one line:
 - STATED: "exact words that name it"
 - DENIED: "exact words that deny it"
 - NOT_MENTIONED
-Quotes must copy the source words exactly. If the topic never comes up, write
-only NOT_MENTIONED with no quotes."""
+Quotes must copy source words exactly. If absent, write only NOT_MENTIONED."""
 
 _FIELD_QUESTION: dict[AtomType, str] = {
     AtomType.MEDICATION: "any medication the patient is taking",
@@ -58,18 +66,21 @@ def build_span_port_prompt(source: Source, spec: _AtomSpecLike) -> str:
     transcript = _format_transcript(source)
     topic = topic_for_spec(spec)
     if spec.speaker is Speaker.CLINICIAN:
-        perspective = "the clinician's own words"
-        label_hint = "STATED for clinician assertions, NOT_MENTIONED if absent"
+        who = "the clinician's own words"
+        choices = "STATED for clinician assertions, NOT_MENTIONED if absent"
     else:
-        perspective = "the patient's own words"
-        label_hint = (
+        who = "the patient's own words"
+        choices = (
             "STATED - names a specific one; DENIED - denies having any; "
             "NOT_MENTIONED - topic never comes up"
         )
     return (
-        "You are reading a clinic transcript.\n\n"
-        f"{transcript}\n\n"
-        f"Question: regarding {topic}, which of these do {perspective} do?\n\n"
-        f"{label_hint}\n\n"
-        f"{_SPAN_PORT_INSTRUCTIONS}"
+        f"Transcript:\n{transcript}\n\n"
+        f"Question: regarding {topic}, which of these do {who} do?\n\n"
+        f"{choices}\n\n"
+        f"{_SPAN_PORT_SUFFIX}"
     )
+
+
+def span_port_system_prompt() -> str:
+    return _SPAN_PORT_SYSTEM
