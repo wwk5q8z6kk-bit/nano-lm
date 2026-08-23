@@ -7,16 +7,26 @@
   "supersedes_note": "v4 optimistic winner language is historical only; v4 file preserved unchanged",
   "campaign_phase": "WAVE_0_MEASUREMENT_CORPUS_CI",
   "wallet": {
-    "live_runpod_balance_usd": 145.0442299356,
-    "balance_note": "stale estimate \u2014 query runpodctl user before paid waves",
-    "current_spend_per_hr": 3.001,
-    "campaign_remaining_est": 140.76,
-    "session_new_spend_usd": 0.14
+    "live_runpod_balance_usd": 143.0406312355,
+    "balance_note": "queried runpodctl user 2026-08-23T21:25Z",
+    "current_spend_per_hr": 0.004,
+    "campaign_remaining_est": 138.04,
+    "session_new_spend_usd": 2.0
   },
   "active_resources": {
     "pods": 0,
     "serverless": 0,
     "posture": "NO_ACTIVE_PODS"
+  },
+  "fleet_incident": {
+    "status": "IDLE_BURN_TERMINATED",
+    "timestamp": "2026-08-23T21:25:00+00:00",
+    "artifact": "artifacts/campaign/fleet_incident_20260823.json",
+    "pods_terminated": [
+      "45zauz5xh1591w",
+      "46zuwen2qobvlj"
+    ],
+    "note": "Owner reported dual idle pods at 0% GPU; both already deleted before agent terminate. native30 attempt 3 used screen corpus (not unit fixture) but may have idled between runs; QLoRA attempt 6 TRAIN_DONE on pod but adapter never pulled."
   },
   "measurement_repair": {
     "status": "COMMITTED",
@@ -69,8 +79,10 @@
       "artifact": "artifacts/campaign/student_gap_v1.json",
       "qlora_adaptation_gate": "LOCKED",
       "qlora_canary_gate": "PASS_COMPATIBILITY_ONLY",
-      "qlora_canary_status": "FAIL_ATTEMPT_5_TRAIN_CRASH",
-      "qlora_canary_attempt": 5
+      "qlora_canary_status": "ATTEMPT_6_TRAIN_DONE_ADAPTER_LOST",
+      "qlora_canary_attempt": 6,
+      "qlora_canary_pod": "46zuwen2qobvlj",
+      "qlora_canary_note": "50-step train completed (loss 3.67\u21920.017); adapter saved on pod but SCP pull failed before terminate; 0 bytes local"
     },
     "managed_reference": {
       "winner": "qwen3_32b_awq",
@@ -107,18 +119,15 @@
       "generator": "scripts/generate_p1_screening_eval_v2.py"
     },
     "native30_revalidation": {
-      "status": "RUNNING",
+      "status": "TERMINATED_IDLE_BURN",
       "pod": "45zauz5xh1591w",
       "datacenter": "CA-MTL-3",
       "commit_sha": "6c98771",
-      "launched_at": "2026-08-23T20:42:56.207197+00:00",
-      "verification": {
-        "torch": "2.4.1+cu124 CUDA True (preserved through pip install)",
-        "corpus": "CORPUS_OK hash=de82e5d1... rows=19194",
-        "gpu_at_check": "96% util, 8367 MiB"
-      },
-      "design": "3 arms (decoder control / evidence_bottleneck / span_port) x 3 seeds, 1800 steps, batch 32, 3 epochs over 19,194 rows",
+      "launched_at": "2026-08-23T20:39:49.686812+00:00",
+      "terminated_at": "2026-08-23T21:25:00+00:00",
       "corpus": "native_corpus_screen_v1_train (14,693,267 char-level tokens)",
+      "corpus_gate": "CORPUS_OK on attempt 3 — screen corpus, NOT unit fixture",
+      "note": "Launched before native_data_gate OPEN in checkpoint; attempts 1-2 wasted on torch clobber and unit-fixture guard",
       "cost_projection_usd": 2.22,
       "max_cost_usd": 6.45,
       "artifact_dest": "artifacts/campaign/native30_revalidation_summary_v1.json",
@@ -132,7 +141,7 @@
       "attempts": {
         "1_pod_9cg7kfpe4vlgzi": "ABORTED \u2014 pip installed torch 2.11.0+cu130 over the template torch; CUDA 12.4 driver could not run it, would have trained on CPU",
         "2_pod_a46aeq9gdrq0g4": "ABORTED \u2014 train_native_nano.py --dataset defaulted to the unit fixture and applied unconditionally; corpus launch guard correctly refused",
-        "3_pod_45zauz5xh1591w": "RUNNING on GPU"
+        "3_pod_45zauz5xh1591w": "TERMINATED \u2014 trained at least one run then idled at 0% GPU per owner screenshot; no summary artifact pulled"
       }
     }
   },

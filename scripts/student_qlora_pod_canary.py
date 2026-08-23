@@ -24,7 +24,7 @@ MANIFEST = ROOT / "artifacts/campaign/manifests/student_qlora_canary_v1.json"
 OUT_PATH = ROOT / "artifacts/campaign/student_qlora_canary_results.json"
 FAIL_LOG_PATH = ROOT / "artifacts/campaign/student_qlora_canary_last.log"
 ADAPTER_DIR = ROOT / "artifacts/campaign/student_qlora_canary_adapter"
-CHECKPOINT = ROOT / "artifacts/campaign/checkpoint_v3.json"
+CHECKPOINT = ROOT / "artifacts/campaign/checkpoint_v5.json"
 LEDGER = ROOT / "artifacts/campaign/spend.json"
 SSH = ROOT / "scripts/runpod_pod_ssh.sh"
 TRAIN_SCRIPT_GIST = (
@@ -32,6 +32,10 @@ TRAIN_SCRIPT_GIST = (
     "cee97a251dcf9848227e5b7a67b77531/raw/student_qlora_minimal_train.py"
 )
 PULL_SCRIPT = ROOT / "scripts/pull_qlora_adapter.py"
+WATCHDOG = ROOT / "scripts/gpu_idle_watchdog.sh"
+BOOTSTRAP_VERIFY_SEC = 120
+IDLE_UTIL_THRESHOLD = 5
+IDLE_STREAK_MAX = 5  # 5 polls × 60s ≈ 5 min idle after bootstrap window
 
 BASE_MODEL = "Qwen/Qwen2.5-32B-Instruct"
 DATASET_URL = (
@@ -227,6 +231,53 @@ def _cuda_gate_with_retries(
     return None, 0.0, last_error, selected_gpu
 
 
+def _verify_bootstrap(pod_id: str, *, timeout_s: int = BOOTSTRAP_VERIFY_SEC) -> None:
+    deadline = time.time() + timeout_s
+    last_out = ""
+    while time.time() < deadline:
+        out = _ssh(
+            pod_id,
+            "test -f /workspace/nano-lm/scripts/student_qlora_minimal_train.py && echo SCRIPT_OK; "
+            "pgrep -af student_qlora_minimal_train.py || echo NO_TRAIN_PID",
+        )
+        last_out = out
+        if "SCRIPT_OK" in out and "NO_TRAIN_PID" not in out:
+            return
+        time.sleep(10)
+    raise RuntimeError(f"bootstrap verify failed within {timeout_s}s: {last_out[-300:]!r}")
+
+
+def _gpu_util(pod_id: str) -> float | None:
+    try:
+        out = _ssh(
+            pod_id,
+            "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null | head -1",
+        )
+        return float(out.strip().split()[0])
+    except (RuntimeError, ValueError, IndexError):
+        return None
+
+
+def _start_idle_watchdog(pod_id: str) -> subprocess.Popen[bytes] | None:
+    if not WATCHDOG.is_file():
+        return None
+    return subprocess.Popen(
+        ["bash", str(WATCHDOG), pod_id, str(BOOTSTRAP_VERIFY_SEC), "5", str(IDLE_UTIL_THRESHOLD)],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def _stop_watchdog(proc: subprocess.Popen[bytes] | None) -> None:
+    if proc is None or proc.poll() is not None:
+        return
+    proc.terminate()
+    try:
+        proc.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+
+
 def _upload_train_script(pod_id: str) -> None:
     local = ROOT / "scripts/student_qlora_minimal_train.py"
     remote = "/workspace/nano-lm/scripts/student_qlora_minimal_train.py"
@@ -273,6 +324,7 @@ def _bootstrap(pod_id: str) -> None:
     out = _ssh(pod_id, cmd)
     if "TRAIN_PID=" not in out:
         raise RuntimeError(f"bootstrap did not start trainer: {out!r}")
+    _verify_bootstrap(pod_id)
 
 
 def _parse_log(text: str) -> dict[str, Any]:
@@ -393,6 +445,10 @@ def run_pod_canary(*, est_cost: float = 2.0, attempt: int = 5) -> dict[str, Any]
         "status": "RUNNING",
     }
     pod_id = None
+    watchdog: subprocess.Popen[bytes] | None = None
+    parsed: dict[str, Any] = {}
+    adapter_ok = False
+    train_done = False
     try:
         pod_id, rate, cuda_err, selected_gpu = _cuda_gate_with_retries(
             max_attempts=4, est_cost=est_cost, attempt=attempt
@@ -408,6 +464,7 @@ def run_pod_canary(*, est_cost: float = 2.0, attempt: int = 5) -> dict[str, Any]
         result["datacenter"] = DATA_CENTER
         result["container_disk_gb"] = CONTAINER_DISK_GB
         _bootstrap(pod_id)
+        watchdog = _start_idle_watchdog(pod_id)
         parsed = _poll_training(pod_id)
         pull = _pull_adapter(pod_id)
         adapter_ok = bool(pull.get("ok"))
@@ -459,8 +516,16 @@ def run_pod_canary(*, est_cost: float = 2.0, attempt: int = 5) -> dict[str, Any]
         result.update({"status": "FAIL", "error": str(exc), "pass": False, "round1_adaptation_gate": "BLOCKED"})
         return result
     finally:
+        _stop_watchdog(watchdog)
         if pod_id:
-            result["pod_deleted"] = _terminate_pod(pod_id)
+            train_done = bool(parsed.get("train_done"))
+            block_terminate = train_done and not adapter_ok
+            if block_terminate:
+                result["pod_deleted"] = False
+                result["terminate_blocked"] = True
+                result["terminate_block_reason"] = "train_done_adapter_pull_failed"
+            else:
+                result["pod_deleted"] = _terminate_pod(pod_id)
         result["wallet_after_usd"] = round(_wallet(), 4)
         result["wallet_delta_usd"] = round(result["wallet_after_usd"] - wallet_before, 4)
         OUT_PATH.write_text(json.dumps(result, indent=2) + "\n")
@@ -479,15 +544,21 @@ def run_pod_canary(*, est_cost: float = 2.0, attempt: int = 5) -> dict[str, Any]
             MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")
         if CHECKPOINT.is_file() and result.get("pass"):
             ckpt = json.loads(CHECKPOINT.read_text())
-            ckpt.setdefault("student_a", {})["qlora_canary_status"] = "PASS"
-            ckpt["student_a"]["qlora_canary_attempt"] = attempt
-            ckpt["student_a"]["round1_adaptation_gate"] = "UNLOCKED_PENDING_LAUNCH"
-            ckpt["next_dollar"] = "Bounded Round-1 QLoRA adaptation (canary PASS)"
+            ckpt.setdefault("lanes", {}).setdefault("student_a", {})["qlora_canary_status"] = "PASS"
+            ckpt["lanes"]["student_a"]["qlora_canary_attempt"] = attempt
+            ckpt["lanes"]["student_a"]["qlora_adaptation_gate"] = "UNLOCKED_PENDING_LAUNCH"
+            ckpt["next_work_lanes"] = [
+                lane for lane in ckpt.get("next_work_lanes", []) if "QLoRA compatibility" not in lane
+            ]
             CHECKPOINT.write_text(json.dumps(ckpt, indent=2) + "\n")
         elif CHECKPOINT.is_file():
             ckpt = json.loads(CHECKPOINT.read_text())
-            ckpt.setdefault("student_a", {})["qlora_canary_status"] = result.get("status", "FAIL")
-            ckpt["student_a"]["qlora_canary_attempt"] = attempt
+            student = ckpt.setdefault("lanes", {}).setdefault("student_a", {})
+            if train_done and not adapter_ok:
+                student["qlora_canary_status"] = "TRAIN_PASS_ARTIFACT_FAIL"
+            else:
+                student["qlora_canary_status"] = result.get("status", "FAIL")
+            student["qlora_canary_attempt"] = attempt
             CHECKPOINT.write_text(json.dumps(ckpt, indent=2) + "\n")
 
 
