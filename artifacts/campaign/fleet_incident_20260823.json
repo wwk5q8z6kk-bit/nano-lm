@@ -19,6 +19,19 @@
       "note": "Attempts 1-2 aborted (torch clobber, unit-fixture guard). Attempt 3 passed CORPUS_OK but may have idled between 9-run loop or after orchestrator disconnect."
     },
     {
+      "pod_id": "b2k1blbxs17w17",
+      "spend_record_id": "b2klblbxsl7wl7",
+      "name": "native30-reval-202608231728",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "rate_per_hr": 1.4,
+      "lane": "native30_revalidation_wave1",
+      "commit_sha": "9a2d388",
+      "started_at": "2026-08-23T21:29:32+00:00",
+      "last_known_state": "owner ~96% GPU; runpodctl 404 at 21:35Z; NATIVE30_REVALIDATION_DONE not verified; no summary pulled",
+      "corpus": "native_corpus_screen_v1_train",
+      "note": "Attempt 4 — outcome unknown; pod absent from API before artifact pull"
+    },
+    {
       "pod_id": "46zuwen2qobvlj",
       "name": "qlora-canary-08232032",
       "gpu": "NVIDIA A100-SXM4-80GB",

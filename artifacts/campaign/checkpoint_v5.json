@@ -1,7 +1,7 @@
 {
   "schema": "nano.campaign.checkpoint.v5",
-  "timestamp": "2026-08-23T21:36:17.864095+00:00",
-  "commit_sha": "7e383efc7628e4fee4be4263bdccc1c0aeffb434",
+  "timestamp": "2026-08-23T21:45:00+00:00",
+  "commit_sha": "488ba77",
   "branch": "frontier/accelerated-research-campaign-v2",
   "supersedes": "artifacts/campaign/checkpoint_v4.json",
   "supersedes_note": "v4 optimistic winner language is historical only; v4 file preserved unchanged",
@@ -13,8 +13,8 @@
     "campaign_remaining_est": 122.73,
     "session_new_spend_usd": 2.0
   },
-  "paid_gpu_hold": false,
-  "paid_gpu_hold_reason": "Lifted for native30 revalidation relaunch at 9a2d388 + QLoRA attempt 7; hold re-applies if idle burn recurs",
+  "paid_gpu_hold": true,
+  "paid_gpu_hold_reason": "Native30 RunPod wave failed 4 attempts with no summary artifact; QLoRA adapter never pulled (attempts 6–7). Re-launch only after Kaggle import or bootstrap fix verified.",
   "paid_gpu_hold_lift_when": [
     "native30_revalidation summary pulled or RUNS_FAILED isolated",
     "QLoRA attempt 7 adapter SCP pull PASS"
@@ -23,7 +23,7 @@
     "pods": 0,
     "serverless": 0,
     "posture": "NO_ACTIVE_PODS",
-    "note": "runpodctl pod list empty at checkpoint write; owner-reported native30 pod b2k1blbxs17w17 not visible to API (404)"
+    "note": "runpodctl pod list empty 2026-08-23T21:35Z; attempt-4 pods 404; fleet zero"
   },
   "fleet_incident": {
     "status": "IDLE_BURN_TERMINATED",
@@ -138,26 +138,31 @@
       "generator": "scripts/generate_p1_screening_eval_v2.py"
     },
     "native30_revalidation": {
-      "status": "IN_PROGRESS",
+      "status": "RUNPOD_ABANDONED_KAGGLE_READY",
       "owner_reported_pod": "b2k1blbxs17w17",
       "owner_reported_name": "native30-reval-202608231728",
       "spend_committed_pod": "b2klblbxsl7wl7",
-      "datacenter": "unknown",
       "commit_sha": "9a2d388",
-      "local_head_note": "workspace HEAD 7e383ef (ahead of 9a2d388 with pod_watchdog wip); pod launched at 9a2d388 per owner",
+      "local_head": "488ba77",
       "launched_at": "2026-08-23T21:29:32+00:00",
       "corpus": "native_corpus_screen_v1_train (screen corpus, 14.69M char-level tokens)",
-      "corpus_gate": "CORPUS_OK \u2014 content_hash matches manifest; not unit fixture",
+      "corpus_gate": "CORPUS_OK",
       "arms_total": 9,
-      "arms_completed": "unknown \u2014 SSH/API blocked; marker NATIVE30_REVALIDATION_DONE not verified",
+      "arms_completed": 0,
+      "summary_local": true,
+      "summary_verdict": "AWAITING_KAGGLE_IMPORT",
       "preflight": "9-arm construct-all before train (embed_dim/num_heads fix at 9a2d388)",
       "artifact_dest": "artifacts/campaign/native30_revalidation_summary_v1.json",
-      "api_visibility": "NOT_IN_RUNPODCTL_LIST_AT_CHECKPOINT",
-      "note": "Owner screenshot ~96% GPU A100 PCIe $1.40/hr; agent could not confirm RUNNING (404/get/list). Do not terminate if GPU>50% and training active.",
+      "runpod_attempts": "artifacts/campaign/native30_runpod_attempts_v1.json",
+      "kaggle_script": "scripts/kaggle_native30_revalidation.py",
+      "kaggle_import": "scripts/import_kaggle_native30_results.py",
+      "api_visibility": "PODS_404_AT_21_35Z",
+      "note": "Four RunPod attempts, zero capturable summary. Next: Kaggle T4 (free) then import results.",
       "attempts": {
-        "1_pod_9cg7kfpe4vlgzi": "ABORTED \u2014 pip installed torch 2.11.0+cu130 over the template torch; CUDA 12.4 driver could not run it, would have trained on CPU",
-        "2_pod_a46aeq9gdrq0g4": "ABORTED \u2014 train_native_nano.py --dataset defaulted to the unit fixture and applied unconditionally; corpus launch guard correctly refused",
-        "3_pod_45zauz5xh1591w": "TERMINATED \u2014 trained at least one run then idled at 0% GPU per owner screenshot; no summary artifact pulled"
+        "1_pod_9cg7kfpe4vlgzi": "ABORTED — torch wheel clobbered CUDA",
+        "2_pod_a46aeq9gdrq0g4": "ABORTED — unit fixture default",
+        "3_pod_45zauz5xh1591w": "TERMINATED — idled 0% GPU; no pull",
+        "4_pod_b2k1blbxs17w17": "UNKNOWN — 404; NATIVE30_REVALIDATION_DONE not verified"
       }
     }
   },
@@ -165,16 +170,15 @@
     "G0_measurement_integrity": "IN_PROGRESS",
     "G1_corpus_validity": "SCREEN_VALIDATED",
     "G2_evaluation_power": "STUB",
-    "G4_30m_revalidation": "IN_PROGRESS",
+    "G4_30m_revalidation": "RUNPOD_FAILED_KAGGLE_PATH",
     "G5_100m_promotion": "BLOCKED",
     "native_data_gate": "artifacts/campaign/gates/native_data_gate_v1.json",
     "qlora_canary_gate": "artifacts/campaign/gates/qlora_canary_gate_v1.json",
     "qlora_adaptation_gate": "artifacts/campaign/gates/qlora_adaptation_gate_v1.json"
   },
   "next_work_lanes": [
-    "merge pull/watchdog fixes and verify locally (no GPU)",
-    "30M revalidation \u00d7 3 seeds on screen corpus (Wave 1) after paid_gpu_hold lifted",
-    "QLoRA compatibility canary attempt 7 (unit fixture; artifact pull must PASS)",
+    "Run scripts/kaggle_native30_revalidation.py on Kaggle T4 (free); import via scripts/import_kaggle_native30_results.py",
+    "QLoRA compatibility canary attempt 8 after git-clone bootstrap fix (artifact pull must PASS)",
     "eval v2 design + power analysis",
     "pytest nanoscribe in CI with collection floor"
   ],
@@ -188,6 +192,7 @@
     "checkpoint_v4": "artifacts/campaign/checkpoint_v4.json",
     "checkpoint_v3": "artifacts/campaign/checkpoint_v3.json",
     "measurement_repair": "artifacts/campaign/measurement_repair_v1.json",
-    "kaggle_retrieval_plan": "artifacts/campaign/kaggle_retrieval_plan_v1.json"
+    "kaggle_retrieval_plan": "artifacts/campaign/kaggle_retrieval_plan_v1.json",
+    "native30_runpod_attempts": "artifacts/campaign/native30_runpod_attempts_v1.json"
   }
 }

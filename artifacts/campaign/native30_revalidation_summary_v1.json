@@ -1,0 +1,32 @@
+{
+  "schema": "nano.campaign.native30_revalidation.v1",
+  "timestamp": "2026-08-23T21:45:00+00:00",
+  "experiment_id": "native30_revalidation_wave1_v1",
+  "corpus": {
+    "revision": "native_corpus_screen_v1",
+    "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+    "train_rows": 19194,
+    "training_tokens_char_level": 14693267
+  },
+  "surface": "pending_kaggle_t4",
+  "runpod_attempts": "artifacts/campaign/native30_runpod_attempts_v1.json",
+  "kaggle_script": "scripts/kaggle_native30_revalidation.py",
+  "import_script": "scripts/import_kaggle_native30_results.py",
+  "runs_expected": 9,
+  "runs_imported": 0,
+  "marker": "INCOMPLETE",
+  "verdict": "AWAITING_KAGGLE_IMPORT",
+  "runs_missing": [
+    "reval30_decoder_control_s0",
+    "reval30_decoder_control_s1",
+    "reval30_decoder_control_s2",
+    "reval30_evidence_bottleneck_s0",
+    "reval30_evidence_bottleneck_s1",
+    "reval30_evidence_bottleneck_s2",
+    "reval30_span_port_s0",
+    "reval30_span_port_s1",
+    "reval30_span_port_s2"
+  ],
+  "runs": [],
+  "note": "Four RunPod attempts produced no capturable summary (see native30_runpod_attempts_v1.json). Re-run on Kaggle T4 and re-import."
+}

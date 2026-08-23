@@ -270,17 +270,18 @@
     }
   },
   "native30_revalidation": {
-    "abort_reason": "torch 2.11.0+cu130 installed over the template torch could not use the CUDA 12.4 driver; run would have trained on CPU",
-    "commit_sha": "f1fc1f7",
-    "corpus_verified_on_pod": "CORPUS_OK \u2014 content_hash matched the committed manifest",
-    "datacenter": "CA-MTL-3",
-    "defect": "artifacts/campaign/infra_defect_torch_cuda_v1.json",
-    "gate": "PROMOTION_GATE_OPEN (all 11 conditions passed)",
+    "status": "RUNPOD_ABANDONED_KAGGLE_READY",
+    "abort_reason": "four RunPod attempts; no native30_revalidation_summary_v1.json",
+    "commit_sha": "9a2d388",
+    "corpus_verified_on_pod": "CORPUS_OK on attempt 3+",
+    "gate": "PROMOTION_GATE_OPEN",
     "manifest": "artifacts/campaign/manifests/native30_revalidation_wave1_v1.json",
-    "next": "relaunch with bootstrap_native30_revalidation.sh (torch preserved) and the hard CUDA assertion",
-    "pod": "9cg7kfpe4vlgzi",
-    "status": "LAUNCH_ABORTED_INFRA_DEFECT",
-    "wasted_usd_est": 0.14
+    "runpod_attempts": "artifacts/campaign/native30_runpod_attempts_v1.json",
+    "kaggle_script": "scripts/kaggle_native30_revalidation.py",
+    "next": "Kaggle T4 run + scripts/import_kaggle_native30_results.py",
+    "pod": "b2k1blbxs17w17",
+    "api_status": "404 at 21:35Z",
+    "wasted_usd_est": 8.0
   },
   "native_extended": {
     "commit_sha": "d0165d8",

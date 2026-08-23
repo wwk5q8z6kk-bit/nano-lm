@@ -1,0 +1,43 @@
+{
+  "schema": "nano.campaign.native30_runpod_attempts.v1",
+  "timestamp": "2026-08-23T21:45:00+00:00",
+  "experiment_id": "native30_revalidation_wave1_v1",
+  "verdict": "ABANDONED_FOR_KAGGLE",
+  "summary_artifact": null,
+  "wallet_usd_at_close": 142.73,
+  "active_pods_at_close": 0,
+  "attempts": [
+    {
+      "attempt": 1,
+      "pod_id": "9cg7kfpe4vlgzi",
+      "status": "ABORTED",
+      "reason": "pip installed torch 2.11.0+cu130 over template; CUDA unusable"
+    },
+    {
+      "attempt": 2,
+      "pod_id": "a46aeq9gdrq0g4",
+      "status": "ABORTED",
+      "reason": "train_native_nano.py defaulted to unit fixture; corpus guard refused"
+    },
+    {
+      "attempt": 3,
+      "pod_id": "45zauz5xh1591w",
+      "status": "TERMINATED_NO_PULL",
+      "reason": "CORPUS_OK; trained at least one arm then idled 0% GPU; no summary pulled"
+    },
+    {
+      "attempt": 4,
+      "pod_id": "b2k1blbxs17w17",
+      "spend_record_id": "b2klblbxsl7wl7",
+      "name": "native30-reval-202608231728",
+      "commit_sha": "9a2d388",
+      "status": "UNKNOWN_NO_ARTIFACT",
+      "reason": "Owner reported ~96% GPU; runpodctl 404 at 21:35Z; marker NATIVE30_REVALIDATION_DONE not verified; no local summary"
+    }
+  ],
+  "kaggle_alternative": {
+    "script": "scripts/kaggle_native30_revalidation.py",
+    "import": "scripts/import_kaggle_native30_results.py",
+    "note": "Free T4; resume-safe; same 9-arm construct-all + RUNS_FAILED isolation"
+  }
+}

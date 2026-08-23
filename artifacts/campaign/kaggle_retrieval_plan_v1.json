@@ -32,6 +32,14 @@
       "status": "PENDING"
     },
     {
+      "asset": "native30_revalidation_results",
+      "purpose": "Wave-1 30M screen on real corpus (9 arms × 3 seeds)",
+      "script": "scripts/kaggle_native30_revalidation.py",
+      "import": "scripts/import_kaggle_native30_results.py",
+      "integrate": "artifacts/campaign/native30_revalidation_summary_v1.json",
+      "status": "READY_TO_RUN"
+    },
+    {
       "asset": "kernel_output_bundles",
       "purpose": "logs, checkpoints from completed kernels",
       "notes": "Check Kaggle Datasets/Notebooks output for wwk5q8z6kk-bit/nano-lm runs",

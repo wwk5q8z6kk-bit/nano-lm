@@ -50,10 +50,10 @@
     "note": "Screen stage sufficient for 30M revalidation wave; full R30/P100 promotion corpus still required"
   },
   "blocked_until": [
-    "paid_gpu_hold lifted after watchdog merged",
-    "qlora adapter pull fix verified locally"
+    "native30_revalidation_summary_v1.json from Kaggle import or verified RunPod pull",
+    "qlora adapter bytes local after attempt 8"
   ],
-  "next_action": "30M revalidation manifest with committed corpus hash; no pod until paid_gpu_hold=false",
+  "next_action": "Kaggle T4: scripts/kaggle_native30_revalidation.py; import with scripts/import_kaggle_native30_results.py",
   "eval_v2": {
     "suite_id": "p1_screening_eval_v2",
     "ready": true,
