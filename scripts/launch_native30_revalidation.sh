@@ -8,14 +8,17 @@ COMMIT_SHA="${WAVE1_COMMIT_SHA:-$(git rev-parse HEAD)}"
 DATA_CENTER="${RUNPOD_DATA_CENTER_IDS:-CA-MTL-3}"
 VOLUME_ID="${RUNPOD_VOLUME_ID:-}"
 LEDGER="${CAMPAIGN_LEDGER:-artifacts/campaign/spend.json}"
-EST_HOURS="${NATIVE_REVAL_HOURS:-1.5}"
-RATE="${NATIVE_REVAL_RATE:-0.27}"
+EST_HOURS="${NATIVE_REVAL_HOURS:-0.75}"
+RATE="${NATIVE_REVAL_RATE:-2.09}"
 MANIFEST="artifacts/campaign/manifests/native30_revalidation_wave1_v1.json"
 # Right-sized from MEASURED footprint: a 30M arm peaked at 8.2GB of an A100's
 # 80GB — a 9.8x over-provision at $1.39-1.59/hr. An RTX A5000 (24GB, $0.27/hr)
 # still leaves 2.9x headroom for eval and fragmentation, cutting the 9-run screen
 # from ~$2.23 to ~$0.38. Override with NATIVE_GPU_ID for larger arms.
-GPU_ID="${NATIVE_GPU_ID:-NVIDIA RTX A5000}"
+# Nine arms run CONCURRENTLY at ~8GB each, so the card is chosen for capacity
+# AND speed: 96GB fits all nine with headroom and finishes the screen in one
+# wall-clock batch instead of nine sequential ones.
+GPU_ID="${NATIVE_GPU_ID:-NVIDIA RTX PRO 6000}"
 
 python3 scripts/campaign_spend.py --ledger "${LEDGER}" gate --amount "$(python3 -c "print(round(${RATE}*${EST_HOURS},4))")" >/dev/null
 

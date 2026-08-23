@@ -87,30 +87,39 @@ sys.exit(1 if bad else 0)
 PY
 
 mkdir -p /workspace/reval_results
-FAILED_RUNS=""
-for RUN_ID in ${RUN_IDS}; do
-  echo "==> train ${RUN_ID}"
-  # A single failing run must not abort the remaining eight — the pod is already
-  # paid for and the other arms are still worth collecting.
-  if ! python3 scripts/train_native_nano.py --run-id "${RUN_ID}" 2>&1 | tail -5; then
-    echo "RUN_FAILED ${RUN_ID}"
-    FAILED_RUNS="${FAILED_RUNS} ${RUN_ID}"
-    continue
-  fi
 
-  # Evaluate on the pod: the GPU is already paid for, and pulling nine 30M
-  # checkpoints over SSH to evaluate on a laptop would cost far more wall clock
-  # than the training itself.
+# PARALLEL execution. Each 30M arm peaks at ~8GB; a 96GB card fits all nine at
+# once, so running them concurrently converts nine sequential trainings into one
+# wall-clock batch. Sequential execution was leaving >90% of the GPU idle.
+echo "==> launching ${RUN_IDS} in parallel"
+PIDS=""
+for RUN_ID in ${RUN_IDS}; do
+  ( python3 scripts/train_native_nano.py --run-id "${RUN_ID}" \
+      > "/workspace/reval_results/${RUN_ID}_train.log" 2>&1 \
+      && echo "RUN_DONE ${RUN_ID}" \
+      || echo "RUN_FAILED ${RUN_ID}" ) &
+  PIDS="${PIDS} $!"
+  sleep 2   # stagger CUDA context creation
+done
+echo "==> waiting on${PIDS}"
+for PID in ${PIDS}; do wait "${PID}" || true; done
+echo "==> all training processes returned"
+nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader
+
+# Evaluate sequentially: eval is short and avoids a second memory spike.
+for RUN_ID in ${RUN_IDS}; do
+  if [[ ! -d "artifacts/native_checkpoints/${RUN_ID}" ]]; then
+    echo "RUN_FAILED ${RUN_ID} (no checkpoint)"; continue
+  fi
   for MODE in constrained unconstrained; do
     FLAG=""
     [[ "${MODE}" == "unconstrained" ]] && FLAG="--unconstrained"
-    echo "==> eval ${RUN_ID} ${MODE}"
     python3 scripts/evaluate_native_nano.py \
       --run-id "${RUN_ID}" --suite p1_screening_eval_v1 ${FLAG} \
       --output "/workspace/reval_results/${RUN_ID}_${MODE}.json" >/dev/null 2>&1 \
       || echo "EVAL_WARN ${RUN_ID} ${MODE}"
   done
-  echo "RUN_DONE ${RUN_ID}"
+  echo "EVAL_DONE ${RUN_ID}"
 done
 
 echo "==> archiving"
@@ -126,7 +135,5 @@ for run_dir in src.glob("reval30_*"):
         shutil.copytree(run_dir, dst / run_dir.name, dirs_exist_ok=True)
 print("ARCHIVE_OK", dst)
 PY
-if [[ -n "${FAILED_RUNS}" ]]; then
-  echo "RUNS_FAILED:${FAILED_RUNS}"
-fi
+grep -h "^RUN_FAILED" /workspace/reval30.log 2>/dev/null | sort -u || true
 echo NATIVE30_REVALIDATION_DONE
