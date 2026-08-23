@@ -2,7 +2,7 @@
   "schema": "nano.p1.integration_manifest.v0",
   "base": {
     "branch": "origin/master",
-    "commit": "0107b7a0c620fafc175eba1b614f3e5e78dbe556"
+    "commit": "be937c18806b4f027d6bfbb8c1bac2a90884001c"
   },
   "rule": "Extract primitives only. Never merge source branches wholesale.",
   "components": [
@@ -73,7 +73,17 @@
       "reason": "Tokenizer-agnostic copy/relocate/snap only; no vocab-constrained decoder yet"
     },
     {
-      "source_branch": "codex/p5-measurement-integrity",
+      "source_branch": "cursor/span-port-route-b-182e",
+      "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
+      "source_path": "nano_ai/training/span_port_format.py",
+      "destination_path": "nanoscribe/adapt.py",
+      "purpose": "Qwen one-line STATED/DENIED/NOT_MENTIONED quote grammar into typed candidates",
+      "dependencies": ["nanoscribe/encounter.py", "nanoscribe/select.py", "nanoscribe/evaluate.py"],
+      "tests": ["nanoscribe/test_adapt.py", "nanoscribe/benchmark.py"],
+      "disposition": "REWRITE",
+      "reason": "Candidates carry quotes only; ConstrainedSelector binds evidence; no mlx/torch in CI"
+    },
+    {
       "source_commit": "95d9bd42102ce7ca6a150a83c1de374e0c3e5085",
       "source_path": "trajectory/",
       "destination_path": "nanoscribe/eval/",
