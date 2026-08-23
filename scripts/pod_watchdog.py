@@ -82,6 +82,52 @@ def _pod_alive(pod: str) -> bool:
         return True  # assume alive rather than terminate on a parse error
 
 
+def fetch_results(pod: str, remote_dir: str, local_dir: Path) -> dict:
+    """Pull results off the pod BEFORE it is terminated.
+
+    The first version of this watchdog terminated on the done-marker without
+    retrieving anything, so a completed nine-arm run — nine trained models and
+    eighteen eval files — was deleted with the pod. Terminating is only safe
+    once the output is somewhere else.
+
+    Streams a base64 tar over the existing SSH helper: the payload is a handful
+    of small JSON files, and this avoids depending on scp being reachable.
+    """
+    local_dir.mkdir(parents=True, exist_ok=True)
+    listing = _ssh(pod, f"ls -1 {remote_dir}/*.json 2>/dev/null | wc -l")
+    expected = next((int(x) for x in listing.split() if x.strip().isdigit()), 0)
+
+    b64 = _ssh(
+        pod,
+        f"tar -czf - -C {remote_dir} . 2>/dev/null | base64 -w0 2>/dev/null "
+        f"|| tar -czf - -C {remote_dir} . 2>/dev/null | base64",
+        timeout=300,
+    )
+    payload = "".join(b64.split())
+    if not payload:
+        return {"fetched": False, "reason": "empty archive from pod", "expected_files": expected}
+
+    import base64 as _b64
+    import io
+    import tarfile
+
+    try:
+        raw = _b64.b64decode(payload)
+        with tarfile.open(fileobj=io.BytesIO(raw), mode="r:gz") as tf:
+            tf.extractall(local_dir, filter="data")
+    except Exception as exc:
+        return {"fetched": False, "reason": f"{type(exc).__name__}: {exc}", "expected_files": expected}
+
+    got = len(list(local_dir.glob("*.json")))
+    return {
+        "fetched": got > 0,
+        "local_dir": str(local_dir),
+        "expected_files": expected,
+        "retrieved_files": got,
+        "complete": got >= expected > 0,
+    }
+
+
 def terminate(pod: str, reason: str) -> dict:
     proc = subprocess.run(
         ["runpodctl", "pod", "delete", pod], capture_output=True, text=True, check=False
