@@ -1,6 +1,6 @@
 {
   "schema": "nano.campaign.native_gate.v1",
-  "checked_at": "2026-08-23T20:04:41.449157+00:00",
+  "checked_at": "2026-08-23T20:05:02.524308+00:00",
   "verdict": "PROMOTION_GATE_BLOCKED_DATA",
   "failed_conditions": [
     "9_code_committed"
@@ -40,7 +40,7 @@
     },
     "9_code_committed": {
       "pass": false,
-      "detail": "2 uncommitted path(s)"
+      "detail": "2 uncommitted path(s): [' M artifacts/native_checkpoints/smoke_cpu/step_000001.json', ' M artifacts/native_checkpoints/smoke_cpu/step_000002.json']"
     },
     "10_command_and_artifact_ready": {
       "pass": true,
