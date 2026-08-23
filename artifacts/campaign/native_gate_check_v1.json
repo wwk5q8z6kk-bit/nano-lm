@@ -1,6 +1,6 @@
 {
   "schema": "nano.campaign.native_gate.v1",
-  "checked_at": "2026-08-23T20:04:30.145104+00:00",
+  "checked_at": "2026-08-23T20:04:41.449157+00:00",
   "verdict": "PROMOTION_GATE_BLOCKED_DATA",
   "failed_conditions": [
     "9_code_committed"
