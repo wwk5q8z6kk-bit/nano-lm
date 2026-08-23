@@ -269,6 +269,17 @@
       "early-stopping / best-checkpoint selection rather than last-step"
     ]
   },
+  "native_root_cause": {
+    "arms_vs_random_init_control": "all overlap; no arm separates from untrained",
+    "cost_usd": 0.0,
+    "finding": "artifacts/campaign/native100_datascale_finding_v1.json",
+    "params": 100000000,
+    "tokenizer_hypothesis": "FALSIFIED (470/470 lossless round-trip)",
+    "tokens_per_param": 4.52e-05,
+    "train_chars": 4516,
+    "verdict": "DATA_SCALE_IS_THE_BINDING_CONSTRAINT",
+    "vs_historical_nano": "31.7x more params, 7,263x fewer tokens"
+  },
   "native_round1": {
     "checkpoints_local": true,
     "commit_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
@@ -364,9 +375,9 @@
   "new_actual_spend": 2.9121,
   "new_committed_spend": 0,
   "next_actions": [
-    "Address training-data scale (96 examples x 34 epochs) before any further native architecture ranking",
-    "Re-run native arm comparison with free-generation eval + random-init/majority-class controls",
-    "Benchmark Qwen3-Coder-Next-FP8 on agent canary v1 (48 tasks) for per-capability donor ranking",
+    "OWNER DECISION: native training-corpus strategy \u2014 4.5KB cannot support a 100M model (binding constraint)",
+    "Ship controls (random-init + majority-class + free-generation) as standing baselines in native eval harness",
+    "Benchmark Qwen3-Coder-Next-FP8 on agent canary v1 \u2014 independent lane, unblocked",
     "student_gap_v1 measurement before any QLoRA spend"
   ],
   "next_reallocations": [

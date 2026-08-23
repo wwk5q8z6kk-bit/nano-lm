@@ -148,5 +148,5 @@
     "100": "native100 early gate (COMPLETE — extended training gated)",
     "135": "kill marginal"
   },
-  "next_dollar": "span_port extended 200-step A/B (~$0.15 US-KS-2) — native screening shows signal (56% cov, 81% assertion on covered, 100% exact span when committed); QLoRA student canary secondary for coverage ROI"
+  "next_dollar": "QLoRA student canary — native A/B complete (evidence_bottleneck 56% cov / span_port 94% assertion-on-covered); coverage gap vs student (-22pp) is binding ROI"
 }

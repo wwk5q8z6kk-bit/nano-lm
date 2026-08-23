@@ -32,7 +32,7 @@
   "parent_experiment": "native100_round2_promotion_v1",
   "resolved_at": "2026-08-23T15:10:00+00:00",
   "schema": "nano.campaign.experiment_manifest.v1",
-  "status": "LAUNCHING",
+  "status": "COMPLETE",
   "surface": "pod_template",
   "termination_condition": "NATIVE100_EXTENDED_DONE + SCP weight pull + screening eval",
   "training_plan": {
