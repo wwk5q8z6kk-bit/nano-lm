@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from nanoscribe.capabilities import CapabilityId
 from nanoscribe.inference import Qwen3CoderInferenceAdapter, normalize_openai_message
-from nanoscribe.render.table_markdown import render_table_markdown
+from nanoscribe.render_table import render_table_markdown
 from nanoscribe.artifacts import TableSpec
 from nanoscribe.tool_calling import ToolCallParseOutcome
 
