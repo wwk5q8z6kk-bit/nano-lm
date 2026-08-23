@@ -27,9 +27,24 @@ if [[ -n "${VOLUME_ID}" ]]; then
   CREATE_ARGS+=(--network-volume-id "${VOLUME_ID}" --volume-mount-path /workspace)
 fi
 
-POD_JSON=$(runpodctl pod create "${CREATE_ARGS[@]}")
-POD_ID=$(echo "${POD_JSON}" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
-RATE=$(echo "${POD_JSON}" | python3 -c "import sys,json; print(json.load(sys.stdin).get('costPerHr', ${RATE}))")
+MAX_CUDA_ATTEMPTS="${NATIVE_CUDA_ATTEMPTS:-4}"
+POD_ID=""
+for attempt in $(seq 1 "${MAX_CUDA_ATTEMPTS}"); do
+  POD_JSON=$(runpodctl pod create "${CREATE_ARGS[@]}")
+  POD_ID=$(echo "${POD_JSON}" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+  RATE=$(echo "${POD_JSON}" | python3 -c "import sys,json; print(json.load(sys.stdin).get('costPerHr', ${RATE}))")
+  echo "cuda_gate_attempt=${attempt} pod=${POD_ID}" >&2
+  sleep 50
+  if bash scripts/native_cuda_gate.sh "${POD_ID}"; then
+    break
+  fi
+  POD_ID=""
+  if [[ "${attempt}" -eq "${MAX_CUDA_ATTEMPTS}" ]]; then
+    echo "CUDA_GATE_FAILED: no pod with working torch.cuda after ${MAX_CUDA_ATTEMPTS} attempts" >&2
+    exit 1
+  fi
+done
+
 EST_COST=$(python3 -c "print(round(float('${RATE}')*${EST_HOURS},4))")
 
 python3 scripts/campaign_spend.py --ledger "${LEDGER}" commit \
