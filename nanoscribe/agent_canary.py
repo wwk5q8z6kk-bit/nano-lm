@@ -42,6 +42,30 @@ SCORE_AXES: tuple[str, ...] = (
     "cost",
 )
 
+# Direction of merit per axis. Required for per-capability teacher ranking: most
+# axes are "higher is better", but unnecessary_call_rate, steps_to_resolution and
+# cost are penalties where LOWER wins. A winner-picker that maximises uniformly
+# would silently crown the worst teacher on those three.
+AXIS_POLARITY: dict[str, str] = {
+    "tool_selection": "higher_better",
+    "arg_validity": "higher_better",
+    "unnecessary_call_rate": "lower_better",
+    "recovery": "higher_better",
+    "steps_to_resolution": "lower_better",
+    "observation_use": "higher_better",
+    "state_fidelity": "higher_better",
+    "verifier_invocation": "higher_better",
+    "abstention": "higher_better",
+    "stop_accuracy": "higher_better",
+    "outcome": "higher_better",
+    "cost": "lower_better",
+}
+
+
+def better_of(axis: str, a: float, b: float) -> float:
+    """Return the better of two scores on `axis`, respecting that axis's polarity."""
+    return min(a, b) if AXIS_POLARITY.get(axis) == "lower_better" else max(a, b)
+
 
 class NativeAgentAction(str, Enum):
     """Future P2+ native agent head — not a P1 scribing blocker."""

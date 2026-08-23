@@ -54,3 +54,9 @@ experiments/**/runs/**
 
 # P1 harness outputs (external to git; summaries in frontier/*.json)
 artifacts/p1_runs/
+
+# Campaign runtime logs (summaries tracked as JSON)
+artifacts/campaign/*.log
+
+# Native checkpoint weights (step_*.json metrics may be tracked selectively)
+artifacts/native_checkpoints/

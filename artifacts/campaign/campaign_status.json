@@ -103,14 +103,15 @@
     },
     "lane_teacher_collective": {
       "lane": "P8_distillation",
-      "status": "CANARY_COMPLETE",
+      "status": "FULL_SUITE_PARSED",
       "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
       "task_suite": "data/p1_agent_canary_v1.json",
       "n_tasks": 48,
-      "canary_probe_tasks": 12,
+      "canary_probe_tasks": 48,
       "canary_results": "artifacts/campaign/agent_canary_v1_results.json",
       "teacher_probe": "gpt_oss_120b_managed",
-      "outcome_mean": 0.1667,
+      "parse_rate": 1.0,
+      "outcome_mean": 0.5,
       "glm_endpoint_deleted": ["epfbo06vpbjy9k"],
       "canary_gate": "UNBLOCKED"
     },
@@ -260,9 +261,9 @@
     "summary": "artifacts/campaign/native_extended_summary.json"
   },
   "next_actions": [
-    "span_port extended 200-step comparison (evidence_bottleneck validated at loss 0.007)",
-    "Fix weight pull-before-terminate on native remote scripts",
-    "QLoRA canary on student assertion gap OR agent canary retry with Qwen3-Coder tool path"
+    "P1 encounter representation schema v0 (docs/EXECUTION_PLAN B1)",
+    "Span/evidence transport on managed student path (not native hash-LM decode yet)",
+    "Optional experiment-scoped: QLoRA assertion-gap canary, span_port native extended, Qwen3-Coder agent canary"
   ],
   "next_reallocations": [
     "inventory refresh only"
@@ -319,6 +320,7 @@
   "students": {
     "student_plane": "vllm_sglang_serverless_not_raw_a100"
   },
-  "timestamp": "2026-08-23T13:10:00+00:00",
-  "checkpoint_authority": "artifacts/campaign/checkpoint_v3.json"
+  "timestamp": "2026-08-23T15:00:00+00:00",
+  "checkpoint_authority": "artifacts/campaign/checkpoint_v4.json",
+  "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE"
 }

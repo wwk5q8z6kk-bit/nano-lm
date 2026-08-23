@@ -1,0 +1,86 @@
+{
+  "schema": "nano.campaign.checkpoint.v4",
+  "timestamp": "2026-08-23T15:00:00+00:00",
+  "commit_sha": "3dbb72f",
+  "branch": "frontier/accelerated-research-campaign-v2",
+  "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE",
+  "wallet": {
+    "live_runpod_balance_usd": 154.47,
+    "current_spend_per_hr": 0.0,
+    "campaign_remaining_est": 149.0,
+    "session_new_spend_usd": 6.45
+  },
+  "active_resources": {
+    "pods": 0,
+    "serverless": 0,
+    "posture": "NO_ACTIVE_PODS"
+  },
+  "lanes_complete": {
+    "managed_reference": {
+      "winner": "qwen3_32b_awq",
+      "c2_coverage_rate": 0.7867,
+      "c2_assertion_state_correct_rate": 1.0
+    },
+    "student_a": {
+      "status": "C1C2_COMPLETE",
+      "qlora_gate": "UNLOCKED_SEMANTIC_GAP",
+      "artifact": "artifacts/campaign/student_gap_v1.json"
+    },
+    "native_round1": {
+      "verdict": "COMPLETE_RANKED",
+      "top2_mechanisms": [
+        "evidence_bottleneck",
+        "span_port"
+      ]
+    },
+    "native_round2": {
+      "verdict": "COMPLETE_RANKED",
+      "winner": "native100_evidence_bottleneck_s1"
+    },
+    "native_extended": {
+      "verdict": "COMPLETE_WITH_WEIGHTS",
+      "steps": 200,
+      "final_loss": 0.048755865544080734,
+      "p1_smoke_viable": false,
+      "artifact": "artifacts/campaign/native_extended_summary.json"
+    },
+    "agent_canary": {
+      "status": "FULL_SUITE_PARSED",
+      "teacher": "gpt_oss_120b",
+      "n_tasks": 48,
+      "parse_rate": 1.0,
+      "outcome_mean": 0.5,
+      "fix": "content-action extraction in agent_canary_bench.py",
+      "artifact": "artifacts/campaign/agent_canary_v1_results.json"
+    },
+    "agent_platform": {
+      "status": "OFFLINE_SMOKE_PASS",
+      "cases": "3/3"
+    },
+    "verifier": {
+      "hard_set_n": 500,
+      "baseline_accuracy": 1.0,
+      "learned_train": "SKIP"
+    }
+  },
+  "evolution_gate": {
+    "current": "P1_ENCOUNTER_REPRESENTATION_AND_EVIDENCE_TRANSPORT",
+    "next_engineering": [
+      "encounter_representation_schema_v0",
+      "span_evidence_transport_on_managed_student",
+      "verified_record_to_note_rendering"
+    ],
+    "optional_experiment_scoped": [
+      "student_qlora_assertion_gap_canary",
+      "native_span_port_extended_200",
+      "qwen3_coder_agent_canary"
+    ],
+    "deferred": [
+      "native_300m_promotion",
+      "hybrid_native_student",
+      "learned_verifier_training"
+    ]
+  },
+  "authority": "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
+  "frontier_notes": "frontier/NEXT.md"
+}
