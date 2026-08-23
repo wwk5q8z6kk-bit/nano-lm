@@ -1,0 +1,34 @@
+{
+  "schema": "nano.p1.experiment_manifest.v0",
+  "experiment_id": "p1_model_adapter_baseline_v0",
+  "branch": "frontier/p1-model-adapter-baseline-v0",
+  "base_commit": "be937c18806b4f027d6bfbb8c1bac2a90884001c",
+  "pipeline": [
+    "SOURCE",
+    "MODEL_ADAPTER",
+    "CandidateAtom",
+    "CandidateEvidenceRequest",
+    "ConstrainedSelector",
+    "EvidenceSpan",
+    "PredictedAtom",
+    "EncounterRecord_construction_probe",
+    "PR2_evaluator",
+    "VerifierResult_optional"
+  ],
+  "model": {
+    "family": "qwen2.5-1.5b-instruct",
+    "adapter_class": "nanoscribe.adapters.Qwen25BaselineAdapter",
+    "ci_mode": "fixture_lines",
+    "weights_in_git": false
+  },
+  "entrypoints": {
+    "unit_tests": "python3 nanoscribe/test_adapt.py",
+    "smoke_benchmark": "python3 nanoscribe/benchmark.py",
+    "encounter_pins": "python3 nanoscribe/test_encounter_v0.py",
+    "transport_pins": "python3 nanoscribe/test_evidence_transport.py"
+  },
+  "artifacts": {
+    "large_weights": "NOT_IN_REPO",
+    "fixture_source": "nanoscribe/test_adapt.py::_source"
+  }
+}

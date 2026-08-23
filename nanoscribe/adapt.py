@@ -11,7 +11,10 @@ import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from nanoscribe.encounter import EncounterRecord
 
 from nanoscribe.encounter import (
     AssertionState,
@@ -187,6 +190,11 @@ class CandidateEvidenceRequest:
     quote: str
 
 
+def evidence_requests(candidate: CandidateAtom) -> tuple[CandidateEvidenceRequest, ...]:
+    """Lift model quotes into constrained-selector lookup requests."""
+    return tuple(CandidateEvidenceRequest(quote=quote) for quote in candidate.quotes)
+
+
 @dataclass(frozen=True, slots=True)
 class CandidateAtom:
     """Model proposal — quotes only, never trusted offsets or evidence IDs."""
@@ -324,6 +332,10 @@ class ModelCandidate:
     @classmethod
     def from_json(cls, raw: str) -> ModelCandidate:
         return cls.from_dict(_load_json(raw))
+
+
+# Mandate name for batched model proposals (alias kept for clarity in pipeline docs).
+ModelCandidateBatch = ModelCandidate
 
 
 def candidate_from_span_port_line(
@@ -467,3 +479,18 @@ def adapt_span_port_line(
 
 def adapt_json(raw: str, model_input: ModelInput, *, selector: ConstrainedSelector | None = None) -> PredictedEncounter:
     return adapt(model_input, ModelCandidate.from_json(raw), selector=selector)
+
+
+def run_pipeline(
+    model_input: ModelInput,
+    batch: ModelCandidateBatch,
+    *,
+    selector: ConstrainedSelector | None = None,
+    gold: EncounterRecord | None = None,
+):
+    """End-to-end smoke: candidates → PredictedEncounter → optional PR2 eval."""
+    from nanoscribe.evaluate import EvalReport, evaluate
+
+    predicted = adapt(model_input, batch, selector=selector)
+    report = evaluate(gold, predicted) if gold is not None else None
+    return predicted, report

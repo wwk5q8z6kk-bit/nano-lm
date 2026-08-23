@@ -12,14 +12,25 @@ from nanoscribe.adapt import (
     CANDIDATE_SCHEMA_VERSION,
     AdaptError,
     CandidateAtom,
+    CandidateEvidenceRequest,
     ModelCandidate,
+    ModelCandidateBatch,
     ModelInput,
     adapt,
     adapt_json,
     adapt_span_port_line,
     candidate_from_span_port_line,
+    evidence_requests,
     format_label_answer,
     parse_label_and_quotes,
+    run_pipeline,
+)
+from nanoscribe.adapters import (
+    FixtureSpanPortAdapter,
+    ModelAdapter,
+    Qwen25BaselineAdapter,
+    default_baseline_specs,
+    default_qwen_fixture_adapter,
 )
 from nanoscribe.encounter import (
     AssertionState,
@@ -338,6 +349,51 @@ def test_model_cannot_emit_encounter_schema() -> None:
             {"schema_version": "nano.encounter.v0", "atoms": []}
         ),
     )
+
+
+def test_evidence_requests_from_quotes() -> None:
+    atom = CandidateAtom(atom_id="a", quotes=("neck", "hurting"))
+    reqs = evidence_requests(atom)
+    assert reqs == (
+        CandidateEvidenceRequest(quote="neck"),
+        CandidateEvidenceRequest(quote="hurting"),
+    )
+
+
+def test_fixture_adapter_implements_protocol() -> None:
+    adapter = default_qwen_fixture_adapter()
+    assert isinstance(adapter, ModelAdapter)
+    batch = adapter.propose(_model_input(), default_baseline_specs())
+    assert isinstance(batch, ModelCandidateBatch)
+    assert len(batch.atoms) == 5
+
+
+def test_qwen_skeleton_falls_back_to_fixture() -> None:
+    adapter = Qwen25BaselineAdapter(fixture_lines={"atom-neck": 'STATED: "neck"'})
+    batch = adapter.propose(
+        _model_input(),
+        (default_baseline_specs()[0],),
+    )
+    assert batch.atoms[0].quotes == ("neck",)
+
+
+def test_run_pipeline_smoke_with_encounter_probe() -> None:
+    gold = _gold()
+    model_input = _model_input(gold.sources[0])
+    batch = FixtureSpanPortAdapter(
+        lines={
+            "atom-neck": 'STATED: "neck"',
+            "atom-alg": 'DENIED: "No allergies."',
+            "atom-hist": 'STATED: "migraines"',
+            "atom-assess": 'STATED: "cervical strain"',
+            "medication": "NOT_MENTIONED",
+        }
+    ).propose(model_input, default_baseline_specs())
+    predicted, report = run_pipeline(model_input, batch, gold=gold)
+    assert report is not None
+    assert len(predicted.atoms) == 5
+    assert atom_result(report, "atom-neck").exact_gold_span
+    assert report.correct_abstention == 1
 
 
 if __name__ == "__main__":

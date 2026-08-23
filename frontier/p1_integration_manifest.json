@@ -81,7 +81,16 @@
       "dependencies": ["nanoscribe/encounter.py", "nanoscribe/select.py", "nanoscribe/evaluate.py"],
       "tests": ["nanoscribe/test_adapt.py", "nanoscribe/benchmark.py"],
       "disposition": "REWRITE",
-      "reason": "Candidates carry quotes only; ConstrainedSelector binds evidence; no mlx/torch in CI"
+      "reason": "Candidates carry quotes only; ConstrainedSelector binds evidence; ModelAdapter protocol + fixture/Qwen skeleton; no mlx/torch in CI"
+    },
+    {
+      "source_path": "frontier/p1_model_adapter_baseline_v0.json",
+      "destination_path": "frontier/p1_model_adapter_baseline_v0.json",
+      "purpose": "PR3 experiment manifest — pipeline entrypoints, no weights in git",
+      "dependencies": ["nanoscribe/adapt.py", "nanoscribe/adapters.py"],
+      "tests": ["nanoscribe/benchmark.py"],
+      "disposition": "ADD",
+      "reason": "Owner-mandated experiment config for model-adapter baseline v0"
     },
     {
       "source_commit": "95d9bd42102ce7ca6a150a83c1de374e0c3e5085",

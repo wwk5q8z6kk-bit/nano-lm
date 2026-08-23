@@ -8,59 +8,25 @@ from __future__ import annotations
 
 import json
 import sys
-from dataclasses import dataclass
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from nanoscribe.adapt import ModelInput, adapt_span_port_line
-from nanoscribe.encounter import AtomType, Experiencer, Speaker
-from nanoscribe.evaluate import PredictedEncounter, evaluate
+from nanoscribe.adapt import run_pipeline
+from nanoscribe.adapters import default_baseline_specs, default_qwen_fixture_adapter
 from nanoscribe.test_adapt import _gold, _model_input
 
 
-@dataclass(frozen=True, slots=True)
-class BaselineCase:
-    atom_id: str
-    atom_type: AtomType
-    raw_value: str
-    model_line: str
-    speaker: Speaker = Speaker.PATIENT
-    experiencer: Experiencer = Experiencer.PATIENT
-
-
-BASELINE_CASES = (
-    BaselineCase("atom-neck", AtomType.SYMPTOM, "neck", 'STATED: "neck"'),
-    BaselineCase("atom-alg", AtomType.ALLERGY, "allergies", 'DENIED: "No allergies."'),
-    BaselineCase("atom-hist", AtomType.SYMPTOM, "migraines", 'STATED: "migraines"'),
-    BaselineCase(
-        "atom-assess",
-        AtomType.ASSESSMENT,
-        "cervical strain",
-        'STATED: "cervical strain"',
-        speaker=Speaker.CLINICIAN,
-        experiencer=Experiencer.PATIENT,
-    ),
-    BaselineCase("medication", AtomType.MEDICATION, "medication", "NOT_MENTIONED"),
-)
+BASELINE_CASES = default_baseline_specs()
 
 
 def run_baseline() -> dict[str, object]:
     gold = _gold()
     model_input = _model_input(gold.sources[0])
-    preds = tuple(
-        adapt_span_port_line(
-            model_input,
-            atom_id=case.atom_id,
-            atom_type=case.atom_type,
-            raw_value=case.raw_value,
-            raw_line=case.model_line,
-            speaker=case.speaker,
-            experiencer=case.experiencer,
-        )
-        for case in BASELINE_CASES
-    )
-    report = evaluate(gold, PredictedEncounter(atoms=preds))
+    adapter = default_qwen_fixture_adapter()
+    batch = adapter.propose(model_input, BASELINE_CASES)
+    predicted, report = run_pipeline(model_input, batch, gold=gold)
+    assert report is not None
     decomposition = {
         "exact_gold_span": report.exact_gold_span,
         "span_character_f1": round(report.span_character_f1, 4),
