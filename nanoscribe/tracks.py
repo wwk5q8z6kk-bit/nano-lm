@@ -21,8 +21,6 @@ STUDENT_MODEL = "Qwen/Qwen2.5-32B-Instruct"
 FRONTIER_MODEL = "Qwen/Qwen2.5-72B-Instruct"
 FRONTIER_ALT = "meta-llama/Llama-3.3-70B-Instruct"
 API_TEACHER_MODEL = "gpt-4o-mini"
-SERVERLESS_STRONG_CONTROL_MODEL = "Qwen/Qwen3.8-27B"
-SERVERLESS_STRONG_CONTROL_ENDPOINT = "tbnur4mac60i70"
 SERVERLESS_STRONG_MODEL = "Qwen/Qwen3.8-27B"
 SERVERLESS_ENDPOINT_ID = "tbnur4mac60i70"
 
@@ -68,14 +66,14 @@ def serverless_strong_control_track(
     api_model: str = SERVERLESS_STRONG_MODEL,
 ) -> TrackConfig:
     return TrackConfig(
-        track=ModelTrack.SERVERLESS,
+        track=ModelTrack.FRONTIER,
         model_id="serverless/qwen3.8-27b-strong-control",
         adapter_factory=lambda: ServerlessQwen38Adapter(
             endpoint_id=endpoint_id,
             api_model=api_model,
         ),
-        cost_class="serverless_burst",
-        notes="Qwen3.8-27B strong control via RunPod Serverless (supersedes 4090 compact pod)",
+        cost_class="serverless_strong_control",
+        notes="Lane 1: Qwen3.8-27B RunPod Serverless strong control / specialist base",
     )
 
 
@@ -86,23 +84,6 @@ def api_teacher_track(api_model: str = API_TEACHER_MODEL) -> TrackConfig:
         adapter_factory=lambda: ApiTeacherAdapter(api_model=api_model),
         cost_class="api_teacher_low",
         notes="Hosted frontier teacher — intelligence per dollar over self-host giants",
-    )
-
-
-def serverless_strong_control_track(
-    api_model: str = SERVERLESS_STRONG_CONTROL_MODEL,
-    endpoint_id: str = SERVERLESS_STRONG_CONTROL_ENDPOINT,
-) -> TrackConfig:
-    return TrackConfig(
-        track=ModelTrack.FRONTIER,
-        model_id=f"serverless/{api_model}-span-port",
-        adapter_factory=lambda: ServerlessAdapter(
-            model_id=f"serverless/{api_model}-span-port",
-            api_model=api_model,
-            endpoint_id=endpoint_id,
-        ),
-        cost_class="serverless_strong_control",
-        notes="Lane 1: Qwen3.8-27B RunPod Serverless strong control / specialist base",
     )
 
 
