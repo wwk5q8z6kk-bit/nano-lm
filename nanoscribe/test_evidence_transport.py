@@ -26,6 +26,7 @@ from nanoscribe.evaluate import (
     PredictedAtom,
     PredictedEncounter,
     SupportRelation,
+    VerifierResult,
     atom_result,
     evaluate,
 )
@@ -627,9 +628,11 @@ def test_ungrounded_raw_value_is_malformed() -> None:
     report = evaluate(gold, pred)
     neck = atom_result(report, "atom-neck")
     assert neck.malformed
-    assert neck.support_relation is SupportRelation.UNSUPPORTED
+    assert neck.support_relation is None
+    assert neck.support_relation is not SupportRelation.SEMANTICALLY_SUPPORTED
     assert report.malformed >= 1
     assert report.support_direct_exact == 0
+    assert report.support_unsupported == 0
 
 
 def test_uncertain_without_evidence_is_malformed() -> None:
@@ -680,6 +683,123 @@ def test_nonauthoritative_without_review_is_malformed() -> None:
     report = evaluate(gold, pred)
     assert atom_result(report, "atom-dm").malformed
     assert report.malformed >= 1
+
+
+def _all_gold_preds(gold: EncounterRecord) -> tuple[PredictedAtom, ...]:
+    return tuple(_pred_from_gold(gold, atom.atom_id) for atom in gold.atoms)
+
+
+def _extra_atom(gold: EncounterRecord, atom_id: str) -> PredictedAtom:
+    neck = gold.span("ev-neck")
+    return PredictedAtom(
+        atom_id=atom_id,
+        atom_type=AtomType.DIAGNOSIS_STATEMENT,
+        raw_value="neck",
+        assertion_state=AssertionState.ASSERTED,
+        speaker=Speaker.PATIENT,
+        experiencer=Experiencer.PATIENT,
+        temporality=TemporalState(kind=Temporality.CURRENT),
+        certainty=Certainty.STATED,
+        evidence_ids=("ev-neck",),
+        spans=(neck,),
+    )
+
+
+def _report_is_clean(report) -> bool:
+    return (
+        report.omission == 0
+        and report.malformed == 0
+        and report.critical_error == 0
+        and report.spurious_atom == 0
+        and report.wrong_source == 0
+        and report.wrong_mention == 0
+        and report.invalid_span == 0
+    )
+
+
+def test_one_valid_extra_atom_is_spurious() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(
+        atoms=_all_gold_preds(gold) + (_extra_atom(gold, "atom-hallucinated-cancer"),)
+    )
+    report = evaluate(gold, pred)
+    extra = atom_result(report, "atom-hallucinated-cancer")
+    assert report.spurious_atom == 1
+    assert extra.spurious_atom
+    assert not extra.malformed
+
+
+def test_ten_extra_atoms_cannot_keep_a_perfect_report() -> None:
+    gold = _gold()
+    extras = tuple(_extra_atom(gold, f"atom-hallucinated-{index}") for index in range(10))
+    clean = evaluate(gold, PredictedEncounter(atoms=_all_gold_preds(gold)))
+    assert _report_is_clean(clean)
+    assert clean.exact_gold_span == len(gold.atoms)
+    report = evaluate(gold, PredictedEncounter(atoms=_all_gold_preds(gold) + extras))
+    assert report.spurious_atom == 10
+    assert report.exact_gold_span == len(gold.atoms)
+    assert not _report_is_clean(report)
+
+
+def test_duplicate_unknown_prediction_ids_are_malformed() -> None:
+    gold = _gold()
+    extra = _extra_atom(gold, "atom-hallucinated-diagnosis")
+    pred = PredictedEncounter(atoms=_all_gold_preds(gold) + (extra, extra))
+    report = evaluate(gold, pred)
+    assert report.malformed >= 1
+    assert report.spurious_atom == 0
+    assert atom_result(report, "atom-hallucinated-diagnosis").malformed
+
+
+def test_unresolved_abstention_is_not_spurious() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(
+        atoms=_all_gold_preds(gold)
+        + (PredictedAtom(atom_id="medication", abstained=True),)
+    )
+    report = evaluate(gold, pred)
+    assert report.spurious_atom == 0
+    assert report.correct_abstention == 1
+    assert _report_is_clean(report)
+
+
+def test_prediction_cannot_self_declare_semantic_support() -> None:
+    gold = _gold()
+    try:
+        PredictedAtom(  # type: ignore[call-arg]
+            atom_id="atom-alg",
+            verifier_support=SupportRelation.SEMANTICALLY_SUPPORTED,
+        )
+    except TypeError:
+        pass
+    else:
+        raise AssertionError("PredictedAtom must not accept verifier_support")
+    report = evaluate(gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-alg"),)))
+    assert atom_result(report, "atom-alg").support_relation is SupportRelation.REVIEW_REQUIRED
+    assert report.support_semantically_supported == 0
+
+
+def test_independent_verifier_can_declare_semantic_support() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-alg"),))
+    report = evaluate(
+        gold,
+        pred,
+        verifier_results=(
+            VerifierResult("atom-alg", SupportRelation.SEMANTICALLY_SUPPORTED),
+        ),
+    )
+    assert atom_result(report, "atom-alg").support_relation is SupportRelation.SEMANTICALLY_SUPPORTED
+    assert report.support_semantically_supported == 1
+    mapping_report = evaluate(
+        gold,
+        pred,
+        verifier_results={"atom-alg": SupportRelation.CONTRADICTED},
+    )
+    assert (
+        atom_result(mapping_report, "atom-alg").support_relation
+        is SupportRelation.CONTRADICTED
+    )
 
 
 if __name__ == "__main__":

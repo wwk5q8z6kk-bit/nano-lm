@@ -12,7 +12,7 @@ SOFTWARE only. Semantic entailment is not inferred from substring matching.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
 
@@ -81,7 +81,14 @@ class PredictedAtom:
     abstained: bool = False
     malformed: bool = False
     quote: str | None = None
-    verifier_support: SupportRelation | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class VerifierResult:
+    """Independent verifier outcome. Never supplied by the model prediction."""
+
+    atom_id: str
+    relation: SupportRelation
 
 
 @dataclass(frozen=True, slots=True)
@@ -105,6 +112,7 @@ class AtomEval:
     critical_error: bool = False
     omitted: bool = False
     abstained: bool = False
+    spurious_atom: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -127,6 +135,7 @@ class EvalReport:
     unnecessary_abstention: int
     malformed: int
     critical_error: int
+    spurious_atom: int
     coverage: float
     latency_s: float
     memory_bytes: int
@@ -238,22 +247,46 @@ def _transport_status(gold: EncounterRecord, span: EvidenceSpan) -> str:
     return "ok"
 
 
-def _mechanical_support(raw_value: str, spans: Sequence[EvidenceSpan]) -> SupportRelation:
+def _mechanical_support(raw_value: str, spans: Sequence[EvidenceSpan]) -> SupportRelation | None:
     if any(raw_value in span.text for span in spans):
         return SupportRelation.DIRECT_EXACT
     grounded = normalize_value(raw_value)
     if grounded and any(grounded in normalize_value(span.text) for span in spans):
         return SupportRelation.NORMALIZED
-    return SupportRelation.UNSUPPORTED
+    return None
 
 
-def _support_relation(pred: PredictedAtom, spans: Sequence[EvidenceSpan]) -> SupportRelation:
-    if pred.verifier_support in _VERIFIER_RELATIONS:
-        return pred.verifier_support
+def _verifier_map(
+    results: Mapping[str, SupportRelation] | Sequence[VerifierResult] | None,
+) -> dict[str, SupportRelation]:
+    if results is None:
+        return {}
+    if isinstance(results, Mapping):
+        items = results.items()
+    else:
+        items = (
+            (item.atom_id, item.relation)
+            for item in results
+            if isinstance(item, VerifierResult)
+        )
+    return {
+        atom_id: relation
+        for atom_id, relation in items
+        if relation in _VERIFIER_RELATIONS
+    }
+
+
+def _support_relation(
+    pred: PredictedAtom,
+    spans: Sequence[EvidenceSpan],
+    verifier_relation: SupportRelation | None,
+) -> SupportRelation | None:
+    if verifier_relation in _VERIFIER_RELATIONS:
+        return verifier_relation
     if pred.assertion_state in _SEMANTIC_STATES:
         return SupportRelation.REVIEW_REQUIRED
     if pred.raw_value is None or not spans:
-        return SupportRelation.UNSUPPORTED
+        return None
     return _mechanical_support(pred.raw_value, spans)
 
 
@@ -302,15 +335,58 @@ def _classify_construction(error: EncounterError) -> tuple[bool, bool]:
     return True, error.code in {"unknown_evidence", "duplicate_id"}
 
 
+def _extra_prediction_result(
+    gold: EncounterRecord,
+    predicted: PredictedAtom,
+    verifier_relation: SupportRelation | None,
+) -> AtomEval:
+    if predicted.malformed:
+        return AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
+    if predicted.abstained:
+        return AtomEval(atom_id=predicted.atom_id, abstained=True)
+    spans = _resolve_pred_spans(gold, predicted)
+    if spans is None:
+        return AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
+    statuses = [_transport_status(gold, span) for span in spans]
+    if any(status == "unknown_source" for status in statuses):
+        return AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
+    if any(status == "invalid_span" for status in statuses):
+        return AtomEval(
+            atom_id=predicted.atom_id,
+            invalid_span=True,
+            malformed=True,
+            critical_error=True,
+        )
+    construction = _probe_construction(gold, predicted, spans)
+    if construction is not None:
+        was_malformed, was_critical = _classify_construction(construction)
+        return AtomEval(
+            atom_id=predicted.atom_id,
+            malformed=was_malformed,
+            critical_error=was_critical,
+        )
+    return AtomEval(
+        atom_id=predicted.atom_id,
+        support_relation=_support_relation(predicted, spans, verifier_relation),
+        spurious_atom=True,
+    )
+
+
 def evaluate(
     gold: EncounterRecord,
     pred: PredictedEncounter,
     *,
     source_for_quotes=None,
+    verifier_results: Mapping[str, SupportRelation] | Sequence[VerifierResult] | None = None,
 ) -> EvalReport:
     source = source_for_quotes or (gold.sources[0] if gold.sources else None)
     presented = list(gold.atoms)
+    gold_ids = {atom.atom_id for atom in presented}
+    unresolved_ids = {item.unresolved_id for item in gold.unresolved} | {
+        item.topic for item in gold.unresolved
+    }
     duplicates = _duplicate_pred_ids(pred.atoms)
+    verifier = _verifier_map(verifier_results)
     pred_by_id: dict[str, list[PredictedAtom]] = {}
     for atom in pred.atoms:
         pred_by_id.setdefault(atom.atom_id, []).append(atom)
@@ -326,6 +402,7 @@ def evaluate(
     correct_abstention = 0
     malformed = 0
     critical_error = 0
+    spurious_atom = 0
     ambiguity = 0
     f1s: list[float] = []
     covered = 0
@@ -407,7 +484,7 @@ def evaluate(
                 wrong_mention += 1
 
             construction = _probe_construction(gold, predicted, spans)
-            support = _support_relation(predicted, spans)
+            support = _support_relation(predicted, spans, verifier.get(atom.atom_id))
             state_ok = predicted.assertion_state is atom.assertion_state
             claim_ok = construction is None
             if exact:
@@ -421,7 +498,8 @@ def evaluate(
             else:
                 if state_ok:
                     assertion_state_correct += 1
-                support_counts[support] += 1
+                if support is not None:
+                    support_counts[support] += 1
                 if spans:
                     covered += 1
 
@@ -448,6 +526,33 @@ def evaluate(
             critical_error += 1
             malformed += 1
             results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
+
+    seen_extra: set[str] = set()
+    for predicted in pred.atoms:
+        if predicted.atom_id in gold_ids or predicted.atom_id in seen_extra:
+            continue
+        seen_extra.add(predicted.atom_id)
+        if predicted.abstained and predicted.atom_id in unresolved_ids:
+            continue
+        if predicted.atom_id in duplicates:
+            malformed += 1
+            results.append(AtomEval(atom_id=predicted.atom_id, malformed=True))
+            continue
+        try:
+            extra = _extra_prediction_result(
+                gold, predicted, verifier.get(predicted.atom_id)
+            )
+        except (EncounterError, TypeError, ValueError, AttributeError):
+            extra = AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
+        results.append(extra)
+        if extra.spurious_atom:
+            spurious_atom += 1
+        if extra.malformed:
+            malformed += 1
+        if extra.critical_error:
+            critical_error += 1
+        if extra.invalid_span:
+            invalid_span += 1
 
     for item in gold.unresolved:
         predicted = None
@@ -486,6 +591,7 @@ def evaluate(
         unnecessary_abstention=unnecessary_abstention,
         malformed=malformed,
         critical_error=critical_error,
+        spurious_atom=spurious_atom,
         coverage=(covered / n_presented) if n_presented else 0.0,
         latency_s=pred.latency_s,
         memory_bytes=pred.memory_bytes,
