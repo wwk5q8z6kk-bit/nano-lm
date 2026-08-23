@@ -12,6 +12,7 @@ BOOT="set -e; cd /workspace/nano-lm 2>/dev/null || { cd /workspace && git clone 
 
 echo "==> Bootstrapping extended native100 on ${POD_ID} @ ${COMMIT_SHA}"
 echo "==> Manifest: ${MANIFEST}"
+echo "==> After training completes, run: bash scripts/finish_native_pod.sh ${POD_ID} native100_evidence_bottleneck_s1"
 bash scripts/runpod_pod_ssh.sh "${POD_ID}" "${BOOT}"
 sleep 8
 bash scripts/runpod_pod_ssh.sh "${POD_ID}" "tail -15 /workspace/native100_extended.log 2>/dev/null || echo log_pending; pgrep -af train_native || echo no_train; nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader"

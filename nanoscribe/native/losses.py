@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from nanoscribe.native.config import LossWeights, NativeTrainConfig
+from nanoscribe.native.tokenize import hash_tokens
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,15 +36,6 @@ def _require_torch():
     return torch, F
 
 
-def _hash_tokens(text: str, vocab_size: int) -> list[int]:
-    tokens = []
-    for ch in text[:64]:
-        tokens.append((ord(ch) % (vocab_size - 1)) + 1)
-    if not tokens:
-        tokens = [1]
-    return tokens
-
-
 def compute_batch_loss(
     model: Any,
     batch_prompts: list[str],
@@ -58,8 +50,8 @@ def compute_batch_loss(
     input_ids = []
     labels = []
     for prompt, target in zip(batch_prompts, batch_targets, strict=True):
-        prompt_ids = _hash_tokens(prompt, vocab)
-        target_ids = _hash_tokens(target, vocab)
+        prompt_ids = hash_tokens(prompt, vocab)
+        target_ids = hash_tokens(target, vocab)
         seq = (prompt_ids + target_ids)[: cfg.max_seq]
         if len(seq) < 2:
             seq = seq + [1]
