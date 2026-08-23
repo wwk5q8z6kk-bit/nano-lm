@@ -17,5 +17,5 @@
   "termination_condition": "50 steps finite loss + adapter save OR fail-fast",
   "artifact_dest": "artifacts/campaign/student_qlora_canary_results.json",
   "status": "FAIL",
-  "endpoint_id": "dnjbbgr8lmczon"
+  "endpoint_id": "kndjw1ao9wzg2z"
 }

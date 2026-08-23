@@ -1,0 +1,107 @@
+{
+  "schema": "nano.campaign.donor_matrix_v1",
+  "timestamp": "2026-08-23T15:48:11.161912+00:00",
+  "experiment_id": "nano_agent_canary_v1_donor_matrix",
+  "cost_usd": 0.0,
+  "suite": "p1_agent_canary_v1",
+  "n_tasks": 48,
+  "tasks_per_family": 4,
+  "teachers": [
+    {
+      "id": "gpt_oss_120b",
+      "model": "openai/gpt-oss-120b",
+      "surface": "runpod managed public endpoint",
+      "spend_usd": 0.0,
+      "parse_rate": 1.0,
+      "outcome_mean": 0.5
+    },
+    {
+      "id": "qwen3_32b_awq",
+      "model": "Qwen/Qwen3-32B-AWQ",
+      "surface": "runpod managed public endpoint",
+      "spend_usd": 0.0,
+      "parse_rate": 1.0,
+      "outcome_mean": 0.4375,
+      "total_latency_s": 40,
+      "role": "generic Qwen control for briefing SS LXII Q13"
+    }
+  ],
+  "headline": "Two donors benchmarked at zero cost with a valid scoreboard. NO capability has a statistically established winner at 48 tasks \u2014 the canary is underpowered for the per-capability ranking the donor-collective architecture depends on. One robust signal does survive: neither teacher demonstrates long-horizon competence.",
+  "per_capability": {
+    "note": "apparent leads shown for completeness; none are significant at 95% (Wilson, n=4-15)",
+    "gpt_oss_leads_on": {
+      "abstention": [
+        0.7778,
+        0.4444
+      ],
+      "arg_validity": [
+        0.75,
+        0.25
+      ],
+      "unnecessary_call_rate_lower_better": [
+        0.25,
+        0.75
+      ],
+      "outcome": [
+        0.5,
+        0.4375
+      ]
+    },
+    "qwen3_32b_leads_on": {
+      "recovery": [
+        0.25,
+        0.5
+      ],
+      "stop_accuracy": [
+        0.375,
+        0.5
+      ],
+      "tool_selection": [
+        0.4167,
+        0.5
+      ]
+    },
+    "tied": {
+      "verifier_invocation": [
+        0.5333,
+        0.5333
+      ]
+    },
+    "established_winners": 0
+  },
+  "robust_finding": {
+    "claim": "neither available teacher is a viable long-horizon donor",
+    "families": [
+      "multi_tool",
+      "premature_stop",
+      "repeated_calls"
+    ],
+    "evidence": "each 0/4 per teacher, 0/8 combined across two independent models; 95% CI [0, 0.3244]",
+    "reading": "Both a 120B structured-output model and a 32B generic Qwen score zero on multi-step tool sequencing, premature-stop traps and repeated-call traps. This is exactly the capability bundle the briefing SS XIX hypothesis assigns to Qwen3-Coder-Next and MiniMax-M2.1, and it gives the paid probe a sharp pre-registered question rather than an open-ended comparison.",
+    "caveat": "n=4 per family per teacher; the CI bounds the ceiling at ~32%, it does not pin the value"
+  },
+  "power_analysis": {
+    "method": "two-proportion, alpha=0.05, power=0.80, around p=0.5",
+    "tasks_per_axis_per_teacher": {
+      "detect_0.40": 25,
+      "detect_0.30": 44,
+      "detect_0.25": 63,
+      "detect_0.20": 99,
+      "detect_0.10": 392
+    },
+    "current": "4 per family, 4-15 per capability axis",
+    "implication": "To rank donors per capability at a moderate-large effect (0.25) the suite needs ~63 tasks per capability axis per teacher, not 4. Briefing SS XXI sizes the canary at 32-64 tasks, which is right for a smoke/plumbing canary but cannot support the SS XX donor matrix. These are two different instruments and should be separated."
+  },
+  "recommendation": {
+    "before_paid_probes": [
+      "Expand the canary to a powered suite (~63 tasks per capability axis) OR restrict claims to the loop-until-dry style 'is this teacher above/below a floor' question the current n can support",
+      "Keep the 48-task suite as the cheap plumbing canary; add a separate powered donor-ranking suite"
+    ],
+    "paid_probe_hypothesis": "Pre-registered: does Qwen3-Coder-Next-FP8 (or MiniMax-M2.1) score above the ~32% ceiling that gpt-oss-120b and Qwen3-32B-AWQ share on multi_tool / premature_stop / repeated_calls? That is a single, powered-enough, falsifiable question and answers SS LXII Q13.",
+    "cost_note": "both teachers so far cost $0 via RunPod managed public endpoints; only Coder-Next/GLM/MiniMax require paid self-hosting"
+  },
+  "briefing_answers": {
+    "Q12_which_donor_wins_which_capability": "NONE ESTABLISHED at current power",
+    "Q13_coder_next_vs_generic_qwen": "generic-Qwen baseline now measured (0.4375 outcome, 0/4 on all three long-horizon families); Coder-Next side still pending a paid probe"
+  }
+}

@@ -4,6 +4,8 @@
   ],
   "actual_spend": 6.45,
   "agent_canary": {
+    "donor_matrix": "artifacts/campaign/agent_canary_donor_matrix_v1.json",
+    "established_capability_winners": 0,
     "experiment_id": "nano_agent_canary_v1",
     "gpt_oss_profile": {
       "strong": {
@@ -28,15 +30,23 @@
     "n_tasks": 48,
     "next": "benchmark Qwen3-Coder-Next-FP8 (briefing SS LXV item 14) then GLM-4.5-Air-FP8",
     "outcome_mean": 0.5,
+    "paid_probe_hypothesis": "does Qwen3-Coder-Next-FP8 beat the ~32% ceiling on the three long-horizon families?",
     "parse_rate": 1.0,
     "reading": "gpt-oss-120b looks like a strong abstention/knowing-when-not-to-act donor and a weak long-horizon stop/recovery/multi-tool donor - consistent with the briefing SS XIX hypothesis that Qwen3-Coder-Next / MiniMax should own long-horizon execution and recovery. Single teacher so far: this is a profile, not yet a per-capability ranking.",
     "results": "artifacts/campaign/agent_canary_v1_results.json",
+    "robust_finding": "neither teacher viable long-horizon: 0/8 combined on multi_tool/premature_stop/repeated_calls, 95% CI [0,0.324]",
     "root_cause_fixed": "content was empty on 9/12 tasks because reasoning tokens consumed the whole max_tokens=128 budget (finish_reason=length, completion_tokens=64/64). Fixed: max_tokens 1024, reasoning_effort=low, reasoning_content/tool_call extraction fallback. Parse rate 0.75 -> 1.00 over 48 tasks.",
     "scoring_fix": "unparsed responses previously scored as capability failures - an empty prediction scored unnecessary_call_rate=1.0 (max badness). Unparsed rows now carry no scores and are excluded from per-capability means; every axis reports {mean, n} and parse_rate is tracked separately.",
     "spend_usd": 0.0,
     "status": "SCOREBOARD_VALID",
     "surface": "managed_reference",
-    "teacher_id": "gpt_oss_120b"
+    "teacher_id": "gpt_oss_120b",
+    "teachers_benchmarked": [
+      "gpt_oss_120b",
+      "qwen3_32b_awq"
+    ],
+    "total_spend_usd": 0.0,
+    "underpowered": "4 tasks/family; ~63/axis needed to rank at 0.25 effect"
   },
   "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE",
   "campaign_remaining": 149.0,
