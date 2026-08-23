@@ -1,8 +1,8 @@
 {
   "campaign_id": "p1_acceleration_campaign_v0",
   "campaign_spend_actual": 5.1568,
-  "campaign_spend_committed": 35.4105,
-  "campaign_spend_remaining": 144.4327,
+  "campaign_spend_committed": 37.4105,
+  "campaign_spend_remaining": 142.4327,
   "entries": [
     {
       "amount_usd": 0.37,
@@ -735,6 +735,18 @@
       "rate_per_hr": 1.39,
       "started_at": "2026-08-23T20:32:01.239094+00:00",
       "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-6",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "46zuwen2qobvlj",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T20:32:59.746117+00:00",
+      "status": "committed"
     }
   ],
   "envelopes": {
@@ -744,6 +756,6 @@
   },
   "posture": "NORMAL",
   "schema": "nano.campaign.spend.v0",
-  "total_exposure": 40.5673,
-  "updated_at": "2026-08-23T20:32:01.239097+00:00"
+  "total_exposure": 42.5673,
+  "updated_at": "2026-08-23T20:32:59.746120+00:00"
 }

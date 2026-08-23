@@ -1,16 +1,30 @@
 {
   "schema": "nano.data.registry.v1",
-  "timestamp": "2026-08-23T20:30:00+00:00",
+  "timestamp": "2026-08-23T20:33:35.357213+00:00",
   "datasets": [
     {
       "dataset_id": "native_unit_overfit_fixture_v1",
-      "legacy_ids": ["p1_distill_train_v1", "distill_train"],
+      "legacy_ids": [
+        "p1_distill_train_v1",
+        "distill_train"
+      ],
       "path": "artifacts/campaign/p1_distill_train_v1.json",
       "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
       "source": "campaign_generated_templated",
       "license": "internal_research",
-      "allowed_uses": ["trainer_smoke", "overfit_regression", "checkpoint_resume", "qlora_canary_fixture"],
-      "disallowed_uses": ["architecture_ranking", "confirmatory_promotion", "open_vocab_claims", "30m_revalidation", "100m_promotion"],
+      "allowed_uses": [
+        "trainer_smoke",
+        "overfit_regression",
+        "checkpoint_resume",
+        "qlora_canary_fixture"
+      ],
+      "disallowed_uses": [
+        "architecture_ranking",
+        "confirmatory_promotion",
+        "open_vocab_claims",
+        "30m_revalidation",
+        "100m_promotion"
+      ],
       "example_count": 96,
       "partition": "train_fixture_only",
       "privacy_status": "no_phi",
@@ -23,8 +37,12 @@
       "path": "data/p1_screening_eval_v1.json",
       "corpus_class": "EVAL_FROZEN",
       "partition": "eval_screening",
-      "allowed_uses": ["held_out_evaluation"],
-      "disallowed_uses": ["training"],
+      "allowed_uses": [
+        "held_out_evaluation"
+      ],
+      "disallowed_uses": [
+        "training"
+      ],
       "privacy_status": "no_phi"
     },
     {
@@ -33,10 +51,182 @@
       "corpus_class": "EVAL_FROZEN",
       "partition": "eval_screening",
       "status": "STUB_PLACEHOLDER",
-      "allowed_uses": ["held_out_evaluation"],
-      "disallowed_uses": ["training"],
+      "allowed_uses": [
+        "held_out_evaluation"
+      ],
+      "disallowed_uses": [
+        "training"
+      ],
       "privacy_status": "no_phi",
-      "note": "Wave 0 eval v2 stub — generator at scripts/generate_p1_screening_eval_v2.py"
+      "note": "Wave 0 eval v2 stub \u2014 generator at scripts/generate_p1_screening_eval_v2.py"
+    },
+    {
+      "dataset_id": "native_corpus_screen_v1_train",
+      "path": "artifacts/campaign/native_corpus_screen_v1_train.json",
+      "corpus_class": "ARCHITECTURE_SCREEN",
+      "tier": "R30",
+      "source": "nanoscribe/native/corpus generator (deterministic)",
+      "generator_commit_sha": "fd1273dea29566520f8078d5697bfabff5b3b39a",
+      "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+      "license": "internal_research",
+      "data_class": "SYNTHETIC_GOLD",
+      "allowed_uses": [
+        "architecture_screening",
+        "architecture_ranking",
+        "30m_revalidation",
+        "100m_promotion",
+        "extended_training"
+      ],
+      "disallowed_uses": [
+        "confirmatory_promotion"
+      ],
+      "example_count": 19194,
+      "training_tokens_char_level": 14693267,
+      "partition": "TRAIN",
+      "privacy_status": "no_phi",
+      "dedupe_status": "duplicate_rate=0.0",
+      "leakage_status": "pass",
+      "not_in_git": true,
+      "rebuild_command": "python3 scripts/build_native_corpus.py --stage screen",
+      "note": "generated corpus is not committed; rebuild deterministically and verify content_hash"
+    },
+    {
+      "dataset_id": "native_corpus_screen_v1_dev",
+      "path": "artifacts/campaign/native_corpus_screen_v1_dev.json",
+      "corpus_class": "ARCHITECTURE_SCREEN",
+      "tier": "R30",
+      "source": "nanoscribe/native/corpus generator (deterministic)",
+      "generator_commit_sha": "fd1273dea29566520f8078d5697bfabff5b3b39a",
+      "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+      "license": "internal_research",
+      "data_class": "SYNTHETIC_GOLD",
+      "allowed_uses": [
+        "held_out_evaluation",
+        "dev_monitoring"
+      ],
+      "disallowed_uses": [
+        "training"
+      ],
+      "example_count": 2397,
+      "training_tokens_char_level": 14693267,
+      "partition": "DEV",
+      "privacy_status": "no_phi",
+      "dedupe_status": "duplicate_rate=0.0",
+      "leakage_status": "pass",
+      "not_in_git": true,
+      "rebuild_command": "python3 scripts/build_native_corpus.py --stage screen",
+      "note": "generated corpus is not committed; rebuild deterministically and verify content_hash"
+    },
+    {
+      "dataset_id": "native_corpus_screen_v1_internal_test",
+      "path": "artifacts/campaign/native_corpus_screen_v1_internal_test.json",
+      "corpus_class": "ARCHITECTURE_SCREEN",
+      "tier": "R30",
+      "source": "nanoscribe/native/corpus generator (deterministic)",
+      "generator_commit_sha": "fd1273dea29566520f8078d5697bfabff5b3b39a",
+      "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+      "license": "internal_research",
+      "data_class": "SYNTHETIC_GOLD",
+      "allowed_uses": [
+        "held_out_evaluation",
+        "dev_monitoring"
+      ],
+      "disallowed_uses": [
+        "training"
+      ],
+      "example_count": 2386,
+      "training_tokens_char_level": 14693267,
+      "partition": "INTERNAL_TEST",
+      "privacy_status": "no_phi",
+      "dedupe_status": "duplicate_rate=0.0",
+      "leakage_status": "pass",
+      "not_in_git": true,
+      "rebuild_command": "python3 scripts/build_native_corpus.py --stage screen",
+      "note": "generated corpus is not committed; rebuild deterministically and verify content_hash"
+    },
+    {
+      "dataset_id": "native_corpus_promotion_v1_train",
+      "path": "artifacts/campaign/native_corpus_promotion_v1_train.json",
+      "corpus_class": "ARCHITECTURE_SCREEN",
+      "tier": "P100",
+      "source": "nanoscribe/native/corpus generator (deterministic)",
+      "generator_commit_sha": "f3b69f07b9e608c51a37c258b4d456d49cb0ef06",
+      "content_hash": "89fb05149cec085326481b026a7bd0f912d6c5865cfc45fc56ce6ebd21d7b0be",
+      "license": "internal_research",
+      "data_class": "SYNTHETIC_GOLD",
+      "allowed_uses": [
+        "architecture_screening",
+        "architecture_ranking",
+        "30m_revalidation",
+        "100m_promotion",
+        "extended_training"
+      ],
+      "disallowed_uses": [
+        "confirmatory_promotion"
+      ],
+      "example_count": 48525,
+      "training_tokens_char_level": 36752357,
+      "partition": "TRAIN",
+      "privacy_status": "no_phi",
+      "dedupe_status": "duplicate_rate=0.0",
+      "leakage_status": "pass",
+      "not_in_git": true,
+      "rebuild_command": "python3 scripts/build_native_corpus.py --stage promotion",
+      "note": "generated corpus is not committed; rebuild deterministically and verify content_hash"
+    },
+    {
+      "dataset_id": "native_corpus_promotion_v1_dev",
+      "path": "artifacts/campaign/native_corpus_promotion_v1_dev.json",
+      "corpus_class": "ARCHITECTURE_SCREEN",
+      "tier": "P100",
+      "source": "nanoscribe/native/corpus generator (deterministic)",
+      "generator_commit_sha": "f3b69f07b9e608c51a37c258b4d456d49cb0ef06",
+      "content_hash": "89fb05149cec085326481b026a7bd0f912d6c5865cfc45fc56ce6ebd21d7b0be",
+      "license": "internal_research",
+      "data_class": "SYNTHETIC_GOLD",
+      "allowed_uses": [
+        "held_out_evaluation",
+        "dev_monitoring"
+      ],
+      "disallowed_uses": [
+        "training"
+      ],
+      "example_count": 5517,
+      "training_tokens_char_level": 36752357,
+      "partition": "DEV",
+      "privacy_status": "no_phi",
+      "dedupe_status": "duplicate_rate=0.0",
+      "leakage_status": "pass",
+      "not_in_git": true,
+      "rebuild_command": "python3 scripts/build_native_corpus.py --stage promotion",
+      "note": "generated corpus is not committed; rebuild deterministically and verify content_hash"
+    },
+    {
+      "dataset_id": "native_corpus_promotion_v1_internal_test",
+      "path": "artifacts/campaign/native_corpus_promotion_v1_internal_test.json",
+      "corpus_class": "ARCHITECTURE_SCREEN",
+      "tier": "P100",
+      "source": "nanoscribe/native/corpus generator (deterministic)",
+      "generator_commit_sha": "f3b69f07b9e608c51a37c258b4d456d49cb0ef06",
+      "content_hash": "89fb05149cec085326481b026a7bd0f912d6c5865cfc45fc56ce6ebd21d7b0be",
+      "license": "internal_research",
+      "data_class": "SYNTHETIC_GOLD",
+      "allowed_uses": [
+        "held_out_evaluation",
+        "dev_monitoring"
+      ],
+      "disallowed_uses": [
+        "training"
+      ],
+      "example_count": 5685,
+      "training_tokens_char_level": 36752357,
+      "partition": "INTERNAL_TEST",
+      "privacy_status": "no_phi",
+      "dedupe_status": "duplicate_rate=0.0",
+      "leakage_status": "pass",
+      "not_in_git": true,
+      "rebuild_command": "python3 scripts/build_native_corpus.py --stage promotion",
+      "note": "generated corpus is not committed; rebuild deterministically and verify content_hash"
     }
   ]
 }
