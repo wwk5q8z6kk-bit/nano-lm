@@ -22,8 +22,14 @@ from nanoscribe.encounter import (
     UnresolvedItem,
     assemble_source,
 )
-from nanoscribe.evaluate import PredictedAtom, PredictedEncounter, evaluate
-from nanoscribe.select import ConstrainedSelector, match_count, relocate, snap_relocate
+from nanoscribe.evaluate import (
+    PredictedAtom,
+    PredictedEncounter,
+    SupportRelation,
+    atom_result,
+    evaluate,
+)
+from nanoscribe.select import ConstrainedSelector, copy_span, match_count, relocate, snap_relocate
 
 
 def _source():
@@ -105,6 +111,26 @@ def _gold():
             ),
         ),
     )
+
+
+def _pred_from_gold(gold: EncounterRecord, atom_id: str, **overrides) -> PredictedAtom:
+    atom = gold.atom(atom_id)
+    spans = tuple(gold.span(evidence_id) for evidence_id in atom.evidence_ids)
+    payload = dict(
+        atom_id=atom.atom_id,
+        atom_type=atom.atom_type,
+        raw_value=atom.raw_value,
+        assertion_state=atom.assertion_state,
+        speaker=atom.speaker,
+        experiencer=atom.experiencer,
+        temporality=atom.temporality,
+        certainty=atom.certainty,
+        evidence_ids=atom.evidence_ids,
+        spans=spans,
+        review_required=atom.review_required,
+    )
+    payload.update(overrides)
+    return PredictedAtom(**payload)
 
 
 def expect(code: str, fn) -> None:
@@ -191,66 +217,61 @@ def test_selector_cannot_emit_non_source_text() -> None:
 
 def test_evaluate_exact_gold_span_and_char_f1() -> None:
     gold = _gold()
-    pred = PredictedEncounter(
-        atoms=(
-            PredictedAtom(
-                atom_id="atom-neck",
-                assertion_state=AssertionState.ASSERTED,
-                spans=(gold.span("ev-neck"),),
-            ),
-        )
-    )
+    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck"),))
     report = evaluate(gold, pred)
-    assert report.correct_gold_span == 1
-    assert report.char_span_f1 == 1.0
-    assert report.wrong_source_span == 0
-    assert report.state_correct == 1
-    assert report.support_correct == 1
+    neck = atom_result(report, "atom-neck")
+    assert report.exact_gold_span == 1
+    assert report.span_character_f1 == 1.0
+    assert report.wrong_source == 0
+    assert report.wrong_mention == 0
+    assert report.assertion_state_correct == 1
+    assert report.support_direct_exact == 1
+    assert neck.support_relation is SupportRelation.DIRECT_EXACT
+    assert not hasattr(report, "support_correct")
 
 
-def test_evaluate_wrong_source_span_and_partial_f1() -> None:
+def test_evaluate_wrong_mention_is_not_wrong_source() -> None:
     gold = _gold()
     source = gold.sources[0]
     hurting = relocate(source, "hurting", evidence_id="ev-hurt")
     assert hurting is not None
     pred = PredictedEncounter(
         atoms=(
-            PredictedAtom(
-                atom_id="atom-neck",
-                assertion_state=AssertionState.ASSERTED,
+            _pred_from_gold(
+                gold,
+                "atom-neck",
+                raw_value="hurting",
+                evidence_ids=("ev-hurt",),
                 spans=(hurting,),
             ),
         )
     )
     report = evaluate(gold, pred)
-    assert report.correct_gold_span == 0
-    assert report.wrong_source_span == 1
-    assert 0.0 <= report.char_span_f1 < 1.0
+    neck = atom_result(report, "atom-neck")
+    assert report.exact_gold_span == 0
+    assert report.wrong_mention == 1
+    assert report.wrong_source == 0
+    assert neck.wrong_mention
+    assert not neck.wrong_source
+    assert 0.0 <= report.span_character_f1 < 1.0
 
 
 def test_evaluate_state_support_omission_and_abstention() -> None:
     gold = _gold()
     pred = PredictedEncounter(
         atoms=(
-            PredictedAtom(
-                atom_id="atom-neck",
-                assertion_state=AssertionState.ASSERTED,
-                spans=(gold.span("ev-neck"),),
-            ),
-            PredictedAtom(
-                atom_id="atom-alg",
-                assertion_state=AssertionState.DENIED,
-                spans=(gold.span("ev-deny"),),
-            ),
+            _pred_from_gold(gold, "atom-neck"),
+            _pred_from_gold(gold, "atom-alg"),
             PredictedAtom(atom_id="atom-hist", abstained=True),
             PredictedAtom(atom_id="medication", abstained=True),
         )
     )
     report = evaluate(gold, pred)
-    assert report.state_correct >= 2
+    assert report.assertion_state_correct >= 2
     assert report.unnecessary_abstention == 1  # hist
     assert report.omission == 2  # hist abstained + assess missing
     assert report.correct_abstention == 1  # medication silence
+    assert atom_result(report, "atom-alg").support_relation is SupportRelation.REVIEW_REQUIRED
 
 
 def test_evaluate_malformed_invented_and_critical() -> None:
@@ -268,16 +289,14 @@ def test_evaluate_malformed_invented_and_critical() -> None:
     pred = PredictedEncounter(
         atoms=(
             PredictedAtom(atom_id="atom-neck", malformed=True),
-            PredictedAtom(
-                atom_id="atom-assess",
-                assertion_state=AssertionState.ASSERTED,
-                spans=(invented,),
-            ),
+            _pred_from_gold(gold, "atom-assess", evidence_ids=("ev-fake",), spans=(invented,)),
         )
     )
     report = evaluate(gold, pred)
     assert report.malformed >= 1
     assert report.critical_error >= 1
+    assert report.invalid_span >= 1
+    assert atom_result(report, "atom-assess").invalid_span
 
 
 def test_evaluate_ambiguity_is_not_a_guessed_span() -> None:
@@ -320,13 +339,7 @@ def test_evaluate_ambiguity_is_not_a_guessed_span() -> None:
 def test_evaluate_reports_coverage_latency_memory() -> None:
     gold = _gold()
     pred = PredictedEncounter(
-        atoms=(
-            PredictedAtom(
-                atom_id="atom-neck",
-                assertion_state=AssertionState.ASSERTED,
-                spans=(gold.span("ev-neck"),),
-            ),
-        ),
+        atoms=(_pred_from_gold(gold, "atom-neck"),),
         latency_s=0.012,
         memory_bytes=2048,
     )
@@ -334,6 +347,339 @@ def test_evaluate_reports_coverage_latency_memory() -> None:
     assert 0.0 < report.coverage <= 1.0
     assert report.latency_s == 0.012
     assert report.memory_bytes == 2048
+
+
+def test_wider_containing_span_is_direct_exact_not_gold_match() -> None:
+    gold = _gold()
+    source = gold.sources[0]
+    turn = source.turns[1]
+    wide = copy_span(source, turn.start, turn.end, evidence_id="ev-wide")
+    assert wide.text == "My neck has been hurting."
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                gold,
+                "atom-neck",
+                evidence_ids=("ev-wide",),
+                spans=(wide,),
+            ),
+        )
+    )
+    report = evaluate(gold, pred)
+    neck = atom_result(report, "atom-neck")
+    assert neck.exact_gold_span is False
+    assert neck.support_relation is SupportRelation.DIRECT_EXACT
+    assert report.exact_gold_span == 0
+    assert report.support_direct_exact == 1
+
+
+def test_normalized_support_is_not_direct_exact() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck", raw_value="Neck"),))
+    report = evaluate(gold, pred)
+    neck = atom_result(report, "atom-neck")
+    assert neck.support_relation is SupportRelation.NORMALIZED
+    assert report.support_normalized == 1
+    assert report.support_direct_exact == 0
+    assert neck.exact_gold_span is True
+
+
+def test_wrong_source_uses_a_different_source_id() -> None:
+    gold = _gold()
+    other = assemble_source("src-2", ((Speaker.PATIENT, "My neck has been hurting."),))
+    other_neck = relocate(other, "neck", evidence_id="ev-other-neck")
+    assert other_neck is not None
+    record = EncounterRecord(
+        encounter_id="enc-2src",
+        sources=gold.sources + (other,),
+        evidence=gold.evidence + (other_neck,),
+        atoms=gold.atoms,
+        unresolved=gold.unresolved,
+    )
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                record,
+                "atom-neck",
+                evidence_ids=("ev-other-neck",),
+                spans=(other_neck,),
+            ),
+        )
+    )
+    report = evaluate(record, pred)
+    neck = atom_result(report, "atom-neck")
+    assert neck.wrong_source
+    assert not neck.wrong_mention
+    assert report.wrong_source == 1
+    assert report.wrong_mention == 0
+
+
+def test_uncertain_state_is_evaluated() -> None:
+    source = assemble_source(
+        "src-u",
+        ((Speaker.PATIENT, "I am not sure if I take anything."),),
+    )
+    span = relocate(source, "I am not sure if I take anything.", evidence_id="ev-unsure")
+    assert span is not None
+    gold = EncounterRecord(
+        encounter_id="enc-u",
+        sources=(source,),
+        evidence=(span,),
+        atoms=(
+            ClinicalAtom(
+                atom_id="atom-med",
+                atom_type=AtomType.MEDICATION,
+                raw_value="anything",
+                assertion_state=AssertionState.UNCERTAIN,
+                speaker=Speaker.PATIENT,
+                experiencer=Experiencer.PATIENT,
+                temporality=TemporalState(kind=Temporality.CURRENT),
+                certainty=Certainty.UNCERTAIN,
+                evidence_ids=("ev-unsure",),
+            ),
+        ),
+    )
+    report = evaluate(gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-med"),)))
+    med = atom_result(report, "atom-med")
+    assert med.assertion_state_correct
+    assert med.support_relation is SupportRelation.DIRECT_EXACT
+    assert report.assertion_state_correct == 1
+
+
+def test_conflicting_evaluates_both_spans() -> None:
+    source = assemble_source(
+        "src-c",
+        (
+            (Speaker.PATIENT, "Pain is mild."),
+            (Speaker.PATIENT, "Pain is severe."),
+        ),
+    )
+    mild = relocate(source, "mild", evidence_id="ev-mild")
+    severe = relocate(source, "severe", evidence_id="ev-severe")
+    assert mild and severe
+    gold = EncounterRecord(
+        encounter_id="enc-c",
+        sources=(source,),
+        evidence=(mild, severe),
+        atoms=(
+            ClinicalAtom(
+                atom_id="atom-sev",
+                atom_type=AtomType.SYMPTOM,
+                raw_value="mild",
+                assertion_state=AssertionState.CONFLICTING,
+                speaker=Speaker.PATIENT,
+                experiencer=Experiencer.PATIENT,
+                temporality=TemporalState(kind=Temporality.CURRENT),
+                certainty=Certainty.UNKNOWN,
+                evidence_ids=("ev-mild", "ev-severe"),
+            ),
+        ),
+    )
+    report = evaluate(gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-sev"),)))
+    item = atom_result(report, "atom-sev")
+    assert item.exact_gold_span
+    assert item.span_character_f1 == 1.0
+    assert item.support_relation is SupportRelation.REVIEW_REQUIRED
+    assert report.support_review_required == 1
+
+
+def test_span_order_and_second_span_are_not_first_span_artifacts() -> None:
+    gold = _gold()
+    source = gold.sources[0]
+    hurting = relocate(source, "hurting", evidence_id="ev-hurt")
+    assert hurting is not None
+    multi = EncounterRecord(
+        encounter_id="enc-multi",
+        sources=gold.sources,
+        evidence=gold.evidence + (hurting,),
+        atoms=(
+            ClinicalAtom(
+                atom_id="atom-neck",
+                atom_type=AtomType.SYMPTOM,
+                raw_value="neck",
+                assertion_state=AssertionState.ASSERTED,
+                speaker=Speaker.PATIENT,
+                experiencer=Experiencer.PATIENT,
+                temporality=TemporalState(kind=Temporality.CURRENT),
+                certainty=Certainty.STATED,
+                evidence_ids=("ev-neck", "ev-hurt"),
+            ),
+        ),
+    )
+    swapped = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                multi,
+                "atom-neck",
+                evidence_ids=("ev-hurt", "ev-neck"),
+                spans=(hurting, multi.span("ev-neck")),
+            ),
+        )
+    )
+    swapped_report = evaluate(multi, swapped)
+    assert atom_result(swapped_report, "atom-neck").exact_gold_span
+
+    turn = source.turns[1]
+    wide = copy_span(source, turn.start, turn.end, evidence_id="ev-wide-first")
+    first_differs = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                multi,
+                "atom-neck",
+                evidence_ids=("ev-wide-first", "ev-hurt"),
+                spans=(wide, hurting),
+            ),
+        )
+    )
+    partial = evaluate(multi, first_differs)
+    item = atom_result(partial, "atom-neck")
+    assert item.exact_gold_span is False
+    assert item.span_character_f1 > 0.0
+    assert item.wrong_mention
+
+
+def test_duplicate_predicted_ids_are_malformed() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(gold, "atom-neck"),
+            _pred_from_gold(gold, "atom-neck"),
+        )
+    )
+    report = evaluate(gold, pred)
+    assert report.malformed >= 1
+    assert atom_result(report, "atom-neck").malformed
+
+
+def test_nonexistent_source_is_critical_and_does_not_crash() -> None:
+    gold = _gold()
+    ghost = EvidenceSpan(
+        evidence_id="ev-ghost",
+        source_id="no-such-source",
+        turn_id="no-such-turn",
+        speaker=Speaker.PATIENT,
+        start=0,
+        end=4,
+        text="neck",
+    )
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                gold,
+                "atom-neck",
+                evidence_ids=("ev-ghost",),
+                spans=(ghost,),
+            ),
+        )
+    )
+    report = evaluate(gold, pred)
+    neck = atom_result(report, "atom-neck")
+    assert report.critical_error >= 1
+    assert neck.critical_error
+    assert not neck.wrong_source
+
+
+def test_wrong_turn_and_speaker_are_invalid_spans() -> None:
+    gold = _gold()
+    source = gold.sources[0]
+    neck = gold.span("ev-neck")
+    wrong_turn = EvidenceSpan(
+        evidence_id="ev-bad-turn",
+        source_id=neck.source_id,
+        turn_id=source.turns[0].turn_id,
+        speaker=neck.speaker,
+        start=neck.start,
+        end=neck.end,
+        text=neck.text,
+    )
+    wrong_speaker = EvidenceSpan(
+        evidence_id="ev-bad-spk",
+        source_id=neck.source_id,
+        turn_id=neck.turn_id,
+        speaker=Speaker.CLINICIAN,
+        start=neck.start,
+        end=neck.end,
+        text=neck.text,
+    )
+    turn_report = evaluate(
+        gold,
+        PredictedEncounter(
+            atoms=(_pred_from_gold(gold, "atom-neck", evidence_ids=("ev-bad-turn",), spans=(wrong_turn,)),)
+        ),
+    )
+    speaker_report = evaluate(
+        gold,
+        PredictedEncounter(
+            atoms=(
+                _pred_from_gold(gold, "atom-neck", evidence_ids=("ev-bad-spk",), spans=(wrong_speaker,)),
+            )
+        ),
+    )
+    assert atom_result(turn_report, "atom-neck").invalid_span
+    assert atom_result(speaker_report, "atom-neck").invalid_span
+    assert turn_report.critical_error >= 1
+    assert speaker_report.critical_error >= 1
+
+
+def test_ungrounded_raw_value_is_malformed() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck", raw_value="diabetes"),))
+    report = evaluate(gold, pred)
+    neck = atom_result(report, "atom-neck")
+    assert neck.malformed
+    assert neck.support_relation is SupportRelation.UNSUPPORTED
+    assert report.malformed >= 1
+    assert report.support_direct_exact == 0
+
+
+def test_uncertain_without_evidence_is_malformed() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                gold,
+                "atom-neck",
+                assertion_state=AssertionState.UNCERTAIN,
+                certainty=Certainty.UNCERTAIN,
+                evidence_ids=(),
+                spans=(),
+            ),
+        )
+    )
+    report = evaluate(gold, pred)
+    assert atom_result(report, "atom-neck").malformed
+    assert report.malformed >= 1
+
+
+def test_nonauthoritative_without_review_is_malformed() -> None:
+    source = assemble_source("src-o", ((Speaker.OTHER, "He has diabetes."),))
+    span = relocate(source, "diabetes", evidence_id="ev-o")
+    assert span is not None
+    gold = EncounterRecord(
+        encounter_id="enc-o",
+        sources=(source,),
+        evidence=(span,),
+        atoms=(
+            ClinicalAtom(
+                atom_id="atom-dm",
+                atom_type=AtomType.DIAGNOSIS_STATEMENT,
+                raw_value="diabetes",
+                assertion_state=AssertionState.ASSERTED,
+                speaker=Speaker.OTHER,
+                experiencer=Experiencer.OTHER,
+                temporality=TemporalState(kind=Temporality.CURRENT),
+                certainty=Certainty.STATED,
+                evidence_ids=("ev-o",),
+                review_required=True,
+            ),
+        ),
+    )
+    pred = PredictedEncounter(
+        atoms=(_pred_from_gold(gold, "atom-dm", review_required=False),)
+    )
+    report = evaluate(gold, pred)
+    assert atom_result(report, "atom-dm").malformed
+    assert report.malformed >= 1
 
 
 if __name__ == "__main__":
