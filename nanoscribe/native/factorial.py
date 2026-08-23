@@ -49,6 +49,51 @@ FACTORIAL_CELLS: tuple[FactorialCell, ...] = (
 )
 
 
+@dataclass(frozen=True, slots=True)
+class Round2Promotion:
+    """Round-2 100M promotion arm — fresh random init, not warm-started from 30M."""
+
+    run_prefix: str
+    arch: ArchFactor
+    objective: ObjectiveFactor
+    params_m: int = 100
+    seeds: tuple[int, ...] = (0, 1)
+
+
+def round2_run_id(promotion: Round2Promotion, seed: int) -> str:
+    return f"{promotion.run_prefix}_s{seed}"
+
+
+ROUND2_PROMOTIONS: tuple[Round2Promotion, ...] = (
+    Round2Promotion("native100_evidence_bottleneck", ArchFactor.EVIDENCE_BOTTLENECK, ObjectiveFactor.SPAN_PORT),
+    Round2Promotion("native100_span_port", ArchFactor.SLOT_ROUTER, ObjectiveFactor.SPAN_PORT),
+)
+
+
+def round2_manifest() -> dict[str, Any]:
+    runs = []
+    for promo in ROUND2_PROMOTIONS:
+        for seed in promo.seeds:
+            runs.append(
+                {
+                    "run_id": round2_run_id(promo, seed),
+                    "arch": promo.arch.value,
+                    "objective": promo.objective.value,
+                    "params_m": promo.params_m,
+                    "seed": seed,
+                    "init": "fresh_random",
+                    "max_steps": 200,
+                }
+            )
+    return {
+        "schema": "nano.campaign.native_round2.v1",
+        "timestamp": datetime.now(UTC).isoformat(),
+        "promotions": [p.run_prefix for p in ROUND2_PROMOTIONS],
+        "n_runs": len(runs),
+        "runs": runs,
+    }
+
+
 def factorial_manifest() -> dict[str, Any]:
     runs = []
     for cell in FACTORIAL_CELLS:

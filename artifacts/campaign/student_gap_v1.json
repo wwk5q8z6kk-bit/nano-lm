@@ -1,0 +1,71 @@
+{
+  "gap_vs_managed_ref_c2": {
+    "assertion_state_correct_rate": -0.3203,
+    "coverage_rate": -0.0055,
+    "exact_gold_span_rate": -0.0086
+  },
+  "gap_vs_qwen38_c2": {
+    "assertion_state_correct_rate": -0.3203,
+    "coverage_rate": -0.0547,
+    "exact_gold_span_rate": 0.0,
+    "support_direct_exact_rate": -0.2265
+  },
+  "hybrid_warranted": false,
+  "leakage_gate": "pass",
+  "managed_reference": {
+    "c2_screening": {
+      "assertion_state_correct_rate": 1.0,
+      "coverage_rate": 0.7867,
+      "exact_gold_span_rate": 0.1102,
+      "malformed": 11,
+      "n_cases": 128,
+      "source": "wave_v2_managed_ref"
+    },
+    "model": "Qwen3-32B-AWQ"
+  },
+  "next_action": "Axolotl 50-step canary",
+  "qlora_gate_unlocked": true,
+  "qlora_rationale": "Assertion gap -0.320 vs managed ref on C2; malformed=6",
+  "qwen38_serverless": {
+    "c2_screening": {
+      "assertion_state_correct_rate": 1.0,
+      "coverage_rate": 0.8359,
+      "exact_gold_span_rate": 0.1016,
+      "malformed": 0,
+      "n_cases": 128,
+      "note": "historical fanout; assertion metric pre-denominator-fix",
+      "source": "/Users/mac/Projects/nano-lm/artifacts/campaign/qwen_structured_metrics_v1.json",
+      "support_direct_exact_rate": 0.9062
+    },
+    "model": "Qwen/Qwen3.8-27B"
+  },
+  "schema": "nano.campaign.student_gap.v1",
+  "semantic_gap_meaningful": true,
+  "student_a": {
+    "c1_canary": {
+      "assertion_state_correct_rate": 0.8125,
+      "correct_abstention_rate": 0.0,
+      "coverage_rate": 1.0,
+      "exact_gold_span_rate": 0.2188,
+      "malformed": 0,
+      "n_cases": 32,
+      "omission": 0,
+      "spurious_atom": 0,
+      "support_direct_exact_rate": 0.7812,
+      "unnecessary_abstention": 0
+    },
+    "c2_screening": {
+      "assertion_state_correct_rate": 0.6797,
+      "correct_abstention_rate": 0.0,
+      "coverage_rate": 0.7812,
+      "exact_gold_span_rate": 0.1016,
+      "malformed": 6,
+      "n_cases": 128,
+      "omission": 1,
+      "spurious_atom": 0,
+      "support_direct_exact_rate": 0.6797,
+      "unnecessary_abstention": 0
+    }
+  },
+  "timestamp": "2026-08-23T10:17:26.287882+00:00"
+}

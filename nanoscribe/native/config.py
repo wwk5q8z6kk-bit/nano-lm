@@ -7,7 +7,13 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
-from nanoscribe.native.factorial import FACTORIAL_CELLS, FactorialCell
+from nanoscribe.native.factorial import (
+    ArchFactor,
+    FACTORIAL_CELLS,
+    FactorialCell,
+    ROUND2_PROMOTIONS,
+    round2_run_id,
+)
 
 
 class NativeVariant(str, Enum):
@@ -82,17 +88,70 @@ def default_loss_weights(variant: NativeVariant) -> LossWeights:
     return LossWeights(lm=0.5, span_port=1.0, evidence_align=0.5, assertion_state=0.25)
 
 
+def _estimate_param_count(d_model: int, n_layers: int, *, evidence_aware: bool, vocab_size: int = 4098) -> int:
+    emb = vocab_size * d_model
+    block = n_layers * (4 * d_model * d_model + 2 * d_model * (4 * d_model))
+    evidence = 2 * d_model * d_model if evidence_aware else 0
+    return emb + block + evidence
+
+
+def dims_for_target_params_m(
+    target_m: float,
+    *,
+    evidence_aware: bool,
+    vocab_size: int = 4098,
+) -> tuple[int, int, int]:
+    """Pick (d_model, n_layers, n_heads) closest to target param budget."""
+    target = int(target_m * 1e6)
+    best = (256, 8, 8)
+    best_diff = float("inf")
+    for n_layers in (10, 12, 14, 16):
+        for d_model in range(384, 1025, 32):
+            n_heads = max(4, d_model // 64)
+            count = _estimate_param_count(d_model, n_layers, evidence_aware=evidence_aware, vocab_size=vocab_size)
+            diff = abs(count - target)
+            if diff < best_diff:
+                best_diff = diff
+                best = (d_model, n_layers, n_heads)
+    return best
+
+
+def _variant_for_arch(arch: ArchFactor) -> NativeVariant:
+    return NativeVariant.NATIVE_B if arch == ArchFactor.EVIDENCE_BOTTLENECK else NativeVariant.NATIVE_A
+
+
 def config_for_run(run_id: str, *, cpu_smoke: bool = False) -> NativeTrainConfig:
-    from nanoscribe.native.factorial import FACTORIAL_CELLS, canonical_run_id, legacy_run_id
+    from nanoscribe.native.factorial import canonical_run_id, legacy_run_id
+
+    for promo in ROUND2_PROMOTIONS:
+        for seed in promo.seeds:
+            rid = round2_run_id(promo, seed)
+            if run_id == rid:
+                variant = _variant_for_arch(promo.arch)
+                d_model, n_layers, n_heads = dims_for_target_params_m(
+                    promo.params_m,
+                    evidence_aware=variant == NativeVariant.NATIVE_B,
+                )
+                return NativeTrainConfig(
+                    run_id=rid,
+                    variant=variant,
+                    cell=None,
+                    seed=seed,
+                    params_m=promo.params_m,
+                    d_model=d_model,
+                    n_layers=n_layers,
+                    n_heads=n_heads,
+                    max_steps=200,
+                    batch_size=16,
+                    peak_lr=3e-4,
+                    cpu_smoke=cpu_smoke,
+                    loss_weights=default_loss_weights(variant),
+                )
 
     for cell in FACTORIAL_CELLS:
         for seed in cell.seeds:
             if run_id in {canonical_run_id(cell, seed), legacy_run_id(cell, seed)}:
-                variant = (
-                    NativeVariant.NATIVE_B
-                    if cell.arch.value == "evidence_bottleneck"
-                    else NativeVariant.NATIVE_A
-                )
+                variant = _variant_for_arch(cell.arch)
                 return NativeTrainConfig(
                     run_id=canonical_run_id(cell, seed),
                     variant=variant,
