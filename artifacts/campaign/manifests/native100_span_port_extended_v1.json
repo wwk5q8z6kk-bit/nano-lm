@@ -1,32 +1,48 @@
 {
-  "schema": "nano.campaign.experiment_manifest.v1",
-  "experiment_id": "native100_span_port_extended_v1",
-  "git_sha": "88030dc1d6482a049331226ad8145239ddbb0cd0",
-  "dataset_revision": "p1_distill_train_v1",
-  "command": "scripts/bootstrap_native100_span_port_extended.sh",
-  "surface": "pod_template",
-  "gpu_or_model": "NVIDIA A100-SXM4-80GB",
-  "hub_stable_locator": "runpod-torch-v240",
-  "hub_listing_id": "runpod-torch-v240",
-  "resolved_at": "2026-08-23T15:10:00+00:00",
-  "max_runtime_min": 90,
-  "max_cost_usd": 2.0,
-  "status": "LAUNCHING",
-  "parent_experiment": "native100_round2_promotion_v1",
   "baseline_extended": "native100_evidence_bottleneck_s1",
   "baseline_screening": "artifacts/campaign/native_extended_screening_eval.json",
+  "command": "scripts/bootstrap_native100_span_port_extended.sh",
+  "compare_to": "native100_evidence_bottleneck_s1",
   "datacenter": "US-KS-2",
-  "termination_condition": "NATIVE100_EXTENDED_DONE + SCP weight pull + screening eval",
+  "dataset_revision": "p1_distill_train_v1",
+  "evaluation_caution_from_native100_heldout_validation": {
+    "added_by": "agent-0eba97de (agent-canary + held-out validation lane)",
+    "do_not": [
+      "rank span_port vs evidence_bottleneck on final train loss",
+      "report exact_gold_span_rate from the default constrained eval as evidence transport"
+    ],
+    "note": "This run is NOT wasted \u2014 it still yields a training curve and a second arm to evaluate under the corrected harness. Only the ranking conclusion is gated.",
+    "required_evaluation_for_this_run": [
+      "scripts/evaluate_native_nano.py --suite p1_screening_eval_v1 --unconstrained  (transport)",
+      "compare against a random-init control of the same config",
+      "compare against majority-class baseline 0.7984 for assertion_state",
+      "select best checkpoint by held-out metric, not last step"
+    ],
+    "source_finding": "artifacts/campaign/native100_heldout_finding_v1.json",
+    "why": "The evidence_bottleneck 100M arm reached train loss 0.0488 yet covers 0/150 gold atoms under free generation on held-out p1_screening_eval_v1, and its assertion-state accuracy (0.8095) is indistinguishable from an untrained control (0.8088) and from majority class (0.7984). The default eval injects the gold raw_value into the candidate set, making span metrics tautological."
+  },
+  "experiment_id": "native100_span_port_extended_v1",
+  "git_sha": "88030dc1d6482a049331226ad8145239ddbb0cd0",
+  "gpu_or_model": "NVIDIA A100-SXM4-80GB",
+  "hub_listing_id": "runpod-torch-v240",
+  "hub_stable_locator": "runpod-torch-v240",
   "init": "fresh_random",
+  "max_cost_usd": 2.0,
+  "max_runtime_min": 90,
+  "parent_experiment": "native100_round2_promotion_v1",
+  "resolved_at": "2026-08-23T15:10:00+00:00",
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "status": "LAUNCHING",
+  "surface": "pod_template",
+  "termination_condition": "NATIVE100_EXTENDED_DONE + SCP weight pull + screening eval",
   "training_plan": {
+    "batch_size": 16,
+    "epochs_note": "same token budget as evidence_bottleneck extended",
+    "max_steps": 200,
+    "peak_lr": 0.0003,
     "run_ids": [
       "native100_span_port_s0",
       "native100_span_port_s1"
-    ],
-    "max_steps": 200,
-    "batch_size": 16,
-    "peak_lr": 0.0003,
-    "epochs_note": "same token budget as evidence_bottleneck extended"
-  },
-  "compare_to": "native100_evidence_bottleneck_s1"
+    ]
+  }
 }
