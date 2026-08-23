@@ -25,8 +25,11 @@ from nanoscribe.prompt import (
     structured_candidate_system_prompt,
     tool_candidate_system_prompt,
 )
-from nanoscribe.tool_calling import build_openai_chat_kwargs
-from nanoscribe.tools import scribing_tool_definitions, tool_choice_submit_candidates
+from nanoscribe.inference.tool_registry import (
+    resolve_inference_tool_choice,
+    scribe_only_tool_definitions,
+)
+from nanoscribe.tool_calling import build_openai_chat_kwargs, resolve_vllm_tool_env
 from nanoscribe.serverless_fanout import (
     CONTRACT_VERSION,
     FanoutJobRecord,
@@ -155,12 +158,15 @@ def build_serverless_job_specs(
             )
         elif mode == "tool":
             user_prompt = build_structured_candidate_prompt(case.model_input.source, case.atom_specs)
+            vllm_env = resolve_vllm_tool_env()
+            tools = scribe_only_tool_definitions()
+            tool_choice = resolve_inference_tool_choice(None, vllm_env, scribe_only=True)
             openai_input = build_openai_chat_kwargs(
                 model=model,
                 system_prompt=tool_candidate_system_prompt(),
                 user_prompt=user_prompt,
-                tools=scribing_tool_definitions(),
-                tool_choice=tool_choice_submit_candidates(),
+                tools=tools,
+                tool_choice=tool_choice,
                 max_tokens=1024,
             )
             specs.append(
@@ -200,6 +206,28 @@ def build_serverless_job_specs(
     return specs
 
 
+def _parse_tool_mode_response(raw: Any) -> ModelCandidateBatch:
+    """Parse fanout tool-mode response into ModelCandidateBatch."""
+    from nanoscribe.capabilities import CapabilityId, CapabilityToolParser
+    from nanoscribe.tool_calling import ToolCallParser
+
+    if raw is None:
+        return ModelCandidateBatch(atoms=())
+    text = str(raw).strip()
+    if not text:
+        return ModelCandidateBatch(atoms=())
+    parser = CapabilityToolParser(allowed_capabilities=(CapabilityId.SCRIBE,))
+    fake_call = {
+        "id": "fanout_tool",
+        "function": {"name": "submit_candidate_atoms", "arguments": text},
+    }
+    result = parser.parse_tool_call(fake_call)
+    if result.candidate is not None:
+        return ModelCandidateBatch(atoms=result.candidate.atoms)
+    legacy = ToolCallParser().parse_text_json(text)
+    return ModelCandidateBatch(atoms=ToolCallParser().to_model_candidate(legacy).atoms)
+
+
 def records_to_candidate_batch(
     case: HarnessCase,
     records: Sequence[FanoutJobRecord],
@@ -211,6 +239,8 @@ def records_to_candidate_batch(
         if record is None or not record.response:
             return ModelCandidateBatch(atoms=())
         try:
+            if mode == "tool":
+                return _parse_tool_mode_response(record.response)
             from nanoscribe.tool_calling import ToolCallParser
 
             parser = ToolCallParser()
