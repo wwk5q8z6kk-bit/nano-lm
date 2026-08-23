@@ -1,6 +1,6 @@
 {
   "schema": "nano.native.checkpoint.v1",
-  "timestamp": "2026-08-23T15:48:13.666076+00:00",
+  "timestamp": "2026-08-23T15:55:21.710791+00:00",
   "step": 1,
   "config": {
     "run_id": "smoke_cpu",
@@ -26,6 +26,6 @@
     "cell": null
   },
   "extra": {
-    "loss": 66.22972869873047
+    "loss": 61.26837921142578
   }
 }
