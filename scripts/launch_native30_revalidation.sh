@@ -9,9 +9,13 @@ DATA_CENTER="${RUNPOD_DATA_CENTER_IDS:-CA-MTL-3}"
 VOLUME_ID="${RUNPOD_VOLUME_ID:-}"
 LEDGER="${CAMPAIGN_LEDGER:-artifacts/campaign/spend.json}"
 EST_HOURS="${NATIVE_REVAL_HOURS:-1.5}"
-RATE="${NATIVE_REVAL_RATE:-1.59}"
+RATE="${NATIVE_REVAL_RATE:-0.27}"
 MANIFEST="artifacts/campaign/manifests/native30_revalidation_wave1_v1.json"
-GPU_ID="${NATIVE_GPU_ID:-NVIDIA A100 80GB PCIe}"
+# Right-sized from MEASURED footprint: a 30M arm peaked at 8.2GB of an A100's
+# 80GB — a 9.8x over-provision at $1.39-1.59/hr. An RTX A5000 (24GB, $0.27/hr)
+# still leaves 2.9x headroom for eval and fragmentation, cutting the 9-run screen
+# from ~$2.23 to ~$0.38. Override with NATIVE_GPU_ID for larger arms.
+GPU_ID="${NATIVE_GPU_ID:-NVIDIA RTX A5000}"
 
 python3 scripts/campaign_spend.py --ledger "${LEDGER}" gate --amount "$(python3 -c "print(round(${RATE}*${EST_HOURS},4))")" >/dev/null
 

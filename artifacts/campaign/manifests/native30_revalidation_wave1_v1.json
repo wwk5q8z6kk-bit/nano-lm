@@ -201,10 +201,19 @@
   "compute": {
     "surface": "pod_template",
     "template": "runpod-torch-v240",
-    "gpu": "NVIDIA A100 80GB PCIe",
-    "gpu_alternate": "NVIDIA A100-SXM4-80GB",
+    "gpu": "NVIDIA RTX A5000",
+    "gpu_alternate": "NVIDIA RTX 4000 Ada / A40",
     "datacenter": "US-KS-2",
-    "datacenter_alternate": "CA-MTL-3"
+    "datacenter_alternate": "CA-MTL-3",
+    "gpu_vram_gb": 24,
+    "rightsizing_basis": "measured 8,365 MiB peak on the live A100 run; 24GB leaves 2.9x headroom",
+    "previous_gpu": "NVIDIA A100 80GB PCIe (9.8x over-provisioned)",
+    "network_volume_available": {
+      "id": "04himzqxbm",
+      "gb": 20,
+      "dc": "EU-RO-1",
+      "note": "attach to persist checkpoints and avoid the SSH weight-pull path entirely"
+    }
   },
   "cost_projection": {
     "throughput_basis": "MEASURED: native100 extended, 200 steps / 51 GPU-s on A100-SXM = 3.92 steps/s",
@@ -213,12 +222,13 @@
     "total_train_seconds": 4133,
     "pod_overhead_min": 15,
     "wall_clock_hr_est": 1.4,
-    "rate_usd_hr": 1.59,
-    "projected_usd": 2.22,
-    "projected_usd_2x_margin": 4.45
+    "rate_usd_hr": 0.27,
+    "projected_usd": 0.38,
+    "projected_usd_2x_margin": 0.76,
+    "saving_vs_a100": "6.6x cheaper than A100 SXM for an identical workload"
   },
   "max_runtime_min": 120,
-  "max_cost_usd": 6.45,
+  "max_cost_usd": 2.0,
   "artifact_dest": "artifacts/campaign/native30_revalidation_summary_v1.json",
   "termination_condition": "9 runs complete + checkpoints pulled + torch.load verified + pod terminated",
   "pass_criteria": [

@@ -51,6 +51,9 @@ CRITICAL_AXES: tuple[Axis, ...] = (
     Axis.SPURIOUS_TEMPTATION,
     Axis.ABSTENTION,
     Axis.MULTI_MENTION,
+    # Speaker attribution is a core P1 invariant (source[start:end] must belong to
+    # the right turn), so a screening suite that cannot resolve it is incomplete.
+    Axis.SPEAKER,
 )
 
 #: Screening floor, not a universal power guarantee. nanoscribe/eval/power.py

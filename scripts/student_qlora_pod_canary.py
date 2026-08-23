@@ -33,9 +33,11 @@ TRAIN_SCRIPT_GIST = (
 )
 PULL_SCRIPT = ROOT / "scripts/pull_qlora_adapter.py"
 WATCHDOG = ROOT / "scripts/gpu_idle_watchdog.sh"
-BOOTSTRAP_VERIFY_SEC = 120
+BOOTSTRAP_VERIFY_SEC = 180  # git clone + pip install on cold pod
+MODEL_LOAD_VERIFY_SEC = 900  # 32B HF download + QLoRA init can exceed 10 min
 IDLE_UTIL_THRESHOLD = 5
 IDLE_STREAK_MAX = 5  # 5 polls × 60s ≈ 5 min idle after bootstrap window
+REPO_URL = os.environ.get("NANO_LM_REPO_URL", "https://github.com/wwk5q8z6kk-bit/nano-lm.git")
 
 BASE_MODEL = "Qwen/Qwen2.5-32B-Instruct"
 DATASET_URL = (
@@ -231,20 +233,47 @@ def _cuda_gate_with_retries(
     return None, 0.0, last_error, selected_gpu
 
 
-def _verify_bootstrap(pod_id: str, *, timeout_s: int = BOOTSTRAP_VERIFY_SEC) -> None:
+def _git_head_sha() -> str:
+    proc = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        capture_output=True,
+        text=True,
+        check=False,
+        cwd=ROOT,
+    )
+    return proc.stdout.strip()[:40] if proc.returncode == 0 else "HEAD"
+
+
+def _ensure_repo_on_pod(pod_id: str, commit_sha: str) -> None:
+    """Clone nano-lm on pod (same pattern as native bootstrap). SCP-only upload is unreliable."""
+    cmd = (
+        f"set -e; cd /workspace/nano-lm 2>/dev/null || "
+        f"{{ cd /workspace && git clone -q {REPO_URL} nano-lm && cd nano-lm; }}; "
+        f"git fetch -q origin && git checkout -q {commit_sha}; "
+        "test -f scripts/student_qlora_minimal_train.py && echo SCRIPT_OK"
+    )
+    out = _ssh(pod_id, cmd)
+    if "SCRIPT_OK" not in out:
+        raise RuntimeError(f"repo bootstrap failed: {out[-500:]!r}")
+
+
+def _verify_bootstrap(pod_id: str, *, timeout_s: int = MODEL_LOAD_VERIFY_SEC) -> None:
     deadline = time.time() + timeout_s
     last_out = ""
     while time.time() < deadline:
         out = _ssh(
             pod_id,
-            "test -f /workspace/nano-lm/scripts/student_qlora_minimal_train.py && echo SCRIPT_OK; "
+            f"test -f /workspace/nano-lm/scripts/student_qlora_minimal_train.py && echo SCRIPT_OK; "
+            f"tail -5 {REMOTE_LOG} 2>/dev/null || true; "
             "pgrep -af student_qlora_minimal_train.py || echo NO_TRAIN_PID",
         )
         last_out = out
         if "SCRIPT_OK" in out and "NO_TRAIN_PID" not in out:
             return
-        time.sleep(10)
-    raise RuntimeError(f"bootstrap verify failed within {timeout_s}s: {last_out[-300:]!r}")
+        if "MODEL_LOADED" in out or "TRAIN_START" in out or "STEP_LOSS" in out:
+            return
+        time.sleep(15)
+    raise RuntimeError(f"bootstrap verify failed within {timeout_s}s: {last_out[-400:]!r}")
 
 
 def _gpu_util(pod_id: str) -> float | None:
@@ -262,7 +291,7 @@ def _start_idle_watchdog(pod_id: str) -> subprocess.Popen[bytes] | None:
     if not WATCHDOG.is_file():
         return None
     return subprocess.Popen(
-        ["bash", str(WATCHDOG), pod_id, str(BOOTSTRAP_VERIFY_SEC), "5", str(IDLE_UTIL_THRESHOLD)],
+        ["bash", str(WATCHDOG), pod_id, str(MODEL_LOAD_VERIFY_SEC), "5", str(IDLE_UTIL_THRESHOLD)],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
@@ -278,7 +307,8 @@ def _stop_watchdog(proc: subprocess.Popen[bytes] | None) -> None:
         proc.kill()
 
 
-def _upload_train_script(pod_id: str) -> None:
+def _upload_train_script_fallback(pod_id: str) -> None:
+    """SCP single script when direct TCP is available (fallback if git clone blocked)."""
     local = ROOT / "scripts/student_qlora_minimal_train.py"
     remote = "/workspace/nano-lm/scripts/student_qlora_minimal_train.py"
     endpoint = resolve_direct_scp(pod_id)
@@ -310,8 +340,18 @@ def _upload_train_script(pod_id: str) -> None:
         raise RuntimeError(f"scp train script failed: {proc.stderr[-500:]}")
 
 
-def _bootstrap(pod_id: str) -> None:
-    _upload_train_script(pod_id)
+def _bootstrap(pod_id: str, commit_sha: str) -> None:
+    try:
+        _ensure_repo_on_pod(pod_id, commit_sha)
+    except RuntimeError:
+        _ssh(pod_id, "mkdir -p /workspace/nano-lm/scripts")
+        _upload_train_script_fallback(pod_id)
+        out = _ssh(
+            pod_id,
+            "test -f /workspace/nano-lm/scripts/student_qlora_minimal_train.py && echo SCRIPT_OK",
+        )
+        if "SCRIPT_OK" not in out:
+            raise RuntimeError(f"repo and scp bootstrap both failed: {out!r}")
     cmd = (
         "set -e; export HF_HOME=/workspace/hf_cache TRANSFORMERS_CACHE=/workspace/hf_cache; "
         "pip install -q 'peft==0.12.0' 'bitsandbytes==0.43.3' 'accelerate==0.34.2' "
@@ -463,7 +503,9 @@ def run_pod_canary(*, est_cost: float = 2.0, attempt: int = 5) -> dict[str, Any]
         result["gpu"] = selected_gpu or GPU_PREFERENCES[1][0]
         result["datacenter"] = DATA_CENTER
         result["container_disk_gb"] = CONTAINER_DISK_GB
-        _bootstrap(pod_id)
+        commit_sha = _git_head_sha()
+        result["commit_sha"] = commit_sha
+        _bootstrap(pod_id, commit_sha)
         watchdog = _start_idle_watchdog(pod_id)
         parsed = _poll_training(pod_id)
         pull = _pull_adapter(pod_id)

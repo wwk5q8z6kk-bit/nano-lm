@@ -1,29 +1,29 @@
 {
   "schema": "nano.campaign.checkpoint.v5",
-  "timestamp": "2026-08-23T20:42:56.207448+00:00",
-  "commit_sha": "d637e26a2facc37ee931899207fbfbd45437eeff",
+  "timestamp": "2026-08-23T21:36:17.864095+00:00",
+  "commit_sha": "7e383efc7628e4fee4be4263bdccc1c0aeffb434",
   "branch": "frontier/accelerated-research-campaign-v2",
   "supersedes": "artifacts/campaign/checkpoint_v4.json",
   "supersedes_note": "v4 optimistic winner language is historical only; v4 file preserved unchanged",
   "campaign_phase": "WAVE_0_MEASUREMENT_CORPUS_CI",
   "wallet": {
-    "live_runpod_balance_usd": 142.8975780133,
-    "balance_note": "queried runpodctl user 2026-08-23T21:26Z",
+    "live_runpod_balance_usd": 142.7323896716,
+    "balance_note": "queried runpodctl user 2026-08-23T21:35Z; no active pods",
     "current_spend_per_hr": 0.004,
-    "campaign_remaining_est": 137.9,
+    "campaign_remaining_est": 122.73,
     "session_new_spend_usd": 2.0
   },
-  "paid_gpu_hold": true,
-  "paid_gpu_hold_reason": "fleet incident IDLE_BURN_TERMINATED; hold until screen corpus validated locally + watchdog/pull fixes merged",
+  "paid_gpu_hold": false,
+  "paid_gpu_hold_reason": "Lifted for native30 revalidation relaunch at 9a2d388 + QLoRA attempt 7; hold re-applies if idle burn recurs",
   "paid_gpu_hold_lift_when": [
-    "native_data_gate SCREEN_VALIDATED (done)",
-    "pull_qlora_adapter + gpu_idle_watchdog merged and tested locally",
-    "attempt 7 canary with artifact pull PASS"
+    "native30_revalidation summary pulled or RUNS_FAILED isolated",
+    "QLoRA attempt 7 adapter SCP pull PASS"
   ],
   "active_resources": {
     "pods": 0,
     "serverless": 0,
-    "posture": "NO_ACTIVE_PODS"
+    "posture": "NO_ACTIVE_PODS",
+    "note": "runpodctl pod list empty at checkpoint write; owner-reported native30 pod b2k1blbxs17w17 not visible to API (404)"
   },
   "fleet_incident": {
     "status": "IDLE_BURN_TERMINATED",
@@ -86,10 +86,11 @@
       "artifact": "artifacts/campaign/student_gap_v1.json",
       "qlora_adaptation_gate": "LOCKED",
       "qlora_canary_gate": "PARTIAL_PASS_TRAIN_PROVEN",
-      "qlora_canary_status": "FAIL",
+      "qlora_canary_status": "ATTEMPT_7_BOOTSTRAP_FAIL",
       "qlora_canary_attempt": 7,
-      "qlora_canary_pod": "46zuwen2qobvlj",
-      "qlora_canary_note": "50-step train completed (loss 3.67\u21920.017); adapter saved on pod but SCP pull failed; pull/watchdog fixes required for attempt 7"
+      "qlora_canary_pod": "qjzfvdafjzd71o",
+      "qlora_canary_note": "CUDA OK; SCP-only bootstrap timed out 120s — script never at /workspace; 0 adapter bytes; wallet $142.73",
+      "qlora_bootstrap_fix": "git clone pattern + 900s verify in student_qlora_pod_canary.py (pending attempt 8)"
     },
     "managed_reference": {
       "winner": "qwen3_32b_awq",
@@ -121,7 +122,9 @@
         "train_rows": 19194,
         "training_tokens_char_level": 14693267,
         "unique_values": 7581
-      }
+      },
+      "kaggle_retrieval_plan": "artifacts/campaign/kaggle_retrieval_plan_v1.json",
+      "stream_a": "Kaggle retrieval plan v1 \u2014 external pretrain + trajectory results"
     },
     "measurement_ci": {
       "status": "IN_PROGRESS",
@@ -135,25 +138,22 @@
       "generator": "scripts/generate_p1_screening_eval_v2.py"
     },
     "native30_revalidation": {
-      "status": "TERMINATED_IDLE_BURN",
-      "pod": "45zauz5xh1591w",
-      "datacenter": "CA-MTL-3",
-      "commit_sha": "6c98771",
-      "launched_at": "2026-08-23T20:39:49.686812+00:00",
-      "terminated_at": "2026-08-23T21:25:00+00:00",
-      "corpus": "native_corpus_screen_v1_train (14,693,267 char-level tokens)",
-      "corpus_gate": "CORPUS_OK on attempt 3 \u2014 screen corpus, NOT unit fixture",
-      "note": "Launched before native_data_gate OPEN in checkpoint; attempts 1-2 wasted on torch clobber and unit-fixture guard",
-      "cost_projection_usd": 2.22,
-      "max_cost_usd": 6.45,
+      "status": "IN_PROGRESS",
+      "owner_reported_pod": "b2k1blbxs17w17",
+      "owner_reported_name": "native30-reval-202608231728",
+      "spend_committed_pod": "b2klblbxsl7wl7",
+      "datacenter": "unknown",
+      "commit_sha": "9a2d388",
+      "local_head_note": "workspace HEAD 7e383ef (ahead of 9a2d388 with pod_watchdog wip); pod launched at 9a2d388 per owner",
+      "launched_at": "2026-08-23T21:29:32+00:00",
+      "corpus": "native_corpus_screen_v1_train (screen corpus, 14.69M char-level tokens)",
+      "corpus_gate": "CORPUS_OK \u2014 content_hash matches manifest; not unit fixture",
+      "arms_total": 9,
+      "arms_completed": "unknown \u2014 SSH/API blocked; marker NATIVE30_REVALIDATION_DONE not verified",
+      "preflight": "9-arm construct-all before train (embed_dim/num_heads fix at 9a2d388)",
       "artifact_dest": "artifacts/campaign/native30_revalidation_summary_v1.json",
-      "pass_criteria": [
-        "each arm scored on p1_screening_eval_v1 constrained AND free-generation",
-        "random-init and majority-class controls reported alongside",
-        "denominator-consistent yield per 150 gold atoms with 95% Wilson intervals",
-        "seed variance across 3 seeds",
-        "no winner unless it separates from the decoder control AND random-init"
-      ],
+      "api_visibility": "NOT_IN_RUNPODCTL_LIST_AT_CHECKPOINT",
+      "note": "Owner screenshot ~96% GPU A100 PCIe $1.40/hr; agent could not confirm RUNNING (404/get/list). Do not terminate if GPU>50% and training active.",
       "attempts": {
         "1_pod_9cg7kfpe4vlgzi": "ABORTED \u2014 pip installed torch 2.11.0+cu130 over the template torch; CUDA 12.4 driver could not run it, would have trained on CPU",
         "2_pod_a46aeq9gdrq0g4": "ABORTED \u2014 train_native_nano.py --dataset defaulted to the unit fixture and applied unconditionally; corpus launch guard correctly refused",
@@ -165,7 +165,7 @@
     "G0_measurement_integrity": "IN_PROGRESS",
     "G1_corpus_validity": "SCREEN_VALIDATED",
     "G2_evaluation_power": "STUB",
-    "G4_30m_revalidation": "READY_PENDING_GPU_HOLD",
+    "G4_30m_revalidation": "IN_PROGRESS",
     "G5_100m_promotion": "BLOCKED",
     "native_data_gate": "artifacts/campaign/gates/native_data_gate_v1.json",
     "qlora_canary_gate": "artifacts/campaign/gates/qlora_canary_gate_v1.json",
@@ -187,6 +187,7 @@
   "refs": {
     "checkpoint_v4": "artifacts/campaign/checkpoint_v4.json",
     "checkpoint_v3": "artifacts/campaign/checkpoint_v3.json",
-    "measurement_repair": "artifacts/campaign/measurement_repair_v1.json"
+    "measurement_repair": "artifacts/campaign/measurement_repair_v1.json",
+    "kaggle_retrieval_plan": "artifacts/campaign/kaggle_retrieval_plan_v1.json"
   }
 }
