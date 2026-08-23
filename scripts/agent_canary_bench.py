@@ -103,8 +103,27 @@ def _system_prompt(*, include_agent_tools: bool) -> str:
         if include_agent_tools
         else ""
     )
+    # The action space must be DEFINED, not just enumerated. Listing nine bare
+    # tokens left STOP / TOOL_NONE / ABSTAIN mutually indistinguishable, so a
+    # teacher answering TOOL_NONE where gold was STOP was graded wrong for a
+    # distinction it was never told about — measuring the prompt, not the model.
+    definitions = "\n".join(
+        [
+            "TOOL_NONE - no tool call is needed right now; proceed from what you already have",
+            "READ - read a specific document or note you already have a pointer to",
+            "SEARCH - look for records you do not yet have a pointer to",
+            "VERIFY - check a claim or span against its supporting evidence",
+            "QUERY - retrieve structured values such as labs or orders",
+            "ACT - perform a state-changing operation such as placing an order",
+            "ABSTAIN - decline to answer because the available information is insufficient",
+            "STOP - end the episode: the task is complete, or no further action can change the outcome",
+            "RECOVERY - the previous action failed; take a corrective or alternative step",
+        ]
+    )
     return (
-        "You are an agent policy model for clinical workflows. "
+        "You are an agent policy model for clinical workflows.\n"
+        "Choose the single best next action.\n\n"
+        f"{definitions}\n\n"
         f"Respond with exactly one action token on the first line from: {', '.join(ACTIONS)}. "
         f"{tools_note}"
     ).strip()
@@ -446,7 +465,17 @@ def main() -> int:
         help="results path (default artifacts/campaign/agent_canary_v1_results.json); "
         "use a per-teacher path to keep scoreboards side by side",
     )
-    parser.add_argument("--include-agent-tools", action="store_true", default=True)
+    # store_true with default=True could never be switched off. The P1 scribing
+    # tools (submit_candidate_atoms/summary/table) also invite a structured-output
+    # model to answer the SCRIBING task instead of the action-policy one: gpt-oss
+    # returned {"atoms":[...]} on 5/48 tasks and scored unparsed. Default off for
+    # a clean action-policy measurement; opt in to test tool-surface interference.
+    parser.add_argument(
+        "--include-agent-tools",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="expose the P1 scribing tools to the teacher (default: off)",
+    )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
