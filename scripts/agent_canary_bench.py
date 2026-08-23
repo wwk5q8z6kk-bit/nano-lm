@@ -42,6 +42,10 @@ MANAGED_TEACHERS = {
         "model": "Qwen/Qwen3-32B-AWQ",
         "surface": "managed_reference",
         "role": "generic_qwen_control",
+        # Qwen3 emits <think>...</think> inline in content. Left on, a 48-task
+        # sweep spends most of its budget and wall-clock on reasoning the action
+        # task does not need; vLLM honours this chat-template flag to skip it.
+        "disable_thinking": True,
     },
 }
 
@@ -117,7 +121,28 @@ def _user_prompt(task) -> str:
     )
 
 
+_THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
+_OPEN_THINK_RE = re.compile(r"<think>.*", re.DOTALL | re.IGNORECASE)
+
+
+def strip_thinking(text: str) -> str:
+    """Remove inline reasoning blocks before parsing an action.
+
+    Qwen3 and GLM emit their chain of thought inline in `content` as
+    <think>...</think> rather than in a separate reasoning_content field. Parsing
+    the first line would otherwise see "<think>" and find no action token,
+    scoring a correct answer as a parse failure. An unclosed <think> (the block
+    was cut off by max_tokens) is dropped entirely.
+    """
+    if not text:
+        return ""
+    text = _THINK_RE.sub(" ", text)
+    text = _OPEN_THINK_RE.sub(" ", text)
+    return text.strip()
+
+
 def _parse_action(text: str) -> str:
+    text = strip_thinking(text)
     if not text:
         return ""
     first = text.strip().splitlines()[0].strip().upper()
@@ -243,6 +268,7 @@ def run_bench(
     include_agent_tools: bool,
     max_tokens: int,
     reasoning_effort: str | None = None,
+    disable_thinking: bool = False,
 ) -> tuple[list[dict[str, Any]], float]:
     client = _openai_client(endpoint_id=endpoint_id, base_url=base_url)
     tools = agent_tool_definitions() if include_agent_tools else None
@@ -261,6 +287,8 @@ def run_bench(
         }
         if reasoning_effort:
             kwargs["reasoning_effort"] = reasoning_effort
+        if disable_thinking:
+            kwargs["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
         if tools:
             kwargs["tools"] = [
                 {
@@ -477,6 +505,7 @@ def main() -> int:
         include_agent_tools=args.include_agent_tools,
         max_tokens=args.max_tokens,
         reasoning_effort=args.reasoning_effort or None,
+        disable_thinking=bool(MANAGED_TEACHERS.get(teacher_id, {}).get("disable_thinking")),
     )
 
     if endpoint_id:
