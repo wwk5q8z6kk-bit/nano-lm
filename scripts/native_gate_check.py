@@ -84,10 +84,21 @@ def check() -> dict:
     ci_text = ci.read_text() if ci.is_file() else ""
     add("8_ci_collects_nanoscribe", "pytest nanoscribe" in ci_text, "ci.yml runs the nanoscribe suite")
 
-    # 9. experiment code committed
+    # 9. experiment code committed.
+    # The gate writes its own result artifact, so that path must be excluded or
+    # the check can never pass — it would always observe the file it just wrote.
     rc, out = _run(["git", "status", "--porcelain"])
-    dirty = [line for line in out.splitlines() if line.strip()]
-    add("9_code_committed", not dirty, f"{len(dirty)} uncommitted path(s)")
+    self_written = "artifacts/campaign/native_gate_check_v1.json"
+    dirty = [
+        line
+        for line in out.splitlines()
+        if line.strip() and self_written not in line
+    ]
+    add(
+        "9_code_committed",
+        not dirty,
+        f"{len(dirty)} uncommitted path(s)" + (f": {dirty[:3]}" if dirty else ""),
+    )
 
     # 10. exact command + artifact path ready
     exp = json.loads(EXPERIMENT_MANIFEST.read_text()) if EXPERIMENT_MANIFEST.is_file() else {}
