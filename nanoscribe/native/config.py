@@ -120,8 +120,59 @@ def _variant_for_arch(arch: ArchFactor) -> NativeVariant:
     return NativeVariant.NATIVE_B if arch == ArchFactor.EVIDENCE_BOTTLENECK else NativeVariant.NATIVE_A
 
 
+#: Wave-1 revalidation trains on the real corpus, not the overfit fixture.
+REVALIDATION_DATASET = "artifacts/campaign/native_corpus_screen_v1_train.json"
+REVALIDATION_DEV_DATASET = "artifacts/campaign/native_corpus_screen_v1_dev.json"
+#: 19,194 TRAIN rows / batch 32 = ~600 steps per epoch; 3 epochs.
+#: Chosen from the corpus size rather than inherited from the fixture's 200 steps,
+#: which was ~33 epochs of 96 rows and therefore pure memorisation.
+REVALIDATION_MAX_STEPS = 1800
+REVALIDATION_BATCH_SIZE = 32
+
+
 def config_for_run(run_id: str, *, cpu_smoke: bool = False) -> NativeTrainConfig:
-    from nanoscribe.native.factorial import canonical_run_id, legacy_run_id
+    from nanoscribe.native.factorial import (
+        REVALIDATION_ARMS,
+        canonical_run_id,
+        legacy_run_id,
+        revalidation_run_id,
+    )
+
+    for arm in REVALIDATION_ARMS:
+        for seed in arm.seeds:
+            if run_id != revalidation_run_id(arm, seed):
+                continue
+            variant = _variant_for_arch(arm.arch)
+            d_model, n_layers, n_heads = dims_for_target_params_m(
+                arm.params_m, evidence_aware=variant == NativeVariant.NATIVE_B
+            )
+            return NativeTrainConfig(
+                run_id=run_id,
+                variant=variant,
+                cell=None,
+                seed=seed,
+                params_m=arm.params_m,
+                d_model=d_model,
+                n_layers=n_layers,
+                n_heads=n_heads,
+                max_steps=REVALIDATION_MAX_STEPS,
+                batch_size=REVALIDATION_BATCH_SIZE,
+                peak_lr=3e-4,
+                dataset_path=REVALIDATION_DATASET,
+                cpu_smoke=cpu_smoke,
+                # The control must be a genuine baseline: plain next-token
+                # prediction with NO span-port objective. Using the default
+                # NATIVE_A weights would make it byte-identical to the span_port
+                # arm (same variant, same dims, same weights) — two names for one
+                # experiment, and no way to tell whether the span-port objective
+                # contributes anything at all.
+                loss_weights=(
+                    LossWeights(lm=1.0, span_port=0.0, evidence_align=0.0, assertion_state=0.0)
+                    if arm.is_control
+                    else default_loss_weights(variant)
+                ),
+            )
+
 
     for promo in ROUND2_PROMOTIONS:
         for seed in promo.seeds:
