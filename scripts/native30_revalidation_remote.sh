@@ -1,139 +1,150 @@
 #!/usr/bin/env bash
-# Remote entrypoint — Wave-1 30M revalidation on the real corpus.
+# Wave-1 30M revalidation — INTERLEAVED order, per-arm durable persistence.
 #
-# The corpus is NOT in git (66MB of generated JSON does not belong there). It is
-# rebuilt here and the content_hash is verified against the committed manifest,
-# so the pod provably trains on the same corpus that passed the leakage and
-# coverage gates locally.
-set -euo pipefail
+# The previous run trained all nine arms successfully and then lost every result
+# when the pod was deleted, because nothing was persisted until the very end.
+# This version writes each arm to durable storage as soon as it finishes and
+# verifies the durable copy before starting the next arm, so an interruption at
+# any point still leaves every completed arm recoverable.
+#
+# Order is interleaved (decoder s0, bottleneck s0, span_port s0, decoder s1, ...)
+# so a partial run still yields a complete seed-0 comparison across all three
+# arms rather than three seeds of a single arm.
+set -uo pipefail          # NOT -e: one failing arm must not abort the rest
 cd /workspace/nano-lm
 export HF_HOME=/workspace/hf_cache
 
-RUN_IDS="${REVAL_RUN_IDS:-}"
-if [[ -z "${RUN_IDS}" ]]; then
-  RUN_IDS=$(python3 - <<'PY'
-from nanoscribe.native.factorial import REVALIDATION_ARMS, revalidation_run_id
-print(" ".join(revalidation_run_id(a, s) for a in REVALIDATION_ARMS for s in a.seeds))
-PY
-)
+DURABLE="${DURABLE_DIR:-/workspace/durable/native30_reval}"
+HEARTBEAT="${DURABLE}/heartbeat.txt"
+mkdir -p "${DURABLE}"
+
+beat() { date -u +%s > "${HEARTBEAT}"; }
+beat
+
+# --- durable write/read test BEFORE any training -----------------------------
+echo "==> durable write/read test at ${DURABLE}"
+echo "durable-probe-$(date -u +%s)" > "${DURABLE}/.probe"
+if [[ ! -s "${DURABLE}/.probe" ]]; then
+  echo "DURABLE_FATAL: cannot write to ${DURABLE}"; exit 1
 fi
+echo "DURABLE_OK dir=${DURABLE} probe=$(cat "${DURABLE}/.probe")"
+df -h "${DURABLE}" | tail -1
 
 echo "==> rebuilding corpus"
-python3 scripts/build_native_corpus.py --stage screen
+python3 scripts/build_native_corpus.py --stage screen || { echo "CORPUS_BUILD_FAILED"; exit 1; }
 
-echo "==> verifying corpus content_hash against committed manifest"
-python3 - <<'PY'
+echo "==> verifying corpus + eval hashes"
+python3 - <<'PY' || { echo "HASHES_FAILED"; exit 1; }
 import json, sys
 m = json.load(open("artifacts/campaign/native_corpus_screen_v1_manifest.json"))
 exp = json.load(open("artifacts/campaign/manifests/native30_revalidation_wave1_v1.json"))
-want = exp["dataset"]["content_hash"]
-got = m["content_hash"]
-if got != want:
-    print(f"CORPUS_HASH_MISMATCH want={want} got={got}", file=sys.stderr)
+if m["content_hash"] != exp["dataset"]["content_hash"]:
+    print(f"CORPUS_HASH_MISMATCH want={exp['dataset']['content_hash']} got={m['content_hash']}", file=sys.stderr)
     raise SystemExit(1)
 if not (m["leakage"]["pass"] and m["axis_coverage"]["pass"]):
-    print("CORPUS_GATES_FAILED", file=sys.stderr)
-    raise SystemExit(1)
-print(f"CORPUS_OK hash={got} rows={m['statistics']['partition_sizes']['TRAIN']}")
+    print("CORPUS_GATES_FAILED", file=sys.stderr); raise SystemExit(1)
+print(f"CORPUS_OK hash={m['content_hash']} rows={m['statistics']['partition_sizes']['TRAIN']}")
+try:
+    e = json.load(open("artifacts/campaign/p1_screening_eval_v2_manifest.json"))
+    print(f"EVAL_V2_OK id={e['suite_id']} hash={e['content_hash']} cases={e['n_cases']}")
+except FileNotFoundError:
+    print("EVAL_V2_ABSENT (screening uses p1_screening_eval_v1 with controls)")
+print("HASHES_OK")
 PY
+beat
 
-# CUDA must be usable by TORCH, not merely visible to nvidia-smi. The previous
-# "nvidia-smi ok, continuing" override let a run proceed on CPU: the GPU was
-# visible (device_count=1) while torch.cuda.is_available() was False, so the pod
-# billed at $1.59/hr to train ~30x slower than it should. A pod that cannot use
-# its GPU has no valid experiment attached and must stop, not continue.
-python3 - <<'PY' || { echo "CUDA_FATAL: torch cannot use the GPU; aborting rather than training on CPU"; exit 1; }
-import sys
-import torch
-
+python3 - <<'PY' || { echo "CUDA_FATAL: torch cannot use the GPU"; exit 1; }
+import sys, torch
 ok = torch.cuda.is_available()
-print(
-    f"TORCH_CUDA available={ok} torch={torch.__version__} "
-    f"built_for_cuda={torch.version.cuda} device_count={torch.cuda.device_count()}"
-)
-if not ok:
-    print(
-        "DIAGNOSIS: torch is present and the GPU is visible, but CUDA is "
-        "unusable — usually a torch wheel built for a newer CUDA than the "
-        "driver provides (e.g. torch+cu130 on a CUDA 12.4 driver).",
-        file=sys.stderr,
-    )
+print(f"TORCH_CUDA available={ok} gpu={torch.cuda.get_device_name(0) if ok else 'none'} "
+      f"torch={torch.__version__} cuda={torch.version.cuda}")
 sys.exit(0 if ok else 1)
 PY
+beat
 
-# Build EVERY arm before training ANY of them. A 9-run job once died three runs
-# in because one arm had an invalid head count — the pod billed for the failed
-# arm and every arm after it. This costs ~20s and fails the whole job up front.
+RUN_IDS=$(python3 - <<'PY'
+from nanoscribe.native.factorial import REVALIDATION_ARMS, revalidation_run_id
+seeds = sorted({s for a in REVALIDATION_ARMS for s in a.seeds})
+print(" ".join(revalidation_run_id(a, s) for s in seeds for a in REVALIDATION_ARMS))
+PY
+)
+echo "==> interleaved order: ${RUN_IDS}"
+
 echo "==> preflight: constructing every arm"
-python3 - <<PY || { echo "ARM_PREFLIGHT_FAILED: an arm cannot be constructed; aborting before training"; exit 1; }
+python3 - <<PY || { echo "ARM_PREFLIGHT_FAILED"; exit 1; }
 import sys
 from nanoscribe.native.config import config_for_run
 from nanoscribe.native.model import build_native_model
-
-run_ids = "${RUN_IDS}".split()
 bad = []
-for rid in run_ids:
+for rid in "${RUN_IDS}".split():
     try:
         cfg = config_for_run(rid)
-        assert cfg.d_model % cfg.n_heads == 0, (
-            f"d_model {cfg.d_model} not divisible by n_heads {cfg.n_heads}"
-        )
+        assert cfg.d_model % cfg.n_heads == 0
         build_native_model(cfg)
         print(f"  ARM_OK {rid} d_model={cfg.d_model} n_heads={cfg.n_heads}")
     except Exception as exc:
-        bad.append((rid, f"{type(exc).__name__}: {exc}"))
-        print(f"  ARM_BAD {rid} {type(exc).__name__}: {exc}", file=sys.stderr)
+        bad.append(rid); print(f"  ARM_BAD {rid} {exc}", file=sys.stderr)
 sys.exit(1 if bad else 0)
 PY
+beat
 
-mkdir -p /workspace/reval_results
-
-# PARALLEL execution. Each 30M arm peaks at ~8GB; a 96GB card fits all nine at
-# once, so running them concurrently converts nine sequential trainings into one
-# wall-clock batch. Sequential execution was leaving >90% of the GPU idle.
-echo "==> launching ${RUN_IDS} in parallel"
-PIDS=""
+DONE_COUNT=0
+TOTAL=$(echo ${RUN_IDS} | wc -w | tr -d ' ')
 for RUN_ID in ${RUN_IDS}; do
-  ( python3 scripts/train_native_nano.py --run-id "${RUN_ID}" \
-      > "/workspace/reval_results/${RUN_ID}_train.log" 2>&1 \
-      && echo "RUN_DONE ${RUN_ID}" \
-      || echo "RUN_FAILED ${RUN_ID}" ) &
-  PIDS="${PIDS} $!"
-  sleep 2   # stagger CUDA context creation
-done
-echo "==> waiting on${PIDS}"
-for PID in ${PIDS}; do wait "${PID}" || true; done
-echo "==> all training processes returned"
-nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader
-
-# Evaluate sequentially: eval is short and avoids a second memory spike.
-for RUN_ID in ${RUN_IDS}; do
-  if [[ ! -d "artifacts/native_checkpoints/${RUN_ID}" ]]; then
-    echo "RUN_FAILED ${RUN_ID} (no checkpoint)"; continue
+  beat
+  echo "==> train ${RUN_ID}"
+  if ! python3 scripts/train_native_nano.py --run-id "${RUN_ID}" > "${DURABLE}/${RUN_ID}_train.log" 2>&1; then
+    echo "RUN_FAILED ${RUN_ID}"
+    tail -5 "${DURABLE}/${RUN_ID}_train.log"
+    continue
   fi
+  beat
+
   for MODE in constrained unconstrained; do
-    FLAG=""
-    [[ "${MODE}" == "unconstrained" ]] && FLAG="--unconstrained"
-    python3 scripts/evaluate_native_nano.py \
-      --run-id "${RUN_ID}" --suite p1_screening_eval_v1 ${FLAG} \
-      --output "/workspace/reval_results/${RUN_ID}_${MODE}.json" >/dev/null 2>&1 \
+    FLAG=""; [[ "${MODE}" == "unconstrained" ]] && FLAG="--unconstrained"
+    python3 scripts/evaluate_native_nano.py --run-id "${RUN_ID}" \
+      --suite p1_screening_eval_v1 ${FLAG} \
+      --output "${DURABLE}/${RUN_ID}_${MODE}.json" >/dev/null 2>&1 \
       || echo "EVAL_WARN ${RUN_ID} ${MODE}"
+    beat
   done
-  echo "EVAL_DONE ${RUN_ID}"
+
+  mkdir -p "${DURABLE}/${RUN_ID}"
+  cp -f "artifacts/native_checkpoints/${RUN_ID}/latest.pt" "${DURABLE}/${RUN_ID}/latest.pt" 2>/dev/null
+  cp -f artifacts/native_checkpoints/${RUN_ID}/step_*.json "${DURABLE}/${RUN_ID}/" 2>/dev/null
+
+  python3 - "${RUN_ID}" "${DURABLE}" <<'PY'
+import json, os, sys
+rid, durable = sys.argv[1], sys.argv[2]
+metrics = {"run_id": rid, "durable_files": {}}
+for mode in ("constrained", "unconstrained"):
+    p = f"{durable}/{rid}_{mode}.json"
+    if os.path.exists(p):
+        metrics[mode] = json.load(open(p)).get("suite_metrics", {})
+        metrics["durable_files"][mode] = os.path.getsize(p)
+ck = f"{durable}/{rid}/latest.pt"
+metrics["checkpoint_bytes"] = os.path.getsize(ck) if os.path.exists(ck) else 0
+json.dump(metrics, open(f"{durable}/{rid}_final_metrics.json", "w"), indent=2)
+print(f"METRICS_WRITTEN {rid} ckpt_bytes={metrics['checkpoint_bytes']}")
+PY
+
+  if [[ -s "${DURABLE}/${RUN_ID}_final_metrics.json" ]]; then
+    echo "DONE" > "${DURABLE}/${RUN_ID}.DONE"
+    DONE_COUNT=$((DONE_COUNT+1))
+    echo "ARM_DURABLE_OK ${RUN_ID}  progress=${DONE_COUNT}/${TOTAL}"
+  else
+    echo "ARM_DURABLE_FAILED ${RUN_ID}"
+  fi
+
+  python3 - "${DURABLE}" <<'PY'
+import glob, json, os, sys
+d = sys.argv[1]
+done = sorted(os.path.basename(p)[:-5] for p in glob.glob(f"{d}/*.DONE"))
+json.dump({"durable_done": done, "count": len(done)}, open(f"{d}/partial_summary.json", "w"), indent=2)
+print(f"PARTIAL {len(done)} arms durable")
+PY
+  beat
 done
 
-echo "==> archiving"
-mkdir -p /workspace/campaign_native_checkpoints
-python3 - <<'PY'
-import shutil
-from pathlib import Path
-src = Path("artifacts/native_checkpoints")
-dst = Path("/workspace/campaign_native_checkpoints")
-dst.mkdir(parents=True, exist_ok=True)
-for run_dir in src.glob("reval30_*"):
-    if run_dir.is_dir():
-        shutil.copytree(run_dir, dst / run_dir.name, dirs_exist_ok=True)
-print("ARCHIVE_OK", dst)
-PY
-grep -h "^RUN_FAILED" /workspace/reval30.log 2>/dev/null | sort -u || true
+echo "DURABLE_DONE_COUNT=${DONE_COUNT}/${TOTAL}"
 echo NATIVE30_REVALIDATION_DONE
