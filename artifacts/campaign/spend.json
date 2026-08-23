@@ -1,8 +1,8 @@
 {
   "campaign_id": "p1_acceleration_campaign_v0",
   "campaign_spend_actual": 5.1568,
-  "campaign_spend_committed": 12.7405,
-  "campaign_spend_remaining": 167.1027,
+  "campaign_spend_committed": 15.2405,
+  "campaign_spend_remaining": 164.6027,
   "entries": [
     {
       "amount_usd": 0.37,
@@ -603,6 +603,18 @@
       "rate_per_hr": 1.39,
       "started_at": "2026-08-23T15:28:27.898733+00:00",
       "status": "committed"
+    },
+    {
+      "amount_usd": 2.5,
+      "description": "Student QLoRA 50-step Axolotl canary",
+      "ended_at": null,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "kndjw1ao9wzg2z",
+      "rate_per_hr": 1.39,
+      "started_at": "2026-08-23T15:35:20.874948+00:00",
+      "status": "committed"
     }
   ],
   "envelopes": {
@@ -612,6 +624,6 @@
   },
   "posture": "NORMAL",
   "schema": "nano.campaign.spend.v0",
-  "total_exposure": 17.8973,
-  "updated_at": "2026-08-23T15:28:27.898736+00:00"
+  "total_exposure": 20.3973,
+  "updated_at": "2026-08-23T15:35:20.874951+00:00"
 }

@@ -441,6 +441,17 @@
     "verdict": "SOAK_FAIL"
   },
   "structured_contract": {},
+  "student_gap_correction": {
+    "corrected_gap_vs_managed_ref": -0.0552,
+    "cost_usd": 0.0,
+    "finding": "artifacts/campaign/student_gap_metric_defect_v1.json",
+    "gap_vs_qwen38_control": -0.1521,
+    "overstatement": "5.8x",
+    "significance_vs_managed_ref": "not established (CIs overlap)",
+    "significance_vs_qwen38": "real at 95%",
+    "stated_gap": -0.3203,
+    "verdict": "QLORA_GATE_FLIPPED_TO_LOCKED"
+  },
   "students": {
     "student_plane": "vllm_sglang_serverless_not_raw_a100"
   },

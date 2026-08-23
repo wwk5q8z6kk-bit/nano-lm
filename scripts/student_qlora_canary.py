@@ -28,8 +28,8 @@ HUB_AXOLOTL = "cma1ofy3e000008l7he7c764k"
 BASE_MODEL = "Qwen/Qwen2.5-32B-Instruct"
 GPU_ID = "NVIDIA A100 80GB PCIe"
 DATASET_URL = (
-    "https://raw.githubusercontent.com/wwk5q8z6kk-bit/nano-lm/"
-    "96ae040e7ebfdbde9a492040077fbfeee27b2a9f/artifacts/campaign/p1_distill_train_v1.json"
+    "https://gist.githubusercontent.com/wwk5q8z6kk-bit/"
+    "f3d11aa2463908190976f388b7b5afc1/raw/p1_distill_train_axolotl_v1.json"
 )
 
 
@@ -142,11 +142,7 @@ def _build_axolotl_args(*, max_steps: int) -> dict[str, Any]:
         "datasets": [
             {
                 "path": DATASET_URL,
-                "ds_type": "json",
-                "type": {
-                    "field_instruction": "prompt",
-                    "field_output": "target",
-                },
+                "type": "alpaca",
             }
         ],
         "dataset_prepared_path": "last_run_prepared",
@@ -259,11 +255,17 @@ def _submit_and_poll(endpoint_id: str, payload: dict[str, Any], *, timeout_s: in
             data = status_resp.json()
             last_status = str(data.get("status") or "")
             if last_status == "COMPLETED":
-                return {"status": "COMPLETED", "output": data.get("output"), "job_id": job_id}
+                return {
+                    "status": "COMPLETED",
+                    "output": data.get("output"),
+                    "raw_status": data,
+                    "job_id": job_id,
+                }
             if last_status in {"FAILED", "CANCELLED", "TIMED_OUT"}:
                 return {
                     "status": last_status,
                     "error": data.get("error") or data.get("output"),
+                    "raw_status": data,
                     "job_id": job_id,
                 }
             time.sleep(15)
@@ -306,8 +308,11 @@ def run_canary(*, max_steps: int = 50, est_cost: float = 2.5) -> dict[str, Any]:
         job = _submit_and_poll(endpoint_id, payload)
         result["job_id"] = job.get("job_id")
         result["job_status"] = job.get("status")
+        result["raw_status"] = job.get("raw_status")
         output = job.get("output")
-        if isinstance(output, dict) and "output" in output:
+        if output is None and isinstance(job.get("raw_status"), dict):
+            output = job["raw_status"].get("output")
+        if isinstance(output, dict) and "output" in output and len(output) == 1:
             output = output["output"]
         result["raw_output"] = output
         final_loss = _final_loss(output)
