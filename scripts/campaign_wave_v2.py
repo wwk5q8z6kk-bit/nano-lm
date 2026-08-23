@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
 import subprocess
 import sys
 import time
@@ -29,14 +30,17 @@ from nanoscribe.native.data import export_distill_train_json
 from nanoscribe.native.factorial import FACTORIAL_CELLS, canonical_run_id
 from nanoscribe.native.trainer import trainer_manifest
 from nanoscribe.runpod_hub import discover_hub_catalog
+from nanoscribe.runpod_gpu_preflight import block_b200_without_sm100
 from nanoscribe.runpod_wallet import budget_gate_with_wallet, effective_campaign_budget, query_live_balance
 from nanoscribe.verifier_eval import export_verifier_dataset, verifier_metrics, build_verifier_examples
 from nanoscribe.distill_train_suite import distill_train_cases
 
 PYTORCH_TEMPLATE_ID = "runpod-torch-v240"
+PYTORCH_IMAGE = "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04"
 VOLUME_ID = "04himzqxbm"
+NATIVE_GPU = "NVIDIA A100 80GB PCIe"
+NATIVE_RATE_HR = 1.39
 B200_GPU = "NVIDIA B200"
-B200_RATE_HR = 4.50
 NATIVE_POD_HOURS = 0.5
 
 
@@ -77,17 +81,20 @@ def _launch_native_pod(
     run_ids: list[str],
     budget: dict[str, Any],
 ) -> dict[str, Any]:
-    est_cost = round(B200_RATE_HR * NATIVE_POD_HOURS, 4)
+    est_cost = round(NATIVE_RATE_HR * NATIVE_POD_HOURS, 4)
     allowed, reason, _ = budget_gate_with_wallet(est_cost)
     if not allowed:
         return {"launched": False, "reason": reason, "run_ids": run_ids}
+
+    block_b200_without_sm100(NATIVE_GPU, PYTORCH_TEMPLATE_ID)
 
     commands = " && ".join(
         [
             "cd /workspace/nano-lm || (cd /workspace && git clone https://github.com/wwk5q8z6kk-bit/nano-lm.git && cd nano-lm)",
             f"git fetch origin && git checkout {_git_sha()} || git checkout frontier/accelerated-research-campaign-v2",
             "pip install -q -r requirements.txt 2>/dev/null || true",
-            "python3 -m nanoscribe.native.data --export-train-json 2>/dev/null || python3 scripts/train_native_nano.py --export-train-json",
+            "python3 -m nanoscribe.runpod_gpu_preflight || exit 1",
+            "python3 scripts/train_native_nano.py --export-train-json",
         ]
         + [f"python3 scripts/train_native_nano.py --run-id {rid}" for rid in run_ids]
     )
@@ -102,7 +109,7 @@ def _launch_native_pod(
             "--template-id",
             PYTORCH_TEMPLATE_ID,
             "--gpu-id",
-            B200_GPU,
+            NATIVE_GPU,
             "--network-volume-id",
             VOLUME_ID,
             "--container-disk-in-gb",
@@ -111,6 +118,8 @@ def _launch_native_pod(
             "/workspace",
             "--ports",
             "22/tcp",
+            "--docker-args",
+            f"bash -lc {shlex.quote(commands)}",
         ],
         capture_output=True,
         text=True,
@@ -123,12 +132,12 @@ def _launch_native_pod(
     pod_id = pod.get("id")
     ledger = CampaignLedger.load()
     entry = ledger.commit(
-        "native_b200",
+        "native_a100",
         f"Native round1 {name} runs={','.join(run_ids)}",
         est_cost,
         pod_id=pod_id,
-        gpu=B200_GPU,
-        rate_per_hr=B200_RATE_HR,
+        gpu=NATIVE_GPU,
+        rate_per_hr=NATIVE_RATE_HR,
         notes=f"template={PYTORCH_TEMPLATE_ID}",
     )
     ledger.save()
@@ -184,9 +193,9 @@ def run_wave(args: argparse.Namespace) -> dict[str, Any]:
     if args.native and leakage["status"] == "pass":
         round1_runs = [canonical_run_id(cell, seed) for cell in FACTORIAL_CELLS[:2] for seed in cell.seeds]
         round1b_runs = [canonical_run_id(cell, seed) for cell in FACTORIAL_CELLS[2:] for seed in cell.seeds]
-        native_launches.append(_launch_native_pod(name="native-b200-1", run_ids=round1_runs, budget=budget))
-        if budget["campaign_remaining"] > B200_RATE_HR * NATIVE_POD_HOURS * 2:
-            native_launches.append(_launch_native_pod(name="native-b200-2", run_ids=round1b_runs, budget=budget))
+        native_launches.append(_launch_native_pod(name="native-a100-1", run_ids=round1_runs, budget=budget))
+        if budget["campaign_remaining"] > NATIVE_RATE_HR * NATIVE_POD_HOURS * 2:
+            native_launches.append(_launch_native_pod(name="native-a100-2", run_ids=round1b_runs, budget=budget))
 
     spend_delta = spend_delta_since_start()
     ledger = CampaignLedger.load()

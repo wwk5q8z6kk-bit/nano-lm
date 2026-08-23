@@ -56,7 +56,7 @@ def estimate_param_count(cfg: NativeTrainConfig) -> int:
 
 
 def build_runpod_command(cfg: NativeTrainConfig) -> str:
-    """Exact command for B200 pod launch — no GPU until this is ready."""
+    """Exact command for GPU pod launch — no GPU until this is ready."""
     return (
         f"python3 -m nanoscribe.native.trainer "
         f"--run-id {cfg.run_id} "
@@ -86,7 +86,7 @@ def trainer_manifest(path: Path | None = None) -> dict[str, Any]:
     payload = {
         "schema": "nano.native.trainer.v0",
         "timestamp": datetime.now(UTC).isoformat(),
-        "status": "READY_FOR_B200_LAUNCH",
+        "status": "READY_FOR_GPU_LAUNCH",
         "backend": "scratch_from_random_init",
         "n_runs": len(runs),
         "runs": runs,

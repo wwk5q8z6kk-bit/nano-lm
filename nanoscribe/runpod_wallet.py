@@ -10,6 +10,8 @@ from pathlib import Path
 
 from nanoscribe.campaign import CampaignLedger, DEFAULT_LEDGER, NORMAL_ENVELOPE_USD
 
+WALLET_FLOOR_USD = 10.0
+
 
 def query_live_balance() -> dict[str, Any]:
     """Query RunPod account via runpodctl user -o json."""
@@ -41,13 +43,13 @@ def effective_campaign_budget(
     ledger_path: Path = DEFAULT_LEDGER,
     authorized_envelope_usd: float = NORMAL_ENVELOPE_USD,
 ) -> dict[str, Any]:
-    """campaign_remaining = min(authorized_remaining, live_runpod_balance)."""
+    """campaign_remaining = min(authorized_remaining, live_balance - WALLET_FLOOR_USD)."""
     wallet = query_live_balance()
     ledger = CampaignLedger.load(ledger_path)
     authorized_remaining = ledger.campaign_spend_remaining
     live_balance = wallet.get("client_balance_usd", 0.0) if wallet.get("ok") else None
     if live_balance is not None:
-        campaign_remaining = min(authorized_remaining, live_balance)
+        campaign_remaining = min(authorized_remaining, max(0.0, live_balance - WALLET_FLOOR_USD))
     else:
         campaign_remaining = authorized_remaining
     return {
@@ -55,6 +57,7 @@ def effective_campaign_budget(
         "authorized_envelope_usd": authorized_envelope_usd,
         "authorized_remaining": round(authorized_remaining, 4),
         "live_runpod_balance": live_balance,
+        "wallet_floor_usd": WALLET_FLOOR_USD,
         "campaign_remaining": round(campaign_remaining, 4),
         "ledger_actual": round(ledger.campaign_spend_actual, 4),
         "ledger_committed": round(ledger.campaign_spend_committed, 4),

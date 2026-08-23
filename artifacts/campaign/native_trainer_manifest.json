@@ -1,6 +1,5 @@
 {
   "backend": "scratch_from_random_init",
-  "commit_sha": "a4b7947737d3f4a363bdc067df95e3008cd94b41",
   "n_runs": 8,
   "runs": [
     {
@@ -10,8 +9,8 @@
       "objective": "span_port",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "A_s0",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id A_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
+      "run_id": "native30_bottleneck_span_s0",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_bottleneck_span_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
       "seed": 0
     },
     {
@@ -21,8 +20,8 @@
       "objective": "span_port",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "A_s1",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id A_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
+      "run_id": "native30_bottleneck_span_s1",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_bottleneck_span_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
       "seed": 1
     },
     {
@@ -32,8 +31,8 @@
       "objective": "structured_json",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "B_s0",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id B_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
+      "run_id": "native30_bottleneck_struct_s0",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_bottleneck_struct_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
       "seed": 0
     },
     {
@@ -43,8 +42,8 @@
       "objective": "structured_json",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "B_s1",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id B_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
+      "run_id": "native30_bottleneck_struct_s1",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_bottleneck_struct_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
       "seed": 1
     },
     {
@@ -54,8 +53,8 @@
       "objective": "span_port",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "C_s0",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id C_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
+      "run_id": "native30_decoder_span_s0",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_decoder_span_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
       "seed": 0
     },
     {
@@ -65,8 +64,8 @@
       "objective": "span_port",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "C_s1",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id C_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
+      "run_id": "native30_decoder_span_s1",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_decoder_span_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
       "seed": 1
     },
     {
@@ -76,8 +75,8 @@
       "objective": "structured_json",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "D_s0",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id D_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
+      "run_id": "native30_decoder_struct_s0",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_decoder_struct_s0 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 0",
       "seed": 0
     },
     {
@@ -87,13 +86,12 @@
       "objective": "structured_json",
       "params_m_estimated": 7.34,
       "params_m_target": 30,
-      "run_id": "D_s1",
-      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id D_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
+      "run_id": "native30_decoder_struct_s1",
+      "runpod_command": "python3 -m nanoscribe.native.trainer --run-id native30_decoder_struct_s1 --dataset artifacts/campaign/p1_distill_train_v1.json --max-steps 200 --seed 1",
       "seed": 1
     }
   ],
   "schema": "nano.native.trainer.v0",
-  "status": "READY_FOR_B200_LAUNCH",
-  "timestamp": "2026-08-23T04:27:42.003128+00:00",
-  "wave": "paid_wave_1"
+  "status": "READY_FOR_GPU_LAUNCH",
+  "timestamp": "2026-08-23T04:38:29.985032+00:00"
 }

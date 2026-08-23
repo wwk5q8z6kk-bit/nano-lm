@@ -1,8 +1,8 @@
 {
   "campaign_id": "p1_acceleration_campaign_v0",
-  "campaign_spend_actual": 1.9659,
-  "campaign_spend_committed": 0,
-  "campaign_spend_remaining": 183.0341,
+  "campaign_spend_actual": 3.8251,
+  "campaign_spend_committed": 1.76,
+  "campaign_spend_remaining": 179.4149,
   "entries": [
     {
       "amount_usd": 0.37,
@@ -183,6 +183,126 @@
       "rate_per_hr": 1.39,
       "started_at": "2026-08-23T04:13:21.275704+00:00",
       "status": "actual"
+    },
+    {
+      "amount_usd": 0.576,
+      "description": "Wave1 managed ref C1+C2 winner=gpt_oss_120b",
+      "ended_at": "2026-08-23T04:30:21.926480+00:00",
+      "gpu": null,
+      "lane": "managed_reference",
+      "notes": "api_token_estimate",
+      "pod_id": null,
+      "rate_per_hr": null,
+      "started_at": "2026-08-23T04:30:21.926467+00:00",
+      "status": "actual"
+    },
+    {
+      "amount_usd": 0.1536,
+      "description": "Wave1 student_a pod launch",
+      "ended_at": "2026-08-23T04:37:52.369048+00:00",
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_a",
+      "notes": "",
+      "pod_id": "1hbomuv91vfbpw",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T04:31:57.643619+00:00",
+      "status": "actual"
+    },
+    {
+      "amount_usd": 0.4821,
+      "description": "Wave1 native_b200 pod launch",
+      "ended_at": "2026-08-23T04:37:52.471410+00:00",
+      "gpu": "NVIDIA B200",
+      "lane": "native_b200",
+      "notes": "",
+      "pod_id": "owrlijfea33xox",
+      "rate_per_hr": 4.99,
+      "started_at": "2026-08-23T04:31:57.705826+00:00",
+      "status": "actual"
+    },
+    {
+      "amount_usd": 0.0715,
+      "description": "Wave1 verifier pod launch",
+      "ended_at": "2026-08-23T04:37:52.420073+00:00",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "lane": "verifier",
+      "notes": "",
+      "pod_id": "yer36mut1lnunv",
+      "rate_per_hr": 0.74,
+      "started_at": "2026-08-23T04:31:57.732503+00:00",
+      "status": "actual"
+    },
+    {
+      "amount_usd": 0.576,
+      "description": "Wave1 managed ref C1+C2 winner=qwen3_32b_awq",
+      "ended_at": "2026-08-23T04:37:49.802305+00:00",
+      "gpu": null,
+      "lane": "managed_reference",
+      "notes": "api_token_estimate",
+      "pod_id": null,
+      "rate_per_hr": null,
+      "started_at": "2026-08-23T04:37:49.802283+00:00",
+      "status": "actual"
+    },
+    {
+      "amount_usd": 0.695,
+      "description": "Native round1 native-a100-1 runs=native30_bottleneck_span_s0,native30_bottleneck_span_s1,native30_bottleneck_struct_s0,native30_bottleneck_struct_s1",
+      "ended_at": null,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "lane": "native_a100",
+      "notes": "template=runpod-torch-v240",
+      "pod_id": "wmxw7pzisysjlh",
+      "rate_per_hr": 1.39,
+      "started_at": "2026-08-23T04:38:02.080648+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 0.0,
+      "description": "Native round1 native-a100-1 runs=native30_bottleneck_span_s0,native30_bottleneck_span_s1,native30_bottleneck_struct_s0,native30_bottleneck_struct_s1",
+      "ended_at": "2026-08-23T04:40:26.863032+00:00",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "lane": "native_a100",
+      "notes": "template=runpod-torch-v240 duplicate pod deleted",
+      "pod_id": "vl5teia0gciol9",
+      "rate_per_hr": 1.39,
+      "started_at": "2026-08-23T04:38:31.018458+00:00",
+      "status": "released"
+    },
+    {
+      "amount_usd": 0.185,
+      "description": "Native round1 decoder half RTX4090",
+      "ended_at": null,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "lane": "native_a100",
+      "notes": "",
+      "pod_id": "vi9u56s9htwwkb",
+      "rate_per_hr": 0.74,
+      "started_at": "2026-08-23T04:39:40.932836+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 0.695,
+      "description": "Wave1 native_a100 pod launch",
+      "ended_at": null,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "lane": "native_a100",
+      "notes": "",
+      "pod_id": "29f3zm0ss30yay",
+      "rate_per_hr": 1.39,
+      "started_at": "2026-08-23T04:41:29.286961+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 0.185,
+      "description": "Native round1 decoder RTX4090",
+      "ended_at": null,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "lane": "native_a100",
+      "notes": "template=runpod-torch-v240",
+      "pod_id": "wusomzx4k947l3",
+      "rate_per_hr": 0.74,
+      "started_at": "2026-08-23T04:41:47.155438+00:00",
+      "status": "committed"
     }
   ],
   "envelopes": {
@@ -192,6 +312,6 @@
   },
   "posture": "NORMAL",
   "schema": "nano.campaign.spend.v0",
-  "total_exposure": 1.9659,
-  "updated_at": "2026-08-23T04:13:21.275711+00:00"
+  "total_exposure": 5.5851,
+  "updated_at": "2026-08-23T04:41:47.155443+00:00"
 }
