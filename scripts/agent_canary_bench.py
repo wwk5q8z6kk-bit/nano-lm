@@ -150,7 +150,14 @@ def _parse_action(text: str) -> str:
         if action in first:
             return action
     m = re.search(r"\b(" + "|".join(ACTIONS) + r")\b", text.upper())
-    return m.group(1) if m else first.split()[0] if first else ""
+    if m:
+        return m.group(1)
+    # No known action anywhere in the response. Previously this fell back to
+    # first.split()[0], which returned whatever token happened to start the line
+    # — a model emitting JSON scored the action '{', which _score_task then
+    # graded as a wrong answer instead of an unparsed response. Returning ""
+    # marks the row unparsed so it is excluded from per-capability means.
+    return ""
 
 
 def _score_task(task, predicted: str) -> dict[str, float | bool]:
