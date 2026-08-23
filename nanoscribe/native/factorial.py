@@ -70,6 +70,41 @@ ROUND2_PROMOTIONS: tuple[Round2Promotion, ...] = (
 )
 
 
+@dataclass(frozen=True, slots=True)
+class RevalidationArm:
+    """Wave-1 arm: re-screen 30M mechanisms on a REAL corpus.
+
+    The original 30M ranking was produced on the 4,516-char fixture with the
+    64-char tokenizer truncation active, so it is EXPLORATORY_SCREENING_RANKING
+    only. Before promoting anything to 100M the provisional leaders must be
+    re-screened against a decoder CONTROL on the real corpus — otherwise a
+    successive-halving artefact gets promoted as an architectural conclusion.
+    """
+
+    run_prefix: str
+    arch: ArchFactor
+    objective: ObjectiveFactor
+    params_m: int = 30
+    seeds: tuple[int, ...] = (0, 1, 2)
+    is_control: bool = False
+
+
+def revalidation_run_id(arm: RevalidationArm, seed: int) -> str:
+    return f"{arm.run_prefix}_s{seed}"
+
+
+# Three arms x three seeds. The decoder control is mandatory: without it a
+# mechanism that merely tracks capacity is indistinguishable from one that works.
+REVALIDATION_ARMS: tuple[RevalidationArm, ...] = (
+    RevalidationArm("reval30_decoder_control", ArchFactor.SLOT_ROUTER,
+                    ObjectiveFactor.STRUCTURED_JSON, is_control=True),
+    RevalidationArm("reval30_evidence_bottleneck", ArchFactor.EVIDENCE_BOTTLENECK,
+                    ObjectiveFactor.SPAN_PORT),
+    RevalidationArm("reval30_span_port", ArchFactor.SLOT_ROUTER,
+                    ObjectiveFactor.SPAN_PORT),
+)
+
+
 def round2_manifest() -> dict[str, Any]:
     runs = []
     for promo in ROUND2_PROMOTIONS:
