@@ -4,6 +4,12 @@ from __future__ import annotations
 
 from nanoscribe.adapt import ModelInput
 from nanoscribe.adapters import AtomSpec, default_baseline_specs
+from nanoscribe.dataset_leakage import DatasetPartition, assert_no_leakage
+from nanoscribe.distill_train_suite import (
+    DISTILL_TRAIN_REVISION,
+    distill_train_cases,
+    distill_train_manifest,
+)
 from nanoscribe.encounter import (
     AssertionState,
     AtomType,
@@ -20,7 +26,16 @@ from nanoscribe.harness import HarnessCase, P1TestSet
 from nanoscribe.select import relocate
 from nanoscribe.tracks import tiny_fixture_case
 
-CAMPAIGN_DATASET_REVISION = "campaign_v1_20260823"
+from nanoscribe.screening_suite import (
+    SCREENING_REVISION,
+    SCREENING_SUITE_NAME,
+    screening_adversarial_cases,
+    screening_core_cases,
+    screening_manifest,
+)
+
+CAMPAIGN_DATASET_REVISION = "campaign_v2_20260823"
+SMOKE_SUITE_REVISION = "p1_contract_smoke_v1"
 
 
 def _specs_for_enc1() -> tuple[AtomSpec, ...]:
@@ -150,6 +165,36 @@ def enc1_as_core() -> HarnessCase:
     )
 
 
+def smoke_contract_cases() -> list[HarnessCase]:
+    """3-case P1 smoke contract — enc-1 core + uncertainty + adversarial."""
+    enc1 = enc1_as_core()
+    enc2 = enc2_uncertainty_case()
+    enc3 = enc3_family_history_case()
+    return [
+        HarnessCase(
+            test_set=P1TestSet.P1_SMOKE_CONTRACT_SUITE,
+            encounter_id=enc1.encounter_id,
+            gold=enc1.gold,
+            model_input=enc1.model_input,
+            atom_specs=enc1.atom_specs,
+        ),
+        HarnessCase(
+            test_set=P1TestSet.P1_SMOKE_CONTRACT_SUITE,
+            encounter_id=enc2.encounter_id,
+            gold=enc2.gold,
+            model_input=enc2.model_input,
+            atom_specs=enc2.atom_specs,
+        ),
+        HarnessCase(
+            test_set=P1TestSet.P1_SMOKE_CONTRACT_SUITE,
+            encounter_id=enc3.encounter_id,
+            gold=enc3.gold,
+            model_input=enc3.model_input,
+            atom_specs=enc3.atom_specs,
+        ),
+    ]
+
+
 def campaign_cases(suite: str) -> list[HarnessCase]:
     """Return harness cases for a named campaign partition."""
     key = suite.strip().lower()
@@ -159,9 +204,45 @@ def campaign_cases(suite: str) -> list[HarnessCase]:
         return [enc1_as_core(), enc2_uncertainty_case()]
     if key == "p1_adversarial":
         return [enc3_family_history_case()]
-    if key == "campaign_v1":
-        return [enc1_as_core(), enc2_uncertainty_case(), enc3_family_history_case()]
+    if key in {"campaign_v1", "p1_contract_smoke_v1", "campaign_smoke", "p1_smoke_contract_suite"}:
+        return smoke_contract_cases()
+    if key in {"p1_screening_eval_v1"}:
+        return screening_core_cases() + screening_adversarial_cases()
+    if key == "screening_p1_core":
+        return screening_core_cases()
+    if key == "screening_p1_adversarial":
+        return screening_adversarial_cases()
+    if key in {"screening_p1", "c2_screening", "c2", "campaign_c2"}:
+        return screening_core_cases() + screening_adversarial_cases()
+    if key in {"p1_distill_train_v1", "distill_train"}:
+        return distill_train_cases()
+    if key in {"c1_canary", "c1", "campaign_c1"}:
+        return (screening_core_cases() + screening_adversarial_cases())[:32]
     raise ValueError(f"unknown campaign suite: {suite}")
+
+
+def partition_cases(partition: DatasetPartition) -> list[HarnessCase]:
+    if partition == DatasetPartition.FROZEN_SCREENING_EVAL:
+        return campaign_cases("p1_screening_eval_v1")
+    if partition == DatasetPartition.TRAIN:
+        return campaign_cases("p1_distill_train_v1")
+    if partition == DatasetPartition.DEV:
+        train = distill_train_cases()
+        return [case for index, case in enumerate(train) if index % 8 == 0]
+    if partition == DatasetPartition.INTERNAL_TEST:
+        train = distill_train_cases()
+        return [case for index, case in enumerate(train) if index % 8 == 4]
+    raise ValueError(f"unknown partition: {partition}")
+
+
+def validate_campaign_partitions() -> None:
+    partitions = {
+        DatasetPartition.TRAIN: partition_cases(DatasetPartition.TRAIN),
+        DatasetPartition.DEV: partition_cases(DatasetPartition.DEV),
+        DatasetPartition.INTERNAL_TEST: partition_cases(DatasetPartition.INTERNAL_TEST),
+        DatasetPartition.FROZEN_SCREENING_EVAL: partition_cases(DatasetPartition.FROZEN_SCREENING_EVAL),
+    }
+    assert_no_leakage(partitions)
 
 
 def suite_manifest() -> dict[str, object]:
@@ -169,10 +250,23 @@ def suite_manifest() -> dict[str, object]:
         "schema": "nano.campaign.dataset.v1",
         "revision": CAMPAIGN_DATASET_REVISION,
         "partitions": {
+            "TRAIN": distill_train_manifest()["encounter_ids"][:8],
+            "DEV": "every 8th distill train case",
+            "INTERNAL_TEST": "every 8th distill train case offset 4",
+            "FROZEN_SCREENING_EVAL": screening_manifest()["P1_CORE"][:8],
             "P1_CORE": ["enc-1", "enc-2"],
             "P1_ADVERSARIAL": ["enc-3"],
             "tiny_fixture": ["enc-1"],
+            "p1_contract_smoke_v1": ["enc-1", "enc-2", "enc-3"],
             "campaign_v1": ["enc-1", "enc-2", "enc-3"],
+            "p1_screening_eval_v1": screening_manifest()["P1_CORE"],
+            "p1_distill_train_v1": distill_train_manifest()["encounter_ids"][:8],
+            "c1_canary": "first 32 of p1_screening_eval_v1",
+            "c2_screening": "full p1_screening_eval_v1 (128 cases)",
         },
+        "smoke_suite": SMOKE_SUITE_REVISION,
+        "screening_suite": SCREENING_SUITE_NAME,
+        "screening_revision": SCREENING_REVISION,
+        "distill_train_revision": DISTILL_TRAIN_REVISION,
         "no_phi": True,
     }

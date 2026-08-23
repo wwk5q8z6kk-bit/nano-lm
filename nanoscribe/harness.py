@@ -19,11 +19,14 @@ class ModelTrack(str, Enum):
     FIXTURE = "fixture"
     COMPACT = "compact"
     SERVERLESS = "serverless"
+    KIMI_FRONTIER = "kimi_frontier"
+    SMALL_API = "small_api_reference"
     FRONTIER = "frontier"
 
 
 class P1TestSet(str, Enum):
     TINY_FIXTURE = "tiny_fixture"
+    P1_SMOKE_CONTRACT_SUITE = "p1_smoke_contract_suite"
     P1_CORE = "p1_core"
     P1_ADVERSARIAL = "p1_adversarial"
     P2_EXPLORATORY = "p2_exploratory"
@@ -54,6 +57,8 @@ class FailureTaxonomy:
     invalid_span: int = 0
     wrong_source: int = 0
     wrong_mention: int = 0
+    annotation_disagreement: int = 0
+    supporting_superspan: int = 0
     omission: int = 0
     unnecessary_abstention: int = 0
     malformed: int = 0
@@ -67,6 +72,8 @@ class FailureTaxonomy:
             invalid_span=report.invalid_span,
             wrong_source=report.wrong_source,
             wrong_mention=report.wrong_mention,
+            annotation_disagreement=report.annotation_disagreement,
+            supporting_superspan=report.supporting_superspan,
             omission=report.omission,
             unnecessary_abstention=report.unnecessary_abstention,
             malformed=report.malformed,
@@ -80,6 +87,8 @@ class FailureTaxonomy:
             "invalid_span": self.invalid_span,
             "wrong_source": self.wrong_source,
             "wrong_mention": self.wrong_mention,
+            "annotation_disagreement": self.annotation_disagreement,
+            "supporting_superspan": self.supporting_superspan,
             "omission": self.omission,
             "unnecessary_abstention": self.unnecessary_abstention,
             "malformed": self.malformed,

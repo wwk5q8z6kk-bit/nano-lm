@@ -62,9 +62,11 @@ HYPOTHESES: tuple[NativeArchSpec, ...] = (
 
 
 def manifest() -> dict[str, object]:
-    return {
+    from nanoscribe.native.trainer import trainer_manifest
+
+    base = {
         "schema": "nano.native_arch_hypotheses.v0",
-        "status": "DESIGN_ONLY_NOT_TRAINING",
+        "status": "TRAINER_READY_NO_GPU",
         "param_range_m": [30, 100],
         "reference_nano_3m": "sft/model_nano.py (~3M GPT, 6L/192d)",
         "hypotheses": [
@@ -83,3 +85,5 @@ def manifest() -> dict[str, object]:
             "immediate_1b_pretrain — screening should start 30M–100M",
         ],
     }
+    base["factorial_trainer"] = trainer_manifest()
+    return base

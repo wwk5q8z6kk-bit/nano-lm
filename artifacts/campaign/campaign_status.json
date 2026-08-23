@@ -1,0 +1,140 @@
+{
+  "active_tracks": [],
+  "actual_spend": 1.9659,
+  "campaign_spend_start": 1.8211,
+  "hourly_exposure": 0.0,
+  "lanes": {
+    "lane0_cpu": {
+      "eval_freeze": "p1_screening_eval_v1",
+      "leakage_validator": "pass",
+      "native_trainer": "LOCAL_ACCEPTANCE_PASS",
+      "status": "complete"
+    },
+    "lane1_kimi": {
+      "status": "blocked",
+      "kimi_k3": "500 x2",
+      "kimi_k27": "500 x2",
+      "kimi_k26": "500 x2"
+    },
+    "lane2_qwen": {
+      "endpoint_deleted": "tbnur4mac60i70",
+      "metrics_128_case": "artifacts/campaign/qwen_structured_metrics_v1.json",
+      "status": "metrics_complete_endpoint_teardown",
+      "workers_min_verified": "endpoint_deleted_no_idle_worker"
+    },
+    "lane3_students": {
+      "qlora_gate": "NOT_LAUNCHED",
+      "status": "prep_only"
+    },
+    "lane4_native": {
+      "acceptance_tests": "17/17 pass",
+      "status": "READY_FOR_B200_LAUNCH",
+      "variants": ["native_a_decoder_baseline", "native_b_evidence_aware"]
+    },
+    "lane5_verifier": {
+      "dataset": "artifacts/campaign/verifier_dataset.json",
+      "disjoint_from_eval": true,
+      "status": "wired"
+    }
+  },
+  "leading_failures": [],
+  "ledger_remaining": 183.0341,
+  "managed_reference": {
+    "cogito_671b": {
+      "label": "MANAGED_REFERENCE_CANDIDATE",
+      "ok": false,
+      "status": 404
+    },
+    "gpt_oss_120b": {
+      "base_url": "https://api.runpod.ai/v2/gpt-oss-120b/openai/v1",
+      "label": "MANAGED_REFERENCE_CANDIDATE",
+      "ok": true,
+      "role": "not_capability_ceiling",
+      "status": 200
+    },
+    "qwen3_32b_awq": {
+      "base_url": "https://api.runpod.ai/v2/qwen3-32b-awq/openai/v1",
+      "label": "MANAGED_REFERENCE_CANDIDATE",
+      "ok": true,
+      "role": "not_capability_ceiling",
+      "status": 200
+    }
+  },
+  "mandate_baseline_usd": 185.0,
+  "model_statuses": {
+    "kimi_k3": {
+      "blocked": true,
+      "blocker": "kimi_all_variants_500",
+      "frontier_lane": "managed_reference_proxy",
+      "kimi": {
+        "attempts_per_model": 2,
+        "base_url": "https://api.runpod.ai/v2/moonshot-kimi/openai/v1",
+        "models_tried": ["kimi-k3", "kimi-k2.7", "kimi-k2.6"],
+        "ok": false,
+        "status": 500
+      },
+      "managed_reference": {
+        "gpt_oss_120b": "operational",
+        "qwen3_32b_awq": "operational"
+      }
+    }
+  },
+  "new_actual_spend": 0.1448,
+  "new_committed_spend": 0,
+  "next_reallocations": [
+    "recreate serverless endpoint workersMin=0 on next Qwen batch (template l5bzkl04uc unavailable — redeploy via hub)",
+    "launch native B200 only after owner authorizes within budget",
+    "retry Kimi when public endpoint recovers",
+    "student QLoRA prep complete — do not launch until Kimi or gap justified"
+  ],
+  "origin_master": "b13ec7d",
+  "partitions": {
+    "DEV": "every 8th distill train",
+    "FROZEN_SCREENING_EVAL": "p1_screening_eval_v1 (128 cases, eval-only)",
+    "INTERNAL_TEST": "every 8th distill train offset 4",
+    "TRAIN": "p1_distill_train_v1 (96 cases, disjoint)"
+  },
+  "posture": "NORMAL",
+  "raw_pods": [],
+  "remaining_budget": 183.0341,
+  "remaining_new_budget": 184.8552,
+  "schema": "nano.campaign.status.v1",
+  "serverless": {
+    "endpoint_id": null,
+    "jobs_in_progress": 0,
+    "jobs_queued": 0,
+    "max_workers": 0,
+    "note": "tbnur4mac60i70 deleted — workersMin=0 refused on update; zero idle exposure",
+    "running_workers": 0
+  },
+  "structured_contract": {
+    "qwen_128_case": {
+      "assertion_state_correct": 1.0078,
+      "coverage": 0.8359,
+      "exact_gold_span": 0.1016,
+      "malformed": 0,
+      "n_cases": 128,
+      "span_character_f1": 0.4393,
+      "support_direct_exact": 0.9062
+    }
+  },
+  "students": {
+    "qlora_gate": "NOT_LAUNCHED — prep only",
+    "qwen_only_gap_note": "Kimi 500 all variants; GPT-OSS-120B + Qwen3-32B-AWQ operational as MANAGED_REFERENCE_CANDIDATE",
+    "student_a": {
+      "lora_ready": true,
+      "model": "Qwen/Qwen2.5-32B-Instruct",
+      "params_b": 32,
+      "rationale": "proven LoRA baseline path, fits A100-80GB",
+      "status": "PREP_ONLY"
+    },
+    "student_b": {
+      "lora_ready": true,
+      "model": "meta-llama/Llama-3.3-70B-Instruct",
+      "params_b": 70,
+      "rationale": "diverse 27B-80B family, QLoRA on 2×A100",
+      "status": "GATED_UNTIL_KIMI_OR_GAP_JUSTIFIED"
+    }
+  },
+  "timestamp": "2026-08-23T04:25:00.000000+00:00"
+}

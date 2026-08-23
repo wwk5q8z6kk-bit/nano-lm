@@ -231,7 +231,7 @@ def test_evaluate_exact_gold_span_and_char_f1() -> None:
     assert not hasattr(report, "support_correct")
 
 
-def test_evaluate_wrong_mention_is_not_wrong_source() -> None:
+def test_wrong_mention_is_not_wrong_source() -> None:
     gold = _gold()
     source = gold.sources[0]
     hurting = relocate(source, "hurting", evidence_id="ev-hurt")
@@ -255,6 +255,33 @@ def test_evaluate_wrong_mention_is_not_wrong_source() -> None:
     assert neck.wrong_mention
     assert not neck.wrong_source
     assert 0.0 <= report.span_character_f1 < 1.0
+
+
+def test_supporting_superspan_is_annotation_disagreement() -> None:
+    gold = _gold()
+    source = gold.sources[0]
+    full_quote = "My neck has been hurting."
+    full = relocate(source, full_quote, evidence_id="ev-full")
+    assert full is not None
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                gold,
+                "atom-neck",
+                evidence_ids=("ev-full",),
+                spans=(full,),
+            ),
+        )
+    )
+    report = evaluate(gold, pred)
+    neck = atom_result(report, "atom-neck")
+    assert report.exact_gold_span == 0
+    assert report.wrong_mention == 0
+    assert report.annotation_disagreement == 1
+    assert report.supporting_superspan == 1
+    assert neck.annotation_disagreement
+    assert neck.supporting_superspan
+    assert neck.support_relation is SupportRelation.DIRECT_EXACT
 
 
 def test_evaluate_state_support_omission_and_abstention() -> None:
@@ -536,7 +563,8 @@ def test_span_order_and_second_span_are_not_first_span_artifacts() -> None:
     item = atom_result(partial, "atom-neck")
     assert item.exact_gold_span is False
     assert item.span_character_f1 > 0.0
-    assert item.wrong_mention
+    assert not item.wrong_mention
+    assert item.annotation_disagreement or item.supporting_superspan
 
 
 def test_duplicate_predicted_ids_are_malformed() -> None:

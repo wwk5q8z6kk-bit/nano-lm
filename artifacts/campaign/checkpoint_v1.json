@@ -1,56 +1,83 @@
 {
   "schema": "nano.campaign.checkpoint.v1",
   "campaign_id": "accelerated_research_campaign_v1",
-  "timestamp": "2026-08-23T01:50:00Z",
-  "origin_master": "04a4ecb9",
+  "timestamp": "2026-08-23T02:15:00Z",
+  "origin_master": "b13ec7d",
   "dataset_revision": "campaign_v1_20260823",
+  "smoke_suite": "campaign_smoke_3case",
+  "screening_revision": "screening_v1_20260823",
   "spend": {
-    "actual_usd": 0.9451,
-    "remaining_usd": 179.0549,
+    "actual_usd": 1.49,
+    "remaining_usd": 178.51,
     "posture": "NORMAL"
   },
   "execution_surfaces": {
-    "frontier_teacher": "api/gpt-4o-mini (Kimi K3 managed not found on hub; API fallback)",
-    "strong_control": "RunPod Serverless Qwen/Qwen3.8-27B endpoint tbnur4mac60i70",
+    "frontier_teacher": "RunPod Public Endpoint moonshot-kimi / kimi-k3 (pending live probe)",
+    "small_api_reference": "api/gpt-4o-mini — NOT capability ceiling",
+    "strong_control": "RunPod Serverless Qwen3.8-27B — endpoint tbnur4mac60i70 DELETED (idle burn); set RUNPOD_SERVERLESS_ENDPOINT_ID after recreate with workersMin=0",
     "raw_pods": "none active"
   },
-  "phase_ab_campaign_v1": {
-    "suite": "campaign_v1",
+  "track_a_correction": {
+    "invalid_claim_removed": "gpt-4o-mini was mislabeled FRONTIER_TEACHER / P1_CEILING",
+    "kimi_public_base_url": "https://api.runpod.ai/v2/moonshot-kimi/openai/v1",
+    "kimi_model": "kimi-k3",
+    "preflight_status": "FAILED_500",
+    "preflight_error": "InternalServerError on direct public endpoint call",
+    "gpt4o_mini_role": "SMALL_API_REFERENCE only"
+  },
+  "evaluator_correction": {
+    "supporting_superspan_separated_from_wrong_mention": true,
+    "annotation_disagreement_metric_added": true,
+    "note": "Over-long quotes may be annotation boundary mismatch with valid DIRECT_EXACT support"
+  },
+  "output_contract": {
+    "structured_candidate_json": "implemented for Kimi + Qwen3.8",
+    "span_port_text": "retained as baseline ARM A"
+  },
+  "phase_ab_smoke_campaign_v1": {
+    "suite": "campaign_smoke_3case",
     "encounters": ["enc-1", "enc-2", "enc-3"],
     "artifact": "artifacts/p1_runs/campaign_phase_ab_v1.json",
-    "api_teacher": {
+    "interpretation": "SMOKE only — not sufficient for ceiling or bottleneck claims",
+    "small_api_reference": {
       "model": "gpt-4o-mini",
-      "enc1_span_f1": 0.5808,
-      "enc2_span_f1": 0.4444,
-      "enc3_span_f1": 0.4194,
-      "dominant_failure": "wrong_mention (over-long quotes, not minimal gold spans)"
+      "note": "Prior smoke results; boundary-sensitive spans need re-read with superspan metric"
     },
     "qwen38_serverless": {
       "model": "Qwen/Qwen3.8-27B",
-      "enc1_span_f1": 0.3333,
-      "dominant_failure": "malformed_span_port_lines + wrong_mention"
+      "dominant_failure_smoke": "malformed span-port lines — test structured JSON contract"
     }
   },
+  "screening_suite": {
+    "P1_CORE": 64,
+    "P1_ADVERSARIAL": 64,
+    "held_out_eval": true,
+    "status": "GENERATED_LOCALLY"
+  },
   "belief_updates": [
-    "API teacher beats Qwen3.8-27B zero-shot on span-port format at campaign_v1 scale",
-    "Frontier failures are mostly quote granularity (wrong_mention), not assertion parsing",
-    "Qwen3.8 needs span-port prompt/parser alignment; parser now accepts ASSERTED/UNCERTAIN aliases",
-    "Serverless scale-to-zero works; no idle raw inference pods",
-    "Kimi K3 managed endpoint not in hub search — continue API teacher within $25 cap"
+    "3-case smoke indicates textual span-port formatting and annotation-boundary sensitivity",
+    "Full capability attribution pending Kimi K3 live probe + structured-output A/B + 128-case matrix",
+    "Do not start large-student QLoRA until corrected baselines complete",
+    "Serverless scale-to-zero works; no idle raw inference pods"
   ],
-  "bottleneck": "span-port output contract (minimal exact quotes + UNCERTAIN label), not infrastructure",
-  "next_high_value_experiments": [
-    "Re-run phase AB after ASSERTED/UNCERTAIN parser + prompt fix",
-    "Minimal-span few-shot in prompt for API teacher",
-    "Large-student QLoRA on span-port fixture data (B200 pod, prepared command)",
-    "Native-A/B short screen via native_screen_launch.sh",
-    "Verifier pilot on teacher-verified hard negatives"
+  "invalid_claims_removed": [
+    "P1 ceiling = gpt-4o-mini",
+    "Kimi K3 not on hub → fallback complete",
+    "Bottleneck = minimal span quotes"
+  ],
+  "next_execution": [
+    "Retry Kimi K3 public endpoint; if still down use alternate managed frontier",
+    "A/B span-port vs structured JSON on smoke then screening suite",
+    "Kimi + Qwen3.8 model matrix on screening_p1 (128 cases)",
+    "Native-A/B short screen in parallel",
+    "Large-student decision only after matrix"
   ],
   "tracks_status": {
-    "A_frontier_teacher": "BASELINE_API_COMPLETE",
-    "B_qwen38_serverless": "BASELINE_COMPLETE_NEEDS_PROMPT",
-    "C_large_student": "NOT_STARTED",
-    "D_native_nano": "DESIGN_ONLY",
+    "A_kimi_frontier": "PREFLIGHT_BLOCKED_500",
+    "A_small_api_reference": "SMOKE_COMPLETE_NOT_CEILING",
+    "B_qwen38_serverless": "SMOKE_COMPLETE_NEEDS_STRUCTURED_AB",
+    "C_large_student": "GATED_NOT_STARTED",
+    "D_native_nano": "READY_FOR_SHORT_SCREEN",
     "E_verifier": "NOT_STARTED"
   },
   "architecture_verdict_native": "CONTINUE_EXPLORATION"

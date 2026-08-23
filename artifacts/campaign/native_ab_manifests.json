@@ -1,0 +1,131 @@
+{
+  "cells": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "design": "2x2_factorial_ABCD_x2_seeds_30M",
+  "halving_schedule": {
+    "round1": "all 8 runs @ 200 steps \u2014 keep top 4 by val loss",
+    "round2": "survivors @ 500 steps \u2014 pick winner"
+  },
+  "n_runs": 8,
+  "runs": [
+    {
+      "arch": "evidence_bottleneck",
+      "cell": "A",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "span_port",
+      "params_m": 30,
+      "run_id": "A_s0",
+      "seed": 0,
+      "successive_halving": true
+    },
+    {
+      "arch": "evidence_bottleneck",
+      "cell": "A",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "span_port",
+      "params_m": 30,
+      "run_id": "A_s1",
+      "seed": 1,
+      "successive_halving": true
+    },
+    {
+      "arch": "evidence_bottleneck",
+      "cell": "B",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "structured_json",
+      "params_m": 30,
+      "run_id": "B_s0",
+      "seed": 0,
+      "successive_halving": true
+    },
+    {
+      "arch": "evidence_bottleneck",
+      "cell": "B",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "structured_json",
+      "params_m": 30,
+      "run_id": "B_s1",
+      "seed": 1,
+      "successive_halving": true
+    },
+    {
+      "arch": "slot_router",
+      "cell": "C",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "span_port",
+      "params_m": 30,
+      "run_id": "C_s0",
+      "seed": 0,
+      "successive_halving": true
+    },
+    {
+      "arch": "slot_router",
+      "cell": "C",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "span_port",
+      "params_m": 30,
+      "run_id": "C_s1",
+      "seed": 1,
+      "successive_halving": true
+    },
+    {
+      "arch": "slot_router",
+      "cell": "D",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "structured_json",
+      "params_m": 30,
+      "run_id": "D_s0",
+      "seed": 0,
+      "successive_halving": true
+    },
+    {
+      "arch": "slot_router",
+      "cell": "D",
+      "dataset": "screening_p1_distill",
+      "gpu": "NVIDIA B200",
+      "launch_gate": "trainer_ready + budget_gate",
+      "max_steps_halving_round1": 200,
+      "max_steps_halving_round2": 500,
+      "objective": "structured_json",
+      "params_m": 30,
+      "run_id": "D_s1",
+      "seed": 1,
+      "successive_halving": true
+    }
+  ],
+  "schema": "nano.campaign.native_factorial.v1",
+  "status": "TRAINER_READY_NO_GPU",
+  "timestamp": "2026-08-23T04:12:59.338778+00:00"
+}

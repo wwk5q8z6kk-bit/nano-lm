@@ -1,0 +1,357 @@
+{
+  "disjoint_from": "p1_screening_eval_v1",
+  "entries": [
+    {
+      "atom_id": "atom-train-sym-00",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-00",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-01",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-01",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-02",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-02",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-03",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-03",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-04",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-04",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-05",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-05",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-06",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-06",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-07",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-07",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-08",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-08",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-09",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-09",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-10",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-10",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-11",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-11",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-12",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-12",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-13",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-13",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-14",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-14",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-15",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-15",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-16",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-16",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-17",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-17",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-18",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-18",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-19",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-19",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-20",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-20",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-21",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-21",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-22",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-22",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-23",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-23",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-24",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-24",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-25",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-25",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-26",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-26",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-27",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-27",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-28",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-28",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-29",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-29",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-30",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-30",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-31",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-31",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-32",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-32",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-33",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-33",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-34",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-34",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-35",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-35",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-36",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-36",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-37",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-37",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-38",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-38",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-39",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-39",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-40",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-40",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-41",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-41",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-42",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-42",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-43",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-43",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-44",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-sym-44",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-45",
+      "deterministic_baseline": "contradicted",
+      "encounter_id": "train-deny-45",
+      "gold_relation": "contradicted",
+      "predicted_quote": "penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-46",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-assess-46",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-47",
+      "deterministic_baseline": "direct_exact",
+      "encounter_id": "train-med-47",
+      "gold_relation": "direct_exact",
+      "predicted_quote": "montelukast"
+    }
+  ],
+  "metrics": {
+    "baseline_accuracy": 1.0,
+    "n": 48,
+    "relations": {
+      "contradicted": 12,
+      "direct_exact": 36,
+      "normalized": 0,
+      "review_required": 0,
+      "semantically_supported": 0,
+      "unsupported": 0
+    }
+  },
+  "n_cases": 48,
+  "partition": "TRAIN",
+  "schema": "nano.campaign.verifier_dataset.v2",
+  "timestamp": "2026-08-23T04:22:00.193501+00:00"
+}

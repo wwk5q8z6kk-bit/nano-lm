@@ -86,3 +86,41 @@ def build_span_port_prompt(source: Source, spec: _AtomSpecLike) -> str:
 
 def span_port_system_prompt() -> str:
     return _SPAN_PORT_SYSTEM
+
+
+_STRUCTURED_SYSTEM = (
+    "You extract clinical facts from transcripts into structured candidate atoms. "
+    "Reply with JSON only — no markdown fences.\n"
+    "Schema:\n"
+    '{"schema_version":"nano.candidate.v0","atoms":[{"atom_id":"...","atom_type":"symptom",'
+    '"raw_value":"...","assertion_state":"asserted|denied|uncertain","speaker":"patient|clinician",'
+    '"experiencer":"patient|clinician|other","temporality":{"kind":"current|historical|future"},'
+    '"certainty":"stated|uncertain","evidence_quote":"verbatim substring from transcript",'
+    '"review_required":false,"abstained":false,"malformed":false}]}\n'
+    "Do not emit offsets, evidence_id, source_id, or normalized_value. "
+    "evidence_quote must copy source words exactly. "
+    "If absent, set abstained=true and omit evidence_quote."
+)
+
+
+def build_structured_candidate_prompt(source: Source, specs: tuple[_AtomSpecLike, ...]) -> str:
+    """Batch structured CandidateAtom probe for one encounter."""
+    transcript = _format_transcript(source)
+    slots: list[str] = []
+    for spec in specs:
+        topic = topic_for_spec(spec)
+        slots.append(
+            f"- atom_id={spec.atom_id!r} atom_type={spec.atom_type.value!r} "
+            f"raw_value={spec.raw_value!r} speaker={spec.speaker.value!r}; "
+            f"question: {topic}"
+        )
+    return (
+        f"Transcript:\n{transcript}\n\n"
+        "For each atom slot below, emit one object in atoms[] with matching atom_id.\n"
+        + "\n".join(slots)
+        + "\n\nReturn JSON with schema_version nano.candidate.v0 and atoms for every slot."
+    )
+
+
+def structured_candidate_system_prompt() -> str:
+    return _STRUCTURED_SYSTEM
