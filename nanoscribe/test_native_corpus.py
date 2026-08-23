@@ -1,0 +1,108 @@
+"""Corpus factory pins.
+
+These guard the properties that make a corpus trustworthy: no frozen-eval value
+ever reaches training, partitions never share values, the loader actually reads
+the file, and the label distribution is not degenerate.
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from nanoscribe.native.corpus import vocab
+from nanoscribe.native.corpus.adversarial import generate_adversarial
+from nanoscribe.native.corpus.generators import generate_mechanism
+from nanoscribe.native.corpus.schema import CORPUS_SCHEMA, FIXTURE_SCHEMA, Partition
+from nanoscribe.native.corpus.validate import (
+    axis_coverage_floor,
+    check_leakage,
+    dedupe,
+    statistics,
+)
+
+
+def _sample(partition: Partition, n_composed: int = 40):
+    return list(generate_mechanism(partition, limit_composed=n_composed)) + list(
+        generate_adversarial(partition, limit_composed=n_composed // 2)
+    )
+
+
+def test_frozen_eval_snapshot_matches_live_suite() -> None:
+    """The reserved vocabulary must be DERIVED, never drift from the suite.
+
+    A hand-authored version of this list once invented 14 values and omitted 14
+    real ones, three of which are in the generation pools — a direct leak.
+    """
+    live = vocab._live_frozen_eval_values()
+    if live is None:  # suite unavailable in a minimal env
+        return
+    snapshot = frozenset(v.lower() for v in vocab._FROZEN_EVAL_SNAPSHOT)
+    assert live == snapshot, (
+        "frozen-eval snapshot drifted from the live suite; "
+        f"missing={sorted(live - snapshot)} extra={sorted(snapshot - live)}"
+    )
+
+
+def test_generation_never_uses_reserved_values() -> None:
+    for partition in (Partition.TRAIN, Partition.DEV):
+        for ex in _sample(partition):
+            assert ex.raw_value.lower() not in vocab.forbidden_values(), (
+                f"{ex.encounter_id} generated a value reserved to the frozen eval suite"
+            )
+
+
+def test_partitions_do_not_share_values() -> None:
+    train = {e.raw_value.lower() for e in _sample(Partition.TRAIN)}
+    dev = {e.raw_value.lower() for e in _sample(Partition.DEV)}
+    test = {e.raw_value.lower() for e in _sample(Partition.INTERNAL_TEST)}
+    assert not train & dev, f"train/dev value overlap: {sorted(train & dev)[:5]}"
+    assert not train & test, f"train/test value overlap: {sorted(train & test)[:5]}"
+
+
+def test_leakage_check_passes_on_generated_sample() -> None:
+    examples, _ = dedupe(_sample(Partition.TRAIN) + _sample(Partition.DEV))
+    result = check_leakage(examples)
+    assert result["pass"], result
+
+
+def test_prompts_use_canonical_builder_format() -> None:
+    """Training prompts must match the evaluator's format exactly."""
+    for ex in _sample(Partition.TRAIN)[:20]:
+        assert ex.prompt.startswith("Transcript:\n")
+        assert "\n\nQuestion: regarding " in ex.prompt
+        assert "Answer on one line" in ex.prompt
+
+
+def test_target_labels_are_not_degenerate() -> None:
+    """No single label may dominate; an imbalanced corpus teaches always-abstain."""
+    stats = statistics(_sample(Partition.TRAIN))
+    hist = stats["target_label_histogram"]
+    total = sum(hist.values())
+    assert total > 0
+    assert max(hist.values()) / total < 0.60, f"label distribution too skewed: {hist}"
+    assert set(hist) >= {"ASSERTED", "DENIED", "UNCERTAIN", "NOT_MENTIONED"}
+
+
+def test_corpus_schema_is_not_the_regenerating_fixture_schema() -> None:
+    """load_train_examples ignores file contents for FIXTURE_SCHEMA.
+
+    Emitting the corpus under that schema would silently discard it and train on
+    the 96-row fixture instead.
+    """
+    assert CORPUS_SCHEMA != FIXTURE_SCHEMA
+
+
+def test_dedupe_removes_repeats() -> None:
+    sample = _sample(Partition.TRAIN)[:50]
+    kept, stats = dedupe(sample + sample)
+    assert len(kept) == len(sample)
+    assert stats["removed_exact_duplicates"] == len(sample)
+
+
+def test_axis_coverage_reports_shortfalls() -> None:
+    result = axis_coverage_floor(_sample(Partition.TRAIN), minimum=10**6)
+    assert not result["pass"]
+    assert result["below_floor"], "an unreachable floor must report the shortfall"
