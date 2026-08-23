@@ -485,6 +485,31 @@
   "raw_pods": [],
   "remaining_budget": 180.2668,
   "remaining_new_budget": 180.2668,
+  "resource_governance_flag": {
+    "action_taken": "NOT terminated \u2014 the pod belongs to a parallel lane and has a full manifest. Flagged for owner decision rather than unilaterally killed.",
+    "discrepancies": [
+      "its manifest artifacts/campaign/manifests/student_qlora_canary_v1.json carries launch_authorized: false",
+      "the same manifest states 'launch when wallet >= ~$153 and owner approves'; live wallet is $146.23, below that threshold",
+      "attempts 1-4 all failed (Axolotl serverless capture broken; raw pod ENOSPC at 50GB; SSH proxy hangs; dep pin failures) \u2014 this is attempt 5",
+      "SSH verification of the running pod hung, matching the attempt-4 failure mode, so work-in-progress could not be confirmed within the 5-minute SS XLI window"
+    ],
+    "gate_status": "the QLoRA gate this canary serves is now LOCKED \u2014 corrected assertion gap vs managed ref is -0.055 and not statistically established (artifacts/campaign/student_gap_metric_defect_v1.json)",
+    "observed_at": "2026-08-23T19:20:07.179703+00:00",
+    "observer": "agent-0eba97de (canary + validation lane)",
+    "pod": {
+      "id": "y5zfwrdlhf8qgh",
+      "name": "qlora-canary-08231904",
+      "rate_usd_hr": 1.59,
+      "status": "RUNNING"
+    },
+    "recommended": "owner decides whether to stop it; a compatibility canary is permitted by briefing SS XXXIII, but the bounded adaptation it leads to is ungated by the corrected gap",
+    "session_wallet_delta": {
+      "note": "none of this was spent by the canary/validation lane, which spent $0.00",
+      "now": 146.23,
+      "spent": 8.24,
+      "start": 154.47
+    }
+  },
   "schema": "nano.campaign.status.v1",
   "serverless": {
     "endpoint_id": null,
