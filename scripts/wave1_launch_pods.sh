@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-COMMIT_SHA="${WAVE1_COMMIT_SHA:-3715e5b003df79afdb2891474d94c38613cc5833}"
+COMMIT_SHA="${WAVE1_COMMIT_SHA:-8e1e0d0de6e4c9f52326af6d19e5efc21590d8cf}"
 VOLUME_ID="${RUNPOD_VOLUME_ID:-04himzqxbm}"
 IMAGE="${RUNPOD_IMAGE:-runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04}"
 LEDGER="${CAMPAIGN_LEDGER:-artifacts/campaign/spend.json}"
