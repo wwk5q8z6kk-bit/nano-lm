@@ -47,6 +47,14 @@ def train_native(
 ) -> TrainResult:
     import torch
 
+    from nanoscribe.native.corpus.registry import assert_corpus_launch_allowed
+
+    assert_corpus_launch_allowed(
+        cfg.dataset_path,
+        purpose=cfg.purpose if not cfg.cpu_smoke else "trainer_smoke",
+        cpu_smoke=cfg.cpu_smoke,
+    )
+
     build = build_native_model(cfg)
     model = build.model
     device = _resolve_device(cfg.cpu_smoke)

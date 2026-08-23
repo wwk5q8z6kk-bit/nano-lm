@@ -1,9 +1,8 @@
 {
   "schema": "nano.campaign.native_gate.v1",
-  "checked_at": "2026-08-23T20:29:06.043606+00:00",
+  "checked_at": "2026-08-23T20:29:50.608618+00:00",
   "verdict": "PROMOTION_GATE_BLOCKED_DATA",
   "failed_conditions": [
-    "7_trainer_tests_pass",
     "9_code_committed"
   ],
   "conditions": {
@@ -32,8 +31,8 @@
       "detail": "duplicate_rate=0.0 reserved_hits=0"
     },
     "7_trainer_tests_pass": {
-      "pass": false,
-      "detail": "FAILED nanoscribe/test_metric_contract.py::test_rate_metric_rejects_rate_above_one"
+      "pass": true,
+      "detail": "........................................................................ [100%]"
     },
     "8_ci_collects_nanoscribe": {
       "pass": true,
@@ -41,7 +40,7 @@
     },
     "9_code_committed": {
       "pass": false,
-      "detail": "3 uncommitted path(s): [' M artifacts/campaign/native_corpus_smoke_v1_manifest.json', '?? nanoscribe/test_metric_contract.py', '?? scripts/validate_native_corpus.py']"
+      "detail": "3 uncommitted path(s): [' M artifacts/campaign/native_corpus_smoke_v1_manifest.json', ' M nanoscribe/native/train.py', ' M scripts/train_native_nano.py']"
     },
     "10_command_and_artifact_ready": {
       "pass": true,
