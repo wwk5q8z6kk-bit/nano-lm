@@ -12,7 +12,12 @@ import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+_repo_root = str(Path(__file__).resolve().parents[1])
+_script_dir = str(Path(__file__).resolve().parent)
+if _repo_root not in sys.path:
+    sys.path.insert(0, _repo_root)
+# `python3 nanoscribe/smoke_qwen_baseline.py` prepends nanoscribe/ and shadows stdlib select.
+sys.path[:] = [p for p in sys.path if p != _script_dir]
 
 from nanoscribe.adapt import run_pipeline
 from nanoscribe.adapters import Qwen25BaselineAdapter, default_baseline_specs
