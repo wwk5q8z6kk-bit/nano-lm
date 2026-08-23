@@ -29,8 +29,13 @@ class RateMetric:
         if self.numerator < 0 or self.denominator < 0:
             raise ValueError(f"{self.name}: counts must be non-negative")
         if self.numerator > self.denominator:
+            # Name the violated invariant ("rate exceeds 1.0"), not just the
+            # arithmetic. This is the defect that let assertion_state_correct =
+            # 1.0078 through: counts averaged as rates produce a value above 1,
+            # and the message must say so plainly.
             raise ValueError(
-                f"{self.name}: numerator {self.numerator} exceeds denominator {self.denominator}"
+                f"{self.name}: numerator {self.numerator} exceeds denominator "
+                f"{self.denominator}; implied rate exceeds 1.0"
             )
         if self.rate > 1.0:
             raise ValueError(f"{self.name}: rate {self.rate} exceeds 1.0")
