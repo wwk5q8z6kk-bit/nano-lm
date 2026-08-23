@@ -61,10 +61,42 @@ if not ok:
 sys.exit(0 if ok else 1)
 PY
 
+# Build EVERY arm before training ANY of them. A 9-run job once died three runs
+# in because one arm had an invalid head count — the pod billed for the failed
+# arm and every arm after it. This costs ~20s and fails the whole job up front.
+echo "==> preflight: constructing every arm"
+python3 - <<PY || { echo "ARM_PREFLIGHT_FAILED: an arm cannot be constructed; aborting before training"; exit 1; }
+import sys
+from nanoscribe.native.config import config_for_run
+from nanoscribe.native.model import build_native_model
+
+run_ids = "${RUN_IDS}".split()
+bad = []
+for rid in run_ids:
+    try:
+        cfg = config_for_run(rid)
+        assert cfg.d_model % cfg.n_heads == 0, (
+            f"d_model {cfg.d_model} not divisible by n_heads {cfg.n_heads}"
+        )
+        build_native_model(cfg)
+        print(f"  ARM_OK {rid} d_model={cfg.d_model} n_heads={cfg.n_heads}")
+    except Exception as exc:
+        bad.append((rid, f"{type(exc).__name__}: {exc}"))
+        print(f"  ARM_BAD {rid} {type(exc).__name__}: {exc}", file=sys.stderr)
+sys.exit(1 if bad else 0)
+PY
+
 mkdir -p /workspace/reval_results
+FAILED_RUNS=""
 for RUN_ID in ${RUN_IDS}; do
   echo "==> train ${RUN_ID}"
-  python3 scripts/train_native_nano.py --run-id "${RUN_ID}" 2>&1 | tail -5
+  # A single failing run must not abort the remaining eight — the pod is already
+  # paid for and the other arms are still worth collecting.
+  if ! python3 scripts/train_native_nano.py --run-id "${RUN_ID}" 2>&1 | tail -5; then
+    echo "RUN_FAILED ${RUN_ID}"
+    FAILED_RUNS="${FAILED_RUNS} ${RUN_ID}"
+    continue
+  fi
 
   # Evaluate on the pod: the GPU is already paid for, and pulling nine 30M
   # checkpoints over SSH to evaluate on a laptop would cost far more wall clock
@@ -94,4 +126,7 @@ for run_dir in src.glob("reval30_*"):
         shutil.copytree(run_dir, dst / run_dir.name, dirs_exist_ok=True)
 print("ARCHIVE_OK", dst)
 PY
+if [[ -n "${FAILED_RUNS}" ]]; then
+  echo "RUNS_FAILED:${FAILED_RUNS}"
+fi
 echo NATIVE30_REVALIDATION_DONE

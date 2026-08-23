@@ -97,6 +97,19 @@ def _estimate_param_count(d_model: int, n_layers: int, *, evidence_aware: bool, 
     return emb + block + evidence
 
 
+def _best_head_count(d_model: int, target_head_dim: int = 64, min_heads: int = 4) -> int:
+    """Largest-valued divisor of d_model whose head_dim is closest to the target.
+
+    Guarantees d_model % n_heads == 0, which torch's multi-head attention
+    asserts. Falls back to the smallest valid divisor rather than returning a
+    non-divisor.
+    """
+    divisors = [h for h in range(min_heads, d_model + 1) if d_model % h == 0]
+    if not divisors:
+        return min_heads
+    return min(divisors, key=lambda h: (abs(d_model // h - target_head_dim), -h))
+
+
 def dims_for_target_params_m(
     target_m: float,
     *,
@@ -109,7 +122,12 @@ def dims_for_target_params_m(
     best_diff = float("inf")
     for n_layers in (10, 12, 14, 16):
         for d_model in range(384, 1025, 32):
-            n_heads = max(4, d_model // 64)
+            # n_heads MUST divide d_model — torch's attention asserts
+            # embed_dim % num_heads == 0. The old `max(4, d_model // 64)` gave
+            # d_model=480 -> 7 heads, and 480 % 7 == 4, which killed the
+            # evidence_bottleneck arm mid-run on a paid pod. Pick the divisor
+            # nearest the target head_dim of 64.
+            n_heads = _best_head_count(d_model)
             count = _estimate_param_count(d_model, n_layers, evidence_aware=evidence_aware, vocab_size=vocab_size)
             diff = abs(count - target)
             if diff < best_diff:
