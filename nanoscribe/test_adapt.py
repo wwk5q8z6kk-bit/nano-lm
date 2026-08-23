@@ -342,6 +342,32 @@ def test_adapt_json_end_to_end() -> None:
     assert atom_result(report, "atom-neck").exact_gold_span
 
 
+def test_abstained_atom_without_quotes_parses() -> None:
+    batch = ModelCandidate.from_dict(
+        {
+            "schema_version": CANDIDATE_SCHEMA_VERSION,
+            "atoms": [
+                {
+                    "atom_id": "medication",
+                    "atom_type": "medication",
+                    "raw_value": "medication",
+                    "assertion_state": "uncertain",
+                    "speaker": "patient",
+                    "experiencer": "patient",
+                    "temporality": {"kind": "current"},
+                    "certainty": "uncertain",
+                    "review_required": False,
+                    "abstained": True,
+                    "malformed": False,
+                }
+            ],
+        }
+    )
+    assert len(batch.atoms) == 1
+    assert batch.atoms[0].abstained
+    assert batch.atoms[0].quotes == ()
+
+
 def test_model_cannot_emit_encounter_schema() -> None:
     expect(
         "schema_version",
