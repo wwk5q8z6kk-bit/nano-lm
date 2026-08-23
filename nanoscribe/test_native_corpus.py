@@ -199,3 +199,36 @@ def test_guard_rejects_undersized_corpus_even_if_mislabelled() -> None:
     }
     with _pytest.raises(CorpusGuardError):
         assert_usable(lying, "promotion")
+
+
+def test_train_cli_does_not_override_registered_dataset() -> None:
+    """`--dataset` must not silently replace a run's registered corpus.
+
+    It previously defaulted to the 96-row fixture path and was applied
+    unconditionally, so `--run-id reval30_*` had its architecture-screen corpus
+    swapped for the unit fixture. The corpus launch guard then refused the run —
+    correctly, but only after a paid pod was already up.
+    """
+    import ast
+
+    root = Path(__file__).resolve().parents[1]
+    src = (root / "scripts" / "train_native_nano.py").read_text()
+    tree = ast.parse(src)
+
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Call) and getattr(node.func, "attr", "") == "add_argument"):
+            continue
+        if not (node.args and getattr(node.args[0], "value", "") == "--dataset"):
+            continue
+        default = next((kw.value for kw in node.keywords if kw.arg == "default"), None)
+        assert default is not None, "--dataset must declare an explicit default"
+        assert getattr(default, "value", None) in ("", None), (
+            "--dataset must default to empty so the run's registered corpus wins; "
+            "a fixture path default silently downgrades every run"
+        )
+        break
+    else:  # pragma: no cover
+        raise AssertionError("--dataset argument not found in train_native_nano.py")
+
+    # and the override must be conditional
+    assert "if args.dataset:" in src, "--dataset override must be conditional on the flag being set"

@@ -54,7 +54,10 @@ def main() -> int:
         parser.error("--run-id required unless --cpu-smoke or --export-train-json")
 
     cfg = config_for_run(args.run_id, cpu_smoke=args.cpu_smoke)
-    cfg = replace(cfg, dataset_path=args.dataset, purpose=args.purpose)
+    overrides: dict[str, object] = {"purpose": args.purpose}
+    if args.dataset:
+        overrides["dataset_path"] = args.dataset
+    cfg = replace(cfg, **overrides)
     result = train_native(cfg, resume=args.resume)
     print(json.dumps(result.to_dict(), indent=2))
     return 0
