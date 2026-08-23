@@ -124,6 +124,14 @@ def test_verify_weights_script(tmp_path: Path) -> None:
     bad.write_bytes(b"x" * 10)
     ok, msg = verify_weights(run_id, tmp_path)
     assert not ok
+
+    # Regression guard for the CORRUPT_INTERRUPTED pull: a truncated transfer can
+    # clear MIN_WEIGHT_BYTES while still being undeserializable, so size alone is
+    # not evidence the weights arrived intact.
+    bad.write_bytes(b"x" * (MIN_WEIGHT_BYTES + 1))
+    ok, msg = verify_weights(run_id, tmp_path)
+    assert not ok, "size-valid but undeserializable checkpoint must not verify"
+
     good = tmp_path / run_id / "latest.pt"
     torch.save({"model_state": {"w": torch.zeros(512, 512)}}, good)
     ok, msg = verify_weights(run_id, tmp_path)
