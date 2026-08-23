@@ -1,0 +1,9 @@
+{
+  "schema": "nano.campaign.span_transport_result.v1",
+  "experiment_id": "B2_span_transport_v2",
+  "status": "not_run",
+  "manifest": "frontier/runpod_span_transport_v2.json",
+  "paid_compute_authorized": false,
+  "launch_command": "python3 scripts/student_serverless_c1c2.py --endpoint $RUNPOD_SERVERLESS_ENDPOINT_ID --suites c2_screening --mode tool --model Qwen/Qwen2.5-32B-Instruct",
+  "notes": "Placeholder artifact path for B2 C2 re-run results. Populated after authorized serverless fanout completes."
+}

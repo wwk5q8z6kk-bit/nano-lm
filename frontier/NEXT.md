@@ -13,24 +13,29 @@ Not canonical authority. See [`docs/ACTIVE_NOW.md`](../docs/ACTIVE_NOW.md).
 - v1 checkpoint: [`artifacts/campaign/checkpoint_v4.json`](../artifacts/campaign/checkpoint_v4.json)
 - Paid compute authority: [`artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md`](../artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md)
 
-## Shipped this session
-
-- **wedge_v1 `ask --escalate-stub`** — opt-in hybrid stub after classical ABSTAIN (`WEDGE_ESCALATE_STUB=1`); default fail-closed unchanged
-- **wedge_v1 `--doc` scope** — exact document filter on `ask` / `find` / `scan`; unknown/empty → `ABSTAIN` with `failure_codes`
-- Tests: `wedge_v1/test_escalate_stub.py` + smoke pins
-
 ## Next bounded tasks (local-first)
 
-1. **B2** — Span transport improvement + C2 re-run (RunPod serverless, routine budget) → `artifacts/campaign/span_transport_v2.json`
-2. **B3 follow-up** — Claim decomposition on rendered notes (`nanoscribe/decompose.py` wiring to encounter v0)
-3. **wedge_v1 port (selective)** — human review / habit loop from `frontier/active-v1` when owner wants product surface; do not wholesale merge `lm/` stack
+1. **B1** — `nanoscribe/schemas/encounter_v0.schema.json` + roundtrip tests (done); semantic validation remains `EncounterRecord.from_dict`
+2. **B2** — Span transport improvement + C2 re-run (RunPod serverless, routine budget) — **ready for auth**; manifest [`runpod_span_transport_v2.json`](runpod_span_transport_v2.json); `paid_compute_authorized: false`
+3. **B3** — `nanoscribe/render.py` verified record → note v0 (**done**); claim IDs + mechanical verifier flags; claim decomposition TBD
 
-## Done (campaign v2)
+### B2 launch (not executed)
 
-| ID | Task | Artifact |
-|----|------|----------|
-| B1 | encounter_representation_schema_v0 | `nanoscribe/schemas/encounter_v0.schema.json` |
-| B3 | verified_record_to_note_rendering_v0 | `nanoscribe/render/encounter_note.py` |
+```bash
+# Preflight: wallet + ACTIVE_NOW gate
+runpodctl user
+python3 scripts/check_active_now.py
+
+# Deploy ephemeral vLLM endpoint, then:
+export RUNPOD_SERVERLESS_ENDPOINT_ID=<live-endpoint-id>
+python3 scripts/student_serverless_c1c2.py \
+  --endpoint "$RUNPOD_SERVERLESS_ENDPOINT_ID" \
+  --suites c2_screening \
+  --mode tool \
+  --model Qwen/Qwen2.5-32B-Instruct
+```
+
+Result artifact: `artifacts/campaign/span_transport_v2.json`
 
 ## Cross-worktree (selective port only)
 
