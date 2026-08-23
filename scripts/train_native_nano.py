@@ -24,7 +24,16 @@ def main() -> int:
     parser.add_argument("--variant", choices=["native_a", "native_b"], default="native_a")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--export-train-json", action="store_true")
-    parser.add_argument("--dataset", default="artifacts/campaign/p1_distill_train_v1.json")
+    # Empty default, NOT the fixture path. This previously defaulted to
+    # artifacts/campaign/p1_distill_train_v1.json and was applied
+    # unconditionally, so `--run-id reval30_*` silently had its registered
+    # architecture-screen corpus replaced by the 96-row unit fixture — which the
+    # corpus launch guard then correctly refused, on a paid pod.
+    parser.add_argument(
+        "--dataset",
+        default="",
+        help="override the run's registered dataset; defaults to the run config's own corpus",
+    )
     parser.add_argument(
         "--purpose",
         default="architecture_screening",
