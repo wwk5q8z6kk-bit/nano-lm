@@ -214,7 +214,7 @@ def campaign_cases(suite: str) -> list[HarnessCase]:
         return screening_adversarial_cases()
     if key in {"screening_p1", "c2_screening", "c2", "campaign_c2"}:
         return screening_core_cases() + screening_adversarial_cases()
-    if key in {"p1_distill_train_v1", "distill_train"}:
+    if key in {"p1_distill_train_v1", "native_unit_overfit_fixture_v1", "distill_train"}:
         return distill_train_cases()
     if key in {"c1_canary", "c1", "campaign_c1"}:
         return (screening_core_cases() + screening_adversarial_cases())[:32]

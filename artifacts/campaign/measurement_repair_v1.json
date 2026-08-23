@@ -103,7 +103,7 @@
         "QLoRA gate UNLOCKED_SEMANTIC_GAP"
       ],
       "fix": "atom-level rates with explicit numerator/denominator and Wilson intervals; clamp removed; both references measured from real artifacts",
-      "regression_test": "covered by student_gap_v1 regeneration; metric contract enforced in artifacts/campaign/measurement_repair_v1.json",
+      "regression_test": "nanoscribe/test_metric_contract.py",
       "recomputation_possible": true,
       "new_interpretation": "gap vs managed ref is -0.055 (not -0.320), CIs overlap, NOT established. QLoRA gate flips to LOCKED. A real -0.152 gap remains vs Qwen3.8 (CIs disjoint)."
     },

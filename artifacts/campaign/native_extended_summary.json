@@ -75,6 +75,7 @@
     "delta_est_usd": 0.5
   },
   "verdict": "COMPLETE_WITH_WEIGHTS",
+  "promotion_status": "REVALIDATION_CANDIDATES",
   "reason": "200/200 steps US-KS-2; weights pulled via direct TCP SCP; torch.load verified; smoke eval run",
   "artifact_audit": {
     "run_id": "native100_evidence_bottleneck_s1",

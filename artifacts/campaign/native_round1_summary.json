@@ -16,6 +16,7 @@
     "recovered_artifacts": "step_000006.json per run_id (weights remain on volume)"
   },
   "verdict": "COMPLETE_RANKED",
+  "promotion_status": "REVALIDATION_CANDIDATES",
   "screening_status": "EXPLORATORY_SCREENING_RANKING",
   "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
   "corpus_path": "artifacts/campaign/p1_distill_train_v1.json",

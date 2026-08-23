@@ -42,6 +42,11 @@ def main() -> int:
     args = ap.parse_args()
 
     manifest = load_manifest(args.manifest)
+    manifest_path = manifest.path.resolve()
+    try:
+        manifest_rel = str(manifest_path.relative_to(ROOT.resolve()))
+    except ValueError:
+        manifest_rel = str(manifest_path)
     if manifest.payload.get("schema") != CORPUS_SCHEMA:
         print(json.dumps({"ok": False, "error": "wrong schema"}))
         return 1
@@ -56,7 +61,7 @@ def main() -> int:
     coverage = axis_coverage_floor(deduped, minimum=64)
 
     report = {
-        "manifest": str(args.manifest.relative_to(ROOT)),
+        "manifest": manifest_rel,
         "corpus_id": manifest.corpus_id,
         "content_hash": manifest.content_hash,
         "dedupe": dedupe_stats,

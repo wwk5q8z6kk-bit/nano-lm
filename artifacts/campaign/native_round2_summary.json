@@ -40,6 +40,7 @@
   "ranking_criterion": "extra.loss (final_train_loss) at step 6 \u2014 lower is better; val_loss absent",
   "metric_note": "Checkpoints store composite loss only; span/evidence/state components not logged per-step",
   "verdict": "COMPLETE_RANKED",
+  "promotion_status": "REVALIDATION_CANDIDATES",
   "reason": "4\u00d7100M promotion arms completed on CUDA; metrics pulled locally before pod terminate",
   "run_ids": [
     "native100_evidence_bottleneck_s0",
