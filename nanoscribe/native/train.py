@@ -58,29 +58,32 @@ def train_native(
         start_step = int(payload.get("step", 0))
 
     examples = load_train_examples(cfg.dataset_path)
-    iterator = NativeBatchIterator(examples, cfg.batch_size, seed=cfg.seed)
     final_loss = 0.0
     step = start_step
-    for batch in iterator:
-        if step >= cfg.max_steps:
-            break
-        prompts = [item.prompt for item in batch]
-        targets = [item.target for item in batch]
-        optimizer.zero_grad(set_to_none=True)
-        breakdown = compute_batch_loss(model, prompts, targets, cfg)
-        total_tensor = breakdown.lm + breakdown.span_port
-        if cfg.evidence_aware:
-            total_tensor = (
-                total_tensor
-                + cfg.loss_weights.evidence_align * breakdown.evidence_align
-                + cfg.loss_weights.assertion_state * breakdown.assertion_state
-            )
-        total_tensor.backward()
-        optimizer.step()
-        final_loss = float(breakdown.total.detach()) if hasattr(breakdown.total, "detach") else float(breakdown.total)
-        step += 1
-        if step % max(1, cfg.max_steps // 5) == 0 or step >= cfg.max_steps:
-            save_checkpoint(model, cfg, step=step, optimizer=optimizer, extra={"loss": final_loss})
+    epoch = 0
+    while step < cfg.max_steps:
+        iterator = NativeBatchIterator(examples, cfg.batch_size, seed=cfg.seed + epoch)
+        for batch in iterator:
+            if step >= cfg.max_steps:
+                break
+            prompts = [item.prompt for item in batch]
+            targets = [item.target for item in batch]
+            optimizer.zero_grad(set_to_none=True)
+            breakdown = compute_batch_loss(model, prompts, targets, cfg)
+            total_tensor = breakdown.lm + breakdown.span_port
+            if cfg.evidence_aware:
+                total_tensor = (
+                    total_tensor
+                    + cfg.loss_weights.evidence_align * breakdown.evidence_align
+                    + cfg.loss_weights.assertion_state * breakdown.assertion_state
+                )
+            total_tensor.backward()
+            optimizer.step()
+            final_loss = float(breakdown.total.detach()) if hasattr(breakdown.total, "detach") else float(breakdown.total)
+            step += 1
+            if step % max(1, cfg.max_steps // 5) == 0 or step >= cfg.max_steps:
+                save_checkpoint(model, cfg, step=step, optimizer=optimizer, extra={"loss": final_loss})
+        epoch += 1
 
     ckpt = None
     if step > start_step:
