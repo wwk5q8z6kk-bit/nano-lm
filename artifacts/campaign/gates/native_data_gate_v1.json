@@ -1,40 +1,24 @@
 {
-  "schema": "nano.campaign.gate.native_data.v1",
-  "checked_at": "2026-08-23T20:27:48.949145+00:00",
-  "commit_sha": "d637e26a2facc37ee931899207fbfbd45437eeff",
-  "fields": {
-    "unit_fixture_only": false,
-    "corpus_generator_ready": true,
-    "train_token_count": 14693267,
-    "unique_token_count": 14693267,
-    "unique_token_note": "char-level tokenizer: character count IS the token count; no sub-word compression",
-    "planned_exposure": 57582,
-    "planned_exposure_note": "1800 steps x batch 32 = 3 epochs over 19,194 TRAIN rows",
-    "capability_axis_min_count": 842,
-    "capability_axis_floor_required": 64,
-    "dedupe_pass": true,
-    "leakage_pass": true,
-    "eval_v2_ready": false,
-    "power_report_ready": true,
-    "ci_nanoscribe_pass": true,
-    "metric_contract_pass": true,
-    "experiment_sha_clean": true,
-    "runpod_manifest_ready": true
+  "schema": "nano.campaign.gate.v1",
+  "gate_id": "native_data_gate_v1",
+  "timestamp": "2026-08-23T20:30:00+00:00",
+  "status": "SCAFFOLD_READY",
+  "verdict": "OPEN_FOR_BUILD",
+  "requirements": {
+    "corpus_factory": "nanoscribe/native/corpus/ + scripts/build_native_corpus.py",
+    "registry": "data/REGISTRY.json",
+    "mixture_v1": {"mechanism": 0.5, "adversarial": 0.3, "teacher_verified": 0.15, "rejected_buffer": 0.05},
+    "tier_targets": {
+      "R30": {"unique_tokens_char_level": 50000000, "exposure_tokens_char_level": 100000000},
+      "P100": {"unique_tokens_char_level_min": 200000000, "unique_tokens_char_level_max": 300000000}
+    },
+    "leakage_gate": "check_leakage pass",
+    "axis_coverage_floor": "per-axis minimum in manifest",
+    "partition_separation": "TRAIN/DEV/INTERNAL_TEST disjoint values"
   },
-  "required_for_launch": [
-    "corpus_generator_ready",
-    "dedupe_pass",
-    "leakage_pass",
-    "ci_nanoscribe_pass",
-    "metric_contract_pass",
-    "experiment_sha_clean",
-    "runpod_manifest_ready",
-    "power_report_ready"
+  "blocked_until": [
+    "screen-stage corpus built and validated",
+    "30m_revalidation_manifest with real corpus hash"
   ],
-  "not_required_for_r30_screen": [
-    "eval_v2_ready"
-  ],
-  "eval_v2_note": "R30 revalidation scores against the existing frozen p1_screening_eval_v1 WITH random-init and majority-class controls. eval_v2 is required before any CONFIRMATORY claim, not before a screening run.",
-  "verdict": "OPEN",
-  "blocking": []
+  "next_action": "python3 scripts/build_native_corpus.py --stage screen && python3 scripts/validate_native_corpus.py"
 }

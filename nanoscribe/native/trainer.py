@@ -120,6 +120,11 @@ def main() -> int:
     parser.add_argument("--dataset", default="artifacts/campaign/p1_distill_train_v1.json")
     parser.add_argument("--max-steps", type=int, default=200)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--purpose",
+        default="architecture_screening",
+        help="training purpose for corpus launch guard",
+    )
     parser.add_argument("--manifest-only", action="store_true")
     args = parser.parse_args()
 
@@ -139,6 +144,11 @@ def main() -> int:
         cpu_smoke = not torch.cuda.is_available()
     except ImportError:
         cpu_smoke = True
+
+    if not cpu_smoke:
+        from nanoscribe.native.corpus.registry import assert_corpus_launch_allowed
+
+        assert_corpus_launch_allowed(args.dataset, purpose=args.purpose, cpu_smoke=False)
 
     result = train_run_id(args.run_id, cpu_smoke=cpu_smoke)
     print(json.dumps(result.to_dict(), indent=2))

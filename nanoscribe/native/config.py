@@ -228,6 +228,7 @@ def smoke_config(*, variant: NativeVariant = NativeVariant.NATIVE_A) -> NativeTr
         n_layers=2,
         n_heads=2,
         cpu_smoke=True,
+        purpose="trainer_smoke",
         loss_weights=default_loss_weights(variant),
     )
 

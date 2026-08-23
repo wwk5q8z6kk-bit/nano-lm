@@ -6,12 +6,14 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from nanoscribe.native.config import config_for_run, smoke_config, NativeVariant
+from nanoscribe.native.data import export_distill_train_json
 from nanoscribe.native.train import cpu_smoke_train, train_native, train_run_id
 
 

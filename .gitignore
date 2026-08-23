@@ -70,3 +70,6 @@ artifacts/native_checkpoints/smoke_cpu/
 artifacts/campaign/native_corpus_*_train.json
 artifacts/campaign/native_corpus_*_dev.json
 artifacts/campaign/native_corpus_*_internal_test.json
+
+# Rebuilt by the determinism test on every run (built_at timestamp churns).
+artifacts/campaign/native_corpus_smoke_v1_manifest.json
