@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 # 5-minute GPU utilization fail-fast: terminate pod if util stays <5%.
+#
+# SSH (RunPod):
+#   runpodctl ssh info <pod_id>  # direct: ssh -i ~/.runpod/ssh/runpodctl-ssh-key root@<ip> -p <port>
+#   When direct TCP times out during startup, use the UI proxy:
+#     ssh -i ~/.runpod/ssh/runpodctl-ssh-key <pod_id>-<ui_token>@ssh.runpod.io
+#   Example (owner handoff): yglu6kr1ys0kw3-64410f1c@ssh.runpod.io — ui_token is NOT the public port.
+#   Non-interactive checks: RUNPOD_SSH_PROXY_SUFFIX=<ui_token> scripts/runpod_pod_ssh.sh <pod_id> 'nvidia-smi'
+#   ~/.ssh/id_ed25519 only works if that key is registered on the RunPod account / pod PUBLIC_KEY.
 set -euo pipefail
 POD_ID="${1:?pod id required}"
 RATE_HR="${2:-0}"
@@ -18,7 +26,8 @@ while [[ "$elapsed" -lt "$MAX_WAIT" ]]; do
     echo "pod gone" | tee -a "$LOG"
     exit 0
   fi
-  ssh_out=$(runpodctl ssh connect "$POD_ID" -- "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits" 2>>"$LOG" || true)
+  ssh_out=$(bash "$(dirname "$0")/runpod_pod_ssh.sh" "$POD_ID" \
+    "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits" 2>>"$LOG" || true)
   util=$(echo "$ssh_out" | tr -d ' ' | head -1)
   if [[ "$util" =~ ^[0-9]+$ ]]; then
     max_util=$(( util > max_util ? util : max_util ))

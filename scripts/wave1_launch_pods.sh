@@ -4,8 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-COMMIT_SHA="${WAVE1_COMMIT_SHA:-a4b7947737d3f4a363bdc067df95e3008cd94b41}"
+COMMIT_SHA="${WAVE1_COMMIT_SHA:-a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261}"
 VOLUME_ID="${RUNPOD_VOLUME_ID:-04himzqxbm}"
+DATA_CENTER_IDS="${RUNPOD_DATA_CENTER_IDS:-EU-RO-1}"
 PYTORCH_TEMPLATE_ID="${RUNPOD_PYTORCH_TEMPLATE:-runpod-torch-v240}"
 IMAGE="${RUNPOD_IMAGE:-runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04}"
 LEDGER="${CAMPAIGN_LEDGER:-artifacts/campaign/spend.json}"
@@ -34,6 +35,7 @@ launch_pod() {
     --name "${name}" \
     "${create_args[@]}" \
     --gpu-id "${gpu}" \
+    --data-center-ids "${DATA_CENTER_IDS}" \
     --cloud-type SECURE \
     --network-volume-id "${VOLUME_ID}" \
     --container-disk-in-gb 30 \
