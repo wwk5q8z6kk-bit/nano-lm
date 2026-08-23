@@ -257,3 +257,21 @@ python3 scripts/check_active_now.py
 python3 scripts/check_docs_integrity.py
 python3 -m pytest nanoscribe/test_encounter_v0.py nanoscribe/test_evidence_transport.py -q
 ```
+
+---
+
+## 9. Phase C v2 completion gates (machine-readable)
+
+**Source of truth:** [knowledge/PROGRAM_CHECKPOINTS.json](knowledge/PROGRAM_CHECKPOINTS.json) — validated by `check_docs_integrity.py`.
+
+| Gate | Status | Done when |
+|------|--------|-----------|
+| C1 control plane | **done** | Campaign execution doc + `campaign_control_plane.py` |
+| C2 tool calling | **done** | `test_tool_calling.py` green + TOOL_CALLING doc |
+| C3 agent canary | **done** | `agent_canary_v1_results.json` committed |
+| C4 native extended | **in progress** | Valid structured decode OR documented non-viability |
+| C5 student fanout | **in progress** | Span transport ≥25% exact gold **or** teacher ceiling artifact |
+| C6 harness regression | **done** | `ci_nanoscribe.sh` green |
+| C7 master port | **pending** | Selective port; zero Evidence Core diff; owner review |
+
+**Engineering success (v2):** ≥2× `exact_gold_span_rate` vs v1 baseline (0.1102) **or** preregistered pivot with artifact — before external/human eval spend.

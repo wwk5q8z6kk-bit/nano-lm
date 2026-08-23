@@ -49,7 +49,7 @@ July-31 IDLE / NanoScribe STOP =
 HISTORICAL_PROGRAM_STATE
 ```
 
-Canonical index: [`docs/README.md`](docs/README.md).
+Canonical index: [`docs/README.md`](docs/README.md) · **Agent knowledge pack:** [`docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md)
 
 ## Typed authority
 
@@ -76,8 +76,10 @@ Canonical index: [`docs/README.md`](docs/README.md).
 ```bash
 python3 scripts/check_active_now.py
 python3 scripts/check_docs_integrity.py
-python3 -m pytest fabric/test_fabric.py trajectory/test_recompute_c3.py nanoscribe/test_tool_calling.py -q
+bash scripts/ci_nanoscribe.sh
 ```
+
+Full agent knowledge: [`docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md) · Gates: [`docs/knowledge/PROGRAM_CHECKPOINTS.json`](docs/knowledge/PROGRAM_CHECKPOINTS.json)
 
 ## Learned User Preferences
 

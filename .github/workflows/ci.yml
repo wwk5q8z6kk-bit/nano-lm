@@ -2,7 +2,7 @@ name: ci
 
 on:
   push:
-    branches: [master, 'docs/**']
+    branches: [master, 'docs/**', 'frontier/**']
   pull_request:
 
 jobs:

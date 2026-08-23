@@ -252,6 +252,76 @@ def check_single_authority_per_concern(errors: list[str]) -> None:
         errors.append("ACTIVE_NOW.json schema mismatch")
 
 
+def check_required_canonical_docs(errors: list[str]) -> None:
+    for rel in REQUIRED_CANONICAL_DOCS:
+        path = ROOT / rel
+        if not path.is_file():
+            errors.append(f"missing required canonical doc: {rel}")
+
+
+def check_doc_code_anchors(errors: list[str]) -> None:
+    for doc_rel, anchors in DOC_CODE_ANCHORS.items():
+        doc_path = ROOT / doc_rel
+        if not doc_path.is_file():
+            errors.append(f"doc anchor source missing: {doc_rel}")
+            continue
+        for anchor in anchors:
+            if not (ROOT / anchor).exists():
+                errors.append(f"{doc_rel} references missing path: {anchor}")
+
+
+def check_program_checkpoints(errors: list[str]) -> None:
+    checkpoints = ROOT / "docs/knowledge/PROGRAM_CHECKPOINTS.json"
+    if not checkpoints.is_file():
+        errors.append("missing docs/knowledge/PROGRAM_CHECKPOINTS.json")
+        return
+    try:
+        data = json.loads(checkpoints.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        errors.append(f"PROGRAM_CHECKPOINTS.json invalid JSON: {exc}")
+        return
+    if data.get("schema") != "nano-lm.docs.program_checkpoints.v1":
+        errors.append("PROGRAM_CHECKPOINTS.json schema mismatch")
+    for phase_key in ("phase_c_v2", "phase_d_p1_exit"):
+        phase = data.get(phase_key)
+        if not isinstance(phase, dict):
+            errors.append(f"PROGRAM_CHECKPOINTS missing {phase_key}")
+            continue
+        gates = phase.get("gates")
+        if not isinstance(gates, list) or not gates:
+            errors.append(f"PROGRAM_CHECKPOINTS {phase_key} gates empty")
+            continue
+        for gate in gates:
+            if not isinstance(gate, dict):
+                errors.append(f"PROGRAM_CHECKPOINTS invalid gate in {phase_key}")
+                continue
+            gid = gate.get("id", "?")
+            status = gate.get("status")
+            if status not in CHECKPOINT_STATUSES:
+                errors.append(f"PROGRAM_CHECKPOINTS gate {gid} bad status: {status!r}")
+            evidence = gate.get("evidence", [])
+            if status == "done":
+                if not evidence:
+                    errors.append(f"PROGRAM_CHECKPOINTS gate {gid} done but no evidence")
+                for rel in evidence:
+                    if not (ROOT / rel).exists():
+                        errors.append(f"PROGRAM_CHECKPOINTS gate {gid} missing evidence: {rel}")
+            elif status == "in_progress" and evidence:
+                if not any((ROOT / rel).exists() for rel in evidence):
+                    errors.append(
+                        f"PROGRAM_CHECKPOINTS gate {gid} (in_progress) has no existing evidence paths"
+                    )
+
+
+def check_agents_knowledge_link(errors: list[str]) -> None:
+    agents = ROOT / "AGENTS.md"
+    if not agents.is_file():
+        return
+    text = agents.read_text(encoding="utf-8")
+    if "docs/knowledge/AGENT_PROGRAM_KNOWLEDGE" not in text:
+        errors.append("AGENTS.md must link docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md")
+
+
 def main() -> int:
     errors: list[str] = []
     check_links(errors)
@@ -260,6 +330,10 @@ def main() -> int:
     check_stale_authority_phrases(errors)
     check_protected_diff(errors)
     check_single_authority_per_concern(errors)
+    check_required_canonical_docs(errors)
+    check_doc_code_anchors(errors)
+    check_program_checkpoints(errors)
+    check_agents_knowledge_link(errors)
     if errors:
         for e in errors:
             print(e, file=sys.stderr)

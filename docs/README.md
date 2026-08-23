@@ -70,6 +70,14 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | [archive/README.md](archive/README.md) | Historical strategy index |
 | [archive/LEGACY_STRATEGY_INDEX.md](archive/LEGACY_STRATEGY_INDEX.md) | Old planning doc map |
 
+## Knowledge (agents)
+
+| Document | Purpose |
+|----------|---------|
+| [knowledge/README.md](knowledge/README.md) | Knowledge pack index |
+| [knowledge/AGENT_PROGRAM_KNOWLEDGE.md](knowledge/AGENT_PROGRAM_KNOWLEDGE.md) | A→Z operational knowledge for coding agents |
+| [knowledge/PROGRAM_CHECKPOINTS.json](knowledge/PROGRAM_CHECKPOINTS.json) | Machine-readable Phase C/D gates |
+
 ## Not moved (evidence-protected)
 
 - `papers/EMPIRICAL_FOUNDATION.md`, `papers/EVIDENCE_LEDGER.md`
