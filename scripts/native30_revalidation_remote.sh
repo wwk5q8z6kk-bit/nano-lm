@@ -37,11 +37,29 @@ if not (m["leakage"]["pass"] and m["axis_coverage"]["pass"]):
 print(f"CORPUS_OK hash={got} rows={m['statistics']['partition_sizes']['TRAIN']}")
 PY
 
-if ! python3 -m nanoscribe.runpod_gpu_preflight; then
-  echo "PREFLIGHT_WARN: preflight failed; checking nvidia-smi"
-  nvidia-smi || { echo "PREFLIGHT_FATAL: no GPU"; exit 1; }
-  echo "PREFLIGHT_OVERRIDE: nvidia-smi ok, continuing"
-fi
+# CUDA must be usable by TORCH, not merely visible to nvidia-smi. The previous
+# "nvidia-smi ok, continuing" override let a run proceed on CPU: the GPU was
+# visible (device_count=1) while torch.cuda.is_available() was False, so the pod
+# billed at $1.59/hr to train ~30x slower than it should. A pod that cannot use
+# its GPU has no valid experiment attached and must stop, not continue.
+python3 - <<'PY' || { echo "CUDA_FATAL: torch cannot use the GPU; aborting rather than training on CPU"; exit 1; }
+import sys
+import torch
+
+ok = torch.cuda.is_available()
+print(
+    f"TORCH_CUDA available={ok} torch={torch.__version__} "
+    f"built_for_cuda={torch.version.cuda} device_count={torch.cuda.device_count()}"
+)
+if not ok:
+    print(
+        "DIAGNOSIS: torch is present and the GPU is visible, but CUDA is "
+        "unusable — usually a torch wheel built for a newer CUDA than the "
+        "driver provides (e.g. torch+cu130 on a CUDA 12.4 driver).",
+        file=sys.stderr,
+    )
+sys.exit(0 if ok else 1)
+PY
 
 mkdir -p /workspace/reval_results
 for RUN_ID in ${RUN_IDS}; do
