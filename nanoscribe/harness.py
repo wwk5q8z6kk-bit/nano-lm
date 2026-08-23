@@ -24,6 +24,11 @@ class ModelTrack(str, Enum):
 
 class P1TestSet(str, Enum):
     TINY_FIXTURE = "tiny_fixture"
+    P1_CORE = "p1_core"
+    P1_ADVERSARIAL = "p1_adversarial"
+    P2_EXPLORATORY = "p2_exploratory"
+    P3_EXPLORATORY = "p3_exploratory"
+    DOMAIN_GENERALITY = "domain_generality"
 
 
 @dataclass(frozen=True, slots=True)

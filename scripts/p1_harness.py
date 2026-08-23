@@ -17,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from nanoscribe.campaign_datasets import campaign_cases
 from nanoscribe.harness import run_matrix, write_results
 from nanoscribe.tracks import (
     API_TEACHER_MODEL,
@@ -82,6 +83,11 @@ def main() -> None:
         default=ROOT / "artifacts" / "p1_runs" / "harness_latest.json",
     )
     parser.add_argument("--capture-raw", action="store_true")
+    parser.add_argument(
+        "--suite",
+        default="tiny_fixture",
+        help="campaign suite: tiny_fixture, p1_core, p1_adversarial, campaign_v1",
+    )
     args = parser.parse_args()
 
     selected = _parse_tracks(args.tracks)
@@ -107,7 +113,10 @@ def main() -> None:
         else:
             raise SystemExit(f"unknown track: {name}")
 
-    cases = [tiny_fixture_case()]
+    try:
+        cases = campaign_cases(args.suite)
+    except ValueError:
+        cases = [tiny_fixture_case()]
     results = run_matrix(tracks, cases, capture_raw_lines=args.capture_raw)
     write_results(
         results,
@@ -120,6 +129,7 @@ def main() -> None:
             "api_model": args.api_model,
             "serverless_endpoint": args.serverless_endpoint,
             "serverless_model": args.serverless_model,
+            "suite": args.suite,
         },
     )
     print(json.dumps({"output": str(args.output), "n_results": len(results)}, indent=2))
