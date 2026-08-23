@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from nanoscribe.native.corpus.manifest import load_manifest
-from nanoscribe.native.corpus.schema import CORPUS_SCHEMA, CorpusExample, Partition
+from nanoscribe.native.corpus.schema import CORPUS_SCHEMA, Axis, CorpusExample, Layer, Partition
 from nanoscribe.native.corpus.validate import axis_coverage_floor, check_leakage, dedupe, statistics
 
 
@@ -27,10 +27,10 @@ def _load_examples(path: Path) -> list[CorpusExample]:
                 prompt=str(entry.get("prompt", "")),
                 target=str(entry.get("target", "")),
                 raw_value=str(entry.get("raw_value", "")),
-                axes=tuple(),
-                layer=entry.get("layer", "B_mechanism_curriculum"),
+                axes=tuple(Axis(a) for a in entry.get("axes", [])),
+                layer=Layer(str(entry.get("layer", Layer.MECHANISM.value))),
                 template_id=str(entry.get("template_id", "unknown")),
-                partition=Partition(str(entry.get("partition", "TRAIN"))),
+                partition=Partition(str(entry.get("partition", Partition.TRAIN.value))),
             )
         )
     return rows

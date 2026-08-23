@@ -1,0 +1,11 @@
+{
+  "schema": "nano.eval.screening.v2.stub",
+  "revision": "p1_screening_eval_v2_stub",
+  "status": "PLACEHOLDER",
+  "timestamp": "2026-08-23T20:30:00+00:00",
+  "note": "Stub placeholder until eval v2 generator lands. Do not train on this file.",
+  "supersedes": null,
+  "frozen": false,
+  "n_cases": 0,
+  "cases": []
+}
