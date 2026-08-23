@@ -4,6 +4,8 @@ P1 scribing research at **intelligence-per-dollar** velocity: parallel tracks, m
 
 **Operational authority (paid waves):** [`artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md`](../../artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md) — supersedes ad-hoc launch prompts.
 
+**Branch-active detail (v2):** [ACCELERATED_RESEARCH_CAMPAIGN_V2.md](../ACCELERATED_RESEARCH_CAMPAIGN_V2.md) — measured snapshot + integration posture on `frontier/accelerated-research-campaign-v2`.
+
 **Program authority:** [ACTIVE_NOW.md](../ACTIVE_NOW.md) · [EXECUTION_PLAN.md](../EXECUTION_PLAN.md)
 
 ---

@@ -34,6 +34,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | [research/SYSTEM_RESEARCH_PROGRAM.md](research/SYSTEM_RESEARCH_PROGRAM.md) | Retrieval, memory, verifiers, routing |
 | [research/EXPERIMENT_STRATEGY.md](research/EXPERIMENT_STRATEGY.md) | Prereg, gates, failure-to-architecture loop |
 | [research/ACCELERATED_CAMPAIGN.md](research/ACCELERATED_CAMPAIGN.md) | Multi-track P1 campaign, manifests, RunPod OS |
+| [ACCELERATED_RESEARCH_CAMPAIGN_V2.md](ACCELERATED_RESEARCH_CAMPAIGN_V2.md) | Branch-active campaign v2 plan + measured snapshot |
 
 ## Domains
 
