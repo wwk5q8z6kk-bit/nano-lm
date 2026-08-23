@@ -204,11 +204,11 @@ P1 MASTERY DECISION (owner + human protocol)
 
 Owner can authorize these independently; each has a clear done-when and is mostly local.
 
-### Task 1 — Encounter representation schema v0 (EXECUTION_PLAN B1)
+### Task 1 — Encounter representation schema v0 (EXECUTION_PLAN B1) — **DONE**
 
 - **Done when:** JSON Schema exported from `nanoscribe/encounter.py`; `nanoscribe/test_encounter_v0.py` + docs synced; `check_docs_integrity` passes
 - **Compute:** Local CPU
-- **Artifact:** `nanoscribe/schemas/encounter_record.v0.json`
+- **Artifact:** `nanoscribe/schemas/encounter_v0.schema.json` (wire shape; semantic invariants via `EncounterRecord.from_dict`)
 
 ### Task 2 — Span/evidence transport on managed student path (EXECUTION_PLAN B2)
 
