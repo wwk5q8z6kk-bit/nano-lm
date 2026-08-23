@@ -1,68 +1,28 @@
 {
-  "schema": "nano.campaign.checkpoint.v1",
-  "campaign_id": "accelerated_research_campaign_v1",
-  "timestamp": "2026-08-23T02:15:00Z",
-  "origin_master": "b13ec7d",
-  "dataset_revision": "campaign_v1_20260823",
-  "smoke_suite": "campaign_smoke_3case",
-  "screening_revision": "screening_v1_20260823",
-  "spend": {
-    "actual_usd": 1.49,
-    "remaining_usd": 178.51,
-    "posture": "NORMAL"
-  },
-  "execution_surfaces": {
-    "frontier_teacher": "RunPod Public Endpoint moonshot-kimi / kimi-k3 (pending live probe)",
-    "small_api_reference": "api/gpt-4o-mini — NOT capability ceiling",
-    "strong_control": "RunPod Serverless Qwen3.8-27B — endpoint tbnur4mac60i70 DELETED (idle burn); set RUNPOD_SERVERLESS_ENDPOINT_ID after recreate with workersMin=0",
-    "raw_pods": "none active"
-  },
-  "track_a_correction": {
-    "invalid_claim_removed": "gpt-4o-mini was mislabeled FRONTIER_TEACHER / P1_CEILING",
-    "kimi_public_base_url": "https://api.runpod.ai/v2/moonshot-kimi/openai/v1",
-    "kimi_model": "kimi-k3",
-    "preflight_status": "FAILED_500",
-    "preflight_error": "InternalServerError on direct public endpoint call",
-    "gpt4o_mini_role": "SMALL_API_REFERENCE only"
-  },
-  "evaluator_correction": {
-    "supporting_superspan_separated_from_wrong_mention": true,
-    "annotation_disagreement_metric_added": true,
-    "note": "Over-long quotes may be annotation boundary mismatch with valid DIRECT_EXACT support"
-  },
-  "output_contract": {
-    "structured_candidate_json": "implemented for Kimi + Qwen3.8",
-    "span_port_text": "retained as baseline ARM A"
-  },
-  "phase_ab_smoke_campaign_v1": {
-    "suite": "campaign_smoke_3case",
-    "encounters": ["enc-1", "enc-2", "enc-3"],
-    "artifact": "artifacts/p1_runs/campaign_phase_ab_v1.json",
-    "interpretation": "SMOKE only — not sufficient for ceiling or bottleneck claims",
-    "small_api_reference": {
-      "model": "gpt-4o-mini",
-      "note": "Prior smoke results; boundary-sensitive spans need re-read with superspan metric"
-    },
-    "qwen38_serverless": {
-      "model": "Qwen/Qwen3.8-27B",
-      "dominant_failure_smoke": "malformed span-port lines — test structured JSON contract"
-    }
-  },
-  "screening_suite": {
-    "P1_CORE": 64,
-    "P1_ADVERSARIAL": 64,
-    "held_out_eval": true,
-    "status": "GENERATED_LOCALLY"
-  },
+  "architecture_verdict_native": "CONTINUE_EXPLORATION",
   "belief_updates": [
     "3-case smoke indicates textual span-port formatting and annotation-boundary sensitivity",
     "Full capability attribution pending Kimi K3 live probe + structured-output A/B + 128-case matrix",
     "Do not start large-student QLoRA until corrected baselines complete",
     "Serverless scale-to-zero works; no idle raw inference pods"
   ],
+  "campaign_id": "accelerated_research_campaign_v1",
+  "commit_sha": "a4b7947737d3f4a363bdc067df95e3008cd94b41",
+  "dataset_revision": "campaign_v1_20260823",
+  "evaluator_correction": {
+    "annotation_disagreement_metric_added": true,
+    "note": "Over-long quotes may be annotation boundary mismatch with valid DIRECT_EXACT support",
+    "supporting_superspan_separated_from_wrong_mention": true
+  },
+  "execution_surfaces": {
+    "frontier_teacher": "RunPod Public Endpoint moonshot-kimi / kimi-k3 (pending live probe)",
+    "raw_pods": "none active",
+    "small_api_reference": "api/gpt-4o-mini \u2014 NOT capability ceiling",
+    "strong_control": "RunPod Serverless Qwen3.8-27B \u2014 endpoint tbnur4mac60i70 DELETED (idle burn); set RUNPOD_SERVERLESS_ENDPOINT_ID after recreate with workersMin=0"
+  },
   "invalid_claims_removed": [
     "P1 ceiling = gpt-4o-mini",
-    "Kimi K3 not on hub → fallback complete",
+    "Kimi K3 not on hub \u2192 fallback complete",
     "Bottleneck = minimal span quotes"
   ],
   "next_execution": [
@@ -72,6 +32,52 @@
     "Native-A/B short screen in parallel",
     "Large-student decision only after matrix"
   ],
+  "origin_master": "b13ec7d",
+  "output_contract": {
+    "span_port_text": "retained as baseline ARM A",
+    "structured_candidate_json": "implemented for Kimi + Qwen3.8"
+  },
+  "phase_ab_smoke_campaign_v1": {
+    "artifact": "artifacts/p1_runs/campaign_phase_ab_v1.json",
+    "encounters": [
+      "enc-1",
+      "enc-2",
+      "enc-3"
+    ],
+    "interpretation": "SMOKE only \u2014 not sufficient for ceiling or bottleneck claims",
+    "qwen38_serverless": {
+      "dominant_failure_smoke": "malformed span-port lines \u2014 test structured JSON contract",
+      "model": "Qwen/Qwen3.8-27B"
+    },
+    "small_api_reference": {
+      "model": "gpt-4o-mini",
+      "note": "Prior smoke results; boundary-sensitive spans need re-read with superspan metric"
+    },
+    "suite": "campaign_smoke_3case"
+  },
+  "schema": "nano.campaign.checkpoint.v1",
+  "screening_revision": "screening_v1_20260823",
+  "screening_suite": {
+    "P1_ADVERSARIAL": 64,
+    "P1_CORE": 64,
+    "held_out_eval": true,
+    "status": "GENERATED_LOCALLY"
+  },
+  "smoke_suite": "campaign_smoke_3case",
+  "spend": {
+    "actual_usd": 1.49,
+    "posture": "NORMAL",
+    "remaining_usd": 178.51
+  },
+  "timestamp": "2026-08-23T02:15:00Z",
+  "track_a_correction": {
+    "gpt4o_mini_role": "SMALL_API_REFERENCE only",
+    "invalid_claim_removed": "gpt-4o-mini was mislabeled FRONTIER_TEACHER / P1_CEILING",
+    "kimi_model": "kimi-k3",
+    "kimi_public_base_url": "https://api.runpod.ai/v2/moonshot-kimi/openai/v1",
+    "preflight_error": "InternalServerError on direct public endpoint call",
+    "preflight_status": "FAILED_500"
+  },
   "tracks_status": {
     "A_kimi_frontier": "PREFLIGHT_BLOCKED_500",
     "A_small_api_reference": "SMOKE_COMPLETE_NOT_CEILING",
@@ -80,5 +86,5 @@
     "D_native_nano": "READY_FOR_SHORT_SCREEN",
     "E_verifier": "NOT_STARTED"
   },
-  "architecture_verdict_native": "CONTINUE_EXPLORATION"
+  "wave": "paid_wave_1"
 }

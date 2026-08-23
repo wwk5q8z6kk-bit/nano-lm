@@ -1,7 +1,9 @@
 {
+  "KIMI_K3_CURRENT_STATUS": "MANAGED_ENDPOINT_UNAVAILABLE",
   "active_tracks": [],
   "actual_spend": 1.9659,
   "campaign_spend_start": 1.8211,
+  "commit_sha": "a4b7947737d3f4a363bdc067df95e3008cd94b41",
   "hourly_exposure": 0.0,
   "lanes": {
     "lane0_cpu": {
@@ -11,10 +13,10 @@
       "status": "complete"
     },
     "lane1_kimi": {
-      "status": "blocked",
-      "kimi_k3": "500 x2",
+      "kimi_k26": "500 x2",
       "kimi_k27": "500 x2",
-      "kimi_k26": "500 x2"
+      "kimi_k3": "500 x2",
+      "status": "blocked"
     },
     "lane2_qwen": {
       "endpoint_deleted": "tbnur4mac60i70",
@@ -29,7 +31,10 @@
     "lane4_native": {
       "acceptance_tests": "17/17 pass",
       "status": "READY_FOR_B200_LAUNCH",
-      "variants": ["native_a_decoder_baseline", "native_b_evidence_aware"]
+      "variants": [
+        "native_a_decoder_baseline",
+        "native_b_evidence_aware"
+      ]
     },
     "lane5_verifier": {
       "dataset": "artifacts/campaign/verifier_dataset.json",
@@ -64,28 +69,18 @@
   "model_statuses": {
     "kimi_k3": {
       "blocked": true,
-      "blocker": "kimi_all_variants_500",
       "frontier_lane": "managed_reference_proxy",
-      "kimi": {
-        "attempts_per_model": 2,
-        "base_url": "https://api.runpod.ai/v2/moonshot-kimi/openai/v1",
-        "models_tried": ["kimi-k3", "kimi-k2.7", "kimi-k2.6"],
-        "ok": false,
-        "status": 500
-      },
-      "managed_reference": {
-        "gpt_oss_120b": "operational",
-        "qwen3_32b_awq": "operational"
-      }
+      "note": "Wave 1: no Kimi retries",
+      "status": "MANAGED_ENDPOINT_UNAVAILABLE"
     }
   },
   "new_actual_spend": 0.1448,
   "new_committed_spend": 0,
   "next_reallocations": [
-    "recreate serverless endpoint workersMin=0 on next Qwen batch (template l5bzkl04uc unavailable — redeploy via hub)",
+    "recreate serverless endpoint workersMin=0 on next Qwen batch (template l5bzkl04uc unavailable \u2014 redeploy via hub)",
     "launch native B200 only after owner authorizes within budget",
     "retry Kimi when public endpoint recovers",
-    "student QLoRA prep complete — do not launch until Kimi or gap justified"
+    "student QLoRA prep complete \u2014 do not launch until Kimi or gap justified"
   ],
   "origin_master": "b13ec7d",
   "partitions": {
@@ -101,11 +96,9 @@
   "schema": "nano.campaign.status.v1",
   "serverless": {
     "endpoint_id": null,
-    "jobs_in_progress": 0,
-    "jobs_queued": 0,
-    "max_workers": 0,
-    "note": "tbnur4mac60i70 deleted — workersMin=0 refused on update; zero idle exposure",
-    "running_workers": 0
+    "note": "tbnur4mac60i70 deleted \u2014 runpodctl serverless list empty",
+    "running_workers": 0,
+    "workers_min_verified": 0
   },
   "structured_contract": {
     "qwen_128_case": {
@@ -119,7 +112,7 @@
     }
   },
   "students": {
-    "qlora_gate": "NOT_LAUNCHED — prep only",
+    "qlora_gate": "NOT_LAUNCHED \u2014 prep only",
     "qwen_only_gap_note": "Kimi 500 all variants; GPT-OSS-120B + Qwen3-32B-AWQ operational as MANAGED_REFERENCE_CANDIDATE",
     "student_a": {
       "lora_ready": true,
@@ -132,9 +125,10 @@
       "lora_ready": true,
       "model": "meta-llama/Llama-3.3-70B-Instruct",
       "params_b": 70,
-      "rationale": "diverse 27B-80B family, QLoRA on 2×A100",
+      "rationale": "diverse 27B-80B family, QLoRA on 2\u00d7A100",
       "status": "GATED_UNTIL_KIMI_OR_GAP_JUSTIFIED"
     }
   },
-  "timestamp": "2026-08-23T04:25:00.000000+00:00"
+  "timestamp": "2026-08-23T04:29:11.766158+00:00",
+  "wave": "paid_wave_1"
 }
