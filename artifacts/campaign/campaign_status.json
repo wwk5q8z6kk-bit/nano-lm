@@ -508,6 +508,12 @@
       "now": 146.23,
       "spent": 8.24,
       "start": 154.47
+    },
+    "ssh_probe_outcome": {
+      "checked_at": "2026-08-23T19:21:07.015656+00:00",
+      "result": "UNREACHABLE \u2014 two SSH probes produced zero bytes and hung until killed (7 orphaned ssh procs reaped)",
+      "significance": "This is the same failure mode the manifest records for attempt 4 ('SSH proxy hangs'). The pod is billing at $1.59/hr while unreachable, so its work cannot be verified and it is closer to the SS XLI empty-resource case than to a confirmed running experiment.",
+      "still_not_terminated": "parallel lane's resource; escalated to owner rather than killed unilaterally"
     }
   },
   "schema": "nano.campaign.status.v1",

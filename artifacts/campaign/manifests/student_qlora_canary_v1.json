@@ -65,12 +65,14 @@
   "termination_condition": "50 steps finite loss + loss decrease + adapter pulled locally + fleet 0",
   "artifact_dest": "artifacts/campaign/student_qlora_canary_results.json",
   "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
-  "status": "PREP_COMPLETE_ATTEMPT_5",
+  "status": "FAIL",
   "attempt": 5,
   "prior_attempts": {
-    "1_3": "Axolotl Hub serverless — output capture broken",
-    "4": "Raw pod — ENOSPC 50GB disk, SSH proxy hangs, dep pin failures"
+    "1_3": "Axolotl Hub serverless \u2014 output capture broken",
+    "4": "Raw pod \u2014 ENOSPC 50GB disk, SSH proxy hangs, dep pin failures"
   },
   "launch_authorized": false,
-  "launch_note": "PREP only this wave; launch when wallet >= ~$153 and owner approves"
+  "launch_note": "PREP only this wave; launch when wallet >= ~$153 and owner approves",
+  "container_disk_gb": 80,
+  "pod_id": "y5zfwrdlhf8qgh"
 }
