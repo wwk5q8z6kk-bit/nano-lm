@@ -49,3 +49,35 @@ def test_duplicate_zero_line_does_not_shift_fields() -> None:
 def test_banner_noise_tolerated() -> None:
     probe = "Enjoy your Pod\nWD_DONE=0\nWD_PROCS=3\nWD_UTIL=45\nroot@host:~#\n"
     assert parse_probe(probe) == {"done": False, "procs": 3, "util": 45}
+
+
+def test_fetch_failure_is_reported_not_silently_ignored() -> None:
+    """A failed retrieval must be visible, because terminate() follows it.
+
+    The first watchdog terminated on the done-marker with no retrieval step at
+    all, deleting a completed nine-arm run along with the pod. --require-fetch
+    now refuses to terminate unless the results are safely local.
+    """
+    import pod_watchdog
+
+    def fake_ssh(pod, cmd, timeout=120):
+        return ""  # pod unreachable / empty archive
+
+    original = pod_watchdog._ssh
+    pod_watchdog._ssh = fake_ssh
+    try:
+        got = pod_watchdog.fetch_results("pod", "/workspace/x", Path("/tmp/wd_fetch_test"))
+    finally:
+        pod_watchdog._ssh = original
+
+    assert got["fetched"] is False
+    assert "reason" in got, "a failed fetch must explain why"
+
+
+def test_require_fetch_flag_exists() -> None:
+    """The guard has to be reachable from the CLI to be usable."""
+    src = (Path(__file__).resolve().parents[1] / "scripts" / "pod_watchdog.py").read_text()
+    assert "--require-fetch" in src
+    assert "--fetch-remote" in src
+    # termination must be guarded by the fetch result
+    assert "if args.require_fetch and not got.get(\"fetched\")" in src

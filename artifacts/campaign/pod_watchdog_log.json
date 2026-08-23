@@ -1,17 +1,115 @@
 {
-  "pod": "b2klblbxsl7wl7",
+  "pod": "ohljhv86yv15tz",
   "events": [
     {
-      "at": "2026-08-23T21:32:10.145537+00:00",
+      "at": "2026-08-23T22:02:23.194635+00:00",
       "done_marker": false,
-      "processes": 0,
-      "gpu_util": 96
+      "processes": 7,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:04:27.080065+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:06:30.669581+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:08:34.391870+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:10:38.528038+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:12:42.385480+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:14:46.120449+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:16:49.723951+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:20:50.468657+00:00",
+      "note": "probe unreadable; skipping"
+    },
+    {
+      "at": "2026-08-23T22:24:51.225473+00:00",
+      "note": "probe unreadable; skipping"
+    },
+    {
+      "at": "2026-08-23T22:26:55.171955+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:28:59.012109+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:31:02.869112+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:33:07.540401+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:35:12.170230+00:00",
+      "done_marker": false,
+      "processes": 11,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:37:16.294697+00:00",
+      "done_marker": false,
+      "processes": 5,
+      "gpu_util": 100
+    },
+    {
+      "at": "2026-08-23T22:39:20.156441+00:00",
+      "done_marker": false,
+      "processes": 2,
+      "gpu_util": 0
+    },
+    {
+      "at": "2026-08-23T22:41:24.416093+00:00",
+      "done_marker": true,
+      "processes": 2,
+      "gpu_util": 0
     },
     {
       "terminated": true,
-      "reason": "no training process and no done-marker \u2014 script died",
-      "at": "2026-08-23T21:32:10.887096+00:00",
-      "output": "{\n  \"deleted\": true,\n  \"id\": \"b2klblbxsl7wl7\"\n}\n"
+      "reason": "done-marker present: work complete",
+      "at": "2026-08-23T22:41:25.154068+00:00",
+      "output": "{\n  \"deleted\": true,\n  \"id\": \"ohljhv86yv15tz\"\n}\n"
     }
   ]
 }

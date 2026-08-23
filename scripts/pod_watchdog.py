@@ -149,6 +149,13 @@ def main() -> int:
     ap.add_argument("--interval", type=int, default=120)
     ap.add_argument("--max-minutes", type=int, default=150)
     ap.add_argument("--idle-strikes", type=int, default=3)
+    ap.add_argument("--fetch-remote", default="", help="remote dir to retrieve BEFORE terminating")
+    ap.add_argument("--fetch-local", type=Path, default=ROOT / "artifacts/campaign/reval_results")
+    ap.add_argument(
+        "--require-fetch",
+        action="store_true",
+        help="refuse to terminate if retrieval failed — the pod is cheaper than losing the run",
+    )
     ap.add_argument("--out", type=Path, default=ROOT / "artifacts/campaign/pod_watchdog_log.json")
     args = ap.parse_args()
 
@@ -194,6 +201,18 @@ def main() -> int:
         print(json.dumps(snapshot), flush=True)
 
         if done:
+            if args.fetch_remote:
+                got = fetch_results(args.pod, args.fetch_remote, args.fetch_local)
+                events.append({"fetch": got, "at": datetime.now(UTC).isoformat()})
+                print(json.dumps({"fetch": got}), flush=True)
+                if args.require_fetch and not got.get("fetched"):
+                    events.append({
+                        "at": datetime.now(UTC).isoformat(),
+                        "note": "NOT terminating: retrieval failed and --require-fetch is set",
+                        "pod": args.pod,
+                    })
+                    print("RETRIEVAL FAILED — pod left running so the results are not lost", flush=True)
+                    break
             events.append(terminate(args.pod, "done-marker present: work complete"))
             break
         if procs == 0 and probe:
