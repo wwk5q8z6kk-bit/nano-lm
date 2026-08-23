@@ -32,6 +32,16 @@ MANAGED_TEACHERS = {
         "base_url": "https://api.runpod.ai/v2/gpt-oss-120b/openai/v1",
         "model": "openai/gpt-oss-120b",
         "surface": "managed_reference",
+        "role": "structured_output",
+    },
+    # Generic-Qwen control (briefing SS XXII). Answers the baseline half of
+    # SS LXII Q13 -- "does Qwen3-Coder-Next materially outperform generic Qwen on
+    # tool/recovery behavior" -- at zero cost, before any paid Coder-Next probe.
+    "qwen3_32b_awq": {
+        "base_url": "https://api.runpod.ai/v2/qwen3-32b-awq/openai/v1",
+        "model": "Qwen/Qwen3-32B-AWQ",
+        "surface": "managed_reference",
+        "role": "generic_qwen_control",
     },
 }
 
@@ -268,7 +278,17 @@ def run_bench(
         completion_tokens: int | None = None
         source = "none"
         try:
-            response = client.chat.completions.create(**kwargs)
+            try:
+                response = client.chat.completions.create(**kwargs)
+            except Exception as exc:
+                # Not every teacher's OpenAI shim accepts reasoning_effort; a
+                # rejected parameter would otherwise fail all tasks and be
+                # misread as a capability score of zero.
+                if "reasoning_effort" in kwargs and "reasoning_effort" in str(exc):
+                    kwargs.pop("reasoning_effort")
+                    response = client.chat.completions.create(**kwargs)
+                else:
+                    raise
             choice = response.choices[0]
             msg = choice.message
             finish_reason = choice.finish_reason
@@ -381,7 +401,16 @@ def main() -> int:
     )
     parser.add_argument("--budget", type=float, default=5.0)
     parser.add_argument("--ledger", type=Path, default=DEFAULT_LEDGER)
-    parser.add_argument("--teacher", choices=["auto", "glm", "gpt_oss"], default="auto")
+    parser.add_argument(
+        "--teacher", choices=["auto", "glm", "gpt_oss", "qwen3_32b_awq"], default="auto"
+    )
+    parser.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="results path (default artifacts/campaign/agent_canary_v1_results.json); "
+        "use a per-teacher path to keep scoreboards side by side",
+    )
     parser.add_argument("--include-agent-tools", action="store_true", default=True)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
@@ -422,7 +451,7 @@ def main() -> int:
             deploy_error = deploy.get("error")
 
     if not endpoint_id:
-        teacher_id = "gpt_oss_120b"
+        teacher_id = args.teacher if args.teacher in MANAGED_TEACHERS else "gpt_oss_120b"
         cfg = MANAGED_TEACHERS[teacher_id]
         base_url = cfg["base_url"]
         model = cfg["model"]
@@ -483,8 +512,9 @@ def main() -> int:
         "winners_by_family_task": winners_by_family,
         "results": results,
     }
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUT_PATH.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    out_path = args.out or OUT_PATH
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     ledger.save(args.ledger)
     print(json.dumps(payload, indent=2))
     return 0
