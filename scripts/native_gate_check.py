@@ -117,6 +117,19 @@ def check() -> dict:
         f"projected(2x)=${projected} wallet=${wallet}",
     )
 
+    # 12. the corpus backing this experiment may actually support the claim.
+    # A unit fixture, or anything under the scientific-token floor, fails here
+    # rather than at conclusion time.
+    try:
+        from nanoscribe.native.corpus.guard import CorpusGuardError, assert_usable
+
+        assert_usable(manifest, "architecture_ranking")
+        add("12_corpus_supports_claim", True, "corpus cleared for architecture_ranking")
+    except CorpusGuardError as exc:
+        add("12_corpus_supports_claim", False, str(exc)[:160])
+    except Exception as exc:  # pragma: no cover
+        add("12_corpus_supports_claim", False, f"guard unavailable: {exc}")
+
     failed = [k for k, v in conditions.items() if not v["pass"]]
     return {
         "schema": "nano.campaign.native_gate.v1",
