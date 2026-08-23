@@ -1,0 +1,113 @@
+{
+  "schema": "nano.campaign.native_extended.v1",
+  "timestamp": "2026-08-23T14:52:00+00:00",
+  "commit_sha": "d0165d8",
+  "pod_id": "nrejxttt2nuxfa",
+  "pod_name": "native100-ext-202608231031",
+  "datacenter": "US-KS-2",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "marker": "NATIVE100_EXTENDED_DONE",
+  "run_id": "native100_evidence_bottleneck_s1",
+  "arm": "evidence_bottleneck",
+  "variant": "native_b_evidence_aware",
+  "seed": 1,
+  "params_m": 100,
+  "dataset_revision": "p1_distill_train_v1",
+  "dataset_n_examples": 96,
+  "batch_size": 16,
+  "max_steps_configured": 200,
+  "steps_completed": 200,
+  "epochs_completed": 34,
+  "final_train_loss": 0.048755865544080734,
+  "loss_curve": [
+    {"step": 6, "loss": 32.00298309326172, "source": "round2", "timestamp": "2026-08-23T10:51:54+00:00"},
+    {"step": 40, "loss": 5.885036945343018, "timestamp": "2026-08-23T11:18:47.840413+00:00"},
+    {"step": 80, "loss": 0.2848661541938782, "timestamp": "2026-08-23T11:18:59.952462+00:00"},
+    {"step": 120, "loss": 0.07124953716993332, "timestamp": "2026-08-23T11:19:09.273585+00:00"},
+    {"step": 160, "loss": 0.02656559832394123, "timestamp": "2026-08-23T11:19:19.477599+00:00"},
+    {"step": 200, "loss": 0.048755865544080734, "timestamp": "2026-08-23T14:34:55.514220+00:00"}
+  ],
+  "loss_reduction": {
+    "step6_to_step200": 31.99572343518958,
+    "step40_to_step200": 5.877777287270874,
+    "pct_from_step6": 99.98
+  },
+  "runtime": {
+    "pod_started_at": "2026-08-23T14:31:00+00:00",
+    "train_last_checkpoint_at": "2026-08-23T14:34:55+00:00",
+    "pod_deleted_at": "2026-08-23T14:52:00+00:00",
+    "gpu_util_peak_pct": 98,
+    "train_log_path": "/workspace/native100_extended.log"
+  },
+  "cost_estimate_usd": {
+    "rate_per_hr": 1.59,
+    "wall_clock_hr": 0.35,
+    "actual_est": 0.49
+  },
+  "wallet": {
+    "pre_launch_usd": 154.97,
+    "post_terminate_usd": 154.47,
+    "delta_est_usd": 0.50
+  },
+  "verdict": "COMPLETE_WITH_WEIGHTS",
+  "reason": "200/200 steps US-KS-2; weights pulled via direct TCP SCP; torch.load verified; smoke eval run",
+  "artifact_audit": {
+    "run_id": "native100_evidence_bottleneck_s1",
+    "step_metrics_json": true,
+    "step_metrics_files": [
+      "step_000006.json",
+      "step_000040.json",
+      "step_000080.json",
+      "step_000120.json",
+      "step_000160.json",
+      "step_000200.json"
+    ],
+    "weights_pt_local": true,
+    "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+    "weights_bytes": 1188792509,
+    "torch_load_ok": true,
+    "pull_method": "direct_tcp_scp",
+    "pull_host": "root@216.81.245.98:48625",
+    "pull_seconds_est": 46,
+    "weights_expected_paths": [
+      "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+      "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/step_000200.pt"
+    ],
+    "weights_size_on_pod_est_gb": 1.1,
+    "weights_gap_reason": "Only step_*.json metadata pulled via SSH before terminate; .pt files (~1.1GB each) left on pod container disk. Pod 3taen8m3jgcs7z deleted; CA-MTL-3 had no volume mount.",
+    "weights_recovery": "NOT_RECOVERABLE without re-train; pull_native_weights.py + finish_native_pod.sh added in ec98817",
+    "retrain_attempts": [
+      {"pod_id": "l2zq2ldhwrzruw", "status": "CUDA_DRIVER_FAIL", "note": "torch.cuda unavailable, preflight blocked training"},
+      {"pod_id": "8rbzmha2htpqs6", "status": "CUDA_DRIVER_FAIL_CPU", "note": "preflight override but CPU-only training"},
+      {"pod_id": null, "status": "NO_STOCK", "note": "CA-MTL-3/EU-RO-1/any region A100 unavailable after CUDA gate added"}
+    ],
+    "local_dir_bytes": 24576
+  },
+  "held_out_eval": {
+    "status": "SMOKE_COMPLETE",
+    "suite": "p1_contract_smoke_v1",
+    "artifact": "artifacts/campaign/native_smoke_eval_extended.json",
+    "n_cases": 3,
+    "coverage_rate": 0.0,
+    "coverage_eligible": 8,
+    "assertion_state_correct_rate": 0.0,
+    "assertion_state_correct_eligible": 0,
+    "exact_gold_span_rate": 0.0,
+    "exact_gold_span_eligible": 0,
+    "malformed": 8,
+    "note": "Hash-LM native inference produces garbled span-port lines; train loss converged but P1 structured decode not yet viable"
+  },
+  "round2_comparison": {
+    "round2_step6_loss": 32.00298309326172,
+    "extended_step200_loss": 0.048755865544080734,
+    "extended_validates_training_loop": true,
+    "seed_variance_note": "s1 seed converged strongly; s0 variance run still optional"
+  },
+  "archive": {
+    "volume_id": "04himzqxbm",
+    "volume_archive_ok": false,
+    "volume_note": "CA-MTL-3 pod without volume mount; archive on pod at /workspace/campaign_native_checkpoints",
+    "local_metrics": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/step_000{040,080,120,160,200}.json"
+  },
+  "next_action": "Improve native hash-LM decode for P1 structured eval; optional span_port extended comparison"
+}

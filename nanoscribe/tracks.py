@@ -10,6 +10,7 @@ from nanoscribe.adapters import (
     Qwen25BaselineAdapter,
     ServerlessQwen38Adapter,
     ServerlessQwen38StructuredAdapter,
+    ServerlessQwen38ToolAdapter,
     SmallApiReferenceAdapter,
     default_baseline_specs,
     default_qwen_fixture_adapter,
@@ -95,6 +96,22 @@ def serverless_strong_structured_track(
         ),
         cost_class="serverless_strong_control",
         notes="Lane B: Qwen3.8-27B structured CandidateAtom JSON",
+    )
+
+
+def serverless_strong_tool_track(
+    endpoint_id: str | None = None,
+    api_model: str = SERVERLESS_STRONG_MODEL,
+) -> TrackConfig:
+    return TrackConfig(
+        track=ModelTrack.SERVERLESS,
+        model_id="serverless/qwen3.8-27b-tool",
+        adapter_factory=lambda: ServerlessQwen38ToolAdapter(
+            endpoint_id=endpoint_id,
+            api_model=api_model,
+        ),
+        cost_class="serverless_strong_control",
+        notes="Lane B: Qwen3.8-27B OpenAI tool-calling CandidateAtom path",
     )
 
 

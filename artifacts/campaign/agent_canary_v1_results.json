@@ -1,0 +1,222 @@
+{
+  "deploy_error": null,
+  "endpoint_deleted": [],
+  "endpoint_id": null,
+  "experiment_id": "nano_agent_canary_v1",
+  "include_agent_tools": true,
+  "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
+  "model": "openai/gpt-oss-120b",
+  "results": [
+    {
+      "error": null,
+      "family": "tool_needed",
+      "gold_action": "SEARCH",
+      "latency_s": 139.815,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "tool_selection": 0.0
+      },
+      "task_id": "agent-tool_needed-01"
+    },
+    {
+      "error": null,
+      "family": "tool_not_needed",
+      "gold_action": "TOOL_NONE",
+      "latency_s": 0.88,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "unnecessary_call_rate": 1.0
+      },
+      "task_id": "agent-tool_not_needed-05"
+    },
+    {
+      "error": null,
+      "family": "similar_tools",
+      "gold_action": "READ",
+      "latency_s": 0.854,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "tool_selection": 0.0
+      },
+      "task_id": "agent-similar_tools-09"
+    },
+    {
+      "error": null,
+      "family": "invalid_tool_args",
+      "gold_action": "ABSTAIN",
+      "latency_s": 0.699,
+      "predicted_action": "ABSTAIN",
+      "raw_snippet": "ABSTAIN",
+      "scores": {
+        "abstention": 1.0,
+        "arg_validity": 1.0,
+        "outcome": 1.0
+      },
+      "task_id": "agent-invalid_tool_args-13"
+    },
+    {
+      "error": null,
+      "family": "timeout_error",
+      "gold_action": "RECOVERY",
+      "latency_s": 0.873,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "recovery": 0.0
+      },
+      "task_id": "agent-timeout_error-17"
+    },
+    {
+      "error": null,
+      "family": "ambiguous_result",
+      "gold_action": "VERIFY",
+      "latency_s": 0.85,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "verifier_invocation": 0.0
+      },
+      "task_id": "agent-ambiguous_result-21"
+    },
+    {
+      "error": null,
+      "family": "multi_tool",
+      "gold_action": "VERIFY",
+      "latency_s": 0.715,
+      "predicted_action": "READ",
+      "raw_snippet": "READ",
+      "scores": {
+        "outcome": 0.0,
+        "tool_selection": 0.0,
+        "verifier_invocation": 0.0
+      },
+      "task_id": "agent-multi_tool-25"
+    },
+    {
+      "error": null,
+      "family": "verify_needed",
+      "gold_action": "VERIFY",
+      "latency_s": 0.826,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "verifier_invocation": 0.0
+      },
+      "task_id": "agent-verify_needed-29"
+    },
+    {
+      "error": null,
+      "family": "insufficient_info",
+      "gold_action": "ABSTAIN",
+      "latency_s": 0.623,
+      "predicted_action": "ABSTAIN",
+      "raw_snippet": "ABSTAIN",
+      "scores": {
+        "abstention": 1.0,
+        "outcome": 1.0
+      },
+      "task_id": "agent-insufficient_info-33"
+    },
+    {
+      "error": null,
+      "family": "premature_stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.822,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "stop_accuracy": 0.0,
+        "verifier_invocation": 0.0
+      },
+      "task_id": "agent-premature_stop-37"
+    },
+    {
+      "error": null,
+      "family": "repeated_calls",
+      "gold_action": "STOP",
+      "latency_s": 0.883,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "stop_accuracy": 0.0
+      },
+      "task_id": "agent-repeated_calls-41"
+    },
+    {
+      "error": null,
+      "family": "state_update_recovery",
+      "gold_action": "ACT",
+      "latency_s": 0.829,
+      "predicted_action": "",
+      "raw_snippet": "",
+      "scores": {
+        "outcome": 0.0,
+        "recovery": 0.0
+      },
+      "task_id": "agent-state_update_recovery-45"
+    }
+  ],
+  "schema": "nano.campaign.agent_canary_results.v1",
+  "spend_usd_est": 0.0,
+  "summary": {
+    "n_errors": 0,
+    "n_tasks": 12,
+    "outcome_mean": 0.1667,
+    "per_capability": {
+      "abstention": 1.0,
+      "arg_validity": 1.0,
+      "cost": null,
+      "observation_use": null,
+      "outcome": 0.1667,
+      "recovery": 0.0,
+      "state_fidelity": null,
+      "steps_to_resolution": null,
+      "stop_accuracy": 0.0,
+      "tool_selection": 0.0,
+      "unnecessary_call_rate": 1.0,
+      "verifier_invocation": 0.0
+    },
+    "per_family_outcome": {
+      "ambiguous_result": 0.0,
+      "insufficient_info": 1.0,
+      "invalid_tool_args": 1.0,
+      "multi_tool": 0.0,
+      "premature_stop": 0.0,
+      "repeated_calls": 0.0,
+      "similar_tools": 0.0,
+      "state_update_recovery": 0.0,
+      "timeout_error": 0.0,
+      "tool_needed": 0.0,
+      "tool_not_needed": 0.0,
+      "verify_needed": 0.0
+    }
+  },
+  "teacher_id": "gpt_oss_120b",
+  "timestamp": "2026-08-23T11:12:55.698989+00:00",
+  "total_latency_s": 148.669,
+  "winners_by_family_task": {
+    "ambiguous_result": "agent-ambiguous_result-21",
+    "insufficient_info": "agent-insufficient_info-33",
+    "invalid_tool_args": "agent-invalid_tool_args-13",
+    "multi_tool": "agent-multi_tool-25",
+    "premature_stop": "agent-premature_stop-37",
+    "repeated_calls": "agent-repeated_calls-41",
+    "similar_tools": "agent-similar_tools-09",
+    "state_update_recovery": "agent-state_update_recovery-45",
+    "timeout_error": "agent-timeout_error-17",
+    "tool_needed": "agent-tool_needed-01",
+    "tool_not_needed": "agent-tool_not_needed-05",
+    "verify_needed": "agent-verify_needed-29"
+  }
+}

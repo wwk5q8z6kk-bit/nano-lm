@@ -142,7 +142,7 @@ def test_trainer_manifest_status() -> None:
     from nanoscribe.native.trainer import trainer_manifest
 
     manifest = trainer_manifest()
-    assert manifest["status"] == "READY_FOR_B200_LAUNCH"
+    assert manifest["status"] == "READY_FOR_GPU_LAUNCH"
     assert manifest["n_runs"] == 8
 
 

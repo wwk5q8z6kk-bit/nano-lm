@@ -75,14 +75,24 @@ async def run_suite(
             "contract_version": CONTRACT_VERSION,
         },
     )
-    cov = sum(r.aggregate.get("coverage", 0) for r in results) / max(1, len(results))
+    cov = sum(
+        r.aggregate.get("coverage_rate", r.aggregate.get("coverage", 0)) for r in results
+    ) / max(1, len(results))
     mal = sum(r.failures.malformed for r in results)
-    asc = sum(r.aggregate.get("assertion_state_correct", 0) for r in results) / max(1, len(results))
+    asc = sum(
+        r.aggregate.get("assertion_state_correct_rate", r.aggregate.get("assertion_state_correct", 0))
+        for r in results
+    ) / max(1, len(results))
+    span = sum(
+        r.aggregate.get("exact_gold_span_rate", r.aggregate.get("exact_gold_span", 0)) for r in results
+    ) / max(1, len(results))
     return {
         "suite": suite,
         "n_cases": len(results),
         "avg_coverage": round(cov, 4),
+        "coverage_rate": round(cov, 4),
         "assertion_state_correct_rate": round(asc, 4),
+        "exact_gold_span_rate": round(span, 4),
         "malformed": mal,
         "artifact": str(out),
         "n_completed": sum(1 for r in records if r.status == "completed"),

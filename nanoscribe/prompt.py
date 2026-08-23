@@ -124,3 +124,17 @@ def build_structured_candidate_prompt(source: Source, specs: tuple[_AtomSpecLike
 
 def structured_candidate_system_prompt() -> str:
     return _STRUCTURED_SYSTEM
+
+
+_TOOL_SYSTEM = (
+    "You extract clinical facts from transcripts into structured candidate atoms. "
+    "You MUST call the submit_candidate_atoms tool exactly once with all atom slots filled. "
+    "Do not reply with free text or markdown. "
+    "Quote-only evidence — never emit offsets, evidence_id, source_id, or normalized_value. "
+    "evidence_quote must copy source words exactly. "
+    "If absent, set abstained=true and omit evidence_quote."
+)
+
+
+def tool_candidate_system_prompt() -> str:
+    return _TOOL_SYSTEM

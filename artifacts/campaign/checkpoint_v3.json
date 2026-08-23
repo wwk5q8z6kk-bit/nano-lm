@@ -1,16 +1,15 @@
 {
   "schema": "nano.campaign.checkpoint.v3",
-  "timestamp": "2026-08-23T10:24:00+00:00",
-  "commit_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
+  "timestamp": "2026-08-23T11:25:00+00:00",
+  "commit_sha": "55547c3",
   "wallet": {
-    "client_balance_usd": 160.38,
-    "current_spend_per_hr": 1.394,
-    "campaign_remaining_est": 150.45
+    "client_balance_usd": 159.56,
+    "current_spend_per_hr": 0.0,
+    "campaign_remaining_est": 148.4
   },
   "active_resources": {
-    "pods": 1,
-    "serverless": 0,
-    "native_round2_pod": "3m8gvc8orfnem6"
+    "pods": 0,
+    "serverless": 0
   },
   "session_spend_usd_est": 1.7,
   "native_round1": {
@@ -29,28 +28,42 @@
     "recovery": "network_volume_http_proxy"
   },
   "native_round2": {
-    "status": "IN_PROGRESS",
-    "pod_id": "3m8gvc8orfnem6",
-    "commit": "aefe4e2",
+    "status": "COMPLETE",
+    "experiment_id": "native100_round2_promotion_v1",
+    "pod_id": "6opxbt2tqphjrm",
+    "commit": "2094214",
     "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
-    "volume_id": "04himzqxbm",
+    "datacenter": "CA-MTL-3",
     "run_ids": [
       "native100_evidence_bottleneck_s0",
       "native100_evidence_bottleneck_s1",
       "native100_span_port_s0",
       "native100_span_port_s1"
     ],
-    "init": "fresh_random",
-    "cost_per_hr": 1.39,
-    "early_gate": "kill dominated arms after step ~50 loss compare"
+    "runs_completed": 4,
+    "steps_per_run": 6,
+    "losses": {
+      "evidence_bottleneck_s0": 61.73,
+      "evidence_bottleneck_s1": 32.0,
+      "span_port_s0": 77.49,
+      "span_port_s1": 81.34
+    },
+    "artifact": "artifacts/campaign/native_round2_summary.json",
+    "hybrid_warranted": false,
+    "extended_training_recommended": true,
+    "winner": "native100_evidence_bottleneck_s1"
   },
   "teacher_collective": {
     "lane": "P8_distillation",
-    "status": "STUB_MANIFEST_ONLY",
+    "status": "CANARY_COMPLETE",
     "architecture": "open_weight_agentic_teacher_collective",
     "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
+    "results": "artifacts/campaign/agent_canary_v1_results.json",
     "task_suite": "data/p1_agent_canary_v1.json",
-    "n_tasks": 48,
+    "n_tasks_probed": 12,
+    "teacher_probe": "gpt_oss_120b_managed",
+    "outcome_mean": 0.1667,
+    "glm_deploy_attempt": "epfbo06vpbjy9k deleted (not ready 90s)",
     "trajectory_compiler": "nanoscribe/trajectory_compiler.py",
     "primary_teachers": [
       "Qwen3-Coder-Next-FP8",
@@ -58,13 +71,35 @@
       "GLM-4.5-Air-FP8",
       "GPT-OSS-120B"
     ],
-    "canary_gate": "BLOCKED until native100 early gate OR <$5 ephemeral probe",
+    "canary_gate": "COMPLETE",
     "deploy_order_usd_capability": [
       "GPT-OSS-120B managed ref",
       "GLM-4.5-Air-FP8 ephemeral vLLM",
       "Qwen3-Coder-Next-FP8 ephemeral vLLM",
       "MiniMax-M2.1"
     ]
+  },
+  "native_extended": {
+    "manifest": "artifacts/campaign/manifests/native100_extended_v1.json",
+    "status": "EXTENDED_COMPLETE_WITH_WEIGHTS",
+    "pod_id": "nrejxttt2nuxfa",
+    "datacenter": "US-KS-2",
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "commit": "d0165d8",
+    "run_id": "native100_evidence_bottleneck_s1",
+    "steps_completed": 200,
+    "final_loss": 0.048755865544080734,
+    "weights_local": true,
+    "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+    "weights_bytes": 1188792509,
+    "torch_load_ok": true,
+    "weight_pull_method": "direct_tcp_scp",
+    "weight_pull_status": "COMPLETE",
+    "held_out_eval": "SMOKE_COMPLETE — coverage 0/8, assertion 0/0, malformed 8",
+    "weight_pull": "direct TCP SCP preferred; scripts/pull_native_weights.py + finish_native_pod.sh fallback",
+    "retrain_blocked": false,
+    "artifact": "artifacts/campaign/native_extended_summary.json",
+    "launch": true
   },
   "managed_reference": {
     "winner": "qwen3_32b_awq",
@@ -108,8 +143,8 @@
   "next_gate_usd": {
     "25": "managed+native start (passed)",
     "60": "student baseline + gap analysis (passed)",
-    "100": "native100 early gate (IN_PROGRESS)",
+    "100": "native100 early gate (COMPLETE — extended training gated)",
     "135": "kill marginal"
   },
-  "next_dollar": "native100 early gate on 3m8gvc8orfnem6 — monitor loss@step50; then <$5 GLM-4.5-Air-FP8 ephemeral agent canary probe"
+  "next_dollar": "Re-train native100 extended when A100 stock returns (pull+eval pipeline ready) OR span_port extended comparison OR QLoRA canary OR agent canary Qwen3-Coder"
 }

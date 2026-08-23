@@ -24,8 +24,9 @@ python3 scripts/campaign_spend.py --ledger "${LEDGER}" gate --amount "$(python3 
 SYNC_CMD="cd /workspace/nano-lm 2>/dev/null || { cd /workspace && git clone https://github.com/wwk5q8z6kk-bit/nano-lm.git && cd nano-lm; }; git fetch origin && git checkout ${COMMIT_SHA}; pip install -q -r requirements.txt; export HF_HOME=/workspace/hf_cache"
 PREFLIGHT_CMD="python3 -m nanoscribe.runpod_gpu_preflight"
 TERMINATE_AFTER="${NATIVE_ROUND2_TERMINATE_AFTER:-$(date -u -v+3H '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || date -u -d '+3 hours' '+%Y-%m-%dT%H:%M:%SZ')}"
-NATIVE_ARCHIVE='mkdir -p /workspace/campaign_native_checkpoints && rsync -a artifacts/native_checkpoints/ /workspace/campaign_native_checkpoints/'
-REMOTE="python3 scripts/train_native_nano.py --export-train-json; for rid in ${RUN_IDS[*]}; do python3 scripts/train_native_nano.py --run-id \"\$rid\" || exit 1; done; ${NATIVE_ARCHIVE}; echo NATIVE100_DONE"
+REMOTE_BOOT="nohup bash scripts/native_round2_remote.sh > /workspace/native100_train.log 2>&1 &"
+KEEPALIVE="sleep infinity"
+STARTUP="${SYNC_CMD}; pip install -q -r requirements.txt; ${REMOTE_BOOT}; ${KEEPALIVE}"
 
 TS=$(date +%Y%m%d%H%M)
 POD_JSON=$(runpodctl pod create \
@@ -38,7 +39,7 @@ POD_JSON=$(runpodctl pod create \
   --container-disk-in-gb 40 \
   --volume-mount-path /workspace \
   --terminate-after "${TERMINATE_AFTER}" \
-  --docker-args "bash -lc $(printf %q "${SYNC_CMD}; ${PREFLIGHT_CMD} || exit 1; ${REMOTE}")")
+  --docker-args "bash -lc $(printf %q "${STARTUP}")")
 
 POD_ID=$(echo "${POD_JSON}" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
 RATE=$(echo "${POD_JSON}" | python3 -c "import sys,json; print(json.load(sys.stdin).get('costPerHr', ${RATE}))")

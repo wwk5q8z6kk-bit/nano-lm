@@ -80,6 +80,7 @@ def refresh_status(inv: dict) -> dict:
     status["campaign_remaining"] = inv["budget"]["campaign_remaining"]
     status["current_spend_per_hr"] = inv["wallet"].get("current_spend_per_hr", 0.0)
     status["hub_catalog"] = inv["hub_catalog"]["resolved"]
+    status["execution_authority"] = "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md"
     status["posture"] = "IDLE" if inv["active_pod_count"] == 0 and inv["current_spend_per_hr"] < 0.01 else "ACTIVE"
     CAMPAIGN_STATUS_PATH.write_text(json.dumps(status, indent=2, sort_keys=True) + "\n")
     return status
@@ -87,8 +88,20 @@ def refresh_status(inv: dict) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Campaign control plane")
-    parser.add_argument("action", choices=["inventory", "refresh"], default="inventory", nargs="?")
+    parser.add_argument("action", choices=["inventory", "refresh", "terminate-pods"], default="inventory", nargs="?")
     args = parser.parse_args()
+    if args.action == "terminate-pods":
+        pods = _run_json(["runpodctl", "pod", "list", "-o", "json"])
+        out = []
+        for pod in pods if isinstance(pods, list) else []:
+            pid = pod.get("id")
+            if not pid:
+                continue
+            proc = subprocess.run(["runpodctl", "pod", "delete", str(pid), "-o", "json"], capture_output=True, text=True)
+            out.append({"pod_id": pid, "ok": proc.returncode == 0})
+        print(json.dumps(out, indent=2))
+        return 0
+
     inv = inventory()
     if args.action == "refresh":
         refresh_status(inv)

@@ -23,7 +23,10 @@ from nanoscribe.prompt import (
     build_structured_candidate_prompt,
     span_port_system_prompt,
     structured_candidate_system_prompt,
+    tool_candidate_system_prompt,
 )
+from nanoscribe.tool_calling import build_openai_chat_kwargs
+from nanoscribe.tools import scribing_tool_definitions, tool_choice_submit_candidates
 from nanoscribe.serverless_fanout import (
     CONTRACT_VERSION,
     FanoutJobRecord,
@@ -150,6 +153,26 @@ def build_serverless_job_specs(
                     openai_input=openai_input,
                 )
             )
+        elif mode == "tool":
+            user_prompt = build_structured_candidate_prompt(case.model_input.source, case.atom_specs)
+            openai_input = build_openai_chat_kwargs(
+                model=model,
+                system_prompt=tool_candidate_system_prompt(),
+                user_prompt=user_prompt,
+                tools=scribing_tool_definitions(),
+                tool_choice=tool_choice_submit_candidates(),
+                max_tokens=1024,
+            )
+            specs.append(
+                FanoutJobSpec(
+                    case_id=case.encounter_id,
+                    experiment_id=experiment_id,
+                    contract_version=CONTRACT_VERSION,
+                    mode=mode,
+                    atom_id=None,
+                    openai_input=openai_input,
+                )
+            )
         elif mode == "span_port":
             for atom_spec in case.atom_specs:
                 user_prompt = build_span_port_prompt(case.model_input.source, atom_spec)
@@ -183,13 +206,16 @@ def records_to_candidate_batch(
     *,
     mode: str,
 ) -> ModelCandidateBatch:
-    if mode == "structured":
+    if mode in {"structured", "tool"}:
         record = next((item for item in records if item.case_id == case.encounter_id), None)
         if record is None or not record.response:
             return ModelCandidateBatch(atoms=())
         try:
-            batch = ModelCandidate.from_json(str(record.response))
-            return ModelCandidateBatch(atoms=batch.atoms)
+            from nanoscribe.tool_calling import ToolCallParser
+
+            parser = ToolCallParser()
+            result = parser.parse_text_json(str(record.response))
+            return ModelCandidateBatch(atoms=parser.to_model_candidate(result).atoms)
         except Exception:
             return ModelCandidateBatch(atoms=())
     atoms = []

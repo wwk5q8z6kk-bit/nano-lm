@@ -1,0 +1,10 @@
+[
+  {
+    "id": "call_valid_1",
+    "type": "function",
+    "function": {
+      "name": "submit_candidate_atoms",
+      "arguments": "{\"schema_version\":\"nano.candidate.v0\",\"atoms\":[{\"atom_id\":\"atom-neck\",\"atom_type\":\"symptom\",\"raw_value\":\"neck\",\"assertion_state\":\"asserted\",\"speaker\":\"patient\",\"experiencer\":\"patient\",\"temporality\":{\"kind\":\"current\"},\"certainty\":\"stated\",\"evidence_quote\":\"neck\",\"review_required\":false,\"abstained\":false,\"malformed\":false}]}"
+    }
+  }
+]

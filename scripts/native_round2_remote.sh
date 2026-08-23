@@ -10,5 +10,15 @@ for rid in native100_evidence_bottleneck_s0 native100_evidence_bottleneck_s1 nat
   python3 scripts/train_native_nano.py --run-id "${rid}"
 done
 mkdir -p /workspace/campaign_native_checkpoints
-rsync -a artifacts/native_checkpoints/ /workspace/campaign_native_checkpoints/
+python3 - <<'PY'
+import shutil
+from pathlib import Path
+src = Path("artifacts/native_checkpoints")
+dst = Path("/workspace/campaign_native_checkpoints")
+dst.mkdir(parents=True, exist_ok=True)
+for run_dir in src.glob("native100_*"):
+    if run_dir.is_dir():
+        shutil.copytree(run_dir, dst / run_dir.name, dirs_exist_ok=True)
+print("ARCHIVE_OK", dst)
+PY
 echo NATIVE100_DONE

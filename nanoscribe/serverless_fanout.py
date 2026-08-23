@@ -28,7 +28,7 @@ class FanoutJobSpec:
     case_id: str
     experiment_id: str
     contract_version: str
-    mode: str  # span_port | structured
+    mode: str  # span_port | structured | tool
     atom_id: str | None
     openai_input: dict[str, Any]
 
@@ -64,21 +64,36 @@ class FanoutJobRecord:
         return payload
 
 
-def extract_openai_content(output: Any) -> str:
-    """Normalize RunPod /run output to assistant text."""
+def extract_openai_message(output: Any) -> dict[str, Any]:
+    """Extract the first OpenAI chat message dict from RunPod /run output."""
     if output is None:
-        return ""
+        return {}
     if isinstance(output, list) and output:
         output = output[0]
     if isinstance(output, dict):
         choices = output.get("choices")
         if choices:
             message = choices[0].get("message") or {}
-            return str(message.get("content") or "").strip()
+            return message if isinstance(message, dict) else {}
         nested = output.get("openai_output")
         if isinstance(nested, dict):
-            return extract_openai_content(nested)
-    return str(output).strip()
+            return extract_openai_message(nested)
+    return {}
+
+
+def extract_openai_content(output: Any) -> str:
+    """Normalize RunPod /run output to assistant text or tool-call arguments."""
+    message = extract_openai_message(output)
+    if not message:
+        return str(output or "").strip()
+    tool_calls = message.get("tool_calls")
+    if tool_calls:
+        from nanoscribe.tool_calling import ToolCallParser
+
+        result = ToolCallParser().parse_tool_calls(tool_calls)
+        if result.raw:
+            return result.raw
+    return str(message.get("content") or "").strip()
 
 
 def estimate_worker_cost_usd(

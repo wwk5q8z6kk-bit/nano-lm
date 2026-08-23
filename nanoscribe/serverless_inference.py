@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import time
 from collections.abc import Sequence
+from typing import Any
 from urllib.parse import urlparse
 
 from nanoscribe.adapters import AtomSpec
@@ -103,6 +104,11 @@ def generate_serverless_structured_candidates(
     endpoint_id: str | None = None,
     base_url: str | None = None,
     max_tokens: int = 512,
+    use_json_object: bool = True,
+    use_tools: bool = False,
+    include_agent_tools: bool = False,
+    tool_choice: str | dict[str, Any] | None = None,
+    vllm_env: dict[str, str] | None = None,
 ) -> tuple:
     from nanoscribe.structured_inference import generate_structured_candidates
 
@@ -113,7 +119,40 @@ def generate_serverless_structured_candidates(
         client=client,
         model=model,
         max_tokens=max_tokens,
-        use_json_object=True,
+        use_json_object=use_json_object,
+        use_tools=use_tools,
+        include_agent_tools=include_agent_tools,
+        tool_choice=tool_choice,
+        vllm_env=vllm_env,
+    )
+
+
+def generate_serverless_tool_candidates(
+    model_input,
+    atom_specs: Sequence[AtomSpec],
+    *,
+    model: str,
+    endpoint_id: str | None = None,
+    base_url: str | None = None,
+    max_tokens: int = 1024,
+    include_coding_stub: bool = False,
+    include_agent_tools: bool = False,
+    tool_choice: str | dict[str, Any] | None = None,
+    vllm_env: dict[str, str] | None = None,
+) -> tuple:
+    from nanoscribe.tool_inference import generate_tool_candidates
+
+    client = _openai_client(endpoint_id=endpoint_id, base_url=base_url)
+    return generate_tool_candidates(
+        model_input,
+        atom_specs,
+        client=client,
+        model=model,
+        max_tokens=max_tokens,
+        include_coding_stub=include_coding_stub,
+        include_agent_tools=include_agent_tools,
+        tool_choice=tool_choice,
+        vllm_env=vllm_env,
     )
 
 

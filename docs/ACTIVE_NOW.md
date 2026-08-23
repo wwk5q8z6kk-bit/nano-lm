@@ -79,3 +79,12 @@ Materially costly runs outside the active experiment budget, confirmatory eviden
 ## Links
 
 - [PROJECT_CHARTER.md](PROJECT_CHARTER.md) · [EXECUTION_PLAN.md](EXECUTION_PLAN.md) · [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md) · [domains/medical/SCRIBING.md](domains/medical/SCRIBING.md)
+
+## Paid campaign execution (RunPod)
+
+**Authority:** [`artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md`](../artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md) — single source of truth for autonomous paid waves (supersedes ad-hoc wave prompts).
+
+**Control plane (no spend):** `python3 scripts/campaign_control_plane.py inventory`
+
+**Live wallet:** `runpodctl user` · `campaign_remaining = min(authorized_remaining, clientBalance − $10 floor)`
+

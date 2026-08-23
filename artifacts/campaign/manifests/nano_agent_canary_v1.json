@@ -106,5 +106,20 @@
     "p1_blocker": false
   },
   "task_suite": "data/p1_agent_canary_v1.json",
-  "n_tasks": 48
+  "n_tasks": 48,
+  "vllm_env": {
+    "TOOL_CALL_PARSER": "qwen3_coder",
+    "ENABLE_AUTO_TOOL_CHOICE": "true"
+  },
+  "inference_tools": [
+    "submit_candidate_atoms",
+    "submit_summary",
+    "submit_table"
+  ],
+  "inference_entrypoints": {
+    "structured_json": "nanoscribe/structured_inference.generate_structured_candidates",
+    "tool_calls": "nanoscribe/tool_inference.generate_tool_candidates",
+    "unified_parser": "nanoscribe/capabilities/parser.CapabilityToolParser",
+    "adapter": "nanoscribe/inference/qwen3_coder.Qwen3CoderInferenceAdapter"
+  }
 }

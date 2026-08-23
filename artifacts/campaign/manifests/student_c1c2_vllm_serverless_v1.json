@@ -13,5 +13,13 @@
   "max_cost_usd": 8.0,
   "artifact_dest": "artifacts/p1_runs/fanout_*_qwen_structured_*.json",
   "termination_condition": "C1+C2 complete then scale endpoint to idle",
-  "endpoint_id": "vllm-r8abq9b4w5p5wl"
+  "endpoint_id": "vllm-r8abq9b4w5p5wl",
+  "vllm_env": {
+    "TOOL_CALL_PARSER": "qwen3_coder",
+    "ENABLE_AUTO_TOOL_CHOICE": "true"
+  },
+  "inference_modes": {
+    "default": "structured",
+    "supported": ["structured", "tool"]
+  }
 }

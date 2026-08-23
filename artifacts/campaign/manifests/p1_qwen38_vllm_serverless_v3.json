@@ -13,5 +13,16 @@
   "max_cost_usd": 10.0,
   "artifact_dest": "artifacts/p1_runs/fanout_*_qwen_structured_*.json",
   "termination_condition": "C1+C2 complete then delete endpoint",
-  "endpoint_id": "vllm-6gd1gw3pm5ka3d"
+  "endpoint_id": "vllm-6gd1gw3pm5ka3d",
+  "vllm_env": {
+    "TOOL_CALL_PARSER": "qwen3_coder",
+    "ENABLE_AUTO_TOOL_CHOICE": "true",
+    "TRUST_REMOTE_CODE": "true",
+    "DTYPE": "bfloat16"
+  },
+  "inference_modes": {
+    "default": "structured",
+    "supported": ["structured", "tool", "span_port"],
+    "tool_choice": "submit_candidate_atoms"
+  }
 }

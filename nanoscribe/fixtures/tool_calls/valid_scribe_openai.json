@@ -1,0 +1,16 @@
+{
+  "name": "valid_scribe_openai",
+  "expected_outcome": "success",
+  "expected_capability": "scribe",
+  "expected_atom_count": 1,
+  "tool_calls": [
+    {
+      "id": "call_1",
+      "type": "function",
+      "function": {
+        "name": "submit_candidate_atoms",
+        "arguments": "{\"schema_version\":\"nano.candidate.v0\",\"atoms\":[{\"atom_id\":\"atom-neck\",\"atom_type\":\"symptom\",\"raw_value\":\"neck\",\"assertion_state\":\"asserted\",\"speaker\":\"patient\",\"experiencer\":\"patient\",\"temporality\":{\"kind\":\"current\"},\"certainty\":\"stated\",\"evidence_quote\":\"neck\",\"quotes\":[\"neck\"],\"review_required\":false,\"abstained\":false,\"malformed\":false}]}"
+      }
+    }
+  ]
+}

@@ -1,7 +1,11 @@
 {
   "schema": "nano.campaign.experiment_manifest.v1",
   "experiment_id": "native100_round2_promotion_v1",
-  "git_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
+  "git_sha": "2094214919fd4c806ec378012cde0ceac4318ef1",
+  "pod_id": "6opxbt2tqphjrm",
+  "datacenter": "CA-MTL-3",
+  "volume_id": null,
+  "volume_note": "EU-RO-1 A100+volume unavailable; trained on CA-MTL-3 container disk",
   "dataset_revision": "p1_distill_train_v1",
   "command": "scripts/launch_native_round2.sh",
   "surface": "pod_template",

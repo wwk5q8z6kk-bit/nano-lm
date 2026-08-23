@@ -226,6 +226,40 @@ class KimiK3StructuredAdapter:
 
 
 @dataclass(frozen=True, slots=True)
+class ServerlessQwen38ToolAdapter:
+    """Qwen3.8-27B CandidateAtom extraction via OpenAI tool calling."""
+
+    model_id: str = "serverless/qwen3.8-27b-tool"
+    api_model: str = "Qwen/Qwen3.8-27B"
+    endpoint_id: str | None = None
+    base_url: str | None = None
+    max_tokens: int = 1024
+    include_coding_stub: bool = False
+
+    def propose(
+        self,
+        model_input: ModelInput,
+        atom_specs: Sequence[AtomSpec],
+    ) -> ModelCandidateBatch:
+        from nanoscribe.serverless_inference import generate_serverless_tool_candidates
+
+        batch, latency_s, memory_bytes = generate_serverless_tool_candidates(
+            model_input,
+            atom_specs,
+            model=self.api_model,
+            endpoint_id=self.endpoint_id,
+            base_url=self.base_url,
+            max_tokens=self.max_tokens,
+            include_coding_stub=self.include_coding_stub,
+        )
+        return ModelCandidateBatch(
+            atoms=batch.atoms,
+            latency_s=latency_s,
+            memory_bytes=memory_bytes,
+        )
+
+
+@dataclass(frozen=True, slots=True)
 class ServerlessQwen38StructuredAdapter:
     """Qwen3.8-27B structured CandidateAtom JSON via RunPod Serverless."""
 

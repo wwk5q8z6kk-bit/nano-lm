@@ -1,14 +1,23 @@
 {
   "schema": "nano.campaign.native_round1.v1",
-  "timestamp": "2026-08-23T05:10:00+00:00",
+  "timestamp": "2026-08-23T05:39:22+00:00",
   "commit_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
   "pod_id": "6o3fj6clc5dcmo",
   "marker": "NATIVE_DONE",
   "runs_completed": 8,
-  "checkpoints_local": false,
-  "metrics_local": false,
-  "verdict": "COMPLETE_BUT_UNRANKED",
-  "reason": "Pod deleted post-NATIVE_DONE; only smoke_cpu checkpoints exist locally. No val_loss artifacts recovered from d6dfad47 search.",
+  "checkpoints_local": true,
+  "metrics_local": true,
+  "recovery": {
+    "method": "network_volume_http_proxy",
+    "volume_id": "04himzqxbm",
+    "volume_path": "/workspace/nano-lm/artifacts/native_checkpoints",
+    "campaign_native_checkpoints_on_volume": false,
+    "probe_pod_id": "iyyolshw3yj0u3",
+    "recovered_artifacts": "step_000006.json per run_id (weights remain on volume)"
+  },
+  "verdict": "COMPLETE_RANKED",
+  "reason": "Recovered final-step metrics from network volume via volume-recovery-http pod; val_loss not logged in native checkpoints \u2014 ranked on extra.loss (final_train_loss).",
+  "metric_note": "native checkpoints store final_train_loss in extra.loss only; val_loss field absent in nano.native.checkpoint.v1",
   "run_ids": [
     "native30_bottleneck_span_s0",
     "native30_bottleneck_span_s1",
@@ -19,12 +28,122 @@
     "native30_decoder_struct_s0",
     "native30_decoder_struct_s1"
   ],
+  "rankings": [
+    {
+      "run_id": "native30_bottleneck_struct_s1",
+      "cell": "B",
+      "variant": "native_b_evidence_aware",
+      "seed": 1,
+      "step": 6,
+      "final_train_loss": 39.389217376708984,
+      "val_loss": null
+    },
+    {
+      "run_id": "native30_bottleneck_span_s0",
+      "cell": "A",
+      "variant": "native_b_evidence_aware",
+      "seed": 0,
+      "step": 6,
+      "final_train_loss": 40.9154052734375,
+      "val_loss": null
+    },
+    {
+      "run_id": "native30_bottleneck_span_s1",
+      "cell": "A",
+      "variant": "native_b_evidence_aware",
+      "seed": 1,
+      "step": 6,
+      "final_train_loss": 41.564842224121094,
+      "val_loss": null
+    },
+    {
+      "run_id": "native30_bottleneck_struct_s0",
+      "cell": "B",
+      "variant": "native_b_evidence_aware",
+      "seed": 0,
+      "step": 6,
+      "final_train_loss": 43.87163162231445,
+      "val_loss": null
+    },
+    {
+      "run_id": "native30_decoder_span_s1",
+      "cell": "C",
+      "variant": "native_a_decoder_baseline",
+      "seed": 1,
+      "step": 6,
+      "final_train_loss": 52.65174102783203,
+      "val_loss": null
+    },
+    {
+      "run_id": "native30_decoder_struct_s1",
+      "cell": "D",
+      "variant": "native_a_decoder_baseline",
+      "seed": 1,
+      "step": 6,
+      "final_train_loss": 52.7446174621582,
+      "val_loss": null
+    },
+    {
+      "run_id": "native30_decoder_span_s0",
+      "cell": "C",
+      "variant": "native_a_decoder_baseline",
+      "seed": 0,
+      "step": 6,
+      "final_train_loss": 54.122718811035156,
+      "val_loss": null
+    },
+    {
+      "run_id": "native30_decoder_struct_s0",
+      "cell": "D",
+      "variant": "native_a_decoder_baseline",
+      "seed": 0,
+      "step": 6,
+      "final_train_loss": 56.86528778076172,
+      "val_loss": null
+    }
+  ],
+  "cell_means": {
+    "B": 41.63042449951172,
+    "A": 41.2401237487793,
+    "C": 53.387229919433594,
+    "D": 54.80495262145996
+  },
+  "cell_ranking": [
+    {
+      "cell": "A",
+      "mean_final_train_loss": 41.2401237487793,
+      "label": "evidence_bottleneck + span_port"
+    },
+    {
+      "cell": "B",
+      "mean_final_train_loss": 41.63042449951172,
+      "label": "evidence_bottleneck + structured_json"
+    },
+    {
+      "cell": "C",
+      "mean_final_train_loss": 53.387229919433594,
+      "label": "slot_router + span_port"
+    },
+    {
+      "cell": "D",
+      "mean_final_train_loss": 54.80495262145996,
+      "label": "slot_router + structured_json"
+    }
+  ],
+  "top2_cells": [
+    "A",
+    "B"
+  ],
+  "top2_mechanisms": [
+    "evidence_bottleneck",
+    "span_port"
+  ],
   "factorial_cells": {
     "A": "evidence_bottleneck + span_port",
     "B": "evidence_bottleneck + structured_json",
     "C": "slot_router + span_port",
     "D": "slot_router + structured_json"
   },
-  "round2_100m_gate": "BLOCKED — re-run round 1 with artifact sync before promotion",
-  "next_action": "Relaunch native30 8-way with pre-delete checkpoint pull via network volume or rsync hook"
+  "round2_100m_gate": "UNBLOCKED \u2014 promote evidence_bottleneck + top transport cells A/B to 100M screening",
+  "next_action": "Optional: rsync latest.pt from volume if weights needed locally; launch round2 100M on winning mechanisms"
 }

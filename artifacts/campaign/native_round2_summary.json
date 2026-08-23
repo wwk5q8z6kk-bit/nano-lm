@@ -1,0 +1,161 @@
+{
+  "schema": "nano.campaign.native_round2.v1",
+  "timestamp": "2026-08-23T10:58:00+00:00",
+  "commit_sha": "2094214919fd4c806ec378012cde0ceac4318ef1",
+  "experiment_id": "native100_round2_promotion_v1",
+  "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
+  "pod_id": "6opxbt2tqphjrm",
+  "datacenter": "CA-MTL-3",
+  "marker": "NATIVE100_DONE",
+  "runs_completed": 4,
+  "checkpoints_local": true,
+  "metrics_local": true,
+  "dataset_revision": "p1_distill_train_v1",
+  "dataset_n_examples": 96,
+  "batch_size": 16,
+  "steps_completed_per_run": 6,
+  "max_steps_configured": 200,
+  "steps_note": "6 steps = one full epoch on 96-example distill set at batch 16; NOT the configured 200-step budget (~33 epochs unused)",
+  "token_estimate": {
+    "chars_per_epoch": 52524,
+    "tokens_per_epoch_est": 13131,
+    "tokens_total_all_runs_est": 52524,
+    "method": "char_total/4 over p1_distill_train_v1, ×4 runs ×1 epoch"
+  },
+  "runtime": {
+    "gpu_train_seconds_est": 16,
+    "pod_wall_clock_min_est": 5,
+    "train_log_path": "/workspace/native100_train.log",
+    "first_step_ts": "2026-08-23T10:51:49+00:00",
+    "last_step_ts": "2026-08-23T10:52:05+00:00"
+  },
+  "cost_estimate_usd": {
+    "committed_ledger": 1.39,
+    "actual_wall_clock_est": 0.12,
+    "rate_per_hr": 1.39,
+    "note": "ledger committed 1h slot; pod terminated ~5min after bootstrap"
+  },
+  "ranking_criterion": "extra.loss (final_train_loss) at step 6 — lower is better; val_loss absent",
+  "metric_note": "Checkpoints store composite loss only; span/evidence/state components not logged per-step",
+  "verdict": "COMPLETE_RANKED",
+  "reason": "4×100M promotion arms completed on CUDA; metrics pulled locally before pod terminate",
+  "run_ids": [
+    "native100_evidence_bottleneck_s0",
+    "native100_evidence_bottleneck_s1",
+    "native100_span_port_s0",
+    "native100_span_port_s1"
+  ],
+  "rankings": [
+    {
+      "rank": 1,
+      "run_id": "native100_evidence_bottleneck_s1",
+      "arm": "evidence_bottleneck",
+      "objective": "span_port",
+      "variant": "native_b_evidence_aware",
+      "params_m": 100,
+      "seed": 1,
+      "step": 6,
+      "final_train_loss": 32.00298309326172,
+      "val_loss": null
+    },
+    {
+      "rank": 2,
+      "run_id": "native100_evidence_bottleneck_s0",
+      "arm": "evidence_bottleneck",
+      "objective": "span_port",
+      "variant": "native_b_evidence_aware",
+      "params_m": 100,
+      "seed": 0,
+      "step": 6,
+      "final_train_loss": 61.73436737060547,
+      "val_loss": null
+    },
+    {
+      "rank": 3,
+      "run_id": "native100_span_port_s0",
+      "arm": "span_port",
+      "objective": "span_port",
+      "variant": "native_a_decoder_baseline",
+      "params_m": 100,
+      "seed": 0,
+      "step": 6,
+      "final_train_loss": 77.48926544189453,
+      "val_loss": null
+    },
+    {
+      "rank": 4,
+      "run_id": "native100_span_port_s1",
+      "arm": "span_port",
+      "objective": "span_port",
+      "variant": "native_a_decoder_baseline",
+      "params_m": 100,
+      "seed": 1,
+      "step": 6,
+      "final_train_loss": 81.33507537841797,
+      "val_loss": null
+    }
+  ],
+  "arm_means": {
+    "evidence_bottleneck": 46.868675231933594,
+    "span_port": 79.41217041015625
+  },
+  "arm_ranking": [
+    {
+      "arm": "evidence_bottleneck",
+      "mean_final_train_loss": 46.868675231933594,
+      "label": "evidence_bottleneck + span_port @ 100M"
+    },
+    {
+      "arm": "span_port",
+      "mean_final_train_loss": 79.41217041015625,
+      "label": "slot_router + span_port @ 100M"
+    }
+  ],
+  "winners": {
+    "overall_run": "native100_evidence_bottleneck_s1",
+    "overall_loss": 32.00298309326172,
+    "winning_arm": "evidence_bottleneck",
+    "runner_up_arm": "span_port"
+  },
+  "seed_variance": {
+    "evidence_bottleneck": {
+      "s0": 61.73436737060547,
+      "s1": 32.00298309326172,
+      "spread": 29.73138427734375,
+      "verdict": "HIGH — dominates ranking uncertainty"
+    },
+    "span_port": {
+      "s0": 77.48926544189453,
+      "s1": 81.33507537841797,
+      "spread": 3.8458099365234375,
+      "verdict": "LOW — arm stably worse than evidence_bottleneck"
+    }
+  },
+  "round1_comparison": {
+    "note": "Loss not comparable across 30M vs 100M param scale; compare arm ordering and seed stability",
+    "round1_cell_A_bottleneck_span_30m_mean": 41.2401237487793,
+    "round1_cell_C_decoder_span_30m_mean": 53.387229919433594,
+    "round2_evidence_bottleneck_100m_mean": 46.868675231933594,
+    "round2_span_port_100m_mean": 79.41217041015625,
+    "arm_ordering_preserved": true,
+    "evidence_bottleneck_still_leads": true,
+    "round1_winner_mechanisms": ["evidence_bottleneck", "span_port"],
+    "round2_confirms": "evidence_bottleneck architecture; span_port slot_router arm dominated at 100M"
+  },
+  "early_gate": {
+    "transport_vs_state_decomposition": "NOT_AVAILABLE — checkpoint logs composite extra.loss only",
+    "loss_weight_hint": "evidence_bottleneck arm trains span_port + evidence_align + assertion_state; span_port arm trains lm + span_port only",
+    "hybrid_warranted": false,
+    "hybrid_rationale": "No metric complementarity — evidence_bottleneck wins both seeds on mean; high s0/s1 spread on bottleneck is variance not complementary strength",
+    "extended_training_recommended": true,
+    "extended_training_rationale": "Only 6/200 steps consumed (1 epoch); seed variance on winner arm (spread 29.7) — multi-epoch run with manifest before scaling spend",
+    "next_native_action": "Manifest-gated multi-epoch native100 (evidence_bottleneck s1 seed) OR 2 more seeds if variance gate fails"
+  },
+  "archive": {
+    "volume_id": "04himzqxbm",
+    "volume_archive_ok": false,
+    "failure": "rsync not in container image; fixed in scripts/native_round2_remote.sh",
+    "local_metrics": "artifacts/native_checkpoints/native100_*/step_000006.json"
+  },
+  "next_action": "Extended multi-epoch native100 (manifest) OR agent canary probe; student QLoRA parallel if assertion gap remains priority"
+}
