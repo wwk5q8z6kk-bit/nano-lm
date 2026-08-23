@@ -46,18 +46,22 @@ def set_workers(
 
 
 def configure_burst(endpoint_id: str | None = None, *, max_workers: int = 10) -> dict[str, object]:
-    return set_workers(endpoint_id, workers_min=1, workers_max=max_workers)
+    try:
+        return set_workers(endpoint_id, workers_min=1, workers_max=max_workers)
+    except RuntimeError as exc:
+        return {"ok": False, "skipped": True, "error": str(exc)}
 
 
 def configure_pause(endpoint_id: str | None = None) -> dict[str, object]:
     """Scale serverless workers to zero when a burst batch ends."""
     endpoint_id = _endpoint_id(endpoint_id)
-    # RunPod treats 0 as "no change" for --workers-min/--workers-max; use max=1 min=0
-    # and rely on idleTimeout (300s) for cost discipline when zero is rejected.
     try:
         return set_workers(endpoint_id, workers_min=0, workers_max=1)
     except RuntimeError:
-        return get_endpoint(endpoint_id)
+        try:
+            return get_endpoint(endpoint_id)
+        except RuntimeError as exc:
+            return {"ok": False, "skipped": True, "error": str(exc)}
 
 
 def fetch_health(endpoint_id: str | None = None) -> dict[str, object]:

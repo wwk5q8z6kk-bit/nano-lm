@@ -1,0 +1,30 @@
+{
+  "schema": "nano.campaign.native_round1.v1",
+  "timestamp": "2026-08-23T05:10:00+00:00",
+  "commit_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+  "pod_id": "6o3fj6clc5dcmo",
+  "marker": "NATIVE_DONE",
+  "runs_completed": 8,
+  "checkpoints_local": false,
+  "metrics_local": false,
+  "verdict": "COMPLETE_BUT_UNRANKED",
+  "reason": "Pod deleted post-NATIVE_DONE; only smoke_cpu checkpoints exist locally. No val_loss artifacts recovered from d6dfad47 search.",
+  "run_ids": [
+    "native30_bottleneck_span_s0",
+    "native30_bottleneck_span_s1",
+    "native30_bottleneck_struct_s0",
+    "native30_bottleneck_struct_s1",
+    "native30_decoder_span_s0",
+    "native30_decoder_span_s1",
+    "native30_decoder_struct_s0",
+    "native30_decoder_struct_s1"
+  ],
+  "factorial_cells": {
+    "A": "evidence_bottleneck + span_port",
+    "B": "evidence_bottleneck + structured_json",
+    "C": "slot_router + span_port",
+    "D": "slot_router + structured_json"
+  },
+  "round2_100m_gate": "BLOCKED — re-run round 1 with artifact sync before promotion",
+  "next_action": "Relaunch native30 8-way with pre-delete checkpoint pull via network volume or rsync hook"
+}
