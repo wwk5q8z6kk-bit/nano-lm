@@ -1,0 +1,139 @@
+{
+  "schema": "nano.p1.serverless_campaign.v0",
+  "campaign_id": "p1_serverless_campaign_v0",
+  "branch": "frontier/p1-serverless-qwen38-v0",
+  "base_commit": "d3f3369",
+  "mandate": "RunPod Serverless pivot — inference/eval/teacher on serverless; raw pods for training only",
+  "budget": {
+    "absolute_max_usd": 200,
+    "normal_envelope_usd": 180,
+    "safety_margin_usd": 20,
+    "ledger": "artifacts/campaign/spend.json"
+  },
+  "lanes": {
+    "lane_1_strong_control": {
+      "name": "Qwen3.8-27B serverless strong control",
+      "model": "Qwen/Qwen3.8-27B",
+      "endpoint_id": "tbnur4mac60i70",
+      "hub": "runpod-workers/worker-vllm",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "rate_usd_hr": 1.39,
+      "workers_min": 0,
+      "workers_max": 2,
+      "model_reference": "https://huggingface.co/Qwen/Qwen3.8-27B:main",
+      "urls": {
+        "health": "https://api.runpod.ai/v2/tbnur4mac60i70/health",
+        "run": "https://api.runpod.ai/v2/tbnur4mac60i70/run",
+        "runsync": "https://api.runpod.ai/v2/tbnur4mac60i70/runsync",
+        "openai_v1": "https://api.runpod.ai/v2/tbnur4mac60i70/openai/v1"
+      },
+      "role": "P1 core, P1 adversarial, P2/P3 exploratory strong control",
+      "status": "DEPLOYED_SMOKE_OK"
+    },
+    "lane_2_frontier_ceiling": {
+      "name": "Frontier ceiling serverless (verify one-by-one)",
+      "status": "RESEARCH_ONLY",
+      "candidates": [
+        {
+          "model": "Qwen/Qwen3.8-2.4T-A95B",
+          "variant": "FP8",
+          "runnable": false,
+          "reason": "MoE 2.4T/A95B — needs multi-GPU tensor parallel; not turnkey single-worker vLLM",
+          "min_gpu_gb": 180,
+          "workers_min_0": "unknown"
+        },
+        {
+          "model": "deepseek-ai/DeepSeek-V4-Pro-0813",
+          "variant": null,
+          "runnable": false,
+          "reason": "Not on HF public hub at verify time; API-only or gated",
+          "min_gpu_gb": null,
+          "workers_min_0": "unknown"
+        },
+        {
+          "model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+          "variant": null,
+          "runnable": false,
+          "reason": "304B MoE — exceeds single A100/H100; official 4×GB300 recipe",
+          "min_gpu_gb": 288,
+          "workers_min_0": false
+        },
+        {
+          "model": "zai-org/GLM-5.2",
+          "variant": null,
+          "runnable": false,
+          "reason": "753B MoE — not self-hostable on RunPod single-worker vLLM",
+          "min_gpu_gb": 1500,
+          "workers_min_0": false
+        },
+        {
+          "model": "nvidia/GLM-5.2-NVFP4",
+          "variant": "NVFP4",
+          "runnable": false,
+          "reason": "753B quantized still multi-node; no turnkey serverless worker",
+          "min_gpu_gb": 400,
+          "workers_min_0": false
+        },
+        {
+          "model": "nvidia/Kimi-K3-NVFP4",
+          "variant": "NVFP4",
+          "runnable": "verify_next",
+          "reason": "NVFP4 on B200/B300 may fit; needs isolated deploy test on B200 serverless",
+          "min_gpu_gb": 180,
+          "workers_min_0": true
+        },
+        {
+          "model": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4",
+          "variant": "NVFP4",
+          "runnable": false,
+          "reason": "550B MoE — multi-GPU required even NVFP4",
+          "min_gpu_gb": 288,
+          "workers_min_0": false
+        },
+        {
+          "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+          "variant": "NVFP4",
+          "runnable": "verify_next",
+          "reason": "120B MoE NVFP4 may fit B200 180GB; cheapest ceiling candidate to test",
+          "min_gpu_gb": 180,
+          "workers_min_0": true
+        }
+      ],
+      "selection_policy": "ONE strongest working by capability × throughput ÷ cost; do not batch deploy"
+    },
+    "lane_3_training": {
+      "name": "B200/B300 raw pod training",
+      "status": "GATED",
+      "gate": "Serverless Lane 1 smoke must pass before parallel training spend",
+      "workloads": [
+        "large-student QLoRA/SFT",
+        "Native Nano scratch",
+        "verifier"
+      ],
+      "forbidden": [
+        "default inference on raw pods",
+        "empty 4090 inference pods"
+      ]
+    }
+  },
+  "harness": {
+    "entrypoint": "python3 scripts/p1_harness.py",
+    "tracks": ["fixture", "serverless", "api", "student"],
+    "serverless_track": "serverless",
+    "test_sets": ["tiny_fixture"],
+    "output_dir": "artifacts/p1_runs/"
+  },
+  "runpod": {
+    "inference_default": "serverless",
+    "training_default": "raw_pod",
+    "launch_script": "scripts/p1_serverless_launch.sh",
+    "spend_cli": "scripts/campaign_spend.py",
+    "network_volume": "04himzqxbm"
+  },
+  "architecture_decision": {
+    "inference": "RunPod Serverless vLLM OpenAI-compatible endpoints",
+    "strong_control": "Qwen3.8-27B on A100-80GB PCIe ($1.39/hr, workersMin=0)",
+    "frontier_ceiling": "Verify Nemotron-3-Super-120B-NVFP4 or Kimi-K3-NVFP4 on B200 serverless next",
+    "raw_pods": "Training/distillation/Native Nano only — NOT default inference"
+  }
+}
