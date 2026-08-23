@@ -174,7 +174,11 @@ def main() -> int:
     for arm, v in verdicts.items():
         for mode, d in v.items():
             print(f"  {arm:30s} {mode:14s} effect={d['effect']:+.4f}  {d['verdict']}")
-    print(f"\nwrote {args.out.relative_to(ROOT)}")
+    try:
+        shown = args.out.relative_to(ROOT)
+    except ValueError:
+        shown = args.out
+    print(f"\nwrote {shown}")
     return 0
 
 
