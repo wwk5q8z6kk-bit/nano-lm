@@ -106,3 +106,42 @@ def test_axis_coverage_reports_shortfalls() -> None:
     result = axis_coverage_floor(_sample(Partition.TRAIN), minimum=10**6)
     assert not result["pass"]
     assert result["below_floor"], "an unreachable floor must report the shortfall"
+
+
+def test_corpus_build_is_deterministic() -> None:
+    """The corpus is not committed; determinism is what makes that safe.
+
+    The generator and the manifest content_hash are the durable artifacts. If a
+    rebuild did not reproduce the hash, the manifest would describe a corpus that
+    no longer exists and the pod would train on something different from what was
+    validated.
+    """
+    import subprocess
+    import sys as _sys
+
+    root = Path(__file__).resolve().parents[1]
+    build = root / "scripts" / "build_native_corpus.py"
+    proc = subprocess.run(
+        [_sys.executable, str(build), "--stage", "smoke", "--manifest-only"],
+        capture_output=True,
+        text=True,
+        cwd=root,
+        check=False,
+    )
+    assert proc.returncode in (0, 1), proc.stderr[-400:]
+    import json as _json
+
+    first = _json.loads(
+        (root / "artifacts/campaign/native_corpus_smoke_v1_manifest.json").read_text()
+    )["content_hash"]
+    subprocess.run(
+        [_sys.executable, str(build), "--stage", "smoke", "--manifest-only"],
+        capture_output=True,
+        text=True,
+        cwd=root,
+        check=False,
+    )
+    second = _json.loads(
+        (root / "artifacts/campaign/native_corpus_smoke_v1_manifest.json").read_text()
+    )["content_hash"]
+    assert first == second, "corpus build is not deterministic; the manifest hash cannot be trusted"
