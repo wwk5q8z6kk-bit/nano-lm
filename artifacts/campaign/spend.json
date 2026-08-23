@@ -1,8 +1,8 @@
 {
   "campaign_id": "p1_acceleration_campaign_v0",
   "campaign_spend_actual": 5.1568,
-  "campaign_spend_committed": 15.2405,
-  "campaign_spend_remaining": 164.6027,
+  "campaign_spend_committed": 29.2405,
+  "campaign_spend_remaining": 150.6027,
   "entries": [
     {
       "amount_usd": 0.37,
@@ -615,6 +615,90 @@
       "rate_per_hr": 1.39,
       "started_at": "2026-08-23T15:35:20.874948+00:00",
       "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-4",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "suhdy3wi75vc7r",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T16:21:28.217443+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-4",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "845f75yo87moc8",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T16:26:02.333710+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-4",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "xoespoezn2dxex",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T16:36:04.515006+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-4",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "4mspyyjgi5anbx",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T16:46:04.652753+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-4",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "pu34js2ij6acq3",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T17:45:10.692794+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-4",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "lqz5fdjoomjhul",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T18:02:31.135270+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-4",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "ed0n59peu3flly",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T18:50:14.134998+00:00",
+      "status": "committed"
     }
   ],
   "envelopes": {
@@ -624,6 +708,6 @@
   },
   "posture": "NORMAL",
   "schema": "nano.campaign.spend.v0",
-  "total_exposure": 20.3973,
-  "updated_at": "2026-08-23T15:35:20.874951+00:00"
+  "total_exposure": 34.3973,
+  "updated_at": "2026-08-23T18:50:14.135002+00:00"
 }

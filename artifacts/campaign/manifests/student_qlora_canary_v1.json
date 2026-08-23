@@ -4,25 +4,73 @@
   "git_sha": "88030dc1d6482a049331226ad8145239ddbb0cd0",
   "dataset_revision": "p1_distill_train_v1",
   "dataset_url": "https://gist.githubusercontent.com/wwk5q8z6kk-bit/f3d11aa2463908190976f388b7b5afc1/raw/p1_distill_train_axolotl_v1.json",
-  "command": "scripts/student_qlora_canary.py --attempt 3 --est-cost 1.0",
-  "surface": "hub_serverless",
-  "gpu_or_model": "NVIDIA A100 80GB PCIe / Qwen/Qwen2.5-32B-Instruct",
-  "hub_stable_locator": "axolotl-ai-cloud/axolotl",
-  "hub_listing_id": "cma1ofy3e000008l7he7c764k",
-  "resolved_at": "2026-08-23T15:50:00+00:00",
+  "command": "scripts/student_qlora_pod_canary.py --attempt 5 --est-cost 2.0",
+  "surface": "raw_pod",
+  "gpu_or_model": "Qwen/Qwen2.5-32B-Instruct",
+  "disk_gb": 80,
+  "disk_note": "Qwen2.5-32B HF shard download needs 65GB+ before 4-bit quantize; attempt 4 failed ENOSPC at 50GB",
+  "gpu_tier_preferences": [
+    {
+      "rank": 1,
+      "gpu": "NVIDIA L40S",
+      "rate_usd_hr_est": 0.99,
+      "vram_gb": 48,
+      "note": "cheapest fit for 32B QLoRA (~20-28GB)"
+    },
+    {
+      "rank": 2,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "rate_usd_hr_est": 1.39,
+      "vram_gb": 80,
+      "note": "proven in native round1/2"
+    },
+    {
+      "rank": 3,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "rate_usd_hr_est": 1.59,
+      "vram_gb": 80,
+      "note": "fallback; US-KS-2 proven CUDA"
+    }
+  ],
+  "datacenter": "US-KS-2",
+  "hub_stable_locator": "runpod-torch-v240",
+  "hub_listing_id": "runpod-torch-v240",
+  "resolved_at": "2026-08-23T19:00:00+00:00",
   "max_runtime_min": 90,
-  "max_cost_usd": 1.0,
+  "max_cost_usd": 2.0,
   "max_steps": 50,
   "adapter": "qlora",
   "base_model": "Qwen/Qwen2.5-32B-Instruct",
-  "capture_strategy": "runsync_primary_stream_fallback",
+  "capture_strategy": "direct_tcp_ssh_log_tail_scp_adapter",
+  "bootstrap": {
+    "deps_pinned": [
+      "peft==0.12.0",
+      "bitsandbytes==0.43.3",
+      "accelerate==0.34.2",
+      "datasets==2.21.0",
+      "transformers==4.44.2",
+      "safetensors",
+      "sentencepiece"
+    ],
+    "trainer": "scripts/student_qlora_minimal_train.py (transformers.Trainer, no trl)",
+    "upload": "scp via direct TCP",
+    "adapter_pull": "scripts/pull_qlora_adapter.py"
+  },
   "capture_requirements": [
-    "runsync or stream poll until output non-null",
-    "parse loss milestones at steps 1/10/25/50 from training log stream",
-    "adapter path from checkpoint log or hub_model_id HF push when token present"
+    "STEP_LOSS milestones at steps 1/10/25/50 in /workspace/qlora_canary.log",
+    "TRAIN_DONE + ADAPTER_SAVED markers",
+    "SCP adapter to artifacts/campaign/student_qlora_canary_adapter/",
+    "safetensors load verify"
   ],
-  "termination_condition": "50 steps finite loss + loss decrease + adapter path + non-null output",
+  "termination_condition": "50 steps finite loss + loss decrease + adapter pulled locally + fleet 0",
   "artifact_dest": "artifacts/campaign/student_qlora_canary_results.json",
-  "status": "LAUNCHING",
-  "attempt": 3
+  "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
+  "status": "PREP_COMPLETE_ATTEMPT_5",
+  "attempt": 5,
+  "prior_attempts": {
+    "1_3": "Axolotl Hub serverless — output capture broken",
+    "4": "Raw pod — ENOSPC 50GB disk, SSH proxy hangs, dep pin failures"
+  },
+  "launch_authorized": false,
+  "launch_note": "PREP only this wave; launch when wallet >= ~$153 and owner approves"
 }

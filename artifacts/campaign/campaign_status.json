@@ -54,6 +54,7 @@
     "underpowered": "4 tasks/family; ~63/axis needed to rank at 0.25 effect"
   },
   "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE",
+  "gpu_training_topology": "artifacts/campaign/gpu_training_topology_v1.json",
   "campaign_remaining": 149.0,
   "campaign_spend_start": 1.8211,
   "checkpoint_authority": "artifacts/campaign/checkpoint_v4.json",
@@ -143,7 +144,7 @@
       "gpu_util_peak_pct": 42,
       "held_out_eval": "SCREENING_COMPLETE \u2014 coverage 84/150 (56%), assertion 68/84 (81%), exact_span 84/84, malformed 11",
       "hybrid_warranted": false,
-      "live_runpod_balance": 154.47,
+      "live_runpod_balance": 146.87,
       "log_path": "/workspace/native100_train.log",
       "losses": {
         "native100_evidence_bottleneck_s0": 61.73,
@@ -189,7 +190,22 @@
     },
     "lane_student": {
       "status": "C1C2_COMPLETE",
-      "surface": "hub_vllm_ephemeral"
+      "surface": "hub_vllm_ephemeral",
+      "qlora_canary": {
+        "attempt": 5,
+        "status": "PREP_COMPLETE",
+        "manifest": "artifacts/campaign/manifests/student_qlora_canary_v1.json",
+        "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
+        "infra_fixes": [
+          "container_disk_gb 80 (was 50, ENOSPC on Qwen2.5-32B HF download)",
+          "gpu preference L40S $0.99 > A100 PCIe $1.39 > A100 SXM $1.59",
+          "US-KS-2 proven CUDA",
+          "pinned deps peft/transformers/bnb; transformers.Trainer not trl",
+          "direct TCP SCP adapter pull"
+        ],
+        "launch_authorized": false,
+        "launch_threshold_wallet_usd": 153.0
+      }
     },
     "lane_teacher_collective": {
       "canary_gate": "UNBLOCKED",
@@ -216,7 +232,7 @@
     }
   ],
   "ledger_remaining": 180.2668,
-  "live_runpod_balance": 154.47,
+  "live_runpod_balance": 146.87,
   "mandate_baseline_usd": 185.0,
   "model_statuses": {
     "managed_reference": {
@@ -398,8 +414,18 @@
   },
   "new_actual_spend": 2.9121,
   "new_committed_spend": 0,
+  "native_real_train_phase": {
+    "status": "STUB_PREP_ONLY",
+    "manifest": "artifacts/campaign/manifests/native_real_train_phase_v1.json",
+    "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
+    "network_volume_id": "04himzqxbm",
+    "token_budget_target": "10M-100M tokens",
+    "cost_est_usd": "12-35 minimum viable",
+    "launch_authorized": false
+  },
   "next_actions": [
-    "OWNER DECISION: native training-corpus strategy \u2014 4.5KB cannot support the task (binding constraint)",
+    "QLoRA canary attempt 5 PREP complete — launch when wallet >= ~$153 and owner approves (~$2 cap)",
+    "OWNER DECISION: native training-corpus strategy — 4.5KB cannot support the task (binding constraint)",
     "Decide whether STOP/TOOL_NONE/ABSTAIN are separable actions in a stateless single-action harness (repeated_calls scoring)",
     "Power the donor suite (~63 tasks/capability axis) before any per-capability donor ranking or paid probe",
     "Re-derive native mechanism ranking from scratch after corpus fix; prior native results are invalid"
@@ -470,5 +496,11 @@
   "students": {
     "student_plane": "vllm_sglang_serverless_not_raw_a100"
   },
-  "timestamp": "2026-08-23T15:03:52.758163+00:00"
+  "timestamp": "2026-08-23T19:05:00+00:00",
+  "fleet_audit": {
+    "as_of": "2026-08-23T19:05:00+00:00",
+    "pods_active": 0,
+    "terminated_this_wave": ["ed0n59peu3flly"],
+    "note": "ed0n59peu3flly already absent at fleet check; no idle burn"
+  }
 }
