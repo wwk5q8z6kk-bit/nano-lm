@@ -5,7 +5,24 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 POD_ID="${1:?pod id required}"
 OUT=$(bash scripts/runpod_pod_ssh.sh "${POD_ID}" \
-  "python3 -c \"import torch, json; print(json.dumps({'cuda': torch.cuda.is_available(), 'name': torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}))\"" 2>&1)
+  "python3 -c \"
+import json, torch
+ok = torch.cuda.is_available()
+mem = 0
+name = None
+err = None
+if ok:
+    try:
+        t = torch.zeros(256, 256, device='cuda')
+        mem = int(torch.cuda.memory_allocated())
+        name = torch.cuda.get_device_name(0)
+        del t
+        torch.cuda.empty_cache()
+    except Exception as e:
+        ok = False
+        err = str(e)
+print(json.dumps({'cuda': ok and mem > 0, 'mem': mem, 'name': name, 'err': err}))
+\"" 2>&1)
 echo "${OUT}"
 if echo "${OUT}" | grep -q '"cuda": true'; then
   echo "CUDA_OK"

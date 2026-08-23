@@ -11,13 +11,14 @@ LEDGER="${CAMPAIGN_LEDGER:-artifacts/campaign/spend.json}"
 EST_HOURS="${NATIVE_EXTENDED_HOURS:-0.75}"
 RATE="${NATIVE_EXTENDED_RATE:-1.39}"
 MANIFEST="artifacts/campaign/manifests/native100_extended_v1.json"
+GPU_ID="${NATIVE_GPU_ID:-NVIDIA A100 80GB PCIe}"
 
 python3 scripts/campaign_spend.py --ledger "${LEDGER}" gate --amount "$(python3 -c "print(round(${RATE}*${EST_HOURS},4))")" >/dev/null
 
 CREATE_ARGS=(
   --name "native100-ext-$(date +%Y%m%d%H%M)"
   --template-id runpod-torch-v240
-  --gpu-id "NVIDIA A100 80GB PCIe"
+  --gpu-id "${GPU_ID}"
   --data-center-ids "${DATA_CENTER}"
   --cloud-type SECURE
   --container-disk-in-gb 40
@@ -52,7 +53,7 @@ python3 scripts/campaign_spend.py --ledger "${LEDGER}" commit \
   --description "Native100 extended evidence_bottleneck_s1" \
   --amount "${EST_COST}" \
   --pod-id "${POD_ID}" \
-  --gpu "NVIDIA A100 80GB PCIe" \
+  --gpu "${GPU_ID}" \
   --rate-hr "${RATE}" >/dev/null
 
 echo "native_extended_pod=${POD_ID}"
