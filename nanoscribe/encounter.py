@@ -7,7 +7,6 @@ canonical JSON, and fail-closed invariants. It does not extract facts.
 from __future__ import annotations
 
 import json
-import re
 import unicodedata
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
@@ -15,18 +14,8 @@ from enum import Enum
 from typing import Any
 
 SCHEMA_VERSION = "nano.encounter.v0"
-AUTHORITATIVE_SPEAKERS = frozenset({"patient", "clinician"})
 STRIP_ARTICLES_NFKC = "strip_articles_nfkc"
 _SURROUNDING = " \t\r\n.,;:!?\"'`‘’"
-_FAMILY_CUE = re.compile(
-    r"\b(mother|father|mom|dad|sister|brother|grandmother|grandfather|aunt|uncle)\b",
-    re.IGNORECASE,
-)
-_UNCERTAIN_CUE = re.compile(
-    r"\b(not sure|unsure|don't know|do not know|maybe|might)\b",
-    re.IGNORECASE,
-)
-_DENIAL_CUE = re.compile(r"\b(no(?:ne)?|deny|denied|nothing)\b", re.IGNORECASE)
 
 
 class EncounterError(ValueError):
@@ -44,6 +33,9 @@ class Speaker(str, Enum):
     CLINICIAN = "clinician"
     OTHER = "other"
     UNKNOWN = "unknown"
+
+
+AUTHORITATIVE_SPEAKERS = frozenset({Speaker.PATIENT, Speaker.CLINICIAN})
 
 
 class AssertionState(str, Enum):
@@ -187,12 +179,31 @@ def apply_normalization(name: str, value: str) -> str:
     return normalize_value(value)
 
 
-def is_denial_text(text: str) -> bool:
-    return _DENIAL_CUE.search(text) is not None and _UNCERTAIN_CUE.search(text) is None
+def _value_grounded_in_span(raw_value: str, span_text: str) -> bool:
+    """Literal containment after only superficial normalization. Not semantic inference."""
+    if raw_value in span_text:
+        return True
+    grounded = normalize_value(raw_value)
+    return bool(grounded) and grounded in normalize_value(span_text)
 
 
-def is_uncertain_text(text: str) -> bool:
-    return _UNCERTAIN_CUE.search(text) is not None
+def _require_id_tuple(value: object, path: str) -> tuple[str, ...]:
+    if not isinstance(value, (tuple, list)):
+        _fail("type_error", "expected a sequence of identifiers", path)
+    ids = tuple(value)
+    if any(not isinstance(item, str) or not item or item.strip() != item for item in ids):
+        _fail("invalid_string", "identifiers must be non-empty, edge-trimmed strings", path)
+    return ids
+
+
+def _require_typed_tuple(value: object, expected: type, path: str) -> tuple[Any, ...]:
+    try:
+        items = tuple(value)  # type: ignore[arg-type]
+    except TypeError:
+        _fail("type_error", "expected a sequence", path)
+    if any(not isinstance(item, expected) for item in items):
+        _fail("type_error", f"expected {expected.__name__} values", path)
+    return items
 
 
 @dataclass(frozen=True, slots=True)
@@ -201,6 +212,16 @@ class TemporalState:
     onset_raw: str | None = None
     duration_raw: str | None = None
     time_expression_raw: str | None = None
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.kind, Temporality):
+            _fail("type_error", "kind must be a Temporality", "$.kind")
+        if self.onset_raw is not None:
+            _require_nonempty_string(self.onset_raw, "$.onset_raw")
+        if self.duration_raw is not None:
+            _require_nonempty_string(self.duration_raw, "$.duration_raw")
+        if self.time_expression_raw is not None:
+            _require_nonempty_string(self.time_expression_raw, "$.time_expression_raw")
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -292,6 +313,8 @@ class Turn:
         _require_nonempty_string(self.source_id, "$.source_id")
         if not isinstance(self.speaker, Speaker):
             _fail("type_error", "speaker must be a Speaker", "$.speaker")
+        _require_int(self.start, "$.start")
+        _require_int(self.end, "$.end")
         if self.start < 0 or self.end <= self.start:
             _fail("invalid_span", "turn must satisfy 0 <= start < end", "$")
         _require_nonempty_string(self.text, "$.text")
@@ -333,7 +356,12 @@ class Source:
         _require_nonempty_string(self.source_id, "$.source_id")
         if not isinstance(self.text, str) or not self.text:
             _fail("invalid_string", "source text must be a non-empty string", "$.text")
-        object.__setattr__(self, "turns", tuple(self.turns))
+        try:
+            object.__setattr__(self, "turns", tuple(self.turns))
+        except TypeError:
+            _fail("type_error", "turns must be a sequence of Turn values", "$.turns")
+        if any(not isinstance(turn, Turn) for turn in self.turns):
+            _fail("type_error", "turns must contain Turn values", "$.turns")
 
     def turn(self, turn_id: str) -> Turn:
         for turn in self.turns:
@@ -427,7 +455,17 @@ class ClinicalAtom:
             _fail("type_error", "temporality must be a TemporalState", "$.temporality")
         if not isinstance(self.certainty, Certainty):
             _fail("type_error", "certainty must be a Certainty", "$.certainty")
-        object.__setattr__(self, "evidence_ids", tuple(self.evidence_ids))
+        object.__setattr__(self, "evidence_ids", _require_id_tuple(self.evidence_ids, "$.evidence_ids"))
+        _require_bool(self.review_required, "$.review_required")
+        if (
+            self.assertion_state is AssertionState.UNCERTAIN
+            and self.certainty is not Certainty.UNCERTAIN
+        ):
+            _fail(
+                "uncertain_certainty_mismatch",
+                "UNCERTAIN atoms require Certainty.UNCERTAIN",
+                "$.certainty",
+            )
         if self.normalized_value is not None and self.normalization_transform is None:
             _fail(
                 "normalized_without_transform",
@@ -513,8 +551,8 @@ class Conflict:
 
     def __post_init__(self) -> None:
         _require_nonempty_string(self.conflict_id, "$.conflict_id")
-        object.__setattr__(self, "atom_ids", tuple(self.atom_ids))
-        object.__setattr__(self, "evidence_ids", tuple(self.evidence_ids))
+        object.__setattr__(self, "atom_ids", _require_id_tuple(self.atom_ids, "$.atom_ids"))
+        object.__setattr__(self, "evidence_ids", _require_id_tuple(self.evidence_ids, "$.evidence_ids"))
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -553,7 +591,8 @@ class UnresolvedItem:
         _require_nonempty_string(self.unresolved_id, "$.unresolved_id")
         _require_nonempty_string(self.topic, "$.topic")
         _require_nonempty_string(self.reason, "$.reason")
-        object.__setattr__(self, "evidence_ids", tuple(self.evidence_ids))
+        _require_bool(self.review_required, "$.review_required")
+        object.__setattr__(self, "evidence_ids", _require_id_tuple(self.evidence_ids, "$.evidence_ids"))
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -599,11 +638,17 @@ class EncounterRecord:
         _require_nonempty_string(self.encounter_id, "$.encounter_id")
         if self.schema_version != SCHEMA_VERSION:
             _fail("schema_version", f"schema_version must be {SCHEMA_VERSION}", "$.schema_version")
-        object.__setattr__(self, "sources", tuple(self.sources))
-        object.__setattr__(self, "evidence", tuple(self.evidence))
-        object.__setattr__(self, "atoms", tuple(self.atoms))
-        object.__setattr__(self, "conflicts", tuple(self.conflicts))
-        object.__setattr__(self, "unresolved", tuple(self.unresolved))
+        object.__setattr__(self, "sources", _require_typed_tuple(self.sources, Source, "$.sources"))
+        object.__setattr__(
+            self, "evidence", _require_typed_tuple(self.evidence, EvidenceSpan, "$.evidence")
+        )
+        object.__setattr__(self, "atoms", _require_typed_tuple(self.atoms, ClinicalAtom, "$.atoms"))
+        object.__setattr__(
+            self, "conflicts", _require_typed_tuple(self.conflicts, Conflict, "$.conflicts")
+        )
+        object.__setattr__(
+            self, "unresolved", _require_typed_tuple(self.unresolved, UnresolvedItem, "$.unresolved")
+        )
         self.validate()
 
     def source(self, source_id: str) -> Source:
@@ -633,6 +678,8 @@ class EncounterRecord:
             self._validate_atom(atom, path=f"$.atoms[{index}]")
         for index, conflict in enumerate(self.conflicts):
             self._validate_conflict(conflict, path=f"$.conflicts[{index}]")
+        for index, item in enumerate(self.unresolved):
+            self._validate_unresolved(item, path=f"$.unresolved[{index}]")
 
     def _all_ids(self) -> Iterable[str]:
         yield self.encounter_id
@@ -691,11 +738,24 @@ class EncounterRecord:
             _fail("denied_without_evidence", "DENIED requires explicit evidence, not silence", path)
         if atom.assertion_state is AssertionState.ASSERTED and not atom.evidence_ids:
             _fail("asserted_without_evidence", "ASSERTED requires evidence", path)
-        if atom.assertion_state is AssertionState.DENIED:
-            if not any(is_denial_text(span.text) for span in spans):
+        if atom.assertion_state is AssertionState.UNCERTAIN and not atom.evidence_ids:
+            _fail(
+                "uncertain_without_evidence",
+                "UNCERTAIN requires explicit uncertainty evidence, not silence",
+                path,
+            )
+        if atom.assertion_state in (AssertionState.ASSERTED, AssertionState.UNCERTAIN):
+            if not any(_value_grounded_in_span(atom.raw_value, span.text) for span in spans):
                 _fail(
-                    "denied_without_denial_state",
-                    "DENIED requires denial wording, not uncertainty or silence",
+                    "value_not_grounded",
+                    "raw_value must be contained in at least one referenced evidence span",
+                    path,
+                )
+        if any(span.speaker not in AUTHORITATIVE_SPEAKERS for span in spans):
+            if not atom.review_required:
+                _fail(
+                    "nonauthoritative_without_review",
+                    "OTHER/UNKNOWN evidence cannot settle an atom without review",
                     path,
                 )
         if atom.assertion_state is AssertionState.CONFLICTING:
@@ -706,20 +766,15 @@ class EncounterRecord:
                     "CONFLICTING requires two textually distinct evidence spans",
                     path,
                 )
-        if atom.experiencer is Experiencer.PATIENT:
-            for span in spans:
-                turn_text = self.source(span.source_id).turn(span.turn_id).text
-                if _FAMILY_CUE.search(turn_text):
-                    _fail(
-                        "experiencer_mismatch",
-                        "family-member evidence cannot be a patient experiencer",
-                        path,
-                    )
 
     def _validate_conflict(self, conflict: Conflict, *, path: str) -> None:
         for atom_id in conflict.atom_ids:
             self.atom(atom_id)
         for evidence_id in conflict.evidence_ids:
+            self.span(evidence_id)
+
+    def _validate_unresolved(self, item: UnresolvedItem, *, path: str) -> None:
+        for evidence_id in item.evidence_ids:
             self.span(evidence_id)
 
     def to_dict(self) -> dict[str, Any]:

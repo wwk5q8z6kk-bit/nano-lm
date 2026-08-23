@@ -20,9 +20,11 @@ from nanoscribe.encounter import (
     EncounterRecord,
     EvidenceSpan,
     Experiencer,
+    Source,
     Speaker,
     TemporalState,
     Temporality,
+    Turn,
     UnresolvedItem,
     apply_normalization,
     assemble_source,
@@ -219,7 +221,7 @@ def test_absence_from_silence_rejected() -> None:
     )
 
 
-def test_uncertain_statement_is_not_denial() -> None:
+def test_uncertain_statement_requires_evidence_and_matching_certainty() -> None:
     rec = _record(
         _atom(
             atom_id="atom-med",
@@ -232,15 +234,27 @@ def test_uncertain_statement_is_not_denial() -> None:
     )
     rec.validate()
     expect(
-        "denied_without_denial_state",
+        "uncertain_without_evidence",
         lambda: _record(
             _atom(
                 atom_id="atom-med",
                 atom_type=AtomType.MEDICATION,
                 raw_value="anything",
-                assertion_state=AssertionState.DENIED,
-                evidence_ids=("ev-unsure",),
+                assertion_state=AssertionState.UNCERTAIN,
+                certainty=Certainty.UNCERTAIN,
+                evidence_ids=(),
             )
+        ),
+    )
+    expect(
+        "uncertain_certainty_mismatch",
+        lambda: _atom(
+            atom_id="atom-med",
+            atom_type=AtomType.MEDICATION,
+            raw_value="anything",
+            assertion_state=AssertionState.UNCERTAIN,
+            certainty=Certainty.STATED,
+            evidence_ids=("ev-unsure",),
         ),
     )
 
@@ -294,7 +308,7 @@ def test_patient_and_clinician_attribution() -> None:
     assert rec.atom("atom-plan").speaker is Speaker.CLINICIAN
 
 
-def test_family_member_experiencer() -> None:
+def test_family_member_experiencer_is_typed_not_inferred() -> None:
     rec = _record(
         _atom(
             atom_id="atom-fh",
@@ -307,18 +321,17 @@ def test_family_member_experiencer() -> None:
     )
     rec.validate()
     assert rec.atom("atom-fh").experiencer is Experiencer.OTHER
-    expect(
-        "experiencer_mismatch",
-        lambda: _record(
-            _atom(
-                atom_id="atom-fh",
-                atom_type=AtomType.HISTORY,
-                raw_value="breast cancer",
-                experiencer=Experiencer.PATIENT,
-                evidence_ids=("ev-mom",),
-            )
-        ),
+    patient_labeled = _record(
+        _atom(
+            atom_id="atom-fh",
+            atom_type=AtomType.HISTORY,
+            raw_value="breast cancer",
+            experiencer=Experiencer.PATIENT,
+            evidence_ids=("ev-mom",),
+        )
     )
+    patient_labeled.validate()
+    assert patient_labeled.atom("atom-fh").experiencer is Experiencer.PATIENT
 
 
 def test_historical_vs_current() -> None:
@@ -353,43 +366,47 @@ def test_future_plans() -> None:
     assert rec.atom("atom-plan").temporality.kind is Temporality.FUTURE
 
 
+def _norm_record(**atom_kwargs) -> EncounterRecord:
+    source = assemble_source("src-n", ((Speaker.PATIENT, "I have a neck issue."),))
+    return EncounterRecord(
+        encounter_id="enc-n",
+        sources=(source,),
+        evidence=(_span(source, 0, "a neck", "ev-neck"),),
+        atoms=(_atom(**atom_kwargs),),
+    )
+
+
 def test_deterministic_normalization_does_not_overwrite_raw() -> None:
     raw = "a neck"
     normalized = apply_normalization(TRANSFORM, raw)
     assert normalized == "neck"
-    rec = _record(
-        _atom(
-            raw_value=raw,
-            normalized_value=normalized,
-            normalization_transform=TRANSFORM,
-        )
+    rec = _norm_record(
+        raw_value=raw,
+        normalized_value=normalized,
+        normalization_transform=TRANSFORM,
     )
     rec.validate()
     assert rec.atom("atom-1").raw_value == raw
     assert rec.atom("atom-1").normalized_value == "neck"
     expect(
         "normalization_mismatch",
-        lambda: _record(
-            _atom(
-                raw_value=raw,
-                normalized_value="cervicalgia",
-                normalization_transform=TRANSFORM,
-            )
+        lambda: _norm_record(
+            raw_value=raw,
+            normalized_value="cervicalgia",
+            normalization_transform=TRANSFORM,
         ),
     )
     expect(
         "normalized_without_transform",
-        lambda: _record(_atom(raw_value=raw, normalized_value="neck")),
+        lambda: _norm_record(raw_value=raw, normalized_value="neck"),
     )
 
 
 def test_json_round_trip() -> None:
-    rec = _record(
-        _atom(
-            raw_value="a neck",
-            normalized_value="neck",
-            normalization_transform=TRANSFORM,
-        )
+    rec = _norm_record(
+        raw_value="a neck",
+        normalized_value="neck",
+        normalization_transform=TRANSFORM,
     )
     encoded = rec.to_json()
     restored = EncounterRecord.from_json(encoded)
@@ -460,6 +477,201 @@ def test_silence_is_unresolved_not_a_negative_fact() -> None:
     rec.validate()
     assert rec.unresolved[0].reason == "silence"
     assert rec.unresolved[0].review_required
+
+
+def test_raw_value_must_be_grounded_in_referenced_span() -> None:
+    expect(
+        "value_not_grounded",
+        lambda: _record(_atom(raw_value="diabetes", evidence_ids=("ev-neck",))),
+    )
+
+
+def test_value_binding_allows_substring_of_supporting_span() -> None:
+    source = _source()
+    full = _span(source, 1, "My neck has been hurting.", "ev-full")
+    rec = _record(_atom(raw_value="neck", evidence_ids=("ev-full",)), extra_spans=(full,))
+    rec.validate()
+    rec_case = _record(_atom(raw_value="Neck", evidence_ids=("ev-neck",)))
+    rec_case.validate()
+
+
+def test_denied_concept_need_not_be_span_substring() -> None:
+    source = assemble_source("src-deny", ((Speaker.PATIENT, "No improvement."),))
+    rec = EncounterRecord(
+        encounter_id="enc-deny",
+        sources=(source,),
+        evidence=(_span(source, 0, "No improvement", "ev-deny-phrase"),),
+        atoms=(
+            _atom(
+                raw_value="diabetes",
+                atom_type=AtomType.DIAGNOSIS_STATEMENT,
+                assertion_state=AssertionState.DENIED,
+                evidence_ids=("ev-deny-phrase",),
+            ),
+        ),
+    )
+    rec.validate()
+    assert rec.atom("atom-1").raw_value == "diabetes"
+
+
+def test_no_improvement_does_not_establish_denied_concept() -> None:
+    source = assemble_source("src-imp", ((Speaker.PATIENT, "No improvement."),))
+    rec = EncounterRecord(
+        encounter_id="enc-imp",
+        sources=(source,),
+        evidence=(_span(source, 0, "No improvement", "ev-imp"),),
+        atoms=(
+            _atom(
+                raw_value="improvement",
+                assertion_state=AssertionState.ASSERTED,
+                evidence_ids=("ev-imp",),
+            ),
+        ),
+    )
+    rec.validate()
+    assert rec.atom("atom-1").assertion_state is AssertionState.ASSERTED
+
+
+def test_self_identifying_as_mother_can_remain_patient_experiencer() -> None:
+    source = assemble_source(
+        "src-m",
+        ((Speaker.PATIENT, "I am a mother and have chest pain."),),
+    )
+    rec = EncounterRecord(
+        encounter_id="enc-m",
+        sources=(source,),
+        evidence=(_span(source, 0, "chest pain", "ev-cp"),),
+        atoms=(
+            _atom(
+                raw_value="chest pain",
+                experiencer=Experiencer.PATIENT,
+                evidence_ids=("ev-cp",),
+            ),
+        ),
+    )
+    rec.validate()
+    assert rec.atom("atom-1").experiencer is Experiencer.PATIENT
+
+
+def test_unresolved_evidence_ids_must_resolve() -> None:
+    expect(
+        "unknown_evidence",
+        lambda: _record(
+            _atom(),
+            unresolved=(
+                UnresolvedItem(
+                    unresolved_id="u-bad",
+                    topic="medication",
+                    reason="missing span",
+                    evidence_ids=("ev-missing",),
+                ),
+            ),
+        ),
+    )
+
+
+def test_turn_offsets_must_be_ints() -> None:
+    expect(
+        "type_error",
+        lambda: Turn(
+            turn_id="t-1",
+            source_id="src-1",
+            speaker=Speaker.PATIENT,
+            start=1.5,
+            end=4,
+            text="hi",
+        ),
+    )
+
+
+def test_temporal_state_rejects_raw_kind_string() -> None:
+    expect("type_error", lambda: TemporalState(kind="future"))
+
+
+def test_source_turns_must_be_turn_objects() -> None:
+    expect("type_error", lambda: Source(source_id="src-1", text="hi", turns=("nope",)))
+
+
+def test_review_required_must_be_bool() -> None:
+    expect("type_error", lambda: _atom(review_required="yes"))
+    expect(
+        "type_error",
+        lambda: UnresolvedItem(
+            unresolved_id="u-1",
+            topic="medication",
+            reason="silence",
+            review_required="yes",
+        ),
+    )
+
+
+def test_encounter_members_must_have_expected_types() -> None:
+    expect(
+        "type_error",
+        lambda: EncounterRecord(
+            encounter_id="enc-1",
+            sources=("nope",),
+            evidence=(),
+            atoms=(),
+        ),
+    )
+
+
+def test_other_speaker_cannot_settle_without_review() -> None:
+    source = assemble_source("src-o", ((Speaker.OTHER, "He has diabetes."),))
+    span = _span(source, 0, "diabetes", "ev-o")
+
+    def unsettled() -> EncounterRecord:
+        return EncounterRecord(
+            encounter_id="enc-o",
+            sources=(source,),
+            evidence=(span,),
+            atoms=(
+                _atom(
+                    raw_value="diabetes",
+                    speaker=Speaker.OTHER,
+                    evidence_ids=("ev-o",),
+                    review_required=False,
+                ),
+            ),
+        )
+
+    expect("nonauthoritative_without_review", unsettled)
+    rec = EncounterRecord(
+        encounter_id="enc-o",
+        sources=(source,),
+        evidence=(span,),
+        atoms=(
+            _atom(
+                raw_value="diabetes",
+                speaker=Speaker.OTHER,
+                evidence_ids=("ev-o",),
+                review_required=True,
+            ),
+        ),
+    )
+    rec.validate()
+    assert rec.atom("atom-1").review_required
+
+
+def test_unknown_speaker_cannot_settle_without_review() -> None:
+    source = assemble_source("src-u", ((Speaker.UNKNOWN, "Something about neck pain."),))
+    expect(
+        "nonauthoritative_without_review",
+        lambda: EncounterRecord(
+            encounter_id="enc-u",
+            sources=(source,),
+            evidence=(_span(source, 0, "neck", "ev-u"),),
+            atoms=(
+                _atom(
+                    raw_value="neck",
+                    speaker=Speaker.UNKNOWN,
+                    evidence_ids=("ev-u",),
+                    review_required=False,
+                ),
+            ),
+        ),
+    )
 
 
 def test_clinician_evidence_is_allowed() -> None:
