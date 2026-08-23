@@ -1,9 +1,9 @@
 {
   "schema": "nano.campaign.gate.v1",
   "gate_id": "qlora_canary_gate_v1",
-  "timestamp": "2026-08-23T20:30:00+00:00",
-  "status": "PASS",
-  "verdict": "COMPATIBILITY_CANARY_ALLOWED",
+  "timestamp": "2026-08-23T21:30:00+00:00",
+  "status": "PARTIAL_PASS",
+  "verdict": "COMPATIBILITY_TRAIN_PROVEN_ARTIFACT_PULL_PENDING",
   "scope": "50-step pod canary on unit fixture only — NOT round-1 adaptation",
   "requirements": {
     "measurement_repair_committed": true,
@@ -14,13 +14,26 @@
       "enable_input_require_grads",
       "TRAIN_FAIL marker",
       "failure log pull",
-      "bootstrap excludes torch clobber"
+      "bootstrap excludes torch clobber",
+      "LossLogger TrainerCallback.on_init_end",
+      "pull_qlora_adapter scp-first with retries",
+      "terminate blocked when train_done but adapter missing",
+      "gpu_idle_watchdog.sh"
     ]
+  },
+  "attempt_6": {
+    "status": "TRAIN_PASS_ARTIFACT_FAIL",
+    "pod_id": "46zuwen2qobvlj",
+    "final_loss": 0.0174,
+    "loss_decreased": true,
+    "adapter_bytes_local": 0,
+    "train_metrics_pass": true,
+    "artifact_pull_pass": false
   },
   "prior_attempts": {
     "attempt_5": "FAIL_ATTEMPT_5_TRAIN_CRASH",
     "attempts_1_4": "Hub stream empty / ENOSPC / SSH"
   },
-  "next_action": "student_qlora_pod_canary.py --attempt 6 --est-cost 2.0",
-  "note": "Compatibility canary permitted; adaptation remains gated separately"
+  "next_action": "attempt 7 after local pull/watchdog fixes verified; still unit fixture only",
+  "note": "Compatibility train proven on pod; campaign FAIL until adapter SCP pull succeeds locally"
 }

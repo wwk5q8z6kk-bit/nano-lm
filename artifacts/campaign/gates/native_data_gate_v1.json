@@ -1,9 +1,23 @@
 {
   "schema": "nano.campaign.gate.v1",
   "gate_id": "native_data_gate_v1",
-  "timestamp": "2026-08-23T20:30:00+00:00",
-  "status": "SCAFFOLD_READY",
-  "verdict": "OPEN_FOR_BUILD",
+  "timestamp": "2026-08-23T21:30:00+00:00",
+  "status": "SCREEN_VALIDATED",
+  "verdict": "OPEN_FOR_30M_REVALIDATION",
+  "corpus": {
+    "corpus_id": "native_corpus_screen_v1",
+    "manifest": "artifacts/campaign/native_corpus_screen_v1_manifest.json",
+    "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+    "n_examples": 23977,
+    "train_rows": 19194,
+    "training_tokens_char_level": 14693267,
+    "unique_values": 7581,
+    "partition_files": {
+      "TRAIN": "artifacts/campaign/native_corpus_screen_v1_train.json",
+      "DEV": "artifacts/campaign/native_corpus_screen_v1_dev.json",
+      "INTERNAL_TEST": "artifacts/campaign/native_corpus_screen_v1_internal_test.json"
+    }
+  },
   "requirements": {
     "corpus_factory": "nanoscribe/native/corpus/ + scripts/build_native_corpus.py",
     "registry": "data/REGISTRY.json",
@@ -16,9 +30,17 @@
     "axis_coverage_floor": "per-axis minimum in manifest",
     "partition_separation": "TRAIN/DEV/INTERNAL_TEST disjoint values"
   },
+  "validation": {
+    "build": "python3 scripts/build_native_corpus.py --stage screen",
+    "validate": "python3 scripts/validate_native_corpus.py",
+    "all_gates_pass": true,
+    "r30_unique_target_met": false,
+    "r30_unique_fraction": 0.2939,
+    "note": "Screen stage sufficient for 30M revalidation wave; full R30/P100 promotion corpus still required"
+  },
   "blocked_until": [
-    "screen-stage corpus built and validated",
-    "30m_revalidation_manifest with real corpus hash"
+    "paid_gpu_hold lifted after watchdog merged",
+    "qlora adapter pull fix verified locally"
   ],
-  "next_action": "python3 scripts/build_native_corpus.py --stage screen && python3 scripts/validate_native_corpus.py"
+  "next_action": "30M revalidation manifest with committed corpus hash; no pod until paid_gpu_hold=false"
 }

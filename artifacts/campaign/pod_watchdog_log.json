@@ -1,0 +1,17 @@
+{
+  "pod": "b2klblbxsl7wl7",
+  "events": [
+    {
+      "at": "2026-08-23T21:32:10.145537+00:00",
+      "done_marker": false,
+      "processes": 0,
+      "gpu_util": 96
+    },
+    {
+      "terminated": true,
+      "reason": "no training process and no done-marker \u2014 script died",
+      "at": "2026-08-23T21:32:10.887096+00:00",
+      "output": "{\n  \"deleted\": true,\n  \"id\": \"b2klblbxsl7wl7\"\n}\n"
+    }
+  ]
+}

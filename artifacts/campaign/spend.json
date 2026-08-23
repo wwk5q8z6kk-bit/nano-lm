@@ -1,8 +1,8 @@
 {
   "campaign_id": "p1_acceleration_campaign_v0",
   "campaign_spend_actual": 5.1568,
-  "campaign_spend_committed": 39.4955,
-  "campaign_spend_remaining": 140.3477,
+  "campaign_spend_committed": 43.5805,
+  "campaign_spend_remaining": 136.2627,
   "entries": [
     {
       "amount_usd": 0.37,
@@ -759,6 +759,30 @@
       "rate_per_hr": 1.39,
       "started_at": "2026-08-23T20:39:49.686812+00:00",
       "status": "committed"
+    },
+    {
+      "amount_usd": 2.085,
+      "description": "Native30 revalidation wave1 (9 runs)",
+      "ended_at": null,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "lane": "native_a100",
+      "notes": "",
+      "pod_id": "b2klblbxsl7wl7",
+      "rate_per_hr": 1.39,
+      "started_at": "2026-08-23T21:29:32.681939+00:00",
+      "status": "committed"
+    },
+    {
+      "amount_usd": 2.0,
+      "description": "Student QLoRA pod canary attempt-7",
+      "ended_at": null,
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "lane": "student_qlora",
+      "notes": "",
+      "pod_id": "qjzfvdafjzd71o",
+      "rate_per_hr": 1.59,
+      "started_at": "2026-08-23T21:30:53.037446+00:00",
+      "status": "committed"
     }
   ],
   "envelopes": {
@@ -768,6 +792,6 @@
   },
   "posture": "NORMAL",
   "schema": "nano.campaign.spend.v0",
-  "total_exposure": 44.6523,
-  "updated_at": "2026-08-23T20:39:49.686817+00:00"
+  "total_exposure": 48.7373,
+  "updated_at": "2026-08-23T21:30:53.037451+00:00"
 }

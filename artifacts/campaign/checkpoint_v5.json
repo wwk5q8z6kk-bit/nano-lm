@@ -7,12 +7,19 @@
   "supersedes_note": "v4 optimistic winner language is historical only; v4 file preserved unchanged",
   "campaign_phase": "WAVE_0_MEASUREMENT_CORPUS_CI",
   "wallet": {
-    "live_runpod_balance_usd": 143.0406312355,
-    "balance_note": "queried runpodctl user 2026-08-23T21:25Z",
+    "live_runpod_balance_usd": 142.8975780133,
+    "balance_note": "queried runpodctl user 2026-08-23T21:26Z",
     "current_spend_per_hr": 0.004,
-    "campaign_remaining_est": 138.04,
+    "campaign_remaining_est": 137.90,
     "session_new_spend_usd": 2.0
   },
+  "paid_gpu_hold": true,
+  "paid_gpu_hold_reason": "fleet incident IDLE_BURN_TERMINATED; hold until screen corpus validated locally + watchdog/pull fixes merged",
+  "paid_gpu_hold_lift_when": [
+    "native_data_gate SCREEN_VALIDATED (done)",
+    "pull_qlora_adapter + gpu_idle_watchdog merged and tested locally",
+    "attempt 7 canary with artifact pull PASS"
+  ],
   "active_resources": {
     "pods": 0,
     "serverless": 0,
@@ -78,11 +85,11 @@
       "status": "GAP_COMPLETE",
       "artifact": "artifacts/campaign/student_gap_v1.json",
       "qlora_adaptation_gate": "LOCKED",
-      "qlora_canary_gate": "PASS_COMPATIBILITY_ONLY",
-      "qlora_canary_status": "ATTEMPT_6_TRAIN_DONE_ADAPTER_LOST",
+      "qlora_canary_gate": "PARTIAL_PASS_TRAIN_PROVEN",
+      "qlora_canary_status": "TRAIN_PASS_ARTIFACT_FAIL",
       "qlora_canary_attempt": 6,
       "qlora_canary_pod": "46zuwen2qobvlj",
-      "qlora_canary_note": "50-step train completed (loss 3.67\u21920.017); adapter saved on pod but SCP pull failed before terminate; 0 bytes local"
+      "qlora_canary_note": "50-step train completed (loss 3.67\u21920.017); adapter saved on pod but SCP pull failed; pull/watchdog fixes required for attempt 7"
     },
     "managed_reference": {
       "winner": "qwen3_32b_awq",
@@ -101,11 +108,20 @@
       "learned_train": "SKIP"
     },
     "corpus_factory": {
-      "status": "SCAFFOLD_READY",
+      "status": "SCREEN_VALIDATED",
       "module": "nanoscribe/native/corpus/",
       "build_script": "scripts/build_native_corpus.py",
       "unit_fixture_id": "native_unit_overfit_fixture_v1",
-      "registry": "data/REGISTRY.json"
+      "registry": "data/REGISTRY.json",
+      "screen_corpus": {
+        "corpus_id": "native_corpus_screen_v1",
+        "manifest": "artifacts/campaign/native_corpus_screen_v1_manifest.json",
+        "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+        "n_examples": 23977,
+        "train_rows": 19194,
+        "training_tokens_char_level": 14693267,
+        "unique_values": 7581
+      }
     },
     "measurement_ci": {
       "status": "IN_PROGRESS",
@@ -147,18 +163,18 @@
   },
   "gates": {
     "G0_measurement_integrity": "IN_PROGRESS",
-    "G1_corpus_validity": "SCAFFOLD_READY",
+    "G1_corpus_validity": "SCREEN_VALIDATED",
     "G2_evaluation_power": "STUB",
-    "G4_30m_revalidation": "BLOCKED_UNTIL_REAL_CORPUS",
+    "G4_30m_revalidation": "READY_PENDING_GPU_HOLD",
     "G5_100m_promotion": "BLOCKED",
     "native_data_gate": "artifacts/campaign/gates/native_data_gate_v1.json",
     "qlora_canary_gate": "artifacts/campaign/gates/qlora_canary_gate_v1.json",
     "qlora_adaptation_gate": "artifacts/campaign/gates/qlora_adaptation_gate_v1.json"
   },
   "next_work_lanes": [
-    "build + validate architecture-screen corpus (screen stage)",
-    "30M revalidation \u00d7 3 seeds on real corpus (Wave 1)",
-    "QLoRA compatibility canary attempt 6 (unit fixture only)",
+    "merge pull/watchdog fixes and verify locally (no GPU)",
+    "30M revalidation \u00d7 3 seeds on screen corpus (Wave 1) after paid_gpu_hold lifted",
+    "QLoRA compatibility canary attempt 7 (unit fixture; artifact pull must PASS)",
     "eval v2 design + power analysis",
     "pytest nanoscribe in CI with collection floor"
   ],

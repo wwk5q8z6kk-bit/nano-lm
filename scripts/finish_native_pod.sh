@@ -15,6 +15,12 @@ POLL_SEC="${NATIVE_POLL_SEC:-20}"
 
 echo "==> Monitoring pod ${POD_ID} for ${MARKER} (run=${RUN_ID})"
 
+if [[ "${ENABLE_GPU_IDLE_WATCHDOG:-1}" == "1" ]] && [[ -f scripts/gpu_idle_watchdog.sh ]]; then
+  bash scripts/gpu_idle_watchdog.sh "${POD_ID}" 120 5 5 &
+  WATCHDOG_PID=$!
+  trap 'kill "${WATCHDOG_PID}" 2>/dev/null || true' EXIT
+fi
+
 for i in $(seq 1 "${MAX_POLLS}"); do
   OUT=$(bash scripts/runpod_pod_ssh.sh "${POD_ID}" \
     "grep -q '${MARKER}' ${LOG_PATH} 2>/dev/null && echo DONE || echo RUNNING; ls -la /workspace/nano-lm/artifacts/native_checkpoints/${RUN_ID}/latest.pt 2>/dev/null || echo NO_WEIGHTS" 2>&1 || true)

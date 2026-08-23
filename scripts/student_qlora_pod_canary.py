@@ -468,6 +468,7 @@ def run_pod_canary(*, est_cost: float = 2.0, attempt: int = 5) -> dict[str, Any]
         parsed = _poll_training(pod_id)
         pull = _pull_adapter(pod_id)
         adapter_ok = bool(pull.get("ok"))
+        train_done = bool(parsed.get("train_done"))
         adapter_bytes = int(pull.get("bytes", 0))
         adapter_path = str(ADAPTER_DIR) if adapter_ok else None
         passed = (

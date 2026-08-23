@@ -102,6 +102,9 @@ def main() -> int:
         def __init__(self) -> None:
             self.step_losses: dict[int, float] = {}
 
+        def on_init_end(self, args, state, control, **kwargs):  # noqa: ANN001
+            return control
+
         def on_log(self, args, state, control, logs=None, **kwargs):  # noqa: ANN001
             if not logs or "loss" not in logs:
                 return

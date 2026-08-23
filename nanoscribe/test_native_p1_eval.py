@@ -145,3 +145,18 @@ def test_verify_weights_script(tmp_path: Path) -> None:
     torch.save({"model_state": {"w": torch.zeros(512, 512)}}, good)
     ok, msg = verify_weights(run_id, tmp_path)
     assert ok
+
+
+def test_verify_qlora_adapter(tmp_path: Path) -> None:
+    from scripts.pull_qlora_adapter import MIN_ADAPTER_BYTES, verify_adapter
+
+    dest = tmp_path / "adapter"
+    dest.mkdir()
+    ok, msg, total = verify_adapter(dest)
+    assert not ok
+
+    (dest / "adapter_config.json").write_text("{}")
+    (dest / "adapter_model.bin").write_bytes(b"x" * (MIN_ADAPTER_BYTES + 1))
+    ok, msg, total = verify_adapter(dest)
+    assert ok, msg
+    assert total > MIN_ADAPTER_BYTES
