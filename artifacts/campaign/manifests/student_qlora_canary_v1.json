@@ -1,0 +1,21 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "student_qlora_canary_v1",
+  "git_sha": "88030dc1d6482a049331226ad8145239ddbb0cd0",
+  "dataset_revision": "p1_distill_train_v1",
+  "command": "scripts/student_qlora_canary.py",
+  "surface": "hub_serverless",
+  "gpu_or_model": "NVIDIA A100 80GB PCIe / Qwen/Qwen2.5-32B-Instruct",
+  "hub_stable_locator": "axolotl-ai-cloud/axolotl",
+  "hub_listing_id": "cma1ofy3e000008l7he7c764k",
+  "resolved_at": "2026-08-23T15:25:00+00:00",
+  "max_runtime_min": 90,
+  "max_cost_usd": 3.0,
+  "max_steps": 50,
+  "adapter": "qlora",
+  "base_model": "Qwen/Qwen2.5-32B-Instruct",
+  "termination_condition": "50 steps finite loss + adapter save OR fail-fast",
+  "artifact_dest": "artifacts/campaign/student_qlora_canary_results.json",
+  "status": "RUNNING",
+  "endpoint_id": "njvpgepyqe09fi"
+}

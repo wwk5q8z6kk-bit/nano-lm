@@ -1,0 +1,20 @@
+{
+  "schema": "nano.campaign.student_qlora_canary.v1",
+  "timestamp": "2026-08-23T15:24:57.494422+00:00",
+  "manifest": "artifacts/campaign/manifests/student_qlora_canary_v1.json",
+  "run_id": "student_qlora_canary_20260823T152457Z",
+  "base_model": "Qwen/Qwen2.5-32B-Instruct",
+  "dataset_revision": "p1_distill_train_v1",
+  "dataset_url": "https://raw.githubusercontent.com/wwk5q8z6kk-bit/nano-lm/96ae040e7ebfdbde9a492040077fbfeee27b2a9f/artifacts/campaign/p1_distill_train_v1.json",
+  "max_steps": 50,
+  "wallet_before_usd": 154.1382,
+  "status": "RUNNING",
+  "endpoint_id": "njvpgepyqe09fi",
+  "endpoint_cleanup": {
+    "deleted": true,
+    "endpoint_id": "njvpgepyqe09fi"
+  },
+  "endpoint_deleted": true,
+  "wallet_after_usd": 154.1382,
+  "wallet_delta_usd": -0.0
+}

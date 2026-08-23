@@ -355,6 +355,15 @@
     },
     "verdict": "BLOCKED_ZERO_HELDOUT_TRANSPORT"
   },
+  "native_tokenizer_defect": {
+    "cost_usd": 0.0,
+    "cpu_validation": "NECESSARY_BUT_NOT_SUFFICIENT \u2014 data scale still binding",
+    "d1": "hash_tokens truncated all input to 64 chars; prompts are ~530 (model saw 12%)",
+    "d2": "newline/tab/CR decoded to '?' \u2014 224/224 corpus sources corrupted",
+    "finding": "artifacts/campaign/native_tokenizer_defect_v1.json",
+    "invalidates": "all native round-1/round-2/extended results",
+    "verdict": "CRITICAL_DEFECT_FIXED"
+  },
   "native_training": {
     "commit": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
     "marker": "NATIVE_DONE",
@@ -375,8 +384,8 @@
   "new_actual_spend": 2.9121,
   "new_committed_spend": 0,
   "next_actions": [
-    "OWNER DECISION: native training-corpus strategy \u2014 4.5KB cannot support a 100M model (binding constraint)",
-    "Ship controls (random-init + majority-class + free-generation) as standing baselines in native eval harness",
+    "OWNER DECISION: native training-corpus strategy \u2014 4.5KB cannot support the task (binding constraint)",
+    "Re-derive native mechanism ranking from scratch after corpus fix; all prior native results are invalid",
     "Benchmark Qwen3-Coder-Next-FP8 on agent canary v1 \u2014 independent lane, unblocked",
     "student_gap_v1 measurement before any QLoRA spend"
   ],
