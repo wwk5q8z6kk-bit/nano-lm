@@ -76,10 +76,12 @@ RunPod is active established infrastructure; costly/confirmatory runs stay exper
 
 | Component | Path | Role |
 |-----------|------|------|
-| Mechanism / compact models | `pretrain/`, `sft/`, `scribe/` | Integrated training experiments |
+| **P1 NanoScribe** | `nanoscribe/` | Encounter v0, CandidateAtom adapters, harness, campaign ([subsystems/NANOSCRIBE.md](subsystems/NANOSCRIBE.md)) |
+| Mechanism / compact models | `pretrain/`, `sft/`, `scribe/` | Integrated training experiments (historical + mechanism) |
 | Model core (future) | `nano_ai/` | **Cross-branch — not yet integrated** — see [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) |
 | Verification harness | `fabric/` | Typed claims, verifiers, abstention regression |
 | Verified document intelligence | `wedge_v1/` | Local corpus Q&A with span evidence ([subsystems/WEDGE.md](subsystems/WEDGE.md)) |
+| Campaign artifacts | `artifacts/campaign/` | Manifests, spend ledger, round summaries ([research/ACCELERATED_CAMPAIGN.md](research/ACCELERATED_CAMPAIGN.md)) |
 | Experimental record | `trajectory/` | Result JSONs, prereg companions |
 
 ## Routing principle (from E1/E4 evidence)

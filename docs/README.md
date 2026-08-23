@@ -33,6 +33,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) | Mechanism / compact / teacher model layers |
 | [research/SYSTEM_RESEARCH_PROGRAM.md](research/SYSTEM_RESEARCH_PROGRAM.md) | Retrieval, memory, verifiers, routing |
 | [research/EXPERIMENT_STRATEGY.md](research/EXPERIMENT_STRATEGY.md) | Prereg, gates, failure-to-architecture loop |
+| [research/ACCELERATED_CAMPAIGN.md](research/ACCELERATED_CAMPAIGN.md) | Multi-track P1 campaign, manifests, RunPod OS |
 
 ## Domains
 
@@ -48,6 +49,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 
 | Document | Purpose |
 |----------|---------|
+| [subsystems/NANOSCRIBE.md](subsystems/NANOSCRIBE.md) | P1 encounter representation, adapters, harness (`nanoscribe/`) |
 | [subsystems/WEDGE.md](subsystems/WEDGE.md) | Verified local document intelligence (`wedge_v1/`) |
 | [subsystems/VERIFICATION.md](subsystems/VERIFICATION.md) | Fabric + constructive faithfulness |
 
@@ -56,6 +58,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | Document | Purpose |
 |----------|---------|
 | [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md) | Primary GPU training backend (active; experiment-scoped costly runs) |
+| [infrastructure/TOOL_CALLING.md](infrastructure/TOOL_CALLING.md) | Structured JSON vs tool inference for CandidateAtom extraction |
 | [infrastructure/REPRODUCIBILITY.md](infrastructure/REPRODUCIBILITY.md) | Tags, manifests, recompute |
 
 ## Archive

@@ -146,5 +146,5 @@
     "100": "native100 early gate (COMPLETE — extended training gated)",
     "135": "kill marginal"
   },
-  "next_dollar": "Re-train native100 extended when A100 stock returns (pull+eval pipeline ready) OR span_port extended comparison OR QLoRA canary OR agent canary Qwen3-Coder"
+  "next_dollar": "span_port extended 200-step comparison OR improve native hash-LM decode further OR QLoRA canary when manifest exists"
 }

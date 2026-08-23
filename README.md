@@ -37,7 +37,7 @@ INTELLIGENCE EXPANSION — P4–P9 (synthesis → reasoning → planning → act
 ```text
 Nano Core + Medical DomainPack + P1  =  NanoScribe
 
-Nano Core + Medical DomainPack + P1–P3  =  longitudinal medical documentation intelligence (earned)
+Nano Core + Medical DomainPack + P1–P3  =  longitudinal medical documentation intelligence (not yet earned)
 
 P4–P9  =  broader synthesis, reasoning, planning, action, adaptation
 ```
@@ -54,6 +54,8 @@ P4–P9  =  broader synthesis, reasoning, planning, action, adaptation
 | E1 | Classical won on **old closed-task** utility (not program kill) |
 | E4 | Classical won on **tested R★** |
 | H6 / span-port lineage | Pretraining/transfer research exists — **cross-branch, not yet integrated** in this tree |
+| P1 foundation (master) | Encounter v0, evidence transport, Qwen harness — **integrated** in `nanoscribe/` (#37–#41) |
+| Accelerated campaign v2 | Tool calling, agent platform, native/student tracks — **active on frontier branch** |
 
 ## Repository map
 
@@ -63,15 +65,18 @@ P4–P9  =  broader synthesis, reasoning, planning, action, adaptation
 | `papers/` | Science and evidence |
 | `trajectory/` | Experimental records |
 | `pretrain/`, `sft/`, `scribe/` | Mechanism / training (integrated) |
+| `nanoscribe/` | P1 NanoScribe — encounter v0, adapters, harness, campaign |
+| `artifacts/campaign/` | Manifest-gated paid experiment artifacts |
 | `fabric/` | Verification harness (integrated) |
 | `wedge_v1/` | Verified document intelligence (integrated) |
-| `frontier/` | Branch notes only |
+| `frontier/` | Branch-local campaign configs + [NEXT.md](frontier/NEXT.md) |
 
-## Current program status — 2026-08-22
+## Current program status — 2026-08-23
 
 - **Frontier:** P1 Master Scribing — [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md)
-- **Doc reset:** `docs/canonical-program-reset-v2` from `origin/master` @ `2ad06d2` (excludes `9fe5b6b6` evidence reconciliation)
-- **Compute:** RunPod = active primary GPU training backend (`training_status=ACTIVE`); routine RunPod training **ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**; materially costly runs **EXPERIMENT_SCOPED**; confirmatory evidential runs **PREREG + EXPERIMENT_SCOPED**
+- **Active branch:** `frontier/accelerated-research-campaign-v2` — tool calling, agent platform, multi-track campaign ([`docs/research/ACCELERATED_CAMPAIGN.md`](docs/research/ACCELERATED_CAMPAIGN.md))
+- **Master foundation:** `origin/master` @ `c4822b9` — encounter v0 + harness (#37–#41)
+- **Compute:** RunPod active; routine training **ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**; materially costly **EXPERIMENT_SCOPED**; confirmatory **PREREG + EXPERIMENT_SCOPED**
 - **Data:** no PHI / private owner material in current Nano experiments
 
 ### Compute evolution
