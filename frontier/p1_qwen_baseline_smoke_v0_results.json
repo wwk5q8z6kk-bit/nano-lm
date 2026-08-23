@@ -1,0 +1,32 @@
+{
+  "experiment": "p1_qwen_baseline_smoke_v0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "adapter": "qwen2.5-1.5b-instruct-span-port",
+  "venue": "runpod-cuda-rtx4090",
+  "pod_id": "2r3c851wtsar6b",
+  "latency_s": 14.032,
+  "memory_bytes": 7529041920,
+  "aggregate": {
+    "exact_gold_span": 0,
+    "span_character_f1": 0.0,
+    "assertion_state_correct": 0,
+    "support_direct_exact": 0,
+    "coverage": 0.0,
+    "correct_abstention": 0,
+    "critical_error": 0
+  },
+  "raw_lines": {
+    "atom-neck": "NOT_MENTIONED",
+    "atom-alg": "DENIED: ",
+    "atom-hist": "DENIED: ",
+    "atom-assess": "NOT_MENTIONED",
+    "medication": "DENIED: "
+  },
+  "per_atom": {
+    "atom-neck": {"exact_gold_span": false, "malformed": false, "abstained": true},
+    "atom-alg": {"exact_gold_span": false, "malformed": true, "abstained": false},
+    "atom-hist": {"exact_gold_span": false, "malformed": true, "abstained": false},
+    "atom-assess": {"exact_gold_span": false, "malformed": false, "abstained": true},
+    "medication": {"exact_gold_span": false, "malformed": true, "abstained": false}
+  }
+}

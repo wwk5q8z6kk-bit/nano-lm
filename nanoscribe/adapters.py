@@ -11,13 +11,13 @@ from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 from nanoscribe.adapt import (
-    CANDIDATE_SCHEMA_VERSION,
     CandidateAtom,
     ModelCandidateBatch,
     ModelInput,
     candidate_from_span_port_line,
 )
 from nanoscribe.encounter import AtomType, Experiencer, Speaker, TemporalState
+from nanoscribe.qwen_inference import DEFAULT_QWEN_MODEL, generate_span_port_lines, resolve_weights_path
 
 
 @dataclass(frozen=True, slots=True)
@@ -88,20 +88,44 @@ class Qwen25BaselineAdapter:
     model_id: str = "qwen2.5-1.5b-instruct-span-port"
     weights_path: str | None = None
     fixture_lines: Mapping[str, str] | None = None
+    max_new_tokens: int = 48
 
     def propose(
         self,
         model_input: ModelInput,
         atom_specs: Sequence[AtomSpec],
     ) -> ModelCandidateBatch:
-        if self.weights_path is None:
+        resolved = resolve_weights_path(self.weights_path)
+        if resolved is None:
             return FixtureSpanPortAdapter(
                 model_id=self.model_id,
                 lines=self.fixture_lines,
             ).propose(model_input, atom_specs)
-        raise NotImplementedError(
-            "Qwen25BaselineAdapter weight inference is owner-gated; "
-            "set fixture_lines for stdlib smoke or authorize RunPod/local GPU load."
+
+        lines, latency_s, memory_bytes = generate_span_port_lines(
+            model_input,
+            atom_specs,
+            weights_path=resolved,
+            max_new_tokens=self.max_new_tokens,
+        )
+        atoms: list[CandidateAtom] = []
+        for spec in atom_specs:
+            raw_line = lines.get(spec.atom_id, "NOT_MENTIONED")
+            atoms.append(
+                candidate_from_span_port_line(
+                    atom_id=spec.atom_id,
+                    atom_type=spec.atom_type,
+                    raw_value=spec.raw_value,
+                    raw_line=raw_line,
+                    speaker=spec.speaker,
+                    experiencer=spec.experiencer,
+                    temporality=spec.temporality,
+                )
+            )
+        return ModelCandidateBatch(
+            atoms=tuple(atoms),
+            latency_s=latency_s,
+            memory_bytes=memory_bytes,
         )
 
 
