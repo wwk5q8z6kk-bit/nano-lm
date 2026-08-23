@@ -21,10 +21,21 @@
   "requirements": {
     "corpus_factory": "nanoscribe/native/corpus/ + scripts/build_native_corpus.py",
     "registry": "data/REGISTRY.json",
-    "mixture_v1": {"mechanism": 0.5, "adversarial": 0.3, "teacher_verified": 0.15, "rejected_buffer": 0.05},
+    "mixture_v1": {
+      "mechanism": 0.5,
+      "adversarial": 0.3,
+      "teacher_verified": 0.15,
+      "rejected_buffer": 0.05
+    },
     "tier_targets": {
-      "R30": {"unique_tokens_char_level": 50000000, "exposure_tokens_char_level": 100000000},
-      "P100": {"unique_tokens_char_level_min": 200000000, "unique_tokens_char_level_max": 300000000}
+      "R30": {
+        "unique_tokens_char_level": 50000000,
+        "exposure_tokens_char_level": 100000000
+      },
+      "P100": {
+        "unique_tokens_char_level_min": 200000000,
+        "unique_tokens_char_level_max": 300000000
+      }
     },
     "leakage_gate": "check_leakage pass",
     "axis_coverage_floor": "per-axis minimum in manifest",
@@ -42,5 +53,16 @@
     "paid_gpu_hold lifted after watchdog merged",
     "qlora adapter pull fix verified locally"
   ],
-  "next_action": "30M revalidation manifest with committed corpus hash; no pod until paid_gpu_hold=false"
+  "next_action": "30M revalidation manifest with committed corpus hash; no pod until paid_gpu_hold=false",
+  "eval_v2": {
+    "suite_id": "p1_screening_eval_v2",
+    "ready": true,
+    "n_cases": 512,
+    "axis_floor": 64,
+    "axes_below_floor": {},
+    "content_hash": "fe561828564793af1a1c991928fd695046e62f42c06699f129a43140653e9feb",
+    "leakage_pass": true,
+    "path": "data/p1_screening_eval_v2.json",
+    "note": "required for CONFIRMATORY claims; a screening run may use v1 with random-init and majority-class controls"
+  }
 }
