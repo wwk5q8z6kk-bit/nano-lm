@@ -30,6 +30,118 @@ def load_corpus(corpus_dir: Path | None = None) -> dict[str, str]:
     return docs
 
 
+def normalize_doc_ids(doc_ids: list[str] | None) -> list[str] | None:
+    """Return canonical exact-document scope for public surfaces."""
+    if doc_ids is None:
+        return None
+    return sorted({str(doc_id).strip() for doc_id in doc_ids if str(doc_id).strip()})
+
+
+def select_documents(
+    docs: dict[str, str],
+    doc_ids: list[str] | None,
+) -> tuple[dict[str, str], dict, bool]:
+    """Apply exact scope without falling back to the full corpus."""
+    normalized = normalize_doc_ids(doc_ids)
+    if normalized is None:
+        return docs, {}, True
+
+    selected_ids = [doc_id for doc_id in normalized if doc_id in docs]
+    missing_ids = [doc_id for doc_id in normalized if doc_id not in docs]
+    scope = {
+        "selected_doc_ids": selected_ids,
+        "missing_doc_ids": missing_ids,
+    }
+    valid = bool(normalized) and not missing_ids
+    if not valid:
+        return {}, scope, False
+    return {doc_id: docs[doc_id] for doc_id in selected_ids}, scope, True
+
+
+def _scope_abstention(
+    *,
+    op: str,
+    query: str,
+    scope: dict,
+) -> dict:
+    missing = list(scope.get("missing_doc_ids") or [])
+    code = "UNKNOWN_DOCUMENT_ID" if missing else "EMPTY_DOCUMENT_SCOPE"
+    note = (
+        "one or more exact document IDs were not found"
+        if missing
+        else "explicit document scope is empty"
+    )
+    return {
+        "query": query,
+        "answer_status": "ABSTAIN",
+        "claims": [],
+        "unsupported": [note],
+        "note": note,
+        "solver_path": ["document_scope"],
+        "failure_codes": [code],
+        "selected_doc_ids": list(scope.get("selected_doc_ids") or []),
+        "missing_doc_ids": missing,
+        "n_docs": 0,
+        "op": op,
+    }
+
+
+def _env_escalate_stub() -> bool:
+    return os.environ.get("WEDGE_ESCALATE_STUB", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
+def _maybe_escalate_stub(payload: dict, docs: dict[str, str], *, enabled: bool) -> dict:
+    """Opt-in hybrid stub after classical ABSTAIN. Default remains fail-closed."""
+    if not enabled or payload.get("answer_status") != "ABSTAIN":
+        return payload
+
+    query = str(payload.get("query") or "")
+    stub = escalate_stub_ask(query, docs)
+    path = list(payload.get("solver_path") or [])
+    for step in stub.get("solver_path") or ["hybrid_stub"]:
+        if step not in path:
+            path.append(step)
+    out = dict(payload)
+    out["escalation_attempted"] = True
+    out["escalation"] = stub.get("escalation")
+    out["solver_path"] = path
+    out["lm_invoked"] = False
+    if stub.get("answer_status") != "SUPPORTED" or not stub.get("claims"):
+        return out
+    out["answer_status"] = "SUPPORTED"
+    out["claims"] = list(stub.get("claims") or [])
+    out["unsupported"] = []
+    out["note"] = "recovered via hybrid stub after classical ABSTAIN"
+    return out
+
+
+def _apply_scope(payload: dict, scope: dict, *, scoped: bool) -> dict:
+    if scoped and scope:
+        payload.update(scope)
+    return payload
+
+
+def _finish_ask(
+    payload: dict,
+    docs: dict[str, str],
+    *,
+    scope: dict,
+    scoped: bool,
+    escalate_stub: bool,
+) -> dict:
+    payload = _maybe_escalate_stub(
+        payload,
+        docs,
+        enabled=bool(escalate_stub) or _env_escalate_stub(),
+    )
+    return _apply_scope(payload, scope, scoped=scoped)
+
+
 def _load_gold() -> dict | None:
     if GOLD_PATH.exists():
         return json.loads(GOLD_PATH.read_text(encoding="utf-8"))
@@ -131,9 +243,19 @@ def _relevant_claim(c: S.Claim, tokens: list[str]) -> bool:
 
 
 
-def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) -> dict:
+def find_spans(
+    needle: str,
+    corpus_dir: Path | None = None,
+    max_hits: int = 20,
+    *,
+    doc_ids: list[str] | None = None,
+) -> dict:
     """Exact substring locate with evidence spans (classical)."""
-    docs = load_corpus(corpus_dir)
+    all_docs = load_corpus(corpus_dir)
+    docs, scope, scope_valid = select_documents(all_docs, doc_ids)
+    scoped = doc_ids is not None
+    if not scope_valid:
+        return _scope_abstention(op="find", query=needle.strip(), scope=scope)
     if not docs:
         return {"answer_status": "NO_CORPUS", "claims": [], "solver_path": ["load_corpus"]}
     needle = needle.strip()
@@ -166,14 +288,17 @@ def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) 
         if len(claims) >= max_hits:
             break
     if not claims:
-        return {
+        result = {
+            "query": needle,
             "answer_status": "ABSTAIN",
             "claims": [],
             "unsupported": [needle],
             "solver_path": ["find_spans"],
             "n_docs": len(docs),
         }
-    return {
+        return _apply_scope(result, scope, scoped=scoped)
+    result = {
+        "query": needle,
         "answer_status": "SUPPORTED",
         "claims": [claim_to_dict(c) for c in claims],
         "unsupported": [],
@@ -181,11 +306,22 @@ def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) 
         "n_docs": len(docs),
         "n_hits": len(claims),
     }
+    return _apply_scope(result, scope, scoped=scoped)
 
 
-def ask(query: str, corpus_dir: Path | None = None) -> dict:
+def ask(
+    query: str,
+    corpus_dir: Path | None = None,
+    *,
+    doc_ids: list[str] | None = None,
+    escalate_stub: bool = False,
+) -> dict:
     """Span-first Q&A over a local folder. Never invents unsupported claims."""
-    docs = load_corpus(corpus_dir)
+    all_docs = load_corpus(corpus_dir)
+    docs, scope, scope_valid = select_documents(all_docs, doc_ids)
+    scoped = doc_ids is not None
+    if not scope_valid:
+        return _scope_abstention(op="ask", query=query.strip(), scope=scope)
     if not docs:
         return {
             "answer_status": "NO_CORPUS",
@@ -294,29 +430,51 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
     )
 
     if not presented_sorted:
-        return {
-            "answer_status": "ABSTAIN",
-            "claims": [],
-            "unsupported": [q],
-            "solver_path": solver_path,
-            "note": "no span-supported claim under classical+eclass cascade",
-            "n_docs": len(docs),
-        }
+        return _finish_ask(
+            {
+                "query": q,
+                "answer_status": "ABSTAIN",
+                "claims": [],
+                "unsupported": [q],
+                "solver_path": solver_path,
+                "note": "no span-supported claim under classical+eclass cascade",
+                "n_docs": len(docs),
+            },
+            docs,
+            scope=scope,
+            scoped=scoped,
+            escalate_stub=escalate_stub,
+        )
 
     disputed = [c for c in presented_sorted if c.status == "DISPUTED"]
     status = "CONTRADICTED" if disputed else "SUPPORTED"
-    return {
-        "answer_status": status,
-        "claims": [claim_to_dict(c) for c in presented_sorted[:12]],
-        "unsupported": [],
-        "solver_path": solver_path,
-        "n_docs": len(docs),
-    }
+    return _finish_ask(
+        {
+            "query": q,
+            "answer_status": status,
+            "claims": [claim_to_dict(c) for c in presented_sorted[:12]],
+            "unsupported": [],
+            "solver_path": solver_path,
+            "n_docs": len(docs),
+        },
+        docs,
+        scope=scope,
+        scoped=scoped,
+        escalate_stub=escalate_stub,
+    )
 
 
-def scan(corpus_dir: Path | None = None) -> dict:
+def scan(
+    corpus_dir: Path | None = None,
+    *,
+    doc_ids: list[str] | None = None,
+) -> dict:
     """Run inventory extractors across corpus (metadata, dosages, contradictions)."""
-    docs = load_corpus(corpus_dir)
+    all_docs = load_corpus(corpus_dir)
+    docs, scope, scope_valid = select_documents(all_docs, doc_ids)
+    scoped = doc_ids is not None
+    if not scope_valid:
+        return _scope_abstention(op="scan", query="", scope=scope)
     if not docs:
         return {"answer_status": "NO_CORPUS", "claims": [], "solver_path": ["load_corpus"]}
 
@@ -338,10 +496,11 @@ def scan(corpus_dir: Path | None = None) -> dict:
     if "binding_coref" in docs:
         claims.append(S.coref_binding("binding_coref", docs["binding_coref"]))
 
-    return {
+    result = {
         "answer_status": "SUPPORTED",
         "claims": [claim_to_dict(c) for c in claims if c.status not in {"MISSING"}],
         "solver_path": ["scan_classical+eclass"],
         "n_docs": len(docs),
         "n_claims": len(claims),
     }
+    return _apply_scope(result, scope, scoped=scoped)

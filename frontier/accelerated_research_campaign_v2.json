@@ -64,7 +64,8 @@
       "id": "B3",
       "task": "verified_record_to_note_rendering_v0",
       "compute": "local_cpu",
-      "artifact": "nanoscribe/render.py"
+      "artifact": "nanoscribe/render/encounter_note.py",
+      "status": "done"
     }
   ],
   "deferred": [
