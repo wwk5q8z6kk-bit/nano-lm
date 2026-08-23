@@ -1,0 +1,644 @@
+{
+  "families": {
+    "ambiguous_result": 4,
+    "insufficient_info": 4,
+    "invalid_tool_args": 4,
+    "multi_tool": 4,
+    "premature_stop": 4,
+    "repeated_calls": 4,
+    "similar_tools": 4,
+    "state_update_recovery": 4,
+    "timeout_error": 4,
+    "tool_needed": 4,
+    "tool_not_needed": 4,
+    "verify_needed": 4
+  },
+  "n_tasks": 48,
+  "native_agent_head": [
+    "TOOL_NONE",
+    "READ",
+    "SEARCH",
+    "VERIFY",
+    "QUERY",
+    "ACT",
+    "ABSTAIN",
+    "STOP"
+  ],
+  "native_agent_head_note": "P2+ agent policy head; not P1 scribing blocker",
+  "revision": "p1_agent_canary_v1",
+  "rule": "no teacher copied wholesale; verified+ablated behavior only",
+  "schema": "nano.campaign.agent_canary.v1",
+  "score_axes": [
+    "tool_selection",
+    "arg_validity",
+    "unnecessary_call_rate",
+    "recovery",
+    "steps_to_resolution",
+    "observation_use",
+    "state_fidelity",
+    "verifier_invocation",
+    "abstention",
+    "stop_accuracy",
+    "outcome",
+    "cost"
+  ],
+  "tasks": [
+    {
+      "expect_abstain": false,
+      "family": "tool_needed",
+      "gold_action": "SEARCH",
+      "notes": "family=tool_needed",
+      "prompt": "lookup lab value",
+      "requires_verifier": false,
+      "task_id": "agent-tool_needed-01",
+      "tools_available": [
+        "search_records",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "tool_needed",
+      "gold_action": "READ",
+      "notes": "family=tool_needed",
+      "prompt": "fetch prior imaging",
+      "requires_verifier": false,
+      "task_id": "agent-tool_needed-02",
+      "tools_available": [
+        "read_note",
+        "search_records"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "tool_needed",
+      "gold_action": "QUERY",
+      "notes": "family=tool_needed",
+      "prompt": "confirm medication dose",
+      "requires_verifier": false,
+      "task_id": "agent-tool_needed-03",
+      "tools_available": [
+        "query_pharmacy",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "tool_needed",
+      "gold_action": "READ",
+      "notes": "family=tool_needed",
+      "prompt": "check allergy list",
+      "requires_verifier": false,
+      "task_id": "agent-tool_needed-04",
+      "tools_available": [
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "tool_not_needed",
+      "gold_action": "TOOL_NONE",
+      "notes": "family=tool_not_needed",
+      "prompt": "summarize stated symptoms only",
+      "requires_verifier": false,
+      "task_id": "agent-tool_not_needed-05",
+      "tools_available": []
+    },
+    {
+      "expect_abstain": false,
+      "family": "tool_not_needed",
+      "gold_action": "TOOL_NONE",
+      "notes": "family=tool_not_needed",
+      "prompt": "answer from given context",
+      "requires_verifier": false,
+      "task_id": "agent-tool_not_needed-06",
+      "tools_available": []
+    },
+    {
+      "expect_abstain": false,
+      "family": "tool_not_needed",
+      "gold_action": "TOOL_NONE",
+      "notes": "family=tool_not_needed",
+      "prompt": "format existing facts",
+      "requires_verifier": false,
+      "task_id": "agent-tool_not_needed-07",
+      "tools_available": []
+    },
+    {
+      "expect_abstain": false,
+      "family": "tool_not_needed",
+      "gold_action": "TOOL_NONE",
+      "notes": "family=tool_not_needed",
+      "prompt": "clarify patient quote",
+      "requires_verifier": false,
+      "task_id": "agent-tool_not_needed-08",
+      "tools_available": []
+    },
+    {
+      "expect_abstain": false,
+      "family": "similar_tools",
+      "gold_action": "READ",
+      "notes": "family=similar_tools",
+      "prompt": "search vs read for one line",
+      "requires_verifier": false,
+      "task_id": "agent-similar_tools-09",
+      "tools_available": [
+        "read_note",
+        "search_records"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "similar_tools",
+      "gold_action": "QUERY",
+      "notes": "family=similar_tools",
+      "prompt": "query vs search for labs",
+      "requires_verifier": false,
+      "task_id": "agent-similar_tools-10",
+      "tools_available": [
+        "query_labs",
+        "search_records"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "similar_tools",
+      "gold_action": "VERIFY",
+      "notes": "family=similar_tools",
+      "prompt": "verify vs read for span",
+      "requires_verifier": true,
+      "task_id": "agent-similar_tools-11",
+      "tools_available": [
+        "verify_span",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "similar_tools",
+      "gold_action": "ACT",
+      "notes": "family=similar_tools",
+      "prompt": "act vs query for order",
+      "requires_verifier": false,
+      "task_id": "agent-similar_tools-12",
+      "tools_available": [
+        "act_order",
+        "query_orders"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "invalid_tool_args",
+      "gold_action": "ABSTAIN",
+      "notes": "family=invalid_tool_args",
+      "prompt": "search with empty query",
+      "requires_verifier": false,
+      "task_id": "agent-invalid_tool_args-13",
+      "tools_available": [
+        "search_records"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "invalid_tool_args",
+      "gold_action": "ABSTAIN",
+      "notes": "family=invalid_tool_args",
+      "prompt": "read missing note id",
+      "requires_verifier": false,
+      "task_id": "agent-invalid_tool_args-14",
+      "tools_available": [
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "invalid_tool_args",
+      "gold_action": "ABSTAIN",
+      "notes": "family=invalid_tool_args",
+      "prompt": "query malformed date",
+      "requires_verifier": false,
+      "task_id": "agent-invalid_tool_args-15",
+      "tools_available": [
+        "query_labs"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "invalid_tool_args",
+      "gold_action": "ABSTAIN",
+      "notes": "family=invalid_tool_args",
+      "prompt": "act without required fields",
+      "requires_verifier": false,
+      "task_id": "agent-invalid_tool_args-16",
+      "tools_available": [
+        "act_order"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "timeout_error",
+      "gold_action": "RECOVERY",
+      "notes": "family=timeout_error",
+      "prompt": "search times out",
+      "requires_verifier": false,
+      "task_id": "agent-timeout_error-17",
+      "tools_available": [
+        "search_records"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "timeout_error",
+      "gold_action": "RECOVERY",
+      "notes": "family=timeout_error",
+      "prompt": "read transient 503",
+      "requires_verifier": false,
+      "task_id": "agent-timeout_error-18",
+      "tools_available": [
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "timeout_error",
+      "gold_action": "RECOVERY",
+      "notes": "family=timeout_error",
+      "prompt": "query slow then retry",
+      "requires_verifier": false,
+      "task_id": "agent-timeout_error-19",
+      "tools_available": [
+        "query_labs"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "timeout_error",
+      "gold_action": "RECOVERY",
+      "notes": "family=timeout_error",
+      "prompt": "verify endpoint error",
+      "requires_verifier": true,
+      "task_id": "agent-timeout_error-20",
+      "tools_available": [
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "ambiguous_result",
+      "gold_action": "VERIFY",
+      "notes": "family=ambiguous_result",
+      "prompt": "two matching notes",
+      "requires_verifier": true,
+      "task_id": "agent-ambiguous_result-21",
+      "tools_available": [
+        "search_records",
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "ambiguous_result",
+      "gold_action": "QUERY",
+      "notes": "family=ambiguous_result",
+      "prompt": "conflicting lab units",
+      "requires_verifier": true,
+      "task_id": "agent-ambiguous_result-22",
+      "tools_available": [
+        "query_labs",
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "ambiguous_result",
+      "gold_action": "VERIFY",
+      "notes": "family=ambiguous_result",
+      "prompt": "unclear speaker attribution",
+      "requires_verifier": true,
+      "task_id": "agent-ambiguous_result-23",
+      "tools_available": [
+        "read_note",
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "ambiguous_result",
+      "gold_action": "VERIFY",
+      "notes": "family=ambiguous_result",
+      "prompt": "partial match span",
+      "requires_verifier": true,
+      "task_id": "agent-ambiguous_result-24",
+      "tools_available": [
+        "search_records",
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "multi_tool",
+      "gold_action": "VERIFY",
+      "notes": "family=multi_tool",
+      "prompt": "read then verify span",
+      "requires_verifier": true,
+      "task_id": "agent-multi_tool-25",
+      "tools_available": [
+        "read_note",
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "multi_tool",
+      "gold_action": "QUERY",
+      "notes": "family=multi_tool",
+      "prompt": "search then query labs",
+      "requires_verifier": false,
+      "task_id": "agent-multi_tool-26",
+      "tools_available": [
+        "search_records",
+        "query_labs"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "multi_tool",
+      "gold_action": "ACT",
+      "notes": "family=multi_tool",
+      "prompt": "read query act chain",
+      "requires_verifier": false,
+      "task_id": "agent-multi_tool-27",
+      "tools_available": [
+        "read_note",
+        "query_orders",
+        "act_order"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "multi_tool",
+      "gold_action": "STOP",
+      "notes": "family=multi_tool",
+      "prompt": "search verify stop",
+      "requires_verifier": true,
+      "task_id": "agent-multi_tool-28",
+      "tools_available": [
+        "search_records",
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "verify_needed",
+      "gold_action": "VERIFY",
+      "notes": "family=verify_needed",
+      "prompt": "assertion without support",
+      "requires_verifier": true,
+      "task_id": "agent-verify_needed-29",
+      "tools_available": [
+        "verify_span",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "verify_needed",
+      "gold_action": "VERIFY",
+      "notes": "family=verify_needed",
+      "prompt": "transport mismatch",
+      "requires_verifier": true,
+      "task_id": "agent-verify_needed-30",
+      "tools_available": [
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "verify_needed",
+      "gold_action": "VERIFY",
+      "notes": "family=verify_needed",
+      "prompt": "spurious atom risk",
+      "requires_verifier": true,
+      "task_id": "agent-verify_needed-31",
+      "tools_available": [
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "verify_needed",
+      "gold_action": "VERIFY",
+      "notes": "family=verify_needed",
+      "prompt": "state contradiction",
+      "requires_verifier": true,
+      "task_id": "agent-verify_needed-32",
+      "tools_available": [
+        "verify_span",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "insufficient_info",
+      "gold_action": "ABSTAIN",
+      "notes": "family=insufficient_info",
+      "prompt": "missing source text",
+      "requires_verifier": false,
+      "task_id": "agent-insufficient_info-33",
+      "tools_available": [
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "insufficient_info",
+      "gold_action": "ABSTAIN",
+      "notes": "family=insufficient_info",
+      "prompt": "no labs ordered",
+      "requires_verifier": false,
+      "task_id": "agent-insufficient_info-34",
+      "tools_available": [
+        "query_labs"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "insufficient_info",
+      "gold_action": "ABSTAIN",
+      "notes": "family=insufficient_info",
+      "prompt": "unknown medication",
+      "requires_verifier": false,
+      "task_id": "agent-insufficient_info-35",
+      "tools_available": [
+        "query_pharmacy"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "insufficient_info",
+      "gold_action": "ABSTAIN",
+      "notes": "family=insufficient_info",
+      "prompt": "cannot attribute speaker",
+      "requires_verifier": false,
+      "task_id": "agent-insufficient_info-36",
+      "tools_available": [
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "premature_stop",
+      "gold_action": "VERIFY",
+      "notes": "family=premature_stop",
+      "prompt": "stop before verify",
+      "requires_verifier": true,
+      "task_id": "agent-premature_stop-37",
+      "tools_available": [
+        "verify_span",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "premature_stop",
+      "gold_action": "READ",
+      "notes": "family=premature_stop",
+      "prompt": "stop after search only",
+      "requires_verifier": false,
+      "task_id": "agent-premature_stop-38",
+      "tools_available": [
+        "search_records",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "premature_stop",
+      "gold_action": "QUERY",
+      "notes": "family=premature_stop",
+      "prompt": "stop with open question",
+      "requires_verifier": false,
+      "task_id": "agent-premature_stop-39",
+      "tools_available": [
+        "query_labs",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": true,
+      "family": "premature_stop",
+      "gold_action": "ABSTAIN",
+      "notes": "family=premature_stop",
+      "prompt": "stop without abstain",
+      "requires_verifier": false,
+      "task_id": "agent-premature_stop-40",
+      "tools_available": []
+    },
+    {
+      "expect_abstain": false,
+      "family": "repeated_calls",
+      "gold_action": "STOP",
+      "notes": "family=repeated_calls",
+      "prompt": "duplicate search",
+      "requires_verifier": false,
+      "task_id": "agent-repeated_calls-41",
+      "tools_available": [
+        "search_records"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "repeated_calls",
+      "gold_action": "STOP",
+      "notes": "family=repeated_calls",
+      "prompt": "re-read same note",
+      "requires_verifier": false,
+      "task_id": "agent-repeated_calls-42",
+      "tools_available": [
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "repeated_calls",
+      "gold_action": "STOP",
+      "notes": "family=repeated_calls",
+      "prompt": "retry loop on verify",
+      "requires_verifier": true,
+      "task_id": "agent-repeated_calls-43",
+      "tools_available": [
+        "verify_span"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "repeated_calls",
+      "gold_action": "STOP",
+      "notes": "family=repeated_calls",
+      "prompt": "ping-pong search read",
+      "requires_verifier": false,
+      "task_id": "agent-repeated_calls-44",
+      "tools_available": [
+        "search_records",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "state_update_recovery",
+      "gold_action": "ACT",
+      "notes": "family=state_update_recovery",
+      "prompt": "update after new observation",
+      "requires_verifier": false,
+      "task_id": "agent-state_update_recovery-45",
+      "tools_available": [
+        "read_note",
+        "act_order"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "state_update_recovery",
+      "gold_action": "RECOVERY",
+      "notes": "family=state_update_recovery",
+      "prompt": "recover from wrong tool",
+      "requires_verifier": false,
+      "task_id": "agent-state_update_recovery-46",
+      "tools_available": [
+        "search_records",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "state_update_recovery",
+      "gold_action": "VERIFY",
+      "notes": "family=state_update_recovery",
+      "prompt": "rollback bad assertion",
+      "requires_verifier": true,
+      "task_id": "agent-state_update_recovery-47",
+      "tools_available": [
+        "verify_span",
+        "read_note"
+      ]
+    },
+    {
+      "expect_abstain": false,
+      "family": "state_update_recovery",
+      "gold_action": "RECOVERY",
+      "notes": "family=state_update_recovery",
+      "prompt": "resume after timeout",
+      "requires_verifier": false,
+      "task_id": "agent-state_update_recovery-48",
+      "tools_available": [
+        "search_records",
+        "query_labs"
+      ]
+    }
+  ],
+  "transfer_types": [
+    "behavior",
+    "outcome",
+    "mechanism"
+  ]
+}

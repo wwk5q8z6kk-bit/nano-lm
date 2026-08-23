@@ -67,11 +67,17 @@ run_direct() {
 run_proxy() {
   local host_id="$1"
   local cmd="$2"
-  ssh -tt -o BatchMode=yes -o ConnectTimeout=25 -o StrictHostKeyChecking=accept-new \
+  ssh -T -o BatchMode=yes -o ConnectTimeout=30 -o StrictHostKeyChecking=accept-new \
     -i "$SSH_KEY" "${host_id}@ssh.runpod.io" \
-    "bash -lc $(printf %q "$cmd"); exit" 2>&1 \
-    | grep -v -E '^(\\*\\* WARNING|Error: Your SSH client||\\[\\?2004h|-- RUNPOD|Enjoy your Pod|For detailed documentation|https://docs\\.runpod|https://blog\\.runpod| ______|$$|$$$|root@.*:.*#)' \
-    | sed '/^$/d'
+    "bash -lc $(printf %q "$cmd")" 2>&1 \
+    | grep -v -F 'WARNING: Remote port forwarding' \
+    | grep -v -F 'Error: Your SSH client' \
+    | grep -v -F -- '-- RUNPOD' \
+    | grep -v -F 'Enjoy your Pod' \
+    | grep -v -F 'docs.runpod.io' \
+    | grep -v -F 'For detailed documentation' \
+    | grep -v -E '^[[:space:]]*$' \
+    | grep -v -E '^root@.*:.*#$'
 }
 
 SSH_CMD="$(ssh_command_from_api "$POD_ID")"

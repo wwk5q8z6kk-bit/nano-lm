@@ -1,213 +1,276 @@
 {
-  "active_tracks": [],
-  "actual_spend": 3.8251,
-  "campaign_remaining": 162.2187,
+  "active_tracks": [
+    "native_round2",
+    "teacher_collective_stub"
+  ],
+  "actual_spend": 6.45,
+  "campaign_remaining": 149.0,
   "campaign_spend_start": 1.8211,
-  "commit_sha": "a4b7947737d3f4a363bdc067df95e3008cd94b41",
-  "committed_spend": 0.88,
-  "hourly_exposure": 2.13,
+  "commit_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
+  "committed_spend": 1.39,
+  "current_spend_per_hr": 1.394,
+  "execution_authority": "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
+  "hourly_exposure": 1.394,
   "hub_catalog": {
-    "pytorch_image": "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04",
+    "axolotl": "cma1ofy3e000008l7he7c764k",
     "pytorch_template": "runpod-torch-v240",
     "vllm": "cm8h09d9n000008jvh2rqdsmb"
   },
   "lanes": {
     "lane_a_native": {
-      "gpu": "A100-80GB-PCIe + RTX4090",
-      "image": "runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04",
-      "pods": [
+      "note": "zo1lq44stf9pqm already absent; no duplicate A100 pair at teardown",
+      "owner": "agent-904633c2-followup",
+      "pods_active_elsewhere": [],
+      "pods_deleted": [
         {
-          "gpu": "NVIDIA A100 80GB PCIe",
-          "pod_id": "wmxw7pzisysjlh",
-          "rate_hr": 1.39,
-          "run_ids": [
-            "native30_bottleneck_span_s0",
-            "native30_bottleneck_span_s1",
-            "native30_bottleneck_struct_s0",
-            "native30_bottleneck_struct_s1"
-          ]
+          "name": "soak-minimal-202608230057",
+          "pod_id": "qcd5lxi2glc13b",
+          "reason": "duplicate soak SOAK_FAIL"
         },
         {
-          "gpu": "NVIDIA GeForce RTX 4090",
-          "pod_id": "vi9u56s9htwwkb",
-          "rate_hr": 0.74,
-          "run_ids": [
-            "native30_decoder_span_s0",
-            "native30_decoder_span_s1",
-            "native30_decoder_struct_s0",
-            "native30_decoder_struct_s1"
-          ]
+          "name": "diag-native-min-1787461034",
+          "pod_id": "yglu6kr1ys0kw3",
+          "reason": "duplicate diag soak SOAK_FAIL"
+        },
+        {
+          "name": "native8-202608230101",
+          "pod_id": "6o3fj6clc5dcmo",
+          "reason": "NATIVE_DONE; teardown idle sleep"
+        },
+        {
+          "name": "diag-native-min-1787461034",
+          "pod_id": "yglu6kr1ys0kw3",
+          "reason": "terminated during health check; never reached stable SSH/smi"
+        },
+        {
+          "name": "soak-minimal-202608230057",
+          "pod_id": "qcd5lxi2glc13b",
+          "reason": "duplicate A100 soak; SSH timeout; terminated"
+        },
+        {
+          "name": "native8-202608230101",
+          "pod_id": "6o3fj6clc5dcmo",
+          "reason": "churned off before SSH succeeded"
         }
       ],
-      "runs": 8,
-      "status": "RUNNING",
-      "template_id": "runpod-torch-v240",
-      "terminated": {
-        "actual_usd": 0.4821,
-        "gpu": "NVIDIA B200",
-        "pod_id": "owrlijfea33xox",
-        "reason": "PyTorch 2.4/cuda12.4 sm_90-only; B200 sm_100 \u2014 CUDA error at torch.full"
-      },
-      "trainer": "scripts/train_native_nano.py"
+      "status": "IDLE_PODS_CLEARED"
     },
-    "lane_b_student": {
-      "actual_usd": 0.1536,
-      "gpu": "NVIDIA A100-SXM4-80GB",
-      "note": "ended ~04:37 UTC during incident response; check artifacts for C1/C2",
-      "pod_id": "1hbomuv91vfbpw",
-      "status": "TERMINATED_EARLY"
+    "lane_native": {
+      "round2_gate": "UNBLOCKED",
+      "status": "ROUND2_IN_PROGRESS",
+      "pod_id": "3m8gvc8orfnem6",
+      "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
+      "run_ids": [
+        "native100_evidence_bottleneck_s0",
+        "native100_evidence_bottleneck_s1",
+        "native100_span_port_s0",
+        "native100_span_port_s1"
+      ],
+      "cost_per_hr": 1.39,
+      "volume_id": "04himzqxbm"
     },
-    "lane_c_verifier": {
-      "actual_usd": 0.0715,
-      "gpu": "NVIDIA GeForce RTX 4090",
-      "pod_id": "yer36mut1lnunv",
-      "status": "TERMINATED_EARLY"
-    },
-    "lane_kimi": {
-      "reason": "MANAGED_ENDPOINT_UNAVAILABLE",
-      "status": "BLOCKED"
+    "lane_teacher_collective": {
+      "lane": "P8_distillation",
+      "status": "STUB_MANIFEST_ONLY",
+      "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
+      "task_suite": "data/p1_agent_canary_v1.json",
+      "n_tasks": 48,
+      "canary_gate": "BLOCKED_native100_early_or_5usd_probe"
     },
     "lane_qwen": {
+      "deleted_endpoint_ids": [
+        "vllm-r8abq9b4w5p5wl",
+        "vllm-6gd1gw3pm5ka3d",
+        "vllm-3ky5pp8exr124g",
+        "vllm-43t77ne9pl485s"
+      ],
       "endpoint_id": null,
+      "note": "duplicate v3b endpoints removed 2026-08-23 follow-up",
       "status": "DELETED"
+    },
+    "lane_student": {
+      "status": "C1C2_COMPLETE",
+      "surface": "hub_vllm_ephemeral"
     }
   },
-  "launch_commit_sha": "a4b7947737d3f4a363bdc067df95e3008cd94b41",
+  "launch_commit_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
   "leading_failures": [
     {
-      "failure": "sm_100 vs sm_90 PyTorch",
-      "pod": "owrlijfea33xox"
-    },
-    {
-      "failure": "duplicate idle launch (deleted)",
-      "pod": "vl5teia0gciol9"
+      "failure": "EU-RO-1 A100 template pods: direct TCP SSH timeout while uptimeSeconds=0",
+      "pods": "qcd5lxi2glc13b,yglu6kr1ys0kw3"
     }
   ],
-  "ledger_remaining": 180.2949,
-  "live_runpod_balance": 162.2187,
-  "local_smoke": {
-    "native_cpu": "PASS (train_native_nano.py --cpu-smoke)",
-    "student_cli": "PRESENT (student_structured_eval.py; GPU/serverless required for full eval)",
-    "verifier": "PASS (verifier_lane.py BASELINE_ONLY)"
-  },
+  "ledger_remaining": 180.2668,
+  "live_runpod_balance": 160.38,
   "mandate_baseline_usd": 185.0,
   "model_statuses": {
-    "kimi_k3": {
-      "frontier_lane": "managed_reference_proxy",
-      "status": "BLOCKED_NO_RETRIES"
-    },
     "managed_reference": {
-      "winner": "qwen3_32b_awq",
-      "winner_label": "BEST_OPERATIONAL_MANAGED_REFERENCE",
-      "c1": {
-        "gpt_oss_120b": {
-          "assertion_state_correct_rate": 0.9355,
-          "coverage_rate": 0.9688,
-          "exact_gold_span_rate": 0.3871,
-          "malformed": 1,
-          "ok": false
-        },
-        "qwen3_32b_awq": {
-          "assertion_state_correct_rate": 1.0,
-          "coverage_rate": 1.0,
-          "exact_gold_span_rate": 0.2188,
-          "malformed": 0,
-          "ok": true
-        }
-      },
-      "c2_winner": {
-        "assertion_state_correct_rate": 1.0,
-        "coverage_rate": 0.7867,
-        "exact_gold_span_rate": 0.1102,
-        "malformed": 11,
-        "n_cases": 128,
-        "ok": false
-      }
+      "c2_assertion_state_correct_rate": 1.0,
+      "c2_coverage_rate": 0.7867,
+      "c2_exact_gold_span_rate": 0.1102,
+      "winner": "qwen3_32b_awq"
+    },
+    "student_a": {
+      "c1_assertion_state_correct_rate": 0.8125,
+      "c1_coverage_rate": 1.0,
+      "c2_assertion_state_correct_rate": 0.6797,
+      "c2_coverage_rate": 0.7812,
+      "c2_exact_gold_span_rate": 0.1016,
+      "model": "Qwen/Qwen2.5-32B-Instruct",
+      "qlora_gate": "GAP_DOCUMENTED_NOT_UNLOCKED"
     }
   },
-  "new_actual_spend": 2.004,
-  "new_committed_spend": 1.39,
+  "native_round1": {
+    "schema": "nano.campaign.native_round1.v1",
+    "timestamp": "2026-08-23T05:39:22+00:00",
+    "commit_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+    "pod_id": "6o3fj6clc5dcmo",
+    "marker": "NATIVE_DONE",
+    "runs_completed": 8,
+    "checkpoints_local": true,
+    "metrics_local": true,
+    "verdict": "COMPLETE_RANKED",
+    "reason": "Recovered final-step metrics from network volume via volume-recovery-http pod; val_loss not logged in native checkpoints \u2014 ranked on extra.loss (final_train_loss).",
+    "run_ids": [
+      "native30_bottleneck_span_s0",
+      "native30_bottleneck_span_s1",
+      "native30_bottleneck_struct_s0",
+      "native30_bottleneck_struct_s1",
+      "native30_decoder_span_s0",
+      "native30_decoder_span_s1",
+      "native30_decoder_struct_s0",
+      "native30_decoder_struct_s1"
+    ],
+    "factorial_cells": {
+      "A": "evidence_bottleneck + span_port",
+      "B": "evidence_bottleneck + structured_json",
+      "C": "slot_router + span_port",
+      "D": "slot_router + structured_json"
+    },
+    "top2_mechanisms": [
+      "evidence_bottleneck",
+      "span_port"
+    ],
+    "top2_cells": [
+      "A",
+      "B"
+    ],
+    "round2_100m_gate": "UNBLOCKED \u2014 promote evidence_bottleneck + top transport cells A/B to 100M screening",
+    "next_action": "Optional: rsync latest.pt from volume if weights needed locally; launch round2 100M on winning mechanisms",
+    "recovery": {
+      "method": "network_volume_http_proxy",
+      "volume_id": "04himzqxbm",
+      "volume_path": "/workspace/nano-lm/artifacts/native_checkpoints",
+      "campaign_native_checkpoints_on_volume": false,
+      "probe_pod_id": "iyyolshw3yj0u3",
+      "recovered_artifacts": "step_000006.json per run_id (weights remain on volume)"
+    }
+  },
+  "native_training": {
+    "commit": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+    "marker": "NATIVE_DONE",
+    "pod_deleted_at": "2026-08-23T05:05:16.335076+00:00",
+    "pod_id": "6o3fj6clc5dcmo",
+    "runs": [
+      "native30_bottleneck_span_s0",
+      "native30_bottleneck_span_s1",
+      "native30_bottleneck_struct_s0",
+      "native30_bottleneck_struct_s1",
+      "native30_decoder_span_s0",
+      "native30_decoder_span_s1",
+      "native30_decoder_struct_s0",
+      "native30_decoder_struct_s1"
+    ],
+    "verdict": "NATIVE8_COMPLETE"
+  },
+  "new_actual_spend": 2.9121,
+  "new_committed_spend": 0,
+  "native_round2": {
+    "status": "IN_PROGRESS",
+    "pod_id": "3m8gvc8orfnem6",
+    "commit_sha": "aefe4e2",
+    "cost_per_hr": 1.39,
+    "gpu": "NVIDIA A100 80GB PCIe",
+    "volume_id": "04himzqxbm",
+    "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
+    "run_ids": [
+      "native100_evidence_bottleneck_s0",
+      "native100_evidence_bottleneck_s1",
+      "native100_span_port_s0",
+      "native100_span_port_s1"
+    ],
+    "init": "fresh_random",
+    "early_gate": "step_50_loss_compare"
+  },
   "next_actions": [
-    "5min gate: native preflight + loss finite on wmxw7pzisysjlh and vi9u56s9htwwkb",
-    "successive halving after 20-30min round1",
-    "do not launch B200 without sm_100 PyTorch",
-    "do not retry Kimi during Wave 1"
+    "Monitor native100 pod 3m8gvc8orfnem6 — SSH preflight + train_native_nano gradients",
+    "native100 early gate at step ~50; rsync checkpoints to volume before delete",
+    "Agent canary stub ready — gate teacher collective until native100 early OR <$5 probe",
+    "QLoRA canary deferred behind native100 early gate"
   ],
   "next_reallocations": [
-    "Hub-first student inference (vLLM cm8h09d9n000008jvh2rqdsmb)",
-    "Native factorial on A100/H100 only with GPU preflight",
-    "Axolotl hub cma1ofy3e000008l7he7c764k for future QLoRA if gated open"
+    "inventory refresh only"
   ],
   "origin_master": "b13ec7d",
-  "posture": "TEARDOWN_IDLE_BURN",
-  "pre_paid_commit_sha": "a4b7947737d3f4a363bdc067df95e3008cd94b41",
-  "raw_pods": [
-    {
-      "lane": "native_a100_bottleneck",
-      "pod_id": "wmxw7pzisysjlh"
+  "pod_diagnosis_zo1lq44stf9pqm": {
+    "api_status": "NOT_FOUND_404",
+    "checked_at": "2026-08-23T05:06:03.543386+00:00",
+    "gpu_util_percent": null,
+    "name": "wave1-native-single-202608230053",
+    "notes": "Vanished from API before health_gate completed; health_gate logged pod gone. Churn pods (soak/diag/native8) showed uptimeSeconds=0 or SSH-only via proxy; 0% GPU; no train_native_nano observed.",
+    "nvidia_smi": null,
+    "pod_id": "zo1lq44stf9pqm",
+    "ssh": {
+      "agent_ssh_success_on_zo1lq": false,
+      "direct_ip_owner_ui": "213.173.105.6:30028 timeout from agent network",
+      "owner_id_ed25519_proxy": "Permission denied (publickey) \u2014 RunPod account key is ~/.runpod/ssh/runpodctl-ssh-key not id_ed25519",
+      "working_pattern_when_pod_alive": "{podHostId}@ssh.runpod.io with runpodctl-ssh-key; remote commands need ssh -tt"
     },
+    "training_running": false
+  },
+  "pods_checked": [
     {
-      "lane": "native_a100_decoder",
-      "pod_id": "vi9u56s9htwwkb"
+      "checked_at": "2026-08-23T05:05:44.499079+00:00",
+      "cost_per_hr": 1.39,
+      "gpu": "NVIDIA A100 80GB PCIe (inferred: 188GB RAM, $1.39/hr)",
+      "name": "diag-native-min-1787461034",
+      "pod_id": "yglu6kr1ys0kw3",
+      "ssh_direct": "root@213.173.105.10:44123",
+      "ssh_notes": "id_ed25519: proxy permission denied; runpodctl key: proxy auth but non-interactive PTY error; direct TCP timeout before pod terminated",
+      "ssh_ok": false,
+      "ssh_proxy": "yglu6kr1ys0kw3-64410f1c@ssh.runpod.io",
+      "status": "TERMINATED_NOT_FOUND",
+      "training_running": "unknown (no shell); likely idle diag \u2014 uptimeSeconds=0 at last API poll"
     }
   ],
-  "remaining_budget": 180.2949,
-  "remaining_new_budget": 181.606,
-  "runpod_hub": {
-    "axolotl": "cma1ofy3e000008l7he7c764k",
-    "pytorch_template": "runpod-torch-v240",
-    "vllm_serverless": "cm8h09d9n000008jvh2rqdsmb"
-  },
+  "posture": "NATIVE_ROUND2_ACTIVE",
+  "raw_pods": [
+    {
+      "pod_id": "3m8gvc8orfnem6",
+      "name": "native100-round2-relaunch",
+      "cost_per_hr": 1.39,
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "desired_status": "RUNNING"
+    }
+  ],
+  "remaining_budget": 180.2668,
+  "remaining_new_budget": 180.2668,
   "schema": "nano.campaign.status.v1",
   "serverless": {
     "endpoint_id": null,
-    "note": "no Qwen serverless recreate without batch"
+    "last_endpoint": "vllm-7chsjdkpxf8hzj",
+    "status": "DELETED"
   },
-  "structured_contract": {
-    "metrics_fixed": true,
-    "assertion_state_correct_rate_c2": 1.0,
-    "assertion_state_correct_eligible_c2": 118,
-    "coverage_rate_c2": 0.7867,
-    "exact_gold_span_rate_c2": 0.1102,
-    "prior_bug": "1.0078 was per-case count average not rate"
+  "soak_gate": {
+    "log": "artifacts/campaign/health_gates/soak_202608230057.log",
+    "owner": "agent-6510cb6c",
+    "reason": "qcd5+yglu6: uptimeSeconds=0, direct SSH timeout; never reached 10min ssh+smi",
+    "verdict": "SOAK_FAIL"
   },
+  "structured_contract": {},
   "students": {
-    "adaptation_hub_id": "cma1ofy3e000008l7he7c764k",
-    "qlora_gate": "NOT_UNLOCKED",
-    "serving_hub_id": "cm8h09d9n000008jvh2rqdsmb",
     "student_plane": "vllm_sglang_serverless_not_raw_a100"
   },
-  "timestamp": "2026-08-23T04:40:27.450375+00:00",
-  "total_exposure": 4.7051,
-  "wave": "paid_wave_v2_hub",
-  "wave1_teardown": {
-    "idle_burn_prevented": true,
-    "pods": [
-      {
-        "actual_usd": 0.4821,
-        "failure": "sm_100 Blackwell vs PyTorch 2.4/cu124 (max sm_90); container never reached training",
-        "gpu": "NVIDIA B200",
-        "lane": "native_b200",
-        "pod_id": "owrlijfea33xox",
-        "status": "TERMINATED"
-      },
-      {
-        "actual_usd": 0.1536,
-        "failure": "pod never ready (uptimeSeconds=0, SSH unavailable); volumeInGb=0; workload never started \u2014 0% GPU",
-        "gpu": "NVIDIA A100-SXM4-80GB",
-        "lane": "student_a",
-        "pod_id": "1hbomuv91vfbpw",
-        "status": "TERMINATED"
-      },
-      {
-        "actual_usd": 0.0715,
-        "failure": "pod never ready; same startup/mount failure \u2014 0% GPU",
-        "gpu": "RTX4090",
-        "lane": "verifier",
-        "pod_id": "yer36mut1lnunv",
-        "status": "TERMINATED"
-      }
-    ],
-    "terminated_at": "2026-08-23T04:39:02.041944+00:00"
-  }
+  "timestamp": "2026-08-23T10:24:00+00:00",
+  "checkpoint_authority": "artifacts/campaign/checkpoint_v3.json"
 }

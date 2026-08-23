@@ -1,7 +1,7 @@
 {
   "schema": "nano.campaign.experiment_manifest.v1",
   "experiment_id": "native100_round2_promotion_v1",
-  "git_sha": "04d321f1f12ec27856b8aa4773611c300a926530",
+  "git_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
   "dataset_revision": "p1_distill_train_v1",
   "command": "scripts/launch_native_round2.sh",
   "surface": "pod_template",
