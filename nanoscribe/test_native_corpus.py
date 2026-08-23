@@ -232,3 +232,41 @@ def test_train_cli_does_not_override_registered_dataset() -> None:
 
     # and the override must be conditional
     assert "if args.dataset:" in src, "--dataset override must be conditional on the flag being set"
+
+
+def test_every_registered_run_config_is_constructible() -> None:
+    """Every registered run must BUILD before any pod is paid for.
+
+    A 9-run job was launched having verified only one arm locally. The
+    evidence_bottleneck arm got d_model=480 with n_heads=480//64=7, and
+    480 % 7 != 0, so torch's attention assertion killed it mid-run — after three
+    runs had already completed and while the pod kept billing.
+    """
+    from nanoscribe.native.config import config_for_run
+    from nanoscribe.native.factorial import REVALIDATION_ARMS, revalidation_run_id
+    from nanoscribe.native.model import build_native_model
+
+    for arm in REVALIDATION_ARMS:
+        for seed in arm.seeds:
+            cfg = config_for_run(revalidation_run_id(arm, seed))
+            assert cfg.d_model % cfg.n_heads == 0, (
+                f"{cfg.run_id}: d_model {cfg.d_model} not divisible by n_heads {cfg.n_heads}; "
+                "torch attention asserts embed_dim % num_heads == 0"
+            )
+            build_native_model(cfg)  # raises if the architecture is invalid
+
+
+def test_head_count_always_divides_d_model() -> None:
+    from nanoscribe.native.config import _best_head_count, dims_for_target_params_m
+
+    for d_model in range(384, 1025, 32):
+        heads = _best_head_count(d_model)
+        assert d_model % heads == 0, f"d_model={d_model} not divisible by n_heads={heads}"
+        assert heads >= 4
+
+    for target in (30, 100, 300):
+        for evidence_aware in (True, False):
+            d_model, _n_layers, n_heads = dims_for_target_params_m(
+                target, evidence_aware=evidence_aware
+            )
+            assert d_model % n_heads == 0, f"{target}M evidence_aware={evidence_aware}"

@@ -36,6 +36,7 @@ def main() -> int:
         BitsAndBytesConfig,
         DataCollatorForLanguageModeling,
         Trainer,
+        TrainerCallback,
         TrainingArguments,
     )
 
@@ -97,7 +98,7 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     log_path = Path(args.log_file)
 
-    class LossLogger:
+    class LossLogger(TrainerCallback):
         def __init__(self) -> None:
             self.step_losses: dict[int, float] = {}
 
