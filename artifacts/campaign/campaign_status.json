@@ -322,10 +322,17 @@
     },
     "cost_usd": 0.0,
     "evaluator_defect": "exact_gold_span_rate=1.0 is tautological \u2014 gold raw_value injected into candidate set",
+    "evaluator_fix": "p1_eval/inference now take constrained=bool; results carry decoding_mode + span_metrics_are_tautological",
     "finding": "artifacts/campaign/native100_heldout_finding_v1.json",
     "heldout_eval": "artifacts/campaign/native100_heldout_eval_v1.json",
     "random_init_control": "artifacts/campaign/native100_randominit_control_v1.json",
-    "verdict": "BLOCKED_NO_MEASURABLE_HELDOUT_LEARNING"
+    "unconstrained_artifact": "artifacts/campaign/native100_heldout_unconstrained_v1.json",
+    "unconstrained_coverage": {
+      "count": 0,
+      "eligible": 150,
+      "rate": 0.0
+    },
+    "verdict": "BLOCKED_ZERO_HELDOUT_TRANSPORT"
   },
   "native_training": {
     "commit": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
@@ -347,8 +354,8 @@
   "new_actual_spend": 2.9121,
   "new_committed_spend": 0,
   "next_actions": [
-    "Fix native p1_eval candidate construction (raw_value injection) \u2014 evidence transport is currently unmeasured",
-    "Add majority-class + random-init standing baselines to native eval harness",
+    "Address training-data scale (96 examples x 34 epochs) before any further native architecture ranking",
+    "Re-run native arm comparison with free-generation eval + random-init/majority-class controls",
     "Benchmark Qwen3-Coder-Next-FP8 on agent canary v1 (48 tasks) for per-capability donor ranking",
     "student_gap_v1 measurement before any QLoRA spend"
   ],

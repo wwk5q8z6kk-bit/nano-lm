@@ -10,7 +10,7 @@
   "n_gold_atoms": 150,
   "cost_usd": 0.0,
   "device": "cpu",
-  "headline": "native100 evidence_bottleneck shows NO measurable held-out learning of the assertion decision; it does not separate from an untrained control or from the majority class.",
+  "headline": "native100 evidence_bottleneck has ZERO held-out evidence-transport capability: 0/150 coverage under free generation. Its constrained-mode scores came from the candidate set, and its assertion decision is indistinguishable from an untrained control and from majority-class guessing.",
   "evidence": {
     "assertion_state_correct": {
       "trained": {
@@ -121,18 +121,41 @@
   },
   "decision": {
     "promotion": "BLOCKED",
-    "rationale": "Briefing SS LV: promotion requires evidence a mechanism improves capability. The only held-out metric that reflects a model decision (assertion_state) is statistically indistinguishable from both an untrained control and majority-class guessing. Ranking evidence_bottleneck vs span_port on final train loss would be ranking memorization.",
+    "rationale": "Briefing SS LV: promotion requires evidence a mechanism improves capability. Under free generation the checkpoint covers 0/150 gold atoms; under constrained selection its only real decision (assertion state) matches an untrained control to within 0.0007 and sits inside the majority-class CI. Train loss 0.0488 after 34 epochs over 96 examples reflects memorization. There is no capability signal to promote.",
     "do_not": [
       "promote to 300M",
       "declare evidence_bottleneck the winner on train loss",
       "report exact_gold_span_rate=1.0 as evidence transport capability"
     ],
     "required_next": [
-      "fix the evaluator so raw_value is not injected into the candidate set (free, local) \u2014 until then evidence transport is unmeasured",
-      "add majority-class and random-init controls as standing baselines in the native eval harness",
-      "select checkpoints by held-out metric, not last step (step 160 beat step 200 on train loss)",
-      "increase training data or reduce epochs \u2014 96 examples x 34 epochs cannot support a 100M model",
-      "power: 84 eligible atoms cannot detect a ~1pp effect; either enlarge the eval or target larger effects"
+      "Treat 96 training examples x 34 epochs as the primary suspect before any architecture conclusion",
+      "Re-run the arm comparison only with: free-generation eval, majority-class + random-init controls, and best-checkpoint selection",
+      "Reconsider the hash tokenizer for span emission \u2014 free-generation output is degenerate at the character level",
+      "Do not rank evidence_bottleneck vs span_port until an arm clears the random-init control on a non-tautological metric",
+      "Enlarge eval or target larger effects: 84 eligible atoms cannot detect ~1pp"
     ]
+  },
+  "unconstrained_free_generation": {
+    "artifact": "artifacts/campaign/native100_heldout_unconstrained_v1.json",
+    "decoding_mode": "free_generation",
+    "coverage": {
+      "count": 0,
+      "eligible": 150,
+      "rate": 0.0
+    },
+    "exact_gold_span": {
+      "count": 0,
+      "eligible": 0,
+      "rate": 0.0
+    },
+    "span_character_f1_mean": 0.0,
+    "malformed": 56,
+    "plumbing_check": "NOT a harness failure \u2014 the free-generation path emits structurally valid lines",
+    "sample_outputs": [
+      "ASSERTED: \"GERD throatiatitistintipatinstinstinsyyyyyyyyyyyyyyyyy\"",
+      "ASSERTED: \"GERD throat: titistintipatinstinstinsyyyyyyyyyyyyyyyyy\"",
+      "ASSERTED: \"GERD flationt: tistin menstipatestinsyyyyyyyyyyyyyyyyy\""
+    ],
+    "interpretation": "The model learned the surface FORMAT of a span-port line (ASSERTED: \"...\") but not its CONTENT: emissions are degenerate character soup under the hash tokenizer. Coverage is 0/150. All apparent held-out performance in constrained mode was supplied by the candidate set, not the model. Native evidence-transport capability at this checkpoint is ZERO, not merely unmeasured."
   }
 }
