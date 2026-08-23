@@ -1,0 +1,32 @@
+{
+  "schema": "nano.campaign.infra_defect.v1",
+  "timestamp": "2026-08-23T20:25:36.002522+00:00",
+  "experiment_id": "native30_revalidation_wave1_v1",
+  "defect_id": "I1_torch_wheel_clobbers_working_cuda",
+  "headline": "Bootstrapping with `pip install -r requirements.txt` replaces the pod template's working torch with torch==2.11.0+cu130, which cannot use a CUDA 12.4 driver. The pod then trains on CPU at ~1/30th speed while billing for an A100.",
+  "evidence": {
+    "launch_cuda_gate": "PASSED \u2014 {\"cuda\": true, \"name\": \"NVIDIA A100 80GB PCIe\"} before bootstrap",
+    "after_pip_install": {
+      "torch": "2.11.0+cu130",
+      "built_for_cuda": "13.0",
+      "driver_cuda": "12.4",
+      "torch.cuda.is_available": false,
+      "torch.cuda.device_count": 1
+    },
+    "symptom": "nvidia-smi showed the GPU at 0% util / 1MiB while train_native_nano.py ran on CPU",
+    "why_it_was_not_caught": "the remote script's preflight had a PREFLIGHT_OVERRIDE path: when the torch preflight failed it fell back to `nvidia-smi ok, continuing`. nvidia-smi reports the DRIVER's view, not whether torch can use it, so the override let a CPU-only run proceed."
+  },
+  "detection": "SS XLI five-minute post-launch verification \u2014 GPU memory allocated / utilisation plausible",
+  "cost": {
+    "pod": "9cg7kfpe4vlgzi",
+    "rate_usd_hr": 1.39,
+    "runtime_min": "~6",
+    "wasted_usd_est": 0.14,
+    "note": "caught and terminated inside the verification window"
+  },
+  "fixes": [
+    "scripts/bootstrap_native30_revalidation.sh installs requirements EXCEPT torch (grep -v '^torch=='), leaving the template's driver-matched torch in place; logs TORCH_BEFORE and TORCH_AFTER",
+    "scripts/native30_revalidation_remote.sh now hard-fails on torch.cuda.is_available() == False. The nvidia-smi override is removed: a pod that cannot use its GPU has no valid experiment attached and must stop, not continue"
+  ],
+  "generalisation": "Any launcher that pip-installs a pinned torch onto a provider's prebuilt GPU image risks this. The launch-time CUDA gate is necessary but NOT sufficient because it runs BEFORE dependency installation \u2014 the gate must be re-asserted after bootstrap."
+}
