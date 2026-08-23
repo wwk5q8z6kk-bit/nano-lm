@@ -6,7 +6,11 @@ Paraphrase cannot become evidence. Ambiguous quotes abstain.
 
 from __future__ import annotations
 
+import re
+
 from nanoscribe.encounter import EncounterError, EvidenceSpan, Source, Speaker
+
+_WS_RE = re.compile(r"\s+")
 
 _UNICODE_MAP = {
     "‘": "'",
@@ -134,6 +138,46 @@ def snap_relocate(source: Source, quote: str, *, evidence_id: str) -> EvidenceSp
     return _span_in_turn(source, start, end, source.text[start:end], evidence_id)
 
 
+def _quote_variants(quote: str, raw_value: str | None = None) -> tuple[str, ...]:
+    """Ordered transport attempts — still fail-closed on ambiguous or invented text."""
+    candidates: list[str] = []
+    seen: set[str] = set()
+
+    def add(text: str | None) -> None:
+        if not text:
+            return
+        cleaned = text.strip()
+        if not cleaned or cleaned in seen:
+            return
+        seen.add(cleaned)
+        candidates.append(cleaned)
+
+    add(quote)
+    add(quote.strip("\"'“”‘’"))
+    collapsed = _WS_RE.sub(" ", quote).strip()
+    add(collapsed)
+    add(raw_value)
+    return tuple(candidates)
+
+
+def select_quote_variants(
+    source: Source,
+    quote: str,
+    *,
+    evidence_id: str,
+    raw_value: str | None = None,
+) -> EvidenceSpan | None:
+    """Try exact then surface-normalized relocation for each quote variant."""
+    for variant in _quote_variants(quote, raw_value=raw_value):
+        span = relocate(source, variant, evidence_id=evidence_id)
+        if span is not None:
+            return span
+        span = snap_relocate(source, variant, evidence_id=evidence_id)
+        if span is not None:
+            return span
+    return None
+
+
 class ConstrainedSelector:
     """Fail-closed interface: only exact, single-turn source spans may be emitted."""
 
@@ -148,7 +192,17 @@ class ConstrainedSelector:
     ) -> EvidenceSpan:
         return copy_span(source, start, end, evidence_id=evidence_id, text=text)
 
-    def select_quote(self, source: Source, quote: str, *, evidence_id: str) -> EvidenceSpan | None:
-        return relocate(source, quote, evidence_id=evidence_id) or snap_relocate(
-            source, quote, evidence_id=evidence_id
+    def select_quote(
+        self,
+        source: Source,
+        quote: str,
+        *,
+        evidence_id: str,
+        raw_value: str | None = None,
+    ) -> EvidenceSpan | None:
+        return select_quote_variants(
+            source,
+            quote,
+            evidence_id=evidence_id,
+            raw_value=raw_value,
         )

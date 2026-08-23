@@ -636,3 +636,54 @@ def evaluate(
         memory_bytes=pred.memory_bytes,
         atom_results=tuple(results),
     )
+
+
+CRITICAL_ATOM_TYPES = frozenset(
+    {
+        AtomType.ALLERGY,
+        AtomType.MEDICATION,
+        AtomType.DIAGNOSIS_STATEMENT,
+        AtomType.ASSESSMENT,
+        AtomType.PLAN,
+    }
+)
+
+
+def gold_atom_spans(record: EncounterRecord, atom: ClinicalAtom) -> tuple[EvidenceSpan, ...]:
+    return tuple(
+        span
+        for evidence_id in atom.evidence_ids
+        if (span := _span_by_id(record, evidence_id)) is not None
+    )
+
+
+def audit_gold_atom_support(record: EncounterRecord, atom: ClinicalAtom) -> SupportRelation:
+    """Mechanical support audit for a gold atom against its cited evidence."""
+    spans = gold_atom_spans(record, atom)
+    if not spans:
+        return SupportRelation.UNSUPPORTED
+    if any(_transport_status(record, span) != "ok" for span in spans):
+        return SupportRelation.UNSUPPORTED
+    if atom.assertion_state in _SEMANTIC_STATES:
+        return SupportRelation.REVIEW_REQUIRED
+    mechanical = _mechanical_support(atom.raw_value, spans)
+    if mechanical is None:
+        return SupportRelation.UNSUPPORTED
+    return mechanical
+
+
+def audit_gold_record(record: EncounterRecord) -> dict[str, SupportRelation]:
+    return {atom.atom_id: audit_gold_atom_support(record, atom) for atom in record.atoms}
+
+
+def unsupported_critical_claim_ids(
+    record: EncounterRecord,
+    audits: Mapping[str, SupportRelation] | None = None,
+) -> tuple[str, ...]:
+    support = audits if audits is not None else audit_gold_record(record)
+    return tuple(
+        atom.atom_id
+        for atom in record.atoms
+        if atom.atom_type in CRITICAL_ATOM_TYPES
+        and support.get(atom.atom_id) is SupportRelation.UNSUPPORTED
+    )

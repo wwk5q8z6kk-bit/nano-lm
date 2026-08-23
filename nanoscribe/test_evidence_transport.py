@@ -216,6 +216,27 @@ def test_selector_cannot_emit_non_source_text() -> None:
     assert selector.select_quote(source, "the patient has cervicalgia", evidence_id="ev-2") is None
 
 
+def test_select_quote_variants_recovers_case_and_whitespace() -> None:
+    from nanoscribe.select import select_quote_variants
+
+    source = _source()
+    span = select_quote_variants(source, "NECK", evidence_id="ev-neck", raw_value="neck")
+    assert span is not None
+    assert span.text == "neck"
+    span2 = select_quote_variants(source, "cervical  strain", evidence_id="ev-assess")
+    assert span2 is not None
+    assert span2.text == "cervical strain"
+
+
+def test_select_quote_variants_uses_raw_value_fallback() -> None:
+    from nanoscribe.select import select_quote_variants
+
+    source = _source()
+    span = select_quote_variants(source, "bogus quote", evidence_id="ev-neck", raw_value="neck")
+    assert span is not None
+    assert span.text == "neck"
+
+
 def test_evaluate_exact_gold_span_and_char_f1() -> None:
     gold = _gold()
     pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck"),))

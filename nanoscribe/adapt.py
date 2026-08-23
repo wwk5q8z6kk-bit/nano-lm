@@ -427,7 +427,12 @@ def adapt_candidate(
     evidence_ids: list[str] = []
     for index, quote in enumerate(candidate.quotes):
         evidence_id = f"{prefix}:ev{index}"
-        span = selector.select_quote(source, quote, evidence_id=evidence_id)
+        span = selector.select_quote(
+            source,
+            quote,
+            evidence_id=evidence_id,
+            raw_value=candidate.raw_value,
+        )
         if span is None:
             return PredictedAtom(
                 atom_id=candidate.atom_id,

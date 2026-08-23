@@ -58,13 +58,14 @@
       "id": "B2",
       "task": "span_evidence_transport_managed_student",
       "compute": "runpod_serverless_routine_budget",
-      "artifact": "artifacts/campaign/span_transport_v2.json"
+      "artifact": "artifacts/campaign/span_transport_v2.json",
+      "status": "local_smoke_done_serverless_pending"
     },
     {
       "id": "B3",
       "task": "verified_record_to_note_rendering_v0",
       "compute": "local_cpu",
-      "artifact": "nanoscribe/render/encounter_note.py",
+      "artifact": "nanoscribe/render.py",
       "status": "done"
     }
   ],

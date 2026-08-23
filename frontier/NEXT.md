@@ -15,9 +15,10 @@ Not canonical authority. See [`docs/ACTIVE_NOW.md`](../docs/ACTIVE_NOW.md).
 
 ## Next bounded tasks (local-first)
 
-1. **B1** — `nanoscribe/schemas/encounter_v0.schema.json` + roundtrip tests (done); semantic validation remains `EncounterRecord.from_dict`
-2. **B2** — Span transport improvement + C2 re-run (RunPod serverless, routine budget) — **ready for auth**; manifest [`runpod_span_transport_v2.json`](runpod_span_transport_v2.json); `paid_compute_authorized: false`
-3. **B3** — `nanoscribe/render.py` verified record → note v0 (**done**); claim IDs + mechanical verifier flags; claim decomposition TBD
+1. **B1** — encounter schema + roundtrip tests (done)
+2. **Native30 revalidation** — `python3 scripts/run_native30_revalidation.py --analyze` (local MPS/CUDA; resume-safe; replaces Kaggle/RunPod for 30M screen)
+3. **B2** — Span transport v2 local smoke done; C2 serverless re-run when paid compute authorized
+4. **B3** — claims + note rendering v0 (done)
 
 ### B2 launch (not executed)
 
