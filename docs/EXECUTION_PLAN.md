@@ -2,16 +2,16 @@
 
 Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserved at `papers/EXECUTION_QUEUE.md` (superseded stub).
 
-## Phase A — Documentation reset v2 (current)
+## Phase A — Documentation reset v2 (CLOSED)
 
 | ID | Task | Done when |
 |----|------|-----------|
-| A1 | Branch from `origin/master` @ `2ad06d2` (exclude `9fe5b6b6`) | This branch |
+| A1 | Branch from `origin/master` @ `2ad06d2` (exclude `9fe5b6b6`) | Done |
 | A2 | Typed `PROJECT_AUTHORITY` + full legacy archives | Done |
-| A3 | Strengthen CI (`check_active_now`, `check_docs_integrity`) | Green |
-| A4 | Owner review | **Pending** before `master` merge |
+| A3 | Strengthen CI (`check_active_now`, `check_docs_integrity`) | Done |
+| A4 | Owner review + merge to `master` | **CLOSED** @ `0107b7a` |
 
-## Phase B — P1 scribe (next, after A7)
+## Phase B — P1 scribe (CURRENT)
 
 | ID | Task | Done when |
 |----|------|-----------|

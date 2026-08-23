@@ -1,0 +1,120 @@
+{
+  "schema": "nano.p1.integration_manifest.v0",
+  "base": {
+    "branch": "origin/master",
+    "commit": "0107b7a0c620fafc175eba1b614f3e5e78dbe556"
+  },
+  "rule": "Extract primitives only. Never merge source branches wholesale.",
+  "components": [
+    {
+      "source_branch": "cursor/span-port-route-b-182e",
+      "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
+      "source_path": "nano_ai/contract.py",
+      "destination_path": "nanoscribe/encounter.py",
+      "purpose": "Exact-offset validation, canonical JSON, duplicate-key rejection, typed states, fail-closed denial/normalization discipline",
+      "dependencies": [],
+      "tests": ["nanoscribe/test_encounter_v0.py"],
+      "disposition": "REWRITE",
+      "reason": "Strong donor for evidence invariants, but five-field patient-only topology is not the P1 architecture"
+    },
+    {
+      "source_branch": "origin/master",
+      "source_commit": "0107b7a0c620fafc175eba1b614f3e5e78dbe556",
+      "source_path": "fabric/schemas.py",
+      "destination_path": "nanoscribe/encounter.py",
+      "purpose": "Role-aware EvidenceSpan, provenance IDs, absence-never-from-silence",
+      "dependencies": [],
+      "tests": ["fabric/test_fabric.py", "nanoscribe/test_encounter_v0.py"],
+      "disposition": "REWRITE",
+      "reason": "Keep fabric as historical regression harness; lift invariants into EncounterRecord rather than expanding Claim slots"
+    },
+    {
+      "source_branch": "frontier/nanoscribe-core-v1",
+      "source_commit": "12f1adb110f152b924e7d22417df474f6489874b",
+      "source_path": "nano_ai/span_contract_v2/types.py",
+      "destination_path": "nanoscribe/encounter.py",
+      "purpose": "EncounterRecord / ClinicalAtom naming",
+      "dependencies": [],
+      "tests": ["nanoscribe/test_encounter_v0.py"],
+      "disposition": "REWRITE",
+      "reason": "Names are right; inline span fields and patient-only SupportRelation are not v0"
+    },
+    {
+      "source_branch": "cursor/span-port-route-b-182e",
+      "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
+      "source_path": "nano_ai/training/span_snap.py",
+      "destination_path": "nanoscribe/evidence/",
+      "purpose": "Exact relocation / snap logic for Span Contract V2",
+      "dependencies": ["nanoscribe/encounter.py"],
+      "tests": [],
+      "disposition": "DEFER",
+      "reason": "PR2 evidence-transport target; do not import training stack now"
+    },
+    {
+      "source_branch": "cursor/span-port-route-b-182e",
+      "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
+      "source_path": "nano_ai/evaluation.py",
+      "destination_path": "nanoscribe/eval/",
+      "purpose": "Span evaluation metrics beyond no_match_rate",
+      "dependencies": ["nanoscribe/encounter.py"],
+      "tests": [],
+      "disposition": "DEFER",
+      "reason": "PR2/PR4; inspect metrics, do not port harness wholesale"
+    },
+    {
+      "source_branch": "cursor/span-port-route-b-182e",
+      "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
+      "source_path": "nano_ai/training/constrained_decode.py",
+      "destination_path": "nanoscribe/decode/",
+      "purpose": "Constrained source-span selection interface (arm B)",
+      "dependencies": ["nanoscribe/encounter.py"],
+      "tests": [],
+      "disposition": "DEFER",
+      "reason": "PR2/PR4 after Encounter v0 is green"
+    },
+    {
+      "source_branch": "codex/p5-measurement-integrity",
+      "source_commit": "95d9bd42102ce7ca6a150a83c1de374e0c3e5085",
+      "source_path": "trajectory/",
+      "destination_path": "nanoscribe/eval/",
+      "purpose": "Measurement-integrity / independent recompute discipline",
+      "dependencies": [],
+      "tests": ["trajectory/test_recompute_c3.py"],
+      "disposition": "DEFER",
+      "reason": "Reuse ideas in PR2 evaluator; C3 pins already on master"
+    },
+    {
+      "source_branch": "frontier/nanoscribe-core-v1",
+      "source_commit": "12f1adb110f152b924e7d22417df474f6489874b",
+      "source_path": "nano_ai/training/",
+      "destination_path": null,
+      "purpose": "CUAD / P4 dry-run and model training",
+      "dependencies": [],
+      "tests": [],
+      "disposition": "REJECT",
+      "reason": "Not a P1 solution; keep parked and isolated"
+    },
+    {
+      "source_branch": "cursor/span-port-route-b-182e",
+      "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
+      "source_path": "artifacts/",
+      "destination_path": null,
+      "purpose": "H2–H6 weights, RunPod logs, Kaggle bundles, receipts",
+      "dependencies": [],
+      "tests": [],
+      "disposition": "REJECT",
+      "reason": "Would recreate repository contamination; 167 commits ahead of master"
+    },
+    {
+      "source_branch": "cursor/span-port-route-b-182e",
+      "source_commit": "8a67ff8868391b8bc2b36302f479688672ae1f26",
+      "source_path": "nano_ai/",
+      "destination_path": null,
+      "purpose": "Entire nano_ai tree",
+      "dependencies": [],
+      "tests": [],
+      "disposition": "REJECT",
+      "reason": "Selective primitives only; wholesale tree import is architectural regression"
+    }
+  ]
+}
