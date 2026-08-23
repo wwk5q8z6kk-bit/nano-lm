@@ -130,17 +130,80 @@ class HarnessResult:
         return payload
 
 
-def _report_aggregate(report: EvalReport) -> dict[str, Any]:
+def _eval_eligible_atoms(report: EvalReport) -> int:
+    return sum(
+        1
+        for item in report.atom_results
+        if not item.spurious_atom
+        and not item.omitted
+        and not item.malformed
+        and not item.abstained
+    )
+
+
+def _metric_block(name: str, count: int, eligible: int) -> dict[str, Any]:
+    rate = round(count / eligible, 4) if eligible else 0.0
     return {
-        "exact_gold_span": report.exact_gold_span,
-        "span_character_f1": round(report.span_character_f1, 4),
-        "assertion_state_correct": report.assertion_state_correct,
-        "support_direct_exact": report.support_direct_exact,
-        "support_normalized": report.support_normalized,
-        "support_review_required": report.support_review_required,
-        "coverage": round(report.coverage, 4),
-        "correct_abstention": report.correct_abstention,
+        f"{name}_count": count,
+        f"{name}_eligible": eligible,
+        f"{name}_rate": rate,
     }
+
+
+def _report_aggregate(report: EvalReport) -> dict[str, Any]:
+    eligible = _eval_eligible_atoms(report)
+    n_gold = sum(1 for item in report.atom_results if not item.spurious_atom)
+    covered = sum(
+        1
+        for item in report.atom_results
+        if not item.spurious_atom
+        and not item.omitted
+        and item.support_relation is not None
+    )
+    agg: dict[str, Any] = {}
+    agg.update(_metric_block("exact_gold_span", report.exact_gold_span, eligible))
+    agg.update(_metric_block("assertion_state_correct", report.assertion_state_correct, eligible))
+    agg.update(_metric_block("support_direct_exact", report.support_direct_exact, eligible))
+    agg.update(
+        _metric_block(
+            "correct_abstention",
+            report.correct_abstention,
+            len(report.atom_results),
+        )
+    )
+    agg.update(_metric_block("coverage", covered, n_gold))
+    agg["span_character_f1_mean"] = round(report.span_character_f1, 4)
+    agg["support_normalized"] = report.support_normalized
+    agg["support_review_required"] = report.support_review_required
+    agg["n_atoms_gold"] = n_gold
+    return agg
+
+
+def aggregate_suite_metrics(results: Sequence[HarnessResult]) -> dict[str, Any]:
+    """Sum numerators/denominators across cases — never average per-case rates."""
+    if not results:
+        return {"n_cases": 0}
+    rate_fields = (
+        "exact_gold_span",
+        "assertion_state_correct",
+        "support_direct_exact",
+        "correct_abstention",
+        "coverage",
+    )
+    summary: dict[str, Any] = {"n_cases": len(results)}
+    for field in rate_fields:
+        count = sum(int(r.aggregate.get(f"{field}_count", 0)) for r in results)
+        eligible = sum(int(r.aggregate.get(f"{field}_eligible", 0)) for r in results)
+        summary[f"{field}_count"] = count
+        summary[f"{field}_eligible"] = eligible
+        summary[f"{field}_rate"] = round(count / eligible, 4) if eligible else 0.0
+    summary["span_character_f1_mean"] = round(
+        sum(float(r.aggregate.get("span_character_f1_mean", 0.0)) for r in results)
+        / len(results),
+        4,
+    )
+    summary["malformed"] = sum(r.failures.malformed for r in results)
+    return summary
 
 
 def _per_atom(report: EvalReport) -> dict[str, dict[str, Any]]:

@@ -27,7 +27,18 @@ class FactorialCell:
     seeds: tuple[int, ...] = (0, 1)
 
     def run_ids(self) -> tuple[str, ...]:
-        return tuple(f"{self.cell_id}_s{seed}" for seed in self.seeds)
+        return tuple(canonical_run_id(self, seed) for seed in self.seeds)
+
+
+def canonical_run_id(cell: FactorialCell, seed: int) -> str:
+    """Unambiguous run ID: native30_{arch}_{objective}_s{seed}."""
+    arch = "bottleneck" if cell.arch == ArchFactor.EVIDENCE_BOTTLENECK else "decoder"
+    obj = "span" if cell.objective == ObjectiveFactor.SPAN_PORT else "struct"
+    return f"native30_{arch}_{obj}_s{seed}"
+
+
+def legacy_run_id(cell: FactorialCell, seed: int) -> str:
+    return f"{cell.cell_id}_s{seed}"
 
 
 FACTORIAL_CELLS: tuple[FactorialCell, ...] = (

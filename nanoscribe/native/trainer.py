@@ -9,7 +9,14 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from nanoscribe.native.factorial import FACTORIAL_CELLS, ArchFactor, FactorialCell, ObjectiveFactor
+from nanoscribe.native.factorial import (
+    FACTORIAL_CELLS,
+    ArchFactor,
+    FactorialCell,
+    ObjectiveFactor,
+    canonical_run_id,
+    legacy_run_id,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -31,8 +38,12 @@ class NativeTrainConfig:
 def config_for_run(run_id: str) -> NativeTrainConfig:
     for cell in FACTORIAL_CELLS:
         for seed in cell.seeds:
-            if run_id == f"{cell.cell_id}_s{seed}":
-                return NativeTrainConfig(run_id=run_id, cell=cell, seed=seed)
+            if run_id in {canonical_run_id(cell, seed), legacy_run_id(cell, seed)}:
+                return NativeTrainConfig(
+                    run_id=canonical_run_id(cell, seed),
+                    cell=cell,
+                    seed=seed,
+                )
     raise ValueError(f"unknown run_id: {run_id}")
 
 
@@ -56,7 +67,7 @@ def build_runpod_command(cfg: NativeTrainConfig) -> str:
 
 
 def trainer_manifest(path: Path | None = None) -> dict[str, Any]:
-    configs = [config_for_run(f"{cell.cell_id}_s{seed}") for cell in FACTORIAL_CELLS for seed in cell.seeds]
+    configs = [config_for_run(rid) for cell in FACTORIAL_CELLS for rid in cell.run_ids()]
     runs = []
     for cfg in configs:
         runs.append(
@@ -120,28 +131,19 @@ def main() -> int:
     if not args.run_id:
         parser.error("--run-id is required unless --manifest-only")
 
-    cfg = config_for_run(args.run_id)
-    result = train_step_stub(cfg)
-    if not result["ok"]:
-        print(json.dumps(result, indent=2))
-        return 1
+    from nanoscribe.native.train import train_run_id
 
     try:
         import torch
+
+        cpu_smoke = not torch.cuda.is_available()
     except ImportError:
-        print(json.dumps({**result, "gpu": "torch_not_installed"}, indent=2))
-        return 0
+        cpu_smoke = True
 
-    if not torch.cuda.is_available():
-        print(json.dumps({**result, "gpu": "cuda_not_available_cpu_stub_ok"}, indent=2))
-        return 0
-
-    # Minimal GPU smoke — one forward pass shape check only.
-    d = cfg.d_model
-    x = torch.randint(0, 4098, (1, 16), device="cuda")
-    w = torch.randn(4098, d, device="cuda")
-    _ = x.float() @ w[x[0, 0]]
-    print(json.dumps({**result, "gpu": "smoke_ok", "max_steps": args.max_steps}, indent=2))
+    result = train_run_id(args.run_id, cpu_smoke=cpu_smoke)
+    print(json.dumps(result.to_dict(), indent=2))
+    if result.steps_completed < 1:
+        return 1
     return 0
 
 

@@ -83,16 +83,18 @@ def default_loss_weights(variant: NativeVariant) -> LossWeights:
 
 
 def config_for_run(run_id: str, *, cpu_smoke: bool = False) -> NativeTrainConfig:
+    from nanoscribe.native.factorial import FACTORIAL_CELLS, canonical_run_id, legacy_run_id
+
     for cell in FACTORIAL_CELLS:
         for seed in cell.seeds:
-            if run_id == f"{cell.cell_id}_s{seed}":
+            if run_id in {canonical_run_id(cell, seed), legacy_run_id(cell, seed)}:
                 variant = (
                     NativeVariant.NATIVE_B
                     if cell.arch.value == "evidence_bottleneck"
                     else NativeVariant.NATIVE_A
                 )
                 return NativeTrainConfig(
-                    run_id=run_id,
+                    run_id=canonical_run_id(cell, seed),
                     variant=variant,
                     cell=cell,
                     seed=seed,

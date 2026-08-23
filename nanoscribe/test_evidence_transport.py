@@ -231,7 +231,41 @@ def test_evaluate_exact_gold_span_and_char_f1() -> None:
     assert not hasattr(report, "support_correct")
 
 
-def test_wrong_mention_is_not_wrong_source() -> None:
+def test_aggregate_suite_metrics_sums_not_averages() -> None:
+    from nanoscribe.harness import HarnessResult, ModelTrack, P1TestSet, TrackConfig, _report_aggregate, aggregate_suite_metrics
+    from nanoscribe.harness import FailureTaxonomy
+
+    gold = _gold()
+    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck"),))
+    report = evaluate(gold, pred)
+    agg = _report_aggregate(report)
+    assert agg["assertion_state_correct_count"] == 1
+    assert agg["assertion_state_correct_eligible"] >= 1
+    assert agg["assertion_state_correct_rate"] <= 1.0
+
+    track = TrackConfig(
+        track=ModelTrack.FIXTURE,
+        model_id="fixture",
+        adapter_factory=lambda: None,
+        cost_class="zero",
+    )
+    result = HarnessResult(
+        track=track.track,
+        model_id=track.model_id,
+        test_set=P1TestSet.TINY_FIXTURE,
+        encounter_id="enc-1",
+        cost_class=track.cost_class,
+        aggregate=agg,
+        failures=FailureTaxonomy(),
+        per_atom={},
+        latency_s=0.0,
+        memory_bytes=0,
+    )
+    suite = aggregate_suite_metrics([result, result])
+    assert suite["assertion_state_correct_count"] == 2
+    assert suite["assertion_state_correct_rate"] <= 1.0
+
+
     gold = _gold()
     source = gold.sources[0]
     hurting = relocate(source, "hurting", evidence_id="ev-hurt")
