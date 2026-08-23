@@ -1,0 +1,29 @@
+{
+  "campaign_id": "p1_acceleration_campaign_v0",
+  "campaign_spend_actual": 0.37,
+  "campaign_spend_committed": 0,
+  "campaign_spend_remaining": 179.63,
+  "entries": [
+    {
+      "amount_usd": 0.37,
+      "description": "RunPod compact baseline harness",
+      "ended_at": "2026-08-23T01:33:55.104403+00:00",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "lane": "compact",
+      "notes": "",
+      "pod_id": "zed3vrrl0zxaoj",
+      "rate_per_hr": 0.74,
+      "started_at": "2026-08-23T01:21:10.268938+00:00",
+      "status": "actual"
+    }
+  ],
+  "envelopes": {
+    "absolute_max_usd": 200.0,
+    "normal_envelope_usd": 180.0,
+    "safety_margin_usd": 20.0
+  },
+  "posture": "NORMAL",
+  "schema": "nano.campaign.spend.v0",
+  "total_exposure": 0.37,
+  "updated_at": "2026-08-23T01:21:10.268943+00:00"
+}

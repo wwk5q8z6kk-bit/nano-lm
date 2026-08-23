@@ -157,3 +157,43 @@ DEFAULT_BASELINE_LINES: dict[str, str] = {
 
 def default_qwen_fixture_adapter() -> Qwen25BaselineAdapter:
     return Qwen25BaselineAdapter(fixture_lines=DEFAULT_BASELINE_LINES)
+
+
+@dataclass(frozen=True, slots=True)
+class ApiTeacherAdapter:
+    """Track A: hosted frontier teacher via OpenAI-compatible API."""
+
+    model_id: str = "api/gpt-4o-mini-span-port"
+    api_model: str = "gpt-4o-mini"
+
+    def propose(
+        self,
+        model_input: ModelInput,
+        atom_specs: Sequence[AtomSpec],
+    ) -> ModelCandidateBatch:
+        from nanoscribe.api_teacher import generate_api_span_port_lines
+
+        lines, latency_s, memory_bytes = generate_api_span_port_lines(
+            model_input,
+            atom_specs,
+            model=self.api_model,
+        )
+        atoms: list[CandidateAtom] = []
+        for spec in atom_specs:
+            raw_line = lines.get(spec.atom_id, "NOT_MENTIONED")
+            atoms.append(
+                candidate_from_span_port_line(
+                    atom_id=spec.atom_id,
+                    atom_type=spec.atom_type,
+                    raw_value=spec.raw_value,
+                    raw_line=raw_line,
+                    speaker=spec.speaker,
+                    experiencer=spec.experiencer,
+                    temporality=spec.temporality,
+                )
+            )
+        return ModelCandidateBatch(
+            atoms=tuple(atoms),
+            latency_s=latency_s,
+            memory_bytes=memory_bytes,
+        )
