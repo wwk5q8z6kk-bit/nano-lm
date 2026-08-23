@@ -166,14 +166,25 @@ def generate_target_line(
     max_new_tokens: int = 64,
     raw_value: str | None = None,
     source: Any | None = None,
+    constrained: bool = True,
 ) -> str:
+    """Emit a span-port line.
+
+    constrained=True scores a candidate set built from `raw_value` (see
+    build_target_candidates), so the emitted span is exact by construction and
+    only the assertion prefix is a model decision. Exact-span metrics under this
+    mode are tautological and must not be read as evidence-transport capability.
+
+    constrained=False forces free autoregressive emission, which is the only
+    mode in which exact_gold_span measures transport.
+    """
     transcript = transcript_from_prompt(prompt)
     if source is not None:
         from nanoscribe.prompt import _format_transcript
 
         transcript = _format_transcript(source)
 
-    if raw_value is not None or transcript:
+    if constrained and (raw_value is not None or transcript):
         return select_best_target(
             model,
             prompt,

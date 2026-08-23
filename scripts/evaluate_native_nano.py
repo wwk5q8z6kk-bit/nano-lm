@@ -26,6 +26,13 @@ def main() -> int:
     parser.add_argument("--step", type=int, default=None, help="checkpoint step (default latest.pt)")
     parser.add_argument("--suite", default="", help=f"P1 suite e.g. {SMOKE_SUITE_REVISION}")
     parser.add_argument("--cpu", action="store_true", help="force CPU eval")
+    parser.add_argument(
+        "--unconstrained",
+        action="store_true",
+        help="free autoregressive generation instead of candidate selection; "
+        "required for exact_gold_span to measure evidence transport rather than "
+        "candidate-set construction",
+    )
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
@@ -50,6 +57,7 @@ def main() -> int:
         cfg,
         suite=args.suite,
         checkpoint_path=ckpt_path,
+        constrained=not args.unconstrained,
     )
     payload = result.to_dict()
     if args.output:

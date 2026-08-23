@@ -42,6 +42,7 @@ class NativeP1EvalResult:
     n_cases: int
     suite_metrics: dict[str, Any]
     cases: tuple[NativeP1CaseResult, ...]
+    constrained: bool = True
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -50,6 +51,11 @@ class NativeP1EvalResult:
             "suite": self.suite,
             "checkpoint": self.checkpoint,
             "n_cases": self.n_cases,
+            "decoding_mode": "constrained_candidate_selection" if self.constrained else "free_generation",
+            # Under constrained selection the gold raw_value is injected into the
+            # candidate set, so span metrics are exact by construction. Only
+            # free_generation makes exact_gold_span a transport measurement.
+            "span_metrics_are_tautological": self.constrained,
             "suite_metrics": self.suite_metrics,
             "cases": [case.to_dict() for case in self.cases],
         }
@@ -84,6 +90,8 @@ def _propose_case(
     model: Any,
     cfg: NativeTrainConfig,
     case: HarnessCase,
+    *,
+    constrained: bool = True,
 ) -> tuple[ModelCandidate, dict[str, str]]:
     atoms = []
     raw_lines: dict[str, str] = {}
@@ -95,6 +103,7 @@ def _propose_case(
             cfg,
             raw_value=spec.raw_value,
             source=case.model_input.source,
+            constrained=constrained,
         )
         raw_lines[spec.atom_id] = raw_line
         atoms.append(
@@ -117,6 +126,7 @@ def evaluate_native_p1_suite(
     *,
     suite: str = SMOKE_SUITE_REVISION,
     checkpoint_path: str = "",
+    constrained: bool = True,
 ) -> NativeP1EvalResult:
     from nanoscribe.harness import FailureTaxonomy, HarnessResult, ModelTrack, _per_atom, _report_aggregate
 
@@ -126,7 +136,7 @@ def evaluate_native_p1_suite(
 
     for case in cases:
         t0 = time.perf_counter()
-        batch, raw_lines = _propose_case(model, cfg, case)
+        batch, raw_lines = _propose_case(model, cfg, case, constrained=constrained)
         latency = time.perf_counter() - t0
         batch = ModelCandidate(
             atoms=batch.atoms,
@@ -167,4 +177,5 @@ def evaluate_native_p1_suite(
         n_cases=len(cases),
         suite_metrics=aggregate_suite_metrics(harness_results),
         cases=tuple(case_results),
+        constrained=constrained,
     )
