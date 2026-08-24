@@ -122,6 +122,8 @@ def enc3_family_history_case() -> HarnessCase:
             atom_type=AtomType.HISTORY,
             raw_value="diabetes",
             speaker=Speaker.PATIENT,
+            experiencer=Experiencer.OTHER,
+            temporality=TemporalState(kind=Temporality.HISTORICAL),
         ),
         AtomSpec(
             atom_id="atom-tired",
