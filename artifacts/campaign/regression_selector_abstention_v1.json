@@ -39,5 +39,25 @@
   "failing_test": "nanoscribe/test_adapt.py::test_paraphrase_abstains_instead_of_inventing_evidence",
   "recommendation": "restrict relocation to the documented transforms only \u2014 copy_span, exact relocate, and snap_relocate over Unicode/case/whitespace. A quote that matches none of those must return None so adapt_candidate abstains, which it already does correctly.",
   "not_fixed_by_reporter": "this is the B2 lane's active code as of 19:32 today; rewriting their selector mid-iteration risks destroying in-flight work. Diagnosis is precise enough to fix in one edit.",
-  "blocks": "native_gate_check condition 7 (trainer tests pass)"
+  "blocks": "native_gate_check condition 7 (trainer tests pass)",
+  "status": "FIXED",
+  "fix": {
+    "site": "nanoscribe/select.py::_quote_variants",
+    "change": "add(raw_value) is now guarded by `if not candidates:` \u2014 raw_value is a last-resort variant only when the model supplied NO usable quote",
+    "preserved": "legitimate surface transforms still relocate: exact, quote-mark stripping, whitespace collapse",
+    "restored": "paraphrase and hallucination now abstain",
+    "verified": {
+      "neck (exact)": "SPAN [29:33]",
+      "'  neck  ' (whitespace)": "SPAN [29:33]",
+      "'\"neck\"' (quote marks)": "SPAN [29:33]",
+      "cervicalgia (paraphrase)": "ABSTAIN",
+      "totally unrelated words (hallucination)": "ABSTAIN",
+      "'' (no quote)": "SPAN [29:33] \u2014 fallback retained"
+    }
+  },
+  "specification_conflict": {
+    "detail": "two tests encoded OPPOSITE contracts: test_adapt.py::test_paraphrase_abstains_instead_of_inventing_evidence required abstain, while test_evidence_transport.py::test_select_quote_variants_uses_raw_value_fallback explicitly passed the literal 'bogus quote' and asserted it resolve.",
+    "resolved_by": "the canonical briefing SS VI, which forbids semantic paraphrase relocation and requires ABSTAIN/REVIEW for ambiguous or missing evidence. The fallback test was updated to the documented contract rather than deleted \u2014 its defensible case (no quote supplied) is retained and now pinned explicitly.",
+    "note": "this was a genuine cross-lane design disagreement, not a simple bug"
+  }
 }
