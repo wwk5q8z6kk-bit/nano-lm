@@ -150,6 +150,22 @@ def enc1_as_core() -> HarnessCase:
     )
 
 
+def fixture_lines_for_encounter(encounter_id: str) -> dict[str, str]:
+    """Deterministic span-port lines for campaign fixture evaluation (no weights)."""
+    from nanoscribe.adapters import DEFAULT_BASELINE_LINES
+
+    if encounter_id == "enc-1":
+        return dict(DEFAULT_BASELINE_LINES)
+    if encounter_id == "enc-2":
+        return {"atom-chest": 'UNCERTAIN: "pressure"'}
+    if encounter_id == "enc-3":
+        return {
+            "atom-fh": 'STATED: "diabetes"',
+            "atom-tired": 'STATED: "tired"',
+        }
+    raise KeyError(f"no fixture lines for encounter_id={encounter_id}")
+
+
 def campaign_cases(suite: str) -> list[HarnessCase]:
     """Return harness cases for a named campaign partition."""
     key = suite.strip().lower()
