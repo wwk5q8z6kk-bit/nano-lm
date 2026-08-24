@@ -170,6 +170,19 @@ def parse_label_and_quotes(raw: str) -> tuple[str | None, tuple[str, ...]]:
     return label, quotes
 
 
+def extract_span_port_line(raw: str) -> str:
+    """Pick the first line that looks like a span-port answer from model output."""
+    stripped = raw.strip()
+    if not stripped:
+        return stripped
+    for line in stripped.splitlines():
+        candidate = line.strip()
+        label, _ = parse_label_and_quotes(candidate)
+        if label is not None:
+            return candidate
+    return stripped.splitlines()[0].strip()
+
+
 def format_label_answer(label: str, quotes: Sequence[str] = ()) -> str:
     if not quotes:
         return label
@@ -389,6 +402,8 @@ def candidate_from_span_port_line(
     assertion = _LABEL_TO_ASSERTION.get(label)
     if assertion is None:
         return CandidateAtom(atom_id=atom_id, malformed=True)
+    if not quotes and raw_value:
+        quotes = (raw_value,)
     certainty_value = certainty
     if assertion is AssertionState.UNCERTAIN:
         certainty_value = certainty or Certainty.UNCERTAIN

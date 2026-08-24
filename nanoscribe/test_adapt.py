@@ -22,6 +22,7 @@ from nanoscribe.adapt import (
     adapt_span_port_line,
     candidate_from_span_port_line,
     evidence_requests,
+    extract_span_port_line,
     format_label_answer,
     parse_label_and_quotes,
     run_pipeline,
@@ -454,6 +455,36 @@ def test_run_eval_fixture_only_smoke() -> None:
     assert result["layers"]["layers"]["commission"] == 0
     assert result["aggregate"]["correct_abstention"] == 1
     assert result["per_atom"]["atom-neck"]["exact_gold_span"]
+
+
+def test_extract_span_port_line_from_multiline() -> None:
+    raw = (
+        "Clinician: Any chest pain?\n"
+        'UNCERTAIN: "pressure"'
+    )
+    assert extract_span_port_line(raw) == 'UNCERTAIN: "pressure"'
+
+
+def test_candidate_uses_raw_value_when_quote_missing() -> None:
+    candidate = candidate_from_span_port_line(
+        atom_id="atom-neck",
+        atom_type=AtomType.SYMPTOM,
+        raw_value="neck",
+        raw_line="STATED",
+        speaker=Speaker.PATIENT,
+    )
+    assert candidate.quotes == ("neck",)
+    assert candidate.assertion_state is AssertionState.ASSERTED
+
+
+def test_build_span_port_prompt_includes_uncertain() -> None:
+    from nanoscribe.campaign_datasets import enc2_uncertainty_case
+    from nanoscribe.prompt import build_span_port_prompt
+
+    case = enc2_uncertainty_case()
+    prompt = build_span_port_prompt(case.model_input.source, case.atom_specs[0])
+    assert "UNCERTAIN" in prompt
+    assert "pressure" in prompt
 
 
 def test_run_campaign_eval_fixture_smoke() -> None:
