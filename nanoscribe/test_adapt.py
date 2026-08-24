@@ -456,6 +456,26 @@ def test_run_eval_fixture_only_smoke() -> None:
     assert result["per_atom"]["atom-neck"]["exact_gold_span"]
 
 
+def test_run_campaign_eval_fixture_smoke() -> None:
+    from nanoscribe.run_eval import run_campaign_eval
+
+    saved = os.environ.pop("NANOSCIBE_QWEN_WEIGHTS", None)
+    try:
+        result = run_campaign_eval("campaign_v1", fixture_only=True)
+    finally:
+        if saved is not None:
+            os.environ["NANOSCIBE_QWEN_WEIGHTS"] = saved
+
+    assert result["fixture_only"] is True
+    assert result["suite"] == "campaign_v1"
+    assert len(result["encounters"]) == 3
+    agg = result["suite_aggregate"]
+    assert agg["encounters"] == 3
+    assert agg["malformed"] == 0
+    assert agg["critical_error"] == 0
+    assert agg["layers"]["malformed"] == 0
+
+
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     for name, fn in fns:

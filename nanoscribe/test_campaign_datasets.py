@@ -6,7 +6,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from nanoscribe.campaign_datasets import campaign_cases, suite_manifest
+from nanoscribe.campaign_datasets import (
+    campaign_cases,
+    fixture_lines_for_encounter,
+    suite_manifest,
+)
 
 
 def test_campaign_v1_has_three_encounters() -> None:
@@ -21,7 +25,14 @@ def test_suite_manifest_revision() -> None:
     assert "campaign_v1" in manifest["partitions"]
 
 
+def test_fixture_lines_cover_campaign_v1() -> None:
+    for case in campaign_cases("campaign_v1"):
+        lines = fixture_lines_for_encounter(case.encounter_id)
+        assert set(lines) == {spec.atom_id for spec in case.atom_specs}
+
+
 if __name__ == "__main__":
     test_campaign_v1_has_three_encounters()
     test_suite_manifest_revision()
-    print("campaign_dataset pins: 2/2 PASS")
+    test_fixture_lines_cover_campaign_v1()
+    print("campaign_dataset pins: 3/3 PASS")
