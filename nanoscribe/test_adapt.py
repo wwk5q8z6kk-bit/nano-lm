@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -435,6 +436,24 @@ def test_failure_layers_on_clean_baseline() -> None:
     assert layers["layers"]["commission"] == 0
     assert layers["layers"]["transport"] == 0
     assert layers["support_mix"]["direct_exact"] == 3
+
+
+def test_run_eval_fixture_only_smoke() -> None:
+    from nanoscribe.run_eval import run_baseline_eval
+
+    saved = os.environ.pop("NANOSCIBE_QWEN_WEIGHTS", None)
+    try:
+        result = run_baseline_eval(fixture_only=True)
+    finally:
+        if saved is not None:
+            os.environ["NANOSCIBE_QWEN_WEIGHTS"] = saved
+
+    assert result["fixture_only"] is True
+    assert set(result) >= {"aggregate", "layers", "per_atom"}
+    assert result["layers"]["layers"]["malformed"] == 0
+    assert result["layers"]["layers"]["commission"] == 0
+    assert result["aggregate"]["correct_abstention"] == 1
+    assert result["per_atom"]["atom-neck"]["exact_gold_span"]
 
 
 if __name__ == "__main__":
