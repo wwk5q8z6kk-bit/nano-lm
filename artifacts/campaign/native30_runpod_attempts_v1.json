@@ -35,6 +35,11 @@
       "reason": "Owner reported ~96% GPU; runpodctl 404 at 21:35Z; marker NATIVE30_REVALIDATION_DONE not verified; no local summary"
     }
   ],
+  "local_runner": {
+    "script": "scripts/run_native30_revalidation.py",
+    "orchestrator": "nanoscribe.campaign.native30_revalidation",
+    "note": "Apple Silicon MPS ~4× CPU; no paid GPU required for 30M screen"
+  },
   "kaggle_alternative": {
     "script": "scripts/kaggle_native30_revalidation.py",
     "import": "scripts/import_kaggle_native30_results.py",

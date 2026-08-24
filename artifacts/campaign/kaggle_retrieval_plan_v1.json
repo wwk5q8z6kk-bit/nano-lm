@@ -37,7 +37,7 @@
       "script": "scripts/kaggle_native30_revalidation.py",
       "import": "scripts/import_kaggle_native30_results.py",
       "integrate": "artifacts/campaign/native30_revalidation_summary_v1.json",
-      "status": "READY_TO_RUN"
+      "status": "IN_PROGRESS",
     },
     {
       "asset": "kernel_output_bundles",

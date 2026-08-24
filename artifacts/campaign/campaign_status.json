@@ -65,7 +65,7 @@
   "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE",
   "campaign_remaining": 149.0,
   "campaign_spend_start": 1.8211,
-  "checkpoint_authority": "artifacts/campaign/checkpoint_v4.json",
+  "checkpoint_authority": "artifacts/campaign/checkpoint_v5.json",
   "commit_sha": "a6c44b3",
   "committed_spend": 1.39,
   "current_spend_per_hr": 0.004,
@@ -270,18 +270,10 @@
     }
   },
   "native30_revalidation": {
-    "status": "RUNPOD_ABANDONED_KAGGLE_READY",
-    "abort_reason": "four RunPod attempts; no native30_revalidation_summary_v1.json",
-    "commit_sha": "9a2d388",
-    "corpus_verified_on_pod": "CORPUS_OK on attempt 3+",
-    "gate": "PROMOTION_GATE_OPEN",
-    "manifest": "artifacts/campaign/manifests/native30_revalidation_wave1_v1.json",
-    "runpod_attempts": "artifacts/campaign/native30_runpod_attempts_v1.json",
-    "kaggle_script": "scripts/kaggle_native30_revalidation.py",
-    "next": "Kaggle T4 run + scripts/import_kaggle_native30_results.py",
-    "pod": "b2k1blbxs17w17",
-    "api_status": "404 at 21:35Z",
-    "wasted_usd_est": 8.0
+    "status": "KAGGLE_KERNEL_RUNNING",
+    "kernel": "hassaneljesr/nano-native30-revalidation-v1",
+    "import_pending": "scripts/import_kaggle_native30_results.py",
+    "runpod_pod_terminated": "fxbfs00asc8cpp"
   },
   "native_extended": {
     "commit_sha": "d0165d8",
@@ -583,5 +575,6 @@
       ],
       "qlora": "PROMOTION_GATE_BLOCKED_DATA"
     }
-  }
+  },
+  "wallet_balance": 138.3483350564
 }
