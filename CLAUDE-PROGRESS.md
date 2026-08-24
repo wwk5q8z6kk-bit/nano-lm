@@ -146,8 +146,13 @@ move to a representation-level probe. Paper 2 reconciliation for C-3 not yet don
    7.0±1.0 / 29.4±4.0 — IDENTICAL to 200M+LoRA → data & method are SUBSTITUTES
    (interaction account replaces 73/27; papers + program updated). Base ckpt preserved
    at checkpoints/chinchilla-160m/ (gitignored, 2.5GB).
-   NEXT best run: the missing factorial corner 3.2B+LoRA (~30 min on the preserved base);
-   then LoRA at the anchors (~1.5h).
+   CORNER DONE — do NOT re-run this cell. 3.2B+LoRA landed on both seeds: 4.2±0.9,
+   |Δseed|=0.00, Q1 fires COMPOUND/tokenizer-innocent (verdict recorded at line 80).
+   Artifacts `trajectory/results_corner_3p2b_lora_seed{0,1}.json`; RESULT table in
+   `trajectory/PREREG_ownstack_160m.md`; ledger row C_ADAPT_DATA_CELLS
+   (`papers/EVIDENCE_LEDGER.md:80`); official M0 arm (`papers/EMPIRICAL_FOUNDATION.md:238`).
+   Still open from this block: LoRA at the anchors (~1.5h) — `papers/paper2_draft.md:343`
+   marks it OPTIONAL (capacity question at 3–10M, not mechanism); no artifacts exist.
    DESIGN NOTE (base-matching): nano scribe.pt was finetuned from dpo.pt (chat lineage),
    scale from scale10m_pretrain.pt (raw pretrain) — the LoRA cells must use the SAME base
    per anchor (nano-LoRA from dpo.pt, scale-LoRA from scale10m_pretrain.pt; all v0.1
