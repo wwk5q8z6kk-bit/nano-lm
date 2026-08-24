@@ -1,0 +1,43 @@
+{
+  "schema": "nano.campaign.regression_finding.v1",
+  "timestamp": "2026-08-24T00:46:01.478081+00:00",
+  "finding_id": "R1_selector_raw_value_fallback_destroys_abstention",
+  "introduced_by": "c9ecfef feat(nanoscribe): B2 span transport v2 selector",
+  "owner_lane": "parallel (B2 span transport)",
+  "reported_by": "agent-0eba97de",
+  "severity": "MEASUREMENT_INTEGRITY",
+  "headline": "ConstrainedSelector.select_quote silently relocates ANY quote to the raw_value's location instead of abstaining, so paraphrase and outright hallucination both score as success.",
+  "evidence": {
+    "source_excerpt": "...My neck has been hurting. I think this is cervical strain...",
+    "probe": [
+      {
+        "model_quote": "neck",
+        "in_source": true,
+        "span": "[29:33]='neck'",
+        "abstained": false,
+        "correct": true
+      },
+      {
+        "model_quote": "cervicalgia",
+        "in_source": false,
+        "span": "[29:33]='neck'",
+        "abstained": false,
+        "correct": false
+      },
+      {
+        "model_quote": "totally unrelated words",
+        "in_source": false,
+        "span": "[29:33]='neck'",
+        "abstained": false,
+        "correct": false
+      }
+    ]
+  },
+  "what_is_NOT_broken": "the offset invariant holds \u2014 source[start:end] == evidence.text for every returned span, so no fabricated text reaches the EncounterRecord. The evidence is grounded.",
+  "what_IS_broken": "the ABSTENTION SIGNAL. A generator that paraphrases or hallucinates is silently rescued by relocating to the raw_value, reported as abstained=False, and scored as a success. Briefing SS VI: 'Never perform semantic paraphrase relocation. Ambiguous or missing evidence: ABSTAIN / REVIEW, not guessed evidence.'",
+  "measurement_impact": "inflates transport/coverage metrics and zeroes the correct_abstention signal \u2014 the same class of defect as the tautological exact_gold_span metric fixed earlier this session. Any student/native comparison run against this selector overstates every model equally, so relative rankings may survive but absolute capability claims do not.",
+  "failing_test": "nanoscribe/test_adapt.py::test_paraphrase_abstains_instead_of_inventing_evidence",
+  "recommendation": "restrict relocation to the documented transforms only \u2014 copy_span, exact relocate, and snap_relocate over Unicode/case/whitespace. A quote that matches none of those must return None so adapt_candidate abstains, which it already does correctly.",
+  "not_fixed_by_reporter": "this is the B2 lane's active code as of 19:32 today; rewriting their selector mid-iteration risks destroying in-flight work. Diagnosis is precise enough to fix in one edit.",
+  "blocks": "native_gate_check condition 7 (trainer tests pass)"
+}
