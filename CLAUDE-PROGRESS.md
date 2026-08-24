@@ -156,7 +156,11 @@ move to a representation-level probe. Paper 2 reconciliation for C-3 not yet don
    DESIGN NOTE (base-matching): nano scribe.pt was finetuned from dpo.pt (chat lineage),
    scale from scale10m_pretrain.pt (raw pretrain) — the LoRA cells must use the SAME base
    per anchor (nano-LoRA from dpo.pt, scale-LoRA from scale10m_pretrain.pt; all v0.1
-   release assets, downloadable in-kernel). Write a short PREREG paragraph before running.
+   release assets, downloadable in-kernel). PREREG WRITTEN 2026-08-23:
+   `trajectory/PREREG_anchors_lora.md` — design/bands/base-matching frozen; both bases
+   verified retrievable (HTTP 200); scale sha256 pinned from C-3, nano `dpo.pt` hash
+   UNRECORDED repo-wide and must be captured on first fetch. Prereg ≠ authorization;
+   the run is still owner-gated on compute per docs/ACTIVE_NOW.md.
 1b. (was) **LoRA arm** (`nano-lm-ownstack-160m-lora` v2; historical RUNNING note superseded): peft wrap VALIDATED locally
    (98 modules, 4.028M trainables; scratchpad venv `venv-peft`, peft 0.19.1); kernel
    reuses the fullft pretrain ckpt via kernel_sources — NOTE: mounts land under
