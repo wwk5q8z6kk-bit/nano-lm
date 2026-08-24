@@ -156,7 +156,23 @@ def _quote_variants(quote: str, raw_value: str | None = None) -> tuple[str, ...]
     add(quote.strip("\"'“”‘’"))
     collapsed = _WS_RE.sub(" ", quote).strip()
     add(collapsed)
-    add(raw_value)
+
+    # raw_value is a LAST-RESORT variant, and only when the model supplied no
+    # usable quote at all.
+    #
+    # Adding it unconditionally made the selector rescue every failed
+    # generation: a paraphrase ("cervicalgia" for "neck") or an outright
+    # hallucination ("totally unrelated words") would fail relocation, fall
+    # through to raw_value, and return a valid span with abstained=False. The
+    # offset invariant still held, so nothing fabricated reached the record —
+    # but the ABSTENTION SIGNAL was destroyed and every such failure scored as a
+    # success, inflating transport/coverage and zeroing correct_abstention.
+    #
+    # Briefing SS VI: "Never perform semantic paraphrase relocation. Ambiguous or
+    # missing evidence: ABSTAIN / REVIEW, not guessed evidence." A model that
+    # offered a quote and got it wrong must abstain.
+    if not candidates:
+        add(raw_value)
     return tuple(candidates)
 
 

@@ -229,10 +229,35 @@ def test_select_quote_variants_recovers_case_and_whitespace() -> None:
 
 
 def test_select_quote_variants_uses_raw_value_fallback() -> None:
+    """raw_value rescues a MISSING quote, never a WRONG one.
+
+    This test previously asserted that "bogus quote" resolved to the raw_value's
+    span. That made the selector rescue every failed generation: a paraphrase or
+    a hallucination fell through to raw_value and returned abstained=False, so
+    the model's failure scored as a success. The offset invariant still held, so
+    nothing fabricated reached the record — but the abstention signal was gone,
+    which inflates transport/coverage and zeroes correct_abstention.
+
+    It also contradicted both the canonical contract (briefing SS VI: "Never
+    perform semantic paraphrase relocation. Ambiguous or missing evidence:
+    ABSTAIN / REVIEW, not guessed evidence.") and
+    test_adapt.py::test_paraphrase_abstains_instead_of_inventing_evidence.
+
+    The fallback itself is retained for its defensible case: the model supplied
+    no quote at all, so there is no claim to contradict.
+    """
     from nanoscribe.select import select_quote_variants
 
     source = _source()
-    span = select_quote_variants(source, "bogus quote", evidence_id="ev-neck", raw_value="neck")
+
+    # A wrong quote must NOT be rescued.
+    assert (
+        select_quote_variants(source, "bogus quote", evidence_id="ev-neck", raw_value="neck")
+        is None
+    ), "a wrong quote must abstain, not relocate to the raw_value"
+
+    # No quote at all may fall back to locating the raw_value.
+    span = select_quote_variants(source, "", evidence_id="ev-neck", raw_value="neck")
     assert span is not None
     assert span.text == "neck"
 
