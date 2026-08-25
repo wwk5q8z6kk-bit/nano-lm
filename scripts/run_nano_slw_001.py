@@ -97,7 +97,11 @@ def main() -> int:
 
     a, b = run_baseline_a(world), run_candidate_b(world)
     _json(args.out / "arm_snapshots.json", {
-        arm.name: {str(t): {"signature_hash": hash(state_signature(s)),
+        # Builtin hash() is salted per process (PYTHONHASHSEED), so an artifact
+        # keyed on it differs on every run — in a repository whose whole claim
+        # is reproducibility. Content-addressed instead.
+        arm.name: {str(t): {"signature_hash": _cid(
+                                {"s": _enc(state_signature(s))}, "sig"),
                             "ledger_version": s.evidence_ledger_version,
                             "facts": len(s.active_conditions)
                             + len(s.current_medications)
