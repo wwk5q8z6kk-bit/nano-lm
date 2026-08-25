@@ -35,7 +35,13 @@ def test_preflight_all_arms() -> None:
     preflight_arms(interleaved_run_ids())
 
 
-def test_smoke_wave_writes_train_and_summary(tmp_path: Path) -> None:
+def test_smoke_wave_writes_train_and_summary(tmp_path: Path, monkeypatch) -> None:
+    # Isolate the checkpoint tree. Without this the smoke wave trains the REAL
+    # reval30_decoder_control_s0 for 2 steps and overwrites its latest.pt in
+    # artifacts/native_checkpoints/ — so merely running the test suite destroyed
+    # a wave artifact (recoverable only because step_001800.pt survives beside
+    # it). Observed twice on 2026-08-25.
+    monkeypatch.setenv("NANO_NATIVE_CHECKPOINT_DIR", str(tmp_path / "checkpoints"))
     results = tmp_path / "reval_results"
     out = tmp_path / "summary.json"
     failed, _ = run_revalidation_wave(
