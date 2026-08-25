@@ -154,6 +154,35 @@ the causalfix null as support for K1 — it does not bear on it.
 
 ---
 
+## Program Q - Domain acquisition
+**Status:** `OPEN` (added 2026-08-25)  
+**Question:** Can the system learn an unfamiliar domain **without rebuilding the
+system**?
+
+Given quantum physics, oncology, or an unknown field, the target behaviour is:
+recognise unfamiliar terminology, observe, learn concepts, connect them,
+construct a domain model, retrieve, self-test, integrate. Knowledge is acquired;
+capability is not modified.
+
+**Why this is the load-bearing program for the Core/DomainPack boundary.** The
+boundary claims capability is general and knowledge is concentrated
+(`docs/SYSTEM_ARCHITECTURE.md`). O is the experiment that falsifies it: if
+acquiring a new domain requires changing Core interfaces, capability was never
+general and the split is decorative. Medicine cannot test this - it is the pack
+the Core was designed alongside, so a fit proves nothing.
+
+**Falsifier.** A new domain that cannot be acquired without a Core change.
+
+**Distinct from N.** N is learning a task from few labels. O is acquiring a
+*conceptual* domain - vocabulary, entities, relations, semantics - where the
+capability set is unchanged and only knowledge grows.
+
+**Convergent external evidence.**
+`papers/FINDING_BREADTH_BEFORE_SPECIALIZATION.md` - compute-matched studies find
+reusing a broadly pretrained model dominates training a domain-native one from
+scratch, which supports O's premise (general capability plus added knowledge)
+over domain-native construction.
+
 ## Cross-cutting domains (also portfolio, not queue)
 
 Learning · Memory · Verification · Retrieval · Planning · Execution · Collaboration · Interfaces · Hardware · Human factors · Evaluation · Benchmarks · Tool ecosystems · Security · Alignment · Compilers · Runtime · Distributed systems · Theory

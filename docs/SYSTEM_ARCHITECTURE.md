@@ -49,7 +49,11 @@ reinterpreted, and each carries the level it serves (see
 `CAPABILITY_LADDER.md`).
 
 ```text
-multimodal source representation  (L0)  image · signal · audio · scanned doc
+universal observation            (L0)  passive: text · image · audio · video ·
+                                        signal · table · scanned doc
+                                        ACTIVE: search · browse · query · execute ·
+                                        inspect · ask the user
+                                        (observation is an ACTION, not only intake)
 typed time                        (L2)  event / documentation / discovery / onset
                                         / relative / uncertain time as distinct axes
 evidence graph                    (L3)  nodes + relations over spans, not spans alone
@@ -76,6 +80,25 @@ primitive is a claim about the future, and this file is Layer 2.
 
 ### DomainPack boundary
 
+**The boundary is capability versus knowledge.** This is the precise statement of
+the split, and it is the test to apply when deciding where something belongs:
+
+```text
+CAPABILITY (Core, general)      KNOWLEDGE (DomainPack, concentrated)
+observe · represent · remember  medicine · biology · chemistry
+retrieve · reason · plan        physics · engineering · law
+use tools · verify · predict    domain ontology and semantics
+communicate · learn
+```
+
+Capability stays general and is **not** allowed to specialise; knowledge may be
+arbitrarily deep. The failure this prevents is building a medical pattern
+machine rather than a cognitive architecture that knows medicine.
+
+**Operational test:** the Core must not contain the string "scribe", or any
+concept that presupposes one. If a Core interface only makes sense for
+medicine, it belongs in the pack.
+
 **Nano Core** holds domain-general interfaces. **DomainPack** holds:
 
 ```text
@@ -85,12 +108,16 @@ domain negation/temporality semantics · evaluation sets · transformations
 
 Do not hardwire medicine into every Core interface. Do not generalize away medically necessary semantics.
 
-**DomainPack-0 — synthetic world (Core development harness).** Medicine is
-DomainPack #1 for the *product*. It is the wrong *first* harness for Core
-development: when a run fails against real records you cannot separate an
-architecture fault from an extraction fault, an ontology fault, or bad ground
-truth. A generated world whose ground truth is the generator's own state
-isolates the Core.
+**DomainPack-0 — synthetic world (Core development harness).** Medicine remains
+DomainPack #1 and the domain the program is judged on; see `PROJECT_CHARTER.md`
+§ Why medicine first. DomainPack-0 changes *benchmark ordering only*, never
+domain priority.
+
+The reason is instrumental: when a run fails against real records you cannot
+separate an architecture fault from an extraction fault, an ontology fault, or
+bad ground truth. A generated world whose ground truth is the generator's own
+state isolates the Core. A win on DomainPack-0 is a claim about the Core and
+**never** a claim about medicine.
 
 This is the existing Core/DomainPack boundary used as intended, not a detour
 around the capability ladder. The Core interfaces are identical under both
@@ -142,6 +169,37 @@ MODEL        what the system learned in training
 Merging PATIENT with MEDICAL is how "the literature says X" becomes "the patient
 has X". The reasoning core *connects* them and reports which world each claim
 came from.
+
+## Observation as a decision (design)
+
+Observation is not intake. Given a goal, the system chooses how to observe:
+
+```text
+goal → what do I know? → what is uncertain? → what would reduce it?
+     → where is it? → which channel? (search / inspect / query / calculate / ask)
+     → observe → new evidence → repeat
+```
+
+This makes information-seeking part of inference rather than a preprocessing
+step, and it is what distinguishes an agent from a summariser. It is also the
+only formulation under which a 1,000-page record is tractable: the system reads
+what its uncertainty requires, not everything.
+
+## Two learning loops (design)
+
+Kept separate because conflating them is how live data corrupts a model:
+
+```text
+FAST  (within interaction)  observe → understand → update state → reason → act
+                            touches STATE and MEMORY only, never weights
+SLOW  (across experience)   experiences → recurring structure → consolidation
+                            → improved representations → new model version
+                            offline, evaluated, versioned
+```
+
+Patient/user data reaches the fast loop. Only curated, validated examples reach
+the slow loop. No live weight updates from unvalidated interaction — this is
+listed in the anti-patterns below and is the reason the loops are named.
 
 ## Hierarchical zoom (the context-window answer)
 

@@ -66,18 +66,30 @@ Operational definition for "best evidence-grounded medical scribe" — targets a
 | MTS-Dialog, ACI-Bench, PriMock57 | External OOD dialogue faithfulness |
 | Classical + verification stack | Comparison arm per E1/E4 — must beat on utility U |
 | **SLW** — Synthetic Longitudinal World | **First** Core benchmark for Program K1. Ground truth constructible. **Not built.** |
-| **LCRB** — Longitudinal Clinical Reconstruction Benchmark | **Final** benchmark, not the first. Medicine is the stress test, not the debugging environment. **Not built.** |
+| **LCRB** — Longitudinal Clinical Reconstruction Benchmark | The benchmark that decides the program. Not the **first** one run. **Not built.** |
 
 #### Ordering correction (2026-08-25)
 
 An earlier revision listed LCRB as the flagship to build first. That was wrong
-and is retracted here rather than edited away. Medicine is an excellent stress
-test and a poor debugging environment: when a run fails you cannot tell whether
-the architecture, the extraction, the ontology, or the ground truth is at fault.
+about **ordering** and is retracted here rather than edited away.
 
-**Build the Core against a synthetic world where the answer is known, then move
-to medicine.** This is not a detour around the capability ladder — it is the
-existing Core/DomainPack split applied honestly. See `SYSTEM_ARCHITECTURE.md`.
+**Medicine is the important benchmark. It is not the first benchmark.** Those are
+separate claims and both hold:
+
+- *Important* — LCRB is what the program is ultimately judged on. Medicine is
+  DomainPack #1 precisely because it is high-consequence, structured and
+  measurable (`PROJECT_CHARTER.md` § Why medicine first). Nothing here demotes
+  it, and success on a synthetic world is **not** a result about medicine.
+- *Not first* — a benchmark that decides the program is a bad instrument for
+  debugging the Core. When a medical run fails, the fault could be the
+  architecture, the extraction, the ontology, or the ground truth, and the run
+  itself cannot tell you which. That is a property of the instrument, not a
+  criticism of the domain.
+
+**No conflict with "why medicine first."** The charter fixes *domain* priority:
+medicine is DomainPack #1 and stays there. This fixes *benchmark* ordering: the
+Core is debugged against a pack whose ground truth is constructible, then
+measured on the pack that matters. See `SYSTEM_ARCHITECTURE.md` § DomainPack-0.
 
 #### SLW — synthetic longitudinal world (design sketch)
 
@@ -93,17 +105,32 @@ supports the conclusion · what information is missing · predict the next state
 The last one is the discriminator: **only a system with an actual state model
 can predict the next state.** Retrieval and summarisation cannot fake it.
 
-#### Complexity ladder to LCRB
+#### Benchmark ladder — B0 to B5
 
-```text
-L1 single document          L5 multimodal records
-L2 multiple documents       L6 continuous data stream
-L3 longitudinal documents   L7 tool use
-L4 contradictory documents  L8 open-world unfamiliar information
-```
+Each rung adds one class of difficulty. **The rung where performance breaks is
+the result**, not a failure to be engineered around.
 
-Each rung is a measurable step, and the rung where performance breaks is the
-result — not a failure to be engineered around.
+| # | Environment | Adds | Isolates |
+|---|---|---|---|
+| **B0** | Synthetic world (SLW) | nothing — state only | can it maintain state *without language*? |
+| **B1** | Longitudinal text | language, many documents, contradiction, irrelevance | can it build state *from* language? |
+| **B2** | Multimodal world | image, table, audio describing the same event | cross-modal identity |
+| **B3** | Open-world research | unbounded sources, unknown terminology | autonomous information acquisition |
+| **B4** | Scientific reasoning | hypotheses, experiments, conflicting results | hypothesis formation, correlation vs causation |
+| **B5** | **Medicine (LCRB)** | consequence, specialised knowledge, all of the above | the program's decisive benchmark |
+
+**B0 deliberately precedes language.** Streaming entity/event/state observations
+with no text isolates the state machinery from linguistic competence — if the
+architecture cannot answer "what is currently true" over 100 entities without
+language, no language benchmark will diagnose why.
+
+**B4 is the bridge, and it is not optional.** Medicine requires hypothesis
+formation, evidence weighing, and correlation-versus-causation discipline. Meeting
+those first in a domain where ground truth is checkable is what makes a medical
+failure interpretable.
+
+Within-rung document complexity (single → multiple → longitudinal →
+contradictory) applies inside B1 onward.
 
 #### LCRB (design sketch — construction not authorized)
 
