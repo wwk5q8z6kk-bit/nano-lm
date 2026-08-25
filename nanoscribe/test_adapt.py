@@ -465,16 +465,43 @@ def test_extract_span_port_line_from_multiline() -> None:
     assert extract_span_port_line(raw) == 'UNCERTAIN: "pressure"'
 
 
-def test_candidate_uses_raw_value_when_quote_missing() -> None:
-    candidate = candidate_from_span_port_line(
-        atom_id="atom-neck",
-        atom_type=AtomType.SYMPTOM,
-        raw_value="neck",
-        raw_line="STATED",
-        speaker=Speaker.PATIENT,
-    )
-    assert candidate.quotes == ("neck",)
-    assert candidate.assertion_state is AssertionState.ASSERTED
+def test_candidate_raw_value_fallback_is_governed_by_the_c2_flag() -> None:
+    """Pin BOTH C2 states explicitly.
+
+    This test used to assert only the substituting behaviour while reading
+    ``PARSER_RAW_VALUE_FALLBACK`` from the module default. That made it
+    cell-dependent: it passed on the four C2-on cells and failed on the four
+    C2-off ones, for no reason connected to the code under test. A test whose
+    result depends on which ablation cell it runs in cannot serve as a
+    pre-launch gate (PREREG section 7 item 5), so it now sets the flag itself.
+    """
+    from nanoscribe import leakage
+
+    saved = leakage.PARSER_RAW_VALUE_FALLBACK
+    try:
+        leakage.PARSER_RAW_VALUE_FALLBACK = True
+        on = candidate_from_span_port_line(
+            atom_id="atom-neck",
+            atom_type=AtomType.SYMPTOM,
+            raw_value="neck",
+            raw_line="STATED",
+            speaker=Speaker.PATIENT,
+        )
+        assert on.quotes == ("neck",)
+        assert on.assertion_state is AssertionState.ASSERTED
+
+        leakage.PARSER_RAW_VALUE_FALLBACK = False
+        off = candidate_from_span_port_line(
+            atom_id="atom-neck",
+            atom_type=AtomType.SYMPTOM,
+            raw_value="neck",
+            raw_line="STATED",
+            speaker=Speaker.PATIENT,
+        )
+        assert off.quotes == ()
+        assert off.assertion_state is AssertionState.ASSERTED
+    finally:
+        leakage.PARSER_RAW_VALUE_FALLBACK = saved
 
 
 def test_build_span_port_prompt_includes_uncertain() -> None:
