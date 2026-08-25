@@ -1,0 +1,45 @@
+{
+  "co_movement_fires": false,
+  "label": "(PURE QUESTION-FORM: same condition C1off_C2off, old vs unified wh)",
+  "n_slots": 192,
+  "ref": "C1off_C2off_Qon_QSoff",
+  "results": {
+    "abstained_correct": {
+      "direction": "treatment lower",
+      "gains_b": 0,
+      "losses_c": 8,
+      "n_ref": 32,
+      "n_trt": 24,
+      "p_clustered_deff1.44": 0.0625,
+      "p_exact": 0.0078125
+    },
+    "asserted_grounded": {
+      "direction": "treatment lower",
+      "gains_b": 0,
+      "losses_c": 14,
+      "n_ref": 16,
+      "n_trt": 2,
+      "p_clustered_deff1.44": 0.00390625,
+      "p_exact": 0.0001220703125
+    },
+    "asserted_unbound": {
+      "direction": "treatment higher",
+      "gains_b": 15,
+      "losses_c": 11,
+      "n_ref": 39,
+      "n_trt": 43,
+      "p_clustered_deff1.44": 0.629058837890625,
+      "p_exact": 0.557197093963623
+    },
+    "assertion_state_correct": {
+      "direction": "treatment lower",
+      "gains_b": 12,
+      "losses_c": 15,
+      "n_ref": 66,
+      "n_trt": 63,
+      "p_clustered_deff1.44": 0.8145294189453125,
+      "p_exact": 0.7011080384254456
+    }
+  },
+  "trt": "C1off_C2off_Qon_QSoff"
+}

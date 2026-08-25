@@ -1,0 +1,45 @@
+{
+  "co_movement_fires": true,
+  "label": "(ARTIFACT'S PAIR: both @02:20, prompt.py identical)",
+  "n_slots": 192,
+  "ref": "C1off_C2off_Qon_QSoff",
+  "results": {
+    "abstained_correct": {
+      "direction": "treatment lower",
+      "gains_b": 1,
+      "losses_c": 14,
+      "n_ref": 32,
+      "n_trt": 19,
+      "p_clustered_deff1.44": 0.00390625,
+      "p_exact": 0.0009765625
+    },
+    "asserted_grounded": {
+      "direction": "treatment higher",
+      "gains_b": 16,
+      "losses_c": 2,
+      "n_ref": 16,
+      "n_trt": 30,
+      "p_clustered_deff1.44": 0.00634765625,
+      "p_exact": 0.001312255859375
+    },
+    "asserted_unbound": {
+      "direction": "treatment higher",
+      "gains_b": 38,
+      "losses_c": 6,
+      "n_ref": 39,
+      "n_trt": 71,
+      "p_clustered_deff1.44": 5.947612226009369e-05,
+      "p_exact": 9.430375484953402e-07
+    },
+    "assertion_state_correct": {
+      "direction": "treatment lower",
+      "gains_b": 7,
+      "losses_c": 10,
+      "n_ref": 66,
+      "n_trt": 63,
+      "p_clustered_deff1.44": 0.75390625,
+      "p_exact": 0.629058837890625
+    }
+  },
+  "trt": "C1on_C2off_Qon_QSoff"
+}
