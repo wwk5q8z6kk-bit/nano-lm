@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -251,8 +253,19 @@ def smoke_config(*, variant: NativeVariant = NativeVariant.NATIVE_A) -> NativeTr
     )
 
 
+def checkpoint_root(cfg: NativeTrainConfig) -> Path:
+    """Checkpoint tree root, overridable per-run without editing configs.
+
+    NANO_NATIVE_CHECKPOINT_DIR lets a re-run write to a fresh tree instead of
+    overwriting prior artifacts in place. The env var (not a CLI flag) so that
+    the eval subprocess spawned by native30_revalidation.eval_one_run resolves
+    the same root as training without extra plumbing.
+    """
+    return Path(os.environ.get("NANO_NATIVE_CHECKPOINT_DIR") or cfg.checkpoint_dir)
+
+
 def checkpoint_path(cfg: NativeTrainConfig, step: int | None = None) -> Path:
-    base = Path(cfg.checkpoint_dir) / cfg.run_id
+    base = checkpoint_root(cfg) / cfg.run_id
     if step is None:
         return base / "latest.pt"
     return base / f"step_{step:06d}.pt"

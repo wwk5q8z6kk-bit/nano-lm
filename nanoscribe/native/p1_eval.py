@@ -12,7 +12,7 @@ from nanoscribe.adapters import AtomSpec
 from nanoscribe.campaign_datasets import SMOKE_SUITE_REVISION, campaign_cases
 from nanoscribe.harness import HarnessCase, aggregate_suite_metrics
 from nanoscribe.native.checkpoint import load_checkpoint
-from nanoscribe.native.config import NativeTrainConfig, config_for_run
+from nanoscribe.native.config import checkpoint_root, NativeTrainConfig, config_for_run
 from nanoscribe.native.inference import generate_target_line
 from nanoscribe.native.model import build_native_model
 from nanoscribe.prompt import build_span_port_prompt
@@ -79,7 +79,7 @@ def load_native_model_for_eval(
     build = build_native_model(cfg)
     device = _resolve_device(cpu)
     build.model.to(device)
-    ckpt_path = Path(cfg.checkpoint_dir) / cfg.run_id / (
+    ckpt_path = checkpoint_root(cfg) / cfg.run_id / (
         "latest.pt" if step is None else f"step_{step:06d}.pt"
     )
     load_checkpoint(cfg, build.model, step=step)
