@@ -40,7 +40,12 @@ from nanoscribe.campaign_datasets import (
 from nanoscribe.decompose import classify_report
 from nanoscribe.harness import FailureTaxonomy, HarnessCase
 from nanoscribe.leakage import condition_label, leakage_config
-from nanoscribe.prompt import build_span_port_prompt, span_port_system_prompt
+from nanoscribe.prompt import (
+    answer_hint_for_spec,
+    build_span_port_prompt,
+    span_port_system_prompt,
+    topic_for_spec,
+)
 from nanoscribe.test_adapt import _gold, _model_input
 
 
@@ -164,20 +169,26 @@ def _quote_absent(raw_line: str) -> bool:
     return label is not None and label != "NOT_MENTIONED" and not quotes
 
 
-def _gold_value_in_prompt(spec, user_prompt: str) -> bool:
-    """Mechanical C1 measure: is the slot's gold value visible in what we sent?
+def _gold_in_answer_template(spec) -> bool:
+    """Channel C1, measured on the instruction text — not on model behaviour.
 
-    Independent of model behaviour — it reads the prompt text, so it reports
-    leakage even on a run where the model happens to answer correctly anyway.
+    True when the slot's gold value is visible in the answer template or in the
+    system prompt's format examples, i.e. when the model is told the exact
+    string to emit.
     """
     value = (spec.raw_value or "").strip().casefold()
     if not value:
         return False
-    shown = (span_port_system_prompt() + "\n" + user_prompt).casefold()
-    # Discount the transcript itself: the value legitimately occurs there when
-    # the atom is present. Only the instruction text counts as leakage.
-    instructions = shown.split("\n\n", 1)[-1]
-    return value in instructions or value in span_port_system_prompt().casefold()
+    shown = (answer_hint_for_spec(spec) + "\n" + span_port_system_prompt()).casefold()
+    return value in shown
+
+
+def _gold_in_question(spec) -> bool:
+    """Channel Q — the value names the concept the question asks about."""
+    value = (spec.raw_value or "").strip().casefold()
+    if not value:
+        return False
+    return value in topic_for_spec(spec).casefold()
 
 
 def _run_campaign_case(case: HarnessCase, *, fixture_only: bool) -> dict[str, Any]:
@@ -203,9 +214,11 @@ def _run_campaign_case(case: HarnessCase, *, fixture_only: bool) -> dict[str, An
         "failure_taxonomy": failures.to_dict(),
         # Primary leakage evidence: what the model was shown, what it said back.
         "prompts": prompts,
-        "gold_value_in_prompt": {
-            spec.atom_id: _gold_value_in_prompt(spec, prompts[spec.atom_id])
-            for spec in case.atom_specs
+        "gold_value_in_answer_template": {
+            spec.atom_id: _gold_in_answer_template(spec) for spec in case.atom_specs
+        },
+        "gold_value_in_question": {
+            spec.atom_id: _gold_in_question(spec) for spec in case.atom_specs
         },
         "raw_lines": dict(raw_lines),
         "quote_absent": {
@@ -230,7 +243,8 @@ def _suite_aggregate(encounters: list[dict[str, Any]]) -> dict[str, Any]:
         "unbound_assertion": 0,
         "invalid_span": 0,
         "quote_absent": 0,
-        "gold_value_in_prompt": 0,
+        "gold_in_answer_template": 0,
+        "gold_in_question": 0,
         "atoms": 0,
         "encounters": len(encounters),
     }
@@ -258,8 +272,11 @@ def _suite_aggregate(encounters: list[dict[str, Any]]) -> dict[str, Any]:
         totals["unbound_assertion"] += agg["unbound_assertion"]
         totals["invalid_span"] += agg["invalid_span"]
         totals["quote_absent"] += sum(1 for v in item["quote_absent"].values() if v)
-        totals["gold_value_in_prompt"] += sum(
-            1 for v in item["gold_value_in_prompt"].values() if v
+        totals["gold_in_answer_template"] += sum(
+            1 for v in item["gold_value_in_answer_template"].values() if v
+        )
+        totals["gold_in_question"] += sum(
+            1 for v in item["gold_value_in_question"].values() if v
         )
         # Denominator = slots probed (one prompt per spec), stable across outcomes.
         totals["atoms"] += len(item["prompts"])
@@ -350,7 +367,8 @@ def _agg_line(name: str, agg: dict[str, Any]) -> str:
         f"critical={agg['critical_error']} "
         f"malformed={agg['malformed']} "
         f"no_quote={agg['quote_absent']} "
-        f"leaked_prompts={agg['gold_value_in_prompt']}/{n}"
+        f"gold_in_template={agg['gold_in_answer_template']}/{n} "
+        f"gold_in_question={agg['gold_in_question']}/{n}"
     )
 
 
@@ -367,8 +385,9 @@ def _summary_block(result: dict[str, Any]) -> str:
         f"  condition          {result.get('condition', 'n/a')}",
         f"  adapter            {result['encounters'][0]['adapter']}",
         f"  fixture_only       {result['fixture_only']}",
-        f"  C1 prompt_includes_gold_value   {cfg.get('prompt_includes_gold_value')}",
+        f"  C1 answer_template_gold_value   {cfg.get('prompt_answer_template_gold_value')}",
         f"  C2 parser_raw_value_fallback    {cfg.get('parser_raw_value_fallback')}",
+        f"  Q  question_names_concept       {cfg.get('prompt_question_names_concept')}",
         "-" * 78,
         _agg_line("ALL", result["suite_aggregate"]),
     ]

@@ -143,6 +143,18 @@ def enc3_family_history_case() -> HarnessCase:
     )
 
 
+# Slots whose value occurs nowhere in enc-4's source. Five of them, spread over
+# distinct atom types, so the false-positive probe is not resting on n=2 and so
+# the slots stay distinguishable even under the Q-off diagnostic cell.
+_ENC4_ABSENT: tuple[tuple[str, AtomType, str], ...] = (
+    ("atom-absent-med", AtomType.MEDICATION, "lisinopril"),
+    ("atom-absent-fever", AtomType.SYMPTOM, "fever"),
+    ("atom-absent-allergy", AtomType.ALLERGY, "penicillin"),
+    ("atom-absent-hist", AtomType.HISTORY, "asthma"),
+    ("atom-absent-vital", AtomType.MEASUREMENT, "blood pressure"),
+)
+
+
 def enc4_absent_atom_case() -> HarnessCase:
     """Slots whose value never occurs in the source — the false-positive probe.
 
@@ -180,17 +192,13 @@ def enc4_absent_atom_case() -> HarnessCase:
                 evidence_ids=("ev-sore",),
             ),
         ),
-        unresolved=(
+        unresolved=tuple(
             UnresolvedItem(
-                unresolved_id="atom-absent-med",
-                topic="lisinopril",
-                reason="no medication occurs anywhere in the source",
-            ),
-            UnresolvedItem(
-                unresolved_id="atom-absent-fever",
-                topic="fever",
-                reason="no fever occurs anywhere in the source",
-            ),
+                unresolved_id=atom_id,
+                topic=value,
+                reason=f"{value!r} occurs nowhere in the source",
+            )
+            for atom_id, _atom_type, value in _ENC4_ABSENT
         ),
     )
     specs = (
@@ -200,18 +208,14 @@ def enc4_absent_atom_case() -> HarnessCase:
             raw_value="sore",
             speaker=Speaker.PATIENT,
         ),
+    ) + tuple(
         AtomSpec(
-            atom_id="atom-absent-med",
-            atom_type=AtomType.MEDICATION,
-            raw_value="lisinopril",
+            atom_id=atom_id,
+            atom_type=atom_type,
+            raw_value=value,
             speaker=Speaker.PATIENT,
-        ),
-        AtomSpec(
-            atom_id="atom-absent-fever",
-            atom_type=AtomType.SYMPTOM,
-            raw_value="fever",
-            speaker=Speaker.PATIENT,
-        ),
+        )
+        for atom_id, atom_type, value in _ENC4_ABSENT
     )
     return HarnessCase(
         test_set=P1TestSet.P1_ADVERSARIAL,
@@ -316,8 +320,7 @@ def fixture_lines_for_encounter(encounter_id: str) -> dict[str, str]:
     if encounter_id == "enc-4":
         return {
             "atom-throat": 'STATED: "sore"',
-            "atom-absent-med": "NOT_MENTIONED",
-            "atom-absent-fever": "NOT_MENTIONED",
+            **{atom_id: "NOT_MENTIONED" for atom_id, _t, _v in _ENC4_ABSENT},
         }
     if encounter_id == "enc-5":
         return {

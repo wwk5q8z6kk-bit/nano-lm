@@ -1,10 +1,15 @@
 """Pins for the span-port leakage ablation instrument.
 
-The load-bearing test here is ``test_pure_echo_model_is_caught`` — the
-manipulation check. If a model that does nothing but echo the value named in
-its prompt still scored clean, then a null result from the ablation would be
-uninterpretable (Stage P/P1 shipped a VOID for exactly this reason). These
-tests assert the instrument has the discriminating power the experiment needs.
+Two load-bearing tests here:
+
+``test_pure_echo_model_is_caught`` — the manipulation check. If a model that
+does nothing but echo the value named in its prompt still scored clean, a null
+result from the ablation would be uninterpretable (Stage P/P1 shipped a VOID
+for exactly this reason).
+
+``test_prompts_stay_distinct_in_every_scoring_cell`` — the confound guard. An
+ablation cell that makes the task underdetermined measures prompt ambiguity,
+not leakage, and would fire the CONFIRMED branch on an artifact.
 """
 
 from __future__ import annotations
@@ -18,41 +23,16 @@ if _repo_root not in sys.path:
     sys.path.insert(0, _repo_root)
 
 from nanoscribe import leakage
-from nanoscribe.adapt import run_pipeline
-from nanoscribe.adapters import AtomSpec, CandidateAtom, ModelCandidateBatch
-from nanoscribe.adapt import candidate_from_span_port_line
-from nanoscribe.campaign_datasets import campaign_cases
-from nanoscribe.evaluate import evaluate
+from nanoscribe.adapt import (
+    ModelCandidateBatch,
+    candidate_from_span_port_line,
+    run_pipeline,
+)
+from nanoscribe.campaign_datasets import _ENC4_ABSENT, campaign_cases
 from nanoscribe.run_eval import run_campaign_eval
 
-
-class _EchoAdapter:
-    """Worst case: answers STATED with the value its own prompt named."""
-
-    model_id = "echo/prompt-parrot"
-
-    def __init__(self, raw_line_sink: dict[str, str] | None = None) -> None:
-        self.raw_line_sink = raw_line_sink
-
-    def propose(self, model_input, atom_specs) -> ModelCandidateBatch:
-        del model_input
-        atoms: list[CandidateAtom] = []
-        for spec in atom_specs:
-            raw_line = f'STATED: "{spec.raw_value}"'
-            if self.raw_line_sink is not None:
-                self.raw_line_sink[spec.atom_id] = raw_line
-            atoms.append(
-                candidate_from_span_port_line(
-                    atom_id=spec.atom_id,
-                    atom_type=spec.atom_type,
-                    raw_value=spec.raw_value,
-                    raw_line=raw_line,
-                    speaker=spec.speaker,
-                    experiencer=spec.experiencer,
-                    temporality=spec.temporality,
-                )
-            )
-        return ModelCandidateBatch(atoms=tuple(atoms))
+SUITE_SLOTS = 16
+ENC4_ABSENT_SLOTS = len(_ENC4_ABSENT)
 
 
 def _case(encounter_id: str):
@@ -79,16 +59,36 @@ def _adapter_lines(case, lines: dict[str, str]) -> ModelCandidateBatch:
     return ModelCandidateBatch(atoms=tuple(atoms))
 
 
+def _enc4_lines(absent_answer: str | None) -> dict[str, str]:
+    """enc-4 answers: honest abstention, or (None) assert the absent value."""
+    lines = {"atom-throat": 'STATED: "sore"'}
+    for atom_id, _atom_type, value in _ENC4_ABSENT:
+        lines[atom_id] = absent_answer or f'STATED: "{value}"'
+    return lines
+
+
+def _all_prompts() -> list[str]:
+    from nanoscribe.prompt import build_span_port_prompt
+
+    return [
+        build_span_port_prompt(case.model_input.source, spec)
+        for case in campaign_cases("campaign_v2")
+        for spec in case.atom_specs
+    ]
+
+
 class LeakageInstrumentTest(unittest.TestCase):
     def setUp(self) -> None:
         self._saved = (
-            leakage.PROMPT_INCLUDES_GOLD_VALUE,
+            leakage.PROMPT_QUESTION_NAMES_CONCEPT,
+            leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE,
             leakage.PARSER_RAW_VALUE_FALLBACK,
         )
 
     def tearDown(self) -> None:
         (
-            leakage.PROMPT_INCLUDES_GOLD_VALUE,
+            leakage.PROMPT_QUESTION_NAMES_CONCEPT,
+            leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE,
             leakage.PARSER_RAW_VALUE_FALLBACK,
         ) = self._saved
 
@@ -98,12 +98,13 @@ class LeakageInstrumentTest(unittest.TestCase):
         self.assertEqual(v2[: len(v1)], v1)
         self.assertEqual(v2[len(v1) :], ["enc-4", "enc-5"])
 
-    def test_fixture_ceiling_is_stable_across_all_four_cells(self) -> None:
+    def test_fixture_ceiling_is_stable_across_scoring_cells(self) -> None:
         """A perfect reader scores the same in every cell — only real models differ."""
+        leakage.PROMPT_QUESTION_NAMES_CONCEPT = True
         seen = set()
         for c1 in (True, False):
             for c2 in (True, False):
-                leakage.PROMPT_INCLUDES_GOLD_VALUE = c1
+                leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = c1
                 leakage.PARSER_RAW_VALUE_FALLBACK = c2
                 agg = run_campaign_eval("campaign_v2", fixture_only=True)[
                     "suite_aggregate"
@@ -118,21 +119,44 @@ class LeakageInstrumentTest(unittest.TestCase):
                         agg["critical_error"],
                     )
                 )
-        self.assertEqual(seen, {(13, 10, 10, 3, 0, 0)})
+        self.assertEqual(seen, {(SUITE_SLOTS, 10, 10, 6, 0, 0)})
 
-    def test_c1_removes_the_gold_value_from_the_instructions(self) -> None:
-        leakage.PROMPT_INCLUDES_GOLD_VALUE = True
+    def test_prompts_stay_distinct_in_every_scoring_cell(self) -> None:
+        """Guards the ablation against measuring task underdetermination.
+
+        Two slots of the same atom_type get the same question when Q is off, so
+        the model cannot tell which slot it is answering and its "failure" is an
+        artifact of the prompt rather than of leakage. Every cell a verdict
+        rests on must keep all 16 prompts distinct; only the labelled Q-off
+        diagnostic may collide.
+        """
+        leakage.PROMPT_QUESTION_NAMES_CONCEPT = True
+        for c1 in (True, False):
+            leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = c1
+            prompts = _all_prompts()
+            self.assertEqual(len(prompts), SUITE_SLOTS, f"C1={c1}")
+            self.assertEqual(len(set(prompts)), SUITE_SLOTS, f"collision with C1={c1}")
+
+        leakage.PROMPT_QUESTION_NAMES_CONCEPT = False
+        self.assertLess(
+            len(set(_all_prompts())),
+            SUITE_SLOTS,
+            "Q-off should be underdetermined; this pin is stale",
+        )
+
+    def test_c1_removes_the_gold_value_from_the_answer_template(self) -> None:
+        leakage.PROMPT_QUESTION_NAMES_CONCEPT = True
+        leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = True
         on = run_campaign_eval("campaign_v2", fixture_only=True)["suite_aggregate"]
-        leakage.PROMPT_INCLUDES_GOLD_VALUE = False
+        leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = False
         off = run_campaign_eval("campaign_v2", fixture_only=True)["suite_aggregate"]
-        self.assertEqual(on["gold_value_in_prompt"], 13)
-        # enc-1's medication slot has raw_value "medication", which the
-        # slot-type question unavoidably contains. Documented, not hidden.
-        self.assertEqual(off["gold_value_in_prompt"], 1)
+        self.assertGreaterEqual(on["gold_in_answer_template"], 13)
+        self.assertEqual(off["gold_in_answer_template"], 0)
+        # Q is untouched: the question still identifies the concept in both.
+        self.assertEqual(on["gold_in_question"], off["gold_in_question"])
 
     def test_c2_fallback_only_fires_without_a_quote(self) -> None:
-        spec = AtomSpec(atom_id="a", atom_type=_case("enc-4").atom_specs[0].atom_type,
-                        raw_value="sore")
+        spec = _case("enc-4").atom_specs[0]
         leakage.PARSER_RAW_VALUE_FALLBACK = True
         on = candidate_from_span_port_line(
             atom_id="a", atom_type=spec.atom_type, raw_value="sore", raw_line="STATED"
@@ -161,8 +185,8 @@ class LeakageInstrumentTest(unittest.TestCase):
         gold value is present. On the added enc-4 slots the echoed value cannot
         bind to the source, and the two outcomes must separate cleanly:
 
-            honest abstainer  -> correct_abstention 2, unbound_assertion 0
-            prompt parrot     -> correct_abstention 0, unbound_assertion 2
+            honest abstainer  -> correct_abstention 5, unbound_assertion 0
+            prompt parrot     -> correct_abstention 0, unbound_assertion 5
 
         The constrained selector still protects the record either way — that is
         a system-level safety property. The point of ``unbound_assertion`` is
@@ -173,28 +197,29 @@ class LeakageInstrumentTest(unittest.TestCase):
         v1_clean = 0
         for encounter_id in ("enc-1", "enc-2", "enc-3"):
             case = _case(encounter_id)
-            batch = _EchoAdapter().propose(case.model_input, case.atom_specs)
+            lines = {
+                spec.atom_id: f'STATED: "{spec.raw_value}"'
+                for spec in case.atom_specs
+            }
+            batch = _adapter_lines(case, lines)
             _, report = run_pipeline(case.model_input, batch, gold=case.gold)
             v1_clean += report.exact_gold_span
         # Echoing looks good on the suite that has no absent slots.
         self.assertGreaterEqual(v1_clean, 5)
 
         case = _case("enc-4")
-        echo = _EchoAdapter().propose(case.model_input, case.atom_specs)
-        _, echo_report = run_pipeline(case.model_input, echo, gold=case.gold)
-        self.assertEqual(echo_report.unbound_assertion, 2)
+        _, echo_report = run_pipeline(
+            case.model_input, _adapter_lines(case, _enc4_lines(None)), gold=case.gold
+        )
+        self.assertEqual(echo_report.unbound_assertion, ENC4_ABSENT_SLOTS)
         self.assertEqual(echo_report.correct_abstention, 0)
 
-        honest = _adapter_lines(
-            case,
-            {
-                "atom-throat": 'STATED: "sore"',
-                "atom-absent-med": "NOT_MENTIONED",
-                "atom-absent-fever": "NOT_MENTIONED",
-            },
+        _, honest_report = run_pipeline(
+            case.model_input,
+            _adapter_lines(case, _enc4_lines("NOT_MENTIONED")),
+            gold=case.gold,
         )
-        _, honest_report = run_pipeline(case.model_input, honest, gold=case.gold)
-        self.assertEqual(honest_report.correct_abstention, 2)
+        self.assertEqual(honest_report.correct_abstention, ENC4_ABSENT_SLOTS)
         self.assertEqual(honest_report.unbound_assertion, 0)
 
     def test_binder_no_longer_launders_hallucination_into_abstention(self) -> None:
@@ -205,18 +230,13 @@ class LeakageInstrumentTest(unittest.TestCase):
         harness credited a hallucination as safe behaviour.
         """
         case = _case("enc-4")
-        batch = _adapter_lines(
-            case,
-            {
-                "atom-throat": 'STATED: "sore"',
-                "atom-absent-med": 'STATED: "lisinopril"',
-                "atom-absent-fever": 'STATED: "fever"',
-            },
+        predicted, report = run_pipeline(
+            case.model_input, _adapter_lines(case, _enc4_lines(None)), gold=case.gold
         )
-        predicted, report = run_pipeline(case.model_input, batch, gold=case.gold)
         hallucinated = [
             atom for atom in predicted.atoms if atom.atom_id != "atom-throat"
         ]
+        self.assertEqual(len(hallucinated), ENC4_ABSENT_SLOTS)
         self.assertTrue(all(atom.unbound_assertion for atom in hallucinated))
         self.assertEqual(report.correct_abstention, 0)
 

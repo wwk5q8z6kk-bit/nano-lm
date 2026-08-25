@@ -63,7 +63,11 @@ _SLOT_QUESTION = {
 
 
 def slot_topic_for_spec(spec: _AtomSpecLike) -> str:
-    """Task phrased by slot type only — never names the gold value (C1 off)."""
+    """Task phrased by slot type only (Q off).
+
+    Underdetermined by construction: two slots of the same atom_type get the
+    same question. Diagnostic cell only — see leakage.py.
+    """
     question = _SLOT_QUESTION.get(spec.atom_type)
     if question is None:
         return f"Does the transcript mention the {spec.atom_type.value} field?"
@@ -72,7 +76,7 @@ def slot_topic_for_spec(spec: _AtomSpecLike) -> str:
 
 def topic_for_spec(spec: _AtomSpecLike) -> str:
     """Human-readable extraction task for one atom slot."""
-    if not leakage.PROMPT_INCLUDES_GOLD_VALUE:
+    if not leakage.PROMPT_QUESTION_NAMES_CONCEPT:
         return slot_topic_for_spec(spec)
     if spec.atom_type is AtomType.ALLERGY:
         return "Does the patient mention or deny allergies?"
@@ -102,8 +106,8 @@ def topic_for_spec(spec: _AtomSpecLike) -> str:
     return f"Does the transcript mention the {spec.atom_type.value} field?"
 
 
-def _answer_hint(spec: _AtomSpecLike) -> str:
-    if not leakage.PROMPT_INCLUDES_GOLD_VALUE:
+def answer_hint_for_spec(spec: _AtomSpecLike) -> str:
+    if not leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE:
         # Keep the task/format guidance, drop every gold-value-bearing clause.
         return " Use DENIED only for explicit denial."
     if spec.atom_type is AtomType.ALLERGY:
@@ -126,7 +130,7 @@ def build_span_port_prompt(source: Source, spec: _AtomSpecLike) -> str:
     transcript = _format_transcript(source)
     task = topic_for_spec(spec)
     who = "clinician" if spec.speaker is Speaker.CLINICIAN else "patient"
-    hint = _answer_hint(spec)
+    hint = answer_hint_for_spec(spec)
     return (
         f"{transcript}\n\n"
         f"{task} Answer using only the {who}'s words.{hint} "
@@ -136,6 +140,6 @@ def build_span_port_prompt(source: Source, spec: _AtomSpecLike) -> str:
 
 
 def span_port_system_prompt() -> str:
-    if not leakage.PROMPT_INCLUDES_GOLD_VALUE:
+    if not leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE:
         return _SPAN_PORT_SYSTEM_NEUTRAL
     return _SPAN_PORT_SYSTEM
