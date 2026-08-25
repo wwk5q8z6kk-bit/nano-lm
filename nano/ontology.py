@@ -105,7 +105,7 @@ PRIMITIVES: tuple[Primitive, ...] = (
     _p(name="Entity", plane="World model",
        definition="A persistent thing with identity across observations.",
        must_not_conflate_with=("Mention", "Concept"),
-       presence=Presence.NAMED_ONLY,
+       presence=Presence.IN_CODE, implementation="nano/kernel.py::Entity",
        admitted_because="the same medication named three ways is one entity"),
 
     _p(name="Mention", plane="World model",
@@ -211,12 +211,6 @@ PRIMITIVES: tuple[Primitive, ...] = (
        presence=Presence.NAMED_ONLY,
        admitted_because="the act is separable from the instrument"),
 
-    _p(name="Tool", plane="Tool",
-       definition="An external deterministic capability invoked rather than emulated.",
-       must_not_conflate_with=("Action", "Specialist model"),
-       presence=Presence.NAMED_ONLY,
-       admitted_because="arithmetic should be computed, not generated"),
-
     _p(name="Memory", plane="Memory",
        definition="Retained material at a named scale (working/episodic/semantic/procedural).",
        must_not_conflate_with=("Ledger", "State", "Context window"),
@@ -248,13 +242,6 @@ PRIMITIVES: tuple[Primitive, ...] = (
        presence=Presence.IN_CODE, implementation="nano/contracts.py::VerificationReceipt",
        admitted_because="asking the generator whether it was right is not verification"),
 
-    _p(name="WorkSlice", plane="Cognition",
-       definition="A unit of cognitive work: objective, known state, unknowns, "
-                  "candidate actions, budget, stop conditions.",
-       must_not_conflate_with=("Goal", "Action", "Plan"),
-       presence=Presence.NAMED_ONLY,
-       admitted_because="adaptive compute needs an addressable unit to budget"),
-
     _p(name="StateDelta", plane="World model",
        definition="The change between two state projections, with its evidence.",
        must_not_conflate_with=("State", "Event"),
@@ -272,14 +259,6 @@ PRIMITIVES: tuple[Primitive, ...] = (
                         "disappear from state; collapsing them loses the reason",
        splits_from="StateDelta"),
 
-    _p(name="Identity", plane="Identity & Authority",
-       definition="The subject/actor/source a piece of information belongs to.",
-       must_not_conflate_with=("Entity", "Provenance"),
-       presence=Presence.PARTIAL,
-       implementation="nano/contracts.py (patient_id required on every object)",
-       admitted_because="a correct fact attached to the wrong subject is a "
-                        "semantic failure, not an infrastructure one"),
-
     _p(name="Dependency", plane="Dependency & Invalidation",
        definition="The lineage edge from a derived object back to what produced it.",
        must_not_conflate_with=("Provenance", "Relation"),
@@ -293,6 +272,51 @@ PRIMITIVES: tuple[Primitive, ...] = (
        presence=Presence.IN_CODE, implementation="nano/dependency.py::Freshness",
        admitted_because="an artifact can be internally correct and still out of date",
        splits_from="Dependency"),
+
+    _p(name="Identity", plane="Identity & Authority",
+       definition="Subject/actor/source scope with authority and consent.",
+       must_not_conflate_with=("Entity", "Provenance"),
+       presence=Presence.IN_CODE, implementation="nano/kernel.py::Identity",
+       admitted_because="a correct fact on the wrong subject is an incorrect state"),
+
+    _p(name="WorkSlice", plane="Cognition",
+       definition="A budgeted, stoppable unit of cognitive work.",
+       must_not_conflate_with=("Goal", "Action", "Plan"),
+       presence=Presence.IN_CODE, implementation="nano/kernel.py::WorkSlice",
+       admitted_because="adaptive compute needs an addressable unit to budget, "
+                        "and a unit that cannot stop is a loop"),
+
+    _p(name="Tool", plane="Tool",
+       definition="An invocable deterministic capability advertising its own cost.",
+       must_not_conflate_with=("Action", "Capability"),
+       presence=Presence.IN_CODE, implementation="nano/kernel.py::Tool",
+       admitted_because="the controller cannot pick the smallest sufficient "
+                        "capability unless each declares cost and reliability"),
+
+    _p(name="ArtifactIR", plane="Artifact",
+       definition="The semantic plan for an artifact, produced before rendering.",
+       must_not_conflate_with=("Artifact", "State"),
+       presence=Presence.IN_CODE, implementation="nano/kernel.py::ArtifactIR",
+       admitted_because="one state compiling to many consistent artifacts "
+                        "requires a plan separate from the rendering",
+       splits_from="Artifact"),
+
+    _p(name="MemoryRecord", plane="Memory",
+       definition="A retained item at a named scale with a path back to source.",
+       must_not_conflate_with=("Memory", "Ledger"),
+       presence=Presence.IN_CODE, implementation="nano/kernel.py::MemoryRecord",
+       admitted_because="compression is only legitimate if it can be reversed "
+                        "to the evidence that produced it",
+       splits_from="Memory"),
+
+    _p(name="WorldStateProjection", plane="World model",
+       definition="WorldState(t) — a view at a named time coordinate.",
+       must_not_conflate_with=("State", "Ledger"),
+       presence=Presence.IN_CODE,
+       implementation="nano/kernel.py::WorldStateProjection",
+       admitted_because="'what appears true now' and 'what appeared true then' "
+                        "are different queries over the same ledger",
+       splits_from="State"),
 
     _p(name="DerivationMode", plane="Metacognition",
        definition="How a statement came to be: observed, derived, inferred, "

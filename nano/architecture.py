@@ -193,3 +193,51 @@ NANO_IS_NOT = (
     "a scribe", "a chatbot", "a language model", "a knowledge graph",
     "an agent", "a workflow", "a collection of tools",
 )
+
+
+# ---------------------------------------------------------------------------
+# The efficiency thesis — stated so it can die.
+# ---------------------------------------------------------------------------
+
+#: Verified Task Completion per Unit Compute. The metric that replaces
+#: benchmark score as the program's primary target.
+VTCPU = (
+    "successful VERIFIED work / computation consumed, extended to latency, "
+    "energy, memory, financial cost and human intervention. A system that "
+    "produces a beautiful answer but does not complete the task scores zero."
+)
+
+PARAMETER_EFFICIENCY_HYPOTHESIS = (
+    "System-level intelligence can substantially exceed what raw parameter "
+    "count predicts, when a compact learned model is combined with structured "
+    "state, retrieval, tools, memory, adaptive computation, verification and "
+    "specialised computation."
+)
+
+#: Stated explicitly because this hypothesis is attractive and therefore
+#: dangerous: it is the kind of claim a program adopts as an assumption.
+PARAMETER_EFFICIENCY_FALSIFIER = (
+    "A compact Nano-System matched against a larger monolithic model on "
+    "verified task completion at EQUAL total cost (compute + tools + retrieval "
+    "+ human review). If the monolith wins or ties, the hypothesis is dead — "
+    "'more components' is not evidence, and the substrate must earn its "
+    "complexity. Do not assume it is true; build experiments capable of "
+    "falsifying it."
+)
+
+#: Three capability readings that must never be reported interchangeably.
+CAPABILITY_READINGS = {
+    "parametric": "what the learned weights can do alone",
+    "system": "what Nano can do with weights + state + memory + retrieval + "
+              "algorithms + tools + verification",
+    "autonomous": "what Nano can reliably accomplish without rescue",
+}
+
+#: Local deployability is a PRIVACY property, not only an engineering one.
+LOCAL_DEPLOYMENT_RATIONALE = (
+    "Personal and medical data argue for local inference, local memory, "
+    "explicit identity boundaries, data minimisation and auditable actions. "
+    "The 1-7B local target is therefore strategic rather than a curiosity: a "
+    "system that runs privately is a different product from one that ships "
+    "every observation to a server."
+)
