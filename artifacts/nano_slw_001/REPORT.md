@@ -353,12 +353,48 @@ Re-derivable from the artifact, not trusted from a comment:
 
 ---
 
-## 13. Next
+## 13. §L.5 and §L.8 — the executable substrate, and whether the fold earns it
+
+`nano/runtime.py` runs the chain that existed only as types: question →
+WorkSlice → capability selection → execution → verification → PRESENT / ABSTAIN
+/ REVIEW → ArtifactIR. On DomainPack-0, 84 questions: present 68 · abstain 12 ·
+review 16, **undeclared error 0** against 6 for a control with the output
+decision removed, answerable yield 1.000, 6 capabilities routed by cost.
+
+Then the discriminating experiment. Same questions, same evidence, same
+three-way decision — only the fold differs:
+
+| arm | undeclared error | spans read | cost/question |
+|---|---|---|---|
+| persistent state | **0** | — | 1.18 (+ one-time fold 177) |
+| retrieval k=4 | 4 | 188 | 1.57 |
+| retrieval k=all | 4 | 904 | 3.72 |
+
+**The error plateaus.** 4.8× the evidence buys nothing. Every miss has a named
+mechanism, zero unexplained: mixed-precision misordering, and blindness to a
+known missing report. Retrieval cannot attempt 13 of 96 questions at any budget.
+
+Three honest negatives: supersession is *not* where retrieval fails here
+(corrections share an event time, so recency recovers them — a benchmark
+limitation, not a retrieval strength); retrieval presents *more* answers (57 vs
+45) because state escalates on gap and conflict keys, buying coverage with
+error; and the fold costs ~460 questions before it pays for itself.
+
+Four thresholds of my own making had to be removed along the way — `coverage >
+0.5`, baseline `accuracy > 0.75`, a `3×` spans-read ratio, and
+`best_strategy == "kind"`. Each was tuned on one world and failed on another.
+The replacements are ratios against what is achievable, or non-degeneracy
+checks.
+
+---
+
+## 14. Next
 
 `LRN-CORRECTION` and `MTA-EPISTEMIC` are both closed against measured evidence.
 The registry now reads IMPLEMENTED 14 · PARTIAL 13 · PROPOSED 6 · ABSENT 17.
 
-The next unproven claim is **`RSN-TEMPORAL`'s remaining half** — during, overlap
-and recurrence. Before/after over mixed precision is done and pinned; interval
+Constitution §L steps 1–8 are done. Step 9 is next: the BPE/representation test,
+already preregistered and not yet run. The queued architectural item remains
+**`RSN-TEMPORAL`'s remaining half** — during, overlap and recurrence. Before/after over mixed precision is done and pinned; interval
 relations are not, and the same instrument applies: a control that answers by
 document order, and a paired comparison rather than a threshold.

@@ -916,3 +916,90 @@ def test_capability_selection_actually_routes(runtime_score):
 
 def test_artifacts_are_compiled_from_an_ir(runtime_score):
     assert runtime_score["artifacts_compiled"] > 0
+
+
+# ---------------------------------------------------------------------------
+# §L.8 — retrieval versus persistent state. Is the fold load-bearing?
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def rvs(world):
+    from nano.slw import score_retrieval_vs_state
+    return score_retrieval_vs_state(world)
+
+
+def test_the_retrieval_arm_is_not_a_strawman(rvs):
+    """Guard on the comparison itself, checked before any conclusion is drawn.
+
+    If the baseline were incompetent, "retrieval is not memory" would look
+    proven while proving nothing.
+
+    The real guard is on the baseline's *code properties* — ranks by event time
+    rather than arrival, escalates on disagreement, abstains when nothing is
+    retrieved, reads the whole index at k=0 — and those are pinned in
+    `test_retrieval.py`. An accuracy floor here would be a constant tuned to one
+    world: baseline accuracy falls as a world gets more contradictory, exactly
+    like `coverage` did. What is asserted here is non-degeneracy — the arm is
+    substantially more right than wrong and uses all three dispositions, so the
+    error comparison is like-for-like.
+    """
+    best = rvs["retrieval_arms"][rvs["best_retrieval_arm"]]
+    assert best["presented"] > 0
+    assert best["present_correct"] > 2 * best["undeclared_error"], (
+        f"baseline got {best['present_correct']} right and "
+        f"{best['undeclared_error']} wrong — too weak to compare against")
+    for arm in ("present", "abstain", "review"):
+        assert best["dispositions"][arm] > 0, (
+            f"the baseline never used {arm} — it is not making an output "
+            "decision, so the error comparison is not like-for-like")
+
+
+def test_persistent_state_is_never_confidently_wrong_and_retrieval_is(rvs):
+    assert rvs["state_undeclared_error"] == 0
+    assert rvs["best_retrieval_undeclared_error"] > 0
+    assert rvs["state_beats_retrieval_on_error"]
+
+
+def test_more_context_does_not_fix_it(rvs):
+    """The load-bearing claim. If retrieval's error fell to zero once it read
+    the whole history, the fold would be an optimisation rather than a
+    capability, and "context is not persistent state" would be false."""
+    unlimited = rvs["retrieval_arms"]["k=all"]["undeclared_error"]
+    assert unlimited > rvs["state_undeclared_error"]
+    assert rvs["error_plateaus_despite_unlimited_context"]
+    assert rvs["unlimited_retrieval_still_errs"]
+
+
+def test_reading_everything_costs_more_and_buys_nothing(rvs):
+    """No ratio threshold: how much more k=all reads depends on how many
+    observations exist per key, which is a world parameter. What matters is the
+    direction — strictly more evidence read, and no fewer errors for it."""
+    arms = rvs["retrieval_arms"]
+    assert arms["k=all"]["spans_read"] > arms["k=4"]["spans_read"]
+    assert arms["k=all"]["cost"] > arms["k=4"]["cost"]
+    assert arms["k=all"]["undeclared_error"] >= arms["k=4"]["undeclared_error"]
+
+
+def test_every_retrieval_error_has_a_named_mechanism(rvs):
+    """A count would only say the fold helps. Zero unexplained misses is what
+    makes the *mechanism* the result rather than the number."""
+    modes = rvs["why_retrieval_errs"]
+    assert modes["unexplained"] == 0
+    assert sum(modes.values()) == rvs["retrieval_arms"]["k=all"]["undeclared_error"]
+    assert sum(modes.values()) > 0
+
+
+def test_retrieval_cannot_attempt_the_stateful_questions(rvs):
+    assert rvs["retrieval_cannot_attempt"] > 0
+    assert rvs["state_arm"]["structurally_unavailable"] == 0
+
+
+def test_the_fold_has_a_measured_crossover_not_an_asserted_one(rvs):
+    """Maintaining state costs something up front and less per question. The
+    honest output is the crossover, not a blanket claim that one is cheaper."""
+    crossover = rvs["cost_crossover_questions"]
+    assert crossover is not None and crossover > 0
+    state = rvs["state_arm"]
+    best = rvs["retrieval_arms"][rvs["best_retrieval_arm"]]
+    assert state["cost_per_common_question"] < best["cost_per_common_question"]
+    assert state["fold_cost"] > 0

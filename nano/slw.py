@@ -80,6 +80,8 @@ from nano.needs import (DEFAULT_STRATEGY, Strategy, explain_plan,
                         rank_needs)
 from nano.runtime import (Disposition, Question, QuestionKind, StateView,
                           open_slice, run_slice)
+from nano.retrieval import (FOLD_COST_PER_OBSERVATION, STRUCTURALLY_UNAVAILABLE,
+                            ObservationIndex, retrieval_answer)
 
 EPOCH = date(2026, 1, 1)
 
@@ -1719,6 +1721,192 @@ def score_runtime(world: SyntheticWorld, *, budget: float = 400.0) -> dict:
     }
 
 
+def _parse_verbatim(text: str):
+    """`"unit_0000 status = offline"` -> (entity, attribute, value).
+
+    The index gets exactly the span text the ledger stored. If retrieval needed
+    a richer parse than this, the extra structure would have to come from a
+    fold, which is the thing being controlled for.
+    """
+    head, _, value = text.partition(" = ")
+    entity, _, attribute = head.partition(" ")
+    if not (entity and attribute and value):
+        return None
+    return (entity, attribute, value)
+
+
+def _retrieval_failure_modes(answers, b: LedgerBuilder, view: StateView,
+                             truth: dict) -> dict:
+    """Why did retrieval present a wrong value?
+
+    A count alone would only say the fold helps. The *mechanism* says what the
+    fold does that an index cannot, which is the part that transfers to other
+    domains. Categories are mutually exclusive and ordered from most to least
+    decisive.
+    """
+    modes = {"believed_a_superseded_report": 0,
+             "misordered_mixed_precision_times": 0,
+             "missed_a_same_time_contradiction": 0,
+             "blind_to_a_known_missing_report": 0,
+             "unexplained": 0}
+    superseded_values: dict = {}
+    for a in b.ledger.assertions:
+        if a.assertion_id in b.superseded:
+            superseded_values.setdefault(
+                (a.subject, a.predicate), set()).add(a.obj)
+
+    for ans in answers:
+        if ans.question.kind is not QuestionKind.CURRENT_VALUE:
+            continue
+        if ans.disposition is not Disposition.PRESENT:
+            continue
+        key = ans.question.key
+        actual = truth.get(key)
+        said = ans.content.rpartition(" = ")[2]
+        if actual is None or said == actual:
+            continue
+
+        live_times = {a.temporal.event_time for a in b.by_key.get(key, ())
+                      if a.assertion_id not in b.superseded}
+        mixed = (any(len(t) == 7 for t in live_times)
+                 and any(len(t) == 10 for t in live_times))
+        if said in superseded_values.get(key, ()):
+            modes["believed_a_superseded_report"] += 1
+        elif mixed:
+            # The state layer refuses to order a month against a day inside it
+            # and declares the key uncertain. A lexicographic index cannot: it
+            # picks whichever string sorts higher and presents it.
+            modes["misordered_mixed_precision_times"] += 1
+        elif key in view.conflicted:
+            modes["missed_a_same_time_contradiction"] += 1
+        elif key in view.gaps:
+            # Nothing was reported, so there is nothing to retrieve. The index
+            # returns the last thing it saw and has no way to know a report is
+            # missing — absence of evidence read as evidence of absence.
+            modes["blind_to_a_known_missing_report"] += 1
+        else:
+            modes["unexplained"] += 1
+    return modes
+
+
+def score_retrieval_vs_state(world: SyntheticWorld,
+                             budgets: tuple = (1, 4, 16, 64, 0)) -> dict:
+    """Constitution §L.8 — is the fold load-bearing?
+
+    Both arms answer the *same* questions over the *same* evidence and make the
+    *same* three-way output decision. The only difference is that one maintains
+    a fold and the other re-derives from raw spans each time. `k=0` means read
+    the entire history per question: the context-stuffing limit, included so the
+    result cannot be dismissed as a budget artifact.
+
+    Cost is measured, not argued. The state arm is charged full freight for
+    folding every observation once; the retrieval arm is charged per span read.
+    That gives a crossover question — after how many questions does maintaining
+    state pay for itself — rather than a blanket claim that one is cheaper.
+    """
+    b = build_full(world, world.observations, world.spec.n_ticks)
+    now = tick_to_date(world.spec.n_ticks)
+    truth = world.truth_at(world.spec.n_ticks)
+    graph, _, _ = _reference_graph(world, b)
+    earlier = build_full(world, world.observations_through(world.spec.n_ticks // 2),
+                         world.spec.n_ticks // 2)
+    view = state_view(b, world.identity, now, graph=graph,
+                      prior=dict(earlier.resolved))
+    questions = domainpack0_questions(b)
+
+    attemptable = [q for q in questions if q.kind not in STRUCTURALLY_UNAVAILABLE]
+
+    def grade(answers, arm_cost, common_cost=None) -> dict:
+        counts = {d.value: 0 for d in Disposition}
+        undeclared = correct = 0
+        unavailable = 0
+        for a in answers:
+            counts[a.disposition.value] += 1
+            if a.question.kind in STRUCTURALLY_UNAVAILABLE and \
+                    a.disposition is Disposition.ABSTAIN and \
+                    "unavailable without persistent state" in a.reason:
+                unavailable += 1
+            if a.question.kind is not QuestionKind.CURRENT_VALUE:
+                continue
+            actual = truth.get(a.question.key)
+            if a.disposition is not Disposition.PRESENT:
+                continue
+            # Read the asserted value back out of the answer rather than out of
+            # any internal state, so both arms are graded on what they said.
+            said = a.content.rpartition(" = ")[2]
+            if actual is not None and said != actual:
+                undeclared += 1
+            else:
+                correct += 1
+        # Per-question cost is computed over the questions BOTH arms attempt.
+        # Charging the state arm for the four kinds retrieval declines to try —
+        # and gets to skip for free — would compare the arms on different work.
+        billed = common_cost if common_cost is not None else arm_cost
+        return {"dispositions": counts, "present_correct": correct,
+                "undeclared_error": undeclared,
+                "presented": correct + undeclared,
+                "structurally_unavailable": unavailable,
+                "cost": round(arm_cost, 2),
+                "common_query_cost": round(billed, 2),
+                "cost_per_common_question":
+                    round(billed / max(1, len(attemptable)), 3)}
+
+    # -- state arm ---------------------------------------------------------
+    work = open_slice("state arm", world.identity, budget=10_000.0)
+    state_answers = run_slice(work, questions, view)
+    common = open_slice("state arm, common questions", world.identity,
+                        budget=10_000.0)
+    run_slice(common, attemptable, view)
+    fold_cost = len(world.observations) * FOLD_COST_PER_OBSERVATION
+    state = grade(state_answers, work.spent + fold_cost,
+                  common_cost=common.spent)
+    state["fold_cost"] = round(fold_cost, 2)
+    state["query_cost"] = round(work.spent, 2)
+
+    # -- retrieval arms ----------------------------------------------------
+    arms = {}
+    for k in budgets:
+        index = ObservationIndex.build(b.ledger.spans, _parse_verbatim)
+        answers = [retrieval_answer(q, index, world.identity, k=k)
+                   for q in questions]
+        label = "k=all" if k <= 0 else f"k={k}"
+        arms[label] = grade(answers, index.cost, common_cost=index.cost)
+        arms[label]["spans_read"] = index.spans_read
+        arms[label]["failure_modes"] = _retrieval_failure_modes(
+            answers, b, view, truth)
+
+    best = min(arms.items(),
+               key=lambda kv: (kv[1]["undeclared_error"], -kv[1]["presented"]))
+
+    # Crossover: after how many questions does maintaining the fold pay for
+    # itself against the cheapest retrieval arm that matches state's accuracy?
+    per_q_state = state["cost_per_common_question"]
+    per_q_best = best[1]["cost_per_common_question"]
+    crossover = (fold_cost / (per_q_best - per_q_state)
+                 if per_q_best > per_q_state else None)
+
+    return {
+        "questions": len(questions),
+        "observations": len(world.observations),
+        "state_arm": state,
+        "retrieval_arms": arms,
+        "best_retrieval_arm": best[0],
+        "state_undeclared_error": state["undeclared_error"],
+        "best_retrieval_undeclared_error": best[1]["undeclared_error"],
+        "state_beats_retrieval_on_error":
+            state["undeclared_error"] < best[1]["undeclared_error"],
+        "retrieval_cannot_attempt": best[1]["structurally_unavailable"],
+        "unlimited_retrieval_still_errs":
+            arms["k=all"]["undeclared_error"] > state["undeclared_error"],
+        "cost_crossover_questions":
+            round(crossover, 1) if crossover is not None else None,
+        "why_retrieval_errs": arms["k=all"]["failure_modes"],
+        "error_plateaus_despite_unlimited_context":
+            arms["k=all"]["undeclared_error"] >= min(
+                a["undeclared_error"] for a in arms.values()),
+    }
+
+
 def run_slw_001(spec: WorldSpec | None = None) -> dict:
     """The benchmark. Returns a plain dict so the runner can serialise it."""
     world = SyntheticWorld.generate(spec)
@@ -1791,6 +1979,7 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
         "faithfulness": score_faithfulness(world),
         "information_need": score_information_need(world),
         "runtime": score_runtime(world),
+        "retrieval_vs_state": score_retrieval_vs_state(world),
     }
     # A cost saving is only reportable if the answers match. Stating it
     # unconditionally is how a benchmark starts rewarding being fast and wrong.

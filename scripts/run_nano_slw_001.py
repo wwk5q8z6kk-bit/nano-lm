@@ -136,6 +136,7 @@ def main() -> int:
         # artifact rather than trusted from a comment.
         comparison = compare_need_strategies()
         _json(args.out / "need_strategy_comparison.json", comparison)
+        _json(args.out / "retrieval_vs_state.json", result["retrieval_vs_state"])
         print(f"  need strategy      simplest justified="
               f"{comparison['simplest_justified_strategy']} "
               f"default={comparison['current_default']} "
@@ -171,6 +172,14 @@ def main() -> int:
     print(f"  runtime error      undeclared={rt['undeclared_error']} "
           f"control={rt['always_present_control']['undeclared_error']}  "
           f"compute={rt['compute_spent']:.0f}/{rt['compute_budget']:.0f}")
+    rvs = result["retrieval_vs_state"]
+    ka = rvs["retrieval_arms"]["k=all"]
+    print(f"  state vs retrieval undeclared: state={rvs['state_undeclared_error']} "
+          f"best-retrieval={rvs['best_retrieval_undeclared_error']} "
+          f"({rvs['best_retrieval_arm']}) k=all={ka['undeclared_error']} "
+          f"reading {ka['spans_read']} spans")
+    print(f"  fold crossover     {rvs['cost_crossover_questions']} questions; "
+          f"retrieval cannot attempt {rvs['retrieval_cannot_attempt']}")
     print(f"  artifacts          {args.out}")
 
     # Exit non-zero when the arms disagree: a benchmark that reports a speedup

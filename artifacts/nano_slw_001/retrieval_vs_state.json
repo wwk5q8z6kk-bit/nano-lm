@@ -1,0 +1,147 @@
+{
+  "questions": 96,
+  "observations": 709,
+  "state_arm": {
+    "dispositions": {
+      "present": 68,
+      "abstain": 12,
+      "review": 16
+    },
+    "present_correct": 45,
+    "undeclared_error": 0,
+    "presented": 45,
+    "structurally_unavailable": 0,
+    "cost": 317.25,
+    "common_query_cost": 98.0,
+    "cost_per_common_question": 1.181,
+    "fold_cost": 177.25,
+    "query_cost": 140.0
+  },
+  "retrieval_arms": {
+    "k=1": {
+      "dispositions": {
+        "present": 70,
+        "abstain": 26,
+        "review": 0
+      },
+      "present_correct": 55,
+      "undeclared_error": 5,
+      "presented": 60,
+      "structurally_unavailable": 13,
+      "cost": 100.75,
+      "common_query_cost": 100.75,
+      "cost_per_common_question": 1.214,
+      "spans_read": 71,
+      "failure_modes": {
+        "believed_a_superseded_report": 0,
+        "misordered_mixed_precision_times": 2,
+        "missed_a_same_time_contradiction": 1,
+        "blind_to_a_known_missing_report": 2,
+        "unexplained": 0
+      }
+    },
+    "k=4": {
+      "dispositions": {
+        "present": 67,
+        "abstain": 26,
+        "review": 3
+      },
+      "present_correct": 53,
+      "undeclared_error": 4,
+      "presented": 57,
+      "structurally_unavailable": 13,
+      "cost": 130.0,
+      "common_query_cost": 130.0,
+      "cost_per_common_question": 1.566,
+      "spans_read": 188,
+      "failure_modes": {
+        "believed_a_superseded_report": 0,
+        "misordered_mixed_precision_times": 2,
+        "missed_a_same_time_contradiction": 0,
+        "blind_to_a_known_missing_report": 2,
+        "unexplained": 0
+      }
+    },
+    "k=16": {
+      "dispositions": {
+        "present": 67,
+        "abstain": 26,
+        "review": 3
+      },
+      "present_correct": 53,
+      "undeclared_error": 4,
+      "presented": 57,
+      "structurally_unavailable": 13,
+      "cost": 135.75,
+      "common_query_cost": 135.75,
+      "cost_per_common_question": 1.636,
+      "spans_read": 211,
+      "failure_modes": {
+        "believed_a_superseded_report": 0,
+        "misordered_mixed_precision_times": 2,
+        "missed_a_same_time_contradiction": 0,
+        "blind_to_a_known_missing_report": 2,
+        "unexplained": 0
+      }
+    },
+    "k=64": {
+      "dispositions": {
+        "present": 67,
+        "abstain": 25,
+        "review": 4
+      },
+      "present_correct": 53,
+      "undeclared_error": 4,
+      "presented": 57,
+      "structurally_unavailable": 13,
+      "cost": 147.75,
+      "common_query_cost": 147.75,
+      "cost_per_common_question": 1.78,
+      "spans_read": 259,
+      "failure_modes": {
+        "believed_a_superseded_report": 0,
+        "misordered_mixed_precision_times": 2,
+        "missed_a_same_time_contradiction": 0,
+        "blind_to_a_known_missing_report": 2,
+        "unexplained": 0
+      }
+    },
+    "k=all": {
+      "dispositions": {
+        "present": 67,
+        "abstain": 25,
+        "review": 4
+      },
+      "present_correct": 53,
+      "undeclared_error": 4,
+      "presented": 57,
+      "structurally_unavailable": 13,
+      "cost": 309.0,
+      "common_query_cost": 309.0,
+      "cost_per_common_question": 3.723,
+      "spans_read": 904,
+      "failure_modes": {
+        "believed_a_superseded_report": 0,
+        "misordered_mixed_precision_times": 2,
+        "missed_a_same_time_contradiction": 0,
+        "blind_to_a_known_missing_report": 2,
+        "unexplained": 0
+      }
+    }
+  },
+  "best_retrieval_arm": "k=4",
+  "state_undeclared_error": 0,
+  "best_retrieval_undeclared_error": 4,
+  "state_beats_retrieval_on_error": true,
+  "retrieval_cannot_attempt": 13,
+  "unlimited_retrieval_still_errs": true,
+  "cost_crossover_questions": 460.4,
+  "why_retrieval_errs": {
+    "believed_a_superseded_report": 0,
+    "misordered_mixed_precision_times": 2,
+    "missed_a_same_time_contradiction": 0,
+    "blind_to_a_known_missing_report": 2,
+    "unexplained": 0
+  },
+  "error_plateaus_despite_unlimited_context": true
+}

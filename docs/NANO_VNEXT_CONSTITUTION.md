@@ -327,8 +327,8 @@ the *current* research constitution.
 > Current state is not history.
 > Absence of evidence is not evidence of absence.
 > Confidence is not provenance.
-> Retrieval is not memory.
-> Context is not persistent state.
+> Retrieval is not memory.          *(measured: §L.8, below)*
+> Context is not persistent state.  *(measured: §L.8, below)*
 > The language model is a capability, not the system.
 > A benchmark is not a capability.
 > A ladder is not an architecture.
@@ -378,10 +378,42 @@ Status is measured, not asserted. Recheck: `pytest nano` and
 | 5 | First executable WorkSlice / InformationNeed / Capability / Verification contracts | **done** | `nano/runtime.py`; `nano/needs.py`; `MTA-EPISTEMIC` IMPLEMENTED |
 | 6 | Build DomainPack-0 synthetic dynamical world | **done** | NANO-SLW-001 — 176 entities, 3 typed relation families, six corruption modes, hidden state, corrections, supersession |
 | 7 | State-maintenance and invalidation baselines | **done** | recompute ratio 0.279; invalidation P/R 1.000; branch isolation 1.000 |
-| 8 | Test retrieval versus persistent state | **next** | needs the executor, which now exists — the two arms are the runtime answering from maintained state vs from retrieved raw observations |
-| 9 | Test BPE/representation before another scale claim | **recorded, not run** | `trajectory/PREREG_tokenizer_bpe_vs_char.md` |
+| 8 | Test retrieval versus persistent state | **done** | `nano/retrieval.py` + `score_retrieval_vs_state`. State 0 undeclared errors; a competent retrieval arm makes 4–7 and **the error plateaus** — reading all 904 spans is no better than reading 4. Every miss has a named mechanism, zero unexplained |
+| 9 | Test BPE/representation before another scale claim | **next / recorded, not run** | `trajectory/PREREG_tokenizer_bpe_vs_char.md` |
 | 10 | Mechanism-model research separate from capability-model | standing rule | §XXV of the source directive |
 | 11–17 | learned components behind stable interfaces → Nano Clinical → longitudinal reconstruction → multimodality → 1,000-page benchmark → system-vs-model comparison → expand on evidence | **not started** | — |
+
+### §L.8 result — the fold is load-bearing
+
+Two of the laws above are empirical claims. Measured on DomainPack-0, same
+questions, same evidence, same three-way output decision, only the fold differs:
+
+| arm | undeclared error | spans read | cost/question |
+|---|---|---|---|
+| persistent state | **0** | — | 1.18 (+ one-time fold 177) |
+| retrieval k=4 | 4 | 188 | 1.57 |
+| retrieval k=all | 4 | 904 | 3.72 |
+
+**More context does not fix it.** Error plateaus; 4.8× the evidence buys nothing.
+Every miss has a named mechanism and none are unexplained — across seeds they
+are entirely *mixed-precision misordering* (an index sorts `"2026-01"` against
+`"2026-01-05"` lexicographically; the fold refuses to order them and declares
+the key uncertain) and *blindness to a known missing report* (nothing was
+reported, so there is nothing to retrieve, and the index confidently returns the
+last value it saw). Retrieval also cannot attempt 13 of 96 questions at any
+budget — what changed, why the belief moved, what is stale, what to ask next.
+
+Honest negatives, recorded so they are not mistaken for strengths:
+
+- **Supersession is not where retrieval fails here.** Corrections in
+  DomainPack-0 share an event time with what they correct, so recency tiebreak
+  recovers them. That is a limitation of the benchmark, not a property of
+  retrieval.
+- **Retrieval presents *more* answers** (57 vs 45) because state escalates on
+  gap and conflict keys. It buys coverage with error; that trade is the result,
+  not a footnote.
+- **The fold is not free.** Crossover is ~460 questions before it pays for
+  itself. Below that, retrieval is cheaper *and* wrong.
 
 Interventions in DomainPack-0 (§XXXVII) are **not** built. The world has
 corrections, supersession and hidden state; it does not yet have actions that
