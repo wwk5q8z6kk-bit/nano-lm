@@ -46,9 +46,19 @@ def build_model(cfg: NativeTrainConfig):
                 nn.Linear(4 * d, d),
             )
 
-        def forward(self, x):
+        def forward(self, x, attn_mask=None):
             h = self.ln1(x)
-            attn_out, _ = self.attn(h, h, h, need_weights=False)
+            # attn_mask is REQUIRED for correctness here. This previously called
+            # self.attn(h, h, h) with no mask, i.e. full bidirectional attention
+            # in a decoder trained on next-token prediction — every position could
+            # attend to its own label. That is total leakage: the objective is
+            # solvable by copying the future, which drove training loss to ~0
+            # while free-running generation (where no future exists) emitted
+            # degenerate output. See
+            # artifacts/campaign/reval_results/FALSE_NULL_DIAGNOSIS.md.
+            attn_out, _ = self.attn(
+                h, h, h, need_weights=False, attn_mask=attn_mask, is_causal=True
+            )
             x = x + attn_out
             x = x + self.mlp(self.ln2(x))
             return x
@@ -71,8 +81,12 @@ def build_model(cfg: NativeTrainConfig):
             h = self.token_emb(input_ids) + self.pos_emb(positions)
             if self.evidence_gate is not None:
                 h = h + 0.1 * self.evidence_gate(h)
+            causal = torch.triu(
+                torch.ones(seqlen, seqlen, dtype=torch.bool, device=input_ids.device),
+                diagonal=1,
+            )
             for block in self.blocks:
-                h = block(h)
+                h = block(h, attn_mask=causal)
             h = self.ln_f(h)
             logits = torch.matmul(h, self.token_emb.weight.t())
             return logits

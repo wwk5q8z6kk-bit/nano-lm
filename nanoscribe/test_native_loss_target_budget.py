@@ -120,3 +120,149 @@ def test_real_compute_batch_loss_actually_depends_on_the_target() -> None:
     assert a.lm.item() != pytest.approx(b.lm.item(), abs=1e-9), (
         "loss is independent of the target — the label is being truncated away"
     )
+
+
+# ---------------------------------------------------------------------------
+# Objective-distinctness pins.
+#
+# span_port/evidence_align/assertion_state were `lm * 0.5`, `lm * 0.25`,
+# `lm * 0.1` — scalar multiples of one number. Every arm's total was therefore
+# an affine function of `lm`, so the three revalidation arms shared one gradient
+# direction and differed only in effective learning rate. The objective factor
+# was unmeasurable by construction.
+# ---------------------------------------------------------------------------
+
+_PROMPT = (
+    "Transcript:\nclinician: What brings you in?\n"
+    "patient: I have sore throat.\n\nQuestion: about it\n"
+    "- ASSERTED: quote\n- NOT_MENTIONED\nAnswer."
+)
+
+
+def _loss(cfg, model, prompts, targets):
+    from nanoscribe.native.losses import compute_batch_loss
+
+    return compute_batch_loss(model, prompts, targets, cfg)
+
+
+def test_components_are_not_scalar_multiples_of_lm() -> None:
+    torch = pytest.importorskip("torch")
+    from nanoscribe.native.config import config_for_run
+    from nanoscribe.native.model import build_native_model
+
+    cfg = config_for_run("reval30_evidence_bottleneck_s0")
+    build = build_native_model(cfg)
+    build.model.eval()
+    with torch.no_grad():
+        r = _loss(cfg, build.model, [_PROMPT] * 3,
+                  ["ASSERTED: sore throat", "NOT_MENTIONED", "DENIED: fever"])
+    lm = r.lm.item()
+    assert r.span_port.item() != pytest.approx(lm * 0.5, abs=1e-9)
+    assert r.evidence_align.item() != pytest.approx(lm * 0.25, abs=1e-9)
+    assert r.assertion_state.item() != pytest.approx(lm * 0.1, abs=1e-9)
+
+
+def test_span_edit_moves_span_port_but_not_assertion_state() -> None:
+    """Each objective must respond to its own region."""
+    torch = pytest.importorskip("torch")
+    from nanoscribe.native.config import config_for_run
+    from nanoscribe.native.model import build_native_model
+
+    cfg = config_for_run("reval30_evidence_bottleneck_s0")
+    build = build_native_model(cfg)
+    build.model.eval()
+    with torch.no_grad():
+        a = _loss(cfg, build.model, [_PROMPT], ["ASSERTED: sore throat"])
+        b = _loss(cfg, build.model, [_PROMPT], ["ASSERTED: fever"])
+    # same label region, different span region
+    assert a.assertion_state.item() == pytest.approx(b.assertion_state.item(), abs=1e-6)
+    assert a.span_port.item() != pytest.approx(b.span_port.item(), abs=1e-6)
+
+
+def test_evidence_align_ignores_ungrounded_spans() -> None:
+    """A span absent from the visible source contributes no evidence signal."""
+    torch = pytest.importorskip("torch")
+    from nanoscribe.native.config import config_for_run
+    from nanoscribe.native.model import build_native_model
+
+    cfg = config_for_run("reval30_evidence_bottleneck_s0")
+    build = build_native_model(cfg)
+    build.model.eval()
+    with torch.no_grad():
+        ungrounded = _loss(cfg, build.model, [_PROMPT], ["ASSERTED: zzzznotinsource"])
+        grounded = _loss(cfg, build.model, [_PROMPT], ["ASSERTED: sore throat"])
+    assert ungrounded.evidence_align.item() == 0.0
+    assert grounded.evidence_align.item() > 0.0
+
+
+def test_control_and_span_port_arms_have_different_gradient_directions() -> None:
+    """The pin that matters: under the old loss these were exactly parallel."""
+    torch = pytest.importorskip("torch")
+    from nanoscribe.native.config import config_for_run
+    from nanoscribe.native.model import build_native_model
+
+    cfg_ctrl = config_for_run("reval30_decoder_control_s0")
+    cfg_span = config_for_run("reval30_span_port_s0")
+    build = build_native_model(cfg_ctrl)
+    build.model.eval()
+    prompts = [_PROMPT] * 2
+    targets = ["ASSERTED: sore throat", "NOT_MENTIONED"]
+
+    def grad_for(cfg):
+        build.model.zero_grad(set_to_none=True)
+        _loss(cfg, build.model, prompts, targets).total.backward()
+        return torch.cat([
+            p.grad.reshape(-1) for p in build.model.parameters() if p.grad is not None
+        ]).clone()
+
+    g_ctrl, g_span = grad_for(cfg_ctrl), grad_for(cfg_span)
+    cos = torch.nn.functional.cosine_similarity(g_ctrl, g_span, dim=0).item()
+    assert cos < 0.9999, (
+        f"control and span_port arms share a gradient direction (cos={cos}) — "
+        "the objective factor is not being varied"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Causality pins.
+#
+# Block.forward called nn.MultiheadAttention with no attn_mask, i.e. full
+# bidirectional attention in a decoder trained on next-token prediction. Every
+# position could attend to its own label, so the objective was solvable by
+# copying the future: training loss collapsed toward 0 while free-running
+# generation (no future available) emitted degenerate output. Measured on the
+# shipped 30M config before the fix: changing tokens at positions 6-7 moved
+# logits at positions 0-5 by up to 20.1.
+# ---------------------------------------------------------------------------
+
+
+def _tiny_model():
+    pytest.importorskip("torch")
+    from nanoscribe.native.config import config_for_run
+    from nanoscribe.native.model import build_native_model
+
+    build = build_native_model(config_for_run("reval30_evidence_bottleneck_s0"))
+    build.model.eval()
+    return build.model
+
+
+def test_future_tokens_cannot_change_earlier_logits() -> None:
+    torch = pytest.importorskip("torch")
+    model = _tiny_model()
+    base = [5, 9, 12, 40, 77, 23, 61, 8]
+    alt = base[:6] + [99, 100]  # differs only at positions 6 and 7
+    with torch.no_grad():
+        a = model(torch.tensor([base]))[0, :6]
+        b = model(torch.tensor([alt]))[0, :6]
+    assert (a - b).abs().max().item() == 0.0, "decoder is attending to the future"
+
+
+def test_appended_content_cannot_change_earlier_logits() -> None:
+    """Length may perturb float32 kernel numerics; content must not leak at all."""
+    torch = pytest.importorskip("torch")
+    model = _tiny_model()
+    base = [5, 9, 12, 40, 77, 23, 61, 8]
+    with torch.no_grad():
+        a = model(torch.tensor([base + [7, 7, 7]]))[0, :8]
+        b = model(torch.tensor([base + [200, 300, 400]]))[0, :8]
+    assert (a - b).abs().max().item() == 0.0, "future content leaks backward"
