@@ -19,6 +19,38 @@ copy. A pretraining curriculum of synthetic **key→value copy** over *random, u
 tokens should induce that circuit, and a scribe built on the induced trunk should copy
 held-out values where the baseline trunk cannot.
 
+### Inherited caveat on the P2 premise (added 2026-08-25, before any Stage-M training)
+
+Stage M's premise is P2's REFUTE, so P2's manipulation check is load-bearing here
+and its scope must travel with it rather than being quietly strengthened.
+
+That check was re-audited on 2026-08-25 (`artifacts/measurement-integrity-audit.md`,
+§3) against a defect found elsewhere in the program — an adversarial baseline that
+built its answers from the gold field and was therefore cell-invariant by
+construction, unable to fail. **The Stage P check is not that defect, on two
+independent grounds.** Structurally, `copy_share` is computed entirely from the
+model's forward pass (`scribe/pointer/pointer_model2.py:36-52`); gold selects
+*which positions* are measured, never what the measurement returns. Empirically
+and decisively, it discriminated two real models on identical code and the same
+n=118 held-value tokens: P1 `M=0.181 VOID(unused)` versus P2 `M=0.969 EXERCISED`.
+A check that actually failed once and changed the conclusion is binding.
+
+**What the check does NOT establish.** `M=0.969` was obtained under explicit
+copy-supervision with gate-bias −2 — a configuration in which copy-dominance is
+close to guaranteed by the training objective. `EXERCISED` therefore rules out the
+P1 failure mode (pathway never engaged, null uninterpretable) and confirms that
+training did what it was told. It is **not** independent evidence that the copy
+pathway generalizes, and it must not be cited as such.
+
+**Consequence for Stage M.** The premise Stage M inherits is precisely: *an
+explicitly engaged, copy-dominant pointer head still failed to select the correct
+source token for held-out values (21% vs 92%)*. It is not the stronger claim that
+copy mechanisms in general have been ruled out. A Stage-M REFUTE must therefore be
+scoped to the induction-curriculum hypothesis and may not be reported as closing
+the architectural line — Stage P closed one architecture under one supervision
+regime, no more. The generality and survival probes below are what carry Stage M's
+own interpretability; they do not inherit strength from P2.
+
 ## Design — two arms, from scratch, identical except the curriculum (à la Stage C)
 
 Both arms: raw nano pretrain → **scribe-SFT directly from the raw pretrain** (precedented by
