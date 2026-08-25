@@ -22,6 +22,10 @@ if _repo_root not in sys.path:
     sys.path.insert(0, _repo_root)
 sys.path[:] = [p for p in sys.path if p != _script_dir]
 
+from nanoscribe.venv_boot import ensure_venv, interpreter_provenance
+
+ensure_venv(Path(_repo_root))
+
 from nanoscribe.adapt import parse_label_and_quotes, run_pipeline
 from nanoscribe.adapters import (
     DEFAULT_BASELINE_LINES,
@@ -516,6 +520,7 @@ def run_campaign_eval(suite: str, *, fixture_only: bool = False) -> dict[str, An
             "experiment": "p1_campaign_eval_v0",
             "suite": suite,
             "weights": _weights_provenance(fixture_only),
+            "interpreter": interpreter_provenance(Path(_repo_root)),
             "dataset_revision": dataset_revision_for(suite),
             "fixture_only": fixture_only,
             "leakage_config": leakage_config(),

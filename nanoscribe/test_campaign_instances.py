@@ -37,7 +37,18 @@ from nanoscribe.campaign_instances import (
     RESERVED_VALUES,
     split_encounter_id,
 )
+from nanoscribe.campaign_instances import CONCEPT_LABELS
 from nanoscribe.select import match_count
+
+
+def _norm(text: str) -> str:
+    """Casefold, strip punctuation, collapse whitespace.
+
+    Comparing raw strings would let "No allergies." and "no allergies" read as
+    different, which is exactly the gap a leak would hide in.
+    """
+    cleaned = "".join(ch if ch.isalnum() or ch.isspace() else " " for ch in text)
+    return " ".join(cleaned.casefold().split())
 
 SLOTS_PER_INSTANCE = 16
 
@@ -124,6 +135,46 @@ class InstanceInvariantTest(unittest.TestCase):
             for source in case.gold.sources
         ]
         self.assertEqual(len(set(source_ids)), len(source_ids))
+
+
+class ConceptLabelSurfaceTest(unittest.TestCase):
+    """The label must not carry its slot's surface form, in any guise.
+
+    Stem-disjointness is checked elsewhere; this pins the two cruder failures
+    directly, per slot, because they are the ones that read as obviously fine
+    while leaking completely: a label of "neck pain" for gold "neck" hands over
+    the answer just as surely as the bare string does, and normalisation
+    differences (case, punctuation, spacing) hide the same identity.
+    """
+
+    def test_no_label_contains_its_own_raw_value_as_a_substring(self) -> None:
+        for values in INSTANCES:
+            for case in instance_cases(values.instance_id):
+                for spec in case.atom_specs:
+                    label = _norm(spec.concept_label)
+                    raw = _norm(spec.raw_value)
+                    where = f"{values.instance_id}/{spec.atom_id}"
+                    self.assertNotIn(raw, label, f"{where}: label contains raw_value")
+                    self.assertNotIn(label, raw, f"{where}: raw_value contains label")
+
+    def test_no_label_contains_ANY_raw_value_in_its_instance(self) -> None:
+        """Cross-slot: enc-1's label must not hand over enc-4's absent value."""
+        for values in INSTANCES:
+            raws = {_norm(v) for v in values.all_values() if v.strip()}
+            for atom_id, label in CONCEPT_LABELS.items():
+                normalized = _norm(label)
+                for raw in raws:
+                    self.assertNotIn(
+                        raw,
+                        normalized,
+                        f"{values.instance_id}/{atom_id}: label carries {raw!r}",
+                    )
+
+    def test_no_label_equals_a_normalized_raw_value(self) -> None:
+        for values in INSTANCES:
+            raws = {_norm(v) for v in values.all_values()}
+            for atom_id, label in CONCEPT_LABELS.items():
+                self.assertNotIn(_norm(label), raws, f"{values.instance_id}/{atom_id}")
 
 
 class I0FidelityTest(unittest.TestCase):
