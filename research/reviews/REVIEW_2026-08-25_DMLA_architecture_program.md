@@ -170,7 +170,16 @@ instrumentation changes" are vaguer than the record. Precisely:
 
 Neither is a blocker. Both are done.
 
-## 6. Two open items — flagged, not asserted
+## 6. Two open items — both since decided by the owner
+
+> **RESOLVED 2026-08-25.** Both items below were settled against the permissive
+> reading. See `research/decision_records/2026-08-25-authorization-clause-and-revalidation-claim.md`.
+> 6a: the confirmatory clause governs — `docs/ACTIVE_NOW.md` line 47 forecloses
+> the `$0`-settles-it argument in its own text. Experiment-scoped authorization
+> for E-DELIMIT was subsequently granted and is recorded in
+> `research/preregistrations/PREREG_E_DELIMIT.md`. 6b: keep the floor result and
+> the seed-noise null as established; mark the revalidation claim PENDING the
+> gated re-run. The original text is kept below unedited.
 
 ### 6a — E-DELIMIT sits between two authorization clauses
 
