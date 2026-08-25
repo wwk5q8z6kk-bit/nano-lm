@@ -66,14 +66,40 @@ Note the dependency — this was found only while fixing a *different* defect
 (objectives being scalar multiples of one another). Had the arms not needed
 separating, the leak would still be in place.
 
-### 3. Owner-reported: `unbound_assertion` laundered into `correct_abstention`
+### 3. `unbound_assertion` laundered into `correct_abstention` — VERIFIED
 
-**Not verifiable from the current tree.** `unbound_assertion` has zero
-occurrences in the repository; `correct_abstention` exists at
-`nanoscribe/harness.py:169,190` and `nanoscribe/benchmark.py:41`. This instance
-is recorded here as reported by the owner and **needs its own defect record
-with the same enumerated scope** before it can be cited as evidence. Do not
-cite it as a third verified instance until that record exists.
+**Superseded correction (2026-08-25).** An earlier revision of this file
+recorded this instance as "not verifiable from the current tree," on the basis
+that `unbound_assertion` has zero occurrences in the repository. That inference
+was wrong: the grep ran *after* the fix landed, so absence of the symbol was
+evidence the defect had been repaired, not that it never existed.
+
+It is verified and indexed as **D4** in `artifacts/DEFECT_INDEX.md`: in
+`nanoscribe/evaluate.py`, a hallucinated assertion was scored as a *correct
+abstention*, crediting model-level commission to the binder's save. Fixed in the
+`be937c1` lineage.
+
+D4 is also the index's most instructive entry, because its retroactive audit
+came back **negative** — 0 occurrences across all eleven frozen trees plus
+`trajectory/`, `fabric/` and `scribe/`. The metric post-dates the frozen
+lineage. "Assume everything is tainted" would have been the safe-sounding answer
+and it would have been false; the scope had to be measured.
+
+## Canonical record
+
+`artifacts/DEFECT_INDEX.md` is the single indexed record — **5 fix threads,
+12 distinct failure sites**, with mechanism, direction of bias, fixing commit,
+and enumerated taint per site. This file is the methods argument; the index is
+the evidence base. Do not maintain a competing list here.
+
+Two framings from the index that strengthen the claim below:
+
+- **Survivorship.** Every defect biased favourably. That is not coincidence — a
+  defect that *depresses* a metric gets investigated the same day, so the
+  surviving population of undetected defects is precisely the flattering ones.
+  Any program without adversarial checks accumulates a biased residual silently.
+- **Four of five threads were found while fixing a different defect**, which is
+  a poor detection mechanism to rely on: it has no coverage guarantee.
 
 ## Why this belongs in Paper α
 

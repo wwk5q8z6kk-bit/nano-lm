@@ -110,6 +110,9 @@ requirement that each objective respond only to its own region. Editing the
 span moved the label loss, which is impossible under causal attention, and the
 contradiction forced a direct causality probe.
 
-This is the third measurement defect in this program caught this way rather
-than by a primary metric, and all three inflate in the same direction. See
-`papers/METHODS_ADVERSARIAL_INSTRUMENTATION.md`.
+Indexed as **D1.1** in `artifacts/DEFECT_INDEX.md`, the canonical record — 5 fix
+threads across **12 distinct failure sites**, every one biased favourably, none
+caught by a primary metric. The companion sub-defect found in the same commit,
+**D1.2** (the three arm objectives being scalar multiples of one another), is
+flagged there as independently wave-voiding and absent from every headline
+summary. Methods argument: `papers/METHODS_ADVERSARIAL_INSTRUMENTATION.md`.
