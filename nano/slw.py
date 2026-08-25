@@ -78,6 +78,8 @@ from nano.dependency import Dependency, DependencyGraph, Freshness
 from nano.kernel import Identity
 from nano.needs import (DEFAULT_STRATEGY, Strategy, explain_plan,
                         rank_needs)
+from nano.runtime import (Disposition, Question, QuestionKind, StateView,
+                          open_slice, run_slice)
 
 EPOCH = date(2026, 1, 1)
 
@@ -1529,6 +1531,194 @@ def compare_need_strategies(seeds: tuple = tuple(range(20260823, 20260833)),
     }
 
 
+def state_view(b: LedgerBuilder, subject: Identity, as_of: str, *,
+               graph: DependencyGraph | None = None,
+               prior: dict | None = None) -> StateView:
+    """Project a builder into the narrow view the executor may see.
+
+    Takes no world. The executor must not be able to reach `truth_at`, the
+    generator, or the corruption schedule — an executor that can see the answer
+    scores perfectly and teaches nothing. This function is the only bridge, and
+    it is deliberately one-way.
+    """
+    inputs = epistemic_inputs(b, as_of)
+    return StateView(
+        subject=subject, as_of=as_of,
+        resolved=inputs["resolved"], conflicted=inputs["conflicted"],
+        gaps=frozenset(inputs["gaps"]),
+        evidence={key: tuple(sorted({s for a in bucket
+                                     if a.assertion_id not in b.superseded
+                                     for s in a.evidence_span_ids}))
+                  for key, bucket in b.by_key.items()},
+        latest_time=inputs["latest_time"],
+        evidence_count=inputs["evidence_count"],
+        known_spans=frozenset(s.evidence_span_id for s in b.ledger.spans),
+        prior=dict(prior or {}),
+        freshness=dict(graph.freshness) if graph else {},
+        ledger_version=b.ledger.version)
+
+
+def domainpack0_questions(b: LedgerBuilder, limit: int = 60) -> list:
+    """The question set constitution §XXXVII asks of DomainPack-0.
+
+    Drawn from the *system's own* tracked keys, not from ground truth, so the
+    question set cannot be biased toward keys the system happens to know.
+    """
+    keys = sorted(set(b.resolved) | set(b.conflicted) | set(b.gap_keys))
+    step = max(1, len(keys) // max(1, limit))
+    sampled = keys[::step][:limit]
+    questions = [Question(kind=QuestionKind.CURRENT_VALUE, entity=e,
+                          attribute=a) for e, a in sampled]
+    questions += [Question(kind=QuestionKind.WHAT_SUPPORTS, entity=e,
+                           attribute=a) for e, a in sampled[:10]]
+    questions += [Question(kind=QuestionKind.WHY_DIFFERENT, entity=e,
+                           attribute=a) for e, a in sampled[:10]]
+    # Attributes nobody has ever reported on. Without these the ABSTAIN branch
+    # is never exercised, and an output decision with one unreachable arm is
+    # not an output decision — every sampled key above is one the system
+    # already tracks, so it can always say *something*.
+    entities = sorted({e for e, _ in sampled})[:8]
+    questions += [Question(kind=QuestionKind.CURRENT_VALUE, entity=e,
+                           attribute="never_reported") for e in entities]
+    questions += [Question(kind=QuestionKind.WHAT_SUPPORTS, entity=e,
+                           attribute="never_reported") for e in entities[:4]]
+    questions += [Question(kind=QuestionKind.WHAT_CONFLICTS),
+                  Question(kind=QuestionKind.WHAT_CHANGED),
+                  Question(kind=QuestionKind.WHAT_IS_STALE),
+                  Question(kind=QuestionKind.WHAT_WOULD_HELP)]
+    return questions
+
+
+def score_runtime(world: SyntheticWorld, *, budget: float = 400.0) -> dict:
+    """Does the executable substrate answer, abstain and escalate correctly?
+
+    The headline is not accuracy. It is **undeclared error**: answers the
+    runtime PRESENTED and got wrong. An ABSTAIN on a key the system genuinely
+    cannot resolve is correct behaviour under partial observation; a confident
+    wrong answer is the failure §XXX exists to prevent.
+
+    Abstention is not free, so coverage is reported beside it — a runtime that
+    abstains on everything has zero undeclared error and zero value. The control
+    makes that trade explicit: the same answers with the output decision removed,
+    forced to present whatever is held.
+    """
+    b = build_full(world, world.observations, world.spec.n_ticks)
+    now = tick_to_date(world.spec.n_ticks)
+    truth = world.truth_at(world.spec.n_ticks)
+
+    # A prior state, so WHAT_CHANGED / WHY_DIFFERENT have something to compare.
+    earlier = build_full(world, world.observations_through(world.spec.n_ticks // 2),
+                         world.spec.n_ticks // 2)
+    graph, _, _ = _reference_graph(world, b)
+    view = state_view(b, world.identity, now, graph=graph,
+                      prior=dict(earlier.resolved))
+
+    work = open_slice("answer the DomainPack-0 question set", world.identity,
+                      budget=budget)
+    questions = domainpack0_questions(b)
+    answers = run_slice(work, questions, view)
+
+    counts = {d.value: 0 for d in Disposition}
+    undeclared_error = correct = 0
+    abstained_on_resolvable = abstained_correctly = 0
+    for a in answers:
+        counts[a.disposition.value] += 1
+        if a.question.kind is not QuestionKind.CURRENT_VALUE:
+            continue
+        key, held = a.question.key, view.resolved.get(a.question.key)
+        actual = truth.get(key)
+        if a.disposition is Disposition.PRESENT:
+            if actual is not None and held != actual:
+                undeclared_error += 1
+            else:
+                correct += 1
+        elif a.disposition is Disposition.ABSTAIN:
+            # Abstaining while holding the right answer is a real cost.
+            if held is not None and held == actual:
+                abstained_on_resolvable += 1
+            else:
+                abstained_correctly += 1
+
+    value_questions = [a for a in answers
+                       if a.question.kind is QuestionKind.CURRENT_VALUE]
+    presented = correct + undeclared_error
+
+    # Raw coverage is a property of how broken the world is, not of the runtime:
+    # a world with more contradictions yields fewer presentable answers however
+    # good the executor. What the runtime is accountable for is answering
+    # everything that *is* answerable — held, evidenced, uncontested, no known
+    # missing report. Thresholding raw coverage would be tuning to a world.
+    answerable = [a for a in value_questions
+                  if a.question.key in view.resolved
+                  and a.question.key not in view.conflicted
+                  and a.question.key not in view.gaps
+                  and view.evidence.get(a.question.key)]
+    answered_answerable = sum(
+        1 for a in answerable if a.disposition is Disposition.PRESENT)
+
+    # Control: the same state, the output decision removed. It must answer
+    # every question — picking a winner where the runtime would send to REVIEW,
+    # and naming the held value where the runtime would abstain. Restricting the
+    # control to keys the runtime was already comfortable with would compare it
+    # only where it cannot lose, which is not a control.
+    control_answered = control_wrong = control_invented = 0
+    for a in value_questions:
+        key = a.question.key
+        actual = truth.get(key)
+        if key in view.conflicted:
+            guess = sorted(view.conflicted[key][1])[-1]   # forced to pick
+        elif key in view.resolved:
+            guess = view.resolved[key]
+        else:
+            control_invented += 1                          # nothing to say
+            control_answered += 1
+            if actual is not None:
+                control_wrong += 1
+            continue
+        control_answered += 1
+        if actual is not None and guess != actual:
+            control_wrong += 1
+
+    every_answer_grounded = all(
+        a.evidence_span_ids for a in answers
+        if a.disposition is Disposition.PRESENT)
+    every_answer_reasoned = all(a.reason for a in answers)
+    receipts_clean = all(
+        a.receipt is None or a.receipt.unsupported_count == 0
+        for a in answers if a.disposition is Disposition.PRESENT)
+
+    return {
+        "questions": len(answers),
+        "dispositions": counts,
+        "value_questions": len(value_questions),
+        "presented": presented,
+        "present_correct": correct,
+        "undeclared_error": undeclared_error,
+        "coverage": presented / max(1, len(value_questions)),
+        "answerable": len(answerable),
+        "answered_of_answerable": answered_answerable,
+        "answerable_yield": answered_answerable / max(1, len(answerable)),
+        "abstained_correctly": abstained_correctly,
+        "abstained_while_holding_the_answer": abstained_on_resolvable,
+        "always_present_control": {
+            "answered": control_answered,
+            "wrong": control_wrong,
+            "answers_with_nothing_to_say": control_invented,
+            "undeclared_error": control_wrong,
+        },
+        "undeclared_error_avoided": control_wrong - undeclared_error,
+        "every_presented_answer_is_grounded": every_answer_grounded,
+        "every_answer_states_its_reason": every_answer_reasoned,
+        "no_fabricated_citations": receipts_clean,
+        "compute_spent": work.spent,
+        "compute_budget": work.compute_budget,
+        "slice_status": work.status.value,
+        "capabilities_used": sorted({a.capability_used for a in answers
+                                     if a.capability_used}),
+        "artifacts_compiled": sum(1 for a in answers if a.artifact is not None),
+    }
+
+
 def run_slw_001(spec: WorldSpec | None = None) -> dict:
     """The benchmark. Returns a plain dict so the runner can serialise it."""
     world = SyntheticWorld.generate(spec)
@@ -1600,6 +1790,7 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
         "branch_isolation": score_unrelated_branches(world),
         "faithfulness": score_faithfulness(world),
         "information_need": score_information_need(world),
+        "runtime": score_runtime(world),
     }
     # A cost saving is only reportable if the answers match. Stating it
     # unconditionally is how a benchmark starts rewarding being fast and wrong.

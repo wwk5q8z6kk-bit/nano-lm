@@ -842,3 +842,77 @@ def test_paired_delta_separates_a_real_shift_from_noise():
     assert not noise["distinguishable"]
     with pytest.raises(ValueError, match="equal-length"):
         paired_delta([0.1, 0.2], [0.1])
+
+
+# ---------------------------------------------------------------------------
+# The executable substrate, proven on DomainPack-0 — constitution §XXXVI, §L.5
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def runtime_score(world):
+    from nano.slw import score_runtime
+    return score_runtime(world)
+
+
+def test_the_runtime_is_never_confidently_wrong(runtime_score):
+    """§XXX. Being wrong under partial observation is survivable; presenting a
+    wrong answer without qualification is the failure the output decision
+    exists to prevent, so it is pinned at zero rather than a tolerance."""
+    assert runtime_score["undeclared_error"] == 0
+
+
+def test_the_output_decision_uses_all_three_arms(runtime_score):
+    """A decision with an unreachable arm is not a decision. If ABSTAIN or
+    REVIEW never fires, the branch is untested however green the suite looks."""
+    for arm in ("present", "abstain", "review"):
+        assert runtime_score["dispositions"][arm] > 0, f"{arm} never fired"
+
+
+def test_abstention_is_not_bought_by_refusing_to_answer(runtime_score):
+    """A runtime that abstains on everything has zero undeclared error and zero
+    value, so what it answers is asserted beside what it gets right.
+
+    NOT a raw-coverage threshold. Coverage falls when the world contains more
+    contradictions, which is a property of the world rather than of the
+    executor — pinning it would tune the test to one world. The runtime is
+    accountable for answering everything that is actually answerable: held,
+    evidenced, uncontested, no known missing report.
+    """
+    assert runtime_score["answerable"] > 0, "no question was answerable at all"
+    assert runtime_score["answerable_yield"] == 1.0, (
+        f"{runtime_score['answerable'] - runtime_score['answered_of_answerable']} "
+        "answerable questions went unanswered")
+    assert runtime_score["abstained_while_holding_the_answer"] == 0
+    assert runtime_score["abstained_correctly"] > 0
+
+
+def test_removing_the_output_decision_makes_the_system_confidently_wrong(
+        runtime_score):
+    """The control: same state, forced to answer everything — picking a winner
+    where the runtime escalates, naming the held value where it abstains."""
+    control = runtime_score["always_present_control"]
+    assert control["undeclared_error"] > runtime_score["undeclared_error"]
+    assert runtime_score["undeclared_error_avoided"] > 0
+    assert control["answers_with_nothing_to_say"] > 0
+
+
+def test_every_presented_answer_is_grounded_and_explained(runtime_score):
+    assert runtime_score["every_presented_answer_is_grounded"]
+    assert runtime_score["every_answer_states_its_reason"]
+    assert runtime_score["no_fabricated_citations"]
+
+
+def test_the_slice_finishes_inside_its_budget(runtime_score):
+    assert runtime_score["slice_status"] == "verified"
+    assert runtime_score["compute_spent"] <= runtime_score["compute_budget"]
+    assert runtime_score["compute_spent"] > 0
+
+
+def test_capability_selection_actually_routes(runtime_score):
+    """If one capability served every question, cost-based selection would be
+    decoration."""
+    assert len(runtime_score["capabilities_used"]) >= 4
+
+
+def test_artifacts_are_compiled_from_an_ir(runtime_score):
+    assert runtime_score["artifacts_compiled"] > 0

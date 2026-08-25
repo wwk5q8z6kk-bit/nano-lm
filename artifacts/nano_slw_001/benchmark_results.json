@@ -455,5 +455,45 @@
     "best_errors_fixed": 39,
     "random_key_errors_fixed": 8,
     "beats_random_key": true
+  },
+  "runtime": {
+    "questions": 96,
+    "dispositions": {
+      "present": 68,
+      "abstain": 12,
+      "review": 16
+    },
+    "value_questions": 68,
+    "presented": 45,
+    "present_correct": 45,
+    "undeclared_error": 0,
+    "coverage": 0.6617647058823529,
+    "answerable": 45,
+    "answered_of_answerable": 45,
+    "answerable_yield": 1.0,
+    "abstained_correctly": 8,
+    "abstained_while_holding_the_answer": 0,
+    "always_present_control": {
+      "answered": 68,
+      "wrong": 6,
+      "answers_with_nothing_to_say": 8,
+      "undeclared_error": 6
+    },
+    "undeclared_error_avoided": 6,
+    "every_presented_answer_is_grounded": true,
+    "every_answer_states_its_reason": true,
+    "no_fabricated_citations": true,
+    "compute_spent": 140.0,
+    "compute_budget": 400.0,
+    "slice_status": "verified",
+    "capabilities_used": [
+      "conflict_report",
+      "delta_read",
+      "evidence_trace",
+      "freshness_probe",
+      "need_planner",
+      "state_lookup"
+    ],
+    "artifacts_compiled": 84
   }
 }

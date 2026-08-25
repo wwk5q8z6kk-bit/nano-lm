@@ -1,5 +1,11 @@
 # System Architecture
 
+> **Intent vs realisation.** `docs/NANO_VNEXT_CONSTITUTION.md` holds the frozen
+> research constitution — what Nano is *for*, the five specifications that must
+> not be conflated, the laws, and the resumption ledger. This file describes the
+> **current realisation** of that intent: the layers as actually built. When they
+> drift apart, this file is the one that is out of date.
+
 ## Nano Core (domain-general)
 
 ```text

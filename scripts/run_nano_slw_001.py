@@ -164,6 +164,13 @@ def main() -> int:
     print(f"  errors fixed       ranked={need['best_errors_fixed']} "
           f"random-key={need['random_key_errors_fixed']} "
           f"of {need['broken_keys']}")
+    rt = result["runtime"]
+    d = rt["dispositions"]
+    print(f"  runtime            present={d['present']} abstain={d['abstain']} "
+          f"review={d['review']}  answerable_yield={rt['answerable_yield']:.3f}")
+    print(f"  runtime error      undeclared={rt['undeclared_error']} "
+          f"control={rt['always_present_control']['undeclared_error']}  "
+          f"compute={rt['compute_spent']:.0f}/{rt['compute_budget']:.0f}")
     print(f"  artifacts          {args.out}")
 
     # Exit non-zero when the arms disagree: a benchmark that reports a speedup
