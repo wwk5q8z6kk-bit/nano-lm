@@ -799,30 +799,6 @@
       "future_status_update_condition": "clinical validation program with recorded evidence",
       "last_reviewed_snapshot_id": "review-2026-07-31-03",
       "claim_record_publication_note": "Live ledger replaced under DIFF E approval; public tag pending commit/push"
-    },
-    {
-      "claim_id": "C_NATIVE_TRACK_VOID",
-      "exact_wording": "Every result produced by nanoscribe/native/ before c98e4ad is void: the decoder ran full bidirectional attention (no attn_mask/is_causal) in a next-token objective, measured 20.15 logit delta at positions the future must not reach",
-      "claim_type": "IMPLEMENTATION_STATE",
-      "epistemic": "VOID",
-      "gate_verdict": "VOID",
-      "gate_label": "D_NATIVE_CAUSAL_MASK",
-      "gate_note": "named defect; see papers/DEFECT_NATIVE_CAUSAL_MASK.md",
-      "evidence_class": "PUBLIC-ANCHORED",
-      "claim_record_publication": "PUBLIC_UNTAGGED",
-      "supporting_evidence_publication": "PUBLIC_TAGGED",
-      "result_state": "PRESENT",
-      "reproducibility": "PUBLIC_REPRODUCIBLE",
-      "wording_policy": "APPROVED",
-      "wording_note": "state the boundary explicitly; this does not retract Paper alpha",
-      "scope": "native track only: reval30_{decoder_control,evidence_bottleneck,span_port}_{s0,s1,s2} and native100_{evidence_bottleneck,span_port}_{s0,s1}. Paper alpha ladder verified causal at sft/model_nano.py:29 and pretrain/train.py:38.",
-      "protocol": "artifacts/campaign/reval_results/FALSE_NULL_DIAGNOSIS.md",
-      "artifacts": "papers/DEFECT_NATIVE_CAUSAL_MASK.md; nanoscribe/test_native_loss_target_budget.py",
-      "limitations": "scope is the native track only; Paper alpha ladder is NOT retracted",
-      "invalidation_condition": "causality pins in nanoscribe/test_native_loss_target_budget.py fail",
-      "future_status_update_condition": "re-run under the fixed trainer produces a valid RESULT",
-      "last_reviewed_snapshot_id": "review-2026-07-31-03",
-      "claim_record_publication_note": ""
     }
   ],
   "retired_ids": {
