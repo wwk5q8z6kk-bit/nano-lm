@@ -110,18 +110,47 @@ Feeding this into task 3 rather than asserting it here.
 
 ## 6. Corrections to `ddb5ce6`
 
-### 6.1 The headline baseline is question-form dependent — establish canonical L000
+### 6.1 RESOLVED — canonical form is the unified one, and exact-extent is demoted
 
 `ddb5ce6` was committed 03:03:21. **Both** L000 and L100 were re-run at 03:10
-under a "unified wh question form". The artifact therefore cites a run the peer
-subsequently superseded, and the headline moves 16/192 → 2/192 under the
-replacement form. **This needs a decision and a correction notice, not a quiet
-edit.** Either form is defensible; what is not defensible is a cited baseline
-whose value depends 8× on an undocumented instrument choice.
+under a "unified wh question form". The artifact cites a run superseded seven
+minutes later, and the headline moves 16/192 → 2/192 under the replacement form.
 
-Recommendation: adopt the **unified** form as canonical (it is the peer's later
-choice and it holds form fixed across cells), publish **2/192 exact-extent
-alongside 97/120 LOCATED**, and retain 16/192 as the earlier-form reading.
+**Decision (owner, 2026-08-25): the unified form is canonical.** It was adopted
+deliberately, every subsequent run uses it, and it is the better task
+specification — span-port asks for *an assertion plus its evidence*, which
+*"What does the patient say about X?"* elicits and *"What is X?"* does not (the
+latter invites a bare value). The superseded 16/192 is retired; **2/192** is the
+exact-extent reading of record.
+
+**But exact-extent is not the headline, and its own behaviour is why.** Across
+the form change, exact-extent moves 16 → 2 — eightfold, on a phrasing edit —
+while LOCATED moves 95 → 97. *A metric that swings 8× on question wording is not
+a property of the model; it is a property of the prompt.* The form-invariant
+quantity is the real measurement.
+
+**Reporting order of record:**
+
+> **Primary — LOCATED, unified form.** The model selects the correct
+> conversational turn for **97/120 gold-bearing slots (81%)**. Located quotes are
+> turn-scale: median 29 characters against gold spans of median 8, ratio 0.32,
+> median quote/enclosing-turn 1.000, with only 1 of 95 exceeding its enclosing
+> turn.
+>
+> **Secondary — exact extent, with its form-sensitivity in the same sentence.**
+> Exact-extent is **2/192** under the canonical form and **16/192** under the
+> earlier phrasing — an eightfold swing on wording alone, which is itself the
+> evidence that extent, not finding, is the fragile axis.
+
+Exact-extent may never be cited without that disclosure attached.
+
+### 6.1a The invariance is the finding
+
+This was isolated by accident of the re-run rather than by design, and it is
+cleaner than anything the 2×2 was built to produce: **question phrasing moves
+extent 8× and moves finding not at all.** A single manipulation that dissociates
+two capacities is stronger evidence for their separability than any amount of
+correlational decomposition of a single scalar.
 
 ### 6.2 The C1 contrast is NOT confounded — I was wrong, and I am recording it
 
@@ -135,9 +164,19 @@ git diff --stat 9a3ecd4 9523bf4   ->  nanoscribe/leakage.py | 2 +-   (only)
 
 `prompt.py` is **byte-identical** within each pair; the sole difference is the
 C1 flag. The artifact's pair (`ba18cf04` × `5b1a17ae`, both @ 02:20) is
-form-matched and clean. The cross-form pairing was **mine** — I had compared the
-old L000 against the new L100. The hazard is real, but it was my error, not the
-artifact's.
+form-matched and clean.
+
+**The cross-form pairing was mine.** I compared the artifact's L000 (`ba18cf04`)
+against `22244713` — a later re-run the artifact never cites — and read the
+resulting discrepancy as a defect in the artifact. It was a defect in my
+pairing. The artifact's own C1 numbers reconcile exactly with its own pair
+(b=16, c=2; +1.17 / +2.67 / −1.08), so **the numbers were sound and only my
+attribution was wrong.** Recorded here rather than dropped, because "defect six"
+was propagated onward before it was checked, and the correction should travel
+the same distance the error did.
+
+The hazard R2 guards against is real — I hit it — but it was not exercised by
+this artifact.
 
 ### 6.3 The C1 verdict survives exact McNemar — the CIs are the wrong shape, the conclusion is right
 
