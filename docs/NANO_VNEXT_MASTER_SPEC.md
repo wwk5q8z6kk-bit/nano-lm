@@ -2,8 +2,10 @@
 
 **Status:** canonical consolidation, 2026-08-25
 **Evidence companion:** [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md)
-**Supersedes as the entry point:** `papers/NANOSCRIBE_VNEXT.md` (retained as the
-historical owner architecture sketch; its reconciliation note still applies)
+**Authority:** [`PROJECT_AUTHORITY.md`](PROJECT_AUTHORITY.md) §3 — which is where
+this document's standing, and its supersession of `papers/NANOSCRIBE_VNEXT.md`,
+are actually established. A document does not become canonical by saying so
+about itself.
 
 ---
 
@@ -32,8 +34,8 @@ session; treat §§4–19 citations to it as a snapshot, and re-read before rely
 on a specific symbol.
 
 **Where cited paths resolve.** Of the 21 paths this document and
-`RESEARCH_STATUS.md` cite, only 4 exist on the branch you are reading. Audited
-2026-08-25:
+`RESEARCH_STATUS.md` cite, only 4 exist on `work/e-delimit-result`, the branch
+these documents were authored on. Audited 2026-08-25:
 
 | Path prefix | Resolves on |
 |---|---|

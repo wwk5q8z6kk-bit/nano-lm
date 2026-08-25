@@ -3,6 +3,19 @@
 **Updated:** 2026-08-22  
 **Integration base:** `origin/master` @ `c4822b9` (PR #41 — Qwen inference + three-track harness)
 
+> **Evidence lives in [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md), not here.** This
+> file is canonical for the *gate and compute posture* (`ACTIVE_NOW.json` §4 of
+> [`PROJECT_AUTHORITY.md`](PROJECT_AUTHORITY.md)); it is **not** canonical for
+> what has been measured. Where the two appear to disagree about a result,
+> RESEARCH_STATUS wins and this file is stale.
+>
+> **Since 2026-08-22, not reflected in the status fields below** (the gate is
+> unchanged, so no field moved): the eight-cell leakage ablation landed the
+> honest span-port baseline at 2/192; E-DELIMIT completed with **arm B VOID**
+> (invariance precondition failed — H5 untested, *not* refuted); and
+> `docs/NANO_VNEXT_MASTER_SPEC.md` became the canonical architecture entry
+> point. No experiment is currently authorized.
+
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
 | Field | Value |
