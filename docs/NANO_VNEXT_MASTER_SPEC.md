@@ -31,6 +31,20 @@ module disagree, **the module wins** and this document is stale.
 session; treat §§4–19 citations to it as a snapshot, and re-read before relying
 on a specific symbol.
 
+**Where cited paths resolve.** Of the 21 paths this document and
+`RESEARCH_STATUS.md` cite, only 4 exist on the branch you are reading. Audited
+2026-08-25:
+
+| Path prefix | Resolves on |
+|---|---|
+| `nano/*`, `docs/NANO_CAPABILITY_SPEC.md`, `artifacts/campaign/*`, `papers/*`, `trajectory/*` | `frontier/accelerated-research-campaign-v2` (12 paths) |
+| `artifacts/span_extent_L000_unified.json` | `work/leakage-power-analysis` (1 path) |
+| `research/decision_records/2026-08-25-*`, `research/reviews/*` | `work/architecture-program-review` |
+| `nanoscribe/*`, `docs/*`, `research/preregistrations/PREREG_E_DELIMIT.md`, `research/negative_results/*` | this branch (4 paths) |
+
+Read a cited file with `git show <branch>:<path>` rather than switching
+branches — two of the three branches above are checked out by other sessions.
+
 ### The eleven planes are the fourteen layers
 
 Verified by explicit diff, not assumed. The taxonomies are content-identical;
