@@ -183,6 +183,54 @@ reusing a broadly pretrained model dominates training a domain-native one from
 scratch, which supports O's premise (general capability plus added knowledge)
 over domain-native construction.
 
+## Program R - Representation convergence
+**Status:** `OPEN` (added 2026-08-25)
+**Question:** Can radically different observations be transformed into
+representations that a *single* reasoning system manipulates, without the
+reasoner knowing which modality they came from?
+
+The architecture to beat is separate strong encoders each talking to a language
+model. That is the baseline, not the target. The claim under test is that a
+**common world space** is better than concatenated modality channels.
+
+**Falsifier.** If the reasoner requires modality-specific branches downstream of
+the common space, convergence did not happen and the space is a concatenation
+wearing a different name. This is checkable by ablation: remove the modality tag
+and measure whether downstream accuracy moves.
+
+**Why it is not K1.** K1 is about persistence across time. R is about unification
+across channels. A system can pass one and fail the other, so they need separate
+gates. R is measured at B2 on the benchmark ladder; K1 at B0/B1.
+
+**Prerequisite honesty.** Nothing in this repository is multimodal today. R is
+`OPEN` in the strict sense - no infrastructure, no measurement, no baseline.
+
+## Program S - Self-directed capability acquisition
+**Status:** `OPEN` (added 2026-08-25)
+**Question:** Can the system acquire a *capability* it lacks, without arbitrary
+weight modification?
+
+Target loop: analyse task, identify the missing capability, find or construct a
+tool, generate its own practice problems, evaluate itself against them, verify,
+integrate.
+
+**Why this is separate from Q, by construction.** The capability/knowledge split
+(`docs/SYSTEM_ARCHITECTURE.md`) says knowledge may be acquired and deepened while
+capability stays general. Q acquires *knowledge* (a new domain's concepts). S
+acquires *capability* (a new thing the system can do). If they were one program,
+the split would be decorative - so the boundary predicts two programs, and this
+is that prediction made explicit.
+
+**The hard part is self-evaluation, not tool construction.** A system that writes
+its own practice problems and grades itself is scoring against its own
+misconception. This is the same failure this program has already paid for five
+times: an instrument that cannot detect the failure it is meant to detect (see
+`artifacts/DEFECT_INDEX.md`). S therefore requires an *external* checkable signal
+before any self-generated curriculum is trusted.
+
+**Falsifier.** Self-generated practice that improves self-scored performance
+while held-out performance is flat or worse.
+
 ## Cross-cutting domains (also portfolio, not queue)
 
 Learning · Memory · Verification · Retrieval · Planning · Execution · Collaboration · Interfaces · Hardware · Human factors · Evaluation · Benchmarks · Tool ecosystems · Security · Alignment · Compilers · Runtime · Distributed systems · Theory

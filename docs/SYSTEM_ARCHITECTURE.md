@@ -170,6 +170,56 @@ Merging PATIENT with MEDICAL is how "the literature says X" becomes "the patient
 has X". The reasoning core *connects* them and reports which world each claim
 came from.
 
+## Representation convergence (the open research problem)
+
+Tokenization is **not** the centrepiece. Tokens are one representation of one
+modality. Each modality has its own low-level pipeline, and they converge:
+
+```text
+TEXT    bytes    -> subwords         -> semantic units
+IMAGE   pixels   -> patches          -> objects -> regions -> relationships
+AUDIO   waveform -> acoustic units   -> speech  -> semantic events
+TABLE   cells    -> columns          -> records -> relationships
+VIDEO   frames   -> objects          -> actions -> temporal events
+                          |
+                          v
+                  COMMON WORLD SPACE
+                          |
+                          v
+                  PERSISTENT STATE
+```
+
+The general shape, modality-independent:
+
+```text
+raw observation -> segmentation -> feature/token representation
+-> semantic representation -> entity/event/relation -> temporal -> state update
+```
+
+**The convergence point is the research problem, not the encoders.** Separate
+strong encoders each talking to a language model is the architecture to beat, not
+the goal. The question is whether radically different observations can be
+transformed into representations a *single* reasoning system manipulates without
+knowing which modality they came from.
+
+Falsifiable form: if the reasoner needs modality-specific branches downstream of
+the common space, convergence failed and the space is a concatenation.
+
+## Memory and knowledge are separate inputs to the world model
+
+Two parallel structures feed the world model, and conflating them is the error
+the four-memory invariant exists to prevent:
+
+```text
+PERSISTENT MEMORY   what this system has observed  (episodic, patient, session)
+KNOWLEDGE SPACE     what is known in general       (domain, literature, learned)
+              \        /
+            WORLD MODEL
+```
+
+Memory is *observed*; knowledge is *held*. A claim sourced from knowledge is
+never reported as an observation about the subject.
+
 ## Observation as a decision (design)
 
 Observation is not intake. Given a goal, the system chooses how to observe:
