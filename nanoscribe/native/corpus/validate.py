@@ -158,3 +158,65 @@ def axis_coverage_floor(
             hist[axis.value] += 1
     below = {a: n for a, n in hist.items() if n < minimum}
     return {"minimum_required": minimum, "below_floor": below, "pass": not below}
+
+
+def sequence_budget(
+    examples: list[CorpusExample], max_seq: int = 512
+) -> dict[str, Any]:
+    """Can each row actually be learned within the model's context window?
+
+    The 2026-08-24 native30 wave trained nine models on a corpus whose every
+    prompt was 519-642 characters against max_seq=512. hash_tokens is
+    character-level and the trainer sliced `(prompt + target)[:max_seq]`, so the
+    target was discarded for 100% of rows and no gate noticed. The trainer now
+    budgets the target first and truncates the prompt from the LEFT, so an
+    over-length prompt degrades instead of corrupting -- but degradation has its
+    own failure mode: if the gold span scrolls out of the visible window, exact
+    emission is impossible by construction (the same defect tokenize.py's
+    docstring records for the historical text[:64] truncation).
+
+    Two gated invariants:
+      * target_fits      -- the target alone must fit, else it is truncated.
+      * spans_visible    -- every raw_value must survive prompt left-truncation.
+
+    `prompt_truncated` is reported but NOT gated: losing the head of a long
+    transcript is acceptable when the span is still in view.
+    """
+    over_budget = 0
+    truncated = 0
+    span_lost: list[str] = []
+    worst = 0
+
+    for ex in examples:
+        prompt, target = ex.prompt, ex.target
+        worst = max(worst, len(prompt) + len(target))
+        if len(prompt) + len(target) > max_seq:
+            over_budget += 1
+        if len(prompt) > max_seq - min(len(target), max_seq - 1):
+            truncated += 1
+        # Mirror the trainer's budgeting exactly.
+        budget = max_seq - min(len(target), max_seq - 1)
+        visible = prompt[-budget:] if budget > 0 else ""
+        span = (ex.raw_value or "").strip()
+        if span and span not in visible:
+            span_lost.append(ex.atom_id)
+
+    target_fits = all(len(ex.target) < max_seq for ex in examples)
+    return {
+        "max_seq": max_seq,
+        "worst_prompt_plus_target": worst,
+        "n_over_budget": over_budget,
+        "n_prompt_truncated": truncated,
+        "n_span_lost_to_truncation": len(span_lost),
+        "span_lost_examples": span_lost[:20],
+        "target_fits": target_fits,
+        "spans_visible": not span_lost,
+        # Honest scope note. This gate validates the corpus against the CURRENT
+        # trainer contract (target budgeted first, prompt truncated left). It
+        # cannot detect a trainer that reverts to right-truncation, because the
+        # target still "fits" on its own -- that regression is pinned by
+        # nanoscribe/test_native_loss_target_budget.py instead. When this flag is
+        # true the corpus is only learnable *because* that contract holds.
+        "relies_on_left_truncation": over_budget > 0,
+        "pass": target_fits and not span_lost,
+    }

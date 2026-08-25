@@ -33,6 +33,7 @@ from nanoscribe.native.corpus.validate import (
     axis_coverage_floor,
     check_leakage,
     dedupe,
+    sequence_budget,
     statistics,
 )
 
@@ -72,6 +73,7 @@ def build(stage: str) -> tuple[list, dict]:
     leakage = check_leakage(examples)
     stats = statistics(examples)
     coverage = axis_coverage_floor(examples, minimum=64)
+    budget = sequence_budget(examples)
 
     content = hashlib.sha256(
         "".join(sorted(f"{e.encounter_id}{e.target}" for e in examples)).encode()
@@ -92,9 +94,11 @@ def build(stage: str) -> tuple[list, dict]:
         "dedupe": dedupe_stats,
         "leakage": leakage,
         "axis_coverage": coverage,
+        "sequence_budget": budget,
         "gates": {
             "leakage_pass": leakage["pass"],
             "axis_coverage_pass": coverage["pass"],
+            "sequence_budget_pass": budget["pass"],
             "nonzero": len(examples) > 0,
         },
     }
