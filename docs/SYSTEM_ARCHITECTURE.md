@@ -313,6 +313,7 @@ RunPod is active established infrastructure; costly/confirmatory runs stay exper
 
 | Component | Path | Role |
 |-----------|------|------|
+| **Nano Core** | `nano/` | Domain-general contracts, kernel, ontology, capability registry. Proven on NANO-CLIN-001 + NANO-SLW-001 (deterministic substrate; no model). |
 | **P1 NanoScribe** | `nanoscribe/` | Encounter v0, CandidateAtom adapters, harness, campaign ([subsystems/NANOSCRIBE.md](subsystems/NANOSCRIBE.md)) |
 | Mechanism / compact models | `pretrain/`, `sft/`, `scribe/` | Integrated training experiments (historical + mechanism) |
 | Model core (future) | `nano_ai/` | **Cross-branch — not yet integrated** — see [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) |

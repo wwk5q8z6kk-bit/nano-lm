@@ -2,10 +2,10 @@
   "coverage": {
     "total": 50,
     "by_status": {
-      "IMPLEMENTED": 12,
-      "PARTIAL": 14,
+      "IMPLEMENTED": 14,
+      "PARTIAL": 13,
       "PROPOSED": 6,
-      "ABSENT": 18
+      "ABSENT": 17
     },
     "domains_covered": 26,
     "domains_required": 26,
@@ -695,7 +695,7 @@
       "domain": "Reasoning",
       "capability": "Reason over before/after/during/overlap/recurrence",
       "internal_representation": "temporal relations over events",
-      "module": "not built",
+      "module": "partially: precision-aware before/after over event time",
       "inputs": [
         "events"
       ],
@@ -708,14 +708,15 @@
         "date arithmetic"
       ],
       "training_objective": "temporal relation prediction",
-      "evaluation_benchmark": "B0/B1 ordering accuracy",
+      "evaluation_benchmark": "B0/B1 ordering accuracy; NANO-SLW-001 resolution",
       "failure_modes": [
         "ordering by document order rather than event time",
-        "unknown time treated as latest"
+        "unknown time treated as latest",
+        "mixed-precision times ordered by string comparison"
       ],
       "implementation_stage": "D",
-      "status": "ABSENT",
-      "evidence": ""
+      "status": "PARTIAL",
+      "evidence": "nano/slw.py::time_range, strictly_after, LedgerBuilder._recompute_key; nano/test_slw.py::test_mixed_precision_times_are_not_ordered_by_string_comparison"
     },
     {
       "capability_id": "RSN-CAUSAL",
@@ -765,7 +766,7 @@
       ],
       "implementation_stage": "D",
       "status": "PARTIAL",
-      "evidence": "nano/contracts.py::PatientStateSnapshot.uncertainties, unresolved_questions"
+      "evidence": "nano/contracts.py::PatientStateSnapshot.uncertainties, unresolved_questions; nano/needs.py::rank_needs"
     },
     {
       "capability_id": "PLN-DECOMP",
@@ -1012,15 +1013,16 @@
       "memory_requirements": "dependency graph artifact->state->evidence",
       "tools": [],
       "training_objective": "none (structural)",
-      "evaluation_benchmark": "LCRB-7 invalidation and freshness",
+      "evaluation_benchmark": "LCRB-7 invalidation and freshness; NANO-SLW-001 correction_absorption",
       "failure_modes": [
         "correction applied, dependent summary left stale",
         "correction overwrites the original claim",
-        "recomputation order ignores lineage"
+        "recomputation order ignores lineage",
+        "obligations accumulate faster than they are discharged"
       ],
       "implementation_stage": "D",
-      "status": "PARTIAL",
-      "evidence": "nano/dependency.py (graph + invalidation + recompute_order); the recompute step itself is not wired to a producer"
+      "status": "IMPLEMENTED",
+      "evidence": "nano/dependency.py (graph + invalidation + recompute_order); nano/slw.py::run_candidate_b steps 2b and 5, _retire; nano/test_slw.py::test_every_lineage_obligation_is_discharged, test_recomputation_follows_lineage_order"
     },
     {
       "capability_id": "LRN-LOOPS",
@@ -1175,25 +1177,27 @@
       "domain": "Metacognition",
       "capability": "Maintain typed machine state for known/unknown/conflicting/needed",
       "internal_representation": "epistemic state as data, not prose chain-of-thought",
-      "module": "partially: uncertainties + unresolved questions on the snapshot",
+      "module": "nano/needs.py::rank_needs; PatientStateSnapshot.next_information_needs",
       "inputs": [
         "state",
         "ledger"
       ],
       "outputs": [
-        "epistemic state"
+        "epistemic state",
+        "ranked information needs"
       ],
       "memory_requirements": "persists with the state version",
       "tools": [],
       "training_objective": "calibration",
-      "evaluation_benchmark": "does stated uncertainty predict actual error?",
+      "evaluation_benchmark": "NANO-SLW-001: KIND vs ARBITRARY at 25% budget; faithfulness vs silent-resolution control",
       "failure_modes": [
         "uncertainty expressed only in prose, so nothing can act on it",
+        "gap list presented as a plan",
         "load-bearing assumption never identified"
       ],
       "implementation_stage": "D",
-      "status": "PARTIAL",
-      "evidence": "nano/contracts.py::PatientStateSnapshot"
+      "status": "IMPLEMENTED",
+      "evidence": "nano/needs.py::rank_needs, DEFAULT_STRATEGY; nano/slw.py::score_information_need; nano/test_slw.py::test_ranked_needs_beat_asking_arbitrarily; nano/test_needs.py"
     },
     {
       "capability_id": "MTA-WOULDCHANGE",

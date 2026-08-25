@@ -1,6 +1,6 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
-  "updated": "2026-08-23",
+  "updated": "2026-08-25",
   "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
   "current_gate": "P1_ENCOUNTER_REPRESENTATION_AND_EVIDENCE_TRANSPORT",
@@ -24,6 +24,7 @@
     "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
   },
   "bounded_work": [
+    "nano_core_lcrb1_model_behind_ledger",
     "accelerated_campaign_v2_tool_agent_stack",
     "native_nano_evidence_bottleneck",
     "student_c1c2_serverless_fanout",
@@ -36,7 +37,7 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "ACCELERATED_CAMPAIGN_V2_TOOL_AGENT_NATIVE",
+  "next_engineering": "NANO_CORE_LCRB1_MODEL_BEHIND_LEDGER",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "c4822b9980ce50adad01efbc6f61c5228794ce2f"
+  "integration_base_sha": "dc4c1f97905f625636ba827641ca0f2dba6c0186"
 }

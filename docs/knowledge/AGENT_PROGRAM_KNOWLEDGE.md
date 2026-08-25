@@ -96,9 +96,9 @@ Full map: [FAILURE_TO_ARCHITECTURE.md](../FAILURE_TO_ARCHITECTURE.md).
 
 ## G — Git / branch truth
 
-- **`origin/master`** = development integration truth (~`c4822b9` post #37–#41).
+- **`origin/master`** = development integration truth (`dc4c1f9` — PRs #37–#51).
 - **Never** trust stale local `master` if it diverges (may include `9fe5b6b6` evidence reconciliation).
-- **Frontier branch** `frontier/accelerated-research-campaign-v2` carries campaign v2 + tool/agent stack.
+- **Frontier branch** `frontier/accelerated-research-campaign-v2` carries Nano Core (`nano/`) + campaign v2 + tool/agent stack. Local may be ahead of origin.
 - **Cross-branch, not integrated:** `nano_ai/`, `artifacts/nano_h6/` — cite as lineage only.
 - **Selective port** to master — no wholesale merge of parked worktrees.
 
@@ -123,8 +123,10 @@ Code: `nanoscribe/tracks.py`, `nanoscribe/harness.py`.
 
 | Path | Role |
 |------|------|
-| `nanoscribe/` | P1 stack — **primary engineering surface** |
+| `nano/` | **Nano Core** — contracts, kernel, ontology, capability registry, DomainPack-0 (SLW) |
+| `nanoscribe/` | P1 product stack — encounter v0, adapters, harness, campaign |
 | `artifacts/campaign/` | Manifests, spend, checkpoints, round summaries |
+| `artifacts/nano_clin_001/`, `artifacts/nano_slw_001/` | Core slice measurements (deterministic, no model) |
 | `fabric/` | Verification harness |
 | `wedge_v1/` | Classical-first document QA (supporting) |
 | `pretrain/`, `sft/`, `scribe/` | Mechanism-era experiments |
@@ -187,8 +189,9 @@ python3 -m pytest nanoscribe/test_encounter_v0.py nanoscribe/test_evidence_trans
 See [PROGRAM_CHECKPOINTS.json](PROGRAM_CHECKPOINTS.json). Summary:
 
 - **Done:** control plane, tool calling, agent canary, harness CI.
-- **In progress:** native extended viability, student span-transport improvement.
-- **Pending:** selective master port, note rendering, external eval, human eval.
+- **Done (frontier Core):** NANO-CLIN-001 ledger slice; NANO-SLW-001 synthetic world (0 undeclared error vs silent-resolution control); `MTA-EPISTEMIC` ranked next-information need (`nano/needs.py`, KIND beats random-key control).
+- **In progress:** native extended viability; student span-transport improvement.
+- **Pending:** selective master port, note rendering, external eval, human eval. Do not conflate Core substrate proofs with P1 mastery.
 
 **Campaign success criterion (engineering):** measurable **≥2× improvement** in exact gold span transport **or** documented teacher ceiling + pivot — with committed artifact JSON, not narrative.
 

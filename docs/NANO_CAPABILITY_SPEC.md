@@ -1,6 +1,6 @@
 # Nano capability specification
 
-50 capabilities across 26 domains. Status: IMPLEMENTED 12, PARTIAL 14, PROPOSED 6, ABSENT 18
+50 capabilities across 26 domains. Status: IMPLEMENTED 14, PARTIAL 13, PROPOSED 6, ABSENT 17
 
 | id | domain | capability | stage | status | evidence |
 |---|---|---|---|---|---|
@@ -30,9 +30,9 @@
 | `MEM-SELECT` | Memory | Decide what is worth remembering | CORE | **ABSENT** | — |
 | `KNW-SEP` | Knowledge | Keep patient / medical / institutional / model knowledge apart | E | **PROPOSED** | — |
 | `RET-ROUTER` | Retrieval | Route between semantic / exact / temporal / graph / episode retrieval | D | **ABSENT** | — |
-| `RSN-TEMPORAL` | Reasoning | Reason over before/after/during/overlap/recurrence | D | **ABSENT** | — |
+| `RSN-TEMPORAL` | Reasoning | Reason over before/after/during/overlap/recurrence | D | **PARTIAL** | nano/slw.py::time_range, strictly_after, LedgerBuilder._recompute_key; nano/test_slw.py::test_mixed_precision_times_are_not_ordered_by_string_comparison |
 | `RSN-CAUSAL` | Reasoning | Separate documented rationale / temporal association / inferred cause | E | **ABSENT** | — |
-| `RSN-METACOG` | Reasoning | Represent what is known / unknown / conflicting / needed | D | **PARTIAL** | nano/contracts.py::PatientStateSnapshot.uncertainties, unresolved_questions |
+| `RSN-METACOG` | Reasoning | Represent what is known / unknown / conflicting / needed | D | **PARTIAL** | nano/contracts.py::PatientStateSnapshot.uncertainties, unresolved_questions; nano/needs.py::rank_needs |
 | `PLN-DECOMP` | Planning | Decompose a question into an evidence and tool plan | D | **ABSENT** | — |
 | `PLN-ADAPTIVE` | Planning | Spend computation in proportion to difficulty | CORE | **ABSENT** | — |
 | `TOL-DELEGATE` | Tools | Delegate arithmetic and lookup rather than estimating | D | **ABSENT** | — |
@@ -42,14 +42,14 @@
 | `VRF-CLAIM` | Verification | Verify every factual claim against evidence | A | **IMPLEMENTED** | nano/contracts.py::VerificationReceipt; artifacts/nano_clin_001/*/verification_receipt.json |
 | `VRF-ADVERSARIAL` | Verification | Attack own output before emitting it | C | **ABSENT** | — |
 | `UNC-ABSTAIN` | Uncertainty | Abstain as a first-class outcome | A | **IMPLEMENTED** | fabric/schemas.py::DecisionAction; ledger claim C_FABRIC_SLICE |
-| `LRN-CORRECTION` | Learning | Absorb a human correction and recompute what depends on it | D | **PARTIAL** | nano/dependency.py (graph + invalidation + recompute_order); the recompute step itself is not wired to a producer |
+| `LRN-CORRECTION` | Learning | Absorb a human correction and recompute what depends on it | D | **IMPLEMENTED** | nano/dependency.py (graph + invalidation + recompute_order); nano/slw.py::run_candidate_b steps 2b and 5, _retire; nano/test_slw.py::test_every_lineage_obligation_is_discharged, test_recomputation_follows_lineage_order |
 | `LRN-LOOPS` | Learning | Fast loop touches state; slow loop touches weights, offline | CORE | **PROPOSED** | — |
 | `SAF-ISOLATION` | Safety | Patient isolation enforced in the type system | A | **IMPLEMENTED** | nano/test_nano_clin_001.py::test_no_cross_patient_contamination |
 | `SAF-ACTION` | Safety | Human review is the action boundary | A | **PARTIAL** | nano/contracts.py::ConflictRecord requires human_disposition |
 | `EVD-LOCATE` | Evidence | Locate a claim in its source, modality-independently | A | **IMPLEMENTED** | nano/contracts.py::EvidenceSpanV2 |
 | `CNV-STATE` | Conversation | Track dialogue state separately from world state | C | **ABSENT** | — |
 | `CNV-ACT` | Conversation | Choose to answer, clarify, retrieve, show, cite, or abstain | C | **ABSENT** | — |
-| `MTA-EPISTEMIC` | Metacognition | Maintain typed machine state for known/unknown/conflicting/needed | D | **PARTIAL** | nano/contracts.py::PatientStateSnapshot |
+| `MTA-EPISTEMIC` | Metacognition | Maintain typed machine state for known/unknown/conflicting/needed | D | **IMPLEMENTED** | nano/needs.py::rank_needs, DEFAULT_STRATEGY; nano/slw.py::score_information_need; nano/test_slw.py::test_ranked_needs_beat_asking_arbitrarily; nano/test_needs.py |
 | `MTA-WOULDCHANGE` | Metacognition | Name what evidence would change the conclusion | D | **ABSENT** | — |
 | `PRD-SEPARATE` | Prediction | Keep observed / inferred / predicted / simulated strictly apart | E | **ABSENT** | — |
 | `ART-PLAN` | Artifact compilation | Plan an artifact before writing it (audience, scope, evidence, format) | C | **ABSENT** | — |

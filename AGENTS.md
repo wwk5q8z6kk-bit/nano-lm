@@ -10,12 +10,16 @@ execution = docs/EXECUTION_PLAN.md
 
 capability_frontier = P1_SCRIBING
 product_frontier = NanoScribe
+nano_core = nano/   (contracts, kernel, ontology, capability registry)
 
 macro_sequence =
 P1 faithful scribing
 → P2 summarization
 → P3 longitudinal charting
 → P4–P9 intelligence expansion
+
+Nano Core is domain-general. NanoScribe is P1 + Medical DomainPack,
+not the architecture. DomainPack-0 (NANO-SLW-001) proves the substrate.
 
 training_backend = RUNPOD
 training_status = ACTIVE
@@ -35,6 +39,9 @@ NOT_AUTHORIZED
 Wedge = supporting verified-information subsystem
 
 NanoScribe (P1) = nanoscribe/ encounter v0 + harness + campaign
+
+Nano Core (built) = nano/ — NANO-CLIN-001 ledger slice + NANO-SLW-001
+synthetic world. Model research stays a separate lane.
 
 Accelerated campaign v2 = tool calling + agent platform + multi-track (frontier branch)
 
