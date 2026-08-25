@@ -57,7 +57,7 @@ from dataclasses import dataclass
 from nanoscribe.encounter import Source
 
 # The one line an arm branch changes. "free_form" | "menu" | "offsets"
-OUTPUT_FORMAT = "free_form"
+OUTPUT_FORMAT = "offsets"
 
 # Longest candidate, in whitespace tokens. Pre-committed at 5: the longest gold
 # span in campaign_v2_multi is 5 tokens ("No allergies in the notes."), and
