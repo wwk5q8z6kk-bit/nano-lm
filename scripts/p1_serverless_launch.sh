@@ -15,7 +15,7 @@ LEDGER="${CAMPAIGN_LEDGER:-artifacts/campaign/spend.json}"
 ACTION="${1:-smoke}"
 
 case "${ACTION}" in
-  deploy)
+    deploy)
     echo "==> Deploying ${MODEL} on ${GPU} (workers ${WORKERS_MIN}-${WORKERS_MAX})"
     runpodctl serverless create \
       --hub-id "${HUB_VLLM}" \
@@ -27,7 +27,9 @@ case "${ACTION}" in
       --idle-timeout 300 \
       --env "MODEL_NAME=${MODEL}" \
       --env TRUST_REMOTE_CODE=true \
-      --env DTYPE=bfloat16
+      --env DTYPE=bfloat16 \
+      --env "TOOL_CALL_PARSER=${TOOL_CALL_PARSER:-qwen3_coder}" \
+      --env "ENABLE_AUTO_TOOL_CHOICE=${ENABLE_AUTO_TOOL_CHOICE:-true}"
     ;;
   smoke)
     ENDPOINT_ID="${RUNPOD_SERVERLESS_ENDPOINT_ID:-tbnur4mac60i70}"

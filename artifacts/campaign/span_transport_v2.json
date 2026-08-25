@@ -1,0 +1,61 @@
+{
+  "schema": "nano.campaign.span_transport.v2",
+  "campaign_id": "accelerated_research_campaign_v2",
+  "task_id": "B2",
+  "generated_at_utc": "2026-08-23T23:30:59.206871+00:00",
+  "suite": "p1_contract_smoke_v1",
+  "arms": {
+    "selector_v2_oracle_fixture": {
+      "arm": "selector_v2_oracle_fixture",
+      "suite": "p1_contract_smoke_v1",
+      "n_cases": 3,
+      "n_atoms": 8,
+      "exact_gold_span_rate": 1.0,
+      "support_direct_exact_rate": 0.8571,
+      "assertion_state_correct_rate": 1.0,
+      "transport_abstain_rate": 0.0
+    },
+    "selector_v1_degraded_fixture": {
+      "arm": "selector_v1_degraded_fixture",
+      "suite": "p1_contract_smoke_v1",
+      "n_cases": 3,
+      "n_atoms": 8,
+      "exact_gold_span_rate": 0.0,
+      "support_direct_exact_rate": 0.0,
+      "assertion_state_correct_rate": 0.0,
+      "transport_abstain_rate": 0.875
+    },
+    "selector_v2_degraded_fixture": {
+      "arm": "selector_v2_degraded_fixture",
+      "suite": "p1_contract_smoke_v1",
+      "n_cases": 3,
+      "n_atoms": 8,
+      "exact_gold_span_rate": 1.0,
+      "support_direct_exact_rate": 0.8571,
+      "assertion_state_correct_rate": 1.0,
+      "transport_abstain_rate": 0.0
+    }
+  },
+  "reference_c2": {
+    "managed_ref_c2": {
+      "exact_gold_span_rate": 0.0867,
+      "support_direct_exact_rate": 0.7,
+      "assertion_state_correct_rate": 0.7867
+    },
+    "student_a_c2": {
+      "exact_gold_span_rate": 0.0872,
+      "support_direct_exact_rate": 0.7315,
+      "assertion_state_correct_rate": 0.7315
+    }
+  },
+  "interim_gate": {
+    "c2_exact_gold_span_rate_min": 0.25,
+    "oracle_fixture_exact_gold_span_rate": 1.0,
+    "degraded_fixture_v1_exact_gold_span_rate": 0.0,
+    "degraded_fixture_v2_exact_gold_span_rate": 1.0,
+    "local_smoke_passes_oracle_fixture": true,
+    "local_smoke_v2_beats_v1_on_degraded": true,
+    "note": "Degraded fixture uses case-folded quotes + extra whitespace; C2 serverless re-run still required for B2 close."
+  },
+  "status": "local_smoke_complete_serverless_pending"
+}

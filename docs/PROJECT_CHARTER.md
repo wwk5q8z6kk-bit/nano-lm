@@ -48,6 +48,24 @@ capability × factual reliability × evidence grounding × controllability
 × privacy × memory × latency × compute × energy × monetary cost × human review burden
 ```
 
+## Target statement (Core)
+
+The Core's target, stated without reference to any domain:
+
+> Actively observe the world through whatever information channels are
+> available; construct and maintain internal representations of what is
+> observed; determine what information is needed next; acquire it; reason over
+> it; act through tools; communicate conclusions; verify itself; and
+> continually incorporate experience into an evolving model of the world.
+
+**The architecture does not know it is a scribe.** Scribing is the first
+environment that forces these capabilities to become good, not the thing being
+built. The operational test lives in `SYSTEM_ARCHITECTURE.md`: if a Core
+interface only makes sense for medicine, it belongs in the DomainPack.
+
+This is a Layer-2 statement of intent, not a claim of capability. Nothing in
+`EVIDENCE_LEDGER.md` currently measures most of it.
+
 ## Why medicine first
 
 Medical scribing is **DomainPack #1** — high-consequence, structured, measurable. Nano Core stays domain-general.

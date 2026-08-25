@@ -1,7 +1,7 @@
 # Active Now
 
-**Updated:** 2026-08-22  
-**Integration base:** `origin/master` @ `c4822b9` (PR #41 — Qwen inference + three-track harness)
+**Updated:** 2026-08-25  
+**Integration base:** `origin/master` @ `dc4c1f9` (PRs #37–#51). Nano Core lives on `frontier/accelerated-research-campaign-v2` (`nano/`).
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -79,3 +79,12 @@ Materially costly runs outside the active experiment budget, confirmatory eviden
 ## Links
 
 - [PROJECT_CHARTER.md](PROJECT_CHARTER.md) · [EXECUTION_PLAN.md](EXECUTION_PLAN.md) · [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md) · [domains/medical/SCRIBING.md](domains/medical/SCRIBING.md)
+
+## Paid campaign execution (RunPod)
+
+**Authority:** [`artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md`](../artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md) — single source of truth for autonomous paid waves (supersedes ad-hoc wave prompts).
+
+**Control plane (no spend):** `python3 scripts/campaign_control_plane.py inventory`
+
+**Live wallet:** `runpodctl user` · `campaign_remaining = min(authorized_remaining, clientBalance − $10 floor)`
+

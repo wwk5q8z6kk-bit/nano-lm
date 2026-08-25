@@ -1,0 +1,580 @@
+{
+  "active_tracks": [
+    "native_extended_complete"
+  ],
+  "actual_spend": 6.45,
+  "agent_canary": {
+    "clean_baseline": {
+      "gpt_oss_120b": 0.6875,
+      "n": 48,
+      "parse_rate": 1.0,
+      "qwen3_32b_awq": 0.7083
+    },
+    "donor_matrix": "artifacts/campaign/agent_canary_donor_matrix_v1.json",
+    "established_capability_winners": 0,
+    "experiment_id": "nano_agent_canary_v1",
+    "gpt_oss_profile": {
+      "strong": {
+        "abstention": 0.7778,
+        "insufficient_info": 1.0,
+        "invalid_tool_args": 0.75,
+        "similar_tools": 0.75,
+        "state_update_recovery": 0.75,
+        "tool_not_needed": 0.75,
+        "verify_needed": 0.75
+      },
+      "weak": {
+        "multi_tool": 0.0,
+        "premature_stop": 0.0,
+        "recovery": 0.25,
+        "repeated_calls": 0.0,
+        "stop_accuracy": 0.375,
+        "timeout_error": 0.25
+      }
+    },
+    "harness_sensitivity": "artifacts/campaign/agent_canary_harness_sensitivity_v1.json",
+    "harness_vs_model_effect": "harness moves score 9-13x more than teacher choice; teachers not distinguishable at n=48",
+    "model": "openai/gpt-oss-120b",
+    "n_tasks": 48,
+    "next": "benchmark Qwen3-Coder-Next-FP8 (briefing SS LXV item 14) then GLM-4.5-Air-FP8",
+    "outcome_mean": 0.5,
+    "outcome_mean_after_fix": {
+      "gpt_oss_120b": 0.6875,
+      "qwen3_32b_awq": 0.6042
+    },
+    "paid_probe_hypothesis": "VOID \u2014 no long-horizon deficit measured; do not spend on Coder-Next for this question",
+    "paid_probe_status": "DEFERRED \u2014 stabilise and power the instrument first (free)",
+    "parse_rate": 1.0,
+    "reading": "gpt-oss-120b looks like a strong abstention/knowing-when-not-to-act donor and a weak long-horizon stop/recovery/multi-tool donor - consistent with the briefing SS XIX hypothesis that Qwen3-Coder-Next / MiniMax should own long-horizon execution and recovery. Single teacher so far: this is a profile, not yet a per-capability ranking.",
+    "results": "artifacts/campaign/agent_canary_v1_results.json",
+    "robust_finding": "RETRACTED \u2014 was a task-design artifact; both teachers now 1.0 on multi_tool and premature_stop",
+    "root_cause_fixed": "content was empty on 9/12 tasks because reasoning tokens consumed the whole max_tokens=128 budget (finish_reason=length, completion_tokens=64/64). Fixed: max_tokens 1024, reasoning_effort=low, reasoning_content/tool_call extraction fallback. Parse rate 0.75 -> 1.00 over 48 tasks.",
+    "scoring_fix": "unparsed responses previously scored as capability failures - an empty prediction scored unnecessary_call_rate=1.0 (max badness). Unparsed rows now carry no scores and are excluded from per-capability means; every axis reports {mean, n} and parse_rate is tracked separately.",
+    "spend_usd": 0.0,
+    "status": "SCOREBOARD_VALID",
+    "suite_revision": "p1_agent_canary_v1.3_semantics",
+    "surface": "managed_reference",
+    "teacher_id": "gpt_oss_120b",
+    "teachers_benchmarked": [
+      "gpt_oss_120b",
+      "qwen3_32b_awq"
+    ],
+    "total_spend_usd": 0.0,
+    "underpowered": "4 tasks/family; ~63/axis needed to rank at 0.25 effect"
+  },
+  "campaign_phase": "ACCELERATED_RESEARCH_V2_IDLE",
+  "campaign_remaining": 149.0,
+  "campaign_spend_start": 1.8211,
+  "checkpoint_authority": "artifacts/campaign/checkpoint_v5.json",
+  "commit_sha": "a6c44b3",
+  "committed_spend": 1.39,
+  "current_spend_per_hr": 0.004,
+  "endpoint_churn_cost": "artifacts/campaign/endpoint_churn_cost_v1.json",
+  "execution_authority": "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
+  "fleet_audit": {
+    "as_of": "2026-08-23T19:05:00+00:00",
+    "note": "ed0n59peu3flly already absent at fleet check; no idle burn",
+    "pods_active": 0,
+    "terminated_this_wave": [
+      "ed0n59peu3flly"
+    ]
+  },
+  "gpu_training_topology": "artifacts/campaign/gpu_training_topology_v1.json",
+  "hourly_exposure": 0.004,
+  "hub_catalog": {
+    "axolotl": "cma1ofy3e000008l7he7c764k",
+    "pytorch_template": "runpod-torch-v240",
+    "vllm": "cm8h09d9n000008jvh2rqdsmb"
+  },
+  "lanes": {
+    "lane_a_native": {
+      "note": "zo1lq44stf9pqm already absent; no duplicate A100 pair at teardown",
+      "owner": "agent-904633c2-followup",
+      "pods_active_elsewhere": [],
+      "pods_deleted": [
+        {
+          "name": "soak-minimal-202608230057",
+          "pod_id": "qcd5lxi2glc13b",
+          "reason": "duplicate soak SOAK_FAIL"
+        },
+        {
+          "name": "diag-native-min-1787461034",
+          "pod_id": "yglu6kr1ys0kw3",
+          "reason": "duplicate diag soak SOAK_FAIL"
+        },
+        {
+          "name": "native8-202608230101",
+          "pod_id": "6o3fj6clc5dcmo",
+          "reason": "NATIVE_DONE; teardown idle sleep"
+        },
+        {
+          "name": "diag-native-min-1787461034",
+          "pod_id": "yglu6kr1ys0kw3",
+          "reason": "terminated during health check; never reached stable SSH/smi"
+        },
+        {
+          "name": "soak-minimal-202608230057",
+          "pod_id": "qcd5lxi2glc13b",
+          "reason": "duplicate A100 soak; SSH timeout; terminated"
+        },
+        {
+          "name": "native8-202608230101",
+          "pod_id": "6o3fj6clc5dcmo",
+          "reason": "churned off before SSH succeeded"
+        }
+      ],
+      "status": "IDLE_PODS_CLEARED"
+    },
+    "lane_agent_platform": {
+      "adapter": "Qwen3CoderInferenceAdapter",
+      "cases_passed": 3,
+      "cases_total": 3,
+      "encounter_ids": [
+        "enc-1",
+        "enc-2",
+        "enc-3"
+      ],
+      "include_agent_tools": true,
+      "live_endpoint": null,
+      "mode": "offline_mock",
+      "note": "No serverless endpoints; skipped ephemeral vLLM ($0 spend)",
+      "parser": "CapabilityToolParser",
+      "smoke_at": "2026-08-23T10:39:00+00:00",
+      "status": "OFFLINE_SMOKE_PASS",
+      "suite": "p1_contract_smoke_v1",
+      "test_file": "nanoscribe/test_agent_platform_smoke.py",
+      "use_tools": true,
+      "verdict": "PASS"
+    },
+    "lane_native": {
+      "cost_per_hr": 1.39,
+      "datacenter": "CA-MTL-3",
+      "experiment_id": "native100_round2_promotion_v1",
+      "extended_datacenter": "US-KS-2",
+      "extended_final_loss": 0.0488,
+      "extended_gpu": "NVIDIA A100-SXM4-80GB",
+      "extended_launch": "COMPLETE",
+      "extended_manifest": "artifacts/campaign/manifests/native100_extended_v1.json",
+      "extended_pod_id": "nrejxttt2nuxfa",
+      "extended_steps": 200,
+      "extended_summary": "artifacts/campaign/native_extended_summary.json",
+      "extended_training_recommended": true,
+      "gpu_util_peak_pct": 42,
+      "held_out_eval": "SCREENING_COMPLETE \u2014 coverage 84/150 (56%), assertion 68/84 (81%), exact_span 84/84, malformed 11",
+      "hybrid_warranted": false,
+      "live_runpod_balance": 146.87,
+      "log_path": "/workspace/native100_train.log",
+      "losses": {
+        "native100_evidence_bottleneck_s0": 61.73,
+        "native100_evidence_bottleneck_s1": 32.0,
+        "native100_span_port_s0": 77.49,
+        "native100_span_port_s1": 81.34
+      },
+      "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
+      "pod_id": "6opxbt2tqphjrm",
+      "pod_name": "native100-r2-camtl",
+      "round2_gate": "UNBLOCKED",
+      "run_ids": [
+        "native100_evidence_bottleneck_s0",
+        "native100_evidence_bottleneck_s1",
+        "native100_span_port_s0",
+        "native100_span_port_s1"
+      ],
+      "runs_completed": 4,
+      "screening_eval": "artifacts/campaign/native_extended_screening_eval.json",
+      "screening_vs_reference": "artifacts/campaign/native_vs_reference_screening_v1.json",
+      "status": "EXTENDED_COMPLETE_WITH_WEIGHTS",
+      "steps_per_run": 6,
+      "summary": "artifacts/campaign/native_round2_summary.json",
+      "torch_load_ok": true,
+      "weight_pull_method": "direct_tcp_scp",
+      "weight_pull_status": "COMPLETE",
+      "weights_bytes": 1188792509,
+      "weights_local": true,
+      "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+      "winner_arm": "evidence_bottleneck",
+      "winner_run": "native100_evidence_bottleneck_s1"
+    },
+    "lane_qwen": {
+      "deleted_endpoint_ids": [
+        "vllm-r8abq9b4w5p5wl",
+        "vllm-6gd1gw3pm5ka3d",
+        "vllm-3ky5pp8exr124g",
+        "vllm-43t77ne9pl485s"
+      ],
+      "endpoint_id": null,
+      "note": "duplicate v3b endpoints removed 2026-08-23 follow-up",
+      "status": "DELETED"
+    },
+    "lane_student": {
+      "qlora_canary": {
+        "attempt": 5,
+        "infra_fixes": [
+          "container_disk_gb 80 (was 50, ENOSPC on Qwen2.5-32B HF download)",
+          "gpu preference L40S $0.99 > A100 PCIe $1.39 > A100 SXM $1.59",
+          "US-KS-2 proven CUDA",
+          "pinned deps peft/transformers/bnb; transformers.Trainer not trl",
+          "direct TCP SCP adapter pull"
+        ],
+        "launch_authorized": false,
+        "launch_threshold_wallet_usd": 153.0,
+        "manifest": "artifacts/campaign/manifests/student_qlora_canary_v1.json",
+        "status": "PREP_COMPLETE",
+        "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json"
+      },
+      "status": "C1C2_COMPLETE",
+      "surface": "hub_vllm_ephemeral"
+    },
+    "lane_teacher_collective": {
+      "canary_gate": "UNBLOCKED",
+      "canary_probe_tasks": 48,
+      "canary_results": "artifacts/campaign/agent_canary_v1_results.json",
+      "glm_endpoint_deleted": [
+        "epfbo06vpbjy9k"
+      ],
+      "lane": "P8_distillation",
+      "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
+      "n_tasks": 48,
+      "outcome_mean": 0.5,
+      "parse_rate": 1.0,
+      "status": "FULL_SUITE_PARSED",
+      "task_suite": "data/p1_agent_canary_v1.json",
+      "teacher_probe": "gpt_oss_120b_managed"
+    }
+  },
+  "launch_commit_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
+  "leading_failures": [
+    {
+      "failure": "EU-RO-1 A100 template pods: direct TCP SSH timeout while uptimeSeconds=0",
+      "pods": "qcd5lxi2glc13b,yglu6kr1ys0kw3"
+    }
+  ],
+  "ledger_remaining": 180.2668,
+  "live_runpod_balance": 146.87,
+  "mandate_baseline_usd": 185.0,
+  "model_statuses": {
+    "managed_reference": {
+      "c2_assertion_state_correct_rate": 1.0,
+      "c2_coverage_rate": 0.7867,
+      "c2_exact_gold_span_rate": 0.1102,
+      "winner": "qwen3_32b_awq"
+    },
+    "student_a": {
+      "c1_assertion_state_correct_rate": 0.8125,
+      "c1_coverage_rate": 1.0,
+      "c2_assertion_state_correct_rate": 0.6797,
+      "c2_coverage_rate": 0.7812,
+      "c2_exact_gold_span_rate": 0.1016,
+      "model": "Qwen/Qwen2.5-32B-Instruct",
+      "qlora_gate": "GAP_DOCUMENTED_NOT_UNLOCKED"
+    }
+  },
+  "native30_revalidation": {
+    "status": "KAGGLE_KERNEL_RUNNING",
+    "kernel": "hassaneljesr/nano-native30-revalidation-v1",
+    "import_pending": "scripts/import_kaggle_native30_results.py",
+    "runpod_pod_terminated": "fxbfs00asc8cpp"
+  },
+  "native_extended": {
+    "commit_sha": "d0165d8",
+    "datacenter": "US-KS-2",
+    "final_train_loss": 0.048755865544080734,
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "loss_curve_monotonic": false,
+    "min_train_loss": 0.02656559832394123,
+    "min_train_loss_step": 160,
+    "pod_id": "nrejxttt2nuxfa",
+    "pod_name": "native100-ext-202608231031",
+    "run_id": "native100_evidence_bottleneck_s1",
+    "run_variance_observation": {
+      "caveat": "n=2 on one config; this bounds nothing tightly, it flags that variance is unmeasured.",
+      "final_losses": [
+        0.007259658,
+        0.048755866
+      ],
+      "implication": "Two nominally identical 200-step runs differ 6.7x in final train loss. Briefing SS LV: 'IF seed variance exceeds architecture difference: increase seeds before concluding.' The round-2 ranking that promoted evidence_bottleneck over span_port rested on step-6 losses (32.0 vs 81.3) from single runs; that separation has not been shown to survive run-to-run noise. Strengthens the BLOCKED verdict.",
+      "same_run_id_and_seed": "native100_evidence_bottleneck_s1 / seed 1 / 200 steps",
+      "spread_ratio": 6.72
+    },
+    "seed": 1,
+    "status": "COMPLETE_WEIGHTS_VERIFIED",
+    "steps_completed": 200,
+    "summary": "artifacts/campaign/native_extended_summary.json",
+    "superseded_value_note": "TWO runs of the same run_id/seed exist across a training-loop change, both recorded in commit fb39282: (1) pod 3taen8m3jgcs7z @ 55547c3, final_loss 0.007259658, with its own runtime block (started 11:16:05, deleted 11:20:30, gpu_train_seconds 51, wallet 159.62->159.56); its weight pull hit CORRUPT_INTERRUPTED and the pod was deleted, so no weights survive. (2) pod nrejxttt2nuxfa @ d0165d8, final_loss 0.048755866, weights pulled and VERIFY_OK. The verified local checkpoint corresponds to run (2). Steps 6-160 are bit-identical across both records (same seed/data); only the tail diverges. Do NOT treat 0.007259 as unsupported - treat it as run (1), whose artifacts did not survive.",
+    "weights_local": true,
+    "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+    "weights_verify": "VERIFY_OK torch.load payload.model_state present (1188792509 bytes)"
+  },
+  "native_extended_caution": {
+    "evidence": {
+      "batch_size": 16,
+      "dataset_n_examples": 96,
+      "epochs_completed": 34,
+      "final_vs_best_ratio": 1.84,
+      "loss_step_160": 0.02656559832394123,
+      "loss_step_200": 0.048755865544080734,
+      "steps_completed": 200,
+      "steps_per_epoch": 6
+    },
+    "implication": "200 steps over 96 examples is ~34 epochs; the curve is non-monotonic and the final checkpoint is 1.84x worse than the step-160 minimum. Final train loss in this regime measures memorization, not capability, and must not by itself decide evidence_bottleneck vs span_port promotion (briefing SS XIV/LV). Rank on held-out P1 eval, not train loss.",
+    "issue": "FINAL_TRAIN_LOSS_IS_NOT_A_SAFE_RANKING_METRIC",
+    "required_before_promotion": [
+      "held-out p1_screening_eval_v1 scoring of the verified checkpoint",
+      "seed variance estimate across >=2 genuinely independent seeds",
+      "early-stopping / best-checkpoint selection rather than last-step"
+    ]
+  },
+  "native_real_train_phase": {
+    "cost_est_usd": "12-35 minimum viable",
+    "launch_authorized": false,
+    "manifest": "artifacts/campaign/manifests/native_real_train_phase_v1.json",
+    "network_volume_id": "04himzqxbm",
+    "status": "STUB_PREP_ONLY",
+    "token_budget_target": "10M-100M tokens",
+    "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json"
+  },
+  "native_root_cause": {
+    "arms_vs_random_init_control": "all overlap; no arm separates from untrained",
+    "cost_usd": 0.0,
+    "finding": "artifacts/campaign/native100_datascale_finding_v1.json",
+    "params": 100000000,
+    "tokenizer_hypothesis": "FALSIFIED (470/470 lossless round-trip)",
+    "tokens_per_param": 4.52e-05,
+    "train_chars": 4516,
+    "verdict": "DATA_SCALE_IS_THE_BINDING_CONSTRAINT",
+    "vs_historical_nano": "31.7x more params, 7,263x fewer tokens"
+  },
+  "native_round1": {
+    "checkpoints_local": true,
+    "commit_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+    "factorial_cells": {
+      "A": "evidence_bottleneck + span_port",
+      "B": "evidence_bottleneck + structured_json",
+      "C": "slot_router + span_port",
+      "D": "slot_router + structured_json"
+    },
+    "marker": "NATIVE_DONE",
+    "metrics_local": true,
+    "next_action": "Optional: rsync latest.pt from volume if weights needed locally; launch round2 100M on winning mechanisms",
+    "pod_id": "6o3fj6clc5dcmo",
+    "reason": "Recovered final-step metrics from network volume via volume-recovery-http pod; val_loss not logged in native checkpoints \u2014 ranked on extra.loss (final_train_loss).",
+    "recovery": {
+      "campaign_native_checkpoints_on_volume": false,
+      "method": "network_volume_http_proxy",
+      "probe_pod_id": "iyyolshw3yj0u3",
+      "recovered_artifacts": "step_000006.json per run_id (weights remain on volume)",
+      "volume_id": "04himzqxbm",
+      "volume_path": "/workspace/nano-lm/artifacts/native_checkpoints"
+    },
+    "round2_100m_gate": "UNBLOCKED \u2014 promote evidence_bottleneck + top transport cells A/B to 100M screening",
+    "run_ids": [
+      "native30_bottleneck_span_s0",
+      "native30_bottleneck_span_s1",
+      "native30_bottleneck_struct_s0",
+      "native30_bottleneck_struct_s1",
+      "native30_decoder_span_s0",
+      "native30_decoder_span_s1",
+      "native30_decoder_struct_s0",
+      "native30_decoder_struct_s1"
+    ],
+    "runs_completed": 8,
+    "schema": "nano.campaign.native_round1.v1",
+    "timestamp": "2026-08-23T05:39:22+00:00",
+    "top2_cells": [
+      "A",
+      "B"
+    ],
+    "top2_mechanisms": [
+      "evidence_bottleneck",
+      "span_port"
+    ],
+    "verdict": "COMPLETE_RANKED"
+  },
+  "native_round2": {
+    "commit_sha": "2094214",
+    "extended_training_recommended": true,
+    "hybrid_warranted": false,
+    "pod_id": "6opxbt2tqphjrm",
+    "status": "COMPLETE_RANKED",
+    "summary": "artifacts/campaign/native_round2_summary.json",
+    "winner": "native100_evidence_bottleneck_s1"
+  },
+  "native_round2_promotion": {
+    "assertion_state_rate": {
+      "majority_class": 0.7984,
+      "random_init": 0.8088,
+      "trained": 0.8095
+    },
+    "cost_usd": 0.0,
+    "evaluator_defect": "exact_gold_span_rate=1.0 is tautological \u2014 gold raw_value injected into candidate set",
+    "evaluator_fix": "p1_eval/inference now take constrained=bool; results carry decoding_mode + span_metrics_are_tautological",
+    "finding": "artifacts/campaign/native100_heldout_finding_v1.json",
+    "heldout_eval": "artifacts/campaign/native100_heldout_eval_v1.json",
+    "random_init_control": "artifacts/campaign/native100_randominit_control_v1.json",
+    "unconstrained_artifact": "artifacts/campaign/native100_heldout_unconstrained_v1.json",
+    "unconstrained_coverage": {
+      "count": 0,
+      "eligible": 150,
+      "rate": 0.0
+    },
+    "verdict": "BLOCKED_ZERO_HELDOUT_TRANSPORT"
+  },
+  "native_tokenizer_defect": {
+    "cost_usd": 0.0,
+    "cpu_validation": "NECESSARY_BUT_NOT_SUFFICIENT \u2014 data scale still binding",
+    "d1": "hash_tokens truncated all input to 64 chars; prompts are ~530 (model saw 12%)",
+    "d2": "newline/tab/CR decoded to '?' \u2014 224/224 corpus sources corrupted",
+    "finding": "artifacts/campaign/native_tokenizer_defect_v1.json",
+    "invalidates": "all native round-1/round-2/extended results",
+    "verdict": "CRITICAL_DEFECT_FIXED"
+  },
+  "native_training": {
+    "commit": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+    "marker": "NATIVE_DONE",
+    "pod_deleted_at": "2026-08-23T05:05:16.335076+00:00",
+    "pod_id": "6o3fj6clc5dcmo",
+    "runs": [
+      "native30_bottleneck_span_s0",
+      "native30_bottleneck_span_s1",
+      "native30_bottleneck_struct_s0",
+      "native30_bottleneck_struct_s1",
+      "native30_decoder_span_s0",
+      "native30_decoder_span_s1",
+      "native30_decoder_struct_s0",
+      "native30_decoder_struct_s1"
+    ],
+    "verdict": "NATIVE8_COMPLETE"
+  },
+  "new_actual_spend": 2.9121,
+  "new_committed_spend": 0,
+  "next_actions": [
+    "OWNER DECISION: native training-corpus strategy \u2014 4.5KB cannot support the task (binding constraint)",
+    "Power the agent canary to ~63 tasks/capability axis, then re-baseline the two free teachers",
+    "Only then spend on ephemeral Qwen3-Coder-Next/GLM/MiniMax with a pre-registered hypothesis",
+    "Re-derive native mechanism ranking from scratch after corpus fix; prior native results are invalid"
+  ],
+  "next_reallocations": [
+    "inventory refresh only"
+  ],
+  "origin_master": "b13ec7d",
+  "pod_diagnosis_zo1lq44stf9pqm": {
+    "api_status": "NOT_FOUND_404",
+    "checked_at": "2026-08-23T05:06:03.543386+00:00",
+    "gpu_util_percent": null,
+    "name": "wave1-native-single-202608230053",
+    "notes": "Vanished from API before health_gate completed; health_gate logged pod gone. Churn pods (soak/diag/native8) showed uptimeSeconds=0 or SSH-only via proxy; 0% GPU; no train_native_nano observed.",
+    "nvidia_smi": null,
+    "pod_id": "zo1lq44stf9pqm",
+    "ssh": {
+      "agent_ssh_success_on_zo1lq": false,
+      "direct_ip_owner_ui": "213.173.105.6:30028 timeout from agent network",
+      "owner_id_ed25519_proxy": "Permission denied (publickey) \u2014 RunPod account key is ~/.runpod/ssh/runpodctl-ssh-key not id_ed25519",
+      "working_pattern_when_pod_alive": "{podHostId}@ssh.runpod.io with runpodctl-ssh-key; remote commands need ssh -tt"
+    },
+    "training_running": false
+  },
+  "pods_checked": [
+    {
+      "checked_at": "2026-08-23T05:05:44.499079+00:00",
+      "cost_per_hr": 1.39,
+      "gpu": "NVIDIA A100 80GB PCIe (inferred: 188GB RAM, $1.39/hr)",
+      "name": "diag-native-min-1787461034",
+      "pod_id": "yglu6kr1ys0kw3",
+      "ssh_direct": "root@213.173.105.10:44123",
+      "ssh_notes": "id_ed25519: proxy permission denied; runpodctl key: proxy auth but non-interactive PTY error; direct TCP timeout before pod terminated",
+      "ssh_ok": false,
+      "ssh_proxy": "yglu6kr1ys0kw3-64410f1c@ssh.runpod.io",
+      "status": "TERMINATED_NOT_FOUND",
+      "training_running": "unknown (no shell); likely idle diag \u2014 uptimeSeconds=0 at last API poll"
+    }
+  ],
+  "posture": "NO_ACTIVE_PODS",
+  "raw_pods": [],
+  "remaining_budget": 180.2668,
+  "remaining_new_budget": 180.2668,
+  "resource_governance_flag": {
+    "action_taken": "NOT terminated \u2014 the pod belongs to a parallel lane and has a full manifest. Flagged for owner decision rather than unilaterally killed.",
+    "discrepancies": [
+      "its manifest artifacts/campaign/manifests/student_qlora_canary_v1.json carries launch_authorized: false",
+      "the same manifest states 'launch when wallet >= ~$153 and owner approves'; live wallet is $146.23, below that threshold",
+      "attempts 1-4 all failed (Axolotl serverless capture broken; raw pod ENOSPC at 50GB; SSH proxy hangs; dep pin failures) \u2014 this is attempt 5",
+      "SSH verification of the running pod hung, matching the attempt-4 failure mode, so work-in-progress could not be confirmed within the 5-minute SS XLI window"
+    ],
+    "gate_status": "the QLoRA gate this canary serves is now LOCKED \u2014 corrected assertion gap vs managed ref is -0.055 and not statistically established (artifacts/campaign/student_gap_metric_defect_v1.json)",
+    "observed_at": "2026-08-23T19:20:07.179703+00:00",
+    "observer": "agent-0eba97de (canary + validation lane)",
+    "pod": {
+      "id": "y5zfwrdlhf8qgh",
+      "name": "qlora-canary-08231904",
+      "rate_usd_hr": 1.59,
+      "status": "RUNNING"
+    },
+    "recommended": "owner decides whether to stop it; a compatibility canary is permitted by briefing SS XXXIII, but the bounded adaptation it leads to is ungated by the corrected gap",
+    "session_wallet_delta": {
+      "note": "none of this was spent by the canary/validation lane, which spent $0.00",
+      "now": 146.23,
+      "spent": 8.24,
+      "start": 154.47
+    },
+    "ssh_probe_outcome": {
+      "checked_at": "2026-08-23T19:21:07.015656+00:00",
+      "result": "UNREACHABLE \u2014 two SSH probes produced zero bytes and hung until killed (7 orphaned ssh procs reaped)",
+      "significance": "This is the same failure mode the manifest records for attempt 4 ('SSH proxy hangs'). The pod is billing at $1.59/hr while unreachable, so its work cannot be verified and it is closer to the SS XLI empty-resource case than to a confirmed running experiment.",
+      "still_not_terminated": "parallel lane's resource; escalated to owner rather than killed unilaterally"
+    }
+  },
+  "schema": "nano.campaign.status.v1",
+  "serverless": {
+    "endpoint_id": null,
+    "last_endpoint": "vllm-7chsjdkpxf8hzj",
+    "status": "DELETED"
+  },
+  "soak_gate": {
+    "log": "artifacts/campaign/health_gates/soak_202608230057.log",
+    "owner": "agent-6510cb6c",
+    "reason": "qcd5+yglu6: uptimeSeconds=0, direct SSH timeout; never reached 10min ssh+smi",
+    "verdict": "SOAK_FAIL"
+  },
+  "structured_contract": {},
+  "student_gap_correction": {
+    "corrected_gap_vs_managed_ref": -0.0552,
+    "cost_usd": 0.0,
+    "finding": "artifacts/campaign/student_gap_metric_defect_v1.json",
+    "gap_vs_qwen38_control": -0.1521,
+    "overstatement": "5.8x",
+    "significance_vs_managed_ref": "not established (CIs overlap)",
+    "significance_vs_qwen38": "real at 95%",
+    "stated_gap": -0.3203,
+    "verdict": "QLORA_GATE_FLIPPED_TO_LOCKED"
+  },
+  "students": {
+    "student_plane": "vllm_sglang_serverless_not_raw_a100"
+  },
+  "timestamp": "2026-08-23T19:05:00+00:00",
+  "verdict_labels": {
+    "allowed": [
+      "UNIT_FIXTURE_PASS",
+      "EXPLORATORY_SCREENING_RANKING",
+      "PROMOTION_CANDIDATE",
+      "STATISTICALLY_UNDERPOWERED",
+      "PROMOTION_GATE_BLOCKED_DATA",
+      "PROMOTION_GATE_OPEN",
+      "CONFIRMATORY_RESULT"
+    ],
+    "banned": [
+      "WINNER (when the design cannot support it)"
+    ],
+    "current": {
+      "native_100m_promotion": "PROMOTION_GATE_BLOCKED_DATA",
+      "native_extended": "STATISTICALLY_UNDERPOWERED",
+      "native_round1": "EXPLORATORY_SCREENING_RANKING",
+      "native_round2": "STATISTICALLY_UNDERPOWERED",
+      "provisional_candidates": [
+        "evidence_bottleneck",
+        "span_port"
+      ],
+      "qlora": "PROMOTION_GATE_BLOCKED_DATA"
+    }
+  },
+  "wallet_balance": 138.3483350564
+}

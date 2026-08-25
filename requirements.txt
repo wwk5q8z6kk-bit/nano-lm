@@ -2,7 +2,7 @@ accelerate==1.14.0
 datasets==4.8.4
 filelock==3.28.0
 fsspec==2026.2.0
-numpy==2.5.0
+numpy>=2.0,<2.5  # Py3.11 RunPod image: 2.5.0 unavailable
 packaging==26.1
 peft==0.20.0
 pytest==9.0.2

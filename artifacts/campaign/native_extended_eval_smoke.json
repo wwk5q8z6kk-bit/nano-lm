@@ -1,0 +1,191 @@
+{
+  "schema": "nano.native.p1_eval.v1",
+  "run_id": "native100_evidence_bottleneck_s1",
+  "suite": "p1_contract_smoke_v1",
+  "checkpoint": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+  "n_cases": 3,
+  "suite_metrics": {
+    "n_cases": 3,
+    "exact_gold_span_count": 3,
+    "exact_gold_span_eligible": 4,
+    "exact_gold_span_rate": 0.75,
+    "assertion_state_correct_count": 2,
+    "assertion_state_correct_eligible": 4,
+    "assertion_state_correct_rate": 0.5,
+    "support_direct_exact_count": 3,
+    "support_direct_exact_eligible": 4,
+    "support_direct_exact_rate": 0.75,
+    "correct_abstention_count": 1,
+    "correct_abstention_eligible": 7,
+    "correct_abstention_rate": 0.1429,
+    "coverage_count": 4,
+    "coverage_eligible": 7,
+    "coverage_rate": 0.5714,
+    "span_character_f1_mean": 0.7348,
+    "malformed": 3
+  },
+  "cases": [
+    {
+      "encounter_id": "enc-1",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 1,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 1,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 1,
+        "support_direct_exact_eligible": 1,
+        "support_direct_exact_rate": 1.0,
+        "correct_abstention_count": 1,
+        "correct_abstention_eligible": 4,
+        "correct_abstention_rate": 0.25,
+        "coverage_count": 1,
+        "coverage_eligible": 4,
+        "coverage_rate": 0.25,
+        "span_character_f1_mean": 0.2045,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 4
+      },
+      "per_atom": {
+        "atom-neck": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-alg": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.8182,
+          "support_relation": "direct_exact",
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": false,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-hist": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-assess": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-neck": "ASSERTED: \"No allergies.\"",
+        "atom-alg": "ASSERTED: \"allergies\"",
+        "atom-hist": "ASSERTED: \"No allergies.\"",
+        "atom-assess": "ASSERTED: \"No allergies.\"",
+        "medication": "DENIED: \"medication\""
+      }
+    },
+    {
+      "encounter_id": "enc-2",
+      "aggregate": {
+        "exact_gold_span_count": 1,
+        "exact_gold_span_eligible": 1,
+        "exact_gold_span_rate": 1.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 1,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 1,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 1,
+        "coverage_eligible": 1,
+        "coverage_rate": 1.0,
+        "span_character_f1_mean": 1.0,
+        "support_normalized": 0,
+        "support_review_required": 1,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-chest": {
+          "exact_gold_span": true,
+          "span_character_f1": 1.0,
+          "support_relation": "review_required",
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": false,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-chest": "DENIED: \"pressure\""
+      }
+    },
+    {
+      "encounter_id": "enc-3",
+      "aggregate": {
+        "exact_gold_span_count": 2,
+        "exact_gold_span_eligible": 2,
+        "exact_gold_span_rate": 1.0,
+        "assertion_state_correct_count": 2,
+        "assertion_state_correct_eligible": 2,
+        "assertion_state_correct_rate": 1.0,
+        "support_direct_exact_count": 2,
+        "support_direct_exact_eligible": 2,
+        "support_direct_exact_rate": 1.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 2,
+        "coverage_eligible": 2,
+        "coverage_rate": 1.0,
+        "span_character_f1_mean": 1.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh": {
+          "exact_gold_span": true,
+          "span_character_f1": 1.0,
+          "support_relation": "direct_exact",
+          "assertion_state_correct": true,
+          "abstained": false,
+          "malformed": false,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-tired": {
+          "exact_gold_span": true,
+          "span_character_f1": 1.0,
+          "support_relation": "direct_exact",
+          "assertion_state_correct": true,
+          "abstained": false,
+          "malformed": false,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh": "ASSERTED: \"diabetes\"",
+        "atom-tired": "ASSERTED: \"tired\""
+      }
+    }
+  ]
+}

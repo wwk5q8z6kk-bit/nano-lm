@@ -1,0 +1,155 @@
+{
+  "schema": "nano.campaign.measurement_repair.v1",
+  "timestamp": "2026-08-23T20:26:55.416435+00:00",
+  "commit_sha": "d637e26a2facc37ee931899207fbfbd45437eeff",
+  "policy": "historical results are RELABELLED, never overwritten; every defect carries a regression test",
+  "n_defects": 6,
+  "defects": [
+    {
+      "defect_id": "D1_reasoning_tokens_exhaust_budget",
+      "old_behavior": "agent_canary_bench requested max_tokens=128 with no reasoning_effort; gpt-oss-120b spent the entire budget on reasoning and returned content=None",
+      "why_invalid": "finish_reason=length with completion_tokens=64/64 means the model never emitted an answer. Scoring that as a capability failure measures the request, not the teacher.",
+      "affected_metrics": [
+        "agent canary per_capability",
+        "outcome_mean",
+        "parse_rate"
+      ],
+      "affected_experiments": [
+        "nano_agent_canary_v1 (first run)"
+      ],
+      "affected_verdicts": [
+        "gpt-oss capability profile \u2014 9/12 tasks were unanswered, not wrong"
+      ],
+      "fix": "max_tokens default 1024, reasoning_effort=low, reasoning_content/tool_call extraction fallback, strip_thinking() for inline <think> blocks",
+      "regression_test": "nanoscribe/test_agent_canary.py::test_parse_action_marks_unrecognised_output_unparsed",
+      "recomputation_possible": true,
+      "new_interpretation": "parse_rate 0.75 -> 1.00 over 48 tasks; the original scoreboard measured transport failure"
+    },
+    {
+      "defect_id": "D2_unparsed_scored_as_capability_failure",
+      "old_behavior": "_score_task graded an empty prediction; unnecessary_call_rate = float(pred not in {TOOL_NONE,ABSTAIN}) awarded 1.0 (max badness) to a non-response",
+      "why_invalid": "conflates 'we failed to read the teacher' with 'the teacher chose badly'. Across teachers, whichever model we parse worse loses on capability axes for non-capability reasons.",
+      "affected_metrics": [
+        "every agent canary per_capability axis"
+      ],
+      "affected_experiments": [
+        "nano_agent_canary_v1"
+      ],
+      "affected_verdicts": [
+        "all per-capability comparisons before the fix"
+      ],
+      "fix": "unparsed rows carry no scores and are excluded from means; each axis reports {mean, n}; parse_rate tracked separately; _parse_action returns '' rather than the first whitespace token",
+      "regression_test": "nanoscribe/test_agent_canary.py::test_parse_action_marks_unrecognised_output_unparsed",
+      "recomputation_possible": true,
+      "new_interpretation": "no capability has a statistically established winner at n=4-15/axis"
+    },
+    {
+      "defect_id": "D3_eval_injects_gold_into_candidate_set",
+      "old_behavior": "p1_eval._propose_case passed raw_value into generate_target_line; build_target_candidates emitted 'ASSERTED: {raw_value}' etc, so the gold span was present by construction",
+      "why_invalid": "exact_gold_span_rate=1.0 measured the candidate builder, not the model. A random-init control scored 0.6618 on the same metric.",
+      "affected_metrics": [
+        "exact_gold_span_rate",
+        "support_direct_exact_rate",
+        "span_character_f1"
+      ],
+      "affected_experiments": [
+        "native30 round 1",
+        "native100 round 2",
+        "native100 extended"
+      ],
+      "affected_verdicts": [
+        "all native evidence-transport claims"
+      ],
+      "fix": "generate_target_line/_propose_case/evaluate_native_p1_suite take constrained: bool; --unconstrained CLI flag; results carry decoding_mode and span_metrics_are_tautological",
+      "regression_test": "nanoscribe/test_native_p1_eval.py (constrained/free-generation modes)",
+      "recomputation_possible": true,
+      "new_interpretation": "under free generation the native100 checkpoint covers 0/150 gold atoms; transport was never demonstrated"
+    },
+    {
+      "defect_id": "D4_tokenizer_truncation_and_whitespace_loss",
+      "old_behavior": "hash_tokens did `for ch in text[:64]`; _char_for_token scanned only range(32,127) so newline/tab/CR decoded to '?'",
+      "why_invalid": "span-port prompts average 530 chars, so the model received 12.1% of its input, cut off mid-word, and the gold value was frequently outside its view. Turn separators were corrupted in 224/224 corpus sources. Every call site already applied [: cfg.max_seq] with max_seq=512, so the inner cap defeated the caller's intent.",
+      "affected_metrics": [
+        "every native training and evaluation metric"
+      ],
+      "affected_experiments": [
+        "native30 round 1",
+        "native100 round 2",
+        "native100 extended"
+      ],
+      "affected_verdicts": [
+        "ALL native architecture rankings \u2014 the models could not see their inputs"
+      ],
+      "fix": "truncation is the caller's decision (max_len, default None); detokenize uses the exact inverse chr(token_id-1)",
+      "regression_test": "nanoscribe/test_native_p1_eval.py::test_hash_tokenize_detokenize_roundtrip_chars (asserts identity, not just length)",
+      "recomputation_possible": false,
+      "new_interpretation": "native results to date carry no information about mechanisms; rankings must be re-derived from scratch"
+    },
+    {
+      "defect_id": "D5_counts_averaged_as_rates",
+      "old_behavior": "student_gap_v1._suite_metrics averaged per-case `aggregate` COUNT fields across cases as if they were rates; _qwen38_c2 wrapped the result in min(1.0, x); _managed_ref_c2 returned hardcoded literals",
+      "why_invalid": "a case with two correct atoms contributed 2, so the mean exceeded 1.0 \u2014 Qwen3.8 reported assertion_state_correct = 1.0078. The clamp turned an impossible value into a perfect score, masking the defect. The managed reference was never measured at all, and its hardcoded coverage 0.7867 was in fact the assertion rate in the wrong slot.",
+      "affected_metrics": [
+        "assertion_state_correct_rate",
+        "coverage_rate",
+        "exact_gold_span_rate",
+        "support_direct_exact_rate"
+      ],
+      "affected_experiments": [
+        "student_gap_v1",
+        "checkpoint_v4 lanes_complete.managed_reference"
+      ],
+      "affected_verdicts": [
+        "QLoRA gate UNLOCKED_SEMANTIC_GAP"
+      ],
+      "fix": "atom-level rates with explicit numerator/denominator and Wilson intervals; clamp removed; both references measured from real artifacts",
+      "regression_test": "nanoscribe/test_metric_contract.py",
+      "recomputation_possible": true,
+      "new_interpretation": "gap vs managed ref is -0.055 (not -0.320), CIs overlap, NOT established. QLoRA gate flips to LOCKED. A real -0.152 gap remains vs Qwen3.8 (CIs disjoint)."
+    },
+    {
+      "defect_id": "D6_training_corpus_too_small_for_the_claims",
+      "old_behavior": "100M-parameter architecture rankings drawn from p1_distill_train_v1: 96 examples, 4,516 characters, 33 epochs",
+      "why_invalid": "0.0000452 tokens/param. Against the project's own historical Nano (3.15M params on 32.8M tokens = 10.4 tok/param) the program scaled parameters UP 31.7x while scaling tokens DOWN 7,263x \u2014 ~443,000x under a Chinchilla-optimal budget. Train loss in that regime measures memorisation.",
+      "affected_metrics": [
+        "final_train_loss as a ranking signal"
+      ],
+      "affected_experiments": [
+        "native30 round 1",
+        "native100 round 2",
+        "native100 extended"
+      ],
+      "affected_verdicts": [
+        "evidence_bottleneck vs span_port ranking"
+      ],
+      "fix": "corpus factory (nanoscribe/native/corpus/) producing R30 (14.7M char-level tokens) and P100 (36.8M) with leakage/coverage/dedupe gates; tiny corpus reclassified NATIVE_UNIT_OVERFIT_FIXTURE",
+      "regression_test": "nanoscribe/test_native_corpus.py (9 pins incl. leakage, partition disjointness, determinism)",
+      "recomputation_possible": false,
+      "new_interpretation": "no arm separated from a random-init control; ranking must be re-derived on the real corpus"
+    }
+  ],
+  "infrastructure_defects": [
+    {
+      "defect_id": "I1_torch_wheel_clobbers_cuda",
+      "detail": "pip install -r requirements.txt replaced the pod template's torch with 2.11.0+cu130 (CUDA 13.0) on a CUDA 12.4 driver; torch.cuda.is_available() False while device_count 1. The remote PREFLIGHT_OVERRIDE path then let it train on CPU.",
+      "fix": "bootstrap installs requirements EXCEPT torch; remote script hard-fails on torch.cuda.is_available() False",
+      "artifact": "artifacts/campaign/infra_defect_torch_cuda_v1.json",
+      "wasted_usd_est": 0.14
+    }
+  ],
+  "metric_contract": {
+    "required_fields": [
+      "numerator",
+      "denominator",
+      "rate",
+      "eligible_unit",
+      "aggregation_level"
+    ],
+    "invariants": [
+      "no rate may exceed 1.0",
+      "a count or per-encounter average must never be named as accuracy",
+      "case-level and atom-level rates are reported separately",
+      "seed-level results reported separately"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "nano.campaign.gate.v1",
+  "gate_id": "qlora_adaptation_gate_v1",
+  "timestamp": "2026-08-23T20:30:00+00:00",
+  "status": "LOCKED",
+  "verdict": "BLOCKED",
+  "scope": "Round-1 QLoRA adaptation on p1_distill_train_v1 \u2014 NOT the compatibility canary",
+  "requirements": {
+    "assertion_gap_vs_managed_ref": -0.0552,
+    "wilson_overlap": true,
+    "qlora_gate_unlocked": false,
+    "student_gap_artifact": "artifacts/campaign/student_gap_v1.json",
+    "metric_defect_fixed": "artifacts/campaign/student_gap_metric_defect_v1.json"
+  },
+  "unlock_conditions": [
+    "assertion gap <= -0.15 vs managed reference with non-overlapping Wilson CIs",
+    "OR explicit owner authorization for bounded adaptation against Qwen3.8 control"
+  ],
+  "blocked_actions": [
+    "full QLoRA adaptation",
+    "round-1 student training spend",
+    "claiming semantic gap -0.320"
+  ],
+  "next_action": "No adaptation \u2014 close assertion gap or accept managed-ref ceiling",
+  "fields": {
+    "student_gap_report_complete": true,
+    "student_gap_artifact": "artifacts/campaign/student_gap_v2.json",
+    "student_gap_design": "PAIRED McNemar on shared atoms (145 vs Qwen3.8, 149 vs managed ref)",
+    "capability_gap_is_semantic": true,
+    "established_deficits_vs_qwen38": [
+      "assertion",
+      "support_direct_exact",
+      "not_malformed"
+    ],
+    "established_deficits_vs_managed_ref": [],
+    "gap_target_clarification": "The student is significantly worse than Qwen3.8-27B on assertion (-0.152, p=2e-05), support_direct_exact (-0.063, p=0.023) and malformedness (-0.040, p=0.041). It is statistically INDISTINGUISHABLE from the Qwen3-32B-AWQ managed reference on every axis. Adaptation is therefore justified only against the Qwen3.8 target, and must be argued on that basis explicitly.",
+    "cross_model_finding": "transport_exact_span is ~0.087 for ALL THREE models. Exact span transport is a task-wide failure, not a student deficit \u2014 adaptation will not fix it."
+  },
+  "blocking": [
+    "real_disjoint_training_corpus",
+    "teacher_data_verified",
+    "exact_adaptation_decision_exists"
+  ]
+}

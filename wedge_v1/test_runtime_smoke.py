@@ -1,8 +1,9 @@
 """Regression pins for wedge_v1 runtime (no LM)."""
 from __future__ import annotations
 
-from wedge_v1.runtime import ask, scan, find_spans, DEFAULT_CORPUS
 from pathlib import Path
+
+from wedge_v1.runtime import ask, scan, find_spans, DEFAULT_CORPUS
 
 
 def test_ttl_supported():
@@ -35,10 +36,19 @@ def test_find_ttl_phrase():
     assert r["n_hits"] >= 1
 
 
+def test_escalate_stub_default_off():
+    from wedge_v1 import test_escalate_stub as est
+
+    est.test_default_abstain_without_escalation()
+    est.test_escalate_stub_recovers_ttl_paraphrase()
+    est.test_oos_stays_abstain_even_with_stub()
+
+
 if __name__ == "__main__":
     test_ttl_supported()
     test_oos_abstain()
     test_empty_corpus()
     test_scan_docs()
     test_find_ttl_phrase()
+    test_escalate_stub_default_off()
     print("WEDGE_V1_SMOKE_OK")

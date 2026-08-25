@@ -1,0 +1,243 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "native30_revalidation_wave1_v1",
+  "created_at": "2026-08-23T20:03:47.089283+00:00",
+  "git_sha": "ee0ace0031ad47b41daca6e6ac61d1197e042050",
+  "purpose": "Re-screen the provisional 30M leaders on a REAL corpus against a genuine decoder control. The original ranking is EXPLORATORY_SCREENING_RANKING: produced on the 4,516-char fixture with the 64-char tokenizer truncation active. Promoting to 100M without revalidation would promote a successive-halving artefact.",
+  "dataset": {
+    "train": "artifacts/campaign/native_corpus_screen_v1_train.json",
+    "dev": "artifacts/campaign/native_corpus_screen_v1_dev.json",
+    "corpus_manifest": "artifacts/campaign/native_corpus_screen_v1_manifest.json",
+    "revision": "native_corpus_screen_v1",
+    "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+    "train_rows": 19194,
+    "training_tokens_char_level": 14693267,
+    "leakage_pass": true,
+    "axis_coverage_pass": true
+  },
+  "design": {
+    "arms": 3,
+    "seeds_per_arm": 3,
+    "total_runs": 9,
+    "control_arm": "reval30_decoder_control (pure LM, span_port=0.0)",
+    "max_steps": 1800,
+    "batch_size": 32,
+    "epochs_over_train": 3.0
+  },
+  "runs": [
+    {
+      "run_id": "reval30_decoder_control_s0",
+      "arm": "reval30_decoder_control",
+      "is_control": true,
+      "variant": "native_a_decoder_baseline",
+      "seed": 0,
+      "params_m": 30,
+      "d_model": 384,
+      "n_layers": 16,
+      "n_heads": 6,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 1.0,
+        "span_port": 0.0,
+        "evidence_align": 0.0,
+        "assertion_state": 0.0
+      }
+    },
+    {
+      "run_id": "reval30_decoder_control_s1",
+      "arm": "reval30_decoder_control",
+      "is_control": true,
+      "variant": "native_a_decoder_baseline",
+      "seed": 1,
+      "params_m": 30,
+      "d_model": 384,
+      "n_layers": 16,
+      "n_heads": 6,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 1.0,
+        "span_port": 0.0,
+        "evidence_align": 0.0,
+        "assertion_state": 0.0
+      }
+    },
+    {
+      "run_id": "reval30_decoder_control_s2",
+      "arm": "reval30_decoder_control",
+      "is_control": true,
+      "variant": "native_a_decoder_baseline",
+      "seed": 2,
+      "params_m": 30,
+      "d_model": 384,
+      "n_layers": 16,
+      "n_heads": 6,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 1.0,
+        "span_port": 0.0,
+        "evidence_align": 0.0,
+        "assertion_state": 0.0
+      }
+    },
+    {
+      "run_id": "reval30_evidence_bottleneck_s0",
+      "arm": "reval30_evidence_bottleneck",
+      "is_control": false,
+      "variant": "native_b_evidence_aware",
+      "seed": 0,
+      "params_m": 30,
+      "d_model": 480,
+      "n_layers": 10,
+      "n_heads": 7,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 0.5,
+        "span_port": 1.0,
+        "evidence_align": 0.5,
+        "assertion_state": 0.25
+      }
+    },
+    {
+      "run_id": "reval30_evidence_bottleneck_s1",
+      "arm": "reval30_evidence_bottleneck",
+      "is_control": false,
+      "variant": "native_b_evidence_aware",
+      "seed": 1,
+      "params_m": 30,
+      "d_model": 480,
+      "n_layers": 10,
+      "n_heads": 7,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 0.5,
+        "span_port": 1.0,
+        "evidence_align": 0.5,
+        "assertion_state": 0.25
+      }
+    },
+    {
+      "run_id": "reval30_evidence_bottleneck_s2",
+      "arm": "reval30_evidence_bottleneck",
+      "is_control": false,
+      "variant": "native_b_evidence_aware",
+      "seed": 2,
+      "params_m": 30,
+      "d_model": 480,
+      "n_layers": 10,
+      "n_heads": 7,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 0.5,
+        "span_port": 1.0,
+        "evidence_align": 0.5,
+        "assertion_state": 0.25
+      }
+    },
+    {
+      "run_id": "reval30_span_port_s0",
+      "arm": "reval30_span_port",
+      "is_control": false,
+      "variant": "native_a_decoder_baseline",
+      "seed": 0,
+      "params_m": 30,
+      "d_model": 384,
+      "n_layers": 16,
+      "n_heads": 6,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 1.0,
+        "span_port": 1.0,
+        "evidence_align": 0.0,
+        "assertion_state": 0.0
+      }
+    },
+    {
+      "run_id": "reval30_span_port_s1",
+      "arm": "reval30_span_port",
+      "is_control": false,
+      "variant": "native_a_decoder_baseline",
+      "seed": 1,
+      "params_m": 30,
+      "d_model": 384,
+      "n_layers": 16,
+      "n_heads": 6,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 1.0,
+        "span_port": 1.0,
+        "evidence_align": 0.0,
+        "assertion_state": 0.0
+      }
+    },
+    {
+      "run_id": "reval30_span_port_s2",
+      "arm": "reval30_span_port",
+      "is_control": false,
+      "variant": "native_a_decoder_baseline",
+      "seed": 2,
+      "params_m": 30,
+      "d_model": 384,
+      "n_layers": 16,
+      "n_heads": 6,
+      "max_steps": 1800,
+      "batch_size": 32,
+      "loss_weights": {
+        "lm": 1.0,
+        "span_port": 1.0,
+        "evidence_align": 0.0,
+        "assertion_state": 0.0
+      }
+    }
+  ],
+  "command": "python3 scripts/train_native_nano.py --run-id <run_id>",
+  "compute": {
+    "surface": "pod_template",
+    "template": "runpod-torch-v240",
+    "gpu": "NVIDIA RTX A5000",
+    "gpu_alternate": "NVIDIA RTX 4000 Ada / A40",
+    "datacenter": "US-KS-2",
+    "datacenter_alternate": "CA-MTL-3",
+    "gpu_vram_gb": 24,
+    "rightsizing_basis": "measured 8,365 MiB peak on the live A100 run; 24GB leaves 2.9x headroom",
+    "previous_gpu": "NVIDIA A100 80GB PCIe (9.8x over-provisioned)",
+    "network_volume_available": {
+      "id": "04himzqxbm",
+      "gb": 20,
+      "dc": "EU-RO-1",
+      "note": "attach to persist checkpoints and avoid the SSH weight-pull path entirely"
+    }
+  },
+  "cost_projection": {
+    "throughput_basis": "MEASURED: native100 extended, 200 steps / 51 GPU-s on A100-SXM = 3.92 steps/s",
+    "assumed_steps_per_s": 3.92,
+    "per_run_seconds": 459,
+    "total_train_seconds": 4133,
+    "pod_overhead_min": 15,
+    "wall_clock_hr_est": 1.4,
+    "rate_usd_hr": 0.27,
+    "projected_usd": 0.38,
+    "projected_usd_2x_margin": 0.76,
+    "saving_vs_a100": "6.6x cheaper than A100 SXM for an identical workload"
+  },
+  "max_runtime_min": 120,
+  "max_cost_usd": 2.0,
+  "artifact_dest": "artifacts/campaign/native30_revalidation_summary_v1.json",
+  "termination_condition": "9 runs complete + checkpoints pulled + torch.load verified + pod terminated",
+  "pass_criteria": [
+    "each arm evaluated on p1_screening_eval_v1 free-generation AND constrained",
+    "random-init control and majority-class baseline reported alongside",
+    "denominator-consistent yield per 150 gold atoms with 95% Wilson intervals",
+    "seed variance reported across 3 seeds per arm",
+    "no arm declared winner unless it separates from the decoder control AND random-init"
+  ],
+  "launch_authorized": false,
+  "launch_note": "gate assessment pending; see native30_revalidation_gate below"
+}

@@ -27,7 +27,11 @@ def classify_report(report: EvalReport) -> dict[str, Any]:
     )
     layers = LayerCounts(
         transport=report.invalid_span + report.wrong_source + report.wrong_mention,
-        support=report.support_unsupported + report.support_contradicted,
+        support=(
+            report.support_unsupported
+            + report.support_contradicted
+            + (1 if report.support_review_required else 0)
+        ),
         state=state_errors,
         abstention=report.omission + report.unnecessary_abstention,
         commission=report.spurious_atom,

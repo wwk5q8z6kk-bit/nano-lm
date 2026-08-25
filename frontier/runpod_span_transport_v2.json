@@ -1,0 +1,27 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "B2_span_transport_v2",
+  "git_sha": "REPLACE_AT_LAUNCH",
+  "dataset_revision": "p1_screening_eval_v1",
+  "command": "python3 scripts/student_serverless_c1c2.py --endpoint $RUNPOD_SERVERLESS_ENDPOINT_ID --suites c2_screening --mode tool --model Qwen/Qwen2.5-32B-Instruct",
+  "surface": "hub_serverless",
+  "gpu_or_model": "NVIDIA A100 80GB PCIe / Qwen/Qwen2.5-32B-Instruct",
+  "hub_stable_locator": "runpod-workers/worker-vllm",
+  "max_runtime_min": 90,
+  "max_cost_usd": 25.0,
+  "artifact_dest": "artifacts/campaign/span_transport_v2.json",
+  "termination_condition": "C2 screening complete (128 cases) then delete endpoint; write span_transport_v2.json",
+  "paid_compute_authorized": false,
+  "authorization_note": "Requires experiment-scoped authorization per ACTIVE_NOW.md; routine_runpod_training allowed within active experiment budget once manifest git_sha is pinned.",
+  "success_criteria": {
+    "exact_gold_span_rate_min": 0.25,
+    "assertion_state_correct_rate_min": 0.9,
+    "malformed_max": 0
+  },
+  "preflight": [
+    "runpodctl user",
+    "python3 scripts/check_active_now.py",
+    "export RUNPOD_SERVERLESS_ENDPOINT_ID from live Hub deploy"
+  ],
+  "notes": "Prep stub only — do not launch until owner authorizes B2 wave."
+}

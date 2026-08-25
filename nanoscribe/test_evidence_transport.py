@@ -216,6 +216,52 @@ def test_selector_cannot_emit_non_source_text() -> None:
     assert selector.select_quote(source, "the patient has cervicalgia", evidence_id="ev-2") is None
 
 
+def test_select_quote_variants_recovers_case_and_whitespace() -> None:
+    from nanoscribe.select import select_quote_variants
+
+    source = _source()
+    span = select_quote_variants(source, "NECK", evidence_id="ev-neck", raw_value="neck")
+    assert span is not None
+    assert span.text == "neck"
+    span2 = select_quote_variants(source, "cervical  strain", evidence_id="ev-assess")
+    assert span2 is not None
+    assert span2.text == "cervical strain"
+
+
+def test_select_quote_variants_uses_raw_value_fallback() -> None:
+    """raw_value rescues a MISSING quote, never a WRONG one.
+
+    This test previously asserted that "bogus quote" resolved to the raw_value's
+    span. That made the selector rescue every failed generation: a paraphrase or
+    a hallucination fell through to raw_value and returned abstained=False, so
+    the model's failure scored as a success. The offset invariant still held, so
+    nothing fabricated reached the record — but the abstention signal was gone,
+    which inflates transport/coverage and zeroes correct_abstention.
+
+    It also contradicted both the canonical contract (briefing SS VI: "Never
+    perform semantic paraphrase relocation. Ambiguous or missing evidence:
+    ABSTAIN / REVIEW, not guessed evidence.") and
+    test_adapt.py::test_paraphrase_abstains_instead_of_inventing_evidence.
+
+    The fallback itself is retained for its defensible case: the model supplied
+    no quote at all, so there is no claim to contradict.
+    """
+    from nanoscribe.select import select_quote_variants
+
+    source = _source()
+
+    # A wrong quote must NOT be rescued.
+    assert (
+        select_quote_variants(source, "bogus quote", evidence_id="ev-neck", raw_value="neck")
+        is None
+    ), "a wrong quote must abstain, not relocate to the raw_value"
+
+    # No quote at all may fall back to locating the raw_value.
+    span = select_quote_variants(source, "", evidence_id="ev-neck", raw_value="neck")
+    assert span is not None
+    assert span.text == "neck"
+
+
 def test_evaluate_exact_gold_span_and_char_f1() -> None:
     gold = _gold()
     pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck"),))
@@ -231,7 +277,41 @@ def test_evaluate_exact_gold_span_and_char_f1() -> None:
     assert not hasattr(report, "support_correct")
 
 
-def test_evaluate_wrong_mention_is_not_wrong_source() -> None:
+def test_aggregate_suite_metrics_sums_not_averages() -> None:
+    from nanoscribe.harness import HarnessResult, ModelTrack, P1TestSet, TrackConfig, _report_aggregate, aggregate_suite_metrics
+    from nanoscribe.harness import FailureTaxonomy
+
+    gold = _gold()
+    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck"),))
+    report = evaluate(gold, pred)
+    agg = _report_aggregate(report)
+    assert agg["assertion_state_correct_count"] == 1
+    assert agg["assertion_state_correct_eligible"] >= 1
+    assert agg["assertion_state_correct_rate"] <= 1.0
+
+    track = TrackConfig(
+        track=ModelTrack.FIXTURE,
+        model_id="fixture",
+        adapter_factory=lambda: None,
+        cost_class="zero",
+    )
+    result = HarnessResult(
+        track=track.track,
+        model_id=track.model_id,
+        test_set=P1TestSet.TINY_FIXTURE,
+        encounter_id="enc-1",
+        cost_class=track.cost_class,
+        aggregate=agg,
+        failures=FailureTaxonomy(),
+        per_atom={},
+        latency_s=0.0,
+        memory_bytes=0,
+    )
+    suite = aggregate_suite_metrics([result, result])
+    assert suite["assertion_state_correct_count"] == 2
+    assert suite["assertion_state_correct_rate"] <= 1.0
+
+
     gold = _gold()
     source = gold.sources[0]
     hurting = relocate(source, "hurting", evidence_id="ev-hurt")
@@ -255,6 +335,33 @@ def test_evaluate_wrong_mention_is_not_wrong_source() -> None:
     assert neck.wrong_mention
     assert not neck.wrong_source
     assert 0.0 <= report.span_character_f1 < 1.0
+
+
+def test_supporting_superspan_is_annotation_disagreement() -> None:
+    gold = _gold()
+    source = gold.sources[0]
+    full_quote = "My neck has been hurting."
+    full = relocate(source, full_quote, evidence_id="ev-full")
+    assert full is not None
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(
+                gold,
+                "atom-neck",
+                evidence_ids=("ev-full",),
+                spans=(full,),
+            ),
+        )
+    )
+    report = evaluate(gold, pred)
+    neck = atom_result(report, "atom-neck")
+    assert report.exact_gold_span == 0
+    assert report.wrong_mention == 0
+    assert report.annotation_disagreement == 1
+    assert report.supporting_superspan == 1
+    assert neck.annotation_disagreement
+    assert neck.supporting_superspan
+    assert neck.support_relation is SupportRelation.DIRECT_EXACT
 
 
 def test_evaluate_state_support_omission_and_abstention() -> None:
@@ -536,7 +643,8 @@ def test_span_order_and_second_span_are_not_first_span_artifacts() -> None:
     item = atom_result(partial, "atom-neck")
     assert item.exact_gold_span is False
     assert item.span_character_f1 > 0.0
-    assert item.wrong_mention
+    assert not item.wrong_mention
+    assert item.annotation_disagreement or item.supporting_superspan
 
 
 def test_duplicate_predicted_ids_are_malformed() -> None:

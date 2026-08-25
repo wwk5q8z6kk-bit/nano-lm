@@ -1,4 +1,101 @@
-# nano-lm — session progress (updated 2026-07-26)
+# nano-lm — session progress (updated 2026-08-25)
+
+## 2026-08-25 — Native30 revalidation: integrity gate + defect index
+**Branch:** `frontier/accelerated-research-campaign-v2` (verified first; all of
+`c98e4ad`, `35ad570`, `3991096` are contained in it and in NO other branch,
+which independently confirms `frontier/p1-campaign-eval-v0` / PR #50 lacks
+every defect fix. Do not work from that branch.)
+
+**Landed**
+- `artifacts/DEFECT_INDEX.md` (`4477497`) — task 6, protected first. All defects
+  in one place with id / site / mechanism / bias / fixing commit / taints.
+  **The "five defects" are twelve sites**: five counts fix *threads*, and three
+  threads bundle several independent defects fixed in one commit. Two of the
+  twelve are in no headline summary and each independently voids a wave:
+  **D1.2** the three native30 arm objectives were scalar multiples of `lm`, so
+  the arms shared one gradient direction and differed only in effective LR —
+  the arm comparison measured learning rate, not objective; **D2.3**
+  `analyze_revalidation.py`'s verdict fallthrough turned total output collapse
+  into `NOT_SEPARATED`, fabricating six nulls that were reported as findings.
+- **Recovered `artifacts/measurement-integrity-audit.md`** — cited as a source
+  for the index but absent from the tree. Written in WIP commit `1b241d6` and
+  never landed; 199 lines, restored.
+- `nanoscribe/native/integrity.py` + `test_native_integrity.py` (`d4790a2`) —
+  tasks 1–3. `run_startup_gate()` runs in `train_native()` before the first
+  optimizer step, on every run, and raises. Reference-oracle differential test
+  vs `F.scaled_dot_product_attention(is_causal=True)` alongside the derived
+  leakage probe. BPB floor (0.01 bits/byte) replaces the remembered
+  "40.6 → 22.4" numbers. 12 tests green, including three that reconstruct each
+  defect and prove the gate fires.
+- `artifacts/campaign/native100_checkpoint_audit.md` — task 5.
+- `a62ad8b` — 19GB untracked nested git repo at
+  `artifacts/campaign/kaggle_native30_download/` was unignored; any `git add -A`
+  would have swallowed it. Now ignored. All 18 pre-fix reval results committed.
+
+**Findings**
+- `native100_evidence_bottleneck_s0` is a **LOST ARTIFACT, not an incomplete
+  run.** `save_checkpoint` writes `step_NNNNNN.pt` → `latest.pt` → `.json`
+  **last**, so a surviving `.json` with no `.pt` proves both weight files were
+  written and later deleted. An incomplete run leaves the opposite signature.
+  Not recoverable (`.pt` is gitignored). Likely disk-pressure cleanup.
+- `native100_*` dirs may mix two configs in one directory (a `step_000006.json`
+  implies `max_steps=30`, but the embedded config says 200). Verify step/config
+  inside each payload rather than trusting directory names.
+- Corrected a stale number rather than propagating it: the recovered audit
+  reports `artifacts/` as 0 files for D4; 38 files under `artifacts/campaign/`
+  carry `correct_abstention`. No conclusion changes — those are native-line
+  results already void from D1–D3 — and the load-bearing claim survives a
+  precise recount: **0 across all eleven frozen Paper-α trees** plus
+  `trajectory/`, `fabric/`, `scribe/`.
+
+**Wave transition (2026-08-25)**
+- The pre-gate `causalfix` wave was **not killed — it completed on its own** at
+  08:35 (ran 02:33→08:35, all 9 arms + summary). The earlier "2 of 9 arms"
+  reading was accurate when taken; the SIGTERM sent afterwards hit nothing
+  ("no such process"). Preserved at `artifacts/campaign/reval_results_causalfix/`
+  (`9b4ac8c`) as the pre-gate comparison arm, NOT the artifact of record.
+  Verdicts: both constrained arms `NOT_SEPARATED` (pooled coverage 18), both
+  unconstrained `INVALID_NO_SIGNAL` at coverage 0 — D2.3's fix behaving
+  correctly rather than emitting a false null.
+- **Gated wave LAUNCHED** — PID 70762, MPS, 9 runs, ~6h expected.
+  - results → `artifacts/campaign/reval_results_fixed/` (log: `wave.log`)
+  - checkpoints → `artifacts/native_checkpoints_fixed/` via
+    `NANO_NATIVE_CHECKPOINT_DIR`
+  - summary → `artifacts/campaign/native30_revalidation_summary_fixed.json`
+- **Checkpoint-collision hazard, avoided.** The wave's run_ids are the bare
+  `reval30_*_s{0,1,2}`, and `config_for_run` defaults `checkpoint_dir` to
+  `artifacts/native_checkpoints`. Launching without the env redirect would have
+  overwritten all nine 2.0G archived checkpoint dirs — the broken-run record the
+  defect analysis cites. **Always set `NANO_NATIVE_CHECKPOINT_DIR` for this wave.**
+  Verified untouched after launch (mtimes still 08-23/08-24, s0 at 08-25 01:53).
+- Gate verified invoked **through the entrypoint**, not just by unit test: a
+  3-step run into throwaway dirs produced an `integrity` block inside the
+  entrypoint's `*_train.json` (`attention_leakage 0.0`,
+  `attention_reference_max_abs_diff 3.28e-07`, `supervised_target_tokens 305`,
+  `prompt_tokens_at_cap 512 == max_seq`).
+
+**Defect discovered this session (BPB floor mis-calibrated)**
+The flat `BPB_HARD_FLOOR = 0.01` I shipped earlier today would **not** have
+caught the real leak at end-of-training. Measured: the archived *leaking*
+`reval30_decoder_control_s0` finished at loss 0.00823 → **0.0119 bpb**, only 19%
+above the floor, while the fixed run finished at 0.0593 → 0.0856 bpb. The
+"0.002" leak signature everyone quotes is a *40-step* number, not a converged
+one. Fixed in `11c907c` by scoping the claim rather than nudging the constant:
+`floor_for_step()` is 0.5 at ≤100 steps (where memorisation is impossible, so
+near-zero loss has no innocent explanation — measured separation ~3,270×) and
+the 0.01 impossibility bound after. The docstring now states outright that a
+late-training pass is **not** evidence of a clean run; that evidence comes from
+`assert_no_attention_leakage`, which is exact rather than statistical.
+
+**Owed / next**
+- **Task 4 is IN FLIGHT** (PID 70762, launched 2026-08-25, ~6h). When it lands:
+  update `artifacts/DEFECT_INDEX.md` and this file with final artifact
+  locations and any newly discovered defects; compare against the pre-gate
+  causalfix wave (agreement ⇒ the gate did not perturb the measurement;
+  divergence ⇒ a finding). If it tripped a startup assertion or the BPB gate,
+  **report the exact failure and do not bypass the gate.**
+- Out of scope by instruction: minbpe/BPE swap (breaks comparability
+  mid-revalidation; own preregistered change), any paid compute.
 
 ## STAGE P / P2 (2026-07-26): explicit pointer/copy head — H-copy REFUTED (measured)
 The scribe OOD copying gap survived Stage C (curriculum) and Stage S (scale); Stage S's audit
@@ -146,12 +243,21 @@ move to a representation-level probe. Paper 2 reconciliation for C-3 not yet don
    7.0±1.0 / 29.4±4.0 — IDENTICAL to 200M+LoRA → data & method are SUBSTITUTES
    (interaction account replaces 73/27; papers + program updated). Base ckpt preserved
    at checkpoints/chinchilla-160m/ (gitignored, 2.5GB).
-   NEXT best run: the missing factorial corner 3.2B+LoRA (~30 min on the preserved base);
-   then LoRA at the anchors (~1.5h).
+   CORNER DONE — do NOT re-run this cell. 3.2B+LoRA landed on both seeds: 4.2±0.9,
+   |Δseed|=0.00, Q1 fires COMPOUND/tokenizer-innocent (verdict recorded at line 80).
+   Artifacts `trajectory/results_corner_3p2b_lora_seed{0,1}.json`; RESULT table in
+   `trajectory/PREREG_ownstack_160m.md`; ledger row C_ADAPT_DATA_CELLS
+   (`papers/EVIDENCE_LEDGER.md:80`); official M0 arm (`papers/EMPIRICAL_FOUNDATION.md:238`).
+   Still open from this block: LoRA at the anchors (~1.5h) — `papers/paper2_draft.md:343`
+   marks it OPTIONAL (capacity question at 3–10M, not mechanism); no artifacts exist.
    DESIGN NOTE (base-matching): nano scribe.pt was finetuned from dpo.pt (chat lineage),
    scale from scale10m_pretrain.pt (raw pretrain) — the LoRA cells must use the SAME base
    per anchor (nano-LoRA from dpo.pt, scale-LoRA from scale10m_pretrain.pt; all v0.1
-   release assets, downloadable in-kernel). Write a short PREREG paragraph before running.
+   release assets, downloadable in-kernel). PREREG WRITTEN 2026-08-23:
+   `trajectory/PREREG_anchors_lora.md` — design/bands/base-matching frozen; both bases
+   verified retrievable (HTTP 200); scale sha256 pinned from C-3, nano `dpo.pt` hash
+   UNRECORDED repo-wide and must be captured on first fetch. Prereg ≠ authorization;
+   the run is still owner-gated on compute per docs/ACTIVE_NOW.md.
 1b. (was) **LoRA arm** (`nano-lm-ownstack-160m-lora` v2; historical RUNNING note superseded): peft wrap VALIDATED locally
    (98 modules, 4.028M trainables; scratchpad venv `venv-peft`, peft 0.19.1); kernel
    reuses the fullft pretrain ckpt via kernel_sources — NOTE: mounts land under

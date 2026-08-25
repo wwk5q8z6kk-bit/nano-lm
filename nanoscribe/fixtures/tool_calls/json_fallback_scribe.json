@@ -1,0 +1,10 @@
+{
+  "name": "json_fallback_scribe",
+  "expected_outcome": "json_fallback",
+  "expected_capability": "scribe",
+  "expected_atom_count": 1,
+  "message": {
+    "role": "assistant",
+    "content": "{\"schema_version\":\"nano.candidate.v0\",\"atoms\":[{\"atom_id\":\"atom-neck\",\"atom_type\":\"symptom\",\"raw_value\":\"neck\",\"assertion_state\":\"asserted\",\"speaker\":\"patient\",\"experiencer\":\"patient\",\"temporality\":{\"kind\":\"current\"},\"certainty\":\"stated\",\"evidence_quote\":\"neck\",\"quotes\":[\"neck\"],\"review_required\":false,\"abstained\":false,\"malformed\":false}]}"
+  }
+}

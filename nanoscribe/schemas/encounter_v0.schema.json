@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nano-lm.local/schemas/encounter_v0.schema.json",
+  "title": "EncounterRecord",
+  "description": "P1 encounter representation v0 — evidence-grounded truth object. Semantic invariants are enforced by nanoscribe.encounter.EncounterRecord.from_dict; this schema captures wire shape only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "encounter_id",
+    "sources",
+    "evidence",
+    "atoms",
+    "conflicts",
+    "unresolved"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "nano.encounter.v0"
+    },
+    "encounter_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_span" }
+    },
+    "atoms": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/clinical_atom" }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/conflict" }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unresolved_item" }
+    }
+  },
+  "$defs": {
+    "speaker": {
+      "type": "string",
+      "enum": ["patient", "clinician", "other", "unknown"]
+    },
+    "assertion_state": {
+      "type": "string",
+      "enum": ["asserted", "denied", "uncertain", "conflicting"]
+    },
+    "temporality": {
+      "type": "string",
+      "enum": ["current", "historical", "future", "hypothetical", "unknown"]
+    },
+    "experiencer": {
+      "type": "string",
+      "enum": ["patient", "other", "unknown"]
+    },
+    "certainty": {
+      "type": "string",
+      "enum": ["stated", "uncertain", "unknown"]
+    },
+    "atom_type": {
+      "type": "string",
+      "enum": [
+        "symptom",
+        "medication",
+        "allergy",
+        "history",
+        "measurement",
+        "diagnosis_statement",
+        "assessment",
+        "plan",
+        "procedure",
+        "instruction"
+      ]
+    },
+    "turn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["turn_id", "source_id", "speaker", "start", "end", "text"],
+      "properties": {
+        "turn_id": { "type": "string", "minLength": 1 },
+        "source_id": { "type": "string", "minLength": 1 },
+        "speaker": { "$ref": "#/$defs/speaker" },
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 1 },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "text", "turns"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 },
+        "turns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/turn" }
+        }
+      }
+    },
+    "evidence_span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "source_id",
+        "turn_id",
+        "speaker",
+        "start",
+        "end",
+        "text"
+      ],
+      "properties": {
+        "evidence_id": { "type": "string", "minLength": 1 },
+        "source_id": { "type": "string", "minLength": 1 },
+        "turn_id": { "type": "string", "minLength": 1 },
+        "speaker": { "$ref": "#/$defs/speaker" },
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 1 },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    },
+    "temporal_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "onset_raw", "duration_raw", "time_expression_raw"],
+      "properties": {
+        "kind": { "$ref": "#/$defs/temporality" },
+        "onset_raw": { "type": ["string", "null"], "minLength": 1 },
+        "duration_raw": { "type": ["string", "null"], "minLength": 1 },
+        "time_expression_raw": { "type": ["string", "null"], "minLength": 1 }
+      }
+    },
+    "clinical_atom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "atom_id",
+        "atom_type",
+        "raw_value",
+        "normalized_value",
+        "assertion_state",
+        "speaker",
+        "experiencer",
+        "temporality",
+        "certainty",
+        "evidence_ids",
+        "normalization_transform",
+        "review_required"
+      ],
+      "properties": {
+        "atom_id": { "type": "string", "minLength": 1 },
+        "atom_type": { "$ref": "#/$defs/atom_type" },
+        "raw_value": { "type": "string", "minLength": 1 },
+        "normalized_value": { "type": ["string", "null"], "minLength": 1 },
+        "assertion_state": { "$ref": "#/$defs/assertion_state" },
+        "speaker": { "$ref": "#/$defs/speaker" },
+        "experiencer": { "$ref": "#/$defs/experiencer" },
+        "temporality": { "$ref": "#/$defs/temporal_state" },
+        "certainty": { "$ref": "#/$defs/certainty" },
+        "evidence_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "normalization_transform": { "type": ["string", "null"], "minLength": 1 },
+        "review_required": { "type": "boolean" }
+      }
+    },
+    "conflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["conflict_id", "atom_ids", "evidence_ids", "note"],
+      "properties": {
+        "conflict_id": { "type": "string", "minLength": 1 },
+        "atom_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "note": { "type": ["string", "null"], "minLength": 1 }
+      }
+    },
+    "unresolved_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unresolved_id", "topic", "reason", "review_required", "evidence_ids"],
+      "properties": {
+        "unresolved_id": { "type": "string", "minLength": 1 },
+        "topic": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "review_required": { "type": "boolean" },
+        "evidence_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

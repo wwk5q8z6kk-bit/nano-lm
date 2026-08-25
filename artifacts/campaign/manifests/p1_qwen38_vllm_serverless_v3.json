@@ -1,0 +1,28 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "p1_qwen38_vllm_serverless_v3",
+  "git_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+  "dataset_revision": "n/a-inference",
+  "command": "scripts/p1_serverless_launch.sh deploy",
+  "surface": "hub_serverless",
+  "gpu_or_model": "NVIDIA A100 80GB PCIe / Qwen/Qwen3.8-27B",
+  "hub_stable_locator": "runpod-workers/worker-vllm",
+  "hub_listing_id": "cm8h09d9n000008jvh2rqdsmb",
+  "resolved_at": "2026-08-23T04:53:33+00:00",
+  "max_runtime_min": 45,
+  "max_cost_usd": 10.0,
+  "artifact_dest": "artifacts/p1_runs/fanout_*_qwen_structured_*.json",
+  "termination_condition": "C1+C2 complete then delete endpoint",
+  "endpoint_id": "vllm-6gd1gw3pm5ka3d",
+  "vllm_env": {
+    "TOOL_CALL_PARSER": "qwen3_coder",
+    "ENABLE_AUTO_TOOL_CHOICE": "true",
+    "TRUST_REMOTE_CODE": "true",
+    "DTYPE": "bfloat16"
+  },
+  "inference_modes": {
+    "default": "structured",
+    "supported": ["structured", "tool", "span_port"],
+    "tool_choice": "submit_candidate_atoms"
+  }
+}

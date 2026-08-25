@@ -1,0 +1,13 @@
+{
+  "schema": "nano.campaign.qwen_metrics.v1",
+  "suite": "p1_screening_eval_v1",
+  "summary": {
+    "exact_gold_span": 0.1016,
+    "span_character_f1": 0.4393,
+    "assertion_state_correct": 1.0078,
+    "support_direct_exact": 0.9062,
+    "coverage": 0.8359,
+    "n_cases": 128,
+    "source": "artifacts/p1_runs/fanout_screening_p1_qwen_structured_20260823T021717Z.json"
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "schema": "nano.campaign.checkpoint.v5",
+  "timestamp": "2026-08-24T00:22:49+00:00",
+  "commit_sha": "488ba77",
+  "branch": "frontier/accelerated-research-campaign-v2",
+  "supersedes": "artifacts/campaign/checkpoint_v4.json",
+  "supersedes_note": "v4 optimistic winner language is historical only; v4 file preserved unchanged",
+  "campaign_phase": "WAVE_0_MEASUREMENT_CORPUS_CI",
+  "wallet": {
+    "live_runpod_balance_usd": 138.3151590231,
+    "balance_note": "runpodctl user 2026-08-23T23:39Z; idle pod fxbfs00asc8cpp stopped+deleted (~$0.74/hr avoided)",
+    "current_spend_per_hr": 0.004,
+    "campaign_remaining_est": 118.35,
+    "session_new_spend_usd": 2.0
+  },
+  "paid_gpu_hold": true,
+  "paid_gpu_hold_reason": "Native30 RunPod wave failed 4 attempts with no summary artifact; QLoRA adapter never pulled (attempts 6\u20137). Re-launch only after Kaggle import or bootstrap fix verified.",
+  "paid_gpu_hold_lift_when": [
+    "native30_revalidation summary pulled or RUNS_FAILED isolated",
+    "QLoRA attempt 7 adapter SCP pull PASS"
+  ],
+  "active_resources": {
+    "pods": 0,
+    "serverless": 0,
+    "posture": "NO_ACTIVE_PODS",
+    "note": "native30 RunPod fxbfs00asc8cpp deleted 2026-08-23T23:31Z; Kaggle kernel RUNNING"
+  },
+  "fleet_incident": {
+    "status": "IDLE_BURN_TERMINATED",
+    "timestamp": "2026-08-23T21:25:00+00:00",
+    "artifact": "artifacts/campaign/fleet_incident_20260823.json",
+    "pods_terminated": [
+      "45zauz5xh1591w",
+      "46zuwen2qobvlj"
+    ],
+    "note": "Owner reported dual idle pods at 0% GPU; both already deleted before agent terminate. native30 attempt 3 used screen corpus (not unit fixture) but may have idled between runs; QLoRA attempt 6 TRAIN_DONE on pod but adapter never pulled."
+  },
+  "measurement_repair": {
+    "status": "COMMITTED",
+    "artifact_md": "artifacts/campaign/MEASUREMENT_REPAIR_V1.md",
+    "artifact_json": "artifacts/campaign/measurement_repair_v1.json",
+    "n_defects": 6,
+    "defect_ids": [
+      "D1_reasoning_tokens_exhaust_budget",
+      "D2_unparsed_scored_as_capability_failure",
+      "D3_eval_injects_gold_into_candidate_set",
+      "D4_tokenizer_truncation_and_whitespace_loss",
+      "D5_counts_averaged_as_rates",
+      "D6_training_corpus_too_small_for_the_claims"
+    ],
+    "infrastructure_defect": "I1_torch_wheel_clobbers_cuda"
+  },
+  "lanes": {
+    "native_round1": {
+      "status": "EXPLORATORY_UNDERPOWERED_RANKING",
+      "promotion_status": "REVALIDATION_CANDIDATES",
+      "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
+      "provisional_mechanisms": [
+        "evidence_bottleneck",
+        "span_port"
+      ],
+      "artifact": "artifacts/campaign/native_round1_summary.json",
+      "invalid_for": [
+        "confirmatory_promotion",
+        "architecture_winner_claims"
+      ]
+    },
+    "native_round2": {
+      "status": "INVALID_FOR_PROMOTION",
+      "promotion_status": "REVALIDATION_CANDIDATES",
+      "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
+      "note": "6/200 steps, single epoch on 96-row fixture",
+      "artifact": "artifacts/campaign/native_round2_summary.json"
+    },
+    "native_extended": {
+      "status": "EXPLORATORY_UNDERPOWERED",
+      "promotion_status": "REVALIDATION_CANDIDATES",
+      "corpus_class": "NATIVE_UNIT_OVERFIT_FIXTURE",
+      "steps": 200,
+      "final_loss": 0.048755865544080734,
+      "held_out_free_generation_coverage": "0/150",
+      "artifact": "artifacts/campaign/native_extended_summary.json"
+    },
+    "student_a": {
+      "status": "GAP_COMPLETE",
+      "artifact": "artifacts/campaign/student_gap_v1.json",
+      "qlora_adaptation_gate": "LOCKED",
+      "qlora_canary_gate": "PARTIAL_PASS_TRAIN_PROVEN",
+      "qlora_canary_status": "ATTEMPT_7_BOOTSTRAP_FAIL",
+      "qlora_canary_attempt": 7,
+      "qlora_canary_pod": "qjzfvdafjzd71o",
+      "qlora_canary_note": "CUDA OK; SCP-only bootstrap timed out 120s \u2014 script never at /workspace; 0 adapter bytes; wallet $142.73",
+      "qlora_bootstrap_fix": "git clone pattern + 900s verify in student_qlora_pod_canary.py (pending attempt 8)"
+    },
+    "managed_reference": {
+      "winner": "qwen3_32b_awq",
+      "c2_coverage_rate": 0.86,
+      "c2_assertion_state_correct_rate": 0.7867,
+      "note": "recomputed atom-level rates; v4 hardcoded 1.0 assertion superseded"
+    },
+    "agent_canary": {
+      "status": "FULL_SUITE_PARSED",
+      "parse_rate": 1.0,
+      "artifact": "artifacts/campaign/agent_canary_v1_results.json"
+    },
+    "verifier": {
+      "hard_set_n": 500,
+      "baseline_accuracy": 1.0,
+      "learned_train": "SKIP"
+    },
+    "corpus_factory": {
+      "status": "SCREEN_VALIDATED",
+      "module": "nanoscribe/native/corpus/",
+      "build_script": "scripts/build_native_corpus.py",
+      "unit_fixture_id": "native_unit_overfit_fixture_v1",
+      "registry": "data/REGISTRY.json",
+      "screen_corpus": {
+        "corpus_id": "native_corpus_screen_v1",
+        "manifest": "artifacts/campaign/native_corpus_screen_v1_manifest.json",
+        "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+        "n_examples": 23977,
+        "train_rows": 19194,
+        "training_tokens_char_level": 14693267,
+        "unique_values": 7581
+      },
+      "kaggle_retrieval_plan": "artifacts/campaign/kaggle_retrieval_plan_v1.json",
+      "stream_a": "Kaggle retrieval plan v1 \u2014 external pretrain + trajectory results"
+    },
+    "measurement_ci": {
+      "status": "IN_PROGRESS",
+      "pytest_config": "pytest.nanoscribe.ini",
+      "ci_script": "scripts/ci_nanoscribe.sh",
+      "collection_floor": "nanoscribe/test_collection_floor.py"
+    },
+    "eval_v2": {
+      "status": "STUB",
+      "placeholder": "data/p1_screening_eval_v2.json",
+      "generator": "scripts/generate_p1_screening_eval_v2.py"
+    },
+    "native30_revalidation": {
+      "status": "KAGGLE_KERNEL_RUNNING",
+      "owner_reported_pod": "b2k1blbxs17w17",
+      "owner_reported_name": "native30-reval-202608231728",
+      "spend_committed_pod": "b2klblbxsl7wl7",
+      "commit_sha": "9a2d388",
+      "local_head": "488ba77",
+      "launched_at": "2026-08-23T21:29:32+00:00",
+      "corpus": "native_corpus_screen_v1_train (screen corpus, 14.69M char-level tokens)",
+      "corpus_gate": "CORPUS_OK",
+      "arms_total": 9,
+      "arms_completed": "0 kaggle (kernel RUNNING); 1 local MPS dev run in reval_results — not authoritative",
+      "summary_local": true,
+      "summary_verdict": "PARTIAL_LOCAL_DEV_ONLY",
+      "preflight": "9-arm construct-all before train (embed_dim/num_heads fix at 9a2d388)",
+      "artifact_dest": "artifacts/campaign/native30_revalidation_summary_v1.json",
+      "runpod_attempts": "artifacts/campaign/native30_runpod_attempts_v1.json",
+      "kaggle_script": "scripts/kaggle_native30_revalidation.py",
+      "kaggle_import": "scripts/import_kaggle_native30_results.py",
+      "api_visibility": "PODS_404_AT_21_35Z",
+      "note": "RunPod abandoned; kernel v1 pushed via artifacts/campaign/kaggle_native30_kernel/",
+      "attempts": {
+        "1_pod_9cg7kfpe4vlgzi": "ABORTED \u2014 torch wheel clobbered CUDA",
+        "2_pod_a46aeq9gdrq0g4": "ABORTED \u2014 unit fixture default",
+        "3_pod_45zauz5xh1591w": "TERMINATED \u2014 idled 0% GPU; no pull",
+        "4_pod_b2k1blbxs17w17": "UNKNOWN \u2014 404; NATIVE30_REVALIDATION_DONE not verified"
+      },
+      "kaggle_kernel": "hassaneljesr/nano-native30-revalidation-v1",
+      "kaggle_kernel_pushed_at": "2026-08-23T23:39:32.719609+00:00",
+      "summary_partial_note": "reval30_decoder_control_s0 is local Apple MPS dev only; await Kaggle COMPLETE then scripts/finish_kaggle_native30.sh"
+    }
+  },
+  "gates": {
+    "G0_measurement_integrity": "IN_PROGRESS",
+    "G1_corpus_validity": "SCREEN_VALIDATED",
+    "G2_evaluation_power": "STUB",
+    "G4_30m_revalidation": "KAGGLE_IN_PROGRESS",
+    "G5_100m_promotion": "BLOCKED",
+    "native_data_gate": "artifacts/campaign/gates/native_data_gate_v1.json",
+    "qlora_canary_gate": "artifacts/campaign/gates/qlora_canary_gate_v1.json",
+    "qlora_adaptation_gate": "artifacts/campaign/gates/qlora_adaptation_gate_v1.json"
+  },
+  "next_work_lanes": [
+    "When kernel COMPLETE: scripts/finish_kaggle_native30.sh (download + import 9/9)",
+    "QLoRA attempt 8 after native30 COMPLETE and wallet > $140 (~$2 canary)",
+    "eval v2 design + power analysis",
+    "pytest nanoscribe in CI with collection floor"
+  ],
+  "explicitly_deferred": [
+    "100M promotion launch",
+    "full QLoRA adaptation",
+    "owner corpus strategy debate"
+  ],
+  "authority": "docs/NANO_MODEL_PROGRAM.md",
+  "refs": {
+    "checkpoint_v4": "artifacts/campaign/checkpoint_v4.json",
+    "checkpoint_v3": "artifacts/campaign/checkpoint_v3.json",
+    "measurement_repair": "artifacts/campaign/measurement_repair_v1.json",
+    "kaggle_retrieval_plan": "artifacts/campaign/kaggle_retrieval_plan_v1.json",
+    "native30_runpod_attempts": "artifacts/campaign/native30_runpod_attempts_v1.json"
+  }
+}

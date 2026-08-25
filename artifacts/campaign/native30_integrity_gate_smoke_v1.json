@@ -1,0 +1,37 @@
+{
+  "schema": "nano.native.integrity_smoke.v1",
+  "timestamp": "2026-08-25T08:09:58.578146+00:00",
+  "purpose": "Task 3 \u2014 verify the startup gate and the BPB floor on the real corpus before the wave.",
+  "config": {
+    "d_model": 192,
+    "n_layers": 4,
+    "n_heads": 4,
+    "max_seq": 512,
+    "max_steps": 40,
+    "batch_size": 8,
+    "device": "cpu"
+  },
+  "startup_gate": {
+    "attention_leakage": 0.0,
+    "attention_matches_reference": true,
+    "attention_reference_max_abs_diff": 3.5762786865234375e-07,
+    "supervised_target_tokens": 337,
+    "sampled_examples": 16,
+    "prompt_tokens_at_cap": 512,
+    "max_seq": 512
+  },
+  "result": {
+    "steps_completed": 40,
+    "final_loss": 12.8958,
+    "bits_per_byte": 9.4848,
+    "wall_seconds": 10.2
+  },
+  "interpretation": {
+    "verdict": "PASS",
+    "scale": "uniform byte model = 8.0 bpb; uniform over this 4098-token vocab ~= 12.0 bpb",
+    "reading": "9.48 bpb at step 40 sits below uniform-over-vocab (~12) and above uniform-over-bytes (8) \u2014 the model has begun to learn and is nowhere near good, which is what 40 honest steps should look like.",
+    "discriminator": "The causal-mask leak presented as loss ~0.002 (~0.003 bpb). Observed 12.90 / 9.48. Separation from the leak signature is ~3 orders of magnitude.",
+    "floor_is_loose_by_design": "HARD_FLOOR=0.01 is a plausibility bound, not a quality gate. It is meant to be unreachable by any honest run and trivially tripped by label leakage; it does not certify that a run is good."
+  },
+  "caveat": "Reduced-size config (d_model 192 vs 704) for speed, on the real p1_distill_train_v1 corpus. Evidence about the INSTRUMENT, not a tuned result."
+}

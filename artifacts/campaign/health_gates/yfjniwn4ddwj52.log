@@ -1,0 +1,10 @@
+health_gate pod=yfjniwn4ddwj52 max_wait=300s threshold=5%
+t=0s ssh/smi not ready
+t=30s ssh/smi not ready
+t=60s ssh/smi not ready
+t=90s ssh/smi not ready
+t=120s ssh/smi not ready
+t=150s ssh/smi not ready
+t=180s ssh/smi not ready
+t=210s ssh/smi not ready
+pod gone

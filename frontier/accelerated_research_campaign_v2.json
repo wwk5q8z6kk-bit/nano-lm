@@ -1,0 +1,91 @@
+{
+  "schema": "nano.accelerated_research_campaign.v2",
+  "campaign_id": "accelerated_research_campaign_v2",
+  "base_branch": "frontier/accelerated-research-campaign-v2",
+  "prior_campaign": "accelerated_research_campaign_v1",
+  "prior_checkpoint": "artifacts/campaign/checkpoint_v4.json",
+  "dataset_revision": "campaign_v2_20260823",
+  "authority_docs": [
+    "docs/ACCELERATED_RESEARCH_CAMPAIGN_V2.md",
+    "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
+    "docs/ACTIVE_NOW.md"
+  ],
+  "budget": {
+    "absolute_max_usd": 200,
+    "normal_envelope_usd": 180,
+    "safety_margin_usd": 20,
+    "campaign_remaining_est_usd": 149.0,
+    "ledger": "artifacts/campaign/spend.json"
+  },
+  "entry_evidence": {
+    "managed_ref_c2_exact_gold_span_rate": 0.1102,
+    "managed_ref_c2_assertion_state_correct_rate": 1.0,
+    "student_a_c2_assertion_gap_vs_managed": -0.3203,
+    "native100_extended_p1_smoke_malformed": 8,
+    "verifier_hard_set_baseline_accuracy": 1.0,
+    "agent_canary_parse_rate": 1.0,
+    "agent_canary_outcome_mean": 0.5
+  },
+  "loops": {
+    "model_science": {
+      "experiments": ["A1_tool_calling_span", "A2_qlora_assertion_canary", "A3_native_decode_viability", "A4_teacher_span_ceiling"],
+      "primary_metrics": ["exact_gold_span_rate", "support_direct_exact_rate", "assertion_state_correct_rate", "malformed"]
+    },
+    "system_intelligence": {
+      "experiments": ["B1_encounter_schema_v0", "B2_span_transport_student", "B3_note_rendering_v0", "B4_classical_utility_compare", "B5_verifier_expand"],
+      "primary_metrics": ["exact_gold_span_rate", "unsupported_critical_claims", "utility_U", "review_burden"]
+    },
+    "product": {
+      "experiments": ["C1_external_benchmark_pilot", "C2_human_eval_pilot", "C3_risk_coverage_curve", "C4_workflow_smoke"],
+      "primary_metrics": ["clinician_edit_distance", "critical_error_rate", "time_to_final_note"],
+      "requires_prereg": ["C2_human_eval_pilot"]
+    }
+  },
+  "interim_gate": {
+    "c2_exact_gold_span_rate_min": 0.25,
+    "c2_assertion_state_correct_rate_min": 0.9,
+    "note_render_unsupported_critical_claims_max": 0
+  },
+  "next_bounded_tasks": [
+    {
+      "id": "B1",
+      "task": "encounter_representation_schema_v0",
+      "compute": "local_cpu",
+      "artifact": "nanoscribe/schemas/encounter_v0.schema.json",
+      "status": "done"
+    },
+    {
+      "id": "B2",
+      "task": "span_evidence_transport_managed_student",
+      "compute": "runpod_serverless_routine_budget",
+      "artifact": "artifacts/campaign/span_transport_v2.json",
+      "status": "local_smoke_done_serverless_pending"
+    },
+    {
+      "id": "B3",
+      "task": "verified_record_to_note_rendering_v0",
+      "compute": "local_cpu",
+      "artifact": "nanoscribe/render.py",
+      "status": "done"
+    }
+  ],
+  "deferred": [
+    "native_300m_promotion",
+    "hybrid_native_student",
+    "learned_verifier_training",
+    "p4_cuad_integration",
+    "kimi_blocking_waves"
+  ],
+  "cross_worktree": {
+    "integration_worktree": "/Users/mac/Projects/nano-lm-nanoscribe",
+    "integration_branch": "frontier/nanoscribe-core-v1",
+    "port_policy": "selective_primitives_only",
+    "manifest": "frontier/p1_integration_manifest.json"
+  },
+  "harness": {
+    "entrypoint": "python3 scripts/p1_harness.py",
+    "suites": ["p1_contract_smoke_v1", "p1_core", "p1_adversarial", "c1_canary", "c2_screening"],
+    "frozen_eval_forever": "p1_screening_eval_v1",
+    "train_disjoint": "p1_distill_train_v1"
+  }
+}

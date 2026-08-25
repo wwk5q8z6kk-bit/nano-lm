@@ -1,0 +1,58 @@
+{
+  "schema": "nano.campaign.kaggle_retrieval.v1",
+  "timestamp": "2026-08-23T21:40:00+00:00",
+  "account": "hassaneljesr",
+  "auth": "kaggle CLI OAuth (no kaggle.json required per CLAUDE-PROGRESS.md)",
+  "already_in_repo": {
+    "kernel_scripts": [
+      "trajectory/kaggle_arm1.py",
+      "trajectory/kaggle_arm1_v2.py",
+      "trajectory/kaggle_ownstack_160m.py",
+      "trajectory/kaggle_ownstack_160m_lora.py",
+      "trajectory/kaggle_pythia_fieldwise.py",
+      "trajectory/kaggle_sweep_10m.py"
+    ],
+    "results_json": "trajectory/results_*.json (immutable ladder measurements)",
+    "reproducibility": "trajectory/REPRODUCIBILITY.md",
+    "fineweb_shard_doc": "pretrain/AUDIT.md — 10.96M token uint16 shard from FineWeb sample"
+  },
+  "retrieve_from_kaggle": [
+    {
+      "asset": "fineweb_10m_token_shard",
+      "purpose": "STREAM A general representation seed",
+      "notes": "10.96M tokens; nano 3.15M pretrain used 32.8M exposures (~3.1 epochs)",
+      "integrate": "nanoscribe/native/corpus/sources.py + data/REGISTRY.json",
+      "status": "PENDING_OWNER_DOWNLOAD"
+    },
+    {
+      "asset": "ownstack160m_pretrain.pt",
+      "purpose": "historical student/own-stack control checkpoint",
+      "kernel": "trajectory/kaggle_ownstack_160m.py",
+      "integrate": "artifacts/kaggle/ownstack/ (gitignored) + REGISTRY entry",
+      "status": "PENDING"
+    },
+    {
+      "asset": "native30_revalidation_results",
+      "purpose": "Wave-1 30M screen on real corpus (9 arms × 3 seeds)",
+      "script": "scripts/kaggle_native30_revalidation.py",
+      "import": "scripts/import_kaggle_native30_results.py",
+      "integrate": "artifacts/campaign/native30_revalidation_summary_v1.json",
+      "status": "IN_PROGRESS",
+    },
+    {
+      "asset": "kernel_output_bundles",
+      "purpose": "logs, checkpoints from completed kernels",
+      "notes": "Check Kaggle Datasets/Notebooks output for wwk5q8z6kk-bit/nano-lm runs",
+      "status": "PENDING"
+    }
+  ],
+  "commands": [
+    "kaggle kernels list --user hassaneljesr",
+    "kaggle datasets list --user hassaneljesr",
+    "kaggle kernels output <kernel-slug> -p artifacts/kaggle/<run_id>/"
+  ],
+  "do_not_use_for": [
+    "architecture_ranking_without_revalidation",
+    "automatic_teacher_gold"
+  ]
+}

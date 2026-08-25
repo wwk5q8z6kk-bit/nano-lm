@@ -1,0 +1,28 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "native100_round2_promotion_v1",
+  "git_sha": "2094214919fd4c806ec378012cde0ceac4318ef1",
+  "pod_id": "6opxbt2tqphjrm",
+  "datacenter": "CA-MTL-3",
+  "volume_id": null,
+  "volume_note": "EU-RO-1 A100+volume unavailable; trained on CA-MTL-3 container disk",
+  "dataset_revision": "p1_distill_train_v1",
+  "command": "scripts/launch_native_round2.sh",
+  "surface": "pod_template",
+  "gpu_or_model": "NVIDIA A100 80GB PCIe",
+  "hub_stable_locator": "runpod-torch-v240",
+  "hub_listing_id": "runpod-torch-v240",
+  "resolved_at": "2026-08-23T10:14:00+00:00",
+  "max_runtime_min": 90,
+  "max_cost_usd": 2.5,
+  "artifact_dest": "/workspace/campaign_native_checkpoints",
+  "termination_condition": "NATIVE100_DONE + rsync to volume then delete pod",
+  "run_ids": [
+    "native100_evidence_bottleneck_s0",
+    "native100_evidence_bottleneck_s1",
+    "native100_span_port_s0",
+    "native100_span_port_s1"
+  ],
+  "init": "fresh_random",
+  "volume_id": "04himzqxbm"
+}

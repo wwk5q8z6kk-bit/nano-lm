@@ -1,0 +1,48 @@
+{
+  "schema": "nano.eval.screening_suite.v2",
+  "suite_id": "p1_screening_eval_v2",
+  "built_at": "2026-08-23T21:37:25.221991+00:00",
+  "generator_commit_sha": "488ba77e2908eee538c2595adfdb0fe995c665db",
+  "preserves": "p1_screening_eval_v1 is retained unchanged; this is an addition",
+  "n_cases": 512,
+  "axis_floor": 64,
+  "axis_floor_note": "screening floor, not a power guarantee \u2014 see nanoscribe/eval/power.py for confirmatory requirements from a declared effect size",
+  "axis_histogram": {
+    "exact_copy": 236,
+    "not_mentioned": 212,
+    "open_vocab": 172,
+    "assertion": 131,
+    "uncertainty": 83,
+    "negation": 81,
+    "temporality": 74,
+    "spurious_temptation": 74,
+    "abstention": 74,
+    "speaker": 64,
+    "wrong_source": 64,
+    "conflict": 64,
+    "experiencer": 64,
+    "superspan": 64,
+    "multi_mention": 64
+  },
+  "axes_below_floor": {},
+  "target_label_histogram": {
+    "ASSERTED": 195,
+    "NOT_MENTIONED": 212,
+    "UNCERTAIN": 83,
+    "DENIED": 22
+  },
+  "unique_values": 270,
+  "leakage": {
+    "overlap_with_train_values": [],
+    "overlap_with_dev_values": [],
+    "overlap_with_frozen_v1_values": [],
+    "pass": true
+  },
+  "content_hash": "fe561828564793af1a1c991928fd695046e62f42c06699f129a43140653e9feb",
+  "gates": {
+    "leakage_pass": true,
+    "axis_floor_pass": true,
+    "size_in_range": true,
+    "all_pass": true
+  }
+}

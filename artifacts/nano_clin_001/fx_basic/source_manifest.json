@@ -1,0 +1,16 @@
+{
+  "patient_id": "synth-001",
+  "modality": "text",
+  "document_type": "encounter_transcript",
+  "content": "clinician: What brings you in today?\npatient: I have had a sore throat for about three days.\nclinician: Any fever?\npatient: No fever.\nclinician: Your temperature is 37.1 degrees celsius.\nclinician: I think this is a viral pharyngitis.\nclinician: Start ibuprofen 400 mg as needed.\n",
+  "author_or_device": "synthetic_generator",
+  "encounter_id": "",
+  "organization_id": "",
+  "source_system": "",
+  "creation_time": "",
+  "received_time": "",
+  "security_classification": "synthetic_non_phi",
+  "consent_scope": "research_synthetic",
+  "content_hash": "cf1316db5ebaf7e1162c2bb4fe53566b4f38a197b9c70ba79823593a7683e14a",
+  "source_id": "src_345863a06d16bf37"
+}

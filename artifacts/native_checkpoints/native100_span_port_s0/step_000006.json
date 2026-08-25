@@ -1,0 +1,31 @@
+{
+  "schema": "nano.native.checkpoint.v1",
+  "timestamp": "2026-08-23T10:52:00.085189+00:00",
+  "step": 6,
+  "config": {
+    "run_id": "native100_span_port_s0",
+    "variant": "native_a_decoder_baseline",
+    "seed": 0,
+    "params_m": 100,
+    "d_model": 896,
+    "n_layers": 10,
+    "n_heads": 14,
+    "max_seq": 512,
+    "max_steps": 200,
+    "batch_size": 16,
+    "peak_lr": 0.0003,
+    "dataset_path": "artifacts/campaign/p1_distill_train_v1.json",
+    "checkpoint_dir": "artifacts/native_checkpoints",
+    "cpu_smoke": false,
+    "loss_weights": {
+      "lm": 1.0,
+      "span_port": 1.0,
+      "evidence_align": 0.0,
+      "assertion_state": 0.0
+    },
+    "cell": null
+  },
+  "extra": {
+    "loss": 77.48926544189453
+  }
+}
