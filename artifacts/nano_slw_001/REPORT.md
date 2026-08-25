@@ -207,6 +207,7 @@ with the corruption rates and be tuned rather than measured.
 | `.venv/bin/python -m pytest fabric/test_fabric.py -rs` | 0 | 8 | 0 | 0 |
 | `.venv/bin/python -m pytest -c pytest.nanoscribe.ini nanoscribe -rs` | 0 | 279 | 0 | 0 |
 | `.venv/bin/python scripts/run_nano_slw_001.py --sweep` | 0 | — | — | — |
+| two independent runs → byte-identical artifacts | — | 10/10 | 0 | — |
 
 **438 tests, no failures, no skips, no environment-dependent exclusions.**
 `nano` includes 59 SLW tests. Earlier in this session I reported nanoscribe as
@@ -269,8 +270,15 @@ a future inference path cannot slip in unnoticed.
 .venv/bin/python -m pytest nano -rs
 ```
 
-Deterministic from `--seed`. `Date.now()`-style nondeterminism is absent by
-construction: the world's clock is tick arithmetic over a fixed epoch.
+Deterministic from `--seed`, and verified as such: two independent runs produce
+**all 10 artifacts byte-identical**. `Date.now()`-style nondeterminism is absent
+by construction — the world's clock is tick arithmetic over a fixed epoch.
+
+One nondeterminism did slip through and was caught by this check: the runner
+keyed `arm_snapshots.json` on Python's builtin `hash()`, which is salted per
+process, so the artifact differed on every run. Content-addressed now. A
+repository whose thesis is provenance cannot ship an artifact that changes when
+nothing changed.
 
 ---
 

@@ -1,42 +1,42 @@
 {
   "baseline_a_full_rebuild": {
     "10": {
-      "signature_hash": 3217701661344276376,
+      "signature_hash": "sig_30c1c4b817cdf491",
       "ledger_version": 354,
       "facts": 217,
       "uncertain": 23,
       "recomputed": 509
     },
     "20": {
-      "signature_hash": -3575910660486771883,
+      "signature_hash": "sig_7bf1dd7808125c50",
       "ledger_version": 440,
       "facts": 212,
       "uncertain": 28,
       "recomputed": 590
     },
     "30": {
-      "signature_hash": -6314579971067127220,
+      "signature_hash": "sig_d0cfe3588854e24a",
       "ledger_version": 504,
       "facts": 207,
       "uncertain": 33,
       "recomputed": 648
     },
     "40": {
-      "signature_hash": -6896035547182254764,
+      "signature_hash": "sig_80941323cf7659d4",
       "ledger_version": 583,
       "facts": 208,
       "uncertain": 32,
       "recomputed": 725
     },
     "50": {
-      "signature_hash": 5680436380119315408,
+      "signature_hash": "sig_7ccf7b0be8567b3b",
       "ledger_version": 658,
       "facts": 208,
       "uncertain": 32,
       "recomputed": 791
     },
     "60": {
-      "signature_hash": 7817890903369115245,
+      "signature_hash": "sig_95af3309825e4c2c",
       "ledger_version": 729,
       "facts": 204,
       "uncertain": 36,
@@ -45,42 +45,42 @@
   },
   "candidate_b_incremental": {
     "10": {
-      "signature_hash": 3217701661344276376,
+      "signature_hash": "sig_30c1c4b817cdf491",
       "ledger_version": 354,
       "facts": 217,
       "uncertain": 23,
       "recomputed": 509
     },
     "20": {
-      "signature_hash": -3575910660486771883,
+      "signature_hash": "sig_7bf1dd7808125c50",
       "ledger_version": 440,
       "facts": 212,
       "uncertain": 28,
       "recomputed": 141
     },
     "30": {
-      "signature_hash": -6314579971067127220,
+      "signature_hash": "sig_d0cfe3588854e24a",
       "ledger_version": 504,
       "facts": 207,
       "uncertain": 33,
       "recomputed": 113
     },
     "40": {
-      "signature_hash": -6896035547182254764,
+      "signature_hash": "sig_80941323cf7659d4",
       "ledger_version": 583,
       "facts": 208,
       "uncertain": 32,
       "recomputed": 138
     },
     "50": {
-      "signature_hash": 5680436380119315408,
+      "signature_hash": "sig_7ccf7b0be8567b3b",
       "ledger_version": 658,
       "facts": 208,
       "uncertain": 32,
       "recomputed": 121
     },
     "60": {
-      "signature_hash": 7817890903369115245,
+      "signature_hash": "sig_95af3309825e4c2c",
       "ledger_version": 729,
       "facts": 204,
       "uncertain": 36,
