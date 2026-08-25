@@ -73,3 +73,6 @@ artifacts/campaign/native_corpus_*_internal_test.json
 
 # Rebuilt by the determinism test on every run (built_at timestamp churns).
 artifacts/campaign/native_corpus_smoke_v1_manifest.json
+
+# 19GB Kaggle artifact download containing a nested git repo — never commit.
+artifacts/campaign/kaggle_native30_download/
