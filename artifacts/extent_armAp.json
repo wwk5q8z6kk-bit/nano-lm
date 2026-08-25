@@ -1,0 +1,1747 @@
+{
+  "counts": {
+    "grounded_exact": 2,
+    "located_over_extended": 95,
+    "no_gold_span": 72,
+    "no_quote": 15,
+    "not_located": 8
+  },
+  "label": "arm A' (free_form replication)",
+  "located_share_of_ceiling": 0.8083,
+  "n_gold_present": 120,
+  "n_located": 97,
+  "n_nongrounded_gold": 118,
+  "n_total": 192,
+  "over_extended_share_of_nongrounded": 0.8051,
+  "rows": [
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My throat has been sore since Friday.",
+      "raw_line": "STATED: \"My throat has been sore since Friday.\"",
+      "slot": "i0/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My throat has been sore since Friday.",
+      "raw_line": "STATED: \"My throat has been sore since Friday.\"",
+      "slot": "i0/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "None.",
+      "raw_line": "DENIED: \"None.\"",
+      "slot": "i0/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (Patient did not mention anything specific about their prescription.)",
+      "slot": "i0/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My temperature is normal.",
+      "raw_line": "DENIED: \"My temperature is normal.\"",
+      "slot": "i0/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i0/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "cervical strain",
+      "model_quote": null,
+      "raw_line": "STATED, DENIED.",
+      "slot": "i0/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "pressure",
+      "model_quote": "Maybe a little pressure sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little pressure sometimes.\"",
+      "slot": "i0/atom-chest",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "diabetes",
+      "model_quote": "My mother had diabetes.",
+      "raw_line": "STATED: \"My mother had diabetes.\"",
+      "slot": "i0/atom-fh",
+      "span_character_f1": 0.5161
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "migraines",
+      "model_quote": "I used to have migraines years ago.",
+      "raw_line": "DENIED: \"I used to have migraines years ago.\"",
+      "slot": "i0/atom-hist",
+      "span_character_f1": 0.4091
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "neck",
+      "model_quote": "My neck",
+      "raw_line": "STATED: \"My neck\"",
+      "slot": "i0/atom-neck",
+      "span_character_f1": 0.7273
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "smoked",
+      "model_quote": "I have never smoked.",
+      "raw_line": "DENIED: \"I have never smoked.\"",
+      "slot": "i0/atom-smoke",
+      "span_character_f1": 0.4615
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "sore",
+      "model_quote": "My throat has been sore since Friday.",
+      "raw_line": "STATED: \"My throat has been sore since Friday.\"",
+      "slot": "i0/atom-throat",
+      "span_character_f1": 0.1951
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tired",
+      "model_quote": "I've been tired this week.",
+      "raw_line": "DENIED: \"I've been tired this week.\"",
+      "slot": "i0/atom-tired",
+      "span_character_f1": 0.3226
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "wheezing",
+      "model_quote": "No wheezing at all.",
+      "raw_line": "DENIED: \"No wheezing at all.\"",
+      "slot": "i0/atom-wheeze",
+      "span_character_f1": 0.5926
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i0/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My knee has been swollen since Friday.",
+      "raw_line": "STATED: \"My knee has been swollen since Friday.\"",
+      "slot": "i1/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My knee has been swollen since Friday.",
+      "raw_line": "STATED: \"My knee has been swollen since Friday.\"",
+      "slot": "i1/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "I have no history of injuries.",
+      "raw_line": "DENIED: \"I have no history of injuries.\"",
+      "slot": "i1/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (Patient did not mention any specific prescription.)",
+      "slot": "i1/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My blood pressure is 120/80.",
+      "raw_line": "DENIED: \"My blood pressure is 120/80.\"",
+      "slot": "i1/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No known allergies.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i1/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "rotator cuff strain",
+      "model_quote": "I think this is rotator cuff strain.",
+      "raw_line": "STATED: \"I think this is rotator cuff strain.\"",
+      "slot": "i1/atom-assess",
+      "span_character_f1": 0.6909
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "cramping",
+      "model_quote": "Maybe a little cramping sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little cramping sometimes.\"",
+      "slot": "i1/atom-chest",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "glaucoma",
+      "model_quote": "My mother had glaucoma.",
+      "raw_line": "STATED: \"My mother had glaucoma.\"",
+      "slot": "i1/atom-fh",
+      "span_character_f1": 0.5161
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "eczema",
+      "model_quote": "I used to have eczema years ago.",
+      "raw_line": "DENIED: \"I used to have eczema years ago.\"",
+      "slot": "i1/atom-hist",
+      "span_character_f1": 0.3158
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "shoulder",
+      "model_quote": "My shoulder.",
+      "raw_line": "STATED: \"My shoulder.\"",
+      "slot": "i1/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "vaped",
+      "model_quote": "I have never vaped.",
+      "raw_line": "DENIED: \"I have never vaped.\"",
+      "slot": "i1/atom-smoke",
+      "span_character_f1": 0.4167
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "swollen",
+      "model_quote": "My knee has been swollen since Friday.",
+      "raw_line": "STATED: \"My knee has been swollen since Friday.\"",
+      "slot": "i1/atom-throat",
+      "span_character_f1": 0.3111
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "dizzy",
+      "model_quote": "I haven't been dizzy.",
+      "raw_line": "DENIED: \"I haven't been dizzy.\"",
+      "slot": "i1/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "coughing",
+      "model_quote": "No coughing at all.",
+      "raw_line": "DENIED: \"No coughing at all.\"",
+      "slot": "i1/atom-wheeze",
+      "span_character_f1": 0.5926
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i1/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My rib has been blotchy since Friday.",
+      "raw_line": "STATED: \"My rib has been blotchy since Friday.\"",
+      "slot": "i10/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My rib has been blotchy since Friday.",
+      "raw_line": "DENIED: \"My rib has been blotchy since Friday.\"",
+      "slot": "i10/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "None.",
+      "raw_line": "DENIED: \"None.\"",
+      "slot": "i10/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i10/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My temperature is normal.",
+      "raw_line": "DENIED: \"My temperature is normal.\"",
+      "slot": "i10/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "No allergies in the notes.",
+      "model_quote": "I don't rule out any reactions.",
+      "raw_line": "DENIED: \"I don't rule out any reactions.\"",
+      "slot": "i10/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "soft tissue swelling",
+      "model_quote": "I believe it's soft tissue swelling.",
+      "raw_line": "DENIED: \"I believe it's soft tissue swelling.\"",
+      "slot": "i10/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "burning",
+      "model_quote": "Maybe a little burning sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little burning sometimes.\"",
+      "slot": "i10/atom-chest",
+      "span_character_f1": 0.35
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "thyroid disease",
+      "model_quote": "My mother had thyroid disease.",
+      "raw_line": "STATED: \"My mother had thyroid disease.\"",
+      "slot": "i10/atom-fh",
+      "span_character_f1": 0.6667
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "pleurisy",
+      "model_quote": "I used to have pleurisy years ago.",
+      "raw_line": "DENIED: \"I used to have pleurisy years ago.\"",
+      "slot": "i10/atom-hist",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "knuckle",
+      "model_quote": "My knuckle",
+      "raw_line": "STATED: \"My knuckle\"",
+      "slot": "i10/atom-neck",
+      "span_character_f1": 0.8235
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "relied on sleeping pills",
+      "model_quote": "I have never relied on sleeping pills.",
+      "raw_line": "DENIED: \"I have never relied on sleeping pills.\"",
+      "slot": "i10/atom-smoke",
+      "span_character_f1": 0.7742
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "blotchy",
+      "model_quote": "My rib has been blotchy since Friday.",
+      "raw_line": "STATED: \"My rib has been blotchy since Friday.\"",
+      "slot": "i10/atom-throat",
+      "span_character_f1": 0.3182
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "irritable",
+      "model_quote": "I haven't been irritable.",
+      "raw_line": "DENIED: \"I haven't been irritable.\"",
+      "slot": "i10/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "groaning",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i10/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i10/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My forearm has been mottled since Friday.",
+      "raw_line": "STATED: \"My forearm has been mottled since Friday.\"",
+      "slot": "i11/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My forearm has been mottled since Friday.",
+      "raw_line": "STATED: \"My forearm has been mottled since Friday.\"",
+      "slot": "i11/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "None.",
+      "raw_line": "DENIED: \"None.\"",
+      "slot": "i11/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": "I take it daily.",
+      "raw_line": "NOT_MENTIONED: \"I take it daily.\"",
+      "slot": "i11/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My blood pressure is 120/80.",
+      "raw_line": "DENIED: \"My blood pressure is 120/80.\"",
+      "slot": "i11/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies on file.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i11/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "ligament strain",
+      "model_quote": "I believe it's a ligament strain.",
+      "raw_line": "DENIED: \"I believe it's a ligament strain.\"",
+      "slot": "i11/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "heaviness",
+      "model_quote": "Maybe a little heaviness sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little heaviness sometimes.\"",
+      "slot": "i11/atom-chest",
+      "span_character_f1": 0.4091
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "osteoporosis",
+      "model_quote": "My mother had osteoporosis.",
+      "raw_line": "STATED: \"My mother had osteoporosis.\"",
+      "slot": "i11/atom-fh",
+      "span_character_f1": 0.6154
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "appendicitis",
+      "model_quote": "I used to have appendicitis years ago.",
+      "raw_line": "DENIED: \"I used to have appendicitis years ago.\"",
+      "slot": "i11/atom-hist",
+      "span_character_f1": 0.48
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "collarbone",
+      "model_quote": "My collarbone.",
+      "raw_line": "STATED: \"My collarbone.\"",
+      "slot": "i11/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "missed appointments",
+      "model_quote": "I have never missed appointments.",
+      "raw_line": "DENIED: \"I have never missed appointments.\"",
+      "slot": "i11/atom-smoke",
+      "span_character_f1": 0.7308
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "mottled",
+      "model_quote": "My forearm has been mottled since Friday.",
+      "raw_line": "STATED: \"My forearm has been mottled since Friday.\"",
+      "slot": "i11/atom-throat",
+      "span_character_f1": 0.2917
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "drowsy",
+      "model_quote": "I've been drowsy this week.",
+      "raw_line": "DENIED: \"I've been drowsy this week.\"",
+      "slot": "i11/atom-tired",
+      "span_character_f1": 0.3636
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "panting",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i11/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i11/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My elbow has been stiff since Friday.",
+      "raw_line": "STATED: \"My elbow has been stiff since Friday.\"",
+      "slot": "i2/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My elbow has been stiff since Friday.",
+      "raw_line": "STATED: \"My elbow has been stiff since Friday.\"",
+      "slot": "i2/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "I have no history of injuries.",
+      "raw_line": "DENIED: \"I have no history of injuries.\"",
+      "slot": "i2/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i2/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My blood pressure is 120/80.",
+      "raw_line": "DENIED: \"My blood pressure is 120/80.\"",
+      "slot": "i2/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies to report.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i2/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tendon sprain",
+      "model_quote": "I think this is tendon sprain.",
+      "raw_line": "STATED: \"I think this is tendon sprain.\"",
+      "slot": "i2/atom-assess",
+      "span_character_f1": 0.6047
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "numbness",
+      "model_quote": "Maybe a little numbness sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little numbness sometimes.\"",
+      "slot": "i2/atom-chest",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "psoriasis",
+      "model_quote": "My mother had psoriasis.",
+      "raw_line": "STATED: \"My mother had psoriasis.\"",
+      "slot": "i2/atom-fh",
+      "span_character_f1": 0.5455
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "abstained_incorrect",
+      "gold_span": "sinusitis",
+      "model_quote": "I used to have sinusitis years ago.",
+      "raw_line": "NOT_MENTIONED: \"I used to have sinusitis years ago.\"",
+      "slot": "i2/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "wrist",
+      "model_quote": "My wrist.",
+      "raw_line": "STATED: \"My wrist.\"",
+      "slot": "i2/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "drank",
+      "model_quote": "I have never drunk.",
+      "raw_line": "DENIED: \"I have never drunk.\"",
+      "slot": "i2/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "stiff",
+      "model_quote": "My elbow has been stiff since Friday.",
+      "raw_line": "STATED: \"My elbow has been stiff since Friday.\"",
+      "slot": "i2/atom-throat",
+      "span_character_f1": 0.2381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "restless",
+      "model_quote": "I've been restless this week.",
+      "raw_line": "DENIED: \"I've been restless this week.\"",
+      "slot": "i2/atom-tired",
+      "span_character_f1": 0.4324
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "gasping",
+      "model_quote": "No gasping at all.",
+      "raw_line": "DENIED: \"No gasping at all.\"",
+      "slot": "i2/atom-wheeze",
+      "span_character_f1": 0.56
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i2/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My hip has been tender since Friday.",
+      "raw_line": "STATED: \"My hip has been tender since Friday.\"",
+      "slot": "i3/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My hip has been tender since Friday.",
+      "raw_line": "STATED: \"My hip has been tender since Friday.\"",
+      "slot": "i3/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "I have no history of hip issues.",
+      "raw_line": "DENIED: \"I have no history of hip issues.\"",
+      "slot": "i3/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i3/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My temperature is normal.",
+      "raw_line": "DENIED: \"My temperature is normal.\"",
+      "slot": "i3/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies at all.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i3/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "joint strain",
+      "model_quote": "I believe it's joint strain.",
+      "raw_line": "DENIED: \"I believe it's joint strain.\"",
+      "slot": "i3/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "ringing",
+      "model_quote": "Maybe a little ringing sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little ringing sometimes.\"",
+      "slot": "i3/atom-chest",
+      "span_character_f1": 0.35
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "anemia",
+      "model_quote": "My mother had anemia.",
+      "raw_line": "DENIED: \"My mother had anemia.\"",
+      "slot": "i3/atom-fh",
+      "span_character_f1": 0.4444
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "vertigo",
+      "model_quote": "I used to have vertigo years ago.",
+      "raw_line": "DENIED: \"I used to have vertigo years ago.\"",
+      "slot": "i3/atom-hist",
+      "span_character_f1": 0.35
+    },
+    {
+      "category": "grounded_exact",
+      "cell": "asserted_grounded",
+      "gold_span": "jaw",
+      "model_quote": "jaw",
+      "raw_line": "STATED: \"jaw\"",
+      "slot": "i3/atom-neck",
+      "span_character_f1": 1.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "smoked cigars",
+      "model_quote": "I have never smoked cigars.",
+      "raw_line": "DENIED: \"I have never smoked cigars.\"",
+      "slot": "i3/atom-smoke",
+      "span_character_f1": 0.65
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tender",
+      "model_quote": "My hip has been tender since Friday.",
+      "raw_line": "STATED: \"My hip has been tender since Friday.\"",
+      "slot": "i3/atom-throat",
+      "span_character_f1": 0.2857
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "queasy",
+      "model_quote": "I've been queasy this week.",
+      "raw_line": "DENIED: \"I've been queasy this week.\"",
+      "slot": "i3/atom-tired",
+      "span_character_f1": 0.3636
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "rattling",
+      "model_quote": "No rattling at all.",
+      "raw_line": "DENIED: \"No rattling at all.\"",
+      "slot": "i3/atom-wheeze",
+      "span_character_f1": 0.5926
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i3/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My foot has been itchy since Friday.",
+      "raw_line": "STATED: \"My foot has been itchy since Friday.\"",
+      "slot": "i4/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My foot has been itchy since Friday.",
+      "raw_line": "STATED: \"My foot has been itchy since Friday.\"",
+      "slot": "i4/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "None.",
+      "raw_line": "DENIED: \"None.\"",
+      "slot": "i4/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i4/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "It was fine.",
+      "raw_line": "DENIED: \"It was fine.\"",
+      "slot": "i4/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No medication allergies.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i4/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "carpal tunnel syndrome",
+      "model_quote": "I think this is carpal tunnel syndrome.",
+      "raw_line": "STATED: \"I think this is carpal tunnel syndrome.\"",
+      "slot": "i4/atom-assess",
+      "span_character_f1": 0.7213
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "throbbing",
+      "model_quote": "Maybe a little throbbing sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little throbbing sometimes.\"",
+      "slot": "i4/atom-chest",
+      "span_character_f1": 0.4091
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "gout",
+      "model_quote": "My mother had gout.",
+      "raw_line": "STATED: \"My mother had gout.\"",
+      "slot": "i4/atom-fh",
+      "span_character_f1": 0.3478
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "shingles",
+      "model_quote": "I used to have shingles years ago.",
+      "raw_line": "DENIED: \"I used to have shingles years ago.\"",
+      "slot": "i4/atom-hist",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "hand",
+      "model_quote": "My hand.",
+      "raw_line": "STATED: \"My hand.\"",
+      "slot": "i4/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "chewed tobacco",
+      "model_quote": "Chewing tobacco",
+      "raw_line": "DENIED: \"Chewing tobacco\"",
+      "slot": "i4/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "itchy",
+      "model_quote": "My foot has been itchy since Friday.",
+      "raw_line": "STATED: \"My foot has been itchy since Friday.\"",
+      "slot": "i4/atom-throat",
+      "span_character_f1": 0.2439
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "hoarse",
+      "model_quote": "I've been hoarse this week.",
+      "raw_line": "DENIED: \"I've been hoarse this week.\"",
+      "slot": "i4/atom-tired",
+      "span_character_f1": 0.3636
+    },
+    {
+      "category": "grounded_exact",
+      "cell": "asserted_grounded",
+      "gold_span": "whistling",
+      "model_quote": "whistling",
+      "raw_line": "DENIED: \"whistling\"",
+      "slot": "i4/atom-wheeze",
+      "span_character_f1": 1.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": "I am not on any medications.",
+      "raw_line": "NOT_MENTIONED: \"I am not on any medications.\"",
+      "slot": "i4/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My shin has been bruised since Friday.",
+      "raw_line": "STATED: \"My shin has been bruised since Friday.\"",
+      "slot": "i5/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My shin has been bruised since Friday.",
+      "raw_line": "STATED: \"My shin has been bruised since Friday.\"",
+      "slot": "i5/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "I have no history of injuries.",
+      "raw_line": "DENIED: \"I have no history of injuries.\"",
+      "slot": "i5/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i5/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "bruised",
+      "raw_line": "DENIED: \"bruised\"",
+      "slot": "i5/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies known.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i5/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "bursitis",
+      "model_quote": "I think this is bursitis.",
+      "raw_line": "STATED: \"I think this is bursitis.\"",
+      "slot": "i5/atom-assess",
+      "span_character_f1": 0.4848
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "clicking",
+      "model_quote": "Maybe a little clicking sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little clicking sometimes.\"",
+      "slot": "i5/atom-chest",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "lupus",
+      "model_quote": "My mother had lupus.",
+      "raw_line": "STATED: \"My mother had lupus.\"",
+      "slot": "i5/atom-fh",
+      "span_character_f1": 0.4
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tonsillitis",
+      "model_quote": "I used to have tonsillitis years ago.",
+      "raw_line": "DENIED: \"I used to have tonsillitis years ago.\"",
+      "slot": "i5/atom-hist",
+      "span_character_f1": 0.4583
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "hip",
+      "model_quote": "My hip.",
+      "raw_line": "STATED: \"My hip.\"",
+      "slot": "i5/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "gambled",
+      "model_quote": "I have never gambled.",
+      "raw_line": "DENIED: \"I have never gambled.\"",
+      "slot": "i5/atom-smoke",
+      "span_character_f1": 0.5
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "bruised",
+      "model_quote": "My shin has been bruised since Friday.",
+      "raw_line": "STATED: \"My shin has been bruised since Friday.\"",
+      "slot": "i5/atom-throat",
+      "span_character_f1": 0.3111
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "sluggish",
+      "model_quote": "I'm not sure.",
+      "raw_line": "DENIED: \"I'm not sure.\"",
+      "slot": "i5/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "snoring",
+      "model_quote": "No snoring at all.",
+      "raw_line": "DENIED: \"No snoring at all.\"",
+      "slot": "i5/atom-wheeze",
+      "span_character_f1": 0.56
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i5/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My calf has been cramped since Friday.",
+      "raw_line": "STATED: \"My calf has been cramped since Friday.\"",
+      "slot": "i6/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My calf has been cramped since Friday.",
+      "raw_line": "STATED: \"My calf has been cramped since Friday.\"",
+      "slot": "i6/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "None.",
+      "raw_line": "DENIED: \"None.\"",
+      "slot": "i6/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i6/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My blood pressure is 120/80.",
+      "raw_line": "DENIED: \"My blood pressure is 120/80.\"",
+      "slot": "i6/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies noted.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i6/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "joint inflammation",
+      "model_quote": "I think this is joint inflammation.",
+      "raw_line": "STATED: \"I think this is joint inflammation.\"",
+      "slot": "i6/atom-assess",
+      "span_character_f1": 0.6792
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "stiffness",
+      "model_quote": "Maybe a little stiffness sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little stiffness sometimes.\"",
+      "slot": "i6/atom-chest",
+      "span_character_f1": 0.4091
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "arthritis",
+      "model_quote": "My mother had arthritis.",
+      "raw_line": "DENIED: \"My mother had arthritis.\"",
+      "slot": "i6/atom-fh",
+      "span_character_f1": 0.5455
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "chickenpox",
+      "model_quote": "I used to have chickenpox years ago.",
+      "raw_line": "DENIED: \"I used to have chickenpox years ago.\"",
+      "slot": "i6/atom-hist",
+      "span_character_f1": 0.4348
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "thumb",
+      "model_quote": "My thumb.",
+      "raw_line": "STATED: \"My thumb.\"",
+      "slot": "i6/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "fasted",
+      "model_quote": "I have never fasted.",
+      "raw_line": "DENIED: \"I have never fasted.\"",
+      "slot": "i6/atom-smoke",
+      "span_character_f1": 0.4615
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "cramped",
+      "model_quote": "My calf has been cramped since Friday.",
+      "raw_line": "STATED: \"My calf has been cramped since Friday.\"",
+      "slot": "i6/atom-throat",
+      "span_character_f1": 0.3111
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "listless",
+      "model_quote": "I've been listless this week.",
+      "raw_line": "DENIED: \"I've been listless this week.\"",
+      "slot": "i6/atom-tired",
+      "span_character_f1": 0.4324
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "hiccupping",
+      "model_quote": "No hiccupping at all.",
+      "raw_line": "DENIED: \"No hiccupping at all.\"",
+      "slot": "i6/atom-wheeze",
+      "span_character_f1": 0.6452
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i6/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My wrist has been puffy since Friday.",
+      "raw_line": "STATED: \"My wrist has been puffy since Friday.\"",
+      "slot": "i7/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My wrist has been puffy since Friday.",
+      "raw_line": "STATED: \"My wrist has been puffy since Friday.\"",
+      "slot": "i7/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "I have no history of injuries.",
+      "raw_line": "DENIED: \"I have no history of injuries.\"",
+      "slot": "i7/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i7/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My blood pressure is 120/80.",
+      "raw_line": "DENIED: \"My blood pressure is 120/80.\"",
+      "slot": "i7/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies whatsoever.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i7/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "plantar irritation",
+      "model_quote": null,
+      "raw_line": "STATED, DENIED. \"I think this is plantar irritation.\"",
+      "slot": "i7/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "blurring",
+      "model_quote": "Maybe a little blurring sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little blurring sometimes.\"",
+      "slot": "i7/atom-chest",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "cataracts",
+      "model_quote": "My mother had cataracts.",
+      "raw_line": "DENIED: \"My mother had cataracts.\"",
+      "slot": "i7/atom-fh",
+      "span_character_f1": 0.5455
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "mumps",
+      "model_quote": "I used to have mumps years ago.",
+      "raw_line": "DENIED: \"I used to have mumps years ago.\"",
+      "slot": "i7/atom-hist",
+      "span_character_f1": 0.2778
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "heel",
+      "model_quote": "My heel",
+      "raw_line": "STATED: \"My heel\"",
+      "slot": "i7/atom-neck",
+      "span_character_f1": 0.7273
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "skipped meals",
+      "model_quote": "I have never skipped meals.",
+      "raw_line": "DENIED: \"I have never skipped meals.\"",
+      "slot": "i7/atom-smoke",
+      "span_character_f1": 0.65
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "puffy",
+      "model_quote": "My wrist has been puffy since Friday.",
+      "raw_line": "STATED: \"My wrist has been puffy since Friday.\"",
+      "slot": "i7/atom-throat",
+      "span_character_f1": 0.2381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "forgetful",
+      "model_quote": "I haven't been forgetful.",
+      "raw_line": "DENIED: \"I haven't been forgetful.\"",
+      "slot": "i7/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "grunting",
+      "model_quote": "No grunting at all.",
+      "raw_line": "DENIED: \"No grunting at all.\"",
+      "slot": "i7/atom-wheeze",
+      "span_character_f1": 0.5926
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i7/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My thigh has been numb since Friday.",
+      "raw_line": "STATED: \"My thigh has been numb since Friday.\"",
+      "slot": "i8/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My thigh has been numb since Friday.",
+      "raw_line": "STATED: \"My thigh has been numb since Friday.\"",
+      "slot": "i8/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "I have no history of any illnesses.",
+      "raw_line": "DENIED: \"I have no history of any illnesses.\"",
+      "slot": "i8/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (The patient did not mention anything specific about their prescription.)",
+      "slot": "i8/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "My temperature is normal.",
+      "raw_line": "DENIED: \"My temperature is normal.\"",
+      "slot": "i8/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "No allergies at this time.",
+      "model_quote": "I don't rule out any reaction.",
+      "raw_line": "DENIED: \"I don't rule out any reaction.\"",
+      "slot": "i8/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_unbound",
+      "gold_span": "tension headache",
+      "model_quote": "I believe it's tension headache.",
+      "raw_line": "DENIED: \"I believe it's tension headache.\"",
+      "slot": "i8/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "scratchiness",
+      "model_quote": "Maybe a little scratchiness sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little scratchiness sometimes.\"",
+      "slot": "i8/atom-chest",
+      "span_character_f1": 0.48
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "epilepsy",
+      "model_quote": "My mother had epilepsy.",
+      "raw_line": "STATED: \"My mother had epilepsy.\"",
+      "slot": "i8/atom-fh",
+      "span_character_f1": 0.5161
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "scarlet fever",
+      "model_quote": "I used to have scarlet fever years ago.",
+      "raw_line": "DENIED: \"I used to have scarlet fever years ago.\"",
+      "slot": "i8/atom-hist",
+      "span_character_f1": 0.5
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "temple",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i8/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "used inhalers",
+      "model_quote": "I have never used inhalers.",
+      "raw_line": "DENIED: \"I have never used inhalers.\"",
+      "slot": "i8/atom-smoke",
+      "span_character_f1": 0.65
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "numb",
+      "model_quote": "My thigh has been numb since Friday.",
+      "raw_line": "STATED: \"My thigh has been numb since Friday.\"",
+      "slot": "i8/atom-throat",
+      "span_character_f1": 0.2
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "clumsy",
+      "model_quote": "I haven't said anything.",
+      "raw_line": "DENIED: \"I haven't said anything.\"",
+      "slot": "i8/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "sighing",
+      "model_quote": "Sighing at all.",
+      "raw_line": "DENIED: \"Sighing at all.\"",
+      "slot": "i8/atom-wheeze",
+      "span_character_f1": 0.6364
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i8/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My jaw has been locked since Friday.",
+      "raw_line": "STATED: \"My jaw has been locked since Friday.\"",
+      "slot": "i9/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "My jaw has been locked since Friday.",
+      "raw_line": "STATED: \"My jaw has been locked since Friday.\"",
+      "slot": "i9/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "None.",
+      "raw_line": "DENIED: \"None.\"",
+      "slot": "i9/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED (Patient did not mention anything specific about their prescription.)",
+      "slot": "i9/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Locked",
+      "raw_line": "DENIED: \"Locked\"",
+      "slot": "i9/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "No allergies that we know.",
+      "model_quote": "I don't rule out any reactions.",
+      "raw_line": "DENIED: \"I don't rule out any reactions.\"",
+      "slot": "i9/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "disc irritation",
+      "model_quote": null,
+      "raw_line": "STATED, DENIED.",
+      "slot": "i9/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tingling",
+      "model_quote": "Maybe a little tingling sometimes.",
+      "raw_line": "UNCERTAIN: \"Maybe a little tingling sometimes.\"",
+      "slot": "i9/atom-chest",
+      "span_character_f1": 0.381
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "dementia",
+      "model_quote": "My mother had dementia.",
+      "raw_line": "STATED: \"My mother had dementia.\"",
+      "slot": "i9/atom-fh",
+      "span_character_f1": 0.5161
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "abstained_incorrect",
+      "gold_span": "whooping cough",
+      "model_quote": "I used to have whooping cough years ago.",
+      "raw_line": "NOT_MENTIONED: \"I used to have whooping cough years ago.\"",
+      "slot": "i9/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "spine",
+      "model_quote": "My spine",
+      "raw_line": "STATED: \"My spine\"",
+      "slot": "i9/atom-neck",
+      "span_character_f1": 0.7692
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "worked nights",
+      "model_quote": "I have never worked nights.",
+      "raw_line": "DENIED: \"I have never worked nights.\"",
+      "slot": "i9/atom-smoke",
+      "span_character_f1": 0.65
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "locked",
+      "model_quote": "My jaw has been locked since Friday.",
+      "raw_line": "STATED: \"My jaw has been locked since Friday.\"",
+      "slot": "i9/atom-throat",
+      "span_character_f1": 0.2857
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "anxious",
+      "model_quote": "I haven't said anything.",
+      "raw_line": "DENIED: \"I haven't said anything.\"",
+      "slot": "i9/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "rasping",
+      "model_quote": "No rasping at all.",
+      "raw_line": "DENIED: \"No rasping at all.\"",
+      "slot": "i9/atom-wheeze",
+      "span_character_f1": 0.56
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i9/medication",
+      "span_character_f1": 0.0
+    }
+  ],
+  "source_log": "/tmp/edelim/armAp_raw.json"
+}

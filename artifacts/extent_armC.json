@@ -1,0 +1,1747 @@
+{
+  "counts": {
+    "located_over_extended": 1,
+    "located_under_extended": 1,
+    "no_gold_span": 72,
+    "no_quote": 26,
+    "not_located": 92
+  },
+  "label": "arm C (offsets)",
+  "located_share_of_ceiling": 0.0167,
+  "n_gold_present": 120,
+  "n_located": 2,
+  "n_nongrounded_gold": 120,
+  "n_total": 192,
+  "over_extended_share_of_nongrounded": 0.0083,
+  "rows": [
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i0/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i0/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i0/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i0/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i0/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i0/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "cervical strain",
+      "model_quote": "I use",
+      "raw_line": "DENIED: \"I use\"",
+      "slot": "i0/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "pressure",
+      "model_quote": "Maybe a lit",
+      "raw_line": "UNCERTAIN: \"Maybe a lit\"",
+      "slot": "i0/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "diabetes",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i0/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "migraines",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i0/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "neck",
+      "model_quote": "stra",
+      "raw_line": "UNCERTAIN: \"stra\"",
+      "slot": "i0/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "smoked",
+      "model_quote": "Any brea",
+      "raw_line": "DENIED: \"Any brea\"",
+      "slot": "i0/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "sore",
+      "model_quote": "Let's take",
+      "raw_line": "DENIED: \"Let's take\"",
+      "slot": "i0/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tired",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i0/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "wheezing",
+      "model_quote": "Any brea",
+      "raw_line": "DENIED: \"Any brea\"",
+      "slot": "i0/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i0/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i1/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i1/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i1/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i1/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i1/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No known allergies.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i1/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "rotator cuff strain",
+      "model_quote": "No known allergies.",
+      "raw_line": "DENIED: \"No known allergies.\"",
+      "slot": "i1/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "cramping",
+      "model_quote": "Maybe a",
+      "raw_line": "UNCERTAIN: \"Maybe a\"",
+      "slot": "i1/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "glaucoma",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i1/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "eczema",
+      "model_quote": "No known allergies.",
+      "raw_line": "UNCERTAIN: \"No known allergies.\"",
+      "slot": "i1/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "shoulder",
+      "model_quote": "What brings you in today?",
+      "raw_line": "DENIED: \"What brings you in today?\"",
+      "slot": "i1/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "vaped",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i1/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "swollen",
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i1/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "dizzy",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i1/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "coughing",
+      "model_quote": "Any breat",
+      "raw_line": "DENIED: \"Any breat\"",
+      "slot": "i1/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i1/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's take",
+      "raw_line": "DENIED: \"Let's take\"",
+      "slot": "i10/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i10/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's take",
+      "raw_line": "DENIED: \"Let's take\"",
+      "slot": "i10/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i10/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i10/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies in the notes.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i10/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "soft tissue swelling",
+      "model_quote": "No alle",
+      "raw_line": "DENIED: \"No alle\"",
+      "slot": "i10/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_over_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "burning",
+      "model_quote": "tle burning",
+      "raw_line": "UNCERTAIN: \"tle burning\"",
+      "slot": "i10/atom-chest",
+      "span_character_f1": 0.7778
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "thyroid disease",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i10/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "pleurisy",
+      "model_quote": "I used",
+      "raw_line": "UNCERTAIN: \"I used\"",
+      "slot": "i10/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "knuckle",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i10/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "relied on sleeping pills",
+      "model_quote": "Any",
+      "raw_line": "DENIED: \"Any\"",
+      "slot": "i10/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "blotchy",
+      "model_quote": "Let's take",
+      "raw_line": "DENIED: \"Let's take\"",
+      "slot": "i10/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "irritable",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i10/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "groaning",
+      "model_quote": "No",
+      "raw_line": "DENIED: \"No\"",
+      "slot": "i10/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i10/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i11/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i11/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i11/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i11/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Le",
+      "raw_line": "DENIED: \"Le\"",
+      "slot": "i11/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies on file.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i11/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "ligament strain",
+      "model_quote": "No allergies on file.",
+      "raw_line": "DENIED: \"No allergies on file.\"",
+      "slot": "i11/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "heaviness",
+      "model_quote": "We",
+      "raw_line": "UNCERTAIN: \"We\"",
+      "slot": "i11/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "osteoporosis",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i11/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "appendicitis",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i11/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "collarbone",
+      "model_quote": "What brings you in today?",
+      "raw_line": "DENIED: \"What brings you in today?\"",
+      "slot": "i11/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "missed appointments",
+      "model_quote": "ny b",
+      "raw_line": "DENIED: \"ny b\"",
+      "slot": "i11/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "mottled",
+      "model_quote": "hat brings you",
+      "raw_line": "DENIED: \"hat brings you\"",
+      "slot": "i11/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "drowsy",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i11/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "panting",
+      "model_quote": "ny b",
+      "raw_line": "DENIED: \"ny b\"",
+      "slot": "i11/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i11/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i2/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i2/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "in today",
+      "raw_line": "DENIED: \"in today\"",
+      "slot": "i2/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i2/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i2/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies to report.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i2/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tendon sprain",
+      "model_quote": "No all",
+      "raw_line": "DENIED: \"No all\"",
+      "slot": "i2/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "numbness",
+      "model_quote": "tle numbnes",
+      "raw_line": "UNCERTAIN: \"tle numbnes\"",
+      "slot": "i2/atom-chest",
+      "span_character_f1": 0.7368
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "psoriasis",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i2/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "sinusitis",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i2/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "wrist",
+      "model_quote": "rt.\nI use",
+      "raw_line": "DENIED: \"rt.\nI use\"",
+      "slot": "i2/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "drank",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i2/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "stiff",
+      "model_quote": "Let's take",
+      "raw_line": "DENIED: \"Let's take\"",
+      "slot": "i2/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "restless",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i2/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "gasping",
+      "model_quote": "Any breat",
+      "raw_line": "DENIED: \"Any breat\"",
+      "slot": "i2/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i2/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "today?",
+      "raw_line": "DENIED: \"today?\"",
+      "slot": "i3/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i3/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "in today",
+      "raw_line": "DENIED: \"in today\"",
+      "slot": "i3/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i3/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i3/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies at all.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i3/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "joint strain",
+      "model_quote": "No allerg",
+      "raw_line": "DENIED: \"No allerg\"",
+      "slot": "i3/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "ringing",
+      "model_quote": "We'l",
+      "raw_line": "UNCERTAIN: \"We'l\"",
+      "slot": "i3/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "anemia",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i3/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "vertigo",
+      "model_quote": "all.",
+      "raw_line": "UNCERTAIN: \"all.\"",
+      "slot": "i3/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "jaw",
+      "model_quote": "No allerg",
+      "raw_line": "DENIED: \"No allerg\"",
+      "slot": "i3/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "smoked cigars",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i3/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tender",
+      "model_quote": "today?",
+      "raw_line": "DENIED: \"today?\"",
+      "slot": "i3/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "queasy",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i3/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "rattling",
+      "model_quote": "o r",
+      "raw_line": "DENIED: \"o r\"",
+      "slot": "i3/atom-wheeze",
+      "span_character_f1": 0.1818
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i3/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i4/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i4/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i4/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i4/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i4/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No medication allergies.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i4/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "carpal tunnel syndrome",
+      "model_quote": "No medica",
+      "raw_line": "DENIED: \"No medica\"",
+      "slot": "i4/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "throbbing",
+      "model_quote": "le throbbin",
+      "raw_line": "UNCERTAIN: \"le throbbin\"",
+      "slot": "i4/atom-chest",
+      "span_character_f1": 0.8
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "gout",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i4/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "shingles",
+      "model_quote": "No med",
+      "raw_line": "UNCERTAIN: \"No med\"",
+      "slot": "i4/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "hand",
+      "model_quote": "I thin",
+      "raw_line": "DENIED: \"I thin\"",
+      "slot": "i4/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "chewed tobacco",
+      "model_quote": "Any breathing",
+      "raw_line": "DENIED: \"Any breathing\"",
+      "slot": "i4/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "itchy",
+      "model_quote": "today?",
+      "raw_line": "DENIED: \"today?\"",
+      "slot": "i4/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "hoarse",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i4/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "whistling",
+      "model_quote": "o",
+      "raw_line": "DENIED: \"o\"",
+      "slot": "i4/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i4/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i5/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i5/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i5/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i5/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i5/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies known.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i5/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "bursitis",
+      "model_quote": "I u",
+      "raw_line": "DENIED: \"I u\"",
+      "slot": "i5/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "clicking",
+      "model_quote": "We'",
+      "raw_line": "UNCERTAIN: \"We'\"",
+      "slot": "i5/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "lupus",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i5/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "tonsillitis",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i5/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "hip",
+      "model_quote": "My hi",
+      "raw_line": "STATED: \"My hi\"",
+      "slot": "i5/atom-neck",
+      "span_character_f1": 0.5
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "gambled",
+      "model_quote": "Any bre",
+      "raw_line": "DENIED: \"Any bre\"",
+      "slot": "i5/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "bruised",
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i5/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "sluggish",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i5/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "snoring",
+      "model_quote": "Any bre",
+      "raw_line": "DENIED: \"Any bre\"",
+      "slot": "i5/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i5/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i6/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i6/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i6/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i6/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i6/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies noted.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i6/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "located_under_extended",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "joint inflammation",
+      "model_quote": "N",
+      "raw_line": "DENIED: \"N\"",
+      "slot": "i6/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "stiffness",
+      "model_quote": "We'll",
+      "raw_line": "UNCERTAIN: \"We'll\"",
+      "slot": "i6/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "arthritis",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i6/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "chickenpox",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i6/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "thumb",
+      "model_quote": "No a",
+      "raw_line": "DENIED: \"No a\"",
+      "slot": "i6/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "fasted",
+      "model_quote": "Any brea",
+      "raw_line": "DENIED: \"Any brea\"",
+      "slot": "i6/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "cramped",
+      "model_quote": "today?\nM",
+      "raw_line": "DENIED: \"today?\nM\"",
+      "slot": "i6/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "listless",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i6/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "hiccupping",
+      "model_quote": "Any brea",
+      "raw_line": "DENIED: \"Any brea\"",
+      "slot": "i6/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i6/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i7/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i7/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i7/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i7/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's",
+      "raw_line": "DENIED: \"Let's\"",
+      "slot": "i7/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies whatsoever.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i7/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "plantar irritation",
+      "model_quote": "No allerg",
+      "raw_line": "DENIED: \"No allerg\"",
+      "slot": "i7/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "blurring",
+      "model_quote": "We'",
+      "raw_line": "UNCERTAIN: \"We'\"",
+      "slot": "i7/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "cataracts",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i7/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "mumps",
+      "model_quote": "No allerg",
+      "raw_line": "UNCERTAIN: \"No allerg\"",
+      "slot": "i7/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "heel",
+      "model_quote": "What brings you in today?",
+      "raw_line": "DENIED: \"What brings you in today?\"",
+      "slot": "i7/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "skipped meals",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i7/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "puffy",
+      "model_quote": "Let's take",
+      "raw_line": "DENIED: \"Let's take\"",
+      "slot": "i7/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "forgetful",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i7/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "grunting",
+      "model_quote": "o",
+      "raw_line": "DENIED: \"o\"",
+      "slot": "i7/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i7/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "today?",
+      "raw_line": "DENIED: \"today?\"",
+      "slot": "i8/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i8/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "in today",
+      "raw_line": "DENIED: \"in today\"",
+      "slot": "i8/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i8/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i8/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies at this time.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i8/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tension headache",
+      "model_quote": "No al",
+      "raw_line": "DENIED: \"No al\"",
+      "slot": "i8/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "scratchiness",
+      "model_quote": "We",
+      "raw_line": "UNCERTAIN: \"We\"",
+      "slot": "i8/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "epilepsy",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i8/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "scarlet fever",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i8/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "temple",
+      "model_quote": "I think this is tension h",
+      "raw_line": "DENIED: \"I think this is tension h\"",
+      "slot": "i8/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "used inhalers",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i8/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "numb",
+      "model_quote": "Let's take a",
+      "raw_line": "DENIED: \"Let's take a\"",
+      "slot": "i8/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "clumsy",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i8/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "sighing",
+      "model_quote": "No s",
+      "raw_line": "DENIED: \"No s\"",
+      "slot": "i8/atom-wheeze",
+      "span_character_f1": 0.1818
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i8/medication",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "today?",
+      "raw_line": "DENIED: \"today?\"",
+      "slot": "i9/atom-absent-allergy",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_bound_wrong",
+      "gold_span": null,
+      "model_quote": "Let's t",
+      "raw_line": "DENIED: \"Let's t\"",
+      "slot": "i9/atom-absent-fever",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i9/atom-absent-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i9/atom-absent-med",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "asserted_unbound",
+      "gold_span": null,
+      "model_quote": "in today?\nM",
+      "raw_line": "DENIED: \"in today?\nM\"",
+      "slot": "i9/atom-absent-vital",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "No allergies that we know.",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i9/atom-alg",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "disc irritation",
+      "model_quote": "No a",
+      "raw_line": "DENIED: \"No a\"",
+      "slot": "i9/atom-assess",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "tingling",
+      "model_quote": "Maybe a lit",
+      "raw_line": "UNCERTAIN: \"Maybe a lit\"",
+      "slot": "i9/atom-chest",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "dementia",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i9/atom-fh",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "abstained_incorrect",
+      "gold_span": "whooping cough",
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i9/atom-hist",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "spine",
+      "model_quote": "What brings you in today?",
+      "raw_line": "DENIED: \"What brings you in today?\"",
+      "slot": "i9/atom-neck",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_quote",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "worked nights",
+      "model_quote": null,
+      "raw_line": "DENIED",
+      "slot": "i9/atom-smoke",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "locked",
+      "model_quote": "today?",
+      "raw_line": "DENIED: \"today?\"",
+      "slot": "i9/atom-throat",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_bound_wrong",
+      "gold_span": "anxious",
+      "model_quote": "My mother",
+      "raw_line": "DENIED: \"My mother\"",
+      "slot": "i9/atom-tired",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "not_located",
+      "cell": "asserted_unbound",
+      "gold_span": "rasping",
+      "model_quote": "No",
+      "raw_line": "DENIED: \"No\"",
+      "slot": "i9/atom-wheeze",
+      "span_character_f1": 0.0
+    },
+    {
+      "category": "no_gold_span",
+      "cell": "abstained_correct",
+      "gold_span": null,
+      "model_quote": null,
+      "raw_line": "NOT_MENTIONED",
+      "slot": "i9/medication",
+      "span_character_f1": 0.0
+    }
+  ],
+  "source_log": "/tmp/edelim/armC_resolved.json"
+}
