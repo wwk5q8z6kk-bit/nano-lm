@@ -340,10 +340,10 @@ CAPABILITIES: tuple[Capability, ...] = (
        tools=(), training_objective="none",
        evaluation_benchmark="LCRB-7 incremental update and invalidation",
        failure_modes=("correction erases the earlier claim",
-                      "dependent artifacts not marked stale"),
-       implementation_stage=Stage.A_ENCOUNTER, status=Status.PARTIAL,
-       evidence="test_new_evidence_appends_and_does_not_overwrite (append yes; "
-                "downstream invalidation not implemented)"),
+                      "dependent artifacts not marked stale",
+                      "blanket invalidation destroying incrementality"),
+       implementation_stage=Stage.A_ENCOUNTER, status=Status.IMPLEMENTED,
+       evidence="nano/dependency.py::DependencyGraph.invalidate; nano/test_dependency.py"),
 
     _c(capability_id="STA-DIFF", domain="State",
        capability="Diff two state versions into a change report",
@@ -603,8 +603,11 @@ CAPABILITIES: tuple[Capability, ...] = (
        tools=(), training_objective="none (structural)",
        evaluation_benchmark="LCRB-7 invalidation and freshness",
        failure_modes=("correction applied, dependent summary left stale",
-                      "correction overwrites the original claim"),
-       implementation_stage=Stage.D_LONGITUDINAL, status=Status.ABSENT),
+                      "correction overwrites the original claim",
+                      "recomputation order ignores lineage"),
+       implementation_stage=Stage.D_LONGITUDINAL, status=Status.PARTIAL,
+       evidence="nano/dependency.py (graph + invalidation + recompute_order); "
+                "the recompute step itself is not wired to a producer"),
 
     _c(capability_id="LRN-LOOPS", domain="Learning",
        capability="Fast loop touches state; slow loop touches weights, offline",

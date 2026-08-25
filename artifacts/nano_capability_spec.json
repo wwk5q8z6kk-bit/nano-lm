@@ -2,10 +2,10 @@
   "coverage": {
     "total": 50,
     "by_status": {
-      "IMPLEMENTED": 11,
+      "IMPLEMENTED": 12,
       "PARTIAL": 14,
       "PROPOSED": 6,
-      "ABSENT": 19
+      "ABSENT": 18
     },
     "domains_covered": 26,
     "domains_required": 26,
@@ -498,11 +498,12 @@
       "evaluation_benchmark": "LCRB-7 incremental update and invalidation",
       "failure_modes": [
         "correction erases the earlier claim",
-        "dependent artifacts not marked stale"
+        "dependent artifacts not marked stale",
+        "blanket invalidation destroying incrementality"
       ],
       "implementation_stage": "A",
-      "status": "PARTIAL",
-      "evidence": "test_new_evidence_appends_and_does_not_overwrite (append yes; downstream invalidation not implemented)"
+      "status": "IMPLEMENTED",
+      "evidence": "nano/dependency.py::DependencyGraph.invalidate; nano/test_dependency.py"
     },
     {
       "capability_id": "STA-DIFF",
@@ -1014,11 +1015,12 @@
       "evaluation_benchmark": "LCRB-7 invalidation and freshness",
       "failure_modes": [
         "correction applied, dependent summary left stale",
-        "correction overwrites the original claim"
+        "correction overwrites the original claim",
+        "recomputation order ignores lineage"
       ],
       "implementation_stage": "D",
-      "status": "ABSENT",
-      "evidence": ""
+      "status": "PARTIAL",
+      "evidence": "nano/dependency.py (graph + invalidation + recompute_order); the recompute step itself is not wired to a producer"
     },
     {
       "capability_id": "LRN-LOOPS",

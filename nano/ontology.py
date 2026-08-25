@@ -283,15 +283,14 @@ PRIMITIVES: tuple[Primitive, ...] = (
     _p(name="Dependency", plane="Dependency & Invalidation",
        definition="The lineage edge from a derived object back to what produced it.",
        must_not_conflate_with=("Provenance", "Relation"),
-       presence=Presence.NAMED_ONLY,
+       presence=Presence.IN_CODE, implementation="nano/dependency.py::Dependency",
        admitted_because="when evidence is corrected, everything downstream must "
                         "become inspectably stale rather than silently wrong"),
 
     _p(name="Staleness", plane="Dependency & Invalidation",
        definition="A derived object whose inputs changed after it was produced.",
        must_not_conflate_with=("Supersession", "Uncertainty"),
-       presence=Presence.PARTIAL,
-       implementation="nano/contracts.py::DerivedArtifact.freshness_status",
+       presence=Presence.IN_CODE, implementation="nano/dependency.py::Freshness",
        admitted_because="an artifact can be internally correct and still out of date",
        splits_from="Dependency"),
 
@@ -299,7 +298,7 @@ PRIMITIVES: tuple[Primitive, ...] = (
        definition="How a statement came to be: observed, derived, inferred, "
                   "hypothesised, predicted, simulated.",
        must_not_conflate_with=("EpistemicStatus",),
-       presence=Presence.NAMED_ONLY,
+       presence=Presence.IN_CODE, implementation="nano/contracts.py::DerivationMode",
        admitted_because="epistemic status says who reported it; derivation mode "
                         "says how the system produced it — orthogonal axes that "
                         "were being carried by one enum",

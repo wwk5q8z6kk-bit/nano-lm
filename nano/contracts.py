@@ -65,10 +65,53 @@ _INFERRED_STATUSES = frozenset({
     EpistemicStatus.CONFLICTING,
 })
 
+#: Statuses asserting the system saw it directly in a source.
+_DIRECT_STATUSES = frozenset({
+    EpistemicStatus.DIRECT_MEASUREMENT,
+    EpistemicStatus.DIRECT_OBSERVATION,
+    EpistemicStatus.DIRECT_DOCUMENTATION,
+})
+
 #: Statuses that assert absence of information, distinct from absence of fact.
 _ABSENCE_STATUSES = frozenset({
     EpistemicStatus.NOT_FOUND,
     EpistemicStatus.UNAVAILABLE,
+})
+
+
+class DerivationMode(str, Enum):
+    """HOW the system produced a statement — orthogonal to WHO reported it.
+
+    `EpistemicStatus` answers provenance: patient_reported, clinician_asserted,
+    direct_measurement. `DerivationMode` answers derivation: did Nano observe
+    this, compute it, infer it, or imagine it? One enum was carrying both axes,
+    which is the overloading failure `nano/ontology.py` guards against.
+
+    The hard boundary (XXIX): OBSERVED / DERIVED / INFERRED / HYPOTHESIZED /
+    PREDICTED / SIMULATED must never be silently mixed. A forecast rendered as
+    a finding is a safety failure, not a formatting one.
+    """
+    OBSERVED = "observed"            # present in a source
+    DERIVED = "derived"              # deterministically computed from observations
+    INFERRED = "inferred"            # reasoned from evidence
+    HYPOTHESIZED = "hypothesized"    # candidate explanation under test
+    PREDICTED = "predicted"          # forecast beyond the evidence
+    SIMULATED = "simulated"          # counterfactual or model output
+
+
+#: Modes that may never be rendered as though the system observed them.
+NON_OBSERVED_MODES = frozenset({
+    DerivationMode.INFERRED,
+    DerivationMode.HYPOTHESIZED,
+    DerivationMode.PREDICTED,
+    DerivationMode.SIMULATED,
+})
+
+#: Modes that may never enter the evidence ledger as evidence.
+NON_LEDGER_MODES = frozenset({
+    DerivationMode.HYPOTHESIZED,
+    DerivationMode.PREDICTED,
+    DerivationMode.SIMULATED,
 })
 
 
@@ -253,6 +296,7 @@ class ClinicalAssertion:
     extractor: str = "nano-clin-001"
     original_units: str = ""
     normalized_units: str = ""
+    derivation: DerivationMode = DerivationMode.OBSERVED
     assertion_id: str = ""
 
     def __post_init__(self):
@@ -264,6 +308,13 @@ class ClinicalAssertion:
             raise ValueError(
                 f"assertion with status {self.epistemic_status.value} needs evidence "
                 "(absence-never-from-silence)")
+        # The two axes must agree: something the system merely inferred cannot
+        # also claim to have been directly measured or observed in a source.
+        if self.derivation in NON_OBSERVED_MODES and self.epistemic_status in _DIRECT_STATUSES:
+            raise ValueError(
+                f"derivation={self.derivation.value} cannot carry "
+                f"epistemic_status={self.epistemic_status.value} — "
+                "an inference is not a direct observation")
         object.__setattr__(self, "assertion_id", _cid(
             {"p": self.patient_id, "s": self.subject, "pr": self.predicate,
              "o": self.obj, "e": self.epistemic_status.value,

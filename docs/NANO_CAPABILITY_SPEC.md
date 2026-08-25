@@ -1,6 +1,6 @@
 # Nano capability specification
 
-50 capabilities across 26 domains. Status: IMPLEMENTED 11, PARTIAL 14, PROPOSED 6, ABSENT 19
+50 capabilities across 26 domains. Status: IMPLEMENTED 12, PARTIAL 14, PROPOSED 6, ABSENT 18
 
 | id | domain | capability | stage | status | evidence |
 |---|---|---|---|---|---|
@@ -22,7 +22,7 @@
 | `LNG-TRAJ` | Longitudinal | Build per-problem trajectories across years | B | **ABSENT** | — |
 | `LNG-ZOOM` | Longitudinal | Descend from trajectory to exact source passage | B | **PARTIAL** | nano/contracts.py id chain; artifacts/nano_clin_001/*.jsonl |
 | `STA-PROJ` | State | Project patient state from the evidence ledger | A | **IMPLEMENTED** | nano/test_nano_clin_001.py::test_state_is_a_rebuildable_projection |
-| `STA-VERSION` | State | Append new evidence without mutating history | A | **PARTIAL** | test_new_evidence_appends_and_does_not_overwrite (append yes; downstream invalidation not implemented) |
+| `STA-VERSION` | State | Append new evidence without mutating history | A | **IMPLEMENTED** | nano/dependency.py::DependencyGraph.invalidate; nano/test_dependency.py |
 | `STA-DIFF` | State | Diff two state versions into a change report | B | **IMPLEMENTED** | nano/contracts.py::StateDelta; nano/test_state_delta.py |
 | `CFL-DETECT` | Conflict | Detect contradictions and never resolve them silently | A | **PARTIAL** | nano/pipeline.py::_detect_conflicts; concept-scoped, 5 concepts only |
 | `GAP-DETECT` | Conflict | Distinguish not-found / unavailable / never-performed | A | **PARTIAL** | nano/test_nano_clin_001.py::test_not_found_is_distinguished_from_absent |
@@ -42,7 +42,7 @@
 | `VRF-CLAIM` | Verification | Verify every factual claim against evidence | A | **IMPLEMENTED** | nano/contracts.py::VerificationReceipt; artifacts/nano_clin_001/*/verification_receipt.json |
 | `VRF-ADVERSARIAL` | Verification | Attack own output before emitting it | C | **ABSENT** | — |
 | `UNC-ABSTAIN` | Uncertainty | Abstain as a first-class outcome | A | **IMPLEMENTED** | fabric/schemas.py::DecisionAction; ledger claim C_FABRIC_SLICE |
-| `LRN-CORRECTION` | Learning | Absorb a human correction and recompute what depends on it | D | **ABSENT** | — |
+| `LRN-CORRECTION` | Learning | Absorb a human correction and recompute what depends on it | D | **PARTIAL** | nano/dependency.py (graph + invalidation + recompute_order); the recompute step itself is not wired to a producer |
 | `LRN-LOOPS` | Learning | Fast loop touches state; slow loop touches weights, offline | CORE | **PROPOSED** | — |
 | `SAF-ISOLATION` | Safety | Patient isolation enforced in the type system | A | **IMPLEMENTED** | nano/test_nano_clin_001.py::test_no_cross_patient_contamination |
 | `SAF-ACTION` | Safety | Human review is the action boundary | A | **PARTIAL** | nano/contracts.py::ConflictRecord requires human_disposition |
