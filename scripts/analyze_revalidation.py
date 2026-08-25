@@ -102,11 +102,18 @@ def main() -> int:
             if not ks:
                 continue
             total_k, total_n = sum(ks), GOLD_ATOMS * len(ks)
+            covs = [r[mode].get("coverage_count") or 0 for r in per_run.values()
+                    if r["arm"] == arm and mode in r]
+            pooled_coverage = sum(covs)
             entry[mode] = {
                 "seeds": len(ks),
                 "per_seed_correct": ks,
                 "pooled": {"k": total_k, "n": total_n, "rate": round(total_k / total_n, 4),
                            "wilson95": wilson(total_k, total_n)},
+                # Pooled coverage is the validity precondition for any verdict: an
+                # arm that emitted nothing scoreable cannot be compared to anything.
+                "pooled_coverage": pooled_coverage,
+                "has_signal": pooled_coverage > 0,
                 "seed_spread": (max(ks) - min(ks)) / GOLD_ATOMS if len(ks) > 1 else None,
                 "seed_stdev": round(statistics.stdev(ks) / GOLD_ATOMS, 4) if len(ks) > 1 else None,
             }
@@ -126,17 +133,28 @@ def main() -> int:
             beats_major = a["wilson95"][0] > MAJORITY_BASELINE["rate"]
             spread = entry[mode].get("seed_spread")
             effect = a["rate"] - c["rate"]
+            # Validity gate. NOT_SEPARATED is an inferential claim about the arm;
+            # it is only meaningful when both the arm and its control actually
+            # produced scoreable output. Wave 1 (2026-08-24) emitted zero coverage
+            # in every cell and every arm was reported NOT_SEPARATED, which read as
+            # a clean null for an instrument that measured nothing.
+            arm_signal = entry[mode].get("has_signal", False)
+            control_signal = per_arm[control][mode].get("has_signal", False)
             v[mode] = {
                 "arm_rate": a["rate"], "control_rate": c["rate"],
                 "effect": round(effect, 4),
                 "separates_from_control": beats_control,
                 "exceeds_majority_baseline": beats_major,
+                "arm_pooled_coverage": entry[mode].get("pooled_coverage"),
+                "control_pooled_coverage": per_arm[control][mode].get("pooled_coverage"),
                 "seed_spread": spread,
                 "effect_exceeds_seed_spread": (
                     None if spread is None else abs(effect) > spread
                 ),
                 "verdict": (
-                    "PROMOTION_CANDIDATE"
+                    "INVALID_NO_SIGNAL"
+                    if not (arm_signal and control_signal)
+                    else "PROMOTION_CANDIDATE"
                     if beats_control and beats_major
                     else "NOT_SEPARATED"
                 ),
@@ -154,22 +172,34 @@ def main() -> int:
         "per_arm": per_arm,
         "verdicts": verdicts,
         "decision_rule": (
-            "an arm is a PROMOTION_CANDIDATE only if its pooled Wilson interval is "
-            "disjoint from the decoder control's AND its lower bound exceeds the "
-            "majority-class baseline. An effect smaller than the seed spread is not "
-            "an architecture effect."
+            "a cell is INVALID_NO_SIGNAL if the arm or its control pooled zero "
+            "coverage — no verdict is inferable from an instrument that produced "
+            "nothing. Otherwise an arm is a PROMOTION_CANDIDATE only if its pooled "
+            "Wilson interval is disjoint from the decoder control's AND its lower "
+            "bound exceeds the majority-class baseline. An effect smaller than the "
+            "seed spread is not an architecture effect."
         ),
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(summary, indent=2) + "\n")
 
-    print(f"{'arm':32s} {'mode':14s} {'k/n':>10s} {'rate':>7s} {'wilson95':>18s} {'seeds':>5s}")
+    print(f"{'arm':32s} {'mode':14s} {'k/n':>10s} {'rate':>7s} {'wilson95':>18s} "
+          f"{'cover':>7s} {'seeds':>5s}")
     for arm, entry in per_arm.items():
         for mode, e in entry.items():
             p = e["pooled"]
+            cov = e.get("pooled_coverage")
             print(f"  {arm:30s} {mode:14s} {p['k']:>4}/{p['n']:<5} {p['rate']:>7.4f} "
-                  f"{str(p['wilson95']):>18s} {e['seeds']:>5}")
+                  f"{str(p['wilson95']):>18s} {str(cov):>7s} {e['seeds']:>5}")
     print(f"\nmajority-class baseline: {MAJORITY_BASELINE['rate']}")
+    degenerate = [
+        f"{arm}/{mode}" for arm, entry in per_arm.items() for mode, e in entry.items()
+        if not e.get("has_signal", False)
+    ]
+    if degenerate:
+        print(f"\n!! ZERO COVERAGE (no scoreable output) in {len(degenerate)} cell(s): "
+              f"{', '.join(degenerate)}")
+        print("!! Verdicts for these cells are INVALID_NO_SIGNAL, not nulls.")
     print("\nVERDICTS:")
     for arm, v in verdicts.items():
         for mode, d in v.items():

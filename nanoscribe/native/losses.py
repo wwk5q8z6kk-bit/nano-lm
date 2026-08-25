@@ -50,13 +50,34 @@ def compute_batch_loss(
     input_ids = []
     labels = []
     for prompt, target in zip(batch_prompts, batch_targets, strict=True):
-        prompt_ids = hash_tokens(prompt, vocab)
-        target_ids = hash_tokens(target, vocab)
-        seq = (prompt_ids + target_ids)[: cfg.max_seq]
+        # Budget the target FIRST, then give the prompt what is left.
+        #
+        # This previously read `(prompt_ids + target_ids)[: cfg.max_seq]`, which
+        # truncates from the right — i.e. it drops the target. hash_tokens is
+        # character-level, and every prompt in native_corpus_screen_v1 is 519-642
+        # chars against max_seq=512, so that slice discarded the target for
+        # 100.0% of 19,194 training examples. The model never saw a label, and
+        # the resulting near-zero `final_loss` was next-character prediction on
+        # templated transcript text, not task learning. See
+        # artifacts/campaign/reval_results/FALSE_NULL_DIAGNOSIS.md.
+        #
+        # The prompt is truncated from the LEFT so the question and answer
+        # instructions at its tail — the part that conditions the target —
+        # always survive.
+        target_ids = hash_tokens(target, vocab)[: max(1, cfg.max_seq - 1)]
+        prompt_budget = cfg.max_seq - len(target_ids)
+        prompt_ids = hash_tokens(prompt, vocab)[-prompt_budget:] if prompt_budget > 0 else []
+        seq = prompt_ids + target_ids
         if len(seq) < 2:
             seq = seq + [1]
+        n_prompt = len(prompt_ids)
+        # Supervise target positions only. Label i predicts seq[i + 1], so a
+        # label is kept iff seq[i + 1] belongs to the target. The boundary
+        # position (last prompt token -> first target token) is supervised.
         input_ids.append(seq[:-1])
-        labels.append(seq[1:])
+        labels.append(
+            [(-100 if i + 1 < n_prompt else tok) for i, tok in enumerate(seq[1:])]
+        )
 
     max_len = max(len(row) for row in input_ids)
     pad_id = 0

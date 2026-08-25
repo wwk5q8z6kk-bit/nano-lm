@@ -151,7 +151,17 @@ def eval_one_run(
         if eval_cpu:
             cmd.append("--cpu")
         cmd.extend(extra)
-        subprocess.run(cmd, cwd=root, check=False, capture_output=True, text=True)
+        proc = subprocess.run(cmd, cwd=root, check=False, capture_output=True, text=True)
+        if proc.returncode != 0 or not out.is_file():
+            # Previously this call discarded returncode and stderr, so an eval
+            # crash was indistinguishable from an eval that scored zero. Surface
+            # it: a missing/failed cell must not silently become a 0-rate row.
+            print(
+                f"[native30] EVAL FAILED run={run_id} mode={mode} rc={proc.returncode}\n"
+                f"  stderr: {(proc.stderr or '').strip()[-2000:]}",
+                file=sys.stderr,
+                flush=True,
+            )
 
 
 def write_heartbeat(results_dir: Path) -> None:
