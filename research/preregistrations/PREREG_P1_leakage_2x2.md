@@ -115,7 +115,32 @@ Because $\theta = -\pi_{C2}$, the interaction effect size **is** $\pi_{C2}$. Gue
 
 **Secondary observation, not a verdict trigger.** The enc-4 false-positive signal (`unbound_assertion` over 5 absent slots) is reported but decides nothing: n=5 per instance is too thin, and the primary rule must stand alone.
 
-**Blocking manipulation check.** `test_leakage_ablation.py::test_pure_echo_model_is_caught` (a prompt-parrot must score `correct_abstention=0` / `unbound_assertion=5` on enc-4 while an honest abstainer scores 5/0) and `test_prompts_stay_distinct_in_every_scoring_cell`. If either fails, a REFUTED verdict is **VOID** rather than reassuring — the Stage P/P1 lesson.
+**Blocking manipulation check — currently NOT binding.** `test_leakage_ablation.py::test_pure_echo_model_is_caught` and `test_prompts_stay_distinct_in_every_scoring_cell`. If either fails, a REFUTED verdict is **VOID** rather than reassuring — the Stage P/P1 lesson.
+
+> **Defect, recorded before the run.** The echo adapter builds its answer from `spec.raw_value` (`f'STATED: "{spec.raw_value}"'`), **not from the prompt it was shown**. It is therefore cell-invariant by construction: it emits the same line whether or not the prompt carries the gold value, so it cannot detect a prompt-channel leak and does not bind this ablation. A parrot that binds must be built **from the prompt text**. Until it is, "the manipulation check passes" is not evidence. Credit: peer session `v7pagl1v`; verified here at `b6473cb:nanoscribe/test_leakage_ablation.py` line 201.
+
+## 7b. HOLD — a leak that is open in all four cells
+
+Registered after §5 and before any launch. **The 2×2 as specified cannot detect what it was built to detect.**
+
+Q was split out of C1 as "task specification, not leakage" on the grounds that naming the concept is how a slot is identified at all. That is right in principle but wrong as implemented: `topic_for_spec` identifies the slot by its **gold surface string** (`Does the patient mention 'neck'?`), so with Q pinned ON the answer sits in the prompt in **every cell** — including `C1off_C2off_Qon`, the cell labelled "leakage-free".
+
+Measured on i0, fixture-only, with a parrot that discards the transcript before parsing (perfect-reader ceiling is `exact_span 10/16`):
+
+| Cell | parrot `exact_span` |
+|---|---|
+| `C1on_C2on` | 10/16 |
+| `C1on_C2off` | 10/16 |
+| `C1off_C2on` | 9/16 |
+| `C1off_C2off` | **9/16** |
+
+A model with **zero transcript access** scores within one slot of ceiling in the leakage-free cell. `exact_gold_span` is saturated, and the previously-registered **REFUTED** branch ("moves ≤ 1 slot across all four cells") is precisely the signature of a channel open everywhere — so it **cannot** be read as evidence of no leakage. That branch is hereby **void as an inference**, not merely underpowered.
+
+This is a *stronger* reason to hold than the power finding in §5, and it explains it: $\hat\pi_{C1}=0.10$ is small because Q carries the answer regardless of C1.
+
+The joint table **does** still discriminate — parrot `state_ok` 6/16 vs ceiling 10/16, `correct_abstention` 0–3/6 vs 6/6, `unbound_assertion` 3–6 vs 0 — which is independent support for the §7 move from a single accuracy scalar to discrimination-based endpoints.
+
+Source: peer session `v7pagl1v` at `b6473cb`, independently reproduced there with a separately-written parrot. **No node launches until `Q_SURFACE` is resolved** — i.e. until the slot can be identified without naming its gold surface string (a slot id, a type-plus-position index, or a paraphrase that does not contain the answer).
 
 ## 8. Reporting contract
 

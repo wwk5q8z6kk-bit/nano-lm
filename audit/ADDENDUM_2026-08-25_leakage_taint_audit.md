@@ -32,7 +32,11 @@ git show post-alpha-evidence-freeze-2026-07-31:scribe/gate_scribe.py
 
 `git ls-tree -r post-alpha-evidence-freeze-2026-07-31 -- nanoscribe/` returns **empty**: the `nanoscribe/` package did not exist at the freeze. `git grep -l 'span_port\|span-port'` over all `*.py` in the tagged tree returns **no files**: no span-port code of any kind existed.
 
-Both channels are introduced in the span-port adapter lineage, whose earliest commits (`ac46908`, `89a7939`, `c7e0e90` for `candidate_from_span_port_line`; `c4822b9` for `build_span_port_prompt`) are all on post-freeze branches. The freeze tags resolve to `a9d12cb` (2026-07-31 10:13), `67bf87b` (2026-07-31 14:29) and `0e01d73` (2026-07-31 01:20); `dc3b310`, which the channel documentation names as the commit where C1 and C2 arrived together, is dated 2026-08-25.
+Both channels are introduced in the span-port adapter lineage, whose earliest commits (`ac46908`, `89a7939`, `c7e0e90` for `candidate_from_span_port_line`; `c4822b9` for `build_span_port_prompt`) are all on post-freeze branches. The freeze tags resolve to `a9d12cb` (2026-07-31 10:13), `67bf87b` (2026-07-31 14:29) and `0e01d73` (2026-07-31 01:20).
+
+> **Correction (same day).** An earlier draft of this addendum repeated `nanoscribe/leakage.py`'s docstring claim that "C1 and C2 arrived together in `dc3b310`". That is **false**, and the correction is recorded here rather than silently applied. Verified against `09745ec`: its `prompt.py` already interpolated `{spec.raw_value!r}` into the question (lines 56–59) and already shipped `Example: STATED: "neck"` in the system prompt (line 20). **The prompt gold-value channel predates `dc3b310`; only the parser fallback is new there.** Credit: peer session `v7pagl1v`, independently re-verified here before acceptance.
+>
+> This does not move any classification below. The load-bearing provenance fact is the stronger one — `nanoscribe/` does not exist in the freeze tree at all, so *both* channels postdate every tag regardless of which post-freeze commit each first appeared in. The corrected date only shifts C1's first appearance from one post-freeze commit to an earlier post-freeze commit.
 
 **No frozen artifact can have been produced by code that did not exist when it was frozen.**
 
