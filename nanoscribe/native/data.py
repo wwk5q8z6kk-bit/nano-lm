@@ -9,7 +9,7 @@ from typing import Any, Iterator
 
 from nanoscribe.distill_train_suite import distill_train_cases, distill_train_manifest
 from nanoscribe.harness import HarnessCase
-from nanoscribe.prompt import build_span_port_prompt
+from nanoscribe.prompt import build_canonical_span_port_prompt
 
 
 @dataclass(frozen=True, slots=True)
@@ -40,7 +40,7 @@ def examples_from_cases(cases: list[HarnessCase]) -> list[NativeTrainExample]:
     rows: list[NativeTrainExample] = []
     for case in cases:
         for spec in case.atom_specs:
-            prompt = build_span_port_prompt(case.model_input.source, spec)
+            prompt = build_canonical_span_port_prompt(case.model_input.source, spec)
             rows.append(
                 NativeTrainExample(
                     encounter_id=case.encounter_id,

@@ -15,7 +15,7 @@ from nanoscribe.native.checkpoint import load_checkpoint
 from nanoscribe.native.config import checkpoint_root, NativeTrainConfig, config_for_run
 from nanoscribe.native.inference import generate_target_line
 from nanoscribe.native.model import build_native_model
-from nanoscribe.prompt import build_span_port_prompt
+from nanoscribe.prompt import build_canonical_span_port_prompt
 
 
 
@@ -145,7 +145,7 @@ def _propose_case(
     atoms = []
     raw_lines: dict[str, str] = {}
     for spec in case.atom_specs:
-        prompt = build_span_port_prompt(case.model_input.source, spec)
+        prompt = build_canonical_span_port_prompt(case.model_input.source, spec)
         raw_line = generate_target_line(
             model,
             prompt,

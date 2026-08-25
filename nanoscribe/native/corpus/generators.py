@@ -1,7 +1,7 @@
 """Layer B — P1 mechanism curriculum.
 
 Generates span-port training examples across capability axes using the CANONICAL
-prompt builder (nanoscribe.prompt.build_span_port_prompt) so training prompts are
+prompt builder (nanoscribe.prompt.build_canonical_span_port_prompt) so training prompts are
 byte-identical in form to what evaluation and deployment produce. Hand-rolling a
 second prompt format here would train the model on a surface the evaluator never
 shows it.
@@ -17,7 +17,7 @@ from collections.abc import Iterator
 from nanoscribe.adapters import AtomSpec, AtomType, Speaker
 from nanoscribe.native.corpus import vocab
 from nanoscribe.native.corpus.schema import Axis, CorpusExample, Layer, Partition
-from nanoscribe.prompt import build_span_port_prompt
+from nanoscribe.prompt import build_canonical_span_port_prompt
 from nanoscribe.distill_train_suite import assemble_source
 
 _ATOM_TYPE = {
@@ -80,7 +80,7 @@ def _example(
     return CorpusExample(
         encounter_id=enc_id,
         atom_id=spec.atom_id,
-        prompt=build_span_port_prompt(source, spec),
+        prompt=build_canonical_span_port_prompt(source, spec),
         target=target,
         raw_value=value,
         axes=axes,
