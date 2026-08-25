@@ -31,7 +31,10 @@ must have**, independent of the number it produces:
 
 Each is falsifiable, cheap, and orthogonal to the headline result.
 
-## Verified instances
+## Worked instances
+
+Three of the twelve indexed sites, chosen because each shows a different
+detection mode. The full set is in `artifacts/DEFECT_INDEX.md`.
 
 ### 1. Pointer-head manipulation check → `C_POINTER_P1` VOID
 
@@ -132,7 +135,9 @@ difference between a control and a decoration.
 
 ## Open
 
-- Record defect #3 properly, or withdraw it from this file.
-- Decide whether the three-defect pattern is stated in Paper α as a
-  methodological finding or held for a separate methods note. It is currently
-  neither.
+- Decide whether this is stated in Paper α as a methodological finding or held
+  for a separate methods note. It is currently neither.
+- The index's standing rule ("a check that has passed once is not protection";
+  prefer a differential test against a known-correct reference over a derived
+  metric) is stronger than this file's point 2 and should be reconciled into
+  one rule rather than stated twice.
