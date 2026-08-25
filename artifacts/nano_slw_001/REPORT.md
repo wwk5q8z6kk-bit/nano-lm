@@ -1,7 +1,8 @@
 # NANO-SLW-001 — Synthetic Longitudinal World
 
 **Date** 2026-08-25 · **Branch** `frontier/accelerated-research-campaign-v2`
-· **Commit** `bc4e693` (amended) · **Spec** `spec_6055dc790314f6d1`
+· **Commits** `9e67ed7` (benchmark) + `b9a2c3b` (determinism fix)
+· **Spec** `spec_6055dc790314f6d1`
 
 Convergence pass against directive D-NANO-2026-08-25: stop expanding the
 architecture, prove the substrate that already exists through one general
@@ -21,8 +22,8 @@ appear below, but they were gathered late.
 | | |
 |---|---|
 | Branch | `frontier/accelerated-research-campaign-v2` |
-| HEAD | `bc4e693` |
-| Upstream divergence | 6 ahead, 0 behind — **unpushed** |
+| HEAD | `b9a2c3b` |
+| Upstream divergence | 8 ahead, 0 behind — **unpushed** |
 | Working tree | clean apart from generated artifacts + `.gitignore` |
 | Worktrees | 8 (`nano-lm` main, `/private/tmp/lk`, 4 under `~/.cache/openresearch/worktrees/`, `nano-lm-nanoscribe`, `nano-lm-span-port`) |
 | vNext commits | 46 in `910310b..HEAD` |
