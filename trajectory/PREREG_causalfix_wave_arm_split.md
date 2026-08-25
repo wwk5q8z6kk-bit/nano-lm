@@ -98,3 +98,77 @@ that carried `dc3b310`'s "0% → 83%" past its own conditions.
 
 **Registered, not resolved.** Seeds 1-2 unobserved at registration. Append a
 RESULT section below without editing the rule above.
+
+---
+
+## RESULT — 2026-08-25, all 9 runs complete
+
+Executed on MPS, single device, no mid-wave code change to any decision metric.
+Rule above applied as written.
+
+### Coverage (headline, per registered reporting order)
+
+| mode | per-run coverage | pooled |
+|---|---|---|
+| constrained | **6/150 in all nine runs** | 54/1350 = **4.0%** |
+| unconstrained | **0/150 in all nine runs** | 0/1350 = 0.0% |
+
+Every model abstains on **144 of 150 atoms**. The entire arm comparison rests on
+6 atoms per run.
+
+### Primary metric — assertion_state_correct, conditioned on covered atoms
+
+| arm | per-seed (s0,s1,s2) | pooled | Wilson95 |
+|---|---|---|---|
+| `decoder_control` | 0, 0, 0 | 0/18 = 0.000 | (0.000, 0.176) |
+| `evidence_bottleneck` | **6**, 0, 0 | 6/18 = 0.333 | (0.163, 0.563) |
+| `span_port` | 0, 0, 0 | 0/18 = 0.000 | (0.000, 0.176) |
+
+### Decision
+
+| rule | outcome |
+|---|---|
+| 1. coverage ≥ 1 in every cell | **PASS** (all 6/150) |
+| 2. intervals disjoint and ordered | **FAIL** — bottleneck lower 0.1628 vs control upper 0.1759, overlapping |
+| 3. direction consistent 3/3 seeds | **FAIL** — higher in 1/3 (0 reversals; s1 and s2 are ties at 0/6) |
+
+**VERDICT: SEED NOISE.**
+
+The `DENIED`-vs-`ASSERTED` split that motivated this prereg came entirely from
+`evidence_bottleneck_s0`. Seeds 1 and 2 of the same arm both read 0/6, identical
+to both other arms. Registering the rule before seeds 1-2 landed is what
+prevented a single-seed artifact from being reported as an objective effect —
+the s0-only view was 0/6 vs 6/6 and looked like a clean architecture result.
+
+### Capability-floor clause — FIRES
+
+- pooled constrained coverage 4.0% < 10% ✔
+- unconstrained coverage 0 in 9/9 runs ≥ 8/9 ✔
+
+Registered conclusion, now in force:
+
+> 30M parameters at 1800 steps on a character-level hash tokenizer is below the
+> capability floor for `p1_screening_eval_v1`. The arm comparison rests on a
+> small covered subset and is **not** used to rank architectures.
+
+### Analyzer verdicts (independent of this prereg)
+
+| arm | mode | verdict |
+|---|---|---|
+| `evidence_bottleneck` | constrained | `NOT_SEPARATED` |
+| `span_port` | constrained | `NOT_SEPARATED` |
+| `evidence_bottleneck` | unconstrained | `INVALID_NO_SIGNAL` |
+| `span_port` | unconstrained | `INVALID_NO_SIGNAL` |
+
+The D2.3 guard is behaving correctly and the distinction is now meaningful:
+constrained cells have real coverage, so `NOT_SEPARATED` is a legitimate
+inference; unconstrained cells produced nothing, so no verdict is inferable.
+Under the pre-fix analyzer all six would have read `NOT_SEPARATED`.
+
+### What this does and does not establish
+
+- **Does:** the fixed pipeline measures something (coverage 0 → 4%); the arms do
+  not separate at this scale; the models are below the capability floor.
+- **Does not:** rank architectures, or say anything about a small objective
+  effect — per the registered power note, this design detects only large effects
+  at n≈18/arm.
