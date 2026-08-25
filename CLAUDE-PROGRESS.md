@@ -1,4 +1,65 @@
-# nano-lm — session progress (updated 2026-07-26)
+# nano-lm — session progress (updated 2026-08-25)
+
+## 2026-08-25 — Native30 revalidation: integrity gate + defect index
+**Branch:** `frontier/accelerated-research-campaign-v2` (verified first; all of
+`c98e4ad`, `35ad570`, `3991096` are contained in it and in NO other branch,
+which independently confirms `frontier/p1-campaign-eval-v0` / PR #50 lacks
+every defect fix. Do not work from that branch.)
+
+**Landed**
+- `artifacts/DEFECT_INDEX.md` (`4477497`) — task 6, protected first. All defects
+  in one place with id / site / mechanism / bias / fixing commit / taints.
+  **The "five defects" are twelve sites**: five counts fix *threads*, and three
+  threads bundle several independent defects fixed in one commit. Two of the
+  twelve are in no headline summary and each independently voids a wave:
+  **D1.2** the three native30 arm objectives were scalar multiples of `lm`, so
+  the arms shared one gradient direction and differed only in effective LR —
+  the arm comparison measured learning rate, not objective; **D2.3**
+  `analyze_revalidation.py`'s verdict fallthrough turned total output collapse
+  into `NOT_SEPARATED`, fabricating six nulls that were reported as findings.
+- **Recovered `artifacts/measurement-integrity-audit.md`** — cited as a source
+  for the index but absent from the tree. Written in WIP commit `1b241d6` and
+  never landed; 199 lines, restored.
+- `nanoscribe/native/integrity.py` + `test_native_integrity.py` (`d4790a2`) —
+  tasks 1–3. `run_startup_gate()` runs in `train_native()` before the first
+  optimizer step, on every run, and raises. Reference-oracle differential test
+  vs `F.scaled_dot_product_attention(is_causal=True)` alongside the derived
+  leakage probe. BPB floor (0.01 bits/byte) replaces the remembered
+  "40.6 → 22.4" numbers. 12 tests green, including three that reconstruct each
+  defect and prove the gate fires.
+- `artifacts/campaign/native100_checkpoint_audit.md` — task 5.
+- `a62ad8b` — 19GB untracked nested git repo at
+  `artifacts/campaign/kaggle_native30_download/` was unignored; any `git add -A`
+  would have swallowed it. Now ignored. All 18 pre-fix reval results committed.
+
+**Findings**
+- `native100_evidence_bottleneck_s0` is a **LOST ARTIFACT, not an incomplete
+  run.** `save_checkpoint` writes `step_NNNNNN.pt` → `latest.pt` → `.json`
+  **last**, so a surviving `.json` with no `.pt` proves both weight files were
+  written and later deleted. An incomplete run leaves the opposite signature.
+  Not recoverable (`.pt` is gitignored). Likely disk-pressure cleanup.
+- `native100_*` dirs may mix two configs in one directory (a `step_000006.json`
+  implies `max_steps=30`, but the embedded config says 200). Verify step/config
+  inside each payload rather than trusting directory names.
+- Corrected a stale number rather than propagating it: the recovered audit
+  reports `artifacts/` as 0 files for D4; 38 files under `artifacts/campaign/`
+  carry `correct_abstention`. No conclusion changes — those are native-line
+  results already void from D1–D3 — and the load-bearing claim survives a
+  precise recount: **0 across all eleven frozen Paper-α trees** plus
+  `trajectory/`, `fabric/`, `scribe/`.
+
+**Owed / next**
+- **Task 4 (the wave) is NOT done.** A pre-assertion wave (PID 67752) was found
+  already running into `artifacts/campaign/reval_results_causalfix/`, started
+  01:57, ~2 of 9 arms complete after 2h → ~5h remaining. It has the code fixes
+  but not the runtime gate, so it cannot prove it ran clean and does not satisfy
+  the revalidation claim. It was left alone rather than killed; that decision is
+  open and belongs to the owner.
+- Once decided: run the wave to **NEW** `reval30_*_fixed_*` dirs. Do not
+  overwrite the nine existing `reval30_*` — they are the broken-run record the
+  defect analysis cites.
+- Out of scope by instruction: minbpe/BPE swap (breaks comparability
+  mid-revalidation; own preregistered change), any paid compute.
 
 ## STAGE P / P2 (2026-07-26): explicit pointer/copy head — H-copy REFUTED (measured)
 The scribe OOD copying gap survived Stage C (curriculum) and Stage S (scale); Stage S's audit
