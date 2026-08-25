@@ -76,6 +76,8 @@ from nano.contracts import (
 )
 from nano.dependency import Dependency, DependencyGraph, Freshness
 from nano.kernel import Identity
+from nano.needs import (DEFAULT_STRATEGY, Strategy, explain_plan,
+                        rank_needs)
 
 EPOCH = date(2026, 1, 1)
 
@@ -702,7 +704,18 @@ def build_full(world: SyntheticWorld, observations: list,
 # Projection
 # ---------------------------------------------------------------------------
 
-def project(world: SyntheticWorld, b: LedgerBuilder) -> PatientStateSnapshot:
+def project(world: SyntheticWorld, b: LedgerBuilder,
+            as_of: int | None = None) -> PatientStateSnapshot:
+    """Project the ledger into a snapshot as it stands at `as_of` (default: the
+    end of the world).
+
+    `as_of` is not cosmetic. The information plan ages every held value against
+    "now", so pinning `now` to the final tick would make a checkpoint-10
+    snapshot report everything as fifty days staler than it was — a plan that
+    is wrong about history. Invisible under the current default strategy, which
+    carries no age term, and exactly the kind of latent error that surfaces the
+    moment someone promotes one.
+    """
     conditions, relations, readings = [], [], []
     for (ent, attr), val in sorted(b.resolved.items()):
         item = f"{ent}.{attr}={val}"
@@ -730,6 +743,8 @@ def project(world: SyntheticWorld, b: LedgerBuilder) -> PatientStateSnapshot:
         conflicts=tuple(sorted(c.conflict_id for c in b.conflict_records())),
         unresolved_questions=tuple(sorted(
             f"{e}.{a}" for e, a in b.gap_keys)),
+        next_information_needs=tuple(rank_needs(**epistemic_inputs(
+            b, tick_to_date(world.spec.n_ticks if as_of is None else as_of)))),
         projection_version="nano-slw-001")
 
 
@@ -747,6 +762,10 @@ def state_signature(snapshot: PatientStateSnapshot) -> tuple:
     separately (`identical_snapshot_ids`) rather than assumed here; keeping the
     weaker comparison as the gate means a future arm that legitimately reorders
     the fold is still judged on the world it believes.
+
+    Ranking (`next_information_needs`) is a view over the same unknowns, not a
+    different believed world, so it is excluded. Two plans over one state are
+    not two worlds.
     """
     return (snapshot.active_conditions, snapshot.current_medications,
             snapshot.laboratory_state, snapshot.uncertainties,
@@ -837,7 +856,7 @@ def run_baseline_a(world: SyntheticWorld) -> ArmResult:
     for tick in world.checkpoints():
         obs = world.observations_through(tick)
         b = build_full(world, obs, tick)
-        snapshot = project(world, b)
+        snapshot = project(world, b, as_of=tick)
         d = derived_objects(world, b)
         arm.snapshots[tick] = snapshot
         arm.observations_folded[tick] = len(obs)
@@ -1035,7 +1054,7 @@ def run_candidate_b(world: SyntheticWorld) -> ArmResult:
             else:
                 arm.unhonoured_obligations.append((tick, obj))
 
-        snapshot = project(world, b)
+        snapshot = project(world, b, as_of=tick)
         arm.snapshots[tick] = snapshot
         arm.recomputed[tick] = recomputed
         delta = _delta(previous, snapshot, b, ())
@@ -1248,6 +1267,268 @@ def score_faithfulness(world: SyntheticWorld) -> dict:
     }
 
 
+def epistemic_inputs(b: LedgerBuilder, now: str) -> dict:
+    """Project the builder into the plain-data view `rank_needs` consumes.
+
+    Deliberately a projection rather than passing the builder: the ranker must
+    not be able to reach ground truth, the world, or anything else the system
+    would not have at request time. Narrowing the input is the guard.
+    """
+    latest_time, evidence_count = {}, {}
+    for key, bucket in b.by_key.items():
+        live = [a for a in bucket if a.assertion_id not in b.superseded]
+        if not live:
+            continue
+        latest_time[key] = max(a.temporal.event_time for a in live)
+        evidence_count[key] = sum(len(a.evidence_span_ids) for a in live)
+    return {"conflicted": dict(b.conflicted), "gaps": set(b.gap_keys),
+            "resolved": dict(b.resolved), "latest_time": latest_time,
+            "evidence_count": evidence_count, "now": now}
+
+
+def _broken_keys(world: SyntheticWorld, b: LedgerBuilder) -> set:
+    """Keys the system is measurably wrong or silent about.
+
+    Scorer-only: computed from ground truth, never visible to the ranker. A key
+    counts as broken if the system holds the wrong value, holds no value, or
+    cannot resolve one. These are exactly the keys where acquiring information
+    would change the answer — which is what a ranking is supposed to find.
+    """
+    truth = world.truth_at(world.spec.n_ticks)
+    broken = set()
+    for key, actual in truth.items():
+        held = b.resolved.get(key)
+        if key in b.conflicted or held is None or held != actual:
+            broken.add(key)
+    return broken
+
+
+def _acquire(world: SyntheticWorld, b: LedgerBuilder, keys, at_tick: int) -> int:
+    """Simulate asking a truthful source about `keys`.
+
+    Acquisition is modelled as what it actually is — an *observation* entering
+    through the normal path, precise and current. It is not a back door to the
+    truth table: the value still becomes a source, a span and an assertion, and
+    still has to win resolution on its merits.
+    """
+    truth = world.truth_at(world.spec.n_ticks)
+    admitted = 0
+    for entity, attribute in keys:
+        actual = truth.get((entity, attribute))
+        if actual is None:
+            continue
+        b.admit(Observation(
+            obs_tick=at_tick, event_tick=at_tick, entity_id=entity,
+            attribute=attribute, value=actual, kind=ObsKind.CLEAN,
+            source_ordinal=9, change_id=f"acq_{entity}_{attribute}"))
+        admitted += 1
+    return admitted
+
+
+def score_information_need(world: SyntheticWorld,
+                           budget_fractions: tuple = (0.1, 0.25, 0.5)) -> dict:
+    """Does the "needed" axis rank, or merely enumerate?
+
+    Scored two ways, both against controls rather than thresholds:
+
+    Two *different* things are being claimed, and an early version of this
+    scorer conflated them:
+
+    * the **filter** — deciding a key deserves a question at all
+    * the **ranking** — ordering the questions the filter produced
+
+    ARBITRARY only controls for the second: it shuffles within an already
+    filtered set, so its precision inherits the filter's selectivity. Measured
+    against it alone, the ranking looked far stronger than it is. `RANDOM_KEY`
+    samples uniformly from *every tracked key* and is the true no-signal
+    baseline; it sits at the base rate by construction. Both lifts are reported
+    separately so neither claim borrows the other's credit.
+
+    * **precision@K** — of the top K questions, how many land on a key the
+      system is measurably wrong or silent about?
+    * **simulated acquisition** — spend the same budget K, admit truthful
+      observations for the selected keys through the normal ingest path, and
+      measure how much of the error actually disappears. Precision could look
+      good while fixing nothing; this closes that gap.
+
+    Reporting every strategy, including the ones that lose, is the point. The
+    alternative is picking the winner and calling it the design.
+    """
+    base = build_full(world, world.observations, world.spec.n_ticks)
+    now = tick_to_date(world.spec.n_ticks)
+    inputs = epistemic_inputs(base, now)
+    broken = _broken_keys(world, base)
+    baseline_error = len(broken)
+    all_keys = sorted(world.truth_at(world.spec.n_ticks))
+
+    def spend(keys) -> dict:
+        """Actually acquire, on a fresh fold, and remeasure."""
+        trial = build_full(world, world.observations, world.spec.n_ticks)
+        _acquire(world, trial, keys, world.spec.n_ticks + 1)
+        remaining = len(_broken_keys(world, trial))
+        return {"errors_before": baseline_error, "errors_after": remaining,
+                "errors_fixed": baseline_error - remaining}
+
+    strategies = {}
+    for strategy in Strategy:
+        requests = rank_needs(**inputs, strategy=strategy)
+        per_budget = {}
+        for frac in budget_fractions:
+            k = max(1, int(len(requests) * frac))
+            top = requests[:k]
+            hits = sum(1 for r in top if r.key in broken)
+            outcome = spend([r.key for r in top])
+            remaining = outcome["errors_after"]
+
+            per_budget[f"{frac:.2f}"] = {
+                "k": k,
+                "precision_at_k": hits / max(1, k),
+                "errors_before": baseline_error,
+                "errors_after": remaining,
+                "errors_fixed": baseline_error - remaining,
+                "fixed_per_question": (baseline_error - remaining) / max(1, k),
+            }
+        strategies[strategy.value] = {
+            "requests": len(requests),
+            "budgets": per_budget,
+            "plan": explain_plan(requests, max(1, int(len(requests) * 0.1))),
+        }
+
+    # True no-signal baseline: sample from every tracked key, not from the
+    # already-filtered request set. Seeded from the world so it replays.
+    rng = random.Random(world.spec.seed)
+    random_key = {}
+    any_strategy = strategies[Strategy.KIND.value]["budgets"]
+    for label, entry in any_strategy.items():
+        k = entry["k"]
+        sample = rng.sample(all_keys, min(k, len(all_keys)))
+        outcome = spend(sample)
+        random_key[label] = {
+            "k": k,
+            "precision_at_k": sum(1 for key in sample if key in broken) / max(1, k),
+            **outcome,
+            "fixed_per_question": outcome["errors_fixed"] / max(1, k)}
+
+    control = strategies[Strategy.ARBITRARY.value]
+    ranked = {k: v for k, v in strategies.items() if k != Strategy.ARBITRARY.value}
+    mid = f"{budget_fractions[len(budget_fractions) // 2]:.2f}"
+
+    def at_mid(entry):
+        return entry["budgets"][mid]
+
+    best = max(ranked.items(), key=lambda kv: (at_mid(kv[1])["errors_fixed"],
+                                               at_mid(kv[1])["precision_at_k"]))
+    base_rate = baseline_error / max(1, len(all_keys))
+    return {
+        "broken_keys": baseline_error,
+        "total_tracked_keys": len(all_keys),
+        "base_rate": base_rate,
+        "comparison_budget": mid,
+        "strategies": strategies,
+        "random_key_baseline": random_key,
+        "best_strategy": best[0],
+        # What asking at all buys, over asking about a key picked at random.
+        "filter_and_rank_precision": at_mid(best[1])["precision_at_k"],
+        "random_key_precision": random_key[mid]["precision_at_k"],
+        "filter_and_rank_lift": (at_mid(best[1])["precision_at_k"]
+                                 - random_key[mid]["precision_at_k"]),
+        # What *ordering* buys, given the same filtered request set.
+        "arbitrary_order_precision": at_mid(control)["precision_at_k"],
+        "rank_lift_given_filter": (at_mid(best[1])["precision_at_k"]
+                                   - at_mid(control)["precision_at_k"]),
+        "best_errors_fixed": at_mid(best[1])["errors_fixed"],
+        "random_key_errors_fixed": random_key[mid]["errors_fixed"],
+        "beats_random_key":
+            at_mid(best[1])["errors_fixed"] > random_key[mid]["errors_fixed"],
+    }
+
+
+#: Two-sided t critical values at 95%, df 1..29. A small table beats importing
+#: scipy for one number, and beats using 1.96 at n=10 — the normal approximation
+#: understates the interval by ~15% there, which is exactly the range where a
+#: refinement gets wrongly promoted.
+_T95 = (12.706, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262, 2.228,
+        2.201, 2.179, 2.160, 2.145, 2.131, 2.120, 2.110, 2.101, 2.093, 2.086,
+        2.080, 2.074, 2.069, 2.064, 2.060, 2.056, 2.052, 2.048, 2.045)
+
+
+def _t95(df: int) -> float:
+    if df < 1:
+        return float("inf")
+    return _T95[df - 1] if df <= len(_T95) else 1.96
+
+
+def paired_delta(a_values: list, b_values: list) -> dict:
+    """Paired difference with a t-based 95% interval.
+
+        Equation:   d_i = a_i - b_i ; CI = mean(d) +/- t_{.975,n-1} * sd(d)/sqrt(n)
+        Purpose:    decide whether one ranking strategy actually beats another
+        Why paired: the same seed produces the same world for both strategies,
+                    so pairing removes world-to-world variance, which dominates
+                    the effect being measured
+        Why t:      n is ~10; the normal approximation is too narrow there
+        Output:     `distinguishable` is True only when the interval excludes 0
+        Failure mode it prevents: promoting a refinement on a mean difference
+                    that is inside the noise, which is how a ranking accretes
+                    terms nobody can justify
+    """
+    n = len(a_values)
+    if n != len(b_values) or n < 2:
+        raise ValueError("paired_delta needs two equal-length series, n >= 2")
+    diffs = [a - b for a, b in zip(a_values, b_values)]
+    mean = sum(diffs) / n
+    var = sum((d - mean) ** 2 for d in diffs) / (n - 1)
+    half = _t95(n - 1) * (var ** 0.5) / (n ** 0.5)
+    return {"n": n, "mean_delta": mean, "sd": var ** 0.5,
+            "ci_low": mean - half, "ci_high": mean + half,
+            "distinguishable": (mean - half > 0) or (mean + half < 0)}
+
+
+def compare_need_strategies(seeds: tuple = tuple(range(20260823, 20260833)),
+                            budget: str = "0.25",
+                            spec_factory=None) -> dict:
+    """Is each added term in the ranking actually paying for itself?
+
+    Runs every strategy on the same worlds and compares each against the next
+    simpler one, so complexity has to earn its place one term at a time rather
+    than being justified by the whole stack beating the control.
+
+    Recheck:
+        .venv/bin/python -c "import json; from nano.slw import \
+            compare_need_strategies as c; print(json.dumps(c(), indent=2))"
+    """
+    factory = spec_factory or (lambda seed: WorldSpec(seed=seed))
+    series: dict = {s.value: [] for s in Strategy}
+    for seed in seeds:
+        result = score_information_need(SyntheticWorld.generate(factory(seed)),
+                                        budget_fractions=(float(budget),))
+        for name, entry in result["strategies"].items():
+            series[name].append(entry["budgets"][budget]["precision_at_k"])
+
+    ladder = [Strategy.ARBITRARY, Strategy.KIND, Strategy.KIND_SCARCITY,
+              Strategy.KIND_SCARCITY_AGE]
+    steps = {}
+    for simpler, richer in zip(ladder, ladder[1:]):
+        steps[f"{richer.value} - {simpler.value}"] = paired_delta(
+            series[richer.value], series[simpler.value])
+
+    # The simplest strategy that is distinguishably better than the control.
+    justified = Strategy.ARBITRARY
+    for simpler, richer in zip(ladder, ladder[1:]):
+        if steps[f"{richer.value} - {simpler.value}"]["distinguishable"]:
+            justified = richer
+        else:
+            break
+    return {
+        "seeds": list(seeds), "budget": budget,
+        "mean_precision": {k: sum(v) / len(v) for k, v in series.items()},
+        "steps": steps,
+        "simplest_justified_strategy": justified.value,
+        "current_default": DEFAULT_STRATEGY.value,
+        "default_is_justified": DEFAULT_STRATEGY.value == justified.value,
+    }
+
+
 def run_slw_001(spec: WorldSpec | None = None) -> dict:
     """The benchmark. Returns a plain dict so the runner can serialise it."""
     world = SyntheticWorld.generate(spec)
@@ -1318,6 +1599,7 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
         "invalidation": score_invalidation(world),
         "branch_isolation": score_unrelated_branches(world),
         "faithfulness": score_faithfulness(world),
+        "information_need": score_information_need(world),
     }
     # A cost saving is only reportable if the answers match. Stating it
     # unconditionally is how a benchmark starts rewarding being fast and wrong.

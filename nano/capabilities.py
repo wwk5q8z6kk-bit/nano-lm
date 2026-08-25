@@ -488,7 +488,8 @@ CAPABILITIES: tuple[Capability, ...] = (
        failure_modes=("confident answer over a gap",
                       "uncertainty reported as a single number"),
        implementation_stage=Stage.D_LONGITUDINAL, status=Status.PARTIAL,
-       evidence="nano/contracts.py::PatientStateSnapshot.uncertainties, unresolved_questions"),
+       evidence="nano/contracts.py::PatientStateSnapshot.uncertainties, unresolved_questions; "
+                "nano/needs.py::rank_needs"),
 
     # ---------------- Planning and compute ----------------
     _c(capability_id="PLN-DECOMP", domain="Planning",
@@ -711,22 +712,20 @@ CAPABILITIES: tuple[Capability, ...] = (
     _c(capability_id="MTA-EPISTEMIC", domain="Metacognition",
        capability="Maintain typed machine state for known/unknown/conflicting/needed",
        internal_representation="epistemic state as data, not prose chain-of-thought",
-       module="partially: uncertainties + unresolved questions on the snapshot",
-       inputs=("state", "ledger"), outputs=("epistemic state",),
+       module="nano/needs.py::rank_needs; PatientStateSnapshot.next_information_needs",
+       inputs=("state", "ledger"), outputs=("epistemic state", "ranked information needs"),
        memory_requirements="persists with the state version",
        tools=(), training_objective="calibration",
-       evaluation_benchmark="does stated uncertainty predict actual error? "
-                            "NANO-SLW-001 faithfulness vs silent-resolution control",
+       evaluation_benchmark="NANO-SLW-001: KIND vs ARBITRARY at 25% budget; "
+                            "faithfulness vs silent-resolution control",
        failure_modes=("uncertainty expressed only in prose, so nothing can act on it",
+                      "gap list presented as a plan",
                       "load-bearing assumption never identified"),
-       implementation_stage=Stage.D_LONGITUDINAL, status=Status.PARTIAL,
-       # Still PARTIAL: the benchmark shows the *known/unknown/conflicting* axes
-       # working — 0 undeclared errors against 29 for a control forced to name a
-       # winner — but "needed" is a passive gap list, not a ranked next-
-       # information need. That is the remaining work, and it is not evidence.
-       evidence="nano/contracts.py::PatientStateSnapshot; "
-                "nano/slw.py::score_faithfulness, LedgerBuilder.resolve_silently; "
-                "nano/test_slw.py::test_the_system_is_never_confidently_wrong"),
+       implementation_stage=Stage.D_LONGITUDINAL, status=Status.IMPLEMENTED,
+       evidence="nano/needs.py::rank_needs, DEFAULT_STRATEGY; "
+                "nano/slw.py::score_information_need; "
+                "nano/test_slw.py::test_ranked_needs_beat_asking_arbitrarily; "
+                "nano/test_needs.py"),
 
     _c(capability_id="MTA-WOULDCHANGE", domain="Metacognition",
        capability="Name what evidence would change the conclusion",

@@ -26,10 +26,13 @@ the ranking can be unit-tested without building either.
 
 Choosing the ranking by measurement, not by preference
 ------------------------------------------------------
-Four strategies are provided, from a deliberate no-signal control upward. They
-exist so the benchmark can *measure* which one earns its place rather than
-asserting that the most elaborate is best. See
-`nano.slw.score_information_need`; the current finding is recorded there.
+Four strategies are provided, from a deliberate no-signal control upward, so the
+benchmark can *measure* which one earns its place rather than assuming the most
+elaborate is best. It did, and the answer was humbling: cause alone carries the
+result, while scarcity-weighting and age-weighting — both of which sounded
+obviously useful — add nothing distinguishable from zero across ten worlds. The
+numbers are pinned next to `DEFAULT_STRATEGY` below, and the default is the
+simplest strategy that beats the control.
 """
 
 from __future__ import annotations
@@ -54,10 +57,30 @@ class NeedKind(str, Enum):
 
 
 class Strategy(str, Enum):
+    """Ranking strategies, kept in increasing complexity so the comparison is
+    honest. The losers stay in the enum on purpose: deleting a strategy that was
+    measured and found not to help turns a recorded negative result into a
+    silent one, and the next person re-adds it."""
     ARBITRARY = "arbitrary"                    # control: no signal at all
-    KIND = "kind"                              # cause only
+    KIND = "kind"                              # cause only — the default, see below
     KIND_SCARCITY = "kind_scarcity"            # cause / corroboration
     KIND_SCARCITY_AGE = "kind_scarcity_age"    # cause / corroboration * age
+
+
+#: Measured on NANO-SLW-001, 10 seeds, paired per seed at a 25% budget
+#: (`nano.slw.compare_need_strategies`, re-derivable with the recheck command in
+#: the docstring there):
+#:
+#:     kind              - arbitrary      +0.6314  95% CI [+0.5929, +0.6698]  ***
+#:     kind_scarcity     - kind           +0.0137  95% CI [-0.0086, +0.0360]  ns
+#:     kind_scarcity_age - kind_scarcity  -0.0070  95% CI [-0.0308, +0.0169]  ns
+#:
+#: So: knowing *why* information is missing does essentially all the work, and
+#: the two refinements I expected to help do not — one of them is directionally
+#: negative. `DEFAULT_STRATEGY` is therefore the simplest strategy that beats the
+#: control, not the most elaborate one available. Promote a refinement only when
+#: its paired interval clears zero.
+DEFAULT_STRATEGY = Strategy.KIND
 
 
 #: Cause weights. Ordered by how little the system knows, not by how alarming
@@ -174,7 +197,7 @@ def rank_needs(
     evidence_count: dict,
     now: str,
     downstream: dict | None = None,
-    strategy: Strategy = Strategy.KIND_SCARCITY_AGE,
+    strategy: Strategy = DEFAULT_STRATEGY,
     stale_after_days: int = 21,
     thin_below: int = 2,
 ) -> list:

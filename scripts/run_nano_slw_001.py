@@ -28,6 +28,7 @@ sys.path.insert(0, str(ROOT))
 
 from fabric.schemas import _cid            # noqa: E402
 from nano.slw import (  # noqa: E402
+    compare_need_strategies,
     SyntheticWorld,
     WorldSpec,
     build_full,
@@ -130,6 +131,16 @@ def main() -> int:
         _json(args.out / "seed_sweep.json", sweep)
         result["seed_sweep"] = sweep
 
+        # Which ranking terms actually pay for themselves, paired per world.
+        # Emitted so the choice of DEFAULT_STRATEGY is re-derivable from the
+        # artifact rather than trusted from a comment.
+        comparison = compare_need_strategies()
+        _json(args.out / "need_strategy_comparison.json", comparison)
+        print(f"  need strategy      simplest justified="
+              f"{comparison['simplest_justified_strategy']} "
+              f"default={comparison['current_default']} "
+              f"ok={comparison['default_is_justified']}")
+
     eq = result["equivalence"]
     print(f"NANO-SLW-001  seed={spec.seed}  spec={result['spec_fingerprint']}")
     print(f"  world              {result['world']['entities']} entities, "
@@ -146,6 +157,13 @@ def main() -> int:
           f"{result['faithfulness']['nano']['undeclared_error']} "
           f"control="
           f"{result['faithfulness']['silent_resolution_control']['undeclared_error']}")
+    need = result["information_need"]
+    print(f"  info-need P@K      ranked={need['filter_and_rank_precision']:.3f} "
+          f"random-key={need['random_key_precision']:.3f} "
+          f"(base rate {need['base_rate']:.3f})")
+    print(f"  errors fixed       ranked={need['best_errors_fixed']} "
+          f"random-key={need['random_key_errors_fixed']} "
+          f"of {need['broken_keys']}")
     print(f"  artifacts          {args.out}")
 
     # Exit non-zero when the arms disagree: a benchmark that reports a speedup

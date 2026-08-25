@@ -434,6 +434,7 @@ class PatientStateSnapshot:
     uncertainties: tuple = ()
     conflicts: tuple = ()
     unresolved_questions: tuple = ()
+    next_information_needs: tuple = ()
     projection_version: str = "nano-clin-001"
     snapshot_id: str = ""
 

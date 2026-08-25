@@ -88,7 +88,7 @@ Registry changes were **reconciliations against evidence**, not expansions:
 |---|---|---|---|
 | `RSN-TEMPORAL` | ABSENT | PARTIAL | precision-aware before/after now exists and is tested |
 | `LRN-CORRECTION` | PARTIAL | IMPLEMENTED | the gap its own evidence string named is closed |
-| `MTA-EPISTEMIC` | PARTIAL | **PARTIAL** | known/unknown/conflicting proven; "needed" is still a passive gap list |
+| `MTA-EPISTEMIC` | PARTIAL | IMPLEMENTED | all four axes now typed state; "needed" is a ranked plan, measured against controls |
 
 ---
 
@@ -204,14 +204,14 @@ with the corruption rates and be tuned rather than measured.
 
 | Command | Exit | Passed | Failed | Skipped |
 |---|---|---|---|---|
-| `.venv/bin/python -m pytest nano -rs` | 0 | 151 | 0 | 0 |
+| `.venv/bin/python -m pytest nano -rs` | 0 | 167 | 0 | 0 |
 | `.venv/bin/python -m pytest fabric/test_fabric.py -rs` | 0 | 8 | 0 | 0 |
 | `.venv/bin/python -m pytest -c pytest.nanoscribe.ini nanoscribe -rs` | 0 | 279 | 0 | 0 |
 | `.venv/bin/python scripts/run_nano_slw_001.py --sweep` | 0 | — | — | — |
-| two independent runs → byte-identical artifacts | — | 10/10 | 0 | — |
+| two independent runs → byte-identical artifacts | — | 11/11 | 0 | — |
 
-**438 tests, no failures, no skips, no environment-dependent exclusions.**
-`nano` includes 59 SLW tests. Earlier in this session I reported nanoscribe as
+**454 tests, no failures, no skips, no environment-dependent exclusions.**
+`nano` includes 75 SLW and information-need tests. Earlier in this session I reported nanoscribe as
 "~133" from a truncated progress display; the real figure is 279.
 
 ---
@@ -235,8 +235,6 @@ conflating them is how a substrate result gets credited to a tokenizer.
 
 ## 9. What is still not true
 
-- `MTA-EPISTEMIC` "needed" is a passive gap list, not a ranked next-information
-  need.
 - `WorkSlice` budgets have no controller; `Tool` costs nothing routes on;
   `ArtifactIR` exists but `pipeline.py` still renders directly.
 - The benchmark has no learned component. It proves the *deterministic
@@ -272,7 +270,7 @@ a future inference path cannot slip in unnoticed.
 ```
 
 Deterministic from `--seed`, and verified as such: two independent runs produce
-**all 10 artifacts byte-identical**. `Date.now()`-style nondeterminism is absent
+**all 11 artifacts byte-identical**. `Date.now()`-style nondeterminism is absent
 by construction — the world's clock is tick arithmetic over a fixed epoch.
 
 One nondeterminism did slip through and was caught by this check: the runner
@@ -283,9 +281,84 @@ nothing changed.
 
 ---
 
-## 12. Next
+## 12. The "needed" axis — MTA-EPISTEMIC closed
 
-`LRN-CORRECTION` is closed. The next unproven claim in the same layer is
-**`MTA-EPISTEMIC`'s "needed" axis** — turning the gap list into a ranked
-next-information need, scored the way `undeclared_error` was: against a control
-that asks for everything, not against a threshold.
+`unresolved_questions` was an inventory: forty things the system does not know,
+sorted alphabetically. That pushes the whole triage problem onto whoever reads
+it while looking thorough. `nano/needs.py` turns it into a plan —
+`PatientStateSnapshot.next_information_needs` now carries ranked
+`InformationRequest` objects, each required at construction to state a **reason**
+and what it **would resolve**. A request that cannot say why it exists cannot be
+prioritised or audited; one that names nothing it would settle can never be
+closed.
+
+### Two lifts, kept separate
+
+An early version of the scorer conflated them, and the correction mattered:
+
+| | precision@K | errors fixed |
+|---|---|---|
+| sample any tracked key (true no-signal baseline) | 0.186 | 8 / 46 |
+| arbitrary order over the same filtered requests | 0.186 | — |
+| **ranked plan** | **0.907** | **39 / 46** |
+
+Base rate of broken keys is 0.192, and the random-key baseline sits on it — so
+it is a real control. The finding is that the **filter buys nothing** (it emits
+requests for 73% of all keys) and **the ordering buys everything**. That is the
+honest reading, and it is the opposite of what a filter-first design would
+predict.
+
+Scored twice, because precision can look good while fixing nothing: the second
+column *spends* the budget — admitting truthful observations through the normal
+ingest path, not reading the truth table — and counts how much error actually
+disappears. At a 25% budget the plan fixes 39 of 46 errors; asking at random
+fixes 8.
+
+### Complexity had to earn its place, and mostly did not
+
+Four strategies from a no-signal control upward, compared **paired per world**
+across 10 seeds with t-based intervals (n=10; the normal approximation is ~15%
+too narrow there, which is exactly where a refinement gets wrongly promoted):
+
+| step | mean Δ | 95% CI | verdict |
+|---|---|---|---|
+| `kind` − `arbitrary` | **+0.631** | [+0.587, +0.676] | distinguishable |
+| `kind_scarcity` − `kind` | +0.014 | [−0.012, +0.039] | not distinguishable |
+| `kind_scarcity_age` − `kind_scarcity` | −0.007 | [−0.035, +0.021] | not distinguishable |
+
+Knowing *why* information is missing does essentially all the work. Weighting by
+corroboration and by age both sounded obviously useful; neither is
+distinguishable from zero, and one is directionally negative. `DEFAULT_STRATEGY`
+is therefore `KIND` — the simplest strategy that beats the control, not the most
+elaborate available. The losers stay in the enum: deleting a measured negative
+result turns it into a silent one, and the next person re-adds it.
+
+Re-derivable from the artifact, not trusted from a comment:
+`artifacts/nano_slw_001/need_strategy_comparison.json`, regenerated by
+`compare_need_strategies()`.
+
+### Guards
+
+- The ranker takes **plain dicts only** — never a world, ledger or snapshot. A
+  structural test fails if it ever grows such a parameter, so a ground-truth
+  leak shows up rather than hiding inside a good score.
+- Reversing the plan must score below the forward plan; otherwise the metric is
+  not measuring ordering.
+- `explain_plan` reports what it **deferred**, with the cause mix. A truncated
+  plan that names only its selection reads as though nothing was left out.
+- One latent bug found while wiring: `project` pinned "now" to the final tick, so
+  a checkpoint-10 snapshot aged everything as if 50 days had passed. Invisible
+  under `KIND` (no age term) and exactly the kind of error that surfaces the
+  moment someone promotes one. Fixed via `as_of`.
+
+---
+
+## 13. Next
+
+`LRN-CORRECTION` and `MTA-EPISTEMIC` are both closed against measured evidence.
+The registry now reads IMPLEMENTED 14 · PARTIAL 13 · PROPOSED 6 · ABSENT 17.
+
+The next unproven claim is **`RSN-TEMPORAL`'s remaining half** — during, overlap
+and recurrence. Before/after over mixed precision is done and pinned; interval
+relations are not, and the same instrument applies: a control that answers by
+document order, and a paired comparison rather than a threshold.

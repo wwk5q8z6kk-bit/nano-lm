@@ -609,6 +609,39 @@ def test_the_system_is_never_confidently_wrong(report):
     assert report["faithfulness"]["nano"]["undeclared_error"] == 0
 
 
+def test_ranked_needs_beat_asking_arbitrarily(report):
+    """The "needed" axis is a ranking only if it beats a no-signal control.
+
+    Two lifts are kept separate so neither borrows the other's credit:
+
+    * filter-and-rank vs sampling any tracked key (the true no-signal baseline)
+    * cause-ranking vs lexicographic order on the *same* filtered request set
+
+    A threshold on precision would be tuned. These are comparisons.
+    """
+    need = report["information_need"]
+    assert need["broken_keys"] > 0
+    assert need["beats_random_key"], (
+        f"best={need['best_strategy']} fixed {need['best_errors_fixed']}; "
+        f"random-key fixed {need['random_key_errors_fixed']}")
+    assert need["filter_and_rank_lift"] > 0
+    # Which *refinement* wins on a single small world is not pinned. The
+    # default (KIND) is justified by the paired 10-seed ladder, not by n=1.
+
+
+def test_the_snapshot_carries_a_plan_not_just_a_gap_list(world, builder):
+    snap = project(world, builder)
+    assert snap.next_information_needs, "declared unknowns produced no plan"
+    for req in snap.next_information_needs:
+        assert req.reason
+        assert req.would_resolve
+    # Ranking is a view: signature identity does not depend on the plan.
+    assert state_signature(snap) == (
+        snap.active_conditions, snap.current_medications,
+        snap.laboratory_state, snap.uncertainties,
+        snap.unresolved_questions)
+
+
 def test_mixed_precision_times_are_not_ordered_by_string_comparison():
     """Regression pin for the defect this benchmark found on its first run.
 
@@ -704,3 +737,108 @@ def test_nothing_in_the_benchmark_is_inferred_or_predicted(builder):
     if a DERIVED or PREDICTED mode appeared, something started guessing."""
     modes = {a.derivation for a in builder.ledger.assertions}
     assert modes == {DerivationMode.OBSERVED}, modes
+
+
+# ---------------------------------------------------------------------------
+# Information need — MTA-EPISTEMIC's "needed" axis, scored against controls
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def needs(world):
+    from nano.slw import score_information_need
+    return score_information_need(world)
+
+
+def test_the_random_key_baseline_sits_at_the_base_rate(needs):
+    """Manipulation check on the control itself.
+
+    If the no-signal baseline accidentally carried signal, every lift measured
+    against it would be understated. Tolerance is the binomial spread at this
+    K rather than a flat constant — at small K the sampling noise is large, and
+    a fixed threshold would either fire spuriously or never fire at all.
+    """
+    budget = needs["comparison_budget"]
+    entry = needs["random_key_baseline"][budget]
+    p, k, base = entry["precision_at_k"], entry["k"], needs["base_rate"]
+    sd = (base * (1 - base) / max(1, k)) ** 0.5
+    assert abs(p - base) <= 3 * sd + 1e-9, (
+        f"random-key precision {p:.3f} is {abs(p - base) / max(sd, 1e-9):.1f} sd "
+        f"from the base rate {base:.3f} — it is not a no-signal control")
+
+
+def test_asking_in_priority_order_beats_asking_at_random(needs):
+    assert needs["broken_keys"] > 0, "nothing was wrong — the test is vacuous"
+    assert needs["beats_random_key"]
+    assert needs["filter_and_rank_lift"] > 0
+
+
+def test_spending_the_budget_actually_removes_error(needs):
+    """Precision could look good while fixing nothing. This is the check that
+    the loop closes: acquire what was asked for and the error must fall."""
+    budget = needs["comparison_budget"]
+    best = needs["strategies"][needs["best_strategy"]]["budgets"][budget]
+    assert best["errors_fixed"] > 0
+    assert best["errors_after"] < best["errors_before"]
+    assert best["errors_fixed"] > needs["random_key_errors_fixed"]
+
+
+def test_an_inverted_plan_scores_worse_than_the_plan(world, builder):
+    """Manipulation check with teeth: asking the *least* useful questions first
+    must score worse. If reversing the order changes nothing, the metric is not
+    measuring ordering at all."""
+    from nano.needs import DEFAULT_STRATEGY, rank_needs
+    from nano.slw import _broken_keys, epistemic_inputs, tick_to_date
+    inputs = epistemic_inputs(builder, tick_to_date(world.spec.n_ticks))
+    broken = _broken_keys(world, builder)
+    requests = rank_needs(**inputs, strategy=DEFAULT_STRATEGY)
+    k = max(1, len(requests) // 4)
+
+    def precision(rs):
+        return sum(1 for r in rs[:k] if r.key in broken) / k
+
+    assert precision(list(reversed(requests))) < precision(requests)
+
+
+def test_the_ranker_never_sees_ground_truth(builder, world):
+    """Structural guard. `rank_needs` takes only the projected epistemic state;
+    if it ever grew a world/ledger parameter this fails and the leak is visible
+    rather than buried in a good-looking score."""
+    import inspect
+    from nano.needs import rank_needs
+    from nano.slw import epistemic_inputs, tick_to_date
+    params = set(inspect.signature(rank_needs).parameters)
+    assert not (params & {"world", "truth", "ledger", "builder", "snapshot"})
+    assert set(epistemic_inputs(builder, tick_to_date(20))) <= params
+
+
+def test_the_default_ranking_strategy_is_the_simplest_justified_one():
+    """Pins a measured negative result.
+
+    Scarcity- and age-weighting both sounded obviously useful; neither is
+    distinguishable from zero. If a future change makes one genuinely pay, this
+    fails deliberately, so the default moves on purpose and the recorded
+    intervals get updated instead of quietly going stale.
+    """
+    from nano.slw import compare_need_strategies
+    comparison = compare_need_strategies(
+        seeds=tuple(range(41, 47)),
+        spec_factory=lambda seed: WorldSpec(seed=seed, n_sites=3,
+                                            units_per_site=3, n_ticks=20,
+                                            checkpoint_every=5))
+    assert comparison["steps"]["kind - arbitrary"]["distinguishable"], (
+        "cause-based ranking no longer beats the arbitrary-order control")
+    assert comparison["default_is_justified"], (
+        f"default is {comparison['current_default']} but the simplest justified "
+        f"strategy is {comparison['simplest_justified_strategy']}")
+
+
+def test_paired_delta_separates_a_real_shift_from_noise():
+    from nano.slw import paired_delta
+    real = paired_delta([0.90, 0.92, 0.88, 0.91, 0.89, 0.93],
+                        [0.20, 0.22, 0.18, 0.21, 0.19, 0.23])
+    assert real["distinguishable"] and real["ci_low"] > 0
+    noise = paired_delta([0.50, 0.62, 0.44, 0.58, 0.41, 0.61],
+                         [0.52, 0.43, 0.59, 0.40, 0.63, 0.45])
+    assert not noise["distinguishable"]
+    with pytest.raises(ValueError, match="equal-length"):
+        paired_delta([0.1, 0.2], [0.1])

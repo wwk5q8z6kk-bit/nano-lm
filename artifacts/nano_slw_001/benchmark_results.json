@@ -108,5 +108,352 @@
     },
     "undeclared_error_avoided": 29,
     "control_is_worse": true
+  },
+  "information_need": {
+    "broken_keys": 46,
+    "total_tracked_keys": 240,
+    "base_rate": 0.19166666666666668,
+    "comparison_budget": "0.25",
+    "strategies": {
+      "arbitrary": {
+        "requests": 175,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 0.11764705882352941,
+            "errors_before": 46,
+            "errors_after": 44,
+            "errors_fixed": 2,
+            "fixed_per_question": 0.11764705882352941
+          },
+          "0.25": {
+            "k": 43,
+            "precision_at_k": 0.18604651162790697,
+            "errors_before": 46,
+            "errors_after": 38,
+            "errors_fixed": 8,
+            "fixed_per_question": 0.18604651162790697
+          },
+          "0.50": {
+            "k": 87,
+            "precision_at_k": 0.20689655172413793,
+            "errors_before": 46,
+            "errors_after": 28,
+            "errors_fixed": 18,
+            "fixed_per_question": 0.20689655172413793
+          }
+        },
+        "plan": {
+          "total_requests": 175,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 158,
+          "selected_mix": {
+            "contradiction": 2,
+            "gap": 2,
+            "stale": 13
+          },
+          "deferred_mix": {
+            "contradiction": 31,
+            "gap": 25,
+            "stale": 102
+          },
+          "top": [
+            {
+              "key": "unit_0000.operator",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (op_04, op_06) and none supersedes the others",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0000.status",
+              "kind": "stale",
+              "why": "nothing reported for 29 days; the world may have moved",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0000_c1.wear",
+              "kind": "stale",
+              "why": "nothing reported for 42 days; the world may have moved",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0001.load",
+              "kind": "stale",
+              "why": "nothing reported for 60 days; the world may have moved",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0001.operator",
+              "kind": "gap",
+              "why": "a change to this attribute went unreported; the held value (op_06) may be stale",
+              "priority": 0.0
+            }
+          ]
+        }
+      },
+      "kind": {
+        "requests": 175,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 1.0,
+            "errors_before": 46,
+            "errors_after": 29,
+            "errors_fixed": 17,
+            "fixed_per_question": 1.0
+          },
+          "0.25": {
+            "k": 43,
+            "precision_at_k": 0.8604651162790697,
+            "errors_before": 46,
+            "errors_after": 9,
+            "errors_fixed": 37,
+            "fixed_per_question": 0.8604651162790697
+          },
+          "0.50": {
+            "k": 87,
+            "precision_at_k": 0.5287356321839081,
+            "errors_before": 46,
+            "errors_after": 0,
+            "errors_fixed": 46,
+            "fixed_per_question": 0.5287356321839081
+          }
+        },
+        "plan": {
+          "total_requests": 175,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 158,
+          "selected_mix": {
+            "contradiction": 17
+          },
+          "deferred_mix": {
+            "contradiction": 16,
+            "gap": 27,
+            "stale": 115
+          },
+          "top": [
+            {
+              "key": "unit_0000.operator",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (op_04, op_06) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0001.status",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (nominal, offline) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0005.status",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (nominal, offline) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0005_c0.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (25, 36) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0104_c0.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (66, 79) and none supersedes the others",
+              "priority": 4.0
+            }
+          ]
+        }
+      },
+      "kind_scarcity": {
+        "requests": 175,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 1.0,
+            "errors_before": 46,
+            "errors_after": 29,
+            "errors_fixed": 17,
+            "fixed_per_question": 1.0
+          },
+          "0.25": {
+            "k": 43,
+            "precision_at_k": 0.9069767441860465,
+            "errors_before": 46,
+            "errors_after": 7,
+            "errors_fixed": 39,
+            "fixed_per_question": 0.9069767441860465
+          },
+          "0.50": {
+            "k": 87,
+            "precision_at_k": 0.5287356321839081,
+            "errors_before": 46,
+            "errors_after": 0,
+            "errors_fixed": 46,
+            "fixed_per_question": 0.5287356321839081
+          }
+        },
+        "plan": {
+          "total_requests": 175,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 158,
+          "selected_mix": {
+            "contradiction": 11,
+            "gap": 6
+          },
+          "deferred_mix": {
+            "contradiction": 22,
+            "gap": 21,
+            "stale": 115
+          },
+          "top": [
+            {
+              "key": "unit_0005.status",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (nominal, offline) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0700.load",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (34, 47) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0703.load",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (44, 55) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0703_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (78, 83) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0704.load",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (62, 75) and none supersedes the others",
+              "priority": 2.3094
+            }
+          ]
+        }
+      },
+      "kind_scarcity_age": {
+        "requests": 175,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 0.9411764705882353,
+            "errors_before": 46,
+            "errors_after": 30,
+            "errors_fixed": 16,
+            "fixed_per_question": 0.9411764705882353
+          },
+          "0.25": {
+            "k": 43,
+            "precision_at_k": 0.8604651162790697,
+            "errors_before": 46,
+            "errors_after": 9,
+            "errors_fixed": 37,
+            "fixed_per_question": 0.8604651162790697
+          },
+          "0.50": {
+            "k": 87,
+            "precision_at_k": 0.47126436781609193,
+            "errors_before": 46,
+            "errors_after": 5,
+            "errors_fixed": 41,
+            "fixed_per_question": 0.47126436781609193
+          }
+        },
+        "plan": {
+          "total_requests": 175,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 158,
+          "selected_mix": {
+            "contradiction": 10,
+            "gap": 7
+          },
+          "deferred_mix": {
+            "contradiction": 23,
+            "gap": 20,
+            "stale": 115
+          },
+          "top": [
+            {
+              "key": "unit_0005.status",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (nominal, offline) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0700.load",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (34, 47) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0703.load",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (44, 55) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0703_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (78, 83) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0704.load",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (62, 75) and none supersedes the others",
+              "priority": 6.9282
+            }
+          ]
+        }
+      }
+    },
+    "random_key_baseline": {
+      "0.10": {
+        "k": 17,
+        "precision_at_k": 0.058823529411764705,
+        "errors_before": 46,
+        "errors_after": 45,
+        "errors_fixed": 1,
+        "fixed_per_question": 0.058823529411764705
+      },
+      "0.25": {
+        "k": 43,
+        "precision_at_k": 0.18604651162790697,
+        "errors_before": 46,
+        "errors_after": 38,
+        "errors_fixed": 8,
+        "fixed_per_question": 0.18604651162790697
+      },
+      "0.50": {
+        "k": 87,
+        "precision_at_k": 0.2413793103448276,
+        "errors_before": 46,
+        "errors_after": 25,
+        "errors_fixed": 21,
+        "fixed_per_question": 0.2413793103448276
+      }
+    },
+    "best_strategy": "kind_scarcity",
+    "filter_and_rank_precision": 0.9069767441860465,
+    "random_key_precision": 0.18604651162790697,
+    "filter_and_rank_lift": 0.7209302325581395,
+    "arbitrary_order_precision": 0.18604651162790697,
+    "rank_lift_given_filter": 0.7209302325581395,
+    "best_errors_fixed": 39,
+    "random_key_errors_fixed": 8,
+    "beats_random_key": true
   }
 }
