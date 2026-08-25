@@ -16,6 +16,8 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 
 | Document | Purpose |
 |----------|---------|
+| **[NANO_VNEXT_MASTER_SPEC.md](NANO_VNEXT_MASTER_SPEC.md)** | **Canonical architecture specification — start here.** Consolidates the eleven planes, ontology, epistemic contract, WorkSlice, capability fabric, and the neural-architecture research program. Normative taxonomy is `nano/architecture.py`; this document cites it rather than restating it |
+| **[RESEARCH_STATUS.md](RESEARCH_STATUS.md)** | **Canonical evidence ledger.** ESTABLISHED / SUPPORTED / HYPOTHESES / VOID / PENDING REVALIDATION / NOT AUTHORIZED / NEXT CANDIDATES. A claim lives in exactly one bucket |
 | [PROJECT_CHARTER.md](PROJECT_CHARTER.md) | Mission, optimization target, medical-first rationale |
 | [PROJECT_AUTHORITY.md](PROJECT_AUTHORITY.md) | What document wins when sources conflict |
 | [CAPABILITY_LADDER.md](CAPABILITY_LADDER.md) | P1 Scribing → P9 Adaptation |
