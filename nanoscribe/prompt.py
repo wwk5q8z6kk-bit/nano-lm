@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Protocol
 
 from nanoscribe.encounter import AtomType, Speaker, Source
+from nanoscribe import leakage
 
 
 class _AtomSpecLike(Protocol):
@@ -14,13 +15,28 @@ class _AtomSpecLike(Protocol):
     speaker: Speaker
 
 
-_SPAN_PORT_SYSTEM = (
+_SPAN_PORT_PREAMBLE = (
     "You extract clinical facts from transcripts. "
     "Reply with exactly one line: STATED, DENIED, UNCERTAIN, or NOT_MENTIONED. "
     "For STATED, DENIED, or UNCERTAIN include a verbatim quote in double quotes.\n"
+)
+
+# The shipped format examples are themselves gold answers in this suite:
+# "neck" (enc-1/atom-neck), "No allergies." (enc-1/atom-alg), "pressure"
+# (enc-2/atom-chest). That makes the system prompt a gold-value channel too, so
+# it is gated by C1 along with the user prompt.
+_SPAN_PORT_SYSTEM = _SPAN_PORT_PREAMBLE + (
     'Example: STATED: "neck"\n'
     'Example: DENIED: "No allergies."\n'
     'Example: UNCERTAIN: "pressure"\n'
+    "Example: NOT_MENTIONED"
+)
+
+# Format-only examples whose values occur in no suite encounter.
+_SPAN_PORT_SYSTEM_NEUTRAL = _SPAN_PORT_PREAMBLE + (
+    'Example: STATED: "ankle"\n'
+    'Example: DENIED: "No prior surgery."\n'
+    'Example: UNCERTAIN: "lightheaded"\n'
     "Example: NOT_MENTIONED"
 )
 
@@ -32,8 +48,32 @@ def _format_transcript(source: Source) -> str:
     return "\n".join(lines)
 
 
+_SLOT_QUESTION = {
+    AtomType.SYMPTOM: "any symptom or complaint",
+    AtomType.MEDICATION: "any medication the patient takes",
+    AtomType.ALLERGY: "any allergy",
+    AtomType.HISTORY: "any past or family medical history",
+    AtomType.DIAGNOSIS_STATEMENT: "any diagnosis",
+    AtomType.ASSESSMENT: "the clinician's assessment",
+    AtomType.PLAN: "the care plan",
+    AtomType.PROCEDURE: "any procedure",
+    AtomType.INSTRUCTION: "patient instructions",
+    AtomType.MEASUREMENT: "any measurement or vital sign",
+}
+
+
+def slot_topic_for_spec(spec: _AtomSpecLike) -> str:
+    """Task phrased by slot type only — never names the gold value (C1 off)."""
+    question = _SLOT_QUESTION.get(spec.atom_type)
+    if question is None:
+        return f"Does the transcript mention the {spec.atom_type.value} field?"
+    return f"Does the transcript mention {question}?"
+
+
 def topic_for_spec(spec: _AtomSpecLike) -> str:
     """Human-readable extraction task for one atom slot."""
+    if not leakage.PROMPT_INCLUDES_GOLD_VALUE:
+        return slot_topic_for_spec(spec)
     if spec.atom_type is AtomType.ALLERGY:
         return "Does the patient mention or deny allergies?"
     if spec.atom_type is AtomType.MEDICATION:
@@ -63,6 +103,9 @@ def topic_for_spec(spec: _AtomSpecLike) -> str:
 
 
 def _answer_hint(spec: _AtomSpecLike) -> str:
+    if not leakage.PROMPT_INCLUDES_GOLD_VALUE:
+        # Keep the task/format guidance, drop every gold-value-bearing clause.
+        return " Use DENIED only for explicit denial."
     if spec.atom_type is AtomType.ALLERGY:
         return ' If denied, reply DENIED: "No allergies." If affirmed, STATED with a quote.'
     if spec.speaker is Speaker.CLINICIAN:
@@ -93,4 +136,6 @@ def build_span_port_prompt(source: Source, spec: _AtomSpecLike) -> str:
 
 
 def span_port_system_prompt() -> str:
+    if not leakage.PROMPT_INCLUDES_GOLD_VALUE:
+        return _SPAN_PORT_SYSTEM_NEUTRAL
     return _SPAN_PORT_SYSTEM

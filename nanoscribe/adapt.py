@@ -28,6 +28,7 @@ from nanoscribe.encounter import (
     Temporality,
 )
 from nanoscribe.evaluate import PredictedAtom, PredictedEncounter
+from nanoscribe import leakage
 from nanoscribe.select import ConstrainedSelector
 
 CANDIDATE_SCHEMA_VERSION = "nano.candidate.v0"
@@ -402,7 +403,8 @@ def candidate_from_span_port_line(
     assertion = _LABEL_TO_ASSERTION.get(label)
     if assertion is None:
         return CandidateAtom(atom_id=atom_id, malformed=True)
-    if not quotes and raw_value:
+    if not quotes and raw_value and leakage.PARSER_RAW_VALUE_FALLBACK:
+        # Channel C2: credit the gold value as the model's quote when it gave none.
         quotes = (raw_value,)
     certainty_value = certainty
     if assertion is AssertionState.UNCERTAIN:
@@ -455,6 +457,7 @@ def adapt_candidate(
                 certainty=candidate.certainty,
                 review_required=candidate.review_required,
                 abstained=True,
+                unbound_assertion=True,
                 quote=quote,
             )
         spans.append(span)

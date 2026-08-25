@@ -52,6 +52,7 @@ class FixtureSpanPortAdapter:
 
     model_id: str = "fixture/qwen2.5-1.5b-span-port"
     lines: Mapping[str, str] | None = None
+    raw_line_sink: dict[str, str] | None = None
 
     def propose(
         self,
@@ -63,6 +64,8 @@ class FixtureSpanPortAdapter:
         atoms: list[CandidateAtom] = []
         for spec in atom_specs:
             raw_line = lines.get(spec.atom_id, "NOT_MENTIONED")
+            if self.raw_line_sink is not None:
+                self.raw_line_sink[spec.atom_id] = raw_line
             atoms.append(
                 candidate_from_span_port_line(
                     atom_id=spec.atom_id,
@@ -89,6 +92,7 @@ class Qwen25BaselineAdapter:
     weights_path: str | None = None
     fixture_lines: Mapping[str, str] | None = None
     max_new_tokens: int = 48
+    raw_line_sink: dict[str, str] | None = None
 
     def propose(
         self,
@@ -100,6 +104,7 @@ class Qwen25BaselineAdapter:
             return FixtureSpanPortAdapter(
                 model_id=self.model_id,
                 lines=self.fixture_lines,
+                raw_line_sink=self.raw_line_sink,
             ).propose(model_input, atom_specs)
 
         lines, latency_s, memory_bytes = generate_span_port_lines(
@@ -111,6 +116,8 @@ class Qwen25BaselineAdapter:
         atoms: list[CandidateAtom] = []
         for spec in atom_specs:
             raw_line = lines.get(spec.atom_id, "NOT_MENTIONED")
+            if self.raw_line_sink is not None:
+                self.raw_line_sink[spec.atom_id] = raw_line
             atoms.append(
                 candidate_from_span_port_line(
                     atom_id=spec.atom_id,

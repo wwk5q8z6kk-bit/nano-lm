@@ -81,6 +81,10 @@ class PredictedAtom:
     abstained: bool = False
     malformed: bool = False
     quote: str | None = None
+    # The model DID assert a value; the quote simply failed to bind to the
+    # source. Distinct from declining to answer — without this flag the binder
+    # launders a hallucination into a correct abstention.
+    unbound_assertion: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -133,6 +137,7 @@ class EvalReport:
     omission: int
     correct_abstention: int
     unnecessary_abstention: int
+    unbound_assertion: int
     malformed: int
     critical_error: int
     spurious_atom: int
@@ -400,6 +405,7 @@ def evaluate(
     omission = 0
     unnecessary_abstention = 0
     correct_abstention = 0
+    unbound_assertion = 0
     malformed = 0
     critical_error = 0
     spurious_atom = 0
@@ -434,6 +440,8 @@ def evaluate(
                 results.append(item)
                 continue
             if predicted.abstained:
+                if predicted.unbound_assertion:
+                    unbound_assertion += 1
                 unnecessary_abstention += 1
                 omission += 1
                 results.append(AtomEval(atom_id=atom.atom_id, abstained=True, omitted=True))
@@ -532,7 +540,13 @@ def evaluate(
         if predicted.atom_id in gold_ids or predicted.atom_id in seen_extra:
             continue
         seen_extra.add(predicted.atom_id)
-        if predicted.abstained and predicted.atom_id in unresolved_ids:
+        if predicted.unbound_assertion:
+            unbound_assertion += 1
+        if (
+            predicted.abstained
+            and not predicted.unbound_assertion
+            and predicted.atom_id in unresolved_ids
+        ):
             continue
         if predicted.atom_id in duplicates:
             malformed += 1
@@ -560,7 +574,13 @@ def evaluate(
             if candidate.atom_id in {item.unresolved_id, item.topic} and item.unresolved_id not in duplicates:
                 predicted = candidate
                 break
-        if predicted is not None and predicted.abstained:
+        if (
+            predicted is not None
+            and predicted.abstained
+            and not predicted.unbound_assertion
+        ):
+            # An unbound assertion is a commission error, not a declined answer:
+            # it is scored through the extra-prediction path above instead.
             correct_abstention += 1
 
     if source is not None:
@@ -589,6 +609,7 @@ def evaluate(
         omission=omission,
         correct_abstention=correct_abstention,
         unnecessary_abstention=unnecessary_abstention,
+        unbound_assertion=unbound_assertion,
         malformed=malformed,
         critical_error=critical_error,
         spurious_atom=spurious_atom,
