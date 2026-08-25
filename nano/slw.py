@@ -101,9 +101,11 @@ class EntityType(str, Enum):
 
 
 class Relation(str, Enum):
+    """Static structure. Relations that *change* (which operator is assigned to
+    a unit) are carried as attributes instead, because a changing relation has
+    to flow through the same evidence/supersession path as any other fact."""
     LOCATED_AT = "located_at"
     PART_OF = "part_of"
-    RESPONSIBLE_FOR = "responsible_for"
     CONSUMES = "consumes"
 
 
@@ -662,11 +664,6 @@ class LedgerBuilder:
                 resolution_status="unresolved"))
         return out
 
-    def live_assertions(self) -> list:
-        return [a for a in self.ledger.assertions
-                if a.assertion_id not in self.superseded
-                and any(a is x for bucket in self.by_key.values() for x in bucket)]
-
     def assertions_for(self, entity: str) -> tuple:
         return tuple(sorted(
             a.assertion_id
@@ -713,8 +710,15 @@ def project(world: SyntheticWorld, b: LedgerBuilder) -> PatientStateSnapshot:
             conditions.append(item)
         elif attr in RELATION_ATTRS:
             relations.append(item)
-        else:
+        elif attr in READING_ATTRS:
             readings.append(item)
+        else:
+            # An `else: readings.append(...)` would route an unclassified
+            # attribute somewhere plausible and say nothing. Silent routing is
+            # how a projection stops being inspectable.
+            raise ValueError(
+                f"attribute {attr!r} is not assigned to a snapshot bucket — "
+                "add it to STATUS_ATTRS, RELATION_ATTRS or READING_ATTRS")
     return PatientStateSnapshot(
         patient_id=world.spec.world_id,
         evidence_ledger_version=b.ledger.version,
@@ -730,12 +734,19 @@ def project(world: SyntheticWorld, b: LedgerBuilder) -> PatientStateSnapshot:
 
 
 def state_signature(snapshot: PatientStateSnapshot) -> tuple:
-    """What "the same state" means for arm comparison.
+    """What "the same believed world" means, independent of bookkeeping.
 
-    Ledger version and hash are excluded deliberately: the arms traverse the
-    ledger differently, so demanding identical bookkeeping would test the
-    harness rather than the substrate. What must match is the *believed world*,
-    including what the system admits it does not know.
+    This is the *semantic* comparison: the facts held, plus what the system
+    admits it does not know. It deliberately excludes ledger version and hash so
+    that a legitimate difference in traversal would not be reported as a
+    disagreement about the world.
+
+    As it turns out the arms do not differ in traversal at all — both drive the
+    same `LedgerBuilder.admit` in the same arrival order — so `snapshot_id`
+    itself matches at every checkpoint. That stronger equality is measured
+    separately (`identical_snapshot_ids`) rather than assumed here; keeping the
+    weaker comparison as the gate means a future arm that legitimately reorders
+    the fold is still judged on the world it believes.
     """
     return (snapshot.active_conditions, snapshot.current_medications,
             snapshot.laboratory_state, snapshot.uncertainties,
@@ -797,6 +808,7 @@ class ArmResult:
     conflict_keys: set = field(default_factory=set)
     lineage_obligations: dict = field(default_factory=dict)   # tick -> [id]
     unhonoured_obligations: list = field(default_factory=list)
+    confirmed_unaffected: list = field(default_factory=list)
     final: PatientStateSnapshot | None = None
     graph: DependencyGraph | None = None
 
@@ -845,6 +857,21 @@ def run_baseline_a(world: SyntheticWorld) -> ArmResult:
 # ---------------------------------------------------------------------------
 # CANDIDATE B — one builder, new observations only, lineage-gated recompute
 # ---------------------------------------------------------------------------
+
+def _retire(graph: DependencyGraph, old_id: str | None, new_id: str) -> None:
+    """Mark a replaced node SUPERSEDED once its successor exists.
+
+    Content-addressed recomputation produces a new id and leaves the old one in
+    the graph — correctly, since history is not edited. But nothing was marking
+    the old node as *retired*, so it stayed STALE forever and `recompute_order()`
+    kept demanding work on an object that had already been rebuilt. An
+    ever-growing list of obligations nobody can discharge is how an invalidation
+    system stops being believed.
+    """
+    if old_id and old_id != new_id and old_id in graph.freshness:
+        graph.freshness[old_id] = Freshness.SUPERSEDED
+        graph.reasons[old_id] = f"replaced by {new_id}"
+
 
 def _recompute_id(stem: str, world: SyntheticWorld, b: LedgerBuilder,
                   known_view: dict) -> str | None:
@@ -941,6 +968,7 @@ def run_candidate_b(world: SyntheticWorld) -> ArmResult:
                 graph.register(Dependency(
                     derived_id=vid, input_ids=inputs, kind="view<-assertions",
                     producer="nano.slw.LedgerBuilder.view_payload"))
+            _retire(graph, known_view.get(entity), vid)
             known_view[entity] = vid
             recomputed.append(vid)
             site = world.site_of(entity)
@@ -959,6 +987,7 @@ def run_candidate_b(world: SyntheticWorld) -> ArmResult:
                     graph.register(Dependency(
                         derived_id=rid, input_ids=member_views,
                         kind="roll<-views", producer="nano.slw.run_candidate_b"))
+                _retire(graph, known_roll.get(site), rid)
                 known_roll[site] = rid
                 recomputed.append(rid)
             pid = report_id_for(site, payload)
@@ -967,6 +996,7 @@ def run_candidate_b(world: SyntheticWorld) -> ArmResult:
                     graph.register(Dependency(
                         derived_id=pid, input_ids=(rid,), kind="report<-roll",
                         producer="nano.slw.run_candidate_b"))
+                _retire(graph, known_report.get(site), pid)
                 known_report[site] = pid
                 recomputed.append(pid)
 
@@ -1229,6 +1259,10 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
     history_match = all(
         state_signature(a.snapshots[t]) == state_signature(b.snapshots[t])
         for t in world.checkpoints())
+    # Stronger than the signature: content-addressed snapshot identity, which
+    # also pins ledger version and hash. Measured, not assumed.
+    identical_ids = all(a.snapshots[t].snapshot_id == b.snapshots[t].snapshot_id
+                        for t in world.checkpoints())
     conflicts_match = a.conflict_keys == b.conflict_keys
 
     counts = {k.value: 0 for k in ObsKind}
@@ -1262,6 +1296,7 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
             "final_state_identical": equivalent,
             "all_checkpoints_identical": history_match,
             "conflict_sets_identical": conflicts_match,
+            "identical_snapshot_ids": identical_ids,
             "final_facts": sum(len(x) for x in sig_a[:3]),
             "final_declared_unknown": len(sig_a[3]) + len(sig_a[4]),
         },
@@ -1276,6 +1311,7 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
                 {o for obs in b.lineage_obligations.values() for o in obs}),
             "lineage_obligations": sum(
                 len(v) for v in b.lineage_obligations.values()),
+            "confirmed_unaffected": len(b.confirmed_unaffected),
             "unhonoured_obligations": len(b.unhonoured_obligations),
             "all_obligations_honoured": not b.unhonoured_obligations,
         },

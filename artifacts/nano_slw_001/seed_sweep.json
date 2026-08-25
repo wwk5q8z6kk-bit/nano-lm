@@ -1,0 +1,52 @@
+[
+  {
+    "seed": 20260823,
+    "final_state_identical": true,
+    "recomputation_ratio": 0.2789231142372059,
+    "precision": 1.0,
+    "recall": 1.0,
+    "isolation": 1.0,
+    "undeclared_error": 0,
+    "control_undeclared_error": 29
+  },
+  {
+    "seed": 20260824,
+    "final_state_identical": true,
+    "recomputation_ratio": 0.2823585810162991,
+    "precision": 1.0,
+    "recall": 1.0,
+    "isolation": 1.0,
+    "undeclared_error": 0,
+    "control_undeclared_error": 34
+  },
+  {
+    "seed": 20260825,
+    "final_state_identical": true,
+    "recomputation_ratio": 0.28616200578592094,
+    "precision": 1.0,
+    "recall": 1.0,
+    "isolation": 1.0,
+    "undeclared_error": 0,
+    "control_undeclared_error": 23
+  },
+  {
+    "seed": 20260826,
+    "final_state_identical": true,
+    "recomputation_ratio": 0.28256124181421294,
+    "precision": 1.0,
+    "recall": 1.0,
+    "isolation": 1.0,
+    "undeclared_error": 0,
+    "control_undeclared_error": 34
+  },
+  {
+    "seed": 20260827,
+    "final_state_identical": true,
+    "recomputation_ratio": 0.27519011406844107,
+    "precision": 1.0,
+    "recall": 1.0,
+    "isolation": 1.0,
+    "undeclared_error": 0,
+    "control_undeclared_error": 42
+  }
+]

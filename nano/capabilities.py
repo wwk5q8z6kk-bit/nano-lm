@@ -445,13 +445,25 @@ CAPABILITIES: tuple[Capability, ...] = (
     _c(capability_id="RSN-TEMPORAL", domain="Reasoning",
        capability="Reason over before/after/during/overlap/recurrence",
        internal_representation="temporal relations over events",
-       module="not built", inputs=("events",), outputs=("ordering", "intervals"),
+       module="partially: precision-aware before/after over event time",
+       inputs=("events",), outputs=("ordering", "intervals"),
        memory_requirements="temporal index",
        tools=("date arithmetic",), training_objective="temporal relation prediction",
-       evaluation_benchmark="B0/B1 ordering accuracy",
+       evaluation_benchmark="B0/B1 ordering accuracy; NANO-SLW-001 resolution",
        failure_modes=("ordering by document order rather than event time",
-                      "unknown time treated as latest"),
-       implementation_stage=Stage.D_LONGITUDINAL, status=Status.ABSENT),
+                      "unknown time treated as latest",
+                      "mixed-precision times ordered by string comparison"),
+       implementation_stage=Stage.D_LONGITUDINAL, status=Status.PARTIAL,
+       # ABSENT -> PARTIAL on 2026-08-25. NANO-SLW-001 found the third failure
+       # mode above in its own resolver: a month-precision report sorted before
+       # a day inside that month, so "some day in January" was silently ruled
+       # older than "January 5th". `strictly_after` now compares intervals and
+       # refuses to order overlapping ones. Before/after over mixed precision
+       # works; during/overlap/recurrence are still not built.
+       evidence="nano/slw.py::time_range, strictly_after, "
+                "LedgerBuilder._recompute_key; "
+                "nano/test_slw.py::test_mixed_precision_times_are_not_ordered_"
+                "by_string_comparison"),
 
     _c(capability_id="RSN-CAUSAL", domain="Reasoning",
        capability="Separate documented rationale / temporal association / inferred cause",
@@ -601,13 +613,24 @@ CAPABILITIES: tuple[Capability, ...] = (
        outputs=("new state version", "stale artifact list"),
        memory_requirements="dependency graph artifact->state->evidence",
        tools=(), training_objective="none (structural)",
-       evaluation_benchmark="LCRB-7 invalidation and freshness",
+       evaluation_benchmark="LCRB-7 invalidation and freshness; NANO-SLW-001 "
+                            "correction_absorption",
        failure_modes=("correction applied, dependent summary left stale",
                       "correction overwrites the original claim",
-                      "recomputation order ignores lineage"),
-       implementation_stage=Stage.D_LONGITUDINAL, status=Status.PARTIAL,
+                      "recomputation order ignores lineage",
+                      "obligations accumulate faster than they are discharged"),
+       implementation_stage=Stage.D_LONGITUDINAL, status=Status.IMPLEMENTED,
+       # PARTIAL -> IMPLEMENTED on 2026-08-25. The gap named in the previous
+       # evidence string — "the recompute step is not wired to a producer" — is
+       # closed: NANO-SLW-001 absorbs generated corrections, invalidates through
+       # lineage, takes its work list FROM `recompute_order()`, and discharges
+       # every obligation by rebuild or by recompute-and-confirm. It also found
+       # the fourth failure mode above: replaced content-addressed nodes were
+       # never retired, so the obligation list grew without bound.
        evidence="nano/dependency.py (graph + invalidation + recompute_order); "
-                "the recompute step itself is not wired to a producer"),
+                "nano/slw.py::run_candidate_b steps 2b and 5, _retire; "
+                "nano/test_slw.py::test_every_lineage_obligation_is_discharged, "
+                "test_recomputation_follows_lineage_order"),
 
     _c(capability_id="LRN-LOOPS", domain="Learning",
        capability="Fast loop touches state; slow loop touches weights, offline",
@@ -692,11 +715,18 @@ CAPABILITIES: tuple[Capability, ...] = (
        inputs=("state", "ledger"), outputs=("epistemic state",),
        memory_requirements="persists with the state version",
        tools=(), training_objective="calibration",
-       evaluation_benchmark="does stated uncertainty predict actual error?",
+       evaluation_benchmark="does stated uncertainty predict actual error? "
+                            "NANO-SLW-001 faithfulness vs silent-resolution control",
        failure_modes=("uncertainty expressed only in prose, so nothing can act on it",
                       "load-bearing assumption never identified"),
        implementation_stage=Stage.D_LONGITUDINAL, status=Status.PARTIAL,
-       evidence="nano/contracts.py::PatientStateSnapshot"),
+       # Still PARTIAL: the benchmark shows the *known/unknown/conflicting* axes
+       # working — 0 undeclared errors against 29 for a control forced to name a
+       # winner — but "needed" is a passive gap list, not a ranked next-
+       # information need. That is the remaining work, and it is not evidence.
+       evidence="nano/contracts.py::PatientStateSnapshot; "
+                "nano/slw.py::score_faithfulness, LedgerBuilder.resolve_silently; "
+                "nano/test_slw.py::test_the_system_is_never_confidently_wrong"),
 
     _c(capability_id="MTA-WOULDCHANGE", domain="Metacognition",
        capability="Name what evidence would change the conclusion",

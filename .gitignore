@@ -58,8 +58,11 @@ artifacts/p1_runs/
 # Campaign runtime logs (summaries tracked as JSON)
 artifacts/campaign/*.log
 
-# Native checkpoint weights (step_*.json metrics may be tracked selectively)
+# Native checkpoint weights (step_*.json metrics may be tracked selectively).
+# Globbed: the un-globbed form missed artifacts/native_checkpoints_causalfix/
+# (18G) and _fixed/ (1G), leaving 19G one `git add -A` away from the index.
 artifacts/native_checkpoints/
+artifacts/native_checkpoints*/
 
 # Regenerated on every CPU smoke test run (timestamps churn); not a durable artifact.
 artifacts/native_checkpoints/smoke_cpu/

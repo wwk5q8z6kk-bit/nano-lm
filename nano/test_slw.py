@@ -145,12 +145,30 @@ def test_unreported_changes_become_gaps_not_silent_persistence(builder, world):
     snapshot = project(world, builder)
     assert snapshot.unresolved_questions
     for chg in world.unobserved_changes():
+        assert (chg.entity_id, chg.attribute) in builder.gap_keys, (
+            f"{chg.entity_id}.{chg.attribute} changed unreported and the system "
+            "recorded no gap")
+
+
+def test_no_resolved_value_was_ever_invented(builder, world):
+    """The sharp form of absence-never-from-silence: every value the system
+    believes must appear verbatim in some observation. A value the system
+    reached by inference, default or carry-forward would fail here."""
+    observed = {(o.entity_id, o.attribute, o.value) for o in world.observations}
+    for (entity, attribute), value in builder.resolved.items():
+        assert (entity, attribute, value) in observed, (
+            f"{entity}.{attribute}={value} was never reported by any source")
+
+
+def test_an_unreported_change_is_never_silently_believed(builder, world):
+    """The world moved and nobody said so. The new value must not appear in the
+    state unless some *other* observation independently reported it."""
+    observed = {(o.entity_id, o.attribute, o.value) for o in world.observations}
+    for chg in world.unobserved_changes():
         key = (chg.entity_id, chg.attribute)
-        if key in builder.gap_keys and key in builder.resolved:
-            # A value may still be resolved from a *later* report — but never
-            # from the gap itself.
-            assert any(a.evidence_span_ids
-                       for a in builder.by_key[key])
+        if builder.resolved.get(key) == chg.new_value:
+            assert (chg.entity_id, chg.attribute, chg.new_value) in observed, (
+                "an unreported change leaked into the state")
 
 
 # ---------------------------------------------------------------------------
@@ -187,8 +205,6 @@ def test_contradictions_survive_as_conflicts(builder):
     assert builder.conflict_groups, "no contradictions were detected"
     for group, values in builder.conflict_groups.items():
         assert len(values) > 1
-        entity, attribute, _ = group
-        assert (entity, attribute) not in builder.resolved or True
 
     records = builder.conflict_records()
     assert records
@@ -235,18 +251,41 @@ def test_corrections_supersede_without_removing_the_original(builder, world):
             assert s in spans, "the evidence behind a correction was discarded"
 
 
-def test_a_superseded_value_stops_being_believed(builder):
+def test_a_correction_flips_the_belief_and_keeps_the_original():
+    """Constructed rather than sampled: the corpus version of this test could
+    silently degenerate to zero iterations, and a test that may examine nothing
+    is not a test."""
+    from nano.slw import LedgerBuilder, Observation
+    b = LedgerBuilder(world_id="slw-001")
+    bad = Observation(obs_tick=3, event_tick=3, entity_id="unit_0000",
+                      attribute="status", value="offline", kind=ObsKind.CLEAN,
+                      source_ordinal=3, change_id="c1", faithful=False)
+    b.admit(bad)
+    assert b.resolved[("unit_0000", "status")] == "offline"
+
+    fix = Observation(obs_tick=5, event_tick=3, entity_id="unit_0000",
+                      attribute="status", value="nominal",
+                      kind=ObsKind.CORRECTION, source_ordinal=3,
+                      change_id="c1", corrects=bad.obs_id)
+    b.admit(fix)
+    assert b.resolved[("unit_0000", "status")] == "nominal", (
+        "the correction was recorded but the belief did not move")
+    assert b.superseded, "the corrected report was not superseded"
+    assert any(a.obj == "offline" for a in b.ledger.assertions), (
+        "the original report was erased instead of superseded")
+
+
+def test_the_generated_world_actually_exercises_belief_reversal(builder):
+    """Companion to the constructed case: confirms the corpus reaches it too,
+    so the property is tested against generated data and not only a fixture."""
+    flipped = 0
     for bad in builder.superseded:
         target = next(a for a in builder.ledger.assertions
                       if a.assertion_id == bad)
         key = (target.subject, target.predicate)
-        live = [a for a in builder.by_key.get(key, ())
-                if a.assertion_id not in builder.superseded]
-        if live and key in builder.resolved:
-            latest = max(a.temporal.event_time for a in live)
-            if target.temporal.event_time == latest:
-                assert builder.resolved[key] != target.obj or any(
-                    a.obj == target.obj for a in live)
+        if builder.resolved.get(key) not in (None, target.obj):
+            flipped += 1
+    assert flipped > 0, "no supersession in this world changed what is believed"
 
 
 def test_supersession_is_distinct_from_removal_in_a_delta():
@@ -434,6 +473,9 @@ def test_incremental_converges_on_the_same_world_as_full_rebuild(report):
     assert report["equivalence"]["final_state_identical"]
     assert report["equivalence"]["all_checkpoints_identical"]
     assert report["equivalence"]["conflict_sets_identical"]
+    assert report["equivalence"]["identical_snapshot_ids"], (
+        "the arms agree on the believed world but not on the ledger that "
+        "produced it — worth knowing which of the two moved")
 
 
 def test_incremental_reaches_correct_historical_snapshots(world):

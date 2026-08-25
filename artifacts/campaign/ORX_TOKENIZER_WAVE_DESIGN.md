@@ -4,6 +4,24 @@
 (`trajectory/PREREG_causalfix_wave_arm_split.md`), which returned *below
 capability floor* confounded with residual truncation (D3.3).
 
+## Status: RECORDED, NOT RUN
+
+**As of 2026-08-25 this is the preregistration of record for the BPE-vs-char
+tokenizer question, and it has not been executed.** It is written down so the
+decision rule is fixed before any result exists, not because a run is imminent.
+
+Fixed before the fact: architecture (30M params), vocabulary (4098), corpus,
+eval suite, 3 seeds inside each node, and a single device type across arms. The
+decision rule is below and is not to be edited once a run lands — an edited
+criterion is not a criterion.
+
+Model research is deliberately **separate** from the Nano substrate work
+(`nano/`, NANO-CLIN-001, NANO-SLW-001). Those benchmarks load no model and
+spend no compute; this one would do both. Conflating them is how a substrate
+result gets credited to a tokenizer, or the reverse.
+
+Cross-reference: `trajectory/PREREG_tokenizer_bpe_vs_char.md` points here.
+
 ## Why not nine parallel nodes
 
 The obvious shape — nine arms as nine sibling nodes — is the **flat fan** that
