@@ -82,13 +82,13 @@ PROMPT_QUESTION_NAMES_CONCEPT = True
 # rather than by its role label. Measured to leak: see the HOLD note above.
 # Off keeps the task fully specified (a unique concept_label per slot) while
 # saying nothing the model could copy as its quote.
-PROMPT_QUESTION_USES_GOLD_SURFACE = True
+PROMPT_QUESTION_USES_GOLD_SURFACE = False
 
 # C1 — answer template and system-prompt examples carry the gold value.
-PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = True
+PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = False
 
 # C2 — gold raw_value substituted for a missing model quote.
-PARSER_RAW_VALUE_FALLBACK = True
+PARSER_RAW_VALUE_FALLBACK = False
 
 
 def leakage_config() -> dict[str, bool]:
