@@ -66,8 +66,67 @@ Status tags for each program (portfolio hygiene, not evidence):
 **Questions:** Search, calculators, DB lookup, validators as first-class actions with logged permissions and cost in \(U\).
 
 ## Program K — Long-context and persistent memory
-**Status:** `OPEN`  
+**Status:** `ACTIVE_DESIGN` (raised 2026-08-25 — a decidable hypothesis now exists; execution NOT authorized)  
 **Questions:** Episodic vs semantic vs user vs graph vs causal memory; write authorization; contamination; forgetting.
+
+**K1 — the central architectural hypothesis.** Stated so it can die:
+
+> A persistent, multiscale, evidence-grounded representation of a changing
+> real-world system supports longitudinal reconstruction more accurately and at
+> lower compute than a long-context autoregressive model reading raw sequences.
+
+Baseline is **not** "raw LLM generation" (per the Kill/keep rule): it is a
+long-context transformer over the raw record, at matched compute. Candidate is
+multiscale encoding + persistent state + temporal graph + retrieval memory +
+iterative inference with adaptive compute.
+
+Comparison axes, all already measurable in this repo's idiom: extraction recall ·
+temporal placement accuracy · entity-resolution accuracy · contradiction
+detection · evidence-weighted recall (see `docs/EVALUATION_FRAMEWORK.md`) ·
+provenance traceability · compute · latency · robustness to incremental new data.
+
+**Why this program and not a new one.** K already owns persistent memory. The
+hypothesis sharpens K rather than forking it; L (agents), J (tools) and G
+(retrieval vs generation) supply components and are not absorbed.
+
+**Falsifier.** If the long-context baseline matches the candidate on
+evidence-weighted recall and temporal accuracy at equal compute, K1 is dead
+regardless of architectural elegance.
+
+**K1 is a compound hypothesis and must be decomposed before it is tested.** It
+bundles persistent state, multiscale representation, temporal structure,
+external memory, learned routing, adaptive compute, tool use and iterative
+inference. A single experiment carrying all eight cannot attribute a gain to any
+one of them — and an unattributable gain is how a seed artifact acquires a
+mechanistic story (see `trajectory/PREREG_causalfix_wave_arm_split.md`, where
+0/6-vs-6/6 on one seed looked like an architecture effect and was not).
+
+Each component gets its own gate before composition:
+
+| Component | Isolated question | Discriminator |
+|---|---|---|
+| persistent state | does carrying state beat re-reading? | next-state prediction — retrieval cannot fake it |
+| multiscale representation | do learned abstractions beat one token scale? | performance at fixed compute |
+| temporal structure | are before/after/during/overlap native? | temporal placement accuracy |
+| external memory | does selective write beat write-everything? | recall at fixed memory budget |
+| learned routing | does the model choose the right retrieval mode? | routing accuracy vs oracle |
+| adaptive compute | does it spend more on harder questions? | compute vs question difficulty correlation |
+| tool use | does it delegate rather than estimate? | arithmetic/lookup error rate |
+| iterative inference | does another pass help? | accuracy vs iteration count, with a halting rule |
+
+**Do not hard-code the hierarchy.** Levels are a structural bias, not a rule
+table. A hand-written `sentence → event` mapping tests the rules, not the
+architecture.
+
+**First harness is DomainPack-0, not medicine** (`docs/SYSTEM_ARCHITECTURE.md`).
+Medicine cannot separate an architecture fault from an extraction, ontology or
+ground-truth fault.
+
+**Standing caution.** The claim "do not optimize primarily for next-token
+prediction" is a *hypothesis inside K1*, not a finding. The measured native track
+is a next-token model, and it currently sits below the capability floor for
+reasons that are tokenizer/context-bound (D3.3), not objective-bound. Do not cite
+the causalfix null as support for K1 — it does not bear on it.
 
 ## Program L — Agent collaboration
 **Status:** `OPEN`  
