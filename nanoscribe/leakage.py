@@ -8,7 +8,8 @@ back into the measurement.
 Not every mention of the value is leakage, and the distinction is the whole
 design of this ablation:
 
-``PROMPT_QUESTION_NAMES_CONCEPT`` (Q — task specification, NOT leakage)
+``PROMPT_QUESTION_NAMES_CONCEPT`` (Q — MEASURED TO LEAK; see the hold note
+below, this flag's framing is wrong and is being replaced by Q_SURFACE)
     The question names the concept being asked about ("Does the patient mention
     'migraines'?"). Span-port legitimately *is* "given a clinical concept,
     locate its assertion and its evidence", so naming the concept is how the
@@ -35,12 +36,41 @@ design of this ablation:
     quote-less output: read ``quote_absent`` from the run report before making
     any claim about C2, since if it is 0 the C2 cells carry no information.
 
-C1 and C2 arrived together in ``dc3b310`` to lift campaign_v1 coverage off
-zero. Each experiment branch sets these flags and changes nothing else; the run
+Provenance (corrected 2026-08-25 — the ledger audit turns on this). C1 and C2
+did NOT arrive together. C2 is new in ``dc3b310`` (``adapt.py``: the
+``not quotes and raw_value`` fallback, absent at ``09745ec``). A
+gold-value-in-prompt channel predates it: ``09745ec``'s ``prompt.py`` already
+interpolated ``{spec.raw_value!r}`` into the question and already shipped
+``Example: STATED: "neck"`` in the system prompt. ``dc3b310`` widened the
+prompt channel and added the scorer channel.
+
+Each experiment branch sets these flags and changes nothing else; the run
 report echoes them under ``leakage_config``.
 
 Flipping a flag changes measurement semantics, never model weights or the run
 command — that is the point of keeping them here rather than in an env var.
+
+HOLD (2026-08-25) — do not launch the 2x2 on these flags as they stand.
+Splitting Q out of C1 was meant to keep the task specified while closing the
+leak. It does not: the question identifies the slot BY ITS GOLD SURFACE STRING,
+so with Q pinned on the answer is in the prompt in all four cells, including the
+one labelled leakage-free. Measured on i0, fixture-only, with a parrot that
+discards the transcript and asserts the first surface string the instructions
+name (perfect-reader ceiling is exact_span 10/16):
+
+    C1on_C2on   10/16   C1on_C2off  10/16
+    C1off_C2on   9/16   C1off_C2off  9/16
+
+Zero transcript access lands within one slot of the ceiling in every cell, so
+``exact_gold_span`` is saturated and the REFUTED branch of the prereg is
+uninterpretable. The joint table still separates parrot from reader
+(state_ok 6/16 vs 10/16; correct_abstention 0-3/6 vs 6/6; unbound_assertion 3-6
+vs 0), which is the argument for making the discrimination the primary endpoint
+rather than a single accuracy scalar.
+
+Fix in progress: a per-slot ``concept_label`` distinct from ``raw_value``, so
+the question can specify the slot without naming the surface form, turning Q
+into a genuinely ablatable ``Q_SURFACE`` channel.
 """
 
 from __future__ import annotations
