@@ -78,6 +78,7 @@ def _atom_user_prompt(spec: AtomSpec, model_input) -> str:
 
 def _generate_line(loaded: _LoadedQwen, user_prompt: str, *, max_new_tokens: int) -> str:
     import torch
+    from nanoscribe.adapt import extract_span_port_line
     from nanoscribe.prompt import span_port_system_prompt
 
     tokenizer = loaded.tokenizer
@@ -101,7 +102,7 @@ def _generate_line(loaded: _LoadedQwen, user_prompt: str, *, max_new_tokens: int
         )
     new_tokens = output[0, inputs["input_ids"].shape[-1] :]
     text = tokenizer.decode(new_tokens, skip_special_tokens=True)
-    return text.strip().splitlines()[0].strip()
+    return extract_span_port_line(text)
 
 
 def generate_span_port_lines(
@@ -112,6 +113,8 @@ def generate_span_port_lines(
     max_new_tokens: int = 48,
 ) -> tuple[dict[str, str], float, int]:
     """Run one generation per atom slot; return lines + latency + rss."""
+    from nanoscribe.adapt import extract_span_port_line
+
     started = time.perf_counter()
     mem_before = _rss_bytes()
     loaded = _load_qwen(weights_path)

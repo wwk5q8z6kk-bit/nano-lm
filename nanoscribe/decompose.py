@@ -20,6 +20,11 @@ class LayerCounts:
 
 def classify_report(report: EvalReport) -> dict[str, Any]:
     """Map an EvalReport into P1 failure layers for dashboards and regression tracking."""
+    state_errors = sum(
+        1
+        for item in report.atom_results
+        if not item.omitted and not item.abstained and not item.assertion_state_correct
+    )
     layers = LayerCounts(
         transport=report.invalid_span + report.wrong_source + report.wrong_mention,
         support=(
@@ -27,7 +32,7 @@ def classify_report(report: EvalReport) -> dict[str, Any]:
             + report.support_contradicted
             + (1 if report.support_review_required else 0)
         ),
-        state=max(0, len([a for a in report.atom_results if not a.assertion_state_correct and not a.omitted])),
+        state=state_errors,
         abstention=report.omission + report.unnecessary_abstention,
         commission=report.spurious_atom,
         malformed=report.malformed + report.critical_error,
