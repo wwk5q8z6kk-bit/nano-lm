@@ -1,0 +1,464 @@
+{
+  "schema": "nano.campaign.native30_revalidation.v1",
+  "timestamp": "2026-08-25T12:35:38.989812+00:00",
+  "suite": "p1_screening_eval_v1",
+  "gold_atoms": 150,
+  "majority_class_baseline": {
+    "k": 103,
+    "n": 129,
+    "rate": 0.7984
+  },
+  "control_arm": "reval30_decoder_control",
+  "per_run": {
+    "reval30_decoder_control_s0": {
+      "arm": "reval30_decoder_control",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_decoder_control_s1": {
+      "arm": "reval30_decoder_control",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_decoder_control_s2": {
+      "arm": "reval30_decoder_control",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_evidence_bottleneck_s0": {
+      "arm": "reval30_evidence_bottleneck",
+      "constrained": {
+        "assertion_correct": 6,
+        "gold_atoms": 150,
+        "yield": 0.04,
+        "wilson95": [
+          0.0185,
+          0.0845
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_evidence_bottleneck_s1": {
+      "arm": "reval30_evidence_bottleneck",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_evidence_bottleneck_s2": {
+      "arm": "reval30_evidence_bottleneck",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_span_port_s0": {
+      "arm": "reval30_span_port",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_span_port_s1": {
+      "arm": "reval30_span_port",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    },
+    "reval30_span_port_s2": {
+      "arm": "reval30_span_port",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 6,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    }
+  },
+  "per_arm": {
+    "reval30_decoder_control": {
+      "constrained": {
+        "seeds": 3,
+        "per_seed_correct": [
+          0,
+          0,
+          0
+        ],
+        "pooled": {
+          "k": 0,
+          "n": 450,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0085
+          ]
+        },
+        "pooled_coverage": 18,
+        "has_signal": true,
+        "seed_spread": 0.0,
+        "seed_stdev": 0.0
+      },
+      "unconstrained": {
+        "seeds": 3,
+        "per_seed_correct": [
+          0,
+          0,
+          0
+        ],
+        "pooled": {
+          "k": 0,
+          "n": 450,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0085
+          ]
+        },
+        "pooled_coverage": 0,
+        "has_signal": false,
+        "seed_spread": 0.0,
+        "seed_stdev": 0.0
+      }
+    },
+    "reval30_evidence_bottleneck": {
+      "constrained": {
+        "seeds": 3,
+        "per_seed_correct": [
+          6,
+          0,
+          0
+        ],
+        "pooled": {
+          "k": 6,
+          "n": 450,
+          "rate": 0.0133,
+          "wilson95": [
+            0.0061,
+            0.0288
+          ]
+        },
+        "pooled_coverage": 18,
+        "has_signal": true,
+        "seed_spread": 0.04,
+        "seed_stdev": 0.0231
+      },
+      "unconstrained": {
+        "seeds": 3,
+        "per_seed_correct": [
+          0,
+          0,
+          0
+        ],
+        "pooled": {
+          "k": 0,
+          "n": 450,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0085
+          ]
+        },
+        "pooled_coverage": 0,
+        "has_signal": false,
+        "seed_spread": 0.0,
+        "seed_stdev": 0.0
+      }
+    },
+    "reval30_span_port": {
+      "constrained": {
+        "seeds": 3,
+        "per_seed_correct": [
+          0,
+          0,
+          0
+        ],
+        "pooled": {
+          "k": 0,
+          "n": 450,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0085
+          ]
+        },
+        "pooled_coverage": 18,
+        "has_signal": true,
+        "seed_spread": 0.0,
+        "seed_stdev": 0.0
+      },
+      "unconstrained": {
+        "seeds": 3,
+        "per_seed_correct": [
+          0,
+          0,
+          0
+        ],
+        "pooled": {
+          "k": 0,
+          "n": 450,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.0085
+          ]
+        },
+        "pooled_coverage": 0,
+        "has_signal": false,
+        "seed_spread": 0.0,
+        "seed_stdev": 0.0
+      }
+    }
+  },
+  "verdicts": {
+    "reval30_evidence_bottleneck": {
+      "constrained": {
+        "arm_rate": 0.0133,
+        "control_rate": 0.0,
+        "effect": 0.0133,
+        "separates_from_control": false,
+        "exceeds_majority_baseline": false,
+        "arm_pooled_coverage": 18,
+        "control_pooled_coverage": 18,
+        "seed_spread": 0.04,
+        "effect_exceeds_seed_spread": false,
+        "verdict": "NOT_SEPARATED"
+      },
+      "unconstrained": {
+        "arm_rate": 0.0,
+        "control_rate": 0.0,
+        "effect": 0.0,
+        "separates_from_control": false,
+        "exceeds_majority_baseline": false,
+        "arm_pooled_coverage": 0,
+        "control_pooled_coverage": 0,
+        "seed_spread": 0.0,
+        "effect_exceeds_seed_spread": false,
+        "verdict": "INVALID_NO_SIGNAL"
+      }
+    },
+    "reval30_span_port": {
+      "constrained": {
+        "arm_rate": 0.0,
+        "control_rate": 0.0,
+        "effect": 0.0,
+        "separates_from_control": false,
+        "exceeds_majority_baseline": false,
+        "arm_pooled_coverage": 18,
+        "control_pooled_coverage": 18,
+        "seed_spread": 0.0,
+        "effect_exceeds_seed_spread": false,
+        "verdict": "NOT_SEPARATED"
+      },
+      "unconstrained": {
+        "arm_rate": 0.0,
+        "control_rate": 0.0,
+        "effect": 0.0,
+        "separates_from_control": false,
+        "exceeds_majority_baseline": false,
+        "arm_pooled_coverage": 0,
+        "control_pooled_coverage": 0,
+        "seed_spread": 0.0,
+        "effect_exceeds_seed_spread": false,
+        "verdict": "INVALID_NO_SIGNAL"
+      }
+    }
+  },
+  "decision_rule": "a cell is INVALID_NO_SIGNAL if the arm or its control pooled zero coverage \u2014 no verdict is inferable from an instrument that produced nothing. Otherwise an arm is a PROMOTION_CANDIDATE only if its pooled Wilson interval is disjoint from the decoder control's AND its lower bound exceeds the majority-class baseline. An effect smaller than the seed spread is not an architecture effect."
+}
