@@ -1,11 +1,43 @@
 # Addendum — leak-taint audit of the frozen evidence ledger
 
 **Date:** 2026-08-25
+**Status: MERGED.** This is the single leak-taint audit of record. It supersedes
+the parallel enumeration in `artifacts/measurement-integrity-audit.md` §1.3,
+which reached a compatible conclusion by a narrower route and is retained there
+as the taint-window analysis for *post-freeze* span metrics. See §0.
 **Author scope:** enumeration only. **No frozen tag is modified by this document.**
 **Subject:** do any claims carried by `post-alpha-evidence-freeze-2026-07-31`, `post-alpha-reconciled-evidence-freeze-2026-07-31`, or `paper-alpha-v1` depend on either of the two span-port leakage channels now under ablation?
 
 - **C1** — `PROMPT_ANSWER_TEMPLATE_GOLD_VALUE`: the answer template and system-prompt format examples carry the gold value.
 - **C2** — `PARSER_RAW_VALUE_FALLBACK`: the scorer substitutes `raw_value` as the model's quote when the model emitted a label with no quote.
+
+## 0. Merge note — two sessions, two routes, one conclusion
+
+Two sessions audited the same question independently and in parallel.
+
+| | this addendum | `measurement-integrity-audit.md` §1.2–1.3 (peer `v7pagl1v`) |
+|---|---|---|
+| Scope | all 28 ledger claims | the span-metric taint window |
+| Route | provenance (code absent from the freeze tree) **+** mechanism (pre-freeze scorer has no equivalent) | provenance of the channels themselves, forward from `09745ec` |
+| Conclusion | 28 unaffected / 0 / 0 | frozen claims unaffected — *"those are different metrics"* |
+
+The conclusions are compatible; this one is the stronger of the two because it
+carries a **second, independent ground** (the mechanism test in Finding 2 below),
+so it does not rest on provenance alone. The peer's analysis contributes
+something this one does not: the **taint window for post-freeze span metrics**,
+which opens at `09745ec` rather than `dc3b310`, and which matters for the
+*current* span-port line even though it does not reach any frozen tag. That
+section stays where it is and is referenced, not duplicated.
+
+**Convergent correction, recorded as such.** Both sessions independently found
+and corrected the same false claim in `nanoscribe/leakage.py`'s docstring — that
+C1 and C2 "arrived together in `dc3b310`". Both verified against `09745ec` that
+the prompt already interpolated `spec.raw_value` into the question and already
+used gold answers as system-prompt format examples. `dc3b310` **widened** the
+prompt channel and **added** the parser fallback; it did not create the leak.
+Two independent derivations of the same correction, from different starting
+points, is worth more than either alone — it is the reason the corrected
+provenance can now be relied on without a third check.
 
 ## Why this is dated *before* the ablation results
 
