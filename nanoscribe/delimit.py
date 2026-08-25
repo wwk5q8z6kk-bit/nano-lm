@@ -226,7 +226,12 @@ def resolve_quotes(
         start, end = int(match.group(1)), int(match.group(2))
         if start < 0 or end <= start or end > len(source.text):
             return ()
-        return (source.text[start:end],)
+        # EvidenceSpan requires a non-empty, edge-trimmed string. A model-chosen
+        # offset pair routinely lands on surrounding whitespace, which crashed
+        # the first arm-C run before it scored anything. Trim the edges and drop
+        # the answer if nothing survives; reachable only under `offsets`.
+        quote = source.text[start:end].strip()
+        return (quote,) if quote else ()
     raise ValueError(f"unknown OUTPUT_FORMAT: {OUTPUT_FORMAT}")
 
 
