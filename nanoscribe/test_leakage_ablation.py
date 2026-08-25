@@ -256,12 +256,23 @@ class LeakageInstrumentTest(unittest.TestCase):
         that model quality must not be credited for the binder's save. If this
         separation ever collapses, a null result from the ablation is
         uninterpretable rather than reassuring.
+
+        The echo answers are built by reading the PROMPT, never from
+        ``spec.raw_value``. A gold-constructed baseline is byte-identical in all
+        eight ablation cells and therefore cannot detect a channel at all; see
+        test_adversarial_baseline_invariant, which pins that rule and keeps the
+        banned shape executable as a counter-example.
         """
+        from nanoscribe.test_prompt_surface_parrot import parrot_line
+
+        leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = True
+        leakage.PROMPT_QUESTION_USES_GOLD_SURFACE = True
+
         v1_clean = 0
         for encounter_id in ("enc-1", "enc-2", "enc-3"):
             case = _case(encounter_id)
             lines = {
-                spec.atom_id: f'STATED: "{spec.raw_value}"'
+                spec.atom_id: parrot_line(case.model_input.source, spec)
                 for spec in case.atom_specs
             }
             batch = _adapter_lines(case, lines)
@@ -271,8 +282,12 @@ class LeakageInstrumentTest(unittest.TestCase):
         self.assertGreaterEqual(v1_clean, 5)
 
         case = _case("enc-4")
+        parrot_lines = {
+            spec.atom_id: parrot_line(case.model_input.source, spec)
+            for spec in case.atom_specs
+        }
         _, echo_report = run_pipeline(
-            case.model_input, _adapter_lines(case, _enc4_lines(None)), gold=case.gold
+            case.model_input, _adapter_lines(case, parrot_lines), gold=case.gold
         )
         self.assertEqual(echo_report.unbound_assertion, ENC4_ABSENT_SLOTS)
         self.assertEqual(echo_report.correct_abstention, 0)
