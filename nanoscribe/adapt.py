@@ -28,7 +28,7 @@ from nanoscribe.encounter import (
     Temporality,
 )
 from nanoscribe.evaluate import PredictedAtom, PredictedEncounter
-from nanoscribe import leakage
+from nanoscribe import delimit, leakage
 from nanoscribe.select import ConstrainedSelector
 
 CANDIDATE_SCHEMA_VERSION = "nano.candidate.v0"
@@ -393,6 +393,7 @@ def candidate_from_span_port_line(
     experiencer: Experiencer = _DEFAULT_EXPERIENCER,
     temporality: TemporalState | None = None,
     certainty: Certainty | None = None,
+    source: Source | None = None,
 ) -> CandidateAtom:
     """Lift a Qwen span-port one-liner into a typed candidate (no evidence binding)."""
     label, quotes = parse_label_and_quotes(raw_line)
@@ -403,6 +404,13 @@ def candidate_from_span_port_line(
     assertion = _LABEL_TO_ASSERTION.get(label)
     if assertion is None:
         return CandidateAtom(atom_id=atom_id, malformed=True)
+    if source is not None:
+        # E-DELIMIT: under `menu`/`offsets` the answer is an index or an offset
+        # pair, not a quoted string. Resolve it to a quote here so everything
+        # downstream — ConstrainedSelector, scoring — is byte-identical to the
+        # free-form arm and only the elicitation differs. Under `free_form`
+        # this is the identity.
+        quotes = delimit.resolve_quotes(raw_line, source, atom_id, quotes)
     if not quotes and raw_value and leakage.PARSER_RAW_VALUE_FALLBACK:
         # Channel C2: credit the gold value as the model's quote when it gave none.
         quotes = (raw_value,)

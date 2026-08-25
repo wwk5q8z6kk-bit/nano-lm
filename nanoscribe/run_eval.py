@@ -48,9 +48,11 @@ from nanoscribe.leakage import condition_label, leakage_config
 from nanoscribe.prompt import (
     answer_hint_for_spec,
     build_span_port_prompt,
+    question_template_hash,
     span_port_system_prompt,
     topic_for_spec,
 )
+from nanoscribe import delimit
 from nanoscribe.test_adapt import _gold, _model_input
 
 
@@ -294,12 +296,44 @@ def _slot_cell(spec, atom, item, gold_atom_ids, raw_lines: dict[str, str]) -> st
     return "asserted_grounded" if grounded else "asserted_bound_wrong"
 
 
+def _gold_spans_by_atom(case: HarnessCase) -> dict[str, tuple[int, int]]:
+    """atom_id -> (start, end) of its first gold evidence span, when it has one."""
+    by_id = {ev.evidence_id: ev for ev in case.gold.evidence}
+    out: dict[str, tuple[int, int]] = {}
+    for atom in case.gold.atoms:
+        spans = [by_id[e] for e in atom.evidence_ids if e in by_id]
+        if spans:
+            out[atom.atom_id] = (spans[0].start, spans[0].end)
+    return out
+
+
+def _resolved_line(raw_line: str, source, atom_id: str) -> str:
+    """Arm B/C answers rewritten as their free-form equivalent.
+
+    ``analyze_span_extent.py`` reads a quoted span out of ``raw_line``. Under
+    ``menu``/``offsets`` the raw line carries an index or an offset pair, so the
+    analyzer would see no quote and score every slot ``no_quote``. Emitting the
+    resolved equivalent lets the same analyzer run unchanged across all three
+    arms; both the true raw line and this one are recorded, so nothing is
+    obscured.
+    """
+    label, quotes = parse_label_and_quotes(raw_line)
+    if label is None:
+        return raw_line
+    resolved = delimit.resolve_quotes(raw_line, source, atom_id, quotes)
+    if not resolved:
+        return label
+    return f"{label}: " + " ".join(f'"{q}"' for q in resolved)
+
+
 def _run_campaign_case(case: HarnessCase, *, fixture_only: bool) -> dict[str, Any]:
     raw_lines: dict[str, str] = {}
+    source = case.model_input.source
     prompts = {
-        spec.atom_id: build_span_port_prompt(case.model_input.source, spec)
+        spec.atom_id: build_span_port_prompt(source, spec)
         for spec in case.atom_specs
     }
+    gold_spans = _gold_spans_by_atom(case)
     adapter = _adapter_for_case(
         case, fixture_only=fixture_only, raw_line_sink=raw_lines
     )
@@ -331,6 +365,29 @@ def _run_campaign_case(case: HarnessCase, *, fixture_only: bool) -> dict[str, An
         "quote_absent": {
             atom_id: _quote_absent(line) for atom_id, line in raw_lines.items()
         },
+        # E-DELIMIT instrumentation. Under the free_form arm `resolved_lines`
+        # equals `raw_lines` and `gold_in_menu` is vacuously true.
+        "resolved_lines": {
+            atom_id: _resolved_line(line, source, atom_id)
+            for atom_id, line in raw_lines.items()
+        },
+        "gold_in_menu": {
+            spec.atom_id: (
+                delimit.gold_in_menu(source, spec.atom_id, *gold_spans[spec.atom_id])
+                if spec.atom_id in gold_spans
+                else None
+            )
+            for spec in case.atom_specs
+        },
+        "menu_size": {
+            spec.atom_id: len(delimit.menu_for_slot(source, spec.atom_id))
+            for spec in case.atom_specs
+        },
+        "parrot_quote": {
+            spec.atom_id: (delimit.parrot_quotes(source, spec.atom_id) or (None,))[0]
+            for spec in case.atom_specs
+        },
+        "question_template_hash": question_template_hash(case.atom_specs),
         "latency_s": round(batch.latency_s, 4),
         "memory_bytes": batch.memory_bytes,
     }
@@ -525,6 +582,8 @@ def run_campaign_eval(suite: str, *, fixture_only: bool = False) -> dict[str, An
             "fixture_only": fixture_only,
             "leakage_config": leakage_config(),
             "condition": condition_label(),
+            "delimit_config": delimit.delimit_config(),
+            "arm": delimit.OUTPUT_FORMAT,
             "manifest": suite_manifest(),
             "suite_aggregate": _suite_aggregate(encounters),
             "pooled_aggregate_warning": (

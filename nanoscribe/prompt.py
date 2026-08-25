@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import hashlib
+from collections.abc import Iterable
 from typing import Protocol
 
 from nanoscribe.encounter import AtomType, Speaker, Source
-from nanoscribe import leakage
+from nanoscribe import delimit, leakage
 
 
 class _AtomSpecLike(Protocol):
@@ -142,18 +144,45 @@ def answer_hint_for_spec(spec: _AtomSpecLike) -> str:
     return ""
 
 
+def question_for_spec(spec: _AtomSpecLike) -> str:
+    """The question, and nothing else. Byte-identical across E-DELIMIT arms.
+
+    R1 requires the arms to vary only the output-format module. This function
+    is what R1 protects, and `question_template_hash` is what proves it held.
+    """
+    who = "clinician" if spec.speaker is Speaker.CLINICIAN else "patient"
+    return (
+        f"{topic_for_spec(spec)} Answer using only the {who}'s words."
+        f"{answer_hint_for_spec(spec)}"
+    )
+
+
 def build_span_port_prompt(source: Source, spec: _AtomSpecLike) -> str:
     """Build a single-atom span-port probe prompt from encounter source."""
-    transcript = _format_transcript(source)
-    task = topic_for_spec(spec)
-    who = "clinician" if spec.speaker is Speaker.CLINICIAN else "patient"
-    hint = answer_hint_for_spec(spec)
     return (
-        f"{transcript}\n\n"
-        f"{task} Answer using only the {who}'s words.{hint} "
-        "Reply with exactly one line: "
-        "STATED, DENIED, UNCERTAIN, or NOT_MENTIONED with a verbatim quote."
+        f"{delimit.transcript_block(source)}\n\n"
+        f"{question_for_spec(spec)} "
+        f"{delimit.format_instruction(source, spec.atom_id)}"
     )
+
+
+def question_template_hash(specs: Iterable[_AtomSpecLike]) -> str:
+    """Digest of the realized questions for a slot set.
+
+    R2 says a contrast is legal iff the prompt-template hashes are equal. The
+    naive whole-module hash cannot express that here: the arms differ in the
+    output-format module by construction, so every contrast would read illegal.
+    The invariant R2 actually protects is *same instrument* — so hash the
+    questions, which must match, and hash the format separately
+    (`delimit.output_format_hash`), which must differ.
+    """
+    digest = hashlib.sha256()
+    for spec in sorted(specs, key=lambda s: s.atom_id):
+        digest.update(spec.atom_id.encode())
+        digest.update(b"\x00")
+        digest.update(question_for_spec(spec).encode())
+        digest.update(b"\x00")
+    return digest.hexdigest()[:16]
 
 
 def span_port_system_prompt() -> str:

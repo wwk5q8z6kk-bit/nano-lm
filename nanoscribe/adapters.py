@@ -62,7 +62,8 @@ class FixtureSpanPortAdapter:
         model_input: ModelInput,
         atom_specs: Sequence[AtomSpec],
     ) -> ModelCandidateBatch:
-        del model_input  # fixture ignores prompt; source is bound downstream
+        # The fixture ignores the prompt, but E-DELIMIT's menu/offsets arms need
+        # the source to resolve an index or an offset pair into a quote.
         lines = self.lines or {}
         atoms: list[CandidateAtom] = []
         for spec in atom_specs:
@@ -78,6 +79,7 @@ class FixtureSpanPortAdapter:
                     speaker=spec.speaker,
                     experiencer=spec.experiencer,
                     temporality=spec.temporality,
+                    source=model_input.source,
                 )
             )
         return ModelCandidateBatch(atoms=tuple(atoms))
@@ -130,6 +132,7 @@ class Qwen25BaselineAdapter:
                     speaker=spec.speaker,
                     experiencer=spec.experiencer,
                     temporality=spec.temporality,
+                    source=model_input.source,
                 )
             )
         return ModelCandidateBatch(
@@ -332,6 +335,7 @@ class SmallApiReferenceAdapter:
                     speaker=spec.speaker,
                     experiencer=spec.experiencer,
                     temporality=spec.temporality,
+                    source=model_input.source,
                 )
             )
         return ModelCandidateBatch(
@@ -378,6 +382,7 @@ class ServerlessQwen38Adapter:
                     speaker=spec.speaker,
                     experiencer=spec.experiencer,
                     temporality=spec.temporality,
+                    source=model_input.source,
                 )
             )
         return ModelCandidateBatch(
