@@ -158,3 +158,21 @@ record) · `artifacts/DEFECT_INDEX.md` (D1.1, canonical index) ·
 **To promote:** apply the row to `papers/EVIDENCE_LEDGER.md` and the matching
 claim object to `papers/EVIDENCE_LEDGER.json` on the owner-facing path, then
 re-run `scripts/check_docs_integrity.py`.
+
+## Companion note for C_NATIVE_TRACK_VOID promotion (2026-08-25)
+
+When promoting the row above on the owner-facing path, promote the
+capability-floor result **with its confound attached**, so the next reader gets
+"below floor, tokenizer suspected" rather than "30M is below floor":
+
+> native30 causalfix wave (9 runs, MPS, single device): constrained coverage
+> 4.0% pooled (6/150 per run, abstaining on 144 of 150 atoms), unconstrained
+> 0/150 in 9/9. Arms did not separate — the apparent `DENIED`/`ASSERTED` split
+> was seed noise, present only in `evidence_bottleneck_s0`. Pre-registered
+> capability-floor clause fired. **Confounded with residual truncation (D3.3):**
+> 82.7% of eval prompts exceed the 512 context under character-level
+> tokenization. 30M with a fitting tokenizer is untested.
+
+Sources: `trajectory/PREREG_causalfix_wave_arm_split.md` (prereg, RESULT, and
+CONFOUND NOTICE) · `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md` ·
+`artifacts/DEFECT_INDEX.md` (D1.1, D3.3, result-status section).

@@ -42,6 +42,7 @@ voiding a whole wave's conclusions and neither appears in any headline summary.
 | **D2.4** | `eval_one_run` | Discarded the eval subprocess returncode and stderr | **Hides failure.** An eval crash was indistinguishable from an eval scoring zero | `35ad570` | any wave cell whose eval crashed — unknown which, by construction |
 | **D3.1** | `hash_tokens: text[:64]` | Hard-truncated every input to 64 chars; prompts average 530 | **Inflates.** Model saw 12.1% of each prompt; gold value usually invisible → task impossible by construction, loss fit 96 memorised fragments | `native_tokenizer_defect_v1.json` | native30 8-way round-1 tournament; native100 round-2 promotion ranking; native100 extended runs; all `exact_gold_span`/support metrics from constrained eval |
 | **D3.2** | `_char_for_token: range(32,127)` | `\n`, `\t`, `\r` had no preimage and decoded to `?` | **Corrupts input.** Turn separators destroyed in 224/224 corpus sources | same | same as D3.1 |
+| **D3.3** | `hash_tokens` vs `max_seq=512` | Character-level tokenization against a 512 context: **82.7%** of `p1_screening_eval_v1` prompts (median 530 tok, max 576) and **100%** of the training corpus (median 615, max 694) exceed the window. D3.1 removed the 64-char cap but never addressed the underlying mismatch — **D3 is only partly closed** | **Confounds.** Median 4.4% / worst 11.1% of eval content dropped; scale and truncation move together, so any parameter result is measured through a truncating tokenizer | **OPEN** — fix is an existing asset, `sft/tokenizer.json` (own-stack BPE, same vocab 4098): measured 2.60x compression, median 204 tok, **0/150 over context**, embeddings unchanged | the 2026-08-25 causalfix capability-floor conclusion — it stands as written because it names the tokenizer, but "30M is below the floor" is an impermissible restatement |
 | **D4** | `nanoscribe/evaluate.py` | `unbound_assertion` laundered into `correct_abstention` — a hallucinated assertion scored as a *correct abstention* | **Inflates safety.** Model-level commission credited to the binder's save | `be937c1` lineage | **No new taint.** Frozen Paper-α lineage: **0** — recounted across all 11 frozen trees (`c1b`, `c3_primary`, `c3_replication`, `e1`, `e3`, `pointer_p1/p2`, `slot_diversity`, `durable_raw`, `stage_t_v2`, `ownstack_corner`) plus `trajectory/`, `fabric/`, `scribe/`. 38 files in `artifacts/campaign/` do carry the field, but those are native-line results already void from D1–D3. `papers/`: 1, and it *describes* the defect rather than reporting a result |
 | **D5.1** | `prompt.py` answer template | `reply STATED: "{raw_value}"` hands over the exact string; system-prompt examples are themselves gold answers | **Inflates.** A model copying its instructions scores as one that read the transcript | orx leakage thread | `dc3b310`'s "campaign_v1 coverage 0% → ~83%" |
 | **D5.2** | `adapt.candidate_from_span_port_line` | Substitutes gold `raw_value` as the model's quote when the model emitted a label with no quote | **Inflates.** A bare `STATED` resolves to the exact gold span | orx leakage thread | same — but measured **inert**: `quote_absent` 2/192, Δ`asserted_grounded` 0.000 |
@@ -100,3 +101,44 @@ effect size (what it *did* buy).
   the working tree**; recovered from WIP commit `1b241d6` while building this
   index. It was one of the three cited sources and had been silently lost.
 - the orx span-port leakage ablation thread (8 cells, `artifacts/RESULT-span-port-leakage-ablation.md`)
+
+---
+
+## Result status carried by this index (added 2026-08-25)
+
+**native30 causalfix wave — below capability floor, tokenizer suspected.**
+Prereg + RESULT: `trajectory/PREREG_causalfix_wave_arm_split.md`.
+
+- Coverage 6/150 (**4.0%**) constrained in all nine runs; **0/150** unconstrained
+  in all nine. Models abstain on 144 of 150 atoms.
+- The `DENIED`-vs-`ASSERTED` arm split was **seed noise** — it came entirely from
+  `evidence_bottleneck_s0`; seeds 1 and 2 read 0/6 like every other arm. Wilson
+  intervals overlap and direction held in 1/3 seeds, both pre-registered as
+  disqualifying.
+- Capability-floor clause fired, **with the D3.3 confound attached**.
+
+**Do not re-run architecture arms from here.** The arms did not separate, and the
+input does not fit the context (D3.3). The next variable is the tokenizer, not
+scale or architecture: scaling through a truncating tokenizer confounds scale
+with truncation. Ceiling calibration — Qwen2.5-1.5B on the related span-port task
+selects the correct turn for ~4 of 5 gold slots and still rarely delimits the
+exact span; a 30M char-level model at 4% coverage is a different regime, not a
+few increments below.
+
+## Pre-commitment as a detection mechanism (added 2026-08-25)
+
+Two independent live uses this week, each converting a plausible false positive
+into a null:
+
+1. **Span-port co-movement rule** — caught one on its first live use, on a
+   contrast that looked like a clean doubling.
+2. **Causalfix arm-split prereg** — registered while only `s0` of two arms was
+   observed; the s0-only view was 0/6 vs 6/6 with a mechanistic story attached.
+   Seeds 1-2 refuted it.
+
+This is a *pattern*, not two anecdotes, and it is the counterpart to the
+survivorship argument at the top of this file. Survivorship explains why the
+undetected defect population is systematically flattering; pre-commitment is the
+mechanism that removes the flattering reading before the data is seen. Cost in
+both cases: minutes. Note the asymmetry — a guard written *after* seeing `s0`
+could have been fitted to it.
