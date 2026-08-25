@@ -139,5 +139,91 @@ class AdversarialBaselineInvariantTest(unittest.TestCase):
         )
 
 
+class FormEquivalenceInvariantTest(unittest.TestCase):
+    """SECOND INVARIANT: a cell must differ in exactly the manipulated variable.
+
+    Generalised from a defect in this repo's own C3 arm. C3-off was meant to
+    remove the gold surface string and nothing else; it also changed the
+    question FORM, from yes/no ("Does the patient mention 'migraines'?") to
+    wh-extraction ("What is a condition ...?"). The measured effect was
+    dominated by form — under yes/no the model answers the yes/no question,
+    which the harness reads as NOT_MENTIONED — so the LEAKIER cells scored
+    worse and the arm was void.
+
+    The prompt-distinctness guard did not catch this, and could not: it asserts
+    the prompts are DIFFERENT, and they were. Distinctness is necessary, not
+    sufficient. The rule this pins:
+
+        An ablation cell must differ in exactly the manipulated variable —
+        same task form, same answer space, same response mode.
+
+    Enforced constructively: both arms are rendered from one template with the
+    identifier substituted, so replacing the identifier with a placeholder must
+    yield byte-identical strings.
+    """
+
+    def setUp(self) -> None:
+        self._saved = leakage.PROMPT_QUESTION_USES_GOLD_SURFACE
+
+    def tearDown(self) -> None:
+        leakage.PROMPT_QUESTION_USES_GOLD_SURFACE = self._saved
+
+    def _questions(self, c3: bool):
+        from nanoscribe.prompt import identifier_for_spec, topic_for_spec
+
+        leakage.PROMPT_QUESTION_USES_GOLD_SURFACE = c3
+        out = {}
+        for instance_id in INSTANCE_IDS:
+            for case in instance_cases(instance_id):
+                for spec in case.atom_specs:
+                    key = f"{instance_id}/{spec.atom_id}"
+                    out[key] = (topic_for_spec(spec), identifier_for_spec(spec))
+        return out
+
+    def test_both_c3_arms_share_one_question_form(self) -> None:
+        from nanoscribe.prompt import IDENTIFIER_PLACEHOLDER, topic_with_placeholder
+
+        on = self._questions(True)
+        off = self._questions(False)
+        self.assertEqual(set(on), set(off))
+        for key in on:
+            q_on, ident_on = on[key]
+            q_off, ident_off = off[key]
+            # Removing the identifier must leave the SAME sentence in both arms.
+            self.assertEqual(
+                q_on.replace(ident_on, IDENTIFIER_PLACEHOLDER),
+                q_off.replace(ident_off, IDENTIFIER_PLACEHOLDER),
+                f"{key}: C3 arms differ by more than the identifier",
+            )
+            self.assertNotEqual(ident_on, ident_off, key)
+
+    def test_the_placeholder_render_matches_both_arms(self) -> None:
+        """Guards the guard: the template must actually be what gets rendered."""
+        from nanoscribe.prompt import IDENTIFIER_PLACEHOLDER, topic_with_placeholder
+
+        for c3 in (True, False):
+            from nanoscribe.prompt import identifier_for_spec, topic_for_spec
+
+            leakage.PROMPT_QUESTION_USES_GOLD_SURFACE = c3
+            for case in instance_cases(INSTANCE_IDS[0]):
+                for spec in case.atom_specs:
+                    rendered = topic_for_spec(spec).replace(
+                        identifier_for_spec(spec), IDENTIFIER_PLACEHOLDER
+                    )
+                    self.assertEqual(rendered, topic_with_placeholder(spec), spec.atom_id)
+
+    def test_response_mode_is_wh_extraction_in_both_arms(self) -> None:
+        """Not yes/no. Pins the specific form that broke the first C3 arm."""
+        from nanoscribe.prompt import topic_for_spec
+
+        for c3 in (True, False):
+            leakage.PROMPT_QUESTION_USES_GOLD_SURFACE = c3
+            for case in instance_cases(INSTANCE_IDS[0]):
+                for spec in case.atom_specs:
+                    question = topic_for_spec(spec)
+                    self.assertTrue(question.startswith("What "), question)
+                    self.assertFalse(question.startswith("Does "), question)
+
+
 if __name__ == "__main__":
     unittest.main()

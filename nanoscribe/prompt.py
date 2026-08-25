@@ -75,48 +75,52 @@ def slot_topic_for_spec(spec: _AtomSpecLike) -> str:
     return f"Does the transcript mention {question}?"
 
 
+IDENTIFIER_PLACEHOLDER = "\u0000IDENT\u0000"
+
+
+def identifier_for_spec(spec: _AtomSpecLike) -> str:
+    """The string that tells the model WHICH slot is being asked about.
+
+    This is the only thing C3 varies. On, it is the slot's gold surface form —
+    which is also the answer. Off, it is a role label that shares no surface
+    form with any value in the instance.
+    """
+    if leakage.PROMPT_QUESTION_USES_GOLD_SURFACE:
+        return repr(spec.raw_value)
+    label = getattr(spec, "concept_label", "") or ""
+    return label or f"the {spec.atom_type.value} field"
+
+
+def question_template(spec: _AtomSpecLike, identifier: str) -> str:
+    """One question form for BOTH C3 arms — wh-extraction over the same answer space.
+
+    The first version of this varied the FORM as well as the identifier: C3-on
+    asked a yes/no question ("Does the patient mention 'migraines'?") while
+    C3-off asked a wh-question ("What is a condition ...?"). That confounded the
+    contrast and voided the arm — under the yes/no form the model answers the
+    yes/no question, which the harness reads as NOT_MENTIONED, so the leakier
+    cells scored WORSE. Same form, same answer space, same response mode; only
+    `identifier` differs. `test_form_equivalence_invariant` asserts it.
+    """
+    who = "clinician" if spec.speaker is Speaker.CLINICIAN else "patient"
+    return f"What does the {who} say about {identifier}?"
+
+
 def label_topic_for_spec(spec: _AtomSpecLike) -> str:
     """Task phrased by role label — identifies the slot, names no surface form."""
-    label = getattr(spec, "concept_label", "") or ""
-    if not label:
-        # No label authored: fall back to slot-type phrasing rather than
-        # silently reintroducing the surface string.
-        return slot_topic_for_spec(spec)
-    return f"What is {label}?"
+    return question_template(spec, identifier_for_spec(spec))
+
+
+def topic_with_placeholder(spec: _AtomSpecLike) -> str:
+    """The question with the identifier removed — used to prove form equivalence."""
+    return question_template(spec, IDENTIFIER_PLACEHOLDER)
 
 
 def topic_for_spec(spec: _AtomSpecLike) -> str:
     """Human-readable extraction task for one atom slot."""
     if not leakage.PROMPT_QUESTION_NAMES_CONCEPT:
         return slot_topic_for_spec(spec)
-    if not leakage.PROMPT_QUESTION_USES_GOLD_SURFACE:
-        return label_topic_for_spec(spec)
-    if spec.atom_type is AtomType.ALLERGY:
-        return "Does the patient mention or deny allergies?"
-    if spec.atom_type is AtomType.MEDICATION:
-        return "Does the patient mention any medication they take?"
-    if spec.atom_type is AtomType.HISTORY:
-        return (
-            f"Does the transcript mention {spec.raw_value!r} "
-            "(patient history or family history)?"
-        )
-    if spec.speaker is Speaker.CLINICIAN:
-        return f"Does the clinician state {spec.raw_value!r}?"
-    if spec.atom_type is AtomType.ASSESSMENT:
-        return f"Does the clinician's assessment include {spec.raw_value!r}?"
-    if spec.raw_value:
-        return f"Does the patient mention {spec.raw_value!r} (current or past)?"
-    question = {
-        AtomType.SYMPTOM: "any symptom or complaint",
-        AtomType.DIAGNOSIS_STATEMENT: "any diagnosis",
-        AtomType.PLAN: "the care plan",
-        AtomType.PROCEDURE: "any procedure",
-        AtomType.INSTRUCTION: "patient instructions",
-        AtomType.MEASUREMENT: "any measurement or vital sign",
-    }.get(spec.atom_type)
-    if question:
-        return f"Does the transcript mention {question}?"
-    return f"Does the transcript mention the {spec.atom_type.value} field?"
+    return question_template(spec, identifier_for_spec(spec))
 
 
 def answer_hint_for_spec(spec: _AtomSpecLike) -> str:
