@@ -5,6 +5,12 @@ The governing rule is expansion:
     A new primitive is admitted when something the system must represent does
     not fit an existing one. Nothing is forced to collapse into a smaller set.
 
+**This registry is OPEN and illustrative, never a closed specification.** The
+entries below demonstrate how the primitives integrate with what is actually
+built; they are not a boundary on what Nano may represent. Adding a primitive is
+ordinary work and needs no justification beyond "this did not fit". Removing one
+to make the set tidier is not.
+
 This is deliberately the opposite of a minimal-ontology discipline. The failure
 mode here is not proliferation — it is **overloading**: one primitive quietly
 doing two jobs, which is how a distinction gets lost and can never be recovered

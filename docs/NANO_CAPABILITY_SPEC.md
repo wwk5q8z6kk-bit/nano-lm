@@ -1,6 +1,6 @@
 # Nano capability specification
 
-42 capabilities across 20 domains. Status: IMPLEMENTED 9, PARTIAL 13, PROPOSED 6, ABSENT 14
+50 capabilities across 26 domains. Status: IMPLEMENTED 10, PARTIAL 14, PROPOSED 6, ABSENT 20
 
 | id | domain | capability | stage | status | evidence |
 |---|---|---|---|---|---|
@@ -46,3 +46,11 @@
 | `LRN-LOOPS` | Learning | Fast loop touches state; slow loop touches weights, offline | CORE | **PROPOSED** | — |
 | `SAF-ISOLATION` | Safety | Patient isolation enforced in the type system | A | **IMPLEMENTED** | nano/test_nano_clin_001.py::test_no_cross_patient_contamination |
 | `SAF-ACTION` | Safety | Human review is the action boundary | A | **PARTIAL** | nano/contracts.py::ConflictRecord requires human_disposition |
+| `EVD-LOCATE` | Evidence | Locate a claim in its source, modality-independently | A | **IMPLEMENTED** | nano/contracts.py::EvidenceSpanV2 |
+| `CNV-STATE` | Conversation | Track dialogue state separately from world state | C | **ABSENT** | — |
+| `CNV-ACT` | Conversation | Choose to answer, clarify, retrieve, show, cite, or abstain | C | **ABSENT** | — |
+| `MTA-EPISTEMIC` | Metacognition | Maintain typed machine state for known/unknown/conflicting/needed | D | **PARTIAL** | nano/contracts.py::PatientStateSnapshot |
+| `MTA-WOULDCHANGE` | Metacognition | Name what evidence would change the conclusion | D | **ABSENT** | — |
+| `PRD-SEPARATE` | Prediction | Keep observed / inferred / predicted / simulated strictly apart | E | **ABSENT** | — |
+| `ART-PLAN` | Artifact compilation | Plan an artifact before writing it (audience, scope, evidence, format) | C | **ABSENT** | — |
+| `HUM-AUDIENCE` | Human interaction | Model the recipient without changing the underlying facts | C | **ABSENT** | — |

@@ -1,14 +1,14 @@
 {
   "coverage": {
-    "total": 42,
+    "total": 50,
     "by_status": {
-      "IMPLEMENTED": 9,
-      "PARTIAL": 13,
+      "IMPLEMENTED": 10,
+      "PARTIAL": 14,
       "PROPOSED": 6,
-      "ABSENT": 14
+      "ABSENT": 20
     },
-    "domains_covered": 20,
-    "domains_required": 20,
+    "domains_covered": 26,
+    "domains_required": 26,
     "missing_domains": []
   },
   "capabilities": [
@@ -1087,6 +1087,207 @@
       "implementation_stage": "A",
       "status": "PARTIAL",
       "evidence": "nano/contracts.py::ConflictRecord requires human_disposition"
+    },
+    {
+      "capability_id": "EVD-LOCATE",
+      "domain": "Evidence",
+      "capability": "Locate a claim in its source, modality-independently",
+      "internal_representation": "EvidenceSpanV2 + Locator families",
+      "module": "nano.contracts",
+      "inputs": [
+        "source",
+        "claim"
+      ],
+      "outputs": [
+        "located span"
+      ],
+      "memory_requirements": "source retained or referenced; never discarded",
+      "tools": [],
+      "training_objective": "span localisation",
+      "evaluation_benchmark": "evidence-span precision/recall (LCRB-1)",
+      "failure_modes": [
+        "span points at paraphrase rather than source text",
+        "offsets invalidated by later normalisation"
+      ],
+      "implementation_stage": "A",
+      "status": "IMPLEMENTED",
+      "evidence": "nano/contracts.py::EvidenceSpanV2"
+    },
+    {
+      "capability_id": "CNV-STATE",
+      "domain": "Conversation",
+      "capability": "Track dialogue state separately from world state",
+      "internal_representation": "dialogue state (participants, goals, commitments)",
+      "module": "not built",
+      "inputs": [
+        "turn",
+        "history"
+      ],
+      "outputs": [
+        "intent",
+        "dialogue act"
+      ],
+      "memory_requirements": "conversation memory distinct from subject memory",
+      "tools": [],
+      "training_objective": "dialogue-state tracking",
+      "evaluation_benchmark": "correction uptake; clarification appropriateness",
+      "failure_modes": [
+        "dialogue state merged into world state",
+        "a user hypothetical recorded as a fact about the subject"
+      ],
+      "implementation_stage": "C",
+      "status": "ABSENT",
+      "evidence": ""
+    },
+    {
+      "capability_id": "CNV-ACT",
+      "domain": "Conversation",
+      "capability": "Choose to answer, clarify, retrieve, show, cite, or abstain",
+      "internal_representation": "dialogue act conditioned on uncertainty",
+      "module": "not built",
+      "inputs": [
+        "intent",
+        "uncertainty"
+      ],
+      "outputs": [
+        "dialogue act"
+      ],
+      "memory_requirements": "none beyond dialogue state",
+      "tools": [],
+      "training_objective": "act selection",
+      "evaluation_benchmark": "does it clarify when the question is ambiguous?",
+      "failure_modes": [
+        "answers a question it should have clarified",
+        "asks for clarification it could have retrieved"
+      ],
+      "implementation_stage": "C",
+      "status": "ABSENT",
+      "evidence": ""
+    },
+    {
+      "capability_id": "MTA-EPISTEMIC",
+      "domain": "Metacognition",
+      "capability": "Maintain typed machine state for known/unknown/conflicting/needed",
+      "internal_representation": "epistemic state as data, not prose chain-of-thought",
+      "module": "partially: uncertainties + unresolved questions on the snapshot",
+      "inputs": [
+        "state",
+        "ledger"
+      ],
+      "outputs": [
+        "epistemic state"
+      ],
+      "memory_requirements": "persists with the state version",
+      "tools": [],
+      "training_objective": "calibration",
+      "evaluation_benchmark": "does stated uncertainty predict actual error?",
+      "failure_modes": [
+        "uncertainty expressed only in prose, so nothing can act on it",
+        "load-bearing assumption never identified"
+      ],
+      "implementation_stage": "D",
+      "status": "PARTIAL",
+      "evidence": "nano/contracts.py::PatientStateSnapshot"
+    },
+    {
+      "capability_id": "MTA-WOULDCHANGE",
+      "domain": "Metacognition",
+      "capability": "Name what evidence would change the conclusion",
+      "internal_representation": "falsifier attached to a claim",
+      "module": "not built",
+      "inputs": [
+        "claim",
+        "evidence"
+      ],
+      "outputs": [
+        "falsifier"
+      ],
+      "memory_requirements": "none",
+      "tools": [],
+      "training_objective": "falsifier generation",
+      "evaluation_benchmark": "is the named falsifier actually decisive?",
+      "failure_modes": [
+        "names a falsifier that would change nothing",
+        "no falsifier, so the claim is unfalsifiable"
+      ],
+      "implementation_stage": "D",
+      "status": "ABSENT",
+      "evidence": ""
+    },
+    {
+      "capability_id": "PRD-SEPARATE",
+      "domain": "Prediction",
+      "capability": "Keep observed / inferred / predicted / simulated strictly apart",
+      "internal_representation": "derivation mode, an axis distinct from epistemic status",
+      "module": "named in nano/ontology.py as DerivationMode; not built",
+      "inputs": [
+        "statement"
+      ],
+      "outputs": [
+        "derivation mode"
+      ],
+      "memory_requirements": "mode travels with the statement",
+      "tools": [],
+      "training_objective": "none (structural)",
+      "evaluation_benchmark": "zero predicted statements rendered as observed",
+      "failure_modes": [
+        "a forecast presented as a finding (safety)",
+        "simulation output entering the ledger as evidence"
+      ],
+      "implementation_stage": "E",
+      "status": "ABSENT",
+      "evidence": ""
+    },
+    {
+      "capability_id": "ART-PLAN",
+      "domain": "Artifact compilation",
+      "capability": "Plan an artifact before writing it (audience, scope, evidence, format)",
+      "internal_representation": "artifact specification preceding generation",
+      "module": "not built",
+      "inputs": [
+        "state",
+        "goal",
+        "audience"
+      ],
+      "outputs": [
+        "artifact spec"
+      ],
+      "memory_requirements": "none",
+      "tools": [],
+      "training_objective": "specification quality",
+      "evaluation_benchmark": "does the artifact satisfy its own spec?",
+      "failure_modes": [
+        "generation begins before scope is decided",
+        "many independent summarisers instead of one planner"
+      ],
+      "implementation_stage": "C",
+      "status": "ABSENT",
+      "evidence": ""
+    },
+    {
+      "capability_id": "HUM-AUDIENCE",
+      "domain": "Human interaction",
+      "capability": "Model the recipient without changing the underlying facts",
+      "internal_representation": "user model held separately from the world model",
+      "module": "not built",
+      "inputs": [
+        "state",
+        "recipient"
+      ],
+      "outputs": [
+        "presentation"
+      ],
+      "memory_requirements": "user model persists per recipient",
+      "tools": [],
+      "training_objective": "audience adaptation",
+      "evaluation_benchmark": "facts held constant across audiences",
+      "failure_modes": [
+        "simplification for a lay reader drops a critical fact",
+        "user model leaks into the world model"
+      ],
+      "implementation_stage": "C",
+      "status": "ABSENT",
+      "evidence": ""
     }
   ]
 }
