@@ -179,3 +179,51 @@ python3 nanoscribe/mcnemar_c1.py --ref <armA>.json --trt <armB>.json \
 
 **Registered, not resolved.** Append a RESULT section below without editing
 anything above it.
+
+---
+
+# RESULT — 2026-08-25: arm B is VOID, the kill condition is not evaluable
+
+Nothing above this line was edited. This section is appended on
+`work/e-delimit-result`; the arm branches themselves are frozen by their runs.
+
+**Full writeup:** `research/negative_results/RESULT_2026-08-25_E_DELIMIT.md`
+
+| arm | run | `asserted_grounded` /192 | **LOCATED /120** |
+|---|---|---|---|
+| A — free-form (published baseline) | `e04b3016` | 2 | **97 (80.8%)** |
+| A′ — free-form replication on the harness | `38b12909` | 2 | **97 (80.8%)** |
+| B — menu (the discriminator) | `4de84c18` | **0** | **30 (25.0%)** |
+| *R5 index-0 parrot on B's own menus* | *(software)* | *2* | ***23 (19.2%)*** |
+| C — offsets (secondary, P6) | `aa779aba` | 0 | 2 (1.7%) |
+
+**Verdict: arm B VOID — manipulation failed. H5 is UNTESTED.**
+
+Arm B's `asserted_grounded` is 0, which read naively against the kill condition
+(`< 25% of LOCATED`) would fire it. It must not be read that way. The arm's
+stated premise — *"leaving retrieval exactly as hard"* — is refuted by its own
+data: LOCATED fell 97 → 30, landing 7 slots above a constant index-0 baseline.
+The contrast varied two things, so the precondition for the kill condition does
+not hold and H-delimit is neither confirmed nor refuted. Reporting REFUTED here
+would repeat the C3 error of `ddb5ce6` one level up.
+
+**Mechanism.** The model's index picks are front-biased: median index 13.5
+against a median menu size of 64, median relative position 0.211 (uniform ~0.5),
+53% of picks below index 20, and indices 1–2 alone accounting for 33% of all
+picks. Arm B measured long-list indexing, not boundary selection.
+
+**Guard post-mortem.** P7's R5 check passed and was the wrong yardstick — it
+verifies the menu does not leak, not that the model can use it. The catching
+statistic is the parrot's **LOCATED** (19.2%), against which arm B's 25.0% is
+nearly indistinguishable. **The next version of this prereg must add a blocking
+LOCATED-invariance check**, evaluated before the primary endpoint is read.
+
+**Control.** P1/P2 held: arm A′ reproduced the published extent census exactly
+(2/95/0/8/15/72, LOCATED 97/120) and the across-instance vector to 4dp, so the
+output-format refactor is behaviour-preserving. R1/R2 held: `question_template_hash`
+equal across all three arms, `output_format_hash` distinct, arm B's diff against
+its parent exactly one line.
+
+**Not run here:** the repaired arm B (two-stage elicitation — ask for the turn,
+then enumerate only that turn's sub-spans). That needs its own pre-registration
+and its own experiment-scoped authorization.
