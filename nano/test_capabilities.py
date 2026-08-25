@@ -73,10 +73,14 @@ def test_implemented_capabilities_point_at_real_paths() -> None:
     for c in CAPABILITIES:
         if c.status is not Status.IMPLEMENTED:
             continue
-        # take the first path-looking token from the evidence pointer
-        tokens = [t.strip(";,") for t in c.evidence.split()
-                  if "/" in t and "::" not in t or t.endswith(".py")]
-        paths = [t.split("::")[0].strip(";,") for t in tokens]
+        # Strip the ::symbol suffix FIRST, then keep path-looking tokens.
+        # An earlier version tested for "/" and "::" in one expression, whose
+        # precedence excluded every `pkg/mod.py::Symbol` pointer in the registry.
+        paths = []
+        for tok in c.evidence.replace(";", " ").replace(",", " ").split():
+            head = tok.split("::")[0].strip("().,;")
+            if "/" in head and head.endswith(".py") or head.endswith(".json"):
+                paths.append(head)
         assert paths, f"{c.capability_id}: evidence names no path: {c.evidence!r}"
         assert any((root / p).exists() for p in paths), (
             f"{c.capability_id}: no existing path among {paths}")
