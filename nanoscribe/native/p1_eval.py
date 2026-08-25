@@ -56,9 +56,7 @@ class NativeP1EvalResult:
             # candidate set, so span metrics are exact by construction. Only
             # free_generation makes exact_gold_span a transport measurement.
             "span_metrics_are_tautological": self.constrained,
-            "suite_metrics": _suppress_tautological_spans(
-                self.suite_metrics, constrained=self.constrained
-            ),
+            "suite_metrics": self.suite_metrics,
             "cases": [case.to_dict() for case in self.cases],
         }
 
