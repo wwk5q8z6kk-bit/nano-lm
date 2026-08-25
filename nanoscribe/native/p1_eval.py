@@ -43,6 +43,13 @@ def _suppress_tautological_spans(
     deleted, so consumers that index these keys degrade to null instead of
     raising. Free-generation mode is untouched -- there exact_gold_span IS the
     transport measurement.
+
+    Convergent evidence that span EXTENT is the fragile quantity, from two
+    independent measurements: the span-port thread found exact-extent scores
+    swinging 8x under a question-phrasing change while turn-selection did not
+    move at all, and this track's constrained mode makes extent exact by
+    construction. Extent is the metric to distrust in both tracks; selection is
+    the stabler signal.
     """
     if not constrained:
         return metrics
