@@ -47,6 +47,16 @@ half, which the owner grants directly. E-DELIMIT's grant is recorded verbatim in
 - **The arm split is seed noise.** `evidence_bottleneck` 6/18 pooled, per-seed
   (6, 0, 0); Wilson intervals overlap (0.1628 vs 0.1759); higher in 1 of 3 seeds.
 
+> **Denominator note (added 2026-08-25).** The two Wilson figures above are the
+> arm's lower bound and the control's upper bound on the **covered-atom**
+> denominator (6/18 and 0/18). The authoritative artifact,
+> `artifacts/campaign/native30_revalidation_summary_causalfix.json`, reports the
+> same contrast on the **all-atom** denominator: arm 6/450 = 0.0133, Wilson
+> [0.0061, 0.0288]; control 0/450, Wilson [0.0000, 0.0085]; `seed_spread` 0.04;
+> verdict `NOT_SEPARATED`, `effect_exceeds_seed_spread: false`. Both denominators
+> are defensible and **both agree the arms do not separate**. Cite the artifact's
+> numbers in canonical documents; see `docs/RESEARCH_STATUS.md`.
+
 **Marked PENDING:**
 
 - **"The native30 wave ran clean under the integrity gate."** This cannot be
