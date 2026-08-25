@@ -18,6 +18,8 @@ if _repo_root not in sys.path:
 
 from nanoscribe.native.config import NativeTrainConfig, NativeVariant
 from nanoscribe.native.integrity import (
+    BPB_EARLY_FLOOR,
+    BPB_EARLY_STEP_LIMIT,
     BPB_HARD_FLOOR,
     IntegrityError,
     assert_bits_per_byte_plausible,
@@ -186,7 +188,8 @@ class BitsPerByteTest(unittest.TestCase):
         self.assertLess(bpb, BPB_HARD_FLOOR)
         with self.assertRaises(IntegrityError) as ctx:
             assert_bits_per_byte_plausible(bpb, step=40)
-        self.assertIn("plausibility floor", str(ctx.exception))
+        self.assertIn("below the floor", str(ctx.exception))
+        self.assertIn("memorisation cannot explain this", str(ctx.exception))
 
     def test_floor_admits_a_plausible_value(self) -> None:
         """Must not false-positive on a legitimately good model."""
@@ -194,12 +197,45 @@ class BitsPerByteTest(unittest.TestCase):
 
         # ~1.0 bpb, around the best published general text compressors.
         assert_bits_per_byte_plausible(bits_per_byte(math.log(2) * 1000, 1000), step=40)
-        # Even an aggressively memorised template at 0.2 bpb passes.
-        assert_bits_per_byte_plausible(0.2, step=40)
+        # Late in training an aggressively memorised template at 0.2 bpb passes.
+        assert_bits_per_byte_plausible(0.2, step=1800)
 
     def test_non_finite_is_rejected(self) -> None:
         with self.assertRaises(IntegrityError):
             assert_bits_per_byte_plausible(float("nan"), step=1)
+
+    def test_calibrated_against_the_four_measured_points(self) -> None:
+        """Pin the real numbers this floor was calibrated on.
+
+        If any of these move, the floor needs re-deriving rather than nudging.
+        """
+        import math
+
+        ln2 = math.log(2)
+        leak_40 = 0.002 / ln2       # 0.0029 — archived leak signature at 40 steps
+        leak_1800 = 0.00823 / ln2   # 0.0119 — archived reval30_decoder_control_s0
+        fixed_1800 = 0.0593 / ln2   # 0.0856 — causalfix same arm
+        fixed_40 = 9.4848           # this session's smoke
+
+        # Early: the floor separates leaking from honest by a wide margin.
+        with self.assertRaises(IntegrityError):
+            assert_bits_per_byte_plausible(leak_40, step=40)
+        assert_bits_per_byte_plausible(fixed_40, step=40)
+        self.assertGreater(fixed_40 / leak_40, 1000)
+
+        # Late: honest by the impossibility bound, but the separation is thin —
+        # this is exactly why the docstring refuses to claim late-training
+        # detection, and why the attention assertion is the real detector.
+        assert_bits_per_byte_plausible(fixed_1800, step=1800)
+        self.assertLess(fixed_1800 / leak_1800, 10)
+        self.assertGreater(leak_1800, BPB_HARD_FLOOR)  # the flat floor MISSES it
+
+    def test_floor_is_step_aware(self) -> None:
+        from nanoscribe.native.integrity import floor_for_step
+
+        self.assertEqual(floor_for_step(40), BPB_EARLY_FLOOR)
+        self.assertEqual(floor_for_step(BPB_EARLY_STEP_LIMIT), BPB_EARLY_FLOOR)
+        self.assertEqual(floor_for_step(BPB_EARLY_STEP_LIMIT + 1), BPB_HARD_FLOOR)
 
 
 @unittest.skipIf(torch is None, "torch required")

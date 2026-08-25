@@ -61,6 +61,30 @@ BPB_HARD_FLOOR = 0.01
 BPB_SUSPICIOUS_BELOW = 0.15
 BPB_UNIFORM_BYTE_MODEL = 8.0
 
+# Step-aware floor. MEASURED CALIBRATION, not a guess — four real data points
+# from this repository:
+#
+#   leaking  @  40 steps   loss 0.002    -> 0.0029 bpb
+#   leaking  @1800 steps   loss 0.00823  -> 0.0119 bpb   (archived reval30 s0)
+#   fixed    @1800 steps   loss 0.0593   -> 0.0856 bpb   (causalfix s0)
+#   fixed    @  40 steps   loss 12.90    -> 9.4848 bpb   (this session's smoke)
+#
+# The flat 0.01 floor does NOT separate the last two: the leaking run at 1800
+# steps sits at 0.0119, only 19% above it. That is not a calibration accident —
+# it is the honest limit of the method. On TRAINING data a converged model that
+# has memorised its corpus and one that is reading its own labels both produce
+# a near-zero loss, and BPB cannot tell them apart.
+#
+# Where BPB *is* principled is early, before memorisation is possible: at <=100
+# steps the model has seen each example at most once, so a near-zero loss has no
+# innocent explanation. The measured separation there is ~3,270x (9.4848 vs
+# 0.0029), so an early floor can be set high without risking a false positive.
+#
+# Late in training the detector is not this metric — it is
+# assert_no_attention_leakage, which is exact rather than statistical.
+BPB_EARLY_STEP_LIMIT = 100
+BPB_EARLY_FLOOR = 0.5
+
 
 class IntegrityError(AssertionError):
     """A training run's instrument failed to prove itself sound."""
@@ -311,27 +335,46 @@ def bits_per_byte(total_nats: float, total_bytes: int) -> float:
     return total_nats / (total_bytes * math.log(2))
 
 
-def assert_bits_per_byte_plausible(
-    bpb: float, *, step: int, floor: float = BPB_HARD_FLOOR
-) -> None:
-    """Gate the smoke run on an information-theoretic floor, not a magic number.
+def floor_for_step(step: int) -> float:
+    """The BPB floor that is actually defensible at this point in training.
 
-    Below `floor` the implied compression ratio exceeds every published text
-    compressor by orders of magnitude. On a ~40-step run the model has seen
-    each example at most once, so genuine memorisation cannot explain it
-    either — the only remaining explanation is that the objective can read its
-    own answer.
+    Early (`step <= BPB_EARLY_STEP_LIMIT`) the model cannot have memorised its
+    corpus, so a near-zero loss has no innocent explanation and a high floor is
+    justified. Later, memorisation and label leakage are indistinguishable on
+    training loss, so only the absolute impossibility bound applies and the
+    real detector is `assert_no_attention_leakage`.
+    """
+    return BPB_EARLY_FLOOR if step <= BPB_EARLY_STEP_LIMIT else BPB_HARD_FLOOR
+
+
+def assert_bits_per_byte_plausible(
+    bpb: float, *, step: int, floor: float | None = None
+) -> None:
+    """Gate on an information-theoretic floor rather than a remembered number.
+
+    Scope, stated rather than implied: this is a *smoke-time* leak detector.
+    See the calibration block above — at 1800 steps the known-leaking run sits
+    at 0.0119 bpb against a fixed run's 0.0856, which this metric cannot
+    reliably separate on training data. Do not read a late-training pass here
+    as evidence of a clean run; that evidence comes from the startup gate.
     """
     if not math.isfinite(bpb):
         raise IntegrityError(f"bits-per-byte is not finite ({bpb}) at step {step}")
-    if bpb < floor:
+    effective = floor_for_step(step) if floor is None else floor
+    if bpb < effective:
         ratio = BPB_UNIFORM_BYTE_MODEL / max(bpb, 1e-12)
+        early = step <= BPB_EARLY_STEP_LIMIT
+        why = (
+            f"the model has seen each example at most once by step {step}, so "
+            f"memorisation cannot explain this"
+            if early
+            else "this is below the absolute impossibility bound"
+        )
         raise IntegrityError(
-            f"bits-per-byte {bpb:.5f} at step {step} is below the plausibility floor "
-            f"{floor}: that implies {ratio:,.0f}:1 compression on text, ~3 orders of "
-            f"magnitude past the best published compressors, and the model has seen "
-            f"each example at most once at this step. The objective is almost "
-            f"certainly readable from its own input. See DEFECT_INDEX D1.1."
+            f"bits-per-byte {bpb:.5f} at step {step} is below the floor {effective}: "
+            f"that implies {ratio:,.0f}:1 compression on text, and {why}. The "
+            f"objective is almost certainly readable from its own input. "
+            f"See DEFECT_INDEX D1.1."
         )
 
 
