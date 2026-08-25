@@ -5,14 +5,20 @@
 > Two corrections to this document. Neither is a quiet edit; the original text
 > below is unchanged so the record stays auditable.
 >
-> **1. The headline baseline is superseded and question-form dependent.** This
-> artifact was committed at 03:03:21. Both L000 and L100 were re-run at 03:10
-> under a *unified wh question form*. The `asserted_grounded` 16/192 cited in §1
-> comes from run `ba18cf04` @ `7447df5`; the same condition
-> (`C1off_C2off_Qon_QSoff`) under the replacement form (`e04b3016` @ `9a3ecd4`)
-> gives **2/192**. An 8× swing on question phrasing alone. Do not cite 16/192 as
-> *the* honest baseline without naming the form. Canonical form is undecided and
-> needs an owner call.
+> **1. The headline baseline is superseded. RESOLVED — the unified form is
+> canonical.** This artifact was committed at 03:03:21; both L000 and L100 were
+> re-run at 03:10 under a *unified wh question form*. The `asserted_grounded`
+> 16/192 cited in §1 comes from `ba18cf04` @ `7447df5`; the same condition
+> (`C1off_C2off_Qon_QSoff`) under the canonical form (`e04b3016` @ `9a3ecd4`)
+> gives **2/192**. The unified form is canonical by owner decision — every
+> subsequent run uses it, and it is the better task specification, since
+> span-port asks for an assertion *plus its evidence*. **16/192 is retired.**
+>
+> **But exact-extent is no longer the headline.** It swings 8× on a phrasing
+> edit while LOCATED moves 95 → 97, so it is a property of the prompt, not of
+> the model. Report **LOCATED as primary** (97/120, 81%, turn-scale) and
+> exact-extent as **secondary with its form-sensitivity in the same sentence**
+> (2/192 canonical, 16/192 earlier phrasing).
 >
 > **2. §1's interpretation ("the model reads, but poorly") is wrong.**
 > `asserted_grounded` is an exact-extent predicate and scores "quoted the wrong
