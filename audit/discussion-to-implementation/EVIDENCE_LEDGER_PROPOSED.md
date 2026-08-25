@@ -134,8 +134,8 @@ Constraint honoured: no frozen tag recreated or moved.
 
 | Claim ID | Exact wording | Type | Epistemic | Evid class | Limitations | Invalidation |
 |---|---|---|---|---|---|---|
-| `C_SPANPORT_DELIMIT` | With all three leak channels closed, Qwen2.5-1.5B selects the correct conversational turn for 95/120 gold-bearing slots (79%) but delimits the gold span within it for only 16/120 (13%); located quotes are turn-scale (median 29 chars vs gold median 8; median quote/enclosing-turn ratio 1.00) | MEASUREMENT | SUPPORTED | PUBLIC-ANCHORED | one model, one suite, synthetic; containment is a looser predicate than exact offsets | a length audit showing quotes are not turn-scale; or LOCATED moving with question form as exact-extent does |
-| `C_SPANPORT_FORM_SENSITIVITY` | `asserted_grounded` for the identical condition `C1off_C2off_Qon_QSoff` is 16/192 under one question form and 2/192 under another, while LOCATED is 95/120 vs 97/120 | MEASUREMENT | SUPPORTED | PUBLIC-ANCHORED | two forms only | recompute mismatch |
+| `C_SPANPORT_DELIMIT` | On the canonical unified question form, with all three leak channels closed, Qwen2.5-1.5B selects the correct conversational turn for 97/120 gold-bearing slots (81%) but delimits the gold span within it for 2/120; located quotes are turn-scale (median 29 chars vs gold median 8, ratio 0.32, median quote/enclosing-turn 1.000, 1 of 95 exceeding its turn) | MEASUREMENT | SUPPORTED | PUBLIC-ANCHORED | one model, one suite, synthetic; containment is looser than exact offsets — always cite with the length bound | a length audit showing quotes are not turn-scale; or LOCATED moving with question form as exact-extent does |
+| `C_SPANPORT_FORM_SENSITIVITY` | `asserted_grounded` for the identical condition `C1off_C2off_Qon_QSoff` is 16/192 under one question form and 2/192 under another (8×), while LOCATED is 95/120 vs 97/120 (invariant). Exact-extent is therefore demoted to secondary and may not be cited without this disclosure; LOCATED is primary | MEASUREMENT | SUPPORTED | PUBLIC-ANCHORED | two forms only; canonical = unified | LOCATED shown to move with form |
 | `C_SPANPORT_C1_VERDICT` | The C1 leakage contrast is UNRESOLVED — coverage shift — on both available form-matched pairs: grounded and unbound move in the same direction, co-movement rule fires | GATE_VERDICT | UNRESOLVED | PUBLIC-ANCHORED | C1 buys assertions, not evidence-finding | a pair where grounded rises and unbound does not |
 
 ### Proposed methodology note — pilot-then-confirm
@@ -169,3 +169,17 @@ measurement line it describes is now known to have carried a prompt-side gold
 channel from `09745ec` forward. Post-freeze span-metric claims in that window
 need the taint check in `artifacts/measurement-integrity-audit.md` §1.3. No
 frozen claim is affected (`audit/ADDENDUM_2026-08-25_leakage_taint_audit.md`).
+
+### Proposed methodology note — dissociation by instrument manipulation
+
+The form change was not designed as an experiment; it was a repair. But it
+produced the cleanest result in the P1 line: **one manipulation moved
+exact-extent 8× (16 → 2) and moved LOCATED not at all (95 → 97).** That is a
+single dissociation, and it separates *finding the evidence* from *delimiting
+it* more convincingly than decomposing a single accuracy scalar ever could.
+
+Operational consequence: when a metric proves highly sensitive to an instrument
+choice, that sensitivity is a **measurement to report**, not only a defect to
+fix. The fragile axis and the invariant axis are different capacities, and the
+fragility is what tells you which is which. Reporting order should follow
+invariance, not tradition — hence LOCATED primary, exact-extent secondary.
