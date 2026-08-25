@@ -70,6 +70,16 @@ def _enc4_lines(absent_answer: str | None) -> dict[str, str]:
     return lines
 
 
+def _instance_prompts(instance_id: str) -> list[str]:
+    from nanoscribe.prompt import build_span_port_prompt
+
+    return [
+        build_span_port_prompt(case.model_input.source, spec)
+        for case in instance_cases(instance_id)
+        for spec in case.atom_specs
+    ]
+
+
 def _all_prompts() -> list[str]:
     from nanoscribe.prompt import build_span_port_prompt
 
@@ -130,28 +140,72 @@ class LeakageInstrumentTest(unittest.TestCase):
             {(SUITE_SLOTS, 10 * N_INSTANCES, 10 * N_INSTANCES, 6 * N_INSTANCES, 0, 0)},
         )
 
-    def test_prompts_stay_distinct_in_every_scoring_cell(self) -> None:
-        """Guards the ablation against measuring task underdetermination.
+    def test_prompts_stay_distinct_within_every_instance_and_cell(self) -> None:
+        """Distinctness is a PER-INSTANCE property; pooling makes it vacuous.
 
-        Two slots of the same atom_type get the same question when Q is off, so
-        the model cannot tell which slot it is answering and its "failure" is an
-        artifact of the prompt rather than of leakage. Every cell a verdict
-        rests on must keep all 16 prompts distinct; only the labelled Q-off
-        diagnostic may collide.
+        A model only ever sees one instance's prompts, so two labels colliding
+        inside an instance is the failure that matters. Pooled over 12
+        instances the count is trivially satisfied even when that happens,
+        because the resampled surface values keep the pooled strings apart.
+
+        Checked under C3-off specifically (prereg s7 item 2): with the gold
+        surface string removed from the question, the concept labels are the
+        only thing carrying slot identity, so that is the cell where a
+        collision would actually make the task underdetermined.
         """
         leakage.PROMPT_QUESTION_NAMES_CONCEPT = True
-        for c1 in (True, False):
-            leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = c1
-            prompts = _all_prompts()
-            self.assertEqual(len(prompts), SUITE_SLOTS, f"C1={c1}")
-            self.assertEqual(len(set(prompts)), SUITE_SLOTS, f"collision with C1={c1}")
+        for c3 in (True, False):
+            for c1 in (True, False):
+                leakage.PROMPT_QUESTION_USES_GOLD_SURFACE = c3
+                leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = c1
+                for instance_id in INSTANCE_IDS:
+                    prompts = _instance_prompts(instance_id)
+                    where = f"instance={instance_id} C3={c3} C1={c1}"
+                    self.assertEqual(len(prompts), SLOTS_PER_INSTANCE, where)
+                    self.assertEqual(
+                        len(set(prompts)), SLOTS_PER_INSTANCE, f"collision: {where}"
+                    )
 
+    def test_concept_labels_alone_are_distinct_within_an_instance(self) -> None:
+        """Under C3-off the label is the whole of slot identity — pin it directly."""
+        for instance_id in INSTANCE_IDS:
+            labels = [
+                spec.concept_label
+                for case in instance_cases(instance_id)
+                for spec in case.atom_specs
+            ]
+            self.assertEqual(len(labels), SLOTS_PER_INSTANCE, instance_id)
+            self.assertEqual(len(set(labels)), SLOTS_PER_INSTANCE, instance_id)
+            self.assertTrue(all(labels), f"{instance_id}: a slot has no label")
+
+    def test_slot_type_only_questions_would_collide(self) -> None:
+        """Why Q_ID is never flipped: the rejected alternative is degenerate.
+
+        Measured with the leakage channels CLOSED, which is the only
+        configuration where the comparison means anything — with C1 on, the
+        answer template still carries the gold value and keeps the prompts
+        superficially distinct, hiding the collision rather than removing it.
+        Kept executable so the reason the 2x2x2 has no Q_ID arm stays checkable
+        rather than remembered.
+        """
         leakage.PROMPT_QUESTION_NAMES_CONCEPT = False
-        self.assertLess(
-            len(set(_all_prompts())),
-            SUITE_SLOTS,
-            "Q-off should be underdetermined; this pin is stale",
-        )
+        leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = False
+        for instance_id in INSTANCE_IDS:
+            prompts = _instance_prompts(instance_id)
+            self.assertLess(
+                len(set(prompts)),
+                SLOTS_PER_INSTANCE,
+                f"{instance_id}: slot-type-only should be underdetermined",
+            )
+
+    def test_instance_count_meets_the_prereg_floor(self) -> None:
+        """Prereg s10: fewer than 12 instances voids the round.
+
+        The paired-interaction MDE at n=5 is ~3.7 slots, wider than H-leak's own
+        3-slot threshold — the round could miss an effect at exactly the size it
+        exists to call. Guarded here so the count cannot drift down unnoticed.
+        """
+        self.assertGreaterEqual(N_INSTANCES, 12)
 
     def test_c1_removes_the_gold_value_from_the_answer_template(self) -> None:
         leakage.PROMPT_QUESTION_NAMES_CONCEPT = True
