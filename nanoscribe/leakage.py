@@ -78,6 +78,12 @@ from __future__ import annotations
 # Q — question names the concept. Task specification; off = underdetermined.
 PROMPT_QUESTION_NAMES_CONCEPT = True
 
+# Q_SURFACE — the question identifies the slot by its gold SURFACE string
+# rather than by its role label. Measured to leak: see the HOLD note above.
+# Off keeps the task fully specified (a unique concept_label per slot) while
+# saying nothing the model could copy as its quote.
+PROMPT_QUESTION_USES_GOLD_SURFACE = True
+
 # C1 — answer template and system-prompt examples carry the gold value.
 PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = True
 
@@ -89,6 +95,7 @@ def leakage_config() -> dict[str, bool]:
     """Active channels, recorded in every run report."""
     return {
         "prompt_question_names_concept": PROMPT_QUESTION_NAMES_CONCEPT,
+        "prompt_question_uses_gold_surface": PROMPT_QUESTION_USES_GOLD_SURFACE,
         "prompt_answer_template_gold_value": PROMPT_ANSWER_TEMPLATE_GOLD_VALUE,
         "parser_raw_value_fallback": PARSER_RAW_VALUE_FALLBACK,
     }
@@ -101,5 +108,6 @@ def condition_label() -> str:
             "C1on" if PROMPT_ANSWER_TEMPLATE_GOLD_VALUE else "C1off",
             "C2on" if PARSER_RAW_VALUE_FALLBACK else "C2off",
             "Qon" if PROMPT_QUESTION_NAMES_CONCEPT else "Qoff",
+            "QSon" if PROMPT_QUESTION_USES_GOLD_SURFACE else "QSoff",
         )
     )

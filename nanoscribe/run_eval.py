@@ -37,6 +37,7 @@ from nanoscribe.campaign_datasets import (
     fixture_lines_for_encounter,
     suite_manifest,
 )
+from nanoscribe.campaign_instances import INSTANCE_IDS, split_encounter_id
 from nanoscribe.decompose import classify_report
 from nanoscribe.harness import FailureTaxonomy, HarnessCase
 from nanoscribe.leakage import condition_label, leakage_config
@@ -191,6 +192,104 @@ def _gold_in_question(spec) -> bool:
     return value in topic_for_spec(spec).casefold()
 
 
+JOINT_CELLS = (
+    "asserted_grounded",
+    "asserted_unbound",
+    "asserted_bound_wrong",
+    "abstained_correct",
+    "abstained_incorrect",
+)
+
+
+def _joint_table(case, predicted, report, raw_lines: dict[str, str]) -> dict[str, Any]:
+    """Model action x evidence status, partitioned so the cells sum to n_presented.
+
+    The primary endpoint is this discrimination, not a single accuracy scalar:
+    a prompt-parroting model and a transcript-reading model can score the same
+    exact_gold_span while landing in completely different cells here.
+
+    Derived from the model's own line (did it decline?) plus the bound
+    prediction (did its quote reach the source?), so an unbound assertion is
+    never silently folded into abstention.
+    """
+    cells = dict.fromkeys(JOINT_CELLS, 0)
+    for record in _per_slot(case, predicted, report, raw_lines).values():
+        cells[record["cell"]] += 1
+
+    n_presented = len(case.atom_specs)
+    assert sum(cells.values()) == n_presented, (cells, n_presented)
+    asserted = (
+        cells["asserted_grounded"]
+        + cells["asserted_unbound"]
+        + cells["asserted_bound_wrong"]
+    )
+    return {
+        **cells,
+        "n_presented": n_presented,
+        "asserted": asserted,
+        # Reported alongside the table, never instead of it: there is no
+        # per-slot confidence score to threshold on, so coverage cannot be
+        # equalised across cells and this risk is coverage-confounded.
+        "observed_coverage": round(asserted / n_presented, 4) if n_presented else 0.0,
+        "selective_risk": (
+            round(
+                (cells["asserted_unbound"] + cells["asserted_bound_wrong"]) / asserted, 4
+            )
+            if asserted
+            else None
+        ),
+    }
+
+
+def _per_slot(case, predicted, report, raw_lines: dict[str, str]) -> dict[str, Any]:
+    """One record per PROBED SLOT, not per scored atom.
+
+    report.atom_results omits slots that were correctly abstained on (no gold
+    atom, nothing to score), so keying off it silently drops those slots and
+    breaks the within-item pairing that paired tests need. Iterating the specs
+    keeps every slot present in every cell, which is what makes cells
+    comparable slot-by-slot.
+    """
+    gold_atom_ids = {atom.atom_id for atom in case.gold.atoms}
+    pred_by_id = {atom.atom_id: atom for atom in predicted.atoms}
+    eval_by_id = {item.atom_id: item for item in report.atom_results}
+    out: dict[str, dict[str, Any]] = {}
+    for spec in case.atom_specs:
+        atom = pred_by_id.get(spec.atom_id)
+        item = eval_by_id.get(spec.atom_id)
+        out[spec.atom_id] = {
+            "cell": _slot_cell(spec, atom, item, gold_atom_ids, raw_lines),
+            "gold_present": spec.atom_id in gold_atom_ids,
+            "exact_gold_span": bool(item and item.exact_gold_span),
+            "span_character_f1": round(item.span_character_f1, 4) if item else 0.0,
+            "assertion_state_correct": bool(item and item.assertion_state_correct),
+            "abstained": bool(atom and atom.abstained),
+            "unbound_assertion": bool(atom and atom.unbound_assertion),
+            "malformed": bool(item and item.malformed),
+            "raw_line": raw_lines.get(spec.atom_id, ""),
+        }
+    return out
+
+
+def _slot_cell(spec, atom, item, gold_atom_ids, raw_lines: dict[str, str]) -> str:
+    label, _quotes = parse_label_and_quotes(raw_lines.get(spec.atom_id, ""))
+    gold_present = spec.atom_id in gold_atom_ids
+    declined = label == "NOT_MENTIONED" or (
+        atom is not None and atom.abstained and not atom.unbound_assertion
+    )
+    if declined:
+        return "abstained_correct" if not gold_present else "abstained_incorrect"
+    if atom is not None and atom.unbound_assertion:
+        return "asserted_unbound"
+    grounded = (
+        gold_present
+        and item is not None
+        and item.exact_gold_span
+        and item.assertion_state_correct
+    )
+    return "asserted_grounded" if grounded else "asserted_bound_wrong"
+
+
 def _run_campaign_case(case: HarnessCase, *, fixture_only: bool) -> dict[str, Any]:
     raw_lines: dict[str, str] = {}
     prompts = {
@@ -201,17 +300,21 @@ def _run_campaign_case(case: HarnessCase, *, fixture_only: bool) -> dict[str, An
         case, fixture_only=fixture_only, raw_line_sink=raw_lines
     )
     batch = adapter.propose(case.model_input, case.atom_specs)
-    _, report = run_pipeline(case.model_input, batch, gold=case.gold)
+    predicted, report = run_pipeline(case.model_input, batch, gold=case.gold)
     assert report is not None
     failures = FailureTaxonomy.from_report(report)
+    base_id, instance_id = split_encounter_id(case.encounter_id)
     return {
         "encounter_id": case.encounter_id,
+        "base_encounter_id": base_id,
+        "instance_id": instance_id,
         "test_set": case.test_set.value,
         "adapter": adapter.model_id,
         "aggregate": _aggregate_from_report(report),
         "layers": classify_report(report),
-        "per_atom": _per_atom_from_report(report),
+        "per_atom": _per_slot(case, predicted, report, raw_lines),
         "failure_taxonomy": failures.to_dict(),
+        "joint_table": _joint_table(case, predicted, report, raw_lines),
         # Primary leakage evidence: what the model was shown, what it said back.
         "prompts": prompts,
         "gold_value_in_answer_template": {
@@ -243,6 +346,13 @@ def _suite_aggregate(encounters: list[dict[str, Any]]) -> dict[str, Any]:
         "unbound_assertion": 0,
         "invalid_span": 0,
         "quote_absent": 0,
+        "asserted_grounded": 0,
+        "asserted_unbound": 0,
+        "asserted_bound_wrong": 0,
+        "abstained_correct": 0,
+        "abstained_incorrect": 0,
+        "asserted": 0,
+        "n_presented": 0,
         "gold_in_answer_template": 0,
         "gold_in_question": 0,
         "atoms": 0,
@@ -272,6 +382,10 @@ def _suite_aggregate(encounters: list[dict[str, Any]]) -> dict[str, Any]:
         totals["unbound_assertion"] += agg["unbound_assertion"]
         totals["invalid_span"] += agg["invalid_span"]
         totals["quote_absent"] += sum(1 for v in item["quote_absent"].values() if v)
+        for cell in ("asserted_grounded", "asserted_unbound", "asserted_bound_wrong",
+                     "abstained_correct", "abstained_incorrect", "asserted",
+                     "n_presented"):
+            totals[cell] += item["joint_table"][cell]
         totals["gold_in_answer_template"] += sum(
             1 for v in item["gold_value_in_answer_template"].values() if v
         )
@@ -285,11 +399,90 @@ def _suite_aggregate(encounters: list[dict[str, Any]]) -> dict[str, Any]:
         layers = item["layers"]["layers"]
         for key in layer_totals:
             layer_totals[key] += layers[key]
+    asserted = totals["asserted"]
     return {
         **totals,
+        "observed_coverage": (
+            round(asserted / totals["n_presented"], 4) if totals["n_presented"] else 0.0
+        ),
+        "selective_risk": (
+            round(
+                (totals["asserted_unbound"] + totals["asserted_bound_wrong"]) / asserted,
+                4,
+            )
+            if asserted
+            else None
+        ),
         "mean_span_character_f1": round(sum(f1s) / len(f1s), 4) if f1s else 0.0,
         "mean_coverage": round(sum(coverages) / len(coverages), 4) if coverages else 0.0,
         "layers": layer_totals,
+    }
+
+
+ACROSS_INSTANCE_METRICS = (
+    "asserted_grounded",
+    "asserted_unbound",
+    "asserted_bound_wrong",
+    "abstained_correct",
+    "abstained_incorrect",
+    "observed_coverage",
+    "exact_gold_span",
+    "assertion_state_correct",
+    "quote_absent",
+    "mean_span_character_f1",
+)
+
+
+def _mean_sd(values: list[float]) -> dict[str, Any]:
+    """Sample mean, SD and SEM across instance draws (ddof=1).
+
+    ddof=1 because the instances are a sample of the surface-value population
+    the instrument draws from, not the population itself. `values` stays in the
+    payload deliberately: the interaction contrast is estimated per instance
+    and averaged over paired estimates, and that pairing cannot be recovered
+    from summary statistics alone.
+    """
+    n = len(values)
+    mean = sum(values) / n if n else 0.0
+    if n < 2:
+        return {"mean": round(mean, 4), "sd": None, "sem": None, "n": n, "values": values}
+    var = sum((v - mean) ** 2 for v in values) / (n - 1)
+    sd = var ** 0.5
+    return {
+        "mean": round(mean, 4),
+        "sd": round(sd, 4),
+        "sem": round(sd / (n ** 0.5), 4),
+        "n": n,
+        "values": values,
+    }
+
+
+def _across_instances(per_instance: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    ordered = [per_instance[iid] for iid in INSTANCE_IDS if iid in per_instance]
+    return {
+        metric: _mean_sd([float(agg[metric]) for agg in ordered])
+        for metric in ACROSS_INSTANCE_METRICS
+    }
+
+
+def _weights_provenance(fixture_only: bool) -> dict[str, Any]:
+    """What the run actually loaded — pinned revision included, or why not.
+
+    A run whose weights are not pinned in its own artifact is not
+    re-measurable, which is the defect the ledger audit found in the claims
+    this round exists to re-measure.
+    """
+    from nanoscribe.qwen_inference import resolve_weights_path, revision_for
+
+    if fixture_only:
+        return {"mode": "fixture", "weights_path": None, "revision": None}
+    resolved = resolve_weights_path(None)
+    if resolved is None:
+        return {"mode": "fixture_fallback", "weights_path": None, "revision": None}
+    return {
+        "mode": "weights",
+        "weights_path": resolved,
+        "revision": revision_for(resolved),
     }
 
 
@@ -308,17 +501,38 @@ def run_campaign_eval(suite: str, *, fixture_only: bool = False) -> dict[str, An
             for item in encounters
             if item["encounter_id"] not in CAMPAIGN_V1_ENCOUNTERS
         ]
+        by_instance: dict[str, list[dict[str, Any]]] = {}
+        for item in encounters:
+            by_instance.setdefault(item["instance_id"], []).append(item)
+        per_instance = {
+            iid: _suite_aggregate(items) for iid, items in by_instance.items()
+        }
+        per_atom = {
+            f"{item['instance_id']}/{atom_id}": data
+            for item in encounters
+            for atom_id, data in item["per_atom"].items()
+        }
         payload: dict[str, Any] = {
             "experiment": "p1_campaign_eval_v0",
             "suite": suite,
+            "weights": _weights_provenance(fixture_only),
             "dataset_revision": dataset_revision_for(suite),
             "fixture_only": fixture_only,
             "leakage_config": leakage_config(),
             "condition": condition_label(),
             "manifest": suite_manifest(),
             "suite_aggregate": _suite_aggregate(encounters),
+            "pooled_aggregate_warning": (
+                "suite_aggregate pools all instances; it inflates apparent n and "
+                "destroys the across-instance SD. Report per_instance / "
+                "across_instance instead."
+            ),
             "encounters": encounters,
         }
+        if len(per_instance) > 1:
+            payload["per_instance_aggregate"] = per_instance
+            payload["across_instance"] = _across_instances(per_instance)
+            payload["per_atom"] = per_atom
         if added:
             # Keep the prior claim's denominator readable next to the new cases.
             payload["campaign_v1_subset_aggregate"] = _suite_aggregate(v1_subset)

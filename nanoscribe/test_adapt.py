@@ -478,10 +478,10 @@ def test_candidate_uses_raw_value_when_quote_missing() -> None:
 
 
 def test_build_span_port_prompt_includes_uncertain() -> None:
-    from nanoscribe.campaign_datasets import enc2_uncertainty_case
+    from nanoscribe.campaign_datasets import case_for
     from nanoscribe.prompt import build_span_port_prompt
 
-    case = enc2_uncertainty_case()
+    case = case_for("enc-2")
     prompt = build_span_port_prompt(case.model_input.source, case.atom_specs[0])
     assert "UNCERTAIN" in prompt
     assert "pressure" in prompt

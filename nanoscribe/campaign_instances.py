@@ -176,6 +176,69 @@ INSTANCES: tuple[InstanceValues, ...] = (
         e5_denied_history="chewed tobacco",
         e5_denied_symptom="whistling",
     ),
+    InstanceValues(
+        instance_id="i5", e1_site="hip", e1_assessment="bursitis",
+        e1_denial="No allergies known.", e1_history="tonsillitis",
+        e2_probe="jaw pain", e2_value="clicking",
+        e3_family="lupus", e3_symptom="sluggish",
+        e4_site="shin", e4_present="bruised",
+        e4_absent=_absent("ibuprofen", "vomiting", "pollen", "measles", "pulse rate"),
+        e5_denied_history="gambled", e5_denied_symptom="snoring",
+    ),
+    InstanceValues(
+        instance_id="i6", e1_site="thumb", e1_assessment="joint inflammation",
+        e1_denial="No allergies noted.", e1_history="chickenpox",
+        e2_probe="neck pain", e2_value="stiffness",
+        e3_family="arthritis", e3_symptom="listless",
+        e4_site="calf", e4_present="cramped",
+        e4_absent=_absent("aspirin", "rash", "peanuts", "tuberculosis", "respiratory rate"),
+        e5_denied_history="fasted", e5_denied_symptom="hiccupping",
+    ),
+    InstanceValues(
+        instance_id="i7", e1_site="heel", e1_assessment="plantar irritation",
+        e1_denial="No allergies whatsoever.", e1_history="mumps",
+        e2_probe="eye pain", e2_value="blurring",
+        e3_family="cataracts", e3_symptom="forgetful",
+        e4_site="wrist", e4_present="puffy",
+        e4_absent=_absent("insulin", "shivering", "dust", "jaundice", "weight reading"),
+        e5_denied_history="skipped meals", e5_denied_symptom="grunting",
+    ),
+    InstanceValues(
+        instance_id="i8", e1_site="temple", e1_assessment="tension headache",
+        e1_denial="No allergies at this time.", e1_history="scarlet fever",
+        e2_probe="throat pain", e2_value="scratchiness",
+        e3_family="epilepsy", e3_symptom="clumsy",
+        e4_site="thigh", e4_present="numb",
+        e4_absent=_absent("codeine", "dizziness", "mould", "rickets", "glucose reading"),
+        e5_denied_history="used inhalers", e5_denied_symptom="sighing",
+    ),
+    InstanceValues(
+        instance_id="i9", e1_site="spine", e1_assessment="disc irritation",
+        e1_denial="No allergies that we know.", e1_history="whooping cough",
+        e2_probe="hand pain", e2_value="tingling",
+        e3_family="dementia", e3_symptom="anxious",
+        e4_site="jaw", e4_present="locked",
+        e4_absent=_absent("paracetamol", "bloating", "grass", "polio", "temperature reading"),
+        e5_denied_history="worked nights", e5_denied_symptom="rasping",
+    ),
+    InstanceValues(
+        instance_id="i10", e1_site="knuckle", e1_assessment="soft tissue swelling",
+        e1_denial="No allergies in the notes.", e1_history="pleurisy",
+        e2_probe="foot pain", e2_value="burning",
+        e3_family="thyroid disease", e3_symptom="irritable",
+        e4_site="rib", e4_present="blotchy",
+        e4_absent=_absent("ramipril", "sneezing", "nickel", "malaria", "blood count"),
+        e5_denied_history="relied on sleeping pills", e5_denied_symptom="groaning",
+    ),
+    InstanceValues(
+        instance_id="i11", e1_site="collarbone", e1_assessment="ligament strain",
+        e1_denial="No allergies on file.", e1_history="appendicitis",
+        e2_probe="leg pain", e2_value="heaviness",
+        e3_family="osteoporosis", e3_symptom="drowsy",
+        e4_site="forearm", e4_present="mottled",
+        e4_absent=_absent("antibiotics", "belching", "wool", "meningitis", "oxygen reading"),
+        e5_denied_history="missed appointments", e5_denied_symptom="panting",
+    ),
 )
 
 INSTANCE_IDS: tuple[str, ...] = tuple(item.instance_id for item in INSTANCES)
@@ -194,3 +257,93 @@ def split_encounter_id(encounter_id: str) -> tuple[str, str]:
         base, _, inst = encounter_id.partition("@")
         return base, inst
     return encounter_id, "i0"
+
+
+# --------------------------------------------------------------------------
+# Concept labels — the Q_SURFACE fix
+# --------------------------------------------------------------------------
+#
+# A slot has to be identifiable or the task is underdetermined, but naming it
+# with its gold SURFACE string hands the model the answer: a parrot that never
+# reads the transcript scored within one slot of the perfect-reader ceiling in
+# every cell of the first 2x2. The two jobs are separable — these labels
+# identify a slot by its ROLE in the encounter, so the question stays fully
+# specified while the surface form stays unsaid.
+#
+# Structure is fixed across instances, so labels are keyed by atom_id and shared
+# by every draw; only the surface values resample. Invariants are enforced per
+# instance in test_campaign_instances (stem-disjoint from that instance's
+# raw_values, in both directions, instance-wide — not merely slot-local).
+CONCEPT_LABELS: dict[str, str] = {
+    # enc-1
+    "atom-neck": "the place the patient says is hurting",
+    "atom-alg": "whether the patient rules out reactions to anything",
+    "atom-hist": "a condition the patient had years earlier",
+    "atom-assess": "the clinician's stated impression",
+    "medication": "a drug the patient is currently taking",
+    # enc-2
+    "atom-chest": "the sensation the patient is unsure about",
+    # enc-3
+    "atom-fh": "the illness a relative had",
+    "atom-tired": "how the patient has felt lately",
+    # enc-4
+    "atom-throat": "the way the patient describes their complaint",
+    "atom-absent-med": "a prescription the patient takes",
+    "atom-absent-fever": "a symptom other than the presenting complaint",
+    "atom-absent-allergy": "a substance the patient says they react to",
+    "atom-absent-hist": "a past illness in the patient's own record",
+    "atom-absent-vital": "a recorded vital sign",
+    # enc-5
+    "atom-smoke": "a habit the patient rules out",
+    "atom-wheeze": "the breathing sign the patient denies",
+}
+
+
+def concept_label(atom_id: str) -> str:
+    return CONCEPT_LABELS[atom_id]
+
+
+# --- stem-level overlap checking (invariant support) -----------------------
+
+_STOPWORDS = frozenset(
+    """a an and any are as at be been being by do does for from had has have how
+    if in is it its lately of on or other own says that the their them they this
+    to what when where whether which who with""".split()
+)
+
+_SUFFIXES = ("ations", "ation", "ings", "ing", "ions", "ion", "ies", "es", "ed", "s")
+
+
+def _stem(token: str) -> str:
+    for suffix in _SUFFIXES:
+        if token.endswith(suffix) and len(token) - len(suffix) >= 4:
+            return token[: -len(suffix)]
+    return token
+
+
+def content_stems(text: str) -> set[str]:
+    """Casefolded, punctuation-stripped, stopword-free, suffix-stripped tokens."""
+    cleaned = "".join(ch if ch.isalnum() or ch.isspace() else " " for ch in text)
+    tokens = [tok for tok in cleaned.casefold().split() if tok and tok not in _STOPWORDS]
+    return {_stem(tok) for tok in tokens if len(tok) > 2}
+
+
+def stems_overlap(left: str, right: str, *, prefix_floor: int = 4) -> set[str]:
+    """Shared content stems, tolerant of morphological variation.
+
+    A plain substring test is not enough: raw_value "migraines" and label
+    "past migraine condition" contain neither string in the other yet still
+    share the stem. Two stems collide when they are equal, or when one is a
+    prefix of the other and the shared prefix is at least `prefix_floor` long
+    (catches migraine/migrainous, temperature/temperatures).
+    """
+    shared: set[str] = set()
+    right_stems = content_stems(right)
+    for a in content_stems(left):
+        for b in right_stems:
+            if a == b or (
+                len(min(a, b, key=len)) >= prefix_floor
+                and (a.startswith(b) or b.startswith(a))
+            ):
+                shared.add(a if a == b else f"{a}~{b}")
+    return shared

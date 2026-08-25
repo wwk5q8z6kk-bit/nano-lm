@@ -142,7 +142,18 @@ class I0FidelityTest(unittest.TestCase):
         self.assertEqual(source.source_id, "src-1")
 
     def test_i0_specs_match_the_shipped_baseline_specs(self) -> None:
-        self.assertEqual(case_for("enc-1", "i0").atom_specs, default_baseline_specs())
+        """Identical to the shipped specs apart from the added concept_label."""
+        from dataclasses import replace
+
+        stripped = tuple(
+            replace(spec, concept_label="")
+            for spec in case_for("enc-1", "i0").atom_specs
+        )
+        self.assertEqual(stripped, default_baseline_specs())
+
+    def test_every_i0_spec_carries_a_concept_label(self) -> None:
+        for spec in case_for("enc-1", "i0").atom_specs:
+            self.assertTrue(spec.concept_label, spec.atom_id)
 
     def test_i0_fixture_lines_match_the_shipped_baseline_lines(self) -> None:
         self.assertEqual(fixture_lines_for_encounter("enc-1"), DEFAULT_BASELINE_LINES)

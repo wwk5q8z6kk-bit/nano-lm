@@ -30,6 +30,9 @@ class AtomSpec:
     speaker: Speaker = Speaker.PATIENT
     experiencer: Experiencer = Experiencer.PATIENT
     temporality: TemporalState | None = None
+    # Role-based slot identifier that shares no surface form with raw_value.
+    # Lets the question specify the slot without naming the answer (Q_SURFACE).
+    concept_label: str = ""
 
 
 @runtime_checkable

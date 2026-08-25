@@ -28,11 +28,14 @@ from nanoscribe.adapt import (
     candidate_from_span_port_line,
     run_pipeline,
 )
-from nanoscribe.campaign_datasets import _ENC4_ABSENT, campaign_cases
+from nanoscribe.campaign_datasets import campaign_cases, instance_cases
+from nanoscribe.campaign_instances import INSTANCE_IDS, instance
 from nanoscribe.run_eval import run_campaign_eval
 
-SUITE_SLOTS = 16
-ENC4_ABSENT_SLOTS = len(_ENC4_ABSENT)
+SLOTS_PER_INSTANCE = 16
+N_INSTANCES = len(INSTANCE_IDS)
+SUITE_SLOTS = SLOTS_PER_INSTANCE * N_INSTANCES
+ENC4_ABSENT_SLOTS = len(instance("i0").e4_absent)
 
 
 def _case(encounter_id: str):
@@ -62,7 +65,7 @@ def _adapter_lines(case, lines: dict[str, str]) -> ModelCandidateBatch:
 def _enc4_lines(absent_answer: str | None) -> dict[str, str]:
     """enc-4 answers: honest abstention, or (None) assert the absent value."""
     lines = {"atom-throat": 'STATED: "sore"'}
-    for atom_id, _atom_type, value in _ENC4_ABSENT:
+    for atom_id, _atom_type, value in instance("i0").e4_absent:
         lines[atom_id] = absent_answer or f'STATED: "{value}"'
     return lines
 
@@ -95,8 +98,11 @@ class LeakageInstrumentTest(unittest.TestCase):
     def test_campaign_v2_is_a_superset_of_v1(self) -> None:
         v1 = [case.encounter_id for case in campaign_cases("campaign_v1")]
         v2 = [case.encounter_id for case in campaign_cases("campaign_v2")]
+        # v2 leads with instance i0, whose encounter ids are unsuffixed, so the
+        # historical partition appears verbatim at the head of the suite.
         self.assertEqual(v2[: len(v1)], v1)
-        self.assertEqual(v2[len(v1) :], ["enc-4", "enc-5"])
+        self.assertEqual(v2[len(v1)], "enc-4")
+        self.assertEqual(len(v2), N_INSTANCES * 5)
 
     def test_fixture_ceiling_is_stable_across_scoring_cells(self) -> None:
         """A perfect reader scores the same in every cell — only real models differ."""
@@ -119,7 +125,10 @@ class LeakageInstrumentTest(unittest.TestCase):
                         agg["critical_error"],
                     )
                 )
-        self.assertEqual(seen, {(SUITE_SLOTS, 10, 10, 6, 0, 0)})
+        self.assertEqual(
+            seen,
+            {(SUITE_SLOTS, 10 * N_INSTANCES, 10 * N_INSTANCES, 6 * N_INSTANCES, 0, 0)},
+        )
 
     def test_prompts_stay_distinct_in_every_scoring_cell(self) -> None:
         """Guards the ablation against measuring task underdetermination.
@@ -150,7 +159,7 @@ class LeakageInstrumentTest(unittest.TestCase):
         on = run_campaign_eval("campaign_v2", fixture_only=True)["suite_aggregate"]
         leakage.PROMPT_ANSWER_TEMPLATE_GOLD_VALUE = False
         off = run_campaign_eval("campaign_v2", fixture_only=True)["suite_aggregate"]
-        self.assertGreaterEqual(on["gold_in_answer_template"], 13)
+        self.assertGreaterEqual(on["gold_in_answer_template"], 13 * N_INSTANCES)
         self.assertEqual(off["gold_in_answer_template"], 0)
         # Q is untouched: the question still identifies the concept in both.
         self.assertEqual(on["gold_in_question"], off["gold_in_question"])

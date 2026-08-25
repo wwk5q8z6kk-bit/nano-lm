@@ -14,6 +14,23 @@ if TYPE_CHECKING:
 
 DEFAULT_QWEN_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 
+# Pinned commit for DEFAULT_QWEN_MODEL. A bare tag is not content-addressed:
+# the hub can move it and a rerun would silently not be a rerun. The pin lives
+# in committed code rather than an env var so it travels with the experiment
+# branch and shows up in the diff. Resolved 2026-08-25 from the HF API
+# (lastModified 2024-09-25T12:32:50Z). Hub ids only; a local directory is used
+# as-is.
+DEFAULT_QWEN_REVISION = "989aa7980e4cf806f80c7fef2b1adb7bc71aa306"
+
+_PINNED_REVISIONS = {DEFAULT_QWEN_MODEL: DEFAULT_QWEN_REVISION}
+
+
+def revision_for(weights_path: str) -> str | None:
+    """Pinned revision for a hub id, or None for a local directory."""
+    if os.path.isdir(weights_path):
+        return None
+    return _PINNED_REVISIONS.get(weights_path)
+
 
 @dataclass
 class _LoadedQwen:
@@ -57,11 +74,15 @@ def _load_qwen(weights_path: str) -> _LoadedQwen:
         device = "cpu"
         dtype = torch.float32
 
-    tokenizer = AutoTokenizer.from_pretrained(weights_path, trust_remote_code=True)
+    revision = revision_for(weights_path)
+    kwargs = {"trust_remote_code": True}
+    if revision is not None:
+        kwargs["revision"] = revision
+    tokenizer = AutoTokenizer.from_pretrained(weights_path, **kwargs)
     model = AutoModelForCausalLM.from_pretrained(
         weights_path,
         torch_dtype=dtype,
-        trust_remote_code=True,
+        **kwargs,
     )
     model.to(device)
     model.eval()

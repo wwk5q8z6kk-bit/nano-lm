@@ -16,6 +16,7 @@ from nanoscribe.campaign_instances import (
     INSTANCE_IDS,
     INSTANCES,
     InstanceValues,
+    concept_label,
     instance,
     split_encounter_id,
 )
@@ -430,7 +431,23 @@ def enc5_denial_case(values: InstanceValues) -> HarnessCase:
     )
 
 
-_BUILDERS = {
+def _with_labels(case: HarnessCase) -> HarnessCase:
+    """Attach each slot's role label. Done at one seam so no builder can forget."""
+    from dataclasses import replace
+
+    return HarnessCase(
+        test_set=case.test_set,
+        encounter_id=case.encounter_id,
+        gold=case.gold,
+        model_input=case.model_input,
+        atom_specs=tuple(
+            replace(spec, concept_label=concept_label(spec.atom_id))
+            for spec in case.atom_specs
+        ),
+    )
+
+
+_RAW_BUILDERS = {
     "enc-1": enc1_case,
     "enc-2": enc2_uncertainty_case,
     "enc-3": enc3_family_history_case,
@@ -440,13 +457,16 @@ _BUILDERS = {
 
 
 def case_for(base_encounter_id: str, instance_id: str = "i0") -> HarnessCase:
-    return _BUILDERS[base_encounter_id](instance(instance_id))
+    return _with_labels(_RAW_BUILDERS[base_encounter_id](instance(instance_id)))
 
 
 def instance_cases(instance_id: str) -> list[HarnessCase]:
     """All five encounters for one instance draw."""
     values = instance(instance_id)
-    return [_BUILDERS[base](values) for base in CAMPAIGN_V2_BASE_ENCOUNTERS]
+    return [
+        _with_labels(_RAW_BUILDERS[base](values))
+        for base in CAMPAIGN_V2_BASE_ENCOUNTERS
+    ]
 
 
 def tiny_fixture_case() -> HarnessCase:

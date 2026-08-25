@@ -13,6 +13,7 @@ class _AtomSpecLike(Protocol):
     atom_type: AtomType
     raw_value: str
     speaker: Speaker
+    concept_label: str
 
 
 _SPAN_PORT_PREAMBLE = (
@@ -74,10 +75,22 @@ def slot_topic_for_spec(spec: _AtomSpecLike) -> str:
     return f"Does the transcript mention {question}?"
 
 
+def label_topic_for_spec(spec: _AtomSpecLike) -> str:
+    """Task phrased by role label — identifies the slot, names no surface form."""
+    label = getattr(spec, "concept_label", "") or ""
+    if not label:
+        # No label authored: fall back to slot-type phrasing rather than
+        # silently reintroducing the surface string.
+        return slot_topic_for_spec(spec)
+    return f"What is {label}?"
+
+
 def topic_for_spec(spec: _AtomSpecLike) -> str:
     """Human-readable extraction task for one atom slot."""
     if not leakage.PROMPT_QUESTION_NAMES_CONCEPT:
         return slot_topic_for_spec(spec)
+    if not leakage.PROMPT_QUESTION_USES_GOLD_SURFACE:
+        return label_topic_for_spec(spec)
     if spec.atom_type is AtomType.ALLERGY:
         return "Does the patient mention or deny allergies?"
     if spec.atom_type is AtomType.MEDICATION:
