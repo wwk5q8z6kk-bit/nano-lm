@@ -48,16 +48,52 @@ every defect fix. Do not work from that branch.)
   precise recount: **0 across all eleven frozen Paper-α trees** plus
   `trajectory/`, `fabric/`, `scribe/`.
 
+**Wave transition (2026-08-25)**
+- The pre-gate `causalfix` wave was **not killed — it completed on its own** at
+  08:35 (ran 02:33→08:35, all 9 arms + summary). The earlier "2 of 9 arms"
+  reading was accurate when taken; the SIGTERM sent afterwards hit nothing
+  ("no such process"). Preserved at `artifacts/campaign/reval_results_causalfix/`
+  (`9b4ac8c`) as the pre-gate comparison arm, NOT the artifact of record.
+  Verdicts: both constrained arms `NOT_SEPARATED` (pooled coverage 18), both
+  unconstrained `INVALID_NO_SIGNAL` at coverage 0 — D2.3's fix behaving
+  correctly rather than emitting a false null.
+- **Gated wave LAUNCHED** — PID 70762, MPS, 9 runs, ~6h expected.
+  - results → `artifacts/campaign/reval_results_fixed/` (log: `wave.log`)
+  - checkpoints → `artifacts/native_checkpoints_fixed/` via
+    `NANO_NATIVE_CHECKPOINT_DIR`
+  - summary → `artifacts/campaign/native30_revalidation_summary_fixed.json`
+- **Checkpoint-collision hazard, avoided.** The wave's run_ids are the bare
+  `reval30_*_s{0,1,2}`, and `config_for_run` defaults `checkpoint_dir` to
+  `artifacts/native_checkpoints`. Launching without the env redirect would have
+  overwritten all nine 2.0G archived checkpoint dirs — the broken-run record the
+  defect analysis cites. **Always set `NANO_NATIVE_CHECKPOINT_DIR` for this wave.**
+  Verified untouched after launch (mtimes still 08-23/08-24, s0 at 08-25 01:53).
+- Gate verified invoked **through the entrypoint**, not just by unit test: a
+  3-step run into throwaway dirs produced an `integrity` block inside the
+  entrypoint's `*_train.json` (`attention_leakage 0.0`,
+  `attention_reference_max_abs_diff 3.28e-07`, `supervised_target_tokens 305`,
+  `prompt_tokens_at_cap 512 == max_seq`).
+
+**Defect discovered this session (BPB floor mis-calibrated)**
+The flat `BPB_HARD_FLOOR = 0.01` I shipped earlier today would **not** have
+caught the real leak at end-of-training. Measured: the archived *leaking*
+`reval30_decoder_control_s0` finished at loss 0.00823 → **0.0119 bpb**, only 19%
+above the floor, while the fixed run finished at 0.0593 → 0.0856 bpb. The
+"0.002" leak signature everyone quotes is a *40-step* number, not a converged
+one. Fixed in `11c907c` by scoping the claim rather than nudging the constant:
+`floor_for_step()` is 0.5 at ≤100 steps (where memorisation is impossible, so
+near-zero loss has no innocent explanation — measured separation ~3,270×) and
+the 0.01 impossibility bound after. The docstring now states outright that a
+late-training pass is **not** evidence of a clean run; that evidence comes from
+`assert_no_attention_leakage`, which is exact rather than statistical.
+
 **Owed / next**
-- **Task 4 (the wave) is NOT done.** A pre-assertion wave (PID 67752) was found
-  already running into `artifacts/campaign/reval_results_causalfix/`, started
-  01:57, ~2 of 9 arms complete after 2h → ~5h remaining. It has the code fixes
-  but not the runtime gate, so it cannot prove it ran clean and does not satisfy
-  the revalidation claim. It was left alone rather than killed; that decision is
-  open and belongs to the owner.
-- Once decided: run the wave to **NEW** `reval30_*_fixed_*` dirs. Do not
-  overwrite the nine existing `reval30_*` — they are the broken-run record the
-  defect analysis cites.
+- **Task 4 is IN FLIGHT** (PID 70762, launched 2026-08-25, ~6h). When it lands:
+  update `artifacts/DEFECT_INDEX.md` and this file with final artifact
+  locations and any newly discovered defects; compare against the pre-gate
+  causalfix wave (agreement ⇒ the gate did not perturb the measurement;
+  divergence ⇒ a finding). If it tripped a startup assertion or the BPB gate,
+  **report the exact failure and do not bypass the gate.**
 - Out of scope by instruction: minbpe/BPE swap (breaks comparability
   mid-revalidation; own preregistered change), any paid compute.
 
