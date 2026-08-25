@@ -172,3 +172,31 @@ Under the pre-fix analyzer all six would have read `NOT_SEPARATED`.
 - **Does not:** rank architectures, or say anything about a small objective
   effect — per the registered power note, this design detects only large effects
   at n≈18/arm.
+
+---
+
+## CONFOUND NOTICE (appended 2026-08-25, after the RESULT above)
+
+The capability-floor conclusion is **confounded with residual truncation** and
+must not be restated without the tokenizer clause.
+
+`hash_tokens` is character-level and `max_seq=512`. Measured after this wave:
+**124/150 = 82.7%** of `p1_screening_eval_v1` prompts exceed the context
+(median 530 tokens, max 576), losing a median 4.4% and up to 11.1% of content.
+On the training corpus it is 100% (median 615, max 694). D3.1 fixed the 64-char
+cap; the char-level-versus-512-context mismatch was never addressed, so D3 is
+only **partly** closed.
+
+The registered conclusion stands **as written**, because it names the tokenizer.
+The impermissible restatement is "30M is below the capability floor" — parameter
+count is not the only thing varying. Correct form:
+
+> 30M at 1800 steps **with a tokenizer that cannot fit 83% of eval prompts in
+> its context** is below the floor. 30M with a fitting tokenizer is **untested**.
+
+The fix is an existing repository asset, not new work: `sft/tokenizer.json`
+(own-stack BPE, same vocab 4098) gives measured 2.60× compression on these exact
+prompts — median 204 tokens, max 226, **0/150 over context**, ~60% headroom, with
+embedding parameter count unchanged.
+
+Full measurement: `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`.

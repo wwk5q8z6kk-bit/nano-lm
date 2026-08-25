@@ -18,6 +18,46 @@ from nanoscribe.native.model import build_native_model
 from nanoscribe.prompt import build_span_port_prompt
 
 
+
+_TAUTOLOGICAL_SPAN_KEYS = (
+    "exact_gold_span_count",
+    "exact_gold_span_eligible",
+    "exact_gold_span_rate",
+    "span_character_f1",
+)
+
+
+def _suppress_tautological_spans(
+    metrics: dict[str, Any], *, constrained: bool
+) -> dict[str, Any]:
+    """Blank span metrics that are exact by construction.
+
+    Under constrained candidate selection the gold raw_value is injected into
+    the candidate set, so exact_gold_span is 1.0 whenever the model commits at
+    all -- it measures the candidate set, not evidence transport. Emitting the
+    number with a `span_metrics_are_tautological` flag beside it is not enough:
+    a metric that reads 6/6 gets quoted by whoever missed the flag, which is how
+    dc3b310's "0% -> 83%" propagated past its own conditions.
+
+    The values are replaced with None and an explicit reason key, rather than
+    deleted, so consumers that index these keys degrade to null instead of
+    raising. Free-generation mode is untouched -- there exact_gold_span IS the
+    transport measurement.
+    """
+    if not constrained:
+        return metrics
+    out = dict(metrics)
+    suppressed = [k for k in _TAUTOLOGICAL_SPAN_KEYS if k in out]
+    for k in suppressed:
+        out[k] = None
+    if suppressed:
+        out["span_metrics_suppressed_reason"] = (
+            "tautological under constrained_candidate_selection: the gold span is "
+            "in the candidate set by construction; use free_generation to measure "
+            "evidence transport"
+        )
+    return out
+
 @dataclass(frozen=True, slots=True)
 class NativeP1CaseResult:
     encounter_id: str
@@ -56,7 +96,9 @@ class NativeP1EvalResult:
             # candidate set, so span metrics are exact by construction. Only
             # free_generation makes exact_gold_span a transport measurement.
             "span_metrics_are_tautological": self.constrained,
-            "suite_metrics": self.suite_metrics,
+            "suite_metrics": _suppress_tautological_spans(
+                self.suite_metrics, constrained=self.constrained
+            ),
             "cases": [case.to_dict() for case in self.cases],
         }
 
