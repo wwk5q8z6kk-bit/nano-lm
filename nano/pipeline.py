@@ -31,6 +31,10 @@ _NEGATION = ("no ", "not ", "denies", "without", "do not", "never")
 _UNCERTAIN_TIME = ("about", "around", "maybe", "a while", "approximately", "roughly")
 _ABSENT_MARKER = ("i do not see", "no adverse reaction documented", "not in the record")
 
+#: Concepts whose dates are worth cross-checking. A shared concept is what
+#: distinguishes a disagreement from an ordinary chronology.
+_CONFLICT_CONCEPTS = ("diabetes", "hypertension", "cancer", "asthma", "copd")
+
 
 # --------------------------------------------------------------------------
 # Shared: segment a transcript into speaker-attributed lines with offsets
@@ -200,24 +204,47 @@ def candidate_b(fx: Fixture) -> dict:
 
 
 def _detect_conflicts(fx: Fixture, assertions: list) -> list[ConflictRecord]:
-    """Surface disagreeing years across transcript and prior chart. Never resolve."""
-    years: dict[str, list[str]] = {}
+    """Flag a date disagreement only when years attach to the SAME concept.
+
+    An earlier version flagged any two distinct years, which reported the
+    metoprolol fixture as conflicting: 2019 (started) and 2021 (stopped) are
+    sequential events, not contradictory claims. Requiring a shared concept is
+    what separates a disagreement from a chronology.
+    """
+    concept_years: dict[str, dict[str, list[str]]] = {}
+
+    def note(text: str, ref: str) -> None:
+        years = re.findall(r"\b((?:19|20)\d{2})\b", text)
+        if not years:
+            return
+        low = text.lower()
+        for concept in _CONFLICT_CONCEPTS:
+            if concept in low:
+                bucket = concept_years.setdefault(concept, {})
+                for y in years:
+                    bucket.setdefault(y, []).append(ref)
+
     for a in assertions:
-        for y in re.findall(r"\b(19|20)\d{2}\b", a.original_wording):
-            pass
-        for y in re.findall(r"\b((?:19|20)\d{2})\b", a.original_wording):
-            years.setdefault(y, []).append(a.assertion_id)
-    for y in re.findall(r"\b((?:19|20)\d{2})\b", fx.prior_chart or ""):
-        years.setdefault(y, []).append(f"prior_chart:{y}")
-    onset_years = {y: ids for y, ids in years.items() if len(y) == 4}
-    if len(onset_years) < 2:
-        return []
-    claim_set = tuple(sorted(i for ids in onset_years.values() for i in ids))
-    return [ConflictRecord(
-        patient_id=fx.patient_id, conflict_type=ConflictType.DATE_DISAGREEMENT,
-        claim_set=claim_set, clinical_importance="unknown",
-        resolution_status="unresolved",
-    )]
+        note(a.original_wording, a.assertion_id)
+    for line in (fx.prior_chart or "").split("\n"):
+        if line.strip():
+            note(line, f"prior_chart:{line.strip()[:24]}")
+
+    out = []
+    for concept, years in concept_years.items():
+        if len(years) < 2:
+            continue
+        claim_set = tuple(sorted({r for refs in years.values() for r in refs}))
+        if len(claim_set) < 2:
+            continue
+        out.append(ConflictRecord(
+            patient_id=fx.patient_id,
+            conflict_type=ConflictType.DATE_DISAGREEMENT,
+            claim_set=claim_set,
+            clinical_importance="unknown",
+            resolution_status="unresolved",
+        ))
+    return out
 
 
 def _render_note(assertions, conflicts, gaps) -> tuple[str, list[dict]]:

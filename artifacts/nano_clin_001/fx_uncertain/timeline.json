@@ -1,0 +1,20 @@
+[
+  {
+    "event_id": "evt_aba5dac591c0c226",
+    "type": "encounter_utterance",
+    "precision": "approximate",
+    "event_time": "2021"
+  },
+  {
+    "event_id": "evt_6153ab32d8b7a8f3",
+    "type": "encounter_utterance",
+    "precision": "unknown",
+    "event_time": ""
+  },
+  {
+    "event_id": "evt_235b5c33bacb5c27",
+    "type": "encounter_utterance",
+    "precision": "unknown",
+    "event_time": ""
+  }
+]

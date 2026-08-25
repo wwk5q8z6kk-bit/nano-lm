@@ -1,0 +1,93 @@
+{
+  "experiment": "NANO-CLIN-001",
+  "decision": "D-NANO-2026-08-25",
+  "data": "synthetic_non_phi",
+  "model_calls": 0,
+  "paid_compute": false,
+  "per_fixture": [
+    {
+      "fixture": "fx_basic",
+      "baseline_a": {
+        "claims_total": 7,
+        "content_claims": 7,
+        "absence_claims": 0,
+        "provenance_coverage": 0.0,
+        "unsupported_claims": 7,
+        "unsupported_rate": 1.0
+      },
+      "candidate_b": {
+        "claims_total": 7,
+        "content_claims": 7,
+        "absence_claims": 0,
+        "provenance_coverage": 1.0,
+        "unsupported_claims": 0,
+        "unsupported_rate": 0.0
+      },
+      "conflicts_detected": 0,
+      "conflicts_gold": 0,
+      "gaps_detected": 0,
+      "gaps_gold": 0,
+      "forbidden_assertions_in_baseline": 0,
+      "forbidden_assertions_in_candidate": 0,
+      "state_rebuildable": true
+    },
+    {
+      "fixture": "fx_conflicting",
+      "baseline_a": {
+        "claims_total": 4,
+        "content_claims": 4,
+        "absence_claims": 0,
+        "provenance_coverage": 0.0,
+        "unsupported_claims": 4,
+        "unsupported_rate": 1.0
+      },
+      "candidate_b": {
+        "claims_total": 5,
+        "content_claims": 5,
+        "absence_claims": 0,
+        "provenance_coverage": 1.0,
+        "unsupported_claims": 0,
+        "unsupported_rate": 0.0
+      },
+      "conflicts_detected": 1,
+      "conflicts_gold": 1,
+      "gaps_detected": 0,
+      "gaps_gold": 0,
+      "forbidden_assertions_in_baseline": 0,
+      "forbidden_assertions_in_candidate": 0,
+      "state_rebuildable": true
+    },
+    {
+      "fixture": "fx_uncertain",
+      "baseline_a": {
+        "claims_total": 5,
+        "content_claims": 5,
+        "absence_claims": 0,
+        "provenance_coverage": 0.0,
+        "unsupported_claims": 5,
+        "unsupported_rate": 1.0
+      },
+      "candidate_b": {
+        "claims_total": 5,
+        "content_claims": 3,
+        "absence_claims": 2,
+        "provenance_coverage": 1.0,
+        "unsupported_claims": 0,
+        "unsupported_rate": 0.0
+      },
+      "conflicts_detected": 0,
+      "conflicts_gold": 0,
+      "gaps_detected": 2,
+      "gaps_gold": 2,
+      "forbidden_assertions_in_baseline": 0,
+      "forbidden_assertions_in_candidate": 0,
+      "state_rebuildable": true
+    }
+  ],
+  "aggregate": {
+    "baseline_provenance_coverage": 0.0,
+    "candidate_provenance_coverage": 1.0,
+    "conflict_recall": "1/1",
+    "gap_recall": "2/2"
+  }
+}
