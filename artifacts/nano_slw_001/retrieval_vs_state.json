@@ -1,20 +1,20 @@
 {
   "questions": 96,
-  "observations": 709,
+  "observations": 827,
   "state_arm": {
     "dispositions": {
       "present": 68,
-      "abstain": 12,
-      "review": 16
+      "abstain": 15,
+      "review": 13
     },
-    "present_correct": 45,
+    "present_correct": 48,
     "undeclared_error": 0,
-    "presented": 45,
+    "presented": 48,
     "structurally_unavailable": 0,
-    "cost": 317.25,
+    "cost": 346.75,
     "common_query_cost": 98.0,
     "cost_per_common_question": 1.181,
-    "fold_cost": 177.25,
+    "fold_cost": 206.75,
     "query_cost": 140.0
   },
   "retrieval_arms": {
@@ -24,8 +24,8 @@
         "abstain": 26,
         "review": 0
       },
-      "present_correct": 55,
-      "undeclared_error": 5,
+      "present_correct": 50,
+      "undeclared_error": 10,
       "presented": 60,
       "structurally_unavailable": 13,
       "cost": 100.75,
@@ -35,113 +35,113 @@
       "failure_modes": {
         "believed_a_superseded_report": 0,
         "misordered_mixed_precision_times": 2,
-        "missed_a_same_time_contradiction": 1,
+        "missed_a_same_time_contradiction": 3,
         "blind_to_a_known_missing_report": 2,
-        "unexplained": 0
+        "unexplained": 3
       }
     },
     "k=4": {
       "dispositions": {
-        "present": 67,
+        "present": 63,
         "abstain": 26,
-        "review": 3
+        "review": 7
       },
-      "present_correct": 53,
-      "undeclared_error": 4,
-      "presented": 57,
+      "present_correct": 46,
+      "undeclared_error": 7,
+      "presented": 53,
       "structurally_unavailable": 13,
-      "cost": 130.0,
-      "common_query_cost": 130.0,
-      "cost_per_common_question": 1.566,
-      "spans_read": 188,
+      "cost": 134.25,
+      "common_query_cost": 134.25,
+      "cost_per_common_question": 1.617,
+      "spans_read": 205,
       "failure_modes": {
         "believed_a_superseded_report": 0,
         "misordered_mixed_precision_times": 2,
-        "missed_a_same_time_contradiction": 0,
-        "blind_to_a_known_missing_report": 2,
-        "unexplained": 0
+        "missed_a_same_time_contradiction": 1,
+        "blind_to_a_known_missing_report": 1,
+        "unexplained": 3
       }
     },
     "k=16": {
       "dispositions": {
-        "present": 67,
-        "abstain": 26,
-        "review": 3
+        "present": 63,
+        "abstain": 25,
+        "review": 8
       },
-      "present_correct": 53,
-      "undeclared_error": 4,
-      "presented": 57,
+      "present_correct": 46,
+      "undeclared_error": 7,
+      "presented": 53,
       "structurally_unavailable": 13,
-      "cost": 135.75,
-      "common_query_cost": 135.75,
-      "cost_per_common_question": 1.636,
-      "spans_read": 211,
+      "cost": 149.5,
+      "common_query_cost": 149.5,
+      "cost_per_common_question": 1.801,
+      "spans_read": 266,
       "failure_modes": {
         "believed_a_superseded_report": 0,
         "misordered_mixed_precision_times": 2,
-        "missed_a_same_time_contradiction": 0,
-        "blind_to_a_known_missing_report": 2,
-        "unexplained": 0
+        "missed_a_same_time_contradiction": 1,
+        "blind_to_a_known_missing_report": 1,
+        "unexplained": 3
       }
     },
     "k=64": {
       "dispositions": {
-        "present": 67,
+        "present": 63,
         "abstain": 25,
-        "review": 4
+        "review": 8
       },
-      "present_correct": 53,
-      "undeclared_error": 4,
-      "presented": 57,
+      "present_correct": 46,
+      "undeclared_error": 7,
+      "presented": 53,
       "structurally_unavailable": 13,
-      "cost": 147.75,
-      "common_query_cost": 147.75,
-      "cost_per_common_question": 1.78,
-      "spans_read": 259,
+      "cost": 161.5,
+      "common_query_cost": 161.5,
+      "cost_per_common_question": 1.946,
+      "spans_read": 314,
       "failure_modes": {
         "believed_a_superseded_report": 0,
         "misordered_mixed_precision_times": 2,
-        "missed_a_same_time_contradiction": 0,
-        "blind_to_a_known_missing_report": 2,
-        "unexplained": 0
+        "missed_a_same_time_contradiction": 1,
+        "blind_to_a_known_missing_report": 1,
+        "unexplained": 3
       }
     },
     "k=all": {
       "dispositions": {
-        "present": 67,
+        "present": 63,
         "abstain": 25,
-        "review": 4
+        "review": 8
       },
-      "present_correct": 53,
-      "undeclared_error": 4,
-      "presented": 57,
+      "present_correct": 46,
+      "undeclared_error": 7,
+      "presented": 53,
       "structurally_unavailable": 13,
-      "cost": 309.0,
-      "common_query_cost": 309.0,
-      "cost_per_common_question": 3.723,
-      "spans_read": 904,
+      "cost": 352.25,
+      "common_query_cost": 352.25,
+      "cost_per_common_question": 4.244,
+      "spans_read": 1077,
       "failure_modes": {
         "believed_a_superseded_report": 0,
         "misordered_mixed_precision_times": 2,
-        "missed_a_same_time_contradiction": 0,
-        "blind_to_a_known_missing_report": 2,
-        "unexplained": 0
+        "missed_a_same_time_contradiction": 1,
+        "blind_to_a_known_missing_report": 1,
+        "unexplained": 3
       }
     }
   },
   "best_retrieval_arm": "k=4",
   "state_undeclared_error": 0,
-  "best_retrieval_undeclared_error": 4,
+  "best_retrieval_undeclared_error": 7,
   "state_beats_retrieval_on_error": true,
   "retrieval_cannot_attempt": 13,
   "unlimited_retrieval_still_errs": true,
-  "cost_crossover_questions": 460.4,
+  "cost_crossover_questions": 474.2,
   "why_retrieval_errs": {
     "believed_a_superseded_report": 0,
     "misordered_mixed_precision_times": 2,
-    "missed_a_same_time_contradiction": 0,
-    "blind_to_a_known_missing_report": 2,
-    "unexplained": 0
+    "missed_a_same_time_contradiction": 1,
+    "blind_to_a_known_missing_report": 1,
+    "unexplained": 3
   },
   "error_plateaus_despite_unlimited_context": true
 }

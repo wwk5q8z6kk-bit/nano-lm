@@ -137,6 +137,8 @@ def main() -> int:
         comparison = compare_need_strategies()
         _json(args.out / "need_strategy_comparison.json", comparison)
         _json(args.out / "retrieval_vs_state.json", result["retrieval_vs_state"])
+        _json(args.out / "causal_attribution.json", result["causal_attribution"])
+        _jsonl(args.out / "interventions.jsonl", world.interventions)
         print(f"  need strategy      simplest justified="
               f"{comparison['simplest_justified_strategy']} "
               f"default={comparison['current_default']} "
@@ -180,6 +182,17 @@ def main() -> int:
           f"reading {ka['spans_read']} spans")
     print(f"  fold crossover     {rvs['cost_crossover_questions']} questions; "
           f"retrieval cannot attempt {rvs['retrieval_cannot_attempt']}")
+    ca = result["causal_attribution"]
+    print(f"  interventions      {ca['interventions']} "
+          f"({ca['outcomes']['effective']}E/{ca['outcomes']['ineffective']}I/"
+          f"{ca['outcomes']['delayed']}D)  documented links "
+          f"{ca['documented_links']}  intended-value leaks "
+          f"{ca['intended_values_leaked_into_state']}")
+    print(f"  causal claims      basis-aware false="
+          f"{ca['basis_aware']['false_causal_claims']} "
+          f"(stated {ca['basis_aware']['stated_as_cause']}, association-only "
+          f"{ca['basis_aware']['reported_as_association_only']})  post-hoc "
+          f"false={ca['post_hoc_control']['false_causal_claims']}")
     print(f"  artifacts          {args.out}")
 
     # Exit non-zero when the arms disagree: a benchmark that reports a speedup

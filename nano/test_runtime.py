@@ -284,6 +284,48 @@ def test_the_rendered_form_leads_with_the_disposition():
 
 
 # ---------------------------------------------------------------------------
+# Causal attribution — temporal association is not causation
+# ---------------------------------------------------------------------------
+
+def _causal_view(**over):
+    base = dict(
+        actions=(("iv1", "actor_00", "a", "state", "2026-02-18", 2),),
+        latest_time={("a", "state"): "2026-02-20"})
+    base.update(over)
+    return _view(**base)
+
+
+def test_a_documented_rationale_may_be_presented_as_a_cause():
+    view = _causal_view(documented_causes={
+        ("a", "state", "2026-02-20", "up"): ("iv1", "span_a")})
+    a = answer(Question(kind=QuestionKind.WHY_DID_IT_CHANGE, entity="a",
+                        attribute="state"), view, _slice())
+    assert a.disposition is Disposition.PRESENT
+    assert a.epistemic_status is EpistemicStatus.DIRECT_DOCUMENTATION
+    assert a.derivation is DerivationMode.OBSERVED
+    assert "as documented" in a.content
+
+
+def test_a_temporal_association_is_never_presented_as_a_cause():
+    """The named safety failure. An action then a change is co-occurrence, and
+    must not render the way a documented link does."""
+    a = answer(Question(kind=QuestionKind.WHY_DID_IT_CHANGE, entity="a",
+                        attribute="state"), _causal_view(), _slice())
+    assert a.disposition is Disposition.REVIEW
+    assert a.derivation is DerivationMode.INFERRED
+    assert "association only" in a.content
+    assert "not established as the cause" in a.content
+    assert "caused" not in a.content
+
+
+def test_no_candidate_action_abstains_rather_than_inventing_one():
+    a = answer(Question(kind=QuestionKind.WHY_DID_IT_CHANGE, entity="a",
+                        attribute="state"), _view(actions=()), _slice())
+    assert a.disposition is Disposition.ABSTAIN
+    assert "found no candidate" in a.reason
+
+
+# ---------------------------------------------------------------------------
 # Derivation mode is not decorative
 # ---------------------------------------------------------------------------
 
@@ -301,9 +343,13 @@ def test_no_answer_claims_to_have_observed_what_it_computed():
     for kind in QuestionKind:
         q = (Question(kind=kind, entity="a", attribute="state")
              if kind in {QuestionKind.CURRENT_VALUE, QuestionKind.WHAT_SUPPORTS,
-                         QuestionKind.WHY_DIFFERENT}
+                         QuestionKind.WHY_DIFFERENT,
+                         QuestionKind.WHY_DID_IT_CHANGE}
              else Question(kind=kind))
         a = answer(q, view, work)
         if a.derivation is DerivationMode.OBSERVED:
-            assert a.question.kind is QuestionKind.WHAT_SUPPORTS, (
+            # WHY_DID_IT_CHANGE may be OBSERVED only when a source *documented*
+            # the link — what was observed is the statement, not the causation.
+            assert a.question.kind in {QuestionKind.WHAT_SUPPORTS,
+                                       QuestionKind.WHY_DID_IT_CHANGE}, (
                 f"{kind.value} claims OBSERVED but it computed its answer")

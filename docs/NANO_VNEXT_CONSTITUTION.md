@@ -376,7 +376,7 @@ Status is measured, not asserted. Recheck: `pytest nano` and
 | 3 | Keep the current NanoState contracts | **done** | `nano/contracts.py`, unchanged in substance |
 | 4 | Complete dependency → recomputation | **done** | `LRN-CORRECTION` IMPLEMENTED; work list taken *from* `recompute_order()`; 10/10 obligations discharged |
 | 5 | First executable WorkSlice / InformationNeed / Capability / Verification contracts | **done** | `nano/runtime.py`; `nano/needs.py`; `MTA-EPISTEMIC` IMPLEMENTED |
-| 6 | Build DomainPack-0 synthetic dynamical world | **done** | NANO-SLW-001 — 176 entities, 3 typed relation families, six corruption modes, hidden state, corrections, supersession |
+| 6 | Build DomainPack-0 synthetic dynamical world | **done** | NANO-SLW-001 — 176 entities, 3 typed relation families, six corruption modes, hidden state, corrections, supersession, **interventions** (47/world: effective, ineffective, delayed) |
 | 7 | State-maintenance and invalidation baselines | **done** | recompute ratio 0.279; invalidation P/R 1.000; branch isolation 1.000 |
 | 8 | Test retrieval versus persistent state | **done** | `nano/retrieval.py` + `score_retrieval_vs_state`. State 0 undeclared errors; a competent retrieval arm makes 4–7 and **the error plateaus** — reading all 904 spans is no better than reading 4. Every miss has a named mechanism, zero unexplained |
 | 9 | Test BPE/representation before another scale claim | **next / recorded, not run** | `trajectory/PREREG_tokenizer_bpe_vs_char.md` |
@@ -415,9 +415,53 @@ Honest negatives, recorded so they are not mistaken for strengths:
 - **The fold is not free.** Crossover is ~460 questions before it pays for
   itself. Below that, retrieval is cheaper *and* wrong.
 
-Interventions in DomainPack-0 (§XXXVII) are **not** built. The world has
-corrections, supersession and hidden state; it does not yet have actions that
-*cause* world change. Recorded here rather than quietly folded into step 6.
+### Interventions (§XXXVII) — built
+
+The world now contains actions that *cause* world change: 47 per default world,
+of which ~24 are effective, ~16 ineffective and ~7 delayed. Two failure modes
+become generatable rather than hypothetical, and each is measured against a
+control:
+
+**An action is not an observation of its effect.** An ineffective intervention
+is a source saying "I set it to X" when the world did not move. Action records
+are routed away from state resolution entirely — they never reach `by_key` —
+so no downstream logic can turn *someone tried* into *it is so*. Measured by
+provenance (no action span backs any believed value), **0 leaks** across every
+seed. Measuring it by value coincidence instead reported a false leak on seed
+20260827; a spontaneous change that lands on the intended value is not a leak.
+
+**Temporal association is not causation** (RSN-CAUSAL's named safety failure).
+Three bases are kept apart and only one may be stated as a cause:
+
+| basis | may be stated as cause | derivation |
+|---|---|---|
+| documented rationale | **yes** — a source said so | OBSERVED (the *statement* was observed) |
+| temporal association | no | INFERRED |
+| none | no | — |
+
+Over 10 seeds, ~6000 candidate changes:
+
+| arm | stated as cause | **false causal claims** |
+|---|---|---|
+| basis-aware | 124 | **0** |
+| post-hoc control | 296 | **153** |
+
+The control is an ablation, not a strawman: identical inputs, identical search,
+differing only in whether an association may be reported at documented strength.
+It still gets every documented link right. The only way it can state an
+association as a cause is by citing the *action record* — which documents that
+someone acted, not why the world moved. That fabricated citation is the tell,
+and `CausalLink` makes the over-claim unconstructible rather than discouraged.
+
+Two defects found here were mine, both in the instrument:
+
+1. `documented_causes` keyed on `(entity, attribute, time)` alone, so a
+   rationale attached to whichever value was asked about at that moment —
+   including one it does not document. Now keyed on the value too.
+2. The ground-truth join and the recall check were both lossy — one keeping
+   only the last of two changes on a tick, the other asking about the current
+   value rather than the value the rationale documents. Together they attributed
+   4 false claims to the system that belonged to the scorer.
 
 Each iteration follows:
 

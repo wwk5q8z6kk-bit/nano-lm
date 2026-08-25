@@ -82,6 +82,7 @@ from nano.runtime import (Disposition, Question, QuestionKind, StateView,
                           open_slice, run_slice)
 from nano.retrieval import (FOLD_COST_PER_OBSERVATION, STRUCTURALLY_UNAVAILABLE,
                             ObservationIndex, retrieval_answer)
+from nano.causal import CausalBasis, attribute_cause, post_hoc_attribute
 
 EPOCH = date(2026, 1, 1)
 
@@ -134,6 +135,8 @@ class ObsKind(str, Enum):
     DUPLICATE = "duplicate"          # a second source reports the same thing
     CONTRADICTORY = "contradictory"  # a second source reports something else
     CORRECTION = "correction"        # a later source corrects an earlier report
+    INTERVENTION = "intervention"    # an actor DID something; not a state report
+    RATIONALE = "rationale"          # a source states why a change happened
 
 
 @dataclass(frozen=True)
@@ -145,6 +148,7 @@ class WorldChange:
     old_value: str
     new_value: str
     observed: bool = True
+    caused_by: str = ""          # intervention_id, or "" if spontaneous
     change_id: str = ""
 
     def __post_init__(self):
@@ -165,6 +169,8 @@ class Observation:
     source_ordinal: int
     change_id: str
     corrects: str = ""           # obs_id of the report this supersedes
+    intervention_id: str = ""    # set on INTERVENTION and RATIONALE channels
+    actor: str = ""
     faithful: bool = True        # does `value` match ground truth?
     obs_id: str = ""
 
@@ -173,6 +179,44 @@ class Observation:
             {"o": self.obs_tick, "e": self.entity_id, "a": self.attribute,
              "v": self.value, "s": self.source_ordinal,
              "k": self.kind.value}, "obs"))
+
+
+class InterventionOutcome(str, Enum):
+    """What an action actually did — which is not what it intended.
+
+    The distinction is the point. A system that learns an action was *taken*
+    and updates state to the intended value has confused doing with observing.
+    INEFFECTIVE exists so that mistake is generatable, and therefore
+    testable.
+    """
+    EFFECTIVE = "effective"        # the world moved to the intended value
+    INEFFECTIVE = "ineffective"    # the action happened; nothing changed
+    DELAYED = "delayed"            # the world moved, several ticks later
+
+
+@dataclass(frozen=True)
+class Intervention:
+    """An actor deliberately acting on the world (§XXXVII).
+
+    Separate from `Observation` because acting and seeing are different
+    operations with different epistemic consequences, and collapsing them is
+    exactly the overloading the ontology guards against.
+    """
+    tick: int
+    actor: str
+    action: str
+    entity_id: str
+    attribute: str
+    intended_value: str
+    outcome: InterventionOutcome
+    effect_tick: int = -1        # when the world actually moved, if it did
+    documented: bool = False     # did any source state the causal link?
+    intervention_id: str = ""
+
+    def __post_init__(self):
+        object.__setattr__(self, "intervention_id", _cid(
+            {"t": self.tick, "a": self.actor, "e": self.entity_id,
+             "at": self.attribute, "v": self.intended_value}, "iv"))
 
 
 @dataclass
@@ -194,6 +238,13 @@ class WorldSpec:
     p_correction: float = 0.10
     p_unobserved: float = 0.10
     checkpoint_every: int = 10
+    # Interventions (§XXXVII). Actions that CAUSE world change, so the
+    # act -> observe result -> update belief arc has something to test, and so
+    # post-hoc-ergo-propter-hoc becomes a generatable error rather than a worry.
+    interventions_per_tick: float = 0.8
+    p_intervention_effective: float = 0.55
+    p_intervention_delayed: float = 0.20
+    p_documented_rationale: float = 0.45
 
     def fingerprint(self) -> str:
         return _cid(dict(sorted(self.__dict__.items())), "spec")
@@ -211,6 +262,7 @@ class SyntheticWorld:
     entities: dict = field(default_factory=dict)      # entity_id -> type
     relations: dict = field(default_factory=dict)     # (src, rel) -> dst
     changes: list = field(default_factory=list)       # chronological WorldChange
+    interventions: list = field(default_factory=list)  # chronological
     observations: list = field(default_factory=list)  # arrival-ordered
     _truth: dict = field(default_factory=dict)        # tick -> {(e,a): v}
 
@@ -264,7 +316,56 @@ class SyntheticWorld:
         w._truth[0] = dict(state)
 
         mutable = sorted(state)
+        actors = [f"actor_{i:02d}" for i in range(4)]
+        pending_effects: dict = {}   # tick -> [(intervention, key, value)]
+
         for tick in range(1, spec.n_ticks + 1):
+            # Effects of earlier delayed interventions land first, so a delayed
+            # effect is separated in time from the action that caused it — which
+            # is precisely when temporal association stops being a usable proxy
+            # for causation.
+            for iv, key, value in pending_effects.pop(tick, ()):
+                if state.get(key) == value:
+                    continue
+                old = state[key]
+                state[key] = value
+                w.changes.append(WorldChange(
+                    tick=tick, entity_id=key[0], attribute=key[1],
+                    old_value=old, new_value=value,
+                    observed=rng.random() >= spec.p_unobserved,
+                    caused_by=iv.intervention_id))
+
+            if rng.random() < spec.interventions_per_tick:
+                key = mutable[rng.randrange(len(mutable))]
+                intended = _advance(key[1], state[key], rng)
+                roll = rng.random()
+                if roll < spec.p_intervention_effective:
+                    outcome, effect_tick = InterventionOutcome.EFFECTIVE, tick
+                elif roll < spec.p_intervention_effective + spec.p_intervention_delayed:
+                    outcome = InterventionOutcome.DELAYED
+                    effect_tick = min(spec.n_ticks, tick + rng.randint(2, 6))
+                else:
+                    outcome, effect_tick = InterventionOutcome.INEFFECTIVE, -1
+                iv = Intervention(
+                    tick=tick, actor=actors[rng.randrange(len(actors))],
+                    action=f"set_{key[1]}", entity_id=key[0], attribute=key[1],
+                    intended_value=intended, outcome=outcome,
+                    effect_tick=effect_tick,
+                    documented=rng.random() < spec.p_documented_rationale)
+                w.interventions.append(iv)
+                if outcome is InterventionOutcome.EFFECTIVE and \
+                        state[key] != intended:
+                    old = state[key]
+                    state[key] = intended
+                    w.changes.append(WorldChange(
+                        tick=tick, entity_id=key[0], attribute=key[1],
+                        old_value=old, new_value=intended,
+                        observed=rng.random() >= spec.p_unobserved,
+                        caused_by=iv.intervention_id))
+                elif outcome is InterventionOutcome.DELAYED:
+                    pending_effects.setdefault(effect_tick, []).append(
+                        (iv, key, intended))
+
             for _ in range(spec.changes_per_tick):
                 ent, attr = mutable[rng.randrange(len(mutable))]
                 old = state[(ent, attr)]
@@ -348,6 +449,34 @@ class SyntheticWorld:
                         corrects=bad.obs_id))
 
             seen_key.add(key)
+
+        # Actions and rationales. An action record says what an actor DID; it is
+        # not a report of the world's state, and the ingestor must never treat
+        # it as one. Note the verbatim mentions the intended value — a source
+        # that says "I set it to X" is genuinely evidence that someone tried,
+        # and genuinely not evidence that it is X.
+        by_intervention = {}
+        for chg in self.changes:
+            if chg.caused_by:
+                by_intervention[chg.caused_by] = chg
+        for iv in self.interventions:
+            pending.append(Observation(
+                obs_tick=iv.tick, event_tick=iv.tick, entity_id=iv.entity_id,
+                attribute=iv.attribute, value=iv.intended_value,
+                kind=ObsKind.INTERVENTION, source_ordinal=4,
+                change_id="", intervention_id=iv.intervention_id,
+                actor=iv.actor))
+            effect = by_intervention.get(iv.intervention_id)
+            if iv.documented and effect is not None and effect.observed:
+                # A source states the causal link explicitly. This is the only
+                # basis on which a cause may be reported as documented rather
+                # than inferred.
+                pending.append(Observation(
+                    obs_tick=effect.tick, event_tick=effect.tick,
+                    entity_id=effect.entity_id, attribute=effect.attribute,
+                    value=effect.new_value, kind=ObsKind.RATIONALE,
+                    source_ordinal=5, change_id=effect.change_id,
+                    intervention_id=iv.intervention_id, actor=iv.actor))
 
         # Observations arrive in the order the system *learns* of them, which is
         # obs_tick order — not event order. Everything downstream must cope with
@@ -502,6 +631,8 @@ class LedgerBuilder:
     conflict_groups: dict = field(default_factory=dict)  # group key -> values
     gap_keys: set = field(default_factory=set)
     touched: set = field(default_factory=set)           # entities since last drain
+    actions: list = field(default_factory=list)         # (obs, span_id)
+    documented_causes: dict = field(default_factory=dict)  # (e,a,when) -> iv_id
     admitted: int = 0
 
     def __post_init__(self):
@@ -514,6 +645,30 @@ class LedgerBuilder:
         source = _source_for(obs, self.world_id)
         span = _span_for(obs, source, self.world_id)
         temporal = _temporal_for(obs)
+
+        if obs.kind is ObsKind.INTERVENTION:
+            # An action is recorded as an action. It never reaches `by_key`, so
+            # no amount of downstream logic can turn "someone tried to set it to
+            # X" into "it is X". The routing is the guard, not a convention.
+            self.ledger.append(sources=[source], spans=[span])
+            self.actions.append((obs, span.evidence_span_id))
+            self.admitted += 1
+            return
+        if obs.kind is ObsKind.RATIONALE:
+            # A stated causal link. Recorded separately from the value itself:
+            # the source is asserting *why*, and the *what* still has to arrive
+            # through the normal evidence path on its own merits.
+            self.ledger.append(sources=[source], spans=[span])
+            # Keyed on the VALUE as well as the time. A rationale documents a
+            # specific outcome; matching on time alone lets it be attached to a
+            # different value reported at the same moment, which is a fabricated
+            # citation wearing a documented-rationale badge.
+            self.documented_causes[
+                (obs.entity_id, obs.attribute, temporal.event_time,
+                 obs.value)] = (obs.intervention_id, span.evidence_span_id)
+            self.admitted += 1
+            return
+
         key = (obs.entity_id, obs.attribute)
         group = (obs.entity_id, obs.attribute, temporal.event_time)
         content_key = group + (obs.value,)
@@ -1533,6 +1688,15 @@ def compare_need_strategies(seeds: tuple = tuple(range(20260823, 20260833)),
     }
 
 
+def _days_between_dates(earlier: str, later: str) -> int:
+    from datetime import date as _d
+    try:
+        return max(0, (_d.fromisoformat(later[:10])
+                       - _d.fromisoformat(earlier[:10])).days)
+    except ValueError:
+        return 0
+
+
 def state_view(b: LedgerBuilder, subject: Identity, as_of: str, *,
                graph: DependencyGraph | None = None,
                prior: dict | None = None) -> StateView:
@@ -1554,6 +1718,12 @@ def state_view(b: LedgerBuilder, subject: Identity, as_of: str, *,
                   for key, bucket in b.by_key.items()},
         latest_time=inputs["latest_time"],
         evidence_count=inputs["evidence_count"],
+        actions=tuple(
+            (obs.intervention_id, obs.actor, obs.entity_id, obs.attribute,
+             tick_to_date(obs.event_tick),
+             _days_between_dates(tick_to_date(obs.event_tick), as_of))
+            for obs, _ in b.actions),
+        documented_causes=dict(b.documented_causes),
         known_spans=frozenset(s.evidence_span_id for s in b.ledger.spans),
         prior=dict(prior or {}),
         freshness=dict(graph.freshness) if graph else {},
@@ -1907,6 +2077,130 @@ def score_retrieval_vs_state(world: SyntheticWorld,
     }
 
 
+def score_causal_attribution(world: SyntheticWorld) -> dict:
+    """Constitution §III / RSN-CAUSAL — is temporal association kept apart from
+    cause?
+
+    The world knows which changes an intervention actually caused, so a claimed
+    link can be checked. Two arms over identical inputs:
+
+    * **basis-aware** — documented rationale may be stated as a cause; a
+      temporal association may not.
+    * **post hoc** — the control, which reports co-occurrence at documented
+      strength. Not a strawman: it is what a system without a basis distinction
+      necessarily does.
+
+    The headline is `false_causal_claims`: links asserted as causes that the
+    world says are not causal. Pinned at zero for the basis-aware arm, because
+    a wrongly asserted cause is a safety failure rather than an accuracy one.
+    """
+    b = build_full(world, world.observations, world.spec.n_ticks)
+    now = tick_to_date(world.spec.n_ticks)
+    view = state_view(b, world.identity, now)
+
+    # Ground truth: which intervention actually caused each observed change.
+    # Keyed on the VALUE too. Two changes to one key can land on one tick — a
+    # delayed effect and a spontaneous change — and a (key, date) map silently
+    # keeps only the last, scoring a correct attribution as false. That was 4
+    # false claims across 10 seeds attributed to the system that belonged to
+    # this counter.
+    true_cause = {}
+    for chg in world.changes:
+        true_cause[(chg.entity_id, chg.attribute, tick_to_date(chg.tick),
+                    chg.new_value)] = chg.caused_by
+    effective = {i.intervention_id for i in world.interventions
+                 if i.outcome is not InterventionOutcome.INEFFECTIVE}
+
+    # One causal question per *observed change*, not per key. Asking only about
+    # final state gave 3-4 associations per world — too few for the control to
+    # reliably fail, so it scored 0 false claims on one seed by luck. A metric
+    # whose control passes by chance cannot distinguish anything.
+    #
+    # Month-precision assertions are excluded: the ground-truth join is on an
+    # exact date, and a fuzzy join would let a wrong attribution be scored
+    # correct. Excluding them costs sample size and buys an exact denominator.
+    candidates = sorted(
+        {(a.subject, a.predicate, a.obj, a.temporal.event_time)
+         for a in b.ledger.assertions
+         if a.assertion_id not in b.superseded
+         and len(a.temporal.event_time) == 10})
+
+    def run(attributor) -> dict:
+        stated_causes = associations = abstained = 0
+        false_causal = missed_documented = correct_causal = 0
+        for entity, attribute, value, when in candidates:
+            link = attributor(entity, attribute, value, when,
+                              actions=view.actions,
+                              documented_causes=view.documented_causes)
+            if link.basis is CausalBasis.NONE:
+                abstained += 1
+                continue
+            if not link.may_be_stated_as_cause:
+                associations += 1
+                continue
+            stated_causes += 1
+            actual = true_cause.get((entity, attribute, when, value), "")
+            if actual and actual == link.candidate_cause:
+                correct_causal += 1
+            else:
+                false_causal += 1
+        # Recall: documented links the arm failed to surface. The question has
+        # to be about the change the rationale documents — an earlier version
+        # asked about the *currently resolved* value at the *latest* time, which
+        # is a different change, so every rationale about anything but the final
+        # state scored as missed.
+        for (entity, attribute, when, value), (iv_id, _) in \
+                b.documented_causes.items():
+            link = attributor(entity, attribute, value, when,
+                              actions=view.actions,
+                              documented_causes=view.documented_causes)
+            if link.candidate_cause != iv_id:
+                missed_documented += 1
+        return {"candidates": len(candidates),
+                "stated_as_cause": stated_causes,
+                "reported_as_association_only": associations,
+                "abstained": abstained,
+                "correct_causal_claims": correct_causal,
+                "false_causal_claims": false_causal,
+                "missed_documented_links": missed_documented}
+
+    aware = run(attribute_cause)
+    control = run(post_hoc_attribute)
+    ineffective = [i for i in world.interventions
+                   if i.outcome is InterventionOutcome.INEFFECTIVE]
+    # Provenance, not value coincidence. A spontaneous change that happens to
+    # land on the intended value is not a leak, and an earlier version of this
+    # counter reported one as a leak on seed 20260827. The exact question is
+    # whether any ACTION span backs a believed value — which the routing makes
+    # structurally impossible, so this measures the guarantee rather than
+    # approximating it.
+    action_spans = {span_id for _, span_id in b.actions}
+    leaked = sum(
+        1 for key in b.resolved
+        if action_spans & {sp for a in b.by_key.get(key, ())
+                           if a.assertion_id not in b.superseded
+                           for sp in a.evidence_span_ids})
+    return {
+        "interventions": len(world.interventions),
+        "outcomes": {o.value: sum(1 for i in world.interventions
+                                  if i.outcome is o)
+                     for o in InterventionOutcome},
+        "changes_caused_by_an_intervention":
+            sum(1 for c in world.changes if c.caused_by),
+        "documented_links": len(b.documented_causes),
+        "action_records": len(b.actions),
+        "basis_aware": aware,
+        "post_hoc_control": control,
+        "false_causal_claims_avoided":
+            control["false_causal_claims"] - aware["false_causal_claims"],
+        "control_is_worse":
+            control["false_causal_claims"] > aware["false_causal_claims"],
+        # An action is not an observation of its effect.
+        "ineffective_interventions": len(ineffective),
+        "intended_values_leaked_into_state": leaked,
+    }
+
+
 def run_slw_001(spec: WorldSpec | None = None) -> dict:
     """The benchmark. Returns a plain dict so the runner can serialise it."""
     world = SyntheticWorld.generate(spec)
@@ -1980,6 +2274,7 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
         "information_need": score_information_need(world),
         "runtime": score_runtime(world),
         "retrieval_vs_state": score_retrieval_vs_state(world),
+        "causal_attribution": score_causal_attribution(world),
     }
     # A cost saving is only reportable if the answers match. Stating it
     # unconditionally is how a benchmark starts rewarding being fast and wrong.

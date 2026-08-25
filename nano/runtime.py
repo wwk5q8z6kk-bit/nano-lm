@@ -56,6 +56,7 @@ from nano.contracts import (
 )
 from nano.dependency import DependencyGraph, Freshness
 from nano.kernel import ArtifactIR, Identity, SliceStatus, Tool, WorkSlice
+from nano.causal import CausalBasis, attribute_cause
 from nano.needs import DEFAULT_STRATEGY, Strategy, rank_needs
 
 
@@ -79,6 +80,8 @@ class StateView:
     evidence: dict = field(default_factory=dict)        # (ent, attr) -> (span_id,)
     latest_time: dict = field(default_factory=dict)
     evidence_count: dict = field(default_factory=dict)
+    actions: tuple = ()            # (iv_id, actor, entity, attribute, t, lag)
+    documented_causes: dict = field(default_factory=dict)
     known_spans: frozenset = frozenset()
     prior: dict = field(default_factory=dict)           # last answered value
     freshness: dict = field(default_factory=dict)       # object_id -> Freshness
@@ -102,6 +105,7 @@ class QuestionKind(str, Enum):
     WHAT_IS_STALE = "what_is_stale"      # what needs recomputation?
     WHY_DIFFERENT = "why_different"      # why is this not your earlier answer?
     WHAT_WOULD_HELP = "what_would_help"  # what would reduce uncertainty?
+    WHY_DID_IT_CHANGE = "why_did_it_change"   # what explains this change?
 
 
 @dataclass(frozen=True)
@@ -113,7 +117,7 @@ class Question:
 
     def __post_init__(self):
         needs_key = {QuestionKind.CURRENT_VALUE, QuestionKind.WHAT_SUPPORTS,
-                     QuestionKind.WHY_DIFFERENT}
+                     QuestionKind.WHY_DIFFERENT, QuestionKind.WHY_DID_IT_CHANGE}
         if self.kind in needs_key and not (self.entity and self.attribute):
             raise ValueError(
                 f"{self.kind.value} is about a specific fact and needs an "
@@ -191,6 +195,10 @@ FRESHNESS_PROBE = Tool(name="freshness_probe", inputs=("question", "graph"),
 NEED_PLANNER = Tool(name="need_planner", inputs=("state",),
                     outputs=("plan",), cost=6.0, latency_s=0.010,
                     reliability=0.95)
+CAUSAL_ATTRIBUTION = Tool(name="causal_attribution",
+                          inputs=("question", "state", "actions"),
+                          outputs=("link",), cost=4.0, latency_s=0.006,
+                          reliability=0.95)
 
 #: Candidates per question kind, richest last. Selection walks this in cost
 #: order, so adding an expensive capability never makes a cheap sufficient one
@@ -203,6 +211,7 @@ CAPABILITIES: dict = {
     QuestionKind.WHY_DIFFERENT: (DELTA_READ,),
     QuestionKind.WHAT_IS_STALE: (FRESHNESS_PROBE,),
     QuestionKind.WHAT_WOULD_HELP: (NEED_PLANNER,),
+    QuestionKind.WHY_DID_IT_CHANGE: (CAUSAL_ATTRIBUTION,),
 }
 
 
@@ -386,6 +395,38 @@ def _answer_what_would_help(q: Question, view: StateView,
             f"{len(top)}")
 
 
+def _answer_why_did_it_change(q: Question, view: StateView) -> tuple:
+    """Explain a change at the strongest basis the evidence supports.
+
+    A documented rationale may be PRESENTed as a cause. A temporal association
+    may not — it goes to REVIEW with the competing explanations attached and
+    wording that does not say "caused". That asymmetry is the entire point:
+    the two must not render identically.
+    """
+    key = q.key
+    value = view.resolved.get(key)
+    if value is None:
+        return ("", (), EpistemicStatus.NOT_FOUND, Disposition.ABSTAIN,
+                "no settled value to explain")
+    link = attribute_cause(
+        q.entity, q.attribute, value, view.latest_time.get(key, view.as_of),
+        actions=view.actions, documented_causes=view.documented_causes)
+
+    if link.basis is CausalBasis.NONE:
+        return ("", (), link.epistemic_status, Disposition.ABSTAIN,
+                "searched the action record within the window and found no "
+                "candidate explanation")
+    if link.may_be_stated_as_cause:
+        return (link.describe(), link.evidence_span_ids, link.epistemic_status,
+                Disposition.PRESENT,
+                "a source documented this link; the attribution is an observed "
+                "statement, not an inference of ours")
+    return (link.describe(), tuple(sorted(view.known_spans))[:1],
+            link.epistemic_status, Disposition.REVIEW,
+            "co-occurrence only — reporting this as a cause would be temporal "
+            "association presented as causation")
+
+
 _HANDLERS = {
     QuestionKind.CURRENT_VALUE: _answer_current_value,
     QuestionKind.WHAT_SUPPORTS: _answer_what_supports,
@@ -393,6 +434,7 @@ _HANDLERS = {
     QuestionKind.WHAT_CHANGED: _answer_what_changed,
     QuestionKind.WHAT_IS_STALE: _answer_what_is_stale,
     QuestionKind.WHY_DIFFERENT: _answer_why_different,
+    QuestionKind.WHY_DID_IT_CHANGE: _answer_why_did_it_change,
 }
 
 
@@ -502,6 +544,12 @@ def answer(question: Question, view: StateView, work: WorkSlice, *,
                   else DerivationMode.DERIVED)
     if status is EpistemicStatus.INFERRED:
         derivation = DerivationMode.INFERRED
+    if question.kind is QuestionKind.WHY_DID_IT_CHANGE:
+        # A documented rationale is an observed *statement*; an association is
+        # an inference. Never the reverse.
+        derivation = (DerivationMode.OBSERVED
+                      if status is EpistemicStatus.DIRECT_DOCUMENTATION
+                      else DerivationMode.INFERRED)
 
     return Answer(question=question, disposition=disposition, content=content,
                   reason=reason, derivation=derivation,

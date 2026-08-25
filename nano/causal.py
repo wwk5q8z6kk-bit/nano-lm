@@ -149,11 +149,14 @@ def attribute_cause(entity: str, attribute: str, effect_value: str,
     association must never be upgraded because no documentation was found.
 
     `actions` is a sequence of `(intervention_id, actor, entity, attribute,
-    time, lag_days)`; `documented_causes` maps `(entity, attribute, time)` to
-    `(intervention_id, span_id)`. Both are plain data — this function cannot
-    reach a world or a ground truth.
+    time, lag_days)`; `documented_causes` maps `(entity, attribute, time,
+    value)` to `(intervention_id, span_id)`. The value is part of the key
+    deliberately: a rationale documents a specific outcome, and matching on time
+    alone would attach it to a different value reported at the same moment.
+    Both are plain data — this function cannot reach a world or a ground truth.
     """
-    documented = documented_causes.get((entity, attribute, effect_time))
+    documented = documented_causes.get(
+        (entity, attribute, effect_time, effect_value))
     if documented:
         intervention_id, span_id = documented
         actor = next((a[1] for a in actions if a[0] == intervention_id), "")
@@ -199,7 +202,8 @@ def post_hoc_attribute(entity: str, attribute: str, effect_value: str,
     state an association as a cause is to cite something that does not document
     it.
     """
-    documented = documented_causes.get((entity, attribute, effect_time))
+    documented = documented_causes.get(
+        (entity, attribute, effect_time, effect_value))
     if documented:
         intervention_id, span_id = documented
         actor = next((a[1] for a in actions if a[0] == intervention_id), "")

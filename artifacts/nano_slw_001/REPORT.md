@@ -388,7 +388,33 @@ checks.
 
 ---
 
-## 14. Next
+## 14. Interventions and causal attribution (§XXXVII, RSN-CAUSAL)
+
+DomainPack-0 now generates actions that cause world change — 47 per world,
+~24 effective, ~16 ineffective, ~7 delayed — which makes two failure modes
+generatable instead of hypothetical.
+
+**An action is not an observation of its effect.** Action records never reach
+state resolution, so "I set it to X" cannot become "it is X". Measured by
+provenance: **0 leaks**, every seed. (Measuring by value coincidence instead
+reported a false leak on seed 20260827.)
+
+**Temporal association is not causation.** Over 10 seeds, ~6000 candidate
+changes:
+
+| arm | stated as cause | false causal claims |
+|---|---|---|
+| basis-aware | 124 | **0** |
+| post-hoc control | 296 | **153** |
+
+Two instrument defects found and fixed: a rationale keyed on time alone
+transferred to values it did not document, and the ground-truth join kept only
+the last of two changes on a tick — together attributing 4 false claims to the
+system that belonged to the scorer.
+
+---
+
+## 15. Next
 
 `LRN-CORRECTION` and `MTA-EPISTEMIC` are both closed against measured evidence.
 The registry now reads IMPLEMENTED 14 · PARTIAL 13 · PROPOSED 6 · ABSENT 17.

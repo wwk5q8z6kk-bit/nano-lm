@@ -1003,3 +1003,73 @@ def test_the_fold_has_a_measured_crossover_not_an_asserted_one(rvs):
     best = rvs["retrieval_arms"][rvs["best_retrieval_arm"]]
     assert state["cost_per_common_question"] < best["cost_per_common_question"]
     assert state["fold_cost"] > 0
+
+
+# ---------------------------------------------------------------------------
+# Interventions — §XXXVII, and RSN-CAUSAL's named safety failure
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def causal(world):
+    from nano.slw import score_causal_attribution
+    return score_causal_attribution(world)
+
+
+@pytest.fixture(scope="module")
+def causal_full():
+    """The SMALL fixture world runs 20 ticks and does not reliably produce every
+    intervention outcome — on seed 7 it yields zero INEFFECTIVE ones. A test of
+    what the generator *can* produce needs a world with room to produce it;
+    asserting against a world too small to contain the case would either fail
+    spuriously or pass vacuously."""
+    from nano.slw import score_causal_attribution
+    return score_causal_attribution(SyntheticWorld.generate(WorldSpec()))
+
+
+def test_the_world_actually_generates_interventions_of_every_outcome(causal_full):
+    """An INEFFECTIVE intervention is what makes "an action is not an
+    observation of its effect" a generatable error rather than a worry."""
+    causal = causal_full
+    assert causal["interventions"] > 0
+    for outcome in ("effective", "ineffective", "delayed"):
+        assert causal["outcomes"][outcome] > 0, f"no {outcome} intervention"
+    assert causal["changes_caused_by_an_intervention"] > 0
+    assert causal["documented_links"] > 0
+
+
+def test_an_action_never_becomes_a_belief_about_its_effect(causal_full):
+    """The load-bearing structural guarantee. An action record says someone
+    tried; it is never evidence that they succeeded. Measured by provenance —
+    no action span may back any believed value — rather than by checking
+    whether a held value happens to equal an intended one, which counts
+    coincidences as leaks."""
+    assert causal_full["ineffective_interventions"] > 0, "nothing could leak"
+    assert causal_full["intended_values_leaked_into_state"] == 0
+
+
+def test_temporal_association_is_never_stated_as_a_cause(causal):
+    """The named safety failure, pinned at zero rather than a tolerance."""
+    assert causal["basis_aware"]["false_causal_claims"] == 0
+    assert causal["basis_aware"]["reported_as_association_only"] > 0, (
+        "no association arose — the test would be vacuous")
+
+
+def test_removing_the_basis_distinction_produces_false_causal_claims(causal):
+    """The control: identical inputs and identical search, differing only in
+    whether an association may be reported at documented strength."""
+    assert causal["control_is_worse"]
+    assert causal["post_hoc_control"]["false_causal_claims"] > 0
+    assert causal["false_causal_claims_avoided"] > 0
+
+
+def test_the_control_is_an_ablation_not_a_strawman(causal):
+    """It must still get documented links right — it differs on associations
+    only. A control that were wrong everywhere would prove nothing about the
+    one distinction being removed."""
+    aware, control = causal["basis_aware"], causal["post_hoc_control"]
+    assert control["correct_causal_claims"] >= aware["correct_causal_claims"]
+    assert control["stated_as_cause"] > aware["stated_as_cause"]
+
+
+def test_documented_links_are_not_missed(causal):
+    assert causal["basis_aware"]["missed_documented_links"] == 0
