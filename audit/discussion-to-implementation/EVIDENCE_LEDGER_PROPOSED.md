@@ -122,3 +122,50 @@ CONSTRAINT = Do not recreate/move post-alpha-evidence-freeze-2026-07-31
 ```
 
 Remediations approved. Live ledger status banners synced; claim table already matched remediations.
+
+---
+
+## PROPOSED (2026-08-25) — P1 span-port line. Staged, not a live ledger edit.
+
+Owner approval required before these reach `papers/EVIDENCE_LEDGER.json`.
+Constraint honoured: no frozen tag recreated or moved.
+
+### Proposed new claims
+
+| Claim ID | Exact wording | Type | Epistemic | Evid class | Limitations | Invalidation |
+|---|---|---|---|---|---|---|
+| `C_SPANPORT_DELIMIT` | With all three leak channels closed, Qwen2.5-1.5B selects the correct conversational turn for 95/120 gold-bearing slots (79%) but delimits the gold span within it for only 16/120 (13%); located quotes are turn-scale (median 29 chars vs gold median 8; median quote/enclosing-turn ratio 1.00) | MEASUREMENT | SUPPORTED | PUBLIC-ANCHORED | one model, one suite, synthetic; containment is a looser predicate than exact offsets | a length audit showing quotes are not turn-scale; or LOCATED moving with question form as exact-extent does |
+| `C_SPANPORT_FORM_SENSITIVITY` | `asserted_grounded` for the identical condition `C1off_C2off_Qon_QSoff` is 16/192 under one question form and 2/192 under another, while LOCATED is 95/120 vs 97/120 | MEASUREMENT | SUPPORTED | PUBLIC-ANCHORED | two forms only | recompute mismatch |
+| `C_SPANPORT_C1_VERDICT` | The C1 leakage contrast is UNRESOLVED — coverage shift — on both available form-matched pairs: grounded and unbound move in the same direction, co-movement rule fires | GATE_VERDICT | UNRESOLVED | PUBLIC-ANCHORED | C1 buys assertions, not evidence-finding | a pair where grounded rises and unbound does not |
+
+### Proposed methodology note — pilot-then-confirm
+
+**This is the program's first clean instance of pilot-then-confirm, and it should
+become the default for any design whose effect size is itself measurable.**
+
+Before the eight-cell grid ran, a pilot on throwaway encounters **disjoint from
+every measurement instance** measured $\hat\pi_{C2} = 0/40$ (95% Clopper–Pearson
+upper bound 0.072) and registered the C1×C2 interaction as **unidentified rather
+than underpowered** — the distinction being that no replicate count repairs a
+manipulation the model gives nothing to act on. That was recorded in
+`research/preregistrations/PREREG_P1_leakage_2x2.md` §5 before any cell ran.
+
+The landed data at n=192 confirmed it exactly: `asserted_grounded` identical
+across all four C2 pairs in all twelve instances, **Δ 0.000, sd 0.000**.
+
+Why this is worth more than the measurement alone: a null discovered after the
+fact is indistinguishable from an underpowered design, and the program has
+already paid for that ambiguity (C_C3_L, "underpowered"; the E1/E2 seed
+underpower caveats). A null **named in advance, with its effect size bounded and
+its unidentifiability argued from mechanism**, is not ambiguous. It cost one
+minute of local compute against ~52 minutes for the grid.
+
+Registered as `docs/RUNBOOK_contrast_hygiene.md` R7.
+
+### Proposed status change
+
+`C_NANOSCRIBE_STATE` — no change proposed, but note that the span-port
+measurement line it describes is now known to have carried a prompt-side gold
+channel from `09745ec` forward. Post-freeze span-metric claims in that window
+need the taint check in `artifacts/measurement-integrity-audit.md` §1.3. No
+frozen claim is affected (`audit/ADDENDUM_2026-08-25_leakage_taint_audit.md`).
