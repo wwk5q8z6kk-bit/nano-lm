@@ -83,11 +83,15 @@ Because $\theta = -\pi_{C2}$, the interaction effect size **is** $\pi_{C2}$. Gue
 
 | Contrast | $\pi$ used | K for 80% power |
 |---|---|---|
-| C1 main effect | 0.100 (measured) | **12 instances** |
-| C1×C2 interaction | 0 (point estimate) | **none exists** — unidentified |
+| C1 main effect | 0.100 (measured) | **12 instances** — ⚠ **VOID, see below** |
+| C1×C2 interaction | 0 (point estimate) | **none exists** — unidentified *for this model* |
 | C1×C2 interaction | 0.072 (95% upper bound) | 16 instances |
 
 **The interaction is not underpowered — it is unidentified.** The model emitted a quote on 40/40 slots, including on `NOT_MENTIONED` where the format does not ask for one. C2's trigger (`label != NOT_MENTIONED and not quotes`) never occurred. No replicate count repairs a manipulation with no purchase on the model.
+
+> **Scope of $\hat\pi_{C2}=0$ — read this before quoting it.** This is a fact about **Qwen2.5-1.5B-Instruct on this task**, not about the channel. `PARSER_RAW_VALUE_FALLBACK` is live in the scorer and *would* fire for any model that emits a label without a quote. "Unidentified" here means *this model gives the manipulation nothing to act on*, and must never be paraphrased as "C2 is harmless" or "the scorer is sound" — that is exactly the misreading prediction **P2** exists to block. Corroborating evidence that C2 is inert *for both models tested*: the §7b parrot table is **flat across the C2 axis** (10→10 and 9→9); its 10-vs-9 split is the C1 axis. A quote-omitting model would move it.
+
+> **⚠ K = 12 is VOID pending re-pilot.** It was measured under the leaky Q documented in §7b. Under a Q that already carries the answer, $\hat\pi_{C1}=0.10$ estimates *"how often C1 adds something on top of an already-open channel"* — which is not the parameter the repaired instrument needs, and is most likely an **under**-estimate of the true C1 effect (so the repaired K is probably smaller). `pilot_quote_absent.py` must be re-run after `Q_SURFACE` is fixed, and this table re-derived. A registered number that is known-wrong is worse than an absent one, so it is struck rather than carried forward.
 
 ## 6. Registered predictions (falsifiable, stated before the run)
 
@@ -140,7 +144,16 @@ This is a *stronger* reason to hold than the power finding in §5, and it explai
 
 The joint table **does** still discriminate — parrot `state_ok` 6/16 vs ceiling 10/16, `correct_abstention` 0–3/6 vs 6/6, `unbound_assertion` 3–6 vs 0 — which is independent support for the §7 move from a single accuracy scalar to discrimination-based endpoints.
 
-Source: peer session `v7pagl1v` at `b6473cb`, independently reproduced there with a separately-written parrot. **No node launches until `Q_SURFACE` is resolved** — i.e. until the slot can be identified without naming its gold surface string (a slot id, a type-plus-position index, or a paraphrase that does not contain the answer).
+Source: peer session `v7pagl1v` at `b6473cb`, independently reproduced there with a separately-written parrot. **No node launches until `Q_SURFACE` is resolved.**
+
+### The design constraint the repair must satisfy
+
+This determines whether the rebuilt instrument is measurable at all, so it is registered rather than left to be discovered during the rebuild. The replacement slot identifier must be **simultaneously**:
+
+- **(a) free of the gold surface string** — otherwise the leak of §7b persists; and
+- **(b) sufficient to disambiguate same-`atom_type` slots within one encounter** — otherwise the instrument is *underdetermined*, which is already measured: with Q off, 16 slots collapse to **14 distinct prompts**, colliding in enc-1 and enc-4 (`atom-throat` and `atom-absent-fever` are both SYMPTOM). That collision would sink the enc-4 false-positive probe, which would then fire on a prompt artifact rather than on leakage.
+
+A bare atom type satisfies (a) but not (b). The gold value satisfies (b) but not (a). **Type + ordinal position of the target mention in the transcript** satisfies both, at the cost of making the task easier along a different axis — a cost that must be registered explicitly, not absorbed silently. `test_prompts_stay_distinct_in_every_scoring_cell` pins (b); (a) needs its own check, asserting that no prompt contains its own slot's gold surface string.
 
 ## 8. Reporting contract
 
