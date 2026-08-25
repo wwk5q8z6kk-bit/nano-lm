@@ -2,10 +2,10 @@
   "coverage": {
     "total": 50,
     "by_status": {
-      "IMPLEMENTED": 10,
+      "IMPLEMENTED": 11,
       "PARTIAL": 14,
       "PROPOSED": 6,
-      "ABSENT": 20
+      "ABSENT": 19
     },
     "domains_covered": 26,
     "domains_required": 26,
@@ -508,24 +508,28 @@
       "capability_id": "STA-DIFF",
       "domain": "State",
       "capability": "Diff two state versions into a change report",
-      "internal_representation": "StateDelta (not built)",
-      "module": "change_summary.md is a stub, not a diff",
+      "internal_representation": "StateDelta over two PatientStateSnapshots",
+      "module": "nano.contracts.diff_states",
       "inputs": [
         "state v_n",
-        "state v_n+1"
+        "state v_n+1",
+        "evidence"
       ],
-      "outputs": "changed / new / resolved",
+      "outputs": [
+        "added/removed/superseded/newly_uncertain/newly_confirmed"
+      ],
       "memory_requirements": "both versions retained",
       "tools": [],
       "training_objective": "none (structural diff)",
       "evaluation_benchmark": "LCRB-2 change detection",
       "failure_modes": [
         "change reported without cause",
-        "unchanged item reported as changed"
+        "unchanged item reported as changed",
+        "supersession collapsed into removal, losing the reason (FIXED, pinned by test_superseded_is_not_removed)"
       ],
       "implementation_stage": "B",
-      "status": "ABSENT",
-      "evidence": ""
+      "status": "IMPLEMENTED",
+      "evidence": "nano/contracts.py::StateDelta; nano/test_state_delta.py"
     },
     {
       "capability_id": "CFL-DETECT",

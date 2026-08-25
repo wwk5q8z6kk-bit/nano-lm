@@ -347,15 +347,19 @@ CAPABILITIES: tuple[Capability, ...] = (
 
     _c(capability_id="STA-DIFF", domain="State",
        capability="Diff two state versions into a change report",
-       internal_representation="StateDelta (not built)",
-       module="change_summary.md is a stub, not a diff",
-       inputs=("state v_n", "state v_n+1"), outputs=("changed / new / resolved"),
+       internal_representation="StateDelta over two PatientStateSnapshots",
+       module="nano.contracts.diff_states",
+       inputs=("state v_n", "state v_n+1", "evidence"),
+       outputs=("added/removed/superseded/newly_uncertain/newly_confirmed",),
        memory_requirements="both versions retained",
        tools=(), training_objective="none (structural diff)",
        evaluation_benchmark="LCRB-2 change detection",
        failure_modes=("change reported without cause",
-                      "unchanged item reported as changed"),
-       implementation_stage=Stage.B_CHART, status=Status.ABSENT),
+                      "unchanged item reported as changed",
+                      "supersession collapsed into removal, losing the reason "
+                      "(FIXED, pinned by test_superseded_is_not_removed)"),
+       implementation_stage=Stage.B_CHART, status=Status.IMPLEMENTED,
+       evidence="nano/contracts.py::StateDelta; nano/test_state_delta.py"),
 
     # ---------------- Conflict and gaps ----------------
     _c(capability_id="CFL-DETECT", domain="Conflict",

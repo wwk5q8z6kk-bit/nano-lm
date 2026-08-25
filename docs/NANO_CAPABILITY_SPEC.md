@@ -1,6 +1,6 @@
 # Nano capability specification
 
-50 capabilities across 26 domains. Status: IMPLEMENTED 10, PARTIAL 14, PROPOSED 6, ABSENT 20
+50 capabilities across 26 domains. Status: IMPLEMENTED 11, PARTIAL 14, PROPOSED 6, ABSENT 19
 
 | id | domain | capability | stage | status | evidence |
 |---|---|---|---|---|---|
@@ -23,7 +23,7 @@
 | `LNG-ZOOM` | Longitudinal | Descend from trajectory to exact source passage | B | **PARTIAL** | nano/contracts.py id chain; artifacts/nano_clin_001/*.jsonl |
 | `STA-PROJ` | State | Project patient state from the evidence ledger | A | **IMPLEMENTED** | nano/test_nano_clin_001.py::test_state_is_a_rebuildable_projection |
 | `STA-VERSION` | State | Append new evidence without mutating history | A | **PARTIAL** | test_new_evidence_appends_and_does_not_overwrite (append yes; downstream invalidation not implemented) |
-| `STA-DIFF` | State | Diff two state versions into a change report | B | **ABSENT** | — |
+| `STA-DIFF` | State | Diff two state versions into a change report | B | **IMPLEMENTED** | nano/contracts.py::StateDelta; nano/test_state_delta.py |
 | `CFL-DETECT` | Conflict | Detect contradictions and never resolve them silently | A | **PARTIAL** | nano/pipeline.py::_detect_conflicts; concept-scoped, 5 concepts only |
 | `GAP-DETECT` | Conflict | Distinguish not-found / unavailable / never-performed | A | **PARTIAL** | nano/test_nano_clin_001.py::test_not_found_is_distinguished_from_absent |
 | `MEM-HIER` | Memory | Working / encounter / episodic / longitudinal / semantic memory | CORE | **ABSENT** | — |

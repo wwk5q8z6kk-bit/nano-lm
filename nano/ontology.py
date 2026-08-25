@@ -255,6 +255,46 @@ PRIMITIVES: tuple[Primitive, ...] = (
        presence=Presence.NAMED_ONLY,
        admitted_because="adaptive compute needs an addressable unit to budget"),
 
+    _p(name="StateDelta", plane="World model",
+       definition="The change between two state projections, with its evidence.",
+       must_not_conflate_with=("State", "Event"),
+       presence=Presence.IN_CODE, implementation="nano/contracts.py::StateDelta",
+       admitted_because="what changed is the longitudinal question; a new snapshot "
+                        "does not answer it",
+       splits_from="State"),
+
+    _p(name="Supersession", plane="World model",
+       definition="A fact replaced by a correction, as opposed to one that stopped being true.",
+       must_not_conflate_with=("Removal", "StateDelta"),
+       presence=Presence.IN_CODE,
+       implementation="nano/contracts.py::StateDelta.superseded",
+       admitted_because="a corrected date and a discontinued medication both "
+                        "disappear from state; collapsing them loses the reason",
+       splits_from="StateDelta"),
+
+    _p(name="Identity", plane="Identity & Authority",
+       definition="The subject/actor/source a piece of information belongs to.",
+       must_not_conflate_with=("Entity", "Provenance"),
+       presence=Presence.PARTIAL,
+       implementation="nano/contracts.py (patient_id required on every object)",
+       admitted_because="a correct fact attached to the wrong subject is a "
+                        "semantic failure, not an infrastructure one"),
+
+    _p(name="Dependency", plane="Dependency & Invalidation",
+       definition="The lineage edge from a derived object back to what produced it.",
+       must_not_conflate_with=("Provenance", "Relation"),
+       presence=Presence.NAMED_ONLY,
+       admitted_because="when evidence is corrected, everything downstream must "
+                        "become inspectably stale rather than silently wrong"),
+
+    _p(name="Staleness", plane="Dependency & Invalidation",
+       definition="A derived object whose inputs changed after it was produced.",
+       must_not_conflate_with=("Supersession", "Uncertainty"),
+       presence=Presence.PARTIAL,
+       implementation="nano/contracts.py::DerivedArtifact.freshness_status",
+       admitted_because="an artifact can be internally correct and still out of date",
+       splits_from="Dependency"),
+
     _p(name="DerivationMode", plane="Metacognition",
        definition="How a statement came to be: observed, derived, inferred, "
                   "hypothesised, predicted, simulated.",
@@ -267,8 +307,9 @@ PRIMITIVES: tuple[Primitive, ...] = (
 )
 
 
-PLANES = ("Observation", "Evidence", "World model", "Memory", "Cognition",
-          "Tool", "Artifact", "Verification", "Metacognition")
+PLANES = ("Identity & Authority", "Observation", "Evidence", "World model",
+          "Memory", "Cognition", "Tool", "Artifact", "Verification",
+          "Metacognition", "Dependency & Invalidation")
 
 
 def by_presence() -> dict[str, list[str]]:

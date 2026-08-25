@@ -440,3 +440,113 @@ class VerificationReceipt:
     def __post_init__(self):
         object.__setattr__(self, "receipt_id", _cid(
             {"a": self.artifact_id, "n": len(self.claim_results)}, "vrfy"))
+
+
+@dataclass(frozen=True)
+class StateDelta:
+    """The change between two state projections — a first-class artifact.
+
+    Nano's longitudinal value is not the new snapshot; it is knowing *what
+    changed and why*. A delta is derived from two snapshots plus the evidence
+    admitted between them, so it inherits the ledger's authority rather than
+    being asserted separately.
+
+    `superseded` is deliberately distinct from `removed`: a fact that stopped
+    being true (medication discontinued) is not a fact that was corrected
+    (wrong date). Collapsing them loses the reason, which is the thing a
+    clinician actually needs.
+    """
+    patient_id: str
+    from_version: int
+    to_version: int
+    from_snapshot_id: str
+    to_snapshot_id: str
+    added: tuple = ()
+    removed: tuple = ()
+    modified: tuple = ()
+    newly_uncertain: tuple = ()
+    newly_confirmed: tuple = ()
+    superseded: tuple = ()
+    conflicting: tuple = ()
+    evidence_span_ids: tuple = ()
+    delta_id: str = ""
+
+    def __post_init__(self):
+        if self.to_version <= self.from_version:
+            raise ValueError(
+                f"delta must move forward: {self.from_version} -> {self.to_version}")
+        if self.from_snapshot_id == self.to_snapshot_id:
+            raise ValueError("delta between identical snapshots is not a change")
+        # A change with no evidence behind it is an assertion about the world
+        # that no source supports.
+        if self.has_changes and not self.evidence_span_ids:
+            raise ValueError(
+                "state delta reports changes but cites no evidence "
+                "(absence-never-from-silence applies to change too)")
+        object.__setattr__(self, "delta_id", _cid(
+            {"p": self.patient_id, "f": self.from_snapshot_id,
+             "t": self.to_snapshot_id}, "delta"))
+
+    @property
+    def has_changes(self) -> bool:
+        return bool(self.added or self.removed or self.modified
+                    or self.newly_uncertain or self.newly_confirmed
+                    or self.superseded or self.conflicting)
+
+    def summary(self) -> dict[str, int]:
+        return {k: len(getattr(self, k)) for k in
+                ("added", "removed", "modified", "newly_uncertain",
+                 "newly_confirmed", "superseded", "conflicting")}
+
+
+def diff_states(
+    before: PatientStateSnapshot,
+    after: PatientStateSnapshot,
+    *,
+    evidence_span_ids: tuple = (),
+    superseded: tuple = (),
+) -> StateDelta:
+    """Derive a StateDelta from two snapshots.
+
+    `superseded` must be supplied by the caller: whether a disappearance is a
+    correction or a real-world change cannot be recovered from the snapshots
+    alone, and guessing is exactly the kind of silent resolution the
+    architecture forbids.
+    """
+    if before.patient_id != after.patient_id:
+        raise ValueError("refusing to diff snapshots across patients")
+
+    def _fields(s):
+        return {
+            "conditions": set(s.active_conditions),
+            "medications": set(s.current_medications),
+            "labs": set(s.laboratory_state),
+            "uncertain": set(s.uncertainties),
+            "conflicts": set(s.conflicts),
+        }
+
+    prev, curr = _fields(before), _fields(after)
+    sup = set(superseded)
+    added, removed = [], []
+    for key in ("conditions", "medications", "labs"):
+        added += sorted(f"{key}:{x}" for x in curr[key] - prev[key])
+        # Compare the PREFIXED key against `superseded`. An earlier version
+        # tested the bare value against a prefixed set, so the filter never
+        # fired and every supersession was also reported as a removal.
+        removed += sorted(k for k in (f"{key}:{x}" for x in prev[key] - curr[key])
+                          if k not in sup)
+
+    return StateDelta(
+        patient_id=after.patient_id,
+        from_version=before.evidence_ledger_version,
+        to_version=after.evidence_ledger_version,
+        from_snapshot_id=before.snapshot_id,
+        to_snapshot_id=after.snapshot_id,
+        added=tuple(added),
+        removed=tuple(removed),
+        newly_uncertain=tuple(sorted(curr["uncertain"] - prev["uncertain"])),
+        newly_confirmed=tuple(sorted(prev["uncertain"] - curr["uncertain"])),
+        superseded=tuple(sorted(sup)),
+        conflicting=tuple(sorted(curr["conflicts"] - prev["conflicts"])),
+        evidence_span_ids=tuple(evidence_span_ids),
+    )
