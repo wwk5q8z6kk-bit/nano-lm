@@ -53,6 +53,17 @@ Three consequences that are ordering rules, not preferences:
    simultaneously serve as a clean test of delimitation. This generalises the
    arm-B VOID (`4de84c18`) past the span-port line.
 
+   > **Scope note, per the HEDGE_REQUIRED policy adopted the same day**
+   > (`RESEARCH_STATUS.md`, ESTABLISHED qualification). The antecedents above are
+   > **conditional and general** — they say *if* a model fails to delimit, not
+   > that the span-port model does. For the span-port line specifically,
+   > "bottleneck", "cannot delimit" and "delimitation failure" are forbidden
+   > until the construct question resolves; what is in evidence is that the model
+   > **returns the enclosing turn rather than the minimal span**, and whether that
+   > is an error at all is unresolved. This rule is about *experiment design* —
+   > which manipulation can test which mechanism — and asserts nothing about
+   > where the span-port model's difficulty lies.
+
 ---
 
 ## The eighteen-field standard

@@ -497,8 +497,12 @@ improve the instrument first. And **if a manipulation changes the thing being
 measured rather than the mechanism intended to affect it, the result is not
 evidence either way**: declare VOID, diagnose the failed invariance, redesign.
 
-Retrieval and delimitation are separate instruments. A manipulation that changes
-retrieval cannot simultaneously be a clean test of delimitation (§23).
+Retrieval and span-extent are separately measurable and need separate
+instruments (§13). A manipulation that changes retrieval cannot simultaneously
+be a clean test of delimitation — H-delimit and H-retrieve are distinct
+hypotheses, and §23's two unresolveds are independent of each other. Per the
+**HEDGE_REQUIRED** policy this is a statement about experiment design, not a
+claim about where the span-port model's difficulty lies.
 
 ### The minimum standard for architectural research
 
@@ -522,8 +526,13 @@ Five of these are the ones this program learned the hard way, and they are the
 ones most often skipped:
 
 - **measured bottleneck** — not a suspected one. The scribe line and the
-  span-port line have *different* measured bottlenecks (§23); a mechanism aimed
-  at the wrong one cannot inform whichever it is pointed at.
+  span-port line have *different* measured failure modes (§23); a mechanism
+  aimed at the wrong one cannot inform whichever it is pointed at. For the
+  span-port line the word **"bottleneck" is currently forbidden** under
+  HEDGE_REQUIRED — what is measured there is that the model returns the
+  enclosing turn rather than the minimal span, and whether that is an error at
+  all is unresolved. A field this standard requires you to *name* is not a
+  licence to assert one that is not in evidence.
 - **invariance requirements** — the capacity the manipulation must leave alone,
   bounded numerically, breach ⇒ VOID. See **R8**. E-DELIMIT arm B supplied every
   other field on this list and still produced nothing.
