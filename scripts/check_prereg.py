@@ -23,7 +23,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PREREG_DIR = ROOT / "research/preregistrations"
+# Opt-in must be a declaration line, not any prose mention of the standard's
+# name — otherwise a document that merely discusses the standard opts itself in.
 STANDARD = "question-before-architecture-v1"
+OPT_IN = re.compile(
+    rf"^\s*\*\*Standard:\*\*\s*{re.escape(STANDARD)}\s*$", re.M
+)
 
 # (canonical name, regexes that may head the section)
 FIELDS: tuple[tuple[str, str], ...] = (
@@ -85,7 +90,7 @@ def substantive(body: str) -> bool:
 def check(path: Path) -> tuple[str, list[str]]:
     """Return (status, missing_fields)."""
     text = path.read_text(encoding="utf-8")
-    if STANDARD not in text:
+    if not OPT_IN.search(text):
         return "GRANDFATHERED", []
     found = sections(text)
     missing: list[str] = []

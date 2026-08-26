@@ -237,9 +237,15 @@ does the experiment distinguish?* — is what produced this ranking.
    embedding parameter count unchanged (it is — same vocab 4098). *Discriminates:*
    capability floor vs context-fit confound — the single largest ambiguity in the
    current record.
-2. **Two-stage span-port: retrieval → conditional delimitation.** *Instrument:*
-   `campaign_v2` span-port. *Bottleneck:* delimitation, conditional on the
-   retrieval the model already performs at 97/120. *Manipulation:* stage 1 is
+2. **Two-stage span-port: retrieval → conditional delimitation.**
+   **NOT READY — fails the readiness gate** (SPEC §25). Under HEDGE_REQUIRED
+   there is **no measured failure mode** on this line to aim at, so gate
+   question 3 is unanswerable and an unanswered question is a stop. Blocked
+   behind unresolved (1), the construct question — which is a human/clinician
+   judgement, not compute. Kept here for its design, which is sound.
+   *Instrument:* `campaign_v2` span-port. *Hypothesised mechanism (H-delimit,
+   not a measured bottleneck):* conditional span selection, given the turn
+   selection the model already performs at 97/120. *Manipulation:* stage 1 is
    free-form and unchanged — the model quotes a turn. Stage 2 enumerates
    sub-spans **of the turn the model itself chose**, never the gold turn, so no
    location is handed over. Formulation adopted from `work/edelimit-instrument`,

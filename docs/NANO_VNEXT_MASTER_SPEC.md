@@ -716,6 +716,30 @@ pre-registration **and** experiment-scoped authorization before launch.
 Every future experiment states, before it runs, the **eighteen-field standard in
 §20** — one standard, not a second list.
 
+### Consequence of HEDGE_REQUIRED for the span-port candidate
+
+The two owner directives of 2026-08-26 interact, and the interaction has a
+verdict. The eighteen-field standard requires a **measured bottleneck**. The
+HEDGE_REQUIRED policy forbids naming one for the span-port line, because
+*"bottleneck" is the wrong word for anything currently in evidence*. Both hold,
+so gate question 3 is **unanswerable for that line** — and §25's own rule is that
+an unanswered question is a stop, not a caveat.
+
+> **The two-stage span-port candidate therefore fails the readiness gate on its
+> face.** Not for want of paperwork — for want of a measured failure mode to aim
+> at. It is not merely unauthorized; it is **not ready**, and pre-registering it
+> would not make it ready.
+
+What would: resolving §23's construct question — *is a non-minimal span an error
+at all?* That is question 1 of the two independent unresolveds, it needs
+human/clinician judgement rather than compute (`E3 = UNRESOLVED`), and until it
+lands there is no measured failure mode on this line for a mechanism to address.
+The concurrent session's reading — that the construct question **gates** E-DELIMIT
+round 2 rather than following it — is what this standard independently implies.
+
+This is the standard working as intended: it disqualified a candidate that
+twelve fields and an authorization check would have let through.
+
 ### The readiness gate
 
 Ratified by the owner 2026-08-26; extended the same day by *Question before
