@@ -118,6 +118,20 @@ causalfix 0.086, gated 0.061.
 > which is exact rather than statistical. Full table:
 > `artifacts/RESULT-native30-gated-revalidation.md`.
 
+**Strengthened further by a fourth population found while auditing disk.**
+`artifacts/campaign/kaggle_native30_download/` turned out not to be a copy of the
+archived wave but a **second independent execution of it** — same run_ids,
+byte-identical configs, same 1800 steps, same date, different hardware, and
+materially different results. Converged loss for the same config differs between
+the two executions by up to **27.1×** (Kaggle median 0.063, range 0.006–0.753;
+local median 0.028, range 0.008–0.536).
+
+That is run-to-run variance *within the defective population alone*, and it
+settles D6 beyond the n=27 argument: no converged-loss threshold can separate
+leaking from clean runs when a single leaking config reproduces across a 27×
+spread. Metadata preserved independently of the weights in
+`artifacts/campaign/native30_kaggle_replicate_metadata.json`.
+
 ## Standing rule this history produces
 
 > A check that has passed once is not protection. All of D1.1, D2.1 and D3.1

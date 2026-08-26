@@ -134,10 +134,20 @@ range spans 0.008–0.536. This confirms at n=27 what the two-point calibration 
   an existing asset (`sft/tokenizer.json`, own-stack BPE, 0/150 over context).
   It changes the instrument, so it breaks comparability with all three classes
   and belongs in its own preregistered change.
-- **Disk at 99% (16–17 GiB free).** Three 18G checkpoint sets now coexist by
-  design; do not delete any, they are the provenance record. Cheapest reclaim is
-  `artifacts/campaign/kaggle_native30_download/` (19G, re-downloadable, nested
-  `.git`, already gitignored).
+- **Disk at 99% (16–17 GiB free) and the obvious reclaim is NOT safe as
+  premised.** `artifacts/campaign/kaggle_native30_download/` was believed to be
+  a re-downloadable duplicate outside the evidence record. It is not: its 54
+  `.pt` files are a **fourth provenance class** — a second independent execution
+  of the defective wave, same run_ids and byte-identical configs but different
+  results (up to 27.1× apart). Verified by size parity failing on all nine
+  `latest.pt` and a sha256 spot-check differing. **Do not delete it on the
+  "redundant copy" rationale.** 18.2 of its 19 GiB is weights; the scientific
+  content is now preserved separately in
+  `artifacts/campaign/native30_kaggle_replicate_metadata.json`, so dropping the
+  weights specifically is a defensible owner decision — dropping the directory
+  as "expendable" is not.
+- The lost `native100_evidence_bottleneck_s0` checkpoint is confirmed
+  **unrecoverable**: the Kaggle snapshot also holds only `step_000006.json`.
 - Out of scope by instruction: minbpe/BPE swap mid-revalidation, any paid
   compute, and the `orx/*` branches.
 - Out of scope by instruction: minbpe/BPE swap (breaks comparability
