@@ -123,6 +123,14 @@ capability-floor result is confounded with tokenizer context fit, not size).
 
 ## 3. Scientific principles
 
+The governing rule, ratified 2026-08-26
+([decision record](../research/decision_records/2026-08-26-question-before-architecture.md)),
+from which the rest follow:
+
+> **Question before architecture.** Before proposing, implementing, or
+> authorizing any architecture change or experiment, first establish that the
+> experiment is *capable of answering the question being asked*.
+
 1. **Name the instrument and its measured bottleneck before proposing a
    mechanism.** Different lines have different bottlenecks; a mechanism aimed at
    the wrong one cannot inform.
@@ -143,6 +151,20 @@ capability-floor result is confounded with tokenizer context fit, not size).
    plus a verifier is sufficient.
 8. **Do not rewrite history.** Exploratory results never become confirmatory
    evidence retroactively. Gaps are recorded, not silently corrected.
+9. **Improve the instrument before expanding the architecture.** If the
+   instrument cannot discriminate the competing explanations, that is the
+   experiment to run. Do not optimize the architecture against a measurement
+   that cannot tell the hypotheses apart.
+10. **Cheapness is not evidential validity.** Prefer the smallest experiment that
+    discriminates, but a \$0 run can still be confirmatory and require
+    authorization, and an expensive run can still be worthless if its invariants
+    are violated. Cost is a resource question, never an evidence question.
+11. **Separate foundational questions from architectural claims.** Where the
+    capability floor may be contaminated by representation, tokenizer,
+    context-length, evaluation, or instrumentation constraints, resolve that
+    first and separately — do not let it contaminate the architecture ladder.
+12. **State the interpretation boundary.** Every result records what it
+    establishes, what it does not, and what remains untested.
 
 ## 4. Ontology
 
@@ -446,30 +468,80 @@ recurrent/iterative refinement · retrieval · structured memory · adaptive
 computation · sparse specialists · energy/constraint dynamics · early exits ·
 modality experts · retrieval-conditioned computation.
 
+### Question before architecture
+
+Ratified by the owner 2026-08-26,
+[`research/decision_records/2026-08-26-question-before-architecture.md`](../research/decision_records/2026-08-26-question-before-architecture.md).
+The governing rule of this section:
+
+> Before proposing, implementing, or authorizing any architecture change or
+> experiment, first establish that the experiment is **capable of answering the
+> question being asked**.
+
+The causal chain is directional:
+
+```
+observed failure → hypothesis → targeted mechanism → controlled manipulation
+→ preserved invariants → measurable prediction → falsifiable result
+```
+
+and never `interesting architecture → implementation → benchmark score →
+post-hoc explanation`.
+
+Two ordering rules follow. **Do not optimize the architecture before
+establishing that the instrument can discriminate the architectural
+hypothesis** — if the instrument cannot distinguish competing explanations,
+improve the instrument first. And **if a manipulation changes the thing being
+measured rather than the mechanism intended to affect it, the result is not
+evidence either way**: declare VOID, diagnose the failed invariance, redesign.
+
+Retrieval and delimitation are separate instruments. A manipulation that changes
+retrieval cannot simultaneously be a clean test of delimitation (§23).
+
 ### The minimum standard for architectural research
 
-Ratified by the owner 2026-08-26. **Every proposed mechanism supplies all twelve
-before it is an experiment.** This chain replaces the two shorter, divergent
-lists this document previously carried in §20 and §25; there is now one standard
-and both sections cite it.
+**Every proposed mechanism supplies all eighteen fields before it is an
+experiment.** This extends the twelve-field chain ratified earlier the same day;
+all twelve are carried forward, six are new, none were removed. The field-by-field
+mapping is in the decision record.
 
 ```
-hypothesis → instrument → measured bottleneck → manipulation
-→ invariance condition → baseline → expected benefit → cost
-→ falsifier → preregistered decision rule → authorization → provenance
+product question → scientific question → instrument → measured bottleneck
+→ hypothesis → baseline/control → manipulation → invariance requirements
+→ confound analysis → outcome measures → decision rule → kill condition
+→ falsifier → authorization → provenance → resource accounting
+→ reproducibility → interpretation boundary
 ```
 
-Three of these are the ones this program learned the hard way, and they are the
+Machine-checkable: `research/preregistrations/TEMPLATE.md` and
+`scripts/check_prereg.py`.
+
+Five of these are the ones this program learned the hard way, and they are the
 ones most often skipped:
 
 - **measured bottleneck** — not a suspected one. The scribe line and the
   span-port line have *different* measured bottlenecks (§23); a mechanism aimed
   at the wrong one cannot inform whichever it is pointed at.
-- **invariance condition** — the capacity the manipulation must leave alone,
+- **invariance requirements** — the capacity the manipulation must leave alone,
   bounded numerically, breach ⇒ VOID. See **R8**. E-DELIMIT arm B supplied every
   other field on this list and still produced nothing.
+- **confound analysis** — the §25 readiness-gate question promoted to a
+  preregistered field. It is what ranks candidates: an experiment that produces
+  the same artifact whichever explanation is true is not worth its compute.
+- **kill condition** — distinct from the falsifier. A falsifier is a result that
+  counts *against the hypothesis*; a kill condition is a result that means *the
+  instrument failed and the hypothesis was never tested*.
 - **authorization** — experiment-scoped, per launch, and not implied by the run
-  being free (`docs/ACTIVE_NOW.md` line 47).
+  being free (`docs/ACTIVE_NOW.md` line 47). **Cheapness is not evidential
+  validity**: a \$0 local run can still be a confirmatory experiment requiring
+  authorization, and an expensive run can still be worthless if its invariants
+  are violated.
+
+**Foundational questions are not architecture rungs.** Where the capability
+floor may itself be contaminated by representation, tokenizer, context-length,
+evaluation, or instrumentation constraints, those questions are resolved
+separately rather than allowed to contaminate architectural claims. §24
+hypothesis 1 is a foundational instrument question, not a mechanism test.
 
 **Explicitly not approved:**
 
@@ -521,6 +593,35 @@ substrate (§§4–19); the lattice describes what has been earned.
 - **Report presented risk and review load together.**
 - **Contrast hygiene R1–R5** (`docs/RUNBOOK_contrast_hygiene.md`) applies to
   every comparison.
+- **Improve the instrument before expanding the architecture.** If the
+  instrument cannot discriminate between the competing explanations, that is the
+  experiment to run first. An instrument incapable of distinguishing hypotheses
+  makes every architectural result it produces uninterpretable.
+- **Measure cost as an outcome, not as an excuse.** Outcome measures include
+  capability and quality *and* compute, latency, memory, and cost — the §2
+  optimization target is verified capability per unit of all four. Cheapness is
+  useful; it is **not** a criterion of evidential validity.
+
+### Experiment verdicts
+
+Every experiment closes in exactly one of six states. **Never convert a VOID
+into a negative result merely because the observed number is unfavourable.**
+
+| Verdict | Meaning |
+|---|---|
+| **SUPPORTED** | The preregistered evidence supports the hypothesis. |
+| **REFUTED** | The experiment validly tested the hypothesis and its prediction failed. |
+| **NULL / INCONCLUSIVE** | A valid experiment that did not distinguish the alternatives. |
+| **VOID** | Assumptions or invariance requirements failed; the result cannot answer the question. |
+| **PENDING** | Required validation or replication has not yet occurred. |
+| **NOT AUTHORIZED** | The experiment has not been permitted to run. |
+
+A failed experiment is not necessarily a failed hypothesis. These are *run*
+verdicts and do not replace the *claim* buckets in
+[`RESEARCH_STATUS.md`](RESEARCH_STATUS.md), which
+[`PROJECT_AUTHORITY.md`](PROJECT_AUTHORITY.md) §1 makes canonical; the mapping
+between them is in the decision record. A VOID returns its hypothesis to
+`HYPOTHESES` untouched — E-DELIMIT arm B is the worked example (§23).
 
 ## 23. Current experimental record
 
@@ -577,32 +678,47 @@ See RESEARCH_STATUS § HYPOTHESES. In priority order by information value:
 RESEARCH_STATUS § NEXT CANDIDATE EXPERIMENTS; each requires its own
 pre-registration **and** experiment-scoped authorization before launch.
 
-Every future experiment states, before it runs, the **twelve-field chain in §20**
-— one standard, not a second list.
+Every future experiment states, before it runs, the **eighteen-field standard in
+§20** — one standard, not a second list.
 
 ### The readiness gate
 
-Ratified by the owner 2026-08-26. Before an experiment is built, answer five
-questions:
+Ratified by the owner 2026-08-26; extended the same day by *Question before
+architecture*. Before an experiment is **built**, answer seven questions. This
+is the cheap early filter; the eighteen fields are the preregistration.
 
-1. **What instrument are we measuring?**
-2. **What is its measured bottleneck?**
-3. **What invariance must the manipulation preserve?**
-4. **What competing explanations does the experiment distinguish?**
-5. **What result would falsify the hypothesis?**
+1. **What product question are we ultimately serving?**
+2. **What instrument are we measuring?**
+3. **What is its measured bottleneck?**
+4. **What invariance must the manipulation preserve?**
+5. **What competing explanations does the experiment distinguish?**
+6. **What result would falsify the hypothesis?**
+7. **What observation would make the experiment incapable of answering its
+   question at all?**
 
 > **If those questions cannot be answered beforehand, the experiment is not
 > ready.** This is a gate, not a checklist: an unanswered question is a stop, not
 > a caveat to note in the write-up.
 
-Question 4 is the one that is genuinely new here, and it is the one that ranks
-candidates. An experiment that cannot fail informatively — that produces the
-same artifact whichever explanation is true — is not worth its compute even when
-every other field is filled in. It is why the tokenizer swap ranks first: it
-separates *capability floor* from *context-fit confound*, which is the single
-largest ambiguity in the record.
+Questions 1 and 7 are the additions. **Question 1** prevents a scientifically
+tidy experiment that improves nothing the product needs — the chain begins at an
+*observed failure* on a line that matters, not at an interesting mechanism.
+**Question 7** is the kill condition, and it is not the falsifier: question 6
+asks what would count against the hypothesis, question 7 asks what would mean the
+hypothesis was never tested. E-DELIMIT arm B answered 6 and not 7, and its
+`asserted_grounded` 0/192 would have been read as a refutation had the
+distinction not been drawn afterwards.
 
-The **invariance condition** (question 3) is the one this program paid for. It
+**Question 5** — competing explanations — was the addition that the original
+five-question gate contributed, and it is the one that ranks candidates. An
+experiment that cannot fail informatively — that produces the same artifact
+whichever explanation is true — is not worth its compute even when every other
+field is filled in. It is why the tokenizer swap ranks first: it separates
+*capability floor* from *context-fit confound*, which is the single largest
+ambiguity in the record. That question is a **foundational** one, not an
+architecture rung (§20).
+
+The **invariance requirement** (question 4) is the one this program paid for. It
 exists because E-DELIMIT arm B satisfied every other field and still produced
 nothing.
 
@@ -657,8 +773,26 @@ Which has a practical consequence and a procedural one:
 > more falsifiable, not merely more elaborate.
 
 > Before another architecture is implemented, the **readiness gate** (§25) must
-> pass: instrument, measured bottleneck, invariance, competing explanations
-> distinguished, falsifier. Unanswered ⇒ not ready.
+> pass: product question, instrument, measured bottleneck, invariance, competing
+> explanations distinguished, falsifier, kill condition. Unanswered ⇒ not ready.
+
+And the rule that orders all of it, ratified 2026-08-26:
+
+> **Question before architecture.** Establish that the experiment is capable of
+> answering the question being asked — before proposing, implementing, or
+> authorizing anything. No architecture is added because it is theoretically
+> attractive, biologically inspired, physics-inspired, fashionable, or
+> intuitively plausible. A mechanism earns its place by resolving a **measured**
+> failure mode under a controlled experiment.
+
+The objective is not to discover a particular architecture. It is to discover the
+**smallest set of empirically justified mechanisms** that produces the required
+Nano capabilities at the best verified capability per unit of compute, latency,
+memory, energy, and cost.
+
+> Earn every component. Preserve every invariant. Predefine every decision.
+> Record every limitation. Kill experiments that cannot answer their own
+> question.
 
 The goal is a highly capable 1–7B-class local Nano system. Every architectural
 component is earned experimentally or it is not in the system.
