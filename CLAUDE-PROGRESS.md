@@ -1,5 +1,43 @@
 # nano-lm — session progress (updated 2026-07-26)
 
+> ## ⚠ THIS BRANCH IS SUPERSEDED AS AN EXPERIMENT BASE (added 2026-08-26)
+>
+> **Do not build a span-port experiment on `work/leakage-power-analysis`.** It
+> carries the delimitation hypothesis and the analysis tooling, but its
+> *measurement path is stale* in two ways that silently confound any contrast
+> built here:
+>
+> 1. **Superseded question form.** This branch has the old yes/no form
+>    (`"Does the patient mention 'migraines'?"`). The instrument that produced
+>    every number the hypothesis cites uses the **unified wh form**
+>    (`"What does the {who} say about {identifier}?"`), added in `b707478`.
+>    Contrasting across the two reproduces exactly the defect that voided the C3
+>    arm — and R2 forbids it, since the prompt-template hashes differ.
+> 2. **No multi-instance suite.** `campaign_v2` here returns 5 single cases
+>    (`campaign_v2_20260825`). The 12-instance × 16-slot suite is
+>    `campaign_v2_multi_20260825`, on the L000 line.
+>
+> The two lines **diverged at `0f6377c`**; neither is an ancestor of the other.
+> **Correct base for span-port work is `9a3ecd4`** (the L000 instrument).
+>
+> ### E-DELIMIT ran, and arm B is VOID — not refuted
+>
+> Two sessions independently reached this. Arm B's `asserted_grounded` is 0/192,
+> which fires the pre-registered kill condition; **it must not be read that way.**
+> The arm's premise was to leave retrieval exactly as hard, and **LOCATED
+> collapsed 97/120 → 30/120**, against a constant index-0 baseline of 23/120.
+> **H5 (delimitation) is UNTESTED, not weakened.** The span-port line does not
+> rejoin the retrieval hypotheses on this evidence.
+>
+> New guard, registered from that VOID: **R8 — retrieval preservation**
+> (`docs/RUNBOOK_contrast_hygiene.md` on `work/edelimit-instrument`). A
+> format-feasibility gate would have *passed* this arm at ~96%: format compliance
+> and task preservation are different properties.
+>
+> Canonical record: `docs/RESEARCH_STATUS.md` and
+> `docs/NANO_VNEXT_MASTER_SPEC.md` on `work/e-delimit-result`. Read them with
+> `git show work/e-delimit-result:docs/RESEARCH_STATUS.md`.
+
 ## STAGE P / P2 (2026-07-26): explicit pointer/copy head — H-copy REFUTED (measured)
 The scribe OOD copying gap survived Stage C (curriculum) and Stage S (scale); Stage S's audit
 named "an architectural copy mechanism" as the next suspect. Built it: pointer/copy head
