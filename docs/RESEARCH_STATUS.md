@@ -36,6 +36,17 @@ requires the evidence named in its row, not an argument.
 > `artifacts/ADDENDUM-delimitation-construct-validity.md` on
 > `work/edelimit-instrument`.
 >
+> **Wording policy — HEDGE_REQUIRED (adopted from the source retraction).** For
+> the span-port line, **"bottleneck", "cannot delimit" and "delimitation failure"
+> are forbidden** until the construct question resolves. *"Bottleneck" is the
+> wrong word for anything currently in evidence.* Say what was measured: the
+> model returns the enclosing turn rather than the minimal span.
+>
+> A third survivor, which sharpens the construct concern: **exact-span scoring is
+> highly prompt-sensitive — 16/192 → 2/192 on a phrasing edit that left LOCATED
+> unmoved.** The primary metric moved 8× on wording while the descriptive finding
+> did not move at all.
+>
 > `span_character_f1` was registered CO-PRIMARY and never reported: mean 0.332,
 > median 0.372. It is **not** the convention-robust alternative it looks like —
 > it is computed post-binding, and of 38 zero-F1 slots, 21 are `asserted_unbound`
@@ -133,7 +144,8 @@ negative result.
 |---|---|
 | ~~**"The native30 wave ran clean under the anti-leakage integrity gate."**~~ | **CLEARED 2026-08-26** — the gated wave landed. Promoted to ESTABLISHED above. |
 | **D3 (context/truncation) closure** | D3.1 fixed the 64-char cap; the char-level-vs-512-context mismatch (D3.3) was never addressed. D3 remains only **partly** closed. |
-| **Whether mis-delimitation is an error at all** | The `exact_gold_span` construct question (see the qualification on the delimitation row). This is not merely open — a concurrent session argues it **gates** E-DELIMIT round 2 rather than following it. Surfaced as an owner call under NEXT CANDIDATE EXPERIMENTS; not acted on unilaterally, because it reorders the success ladder. |
+| **1. Construct validity — is a non-minimal span an error at all?** | `exact_gold_span` encodes a minimal-span convention **no clinician has ratified**. If enclosing-turn evidence is acceptable, ~80% of slots are not failures. Needs human/clinician judgement; `E3 = UNRESOLVED`. A concurrent session argues this **gates** E-DELIMIT round 2 rather than following it — surfaced as an owner call below. |
+| **2. Causal identification — H-delimit vs H-retrieve** | **Untested.** The one arm built to discriminate them ran **at chance** and is VOID. **Independent of (1):** even if the minimal-span target were ratified tomorrow, this stays open. Conversely, settling this would not settle (1). Earlier framing here blurred the two; they are separate. |
 
 ---
 

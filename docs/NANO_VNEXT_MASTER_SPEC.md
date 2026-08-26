@@ -331,8 +331,10 @@ temporal · graph · episode. Currently ABSENT (`RET-ROUTER`).
 
 Two measured constraints from this program's own record:
 
-1. Retrieval and delimitation are **separable failures** and must be measured
-   separately — the span-port line locates 97/120 and delimits 2 (§23).
+1. Retrieval and span-extent are **separately measurable** and must be measured
+   separately — the span-port line selects the right turn 97/120 and returns a
+   minimal span in 2 (§23). Whether the second is a *failure* is unresolved;
+   do not call it one.
 2. Any manipulation that claims to hold retrieval fixed must **prove** it with a
    LOCATED-invariance check before its primary endpoint is read.
 
@@ -526,16 +528,40 @@ substrate (§§4–19); the lattice describes what has been earned.
 
 Full ledger: [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md). The load-bearing facts:
 
-**Span-port line — the bottleneck is delimitation, not retrieval.** With all leak
-channels closed the model selects the correct turn for **97/120** gold-bearing
-slots and delimits the gold span in **2**. All 95 non-exact located quotes are
-over-extended; zero under-extended. Replicated (`e04b3016` → `38b12909`).
+**Span-port line — descriptive only.** *This section previously read "the
+bottleneck is delimitation, not retrieval." That heading was **retracted at
+source** on 2026-08-26; "bottleneck" is the wrong word for anything currently in
+evidence, and a **HEDGE_REQUIRED** wording policy forbids "bottleneck",
+"cannot delimit" and "delimitation failure" for this line until the target
+question resolves.*
+
+What survives, narrowly, each with a baseline or a bound:
+
+- **Turn-level evidence selection is substantially above chance** — 97/120 =
+  81% against a **26% chance baseline**, ~3.07×.
+- **Quotes are enclosing-turn scale** — median quote/enclosing-turn ratio
+  **1.000**; 1 of 95 exceeds the turn.
+- **Exact-span scoring is highly prompt-sensitive** — **16/192 → 2/192** on a
+  phrasing edit **that left LOCATED unmoved**. The primary metric moved 8× on
+  wording while the descriptive finding did not move at all.
+
+Replicated (`e04b3016` → `38b12909`), cell-for-cell under a common analyzer.
+
+**Two independent unresolveds, and resolving either leaves the other open:**
+
+1. **Construct validity.** `exact_gold_span` encodes a minimal-span convention
+   **no clinician has ratified**. If enclosing-turn evidence is acceptable, ~80%
+   of slots are not failures at all.
+2. **Causal identification.** H-delimit vs H-retrieve is **untested**. The one
+   arm built to discriminate them ran **at chance** and is VOID. *Even if the
+   minimal-span target were ratified tomorrow, this stays open.*
 
 **E-DELIMIT is complete and did not refute H5.** Arm B is **VOID**: its
-LOCATED-invariance precondition failed, retrieval collapsing **97/120 → 30/120**
-against a constant-baseline 23/120. `asserted_grounded` 0/192 would have fired
-the kill condition; it must not be read that way. **H5 is untested, not
-weakened.** Arm C is secondary by pre-registration and is not evidence about H5.
+LOCATED-invariance precondition failed, LOCATED falling **97/120 → 30/120** —
+**0.95× the 0.263 chance rate**, i.e. indistinguishable from guessing.
+`asserted_grounded` 0/192 would have fired the kill condition; it must not be
+read that way. **H5 is untested, not weakened.** Arm C is secondary by
+pre-registration and is not evidence about H5.
 
 **Scribe line — a different bottleneck.** The OOD copying gap survived curriculum
 (Stage C), scale (Stage S) and architecture (Stage P). Suspects narrow to
