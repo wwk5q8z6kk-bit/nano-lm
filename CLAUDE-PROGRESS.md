@@ -88,12 +88,58 @@ late-training pass is **not** evidence of a clean run; that evidence comes from
 `assert_no_attention_leakage`, which is exact rather than statistical.
 
 **Owed / next**
-- **Task 4 is IN FLIGHT** (PID 70762, launched 2026-08-25, ~6h). When it lands:
-  update `artifacts/DEFECT_INDEX.md` and this file with final artifact
-  locations and any newly discovered defects; compare against the pre-gate
-  causalfix wave (agreement ⇒ the gate did not perturb the measurement;
-  divergence ⇒ a finding). If it tripped a startup assertion or the BPB gate,
-  **report the exact failure and do not bypass the gate.**
+- **Task 4 COMPLETE.** Gated wave (PID 70762) finished all 9 arms,
+  `NATIVE30_REVALIDATION_DONE`. Full write-up:
+  `artifacts/RESULT-native30-gated-revalidation.md`.
+
+  **Final artifact locations — three provenance classes, all preserved:**
+
+  | class | results | checkpoints | summary |
+  |---|---|---|---|
+  | **GATED (record)** | `artifacts/campaign/reval_results_fixed/` | `artifacts/native_checkpoints_fixed/` 18G | `native30_revalidation_summary_fixed.json` |
+  | CAUSALFIX (pre-gate) | `artifacts/campaign/reval_results_causalfix/` | `artifacts/native_checkpoints_causalfix/` 18G | `native30_revalidation_summary_causalfix.json` |
+  | ARCHIVED (leaking) | `artifacts/campaign/reval_results/` | `artifacts/native_checkpoints/reval30_*` 18G | — |
+
+  Archived checkpoint mtimes verified **unchanged** after the wave.
+
+  **Two separate claims, deliberately not merged:**
+  1. *Measurement validity* — the gate passed on all 9 runs. `integrity` block
+     present in every `*_train.json`; attention leakage **exactly 0.0**
+     everywhere; every block matched the `scaled_dot_product_attention(
+     is_causal=True)` reference to 2.98e-07–5.07e-07; supervised 305, prompt cap
+     512 = max_seq. Nothing bypassed or relaxed. This says the instrument was
+     sound; it says nothing about whether the models learned.
+  2. *Empirical* — the result **replicated exactly**. Verdicts, effect sizes and
+     pooled coverage identical to causalfix: `evidence_bottleneck`/constrained
+     NOT_SEPARATED eff +0.0133 cov 18; `span_port`/constrained NOT_SEPARATED eff
+     +0.0000 cov 18; both unconstrained INVALID_NO_SIGNAL cov 0.
+     `NOT_SEPARATED` here is **under-powered, not a null** (18/450 constrained,
+     0/450 unconstrained).
+
+**New finding — converged training loss does NOT detect leakage (n=27)**
+Across the three classes the loss distributions overlap heavily. GATED
+`decoder_control_s1` finished at **0.00962 — lower than eight of the nine
+known-leaking archived runs** — while its attention leakage is proven exactly
+0.0. Medians: archived 0.028, causalfix 0.086, gated 0.061. The famous
+"loss ≈ 0.002" is a **40-step** number that was retold as if it characterised
+converged training; only two of nine archived runs are near it, and the archived
+range spans 0.008–0.536. This confirms at n=27 what the two-point calibration in
+`11c907c` inferred, and is the empirical justification for the step-aware floor.
+
+**Owed / next**
+- **D3.3 is OPEN** and is the highest-value next item: character-level
+  tokenization vs a 512 context leaves 82.7% of eval prompts and 100% of the
+  training corpus over the window. It is a *candidate* explanation for the
+  0/450 unconstrained coverage — **hypothesis, not measured here**. The fix is
+  an existing asset (`sft/tokenizer.json`, own-stack BPE, 0/150 over context).
+  It changes the instrument, so it breaks comparability with all three classes
+  and belongs in its own preregistered change.
+- **Disk at 99% (16–17 GiB free).** Three 18G checkpoint sets now coexist by
+  design; do not delete any, they are the provenance record. Cheapest reclaim is
+  `artifacts/campaign/kaggle_native30_download/` (19G, re-downloadable, nested
+  `.git`, already gitignored).
+- Out of scope by instruction: minbpe/BPE swap mid-revalidation, any paid
+  compute, and the `orx/*` branches.
 - Out of scope by instruction: minbpe/BPE swap (breaks comparability
   mid-revalidation; own preregistered change), any paid compute.
 

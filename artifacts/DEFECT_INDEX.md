@@ -23,10 +23,17 @@ the working tree, and two session transcripts. It is the evidence base for Paper
 **Counting note.** The program refers to "five defects." That is the count of
 *fix threads*, not of distinct failure sites. Three of the five threads bundle
 multiple independent defects that were found together and fixed in one commit,
-so the true site count is **twelve**. They are enumerated as `N.x` below, because
-a bundled sub-defect is exactly the kind that gets lost when someone later reads
-only the headline. Two of the twelve (D1.2 and D2.3) are independently capable of
-voiding a whole wave's conclusions and neither appears in any headline summary.
+so the true site count is **fourteen**. They are enumerated as `N.x` below,
+because a bundled sub-defect is exactly the kind that gets lost when someone
+later reads only the headline. Two of them (D1.2 and D2.3) are independently
+capable of voiding a whole wave's conclusions and neither appears in any
+headline summary.
+
+**One entry is still OPEN.** D3.3 — character-level tokenization against a
+512-token context, with 82.7% of eval prompts and 100% of the training corpus
+over the window. D3.1 removed the 64-char cap but never addressed the underlying
+mismatch, so **D3 is only partly closed**. Everything else here is fixed and
+asserted at runtime.
 
 ---
 
@@ -47,6 +54,7 @@ voiding a whole wave's conclusions and neither appears in any headline summary.
 | **D5.1** | `prompt.py` answer template | `reply STATED: "{raw_value}"` hands over the exact string; system-prompt examples are themselves gold answers | **Inflates.** A model copying its instructions scores as one that read the transcript | orx leakage thread | `dc3b310`'s "campaign_v1 coverage 0% → ~83%" |
 | **D5.2** | `adapt.candidate_from_span_port_line` | Substitutes gold `raw_value` as the model's quote when the model emitted a label with no quote | **Inflates.** A bare `STATED` resolves to the exact gold span | orx leakage thread | same — but measured **inert**: `quote_absent` 2/192, Δ`asserted_grounded` 0.000 |
 | **D5.3** | `prompt.py topic_for_spec` | The **question** interpolated `spec.raw_value!r` — 14/16 slots — and was classified as task specification, so it was pinned ON in all four original ablation cells | **Inflates, and voids the ablation.** The cell named "leakage-free" still leaked; a question-only parrot scored 9/16 against a 10/16 ceiling, identical in all four cells | orx leakage thread | the original 2×2 design itself; forced the 2×2×2 redesign |
+| **D6** | `integrity.py` BPB floor | A flat `BPB_HARD_FLOOR = 0.01` was shipped claiming it "cannot false-positive and still fires on the defect". The known-leaking archived `reval30_decoder_control_s0` finished at loss 0.00823 → **0.0119 bpb** and would have passed | **Would have cleared a leaking run.** True at 40 steps, false at 1800 — the quoted "loss ≈ 0.002" signature is a *40-step* number retold as if it described converged training | `11c907c` | nothing archived — caught in the same session it was introduced, before the gated wave ran |
 
 ---
 
@@ -85,6 +93,31 @@ being open is not evidence it was exploited. That distinction is the difference
 between the parrot floor (an upper bound on what leakage *can* buy) and an
 effect size (what it *did* buy).
 
+## D6 in full, and the measurement it produced
+
+D6 is the only defect here found in *this program's own instrumentation* rather
+than in the thing being instrumented, and it is the one worth reading twice: the
+check was written specifically to catch D1.1, was tested, passed its tests, and
+would still have cleared the very run it was designed to catch.
+
+The fix was to scope the claim rather than move the constant. `floor_for_step()`
+is 0.5 at ≤100 steps — where the model has seen each example at most once, so a
+near-zero loss has no innocent explanation — and the 0.01 impossibility bound
+after. Nudging 0.01 upward until it separated the two archived points would have
+produced a number that fit the data and meant nothing.
+
+**The gated wave then confirmed the scoping empirically at n=27.** Final
+training loss across the three provenance classes overlaps heavily, and
+`decoder_control_s1` in the GATED class — attention leakage proven exactly 0.0,
+matching the causal reference to 3.58e-07 — finished at **0.00962, lower than
+eight of the nine known-leaking archived runs**. Medians: archived 0.028,
+causalfix 0.086, gated 0.061.
+
+> **Converged training loss is not a leak detector.** Memorisation and label
+> leakage are indistinguishable in it. The detector is the startup assertion,
+> which is exact rather than statistical. Full table:
+> `artifacts/RESULT-native30-gated-revalidation.md`.
+
 ## Standing rule this history produces
 
 > A check that has passed once is not protection. All of D1.1, D2.1 and D3.1
@@ -92,6 +125,18 @@ effect size (what it *did* buy).
 > entrypoint, and prefer a differential test against a known-correct reference
 > over a derived metric — a derived metric can itself be wrong, and this program
 > has already shipped one non-binding check.
+
+And the rule D6 adds, which is sharper:
+
+> **Calibrate a threshold against the archived failure it claims to catch, not
+> against the anecdote about that failure.** D6 was calibrated on a remembered
+> "loss ≈ 0.002" and would have cleared the real run, whose converged loss was
+> 4× higher. The archived checkpoints carried the true number the whole time.
+
+> **Never merge "the gate passed" with "the result replicated."** The first is
+> measurement validity, the second is an empirical claim; each can hold while
+> the other fails. The gated wave established both, separately, and the write-up
+> keeps them in separate sections for that reason.
 
 ## Sources consolidated here
 
