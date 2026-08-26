@@ -446,11 +446,30 @@ recurrent/iterative refinement · retrieval · structured memory · adaptive
 computation · sparse specialists · energy/constraint dynamics · early exits ·
 modality experts · retrieval-conditioned computation.
 
-**Every proposed mechanism supplies all six before it is an experiment:**
+### The minimum standard for architectural research
+
+Ratified by the owner 2026-08-26. **Every proposed mechanism supplies all twelve
+before it is an experiment.** This chain replaces the two shorter, divergent
+lists this document previously carried in §20 and §25; there is now one standard
+and both sections cite it.
 
 ```
-hypothesis → baseline → expected benefit → cost → falsifier → experiment
+hypothesis → instrument → measured bottleneck → manipulation
+→ invariance condition → baseline → expected benefit → cost
+→ falsifier → preregistered decision rule → authorization → provenance
 ```
+
+Three of these are the ones this program learned the hard way, and they are the
+ones most often skipped:
+
+- **measured bottleneck** — not a suspected one. The scribe line and the
+  span-port line have *different* measured bottlenecks (§23); a mechanism aimed
+  at the wrong one cannot inform whichever it is pointed at.
+- **invariance condition** — the capacity the manipulation must leave alone,
+  bounded numerically, breach ⇒ VOID. See **R8**. E-DELIMIT arm B supplied every
+  other field on this list and still produced nothing.
+- **authorization** — experiment-scoped, per launch, and not implied by the run
+  being free (`docs/ACTIVE_NOW.md` line 47).
 
 **Explicitly not approved:**
 
@@ -459,8 +478,10 @@ hypothesis → baseline → expected benefit → cost → falsifier → experime
 - The **5–10M mechanism-testing tier as automatic**. The 30M instrument already
   failed its capability floor; shrinking it may reduce discrimination further,
   and a mechanism test that cannot discriminate is not cheap, it is worthless.
-  A smaller tier becomes appropriate only once an instrument at that scale is
-  shown to discriminate.
+  **A small-model mechanism study must first establish that the smaller regime
+  can actually distinguish the hypotheses being tested** — that demonstration is
+  itself the prerequisite experiment, and it precedes any mechanism claim made
+  at that scale.
 - **"Build DMLA" / "build an MoE" / "use physics"** as instructions. These are
   not experiments.
 
@@ -556,14 +577,32 @@ See RESEARCH_STATUS § HYPOTHESES. In priority order by information value:
 RESEARCH_STATUS § NEXT CANDIDATE EXPERIMENTS; each requires its own
 pre-registration **and** experiment-scoped authorization before launch.
 
-Every future experiment states, before it runs:
+Every future experiment states, before it runs, the **twelve-field chain in §20**
+— one standard, not a second list.
 
-```
-instrument · bottleneck · hypothesis · manipulation · invariance requirement
-preregistered decision rule · authorization · compute/cost · artifact/provenance
-```
+### The readiness gate
 
-The **invariance requirement** is the newest of these and is not optional. It
+Ratified by the owner 2026-08-26. Before an experiment is built, answer five
+questions:
+
+1. **What instrument are we measuring?**
+2. **What is its measured bottleneck?**
+3. **What invariance must the manipulation preserve?**
+4. **What competing explanations does the experiment distinguish?**
+5. **What result would falsify the hypothesis?**
+
+> **If those questions cannot be answered beforehand, the experiment is not
+> ready.** This is a gate, not a checklist: an unanswered question is a stop, not
+> a caveat to note in the write-up.
+
+Question 4 is the one that is genuinely new here, and it is the one that ranks
+candidates. An experiment that cannot fail informatively — that produces the
+same artifact whichever explanation is true — is not worth its compute even when
+every other field is filled in. It is why the tokenizer swap ranks first: it
+separates *capability floor* from *context-fit confound*, which is the single
+largest ambiguity in the record.
+
+The **invariance condition** (question 3) is the one this program paid for. It
 exists because E-DELIMIT arm B satisfied every other field and still produced
 nothing.
 
@@ -604,10 +643,29 @@ infrastructure because it is fashionable.**
 
 ## Standing rule
 
+Owner ratification, 2026-08-26 — the governing methodological commitment of this
+program:
+
+> **Nano vNext is not going to be designed by accumulating mechanisms. It will be
+> discovered by discriminating experiments.**
+
+Which has a practical consequence and a procedural one:
+
 > Do not code the future architecture now. Consolidate the specification and the
 > evidence, then identify the **smallest next experiment that discriminates
 > between competing explanations**. Every experiment must make the architecture
 > more falsifiable, not merely more elaborate.
 
+> Before another architecture is implemented, the **readiness gate** (§25) must
+> pass: instrument, measured bottleneck, invariance, competing explanations
+> distinguished, falsifier. Unanswered ⇒ not ready.
+
 The goal is a highly capable 1–7B-class local Nano system. Every architectural
 component is earned experimentally or it is not in the system.
+
+A mechanism list is not an architecture, and a longer mechanism list is not a
+better one. The A0→A7 ladder was rejected not because its mechanisms are
+implausible but because accumulation is not a method: each rung would have added
+elaboration without naming what it discriminates. The same test applies to any
+future ladder, including one built from mechanisms this document names
+approvingly.

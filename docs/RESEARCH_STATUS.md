@@ -138,9 +138,10 @@ finding, the C1 UNRESOLVED verdict and the C3 void all rest on it. See
 
 ## NEXT CANDIDATE EXPERIMENTS
 
-Ranked. None authorized. Each must state instrument, bottleneck, hypothesis,
-manipulation, **invariance requirement**, decision rule, authorization, cost, and
-artifact before it is proposed for launch.
+Ranked. None authorized. Each must supply the **twelve-field chain**
+(`NANO_VNEXT_MASTER_SPEC.md` §20) and pass the **readiness gate** (§25) before it
+is proposed for launch. The gate's fourth question — *what competing explanations
+does the experiment distinguish?* — is what produced this ranking.
 
 1. **Tokenizer swap on the native30 instrument.** Highest information per dollar
    and uses an existing asset. Swap `hash_tokens` → `sft/tokenizer.json`; hold
