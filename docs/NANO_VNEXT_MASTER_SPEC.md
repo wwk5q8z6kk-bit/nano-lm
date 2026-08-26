@@ -628,9 +628,16 @@ once corrections accumulate through the validation gates.
 
 **Far** — modality expansion through the existing evidence interfaces;
 adversarial self-verification; audience-aware artifact compilation; the
-Nano-System decomposition (Core / Reason / Memory / Verify / Route / Vision /
-Audio) *if* experiments show modularity beats a monolith at equal verified
-capability per unit cost — and the converse if they do not.
+**Nano-System decomposition** — Nano-Core · Nano-Reason · Nano-Memory ·
+Nano-Verify · Nano-Route · Nano-Perception · specialist/tool capabilities —
+*if* experiments show modularity beats a monolith at equal verified capability
+per unit cost, **and the converse if they do not. Convergence is left
+empirical in both directions.**
+
+(Named **Nano-Perception**, not Nano-Vision/Nano-Audio: modality is a parameter
+of plane `IV_observation_perception` (§12), not a module boundary. Enumerating
+two modalities as separate services would bake today's two into the
+architecture, which is what `EXTENSIBLE_SETS` exists to prevent.)
 
 **Development posture — Mac-first.** Experiments are developed and run primarily
 on local Apple Silicon: reproducible locally, cheap enough to iterate rapidly,
