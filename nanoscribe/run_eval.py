@@ -246,7 +246,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--suite",
         default="default",
-        help="Evaluation suite: default | tiny_fixture | p1_core | p1_adversarial | campaign_v1",
+        help="Evaluation suite: default | tiny_fixture | p1_core | p1_adversarial | campaign_v1 | campaign_v2",
     )
     args = parser.parse_args(argv)
     if args.suite == "default":
