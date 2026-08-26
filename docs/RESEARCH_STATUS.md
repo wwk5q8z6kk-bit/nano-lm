@@ -47,6 +47,17 @@ upward requires the evidence named in its row, not an argument.
 > `artifacts/ADDENDUM-delimitation-construct-validity.md` on
 > `work/edelimit-instrument`.
 >
+> **Wording policy — HEDGE_REQUIRED (adopted from the source retraction).** For
+> the span-port line, **"bottleneck", "cannot delimit" and "delimitation failure"
+> are forbidden** until the construct question resolves. *"Bottleneck" is the
+> wrong word for anything currently in evidence.* Say what was measured: the
+> model returns the enclosing turn rather than the minimal span.
+>
+> A third survivor, which sharpens the construct concern: **exact-span scoring is
+> highly prompt-sensitive — 16/192 → 2/192 on a phrasing edit that left LOCATED
+> unmoved.** The primary metric moved 8× on wording while the descriptive finding
+> did not move at all.
+>
 > `span_character_f1` was registered CO-PRIMARY and never reported: mean 0.332,
 > median 0.372. It is **not** the convention-robust alternative it looks like —
 > it is computed post-binding, and of 38 zero-F1 slots, 21 are `asserted_unbound`
@@ -76,7 +87,7 @@ upward requires the evidence named in its row, not an argument.
 | **The native30 arms do not separate at this scale.** `evidence_bottleneck` pooled 6/450 (0.0133, Wilson [0.0061, 0.0288]) against decoder control 0/450 (Wilson [0, 0.0085]); per-seed [6, 0, 0]; `seed_spread` 0.04 exceeds the effect. Verdict `NOT_SEPARATED`, `effect_exceeds_seed_spread: false`. | `artifacts/campaign/native30_revalidation_summary_causalfix.json` | Registered decision rule; the split is seed noise, not an architecture effect |
 | **The native30 instrument was sound — the gated wave ran clean.** All 9 arms landed under `reval_results_fixed/`; every `*_train.json` carries an integrity block with attention leakage **exactly 0.0**, each block matching the `scaled_dot_product_attention(is_causal=True)` reference to 2.98e-07–5.07e-07, supervised 305, prompt cap 512 == `max_seq`. Nothing bypassed or relaxed. | `326b301`; `artifacts/RESULT-native30-gated-revalidation.md` | **Establishes the instrument was sound — not that anything was learned.** The two claims are kept separate by rule |
 | **…and the result replicated exactly against the pre-gate causalfix wave.** Verdicts, effect sizes and pooled coverage all identical: `evidence_bottleneck` constrained NOT_SEPARATED +0.0133 cov 18; `span_port` constrained NOT_SEPARATED +0.0000 cov 18; both unconstrained INVALID_NO_SIGNAL cov 0. | `326b301` | **NOT_SEPARATED here is under-powered, not a null** — recorded as such at source |
-| **Converged training loss does not detect leakage** (n=27). Gated `decoder_control_s1` finished at **0.00962** — lower than eight of the nine known-leaking archived runs — with attention leakage proven exactly 0.0. Medians: archived 0.028, causalfix 0.086, gated 0.061. | `326b301`; `artifacts/DEFECT_INDEX.md` D6 | The "loss ≈0.002" signature was a **40-step number retold as convergence**; only two of nine archived runs are near it and the range spans 0.008–0.536. Rule produced: calibrate a threshold against the archived failure, not the anecdote about it |
+| **Converged training loss does not detect leakage** (n=27). Gated `decoder_control_s1` finished at **0.00962** — lower than eight of the nine known-leaking archived runs — with attention leakage proven exactly 0.0. Medians: archived 0.028, causalfix 0.086, gated 0.061. | `326b301`; `artifacts/DEFECT_INDEX.md` D6 | The "loss ≈0.002" signature was a **40-step number retold as convergence**; only two of nine archived runs are near it and the range spans 0.008–0.536. Rule produced: calibrate a threshold against the archived failure, not the anecdote about it. **Consequence: converged training loss is RETIRED as a leakage diagnostic.** Leakage is established by the integrity block — attention-leakage measurement against the `is_causal=True` reference — and by nothing else |
 | **The capability floor fired — in its permissible form only.** *30M at 1800 steps **with a tokenizer that cannot fit 83% of eval prompts in its context** is below the floor for `p1_screening_eval_v1`.* Measured: **124/150 = 82.7%** of prompts exceed `max_seq=512` under char-level `hash_tokens` (median 530, max 576); 100% of the training corpus does (median 615, max 694). | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`; CONFOUND NOTICE in `trajectory/PREREG_causalfix_wave_arm_split.md` | The prereg names the short form *"30M is below the capability floor"* **impermissible** — parameter count is not the only thing varying |
 
 **Two qualifiers that travel with the native30 rows and must not be dropped:**
@@ -181,7 +192,8 @@ negative result.
 |---|---|
 | ~~**"The native30 wave ran clean under the anti-leakage integrity gate."**~~ | **CLEARED 2026-08-26** — the gated wave landed. Promoted to ESTABLISHED above. |
 | **D3 (context/truncation) closure** | D3.1 fixed the 64-char cap; the char-level-vs-512-context mismatch (D3.3) was never addressed. D3 remains only **partly** closed. |
-| **Whether mis-delimitation is an error at all** | The `exact_gold_span` construct question (see the qualification on the delimitation row). This is not merely open — a concurrent session argues it **gates** E-DELIMIT round 2 rather than following it. Surfaced as an owner call under NEXT CANDIDATE EXPERIMENTS; not acted on unilaterally, because it reorders the success ladder. |
+| **1. Construct validity — is a non-minimal span an error at all?** | `exact_gold_span` encodes a minimal-span convention **no clinician has ratified**. If enclosing-turn evidence is acceptable, ~80% of slots are not failures. Needs human/clinician judgement; `E3 = UNRESOLVED`. A concurrent session argues this **gates** E-DELIMIT round 2 rather than following it — surfaced as an owner call below. |
+| **2. Causal identification — H-delimit vs H-retrieve** | **Untested.** The one arm built to discriminate them ran **at chance** and is VOID. **Independent of (1):** even if the minimal-span target were ratified tomorrow, this stays open. Conversely, settling this would not settle (1). Earlier framing here blurred the two; they are separate. |
 
 ---
 
