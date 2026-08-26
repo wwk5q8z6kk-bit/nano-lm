@@ -208,12 +208,15 @@ the other's question.
 
 Worked examples, to fix the meaning of the verdicts. **This appendix is not
 canonical for claim buckets.** `docs/RESEARCH_STATUS.md` is
-(`docs/PROJECT_AUTHORITY.md` §1), and the ledger rows below are for its owning
-session to write.
+(`docs/PROJECT_AUTHORITY.md` §1); it is the ledger that binds, and this appendix
+only explains the reasoning behind the rows.
 
-**1. Cross-regime selection probe** — run `d222465e`, commit `3205a64`. Currently
-**absent from `RESEARCH_STATUS.md`, therefore unclassified**, which is the gap
-this example exists to flag.
+**1. Cross-regime selection probe** — run `d222465e`, commit `3205a64`. Was
+**absent from `RESEARCH_STATUS.md`, therefore unclassified**. Classified on this
+branch: the ledger gained a **REFUTED** bucket, which it previously lacked
+entirely — it could express ESTABLISHED, SUPPORTED, HYPOTHESIS and VOID, but had
+nowhere to record *a valid experiment whose prediction failed*. The vocabulary
+exposed a gap in the instrument, and the instrument was fixed first.
 
 The run is valid: the instrument worked, task and statistic were held fixed, the
 model axis was crossed, and a SEEN control was present. Measured HELD first-token

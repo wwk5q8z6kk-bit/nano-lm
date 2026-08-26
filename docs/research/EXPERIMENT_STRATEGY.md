@@ -1,5 +1,20 @@
 # Experiment Strategy
 
+> **The canonical experiment standard is
+> [`NANO_VNEXT_MASTER_SPEC.md`](../NANO_VNEXT_MASTER_SPEC.md) §20 — eighteen
+> fields, ratified 2026-08-26 under *Question before architecture*
+> ([decision record](../../research/decision_records/2026-08-26-question-before-architecture.md)).**
+> The readiness gate is §25 and the verdict vocabulary is §22. Mechanically
+> checkable via `research/preregistrations/TEMPLATE.md` and
+> `scripts/check_prereg.py`.
+>
+> This document is **subordinate** to those sections
+> ([`PROJECT_AUTHORITY.md`](../PROJECT_AUTHORITY.md) §3) and is deliberately not
+> a second copy of the standard — two divergent field-lists is the failure the
+> consolidation exists to end. What follows is the older program-level framing,
+> retained for the regime and construct-validity discipline it records. Where it
+> disagrees with §20, **§20 wins and this document is stale.**
+
 ## Sequential pipeline
 
 ```text

@@ -1,5 +1,22 @@
 # Evaluation Framework
 
+> **The canonical evaluation strategy is
+> [`NANO_VNEXT_MASTER_SPEC.md`](NANO_VNEXT_MASTER_SPEC.md) §22**, which carries
+> the instrument-first rules, the adversarial-baseline requirement, and the six
+> **experiment verdicts** (SUPPORTED / REFUTED / NULL-INCONCLUSIVE / VOID /
+> PENDING / NOT AUTHORIZED). Claim buckets live in
+> [`RESEARCH_STATUS.md`](RESEARCH_STATUS.md); the two compose, and neither
+> replaces the other.
+>
+> This document is **subordinate** to §22
+> ([`PROJECT_AUTHORITY.md`](PROJECT_AUTHORITY.md) §3). It remains canonical for
+> the **capability-program metric sets** and the P1 exit gate below — the things
+> §22 does not enumerate. Where it disagrees with §22, **§22 wins.**
+>
+> One rule from §22 that qualifies everything here: **cheapness is not
+> evidential validity.** A \$0 local run can still be confirmatory and require
+> authorization.
+
 ## Principles
 
 1. **Pre-register** what would change the roadmap before running.

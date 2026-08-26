@@ -1,16 +1,27 @@
 # Research status
 
-**Updated:** 2026-08-25
+**Updated:** 2026-08-26
 **Companion to:** [`NANO_VNEXT_MASTER_SPEC.md`](NANO_VNEXT_MASTER_SPEC.md)
 
-One page, seven buckets. A claim lives in exactly one. Moving a claim upward
-requires the evidence named in its row, not an argument.
+One page, seven claim buckets. A claim lives in exactly one. Moving a claim
+upward requires the evidence named in its row, not an argument.
 
 > **Reading rule.** ESTABLISHED means a pre-registered decision rule fired on
 > data that survived its own guards. SUPPORTED means the evidence points one way
-> but no rule fired. HYPOTHESIS means nothing has been measured. VOID means the
-> instrument failed and the result carries no information about the hypothesis —
-> a VOID is **not** a negative result.
+> but no rule fired. REFUTED means a *valid* experiment tested the claim and its
+> prediction failed — the instrument worked, so this **is** information, unlike a
+> VOID. HYPOTHESIS means nothing has been measured. VOID means the instrument
+> failed and the result carries no information about the hypothesis — a VOID is
+> **not** a negative result.
+>
+> A valid experiment that lands between its registered anchors is **NULL /
+> INCONCLUSIVE**: it did not distinguish the alternatives, and the hypothesis
+> stays in HYPOTHESES rather than moving. Where a null is itself the claim
+> ("the arms do not separate"), it is recorded as an ESTABLISHED claim about
+> non-separation — see the native30 rows.
+>
+> These are *claim* buckets. The *run* verdicts they compose from are in
+> [`NANO_VNEXT_MASTER_SPEC.md`](NANO_VNEXT_MASTER_SPEC.md) §22.
 
 ---
 
@@ -90,10 +101,47 @@ requires the evidence named in its row, not an argument.
 
 ---
 
+## REFUTED
+
+A valid experiment tested the claim and its prediction failed. Unlike a VOID,
+the instrument worked — these rows carry information and must not be reopened
+without new evidence.
+
+| Claim, as it was made | Refuting evidence | What survives |
+|---|---|---|
+| **"Qwen already exhibits the retrieval competence the nano trunk was measured to lack."** ANALYSIS §3, this program's own argument. | Cross-regime selection probe, run `d222465e`, commit `3205a64`. Stage P's own statistic (teacher-forced top-1 at value tokens), task and statistic held fixed, model axis crossed. **HELD first-token 11/28 = 39.3%**, 95% Wilson **[23.6%, 57.6%]** — the interval **excludes the 92% anchor** at which §3 would have stood. Held-vs-seen gap **+41.0 pts** against a SEEN control of 102/127 = 80.3%, two-proportion z = 4.42, p ≈ 9.8e-06. | Qwen is better than the nano trunk (the interval also excludes 21%) and nowhere near solved. **Content-addressed selection does not generalise OOD for Qwen either.** |
+| **"A model with the circuit still grounds at 13%, therefore inducing the circuit would not deliver P1."** | Withdrawn with the premise above — the antecedent is false. The downstream conclusion that *"Stage M should not be described as unblocking P1"* is withdrawn with it. | **Stage M may well be on the P1 critical path.** This is now open, not closed. |
+
+> **The dichotomy itself is NULL / INCONCLUSIVE, and that is a separate fact.**
+> The probe registered two anchors — *held near 92%* (selection is a small-trunk
+> property) and *held near 21%* (selection is task-intrinsic). 39.3% is near
+> neither; the interval excludes both. The registered third branch (*report
+> as-is beside the control*) is what fired. So the specific claim is refuted
+> while the **small-trunk-vs-task-intrinsic question remains untested** — it sits
+> in HYPOTHESES below, not here.
+>
+> **Newly suspect, recorded not resolved.** Treating *"79% located"* and *"39.3%
+> selection"* as two measurements of one quantity. The first is a generous
+> substring criterion on free-running output; the second is exact next-token
+> top-1 under teacher forcing on a different task. Honest reading: **both**
+> regimes carry a selection deficit, and delimitation is an additional layer on
+> top rather than an alternative to it.
+>
+> **Interpretation boundary.** This establishes that the selection deficit is not
+> confined to the small trunk. It does **not** establish where the deficit comes
+> from, and it does **not** touch the delimitation measurement, which is a direct
+> observation about span extent given a quote was emitted.
+
+---
+
 ## HYPOTHESES
 
 Nothing measured. Each needs instrument → bottleneck → manipulation → invariance
 requirement → decision rule before it is an experiment.
+
+- **Is the selection deficit a small-trunk property or task-intrinsic?**
+  NULL / INCONCLUSIVE on the cross-regime probe above — 39.3% sits between the
+  two registered anchors and the interval excludes both. Untested, not weakened.
 
 - **H5 — delimitation.** The model addresses content at unit granularity and
   cannot resolve sub-unit boundaries. **Untested** (see VOID RESULTS).
