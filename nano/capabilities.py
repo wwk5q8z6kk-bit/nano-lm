@@ -445,25 +445,35 @@ CAPABILITIES: tuple[Capability, ...] = (
     _c(capability_id="RSN-TEMPORAL", domain="Reasoning",
        capability="Reason over before/after/during/overlap/recurrence",
        internal_representation="temporal relations over events",
-       module="partially: precision-aware before/after over event time",
-       inputs=("events",), outputs=("ordering", "intervals"),
+       module="precision-aware before/after, Allen interval relations, recurrence",
+       inputs=("events",), outputs=("ordering", "intervals", "recurrence"),
        memory_requirements="temporal index",
        tools=("date arithmetic",), training_objective="temporal relation prediction",
-       evaluation_benchmark="B0/B1 ordering accuracy; NANO-SLW-001 resolution",
+       evaluation_benchmark="B0/B1 ordering accuracy; NANO-SLW-001 "
+                            "interval_relations + recurrence",
        failure_modes=("ordering by document order rather than event time",
                       "unknown time treated as latest",
-                      "mixed-precision times ordered by string comparison"),
-       implementation_stage=Stage.D_LONGITUDINAL, status=Status.PARTIAL,
-       # ABSENT -> PARTIAL on 2026-08-25. NANO-SLW-001 found the third failure
-       # mode above in its own resolver: a month-precision report sorted before
-       # a day inside that month, so "some day in January" was silently ruled
-       # older than "January 5th". `strictly_after` now compares intervals and
-       # refuses to order overlapping ones. Before/after over mixed precision
-       # works; during/overlap/recurrence are still not built.
-       evidence="nano/slw.py::time_range, strictly_after, "
-                "LedgerBuilder._recompute_key; "
-                "nano/test_slw.py::test_mixed_precision_times_are_not_ordered_"
-                "by_string_comparison"),
+                      "mixed-precision times ordered by string comparison",
+                      "one relation named where the evidence names a set",
+                      "a point recurrence count over a corrupted record"),
+       implementation_stage=Stage.D_LONGITUDINAL, status=Status.IMPLEMENTED,
+       # ABSENT -> PARTIAL (2026-08-25) -> IMPLEMENTED (2026-08-26). All 13
+       # Allen relations, returned as the SET consistent with the endpoints
+       # rather than a single guess, plus bidirectional recurrence ranges.
+       # Scored on soundness AND sharpness together, because either alone is
+       # gameable: an all-relations answer is perfectly sound and useless, and
+       # the document-order control is perfectly sharp and unsound on ~2/3 of
+       # pairs. Honest limit: end-to-end soundness is bounded by tenure
+       # reconstruction under partial observation, not by the relation algebra —
+       # the system flags the at-risk keys itself (gaps, contradictions, mixed
+       # precision) and is 0.96-1.00 sound on the ones it does not flag, 11
+       # unsound out of 577 across 6 seeds.
+       evidence="nano/temporal.py (AllenRelation, relate, count_recurrences); "
+                "nano/slw.py::time_range, strictly_after, observed_tenures, "
+                "unreliable_keys, score_interval_relations, score_recurrence; "
+                "nano/test_temporal.py (13 relations + inverse law); "
+                "nano/test_slw.py::test_the_system_knows_when_its_"
+                "reconstruction_is_unreliable"),
 
     _c(capability_id="RSN-CAUSAL", domain="Reasoning",
        capability="Separate documented rationale / temporal association / inferred cause",

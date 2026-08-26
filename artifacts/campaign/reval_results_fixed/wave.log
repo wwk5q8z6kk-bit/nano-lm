@@ -1,1 +1,23 @@
 surface=mps:apple_silicon runs=9 results=artifacts/campaign/reval_results_fixed
+imported 9/9 -> artifacts/campaign/native30_revalidation_summary_fixed.json
+arm                              mode                  k/n    rate           wilson95   cover seeds
+  reval30_decoder_control        constrained       0/450    0.0000      (0.0, 0.0085)      18     3
+  reval30_decoder_control        unconstrained     0/450    0.0000      (0.0, 0.0085)       0     3
+  reval30_evidence_bottleneck    constrained       6/450    0.0133   (0.0061, 0.0288)      18     3
+  reval30_evidence_bottleneck    unconstrained     0/450    0.0000      (0.0, 0.0085)       0     3
+  reval30_span_port              constrained       0/450    0.0000      (0.0, 0.0085)      18     3
+  reval30_span_port              unconstrained     0/450    0.0000      (0.0, 0.0085)       0     3
+
+majority-class baseline: 0.7984
+
+!! ZERO COVERAGE (no scoreable output) in 3 cell(s): reval30_decoder_control/unconstrained, reval30_evidence_bottleneck/unconstrained, reval30_span_port/unconstrained
+!! Verdicts for these cells are INVALID_NO_SIGNAL, not nulls.
+
+VERDICTS:
+  reval30_evidence_bottleneck    constrained    effect=+0.0133  NOT_SEPARATED
+  reval30_evidence_bottleneck    unconstrained  effect=+0.0000  INVALID_NO_SIGNAL
+  reval30_span_port              constrained    effect=+0.0000  NOT_SEPARATED
+  reval30_span_port              unconstrained  effect=+0.0000  INVALID_NO_SIGNAL
+
+wrote artifacts/campaign/native30_revalidation_summary_fixed.json
+NATIVE30_REVALIDATION_DONE

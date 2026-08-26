@@ -1073,3 +1073,77 @@ def test_the_control_is_an_ablation_not_a_strawman(causal):
 
 def test_documented_links_are_not_missed(causal):
     assert causal["basis_aware"]["missed_documented_links"] == 0
+
+
+# ---------------------------------------------------------------------------
+# RSN-TEMPORAL's second half — during / overlap / recurrence
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def intervals(world):
+    from nano.slw import score_interval_relations
+    return score_interval_relations(world)
+
+
+@pytest.fixture(scope="module")
+def recurrence(world):
+    from nano.slw import score_recurrence
+    return score_recurrence(world)
+
+
+def test_ordering_by_document_order_is_measurably_unsound(intervals):
+    """RSN-TEMPORAL's own named failure mode, implemented faithfully as the
+    control rather than as a caricature."""
+    assert intervals["pairs"] > 0
+    assert intervals["control_is_unsound"]
+    assert intervals["unsound_answers_avoided"] > 0
+    aware = intervals["interval_aware"]["soundness"]
+    control = intervals["document_order_control"]["soundness"]
+    assert aware > control
+
+
+def test_the_control_looks_sharper_precisely_because_it_is_wrong(intervals):
+    """The trade-off is the result. Reporting soundness alone would make the
+    interval-aware arm look strictly better; reporting sharpness alone would
+    make the control look better. Both are asserted together."""
+    assert intervals["control_looks_sharper"]
+    assert intervals["document_order_control"]["mean_sharpness"] == 1.0
+    assert intervals["interval_aware"]["mean_sharpness"] < 1.0
+
+
+def test_the_system_knows_when_its_reconstruction_is_unreliable(intervals):
+    """The load-bearing claim. End-to-end soundness is limited by whether the
+    inferred tenures bracket the real ones — and the system can tell in advance
+    which keys are at risk, from gaps, contradictions and mixed precision."""
+    rc = intervals["reconstruction"]
+    assert rc["pairs_flagged_unreliable"] > 0
+    assert rc["pairs_not_flagged"] > 0
+    assert rc["soundness_when_not_flagged"] > rc["soundness_when_flagged"]
+    assert rc["soundness_when_not_flagged"] > 0.9
+
+
+def test_a_concurrency_call_is_better_than_a_coin_flip(intervals):
+    """"Did these overlap" is what a consumer actually asks. The control answers
+    it barely better than chance because document order carries no information
+    about containment."""
+    aware = intervals["interval_aware"]["concurrency_accuracy"]
+    control = intervals["document_order_control"]["concurrency_accuracy"]
+    assert aware > control
+    assert aware > 0.75
+
+
+def test_recurrence_is_never_confidently_wrong(recurrence):
+    """A point count over a record with known corruption is a guess wearing a
+    number. Pinned at zero rather than a tolerance."""
+    assert recurrence["keys"] > 0
+    assert recurrence["certain_but_wrong"] == 0
+
+
+def test_the_reported_range_brackets_the_truth(recurrence):
+    assert recurrence["correctly_bracketed_when_uncertain"] > 0
+    assert recurrence["coverage"] > 0.95
+
+
+def test_a_point_count_control_is_wrong_far_more_often(recurrence):
+    assert recurrence["point_count_control_wrong"] > 0
+    assert recurrence["range_avoids_error"] > 0

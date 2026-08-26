@@ -83,6 +83,9 @@ from nano.runtime import (Disposition, Question, QuestionKind, StateView,
 from nano.retrieval import (FOLD_COST_PER_OBSERVATION, STRUCTURALLY_UNAVAILABLE,
                             ObservationIndex, retrieval_answer)
 from nano.causal import CausalBasis, attribute_cause, post_hoc_attribute
+from nano.temporal import (AllenRelation, CONCURRENT, Interval,
+                           count_recurrences, document_order_relate, is_sound,
+                           relate, sharpness)
 
 EPOCH = date(2026, 1, 1)
 
@@ -2201,6 +2204,295 @@ def score_causal_attribution(world: SyntheticWorld) -> dict:
     }
 
 
+def unreliable_keys(b: LedgerBuilder) -> set:
+    """Keys whose tenure reconstruction the system has reason to distrust.
+
+    Known from the ledger alone, not from ground truth. Three causes, all
+    visible without checking any answer:
+
+    * an **unreported change** — an episode boundary may be missing entirely;
+    * a **live contradiction** — a boundary may be spurious;
+    * **mixed precision** — a month-precision report cannot be ordered against
+      a day inside that month, so the episode *sequence* itself is uncertain.
+
+    The third was found by measurement, not foresight: it accounted for most of
+    the unsound-while-unflagged pairs. Sorting cannot fix it — that is the whole
+    content of `strictly_after` — so the only honest response is to say the
+    reconstruction is uncertain rather than to present a segmentation that a
+    lexicographic sort happened to produce.
+    """
+    mixed = set()
+    for key, bucket in b.by_key.items():
+        times = {a.temporal.event_time for a in bucket
+                 if a.assertion_id not in b.superseded}
+        if any(len(t) == 7 for t in times) and any(len(t) == 10 for t in times):
+            mixed.add(key)
+    return (set(b.gap_keys) | {(e, a) for e, a, _ in b.conflict_groups}
+            | mixed)
+
+
+def observed_tenures(b: LedgerBuilder, horizon: str) -> dict:
+    """(entity, attribute) -> tuple of `Interval`, as the SYSTEM sees them.
+
+    A tenure is a maximal run during which a key held one value — an episode.
+    Derived from live assertions only, carrying whatever precision those
+    assertions carried, so a month-precision report yields a month-precision
+    endpoint rather than a manufactured day.
+    """
+    out: dict = {}
+    for key, bucket in b.by_key.items():
+        live = sorted(
+            ((a.temporal.event_time, a.obj) for a in bucket
+             if a.assertion_id not in b.superseded),
+            key=lambda t: (time_range(t[0])[0], t[0]))
+        if not live:
+            continue
+        runs = []
+        for when, value in live:
+            if runs and runs[-1][2] == value:
+                continue                     # a repeated report, not a return
+            runs.append([when, None, value])
+            if len(runs) > 1:
+                runs[-2][1] = when           # previous tenure ends here
+        intervals = []
+        for start, end, value in runs:
+            intervals.append(Interval(
+                label=f"{key[0]}.{key[1]}={value}", start=start,
+                end=end or "", open_ended=end is None, horizon=horizon))
+        out[key] = tuple(intervals)
+    return out
+
+
+def true_tenures(world: SyntheticWorld) -> dict:
+    """Ground truth tenures. Scorer only — never reachable from the ledger."""
+    ordered: dict = {}
+    for chg in sorted(world.changes, key=lambda c: c.tick):
+        ordered.setdefault((chg.entity_id, chg.attribute), []).append(
+            (chg.tick, chg.new_value))
+    out: dict = {}
+    for key, seq in ordered.items():
+        runs = []
+        for tick, value in seq:
+            if runs and runs[-1][2] == value:
+                continue
+            runs.append([tick, None, value])
+            if len(runs) > 1:
+                runs[-2][1] = tick
+        out[key] = tuple(
+            Interval(label=f"{key[0]}.{key[1]}={v}", start=tick_to_date(st),
+                     end=tick_to_date(en) if en is not None else "",
+                     open_ended=en is None,
+                     horizon=tick_to_date(world.spec.n_ticks))
+            for st, en, v in runs)
+    return out
+
+
+def _true_relation(a: Interval, b: Interval) -> AllenRelation:
+    """The determined relation between two exact intervals."""
+    found = relate(a, b)
+    if len(found) != 1:
+        raise ValueError(
+            f"ground-truth intervals must determine one relation, got "
+            f"{sorted(r.value for r in found)} for {a.label} vs {b.label}")
+    return next(iter(found))
+
+
+def score_interval_relations(world: SyntheticWorld, pairs: int = 400) -> dict:
+    """RSN-TEMPORAL's during/overlap half, scored on soundness AND sharpness.
+
+    Either alone is meaningless. A system that returns all thirteen relations is
+    perfectly sound and useless; one that always returns a singleton is maximally
+    sharp and wrong whenever the evidence does not decide. The control —
+    ordering by document order, RSN-TEMPORAL's own named failure mode — is
+    exactly the second kind, which is why it is the right thing to compare
+    against rather than a weakened version of the real thing.
+    """
+    b = build_full(world, world.observations, world.spec.n_ticks)
+    horizon = tick_to_date(world.spec.n_ticks)
+    observed = observed_tenures(b, horizon)
+    truth = true_tenures(world)
+    documented = {
+        (a.subject, a.predicate, a.obj): a.temporal.documentation_time
+        for a in b.ledger.assertions if a.assertion_id not in b.superseded}
+
+    # Pair tenures the system can see with the ground-truth tenure of the same
+    # (key, value), so the comparison is about the same real span.
+    candidates = []
+    for key, spans in sorted(observed.items()):
+        true_spans = {t.label: t for t in truth.get(key, ())}
+        for span in spans:
+            if span.label in true_spans:
+                candidates.append((key, span, true_spans[span.label]))
+
+    # Cross-entity pairs: the interesting questions ("did this overlap that")
+    # are between different keys, which is where document order is most tempting
+    # and most wrong.
+    graded, graded_keys = [], []
+    for i in range(0, min(pairs, max(0, len(candidates) - 1))):
+        key_a, obs_a, true_a = candidates[i]
+        key_b, obs_b, true_b = candidates[(i * 7 + 3) % len(candidates)]
+        if key_a == key_b:
+            continue
+        try:
+            actual = _true_relation(true_a, true_b)
+        except ValueError:
+            continue
+        graded_keys.append((key_a, key_b))
+        graded.append((obs_a, obs_b, actual,
+                       documented.get((key_a[0], key_a[1],
+                                       obs_a.label.rpartition("=")[2]), ""),
+                       documented.get((key_b[0], key_b[1],
+                                       obs_b.label.rpartition("=")[2]), "")))
+
+    def run(fn) -> dict:
+        sound = 0
+        sharp_total = 0.0
+        singletons = concurrency_calls = concurrency_right = 0
+        for obs_a, obs_b, actual, doc_a, doc_b in graded:
+            reported = fn(obs_a, obs_b, doc_a, doc_b)
+            if is_sound(reported, actual):
+                sound += 1
+            sharp_total += sharpness(reported)
+            if len(reported) == 1:
+                singletons += 1
+            # "Did these overlap?" answered as a yes/no, which is what a
+            # downstream consumer actually asks. Sound only if the reported set
+            # does not commit to the wrong side.
+            says_concurrent = bool(reported & CONCURRENT)
+            says_sequential = bool(reported - CONCURRENT)
+            truly_concurrent = actual in CONCURRENT
+            if says_concurrent != says_sequential:      # committed to one side
+                concurrency_calls += 1
+                if says_concurrent == truly_concurrent:
+                    concurrency_right += 1
+        n = max(1, len(graded))
+        return {"pairs": len(graded),
+                "soundness": sound / n,
+                "unsound": len(graded) - sound,
+                "mean_sharpness": sharp_total / n,
+                "determined": singletons,
+                "concurrency_calls": concurrency_calls,
+                "concurrency_correct": concurrency_right,
+                "concurrency_accuracy":
+                    concurrency_right / max(1, concurrency_calls)}
+
+    unreliable = unreliable_keys(b)
+    interval_aware = run(lambda a, bb, da, db: relate(a, bb))
+    doc_order = run(lambda a, bb, da, db: document_order_relate(
+        a, bb, a_documented=da or "", b_documented=db or ""))
+
+    # Split by whether the system had reason to distrust its own
+    # reconstruction. End-to-end soundness conflates two things: whether
+    # `relate` is correct about the intervals it was given (it is, by
+    # construction, and pinned in test_temporal.py) and whether those intervals
+    # bracket the real spans. Only the second can fail here, and the system
+    # knows in advance which keys are at risk.
+    declared_sound = declared_total = quiet_sound = quiet_total = 0
+    for idx, (obs_a, obs_b, actual, _, _) in enumerate(graded):
+        key_a, key_b = graded_keys[idx]
+        reported = relate(obs_a, obs_b)
+        at_risk = key_a in unreliable or key_b in unreliable
+        if at_risk:
+            declared_total += 1
+            declared_sound += int(is_sound(reported, actual))
+        else:
+            quiet_total += 1
+            quiet_sound += int(is_sound(reported, actual))
+
+    return {
+        "pairs": len(graded),
+        "interval_aware": interval_aware,
+        "document_order_control": doc_order,
+        "reconstruction": {
+            "pairs_flagged_unreliable": declared_total,
+            "soundness_when_flagged": declared_sound / max(1, declared_total),
+            "pairs_not_flagged": quiet_total,
+            "soundness_when_not_flagged": quiet_sound / max(1, quiet_total),
+            "unsound_while_unflagged": quiet_total - quiet_sound,
+        },
+        "control_is_unsound": doc_order["unsound"] > interval_aware["unsound"],
+        "control_looks_sharper":
+            doc_order["mean_sharpness"] > interval_aware["mean_sharpness"],
+        "unsound_answers_avoided":
+            doc_order["unsound"] - interval_aware["unsound"],
+    }
+
+
+def score_recurrence(world: SyntheticWorld) -> dict:
+    """Did a value come back, and how often — with a range when reports are
+    missing rather than a point count that quietly guesses."""
+    b = build_full(world, world.observations, world.spec.n_ticks)
+    truth_seq: dict = {}
+    for chg in sorted(world.changes, key=lambda c: c.tick):
+        truth_seq.setdefault((chg.entity_id, chg.attribute), []).append(
+            chg.new_value)
+
+    # The uncertainty basis has to cover every corruption the system knows
+    # about, not just gaps. A live contradiction can invent or erase an episode
+    # boundary exactly as an unreported change can, and counting only gaps left
+    # 19 keys "certain" and wrong — a point count wearing a confidence it had
+    # not earned.
+    # Two directions, because the two corruptions push opposite ways. An
+    # unreported change can HIDE an episode, so the truth may be higher. A
+    # contested or mixed-precision report can INVENT one, so the truth may be
+    # lower. An earlier version only extended upward and simply moved errors
+    # from "certain but wrong" into "outside the reported range" — the total
+    # did not budge, which is what made the asymmetry visible.
+    gaps_per_key: dict = {}
+    for chg in world.unobserved_changes():
+        key = (chg.entity_id, chg.attribute)
+        gaps_per_key[key] = gaps_per_key.get(key, 0) + 1
+    contested_per_key: dict = {}
+    for entity, attribute, _when in b.conflict_groups:
+        key = (entity, attribute)
+        contested_per_key[key] = contested_per_key.get(key, 0) + 1
+    for key in unreliable_keys(b):
+        if key not in gaps_per_key and key not in contested_per_key:
+            contested_per_key[key] = 1        # mixed precision
+
+    exact = bracketed = missed = certain_and_wrong = 0
+    point_control_wrong = 0
+    for key, bucket in sorted(b.by_key.items()):
+        live = sorted(
+            ((a.temporal.event_time, a.obj) for a in bucket
+             if a.assertion_id not in b.superseded),
+            key=lambda t: (time_range(t[0])[0], t[0]))
+        if not live:
+            continue
+        target = live[-1][1]
+        seen = [v for _, v in live]
+        got = count_recurrences(f"{key[0]}.{key[1]}={target}", seen, target,
+                                gaps=gaps_per_key.get(key, 0),
+                                contested=contested_per_key.get(key, 0))
+        actual = count_recurrences("truth", truth_seq.get(key, []), target).low
+        if got.certain:
+            if got.low == actual:
+                exact += 1
+            else:
+                certain_and_wrong += 1
+        else:
+            if got.low <= actual <= got.high:
+                bracketed += 1
+            else:
+                missed += 1
+        # Control: a point count that ignores gaps entirely.
+        if got.low != actual:
+            point_control_wrong += 1
+
+    total = exact + bracketed + missed + certain_and_wrong
+    return {
+        "keys": total,
+        "exact_when_certain": exact,
+        "correctly_bracketed_when_uncertain": bracketed,
+        "true_count_outside_reported_range": missed,
+        "certain_but_wrong": certain_and_wrong,
+        "point_count_control_wrong": point_control_wrong,
+        "coverage": (exact + bracketed) / max(1, total),
+        "range_avoids_error":
+            point_control_wrong - (missed + certain_and_wrong),
+    }
+
+
 def run_slw_001(spec: WorldSpec | None = None) -> dict:
     """The benchmark. Returns a plain dict so the runner can serialise it."""
     world = SyntheticWorld.generate(spec)
@@ -2275,6 +2567,8 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
         "runtime": score_runtime(world),
         "retrieval_vs_state": score_retrieval_vs_state(world),
         "causal_attribution": score_causal_attribution(world),
+        "interval_relations": score_interval_relations(world),
+        "recurrence": score_recurrence(world),
     }
     # A cost saving is only reportable if the answers match. Stating it
     # unconditionally is how a benchmark starts rewarding being fast and wrong.

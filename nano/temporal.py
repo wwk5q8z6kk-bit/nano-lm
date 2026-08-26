@@ -264,17 +264,22 @@ class RecurrenceCount:
 
 
 def count_recurrences(label: str, sequence, target: str,
-                      *, gaps: int = 0) -> RecurrenceCount:
+                      *, gaps: int = 0, contested: int = 0) -> RecurrenceCount:
     """Episodes in which `target` was held, from an ordered value sequence.
 
     An episode is a maximal run, so a value reported twice in a row is one
     episode, not two — the distinction between a repeated report and a genuine
     return is the whole point of recurrence.
 
-    Each unreported change could hide at most one additional episode, which is
-    where `high` comes from. That bound is deliberately loose in the safe
-    direction: understating what a gap could conceal is how a recurrence gets
-    silently missed.
+    The range extends in both directions, and the two inputs are not
+    symmetric. An unreported change can only HIDE an episode, so `gaps` raises
+    the ceiling alone. A contested or unorderable report is ambiguous both ways —
+    picking the wrong value can invent a boundary *or* mask one — so `contested`
+    moves both bounds. Extending only upward leaves every invented episode
+    uncountable and the count stays confidently wrong.
+
+    Both bounds are deliberately loose in the safe direction: understating what
+    a corruption could do is how a recurrence gets silently missed.
     """
     episodes = 0
     previous = None
@@ -282,5 +287,6 @@ def count_recurrences(label: str, sequence, target: str,
         if value == target and previous != target:
             episodes += 1
         previous = value
-    return RecurrenceCount(label=label, low=episodes,
-                           high=episodes + gaps, gaps_in_window=gaps)
+    return RecurrenceCount(label=label, low=max(0, episodes - contested),
+                           high=episodes + gaps + contested,
+                           gaps_in_window=gaps + contested)

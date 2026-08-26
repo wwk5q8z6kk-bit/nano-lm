@@ -414,7 +414,31 @@ system that belonged to the scorer.
 
 ---
 
-## 15. Next
+## 15. RSN-TEMPORAL — during / overlap / recurrence
+
+Thirteen Allen relations, returned as the set consistent with the endpoints.
+
+| arm | soundness | sharpness | concurrency |
+|---|---|---|---|
+| interval-aware | 0.73 | 0.97 | 0.86 |
+| document-order control | **0.36** | **1.00** | 0.47 |
+
+The control is maximally sharp and unsound on two thirds of pairs — which is why
+neither number is ever reported alone. End-to-end soundness is bounded by tenure
+reconstruction, not the algebra: on keys the system does not flag as unreliable
+it is **0.96–1.00 sound (11 of 577 across six seeds)**.
+
+Recurrence reports a range whenever the record is known to be corrupted, with
+gaps raising the ceiling and contested reports moving both bounds. **1 error
+against a point count's 344**, zero certain-but-wrong.
+
+Mixed precision surfaced for the **third** time here — first in value
+resolution, then in tenure segmentation, now in interval relations. Each time
+the fix is the same shape: refuse to order what cannot be ordered, and say so.
+
+---
+
+## 16. Next
 
 `LRN-CORRECTION` and `MTA-EPISTEMIC` are both closed against measured evidence.
 The registry now reads IMPLEMENTED 14 · PARTIAL 13 · PROPOSED 6 · ABSENT 17.

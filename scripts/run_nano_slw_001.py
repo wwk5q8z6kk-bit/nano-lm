@@ -138,6 +138,7 @@ def main() -> int:
         _json(args.out / "need_strategy_comparison.json", comparison)
         _json(args.out / "retrieval_vs_state.json", result["retrieval_vs_state"])
         _json(args.out / "causal_attribution.json", result["causal_attribution"])
+        _json(args.out / "interval_relations.json", result["interval_relations"])
         _jsonl(args.out / "interventions.jsonl", world.interventions)
         print(f"  need strategy      simplest justified="
               f"{comparison['simplest_justified_strategy']} "
@@ -193,6 +194,18 @@ def main() -> int:
           f"(stated {ca['basis_aware']['stated_as_cause']}, association-only "
           f"{ca['basis_aware']['reported_as_association_only']})  post-hoc "
           f"false={ca['post_hoc_control']['false_causal_claims']}")
+    ir, rec = result["interval_relations"], result["recurrence"]
+    print(f"  interval relations sound={ir['interval_aware']['soundness']:.3f} "
+          f"sharp={ir['interval_aware']['mean_sharpness']:.3f} vs doc-order "
+          f"sound={ir['document_order_control']['soundness']:.3f} sharp="
+          f"{ir['document_order_control']['mean_sharpness']:.3f}")
+    print(f"  reconstruction     unflagged sound="
+          f"{ir['reconstruction']['soundness_when_not_flagged']:.3f} "
+          f"({ir['reconstruction']['unsound_while_unflagged']} bad of "
+          f"{ir['reconstruction']['pairs_not_flagged']})")
+    print(f"  recurrence         certain-but-wrong={rec['certain_but_wrong']} "
+          f"outside-range={rec['true_count_outside_reported_range']} "
+          f"point-count control wrong={rec['point_count_control_wrong']}")
     print(f"  artifacts          {args.out}")
 
     # Exit non-zero when the arms disagree: a benchmark that reports a speedup

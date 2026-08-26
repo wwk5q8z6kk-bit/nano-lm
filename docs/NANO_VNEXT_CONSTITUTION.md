@@ -328,6 +328,7 @@ the *current* research constitution.
 > Absence of evidence is not evidence of absence.
 > Confidence is not provenance.
 > Retrieval is not memory.          *(measured: §L.8, below)*
+> A month is not a day inside it.   *(measured three times: resolution, tenure segmentation, interval relations)*
 > Context is not persistent state.  *(measured: §L.8, below)*
 > The language model is a capability, not the system.
 > A benchmark is not a capability.
