@@ -22,7 +22,23 @@ requires the evidence named in its row, not an argument.
 | **The honest span-port baseline is 2/192, not the 83% coverage once claimed.** The earlier headline was measured with both prompt leak channels open. | `ddb5ce6`, run `e04b3016` | Mechanically verified in the run's own artifact: `gold_in_answer_template` 0/192, `gold_in_question` 0/192 |
 | **On the safety property, the model asserts unsupported content about as often as it correctly declines.** `asserted_unbound` 43 vs `abstained_correct` 24. | run `e04b3016` | Same cell, same slot set |
 | **C2 (parser gold-value fallback) is inert on the primary endpoint.** `asserted_grounded` identical across all four C2 pairs in all 12 instances (Δ 0.000, sd 0.000). | `ddb5ce6` | Four of eight grid cells are redundant; axis folded |
-| **The delimit output-format refactor is behaviour-preserving.** | `38b12909` vs `e04b3016` | R1 control; `question_template_hash` equal across arms, `output_format_hash` distinct |
+| **The delimit output-format refactor is behaviour-preserving.** Run one analyzer over both payloads and the extent census is **cell-for-cell identical** — 2 / 95 / 0 / 8 / 15 / 72, LOCATED 97/120 each. | `38b12909` vs `e04b3016`, both through `nanoscribe/analyze_span_extent.py` | R1 control; `question_template_hash` equal across arms, `output_format_hash` distinct |
+
+> **Independently corroborated 2026-08-25.** A concurrent session
+> (`work/edelimit-instrument`) built E-DELIMIT separately off the same base
+> `9a3ecd4`, stopped before launching its own arms to avoid duplicate compute,
+> and re-analysed runs `38b12909` and `4de84c18` with its own code. It reached
+> the same verdict — **arm B VOID, H-delimit untested** — and added a finer pick
+> census: unrelated 90 (75%), over-extended 27, under-extended 2, exact 1, with
+> format compliance ~96%. Its arm-B LOCATED (30/120) matches this ledger exactly.
+>
+> **One discrepancy, settled.** That session reported arm A′ LOCATED as **98/120**
+> against L000's published **97/120** and read it as "agreement to within one
+> slot." It is not a run difference: it compared *its* normalization of A′ against
+> the *published* (this ledger's) normalization of L000. Running a single
+> analyzer over both payloads gives **97/120 for each, identical in every cell**.
+> The two runs agree *exactly*; the one-slot gap is analyzer-vs-analyzer, and the
+> replication is therefore stronger than either session stated alone.
 | **The native30 arms do not separate at this scale.** `evidence_bottleneck` pooled 6/450 (0.0133, Wilson [0.0061, 0.0288]) against decoder control 0/450 (Wilson [0, 0.0085]); per-seed [6, 0, 0]; `seed_spread` 0.04 exceeds the effect. Verdict `NOT_SEPARATED`, `effect_exceeds_seed_spread: false`. | `artifacts/campaign/native30_revalidation_summary_causalfix.json` | Registered decision rule; the split is seed noise, not an architecture effect |
 | **The capability floor fired — in its permissible form only.** *30M at 1800 steps **with a tokenizer that cannot fit 83% of eval prompts in its context** is below the floor for `p1_screening_eval_v1`.* Measured: **124/150 = 82.7%** of prompts exceed `max_seq=512` under char-level `hash_tokens` (median 530, max 576); 100% of the training corpus does (median 615, max 694). | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`; CONFOUND NOTICE in `trajectory/PREREG_causalfix_wave_arm_split.md` | The prereg names the short form *"30M is below the capability floor"* **impermissible** — parameter count is not the only thing varying |
 
@@ -135,13 +151,34 @@ artifact before it is proposed for launch.
    current record.
 2. **Two-stage span-port: retrieval → conditional delimitation.** *Instrument:*
    `campaign_v2` span-port. *Bottleneck:* delimitation, conditional on the
-   retrieval the model already performs at 97/120. *Manipulation:* ask for the
-   turn, then enumerate only that turn's sub-spans. Concedes that retrieval and
-   delimitation cannot both be held fixed in one prompt, and measures the
-   conditional quantity H5 is actually about. **Requires a blocking
-   LOCATED-invariance check** — the guard whose absence voided arm B.
+   retrieval the model already performs at 97/120. *Manipulation:* stage 1 is
+   free-form and unchanged — the model quotes a turn. Stage 2 enumerates
+   sub-spans **of the turn the model itself chose**, never the gold turn, so no
+   location is handed over. Formulation adopted from `work/edelimit-instrument`,
+   which sharpened it: because the model has already done the retrieval, this
+   holds retrieval fixed **by construction** rather than leaving it to be checked
+   afterwards — strictly better than the version first drafted here.
+   *Invariance requirement:* **R8**, below, still applies as a backstop.
 3. **Gated native30 re-run to `reval30_*_fixed_*`.** Closes the PENDING
    REVALIDATION row. Mechanical, no new hypothesis.
 
 **Do not** answer a delimitation question with a generic memory/reasoning
 architecture experiment. Instrument and bottleneck must match.
+
+### R8 — retrieval preservation (registered from the arm-B VOID)
+
+`docs/RUNBOOK_contrast_hygiene.md` R8, registered on `work/edelimit-instrument`
+after this VOID and adopted here:
+
+> When an arm manipulates the output format, pre-register a
+> **retrieval-preservation** invariant on the capacity the manipulation is
+> supposed to leave alone, and make it a **VOID condition**. For the span-port
+> line: arm B is VOID if its **LOCATED falls more than 10 points below the
+> free-form control's**.
+
+The instructive part is *why the existing guard missed it*. A format-feasibility
+gate (`well_formed_rate ≥ 0.80`) would have **passed at ~96%** — the model used
+the menu format perfectly well. **Format compliance and task preservation are
+different properties**, and only the first was being checked. This is the
+concrete instance of the "invariance requirement" field that
+`NANO_VNEXT_MASTER_SPEC.md` §25 now requires of every experiment.

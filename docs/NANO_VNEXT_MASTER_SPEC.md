@@ -567,6 +567,14 @@ The **invariance requirement** is the newest of these and is not optional. It
 exists because E-DELIMIT arm B satisfied every other field and still produced
 nothing.
 
+Its concrete form for output-format manipulations is **R8** in
+`docs/RUNBOOK_contrast_hygiene.md` — registered after the arm-B VOID and stated
+in `RESEARCH_STATUS.md`. The lesson generalizes past the span-port line: arm B's
+*format-feasibility* gate would have passed at ~96%, because the model used the
+menu format perfectly well. **Format compliance and task preservation are
+different properties.** Name the capacity the manipulation is supposed to leave
+alone, bound it numerically, and make breaching it a VOID condition.
+
 ## 26. Future roadmap
 
 Sequenced by what each stage would make falsifiable, not by ambition.
