@@ -18,7 +18,30 @@ requires the evidence named in its row, not an argument.
 
 | Claim | Evidence | Guard that held |
 |---|---|---|
-| **The span-port model locates but does not delimit.** With all leak channels closed it selects the correct turn for **97/120** gold-bearing slots and delimits the gold span in **2**. All 95 non-exact located quotes are *over*-extended; **zero** under-extended. | `e04b3016`, replicated by `38b12909`; `artifacts/span_extent_L000_unified.json` | Replication reproduced the extent census cell-for-cell and the across-instance vector to 4dp |
+| **The span-port model returns the enclosing turn rather than the minimal span.** With all leak channels closed it selects the correct turn for **97/120** gold-bearing slots — **3.07× the 0.263 chance rate** — and returns a character-identical minimal span in **2**. All 95 non-exact located quotes are *over*-extended; **zero** under-extended. | `e04b3016`, replicated by `38b12909`; `artifacts/span_extent_L000_unified.json`; chance baseline recomputed independently over all 120 gold slots | Replication reproduced the extent census cell-for-cell and the across-instance vector to 4dp |
+
+> **Wording qualified 2026-08-26, after a concurrent session audited its own
+> claim.** This row previously read *"locates but does not delimit."* The
+> **description survives** — the model does return enclosing turns, corroborated
+> three independent ways (containment 81% vs 26% chance; median
+> quote/enclosing-turn ratio 1.000; character-overlap profile ≈0.47 against the
+> analytic whole-turn prediction 2|g|/(|g|+|q|) ≈ 0.43).
+>
+> **The word "cannot" does not survive.** `exact_gold_span` demands character
+> identity with a gold span the harness authored as the *minimal value string*.
+> **Nobody has established that minimal is the target.** For a scribe, quoting
+> the sentence carrying the assertion is defensible. If it is acceptable, then on
+> ~80% of slots the model is not failing at all and "13% of ceiling" measures
+> conformance to an **unvalidated convention**, not a capability limit. See
+> `artifacts/ADDENDUM-delimitation-construct-validity.md` on
+> `work/edelimit-instrument`.
+>
+> `span_character_f1` was registered CO-PRIMARY and never reported: mean 0.332,
+> median 0.372. It is **not** the convention-robust alternative it looks like —
+> it is computed post-binding, and of 38 zero-F1 slots, 21 are `asserted_unbound`
+> and 15 demonstrably contain the gold span but failed to bind. Quoting 0.33 as a
+> clean substitute for 2/192 would be a second convenient-metric error on top of
+> the first.
 | **The honest span-port baseline is 2/192, not the 83% coverage once claimed.** The earlier headline was measured with both prompt leak channels open. | `ddb5ce6`, run `e04b3016` | Mechanically verified in the run's own artifact: `gold_in_answer_template` 0/192, `gold_in_question` 0/192 |
 | **On the safety property, the model asserts unsupported content about as often as it correctly declines.** `asserted_unbound` 43 vs `abstained_correct` 24. | run `e04b3016` | Same cell, same slot set |
 | **C2 (parser gold-value fallback) is inert on the primary endpoint.** `asserted_grounded` identical across all four C2 pairs in all 12 instances (Δ 0.000, sd 0.000). | `ddb5ce6` | Four of eight grid cells are redundant; axis folded |
@@ -40,6 +63,9 @@ requires the evidence named in its row, not an argument.
 > The two runs agree *exactly*; the one-slot gap is analyzer-vs-analyzer, and the
 > replication is therefore stronger than either session stated alone.
 | **The native30 arms do not separate at this scale.** `evidence_bottleneck` pooled 6/450 (0.0133, Wilson [0.0061, 0.0288]) against decoder control 0/450 (Wilson [0, 0.0085]); per-seed [6, 0, 0]; `seed_spread` 0.04 exceeds the effect. Verdict `NOT_SEPARATED`, `effect_exceeds_seed_spread: false`. | `artifacts/campaign/native30_revalidation_summary_causalfix.json` | Registered decision rule; the split is seed noise, not an architecture effect |
+| **The native30 instrument was sound — the gated wave ran clean.** All 9 arms landed under `reval_results_fixed/`; every `*_train.json` carries an integrity block with attention leakage **exactly 0.0**, each block matching the `scaled_dot_product_attention(is_causal=True)` reference to 2.98e-07–5.07e-07, supervised 305, prompt cap 512 == `max_seq`. Nothing bypassed or relaxed. | `326b301`; `artifacts/RESULT-native30-gated-revalidation.md` | **Establishes the instrument was sound — not that anything was learned.** The two claims are kept separate by rule |
+| **…and the result replicated exactly against the pre-gate causalfix wave.** Verdicts, effect sizes and pooled coverage all identical: `evidence_bottleneck` constrained NOT_SEPARATED +0.0133 cov 18; `span_port` constrained NOT_SEPARATED +0.0000 cov 18; both unconstrained INVALID_NO_SIGNAL cov 0. | `326b301` | **NOT_SEPARATED here is under-powered, not a null** — recorded as such at source |
+| **Converged training loss does not detect leakage** (n=27). Gated `decoder_control_s1` finished at **0.00962** — lower than eight of the nine known-leaking archived runs — with attention leakage proven exactly 0.0. Medians: archived 0.028, causalfix 0.086, gated 0.061. | `326b301`; `artifacts/DEFECT_INDEX.md` D6 | The "loss ≈0.002" signature was a **40-step number retold as convergence**; only two of nine archived runs are near it and the range spans 0.008–0.536. Rule produced: calibrate a threshold against the archived failure, not the anecdote about it |
 | **The capability floor fired — in its permissible form only.** *30M at 1800 steps **with a tokenizer that cannot fit 83% of eval prompts in its context** is below the floor for `p1_screening_eval_v1`.* Measured: **124/150 = 82.7%** of prompts exceed `max_seq=512` under char-level `hash_tokens` (median 530, max 576); 100% of the training corpus does (median 615, max 694). | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`; CONFOUND NOTICE in `trajectory/PREREG_causalfix_wave_arm_split.md` | The prereg names the short form *"30M is below the capability floor"* **impermissible** — parameter count is not the only thing varying |
 
 **Two qualifiers that travel with the native30 rows and must not be dropped:**
@@ -93,7 +119,7 @@ negative result.
 
 | Arm | Why VOID | What is *not* concluded |
 |---|---|---|
-| **E-DELIMIT arm B (menu)** — run `4de84c18` | **Invariance precondition failed.** The arm's premise was to leave retrieval exactly as hard; LOCATED collapsed **97/120 → 30/120**, landing 7 slots above the constant index-0 parrot's 23/120. Model picks are front-biased: median index 13.5 against median menu size 64, median relative position 0.211 (uniform ≈ 0.5), indices 1–2 alone = 33% of picks. The arm measured long-list indexing, not boundary selection. | `asserted_grounded` 0/192 would fire the pre-registered kill condition. **H5 is not refuted.** The span-port line does **not** rejoin the retrieval hypotheses on this evidence. |
+| **E-DELIMIT arm B (menu)** — run `4de84c18` | **Invariance precondition failed.** The arm's premise was to leave retrieval exactly as hard; LOCATED collapsed **97/120 → 30/120** — **0.95× the 0.263 chance rate, i.e. indistinguishable from guessing**, and below even the constant index-0 parrot's 23/120. The menu did not make locating *harder*; it reduced span selection to **chance**. Model picks are front-biased: median index 13.5 against median menu size 64, median relative position 0.211 (uniform ≈ 0.5), indices 1–2 alone = 33% of picks. The arm measured long-list indexing, not boundary selection. | `asserted_grounded` 0/192 would fire the pre-registered kill condition. **H5 is not refuted.** The span-port line does **not** rejoin the retrieval hypotheses on this evidence. |
 | **E-DELIMIT arm C (offsets)** — run `aa779aba` | LOCATED 2/120. Secondary by pre-registration (P6): requires index arithmetic over transcript offsets, a known weakness independent of delimitation. | Not evidence about H5. Reported for completeness only. |
 | **native30 revalidation wave 1** — `artifacts/campaign/native30_revalidation_summary_v1.json` | **False null.** The decoder was non-causal — `nn.MultiheadAttention` with no mask and no `is_causal` in a decoder trained on next-token prediction, so every position could attend to its own label. Measured leakage before the fix: changing tokens at positions 6–7 moved logits at 0–5 by up to **20.1**; after the fix, exactly **0.0**. Compounded by a target truncated out of the loss. | All six arm×mode cells read `NOT_SEPARATED`, effect +0.0000, pooled 0/450. **Do not bank these verdicts. Do not retire `span_port` or `evidence_bottleneck` on them.** |
 | **C3 arm (leakage grid)** | The C3-off prompt removed the gold surface *and* changed the question from yes/no to wh-extraction. The measured effect was dominated by form. | Superseded by the unified wh form (`b707478`). The R1 rule exists because of this arm. |
@@ -105,8 +131,9 @@ negative result.
 
 | Claim | Blocked on |
 |---|---|
-| **"The native30 wave ran clean under the anti-leakage integrity gate."** | The `_causalfix` wave carries the code fixes but **not** the runtime gate, so it cannot prove it ran clean. Pending the gated re-run to `reval30_*_fixed_*`, which **does not exist**. The floor result and the seed-noise null survive the missing gate — the gate guards against leakage and leakage *inflates*, so it cannot manufacture 4% coverage or a null — but *"ran clean under the gate"* is a statement **about the gate** and cannot be made from a wave that did not have one. |
-| **D3 (context/truncation) closure** | D3.1 fixed the 64-char cap; the char-level-vs-512-context mismatch was never addressed. D3 is only **partly** closed. |
+| ~~**"The native30 wave ran clean under the anti-leakage integrity gate."**~~ | **CLEARED 2026-08-26** — the gated wave landed. Promoted to ESTABLISHED above. |
+| **D3 (context/truncation) closure** | D3.1 fixed the 64-char cap; the char-level-vs-512-context mismatch (D3.3) was never addressed. D3 remains only **partly** closed. |
+| **Whether mis-delimitation is an error at all** | The `exact_gold_span` construct question (see the qualification on the delimitation row). This is not merely open — a concurrent session argues it **gates** E-DELIMIT round 2 rather than following it. Surfaced as an owner call under NEXT CANDIDATE EXPERIMENTS; not acted on unilaterally, because it reorders the success ladder. |
 
 ---
 
@@ -160,8 +187,28 @@ does the experiment distinguish?* — is what produced this ranking.
    holds retrieval fixed **by construction** rather than leaving it to be checked
    afterwards — strictly better than the version first drafted here.
    *Invariance requirement:* **R8**, below, still applies as a backstop.
-3. **Gated native30 re-run to `reval30_*_fixed_*`.** Closes the PENDING
-   REVALIDATION row. Mechanical, no new hypothesis.
+3. ~~**Gated native30 re-run.**~~ **DONE 2026-08-26** — `326b301`. Gate passed
+   *and* result replicated, the two claims kept separate.
+
+### Owner call — does the construct question gate candidate 2?
+
+Not a candidate; a **reordering** that a concurrent session surfaced rather than
+acted on, because it changes the success ladder.
+
+The argument: `exact_gold_span` may measure conformance to an unvalidated
+convention (minimal span) rather than faithfulness. If quoting the enclosing
+utterance is acceptable for a scribe, then the model is not failing on ~80% of
+slots, and a sharper delimitation experiment would **spend compute explaining a
+convention**. On that reading, E3's faithfulness construct and the P1 span metric
+are the same question asked twice, and the construct question should be settled
+**before** candidate 2 runs, not after.
+
+Against: settling the construct requires human/clinician judgement about what a
+scribe should quote, which is `E3 = UNRESOLVED` and gated on external validation.
+Waiting could stall the span-port line indefinitely.
+
+**This ranking is the owner's to make.** Recorded here so it is not resolved by
+whoever happens to launch first.
 
 **Do not** answer a delimitation question with a generic memory/reasoning
 architecture experiment. Instrument and bottleneck must match.
