@@ -29,6 +29,17 @@ later reads only the headline. Two of them (D1.2 and D2.3) are independently
 capable of voiding a whole wave's conclusions and neither appears in any
 headline summary.
 
+**D3.3 is now ASSERTED AT RUNTIME even though its corpus-level fix is still
+open.** `integrity.assert_context_budget` runs on every training run: it raises
+if the target alone cannot fit or if any gold span is lost to prompt
+left-truncation, and it reports the over-budget fraction into every run's
+integrity block. `corpus/validate.py::sequence_budget` had computed this since
+`3991096` but only at corpus *build* time, which is exactly how D3.3 outlived
+D3.1 — the 64-char cap was removed while the underlying mismatch went unmeasured
+in every run report. Measured on the shipped corpus: **96/96 rows over budget,
+median 551 tokens against `max_seq` 512, `relies_on_left_truncation: true`, and
+`spans_visible: true`** — the last being why the corpus is learnable at all.
+
 **One entry is still OPEN.** D3.3 — character-level tokenization against a
 512-token context, with 82.7% of eval prompts and 100% of the training corpus
 over the window. D3.1 removed the 64-char cap but never addressed the underlying
@@ -149,6 +160,11 @@ And the rule D6 adds, which is sharper:
 > against the anecdote about that failure.** D6 was calibrated on a remembered
 > "loss ≈ 0.002" and would have cleared the real run, whose converged loss was
 > 4× higher. The archived checkpoints carried the true number the whole time.
+
+> **A build-time gate is not a runtime gate.** D3.3's invariants were computed
+> and correct from `3991096` onward — and nothing ran them per-run, so the
+> corpus could drift out from under them and no run report would show it. If a
+> check matters, it belongs in the entrypoint, not only in the builder.
 
 > **A gate is only calibrated for the instrument it was measured on.** D7 was
 > correct for the character tokenizer it was written against and silently wrong

@@ -144,6 +144,16 @@ range spans 0.008–0.536. This confirms at n=27 what the two-point calibration 
   `step_*.pt` under `kaggle_native30_download/.../native_checkpoints/`, keep the
   9 `latest.pt` — reclaims ~15 GiB while leaving every run's final state
   re-analyzable.
+- **D3.3 is now ASSERTED AT RUNTIME** (its corpus-level fix remains open).
+  `integrity.assert_context_budget` runs on every training run: raises if the
+  target alone cannot fit or if any gold span is lost to prompt
+  left-truncation, and reports the over-budget fraction into every run's
+  integrity block. `sequence_budget` had computed these invariants since
+  `3991096` but only at corpus *build* time — which is exactly how D3.3
+  outlived D3.1. Measured on the shipped corpus: **96/96 rows over budget,
+  median 551 tokens vs max_seq 512, relies_on_left_truncation true,
+  spans_visible true**. Measured in TOKENS, not characters, so it survives the
+  BPE swap (the build-time version uses `len(prompt)` and would not).
 - **D3.3 PREREGISTERED, not run:** `artifacts/PREREG-D33-context-tokenizer-wave.md`.
   Namespace `reval30_*_bpe_*`; explicit comparison boundary against all four
   frozen classes; CONFIRMED ≥45/450 unconstrained coverage, REFUTED ≤4/450,

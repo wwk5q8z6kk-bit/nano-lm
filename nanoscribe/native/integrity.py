@@ -101,6 +101,7 @@ class IntegrityReport:
     sampled_examples: int
     prompt_tokens_at_cap: int
     max_seq: int
+    context_budget: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -111,6 +112,7 @@ class IntegrityReport:
             "sampled_examples": self.sampled_examples,
             "prompt_tokens_at_cap": self.prompt_tokens_at_cap,
             "max_seq": self.max_seq,
+            "context_budget": self.context_budget,
         }
 
 
@@ -378,6 +380,104 @@ def assert_bits_per_byte_plausible(
         )
 
 
+# ---------------------------------------------------------------------------
+# Defect D3.3 — context budget (OPEN at the corpus level; asserted here)
+# ---------------------------------------------------------------------------
+
+_QUOTED_TARGET = None
+
+
+def assert_context_budget(rows: Any, cfg: Any) -> dict[str, Any]:
+    """Runtime context-budget gate — measured in TOKENS, not characters.
+
+    `corpus/validate.py::sequence_budget` already computes this at corpus BUILD
+    time, but nothing checked it per-run, which is how D3.3 survived D3.1: the
+    64-char cap was removed while the underlying prompt-vs-context mismatch went
+    on unmeasured in every run report.
+
+    Two differences from the build-time gate, both deliberate:
+
+    1. **Tokens, not characters.** `sequence_budget` uses `len(prompt)`, which
+       equals the token count only for a character-level tokenizer — the same
+       instrument coupling as D7. Tokenizing here keeps the check correct under
+       the BPE swap D3.3 proposes.
+    2. **Fail on the fatal invariant, report the confound.** A lost gold span
+       makes exact emission impossible by construction, so that raises. Being
+       merely over budget is survivable — the trainer budgets the target first
+       and truncates the prompt from the left — so it is *reported into every
+       run* rather than blocking. Reporting is the point: D3.3 was invisible
+       precisely because no run surfaced it.
+    """
+    import re
+
+    from nanoscribe.native.tokenize import detokenize, hash_tokens
+
+    global _QUOTED_TARGET
+    if _QUOTED_TARGET is None:
+        _QUOTED_TARGET = re.compile(r'"([^"]+)"')
+
+    vocab, max_seq = cfg.vocab_size, cfg.max_seq
+    over_budget = span_lost = 0
+    lengths: list[int] = []
+    lost_examples: list[str] = []
+
+    sampled = list(rows)
+    for row in sampled:
+        prompt = row["prompt"] if isinstance(row, dict) else row.prompt
+        target = row["target"] if isinstance(row, dict) else row.target
+        atom_id = (
+            row.get("atom_id", "?") if isinstance(row, dict) else getattr(row, "atom_id", "?")
+        )
+
+        p_tok = hash_tokens(prompt, vocab)
+        t_tok = hash_tokens(target, vocab)
+        lengths.append(len(p_tok) + len(t_tok))
+
+        if len(t_tok) >= max_seq:
+            raise IntegrityError(
+                f"target alone is {len(t_tok)} tokens against max_seq={max_seq}: "
+                f"it cannot fit and will be truncated out of the loss. "
+                f"See DEFECT_INDEX D2.1/D3.3."
+            )
+        if len(p_tok) + len(t_tok) > max_seq:
+            over_budget += 1
+
+        # Does the gold span survive the trainer's left-truncation? Mirror the
+        # trainer's budgeting exactly, then decode the visible window back to
+        # text and look for the span.
+        m = _QUOTED_TARGET.search(target)
+        if m:
+            budget = max_seq - min(len(t_tok), max_seq - 1)
+            visible = detokenize(p_tok[-budget:], vocab) if budget > 0 else ""
+            if m.group(1) not in visible:
+                span_lost += 1
+                if len(lost_examples) < 10:
+                    lost_examples.append(atom_id)
+
+    if span_lost:
+        raise IntegrityError(
+            f"{span_lost}/{len(sampled)} rows lose their gold span to prompt "
+            f"left-truncation (e.g. {lost_examples[:5]}): exact emission is "
+            f"impossible by construction for those rows. See DEFECT_INDEX D3.1/D3.3."
+        )
+
+    lengths.sort()
+    n = len(lengths)
+    return {
+        "rows_checked": n,
+        "n_over_budget": over_budget,
+        "frac_over_budget": round(over_budget / n, 4) if n else 0.0,
+        "median_prompt_plus_target_tokens": lengths[n // 2] if n else 0,
+        "max_prompt_plus_target_tokens": lengths[-1] if n else 0,
+        "max_seq": max_seq,
+        "spans_visible": True,
+        # When true the corpus is learnable ONLY because the trainer budgets the
+        # target first and truncates the prompt from the left. That coupling is
+        # an unstated assumption unless it is surfaced here.
+        "relies_on_left_truncation": over_budget > 0,
+    }
+
+
 def run_startup_gate(model: Any, rows: Any, cfg: Any) -> IntegrityReport:
     """Run every defect gate. Raises `IntegrityError` on the first failure.
 
@@ -387,6 +487,7 @@ def run_startup_gate(model: Any, rows: Any, cfg: Any) -> IntegrityReport:
     leakage = assert_no_attention_leakage(model)
     supervised, sampled = assert_target_present_in_loss(rows, cfg)
     capped = assert_prompt_not_silently_capped(cfg)
+    budget = assert_context_budget(rows, cfg)
     return IntegrityReport(
         attention_leakage=leakage,
         attention_matches_reference=True,
@@ -395,4 +496,5 @@ def run_startup_gate(model: Any, rows: Any, cfg: Any) -> IntegrityReport:
         sampled_examples=sampled,
         prompt_tokens_at_cap=capped,
         max_seq=cfg.max_seq,
+        context_budget=budget,
     )

@@ -19,6 +19,7 @@ if _repo_root not in sys.path:
 from nanoscribe.native.config import NativeTrainConfig, NativeVariant
 from nanoscribe.native.integrity import (
     BPB_EARLY_FLOOR,
+    assert_context_budget,
     BPB_EARLY_STEP_LIMIT,
     BPB_HARD_FLOOR,
     IntegrityError,
@@ -57,14 +58,22 @@ def _cfg(**over) -> NativeTrainConfig:
 
 
 def _rows(n: int = 4) -> list[dict[str, str]]:
+    """Rows whose gold span sits near the TAIL of the prompt.
+
+    The trainer truncates the prompt from the left, so a span at the head is
+    lost by construction. An earlier version of this fixture asked for
+    `"sore throat"` while the prompt said `"throat is sore"` — the span was not
+    in the prompt at all, and `assert_context_budget` correctly rejected it.
+    """
     return [
         {
-            "prompt": "Transcript:\nclinician: What symptoms?\npatient: My "
-            + ("throat is sore. " * 20)
-            + "\nQuestion: what symptom?",
-            "target": 'STATED: "sore throat"',
+            "prompt": "Transcript:\nclinician: What symptoms?\n"
+            + ("patient: unrelated chatter here. " * 12)
+            + "patient: my throat is sore.\nQuestion: what symptom?",
+            "target": 'STATED: "throat is sore"',
+            "atom_id": f"atom-throat-{i}",
         }
-        for _ in range(n)
+        for i in range(n)
     ]
 
 
@@ -172,6 +181,54 @@ class TokenizerCapTest(unittest.TestCase):
             self.assertIn("silently truncating", str(ctx.exception))
         finally:
             tokenize.hash_tokens = original
+
+
+@unittest.skipIf(torch is None, "torch required")
+class ContextBudgetTest(unittest.TestCase):
+    """D3.3 — the runtime context gate.
+
+    `corpus/validate.py::sequence_budget` computed this at corpus BUILD time,
+    but nothing checked it per-run. That is how D3.3 outlived D3.1: the 64-char
+    cap was removed while the prompt-vs-context mismatch went unmeasured in
+    every run report.
+    """
+
+    def test_reports_over_budget_without_blocking_a_survivable_corpus(self) -> None:
+        """Being over budget is survivable; it must be surfaced, not fatal."""
+        rows = _rows(4)
+        info = assert_context_budget(rows, _cfg(max_seq=128))
+        self.assertEqual(info["rows_checked"], 4)
+        self.assertGreater(info["n_over_budget"], 0)
+        self.assertTrue(info["relies_on_left_truncation"])
+        self.assertTrue(info["spans_visible"])
+
+    def test_fires_when_the_gold_span_scrolls_out_of_view(self) -> None:
+        """THE fatal case: exact emission becomes impossible by construction."""
+        # Gold value sits at the HEAD of a long prompt, so left-truncation
+        # drops it out of the visible window.
+        rows = [{
+            "prompt": "patient: my throat is sore.\n" + ("filler text. " * 200),
+            "target": 'STATED: "sore"',
+            "atom_id": "atom-throat",
+        }]
+        with self.assertRaises(IntegrityError) as ctx:
+            assert_context_budget(rows, _cfg(max_seq=64))
+        self.assertIn("lose their gold span", str(ctx.exception))
+
+    def test_fires_when_the_target_alone_cannot_fit(self) -> None:
+        rows = [{"prompt": "short", "target": 'STATED: "' + ("x" * 200) + '"',
+                 "atom_id": "a"}]
+        with self.assertRaises(IntegrityError) as ctx:
+            assert_context_budget(rows, _cfg(max_seq=64))
+        self.assertIn("target alone", str(ctx.exception))
+
+    def test_measures_tokens_not_characters(self) -> None:
+        """Instrument-independence: the same coupling that produced D7."""
+        import inspect
+        from nanoscribe.native import integrity
+        src = inspect.getsource(integrity.assert_context_budget)
+        self.assertIn("hash_tokens", src)
+        self.assertNotIn("len(prompt) + len(target)", src)
 
 
 @unittest.skipIf(torch is None, "torch required")
