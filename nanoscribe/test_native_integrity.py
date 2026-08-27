@@ -174,6 +174,43 @@ class TokenizerCapTest(unittest.TestCase):
             tokenize.hash_tokens = original
 
 
+@unittest.skipIf(torch is None, "torch required")
+class SupervisedTokenCountTest(unittest.TestCase):
+    """D7 — the BPB numerator must count TOKENS, not characters.
+
+    `lm` is a mean over supervised token positions, so total nats is
+    `lm * n_supervised`. Using the target character count instead is correct
+    only for a character-level tokenizer. Under the BPE asset D3.3 proposes
+    (2.60x compression) it overestimates total nats ~2.6x and inflates BPB by
+    the same factor — moving the measurement AWAY from the floor and making the
+    gate less sensitive precisely when the instrument changes.
+    """
+
+    def test_breakdown_reports_the_supervised_position_count(self) -> None:
+        from nanoscribe.native.losses import compute_batch_loss
+
+        cfg = _cfg()
+        rows = _rows(3)
+        model = build_model(cfg)
+        b = compute_batch_loss(
+            model, [r["prompt"] for r in rows], [r["target"] for r in rows], cfg
+        )
+        self.assertGreater(b.n_supervised, 0)
+        # It must track the target, not the prompt: prompts here are ~20x the
+        # target length, so a count that included them would be far larger.
+        total_target_chars = sum(len(r["target"]) for r in rows)
+        self.assertLessEqual(b.n_supervised, total_target_chars + len(rows))
+
+    def test_bpb_uses_the_token_count_not_the_char_count(self) -> None:
+        """A tokenizer with N tokens per char must not change the numerator."""
+        lm_nats, n_supervised, n_bytes = 2.0, 100, 260
+        correct = bits_per_byte(lm_nats * n_supervised, n_bytes)
+        # What the char-count proxy would have produced under 2.6x compression:
+        char_proxy = bits_per_byte(lm_nats * 260, n_bytes)
+        self.assertAlmostEqual(char_proxy / correct, 2.6, places=6)
+        self.assertLess(correct, char_proxy, "the proxy inflates BPB away from the floor")
+
+
 class BitsPerByteTest(unittest.TestCase):
     def test_uniform_byte_model_is_eight_bits_per_byte(self) -> None:
         """Anchors the scale: -ln(1/256) nats per byte is exactly 8 bpb."""

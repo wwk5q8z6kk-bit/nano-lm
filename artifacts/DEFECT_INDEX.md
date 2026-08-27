@@ -23,13 +23,15 @@ the working tree, and two session transcripts. It is the evidence base for Paper
 **Counting note.** The program refers to "five defects." That is the count of
 *fix threads*, not of distinct failure sites. Three of the five threads bundle
 multiple independent defects that were found together and fixed in one commit,
-so the true site count is **fourteen**. They are enumerated as `N.x` below,
+so the true site count is **fifteen**. They are enumerated as `N.x` below,
 because a bundled sub-defect is exactly the kind that gets lost when someone
 later reads only the headline. Two of them (D1.2 and D2.3) are independently
 capable of voiding a whole wave's conclusions and neither appears in any
 headline summary.
 
-**One entry is still OPEN.** D3.3 — character-level tokenization against a
+**One entry is still OPEN.** D3.3 — preregistered for a separate wave in
+`artifacts/PREREG-D33-context-tokenizer-wave.md`; not folded into the completed
+revalidation. D3.3 — character-level tokenization against a
 512-token context, with 82.7% of eval prompts and 100% of the training corpus
 over the window. D3.1 removed the 64-char cap but never addressed the underlying
 mismatch, so **D3 is only partly closed**. Everything else here is fixed and
@@ -55,6 +57,7 @@ asserted at runtime.
 | **D5.2** | `adapt.candidate_from_span_port_line` | Substitutes gold `raw_value` as the model's quote when the model emitted a label with no quote | **Inflates.** A bare `STATED` resolves to the exact gold span | orx leakage thread | same — but measured **inert**: `quote_absent` 2/192, Δ`asserted_grounded` 0.000 |
 | **D5.3** | `prompt.py topic_for_spec` | The **question** interpolated `spec.raw_value!r` — 14/16 slots — and was classified as task specification, so it was pinned ON in all four original ablation cells | **Inflates, and voids the ablation.** The cell named "leakage-free" still leaked; a question-only parrot scored 9/16 against a 10/16 ceiling, identical in all four cells | orx leakage thread | the original 2×2 design itself; forced the 2×2×2 redesign |
 | **D6** | `integrity.py` BPB floor | A flat `BPB_HARD_FLOOR = 0.01` was shipped claiming it "cannot false-positive and still fires on the defect". The known-leaking archived `reval30_decoder_control_s0` finished at loss 0.00823 → **0.0119 bpb** and would have passed | **Would have cleared a leaking run.** True at 40 steps, false at 1800 — the quoted "loss ≈ 0.002" signature is a *40-step* number retold as if it described converged training | `11c907c` | nothing archived — caught in the same session it was introduced, before the gated wave ran |
+| **D7** | `train.py` BPB numerator | Total nats computed as `lm * target_chars`. `lm` is a mean over supervised **token** positions, so the char count is only correct for a character-level tokenizer | **Weakens the gate under a tokenizer change.** Under the 2.60x BPE D3.3 proposes this overestimates total nats ~2.6x and inflates BPB by the same factor, moving the measurement *away* from the floor — it would have fired exactly when the instrument changed. Also wrong by 6.3% in the char case (9.4848 -> 10.0840), since `n_supervised` includes the boundary position | this session | nothing archived — the only BPB figures recorded so far are from char-level runs, where the error is 6.3% and no verdict rests on it |
 
 ---
 
@@ -146,6 +149,12 @@ And the rule D6 adds, which is sharper:
 > against the anecdote about that failure.** D6 was calibrated on a remembered
 > "loss ≈ 0.002" and would have cleared the real run, whose converged loss was
 > 4× higher. The archived checkpoints carried the true number the whole time.
+
+> **A gate is only calibrated for the instrument it was measured on.** D7 was
+> correct for the character tokenizer it was written against and silently wrong
+> for the one the program is about to adopt. When the instrument changes,
+> re-derive the thresholds rather than carrying them across — the D3.3 prereg
+> makes that a blocking pre-run item rather than a hope.
 
 > **Never merge "the gate passed" with "the result replicated."** The first is
 > measurement validity, the second is an empirical claim; each can hold while

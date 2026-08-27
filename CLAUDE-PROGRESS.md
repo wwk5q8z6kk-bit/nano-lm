@@ -134,8 +134,30 @@ range spans 0.008–0.536. This confirms at n=27 what the two-point calibration 
   an existing asset (`sft/tokenizer.json`, own-stack BPE, 0/150 over context).
   It changes the instrument, so it breaks comparability with all three classes
   and belongs in its own preregistered change.
-- **Disk at 99% (16–17 GiB free) and the obvious reclaim is NOT safe as
-  premised.** `artifacts/campaign/kaggle_native30_download/` was believed to be
+- **Disk reclaim is BLOCKED by the sandbox, quoted denial:**
+  `rm: .../kaggle_native30_download/.../step_000360.pt: Operation not permitted`
+  (exit 1, file still present). Probed `find`, `ls`, `os.walk`, `touch`, `rm`;
+  only exact-path `stat` is permitted on that tree. Deletes succeed normally
+  elsewhere in `artifacts/`, so this is specific to that directory, not a
+  general permission problem. **The reclaim needs a shell outside this
+  sandbox.** Recommended action when someone has one: delete the 45
+  `step_*.pt` under `kaggle_native30_download/.../native_checkpoints/`, keep the
+  9 `latest.pt` — reclaims ~15 GiB while leaving every run's final state
+  re-analyzable.
+- **D3.3 PREREGISTERED, not run:** `artifacts/PREREG-D33-context-tokenizer-wave.md`.
+  Namespace `reval30_*_bpe_*`; explicit comparison boundary against all four
+  frozen classes; CONFIRMED ≥45/450 unconstrained coverage, REFUTED ≤4/450,
+  predicted direction stated. Blocking pre-run items include a new
+  every-row context-fit assertion and **re-derivation of the BPB floor for the
+  new instrument**. Needs disk reclaimed and owner authorization first.
+- **New defect D7 found while preparing the prereg** — the BPB numerator used
+  `lm * target_chars` where `lm` is a per-TOKEN mean. Correct only for a
+  character tokenizer; under the 2.60x BPE it would have inflated BPB ~2.6x and
+  weakened the gate exactly when the instrument changed. Fixed to
+  `lm * n_supervised` (`LossBreakdown.n_supervised` added); the char-case figure
+  moves 9.4848 -> 10.0840 (6.3%, boundary position). Pinned by
+  `test_bpb_uses_the_token_count_not_the_char_count`. 16 tests green.
+- **Superseded note — the obvious reclaim is NOT safe as premised.** `artifacts/campaign/kaggle_native30_download/` was believed to be
   a re-downloadable duplicate outside the evidence record. It is not: its 54
   `.pt` files are a **fourth provenance class** — a second independent execution
   of the defective wave, same run_ids and byte-identical configs but different

@@ -124,14 +124,21 @@ def train_native(
             total_tensor.backward()
             optimizer.step()
             final_loss = float(breakdown.total.detach()) if hasattr(breakdown.total, "detach") else float(breakdown.total)
-            # Bits per byte, tracked every step. `lm` is mean CE in nats over
-            # supervised (target) positions and the tokenizer is character
-            # level, so nats-per-target-char is `lm`; scale by chars/bytes to
-            # land on a per-byte figure that is comparable across tokenizers.
+            # Bits per byte, tracked every step.
+            #
+            # `lm` is the mean CE in nats over SUPERVISED TOKEN positions, so
+            # total nats = lm * n_supervised. This previously multiplied by the
+            # target CHARACTER count, which is only equal to the token count
+            # for a character-level tokenizer. Under the BPE asset D3.3
+            # proposes (2.60x compression) that overestimates total nats by
+            # ~2.6x and inflates BPB by the same factor — raising the measured
+            # value away from the floor and making the gate LESS sensitive
+            # exactly when the instrument changes. Bytes stay the denominator,
+            # which is what makes the figure tokenizer-independent.
             lm_nats = float(breakdown.lm.detach()) if hasattr(breakdown.lm, "detach") else float(breakdown.lm)
-            target_chars = sum(len(t) for t in targets)
+            n_supervised = breakdown.n_supervised
             target_bytes = sum(len(t.encode("utf-8")) for t in targets)
-            final_bpb = bits_per_byte(lm_nats * target_chars, max(1, target_bytes))
+            final_bpb = bits_per_byte(lm_nats * n_supervised, max(1, target_bytes))
             step += 1
             if step % max(1, cfg.max_steps // 5) == 0 or step >= cfg.max_steps:
                 save_checkpoint(model, cfg, step=step, optimizer=optimizer, extra={"loss": final_loss})

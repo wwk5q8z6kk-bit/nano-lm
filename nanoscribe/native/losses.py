@@ -16,6 +16,11 @@ class LossBreakdown:
     span_port: float
     evidence_align: float
     assertion_state: float
+    # Number of positions the loss was actually averaged over. Needed to
+    # recover TOTAL nats from the per-token mean; without it any bits-per-byte
+    # figure has to guess the token count, and guessing "one token per
+    # character" silently breaks under any non-character tokenizer.
+    n_supervised: int = 0
 
     def to_dict(self) -> dict[str, float]:
         return {
@@ -24,6 +29,7 @@ class LossBreakdown:
             "span_port": self.span_port,
             "evidence_align": self.evidence_align,
             "assertion_state": self.assertion_state,
+            "n_supervised": self.n_supervised,
         }
 
 
@@ -169,4 +175,5 @@ def compute_batch_loss(
         span_port=span_port,
         evidence_align=evidence_align,
         assertion_state=assertion_state,
+        n_supervised=int(supervised.sum()),
     )
