@@ -82,8 +82,11 @@ def substantive(body: str) -> bool:
             break
         kept = stripped
     kept = ANGLE.sub(" ", kept)
-    if PLACEHOLDER.search(kept):
-        return False
+    # Placeholder tokens do not *disqualify* a field — they simply do not count
+    # toward it. "TBD" alone is unfilled; "base commit is TBD pending a port",
+    # inside a full provenance section, is an answer. Treating any occurrence as
+    # a placeholder false-flagged exactly that case on the first real prereg.
+    kept = PLACEHOLDER.sub(" ", kept)
     return len("".join(kept.split())) >= MIN_CHARS
 
 

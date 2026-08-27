@@ -219,6 +219,28 @@ def check_single_authority_per_concern(errors: list[str]) -> None:
         errors.append("ACTIVE_NOW.json schema mismatch")
 
 
+def check_preregistrations(errors: list[str]) -> None:
+    """Gate opted-in preregs on the eighteen-field standard (SPEC §20).
+
+    Only files declaring `**Standard:** question-before-architecture-v1` are
+    checked; preregs predating the standard are grandfathered, not failed.
+    Delegates to scripts/check_prereg.py so the field list has one definition.
+    """
+    checker = ROOT / "scripts/check_prereg.py"
+    if not checker.is_file():
+        errors.append("missing scripts/check_prereg.py")
+        return
+    proc = subprocess.run(
+        [sys.executable, str(checker)], capture_output=True, text=True
+    )
+    if proc.returncode != 0:
+        for line in (proc.stdout + proc.stderr).splitlines():
+            text = line.strip()
+            # Report only the failures, not the GRANDFATHERED/COMPLETE roster.
+            if text.startswith("INCOMPLETE") or text.startswith("missing:"):
+                errors.append(f"prereg: {text}")
+
+
 def main() -> int:
     errors: list[str] = []
     check_links(errors)
@@ -227,6 +249,7 @@ def main() -> int:
     check_stale_authority_phrases(errors)
     check_protected_diff(errors)
     check_single_authority_per_concern(errors)
+    check_preregistrations(errors)
     if errors:
         for e in errors:
             print(e, file=sys.stderr)

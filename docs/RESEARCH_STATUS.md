@@ -225,18 +225,32 @@ finding, the C1 UNRESOLVED verdict and the C3 void all rest on it. See
 
 ## NEXT CANDIDATE EXPERIMENTS
 
-Ranked. None authorized. Each must supply the **twelve-field chain**
+Ranked. None authorized. Each must supply the **eighteen-field standard**
 (`NANO_VNEXT_MASTER_SPEC.md` §20) and pass the **readiness gate** (§25) before it
-is proposed for launch. The gate's fourth question — *what competing explanations
+is proposed for launch. The gate's fifth question — *what competing explanations
 does the experiment distinguish?* — is what produced this ranking.
 
-1. **Tokenizer swap on the native30 instrument.** Highest information per dollar
-   and uses an existing asset. Swap `hash_tokens` → `sft/tokenizer.json`; hold
-   parameters, steps, corpus and eval fixed. *Instrument:* `p1_screening_eval_v1`.
-   *Bottleneck:* 82.7% of eval prompts truncated. *Invariance requirement:*
-   embedding parameter count unchanged (it is — same vocab 4098). *Discriminates:*
-   capability floor vs context-fit confound — the single largest ambiguity in the
-   current record.
+1. **Tokenizer swap on the native30 instrument.**
+   **PRE-REGISTERED 2026-08-26** —
+   `research/preregistrations/PREREG_TOKENIZER_CONTEXT_FIT.md`, the first
+   document written to the eighteen-field standard. **NOT AUTHORIZED, and NOT
+   READY**: field 8 is incompletely specified. Length and overflow are measured,
+   but *semantic* preservation across the tokenizer swap has no numeric bound,
+   so gate question 4 is only partly answered — and an unanswered gate question
+   is a stop. The R8 lesson applies directly: arm B's format-feasibility gate
+   passed at ~96% while the task collapsed. Unblocking it means adopting a
+   stated invariance criterion, not running the experiment.
+
+   Still ranked first: highest information per dollar, uses an existing asset.
+   Swap `hash_tokens` → `sft/tokenizer.json`; hold parameters, steps, corpus and
+   eval fixed. *Instrument:* `p1_screening_eval_v1`. *Measured bottleneck:*
+   truncation — 124/150 = 82.7% of eval prompts exceed `max_seq=512`, median
+   content loss 4.4% (`de188a2:artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`).
+   That truncation *causes* the floor result is the hypothesis, not the
+   measurement. *Invariance requirement:* embedding **and** total trainable
+   parameter count identical — same vocab 4098 — asserted as equality, breach ⇒
+   VOID. *Discriminates:* capability floor vs context-fit confound, the single
+   largest ambiguity in the current record.
 2. **Two-stage span-port: retrieval → conditional delimitation.**
    **NOT READY — fails the readiness gate** (SPEC §25). Under HEDGE_REQUIRED
    there is **no measured failure mode** on this line to aim at, so gate
