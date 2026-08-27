@@ -29,12 +29,12 @@ later reads only the headline. Two of them (D1.2 and D2.3) are independently
 capable of voiding a whole wave's conclusions and neither appears in any
 headline summary.
 
-**One entry is still OPEN.** D3.3 — preregistered for a separate wave in
-`artifacts/PREREG-D33-context-tokenizer-wave.md`; not folded into the completed
-revalidation. D3.3 — character-level tokenization against a
+**One entry is still OPEN.** D3.3 — character-level tokenization against a
 512-token context, with 82.7% of eval prompts and 100% of the training corpus
 over the window. D3.1 removed the 64-char cap but never addressed the underlying
-mismatch, so **D3 is only partly closed**. Everything else here is fixed and
+mismatch, so **D3 is only partly closed**. It is preregistered as a separate
+wave in `artifacts/PREREG-D33-context-tokenizer-wave.md` and deliberately *not*
+folded into the completed revalidation. Everything else here is fixed and
 asserted at runtime.
 
 ---
