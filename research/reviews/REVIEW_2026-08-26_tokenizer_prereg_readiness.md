@@ -1,8 +1,10 @@
 # Readiness review — D3.3 context/tokenizer wave
 
 **Date:** 2026-08-26
-**Reviews:** `artifacts/PREREG-D33-context-tokenizer-wave.md`, read at
-`de188a2` on `frontier/accelerated-research-campaign-v2`
+**Reviews:** `artifacts/PREREG-D33-context-tokenizer-wave.md` — **cross-branch**,
+read at `de188a2` on `frontier/accelerated-research-campaign-v2`. It does **not**
+exist on the branch this review is committed to; cite it as
+`de188a2:artifacts/PREREG-D33-context-tokenizer-wave.md`.
 **Against:** the eighteen-field standard, `NANO_VNEXT_MASTER_SPEC.md` §20, and
 the readiness gate, §25
 **Verdict:** **NOT READY** — one blocking gap (field 8). Not an authorization

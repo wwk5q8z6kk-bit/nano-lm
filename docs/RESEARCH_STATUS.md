@@ -240,7 +240,9 @@ does the experiment distinguish?* — is what produced this ranking.
    current record.
 
    **Status changed 2026-08-26, still unauthorized.** A pre-registration now
-   exists — `artifacts/PREREG-D33-context-tokenizer-wave.md`, *written, not run*,
+   exists — `artifacts/PREREG-D33-context-tokenizer-wave.md` (**cross-branch**:
+   resolves on `frontier/accelerated-research-campaign-v2`, read at `de188a2`;
+   it does **not** exist on this branch), *written, not run*,
    with a separate `reval30_*_bpe_*` namespace and explicit non-comparability to
    all four existing populations. And the **D7 fix is a prerequisite that landed
    just in time**: the BPB numerator bug would have inflated this experiment's
