@@ -206,6 +206,12 @@ def main() -> int:
     print(f"  recurrence         certain-but-wrong={rec['certain_but_wrong']} "
           f"outside-range={rec['true_count_outside_reported_range']} "
           f"point-count control wrong={rec['point_count_control_wrong']}")
+    fa = result["falsifiers"]
+    print(f"  falsifiers         derived validity="
+          f"{fa['derived']['validity']:.3f} discrimination="
+          f"{fa['derived']['discrimination']:.3f} "
+          f"({fa['derived']['named']} named) vs broad control validity="
+          f"{fa['broad_control']['validity']:.3f}")
     print(f"  artifacts          {args.out}")
 
     # Exit non-zero when the arms disagree: a benchmark that reports a speedup

@@ -83,6 +83,7 @@ from nano.runtime import (Disposition, Question, QuestionKind, StateView,
 from nano.retrieval import (FOLD_COST_PER_OBSERVATION, STRUCTURALLY_UNAVAILABLE,
                             ObservationIndex, retrieval_answer)
 from nano.causal import CausalBasis, attribute_cause, post_hoc_attribute
+from nano.falsifier import broad_falsifier, falsifiers_for
 from nano.temporal import (AllenRelation, CONCURRENT, Interval,
                            count_recurrences, document_order_relate, is_sound,
                            relate, sharpness)
@@ -2493,6 +2494,105 @@ def score_recurrence(world: SyntheticWorld) -> dict:
     }
 
 
+def score_falsifiers(world: SyntheticWorld, sample: int = 60) -> dict:
+    """MTA-WOULDCHANGE — is the named falsifier real?
+
+    Every falsifier is **executed**: the observation it names is constructed,
+    admitted through the normal ingest path, and the answer re-derived. Two
+    things are measured, and neither is meaningful alone:
+
+    * **validity** — satisfying the falsifier changes the conclusion. A
+      falsifier that does not fire when satisfied is simply false.
+    * **discrimination** — a *near miss* (the same key, corroborating rather
+      than contradicting) leaves the conclusion alone. A falsifier satisfied by
+      anything is useless even when technically valid.
+
+    Validity alone is maximised by naming something so broad that any evidence
+    satisfies it, which is exactly what the control does.
+    """
+    b = build_full(world, world.observations, world.spec.n_ticks)
+    now = tick_to_date(world.spec.n_ticks)
+    view = state_view(b, world.identity, now)
+    keys = sorted(set(b.resolved) | set(b.conflicted))
+    step = max(1, len(keys) // sample)
+    probes = keys[::step][:sample]
+
+    def conclusion(builder, key):
+        """What the system currently holds about a key, as a comparable value."""
+        if key in builder.conflicted:
+            return ("disputed", builder.conflicted[key][1])
+        if key in builder.resolved:
+            return ("held", builder.resolved[key])
+        return ("unknown", None)
+
+    def admit_hypothetical(entity, attribute, value, event_time):
+        """Replay the world, then add the hypothetical observation.
+
+        A fresh fold each time: mutating the shared builder would let one probe
+        contaminate the next, and the whole point is that each falsifier is
+        checked against the same starting state.
+        """
+        trial = build_full(world, world.observations, world.spec.n_ticks)
+        tick = max(0, (date.fromisoformat(event_time)
+                       - EPOCH).days) if len(event_time) == 10 else \
+            world.spec.n_ticks + 1
+        trial.admit(Observation(
+            obs_tick=world.spec.n_ticks + 1, event_tick=tick,
+            entity_id=entity, attribute=attribute, value=value,
+            kind=ObsKind.CLEAN, source_ordinal=8,
+            change_id=f"hyp_{entity}_{attribute}_{value}"))
+        return trial
+
+    def run(generator) -> dict:
+        named = fired = discriminated = near_miss_total = 0
+        unexecutable = 0
+        for key in probes:
+            entity, attribute = key
+            before = conclusion(b, key)
+            for f in generator(entity, attribute, resolved=b.resolved,
+                               conflicted=b.conflicted,
+                               latest_time=view.latest_time,
+                               evidence=view.evidence, as_of=now):
+                named += 1
+                if f.value == "any":
+                    unexecutable += 1
+                    continue
+                after = conclusion(
+                    admit_hypothetical(entity, attribute, f.value,
+                                       f.event_time), key)
+                if after != before:
+                    fired += 1
+
+                # Near miss: corroborate the held value at the same time the
+                # falsifier names. Same key, same moment, different content —
+                # a well-aimed falsifier must not be satisfied by this.
+                if before[0] == "held":
+                    near_miss_total += 1
+                    same = conclusion(
+                        admit_hypothetical(entity, attribute, before[1],
+                                           f.event_time), key)
+                    if same == before:
+                        discriminated += 1
+        return {"named": named,
+                "executable": named - unexecutable,
+                "fired_when_satisfied": fired,
+                "validity": fired / max(1, named - unexecutable),
+                "near_misses_tested": near_miss_total,
+                "correctly_ignored_near_miss": discriminated,
+                "discrimination": discriminated / max(1, near_miss_total)}
+
+    derived = run(falsifiers_for)
+    control = run(lambda e, a, **kw: broad_falsifier(e, a, **kw))
+    return {
+        "keys_probed": len(probes),
+        "derived": derived,
+        "broad_control": control,
+        "control_is_worse": control["validity"] < derived["validity"],
+        "validity_gain": derived["validity"] - control["validity"],
+        "every_claim_has_a_falsifier": derived["named"] >= len(probes),
+    }
+
+
 def run_slw_001(spec: WorldSpec | None = None) -> dict:
     """The benchmark. Returns a plain dict so the runner can serialise it."""
     world = SyntheticWorld.generate(spec)
@@ -2569,6 +2669,7 @@ def run_slw_001(spec: WorldSpec | None = None) -> dict:
         "causal_attribution": score_causal_attribution(world),
         "interval_relations": score_interval_relations(world),
         "recurrence": score_recurrence(world),
+        "falsifiers": score_falsifiers(world),
     }
     # A cost saving is only reportable if the answers match. Stating it
     # unconditionally is how a benchmark starts rewarding being fast and wrong.

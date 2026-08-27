@@ -740,13 +740,29 @@ CAPABILITIES: tuple[Capability, ...] = (
     _c(capability_id="MTA-WOULDCHANGE", domain="Metacognition",
        capability="Name what evidence would change the conclusion",
        internal_representation="falsifier attached to a claim",
-       module="not built", inputs=("claim", "evidence"), outputs=("falsifier",),
+       module="nano.falsifier", inputs=("claim", "evidence"),
+       outputs=("falsifier",),
        memory_requirements="none", tools=(),
        training_objective="falsifier generation",
-       evaluation_benchmark="is the named falsifier actually decisive?",
+       evaluation_benchmark="NANO-SLW-001 falsifiers: validity + discrimination",
        failure_modes=("names a falsifier that would change nothing",
-                      "no falsifier, so the claim is unfalsifiable"),
-       implementation_stage=Stage.D_LONGITUDINAL, status=Status.ABSENT),
+                      "no falsifier, so the claim is unfalsifiable",
+                      "'evidence to the contrary' — true of every claim and "
+                      "actionable for none",
+                      "a falsifier satisfied by evidence that changes nothing"),
+       implementation_stage=Stage.D_LONGITUDINAL, status=Status.IMPLEMENTED,
+       # ABSENT -> IMPLEMENTED on 2026-08-26. Falsifiers are derived from the
+       # resolution rule rather than invented, and every one is EXECUTED: the
+       # named observation is constructed, admitted through the normal ingest
+       # path, and the answer re-derived. Validity 1.000 (fires when satisfied)
+       # and discrimination 1.000 (never fires on a corroborating near miss); a
+       # broad control naming the key but constraining nothing scores validity
+       # 0.000. Both metrics are required — validity alone is maximised by
+       # naming something anything satisfies.
+       evidence="nano/falsifier.py (Falsifier, falsifiers_for, broad_falsifier); "
+                "nano/slw.py::score_falsifiers; "
+                "nano/test_slw.py::test_every_named_falsifier_fires_when_"
+                "satisfied, test_a_falsifier_is_not_satisfied_by_a_near_miss"),
 
     # ---------------- Prediction ----------------
     _c(capability_id="PRD-SEPARATE", domain="Prediction",

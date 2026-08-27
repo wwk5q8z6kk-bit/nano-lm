@@ -720,5 +720,29 @@
     "point_count_control_wrong": 58,
     "coverage": 0.9958333333333333,
     "range_avoids_error": 57
+  },
+  "falsifiers": {
+    "keys_probed": 60,
+    "derived": {
+      "named": 112,
+      "executable": 112,
+      "fired_when_satisfied": 112,
+      "validity": 1.0,
+      "near_misses_tested": 104,
+      "correctly_ignored_near_miss": 104,
+      "discrimination": 1.0
+    },
+    "broad_control": {
+      "named": 60,
+      "executable": 52,
+      "fired_when_satisfied": 0,
+      "validity": 0.0,
+      "near_misses_tested": 52,
+      "correctly_ignored_near_miss": 52,
+      "discrimination": 1.0
+    },
+    "control_is_worse": true,
+    "validity_gain": 1.0,
+    "every_claim_has_a_falsifier": true
   }
 }

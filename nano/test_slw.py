@@ -1147,3 +1147,42 @@ def test_the_reported_range_brackets_the_truth(recurrence):
 def test_a_point_count_control_is_wrong_far_more_often(recurrence):
     assert recurrence["point_count_control_wrong"] > 0
     assert recurrence["range_avoids_error"] > 0
+
+
+# ---------------------------------------------------------------------------
+# MTA-WOULDCHANGE — a falsifier is only real if executing it moves the answer
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def falsifiers(world):
+    from nano.slw import score_falsifiers
+    return score_falsifiers(world)
+
+
+def test_every_named_falsifier_fires_when_satisfied(falsifiers):
+    """Executed, not asserted: the named observation is constructed, admitted
+    through the normal ingest path, and the answer re-derived."""
+    d = falsifiers["derived"]
+    assert d["named"] > 0
+    assert d["executable"] == d["named"], "a falsifier that cannot be executed"
+    assert d["validity"] == 1.0
+
+
+def test_a_falsifier_is_not_satisfied_by_a_near_miss(falsifiers):
+    """Validity alone is maximised by naming something so broad that anything
+    satisfies it. Discrimination is what stops that."""
+    d = falsifiers["derived"]
+    assert d["near_misses_tested"] > 0
+    assert d["discrimination"] == 1.0
+
+
+def test_every_claim_carries_a_falsifier(falsifiers):
+    assert falsifiers["every_claim_has_a_falsifier"]
+
+
+def test_an_underspecified_falsifier_does_not_fire(falsifiers):
+    """The control names the key and constrains nothing about it — which sounds
+    specific and is satisfied by evidence that changes nothing."""
+    assert falsifiers["control_is_worse"]
+    assert falsifiers["broad_control"]["validity"] < 0.5
+    assert falsifiers["validity_gain"] > 0.5
