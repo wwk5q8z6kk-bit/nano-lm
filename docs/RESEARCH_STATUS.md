@@ -87,7 +87,8 @@ upward requires the evidence named in its row, not an argument.
 | **The native30 arms do not separate at this scale.** `evidence_bottleneck` pooled 6/450 (0.0133, Wilson [0.0061, 0.0288]) against decoder control 0/450 (Wilson [0, 0.0085]); per-seed [6, 0, 0]; `seed_spread` 0.04 exceeds the effect. Verdict `NOT_SEPARATED`, `effect_exceeds_seed_spread: false`. | `artifacts/campaign/native30_revalidation_summary_causalfix.json` | Registered decision rule; the split is seed noise, not an architecture effect |
 | **The native30 instrument was sound — the gated wave ran clean.** All 9 arms landed under `reval_results_fixed/`; every `*_train.json` carries an integrity block with attention leakage **exactly 0.0**, each block matching the `scaled_dot_product_attention(is_causal=True)` reference to 2.98e-07–5.07e-07, supervised 305, prompt cap 512 == `max_seq`. Nothing bypassed or relaxed. | `326b301`; `artifacts/RESULT-native30-gated-revalidation.md` | **Establishes the instrument was sound — not that anything was learned.** The two claims are kept separate by rule |
 | **…and the result replicated exactly against the pre-gate causalfix wave.** Verdicts, effect sizes and pooled coverage all identical: `evidence_bottleneck` constrained NOT_SEPARATED +0.0133 cov 18; `span_port` constrained NOT_SEPARATED +0.0000 cov 18; both unconstrained INVALID_NO_SIGNAL cov 0. | `326b301` | **NOT_SEPARATED here is under-powered, not a null** — recorded as such at source |
-| **Converged training loss does not detect leakage** (n=27). Gated `decoder_control_s1` finished at **0.00962** — lower than eight of the nine known-leaking archived runs — with attention leakage proven exactly 0.0. Medians: archived 0.028, causalfix 0.086, gated 0.061. | `326b301`; `artifacts/DEFECT_INDEX.md` D6 | The "loss ≈0.002" signature was a **40-step number retold as convergence**; only two of nine archived runs are near it and the range spans 0.008–0.536. Rule produced: calibrate a threshold against the archived failure, not the anecdote about it. **Consequence: converged training loss is RETIRED as a leakage diagnostic.** Leakage is established by the integrity block — attention-leakage measurement against the `is_causal=True` reference — and by nothing else |
+| **No converged-loss threshold can separate leaking from clean.** Stronger than the original n=27 reading. A **fourth population** was found — the Kaggle directory is a *second independent execution* of the defective wave (same `run_id`s, byte-identical configs, same 1800 steps, same date, different hardware), proven distinct by `latest.pt` size parity failing on all nine runs and a sha256 mismatch on `reval30_decoder_control_s0/step_001800.pt`. **The same config's converged loss differs between the two executions by up to 27.1×** (Kaggle median 0.063, range 0.006–0.753; local median 0.028, range 0.008–0.536). | `326b301`, `130b77d`; `artifacts/DEFECT_INDEX.md` D6; `artifacts/campaign/native30_kaggle_replicate_metadata.json` | That spread is run-to-run variance **within the defective population alone**, so no threshold can exist — this settles D6 past the n=27 argument. Supporting: gated `decoder_control_s1` finished at 0.00962, lower than eight of nine known-leaking archived runs, with leakage proven exactly 0.0. The "loss ≈0.002" signature was a **40-step number retold as convergence**. **Consequence: converged training loss is RETIRED as a leakage diagnostic.** Leakage is established by the integrity block — attention-leakage measurement against the `is_causal=True` reference — and by nothing else |
+| **The BPB gate was miscomputed, and the error scaled with the instrument** (D7). `train.py` computed total nats as `lm * target_chars`, but `lm` is a mean over supervised **token** positions — an identity that holds only for a character-level tokenizer. | `388b2e7`; `artifacts/DEFECT_INDEX.md` D7 | Under the 2.60× BPE asset it **overestimates nats ~2.6× and inflates BPB by the same factor — moving the measurement away from the floor and making the gate *less* sensitive precisely when the instrument changes.** Also wrong by 6.3% in the char case (9.4848 → 10.0840). Fixed via `LossBreakdown.n_supervised`; bytes stay the denominator, which is what keeps the figure tokenizer-independent. Pinned by `test_bpb_uses_the_token_count_not_the_char_count` |
 | **The capability floor fired — in its permissible form only.** *30M at 1800 steps **with a tokenizer that cannot fit 83% of eval prompts in its context** is below the floor for `p1_screening_eval_v1`.* Measured: **124/150 = 82.7%** of prompts exceed `max_seq=512` under char-level `hash_tokens` (median 530, max 576); 100% of the training corpus does (median 615, max 694). | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`; CONFOUND NOTICE in `trajectory/PREREG_causalfix_wave_arm_split.md` | The prereg names the short form *"30M is below the capability floor"* **impermissible** — parameter count is not the only thing varying |
 
 **Two qualifiers that travel with the native30 rows and must not be dropped:**
@@ -230,33 +231,39 @@ Ranked. None authorized. Each must supply the **eighteen-field standard**
 is proposed for launch. The gate's fifth question — *what competing explanations
 does the experiment distinguish?* — is what produced this ranking.
 
-1. **Tokenizer swap on the native30 instrument.**
-   **PRE-REGISTERED 2026-08-26** —
-   `research/preregistrations/PREREG_TOKENIZER_CONTEXT_FIT.md`, the first
-   document written to the eighteen-field standard. **NOT AUTHORIZED, and NOT
-   READY**: field 8 is incompletely specified. Length and overflow are measured,
-   but *semantic* preservation across the tokenizer swap has no numeric bound,
-   so gate question 4 is only partly answered — and an unanswered gate question
-   is a stop. The R8 lesson applies directly: arm B's format-feasibility gate
-   passed at ~96% while the task collapsed. Unblocking it means adopting a
-   stated invariance criterion, not running the experiment.
+1. **Tokenizer swap on the native30 instrument.** Highest information per dollar
+   and uses an existing asset. Swap `hash_tokens` → `sft/tokenizer.json`; hold
+   parameters, steps, corpus and eval fixed. *Instrument:* `p1_screening_eval_v1`.
+   *Bottleneck:* 82.7% of eval prompts truncated. *Invariance requirement:*
+   embedding parameter count unchanged (it is — same vocab 4098). *Discriminates:*
+   capability floor vs context-fit confound — the single largest ambiguity in the
+   current record.
 
-   Still ranked first: highest information per dollar, uses an existing asset.
-   Swap `hash_tokens` → `sft/tokenizer.json`; hold parameters, steps, corpus and
-   eval fixed. *Instrument:* `p1_screening_eval_v1`. *Measured bottleneck:*
-   truncation — 124/150 = 82.7% of eval prompts exceed `max_seq=512`, median
-   content loss 4.4% (`de188a2:artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`).
-   That truncation *causes* the floor result is the hypothesis, not the
-   measurement. *Invariance requirement:* embedding **and** total trainable
-   parameter count identical — same vocab 4098 — asserted as equality, breach ⇒
-   VOID. *Discriminates:* capability floor vs context-fit confound, the single
-   largest ambiguity in the current record.
+   **Status changed 2026-08-26, still unauthorized.** A pre-registration now
+   exists — `artifacts/PREREG-D33-context-tokenizer-wave.md`, *written, not run*,
+   with a separate `reval30_*_bpe_*` namespace and explicit non-comparability to
+   all four existing populations. And the **D7 fix is a prerequisite that landed
+   just in time**: the BPB numerator bug would have inflated this experiment's
+   own gate by ~2.6× *because* it swaps the tokenizer — the defect scaled with
+   the very change under test, and would have desensitised the gate precisely
+   when it mattered. It was found while writing that prereg, which is the
+   argument for writing preregs before running anything.
+
+   **Readiness review against the eighteen-field standard, 2026-08-26** —
+   `research/reviews/REVIEW_2026-08-26_tokenizer_prereg_readiness.md`. That
+   prereg is canonical for this wave; the review does not duplicate it and
+   registers no rival endpoint. Finding: **one blocking gap.** Length and
+   overflow across the swap are measured, but *semantic* preservation has no
+   stated bound — "nothing else changes" is an argument, not a check. R8 is the
+   precedent: arm B's format-feasibility gate passed at ~96% while the task
+   collapsed. Until a bound is stated, gate question 4 is only partly answered
+   and the wave is **NOT READY**, independently of authorization.
 2. **Two-stage span-port: retrieval → conditional delimitation.**
    **NOT READY — fails the readiness gate** (SPEC §25). Under HEDGE_REQUIRED
    there is **no measured failure mode** on this line to aim at, so gate
    question 3 is unanswerable and an unanswered question is a stop. Blocked
-   behind unresolved (1), the construct question — which is a human/clinician
-   judgement, not compute. Kept here for its design, which is sound.
+   behind unresolved (1), the construct question — a human/clinician judgement,
+   not compute. Kept here for its design, which is sound.
    *Instrument:* `campaign_v2` span-port. *Hypothesised mechanism (H-delimit,
    not a measured bottleneck):* conditional span selection, given the turn
    selection the model already performs at 97/120. *Manipulation:* stage 1 is
@@ -310,3 +317,17 @@ the menu format perfectly well. **Format compliance and task preservation are
 different properties**, and only the first was being checked. This is the
 concrete instance of the "invariance requirement" field that
 `NANO_VNEXT_MASTER_SPEC.md` §25 now requires of every experiment.
+
+### Gate calibration is instrument-specific (from D7)
+
+> **A gate is only calibrated for the instrument it was measured on. Re-derive it
+> on change rather than carrying the threshold across.**
+
+D7 is the case: a BPB gate calibrated under a character-level tokenizer silently
+desensitises by ~2.6× the moment a BPE tokenizer is substituted — and the
+substitution *is* the experiment. A threshold carried across an instrument change
+is not a conservative choice; it is an uncalibrated one, and it fails in the
+direction that hides the effect.
+
+Companion to R8: R8 asks whether the *task* survived the manipulation, this asks
+whether the *measurement* did.

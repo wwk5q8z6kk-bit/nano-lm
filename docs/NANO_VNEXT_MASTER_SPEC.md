@@ -608,6 +608,16 @@ substrate (§§4–19); the lattice describes what has been earned.
   instrument cannot discriminate between the competing explanations, that is the
   experiment to run first. An instrument incapable of distinguishing hypotheses
   makes every architectural result it produces uninterpretable.
+- **A gate is only calibrated for the instrument it was measured on.**
+  Re-derive it on change; never carry the threshold across. **D7** is the case:
+  a BPB gate calibrated under a character-level tokenizer desensitises by ~2.6×
+  the moment the BPE asset is substituted — and the substitution *is* the
+  experiment, so the defect scaled with the very change under test. A threshold
+  carried across an instrument change is not a conservative choice, it is an
+  uncalibrated one, and it fails in the direction that **hides the effect**.
+  Companion to R8: R8 asks whether the *task* survived the manipulation; this
+  asks whether the *measurement* did. Both are checked before the endpoint is
+  read.
 - **Measure cost as an outcome, not as an excuse.** Outcome measures include
   capability and quality *and* compute, latency, memory, and cost — the §2
   optimization target is verified capability per unit of all four. Cheapness is
