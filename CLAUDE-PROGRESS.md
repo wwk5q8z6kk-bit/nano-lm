@@ -144,6 +144,15 @@ range spans 0.008–0.536. This confirms at n=27 what the two-point calibration 
   `step_*.pt` under `kaggle_native30_download/.../native_checkpoints/`, keep the
   9 `latest.pt` — reclaims ~15 GiB while leaving every run's final state
   re-analyzable.
+- **New defect D8 found while validating the D7 fix** — `logits = h @
+  token_emb.weight.T` has no 1/sqrt(d) scaling against `nn.Embedding`'s N(0,1)
+  init. Measured at d_model=256: logit std 16.2 = sqrt(256), init CE 39.7
+  nats/token vs ln(vocab)=8.3. **Init loss grows as sqrt(d_model)**, so wider
+  models start worse for reasons unrelated to capability. Does NOT affect the
+  native30 wave (all arms 30M, offset common to every cell, cancels in the
+  contrasts) but WOULD confound any native30-vs-native100 loss/BPB comparison.
+  Left OPEN and unfixed on purpose — fixing changes the instrument and needs its
+  own prereg, same rule as D3.3.
 - **D3.3 is now ASSERTED AT RUNTIME** (its corpus-level fix remains open).
   `integrity.assert_context_budget` runs on every training run: raises if the
   target alone cannot fit or if any gold span is lost to prompt

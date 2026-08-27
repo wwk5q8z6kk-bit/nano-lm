@@ -23,7 +23,7 @@ the working tree, and two session transcripts. It is the evidence base for Paper
 **Counting note.** The program refers to "five defects." That is the count of
 *fix threads*, not of distinct failure sites. Three of the five threads bundle
 multiple independent defects that were found together and fixed in one commit,
-so the true site count is **fifteen**. They are enumerated as `N.x` below,
+so the true site count is **sixteen**. They are enumerated as `N.x` below,
 because a bundled sub-defect is exactly the kind that gets lost when someone
 later reads only the headline. Two of them (D1.2 and D2.3) are independently
 capable of voiding a whole wave's conclusions and neither appears in any
@@ -40,7 +40,12 @@ in every run report. Measured on the shipped corpus: **96/96 rows over budget,
 median 551 tokens against `max_seq` 512, `relies_on_left_truncation: true`, and
 `spans_visible: true`** — the last being why the corpus is learnable at all.
 
-**One entry is still OPEN.** D3.3 — character-level tokenization against a
+**Two entries are OPEN**, both deliberately: D3.3 (below) and D8 (init logit
+scale). Neither is fixed in place, because both change the measurement
+instrument and this program's rule is that an instrument change gets its own
+preregistered wave rather than a silent patch.
+
+**One of them:** D3.3 — character-level tokenization against a
 512-token context, with 82.7% of eval prompts and 100% of the training corpus
 over the window. D3.1 removed the 64-char cap but never addressed the underlying
 mismatch, so **D3 is only partly closed**. It is preregistered as a separate
@@ -69,6 +74,7 @@ asserted at runtime.
 | **D5.3** | `prompt.py topic_for_spec` | The **question** interpolated `spec.raw_value!r` — 14/16 slots — and was classified as task specification, so it was pinned ON in all four original ablation cells | **Inflates, and voids the ablation.** The cell named "leakage-free" still leaked; a question-only parrot scored 9/16 against a 10/16 ceiling, identical in all four cells | orx leakage thread | the original 2×2 design itself; forced the 2×2×2 redesign |
 | **D6** | `integrity.py` BPB floor | A flat `BPB_HARD_FLOOR = 0.01` was shipped claiming it "cannot false-positive and still fires on the defect". The known-leaking archived `reval30_decoder_control_s0` finished at loss 0.00823 → **0.0119 bpb** and would have passed | **Would have cleared a leaking run.** True at 40 steps, false at 1800 — the quoted "loss ≈ 0.002" signature is a *40-step* number retold as if it described converged training | `11c907c` | nothing archived — caught in the same session it was introduced, before the gated wave ran |
 | **D7** | `train.py` BPB numerator | Total nats computed as `lm * target_chars`. `lm` is a mean over supervised **token** positions, so the char count is only correct for a character-level tokenizer | **Weakens the gate under a tokenizer change.** Under the 2.60x BPE D3.3 proposes this overestimates total nats ~2.6x and inflates BPB by the same factor, moving the measurement *away* from the floor — it would have fired exactly when the instrument changed. Also wrong by 6.3% in the char case (9.4848 -> 10.0840), since `n_supervised` includes the boundary position | this session | nothing archived — the only BPB figures recorded so far are from char-level runs, where the error is 6.3% and no verdict rests on it |
+| **D8** | `model.py` tied output projection | `logits = h @ token_emb.weight.T` with **no 1/sqrt(d) scaling**, against `nn.Embedding`'s default N(0,1) init. Measured at d_model=256: logit std **16.2 = sqrt(256)**, absmax 201. Init CE is **39.7 nats/token against ln(vocab)=8.3** — the model starts ~4.8x worse than uniform | **Confounds scale comparisons.** Init loss grows as sqrt(d_model), so a wider model starts worse for reasons unrelated to capability. Not a flattering defect — it depresses early loss quality — but it is scale-coupled, and this program makes cross-scale claims | **OPEN, deliberately unfixed** — fixing it changes the instrument, so it needs its own prereg like D3.3 | **not** the native30 wave (all nine arms are 30M, so the offset is common to every cell and cancels in the contrasts). It **would** confound any native30-vs-native100 loss/BPB comparison |
 
 ---
 
