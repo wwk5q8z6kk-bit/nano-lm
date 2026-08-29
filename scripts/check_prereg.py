@@ -72,6 +72,29 @@ def sections(text: str) -> dict[str, str]:
     return out
 
 
+# Non-interventional studies (measurement, construct validity, calibration) have
+# no manipulation. SPEC §20 lets such a field be "N/A — <reason>"; a bare N/A is
+# an unanswered field. Fields 8 and 12 are never N/A — a measurement study can
+# still fail its own preconditions.
+NEVER_NA = frozenset({"invariance requirements", "kill condition"})
+NA = re.compile(r"^\s*(?:\*\*)?n/?a(?:\*\*)?\b[\s:—–-]*(.*)$", re.I | re.M)
+NA_MIN_REASON = 12
+
+
+def na_state(body: str, field: str) -> str:
+    """'none' | 'justified' | 'bare' | 'illegal' — how this field uses N/A."""
+    m = NA.search(body)
+    if not m:
+        return "none"
+    if field in NEVER_NA:
+        return "illegal"
+    return (
+        "justified"
+        if len("".join(m.group(1).split())) >= NA_MIN_REASON
+        else "bare"
+    )
+
+
 def substantive(body: str) -> bool:
     """A field is answered if real prose survives stripping template guidance."""
     kept = "\n".join(ln for ln in body.splitlines() if not ln.lstrip().startswith(">"))
@@ -102,7 +125,17 @@ def check(path: Path) -> tuple[str, list[str]]:
         body = next((b for h, b in found.items() if rx.search(h)), None)
         if body is None:
             missing.append(f"{canonical} (no section)")
-        elif not substantive(body):
+            continue
+        match na_state(body, canonical):
+            case "justified":
+                continue  # non-interventional, reason given
+            case "bare":
+                missing.append(f"{canonical} (bare N/A — state a reason)")
+                continue
+            case "illegal":
+                missing.append(f"{canonical} (never N/A — SPEC §20)")
+                continue
+        if not substantive(body):
             missing.append(f"{canonical} (empty/placeholder)")
     return ("INCOMPLETE" if missing else "COMPLETE"), missing
 
@@ -174,6 +207,11 @@ def main() -> int:
     targets = args.paths or sorted(PREREG_DIR.glob("PREREG_*.md"))
     if not targets:
         print("no preregistrations found", file=sys.stderr)
+        return 1
+
+    if missing_files := [p for p in targets if not p.is_file()]:
+        for p in missing_files:
+            print(f"no such file: {p}", file=sys.stderr)
         return 1
 
     failed = False

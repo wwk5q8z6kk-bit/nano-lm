@@ -595,6 +595,23 @@ evaluation, or instrumentation constraints, those questions are resolved
 separately rather than allowed to contaminate architectural claims. §24
 hypothesis 1 is a foundational instrument question, not a mechanism test.
 
+**Non-interventional studies mark fields `N/A — <reason>`.** The chain above was
+derived from intervention experiments and assumes a manipulation exists. It does
+not, for measurement, construct-validity, instrument-calibration or power
+studies — the E3 dual-clinician arm manipulates nothing, it rates frozen items
+under a fixed rubric. Inventing a contrast to satisfy the checklist would be
+worse than leaving the field empty; that is the *"interesting architecture →
+implementation → post-hoc explanation"* direction this section forbids.
+
+So a field may be `N/A` **with a stated reason**. A bare `N/A` is an unanswered
+field, and §25 makes an unanswered field a stop. **Fields 8 (invariance
+requirements) and 12 (kill condition) are never `N/A`** — a measurement study
+can still fail its own preconditions, and E3's rater anchors are exactly field 8
+done properly on a study with no manipulation to check. Two of the five open
+hypotheses in §24 are instrument questions rather than mechanism questions; a
+standard that fitted only interventions would have pushed both toward being
+framed as interventions.
+
 **Explicitly not approved:**
 
 - The **A0→A7 ladder as written**. It is a sequence of mechanisms with no
