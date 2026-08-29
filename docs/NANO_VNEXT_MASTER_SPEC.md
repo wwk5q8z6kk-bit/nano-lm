@@ -33,16 +33,28 @@ module disagree, **the module wins** and this document is stale.
 session; treat §§4–19 citations to it as a snapshot, and re-read before relying
 on a specific symbol.
 
-**Where cited paths resolve.** Of the 21 paths this document and
-`RESEARCH_STATUS.md` cite, only 4 exist on `work/e-delimit-result`, the branch
-these documents were authored on. Audited 2026-08-25:
+**Where cited paths resolve.** Re-audited **2026-08-26** on
+`work/question-before-architecture`, which now carries the merged doc/ledger
+work. Of the **30** paths this document and `RESEARCH_STATUS.md` cite, **10**
+resolve here and 20 do not. (The previous audit read 21 paths / 4 local on
+`work/e-delimit-result`, before that branch's work was merged here.)
 
 | Path prefix | Resolves on |
 |---|---|
-| `nano/*`, `docs/NANO_CAPABILITY_SPEC.md`, `artifacts/campaign/*`, `papers/*`, `trajectory/*` | `frontier/accelerated-research-campaign-v2` (12 paths) |
-| `artifacts/span_extent_L000_unified.json` | `work/leakage-power-analysis` (1 path) |
-| `research/decision_records/2026-08-25-*`, `research/reviews/*` | `work/architecture-program-review` |
-| `nanoscribe/*`, `docs/*`, `research/preregistrations/PREREG_E_DELIMIT.md`, `research/negative_results/*` | this branch (4 paths) |
+| `nano/*`, `docs/NANO_CAPABILITY_SPEC.md`, `artifacts/campaign/*`, `artifacts/DEFECT_INDEX.md`, `artifacts/PREREG-D33-*`, `artifacts/RESULT-native30-*`, `papers/FINDING_*`, `trajectory/*` | `frontier/accelerated-research-campaign-v2` (15 paths) |
+| `artifacts/span_extent_L000_unified.json`, `nanoscribe/iaa_power.py` | `work/leakage-power-analysis` (2 paths) |
+| `artifacts/ADDENDUM-delimitation-construct-validity.md` | `work/edelimit-instrument` (1 path) |
+| `research/decision_records/2026-08-25-*`, `research/reviews/2026-08-25-*` | `work/architecture-program-review` (1 path) |
+| `docs/ACTIVE_NOW.md`, `docs/RUNBOOK_contrast_hygiene.md`, `nanoscribe/analyze_span_extent.py`, `papers/NANOSCRIBE_VNEXT.md`, `research/decision_records/2026-08-26-*`, `research/preregistrations/{PREREG_E_DELIMIT,TEMPLATE}.md`, `research/reviews/REVIEW_2026-08-26-*`, `scripts/check_prereg.py`, `sft/tokenizer.json` | **this branch** (10 paths) |
+
+**One citation was mis-pathed, and is corrected.** `RESEARCH_STATUS.md` cited
+the E3 protocol as `research/preregistrations/PREREG_E3_dual_clinician.md` on
+`work/leakage-power-analysis` (`e6d2fc4`). The branch and commit are right; the
+path is not. At that commit the file is
+`trajectory/PREREG_E3_dual_clinician_arm.md` — different directory, and the
+`_arm` suffix is dropped. Verified as the same document by the commit that adds
+it (*"prereg(E3): dual-clinician arm — protocol only, nothing collected"*), not
+by name similarity.
 
 Read a cited file with `git show <branch>:<path>` rather than switching
 branches — two of the three branches above are checked out by other sessions.

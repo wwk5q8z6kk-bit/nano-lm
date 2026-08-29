@@ -300,8 +300,11 @@ Waiting could stall the span-port line indefinitely.
 **This ranking is the owner's to make.** Recorded here so it is not resolved by
 whoever happens to launch first.
 
-**A protocol now exists** — `research/preregistrations/PREREG_E3_dual_clinician.md`
-on `work/leakage-power-analysis` (`e6d2fc4`), *protocol only, nothing collected*.
+**A protocol now exists** — `trajectory/PREREG_E3_dual_clinician_arm.md`
+(**cross-branch**: `e6d2fc4` on `work/leakage-power-analysis`; does not exist on
+this branch), *protocol only, nothing collected*. Path corrected 2026-08-26 —
+this row previously read `research/preregistrations/PREREG_E3_dual_clinician.md`,
+which resolves on no branch.
 Three features change the shape of the decision:
 
 - **Two estimands, not one.** E3 was written for the **scribe** line — does exact
