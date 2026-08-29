@@ -638,6 +638,18 @@ substrate (§§4–19); the lattice describes what has been earned.
   Companion to R8: R8 asks whether the *task* survived the manipulation; this
   asks whether the *measurement* did. Both are checked before the endpoint is
   read.
+
+  **D8 is the same rule on a different axis, and two instances make it a
+  pattern rather than an anecdote.** D7 couples the metric to the *instrument*
+  (tokenizer); D8 couples it to *scale* — the tied output projection has no
+  1/√d scaling, so initial loss grows as √`d_model` and a wider model starts
+  worse for reasons unrelated to capability (§2). Generalised: **a metric is
+  only usable across a manipulation it is invariant to.** Before comparing
+  across any axis — instrument, scale, tokenizer, seed, analyzer — state which
+  axis the metric is invariant to, and treat a metric that co-varies with the
+  manipulation as confounded rather than conservative. Both defects fail in the
+  direction that *hides* the effect, which is why neither surfaced as an obvious
+  anomaly.
 - **Measure cost as an outcome, not as an excuse.** Outcome measures include
   capability and quality *and* compute, latency, memory, and cost — the §2
   optimization target is verified capability per unit of all four. Cheapness is
