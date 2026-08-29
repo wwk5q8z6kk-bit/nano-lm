@@ -303,8 +303,8 @@ whoever happens to launch first.
 **A protocol now exists** — `trajectory/PREREG_E3_dual_clinician_arm.md`
 (**cross-branch**: `e6d2fc4` on `work/leakage-power-analysis`; does not exist on
 this branch), *protocol only, nothing collected*. Path corrected 2026-08-26 —
-this row previously read `research/preregistrations/PREREG_E3_dual_clinician.md`,
-which resolves on no branch.
+this row previously pointed under research/preregistrations/ with the `_arm`
+suffix dropped, which resolves on no branch.
 Three features change the shape of the decision:
 
 - **Two estimands, not one.** E3 was written for the **scribe** line — does exact

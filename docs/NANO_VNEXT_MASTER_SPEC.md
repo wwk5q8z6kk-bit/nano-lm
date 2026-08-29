@@ -48,9 +48,11 @@ resolve here and 20 do not. (The previous audit read 21 paths / 4 local on
 | `docs/ACTIVE_NOW.md`, `docs/RUNBOOK_contrast_hygiene.md`, `nanoscribe/analyze_span_extent.py`, `papers/NANOSCRIBE_VNEXT.md`, `research/decision_records/2026-08-26-*`, `research/preregistrations/{PREREG_E_DELIMIT,TEMPLATE}.md`, `research/reviews/REVIEW_2026-08-26-*`, `scripts/check_prereg.py`, `sft/tokenizer.json` | **this branch** (10 paths) |
 
 **One citation was mis-pathed, and is corrected.** `RESEARCH_STATUS.md` cited
-the E3 protocol as `research/preregistrations/PREREG_E3_dual_clinician.md` on
-`work/leakage-power-analysis` (`e6d2fc4`). The branch and commit are right; the
-path is not. At that commit the file is
+the E3 protocol under research/preregistrations/ with the `_arm` suffix dropped
+(deliberately not backticked here — the path resolves nowhere, and
+`scripts/audit_cited_paths.py` would flag a dead citation it cannot tell from a
+live one). The branch and commit it named were right: `work/leakage-power-analysis`
+(`e6d2fc4`). At that commit the file is
 `trajectory/PREREG_E3_dual_clinician_arm.md` — different directory, and the
 `_arm` suffix is dropped. Verified as the same document by the commit that adds
 it (*"prereg(E3): dual-clinician arm — protocol only, nothing collected"*), not
