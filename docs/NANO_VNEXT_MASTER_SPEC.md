@@ -39,13 +39,20 @@ work. Of the **30** paths this document and `RESEARCH_STATUS.md` cite, **10**
 resolve here and 20 do not. (The previous audit read 21 paths / 4 local on
 `work/e-delimit-result`, before that branch's work was merged here.)
 
-| Path prefix | Resolves on |
-|---|---|
-| `nano/*`, `docs/NANO_CAPABILITY_SPEC.md`, `artifacts/campaign/*`, `artifacts/DEFECT_INDEX.md`, `artifacts/PREREG-D33-*`, `artifacts/RESULT-native30-*`, `papers/FINDING_*`, `trajectory/*` | `frontier/accelerated-research-campaign-v2` (15 paths) |
-| `artifacts/span_extent_L000_unified.json`, `nanoscribe/iaa_power.py` | `work/leakage-power-analysis` (2 paths) |
-| `artifacts/ADDENDUM-delimitation-construct-validity.md` | `work/edelimit-instrument` (1 path) |
-| `research/decision_records/2026-08-25-*`, `research/reviews/2026-08-25-*` | `work/architecture-program-review` (1 path) |
-| `docs/ACTIVE_NOW.md`, `docs/RUNBOOK_contrast_hygiene.md`, `nanoscribe/analyze_span_extent.py`, `papers/NANOSCRIBE_VNEXT.md`, `research/decision_records/2026-08-26-*`, `research/preregistrations/{PREREG_E_DELIMIT,TEMPLATE}.md`, `research/reviews/REVIEW_2026-08-26-*`, `scripts/check_prereg.py`, `sft/tokenizer.json` | **this branch** (10 paths) |
+**Generated** from `scripts/audit_cited_paths.py --json`, not maintained by
+hand. Regenerate it rather than editing it: the previous hand-written version of
+this table summed to 29 of 30 and filed the E3 protocol under `trajectory/*` on
+the frontier branch, which is the wrong branch for that one file.
+
+| Resolves on | n | Paths |
+|---|---|---|
+| `frontier/accelerated-research-campaign-v2` | 15 | `nano/{architecture,capabilities,dependency,kernel,ontology}.py` · `docs/NANO_CAPABILITY_SPEC.md` · `artifacts/DEFECT_INDEX.md` · `artifacts/PREREG-D33-context-tokenizer-wave.md` · `artifacts/RESULT-native30-gated-revalidation.md` · `artifacts/campaign/{TOKENIZER_CONTEXT_CONFOUND.md,native30_kaggle_replicate_metadata.json,native30_revalidation_summary_causalfix.json,native30_revalidation_summary_v1.json}` · `papers/FINDING_BREADTH_BEFORE_SPECIALIZATION.md` · `trajectory/PREREG_causalfix_wave_arm_split.md` |
+| **this branch** | 10 | `docs/ACTIVE_NOW.md` · `docs/RUNBOOK_contrast_hygiene.md` · `nanoscribe/analyze_span_extent.py` · `papers/NANOSCRIBE_VNEXT.md` · `research/decision_records/2026-08-26-question-before-architecture.md` · `research/preregistrations/TEMPLATE.md` · `research/reviews/REVIEW_2026-08-26_tokenizer_prereg_readiness.md` · `scripts/audit_cited_paths.py` · `scripts/check_prereg.py` · `sft/tokenizer.json` |
+| `work/leakage-power-analysis` | 3 | `artifacts/span_extent_L000_unified.json` · `nanoscribe/iaa_power.py` · `trajectory/PREREG_E3_dual_clinician_arm.md` |
+| `work/edelimit-instrument` | 1 | `artifacts/ADDENDUM-delimitation-construct-validity.md` |
+| `work/architecture-program-review` | 1 | `research/decision_records/2026-08-25-authorization-clause-and-revalidation-claim.md` |
+
+Unresolved: **0**.
 
 **One citation was mis-pathed, and is corrected.** `RESEARCH_STATUS.md` cited
 the E3 protocol under research/preregistrations/ with the `_arm` suffix dropped
