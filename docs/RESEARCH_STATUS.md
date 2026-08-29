@@ -144,7 +144,8 @@ negative result.
 | Claim | Blocked on |
 |---|---|
 | ~~**"The native30 wave ran clean under the anti-leakage integrity gate."**~~ | **CLEARED 2026-08-26** — the gated wave landed. Promoted to ESTABLISHED above. |
-| **D3 (context/truncation) closure** | D3.1 fixed the 64-char cap; the char-level-vs-512-context mismatch (D3.3) was never addressed. D3 remains only **partly** closed. |
+| **D3 (context/truncation) closure** | D3.1 fixed the 64-char cap; the char-level-vs-512-context mismatch (D3.3) was never addressed. D3 remains only **partly** closed. A runtime token-budget assertion landed (`fb2f960`) and a prereg exists (`PREREG-D33-context-tokenizer-wave.md`), unrun. |
+| **D8 — tied output projection has no 1/√d scaling** (OPEN, deliberately unfixed) | `logits = h @ token_emb.weight.T` against `nn.Embedding`'s default N(0,1) init. At `d_model=256`: logit std 16.2 = √256, absmax 201, init CE **39.7 nats/token** vs `ln(vocab)` 8.3 — ~4.8× worse than uniform. **Scope, as stated at source and not independently re-derived here:** it does **not** affect the completed native30 wave, where all nine arms are 30M so the offset is common to every cell and cancels in the contrasts; it **would** confound any native30-vs-native100 loss or BPB comparison. Left unfixed on purpose — fixing it changes the instrument, and the D3.3 rule is that an instrument change earns its own preregistered wave rather than a silent patch. `73d61a9`. |
 | **1. Construct validity — is a non-minimal span an error at all?** | `exact_gold_span` encodes a minimal-span convention **no clinician has ratified**. If enclosing-turn evidence is acceptable, ~80% of slots are not failures. Needs human/clinician judgement; `E3 = UNRESOLVED`. A concurrent session argues this **gates** E-DELIMIT round 2 rather than following it — surfaced as an owner call below. |
 | **2. Causal identification — H-delimit vs H-retrieve** | **Untested.** The one arm built to discriminate them ran **at chance** and is VOID. **Independent of (1):** even if the minimal-span target were ratified tomorrow, this stays open. Conversely, settling this would not settle (1). Earlier framing here blurred the two; they are separate. |
 
@@ -232,6 +233,36 @@ Waiting could stall the span-port line indefinitely.
 
 **This ranking is the owner's to make.** Recorded here so it is not resolved by
 whoever happens to launch first.
+
+**A protocol now exists** — `research/preregistrations/PREREG_E3_dual_clinician.md`
+on `work/leakage-power-analysis` (`e6d2fc4`), *protocol only, nothing collected*.
+Three features change the shape of the decision:
+
+- **Two estimands, not one.** E3 was written for the **scribe** line — does exact
+  match overstate *value* failure (`migraine` ~ `migraines`)? The span-port line
+  asks a different question — is an enclosing-turn quote an acceptable *evidence
+  unit*? One clinician session can rate both efficiently, but **merging them
+  would repeat the error this program already made once**: transporting a
+  conclusion between the scribe and span-port instruments without argument.
+  Separate pools, thresholds and decision rules.
+- **The owner cannot be a primary rater.** Being a practising physician is what
+  makes this arm runnable at all, but the owner has seen the outputs, the
+  hypotheses and the predicted direction. **Two independent external clinicians
+  are required**; the owner recruits, adjudicates (adjudicated labels excluded
+  from κ) and reviews safety. Owner labels, if any, are a declared non-blind
+  sensitivity analysis. *This is the constraint most likely to be surprising, so
+  it is stated plainly rather than buried in the protocol.*
+- **Sample size derived, not asserted** (`nanoscribe/iaa_power.py`). The binding
+  constraint is precision on **κ**, not on the rate — an unreliable rater pair
+  makes the rate uninterpretable however tight its CI. Pool B **n=150** clears a
+  0.60 lower-bound gate even at true κ=0.70; n=100 clears only at κ ≥ 0.73. Pool
+  A stays at n=100 for comparability with the frozen agent-rated pack, with the
+  precision limit **disclosed** (κ̂ 0.60–0.73 is INCONCLUSIVE for Pool A, not a
+  failure). Futility-only interim at n=40; never stop for success.
+
+So the owner call is no longer "should we settle the construct question?" but
+"do we recruit two external clinicians now, or run candidate 1 first?" —
+candidate 1 needs no human raters and is unblocked.
 
 **Do not** answer a delimitation question with a generic memory/reasoning
 architecture experiment. Instrument and bottleneck must match.

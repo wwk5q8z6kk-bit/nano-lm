@@ -121,6 +121,15 @@ already measured that parameter count is not the explanatory variable it looks
 like (§23: 159M own-stack reads 16.9 where 160M Pythia reads 3.5, and the
 capability-floor result is confounded with tokenizer context fit, not size).
 
+> **Cross-scale loss and BPB comparisons are currently blocked** by **D8**
+> (`RESEARCH_STATUS.md`, OPEN): the tied output projection has no 1/√d scaling,
+> so initial loss grows as √`d_model` and **a wider model starts worse for
+> reasons unrelated to capability**. The defect is scale-coupled, and this
+> program makes cross-scale claims. It cancels within a fixed width — the
+> completed native30 wave is unaffected — but any native30-vs-native100
+> comparison, or any size-scaling curve built on loss or BPB, is confounded
+> until D8 is fixed under its own preregistered wave.
+
 ## 3. Scientific principles
 
 1. **Name the instrument and its measured bottleneck before proposing a
