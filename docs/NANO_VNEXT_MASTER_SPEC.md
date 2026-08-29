@@ -522,6 +522,17 @@ product question → scientific question → instrument → measured bottleneck
 Machine-checkable: `research/preregistrations/TEMPLATE.md` and
 `scripts/check_prereg.py`.
 
+> **The list above is a copy.** `FIELDS` in `scripts/check_prereg.py` is
+> **normative** — the same principle §0 applies to `nano/architecture.py`, for
+> the same reason. The list now exists in four places (here, the decision
+> record's mapping table, the template's headings, and the checker), and this
+> program has already lost a standard to divergent copies: before 2026-08-26,
+> §20 carried six fields and §25 carried nine. `check_prereg.py` now compares
+> all three prose copies against `FIELDS` on every run — including when no
+> preregistration exists, since copies drift with an empty tree — and
+> `check_docs_integrity.py` fails on any mismatch. **Edit `FIELDS` first, then
+> the prose.**
+
 Five of these are the ones this program learned the hard way, and they are the
 ones most often skipped:
 

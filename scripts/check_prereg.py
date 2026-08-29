@@ -107,6 +107,60 @@ def check(path: Path) -> tuple[str, list[str]]:
     return ("INCOMPLETE" if missing else "COMPLETE"), missing
 
 
+# Prose copies of the eighteen-field list. `FIELDS` above is NORMATIVE — same
+# principle as SPEC §0, where `nano/architecture.py` outranks prose about the
+# taxonomy. Two divergent field-lists is the exact failure the 2026-08-26
+# consolidation ended (§20 carried six fields, §25 carried nine); the list now
+# exists in four places, so it is checked rather than trusted.
+SPEC = "docs/NANO_VNEXT_MASTER_SPEC.md"
+RECORD = "research/decision_records/2026-08-26-question-before-architecture.md"
+TEMPLATE = "research/preregistrations/TEMPLATE.md"
+
+
+def _norm(s: str) -> str:
+    return re.sub(r"[^a-z]", "", s.lower())
+
+
+def _copies() -> dict[str, list[str]]:
+    """Extract the field list as written in each prose location."""
+    out: dict[str, list[str]] = {}
+    spec = (ROOT / SPEC).read_text(encoding="utf-8")
+    m = re.search(r"```\n(product question →.*?)\n```", spec, re.S)
+    # Always register the key. Skipping it when the regex misses would drop the
+    # spec from the comparison entirely — a reformat there would then pass
+    # silently, which is the failure this whole check exists to prevent.
+    out[f"{SPEC} §20"] = (
+        [x.strip() for x in m.group(1).replace("\n", " ").split("→") if x.strip()]
+        if m
+        else []
+    )
+    rec = (ROOT / RECORD).read_text(encoding="utf-8")
+    out[RECORD] = re.findall(r"^\|\s*\d+\s*\|\s*\*\*(.+?)\*\*\s*\|", rec, re.M)
+    tpl = (ROOT / TEMPLATE).read_text(encoding="utf-8")
+    out[TEMPLATE] = re.findall(r"^##\s*\d+\.\s*(.+?)\s*$", tpl, re.M)
+    return out
+
+
+def check_field_list_consistency() -> list[str]:
+    """Every prose copy must match FIELDS in name and order."""
+    errs: list[str] = []
+    ref = [_norm(c) for c, _ in FIELDS]
+    for where, listed in _copies().items():
+        if not listed:
+            errs.append(f"{where}: field list not found (format changed?)")
+            continue
+        got = [_norm(x) for x in listed]
+        if got == ref:
+            continue
+        if len(got) != len(ref):
+            errs.append(f"{where}: has {len(got)} fields, FIELDS has {len(ref)}")
+        for i, (a, b) in enumerate(zip(ref, got), start=1):
+            if a != b:
+                errs.append(f"{where}: field {i} is {b!r}, FIELDS says {a!r}")
+                break
+    return errs
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("paths", nargs="*", type=Path, help="prereg files (default: all)")
@@ -123,6 +177,13 @@ def main() -> int:
         return 1
 
     failed = False
+
+    # Runs even when no prereg opts in — the copies can drift with zero preregs
+    # in the tree, which is exactly the current state.
+    for err in check_field_list_consistency():
+        print(f"FIELD-LIST     {err}", file=sys.stderr)
+        failed = True
+
     for path in targets:
         status, missing = check(path)
         try:

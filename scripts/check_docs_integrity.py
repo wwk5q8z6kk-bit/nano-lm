@@ -237,7 +237,7 @@ def check_preregistrations(errors: list[str]) -> None:
         for line in (proc.stdout + proc.stderr).splitlines():
             text = line.strip()
             # Report only the failures, not the GRANDFATHERED/COMPLETE roster.
-            if text.startswith("INCOMPLETE") or text.startswith("missing:"):
+            if text.startswith(("INCOMPLETE", "missing:", "FIELD-LIST")):
                 errors.append(f"prereg: {text}")
 
 
