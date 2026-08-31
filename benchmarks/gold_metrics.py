@@ -15,7 +15,8 @@ against synthetic tasks, and the corpus decision stays open.
 Diagnostics, not gates. No threshold is promoted. Promotion requires §5.3's criteria
 (sufficient n, tested failure modes, documented baseline, justified threshold), and
 §5.1 requires that any *safety* gate be stated as a Wilson upper bound over runs
-rather than an observed count — this module returns observations only.
+rather than an observed count — this module returns observations only; the bound
+lives in `benchmarks/confidence.py`.
 
 Undefined versus zero, as in Class A: every rate returns ``None`` when its
 denominator is zero. A task with no pass-to-pass tests has an undefined regression
@@ -266,7 +267,8 @@ def aggregate_rate(values: Sequence[bool | None]) -> tuple[int, int] | None:
     a collapsed ratio. Zero violations in twelve runs is consistent with a high
     underlying rate, and returning ``0.0`` here would invite exactly the reading
     the bound exists to prevent. Callers that want a point estimate can divide;
-    callers building a gate need these two numbers.
+    callers building a gate pass both terms to
+    ``benchmarks.confidence.failure_gate_passes``.
     """
     defined = [v for v in values if v is not None]
     if not defined:

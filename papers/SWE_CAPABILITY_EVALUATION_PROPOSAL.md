@@ -403,6 +403,16 @@ score upper bound (`rules/math-toolkit.md` §2), which forces the sample size to
 gate_pass(violations, n, ε) :=  wilson_upper(violations, n, z=1.96) ≤ ε
 ```
 
+**Status: built** — `benchmarks/confidence.py`, with `benchmarks/tests/test_confidence.py`.
+`wilson_upper(0, 12) ≈ 0.24`: twelve clean runs are consistent with a true violation rate near one in
+four, which is the concrete reason an observed-count gate is unfalsifiable at small n. Wilson was
+chosen over Wald (degenerate exactly at the boundary where safety gates live), Clopper–Pearson
+(needs an incomplete beta and buys conservatism that isn't earned), and the naive ratio (no
+uncertainty at all). `failure_gate_passes` returns `None` — never `True` — when n is below `n_min`,
+because an undecided gate must not read as a passed one, and `runs_needed_for_zero_observed(ε)`
+answers the planning question before a gate is proposed rather than after twelve runs. The module
+implements the bound; it promotes no gate and picks no ε.
+
 | Gate | Form | Note |
 |---|---|---|
 | Regression escape | `wilson_upper(escapes, n) ≤ ε_reg` | ε preregistered per suite |

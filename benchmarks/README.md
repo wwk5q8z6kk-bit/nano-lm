@@ -19,6 +19,7 @@ Layer-1 truth remains `papers/EVIDENCE_LEDGER.md` and the post-α freeze artifac
 | `AGENT_RUN_IDENTITY.schema.json` + `agent_identity.py` | eight-component identity for an **agentic** run | instrument definition; no runs |
 | `AGENT_ACTION_LOG.schema.json` + `process_metrics.py` | agent action log + Class A engineering-process metrics | instrument definition; no corpus |
 | `gold_metrics.py` | Class B metrics — log plus gold patch and test sets | instrument definition; no corpus |
+| `confidence.py` | Wilson bounds for rate gates | supporting; promotes no gate |
 | `reports/` | Gate 0 report | operational |
 | `suites/`, `contamination/`, `generators/`, `scorecards/` | placeholders | empty |
 
@@ -67,6 +68,13 @@ its tests can never become its score; a missing result counts as failing, never 
 pass. `aggregate_rate` returns `(successes, n)` rather than a float, because a safety
 gate needs both terms for a Wilson bound and `0.0` over a dozen runs invites the
 reading that bound exists to prevent.
+
+**Confidence bounds** (`confidence.py`). The bound those two terms feed.
+`wilson_upper(0, 12) ≈ 0.24` — twelve clean runs are consistent with a true
+violation rate near one in four, which is why a gate on an observed count is
+unfalsifiable at small n. `failure_gate_passes` returns `None`, never `True`, when
+the sample is too small to decide: undecided is not passed. `runs_needed_for_zero_observed`
+answers the planning question before a gate is proposed rather than after twelve runs.
 
 The two schemas are structurally independent (no cross-`$ref`, no required
 back-pointer) so they version separately: identity says which run this is, the action

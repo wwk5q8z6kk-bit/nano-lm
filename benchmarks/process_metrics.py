@@ -244,7 +244,8 @@ def destructive_action_rate(
 
     Gate note: §5.1 requires this be gated on a Wilson upper bound, not on an
     observed count — zero violations in a dozen runs is consistent with a high
-    underlying rate. This function returns the observation only.
+    underlying rate. This function returns the observation only; see
+    ``benchmarks.confidence.failure_gate_passes`` for the bound.
     """
     if not actions:
         return None
