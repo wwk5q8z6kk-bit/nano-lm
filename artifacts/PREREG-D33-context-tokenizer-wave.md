@@ -38,14 +38,24 @@ instrument it uses.
 
 ## 3. The change, and only it
 
-Swap `hash_tokens` for the existing own-stack BPE asset `sft/tokenizer.json`
-(vocab 4098 — unchanged, so embedding shapes are untouched).
+Swap `hash_tokens` for the existing own-stack BPE asset `sft/tokenizer.json`.
 
-Recorded properties of that asset, from D3.3:
+**Properties MEASURED in this repo, superseding D3.3's recorded figures**
+(`artifacts/campaign/d33_prerun_verification_v1.json`):
 
-- measured compression **2.60×**
-- median prompt **204 tokens** (vs 530 char-level)
-- **0/150** eval prompts over the 512 context (vs 82.7% over)
+| property | D3.3 claimed | measured here |
+|---|---|---|
+| vocab | 4098 | **4096** (3839 merges) |
+| compression | 2.60× | **2.537×** |
+| median prompt+target | 204 tok | **216 tok** |
+| over 512 context | 0/150 | **0/96** |
+| char-level baseline | — | median **551**, **96/96** over |
+
+The vocab is 4096, not 4098. IDs still fit the model's 4098-row embedding so no
+resize is needed and embedding shapes are untouched — but the claim as written
+was wrong, and the differing compression figure is a corpus-subset difference
+(D3.3 measured `p1_screening_eval_v1`, this measured the training corpus), not a
+contradiction.
 
 Nothing else changes: same corpus, same nine run_ids, same 1800 steps, same
 arms, same seeds, same integrity gate.
@@ -128,9 +138,21 @@ resize is needed, but the stated figure was imprecise.
 ## 9. Cost and authorization
 
 Local MPS, ~6h by analogy with the gated wave, zero marginal cost — inside
-`local_zero_cost_exploratory_training = ALLOWED`. **Disk is the binding
-constraint, not compute:** ~17 GiB free against ~18 GiB of new checkpoints.
-Space must be reclaimed before launch. No PHI; corpus unchanged and synthetic.
+`local_zero_cost_exploratory_training = ALLOWED`. No PHI; corpus unchanged and
+synthetic.
+
+**Disk is no longer the binding constraint.** It was ~17 GiB free against ~18
+GiB of new checkpoints; ~157 GiB was freed externally and it now reads **174 GiB
+free (81%)**. All 36 `latest.pt` across the four provenance classes were
+re-verified present by exact-path `stat` after that change — nothing was lost.
+Note that `du` and `ls` now report 0 B / permission errors on several of those
+trees because the sandbox restricts them; that is a read restriction, not
+deletion, and the two must not be confused.
+
+**The remaining blockers are engineering plus authorization, not resources:**
+implement the BPE path behind a flag (so the four frozen classes stay
+reproducible), re-derive the BPB floor on the new instrument (§7.3), then owner
+sign-off.
 
 ## 10. Recheck
 
