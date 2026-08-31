@@ -1,0 +1,51 @@
+{
+  "schema": "nano.d33.prerun_verification.v1",
+  "timestamp": "2026-08-31T16:27:03.371198+00:00",
+  "purpose": "Verify the D3.3 prereg's blocking pre-run items and its load-bearing premise BEFORE any wave launches.",
+  "tokenizer_asset": {
+    "path": "sft/tokenizer.json",
+    "type": "BPE",
+    "vocab": 4096,
+    "merges": 3839,
+    "note": "D3.3 states 'same vocab 4098'. It is 4096. IDs fit inside the model's 4098-row embedding so no resize is needed and 'embeddings unchanged' still holds, but the stated number was imprecise."
+  },
+  "premise_check_context_fit": {
+    "corpus": "p1_distill_train_v1 (96 rows)",
+    "max_seq": 512,
+    "char_level": {
+      "median_prompt_plus_target": 551,
+      "max": 559,
+      "n_over_context": 96,
+      "pct_over": 100.0
+    },
+    "bpe": {
+      "median_prompt_plus_target": 216,
+      "max": 221,
+      "n_over_context": 0,
+      "pct_over": 0.0
+    },
+    "measured_compression": 2.537,
+    "claimed_compression": 2.6,
+    "verdict": "HOLDS \u2014 BPE takes 100% over-context to 0%. Compression 2.537x vs claimed 2.60x; the claim was measured on p1_screening_eval_v1 (150 rows), this on the training corpus (96 rows)."
+  },
+  "blocking_item_1_context_assertion": {
+    "status": "DONE",
+    "detail": "integrity.assert_context_budget runs in run_startup_gate; raises on target-cannot-fit and on gold-span-lost-to-left-truncation; reports over-budget fraction into every run. Measured in tokens, not characters."
+  },
+  "blocking_item_3_roundtrip": {
+    "status": "VERIFIED",
+    "exact_roundtrip": "192/192 (100.0%)",
+    "whitespace_probe": "LOSSLESS for \\n, \\t, \\r",
+    "why": "D3.2 decoded newlines to '?' and corrupted turn separators in 224/224 sources. That failure mode does not recur under this tokenizer."
+  },
+  "blocking_item_2_bpb_floor": {
+    "status": "NOT DONE",
+    "detail": "The BPB floor (early 0.5 / late 0.01) was calibrated on char-level runs. It must be re-derived under BPE before it can gate anything. Requires running training under the new tokenizer, which requires the swap to be implemented behind a flag so the four frozen provenance classes stay reproducible."
+  },
+  "remaining_to_launch": [
+    "implement the BPE path behind a flag (char path untouched)",
+    "re-derive the BPB floor on the new instrument",
+    "owner authorization"
+  ],
+  "caveat": "D8 (no 1/sqrt(d) logit scaling) is OPEN and unfixed. It is common to every arm at a fixed width so it does not confound within-wave contrasts, but it does mean absolute BPB values are not comparable across model widths."
+}

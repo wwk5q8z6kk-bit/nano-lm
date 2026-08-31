@@ -88,21 +88,30 @@ round.
 ## 7. Blocking pre-run checks
 
 All must pass before launch; failure voids the wave rather than being worked
-around.
+around. **Status as of the latest verification pass**
+(`artifacts/campaign/d33_prerun_verification_v1.json`): items 1 and 4 VERIFIED,
+item 3 NOT DONE, item 2 unchanged and still in force.
 
-1. **Context-fit assertion (the D3.3 gate).** A new startup assertion:
+The premise itself is also now verified rather than assumed: on the training
+corpus, BPE takes prompts from **100% over context (median 551 tok) to 0%
+(median 216)**. Measured compression 2.537x against the 2.60x D3.3 claims — the
+difference is corpus subset, not a contradiction. The asset's vocab is **4096**,
+not the 4098 D3.3 states; IDs still fit the model's 4098-row embedding so no
+resize is needed, but the stated figure was imprecise.
+
+1. **[VERIFIED]** **Context-fit assertion (the D3.3 gate).** A new startup assertion:
    post-tokenization prompt length ≤ `max_seq` for **every** row, not merely for
    a sample. This is the assertion whose absence let D3.3 persist after D3.1
    removed the 64-char cap.
 2. **The existing gate stays on, unmodified** — attention leakage exactly 0.0,
    causal-reference equivalence, target present in the loss.
-3. **BPB numerator must use the token count.** D7 corrected `lm * target_chars`
+3. **[NOT DONE — the remaining blocker]** **BPB numerator must use the token count.** D7 corrected `lm * target_chars`
    to `lm * n_supervised`; under a 2.60× tokenizer the old form inflates BPB by
    ~2.6× and moves the measurement away from the floor. Pinned by
    `test_bpb_uses_the_token_count_not_the_char_count`. **The BPB floor must be
    re-derived for this instrument before it can gate anything** — the current
    values were calibrated on char-level runs.
-4. **Round-trip fidelity.** The BPE tokenizer must decode losslessly over
+4. **[VERIFIED — 192/192 lossless, incl. `\n`/`\t`/`\r`]** **Round-trip fidelity.** The BPE tokenizer must decode losslessly over
    multi-line corpus sources, pinned as D3.2's fix is. A tokenizer that mangles
    turn separators reintroduces D3.2 under a new name.
 
