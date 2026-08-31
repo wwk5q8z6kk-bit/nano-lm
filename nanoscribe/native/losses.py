@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from nanoscribe.native.config import LossWeights, NativeTrainConfig
-from nanoscribe.native.tokenize import hash_tokens
+from nanoscribe.native.tokenize import resolve_tokenizer
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,6 +54,7 @@ def compute_batch_loss(
     weights = cfg.loss_weights
 
     input_ids = []
+    _encode, _ = resolve_tokenizer(getattr(cfg, "tokenizer", "hash"))
     labels = []
     roles = []  # per label position: 0 none, 1 assertion label, 2 span
     evidence = []  # per label position: span token grounded in the source
@@ -72,9 +73,9 @@ def compute_batch_loss(
         # The prompt is truncated from the LEFT so the question and answer
         # instructions at its tail — the part that conditions the target —
         # always survive.
-        target_ids = hash_tokens(target, vocab)[: max(1, cfg.max_seq - 1)]
+        target_ids = _encode(target, vocab)[: max(1, cfg.max_seq - 1)]
         prompt_budget = cfg.max_seq - len(target_ids)
-        prompt_ids = hash_tokens(prompt, vocab)[-prompt_budget:] if prompt_budget > 0 else []
+        prompt_ids = _encode(prompt, vocab)[-prompt_budget:] if prompt_budget > 0 else []
         seq = prompt_ids + target_ids
         if len(seq) < 2:
             seq = seq + [1]

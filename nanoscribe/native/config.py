@@ -57,6 +57,11 @@ class NativeTrainConfig:
     dataset_path: str = "artifacts/campaign/p1_distill_train_v1.json"
     checkpoint_dir: str = "artifacts/native_checkpoints"
     cpu_smoke: bool = False
+    # Which tokenizer produced this run. Default "hash" reproduces the four
+    # frozen provenance classes byte-for-byte; "bpe" selects the own-stack BPE
+    # asset (D3.3). Recorded in to_dict() so a result always names its
+    # instrument.
+    tokenizer: str = "hash"
     purpose: str = "architecture_screening"
     loss_weights: LossWeights = field(default_factory=LossWeights)
 
@@ -80,6 +85,7 @@ class NativeTrainConfig:
             "dataset_path": self.dataset_path,
             "checkpoint_dir": self.checkpoint_dir,
             "cpu_smoke": self.cpu_smoke,
+            "tokenizer": self.tokenizer,
             "purpose": self.purpose,
             "loss_weights": self.loss_weights.as_dict(),
             "cell": self.cell.cell_id if self.cell else None,

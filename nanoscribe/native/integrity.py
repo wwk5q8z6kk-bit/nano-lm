@@ -263,8 +263,9 @@ def assert_target_present_in_loss(rows: Any, cfg: Any, *, sample: int = 16) -> t
 
     Returns (supervised_target_tokens, examples_checked).
     """
-    from nanoscribe.native.tokenize import hash_tokens
+    from nanoscribe.native.tokenize import resolve_tokenizer
 
+    hash_tokens, _ = resolve_tokenizer(getattr(cfg, "tokenizer", "hash"))
     sampled = list(rows)[:sample]
     if not sampled:
         raise IntegrityError("no rows sampled; cannot verify the loss contains a target")
@@ -304,8 +305,9 @@ def assert_prompt_not_silently_capped(cfg: Any, *, probe_chars: int = 600) -> in
     "the tokenizer returns what the caller asked for" rather than "the constant
     64 is gone", so it also catches a *different* constant appearing later.
     """
-    from nanoscribe.native.tokenize import hash_tokens
+    from nanoscribe.native.tokenize import resolve_tokenizer
 
+    hash_tokens, _ = resolve_tokenizer(getattr(cfg, "tokenizer", "hash"))
     probe = "a" * probe_chars
     uncapped = hash_tokens(probe, cfg.vocab_size)
     if len(uncapped) != probe_chars:
@@ -410,7 +412,9 @@ def assert_context_budget(rows: Any, cfg: Any) -> dict[str, Any]:
     """
     import re
 
-    from nanoscribe.native.tokenize import detokenize, hash_tokens
+    from nanoscribe.native.tokenize import resolve_tokenizer
+
+    hash_tokens, detokenize = resolve_tokenizer(getattr(cfg, "tokenizer", "hash"))
 
     global _QUOTED_TARGET
     if _QUOTED_TARGET is None:
