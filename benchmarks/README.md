@@ -29,8 +29,20 @@ Layer-1 truth remains `papers/EVIDENCE_LEDGER.md` and the post-α freeze artifac
 collect it. Run it explicitly:
 
 ```bash
+pip install -r ../requirements-bench-test.txt   # tests only; the modules are stdlib-only
 pytest benchmarks/ -q
 ```
+
+CI runs exactly that (`.github/workflows/ci.yml`, step *Benchmark contracts*). Before
+that step existed these tests ran in no job at all, including the Program 0 Gate 0
+property tests that guard identity, reproducibility, and Layer-1 boundary isolation.
+
+Two pytest configs disagree about this directory and it is worth knowing which wins:
+`pyproject.toml` lists `benchmarks/adapters/lm_eval/tests` in its `testpaths`, but
+`pytest.ini` exists and therefore takes precedence, and it does not. pytest reports
+this as `WARNING: ignoring pytest config in pyproject.toml`. Reconciling the two is
+left alone deliberately — the narrowing in `pytest.ini` looks intentional, and CI now
+covers the gap either way.
 
 ## The two agentic instruments
 
