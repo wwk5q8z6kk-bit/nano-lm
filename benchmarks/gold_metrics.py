@@ -28,9 +28,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Sequence
 
-Action = dict[str, Any]
+# Imported rather than restated: if Class A and Class B disagreed about what counts
+# as a mutation, localization and premature-edit would silently measure different
+# populations of the same log.
+from benchmarks.process_metrics import MUTATING_CLASSES
 
-MUTATING_CLASSES = frozenset({"mutate"})
+Action = dict[str, Any]
 
 
 @dataclass(frozen=True)

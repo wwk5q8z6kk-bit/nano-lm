@@ -36,7 +36,9 @@ Action = dict[str, Any]
 MUTATING_CLASSES = frozenset({"mutate"})
 READING_CLASSES = frozenset({"read"})
 VERIFYING_CLASSES = frozenset({"verify"})
-ERROR_STATUSES = frozenset({"error", "tool_error", "timeout"})
+#: Only `tool_error` marks agent misuse. `error` and `timeout` are the world saying
+#: no, and are deliberately excluded — see `invalid_tool_call_rate`. The full status
+#: taxonomy is owned by AGENT_ACTION_LOG.schema.json, not restated here.
 INVALID_STATUSES = frozenset({"tool_error"})
 
 
