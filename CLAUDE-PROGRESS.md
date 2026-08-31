@@ -163,7 +163,25 @@ range spans 0.008–0.536. This confirms at n=27 what the two-point calibration 
   median 551 tokens vs max_seq 512, relies_on_left_truncation true,
   spans_visible true**. Measured in TOKENS, not characters, so it survives the
   BPE swap (the build-time version uses `len(prompt)` and would not).
-- **D3.3 PREREGISTERED, not run:** `artifacts/PREREG-D33-context-tokenizer-wave.md`.
+- **D3.3 wave: ALL BLOCKING PRE-RUN CHECKS NOW PASS. Only owner authorization
+  remains.** BPE implemented behind `NativeTrainConfig.tokenizer` (default
+  `"hash"`, so the four frozen classes stay byte-reproducible; the flag rides
+  into every checkpoint via `cfg.to_dict()`) — `b78a9e5`. §7.3 floor re-derived
+  — `a0550b5`, `artifacts/campaign/bpb_floor_derivation_v1.md`.
+- **§7.3 outcome, and it is bigger than the item asked for.** The floor needs
+  no numeric change for BPE (honest 6.61 hash vs 5.01 bpe — the per-byte
+  construction cancels BPE's 0.494 tokens/byte against its higher nats/token).
+  But **the floor's calibration anchor is not reproducible**: seven
+  reconstructions of D1.1/D2.2/D3.1 land 3.99–401 bpb, none within three orders
+  of magnitude of the historical `loss ≈ 0.002`. D1.1 alone is real and moves
+  loss the expected way (3.989 vs 4.718) but that is a 15% effect, not a
+  collapse. That is **D6 recurring one level up** — a threshold anchored to an
+  anecdote rather than a measured failure population. Response was to narrow the
+  claim, not delete the gate: **BPB is a catastrophic-collapse backstop, not a
+  leak detector**; the exact assertions are the detectors. The module header and
+  calibration comment were reconciled — they had gone on asserting the 0.002
+  story as fact, so the file contradicted its own derivation.
+- **D3.3 PREREG (now unblocked):** `artifacts/PREREG-D33-context-tokenizer-wave.md`.
   Namespace `reval30_*_bpe_*`; explicit comparison boundary against all four
   frozen classes; CONFIRMED ≥45/450 unconstrained coverage, REFUTED ≤4/450,
   predicted direction stated. Blocking pre-run items include a new

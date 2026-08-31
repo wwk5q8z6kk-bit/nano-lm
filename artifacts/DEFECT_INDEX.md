@@ -167,6 +167,14 @@ And the rule D6 adds, which is sharper:
 > "loss ≈ 0.002" and would have cleared the real run, whose converged loss was
 > 4× higher. The archived checkpoints carried the true number the whole time.
 
+> **A threshold's anchor must be reproducible, or the threshold is folklore.**
+> D6 said calibrate against the archived failure rather than the anecdote about
+> it. §7.3 then found the archived failure itself could not be reproduced from
+> the recorded descriptions — seven reconstructions landed 3.99–401 bpb against
+> an anchor of 0.002. The gate was kept and its *claim* narrowed, which is the
+> move: a backstop that admits what it cannot detect is worth more than a
+> detector that is trusted for something it never did.
+
 > **A build-time gate is not a runtime gate.** D3.3's invariants were computed
 > and correct from `3991096` onward — and nothing ran them per-run, so the
 > corpus could drift out from under them and no run report would show it. If a
