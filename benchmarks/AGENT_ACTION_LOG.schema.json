@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "benchmarks/AGENT_ACTION_LOG.schema.json",
+  "title": "AgentActionLog",
+  "description": "One record per agent action. This is the minimum instrument for Tier 4 (engineering-process) evaluation: none of the Class A process metrics are computable without it. Independent of benchmarks/AGENT_RUN_IDENTITY.schema.json — identity says which run this is, the action log says what happened inside it; neither references the other so they version independently. Instrument definition only: registers no suite, authorizes no execution, asserts no result.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "actions"],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seq", "action_class", "tool", "args_sha256", "result_status"],
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Monotonic index within the run. Ordering is the metric substrate; wall-clock timestamps are not required to be monotonic under concurrency."
+        },
+        "action_class": {
+          "enum": ["read", "mutate", "execute", "verify", "escalate", "other"],
+          "description": "Declared by the emitting harness, which is where the knowledge lives. A harness that mis-declares can inflate verification_attempted — that is the metric's principal false-positive mode and it is not detectable from the log alone."
+        },
+        "tool": {"type": "string", "minLength": 1},
+        "args_sha256": {
+          "$ref": "#/$defs/sha256",
+          "description": "Digest over NORMALIZED arguments (repo-relative paths, sorted keys). Repeat detection compares this, never raw argument dicts."
+        },
+        "args": {
+          "type": "object",
+          "description": "Optional human-readable pre-image of args_sha256. Not used by any metric."
+        },
+        "targets": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Repo-relative paths this action read or mutated. Required in practice for premature_edit_rate and scope_violation_rate; empty for actions that touch no file."
+        },
+        "result_status": {"enum": ["ok", "error", "tool_error", "timeout"]},
+        "result_sha256": {
+          "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}],
+          "description": "Digest of the result payload. repeated_action_rate requires it: an action repeated after a CHANGED result is retrying against new information, which is not the failure being measured."
+        },
+        "post_state_sha256": {
+          "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}],
+          "description": "For mutating actions: digest of the target's content after the mutation. Reversion detection compares against earlier states of the same target."
+        },
+        "claimed_complete": {
+          "type": "boolean",
+          "description": "The agent asserted the task was done at this action. Consumed by the Class B claimed-complete-but-failing metric, which additionally needs gold tests and is therefore not in benchmarks/process_metrics.py."
+        },
+        "confidence": {
+          "oneOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}],
+          "description": "RESERVED FOR CLASS D — no consumer today. Present because a probability emitted before the outcome is known cannot be back-filled into an already-collected log; calibration metrics (ECE/Brier) are deliberately not built until a consumer exists."
+        },
+        "tokens_in": {"type": ["integer", "null"], "minimum": 0},
+        "tokens_out": {"type": ["integer", "null"], "minimum": 0},
+        "cost_usd": {"type": ["number", "null"], "minimum": 0},
+        "wall_clock_ms": {"type": ["integer", "null"], "minimum": 0}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "benchmark_lab.agent_action_log.v1"},
+    "agent_run_id": {
+      "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}],
+      "description": "Optional back-reference to an AgentRunIdentity record. Not required: the log is a valid instrument on its own, and coupling the two schemas would force a version bump on both when either moves."
+    },
+    "actions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/action"},
+      "description": "Ordered by seq. May be empty — an agent that took no action is a real and distinct outcome from one whose log was not captured."
+    },
+    "declared_scope": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Repo-relative path prefixes the run was permitted to mutate. Required for scope_violation_rate; absent means the metric is undefined, not zero."
+    },
+    "pre_run_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "post_run_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+  }
+}

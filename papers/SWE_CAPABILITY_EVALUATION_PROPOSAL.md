@@ -19,9 +19,14 @@
 > contribution; keep public suites as later diagnostic/validation layers subject to authorization and
 > compute constraints.
 >
-> **Authorized work under that directive:** infrastructure required to make future evaluation
-> scientifically identifiable and reproducible — no more. Delivered in §2.1. The three-layer
+> **Work delivered under that directive:** (a) the identity infrastructure required to make future
+> evaluation scientifically identifiable and reproducible — §2.1; (b) the Class A process-intelligence
+> instrument named by item 5 of the sequencing above — §4.1. Both are instrument definitions with
+> tests: no corpus, no runner, no registry row, no execution, no promoted gate. The three-layer
 > principle is frozen verbatim in [`../docs/EVALUATION_FRAMEWORK.md`](../docs/EVALUATION_FRAMEWORK.md).
+>
+> **Open and owner-gated:** Program 1 authorization for Tiers 1–3, and which task corpus Tier 4
+> Class A runs against first.
 
 ---
 
@@ -221,7 +226,7 @@ Adopting the critique's taxonomy verbatim, annotated with what exists here and w
 | 3 | Generalization (ARC-AGI-2, rolling suites) | none | Program 1 + compute auth |
 | 4 | Code primitives | none | Program 1 + compute auth |
 | 5 | Repository intelligence | none | Program 1 + compute auth |
-| 6 | **Engineering process** | none — and **no public suite covers it** | instrument design (§5); *not* blocked on Program 1 |
+| 6 | **Engineering process** | Class A instrument built (§4.1); **no public suite covers this layer** | a corpus; Class B/C instruments; *not* blocked on Program 1 |
 | 7 | Tool competence (terminal, OS, browser, IDE) | none | Program 1 + sandboxed exec environment |
 | 8 | Agentic execution | identity contract present (§2.1); no suite, no runs | Program 1 + compute auth |
 | 9 | Verification sufficiency | partial — abstention economics in `wedge_v1/`; verifier relation in `docs/EVALUATION_FRAMEWORK.md` principle 4 | instrument design |
@@ -244,9 +249,35 @@ investigation quality, hypothesis-driven debugging, change-impact prediction, de
 verification sufficiency, uncertainty and escalation. They are not equally buildable. The distinction
 below *is* the specification — it converts a wish list into a build order.
 
-Assume a **trajectory log** with one record per agent action: timestamp, tool name, arguments, raw
-result, token/cost accounting, and a diff for any mutating action. This is the minimum instrument;
-nothing in Layer 6 is measurable without it.
+The instrument is an **agent action log** with one record per agent action: sequence index, declared
+action class, tool, normalized-argument digest, targets, result status and digest, post-state digest
+for mutations, and token/cost accounting. This is the minimum instrument; nothing in Layer 6 is
+measurable without it. (Named *action log*, not *trajectory log*: `trajectory/` in this repository is
+the Layer-1 evidence directory, and reusing the word would collide.)
+
+**Status: built.** `benchmarks/AGENT_ACTION_LOG.schema.json` is the record contract;
+`benchmarks/process_metrics.py` implements every Class A metric below as a pure function over a log;
+`benchmarks/tests/test_process_metrics.py` covers one case per metric plus the empty-log and
+single-action edges. Instrument definitions only — no corpus, no runner, no emitter, no CLI, and no
+threshold promoted to a gate.
+
+Three definitional choices the prose above left underdetermined, fixed explicitly in code because
+tests would otherwise silently bless whichever reading was implemented:
+
+- **`premature_edit_rate` is per mutated file, not per run.** A run that reads and edits `a.py`, then
+  blind-edits `b.py`, is premature on `b.py`; a first-action-only run-level reading scores it clean.
+- **`repeated_action_rate` requires an *unchanged result digest*.** Re-running a test after an edit is
+  correct behavior; only a repeat returning the same result is evidence of not learning. Comparison is
+  over the normalized-argument digest, never raw argument dicts.
+- **`verification_attempted` reads a declared `action_class`**, and `destructive_action_rate` and
+  `scope_violation_rate` take the tool set and scope as parameters. Which tools verify or destroy is a
+  property of the harness, not a universal fact; hardcoding a name list would be wrong on every
+  harness but the first.
+
+Two conventions carry through: every rate returns **undefined rather than zero** when its denominator
+is zero — a run that mutated nothing has no premature-edit rate, and collapsing that to 0.0 would let
+an agent that did nothing outscore one that did the work — and the reported artifact is a **profile
+vector**, never a scalar.
 
 ### 4.1 Class A — derivable from the trajectory log alone (zero annotation)
 
@@ -326,7 +357,10 @@ An uncalibrated judge converts an annotation cost into an unmeasured bias.
 
 These are cheap in code and consequential in contract: they change what a compliant agent must
 produce, so they must be decided before any agentic scores are collected, for the same reason as
-§2.1. Note that this repo already treats abstention as first-class (`wedge_v1/` abstention economics,
+§2.1. **Partially pre-empted:** the action-log schema already carries a per-action `confidence` field
+and an `escalate` action class, because a probability emitted before the outcome is known cannot be
+back-filled into a log already collected. The calibration *metrics* (ECE, Brier, risk–coverage) are
+deliberately not built — unlike the fields, they carry no retrofit hazard and have no consumer yet. Note that this repo already treats abstention as first-class (`wedge_v1/` abstention economics,
 Program D — Calibration in `RESEARCH_PORTFOLIO.md`), so Class D is the closest of the four to
 existing work.
 
@@ -395,7 +429,7 @@ The critique's five tiers, annotated with the *named* blocker rather than a unif
 | 1 — general capability floor | MMLU-Pro, GPQA, HLE subset, ARC-AGI-2, math, IFEval, HELMET | **blocked** | Program 1 authorization (`LABORATORY_CONSTITUTION.md:134` lists large suites as not authorized) + compute authorization |
 | 2 — code and software primitives | LiveCodeBench, EvalPlus, BigCodeBench, CRUXEval | **blocked** | Program 1 authorization + compute authorization |
 | 3 — real engineering outcomes | SWE-bench variants, Terminal-Bench, private repos, greenfield, migration | **blocked** | Program 1 + compute + sandboxed execution environment (§2.1 pin extension no longer blocking) |
-| 4 — cognitive-process evaluations | Class A/B/D metrics from §4 | **buildable now** | trajectory-log format + Class D protocol decision. No Program 1 dependency, no paid compute, no annotation |
+| 4 — cognitive-process evaluations | Class A/B/D metrics from §4 | **Class A instrument built** (§4.1); Class B needs gold artifacts, Class C needs annotation | a corpus to run against — owner's call. No Program 1 dependency, no paid compute, no annotation for Class A |
 | 5 — product and economics | completion per dollar, acceptance without rework, escalation quality | **partially buildable** | needs a product surface; `wedge_v1/` is the existing pattern |
 
 The asymmetry is the actionable finding: **Tier 4 is the only tier that is unblocked, and it is also
@@ -440,6 +474,8 @@ in place, so that is no longer the blocker; Program 1 authorization is.
 - does not modify `benchmarks/REGISTRY.yaml`, `REGISTRY.schema.json`, or any Gate 0 report;
 - does not modify `compute_run_id` or any existing run identity; the agent-identity module is
   strictly additive (`benchmarks/agent_identity.py`);
+- builds no corpus, runner, emitter, or CLI for the Class A instrument, and promotes no metric to a
+  gate — `benchmarks/process_metrics.py` is diagnostics only;
 - does not touch `papers/EVIDENCE_LEDGER.md`, `artifacts/` manifests, `SHA256SUMS`, or protected tags;
 - does not authorize training, paid compute, Program 1, or any benchmark execution;
 - does not reprioritize P1 scribing, which remains the declared capability frontier;
