@@ -108,10 +108,33 @@ upward requires the evidence named in its row, not an argument.
 |---|---|---|
 | **Breadth before specialization.** At matched parameter count a generally-pretrained model reads 3.5 ± 0.7 against a domain-native model's 16.9 ± 1.7; 16× more tokens moves the native model to 7.0 ± 1.0, LoRA on top to 4.2 ± 0.9. | `papers/FINDING_BREADTH_BEFORE_SPECIALIZATION.md`; Stage-T ladder | Layer 2/3 synthesis of frozen evidence plus external studies — **not a new measurement** |
 | **Data and method are substitutes.** 200M tokens + LoRA ≈ 3.2B tokens + full FT (7.1 ± 1.2 vs 7.0 ± 1.0). | Chinchilla control, P2 2×2 | Interaction account replaces the earlier 73/27 decomposition; mechanism unidentified (E2 GATED/STOP) |
-| **A fitting tokenizer would move the floor.** `sft/tokenizer.json` (own-stack BPE, **vocab 4096, 3839 merges**) gives **2.60×** compression on the 150 `p1_screening_eval_v1` prompts (median 204, max 226, **0/150** over context) and **2.537×** on the 96-row training corpus (median 216, **0/96** over, against char-level median 551 with 96/96 over). Embedding parameter count unchanged. | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`; premise re-verified `22a16dc` | The compression is measured; the capability effect is not. **Number corrected 2026-08-31:** this ledger previously said "same vocab 4098". The asset is 4096; IDs fit inside the model's 4098-row embedding so no resize is needed and *"embeddings unchanged" still holds*, but the stated figure was wrong. The two compression ratios are the same asset on different corpus subsets, not a contradiction |
+| **A fitting tokenizer would move the floor.** `sft/tokenizer.json` (own-stack BPE) gives **~2.59×** compression on the 150 `p1_screening_eval_v1` prompts (median 204, max 226, **0/150** over context) against char-level median 530, max 576, **124/150 = 82.7% over** `max_seq=512`. Embedding rows unchanged at **4098**. | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`; independently reproduced to the digit from the artifact's own code at `e67d96b`; premise re-verified `22a16dc` | The compression is measured; the capability effect is not. **See the vocab note below — this row's earlier "correction" was itself wrong.** The compression ratios are the same asset on different corpora, not a contradiction |
 | **Slots behave differently by value diversity.** Diversity effect 66.7 pts; position innocent. | slot-diversity sweep, H-slot SUPPORTED | Pre-registered and supported; not re-measured under the current instrument |
 
 ---
+
+### Vocab note — 4096 and 4098 are both right, and they measure different things
+
+Two concurrent sessions reported different figures for the same asset. Measured
+directly from `sft/tokenizer.json` on this branch rather than adopting either:
+
+| field | value |
+|---|---|
+| `model.type` | BPE |
+| `len(model.vocab)` | **4096** |
+| `len(model.merges)` | 3839 |
+| `added_tokens` | 3 — `<|endoftext|>`, `<|im_start|>`, `<|im_end|>` |
+| distinct ids | **4098** (max id 4097) |
+| **implied embedding rows** | **4098** |
+
+`22a16dc` reported 4096 (`model.vocab` alone); `e67d96b` reported 4098 (the id
+space the embedding must cover). Neither is wrong.
+
+**4098 is the figure the invariance requirement needs**, because that clause is
+about embedding rows. This ledger said 4098, "corrected" it to 4096 on
+2026-08-31 citing `22a16dc`, and that correction made the row *less* accurate for
+its own purpose. Restored, with the ambiguity named so it cannot recur — "vocab"
+is exactly the word that hides this distinction.
 
 ## REFUTED
 
@@ -236,8 +259,8 @@ does the experiment distinguish?* — is what produced this ranking.
    and uses an existing asset. Swap `hash_tokens` → `sft/tokenizer.json`; hold
    parameters, steps, corpus and eval fixed. *Instrument:* `p1_screening_eval_v1`.
    *Bottleneck:* 82.7% of eval prompts truncated. *Invariance requirement:*
-   embedding parameter count unchanged (it is — vocab 4096 fits the 4098-row
-   embedding, no resize). *Discriminates:*
+   embedding rows unchanged at **4098** — see the vocab note below.
+   *Discriminates:*
    capability floor vs context-fit confound — the single largest ambiguity in the
    current record.
 
@@ -274,10 +297,28 @@ does the experiment distinguish?* — is what produced this ranking.
    | **Item 3** — BPB floor re-derived under BPE | **REMAINS.** Calibrated on char-level runs, so it cannot gate anything until re-derived — and that needs the swap behind a flag so the four frozen provenance classes stay reproducible |
 
    Item 3 is the §22 invariance rule biting exactly as stated: a gate calibrated
-   on one instrument cannot be carried across a change of instrument. Item 4
-   partly answers the semantic-preservation gap above at the *lexical* level —
-   round-trip exactness is not semantic equivalence, so the stated bound is
-   still owed.
+   on one instrument cannot be carried across a change of instrument.
+
+   **Field 8 is now measured** (`e67d96b`): `decode(encode(p)) == p` is **150/150
+   exact on both prompt builders**. The BPE asset is lossless, so both arms
+   present the same prompt text and the surviving difference is the treatment
+   rather than a confound. That supplies the number the readiness review asked
+   for — **the gap is closable, not closed**, since that prereg is canonical and
+   lives on another branch.
+
+   **The limit that survives, stated so a positive result is not over-read:**
+   this does *not* establish that segmentation per se leaves task difficulty
+   alone. Compression and context-fit move together, so a positive result
+   licenses *"a fitting tokenizer restores coverage"* — **not** *"context length
+   was the mechanism."*
+
+   **Not verified, flagged so it is not read as covered:** the training-corpus
+   half (median 615, max 694, 19,194/19,194) uses `native_corpus_screen_v1` at
+   prompt+target. The 96-prompt fixture reconstructible from the read-only export
+   is a different and much smaller suite; its figure is directionally consistent
+   and nothing more. This is why the two training-corpus percentages in
+   circulation (96/96 and 75.0%) are not a contradiction — they are different
+   fixtures.
 2. **Two-stage span-port: retrieval → conditional delimitation.**
    **NOT READY — fails the readiness gate** (SPEC §25). Under HEDGE_REQUIRED
    there is **no measured failure mode** on this line to aim at, so gate
@@ -370,6 +411,32 @@ the menu format perfectly well. **Format compliance and task preservation are
 different properties**, and only the first was being checked. This is the
 concrete instance of the "invariance requirement" field that
 `NANO_VNEXT_MASTER_SPEC.md` §25 now requires of every experiment.
+
+### A recheck is only valid for the instrument it was written against (from the D3.3 recheck defect)
+
+Third instance of the D7/D8 family and the sharpest, because the thing that
+failed to transfer was **the verification procedure itself**.
+
+`nanoscribe/prompt.py` carries two builders, and its own docstrings separate
+them: `build_span_port_prompt` is the compact **Qwen probe**;
+`build_canonical_span_port_prompt` is the *"canonical Transcript/Question surface
+for native training and screening eval"*. The screening eval uses the canonical
+one. **The published recheck block ships the Qwen one.**
+
+Run as published, the recheck reports **0/150 over context instead of 124/150** —
+so *a future session verifying in good faith would conclude the confound does not
+exist* and un-block a qualification that should stand. It fails in the direction
+that discredits a correct finding. Corroborated from a third place:
+`hash_tokens`' own docstring says prompts are ~530 chars — the canonical figure,
+not the Qwen builder's 357.
+
+> **§22, generalised again: a recheck is only valid for the instrument it was
+> written against.** D7 — the metric did not survive the tokenizer swap. D8 — it
+> did not survive a width change. Here — the *verification* did not survive the
+> instrument it verifies.
+
+Recorded at `e67d96b`; corrections were **recommended to the artifact, not
+applied**, because it lives on a branch another session has checked out.
 
 ### Gate calibration is instrument-specific (from D7)
 
