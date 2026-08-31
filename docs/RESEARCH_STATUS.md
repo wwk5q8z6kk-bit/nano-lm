@@ -108,7 +108,7 @@ upward requires the evidence named in its row, not an argument.
 |---|---|---|
 | **Breadth before specialization.** At matched parameter count a generally-pretrained model reads 3.5 ± 0.7 against a domain-native model's 16.9 ± 1.7; 16× more tokens moves the native model to 7.0 ± 1.0, LoRA on top to 4.2 ± 0.9. | `papers/FINDING_BREADTH_BEFORE_SPECIALIZATION.md`; Stage-T ladder | Layer 2/3 synthesis of frozen evidence plus external studies — **not a new measurement** |
 | **Data and method are substitutes.** 200M tokens + LoRA ≈ 3.2B tokens + full FT (7.1 ± 1.2 vs 7.0 ± 1.0). | Chinchilla control, P2 2×2 | Interaction account replaces the earlier 73/27 decomposition; mechanism unidentified (E2 GATED/STOP) |
-| **A fitting tokenizer would move the floor.** `sft/tokenizer.json` (own-stack BPE, same vocab 4098) gives measured 2.60× compression on the exact eval prompts — median 204, max 226, **0/150** over context, ~60% headroom, embedding parameter count unchanged. | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md` | The compression is measured; the capability effect is not. An existing repository asset, not new work |
+| **A fitting tokenizer would move the floor.** `sft/tokenizer.json` (own-stack BPE, **vocab 4096, 3839 merges**) gives **2.60×** compression on the 150 `p1_screening_eval_v1` prompts (median 204, max 226, **0/150** over context) and **2.537×** on the 96-row training corpus (median 216, **0/96** over, against char-level median 551 with 96/96 over). Embedding parameter count unchanged. | `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md`; premise re-verified `22a16dc` | The compression is measured; the capability effect is not. **Number corrected 2026-08-31:** this ledger previously said "same vocab 4098". The asset is 4096; IDs fit inside the model's 4098-row embedding so no resize is needed and *"embeddings unchanged" still holds*, but the stated figure was wrong. The two compression ratios are the same asset on different corpus subsets, not a contradiction |
 | **Slots behave differently by value diversity.** Diversity effect 66.7 pts; position innocent. | slot-diversity sweep, H-slot SUPPORTED | Pre-registered and supported; not re-measured under the current instrument |
 
 ---
@@ -236,7 +236,8 @@ does the experiment distinguish?* — is what produced this ranking.
    and uses an existing asset. Swap `hash_tokens` → `sft/tokenizer.json`; hold
    parameters, steps, corpus and eval fixed. *Instrument:* `p1_screening_eval_v1`.
    *Bottleneck:* 82.7% of eval prompts truncated. *Invariance requirement:*
-   embedding parameter count unchanged (it is — same vocab 4098). *Discriminates:*
+   embedding parameter count unchanged (it is — vocab 4096 fits the 4098-row
+   embedding, no resize). *Discriminates:*
    capability floor vs context-fit confound — the single largest ambiguity in the
    current record.
 
@@ -261,6 +262,22 @@ does the experiment distinguish?* — is what produced this ranking.
    precedent: arm B's format-feasibility gate passed at ~96% while the task
    collapsed. Until a bound is stated, gate question 4 is only partly answered
    and the wave is **NOT READY**, independently of authorization.
+
+   **Pre-run checks verified 2026-08-31** (`22a16dc`). The premise was
+   re-measured rather than carried from the anecdote:
+
+   | check | status |
+   |---|---|
+   | **Premise** — char-level overruns context, BPE does not | **HOLDS**: training corpus 96 rows, char-level median 551 with **96/96** over `max_seq=512`; BPE median 216 with **0/96** over |
+   | **Item 1** — `assert_context_budget` wired into `run_startup_gate` | **VERIFIED** |
+   | **Item 4** — round-trip fidelity | **VERIFIED**: 192/192 exact, and a dedicated whitespace probe over `\n`, `\t`, `\r` is lossless. **D3.2 does not recur** — that defect decoded newlines to `?` and corrupted turn separators in 224/224 sources |
+   | **Item 3** — BPB floor re-derived under BPE | **REMAINS.** Calibrated on char-level runs, so it cannot gate anything until re-derived — and that needs the swap behind a flag so the four frozen provenance classes stay reproducible |
+
+   Item 3 is the §22 invariance rule biting exactly as stated: a gate calibrated
+   on one instrument cannot be carried across a change of instrument. Item 4
+   partly answers the semantic-preservation gap above at the *lexical* level —
+   round-trip exactness is not semantic equivalence, so the stated bound is
+   still owed.
 2. **Two-stage span-port: retrieval → conditional delimitation.**
    **NOT READY — fails the readiness gate** (SPEC §25). Under HEDGE_REQUIRED
    there is **no measured failure mode** on this line to aim at, so gate
