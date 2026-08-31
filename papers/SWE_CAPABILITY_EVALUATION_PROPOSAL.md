@@ -20,13 +20,13 @@
 > compute constraints.
 >
 > **Work delivered under that directive:** (a) the identity infrastructure required to make future
-> evaluation scientifically identifiable and reproducible — §2.1; (b) the Class A process-intelligence
-> instrument named by item 5 of the sequencing above — §4.1. Both are instrument definitions with
-> tests: no corpus, no runner, no registry row, no execution, no promoted gate. The three-layer
-> principle is frozen verbatim in [`../docs/EVALUATION_FRAMEWORK.md`](../docs/EVALUATION_FRAMEWORK.md).
+> evaluation scientifically identifiable and reproducible — §2.1; (b) the Class A and Class B
+> process-intelligence instruments named by item 5 of the sequencing above — §4.1, §4.2. All are
+> instrument definitions with tests: no corpus, no runner, no registry row, no execution, no promoted
+> gate. The three-layer principle is frozen verbatim in [`../docs/EVALUATION_FRAMEWORK.md`](../docs/EVALUATION_FRAMEWORK.md).
 >
-> **Open and owner-gated:** Program 1 authorization for Tiers 1–3, and which task corpus Tier 4
-> Class A runs against first.
+> **Open and owner-gated:** Program 1 authorization for Tiers 1–3, and which task corpus the Tier 4
+> instruments run against first. Class C (expert annotation) remains unbuilt by design.
 
 ---
 
@@ -226,7 +226,7 @@ Adopting the critique's taxonomy verbatim, annotated with what exists here and w
 | 3 | Generalization (ARC-AGI-2, rolling suites) | none | Program 1 + compute auth |
 | 4 | Code primitives | none | Program 1 + compute auth |
 | 5 | Repository intelligence | none | Program 1 + compute auth |
-| 6 | **Engineering process** | Class A instrument built (§4.1); **no public suite covers this layer** | a corpus; Class B/C instruments; *not* blocked on Program 1 |
+| 6 | **Engineering process** | Class A + Class B instruments built (§4.1, §4.2); **no public suite covers this layer** | a corpus; Class C annotation; *not* blocked on Program 1 |
 | 7 | Tool competence (terminal, OS, browser, IDE) | none | Program 1 + sandboxed exec environment |
 | 8 | Agentic execution | identity contract present (§2.1); no suite, no runs | Program 1 + compute auth |
 | 9 | Verification sufficiency | partial — abstention economics in `wedge_v1/`; verifier relation in `docs/EVALUATION_FRAMEWORK.md` principle 4 | instrument design |
@@ -321,6 +321,24 @@ test sets). No new annotation.
 direct measure of the failure the critique opens with — an apparently valid patch, no noticed
 collateral damage, no verification — and it costs nothing beyond Class A plus the gold test sets.
 
+**Status: built.** `benchmarks/gold_metrics.py`, with `benchmarks/tests/test_gold_metrics.py`. Class B
+turned out **not** to be corpus-blocked: the gold artifacts are function parameters (`GoldTask`,
+`RunOutcome`), never a bundled dataset, so the instrument is definable and testable against synthetic
+tasks while the corpus decision stays open. Four design points:
+
+- **Gold results come from the grader, not the log.** `RunOutcome` is a separate input from the action
+  log precisely so an agent's own claim about its tests can never become its score.
+- **A missing test result is not a pass.** An F2P test with no recorded outcome counts as failing, and
+  a P2P test with no post-run result counts as broken.
+- **Regression escape counts only tests that were green beforehand** — a test already red at the start
+  is not a regression this run caused.
+- **Localization recall and precision are reported separately, never merged.** An agent that rewrites
+  the repository scores perfect recall; precision is what exposes it.
+
+`aggregate_rate` deliberately returns `(successes, n)` rather than a float: §5.1 requires safety gates
+to be stated as a Wilson upper bound, which needs both terms, and returning `0.0` over twelve runs
+invites exactly the reading the bound exists to prevent.
+
 ### 4.3 Class C — requires new annotation (expensive; this is the real frontier)
 
 Each of these needs a per-task gold artifact that does not exist in any public suite, and each unit of
@@ -365,7 +383,7 @@ Program D — Calibration in `RESEARCH_PORTFOLIO.md`), so Class D is the closest
 existing work.
 
 **Build order implied by the triage:** Class A → Class D (protocol, before any data is collected) →
-Class B → Class C. Classes A, B, and D together cover investigation discipline, verification
+Class B → Class C. Class A, the Class D protocol fields, and Class B are built; Class C is not. Classes A, B, and D together cover investigation discipline, verification
 sufficiency, regression safety, and calibration — most of the critique's engineering-process concern —
 at zero annotation cost. Class C buys architecture, design judgment, and belief revision, and it is
 where the budget actually goes.
@@ -429,7 +447,7 @@ The critique's five tiers, annotated with the *named* blocker rather than a unif
 | 1 — general capability floor | MMLU-Pro, GPQA, HLE subset, ARC-AGI-2, math, IFEval, HELMET | **blocked** | Program 1 authorization (`LABORATORY_CONSTITUTION.md:134` lists large suites as not authorized) + compute authorization |
 | 2 — code and software primitives | LiveCodeBench, EvalPlus, BigCodeBench, CRUXEval | **blocked** | Program 1 authorization + compute authorization |
 | 3 — real engineering outcomes | SWE-bench variants, Terminal-Bench, private repos, greenfield, migration | **blocked** | Program 1 + compute + sandboxed execution environment (§2.1 pin extension no longer blocking) |
-| 4 — cognitive-process evaluations | Class A/B/D metrics from §4 | **Class A instrument built** (§4.1); Class B needs gold artifacts, Class C needs annotation | a corpus to run against — owner's call. No Program 1 dependency, no paid compute, no annotation for Class A |
+| 4 — cognitive-process evaluations | Class A/B/D metrics from §4 | **Class A + Class B instruments built** (§4.1, §4.2); Class C needs annotation | a corpus to run against — owner's call. No Program 1 dependency, no paid compute, no annotation for A or B |
 | 5 — product and economics | completion per dollar, acceptance without rework, escalation quality | **partially buildable** | needs a product surface; `wedge_v1/` is the existing pattern |
 
 The asymmetry is the actionable finding: **Tier 4 is the only tier that is unblocked, and it is also

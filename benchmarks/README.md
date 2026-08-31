@@ -18,6 +18,7 @@ Layer-1 truth remains `papers/EVIDENCE_LEDGER.md` and the post-α freeze artifac
 | `adapters/lm_eval/` | pinned harness adapter, run identity, smoke runner | operational |
 | `AGENT_RUN_IDENTITY.schema.json` + `agent_identity.py` | eight-component identity for an **agentic** run | instrument definition; no runs |
 | `AGENT_ACTION_LOG.schema.json` + `process_metrics.py` | agent action log + Class A engineering-process metrics | instrument definition; no corpus |
+| `gold_metrics.py` | Class B metrics — log plus gold patch and test sets | instrument definition; no corpus |
 | `reports/` | Gate 0 report | operational |
 | `suites/`, `contamination/`, `generators/`, `scorecards/` | placeholders | empty |
 
@@ -56,6 +57,16 @@ scalar.
 Each metric documents its false-positive and false-negative modes, and each documented
 mode has a test in `tests/test_process_metrics.py` that makes it reproducible — these
 metrics are **diagnostics, not gates**, and no threshold has been promoted.
+
+**Gold metrics** (`gold_metrics.py`). Class B: the same action log plus the reference
+patch and fail-to-pass / pass-to-pass test sets that issue-resolution tasks already
+ship. No new annotation, and no corpus needed to define the instrument — the gold
+artifacts are function parameters (`GoldTask`, `RunOutcome`), not a bundled dataset.
+Test results come from the grader as a separate input, so an agent's own claim about
+its tests can never become its score; a missing result counts as failing, never as a
+pass. `aggregate_rate` returns `(successes, n)` rather than a float, because a safety
+gate needs both terms for a Wilson bound and `0.0` over a dozen runs invites the
+reading that bound exists to prevent.
 
 The two schemas are structurally independent (no cross-`$ref`, no required
 back-pointer) so they version separately: identity says which run this is, the action

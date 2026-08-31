@@ -47,7 +47,18 @@
         },
         "claimed_complete": {
           "type": "boolean",
-          "description": "The agent asserted the task was done at this action. Consumed by the Class B claimed-complete-but-failing metric, which additionally needs gold tests and is therefore not in benchmarks/process_metrics.py."
+          "description": "The agent asserted the task was done at this action. Consumed by the Class B claimed-complete-but-failing metric in benchmarks/gold_metrics.py, which additionally needs gold tests."
+        },
+        "tests_run": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Test identifiers this action executed. Captured at action time because which tests an agent chose to run cannot be recovered from a result payload afterwards; consumed by Class B affected-test recall. Empty or absent for non-verifying actions.",
+          "uniqueItems": true
+        },
+        "lines_changed": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "For mutating actions: lines added plus removed. Consumed by Class B fix minimality."
         },
         "confidence": {
           "oneOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}],
