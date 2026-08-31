@@ -99,8 +99,9 @@ round.
 
 All must pass before launch; failure voids the wave rather than being worked
 around. **Status as of the latest verification pass**
-(`artifacts/campaign/d33_prerun_verification_v1.json`): items 1 and 4 VERIFIED,
-item 3 NOT DONE, item 2 unchanged and still in force.
+(`d33_prerun_verification_v1.json`, `bpb_floor_derivation_v1.md`): items 1, 3
+and 4 VERIFIED; item 2 unchanged and still in force. **All blocking pre-run
+checks now pass.**
 
 The premise itself is also now verified rather than assumed: on the training
 corpus, BPE takes prompts from **100% over context (median 551 tok) to 0%
@@ -115,12 +116,18 @@ resize is needed, but the stated figure was imprecise.
    removed the 64-char cap.
 2. **The existing gate stays on, unmodified** — attention leakage exactly 0.0,
    causal-reference equivalence, target present in the loss.
-3. **[NOT DONE — the remaining blocker]** **BPB numerator must use the token count.** D7 corrected `lm * target_chars`
+3. **[VERIFIED]** **BPB numerator must use the token count.** D7 corrected `lm * target_chars`
    to `lm * n_supervised`; under a 2.60× tokenizer the old form inflates BPB by
    ~2.6× and moves the measurement away from the floor. Pinned by
-   `test_bpb_uses_the_token_count_not_the_char_count`. **The BPB floor must be
-   re-derived for this instrument before it can gate anything** — the current
-   values were calibrated on char-level runs.
+   `test_bpb_uses_the_token_count_not_the_char_count`. Floor re-derived in
+   `artifacts/campaign/bpb_floor_derivation_v1.md`: **no numeric change is
+   needed for BPE** — honest final BPB is 5.01 (bpe) vs 6.61 (hash), the same
+   order, because the per-byte construction cancels BPE's 0.494 tokens/byte
+   against its higher nats/token. The derivation also found something larger:
+   **seven reconstructions of D1.1/D2.2/D3.1 all land 3.99–401 bpb, none within
+   three orders of magnitude of the 0.002 the floor was anchored to.** The gate
+   is therefore documented as a catastrophic-collapse backstop rather than a
+   leak detector, with the exact assertions named as the real detectors.
 4. **[VERIFIED — 192/192 lossless, incl. `\n`/`\t`/`\r`]** **Round-trip fidelity.** The BPE tokenizer must decode losslessly over
    multi-line corpus sources, pinned as D3.2's fix is. A tokenizer that mangles
    turn separators reintroduces D3.2 under a new name.
@@ -149,10 +156,11 @@ Note that `du` and `ls` now report 0 B / permission errors on several of those
 trees because the sandbox restricts them; that is a read restriction, not
 deletion, and the two must not be confused.
 
-**The remaining blockers are engineering plus authorization, not resources:**
-implement the BPE path behind a flag (so the four frozen classes stay
-reproducible), re-derive the BPB floor on the new instrument (§7.3), then owner
-sign-off.
+**Engineering is complete; only authorization remains.** The BPE path is
+implemented behind `NativeTrainConfig.tokenizer` (default `"hash"`, so the four
+frozen classes stay byte-reproducible; the flag rides into every checkpoint via
+`cfg.to_dict()`), commit `b78a9e5`. The BPB floor is re-derived (§7.3). The
+wave needs owner sign-off and nothing else.
 
 ## 10. Recheck
 

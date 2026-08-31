@@ -24,12 +24,22 @@ the block is causal, the probe proves the wiring that reaches it is too.
 `assert_bits_per_byte_plausible` gates on BPB rather than on raw loss. "Loss
 descends 40.6 -> 22.4" is two magic numbers from a single run and transfers
 across neither configs nor tokenizers nor arms. BPB has an interpretable scale
-that does transfer: a uniform byte model sits at 8 bits/byte, and the
-information content of real text bounds how low an honest model can go. The
-causal-mask leak presented as loss ~= 0.002, which is ~0.003 bits/byte — a
-2700:1 compression ratio on text, roughly three orders of magnitude past every
-published text compressor. That makes the detector a principled bound instead
-of an anomaly someone happened to remember.
+that does transfer: a uniform byte model sits at 8 bits/byte, and it is
+per-BYTE, so it survives a tokenizer swap (measured: honest final BPB 6.61 on
+the character tokenizer vs 5.01 on BPE, because BPE's 0.494 tokens/byte cancels
+against its higher nats/token).
+
+**Its claim has since been narrowed by measurement.** It was anchored to a
+historical `loss ~= 0.002`, and
+`artifacts/campaign/bpb_floor_derivation_v1.md` could not reproduce that from
+the recorded defect descriptions: seven reconstructions of D1.1 / D2.2 / D3.1
+land between 3.99 and 401 bpb, none within three orders of magnitude of it.
+D1.1 in isolation does move loss the expected way (3.989 vs 4.718 — a 15% gain
+from reading the future) but that is not a collapse. So BPB is a
+**catastrophic-collapse backstop, not a leak detector**; the exact assertions
+in this module are what actually catch the defects. Keeping the floor is still
+right — it costs nothing and covers the failure no exact check anticipates —
+but it must not be cited as evidence a run is clean.
 """
 
 from __future__ import annotations
@@ -61,27 +71,28 @@ BPB_HARD_FLOOR = 0.01
 BPB_SUSPICIOUS_BELOW = 0.15
 BPB_UNIFORM_BYTE_MODEL = 8.0
 
-# Step-aware floor. MEASURED CALIBRATION, not a guess — four real data points
-# from this repository:
+# Step-aware floor. Archived data points from this repository:
 #
-#   leaking  @  40 steps   loss 0.002    -> 0.0029 bpb
 #   leaking  @1800 steps   loss 0.00823  -> 0.0119 bpb   (archived reval30 s0)
 #   fixed    @1800 steps   loss 0.0593   -> 0.0856 bpb   (causalfix s0)
-#   fixed    @  40 steps   loss 12.90    -> 9.4848 bpb   (this session's smoke)
+#   fixed    @  40 steps   loss 12.90    -> 9.4848 bpb   (a smoke run)
+#   leaking  @  40 steps   loss 0.002    -> 0.0029 bpb   ** NOT REPRODUCIBLE **
 #
-# The flat 0.01 floor does NOT separate the last two: the leaking run at 1800
-# steps sits at 0.0119, only 19% above it. That is not a calibration accident —
-# it is the honest limit of the method. On TRAINING data a converged model that
-# has memorised its corpus and one that is reading its own labels both produce
-# a near-zero loss, and BPB cannot tell them apart.
+# The flat 0.01 floor does NOT separate the first two: the leaking run at 1800
+# steps sits at 0.0119, only 19% above it. On TRAINING data a converged model
+# that has memorised its corpus and one reading its own labels both produce a
+# near-zero loss, and BPB cannot tell them apart. Hence the step split: early,
+# before memorisation is possible, a low reading has no innocent explanation.
 #
-# Where BPB *is* principled is early, before memorisation is possible: at <=100
-# steps the model has seen each example at most once, so a near-zero loss has no
-# innocent explanation. The measured separation there is ~3,270x (9.4848 vs
-# 0.0029), so an early floor can be set high without risking a false positive.
+# The fourth row is the one to be careful about. It is the number this floor was
+# originally anchored to, and bpb_floor_derivation_v1.md could not reproduce it
+# from the recorded defect descriptions — seven reconstructions of D1.1/D2.2/
+# D3.1 all land 3.99-401 bpb. It is retained here as provenance, NOT as
+# calibration. Do not re-derive thresholds from it without reproducing it first.
 #
-# Late in training the detector is not this metric — it is
-# assert_no_attention_leakage, which is exact rather than statistical.
+# The detectors are the exact assertions below (attention leakage, causal
+# reference equivalence, target-in-loss, context budget). This floor is the net
+# underneath them.
 BPB_EARLY_STEP_LIMIT = 100
 BPB_EARLY_FLOOR = 0.5
 
@@ -356,7 +367,21 @@ def assert_bits_per_byte_plausible(
 ) -> None:
     """Gate on an information-theoretic floor rather than a remembered number.
 
-    Scope, stated rather than implied: this is a *smoke-time* leak detector.
+    Scope, stated rather than implied: this is a **catastrophic-collapse
+    backstop, not a leak detector**. Measured in
+    `artifacts/campaign/bpb_floor_derivation_v1.md`: seven reconstructions of
+    D1.1 / D2.2 / D3.1 all land between 3.99 and 401 bpb — none within three
+    orders of magnitude of the 0.002 signature this floor was anchored to. D1.1
+    in isolation does move loss the expected way (3.989 vs 4.718, a 15% gain
+    from reading the future) but that is not a collapse.
+
+    So this fires only when an objective becomes trivially solvable. The actual
+    detectors are exact and separate: assert_no_attention_leakage plus the
+    causal-reference differential test (D1.1), assert_target_present_in_loss
+    (D2.1/D2.2), assert_prompt_not_silently_capped and assert_context_budget
+    (D3.1/D3.3). BPB is the net underneath those, not the thing catching them.
+
+    Also a *smoke-time* measure.
     See the calibration block above — at 1800 steps the known-leaking run sits
     at 0.0119 bpb against a fixed run's 0.0856, which this metric cannot
     reliably separate on training data. Do not read a late-training pass here

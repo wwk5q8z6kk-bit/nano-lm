@@ -1,0 +1,56 @@
+{
+  "schema": "nano.native.bpb_floor_derivation.v1",
+  "purpose": "PREREG D3.3 \u00a77.3 \u2014 re-derive the BPB floor for the BPE instrument.",
+  "method": "2x2 over {hash,bpe} x {honest,leaking}. The leaking arm reconstructs D1.1 by making every block bidirectional, i.e. the actual failure population the floor claims to detect (D6's lesson).",
+  "steps": 40,
+  "cells": [
+    {
+      "tokenizer": "hash",
+      "condition": "honest",
+      "steps": 40,
+      "init_bpb": 171.58901,
+      "final_bpb": 6.61372,
+      "final_lm_nats_per_token": 4.58428,
+      "tokens_per_supervised_byte": 1.0
+    },
+    {
+      "tokenizer": "hash",
+      "condition": "leaking",
+      "steps": 40,
+      "init_bpb": 174.2298,
+      "final_bpb": 7.9889,
+      "final_lm_nats_per_token": 5.53749,
+      "tokens_per_supervised_byte": 1.0
+    },
+    {
+      "tokenizer": "bpe",
+      "condition": "honest",
+      "steps": 40,
+      "init_bpb": 91.37537,
+      "final_bpb": 5.00694,
+      "final_lm_nats_per_token": 7.02574,
+      "tokens_per_supervised_byte": 0.494
+    },
+    {
+      "tokenizer": "bpe",
+      "condition": "leaking",
+      "steps": 40,
+      "init_bpb": 97.85819,
+      "final_bpb": 6.60413,
+      "final_lm_nats_per_token": 9.26692,
+      "tokens_per_supervised_byte": 0.494
+    }
+  ],
+  "separation_hash": {
+    "honest_final_bpb": 6.61372,
+    "leaking_final_bpb": 7.9889,
+    "separation_ratio": 0.8,
+    "geometric_midpoint": 7.26886
+  },
+  "separation_bpe": {
+    "honest_final_bpb": 5.00694,
+    "leaking_final_bpb": 6.60413,
+    "separation_ratio": 0.8,
+    "geometric_midpoint": 5.75035
+  }
+}
