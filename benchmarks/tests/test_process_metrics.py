@@ -389,3 +389,135 @@ def test_class_d_confidence_field_is_reserved_and_documented():
         {"schema_version": LOG_SCHEMA_VERSION, "actions": [act(0, "read", confidence=0.9)]}
     )
     assert not any("calibration" in k or "confidence" in k for k in profile)
+
+
+# --- documented failure modes: pinned, not fixed ----------------------------
+#
+# Every docstring in benchmarks/process_metrics.py names its false-positive and
+# false-negative modes. Until these tests existed those were unbacked claims —
+# prose asserting a limitation that nothing demonstrated. Each test below makes
+# one documented mode reproducible, so that (a) the claim is evidence rather than
+# assertion, (b) nobody later assumes the metric detects what it cannot, and
+# (c) the repo's metric-promotion rule ("false_positive_modes_tested",
+# "false_negative_modes_tested") has something to point at before any of these is
+# ever considered for a gate.
+#
+# These tests assert the CURRENT, DOCUMENTED behavior including where it is
+# wrong. A future fix should change the metric and the test together, not delete
+# the test.
+
+
+def test_fp_invalid_tool_call_rate_counts_harness_outages_as_agent_error():
+    """FP (line 69): a genuine tool outage reported as `tool_error` scores as agent misuse.
+
+    The log cannot distinguish "the agent sent malformed arguments" from "the
+    tool was down and the harness labelled it tool_error". Both inflate the rate.
+    """
+    outage = [act(0, "execute", tool="api", result_status="tool_error")]
+    assert invalid_tool_call_rate(outage) == 1.0  # indistinguishable from agent misuse
+
+
+def test_fn_invalid_tool_call_rate_misses_coerced_malformed_arguments():
+    """FN (line 70): a harness that repairs bad arguments instead of rejecting them.
+
+    The agent misused the tool; the harness silently fixed it and returned ok, so
+    the competence signal never reaches the log.
+    """
+    coerced = [act(0, "execute", tool="edit", result_status="ok")]
+    assert invalid_tool_call_rate(coerced) == 0.0  # misuse invisible
+
+
+def test_fn_repeated_action_misses_loops_against_a_nondeterministic_tool():
+    """FN (lines 94-96): identical calls whose result digest differs each time.
+
+    The agent is looping, but the metric cannot tell that from a genuine retry
+    against new information — the unchanged-result condition is what makes the
+    metric meaningful, and it is also what makes this case undetectable.
+    """
+    looping_on_nondeterministic = [
+        act(0, "execute", args="x", result="run-1"),
+        act(1, "execute", args="x", result="run-2"),
+        act(2, "execute", args="x", result="run-3"),
+    ]
+    assert repeated_action_rate(looping_on_nondeterministic) == 0.0  # loop invisible
+
+
+def test_fp_repeated_action_flags_a_legitimate_re_read_after_a_long_gap():
+    """FP (lines 97-98): the metric does not model forgetting.
+
+    Re-reading a file 40 actions later, after context has moved on, is reasonable
+    behavior and is counted as a repeat.
+    """
+    with_long_gap = [act(0, "read", tool="cat", args="a.py", result="body")]
+    with_long_gap += [act(i, "execute", args=f"other-{i}", result=f"r{i}") for i in range(1, 40)]
+    with_long_gap += [act(40, "read", tool="cat", args="a.py", result="body")]
+    rate = repeated_action_rate(with_long_gap)
+    assert rate is not None and rate > 0  # counted despite being reasonable
+
+
+def test_fp_premature_edit_when_content_arrived_through_an_unclassified_tool():
+    """FP (lines 125-126): a grep that returned the full body, classed `execute`.
+
+    The agent did have the content before editing. Because the harness did not
+    class that action as `read`, the edit scores premature.
+    """
+    grep_then_edit = [
+        act(0, "execute", tool="grep", targets=["a.py"], result="full-body"),
+        act(1, "mutate", targets=["a.py"]),
+    ]
+    assert premature_edit_rate(grep_then_edit) == 1.0  # false alarm
+
+
+def test_fn_premature_edit_accepts_a_token_read():
+    """FN (lines 127-128): opening a file and ignoring it counts as evidence.
+
+    This metric measures sequence, not comprehension, and cannot see that the
+    read was pro forma.
+    """
+    token_read = [
+        act(0, "read", targets=["a.py"]),
+        act(1, "mutate", targets=["a.py"]),
+    ]
+    assert premature_edit_rate(token_read) == 0.0  # scores clean regardless of comprehension
+
+
+def test_fp_verification_attempted_trusts_a_mislabelled_trivial_action():
+    """FP (lines 179-180): action_class is declared at emission and unverifiable here.
+
+    A harness that labels `ls` as `verify` gets full credit. This is the reason
+    the schema documents mis-declaration as the metric's principal weakness.
+    """
+    trivial = [
+        act(0, "mutate", targets=["a.py"]),
+        act(1, "verify", tool="ls"),
+    ]
+    assert verification_attempted(trivial) is True  # credit for a no-op
+
+
+def test_fn_scope_violation_misses_an_escape_through_an_in_scope_path():
+    """FN (lines 266-267): prefix matching only.
+
+    A mutation whose declared target sits inside scope but resolves outside it
+    (symlink, `..` traversal) is not detected — the metric never touches the
+    filesystem.
+    """
+    traversal = [act(0, "mutate", targets=["src/../../etc/passwd"])]
+    assert scope_violation_rate(traversal, declared_scope=["src/"]) == 0.0  # escape invisible
+
+
+def test_every_documented_failure_mode_has_a_test():
+    """Guard: the count of documented FP/FN claims must not outrun the tests.
+
+    If a new metric adds a failure-mode claim without a pinning test, this fails
+    and the claim cannot ship unbacked.
+    """
+    source = (REPO / "benchmarks/process_metrics.py").read_text()
+    documented = source.count("False positives:") + source.count("False negatives:")
+    tests = sum(
+        1
+        for name in globals()
+        if name.startswith(("test_fp_", "test_fn_"))
+    )
+    assert tests >= documented, (
+        f"{documented} documented failure modes but only {tests} pinning tests"
+    )
