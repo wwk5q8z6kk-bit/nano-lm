@@ -148,7 +148,7 @@ def score(model, items, label=""):
     hal = sum(d[2] for d in per_dialogue) / (5 * n)
     omi = sum(d[3] for d in per_dialogue)
     # held/seen strata are CONDITIONAL ON PARSE — gate_scribe.py:96-106 semantics
-    # (the nano/scale anchor gaps were computed this way). F1 fix.
+    # (the nano/scale anchor gaps were computed this way). (Implements Fix F1 from the header).
     held = [d for d in per_dialogue if d[0] and d[4]]
     seen = [d for d in per_dialogue if (not d[0]) and d[4]]
     if len(held) >= 2 and len(seen) >= 2:
