@@ -5,10 +5,10 @@ fsspec==2026.2.0
 numpy==2.5.0
 packaging==26.1
 peft==0.20.0
-pytest==9.0.2
+pytest==9.0.3
 regex==2026.4.4
 safetensors==0.7.0
 tokenizers==0.22.2
-torch==2.11.0
+torch==2.13.0
 tqdm==4.67.3
-transformers==5.5.3
+transformers==5.10.1
