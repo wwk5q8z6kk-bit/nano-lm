@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 from nanoscribe.adapt import (
+    AdapterExecutionMode,
     CandidateAtom,
     ModelCandidateBatch,
     ModelInput,
@@ -74,7 +75,10 @@ class FixtureSpanPortAdapter:
                     temporality=spec.temporality,
                 )
             )
-        return ModelCandidateBatch(atoms=tuple(atoms))
+        return ModelCandidateBatch(
+            atoms=tuple(atoms),
+            execution_mode=AdapterExecutionMode.FIXTURE,
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -126,6 +130,7 @@ class Qwen25BaselineAdapter:
             atoms=tuple(atoms),
             latency_s=latency_s,
             memory_bytes=memory_bytes,
+            execution_mode=AdapterExecutionMode.LOCAL_WEIGHTS,
         )
 
 
@@ -328,6 +333,7 @@ class SmallApiReferenceAdapter:
             atoms=tuple(atoms),
             latency_s=latency_s,
             memory_bytes=memory_bytes,
+            execution_mode=AdapterExecutionMode.EXTERNAL_API,
         )
 
 
@@ -374,4 +380,5 @@ class ServerlessQwen38Adapter:
             atoms=tuple(atoms),
             latency_s=latency_s,
             memory_bytes=memory_bytes,
+            execution_mode=AdapterExecutionMode.EXTERNAL_API,
         )
