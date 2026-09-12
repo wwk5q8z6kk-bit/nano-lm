@@ -1,0 +1,16 @@
+{
+  "patient_id": "synth-003",
+  "modality": "text",
+  "document_type": "encounter_transcript",
+  "content": "patient: I stopped the metoprolol a while back, maybe around 2021.\nclinician: Do you recall why?\npatient: I do not remember.\nclinician: I do not see a colonoscopy in your record.\nclinician: You had no adverse reaction documented to penicillin.\n",
+  "author_or_device": "synthetic_generator",
+  "encounter_id": "",
+  "organization_id": "",
+  "source_system": "",
+  "creation_time": "",
+  "received_time": "",
+  "security_classification": "synthetic_non_phi",
+  "consent_scope": "research_synthetic",
+  "content_hash": "ae6b16723efa9508ce01a209dd94020f79002cae843edc7437f50d16bdff18d9",
+  "source_id": "src_4684537a80f7a1d0"
+}

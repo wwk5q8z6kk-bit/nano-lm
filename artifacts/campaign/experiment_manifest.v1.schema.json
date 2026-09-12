@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "nano.campaign.experiment_manifest.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "experiment_id",
+    "git_sha",
+    "dataset_revision",
+    "command",
+    "surface",
+    "max_runtime_min",
+    "max_cost_usd",
+    "artifact_dest",
+    "termination_condition"
+  ],
+  "properties": {
+    "schema": {
+      "const": "nano.campaign.experiment_manifest.v1"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "git_sha": {
+      "type": "string"
+    },
+    "dataset_revision": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "surface": {
+      "enum": [
+        "public_endpoint",
+        "hub_serverless",
+        "flash",
+        "pod_template",
+        "raw_pod",
+        "cluster",
+        "local_cpu"
+      ]
+    },
+    "gpu_or_model": {
+      "type": "string"
+    },
+    "hub_stable_locator": {
+      "type": "string"
+    },
+    "hub_listing_id": {
+      "type": "string"
+    },
+    "resolved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "max_runtime_min": {
+      "type": "number",
+      "minimum": 1
+    },
+    "max_cost_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "artifact_dest": {
+      "type": "string"
+    },
+    "termination_condition": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

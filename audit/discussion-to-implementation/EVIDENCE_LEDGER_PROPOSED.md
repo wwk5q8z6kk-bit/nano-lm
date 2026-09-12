@@ -122,3 +122,57 @@ CONSTRAINT = Do not recreate/move post-alpha-evidence-freeze-2026-07-31
 ```
 
 Remediations approved. Live ledger status banners synced; claim table already matched remediations.
+
+---
+
+# PROPOSED (2026-08-25) — C_NATIVE_TRACK_VOID
+
+**Not applied to the live ledger.** `scripts/check_docs_integrity.py` treats
+`papers/EVIDENCE_LEDGER*` as a protected evidence path and fails any branch whose
+diff against `origin/master` touches it; the ledger header likewise says
+"amended only by owner-facing commit." The owner directed that this defect be
+enumerated in the ledger, so the row is staged here for promotion via the
+owner-facing path rather than merged in from a frontier branch.
+
+**Proposed row** (15/15 columns, enums validated against
+`papers/EVIDENCE_LEDGER.json.enums`):
+
+| Claim ID | Exact wording | Type | Epistemic | Gate | Gate label | Evid class | Claim pub | Evidence pub | Result | Repro | Wording | Limitations | Invalidation | Future update |
+|----------|---------------|------|-----------|------|------------|------------|-----------|--------------|--------|-------|---------|-------------|--------------|---------------|
+| C_NATIVE_TRACK_VOID | Every result produced by `nanoscribe/native/` before `c98e4ad` is void: the decoder ran full bidirectional attention (no attn_mask/is_causal) in a next-token objective, measured 20.15 logit delta at positions the future must not reach | IMPLEMENTATION_STATE | VOID | VOID | D_NATIVE_CAUSAL_MASK | PUBLIC-ANCHORED | PUBLIC_UNTAGGED | PUBLIC_TAGGED | PRESENT | PUBLIC_REPRODUCIBLE | APPROVED | scope is the native track only; Paper alpha ladder verified causal (sft/model_nano.py:29, pretrain/train.py:38) and is NOT retracted | causality pins in nanoscribe/test_native_loss_target_budget.py fail | re-run under the fixed trainer produces a valid RESULT |
+
+**Scope (enumerated).** `reval30_{decoder_control,evidence_bottleneck,span_port}_{s0,s1,s2}`
+and `native100_{evidence_bottleneck,span_port}_{s0,s1}`.
+
+**Boundary verified, not assumed.** `sft/model_nano.py:29` and
+`pretrain/train.py:38` both call
+`F.scaled_dot_product_attention(q, k, v, is_causal=True)`. `C_GAP_EXISTS`,
+`C_DIVERSITY`, `C_OWNSTACK_200M_FULLFT_GATE`, `C_ADAPT_DATA_CELLS`,
+`C_INTERFERENCE`, `C_C3_*`, `C_POINTER_*` and `C_E1_*` are untouched. This is
+**not** a retraction of Paper α.
+
+**Supporting artifacts.** `papers/DEFECT_NATIVE_CAUSAL_MASK.md` (full defect
+record) · `artifacts/DEFECT_INDEX.md` (D1.1, canonical index) ·
+`artifacts/campaign/reval_results/FALSE_NULL_DIAGNOSIS.md`.
+
+**To promote:** apply the row to `papers/EVIDENCE_LEDGER.md` and the matching
+claim object to `papers/EVIDENCE_LEDGER.json` on the owner-facing path, then
+re-run `scripts/check_docs_integrity.py`.
+
+## Companion note for C_NATIVE_TRACK_VOID promotion (2026-08-25)
+
+When promoting the row above on the owner-facing path, promote the
+capability-floor result **with its confound attached**, so the next reader gets
+"below floor, tokenizer suspected" rather than "30M is below floor":
+
+> native30 causalfix wave (9 runs, MPS, single device): constrained coverage
+> 4.0% pooled (6/150 per run, abstaining on 144 of 150 atoms), unconstrained
+> 0/150 in 9/9. Arms did not separate — the apparent `DENIED`/`ASSERTED` split
+> was seed noise, present only in `evidence_bottleneck_s0`. Pre-registered
+> capability-floor clause fired. **Confounded with residual truncation (D3.3):**
+> 82.7% of eval prompts exceed the 512 context under character-level
+> tokenization. 30M with a fitting tokenizer is untested.
+
+Sources: `trajectory/PREREG_causalfix_wave_arm_split.md` (prereg, RESULT, and
+CONFOUND NOTICE) · `artifacts/campaign/TOKENIZER_CONTEXT_CONFOUND.md` ·
+`artifacts/DEFECT_INDEX.md` (D1.1, D3.3, result-status section).

@@ -1,0 +1,955 @@
+{
+  "deploy_error": null,
+  "endpoint_deleted": [],
+  "endpoint_id": null,
+  "experiment_id": "nano_agent_canary_v1",
+  "include_agent_tools": true,
+  "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
+  "model": "openai/gpt-oss-120b",
+  "results": [
+    {
+      "action_source": "content",
+      "completion_tokens": 28,
+      "error": null,
+      "family": "tool_needed",
+      "finish_reason": "stop",
+      "gold_action": "SEARCH",
+      "latency_s": 138.788,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "outcome": 0.0,
+        "tool_selection": 0.0
+      },
+      "task_id": "agent-tool_needed-01"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 65,
+      "error": null,
+      "family": "tool_not_needed",
+      "finish_reason": "stop",
+      "gold_action": "TOOL_NONE",
+      "latency_s": 0.51,
+      "parsed": true,
+      "predicted_action": "TOOL_NONE",
+      "raw_snippet": "TOOL_NONE",
+      "scores": {
+        "outcome": 1.0,
+        "unnecessary_call_rate": 0.0
+      },
+      "task_id": "agent-tool_not_needed-05"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 55,
+      "error": null,
+      "family": "similar_tools",
+      "finish_reason": "stop",
+      "gold_action": "READ",
+      "latency_s": 5.061,
+      "parsed": true,
+      "predicted_action": "SEARCH",
+      "raw_snippet": "SEARCH",
+      "scores": {
+        "outcome": 0.0,
+        "tool_selection": 0.0
+      },
+      "task_id": "agent-similar_tools-09"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 64,
+      "error": null,
+      "family": "invalid_tool_args",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 0.484,
+      "parsed": true,
+      "predicted_action": "ABSTAIN",
+      "raw_snippet": "ABSTAIN",
+      "scores": {
+        "abstention": 1.0,
+        "arg_validity": 1.0,
+        "outcome": 1.0
+      },
+      "task_id": "agent-invalid_tool_args-13"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 66,
+      "error": null,
+      "family": "timeout_error",
+      "finish_reason": "stop",
+      "gold_action": "RECOVERY",
+      "latency_s": 5.113,
+      "parsed": true,
+      "predicted_action": "TOOL_NONE",
+      "raw_snippet": "TOOL_NONE",
+      "scores": {
+        "outcome": 0.0,
+        "recovery": 0.0
+      },
+      "task_id": "agent-timeout_error-17"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 27,
+      "error": null,
+      "family": "ambiguous_result",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.298,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-ambiguous_result-21"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 21,
+      "error": null,
+      "family": "multi_tool",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 5.073,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-multi_tool-25"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 28,
+      "error": null,
+      "family": "verify_needed",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.359,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-verify_needed-29"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 33,
+      "error": null,
+      "family": "insufficient_info",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 5.082,
+      "parsed": true,
+      "predicted_action": "READ",
+      "raw_snippet": "READ",
+      "scores": {
+        "abstention": 0.0,
+        "outcome": 0.0
+      },
+      "task_id": "agent-insufficient_info-33"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 21,
+      "error": null,
+      "family": "premature_stop",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.262,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "stop_accuracy": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-premature_stop-37"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 40,
+      "error": null,
+      "family": "repeated_calls",
+      "finish_reason": "stop",
+      "gold_action": "STOP",
+      "latency_s": 5.204,
+      "parsed": true,
+      "predicted_action": "TOOL_NONE",
+      "raw_snippet": "TOOL_NONE",
+      "scores": {
+        "outcome": 0.0,
+        "stop_accuracy": 0.0
+      },
+      "task_id": "agent-repeated_calls-41"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 156,
+      "error": null,
+      "family": "state_update_recovery",
+      "finish_reason": "stop",
+      "gold_action": "ACT",
+      "latency_s": 0.983,
+      "parsed": false,
+      "predicted_action": "",
+      "raw_snippet": "{\n  \"atoms\": [\n    {\n      \"atom_id\": \"obs1\",\n      \"atom_type\": \"measurement\",\n      \"assertion_state\": \"asserted\",\n      \"certainty\": \"stated\",\n      \"evidence_quote\": \"Patient's blood pressure is n",
+      "scores": {},
+      "task_id": "agent-state_update_recovery-45"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 32,
+      "error": null,
+      "family": "tool_needed",
+      "finish_reason": "stop",
+      "gold_action": "READ",
+      "latency_s": 4.45,
+      "parsed": true,
+      "predicted_action": "SEARCH",
+      "raw_snippet": "SEARCH",
+      "scores": {
+        "outcome": 0.0,
+        "tool_selection": 0.0
+      },
+      "task_id": "agent-tool_needed-02"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 57,
+      "error": null,
+      "family": "tool_not_needed",
+      "finish_reason": "stop",
+      "gold_action": "TOOL_NONE",
+      "latency_s": 0.465,
+      "parsed": true,
+      "predicted_action": "TOOL_NONE",
+      "raw_snippet": "TOOL_NONE",
+      "scores": {
+        "outcome": 1.0,
+        "unnecessary_call_rate": 0.0
+      },
+      "task_id": "agent-tool_not_needed-06"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 56,
+      "error": null,
+      "family": "similar_tools",
+      "finish_reason": "stop",
+      "gold_action": "QUERY",
+      "latency_s": 5.093,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0
+      },
+      "task_id": "agent-similar_tools-10"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 37,
+      "error": null,
+      "family": "invalid_tool_args",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 0.347,
+      "parsed": true,
+      "predicted_action": "READ",
+      "raw_snippet": "READ",
+      "scores": {
+        "abstention": 0.0,
+        "arg_validity": 0.0,
+        "outcome": 0.0
+      },
+      "task_id": "agent-invalid_tool_args-14"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 25,
+      "error": null,
+      "family": "timeout_error",
+      "finish_reason": "stop",
+      "gold_action": "RECOVERY",
+      "latency_s": 5.086,
+      "parsed": true,
+      "predicted_action": "READ",
+      "raw_snippet": "READ",
+      "scores": {
+        "outcome": 1.0,
+        "recovery": 0.0
+      },
+      "task_id": "agent-timeout_error-18"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 45,
+      "error": null,
+      "family": "ambiguous_result",
+      "finish_reason": "stop",
+      "gold_action": "QUERY",
+      "latency_s": 0.417,
+      "parsed": false,
+      "predicted_action": "",
+      "raw_snippet": "{\n  \"span\": \"conflicting lab units\",\n  \"evidence\": []\n}",
+      "scores": {},
+      "task_id": "agent-ambiguous_result-22"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 24,
+      "error": null,
+      "family": "multi_tool",
+      "finish_reason": "stop",
+      "gold_action": "QUERY",
+      "latency_s": 4.996,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0
+      },
+      "task_id": "agent-multi_tool-26"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 43,
+      "error": null,
+      "family": "verify_needed",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.381,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-verify_needed-30"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 43,
+      "error": null,
+      "family": "insufficient_info",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 5.094,
+      "parsed": false,
+      "predicted_action": "",
+      "raw_snippet": "{\n  \"lab_name\": \"any\"\n}",
+      "scores": {},
+      "task_id": "agent-insufficient_info-34"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 22,
+      "error": null,
+      "family": "premature_stop",
+      "finish_reason": "stop",
+      "gold_action": "READ",
+      "latency_s": 0.313,
+      "parsed": true,
+      "predicted_action": "READ",
+      "raw_snippet": "READ",
+      "scores": {
+        "outcome": 1.0,
+        "stop_accuracy": 1.0
+      },
+      "task_id": "agent-premature_stop-38"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 463,
+      "error": null,
+      "family": "repeated_calls",
+      "finish_reason": "stop",
+      "gold_action": "STOP",
+      "latency_s": 7.234,
+      "parsed": false,
+      "predicted_action": "",
+      "raw_snippet": "{\n  \"atoms\": [\n    {\n      \"atom_id\": \"a1\",\n      \"atom_type\": \"diagnosis_statement\",\n      \"assertion_state\": \"asserted\",\n      \"certainty\": \"stated\",\n      \"evidence_quote\": \"Patient presents with a",
+      "scores": {},
+      "task_id": "agent-repeated_calls-42"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 26,
+      "error": null,
+      "family": "state_update_recovery",
+      "finish_reason": "stop",
+      "gold_action": "RECOVERY",
+      "latency_s": 0.288,
+      "parsed": true,
+      "predicted_action": "RECOVERY",
+      "raw_snippet": "RECOVERY",
+      "scores": {
+        "outcome": 1.0,
+        "recovery": 1.0
+      },
+      "task_id": "agent-state_update_recovery-46"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 39,
+      "error": null,
+      "family": "tool_needed",
+      "finish_reason": "stop",
+      "gold_action": "QUERY",
+      "latency_s": 0.348,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0
+      },
+      "task_id": "agent-tool_needed-03"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 253,
+      "error": null,
+      "family": "tool_not_needed",
+      "finish_reason": "stop",
+      "gold_action": "TOOL_NONE",
+      "latency_s": 6.146,
+      "parsed": false,
+      "predicted_action": "",
+      "raw_snippet": "{\n  \"atoms\": [\n    {\n      \"atom_id\": \"a1\",\n      \"atom_type\": \"symptom\",\n      \"assertion_state\": \"asserted\",\n      \"certainty\": \"stated\",\n      \"evidence_quote\": \"Patient reports chest pain lasting ",
+      "scores": {},
+      "task_id": "agent-tool_not_needed-07"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 33,
+      "error": null,
+      "family": "similar_tools",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.317,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-similar_tools-11"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 42,
+      "error": null,
+      "family": "invalid_tool_args",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 0.442,
+      "parsed": true,
+      "predicted_action": "ABSTAIN",
+      "raw_snippet": "ABSTAIN",
+      "scores": {
+        "abstention": 1.0,
+        "arg_validity": 1.0,
+        "outcome": 1.0
+      },
+      "task_id": "agent-invalid_tool_args-15"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 33,
+      "error": null,
+      "family": "timeout_error",
+      "finish_reason": "stop",
+      "gold_action": "RECOVERY",
+      "latency_s": 5.019,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "outcome": 0.0,
+        "recovery": 0.0
+      },
+      "task_id": "agent-timeout_error-19"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 58,
+      "error": null,
+      "family": "ambiguous_result",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.442,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-ambiguous_result-23"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 21,
+      "error": null,
+      "family": "multi_tool",
+      "finish_reason": "stop",
+      "gold_action": "ACT",
+      "latency_s": 4.924,
+      "parsed": true,
+      "predicted_action": "ACT",
+      "raw_snippet": "ACT",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0
+      },
+      "task_id": "agent-multi_tool-27"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 36,
+      "error": null,
+      "family": "verify_needed",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.34,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-verify_needed-31"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 43,
+      "error": null,
+      "family": "insufficient_info",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 5.143,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "abstention": 0.0,
+        "outcome": 0.0
+      },
+      "task_id": "agent-insufficient_info-35"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 21,
+      "error": null,
+      "family": "premature_stop",
+      "finish_reason": "stop",
+      "gold_action": "QUERY",
+      "latency_s": 0.249,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "outcome": 1.0,
+        "stop_accuracy": 1.0
+      },
+      "task_id": "agent-premature_stop-39"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 41,
+      "error": null,
+      "family": "repeated_calls",
+      "finish_reason": "stop",
+      "gold_action": "STOP",
+      "latency_s": 5.21,
+      "parsed": true,
+      "predicted_action": "STOP",
+      "raw_snippet": "STOP",
+      "scores": {
+        "outcome": 1.0,
+        "stop_accuracy": 1.0,
+        "verifier_invocation": 0.0
+      },
+      "task_id": "agent-repeated_calls-43"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 27,
+      "error": null,
+      "family": "state_update_recovery",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.286,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "recovery": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-state_update_recovery-47"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 34,
+      "error": null,
+      "family": "tool_needed",
+      "finish_reason": "stop",
+      "gold_action": "READ",
+      "latency_s": 5.15,
+      "parsed": true,
+      "predicted_action": "READ",
+      "raw_snippet": "READ",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0
+      },
+      "task_id": "agent-tool_needed-04"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 46,
+      "error": null,
+      "family": "tool_not_needed",
+      "finish_reason": "stop",
+      "gold_action": "TOOL_NONE",
+      "latency_s": 0.38,
+      "parsed": true,
+      "predicted_action": "TOOL_NONE",
+      "raw_snippet": "TOOL_NONE",
+      "scores": {
+        "outcome": 1.0,
+        "unnecessary_call_rate": 0.0
+      },
+      "task_id": "agent-tool_not_needed-08"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 45,
+      "error": null,
+      "family": "similar_tools",
+      "finish_reason": "stop",
+      "gold_action": "ACT",
+      "latency_s": 5.142,
+      "parsed": true,
+      "predicted_action": "QUERY",
+      "raw_snippet": "QUERY",
+      "scores": {
+        "outcome": 0.0,
+        "tool_selection": 0.0
+      },
+      "task_id": "agent-similar_tools-12"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 36,
+      "error": null,
+      "family": "invalid_tool_args",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 0.342,
+      "parsed": true,
+      "predicted_action": "ABSTAIN",
+      "raw_snippet": "ABSTAIN",
+      "scores": {
+        "abstention": 1.0,
+        "arg_validity": 1.0,
+        "outcome": 1.0
+      },
+      "task_id": "agent-invalid_tool_args-16"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 22,
+      "error": null,
+      "family": "timeout_error",
+      "finish_reason": "stop",
+      "gold_action": "RECOVERY",
+      "latency_s": 5.157,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 0.0,
+        "recovery": 0.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-timeout_error-20"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 33,
+      "error": null,
+      "family": "ambiguous_result",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.319,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-ambiguous_result-24"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 27,
+      "error": null,
+      "family": "multi_tool",
+      "finish_reason": "stop",
+      "gold_action": "STOP",
+      "latency_s": 5.082,
+      "parsed": true,
+      "predicted_action": "STOP",
+      "raw_snippet": "STOP",
+      "scores": {
+        "outcome": 1.0,
+        "tool_selection": 1.0,
+        "verifier_invocation": 0.0
+      },
+      "task_id": "agent-multi_tool-28"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 25,
+      "error": null,
+      "family": "verify_needed",
+      "finish_reason": "stop",
+      "gold_action": "VERIFY",
+      "latency_s": 0.328,
+      "parsed": true,
+      "predicted_action": "VERIFY",
+      "raw_snippet": "VERIFY",
+      "scores": {
+        "outcome": 1.0,
+        "verifier_invocation": 1.0
+      },
+      "task_id": "agent-verify_needed-32"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 23,
+      "error": null,
+      "family": "insufficient_info",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 5.043,
+      "parsed": true,
+      "predicted_action": "ABSTAIN",
+      "raw_snippet": "ABSTAIN",
+      "scores": {
+        "abstention": 1.0,
+        "outcome": 1.0
+      },
+      "task_id": "agent-insufficient_info-36"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 18,
+      "error": null,
+      "family": "premature_stop",
+      "finish_reason": "stop",
+      "gold_action": "ABSTAIN",
+      "latency_s": 0.249,
+      "parsed": true,
+      "predicted_action": "ABSTAIN",
+      "raw_snippet": "ABSTAIN",
+      "scores": {
+        "abstention": 1.0,
+        "outcome": 1.0,
+        "stop_accuracy": 1.0
+      },
+      "task_id": "agent-premature_stop-40"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 30,
+      "error": null,
+      "family": "repeated_calls",
+      "finish_reason": "stop",
+      "gold_action": "STOP",
+      "latency_s": 5.197,
+      "parsed": true,
+      "predicted_action": "STOP",
+      "raw_snippet": "STOP",
+      "scores": {
+        "outcome": 1.0,
+        "stop_accuracy": 1.0
+      },
+      "task_id": "agent-repeated_calls-44"
+    },
+    {
+      "action_source": "content",
+      "completion_tokens": 41,
+      "error": null,
+      "family": "state_update_recovery",
+      "finish_reason": "stop",
+      "gold_action": "RECOVERY",
+      "latency_s": 0.407,
+      "parsed": true,
+      "predicted_action": "TOOL_NONE",
+      "raw_snippet": "TOOL_NONE",
+      "scores": {
+        "outcome": 0.0,
+        "recovery": 0.0
+      },
+      "task_id": "agent-state_update_recovery-48"
+    }
+  ],
+  "schema": "nano.campaign.agent_canary_results.v1",
+  "spend_usd_est": 0.0,
+  "summary": {
+    "n_errors": 0,
+    "n_parsed": 43,
+    "n_tasks": 48,
+    "n_unparsed": 5,
+    "outcome_mean": 0.7209,
+    "outcome_n": 43,
+    "parse_rate": 0.8958,
+    "per_capability": {
+      "abstention": {
+        "mean": 0.625,
+        "n": 8
+      },
+      "arg_validity": {
+        "mean": 0.75,
+        "n": 4
+      },
+      "cost": {
+        "mean": null,
+        "n": 0
+      },
+      "observation_use": {
+        "mean": null,
+        "n": 0
+      },
+      "outcome": {
+        "mean": 0.7209,
+        "n": 43
+      },
+      "recovery": {
+        "mean": 0.2857,
+        "n": 7
+      },
+      "state_fidelity": {
+        "mean": null,
+        "n": 0
+      },
+      "steps_to_resolution": {
+        "mean": null,
+        "n": 0
+      },
+      "stop_accuracy": {
+        "mean": 0.8571,
+        "n": 7
+      },
+      "tool_selection": {
+        "mean": 0.6667,
+        "n": 12
+      },
+      "unnecessary_call_rate": {
+        "mean": 0.0,
+        "n": 3
+      },
+      "verifier_invocation": {
+        "mean": 0.8571,
+        "n": 14
+      }
+    },
+    "per_family_outcome": {
+      "ambiguous_result": {
+        "mean": 1.0,
+        "n": 3
+      },
+      "insufficient_info": {
+        "mean": 0.3333,
+        "n": 3
+      },
+      "invalid_tool_args": {
+        "mean": 0.75,
+        "n": 4
+      },
+      "multi_tool": {
+        "mean": 1.0,
+        "n": 4
+      },
+      "premature_stop": {
+        "mean": 1.0,
+        "n": 4
+      },
+      "repeated_calls": {
+        "mean": 0.6667,
+        "n": 3
+      },
+      "similar_tools": {
+        "mean": 0.5,
+        "n": 4
+      },
+      "state_update_recovery": {
+        "mean": 0.6667,
+        "n": 3
+      },
+      "timeout_error": {
+        "mean": 0.25,
+        "n": 4
+      },
+      "tool_needed": {
+        "mean": 0.5,
+        "n": 4
+      },
+      "tool_not_needed": {
+        "mean": 1.0,
+        "n": 3
+      },
+      "verify_needed": {
+        "mean": 1.0,
+        "n": 4
+      }
+    },
+    "unparsed_finish_reasons": {
+      "stop": 5
+    }
+  },
+  "teacher_id": "gpt_oss_120b",
+  "timestamp": "2026-08-23T19:09:32.077274+00:00",
+  "total_latency_s": 263.046,
+  "winners_by_family_task": {
+    "ambiguous_result": "agent-ambiguous_result-21",
+    "insufficient_info": "agent-insufficient_info-36",
+    "invalid_tool_args": "agent-invalid_tool_args-13",
+    "multi_tool": "agent-multi_tool-25",
+    "premature_stop": "agent-premature_stop-37",
+    "repeated_calls": "agent-repeated_calls-43",
+    "similar_tools": "agent-similar_tools-10",
+    "state_update_recovery": "agent-state_update_recovery-46",
+    "timeout_error": "agent-timeout_error-18",
+    "tool_needed": "agent-tool_needed-03",
+    "tool_not_needed": "agent-tool_not_needed-05",
+    "verify_needed": "agent-verify_needed-29"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "p1_qwen38_vllm_serverless_ephemeral_v1",
+  "git_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+  "dataset_revision": "n/a-inference",
+  "command": "runpodctl serverless create --hub-id vllm --workers-min 0",
+  "surface": "hub_serverless",
+  "gpu_or_model": "ADA_48_PRO / Qwen/Qwen3-8B canary",
+  "hub_stable_locator": "runpod-workers/worker-vllm",
+  "hub_listing_id": "cm8h09d9n000008jvh2rqdsmb",
+  "resolved_at": "2026-08-23T04:45:19.755800+00:00",
+  "max_runtime_min": 20,
+  "max_cost_usd": 5.0,
+  "artifact_dest": "artifacts/campaign/checkpoint_v1.json",
+  "termination_condition": "batch complete then delete endpoint",
+  "endpoint_id": "vllm-r8abq9b4w5p5wl"
+}

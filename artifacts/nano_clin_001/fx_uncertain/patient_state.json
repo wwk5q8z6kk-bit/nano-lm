@@ -1,0 +1,19 @@
+{
+  "patient_id": "synth-003",
+  "evidence_ledger_version": 2,
+  "ledger_hash": "5bcbd238efd9dde4",
+  "active_conditions": [],
+  "current_medications": [],
+  "laboratory_state": [],
+  "functional_state": [],
+  "uncertainties": [
+    "I stopped the metoprolol a while back, maybe around 2021."
+  ],
+  "conflicts": [],
+  "unresolved_questions": [
+    "I do not see a colonoscopy in your record.",
+    "You had no adverse reaction documented to penicillin."
+  ],
+  "projection_version": "nano-clin-001",
+  "snapshot_id": "state_c0ea0de5d17f93b8"
+}

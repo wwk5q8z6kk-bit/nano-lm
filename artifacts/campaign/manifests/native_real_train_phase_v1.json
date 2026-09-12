@@ -1,0 +1,80 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "native_real_train_phase_v1",
+  "status": "STUB_PREP_ONLY",
+  "launch_authorized": false,
+  "launch_note": "NOT launch — manifest prep only. Distinct from 96-row architecture screens.",
+  "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
+  "parent_screening": {
+    "native_round1": "artifacts/campaign/native_round1_summary.json",
+    "native_round2": "artifacts/campaign/native_round2_summary.json",
+    "native_extended": "artifacts/campaign/native_extended_summary.json"
+  },
+  "model": {
+    "architecture": "evidence_bottleneck",
+    "variant": "native_b_evidence_aware",
+    "params_m": 100,
+    "init": "fresh_random_or_checkpoint",
+    "checkpoint_seed": "native100_evidence_bottleneck_s1"
+  },
+  "dataset": {
+    "revision": "TBD_expanded_disjoint_corpus_v1",
+    "note": "MUST be disjoint from p1_screening_eval_v1; NOT the 96-row p1_distill_train_v1 screen",
+    "current_screen_corpus": "p1_distill_train_v1 (96 rows, ~13k tokens/epoch)",
+    "screen_tokens_consumed": "~4.5M in extended 200-step run"
+  },
+  "training_plan": {
+    "phase": "distill-scale_fit_not_pretrain",
+    "token_budget_target": {
+      "min_tokens": 10000000,
+      "max_tokens": 100000000,
+      "note": "10M-100M tokens per gpu_training_topology_v1 minimum viable native wave"
+    },
+    "batch_size": 16,
+    "early_stopping": "best checkpoint by held-out eval, not final step",
+    "held_out_eval": "p1_screening_eval_v1 (frozen forever, disjoint)"
+  },
+  "compute": {
+    "surface": "pod_template",
+    "template": "runpod-torch-v240",
+    "gpu": "NVIDIA A100 80GB PCIe",
+    "gpu_alternate": "NVIDIA A100-SXM4-80GB",
+    "datacenter": "US-KS-2",
+    "datacenter_alternate": "CA-MTL-3",
+    "gpus_min": 1,
+    "gpus_ideal": 1,
+    "network_volume_id": "04himzqxbm",
+    "volume_mount_path": "/workspace",
+    "container_disk_gb": 40,
+    "checkpoint_pull": "direct_tcp_scp via scripts/pull_native_weights.py",
+    "rate_usd_hr_est": 1.39
+  },
+  "cost_estimate_usd": {
+    "source": "artifacts/campaign/gpu_training_topology_v1.json",
+    "wall_clock_hr_est": "8-24",
+    "minimum_viable": {
+      "low": 12,
+      "high": 35
+    },
+    "ideal_pretrain_pilot_1b_tokens": {
+      "low": 40,
+      "high": 120,
+      "note": "exceeds current wallet without phased waves or top-up"
+    }
+  },
+  "pass_criteria": [
+    "held-out p1_screening_eval_v1 improvement over random-init control",
+    "checkpoint on network volume before pod terminate",
+    "weights pulled locally and torch.load verified",
+    "seed variance measured across >=2 independent seeds"
+  ],
+  "blocked_by": [
+    "expanded_disjoint_training_corpus not yet defined",
+    "native100 held-out transport verdict BLOCKED_ZERO_HELDOUT_TRANSPORT",
+    "owner decision on corpus strategy"
+  ],
+  "command_stub": "scripts/launch_native100_extended.sh (adapt for expanded corpus + volume mount)",
+  "max_cost_usd": 35,
+  "max_runtime_hr": 24,
+  "termination_condition": "token budget reached OR early-stop gate OR max_cost exceeded"
+}

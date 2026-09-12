@@ -1,0 +1,50 @@
+{
+  "artifact_id": "art_6387e0f7ca5b8c54",
+  "claim_results": [
+    {
+      "text": "Documented: Your notes say diabetes was diagnosed in 2016.",
+      "evidence_span_ids": [
+        "ev_4bad80bc3a53733b"
+      ],
+      "epistemic_status": "direct_documentation",
+      "supported": true
+    },
+    {
+      "text": "Patient denies: I think it was 2019, but I am not certain.",
+      "evidence_span_ids": [
+        "ev_56f381885ac1d4e4"
+      ],
+      "epistemic_status": "patient_reported",
+      "supported": true
+    },
+    {
+      "text": "Measured: Your HbA1c today is 8.2 percent.",
+      "evidence_span_ids": [
+        "ev_7623610806649519"
+      ],
+      "epistemic_status": "direct_measurement",
+      "supported": true
+    },
+    {
+      "text": "Measured: The previous HbA1c was 7.4 percent.",
+      "evidence_span_ids": [
+        "ev_427f533bd02c716c"
+      ],
+      "epistemic_status": "direct_measurement",
+      "supported": true
+    },
+    {
+      "text": "CONFLICT (unresolved): date_disagreement across 3 sources",
+      "evidence_span_ids": [
+        "asrt_54f12f39d60eadee",
+        "prior_chart:2018-05-02 note: No hist",
+        "prior_chart:2020-11-14 note: Type 2 "
+      ],
+      "epistemic_status": "conflicting",
+      "supported": true
+    }
+  ],
+  "coverage_status": "complete",
+  "verifier_version": "nano-clin-001",
+  "receipt_id": "vrfy_8868795563e3e519"
+}

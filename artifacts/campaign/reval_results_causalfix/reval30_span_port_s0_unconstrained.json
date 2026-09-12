@@ -1,0 +1,5265 @@
+{
+  "schema": "nano.native.p1_eval.v1",
+  "run_id": "reval30_span_port_s0",
+  "suite": "p1_screening_eval_v1",
+  "checkpoint": "artifacts/native_checkpoints_causalfix/reval30_span_port_s0/latest.pt",
+  "n_cases": 128,
+  "decoding_mode": "free_generation",
+  "span_metrics_are_tautological": false,
+  "suite_metrics": {
+    "n_cases": 128,
+    "exact_gold_span_count": 0,
+    "exact_gold_span_eligible": 0,
+    "exact_gold_span_rate": 0.0,
+    "assertion_state_correct_count": 0,
+    "assertion_state_correct_eligible": 0,
+    "assertion_state_correct_rate": 0.0,
+    "support_direct_exact_count": 0,
+    "support_direct_exact_eligible": 0,
+    "support_direct_exact_rate": 0.0,
+    "correct_abstention_count": 0,
+    "correct_abstention_eligible": 150,
+    "correct_abstention_rate": 0.0,
+    "coverage_count": 0,
+    "coverage_eligible": 150,
+    "coverage_rate": 0.0,
+    "span_character_f1_mean": 0.0,
+    "malformed": 150
+  },
+  "cases": [
+    {
+      "encounter_id": "core-sym-00",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-00": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-00": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-01",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-01": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-01": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-02",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-02": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-02": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-03",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-03": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-03": "D::::::::essssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-04",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-04": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-04": "D::::essssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-05",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-05": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-05": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-06",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-06": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-06": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-07",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-07": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-07": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-08",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-08": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-08": "DENIEN: numbnessssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-09",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-09": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-09": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-10",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-10": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-10": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-11",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-11": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-11": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-12",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-12": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-12": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-13",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-13": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-13": "D::::::::essssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-14",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-14": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-14": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-15",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-15": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-15": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-16",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-16": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-16": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-17",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-17": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-17": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-18",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-18": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-18": "DENIEN: numbnessssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-19",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-19": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-19": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-20",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-20": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-20": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-21",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-21": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-21": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-22",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-22": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-22": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-23",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-23": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-23": "D::::::::essssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-24",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-24": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-24": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-25",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-25": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-25": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-26",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-26": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-26": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-27",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-27": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-27": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-28",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-28": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-28": "DENIEN: numbnessssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-29",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-29": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-29": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-30",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-30": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-30": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-31",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-31": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-31": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-32",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-32": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-32": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-33",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-33": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-33": "D::::::::essssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-34",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-34": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-34": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-35",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-35": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-35": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-36",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-36": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-36": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-37",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-37": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-37": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-38",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-38": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-38": "DENIEN: numbnessssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-39",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-39": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-39": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-40",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-40": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-40": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-41",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-41": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-41": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-42",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-42": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-42": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-43",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-43": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-43": "D::::::::essssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-44",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-44": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-44": "D::::essssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-45",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-45": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-45": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-46",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-46": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-46": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-47",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-47": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-47": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-48",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-48": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-48": "DENIEN: numbnessssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-49",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-49": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-49": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-50",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-50": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-50": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-51",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-51": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-51": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-52",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-52": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-52": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-53",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-53": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-53": "D::::::::essssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-54",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-54": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-54": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-55",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-55": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-55": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-56",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-56": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-56": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-57",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-57": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-57": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-58",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-58": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-58": "DENIEN: numbnessssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-med-59",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-med-59": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-med-59": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-sym-60",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-sym-60": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-sym-60": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-deny-61",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-deny-61": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-deny-61": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-unc-62",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-unc-62": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-unc-62": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "core-assess-63",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-core-assess-63": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-core-assess-63": "D::::::::essssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-00",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-00": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-00": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-00": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-00": "D::::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-01",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-01": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-01": "D::::::::::essssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-02",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-02": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-02": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-03",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-03": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-03": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-03": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-03": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-04",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-04": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-04": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-05",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-05": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-05": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-06",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-06": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-06": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-06": "D::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-06": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-07",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-07": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-07": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-08",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-08": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-08": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-09",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-09": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-09": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-09": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-09": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-10",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-10": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-10": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-11",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-11": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-11": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-12",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-12": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-12": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-12": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-12": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-13",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-13": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-13": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-14",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-14": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-14": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-15",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-15": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-15": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-15": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-15": "D: sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-16",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-16": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-16": "D::::::::::essssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-17",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-17": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-17": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-18",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-18": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-18": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-18": "D::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-18": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-19",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-19": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-19": "D::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-20",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-20": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-20": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-21",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-21": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-21": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-21": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-21": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-22",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-22": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-22": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-23",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-23": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-23": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-24",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-24": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-24": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-24": "D: sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-24": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-25",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-25": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-25": "D:::::::::: ssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-26",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-26": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-26": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-27",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-27": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-27": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-27": "D: sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-27": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-28",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-28": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-28": "DD::esssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-29",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-29": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-29": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-30",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-30": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-30": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-30": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-30": "D::::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-31",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-31": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-31": "D::: sssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-32",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-32": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-32": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-33",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-33": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-33": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-33": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-33": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-34",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-34": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-34": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-35",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-35": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-35": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-36",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-36": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-36": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-36": "D::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-36": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-37",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-37": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-37": "D:::::::::esssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-38",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-38": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-38": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-39",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-39": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-39": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-39": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-39": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-40",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-40": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-40": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-41",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-41": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-41": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-42",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-42": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-42": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-42": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-42": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-43",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-43": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-43": "D::::::::::essssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-44",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-44": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-44": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-45",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-45": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-45": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-45": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-45": "D: sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-46",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-46": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-46": "D::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-47",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-47": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-47": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-48",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-48": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-48": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-48": "D::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-48": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-49",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-49": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-49": "D::::::::::essssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-50",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-50": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-50": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-51",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-51": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-51": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-51": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-51": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-52",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-52": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-52": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-53",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-53": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-53": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-54",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-54": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-54": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-54": "D: sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-54": "D: tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-55",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-55": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-55": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-56",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-56": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-56": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-57",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-57": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-57": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-57": "D: sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-57": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-58",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-58": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-58": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-59",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-59": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-59": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-60",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-60": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-60": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-60": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-60": "D::::::: sssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-dup-61",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-dup-61": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-dup-61": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-abs-62",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-adv-abs-62": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-adv-abs-62": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    },
+    {
+      "encounter_id": "adv-fh-63",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh-adv-fh-63": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-sym-adv-fh-63": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh-adv-fh-63": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+        "atom-sym-adv-fh-63": "D:esssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+      }
+    }
+  ]
+}

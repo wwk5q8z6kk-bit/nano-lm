@@ -1,0 +1,92 @@
+{
+  "schema": "nano.campaign.fleet_incident.v1",
+  "timestamp": "2026-08-23T21:25:00+00:00",
+  "incident_id": "IDLE_BURN_TERMINATED_20260823",
+  "status": "RESOLVED_FLEET_ZERO",
+  "wallet_usd_at_close": 143.0406312355,
+  "current_spend_per_hr": 0.004,
+  "pods_terminated": [
+    {
+      "pod_id": "45zauz5xh1591w",
+      "name": "native30-reval-202608231638",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "rate_per_hr": 1.39,
+      "lane": "native30_revalidation_wave1",
+      "started_at": "2026-08-23T20:39:49.686812+00:00",
+      "committed_usd": 2.085,
+      "last_known_state": "attempt 3 of wave1; earlier GPU 96% during reval30_decoder_control_s1; owner screenshot showed 0% util / idle before terminate",
+      "corpus": "native_corpus_screen_v1_train (screen corpus — NOT unit fixture); launched AFTER corpus hash gate on attempt 3",
+      "note": "Attempts 1-2 aborted (torch clobber, unit-fixture guard). Attempt 3 passed CORPUS_OK but may have idled between 9-run loop or after orchestrator disconnect."
+    },
+    {
+      "pod_id": "b2k1blbxs17w17",
+      "spend_record_id": "b2klblbxsl7wl7",
+      "name": "native30-reval-202608231728",
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "rate_per_hr": 1.4,
+      "lane": "native30_revalidation_wave1",
+      "commit_sha": "9a2d388",
+      "started_at": "2026-08-23T21:29:32+00:00",
+      "last_known_state": "owner ~96% GPU; runpodctl 404 at 21:35Z; NATIVE30_REVALIDATION_DONE not verified; no summary pulled",
+      "corpus": "native_corpus_screen_v1_train",
+      "note": "Attempt 4 — outcome unknown; pod absent from API before artifact pull"
+    },
+    {
+      "pod_id": "46zuwen2qobvlj",
+      "name": "qlora-canary-08232032",
+      "gpu": "NVIDIA A100-SXM4-80GB",
+      "rate_per_hr": 1.59,
+      "lane": "student_qlora_attempt_6",
+      "started_at": "2026-08-23T20:32:59.746117+00:00",
+      "committed_usd": 2.0,
+      "last_known_state": "orchestrator bootstrap never uploaded train script (~17 min 0% GPU); manual salvage TRAIN_DONE step 50 loss=0.0174; adapter on pod never SCP-pulled before terminate",
+      "last_log_lines": [
+        "ADAPTER_SAVED",
+        "ADAPTER_PATH /workspace/qlora_canary_adapter",
+        "TRAIN_DONE",
+        "{\"final_loss\": 0.0174, \"step_1_loss\": 3.6747, \"loss_decreased\": true}"
+      ],
+      "adapter_bytes_local": 0,
+      "campaign_verdict": "TRAIN_PASS_ARTIFACT_FAIL"
+    }
+  ],
+  "related_aborted_pods": [
+    {
+      "pod_id": "9cg7kfpe4vlgzi",
+      "reason": "pip install clobbered template torch with cu130 wheel; CUDA unusable"
+    },
+    {
+      "pod_id": "a46aeq9gdrq0g4",
+      "reason": "train_native_nano.py defaulted to unit fixture; corpus launch guard correctly refused"
+    }
+  ],
+  "est_burn": {
+    "combined_idle_rate_per_hr": 2.98,
+    "session_wallet_delta_usd_est": 2.0,
+    "ledger_committed_this_incident_usd": 8.255,
+    "ledger_total_exposure_usd": 44.6523,
+    "ledger_campaign_spend_actual_usd": 5.1568,
+    "note": "committed slots include stale entries from prior deleted pods; wallet delta is the physical spend signal"
+  },
+  "root_causes": [
+    "QLoRA orchestrator (student_qlora_pod_canary.py) passed CUDA gate but bootstrap/SCP never populated /workspace — pod billed at 0% GPU for ~17 min before manual intervention",
+    "LossLogger missing TrainerCallback.on_init_end caused first train crash (AttributeError); fixed locally but orchestrator had already given up polling",
+    "Adapter pull attempted after pod SSH endpoint expired — TRAIN_DONE on pod but 0 adapter bytes local",
+    "Native30 wave1 launched 3 pods in one session; attempts 1-2 wasted on infra/guard failures before screen corpus run",
+    "No idle-GPU watchdog: nothing auto-terminates when util=0% for >5 min",
+    "Checkpoint claimed pods=0 while two pods were still billing"
+  ],
+  "recommendations": [
+    "NO paid GPU until (a) screen corpus built and validated locally, (b) QLoRA canary passes CPU mock or single-pod health gate",
+    "Add post-bootstrap verify: /workspace/nano-lm/scripts exists + TRAIN_PID within 120s or terminate",
+    "Add idle burn guard: terminate if nvidia-smi util <5% for 5 consecutive minutes after bootstrap window",
+    "Pull adapter before any terminate; block pod delete in orchestrator until artifact verified or explicit FAIL",
+    "Do not launch native30 revalidation until native_data_gate OPEN and manifest committed",
+    "Reconcile spend ledger committed entries when pods terminate"
+  ],
+  "artifacts": {
+    "qlora_log": "artifacts/campaign/student_qlora_canary_last.log",
+    "spend": "artifacts/campaign/spend.json",
+    "checkpoint": "artifacts/campaign/checkpoint_v5.json"
+  }
+}

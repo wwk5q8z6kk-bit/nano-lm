@@ -1,0 +1,2 @@
+health_gate pod=zo1lq44stf9pqm max_wait=300s threshold=5%
+pod gone

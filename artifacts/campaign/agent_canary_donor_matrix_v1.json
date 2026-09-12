@@ -1,0 +1,183 @@
+{
+  "schema": "nano.campaign.donor_matrix_v1",
+  "timestamp": "2026-08-23T15:48:11.161912+00:00",
+  "experiment_id": "nano_agent_canary_v1_donor_matrix",
+  "cost_usd": 0.0,
+  "suite": "p1_agent_canary_v1",
+  "n_tasks": 48,
+  "tasks_per_family": 4,
+  "teachers": [
+    {
+      "id": "gpt_oss_120b",
+      "model": "openai/gpt-oss-120b",
+      "surface": "runpod managed public endpoint",
+      "spend_usd": 0.0,
+      "parse_rate": 1.0,
+      "outcome_mean": 0.5
+    },
+    {
+      "id": "qwen3_32b_awq",
+      "model": "Qwen/Qwen3-32B-AWQ",
+      "surface": "runpod managed public endpoint",
+      "spend_usd": 0.0,
+      "parse_rate": 1.0,
+      "outcome_mean": 0.4375,
+      "total_latency_s": 40,
+      "role": "generic Qwen control for briefing SS LXII Q13"
+    }
+  ],
+  "headline": "Two donors benchmarked at $0 with a valid scoreboard. No capability has a statistically established winner (n=4-15/axis; ~63 needed). The earlier 'no viable long-horizon donor' finding is RETRACTED \u2014 it was a task-design defect, and after correction both teachers score 1.0 on multi_tool and premature_stop.",
+  "per_capability": {
+    "note": "apparent leads shown for completeness; none are significant at 95% (Wilson, n=4-15)",
+    "gpt_oss_leads_on": {
+      "abstention": [
+        0.7778,
+        0.4444
+      ],
+      "arg_validity": [
+        0.75,
+        0.25
+      ],
+      "unnecessary_call_rate_lower_better": [
+        0.25,
+        0.75
+      ],
+      "outcome": [
+        0.5,
+        0.4375
+      ]
+    },
+    "qwen3_32b_leads_on": {
+      "recovery": [
+        0.25,
+        0.5
+      ],
+      "stop_accuracy": [
+        0.375,
+        0.5
+      ],
+      "tool_selection": [
+        0.4167,
+        0.5
+      ]
+    },
+    "tied": {
+      "verifier_invocation": [
+        0.5333,
+        0.5333
+      ]
+    },
+    "established_winners": 0
+  },
+  "robust_finding": {
+    "claim": "neither available teacher is a viable long-horizon donor",
+    "families": [
+      "multi_tool",
+      "premature_stop",
+      "repeated_calls"
+    ],
+    "evidence": "each 0/4 per teacher, 0/8 combined across two independent models; 95% CI [0, 0.3244]",
+    "reading": "Both a 120B structured-output model and a 32B generic Qwen score zero on multi-step tool sequencing, premature-stop traps and repeated-call traps. This is exactly the capability bundle the briefing SS XIX hypothesis assigns to Qwen3-Coder-Next and MiniMax-M2.1, and it gives the paid probe a sharp pre-registered question rather than an open-ended comparison.",
+    "caveat": "n=4 per family per teacher; the CI bounds the ceiling at ~32%, it does not pin the value"
+  },
+  "power_analysis": {
+    "method": "two-proportion, alpha=0.05, power=0.80, around p=0.5",
+    "tasks_per_axis_per_teacher": {
+      "detect_0.40": 25,
+      "detect_0.30": 44,
+      "detect_0.25": 63,
+      "detect_0.20": 99,
+      "detect_0.10": 392
+    },
+    "current": "4 per family, 4-15 per capability axis",
+    "implication": "To rank donors per capability at a moderate-large effect (0.25) the suite needs ~63 tasks per capability axis per teacher, not 4. Briefing SS XXI sizes the canary at 32-64 tasks, which is right for a smoke/plumbing canary but cannot support the SS XX donor matrix. These are two different instruments and should be separated."
+  },
+  "recommendation": {
+    "before_paid_probes": [
+      "Expand the canary to a powered suite (~63 tasks per capability axis) OR restrict claims to the loop-until-dry style 'is this teacher above/below a floor' question the current n can support",
+      "Keep the 48-task suite as the cheap plumbing canary; add a separate powered donor-ranking suite"
+    ],
+    "paid_probe_hypothesis": "Pre-registered: does Qwen3-Coder-Next-FP8 (or MiniMax-M2.1) score above the ~32% ceiling that gpt-oss-120b and Qwen3-32B-AWQ share on multi_tool / premature_stop / repeated_calls? That is a single, powered-enough, falsifiable question and answers SS LXII Q13.",
+    "cost_note": "both teachers so far cost $0 via RunPod managed public endpoints; only Coder-Next/GLM/MiniMax require paid self-hosting"
+  },
+  "briefing_answers": {
+    "Q12_which_donor_wins_which_capability": "NONE ESTABLISHED at current power",
+    "Q13_coder_next_vs_generic_qwen": "generic-Qwen baseline now measured (0.4375 outcome, 0/4 on all three long-horizon families); Coder-Next side still pending a paid probe"
+  },
+  "RETRACTION": {
+    "retracted_claim": "neither available teacher is a viable long-horizon donor",
+    "status": "WITHDRAWN \u2014 this was a task-design artifact, not a capability finding",
+    "how_it_was_caught": "Both teachers produced IDENTICAL predictions on all 12 long-horizon tasks while their baseline inter-model agreement across all families was only 0.667. Two independent models (120B MoE and 32B dense) converging on the same answer where the gold disagrees indicates a label defect, not a shared blind spot.",
+    "root_cause": "v1 prompts named a TRAJECTORY ('read then verify span', 'duplicate search') while the harness asks for a single next action with no execution state. The gold action presumed hidden state (a search already happened, evidence already gathered) that was never shown to the model. Answering READ to 'read then verify span' is correct for the prompt as given.",
+    "fix": "data/p1_agent_canary_v1.json revision p1_agent_canary_v1.1 \u2014 all 12 prompts now state the execution state",
+    "result_after_fix": {
+      "multi_tool": {
+        "before": {
+          "gpt_oss": 0.0,
+          "qwen3_32b": 0.0
+        },
+        "after": {
+          "gpt_oss": 1.0,
+          "qwen3_32b": 1.0
+        }
+      },
+      "premature_stop": {
+        "before": {
+          "gpt_oss": 0.0,
+          "qwen3_32b": 0.0
+        },
+        "after": {
+          "gpt_oss": 1.0,
+          "qwen3_32b": 1.0
+        }
+      },
+      "repeated_calls": {
+        "before": {
+          "gpt_oss": 0.0,
+          "qwen3_32b": 0.0
+        },
+        "after": {
+          "gpt_oss": 0.25,
+          "qwen3_32b": 0.0
+        }
+      },
+      "outcome_mean": {
+        "gpt_oss": {
+          "before": 0.5,
+          "after": 0.6875
+        },
+        "qwen3_32b": {
+          "before": 0.4375,
+          "after": 0.6042
+        }
+      }
+    },
+    "corrected_reading": "Both teachers handle multi-step sequencing and premature-stop traps perfectly once the state is stated. There is NO evidence of a long-horizon capability deficit in either model, and the pre-registered hypothesis for a paid Qwen3-Coder-Next probe ('does it clear the ~32% ceiling?') is void \u2014 there is no ceiling to clear."
+  },
+  "repeated_calls_residual": {
+    "status": "NOT A CLEAN CAPABILITY SIGNAL",
+    "gpt_oss": [
+      "TOOL_NONE",
+      "{",
+      "TOOL_NONE",
+      "STOP"
+    ],
+    "qwen3_32b": [
+      "ABSTAIN",
+      "READ",
+      "ABSTAIN",
+      "ABSTAIN"
+    ],
+    "gold": "STOP",
+    "issue": "The teachers now DISAGREE (unlike v1), so the task is answerable, but they answer TOOL_NONE and ABSTAIN where gold is STOP. In a stateless single-action harness TOOL_NONE ('do not call a tool'), ABSTAIN and STOP are near-synonyms; the scorer treats them as distinct. This is label granularity, not demonstrated incapability. Decide whether these three actions are separable in a single-action harness before scoring them apart.",
+    "scorer_artifact": "gpt-oss emitted JSON on task 42 and _parse_action's `first.split()[0]` fallback returned '{' \u2014 that should be recorded as unparsed rather than scored as a wrong action."
+  },
+  "axis_independence_caveat": {
+    "axis": "unnecessary_call_rate",
+    "issue": "_score_task sets unnecessary_call_rate only on TaskFamily.TOOL_NOT_NEEDED, where gold is TOOL_NONE. On that family it is the same underlying event as `outcome`, inverted \u2014 so the axis is currently a restatement of tool_not_needed outcome, not an independent signal.",
+    "evidence": "gpt-oss tool_not_needed outcome 0.75 / unnecessary_call_rate 0.25; qwen3 0.0 / 0.75",
+    "impact": "double-counts one measurement across two axes and inflates apparent per-capability differentiation",
+    "action": "treat as dependent until the suite is powered and the axis has its own tasks"
+  },
+  "paid_probe_status": "DEFERRED \u2014 pre-registered hypothesis void; no measured deficit for Coder-Next to beat"
+}

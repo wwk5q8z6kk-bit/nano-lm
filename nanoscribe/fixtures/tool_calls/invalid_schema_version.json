@@ -1,0 +1,16 @@
+{
+  "name": "invalid_schema_version",
+  "expected_outcome": "invalid_args",
+  "expected_capability": "scribe",
+  "expected_error_code": "schema_version",
+  "tool_calls": [
+    {
+      "id": "call_bad_schema",
+      "type": "function",
+      "function": {
+        "name": "submit_candidate_atoms",
+        "arguments": "{\"schema_version\":\"nano.candidate.v99\",\"atoms\":[]}"
+      }
+    }
+  ]
+}

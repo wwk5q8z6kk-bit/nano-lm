@@ -1,0 +1,23 @@
+{
+  "name": "multi_tool_first_success",
+  "expected_outcome": "success",
+  "expected_capability": "summarize",
+  "tool_calls": [
+    {
+      "id": "call_unknown",
+      "type": "function",
+      "function": {
+        "name": "not_a_real_tool",
+        "arguments": "{}"
+      }
+    },
+    {
+      "id": "call_ok",
+      "type": "function",
+      "function": {
+        "name": "submit_summary",
+        "arguments": "{\"schema_version\":\"nano.summary.v0\",\"title\":\"T\",\"sections\":[{\"heading\":\"H\",\"bullets\":[\"b\"]}]}"
+      }
+    }
+  ]
+}

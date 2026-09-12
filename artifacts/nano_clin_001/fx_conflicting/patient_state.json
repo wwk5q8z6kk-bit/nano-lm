@@ -1,0 +1,19 @@
+{
+  "patient_id": "synth-002",
+  "evidence_ledger_version": 2,
+  "ledger_hash": "98f1fff62039155e",
+  "active_conditions": [],
+  "current_medications": [],
+  "laboratory_state": [
+    "Your HbA1c today is 8.2 percent.",
+    "The previous HbA1c was 7.4 percent."
+  ],
+  "functional_state": [],
+  "uncertainties": [],
+  "conflicts": [
+    "cfl_291e8e980c1974da"
+  ],
+  "unresolved_questions": [],
+  "projection_version": "nano-clin-001",
+  "snapshot_id": "state_005337ea3bd16379"
+}

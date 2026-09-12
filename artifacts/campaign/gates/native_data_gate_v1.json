@@ -1,0 +1,68 @@
+{
+  "schema": "nano.campaign.gate.v1",
+  "gate_id": "native_data_gate_v1",
+  "timestamp": "2026-08-23T21:30:00+00:00",
+  "status": "SCREEN_VALIDATED",
+  "verdict": "OPEN_FOR_30M_REVALIDATION",
+  "corpus": {
+    "corpus_id": "native_corpus_screen_v1",
+    "manifest": "artifacts/campaign/native_corpus_screen_v1_manifest.json",
+    "content_hash": "de82e5d11d739d731035fdc7b1e82fd70dbc56ba4b521c1cbe65e60a735d4ea6",
+    "n_examples": 23977,
+    "train_rows": 19194,
+    "training_tokens_char_level": 14693267,
+    "unique_values": 7581,
+    "partition_files": {
+      "TRAIN": "artifacts/campaign/native_corpus_screen_v1_train.json",
+      "DEV": "artifacts/campaign/native_corpus_screen_v1_dev.json",
+      "INTERNAL_TEST": "artifacts/campaign/native_corpus_screen_v1_internal_test.json"
+    }
+  },
+  "requirements": {
+    "corpus_factory": "nanoscribe/native/corpus/ + scripts/build_native_corpus.py",
+    "registry": "data/REGISTRY.json",
+    "mixture_v1": {
+      "mechanism": 0.5,
+      "adversarial": 0.3,
+      "teacher_verified": 0.15,
+      "rejected_buffer": 0.05
+    },
+    "tier_targets": {
+      "R30": {
+        "unique_tokens_char_level": 50000000,
+        "exposure_tokens_char_level": 100000000
+      },
+      "P100": {
+        "unique_tokens_char_level_min": 200000000,
+        "unique_tokens_char_level_max": 300000000
+      }
+    },
+    "leakage_gate": "check_leakage pass",
+    "axis_coverage_floor": "per-axis minimum in manifest",
+    "partition_separation": "TRAIN/DEV/INTERNAL_TEST disjoint values"
+  },
+  "validation": {
+    "build": "python3 scripts/build_native_corpus.py --stage screen",
+    "validate": "python3 scripts/validate_native_corpus.py",
+    "all_gates_pass": true,
+    "r30_unique_target_met": false,
+    "r30_unique_fraction": 0.2939,
+    "note": "Screen stage sufficient for 30M revalidation wave; full R30/P100 promotion corpus still required"
+  },
+  "blocked_until": [
+    "native30_revalidation_summary_v1.json from Kaggle import or verified RunPod pull",
+    "qlora adapter bytes local after attempt 8"
+  ],
+  "next_action": "Kaggle T4: scripts/kaggle_native30_revalidation.py; import with scripts/import_kaggle_native30_results.py",
+  "eval_v2": {
+    "suite_id": "p1_screening_eval_v2",
+    "ready": true,
+    "n_cases": 512,
+    "axis_floor": 64,
+    "axes_below_floor": {},
+    "content_hash": "fe561828564793af1a1c991928fd695046e62f42c06699f129a43140653e9feb",
+    "leakage_pass": true,
+    "path": "data/p1_screening_eval_v2.json",
+    "note": "required for CONFIRMATORY claims; a screening run may use v1 with random-init and majority-class controls"
+  }
+}

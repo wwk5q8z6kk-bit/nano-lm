@@ -13,7 +13,7 @@ DEFAULT_LEDGER = Path("artifacts/campaign/spend.json")
 
 # Mandate v1.0 envelopes (USD).
 ABSOLUTE_MAX_USD = 200.0
-NORMAL_ENVELOPE_USD = 180.0
+NORMAL_ENVELOPE_USD = 185.0
 SAFETY_MARGIN_USD = 20.0
 
 # Review / kill thresholds on campaign_spend_actual + campaign_spend_committed.

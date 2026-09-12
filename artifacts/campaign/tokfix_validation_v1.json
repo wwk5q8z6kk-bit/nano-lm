@@ -1,0 +1,34 @@
+[
+  {
+    "model": "TRAINED (tok fixed)",
+    "mode": "constrained",
+    "correct": 0,
+    "coverage": 0,
+    "malformed": 0,
+    "exact": 0.0
+  },
+  {
+    "model": "TRAINED (tok fixed)",
+    "mode": "free-gen",
+    "correct": 0,
+    "coverage": 0,
+    "malformed": 150,
+    "exact": 0.0
+  },
+  {
+    "model": "random-init control",
+    "mode": "constrained",
+    "correct": 6,
+    "coverage": 6,
+    "malformed": 0,
+    "exact": 1.0
+  },
+  {
+    "model": "random-init control",
+    "mode": "free-gen",
+    "correct": 0,
+    "coverage": 0,
+    "malformed": 150,
+    "exact": 0.0
+  }
+]

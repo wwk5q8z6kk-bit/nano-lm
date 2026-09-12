@@ -1,0 +1,10 @@
+{
+  "run_id": "reval30_decoder_control_s0",
+  "steps_completed": 1800,
+  "final_loss": 0.05927184969186783,
+  "device": "mps",
+  "checkpoint": "artifacts/native_checkpoints_causalfix/reval30_decoder_control_s0/step_001800.pt",
+  "smoke": false,
+  "wall_seconds": 2175.7,
+  "surface": "mps:apple_silicon"
+}

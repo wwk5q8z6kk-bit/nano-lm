@@ -1,0 +1,137 @@
+{
+  "schema": "nano.native.corpus.v1",
+  "corpus_id": "native_corpus_promotion_v1",
+  "revision": "native_corpus_promotion_v1",
+  "stage": "promotion",
+  "built_at": "2026-08-23T19:56:32.630571+00:00",
+  "generator_commit_sha": "f3b69f07b9e608c51a37c258b4d456d49cb0ef06",
+  "seed_namespace": "native_corpus_v1",
+  "no_phi": true,
+  "content_hash": "89fb05149cec085326481b026a7bd0f912d6c5865cfc45fc56ce6ebd21d7b0be",
+  "generation_config": {
+    "composed_mech": 14386,
+    "composed_adv": 6000
+  },
+  "statistics": {
+    "n_examples": 59727,
+    "partition_sizes": {
+      "TRAIN": 48525,
+      "DEV": 5517,
+      "INTERNAL_TEST": 5685
+    },
+    "layer_sizes": {
+      "B_mechanism_curriculum": 41893,
+      "C_adversarial_curriculum": 17834
+    },
+    "axis_histogram": {
+      "exact_copy": 33906,
+      "open_vocab": 31480,
+      "not_mentioned": 22180,
+      "assertion": 20414,
+      "spurious_temptation": 14764,
+      "wrong_source": 9277,
+      "negation": 9272,
+      "uncertainty": 8138,
+      "temporality": 7101,
+      "abstention": 5418,
+      "conflict": 3641,
+      "multi_mention": 2998,
+      "experiencer": 2570,
+      "superspan": 2426,
+      "speaker": 1998
+    },
+    "template_histogram": {
+      "adv_wrong_source_records": 7279,
+      "unc_think": 4497,
+      "adv_self_contradiction": 3641,
+      "absent_other_topic": 3598,
+      "assert_have": 2999,
+      "assert_getting": 2999,
+      "assert_noticed": 2999,
+      "assert_dealing": 2998,
+      "multi_two_mentions": 2998,
+      "assert_bothering": 2997,
+      "assert_started": 2996,
+      "experiencer_family": 2570,
+      "adv_superspan_clause": 2426,
+      "temporality_historical": 2247,
+      "speaker_clinician_only": 1998,
+      "adv_silence_not_denial": 1820,
+      "deny_no": 1501,
+      "deny_denies": 1500,
+      "deny_not": 1498,
+      "deny_never": 1498,
+      "adv_plausible_unsupported": 1455,
+      "adv_future_plan": 1213
+    },
+    "unique_values": 17988,
+    "value_histogram_top20": {
+      "burning right ankle tightness": 9,
+      "stabbing mid spine weakness": 9,
+      "pulsing left rib cage stinging": 9,
+      "gnawing right shin cramping": 9,
+      "dull left ankle throb": 8,
+      "dull right forearm tenderness": 8,
+      "dull left thigh pulling": 8,
+      "dull lower abdomen tightness": 8,
+      "dull left temple irritation": 8,
+      "dull right rib cage pulling": 8,
+      "dull left shin irritation": 8,
+      "sharp left knee tightness": 8,
+      "sharp right calf sensation": 8,
+      "sharp right calf irritation": 8,
+      "sharp left forearm discomfort": 8,
+      "sharp lower abdomen sensation": 8,
+      "sharp right jaw ache": 8,
+      "sharp right shin stinging": 8,
+      "sharp left shin heaviness": 8,
+      "throbbing upper back irritation": 8
+    },
+    "target_label_histogram": {
+      "ASSERTED": 23412,
+      "NOT_MENTIONED": 22180,
+      "UNCERTAIN": 8138,
+      "DENIED": 5997
+    },
+    "chars": {
+      "prompt_total": 35014189,
+      "target_total": 1738168,
+      "total": 36752357,
+      "mean_prompt": 586.2
+    },
+    "training_tokens_char_level": 36752357
+  },
+  "dedupe": {
+    "input": 59727,
+    "kept": 59727,
+    "removed_exact_duplicates": 0,
+    "removed_near_duplicates": 0,
+    "duplicate_rate": 0.0
+  },
+  "leakage": {
+    "reserved_value_hits": [],
+    "n_reserved_value_hits": 0,
+    "eval_source_overlap_count": 0,
+    "eval_sources_indexed": 64,
+    "eval_index_error": null,
+    "train_dev_value_overlap": [],
+    "train_test_value_overlap": [],
+    "pass": true
+  },
+  "axis_coverage": {
+    "minimum_required": 64,
+    "below_floor": {},
+    "pass": true
+  },
+  "gates": {
+    "leakage_pass": true,
+    "axis_coverage_pass": true,
+    "nonzero": true,
+    "all_pass": true
+  },
+  "partition_files": {
+    "TRAIN": "artifacts/campaign/native_corpus_promotion_v1_train.json",
+    "DEV": "artifacts/campaign/native_corpus_promotion_v1_dev.json",
+    "INTERNAL_TEST": "artifacts/campaign/native_corpus_promotion_v1_internal_test.json"
+  }
+}

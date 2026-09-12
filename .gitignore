@@ -54,3 +54,28 @@ experiments/**/runs/**
 
 # P1 harness outputs (external to git; summaries in frontier/*.json)
 artifacts/p1_runs/
+
+# Campaign runtime logs (summaries tracked as JSON)
+artifacts/campaign/*.log
+
+# Native checkpoint weights (step_*.json metrics may be tracked selectively).
+# Globbed: the un-globbed form missed artifacts/native_checkpoints_causalfix/
+# (18G) and _fixed/ (1G), leaving 19G one `git add -A` away from the index.
+artifacts/native_checkpoints/
+artifacts/native_checkpoints*/
+
+# Regenerated on every CPU smoke test run (timestamps churn); not a durable artifact.
+artifacts/native_checkpoints/smoke_cpu/
+
+# Generated corpora are deterministic — rebuild with scripts/build_native_corpus.py
+# and verify against the manifest content_hash. The generator + manifest are the
+# durable artifacts; the expanded JSON is not (66MB of it was committed once).
+artifacts/campaign/native_corpus_*_train.json
+artifacts/campaign/native_corpus_*_dev.json
+artifacts/campaign/native_corpus_*_internal_test.json
+
+# Rebuilt by the determinism test on every run (built_at timestamp churns).
+artifacts/campaign/native_corpus_smoke_v1_manifest.json
+
+# 19GB Kaggle artifact download containing a nested git repo — never commit.
+artifacts/campaign/kaggle_native30_download/

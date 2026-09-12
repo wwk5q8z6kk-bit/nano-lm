@@ -1,0 +1,262 @@
+{
+  "schema": "nano.campaign.gpu_training_topology.v1",
+  "timestamp": "2026-08-23T18:58:00+00:00",
+  "author": "campaign_agent",
+  "wallet_usd": 147.0,
+  "budget": {
+    "absolute_max_usd": 200,
+    "normal_envelope_usd": 185,
+    "safety_margin_usd": 20,
+    "campaign_spend_actual_usd": 5.16,
+    "campaign_spend_committed_ledger_usd": 29.24,
+    "effective_ceiling_usd": 147.0,
+    "note": "Physical wallet is binding ceiling; ledger has stale committed rows from terminated pods"
+  },
+  "authorized_scope": {
+    "source": [
+      "docs/ACTIVE_NOW.json",
+      "docs/EXECUTION_PLAN.md Phase C",
+      "frontier/accelerated_research_campaign_v2.json",
+      "docs/ACCELERATED_RESEARCH_CAMPAIGN_V2.md"
+    ],
+    "in_scope": [
+      "architecture_screening_native_30m_100m",
+      "distill_fit_on_p1_distill_train_v1_96_rows",
+      "student_qlora_50step_canary",
+      "student_c1c2_serverless_eval",
+      "native_extended_200step_distill_epochs"
+    ],
+    "explicitly_deferred": [
+      "native_300m_promotion",
+      "hybrid_native_student",
+      "learned_verifier_training",
+      "p4_cuad_integration",
+      "from_scratch_pretrain_at_chinchilla_scale",
+      "full_sft_qwen32b_without_manifest"
+    ],
+    "materially_costly_requires": "experiment_manifest + spend gate",
+    "confirmatory_requires": "prereg + experiment_manifest"
+  },
+  "campaign_actuals_vs_pretraining": {
+    "summary": "Campaign has run mechanism/architecture screens and tiny distill fits — NOT from-scratch pretraining or production SFT.",
+    "native_round1": {
+      "what": "8× native30M factorial screen (6 steps each)",
+      "dataset": "p1_distill_train_v1 (96 rows)",
+      "tokens_est": "~52k total across 8 runs (1 epoch each)",
+      "gpu": "A100 80GB PCIe",
+      "cost_usd_est": 0.07,
+      "verdict": "COMPLETE_RANKED — evidence_bottleneck + span_port won"
+    },
+    "native_round2": {
+      "what": "4× native100M promotion (6 steps each = 1 epoch)",
+      "dataset": "p1_distill_train_v1",
+      "tokens_est": "~52k total (13k/epoch × 4 runs)",
+      "gpu": "A100 80GB PCIe CA-MTL-3",
+      "cost_usd_est": 0.12,
+      "verdict": "COMPLETE — evidence_bottleneck wins; only 6/200 configured steps used"
+    },
+    "native_extended": {
+      "what": "1× native100M evidence_bottleneck_s1 extended (200 steps ≈ 34 epochs on 96 rows)",
+      "dataset": "p1_distill_train_v1",
+      "tokens_est": "~4.5M tokens (200 steps × batch 16 × ~1.4k tokens/step est)",
+      "gpu": "A100-SXM4-80GB US-KS-2",
+      "cost_usd_est": 0.49,
+      "verdict": "COMPLETE_WITH_WEIGHTS — loss 32→0.05; held-out transport still zero under free gen"
+    },
+    "student_baseline": {
+      "what": "Qwen2.5-32B vLLM serverless C1+C2 eval (no training)",
+      "gpu": "A100 serverless ephemeral",
+      "cost_usd_est": 0.32,
+      "verdict": "COMPLETE — assertion gap vs managed ref documented"
+    },
+    "student_qlora_canary": {
+      "what": "50-step QLoRA compatibility canary on Qwen2.5-32B",
+      "attempts": {
+        "1_3": "Axolotl Hub serverless — GPU ran ~624-679s each; /status and /stream returned empty; ~$2.5 wasted",
+        "4": "Raw pod US-KS-2 A100-SXM — 7 pod launches; SSH/bootstrap/disk failures; BLOCKED"
+      },
+      "dataset": "p1_distill_train_v1 (96 rows alpaca export)",
+      "verdict": "NOT_PASS — canary gate still blocked"
+    },
+    "not_run": [
+      "from_scratch_native_pretrain_billions_of_tokens",
+      "native_1b_or_7b_training",
+      "qwen32b_full_sft_non_qlora",
+      "multi_gpu_native_pretrain_cluster",
+      "round_1_student_qlora_adaptation_post_canary"
+    ]
+  },
+  "gpu_requirements_matrix": {
+    "native_100m_distill_screen": {
+      "params": "100M",
+      "vram_gb": "2-8",
+      "gpus_min": 1,
+      "gpus_ideal": 1,
+      "token_budget_screen": "50k-5M (96-row distill, multi-epoch)",
+      "token_budget_real_pretrain": "1B-20B+ (Chinchilla ~20× params)",
+      "fits_single_gpu": ["RTX 4090 24GB", "A100 40/80GB", "L40S 48GB"],
+      "campaign_evidence": "200-step extended ran on single A100 SXM in ~4 min GPU-active"
+    },
+    "native_100m_real_pretrain": {
+      "params": "100M",
+      "vram_gb": "4-16",
+      "gpus_min": 1,
+      "gpus_ideal": "1-2 A100 for throughput",
+      "token_budget": "2B-20B tokens (domain corpus TBD; not p1_distill 96 rows)",
+      "fits_single_gpu": true,
+      "multi_gpu_need": "optional for wall-clock, not VRAM",
+      "budget_feasible_at_147_usd": "yes for 1-5B token pilot ($15-40); no for full Chinchilla 20B tokens"
+    },
+    "native_1b": {
+      "params": "1B",
+      "vram_gb": "16-32 training",
+      "gpus_min": 1,
+      "gpus_ideal": "2-4 A100/H100",
+      "token_budget_pretrain": "~20B tokens (Chinchilla)",
+      "fits_single_gpu": "A100 80GB with ZeRO/checkpointing",
+      "budget_feasible_at_147_usd": "no for real pretrain; smoke only"
+    },
+    "native_7b_plus": {
+      "params": "7B+",
+      "vram_gb": "40-80+ training",
+      "gpus_min": "1 A100 80GB (tight) or 2+",
+      "gpus_ideal": "4-8 A100/H100 for pretrain throughput",
+      "token_budget_pretrain": "140B+ tokens (7B Chinchilla)",
+      "budget_feasible_at_147_usd": "no — deferred per campaign v2"
+    },
+    "qwen25_32b_qlora": {
+      "params": "32B base + ~0.1-0.5B adapter",
+      "vram_gb": "20-28 (4-bit QLoRA + grad checkpoint)",
+      "disk_gb": "65+ container (HF shard download before quantize)",
+      "gpus_min": 1,
+      "fits": ["L40S 48GB", "A100 40/80GB PCIe", "A100 SXM 80GB"],
+      "cheapest_fit": "L40S 48GB ~$0.99/hr if stable; A100 PCIe $1.39/hr proven",
+      "campaign_evidence": "Attempt 4 A100 SXM OK for VRAM; failed on 50GB disk + SSH ops"
+    },
+    "qwen25_32b_full_sft": {
+      "params": "32B",
+      "vram_gb": "64-80+ bf16",
+      "gpus_min": "2× A100 80GB or 1× H100 80GB",
+      "budget_feasible_at_147_usd": "short run only ($30-80); not default path"
+    },
+    "teacher_qwen3_coder_next_fp8": {
+      "params": "~80GB class",
+      "inference_vram_gb": "48 (FP8/AWQ serverless)",
+      "training": "not in scope — use managed API/serverless for teacher",
+      "surface": "RunPod Public Endpoint / managed ref / ephemeral vLLM"
+    }
+  },
+  "runpod_surfaces": {
+    "single_gpu_pod": {
+      "use": "native screens, QLoRA canary, extended distill epochs",
+      "template": "runpod-torch-v240 (PyTorch 2.4.1; pin deps for QLoRA)",
+      "proven_regions": ["US-KS-2 A100 SXM", "CA-MTL-3 A100 PCIe (CUDA flake)"],
+      "requirements": ["direct TCP SSH/SCP", "container_disk_gb >= 80 for 32B HF download", "network volume for checkpoint persistence"]
+    },
+    "multi_gpu_pod": {
+      "use": "7B+ native pretrain, 32B full SFT, throughput scaling",
+      "status": "not_used_in_campaign",
+      "need": "manifest + budget authorization beyond current wallet"
+    },
+    "b200": {
+      "use": "frontier inference / future native at scale",
+      "blocker": "requires PyTorch sm_100; runpod-torch-v240 is sm_90 only",
+      "rate_usd_hr_est": 4.99
+    },
+    "axolotl_hub_serverless": {
+      "use": "default large-student QLoRA/SFT per AGENTS.md",
+      "hub_id": "cma1ofy3e000008l7he7c764k",
+      "status": "GPU trains but output capture broken (attempts 1-3)",
+      "workaround": "raw pod with log tail + SCP until stream API fixed or HF push token"
+    },
+    "vllm_sglang_serverless": {
+      "use": "student/teacher inference C1/C2 — not training",
+      "status": "proven for eval fanout"
+    },
+    "network_volume": {
+      "volume_id": "04himzqxbm",
+      "use": "checkpoint persistence across pod terminate",
+      "note": "EU-RO-1 pairing unreliable; US-KS-2 pods often without volume mount"
+    }
+  },
+  "active_pod_audit": {
+    "as_of": "2026-08-23T19:05:00+00:00",
+    "count": 0,
+    "pods": [],
+    "note": "ed0n59peu3flly (attempt 4) terminated; fleet 0 at prep wave"
+  },
+  "owner_verdict": {
+    "pod_wrong_for_screening": false,
+    "pod_wrong_for_pretraining": true,
+    "explanation": "Single US-KS-2 A100 was appropriate for 100M/96-row distill screens and extended 200-step fit (~$0.5). It is NOT appropriate infrastructure for from-scratch pretraining or production-scale SFT. Owner is correct: campaign has not run real pretraining.",
+    "attempt4_pod_class": "A100 80GB is VRAM-appropriate for 32B QLoRA canary; wrong on disk (50GB), cost (SXM vs PCIe/L40S), and surface (raw pod was escape hatch after serverless capture failure)"
+  },
+  "recommended_topology": {
+    "phase": "real_training_wave_v1",
+    "prerequisite": "QLoRA canary attempt 5 prep complete (80GB disk, direct TCP, pinned deps); launch when wallet >= ~$153",
+    "native": {
+      "minimum_viable": {
+        "goal": "Distill-scale training on expanded disjoint corpus (NOT 96-row screen)",
+        "model": "native100M evidence_bottleneck",
+        "token_budget": "10M-100M tokens (manifest-defined corpus)",
+        "gpu": "1× A100 80GB PCIe US-KS-2 or CA-MTL-3",
+        "rate_usd_hr": 1.39,
+        "wall_clock_hr_est": "8-24",
+        "cost_usd_est": "12-35",
+        "volume": "mount 04himzqxbm or SCP pull before terminate",
+        "manifest_required": true
+      },
+      "ideal": {
+        "goal": "Domain pretrain + distill two-stage",
+        "model": "native100M → native300M if gate passes",
+        "token_budget": "1B-5B pretrain tokens + 100M distill",
+        "gpu": "1-2× A100 80GB",
+        "cost_usd_est": "40-120",
+        "budget_fit": "exceeds current $147 wallet without owner top-up or phased waves"
+      },
+      "not_authorized_now": "1B/7B native pretrain — deferred in campaign v2"
+    },
+    "student": {
+      "minimum_viable": {
+        "goal": "QLoRA canary PASS then round-1 adaptation on p1_distill_train_v1",
+        "model": "Qwen/Qwen2.5-32B-Instruct + LoRA",
+        "steps": "50 canary then 500-2000 adaptation steps",
+        "surface": "Axolotl Hub serverless IF output capture fixed; else 1× A100 PCIe pod",
+        "gpu": "L40S 48GB or A100 80GB PCIe",
+        "rate_usd_hr": "0.99-1.39",
+        "disk_gb": 80,
+        "cost_usd_est": "5-15 total",
+        "manifest_required": true
+      },
+      "ideal": {
+        "goal": "Full SFT on expanded distill + C2 re-eval",
+        "model": "Qwen2.5-32B",
+        "surface": "Axolotl Hub multi-hour job OR 2× A100 full SFT",
+        "cost_usd_est": "30-80",
+        "budget_fit": "tight at $147 — needs phased authorization"
+      }
+    },
+    "teacher": {
+      "minimum_viable": "Managed API / RunPod Public Endpoint (GPT-OSS-120B, Qwen3-32B-AWQ)",
+      "ideal": "Ephemeral vLLM FP8 pods for distillation bursts — delete between batches",
+      "training": "do not self-host train 80GB+ teachers on campaign budget"
+    }
+  },
+  "cost_summary_usd": {
+    "spent_campaign_actual_est": 5.16,
+    "spent_session_including_qlora_retries_est": 12,
+    "wallet_remaining": 147.0,
+    "next_wave_minimum_viable": {
+      "qlora_canary_fix_and_pass": "3-5",
+      "student_round1_qlora_adaptation": "8-15",
+      "native_100m_distill_expansion_10m_tokens": "12-35",
+      "total_minimum_viable": "25-55"
+    },
+    "next_wave_ideal": {
+      "native_pretrain_pilot_1b_tokens": "40-80",
+      "student_full_sft": "30-50",
+      "total_ideal": "70-130",
+      "fits_wallet_147": "only as sequential phases, not parallel"
+    }
+  }
+}

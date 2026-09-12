@@ -1,0 +1,47 @@
+{
+  "schema": "nano.campaign.prelaunch_verification.v1",
+  "timestamp": "2026-08-23T21:28:32.465679+00:00",
+  "experiment_id": "native30_revalidation_wave1_v1",
+  "reason": "three prior launches each died on a defect a local check would have caught; this records the check actually being run",
+  "steps": [
+    {
+      "step": "corpus rebuild + content_hash verify",
+      "result": "PASS",
+      "evidence": "CORPUS_OK hash=de82e5d1... rows=19194 (verified on pod attempt 3)"
+    },
+    {
+      "step": "arm preflight \u2014 construct all 9",
+      "result": "PASS 9/9",
+      "evidence": "decoder_control d=384 h=6 L=16; evidence_bottleneck d=480 h=8 L=10; span_port d=384 h=6 L=16"
+    },
+    {
+      "step": "train all 9 arms (3 steps)",
+      "result": "PASS 9/9 in 113s",
+      "evidence": "control 48.9/49.6/50.9; bottleneck 89.4/86.4/92.2; span_port 78.7/82.3/76.0"
+    },
+    {
+      "step": "eval CLI both modes with reval30 run ids",
+      "result": "PASS",
+      "evidence": "constrained -> constrained_candidate_selection tautological=True; --unconstrained -> free_generation tautological=False"
+    }
+  ],
+  "prior_failures": [
+    {
+      "attempt": 1,
+      "pod": "9cg7kfpe4vlgzi",
+      "defect": "torch 2.11.0+cu130 clobbered the CUDA 12.4 driver"
+    },
+    {
+      "attempt": 2,
+      "pod": "a46aeq9gdrq0g4",
+      "defect": "--dataset defaulted to the unit fixture; launch guard refused"
+    },
+    {
+      "attempt": 3,
+      "pod": "45zauz5xh1591w",
+      "defect": "n_heads=7 did not divide d_model=480; set -e aborted the remaining 6 arms"
+    }
+  ],
+  "lesson": "the pipeline was verified, the ARMS were not. Preflight now constructs every arm before training any, and a single run failure no longer aborts the rest.",
+  "verdict": "CLEARED_FOR_LAUNCH"
+}

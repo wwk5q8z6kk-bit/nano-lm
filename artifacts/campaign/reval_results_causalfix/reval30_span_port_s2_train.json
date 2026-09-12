@@ -1,0 +1,10 @@
+{
+  "run_id": "reval30_span_port_s2",
+  "steps_completed": 1800,
+  "final_loss": 0.049773842096328735,
+  "device": "mps",
+  "checkpoint": "artifacts/native_checkpoints_causalfix/reval30_span_port_s2/step_001800.pt",
+  "smoke": false,
+  "wall_seconds": 1922.5,
+  "surface": "mps:apple_silicon"
+}

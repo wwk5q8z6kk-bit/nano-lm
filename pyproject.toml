@@ -6,10 +6,10 @@ readme = "README.md"
 requires-python = ">=3.10"
 # Runtime pins live in requirements.txt (torch stack is environment-specific).
 
-[tool.pytest.ini_options]
-testpaths = ["fabric", "trajectory", "benchmarks/adapters/lm_eval/tests"]
-python_files = ["test_*.py"]
-addopts = "-q"
+# NOTE: pytest configuration lives in pytest.ini, which takes precedence over
+# this file. A [tool.pytest.ini_options] block here is silently ignored ("WARNING:
+# ignoring pytest config in pyproject.toml"), so editing testpaths here has no
+# effect and is a trap for the next reader. Change pytest.ini instead.
 
 [tool.setuptools]
 py-modules = []

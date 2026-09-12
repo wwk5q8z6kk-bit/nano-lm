@@ -1,0 +1,79 @@
+{
+  "schema": "nano.campaign.tokenizer_defect_finding.v1",
+  "timestamp": "2026-08-23T15:29:32.695455+00:00",
+  "experiment_id": "native_tokenizer_defect_v1",
+  "cost_usd": 0.0,
+  "device": "cpu",
+  "headline": "nanoscribe/native/tokenize.py hard-truncated every input to 64 characters and decoded newlines to '?'. Span-port prompts are ~530 characters, so the model saw ~12% of its input and the gold value was frequently outside its view \u2014 the task was impossible by construction.",
+  "defects": [
+    {
+      "id": "D1_hard_truncation",
+      "site": "hash_tokens: `for ch in text[:64]`",
+      "impact": "Prompts average 530 chars (max 576); 128/128 eval and 96/96 train prompts exceed 64. The model received 12.1% of each prompt, cut off mid-word. Every call site already applied `[: cfg.max_seq]` with max_seq=512, so the 64-char cap defeated the callers' own intent and used 12.5% of the configured context.",
+      "worked_example": {
+        "prompt_chars": 535,
+        "model_saw": "Transcript:?clinician: What symptoms are you having??patient: I ",
+        "gold_raw_value": "sore throat",
+        "gold_visible_to_model": false
+      },
+      "fix": "truncation is now the caller's decision (max_len param, default None)"
+    },
+    {
+      "id": "D2_whitespace_decode",
+      "site": "_char_for_token: `for code in range(32, 127)`",
+      "impact": "'\\n', '\\t', '\\r' have no preimage in printable ASCII and decoded to '?'. Turn separators were corrupted in 100% of corpus sources (224/224 lossy), destroying speaker/turn structure.",
+      "fix": "exact O(1) inverse chr(token_id - 1) for codepoints below the modulus"
+    }
+  ],
+  "verification": {
+    "full_source_roundtrip": {
+      "before": "0/224 lossless",
+      "after": "224/224 lossless"
+    },
+    "prompt_visibility": {
+      "before": "64/535 chars = 12%",
+      "after": "535/535 = 100%"
+    },
+    "gold_value_visible": {
+      "before": false,
+      "after": true
+    },
+    "test_suite": "195 passed",
+    "test_strengthened": "test_hash_tokenize_detokenize_roundtrip_chars asserted only len(back)==len(text) and could not detect a lossy tokenizer; it now asserts identity over multi-line inputs."
+  },
+  "cpu_validation": {
+    "purpose": "check whether removing the truncation makes the task learnable on the current corpus",
+    "config": "d_model=192, n_layers=4, 300 steps, batch 8, real p1_distill_train_v1",
+    "train_seconds": 25.5,
+    "final_train_loss": 1.877,
+    "note": "loss no longer collapses to ~0.007 because the model now has real content to fit rather than 96 memorised 64-char fragments",
+    "heldout_yield_per_150_gold_atoms": {
+      "trained_constrained": 0,
+      "trained_free_gen": 0,
+      "random_init_constrained": 6,
+      "random_init_free_gen": 0
+    },
+    "verdict": "NECESSARY BUT NOT SUFFICIENT",
+    "interpretation": "With the truncation removed the trained model abstains on all 150 atoms (coverage 0) and does not beat a random-init control. This is consistent with the data-scale finding: 4,516 characters of training text cannot teach the task regardless of context width. The tokenizer defect made the task impossible; data scale makes it unlearnable. Both must be fixed.",
+    "caveat": "This validation used a much smaller model (d_model 192 vs 704) for 300 CPU steps and is not a substitute for a proper GPU re-run; it is evidence about the corpus, not a tuned result."
+  },
+  "consequences": {
+    "invalidated": [
+      "native30 8-way round-1 tournament",
+      "native100 round-2 promotion ranking",
+      "native100 extended runs",
+      "all exact_gold_span and support metrics from constrained eval"
+    ],
+    "reason": "every native result to date was produced by models that could see at most 64 characters of a ~530-character prompt, with corrupted turn separators",
+    "not_invalidated": [
+      "the eval-harness defect finding",
+      "the data-scale finding",
+      "the agent canary results (different code path)"
+    ]
+  },
+  "next": [
+    "Do not re-run native arms until the training corpus is addressed (data scale is still binding)",
+    "Any re-run must ship random-init + majority-class controls and free-generation eval",
+    "Re-derive mechanism ranking from scratch \u2014 prior rankings carry no information"
+  ]
+}

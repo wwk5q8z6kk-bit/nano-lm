@@ -1,0 +1,46 @@
+{
+  "schema": "nano.campaign.endpoint_churn_cost.v1",
+  "timestamp": "2026-08-23T19:49:02.869504+00:00",
+  "recorded_by": "agent-0eba97de",
+  "session_wallet": {
+    "start": 154.4742,
+    "end": 145.7145,
+    "delta_usd": 8.7597,
+    "observations": [
+      154.4742,
+      154.2211,
+      154.1382,
+      153.293,
+      152.3951,
+      146.235,
+      145.7615,
+      145.7145
+    ]
+  },
+  "attribution": {
+    "student_qlora_lane": {
+      "ledger_entries": 10,
+      "committed_usd": 21.0,
+      "attempts": 5,
+      "outcomes": "attempts 1-3 Axolotl serverless (output capture broken); 4 raw pod ENOSPC 50GB; 5 pod SSH unreachable on two probes",
+      "resources_observed": [
+        "serverless dnjbbgr8lmczon",
+        "serverless kndjw1ao9wzg2z",
+        "serverless xkaapaxweg91k2",
+        "pod y5zfwrdlhf8qgh"
+      ],
+      "churn": "3 serverless endpoints recreated in ~40min plus 1 pod, peak $2.724/hr"
+    },
+    "canary_validation_lane": {
+      "spend_usd": 0.0,
+      "note": "two teachers benchmarked on RunPod managed public endpoints (gpt-oss-120b, qwen3-32b-awq) at zero cost; all native validation ran on local CPU"
+    }
+  },
+  "current_state": {
+    "pods": 0,
+    "serverless_endpoints": 0,
+    "spend_per_hr": 0.004,
+    "verdict": "NO_IDLE_PAID_RESOURCES"
+  },
+  "policy_reminder": "Per the execution order: prepare exact job -> create endpoint -> canary -> adapt -> persist -> delete. Never create an endpoint while science/data gates are unresolved. QLoRA stays blocked until its separate gate passes."
+}

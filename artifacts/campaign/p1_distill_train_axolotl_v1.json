@@ -1,0 +1,482 @@
+[
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: sore throat"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: heartburn"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: contact dermatitis"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: rosuvastatin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: constipation"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "DENIED: penicillin"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: GERD flare"
+  },
+  {
+    "instruction": "Extract span-port label for the clinical atom.",
+    "input": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+    "output": "ASSERTED: montelukast"
+  }
+]

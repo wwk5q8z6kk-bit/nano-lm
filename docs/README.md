@@ -25,6 +25,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | [EXECUTION_PLAN.md](EXECUTION_PLAN.md) | Bounded executable work |
 | [EVALUATION_FRAMEWORK.md](EVALUATION_FRAMEWORK.md) | How capabilities are measured |
 | [FAILURE_TO_ARCHITECTURE.md](FAILURE_TO_ARCHITECTURE.md) | Major failures → architectural lessons |
+| [ACCELERATED_RESEARCH_CAMPAIGN_V2.md](ACCELERATED_RESEARCH_CAMPAIGN_V2.md) | Active P1 research campaign plan (v2) |
 
 ## Research
 
@@ -33,6 +34,8 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) | Mechanism / compact / teacher model layers |
 | [research/SYSTEM_RESEARCH_PROGRAM.md](research/SYSTEM_RESEARCH_PROGRAM.md) | Retrieval, memory, verifiers, routing |
 | [research/EXPERIMENT_STRATEGY.md](research/EXPERIMENT_STRATEGY.md) | Prereg, gates, failure-to-architecture loop |
+| [research/ACCELERATED_CAMPAIGN.md](research/ACCELERATED_CAMPAIGN.md) | Multi-track P1 campaign, manifests, RunPod OS |
+| [ACCELERATED_RESEARCH_CAMPAIGN_V2.md](ACCELERATED_RESEARCH_CAMPAIGN_V2.md) | Branch-active campaign v2 plan + measured snapshot |
 
 ## Domains
 
@@ -48,6 +51,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 
 | Document | Purpose |
 |----------|---------|
+| [subsystems/NANOSCRIBE.md](subsystems/NANOSCRIBE.md) | P1 encounter representation, adapters, harness (`nanoscribe/`) |
 | [subsystems/WEDGE.md](subsystems/WEDGE.md) | Verified local document intelligence (`wedge_v1/`) |
 | [subsystems/VERIFICATION.md](subsystems/VERIFICATION.md) | Fabric + constructive faithfulness |
 
@@ -56,6 +60,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | Document | Purpose |
 |----------|---------|
 | [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md) | Primary GPU training backend (active; experiment-scoped costly runs) |
+| [infrastructure/TOOL_CALLING.md](infrastructure/TOOL_CALLING.md) | Structured JSON vs tool inference for CandidateAtom extraction |
 | [infrastructure/REPRODUCIBILITY.md](infrastructure/REPRODUCIBILITY.md) | Tags, manifests, recompute |
 
 ## Archive
@@ -64,6 +69,14 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 |----------|---------|
 | [archive/README.md](archive/README.md) | Historical strategy index |
 | [archive/LEGACY_STRATEGY_INDEX.md](archive/LEGACY_STRATEGY_INDEX.md) | Old planning doc map |
+
+## Knowledge (agents)
+
+| Document | Purpose |
+|----------|---------|
+| [knowledge/README.md](knowledge/README.md) | Knowledge pack index |
+| [knowledge/AGENT_PROGRAM_KNOWLEDGE.md](knowledge/AGENT_PROGRAM_KNOWLEDGE.md) | A→Z operational knowledge for coding agents |
+| [knowledge/PROGRAM_CHECKPOINTS.json](knowledge/PROGRAM_CHECKPOINTS.json) | Machine-readable Phase C/D gates |
 
 ## Not moved (evidence-protected)
 
