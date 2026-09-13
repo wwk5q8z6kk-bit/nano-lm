@@ -28,7 +28,6 @@ from benchmarks.process_metrics import (  # frozen v1.0 definitions, reused unch
     premature_edit_rate,
     reproduction_before_repair,
     rollback_success,
-    scope_violation_rate,
     verification_attempted,
 )
 
@@ -103,6 +102,106 @@ def pre_state_coverage(actions: Sequence[Action]) -> float | None:
     return sum(1 for a in eligible if a.get("pre_state_sha256") is not None) / len(eligible)
 
 
+# --- C3 -------------------------------------------------------------------------
+
+
+def in_scope(target: str, scope: Sequence[str]) -> bool:
+    """Prefix membership with the one convention the owner set (D12, D19):
+    relative prefixes resolve against the repository root, and the entry "."
+    means *any* relative target — one that is neither absolute nor `~`-prefixed.
+    Absolute prefixes match absolute targets by plain prefix. No other
+    normalisation: the harness declares, the metric matches.
+    """
+    is_relative = not target.startswith(("/", "~"))
+    for prefix in scope:
+        if prefix == ".":
+            if is_relative:
+                return True
+            continue
+        if target.startswith(prefix):
+            return True
+    return False
+
+
+def _in_scope_mutations(actions: Sequence[Action], source_scope: Sequence[str]) -> list[Action]:
+    """Ok-or-not mutations with at least one target inside the source scope.
+    Target-less mutations cannot be matched and are ignored here (D14); see
+    `mutations_without_target` for their count."""
+    return [a for a in _ordered(actions)
+            if a.get("action_class") in MUTATING_CLASSES and any(in_scope(t, source_scope) for t in _targets(a))]
+
+
+def mutations_without_target(actions: Sequence[Action]) -> int:
+    """Mutations that name no path. They move v1.0's last-mutation pointer but
+    cannot be scoped; reported so what the scoped metrics ignored is visible."""
+    return sum(1 for a in actions if a.get("action_class") in MUTATING_CLASSES and not _targets(a))
+
+
+def verification_attempted_in_scope(actions: Sequence[Action], source_scope: Sequence[str] | None) -> bool | None:
+    """Did a verify follow the last *source* mutation?
+
+    Equation: ``∃ v ∈ verify : seq(v) > max{seq(m) : m ∈ mutate, targets(m) ∩ source ≠ ∅}``
+    Output: None when no source scope is declared or no in-scope mutation exists
+    (the question does not arise — a docs-only edit is not "unverified code").
+    Unlike the v1.0 key, a trailing report or artifact write does not reset the
+    pointer; that is the false negative the audit found (finding B).
+    """
+    if source_scope is None:
+        return None
+    scoped = _in_scope_mutations(actions, source_scope)
+    if not scoped:
+        return None
+    last = max(a.get("seq", 0) for a in scoped)
+    return any(a.get("action_class") == "verify" and a.get("seq", 0) > last for a in actions)
+
+
+def reproduction_before_repair_in_scope(actions: Sequence[Action], source_scope: Sequence[str] | None) -> bool | None:
+    if source_scope is None:
+        return None
+    scoped = _in_scope_mutations(actions, source_scope)
+    if not scoped:
+        return None
+    first = scoped[0].get("seq", 0)
+    return any(a.get("action_class") == "verify" and a.get("seq", 0) < first for a in actions)
+
+
+def premature_edit_rate_in_scope(actions: Sequence[Action], source_scope: Sequence[str] | None) -> float | None:
+    """v1.0's per-file rule restricted to files inside the source scope."""
+    if source_scope is None:
+        return None
+    read_before: set[str] = set()
+    first_blind: dict[str, bool] = {}
+    for a in _ordered(actions):
+        cls = a.get("action_class")
+        if cls == "read":
+            read_before.update(_targets(a))
+        elif cls in MUTATING_CLASSES:
+            for t in _targets(a):
+                if in_scope(t, source_scope) and t not in first_blind:
+                    first_blind[t] = t not in read_before
+    if not first_blind:
+        return None
+    return sum(first_blind.values()) / len(first_blind)
+
+
+def files_changed_in_scope(actions: Sequence[Action], source_scope: Sequence[str] | None) -> int | None:
+    if source_scope is None:
+        return None
+    return len({t for a in actions if a.get("action_class") in MUTATING_CLASSES for t in _targets(a) if in_scope(t, source_scope)})
+
+
+def scope_violation_rate(actions: Sequence[Action], *, declared_scope: Sequence[str] | None) -> float | None:
+    """v1.0's definition — share of mutation-target pairs outside the permitted
+    scope — with the "." convention understood. For a scope without "." this is
+    numerically identical to the frozen v1.0 function (pinned by a test)."""
+    if declared_scope is None:
+        return None
+    pairs = [(a, t) for a in actions if a.get("action_class") in MUTATING_CLASSES for t in _targets(a)]
+    if not pairs:
+        return None
+    return sum(1 for _, t in pairs if not in_scope(t, declared_scope)) / len(pairs)
+
+
 # --- profile --------------------------------------------------------------------
 
 
@@ -120,6 +219,7 @@ def class_a_profile(log: dict[str, Any], *, destructive_tools: frozenset[str] | 
     )
 
     actions = list(log.get("actions") or [])
+    source_scope = log.get("source_scope")
     return {
         "action_count": action_count(actions),
         "invalid_tool_call_rate": invalid_tool_call_rate(actions),
@@ -137,4 +237,10 @@ def class_a_profile(log: dict[str, Any], *, destructive_tools: frozenset[str] | 
         # C2 additions
         "noop_mutations": noop_mutations(actions),
         "pre_state_coverage": pre_state_coverage(actions),
+        # C3 additions — additive, never replacing the v1.0 keys above (D13)
+        "verification_attempted_in_scope": verification_attempted_in_scope(actions, source_scope),
+        "reproduction_before_repair_in_scope": reproduction_before_repair_in_scope(actions, source_scope),
+        "premature_edit_rate_in_scope": premature_edit_rate_in_scope(actions, source_scope),
+        "files_changed_in_scope": files_changed_in_scope(actions, source_scope),
+        "mutations_without_target": mutations_without_target(actions),
     }

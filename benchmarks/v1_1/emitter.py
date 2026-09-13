@@ -137,8 +137,17 @@ def emit(
     *,
     verify_patterns: Sequence[re.Pattern[str]] = DEFAULT_VERIFY_PATTERNS,
     read_only_patterns: Sequence[re.Pattern[str]] = (),
+    declared_scope: Sequence[str] | None = None,
+    source_scope: Sequence[str] | None = None,
 ) -> EmitResult:
-    """Transcript records → v1.1 action log + trace + stats. Pure over its input."""
+    """Transcript records → v1.1 action log + trace + stats. Pure over its input.
+
+    C3: `declared_scope` (paths the harness permitted the agent to mutate) and
+    `source_scope` (paths that count as source under evaluation) are **harness
+    declarations**. They are written into the log verbatim — no normalisation,
+    no inference from the transcript — and omitted when not given, so the
+    scoped metrics stay undefined rather than zero (D11, D14, D19).
+    """
     pending: dict[str, tuple[dict[str, Any], dict[str, Any], dict[str, Any]]] = {}
     actions: list[dict[str, Any]] = []
     trace: list[ClassificationTrace] = []
@@ -274,6 +283,10 @@ def emit(
         "pre_run_state_sha256": None,
         "post_run_state_sha256": None,
     }
+    if declared_scope is not None:
+        log["declared_scope"] = list(declared_scope)
+    if source_scope is not None:
+        log["source_scope"] = list(source_scope)
     return EmitResult(log=log, trace=trace, stats=stats)
 
 
