@@ -132,6 +132,7 @@ READ_ONLY_PROGRAMS = frozenset({
     "bc", "df", "ps", "sysctl", "vm_stat", "uname", "sw_vers", "nproc", "hostname",
     "whoami", "id", "uptime", "lsof", "true", ":", "set", "unset", "shift", "local",
     "break", "continue", "return", "exit", "let", "declare", "typeset",
+    "sleep", "wait",  # waiting has no world effect; `sleep 60; cat log` is a read
 })
 
 #: Shell control-flow. Keywords in CONTROL_STRIP prefix a command (`then cat x`);
@@ -159,7 +160,17 @@ GIT_READ_SUBCOMMANDS = frozenset({
     "status", "log", "diff", "show", "rev-parse", "branch", "ls-tree", "ls-files",
     "check-ignore", "blame", "describe", "remote", "tag", "shortlog", "cat-file",
     "diff-tree", "rev-list", "config", "worktree", "stash", "reflog", "name-rev",
+    # found by the audit: `merge-base` was unlisted, so "unknown ⇒ may write"
+    # turned an all-read command into git-index
+    "merge-base", "symbolic-ref", "for-each-ref", "count-objects", "whatchanged",
+    "grep", "ls-remote", "var", "version", "help", "verify-commit", "verify-tag",
+    "show-ref", "show-branch", "check-attr", "check-ref-format", "cherry",
 })
+
+#: Programs whose heredoc / `-c` payload is *code* worth scanning for read or
+#: write evidence. A heredoc fed to `git commit -F -` or `orx exp desc --stdin`
+#: is prose; the audit found the write-evidence regex firing on a commit message.
+INTERPRETERS = re.compile(r"^(python(\d(\.\d+)?)?|node|ruby|perl|bash|sh|zsh|deno|bun)$")
 GIT_WRITE_SUBCOMMANDS = frozenset({
     "add", "commit", "reset", "switch", "checkout", "merge", "rebase", "cherry-pick",
     "push", "pull", "fetch", "rm", "mv", "restore", "revert", "am", "apply", "clean",
@@ -499,7 +510,11 @@ def _seg_is_read_only(seg: list[str], read_only_patterns: Sequence[re.Pattern[st
     if prog == "git":
         return _git_is_write(seg) is False
     if PYTHON_PROGRAMS.match(prog) and "-c" in seg:
-        return not HEREDOC_WRITE_EVIDENCE.search(_inline_code(seg))
+        # same rule as a heredoc body: read-only only on positive read evidence.
+        # "No write evidence" is not "read" — `snapshot_download(...)` writes a
+        # model to disk and was classified read under the weaker rule.
+        code = _inline_code(seg)
+        return bool(HEREDOC_READ_EVIDENCE.search(code)) and not HEREDOC_WRITE_EVIDENCE.search(code)
     if prog == "sed":
         return "-i" not in seg and not any(a.startswith("-i") for a in seg[1:])
     if prog == "tee":
@@ -522,10 +537,13 @@ def _seg_write_targets(seg: list[str]) -> list[str]:
     if not seg:
         return targets
     prog = _basename(seg[0])
-    # `$f` is a variable, not a path the log can name
-    args = [a for a in seg[1:] if not a.startswith(("-", "$"))]
+    # `$f` is a variable, not a path the log can name; `''` is macOS `sed -i ''`
+    args = [a for a in seg[1:] if a and not a.startswith(("-", "$"))]
     if prog == "sed" and any(a == "-i" or a.startswith("-i") for a in seg[1:]) and args:
-        targets.append(args[-1])
+        # the file is the last arg only when it looks like one; with `$VAR/x`
+        # filtered out, the last survivor may be the sed script itself
+        if _looks_like_path(args[-1]) and not re.match(r"^s[/|#].*[/|#]g?$", args[-1]):
+            targets.append(args[-1])
     elif prog in ("cp", "mv", "ln") and len(args) >= 2:
         targets.append(args[-1])
         if prog == "mv":
@@ -632,7 +650,14 @@ def classify_bash(
         write_targets.extend(_seg_write_targets(s))
     write_prog = any(_seg_writes(s) for s in action_segs)
     inline = "\n".join(c for c in (_inline_code(s) for s in action_segs) if c)
-    code = "\n".join(x for x in (body, inline) if x)
+    # only scan a heredoc body when an interpreter consumes it; prose fed to
+    # `git commit -F -` or a CLI's `--stdin` is not code
+    body_is_code = bool(body) and any(
+        "<<" in s and _unwrap(s) and INTERPRETERS.match(_basename(_unwrap(s)[0])) for s in segs
+    )
+    code = "\n".join(x for x in ((body if body_is_code else ""), inline) if x)
+    if body and not body_is_code:
+        notes.append("heredoc:prose")
     body_write = bool(code and HEREDOC_WRITE_EVIDENCE.search(code))
     body_read = bool(code) and not body_write and bool(HEREDOC_READ_EVIDENCE.search(code))
     if body_write:

@@ -181,6 +181,8 @@ READ = [
     ("sed -n '10,20p' x.py", ["x.py"]),
     ("echo '=== x ===' && cat a.md", ["a.md"]),
     ("cd /x && ls", []),
+    ("sleep 100", []),  # waiting has no world effect (audit)
+    ("sleep 30; cat run.log", ["run.log"]),
     ("ls -la && git log --oneline -5", []),
     ("git status --porcelain && git diff --stat master..HEAD", []),
     ("git stash list", []),
@@ -189,7 +191,6 @@ READ = [
     ("git tag -l", []),
     ("git worktree list", []),
     ("git show --stat abc1234 | head", []),
-    ('python3 -c "import json; print(1)"', []),
     ("find . -name '*.py' | xargs wc -l", []),
     ("diff a b", []),  # bare names without / or . are not recognised as paths
     ("cat a.py 2>&1", ["a.py"]),
@@ -234,12 +235,12 @@ def test_git_index_operations_are_execute_not_mutate(command):
 
 FALLBACK = [
     "python3 scripts/run_thing.py",
-    "sleep 100",
     "make build",
     "npm install",
     "docker run x",
     "~/.claude/bin/loop-state init --objective x",
     "python3 -m benchmarks.adapters.lm_eval.cli smoke --mode mock",
+    'python3 -c "import json; print(1)"',  # a probe with no read evidence: execute, not read (audit)
     "",
 ]
 
@@ -411,7 +412,7 @@ def test_synthetic_action_table(synthetic):
         (9, "Write", "mutate", "ok", "tool:Write", ["src/c.py"]),
         (10, "Bash", "read", "ok", "bash:read-only", ["src/"]),
         (11, "Bash", "mutate", "ok", "bash:file-write", ["/tmp/out.txt"]),
-        (12, "Bash", "execute", "timeout", "bash:fallback", []),
+        (12, "Bash", "read", "timeout", "bash:read-only", []),  # sleep is read-only; status still timeout
     ]
 
 
@@ -533,7 +534,7 @@ def test_large_fixture_derived_post_states_are_edits_only():
 
 EXPECTED_BY_RULE = {
     "session_large_varied": {
-        "bash:fallback": 29, "bash:file-write": 37, "bash:git-index": 16, "bash:read-only": 100,
+        "bash:fallback": 41, "bash:file-write": 36, "bash:git-index": 14, "bash:read-only": 91,
         "bash:test-runner": 38, "tool:Edit": 15, "tool:ListAgents": 2, "tool:Read": 5, "tool:Skill": 3,
         "tool:ToolSearch": 3, "tool:Write": 12, "tool:message-passing": 7, "tool:peer-discovery": 2,
     },
@@ -543,10 +544,12 @@ EXPECTED_BY_RULE = {
 }
 
 #: What still falls through on the large fixture, by program. Every entry is a
-#: genuine external program or script with no read/write evidence — the honest
-#: meaning of `execute`. A new name here, or one disappearing, is a classifier
+#: genuine external program, shell function (`attach`, `check`, `setcell`), or
+#: python probe with no read/write evidence — the honest meaning of `execute`.
+#: Post-audit: bare `python -c` probes moved here from read (41 across the 62
+#: real transcripts), and `sleep` moved to read-only. A new name here, or one disappearing, is a classifier
 #: change to look at.
-EXPECTED_FALLBACK_PROGRAMS = {"python3", "orx", "sleep", "attach", "check", "peer-claims", "kill"}
+EXPECTED_FALLBACK_PROGRAMS = {"python3", "orx", "attach", "check", "peer-claims", "kill", "setcell"}
 
 
 @pytest.mark.parametrize("name", sorted(EXPECTED_BY_RULE), ids=lambda n: n)
