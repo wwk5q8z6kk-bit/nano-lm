@@ -25,8 +25,15 @@
 > instrument definitions with tests: no corpus, no runner, no registry row, no execution, no promoted
 > gate. The three-layer principle is frozen verbatim in [`../docs/EVALUATION_FRAMEWORK.md`](../docs/EVALUATION_FRAMEWORK.md).
 >
-> **Open and owner-gated:** Program 1 authorization for Tiers 1–3, and which task corpus the Tier 4
-> instruments run against first. Class C (expert annotation) remains unbuilt by design.
+> **Owner decision, 2026-09-13 — fixture-first emitter.** Sequence: freeze the seven commits; build a
+> sanitized fixture corpus; build the transcript → action-log emitter against it; test `action_class`
+> aggressively; run the suite; measure the 62 real transcripts only as a labelled *instrument
+> validation*; audit the logs by hand; decide on contract revision; then merge. Boundary: "we have a
+> corpus" must not quietly become "we have benchmark evidence". Delivered — see §4.4.
+>
+> **Open and owner-gated:** Program 1 authorization for Tiers 1–3. Class C (expert annotation)
+> remains unbuilt by design. The v1.1 contract revision (§4.4) is specified and awaits its own
+> review.
 
 ---
 
@@ -383,7 +390,39 @@ Program D — Calibration in `RESEARCH_PORTFOLIO.md`), so Class D is the closest
 existing work.
 
 **Build order implied by the triage:** Class A → Class D (protocol, before any data is collected) →
-Class B → Class C. Class A, the Class D protocol fields, and Class B are built; Class C is not. Classes A, B, and D together cover investigation discipline, verification
+Class B → Class C. Class A, the Class D protocol fields, and Class B are built; Class C is not.
+
+### 4.4 The instrument on real trajectories — emitter, fixtures, validation, audit
+
+**Status: built, validated, audited.** `benchmarks/transcript_emitter.py` turns a Claude Code session
+transcript into a schema-valid action log plus a per-action *classification trace* (rule fired,
+evidence, compound flag, notes), so the schema's weakest assumption — `action_class` is declared and
+unverifiable — is auditable rather than trusted. It is developed only against checked-in fixtures
+(`benchmarks/fixtures/transcripts/`, produced by `benchmarks/transcript_sanitizer.py`); the single
+component that reads real transcripts is `benchmarks/validation/instrument_validation_transcripts.py`.
+
+What the validation established, on 62 sessions and 1899 actions: every log validates; raw and
+sanitized emissions agree on every classification field (so the fixtures are trustworthy); no tool is
+unmapped; 180 classifications were read by a person, 3 were wrong (2 fixed generically), 20 were the
+right class with a lost target. Full audit and per-bucket verdicts:
+`artifacts/instrument-validation-transcripts/audit-and-contract-decision.md`.
+
+What it established about the *instrument*, not about any agent — the three contract-level findings:
+
+- **Compound edit-then-test calls lose an extractable mutation target: 29 of 45.** The precedence
+  that puts `verify` above `mutate` in one Bash call assumed heredoc targets are unextractable; on this
+  corpus 64% name an in-repo file. Neither label is right because the call is not atomic.
+- **`verification_attempted` is dominated by trailing artifact writes.** Two of four "no" verdicts on
+  large sessions are a report write after a real verify; 148 of 460 mutations are outside the repo.
+  The metric cannot tell a source edit from a report write.
+- **Investigation by execution is invisible.** 114 bare python probes are `execute`; many are
+  evidence gathering. The read/mutate/verify/execute taxonomy has no place for "ran code to learn".
+
+**Decision (step 8): the contract needs a v1.1 revision — `call_id` for ordered atomic sub-actions
+per tool call, `pre_state_sha256` on mutations, and `declared_scope` as a harness declaration of
+*source* paths with scoped metrics.** Specified in the audit document; deliberately not implemented
+on the merged branch, because it moves every pinned count and the fixtures, tests, and audit all
+encode v1. The taxonomy gap is recorded as the question Class C annotation will have to answer. Classes A, B, and D together cover investigation discipline, verification
 sufficiency, regression safety, and calibration — most of the critique's engineering-process concern —
 at zero annotation cost. Class C buys architecture, design judgment, and belief revision, and it is
 where the budget actually goes.
@@ -502,8 +541,10 @@ in place, so that is no longer the blocker; Program 1 authorization is.
 - does not modify `benchmarks/REGISTRY.yaml`, `REGISTRY.schema.json`, or any Gate 0 report;
 - does not modify `compute_run_id` or any existing run identity; the agent-identity module is
   strictly additive (`benchmarks/agent_identity.py`);
-- builds no corpus, runner, emitter, or CLI for the Class A instrument, and promotes no metric to a
-  gate — `benchmarks/process_metrics.py` is diagnostics only;
+- promotes no metric to a gate — `benchmarks/process_metrics.py` is diagnostics only;
+- builds an emitter and a *fixture* corpus, and runs the instrument over this project's own
+  sessions as a labelled instrument validation — none of which is benchmark evidence, enters the
+  evidence ledger, or bears on any model;
 - does not touch `papers/EVIDENCE_LEDGER.md`, `artifacts/` manifests, `SHA256SUMS`, or protected tags;
 - does not authorize training, paid compute, Program 1, or any benchmark execution;
 - does not reprioritize P1 scribing, which remains the declared capability frontier;

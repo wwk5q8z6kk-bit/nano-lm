@@ -20,6 +20,10 @@ Layer-1 truth remains `papers/EVIDENCE_LEDGER.md` and the post-α freeze artifac
 | `AGENT_ACTION_LOG.schema.json` + `process_metrics.py` | agent action log + Class A engineering-process metrics | instrument definition; no corpus |
 | `gold_metrics.py` | Class B metrics — log plus gold patch and test sets | instrument definition; no corpus |
 | `confidence.py` | Wilson bounds for rate gates | supporting; promotes no gate |
+| `transcript_sanitizer.py` | structure-preserving redaction of Claude Code transcripts | produces the fixtures |
+| `fixtures/transcripts/` | 4 sanitized sessions + 1 synthetic, with README and MANIFEST | instrument fixtures, not evidence |
+| `transcript_emitter.py` | transcript → action log + classification trace | v1; v1.1 revision specified |
+| `validation/` | runs the emitter over real sessions as a labelled instrument validation | the only reader of `~/.claude/projects/` |
 | `reports/` | Gate 0 report | operational |
 | `suites/`, `contamination/`, `generators/`, `scorecards/` | placeholders | empty |
 
@@ -91,3 +95,26 @@ answers the planning question before a gate is proposed rather than after twelve
 The two schemas are structurally independent (no cross-`$ref`, no required
 back-pointer) so they version separately: identity says which run this is, the action
 log says what happened inside it.
+
+## The emitter and its fixtures
+
+`transcript_emitter.py` turns a Claude Code session transcript into a schema-valid action
+log. Every action carries a **classification trace** — the rule that fired, its evidence,
+whether the Bash call was compound, and notes — because `action_class` is declared at
+emission and cannot be verified from the log; the trace makes it auditable instead of
+trusted. Bash is classified by an explicit precedence (test runner → verify; file write →
+mutate; all read-only → read; git index → execute; else execute) that the module docstring
+defends and a 100-row test table pins, including the shapes real sessions use: multi-line
+scripts, heredocs, control flow, wrappers, arithmetic.
+
+It is developed **only against `fixtures/transcripts/`**, sanitized by
+`transcript_sanitizer.py` (see the fixture README for what is preserved, what is
+destroyed, and the raw-vs-sanitized invariant that makes the fixtures trustworthy).
+`validation/instrument_validation_transcripts.py` is the one component that reads real
+transcripts; it labels every output **instrument validation, not model evidence**, and
+writes to the artifacts directory, not here.
+
+Validated on 62 sessions / 1899 actions and audited by hand (180 classifications read).
+The audit found three contract-level limitations and produced a v1.1 specification
+(`call_id` sub-actions, `pre_state_sha256`, scoped `declared_scope`) that is deliberately
+not implemented here: `artifacts/instrument-validation-transcripts/audit-and-contract-decision.md`.
