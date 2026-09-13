@@ -133,20 +133,35 @@ def test_scoped_premature_and_reproduction_follow_v1_0_rules_within_scope():
 # --- scope_violation_rate: v1.0 semantics, "." understood --------------------------------
 
 
-@pytest.mark.parametrize("name", ["session_large_varied", "session_small_errors", "session_small_reads", "session_trivial", "synthetic_minimal"])
+@pytest.mark.parametrize("name", ["session_small_errors", "session_small_reads", "session_trivial", "synthetic_minimal"])
 @pytest.mark.parametrize("scope", [["benchmarks/", "nanoscribe/"], ["src/"], [], ["/tmp/"]])
 def test_scope_violation_rate_identical_to_v1_0_without_the_dot_entry(name, scope):
-    """At this stage the v1.1 log has the same actions as the v1.0 log, so the
-    two functions must agree exactly on every scope that does not use '.'."""
+    """On a log whose mutation-target pairs are the same under both contracts,
+    the two functions must agree exactly on every scope that does not use '.'.
+    The large fixture is excluded on purpose: C1 splits `pytest > /tmp/x` into
+    a verify and a mutate, adding pairs v1.0 never had — see the next test."""
     path = V10_FIX / f"{name}.jsonl"
     v10 = scope_violation_rate_v10(emit_v10(path).log["actions"], declared_scope=scope)
     v11 = scope_violation_rate(emit_file(path).log["actions"], declared_scope=scope)
     assert v10 == v11
 
 
+def test_scope_violation_rate_delta_on_large_fixture_is_exactly_the_split_pairs():
+    """Spec §3.4 said this key would be unchanged with the same declared_scope.
+    That was wrong once C1 landed: split writes add mutation-target pairs. The
+    migration module explains the delta as `scope-pairs`; here the explanation
+    is checked directly — the pair sets differ by exactly the pairs whose call
+    v1.0 did not label `mutate`."""
+    from benchmarks.v1_1.migration import compare_file
+
+    c = compare_file(V10_FIX / "session_large_varied.jsonl", declared_scope=["benchmarks/", "nanoscribe/"])
+    d = next(x for x in c.deltas if x.key == "scope_violation_rate")
+    assert d.category == "scope-pairs" and d.explained, d
+
+
 def test_scope_violation_rate_dot_means_in_repo():
-    acts = _log("F04_test_output_redirect")["actions"]  # mutates src/a.py (Edit); the /tmp redirect is not a v1.0-shaped mutate at this stage
-    assert scope_violation_rate(acts, declared_scope=["."]) == 0.0
+    acts = _log("F04_test_output_redirect")["actions"]  # [read, mutate(src/a.py), verify, mutate(/tmp/out.txt)] under C1
+    assert scope_violation_rate(acts, declared_scope=["."]) == 0.5   # the /tmp pair is the violation
     assert scope_violation_rate_v10(acts, declared_scope=["."]) == 1.0  # v1.0 cannot read "."; documented difference
     assert scope_violation_rate(acts, declared_scope=None) is None
 

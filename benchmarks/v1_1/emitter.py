@@ -34,15 +34,33 @@ from typing import Any, Iterable, Sequence
 
 from benchmarks.transcript_emitter import (  # frozen v1.0 machinery
     DEFAULT_VERIFY_PATTERNS,
+    HEREDOC_PATH_LITERAL,
+    HEREDOC_READ_EVIDENCE,
+    HEREDOC_WRITE_EVIDENCE,
+    INTERPRETERS,
     PATH_INPUT_KEYS,
     TOOL_CLASS,
+    _basename,
     _canonical,
+    _git_is_write,
+    _inline_code,
     _lines_changed_from_patch,
+    _normalize_control_flow,
     _parse_ts,
     _post_state,
+    _pytest_targets,
+    _redirect_targets,
     _result_text,
+    _seg_is_read_only,
+    _seg_is_test_runner,
+    _seg_read_targets,
+    _seg_write_targets,
+    _seg_writes,
+    _segments,
     _sha256,
-    classify_bash,
+    _split_heredoc,
+    _tokenize,
+    _unwrap,
     relativize,
     result_status,
 )
@@ -107,20 +125,152 @@ def _pre_state(tool: str, tur: Any, status: str, targets: Sequence[str]) -> str 
     return None
 
 
+def decompose_bash(
+    command: str,
+    *,
+    verify_patterns: Sequence[re.Pattern[str]] = DEFAULT_VERIFY_PATTERNS,
+    read_only_patterns: Sequence[re.Pattern[str]] = (),
+) -> tuple[list[Effect], bool, int, list[str]]:
+    """C1. One Bash command → its effects in command order (D3a), with consecutive
+    same-class effects merged (D3b). Returns (effects, compound, segments, call_notes).
+
+    Every segment-level judgment is v1.0's, imported: what is a test runner, a
+    file write, a git index operation, read-only, a heredoc body with read or
+    write evidence. The only new logic is that those judgments are *emitted in
+    sequence* instead of collapsed by precedence. So a segment that v1.0 would
+    have called `mutate` inside a `verify` call is now its own `mutate`
+    sub-action with its own targets — the 29-of-45 hidden edits of audit
+    finding A.
+
+    A verify segment with an output redirection (`pytest > /tmp/out.txt`) emits
+    `verify` then `mutate(/tmp/out.txt)` with note `redirect:command-output`; the
+    write exists, and scoping (C3) is what makes it harmless.
+
+    Heredoc bodies attach to the *first* interpreter opener; with several
+    heredocs (`heredoc:multiple`) the combined body's evidence is attributed
+    once, not once per opener.
+
+    Merged `execute` sub-actions take rule `bash:git-index` if any component was
+    a git index operation, else `bash:fallback`, and note `merged:N`.
+    """
+    head, body, call_notes = _split_heredoc(command)
+    tokens, fallback = _tokenize(head)
+    segs = _normalize_control_flow(_segments(tokens))
+    if fallback:
+        call_notes.append("shlex:fallback-whitespace-split")
+    action_segs = [s for s in segs if _unwrap(s)[:1] != ["cd"]]
+
+    def _is_opener(s: list[str]) -> bool:
+        u = _unwrap(s)
+        return "<<" in s and bool(u) and INTERPRETERS.match(_basename(u[0])) is not None
+
+    body_is_code = bool(body) and any(_is_opener(s) for s in segs)
+    if body and not body_is_code:
+        call_notes.append("heredoc:prose")
+    code_body = body if body_is_code else ""
+    body_write = bool(code_body and HEREDOC_WRITE_EVIDENCE.search(code_body))
+    body_read = bool(code_body) and not body_write and bool(HEREDOC_READ_EVIDENCE.search(code_body))
+    body_literals = HEREDOC_PATH_LITERAL.findall(code_body) if code_body else []
+    body_attached = False
+
+    effects: list[Effect] = []
+    for s in action_segs:
+        u = _unwrap(s)
+        if not u:
+            continue  # a bare assignment; no effect
+        prog = _basename(u[0])
+        opener = _is_opener(s) and not body_attached
+        if opener:
+            body_attached = True
+        inline = _inline_code(s)
+        inline_write = bool(inline and HEREDOC_WRITE_EVIDENCE.search(inline))
+        inline_read = bool(inline) and not inline_write and bool(HEREDOC_READ_EVIDENCE.search(inline))
+        inline_literals = HEREDOC_PATH_LITERAL.findall(inline) if inline else []
+        notes: list[str] = []
+
+        if _seg_is_test_runner(s) or any(p.search(" ".join(s)) for p in verify_patterns):
+            effects.append(Effect("verify", "bash:test-runner", " ".join(u)[:80], [], _pytest_targets(s), []))
+            redirects = _redirect_targets(s)
+            if redirects:
+                effects.append(Effect("mutate", "bash:file-write", redirects[0], list(redirects), [], ["redirect:command-output"]))
+            continue
+
+        write_targets = list(_seg_write_targets(s))
+        write_signal = bool(write_targets) or _seg_writes(s)
+        if opener and body_write:
+            write_targets += body_literals
+            write_signal = True
+            notes.append("heredoc:write-evidence")
+        if inline_write:
+            write_targets += inline_literals
+            write_signal = True
+            notes.append("inline-code:write-evidence")
+        if write_signal:
+            if not write_targets:
+                notes.append("mutate:no-target")
+            effects.append(Effect("mutate", "bash:file-write", (write_targets[:1] or ["<no-target>"])[0], write_targets, [], notes))
+            continue
+
+        if _git_is_write(s):
+            effects.append(Effect("execute", "bash:git-index", " ".join(u[:3]), [], [], []))
+            continue
+
+        read_signal = _seg_is_read_only(s, read_only_patterns) or (opener and body_read) or inline_read
+        if read_signal:
+            targets = list(_seg_read_targets(s))
+            if opener and body_read:
+                targets += body_literals
+                notes.append("heredoc:read-evidence")
+            if inline_read:
+                targets += inline_literals
+                notes.append("inline-code:read-evidence")
+            if not targets:
+                notes.append("read:no-target")
+            effects.append(Effect("read", "bash:read-only", " ".join(u[:3])[:80], targets, [], notes))
+            continue
+
+        effects.append(Effect("execute", "bash:fallback", prog, [], [], [f"fallback:{prog}"] + (["heredoc"] if opener else [])))
+
+    if not effects:
+        effects = [Effect("execute", "bash:fallback", "", [], [], ["fallback:empty"])]
+
+    merged: list[Effect] = []
+    counts: list[int] = []
+    for e in effects:
+        if merged and merged[-1].action_class == e.action_class:
+            m = merged[-1]
+            m.targets = list(dict.fromkeys(m.targets + e.targets))
+            m.tests_run = sorted(set(m.tests_run + e.tests_run))
+            m.notes = list(dict.fromkeys(m.notes + e.notes))
+            if e.action_class == "execute" and e.rule == "bash:git-index":
+                m.rule = "bash:git-index"
+            if m.targets:
+                m.notes = [n for n in m.notes if n not in ("read:no-target", "mutate:no-target")]
+                if m.evidence in ("", "<no-target>"):
+                    m.evidence = m.targets[0]
+            counts[-1] += 1
+        else:
+            merged.append(Effect(e.action_class, e.rule, e.evidence, list(e.targets), list(e.tests_run), list(e.notes)))
+            counts.append(1)
+    for m, n in zip(merged, counts):
+        if n > 1:
+            m.notes.append(f"merged:{n}")
+    compound = len(merged) > 1 or len(action_segs) > 1 or bool(body)
+    return merged, compound, len(segs), call_notes
+
+
 def _effects_for_call(tool: str, tool_input: dict[str, Any], cwd: str | None, *,
                       verify_patterns: Sequence[re.Pattern[str]], read_only_patterns: Sequence[re.Pattern[str]]) -> tuple[list[Effect], bool, int, str]:
-    """Effects of one call, in order. Returns (effects, compound, segments, preview).
-
-    C2/C3 stage: exactly one effect per call, from v1.0's single-winner
-    classifier, so the log is v1.0-shaped plus the new fields. C1 replaces the
-    Bash branch with a decomposition.
-    """
+    """Effects of one call, in order. Returns (effects, compound, segments, preview)."""
     if tool == "Bash":
-        cls = classify_bash(str(tool_input.get("command", "")), verify_patterns=verify_patterns, read_only_patterns=read_only_patterns)
-        effect = Effect(cls["action_class"], cls["rule"], cls["evidence"],
-                        [relativize(t, cwd) for t in cls["targets"]], list(cls["tests_run"]), list(cls["notes"]))
+        effects, compound, segments, call_notes = decompose_bash(
+            str(tool_input.get("command", "")), verify_patterns=verify_patterns, read_only_patterns=read_only_patterns)
+        for e in effects:
+            e.targets = [relativize(t, cwd) for t in e.targets]
+        if call_notes:
+            effects[0].notes = list(dict.fromkeys(call_notes + effects[0].notes))
         preview = str(tool_input.get("command", ""))[:120].replace("\n", "⏎")
-        return [effect], cls["compound"], cls["segments"], preview
+        return effects, compound, segments, preview
     action_class, rule, note = TOOL_CLASS.get(tool, ("other", "tool:unknown", "unmapped tool"))
     targets: list[str] = []
     for k in PATH_INPUT_KEYS:

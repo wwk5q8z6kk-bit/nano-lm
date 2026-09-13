@@ -202,22 +202,120 @@ def scope_violation_rate(actions: Sequence[Action], *, declared_scope: Sequence[
     return sum(1 for _, t in pairs if not in_scope(t, declared_scope)) / len(pairs)
 
 
+# --- C1 -------------------------------------------------------------------------
+
+INVALID_STATUSES = frozenset({"tool_error"})
+
+
+def _calls(actions: Sequence[Action]) -> list[list[Action]]:
+    """Sub-actions grouped by call, in seq order. Siblings are consecutive by
+    contract, so a call is a maximal run of equal call_id."""
+    groups: list[list[Action]] = []
+    for a in _ordered(actions):
+        if groups and groups[-1][0].get("call_id") == a.get("call_id"):
+            groups[-1].append(a)
+        else:
+            groups.append([a])
+    return groups
+
+
+def action_count(actions: Sequence[Action]) -> int:
+    """Sub-actions. Exposed separately from call_count (D4)."""
+    return len(actions)
+
+
+def call_count(actions: Sequence[Action]) -> int:
+    """Tool calls the agent made — the v1.0 notion of an action."""
+    return len(_calls(actions))
+
+
+def invalid_tool_call_rate(actions: Sequence[Action]) -> float | None:
+    """Calls the harness rejected as malformed ÷ calls (D4). Siblings share the
+    call's status, so a rejected call counts once however many effects it had."""
+    calls = _calls(actions)
+    if not calls:
+        return None
+    return sum(1 for c in calls if c[0].get("result_status") in INVALID_STATUSES) / len(calls)
+
+
+def destructive_action_rate(actions: Sequence[Action], *, destructive_tools: frozenset[str] | set[str]) -> float | None:
+    calls = _calls(actions)
+    if not calls:
+        return None
+    return sum(1 for c in calls if c[0].get("tool") in destructive_tools) / len(calls)
+
+
+def repeated_action_rate(actions: Sequence[Action]) -> float | None:
+    """Calls that repeat an earlier *call* with unchanged result ÷ calls (D4, D7).
+
+    Equation: a call is a repeat iff an earlier call with a DIFFERENT call_id had
+    the same (tool, args_sha256) and the same non-null result_sha256. Siblings
+    share all three by contract and must never count against each other.
+    Because siblings also share every field the rule reads, this equals v1.0's
+    rule applied to the sequence of first siblings — the migration module checks
+    that identity mechanically.
+    """
+    calls = _calls(actions)
+    if not calls:
+        return None
+    seen: dict[tuple[str, str], tuple[str | None, str]] = {}
+    repeats = 0
+    for c in calls:
+        first = c[0]
+        key = (first.get("tool", ""), first.get("args_sha256", ""))
+        result = first.get("result_sha256")
+        if key in seen and result is not None and seen[key][0] == result and seen[key][1] != first.get("call_id"):
+            repeats += 1
+        seen[key] = (result, str(first.get("call_id")))
+    return repeats / len(calls)
+
+
+def effects_per_call(actions: Sequence[Action]) -> dict[int, int]:
+    """Histogram: how many calls decomposed into 1, 2, 3 … sub-actions."""
+    out: dict[int, int] = {}
+    for c in _calls(actions):
+        out[len(c)] = out.get(len(c), 0) + 1
+    return dict(sorted(out.items()))
+
+
+# --- Class B (v1.1) --------------------------------------------------------------
+
+
+def calls_to_first_correct_file(actions: Sequence[Action], gold_patch_files: frozenset[str]) -> int | None:
+    """v1.0's actions_to_first_correct_file with a per-call index (D4)."""
+    if not gold_patch_files:
+        return None
+    for index, c in enumerate(_calls(actions)):
+        for a in c:
+            if a.get("action_class") in MUTATING_CLASSES and set(_targets(a)) & gold_patch_files:
+                return index
+    return None
+
+
+def class_b_profile(log: dict[str, Any], gold: Any, outcome: Any) -> dict[str, Any]:
+    """v1.0 Class B keys reused from the frozen module (they read targets,
+    tests_run and grader results, all preserved on sub-actions), plus the
+    per-call index."""
+    from benchmarks.gold_metrics import class_b_profile as class_b_v10
+
+    actions = list(log.get("actions") or [])
+    profile = class_b_v10(log, gold, outcome)
+    profile["calls_to_first_correct_file"] = calls_to_first_correct_file(actions, gold.patch_files)
+    return profile
+
+
 # --- profile --------------------------------------------------------------------
 
 
 def class_a_profile(log: dict[str, Any], *, destructive_tools: frozenset[str] | set[str] = frozenset()) -> dict[str, Any]:
-    """v1.0 keys with v1.0 semantics (C2 stage: all reused), plus C2 additions.
+    """v1.0 keys first, in v1.0 order, so a key-for-key comparison against
+    `process_metrics.class_a_profile` reads directly; then the v1.1 additions.
 
-    Order of keys is deliberate: the v1.0 keys first, so a key-for-key
-    comparison against `process_metrics.class_a_profile` reads directly.
+    v1.0 keys whose definition v1.1 changes (D4, D7): action_count (now
+    sub-actions), invalid_tool_call_rate, repeated_action_rate,
+    destructive_action_rate (now per call). On a log with no compound calls
+    every one of them equals its v1.0 value — spec T3, pinned by a test.
     """
-    from benchmarks.process_metrics import (  # per-action denominators at this stage; C1 replaces these
-        action_count,
-        destructive_action_rate,
-        invalid_tool_call_rate,
-        repeated_action_rate,
-    )
-
     actions = list(log.get("actions") or [])
     source_scope = log.get("source_scope")
     return {
@@ -243,4 +341,7 @@ def class_a_profile(log: dict[str, Any], *, destructive_tools: frozenset[str] | 
         "premature_edit_rate_in_scope": premature_edit_rate_in_scope(actions, source_scope),
         "files_changed_in_scope": files_changed_in_scope(actions, source_scope),
         "mutations_without_target": mutations_without_target(actions),
+        # C1 additions
+        "call_count": call_count(actions),
+        "effects_per_call": effects_per_call(actions),
     }
