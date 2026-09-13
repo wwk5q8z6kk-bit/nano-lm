@@ -231,6 +231,130 @@ class ContextBudgetTest(unittest.TestCase):
         self.assertNotIn("len(prompt) + len(target)", src)
 
 
+class TokenizerIdentityTest(unittest.TestCase):
+    """The run report must prove WHICH tokenizer ran, not just name one.
+
+    config_for_run never set `tokenizer`, so a wave launched into the BPE
+    namespace would have run character-level and reported itself as BPE in its
+    own provenance. Plumbing the flag fixes the cause; the fingerprint makes the
+    symptom detectable, which matters because the frozen provenance classes are
+    distinguished by exactly this property.
+    """
+
+    def test_fingerprint_separates_the_two_tokenizers(self) -> None:
+        from nanoscribe.native.integrity import tokenizer_fingerprint
+
+        h = tokenizer_fingerprint(_cfg(tokenizer="hash"))
+        b = tokenizer_fingerprint(_cfg(tokenizer="bpe", vocab_size=4098))
+        self.assertNotEqual(h["probe_id_sha256_12"], b["probe_id_sha256_12"])
+        self.assertLess(b["probe_token_count"], h["probe_token_count"])
+        self.assertTrue(h["roundtrip_lossless"] and b["roundtrip_lossless"])
+
+    def test_identity_gate_rejects_a_lossy_tokenizer(self) -> None:
+        """A tokenizer that mangles whitespace reintroduces D3.2."""
+        from nanoscribe.native import integrity, tokenize
+
+        original = tokenize.detokenize
+        tokenize.detokenize = lambda ids, v: "mangled"
+        try:
+            with self.assertRaises(IntegrityError) as ctx:
+                integrity.assert_tokenizer_identity(_cfg(tokenizer="hash"))
+            self.assertIn("does not round-trip", str(ctx.exception))
+        finally:
+            tokenize.detokenize = original
+
+    def test_identity_gate_rejects_ids_outside_the_embedding(self) -> None:
+        """An id past the embedding must be a named error, not a runtime crash.
+
+        Targeted directly: a tokenizer that round-trips but emits an
+        out-of-range id. Shrinking vocab_size instead trips the round-trip
+        check first, because `_char_for_token` cannot invert ids it never had.
+        """
+        from nanoscribe.native import integrity, tokenize
+
+        enc, dec = tokenize.hash_tokens, tokenize.detokenize
+        tokenize.hash_tokens = lambda t, v, max_len=None: [v + 5]
+        tokenize.detokenize = lambda ids, v: (
+            'clinician: any pain?\n\tpatient: my throat is sore.'
+        )
+        try:
+            with self.assertRaises(IntegrityError) as ctx:
+                integrity.assert_tokenizer_identity(_cfg(tokenizer="hash"))
+            self.assertIn("vocab_size", str(ctx.exception))
+        finally:
+            tokenize.hash_tokens, tokenize.detokenize = enc, dec
+
+    def test_REGRESSION_deliberate_mismatch_is_detected(self) -> None:
+        """Deliberately create the mismatch and prove the gate fails.
+
+        Simulates a `config_for_run` return branch that drops the tokenizer
+        flag: the launcher requests bpe, the config comes back hash. Before the
+        guard existed this ran silently and mislabelled its own provenance.
+        """
+        import os
+
+        from nanoscribe.native import integrity
+
+        saved = os.environ.get("NANO_NATIVE_TOKENIZER")
+        try:
+            os.environ["NANO_NATIVE_TOKENIZER"] = "bpe"
+            dropped = _cfg(tokenizer="hash")  # the branch that forgot the flag
+            with self.assertRaises(IntegrityError) as ctx:
+                integrity.assert_requested_tokenizer_honoured(dropped)
+            msg = str(ctx.exception)
+            self.assertIn("NOT honoured", msg)
+            self.assertIn("'bpe'", msg)
+            self.assertIn("'hash'", msg)
+
+            # And the full identity gate must also reject it, not just the helper.
+            with self.assertRaises(IntegrityError):
+                integrity.assert_tokenizer_identity(dropped)
+
+            # The honoured case passes and records the request.
+            ok = integrity.assert_tokenizer_identity(_cfg(tokenizer="bpe", vocab_size=4098))
+            self.assertEqual(ok["requested"], "bpe")
+            self.assertTrue(ok["request_honoured"])
+        finally:
+            os.environ.pop("NANO_NATIVE_TOKENIZER", None)
+            if saved is not None:
+                os.environ["NANO_NATIVE_TOKENIZER"] = saved
+
+    def test_no_request_means_config_is_authoritative(self) -> None:
+        """Absent a request there is nothing to compare — must not false-fire."""
+        import os
+
+        from nanoscribe.native import integrity
+
+        saved = os.environ.pop("NANO_NATIVE_TOKENIZER", None)
+        try:
+            self.assertIsNone(integrity.assert_requested_tokenizer_honoured(_cfg()))
+            fp = integrity.assert_tokenizer_identity(_cfg(tokenizer="hash"))
+            self.assertIsNone(fp["requested"])
+            self.assertTrue(fp["request_honoured"])
+        finally:
+            if saved is not None:
+                os.environ["NANO_NATIVE_TOKENIZER"] = saved
+
+    def test_config_for_run_honours_the_env_override(self) -> None:
+        import os
+
+        from nanoscribe.native.config import config_for_run
+
+        saved = os.environ.get("NANO_NATIVE_TOKENIZER")
+        try:
+            os.environ.pop("NANO_NATIVE_TOKENIZER", None)
+            self.assertEqual(config_for_run("reval30_decoder_control_s0").tokenizer, "hash")
+            os.environ["NANO_NATIVE_TOKENIZER"] = "bpe"
+            self.assertEqual(config_for_run("reval30_decoder_control_s0").tokenizer, "bpe")
+            os.environ["NANO_NATIVE_TOKENIZER"] = "not-a-tokenizer"
+            with self.assertRaises(ValueError):
+                config_for_run("reval30_decoder_control_s0")
+        finally:
+            os.environ.pop("NANO_NATIVE_TOKENIZER", None)
+            if saved is not None:
+                os.environ["NANO_NATIVE_TOKENIZER"] = saved
+
+
 @unittest.skipIf(torch is None, "torch required")
 class SupervisedTokenCountTest(unittest.TestCase):
     """D7 — the BPB numerator must count TOKENS, not characters.

@@ -113,6 +113,7 @@ class IntegrityReport:
     prompt_tokens_at_cap: int
     max_seq: int
     context_budget: dict[str, Any] | None = None
+    tokenizer: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -124,6 +125,7 @@ class IntegrityReport:
             "prompt_tokens_at_cap": self.prompt_tokens_at_cap,
             "max_seq": self.max_seq,
             "context_budget": self.context_budget,
+            "tokenizer": self.tokenizer,
         }
 
 
@@ -507,6 +509,91 @@ def assert_context_budget(rows: Any, cfg: Any) -> dict[str, Any]:
     }
 
 
+def tokenizer_fingerprint(cfg: Any) -> dict[str, Any]:
+    """Identify the tokenizer that ACTUALLY ran, not the one the name claims.
+
+    `config_for_run` previously never set `tokenizer`, so a wave launched into
+    the BPE namespace would have run character-level while reporting itself as
+    BPE in its own provenance. Plumbing the flag fixes the cause; this makes the
+    symptom detectable after the fact, which matters because the four frozen
+    provenance classes are distinguished by exactly this property.
+
+    The probe deliberately contains `\n` and `\t`: D3.2 was a whitespace
+    round-trip defect, so whitespace belongs in any tokenizer identity check.
+    """
+    import hashlib
+
+    from nanoscribe.native.tokenize import resolve_tokenizer
+
+    name = getattr(cfg, "tokenizer", "hash")
+    encode, decode = resolve_tokenizer(name)
+    probe = 'clinician: any pain?\n\tpatient: my throat is sore.'
+    ids = encode(probe, cfg.vocab_size)
+    return {
+        "name": name,
+        "probe_token_count": len(ids),
+        "probe_id_sha256_12": hashlib.sha256(
+            ",".join(map(str, ids)).encode()
+        ).hexdigest()[:12],
+        "roundtrip_lossless": decode(ids, cfg.vocab_size) == probe,
+        "max_id": max(ids) if ids else 0,
+        "vocab_size": cfg.vocab_size,
+    }
+
+
+def assert_requested_tokenizer_honoured(cfg: Any) -> str | None:
+    """The tokenizer the launcher ASKED for must equal the one in the config.
+
+    This is the guard the fingerprint alone cannot provide. `tokenizer_fingerprint`
+    derives everything from `cfg.tokenizer`, so it faithfully reports whatever the
+    config says — including when the config is wrong. An independent second source
+    is required, and the launch request is it.
+
+    The defect this exists for was real and live: `config_for_run` had three
+    `NativeTrainConfig(...)` return sites and none set `tokenizer`, so a wave
+    launched with `NANO_NATIVE_TOKENIZER=bpe` into `reval_results_bpe/` would have
+    run character-level and recorded `tokenizer: "hash"` in its own provenance.
+    Every downstream reader would have seen a BPE-namespaced, char-level result.
+
+    Returns the requested name, or None when nothing was requested (the default
+    path, where `cfg.tokenizer` is authoritative and there is nothing to compare).
+    """
+    import os
+
+    requested = os.environ.get("NANO_NATIVE_TOKENIZER")
+    if not requested:
+        return None
+    resolved = getattr(cfg, "tokenizer", "hash")
+    if requested != resolved:
+        raise IntegrityError(
+            f"tokenizer request was NOT honoured: launcher asked for "
+            f"{requested!r} but the config resolved to {resolved!r}. A run would "
+            f"execute {resolved!r} while its namespace and provenance claim "
+            f"{requested!r}. Check every NativeTrainConfig return site in "
+            f"config_for_run. See DEFECT_INDEX D3.3 / PREREG section 8."
+        )
+    return requested
+
+
+def assert_tokenizer_identity(cfg: Any) -> dict[str, Any]:
+    """Gate: the tokenizer must round-trip and stay inside the embedding."""
+    requested = assert_requested_tokenizer_honoured(cfg)
+    fp = tokenizer_fingerprint(cfg)
+    fp["requested"] = requested
+    fp["request_honoured"] = requested is None or requested == fp["name"]
+    if not fp["roundtrip_lossless"]:
+        raise IntegrityError(
+            f"tokenizer {fp['name']!r} does not round-trip a probe containing "
+            f"newline and tab: this reintroduces D3.2 under a new name."
+        )
+    if fp["max_id"] >= cfg.vocab_size:
+        raise IntegrityError(
+            f"tokenizer {fp['name']!r} produced id {fp['max_id']} >= vocab_size "
+            f"{cfg.vocab_size}: the embedding cannot represent it."
+        )
+    return fp
+
+
 def run_startup_gate(model: Any, rows: Any, cfg: Any) -> IntegrityReport:
     """Run every defect gate. Raises `IntegrityError` on the first failure.
 
@@ -517,6 +604,7 @@ def run_startup_gate(model: Any, rows: Any, cfg: Any) -> IntegrityReport:
     supervised, sampled = assert_target_present_in_loss(rows, cfg)
     capped = assert_prompt_not_silently_capped(cfg)
     budget = assert_context_budget(rows, cfg)
+    tokenizer = assert_tokenizer_identity(cfg)
     return IntegrityReport(
         attention_leakage=leakage,
         attention_matches_reference=True,
@@ -526,4 +614,5 @@ def run_startup_gate(model: Any, rows: Any, cfg: Any) -> IntegrityReport:
         prompt_tokens_at_cap=capped,
         max_seq=cfg.max_seq,
         context_budget=budget,
+        tokenizer=tokenizer,
     )

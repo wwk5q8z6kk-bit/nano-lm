@@ -158,7 +158,33 @@ REVALIDATION_MAX_STEPS = 1800
 REVALIDATION_BATCH_SIZE = 32
 
 
-def config_for_run(run_id: str, *, cpu_smoke: bool = False) -> NativeTrainConfig:
+def _resolve_tokenizer_name(explicit: str | None = None) -> str:
+    """Which tokenizer this run should use.
+
+    Precedence: explicit arg > NANO_NATIVE_TOKENIZER env > "hash".
+
+    The env override mirrors NANO_NATIVE_CHECKPOINT_DIR, which is how the
+    causalfix and gated waves redirected their checkpoints — same shape, same
+    place in the launch command, so it is hard to set one and forget the other.
+
+    The name is VALIDATED here rather than at first use. Without this,
+    `config_for_run` always returned tokenizer="hash", so a wave launched into
+    the BPE namespace would have run character-level and reported itself as BPE
+    in its own provenance — exactly the silent-mislabeling class in
+    artifacts/DEFECT_INDEX.md.
+    """
+    import os
+
+    from nanoscribe.native.tokenize import resolve_tokenizer
+
+    name = explicit or os.environ.get("NANO_NATIVE_TOKENIZER") or "hash"
+    resolve_tokenizer(name)  # raises ValueError on an unknown name
+    return name
+
+
+def config_for_run(
+    run_id: str, *, cpu_smoke: bool = False, tokenizer: str | None = None
+) -> NativeTrainConfig:
     from nanoscribe.native.factorial import (
         REVALIDATION_ARMS,
         canonical_run_id,
@@ -175,6 +201,7 @@ def config_for_run(run_id: str, *, cpu_smoke: bool = False) -> NativeTrainConfig
                 arm.params_m, evidence_aware=variant == NativeVariant.NATIVE_B
             )
             return NativeTrainConfig(
+                tokenizer=_resolve_tokenizer_name(tokenizer),
                 run_id=run_id,
                 variant=variant,
                 cell=None,
@@ -212,6 +239,7 @@ def config_for_run(run_id: str, *, cpu_smoke: bool = False) -> NativeTrainConfig
                     evidence_aware=variant == NativeVariant.NATIVE_B,
                 )
                 return NativeTrainConfig(
+                    tokenizer=_resolve_tokenizer_name(tokenizer),
                     run_id=rid,
                     variant=variant,
                     cell=None,
@@ -232,6 +260,7 @@ def config_for_run(run_id: str, *, cpu_smoke: bool = False) -> NativeTrainConfig
             if run_id in {canonical_run_id(cell, seed), legacy_run_id(cell, seed)}:
                 variant = _variant_for_arch(cell.arch)
                 return NativeTrainConfig(
+                    tokenizer=_resolve_tokenizer_name(tokenizer),
                     run_id=canonical_run_id(cell, seed),
                     variant=variant,
                     cell=cell,
