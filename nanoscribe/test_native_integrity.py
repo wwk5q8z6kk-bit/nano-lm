@@ -41,6 +41,40 @@ except ImportError:  # pragma: no cover
     pass
 
 
+_SAVED_TOKENIZER_ENV: str | None = None
+
+
+def setUpModule() -> None:
+    """Neutralise NANO_NATIVE_TOKENIZER for the whole module.
+
+    Most tests here build a config directly with `_cfg()`, which bypasses
+    `config_for_run` and therefore has no launch request attached. If the
+    ambient environment requests a tokenizer, `assert_requested_tokenizer_honoured`
+    correctly reports a mismatch against `_cfg()`'s default and the suite fails
+    for a reason unconnected to the code under test.
+
+    That is the same defect this session fixed in
+    `test_candidate_raw_value_when_quote_missing`: a test whose result depends
+    on ambient state cannot serve as a pre-launch gate, because it is red or
+    green depending on how you invoked it. It was caught here by running the
+    suite with NANO_NATIVE_TOKENIZER=bpe exported during the D3.3 pre-launch
+    check — the launch configuration itself.
+
+    Tests that need a request set it explicitly and restore it themselves.
+    """
+    import os
+
+    global _SAVED_TOKENIZER_ENV
+    _SAVED_TOKENIZER_ENV = os.environ.pop("NANO_NATIVE_TOKENIZER", None)
+
+
+def tearDownModule() -> None:
+    import os
+
+    if _SAVED_TOKENIZER_ENV is not None:
+        os.environ["NANO_NATIVE_TOKENIZER"] = _SAVED_TOKENIZER_ENV
+
+
 def _cfg(**over) -> NativeTrainConfig:
     base = dict(
         run_id="integrity_test",

@@ -271,8 +271,18 @@ def config_for_run(
     raise ValueError(f"unknown run_id: {run_id}")
 
 
-def smoke_config(*, variant: NativeVariant = NativeVariant.NATIVE_A) -> NativeTrainConfig:
+def smoke_config(
+    *, variant: NativeVariant = NativeVariant.NATIVE_A, tokenizer: str | None = None
+) -> NativeTrainConfig:
+    """Smoke config. Honours NANO_NATIVE_TOKENIZER like `config_for_run`.
+
+    This was the second factory that ignored the request: a smoke run launched
+    under a BPE configuration silently produced a character-level run. Same
+    defect as the `config_for_run` return sites, in a second place — which is
+    why the fix is a shared resolver rather than a per-callsite default.
+    """
     return NativeTrainConfig(
+        tokenizer=_resolve_tokenizer_name(tokenizer),
         run_id="smoke_cpu",
         variant=variant,
         cell=None,
