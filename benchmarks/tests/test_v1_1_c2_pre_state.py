@@ -84,7 +84,7 @@ def test_v1_1_fixtures_match_generator():
     expected = {f"{name}.jsonl": gen.render(s) for name, s in gen.scenarios().items()}
     on_disk = {p.name: p.read_text() for p in FIX.glob("*.jsonl")}
     assert on_disk == expected, "regenerate with make_synthetic_v1_1.py"
-    assert len(expected) == 14
+    assert len(expected) == 15
 
 
 @pytest.mark.parametrize("path", sorted(FIX.glob("*.jsonl")), ids=lambda p: p.stem)

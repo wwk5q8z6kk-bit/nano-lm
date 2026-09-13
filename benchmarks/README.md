@@ -23,7 +23,9 @@ Layer-1 truth remains `papers/EVIDENCE_LEDGER.md` and the post-α freeze artifac
 | `transcript_sanitizer.py` | structure-preserving redaction of Claude Code transcripts | produces the fixtures |
 | `fixtures/transcripts/` | 4 sanitized sessions + 1 synthetic, with README and MANIFEST | instrument fixtures, not evidence |
 | `transcript_emitter.py` | transcript → action log + classification trace | v1; v1.1 revision specified |
-| `validation/` | runs the emitter over real sessions as a labelled instrument validation | the only reader of `~/.claude/projects/` |
+| `validation/` | runs the v1.0 emitter over real sessions as a labelled instrument validation | reads `~/.claude/projects/` (frozen) |
+| `v1_1/` | contract v1.1: schema, emitter, metrics, 15 semantic fixtures, migration comparator, the authorized side-by-side rerun | separate path; v1.0 untouched |
+| `tests/test_v1_0_freeze.py` | asserts every v1.0 file is byte-identical to `18e410c` (fixture corpus pinned by digest) | the freeze, made structural |
 | `reports/` | Gate 0 report | operational |
 | `suites/`, `contamination/`, `generators/`, `scorecards/` | placeholders | empty |
 
@@ -118,3 +120,44 @@ Validated on 62 sessions / 1899 actions and audited by hand (180 classifications
 The audit found three contract-level limitations and produced a v1.1 specification
 (`call_id` sub-actions, `pre_state_sha256`, scoped `declared_scope`) that is deliberately
 not implemented here: `artifacts/instrument-validation-transcripts/audit-and-contract-decision.md`.
+
+## Contract v1.1 (`v1_1/`)
+
+v1.0 is frozen permanently (owner decision, 2026-09-13). v1.1 lives in its own
+package and imports v1.0's frozen segment-level machinery rather than copying it,
+so a single command segment classifies identically under both contracts by
+construction. Three changes, landed as three stages with their own fixtures and
+tests (C2 → C3 → C1), decided in
+`artifacts/instrument-validation-transcripts/v1.1-migration-spec.md`:
+
+- **C2 `pre_state_sha256`** on mutations, from the transcript's `originalFile`;
+  null on Write-create, non-ok results, Bash, and multi-target mutations, with no
+  sentinel. `reversion_count` seeds history with it, so returning a file to its
+  initial content is visible; no-op mutations are excluded and counted.
+- **C3 `declared_scope` / `source_scope`**: harness declarations written verbatim,
+  never inferred. Additive `*_in_scope` metrics; the v1.0 keys keep v1.0 meaning.
+  A report written to `artifacts/` after a real verify no longer reads as
+  "shipped unverified".
+- **C1 `call_id`**: one Bash call decomposes into its effects in command order,
+  consecutive same-class effects merged, all four classes participating. Siblings
+  share the call's args, result and status; tokens and time sit on the first.
+  Behavioural rates use per-call denominators; same-call siblings never count as
+  repeats. The 29-of-45 hidden edits of the v1.0 audit become their own `mutate`
+  sub-actions.
+
+`v1_1/migration.py` emits both contracts side by side and must **explain every
+changed value mechanically** — each explanation category has a predicate; a
+delta that fails its predicate is `unexplained` and fails the gate. On the
+checked-in fixtures the gate passes with zero unexplained deltas
+(`artifacts/.../v1.1-migration/fixture-delta.md`). `v1_1/migration_rerun.py` is
+the single authorized rerun over real sessions, labelled migration evidence.
+
+Three spec statements were corrected by the side-by-side runs and are recorded in
+the tests rather than smoothed over: verify *presence* is per call (the sub-action
+count can exceed it when two test segments are separated by another effect);
+`scope_violation_rate` does change on compound fixtures because split writes add
+mutation-target pairs; and v1.0 mutate targets are not a subset of v1.1's, because
+v1.0 pooled heredoc and inline evidence per call and over-attributed read-only
+literals as mutate targets (a v1.0 defect, documented and reproduced as fixture
+F15, not patched — v1.0 is frozen). The authorized 62-transcript rerun passed the
+gate with zero unexplained deltas: `artifacts/.../v1.1-migration/`.

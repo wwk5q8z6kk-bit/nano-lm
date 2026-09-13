@@ -1,4 +1,4 @@
-"""Generate the fourteen v1.1 semantic fixtures (migration spec §5.1, F1–F14).
+"""Generate the fifteen v1.1 semantic fixtures (migration spec §5.1, F1–F14, plus F15 from the rerun).
 
 One transcript file per scenario under `synthetic/`, each with real fake content
 so exact values can be asserted. The v1.0 synthetic fixture is untouched.
@@ -161,6 +161,13 @@ def scenarios() -> dict[str, Session]:
     f = s["F14_docs_only"] = Session(); f.prompt("docs")
     f.read("t0", "docs/x.md", "# x\n")
     f.edit("t1", "docs/x.md", "# x\n", "# x", "# y")
+
+    # Found by the 62-transcript rerun: one call whose heredoc WRITES one file
+    # and whose later `python -c` only READS another. v1.0 pooled the evidence
+    # and attributed both literals as mutate targets; v1.1 attributes each to
+    # its own segment.
+    f = s["F15_mixed_evidence_over_attribution"] = Session(); f.prompt("fix and check")
+    f.bash("t0", "python3 - <<'PY'\nfrom pathlib import Path\np = Path('src/gen.py'); p.write_text('x')\nPY\npython3 src/gen.py\npython3 -c \"import json; print(json.load(open('out/manifest.json')))\"", "ok")
     return s
 
 
