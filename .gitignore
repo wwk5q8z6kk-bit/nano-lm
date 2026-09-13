@@ -41,6 +41,12 @@ papers/latex/*.blg
 !artifacts/durable_raw/
 !artifacts/durable_raw/**
 
+# Benchmark instrument fixtures (explicitly tracked; overrides *.jsonl ignore).
+# The v1.0 corpus was silently excluded by the rule above at the freeze commit
+# 18e410c; its content is pinned by digest in benchmarks/tests/test_v1_0_freeze.py.
+!benchmarks/fixtures/transcripts/*.jsonl
+!benchmarks/v1_1/fixtures/synthetic/*.jsonl
+
 
 # Benchmark lab generated runs (Program 0+)
 experiments/**/runs/
