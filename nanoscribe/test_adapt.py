@@ -507,6 +507,52 @@ def test_run_campaign_eval_fixture_smoke() -> None:
     assert agg["layers"]["malformed"] == 0
 
 
+
+def test_extract_span_port_line_empty() -> None:
+    assert extract_span_port_line("") == ""
+    assert extract_span_port_line("   ") == ""
+    assert extract_span_port_line("\n\n") == ""
+
+def test_extract_span_port_line_no_label() -> None:
+    raw = (
+        "This is a line\n"
+        "And another\n"
+        "Without any labels"
+    )
+    assert extract_span_port_line(raw) == "This is a line"
+
+def test_extract_span_port_line_multiple_labels() -> None:
+    raw = (
+        "STATED: \"first\"\n"
+        "DENIED: \"second\"\n"
+    )
+    assert extract_span_port_line(raw) == 'STATED: "first"'
+
+def test_extract_span_port_line_whitespace_around_label() -> None:
+    raw = (
+        "\n"
+        "   UNCERTAIN: \"maybe\"  \n"
+        "\n"
+    )
+    assert extract_span_port_line(raw) == 'UNCERTAIN: "maybe"'
+
+def test_extract_span_port_line_first_line_is_label() -> None:
+    raw = (
+        "NOT_MENTIONED\n"
+        "Something else"
+    )
+    assert extract_span_port_line(raw) == "NOT_MENTIONED"
+
+def test_extract_span_port_line_valid_label_after_non_empty_lines() -> None:
+    raw = (
+        "Some thoughts.\n"
+        "More non-empty thoughts.\n"
+        "STATED: \"symptom\"\n"
+        "Something else"
+    )
+    assert extract_span_port_line(raw) == 'STATED: "symptom"'
+
+
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     for name, fn in fns:
