@@ -802,6 +802,35 @@ def test_independent_verifier_can_declare_semantic_support() -> None:
     )
 
 
+def test_classify_construction() -> None:
+    from nanoscribe.evaluate import _classify_construction, _INVALID_SPAN_CODES
+    from nanoscribe.encounter import EncounterError
+
+    # Test unknown_source
+    err = EncounterError("unknown_source", "test message")
+    assert _classify_construction(err) == (True, True)
+
+    # Test invalid span codes
+    for code in _INVALID_SPAN_CODES:
+        err = EncounterError(code, "test message")
+        assert _classify_construction(err) == (True, True)
+
+    # Test unknown_evidence and duplicate_id
+    for code in {"unknown_evidence", "duplicate_id"}:
+        err = EncounterError(code, "test message")
+        assert _classify_construction(err) == (True, True)
+
+    # Test missing_field and type_error
+    for code in {"type_error", "missing_field"}:
+        err = EncounterError(code, "test message")
+        assert _classify_construction(err) == (True, True)
+
+    # Test other error types (should be malformed=True, critical=False)
+    for code in {"generic_error"}:
+        err = EncounterError(code, "test message")
+        assert _classify_construction(err) == (True, False)
+
+
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     for name, fn in fns:
