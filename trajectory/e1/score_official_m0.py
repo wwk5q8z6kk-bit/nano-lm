@@ -352,12 +352,81 @@ def load_ownstack_lora_predictor(ckpt_path: Path):
 # Pythia-160M LoRA
 # ---------------------------------------------------------------------------
 
+def _load_pythia_data(tok, max_len: int, eos_id: int):
+    v2_src = (REPO / "scribe" / "build_scribe_data_v2.py").read_text()
+    prefix = v2_src.split("tok = Tokenizer.from_file")[0].replace(
+        "from tokenizers import Tokenizer", ""
+    )
+    ns = {}
+    exec(compile(prefix, "v2[prefix]", "exec"), ns)
+    convos = ns["convos"]
+    assert len(convos) == 12000
+
+    def encode_example(convo):
+        p_ids = tok.encode(convo[0]["content"] + "\n")
+        t_ids = tok.encode(convo[1]["content"]) + [eos_id]
+        return p_ids + t_ids, [-100] * len(p_ids) + t_ids
+
+    examples, dropped = [], 0
+    for c in convos:
+        ids, labels = encode_example(c)
+        if len(ids) > max_len:
+            dropped += 1
+            continue
+        examples.append((ids, labels))
+    print(f"[pythia-lora] train examples {len(examples)} (dropped {dropped})", flush=True)
+    return examples
+
+
+def _pythia_batches(data, bs, eos_id: int, dev):
+    idx = list(range(len(data)))
+    random.shuffle(idx)
+    for i in range(0, len(idx) - bs + 1, bs):
+        chunk = [data[j] for j in idx[i : i + bs]]
+        Lmax = max(len(x[0]) for x in chunk)
+        x = torch.full((bs, Lmax), eos_id, dtype=torch.long)
+        y = torch.full((bs, Lmax), -100, dtype=torch.long)
+        m = torch.zeros((bs, Lmax), dtype=torch.long)
+        for r, (ids, labels) in enumerate(chunk):
+            x[r, : len(ids)] = torch.tensor(ids)
+            y[r, : len(labels)] = torch.tensor(labels)
+            m[r, : len(ids)] = 1
+        yield x.to(dev), y.to(dev), m.to(dev)
+
+
+def _run_pythia_training(
+    model, examples, opt, epochs, micro_batch, accum, eos_id, dev, t0
+):
+    total_steps = (len(examples) // (micro_batch * accum)) * epochs
+    step = 0
+    model.train()
+    for ep in range(epochs):
+        micro = 0
+        opt.zero_grad(set_to_none=True)
+        for x, y, m in _pythia_batches(examples, micro_batch, eos_id, dev):
+            out = model(input_ids=x, attention_mask=m, labels=y)
+            (out.loss / accum).backward()
+            micro += 1
+            if micro % accum == 0:
+                torch.nn.utils.clip_grad_norm_(
+                    (p for p in model.parameters() if p.requires_grad), 1.0
+                )
+                opt.step()
+                opt.zero_grad(set_to_none=True)
+                step += 1
+                if step % 50 == 0 or step == 1:
+                    print(
+                        f"[pythia-lora] ep{ep} step {step}/{total_steps} "
+                        f"loss {out.loss.item():.3f} ({(time.time()-t0)/60:.1f} min)",
+                        flush=True,
+                    )
+
+
 def train_pythia_lora(force: bool = False):
     from peft import LoraConfig, get_peft_model
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     out_dir = OUT_CKPT / "pythia160m_lora"
-    marker = out_dir / "adapter_model.safetensors"
     marker2 = out_dir / "adapter_config.json"
     if marker2.exists() and not force:
         print(f"[pythia-lora] reuse {out_dir}", flush=True)
@@ -381,47 +450,11 @@ def train_pythia_lora(force: bool = False):
     np.random.seed(SEED)
     torch.manual_seed(SEED)
 
-    v2_src = (REPO / "scribe" / "build_scribe_data_v2.py").read_text()
-    prefix = v2_src.split("tok = Tokenizer.from_file")[0].replace(
-        "from tokenizers import Tokenizer", ""
-    )
-    ns = {}
-    exec(compile(prefix, "v2[prefix]", "exec"), ns)
-    convos = ns["convos"]
-    assert len(convos) == 12000
-
     tok = AutoTokenizer.from_pretrained(MODEL)
     tok.pad_token = tok.eos_token
     EOS = tok.eos_token_id
 
-    def encode_example(convo):
-        p_ids = tok.encode(convo[0]["content"] + "\n")
-        t_ids = tok.encode(convo[1]["content"]) + [EOS]
-        return p_ids + t_ids, [-100] * len(p_ids) + t_ids
-
-    examples, dropped = [], 0
-    for c in convos:
-        ids, labels = encode_example(c)
-        if len(ids) > MAX_LEN:
-            dropped += 1
-            continue
-        examples.append((ids, labels))
-    print(f"[pythia-lora] train examples {len(examples)} (dropped {dropped})", flush=True)
-
-    def batches(data, bs):
-        idx = list(range(len(data)))
-        random.shuffle(idx)
-        for i in range(0, len(idx) - bs + 1, bs):
-            chunk = [data[j] for j in idx[i : i + bs]]
-            Lmax = max(len(x[0]) for x in chunk)
-            x = torch.full((bs, Lmax), EOS, dtype=torch.long)
-            y = torch.full((bs, Lmax), -100, dtype=torch.long)
-            m = torch.zeros((bs, Lmax), dtype=torch.long)
-            for r, (ids, labels) in enumerate(chunk):
-                x[r, : len(ids)] = torch.tensor(ids)
-                y[r, : len(labels)] = torch.tensor(labels)
-                m[r, : len(ids)] = 1
-            yield x.to(dev), y.to(dev), m.to(dev)
+    examples = _load_pythia_data(tok, MAX_LEN, EOS)
 
     print(f"[pythia-lora] loading {MODEL} on {dev}...", flush=True)
     model = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32).to(dev)
@@ -440,30 +473,12 @@ def train_pythia_lora(force: bool = False):
         (p for p in model.parameters() if p.requires_grad),
         lr=LR, betas=(0.9, 0.95), weight_decay=0.0,
     )
-    total_steps = (len(examples) // (MICRO_BATCH * ACCUM)) * EPOCHS
     t0 = time.time()
-    step = 0
-    model.train()
-    for ep in range(EPOCHS):
-        micro = 0
-        opt.zero_grad(set_to_none=True)
-        for x, y, m in batches(examples, MICRO_BATCH):
-            out = model(input_ids=x, attention_mask=m, labels=y)
-            (out.loss / ACCUM).backward()
-            micro += 1
-            if micro % ACCUM == 0:
-                torch.nn.utils.clip_grad_norm_(
-                    (p for p in model.parameters() if p.requires_grad), 1.0
-                )
-                opt.step()
-                opt.zero_grad(set_to_none=True)
-                step += 1
-                if step % 50 == 0 or step == 1:
-                    print(
-                        f"[pythia-lora] ep{ep} step {step}/{total_steps} "
-                        f"loss {out.loss.item():.3f} ({(time.time()-t0)/60:.1f} min)",
-                        flush=True,
-                    )
+
+    _run_pythia_training(
+        model, examples, opt, EPOCHS, MICRO_BATCH, ACCUM, EOS, dev, t0
+    )
+
     print(f"[pythia-lora] done in {(time.time()-t0)/60:.1f} min", flush=True)
     out_dir.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(str(out_dir))
