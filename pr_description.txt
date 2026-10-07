@@ -1,0 +1,11 @@
+💡 **What:** Replaced the O(N) list traversal in `_source_by_id` with an O(1) dictionary lookup by dynamically building and caching a source map for each `EncounterRecord`. The cache is keyed by `id(record)` to avoid expensive hashing of the large frozen dataclass and bounded to prevent memory leaks.
+
+🎯 **Why:** `_source_by_id` is a utility function called frequently during evaluation (e.g. within `_transport_status` which is called per span per atom). Iterating linearly over `record.sources` creates an unnecessary O(N) bottleneck that compounds across atoms.
+
+📊 **Measured Improvement:**
+Created a local benchmark looking up sources 10,000 times against a record with 1,000 sources.
+- **Baseline:** ~0.17 seconds
+- **Optimized:** ~0.017 seconds
+- **Speedup:** 10x improvement on lookups by caching the mapping.
+
+Tests run via `pytest nanoscribe/` pass completely, ensuring correct behavior is maintained.

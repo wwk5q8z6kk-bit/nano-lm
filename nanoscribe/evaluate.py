@@ -172,11 +172,18 @@ def atom_result(report: EvalReport, atom_id: str) -> AtomEval:
     raise KeyError(atom_id)
 
 
+_source_map_cache = {}
+
 def _source_by_id(record: EncounterRecord, source_id: str):
-    for source in record.sources:
-        if source.source_id == source_id:
-            return source
-    return None
+    record_id = id(record)
+    cache_item = _source_map_cache.get(record_id)
+    if cache_item is None or cache_item[0] is not record:
+        source_map = {source.source_id: source for source in record.sources}
+        _source_map_cache[record_id] = (record, source_map)
+        if len(_source_map_cache) > 128:
+            _source_map_cache.pop(next(iter(_source_map_cache)))
+        return source_map.get(source_id)
+    return cache_item[1].get(source_id)
 
 
 def _span_by_id(record: EncounterRecord, evidence_id: str) -> EvidenceSpan | None:
