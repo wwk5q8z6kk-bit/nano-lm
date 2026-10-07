@@ -57,24 +57,9 @@ def device():
 # Own-stack GPT + LoRA (corner / chinchilla base)
 # ---------------------------------------------------------------------------
 
-def train_ownstack_lora(ft_seed: int = 0, force: bool = False):
-    from peft import LoraConfig, inject_adapter_in_model
-    from tokenizers import Tokenizer
-
-    out = OUT_CKPT / f"ownstack160m_chinchilla_lora_seed{ft_seed}.pt"
-    if out.exists() and not force:
-        print(f"[ownstack-lora] reuse {out}", flush=True)
-        return out
-
-    dev = device()
-    torch.manual_seed(ft_seed)
-    random.seed(ft_seed)
-    tok = Tokenizer.from_file(str(REPO / "sft" / "tokenizer.json"))
-    IMS, IME = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
+def _build_ownstack_model(dev):
     V = 4098
     d, L, H, KV, hd, ff, S = 1024, 14, 16, 4, 64, 2752, 512
-    MICRO, ACCUM = 4, 8  # same effective batch 32; smaller micro for MPS memory
-    BATCH = MICRO * ACCUM
 
     def rope(q, k):
         t = torch.arange(S, device=dev, dtype=torch.float32)
@@ -127,9 +112,29 @@ def train_ownstack_lora(ft_seed: int = 0, force: bool = False):
                 h = b(h)
             return F.linear(s.nf(h), s.emb.weight)
 
+    return GPT(), V, S
+
+
+def train_ownstack_lora(ft_seed: int = 0, force: bool = False):
+    from peft import LoraConfig, inject_adapter_in_model
+    from tokenizers import Tokenizer
+
+    out = OUT_CKPT / f"ownstack160m_chinchilla_lora_seed{ft_seed}.pt"
+    if out.exists() and not force:
+        print(f"[ownstack-lora] reuse {out}", flush=True)
+        return out
+
+    dev = device()
+    torch.manual_seed(ft_seed)
+    random.seed(ft_seed)
+    tok = Tokenizer.from_file(str(REPO / "sft" / "tokenizer.json"))
+    IMS, IME = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
+    MICRO, ACCUM = 4, 8  # same effective batch 32; smaller micro for MPS memory
+    BATCH = MICRO * ACCUM
+
     ckpt_path = REPO / "checkpoints" / "chinchilla-160m" / "ownstack160m_pretrain.pt"
     assert ckpt_path.exists(), ckpt_path
-    m = GPT()
+    m, V, S = _build_ownstack_model(dev)
     st = torch.load(ckpt_path, map_location="cpu", weights_only=True)
     m.load_state_dict(st["m"])
     m.to(dev)
@@ -236,61 +241,7 @@ def load_ownstack_lora_predictor(ckpt_path: Path):
     dev = device()
     tok = Tokenizer.from_file(str(REPO / "sft" / "tokenizer.json"))
     IMS, IME = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
-    V = 4098
-    d, L, H, KV, hd, ff, S = 1024, 14, 16, 4, 64, 2752, 512
-
-    def rope(q, k):
-        t = torch.arange(S, device=dev, dtype=torch.float32)
-        inv = 1.0 / (10000 ** (torch.arange(0, hd, 2, device=dev).float() / hd))
-        f = torch.outer(t, inv)
-        cos, sin = f.cos()[None, None], f.sin()[None, None]
-
-        def rot(x):
-            x1, x2 = x[..., 0::2], x[..., 1::2]
-            return torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1).flatten(-2)
-
-        return rot(q), rot(k)
-
-    class Block(nn.Module):
-        def __init__(s):
-            super().__init__()
-            s.n1, s.n2 = nn.RMSNorm(d), nn.RMSNorm(d)
-            s.q = nn.Linear(d, H * hd, bias=False)
-            s.k = nn.Linear(d, KV * hd, bias=False)
-            s.v = nn.Linear(d, KV * hd, bias=False)
-            s.o = nn.Linear(H * hd, d, bias=False)
-            s.g = nn.Linear(d, ff, bias=False)
-            s.u = nn.Linear(d, ff, bias=False)
-            s.dn = nn.Linear(ff, d, bias=False)
-
-        def forward(s, x):
-            B = x.shape[0]
-            h = s.n1(x)
-            q = s.q(h).view(B, S, H, hd).transpose(1, 2)
-            k = s.k(h).view(B, S, KV, hd).transpose(1, 2)
-            v = s.v(h).view(B, S, KV, hd).transpose(1, 2)
-            q, k = rope(q, k)
-            k = k.repeat_interleave(H // KV, 1)
-            v = v.repeat_interleave(H // KV, 1)
-            a = F.scaled_dot_product_attention(q, k, v, is_causal=True)
-            x = x + s.o(a.transpose(1, 2).reshape(B, S, H * hd))
-            h = s.n2(x)
-            return x + s.dn(F.silu(s.g(h)) * s.u(h))
-
-    class GPT(nn.Module):
-        def __init__(s):
-            super().__init__()
-            s.emb = nn.Embedding(V, d)
-            s.blocks = nn.ModuleList(Block() for _ in range(L))
-            s.nf = nn.RMSNorm(d)
-
-        def forward(s, x):
-            h = s.emb(x)
-            for b in s.blocks:
-                h = b(h)
-            return F.linear(s.nf(h), s.emb.weight)
-
-    m = GPT()
+    m, V, S = _build_ownstack_model(dev)
     cfg = LoraConfig(
         r=16, lora_alpha=32, lora_dropout=0.0,
         target_modules=["q", "k", "v", "o", "g", "u", "dn"],
