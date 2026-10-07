@@ -54,6 +54,60 @@ COST = {
 
 # ---------------- Own-stack LoRA (CUDA fp16) ----------------
 
+OWNSTACK_V = 4098
+OWNSTACK_d, OWNSTACK_L, OWNSTACK_H, OWNSTACK_KV, OWNSTACK_hd, OWNSTACK_ff, OWNSTACK_S = 1024, 14, 16, 4, 64, 2752, 512
+
+def ownstack_rope(q, k):
+    t = torch.arange(OWNSTACK_S, device=dev, dtype=torch.float32)
+    inv = 1.0 / (10000 ** (torch.arange(0, OWNSTACK_hd, 2, device=dev).float() / OWNSTACK_hd))
+    f = torch.outer(t, inv)
+    cos, sin = f.cos()[None, None], f.sin()[None, None]
+
+    def rot(x):
+        x1, x2 = x[..., 0::2], x[..., 1::2]
+        return torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1).flatten(-2)
+
+    return rot(q), rot(k)
+
+class OwnstackBlock(nn.Module):
+    def __init__(s):
+        super().__init__()
+        s.n1, s.n2 = nn.RMSNorm(OWNSTACK_d), nn.RMSNorm(OWNSTACK_d)
+        s.q = nn.Linear(OWNSTACK_d, OWNSTACK_H * OWNSTACK_hd, bias=False)
+        s.k = nn.Linear(OWNSTACK_d, OWNSTACK_KV * OWNSTACK_hd, bias=False)
+        s.v = nn.Linear(OWNSTACK_d, OWNSTACK_KV * OWNSTACK_hd, bias=False)
+        s.o = nn.Linear(OWNSTACK_H * OWNSTACK_hd, OWNSTACK_d, bias=False)
+        s.g = nn.Linear(OWNSTACK_d, OWNSTACK_ff, bias=False)
+        s.u = nn.Linear(OWNSTACK_d, OWNSTACK_ff, bias=False)
+        s.dn = nn.Linear(OWNSTACK_ff, OWNSTACK_d, bias=False)
+
+    def forward(s, x):
+        B = x.shape[0]
+        h = s.n1(x)
+        q = s.q(h).view(B, OWNSTACK_S, OWNSTACK_H, OWNSTACK_hd).transpose(1, 2)
+        k = s.k(h).view(B, OWNSTACK_S, OWNSTACK_KV, OWNSTACK_hd).transpose(1, 2)
+        v = s.v(h).view(B, OWNSTACK_S, OWNSTACK_KV, OWNSTACK_hd).transpose(1, 2)
+        q, k = ownstack_rope(q, k)
+        k = k.repeat_interleave(OWNSTACK_H // OWNSTACK_KV, 1)
+        v = v.repeat_interleave(OWNSTACK_H // OWNSTACK_KV, 1)
+        a = F.scaled_dot_product_attention(q, k, v, is_causal=True)
+        x = x + s.o(a.transpose(1, 2).reshape(B, OWNSTACK_S, OWNSTACK_H * OWNSTACK_hd))
+        h = s.n2(x)
+        return x + s.dn(F.silu(s.g(h)) * s.u(h))
+
+class OwnstackGPT(nn.Module):
+    def __init__(s):
+        super().__init__()
+        s.emb = nn.Embedding(OWNSTACK_V, OWNSTACK_d)
+        s.blocks = nn.ModuleList(OwnstackBlock() for _ in range(OWNSTACK_L))
+        s.nf = nn.RMSNorm(OWNSTACK_d)
+
+    def forward(s, x):
+        h = s.emb(x)
+        for b in s.blocks:
+            h = b(h)
+        return F.linear(s.nf(h), s.emb.weight)
+
 def train_ownstack_lora(ft_seed: int = 0):
     from peft import LoraConfig, inject_adapter_in_model
     from tokenizers import Tokenizer
@@ -68,65 +122,12 @@ def train_ownstack_lora(ft_seed: int = 0):
     tok = Tokenizer.from_file(str(REPO / "sft" / "tokenizer.json"))
     IMS = tok.token_to_id("<|im_start|>")
     IME = tok.token_to_id("<|im_end|>")
-    V = 4098
-    d, L, H, KV, hd, ff, S = 1024, 14, 16, 4, 64, 2752, 512
     MICRO, ACCUM = 8, 4
     BATCH = MICRO * ACCUM
 
-    def rope(q, k):
-        t = torch.arange(S, device=dev, dtype=torch.float32)
-        inv = 1.0 / (10000 ** (torch.arange(0, hd, 2, device=dev).float() / hd))
-        f = torch.outer(t, inv)
-        cos, sin = f.cos()[None, None], f.sin()[None, None]
-
-        def rot(x):
-            x1, x2 = x[..., 0::2], x[..., 1::2]
-            return torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1).flatten(-2)
-
-        return rot(q), rot(k)
-
-    class Block(nn.Module):
-        def __init__(s):
-            super().__init__()
-            s.n1, s.n2 = nn.RMSNorm(d), nn.RMSNorm(d)
-            s.q = nn.Linear(d, H * hd, bias=False)
-            s.k = nn.Linear(d, KV * hd, bias=False)
-            s.v = nn.Linear(d, KV * hd, bias=False)
-            s.o = nn.Linear(H * hd, d, bias=False)
-            s.g = nn.Linear(d, ff, bias=False)
-            s.u = nn.Linear(d, ff, bias=False)
-            s.dn = nn.Linear(ff, d, bias=False)
-
-        def forward(s, x):
-            B = x.shape[0]
-            h = s.n1(x)
-            q = s.q(h).view(B, S, H, hd).transpose(1, 2)
-            k = s.k(h).view(B, S, KV, hd).transpose(1, 2)
-            v = s.v(h).view(B, S, KV, hd).transpose(1, 2)
-            q, k = rope(q, k)
-            k = k.repeat_interleave(H // KV, 1)
-            v = v.repeat_interleave(H // KV, 1)
-            a = F.scaled_dot_product_attention(q, k, v, is_causal=True)
-            x = x + s.o(a.transpose(1, 2).reshape(B, S, H * hd))
-            h = s.n2(x)
-            return x + s.dn(F.silu(s.g(h)) * s.u(h))
-
-    class GPT(nn.Module):
-        def __init__(s):
-            super().__init__()
-            s.emb = nn.Embedding(V, d)
-            s.blocks = nn.ModuleList(Block() for _ in range(L))
-            s.nf = nn.RMSNorm(d)
-
-        def forward(s, x):
-            h = s.emb(x)
-            for b in s.blocks:
-                h = b(h)
-            return F.linear(s.nf(h), s.emb.weight)
-
     ckpt = REPO / "checkpoints" / "chinchilla-160m" / "ownstack160m_pretrain.pt"
     assert ckpt.exists(), ckpt
-    m = GPT()
+    m = OwnstackGPT()
     st = torch.load(ckpt, map_location="cpu", weights_only=True)
     m.load_state_dict(st["m"])
     m.to(dev)
@@ -166,10 +167,10 @@ def train_ownstack_lora(ft_seed: int = 0):
     X, Msk = [], []
     for c in convos:
         ids, mask = render_ids(c)
-        if len(ids) > S:
+        if len(ids) > OWNSTACK_S:
             continue
-        X.append(ids + [0] * (S - len(ids)))
-        Msk.append(mask + [0] * (S - len(mask)))
+        X.append(ids + [0] * (OWNSTACK_S - len(ids)))
+        Msk.append(mask + [0] * (OWNSTACK_S - len(mask)))
     X = torch.tensor(np.array(X, dtype=np.int64))
     Msk = torch.tensor(np.array(Msk, dtype=np.int64))
     N = X.shape[0]
@@ -205,7 +206,7 @@ def train_ownstack_lora(ft_seed: int = 0):
                 tgt = x[:, 1:]
                 mtgt = mt[:, 1:]
                 ce = F.cross_entropy(
-                    logits.reshape(-1, V), tgt.reshape(-1), reduction="none"
+                    logits.reshape(-1, OWNSTACK_V), tgt.reshape(-1), reduction="none"
                 ).reshape(tgt.shape)
                 loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)
             scaler.scale(loss / ACCUM).backward()
@@ -233,61 +234,9 @@ def load_ownstack_predictor(ckpt_path: Path):
     tok = Tokenizer.from_file(str(REPO / "sft" / "tokenizer.json"))
     IMS = tok.token_to_id("<|im_start|>")
     IME = tok.token_to_id("<|im_end|>")
-    V = 4098
-    d, L, H, KV, hd, ff, S = 1024, 14, 16, 4, 64, 2752, 512
 
-    def rope(q, k):
-        t = torch.arange(S, device=dev, dtype=torch.float32)
-        inv = 1.0 / (10000 ** (torch.arange(0, hd, 2, device=dev).float() / hd))
-        f = torch.outer(t, inv)
-        cos, sin = f.cos()[None, None], f.sin()[None, None]
 
-        def rot(x):
-            x1, x2 = x[..., 0::2], x[..., 1::2]
-            return torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1).flatten(-2)
-
-        return rot(q), rot(k)
-
-    class Block(nn.Module):
-        def __init__(s):
-            super().__init__()
-            s.n1, s.n2 = nn.RMSNorm(d), nn.RMSNorm(d)
-            s.q = nn.Linear(d, H * hd, bias=False)
-            s.k = nn.Linear(d, KV * hd, bias=False)
-            s.v = nn.Linear(d, KV * hd, bias=False)
-            s.o = nn.Linear(H * hd, d, bias=False)
-            s.g = nn.Linear(d, ff, bias=False)
-            s.u = nn.Linear(d, ff, bias=False)
-            s.dn = nn.Linear(ff, d, bias=False)
-
-        def forward(s, x):
-            B = x.shape[0]
-            h = s.n1(x)
-            q = s.q(h).view(B, S, H, hd).transpose(1, 2)
-            k = s.k(h).view(B, S, KV, hd).transpose(1, 2)
-            v = s.v(h).view(B, S, KV, hd).transpose(1, 2)
-            q, k = rope(q, k)
-            k = k.repeat_interleave(H // KV, 1)
-            v = v.repeat_interleave(H // KV, 1)
-            a = F.scaled_dot_product_attention(q, k, v, is_causal=True)
-            x = x + s.o(a.transpose(1, 2).reshape(B, S, H * hd))
-            h = s.n2(x)
-            return x + s.dn(F.silu(s.g(h)) * s.u(h))
-
-    class GPT(nn.Module):
-        def __init__(s):
-            super().__init__()
-            s.emb = nn.Embedding(V, d)
-            s.blocks = nn.ModuleList(Block() for _ in range(L))
-            s.nf = nn.RMSNorm(d)
-
-        def forward(s, x):
-            h = s.emb(x)
-            for b in s.blocks:
-                h = b(h)
-            return F.linear(s.nf(h), s.emb.weight)
-
-    m = GPT()
+    m = OwnstackGPT()
     m = inject_adapter_in_model(
         LoraConfig(r=16, lora_alpha=32, lora_dropout=0.0,
                    target_modules=["q", "k", "v", "o", "g", "u", "dn"]),
@@ -308,9 +257,9 @@ def load_ownstack_predictor(ckpt_path: Path):
     def generate(ids, max_new=64):
         ids = list(ids)
         for _ in range(max_new):
-            if len(ids) >= S:
+            if len(ids) >= OWNSTACK_S:
                 break
-            x = torch.tensor([ids + [0] * (S - len(ids))], device=dev)
+            x = torch.tensor([ids + [0] * (OWNSTACK_S - len(ids))], device=dev)
             nxt = int(m(x)[0, len(ids) - 1].argmax())
             if nxt == IME:
                 break
