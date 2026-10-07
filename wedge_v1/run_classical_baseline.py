@@ -28,17 +28,7 @@ def claim_ok_evidence(c: S.Claim) -> bool:
     return bool(c.evidence)
 
 
-def score(claims: list[S.Claim], gold: dict, docs: dict) -> dict:
-    checks = []
-
-    def add(task, ok, detail=""):
-        checks.append({"task_id": task, "ok": bool(ok), "detail": detail})
-
-    by = {}
-    for c in claims:
-        by.setdefault(c.task_id, []).append(c)
-
-    # T01 titles vs gold
+def _check_metadata_claims(by: dict, gold: dict, add):
     for did, meta in gold["docs"].items():
         cs = [c for c in by.get("T01", []) if c.doc_id == did]
         add("T01", cs and cs[0].value == meta["title"], did)
@@ -55,7 +45,8 @@ def score(claims: list[S.Claim], gold: dict, docs: dict) -> dict:
         cs = [c for c in by.get("T04", []) if c.doc_id == did]
         add("T04", cs and cs[0].value == meta["doc_type"], did)
 
-    # dosages planted
+
+def _check_planted_claims(by: dict, gold: dict, add):
     for item in gold["planted"]["dosages"]:
         cs = [c for c in by.get("T09", []) if c.doc_id == item["doc_id"]]
         texts = []
@@ -71,29 +62,28 @@ def score(claims: list[S.Claim], gold: dict, docs: dict) -> dict:
     cs = [c for c in by.get("T15", []) if c.doc_id == "tech_note_cache"]
     add("T15", cs and cs[0].value == email, "tech_note_cache")
 
-    # kv
     for k, v in gold["planted"]["kv"]["semi_structured_lab"].items():
         cs = [c for c in by.get("T17", []) if c.doc_id == "semi_structured_lab"]
         add("T17", cs and str(cs[0].value.get(k)) == str(v), k)
 
-    # table
+
+def _check_misc_claims(by: dict, gold: dict, claims: list, add):
     cs = [c for c in by.get("T38", []) if c.doc_id == "tableish_throughput"]
     add("T38", cs and len(cs[0].value) == 3, "rows")
 
-    # contradictions / collisions / abstain
     cs = by.get("T29", [])
     add("T29", cs and cs[0].status == "DISPUTED", "numeric")
+
     cs = by.get("T30", [])
     add("T30", cs and cs[0].status == "DISPUTED", "ibuprofen reagent")
+
     cs = [c for c in by.get("T34", []) if c.doc_id == "semi_structured_lab"]
     add("T34", cs and cs[0].status == "ABSTAIN", "patient_id")
 
-    # mentions metformin
     cs = by.get("T25", [])
     exp = set(gold["planted"]["mentions"]["metformin"])
     add("T25", cs and set(cs[0].value) >= exp, "metformin docs")
 
-    # T35 paraphrastic — ok if PRESENT correct or ABSTAIN (classical allowed to abstain)
     cs = by.get("T35", [])
     ok35 = False
     if cs:
@@ -103,17 +93,31 @@ def score(claims: list[S.Claim], gold: dict, docs: dict) -> dict:
             ok35 = True
     add("T35", ok35, "paraphrastic")
 
-    # OCR
     cs = [c for c in by.get("T37", []) if c.doc_id == "noisy_ocr_line"]
     add("T37", cs and isinstance(cs[0].value, dict) and cs[0].value.get("ttl_seconds") == 250, "ocr")
 
-    # evidence rule on PRESENT atomic claims
     evid_viol = [
         c.task_id
         for c in claims
         if c.status == "PRESENT" and not claim_ok_evidence(c)
     ]
     add("T33", len(evid_viol) == 0, f"violations={evid_viol[:5]}")
+    return evid_viol
+
+
+def score(claims: list[S.Claim], gold: dict, docs: dict) -> dict:
+    checks = []
+
+    def add(task, ok, detail=""):
+        checks.append({"task_id": task, "ok": bool(ok), "detail": detail})
+
+    by = {}
+    for c in claims:
+        by.setdefault(c.task_id, []).append(c)
+
+    _check_metadata_claims(by, gold, add)
+    _check_planted_claims(by, gold, add)
+    evid_viol = _check_misc_claims(by, gold, claims, add)
 
     n = len(checks)
     n_ok = sum(1 for c in checks if c["ok"])
