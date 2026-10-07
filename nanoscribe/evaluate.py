@@ -372,6 +372,248 @@ def _extra_prediction_result(
     )
 
 
+
+class _Evaluator:
+    def __init__(
+        self,
+        gold: EncounterRecord,
+        pred: PredictedEncounter,
+        *,
+        source_for_quotes=None,
+        verifier_results: Mapping[str, SupportRelation] | Sequence[VerifierResult] | None = None,
+    ):
+        self.gold = gold
+        self.pred = pred
+        self.source = source_for_quotes or (gold.sources[0] if gold.sources else None)
+        self.presented = list(gold.atoms)
+        self.gold_ids = {atom.atom_id for atom in self.presented}
+        self.unresolved_ids = {item.unresolved_id for item in gold.unresolved} | {
+            item.topic for item in gold.unresolved
+        }
+        self.duplicates = _duplicate_pred_ids(pred.atoms)
+        self.verifier = _verifier_map(verifier_results)
+
+        self.pred_by_id: dict[str, list[PredictedAtom]] = {}
+        for atom in pred.atoms:
+            self.pred_by_id.setdefault(atom.atom_id, []).append(atom)
+
+        self.exact_gold_span = 0
+        self.assertion_state_correct = 0
+        self.support_counts = {relation: 0 for relation in SupportRelation}
+        self.invalid_span = 0
+        self.wrong_source = 0
+        self.wrong_mention = 0
+        self.omission = 0
+        self.unnecessary_abstention = 0
+        self.correct_abstention = 0
+        self.malformed = 0
+        self.critical_error = 0
+        self.spurious_atom = 0
+        self.ambiguity = 0
+        self.f1s: list[float] = []
+        self.covered = 0
+        self.results: list[AtomEval] = []
+
+    def run(self) -> EvalReport:
+        self._evaluate_presented()
+        self._evaluate_extra()
+        self._evaluate_unresolved()
+        self._evaluate_ambiguity()
+
+        n_presented = len(self.presented)
+        return EvalReport(
+            exact_gold_span=self.exact_gold_span,
+            span_character_f1=(sum(self.f1s) / len(self.f1s)) if self.f1s else 0.0,
+            assertion_state_correct=self.assertion_state_correct,
+            support_direct_exact=self.support_counts[SupportRelation.DIRECT_EXACT],
+            support_normalized=self.support_counts[SupportRelation.NORMALIZED],
+            support_semantically_supported=self.support_counts[SupportRelation.SEMANTICALLY_SUPPORTED],
+            support_unsupported=self.support_counts[SupportRelation.UNSUPPORTED],
+            support_contradicted=self.support_counts[SupportRelation.CONTRADICTED],
+            support_review_required=self.support_counts[SupportRelation.REVIEW_REQUIRED],
+            invalid_span=self.invalid_span,
+            wrong_source=self.wrong_source,
+            wrong_mention=self.wrong_mention,
+            ambiguity=self.ambiguity,
+            omission=self.omission,
+            correct_abstention=self.correct_abstention,
+            unnecessary_abstention=self.unnecessary_abstention,
+            malformed=self.malformed,
+            critical_error=self.critical_error,
+            spurious_atom=self.spurious_atom,
+            coverage=(self.covered / n_presented) if n_presented else 0.0,
+            latency_s=self.pred.latency_s,
+            memory_bytes=self.pred.memory_bytes,
+            atom_results=tuple(self.results),
+        )
+
+    def _evaluate_presented(self):
+        for atom in self.presented:
+            predicted_group = self.pred_by_id.get(atom.atom_id, [])
+            gold_spans = tuple(
+                span
+                for evidence_id in atom.evidence_ids
+                if (span := _span_by_id(self.gold, evidence_id)) is not None
+            )
+            if not predicted_group:
+                self.omission += 1
+                self.results.append(AtomEval(atom_id=atom.atom_id, omitted=True))
+                continue
+            if atom.atom_id in self.duplicates:
+                self.malformed += 1
+                self.results.append(AtomEval(atom_id=atom.atom_id, malformed=True))
+                continue
+
+            predicted = predicted_group[0]
+            item = AtomEval(atom_id=atom.atom_id)
+            try:
+                if predicted.malformed:
+                    self.malformed += 1
+                    self.critical_error += 1
+                    item = AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True)
+                    self.results.append(item)
+                    continue
+                if predicted.abstained:
+                    self.unnecessary_abstention += 1
+                    self.omission += 1
+                    self.results.append(AtomEval(atom_id=atom.atom_id, abstained=True, omitted=True))
+                    continue
+
+                spans = _resolve_pred_spans(self.gold, predicted)
+                if spans is None:
+                    self.malformed += 1
+                    self.critical_error += 1
+                    self.results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
+                    continue
+
+                statuses = [_transport_status(self.gold, span) for span in spans]
+                transport_critical = False
+                if any(status == "unknown_source" for status in statuses):
+                    self.critical_error += 1
+                    item = AtomEval(atom_id=item.atom_id, critical_error=True, malformed=True)
+                    transport_critical = True
+                if any(status == "invalid_span" for status in statuses):
+                    self.invalid_span += 1
+                    self.critical_error += 1
+                    item = AtomEval(
+                        atom_id=item.atom_id,
+                        invalid_span=True,
+                        critical_error=True,
+                        malformed=True,
+                    )
+                    transport_critical = True
+                if transport_critical:
+                    self.malformed += 1
+                    self.results.append(item)
+                    continue
+
+                gold_sources = {span.source_id for span in gold_spans}
+                pred_sources = {span.source_id for span in spans}
+                gold_keys = char_keys(gold_spans)
+                pred_keys = char_keys(spans)
+                f1 = span_character_f1(gold_spans, spans)
+                self.f1s.append(f1)
+                exact = bool(gold_keys) and gold_keys == pred_keys
+                mention_wrong = False
+                source_wrong = False
+                if pred_sources - gold_sources:
+                    source_wrong = True
+                    self.wrong_source += 1
+                elif gold_keys != pred_keys:
+                    mention_wrong = True
+                    self.wrong_mention += 1
+
+                construction = _probe_construction(self.gold, predicted, spans)
+                support = _support_relation(predicted, spans, self.verifier.get(atom.atom_id))
+                state_ok = predicted.assertion_state is atom.assertion_state
+                claim_ok = construction is None
+                if exact:
+                    self.exact_gold_span += 1
+                if construction is not None:
+                    was_malformed, was_critical = _classify_construction(construction)
+                    if was_malformed:
+                        self.malformed += 1
+                    if was_critical:
+                        self.critical_error += 1
+                else:
+                    if state_ok:
+                        self.assertion_state_correct += 1
+                    if support is not None:
+                        self.support_counts[support] += 1
+                    if spans:
+                        self.covered += 1
+
+                self.results.append(
+                    AtomEval(
+                        atom_id=atom.atom_id,
+                        exact_gold_span=exact,
+                        span_character_f1=f1,
+                        support_relation=support,
+                        assertion_state_correct=state_ok and claim_ok,
+                        invalid_span=False,
+                        wrong_source=source_wrong,
+                        wrong_mention=mention_wrong,
+                        malformed=construction is not None,
+                        critical_error=construction is not None
+                        and _classify_construction(construction)[1],
+                    )
+                )
+            except EncounterError:
+                self.critical_error += 1
+                self.malformed += 1
+                self.results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
+            except (TypeError, ValueError, AttributeError):
+                self.critical_error += 1
+                self.malformed += 1
+                self.results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
+
+    def _evaluate_extra(self):
+        seen_extra: set[str] = set()
+        for predicted in self.pred.atoms:
+            if predicted.atom_id in self.gold_ids or predicted.atom_id in seen_extra:
+                continue
+            seen_extra.add(predicted.atom_id)
+            if predicted.abstained and predicted.atom_id in self.unresolved_ids:
+                continue
+            if predicted.atom_id in self.duplicates:
+                self.malformed += 1
+                self.results.append(AtomEval(atom_id=predicted.atom_id, malformed=True))
+                continue
+            try:
+                extra = _extra_prediction_result(
+                    self.gold, predicted, self.verifier.get(predicted.atom_id)
+                )
+            except (EncounterError, TypeError, ValueError, AttributeError):
+                extra = AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
+            self.results.append(extra)
+            if extra.spurious_atom:
+                self.spurious_atom += 1
+            if extra.malformed:
+                self.malformed += 1
+            if extra.critical_error:
+                self.critical_error += 1
+            if extra.invalid_span:
+                self.invalid_span += 1
+
+    def _evaluate_unresolved(self):
+        for item in self.gold.unresolved:
+            predicted = None
+            for candidate in self.pred.atoms:
+                if candidate.atom_id in {item.unresolved_id, item.topic} and item.unresolved_id not in self.duplicates:
+                    predicted = candidate
+                    break
+            if predicted is not None and predicted.abstained:
+                self.correct_abstention += 1
+
+    def _evaluate_ambiguity(self):
+        if self.source is not None:
+            try:
+                for predicted in self.pred.atoms:
+                    if predicted.quote and match_count(self.source, predicted.quote) > 1:
+                        self.ambiguity += 1
+            except EncounterError:
+                self.critical_error += 1
+
 def evaluate(
     gold: EncounterRecord,
     pred: PredictedEncounter,
@@ -379,221 +621,9 @@ def evaluate(
     source_for_quotes=None,
     verifier_results: Mapping[str, SupportRelation] | Sequence[VerifierResult] | None = None,
 ) -> EvalReport:
-    source = source_for_quotes or (gold.sources[0] if gold.sources else None)
-    presented = list(gold.atoms)
-    gold_ids = {atom.atom_id for atom in presented}
-    unresolved_ids = {item.unresolved_id for item in gold.unresolved} | {
-        item.topic for item in gold.unresolved
-    }
-    duplicates = _duplicate_pred_ids(pred.atoms)
-    verifier = _verifier_map(verifier_results)
-    pred_by_id: dict[str, list[PredictedAtom]] = {}
-    for atom in pred.atoms:
-        pred_by_id.setdefault(atom.atom_id, []).append(atom)
-
-    exact_gold_span = 0
-    assertion_state_correct = 0
-    support_counts = {relation: 0 for relation in SupportRelation}
-    invalid_span = 0
-    wrong_source = 0
-    wrong_mention = 0
-    omission = 0
-    unnecessary_abstention = 0
-    correct_abstention = 0
-    malformed = 0
-    critical_error = 0
-    spurious_atom = 0
-    ambiguity = 0
-    f1s: list[float] = []
-    covered = 0
-    results: list[AtomEval] = []
-
-    for atom in presented:
-        predicted_group = pred_by_id.get(atom.atom_id, [])
-        gold_spans = tuple(
-            span
-            for evidence_id in atom.evidence_ids
-            if (span := _span_by_id(gold, evidence_id)) is not None
-        )
-        if not predicted_group:
-            omission += 1
-            results.append(AtomEval(atom_id=atom.atom_id, omitted=True))
-            continue
-        if atom.atom_id in duplicates:
-            malformed += 1
-            results.append(AtomEval(atom_id=atom.atom_id, malformed=True))
-            continue
-
-        predicted = predicted_group[0]
-        item = AtomEval(atom_id=atom.atom_id)
-        try:
-            if predicted.malformed:
-                malformed += 1
-                critical_error += 1
-                item = AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True)
-                results.append(item)
-                continue
-            if predicted.abstained:
-                unnecessary_abstention += 1
-                omission += 1
-                results.append(AtomEval(atom_id=atom.atom_id, abstained=True, omitted=True))
-                continue
-
-            spans = _resolve_pred_spans(gold, predicted)
-            if spans is None:
-                malformed += 1
-                critical_error += 1
-                results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
-                continue
-
-            statuses = [_transport_status(gold, span) for span in spans]
-            transport_critical = False
-            if any(status == "unknown_source" for status in statuses):
-                critical_error += 1
-                item = AtomEval(atom_id=item.atom_id, critical_error=True, malformed=True)
-                transport_critical = True
-            if any(status == "invalid_span" for status in statuses):
-                invalid_span += 1
-                critical_error += 1
-                item = AtomEval(
-                    atom_id=item.atom_id,
-                    invalid_span=True,
-                    critical_error=True,
-                    malformed=True,
-                )
-                transport_critical = True
-            if transport_critical:
-                malformed += 1
-                results.append(item)
-                continue
-
-            gold_sources = {span.source_id for span in gold_spans}
-            pred_sources = {span.source_id for span in spans}
-            gold_keys = char_keys(gold_spans)
-            pred_keys = char_keys(spans)
-            f1 = span_character_f1(gold_spans, spans)
-            f1s.append(f1)
-            exact = bool(gold_keys) and gold_keys == pred_keys
-            mention_wrong = False
-            source_wrong = False
-            if pred_sources - gold_sources:
-                source_wrong = True
-                wrong_source += 1
-            elif gold_keys != pred_keys:
-                mention_wrong = True
-                wrong_mention += 1
-
-            construction = _probe_construction(gold, predicted, spans)
-            support = _support_relation(predicted, spans, verifier.get(atom.atom_id))
-            state_ok = predicted.assertion_state is atom.assertion_state
-            claim_ok = construction is None
-            if exact:
-                exact_gold_span += 1
-            if construction is not None:
-                was_malformed, was_critical = _classify_construction(construction)
-                if was_malformed:
-                    malformed += 1
-                if was_critical:
-                    critical_error += 1
-            else:
-                if state_ok:
-                    assertion_state_correct += 1
-                if support is not None:
-                    support_counts[support] += 1
-                if spans:
-                    covered += 1
-
-            results.append(
-                AtomEval(
-                    atom_id=atom.atom_id,
-                    exact_gold_span=exact,
-                    span_character_f1=f1,
-                    support_relation=support,
-                    assertion_state_correct=state_ok and claim_ok,
-                    invalid_span=False,
-                    wrong_source=source_wrong,
-                    wrong_mention=mention_wrong,
-                    malformed=construction is not None,
-                    critical_error=construction is not None
-                    and _classify_construction(construction)[1],
-                )
-            )
-        except EncounterError:
-            critical_error += 1
-            malformed += 1
-            results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
-        except (TypeError, ValueError, AttributeError):
-            critical_error += 1
-            malformed += 1
-            results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
-
-    seen_extra: set[str] = set()
-    for predicted in pred.atoms:
-        if predicted.atom_id in gold_ids or predicted.atom_id in seen_extra:
-            continue
-        seen_extra.add(predicted.atom_id)
-        if predicted.abstained and predicted.atom_id in unresolved_ids:
-            continue
-        if predicted.atom_id in duplicates:
-            malformed += 1
-            results.append(AtomEval(atom_id=predicted.atom_id, malformed=True))
-            continue
-        try:
-            extra = _extra_prediction_result(
-                gold, predicted, verifier.get(predicted.atom_id)
-            )
-        except (EncounterError, TypeError, ValueError, AttributeError):
-            extra = AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
-        results.append(extra)
-        if extra.spurious_atom:
-            spurious_atom += 1
-        if extra.malformed:
-            malformed += 1
-        if extra.critical_error:
-            critical_error += 1
-        if extra.invalid_span:
-            invalid_span += 1
-
-    for item in gold.unresolved:
-        predicted = None
-        for candidate in pred.atoms:
-            if candidate.atom_id in {item.unresolved_id, item.topic} and item.unresolved_id not in duplicates:
-                predicted = candidate
-                break
-        if predicted is not None and predicted.abstained:
-            correct_abstention += 1
-
-    if source is not None:
-        try:
-            for predicted in pred.atoms:
-                if predicted.quote and match_count(source, predicted.quote) > 1:
-                    ambiguity += 1
-        except EncounterError:
-            critical_error += 1
-
-    n_presented = len(presented)
-    return EvalReport(
-        exact_gold_span=exact_gold_span,
-        span_character_f1=(sum(f1s) / len(f1s)) if f1s else 0.0,
-        assertion_state_correct=assertion_state_correct,
-        support_direct_exact=support_counts[SupportRelation.DIRECT_EXACT],
-        support_normalized=support_counts[SupportRelation.NORMALIZED],
-        support_semantically_supported=support_counts[SupportRelation.SEMANTICALLY_SUPPORTED],
-        support_unsupported=support_counts[SupportRelation.UNSUPPORTED],
-        support_contradicted=support_counts[SupportRelation.CONTRADICTED],
-        support_review_required=support_counts[SupportRelation.REVIEW_REQUIRED],
-        invalid_span=invalid_span,
-        wrong_source=wrong_source,
-        wrong_mention=wrong_mention,
-        ambiguity=ambiguity,
-        omission=omission,
-        correct_abstention=correct_abstention,
-        unnecessary_abstention=unnecessary_abstention,
-        malformed=malformed,
-        critical_error=critical_error,
-        spurious_atom=spurious_atom,
-        coverage=(covered / n_presented) if n_presented else 0.0,
-        latency_s=pred.latency_s,
-        memory_bytes=pred.memory_bytes,
-        atom_results=tuple(results),
-    )
+    return _Evaluator(
+        gold,
+        pred,
+        source_for_quotes=source_for_quotes,
+        verifier_results=verifier_results,
+    ).run()
