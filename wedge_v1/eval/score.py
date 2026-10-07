@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from wedge_v1.classical.solvers import Claim
 from wedge_v1.classical.verifier import present, verify_all
@@ -18,16 +18,7 @@ def _load_gold() -> dict:
     return json.loads((ROOT / "data" / "gold" / "gold.json").read_text(encoding="utf-8"))
 
 
-def _task_checks(claims: list[Claim], gold: dict) -> dict[str, dict[str, Any]]:
-    by = defaultdict(list)
-    for c in claims:
-        by[c.task_id].append(c)
-
-    results = {}
-
-    def ok(tid: str, passed: bool, detail: dict | None = None):
-        results[tid] = {"pass": passed, **(detail or {})}
-
+def _check_metadata(by: dict[str, list[Claim]], gold: dict, ok: Callable) -> None:
     # T01 titles
     titles = {c.value["doc_id"]: c.value["title"] for c in by["T01"] if c.status != "REJECTED"}
     gtitles = {d: v["title"] for d, v in gold["docs"].items()}
@@ -53,6 +44,8 @@ def _task_checks(claims: list[Claim], gold: dict) -> dict[str, dict[str, Any]]:
     gdoi = {d: v["doi"] for d, v in gold["docs"].items() if v["doi"]}
     ok("T06", dois == gdoi, {"n": len(dois)})
 
+
+def _check_entities(by: dict[str, list[Claim]], gold: dict, ok: Callable) -> None:
     # T09 dosages contain planted
     got_doses = {(c.value["doc_id"], c.value["dosage"].lower()) for c in by["T09"] if c.status != "REJECTED"}
     need = {(d["doc_id"], d["text"].lower()) for d in gold["planted"]["dosages"]}
@@ -81,6 +74,8 @@ def _task_checks(claims: list[Claim], gold: dict) -> dict[str, dict[str, Any]]:
     met = [c for c in t21 if c.value.get("entity") == "metformin"]
     ok("T21", bool(uni) and uni[0].status == "ABSTAIN" and bool(met) and met[0].value.get("mentioned") is True)
 
+
+def _check_status(by: dict[str, list[Claim]], gold: dict, ok: Callable) -> None:
     # T25 metformin docs
     t25 = by["T25"][0] if by["T25"] else None
     need_docs = set(gold["planted"]["mentions"]["metformin"])
@@ -122,6 +117,21 @@ def _task_checks(claims: list[Claim], gold: dict) -> dict[str, dict[str, Any]]:
     # T40 extractive
     t40 = by["T40"][0] if by["T40"] else None
     ok("T40", t40 is not None and "Latency is" in t40.value.get("explanation", ""))
+
+
+def _task_checks(claims: list[Claim], gold: dict) -> dict[str, dict[str, Any]]:
+    by = defaultdict(list)
+    for c in claims:
+        by[c.task_id].append(c)
+
+    results = {}
+
+    def ok(tid: str, passed: bool, detail: dict | None = None):
+        results[tid] = {"pass": passed, **(detail or {})}
+
+    _check_metadata(by, gold, ok)
+    _check_entities(by, gold, ok)
+    _check_status(by, gold, ok)
 
     # Remaining tasks: presence smoke (ran without crash / produced claims)
     for tid in ["T05", "T07", "T08", "T11", "T12", "T14", "T16", "T18", "T19", "T20",
