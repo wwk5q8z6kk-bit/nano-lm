@@ -1,0 +1,5 @@
+🧪 Add tests for span_character_f1
+
+🎯 What: Added a new test suite `nanoscribe/test_evaluate.py` to cover the previously untested `span_character_f1` function in `nanoscribe/evaluate.py`.
+📊 Coverage: Added unit tests that cover various edge cases, including empty spans, complete non-overlapping ranges, identical exact matches, partially overlapping ranges, mismatched source IDs, and cases with multiple contiguous evidence spans correctly predicting intersection scores.
+✨ Result: Enhanced unit test coverage ensuring that future changes to `nanoscribe/evaluate.py` will not introduce regressions in character-level F1 calculation.
