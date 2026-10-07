@@ -272,11 +272,7 @@ def flr_at(t, fsteps):
     return FLR * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * p)))
 
 
-def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int | None):
-    """Train until stop_at (inclusive) or early-stop plateau (fullft only when stop_at is None).
-
-    Returns (state_dict_cpu, meta).
-    """
+def setup_model_and_opt(kind: str, base_sd: dict):
     from peft import LoraConfig, inject_adapter_in_model
 
     m = GPT()
@@ -313,8 +309,18 @@ def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int 
             eps=1e-8,
         )
         print(f"[u3/{kind}] full-FT params {sum(p.numel() for p in m.parameters())/1e6:.2f}M", flush=True)
+    return m, opt
+
+
+def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int | None):
+    """Train until stop_at (inclusive) or early-stop plateau (fullft only when stop_at is None).
+
+    Returns (state_dict_cpu, meta).
+    """
+    m, opt = setup_model_and_opt(kind, base_sd)
 
     scaler = torch.amp.GradScaler("cuda")
+
     N = X.shape[0]
     perm = torch.randperm(N)
     probes = []
