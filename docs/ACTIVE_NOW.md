@@ -1,7 +1,7 @@
 # Active Now
 
 **Updated:** 2026-10-12
-**Integration base:** `origin/master` @ `370f131` (PR #112 — H6 terminal evidence reconciliation)
+**Integration base:** `origin/master` @ `1d4fca6` (PR #113 — H6 mechanism diagnosis)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -9,7 +9,7 @@
 |-------|-------|
 | `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `P1_NEXT_INTERVENTION_DEFINITION` |
+| `current_gate` | `P1_H7_BOUNDARY_MARGIN_LOCAL_PREFLIGHT` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
 | `training_backend` | `KAGGLE_AND_RUNPOD` |
 | `training_status` | `ACTIVE` |
@@ -69,14 +69,29 @@ errors; and 87 combined both errors. Absence (184/214 errors) and uncertainty
 and 50 combined errors. Supported fields were dominated by exact-span binding
 (714/718 errors). Threshold calibration, verifier effects, latency, and sealed
 confirmation were not assessed because H6 stopped at uncalibrated admission.
+Of 858 fields with a binding error, only 12 were purely disjoint; the largest
+pure shapes were raw-span contains gold (467), gold contains raw (192), partial
+overlap (48), and count mismatch (86). Mixed multi-span relations remain
+separately reported rather than credited to a favorable category.
 The diagnosis is reproducible with
 `python3 -m nano_ai.training.diagnose_h6`; it authenticates the frozen result
 against the terminal-decision hash and does not rerun the model.
 
+H7-BM now has a frozen evaluation-only screen at
+`artifacts/nano_h7/screen-v1/`: 1,000 records from 250 four-variant worlds,
+dataset SHA-256 `9b18c5eef105d0fa2ff0a1e575e764c0014a4ff62e40e8b8205dc12674c436f2`.
+The manifest proves zero exact-transcript, normalized line-component, and open
+value overlap (excluding the fixed severity vocabulary) against legacy
+train/dev and H4 fit/calibration, which are the source families replayed by
+H5/H6. It contains no PHI or private material. The screen remains unopened by
+either model arm; the next step is the unchanged-H6 training/control package.
+
 ## Current gate sequence
 
 ```text
-P1 — define one bounded intervention from the diagnosed H6 error axes
+P1 — integrate H7-BM into the unchanged-H6 training/control package
+        ↓
+CHEAPEST VALID TWO-SEED MECHANISM SCREEN (Kaggle first)
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓

@@ -37,6 +37,28 @@ def test_canonical_h6_diagnosis_separates_error_axes() -> None:
         "binding_only_error": 771,
         "combined_error": 87,
     }
+    assert report["binding_shape"]["span_error_fields"] == 858
+    assert report["binding_shape"]["relations"] == {
+        "count_mismatch": 86,
+        "disjoint": 12,
+        "gold_contains_raw": 192,
+        "mixed:disjoint+exact": 1,
+        "mixed:exact+gold_contains_raw": 22,
+        "mixed:exact+partial_overlap": 16,
+        "mixed:exact+raw_contains_gold": 6,
+        "mixed:gold_contains_raw+partial_overlap": 3,
+        "mixed:gold_contains_raw+raw_contains_gold": 1,
+        "mixed:partial_overlap+raw_contains_gold": 4,
+        "partial_overlap": 48,
+        "raw_contains_gold": 467,
+    }
+    assert report["binding_shape"]["by_field"]["chief_complaint"] == {
+        "count_mismatch": 50,
+        "disjoint": 11,
+        "gold_contains_raw": 58,
+        "partial_overlap": 9,
+        "raw_contains_gold": 366,
+    }
 
     absent = report["by_gold_state"]["absent"]
     assert absent["errors"] == {

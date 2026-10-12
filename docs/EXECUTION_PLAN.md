@@ -27,8 +27,8 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 |----|------|-----------|
 | C1 | Reconcile H6 terminal evidence | **Done** — exact historical result and decision are present on `master`; hashes verify |
 | C2 | Localize H6 failures | **Done** — authenticated row-level analysis separates state selection from evidence binding; threshold and verifier effects remain explicitly unassessed |
-| C3 | Define the next bounded intervention | **Current** — one falsifiable hypothesis targets one diagnosed mechanism; H6 is not rerun or relabeled |
-| C4 | Run cheapest valid screen | Local/Kaggle first when runtime fits; manifest, termination condition, and disjoint data are frozen |
+| C3 | Define the next bounded intervention | **Done** — H7-BM isolates local evidence-boundary ranking; H6 is not rerun or relabeled |
+| C4 | Run cheapest valid screen | **Current** — the disjoint H7 screen and local margin primitive are frozen; integrate the unchanged-H6 package, verify locally, then use Kaggle first when runtime fits |
 | C5 | Re-evaluate P1 exit gap | Automatic evidence plus external human-review plan; no mastery claim from synthetic data |
 
 ## Explicitly out of scope (until separately authorized)

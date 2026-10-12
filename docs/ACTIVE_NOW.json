@@ -3,7 +3,7 @@
   "updated": "2026-10-12",
   "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_NEXT_INTERVENTION_DEFINITION",
+  "current_gate": "P1_H7_BOUNDARY_MARGIN_LOCAL_PREFLIGHT",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
   "training_backend": "KAGGLE_AND_RUNPOD",
   "training_status": "ACTIVE",
@@ -25,8 +25,8 @@
     "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
   },
   "bounded_work": [
-    "p1_next_intervention_definition",
-    "p1_disjoint_screen_design"
+    "p1_h7_boundary_margin_training_package",
+    "p1_h7_control_scoring_package"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -35,7 +35,7 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "DEFINE_ONE_BOUNDED_INTERVENTION_FROM_H6_ERROR_AXES",
+  "next_engineering": "INTEGRATE_H7_OBJECTIVE_WITH_UNCHANGED_H6_RECIPE",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "370f13178aa12d596f150ff102ef399b1c728fa8"
+  "integration_base_sha": "1d4fca6486e3dc7089c93bf83b14c0de85143825"
 }
