@@ -3,7 +3,7 @@
   "updated": "2026-10-12",
   "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_H7_EXECUTION_PACKAGE_PREFLIGHT",
+  "current_gate": "P1_H7_KAGGLE_EXECUTION_READY",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
   "training_backend": "KAGGLE_AND_RUNPOD",
   "training_status": "ACTIVE",
@@ -25,8 +25,8 @@
     "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
   },
   "bounded_work": [
-    "p1_h7_kaggle_training_package",
-    "p1_h7_control_scoring_package"
+    "p1_h7_kaggle_two_seed_cpu_training",
+    "p1_h7_one_shot_control_treatment_screen"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -35,7 +35,7 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "PACKAGE_H7_TRAINING_AND_CONTROL_SCORING",
+  "next_engineering": "EXECUTE_H7_TWO_STAGE_KAGGLE_PACKAGE",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "c7785202ec758fe825a51367b04dffb18b2e302d"
+  "integration_base_sha": "a5d0c5dac0663cd760224073439905b211c11b44"
 }

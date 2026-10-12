@@ -1,7 +1,7 @@
 # Active Now
 
 **Updated:** 2026-10-12
-**Integration base:** `origin/master` @ `c778520` (PR #114 — H7 preregistration and frozen screen)
+**Integration base:** `origin/master` @ `a5d0c5d` (PR #115 — authenticated H7 trainer)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -9,7 +9,7 @@
 |-------|-------|
 | `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `P1_H7_EXECUTION_PACKAGE_PREFLIGHT` |
+| `current_gate` | `P1_H7_KAGGLE_EXECUTION_READY` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
 | `training_backend` | `KAGGLE_AND_RUNPOD` |
 | `training_status` | `ACTIVE` |
@@ -86,20 +86,29 @@ train/dev and H4 fit/calibration, which are the source families replayed by
 H5/H6. It contains no PHI or private material. The screen remains unopened by
 either model arm.
 
-The dedicated H7 trainer is now implemented and locally verified. It imports
+The dedicated H7 trainer is implemented and locally verified. It imports
 the authenticated H6 recipe, preserves H6's model, data identities, optimizer,
 schedule, exposure, seeds, calibration, and selection rules, and adds only the
 preregistered boundary-margin treatment (margin 1.0, radius 2, weight 0.25).
-The frozen H6 trainer remains untouched. The next step is a portable execution
-package containing the authenticated H5 inputs plus independent control and
-treatment scoring. The local checkout currently has the exact H5 fit and
-calibration bytes but lacks their authenticated manifest; that manifest must be
-restored byte-for-byte rather than regenerated before an end-to-end run.
+The frozen H6 trainer remains untouched. The exact historical H5 manifest has
+been restored and authenticated alongside its unchanged fit and calibration
+bytes.
+
+The H7 evaluator and deterministic Kaggle packager are now locally verified.
+The packager emits two physically separate archives: training contains H5 data,
+the base checkpoint, and two fixed CPU treatment seeds but no H7 screen or
+control; evaluation contains the frozen screen, frozen H6 control, tokenizer,
+and one-pass scorer but no H5 training data or base checkpoint. Evaluation can
+begin only after both treatment reports are hash-frozen and transferred. The
+experiment has a $0 compute ceiling, a four-hour stop condition, one control
+pass, two treatment passes, no third seed, and no threshold sweep. The next
+step is to execute this package on free Kaggle CPU and pull the authenticated
+artifacts before interpreting the preregistered PASS/REJECT/GRAY result.
 
 ## Current gate sequence
 
 ```text
-P1 — package authenticated H5 inputs + H7 treatment/control scoring
+P1 — execute isolated H7 two-stage package on free Kaggle CPU
         ↓
 CHEAPEST VALID TWO-SEED MECHANISM SCREEN (Kaggle first)
         ↓
