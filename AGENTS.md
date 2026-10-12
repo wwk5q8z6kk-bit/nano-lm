@@ -10,6 +10,8 @@ execution = docs/EXECUTION_PLAN.md
 
 capability_frontier = P1_SCRIBING
 product_frontier = NanoScribe
+nano_core = nano/                  # domain-general symbolic substrate
+nano_learned_core = nano_ai/       # learned scribing path through frozen H6
 
 macro_sequence =
 P1 faithful scribing
@@ -17,8 +19,12 @@ P1 faithful scribing
 → P3 longitudinal charting
 → P4–P9 intelligence expansion
 
-training_backend = RUNPOD
+training_backends = KAGGLE + RUNPOD
 training_status = ACTIVE
+
+backend_policy =
+KAGGLE_FREE_WHEN_RUNTIME_FITS;
+RUNPOD_FOR_EXACT_GPU_RUNTIME_OR_MANAGED_INFERENCE
 
 routine_runpod_training =
 ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET
@@ -34,8 +40,8 @@ NOT_AUTHORIZED
 
 Wedge = supporting verified-information subsystem
 
-H6 / Nano AI / span-port =
-CROSS_BRANCH_NOT_YET_INTEGRATED
+H6 / Nano AI = INTEGRATED_ON_MASTER
+span-port / P4 / CUAD = CROSS_BRANCH_NOT_YET_INTEGRATED
 
 E1 / E4 =
 preserved scoped empirical verdicts,
@@ -74,6 +80,9 @@ python3 scripts/check_active_now.py
 python3 scripts/check_docs_integrity.py
 python3 fabric/test_fabric.py
 python3 trajectory/test_recompute_c3.py
+python3 -m pytest -q nano
+python3 -m pytest -q nano_ai/tests
+python3 -m pytest -q benchmarks/
 ```
 
 ## Learned User Preferences
@@ -82,13 +91,16 @@ python3 trajectory/test_recompute_c3.py
 - Maximize intelligence gained per dollar and wall-clock hour; do not default to self-hosting the largest open-weight checkpoint available.
 - Treat B300 availability as a feasibility gate, not proof that arbitrary frontier checkpoints fit on one or two GPUs.
 - Prefer hosted API/inference for the frontier teacher when cheaper; reserve self-hosted B200/B300 for student training, distillation, Native Nano, and verifier work.
+- Prefer Kaggle for free, reproducible experiments when its runtime fits; use RunPod only when the exact GPU/runtime, persistence, or managed inference surface is required.
 - Enforce RunPod cost discipline: $180 autonomous spend envelope, $200 hard campaign cap, $20 owner reserve not for routine use; tear down idle pods promptly.
 - Use `origin/master` as development truth; never trust or push from a stale local `master`.
 - Do not reopen the documentation-reset program or turn work back into governance exercises when implementation can proceed.
 
 ## Learned Workspace Facts
 
-- Current capability frontier is P1 faithful scribing; product frontier is NanoScribe; RunPod is the active GPU training backend within the active experiment budget.
+- Current capability frontier is P1 faithful scribing; product frontier is NanoScribe; Kaggle and RunPod are complementary training backends selected by experiment fit and cost.
+- Nano Core (`nano/`), its reproducible clinical/synthetic-world evidence, and the coherent learned Nano AI package through H6 (`nano_ai/`) are integrated on `master` via PRs #107–#109.
+- The agentic benchmark instrument and v1.1 action-log contracts are integrated on `master` via PR #110.
 - P1 foundation PRs landed on master: #37 Encounter Representation v0, #38 constrained evidence transport/evaluation, #40 minimal model adapter and baseline bridge, #41 Qwen inference + three-track harness (`origin/master` ~c4822b9).
 - P1 model research runs four parallel tracks: frontier teacher (capability ceiling), large student, compact control (e.g. Qwen2.5-1.5B baseline adapter), and native Nano vNext screening (~30M–100M).
 - Qwen is a compact control / baseline adapter path, not Nano itself; Nano is the broader faithful-representation program, not merely a tiny LM, Qwen wrapper, or LoRA baseline.
