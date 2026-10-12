@@ -25,9 +25,9 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 
 | ID | Task | Done when |
 |----|------|-----------|
-| C1 | Reconcile H6 terminal evidence | Exact historical result and decision are present on `master`; hashes verify |
-| C2 | Localize abstention-calibration failures | Row-level analysis separates state classification, evidence binding, and verifier effects |
-| C3 | Define the next bounded intervention | New hypothesis follows the diagnosis; H6 is not rerun or relabeled |
+| C1 | Reconcile H6 terminal evidence | **Done** — exact historical result and decision are present on `master`; hashes verify |
+| C2 | Localize H6 failures | **Done** — authenticated row-level analysis separates state selection from evidence binding; threshold and verifier effects remain explicitly unassessed |
+| C3 | Define the next bounded intervention | **Current** — one falsifiable hypothesis targets one diagnosed mechanism; H6 is not rerun or relabeled |
 | C4 | Run cheapest valid screen | Local/Kaggle first when runtime fits; manifest, termination condition, and disjoint data are frozen |
 | C5 | Re-evaluate P1 exit gap | Automatic evidence plus external human-review plan; no mastery claim from synthetic data |
 

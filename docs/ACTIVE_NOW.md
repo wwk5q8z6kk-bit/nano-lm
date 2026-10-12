@@ -1,7 +1,7 @@
 # Active Now
 
 **Updated:** 2026-10-12
-**Integration base:** `origin/master` @ `e7c51fe` (PR #111 — integrated operating-state reconciliation)
+**Integration base:** `origin/master` @ `370f131` (PR #112 — H6 terminal evidence reconciliation)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -9,7 +9,7 @@
 |-------|-------|
 | `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `P1_ABSTENTION_CALIBRATION_DIAGNOSIS` |
+| `current_gate` | `P1_NEXT_INTERVENTION_DEFINITION` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
 | `training_backend` | `KAGGLE_AND_RUNPOD` |
 | `training_status` | `ACTIVE` |
@@ -60,14 +60,23 @@ consumed on Kaggle and is recorded in
 [`artifacts/nano_h6/H6_TERMINAL_DECISION.json`](../artifacts/nano_h6/H6_TERMINAL_DECISION.json).
 The selected checkpoint passed overall, held-value, missing-target, failure,
 and state-balance gates, but failed absence, conflict, and uncertainty gates.
-The exact H6 coupling must not be rerun or silently renamed. The next task is
-row-level diagnosis of abstention calibration before proposing another learned
-architecture.
+The exact H6 coupling must not be rerun or silently renamed.
+
+Authenticated row-level diagnosis now accounts for all 5,000 field decisions:
+3,901 were jointly correct; 241 were state-only errors; 771 were binding-only
+errors; and 87 combined both errors. Absence (184/214 errors) and uncertainty
+(53/60 errors) were dominated by state selection. Conflict had 57 binding-only
+and 50 combined errors. Supported fields were dominated by exact-span binding
+(714/718 errors). Threshold calibration, verifier effects, latency, and sealed
+confirmation were not assessed because H6 stopped at uncalibrated admission.
+The diagnosis is reproducible with
+`python3 -m nano_ai.training.diagnose_h6`; it authenticates the frozen result
+against the terminal-decision hash and does not rerun the model.
 
 ## Current gate sequence
 
 ```text
-P1 — abstention-calibration diagnosis over grounded evidence
+P1 — define one bounded intervention from the diagnosed H6 error axes
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓

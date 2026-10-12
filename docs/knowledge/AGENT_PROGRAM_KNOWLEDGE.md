@@ -33,13 +33,24 @@ H6 is complete and **REJECTED**. Its one-shot evaluation was consumed on Kaggle
 and is preserved at
 [`artifacts/nano_h6/H6_TERMINAL_DECISION.json`](../../artifacts/nano_h6/H6_TERMINAL_DECISION.json).
 The checkpoint passed overall and held-value copying but failed absence,
-conflict, and uncertainty. Therefore:
+conflict, and uncertainty. A hash-gated row-level decomposition accounts for
+all 5,000 decisions: 3,901 joint correct, 241 state-only errors, 771
+binding-only errors, and 87 combined errors. Absence and uncertainty are
+primarily state-selection failures; supported fields are primarily exact-span
+binding failures; conflict is split between binding-only and combined errors.
+Threshold and verifier effects were not assessed. Therefore:
 
 - do not rerun, reopen, or rename H6;
 - do not treat copying as the current primary blocker;
-- localize abstention-calibration failures before proposing another learned
-  architecture;
+- choose one bounded intervention against one diagnosed mechanism rather than
+  treating abstention and binding as a single failure;
 - keep future training data disjoint from frozen evaluation data.
+
+Reproduce the diagnosis without loading the model or rerunning H6:
+
+```bash
+python3 -m nano_ai.training.diagnose_h6
+```
 
 ## Compute choice
 
