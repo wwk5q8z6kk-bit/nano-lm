@@ -1,0 +1,8 @@
+# Test-only deps for the benchmark contract suite (`pytest benchmarks/`).
+# NOT default runtime: benchmarks/agent_identity.py, process_metrics.py,
+# gold_metrics.py and confidence.py are stdlib-only by design — only the tests
+# need these. Pinned to match requirements.txt (pytest) and the versions the
+# suite was verified against.
+pytest==9.0.2
+jsonschema==4.26.0
+PyYAML==6.0.3
