@@ -1,0 +1,96 @@
+{
+  "schema_version": "nano.fixtures.v0",
+  "contract_version": "nano.scribe.v0",
+  "purpose": "Contract conformance and historical provenance for Nano v0; this is not a fresh scientific benchmark.",
+  "scientific_status": {
+    "fresh_test_partition": null,
+    "historical_eval_is_fresh": false,
+    "next_requirement": "Create and seal a disjoint, previously unmeasured Nano v0 test partition before the next scientific benchmark."
+  },
+  "partitions": {
+    "rstar_train": {
+      "path": "trajectory/e4/data/rstar_train.json",
+      "records": 800,
+      "sha256": "0c0065c3f01d93a7850d93ab7cb29de8a100a386191401beaf04652ca84e4d13",
+      "role": "historical_training",
+      "exposure": "previously_generated_and_used"
+    },
+    "rstar_dev": {
+      "path": "trajectory/e4/data/rstar_dev.json",
+      "records": 100,
+      "sha256": "57321d1b729a48944e575df6226ec9ce1a0a05a5c100069c05ee54a78fcb52e6",
+      "role": "historical_validation",
+      "exposure": "previously_generated_and_used"
+    },
+    "rstar_eval": {
+      "path": "trajectory/e4/data/rstar_eval.json",
+      "records": 220,
+      "sha256": "37e96ff94bff41d25e5b06f22b4d941fc7a2c6067540148e88022779e8fc2ff7",
+      "role": "historical_regression",
+      "exposure": "fully_measured_before_nano_v0"
+    }
+  },
+  "contract_smoke": [
+    {
+      "case_id": "rstar-dev-0000",
+      "partition": "contract_smoke",
+      "purpose": "all five fields supported",
+      "source": {
+        "type": "inline_snapshot",
+        "transcript": "Doctor: Good morning, what brings you in today?\nPatient: I've been having shortness of breath.\nDoctor: How long has this been going on?\nPatient: Coming up on 3 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: I've been taking zinc tablets.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to penicillin.",
+        "transcript_sha256": "83276d0f406901b49f64fa4b5be51782645e07a117257bbd77db22106b36ab16",
+        "historical_source": {
+          "partition": "rstar_dev",
+          "index": 0,
+          "record_sha256": "1d4baa5ba45d2828d5b3d069e1c984b7722eac2207688f0f61bb21c8e3066ae0"
+        }
+      },
+      "gold": [
+        {"field": "chief_complaint", "state": "supported", "value": "shortness of breath", "evidence": [{"start": 74, "end": 93, "text": "shortness of breath", "speaker": "patient"}]},
+        {"field": "duration", "state": "supported", "value": "3 weeks", "evidence": [{"start": 158, "end": 165, "text": "3 weeks", "speaker": "patient"}]},
+        {"field": "severity", "state": "supported", "value": "moderate", "evidence": [{"start": 229, "end": 237, "text": "moderate", "speaker": "patient"}]},
+        {"field": "medication", "state": "supported", "value": "zinc tablets", "evidence": [{"start": 305, "end": 317, "text": "zinc tablets", "speaker": "patient"}]},
+        {"field": "allergy", "state": "supported", "value": "penicillin", "evidence": [{"start": 387, "end": 397, "text": "penicillin", "speaker": "patient"}]}
+      ]
+    },
+    {
+      "case_id": "rstar-dev-0004",
+      "partition": "contract_smoke",
+      "purpose": "supported values and positively evidenced absence",
+      "source": {
+        "type": "inline_snapshot",
+        "transcript": "Doctor: Good morning, what brings you in today?\nPatient: I've been having shortness of breath.\nDoctor: How long has this been going on?\nPatient: Coming up on 8 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: No allergies.",
+        "transcript_sha256": "a2202700914eccbe12a1e60392e194614ab4449dad3712c4253a436368728930",
+        "historical_source": {
+          "partition": "rstar_dev",
+          "index": 4,
+          "record_sha256": "0088d764fc0bb482874678ad932d46a8928ec08beb3cad5913ce8a237881aca0"
+        }
+      },
+      "gold": [
+        {"field": "chief_complaint", "state": "supported", "value": "shortness of breath", "evidence": [{"start": 74, "end": 93, "text": "shortness of breath", "speaker": "patient"}]},
+        {"field": "duration", "state": "supported", "value": "8 days", "evidence": [{"start": 158, "end": 164, "text": "8 days", "speaker": "patient"}]},
+        {"field": "severity", "state": "supported", "value": "mild", "evidence": [{"start": 228, "end": 232, "text": "mild", "speaker": "patient"}]},
+        {"field": "medication", "state": "absent", "value": null, "evidence": [{"start": 283, "end": 299, "text": "No, nothing yet.", "speaker": "patient"}]},
+        {"field": "allergy", "state": "absent", "value": null, "evidence": [{"start": 352, "end": 365, "text": "No allergies.", "speaker": "patient"}]}
+      ]
+    },
+    {
+      "case_id": "contract-edge-0000",
+      "partition": "contract_smoke",
+      "purpose": "missing, uncertain, conflicting, and required abstention semantics",
+      "source": {
+        "type": "inline",
+        "transcript": "Doctor: What brings you in today?\nPatient: chest pain.\nDoctor: How long has this been going on?\nPatient: I'm not sure; perhaps several days.\nDoctor: How severe is it?\nPatient: moderate.\nDoctor: Any allergies I should know about?\nPatient: One record says penicillin allergy, but another says no penicillin allergy.",
+        "transcript_sha256": "1cc8d22d4b31825c60775b9dc5a61d5aa5c4696f24ec64bceaef4c40d84c3aab"
+      },
+      "gold": [
+        {"field": "chief_complaint", "state": "supported", "value": "chest pain", "evidence": [{"start": 43, "end": 53, "text": "chest pain", "speaker": "patient"}]},
+        {"field": "duration", "state": "uncertain", "value": null, "evidence": [{"start": 105, "end": 140, "text": "I'm not sure; perhaps several days.", "speaker": "patient"}]},
+        {"field": "severity", "state": "supported", "value": "moderate", "evidence": [{"start": 176, "end": 184, "text": "moderate", "speaker": "patient"}]},
+        {"field": "medication", "state": "missing", "value": null, "evidence": []},
+        {"field": "allergy", "state": "conflicting", "value": null, "evidence": [{"start": 254, "end": 272, "text": "penicillin allergy", "speaker": "patient"}, {"start": 291, "end": 312, "text": "no penicillin allergy", "speaker": "patient"}]}
+      ]
+    }
+  ]
+}
