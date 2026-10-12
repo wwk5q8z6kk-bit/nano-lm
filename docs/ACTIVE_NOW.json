@@ -1,11 +1,11 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
-  "updated": "2026-08-22",
+  "updated": "2026-10-12",
   "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_ENCOUNTER_REPRESENTATION_AND_EVIDENCE_TRANSPORT",
+  "current_gate": "P1_ABSTENTION_CALIBRATION_DIAGNOSIS",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
-  "training_backend": "RUNPOD",
+  "training_backend": "KAGGLE_AND_RUNPOD",
   "training_status": "ACTIVE",
   "local_zero_cost_exploratory_training": "ALLOWED",
   "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
@@ -15,8 +15,9 @@
   "phi_or_private_data": "NOT_AUTHORIZED",
   "clinical_claims": "FORBIDDEN_WITHOUT_EXTERNAL_HUMAN_VALIDATION",
   "compute_posture": {
-    "primary_gpu_training_backend": "RUNPOD",
-    "training": "ACTIVE_ON_RUNPOD",
+    "free_gpu_backend": "KAGGLE_WHEN_RUNTIME_FITS",
+    "paid_gpu_backend": "RUNPOD_FOR_EXACT_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE",
+    "training": "ACTIVE_ON_KAGGLE_AND_RUNPOD",
     "local_compute": "APPLE_SILICON_AND_CPU_FOR_DEV_SMOKE_ANALYSIS_PREPROCESS_EVAL_AND_SMALL_EXPERIMENTS",
     "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
     "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
@@ -24,7 +25,8 @@
     "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
   },
   "bounded_work": [
-    "p1_encounter_representation_v0"
+    "h6_terminal_evidence_reconciliation",
+    "p1_abstention_calibration_diagnosis"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -33,7 +35,7 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "ENCOUNTER_REPRESENTATION_V0",
+  "next_engineering": "LOCALIZE_ABSTENTION_CALIBRATION_FAILURE_BEFORE_NEW_ARCHITECTURE",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "c4822b9980ce50adad01efbc6f61c5228794ce2f"
+  "integration_base_sha": "e7c51fe245c71075678652adcc37fff9972aac90"
 }

@@ -49,7 +49,7 @@ Synthetic/mock benchmark success alone is insufficient.
 
 `scribe/` stages (v1/v2, G, A, C, S) and Paper α inform design — see [FAILURE_TO_ARCHITECTURE.md](../../FAILURE_TO_ARCHITECTURE.md).
 
-E1 KILL applies to the **old closed generative-substrate claim** on the old task — not to abandoning P1 scribing as the product frontier.
+E1 KILL applies to the **old closed generative-substrate claim** on the old task — not to abandoning P1 scribing as the current capability frontier.
 
 ## Immediate engineering focus
 

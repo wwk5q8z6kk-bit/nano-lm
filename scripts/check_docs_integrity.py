@@ -33,12 +33,9 @@ STUB_TO_ARCHIVE = {
     "papers/PROGRAM_AUTHORITY.md": "docs/archive/legacy/PROGRAM_AUTHORITY_WEDGE_20260731.md",
 }
 
-CROSS_BRANCH_PATHS = frozenset(
-    {
-        "artifacts/nano_h6/",
-        "nano_ai/",
-    }
-)
+# H6 and nano_ai are integrated. Later span-port/P4/CUAD work has no canonical
+# path in this tree yet, so there is no broad path prefix to police here.
+CROSS_BRANCH_PATHS: frozenset[str] = frozenset()
 
 STALE_AUTHORITY_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     (

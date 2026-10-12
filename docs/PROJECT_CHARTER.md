@@ -24,9 +24,9 @@ INTELLIGENCE EXPANSION — P4–P9
 synthesis → questioning → reasoning → planning → action → adaptation
 ```
 
-The nine-program ladder ([CAPABILITY_LADDER.md](CAPABILITY_LADDER.md)) details P1–P9. Only **Foundation I** is the near-term product frontier.
+The nine-program ladder ([CAPABILITY_LADDER.md](CAPABILITY_LADDER.md)) details P1–P9. Only **Foundation I** is the near-term capability frontier.
 
-## Capability-aware product naming
+## Capability-aware naming
 
 ```text
 Nano Core + Medical DomainPack + P1  =  NanoScribe (faithful encounter record)
@@ -58,7 +58,15 @@ Medical scribing is **DomainPack #1** — high-consequence, structured, measurab
 
 ## Compute
 
-**RunPod is the active primary GPU training backend.** Local zero-cost exploratory training on Apple Silicon/CPU is **ALLOWED**. Routine RunPod training is **ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require **EXPERIMENT_SCOPED_AUTHORIZATION**. Confirmatory evidential runs require **PREREG + EXPERIMENT_SCOPED_AUTHORIZATION**. PHI and private owner material are **NOT AUTHORIZED**. Training venue ≠ deployment venue — compact/local/private deployment remains a long-term axis. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md), [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
+Kaggle and RunPod are complementary active training backends: use free Kaggle
+when its runtime fits, and RunPod when exact GPU/runtime requirements,
+persistence, or managed inference justify it. Local zero-cost exploratory
+training is **ALLOWED**. Routine RunPod training is
+**ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require
+**EXPERIMENT_SCOPED_AUTHORIZATION**. Confirmatory evidential runs require
+**PREREG + EXPERIMENT_SCOPED_AUTHORIZATION**. PHI and private owner material are
+**NOT AUTHORIZED**. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md),
+[infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
 
 ## Three research layers
 

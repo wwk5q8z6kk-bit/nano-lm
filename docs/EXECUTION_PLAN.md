@@ -11,15 +11,25 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 | A3 | Strengthen CI (`check_active_now`, `check_docs_integrity`) | Done |
 | A4 | Owner review + merge to `master` | **CLOSED** @ `0107b7a` |
 
-## Phase B — P1 scribe (CURRENT)
+## Phase B — P1 scribe foundation (BUILT)
 
 | ID | Task | Done when |
 |----|------|-----------|
-| B1 | Encounter representation schema v0 | JSON schema + docs; supports entity/event/evidence refs |
-| B2 | Span/evidence bottleneck | Measured on held-out medical dialogue subset (no PHI in repo) |
-| B3 | Verified record → note rendering | Note is view of record, not primary truth |
-| B4 | External eval protocol draft | [domains/medical/EVALUATION_PROTOCOL.md](domains/medical/EVALUATION_PROTOCOL.md) instantiated |
-| B5 | P1 exit gate checklist | Metrics + human review plan — not claimed passed |
+| B1 | Encounter representation schema v0 | **Done** — PR #37 |
+| B2 | Constrained evidence transport | **Done** — PR #38 |
+| B3 | Model adapter and baseline bridge | **Done** — PR #40 |
+| B4 | Three-track inference harness | **Done** — PR #41 |
+| B5 | Nano Core, learned Nano AI, benchmark integration | **Done** — PRs #107–#110 |
+
+## Phase C — P1 learned intelligence (CURRENT)
+
+| ID | Task | Done when |
+|----|------|-----------|
+| C1 | Reconcile H6 terminal evidence | Exact historical result and decision are present on `master`; hashes verify |
+| C2 | Localize abstention-calibration failures | Row-level analysis separates state classification, evidence binding, and verifier effects |
+| C3 | Define the next bounded intervention | New hypothesis follows the diagnosis; H6 is not rerun or relabeled |
+| C4 | Run cheapest valid screen | Local/Kaggle first when runtime fits; manifest, termination condition, and disjoint data are frozen |
+| C5 | Re-evaluate P1 exit gap | Automatic evidence plus external human-review plan; no mastery claim from synthetic data |
 
 ## Explicitly out of scope (until separately authorized)
 
@@ -30,7 +40,10 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 
 ## Training / compute (standing)
 
-RunPod is Nano’s **primary GPU training backend** and is **active** infrastructure — see [ACTIVE_NOW.md](ACTIVE_NOW.md) and [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md). Ordinary training/adaptation/CUDA research on RunPod is in-workflow. Materially costly or confirmatory runs remain **experiment-scoped** under the active plan’s budget/auth rules. Local Apple Silicon stays for development, smoke, analysis, preprocessing, evaluation, and small/cheap experiments.
+Kaggle and RunPod are complementary active backends. Prefer Kaggle when the
+free runtime fits; use RunPod for exact GPU/runtime requirements, persistence,
+or managed inference. Materially costly or confirmatory runs remain
+experiment-scoped under the active plan’s budget and authorization rules.
 
 ## Verification commands
 

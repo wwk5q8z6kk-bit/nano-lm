@@ -12,6 +12,8 @@ empirical artifacts → mission (CHARTER) → architecture → ACTIVE_NOW → EX
 
 Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 
+Agent operational map: [`knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](knowledge/AGENT_PROGRAM_KNOWLEDGE.md)
+
 ## Core
 
 | Document | Purpose |
@@ -25,6 +27,7 @@ Machine-readable mirror: [`ACTIVE_NOW.json`](ACTIVE_NOW.json)
 | [EXECUTION_PLAN.md](EXECUTION_PLAN.md) | Bounded executable work |
 | [EVALUATION_FRAMEWORK.md](EVALUATION_FRAMEWORK.md) | How capabilities are measured |
 | [FAILURE_TO_ARCHITECTURE.md](FAILURE_TO_ARCHITECTURE.md) | Major failures → architectural lessons |
+| [knowledge/AGENT_PROGRAM_KNOWLEDGE.md](knowledge/AGENT_PROGRAM_KNOWLEDGE.md) | Compact start-to-finish operating map |
 
 ## Research
 

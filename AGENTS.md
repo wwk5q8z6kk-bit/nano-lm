@@ -9,7 +9,7 @@ current_state = docs/ACTIVE_NOW.json + docs/ACTIVE_NOW.md
 execution = docs/EXECUTION_PLAN.md
 
 capability_frontier = P1_SCRIBING
-product_frontier = NanoScribe
+proving_application = NanoScribe
 nano_core = nano/                  # domain-general symbolic substrate
 nano_learned_core = nano_ai/       # learned scribing path through frozen H6
 
@@ -40,7 +40,7 @@ NOT_AUTHORIZED
 
 Wedge = supporting verified-information subsystem
 
-H6 / Nano AI = INTEGRATED_ON_MASTER
+H6 / Nano AI = INTEGRATED_ON_MASTER_AND_H6_REJECTED
 span-port / P4 / CUAD = CROSS_BRANCH_NOT_YET_INTEGRATED
 
 E1 / E4 =
@@ -51,7 +51,8 @@ July-31 IDLE / NanoScribe STOP =
 HISTORICAL_PROGRAM_STATE
 ```
 
-Canonical index: [`docs/README.md`](docs/README.md).
+Canonical index: [`docs/README.md`](docs/README.md) · operational map:
+[`docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](docs/knowledge/AGENT_PROGRAM_KNOWLEDGE.md).
 
 ## Typed authority
 
@@ -66,6 +67,7 @@ Canonical index: [`docs/README.md`](docs/README.md).
 - `OLD_TASK_U` forbidden.
 - Doc-reset PRs must not modify Evidence Core / ledger / freeze artifacts.
 - No PHI / private owner material in current Nano experiments.
+- H6's one-shot evaluation is consumed and terminal. Do not rerun or relabel it.
 
 ## Hard gates
 
@@ -80,6 +82,8 @@ python3 scripts/check_active_now.py
 python3 scripts/check_docs_integrity.py
 python3 fabric/test_fabric.py
 python3 trajectory/test_recompute_c3.py
+python3 -m pytest -q nanoscribe
+python3 nanoscribe/benchmark.py
 python3 -m pytest -q nano
 python3 -m pytest -q nano_ai/tests
 python3 -m pytest -q benchmarks/
@@ -98,7 +102,7 @@ python3 -m pytest -q benchmarks/
 
 ## Learned Workspace Facts
 
-- Current capability frontier is P1 faithful scribing; product frontier is NanoScribe; Kaggle and RunPod are complementary training backends selected by experiment fit and cost.
+- Current capability frontier is P1 faithful scribing; NanoScribe is the proving application for the AI, not a separate product scope. Kaggle and RunPod are complementary training backends selected by experiment fit and cost.
 - Nano Core (`nano/`), its reproducible clinical/synthetic-world evidence, and the coherent learned Nano AI package through H6 (`nano_ai/`) are integrated on `master` via PRs #107–#109.
 - The agentic benchmark instrument and v1.1 action-log contracts are integrated on `master` via PR #110.
 - P1 foundation PRs landed on master: #37 Encounter Representation v0, #38 constrained evidence transport/evaluation, #40 minimal model adapter and baseline bridge, #41 Qwen inference + three-track harness (`origin/master` ~c4822b9).
