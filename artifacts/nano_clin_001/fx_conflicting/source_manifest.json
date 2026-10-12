@@ -1,0 +1,16 @@
+{
+  "patient_id": "synth-002",
+  "modality": "text",
+  "document_type": "encounter_transcript",
+  "content": "clinician: Your notes say diabetes was diagnosed in 2016.\npatient: I think it was 2019, but I am not certain.\nclinician: Your HbA1c today is 8.2 percent.\nclinician: The previous HbA1c was 7.4 percent.\n",
+  "author_or_device": "synthetic_generator",
+  "encounter_id": "",
+  "organization_id": "",
+  "source_system": "",
+  "creation_time": "",
+  "received_time": "",
+  "security_classification": "synthetic_non_phi",
+  "consent_scope": "research_synthetic",
+  "content_hash": "ab0fc8a44f0e9560bbd40a82281967d31388a0b0530cfed3639661c84cc159c1",
+  "source_id": "src_dd37809b5aa31232"
+}

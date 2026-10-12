@@ -1,0 +1,20 @@
+{
+  "run_id": "reval30_decoder_control_s0",
+  "steps_completed": 1800,
+  "final_loss": 0.053786471486091614,
+  "device": "mps",
+  "checkpoint": "artifacts/native_checkpoints_fixed/reval30_decoder_control_s0/step_001800.pt",
+  "bits_per_byte": 0.07759747567990001,
+  "integrity": {
+    "attention_leakage": 0.0,
+    "attention_matches_reference": true,
+    "attention_reference_max_abs_diff": 3.5762786865234375e-07,
+    "supervised_target_tokens": 305,
+    "sampled_examples": 16,
+    "prompt_tokens_at_cap": 512,
+    "max_seq": 512
+  },
+  "smoke": false,
+  "wall_seconds": 2606.8,
+  "surface": "mps:apple_silicon"
+}

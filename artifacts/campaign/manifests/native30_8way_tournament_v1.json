@@ -1,0 +1,26 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "native30_8way_tournament_v1",
+  "git_sha": "a89ecb026d31bb9df3b9122fac6e1dd5bc6c3261",
+  "dataset_revision": "p1_distill_train_v1",
+  "command": "scripts/wave1_launch_pods.sh native-only",
+  "surface": "pod_template",
+  "gpu_or_model": "NVIDIA A100 80GB PCIe + RTX 4090 (4+4 split)",
+  "hub_stable_locator": "runpod-torch-v240",
+  "hub_listing_id": "runpod-torch-v240",
+  "resolved_at": "2026-08-23T05:00:00+00:00",
+  "max_runtime_min": 90,
+  "max_cost_usd": 3.5,
+  "artifact_dest": "artifacts/native_checkpoints/",
+  "termination_condition": "all 8 run_ids complete or 5min GPU util fail-fast",
+  "run_ids": [
+    "native30_bottleneck_span_s0",
+    "native30_bottleneck_span_s1",
+    "native30_bottleneck_struct_s0",
+    "native30_bottleneck_struct_s1",
+    "native30_decoder_span_s0",
+    "native30_decoder_span_s1",
+    "native30_decoder_struct_s0",
+    "native30_decoder_struct_s1"
+  ]
+}

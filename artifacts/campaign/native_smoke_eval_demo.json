@@ -1,0 +1,201 @@
+{
+  "schema": "nano.native.p1_eval.v1",
+  "run_id": "smoke_p1_eval_demo",
+  "suite": "p1_contract_smoke_v1",
+  "checkpoint": "artifacts/native_checkpoints/smoke_p1_eval_demo/latest.pt",
+  "n_cases": 3,
+  "suite_metrics": {
+    "n_cases": 3,
+    "exact_gold_span_count": 0,
+    "exact_gold_span_eligible": 0,
+    "exact_gold_span_rate": 0.0,
+    "assertion_state_correct_count": 0,
+    "assertion_state_correct_eligible": 0,
+    "assertion_state_correct_rate": 0.0,
+    "support_direct_exact_count": 0,
+    "support_direct_exact_eligible": 0,
+    "support_direct_exact_rate": 0.0,
+    "correct_abstention_count": 0,
+    "correct_abstention_eligible": 8,
+    "correct_abstention_rate": 0.0,
+    "coverage_count": 0,
+    "coverage_eligible": 8,
+    "coverage_rate": 0.0,
+    "span_character_f1_mean": 0.0,
+    "malformed": 8
+  },
+  "cases": [
+    {
+      "encounter_id": "enc-1",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 5,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 5,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 5
+      },
+      "per_atom": {
+        "atom-neck": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-alg": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-hist": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-assess": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "medication": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-neck": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "atom-alg": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "atom-hist": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "atom-assess": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "medication": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    },
+    {
+      "encounter_id": "enc-2",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 1,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 1,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 1
+      },
+      "per_atom": {
+        "atom-chest": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-chest": "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+      }
+    },
+    {
+      "encounter_id": "enc-3",
+      "aggregate": {
+        "exact_gold_span_count": 0,
+        "exact_gold_span_eligible": 0,
+        "exact_gold_span_rate": 0.0,
+        "assertion_state_correct_count": 0,
+        "assertion_state_correct_eligible": 0,
+        "assertion_state_correct_rate": 0.0,
+        "support_direct_exact_count": 0,
+        "support_direct_exact_eligible": 0,
+        "support_direct_exact_rate": 0.0,
+        "correct_abstention_count": 0,
+        "correct_abstention_eligible": 2,
+        "correct_abstention_rate": 0.0,
+        "coverage_count": 0,
+        "coverage_eligible": 2,
+        "coverage_rate": 0.0,
+        "span_character_f1_mean": 0.0,
+        "support_normalized": 0,
+        "support_review_required": 0,
+        "n_atoms_gold": 2
+      },
+      "per_atom": {
+        "atom-fh": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        },
+        "atom-tired": {
+          "exact_gold_span": false,
+          "span_character_f1": 0.0,
+          "support_relation": null,
+          "assertion_state_correct": false,
+          "abstained": false,
+          "malformed": true,
+          "omitted": false,
+          "spurious_atom": false
+        }
+      },
+      "raw_lines": {
+        "atom-fh": "iiiiiii?????????????????????????????????????????????????????????",
+        "atom-tired": "iiiiiii?????????????????????????????????????????????????????????"
+      }
+    }
+  ]
+}

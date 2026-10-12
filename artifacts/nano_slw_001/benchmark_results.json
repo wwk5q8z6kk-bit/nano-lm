@@ -1,0 +1,748 @@
+{
+  "benchmark": "NANO-SLW-001",
+  "spec_fingerprint": "spec_dc5368e05f49119d",
+  "seed": 20260823,
+  "world": {
+    "entities": 176,
+    "typed_relations": 192,
+    "entity_types": [
+      "component",
+      "operator",
+      "resource",
+      "site",
+      "unit"
+    ],
+    "relation_types": [
+      "consumes",
+      "located_at",
+      "part_of"
+    ],
+    "ticks": 60,
+    "ground_truth_changes": 625,
+    "observations": 827,
+    "unobserved_changes": 30,
+    "observation_kinds": {
+      "clean": 508,
+      "delayed": 56,
+      "approximate": 63,
+      "duplicate": 65,
+      "contradictory": 45,
+      "correction": 32,
+      "intervention": 47,
+      "rationale": 11
+    }
+  },
+  "arms": {
+    "baseline_a_full_rebuild": {
+      "recomputations": 4307,
+      "observations_folded": 3551,
+      "checkpoints": 6,
+      "deltas": 5
+    },
+    "candidate_b_incremental": {
+      "recomputations": 1225,
+      "observations_folded": 816,
+      "checkpoints": 6,
+      "deltas": 5
+    }
+  },
+  "equivalence": {
+    "final_state_identical": true,
+    "all_checkpoints_identical": true,
+    "conflict_sets_identical": true,
+    "identical_snapshot_ids": true,
+    "final_facts": 195,
+    "final_declared_unknown": 74
+  },
+  "cost": {
+    "baseline_recomputations": 4307,
+    "candidate_recomputations": 1225,
+    "baseline_observations_folded": 3551,
+    "candidate_observations_folded": 816,
+    "recomputation_ratio": 0.2844207104713257,
+    "fold_ratio": 0.22979442410588566
+  },
+  "correction_absorption": {
+    "corrections_applied": 15,
+    "lineage_obligations": 15,
+    "confirmed_unaffected": 0,
+    "unhonoured_obligations": 0,
+    "all_obligations_honoured": true
+  },
+  "invalidation": {
+    "trials": 60,
+    "true_positives": 245,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "direct_marked_stale": 1.0,
+    "transitive_marked_possibly_stale": 1.0,
+    "graph_nodes": 1698
+  },
+  "branch_isolation": {
+    "perturbed_site": "site_00",
+    "perturbed_entity": "unit_0000",
+    "other_sites": 7,
+    "other_sites_still_current": 7,
+    "isolation": 1.0,
+    "target_roll_invalidated": true,
+    "every_stale_object_has_a_reason": true
+  },
+  "faithfulness": {
+    "ground_truth_keys": 240,
+    "declared_unknown": 69,
+    "nano": {
+      "resolved_keys": 195,
+      "correct": 177,
+      "incorrect": 18,
+      "accuracy": 0.9076923076923077,
+      "undeclared_error": 0,
+      "undeclared_error_rate": 0.0
+    },
+    "silent_resolution_control": {
+      "resolved_keys": 240,
+      "correct": 199,
+      "incorrect": 41,
+      "accuracy": 0.8291666666666667,
+      "undeclared_error": 41,
+      "undeclared_error_rate": 0.17083333333333334
+    },
+    "undeclared_error_avoided": 41,
+    "control_is_worse": true
+  },
+  "information_need": {
+    "broken_keys": 63,
+    "total_tracked_keys": 240,
+    "base_rate": 0.2625,
+    "comparison_budget": "0.25",
+    "strategies": {
+      "arbitrary": {
+        "requests": 178,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 0.058823529411764705,
+            "errors_before": 63,
+            "errors_after": 62,
+            "errors_fixed": 1,
+            "fixed_per_question": 0.058823529411764705
+          },
+          "0.25": {
+            "k": 44,
+            "precision_at_k": 0.36363636363636365,
+            "errors_before": 63,
+            "errors_after": 47,
+            "errors_fixed": 16,
+            "fixed_per_question": 0.36363636363636365
+          },
+          "0.50": {
+            "k": 89,
+            "precision_at_k": 0.33707865168539325,
+            "errors_before": 63,
+            "errors_after": 33,
+            "errors_fixed": 30,
+            "fixed_per_question": 0.33707865168539325
+          }
+        },
+        "plan": {
+          "total_requests": 178,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 161,
+          "selected_mix": {
+            "contradiction": 1,
+            "gap": 1,
+            "stale": 15
+          },
+          "deferred_mix": {
+            "contradiction": 44,
+            "gap": 23,
+            "stale": 94
+          },
+          "top": [
+            {
+              "key": "unit_0000.load",
+              "kind": "stale",
+              "why": "nothing reported for 56 days; the world may have moved",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0000.status",
+              "kind": "stale",
+              "why": "nothing reported for 28 days; the world may have moved",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0001.load",
+              "kind": "stale",
+              "why": "nothing reported for 38 days; the world may have moved",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0001.operator",
+              "kind": "stale",
+              "why": "nothing reported for 51 days; the world may have moved",
+              "priority": 0.0
+            },
+            {
+              "key": "unit_0001.status",
+              "kind": "stale",
+              "why": "nothing reported for 44 days; the world may have moved",
+              "priority": 0.0
+            }
+          ]
+        }
+      },
+      "kind": {
+        "requests": 178,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 1.0,
+            "errors_before": 63,
+            "errors_after": 46,
+            "errors_fixed": 17,
+            "fixed_per_question": 1.0
+          },
+          "0.25": {
+            "k": 44,
+            "precision_at_k": 1.0,
+            "errors_before": 63,
+            "errors_after": 19,
+            "errors_fixed": 44,
+            "fixed_per_question": 1.0
+          },
+          "0.50": {
+            "k": 89,
+            "precision_at_k": 0.7078651685393258,
+            "errors_before": 63,
+            "errors_after": 0,
+            "errors_fixed": 63,
+            "fixed_per_question": 0.7078651685393258
+          }
+        },
+        "plan": {
+          "total_requests": 178,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 161,
+          "selected_mix": {
+            "contradiction": 17
+          },
+          "deferred_mix": {
+            "contradiction": 28,
+            "gap": 24,
+            "stale": 109
+          },
+          "top": [
+            {
+              "key": "unit_0003.status",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (nominal, offline) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0004_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (30, 8) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0005_c0.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (38, 51) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0005_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (27, 38) and none supersedes the others",
+              "priority": 4.0
+            },
+            {
+              "key": "unit_0100.operator",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (op_06, op_08) and none supersedes the others",
+              "priority": 4.0
+            }
+          ]
+        }
+      },
+      "kind_scarcity": {
+        "requests": 178,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 1.0,
+            "errors_before": 63,
+            "errors_after": 46,
+            "errors_fixed": 17,
+            "fixed_per_question": 1.0
+          },
+          "0.25": {
+            "k": 44,
+            "precision_at_k": 0.9545454545454546,
+            "errors_before": 63,
+            "errors_after": 21,
+            "errors_fixed": 42,
+            "fixed_per_question": 0.9545454545454546
+          },
+          "0.50": {
+            "k": 89,
+            "precision_at_k": 0.7078651685393258,
+            "errors_before": 63,
+            "errors_after": 0,
+            "errors_fixed": 63,
+            "fixed_per_question": 0.7078651685393258
+          }
+        },
+        "plan": {
+          "total_requests": 178,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 161,
+          "selected_mix": {
+            "contradiction": 9,
+            "gap": 8
+          },
+          "deferred_mix": {
+            "contradiction": 36,
+            "gap": 16,
+            "stale": 109
+          },
+          "top": [
+            {
+              "key": "unit_0100.operator",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (op_06, op_08) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0101.operator",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (op_07, op_10) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0104_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (73, 79) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0202_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (66, 77) and none supersedes the others",
+              "priority": 2.3094
+            },
+            {
+              "key": "unit_0205_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (50, 55) and none supersedes the others",
+              "priority": 2.3094
+            }
+          ]
+        }
+      },
+      "kind_scarcity_age": {
+        "requests": 178,
+        "budgets": {
+          "0.10": {
+            "k": 17,
+            "precision_at_k": 1.0,
+            "errors_before": 63,
+            "errors_after": 46,
+            "errors_fixed": 17,
+            "fixed_per_question": 1.0
+          },
+          "0.25": {
+            "k": 44,
+            "precision_at_k": 0.9772727272727273,
+            "errors_before": 63,
+            "errors_after": 20,
+            "errors_fixed": 43,
+            "fixed_per_question": 0.9772727272727273
+          },
+          "0.50": {
+            "k": 89,
+            "precision_at_k": 0.5955056179775281,
+            "errors_before": 63,
+            "errors_after": 10,
+            "errors_fixed": 53,
+            "fixed_per_question": 0.5955056179775281
+          }
+        },
+        "plan": {
+          "total_requests": 178,
+          "budget": 17,
+          "selected": 17,
+          "deferred": 161,
+          "selected_mix": {
+            "contradiction": 9,
+            "gap": 8
+          },
+          "deferred_mix": {
+            "contradiction": 36,
+            "gap": 16,
+            "stale": 109
+          },
+          "top": [
+            {
+              "key": "unit_0100.operator",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (op_06, op_08) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0101.operator",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (op_07, op_10) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0104_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (73, 79) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0202_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (66, 77) and none supersedes the others",
+              "priority": 6.9282
+            },
+            {
+              "key": "unit_0205_c1.wear",
+              "kind": "contradiction",
+              "why": "2 live reports disagree (50, 55) and none supersedes the others",
+              "priority": 6.9282
+            }
+          ]
+        }
+      }
+    },
+    "random_key_baseline": {
+      "0.10": {
+        "k": 17,
+        "precision_at_k": 0.23529411764705882,
+        "errors_before": 63,
+        "errors_after": 59,
+        "errors_fixed": 4,
+        "fixed_per_question": 0.23529411764705882
+      },
+      "0.25": {
+        "k": 44,
+        "precision_at_k": 0.2727272727272727,
+        "errors_before": 63,
+        "errors_after": 51,
+        "errors_fixed": 12,
+        "fixed_per_question": 0.2727272727272727
+      },
+      "0.50": {
+        "k": 89,
+        "precision_at_k": 0.29213483146067415,
+        "errors_before": 63,
+        "errors_after": 37,
+        "errors_fixed": 26,
+        "fixed_per_question": 0.29213483146067415
+      }
+    },
+    "best_strategy": "kind",
+    "filter_and_rank_precision": 1.0,
+    "random_key_precision": 0.2727272727272727,
+    "filter_and_rank_lift": 0.7272727272727273,
+    "arbitrary_order_precision": 0.36363636363636365,
+    "rank_lift_given_filter": 0.6363636363636364,
+    "best_errors_fixed": 44,
+    "random_key_errors_fixed": 12,
+    "beats_random_key": true
+  },
+  "runtime": {
+    "questions": 96,
+    "dispositions": {
+      "present": 68,
+      "abstain": 15,
+      "review": 13
+    },
+    "value_questions": 68,
+    "presented": 48,
+    "present_correct": 48,
+    "undeclared_error": 0,
+    "coverage": 0.7058823529411765,
+    "answerable": 48,
+    "answered_of_answerable": 48,
+    "answerable_yield": 1.0,
+    "abstained_correctly": 8,
+    "abstained_while_holding_the_answer": 0,
+    "always_present_control": {
+      "answered": 68,
+      "wrong": 7,
+      "answers_with_nothing_to_say": 8,
+      "undeclared_error": 7
+    },
+    "undeclared_error_avoided": 7,
+    "every_presented_answer_is_grounded": true,
+    "every_answer_states_its_reason": true,
+    "no_fabricated_citations": true,
+    "compute_spent": 140.0,
+    "compute_budget": 400.0,
+    "slice_status": "verified",
+    "capabilities_used": [
+      "conflict_report",
+      "delta_read",
+      "evidence_trace",
+      "freshness_probe",
+      "need_planner",
+      "state_lookup"
+    ],
+    "artifacts_compiled": 81
+  },
+  "retrieval_vs_state": {
+    "questions": 96,
+    "observations": 827,
+    "state_arm": {
+      "dispositions": {
+        "present": 68,
+        "abstain": 15,
+        "review": 13
+      },
+      "present_correct": 48,
+      "undeclared_error": 0,
+      "presented": 48,
+      "structurally_unavailable": 0,
+      "cost": 346.75,
+      "common_query_cost": 98.0,
+      "cost_per_common_question": 1.181,
+      "fold_cost": 206.75,
+      "query_cost": 140.0
+    },
+    "retrieval_arms": {
+      "k=1": {
+        "dispositions": {
+          "present": 70,
+          "abstain": 26,
+          "review": 0
+        },
+        "present_correct": 50,
+        "undeclared_error": 10,
+        "presented": 60,
+        "structurally_unavailable": 13,
+        "cost": 100.75,
+        "common_query_cost": 100.75,
+        "cost_per_common_question": 1.214,
+        "spans_read": 71,
+        "failure_modes": {
+          "believed_a_superseded_report": 0,
+          "misordered_mixed_precision_times": 2,
+          "missed_a_same_time_contradiction": 3,
+          "blind_to_a_known_missing_report": 2,
+          "unexplained": 3
+        }
+      },
+      "k=4": {
+        "dispositions": {
+          "present": 63,
+          "abstain": 26,
+          "review": 7
+        },
+        "present_correct": 46,
+        "undeclared_error": 7,
+        "presented": 53,
+        "structurally_unavailable": 13,
+        "cost": 134.25,
+        "common_query_cost": 134.25,
+        "cost_per_common_question": 1.617,
+        "spans_read": 205,
+        "failure_modes": {
+          "believed_a_superseded_report": 0,
+          "misordered_mixed_precision_times": 2,
+          "missed_a_same_time_contradiction": 1,
+          "blind_to_a_known_missing_report": 1,
+          "unexplained": 3
+        }
+      },
+      "k=16": {
+        "dispositions": {
+          "present": 63,
+          "abstain": 25,
+          "review": 8
+        },
+        "present_correct": 46,
+        "undeclared_error": 7,
+        "presented": 53,
+        "structurally_unavailable": 13,
+        "cost": 149.5,
+        "common_query_cost": 149.5,
+        "cost_per_common_question": 1.801,
+        "spans_read": 266,
+        "failure_modes": {
+          "believed_a_superseded_report": 0,
+          "misordered_mixed_precision_times": 2,
+          "missed_a_same_time_contradiction": 1,
+          "blind_to_a_known_missing_report": 1,
+          "unexplained": 3
+        }
+      },
+      "k=64": {
+        "dispositions": {
+          "present": 63,
+          "abstain": 25,
+          "review": 8
+        },
+        "present_correct": 46,
+        "undeclared_error": 7,
+        "presented": 53,
+        "structurally_unavailable": 13,
+        "cost": 161.5,
+        "common_query_cost": 161.5,
+        "cost_per_common_question": 1.946,
+        "spans_read": 314,
+        "failure_modes": {
+          "believed_a_superseded_report": 0,
+          "misordered_mixed_precision_times": 2,
+          "missed_a_same_time_contradiction": 1,
+          "blind_to_a_known_missing_report": 1,
+          "unexplained": 3
+        }
+      },
+      "k=all": {
+        "dispositions": {
+          "present": 63,
+          "abstain": 25,
+          "review": 8
+        },
+        "present_correct": 46,
+        "undeclared_error": 7,
+        "presented": 53,
+        "structurally_unavailable": 13,
+        "cost": 352.25,
+        "common_query_cost": 352.25,
+        "cost_per_common_question": 4.244,
+        "spans_read": 1077,
+        "failure_modes": {
+          "believed_a_superseded_report": 0,
+          "misordered_mixed_precision_times": 2,
+          "missed_a_same_time_contradiction": 1,
+          "blind_to_a_known_missing_report": 1,
+          "unexplained": 3
+        }
+      }
+    },
+    "best_retrieval_arm": "k=4",
+    "state_undeclared_error": 0,
+    "best_retrieval_undeclared_error": 7,
+    "state_beats_retrieval_on_error": true,
+    "retrieval_cannot_attempt": 13,
+    "unlimited_retrieval_still_errs": true,
+    "cost_crossover_questions": 474.2,
+    "why_retrieval_errs": {
+      "believed_a_superseded_report": 0,
+      "misordered_mixed_precision_times": 2,
+      "missed_a_same_time_contradiction": 1,
+      "blind_to_a_known_missing_report": 1,
+      "unexplained": 3
+    },
+    "error_plateaus_despite_unlimited_context": true
+  },
+  "causal_attribution": {
+    "interventions": 47,
+    "outcomes": {
+      "effective": 24,
+      "ineffective": 16,
+      "delayed": 7
+    },
+    "changes_caused_by_an_intervention": 30,
+    "documented_links": 11,
+    "action_records": 47,
+    "basis_aware": {
+      "candidates": 590,
+      "stated_as_cause": 9,
+      "reported_as_association_only": 13,
+      "abstained": 568,
+      "correct_causal_claims": 9,
+      "false_causal_claims": 0,
+      "missed_documented_links": 0
+    },
+    "post_hoc_control": {
+      "candidates": 590,
+      "stated_as_cause": 22,
+      "reported_as_association_only": 0,
+      "abstained": 568,
+      "correct_causal_claims": 11,
+      "false_causal_claims": 11,
+      "missed_documented_links": 0
+    },
+    "false_causal_claims_avoided": 11,
+    "control_is_worse": true,
+    "ineffective_interventions": 16,
+    "intended_values_leaked_into_state": 0
+  },
+  "interval_relations": {
+    "pairs": 396,
+    "interval_aware": {
+      "pairs": 396,
+      "soundness": 0.7323232323232324,
+      "unsound": 106,
+      "mean_sharpness": 0.9692760942760944,
+      "determined": 340,
+      "concurrency_calls": 345,
+      "concurrency_correct": 297,
+      "concurrency_accuracy": 0.8608695652173913
+    },
+    "document_order_control": {
+      "pairs": 396,
+      "soundness": 0.35858585858585856,
+      "unsound": 254,
+      "mean_sharpness": 1.0,
+      "determined": 396,
+      "concurrency_calls": 396,
+      "concurrency_correct": 187,
+      "concurrency_accuracy": 0.4722222222222222
+    },
+    "reconstruction": {
+      "pairs_flagged_unreliable": 302,
+      "soundness_when_flagged": 0.6556291390728477,
+      "pairs_not_flagged": 94,
+      "soundness_when_not_flagged": 0.9787234042553191,
+      "unsound_while_unflagged": 2
+    },
+    "control_is_unsound": true,
+    "control_looks_sharper": true,
+    "unsound_answers_avoided": 148
+  },
+  "recurrence": {
+    "keys": 240,
+    "exact_when_certain": 140,
+    "correctly_bracketed_when_uncertain": 99,
+    "true_count_outside_reported_range": 1,
+    "certain_but_wrong": 0,
+    "point_count_control_wrong": 58,
+    "coverage": 0.9958333333333333,
+    "range_avoids_error": 57
+  },
+  "falsifiers": {
+    "keys_probed": 60,
+    "derived": {
+      "named": 112,
+      "executable": 112,
+      "fired_when_satisfied": 112,
+      "validity": 1.0,
+      "near_misses_tested": 104,
+      "correctly_ignored_near_miss": 104,
+      "discrimination": 1.0
+    },
+    "broad_control": {
+      "named": 60,
+      "executable": 52,
+      "fired_when_satisfied": 0,
+      "validity": 0.0,
+      "near_misses_tested": 52,
+      "correctly_ignored_near_miss": 52,
+      "discrimination": 1.0
+    },
+    "control_is_worse": true,
+    "validity_gain": 1.0,
+    "every_claim_has_a_falsifier": true
+  }
+}

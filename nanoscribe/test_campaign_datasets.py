@@ -22,7 +22,14 @@ def test_campaign_v1_has_three_encounters() -> None:
 def test_suite_manifest_revision() -> None:
     manifest = suite_manifest()
     assert manifest["schema"] == "nano.campaign.dataset.v1"
-    assert "campaign_v1" in manifest["partitions"]
+    assert manifest["smoke_suite"] == "p1_contract_smoke_v1"
+    assert manifest["screening_suite"] == "p1_screening_eval_v1"
+
+
+def test_campaign_partitions_no_leakage() -> None:
+    from nanoscribe.campaign_datasets import validate_campaign_partitions
+
+    validate_campaign_partitions()
 
 
 def test_fixture_lines_cover_campaign_v1() -> None:

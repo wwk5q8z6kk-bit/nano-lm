@@ -6,7 +6,7 @@ import json
 import sys
 from pathlib import Path
 
-from wedge_v1.runtime import ask, scan, find_spans, DEFAULT_CORPUS
+from wedge_v1.runtime import ask, find_spans, scan, DEFAULT_CORPUS
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -14,37 +14,88 @@ def main(argv: list[str] | None = None) -> int:
         prog="wedge_v1",
         description="Local verified research Q&A — classical + E-class solvers (no LM).",
     )
-    p.add_argument(
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    ask_p = sub.add_parser("ask", help="Ask a question; returns span-supported claims or ABSTAIN")
+    ask_p.add_argument(
         "--corpus",
         type=Path,
         default=DEFAULT_CORPUS,
         help=f"Local document folder (default: {DEFAULT_CORPUS})",
     )
-    sub = p.add_subparsers(dest="cmd", required=True)
-
-    ask_p = sub.add_parser("ask", help="Ask a question; returns span-supported claims or ABSTAIN")
+    ask_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope (repeatable); unknown/empty → fail-closed ABSTAIN",
+    )
+    ask_p.add_argument(
+        "--escalate-stub",
+        action="store_true",
+        help="On classical ABSTAIN, try constructive hybrid stub (also WEDGE_ESCALATE_STUB=1)",
+    )
     ask_p.add_argument("query", nargs="+", help="Question text")
 
     find_p = sub.add_parser("find", help="Exact substring locate with spans")
+    find_p.add_argument(
+        "--corpus",
+        type=Path,
+        default=DEFAULT_CORPUS,
+        help=f"Local document folder (default: {DEFAULT_CORPUS})",
+    )
+    find_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope (repeatable)",
+    )
     find_p.add_argument("needle", nargs="+", help="Exact text to find")
 
-    sub.add_parser("scan", help="Inventory extract + contradictions over corpus")
+    scan_p = sub.add_parser("scan", help="Inventory extract + contradictions over corpus")
+    scan_p.add_argument(
+        "--corpus",
+        type=Path,
+        default=DEFAULT_CORPUS,
+        help=f"Local document folder (default: {DEFAULT_CORPUS})",
+    )
+    scan_p.add_argument(
+        "--doc",
+        action="append",
+        default=None,
+        dest="doc_ids",
+        metavar="DOC_ID",
+        help="Exact document scope (repeatable)",
+    )
+
     sub.add_parser("dogfood", help="Score dogfood tasks on papers/ corpus")
     sub.add_parser("smoke", help="Run runtime regression pins")
 
     args = p.parse_args(argv)
     if args.cmd == "ask":
-        out = ask(" ".join(args.query), corpus_dir=args.corpus)
+        out = ask(
+            " ".join(args.query),
+            corpus_dir=args.corpus,
+            doc_ids=args.doc_ids,
+            escalate_stub=args.escalate_stub,
+        )
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
     if args.cmd == "find":
-        out = find_spans(" ".join(args.needle), corpus_dir=args.corpus)
+        out = find_spans(
+            " ".join(args.needle),
+            corpus_dir=args.corpus,
+            doc_ids=args.doc_ids,
+        )
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2
     if args.cmd == "scan":
-        out = scan(corpus_dir=args.corpus)
+        out = scan(corpus_dir=args.corpus, doc_ids=args.doc_ids)
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")
         return 0 if out.get("answer_status") != "NO_CORPUS" else 2

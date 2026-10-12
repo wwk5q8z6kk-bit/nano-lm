@@ -1,0 +1,37 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "native100_extended_v1",
+  "git_sha": "2094214919fd4c806ec378012cde0ceac4318ef1",
+  "dataset_revision": "p1_distill_train_v1",
+  "command": "scripts/bootstrap_native_round2_pod.sh",
+  "surface": "pod_template",
+  "gpu_or_model": "NVIDIA A100 80GB PCIe",
+  "hub_stable_locator": "runpod-torch-v240",
+  "hub_listing_id": "runpod-torch-v240",
+  "resolved_at": "2026-08-23T11:00:00+00:00",
+  "max_runtime_min": 120,
+  "max_cost_usd": 3.0,
+  "status": "COMPLETE",
+  "parent_experiment": "native100_round2_promotion_v1",
+  "round2_summary": "artifacts/campaign/native_round2_summary.json",
+  "launch_gate": "canary completes under budget AND remaining >= 3.0 USD OR canary fails fast",
+  "volume_id": "04himzqxbm",
+  "volume_note": "prefer EU-RO-1 when A100+volume available; else CA-MTL-3 container disk with python archive",
+  "termination_condition": "NATIVE100_EXTENDED_DONE + archive to volume",
+  "init": "fresh_random",
+  "training_plan": {
+    "primary_run": "native100_evidence_bottleneck_s1",
+    "variance_run_optional": "native100_evidence_bottleneck_s0",
+    "max_steps": 200,
+    "epochs": 33,
+    "epochs_note": "200 steps / 6 steps_per_epoch ≈ 33 full passes over 96-example distill set",
+    "batch_size": 16,
+    "peak_lr": 0.0003,
+    "early_gate": "compare loss@step 50 vs round2 step 6; kill if dominated"
+  },
+  "run_ids": [
+    "native100_evidence_bottleneck_s1",
+    "native100_evidence_bottleneck_s0"
+  ],
+  "do_not_launch": "full 4-run extended wave until single-run extended validates seed variance reduction"
+}

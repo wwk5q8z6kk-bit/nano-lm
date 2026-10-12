@@ -1,0 +1,10 @@
+{
+  "run_id": "reval30_evidence_bottleneck_s0",
+  "steps_completed": 1800,
+  "final_loss": 0.022274402901530266,
+  "device": "mps",
+  "checkpoint": "artifacts/native_checkpoints/reval30_evidence_bottleneck_s0/step_001800.pt",
+  "smoke": false,
+  "wall_seconds": 2124.5,
+  "surface": "mps:apple_silicon"
+}

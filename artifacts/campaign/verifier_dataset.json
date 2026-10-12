@@ -1,0 +1,519 @@
+{
+  "entries": [
+    {
+      "encounter_id": "core-sym-00",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-sym-00",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-sym-00"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-deny-01",
+      "gold_atoms": [
+        {
+          "assertion_state": "denied",
+          "atom_id": "atom-core-deny-01",
+          "atom_type": "allergy",
+          "evidence_ids": [
+            "ev-core-deny-01"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-unc-02",
+      "gold_atoms": [
+        {
+          "assertion_state": "uncertain",
+          "atom_id": "atom-core-unc-02",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-unc-02"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-assess-03",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-assess-03",
+          "atom_type": "assessment",
+          "evidence_ids": [
+            "ev-core-assess-03"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-med-04",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-med-04",
+          "atom_type": "medication",
+          "evidence_ids": [
+            "ev-core-med-04"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-sym-05",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-sym-05",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-sym-05"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-deny-06",
+      "gold_atoms": [
+        {
+          "assertion_state": "denied",
+          "atom_id": "atom-core-deny-06",
+          "atom_type": "allergy",
+          "evidence_ids": [
+            "ev-core-deny-06"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-unc-07",
+      "gold_atoms": [
+        {
+          "assertion_state": "uncertain",
+          "atom_id": "atom-core-unc-07",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-unc-07"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-assess-08",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-assess-08",
+          "atom_type": "assessment",
+          "evidence_ids": [
+            "ev-core-assess-08"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-med-09",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-med-09",
+          "atom_type": "medication",
+          "evidence_ids": [
+            "ev-core-med-09"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-sym-10",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-sym-10",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-sym-10"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-deny-11",
+      "gold_atoms": [
+        {
+          "assertion_state": "denied",
+          "atom_id": "atom-core-deny-11",
+          "atom_type": "allergy",
+          "evidence_ids": [
+            "ev-core-deny-11"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-unc-12",
+      "gold_atoms": [
+        {
+          "assertion_state": "uncertain",
+          "atom_id": "atom-core-unc-12",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-unc-12"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-assess-13",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-assess-13",
+          "atom_type": "assessment",
+          "evidence_ids": [
+            "ev-core-assess-13"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-med-14",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-med-14",
+          "atom_type": "medication",
+          "evidence_ids": [
+            "ev-core-med-14"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-sym-15",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-sym-15",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-sym-15"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-deny-16",
+      "gold_atoms": [
+        {
+          "assertion_state": "denied",
+          "atom_id": "atom-core-deny-16",
+          "atom_type": "allergy",
+          "evidence_ids": [
+            "ev-core-deny-16"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-unc-17",
+      "gold_atoms": [
+        {
+          "assertion_state": "uncertain",
+          "atom_id": "atom-core-unc-17",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-unc-17"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-assess-18",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-assess-18",
+          "atom_type": "assessment",
+          "evidence_ids": [
+            "ev-core-assess-18"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-med-19",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-med-19",
+          "atom_type": "medication",
+          "evidence_ids": [
+            "ev-core-med-19"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-sym-20",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-sym-20",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-sym-20"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-deny-21",
+      "gold_atoms": [
+        {
+          "assertion_state": "denied",
+          "atom_id": "atom-core-deny-21",
+          "atom_type": "allergy",
+          "evidence_ids": [
+            "ev-core-deny-21"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-unc-22",
+      "gold_atoms": [
+        {
+          "assertion_state": "uncertain",
+          "atom_id": "atom-core-unc-22",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-unc-22"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-assess-23",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-assess-23",
+          "atom_type": "assessment",
+          "evidence_ids": [
+            "ev-core-assess-23"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-med-24",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-med-24",
+          "atom_type": "medication",
+          "evidence_ids": [
+            "ev-core-med-24"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-sym-25",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-sym-25",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-sym-25"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-deny-26",
+      "gold_atoms": [
+        {
+          "assertion_state": "denied",
+          "atom_id": "atom-core-deny-26",
+          "atom_type": "allergy",
+          "evidence_ids": [
+            "ev-core-deny-26"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-unc-27",
+      "gold_atoms": [
+        {
+          "assertion_state": "uncertain",
+          "atom_id": "atom-core-unc-27",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-unc-27"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-assess-28",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-assess-28",
+          "atom_type": "assessment",
+          "evidence_ids": [
+            "ev-core-assess-28"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-med-29",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-med-29",
+          "atom_type": "medication",
+          "evidence_ids": [
+            "ev-core-med-29"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-sym-30",
+      "gold_atoms": [
+        {
+          "assertion_state": "asserted",
+          "atom_id": "atom-core-sym-30",
+          "atom_type": "symptom",
+          "evidence_ids": [
+            "ev-core-sym-30"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    },
+    {
+      "encounter_id": "core-deny-31",
+      "gold_atoms": [
+        {
+          "assertion_state": "denied",
+          "atom_id": "atom-core-deny-31",
+          "atom_type": "allergy",
+          "evidence_ids": [
+            "ev-core-deny-31"
+          ]
+        }
+      ],
+      "n_atoms": 1,
+      "test_set": "p1_core",
+      "transcript_turns": 2
+    }
+  ],
+  "n_cases": 32,
+  "schema": "nano.campaign.verifier_dataset.v1",
+  "timestamp": "2026-08-23T04:46:08.950400+00:00"
+}

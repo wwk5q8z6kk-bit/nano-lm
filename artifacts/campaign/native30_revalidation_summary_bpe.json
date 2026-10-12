@@ -1,0 +1,87 @@
+{
+  "schema": "nano.campaign.native30_revalidation.v1",
+  "timestamp": "2026-09-13T16:01:58.230998+00:00",
+  "suite": "p1_screening_eval_v1",
+  "gold_atoms": 150,
+  "majority_class_baseline": {
+    "k": 103,
+    "n": 129,
+    "rate": 0.7984
+  },
+  "control_arm": "reval30_decoder_control",
+  "per_run": {
+    "reval30_evidence_bottleneck_s1": {
+      "arm": "reval30_evidence_bottleneck",
+      "constrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 0,
+        "decoding_mode": "constrained_candidate_selection",
+        "span_metrics_are_tautological": true
+      },
+      "unconstrained": {
+        "assertion_correct": 0,
+        "gold_atoms": 150,
+        "yield": 0.0,
+        "wilson95": [
+          0.0,
+          0.025
+        ],
+        "coverage_count": 0,
+        "malformed": 150,
+        "decoding_mode": "free_generation",
+        "span_metrics_are_tautological": false
+      }
+    }
+  },
+  "per_arm": {
+    "reval30_evidence_bottleneck": {
+      "constrained": {
+        "seeds": 1,
+        "per_seed_correct": [
+          0
+        ],
+        "pooled": {
+          "k": 0,
+          "n": 150,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.025
+          ]
+        },
+        "pooled_coverage": 0,
+        "has_signal": false,
+        "seed_spread": null,
+        "seed_stdev": null
+      },
+      "unconstrained": {
+        "seeds": 1,
+        "per_seed_correct": [
+          0
+        ],
+        "pooled": {
+          "k": 0,
+          "n": 150,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.025
+          ]
+        },
+        "pooled_coverage": 0,
+        "has_signal": false,
+        "seed_spread": null,
+        "seed_stdev": null
+      }
+    }
+  },
+  "verdicts": {},
+  "decision_rule": "a cell is INVALID_NO_SIGNAL if the arm or its control pooled zero coverage \u2014 no verdict is inferable from an instrument that produced nothing. Otherwise an arm is a PROMOTION_CANDIDATE only if its pooled Wilson interval is disjoint from the decoder control's AND its lower bound exceeds the majority-class baseline. An effect smaller than the seed spread is not an architecture effect."
+}

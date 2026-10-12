@@ -1,0 +1,20 @@
+==> Creating soak pod soak-minimal-202608230057 gpu=NVIDIA A100 80GB PCIe dc=EU-RO-1 template=runpod-torch-v240
+SOAK_POD_ID=qcd5lxi2glc13b
+==> Sleeping 120s until t=2min...
+ssh: connect to host 213.173.105.5 port 30091: Operation timed out
+[2min] t=2min desired=RUNNING uptimeSeconds=0 volumeInGb=0 dc=NA ssh=FAIL smi=none
+==> Sleeping 180s until t=5min...
+{"error":"failed to get pod: pod not found","code":"not_found","status":404}
+ssh command unavailable for pod qcd5lxi2glc13b
+[5min] t=5min desired=NA uptimeSeconds=NA volumeInGb=NA dc=NA ssh=FAIL smi=none
+==> Sleeping 300s until t=10min...
+SOAK_FAIL qcd5 2min ssh=FAIL uptime=0 pod_404@5min
+SOAK_DONE verdict=FAIL
+{"error":"failed to get pod: pod not found","code":"not_found","status":404}
+ssh unavailable for pod qcd5lxi2glc13b (no ssh_command or podHostId)
+[10min] t=10min desired=NA uptimeSeconds=NA volumeInGb=NA dc=NA ssh=FAIL smi=none
+==> Sleeping 300s until t=15min...
+{"error":"failed to get pod: pod not found","code":"not_found","status":404}
+ssh unavailable for pod qcd5lxi2glc13b (no ssh_command or podHostId)
+[15min] t=15min desired=NA uptimeSeconds=NA volumeInGb=NA dc=NA ssh=FAIL smi=none
+==> Final pod state:

@@ -1,0 +1,140 @@
+{
+  "schema": "nano.native30.kaggle_replicate_metadata.v1",
+  "purpose": "Preserve the scientific content of the Kaggle reval30 execution independently of its 19GiB of weights.",
+  "finding": "Same run_ids, byte-identical configs, same 1800 steps, same date \u2014 but a DIFFERENT execution with different losses. This is a second independent instance of the DEFECTIVE (pre-causal-fix) wave, not a copy of the local archive.",
+  "runs": {
+    "reval30_decoder_control_s0": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.06317819654941559,
+        "timestamp": "2026-08-24T00:12:51.267318+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.008232982829213142,
+        "timestamp": "2026-08-24T00:08:50.087424+00:00"
+      },
+      "ratio_kaggle_over_local": 7.674
+    },
+    "reval30_decoder_control_s1": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.08307470381259918,
+        "timestamp": "2026-08-24T00:59:03.634300+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.017129698768258095,
+        "timestamp": "2026-08-24T02:09:41.448564+00:00"
+      },
+      "ratio_kaggle_over_local": 4.85
+    },
+    "reval30_decoder_control_s2": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.4778504967689514,
+        "timestamp": "2026-08-24T01:45:17.131998+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.039470139890909195,
+        "timestamp": "2026-08-24T04:01:52.865911+00:00"
+      },
+      "ratio_kaggle_over_local": 12.107
+    },
+    "reval30_evidence_bottleneck_s0": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.006025587674230337,
+        "timestamp": "2026-08-24T02:29:19.467177+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.022274402901530266,
+        "timestamp": "2026-08-24T00:45:04.958867+00:00"
+      },
+      "ratio_kaggle_over_local": 0.271
+    },
+    "reval30_evidence_bottleneck_s1": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.044561851769685745,
+        "timestamp": "2026-08-24T03:14:50.330598+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.08401286602020264,
+        "timestamp": "2026-08-24T02:45:00.840987+00:00"
+      },
+      "ratio_kaggle_over_local": 0.53
+    },
+    "reval30_evidence_bottleneck_s2": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.025556128472089767,
+        "timestamp": "2026-08-24T03:59:09.040788+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.03691416233778,
+        "timestamp": "2026-08-24T04:36:18.829854+00:00"
+      },
+      "ratio_kaggle_over_local": 0.692
+    },
+    "reval30_span_port_s0": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.010181681253015995,
+        "timestamp": "2026-08-24T04:45:45.937356+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.010609910823404789,
+        "timestamp": "2026-08-24T01:24:58.465333+00:00"
+      },
+      "ratio_kaggle_over_local": 0.96
+    },
+    "reval30_span_port_s1": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.09477698802947998,
+        "timestamp": "2026-08-24T05:32:18.579290+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.536071240901947,
+        "timestamp": "2026-08-24T03:23:28.978706+00:00"
+      },
+      "ratio_kaggle_over_local": 0.177
+    },
+    "reval30_span_port_s2": {
+      "kaggle": {
+        "step": 1800,
+        "loss": 0.7528432607650757,
+        "timestamp": "2026-08-24T06:19:08.003444+00:00"
+      },
+      "local_archive": {
+        "step": 1800,
+        "loss": 0.027763627469539642,
+        "timestamp": "2026-08-24T05:12:25.534472+00:00"
+      },
+      "ratio_kaggle_over_local": 27.116
+    }
+  },
+  "aggregate": {
+    "kaggle": {
+      "mean": 0.17312,
+      "median": 0.06318,
+      "min": 0.00603,
+      "max": 0.75284
+    },
+    "local_archive": {
+      "mean": 0.08694,
+      "median": 0.02776,
+      "min": 0.00823,
+      "max": 0.53607
+    },
+    "max_abs_ratio": 27.12
+  },
+  "why_this_matters": "Two independent executions of the SAME defective config produce converged losses differing by up to 27x. That is run-to-run variance on the defective instrument, and it is the strongest available evidence for D6: no converged-loss threshold can separate leaking from clean runs when the leaking population alone spans this range."
+}

@@ -1,0 +1,453 @@
+{
+  "schema": "nano.campaign.student_gap.v2",
+  "timestamp": "2026-08-24T00:40:31.994304+00:00",
+  "design": "PAIRED \u2014 all models scored the same atoms; McNemar on discordant pairs",
+  "supersedes": "student_gap_v1 (counts averaged as rates; clamped; hardcoded reference)",
+  "metric_contract": [
+    "numerator",
+    "denominator",
+    "rate",
+    "eligible_unit",
+    "aggregation_level"
+  ],
+  "per_model": {
+    "qwen38_27b": {
+      "n_atoms": 146,
+      "axes": {
+        "assertion": {
+          "numerator": 129,
+          "denominator": 146,
+          "rate": 0.8836,
+          "wilson95": [
+            0.8214,
+            0.926
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "transport_exact_span": {
+          "numerator": 13,
+          "denominator": 146,
+          "rate": 0.089,
+          "wilson95": [
+            0.0528,
+            0.1464
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "support_direct_exact": {
+          "numerator": 116,
+          "denominator": 146,
+          "rate": 0.7945,
+          "wilson95": [
+            0.7218,
+            0.8521
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "coverage": {
+          "numerator": 129,
+          "denominator": 146,
+          "rate": 0.8836,
+          "wilson95": [
+            0.8214,
+            0.926
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "not_malformed": {
+          "numerator": 146,
+          "denominator": 146,
+          "rate": 1.0,
+          "wilson95": [
+            0.9744,
+            1.0
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "not_spurious": {
+          "numerator": 146,
+          "denominator": 146,
+          "rate": 1.0,
+          "wilson95": [
+            0.9744,
+            1.0
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "abstention": {
+          "numerator": 17,
+          "denominator": 146,
+          "rate": 0.1164,
+          "wilson95": [
+            0.074,
+            0.1786
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        }
+      }
+    },
+    "qwen3_32b_awq_managed_ref": {
+      "n_atoms": 150,
+      "axes": {
+        "assertion": {
+          "numerator": 118,
+          "denominator": 150,
+          "rate": 0.7867,
+          "wilson95": [
+            0.7144,
+            0.8446
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "transport_exact_span": {
+          "numerator": 13,
+          "denominator": 150,
+          "rate": 0.0867,
+          "wilson95": [
+            0.0513,
+            0.1426
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "support_direct_exact": {
+          "numerator": 105,
+          "denominator": 150,
+          "rate": 0.7,
+          "wilson95": [
+            0.6224,
+            0.7676
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "coverage": {
+          "numerator": 129,
+          "denominator": 150,
+          "rate": 0.86,
+          "wilson95": [
+            0.7954,
+            0.9066
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "not_malformed": {
+          "numerator": 139,
+          "denominator": 150,
+          "rate": 0.9267,
+          "wilson95": [
+            0.8735,
+            0.9586
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "not_spurious": {
+          "numerator": 150,
+          "denominator": 150,
+          "rate": 1.0,
+          "wilson95": [
+            0.975,
+            1.0
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "abstention": {
+          "numerator": 21,
+          "denominator": 150,
+          "rate": 0.14,
+          "wilson95": [
+            0.0934,
+            0.2046
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        }
+      }
+    },
+    "student_a": {
+      "n_atoms": 149,
+      "axes": {
+        "assertion": {
+          "numerator": 109,
+          "denominator": 149,
+          "rate": 0.7315,
+          "wilson95": [
+            0.6552,
+            0.7962
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "transport_exact_span": {
+          "numerator": 13,
+          "denominator": 149,
+          "rate": 0.0872,
+          "wilson95": [
+            0.0517,
+            0.1435
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "support_direct_exact": {
+          "numerator": 109,
+          "denominator": 149,
+          "rate": 0.7315,
+          "wilson95": [
+            0.6552,
+            0.7962
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "coverage": {
+          "numerator": 128,
+          "denominator": 149,
+          "rate": 0.8591,
+          "wilson95": [
+            0.7941,
+            0.9059
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "not_malformed": {
+          "numerator": 143,
+          "denominator": 149,
+          "rate": 0.9597,
+          "wilson95": [
+            0.9149,
+            0.9814
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "not_spurious": {
+          "numerator": 149,
+          "denominator": 149,
+          "rate": 1.0,
+          "wilson95": [
+            0.9749,
+            1.0
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        },
+        "abstention": {
+          "numerator": 20,
+          "denominator": 149,
+          "rate": 0.1342,
+          "wilson95": [
+            0.0886,
+            0.1982
+          ],
+          "eligible_unit": "atom",
+          "aggregation_level": "suite"
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "student_a_vs_qwen38_27b": {
+      "paired_atoms": 145,
+      "axes": {
+        "assertion": {
+          "student_rate": 0.7315,
+          "reference_rate": 0.8836,
+          "delta": -0.1521,
+          "mcnemar": {
+            "discordant": 20,
+            "b_first_only": 0,
+            "c_second_only": 20,
+            "chi2": 18.05,
+            "p_approx": 2e-05,
+            "significant_95": true
+          }
+        },
+        "transport_exact_span": {
+          "student_rate": 0.0872,
+          "reference_rate": 0.089,
+          "delta": -0.0018,
+          "mcnemar": {
+            "discordant": 0,
+            "chi2": null,
+            "p_approx": null,
+            "significant_95": false
+          }
+        },
+        "support_direct_exact": {
+          "student_rate": 0.7315,
+          "reference_rate": 0.7945,
+          "delta": -0.063,
+          "mcnemar": {
+            "discordant": 7,
+            "b_first_only": 0,
+            "c_second_only": 7,
+            "chi2": 5.1429,
+            "p_approx": 0.02334,
+            "significant_95": true
+          }
+        },
+        "coverage": {
+          "student_rate": 0.8591,
+          "reference_rate": 0.8836,
+          "delta": -0.0245,
+          "mcnemar": {
+            "discordant": 1,
+            "b_first_only": 0,
+            "c_second_only": 1,
+            "chi2": 0.0,
+            "p_approx": 1.0,
+            "significant_95": false
+          }
+        },
+        "not_malformed": {
+          "student_rate": 0.9597,
+          "reference_rate": 1.0,
+          "delta": -0.0403,
+          "mcnemar": {
+            "discordant": 6,
+            "b_first_only": 0,
+            "c_second_only": 6,
+            "chi2": 4.1667,
+            "p_approx": 0.04123,
+            "significant_95": true
+          }
+        },
+        "not_spurious": {
+          "student_rate": 1.0,
+          "reference_rate": 1.0,
+          "delta": 0.0,
+          "mcnemar": {
+            "discordant": 0,
+            "chi2": null,
+            "p_approx": null,
+            "significant_95": false
+          }
+        },
+        "abstention": {
+          "student_rate": 0.1342,
+          "reference_rate": 0.1164,
+          "delta": 0.0178,
+          "mcnemar": {
+            "discordant": 0,
+            "chi2": null,
+            "p_approx": null,
+            "significant_95": false
+          }
+        }
+      }
+    },
+    "student_a_vs_qwen3_32b_awq_managed_ref": {
+      "paired_atoms": 149,
+      "axes": {
+        "assertion": {
+          "student_rate": 0.7315,
+          "reference_rate": 0.7867,
+          "delta": -0.0552,
+          "mcnemar": {
+            "discordant": 25,
+            "b_first_only": 8,
+            "c_second_only": 17,
+            "chi2": 2.56,
+            "p_approx": 0.1096,
+            "significant_95": false
+          }
+        },
+        "transport_exact_span": {
+          "student_rate": 0.0872,
+          "reference_rate": 0.0867,
+          "delta": 0.0005,
+          "mcnemar": {
+            "discordant": 0,
+            "chi2": null,
+            "p_approx": null,
+            "significant_95": false
+          }
+        },
+        "support_direct_exact": {
+          "student_rate": 0.7315,
+          "reference_rate": 0.7,
+          "delta": 0.0315,
+          "mcnemar": {
+            "discordant": 12,
+            "b_first_only": 8,
+            "c_second_only": 4,
+            "chi2": 0.75,
+            "p_approx": 0.38648,
+            "significant_95": false
+          }
+        },
+        "coverage": {
+          "student_rate": 0.8591,
+          "reference_rate": 0.86,
+          "delta": -0.0009,
+          "mcnemar": {
+            "discordant": 1,
+            "b_first_only": 0,
+            "c_second_only": 1,
+            "chi2": 0.0,
+            "p_approx": 1.0,
+            "significant_95": false
+          }
+        },
+        "not_malformed": {
+          "student_rate": 0.9597,
+          "reference_rate": 0.9267,
+          "delta": 0.033,
+          "mcnemar": {
+            "discordant": 11,
+            "b_first_only": 8,
+            "c_second_only": 3,
+            "chi2": 1.4545,
+            "p_approx": 0.2278,
+            "significant_95": false
+          }
+        },
+        "not_spurious": {
+          "student_rate": 1.0,
+          "reference_rate": 1.0,
+          "delta": 0.0,
+          "mcnemar": {
+            "discordant": 0,
+            "chi2": null,
+            "p_approx": null,
+            "significant_95": false
+          }
+        },
+        "abstention": {
+          "student_rate": 0.1342,
+          "reference_rate": 0.14,
+          "delta": -0.0058,
+          "mcnemar": {
+            "discordant": 0,
+            "chi2": null,
+            "p_approx": null,
+            "significant_95": false
+          }
+        }
+      }
+    }
+  },
+  "statistically_established_deficits": {
+    "student_a_vs_qwen38_27b": [
+      "assertion",
+      "support_direct_exact",
+      "not_malformed"
+    ],
+    "student_a_vs_qwen3_32b_awq_managed_ref": []
+  },
+  "adaptation_verdict": "JUSTIFIED",
+  "note": "Only axes where the student is significantly WORSE than a reference count as a capability gap. A gap that is not statistically established does not unlock paid adaptation."
+}

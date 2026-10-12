@@ -1,0 +1,20 @@
+{
+  "run_id": "reval30_evidence_bottleneck_s0",
+  "steps_completed": 1800,
+  "final_loss": 0.22079287469387054,
+  "device": "mps",
+  "checkpoint": "artifacts/native_checkpoints_fixed/reval30_evidence_bottleneck_s0/step_001800.pt",
+  "bits_per_byte": 0.10697353130413734,
+  "integrity": {
+    "attention_leakage": 0.0,
+    "attention_matches_reference": true,
+    "attention_reference_max_abs_diff": 5.066394805908203e-07,
+    "supervised_target_tokens": 305,
+    "sampled_examples": 16,
+    "prompt_tokens_at_cap": 512,
+    "max_seq": 512
+  },
+  "smoke": false,
+  "wall_seconds": 2935.7,
+  "surface": "mps:apple_silicon"
+}

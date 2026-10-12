@@ -1,0 +1,14 @@
+{
+  "name": "malformed_empty_args",
+  "expected_outcome": "empty",
+  "tool_calls": [
+    {
+      "id": "call_bad",
+      "type": "function",
+      "function": {
+        "name": "submit_candidate_atoms",
+        "arguments": ""
+      }
+    }
+  ]
+}

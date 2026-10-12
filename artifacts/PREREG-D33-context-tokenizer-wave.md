@@ -1,0 +1,170 @@
+# PREREG — D3.3 context/tokenizer wave
+
+**Status:** written before any run. **Nothing has launched.** Requires owner
+authorization before execution.
+**Branch:** to be cut from `frontier/accelerated-research-campaign-v2`.
+**Namespace:** `reval30_*_bpe_*` / `artifacts/native_checkpoints_bpe/` /
+`artifacts/campaign/reval_results_bpe/`.
+
+---
+
+## 1. Round question
+
+Does the 0/450 unconstrained coverage in the gated revalidation wave come from
+**context truncation**, or from the models genuinely having nothing to emit?
+
+## 2. Why this is a separate wave and not a patch
+
+The proposed change swaps the tokenizer. That changes the measurement
+instrument, not a hyperparameter. Every existing result was produced through a
+character-level tokenizer against a 512-token context; a BPE tokenizer changes
+what the model can see, how many tokens a prompt costs, and therefore what any
+number means.
+
+**Explicit comparison boundary.** Results from this wave are **not comparable**
+to any of the four existing provenance classes:
+
+| class | instrument | comparable to this wave? |
+|---|---|---|
+| ARCHIVED (leaking, local) | char-level, 512 | **no** |
+| KAGGLE replicate (leaking) | char-level, 512 | **no** |
+| CAUSALFIX (pre-gate) | char-level, 512 | **no** |
+| GATED (record) | char-level, 512 | **no** |
+
+Those four stay frozen. This wave does **not** retroactively reinterpret them,
+and the completed revalidation must not be described as having tested this
+hypothesis — it did not. The only claim this wave can license is about the
+instrument it uses.
+
+## 3. The change, and only it
+
+Swap `hash_tokens` for the existing own-stack BPE asset `sft/tokenizer.json`.
+
+**Properties MEASURED in this repo, superseding D3.3's recorded figures**
+(`artifacts/campaign/d33_prerun_verification_v1.json`):
+
+| property | D3.3 claimed | measured here |
+|---|---|---|
+| vocab | 4098 | **4096** (3839 merges) |
+| compression | 2.60× | **2.537×** |
+| median prompt+target | 204 tok | **216 tok** |
+| over 512 context | 0/150 | **0/96** |
+| char-level baseline | — | median **551**, **96/96** over |
+
+The vocab is 4096, not 4098. IDs still fit the model's 4098-row embedding so no
+resize is needed and embedding shapes are untouched — but the claim as written
+was wrong, and the differing compression figure is a corpus-subset difference
+(D3.3 measured `p1_screening_eval_v1`, this measured the training corpus), not a
+contradiction.
+
+Nothing else changes: same corpus, same nine run_ids, same 1800 steps, same
+arms, same seeds, same integrity gate.
+
+## 4. Hypothesis and decision rule (pre-committed)
+
+**H-context.** The unconstrained zero coverage is caused by prompt truncation.
+
+Primary endpoint: **pooled unconstrained coverage**, out of 450.
+
+- **CONFIRMED** if pooled unconstrained coverage rises to **≥ 45/450 (10%)**.
+- **REFUTED** if it stays **≤ 4/450**, i.e. indistinguishable from the current 0.
+- **UNRESOLVED** in between — report as such and do not round toward a verdict.
+
+Secondary, reported but **not** verdict-bearing: constrained coverage (currently
+18/450), the arm contrasts, and final BPB.
+
+**Predicted direction, stated up front:** CONFIRMED. If 82.7% of prompts lose
+their tail — where the question and answer instructions sit — a model with
+nothing to condition on is expected to emit nothing scoreable. Recording the
+prediction so a null is informative rather than deniable.
+
+## 5. What a CONFIRMED result would and would not establish
+
+It would establish that the **prior waves' unconstrained arms were
+uninterpretable** — measuring truncation, not capability. It would **not**
+retro-fit a capability claim onto any archived class, and it would **not** turn
+the constrained `NOT_SEPARATED` cells into a positive finding; those remain
+under-powered at 18/450 regardless of tokenizer.
+
+## 6. Power, stated honestly
+
+At n=450 pooled, the 10% CONFIRMED threshold is comfortably detectable; the
+REFUTED band at ≤4/450 is likewise cleanly separated from it. The **arm
+contrasts are not powered** at this n and no arm-level verdict may be drawn from
+this wave, whatever the coverage does. If coverage rises, the correct follow-up
+is a properly powered arm comparison **under the new instrument**, as its own
+round.
+
+## 7. Blocking pre-run checks
+
+All must pass before launch; failure voids the wave rather than being worked
+around. **Status as of the latest verification pass**
+(`d33_prerun_verification_v1.json`, `bpb_floor_derivation_v1.md`): items 1, 3
+and 4 VERIFIED; item 2 unchanged and still in force. **All blocking pre-run
+checks now pass.**
+
+The premise itself is also now verified rather than assumed: on the training
+corpus, BPE takes prompts from **100% over context (median 551 tok) to 0%
+(median 216)**. Measured compression 2.537x against the 2.60x D3.3 claims — the
+difference is corpus subset, not a contradiction. The asset's vocab is **4096**,
+not the 4098 D3.3 states; IDs still fit the model's 4098-row embedding so no
+resize is needed, but the stated figure was imprecise.
+
+1. **[VERIFIED]** **Context-fit assertion (the D3.3 gate).** A new startup assertion:
+   post-tokenization prompt length ≤ `max_seq` for **every** row, not merely for
+   a sample. This is the assertion whose absence let D3.3 persist after D3.1
+   removed the 64-char cap.
+2. **The existing gate stays on, unmodified** — attention leakage exactly 0.0,
+   causal-reference equivalence, target present in the loss.
+3. **[VERIFIED]** **BPB numerator must use the token count.** D7 corrected `lm * target_chars`
+   to `lm * n_supervised`; under a 2.60× tokenizer the old form inflates BPB by
+   ~2.6× and moves the measurement away from the floor. Pinned by
+   `test_bpb_uses_the_token_count_not_the_char_count`. Floor re-derived in
+   `artifacts/campaign/bpb_floor_derivation_v1.md`: **no numeric change is
+   needed for BPE** — honest final BPB is 5.01 (bpe) vs 6.61 (hash), the same
+   order, because the per-byte construction cancels BPE's 0.494 tokens/byte
+   against its higher nats/token. The derivation also found something larger:
+   **seven reconstructions of D1.1/D2.2/D3.1 all land 3.99–401 bpb, none within
+   three orders of magnitude of the 0.002 the floor was anchored to.** The gate
+   is therefore documented as a catastrophic-collapse backstop rather than a
+   leak detector, with the exact assertions named as the real detectors.
+4. **[VERIFIED — 192/192 lossless, incl. `\n`/`\t`/`\r`]** **Round-trip fidelity.** The BPE tokenizer must decode losslessly over
+   multi-line corpus sources, pinned as D3.2's fix is. A tokenizer that mangles
+   turn separators reintroduces D3.2 under a new name.
+
+## 8. Voiding conditions
+
+- Any startup assertion or the BPB gate is bypassed, relaxed, or edited to fit a
+  result.
+- Results are written into any existing namespace, or any of the four frozen
+  classes is modified.
+- The BPB floor is carried over from the char-level calibration without
+  re-derivation (item 7.3).
+- Fewer than all nine arms complete.
+
+## 9. Cost and authorization
+
+Local MPS, ~6h by analogy with the gated wave, zero marginal cost — inside
+`local_zero_cost_exploratory_training = ALLOWED`. No PHI; corpus unchanged and
+synthetic.
+
+**Disk is no longer the binding constraint.** It was ~17 GiB free against ~18
+GiB of new checkpoints; ~157 GiB was freed externally and it now reads **174 GiB
+free (81%)**. All 36 `latest.pt` across the four provenance classes were
+re-verified present by exact-path `stat` after that change — nothing was lost.
+Note that `du` and `ls` now report 0 B / permission errors on several of those
+trees because the sandbox restricts them; that is a read restriction, not
+deletion, and the two must not be confused.
+
+**Engineering is complete; only authorization remains.** The BPE path is
+implemented behind `NativeTrainConfig.tokenizer` (default `"hash"`, so the four
+frozen classes stay byte-reproducible; the flag rides into every checkpoint via
+`cfg.to_dict()`), commit `b78a9e5`. The BPB floor is re-derived (§7.3). The
+wave needs owner sign-off and nothing else.
+
+## 10. Recheck
+
+```
+python3 -m pytest nanoscribe/test_native_integrity.py -q
+python3 -c "import json;d=json.load(open('artifacts/campaign/reval_results_bpe/reval30_decoder_control_s0_train.json'));print(d['integrity'],d['bits_per_byte'])"
+```

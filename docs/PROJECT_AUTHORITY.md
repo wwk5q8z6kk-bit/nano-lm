@@ -4,6 +4,11 @@ When sources conflict, use **typed authority** — not one global document stack
 
 **No aspirational document may overrule measured evidence.**
 
+`docs/NANO_VNEXT_CONSTITUTION.md` is **architecture intent** (frozen 2026-08-25).
+It ranks below measured evidence like any other aspirational document — that is
+its own §XLIII law, not an exception carved for it. When the constitution and a
+result disagree, the result wins and the constitution is edited.
+
 ---
 
 ## 1. Scientific / empirical truth

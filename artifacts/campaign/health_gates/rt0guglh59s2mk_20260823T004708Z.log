@@ -1,0 +1,3 @@
+health_gate pod=rt0guglh59s2mk max_wait=300s threshold=5%
+{"error":"failed to get pod: pod not found","code":"not_found","status":404}
+pod gone

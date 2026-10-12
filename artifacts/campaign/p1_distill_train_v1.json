@@ -1,0 +1,685 @@
+{
+  "encounter_ids": [
+    "train-sym-00",
+    "train-deny-01",
+    "train-assess-02",
+    "train-med-03",
+    "train-sym-04",
+    "train-deny-05",
+    "train-assess-06",
+    "train-med-07",
+    "train-sym-08",
+    "train-deny-09",
+    "train-assess-10",
+    "train-med-11",
+    "train-sym-12",
+    "train-deny-13",
+    "train-assess-14",
+    "train-med-15",
+    "train-sym-16",
+    "train-deny-17",
+    "train-assess-18",
+    "train-med-19",
+    "train-sym-20",
+    "train-deny-21",
+    "train-assess-22",
+    "train-med-23",
+    "train-sym-24",
+    "train-deny-25",
+    "train-assess-26",
+    "train-med-27",
+    "train-sym-28",
+    "train-deny-29",
+    "train-assess-30",
+    "train-med-31",
+    "train-sym-32",
+    "train-deny-33",
+    "train-assess-34",
+    "train-med-35",
+    "train-sym-36",
+    "train-deny-37",
+    "train-assess-38",
+    "train-med-39",
+    "train-sym-40",
+    "train-deny-41",
+    "train-assess-42",
+    "train-med-43",
+    "train-sym-44",
+    "train-deny-45",
+    "train-assess-46",
+    "train-med-47",
+    "train-sym-48",
+    "train-deny-49",
+    "train-assess-50",
+    "train-med-51",
+    "train-sym-52",
+    "train-deny-53",
+    "train-assess-54",
+    "train-med-55",
+    "train-sym-56",
+    "train-deny-57",
+    "train-assess-58",
+    "train-med-59",
+    "train-sym-60",
+    "train-deny-61",
+    "train-assess-62",
+    "train-med-63",
+    "train-sym-64",
+    "train-deny-65",
+    "train-assess-66",
+    "train-med-67",
+    "train-sym-68",
+    "train-deny-69",
+    "train-assess-70",
+    "train-med-71",
+    "train-sym-72",
+    "train-deny-73",
+    "train-assess-74",
+    "train-med-75",
+    "train-sym-76",
+    "train-deny-77",
+    "train-assess-78",
+    "train-med-79",
+    "train-sym-80",
+    "train-deny-81",
+    "train-assess-82",
+    "train-med-83",
+    "train-sym-84",
+    "train-deny-85",
+    "train-assess-86",
+    "train-med-87",
+    "train-sym-88",
+    "train-deny-89",
+    "train-assess-90",
+    "train-med-91",
+    "train-sym-92",
+    "train-deny-93",
+    "train-assess-94",
+    "train-med-95"
+  ],
+  "entries": [
+    {
+      "atom_id": "atom-train-sym-00",
+      "encounter_id": "train-sym-00",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-01",
+      "encounter_id": "train-deny-01",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-02",
+      "encounter_id": "train-assess-02",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-03",
+      "encounter_id": "train-med-03",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-04",
+      "encounter_id": "train-sym-04",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-05",
+      "encounter_id": "train-deny-05",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-06",
+      "encounter_id": "train-assess-06",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-07",
+      "encounter_id": "train-med-07",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-08",
+      "encounter_id": "train-sym-08",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-09",
+      "encounter_id": "train-deny-09",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-10",
+      "encounter_id": "train-assess-10",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-11",
+      "encounter_id": "train-med-11",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-12",
+      "encounter_id": "train-sym-12",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-13",
+      "encounter_id": "train-deny-13",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-14",
+      "encounter_id": "train-assess-14",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-15",
+      "encounter_id": "train-med-15",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-16",
+      "encounter_id": "train-sym-16",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-17",
+      "encounter_id": "train-deny-17",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-18",
+      "encounter_id": "train-assess-18",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-19",
+      "encounter_id": "train-med-19",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-20",
+      "encounter_id": "train-sym-20",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-21",
+      "encounter_id": "train-deny-21",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-22",
+      "encounter_id": "train-assess-22",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-23",
+      "encounter_id": "train-med-23",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-24",
+      "encounter_id": "train-sym-24",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-25",
+      "encounter_id": "train-deny-25",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-26",
+      "encounter_id": "train-assess-26",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-27",
+      "encounter_id": "train-med-27",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-28",
+      "encounter_id": "train-sym-28",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-29",
+      "encounter_id": "train-deny-29",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-30",
+      "encounter_id": "train-assess-30",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-31",
+      "encounter_id": "train-med-31",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-32",
+      "encounter_id": "train-sym-32",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-33",
+      "encounter_id": "train-deny-33",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-34",
+      "encounter_id": "train-assess-34",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-35",
+      "encounter_id": "train-med-35",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-36",
+      "encounter_id": "train-sym-36",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-37",
+      "encounter_id": "train-deny-37",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-38",
+      "encounter_id": "train-assess-38",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-39",
+      "encounter_id": "train-med-39",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-40",
+      "encounter_id": "train-sym-40",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-41",
+      "encounter_id": "train-deny-41",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-42",
+      "encounter_id": "train-assess-42",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-43",
+      "encounter_id": "train-med-43",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-44",
+      "encounter_id": "train-sym-44",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-45",
+      "encounter_id": "train-deny-45",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-46",
+      "encounter_id": "train-assess-46",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-47",
+      "encounter_id": "train-med-47",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-48",
+      "encounter_id": "train-sym-48",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-49",
+      "encounter_id": "train-deny-49",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-50",
+      "encounter_id": "train-assess-50",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-51",
+      "encounter_id": "train-med-51",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-52",
+      "encounter_id": "train-sym-52",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-53",
+      "encounter_id": "train-deny-53",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-54",
+      "encounter_id": "train-assess-54",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-55",
+      "encounter_id": "train-med-55",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-56",
+      "encounter_id": "train-sym-56",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-57",
+      "encounter_id": "train-deny-57",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-58",
+      "encounter_id": "train-assess-58",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-59",
+      "encounter_id": "train-med-59",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-60",
+      "encounter_id": "train-sym-60",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-61",
+      "encounter_id": "train-deny-61",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-62",
+      "encounter_id": "train-assess-62",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-63",
+      "encounter_id": "train-med-63",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-64",
+      "encounter_id": "train-sym-64",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-65",
+      "encounter_id": "train-deny-65",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-66",
+      "encounter_id": "train-assess-66",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-67",
+      "encounter_id": "train-med-67",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-68",
+      "encounter_id": "train-sym-68",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-69",
+      "encounter_id": "train-deny-69",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-70",
+      "encounter_id": "train-assess-70",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-71",
+      "encounter_id": "train-med-71",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-72",
+      "encounter_id": "train-sym-72",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-73",
+      "encounter_id": "train-deny-73",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-74",
+      "encounter_id": "train-assess-74",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-75",
+      "encounter_id": "train-med-75",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-76",
+      "encounter_id": "train-sym-76",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-77",
+      "encounter_id": "train-deny-77",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-78",
+      "encounter_id": "train-assess-78",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-79",
+      "encounter_id": "train-med-79",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-80",
+      "encounter_id": "train-sym-80",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-81",
+      "encounter_id": "train-deny-81",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-82",
+      "encounter_id": "train-assess-82",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-83",
+      "encounter_id": "train-med-83",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-84",
+      "encounter_id": "train-sym-84",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have sore throat.\n\nQuestion: regarding whether the patient mentions 'sore throat', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: sore throat"
+    },
+    {
+      "atom_id": "atom-train-deny-85",
+      "encounter_id": "train-deny-85",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-86",
+      "encounter_id": "train-assess-86",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-87",
+      "encounter_id": "train-med-87",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    },
+    {
+      "atom_id": "atom-train-sym-88",
+      "encounter_id": "train-sym-88",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have heartburn.\n\nQuestion: regarding whether the patient mentions 'heartburn', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: heartburn"
+    },
+    {
+      "atom_id": "atom-train-deny-89",
+      "encounter_id": "train-deny-89",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-90",
+      "encounter_id": "train-assess-90",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely contact dermatitis.\n\nQuestion: regarding whether the transcript mentions 'contact dermatitis', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: contact dermatitis"
+    },
+    {
+      "atom_id": "atom-train-med-91",
+      "encounter_id": "train-med-91",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use rosuvastatin at night.\n\nQuestion: regarding whether the patient mentions 'rosuvastatin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: rosuvastatin"
+    },
+    {
+      "atom_id": "atom-train-sym-92",
+      "encounter_id": "train-sym-92",
+      "prompt": "Transcript:\nclinician: What symptoms are you having?\npatient: I have constipation.\n\nQuestion: regarding whether the patient mentions 'constipation', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: constipation"
+    },
+    {
+      "atom_id": "atom-train-deny-93",
+      "encounter_id": "train-deny-93",
+      "prompt": "Transcript:\nclinician: Any medication allergies?\npatient: No penicillin allergy.\n\nQuestion: regarding whether the patient mentions 'penicillin', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "DENIED: penicillin"
+    },
+    {
+      "atom_id": "atom-train-assess-94",
+      "encounter_id": "train-assess-94",
+      "prompt": "Transcript:\npatient: The pain comes and goes.\nclinician: Likely GERD flare.\n\nQuestion: regarding whether the transcript mentions 'GERD flare', which of these do the clinician's own words do?\n\nSTATED for clinician assertions, NOT_MENTIONED if absent\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: GERD flare"
+    },
+    {
+      "atom_id": "atom-train-med-95",
+      "encounter_id": "train-med-95",
+      "prompt": "Transcript:\nclinician: Current medications?\npatient: I use montelukast at night.\n\nQuestion: regarding whether the patient mentions 'montelukast', which of these do the patient's own words do?\n\nSTATED - names a specific one; DENIED - denies having any; NOT_MENTIONED - topic never comes up\n\nAnswer on one line:\n- STATED or ASSERTED: \"exact words that name it\"\n- DENIED: \"exact words that deny it\"\n- UNCERTAIN: \"exact words showing uncertainty\"\n- NOT_MENTIONED\nQuotes must copy source words exactly. If absent, write only NOT_MENTIONED.",
+      "target": "ASSERTED: montelukast"
+    }
+  ],
+  "held_out_eval": false,
+  "n_cases": 96,
+  "no_phi": true,
+  "partition": "TRAIN",
+  "revision": "p1_distill_train_v1",
+  "schema": "nano.distill.train.v1",
+  "seed_namespace": "distill_train_v1"
+}

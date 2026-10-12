@@ -1,0 +1,10 @@
+[
+  {
+    "id": "call_bad",
+    "type": "function",
+    "function": {
+      "name": "submit_candidate_atoms",
+      "arguments": "{\"schema_version\":\"nano.candidate.wrong\",\"atoms\":[]}"
+    }
+  }
+]

@@ -53,6 +53,9 @@ E1 KILL applies to the **old closed generative-substrate claim** on the old task
 
 ## Immediate engineering focus
 
-1. Encounter representation schema (entity/event/evidence refs)
-2. Span/evidence bottleneck
-3. Verified record → note realization under verification
+1. **Encounter Representation v0** — `nanoscribe/encounter.py`; wire schema at `nanoscribe/schemas/encounter_v0.schema.json`
+2. **Evidence transport** — `nanoscribe/adapt.py`, constrained selection, harness metrics
+3. **Accelerated campaign** — multi-track manifests, serverless + native + student ([research/ACCELERATED_CAMPAIGN.md](../../research/ACCELERATED_CAMPAIGN.md))
+4. Verified record → note realization under verification
+
+Subsystem map: [subsystems/NANOSCRIBE.md](../../subsystems/NANOSCRIBE.md)

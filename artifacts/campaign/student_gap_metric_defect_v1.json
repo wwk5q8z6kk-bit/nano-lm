@@ -1,0 +1,82 @@
+{
+  "schema": "nano.campaign.student_gap_metric_defect.v1",
+  "timestamp": "2026-08-23T15:44:29.568775+00:00",
+  "experiment_id": "student_gap_metric_correction_v1",
+  "cost_usd": 0.0,
+  "headline": "The QLoRA gate was unlocked by a metric defect. Recomputed with correct denominators the assertion gap vs the managed reference is -0.055 (not -0.320) and is NOT statistically established; the gate now evaluates to LOCKED.",
+  "defects": [
+    {
+      "id": "S1_counts_averaged_as_rates",
+      "site": "student_gap_v1._suite_metrics",
+      "detail": "Per-case `aggregate` fields are COUNTS (a case with 2 correct atoms contributes 2). They were averaged across cases as if they were rates, so the mean could exceed 1.0.",
+      "evidence": "qwen_structured_metrics_v1.json summary: assertion_state_correct = 1.0078 (a rate > 1)"
+    },
+    {
+      "id": "S2_clamp_masked_the_defect",
+      "site": "student_gap_v1._qwen38_c2",
+      "detail": "min(1.0, float(...)) turned the impossible 1.0078 into a perfect 1.0, hiding the bug and inflating the reference the student was measured against.",
+      "note": "the code even carried the comment 'assertion metric pre-denominator-fix' while still using the value"
+    },
+    {
+      "id": "S3_hardcoded_unmeasured_reference",
+      "site": "student_gap_v1._managed_ref_c2",
+      "detail": "Returned literals, not a measurement: assertion_state_correct_rate=1.0, coverage_rate=0.7867. Recomputed from the real artifact the true assertion rate IS 0.7867 (118/150) \u2014 the hardcoded value was the assertion rate sitting in the coverage slot. Assertion and coverage were mislabelled and assertion was replaced with a perfect 1.0.",
+      "real_artifact": "artifacts/p1_runs/managed_ref_qwen3_32b_awq_c2_20260823T043749Z.json"
+    }
+  ],
+  "corrected_measurements_atom_level": {
+    "note": "assertion_state_correct, explicit numerator/denominator, 95% Wilson",
+    "qwen38_27b_control": {
+      "k": 129,
+      "n": 146,
+      "rate": 0.8836,
+      "wilson95": [
+        0.8214,
+        0.926
+      ]
+    },
+    "qwen3_32b_awq_managed_ref": {
+      "k": 118,
+      "n": 150,
+      "rate": 0.7867,
+      "wilson95": [
+        0.7144,
+        0.8446
+      ]
+    },
+    "student_a": {
+      "k": 109,
+      "n": 149,
+      "rate": 0.7315,
+      "wilson95": [
+        0.6552,
+        0.7962
+      ]
+    }
+  },
+  "gap_correction": {
+    "stated_rationale": "Assertion gap -0.320 vs managed ref on C2",
+    "actual_gap_vs_managed_ref": -0.0552,
+    "overstatement_factor": 5.8,
+    "significance_vs_managed_ref": "NOT ESTABLISHED \u2014 CIs overlap ([0.6552,0.7962] vs [0.7144,0.8446])",
+    "gap_vs_qwen38_control": -0.1521,
+    "significance_vs_qwen38": "REAL at 95% \u2014 CIs disjoint ([0.6552,0.7962] vs [0.8214,0.9260])"
+  },
+  "gate_outcome": {
+    "before": {
+      "qlora_gate_unlocked": true,
+      "next_action": "Axolotl 50-step canary"
+    },
+    "after": {
+      "qlora_gate_unlocked": false,
+      "next_action": "No QLoRA \u2014 close assertion gap first or accept managed ref ceiling"
+    },
+    "honest_reading": "Against the managed reference the student is within noise, so the stated gate rationale does not survive. Against the stronger Qwen3.8 control a real -0.152 gap remains, so a case for adaptation can still be made \u2014 but it must be argued against that reference explicitly, not against a hardcoded 1.0."
+  },
+  "live_resource_note": "Serverless endpoint student-qlora-canary-0510a047 (dnjbbgr8lmczon) was observed initializing a worker with 1 job queued while this correction was made. A compatibility canary is permitted by briefing SS XXXIII before adaptation, so it was left running; the BOUNDED ADAPTATION that would follow is now ungated and should not proceed on the -0.320 figure.",
+  "fixes_applied": [
+    "_suite_metrics now computes atom-level rates with explicit numerator/denominator and Wilson intervals",
+    "removed the min(1.0, x) clamp",
+    "_managed_ref_c2 and _qwen38_c2 now measure from real artifacts instead of literals/broken summaries"
+  ]
+}

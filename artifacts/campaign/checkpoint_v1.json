@@ -1,57 +1,424 @@
 {
-  "schema": "nano.campaign.checkpoint.v1",
-  "campaign_id": "accelerated_research_campaign_v1",
-  "timestamp": "2026-08-23T01:50:00Z",
-  "origin_master": "04a4ecb9",
-  "dataset_revision": "campaign_v1_20260823",
-  "spend": {
-    "actual_usd": 0.9451,
-    "remaining_usd": 179.0549,
-    "posture": "NORMAL"
+  "active_resources": {
+    "pods": [],
+    "serverless": []
   },
-  "execution_surfaces": {
-    "frontier_teacher": "api/gpt-4o-mini (Kimi K3 managed not found on hub; API fallback)",
-    "strong_control": "RunPod Serverless Qwen/Qwen3.8-27B endpoint tbnur4mac60i70",
-    "raw_pods": "none active"
-  },
-  "phase_ab_campaign_v1": {
-    "suite": "campaign_v1",
-    "encounters": ["enc-1", "enc-2", "enc-3"],
-    "artifact": "artifacts/p1_runs/campaign_phase_ab_v1.json",
-    "api_teacher": {
-      "model": "gpt-4o-mini",
-      "enc1_span_f1": 0.5808,
-      "enc2_span_f1": 0.4444,
-      "enc3_span_f1": 0.4194,
-      "dominant_failure": "wrong_mention (over-long quotes, not minimal gold spans)"
+  "budget": {
+    "authorized_envelope_usd": 185.0,
+    "authorized_remaining": 180.2669,
+    "campaign_remaining": 151.7619,
+    "ledger_actual": 4.0381,
+    "ledger_committed": 0.695,
+    "live_runpod_balance": 161.7619,
+    "posture": "NORMAL",
+    "wallet": {
+      "client_balance_usd": 161.7619,
+      "current_spend_per_hr": 0.004,
+      "email": "rill-mud-9i@icloud.com",
+      "ok": true,
+      "user_id": "user_3Gipqdtq5P6GQgrqGiAJ2FIWvPJ"
     },
-    "qwen38_serverless": {
-      "model": "Qwen/Qwen3.8-27B",
-      "enc1_span_f1": 0.3333,
-      "dominant_failure": "malformed_span_port_lines + wrong_mention"
+    "wallet_floor_usd": 10.0
+  },
+  "commit_sha": "9a5546cf7efa7be8b0018cecc233f9e5fd2cc438",
+  "hub_catalog": {
+    "listed_count": 10,
+    "resolved": {
+      "axolotl": "cma1ofy3e000008l7he7c764k",
+      "pytorch_template": "runpod-torch-v240",
+      "sglang": "cmdncyqe1000002k498dt9pvr",
+      "vllm": "cm8h09d9n000008jvh2rqdsmb"
+    },
+    "schema": "nano.runpod.hub_catalog.v1",
+    "searches": {
+      "autoresearch": [],
+      "axolotl": [
+        {
+          "id": "cma1ofy3e000008l7he7c764k",
+          "repo": "axolotl-ai-cloud/axolotl",
+          "title": "Axolotl Fine-Tuning",
+          "type": "SERVERLESS"
+        }
+      ],
+      "parameter golf": [],
+      "pytorch": [],
+      "sglang": [
+        {
+          "id": "cmdncyqe1000002k498dt9pvr",
+          "repo": "runpod-workers/worker-sglang",
+          "title": "SGLang",
+          "type": "SERVERLESS"
+        },
+        {
+          "id": "cmejufc9p000002l782rb0bsn",
+          "repo": "zalaa17/worker-sglang-with-vllm",
+          "title": "SGLang",
+          "type": "SERVERLESS"
+        }
+      ],
+      "vllm": [
+        {
+          "id": "cm8h09d9n000008jvh2rqdsmb",
+          "repo": "runpod-workers/worker-vllm",
+          "title": "vLLM",
+          "type": "SERVERLESS"
+        },
+        {
+          "id": "cmhy06ie9000002l52b0hcv0l",
+          "repo": "rachfop/nano-vllm-runpod",
+          "title": "nano-vLLM Runpod Edition",
+          "type": "SERVERLESS"
+        },
+        {
+          "id": "cmejufc9p000002l782rb0bsn",
+          "repo": "zalaa17/worker-sglang-with-vllm",
+          "title": "SGLang",
+          "type": "SERVERLESS"
+        }
+      ]
+    },
+    "timestamp": "2026-08-23T04:38:29.968416+00:00"
+  },
+  "leakage": {
+    "status": "pass"
+  },
+  "managed_reference": {},
+  "native_launches": [
+    {
+      "est_cost_usd": 0.695,
+      "launched": true,
+      "name": "native-a100-1",
+      "pod_id": "vl5teia0gciol9",
+      "remote_commands": "cd /workspace/nano-lm || (cd /workspace && git clone https://github.com/wwk5q8z6kk-bit/nano-lm.git && cd nano-lm) && git fetch origin && git checkout 9a5546cf7efa7be8b0018cecc233f9e5fd2cc438 || git checkout frontier/accelerated-research-campaign-v2 && pip install -q -r requirements.txt 2>/dev/null || true && python3 -m nanoscribe.runpod_gpu_preflight || exit 1 && python3 scripts/train_native_nano.py --export-train-json && python3 scripts/train_native_nano.py --run-id native30_bottleneck_span_s0 && python3 scripts/train_native_nano.py --run-id native30_bottleneck_span_s1 && python3 scripts/train_native_nano.py --run-id native30_bottleneck_struct_s0 && python3 scripts/train_native_nano.py --run-id native30_bottleneck_struct_s1",
+      "run_ids": [
+        "native30_bottleneck_span_s0",
+        "native30_bottleneck_span_s1",
+        "native30_bottleneck_struct_s0",
+        "native30_bottleneck_struct_s1"
+      ],
+      "surface": "pod_template_pytorch",
+      "template_id": "runpod-torch-v240"
+    },
+    {
+      "launched": false,
+      "reason": "{\"error\":\"failed to create pod: graphql error: There are no longer any instances available with the requested specifications. Please refresh and try again.\",\"code\":\"graphql_error\"}",
+      "run_ids": [
+        "native30_decoder_span_s0",
+        "native30_decoder_span_s1",
+        "native30_decoder_struct_s0",
+        "native30_decoder_struct_s1"
+      ]
     }
-  },
-  "belief_updates": [
-    "API teacher beats Qwen3.8-27B zero-shot on span-port format at campaign_v1 scale",
-    "Frontier failures are mostly quote granularity (wrong_mention), not assertion parsing",
-    "Qwen3.8 needs span-port prompt/parser alignment; parser now accepts ASSERTED/UNCERTAIN aliases",
-    "Serverless scale-to-zero works; no idle raw inference pods",
-    "Kimi K3 managed endpoint not in hub search — continue API teacher within $25 cap"
   ],
-  "bottleneck": "span-port output contract (minimal exact quotes + UNCERTAIN label), not infrastructure",
-  "next_high_value_experiments": [
-    "Re-run phase AB after ASSERTED/UNCERTAIN parser + prompt fix",
-    "Minimal-span few-shot in prompt for API teacher",
-    "Large-student QLoRA on span-port fixture data (B200 pod, prepared command)",
-    "Native-A/B short screen via native_screen_launch.sh",
-    "Verifier pilot on teacher-verified hard negatives"
-  ],
-  "tracks_status": {
-    "A_frontier_teacher": "BASELINE_API_COMPLETE",
-    "B_qwen38_serverless": "BASELINE_COMPLETE_NEEDS_PROMPT",
-    "C_large_student": "NOT_STARTED",
-    "D_native_nano": "DESIGN_ONLY",
-    "E_verifier": "NOT_STARTED"
+  "qlora_gate": "NOT_UNLOCKED",
+  "schema": "nano.campaign.wave_v2_checkpoint.v1",
+  "spend": {
+    "campaign_id": "p1_acceleration_campaign_v0",
+    "campaign_spend_actual": 3.8251,
+    "campaign_spend_committed": 1.39,
+    "campaign_spend_remaining": 179.7849,
+    "campaign_spend_start": 1.8211,
+    "entries": [
+      {
+        "amount_usd": 0.37,
+        "description": "RunPod compact baseline harness",
+        "ended_at": "2026-08-23T01:33:55.104403+00:00",
+        "gpu": "NVIDIA GeForce RTX 4090",
+        "lane": "compact",
+        "notes": "",
+        "pod_id": "zed3vrrl0zxaoj",
+        "rate_per_hr": 0.74,
+        "started_at": "2026-08-23T01:21:10.268938+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.0051,
+        "description": "Serverless Qwen38 tiny_fixture harness baseline",
+        "ended_at": "2026-08-23T01:45:31.613740+00:00",
+        "gpu": "NVIDIA A100 80GB PCIe",
+        "lane": "serverless",
+        "notes": "",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T01:45:31.567487+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.12,
+        "description": "Phase A API teacher eval suite=campaign_v1",
+        "ended_at": "2026-08-23T01:48:57.009690+00:00",
+        "gpu": null,
+        "lane": "frontier_teacher",
+        "notes": "api_token_estimate",
+        "pod_id": null,
+        "rate_per_hr": null,
+        "started_at": "2026-08-23T01:48:57.009683+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.45,
+        "description": "Phase B serverless eval suite=campaign_v1",
+        "ended_at": "2026-08-23T01:48:57.009874+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "execution-time estimate per encounter",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T01:48:57.009867+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.1,
+        "description": "Phase A API teacher eval suite=campaign_v1",
+        "ended_at": "2026-08-23T01:51:55.856825+00:00",
+        "gpu": null,
+        "lane": "frontier_teacher",
+        "notes": "api_token_estimate",
+        "pod_id": null,
+        "rate_per_hr": null,
+        "started_at": "2026-08-23T01:51:55.856810+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.45,
+        "description": "Phase B serverless eval suite=campaign_v1",
+        "ended_at": "2026-08-23T01:51:55.857198+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "execution-time estimate per encounter",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T01:51:55.857187+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.0046,
+        "description": "Fanout span_port suite=campaign_smoke jobs=8",
+        "ended_at": "2026-08-23T02:12:19.974314+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=8 worker_s=11.8",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T02:12:19.974306+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.005,
+        "description": "Fanout structured suite=campaign_smoke jobs=3",
+        "ended_at": "2026-08-23T02:12:24.252135+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=3 worker_s=13.0",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T02:12:24.252129+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.1254,
+        "description": "Fanout structured suite=screening_p1 jobs=128",
+        "ended_at": "2026-08-23T02:12:55.719324+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=128 worker_s=324.7",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T02:12:55.719314+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.0711,
+        "description": "Fanout span_port suite=screening_p1 jobs=150",
+        "ended_at": "2026-08-23T02:13:17.929921+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=150 worker_s=184.1",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T02:13:17.929912+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.0034,
+        "description": "Fanout span_port suite=campaign_smoke jobs=8",
+        "ended_at": "2026-08-23T02:16:21.092640+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=8 worker_s=8.8",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T02:16:21.092631+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.005,
+        "description": "Fanout structured suite=campaign_smoke jobs=3",
+        "ended_at": "2026-08-23T02:16:27.472614+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=3 worker_s=12.8",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T02:16:27.472608+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.1115,
+        "description": "Fanout structured suite=screening_p1 jobs=128",
+        "ended_at": "2026-08-23T02:17:17.992497+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=128 worker_s=288.9",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T02:17:17.992484+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.0242,
+        "description": "Fanout structured suite=c1_canary jobs=32",
+        "ended_at": "2026-08-23T04:13:05.368219+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=32 worker_s=62.6",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T04:13:05.368211+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.1206,
+        "description": "Fanout structured suite=c2_screening jobs=128",
+        "ended_at": "2026-08-23T04:13:21.275714+00:00",
+        "gpu": "A100-80GB-serverless",
+        "lane": "qwen38_serverless",
+        "notes": "fanout jobs=128 worker_s=312.4",
+        "pod_id": null,
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T04:13:21.275704+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.576,
+        "description": "Wave1 managed ref C1+C2 winner=gpt_oss_120b",
+        "ended_at": "2026-08-23T04:30:21.926480+00:00",
+        "gpu": null,
+        "lane": "managed_reference",
+        "notes": "api_token_estimate",
+        "pod_id": null,
+        "rate_per_hr": null,
+        "started_at": "2026-08-23T04:30:21.926467+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.1536,
+        "description": "Wave1 student_a pod launch",
+        "ended_at": "2026-08-23T04:37:52.369048+00:00",
+        "gpu": "NVIDIA A100-SXM4-80GB",
+        "lane": "student_a",
+        "notes": "",
+        "pod_id": "1hbomuv91vfbpw",
+        "rate_per_hr": 1.59,
+        "started_at": "2026-08-23T04:31:57.643619+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.4821,
+        "description": "Wave1 native_b200 pod launch",
+        "ended_at": "2026-08-23T04:37:52.471410+00:00",
+        "gpu": "NVIDIA B200",
+        "lane": "native_b200",
+        "notes": "",
+        "pod_id": "owrlijfea33xox",
+        "rate_per_hr": 4.99,
+        "started_at": "2026-08-23T04:31:57.705826+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.0715,
+        "description": "Wave1 verifier pod launch",
+        "ended_at": "2026-08-23T04:37:52.420073+00:00",
+        "gpu": "NVIDIA GeForce RTX 4090",
+        "lane": "verifier",
+        "notes": "",
+        "pod_id": "yer36mut1lnunv",
+        "rate_per_hr": 0.74,
+        "started_at": "2026-08-23T04:31:57.732503+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.576,
+        "description": "Wave1 managed ref C1+C2 winner=qwen3_32b_awq",
+        "ended_at": "2026-08-23T04:37:49.802305+00:00",
+        "gpu": null,
+        "lane": "managed_reference",
+        "notes": "api_token_estimate",
+        "pod_id": null,
+        "rate_per_hr": null,
+        "started_at": "2026-08-23T04:37:49.802283+00:00",
+        "status": "actual"
+      },
+      {
+        "amount_usd": 0.695,
+        "description": "Native round1 native-a100-1 runs=native30_bottleneck_span_s0,native30_bottleneck_span_s1,native30_bottleneck_struct_s0,native30_bottleneck_struct_s1",
+        "ended_at": null,
+        "gpu": "NVIDIA A100 80GB PCIe",
+        "lane": "native_a100",
+        "notes": "template=runpod-torch-v240",
+        "pod_id": "wmxw7pzisysjlh",
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T04:38:02.080648+00:00",
+        "status": "committed"
+      },
+      {
+        "amount_usd": 0.695,
+        "description": "Native round1 native-a100-1 runs=native30_bottleneck_span_s0,native30_bottleneck_span_s1,native30_bottleneck_struct_s0,native30_bottleneck_struct_s1",
+        "ended_at": null,
+        "gpu": "NVIDIA A100 80GB PCIe",
+        "lane": "native_a100",
+        "notes": "template=runpod-torch-v240",
+        "pod_id": "vl5teia0gciol9",
+        "rate_per_hr": 1.39,
+        "started_at": "2026-08-23T04:38:31.018458+00:00",
+        "status": "committed"
+      }
+    ],
+    "envelopes": {
+      "absolute_max_usd": 200.0,
+      "normal_envelope_usd": 185.0,
+      "safety_margin_usd": 20.0
+    },
+    "new_actual_spend": 2.004,
+    "new_committed_spend": 1.39,
+    "posture": "NORMAL",
+    "remaining_new_budget": 181.606,
+    "schema": "nano.campaign.spend.v0",
+    "total_exposure": 5.2151,
+    "updated_at": "2026-08-23T04:38:31.018464+00:00"
   },
-  "architecture_verdict_native": "CONTINUE_EXPLORATION"
+  "timestamp": "2026-08-23T04:46:09.293201+00:00",
+  "verifier": {
+    "baseline_accuracy": 1.0,
+    "discriminative": false,
+    "hard_set_n": 48,
+    "learned_train": "SKIP"
+  },
+  "wallet": {
+    "client_balance_usd": 161.7619,
+    "current_spend_per_hr": 0.004,
+    "email": "rill-mud-9i@icloud.com",
+    "ok": true,
+    "user_id": "user_3Gipqdtq5P6GQgrqGiAJ2FIWvPJ"
+  },
+  "wave_v2_followup_teardown": {
+    "active_pods_after_teardown": 0,
+    "push": "origin/frontier/accelerated-research-campaign-v2 @ 9a5546c",
+    "stragglers_deleted": [
+      "wusomzx4k947l3",
+      "29f3zm0ss30yay",
+      "wxyug430mqgakm"
+    ],
+    "tests_pass": 108
+  }
 }

@@ -1,0 +1,105 @@
+{
+  "schema": "nano-lm.docs.program_checkpoints.v1",
+  "updated": "2026-08-23",
+  "phase_c_v2": {
+    "description": "Accelerated research campaign v2 — merge-ready when all required gates pass",
+    "authority": "docs/ACCELERATED_RESEARCH_CAMPAIGN_V2.md",
+    "manifest": "frontier/accelerated_research_campaign_v2.json",
+    "gates": [
+      {
+        "id": "C1_control_plane",
+        "status": "done",
+        "evidence": [
+          "artifacts/campaign/CAMPAIGN_AUTONOMOUS_EXECUTION.md",
+          "scripts/campaign_control_plane.py"
+        ]
+      },
+      {
+        "id": "C2_tool_calling",
+        "status": "done",
+        "evidence": [
+          "nanoscribe/tool_calling.py",
+          "nanoscribe/test_tool_calling.py",
+          "docs/infrastructure/TOOL_CALLING.md"
+        ]
+      },
+      {
+        "id": "C3_agent_canary",
+        "status": "done",
+        "evidence": [
+          "nanoscribe/agent_canary.py",
+          "artifacts/campaign/agent_canary_v1_results.json"
+        ]
+      },
+      {
+        "id": "C4_native_extended",
+        "status": "in_progress",
+        "evidence": [
+          "artifacts/campaign/native_extended_summary.json",
+          "nanoscribe/native/train.py"
+        ],
+        "done_when": "native decode produces valid structured output OR documented non-viability with artifact"
+      },
+      {
+        "id": "C5_student_fanout",
+        "status": "in_progress",
+        "evidence": [
+          "artifacts/campaign/student_gap_v1.json",
+          "artifacts/campaign/manifests/student_c1c2_vllm_serverless_v1.json"
+        ],
+        "done_when": "C1/C2 metrics JSON committed; span transport improvement measured"
+      },
+      {
+        "id": "C6_harness_regression",
+        "status": "done",
+        "evidence": [
+          "scripts/ci_nanoscribe.sh",
+          "nanoscribe/test_encounter_v0.py",
+          "nanoscribe/test_evidence_transport.py"
+        ]
+      },
+      {
+        "id": "C7_master_port",
+        "status": "pending",
+        "evidence": [],
+        "done_when": "selective port to origin/master; zero Evidence Core diff; owner review"
+      }
+    ]
+  },
+  "phase_d_p1_exit": {
+    "description": "P1 mastery — not claimed until all pass",
+    "gates": [
+      {
+        "id": "D1_note_rendering",
+        "status": "pending",
+        "evidence": ["nanoscribe/render.py"],
+        "done_when": "EncounterRecord to sectioned note plus unsupported-claim flags"
+      },
+      {
+        "id": "D2_external_eval",
+        "status": "pending",
+        "evidence": [],
+        "done_when": "licensed external dialogue eval; no PHI in repo"
+      },
+      {
+        "id": "D3_human_eval",
+        "status": "pending",
+        "evidence": ["docs/domains/medical/EVALUATION_PROTOCOL.md"],
+        "done_when": "blinded human pilot executed — not protocol-only"
+      },
+      {
+        "id": "D4_owner_signoff",
+        "status": "pending",
+        "evidence": [],
+        "done_when": "explicit owner P1 mastery decision"
+      }
+    ]
+  },
+  "binding_bottleneck": {
+    "metric": "exact_gold_span_rate",
+    "campaign_v1_best": 0.1102,
+    "directional_target": 0.25,
+    "world_class_hypothesis": 0.85,
+    "source": "artifacts/campaign/student_gap_v1.json"
+  }
+}

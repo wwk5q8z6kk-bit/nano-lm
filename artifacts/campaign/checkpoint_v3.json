@@ -1,0 +1,186 @@
+{
+  "schema": "nano.campaign.checkpoint.v3",
+  "timestamp": "2026-08-23T19:05:00+00:00",
+  "commit_sha": "55547c3",
+  "wallet": {
+    "client_balance_usd": 146.87,
+    "current_spend_per_hr": 0.004,
+    "campaign_remaining_est": 146.87,
+    "launch_threshold_usd": 153.0,
+    "launch_authorized": false
+  },
+  "active_resources": {
+    "pods": 0,
+    "serverless": 0
+  },
+  "session_spend_usd_est": 1.7,
+  "native_round1": {
+    "verdict": "COMPLETE_RANKED",
+    "pod_id": "6o3fj6clc5dcmo",
+    "commit": "a89ecb0",
+    "runs": 8,
+    "checkpoints_local": true,
+    "metrics_local": true,
+    "top2_mechanisms": [
+      "evidence_bottleneck",
+      "span_port"
+    ],
+    "round2_100m_gate": "UNBLOCKED",
+    "artifact": "artifacts/campaign/native_round1_summary.json",
+    "recovery": "network_volume_http_proxy"
+  },
+  "native_round2": {
+    "status": "COMPLETE",
+    "experiment_id": "native100_round2_promotion_v1",
+    "pod_id": "6opxbt2tqphjrm",
+    "commit": "2094214",
+    "manifest": "artifacts/campaign/manifests/native100_round2_promotion_v1.json",
+    "datacenter": "CA-MTL-3",
+    "run_ids": [
+      "native100_evidence_bottleneck_s0",
+      "native100_evidence_bottleneck_s1",
+      "native100_span_port_s0",
+      "native100_span_port_s1"
+    ],
+    "runs_completed": 4,
+    "steps_per_run": 6,
+    "losses": {
+      "evidence_bottleneck_s0": 61.73,
+      "evidence_bottleneck_s1": 32.0,
+      "span_port_s0": 77.49,
+      "span_port_s1": 81.34
+    },
+    "artifact": "artifacts/campaign/native_round2_summary.json",
+    "hybrid_warranted": false,
+    "extended_training_recommended": true,
+    "winner": "native100_evidence_bottleneck_s1"
+  },
+  "teacher_collective": {
+    "lane": "P8_distillation",
+    "status": "CANARY_COMPLETE",
+    "architecture": "open_weight_agentic_teacher_collective",
+    "manifest": "artifacts/campaign/manifests/nano_agent_canary_v1.json",
+    "results": "artifacts/campaign/agent_canary_v1_results.json",
+    "task_suite": "data/p1_agent_canary_v1.json",
+    "n_tasks_probed": 12,
+    "teacher_probe": "gpt_oss_120b_managed",
+    "outcome_mean": 0.1667,
+    "glm_deploy_attempt": "epfbo06vpbjy9k deleted (not ready 90s)",
+    "trajectory_compiler": "nanoscribe/trajectory_compiler.py",
+    "primary_teachers": [
+      "Qwen3-Coder-Next-FP8",
+      "MiniMax-M2.1",
+      "GLM-4.5-Air-FP8",
+      "GPT-OSS-120B"
+    ],
+    "canary_gate": "COMPLETE",
+    "deploy_order_usd_capability": [
+      "GPT-OSS-120B managed ref",
+      "GLM-4.5-Air-FP8 ephemeral vLLM",
+      "Qwen3-Coder-Next-FP8 ephemeral vLLM",
+      "MiniMax-M2.1"
+    ]
+  },
+  "native_extended": {
+    "manifest": "artifacts/campaign/manifests/native100_extended_v1.json",
+    "status": "EXTENDED_COMPLETE_WITH_WEIGHTS",
+    "pod_id": "nrejxttt2nuxfa",
+    "datacenter": "US-KS-2",
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "commit": "d0165d8",
+    "run_id": "native100_evidence_bottleneck_s1",
+    "steps_completed": 200,
+    "final_loss": 0.048755865544080734,
+    "weights_local": true,
+    "weights_path": "artifacts/native_checkpoints/native100_evidence_bottleneck_s1/latest.pt",
+    "weights_bytes": 1188792509,
+    "torch_load_ok": true,
+    "weight_pull_method": "direct_tcp_scp",
+    "weight_pull_status": "COMPLETE",
+    "held_out_eval": "SCREENING_COMPLETE \u2014 coverage 84/150, assertion 68/84, exact_span 84/84",
+    "screening_eval": "artifacts/campaign/native_extended_screening_eval.json",
+    "screening_vs_reference": "artifacts/campaign/native_vs_reference_screening_v1.json",
+    "weight_pull": "direct TCP SCP preferred; scripts/pull_native_weights.py + finish_native_pod.sh fallback",
+    "retrain_blocked": false,
+    "artifact": "artifacts/campaign/native_extended_summary.json",
+    "launch": true
+  },
+  "managed_reference": {
+    "winner": "qwen3_32b_awq",
+    "c1_ok": true,
+    "c2_coverage_rate": 0.7867,
+    "c2_assertion_state_correct_rate": 1.0,
+    "c2_exact_gold_span_rate": 0.1102,
+    "source": "campaign_status historical wave v2"
+  },
+  "student_a": {
+    "model": "Qwen/Qwen2.5-32B-Instruct",
+    "surface": "hub_vllm_ephemeral",
+    "endpoint_deleted": "vllm-7chsjdkpxf8hzj",
+    "c1_canary": {
+      "coverage_rate": 1.0,
+      "assertion_state_correct_rate": 0.8125,
+      "exact_gold_span_rate": 0.2188,
+      "malformed": 0,
+      "artifact": "artifacts/p1_runs/student_a_structured_c1_canary_20260823T052317Z.json"
+    },
+    "c2_screening": {
+      "coverage_rate": 0.7812,
+      "assertion_state_correct_rate": 0.6797,
+      "exact_gold_span_rate": 0.1016,
+      "malformed": 6,
+      "artifact": "artifacts/p1_runs/student_a_structured_c2_screening_20260823T052456Z.json"
+    },
+    "student_gap": "artifacts/campaign/student_gap_v1.json",
+    "qlora_gate": "UNLOCKED_SEMANTIC_GAP",
+    "qlora_canary": "artifacts/campaign/student_qlora_canary_results.json",
+    "qlora_canary_status": "FAIL_ATTEMPT_5_TRAIN_CRASH",
+    "qlora_canary_attempt": 5,
+    "qlora_canary_manifest": "artifacts/campaign/manifests/student_qlora_canary_v1.json",
+    "qlora_canary_note": "Attempt 5: 80GB disk OK, MODEL_LOADED+QLORA_INIT_OK; train crashed before STEP_LOSS. Scripts fixed: enable_input_require_grads, TRAIN_FAIL marker, failure log pull, 90m poll. Attempt 6 deferred — Wave 0 corpus primary (NANO_MODEL_PROGRAM)",
+    "qlora_canary_prior": "attempts 1-3 Hub stream empty; attempt 4 ENOSPC/SSH; attempt 5 ~$1.08"
+  },
+  "disagreement_matrix": {
+    "n_cases": 128,
+    "annotation_disagreement_rows": 94,
+    "source": "artifacts/campaign/disagreement_live.json"
+  },
+  "verifier": {
+    "hard_set_n": 500,
+    "baseline_accuracy": 1.0,
+    "learned_train": "SKIP"
+  },
+  "next_gate_usd": {
+    "25": "managed+native start (passed)",
+    "60": "student baseline + gap analysis (passed)",
+    "100": "native100 early gate (COMPLETE \u2014 extended training gated)",
+    "135": "kill marginal"
+  },
+  "topology_ref": "artifacts/campaign/gpu_training_topology_v1.json",
+  "native_real_train_phase": {
+    "status": "STUB_PREP_ONLY",
+    "manifest": "artifacts/campaign/manifests/native_real_train_phase_v1.json",
+    "cost_est_usd": "12-35 minimum viable (10M-100M tokens); exceeds wallet for ideal pilot",
+    "blocked_by": "expanded_disjoint_corpus + held-out transport verdict"
+  },
+  "master_plan": {
+    "authority": "docs/NANO_MODEL_PROGRAM.md",
+    "current_wave": "WAVE_0",
+    "wave_0_lanes": {
+      "measurement_ci": "PENDING",
+      "corpus_factory": "PENDING",
+      "eval_v2": "PENDING",
+      "student_gap": "COMPLETE",
+      "verifier": "PARTIAL",
+      "agent_canary": "COMPLETE_PROBE",
+      "p2_p3_probes": "PARTIAL"
+    },
+    "wave_1_blocked_until": [
+      "corpus_factory",
+      "p1_screening_eval_v2",
+      "30m_revalidation_manifest"
+    ],
+    "corpus_reclassification": "p1_distill_train_v1 \u2192 NATIVE_UNIT_OVERFIT_FIXTURE (data/REGISTRY.json)"
+  },
+  "next_dollar": "Wave 0 Lane 2: build real architecture-screen corpus + registry; then Wave 1 30M revalidation (NOT more 100M on unit fixture). Secondary: QLoRA attempt-5 when wallet >= ~$153 after corpus lane started."
+}

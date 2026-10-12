@@ -1,0 +1,130 @@
+{
+  "schema": "nano.campaign.native_datascale_finding.v1",
+  "timestamp": "2026-08-23T15:23:08.208647+00:00",
+  "experiment_id": "native100_datascale_audit_v1",
+  "cost_usd": 0.0,
+  "device": "cpu",
+  "headline": "The native program is training 100M-parameter models on 4,516 characters of text. No architecture or mechanism question can be answered at this data scale, and none of the round-1/round-2 rankings are informative.",
+  "data_scale": {
+    "train_suite": "p1_distill_train_v1",
+    "train_cases": 96,
+    "train_atom_specs": 96,
+    "train_transcript_chars": 4516,
+    "train_chars_per_case": 47,
+    "example_case_full_text": "What symptoms are you having?\nI have sore throat.",
+    "params": 100000000,
+    "tokens_per_param": 4.52e-05,
+    "batch_size": 16,
+    "steps": 200,
+    "epochs": 33,
+    "comparisons": {
+      "historical_nano_briefing_XII": {
+        "params": 3150000,
+        "tokens": 32800000,
+        "tokens_per_param": 10.41
+      },
+      "chinchilla_20x": {
+        "tokens_needed_for_100M": 2000000000
+      },
+      "param_scaleup_vs_historical": 31.7,
+      "token_scaledown_vs_historical": 7263,
+      "shortfall_vs_chinchilla": 442870
+    },
+    "reading": "Relative to the project's own historical Nano (3.15M params on 32.8M tokens = 10.4 tok/param, roughly data-matched), the native program scaled parameters UP 31.7x while scaling training tokens DOWN 7,263x. It is ~443,000x under a Chinchilla-optimal budget."
+  },
+  "tokenizer_hypothesis": {
+    "status": "FALSIFIED",
+    "test": "detokenize(hash_tokens(t)) == t over 470 corpus turn texts",
+    "result": "470/470 lossless",
+    "note": "The hash tokenizer is NOT the cause of degenerate span emission \u2014 exact emission is possible in principle. Note nanoscribe/test_native_p1_eval.py::test_hash_tokenize_detokenize_roundtrip_chars only asserts len(back)==len(text), which would not have caught a lossy tokenizer; the stronger identity check was run manually here."
+  },
+  "arm_comparison": {
+    "suite": "p1_screening_eval_v1",
+    "gold_atoms": 150,
+    "method": "Conditional accuracy (correct/eligible) is confounded: arms answer different numbers of atoms, so accuracy is computed over different, self-selected subsets. Reported denominator-consistent as correct assertions per gold atom (n=150) with 95% Wilson intervals.",
+    "confounded_view": {
+      "span_port": {
+        "k": 72,
+        "n": 77,
+        "rate": 0.9351,
+        "coverage": 0.5133
+      },
+      "evidence_bottleneck": {
+        "k": 68,
+        "n": 84,
+        "rate": 0.8095,
+        "coverage": 0.56
+      },
+      "random_init_control": {
+        "k": 55,
+        "n": 68,
+        "rate": 0.8088,
+        "coverage": 0.4533
+      }
+    },
+    "denominator_consistent": {
+      "span_port": {
+        "k": 72,
+        "n": 150,
+        "rate": 0.48,
+        "wilson95": [
+          0.4015,
+          0.5594
+        ]
+      },
+      "evidence_bottleneck": {
+        "k": 68,
+        "n": 150,
+        "rate": 0.4533,
+        "wilson95": [
+          0.3758,
+          0.5332
+        ]
+      },
+      "random_init_control": {
+        "k": 55,
+        "n": 150,
+        "rate": 0.3667,
+        "wilson95": [
+          0.2938,
+          0.4462
+        ]
+      }
+    },
+    "separation": {
+      "span_port_vs_evidence_bottleneck": "OVERLAP \u2014 arms not distinguishable",
+      "span_port_vs_random_init": "OVERLAP \u2014 not distinguishable from untrained",
+      "evidence_bottleneck_vs_random_init": "OVERLAP \u2014 not distinguishable from untrained"
+    },
+    "free_generation": {
+      "evidence_bottleneck_coverage": "0/150",
+      "note": "under unconstrained decoding the evidence_bottleneck checkpoint covers zero gold atoms"
+    }
+  },
+  "briefing_LXII_answers": {
+    "Q4_evidence_bottleneck_survived_100M": "NO \u2014 does not separate from an untrained control",
+    "Q5_span_port_survived_100M": "NO \u2014 does not separate from an untrained control",
+    "Q6_seed_variance": "UNMEASURED but large: two same-seed 200-step runs differ 6.7x in final train loss",
+    "Q7_complementary_strengths": "CANNOT BE DETERMINED \u2014 arms overlap each other and the control",
+    "Q8_hybrid_warranted": "NO \u2014 no complementarity can be established at this data scale",
+    "Q9_30M_to_100M_improvement": "CANNOT BE DETERMINED \u2014 the dataset cannot support either size"
+  },
+  "decision": {
+    "promotion": "BLOCKED",
+    "hybrid": "NOT WARRANTED",
+    "scale_to_300M": "NOT WARRANTED",
+    "root_cause": "TRAINING DATA SCALE, not architecture or mechanism",
+    "rationale": "Every observation is explained by 4.5 KB of training text: train loss -> 0.048 is memorization of 96 short examples; 0/150 free-generation coverage is absence of anything to generalize from; assertion accuracy at the majority-class prior is the only signal such a corpus carries; 6.7x run-to-run loss variance is expected at this size. Briefing SS LV: 'IF both 100M variants fail to improve meaningfully over 30M: do not move to 300M blindly; investigate data, training tokens, objectives, optimization, representation.' Data is the binding constraint.",
+    "do_not": [
+      "rank mechanisms on this corpus",
+      "spend further GPU on native arm tournaments",
+      "conclude anything about evidence_bottleneck vs span_port",
+      "attribute the degenerate output to the tokenizer (falsified)"
+    ],
+    "required_next": [
+      "Decide the native training-corpus strategy \u2014 this is the binding constraint and a program-level call",
+      "Any future arm comparison must ship with: random-init control, majority-class baseline, free-generation eval, denominator-consistent metrics",
+      "Strengthen the tokenizer round-trip test to assert identity, not just length"
+    ]
+  }
+}

@@ -108,6 +108,8 @@ class AtomEval:
     invalid_span: bool = False
     wrong_source: bool = False
     wrong_mention: bool = False
+    annotation_disagreement: bool = False
+    supporting_superspan: bool = False
     malformed: bool = False
     critical_error: bool = False
     omitted: bool = False
@@ -129,6 +131,8 @@ class EvalReport:
     invalid_span: int
     wrong_source: int
     wrong_mention: int
+    annotation_disagreement: int
+    supporting_superspan: int
     ambiguity: int
     omission: int
     correct_abstention: int
@@ -163,6 +167,26 @@ def span_character_f1(gold: Iterable[EvidenceSpan], pred: Iterable[EvidenceSpan]
     precision = inter / len(pred_keys)
     recall = inter / len(gold_keys)
     return 2 * precision * recall / (precision + recall)
+
+
+def _span_contains(outer: EvidenceSpan, inner: EvidenceSpan) -> bool:
+    return (
+        outer.source_id == inner.source_id
+        and outer.start <= inner.start
+        and outer.end >= inner.end
+    )
+
+
+def _gold_spans_contained_in_pred(
+    gold_spans: Sequence[EvidenceSpan],
+    pred_spans: Sequence[EvidenceSpan],
+) -> bool:
+    if not gold_spans:
+        return False
+    for gold_span in gold_spans:
+        if not any(_span_contains(pred_span, gold_span) for pred_span in pred_spans):
+            return False
+    return True
 
 
 def atom_result(report: EvalReport, atom_id: str) -> AtomEval:
@@ -397,6 +421,8 @@ def evaluate(
     invalid_span = 0
     wrong_source = 0
     wrong_mention = 0
+    annotation_disagreement = 0
+    supporting_superspan = 0
     omission = 0
     unnecessary_abstention = 0
     correct_abstention = 0
@@ -476,10 +502,19 @@ def evaluate(
             exact = bool(gold_keys) and gold_keys == pred_keys
             mention_wrong = False
             source_wrong = False
+            annotation_only = False
+            superspan = False
             if pred_sources - gold_sources:
                 source_wrong = True
                 wrong_source += 1
-            elif gold_keys != pred_keys:
+            elif gold_keys == pred_keys:
+                pass
+            elif _gold_spans_contained_in_pred(gold_spans, spans):
+                annotation_only = True
+                superspan = True
+                annotation_disagreement += 1
+                supporting_superspan += 1
+            else:
                 mention_wrong = True
                 wrong_mention += 1
 
@@ -513,6 +548,8 @@ def evaluate(
                     invalid_span=False,
                     wrong_source=source_wrong,
                     wrong_mention=mention_wrong,
+                    annotation_disagreement=annotation_only,
+                    supporting_superspan=superspan,
                     malformed=construction is not None,
                     critical_error=construction is not None
                     and _classify_construction(construction)[1],
@@ -585,6 +622,8 @@ def evaluate(
         invalid_span=invalid_span,
         wrong_source=wrong_source,
         wrong_mention=wrong_mention,
+        annotation_disagreement=annotation_disagreement,
+        supporting_superspan=supporting_superspan,
         ambiguity=ambiguity,
         omission=omission,
         correct_abstention=correct_abstention,
@@ -596,4 +635,55 @@ def evaluate(
         latency_s=pred.latency_s,
         memory_bytes=pred.memory_bytes,
         atom_results=tuple(results),
+    )
+
+
+CRITICAL_ATOM_TYPES = frozenset(
+    {
+        AtomType.ALLERGY,
+        AtomType.MEDICATION,
+        AtomType.DIAGNOSIS_STATEMENT,
+        AtomType.ASSESSMENT,
+        AtomType.PLAN,
+    }
+)
+
+
+def gold_atom_spans(record: EncounterRecord, atom: ClinicalAtom) -> tuple[EvidenceSpan, ...]:
+    return tuple(
+        span
+        for evidence_id in atom.evidence_ids
+        if (span := _span_by_id(record, evidence_id)) is not None
+    )
+
+
+def audit_gold_atom_support(record: EncounterRecord, atom: ClinicalAtom) -> SupportRelation:
+    """Mechanical support audit for a gold atom against its cited evidence."""
+    spans = gold_atom_spans(record, atom)
+    if not spans:
+        return SupportRelation.UNSUPPORTED
+    if any(_transport_status(record, span) != "ok" for span in spans):
+        return SupportRelation.UNSUPPORTED
+    if atom.assertion_state in _SEMANTIC_STATES:
+        return SupportRelation.REVIEW_REQUIRED
+    mechanical = _mechanical_support(atom.raw_value, spans)
+    if mechanical is None:
+        return SupportRelation.UNSUPPORTED
+    return mechanical
+
+
+def audit_gold_record(record: EncounterRecord) -> dict[str, SupportRelation]:
+    return {atom.atom_id: audit_gold_atom_support(record, atom) for atom in record.atoms}
+
+
+def unsupported_critical_claim_ids(
+    record: EncounterRecord,
+    audits: Mapping[str, SupportRelation] | None = None,
+) -> tuple[str, ...]:
+    support = audits if audits is not None else audit_gold_record(record)
+    return tuple(
+        atom.atom_id
+        for atom in record.atoms
+        if atom.atom_type in CRITICAL_ATOM_TYPES
+        and support.get(atom.atom_id) is SupportRelation.UNSUPPORTED
     )

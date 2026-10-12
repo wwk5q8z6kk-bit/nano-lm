@@ -1,0 +1,15 @@
+{
+  "name": "valid_table_tool",
+  "expected_outcome": "success",
+  "expected_capability": "table",
+  "tool_calls": [
+    {
+      "id": "call_tbl",
+      "type": "function",
+      "function": {
+        "name": "submit_table",
+        "arguments": "{\"schema_version\":\"nano.table.v0\",\"title\":\"Meds\",\"columns\":[{\"key\":\"name\",\"label\":\"Name\",\"data_type\":\"string\"},{\"key\":\"dose\",\"label\":\"Dose\",\"data_type\":\"string\"}],\"rows\":[[\"ibuprofen\",\"400mg\"]]}"
+      }
+    }
+  ]
+}

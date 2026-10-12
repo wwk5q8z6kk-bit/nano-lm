@@ -1,0 +1,10 @@
+[
+  {
+    "id": "call_unknown",
+    "type": "function",
+    "function": {
+      "name": "unknown_tool",
+      "arguments": "{\"foo\": 1}"
+    }
+  }
+]

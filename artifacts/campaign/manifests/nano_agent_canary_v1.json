@@ -1,0 +1,125 @@
+{
+  "schema": "nano.campaign.experiment_manifest.v1",
+  "experiment_id": "nano_agent_canary_v1",
+  "git_sha": "aefe4e207598be30277b2ba55c84c52c9a5b02ec",
+  "dataset_revision": "p1_agent_canary_v1",
+  "command": "scripts/agent_canary_bench.py",
+  "surface": "teacher_collective_ephemeral",
+  "gpu_or_model": "NVIDIA A100 80GB PCIe (per-teacher ephemeral serverless)",
+  "hub_stable_locator": "runpod-workers/worker-vllm",
+  "hub_listing_id": "cm8h09d9n000008jvh2rqdsmb",
+  "resolved_at": "2026-08-23T10:23:00+00:00",
+  "max_runtime_min": 30,
+  "max_cost_usd": 5.0,
+  "termination_condition": "per-capability scoreboard written; all endpoints deleted",
+  "status": "STUB_GATED",
+  "architecture": {
+    "name": "open_weight_agentic_teacher_collective",
+    "rule": "no single teacher; per-capability competition; no wholesale copy",
+    "transfer_types": ["behavior", "outcome", "mechanism"],
+    "trajectory_compiler": "nanoscribe/trajectory_compiler.py",
+    "pipeline_stages": [
+      "multi_teacher_rollouts",
+      "normalize",
+      "per_step_eval",
+      "best_step_selection",
+      "verified_training_examples"
+    ]
+  },
+  "teachers": {
+    "primary_bench": [
+      {
+        "id": "qwen3_coder_next_fp8",
+        "model": "Qwen/Qwen3-Coder-Next-FP8",
+        "role": "agent_policy",
+        "deploy_surface": "hub_vllm_ephemeral",
+        "est_vram_gb": 80,
+        "feasibility": "fits_single_a100_fp8",
+        "probe_cost_usd_est": 0.5
+      },
+      {
+        "id": "minimax_m21",
+        "model": "MiniMax/MiniMax-M2.1",
+        "role": "planning_recovery",
+        "deploy_surface": "hub_vllm_ephemeral_or_managed",
+        "est_vram_gb": 100,
+        "feasibility": "marginal_single_a100; prefer_managed_if_available",
+        "probe_cost_usd_est": 1.0
+      },
+      {
+        "id": "glm_45_air_fp8",
+        "model": "THUDM/GLM-4.5-Air-FP8",
+        "role": "general_agency",
+        "deploy_surface": "hub_vllm_ephemeral",
+        "est_vram_gb": 70,
+        "feasibility": "fits_single_a100_fp8",
+        "probe_cost_usd_est": 0.5
+      },
+      {
+        "id": "gpt_oss_120b",
+        "model": "openai/gpt-oss-120b",
+        "role": "structured_output",
+        "deploy_surface": "managed_reference_preferred",
+        "est_vram_gb": 120,
+        "feasibility": "managed_ref_operational; self_host_needs_multi_gpu",
+        "probe_cost_usd_est": 0.0
+      }
+    ],
+    "expensive_refs": [
+      {"id": "deepseek_v32", "model": "deepseek-ai/DeepSeek-V3.2", "role": "expensive_ref"},
+      {"id": "kimi_k3", "model": "moonshotai/Kimi-K3", "role": "expensive_ref_blocked"}
+    ],
+    "p1_control_not_teacher": {
+      "model": "Qwen/Qwen3.8-27B",
+      "note": "P1 student/control lane — distinct from Qwen3-Coder-Next agent policy teacher"
+    }
+  },
+  "deploy_feasibility": {
+    "cheapest_path": "GPT-OSS-120B managed ref (already operational) → GLM-4.5-Air-FP8 ephemeral vLLM → Qwen3-Coder-Next-FP8 ephemeral vLLM → MiniMax-M2.1 last",
+    "hub_vllm_listing": "cm8h09d9n000008jvh2rqdsmb",
+    "workers_min": 0,
+    "idle_policy": "delete_endpoint_after_batch",
+    "qwen3_coder_next_fp8_note": "~80GB FP8 fits A100-80GB vLLM hub worker; no dedicated hub listing — use model-reference on vLLM worker",
+    "blocks_canary_run": [
+      "native100 early gate not yet passed",
+      "agent_canary_bench runner not wired (skeleton only)",
+      "budget_gate: no multi-teacher batch until native100 early gate OR <$5 ephemeral probe authorized"
+    ]
+  },
+  "score_axes": [
+    "tool_selection",
+    "arg_validity",
+    "unnecessary_call_rate",
+    "recovery",
+    "steps_to_resolution",
+    "observation_use",
+    "state_fidelity",
+    "verifier_invocation",
+    "abstention",
+    "stop_accuracy",
+    "outcome",
+    "cost"
+  ],
+  "native_agent_head_future": {
+    "actions": ["TOOL_NONE", "READ", "SEARCH", "VERIFY", "QUERY", "ACT", "ABSTAIN", "STOP"],
+    "phase": "P2+",
+    "p1_blocker": false
+  },
+  "task_suite": "data/p1_agent_canary_v1.json",
+  "n_tasks": 48,
+  "vllm_env": {
+    "TOOL_CALL_PARSER": "qwen3_coder",
+    "ENABLE_AUTO_TOOL_CHOICE": "true"
+  },
+  "inference_tools": [
+    "submit_candidate_atoms",
+    "submit_summary",
+    "submit_table"
+  ],
+  "inference_entrypoints": {
+    "structured_json": "nanoscribe/structured_inference.generate_structured_candidates",
+    "tool_calls": "nanoscribe/tool_inference.generate_tool_candidates",
+    "unified_parser": "nanoscribe/capabilities/parser.CapabilityToolParser",
+    "adapter": "nanoscribe/inference/qwen3_coder.Qwen3CoderInferenceAdapter"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "valid_summary_tool",
+  "expected_outcome": "success",
+  "expected_capability": "summarize",
+  "tool_calls": [
+    {
+      "id": "call_sum",
+      "type": "function",
+      "function": {
+        "name": "submit_summary",
+        "arguments": "{\"schema_version\":\"nano.summary.v0\",\"title\":\"Visit summary\",\"sections\":[{\"heading\":\"Symptoms\",\"bullets\":[\"Neck pain\"]}],\"source_atom_ids\":[\"atom-neck\"]}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "patient_id": "synth-001",
+  "evidence_ledger_version": 2,
+  "ledger_hash": "5a00b93290ca95e2",
+  "active_conditions": [
+    "I think this is a viral pharyngitis."
+  ],
+  "current_medications": [
+    "Start ibuprofen 400 mg as needed."
+  ],
+  "laboratory_state": [
+    "Your temperature is 37.1 degrees celsius.",
+    "Start ibuprofen 400 mg as needed."
+  ],
+  "functional_state": [],
+  "uncertainties": [
+    "I have had a sore throat for about three days."
+  ],
+  "conflicts": [],
+  "unresolved_questions": [],
+  "projection_version": "nano-clin-001",
+  "snapshot_id": "state_f0ca609bf9ea55dc"
+}

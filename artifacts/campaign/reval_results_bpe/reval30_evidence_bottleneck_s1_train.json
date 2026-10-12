@@ -1,0 +1,40 @@
+{
+  "run_id": "reval30_evidence_bottleneck_s1",
+  "steps_completed": 1800,
+  "final_loss": 0.1373833864927292,
+  "device": "mps",
+  "checkpoint": "artifacts/native_checkpoints_bpe/reval30_evidence_bottleneck_s1/step_001800.pt",
+  "bits_per_byte": 0.022675401063163108,
+  "integrity": {
+    "attention_leakage": 0.0,
+    "attention_matches_reference": true,
+    "attention_reference_max_abs_diff": 3.5762786865234375e-07,
+    "supervised_target_tokens": 154,
+    "sampled_examples": 16,
+    "prompt_tokens_at_cap": 512,
+    "max_seq": 512,
+    "context_budget": {
+      "rows_checked": 19194,
+      "n_over_budget": 0,
+      "frac_over_budget": 0.0,
+      "median_prompt_plus_target_tokens": 232,
+      "max_prompt_plus_target_tokens": 256,
+      "max_seq": 512,
+      "spans_visible": true,
+      "relies_on_left_truncation": false
+    },
+    "tokenizer": {
+      "name": "bpe",
+      "probe_token_count": 22,
+      "probe_id_sha256_12": "2a4e20fd940b",
+      "roundtrip_lossless": true,
+      "max_id": 1603,
+      "vocab_size": 4098,
+      "requested": "bpe",
+      "request_honoured": true
+    }
+  },
+  "smoke": false,
+  "wall_seconds": 780.8,
+  "surface": "mps:apple_silicon"
+}

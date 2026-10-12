@@ -1,0 +1,1 @@
+IntegrityError: bits-per-byte 0.00092 at step 1800 is below the floor 0.01: that implies 8,657:1 compression on text, and this is below the absolute impossibility bound. The objective is almost certainly readable from its own input. See DEFECT_INDEX D1.1.
