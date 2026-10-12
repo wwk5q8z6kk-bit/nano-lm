@@ -19,7 +19,7 @@ from typing import Any
 
 from nano_ai.contract import FIELD_ORDER, FieldState
 
-DIAGNOSIS_SCHEMA_VERSION = "nano.h6-abstention-diagnosis.v1"
+DIAGNOSIS_SCHEMA_VERSION = "nano.h6-mechanism-diagnosis.v2"
 H6_EVALUATION_SCHEMA_VERSION = "nano.evidence-query-h6-development-evaluation.v1"
 H6_TERMINAL_SCHEMA_VERSION = "nano.h6.terminal-decision.v1"
 CANONICAL_H6_EVALUATION_SHA256 = (
@@ -33,6 +33,14 @@ ERROR_AXES = (
     "state_only_error",
     "binding_only_error",
     "combined_error",
+)
+SPAN_RELATIONS = (
+    "raw_contains_gold",
+    "gold_contains_raw",
+    "partial_overlap",
+    "disjoint",
+    "speaker_mismatch",
+    "count_mismatch",
 )
 _VALID_STATES = frozenset(state.value for state in FieldState)
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
@@ -92,6 +100,77 @@ def _classify_field(field: Mapping[str, Any], *, role: str) -> str:
     if state_correct and not span_exact:
         return "binding_only_error"
     return "combined_error"
+
+
+def _validated_spans(value: object, *, role: str) -> tuple[Mapping[str, Any], ...]:
+    if not isinstance(value, list):
+        raise H6DiagnosisError(f"{role} must be an array")
+    validated: list[Mapping[str, Any]] = []
+    for index, item in enumerate(value):
+        span = _require_mapping(item, role=f"{role}[{index}]")
+        start = span.get("start")
+        end = span.get("end")
+        text = span.get("text")
+        speaker = span.get("speaker")
+        if (
+            isinstance(start, bool)
+            or not isinstance(start, int)
+            or isinstance(end, bool)
+            or not isinstance(end, int)
+            or start < 0
+            or end <= start
+            or not isinstance(text, str)
+            or not text
+            or not isinstance(speaker, str)
+            or not speaker
+        ):
+            raise H6DiagnosisError(f"{role}[{index}] is not a valid evidence span")
+        validated.append(span)
+    return tuple(validated)
+
+
+def _paired_span_relation(raw: Mapping[str, Any], gold: Mapping[str, Any]) -> str:
+    if raw == gold:
+        return "exact"
+    if raw["speaker"] != gold["speaker"]:
+        return "speaker_mismatch"
+    if raw["start"] <= gold["start"] and raw["end"] >= gold["end"]:
+        return "raw_contains_gold"
+    if gold["start"] <= raw["start"] and gold["end"] >= raw["end"]:
+        return "gold_contains_raw"
+    if max(raw["start"], gold["start"]) < min(raw["end"], gold["end"]):
+        return "partial_overlap"
+    return "disjoint"
+
+
+def _span_identity(span: Mapping[str, Any]) -> tuple[int, int, str, str]:
+    return (span["start"], span["end"], span["text"], span["speaker"])
+
+
+def _span_relation(field: Mapping[str, Any], *, role: str) -> str | None:
+    """Classify one non-exact field without repairing or rescoring it.
+
+    Multiple gold spans are ordered by the frozen evaluator.  When cardinality
+    matches, the same positional pairing therefore preserves its semantics.
+    Mixed signatures stay explicit instead of being collapsed into a favorable
+    bucket.
+    """
+
+    raw = _validated_spans(field.get("raw_spans"), role=f"{role}.raw_spans")
+    gold = _validated_spans(field.get("gold_spans"), role=f"{role}.gold_spans")
+    raw = tuple(sorted(raw, key=_span_identity))
+    gold = tuple(sorted(gold, key=_span_identity))
+    if tuple(map(_span_identity, raw)) == tuple(map(_span_identity, gold)):
+        return None
+    if len(raw) != len(gold):
+        return "count_mismatch"
+    relations = tuple(
+        _paired_span_relation(raw_span, gold_span)
+        for raw_span, gold_span in zip(raw, gold, strict=True)
+    )
+    if len(set(relations)) == 1:
+        return relations[0]
+    return "mixed:" + "+".join(sorted(set(relations)))
 
 
 def _summary(counter: Counter[str]) -> dict[str, Any]:
@@ -155,6 +234,9 @@ def diagnose_h6(
     by_gold_state: defaultdict[str, Counter[str]] = defaultdict(Counter)
     by_field: defaultdict[str, Counter[str]] = defaultdict(Counter)
     raw_state_counts: defaultdict[str, Counter[str]] = defaultdict(Counter)
+    span_relations: Counter[str] = Counter()
+    span_relations_by_field: defaultdict[str, Counter[str]] = defaultdict(Counter)
+    span_relations_by_gold_state: defaultdict[str, Counter[str]] = defaultdict(Counter)
 
     expected_fields = set(FIELD_ORDER)
     for row_index, row_value in enumerate(diagnostics):
@@ -183,6 +265,15 @@ def diagnose_h6(
             by_gold_state[str(gold_state)][axis] += 1
             by_field[str(field_name)][axis] += 1
             raw_state_counts[str(gold_state)][str(raw_state)] += 1
+            relation = _span_relation(field, role=role)
+            if relation is not None:
+                if axis not in {"binding_only_error", "combined_error"}:
+                    raise H6DiagnosisError(
+                        f"{role} has a span mismatch outside a binding error axis"
+                    )
+                span_relations[relation] += 1
+                span_relations_by_field[str(field_name)][relation] += 1
+                span_relations_by_gold_state[str(gold_state)][relation] += 1
 
     expected_field_total = len(diagnostics) * len(FIELD_ORDER)
     if sum(overall.values()) != expected_field_total:
@@ -223,6 +314,21 @@ def diagnose_h6(
         "by_gold_state": gold_state_report,
         "by_field": {
             field_name: _summary(by_field[field_name]) for field_name in FIELD_ORDER
+        },
+        "binding_shape": {
+            "span_error_fields": sum(span_relations.values()),
+            "relations": dict(sorted(span_relations.items())),
+            "by_field": {
+                field_name: dict(sorted(span_relations_by_field[field_name].items()))
+                for field_name in FIELD_ORDER
+            },
+            "by_gold_state": {
+                state: dict(sorted(span_relations_by_gold_state[state].items()))
+                for state in sorted(_VALID_STATES)
+            },
+            "interpretation": (
+                "descriptive_post_hoc_only; exact H6 evaluation remains terminal"
+            ),
         },
         "scientific_boundary": {
             "raw_error_attribution_available": True,

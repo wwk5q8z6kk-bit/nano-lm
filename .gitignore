@@ -47,6 +47,9 @@ papers/latex/*.blg
 !benchmarks/fixtures/transcripts/*.jsonl
 !benchmarks/v1_1/fixtures/synthetic/*.jsonl
 
+# Preregistered synthetic evaluation instruments (small, immutable, hash-pinned).
+!artifacts/nano_h7/screen-v1/screen.jsonl
+
 
 # Benchmark lab generated runs (Program 0+)
 experiments/**/runs/
