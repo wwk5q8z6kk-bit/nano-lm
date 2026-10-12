@@ -50,6 +50,9 @@ papers/latex/*.blg
 # Preregistered synthetic evaluation instruments (small, immutable, hash-pinned).
 !artifacts/nano_h7/screen-v1/screen.jsonl
 
+# Local, reproducible H7 execution bundles (large; source and hashes are tracked).
+artifacts/nano_h7/execution-package-*/
+
 
 # Benchmark lab generated runs (Program 0+)
 experiments/**/runs/
