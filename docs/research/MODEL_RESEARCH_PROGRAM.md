@@ -26,7 +26,7 @@ deployment venue. See [ACTIVE_NOW.md](../ACTIVE_NOW.md) and
 
 ## Integration status (this tree)
 
-Base branch: `origin/master` @ `1d4fca6`. Paths below reflect **what exists in this checkout**.
+Base branch: `origin/master` @ `c778520`. Paths below reflect **what exists in this checkout**.
 
 | Component | State | Canonical location (this tree) |
 |-----------|-------|--------------------------------|
@@ -34,7 +34,7 @@ Base branch: `origin/master` @ `1d4fca6`. Paths below reflect **what exists in t
 | Fabric verification | **integrated** | `fabric/` |
 | Wedge v1 | **integrated** | `wedge_v1/` |
 | Nano AI through H6 | **integrated** | `nano_ai/`, `artifacts/nano_h6/` |
-| H7-BM boundary-margin screen | **screen frozen / local preflight** | `research/hypotheses/H7_BOUNDARY_MARGIN.md`, `nano_ai/training/boundary_margin.py`, `artifacts/nano_h7/screen-v1/` |
+| H7-BM boundary-margin screen | **trainer locally verified / execution package next** | `research/hypotheses/H7_BOUNDARY_MARGIN.md`, `nano_ai/training/boundary_margin.py`, `nano_ai/training/train_evidence_query_h7.py`, `artifacts/nano_h7/screen-v1/` |
 | Span-port / register work | **not yet integrated** | cross-branch — source branch + commit |
 | Measurement-integrity reconciliation | **not yet integrated** | cross-branch — commit `9fe5b6b6` (evaluate separately) |
 

@@ -1,7 +1,7 @@
 # Active Now
 
 **Updated:** 2026-10-12
-**Integration base:** `origin/master` @ `1d4fca6` (PR #113 — H6 mechanism diagnosis)
+**Integration base:** `origin/master` @ `c778520` (PR #114 — H7 preregistration and frozen screen)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -9,7 +9,7 @@
 |-------|-------|
 | `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `P1_H7_BOUNDARY_MARGIN_LOCAL_PREFLIGHT` |
+| `current_gate` | `P1_H7_EXECUTION_PACKAGE_PREFLIGHT` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
 | `training_backend` | `KAGGLE_AND_RUNPOD` |
 | `training_status` | `ACTIVE` |
@@ -84,12 +84,22 @@ The manifest proves zero exact-transcript, normalized line-component, and open
 value overlap (excluding the fixed severity vocabulary) against legacy
 train/dev and H4 fit/calibration, which are the source families replayed by
 H5/H6. It contains no PHI or private material. The screen remains unopened by
-either model arm; the next step is the unchanged-H6 training/control package.
+either model arm.
+
+The dedicated H7 trainer is now implemented and locally verified. It imports
+the authenticated H6 recipe, preserves H6's model, data identities, optimizer,
+schedule, exposure, seeds, calibration, and selection rules, and adds only the
+preregistered boundary-margin treatment (margin 1.0, radius 2, weight 0.25).
+The frozen H6 trainer remains untouched. The next step is a portable execution
+package containing the authenticated H5 inputs plus independent control and
+treatment scoring. The local checkout currently has the exact H5 fit and
+calibration bytes but lacks their authenticated manifest; that manifest must be
+restored byte-for-byte rather than regenerated before an end-to-end run.
 
 ## Current gate sequence
 
 ```text
-P1 — integrate H7-BM into the unchanged-H6 training/control package
+P1 — package authenticated H5 inputs + H7 treatment/control scoring
         ↓
 CHEAPEST VALID TWO-SEED MECHANISM SCREEN (Kaggle first)
         ↓

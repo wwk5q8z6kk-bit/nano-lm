@@ -70,31 +70,45 @@ def local_boundary_margin_loss(
     if bool(torch.any(active_targets < 0) or torch.any(active_targets >= token_count)):
         raise ValueError("active boundary targets are out of bounds")
 
-    terms_by_slot: list[list[Tensor]] = [[] for _ in range(slot_count)]
-    active_indices = active_mask.nonzero(as_tuple=False)
-    for batch_index, field_index, slot_index in active_indices.tolist():
-        target = int(targets[batch_index, field_index, slot_index].item())
-        if not bool(valid_token_mask[batch_index, target]):
-            raise ValueError("active boundary target is outside the valid token mask")
-        gold_logit = logits[batch_index, target, field_index, slot_index]
-        lower = max(0, target - radius)
-        upper = min(token_count, target + radius + 1)
-        for neighbor in range(lower, upper):
-            if neighbor == target or not bool(valid_token_mask[batch_index, neighbor]):
-                continue
-            neighbor_logit = logits[batch_index, neighbor, field_index, slot_index]
-            terms_by_slot[slot_index].append(
-                torch_functional.relu(
-                    logits.new_tensor(float(margin)) - (gold_logit - neighbor_logit)
-                )
-            )
+    position_logits = logits.permute(0, 2, 3, 1)
+    safe_targets = targets.clamp(0, token_count - 1)
+    gold_valid = valid_token_mask.gather(
+        1, safe_targets.reshape(batch_size, -1)
+    ).reshape_as(targets)
+    if bool(torch.any(active_mask & ~gold_valid)):
+        raise ValueError("active boundary target is outside the valid token mask")
+    gold_logits = position_logits.gather(-1, safe_targets.unsqueeze(-1)).squeeze(-1)
 
-    slot_losses = [torch.stack(terms).mean() for terms in terms_by_slot if terms]
-    comparisons = sum(len(terms) for terms in terms_by_slot)
-    if not slot_losses:
+    loss_sums = logits.new_zeros(slot_count)
+    comparison_counts = torch.zeros(
+        slot_count, dtype=torch.long, device=logits.device
+    )
+    margin_tensor = logits.new_tensor(float(margin))
+    for offset in range(-radius, radius + 1):
+        if offset == 0:
+            continue
+        neighbor_targets = targets + offset
+        in_bounds = (neighbor_targets >= 0) & (neighbor_targets < token_count)
+        safe_neighbors = neighbor_targets.clamp(0, token_count - 1)
+        neighbor_valid = valid_token_mask.gather(
+            1, safe_neighbors.reshape(batch_size, -1)
+        ).reshape_as(targets)
+        comparisons_mask = active_mask & in_bounds & neighbor_valid
+        neighbor_logits = position_logits.gather(
+            -1, safe_neighbors.unsqueeze(-1)
+        ).squeeze(-1)
+        terms = torch_functional.relu(
+            margin_tensor - (gold_logits - neighbor_logits)
+        )
+        loss_sums = loss_sums + (terms * comparisons_mask).sum(dim=(0, 1))
+        comparison_counts = comparison_counts + comparisons_mask.sum(dim=(0, 1))
+
+    populated_slots = comparison_counts > 0
+    comparisons = int(comparison_counts.sum().item())
+    if not bool(torch.any(populated_slots)):
         raise ValueError("boundary margin found no valid local negative")
     return BoundaryMarginLoss(
-        loss=torch.stack(slot_losses).mean(),
+        loss=(loss_sums[populated_slots] / comparison_counts[populated_slots]).mean(),
         comparisons=comparisons,
     )
 
