@@ -7,6 +7,7 @@
 from nanoscribe.campaign.ledger import (  # noqa: E402,F401
     CampaignLedger,
     DEFAULT_LEDGER,
+    NORMAL_ENVELOPE_USD,
 )
 
-__all__ = ["CampaignLedger", "DEFAULT_LEDGER"]
+__all__ = ["CampaignLedger", "DEFAULT_LEDGER", "NORMAL_ENVELOPE_USD"]
