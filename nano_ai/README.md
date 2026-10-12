@@ -46,10 +46,11 @@ verifier reduced false-presented fields to zero, but native abstention remained
 zero. This is a one-run synthetic, closed-world, generator-matched engineering
 benchmark—not clinical evidence or an open-world generalization result.
 
-Three bounded native-output interventions have now been evaluated and rejected
-on the synthetic development family. H1's generative state/span grammar became the
-frozen baseline for H2. H2 replaced autoregressive value generation with direct
-state and pointer heads and evaluated two seeds across three epochs each. The
+Six bounded native-output interventions (H1–H6) have now been evaluated and
+rejected on the synthetic development family. H1's generative state/span
+grammar became the frozen baseline for H2. H2 replaced autoregressive value
+generation with direct state and pointer heads and evaluated two seeds across
+three epochs each. The
 best H2 checkpoint reached 61.82% raw overall, 64.75% held-value, and 88.40%
 missing-target accuracy with no decode failures, but reached only 0% absence,
 24.80% conflict, and 21.60% uncertain accuracy and produced 1,707 raw
@@ -78,10 +79,22 @@ with a broader, leakage-audited version. The training-only winner scored
 including 1,136/2,987 held values, 33/413 absence cases, and 2,141
 wrong-presented fields. It regressed from H3 on every gated semantic category.
 H4 therefore failed uncalibrated admission and stopped before threshold,
-verifier, latency, and `fresh-v1`, as required. This rejects the exact H4
-data-only repair; the next work is row-level mechanism localization, not model
-scaling. An independent later test is still required for any generalization
-claim.
+verifier, latency, and `fresh-v1`, as required. H5 and H6 continued the bounded
+lineage; the terminal H6 decision is preserved at
+[`artifacts/nano_h6/H6_TERMINAL_DECISION.json`](../artifacts/nano_h6/H6_TERMINAL_DECISION.json).
+H6 passed overall (3,901/5,000), held-value (2,277/2,987), missing-target
+(250/250), failure, and state-balance gates, but failed absence (199/413),
+conflict (143/250), and uncertainty (190/250). It stopped before threshold,
+verifier, latency, and sealed confirmation.
+
+The authenticated row-level diagnosis separates the mechanisms behind that
+decision. Of 1,099 incorrect fields, 241 were state-only errors, 771 were
+binding-only errors, and 87 combined both. Absence and uncertainty errors were
+mostly state-selection failures, while supported-field errors were almost
+entirely exact-span binding failures. Conflict was split between binding-only
+and combined failures. This makes the next task a bounded intervention against
+one mechanism—not model scaling and not another H6 run. An independent later
+test is still required for any generalization claim.
 
 The packaged smoke suite is an engineering conformance check, not evidence that
 Nano is generally capable. Malformed model output, invalid diagnostics,
@@ -92,4 +105,10 @@ Run the conformance suite with:
 
 ```bash
 python3 -m pytest -q nano_ai/tests
+```
+
+Reproduce the H6 decomposition without loading the model or rerunning H6:
+
+```bash
+python3 -m nano_ai.training.diagnose_h6
 ```
