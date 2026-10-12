@@ -9,28 +9,37 @@ Original Nano
 → trained from scratch locally on Apple Silicon
 
 Current Nano research
-→ local development + RunPod GPU training
+→ local development + Kaggle free GPU + RunPod exact-runtime compute
 
 Future deployment
 → chosen independently from training infrastructure
 ```
 
-**RunPod** is Nano's active primary GPU training/adaptation/CUDA backend. Routine RunPod training is **ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require experiment-scoped authorization; confirmatory evidential runs require prereg plus experiment-scoped authorization. Local zero-cost exploratory training on Apple Silicon/CPU is **ALLOWED**. Training on RunPod does **not** imply Nano must deploy in the cloud — compact/local/private deployment remains a long-term optimization axis. See [ACTIVE_NOW.md](../ACTIVE_NOW.md) and [infrastructure/RUNPOD.md](../infrastructure/RUNPOD.md).
+Kaggle and RunPod are complementary active backends. Use Kaggle when its free
+runtime fits; use RunPod for exact GPU/runtime requirements, persistent storage,
+or managed inference. Routine RunPod training is
+**ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require
+experiment-scoped authorization; confirmatory evidential runs require prereg
+plus experiment-scoped authorization. Training venue does not determine
+deployment venue. See [ACTIVE_NOW.md](../ACTIVE_NOW.md) and
+[infrastructure/RUNPOD.md](../infrastructure/RUNPOD.md).
 
 ## Integration status (this tree)
 
-Base branch: `origin/master` @ `2ad06d2`. Paths below reflect **what exists in this checkout**.
+Base branch: `origin/master` @ `e7c51fe`. Paths below reflect **what exists in this checkout**.
 
 | Component | State | Canonical location (this tree) |
 |-----------|-------|--------------------------------|
 | Original 3.15M stack | **integrated** | `pretrain/`, `sft/`, `scribe/` |
 | Fabric verification | **integrated** | `fabric/` |
 | Wedge v1 | **integrated** | `wedge_v1/` |
-| Nano AI / H6 transfer | **not yet integrated** | cross-branch — e.g. `cursor/span-port-route-b-182e` |
+| Nano AI through H6 | **integrated** | `nano_ai/`, `artifacts/nano_h6/` |
 | Span-port / register work | **not yet integrated** | cross-branch — source branch + commit |
 | Measurement-integrity reconciliation | **not yet integrated** | cross-branch — commit `9fe5b6b6` (evaluate separately) |
 
-Until selectively ported, **do not** treat `artifacts/nano_h6/` or `nano_ai/` as present locally. Canonical docs may reference them only as **cross-branch research lineage**.
+H6 is terminal and rejected. Its exact result is authoritative for that
+experiment; it is not permission to rerun the one-shot evaluation. Span-port,
+P4, and CUAD work remain cross-branch until separately reviewed.
 
 ---
 
@@ -46,7 +55,9 @@ Until selectively ported, **do not** treat `artifacts/nano_h6/` or `nano_ai/` as
 
 **Scale:** efficient pretrained / adapted / distilled
 
-**Cross-branch lineage:** H6 transfer, span-port, register experiments — **not yet integrated** in this tree (`artifacts/nano_h6/`, `nano_ai/` when ported)
+**Integrated lineage:** `nano_ai/` through the frozen H6 decision. **Cross-branch
+lineage:** later span-port/register experiments, which are not current program
+authority.
 
 ## C — Teacher / reference models
 

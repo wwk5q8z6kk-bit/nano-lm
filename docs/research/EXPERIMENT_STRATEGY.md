@@ -27,9 +27,13 @@ E1 closed the **old closed task**. New generative experiments require:
 2. Frozen utility for that regime
 3. Kill gate result — E4 executed this for R★ v1 (KILL)
 
-## Compute / RunPod
+## Compute backends
 
-**RunPod is Nano’s primary GPU training and experimental-compute backend** (active). Local Apple Silicon/CPU covers development, smoke tests, analysis, preprocessing, evaluation, and small/cheap experiments.
+Kaggle and RunPod are complementary active backends. Local Apple Silicon/CPU
+covers development, smoke tests, analysis, preprocessing, evaluation, and
+small/cheap experiments. Prefer free Kaggle when its runtime fits. Use RunPod
+when the experiment needs an exact GPU/runtime, persistence, or managed
+inference.
 
 ```text
 research question
@@ -37,7 +41,7 @@ research question
 → preregistration when evidential
 → dataset + model manifest
 → local preflight
-→ RunPod environment
+→ cheapest valid backend environment
 → training / adaptation
 → checkpoints
 → evaluation

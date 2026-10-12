@@ -32,7 +32,7 @@ INTELLIGENCE EXPANSION — P4–P9 (synthesis → reasoning → planning → act
 
 `papers/` = **science**. `docs/` = **current program truth** (must not contradict tagged evidence).
 
-## Product naming (medical DomainPack)
+## Capability naming (medical DomainPack)
 
 ```text
 Nano Core + Medical DomainPack + P1  =  NanoScribe
@@ -53,7 +53,7 @@ P4–P9  =  broader synthesis, reasoning, planning, action, adaptation
 | Paper α | Open-vocabulary held-out copying failure localized |
 | E1 | Classical won on **old closed-task** utility (not program kill) |
 | E4 | Classical won on **tested R★** |
-| H6 / span-port lineage | Pretraining/transfer research exists — **cross-branch, not yet integrated** in this tree |
+| H6 | One-shot development evaluation **REJECTED** the exact coupling: copying passed, abstention calibration failed |
 
 ## Repository map
 
@@ -63,15 +63,20 @@ P4–P9  =  broader synthesis, reasoning, planning, action, adaptation
 | `papers/` | Science and evidence |
 | `trajectory/` | Experimental records |
 | `pretrain/`, `sft/`, `scribe/` | Mechanism / training (integrated) |
+| `nano_ai/` | Learned Nano transcript-to-structure research through frozen H6 (integrated) |
+| `nano/` | Domain-general contracts, evidence, state, retrieval, and runtime (integrated) |
+| `nanoscribe/` | P1 encounter proposal, constrained evidence binding, and evaluation |
+| `artifacts/nano_h6/` | H6 terminal decision and authenticated evaluation output |
 | `fabric/` | Verification harness (integrated) |
 | `wedge_v1/` | Verified document intelligence (integrated) |
 | `frontier/` | Branch notes only |
 
-## Current program status — 2026-08-22
+## Current program status — 2026-10-12
 
 - **Frontier:** P1 Master Scribing — [`docs/ACTIVE_NOW.md`](docs/ACTIVE_NOW.md)
-- **Doc reset:** `docs/canonical-program-reset-v2` from `origin/master` @ `2ad06d2` (excludes `9fe5b6b6` evidence reconciliation)
-- **Compute:** RunPod = active primary GPU training backend (`training_status=ACTIVE`); routine RunPod training **ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**; materially costly runs **EXPERIMENT_SCOPED**; confirmatory evidential runs **PREREG + EXPERIMENT_SCOPED**
+- **Empirical boundary:** H6 is terminal and rejected; do not rerun or relabel its one-shot evaluation
+- **Current diagnosis:** copying passed while absence/conflict/uncertainty failed; localize abstention calibration before another architecture
+- **Compute:** use Kaggle when its free runtime fits; use RunPod for exact runtime, persistence, or managed inference
 - **Data:** no PHI / private owner material in current Nano experiments
 
 ### Compute evolution
@@ -81,7 +86,7 @@ Original Nano
 → trained from scratch locally on Apple Silicon
 
 Current Nano research
-→ local development + RunPod GPU training
+→ local development + Kaggle free GPU + RunPod exact-runtime compute
 
 Future deployment
 → chosen independently from training infrastructure

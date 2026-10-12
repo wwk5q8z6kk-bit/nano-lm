@@ -1,7 +1,7 @@
 # Active Now
 
-**Updated:** 2026-08-22  
-**Integration base:** `origin/master` @ `c4822b9` (PR #41 — Qwen inference + three-track harness)
+**Updated:** 2026-10-12
+**Integration base:** `origin/master` @ `e7c51fe` (PR #111 — integrated operating-state reconciliation)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -9,9 +9,9 @@
 |-------|-------|
 | `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `P1_ENCOUNTER_REPRESENTATION_AND_EVIDENCE_TRANSPORT` |
+| `current_gate` | `P1_ABSTENTION_CALIBRATION_DIAGNOSIS` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
-| `training_backend` | `RUNPOD` |
+| `training_backend` | `KAGGLE_AND_RUNPOD` |
 | `training_status` | `ACTIVE` |
 | `local_zero_cost_exploratory_training` | `ALLOWED` |
 | `routine_runpod_training` | `ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET` |
@@ -24,8 +24,12 @@
 ## COMPUTE_POSTURE
 
 ```text
-training_backend = RUNPOD
+training_backend = KAGGLE_AND_RUNPOD
 training_status = ACTIVE
+
+backend_policy =
+KAGGLE_FREE_WHEN_RUNTIME_FITS;
+RUNPOD_FOR_EXACT_GPU_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE
 
 routine_runpod_training =
 ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET
@@ -39,17 +43,31 @@ PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION
 phi_or_private_data =
 NOT_AUTHORIZED
 
-Local Apple Silicon / CPU remains available for cheap
-mechanism experiments, development, preprocessing,
-evaluation, and other zero-cost exploratory work.
+Local Apple Silicon / CPU remains available for cheap mechanism experiments,
+development, preprocessing, evaluation, and other zero-cost exploratory work.
 ```
 
-The distinction is **cost / risk / evidential significance**, not “free local versus paid cloud.” RunPod is the active primary GPU training backend. Routine training on that backend is in-workflow within the active experiment budget. A new materially costly run still needs experiment-scoped authorization. A confirmatory evidential run needs prereg plus experiment-scoped authorization.
+Choose the cheapest backend that satisfies the experiment. Kaggle is preferred
+when its free runtime fits. RunPod is used for exact GPU/runtime requirements,
+persistent volumes, or managed inference. A new materially costly run still
+needs experiment-scoped authorization. A confirmatory evidential run needs
+preregistration plus experiment-scoped authorization.
+
+## Current empirical boundary
+
+H6 is complete and **REJECTED**. The one-shot known-development evaluation was
+consumed on Kaggle and is recorded in
+[`artifacts/nano_h6/H6_TERMINAL_DECISION.json`](../artifacts/nano_h6/H6_TERMINAL_DECISION.json).
+The selected checkpoint passed overall, held-value, missing-target, failure,
+and state-balance gates, but failed absence, conflict, and uncertainty gates.
+The exact H6 coupling must not be rerun or silently renamed. The next task is
+row-level diagnosis of abstention calibration before proposing another learned
+architecture.
 
 ## Current gate sequence
 
 ```text
-P1 — encounter representation + span/evidence transport
+P1 — abstention-calibration diagnosis over grounded evidence
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓
@@ -62,7 +80,7 @@ P1 MASTERY DECISION
 
 | Class | Policy |
 |-------|--------|
-| Training backend | **RUNPOD** (active primary GPU training / adaptation / CUDA experiments) |
+| Training backends | **Kaggle + RunPod** selected by runtime fit and cost |
 | Training status | **ACTIVE** |
 | Local Apple Silicon / CPU | **ALLOWED** — development, smoke, analysis, preprocessing, evaluation, small/cheap experiments |
 | Routine RunPod training | **ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET** |
@@ -70,7 +88,7 @@ P1 MASTERY DECISION
 | Confirmatory / evidential run | **PREREG + EXPERIMENT_SCOPED_AUTHORIZATION** |
 | PHI / private owner material | **NOT_AUTHORIZED** |
 
-Do not describe RunPod as a future or optional backend, and do not treat every paid GPU job as automatically owner-gated.
+Do not treat RunPod as the only backend, and do not treat every paid GPU job as automatically owner-gated.
 
 ## Owner gates (standing)
 

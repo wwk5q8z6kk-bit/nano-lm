@@ -1,0 +1,19 @@
+{
+  "id": "hassaneljesr/nano-h6-eval-oneshot",
+  "title": "nano-h6-eval-oneshot",
+  "code_file": "nano_h6_eval_kaggle.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "hassaneljesr/nano-h6-frozen-input",
+    "hassaneljesr/nano-h6-dev-sealed"
+  ],
+  "kernel_sources": [
+    "hassaneljesr/nano-h6-train-disclosed"
+  ],
+  "competition_sources": [],
+  "model_sources": []
+}
