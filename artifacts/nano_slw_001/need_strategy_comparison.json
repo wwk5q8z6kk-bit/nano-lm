@@ -1,0 +1,50 @@
+{
+  "seeds": [
+    20260823,
+    20260824,
+    20260825,
+    20260826,
+    20260827,
+    20260828,
+    20260829,
+    20260830,
+    20260831,
+    20260832
+  ],
+  "budget": "0.25",
+  "mean_precision": {
+    "arbitrary": 0.29860098164951554,
+    "kind": 0.961553911205074,
+    "kind_scarcity": 0.9570544167662469,
+    "kind_scarcity_age": 0.9300706107733407
+  },
+  "steps": {
+    "kind - arbitrary": {
+      "n": 10,
+      "mean_delta": 0.6629529295555584,
+      "sd": 0.06767916206844252,
+      "ci_low": 0.6145415371825479,
+      "ci_high": 0.7113643219285689,
+      "distinguishable": true
+    },
+    "kind_scarcity - kind": {
+      "n": 10,
+      "mean_delta": -0.0044994944388270786,
+      "sd": 0.02963886813810362,
+      "ci_low": -0.025700390417335364,
+      "ci_high": 0.016701401539681207,
+      "distinguishable": false
+    },
+    "kind_scarcity_age - kind_scarcity": {
+      "n": 10,
+      "mean_delta": -0.026983805992906097,
+      "sd": 0.03177787651808869,
+      "ci_low": -0.04971475008087375,
+      "ci_high": -0.004252861904938447,
+      "distinguishable": true
+    }
+  },
+  "simplest_justified_strategy": "kind",
+  "current_default": "kind",
+  "default_is_justified": true
+}

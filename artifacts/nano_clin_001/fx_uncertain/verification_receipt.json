@@ -1,0 +1,44 @@
+{
+  "artifact_id": "art_787859426df80c55",
+  "claim_results": [
+    {
+      "text": "Patient-reported: I stopped the metoprolol a while back, maybe around 2021. [time approximate as stated]",
+      "evidence_span_ids": [
+        "ev_923668d1687d6231"
+      ],
+      "epistemic_status": "patient_reported",
+      "supported": true
+    },
+    {
+      "text": "Documented: Do you recall why?",
+      "evidence_span_ids": [
+        "ev_132c43f23eefd06d"
+      ],
+      "epistemic_status": "direct_documentation",
+      "supported": true
+    },
+    {
+      "text": "Patient denies: I do not remember.",
+      "evidence_span_ids": [
+        "ev_cbaeea91c08d7dfd"
+      ],
+      "epistemic_status": "patient_reported",
+      "supported": true
+    },
+    {
+      "text": "NOT FOUND IN RECORD (not equivalent to absent): I do not see a colonoscopy in your record.",
+      "evidence_span_ids": [],
+      "epistemic_status": "not_found",
+      "supported": true
+    },
+    {
+      "text": "NOT FOUND IN RECORD (not equivalent to absent): You had no adverse reaction documented to penicillin.",
+      "evidence_span_ids": [],
+      "epistemic_status": "not_found",
+      "supported": true
+    }
+  ],
+  "coverage_status": "complete",
+  "verifier_version": "nano-clin-001",
+  "receipt_id": "vrfy_370c14061a9551fd"
+}
