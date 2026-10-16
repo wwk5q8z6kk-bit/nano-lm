@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 import unicodedata
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
@@ -633,6 +633,9 @@ class EncounterRecord:
     conflicts: tuple[Conflict, ...] = ()
     unresolved: tuple[UnresolvedItem, ...] = ()
     schema_version: str = SCHEMA_VERSION
+    _source_index: dict[str, Source] = field(init=False, repr=False, compare=False)
+    _evidence_index: dict[str, EvidenceSpan] = field(init=False, repr=False, compare=False)
+    _atom_index: dict[str, ClinicalAtom] = field(init=False, repr=False, compare=False)
 
     def __post_init__(self) -> None:
         _require_nonempty_string(self.encounter_id, "$.encounter_id")
@@ -649,25 +652,28 @@ class EncounterRecord:
         object.__setattr__(
             self, "unresolved", _require_typed_tuple(self.unresolved, UnresolvedItem, "$.unresolved")
         )
+        object.__setattr__(self, "_source_index", {item.source_id: item for item in self.sources})
+        object.__setattr__(self, "_evidence_index", {item.evidence_id: item for item in self.evidence})
+        object.__setattr__(self, "_atom_index", {item.atom_id: item for item in self.atoms})
         self.validate()
 
     def source(self, source_id: str) -> Source:
-        for item in self.sources:
-            if item.source_id == source_id:
-                return item
-        _fail("unknown_source", f"unknown source_id: {source_id}", "$.sources")
+        try:
+            return self._source_index[source_id]
+        except KeyError:
+            _fail("unknown_source", f"unknown source_id: {source_id}", "$.sources")
 
     def span(self, evidence_id: str) -> EvidenceSpan:
-        for item in self.evidence:
-            if item.evidence_id == evidence_id:
-                return item
-        _fail("unknown_evidence", f"unknown evidence_id: {evidence_id}", "$.evidence")
+        try:
+            return self._evidence_index[evidence_id]
+        except KeyError:
+            _fail("unknown_evidence", f"unknown evidence_id: {evidence_id}", "$.evidence")
 
     def atom(self, atom_id: str) -> ClinicalAtom:
-        for item in self.atoms:
-            if item.atom_id == atom_id:
-                return item
-        _fail("unknown_atom", f"unknown atom_id: {atom_id}", "$.atoms")
+        try:
+            return self._atom_index[atom_id]
+        except KeyError:
+            _fail("unknown_atom", f"unknown atom_id: {atom_id}", "$.atoms")
 
     def validate(self) -> None:
         self._validate_unique_ids()
