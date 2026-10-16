@@ -332,7 +332,7 @@ def _classify_construction(error: EncounterError) -> tuple[bool, bool]:
         return True, True
     if error.code in _INVALID_SPAN_CODES:
         return True, True
-    return True, error.code in {"unknown_evidence", "duplicate_id"}
+    return True, error.code in {"unknown_evidence", "duplicate_id", "type_error", "missing_field"}
 
 
 def _extra_prediction_result(
