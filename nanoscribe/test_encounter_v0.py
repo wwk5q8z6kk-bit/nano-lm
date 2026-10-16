@@ -10,6 +10,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from nanoscribe.encounter import (
+    normalize_value,
     SCHEMA_VERSION,
     AssertionState,
     AtomType,
@@ -692,6 +693,29 @@ def test_clinician_evidence_is_allowed() -> None:
     assert span.speaker is Speaker.CLINICIAN
     assert source.text[span.start : span.end] == "cervical strain"
 
+
+
+
+def test_normalize_value() -> None:
+    # Unicode NFKC normalization and casefolding
+    assert normalize_value("ﬁsh") == "fish"
+
+    # Whitespace collapsing and surrounding punctuation removal
+    assert normalize_value("  The    Quick.,  Brown   ") == "quick., brown"
+    assert normalize_value("  A   \t   Patient.  ") == "patient"
+    assert normalize_value("!!??..") == ""
+    assert normalize_value("  ") == ""
+
+    # Article stripping
+    assert normalize_value("The patient") == "patient"
+    assert normalize_value("a apple") == "apple"
+    assert normalize_value("an apple") == "apple"
+    assert normalize_value("theology") == "theology"
+    assert normalize_value("the     theology") == "theology"
+
+    # Punctuation removal combined with article stripping
+    assert normalize_value(".,the ,.,. quick brown;") == "quick brown"
+    assert normalize_value("the.,;") == "the"
 
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
