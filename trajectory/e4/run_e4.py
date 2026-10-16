@@ -20,8 +20,7 @@ TRAJ = REPO / "trajectory"
 M_ASSIGN = RECIPE["M_rubric_preassigned"]
 
 
-def main():
-    # Preconditions
+def check_preconditions():
     probe = json.loads((TRAJ / "results_e4_classical_probe.json").read_text())
     if not probe.get("in_Rstar"):
         raise SystemExit("VOID: classical probe in_Rstar=false")
@@ -29,21 +28,8 @@ def main():
     if not world.get("world_frozen"):
         raise SystemExit("VOID: world not frozen")
 
-    eval_items = json.loads((DATA / "rstar_eval.json").read_text())
-    print(f"eval n={len(eval_items)} venue_gref loading...", flush=True)
-    gref = make_gref_predict()
 
-    methods = {
-        "C-M1": (predict_c_m1, COST_C["C-M1"], M_ASSIGN["C-M1"]),
-        "C-M2": (predict_c_m2, COST_C["C-M2"], M_ASSIGN["C-M2"]),
-        "C-M4": (predict_c_m4, COST_C["C-M4"], M_ASSIGN["C-M4"]),
-        "G-ref": (gref, COST_C["G-ref"], M_ASSIGN["G-ref|verify-on"]),
-    }
-
-    # C: pre-assigned relative compute indices (E1-continuity O(1) scale), frozen in
-    # methods.COST_C before scoring. Raw wall-clock ratios are diagnostics only —
-    # using raw ratio (~1e4) as C would silently change U semantics vs E1 κ=0.05.
-    sample = eval_items[:20]
+def measure_latencies(sample, gref):
     def mean_lat(fn):
         ts = []
         for i, it in enumerate(sample):
@@ -59,10 +45,10 @@ def main():
         "C-M4": mean_lat(predict_c_m4),
         "G-ref": mean_lat(gref),
     }
-    cost_runtime = {k: COST_C[k] for k in ("C-M1", "C-M2", "C-M4", "G-ref")}
-    print("cost_C_frozen", cost_runtime, flush=True)
-    print("latency_p50_diag", {k: round(v, 6) for k, v in lat_diag.items()}, flush=True)
+    return lat_diag
 
+
+def run_evaluations(methods, eval_items, cost_runtime, lat_diag, gref):
     rows = []
     primary = {}
     for name, (fn, _c_design, M) in methods.items():
@@ -107,7 +93,10 @@ def main():
             rows.append({"method": name, "verify_on": verify_on, **{k: s[k] for k in s if k != "U_sensitivity"}, "U_sensitivity": s["U_sensitivity"]})
             if verify_on:
                 primary[name] = res
+    return rows, primary
 
+
+def write_utility_results(primary, rows, cost_runtime, lat_diag):
     decision = decide(primary)
     util = {
         "schema": "nano-lm.e4.utility.v1",
@@ -132,6 +121,35 @@ def main():
     util_path.write_text(json.dumps(util, indent=2) + "\n")
     print(json.dumps(decision, indent=2), flush=True)
     print(f"wrote {util_path}", flush=True)
+
+
+def main():
+    check_preconditions()
+
+    eval_items = json.loads((DATA / "rstar_eval.json").read_text())
+    print(f"eval n={len(eval_items)} venue_gref loading...", flush=True)
+    gref = make_gref_predict()
+
+    methods = {
+        "C-M1": (predict_c_m1, COST_C["C-M1"], M_ASSIGN["C-M1"]),
+        "C-M2": (predict_c_m2, COST_C["C-M2"], M_ASSIGN["C-M2"]),
+        "C-M4": (predict_c_m4, COST_C["C-M4"], M_ASSIGN["C-M4"]),
+        "G-ref": (gref, COST_C["G-ref"], M_ASSIGN["G-ref|verify-on"]),
+    }
+
+    # C: pre-assigned relative compute indices (E1-continuity O(1) scale), frozen in
+    # methods.COST_C before scoring. Raw wall-clock ratios are diagnostics only —
+    # using raw ratio (~1e4) as C would silently change U semantics vs E1 κ=0.05.
+    sample = eval_items[:20]
+    lat_diag = measure_latencies(sample, gref)
+
+    cost_runtime = {k: COST_C[k] for k in ("C-M1", "C-M2", "C-M4", "G-ref")}
+    print("cost_C_frozen", cost_runtime, flush=True)
+    print("latency_p50_diag", {k: round(v, 6) for k, v in lat_diag.items()}, flush=True)
+
+    rows, primary = run_evaluations(methods, eval_items, cost_runtime, lat_diag, gref)
+
+    write_utility_results(primary, rows, cost_runtime, lat_diag)
 
 
 if __name__ == "__main__":
