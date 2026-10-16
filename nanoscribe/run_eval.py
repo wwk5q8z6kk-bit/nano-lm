@@ -22,7 +22,7 @@ if _repo_root not in sys.path:
     sys.path.insert(0, _repo_root)
 sys.path[:] = [p for p in sys.path if p != _script_dir]
 
-from nanoscribe.adapt import run_pipeline
+from nanoscribe.adapt import AdapterExecutionMode, run_pipeline
 from nanoscribe.adapters import (
     DEFAULT_BASELINE_LINES,
     FixtureSpanPortAdapter,
@@ -93,13 +93,13 @@ def _payload_from_report(
     report,
     batch,
     adapter_model_id: str,
-    fixture_only: bool,
     experiment: str,
     extra: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     payload: dict[str, Any] = {
         "experiment": experiment,
-        "fixture_only": fixture_only,
+        "fixture_only": batch.execution_mode is AdapterExecutionMode.FIXTURE,
+        "execution_mode": batch.execution_mode.value,
         "adapter": adapter_model_id,
         "aggregate": _aggregate_from_report(report),
         "layers": classify_report(report),
@@ -127,7 +127,6 @@ def run_baseline_eval(*, fixture_only: bool = False) -> dict[str, Any]:
             report=report,
             batch=batch,
             adapter_model_id=adapter.model_id,
-            fixture_only=fixture_only,
             experiment="p1_baseline_eval_v0",
         )
 
@@ -161,6 +160,8 @@ def _run_campaign_case(case: HarnessCase, *, fixture_only: bool) -> dict[str, An
         "encounter_id": case.encounter_id,
         "test_set": case.test_set.value,
         "adapter": adapter.model_id,
+        "fixture_only": batch.execution_mode is AdapterExecutionMode.FIXTURE,
+        "execution_mode": batch.execution_mode.value,
         "aggregate": _aggregate_from_report(report),
         "layers": classify_report(report),
         "per_atom": _per_atom_from_report(report),
@@ -220,11 +221,13 @@ def run_campaign_eval(suite: str, *, fixture_only: bool = False) -> dict[str, An
         encounters = [
             _run_campaign_case(case, fixture_only=fixture_only) for case in cases
         ]
+        execution_modes = sorted({item["execution_mode"] for item in encounters})
         return {
             "experiment": "p1_campaign_eval_v0",
             "suite": suite,
             "dataset_revision": CAMPAIGN_DATASET_REVISION,
-            "fixture_only": fixture_only,
+            "fixture_only": execution_modes == [AdapterExecutionMode.FIXTURE.value],
+            "execution_modes": execution_modes,
             "manifest": suite_manifest(),
             "suite_aggregate": _suite_aggregate(encounters),
             "encounters": encounters,

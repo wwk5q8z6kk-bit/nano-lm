@@ -8,6 +8,7 @@ from collections.abc import Sequence
 from urllib.parse import urlparse
 
 from nanoscribe.adapters import AtomSpec
+from nanoscribe.egress import ExternalEgressTarget, require_external_egress
 from nanoscribe.prompt import build_span_port_prompt, span_port_system_prompt
 
 
@@ -34,18 +35,52 @@ def _resolve_api_key(explicit: str | None) -> str:
     )
 
 
-def _openai_base_url(endpoint_id: str | None, base_url: str | None) -> str:
-    if base_url:
-        return base_url.rstrip("/")
-    endpoint = endpoint_id or os.environ.get("RUNPOD_SERVERLESS_ENDPOINT_ID")
+def _validated_endpoint_id(value: str) -> str:
+    if not value.isascii() or not value.isalnum():
+        raise ValueError("RunPod endpoint ID must be ASCII alphanumeric")
+    return value
+
+
+def _endpoint_id_from_canonical_url(value: str) -> str:
+    parsed = urlparse(value)
+    if (
+        parsed.scheme != "https"
+        or parsed.hostname != "api.runpod.ai"
+        or parsed.port not in (None, 443)
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.query
+        or parsed.fragment
+    ):
+        raise ValueError("RunPod Serverless URL must use canonical api.runpod.ai HTTPS")
+    parts = parsed.path.strip("/").split("/")
+    if len(parts) != 4 or parts[0] != "v2" or parts[2:] != ["openai", "v1"]:
+        raise ValueError("RunPod Serverless URL must be /v2/{endpoint}/openai/v1")
+    return _validated_endpoint_id(parts[1])
+
+
+def _resolve_endpoint_id(endpoint_id: str | None, base_url: str | None) -> str:
+    configured = endpoint_id or os.environ.get("RUNPOD_SERVERLESS_ENDPOINT_ID")
+    canonical_endpoint = _endpoint_id_from_canonical_url(base_url) if base_url else None
+    if configured:
+        configured = parse_endpoint_id(configured)
+        configured = _validated_endpoint_id(configured)
+    if configured and canonical_endpoint and configured != canonical_endpoint:
+        raise ValueError("endpoint_id must match the canonical RunPod Serverless URL")
+    endpoint = configured or canonical_endpoint
     if not endpoint:
         raise RuntimeError(
             "RUNPOD_SERVERLESS_ENDPOINT_ID not set and no base_url provided"
         )
-    return f"https://api.runpod.ai/v2/{endpoint}/openai/v1"
+    return endpoint
 
 
-def _openai_client(*, endpoint_id: str | None = None, base_url: str | None = None):
+def _openai_base_url(endpoint_id: str) -> str:
+    endpoint = _resolve_endpoint_id(endpoint_id, None)
+    return endpoint_openai_url(endpoint)
+
+
+def _openai_client(*, endpoint_id: str):
     try:
         from openai import OpenAI
     except ImportError as exc:
@@ -53,7 +88,7 @@ def _openai_client(*, endpoint_id: str | None = None, base_url: str | None = Non
             "openai package required for serverless inference; pip install openai"
         ) from exc
     api_key = _resolve_api_key(None)
-    return OpenAI(api_key=api_key, base_url=_openai_base_url(endpoint_id, base_url))
+    return OpenAI(api_key=api_key, base_url=_openai_base_url(endpoint_id))
 
 
 def _generate_line(client, model: str, user_prompt: str, *, max_tokens: int) -> str:
@@ -80,7 +115,12 @@ def generate_serverless_span_port_lines(
     max_tokens: int = 64,
 ) -> tuple[dict[str, str], float, int]:
     """Run one serverless call per atom; return lines + latency + zero memory."""
-    client = _openai_client(endpoint_id=endpoint_id, base_url=base_url)
+    resolved_endpoint_id = _resolve_endpoint_id(endpoint_id, base_url)
+    require_external_egress(
+        model_input,
+        ExternalEgressTarget.runpod_serverless(resolved_endpoint_id),
+    )
+    client = _openai_client(endpoint_id=resolved_endpoint_id)
     started = time.perf_counter()
     lines: dict[str, str] = {}
     for spec in atom_specs:
@@ -111,9 +151,5 @@ def endpoint_native_urls(endpoint_id: str) -> dict[str, str]:
 def parse_endpoint_id(value: str) -> str:
     """Accept bare endpoint id or full RunPod URL."""
     if "://" not in value:
-        return value
-    path = urlparse(value).path.strip("/")
-    parts = path.split("/")
-    if len(parts) >= 2 and parts[0] == "v2":
-        return parts[1]
-    raise ValueError(f"cannot parse RunPod endpoint id from {value!r}")
+        return _validated_endpoint_id(value)
+    return _endpoint_id_from_canonical_url(value)

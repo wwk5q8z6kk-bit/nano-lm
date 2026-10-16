@@ -27,6 +27,7 @@ from nanoscribe.encounter import (
     TemporalState,
     Temporality,
 )
+from nanoscribe.egress import ExternalEgressAuthorization
 from nanoscribe.evaluate import PredictedAtom, PredictedEncounter
 from nanoscribe.select import ConstrainedSelector
 
@@ -196,6 +197,13 @@ class ModelInput:
     source: Source
     encounter_id: str
     prompt: str | None = None
+    external_egress: ExternalEgressAuthorization | None = None
+
+    def __post_init__(self) -> None:
+        if self.external_egress is not None and not isinstance(
+            self.external_egress, ExternalEgressAuthorization
+        ):
+            raise TypeError("external_egress must be an ExternalEgressAuthorization")
 
 
 def _parse_candidate_temporality(value: object, path: str) -> TemporalState:
@@ -328,6 +336,15 @@ class CandidateAtom:
         )
 
 
+class AdapterExecutionMode(str, Enum):
+    """How an adapter batch was actually produced."""
+
+    UNSPECIFIED = "unspecified"
+    FIXTURE = "fixture"
+    LOCAL_WEIGHTS = "local_weights"
+    EXTERNAL_API = "external_api"
+
+
 @dataclass(frozen=True, slots=True)
 class ModelCandidate:
     """Bundle of model proposals for one encounter."""
@@ -336,6 +353,7 @@ class ModelCandidate:
     schema_version: str = CANDIDATE_SCHEMA_VERSION
     latency_s: float = 0.0
     memory_bytes: int = 0
+    execution_mode: AdapterExecutionMode = AdapterExecutionMode.UNSPECIFIED
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -343,6 +361,7 @@ class ModelCandidate:
             "atoms": [atom.to_dict() for atom in self.atoms],
             "latency_s": self.latency_s,
             "memory_bytes": self.memory_bytes,
+            "execution_mode": self.execution_mode.value,
         }
 
     @classmethod
@@ -359,10 +378,16 @@ class ModelCandidate:
             _fail("type_error", "atoms must be an array", "$.atoms")
         latency = mapping.get("latency_s", 0.0)
         memory = mapping.get("memory_bytes", 0)
+        execution_mode = mapping.get("execution_mode", AdapterExecutionMode.UNSPECIFIED.value)
         if not isinstance(latency, (int, float)) or isinstance(latency, bool):
             _fail("type_error", "latency_s must be a number", "$.latency_s")
         if not isinstance(memory, int) or isinstance(memory, bool):
             _fail("type_error", "memory_bytes must be an integer", "$.memory_bytes")
+        execution = _parse_enum(
+            AdapterExecutionMode,
+            execution_mode,
+            "$.execution_mode",
+        )
         return cls(
             atoms=tuple(
                 CandidateAtom.from_dict(atom, path=f"$.atoms[{index}]")
@@ -371,6 +396,7 @@ class ModelCandidate:
             schema_version=CANDIDATE_SCHEMA_VERSION,
             latency_s=float(latency),
             memory_bytes=memory,
+            execution_mode=execution,
         )
 
     @classmethod

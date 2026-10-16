@@ -11,6 +11,18 @@
 
 “Not in Git” is **not** sufficient protection. A future sensitive-data program may supersede this explicitly.
 
+## External inference egress
+
+Hosted API and serverless adapters fail closed unless their `ModelInput` carries
+an `ExternalEgressAuthorization`: an explicit `NON_PHI_AUTHORIZED`
+classification, source and run provenance IDs, a source ID/exact outbound
+transcript-digest binding, and a specific authorized cloud target (including
+the RunPod endpoint ID). Its claims require an HMAC signature from the
+out-of-process approval authority; the verification key is required at runtime
+and is never stored in this repository. The gate runs before a client is
+created and emits no transcript telemetry. Local-weight and fixture paths do
+not egress data; fixture execution must be labeled as such in eval output.
+
 ## Dataset registry (in-repo)
 
 | Path | Content | License / notes |
