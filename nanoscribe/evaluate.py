@@ -328,6 +328,8 @@ def _probe_construction(
 
 def _classify_construction(error: EncounterError) -> tuple[bool, bool]:
     """Return (malformed, critical)."""
+    if error.code in ("type_error", "missing_field"):
+        return True, True
     if error.code == "unknown_source":
         return True, True
     if error.code in _INVALID_SPAN_CODES:
