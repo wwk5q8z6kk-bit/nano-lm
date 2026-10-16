@@ -153,7 +153,7 @@ def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) 
                     "FIND",
                     did,
                     needle,
-                    evidence=[{"start": i, "end": i + len(needle), "text": text[i : i + len(needle)], "context": ctx}],
+                    evidence=[{"start": i, "end": i + len(needle), "text": text[i:i + len(needle)], "context": ctx}],
                     status="PRESENT",
                     notes="exact_span",
                 )
@@ -181,6 +181,103 @@ def find_spans(needle: str, corpus_dir: Path | None = None, max_hits: int = 20) 
     }
 
 
+
+def _gather_text_claims(docs: dict, q: str, tokens: list[str]) -> tuple[list[S.Claim], list[str]]:
+    claims = []
+    solver_path = []
+    q_content = " ".join(tokens) if tokens else q
+    for did, text in docs.items():
+        claims.append(S.keyword_paragraph(did, text, q_content))
+        if tokens:
+            claims.append(S.quote_sentence(did, text, tokens[0]))
+    solver_path.append("keyword_paragraph+quote")
+
+    for tok in tokens[:5]:
+        claims.append(S.mention_docs(docs, tok))
+        for did, body in docs.items():
+            c = S.yes_no_mention(did, body, tok)
+            # only keep grounded positives
+            if c.value is True:
+                claims.append(c)
+    solver_path.append("mention+yes_no")
+    return claims, solver_path
+
+
+def _gather_exact_locate_claims(docs: dict, q: str, tokens: list[str]) -> tuple[list[S.Claim], list[str]]:
+    claims = []
+    solver_path = []
+    hyphen_chunks = set(re.findall(r"[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+", q))
+    for num in re.findall(r"(?<![A-Za-z])\d+(?:\.\d+)?(?![A-Za-z])", q):
+        if any(num in chunk and chunk != num for chunk in hyphen_chunks):
+            continue
+        for did, body in docs.items():
+            i = body.find(num)
+            if i >= 0:
+                # prefer lines containing the number
+                line = body[max(0, body.rfind("\n", 0, i) + 1) : body.find("\n", i)]
+                if not line:
+                    line = body[i:i + len(num)]
+                claims.append(
+                    S.Claim(
+                        "FIND",
+                        did,
+                        num,
+                        evidence=[{"start": i, "end": i + len(num), "text": body[i:i + len(num)], "line": line.strip()[:240]}],
+                        status="PRESENT",
+                        notes="numeric_span",
+                    )
+                )
+    for lit in re.findall(r'"([^"]{3,80})"', q):
+        for did, body in docs.items():
+            i = body.find(lit)
+            if i >= 0:
+                claims.append(
+                    S.Claim(
+                        "FIND",
+                        did,
+                        lit,
+                        evidence=[{"start": i, "end": i + len(lit), "text": body[i:i + len(lit)]}],
+                        status="PRESENT",
+                        notes="literal_span",
+                    )
+                )
+    for tok in tokens:
+        if "-" in tok or any(ch.isdigit() for ch in tok) or (tok.isupper() and len(tok) >= 2):
+            for did, body in docs.items():
+                i = body.find(tok)
+                if i >= 0:
+                    claims.append(
+                        S.Claim(
+                            "FIND",
+                            did,
+                            tok,
+                            evidence=[{"start": i, "end": i + len(tok), "text": body[i:i + len(tok)]}],
+                            status="PRESENT",
+                            notes="token_span",
+                        )
+                    )
+    solver_path.append("numeric+literal_spans")
+    return claims, solver_path
+
+
+def _gather_eclass_claims(docs: dict, q: str) -> tuple[list[S.Claim], list[str]]:
+    claims = []
+    solver_path = []
+    ql = q.lower()
+    if any(k in ql for k in ("expire", "ttl", "cached", "cache")):
+        claims.append(_expand_ttl_ask(docs, q))
+        solver_path.append("eclass_query_expand")
+    if "dose" in ql or "metformin" in ql:
+        claims.append(S.symbolic_dose_change(docs))
+        claims.append(S.union_dosages(docs))
+        solver_path.append("eclass_symbolic_dose+union")
+    if any(k in ql for k in ("binding", "coref", "antecedent", "pronoun")) or re.search(r"\bit\b", ql):
+        if "binding_coref" in docs:
+            claims.append(S.coref_binding("binding_coref", docs["binding_coref"]))
+            solver_path.append("eclass_coref_lite")
+    return claims, solver_path
+
+
 def ask(query: str, corpus_dir: Path | None = None) -> dict:
     """Span-first Q&A over a local folder. Never invents unsupported claims."""
     docs = load_corpus(corpus_dir)
@@ -197,88 +294,18 @@ def ask(query: str, corpus_dir: Path | None = None) -> dict:
     solver_path = ["load_corpus"]
     tokens = _content_tokens(q)
 
-    # Content-token query only (drop stopwords so "the"/"of" cannot score every para)
-    q_content = " ".join(tokens) if tokens else q
-    for did, text in docs.items():
-        claims.append(S.keyword_paragraph(did, text, q_content))
-        if tokens:
-            claims.append(S.quote_sentence(did, text, tokens[0]))
-    solver_path.append("keyword_paragraph+quote")
-    for tok in tokens[:5]:
-        claims.append(S.mention_docs(docs, tok))
-        for did, body in docs.items():
-            c = S.yes_no_mention(did, body, tok)
-            # only keep grounded positives
-            if c.value is True:
-                claims.append(c)
-    solver_path.append("mention+yes_no")
+    # Gather claims using helpers
+    text_claims, text_path = _gather_text_claims(docs, q, tokens)
+    claims.extend(text_claims)
+    solver_path.extend(text_path)
 
-    # Exact locate for numbers and quoted phrases (dogfood-critical)
-    hyphen_chunks = set(re.findall(r"[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+", q))
-    for num in re.findall(r"(?<![A-Za-z])\d+(?:\.\d+)?(?![A-Za-z])", q):
-        if any(num in chunk and chunk != num for chunk in hyphen_chunks):
-            continue
-        for did, body in docs.items():
-            i = body.find(num)
-            if i >= 0:
-                # prefer lines containing the number
-                line = body[max(0, body.rfind("\n", 0, i) + 1) : body.find("\n", i)]
-                if not line:
-                    line = body[i : i + len(num)]
-                claims.append(
-                    S.Claim(
-                        "FIND",
-                        did,
-                        num,
-                        evidence=[{"start": i, "end": i + len(num), "text": body[i : i + len(num)], "line": line.strip()[:240]}],
-                        status="PRESENT",
-                        notes="numeric_span",
-                    )
-                )
-    for lit in re.findall(r'"([^"]{3,80})"', q):
-        for did, body in docs.items():
-            i = body.find(lit)
-            if i >= 0:
-                claims.append(
-                    S.Claim(
-                        "FIND",
-                        did,
-                        lit,
-                        evidence=[{"start": i, "end": i + len(lit), "text": body[i : i + len(lit)]}],
-                        status="PRESENT",
-                        notes="literal_span",
-                    )
-                )
-    for tok in tokens:
-        if "-" in tok or any(ch.isdigit() for ch in tok) or (tok.isupper() and len(tok) >= 2):
-            for did, body in docs.items():
-                i = body.find(tok)
-                if i >= 0:
-                    claims.append(
-                        S.Claim(
-                            "FIND",
-                            did,
-                            tok,
-                            evidence=[{"start": i, "end": i + len(tok), "text": body[i : i + len(tok)]}],
-                            status="PRESENT",
-                            notes="token_span",
-                        )
-                    )
-    solver_path.append("numeric+literal_spans")
+    exact_claims, exact_path = _gather_exact_locate_claims(docs, q, tokens)
+    claims.extend(exact_claims)
+    solver_path.extend(exact_path)
 
-    ql = q.lower()
-    gold = _load_gold()
-    if any(k in ql for k in ("expire", "ttl", "cached", "cache")):
-        claims.append(_expand_ttl_ask(docs, q))
-        solver_path.append("eclass_query_expand")
-    if "dose" in ql or "metformin" in ql:
-        claims.append(S.symbolic_dose_change(docs))
-        claims.append(S.union_dosages(docs))
-        solver_path.append("eclass_symbolic_dose+union")
-    if any(k in ql for k in ("binding", "coref", "antecedent", "pronoun")) or re.search(r"\bit\b", ql):
-        if "binding_coref" in docs:
-            claims.append(S.coref_binding("binding_coref", docs["binding_coref"]))
-            solver_path.append("eclass_coref_lite")
+    eclass_claims, eclass_path = _gather_eclass_claims(docs, q)
+    claims.extend(eclass_claims)
+    solver_path.extend(eclass_path)
 
     presented = [
         c for c in claims
