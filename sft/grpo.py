@@ -34,50 +34,52 @@ def verify(out, stopped):
     words = len(M.tok.decode(out).split())
     return 1.0 if (1 <= words <= NMAX) else 0.0
 
-policy = M.load("sft.pt"); policy.train()
-ref = M.load("sft.pt")
-for p in ref.parameters(): p.requires_grad_(False)
-opt = torch.optim.AdamW(policy.parameters(), lr=LR, betas=(0.9, 0.95), weight_decay=0.0)
+if __name__ == '__main__':
+    policy = M.load("sft.pt"); policy.train()
+    ref = M.load("sft.pt")
+    for p in ref.parameters(): p.requires_grad_(False)
+    opt = torch.optim.AdamW(policy.parameters(), lr=LR, betas=(0.9, 0.95), weight_decay=0.0)
 
-def rollout_logprob_and_kl(prompt_ids, comp_ids):
-    """token log-probs of comp under policy, and per-token KL(policy||ref), teacher-forced."""
-    full = (prompt_ids + comp_ids)[:S]; lo, hi = len(prompt_ids), len(full)
-    x = torch.tensor(full, device=dev)[None]
-    if x.shape[1] < S: x = F.pad(x, (0, S - x.shape[1]))
-    plog = F.log_softmax(policy(x)[0].float(), -1)
-    with torch.no_grad():
-        rlog = F.log_softmax(ref(x)[0].float(), -1)
-    lp, kl = 0.0, 0.0
-    for pos in range(lo, hi):
-        tok_id = full[pos]
-        lp = lp + plog[pos-1, tok_id]
-        kl = kl + (plog[pos-1].exp() * (plog[pos-1] - rlog[pos-1])).sum()   # forward KL, this step
-    return lp, kl
+    def rollout_logprob_and_kl(prompt_ids, comp_ids):
+        """token log-probs of comp under policy, and per-token KL(policy||ref), teacher-forced."""
+        full = (prompt_ids + comp_ids)[:S]; lo, hi = len(prompt_ids), len(full)
+        x = torch.tensor(full, device=dev)[None]
+        if x.shape[1] < S: x = F.pad(x, (0, S - x.shape[1]))
+        plog = F.log_softmax(policy(x)[0].float(), -1)
+        with torch.no_grad():
+            rlog = F.log_softmax(ref(x)[0].float(), -1)
+        lp, kl = 0.0, 0.0
+        for pos in range(lo, hi):
+            tok_id = full[pos]
+            lp = lp + plog[pos-1, tok_id]
+            kl = kl + (plog[pos-1].exp() * (plog[pos-1] - rlog[pos-1])).sum()   # forward KL, this step
+        return lp, kl
 
-t0 = time.time(); base_pass = None
-for step in range(1, STEPS+1):
-    batch = random.sample(QUESTIONS, BATCH_PROMPTS)
-    loss = 0.0; nseq = 0; rewards_all = []
-    for q in batch:
-        pid = M.chat_ids(make_prompt(q))
-        rolls = [M.sample(policy, make_prompt(q), temp=1.0) for _ in range(G)]   # on-policy group
-        rs = torch.tensor([verify(o, s) for (o, s) in rolls])
-        rewards_all += rs.tolist()
-        adv = (rs - rs.mean()) / (rs.std() + 1e-8)                               # group-relative advantage
-        for (o, s), a in zip(rolls, adv):
-            if len(o) == 0: continue
-            comp = o + [IME]
-            lp, kl = rollout_logprob_and_kl(pid, comp)
-            loss = loss - a.item() * lp + BETA_KL * kl                           # -A*logp + beta*KL
-            nseq += 1
-    if nseq == 0: continue
-    loss = loss / nseq
-    opt.zero_grad(set_to_none=True); loss.backward()
-    torch.nn.utils.clip_grad_norm_(policy.parameters(), 1.0); opt.step()
-    pr = sum(rewards_all)/len(rewards_all)
-    if base_pass is None: base_pass = pr
-    if step % 25 == 0:
-        print(f"step {step:4d}  batch pass@1 {pr:.2f}  loss {loss.item():+.3f}  {(time.time()-t0)/60:.1f}min", flush=True)
+    t0 = time.time(); base_pass = None
+    for step in range(1, STEPS+1):
+        batch = random.sample(QUESTIONS, BATCH_PROMPTS)
+        loss = 0.0; nseq = 0; rewards_all = []
+        for q in batch:
+            pid = M.chat_ids(make_prompt(q))
+            rolls = [M.sample(policy, make_prompt(q), temp=1.0) for _ in range(G)]   # on-policy group
+            rs = torch.tensor([verify(o, s) for (o, s) in rolls])
+            rewards_all += rs.tolist()
+            adv = (rs - rs.mean()) / (rs.std() + 1e-8)                               # group-relative advantage
+            for (o, s), a in zip(rolls, adv):
+                if len(o) == 0: continue
+                comp = o + [IME]
+                lp, kl = rollout_logprob_and_kl(pid, comp)
+                loss = loss - a.item() * lp + BETA_KL * kl                           # -A*logp + beta*KL
+                nseq += 1
+        if nseq == 0: continue
+        loss = loss / nseq
+        opt.zero_grad(set_to_none=True); loss.backward()
+        torch.nn.utils.clip_grad_norm_(policy.parameters(), 1.0); opt.step()
+        pr = sum(rewards_all)/len(rewards_all)
+        if base_pass is None: base_pass = pr
+        if step % 25 == 0:
+            print(f"step {step:4d}  batch pass@1 {pr:.2f}  loss {loss.item():+.3f}  {(time.time()-t0)/60:.1f}min", flush=True)
 
-torch.save(policy.state_dict(), "grpo.pt")
-print(f"GRPO done in {(time.time()-t0)/60:.1f} min -> grpo.pt  (rollout pass@1 {base_pass:.2f} -> {pr:.2f})", flush=True)
+    torch.save(policy.state_dict(), "grpo.pt")
+    print(f"GRPO done in {(time.time()-t0)/60:.1f} min -> grpo.pt  (rollout pass@1 {base_pass:.2f} -> {pr:.2f})", flush=True)
+

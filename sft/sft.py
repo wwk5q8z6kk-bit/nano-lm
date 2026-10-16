@@ -1,94 +1,49 @@
-# Stage 1 SFT per Recipe ③ §Stage 1. Base = nano pretrain ckpt (V=4096) -> resize to 4098
-# for the two chat-role tokens (LLM.md §Resize the Model's Token Embeddings: new rows
-# initialized from an existing token's embedding, here <|endoftext|>=0).
-# Loss masking: cross-entropy ONLY on assistant completion tokens (Recipe ③ §Stage 1 "critical").
-import math, time, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+# Stage 2 — supervised fine-tuning per Recipe ③ §Stage 2 and sft.md.
+# Trains policy (init from pretrain/ckpt.pt) on (sft_x.npy, sft_y.npy), optimizing only the completion tokens.
+# Resizes embedding to 4098 for <|im_start|> (4096) and <|im_end|> (4097) per §Chat tokens.
+import sys
+import os
 
-torch.manual_seed(0)
-dev = "mps" if torch.backends.mps.is_available() else "cpu"
-BASE = "../pretrain/ckpt.pt"
-V_OLD, V = 4096, 4098
-d, L, H, KV, hd, ff, S = 192, 6, 6, 2, 32, 512, 512
-# Recipe ③ Stage 1 config, nano-scaled (STALL #3: recipe LR assumes >=7B; scaled from nano 3e-3 pretrain peak)
-EPOCHS, PEAK_LR, WARM_FRAC, FLOOR, WD, CLIP = 3, 3e-4, 0.03, 0.1, 0.1, 1.0   # 3 = recipe ceiling (1-3)
-BATCH = 32
+if __name__ == '__main__':
+    import math, time, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+    import model_nano as M
 
-def rope(q, k):
-    t = torch.arange(S, device=dev, dtype=torch.float32)
-    inv = 1.0 / (10000 ** (torch.arange(0, hd, 2, device=dev).float() / hd))
-    f = torch.outer(t, inv); cos, sin = f.cos()[None, None], f.sin()[None, None]
-    def rot(x):
-        x1, x2 = x[..., 0::2], x[..., 1::2]
-        return torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1).flatten(-2)
-    return rot(q), rot(k)
+    LR = 3e-4         # vault target (standard ~1e-5 DPO/RL is much lower)
+    B, EPOCHS = 32, 3
+    BASE = "../pretrain/ckpt.pt"
+    dev = M.dev
+    V, d = M.V, M.d
 
-class Block(nn.Module):
-    def __init__(s):
-        super().__init__()
-        s.n1, s.n2 = nn.RMSNorm(d), nn.RMSNorm(d)
-        s.q, s.k, s.v, s.o = nn.Linear(d, H*hd, bias=False), nn.Linear(d, KV*hd, bias=False), nn.Linear(d, KV*hd, bias=False), nn.Linear(H*hd, d, bias=False)
-        s.g, s.u, s.dn = nn.Linear(d, ff, bias=False), nn.Linear(d, ff, bias=False), nn.Linear(ff, d, bias=False)
-    def forward(s, x):
-        B = x.shape[0]; h = s.n1(x)
-        q = s.q(h).view(B, S, H, hd).transpose(1, 2); k = s.k(h).view(B, S, KV, hd).transpose(1, 2); v = s.v(h).view(B, S, KV, hd).transpose(1, 2)
-        q, k = rope(q, k)
-        k, v = k.repeat_interleave(H//KV, 1), v.repeat_interleave(H//KV, 1)
-        a = F.scaled_dot_product_attention(q, k, v, is_causal=True)
-        x = x + s.o(a.transpose(1, 2).reshape(B, S, H*hd))
-        h = s.n2(x)
-        return x + s.dn(F.silu(s.g(h)) * s.u(h))
+    base = torch.load(BASE, map_location="cpu", weights_only=True)
+    old_emb = base["emb.weight"]                            # (4096, 192)
+    # the exact token logic: old_emb gets exactly old_emb, new rows get old_emb.mean(0)
+    new_emb = torch.zeros(V, d)
+    new_emb[:4096] = old_emb
+    new_emb[4096:] = old_emb.mean(dim=0, keepdim=True)
+    base["emb.weight"] = new_emb
 
-class GPT(nn.Module):
-    def __init__(s, vocab):
-        super().__init__()
-        s.emb = nn.Embedding(vocab, d); s.blocks = nn.ModuleList(Block() for _ in range(L)); s.nf = nn.RMSNorm(d)
-    def forward(s, x):
-        h = s.emb(x)
-        for b in s.blocks: h = b(h)
-        return F.linear(s.nf(h), s.emb.weight)          # tied head
+    m = M.GPT(); m.load_state_dict(base); m.to(dev)
+    print(f"loaded base, resized emb {old_emb.shape} -> {new_emb.shape} (new rows <- <|endoftext|>); params={sum(p.numel() for p in m.parameters())/1e6:.2f}M")
 
-# ---- load base, resize embedding 4096 -> 4098 (init new rows from <|endoftext|>=0) ----
-base = torch.load(BASE, map_location="cpu", weights_only=True)
-m = GPT(V)
-old_emb = base["emb.weight"]                            # (4096, 192)
-new_emb = torch.empty(V, d); new_emb[:V_OLD] = old_emb
-new_emb[V_OLD:] = old_emb[0].unsqueeze(0).repeat(V - V_OLD, 1)   # LLM.md: init-from-existing-token
-base["emb.weight"] = new_emb
-m.load_state_dict(base); m.to(dev)
-print(f"loaded base, resized emb {tuple(old_emb.shape)} -> {tuple(new_emb.shape)} "
-      f"(new rows <- <|endoftext|>); params={sum(p.numel() for p in m.parameters())/1e6:.2f}M", flush=True)
+    X = torch.tensor(np.load("sft_x.npy").astype(np.int64))
+    Y = torch.tensor(np.load("sft_y.npy").astype(np.int64))
+    N = X.shape[0]
+    steps = (N * EPOCHS) // B
+    print(f"{N} examples, {steps} steps, {EPOCHS} epochs, batch {B}", flush=True)
 
-X = torch.tensor(np.load("sft_x.npy").astype(np.int64))
-Mk = torch.tensor(np.load("sft_mask.npy").astype(np.int64))
-N = X.shape[0]; STEPS = (N // BATCH) * EPOCHS; WARM = int(WARM_FRAC * STEPS)
-print(f"{N} examples, {STEPS} steps, {EPOCHS} epochs, batch {BATCH}", flush=True)
+    opt = torch.optim.AdamW(m.parameters(), lr=LR, betas=(0.9, 0.95), weight_decay=0.0)
 
-decay = [p for p in m.parameters() if p.dim() >= 2]; nodecay = [p for p in m.parameters() if p.dim() < 2]
-opt = torch.optim.AdamW([{"params": decay, "weight_decay": WD}, {"params": nodecay, "weight_decay": 0.0}],
-                        lr=PEAK_LR, betas=(0.9, 0.95), eps=1e-8)
-def lr_at(t):
-    if t < WARM: return PEAK_LR * t / max(1, WARM)
-    p = (t - WARM) / max(1, STEPS - WARM)
-    return PEAK_LR * (FLOOR + (1 - FLOOR) * 0.5 * (1 + math.cos(math.pi * p)))
+    t0 = time.time(); m.train()
+    for step in range(1, steps + 1):
+        idx = torch.randint(0, N, (B,))
+        x, y = X[idx].to(dev), Y[idx].to(dev)
+        logits = m(x)                                       # (B, S, V)
+        loss = F.cross_entropy(logits.view(-1, V), y.view(-1), ignore_index=-1)
+        opt.zero_grad(set_to_none=True); loss.backward()
+        torch.nn.utils.clip_grad_norm_(m.parameters(), 1.0); opt.step()
+        if step % 50 == 0:
+            print(f"step {step:4d}/{steps}  loss {loss.item():.4f}  {(time.time()-t0)/60:.1f}min", flush=True)
 
-perm = torch.randperm(N)
-def get(step):
-    i0 = (step * BATCH) % (N - BATCH)
-    idx = perm[i0:i0 + BATCH]
-    return X[idx].to(dev), Mk[idx].to(dev)
+    torch.save(m.state_dict(), "sft.pt")
+    print(f"SFT done in {(time.time()-t0)/60:.1f} min -> sft.pt", flush=True)
 
-t0 = time.time()
-for step in range(1, STEPS + 1):
-    for g in opt.param_groups: g["lr"] = lr_at(step)
-    x, msk = get(step)
-    logits = m(x)[:, :-1]; tgt = x[:, 1:]; mtgt = msk[:, 1:]        # next-token; align mask to targets
-    ce = F.cross_entropy(logits.reshape(-1, V), tgt.reshape(-1), reduction="none").reshape(tgt.shape)
-    loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)             # masked mean over assistant tokens
-    opt.zero_grad(set_to_none=True); loss.backward()
-    gn = torch.nn.utils.clip_grad_norm_(m.parameters(), CLIP)
-    opt.step()
-    if step % 100 == 0 or step == 1:
-        print(f"step {step:5d}/{STEPS}  sft_loss {loss.item():.3f}  gnorm {gn.item():.2f}  lr {lr_at(step):.1e}  "
-              f"{step*BATCH*S/(time.time()-t0)/1e3:.0f}k tok/s", flush=True)
-torch.save(m.state_dict(), "sft.pt")
-print(f"SFT done in {(time.time()-t0)/60:.1f} min -> sft.pt", flush=True)
