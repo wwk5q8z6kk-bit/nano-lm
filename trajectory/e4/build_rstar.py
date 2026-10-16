@@ -260,16 +260,9 @@ EVAL_RENDERERS = {
 }
 
 
-def make_item(
-    rng: random.Random,
-    *,
-    split: str,
-    family: str,
-    force_held_open: bool,
-    force_norm: bool,
-    force_multi: bool,
-    force_weak_or_none: bool,
-) -> dict:
+def _sample_slots(
+    rng: random.Random, force_held_open: bool, force_norm: bool
+) -> Tuple[Dict[str, str], Dict[str, str], Dict[str, bool], Dict[str, bool]]:
     # open slots
     cc, cc_held = pick_open(rng, CC_TRAIN, CC_EVAL_HELD, force_held_open and rng.random() < 0.7)
     med_none = rng.random() < 0.35
@@ -315,6 +308,29 @@ def make_item(
         "alg": alg_surface if not alg_none else "none",
         "dur_surface": dur_surface,
     }
+    held_open = {"cc": cc_held, "med": med_held, "alg": alg_held}
+
+    return t, surfaces, needs_norm_flags, held_open
+
+
+def _get_competitors(rng: random.Random, t: Dict[str, str]) -> Dict[str, List[str]]:
+    alt_cc = rng.choice([x for x in (CC_TRAIN + CC_EVAL_HELD) if x != t["cc"]])
+    alt_med = rng.choice([x for x in (MED_TRAIN + MED_EVAL_HELD) if x != t["med"]] or ["aspirin"])
+    alt_alg = rng.choice([x for x in (ALG_TRAIN + ALG_EVAL_HELD) if x != t["alg"]] or ["pollen"])
+    return {"cc": [alt_cc], "med": [alt_med], "alg": [alt_alg]}
+
+
+def make_item(
+    rng: random.Random,
+    *,
+    split: str,
+    family: str,
+    force_held_open: bool,
+    force_norm: bool,
+    force_multi: bool,
+    force_weak_or_none: bool,
+) -> dict:
+    t, surfaces, needs_norm_flags, held_open = _sample_slots(rng, force_held_open, force_norm)
 
     meta: Dict[str, Any] = {
         "template_family_id": family,
@@ -322,18 +338,14 @@ def make_item(
         "multi_candidate": False,
         "competitors": {},
         "needs_norm_or_multispan": {},
-        "held_open": {"cc": cc_held, "med": med_held, "alg": alg_held},
+        "held_open": held_open,
         "split": split,
     }
 
     # competitors for binding stress (I4)
     if force_multi or (family == "eval_multi_candidate"):
         meta["multi_candidate"] = True
-        # distractors from the other pool
-        alt_cc = rng.choice([x for x in (CC_TRAIN + CC_EVAL_HELD) if x != cc])
-        alt_med = rng.choice([x for x in (MED_TRAIN + MED_EVAL_HELD) if x != med] or ["aspirin"])
-        alt_alg = rng.choice([x for x in (ALG_TRAIN + ALG_EVAL_HELD) if x != alg] or ["pollen"])
-        meta["competitors"] = {"cc": [alt_cc], "med": [alt_med], "alg": [alt_alg]}
+        meta["competitors"] = _get_competitors(rng, t)
 
     for f in OPEN + ["dur"]:
         meta["needs_norm_or_multispan"][f] = bool(needs_norm_flags.get(f, False))
@@ -356,12 +368,6 @@ def make_item(
     if force_weak_or_none and meta["cue_family"] == "strong":
         # should not happen for eval families
         meta["cue_family"] = "weak"
-
-    # open gold cells needing norm
-    open_needs = []
-    for f in OPEN:
-        if t[f] != "none":
-            open_needs.append(meta["needs_norm_or_multispan"].get(f, False) or meta["needs_norm_or_multispan"].get("dur", False) and f == "cc")
 
     item = {
         "tuple": t,
