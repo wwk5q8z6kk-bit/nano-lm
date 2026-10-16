@@ -507,6 +507,33 @@ def test_run_campaign_eval_fixture_smoke() -> None:
     assert agg["layers"]["malformed"] == 0
 
 
+def test_extract_span_port_line_empty() -> None:
+    assert extract_span_port_line("") == ""
+    assert extract_span_port_line("   \n  ") == ""
+
+
+def test_extract_span_port_line_no_match_single_line() -> None:
+    assert extract_span_port_line("Just some text") == "Just some text"
+
+
+def test_extract_span_port_line_no_match_multiline() -> None:
+    assert extract_span_port_line("First line\nSecond line") == "First line"
+
+
+def test_extract_span_port_line_single_line_match() -> None:
+    assert extract_span_port_line('STATED: "yes"') == 'STATED: "yes"'
+    assert extract_span_port_line('  denied: "no"  ') == 'denied: "no"'
+
+
+def test_extract_span_port_line_multiline_middle_match() -> None:
+    raw = (
+        "Here is my reasoning:\n"
+        "It seems clear that...\n"
+        'ASSERTED: "the finding is present"\n'
+        "So we conclude this."
+    )
+    assert extract_span_port_line(raw) == 'ASSERTED: "the finding is present"'
+
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     for name, fn in fns:
