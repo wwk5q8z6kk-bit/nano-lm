@@ -693,6 +693,54 @@ def test_clinician_evidence_is_allowed() -> None:
     assert source.text[span.start : span.end] == "cervical strain"
 
 
+
+def test_assemble_source_offsets() -> None:
+    source_id = "test-source"
+    turns = [
+        (Speaker.PATIENT, "Hello."),
+        (Speaker.CLINICIAN, "Hi there."),
+        (Speaker.PATIENT, "My neck hurts.")
+    ]
+    source = assemble_source(source_id, turns)
+    assert source.source_id == "test-source"
+    assert len(source.turns) == 3
+    t0 = source.turns[0]
+    assert t0.speaker == Speaker.PATIENT
+    assert t0.text == "Hello."
+    assert t0.start == 0
+    assert t0.end == len("Hello.")
+    assert t0.turn_id == "test-source:t0"
+    t1 = source.turns[1]
+    assert t1.speaker == Speaker.CLINICIAN
+    assert t1.text == "Hi there."
+    assert t1.start == t0.end + 1
+    assert t1.end == t1.start + len("Hi there.")
+    assert t1.turn_id == "test-source:t1"
+    t2 = source.turns[2]
+    assert t2.speaker == Speaker.PATIENT
+    assert t2.text == "My neck hurts."
+    assert t2.start == t1.end + 1
+    assert t2.end == t2.start + len("My neck hurts.")
+    assert t2.turn_id == "test-source:t2"
+    assert source.text == "Hello.\nHi there.\nMy neck hurts."
+
+def test_assemble_source_custom_separator() -> None:
+    source_id = "test-source-2"
+    turns = [
+        (Speaker.PATIENT, "Yes."),
+        (Speaker.CLINICIAN, "Okay.")
+    ]
+    source = assemble_source(source_id, turns, sep=" || ")
+    assert source.text == "Yes. || Okay."
+    assert source.turns[0].end == 4
+    assert source.turns[1].start == 4 + 4
+
+def test_assemble_source_empty_turns_rejected() -> None:
+    expect(
+        "invalid_string",
+        lambda: assemble_source("empty", [])
+    )
+
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     for name, fn in fns:
