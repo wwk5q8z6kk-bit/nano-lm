@@ -802,6 +802,18 @@ def test_independent_verifier_can_declare_semantic_support() -> None:
     )
 
 
+
+def test_snap_relocate_abstains_on_ambiguous_or_missing_quote() -> None:
+    source = assemble_source(
+        "src-amb-snap",
+        (
+            (Speaker.PATIENT, "Pain is mild today."),
+            (Speaker.CLINICIAN, "Was it mild last week too?"),
+        ),
+    )
+    assert snap_relocate(source, "SEVERE", evidence_id="ev-sev") is None
+    assert snap_relocate(source, "mild", evidence_id="ev-mild") is None
+
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     for name, fn in fns:
