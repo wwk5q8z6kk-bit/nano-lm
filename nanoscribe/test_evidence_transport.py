@@ -27,6 +27,7 @@ from nanoscribe.evaluate import (
     PredictedEncounter,
     SupportRelation,
     VerifierResult,
+    _transport_status,
     atom_result,
     evaluate,
 )
@@ -800,6 +801,63 @@ def test_independent_verifier_can_declare_semantic_support() -> None:
         atom_result(mapping_report, "atom-alg").support_relation
         is SupportRelation.CONTRADICTED
     )
+
+
+
+def test_transport_status_validation() -> None:
+    gold = _gold()
+    source = gold.sources[0]
+    span = gold.span("ev-neck")
+
+    # 1. Valid span
+    assert _transport_status(gold, span) == "ok"
+
+
+    def create_span(start, end, text, source_id, turn_id, speaker):
+        span = object.__new__(EvidenceSpan)
+        object.__setattr__(span, 'evidence_id', "ev-test")
+        object.__setattr__(span, 'source_id', source_id)
+        object.__setattr__(span, 'turn_id', turn_id)
+        object.__setattr__(span, 'speaker', speaker)
+        object.__setattr__(span, 'start', start)
+        object.__setattr__(span, 'end', end)
+        object.__setattr__(span, 'text', text)
+        return span
+
+    # 2. Unknown source
+    ghost_source_span = create_span(span.start, span.end, span.text, "no-such-source", span.turn_id, span.speaker)
+    assert _transport_status(gold, ghost_source_span) == "unknown_source"
+
+    # 3. Invalid span start (< 0)
+    invalid_start_span = create_span(-1, span.end, span.text, span.source_id, span.turn_id, span.speaker)
+    assert _transport_status(gold, invalid_start_span) == "invalid_span"
+
+    # 4. Invalid span end (end <= start)
+    invalid_end_span = create_span(span.start, span.start, "", span.source_id, span.turn_id, span.speaker)
+    assert _transport_status(gold, invalid_end_span) == "invalid_span"
+
+    # 5. Invalid span end (> len(source.text))
+    out_of_bounds_span = create_span(span.start, len(source.text) + 1, span.text, span.source_id, span.turn_id, span.speaker)
+    assert _transport_status(gold, out_of_bounds_span) == "invalid_span"
+
+    # 6. Wrong text
+    wrong_text_span = create_span(span.start, span.end, "wrong text", span.source_id, span.turn_id, span.speaker)
+    assert _transport_status(gold, wrong_text_span) == "invalid_span"
+
+    # 7. Unknown turn
+    unknown_turn_span = create_span(span.start, span.end, span.text, span.source_id, "no-such-turn", span.speaker)
+    assert _transport_status(gold, unknown_turn_span) == "invalid_span"
+
+    # 8. Span boundaries out of turn boundaries
+    turn_0 = source.turns[0]
+    turn_1 = source.turns[1]
+    out_of_turn_span = create_span(turn_1.start, turn_1.start + 2, source.text[turn_1.start : turn_1.start + 2], span.source_id, turn_0.turn_id, turn_0.speaker)
+    assert _transport_status(gold, out_of_turn_span) == "invalid_span"
+
+    # 9. Wrong speaker
+    wrong_speaker_span = create_span(span.start, span.end, span.text, span.source_id, span.turn_id, Speaker.OTHER)
+    assert _transport_status(gold, wrong_speaker_span) == "invalid_span"
+
 
 
 if __name__ == "__main__":
