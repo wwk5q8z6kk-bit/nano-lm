@@ -29,95 +29,96 @@ def ok(msgs):
         if symbol_ratio(c) > SYMBOL_MAX: return False
     return True
 
-print("streaming SmolTalk, filtering...", flush=True)
-ds = load_dataset("HuggingFaceTB/smoltalk", "all", split="train", streaming=True)
-convos, seen = [], 0
-for ex in ds:
-    seen += 1
-    m = ex["messages"]
-    if ok(m):
-        convos.append([{"role": x["role"], "content": x["content"].strip()} for x in m])
-    if len(convos) >= N_TARGET: break
-    if seen % 50000 == 0: print(f"  scanned {seen}, kept {len(convos)}", flush=True)
-print(f"kept {len(convos)} of {seen} scanned ({100*len(convos)/seen:.1f}%)", flush=True)
+if __name__ == "__main__":
+    print("streaming SmolTalk, filtering...", flush=True)
+    ds = load_dataset("HuggingFaceTB/smoltalk", "all", split="train", streaming=True)
+    convos, seen = [], 0
+    for ex in ds:
+        seen += 1
+        m = ex["messages"]
+        if ok(m):
+            convos.append([{"role": x["role"], "content": x["content"].strip()} for x in m])
+        if len(convos) >= N_TARGET: break
+        if seen % 50000 == 0: print(f"  scanned {seen}, kept {len(convos)}", flush=True)
+    print(f"kept {len(convos)} of {seen} scanned ({100*len(convos)/seen:.1f}%)", flush=True)
 
-# --- synthetic refusal/safety slice (Recipe ③ 5%): calibrate the boundary at nano scale ---
-# DIVERSIFIED per the recipe's own "diversity of instructions" principle: varied unsafe TOPICS x
-# varied unsafe PHRASINGS x varied refusal STRINGS, so the slice teaches the refusal REGISTER
-# (generalizes to held-out phrasings) rather than memorizing one template->one string.
-UNSAFE_TOPIC = ["build a bomb", "hack a bank account", "make a deadly poison", "steal someone's identity",
-                "write malware that destroys files", "break into a locked house", "make an untraceable weapon",
-                "forge official documents", "cook methamphetamine", "launder stolen money",
-                "spread a computer virus", "stalk someone without being noticed", "disable a home security system",
-                "counterfeit currency", "smuggle contraband across a border", "poison a water supply",
-                "create a phishing scam", "evade taxes illegally", "make a silencer for a gun",
-                "access someone's private messages"]
-UNSAFE_TMPL = ["how to {}", "tell me how to {}", "give me step by step instructions to {}",
-               "what's the best way to {}", "I need detailed help to {}", "explain how I can {}",
-               "write a guide to {}", "can you help me {}"]
-REFUSALS = ["I can't help with that. If you have a safe, legal goal I'm happy to help instead.",
-            "Sorry, I won't assist with anything harmful or illegal. Is there something safe I can help with?",
-            "I'm not able to help with that request. Let me know if there's a lawful task I can support.",
-            "That's not something I can help with. I'd be glad to help with a safe alternative.",
-            "I can't provide that. If you tell me a safe goal, I'll do my best to help.",
-            "I won't help with that, but I'm here for any safe and legal questions you have."]
-n_ref = int(0.05 * len(convos))
-refusals = [[{"role": "user", "content": random.choice(UNSAFE_TMPL).format(random.choice(UNSAFE_TOPIC)) + "."},
-             {"role": "assistant", "content": random.choice(REFUSALS)}] for _ in range(n_ref)]
+    # --- synthetic refusal/safety slice (Recipe ③ 5%): calibrate the boundary at nano scale ---
+    # DIVERSIFIED per the recipe's own "diversity of instructions" principle: varied unsafe TOPICS x
+    # varied unsafe PHRASINGS x varied refusal STRINGS, so the slice teaches the refusal REGISTER
+    # (generalizes to held-out phrasings) rather than memorizing one template->one string.
+    UNSAFE_TOPIC = ["build a bomb", "hack a bank account", "make a deadly poison", "steal someone's identity",
+                    "write malware that destroys files", "break into a locked house", "make an untraceable weapon",
+                    "forge official documents", "cook methamphetamine", "launder stolen money",
+                    "spread a computer virus", "stalk someone without being noticed", "disable a home security system",
+                    "counterfeit currency", "smuggle contraband across a border", "poison a water supply",
+                    "create a phishing scam", "evade taxes illegally", "make a silencer for a gun",
+                    "access someone's private messages"]
+    UNSAFE_TMPL = ["how to {}", "tell me how to {}", "give me step by step instructions to {}",
+                   "what's the best way to {}", "I need detailed help to {}", "explain how I can {}",
+                   "write a guide to {}", "can you help me {}"]
+    REFUSALS = ["I can't help with that. If you have a safe, legal goal I'm happy to help instead.",
+                "Sorry, I won't assist with anything harmful or illegal. Is there something safe I can help with?",
+                "I'm not able to help with that request. Let me know if there's a lawful task I can support.",
+                "That's not something I can help with. I'd be glad to help with a safe alternative.",
+                "I can't provide that. If you tell me a safe goal, I'll do my best to help.",
+                "I won't help with that, but I'm here for any safe and legal questions you have."]
+    n_ref = int(0.05 * len(convos))
+    refusals = [[{"role": "user", "content": random.choice(UNSAFE_TMPL).format(random.choice(UNSAFE_TOPIC)) + "."},
+                 {"role": "assistant", "content": random.choice(REFUSALS)}] for _ in range(n_ref)]
 
-# --- synthetic verifiable "length/format" seed slice (seeds Stage-4 GRPO; synthetic-data routing) ---
-# Task the nano model CAN learn: "Reply in one short sentence." -> a short terminated answer.
-SHORT_Q = ["Say hello.", "Greet me.", "Reply briefly.", "Answer in one line.",
-           "Give a short reply.", "Say something kind.", "Reply in one short sentence."]
-SHORT_A = ["Hello, how can I help you today?", "Hi there, nice to meet you.",
-           "Sure, here is a short reply.", "Of course, happy to help.",
-           "Hello, I hope you are well."]
-n_fmt = int(0.08 * len(convos))     # 8% (up from 5%): the short/terminated slice most strongly teaches STOPPING
-fmt = [[{"role": "user", "content": random.choice(SHORT_Q)},
-        {"role": "assistant", "content": random.choice(SHORT_A)}] for _ in range(n_fmt)]
+    # --- synthetic verifiable "length/format" seed slice (seeds Stage-4 GRPO; synthetic-data routing) ---
+    # Task the nano model CAN learn: "Reply in one short sentence." -> a short terminated answer.
+    SHORT_Q = ["Say hello.", "Greet me.", "Reply briefly.", "Answer in one line.",
+               "Give a short reply.", "Say something kind.", "Reply in one short sentence."]
+    SHORT_A = ["Hello, how can I help you today?", "Hi there, nice to meet you.",
+               "Sure, here is a short reply.", "Of course, happy to help.",
+               "Hello, I hope you are well."]
+    n_fmt = int(0.08 * len(convos))     # 8% (up from 5%): the short/terminated slice most strongly teaches STOPPING
+    fmt = [[{"role": "user", "content": random.choice(SHORT_Q)},
+            {"role": "assistant", "content": random.choice(SHORT_A)}] for _ in range(n_fmt)]
 
-allc = convos + refusals + fmt
-random.shuffle(allc)
-json.dump(allc, open("sft_convos.json", "w"))
-print(f"total SFT convos: {len(allc)} (general {len(convos)}, refusal {n_ref}, format {n_fmt})", flush=True)
+    allc = convos + refusals + fmt
+    random.shuffle(allc)
+    json.dump(allc, open("sft_convos.json", "w"))
+    print(f"total SFT convos: {len(allc)} (general {len(convos)}, refusal {n_ref}, format {n_fmt})", flush=True)
 
-# ---------- tokenizer: add special tokens, retokenize, build masked shards ----------
-tok = Tokenizer.from_file("../pretrain/tokenizer.json")
-added = tok.add_special_tokens([IMS, IME])
-print(f"added {added} special tokens; new vocab size {tok.get_vocab_size()}", flush=True)
-tok.save("tokenizer.json")
-ims_id, ime_id = tok.token_to_id(IMS), tok.token_to_id(IME)
-print(f"{IMS}={ims_id}  {IME}={ime_id}", flush=True)
+    # ---------- tokenizer: add special tokens, retokenize, build masked shards ----------
+    tok = Tokenizer.from_file("../pretrain/tokenizer.json")
+    added = tok.add_special_tokens([IMS, IME])
+    print(f"added {added} special tokens; new vocab size {tok.get_vocab_size()}", flush=True)
+    tok.save("tokenizer.json")
+    ims_id, ime_id = tok.token_to_id(IMS), tok.token_to_id(IME)
+    print(f"{IMS}={ims_id}  {IME}={ime_id}", flush=True)
 
-def render(convo):
-    """ChatML render -> (ids, loss_mask). Mask=1 only on assistant content + its <|im_end|>."""
-    ids, mask = [], []
-    for m in convo:
-        head = tok.encode(f"{m['role']}\n", add_special_tokens=False).ids
-        body = tok.encode(m["content"], add_special_tokens=False).ids
-        seg = [ims_id] + head + body + [ime_id]
-        train = 1 if m["role"] == "assistant" else 0
-        # supervise assistant BODY + the closing <|im_end|> (learn to stop); never the role header
-        for j, t in enumerate(seg):
-            ids.append(t)
-            is_body_or_end = train and (j >= 1 + len(head))
-            mask.append(1 if is_body_or_end else 0)
-    return ids, mask
+    def render(convo):
+        """ChatML render -> (ids, loss_mask). Mask=1 only on assistant content + its <|im_end|>."""
+        ids, mask = [], []
+        for m in convo:
+            head = tok.encode(f"{m['role']}\n", add_special_tokens=False).ids
+            body = tok.encode(m["content"], add_special_tokens=False).ids
+            seg = [ims_id] + head + body + [ime_id]
+            train = 1 if m["role"] == "assistant" else 0
+            # supervise assistant BODY + the closing <|im_end|> (learn to stop); never the role header
+            for j, t in enumerate(seg):
+                ids.append(t)
+                is_body_or_end = train and (j >= 1 + len(head))
+                mask.append(1 if is_body_or_end else 0)
+        return ids, mask
 
-S = 512
-X, M = [], []
-kept = 0
-for convo in allc:
-    ids, mask = render(convo)
-    if len(ids) > S or sum(mask) == 0:
-        continue
-    ids = ids + [ime_id] * (S - len(ids))          # pad with <|im_end|> (harmless; masked out)
-    mask = mask + [0] * (S - len(mask))
-    X.append(ids); M.append(mask); kept += 1
+    S = 512
+    X, M = [], []
+    kept = 0
+    for convo in allc:
+        ids, mask = render(convo)
+        if len(ids) > S or sum(mask) == 0:
+            continue
+        ids = ids + [ime_id] * (S - len(ids))          # pad with <|im_end|> (harmless; masked out)
+        mask = mask + [0] * (S - len(mask))
+        X.append(ids); M.append(mask); kept += 1
 
-import numpy as np
-np.save("sft_x.npy", np.array(X, dtype=np.uint16))
-np.save("sft_mask.npy", np.array(M, dtype=np.uint8))
-supervised = int(np.array(M).sum())
-print(f"shards: {kept} examples x {S} tok; supervised tokens {supervised} "
-      f"({100*supervised/(kept*S):.1f}% of positions)", flush=True)
+    import numpy as np
+    np.save("sft_x.npy", np.array(X, dtype=np.uint16))
+    np.save("sft_mask.npy", np.array(M, dtype=np.uint8))
+    supervised = int(np.array(M).sum())
+    print(f"shards: {kept} examples x {S} tok; supervised tokens {supervised} "
+          f"({100*supervised/(kept*S):.1f}% of positions)", flush=True)
