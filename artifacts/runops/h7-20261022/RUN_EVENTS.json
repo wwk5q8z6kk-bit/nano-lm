@@ -1,0 +1,11 @@
+[
+  {
+    "time": "2026-10-22T19:33:18.792668+00:00",
+    "event": "training_submission_prepared",
+    "runner_sha256": "f0d7eed99f6b1eaf28e214c0e73924585ec91b92333379a460f2d4d53f8d8c86",
+    "notebook_sha256": "c7a2b90b0d3511558d2d3ed57841217e6663c668e7136dab1f5af59208bcdae4",
+    "attempt_id": "c6177067-487f-4872-a84e-cd2c9eab8278",
+    "cost_ceiling_usd": 0,
+    "provider_timeout_seconds": 14400
+  }
+]

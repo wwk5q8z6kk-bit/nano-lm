@@ -1,0 +1,11 @@
+{
+  "experiment_id": "nano-p1-h7-boundary-margin-screen-v1",
+  "observed_at_utc": "2026-10-22T19:33:45.038136+00:00",
+  "training_kernel": "hassaneljesr/nano-h7-train-run-d6ed212",
+  "training_version": 1,
+  "provider_status": "RUNNING",
+  "training_completed": false,
+  "evaluation_submitted": false,
+  "decision": null,
+  "new_paid_compute_usd": 0
+}

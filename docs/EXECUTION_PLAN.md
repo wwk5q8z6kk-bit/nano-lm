@@ -28,8 +28,10 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 | C1 | Reconcile H6 terminal evidence | **Done** — exact historical result and decision are present on `master`; hashes verify |
 | C2 | Localize H6 failures | **Done** — authenticated row-level analysis separates state selection from evidence binding; threshold and verifier effects remain explicitly unassessed |
 | C3 | Define the next bounded intervention | **Done** — H7-BM isolates local evidence-boundary ranking; H6 is not rerun or relabeled |
-| C4 | Run cheapest valid screen | **Current** — two-stage Kaggle CPU package is locally verified with screen absent from training; execute two fixed seeds, freeze report hashes, then perform the single preregistered control/treatment scoring pass |
+| C4 | Finish bounded H7 screen | **Running** — private Kaggle CPU training version 1 submitted 2026-10-22; screen absent from training; capture both fixed seeds and freeze report hashes before the single preregistered control/treatment scoring pass |
 | C5 | Re-evaluate P1 exit gap | Automatic evidence plus external human-review plan; no mastery claim from synthetic data |
+| C6 | Import preserved compact-model comparison | **Built** — compact, six recovered OpenResearch prompt variants, corrected C2 and terminal H6 evidence with exact provenance and explicit denominators; H7 slot awaits its single completed screen |
+| C7 | Connect one end-to-end scribing path | **Built** — transcript-only reference extraction → encounter → source-checked review draft; 143 NanoScribe tests pass; learned-model and external human validation remain open |
 
 ## Explicitly out of scope (until separately authorized)
 
@@ -40,9 +42,14 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 
 ## Training / compute (standing)
 
-Kaggle and RunPod are complementary active backends. Prefer Kaggle when the
-free runtime fits; use RunPod for exact GPU/runtime requirements, persistence,
-or managed inference. Materially costly or confirmatory runs remain
+Kaggle and RunPod are complementary active backends. Optimize useful evidence
+per dollar and wall-clock hour: prefer Kaggle when the free runtime fits and
+turnaround is acceptable; use RunPod when faster compute justifies the spend
+within the active experiment budget, or for exact GPU/runtime requirements,
+persistence, or managed inference. H7 retains its frozen CPU recipe and $0
+ceiling. Authenticated OpenResearch access is available and six prior prompt
+variant runs are recovered in the comparison; no new managed boxes were launched.
+Materially costly or confirmatory runs remain
 experiment-scoped under the active plan’s budget and authorization rules.
 
 ## Verification commands

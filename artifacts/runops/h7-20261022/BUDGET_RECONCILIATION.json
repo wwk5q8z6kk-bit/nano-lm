@@ -1,0 +1,43 @@
+{
+  "schema": "nano.p1.budget-reconciliation.v1",
+  "observed_at_utc": "2026-10-22T19:29:41.618061+00:00",
+  "query_window": {
+    "start": "2026-08-01T00:00:00Z",
+    "end": "2026-10-23T00:00:00Z"
+  },
+  "runpod_account_window_totals": {
+    "network-volume": {
+      "rows": 80,
+      "amount_usd": 7.983889082213864,
+      "source": "provider/billing-network-volume.json",
+      "sha256": "e45c0049551d0dea5985cc334dace91a0743e4156be345c6d1ce0f4825d37af5"
+    },
+    "pods": {
+      "rows": 23,
+      "amount_usd": 35.247332914790604,
+      "source": "provider/billing-pods.json",
+      "sha256": "0e7b0e3c47af6708f99f46d77a0f7fdca69d1b7c7ec96326048047c994daf105"
+    },
+    "serverless": {
+      "rows": 5,
+      "amount_usd": 28.05128000508921,
+      "source": "provider/billing-serverless.json",
+      "sha256": "bb6894c561e6fff66b5dafae80ed14bc6b1771c2f1d3af7248c8f9f9244afa1f"
+    }
+  },
+  "runpod_account_window_total_usd": 71.28250200209368,
+  "interpretation": "Account-window billing, not fully attributed campaign spend. Network-volume rows have blank timestamps; do not interpret this as a validated final campaign total. Historical campaign/spend.json remains unchanged.",
+  "campaign_autonomous_envelope_usd": 180,
+  "campaign_hard_cap_usd": 200,
+  "owner_reserve_usd": 20,
+  "h7_authorized_cost_usd": 0,
+  "new_paid_compute_started": false,
+  "live_runpod_pods": 0,
+  "live_runpod_serverless_endpoints": 0,
+  "retained_network_volumes": 2,
+  "backends": {
+    "kaggle": "authenticated; free CPU runtime observed",
+    "runpod": "authenticated; no active pods or endpoints",
+    "openresearch": "orx authenticated; ephemeral boxes billed to personal org; no launch"
+  }
+}

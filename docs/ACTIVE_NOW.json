@@ -1,9 +1,9 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
-  "updated": "2026-10-12",
+  "updated": "2026-10-22",
   "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_H7_KAGGLE_EXECUTION_READY",
+  "current_gate": "P1_H7_KAGGLE_TRAINING_RUNNING",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
   "training_backend": "KAGGLE_AND_RUNPOD",
   "training_status": "ACTIVE",
@@ -22,11 +22,15 @@
     "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
     "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
     "confirmatory_evidential_run": "PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION",
-    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
+    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM",
+    "selection_objective": "USEFUL_EVIDENCE_PER_DOLLAR_AND_WALL_CLOCK_HOUR",
+    "runpod_speed": "ALLOWED_WHEN_TIME_SAVED_JUSTIFIES_COST_WITHIN_ACTIVE_EXPERIMENT_BUDGET"
   },
   "bounded_work": [
     "p1_h7_kaggle_two_seed_cpu_training",
-    "p1_h7_one_shot_control_treatment_screen"
+    "p1_h7_one_shot_control_treatment_screen",
+    "p1_preserved_compact_model_comparison",
+    "p1_transcript_to_checked_review_draft"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -35,7 +39,7 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "EXECUTE_H7_TWO_STAGE_KAGGLE_PACKAGE",
+  "next_engineering": "CAPTURE_H7_TREATMENTS_THEN_SINGLE_SCREEN",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "a5d0c5dac0663cd760224073439905b211c11b44"
+  "integration_base_sha": "d6ed212c32384c1d50089e50260918028af88bfd"
 }

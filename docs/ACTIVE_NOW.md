@@ -1,7 +1,7 @@
 # Active Now
 
-**Updated:** 2026-10-12
-**Integration base:** `origin/master` @ `a5d0c5d` (PR #115 — authenticated H7 trainer)
+**Updated:** 2026-10-22
+**Integration base:** `origin/master` @ `d6ed212` (PR #116 — isolated H7 package)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -9,7 +9,7 @@
 |-------|-------|
 | `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `P1_H7_KAGGLE_EXECUTION_READY` |
+| `current_gate` | `P1_H7_KAGGLE_TRAINING_RUNNING` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
 | `training_backend` | `KAGGLE_AND_RUNPOD` |
 | `training_status` | `ACTIVE` |
@@ -47,9 +47,12 @@ Local Apple Silicon / CPU remains available for cheap mechanism experiments,
 development, preprocessing, evaluation, and other zero-cost exploratory work.
 ```
 
-Choose the cheapest backend that satisfies the experiment. Kaggle is preferred
-when its free runtime fits. RunPod is used for exact GPU/runtime requirements,
-persistent volumes, or managed inference. A new materially costly run still
+Choose the backend that maximizes useful evidence per dollar and wall-clock
+hour. Kaggle is preferred when its free runtime fits and turnaround is
+acceptable. RunPod is also appropriate when its compute speed justifies the
+cost within the active experiment budget, as well as for exact GPU/runtime
+requirements, persistent volumes, or managed inference. H7 retains its frozen
+Kaggle CPU recipe and $0 ceiling. A new materially costly run still
 needs experiment-scoped authorization. A confirmatory evidential run needs
 preregistration plus experiment-scoped authorization.
 
@@ -101,16 +104,58 @@ control; evaluation contains the frozen screen, frozen H6 control, tokenizer,
 and one-pass scorer but no H5 training data or base checkpoint. Evaluation can
 begin only after both treatment reports are hash-frozen and transferred. The
 experiment has a $0 compute ceiling, a four-hour stop condition, one control
-pass, two treatment passes, no third seed, and no threshold sweep. The next
-step is to execute this package on free Kaggle CPU and pull the authenticated
-artifacts before interpreting the preregistered PASS/REJECT/GRAY result.
+pass, two treatment passes, no third seed, and no threshold sweep. The training stage was submitted on 2026-10-22 as private Kaggle kernel
+`hassaneljesr/nano-h7-train-run-d6ed212`, version 1. The provider reports RUNNING;
+no completed training or screen result is yet claimed. The operational wrapper
+verifies every frozen package member, fixes only the Kaggle dependency bootstrap
+and evaluation checksum working directory, reserves each stage once outside
+Kaggle, and enforces a cumulative four-hour runtime cap. Execution records are
+in [`artifacts/runops/h7-20261022/`](../artifacts/runops/h7-20261022/RUN_STATE.json).
+
+## Preserved comparison and compute availability
+
+The [P1 comparison](../artifacts/p1_comparison/REPORT.md) now imports exact,
+hash-pinned compact-model source results from their preserved branch alongside
+six recovered OpenResearch prompt variants, the corrected larger-model C2
+screen and terminal H6 evidence. The compact
+Qwen2.5-1.5B route cleared its recorded two-field synthetic floors across three
+seeds; its span agreement includes overlap and excludes unrelocated spans, so
+it is not an exact-span or full-P1 score. Corrected C2 student and managed state
+counts are 109/149 and 118/150; the gap is -5.51 percentage points, not the old
+-32-point claim. H7 remains a separate fresh-screen comparison group.
+
+The recovered OpenResearch study uses a fixed Qwen2.5-1.5B checkpoint and 24
+fresh synthetic instances (384 slots), separate from its earlier 12 instances.
+The shortest-span clause produced 17/240 grounded present slots versus 3/240
+for the content-free clause. The verbatim clause improved location but lost six
+correct abstentions. These are small, scoped prompt-mechanism findings; the
+repeated slots and shared templates do not establish independent clinical
+evidence or a trained-model gain. Exact exports, preregistrations, metric code,
+and a sanitized audit matching all six retrieved run logs are preserved in the
+comparison. Raw provider logs remain local.
+
+Kaggle, RunPod, and OpenResearch (`orx`) authentication were verified live.
+OpenResearch managed boxes bill the organization; none were launched. No RunPod
+pods or serverless endpoints were active. Two retained network volumes remain.
+The observed RunPod account-window billing is $71.282502, including storage;
+this is not a fully attributed campaign balance. The historical campaign ledger
+is preserved. H7 has a $0 ceiling and adds no paid compute. See the
+[budget reconciliation](../artifacts/runops/h7-20261022/BUDGET_RECONCILIATION.json).
 
 ## Current gate sequence
+
+The [bounded scribing path](../nanoscribe/SCRIBING_PATH.md) now connects
+transcript-only solver input to the encounter schema, a five-field review draft,
+and independent source/representation checking. The default is explicitly the
+deterministic reference extractor. Forty-nine new adversarial boundary tests bring
+the NanoScribe suite to 143 passing tests; this is software integration evidence,
+not a learned-model result or clinical validation. Unsupported context and
+corrections retain review evidence and can force abstention.
 
 ```text
 P1 — execute isolated H7 two-stage package on free Kaggle CPU
         ↓
-CHEAPEST VALID TWO-SEED MECHANISM SCREEN (Kaggle first)
+FROZEN TWO-SEED H7 MECHANISM SCREEN
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓

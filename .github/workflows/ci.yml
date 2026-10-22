@@ -46,5 +46,11 @@ jobs:
       - name: Benchmark contract test deps
         run: pip install -r requirements-bench-test.txt
 
+      - name: NanoScribe contracts and end-to-end path
+        run: python3 -m pytest nanoscribe/ -q
+
+      - name: P1 evidence comparison and H7 launch controls
+        run: python3 -m pytest scripts/test_reconcile_p1_comparison.py scripts/test_run_h7_kaggle.py -q
+
       - name: Benchmark contracts (Program 0 + agentic instruments)
         run: pytest benchmarks/ -q
