@@ -121,6 +121,61 @@ def test_correction_hidden_in_another_fields_uncertain_evidence_quarantines_deni
     assert result["disposition"] == "abstain"
 
 
+@pytest.mark.parametrize("text", [
+    "Doctor: Answer the next questions about your child, not yourself.\nDoctor: Any allergies I should know about?\nPatient: Yes, penicillin.\n",
+    "Doctor: Any allergies I should know about?\nPatient: No allergies.\nDoctor: You reported a rash with penicillin earlier; that is a possible allergy.\n",
+])
+def test_unhandled_clinician_context_quarantines_attribution_and_denial(text):
+    result = scribe(text)
+    assert result["verification"]["passed"]
+    assert result["disposition"] == "abstain"
+    assert result["note"]["claims"][4]["state"] == "uncertain"
+    assert "patient reports" not in result["note"]["text"]
+    assert "patient denial" not in result["note"]["text"]
+    atom = result["encounter"]["atoms"][0]
+    assert atom["assertion_state"] == "uncertain" and atom["experiencer"] == "unknown"
+    assert any(span["speaker"] == "clinician" for span in result["encounter"]["evidence"])
+    review = next(item for item in result["encounter"]["unresolved"] if item["topic"] == "allergy")
+    assert "unhandled_source_context" in review["reason"]
+
+
+@pytest.mark.parametrize("reply", ["Just avoiding aspirin.", "Just skipping aspirin.",
+                                  "Just withholding aspirin.", "Just considering aspirin."])
+def test_nonuse_and_contemplated_use_are_not_asserted_as_medication(reply):
+    result = scribe("Doctor: Have you taken anything for it?\nPatient: " + reply + "\n")
+    assert result["verification"]["passed"]
+    assert result["extraction"]["fields"][3]["state"] == "supported"
+    assert result["note"]["claims"][3]["state"] == "uncertain"
+    assert result["note"]["claims"][3]["value"] is None
+    assert result["disposition"] == "abstain"
+    assert "patient reports" not in result["note"]["text"]
+
+
+def test_epistemic_modifier_inside_positive_wrapper_is_not_asserted():
+    result = scribe("Doctor: Any allergies I should know about?\nPatient: I'm allergic to potentially penicillin.\n")
+    assert result["verification"]["passed"]
+    assert result["note"]["claims"][4]["state"] == "uncertain"
+    assert result["note"]["claims"][4]["value"] is None
+    assert result["disposition"] == "abstain"
+
+
+@pytest.mark.parametrize(("question", "denial", "complaint", "field_index"), [
+    ("Any allergies I should know about?", "No allergies.", "penicillin allergy", 4),
+    ("Have you taken anything for it?", "No, nothing yet.", "aspirin side effects", 3),
+])
+def test_complaint_cannot_hide_cross_field_context_and_leave_a_denial(question, denial, complaint, field_index):
+    text = (f"Doctor: {question}\nPatient: {denial}\n"
+            f"Doctor: Good morning, what brings you in today?\nPatient: I've been having {complaint}.\n")
+    result = scribe(text)
+    assert result["verification"]["passed"]
+    assert result["extraction"]["fields"][field_index]["state"] == "absent"
+    assert result["note"]["claims"][0]["state"] == "uncertain"
+    assert result["note"]["claims"][field_index]["state"] == "uncertain"
+    assert result["disposition"] == "abstain"
+    assert "patient reports" not in result["note"]["text"]
+    assert "patient denial" not in result["note"]["text"]
+
+
 class MaliciousSolver:
     descriptor = SolverDescriptor("test/adversarial", SolverKind.REFERENCE)
 

@@ -42,6 +42,21 @@ _NEGATIVE = {
     FieldName.ALLERGY: {"no allergies.", "none whatsoever."},
 }
 _QUALIFIERS = frozenset("no not none nothing neither nor never zero free without denies denied uncertain unknown unsure maybe perhaps possibly possible probably apparently reportedly suspected likely unlikely might may could would should if unless or but except although because that which who before after previously past history resolved stopped tomorrow yesterday next last used formerly my his her their mother father child daughter son wife husband partner think guess believe seem seems sometimes intermittent occasionally almost barely".split())
+# A positive reply wrapper does not turn non-use, contemplated use, or an
+# epistemic modifier into a scalar name. Exclude these contextual words even
+# after an article; this remains a lexical guard, not general entailment.
+_CONTEXTUAL_VALUE_WORDS = frozenset(
+    "avoid avoided avoiding avoidance skip skipped skipping withhold withheld withholding "
+    "stop stopping discontinue discontinued discontinuing consider considered considering "
+    "potential potentially".split()
+)
+# This bridge cannot reconcile a complaint that also asserts an allergy or
+# medication relationship. Quarantine it instead of treating its field label as
+# proof that it cannot contradict another field (for example, an allergy denial).
+_COMPLAINT_RELATION_WORDS = frozenset(
+    "allergy allergies allergic medication medications medicine medicines drug drugs "
+    "effect effects reaction reactions".split()
+)
 LABELS = dict(zip(FIELD_ORDER, ("Chief complaint", "Duration", "Severity", "Medication", "Allergy")))
 HEADER = "Patient-reported encounter draft — human review required"
 SCOPE_REASON = "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established."
@@ -71,7 +86,7 @@ def _turn_index(source: Source, start: int, end: int) -> int | None:
 
 
 def uncovered_turns(source: Source, output: NanoOutput) -> tuple[Turn, ...]:
-    """Unrepresented patient replies can contain corrections to any field."""
+    """Unrepresented context from any speaker can change a field's meaning."""
     covered = {_turn_index(source, span.start, span.end) for field in output.fields for span in field.evidence}
     known_questions = set().union(*QUESTIONS.values())
     return tuple(turn for i, turn in enumerate(source.turns)
@@ -86,7 +101,9 @@ def _plain_value(field: FieldName, text: str) -> bool:
     tokens = re.findall(r"\w+", text.casefold())
     return (0 < len(tokens) <= 5 and len(text) <= 80
             and re.fullmatch(r"[^\W_]+(?:[ -][^\W_]+)*", text, re.UNICODE) is not None
-            and not _QUALIFIERS.intersection(tokens))
+            and not _QUALIFIERS.intersection(tokens)
+            and not _CONTEXTUAL_VALUE_WORDS.intersection(tokens)
+            and not (field is FieldName.CHIEF_COMPLAINT and _COMPLAINT_RELATION_WORDS.intersection(tokens)))
 
 
 def _observation_kind(source: Source, field: FieldName, span: CandidateSpan) -> FieldState | None:
@@ -123,7 +140,9 @@ def assess_fields(request: NanoInput, output: NanoOutput) -> tuple[FieldAssessme
     """
     output.validate_against(request)
     source = transcript_source(request)
-    unhandled = any(turn.speaker is not Speaker.CLINICIAN for turn in uncovered_turns(source, output))
+    # A clinician can establish a different experiencer or correct an earlier
+    # answer. Only the exact allowlisted questions are safe to leave uncovered.
+    unhandled = bool(uncovered_turns(source, output))
     # Evidence under an uncertain/wrong field may contain a correction to a
     # different field. Merely being referenced does not make that turn handled.
     unverified = any(_observation_kind(source, field.field, span) is None
@@ -133,7 +152,7 @@ def assess_fields(request: NanoInput, output: NanoOutput) -> tuple[FieldAssessme
         reasons = []
         if field.presented:
             if unhandled:
-                reasons.append("unhandled_patient_or_unlabeled_turn")
+                reasons.append("unhandled_source_context")
             if unverified:
                 reasons.append("unverified_source_observation")
             for span in field.evidence:

@@ -56,14 +56,23 @@ than the reference extractor. Explicit medication/allergy denial is retained
 as a denial quote; silence is missing. Qualified denial such as “Not that I
 know of” is quarantined even if the reference solver calls it absent.
 Uncertain/conflicting fields retain their evidence but have no asserted value.
-Any unhandled patient or unlabeled turn quarantines all otherwise presented
-fields, because an ignored correction could affect any of them. So does an
+Any unhandled source turn quarantines all otherwise presented fields, because
+an ignored correction or instruction about another person could affect any of
+them. This includes clinician turns other than the exact allowlisted questions.
+So does an
 evidence-bearing reply outside the checked observation grammar, even when the
 solver assigned it to uncertainty in a different field. This conservative rule
 prevents a consumed correction from leaving an earlier denial in the draft.
-Unhandled
-clinician content is preserved as a review item, not incorporated as a plan or
-diagnosis. Clinician quotations cannot serve as patient evidence.
+Unhandled clinician content is preserved as a review item; clinician quotations
+cannot serve as patient evidence. Contextual words for non-use, contemplated use,
+or qualification are also excluded from scalar values: “Just avoiding aspirin”
+and “potentially penicillin” remain uncertain despite a positive reply wrapper.
+Chief-complaint scalars also exclude explicit allergy/medication relation words
+(such as “allergy”, “medicine”, “effects”, or “reaction”). Thus “penicillin
+allergy” or “aspirin side effects” cannot count as a handled complaint while a
+separate denial remains asserted. The checker quarantines the values; it does
+not infer or resolve a clinical relationship between fields.
+These exclusions are conservative lexical guards, not a complete language model.
 
 The checked projection uses existing `EncounterRecord` atoms. Chief complaint,
 duration, and severity are symptom-related scalar atoms identified by their
@@ -96,6 +105,8 @@ clinical usefulness, clinician review, or readiness to put a note in a chart.
 Tests exercise values derived from the transcript, original Unicode/CRLF
 offsets, absence versus silence, qualified denials, conflicts, negative/hedged
 and other-person language, injected instructions, unconsumed corrections,
+clinician context/corrections, medication non-use and contemplated use,
+cross-field context inside complaint scalars,
 wrong-field and wrong-speaker source spans, solver exceptions, and CLI error
 behavior. Mutation tests change draft prose/value/state/references, remove or
 add claims, alter atom metadata, remove conflicts, change unresolved review
