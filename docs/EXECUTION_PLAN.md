@@ -28,10 +28,11 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 | C1 | Reconcile H6 terminal evidence | **Done** — exact historical result and decision are present on `master`; hashes verify |
 | C2 | Localize H6 failures | **Done** — authenticated row-level analysis separates state selection from evidence binding; threshold and verifier effects remain explicitly unassessed |
 | C3 | Define the next bounded intervention | **Done** — H7-BM isolates local evidence-boundary ranking; H6 is not rerun or relabeled |
-| C4 | Finish bounded H7 screen | **Running** — private Kaggle CPU training version 1 submitted 2026-10-22; screen absent from training; capture both fixed seeds and freeze report hashes before the single preregistered control/treatment scoring pass |
-| C5 | Re-evaluate P1 exit gap | Automatic evidence plus external human-review plan; no mastery claim from synthetic data |
-| C6 | Import preserved compact-model comparison | **Built** — compact, six recovered OpenResearch prompt variants, corrected C2 and terminal H6 evidence with exact provenance and explicit denominators; H7 slot awaits its single completed screen |
+| C4 | Finish bounded H7 screen | **Executed; consumed** — both seeds and single screen completed for $0 in 4,017.465 seconds. Recorded REJECT is scientifically invalid because the evaluator replaced annotated gold with all-missing fields; exact evidence and diagnosis preserved, no rerun |
+| C5 | Re-evaluate P1 exit gap | **Assessed** — checked reference scribing path exists; learned exact-span quality, validated target transport, longer-dialogue transfer and external human review remain open. No H7 treatment conclusion or P1 mastery claim |
+| C6 | Import preserved compact-model comparison | **Built** — compact, six recovered OpenResearch prompt variants, corrected C2 and terminal H6 evidence with exact provenance and explicit denominators; H7 bytes imported with an explicit invalid-gold warning |
 | C7 | Connect one end-to-end scribing path | **Built** — transcript-only reference extraction → encounter → source-checked review draft; 143 NanoScribe tests pass; learned-model and external human validation remain open |
+| C8 | Validate future evaluation target transport | Add source-annotation parity checks before any separately specified fresh screen; preserve consumed H7 and H6 artifacts |
 
 ## Explicitly out of scope (until separately authorized)
 

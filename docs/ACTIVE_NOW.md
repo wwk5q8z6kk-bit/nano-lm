@@ -9,7 +9,7 @@
 |-------|-------|
 | `program_execution_status` | `P1_SCRIBING_ACTIVE` |
 | `capability_frontier` | `P1_SCRIBING` |
-| `current_gate` | `P1_H7_KAGGLE_TRAINING_RUNNING` |
+| `current_gate` | `P1_H7_CONSUMED_INVALID_GOLD_INSTRUMENT` |
 | `evidence_core` | `FROZEN_UNTOUCHED_BY_DOC_PR` |
 | `training_backend` | `KAGGLE_AND_RUNPOD` |
 | `training_status` | `ACTIVE` |
@@ -86,8 +86,7 @@ dataset SHA-256 `9b18c5eef105d0fa2ff0a1e575e764c0014a4ff62e40e8b8205dc12674c436f
 The manifest proves zero exact-transcript, normalized line-component, and open
 value overlap (excluding the fixed severity vocabulary) against legacy
 train/dev and H4 fit/calibration, which are the source families replayed by
-H5/H6. It contains no PHI or private material. The screen remains unopened by
-either model arm.
+H5/H6. It contains no PHI or private material. The screen is mounted only in the separately reserved evaluation stage.
 
 The dedicated H7 trainer is implemented and locally verified. It imports
 the authenticated H6 recipe, preserves H6's model, data identities, optimizer,
@@ -97,20 +96,33 @@ The frozen H6 trainer remains untouched. The exact historical H5 manifest has
 been restored and authenticated alongside its unchanged fit and calibration
 bytes.
 
-The H7 evaluator and deterministic Kaggle packager are now locally verified.
-The packager emits two physically separate archives: training contains H5 data,
-the base checkpoint, and two fixed CPU treatment seeds but no H7 screen or
-control; evaluation contains the frozen screen, frozen H6 control, tokenizer,
-and one-pass scorer but no H5 training data or base checkpoint. Evaluation can
-begin only after both treatment reports are hash-frozen and transferred. The
-experiment has a $0 compute ceiling, a four-hour stop condition, one control
-pass, two treatment passes, no third seed, and no threshold sweep. The training stage was submitted on 2026-10-22 as private Kaggle kernel
-`hassaneljesr/nano-h7-train-run-d6ed212`, version 1. The provider reports RUNNING;
-no completed training or screen result is yet claimed. The operational wrapper
-verifies every frozen package member, fixes only the Kaggle dependency bootstrap
-and evaluation checksum working directory, reserves each stage once outside
-Kaggle, and enforces a cumulative four-hour runtime cap. Execution records are
-in [`artifacts/runops/h7-20261022/`](../artifacts/runops/h7-20261022/RUN_STATE.json).
+The bounded H7 execution is complete and its screen is consumed. Both fixed
+seeds selected epoch 2, with all six checkpoints and both reports authenticated.
+The training stage took 3,694.707 seconds; the evaluation stage, containing one
+control pass and two treatment passes, took 322.758 seconds. Their measured
+runtime was 4,017.465 seconds total and **$0 new paid compute** (excluding
+provider provisioning and the pre-execution version-1 failure).
+The result bytes and recorded arithmetic are preserved in
+[H7_TERMINAL_DECISION.json](../artifacts/nano_h7/H7_TERMINAL_DECISION.json).
+
+**Scientific validity: INVALID_GOLD_ANNOTATIONS.** The evaluator recorded
+`REJECT`, but reconstructed all 5,000 gold fields as missing; the authenticated
+screen manifest specifies only 250 missing and 4,750 nonmissing fields. It used
+a legacy fixture extractor instead of the screen's annotated targets. The
+reported accuracy and boundary comparisons therefore cannot establish model
+quality or a valid treatment rejection. The [stored-output/code diagnosis](research/H7_EVALUATOR_DIAGNOSIS.md)
+does not rerun a model or open screen inputs. The next instrument must validate
+annotated-target transport before any separately specified fresh experiment.
+This consumed screen, its original result and H6's terminal verdict remain unchanged.
+
+Private evaluation kernel `hassaneljesr/nano-h7-eval-run-d6ed212` version 2
+completed under the original reservation. Version 1 stopped at a mount-path
+assertion before the runner started; independent review verified the narrow
+manifest-discovery repair. The frozen result checksum list also included a
+renamed temporary file. A separate capture verifier proved that entry's exact
+prefix digest while authenticating every actual member; both the first capture
+failure and successful audited capture are retained. Neither repair repeated
+the scientific evaluation. See the [execution record](../artifacts/runops/h7-20261022/RUN_STATE.json).
 
 ## Preserved comparison and compute availability
 
@@ -122,7 +134,7 @@ Qwen2.5-1.5B route cleared its recorded two-field synthetic floors across three
 seeds; its span agreement includes overlap and excludes unrelocated spans, so
 it is not an exact-span or full-P1 score. Corrected C2 student and managed state
 counts are 109/149 and 118/150; the gap is -5.51 percentage points, not the old
--32-point claim. H7 remains a separate fresh-screen comparison group.
+-32-point claim. H7 remains a separate comparison group, explicitly marked invalid for scientific interpretation.
 
 The recovered OpenResearch study uses a fixed Qwen2.5-1.5B checkpoint and 24
 fresh synthetic instances (384 slots), separate from its earlier 12 instances.
@@ -153,9 +165,9 @@ not a learned-model result or clinical validation. Unsupported context and
 corrections retain review evidence and can force abstention.
 
 ```text
-P1 — execute isolated H7 two-stage package on free Kaggle CPU
+P1 — H7 executed; frozen screen consumed; gold transport invalid
         ↓
-FROZEN TWO-SEED H7 MECHANISM SCREEN
+VALIDATE ANNOTATED TARGET TRANSPORT FOR A NEW INSTRUMENT
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓

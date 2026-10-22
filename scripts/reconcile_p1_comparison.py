@@ -32,6 +32,8 @@ H7_BAR_NAMES = (
     "zero_decode_failures",
     "no_field_collapse",
 )
+H7_FIELDS = ("chief_complaint", "duration", "severity", "medication", "allergy")
+H7_STATES = ("supported", "absent", "uncertain", "conflicting", "missing")
 
 
 class EvidenceError(ValueError):
@@ -255,11 +257,111 @@ def orx_study(src: dict[str, Any], audit: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def h7_result(path: Path | None, digest: str | None, contract: dict[str, Any]) -> dict[str, Any]:
+def h7_gold_annotation_audit(result: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    """Audit saved labels against authenticated quotas, without opening screen inputs.
+
+    Quota agreement cannot establish individual gold values/spans, model accuracy,
+    or clinical validity. Failed-decode rows omit gold fields, so incomplete row
+    evidence remains unverified even when the full-cohort aggregate agrees.
+    """
+    audit: dict[str, Any] = {
+        "status": "UNVERIFIED_GOLD_ANNOTATIONS", "issues": [], "arms": [],
+        "limit": "Gold-state quota agreement is necessary, not sufficient: individual gold values/spans and scientific validity are not established by this audit.",
+    }
+    manifest = result["screen"].get("manifest")
+    if manifest is None:
+        audit["issues"].append("No embedded screen manifest available for quota authentication.")
+        return audit
+    # This is the frozen screen generator's canonical encoding. Authenticate the
+    # embedded object itself, not merely the result's declared manifest hash.
+    encoded = json.dumps(manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode() + b"\n"
+    require(hashlib.sha256(encoded).hexdigest() == contract["screen_manifest_sha256"], "H7 embedded screen manifest SHA-256 mismatch")
+    screen = manifest["screen"]
+    require(screen["records"] == contract["records"] and screen["sha256"] == contract["screen_records_sha256"], "H7 embedded screen identity mismatch")
+    quota = screen["state_field_quota"]
+    keys = {f"{field}:{state}" for field in H7_FIELDS for state in H7_STATES}
+    require(isinstance(quota, dict) and set(quota) <= keys, "H7 unknown manifest field/state quota")
+    require(all(type(n) is int and n >= 0 for n in quota.values()), "H7 invalid manifest quota count")
+    expected = {key: quota.get(key, 0) for key in sorted(keys)}
+    require(all(sum(expected[f"{field}:{state}"] for state in H7_STATES) == contract["records"] for field in H7_FIELDS), "H7 manifest field quotas do not cover the cohort")
+    expected_states = {state: sum(expected[f"{field}:{state}"] for field in H7_FIELDS) for state in H7_STATES}
+    audit.update(manifest_sha256=contract["screen_manifest_sha256"], expected_by_field_state=expected, expected_by_gold_state=expected_states)
+    invalid, incomplete = False, False
+    paired_labels: dict[tuple[str, str], str] = {}
+    reference_ids: set[str] | None = None
+    for arm in result["arms"]:
+        checked: dict[str, Any] = {"seed": arm["candidate"]["seed"], "issues": []}
+        issues = checked["issues"]
+        raw = arm.get("raw", {})
+        summary, rows = raw.get("by_gold_state"), raw.get("item_diagnostics")
+        totals = None
+        if summary is None:
+            incomplete = True
+        else:
+            require(isinstance(summary, dict) and set(summary) == set(H7_STATES), "H7 invalid stored gold-state buckets")
+            totals = {state: summary[state]["total"] for state in H7_STATES}
+            require(all(type(n) is int and n >= 0 for n in totals.values()), "H7 invalid stored gold-state total")
+            checked["stored_by_gold_state"] = totals
+            if totals != expected_states:
+                issues.append("Stored gold-state aggregate differs from authenticated manifest quotas.")
+                invalid = True
+        if rows is None:
+            incomplete = True
+            issues.append("Stored item rows unavailable.")
+            if summary is None:
+                issues.append("Stored gold-state aggregates unavailable.")
+            audit["arms"].append(checked)
+            continue
+        require(isinstance(rows, list), "H7 stored item diagnostics must be a list")
+        observed: Counter[str] = Counter()
+        ids: set[str] = set()
+        missing_rows = 0
+        for row in rows:
+            identity = row["example_id"]
+            require(isinstance(identity, str) and identity not in ids, "H7 duplicate or invalid stored item identity")
+            ids.add(identity)
+            fields = row.get("fields")
+            if fields is None:
+                missing_rows += 1
+                continue
+            require(isinstance(fields, list) and len(fields) == len(H7_FIELDS) and {f["field"] for f in fields} == set(H7_FIELDS), "H7 stored row field inventory mismatch")
+            for field in fields:
+                name, state = field["field"], field["gold_state"]
+                require(state in H7_STATES, "H7 unknown stored gold state")
+                observed[f"{name}:{state}"] += 1
+                pair = (identity, name)
+                if pair in paired_labels and paired_labels[pair] != state:
+                    issues.append("Paired arms disagree on a stored gold state.")
+                paired_labels[pair] = state
+        if len(rows) != contract["records"]:
+            issues.append("Stored item count differs from the authenticated screen cohort.")
+        if reference_ids is not None and ids != reference_ids:
+            issues.append("Stored item identities differ between arms.")
+        reference_ids = ids
+        complete = len(rows) == contract["records"] and missing_rows == 0
+        observed_states = {state: sum(observed[f"{field}:{state}"] for field in H7_FIELDS) for state in H7_STATES}
+        checked.update(observed_by_field_state={key: observed[key] for key in sorted(keys)}, observed_by_gold_state=observed_states, rows_without_gold_fields=missing_rows)
+        if any(observed[key] > expected[key] or (complete and observed[key] != expected[key]) for key in keys):
+            issues.append("Stored row gold labels differ from authenticated field/state quotas.")
+        if totals is not None and any(observed_states[state] > totals[state] or (complete and observed_states[state] != totals[state]) for state in H7_STATES):
+            issues.append("Stored row gold labels disagree with stored gold-state aggregates.")
+        invalid |= bool(issues)
+        incomplete |= not complete
+        if not complete:
+            issues.append("Full per-field gold-state quotas cannot be verified from incomplete stored rows.")
+        if summary is None:
+            issues.append("Stored gold-state aggregates unavailable.")
+        checked["issues"] = list(dict.fromkeys(issues))
+        audit["arms"].append(checked)
+    audit["status"] = "INVALID_GOLD_ANNOTATIONS" if invalid else ("UNVERIFIED_GOLD_ANNOTATIONS" if incomplete else "QUOTA_CONSISTENT_ONLY")
+    return audit
+
+
+def h7_result(path: Path | None, digest: str | None, contract: dict[str, Any], *, audit_gold: bool = False) -> dict[str, Any]:
     require((path is None) == (digest is None), "--h7-result and --h7-sha256 must be supplied together")
     common = {
         "comparison_group": "h7_fresh_boundary_screen",
-        "scope": "Fresh 1000-record/250-world synthetic screen, 5000 fields; control versus two treatment seeds on this screen only. A PASS is a mechanism result, not P1 completion.",
+        "scope": "Fresh 1000-record/250-world synthetic screen, 5000 fields; control versus two treatment seeds on this screen only. Stored decisions require a separate annotation-validity check and cannot establish P1 completion.",
         "comparable_to_other_groups": False,
     }
     if path is None:
@@ -331,10 +433,21 @@ def h7_result(path: Path | None, digest: str | None, contract: dict[str, Any]) -
         "REJECT" if any(row["safety_or_state_violation"] for row in comparisons) or not any(row["boundary_improvement_bars_met"] for row in comparisons) else "GRAY"
     )
     require(result["decision"] == decision, "H7 decision disagrees with stored bars")
+    audit = h7_gold_annotation_audit(result, contract) if audit_gold else {
+        "status": "UNVERIFIED_GOLD_ANNOTATIONS",
+        "issues": ["Record-only import; authenticated gold-state quota audit was not requested."],
+    }
     return {
         **common, "status": "STORED_RESULT_IMPORTED", "decision": decision,
+        "scientific_validity": audit["status"], "gold_annotation_audit": audit,
+        "claim_scope": "QUOTA_CONSISTENT_STORED_RESULT" if audit["status"] == "QUOTA_CONSISTENT_ONLY" else "RECORD_ONLY",
+        "interpretation": (
+            "Gold-state quotas agree only; individual gold values/spans and scientific validity remain unestablished by this audit."
+            if audit["status"] == "QUOTA_CONSISTENT_ONLY" else
+            "Record only: the recorded decision and numeric outputs do not support a measured accuracy, mechanism effect, or treatment-rejection claim."
+        ),
         "sha256": digest, "bytes": len(payload),
-        "verification": "Pinned bytes and stored result contract checked. Model outputs, checkpoint bytes, and training reports were not independently replayed or authenticated here.",
+        "verification": "Pinned bytes and stored result contract checked. Model outputs, checkpoint bytes, and training reports were not independently replayed or authenticated here. Decision and numeric summaries are recorded evaluator outputs; byte integrity alone does not establish measured accuracy or treatment rejection.",
         "arms": [{key: arm[key] for key in ("candidate", "metrics", "mechanism")} for arm in arms],
         "comparisons": comparisons,
     }
@@ -344,7 +457,7 @@ def import_h7_result(manifest: dict[str, Any], evidence_dir: Path, path: Path | 
     """Use a complete explicit pair first, otherwise the optional preserved pointer."""
     require((path is None) == (digest is None), "--h7-result and --h7-sha256 must be supplied together")
     if path is not None:
-        result = h7_result(path, digest, manifest["h7_contract"])
+        result = h7_result(path, digest, manifest["h7_contract"], audit_gold=True)
         result["input_source"] = {"kind": "explicit", "path": str(path)}
         return result
     if "stored_h7_result" not in manifest:
@@ -357,7 +470,7 @@ def import_h7_result(manifest: dict[str, Any], evidence_dir: Path, path: Path | 
     path = evidence_dir / relative
     require(path.resolve().is_relative_to(evidence_dir.resolve()), "Stored H7 result must stay within evidence directory")
     require(isinstance(pointer["sha256"], str), "Stored H7 SHA-256 must be a string")
-    result = h7_result(path, pointer["sha256"], manifest["h7_contract"])
+    result = h7_result(path, pointer["sha256"], manifest["h7_contract"], audit_gold=True)
     result["input_source"] = {"kind": "manifest", "manifest_key": "stored_h7_result", "local_path": pointer["local_path"]}
     return result
 
@@ -459,10 +572,22 @@ def markdown(report: dict[str, Any]) -> str:
         lines.append(f"| {row['metric']} | {row['numerator']}/{row['denominator']} ({percentage(row['rate'])}) | {row['floor_count']} | {row['passed']} |")
     lines += ["", studies["h6_terminal"]["unassessed"], "", f"H7: **{h7['status']}**" + (f"; recorded decision **{h7['decision']}**." if h7["decision"] else "."), "", h7["scope"]]
     if h7["decision"]:
-        lines += ["", f"Result SHA-256: `{h7['sha256']}`. {h7['verification']}", "", "| Treatment seed | Binding error reduction | Shared-state span gain | State delta | Decision bars all pass |", "|---|---:|---:|---:|---|"]
-        for row in h7["comparisons"]:
-            lines.append(f"| {row['treatment_seed']} | {percentage(row['binding_error_fields']['relative_reduction'])} | {percentage(row['span_exact_on_shared_state_correct']['absolute_gain'])} | {percentage(row['state_accuracy_delta'])} | {row['all_pass_bars']} |")
-    lines += ["", "## Exact source provenance", "", "Every source copy is byte-preserved and pinned by full commit, Git blob ID, SHA-256 and size in [manifest.json](manifest.json). `--verify-git` additionally compares it with the local commit object; default verification needs no branch checkout or remote access.", ""]
+        lines += ["", f"**Scientific validity: {h7['scientific_validity']}. Claim scope: {h7['claim_scope']}.** {h7['interpretation']}", "", f"Result SHA-256: `{h7['sha256']}`. {h7['verification']}"]
+        audit = h7["gold_annotation_audit"]
+        if "expected_by_gold_state" in audit:
+            arms = audit["arms"]
+            names = ["Control" if arm["seed"] is None else f"Seed {arm['seed']}" for arm in arms]
+            lines += ["", "Stored gold-label counts versus authenticated manifest quotas (annotation audit, not model performance):", "", "| Gold state | Manifest quota | " + " | ".join(names) + " |", "|---|---:|" + "---:|" * len(arms)]
+            for state in H7_STATES:
+                counts = [str(arm.get("stored_by_gold_state", {}).get(state, "unavailable")) for arm in arms]
+                lines.append(f"| {state} | {audit['expected_by_gold_state'][state]} | " + " | ".join(counts) + " |")
+        if h7["scientific_validity"] == "QUOTA_CONSISTENT_ONLY":
+            lines += ["", "Recorded comparison arithmetic; quota agreement alone does not validate these performance estimates:", "", "| Treatment seed | Binding error reduction | Shared-state span gain | State delta | Decision bars all pass |", "|---|---:|---:|---:|---|"]
+            for row in h7["comparisons"]:
+                lines.append(f"| {row['treatment_seed']} | {percentage(row['binding_error_fields']['relative_reduction'])} | {percentage(row['span_exact_on_shared_state_correct']['absolute_gain'])} | {percentage(row['state_accuracy_delta'])} | {row['all_pass_bars']} |")
+        else:
+            lines += ["", "H7 performance tables withheld. The recorded decision is preserved for audit, not adopted as a scientific verdict."]
+    lines += ["", "## Exact source provenance", "", "Historical imported source copies below are byte-preserved and pinned by full commit, Git blob ID, SHA-256 and size in [manifest.json](manifest.json). `--verify-git` additionally compares those copies with local commit objects. Any newly captured H7 result is separately pinned by its capture SHA-256 above. Default verification needs no branch checkout or remote access.", ""]
     for item in report["provenance"]["sources"]:
         lines.append(f"- [{item['id']}]({item['local_path']}): `{item['source_commit']}:{item['source_path']}`; SHA-256 `{item['sha256']}`.")
     return "\n".join(lines) + "\n"

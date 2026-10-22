@@ -1,0 +1,6 @@
+{
+  "archive_verification": "Expanded dataset authenticated by pinned manifest and every member; compressed archive is not mounted.",
+  "frozen_archive_sha256_provenance": "1098761fd287dea1d106a32383308032d47c1061d3525877d57888bc7a15cb3f",
+  "full_tree_verified": true,
+  "manifest_sha256": "ed5781f7728b4f7401b5a06f15b9760efc2584e0d977600966f1eb62395050dd"
+}

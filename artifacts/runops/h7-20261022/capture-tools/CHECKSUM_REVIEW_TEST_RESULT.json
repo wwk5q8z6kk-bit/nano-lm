@@ -1,0 +1,31 @@
+{
+  "schema": "nano.h7-capture-tools-local-test.v1",
+  "checked_at_utc": "2026-10-22T20:53:36.099349+00:00",
+  "command": "python3 artifacts/runops/h7-20261022/capture-tools/run_checksum_review_fixture_tests.py -v",
+  "cwd": "/Users/mac/Projects/nano-lm",
+  "python": "3.14.7",
+  "packages": {
+    "torch": "2.11.0",
+    "tokenizers": "0.22.2",
+    "pytest": "9.0.2"
+  },
+  "exit_code": 0,
+  "tests_run": 19,
+  "elapsed_seconds_reported": 4.375,
+  "wall_seconds": 5.036,
+  "outcome": "OK",
+  "target": "preserved separately named checksum-review helper and original fixture through exact import redirects",
+  "fixture": "invented rows and archives; original regressions plus strict temporary-checksum cases; no scientific evaluation",
+  "original_fixture_regressions": 11,
+  "checksum_review_tests": 8,
+  "preserved_copies_byte_identical_to_originals": true,
+  "provider_actions": false,
+  "model_inference": false,
+  "screen_input_access": false,
+  "checkpoint_loading": false,
+  "limitations": [
+    "Hardcoded repository root and locally retained frozen package are required.",
+    "Local fixture runtime is distinct from the captured provider runtime.",
+    "Use the preserved launcher to avoid temporary-file drift."
+  ]
+}

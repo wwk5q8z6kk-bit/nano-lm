@@ -3,7 +3,7 @@
   "updated": "2026-10-22",
   "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_H7_KAGGLE_TRAINING_RUNNING",
+  "current_gate": "P1_H7_CONSUMED_INVALID_GOLD_INSTRUMENT",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
   "training_backend": "KAGGLE_AND_RUNPOD",
   "training_status": "ACTIVE",
@@ -27,8 +27,7 @@
     "runpod_speed": "ALLOWED_WHEN_TIME_SAVED_JUSTIFIES_COST_WITHIN_ACTIVE_EXPERIMENT_BUDGET"
   },
   "bounded_work": [
-    "p1_h7_kaggle_two_seed_cpu_training",
-    "p1_h7_one_shot_control_treatment_screen",
+    "p1_h7_terminal_capture_and_instrument_diagnosis",
     "p1_preserved_compact_model_comparison",
     "p1_transcript_to_checked_review_draft"
   ],
@@ -39,7 +38,12 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "CAPTURE_H7_TREATMENTS_THEN_SINGLE_SCREEN",
+  "next_engineering": "VALIDATE_ANNOTATED_TARGET_TRANSPORT_BEFORE_NEW_SCREEN",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "d6ed212c32384c1d50089e50260918028af88bfd"
+  "integration_base_sha": "d6ed212c32384c1d50089e50260918028af88bfd",
+  "bounded_work_completed": [
+    "h7_two_seed_training_and_single_screen_execution",
+    "preserved_compact_orx_comparison",
+    "transcript_to_checked_reference_review_draft"
+  ]
 }

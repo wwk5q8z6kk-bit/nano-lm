@@ -103,13 +103,29 @@ H6 remains **REJECTED**, one-shot consumed. Joint-correctness gates:
 
 uncalibrated admission failed -> threshold, verifier, latency, and sealed fresh-v1 confirmation NOT assessed, exactly as preregistered
 
-H7: **NO_RESULT_IMPORTED**.
+H7: **STORED_RESULT_IMPORTED**; recorded decision **REJECT**.
 
-Fresh 1000-record/250-world synthetic screen, 5000 fields; control versus two treatment seeds on this screen only. A PASS is a mechanism result, not P1 completion.
+Fresh 1000-record/250-world synthetic screen, 5000 fields; control versus two treatment seeds on this screen only. Stored decisions require a separate annotation-validity check and cannot establish P1 completion.
+
+**Scientific validity: INVALID_GOLD_ANNOTATIONS. Claim scope: RECORD_ONLY.** Record only: the recorded decision and numeric outputs do not support a measured accuracy, mechanism effect, or treatment-rejection claim.
+
+Result SHA-256: `9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49`. Pinned bytes and stored result contract checked. Model outputs, checkpoint bytes, and training reports were not independently replayed or authenticated here. Decision and numeric summaries are recorded evaluator outputs; byte integrity alone does not establish measured accuracy or treatment rejection.
+
+Stored gold-label counts versus authenticated manifest quotas (annotation audit, not model performance):
+
+| Gold state | Manifest quota | Control | Seed 20260805 | Seed 20260806 |
+|---|---:|---:|---:|---:|
+| supported | 3837 | 0 | 0 | 0 |
+| absent | 413 | 0 | 0 | 0 |
+| uncertain | 250 | 0 | 0 | 0 |
+| conflicting | 250 | 0 | 0 | 0 |
+| missing | 250 | 5000 | 5000 | 5000 |
+
+H7 performance tables withheld. The recorded decision is preserved for audit, not adopted as a scientific verdict.
 
 ## Exact source provenance
 
-Every source copy is byte-preserved and pinned by full commit, Git blob ID, SHA-256 and size in [manifest.json](manifest.json). `--verify-git` additionally compares it with the local commit object; default verification needs no branch checkout or remote access.
+Historical imported source copies below are byte-preserved and pinned by full commit, Git blob ID, SHA-256 and size in [manifest.json](manifest.json). `--verify-git` additionally compares those copies with local commit objects. Any newly captured H7 result is separately pinned by its capture SHA-256 above. Default verification needs no branch checkout or remote access.
 
 - [compact_field_filter](sources/d4608dd1f69a/artifacts/nano_h6/field_filter/FIELD_FILTER_SUMMARY.json): `d4608dd1f69af506019e2c8df79851fb3413f582:artifacts/nano_h6/field_filter/FIELD_FILTER_SUMMARY.json`; SHA-256 `b62204caf895d05e4ff07bac9df6d5c20f6cb9e928e9114babe08b4826437895`.
 - [compact_predecessor](sources/d4608dd1f69a/artifacts/nano_h6/p3/P3_SUMMARY.json): `d4608dd1f69af506019e2c8df79851fb3413f582:artifacts/nano_h6/p3/P3_SUMMARY.json`; SHA-256 `ea637864015192eacea64a77591d2630f22afe13ae6d1bd9447d02c3dd24a9bb`.

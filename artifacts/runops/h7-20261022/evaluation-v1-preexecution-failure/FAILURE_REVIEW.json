@@ -1,0 +1,52 @@
+{
+  "observed_at_utc": "2026-10-22T20:40:49.571824+00:00",
+  "kernel": "hassaneljesr/nano-h7-eval-run-d6ed212",
+  "version": 1,
+  "status": "PREEXECUTION_PATH_ASSERTION_FAILURE",
+  "failed_line": "assert len(manifests) == 1, manifests",
+  "assertion_value": [],
+  "subprocess_run_reached": false,
+  "wrapper_started": false,
+  "scientific_command_started": false,
+  "screen_records_opened": false,
+  "canonical_reservation_retained": true,
+  "output_inventory": [
+    {
+      "name": "evaluation.reservation.json",
+      "bytes": 2518,
+      "sha256": "79e974fd17893aef88a282da5a587308fac6f255a1199a3b5acd1b185beef425"
+    },
+    {
+      "name": "nano-h7-eval-run-d6ed212.log",
+      "bytes": 8962,
+      "sha256": "324e0f7118d92a09dabf5e86f226c0b22eb364890ea74b3f6dc5cad236b2bf87"
+    },
+    {
+      "name": "run_h7_kaggle.py",
+      "bytes": 24126,
+      "sha256": "f0d7eed99f6b1eaf28e214c0e73924585ec91b92333379a460f2d4d53f8d8c86"
+    }
+  ],
+  "repair_scope": "Select the sole BUNDLE_MANIFEST.json by frozen SHA-256 rather than expected parent directory name; retain wrapper, reservation, package, checkpoints and scoring commands.",
+  "provider_terminal_status": "KernelWorkerStatus.ERROR",
+  "repaired_notebook_sha256": "940a9e9356c1b05c647810b4c3f31415a3e499cdd00682036a6d4f10a6004c43",
+  "local_repair_validation": {
+    "flattened_dataset_mount": "PASS",
+    "modified_manifest_rejection": "PASS",
+    "scientific_command_change": false,
+    "runner_or_reservation_change": false
+  },
+  "independent_review": {
+    "reviewed_at_utc": "2026-10-22T20:42:46.988885+00:00",
+    "reviewer": "health_checks",
+    "conclusion": "PASS_PREEXECUTION_INFRASTRUCTURE_REPAIR",
+    "basis": [
+      "One code cell failed at line 10 before sole subprocess invocation at line 13",
+      "Downloaded runner and reservation bytes match frozen originals",
+      "Provider terminal status ERROR; no runner/scientific-start output",
+      "V2 subprocess AST and embedded runner/reservation are unchanged",
+      "Full bundle and mounted-input validation remain enforced"
+    ],
+    "authorized_scope": "One repaired infrastructure submission under the same immutable reservation; no additional scientific pass or automatic retry after any scientific-start/unknown state"
+  }
+}

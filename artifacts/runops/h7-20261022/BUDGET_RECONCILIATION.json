@@ -39,5 +39,51 @@
     "kaggle": "authenticated; free CPU runtime observed",
     "runpod": "authenticated; no active pods or endpoints",
     "openresearch": "orx authenticated; ephemeral boxes billed to personal org; no launch"
+  },
+  "attribution_review": {
+    "scope": "Attribution within the captured RunPod account window only; not a full campaign reconciliation or spend authorization.",
+    "matched_serverless_rows": [
+      {
+        "endpoint_id": "kndjw1ao9wzg2z",
+        "amount_usd": 0.3634331403300166,
+        "matching_source": "artifacts/campaign/student_qlora_canary_run.log",
+        "source_sha256": "53bcde18cc0333cf5437a0548af552de092efd59a5375413cb6dcbc3fb879d67"
+      },
+      {
+        "endpoint_id": "tbnur4mac60i70",
+        "amount_usd": 26.339422967703285,
+        "matching_source": "frontier/p1_serverless_qwen38_v0.json",
+        "source_sha256": "422dca76119aba77869b6b3f70becba526a4c95329d7b92ef78ca2cfb25dd0be"
+      },
+      {
+        "endpoint_id": "vllm-7chsjdkpxf8hzj",
+        "amount_usd": 0.298294527688995,
+        "matching_source": "artifacts/campaign/student_a_c1c2_run.log",
+        "source_sha256": "12fff494ec3f17fdbd182e53d16949807bb8b6bd8be535aff10faa0bd8571310"
+      },
+      {
+        "endpoint_id": "xkaapaxweg91k2",
+        "amount_usd": 0.8558056186884642,
+        "matching_source": "artifacts/campaign/student_qlora_canary_run.log",
+        "source_sha256": "53bcde18cc0333cf5437a0548af552de092efd59a5375413cb6dcbc3fb879d67"
+      }
+    ],
+    "matched_serverless_subtotal_usd": 27.85695625441076,
+    "unattributed_account_window_usd": 43.42554574768292,
+    "unresolved": [
+      "Pod billing has GPU/day aggregates but no pod IDs.",
+      "Storage rows have no timestamps or volume IDs.",
+      "One serverless endpoint has no located campaign match.",
+      "Other provider/API costs are outside this RunPod snapshot."
+    ],
+    "historical_ledger": {
+      "path": "artifacts/campaign/spend.json",
+      "sha256": "a73353501314656bc2b743680f8a99b3ade2341f374d07cd60374df8e3c3e9a3",
+      "recorded_actual_usd": 0.9451,
+      "updated_at": "2026-08-23T01:48:57.009872+00:00",
+      "unchanged": true
+    },
+    "remaining_envelope_usd": null,
+    "caution": "Historical estimates and unclosed commitments must not be added to provider bills; no validated remaining envelope is claimed."
   }
 }

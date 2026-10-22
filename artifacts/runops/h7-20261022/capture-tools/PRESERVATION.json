@@ -1,0 +1,65 @@
+{
+  "schema": "nano.h7-capture-tools-preservation.v1",
+  "preserved_at_utc": "2026-10-22T20:42:48.417479+00:00",
+  "repository_root_required": "/Users/mac/Projects/nano-lm",
+  "files": [
+    {
+      "source": "/private/tmp/nano_h7_capture_training.py",
+      "preserved": "nano_h7_capture_training.py",
+      "bytes": 3889,
+      "sha256": "e5f589a4958e9e22b311fbb704b7f27ac6d22a6c0227341faabee66545ffae87"
+    },
+    {
+      "source": "/private/tmp/nano_h7_capture_evaluation.py",
+      "preserved": "nano_h7_capture_evaluation.py",
+      "bytes": 23407,
+      "sha256": "d1a0d6cf34a648fa2a5bb26b90b67e248c3ee3f23eafde9973d7f238d7be0526"
+    },
+    {
+      "source": "/private/tmp/test_nano_h7_capture_evaluation.py",
+      "preserved": "test_nano_h7_capture_evaluation.py",
+      "bytes": 16771,
+      "sha256": "c742d6701691da44b1d48d8eff3a9c9e04c5f0520ee0a558b52989687ade0d0c"
+    },
+    {
+      "source": "/private/tmp/nano_h7_capture_evaluation_checksum_review.py",
+      "preserved": "nano_h7_capture_evaluation_checksum_review.py",
+      "bytes": 25147,
+      "sha256": "aa8865618b2bec81b3e6cacb528300350e561018751c7e264a3eb16a80856993",
+      "preserved_at_utc": "2026-10-22T20:53:20.621842+00:00",
+      "purpose": "Reviewed capture-only checksum temporary self-entry handling and synthetic tests"
+    },
+    {
+      "source": "/private/tmp/test_nano_h7_capture_evaluation_checksum_review.py",
+      "preserved": "test_nano_h7_capture_evaluation_checksum_review.py",
+      "bytes": 5407,
+      "sha256": "5bc8109aaaf66a59223b92f5fdf96fa073e0d8ff84a9fb84e12b22bb38aab82f",
+      "preserved_at_utc": "2026-10-22T20:53:20.622038+00:00",
+      "purpose": "Reviewed capture-only checksum temporary self-entry handling and synthetic tests"
+    }
+  ],
+  "originals_modified": false,
+  "provider_actions": false,
+  "model_execution": false,
+  "checksum_review": {
+    "original_helper_sha256": "d1a0d6cf34a648fa2a5bb26b90b67e248c3ee3f23eafde9973d7f238d7be0526",
+    "repaired_helper_sha256": "aa8865618b2bec81b3e6cacb528300350e561018751c7e264a3eb16a80856993",
+    "first_failure": "artifacts/runops/h7-20261022/downloads/evaluation-capture/CAPTURE_FAILURE.json",
+    "successful_recapture": "artifacts/runops/h7-20261022/downloads/evaluation-capture-reviewed/CAPTURE_VALIDATION.json",
+    "same_attempt_archive_sha256": "c9150c96c9622d84b59cf87a1853a0aa2bef7895bf5561221465e02b90e41f60",
+    "result_sha256": "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49",
+    "scope": "Only absent final results/SHA256SUMS.tmp with digest equal to exact preceding checksum bytes; real-file digest and full inventory checks retained. Original helpers, fixtures, scientific sources and archive/result bytes unchanged.",
+    "scientific_rerun": false,
+    "launcher": {
+      "path": "run_checksum_review_fixture_tests.py",
+      "bytes": 1236,
+      "sha256": "b189fead52fee52bf6581bd045c718241f227a95981147f1c046cb9c1dcded3c",
+      "temporary_imports_redirected": [
+        "nano_h7_capture_evaluation.py",
+        "nano_h7_capture_evaluation_checksum_review.py",
+        "test_nano_h7_capture_evaluation.py"
+      ],
+      "other_temporary_imports_rejected": true
+    }
+  }
+}

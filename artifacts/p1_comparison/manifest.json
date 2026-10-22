@@ -423,5 +423,9 @@
       "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
       "source_path": "nanoscribe/run_eval.py"
     }
-  ]
+  ],
+  "stored_h7_result": {
+    "local_path": "sources/h7-20261022/h7_screen_evaluation.json",
+    "sha256": "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49"
+  }
 }

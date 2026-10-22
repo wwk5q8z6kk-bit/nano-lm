@@ -200,6 +200,9 @@ def test_h7_import_is_hash_pinned_separate_and_does_not_replay(tmp_path):
     assert result["status"] == "STORED_RESULT_IMPORTED"
     assert result["decision"] == "PASS"
     assert result["comparable_to_other_groups"] is False
+    # The original three-argument API remains a record-only capture check.
+    assert result["scientific_validity"] == "UNVERIFIED_GOLD_ANNOTATIONS"
+    assert result["claim_scope"] == "RECORD_ONLY"
     assert "not independently replayed" in result["verification"]
     with pytest.raises(comparison.EvidenceError, match="SHA-256 mismatch"):
         comparison.h7_result(path, "0" * 64, contract)
@@ -326,6 +329,147 @@ def test_h7_attempts_or_inconsistent_results_cannot_become_a_completed_result(tm
     path, digest = write_result(tmp_path, data)
     with pytest.raises(comparison.EvidenceError):
         comparison.h7_result(path, digest, contract)
+
+
+def synthetic_h7_quota_result():
+    """Invented gold-state-only rows for the quota audit, not measured outputs."""
+    contract, data = synthetic_h7_result()
+    quota, columns = {}, {}
+    for index, field in enumerate(comparison.H7_FIELDS):
+        counts = {"supported": 996 - index, "absent": 1, "uncertain": 1, "conflicting": 1, "missing": 1 + index}
+        quota.update({f"{field}:{state}": count for state, count in counts.items()})
+        columns[field] = [state for state, count in counts.items() for _ in range(count)]
+    manifest = {"screen": {"records": contract["records"], "sha256": contract["screen_records_sha256"], "state_field_quota": quota}}
+    encoded = json.dumps(manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode() + b"\n"
+    contract["screen_manifest_sha256"] = hashlib.sha256(encoded).hexdigest()
+    data["screen"].update(manifest=manifest, manifest_sha256=contract["screen_manifest_sha256"])
+    rows = [{"example_id": f"synthetic-{i}", "fields": [{"field": field, "gold_state": columns[field][i]} for field in comparison.H7_FIELDS]} for i in range(contract["records"])]
+    totals = {state: {"total": sum(quota[f"{field}:{state}"] for field in comparison.H7_FIELDS)} for state in comparison.H7_STATES}
+    for arm in data["arms"]:
+        arm["raw"] = {"by_gold_state": copy.deepcopy(totals), "item_diagnostics": copy.deepcopy(rows)}
+    return contract, data
+
+
+def test_h7_matching_authenticated_quotas_are_necessary_not_scientific_validation(monkeypatch, tmp_path):
+    contract, data = synthetic_h7_quota_result()
+    path, digest = write_result(tmp_path, data)
+    manifest, sources = comparison.load_sources()
+    manifest["h7_contract"] = contract
+    manifest["stored_h7_result"] = {"local_path": path.name, "sha256": digest}
+    monkeypatch.setattr(comparison, "load_sources", lambda *args, **kwargs: (manifest, sources))
+    result = comparison.reconcile(tmp_path)
+    h7 = result["studies"]["h7"]
+    assert h7["scientific_validity"] == "QUOTA_CONSISTENT_ONLY"
+    assert h7["claim_scope"] == "QUOTA_CONSISTENT_STORED_RESULT"
+    assert h7["decision"] == "PASS"
+    assert all(not arm["issues"] for arm in h7["gold_annotation_audit"]["arms"])
+    assert "scientific validity remain unestablished" in h7["interpretation"]
+    rendered = comparison.markdown(result)
+    assert "Scientific validity: QUOTA_CONSISTENT_ONLY" in rendered
+    assert "quota agreement alone does not validate these performance estimates" in rendered
+
+
+@pytest.mark.parametrize("mutation", ["all_missing", "aggregate_only", "rows_only", "field_quota_only", "paired_disagreement"])
+def test_h7_gold_quota_mismatches_retain_decision_but_block_performance_claims(tmp_path, mutation):
+    contract, data = synthetic_h7_quota_result()
+    for arm in data["arms"]:
+        raw, rows = arm["raw"], arm["raw"]["item_diagnostics"]
+        if mutation == "all_missing":
+            raw["by_gold_state"] = {state: {"total": 5000 if state == "missing" else 0} for state in comparison.H7_STATES}
+            for row in rows:
+                for field in row["fields"]:
+                    field["gold_state"] = "missing"
+        elif mutation == "aggregate_only":
+            raw["by_gold_state"]["supported"]["total"] -= 1
+            raw["by_gold_state"]["missing"]["total"] += 1
+        elif mutation == "rows_only":
+            rows[0]["fields"][0]["gold_state"] = "missing"
+        elif mutation == "field_quota_only":
+            # Preserve overall state totals; only field-specific quotas expose it.
+            rows[0]["fields"][0]["gold_state"] = "missing"
+            rows[-1]["fields"][-1]["gold_state"] = "supported"
+        elif arm["candidate"]["seed"] is not None:
+            # Even matching every marginal quota cannot excuse paired gold drift.
+            rows[0]["fields"][0]["gold_state"], rows[-1]["fields"][0]["gold_state"] = rows[-1]["fields"][0]["gold_state"], rows[0]["fields"][0]["gold_state"]
+    path, digest = write_result(tmp_path, data)
+    h7 = comparison.h7_result(path, digest, contract, audit_gold=True)
+    assert h7["decision"] == "PASS"  # Preserve the evaluator record, even a PASS.
+    assert h7["scientific_validity"] == "INVALID_GOLD_ANNOTATIONS"
+    assert h7["claim_scope"] == "RECORD_ONLY"
+    result = comparison.reconcile()
+    result["studies"]["h7"] = h7
+    rendered = comparison.markdown(result).split("H7: **", 1)[1]
+    assert "recorded decision **PASS**" in rendered
+    assert "Scientific validity: INVALID_GOLD_ANNOTATIONS" in rendered
+    assert "do not support a measured accuracy, mechanism effect, or treatment-rejection claim" in rendered
+    assert "H7 performance tables withheld" in rendered
+    assert "| Treatment seed |" not in rendered
+
+
+@pytest.mark.parametrize("missing", ["manifest", "raw", "summary", "rows", "failed_decode"])
+def test_h7_missing_gold_audit_evidence_never_becomes_a_valid_result(tmp_path, missing):
+    contract, data = synthetic_h7_quota_result()
+    if missing == "manifest":
+        del data["screen"]["manifest"]
+    elif missing == "raw":
+        del data["arms"][0]["raw"]
+    elif missing == "summary":
+        del data["arms"][0]["raw"]["by_gold_state"]
+    elif missing == "rows":
+        del data["arms"][0]["raw"]["item_diagnostics"]
+    else:
+        data["arms"][0]["raw"]["item_diagnostics"][0]["fields"] = None
+    path, digest = write_result(tmp_path, data)
+    h7 = comparison.h7_result(path, digest, contract, audit_gold=True)
+    assert h7["decision"] == "PASS"
+    assert h7["scientific_validity"] == "UNVERIFIED_GOLD_ANNOTATIONS"
+    assert h7["claim_scope"] == "RECORD_ONLY"
+
+
+def test_h7_aggregate_quota_violation_stays_invalid_when_item_rows_are_unavailable(tmp_path):
+    contract, data = synthetic_h7_quota_result()
+    raw = data["arms"][0]["raw"]
+    raw["by_gold_state"]["missing"]["total"] += 1
+    del raw["item_diagnostics"]
+    path, digest = write_result(tmp_path, data)
+    assert comparison.h7_result(path, digest, contract, audit_gold=True)["scientific_validity"] == "INVALID_GOLD_ANNOTATIONS"
+
+
+def test_h7_row_quota_violation_stays_invalid_when_aggregates_are_unavailable(tmp_path):
+    contract, data = synthetic_h7_quota_result()
+    raw = data["arms"][0]["raw"]
+    raw["item_diagnostics"][0]["fields"][0]["gold_state"] = "missing"
+    del raw["by_gold_state"]
+    path, digest = write_result(tmp_path, data)
+    assert comparison.h7_result(path, digest, contract, audit_gold=True)["scientific_validity"] == "INVALID_GOLD_ANNOTATIONS"
+
+
+def test_h7_embedded_quota_manifest_must_itself_match_the_frozen_hash(tmp_path):
+    contract, data = synthetic_h7_quota_result()
+    data["screen"]["manifest"]["screen"]["state_field_quota"]["allergy:supported"] += 1
+    path, digest = write_result(tmp_path, data)
+    with pytest.raises(comparison.EvidenceError, match="embedded screen manifest SHA-256 mismatch"):
+        comparison.h7_result(path, digest, contract, audit_gold=True)
+
+
+def test_actual_preserved_h7_result_is_invalid_gold_and_recorded_reject_only():
+    # Stored result and embedded manifest only. No screen records or model access.
+    result = comparison.reconcile()
+    h7 = result["studies"]["h7"]
+    assert h7["sha256"] == "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49"
+    assert h7["decision"] == "REJECT"
+    assert h7["scientific_validity"] == "INVALID_GOLD_ANNOTATIONS"
+    assert h7["claim_scope"] == "RECORD_ONLY"
+    audit = h7["gold_annotation_audit"]
+    assert audit["expected_by_gold_state"] == {"supported": 3837, "absent": 413, "uncertain": 250, "conflicting": 250, "missing": 250}
+    for arm in audit["arms"]:
+        assert arm["stored_by_gold_state"] == {"supported": 0, "absent": 0, "uncertain": 0, "conflicting": 0, "missing": 5000}
+        assert arm["observed_by_gold_state"] == arm["stored_by_gold_state"]
+        assert arm["rows_without_gold_fields"] == 0
+    rendered = comparison.markdown(result).split("H7: **", 1)[1]
+    assert "recorded decision **REJECT**" in rendered
+    assert "Scientific validity: INVALID_GOLD_ANNOTATIONS" in rendered
+    assert "| Treatment seed |" not in rendered
 
 
 def test_checked_in_readable_report_is_reproducible():

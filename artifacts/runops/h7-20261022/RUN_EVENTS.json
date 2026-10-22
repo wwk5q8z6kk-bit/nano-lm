@@ -7,5 +7,21 @@
     "attempt_id": "c6177067-487f-4872-a84e-cd2c9eab8278",
     "cost_ceiling_usd": 0,
     "provider_timeout_seconds": 14400
+  },
+  {
+    "time": "2026-10-22T20:54:23.240755+00:00",
+    "event": "completed_output_capture_reviewed",
+    "training_finished_at_utc": "2026-10-22T20:35:11Z",
+    "evaluation_finished_at_utc": "2026-10-22T20:48:39Z",
+    "evaluation_attempt_id": "abd33a51-419d-44c9-87ff-4b165acfd235",
+    "result_sha256": "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49",
+    "recorded_decision": "REJECT",
+    "scientific_validity": "INVALID_GOLD_ANNOTATIONS",
+    "result_capture": "evaluation-evidence/CAPTURE_VALIDATION.json",
+    "evaluation_bootstrap_failure": "evaluation-v1-preexecution-failure/FAILURE_REVIEW.json",
+    "original_capture_failure": "evaluation-evidence/ORIGINAL_CAPTURE_FAILURE.json",
+    "total_training_and_evaluation_runtime_seconds": 4017.465,
+    "new_paid_compute_usd": 0,
+    "scientific_retry": false
   }
 ]
