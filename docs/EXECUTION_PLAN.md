@@ -29,10 +29,11 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 | C2 | Localize H6 failures | **Done** — authenticated row-level analysis separates state selection from evidence binding; threshold and verifier effects remain explicitly unassessed |
 | C3 | Define the next bounded intervention | **Done** — H7-BM isolates local evidence-boundary ranking; H6 is not rerun or relabeled |
 | C4 | Finish bounded H7 screen | **Executed; consumed** — both seeds and single screen completed for $0 in 4,017.465 seconds. Recorded REJECT is scientifically invalid because the evaluator replaced annotated gold with all-missing fields; exact evidence and diagnosis preserved, no rerun |
-| C5 | Re-evaluate P1 exit gap | **Assessed** — checked reference scribing path exists; learned exact-span quality, validated target transport, longer-dialogue transfer and external human review remain open. No H7 treatment conclusion or P1 mastery claim |
+| C5 | Re-evaluate P1 exit gap | **Assessed** — checked reference scribing path and annotation transport exist; learned exact-span quality, independent semantic annotation review, longer-dialogue transfer and external human review remain open. No H7 treatment conclusion or P1 mastery claim |
 | C6 | Import preserved compact-model comparison | **Built** — compact, six recovered OpenResearch prompt variants, corrected C2 and terminal H6 evidence with exact provenance and explicit denominators; H7 bytes imported with an explicit invalid-gold warning |
 | C7 | Connect one end-to-end scribing path | **Built** — transcript-only reference extraction → encounter → source-checked review draft; 143 NanoScribe tests pass; learned-model and external human validation remain open |
-| C8 | Validate future evaluation target transport | Add source-annotation parity checks before any separately specified fresh screen; preserve consumed H7 and H6 artifacts |
+| C8 | Validate future evaluation target transport | **Built** — separate annotation-owned evaluator with exact spans, metadata and independent field/state quota gates; toy oracle and all-missing negative control. H7/H6 remain untouched; semantic annotation review still required |
+| C9 | Develop one learned scribing transfer pilot | Next: 20 independently reviewed public/synthetic development dialogues, instrument admission, preserved compact-adapter runtime check, then transcript → learned adapter → checked review draft. Start at $0 incremental paid compute; recipe in [P1_ANNOTATION_TRANSPORT.md](research/P1_ANNOTATION_TRANSPORT.md) |
 
 ## Explicitly out of scope (until separately authorized)
 

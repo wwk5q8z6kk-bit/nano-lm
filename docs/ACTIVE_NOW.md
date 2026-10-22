@@ -167,7 +167,7 @@ corrections retain review evidence and can force abstention.
 ```text
 P1 — H7 executed; frozen screen consumed; gold transport invalid
         ↓
-VALIDATE ANNOTATED TARGET TRANSPORT FOR A NEW INSTRUMENT
+ANNOTATION TRANSPORT BUILT → REVIEW NEW DEVELOPMENT ANNOTATIONS
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓
@@ -177,6 +177,13 @@ P1 MASTERY DECISION
 ```
 
 ## Training / compute policy
+
+The separate annotation-owned evaluation path is implemented with exact-span,
+metadata and independent field/state quota checks before inference. Toy oracle
+and all-missing negative-control checks verify transport without touching the
+consumed H7 screen. Semantic annotation review and learned transfer remain open.
+The next $0-first development pilot is specified in
+[P1_ANNOTATION_TRANSPORT.md](research/P1_ANNOTATION_TRANSPORT.md).
 
 | Class | Policy |
 |-------|--------|
