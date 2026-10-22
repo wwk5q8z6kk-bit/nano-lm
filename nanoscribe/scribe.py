@@ -1,0 +1,160 @@
+"""Transcript-only P1 bridge: extraction -> encounter -> checked review draft.
+
+Run ``python -m nanoscribe.scribe --transcript FILE``. The default solver is a
+closed-grammar deterministic reference, not a trained or clinically validated
+model. The Python entry point accepts any existing NanoSolver implementation.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+from nano.runtime import Disposition
+from nano_ai.adapters.deterministic_v0 import DeterministicV0Solver
+from nano_ai.contract import FieldName, FieldState, NanoInput, NanoOutput
+from nano_ai.solver import NanoSolver, run_inference
+from nanoscribe.check_note import (
+    CONFLICT_NOTE, HEADER, LABELS, SCOPE_REASON, UNHANDLED_REASON,
+    assess_fields, check_note, transcript_source, uncovered_turns,
+)
+from nanoscribe.encounter import (
+    AssertionState, AtomType, Certainty, ClinicalAtom, Conflict, EncounterError, EncounterRecord,
+    EvidenceSpan, Experiencer, Speaker, TemporalState, Temporality, UnresolvedItem,
+)
+
+
+def build_encounter(request: NanoInput, output: NanoOutput) -> EncounterRecord:
+    """Adapt validated solver candidates; unsafe candidates remain unresolved."""
+    assessments = assess_fields(request, output)
+    source = transcript_source(request)
+    evidence, atoms, conflicts, unresolved = [], [], [], []
+    for field, assessment in zip(output.fields, assessments):
+        name = field.field.value
+        refs = tuple(f"e:{name}:{i}" for i in range(len(field.evidence)))
+        for ref, span in zip(refs, field.evidence):
+            turn = next(turn for turn in source.turns if turn.start <= span.start < span.end <= turn.end)
+            evidence.append(EvidenceSpan(ref, source.source_id, turn.turn_id, Speaker.PATIENT, span.start, span.end, span.text))
+        state = assessment.state
+        if refs:
+            atom_state = {FieldState.SUPPORTED: AssertionState.ASSERTED, FieldState.ABSENT: AssertionState.DENIED,
+                          FieldState.UNCERTAIN: AssertionState.UNCERTAIN, FieldState.CONFLICTING: AssertionState.CONFLICTING}[state]
+            # Duration and severity are symptom attributes in this bounded
+            # projection; their field identity is preserved in the atom ID.
+            atom_type = {FieldName.MEDICATION: AtomType.MEDICATION, FieldName.ALLERGY: AtomType.ALLERGY}.get(field.field, AtomType.SYMPTOM)
+            atoms.append(ClinicalAtom(
+                atom_id=f"a:{name}", atom_type=atom_type,
+                raw_value=field.value if state is FieldState.SUPPORTED else field.evidence[0].text,
+                assertion_state=atom_state, speaker=Speaker.PATIENT,
+                experiencer=Experiencer.PATIENT if state in (FieldState.SUPPORTED, FieldState.ABSENT) else Experiencer.UNKNOWN,
+                temporality=TemporalState(Temporality.UNKNOWN),
+                certainty=Certainty.UNCERTAIN if state is FieldState.UNCERTAIN else Certainty.STATED if state in (FieldState.SUPPORTED, FieldState.ABSENT) else Certainty.UNKNOWN,
+                evidence_ids=refs, review_required=True,
+            ))
+        if state is FieldState.CONFLICTING:
+            conflicts.append(Conflict(f"c:{name}", (f"a:{name}",), refs, CONFLICT_NOTE))
+        if state not in (FieldState.SUPPORTED, FieldState.ABSENT):
+            reason = "; ".join(assessment.reasons) or state.value
+            unresolved.append(UnresolvedItem(f"u:{name}", name, reason, evidence_ids=refs))
+    for turn in uncovered_turns(source, output):
+        ref = f"e:{turn.turn_id}"
+        evidence.append(EvidenceSpan(ref, source.source_id, turn.turn_id, turn.speaker, turn.start, turn.end, turn.text))
+        unresolved.append(UnresolvedItem(f"u:{turn.turn_id}", "unhandled_source_turn", UNHANDLED_REASON, evidence_ids=(ref,)))
+    unresolved.append(UnresolvedItem("u:scope", "scope", SCOPE_REASON))
+    return EncounterRecord(request.item_id, (source,), tuple(evidence), tuple(atoms), tuple(conflicts), tuple(unresolved))
+
+
+def render_note(output: NanoOutput, record: EncounterRecord) -> dict:
+    """A deterministic view of the checked encounter; never generates facts."""
+    claims, lines = [], [HEADER]
+    for field in output.fields:
+        name = field.field.value
+        atom = next((atom for atom in record.atoms if atom.atom_id == f"a:{name}"), None)
+        state = ({AssertionState.ASSERTED: FieldState.SUPPORTED, AssertionState.DENIED: FieldState.ABSENT,
+                  AssertionState.UNCERTAIN: FieldState.UNCERTAIN, AssertionState.CONFLICTING: FieldState.CONFLICTING}[atom.assertion_state]
+                 if atom else field.state)
+        value = atom.raw_value if atom and state is FieldState.SUPPORTED else None
+        refs = list(atom.evidence_ids) if atom else []
+        claims.append({"field": name, "state": state.value, "value": value, "evidence_ids": refs})
+        if state is FieldState.SUPPORTED:
+            description = f"patient reports {json.dumps(value, ensure_ascii=False)}"
+        elif state is FieldState.ABSENT:
+            description = f"patient denial {json.dumps(record.span(refs[0]).text, ensure_ascii=False)}"
+        else:
+            description = f"not asserted ({state.value}); review required"
+        citation = f" [{', '.join(refs)}]" if refs else ""
+        lines.append(f"{LABELS[field.field]}: {description}{citation}")
+    return {"claims": claims, "text": "\n".join(lines), "review_required": True}
+
+
+def scribe(transcript: str, *, encounter_id: str = "encounter", solver: NanoSolver | None = None) -> dict:
+    """Run without targets, fixtures, AtomSpecs, or gold evidence as inputs.
+
+    Inference failures produce no encounter/note. A failed independent note
+    check also withholds the note. REVIEW/ABSTAIN are software dispositions,
+    never authorization to use a draft as a clinical record.
+    """
+    request = NanoInput(encounter_id, transcript)
+    selected_solver = solver if solver is not None else DeterministicV0Solver()
+    result = run_inference(selected_solver, request)
+    base = {"schema_version": "nanoscribe.draft.v0", "encounter_id": encounter_id,
+            "source_sha256": hashlib.sha256(transcript.encode("utf-8")).hexdigest(),
+            "status": "failed", "disposition": Disposition.ABSTAIN.value,
+            "extraction": None, "encounter": None, "note": None, "verification": None,
+            "limitations": ["Five patient-reported fields; no completeness or clinical readiness claim.",
+                            "Deterministic source checks are not clinical entailment or human evaluation."]}
+    if result.failure:
+        return {**base, "failure": result.failure.to_dict()}
+    output = result.output
+    assert output is not None
+    try:
+        record = build_encounter(request, output)
+    except (EncounterError, StopIteration) as exc:
+        # A valid solver contract is not proof that a downstream schema can
+        # represent it. Keep this distinct from missing evidence/abstention.
+        return {**base, "solver": selected_solver.descriptor.to_dict(),
+                "extraction": output.to_dict(),
+                "failure": {"category": "encounter_projection_failed", "message": str(exc)}}
+    note = render_note(output, record)
+    verification = check_note(request, output, record, note)
+    has_usable_content = any(claim["state"] in (FieldState.SUPPORTED.value, FieldState.ABSENT.value) for claim in note["claims"])
+    disposition = Disposition.REVIEW if verification["passed"] and has_usable_content else Disposition.ABSTAIN
+    return {**base, "status": "draft" if verification["passed"] else "failed",
+            "disposition": disposition.value, "solver": selected_solver.descriptor.to_dict(),
+            "extraction": output.to_dict(), "encounter": record.to_dict(),
+            "note": note if verification["passed"] else None, "verification": verification,
+            "failure": None if verification["passed"] else {"category": "note_verification_failed"}}
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--transcript", type=Path, required=True, help="UTF-8 Doctor:/Patient: transcript; no gold inputs")
+    parser.add_argument("--encounter-id", default="encounter")
+    parser.add_argument("--format", choices=("json", "text"), default="json")
+    args = parser.parse_args(argv)
+    try:
+        # Path.read_text performs universal-newline translation. Preserve bytes
+        # here so evidence offsets/hash refer to the actual submitted source.
+        transcript = args.transcript.read_bytes().decode("utf-8")
+        result = scribe(transcript, encounter_id=args.encounter_id)
+    except (OSError, UnicodeError, ValueError) as exc:
+        print(json.dumps({"status": "failed", "failure": {"category": "invalid_input", "message": str(exc)}}), file=sys.stderr)
+        return 2
+    if args.format == "json":
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        print(f"Status: {result['status']}; disposition: {result['disposition']}")
+        if result["note"]:
+            print(result["note"]["text"])
+            for item in result["encounter"]["unresolved"]:
+                print(f"Review {item['topic']}: {item['reason']}")
+        elif result["failure"]:
+            print(json.dumps(result["failure"], ensure_ascii=False))
+    return 0 if result["status"] == "draft" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

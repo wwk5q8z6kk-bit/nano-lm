@@ -1,0 +1,252 @@
+"""Independent, deliberately narrow source and draft checks for the P1 bridge.
+
+This is a deterministic source-context allowlist, not clinical entailment or a
+learned verifier. It never calls a solver or the note renderer. Passing means
+the bounded representation/quotation checks passed; human review still applies.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+from dataclasses import dataclass
+
+from nano_ai.contract import (
+    FIELD_ORDER, EvidenceSpan as CandidateSpan, FieldName, FieldState,
+    NanoInput, NanoOutput, normalize_value,
+)
+from nanoscribe.encounter import (
+    AssertionState, AtomType, Certainty, EncounterRecord, Experiencer,
+    Source, Speaker, TemporalState, Temporality, Turn,
+)
+
+
+# Intentionally narrower than the reference extractor's synthetic grammar.
+# New phrasing must be reviewed, rather than silently broadening this policy.
+QUESTIONS = {
+    FieldName.CHIEF_COMPLAINT: {"good morning, what brings you in today?", "what brings you to the clinic today?"},
+    FieldName.DURATION: {"how long has this been going on?", "when did it start?"},
+    FieldName.SEVERITY: {"how bad would you say it is?", "is it mild, moderate, or severe?"},
+    FieldName.MEDICATION: {"have you taken anything for it?", "did you try any medicine?"},
+    FieldName.ALLERGY: {"any allergies i should know about?", "do you have any known allergies?"},
+}
+_POSITIVE = {
+    FieldName.CHIEF_COMPLAINT: ("I've been having {}.", "I came in because of {}."),
+    FieldName.DURATION: ("For about {} now.", "For about {}.", "It started {} ago."),
+    FieldName.SEVERITY: ("I'd call it {}.", "It's {}, I would say.", "Definitely {}."),
+    FieldName.MEDICATION: ("I've been taking {}.", "Just {}.", "Only {} so far."),
+    FieldName.ALLERGY: ("I'm allergic to {}.", "Yes, {}.", "Just {}."),
+}
+_NEGATIVE = {
+    FieldName.MEDICATION: {"no, nothing yet.", "i haven't taken anything.", "nothing at all."},
+    FieldName.ALLERGY: {"no allergies.", "none whatsoever."},
+}
+_QUALIFIERS = frozenset("no not none nothing neither nor never zero free without denies denied uncertain unknown unsure maybe perhaps possibly possible probably apparently reportedly suspected likely unlikely might may could would should if unless or but except although because that which who before after previously past history resolved stopped tomorrow yesterday next last used formerly my his her their mother father child daughter son wife husband partner think guess believe seem seems sometimes intermittent occasionally almost barely".split())
+LABELS = dict(zip(FIELD_ORDER, ("Chief complaint", "Duration", "Severity", "Medication", "Allergy")))
+HEADER = "Patient-reported encounter draft — human review required"
+SCOPE_REASON = "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established."
+UNHANDLED_REASON = "Content outside the checked five-field path; inspect for omissions or corrections."
+CONFLICT_NOTE = "Conflicting observations retained; no value selected."
+
+
+def transcript_source(request: NanoInput) -> Source:
+    """Keep original characters/offsets, including CRLF; never reassemble text."""
+    turns = []
+    offset = 0
+    for index, line in enumerate(request.transcript.splitlines(keepends=True)):
+        text = line.rstrip("\r\n")
+        match = re.match(r"\s*(Doctor|Patient)\s*:[ \t]*", text, re.IGNORECASE)
+        content_start = match.end() if match else 0
+        start = content_start + len(text[content_start:]) - len(text[content_start:].lstrip())
+        end = len(text.rstrip())
+        if start < end:
+            speaker = (Speaker.PATIENT if match.group(1).casefold() == "patient" else Speaker.CLINICIAN) if match else Speaker.UNKNOWN
+            turns.append(Turn(f"source:t{index}", "source", speaker, offset + start, offset + end, text[start:end]))
+        offset += len(line)
+    return Source("source", request.transcript, tuple(turns))
+
+
+def _turn_index(source: Source, start: int, end: int) -> int | None:
+    return next((i for i, turn in enumerate(source.turns) if turn.start <= start < end <= turn.end), None)
+
+
+def uncovered_turns(source: Source, output: NanoOutput) -> tuple[Turn, ...]:
+    """Unrepresented patient replies can contain corrections to any field."""
+    covered = {_turn_index(source, span.start, span.end) for field in output.fields for span in field.evidence}
+    known_questions = set().union(*QUESTIONS.values())
+    return tuple(turn for i, turn in enumerate(source.turns)
+                 if i not in covered and (turn.speaker is not Speaker.CLINICIAN or turn.text.casefold() not in known_questions))
+
+
+def _plain_value(field: FieldName, text: str) -> bool:
+    if field is FieldName.DURATION:
+        return re.fullmatch(r"[1-9]\d{0,2} (?:days?|weeks?)", text.casefold()) is not None
+    if field is FieldName.SEVERITY:
+        return text.casefold() in {"mild", "moderate", "severe"}
+    tokens = re.findall(r"\w+", text.casefold())
+    return (0 < len(tokens) <= 5 and len(text) <= 80
+            and re.fullmatch(r"[^\W_]+(?:[ -][^\W_]+)*", text, re.UNICODE) is not None
+            and not _QUALIFIERS.intersection(tokens))
+
+
+def _observation_kind(source: Source, field: FieldName, span: CandidateSpan) -> FieldState | None:
+    """Recognize a complete observation independently of the proposed state."""
+    index = _turn_index(source, span.start, span.end)
+    if index is None or source.turns[index].speaker is not Speaker.PATIENT:
+        return None
+    turn = source.turns[index]
+    previous = source.turns[index - 1] if index else None
+    if previous is None or previous.speaker is not Speaker.CLINICIAN or previous.text.casefold() not in QUESTIONS[field]:
+        return None
+    if span.text == turn.text and turn.text.casefold() in _NEGATIVE.get(field, ()):
+        return FieldState.ABSENT
+    if _plain_value(field, span.text) and any(
+        template.format(span.text).casefold() == turn.text.casefold()
+        for template in _POSITIVE[field]
+    ):
+        return FieldState.SUPPORTED
+    return None
+
+
+@dataclass(frozen=True)
+class FieldAssessment:
+    field: FieldName
+    state: FieldState
+    reasons: tuple[str, ...] = ()
+
+
+def assess_fields(request: NanoInput, output: NanoOutput) -> tuple[FieldAssessment, ...]:
+    """Check full reply + preceding question, not just a matching value span.
+
+    A rejected candidate is quarantined as UNCERTAIN. Original inference is
+    retained separately by the caller; this check does not rewrite its result.
+    """
+    output.validate_against(request)
+    source = transcript_source(request)
+    unhandled = any(turn.speaker is not Speaker.CLINICIAN for turn in uncovered_turns(source, output))
+    # Evidence under an uncertain/wrong field may contain a correction to a
+    # different field. Merely being referenced does not make that turn handled.
+    unverified = any(_observation_kind(source, field.field, span) is None
+                     for field in output.fields for span in field.evidence)
+    assessments = []
+    for field in output.fields:
+        reasons = []
+        if field.presented:
+            if unhandled:
+                reasons.append("unhandled_patient_or_unlabeled_turn")
+            if unverified:
+                reasons.append("unverified_source_observation")
+            for span in field.evidence:
+                if _observation_kind(source, field.field, span) is not field.state:
+                    reasons.append("observation_state_not_verified")
+                if field.state is FieldState.SUPPORTED and normalize_value(span.text) != normalize_value(field.value):
+                    reasons.append("inconsistent_supported_observations")
+            state = FieldState.UNCERTAIN if reasons else field.state
+        else:
+            state = field.state
+        assessments.append(FieldAssessment(field.field, state, tuple(dict.fromkeys(reasons))))
+    return tuple(assessments)
+
+
+def check_note(request: NanoInput, output: NanoOutput, record: EncounterRecord, note: dict) -> dict:
+    """Check an untrusted rendered note against the original source and record.
+
+    Covers exact source identity, patient attribution, state/value/reference
+    conservation, all five fields, and all visible text. A pass is not a claim
+    that the extractor understood unrestricted clinical language.
+    """
+    errors = []
+    try:
+        output.validate_against(request)
+        record.validate()
+        assessments = assess_fields(request, output)
+        if record.encounter_id != request.item_id or record.sources != (transcript_source(request),):
+            errors.append("source_identity_mismatch")
+        claims = note.get("claims")
+        if not isinstance(claims, list) or len(claims) != len(FIELD_ORDER):
+            return {"passed": False, "errors": ["claim_coverage_mismatch"], "scope": "bounded_source_and_representation"}
+        lines = [HEADER]
+        expected_atoms = set()
+        expected_evidence = set()
+        expected_conflicts = set()
+        expected_unresolved = {"u:scope": {
+            "unresolved_id": "u:scope", "topic": "scope", "reason": SCOPE_REASON,
+            "review_required": True, "evidence_ids": [],
+        }}
+        for field, assessment, claim in zip(output.fields, assessments, claims):
+            name = field.field.value
+            refs = [f"e:{name}:{i}" for i in range(len(field.evidence))]
+            expected_evidence.update(refs)
+            state = assessment.state
+            value = field.value if state is FieldState.SUPPORTED else None
+            if claim != {"field": name, "state": state.value, "value": value, "evidence_ids": refs}:
+                errors.append(f"claim_mismatch:{name}")
+            for ref, span in zip(refs, field.evidence):
+                saved = record.span(ref)
+                if (saved.start, saved.end, saved.text, saved.speaker) != (span.start, span.end, span.text, Speaker.PATIENT):
+                    errors.append(f"evidence_mismatch:{name}")
+            if field.evidence:
+                atom_id = f"a:{name}"
+                expected_atoms.add(atom_id)
+                atom = record.atom(atom_id)
+                expected_state = {FieldState.SUPPORTED: AssertionState.ASSERTED, FieldState.ABSENT: AssertionState.DENIED,
+                                  FieldState.UNCERTAIN: AssertionState.UNCERTAIN, FieldState.CONFLICTING: AssertionState.CONFLICTING}[state]
+                expected_type = {FieldName.MEDICATION: AtomType.MEDICATION, FieldName.ALLERGY: AtomType.ALLERGY}.get(field.field, AtomType.SYMPTOM)
+                expected_experiencer = Experiencer.PATIENT if state in (FieldState.SUPPORTED, FieldState.ABSENT) else Experiencer.UNKNOWN
+                expected_certainty = Certainty.UNCERTAIN if state is FieldState.UNCERTAIN else Certainty.STATED if state in (FieldState.SUPPORTED, FieldState.ABSENT) else Certainty.UNKNOWN
+                if (atom.assertion_state is not expected_state or atom.raw_value != (value or field.evidence[0].text)
+                        or atom.evidence_ids != tuple(refs) or atom.speaker is not Speaker.PATIENT or not atom.review_required
+                        or atom.atom_type is not expected_type or atom.experiencer is not expected_experiencer
+                        or atom.certainty is not expected_certainty or atom.temporality != TemporalState(Temporality.UNKNOWN)
+                        or atom.normalized_value is not None or atom.normalization_transform is not None):
+                    errors.append(f"atom_mismatch:{name}")
+            if state is FieldState.CONFLICTING:
+                expected_conflicts.add(f"c:{name}")
+                conflict = next((item for item in record.conflicts if item.conflict_id == f"c:{name}"), None)
+                if (conflict is None or conflict.atom_ids != (f"a:{name}",)
+                        or conflict.evidence_ids != tuple(refs) or conflict.note != CONFLICT_NOTE):
+                    errors.append(f"conflict_mismatch:{name}")
+            if state not in (FieldState.SUPPORTED, FieldState.ABSENT):
+                expected_unresolved[f"u:{name}"] = {
+                    "unresolved_id": f"u:{name}", "topic": name,
+                    "reason": "; ".join(assessment.reasons) or state.value,
+                    "review_required": True, "evidence_ids": refs,
+                }
+            # Independently construct the allowed line from checked source data;
+            # never use the renderer's text or its claimed verification status.
+            prefix = f"{LABELS[field.field]}: "
+            if state is FieldState.SUPPORTED:
+                content = "patient reports " + json.dumps(value, ensure_ascii=False)
+            elif state is FieldState.ABSENT:
+                content = "patient denial " + json.dumps(field.evidence[0].text, ensure_ascii=False)
+            else:
+                content = f"not asserted ({state.value}); review required"
+            citation = " [" + ", ".join(refs) + "]" if refs else ""
+            lines.append(prefix + content + citation)
+        if {atom.atom_id for atom in record.atoms} != expected_atoms:
+            errors.append("atom_coverage_mismatch")
+        if {item.conflict_id for item in record.conflicts} != expected_conflicts:
+            errors.append("conflict_coverage_mismatch")
+        if note.get("text") != "\n".join(lines):
+            errors.append("visible_text_mismatch")
+        if set(note) != {"claims", "text", "review_required"} or note.get("review_required") is not True:
+            errors.append("note_envelope_mismatch")
+        # Review items cannot be removed from the structured record to make a
+        # draft look complete. Missing does not mean a clinical negative.
+        for turn in uncovered_turns(record.sources[0], output):
+            ref = f"e:{turn.turn_id}"
+            expected_evidence.add(ref)
+            saved = record.span(ref)
+            if (saved.start, saved.end, saved.text, saved.speaker) != (turn.start, turn.end, turn.text, turn.speaker):
+                errors.append(f"unhandled_turn_evidence_mismatch:{turn.turn_id}")
+            expected_unresolved[f"u:{turn.turn_id}"] = {
+                "unresolved_id": f"u:{turn.turn_id}", "topic": "unhandled_source_turn",
+                "reason": UNHANDLED_REASON, "review_required": True, "evidence_ids": [ref],
+            }
+        if {span.evidence_id for span in record.evidence} != expected_evidence:
+            errors.append("evidence_coverage_mismatch")
+        if {item.unresolved_id: item.to_dict() for item in record.unresolved} != expected_unresolved:
+            errors.append("unresolved_projection_mismatch")
+    except (ValueError, TypeError, AttributeError, KeyError, IndexError) as exc:
+        errors.append(f"invalid_boundary:{type(exc).__name__}")
+    return {"passed": not errors, "errors": errors, "scope": "bounded_source_and_representation"}
