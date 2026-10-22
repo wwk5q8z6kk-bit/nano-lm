@@ -26,7 +26,16 @@ No frozen H6/H7 evaluator, source recipe, consumed screen or result is changed.
 H7 remains consumed with invalid transported gold; no treatment conclusion is
 recovered by rescoring it.
 
-## Next bounded exploratory pilot
+## Bounded exploratory pilot (executed)
+
+The recipe below was executed as a separate exposed development diagnostic.
+See the [20-dialogue pilot report](../../artifacts/p1_pilot_v1/REPORT.md).
+Annotation review was a separate logical pass by the same coding agent, not an
+independent annotator. The executable checkpoint was pinned base Qwen2.5-1.5B,
+not the historical fine-tuned compact adapter. Two complete prompt runs cost $0;
+the revised prompt reached two useful checked review drafts but failed most
+cases. Constrained generation and broader independently checked source context
+are the next engineering work; this is not P1 admission.
 
 1. Author 20 new public/synthetic **development-only** dialogues with novel
    question wording, all five field states, explicit Patient spans and at least

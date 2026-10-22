@@ -167,7 +167,9 @@ corrections retain review evidence and can force abstention.
 ```text
 P1 — H7 executed; frozen screen consumed; gold transport invalid
         ↓
-ANNOTATION TRANSPORT BUILT → REVIEW NEW DEVELOPMENT ANNOTATIONS
+ANNOTATION TRANSPORT ADMITTED → COMPACT DEVELOPMENT PILOT LIMITED
+        ↓
+CONSTRAIN GENERATION → TEST QUESTION-CONTEXT TRANSFER
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓
@@ -181,9 +183,14 @@ P1 MASTERY DECISION
 The separate annotation-owned evaluation path is implemented with exact-span,
 metadata and independent field/state quota checks before inference. Toy oracle
 and all-missing negative-control checks verify transport without touching the
-consumed H7 screen. Semantic annotation review and learned transfer remain open.
-The next $0-first development pilot is specified in
-[P1_ANNOTATION_TRANSPORT.md](research/P1_ANNOTATION_TRANSPORT.md).
+consumed H7 screen. The [20-dialogue compact development pilot](../artifacts/p1_pilot_v1/REPORT.md)
+is now complete for $0 paid compute, using a pinned cached base Qwen checkpoint
+and a separate same-agent semantic annotation review (no independent human review).
+The rules prompt failed all 20 cases. Adding two worked examples produced two
+useful checked review drafts, four abstaining drafts and 14 failures. Paraphrased
+questions still force abstention. The model is connected but not ready for broad
+scribing; constrained generation and context verification are next. H6/H7 remain
+unchanged, and independent annotation/clinical validation remains open.
 
 | Class | Policy |
 |-------|--------|

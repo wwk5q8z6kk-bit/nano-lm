@@ -38,13 +38,14 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "REVIEW_PUBLIC_DEVELOPMENT_ANNOTATIONS_AND_CONNECT_PRESERVED_LEARNED_ADAPTER",
+  "next_engineering": "CONSTRAIN_COMPACT_GENERATION_AND_TEST_PARAPHRASE_CONTEXT_VERIFICATION",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
   "integration_base_sha": "d6ed212c32384c1d50089e50260918028af88bfd",
   "bounded_work_completed": [
     "h7_two_seed_training_and_single_screen_execution",
     "preserved_compact_orx_comparison",
     "transcript_to_checked_reference_review_draft",
-    "annotation_owned_evaluator_with_independent_quota_preflight"
+    "annotation_owned_evaluator_with_independent_quota_preflight",
+    "twenty_dialogue_compact_checked_scribing_development_pilot"
   ]
 }

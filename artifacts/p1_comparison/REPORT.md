@@ -123,6 +123,11 @@ Stored gold-label counts versus authenticated manifest quotas (annotation audit,
 
 H7 performance tables withheld. The recorded decision is preserved for audit, not adopted as a scientific verdict.
 
+## Current compact scribing development pilot
+
+The separate [20-dialogue pilot](../p1_pilot_v1/REPORT.md) connects a pinned base Qwen2.5-1.5B-Instruct checkpoint to the checked scribing path. It does not recover the historical fine-tuned adapter or pool these studies. The exposed prompt revision produced two useful review drafts, four abstaining drafts and 14 failures for $0 paid compute; format and question-context failures remain open. Raw generations, annotations, checkpoint hashes and both complete prompt runs are retained there.
+
+
 ## Exact source provenance
 
 Historical imported source copies below are byte-preserved and pinned by full commit, Git blob ID, SHA-256 and size in [manifest.json](manifest.json). `--verify-git` additionally compares those copies with local commit objects. Any newly captured H7 result is separately pinned by its capture SHA-256 above. Default verification needs no branch checkout or remote access.

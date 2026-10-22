@@ -133,13 +133,22 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--transcript", type=Path, required=True, help="UTF-8 Doctor:/Patient: transcript; no gold inputs")
     parser.add_argument("--encounter-id", default="encounter")
+    parser.add_argument("--compact-checkpoint", type=Path,
+                        help="Local pinned compact model snapshot; offline inference through the checked adapter")
+    parser.add_argument("--compact-prompt-style", choices=("rules", "fewshot"), default="fewshot")
     parser.add_argument("--format", choices=("json", "text"), default="json")
     args = parser.parse_args(argv)
     try:
         # Path.read_text performs universal-newline translation. Preserve bytes
         # here so evidence offsets/hash refer to the actual submitted source.
         transcript = args.transcript.read_bytes().decode("utf-8")
-        result = scribe(transcript, encounter_id=args.encounter_id)
+        solver = None
+        if args.compact_checkpoint is not None:
+            from nanoscribe.compact import FEWSHOT_PROMPT, SYSTEM_PROMPT, LocalCompactPredictor, compact_solver
+            prompt = FEWSHOT_PROMPT if args.compact_prompt_style == "fewshot" else SYSTEM_PROMPT
+            solver = compact_solver(LocalCompactPredictor(str(args.compact_checkpoint), system_prompt=prompt),
+                                    version=f"{args.compact_checkpoint.name}/{args.compact_prompt_style}-v1")
+        result = scribe(transcript, encounter_id=args.encounter_id, solver=solver)
     except (OSError, UnicodeError, ValueError) as exc:
         print(json.dumps({"status": "failed", "failure": {"category": "invalid_input", "message": str(exc)}}), file=sys.stderr)
         return 2

@@ -40,6 +40,21 @@ solver descriptor, and checking result are retained in JSON for review.
 
 ## Execution and boundaries
 
+An optional compact model is now connected through the same checked adapter:
+
+```sh
+python3 -m nanoscribe.scribe --transcript /absolute/path/to/transcript.txt \
+  --compact-checkpoint /absolute/path/to/pinned/local/snapshot --format text
+```
+
+This uses offline greedy Qwen inference with two fixed format demonstrations.
+`--compact-prompt-style rules` selects the original failed prompt for development
+reproduction. The [20-dialogue pilot](../artifacts/p1_pilot_v1/REPORT.md) produced
+two useful review drafts, four abstaining drafts and 14 inference failures with
+the revised prompt. It used base Qwen2.5-1.5B-Instruct, not a recovered fine-tuned
+adapter. Malformed output withholds the draft; the independent binder and note
+checker remain active. The default command still uses the reference solver.
+
 `scribe(transcript, encounter_id=..., solver=...)` sends only `NanoInput`
 (`item_id`, `transcript`, `schema_version`) to the existing `run_inference`
 boundary. It never supplies target values, gold spans, `AtomSpec`, or scoring
