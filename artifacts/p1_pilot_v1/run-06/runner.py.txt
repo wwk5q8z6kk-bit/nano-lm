@@ -1,0 +1,173 @@
+"""Exposed 20-dialogue development diagnostic; never a consumed H6/H7 rerun.
+
+Run preflight with no model, or add --checkpoint /local/pinned/snapshot and
+--output /new/result/directory. No network download or paid compute is used.
+"""
+
+from __future__ import annotations
+
+import argparse
+from collections import Counter, defaultdict
+import hashlib
+import json
+from pathlib import Path
+import sys
+import time
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from nano_ai.adapters.deterministic_v0 import DeterministicV0Solver
+from nano_ai.adapters.state_span import parse_state_span_summary
+from nano_ai.contract import FIELD_ORDER, FieldName, FieldOutput, FieldState, NanoOutput, normalize_value
+from nano_ai.evaluation import evaluate_solver
+from nano_ai.solver import SolverDescriptor, SolverKind
+from nano_ai.training.annotated_evaluation import annotated_cases
+from nano_ai.training.state_span_data import StateSpanExample
+from nanoscribe.compact import FEWSHOT_PROMPT, LocalCompactPredictor, SYSTEM_PROMPT, STRUCTURED_PROMPT, compact_solver
+from nanoscribe.scribe import scribe
+
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "artifacts/p1_pilot_v1"
+
+
+def digest(path):
+    h = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def admit(data=DATA):
+    rows = json.loads((data / "dialogues.json").read_text())
+    spec = json.loads((data / "spec.json").read_text())
+    if len(rows) != spec["records"] or spec["split"] != "development":
+        raise ValueError("development record count/split mismatch")
+    groups = defaultdict(list)
+    for row in rows:
+        if row["split"] != "development":
+            raise ValueError("world split leakage")
+        groups[row["world_id"]].append(row)
+    if len(groups) != spec["worlds"] or len({r["transcript"] for r in rows}) != len(rows):
+        raise ValueError("duplicate source or incorrect world count")
+    for pair in groups.values():
+        if len(pair) != 2 or {r["variant"] for r in pair} != {"canonical", "paraphrase"}:
+            raise ValueError("world must contain exactly one question paraphrase pair")
+        replies = [[line for line in r["transcript"].splitlines() if line.startswith("Patient:")] for r in pair]
+        if replies[0] != replies[1] or pair[0]["target"] != pair[1]["target"]:
+            raise ValueError("paraphrase pair changed patient evidence/labels")
+    counts = {FieldName(f): {FieldState(s): n for s, n in c.items()} for f, c in spec["expected_counts"].items()}
+    examples = [StateSpanExample(**row, target_field=FieldName.CHIEF_COMPLAINT, target_state=None) for row in rows]
+    cases = annotated_cases(examples, expected_counts=counts)
+    return rows, cases
+
+
+class Replay:
+    """Evaluator-only replay. Never passed to the clinical scribing path."""
+    def __init__(self, outputs, name):
+        self.outputs = outputs
+        self.descriptor = SolverDescriptor(name, SolverKind.REFERENCE)
+
+    def infer(self, request):
+        fields = self.outputs[request.item_id]
+        if isinstance(fields, Exception):
+            raise fields
+        return NanoOutput(request.item_id, self.descriptor.solver_id, fields)
+
+
+def proposal_fields(raw, transcript):
+    return tuple(FieldOutput(p.field, p.state,
+        normalize_value(p.spans[0].text) if p.state is FieldState.SUPPORTED else None, p.spans)
+        for p in parse_state_span_summary(raw, transcript))
+
+
+def preflight(data=DATA):
+    rows, cases = admit(data)
+    oracle = evaluate_solver(Replay({c.case_id: c.gold.fields for c in cases}, "test-only/gold-oracle"), cases)
+    missing = tuple(FieldOutput(f, FieldState.MISSING) for f in FIELD_ORDER)
+    negative = evaluate_solver(Replay({c.case_id: missing for c in cases}, "negative/all-missing"), cases)
+    assert oracle.quality["grounded_exact_field_accuracy"] == 1.0
+    assert negative.quality["state_accuracy"] == .12
+    return rows, cases, {"oracle": oracle.to_dict(), "all_missing": negative.to_dict(),
+        "reference": evaluate_solver(DeterministicV0Solver(), cases).to_dict(),
+        "source_hashes": {name: digest(data / name) for name in ("dialogues.json", "spec.json")}}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--checkpoint")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--prompt-style", choices=("rules", "fewshot"), default="rules")
+    parser.add_argument("--decoding", choices=("free", "constrained"), default="free")
+    parser.add_argument("--binder", choices=("legacy", "context"), default="legacy")
+    args = parser.parse_args()
+    rows, cases, controls = preflight()
+    if not args.checkpoint:
+        print(json.dumps({k: v["quality"]["state_accuracy"] for k, v in controls.items() if k != "source_hashes"}))
+        return
+    if args.output is None:
+        parser.error("--output is required with a checkpoint")
+    args.output.mkdir(parents=True, exist_ok=False)
+    def save(name, value):
+        (args.output / name).write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
+    save("controls.json", controls)
+    prompt = FEWSHOT_PROMPT if args.prompt_style == "fewshot" else SYSTEM_PROMPT
+    if args.decoding == "constrained":
+        prompt = STRUCTURED_PROMPT
+    predictor = LocalCompactPredictor(args.checkpoint, system_prompt=prompt, decoding=args.decoding)
+    checkpoint = Path(predictor.checkpoint)
+    provenance = {"checkpoint_revision": checkpoint.name,
+        "model": "Qwen/Qwen2.5-1.5B-Instruct", "finetuned_adapter": False,
+        "checkpoint_hashes": {p.name: digest(p) for p in sorted(checkpoint.iterdir()) if p.is_file()},
+        "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(), "prompt_style": args.prompt_style,
+        "code_hashes": {p: digest(ROOT / p) for p in ("nanoscribe/compact.py", "scripts/run_p1_pilot.py", "nanoscribe/context.py", "nanoscribe/check_note.py", "nanoscribe/scribe.py", "nano_ai/adapters/state_span.py")},
+        "incremental_paid_compute_usd": 0, "max_new_tokens": predictor.max_new_tokens,
+        "decoding": args.decoding, "binder": args.binder, "development_only": True}
+    save("prompt.json", {"system": prompt})
+    for name, source in (("runner.py.txt", "scripts/run_p1_pilot.py"), ("compact.py.txt", "nanoscribe/compact.py")):
+        (args.output / name).write_bytes((ROOT / source).read_bytes())
+    for source in ("nanoscribe/context.py", "nanoscribe/check_note.py", "nanoscribe/scribe.py", "nano_ai/adapters/state_span.py"):
+        (args.output / (Path(source).name + ".txt")).write_bytes((ROOT / source).read_bytes())
+    save("provenance.json", provenance)
+    solver = compact_solver(predictor, version=checkpoint.name, binder=args.binder)
+    legacy_solver = compact_solver(predictor, version=checkpoint.name, binder="legacy")
+    legacy_results = []
+    raw_outputs = {}
+    results = []
+    started = time.perf_counter()
+    for row in rows:
+        before = time.perf_counter()
+        draft = scribe(row["transcript"], encounter_id=row["example_id"], solver=solver, context_policy=args.binder)
+        record = predictor.records.get(row["transcript"], {})
+        try:
+            raw_outputs[row["example_id"]] = proposal_fields(record["raw"], row["transcript"])
+            raw_error = None
+        except (KeyError, ValueError) as exc:
+            raw_outputs[row["example_id"]] = exc
+            raw_error = str(exc)
+        results.append({"example_id": row["example_id"], "world_id": row["world_id"],
+            "variant": row["variant"], "generation": record, "raw_parse_error": raw_error,
+            "draft": draft, "total_seconds": time.perf_counter() - before})
+        if args.binder == "context":
+            legacy_results.append({"example_id": row["example_id"], "draft": scribe(row["transcript"], encounter_id=row["example_id"], solver=legacy_solver)})
+            save("legacy_encounters.json", legacy_results)
+        save("encounters.json", results)
+        print(row["example_id"], draft["status"], draft["disposition"], record.get("generated_tokens"), flush=True)
+    import torch
+    import transformers
+    provenance.update(torch=torch.__version__, transformers=transformers.__version__,
+                      device=predictor._loaded[2], total_seconds=time.perf_counter() - started)
+    save("provenance.json", provenance)
+    # Cached transcript generation: no second model invocation when evaluating.
+    save("checked_evaluation.json", evaluate_solver(solver, cases).to_dict())
+    if args.binder == "context":
+        save("legacy_evaluation.json", evaluate_solver(legacy_solver, cases).to_dict())
+    save("raw_evaluation.json", evaluate_solver(Replay(raw_outputs, "diagnostic/raw-compact-proposals"), cases).to_dict())
+    summary = {variant: dict(Counter(r["draft"]["disposition"] for r in results if r["variant"] == variant))
+               for variant in ("canonical", "paraphrase")}
+    save("summary.json", summary)
+    print(json.dumps(summary), flush=True)
+
+
+if __name__ == "__main__":
+    main()

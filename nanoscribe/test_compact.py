@@ -59,3 +59,23 @@ def test_cli_selects_compact_prompt_without_passing_gold(tmp_path, monkeypatch, 
     monkeypatch.setattr(compact, "LocalCompactPredictor", load)
     assert main(["--transcript", str(source), "--compact-checkpoint", str(tmp_path)]) == 0
     assert '"disposition": "review"' in capsys.readouterr().out
+
+
+def test_cli_constrained_context_path_reaches_paraphrased_review(tmp_path, monkeypatch, capsys):
+    import json
+    from nanoscribe import compact
+    from nanoscribe.scribe import main
+    transcript = "Doctor: Which medicines are you taking?\nPatient: I've been taking diclofenac."
+    source = tmp_path / "source.txt"
+    source.write_text(transcript)
+    def load(checkpoint, *, system_prompt, decoding):
+        assert system_prompt == compact.STRUCTURED_PROMPT
+        assert decoding == "constrained"
+        return lambda text: "CC:M|DUR:M|SEV:M|MED:S[diclofenac]|ALG:M"
+    monkeypatch.setattr(compact, "LocalCompactPredictor", load)
+    assert main(["--transcript", str(source), "--compact-checkpoint", str(tmp_path),
+                 "--compact-decoding", "constrained", "--context-policy", "context"]) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["disposition"] == "review"
+    assert result["context_policy"] == "context"
+    assert result["note"]["claims"][3]["value"] == "diclofenac"

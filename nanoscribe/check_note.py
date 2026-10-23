@@ -41,6 +41,10 @@ _NEGATIVE = {
     FieldName.MEDICATION: {"no, nothing yet.", "i haven't taken anything.", "nothing at all."},
     FieldName.ALLERGY: {"no allergies.", "none whatsoever."},
 }
+_UNCERTAINTY = {
+    FieldName.DURATION: r"I cannot (?:remember how long it has been|recall when it started)\.",
+    FieldName.SEVERITY: r"I (?:cannot rate it|am not sure how intense it is)\.",
+}
 _QUALIFIERS = frozenset("no not none nothing neither nor never zero free without denies denied uncertain unknown unsure maybe perhaps possibly possible probably apparently reportedly suspected likely unlikely might may could would should if unless or but except although because that which who before after previously past history resolved stopped tomorrow yesterday next last used formerly my his her their mother father child daughter son wife husband partner think guess believe seem seems sometimes intermittent occasionally almost barely".split())
 # A positive reply wrapper does not turn non-use, contemplated use, or an
 # epistemic modifier into a scalar name. Exclude these contextual words even
@@ -85,10 +89,14 @@ def _turn_index(source: Source, start: int, end: int) -> int | None:
     return next((i for i, turn in enumerate(source.turns) if turn.start <= start < end <= turn.end), None)
 
 
-def uncovered_turns(source: Source, output: NanoOutput) -> tuple[Turn, ...]:
+def uncovered_turns(source: Source, output: NanoOutput, *, context_policy: str = "legacy") -> tuple[Turn, ...]:
     """Unrepresented context from any speaker can change a field's meaning."""
     covered = {_turn_index(source, span.start, span.end) for field in output.fields for span in field.evidence}
     known_questions = set().union(*QUESTIONS.values())
+    if context_policy == "context":
+        from nanoscribe.context import question_field
+        known_questions |= {turn.text.casefold() for turn in source.turns
+                            if turn.speaker is Speaker.CLINICIAN and question_field(turn.text) is not None}
     return tuple(turn for i, turn in enumerate(source.turns)
                  if i not in covered and (turn.speaker is not Speaker.CLINICIAN or turn.text.casefold() not in known_questions))
 
@@ -106,14 +114,23 @@ def _plain_value(field: FieldName, text: str) -> bool:
             and not (field is FieldName.CHIEF_COMPLAINT and _COMPLAINT_RELATION_WORDS.intersection(tokens)))
 
 
-def _observation_kind(source: Source, field: FieldName, span: CandidateSpan) -> FieldState | None:
+def _observation_kind(source: Source, field: FieldName, span: CandidateSpan, *, context_policy: str = "legacy") -> FieldState | None:
     """Recognize a complete observation independently of the proposed state."""
     index = _turn_index(source, span.start, span.end)
     if index is None or source.turns[index].speaker is not Speaker.PATIENT:
         return None
     turn = source.turns[index]
     previous = source.turns[index - 1] if index else None
-    if previous is None or previous.speaker is not Speaker.CLINICIAN or previous.text.casefold() not in QUESTIONS[field]:
+    if previous is None or previous.speaker is not Speaker.CLINICIAN:
+        return None
+    if context_policy == "context":
+        from nanoscribe.context import question_field
+        if question_field(previous.text) is not field:
+            return None
+        if span.text == turn.text and field in _UNCERTAINTY and re.fullmatch(
+            _UNCERTAINTY[field], turn.text, re.IGNORECASE):
+            return FieldState.UNCERTAIN
+    elif previous.text.casefold() not in QUESTIONS[field]:
         return None
     if span.text == turn.text and turn.text.casefold() in _NEGATIVE.get(field, ()):
         return FieldState.ABSENT
@@ -132,7 +149,7 @@ class FieldAssessment:
     reasons: tuple[str, ...] = ()
 
 
-def assess_fields(request: NanoInput, output: NanoOutput) -> tuple[FieldAssessment, ...]:
+def assess_fields(request: NanoInput, output: NanoOutput, *, context_policy: str = "legacy") -> tuple[FieldAssessment, ...]:
     """Check full reply + preceding question, not just a matching value span.
 
     A rejected candidate is quarantined as UNCERTAIN. Original inference is
@@ -142,10 +159,10 @@ def assess_fields(request: NanoInput, output: NanoOutput) -> tuple[FieldAssessme
     source = transcript_source(request)
     # A clinician can establish a different experiencer or correct an earlier
     # answer. Only the exact allowlisted questions are safe to leave uncovered.
-    unhandled = bool(uncovered_turns(source, output))
+    unhandled = bool(uncovered_turns(source, output, context_policy=context_policy))
     # Evidence under an uncertain/wrong field may contain a correction to a
     # different field. Merely being referenced does not make that turn handled.
-    unverified = any(_observation_kind(source, field.field, span) is None
+    unverified = any(_observation_kind(source, field.field, span, context_policy=context_policy) is None
                      for field in output.fields for span in field.evidence)
     assessments = []
     for field in output.fields:
@@ -156,7 +173,7 @@ def assess_fields(request: NanoInput, output: NanoOutput) -> tuple[FieldAssessme
             if unverified:
                 reasons.append("unverified_source_observation")
             for span in field.evidence:
-                if _observation_kind(source, field.field, span) is not field.state:
+                if _observation_kind(source, field.field, span, context_policy=context_policy) is not field.state:
                     reasons.append("observation_state_not_verified")
                 if field.state is FieldState.SUPPORTED and normalize_value(span.text) != normalize_value(field.value):
                     reasons.append("inconsistent_supported_observations")
@@ -167,7 +184,7 @@ def assess_fields(request: NanoInput, output: NanoOutput) -> tuple[FieldAssessme
     return tuple(assessments)
 
 
-def check_note(request: NanoInput, output: NanoOutput, record: EncounterRecord, note: dict) -> dict:
+def check_note(request: NanoInput, output: NanoOutput, record: EncounterRecord, note: dict, *, context_policy: str = "legacy") -> dict:
     """Check an untrusted rendered note against the original source and record.
 
     Covers exact source identity, patient attribution, state/value/reference
@@ -178,7 +195,7 @@ def check_note(request: NanoInput, output: NanoOutput, record: EncounterRecord, 
     try:
         output.validate_against(request)
         record.validate()
-        assessments = assess_fields(request, output)
+        assessments = assess_fields(request, output, context_policy=context_policy)
         if record.encounter_id != request.item_id or record.sources != (transcript_source(request),):
             errors.append("source_identity_mismatch")
         claims = note.get("claims")
@@ -252,7 +269,7 @@ def check_note(request: NanoInput, output: NanoOutput, record: EncounterRecord, 
             errors.append("note_envelope_mismatch")
         # Review items cannot be removed from the structured record to make a
         # draft look complete. Missing does not mean a clinical negative.
-        for turn in uncovered_turns(record.sources[0], output):
+        for turn in uncovered_turns(record.sources[0], output, context_policy=context_policy):
             ref = f"e:{turn.turn_id}"
             expected_evidence.add(ref)
             saved = record.span(ref)

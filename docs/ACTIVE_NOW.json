@@ -38,7 +38,7 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "CONSTRAIN_COMPACT_GENERATION_AND_TEST_PARAPHRASE_CONTEXT_VERIFICATION",
+  "next_engineering": "IMPROVE_SEMANTIC_STATE_AND_CONFLICT_SELECTION_WITH_SEPARATE_DEVELOPMENT_DATA",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
   "integration_base_sha": "d6ed212c32384c1d50089e50260918028af88bfd",
   "bounded_work_completed": [
@@ -46,6 +46,9 @@
     "preserved_compact_orx_comparison",
     "transcript_to_checked_reference_review_draft",
     "annotation_owned_evaluator_with_independent_quota_preflight",
-    "twenty_dialogue_compact_checked_scribing_development_pilot"
+    "twenty_dialogue_compact_checked_scribing_development_pilot",
+    "constrained_exact_source_compact_generation",
+    "bounded_paraphrase_context_checked_path",
+    "twenty_dialogue_structured_rerun_with_current_adapter_replay"
   ]
 }

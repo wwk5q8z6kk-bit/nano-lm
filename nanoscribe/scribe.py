@@ -27,9 +27,9 @@ from nanoscribe.encounter import (
 )
 
 
-def build_encounter(request: NanoInput, output: NanoOutput) -> EncounterRecord:
+def build_encounter(request: NanoInput, output: NanoOutput, *, context_policy: str = "legacy") -> EncounterRecord:
     """Adapt validated solver candidates; unsafe candidates remain unresolved."""
-    assessments = assess_fields(request, output)
+    assessments = assess_fields(request, output, context_policy=context_policy)
     source = transcript_source(request)
     evidence, atoms, conflicts, unresolved = [], [], [], []
     for field, assessment in zip(output.fields, assessments):
@@ -59,7 +59,7 @@ def build_encounter(request: NanoInput, output: NanoOutput) -> EncounterRecord:
         if state not in (FieldState.SUPPORTED, FieldState.ABSENT):
             reason = "; ".join(assessment.reasons) or state.value
             unresolved.append(UnresolvedItem(f"u:{name}", name, reason, evidence_ids=refs))
-    for turn in uncovered_turns(source, output):
+    for turn in uncovered_turns(source, output, context_policy=context_policy):
         ref = f"e:{turn.turn_id}"
         evidence.append(EvidenceSpan(ref, source.source_id, turn.turn_id, turn.speaker, turn.start, turn.end, turn.text))
         unresolved.append(UnresolvedItem(f"u:{turn.turn_id}", "unhandled_source_turn", UNHANDLED_REASON, evidence_ids=(ref,)))
@@ -90,17 +90,20 @@ def render_note(output: NanoOutput, record: EncounterRecord) -> dict:
     return {"claims": claims, "text": "\n".join(lines), "review_required": True}
 
 
-def scribe(transcript: str, *, encounter_id: str = "encounter", solver: NanoSolver | None = None) -> dict:
+def scribe(transcript: str, *, encounter_id: str = "encounter", solver: NanoSolver | None = None, context_policy: str = "legacy") -> dict:
     """Run without targets, fixtures, AtomSpecs, or gold evidence as inputs.
 
     Inference failures produce no encounter/note. A failed independent note
     check also withholds the note. REVIEW/ABSTAIN are software dispositions,
     never authorization to use a draft as a clinical record.
     """
+    if context_policy not in ("legacy", "context"):
+        raise ValueError("unknown source context policy")
     request = NanoInput(encounter_id, transcript)
     selected_solver = solver if solver is not None else DeterministicV0Solver()
     result = run_inference(selected_solver, request)
     base = {"schema_version": "nanoscribe.draft.v0", "encounter_id": encounter_id,
+            "context_policy": context_policy,
             "source_sha256": hashlib.sha256(transcript.encode("utf-8")).hexdigest(),
             "status": "failed", "disposition": Disposition.ABSTAIN.value,
             "extraction": None, "encounter": None, "note": None, "verification": None,
@@ -111,7 +114,7 @@ def scribe(transcript: str, *, encounter_id: str = "encounter", solver: NanoSolv
     output = result.output
     assert output is not None
     try:
-        record = build_encounter(request, output)
+        record = build_encounter(request, output, context_policy=context_policy)
     except (EncounterError, StopIteration) as exc:
         # A valid solver contract is not proof that a downstream schema can
         # represent it. Keep this distinct from missing evidence/abstention.
@@ -119,7 +122,7 @@ def scribe(transcript: str, *, encounter_id: str = "encounter", solver: NanoSolv
                 "extraction": output.to_dict(),
                 "failure": {"category": "encounter_projection_failed", "message": str(exc)}}
     note = render_note(output, record)
-    verification = check_note(request, output, record, note)
+    verification = check_note(request, output, record, note, context_policy=context_policy)
     has_usable_content = any(claim["state"] in (FieldState.SUPPORTED.value, FieldState.ABSENT.value) for claim in note["claims"])
     disposition = Disposition.REVIEW if verification["passed"] and has_usable_content else Disposition.ABSTAIN
     return {**base, "status": "draft" if verification["passed"] else "failed",
@@ -136,6 +139,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--compact-checkpoint", type=Path,
                         help="Local pinned compact model snapshot; offline inference through the checked adapter")
     parser.add_argument("--compact-prompt-style", choices=("rules", "fewshot"), default="fewshot")
+    parser.add_argument("--compact-decoding", choices=("free", "constrained"), default="free")
+    parser.add_argument("--context-policy", choices=("legacy", "context"), default="legacy",
+                        help="Opt-in bounded question attribution; unsupported contexts still abstain")
     parser.add_argument("--format", choices=("json", "text"), default="json")
     args = parser.parse_args(argv)
     try:
@@ -144,11 +150,16 @@ def main(argv: list[str] | None = None) -> int:
         transcript = args.transcript.read_bytes().decode("utf-8")
         solver = None
         if args.compact_checkpoint is not None:
-            from nanoscribe.compact import FEWSHOT_PROMPT, SYSTEM_PROMPT, LocalCompactPredictor, compact_solver
+            from nanoscribe.compact import FEWSHOT_PROMPT, SYSTEM_PROMPT, STRUCTURED_PROMPT, LocalCompactPredictor, compact_solver
             prompt = FEWSHOT_PROMPT if args.compact_prompt_style == "fewshot" else SYSTEM_PROMPT
-            solver = compact_solver(LocalCompactPredictor(str(args.compact_checkpoint), system_prompt=prompt),
-                                    version=f"{args.compact_checkpoint.name}/{args.compact_prompt_style}-v1")
-        result = scribe(transcript, encounter_id=args.encounter_id, solver=solver)
+            options = {}
+            if args.compact_decoding == "constrained":
+                prompt = STRUCTURED_PROMPT
+                options["decoding"] = "constrained"
+            solver = compact_solver(LocalCompactPredictor(str(args.compact_checkpoint), system_prompt=prompt, **options),
+                                    version=f"{args.compact_checkpoint.name}/{args.compact_prompt_style}/{args.compact_decoding}-v1",
+                                    binder=args.context_policy)
+        result = scribe(transcript, encounter_id=args.encounter_id, solver=solver, context_policy=args.context_policy)
     except (OSError, UnicodeError, ValueError) as exc:
         print(json.dumps({"status": "failed", "failure": {"category": "invalid_input", "message": str(exc)}}), file=sys.stderr)
         return 2

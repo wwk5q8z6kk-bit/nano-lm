@@ -167,9 +167,9 @@ corrections retain review evidence and can force abstention.
 ```text
 P1 — H7 executed; frozen screen consumed; gold transport invalid
         ↓
-ANNOTATION TRANSPORT ADMITTED → COMPACT DEVELOPMENT PILOT LIMITED
+ANNOTATION TRANSPORT ADMITTED → COMPACT STRUCTURED PILOT IMPROVED
         ↓
-CONSTRAIN GENERATION → TEST QUESTION-CONTEXT TRANSFER
+BOUNDED QUESTION-CONTEXT TRANSFER → SEMANTIC STATE/CONFLICT WORK
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓
@@ -186,11 +186,17 @@ and all-missing negative-control checks verify transport without touching the
 consumed H7 screen. The [20-dialogue compact development pilot](../artifacts/p1_pilot_v1/REPORT.md)
 is now complete for $0 paid compute, using a pinned cached base Qwen checkpoint
 and a separate same-agent semantic annotation review (no independent human review).
-The rules prompt failed all 20 cases. Adding two worked examples produced two
-useful checked review drafts, four abstaining drafts and 14 failures. Paraphrased
-questions still force abstention. The model is connected but not ready for broad
-scribing; constrained generation and context verification are next. H6/H7 remain
-unchanged, and independent annotation/clinical validation remains open.
+The original worked-example path produced two useful drafts, four abstentions
+and 14 failures. The typed constrained/context rerun produces 14 useful review
+drafts (seven per question style), six abstentions and zero final-path failures.
+Checked extraction scores 95/100 grounded exact fields with zero false assertions
+among 78 presented fields; the stricter final notes retain 56 supported/absent
+claims. Two raw proposals still fail the contract and are quarantined. This is a
+bounded hybrid grammar/model development result, with a shared question policy,
+not general paraphrase understanding or clinical validation. Frozen adapter source
+pins pass; saved proposals reproduce identical drafts through the final separate
+development adapter. Semantic state/conflict selection and longer-dialogue transfer
+remain next. H6/H7 and independent annotation/clinical validation remain unchanged.
 
 | Class | Policy |
 |-------|--------|

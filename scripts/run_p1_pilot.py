@@ -23,7 +23,7 @@ from nano_ai.evaluation import evaluate_solver
 from nano_ai.solver import SolverDescriptor, SolverKind
 from nano_ai.training.annotated_evaluation import annotated_cases
 from nano_ai.training.state_span_data import StateSpanExample
-from nanoscribe.compact import FEWSHOT_PROMPT, LocalCompactPredictor, SYSTEM_PROMPT, compact_solver
+from nanoscribe.compact import FEWSHOT_PROMPT, LocalCompactPredictor, SYSTEM_PROMPT, STRUCTURED_PROMPT, compact_solver
 from nanoscribe.scribe import scribe
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -98,6 +98,8 @@ def main():
     parser.add_argument("--checkpoint")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--prompt-style", choices=("rules", "fewshot"), default="rules")
+    parser.add_argument("--decoding", choices=("free", "constrained"), default="free")
+    parser.add_argument("--binder", choices=("legacy", "context"), default="legacy")
     args = parser.parse_args()
     rows, cases, controls = preflight()
     if not args.checkpoint:
@@ -110,26 +112,32 @@ def main():
         (args.output / name).write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
     save("controls.json", controls)
     prompt = FEWSHOT_PROMPT if args.prompt_style == "fewshot" else SYSTEM_PROMPT
-    predictor = LocalCompactPredictor(args.checkpoint, system_prompt=prompt)
+    if args.decoding == "constrained":
+        prompt = STRUCTURED_PROMPT
+    predictor = LocalCompactPredictor(args.checkpoint, system_prompt=prompt, decoding=args.decoding)
     checkpoint = Path(predictor.checkpoint)
     provenance = {"checkpoint_revision": checkpoint.name,
         "model": "Qwen/Qwen2.5-1.5B-Instruct", "finetuned_adapter": False,
         "checkpoint_hashes": {p.name: digest(p) for p in sorted(checkpoint.iterdir()) if p.is_file()},
-        "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(), "prompt_style": args.prompt_style,
-        "code_hashes": {p: digest(ROOT / p) for p in ("nanoscribe/compact.py", "scripts/run_p1_pilot.py")},
+        "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(), "prompt_style": "structured" if args.decoding == "constrained" else args.prompt_style,
+        "code_hashes": {p: digest(ROOT / p) for p in ("nanoscribe/compact.py", "scripts/run_p1_pilot.py", "nanoscribe/context.py", "nanoscribe/context_solver.py", "nanoscribe/check_note.py", "nanoscribe/scribe.py", "nano_ai/adapters/state_span.py")},
         "incremental_paid_compute_usd": 0, "max_new_tokens": predictor.max_new_tokens,
-        "decoding": "greedy", "development_only": True}
+        "decoding": args.decoding, "binder": args.binder, "development_only": True}
     save("prompt.json", {"system": prompt})
     for name, source in (("runner.py.txt", "scripts/run_p1_pilot.py"), ("compact.py.txt", "nanoscribe/compact.py")):
         (args.output / name).write_bytes((ROOT / source).read_bytes())
+    for source in ("nanoscribe/context.py", "nanoscribe/context_solver.py", "nanoscribe/check_note.py", "nanoscribe/scribe.py", "nano_ai/adapters/state_span.py"):
+        (args.output / (Path(source).name + ".txt")).write_bytes((ROOT / source).read_bytes())
     save("provenance.json", provenance)
-    solver = compact_solver(predictor, version=checkpoint.name)
+    solver = compact_solver(predictor, version=checkpoint.name, binder=args.binder)
+    legacy_solver = compact_solver(predictor, version=checkpoint.name, binder="legacy")
+    legacy_results = []
     raw_outputs = {}
     results = []
     started = time.perf_counter()
     for row in rows:
         before = time.perf_counter()
-        draft = scribe(row["transcript"], encounter_id=row["example_id"], solver=solver)
+        draft = scribe(row["transcript"], encounter_id=row["example_id"], solver=solver, context_policy=args.binder)
         record = predictor.records.get(row["transcript"], {})
         try:
             raw_outputs[row["example_id"]] = proposal_fields(record["raw"], row["transcript"])
@@ -140,6 +148,9 @@ def main():
         results.append({"example_id": row["example_id"], "world_id": row["world_id"],
             "variant": row["variant"], "generation": record, "raw_parse_error": raw_error,
             "draft": draft, "total_seconds": time.perf_counter() - before})
+        if args.binder == "context":
+            legacy_results.append({"example_id": row["example_id"], "draft": scribe(row["transcript"], encounter_id=row["example_id"], solver=legacy_solver)})
+            save("legacy_encounters.json", legacy_results)
         save("encounters.json", results)
         print(row["example_id"], draft["status"], draft["disposition"], record.get("generated_tokens"), flush=True)
     import torch
@@ -149,6 +160,8 @@ def main():
     save("provenance.json", provenance)
     # Cached transcript generation: no second model invocation when evaluating.
     save("checked_evaluation.json", evaluate_solver(solver, cases).to_dict())
+    if args.binder == "context":
+        save("legacy_evaluation.json", evaluate_solver(legacy_solver, cases).to_dict())
     save("raw_evaluation.json", evaluate_solver(Replay(raw_outputs, "diagnostic/raw-compact-proposals"), cases).to_dict())
     summary = {variant: dict(Counter(r["draft"]["disposition"] for r in results if r["variant"] == variant))
                for variant in ("canonical", "paraphrase")}
