@@ -1,0 +1,564 @@
+{
+  "schema_version": "nano.evaluation.v0",
+  "solver": {
+    "solver_id": "diagnostic/raw-compact-proposals",
+    "kind": "reference",
+    "version": "0",
+    "parameter_count": null,
+    "artifact_bytes": null
+  },
+  "quality": {
+    "items": 20,
+    "fields": 100,
+    "inference_success_count": 0,
+    "inference_success_rate": 0.0,
+    "contract_valid_output_count": 0,
+    "contract_valid_output_rate": 0.0,
+    "exact_field_count": 0,
+    "exact_field_accuracy": 0.0,
+    "normalized_field_count": 0,
+    "normalized_field_accuracy": 0.0,
+    "grounded_exact_field_count": 0,
+    "grounded_exact_field_accuracy": 0.0,
+    "grounded_normalized_field_count": 0,
+    "grounded_normalized_field_accuracy": 0.0,
+    "state_correct_count": 0,
+    "state_accuracy": 0.0,
+    "presented_field_count": 0,
+    "coverage": 0.0,
+    "presented_content_correct_count": 0,
+    "content_selective_accuracy": null,
+    "presented_correct_count": 0,
+    "selective_accuracy": null,
+    "normalized_presented_content_correct_count": 0,
+    "normalized_content_selective_accuracy": null,
+    "normalized_presented_correct_count": 0,
+    "normalized_selective_accuracy": null,
+    "false_presented_count": 0,
+    "false_presented_rate": null,
+    "intentional_abstention_count": 0,
+    "intentional_abstention_rate": 0.0,
+    "failed_inference_field_count": 100,
+    "assertion_grounded_count": 0,
+    "assertion_grounded_rate": null,
+    "evidence_required_field_count": 0,
+    "evidence_aligned_field_count": 0,
+    "evidence_alignment_rate": null,
+    "contract_evidence_span_count": 0,
+    "contract_evidence_span_valid_count": 0,
+    "contract_evidence_span_valid_rate": null,
+    "by_field": {
+      "chief_complaint": {
+        "exact": 0,
+        "normalized": 0,
+        "grounded_exact": 0,
+        "grounded_normalized": 0,
+        "state_correct": 0,
+        "evidence_aligned": 0,
+        "evidence_required": 0,
+        "total": 20,
+        "exact_accuracy": 0.0,
+        "normalized_accuracy": 0.0,
+        "grounded_exact_accuracy": 0.0,
+        "grounded_normalized_accuracy": 0.0,
+        "state_accuracy": 0.0,
+        "evidence_alignment_rate": null
+      },
+      "duration": {
+        "exact": 0,
+        "normalized": 0,
+        "grounded_exact": 0,
+        "grounded_normalized": 0,
+        "state_correct": 0,
+        "evidence_aligned": 0,
+        "evidence_required": 0,
+        "total": 20,
+        "exact_accuracy": 0.0,
+        "normalized_accuracy": 0.0,
+        "grounded_exact_accuracy": 0.0,
+        "grounded_normalized_accuracy": 0.0,
+        "state_accuracy": 0.0,
+        "evidence_alignment_rate": null
+      },
+      "severity": {
+        "exact": 0,
+        "normalized": 0,
+        "grounded_exact": 0,
+        "grounded_normalized": 0,
+        "state_correct": 0,
+        "evidence_aligned": 0,
+        "evidence_required": 0,
+        "total": 20,
+        "exact_accuracy": 0.0,
+        "normalized_accuracy": 0.0,
+        "grounded_exact_accuracy": 0.0,
+        "grounded_normalized_accuracy": 0.0,
+        "state_accuracy": 0.0,
+        "evidence_alignment_rate": null
+      },
+      "medication": {
+        "exact": 0,
+        "normalized": 0,
+        "grounded_exact": 0,
+        "grounded_normalized": 0,
+        "state_correct": 0,
+        "evidence_aligned": 0,
+        "evidence_required": 0,
+        "total": 20,
+        "exact_accuracy": 0.0,
+        "normalized_accuracy": 0.0,
+        "grounded_exact_accuracy": 0.0,
+        "grounded_normalized_accuracy": 0.0,
+        "state_accuracy": 0.0,
+        "evidence_alignment_rate": null
+      },
+      "allergy": {
+        "exact": 0,
+        "normalized": 0,
+        "grounded_exact": 0,
+        "grounded_normalized": 0,
+        "state_correct": 0,
+        "evidence_aligned": 0,
+        "evidence_required": 0,
+        "total": 20,
+        "exact_accuracy": 0.0,
+        "normalized_accuracy": 0.0,
+        "grounded_exact_accuracy": 0.0,
+        "grounded_normalized_accuracy": 0.0,
+        "state_accuracy": 0.0,
+        "evidence_alignment_rate": null
+      }
+    },
+    "state_confusion": {
+      "supported": {
+        "supported": 0,
+        "absent": 0,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 0
+      },
+      "absent": {
+        "supported": 0,
+        "absent": 0,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 0
+      },
+      "missing": {
+        "supported": 0,
+        "absent": 0,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 0
+      },
+      "uncertain": {
+        "supported": 0,
+        "absent": 0,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 0
+      },
+      "conflicting": {
+        "supported": 0,
+        "absent": 0,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 0
+      }
+    },
+    "held_seen": null,
+    "paired_robustness": null
+  },
+  "failures": {
+    "count": 20,
+    "rate": 1.0,
+    "by_category": {
+      "invalid_request": 0,
+      "invalid_solver": 0,
+      "solver_exception": 20,
+      "invalid_output_type": 0,
+      "invalid_diagnostics": 0,
+      "solver_id_mismatch": 0,
+      "contract_violation": 0
+    },
+    "synthetic_abstentions_created": 0
+  },
+  "operational": {
+    "latency_measured": false,
+    "inference_latency_ms_p50": null,
+    "inference_latency_ms_p95": null,
+    "cold_load_ms": null,
+    "parameter_count": null,
+    "artifact_bytes": null,
+    "peak_memory_bytes": null
+  },
+  "pipeline": {
+    "diagnostic_protocol_counts": {},
+    "raw_proposal": {
+      "available": false,
+      "protocol_version": null,
+      "items": 0,
+      "fields": 0,
+      "presented_field_count": 0,
+      "coverage": null,
+      "strict_content_correct_count": 0,
+      "strict_content_selective_accuracy": null,
+      "strict_false_presented_count": 0,
+      "strict_false_presented_rate": null,
+      "normalized_content_correct_count": 0,
+      "normalized_content_selective_accuracy": null,
+      "normalized_false_presented_count": 0,
+      "normalized_false_presented_rate": null,
+      "native_abstention_count": 0,
+      "by_field": {
+        "chief_complaint": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "duration": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "severity": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "medication": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "allergy": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        }
+      }
+    },
+    "verification": {
+      "decision_counts": {
+        "accepted_supported": 0,
+        "accepted_absent": 0,
+        "rejected_ungrounded": 0,
+        "rejected_unproven_absence": 0,
+        "preserved_conflict": 0,
+        "native_abstention": 0
+      },
+      "accepted_count": 0,
+      "rejected_count": 0,
+      "preserved_conflict_count": 0,
+      "native_abstention_count": 0,
+      "acceptance_rate_over_decisions": null
+    }
+  },
+  "items": [
+    {
+      "case_id": "pilot-00-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-00-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-01-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-01-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-02-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "MED has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-02-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-03-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-03-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-04-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-04-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-05-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-05-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-06-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-06-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-07-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-07-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-08-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-08-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-09-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-09-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    }
+  ]
+}

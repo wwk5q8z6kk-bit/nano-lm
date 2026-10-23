@@ -1,0 +1,14 @@
+{
+  "verified_at_utc": "2026-10-22T20:39:23.571221+00:00",
+  "dataset": "hassaneljesr/nano-h7-treatments-c6177067",
+  "is_private": true,
+  "provider_file_inventory": [
+    {
+      "name": "nano-h7-treatment-results.tar.gz.bin",
+      "bytes": 73203231
+    }
+  ],
+  "downloaded_sha256": "cef53ffe6822cdfd5bb31d03575b98a690efe4d1ab223088bb15ede03e903414",
+  "source_archive_sha256": "cef53ffe6822cdfd5bb31d03575b98a690efe4d1ab223088bb15ede03e903414",
+  "exact_bytes_match": true
+}

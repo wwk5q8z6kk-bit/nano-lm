@@ -1,0 +1,27 @@
+{
+  "checkpoint_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "finetuned_adapter": false,
+  "checkpoint_hashes": {
+    "config.json": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+    "generation_config.json": "e558847a8b4402616f1273797b015104dc266fe4b520056fca88823ba8f8ebe6",
+    "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+    "model.safetensors": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+    "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "prompt_sha256": "ffc238b10bdfdee60650aac785648e001fe786f77af6e07c2b2ec586dfbb3884",
+  "code_hashes": {
+    "nanoscribe/compact.py": "9243acb47ed8454148c8b8ae85746686e9803fe9f11e50eb8483c740dafa4610",
+    "scripts/run_p1_pilot.py": "14b4a49b866fe87122f3e788d4b5f5c9672f2f3dda54e50396e3518c4cee70b1"
+  },
+  "incremental_paid_compute_usd": 0,
+  "max_new_tokens": 256,
+  "decoding": "greedy",
+  "development_only": true,
+  "torch": "2.11.0",
+  "transformers": "5.5.3",
+  "device": "cpu",
+  "total_seconds": 76.75763391700457
+}

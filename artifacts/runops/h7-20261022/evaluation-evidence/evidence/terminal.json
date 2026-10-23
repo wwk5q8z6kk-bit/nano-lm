@@ -1,0 +1,13 @@
+{
+  "attempt_id": "abd33a51-419d-44c9-87ff-4b165acfd235",
+  "elapsed_seconds": 322.758,
+  "error": null,
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-22T20:48:39Z",
+  "phase": "completed",
+  "reservation_sha256": "79e974fd17893aef88a282da5a587308fac6f255a1199a3b5acd1b185beef425",
+  "retry_authorized": false,
+  "stage": "evaluation",
+  "started_at_utc": "2026-10-22T20:43:16Z",
+  "status": "completed"
+}

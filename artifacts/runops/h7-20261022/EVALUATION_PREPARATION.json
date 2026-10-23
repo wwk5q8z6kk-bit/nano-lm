@@ -1,0 +1,10 @@
+{
+  "observed_at_utc": "2026-10-22T19:41:36.333164+00:00",
+  "evaluation_dataset": "hassaneljesr/nano-h7-evaluation-d6ed212",
+  "evaluation_dataset_private": true,
+  "evaluation_reserved": false,
+  "evaluation_submitted": false,
+  "training_dataset": "hassaneljesr/nano-h7-training-d6ed212",
+  "training_input_change": false,
+  "runner_sha256": "f0d7eed99f6b1eaf28e214c0e73924585ec91b92333379a460f2d4d53f8d8c86"
+}

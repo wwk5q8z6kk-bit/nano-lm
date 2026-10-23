@@ -28,8 +28,13 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 | C1 | Reconcile H6 terminal evidence | **Done** — exact historical result and decision are present on `master`; hashes verify |
 | C2 | Localize H6 failures | **Done** — authenticated row-level analysis separates state selection from evidence binding; threshold and verifier effects remain explicitly unassessed |
 | C3 | Define the next bounded intervention | **Done** — H7-BM isolates local evidence-boundary ranking; H6 is not rerun or relabeled |
-| C4 | Run cheapest valid screen | **Current** — two-stage Kaggle CPU package is locally verified with screen absent from training; execute two fixed seeds, freeze report hashes, then perform the single preregistered control/treatment scoring pass |
-| C5 | Re-evaluate P1 exit gap | Automatic evidence plus external human-review plan; no mastery claim from synthetic data |
+| C4 | Finish bounded H7 screen | **Executed; consumed** — both seeds and single screen completed for $0 in 4,017.465 seconds. Recorded REJECT is scientifically invalid because the evaluator replaced annotated gold with all-missing fields; exact evidence and diagnosis preserved, no rerun |
+| C5 | Re-evaluate P1 exit gap | **Assessed** — checked reference scribing path and annotation transport exist; learned exact-span quality, independent semantic annotation review, longer-dialogue transfer and external human review remain open. No H7 treatment conclusion or P1 mastery claim |
+| C6 | Import preserved compact-model comparison | **Built** — compact, six recovered OpenResearch prompt variants, corrected C2 and terminal H6 evidence with exact provenance and explicit denominators; H7 bytes imported with an explicit invalid-gold warning |
+| C7 | Connect one end-to-end scribing path | **Built** — transcript-only reference or optional compact extraction → encounter → source-checked review draft. Compact pilot remains limited; external human validation is open |
+| C8 | Validate future evaluation target transport | **Built** — separate annotation-owned evaluator with exact spans, metadata and independent field/state quota gates; toy oracle and all-missing negative control. H7/H6 remain untouched; semantic annotation review still required |
+| C9 | Develop one learned scribing transfer pilot | **Executed, limited** — 20 synthetic development dialogues, separate same-agent annotation review, quota/oracle/negative controls; pinned base Qwen compact model connected to checked scribing. Original worked examples yielded two useful drafts, four abstentions and 14 failures; the typed constrained/context rerun yields 14 useful drafts, six abstentions and zero final failures for $0. Checked extraction is 95/100 grounded exact; final notes retain 56 supported/absent claims. No fine-tuned adapter recovery or clinical claim. [Results](../artifacts/p1_pilot_v1/REPORT.md) |
+| C10 | Improve compact format and paraphrase handling | **Built and rerun** — typed exact-source token constraints and bounded paraphrase context policy; seven useful drafts per question style. Two raw contract failures are quarantined, medication conflicts still lose their state, and six final drafts abstain. Frozen source pins preserved via a separate development adapter; 20 saved generations reproduce identical current-path drafts. Additional six-case development challenge recorded. Next: improve semantic state/conflict selection with separate development data and independently reviewed annotations before a new scientific screen |
 
 ## Explicitly out of scope (until separately authorized)
 
@@ -40,9 +45,14 @@ Executable tasks under [ACTIVE_NOW.md](ACTIVE_NOW.md). Historical queue preserve
 
 ## Training / compute (standing)
 
-Kaggle and RunPod are complementary active backends. Prefer Kaggle when the
-free runtime fits; use RunPod for exact GPU/runtime requirements, persistence,
-or managed inference. Materially costly or confirmatory runs remain
+Kaggle and RunPod are complementary active backends. Optimize useful evidence
+per dollar and wall-clock hour: prefer Kaggle when the free runtime fits and
+turnaround is acceptable; use RunPod when faster compute justifies the spend
+within the active experiment budget, or for exact GPU/runtime requirements,
+persistence, or managed inference. H7 retains its frozen CPU recipe and $0
+ceiling. Authenticated OpenResearch access is available and six prior prompt
+variant runs are recovered in the comparison; no new managed boxes were launched.
+Materially costly or confirmatory runs remain
 experiment-scoped under the active plan’s budget and authorization rules.
 
 ## Verification commands
