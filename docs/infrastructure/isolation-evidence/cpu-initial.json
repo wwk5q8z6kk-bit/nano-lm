@@ -1,0 +1,62 @@
+{
+  "platform": "macOS-26.7.2-arm64-arm-64bit-Mach-O",
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "srt_version": "0.0.81",
+  "runs": [
+    {
+      "mode": "baseline",
+      "repeat": 0,
+      "exit_code": 0,
+      "stdout": "{\"started\": true, \"secret_read\": \"allowed\", \"protected_write\": \"allowed\", \"child_secret_read\": \"allowed\", \"child_stderr\": \"\", \"loopback_connect\": \"allowed\", \"artifact_sha256\": \"130ff0cfd0e1163f0c6c392158774e97ddd1d6d3ff8bd614c8f30a02551164e6\", \"artifact_write_read_seconds\": 0.0013460420013871044, \"torch\": {\"version\": \"2.11.0\", \"cuda\": null, \"cuda_available\": false, \"steps\": 8, \"seconds\": 0.8685055000241846, \"checkpoint_equal\": true, \"state_sha256\": \"f9e15cb7672406e8e25b84ea78983de8b8d37336f42d772076a6f7242a89950f\"}, \"worker_cpu_seconds\": 0.9682679999999999, \"worker_max_rss_bytes\": 308051968}\n",
+      "stderr": "",
+      "wall_seconds": 4.077637333015446,
+      "worker_started": true
+    },
+    {
+      "mode": "srt",
+      "repeat": 0,
+      "exit_code": 0,
+      "stdout": "{\"started\": true, \"secret_read\": \"denied\", \"protected_write\": \"denied\", \"child_secret_read\": \"failed\", \"child_stderr\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 1, in <module>\\n    import pathlib,sys; pathlib.Path(sys.argv[1]).read_bytes()\\n                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\\n  File \\\"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\\\", line 777, in read_bytes\\n    with self.open(mode='rb', buffering=0) as f:\\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\\\", line 771, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nPermissionError: [Errno 1] Operation not permitted: '/private/tmp/nano-srt-assessment-20261023/run-1/secret'\\n\", \"loopback_connect\": \"PermissionError\", \"artifact_sha256\": \"130ff0cfd0e1163f0c6c392158774e97ddd1d6d3ff8bd614c8f30a02551164e6\", \"artifact_write_read_seconds\": 0.0009955840068869293, \"torch_error\": \"FileNotFoundError(2, \\\"No usable temporary directory found in ['/tmp/claude', '/tmp', '/var/tmp', '/usr/tmp', '/Users/mac/.codex/worktrees/research-execution-isolation/nano-lm']\\\")\", \"worker_cpu_seconds\": 0.251725, \"worker_max_rss_bytes\": 153321472}\n",
+      "stderr": "OMP: Warning #179: Function Can't set size of /tmp file failed:\n",
+      "wall_seconds": 0.5154822499898728,
+      "worker_started": true
+    },
+    {
+      "mode": "baseline",
+      "repeat": 1,
+      "exit_code": 0,
+      "stdout": "{\"started\": true, \"secret_read\": \"allowed\", \"protected_write\": \"allowed\", \"child_secret_read\": \"allowed\", \"child_stderr\": \"\", \"loopback_connect\": \"allowed\", \"artifact_sha256\": \"130ff0cfd0e1163f0c6c392158774e97ddd1d6d3ff8bd614c8f30a02551164e6\", \"artifact_write_read_seconds\": 0.0011994160013273358, \"torch\": {\"version\": \"2.11.0\", \"cuda\": null, \"cuda_available\": false, \"steps\": 8, \"seconds\": 0.8666990420024376, \"checkpoint_equal\": true, \"state_sha256\": \"f9e15cb7672406e8e25b84ea78983de8b8d37336f42d772076a6f7242a89950f\"}, \"worker_cpu_seconds\": 1.0185659999999999, \"worker_max_rss_bytes\": 306298880}\n",
+      "stderr": "",
+      "wall_seconds": 4.157681208016584,
+      "worker_started": true
+    },
+    {
+      "mode": "srt",
+      "repeat": 1,
+      "exit_code": 0,
+      "stdout": "{\"started\": true, \"secret_read\": \"denied\", \"protected_write\": \"denied\", \"child_secret_read\": \"failed\", \"child_stderr\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 1, in <module>\\n    import pathlib,sys; pathlib.Path(sys.argv[1]).read_bytes()\\n                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\\n  File \\\"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\\\", line 777, in read_bytes\\n    with self.open(mode='rb', buffering=0) as f:\\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\\\", line 771, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nPermissionError: [Errno 1] Operation not permitted: '/private/tmp/nano-srt-assessment-20261023/run-1/secret'\\n\", \"loopback_connect\": \"PermissionError\", \"artifact_sha256\": \"130ff0cfd0e1163f0c6c392158774e97ddd1d6d3ff8bd614c8f30a02551164e6\", \"artifact_write_read_seconds\": 0.001451084011932835, \"torch_error\": \"FileNotFoundError(2, \\\"No usable temporary directory found in ['/tmp/claude', '/tmp', '/var/tmp', '/usr/tmp', '/Users/mac/.codex/worktrees/research-execution-isolation/nano-lm']\\\")\", \"worker_cpu_seconds\": 0.247409, \"worker_max_rss_bytes\": 153665536}\n",
+      "stderr": "OMP: Warning #179: Function Can't set size of /tmp file failed:\n",
+      "wall_seconds": 0.5073292909946758,
+      "worker_started": true
+    },
+    {
+      "mode": "baseline",
+      "repeat": 2,
+      "exit_code": 0,
+      "stdout": "{\"started\": true, \"secret_read\": \"allowed\", \"protected_write\": \"allowed\", \"child_secret_read\": \"allowed\", \"child_stderr\": \"\", \"loopback_connect\": \"allowed\", \"artifact_sha256\": \"130ff0cfd0e1163f0c6c392158774e97ddd1d6d3ff8bd614c8f30a02551164e6\", \"artifact_write_read_seconds\": 0.0011997919937130064, \"torch\": {\"version\": \"2.11.0\", \"cuda\": null, \"cuda_available\": false, \"steps\": 8, \"seconds\": 0.8426864170178305, \"checkpoint_equal\": true, \"state_sha256\": \"f9e15cb7672406e8e25b84ea78983de8b8d37336f42d772076a6f7242a89950f\"}, \"worker_cpu_seconds\": 0.983718, \"worker_max_rss_bytes\": 307462144}\n",
+      "stderr": "",
+      "wall_seconds": 4.092773207987193,
+      "worker_started": true
+    },
+    {
+      "mode": "srt",
+      "repeat": 2,
+      "exit_code": 0,
+      "stdout": "{\"started\": true, \"secret_read\": \"denied\", \"protected_write\": \"denied\", \"child_secret_read\": \"failed\", \"child_stderr\": \"Traceback (most recent call last):\\n  File \\\"<string>\\\", line 1, in <module>\\n    import pathlib,sys; pathlib.Path(sys.argv[1]).read_bytes()\\n                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\\n  File \\\"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\\\", line 777, in read_bytes\\n    with self.open(mode='rb', buffering=0) as f:\\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\\\", line 771, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nPermissionError: [Errno 1] Operation not permitted: '/private/tmp/nano-srt-assessment-20261023/run-1/secret'\\n\", \"loopback_connect\": \"PermissionError\", \"artifact_sha256\": \"130ff0cfd0e1163f0c6c392158774e97ddd1d6d3ff8bd614c8f30a02551164e6\", \"artifact_write_read_seconds\": 0.0014538750110659748, \"torch_error\": \"FileNotFoundError(2, \\\"No usable temporary directory found in ['/tmp/claude', '/tmp', '/var/tmp', '/usr/tmp', '/Users/mac/.codex/worktrees/research-execution-isolation/nano-lm']\\\")\", \"worker_cpu_seconds\": 0.25121899999999997, \"worker_max_rss_bytes\": 153255936}\n",
+      "stderr": "OMP: Warning #179: Function Can't set size of /tmp file failed:\n",
+      "wall_seconds": 0.513166042015655,
+      "worker_started": true
+    }
+  ],
+  "gpu_test": "not_run"
+}
