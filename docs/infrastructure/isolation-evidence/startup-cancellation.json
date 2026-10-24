@@ -1,0 +1,88 @@
+{
+  "startup": [
+    {
+      "mode": "baseline",
+      "repeat": 0,
+      "exit_code": 0,
+      "seconds": 0.003132499987259507,
+      "stderr": ""
+    },
+    {
+      "mode": "baseline",
+      "repeat": 1,
+      "exit_code": 0,
+      "seconds": 0.0029892500024288893,
+      "stderr": ""
+    },
+    {
+      "mode": "baseline",
+      "repeat": 2,
+      "exit_code": 0,
+      "seconds": 0.002411374996881932,
+      "stderr": ""
+    },
+    {
+      "mode": "baseline",
+      "repeat": 3,
+      "exit_code": 0,
+      "seconds": 0.002666917018359527,
+      "stderr": ""
+    },
+    {
+      "mode": "baseline",
+      "repeat": 4,
+      "exit_code": 0,
+      "seconds": 0.0027916250110138208,
+      "stderr": ""
+    },
+    {
+      "mode": "srt",
+      "repeat": 0,
+      "exit_code": 0,
+      "seconds": 0.209487457992509,
+      "stderr": ""
+    },
+    {
+      "mode": "srt",
+      "repeat": 1,
+      "exit_code": 0,
+      "seconds": 0.17768900000373833,
+      "stderr": ""
+    },
+    {
+      "mode": "srt",
+      "repeat": 2,
+      "exit_code": 0,
+      "seconds": 0.1818083339894656,
+      "stderr": ""
+    },
+    {
+      "mode": "srt",
+      "repeat": 3,
+      "exit_code": 0,
+      "seconds": 0.17878854199079797,
+      "stderr": ""
+    },
+    {
+      "mode": "srt",
+      "repeat": 4,
+      "exit_code": 0,
+      "seconds": 0.17583033299888484,
+      "stderr": ""
+    }
+  ],
+  "cancellation": [
+    {
+      "mode": "baseline",
+      "started": true,
+      "exit_code": -15,
+      "descendant_late_write": false
+    },
+    {
+      "mode": "srt",
+      "started": true,
+      "exit_code": 0,
+      "descendant_late_write": false
+    }
+  ]
+}
