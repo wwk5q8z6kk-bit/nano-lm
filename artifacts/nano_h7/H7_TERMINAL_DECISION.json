@@ -1,0 +1,59 @@
+{
+  "schema": "nano.h7-terminal-decision.v1",
+  "experiment_id": "nano-p1-h7-boundary-margin-screen-v1",
+  "recorded_at_utc": "2026-10-22T20:53:53.177896+00:00",
+  "execution_status": "COMPLETE",
+  "recorded_evaluator_decision": "REJECT",
+  "scientific_validity": "INVALID_GOLD_ANNOTATIONS",
+  "capability_conclusion": "No valid boundary-treatment effect or model-accuracy conclusion. The consumed frozen evaluator reconstructed every gold field as missing instead of using annotated targets.",
+  "result_path": "artifacts/nano_h7/kaggle/h7-boundary-margin-v1/h7_screen_evaluation.json",
+  "result_sha256": "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49",
+  "capture_validation": "artifacts/runops/h7-20261022/evaluation-evidence/CAPTURE_VALIDATION.json",
+  "diagnosis": "docs/research/H7_EVALUATOR_DIAGNOSIS.md",
+  "gold_state_totals": {
+    "expected_from_frozen_manifest": {
+      "absent": 413,
+      "conflicting": 250,
+      "missing": 250,
+      "supported": 3837,
+      "uncertain": 250
+    },
+    "observed_in_each_arm": {
+      "absent": 0,
+      "conflicting": 0,
+      "missing": 5000,
+      "supported": 0,
+      "uncertain": 0
+    }
+  },
+  "training": {
+    "seeds": [
+      20260805,
+      20260806
+    ],
+    "selected_epochs": [
+      2,
+      2
+    ],
+    "elapsed_seconds": 3694.707,
+    "capture_validation": "artifacts/runops/h7-20261022/training-evidence/CAPTURE_VALIDATION.json"
+  },
+  "evaluation": {
+    "kernel": "hassaneljesr/nano-h7-eval-run-d6ed212",
+    "version": 2,
+    "attempt_id": "abd33a51-419d-44c9-87ff-4b165acfd235",
+    "elapsed_seconds": 322.758,
+    "control_passes": 1,
+    "treatment_passes": 2,
+    "preexecution_version_1_failure": "artifacts/runops/h7-20261022/evaluation-v1-preexecution-failure/FAILURE_REVIEW.json"
+  },
+  "capture_packaging_anomaly": "Frozen checksum list contains a renamed temporary self-entry. A separate verifier checks its exact prefix digest and every real file; original failure and bytes are retained. No scientific execution was repeated.",
+  "new_paid_compute_usd": 0,
+  "total_training_and_evaluation_runtime_seconds": 4017.465,
+  "screen_consumed": true,
+  "rerun_authorized": false,
+  "third_seed_allowed": false,
+  "threshold_sweep_allowed": false,
+  "h6_terminal_unchanged": true,
+  "next_step": "Fix and test annotated-target transport for a separately specified future instrument; no reuse or relabeling of this consumed screen."
+}

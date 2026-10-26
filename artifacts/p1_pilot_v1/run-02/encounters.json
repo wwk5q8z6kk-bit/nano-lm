@@ -1,0 +1,702 @@
+[
+  {
+    "example_id": "pilot-00-canonical",
+    "world_id": "pilot-world-00",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have an allergy to nickel.|DUR:S[11 days]|SEV:A[moderate]|MED:C[naproxen]|ALG:A[nickel allergy]",
+      "generated_tokens": 39,
+      "token_limit_reached": false,
+      "generation_seconds": 3.330710958005511,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-canonical",
+      "source_sha256": "449f638874a2ac25924d4c2d465c1c36fb197144f1a43dcb1b55f71a6848aaa4",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 6.781401166997966
+  },
+  {
+    "example_id": "pilot-00-paraphrase",
+    "world_id": "pilot-world-00",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having jaw pain.|DUR:For about 11 days now.|SEV:moderate.|MED:naproxen.|ALG:I'm allergic to nickel.",
+      "generated_tokens": 40,
+      "token_limit_reached": false,
+      "generation_seconds": 3.3941888330009533,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-paraphrase",
+      "source_sha256": "e9b4629a7810603e8132d201bca9a05c28349a21c2583c719d5150be29f41aec",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.395182374995784
+  },
+  {
+    "example_id": "pilot-01-canonical",
+    "world_id": "pilot-world-01",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have an allergy to latex.|DUR:Asthma started at age 10.|SEV:Mild discomfort.|MED:Acetaminophen.|ALG:C|CC:I have an allergy to latex.|DUR:Asthma started at age 10.|SEV:Mild discomfort.|MED:Acetaminophen.|ALG:C",
+      "generated_tokens": 76,
+      "token_limit_reached": false,
+      "generation_seconds": 6.104642958001932,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-01-canonical",
+      "source_sha256": "a501edaa6957c2f90592794579dbdc9c0406326e3b7368a19162277bc6e1a51a",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 6.105427874994348
+  },
+  {
+    "example_id": "pilot-01-paraphrase",
+    "world_id": "pilot-world-01",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having ankle soreness.|DUR:For about 6 weeks now.|SEV:mild.|MED:acetaminophen.|ALG:I'm allergic to latex.",
+      "generated_tokens": 40,
+      "token_limit_reached": false,
+      "generation_seconds": 3.420645416001207,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-01-paraphrase",
+      "source_sha256": "bc5f635de82c01fc4e1fd04f796f2d61f1733dcdc8a12547b28b81cda6e9d313",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.4214003329980187
+  },
+  {
+    "example_id": "pilot-02-canonical",
+    "world_id": "pilot-world-02",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[dry cough]|DUR:A[about 9 days]|SEV:S[severe]|MED:C[M][nothing]|ALG:A[no allergies]",
+      "generated_tokens": 36,
+      "token_limit_reached": false,
+      "generation_seconds": 3.101151041002595,
+      "device": "cpu"
+    },
+    "raw_parse_error": "MED has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-02-canonical",
+      "source_sha256": "dbcc9cb65640365fa04382d17abe2aedfd549ab09f3c34f32715f020c10fac72",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "MED has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.1020558329910273
+  },
+  {
+    "example_id": "pilot-02-paraphrase",
+    "world_id": "pilot-world-02",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having dry cough.|DUR:about 9 days now.|SEV:severe.|MED:No, nothing yet.|ALG:Avoiding known allergens.",
+      "generated_tokens": 40,
+      "token_limit_reached": false,
+      "generation_seconds": 3.4195236670057056,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-02-paraphrase",
+      "source_sha256": "0c3ce9b4e003ef9ea972630861ec3fe9ed20f3cf1765bcaaf958f6e20acc4fbb",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.4203339999949094
+  },
+  {
+    "example_id": "pilot-03-canonical",
+    "world_id": "pilot-world-03",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have an allergy to amoxicillin.|DUR:A mild reaction.|SEV:Slightly uncomfortable.|MED:C[a mild reaction;second unspecified]|ALG:A|",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 3.1479699589981465,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-03-canonical",
+      "source_sha256": "ea8bb581301db9bcc38d8ba4f14e0ebee88cc30ff687010eea181f86b88bad9a",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.148700000005192
+  },
+  {
+    "example_id": "pilot-03-paraphrase",
+    "world_id": "pilot-world-03",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I have a chief complaint of wrist ache.|SEV:I describe my symptoms as moderate.|ALG:A patient reported being allergic to amoxicillin.|MED:The doctor inquired about allergies but did not discuss medications.|DUR:U[no duration was mentioned by the patient.]",
+      "generated_tokens": 58,
+      "token_limit_reached": false,
+      "generation_seconds": 4.741996500000823,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-03-paraphrase",
+      "source_sha256": "bf3cc9f6048151152b356611140192a77f8f0cd576f35b24992d149bb86bea19",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 4.74267150000378
+  },
+  {
+    "example_id": "pilot-04-canonical",
+    "world_id": "pilot-world-04",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have ear pressure|DUR:about 3 weeks|SEV:mild discomfort|MED:i-bu-pro-fen|ALG:A mild case of ear pressure",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 3.236094374995446,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-04-canonical",
+      "source_sha256": "21ef56097ac2bd1462d21e5450f337e648e8fe264076e94b6cddd371c8180403",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.236817917000735
+  },
+  {
+    "example_id": "pilot-04-paraphrase",
+    "world_id": "pilot-world-04",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having ear pressure.|DUR:For about 3 weeks now.|SEV:Asthma.|MED:Ibuprofen.|ALG:C",
+      "generated_tokens": 34,
+      "token_limit_reached": false,
+      "generation_seconds": 2.8798816250055097,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-04-paraphrase",
+      "source_sha256": "2082438de9d919a8e6b7934ffe04176d14f74b86ab24d2bb4d0ecc601b4a230a",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.8805749169987394
+  },
+  {
+    "example_id": "pilot-05-canonical",
+    "world_id": "pilot-world-05",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have an allergy|DUR:A[adhesive]|SEV:A[mild]|MED:C[none;any]|ALG:A[allergic reaction]",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 3.0736115420004353,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-05-canonical",
+      "source_sha256": "c028a577d3e81e535c1a61edec6a7804a8200b2b093ef3dc20456072c6323840",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.0743692919932073
+  },
+  {
+    "example_id": "pilot-05-paraphrase",
+    "world_id": "pilot-world-05",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having heel pain.|DUR:A[exact uncertainty quote]I cannot remember how long it has been.|SEV:M[I'd call it mild]|MED:C[first exact value quote;second exact value quote]Adhesive.|ALG:A[exact uncertainty quote]I'm allergic to adhesive.",
+      "generated_tokens": 64,
+      "token_limit_reached": false,
+      "generation_seconds": 5.09043658299197,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-05-paraphrase",
+      "source_sha256": "7bce03f26f12678efe69b77ffddfe17026b063794cb630cc19a2b07cc30fcaf0",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 5.091201208997518
+  },
+  {
+    "example_id": "pilot-06-canonical",
+    "world_id": "pilot-world-06",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have eye irritation.|DUR:about 8 days.|SEV:I am not sure how intense it is.|MED:lortadine.|ALG:A|U:C",
+      "generated_tokens": 38,
+      "token_limit_reached": false,
+      "generation_seconds": 3.192702250002185,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-06-canonical",
+      "source_sha256": "df6bcd9acc82c9c89823c05834db583e126e641d95ee2b151ac248e447527c31",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.1934767499915324
+  },
+  {
+    "example_id": "pilot-06-paraphrase",
+    "world_id": "pilot-world-06",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I have been experiencing eye irritation.|DUR:S[8 days]|SEV:A[U[not sure]]|MED:C[loratadine]|ALG:A[M]",
+      "generated_tokens": 38,
+      "token_limit_reached": false,
+      "generation_seconds": 3.2374068749923026,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-06-paraphrase",
+      "source_sha256": "68a995c5230f1a37dfd7b62f18ec26a72f9cbfef5f2b288a54a5781d9c16a8ed",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.2381808329955675
+  },
+  {
+    "example_id": "pilot-07-canonical",
+    "world_id": "pilot-world-07",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have a shoulder ache|DUR:about 4 days|SEV:moderate|MED:aspirin|ALG:A [None whatsoever.]",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 3.009147832999588,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-07-canonical",
+      "source_sha256": "971c100288119c496f4714fd6c893b3f85c290d899cf2ba2a86af0e7491547c8",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.0099423750070855
+  },
+  {
+    "example_id": "pilot-07-paraphrase",
+    "world_id": "pilot-world-07",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having shoulder ache.|DUR:For about 4 days now.|SEV:moderate.|MED:aspirin.|ALG:A|U:C",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 3.117466957992292,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-07-paraphrase",
+      "source_sha256": "80a99128cfdb3d5eee5c94a38d05d45edb011e8b1cb50b3e7c61a592337701e2",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.118267333993572
+  },
+  {
+    "example_id": "pilot-08-canonical",
+    "world_id": "pilot-world-08",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I'm allergic to penicillin.|DUR:For about 2 weeks now.|SEV:mild.|MED:cetirizine.|ALG:A[explicit denial quote] penicillin",
+      "generated_tokens": 43,
+      "token_limit_reached": false,
+      "generation_seconds": 3.5785681669949554,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-08-canonical",
+      "source_sha256": "ec465d04bc6d25dd40781c91c5dcc400bb8ece0915789f618f9c2efb953ec1ab",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.5793516249977984
+  },
+  {
+    "example_id": "pilot-08-paraphrase",
+    "world_id": "pilot-world-08",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having nasal congestion.|DUR:For about 2 weeks now.|SEV:Mild.|MED:Cetirizine.|ALG:I'm allergic to penicillin.",
+      "generated_tokens": 41,
+      "token_limit_reached": false,
+      "generation_seconds": 3.3725937910057837,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-08-paraphrase",
+      "source_sha256": "b63a819920a959a677b12c6e1dcf21ed7f1ec0abc6bc2076067f87b66b1f8f6d",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.3734286250110017
+  },
+  {
+    "example_id": "pilot-09-canonical",
+    "world_id": "pilot-world-09",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:S[finger soreness]|DUR:A[no specific duration given]|SEV:S[soreness], which could indicate inflammation or infection.|MED:C[none]|ALG:A[none]",
+      "generated_tokens": 42,
+      "token_limit_reached": false,
+      "generation_seconds": 3.407457583001815,
+      "device": "cpu"
+    },
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-09-canonical",
+      "source_sha256": "2caf2e7797d038cd0124d9a786c8bf05b163c584ef2440a311a79071f4952c68",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.408276209011092
+  },
+  {
+    "example_id": "pilot-09-paraphrase",
+    "world_id": "pilot-world-09",
+    "variant": "paraphrase",
+    "generation": {
+      "raw": "CC:I've been having finger soreness.|DUR:A symptom of the condition.|SEV:Slight discomfort.|MED:C[Cfinger cream];U[nothing at all]|ALG:N[ANo known allergies.]",
+      "generated_tokens": 44,
+      "token_limit_reached": false,
+      "generation_seconds": 5.4280746250005905,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-09-paraphrase",
+      "source_sha256": "b719795e4c2e68feb231d92af2958113941795d2d8488883b560e90341d31419",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 5.428809374992852
+  }
+]

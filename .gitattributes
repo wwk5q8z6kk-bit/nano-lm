@@ -1,0 +1,2 @@
+# Verbatim experiment source snapshots retain the bytes hashed in provenance.
+artifacts/p1_pilot_v1/**/*.py.txt -whitespace

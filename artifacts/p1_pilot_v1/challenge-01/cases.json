@@ -1,0 +1,55 @@
+[
+  {
+    "id": "new-wording-and-values",
+    "transcript": "Doctor: What symptoms brought you here?\nPatient: I've been having toe pain.\nDoctor: What is the duration of your symptoms?\nPatient: For about 13 days now.\nDoctor: Please describe how severe your discomfort is.\nPatient: I'd call it severe.\nDoctor: Which medicines are you taking for this?\nPatient: I've been taking diclofenac.\nDoctor: Which substances are you allergic to?\nPatient: I'm allergic to chromium.",
+    "disposition": "review",
+    "supported_claims": {
+      "chief_complaint": "toe pain",
+      "duration": "13 days",
+      "severity": "severe",
+      "medication": "diclofenac",
+      "allergy": "chromium"
+    }
+  },
+  {
+    "id": "uncertainty-and-denial",
+    "transcript": "Doctor: What symptoms brought you here?\nPatient: I've been having knee ache.\nDoctor: What is the duration of your symptoms?\nPatient: I cannot recall when it started.\nDoctor: Which medicine did you try?\nPatient: No, nothing yet.",
+    "disposition": "review",
+    "supported_claims": {
+      "chief_complaint": "knee ache"
+    },
+    "states": {
+      "duration": "uncertain",
+      "medication": "absent"
+    }
+  },
+  {
+    "id": "medication-conflict",
+    "transcript": "Doctor: What symptoms brought you here?\nPatient: I've been having ear pain.\nDoctor: Which medicine did you try?\nPatient: I've been taking diclofenac.\nDoctor: Which medicine did you try?\nPatient: No, nothing yet.",
+    "disposition": "review",
+    "supported_claims": {
+      "chief_complaint": "ear pain"
+    },
+    "states": {
+      "medication": "conflicting"
+    }
+  },
+  {
+    "id": "third-party",
+    "transcript": "Doctor: Which medicines is your uncle taking?\nPatient: I've been taking diclofenac.",
+    "disposition": "abstain",
+    "supported_claims": {}
+  },
+  {
+    "id": "future-plan",
+    "transcript": "Doctor: What medications will you start tomorrow?\nPatient: I've been taking diclofenac.",
+    "disposition": "abstain",
+    "supported_claims": {}
+  },
+  {
+    "id": "compound",
+    "transcript": "Doctor: Which medicines and allergies do you have?\nPatient: I've been taking diclofenac.",
+    "disposition": "abstain",
+    "supported_claims": {}
+  }
+]

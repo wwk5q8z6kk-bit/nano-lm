@@ -1,0 +1,431 @@
+{
+  "h7_contract": {
+    "control_checkpoint_sha256": "07547ec5c01b46fa87e8d53a40497a7c4b4a6bc92b596dddd67f4be4d18c89e0",
+    "experiment_id": "nano-p1-h7-boundary-margin-screen-v1",
+    "records": 1000,
+    "schema_version": "nano.h7-boundary-screen-evaluation.v1",
+    "screen_manifest_sha256": "a766a41ed99bcffcd8e078c652c8a85fe6d796fe44268e03e0e309d9070cd6a6",
+    "screen_records_sha256": "9b18c5eef105d0fa2ff0a1e575e764c0014a4ff62e40e8b8205dc12674c436f2",
+    "treatment_seeds": [
+      20260805,
+      20260806
+    ]
+  },
+  "orx_capture_audit": {
+    "captured_on": "2026-10-22",
+    "method": "Read-only orx logs retrieval; complete JSON payload extracted from each local log. All per-atom values and every encounter prompt/raw line matched the already-versioned slot exports. Raw CLI logs remain local; no compute or evaluation was launched. This sanitized audit is a capture record, not a server-signed attestation.",
+    "runs": {
+      "D": {
+        "calibration_condition": "Soff_Voff_Don_P0",
+        "calibration_config": {
+          "delimit_check": true,
+          "placebo_clauses": 0,
+          "sufficiency_check": false,
+          "verbatim_check": false
+        },
+        "log_bytes": 1286860,
+        "log_sha256": "08f09d429cbaf815756d96659c03e7d45c5687bce9abc38dcc311f7072a523c5",
+        "matching_aggregate_fields": [
+          "condition",
+          "dataset_revision",
+          "leakage_config",
+          "per_instance_aggregate",
+          "suite",
+          "suite_aggregate",
+          "weights"
+        ],
+        "matching_prompt_and_raw_line_records": 576,
+        "matching_slot_records": 576,
+        "prompts_sha256": "2890b6c39e6ef7db20fe91f24bbc61a6cd0b7d3634b11b798aae37ce2b7e98d8",
+        "run_id": "1dd04c3a-f46c-4ffd-b991-b7cf0319c281",
+        "run_source_commit": "8b3a5e4f716a52613bf1811cfe4b90ded728b445"
+      },
+      "DV": {
+        "calibration_condition": "Soff_Von_Don_P0",
+        "calibration_config": {
+          "delimit_check": true,
+          "placebo_clauses": 0,
+          "sufficiency_check": false,
+          "verbatim_check": true
+        },
+        "log_bytes": 1338551,
+        "log_sha256": "f17ce16aee4949b3788a1fc334928e62acc9f2388fcdf76774ca17db25dfb832",
+        "matching_aggregate_fields": [
+          "condition",
+          "dataset_revision",
+          "leakage_config",
+          "per_instance_aggregate",
+          "suite",
+          "suite_aggregate",
+          "weights"
+        ],
+        "matching_prompt_and_raw_line_records": 576,
+        "matching_slot_records": 576,
+        "prompts_sha256": "e82e3dcbad949879d9882cced2cc3656b805ccf9dfcc387036dc422ab1e5e099",
+        "run_id": "0e2a764d-1e6a-4c4b-8138-4dd8253ffc61",
+        "run_source_commit": "345e8ac51ce58c5a021c1e472bf7b81026479e56"
+      },
+      "P0": {
+        "calibration_condition": "Soff_Voff_Doff_P0",
+        "calibration_config": {
+          "delimit_check": false,
+          "placebo_clauses": 0,
+          "sufficiency_check": false,
+          "verbatim_check": false
+        },
+        "log_bytes": 1233420,
+        "log_sha256": "fefd055a98af4c268e26ee0a4e80fc090fc398c4245e66d0d7c00cca96b09f79",
+        "matching_aggregate_fields": [
+          "condition",
+          "dataset_revision",
+          "leakage_config",
+          "per_instance_aggregate",
+          "suite",
+          "suite_aggregate",
+          "weights"
+        ],
+        "matching_prompt_and_raw_line_records": 576,
+        "matching_slot_records": 576,
+        "prompts_sha256": "6cc7c72014b8061bdecfb65a5f6cb11e80e48ef1a00c35fb7bd258e0e696f64d",
+        "run_id": "ae13b37e-e381-4a0e-beca-c8daacb1b301",
+        "run_source_commit": "33e7d7c022444d736b25cc3566f82de726ff42cb"
+      },
+      "P1": {
+        "calibration_condition": "Soff_Voff_Doff_P1",
+        "calibration_config": {
+          "delimit_check": false,
+          "placebo_clauses": 1,
+          "sufficiency_check": false,
+          "verbatim_check": false
+        },
+        "log_bytes": 1296710,
+        "log_sha256": "475219c4461837ecacac2408ed9bdffabe608d9c09a6562667cc304ba67d225d",
+        "matching_aggregate_fields": [
+          "condition",
+          "dataset_revision",
+          "leakage_config",
+          "per_instance_aggregate",
+          "suite",
+          "suite_aggregate",
+          "weights"
+        ],
+        "matching_prompt_and_raw_line_records": 576,
+        "matching_slot_records": 576,
+        "prompts_sha256": "ca2612107c0e7be602661822bd8a5ebd61c5060581cec413af61b19b928503cc",
+        "run_id": "5242ec03-1025-4595-8092-2d174d9eadfb",
+        "run_source_commit": "1e064bdaefb03ad54f1944fbf427c32d131ce1f4"
+      },
+      "S": {
+        "calibration_condition": "Son_Voff_Doff_P0",
+        "calibration_config": {
+          "delimit_check": false,
+          "placebo_clauses": 0,
+          "sufficiency_check": true,
+          "verbatim_check": false
+        },
+        "log_bytes": 1308056,
+        "log_sha256": "42c27ec114765cc6532b0a0eed935a0fcf71f8417b53e4e962906dc0df717bdc",
+        "matching_aggregate_fields": [
+          "condition",
+          "dataset_revision",
+          "leakage_config",
+          "per_instance_aggregate",
+          "suite",
+          "suite_aggregate",
+          "weights"
+        ],
+        "matching_prompt_and_raw_line_records": 576,
+        "matching_slot_records": 576,
+        "prompts_sha256": "b2ec98017d72e63637aa5de6e2a0925e56ad8601581f05484dc076830881dcf7",
+        "run_id": "df3e8b9d-ff4d-441f-9968-68477fcf453e",
+        "run_source_commit": "ebe6f67c5382cb1da9f4422ef7a4d557648b7326"
+      },
+      "V": {
+        "calibration_condition": "Soff_Von_Doff_P0",
+        "calibration_config": {
+          "delimit_check": false,
+          "placebo_clauses": 0,
+          "sufficiency_check": false,
+          "verbatim_check": true
+        },
+        "log_bytes": 1296151,
+        "log_sha256": "d1d1ea03c3e4b56f05a501acef586f9bc469e6c0b9250c2b0cd3e3edc15f3638",
+        "matching_aggregate_fields": [
+          "condition",
+          "dataset_revision",
+          "leakage_config",
+          "per_instance_aggregate",
+          "suite",
+          "suite_aggregate",
+          "weights"
+        ],
+        "matching_prompt_and_raw_line_records": 576,
+        "matching_slot_records": 576,
+        "prompts_sha256": "c1569418ce3a1abb8f1d8dcc943f94bf19c2d8818818da01f6e846548dbfef4e",
+        "run_id": "19232762-e0c4-41e5-9244-f4f366327ed4",
+        "run_source_commit": "ec7d888f926e9678e796f7367d54291720d4d4e4"
+      }
+    },
+    "schema": "nano.p1-orx-capture-audit.v1"
+  },
+  "schema": "nano.p1-evidence-comparison-manifest.v1",
+  "scope": "Stored results only. No model execution or screen consumption. Branch-local P3/P4 study labels are not program macro-stage completion.",
+  "sources": [
+    {
+      "bytes": 2240,
+      "git_blob_oid": "e267bbad3bce4de889121a348089eaa244441be8",
+      "id": "compact_field_filter",
+      "local_path": "sources/d4608dd1f69a/artifacts/nano_h6/field_filter/FIELD_FILTER_SUMMARY.json",
+      "sha256": "b62204caf895d05e4ff07bac9df6d5c20f6cb9e928e9114babe08b4826437895",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "artifacts/nano_h6/field_filter/FIELD_FILTER_SUMMARY.json"
+    },
+    {
+      "bytes": 2063,
+      "git_blob_oid": "a75a95b6725ec2395b185bb2edd7ff80cb76d20b",
+      "id": "compact_predecessor",
+      "local_path": "sources/d4608dd1f69a/artifacts/nano_h6/p3/P3_SUMMARY.json",
+      "sha256": "ea637864015192eacea64a77591d2630f22afe13ae6d1bd9447d02c3dd24a9bb",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "artifacts/nano_h6/p3/P3_SUMMARY.json"
+    },
+    {
+      "bytes": 2230,
+      "git_blob_oid": "dcddfe5bb2a94ed26f50a61e069ce13e65d3fb42",
+      "id": "compact_transfer_curve",
+      "local_path": "sources/d4608dd1f69a/artifacts/nano_h6/transfer_curve_balanced/curve.json",
+      "sha256": "54749346273da2e78a9bb08f1416dca67db670190683214ee97a02482d636d13",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "artifacts/nano_h6/transfer_curve_balanced/curve.json"
+    },
+    {
+      "bytes": 2714,
+      "git_blob_oid": "419b0d151158533fe6f899a1110a99f1076a2c2e",
+      "id": "compact_field_filter_scope",
+      "local_path": "sources/d4608dd1f69a/papers/RESULT_FIELD_FILTER.md",
+      "sha256": "473af8b377aef175e67f42a999da34312e7b6b4dfcf9c458a38d1c61a37b7544",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "papers/RESULT_FIELD_FILTER.md"
+    },
+    {
+      "bytes": 3010,
+      "git_blob_oid": "f96c7fa8e6af393f7af1f1b680230b89342aedce",
+      "id": "compact_field_filter_design",
+      "local_path": "sources/d4608dd1f69a/papers/PREREG_FIELD_FILTER.md",
+      "sha256": "8ea03d221bd158063b0ee9cb4e7ca5bc6b40845f2e17d70f99b7ec54179faba4",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "papers/PREREG_FIELD_FILTER.md"
+    },
+    {
+      "bytes": 6045,
+      "git_blob_oid": "4a0e866e6077e1a730c30e49b7c4dae08285a64a",
+      "id": "compact_predecessor_design",
+      "local_path": "sources/d4608dd1f69a/papers/PREREG_P3_MULTISEED.md",
+      "sha256": "cb615c2d96d3fef1934c5308734dd1db41ef1ca15f323c9855d50eb37c58cb55",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "papers/PREREG_P3_MULTISEED.md"
+    },
+    {
+      "bytes": 4175,
+      "git_blob_oid": "f65ba3690722a4c5a4c2fcbefe1a14bf783b50d5",
+      "id": "compact_transfer_scope",
+      "local_path": "sources/d4608dd1f69a/papers/RESULT_TRANSFER_CURVE_BALANCED.md",
+      "sha256": "7e752419edd4c4b684f53cf1763e19e90630baea10c0e7227d9513e70a47987d",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "papers/RESULT_TRANSFER_CURVE_BALANCED.md"
+    },
+    {
+      "bytes": 5790,
+      "git_blob_oid": "59361c1add7ce4839fc8979cccc8c7bb43a801d1",
+      "id": "large_model_c2",
+      "local_path": "sources/00a7adc6a9fa/artifacts/campaign/student_gap_v1.json",
+      "sha256": "c0cfc931b87beea9f99a6a8ee29a287708a62a32de59bed23dddaaf6f84d1dd3",
+      "source_commit": "00a7adc6a9fa9d29f0633476f083fa9cbd679250",
+      "source_path": "artifacts/campaign/student_gap_v1.json"
+    },
+    {
+      "bytes": 4045,
+      "git_blob_oid": "429241df35aa63a8093d98f1d67c999db3eacb5b",
+      "id": "large_model_correction",
+      "local_path": "sources/00a7adc6a9fa/artifacts/campaign/student_gap_metric_defect_v1.json",
+      "sha256": "58fe3a363d77adb577b223fe82452649fa0681208d721a53afdd4daa8dce67e9",
+      "source_commit": "00a7adc6a9fa9d29f0633476f083fa9cbd679250",
+      "source_path": "artifacts/campaign/student_gap_metric_defect_v1.json"
+    },
+    {
+      "bytes": 2943,
+      "git_blob_oid": "bd9a2208ebd84e5d47c658594b3ac29dbf93e950",
+      "id": "h6_terminal",
+      "local_path": "sources/d6ed212c3238/artifacts/nano_h6/H6_TERMINAL_DECISION.json",
+      "sha256": "297a7b7e914bd9be938479a726a8e690c56f1946a62bd02e6806ed243d3471e7",
+      "source_commit": "d6ed212c32384c1d50089e50260918028af88bfd",
+      "source_path": "artifacts/nano_h6/H6_TERMINAL_DECISION.json"
+    },
+    {
+      "bytes": 1425,
+      "git_blob_oid": "1b38fce444c69189505dafb3a2f2512e826dc6f5",
+      "id": "h7_manifest",
+      "local_path": "sources/d6ed212c3238/artifacts/nano_h7/screen-v1/manifest.json",
+      "sha256": "a766a41ed99bcffcd8e078c652c8a85fe6d796fe44268e03e0e309d9070cd6a6",
+      "source_commit": "d6ed212c32384c1d50089e50260918028af88bfd",
+      "source_path": "artifacts/nano_h7/screen-v1/manifest.json"
+    },
+    {
+      "bytes": 15743,
+      "git_blob_oid": "c33ff0e3de59f622bb8bd2761d625dab6a4b35a9",
+      "id": "compact_span_metric_code",
+      "local_path": "sources/d4608dd1f69a/nano_ai/training/run_span_port_probe_snap.py",
+      "sha256": "2f392a7626dc9c833ce756c97d90a420c305f00ae537b23572ea39a3ae2c8785",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "nano_ai/training/run_span_port_probe_snap.py"
+    },
+    {
+      "bytes": 10958,
+      "git_blob_oid": "7421ec7e1fb51bdf0ac653efd4070ff6b4c9ac8d",
+      "id": "compact_agreement_metric_code",
+      "local_path": "sources/d4608dd1f69a/nano_ai/training/evaluate_span_gold_agreement.py",
+      "sha256": "4fea3b912198511aeaaae32069ebec6b305a894bd91d34ca5751c053f926e319",
+      "source_commit": "d4608dd1f69af506019e2c8df79851fb3413f582",
+      "source_path": "nano_ai/training/evaluate_span_gold_agreement.py"
+    },
+    {
+      "bytes": 728226,
+      "git_blob_oid": "e2ce78d7ef3862e9d6ffcaf5983f5a41ab0fe386",
+      "id": "orx_slots_P0",
+      "local_path": "sources/2e29d396cdf8/artifacts/slots/slots-conf-P0.json",
+      "sha256": "49733d08c185020a5fc9bb9f152596a20daa6506f9571f06b1fbdda0cfafc714",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/slots/slots-conf-P0.json"
+    },
+    {
+      "bytes": 795031,
+      "git_blob_oid": "c5e2d8d59edf398c1da0bde8a30e6af4b341097a",
+      "id": "orx_slots_P1",
+      "local_path": "sources/2e29d396cdf8/artifacts/slots/slots-conf-P1.json",
+      "sha256": "c7aa5a34fe3275155bc29c21a0cb2993d814b07eb4100fa05803b0954680a2ba",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/slots/slots-conf-P1.json"
+    },
+    {
+      "bytes": 803597,
+      "git_blob_oid": "4093aff992ea553e93e4b827549ac4ce69b49946",
+      "id": "orx_slots_S",
+      "local_path": "sources/2e29d396cdf8/artifacts/slots/slots-conf-S.json",
+      "sha256": "fef38f0955882deada6850417c961e9f10ac7e52e018fb7dc4955c345ea7b214",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/slots/slots-conf-S.json"
+    },
+    {
+      "bytes": 791605,
+      "git_blob_oid": "6c9ddc1466abdb74643f88938daf1304eea5c898",
+      "id": "orx_slots_V",
+      "local_path": "sources/2e29d396cdf8/artifacts/slots/slots-conf-V.json",
+      "sha256": "259261880a7a5a171569d9d7b3aca7bb5e48436e59ab5d01dfd3ab34be38c8c1",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/slots/slots-conf-V.json"
+    },
+    {
+      "bytes": 788006,
+      "git_blob_oid": "09b22b579f67fe048e1247fe4ebcf7d6f18589e8",
+      "id": "orx_slots_D",
+      "local_path": "sources/2e29d396cdf8/artifacts/slots/slots-conf-D.json",
+      "sha256": "747943be8b3b805f33f93423dbcf2cd54e9087b3ae68714692577ec3778c85f1",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/slots/slots-conf-D.json"
+    },
+    {
+      "bytes": 843585,
+      "git_blob_oid": "8300f7f8f2f6e735e56d99c95e9c0910f7174f62",
+      "id": "orx_slots_DV",
+      "local_path": "sources/2e29d396cdf8/artifacts/slots/slots-conf-DV.json",
+      "sha256": "7014e5b959d70b0e23981f7d8f4fcd3c89f2ae055695159e5a3a0258177e2980",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/slots/slots-conf-DV.json"
+    },
+    {
+      "bytes": 3924,
+      "git_blob_oid": "31fc8f6229cb6d65f2ca5636c5c3434ddfbd279b",
+      "id": "orx_result_delimit_confirmatory",
+      "local_path": "sources/2e29d396cdf8/artifacts/RESULT-delimit-confirmatory.md",
+      "sha256": "9c41a1413a71044a33d88072282ff09d772e5b0843cef4942e9da6815615bdd2",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/RESULT-delimit-confirmatory.md"
+    },
+    {
+      "bytes": 3198,
+      "git_blob_oid": "25107e8afee298040bdc0f170a9951f68b6f1313",
+      "id": "orx_prereg_delimit_confirmatory",
+      "local_path": "sources/1e064bdaefb0/artifacts/PREREG-delimit-confirmatory.md",
+      "sha256": "b832f871dc038cbf98dc213261a85a89cde281888708f406066efdd0e4acb737",
+      "source_commit": "1e064bdaefb03ad54f1944fbf427c32d131ce1f4",
+      "source_path": "artifacts/PREREG-delimit-confirmatory.md"
+    },
+    {
+      "bytes": 2840,
+      "git_blob_oid": "bdbe908a90978c048cec8370f5baf1579b1c44a2",
+      "id": "orx_result_fresh_promotion",
+      "local_path": "sources/2e29d396cdf8/artifacts/RESULT-fresh-promotion.md",
+      "sha256": "3c9400084cf353f89220497e10af0d37d68df9520a6ff295c4c91935bfc87f9d",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/RESULT-fresh-promotion.md"
+    },
+    {
+      "bytes": 2068,
+      "git_blob_oid": "636776edb325b8aa5ea07144eff7ac35348f1001",
+      "id": "orx_prereg_fresh_promotion",
+      "local_path": "sources/52d82482749c/artifacts/PREREG-fresh-promotion.md",
+      "sha256": "4497b3348aaa70ab14b082c68205e3db984fadf7a7cb7f390dbcc1e86c47b373",
+      "source_commit": "52d82482749ca5c3d042fed75ee8cca0952fe5a4",
+      "source_path": "artifacts/PREREG-fresh-promotion.md"
+    },
+    {
+      "bytes": 2182,
+      "git_blob_oid": "e43df5148507dc2606199f07b4d8b029d5e5c9dc",
+      "id": "orx_result_clause_abstention_cost",
+      "local_path": "sources/2e29d396cdf8/artifacts/RESULT-clause-abstention-cost.md",
+      "sha256": "eacd3ac061c8c9083b1925bc3cc8a4f7c70a5c68da6d337c377fc08456c78441",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "artifacts/RESULT-clause-abstention-cost.md"
+    },
+    {
+      "bytes": 2176,
+      "git_blob_oid": "07bd46834fcd7d8311a5651e8d656c6ffc447e76",
+      "id": "orx_prereg_clause_abstention_cost",
+      "local_path": "sources/dcb591b90e92/artifacts/PREREG-clause-abstention-cost.md",
+      "sha256": "e32c0045d42962082e816f687fc2fd956222e930bb4ad152be3a9ba2129481c9",
+      "source_commit": "dcb591b90e929e24aadba0e6c10c72d13be1ea36",
+      "source_path": "artifacts/PREREG-clause-abstention-cost.md"
+    },
+    {
+      "bytes": 6459,
+      "git_blob_oid": "b685a94f7c0d90c609b6025f52858781dc4d4330",
+      "id": "orx_export_code",
+      "local_path": "sources/2e29d396cdf8/scripts/export_run_slots.py",
+      "sha256": "a8a7e366405e663fa795d7678aacdfd99eb158559a7f8d0d44c81c46af878bde",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "scripts/export_run_slots.py"
+    },
+    {
+      "bytes": 12743,
+      "git_blob_oid": "9c709383d3e442dd7cb68a08df7af7725240d7ae",
+      "id": "orx_triaxial_code",
+      "local_path": "sources/2e29d396cdf8/nanoscribe/triaxial.py",
+      "sha256": "41d8b95ca15f5cd4ab07bf475df72a3a77d03a4ab91e03d26f50d706e281f5cc",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "nanoscribe/triaxial.py"
+    },
+    {
+      "bytes": 23528,
+      "git_blob_oid": "1ad98195b19106c09ba6c27cf968921aae2c0d2a",
+      "id": "orx_joint_metric_code",
+      "local_path": "sources/2e29d396cdf8/nanoscribe/run_eval.py",
+      "sha256": "5d46e62f824b596f1656914e90d7d107760f1fac2cf71ecda8b477c878403075",
+      "source_commit": "2e29d396cdf8d34812bc3fb93c7c47e9675e1781",
+      "source_path": "nanoscribe/run_eval.py"
+    }
+  ],
+  "stored_h7_result": {
+    "local_path": "sources/h7-20261022/h7_screen_evaluation.json",
+    "sha256": "9d1b8035b87b8af9419ead92a0dffd66806df1e77720abdf6a1d1deb98951d49"
+  }
+}
