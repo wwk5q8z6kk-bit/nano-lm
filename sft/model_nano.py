@@ -1,5 +1,5 @@
 # Shared nano model (Recipe ① spec) + generation, used by SFT-gate, DPO, GRPO.
-import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+import torch, torch.nn as nn, torch.nn.functional as F
 from tokenizers import Tokenizer
 
 dev = "mps" if torch.backends.mps.is_available() else "cpu"
