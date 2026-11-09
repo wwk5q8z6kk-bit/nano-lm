@@ -43,7 +43,9 @@ def _normalize_surface(text: str) -> tuple[str, list[int]]:
     return "".join(chars), index_map
 
 
-def _span_in_turn(source: Source, start: int, end: int, text: str, evidence_id: str) -> EvidenceSpan:
+def _span_in_turn(
+    source: Source, start: int, end: int, text: str, evidence_id: str
+) -> EvidenceSpan:
     if start < 0 or end <= start or end > len(source.text):
         _fail("evidence_bounds", "offsets are outside the source")
     if source.text[start:end] != text:
@@ -86,13 +88,33 @@ def _exact_hits(source: Source, quote: str) -> list[tuple[int, int]]:
     hits: list[tuple[int, int]] = []
     if not quote:
         return hits
-    for turn in source.turns:
-        found = source.text.find(quote, turn.start, turn.end)
-        while found >= 0:
-            end = found + len(quote)
-            if end <= turn.end:
-                hits.append((found, end))
-            found = source.text.find(quote, found + 1, turn.end)
+
+    quote_len = len(quote)
+    source_text = source.text
+    found = source_text.find(quote)
+    if found < 0:
+        return hits
+
+    found_positions: list[int] = []
+    while found >= 0:
+        found_positions.append(found)
+        found = source_text.find(quote, found + 1)
+
+    num_turns = len(source.turns)
+    turns = source.turns
+    turn_idx = 0
+
+    for f_start in found_positions:
+        f_end = f_start + quote_len
+        while turn_idx < num_turns and turns[turn_idx].end < f_end:
+            turn_idx += 1
+
+        temp_idx = turn_idx
+        while temp_idx < num_turns and turns[temp_idx].start <= f_start:
+            if f_end <= turns[temp_idx].end:
+                hits.append((f_start, f_end))
+            temp_idx += 1
+
     return hits
 
 
@@ -112,21 +134,43 @@ def _surface_hits(source: Source, quote: str) -> list[tuple[int, int]]:
     norm_quote, _ = _normalize_surface(quote)
     if not norm_quote:
         return []
+
+    norm_segment, index_map = _normalize_surface(source.text)
+    found = norm_segment.find(norm_quote)
     hits: list[tuple[int, int]] = []
-    for turn in source.turns:
-        segment = source.text[turn.start : turn.end]
-        norm_segment, index_map = _normalize_surface(segment)
-        found = norm_segment.find(norm_quote)
-        while found >= 0:
-            last = found + len(norm_quote) - 1
-            start = turn.start + index_map[found]
-            end = turn.start + index_map[last] + 1
-            hits.append((start, end))
-            found = norm_segment.find(norm_quote, found + 1)
+    if found < 0:
+        return hits
+
+    found_positions: list[int] = []
+    while found >= 0:
+        found_positions.append(found)
+        found = norm_segment.find(norm_quote, found + 1)
+
+    quote_len = len(norm_quote)
+    num_turns = len(source.turns)
+    turns = source.turns
+    turn_idx = 0
+
+    for f_start_norm in found_positions:
+        f_end_norm = f_start_norm + quote_len - 1
+        start = index_map[f_start_norm]
+        end = index_map[f_end_norm] + 1
+
+        while turn_idx < num_turns and turns[turn_idx].end < end:
+            turn_idx += 1
+
+        temp_idx = turn_idx
+        while temp_idx < num_turns and turns[temp_idx].start <= start:
+            if end <= turns[temp_idx].end:
+                hits.append((start, end))
+            temp_idx += 1
+
     return hits
 
 
-def snap_relocate(source: Source, quote: str, *, evidence_id: str) -> EvidenceSpan | None:
+def snap_relocate(
+    source: Source, quote: str, *, evidence_id: str
+) -> EvidenceSpan | None:
     hits = _surface_hits(source, quote)
     if len(hits) != 1:
         return None
@@ -148,7 +192,9 @@ class ConstrainedSelector:
     ) -> EvidenceSpan:
         return copy_span(source, start, end, evidence_id=evidence_id, text=text)
 
-    def select_quote(self, source: Source, quote: str, *, evidence_id: str) -> EvidenceSpan | None:
+    def select_quote(
+        self, source: Source, quote: str, *, evidence_id: str
+    ) -> EvidenceSpan | None:
         return relocate(source, quote, evidence_id=evidence_id) or snap_relocate(
             source, quote, evidence_id=evidence_id
         )
