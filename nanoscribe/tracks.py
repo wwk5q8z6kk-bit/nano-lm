@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from nanoscribe.adapt import ModelInput
 from nanoscribe.adapters import (
     AtomSpec,
     ApiTeacherAdapter,
