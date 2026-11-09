@@ -1,7 +1,7 @@
 """Regression pins for wedge_v1 runtime (no LM)."""
 from __future__ import annotations
 
-from wedge_v1.runtime import ask, scan, find_spans, DEFAULT_CORPUS
+from wedge_v1.runtime import ask, scan, find_spans
 from pathlib import Path
 
 
