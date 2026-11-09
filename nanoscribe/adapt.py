@@ -20,7 +20,6 @@ from nanoscribe.encounter import (
     AssertionState,
     AtomType,
     Certainty,
-    EncounterError,
     Experiencer,
     Speaker,
     Source,
