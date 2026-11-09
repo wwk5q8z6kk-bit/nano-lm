@@ -21,7 +21,6 @@ sys.path[:] = [p for p in sys.path if p != _script_dir]
 
 from nanoscribe.adapt import run_pipeline
 from nanoscribe.adapters import Qwen25BaselineAdapter, default_baseline_specs
-from nanoscribe.evaluate import atom_result
 from nanoscribe.qwen_inference import DEFAULT_QWEN_MODEL
 from nanoscribe.test_adapt import _gold, _model_input
 
