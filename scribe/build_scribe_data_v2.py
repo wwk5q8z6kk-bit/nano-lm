@@ -77,13 +77,14 @@ DISTRACT = ["The parking here was terrible today.", "It's been so cold this week
             "The waiting room was quite full.", "My neighbor recommended this clinic.",
             "Traffic on the bridge was awful.", "I nearly forgot my insurance card."]
 
-def sample_tuple():
+def sample_tuple(alg_train_override=None):
+    alg_list = alg_train_override if alg_train_override is not None else ALG_TRAIN
     cc = random.choice(CC_COMP) if random.random() < 0.5 else random.choice(CC_TRAIN)
     unit = random.choice(["days", "weeks"])
     n = random.randint(2, 14) if unit == "days" else random.randint(1, 6)
     return {"cc": cc, "n": n, "unit": unit, "sev": random.choice(SEV),
             "med": random.choice(MED_TRAIN) if random.random() < 0.6 else None,
-            "alg": random.choice(ALG_TRAIN) if random.random() < 0.5 else None}
+            "alg": random.choice(alg_list) if random.random() < 0.5 else None}
 
 def render_dialogue(t):
     lines = ["Doctor: " + random.choice(D_OPEN)]
@@ -117,35 +118,46 @@ def summary_of(t):
     return (f"CC: {t['cc'][1]} | DUR: {t['n']} {t['unit']} | SEV: {t['sev']} | "
             f"MED: {t['med'] or 'none'} | ALG: {t['alg'] or 'none'}")
 
-N_TRAIN = 12000
-convos = []
-for _ in range(N_TRAIN):
-    t = sample_tuple()
-    convos.append([{"role": "user", "content": render_dialogue(t) + "\nSummarize the visit."},
-                   {"role": "assistant", "content": summary_of(t)}])
 
-tok = Tokenizer.from_file("tokenizer.json")
-ims_id, ime_id = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
-S = 512
+def generate_convos(n_train, alg_train_override=None):
+    convos = []
+    for _ in range(n_train):
+        t = sample_tuple(alg_train_override)
+        convos.append([{"role": "user", "content": render_dialogue(t) + "\nSummarize the visit."},
+                       {"role": "assistant", "content": summary_of(t)}])
+    return convos
 
-def render_ids(convo):
-    ids, mask = [], []
-    for m in convo:
-        head = tok.encode(f"{m['role']}\n", add_special_tokens=False).ids
-        body = tok.encode(m["content"], add_special_tokens=False).ids
-        seg = [ims_id] + head + body + [ime_id]
-        tf = 1 if m["role"] == "assistant" else 0
-        for j, tkn in enumerate(seg):
-            ids.append(tkn); mask.append(1 if (tf and j >= 1 + len(head)) else 0)
-    return ids, mask
+if __name__ == '__main__':
+    N_TRAIN = 12000
+    convos = []
+    for _ in range(N_TRAIN):
+        t = sample_tuple()
+        convos.append([{"role": "user", "content": render_dialogue(t) + "\nSummarize the visit."},
+                       {"role": "assistant", "content": summary_of(t)}])
 
-X, M, dropped = [], [], 0
-for c in convos:
-    ids, mask = render_ids(c)
-    if len(ids) > S: dropped += 1; continue
-    X.append(ids + [0] * (S - len(ids))); M.append(mask + [0] * (S - len(mask)))
+    tok = Tokenizer.from_file("tokenizer.json")
+    ims_id, ime_id = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
+    S = 512
 
-np.save("scribe_x.npy", np.array(X, dtype=np.uint16))
-np.save("scribe_mask.npy", np.array(M, dtype=np.uint8))
-print(f"v2 train examples {len(X)} (dropped {dropped}); CC value space = {len(CC_TRAIN) + len(CC_COMP)}; "
-      f"eval set NOT regenerated (v1 scribe_eval.json reused)", flush=True)
+    def render_ids(convo):
+        ids, mask = [], []
+        for m in convo:
+            head = tok.encode(f"{m['role']}\n", add_special_tokens=False).ids
+            body = tok.encode(m["content"], add_special_tokens=False).ids
+            seg = [ims_id] + head + body + [ime_id]
+            tf = 1 if m["role"] == "assistant" else 0
+            for j, tkn in enumerate(seg):
+                ids.append(tkn); mask.append(1 if (tf and j >= 1 + len(head)) else 0)
+        return ids, mask
+
+    X, M, dropped = [], [], 0
+    for c in convos:
+        ids, mask = render_ids(c)
+        if len(ids) > S: dropped += 1; continue
+        X.append(ids + [0] * (S - len(ids))); M.append(mask + [0] * (S - len(mask)))
+
+    np.save("scribe_x.npy", np.array(X, dtype=np.uint16))
+    np.save("scribe_mask.npy", np.array(M, dtype=np.uint8))
+    print(f"v2 train examples {len(X)} (dropped {dropped}); CC value space = {len(CC_TRAIN) + len(CC_COMP)}; "
+          f"eval set NOT regenerated (v1 scribe_eval.json reused)", flush=True)
+
