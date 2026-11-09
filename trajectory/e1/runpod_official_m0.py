@@ -11,6 +11,7 @@ Expects cwd layout:
   /workspace/nano-lm/   (repo root)
   checkpoints/chinchilla-160m/ownstack160m_pretrain.pt
 """
+
 from __future__ import annotations
 
 import json
@@ -18,6 +19,10 @@ import math
 import os
 import random
 import re
+
+RE_PARSE = re.compile(
+    r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$"
+)
 import sys
 import time
 from pathlib import Path
@@ -54,6 +59,7 @@ COST = {
 
 # ---------------- Own-stack LoRA (CUDA fp16) ----------------
 
+
 def train_ownstack_lora(ft_seed: int = 0):
     from peft import LoraConfig, inject_adapter_in_model
     from tokenizers import Tokenizer
@@ -81,7 +87,9 @@ def train_ownstack_lora(ft_seed: int = 0):
 
         def rot(x):
             x1, x2 = x[..., 0::2], x[..., 1::2]
-            return torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1).flatten(-2)
+            return torch.stack(
+                [x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1
+            ).flatten(-2)
 
         return rot(q), rot(k)
 
@@ -133,7 +141,9 @@ def train_ownstack_lora(ft_seed: int = 0):
     print(f"[ownstack] loaded pretrain step={st.get('step')}", flush=True)
 
     cfg = LoraConfig(
-        r=16, lora_alpha=32, lora_dropout=0.0,
+        r=16,
+        lora_alpha=32,
+        lora_dropout=0.0,
         target_modules=["q", "k", "v", "o", "g", "u", "dn"],
     )
     m = inject_adapter_in_model(cfg, m)
@@ -178,7 +188,9 @@ def train_ownstack_lora(ft_seed: int = 0):
     FLR = 1e-4
     opt = torch.optim.AdamW(
         (p for p in m.parameters() if p.requires_grad),
-        lr=FLR, betas=(0.9, 0.95), weight_decay=0.0,
+        lr=FLR,
+        betas=(0.9, 0.95),
+        weight_decay=0.0,
     )
     scaler = torch.amp.GradScaler("cuda")
     perm = torch.randperm(N)
@@ -222,7 +234,15 @@ def train_ownstack_lora(ft_seed: int = 0):
                 flush=True,
             )
     print(f"[ownstack] done {(time.time()-t0)/60:.1f} min", flush=True)
-    torch.save({"m": m.state_dict(), "ft_seed": ft_seed, "kind": "ownstack_lora", "venue": "runpod-cuda"}, out)
+    torch.save(
+        {
+            "m": m.state_dict(),
+            "ft_seed": ft_seed,
+            "kind": "ownstack_lora",
+            "venue": "runpod-cuda",
+        },
+        out,
+    )
     return out
 
 
@@ -244,7 +264,9 @@ def load_ownstack_predictor(ckpt_path: Path):
 
         def rot(x):
             x1, x2 = x[..., 0::2], x[..., 1::2]
-            return torch.stack([x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1).flatten(-2)
+            return torch.stack(
+                [x1 * cos - x2 * sin, x1 * sin + x2 * cos], dim=-1
+            ).flatten(-2)
 
         return rot(q), rot(k)
 
@@ -289,8 +311,12 @@ def load_ownstack_predictor(ckpt_path: Path):
 
     m = GPT()
     m = inject_adapter_in_model(
-        LoraConfig(r=16, lora_alpha=32, lora_dropout=0.0,
-                   target_modules=["q", "k", "v", "o", "g", "u", "dn"]),
+        LoraConfig(
+            r=16,
+            lora_alpha=32,
+            lora_dropout=0.0,
+            target_modules=["q", "k", "v", "o", "g", "u", "dn"],
+        ),
         m,
     )
     st = torch.load(ckpt_path, map_location="cpu", weights_only=True)
@@ -299,9 +325,12 @@ def load_ownstack_predictor(ckpt_path: Path):
 
     def prompt_ids(user_content):
         return (
-            [IMS] + tok.encode("user\n", add_special_tokens=False).ids
-            + tok.encode(user_content, add_special_tokens=False).ids + [IME]
-            + [IMS] + tok.encode("assistant\n", add_special_tokens=False).ids
+            [IMS]
+            + tok.encode("user\n", add_special_tokens=False).ids
+            + tok.encode(user_content, add_special_tokens=False).ids
+            + [IME]
+            + [IMS]
+            + tok.encode("assistant\n", add_special_tokens=False).ids
         )
 
     @torch.no_grad()
@@ -317,16 +346,14 @@ def load_ownstack_predictor(ckpt_path: Path):
             ids.append(nxt)
         return ids
 
-    RE = re.compile(r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$")
-
     def predict(item, source_id):
         t0 = time.perf_counter()
         out = generate(prompt_ids(item["convo"][0]["content"]))
-        text = tok.decode(out[len(prompt_ids(item["convo"][0]["content"])):]).strip()
+        text = tok.decode(out[len(prompt_ids(item["convo"][0]["content"])) :]).strip()
         # recompute prompt length cleanly
         pids = prompt_ids(item["convo"][0]["content"])
-        text = tok.decode(out[len(pids):]).strip()
-        mm = RE.match(text)
+        text = tok.decode(out[len(pids) :]).strip()
+        mm = RE_PARSE.match(text)
         if not mm:
             return ItemPred(
                 fields={f: FieldPred("none") for f in FIELDS},
@@ -334,13 +361,16 @@ def load_ownstack_predictor(ckpt_path: Path):
                 raw=text,
                 parsed=False,
             )
-        return pred_from_values(dict(zip(FIELDS, [g.strip() for g in mm.groups()])),
-                                latency_s=time.perf_counter() - t0)
+        return pred_from_values(
+            dict(zip(FIELDS, [g.strip() for g in mm.groups()])),
+            latency_s=time.perf_counter() - t0,
+        )
 
     return predict
 
 
 # ---------------- Pythia LoRA (CUDA fp16) ----------------
+
 
 def train_pythia_lora():
     # peft trap on some images
@@ -360,7 +390,9 @@ def train_pythia_lora():
     ACCUM = 4
     MAX_LEN = 448
     LORA = {
-        "r": 16, "alpha": 32, "dropout": 0.0,
+        "r": 16,
+        "alpha": 32,
+        "dropout": 0.0,
         "targets": ["query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h"],
     }
     MODEL = "EleutherAI/pythia-160m"
@@ -410,17 +442,24 @@ def train_pythia_lora():
                 m[r, : len(ids)] = 1
             yield x.to(dev), y.to(dev), m.to(dev)
 
-    model = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32).to(dev)
+    model = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32).to(
+        dev
+    )
     model = get_peft_model(
         model,
         LoraConfig(
-            r=LORA["r"], lora_alpha=LORA["alpha"], lora_dropout=LORA["dropout"],
-            target_modules=LORA["targets"], task_type="CAUSAL_LM",
+            r=LORA["r"],
+            lora_alpha=LORA["alpha"],
+            lora_dropout=LORA["dropout"],
+            target_modules=LORA["targets"],
+            task_type="CAUSAL_LM",
         ),
     )
     opt = torch.optim.AdamW(
         (p for p in model.parameters() if p.requires_grad),
-        lr=LR, betas=(0.9, 0.95), weight_decay=0.0,
+        lr=LR,
+        betas=(0.9, 0.95),
+        weight_decay=0.0,
     )
     scaler = torch.amp.GradScaler("cuda")
     total_steps = (len(examples) // (MICRO_BATCH * ACCUM)) * EPOCHS
@@ -454,10 +493,18 @@ def train_pythia_lora():
     out_dir.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(str(out_dir))
     tok.save_pretrained(str(out_dir))
-    (out_dir / "e1_train_meta.json").write_text(json.dumps({
-        "model": MODEL, "seed": SEED, "lora": LORA, "venue": "runpod-cuda",
-        "train_secs": round(time.time() - t0),
-    }, indent=2))
+    (out_dir / "e1_train_meta.json").write_text(
+        json.dumps(
+            {
+                "model": MODEL,
+                "seed": SEED,
+                "lora": LORA,
+                "venue": "runpod-cuda",
+                "train_secs": round(time.time() - t0),
+            },
+            indent=2,
+        )
+    )
     return out_dir
 
 
@@ -471,18 +518,22 @@ def load_pythia_predictor(adapter_dir: Path):
     EOS = tok.eos_token_id
     base = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32)
     model = PeftModel.from_pretrained(base, str(adapter_dir)).to(dev).eval()
-    RE = re.compile(r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$")
 
     @torch.no_grad()
     def predict(item, source_id):
         t0 = time.perf_counter()
         enc = tok(item["convo"][0]["content"] + "\n", return_tensors="pt").to(dev)
         gen = model.generate(
-            **enc, max_new_tokens=64, do_sample=False,
-            eos_token_id=EOS, pad_token_id=EOS,
+            **enc,
+            max_new_tokens=64,
+            do_sample=False,
+            eos_token_id=EOS,
+            pad_token_id=EOS,
         )
-        text = tok.decode(gen[0, enc["input_ids"].shape[1]:], skip_special_tokens=True).strip()
-        mm = RE.match(text)
+        text = tok.decode(
+            gen[0, enc["input_ids"].shape[1] :], skip_special_tokens=True
+        ).strip()
+        mm = RE_PARSE.match(text)
         if not mm:
             return ItemPred(
                 fields={f: FieldPred("none") for f in FIELDS},
@@ -490,8 +541,10 @@ def load_pythia_predictor(adapter_dir: Path):
                 raw=text,
                 parsed=False,
             )
-        return pred_from_values(dict(zip(FIELDS, [g.strip() for g in mm.groups()])),
-                                latency_s=time.perf_counter() - t0)
+        return pred_from_values(
+            dict(zip(FIELDS, [g.strip() for g in mm.groups()])),
+            latency_s=time.perf_counter() - t0,
+        )
 
     return predict
 
@@ -500,17 +553,19 @@ def eval_merge(name, predict_fn, cost, util):
     instances = load_instances()
     for verify_on in (False, True):
         print(f"E1 {name} verify={'on' if verify_on else 'off'}", flush=True)
-        res = evaluate_method(name, predict_fn, instances, verify_on=verify_on, cost_c=cost)
+        res = evaluate_method(
+            name, predict_fn, instances, verify_on=verify_on, cost_c=cost
+        )
         out = {k: v for k, v in res.items() if k != "item_logs"}
         out["prereg"] = "trajectory/PREREG_E1_nonlm_baseline.md"
         out["official_m0"] = True
         out["venue"] = "runpod-cuda"
-        (TRAJ / f"results_e1_nonlm_{name}_v{'on' if verify_on else 'off'}.json").write_text(
-            json.dumps(out, indent=2)
-        )
-        (TRAJ / f"results_e1_items_{name}_v{'on' if verify_on else 'off'}.json").write_text(
-            json.dumps(res["item_logs"])
-        )
+        (
+            TRAJ / f"results_e1_nonlm_{name}_v{'on' if verify_on else 'off'}.json"
+        ).write_text(json.dumps(out, indent=2))
+        (
+            TRAJ / f"results_e1_items_{name}_v{'on' if verify_on else 'off'}.json"
+        ).write_text(json.dumps(res["item_logs"]))
         s = res["summary"]
         print(
             f"  U={s['U']:.4f} P={s['P']:.3f} rec={s['recall']:.3f} "
@@ -518,16 +573,31 @@ def eval_merge(name, predict_fn, cost, util):
             flush=True,
         )
         util["rows"] = [r for r in util["rows"] if r["method"] != name]
-        util["rows"].append({
-            "method": name,
-            "verify_on": verify_on,
-            **{k: s[k] for k in (
-                "U", "P", "M", "rho", "L_p50", "C", "recall", "halluc",
-                "gap_pts", "held_recall", "seen_recall", "correct_norm_rate",
-                "liability_presented_bad",
-            )},
-            "U_sensitivity": s["U_sensitivity"],
-        })
+        util["rows"].append(
+            {
+                "method": name,
+                "verify_on": verify_on,
+                **{
+                    k: s[k]
+                    for k in (
+                        "U",
+                        "P",
+                        "M",
+                        "rho",
+                        "L_p50",
+                        "C",
+                        "recall",
+                        "halluc",
+                        "gap_pts",
+                        "held_recall",
+                        "seen_recall",
+                        "correct_norm_rate",
+                        "liability_presented_bad",
+                    )
+                },
+                "U_sensitivity": s["U_sensitivity"],
+            }
+        )
     return util
 
 
@@ -542,7 +612,8 @@ def finalize(util):
             "verify_on": True,
             "summary": {"U": r["U"], "U_sensitivity": r["U_sensitivity"]},
         }
-        for r in util["rows"] if r["verify_on"]
+        for r in util["rows"]
+        if r["verify_on"]
     }
     decision = aggregate_decision(fake, m0)
     decision["official_m0_candidates"] = {n: rows[n]["U"] for n in present}
@@ -558,7 +629,9 @@ def finalize(util):
 
 def main():
     # peft/torchao trap
-    os.system("pip install -q transformers==4.44.2 peft==0.12.0 accelerate==0.33.0 tokenizers 2>/dev/null; pip uninstall -y -q torchao 2>/dev/null")
+    os.system(
+        "pip install -q transformers==4.44.2 peft==0.12.0 accelerate==0.33.0 tokenizers 2>/dev/null; pip uninstall -y -q torchao 2>/dev/null"
+    )
     util = json.loads((TRAJ / "results_e1_utility.json").read_text())
 
     print("=== ARM 1: ownstack Chinchilla+LoRA ===", flush=True)
