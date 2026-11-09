@@ -92,8 +92,9 @@ class Session:
                   f"File {'updated' if original is not None else 'created'} successfully at: {CWD}/{path}", tur)
 
     def read(self, tid: str, path: str, content: str) -> None:
+        num_lines = content.count("\n")
         self.call("Read", {"file_path": f"{CWD}/{path}"}, tid, content,
-                  {"type": "text", "file": {"filePath": f"{CWD}/{path}", "content": content, "numLines": content.count("\n"), "startLine": 1, "totalLines": content.count("\n")}})
+                  {"type": "text", "file": {"filePath": f"{CWD}/{path}", "content": content, "numLines": num_lines, "startLine": 1, "totalLines": num_lines}})
 
 
 HEREDOC_EDIT = "python3 - <<'PY'\nfrom pathlib import Path\np = Path('src/a.py'); s = p.read_text(); p.write_text(s.replace('x = 1', 'x = 2'))\nPY\npytest tests/ -q"
