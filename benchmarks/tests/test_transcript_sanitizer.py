@@ -23,7 +23,6 @@ if str(REPO) not in sys.path:
 from benchmarks.transcript_sanitizer import (  # noqa: E402
     COMMAND_KEYS,
     KEPT_INPUT_KEYS,
-    normalize_home,
     redact_secrets,
     redaction_marker,
     sanitize_record,
