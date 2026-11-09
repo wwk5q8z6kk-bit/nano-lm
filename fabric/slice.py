@@ -17,7 +17,7 @@
 #     variants observed across all frozen instruments ("Nothing at all.",
 #     "None whatsoever."). No denial found -> UNVERIFIABLE (never VERIFIED): the
 #     hard rule that lack of evidence is not evidence of absence.
-import importlib.util, json, os, re, sys, time
+import functools, importlib.util, json, os, re, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -46,8 +46,13 @@ def patient_lines(content):
     return out
 
 
+
+@functools.lru_cache(maxsize=1024)
+def _compile_claim_pat(obj):
+    return re.compile(r"\b" + re.escape(obj) + r"\b", re.IGNORECASE)
+
 def verify_value(claim, content, source_id):
-    pat = re.compile(r"\b" + re.escape(claim.obj) + r"\b", re.IGNORECASE)
+    pat = _compile_claim_pat(claim.obj)
     for text, start in patient_lines(content):
         m = pat.search(text)
         if m:
