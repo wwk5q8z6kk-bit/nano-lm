@@ -30,7 +30,13 @@ from nanoscribe.evaluate import (
     atom_result,
     evaluate,
 )
-from nanoscribe.select import ConstrainedSelector, copy_span, match_count, relocate, snap_relocate
+from nanoscribe.select import (
+    ConstrainedSelector,
+    copy_span,
+    match_count,
+    relocate,
+    snap_relocate,
+)
 
 
 def _source():
@@ -213,7 +219,10 @@ def test_selector_cannot_emit_non_source_text() -> None:
     span = selector.select_quote(source, "neck", evidence_id="ev-1")
     assert span is not None
     assert "neck" in source.text
-    assert selector.select_quote(source, "the patient has cervicalgia", evidence_id="ev-2") is None
+    assert (
+        selector.select_quote(source, "the patient has cervicalgia", evidence_id="ev-2")
+        is None
+    )
 
 
 def test_evaluate_exact_gold_span_and_char_f1() -> None:
@@ -272,7 +281,10 @@ def test_evaluate_state_support_omission_and_abstention() -> None:
     assert report.unnecessary_abstention == 1  # hist
     assert report.omission == 2  # hist abstained + assess missing
     assert report.correct_abstention == 1  # medication silence
-    assert atom_result(report, "atom-alg").support_relation is SupportRelation.REVIEW_REQUIRED
+    assert (
+        atom_result(report, "atom-alg").support_relation
+        is SupportRelation.REVIEW_REQUIRED
+    )
 
 
 def test_evaluate_malformed_invented_and_critical() -> None:
@@ -290,7 +302,9 @@ def test_evaluate_malformed_invented_and_critical() -> None:
     pred = PredictedEncounter(
         atoms=(
             PredictedAtom(atom_id="atom-neck", malformed=True),
-            _pred_from_gold(gold, "atom-assess", evidence_ids=("ev-fake",), spans=(invented,)),
+            _pred_from_gold(
+                gold, "atom-assess", evidence_ids=("ev-fake",), spans=(invented,)
+            ),
         )
     )
     report = evaluate(gold, pred)
@@ -376,7 +390,9 @@ def test_wider_containing_span_is_direct_exact_not_gold_match() -> None:
 
 def test_normalized_support_is_not_direct_exact() -> None:
     gold = _gold()
-    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck", raw_value="Neck"),))
+    pred = PredictedEncounter(
+        atoms=(_pred_from_gold(gold, "atom-neck", raw_value="Neck"),)
+    )
     report = evaluate(gold, pred)
     neck = atom_result(report, "atom-neck")
     assert neck.support_relation is SupportRelation.NORMALIZED
@@ -420,7 +436,9 @@ def test_uncertain_state_is_evaluated() -> None:
         "src-u",
         ((Speaker.PATIENT, "I am not sure if I take anything."),),
     )
-    span = relocate(source, "I am not sure if I take anything.", evidence_id="ev-unsure")
+    span = relocate(
+        source, "I am not sure if I take anything.", evidence_id="ev-unsure"
+    )
     assert span is not None
     gold = EncounterRecord(
         encounter_id="enc-u",
@@ -440,7 +458,9 @@ def test_uncertain_state_is_evaluated() -> None:
             ),
         ),
     )
-    report = evaluate(gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-med"),)))
+    report = evaluate(
+        gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-med"),))
+    )
     med = atom_result(report, "atom-med")
     assert med.assertion_state_correct
     assert med.support_relation is SupportRelation.DIRECT_EXACT
@@ -476,7 +496,9 @@ def test_conflicting_evaluates_both_spans() -> None:
             ),
         ),
     )
-    report = evaluate(gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-sev"),)))
+    report = evaluate(
+        gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-sev"),))
+    )
     item = atom_result(report, "atom-sev")
     assert item.exact_gold_span
     assert item.span_character_f1 == 1.0
@@ -605,14 +627,26 @@ def test_wrong_turn_and_speaker_are_invalid_spans() -> None:
     turn_report = evaluate(
         gold,
         PredictedEncounter(
-            atoms=(_pred_from_gold(gold, "atom-neck", evidence_ids=("ev-bad-turn",), spans=(wrong_turn,)),)
+            atoms=(
+                _pred_from_gold(
+                    gold,
+                    "atom-neck",
+                    evidence_ids=("ev-bad-turn",),
+                    spans=(wrong_turn,),
+                ),
+            )
         ),
     )
     speaker_report = evaluate(
         gold,
         PredictedEncounter(
             atoms=(
-                _pred_from_gold(gold, "atom-neck", evidence_ids=("ev-bad-spk",), spans=(wrong_speaker,)),
+                _pred_from_gold(
+                    gold,
+                    "atom-neck",
+                    evidence_ids=("ev-bad-spk",),
+                    spans=(wrong_speaker,),
+                ),
             )
         ),
     )
@@ -624,7 +658,9 @@ def test_wrong_turn_and_speaker_are_invalid_spans() -> None:
 
 def test_ungrounded_raw_value_is_malformed() -> None:
     gold = _gold()
-    pred = PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-neck", raw_value="diabetes"),))
+    pred = PredictedEncounter(
+        atoms=(_pred_from_gold(gold, "atom-neck", raw_value="diabetes"),)
+    )
     report = evaluate(gold, pred)
     neck = atom_result(report, "atom-neck")
     assert neck.malformed
@@ -731,7 +767,9 @@ def test_one_valid_extra_atom_is_spurious() -> None:
 
 def test_ten_extra_atoms_cannot_keep_a_perfect_report() -> None:
     gold = _gold()
-    extras = tuple(_extra_atom(gold, f"atom-hallucinated-{index}") for index in range(10))
+    extras = tuple(
+        _extra_atom(gold, f"atom-hallucinated-{index}") for index in range(10)
+    )
     clean = evaluate(gold, PredictedEncounter(atoms=_all_gold_preds(gold)))
     assert _report_is_clean(clean)
     assert clean.exact_gold_span == len(gold.atoms)
@@ -774,8 +812,13 @@ def test_prediction_cannot_self_declare_semantic_support() -> None:
         pass
     else:
         raise AssertionError("PredictedAtom must not accept verifier_support")
-    report = evaluate(gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-alg"),)))
-    assert atom_result(report, "atom-alg").support_relation is SupportRelation.REVIEW_REQUIRED
+    report = evaluate(
+        gold, PredictedEncounter(atoms=(_pred_from_gold(gold, "atom-alg"),))
+    )
+    assert (
+        atom_result(report, "atom-alg").support_relation
+        is SupportRelation.REVIEW_REQUIRED
+    )
     assert report.support_semantically_supported == 0
 
 
@@ -789,7 +832,10 @@ def test_independent_verifier_can_declare_semantic_support() -> None:
             VerifierResult("atom-alg", SupportRelation.SEMANTICALLY_SUPPORTED),
         ),
     )
-    assert atom_result(report, "atom-alg").support_relation is SupportRelation.SEMANTICALLY_SUPPORTED
+    assert (
+        atom_result(report, "atom-alg").support_relation
+        is SupportRelation.SEMANTICALLY_SUPPORTED
+    )
     assert report.support_semantically_supported == 1
     mapping_report = evaluate(
         gold,
@@ -800,6 +846,41 @@ def test_independent_verifier_can_declare_semantic_support() -> None:
         atom_result(mapping_report, "atom-alg").support_relation
         is SupportRelation.CONTRADICTED
     )
+
+
+def test_evaluate_extra_prediction_result_exceptions() -> None:
+    # Testing that exception in _extra_prediction_result causes malformed and critical_error
+    gold = _gold()
+    pred = PredictedEncounter(
+        atoms=(_pred_from_gold(gold, "atom-neck"), _extra_atom(gold, "extra-1"))
+    )
+
+    import nanoscribe.evaluate
+
+    original = nanoscribe.evaluate._extra_prediction_result
+
+    for exc in (
+        EncounterError("error_code", "message"),
+        TypeError("err"),
+        ValueError("err"),
+        AttributeError("err"),
+    ):
+        try:
+
+            def raise_error(*args, **kwargs):
+                raise exc
+
+            nanoscribe.evaluate._extra_prediction_result = raise_error
+
+            report = evaluate(gold, pred)
+            extra_results = [r for r in report.atom_results if r.atom_id == "extra-1"]
+
+            assert len(extra_results) == 1
+            assert extra_results[0].malformed
+            assert extra_results[0].critical_error
+            assert extra_results[0].spurious_atom is False
+        finally:
+            nanoscribe.evaluate._extra_prediction_result = original
 
 
 if __name__ == "__main__":
