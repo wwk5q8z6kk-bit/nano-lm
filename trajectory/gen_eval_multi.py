@@ -10,12 +10,9 @@ SEEDS = [20260720, 20260721, 20260722, 20260723, 20260724]   # fixed in PREREG_T
 N = 200                                                        # 100 held + 100 seen
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-src = open(V1).read()
-marker = "# ---------------- build sets ----------------"
-assert marker in src, "v1 generator layout changed; re-verify before generating"
-ns = {}
-exec(compile(src.split(marker)[0], V1, "exec"), ns)
-sample_tuple, make_convo = ns["sample_tuple"], ns["make_convo"]
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scribe"))
+from build_scribe_data import sample_tuple, make_convo
 
 HELD_VALS = {"toothache", "neck pain", "heartburn", "melatonin", "throat lozenges", "sulfa drugs"}
 inst0 = json.load(open(os.path.join(HERE, "..", "scribe", "scribe_eval.json")))
