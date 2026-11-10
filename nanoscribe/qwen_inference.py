@@ -57,11 +57,13 @@ def _load_qwen(weights_path: str) -> _LoadedQwen:
         device = "cpu"
         dtype = torch.float32
 
-    tokenizer = AutoTokenizer.from_pretrained(weights_path, trust_remote_code=True)
+    # Qwen2 is implemented by Transformers; model repositories need not execute
+    # Python in the research process. Custom-code checkpoints fail closed.
+    tokenizer = AutoTokenizer.from_pretrained(weights_path, trust_remote_code=False)
     model = AutoModelForCausalLM.from_pretrained(
         weights_path,
         torch_dtype=dtype,
-        trust_remote_code=True,
+        trust_remote_code=False,
     )
     model.to(device)
     model.eval()
