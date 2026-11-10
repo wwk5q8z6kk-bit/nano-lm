@@ -1,0 +1,30 @@
+{
+  "checked_utc": "2026-10-26T13:58:53.277674+00:00",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "scripts/check_active_now.py"
+      ],
+      "exit_code": 0,
+      "output": "ACTIVE_NOW_OK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_docs_integrity.py"
+      ],
+      "exit_code": 0,
+      "output": "DOCS_INTEGRITY_OK\n"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ]
+}

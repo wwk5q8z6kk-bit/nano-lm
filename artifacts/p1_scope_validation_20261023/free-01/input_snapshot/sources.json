@@ -1,0 +1,122 @@
+[
+  {
+    "case_id": "scope-01",
+    "stratum": "ordinary_question_variation",
+    "transcript": "Doctor: What have you come in about today?\nPatient: My throat has been sore. Swallowing is a bit uncomfortable, although I can still eat.\nDoctor: How far back does that go?\nPatient: Three days. It started on Monday evening.\nDoctor: How much is it bothering you?\nPatient: It's mild, really. It's just hanging around.\nDoctor: Have you used anything for it?\nPatient: I took acetaminophen last night. That's all.\nDoctor: Are there any medicines you react badly to?\nPatient: Penicillin gives me hives.\nDoctor: Anything else you wanted to mention?\nPatient: No, the sore throat is why I'm here."
+  },
+  {
+    "case_id": "scope-02",
+    "stratum": "ordinary_question_variation",
+    "transcript": "Doctor: What's been bothering you lately?\nPatient: My left knee aches when I walk downstairs.\nDoctor: When did you first notice the ache?\nPatient: About two weeks ago, after a long walk.\nDoctor: If zero is no pain and ten is the worst, where would you put it?\nPatient: Two sitting here, but five on the stairs.\nDoctor: What have you been taking or putting on it?\nPatient: Nothing. I haven't taken any tablets or used a cream.\nDoctor: Any known drug allergies?\nPatient: None that I know of."
+  },
+  {
+    "case_id": "scope-03",
+    "stratum": "ordinary_question_variation",
+    "transcript": "Doctor: Tell me what's brought you in.\nPatient: This dry cough. It keeps interrupting me when I talk.\nDoctor: Has it been a matter of days or weeks?\nPatient: Six days now.\nDoctor: How rough has it been?\nPatient: Moderate. I can work, but I'm coughing through meetings.\nDoctor: What, if anything, are you using at the moment?\nPatient: A dextromethorphan cough syrup at bedtime.\nDoctor: Is there anything on your allergy list?\nPatient: I don't have any medicine allergies.\nDoctor: Is there another symptom you want to discuss today?\nPatient: No. I just want to talk about the cough."
+  },
+  {
+    "case_id": "scope-04",
+    "stratum": "ordinary_question_variation",
+    "transcript": "Doctor: What's going on with your ear?\nPatient: The right one feels full, like it won't pop.\nDoctor: Since when?\nPatient: Yesterday morning.\nDoctor: Is that painful, or mostly a pressure feeling?\nPatient: Mostly pressure. If you need a number, the discomfort is three out of ten.\nDoctor: Walk me through any medicines you're using.\nPatient: I take loratadine every morning for my seasonal allergies. I haven't used anything else for the ear.\nDoctor: Have any medicines caused an allergic reaction?\nPatient: Sulfa antibiotics caused a rash when I was a teenager.\nDoctor: Does the fullness come and go?\nPatient: It's been there continuously since yesterday."
+  },
+  {
+    "case_id": "scope-05",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: What would you like to talk about?\nPatient: A headache across my forehead.\nDoctor: When did it begin?\nPatient: Sometime over the weekend. I honestly can't remember which day.\nDoctor: How strong is it right now?\nPatient: Seven out of ten. It's hard to concentrate.\nDoctor: Have you taken anything for it?\nPatient: Acetaminophen this morning. I don't remember whether the tablets were the regular or extra strength ones.\nDoctor: Do you have any medicine allergies?\nPatient: No known allergies.\nDoctor: How many hours did you sleep last night?\nPatient: I'm not sure. I kept waking up and didn't look at the clock."
+  },
+  {
+    "case_id": "scope-06",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: What's troubling you today?\nPatient: A burning feeling in my upper stomach. It started after breakfast this morning.\nDoctor: How uncomfortable would you say it is?\nPatient: Mild. I can go about my day, but I notice it.\nDoctor: What medicines have you used today?\nPatient: None today. I take no regular medicines either.\nDoctor: Are you allergic to any medications?\nPatient: I don't know. My old chart has an allergy flag, but I don't remember ever having a reaction or which medicine it means.\nDoctor: Do you recall what time you finished breakfast?\nPatient: Not exactly. I ate sometime before leaving for work.\nDoctor: And the burning is still there?\nPatient: Yes, the same mild burning."
+  },
+  {
+    "case_id": "scope-07",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: Can you describe the problem?\nPatient: My right shoulder hurts when I reach up to a shelf.\nDoctor: How long has that been happening?\nPatient: Nine days. I remember because it started on my day off.\nDoctor: How would you rate the pain?\nPatient: It depends. Barely one out of ten when I'm still, but around six when I lift my arm. I can't give you one number for the whole day.\nDoctor: Have you used a medicine for it?\nPatient: Ibuprofen a couple of times. I don't know the tablet strength; the bottle is at home.\nDoctor: Any allergies to medicines?\nPatient: No.\nDoctor: Was there a particular movement that started it?\nPatient: I can't remember one."
+  },
+  {
+    "case_id": "scope-08",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: My nose is blocked on both sides. It's been two days.\nDoctor: Is the congestion mild, moderate, or severe?\nPatient: I don't know how to choose between those. I can sleep, but I keep breathing through my mouth.\nDoctor: Have you tried any medicine or nasal spray?\nPatient: No.\nDoctor: Do any medications cause you an allergic reaction?\nPatient: An antibiotic gave me a rash years ago, but I can't remember its name.\nDoctor: Was it prescribed here?\nPatient: I don't know; it was at a clinic where I used to live.\nDoctor: Are you taking regular medication for anything else?\nPatient: No regular medication."
+  },
+  {
+    "case_id": "scope-09",
+    "stratum": "irrelevant_and_unattributed_context",
+    "transcript": "Doctor: What brings you here?\nPatient: I've had a cough for four days. My mother heard it over the phone and told me all about her asthma again.\nDoctor: How bad is your cough?\nPatient: Mild. It's mostly a few coughs in the evening.\nDoctor: Are you using any medicine?\nPatient: No. My mother uses an inhaler, but I don't use one and I haven't taken anything for this.\nDoctor: Any medication allergies of your own?\nPatient: None. My mother is allergic to penicillin, which is why she always asks me that question.\nDoctor: Have you had trouble keeping up with your usual activities?\nPatient: No, I've been doing everything as usual."
+  },
+  {
+    "case_id": "scope-10",
+    "stratum": "irrelevant_and_unattributed_context",
+    "transcript": "Doctor: Tell me about the wrist problem.\nPatient: My left wrist has been sore for ten days. I type a lot for work.\nDoctor: How much does it hurt?\nPatient: About four out of ten when I'm typing.\nDoctor: Have you been taking anything?\nPatient: I used ibuprofen yesterday. A coworker said they take naproxen every day, but that was them, not me.\nDoctor: Are you allergic to any medicines?\nPatient: Amoxicillin gives me hives.\nDoctor: Was there something else you wanted to ask?\nPatient: I wondered in general whether people who play tennis get wrist pain. I don't play tennis myself.\nDoctor: Did anything unusual happen to your wrist?\nPatient: No injury that I can think of."
+  },
+  {
+    "case_id": "scope-11",
+    "stratum": "irrelevant_and_unattributed_context",
+    "transcript": "Doctor: What are we looking at today?\nPatient: This itchy patch on my left forearm. It's been there a week.\nDoctor: How troublesome is the itching?\nPatient: Moderate. I catch myself scratching it while I read.\nDoctor: Have you put anything on it or taken anything?\nPatient: I haven't. There was a bottle of cetirizine on the kitchen counter, but it's my housemate's.\nDoctor: Do you have any medicine allergies?\nPatient: No known ones.\nDoctor: Did you bring the note you mentioned when booking?\nPatient: Yes. It just says 'severe rash, three months, steroid cream.' I found it in a shared notebook and don't know who wrote it. It isn't a description of my arm.\nDoctor: What can you tell me about your own patch?\nPatient: It's just this one patch, and I first noticed it last Friday."
+  },
+  {
+    "case_id": "scope-12",
+    "stratum": "irrelevant_and_unattributed_context",
+    "transcript": "Doctor: What would you like help describing today?\nPatient: I've had a dull ache in my lower back since yesterday afternoon.\nDoctor: How strong is the ache?\nPatient: Mild, maybe two out of ten.\nDoctor: What medication are you using?\nPatient: None. I haven't taken anything for my back.\nDoctor: Any known medicine allergies?\nPatient: No known drug allergies.\nDoctor: You mentioned an article on the booking form.\nPatient: Yes, it described someone with severe back pain who took tramadol for years. I was asking about the article, not saying that's my situation.\nDoctor: Is there anything else about your symptoms?\nPatient: The ache is the main thing. My brother has kidney stones, but I've never had them."
+  },
+  {
+    "case_id": "scope-13",
+    "stratum": "medication_allergy_scope",
+    "transcript": "Doctor: What's the concern today?\nPatient: My eyes have been itchy for five days.\nDoctor: How bad is the itch?\nPatient: Mild. I notice it most when I'm outside.\nDoctor: What medicines are you taking?\nPatient: I take cetirizine every evening. I used to take loratadine, but I stopped that last year.\nDoctor: Anything else, including drops?\nPatient: No drops and no other medicines.\nDoctor: Are you allergic to any medications?\nPatient: Penicillin gave me hives. Pollen also bothers me, but that's the reason I take the cetirizine.\nDoctor: Have you taken penicillin recently?\nPatient: No, that reaction happened years ago."
+  },
+  {
+    "case_id": "scope-14",
+    "stratum": "medication_allergy_scope",
+    "transcript": "Doctor: What has been happening?\nPatient: I've had a headache since yesterday. It's moderate, across the back of my head.\nDoctor: Are you taking medication for it?\nPatient: Not for the headache. I do take levothyroxine every morning.\nDoctor: Any other medicines today?\nPatient: No. I haven't even taken a painkiller.\nDoctor: Do you have any drug allergies?\nPatient: I don't have any known drug allergies. Codeine once made me nauseated, but I wasn't told it was an allergy.\nDoctor: Is that a medicine you still use?\nPatient: No, I only took it after dental work years ago.\nDoctor: Anything else on your regular medication list?\nPatient: Just the levothyroxine."
+  },
+  {
+    "case_id": "scope-15",
+    "stratum": "medication_allergy_scope",
+    "transcript": "Doctor: Tell me about the skin problem.\nPatient: I have an itchy rash around my ankles. It appeared three days ago.\nDoctor: How bad is it?\nPatient: The itching is moderate.\nDoctor: What have you used so far?\nPatient: Hydrocortisone cream once last night. I haven't taken any tablets.\nDoctor: Do you have any allergies to medication?\nPatient: I'm not sure. I once developed a rash while taking amoxicillin, but I also had a new detergent then. Nobody worked out which it was.\nDoctor: Are you taking amoxicillin now?\nPatient: No. That was years ago.\nDoctor: Anything else being used on this rash?\nPatient: No, only the cream last night."
+  },
+  {
+    "case_id": "scope-16",
+    "stratum": "medication_allergy_scope",
+    "transcript": "Doctor: What brought you in today?\nPatient: I have a sore right ankle. It's been four days since I rolled it stepping off a curb.\nDoctor: How painful is it now?\nPatient: Four out of ten when I walk.\nDoctor: Are you on any medicines?\nPatient: No regular prescriptions. I took naproxen yesterday for the ankle, though.\nDoctor: Any known medication allergies?\nPatient: Yes, aspirin causes hives for me.\nDoctor: Have you taken aspirin during these four days?\nPatient: No. The only tablet I've used was the naproxen yesterday.\nDoctor: Is there anything else on your medication list?\nPatient: No."
+  },
+  {
+    "case_id": "scope-17",
+    "stratum": "correction_and_conflict",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: My right ear hurts.\nDoctor: How long has it hurt?\nPatient: Two weeks. Wait, I mean two days. I was thinking about when I booked a different appointment.\nDoctor: And which ear is it?\nPatient: Sorry, the left ear. I keep saying right, but it's this left one that hurts.\nDoctor: How bad is the pain?\nPatient: Mild, about two out of ten.\nDoctor: Have you taken anything?\nPatient: No medicine for it, and I don't take regular medicine.\nDoctor: Any medication allergies?\nPatient: None that I'm aware of."
+  },
+  {
+    "case_id": "scope-18",
+    "stratum": "correction_and_conflict",
+    "transcript": "Doctor: What's been bothering you?\nPatient: My throat has been sore for five days.\nDoctor: How severe is it?\nPatient: I'd say severe.\nDoctor: Can you tell me what you mean by severe?\nPatient: Actually, moderate is a better word. I can eat and talk; I'm just frustrated that it hasn't gone away.\nDoctor: Are you taking any medicine?\nPatient: Nothing. Oh, I did take acetaminophen before work this morning. I forgot about that.\nDoctor: Any known allergies to medication?\nPatient: No known allergies.\nDoctor: Any other medicine this week?\nPatient: No, just that acetaminophen this morning."
+  },
+  {
+    "case_id": "scope-19",
+    "stratum": "correction_and_conflict",
+    "transcript": "Doctor: What is the problem today?\nPatient: A cough that's been going on for eight days.\nDoctor: How troublesome is it?\nPatient: Mild during the day, but the nighttime coughing feels severe.\nDoctor: What medicine are you using?\nPatient: Dextromethorphan syrup at night.\nDoctor: Are you allergic to any medicines?\nPatient: Penicillin.\nDoctor: What reaction did you have?\nPatient: Hold on, that's my sister's allergy. I mixed up our forms. I don't have any known medicine allergies myself.\nDoctor: Do you want to correct anything else from what you've told me?\nPatient: No. The cough really has been eight days, and I am taking that syrup."
+  },
+  {
+    "case_id": "scope-20",
+    "stratum": "correction_and_conflict",
+    "transcript": "Doctor: What brought you here?\nPatient: My left knee has been stiff and sore for three weeks.\nDoctor: How much pain are you in?\nPatient: Around five out of ten.\nDoctor: What are you taking for it?\nPatient: Ibuprofen every day.\nDoctor: When was your last dose?\nPatient: I haven't taken any ibuprofen this week.\nDoctor: I'm hearing two different descriptions of your use. Can you clarify?\nPatient: I know, but I can't sort it out without checking the packets at home. I may be mixing up this week and last week.\nDoctor: Any drug allergies you know about?\nPatient: Sulfa antibiotics gave me hives."
+  },
+  {
+    "case_id": "scope-21",
+    "stratum": "mixed_or_ambiguous_questions",
+    "transcript": "Doctor: What is troubling you?\nPatient: I've had a cough for three days.\nDoctor: How bad is the cough?\nPatient: Mild. It's more of a nuisance than anything.\nDoctor: Are you taking anything, and do you have any drug allergies?\nPatient: No.\nDoctor: Have you been sleeping normally?\nPatient: Yes, pretty much.\nDoctor: Does the cough happen at work as well as at home?\nPatient: Both, although I notice it more when the room is quiet.\nDoctor: Is there anything else you want to add?\nPatient: Just that it began three days ago, not last week like I wrote on the form."
+  },
+  {
+    "case_id": "scope-22",
+    "stratum": "mixed_or_ambiguous_questions",
+    "transcript": "Doctor: What would you like to discuss?\nPatient: A dull headache around my temples.\nDoctor: Did it start yesterday, or has it been there for a week?\nPatient: Yes.\nDoctor: What have you taken for it?\nPatient: I took acetaminophen this morning.\nDoctor: Would you call the pain mild or severe?\nPatient: Somewhere in the middle, moderate.\nDoctor: Any medication allergies?\nPatient: No known drug allergies.\nDoctor: Can you tell me more about when it began?\nPatient: I can't pin it down right now. I've had a very busy week."
+  },
+  {
+    "case_id": "scope-23",
+    "stratum": "mixed_or_ambiguous_questions",
+    "transcript": "Doctor: What has brought you in today?\nPatient: My left shoulder has been aching for four days.\nDoctor: This is severe pain, then.\nPatient: I need to check what time my ride is coming. Sorry, what was the question?\nDoctor: Have you used anything for the shoulder?\nPatient: No, nothing for it. I don't take regular medication either.\nDoctor: And I can assume there are no medication allergies.\nPatient: I don't remember what the old record says.\nDoctor: How would you describe the ache in your own words?\nPatient: It's there when I reach for things, but I haven't decided what number to give it.\nDoctor: Has it really been four days?\nPatient: Yes, four days."
+  },
+  {
+    "case_id": "scope-24",
+    "stratum": "mixed_or_ambiguous_questions",
+    "transcript": "Doctor: What's bothering you most?\nPatient: A blocked nose and a sore throat. The nose started a week ago; the throat started yesterday.\nDoctor: Is the nose problem worse, or is it the throat?\nPatient: Yes, especially in the morning.\nDoctor: What would you say about how severe they are?\nPatient: The blocked nose is mild. The throat is moderate when I swallow.\nDoctor: Are you using a nasal spray or taking tablets?\nPatient: I'm taking loratadine, one tablet each morning. No spray.\nDoctor: Do you have any drug allergies, or is there a medicine you're worried about trying?\nPatient: I'm worried about trying new medicines in general. I don't have any known allergies.\nDoctor: Is there anything else about the timing?\nPatient: Just that the throat is new since yesterday. The blocked nose was already there."
+  }
+]

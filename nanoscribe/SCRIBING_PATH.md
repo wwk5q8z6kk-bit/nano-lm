@@ -45,6 +45,9 @@ An optional compact model is now connected through the same checked adapter:
 ```sh
 python3 -m nanoscribe.scribe --transcript /absolute/path/to/transcript.txt \
   --compact-checkpoint /absolute/path/to/pinned/local/snapshot --format text
+python3 -m nanoscribe.scribe --transcript /absolute/path/to/transcript.txt \
+  --compact-checkpoint /absolute/path/to/pinned/local/snapshot \
+  --context-policy context --compact-decoding constrained --format text
 ```
 
 This uses offline greedy Qwen inference with two fixed format demonstrations.
@@ -71,7 +74,7 @@ than the reference extractor. Explicit medication/allergy denial is retained
 as a denial quote; silence is missing. Qualified denial such as “Not that I
 know of” is quarantined even if the reference solver calls it absent.
 Uncertain/conflicting fields retain their evidence but have no asserted value.
-Any unhandled source turn quarantines all otherwise presented fields, because
+Under the default legacy policy, any unhandled source turn quarantines all otherwise presented fields, because
 an ignored correction or instruction about another person could affect any of
 them. This includes clinician turns other than the exact allowlisted questions.
 So does an
@@ -88,6 +91,40 @@ allergy” or “aspirin side effects” cannot count as a handled complaint whi
 separate denial remains asserted. The checker quarantines the values; it does
 not infer or resolve a clinical relationship between fields.
 These exclusions are conservative lexical guards, not a complete language model.
+
+The opt-in `--context-policy context` development policy scans every original
+turn before determining failure scope. Complete, recognized medication/allergy
+replies can produce field-local uncertainty while preserving independently
+supported fields. Anchored request patterns attribute ordinary questions without
+requiring every symptom modifier in a vocabulary list. Unknown replies quarantine
+requested or mentioned fields, including named and anaphoric corrections.
+Unrelated exchanges and explicitly other-person/old-episode questions remain
+reviewable source context. Mixed scopes are quarantined locally; empty role
+boundaries still interrupt attribution. Explicit unbounded reassignment of the
+patient's answers retains whole-note quarantine. This scope analysis is a bounded
+lexical policy, not general clinical entailment.
+
+Medication use followed or preceded by an explicit blanket denial remains a
+conflict with all source evidence, even if the model proposes only one side.
+Different medicines or allergens can coexist: the scalar schema leaves these
+unresolved rather than inventing a contradiction. The constrained decoder offers
+absence only for complete explicit denials and medication/allergy values only
+for bounded positive replies. Wrong proposals become local uncertainty; the
+adapter does not promote rejected proposals to supported values.
+
+`inference_diagnostics` records the raw proposal, verification decision and final
+state/evidence separately. A preserved source conflict does not count as a correct
+raw model decision. Exactly five ordered raw slots can recover independently:
+each slot must pass the unchanged strict parser and unique patient-span locator.
+A malformed slot becomes uncertain; all owners of duplicate evidence are rejected.
+Malformed overall structure still fails closed. Diagnostics retain the original
+response, slot errors and strict parse failure alongside checked fields.
+The policy is `context-source-scope-v4`, with diagnostics
+`nanoscribe.context-state-diagnostics.v3` and decoder `typed-context-source-trie-v8`;
+the source binder, decoder and checker
+share bounded recognition rules, so their agreement is not independent semantic
+validation. See the [repair verification report](P1_REPAIRS.md) for development
+cases, preserved historical replay and full-suite results.
 
 The checked projection uses existing `EncounterRecord` atoms. Chief complaint,
 duration, and severity are symptom-related scalar atoms identified by their
@@ -127,3 +164,29 @@ behavior. Mutation tests change draft prose/value/state/references, remove or
 add claims, alter atom metadata, remove conflicts, change unresolved review
 metadata, and show that the pipeline withholds a corrupted draft. These are
 software boundary checks, not a held-out medical evaluation.
+
+The [October 26 varied development comparison](../artifacts/p1_varied_dev_20261026/REPORT.md)
+records complete blanket medication-denial recognition, direct-question and
+short-reply coverage, and paired constrained/free inference on 24 exposed
+synthetic dialogues. The fixed-snapshot constrained path yielded 24 review
+drafts, retained all four conflicts and matched 117/120 labelled fields at $0
+paid compute. Free generation remained unreliable. The report separates raw
+model errors, source repairs, concurrent integration checks and the earlier
+failed independent transfer evidence.
+
+The [October 26 retention repair](../artifacts/p1_retention_repair_dev_20261026/REPORT.md)
+shares bounded complete-clause observations across binding, all five decoder
+fields and final checking. It preserves source offsets and recognized valid
+clauses beside unrelated uncertainty; only a first clause inherits a recognized
+question, while later positive clauses require an explicit assertion. Local
+retractions carry across consecutive patient turns. Medication administration
+adjuncts and unnamed allergy/medication relations no longer become names.
+
+The [subsequent fresh validation](../artifacts/p1_retention_validation_20261026/REPORT.md)
+shows the limitation clearly: free generation abstains on 24/24 notes; constrained
+on 23/24, with one normalized-correct complaint and no exact-correct assertion
+retained. Thirteen locally recovered exact-correct free assertions are rejected.
+Only four of 120 constrained slots have concrete choices. No source triggers the
+global fallback; inadequate local interpretation still empties the notes. The
+annotations are blinded AI-agent work, not clinical validation. Further changes
+must use separate development cases and retain these results unchanged.

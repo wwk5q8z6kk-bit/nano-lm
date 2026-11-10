@@ -1,0 +1,157 @@
+{
+  "started_utc": "2026-10-24T00:33:32.467438+00:00",
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "nanoscribe"
+      ],
+      "exit_code": 0,
+      "seconds": 1.6581327089807019,
+      "log": "verification/nanoscribe-final.log",
+      "passed": 375,
+      "skipped": 0,
+      "initial_passed": 373,
+      "initial_log": "verification/nanoscribe.log",
+      "final_recheck_reason": "Two immediate self-retraction regressions added after first suite group completed; all affected NanoScribe and independent-harness tests rerun afterward."
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "nano"
+      ],
+      "exit_code": 0,
+      "seconds": 17.146530333993724,
+      "log": "verification/nano.log",
+      "passed": 316,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "nano_ai/tests"
+      ],
+      "exit_code": 0,
+      "seconds": 115.47097120800754,
+      "log": "verification/learned.log",
+      "passed": 499,
+      "skipped": 1
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "benchmarks/"
+      ],
+      "exit_code": 0,
+      "seconds": 3.404301625007065,
+      "log": "verification/benchmarks.log",
+      "passed": 500,
+      "skipped": 1
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "fabric",
+        "trajectory",
+        "wedge_v1"
+      ],
+      "exit_code": 0,
+      "seconds": 1.8066507080220617,
+      "log": "verification/foundations.log",
+      "passed": 32,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-o",
+        "addopts=",
+        "scripts/test_reconcile_p1_comparison.py",
+        "scripts/test_run_h7_kaggle.py",
+        "scripts/test_run_p1_pilot.py",
+        "scripts/test_run_p1_independent_dev.py"
+      ],
+      "exit_code": 0,
+      "seconds": 5.536706290993607,
+      "log": "verification/scripts.log",
+      "passed": 121,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "fabric/test_fabric.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.06478158399113454,
+      "log": "verification/fabric-direct.log",
+      "passed": 0,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "trajectory/test_recompute_c3.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.057431124994764104,
+      "log": "verification/trajectory-direct.log",
+      "passed": 0,
+      "skipped": 0
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "nanoscribe/benchmark.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.07335970798158087,
+      "log": "verification/benchmark-direct.log",
+      "passed": 0,
+      "skipped": 0
+    }
+  ],
+  "total_passed": 1843,
+  "total_skipped": 2,
+  "completed_utc": "2026-10-24T00:35:57.695196+00:00"
+}

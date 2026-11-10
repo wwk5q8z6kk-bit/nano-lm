@@ -1,0 +1,4066 @@
+{
+  "schema_version": "p1.posthoc-state-labels.v1",
+  "analysis_status": "posthoc_diagnostic_not_preplanned",
+  "primary_scores_replaced": false,
+  "script_sha256": "5c00121d3f65f2b3b29f696d4eb4facd7332b7e3c85966778682ef34c811bd0a",
+  "method": {
+    "purpose": "Separate literal state-label agreement from the primary full exact-source parser score.",
+    "pattern": "(?:^|\\|)(CC|DUR|SEV|MED|ALG):([SAMUC])(?=\\[|\\||$)",
+    "canonical_labels": [
+      "CC",
+      "DUR",
+      "SEV",
+      "MED",
+      "ALG"
+    ],
+    "rule": "Find canonical LABEL:STATE strings at start or after a pipe, followed by '[' or a pipe or end of text. A field is available only with exactly one recognized occurrence; zero or multiple occurrences are unavailable and incorrect.",
+    "denominator": "All 120 gold fields in all 24 cases per run; unavailable labels remain in the denominator. No case or field is excluded.",
+    "payload_policy": "Payloads are ignored. No bracket, slot, span, source, referent, temporal, evidence, or clinical validity is checked or claimed. A pipe within malformed payload text can act as a label boundary. Canonical label order does not establish valid output syntax.",
+    "interpretation": "This is literal label agreement, not standalone validated semantic-state accuracy, grounded extraction, complete evidence accuracy, or useful note yield.",
+    "primary_rule": "The preplanned primary score marks all fields incorrect when the full raw exact-source parser fails; this diagnostic does not change that rule or any primary artifact.",
+    "limitations": "Posthoc on a small synthetic development set with agent-applied annotations; not clinical, human, or confirmatory validation. Unlabeled state tokens are not inferred or repaired.",
+    "reproduction": "Standard library only; no model calls or product imports. Completed provenance and source/gold hashes are verified before output analysis. Use --output - for a read-only reproduction."
+  },
+  "runs": [
+    {
+      "run": "free-01",
+      "completed_utc": "2026-10-23T23:42:58.928396+00:00",
+      "decoding": "free",
+      "input_hashes": {
+        "gold.json": "6a2ab33a5bfbba36f5b2905d989695e6b817ae1e3acf0320d1340ecb67b287f4",
+        "sources.json": "fdfc670f3ffb74aa86911a8520c5c8da336a0b1e3dbcdf3297bbd9110d848c13",
+        "free-01/provenance.json": "5816fc26e44f44c5bd904d214e66d08e7f4e2ed018b068fff321f8c53e62f22d",
+        "free-01/encounters.json": "eb619ef4eb4ba4b365fe8b5c6e600339d4b4bbb0b7eaf44813f8a8e52dc4844b"
+      },
+      "summary": {
+        "denominator": 120,
+        "available_labels": 119,
+        "unavailable_labels": 1,
+        "correct_labels": 89,
+        "label_match_fraction_all_fields": 0.7416666666666667,
+        "gold_to_label_confusion": {
+          "S": {
+            "S": 74,
+            "A": 13,
+            "C": 2
+          },
+          "A": {
+            "A": 15
+          },
+          "M": {
+            "A": 2,
+            "unavailable": 1,
+            "S": 1
+          },
+          "U": {
+            "A": 7,
+            "C": 4
+          },
+          "C": {
+            "A": 1
+          }
+        }
+      },
+      "by_field": {
+        "CC": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 24,
+          "label_match_fraction_all_fields": 1.0,
+          "gold_to_label_confusion": {
+            "S": {
+              "S": 24
+            }
+          }
+        },
+        "DUR": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 21,
+          "label_match_fraction_all_fields": 0.875,
+          "gold_to_label_confusion": {
+            "S": {
+              "S": 21,
+              "C": 1
+            },
+            "M": {
+              "A": 1
+            },
+            "U": {
+              "C": 1
+            }
+          }
+        },
+        "SEV": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 21,
+          "label_match_fraction_all_fields": 0.875,
+          "gold_to_label_confusion": {
+            "S": {
+              "S": 21,
+              "A": 1
+            },
+            "U": {
+              "C": 1
+            },
+            "M": {
+              "S": 1
+            }
+          }
+        },
+        "MED": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 12,
+          "label_match_fraction_all_fields": 0.5,
+          "gold_to_label_confusion": {
+            "S": {
+              "S": 5,
+              "A": 5,
+              "C": 1
+            },
+            "A": {
+              "A": 7
+            },
+            "M": {
+              "A": 1
+            },
+            "U": {
+              "A": 3,
+              "C": 1
+            },
+            "C": {
+              "A": 1
+            }
+          }
+        },
+        "ALG": {
+          "denominator": 24,
+          "available_labels": 23,
+          "unavailable_labels": 1,
+          "correct_labels": 11,
+          "label_match_fraction_all_fields": 0.4583333333333333,
+          "gold_to_label_confusion": {
+            "S": {
+              "S": 3,
+              "A": 7
+            },
+            "A": {
+              "A": 8
+            },
+            "M": {
+              "unavailable": 1
+            },
+            "U": {
+              "A": 4,
+              "C": 1
+            }
+          }
+        }
+      },
+      "cases_with_exactly_five_recognized_labels_in_canonical_order": 23,
+      "unavailable_label_details": [
+        {
+          "case_id": "fresh-03",
+          "field": "ALG",
+          "gold_state": "M",
+          "predicted_label": null,
+          "unavailable_reason": "no_recognized_label",
+          "recognized_occurrences": [],
+          "label_correct": false
+        }
+      ],
+      "cases": [
+        {
+          "case_id": "fresh-01",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:S[headache]|DUR:S[3 days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-01",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 15
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 29
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 41
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 58
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-02",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:S[a cough]|DUR:S[one week]|SEV:S[moderate]|MED:A[A haven't taken any medicine for it.]|ALG:A[No medication allergies.]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-02",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 14
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 30
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 46
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 90
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-03",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:S[throat is sore]|DUR:S[two days]|SEV:S[severe]|MED:A|M",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-03",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 21
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 37
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "MED",
+              "gold_state": "M",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 51
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "ALG",
+              "gold_state": "M",
+              "predicted_label": null,
+              "unavailable_reason": "no_recognized_label",
+              "recognized_occurrences": [],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-04",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:S[lower back pain]|DUR:A[mild]|SEV:A[really]|MED:A[penicillin]|ALG:A[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-04",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "DUR",
+              "gold_state": "M",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 22
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 34
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 48
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 66
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-05",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:S[a headache]|DUR:C[yesterday]|SEV:S[moderate]|MED:A[Avoidance of specific medications due to lack of certainty]|ALG:A[None that I know of]",
+          "primary_raw_parse_error": "C must carry exactly two edge-trimmed evidence spans",
+          "fields": [
+            {
+              "case_id": "fresh-05",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "C",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "C",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 34
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 50
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 116
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-06",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:S[throat]|DUR:S[four days]|SEV:S[mild]|MED:A[penicillin]|ALG:A[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-06",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 13
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 30
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 42
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 60
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-07",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:S[a headache]|DUR:S[two days]|SEV:S[moderate]|MED:A[A capsule from my travel pouch]|ALG:A[No, none.]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-07",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 33
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 49
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 87
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-08",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:S[sore throat]|DUR:S[yesterday morning]|SEV:S[moderate]|MED:A[Avoiding medicines]|ALG:A[No medication allergies.]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-08",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 18
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 43
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 59
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 85
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-09",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:S[mild headache]|DUR:S[three days]|SEV:S[mixing things up]|MED:A[penicillin]|ALG:A[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-09",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 20
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 38
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "MED",
+              "gold_state": "C",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 62
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 80
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-10",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:S[lower back pain]|DUR:S[6 days]|SEV:S[moderate]|MED:C[Acetaminophen;ibuprofen]|ALG:A",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-10",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 22
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 36
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "C",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "C",
+                  "label_start_character": 52
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 83
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-11",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:S[moderate headache]|DUR:S[4 days]|SEV:S[moderate]|MED:S[ibuprofen]|ALG:S[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-11",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 24
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 38
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 54
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 71
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-12",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:S[sore throat]|DUR:S[two days]|SEV:S[mild]|MED:A[acetaminophen]|ALG:A",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-12",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 18
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 34
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 46
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 67
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-13",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:S[headache]|DUR:S[5 days]|SEV:S[moderate]|MED:C[ibuprofen]|ALG:C[penicillin;someone once said I had a rash as a child, but I don't know whether it was an allergy]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-13",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 15
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 29
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "C",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "C",
+                  "label_start_character": 45
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "C",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "C",
+                  "label_start_character": 62
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-14",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:S[mild cough]|DUR:S[three days]|SEV:S[mild]|MED:A[Avoidance of penicillin]|ALG:A[No, I'm not allergic to penicillin. I have no medication allergies.]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-14",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 35
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 47
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 78
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-15",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:S[sore throat]|DUR:S[two days]|SEV:S[moderate]|MED:A[Acetaminophen]|ALG:A[Penicillin]|A[sulfa antibiotics]",
+          "primary_raw_parse_error": "native-state summary must contain exactly five ordered slots",
+          "fields": [
+            {
+              "case_id": "fresh-15",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 18
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 34
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 50
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 71
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-16",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:S[a headache]|DUR:S[one week]|SEV:S[mild]|MED:A[I can't remember the specific name of the medication.|ALG:A[penicillin or a sulfa antibiotic]|U[no details available on the old card].",
+          "primary_raw_parse_error": "native-state summary must contain exactly five ordered slots",
+          "fields": [
+            {
+              "case_id": "fresh-16",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 33
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 45
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 105
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-17",
+          "stratum": "partial_information",
+          "raw_output": "CC:S[a headache]|DUR:C[since that stretch when everything was happening]|SEV:S[moderate]|MED:S[ibuprofen]|ALG:S[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-17",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "DUR",
+              "gold_state": "U",
+              "predicted_label": "C",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "C",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 73
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 89
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 106
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-18",
+          "stratum": "partial_information",
+          "raw_output": "CC:S[throat soreness]|DUR:S[three days]|SEV:C[somehow between a nuisance and a real problem]|MED:A[Acetaminophen]|ALG:A",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-18",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 22
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "SEV",
+              "gold_state": "U",
+              "predicted_label": "C",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "C",
+                  "label_start_character": 40
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 93
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 114
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-19",
+          "stratum": "partial_information",
+          "raw_output": "CC:S[cough]|DUR:S[4 days]|SEV:S[mild]|MED:A[penicillin]|ALG:A[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-19",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 12
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 26
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 38
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 56
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-20",
+          "stratum": "partial_information",
+          "raw_output": "CC:S[lower back]|DUR:S[five days]|SEV:S[moderate]|MED:A[green tablet]|ALG:A[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-20",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 34
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 50
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 70
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-21",
+          "stratum": "context_complications",
+          "raw_output": "CC:S[headache]|DUR:S[three days]|SEV:S[moderate]|MED:A[Moderate.|penicillin]|ALG:A[Penicillin.]",
+          "primary_raw_parse_error": "native-state summary must contain exactly five ordered slots",
+          "fields": [
+            {
+              "case_id": "fresh-21",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 15
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 33
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 49
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 77
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-22",
+          "stratum": "context_complications",
+          "raw_output": "CC:S[headache]|DUR:S[two days]|SEV:S[severe]|MED:A[I took ibuprofen last night.]|ALG:A",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-22",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 15
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "SEV",
+              "gold_state": "M",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 31
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 45
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 81
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-23",
+          "stratum": "context_complications",
+          "raw_output": "CC:S[headache]|DUR:S[4 days]|SEV:S[moderate]|MED:S[ibuprofen]|ALG:A",
+          "primary_raw_parse_error": "native-state evidence is ambiguous across Patient turns",
+          "fields": [
+            {
+              "case_id": "fresh-23",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 15
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 29
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 45
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 62
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-24",
+          "stratum": "context_complications",
+          "raw_output": "CC:S[headache]|DUR:S[Two days]|SEV:S[mild]|MED:S[penicillin]|ALG:A[penicillin]",
+          "primary_raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+          "fields": [
+            {
+              "case_id": "fresh-24",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 15
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 31
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 43
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "A",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "A",
+                  "label_start_character": 61
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "constrained-01",
+      "completed_utc": "2026-10-23T23:45:16.038699+00:00",
+      "decoding": "constrained",
+      "input_hashes": {
+        "gold.json": "6a2ab33a5bfbba36f5b2905d989695e6b817ae1e3acf0320d1340ecb67b287f4",
+        "sources.json": "fdfc670f3ffb74aa86911a8520c5c8da336a0b1e3dbcdf3297bbd9110d848c13",
+        "constrained-01/provenance.json": "b13439e760455e8244f1b17d297333f28aa5489f0ce715b5b8514a55e3529671",
+        "constrained-01/encounters.json": "9be44cbec275298b158b78967e95b7ecad11ef523864d5a6569db3457d2309f9"
+      },
+      "summary": {
+        "denominator": 120,
+        "available_labels": 120,
+        "unavailable_labels": 0,
+        "correct_labels": 13,
+        "label_match_fraction_all_fields": 0.10833333333333334,
+        "gold_to_label_confusion": {
+          "S": {
+            "M": 81,
+            "U": 5,
+            "S": 3
+          },
+          "A": {
+            "U": 11,
+            "M": 4
+          },
+          "M": {
+            "M": 4
+          },
+          "U": {
+            "U": 6,
+            "M": 5
+          },
+          "C": {
+            "M": 1
+          }
+        }
+      },
+      "by_field": {
+        "CC": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 3,
+          "label_match_fraction_all_fields": 0.125,
+          "gold_to_label_confusion": {
+            "S": {
+              "M": 21,
+              "S": 3
+            }
+          }
+        },
+        "DUR": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 1,
+          "label_match_fraction_all_fields": 0.041666666666666664,
+          "gold_to_label_confusion": {
+            "S": {
+              "M": 21,
+              "U": 1
+            },
+            "M": {
+              "M": 1
+            },
+            "U": {
+              "M": 1
+            }
+          }
+        },
+        "SEV": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 1,
+          "label_match_fraction_all_fields": 0.041666666666666664,
+          "gold_to_label_confusion": {
+            "S": {
+              "M": 22
+            },
+            "U": {
+              "M": 1
+            },
+            "M": {
+              "M": 1
+            }
+          }
+        },
+        "MED": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 3,
+          "label_match_fraction_all_fields": 0.125,
+          "gold_to_label_confusion": {
+            "S": {
+              "M": 11
+            },
+            "A": {
+              "U": 6,
+              "M": 1
+            },
+            "M": {
+              "M": 1
+            },
+            "U": {
+              "U": 2,
+              "M": 2
+            },
+            "C": {
+              "M": 1
+            }
+          }
+        },
+        "ALG": {
+          "denominator": 24,
+          "available_labels": 24,
+          "unavailable_labels": 0,
+          "correct_labels": 5,
+          "label_match_fraction_all_fields": 0.20833333333333334,
+          "gold_to_label_confusion": {
+            "S": {
+              "U": 4,
+              "M": 6
+            },
+            "A": {
+              "M": 3,
+              "U": 5
+            },
+            "M": {
+              "M": 1
+            },
+            "U": {
+              "U": 4,
+              "M": 1
+            }
+          }
+        }
+      },
+      "cases_with_exactly_five_recognized_labels_in_canonical_order": 24,
+      "unavailable_label_details": [],
+      "cases": [
+        {
+          "case_id": "fresh-01",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-01",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-01",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-02",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:S[cough]|DUR:M|SEV:M|MED:U[]|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-02",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 12
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 18
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 24
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-02",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 32
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-03",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-03",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "MED",
+              "gold_state": "M",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-03",
+              "field": "ALG",
+              "gold_state": "M",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-04",
+          "stratum": "conventional_controls",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:U[]|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-04",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "DUR",
+              "gold_state": "M",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-04",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 25
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-05",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:M|DUR:U[]|SEV:M|MED:U[]|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-05",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 13
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 19
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-05",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 27
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-06",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:U[]|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-06",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-06",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 25
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-07",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:U[]|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-07",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-07",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 25
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-08",
+          "stratum": "medication_uncertainty_nonuse",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:U[]|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-08",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-08",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 25
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-09",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-09",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "MED",
+              "gold_state": "C",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-09",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-10",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-10",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-10",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-11",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:S[moderate headache]|DUR:M|SEV:M|MED:M|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-11",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 24
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 30
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 36
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-11",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 42
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-12",
+          "stratum": "medication_conflict_coexistence",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-12",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-12",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-13",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-13",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-13",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-14",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-14",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-14",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-15",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-15",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-15",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-16",
+          "stratum": "allergy_uncertainty_negation_coexistence",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-16",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-16",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-17",
+          "stratum": "partial_information",
+          "raw_output": "CC:S[headache]|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-17",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "S",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "S",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "DUR",
+              "gold_state": "U",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 15
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 21
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 27
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-17",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 33
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-18",
+          "stratum": "partial_information",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-18",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "SEV",
+              "gold_state": "U",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-18",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-19",
+          "stratum": "partial_information",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:U[]|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-19",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-19",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 25
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-20",
+          "stratum": "partial_information",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-20",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "MED",
+              "gold_state": "U",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-20",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-21",
+          "stratum": "context_complications",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:U[]|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-21",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "MED",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-21",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 25
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-22",
+          "stratum": "context_complications",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-22",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "SEV",
+              "gold_state": "M",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": true
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-22",
+              "field": "ALG",
+              "gold_state": "A",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-23",
+          "stratum": "context_complications",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:U[]",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-23",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-23",
+              "field": "ALG",
+              "gold_state": "U",
+              "predicted_label": "U",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "U",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": true
+            }
+          ]
+        },
+        {
+          "case_id": "fresh-24",
+          "stratum": "context_complications",
+          "raw_output": "CC:M|DUR:M|SEV:M|MED:M|ALG:M",
+          "primary_raw_parse_error": null,
+          "fields": [
+            {
+              "case_id": "fresh-24",
+              "field": "CC",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 0
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "DUR",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 5
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "SEV",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 11
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "MED",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 17
+                }
+              ],
+              "label_correct": false
+            },
+            {
+              "case_id": "fresh-24",
+              "field": "ALG",
+              "gold_state": "S",
+              "predicted_label": "M",
+              "unavailable_reason": null,
+              "recognized_occurrences": [
+                {
+                  "state": "M",
+                  "label_start_character": 23
+                }
+              ],
+              "label_correct": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -107,6 +107,7 @@ def scribe(transcript: str, *, encounter_id: str = "encounter", solver: NanoSolv
             "source_sha256": hashlib.sha256(transcript.encode("utf-8")).hexdigest(),
             "status": "failed", "disposition": Disposition.ABSTAIN.value,
             "extraction": None, "encounter": None, "note": None, "verification": None,
+            "inference_diagnostics": result.diagnostics,
             "limitations": ["Five patient-reported fields; no completeness or clinical readiness claim.",
                             "Deterministic source checks are not clinical entailment or human evaluation."]}
     if result.failure:

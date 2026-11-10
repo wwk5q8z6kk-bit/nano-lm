@@ -1,77 +1,223 @@
 """Conservative development context binder, separate from the v0 reference.
 
-Only question attribution changes. Reply grammars and conservative conflict
-resolution are inherited from the bounded synthetic instrument, not a general
-clinical language verifier. Unknown, compound, historical or third-party
-questions block assertions and prevent a verified missing-state claim.
+Complete reply scope is checked before field-local failures are allowed.
+This is a bounded development grammar, not a general clinical verifier.
 """
 import re
 
 from nano_ai.adapters.deterministic_v0 import (
-    _observe_reply, _question_field, _resolve, _turns,
+    _Observation, _question_field, _resolve,
 )
-from nano_ai.contract import FIELD_ORDER, FieldName, FieldOutput, FieldState
+from nano_ai.contract import FIELD_ORDER, FieldName, FieldOutput, FieldState, normalize_value
 
-VERSION = "context-questions-v1"
-_BLOCK = re.compile(r"\b(mother|father|sister|brother|family|child|wife|husband|partner|pet|previous|previously|last|past|historical|history|used to|if|hypothetical|repeat|say|ignore|pretend|not|never|no)\b")
-_INTENTS = {
-    FieldName.MEDICATION: r"\b(medicines?|medications?|drugs?|taken anything)\b",
-    FieldName.ALLERGY: r"\b(allerg\w*)\b",
-    FieldName.DURATION: r"\b(duration|how long|length of time|when.*start|since when|how many days|onset)\b",
-    FieldName.SEVERITY: r"\b(sever\w*|intens\w*|how bad|mild|moderate)\b",
-    FieldName.CHIEF_COMPLAINT: r"\b(brings|brought|bothering|trouble|issue|problem|symptoms|going on)\b",
+VERSION = "context-source-scope-v4"
+# Attribute a *request*, not a field noun appearing somewhere in a sentence.
+# Noun phrases are bounded independently from the question operator, so an
+# ordinary symptom modifier does not require adding every word to a global
+# vocabulary. These are development rules, not general clinical entailment.
+_BLOCK = re.compile(
+    r"\b(mother|father|sister|brother|family|child|children|daughter|son|wife|husband|"
+    r"partner|pet|uncle|aunt|cousin|grandmother|grandfather|friend|someone|anyone|"
+    r"else|he|she|they|his|her|their|previous|previously|old|last|past|historical|"
+    r"history|used to|if|hypothetical|repeat|ignore|pretend|not|never|no|"
+    r"tomorrow|next|future|planning|planned|plan|will|recommend|recommended|suggest)\b"
+    r"|\b\w+n't\b"
+)
+_MEDICINE = r"(?:medicines?|medications?|drugs?|tablets?|pills?|remedies|remedy)"
+_SYMPTOM = (
+    r"(?:symptoms?|problems?|concerns?|discomfort|pain|ache|headache|cough|"
+    r"nausea|dizziness|vertigo|ringing|swelling|rash|itching|fever|fatigue|"
+    r"soreness|numbness|tingling|vomiting|diarrhea|bleeding|breathlessness)"
+)
+_WORD = r"[^\W\d_]+(?:-[^\W\d_]+)*"
+_NOUN_PHRASE = rf"(?:{_WORD}\s+){{0,4}}{_SYMPTOM}"
+_REFERENCE = rf"(?:it|this|that|(?:the|your|this|that|these|those)\s+{_NOUN_PHRASE})"
+_BODY_REFERENCE = rf"(?:the|your|this|that)\s+(?:{_WORD}\s+){{0,4}}{_WORD}"
+_CURRENT_TIME = r"(?:\s+(?:today|now|at the moment|currently|so far))?"
+_FOR_REFERENCE = rf"(?:\s+(?:for|to help with)\s+{_REFERENCE})?"
+_RATINGS = r"(?:mild|moderate|severe)(?:,?\s+(?:or\s+)?(?:mild|moderate|severe))*"
+_REACTION_RELATION = r"(?:are allergic to|have an allergy to|react badly to)"
+_DISCOURSE_PREFIX = re.compile(
+    r"^(?:hello|hi|good morning|good afternoon|good evening|okay|ok|all right|"
+    r"alright|thank you|thanks|now|to start)[,.!]\s+"
+)
+_QUESTION_PATTERNS = {
+    FieldName.CHIEF_COMPLAINT: (
+        r"what (?:symptoms?|problem|trouble|issue)",
+        r"what symptoms? are you (?:having|experiencing)" + _CURRENT_TIME,
+        r"what is troubling you" + _CURRENT_TIME,
+        r"what (?:symptoms? )?(?:brings|brought) you (?:in|here|to (?:the|our) (?:clinic|office))" + _CURRENT_TIME,
+        r"what (?:is|has been) bothering you" + _CURRENT_TIME,
+        r"what (?:is|seems to be) (?:the|your) (?:main )?(?:problem|trouble|issue|concern)" + _CURRENT_TIME,
+        r"(?:describe|tell me about) (?:the|your) (?:main )?(?:symptoms?|problem|concern|issue)(?: you are having)?" + _CURRENT_TIME,
+        r"tell me what (?:is|has been) (?:going on|bothering you)" + _CURRENT_TIME,
+        r"what (?:have you|did you) come (?:in|here) (?:about|for)" + _CURRENT_TIME,
+        r"what (?:can|could) i help you with" + _CURRENT_TIME,
+        r"what (?:symptoms?|problem|concern) (?:are you having|do you have)" + _CURRENT_TIME,
+    ),
+    FieldName.DURATION: (
+        r"how long",
+        rf"how long (?:has|have) {_REFERENCE} (?:hurt|ached)",
+        rf"how long (?:has|have) {_REFERENCE} (?:been (?:going on|there|present)|lasted|persisted)",
+        rf"how long (?:has|have) {_BODY_REFERENCE} been (?:hurting|aching|swollen|sore)",
+        rf"how long have you (?:had|experienced) {_REFERENCE}",
+        r"how long have you (?:felt this way|been feeling this way)",
+        rf"when did {_REFERENCE} (?:first )?(?:start|begin|appear)",
+        rf"when did you (?:first )?(?:notice|develop) {_REFERENCE}",
+        rf"how many (?:days|weeks) (?:has|have) {_REFERENCE} (?:lasted|persisted|been present)",
+        rf"what is the (?:duration|length of time) of {_REFERENCE}",
+        rf"since when have you had {_REFERENCE}",
+        rf"how long ago did {_REFERENCE} (?:first )?(?:start|begin|appear)",
+        rf"how long (?:has|have) {_REFERENCE} been (?:bothering|troubling) you",
+        rf"how far back (?:does|do) {_REFERENCE} go",
+        rf"when (?:was|were) {_REFERENCE} first (?:present|noticeable)",
+    ),
+    FieldName.SEVERITY: (
+        r"how (?:bad|severe|intense)",
+        rf"how (?:painful|strong|troublesome) (?:is|are) {_REFERENCE}" + _CURRENT_TIME,
+        rf"how (?:bad|severe|intense) (?:is|are) {_REFERENCE}" + _CURRENT_TIME,
+        rf"how (?:bad|severe|intense) (?:would you say|does) {_REFERENCE} (?:is|feel)",
+        rf"how would you (?:rate|describe) {_REFERENCE}(?: in severity)?",
+        rf"would you (?:rate|describe|call) {_REFERENCE} (?:as )?{_RATINGS}",
+        rf"is {_REFERENCE} {_RATINGS}",
+        rf"how much does {_BODY_REFERENCE} hurt",
+        rf"(?:describe|tell me) how (?:severe|intense) {_REFERENCE} is",
+        rf"what is the (?:severity|intensity) of {_REFERENCE}",
+        rf"how (?:do|would) you rate {_REFERENCE}(?: in severity)?",
+        rf"how much (?:is|are) {_REFERENCE} bothering you" + _CURRENT_TIME,
+        rf"how (?:bad|severe|intense) (?:does|do) {_REFERENCE} (?:feel|seem)" + _CURRENT_TIME,
+    ),
+    FieldName.MEDICATION: (
+        rf"any {_MEDICINE}" + _FOR_REFERENCE + _CURRENT_TIME,
+        r"what are you (?:taking|using)" + _FOR_REFERENCE + _CURRENT_TIME,
+        rf"(?:what|which) {_MEDICINE}" + _FOR_REFERENCE + _CURRENT_TIME,
+        rf"(?:what|which) {_MEDICINE} (?:are you (?:taking|using)|have you (?:taken|used|tried)|did you (?:take|use|try))" + _FOR_REFERENCE + _CURRENT_TIME,
+        rf"(?:have you|did you) (?:taken|take|used|use|tried|try) (?:anything|any {_MEDICINE})" + _FOR_REFERENCE + _CURRENT_TIME,
+        rf"are you (?:taking|using|on) (?:anything|any {_MEDICINE}|{_MEDICINE})" + _FOR_REFERENCE + _CURRENT_TIME,
+        rf"what (?:have you (?:taken|used|tried)|did you (?:take|use|try))" + _FOR_REFERENCE + _CURRENT_TIME,
+        rf"(?:what|which) {_MEDICINE} (?:do you take|do you use)" + _FOR_REFERENCE + _CURRENT_TIME,
+        rf"(?:what|which) {_MEDICINE} are you currently (?:taking|using)" + _FOR_REFERENCE,
+        rf"are you currently (?:taking|using|on) (?:anything|any {_MEDICINE}|{_MEDICINE})" + _FOR_REFERENCE,
+        rf"do you (?:take|use) (?:anything|any {_MEDICINE})" + _FOR_REFERENCE + _CURRENT_TIME,
+    ),
+    FieldName.ALLERGY: (
+        rf"(?:do you have |are there )?any (?:known )?(?:{_MEDICINE} )?allerg(?:y|ies)(?: (?:i|we) should know about)?",
+        rf"(?:do you have |are there )?any (?:known )?allerg(?:y|ies) to (?:any )?{_MEDICINE}",
+        rf"are you allergic to (?:anything|(?:any )?{_MEDICINE})",
+        rf"(?:are there|is there) any {_MEDICINE} (?:that )?you are allergic to",
+        rf"(?:what|which) (?:substances|{_MEDICINE}) are you allergic to",
+        r"(?:what|which) allergies (?:do you have|should i know about)",
+        r"(?:describe|tell me about) your (?:known )?allergies",
+        r"what are your (?:known )?allergies",
+        rf"(?:are there (?:any )?{_MEDICINE}|is there anything) (?:that )?you {_REACTION_RELATION}",
+        rf"(?:what|which) {_MEDICINE} do you react badly to",
+        rf"do you react badly to (?:anything|any {_MEDICINE})",
+        rf"do (?:any )?{_MEDICINE} (?:cause|give) you (?:an? )?allergic reactions?",
+    ),
 }
-_QUESTION_WORDS = frozenset("please what which how when since for any are do have did describe tell me about substances you your to is the of this it has been going on long many days start length time noticed symptoms symptom problem discomfort feels feel intense intensity severe severity mild moderate bad duration onset brings brought bothering trouble issue here that medicines medicine medications medication drugs drug taken anything taking used try allergies allergy allergic known know should today now".split())
+
+
+def _normalized_question(text):
+    question = " ".join(text.strip().casefold().replace("’", "'").split())
+    # Only literal discourse markers may precede a request. Do not discard an
+    # arbitrary first sentence: it may assign another person or time period.
+    for _ in range(3):
+        question = _DISCOURSE_PREFIX.sub("", question)
+    question = re.sub(r"^(?:hello|hi|good morning)[, ]+", "", question)
+    question = re.sub(r"^(?:please\s+)?(?:can|could|would) you (?:please )?(?=describe|tell me)", "", question).strip()
+    question = re.sub(r"^please\s+", "", question)
+    question = re.sub(r"\bwhat's been\b", "what has been", question)
+    question = re.sub(r"\bwhat's\b", "what is", question)
+    question = re.sub(r"\byou're\b", "you are", question)
+    return question.rstrip("?.!").strip()
+
+
+def _request_targets(question):
+    variants = {question}
+    if re.match(r"tell me (?:what|which|when|how|since when)\b", question):
+        variants.add(question.removeprefix("tell me "))
+    return {field for field, patterns in _QUESTION_PATTERNS.items()
+            if any(re.fullmatch(pattern, variant) for pattern in patterns for variant in variants)}
+
+
+def question_targets(text):
+    """Possible requested fields for quarantine only, never positive evidence.
+
+    Unlike question_field, this intentionally retains targets of third-person,
+    hypothetical, or compound requests. A medicine noun modifying an allergy
+    request does not independently request medication-use information.
+    """
+    question = _normalized_question(text)
+    legacy = _question_field(text)
+    if legacy is not None:
+        return frozenset({legacy})
+    structural = _request_targets(question)
+    if structural:
+        # A full request decides its target even when the referenced symptom
+        # mentions another field: severity of a complaint is still severity.
+        return frozenset(structural)
+    found = set()
+    if re.search(r"\ballerg\w*\b|\breact badly to\b", question):
+        found.add(FieldName.ALLERGY)
+    medicine = re.search(rf"\b{_MEDICINE}\b", question)
+    medicine_use = re.search(r"\b(?:taken|taking|take|used|using|use|tried|try)\b", question)
+    coordinated_medicine = re.search(
+        rf"\b(?:{_MEDICINE}\s+(?:and|or)\s+(?:(?:what|which|your|any)\s+)?allerg\w*|"
+        rf"allerg\w*\s+(?:and|or)\s+(?:(?:what|which|your|any)\s+)?{_MEDICINE})\b", question)
+    if (medicine and (FieldName.ALLERGY not in found or medicine_use or coordinated_medicine)
+            or re.search(r"\b(?:taken|taking|used|using|tried|try) anything\b", question)):
+        found.add(FieldName.MEDICATION)
+    if re.search(r"\b(?:duration|how long|length of time|when did|since when|how many (?:days|weeks)|onset)\b", question):
+        found.add(FieldName.DURATION)
+    if re.search(r"\b(?:sever\w*|intens\w*|how bad|how much.*hurt|mild|moderate|rate)\b", question):
+        found.add(FieldName.SEVERITY)
+    complaint = re.search(r"\b(?:brings|brought|bothering|trouble|issue|problem|symptoms?|concern|going on)\b", question)
+    coordinated_complaint = re.search(
+        rf"\b(?:symptoms?|problems?|concerns?)\s+(?:and|or)\s+(?:(?:what|which|your|any)\s+)?(?:{_MEDICINE}|allerg\w*|duration|severity)\b", question)
+    if complaint and (not found or coordinated_complaint):
+        found.add(FieldName.CHIEF_COMPLAINT)
+    return frozenset(found)
 
 
 def question_field(text):
-    question = text.strip().casefold()
     legacy = _question_field(text)
     if legacy is not None:
         return legacy
-    if _BLOCK.search(question):
+    question = _normalized_question(text)
+    if _BLOCK.search(question) or re.search(r"[?.!;:]|\b(?:and|but|then)\b", question):
         return None
-    # A bounded vocabulary prevents a recognized field noun from authorizing
-    # unknown subjects, temporal modifiers, negation or compound requests.
-    if not set(re.findall(r"[\w']+", question)) <= _QUESTION_WORDS:
+    # Full request structure, rather than every mentioned field word, decides
+    # attribution. For example, 'mild swelling' is the symptom whose onset is
+    # requested; its adjective does not also request a severity answer.
+    targets = _request_targets(question)
+    if len(targets) != 1:
         return None
-    if not re.match(r"(?:please\s+)?(?:what|which|how|when|since|for what|any|are|do|have|did|describe|tell)\b", question):
-        return None
-    found = {field for field, pattern in _INTENTS.items() if re.search(pattern, question)}
-    # A generic problem/symptom mention is subordinate to a specific attribute.
-    # E.g. duration of symptoms; medicine for this problem. Two specific intents
-    # remain ambiguous rather than guessing which part the Patient answered.
-    specific = found - {FieldName.CHIEF_COMPLAINT}
-    if len(specific) == 1:
-        return next(iter(specific))
-    if not specific and found:
-        return FieldName.CHIEF_COMPLAINT
-    return None
+    return next(iter(targets))
 
 
 def extract_context_fields(item):
+    from nanoscribe.check_note import inspect_context, transcript_source
     observed = {field: [] for field in FIELD_ORDER}
-    turns = _turns(item.transcript)
-    unknown = False
-    # Do not silently skip unparsed role/content lines or orphan replies.
-    if len(turns) != len([line for line in item.transcript.splitlines() if line.strip()]):
-        unknown = True
-    for index, turn in enumerate(turns):
-        if turn.speaker != "doctor":
-            if index == 0 or turns[index - 1].speaker != "doctor":
-                unknown = True
-            continue
-        field = question_field(turn.text)
-        if field is None:
-            unknown = True
-            continue
-        reply = turns[index + 1] if index + 1 < len(turns) and turns[index + 1].speaker == "patient" else None
-        observed[field].append(_observe_reply(field, reply))
+    observations, unknown = inspect_context(transcript_source(item))
+    for observation in observations:
+        observed[observation.field].append(_Observation(
+            observation.state,
+            normalize_value(observation.span.text) if observation.state is FieldState.SUPPORTED else None,
+            (observation.span,) if observation.span else (),
+        ))
     result = []
     for field in FIELD_ORDER:
         value = _resolve(field, observed[field])
-        # Unknown context could contain a competing observation of any field.
+        evidence = tuple(span for observation in observed[field] for span in observation.evidence)
+        if value.state is FieldState.CONFLICTING:
+            # Different medicines/allergens can coexist. The scalar schema
+            # cannot represent a list, but that does not establish contradiction.
+            has_denial = any(observation.state is FieldState.ABSENT for observation in observed[field])
+            state = (FieldState.UNCERTAIN if field in (FieldName.MEDICATION, FieldName.ALLERGY) and not has_denial
+                     else FieldState.CONFLICTING)
+            value = FieldOutput(field, state, evidence=evidence)
+        # Explicit unbounded source reassignment invalidates all patient claims.
         if unknown:
-            value = FieldOutput(field, FieldState.UNCERTAIN, evidence=value.evidence)
+            value = FieldOutput(field, FieldState.UNCERTAIN, evidence=evidence)
         result.append(value)
     return tuple(result)

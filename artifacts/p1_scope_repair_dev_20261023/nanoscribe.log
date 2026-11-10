@@ -1,0 +1,54 @@
+..................................F..................................... [ 18%]
+........................................................................ [ 37%]
+........................................................................ [ 55%]
+........................................................................ [ 74%]
+........................................................................ [ 92%]
+.............................                                            [100%]
+=================================== FAILURES ===================================
+__________ test_duration_and_severity_candidates_respect_field_types ___________
+
+tmp_path = PosixPath('/private/var/folders/v5/38p4vtr16t9f_30dt3n01khr0000gn/T/pytest-of-mac/pytest-1084/test_duration_and_severity_can0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bc84250>
+
+    def test_duration_and_severity_candidates_respect_field_types(tmp_path, monkeypatch):
+        source = "Doctor: What is the duration of your symptoms?\nPatient: For about 13 days now.\nDoctor: Please describe how severe your discomfort is.\nPatient: I'd call it severe."
+        def choose(messages, choices):
+            field = messages[-1]["content"].split("|")[-1]
+            if field == "DUR":
+                assert ":S[13 days]" in choices
+                assert ":S[about 13 days]" not in choices
+                assert not any(c.startswith(":C[") for c in choices)
+                return ":S[13 days]", {}
+            if field == "SEV":
+                assert ":S[severe]" in choices
+                assert ":S[severe.]" not in choices
+                return ":S[severe]", {}
+            return ":M", {}
+        predictor = LocalCompactPredictor(str(tmp_path), decoding="constrained")
+        monkeypatch.setattr(predictor, "_choose", choose)
+>       assert "DUR:S[13 days]|SEV:S[severe]" in predictor(source)
+                                                 ^^^^^^^^^^^^^^^^^
+
+nanoscribe/test_constrained.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+nanoscribe/compact.py:107: in __call__
+    return self._constrained(transcript)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+nanoscribe/compact.py:280: in _constrained
+    raw, step = self._choose([
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+messages = [{'content': 'Extract only patient-reported encounter facts from the transcript.\nReturn exactly one line, no explanat...vere your discomfort is.\nPatient: I'd call it severe.", 'role': 'user'}, {'content': 'CC:M|DUR', 'role': 'assistant'}]
+choices = [':M', ':U[]', ':S[13]', ':S[13 days]', ':S[13 days now]', ':S[about]', ...]
+
+    def choose(messages, choices):
+        field = messages[-1]["content"].split("|")[-1]
+        if field == "DUR":
+            assert ":S[13 days]" in choices
+>           assert ":S[about 13 days]" not in choices
+E           AssertionError: assert ':S[about 13 days]' not in [':M', ':U[]', ':S[13]', ':S[13 days]', ':S[13 days now]', ':S[about]', ...]
+
+nanoscribe/test_constrained.py:69: AssertionError
+=========================== short test summary info ============================
+FAILED nanoscribe/test_constrained.py::test_duration_and_severity_candidates_respect_field_types
+1 failed, 388 passed in 0.81s

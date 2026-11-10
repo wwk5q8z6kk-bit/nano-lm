@@ -1,0 +1,82 @@
+{
+  "aggregate": {
+    "assertion_state_correct": 4,
+    "correct_abstention": 1,
+    "coverage": 1.0,
+    "critical_error": 0,
+    "exact_gold_span": 4,
+    "invalid_span": 0,
+    "malformed": 0,
+    "omission": 0,
+    "span_character_f1": 1.0,
+    "spurious_atom": 0,
+    "support_direct_exact": 3,
+    "support_normalized": 0,
+    "support_review_required": 1,
+    "unnecessary_abstention": 0,
+    "wrong_mention": 0,
+    "wrong_source": 0
+  },
+  "baseline": "span_port_quote_generation",
+  "layers": {
+    "coverage": 1.0,
+    "exact_gold_span": 4,
+    "layers": {
+      "abstention": 0,
+      "commission": 0,
+      "malformed": 0,
+      "state": 0,
+      "support": 0,
+      "transport": 0
+    },
+    "span_character_f1": 1.0,
+    "support_mix": {
+      "contradicted": 0,
+      "direct_exact": 3,
+      "normalized": 0,
+      "review_required": 1,
+      "semantically_supported": 0,
+      "unsupported": 0
+    }
+  },
+  "model_family": "qwen2.5-1.5b-style-one-liner",
+  "note": "Software simulation of historical quote+label output; no weights loaded.",
+  "per_atom": {
+    "atom-alg": {
+      "abstained": false,
+      "assertion_state_correct": true,
+      "exact_gold_span": true,
+      "malformed": false,
+      "omitted": false,
+      "span_character_f1": 1.0,
+      "support_relation": "review_required"
+    },
+    "atom-assess": {
+      "abstained": false,
+      "assertion_state_correct": true,
+      "exact_gold_span": true,
+      "malformed": false,
+      "omitted": false,
+      "span_character_f1": 1.0,
+      "support_relation": "direct_exact"
+    },
+    "atom-hist": {
+      "abstained": false,
+      "assertion_state_correct": true,
+      "exact_gold_span": true,
+      "malformed": false,
+      "omitted": false,
+      "span_character_f1": 1.0,
+      "support_relation": "direct_exact"
+    },
+    "atom-neck": {
+      "abstained": false,
+      "assertion_state_correct": true,
+      "exact_gold_span": true,
+      "malformed": false,
+      "omitted": false,
+      "span_character_f1": 1.0,
+      "support_relation": "direct_exact"
+    }
+  }
+}

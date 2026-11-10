@@ -1,0 +1,29 @@
+{
+  "checked_utc": "2026-10-24T00:46:27.510196+00:00",
+  "protected_files": 1099,
+  "protected_changed": [],
+  "implementation_files": 170,
+  "implementation_changed": [],
+  "annotation_lock_verified": true,
+  "locked_input_count_including_lock": 13,
+  "previous_cohort_exact_transcript_reuse_count": 0,
+  "runs": {
+    "free": {
+      "status": "complete",
+      "source_snapshot_files_verified": 170,
+      "input_snapshot_files_verified": 13,
+      "input_and_code_locks_match": true,
+      "encounters": 24,
+      "paid_compute_usd": 0
+    },
+    "constrained": {
+      "status": "complete",
+      "source_snapshot_files_verified": 170,
+      "input_snapshot_files_verified": 13,
+      "input_and_code_locks_match": true,
+      "encounters": 24,
+      "paid_compute_usd": 0
+    }
+  },
+  "checkpoint_hashes_match_across_runs": true
+}

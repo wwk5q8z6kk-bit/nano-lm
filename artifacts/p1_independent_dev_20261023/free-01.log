@@ -1,0 +1,27 @@
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:02<12:44,  2.27s/it]Loading weights:  43%|████▎     | 147/338 [00:02<00:02, 69.83it/s]Loading weights:  49%|████▊     | 164/338 [00:03<00:02, 62.08it/s]Loading weights:  52%|█████▏    | 175/338 [00:03<00:03, 52.62it/s]Loading weights:  58%|█████▊    | 195/338 [00:04<00:02, 53.53it/s]Loading weights:  61%|██████    | 207/338 [00:04<00:02, 52.94it/s]Loading weights:  63%|██████▎   | 214/338 [00:04<00:02, 52.66it/s]Loading weights:  68%|██████▊   | 231/338 [00:04<00:01, 56.32it/s]Loading weights:  70%|███████   | 238/338 [00:04<00:02, 46.37it/s]Loading weights:  79%|███████▉  | 267/338 [00:05<00:00, 73.47it/s]Loading weights:  83%|████████▎ | 279/338 [00:05<00:00, 77.89it/s]Loading weights:  86%|████████▌ | 290/338 [00:05<00:00, 80.57it/s]Loading weights:  90%|████████▉ | 303/338 [00:05<00:00, 89.41it/s]Loading weights:  93%|█████████▎| 315/338 [00:05<00:00, 85.63it/s]Loading weights:  97%|█████████▋| 328/338 [00:05<00:00, 93.40it/s]Loading weights: 100%|██████████| 338/338 [00:05<00:00, 59.13it/s]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+fresh-01 failed abstain 35
+fresh-02 failed abstain 40
+fresh-03 failed abstain 25
+fresh-04 failed abstain 34
+fresh-05 failed abstain 43
+fresh-06 failed abstain 34
+fresh-07 failed abstain 37
+fresh-08 failed abstain 36
+fresh-09 failed abstain 37
+fresh-10 failed abstain 38
+fresh-11 failed abstain 37
+fresh-12 failed abstain 31
+fresh-13 failed abstain 57
+fresh-14 failed abstain 51
+fresh-15 failed abstain 44
+fresh-16 failed abstain 55
+fresh-17 failed abstain 40
+fresh-18 failed abstain 41
+fresh-19 failed abstain 33
+fresh-20 failed abstain 35
+fresh-21 failed abstain 39
+fresh-22 failed abstain 35
+fresh-23 failed abstain 31
+fresh-24 failed abstain 34
+{"raw": 0.0, "checked": 0.0}

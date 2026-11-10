@@ -52,7 +52,8 @@ def test_paraphrased_conflict_is_retained_and_single_value_is_rejected():
     bad = good.replace("C[diclofenac;No, nothing yet.]", "S[diclofenac]")
     result = scribe(source, context_policy="context", solver=compact_solver(lambda _: bad, binder="context"))
     assert result["disposition"] == "abstain"
-    assert result["extraction"]["fields"][3]["state"] == "uncertain"
+    assert result["extraction"]["fields"][3]["state"] == "conflicting"
+    assert not result["inference_diagnostics"]["fields"][3]["verified"]
 
 
 def test_context_preserves_every_exact_legacy_question():

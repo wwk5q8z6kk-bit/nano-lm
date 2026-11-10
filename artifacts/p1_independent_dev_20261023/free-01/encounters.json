@@ -1,0 +1,938 @@
+[
+  {
+    "case_id": "fresh-01",
+    "stratum": "conventional_controls",
+    "generation": {
+      "raw": "CC:S[headache]|DUR:S[3 days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[penicillin]",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 10.854711583000608,
+      "device": "mps",
+      "wall_seconds": 97.66240500001004
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-01",
+      "context_policy": "context",
+      "source_sha256": "94abed0c844c9181e8708899854d6c7c5b96e37d73d5e88bc001200487e4ad78",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 97.66312079201452
+  },
+  {
+    "case_id": "fresh-02",
+    "stratum": "conventional_controls",
+    "generation": {
+      "raw": "CC:S[a cough]|DUR:S[one week]|SEV:S[moderate]|MED:A[A haven't taken any medicine for it.]|ALG:A[No medication allergies.]",
+      "generated_tokens": 40,
+      "token_limit_reached": false,
+      "generation_seconds": 3.1765964170044754,
+      "device": "mps",
+      "wall_seconds": 3.1825551250076387
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-02",
+      "context_policy": "context",
+      "source_sha256": "5c356f7ddb78dd1567e11dda7ef06f82b1fcc8ca8897c66d9862a45af5c879dd",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.182705041981535
+  },
+  {
+    "case_id": "fresh-03",
+    "stratum": "conventional_controls",
+    "generation": {
+      "raw": "CC:S[throat is sore]|DUR:S[two days]|SEV:S[severe]|MED:A|M",
+      "generated_tokens": 25,
+      "token_limit_reached": false,
+      "generation_seconds": 2.308725125010824,
+      "device": "mps",
+      "wall_seconds": 2.3124512500071432
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-03",
+      "context_policy": "context",
+      "source_sha256": "db2ff78138a0b59d65900ee42276bbbb7ea92bd82f55846a4ff2ee0cd08de85d",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.312780375010334
+  },
+  {
+    "case_id": "fresh-04",
+    "stratum": "conventional_controls",
+    "generation": {
+      "raw": "CC:S[lower back pain]|DUR:A[mild]|SEV:A[really]|MED:A[penicillin]|ALG:A[penicillin]",
+      "generated_tokens": 34,
+      "token_limit_reached": false,
+      "generation_seconds": 2.2727991249994375,
+      "device": "mps",
+      "wall_seconds": 2.27725395798916
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-04",
+      "context_policy": "context",
+      "source_sha256": "e23d77404f5a0dcd2d7aee240ec527f86fcc87489c8655e99aa204725620fb44",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.277382750005927
+  },
+  {
+    "case_id": "fresh-05",
+    "stratum": "medication_uncertainty_nonuse",
+    "generation": {
+      "raw": "CC:S[a headache]|DUR:C[yesterday]|SEV:S[moderate]|MED:A[Avoidance of specific medications due to lack of certainty]|ALG:A[None that I know of]",
+      "generated_tokens": 43,
+      "token_limit_reached": false,
+      "generation_seconds": 3.11882245799643,
+      "device": "mps",
+      "wall_seconds": 3.121826124988729
+    },
+    "raw_fields": null,
+    "raw_parse_error": "C must carry exactly two edge-trimmed evidence spans",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-05",
+      "context_policy": "context",
+      "source_sha256": "caaf1f47788349c3723a84d16fe98c54d042d15002a310c50a3e542124574294",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "C must carry exactly two edge-trimmed evidence spans",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.121997124981135
+  },
+  {
+    "case_id": "fresh-06",
+    "stratum": "medication_uncertainty_nonuse",
+    "generation": {
+      "raw": "CC:S[throat]|DUR:S[four days]|SEV:S[mild]|MED:A[penicillin]|ALG:A[penicillin]",
+      "generated_tokens": 34,
+      "token_limit_reached": false,
+      "generation_seconds": 1.95930999997654,
+      "device": "mps",
+      "wall_seconds": 1.9630026250088122
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-06",
+      "context_policy": "context",
+      "source_sha256": "8eed9107eb879d30e02e903d9d543a7084c0d075c8632e4f4065b847ed33d1bc",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 1.9633037919993512
+  },
+  {
+    "case_id": "fresh-07",
+    "stratum": "medication_uncertainty_nonuse",
+    "generation": {
+      "raw": "CC:S[a headache]|DUR:S[two days]|SEV:S[moderate]|MED:A[A capsule from my travel pouch]|ALG:A[No, none.]",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 1.967078459012555,
+      "device": "mps",
+      "wall_seconds": 1.9710480000067037
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-07",
+      "context_policy": "context",
+      "source_sha256": "1528f170fa71586e41af0d0c5f470dac32b18ee97e005985ecd99c7c43ff6c12",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 1.9711750409915112
+  },
+  {
+    "case_id": "fresh-08",
+    "stratum": "medication_uncertainty_nonuse",
+    "generation": {
+      "raw": "CC:S[sore throat]|DUR:S[yesterday morning]|SEV:S[moderate]|MED:A[Avoiding medicines]|ALG:A[No medication allergies.]",
+      "generated_tokens": 36,
+      "token_limit_reached": false,
+      "generation_seconds": 2.037360541988164,
+      "device": "mps",
+      "wall_seconds": 2.0405542500084266
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-08",
+      "context_policy": "context",
+      "source_sha256": "274e05ca7930708564a9131d8f100ae187f1ea3bdba565c6e1a45aa64f3bc116",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.0407635829760693
+  },
+  {
+    "case_id": "fresh-09",
+    "stratum": "medication_conflict_coexistence",
+    "generation": {
+      "raw": "CC:S[mild headache]|DUR:S[three days]|SEV:S[mixing things up]|MED:A[penicillin]|ALG:A[penicillin]",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 1.8560754590143915,
+      "device": "mps",
+      "wall_seconds": 1.861854041024344
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-09",
+      "context_policy": "context",
+      "source_sha256": "5e290408b797f53172c82553d54780a9153f02b32205190a8972d8b76982c8e8",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 1.8620846249978058
+  },
+  {
+    "case_id": "fresh-10",
+    "stratum": "medication_conflict_coexistence",
+    "generation": {
+      "raw": "CC:S[lower back pain]|DUR:S[6 days]|SEV:S[moderate]|MED:C[Acetaminophen;ibuprofen]|ALG:A",
+      "generated_tokens": 38,
+      "token_limit_reached": false,
+      "generation_seconds": 1.9116337079904042,
+      "device": "mps",
+      "wall_seconds": 1.9144507499877363
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-10",
+      "context_policy": "context",
+      "source_sha256": "16400a599cd3229d61d826a36ea94ca8d4bd5c7064bac26d69588c67720e5f63",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 1.9145370420010295
+  },
+  {
+    "case_id": "fresh-11",
+    "stratum": "medication_conflict_coexistence",
+    "generation": {
+      "raw": "CC:S[moderate headache]|DUR:S[4 days]|SEV:S[moderate]|MED:S[ibuprofen]|ALG:S[penicillin]",
+      "generated_tokens": 37,
+      "token_limit_reached": false,
+      "generation_seconds": 1.6624748329923023,
+      "device": "mps",
+      "wall_seconds": 1.665205249999417
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-11",
+      "context_policy": "context",
+      "source_sha256": "cdf32ba3870da49222b639061ee05b364fcf0814aeb8746ba675ee8ee46c0cad",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 1.6653727920202073
+  },
+  {
+    "case_id": "fresh-12",
+    "stratum": "medication_conflict_coexistence",
+    "generation": {
+      "raw": "CC:S[sore throat]|DUR:S[two days]|SEV:S[mild]|MED:A[acetaminophen]|ALG:A",
+      "generated_tokens": 31,
+      "token_limit_reached": false,
+      "generation_seconds": 2.4080756659968756,
+      "device": "mps",
+      "wall_seconds": 2.411468292004429
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-12",
+      "context_policy": "context",
+      "source_sha256": "a7a3cf21a2b6a88f0dae10db19519c5124bfc5b10eb74a2b3681fec38badbd6a",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.411781915987376
+  },
+  {
+    "case_id": "fresh-13",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "generation": {
+      "raw": "CC:S[headache]|DUR:S[5 days]|SEV:S[moderate]|MED:C[ibuprofen]|ALG:C[penicillin;someone once said I had a rash as a child, but I don't know whether it was an allergy]",
+      "generated_tokens": 57,
+      "token_limit_reached": false,
+      "generation_seconds": 3.8699599580140784,
+      "device": "mps",
+      "wall_seconds": 3.874209375004284
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-13",
+      "context_policy": "context",
+      "source_sha256": "a0b0270bd1dfe8cea6e560ef13962cb1f478a39548c8ab48f3ddc8dd4acebcfb",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.8745499159849714
+  },
+  {
+    "case_id": "fresh-14",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "generation": {
+      "raw": "CC:S[mild cough]|DUR:S[three days]|SEV:S[mild]|MED:A[Avoidance of penicillin]|ALG:A[No, I'm not allergic to penicillin. I have no medication allergies.]",
+      "generated_tokens": 51,
+      "token_limit_reached": false,
+      "generation_seconds": 3.5315703749947716,
+      "device": "mps",
+      "wall_seconds": 3.5350179169909097
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-14",
+      "context_policy": "context",
+      "source_sha256": "00e7961c2fec07d796fdb3f9f3f3f7fa29e272648b01a7d5f7cacfc98a47d642",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.535218957986217
+  },
+  {
+    "case_id": "fresh-15",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "generation": {
+      "raw": "CC:S[sore throat]|DUR:S[two days]|SEV:S[moderate]|MED:A[Acetaminophen]|ALG:A[Penicillin]|A[sulfa antibiotics]",
+      "generated_tokens": 44,
+      "token_limit_reached": false,
+      "generation_seconds": 3.0473899159987923,
+      "device": "mps",
+      "wall_seconds": 3.051022041006945
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-15",
+      "context_policy": "context",
+      "source_sha256": "e7c63b0eb5523a77c163f8e05fd37a4cf0f27b35526252783b159c2a16fc2d7f",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.0512473750277422
+  },
+  {
+    "case_id": "fresh-16",
+    "stratum": "allergy_uncertainty_negation_coexistence",
+    "generation": {
+      "raw": "CC:S[a headache]|DUR:S[one week]|SEV:S[mild]|MED:A[I can't remember the specific name of the medication.|ALG:A[penicillin or a sulfa antibiotic]|U[no details available on the old card].",
+      "generated_tokens": 55,
+      "token_limit_reached": false,
+      "generation_seconds": 3.0255561669764575,
+      "device": "mps",
+      "wall_seconds": 3.033782250015065
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-16",
+      "context_policy": "context",
+      "source_sha256": "151eea56fcd1ecd3d387c75cb5a2d22452f73fab57900e8047865a4f145f3c25",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 3.0338858749892097
+  },
+  {
+    "case_id": "fresh-17",
+    "stratum": "partial_information",
+    "generation": {
+      "raw": "CC:S[a headache]|DUR:C[since that stretch when everything was happening]|SEV:S[moderate]|MED:S[ibuprofen]|ALG:S[penicillin]",
+      "generated_tokens": 40,
+      "token_limit_reached": false,
+      "generation_seconds": 2.362010000011651,
+      "device": "mps",
+      "wall_seconds": 2.3653532910102513
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-17",
+      "context_policy": "context",
+      "source_sha256": "412f3e15016ba98aa7cb86a8840f2ad52bf76a987407daf7bee60d1d7c710e18",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.3655275420169346
+  },
+  {
+    "case_id": "fresh-18",
+    "stratum": "partial_information",
+    "generation": {
+      "raw": "CC:S[throat soreness]|DUR:S[three days]|SEV:C[somehow between a nuisance and a real problem]|MED:A[Acetaminophen]|ALG:A",
+      "generated_tokens": 41,
+      "token_limit_reached": false,
+      "generation_seconds": 2.0151522920059506,
+      "device": "mps",
+      "wall_seconds": 2.0188391669944394
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-18",
+      "context_policy": "context",
+      "source_sha256": "a661965b16ca1a4ede33da304beb3c8313b8caac82557ffa9dc9021d706418ce",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.0189613749971613
+  },
+  {
+    "case_id": "fresh-19",
+    "stratum": "partial_information",
+    "generation": {
+      "raw": "CC:S[cough]|DUR:S[4 days]|SEV:S[mild]|MED:A[penicillin]|ALG:A[penicillin]",
+      "generated_tokens": 33,
+      "token_limit_reached": false,
+      "generation_seconds": 2.6944154580123723,
+      "device": "mps",
+      "wall_seconds": 2.6975500830158126
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-19",
+      "context_policy": "context",
+      "source_sha256": "56aee6736a4515bf666f35a88bb0196d64ae23eaad780653e20c6df1d7135634",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.6977449170080945
+  },
+  {
+    "case_id": "fresh-20",
+    "stratum": "partial_information",
+    "generation": {
+      "raw": "CC:S[lower back]|DUR:S[five days]|SEV:S[moderate]|MED:A[green tablet]|ALG:A[penicillin]",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 2.880827416985994,
+      "device": "mps",
+      "wall_seconds": 2.8885862920142245
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-20",
+      "context_policy": "context",
+      "source_sha256": "203547dff13cdff2189c119cde02455b2b7fbfecb04eacbed727d17d9723630b",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.889172791998135
+  },
+  {
+    "case_id": "fresh-21",
+    "stratum": "context_complications",
+    "generation": {
+      "raw": "CC:S[headache]|DUR:S[three days]|SEV:S[moderate]|MED:A[Moderate.|penicillin]|ALG:A[Penicillin.]",
+      "generated_tokens": 39,
+      "token_limit_reached": false,
+      "generation_seconds": 2.6529827500053216,
+      "device": "mps",
+      "wall_seconds": 2.6587001250009052
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state summary must contain exactly five ordered slots",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-21",
+      "context_policy": "context",
+      "source_sha256": "64680e2625445b7524634c456bf901b5da55b7adf5510693319ae15b48c42af8",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state summary must contain exactly five ordered slots",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.6587794170191046
+  },
+  {
+    "case_id": "fresh-22",
+    "stratum": "context_complications",
+    "generation": {
+      "raw": "CC:S[headache]|DUR:S[two days]|SEV:S[severe]|MED:A[I took ibuprofen last night.]|ALG:A",
+      "generated_tokens": 35,
+      "token_limit_reached": false,
+      "generation_seconds": 2.0141749999893364,
+      "device": "mps",
+      "wall_seconds": 2.021998332988005
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-22",
+      "context_policy": "context",
+      "source_sha256": "a61e9d9008ea2fbd51ef8cf3c191390ee181669dd5882cf5fa81b06189396198",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 2.0222914170008153
+  },
+  {
+    "case_id": "fresh-23",
+    "stratum": "context_complications",
+    "generation": {
+      "raw": "CC:S[headache]|DUR:S[4 days]|SEV:S[moderate]|MED:S[ibuprofen]|ALG:A",
+      "generated_tokens": 31,
+      "token_limit_reached": false,
+      "generation_seconds": 8.371661041979678,
+      "device": "mps",
+      "wall_seconds": 8.377368834015215
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is ambiguous across Patient turns",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-23",
+      "context_policy": "context",
+      "source_sha256": "3ab6876a3ce24f78ed6231fd2e1a1565062d0d2d6d029dfc3c12c2365d46739c",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is ambiguous across Patient turns",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 8.37785120899207
+  },
+  {
+    "case_id": "fresh-24",
+    "stratum": "context_complications",
+    "generation": {
+      "raw": "CC:S[headache]|DUR:S[Two days]|SEV:S[mild]|MED:S[penicillin]|ALG:A[penicillin]",
+      "generated_tokens": 34,
+      "token_limit_reached": false,
+      "generation_seconds": 1.9010366669972427,
+      "device": "mps",
+      "wall_seconds": 1.9055057499790564
+    },
+    "raw_fields": null,
+    "raw_parse_error": "native-state evidence is not exact text inside a Patient turn",
+    "raw_contract_transport_errors": [],
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "fresh-24",
+      "context_policy": "context",
+      "source_sha256": "f83c0e7f5f11858b83a1783d012125136706a60160073751ddc54d098c434b9e",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "inference_diagnostics": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "native-state evidence is not exact text inside a Patient turn",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 1.9057748329942115
+  }
+]

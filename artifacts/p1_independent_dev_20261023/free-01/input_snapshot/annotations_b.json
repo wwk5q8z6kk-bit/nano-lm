@@ -1,0 +1,964 @@
+[
+  {
+    "case_id": "fresh-01",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a headache"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Three days"
+        ],
+        "rationale": "Direct answer about complaint duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "ibuprofen this morning"
+        ],
+        "rationale": "Patient explicitly reports taking this medicine for the complaint, with timing."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "penicillin"
+        ],
+        "rationale": "Patient explicitly identifies the medication allergy."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-02",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A cough"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "One week ago"
+        ],
+        "rationale": "Direct answer about cough onset."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't taken any medicine for it."
+        ],
+        "rationale": "Complete explicit denial of medication use for the current complaint."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No medication allergies."
+        ],
+        "rationale": "Complete unqualified denial of medication allergies."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-03",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My throat is sore"
+        ],
+        "rationale": "Patient describes the symptom and its location."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Two days now"
+        ],
+        "rationale": "Direct answer about symptom duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "severe"
+        ],
+        "rationale": "Patient supplies an unambiguous severity descriptor."
+      },
+      "MED": {
+        "state": "M",
+        "spans": [],
+        "rationale": "No patient report for this field."
+      },
+      "ALG": {
+        "state": "M",
+        "spans": [],
+        "rationale": "No patient report for this field."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-04",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My lower back hurts"
+        ],
+        "rationale": "Patient describes pain and its location."
+      },
+      "DUR": {
+        "state": "M",
+        "spans": [],
+        "rationale": "No patient report for this field."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "Patient supplies an unambiguous severity rating; really does not change the rating."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "No, I haven't tried any."
+        ],
+        "rationale": "The complete answer explicitly denies medicine use for the back pain."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ],
+        "rationale": "The patient names one allergy in answer to the medication-allergy question."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-05",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a headache"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "yesterday"
+        ],
+        "rationale": "The patient explicitly dates onset."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ],
+        "rationale": "Patient explicitly reports severity despite medication uncertainty."
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I may have, but I honestly can't remember whether I took a tablet or just got the packet out."
+        ],
+        "rationale": "The patient cannot establish whether any medicine was actually taken."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "None that I know of."
+        ],
+        "rationale": "The denial is explicitly limited by knowledge; the rubric assigns qualified lack of knowledge to U."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-06",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My throat. It's been sore"
+        ],
+        "rationale": "The two adjacent patient clauses identify the throat and describe its soreness; neither an invented sore-throat quote nor the location alone is needed."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "four days"
+        ],
+        "rationale": "Explicit duration of the throat soreness."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't taken so much as a lozenge or a pill for this."
+        ],
+        "rationale": "Natural-language blanket denial of medication or lozenge use for this complaint."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "penicillin"
+        ],
+        "rationale": "Explicit allergy report."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-07",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A headache"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days ago"
+        ],
+        "rationale": "Explicit onset of the headache."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "One capsule from my travel pouch, but I can't tell you what it was called.",
+          "I don't know the name."
+        ],
+        "rationale": "Ingestion is reported, but the medication identity is explicitly unknown; no named medication can be faithfully resolved."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No, none."
+        ],
+        "rationale": "Complete unqualified denial in the medication-allergy context."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-08",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A sore throat"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "since yesterday morning"
+        ],
+        "rationale": "Explicit onset qualifier for the sore throat."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't used any medicine for this."
+        ],
+        "rationale": "Considering and buying ibuprofen is distinguished from taking it; the patient explicitly denies use."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No medication allergies."
+        ],
+        "rationale": "Complete unqualified denial of medication allergies."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-09",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a mild headache"
+        ],
+        "rationale": "Patient reports one headache, with an explicit severity qualifier."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three days"
+        ],
+        "rationale": "Explicit headache duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ],
+        "rationale": "Explicit patient severity descriptor."
+      },
+      "MED": {
+        "state": "C",
+        "spans": [
+          "Ibuprofen last night.",
+          "I haven't taken any medicine at all for this headache.",
+          "I'm mixing things up, and I can't settle which is right."
+        ],
+        "rationale": "Positive use and blanket nonuse concern the same headache. The patient cannot resolve them and makes no correction; incompatible observations remain C."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ],
+        "rationale": "Patient names a medication allergy."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-10",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My lower back has hurt"
+        ],
+        "rationale": "Patient explicitly identifies back pain."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "six days"
+        ],
+        "rationale": "Explicit duration of the back pain."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "Acetaminophen on Monday",
+          "ibuprofen on Tuesday"
+        ],
+        "rationale": "Two compatible medication uses are confirmed for the same episode. Both are valid, but the scalar medication field cannot retain both; this is U, not C."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have any."
+        ],
+        "rationale": "Complete denial in direct response to the medication-allergy question."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-11",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A moderate headache"
+        ],
+        "rationale": "Patient gives one headache complaint with its severity."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "four days"
+        ],
+        "rationale": "Explicit duration of this headache."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ],
+        "rationale": "Explicit patient severity descriptor."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "ibuprofen yesterday"
+        ],
+        "rationale": "The patient explicitly corrects the aspirin attribution to an old episode and identifies ibuprofen as the only medicine for this headache."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ],
+        "rationale": "Patient names a medication allergy."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-12",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A sore throat"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days"
+        ],
+        "rationale": "Explicit sore-throat duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "acetaminophen last night"
+        ],
+        "rationale": "The patient resolves the initial nonuse report as referring to before yesterday and explicitly reports subsequent use for the throat."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "None."
+        ],
+        "rationale": "Complete denial in the drug-allergy context."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-13",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a headache"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "five days"
+        ],
+        "rationale": "Explicit headache duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "ibuprofen yesterday"
+        ],
+        "rationale": "Explicit medicine use for the current complaint."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I'm not sure about penicillin.",
+          "I don't know whether it was an allergy."
+        ],
+        "rationale": "The patient explicitly cannot determine whether the historical rash was a penicillin allergy."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-14",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A mild cough"
+        ],
+        "rationale": "One clear cough complaint with its reported severity."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three days"
+        ],
+        "rationale": "Explicit cough duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ],
+        "rationale": "Explicit patient severity descriptor."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "No medicine for the cough."
+        ],
+        "rationale": "Complete explicit denial of medication use for the complaint."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I have no medication allergies."
+        ],
+        "rationale": "The patient explicitly denies all medication allergies; the preceding penicillin-specific denial is consistent."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-15",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A sore throat"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days ago"
+        ],
+        "rationale": "Explicit onset of the sore throat."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ],
+        "rationale": "Explicit patient severity descriptor."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Acetaminophen this morning"
+        ],
+        "rationale": "Direct report of medication use and timing."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "Penicillin",
+          "sulfa antibiotics"
+        ],
+        "rationale": "The patient confirms two separate compatible reported allergies. The scalar field cannot retain both; differing names are not a contradiction."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-16",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A headache"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "one week"
+        ],
+        "rationale": "Explicit headache duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ],
+        "rationale": "Explicit patient severity descriptor."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Ibuprofen"
+        ],
+        "rationale": "Patient names the medicine tried for this complaint."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "There is one, but I can't remember whether the name was penicillin or a sulfa antibiotic.",
+          "I would be guessing."
+        ],
+        "rationale": "The patient reports an allergy exists but explicitly cannot identify which named alternative it is."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-17",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A headache"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "U",
+        "spans": [
+          "Since that stretch when everything was happening. I can't place it on a day or say how long ago."
+        ],
+        "rationale": "The patient explicitly cannot locate onset or provide elapsed duration; the vague reference supplies no resolvable time."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct patient severity rating remains clear despite uncertain duration."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Ibuprofen yesterday"
+        ],
+        "rationale": "Explicit medication use and timing."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ],
+        "rationale": "Patient names a medication allergy."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-18",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My throat has been sore"
+        ],
+        "rationale": "Patient explicitly describes throat soreness."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three days"
+        ],
+        "rationale": "Explicit duration of the sore throat."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "It's somewhere between a nuisance and a real problem.",
+          "I can't choose mild, moderate, or severe."
+        ],
+        "rationale": "The patient gives a broad range and explicitly declines a single severity rating; no scalar severity is resolved."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Acetaminophen last night"
+        ],
+        "rationale": "Direct medication-use report and timing."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No medication allergies."
+        ],
+        "rationale": "Complete unqualified denial of medication allergies."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-19",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "A cough"
+        ],
+        "rationale": "Explicit chief complaint; bus small talk is unrelated."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Four days"
+        ],
+        "rationale": "Direct answer about cough duration."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "Nothing at all."
+        ],
+        "rationale": "Complete unqualified denial in response to medicine tried for the cough."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "penicillin"
+        ],
+        "rationale": "Explicit patient allergy report."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-20",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "My lower back"
+        ],
+        "rationale": "The answer to what has been hurting unambiguously identifies lower-back pain; no extra symptom wording is invented."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "five days"
+        ],
+        "rationale": "Explicit duration of the lower-back complaint."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "A little green tablet from a packet I no longer have.",
+          "I don't know its name."
+        ],
+        "rationale": "Use of a tablet is reported, but its identity is explicitly unknown; appearance cannot establish a medicine name."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ],
+        "rationale": "Patient names a medication allergy."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-21",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "The headache."
+        ],
+        "rationale": "The patient explicitly selects headache as the concern to discuss; cough is secondary."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three days ago"
+        ],
+        "rationale": "The patient explicitly assigns this onset to the headache; the week-long duration belongs to the cough."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "Direct headache severity rating; mild belongs to the cough."
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "No, nothing for the headache."
+        ],
+        "rationale": "Complete explicit denial of medication use for the selected complaint."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ],
+        "rationale": "Patient names a medication allergy."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-22",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a headache"
+        ],
+        "rationale": "Explicit presenting complaint."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days"
+        ],
+        "rationale": "Explicit patient report of headache duration."
+      },
+      "SEV": {
+        "state": "M",
+        "spans": [],
+        "rationale": "The clinician calls the headache severe, but the patient neither reports nor confirms severity; the window request supplies no rating."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "ibuprofen last night"
+        ],
+        "rationale": "Explicit patient report of medication use and timing."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No medication allergies."
+        ],
+        "rationale": "Complete unqualified denial of medication allergies."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-23",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "a headache"
+        ],
+        "rationale": "The patient clearly identifies headache as the reason for the visit despite surrounding narrative."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Four days ago"
+        ],
+        "rationale": "Patient gives a clear onset; the kitchen narrative supports recall without adding a competing time."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate"
+        ],
+        "rationale": "The patient explicitly selects moderate and rejects severe and mild."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "ibuprofen yesterday"
+        ],
+        "rationale": "The patient clearly reports medication use and reinforces that it was for this headache."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I don't have any known medication allergies."
+        ],
+        "rationale": "Debatable: the opening No resembles an ordinary denial, but the elaboration limits the report to known allergies. Applying the rubric rule for qualified lack of knowledge, I label this U rather than an unqualified A."
+      }
+    }
+  },
+  {
+    "case_id": "fresh-24",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "This headache"
+        ],
+        "rationale": "The patient explicitly selects headache and excludes previous back trouble from the current concern."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Two days ago"
+        ],
+        "rationale": "Direct onset answer for the current headache."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ],
+        "rationale": "Direct patient severity rating."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Yes, I took it last night."
+        ],
+        "rationale": "The affirmative answer and local it clearly refer to ibuprofen named in the preceding question. Patient-only evidence cannot spell out that name without inventing a quote, so the full affirmative report is retained."
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Yes, I am.",
+          "That is my only medication allergy."
+        ],
+        "rationale": "The affirmative answer unambiguously confirms penicillin allergy named in the preceding question. The additional patient sentence confirms this is the only medication allergy."
+      }
+    }
+  }
+]

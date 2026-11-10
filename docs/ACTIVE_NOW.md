@@ -1,6 +1,6 @@
 # Active Now
 
-**Updated:** 2026-10-22
+**Updated:** 2026-10-26
 **Integration base:** `origin/master` @ `d6ed212` (PR #116 — isolated H7 package)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
@@ -158,10 +158,11 @@ is preserved. H7 has a $0 ceiling and adds no paid compute. See the
 
 The [bounded scribing path](../nanoscribe/SCRIBING_PATH.md) now connects
 transcript-only solver input to the encounter schema, a five-field review draft,
-and independent source/representation checking. The default is explicitly the
-deterministic reference extractor. Forty-nine new adversarial boundary tests bring
-the NanoScribe suite to 143 passing tests; this is software integration evidence,
-not a learned-model result or clinical validation. Unsupported context and
+and source/representation checking. The default is explicitly the
+deterministic reference extractor. The NanoScribe suite now has 252 passing tests;
+this is software integration evidence, not a learned-model result or clinical
+validation. The context binder and checker share bounded recognition rules.
+Unsupported context and
 corrections retain review evidence and can force abstention.
 
 ```text
@@ -169,7 +170,7 @@ P1 — H7 executed; frozen screen consumed; gold transport invalid
         ↓
 ANNOTATION TRANSPORT ADMITTED → COMPACT STRUCTURED PILOT IMPROVED
         ↓
-BOUNDED QUESTION-CONTEXT TRANSFER → SEMANTIC STATE/CONFLICT WORK
+BOUNDED CONTEXT/CONFLICT REPAIRS → SEPARATE MODEL DEVELOPMENT VALIDATION
         ↓
 VERIFIED ENCOUNTER RECORD → NOTE REALIZATION
         ↓
@@ -187,16 +188,73 @@ consumed H7 screen. The [20-dialogue compact development pilot](../artifacts/p1_
 is now complete for $0 paid compute, using a pinned cached base Qwen checkpoint
 and a separate same-agent semantic annotation review (no independent human review).
 The original worked-example path produced two useful drafts, four abstentions
-and 14 failures. The typed constrained/context rerun produces 14 useful review
+and 14 failures. The archived typed constrained/context rerun produced 14 useful review
 drafts (seven per question style), six abstentions and zero final-path failures.
 Checked extraction scores 95/100 grounded exact fields with zero false assertions
 among 78 presented fields; the stricter final notes retain 56 supported/absent
 claims. Two raw proposals still fail the contract and are quarantined. This is a
 bounded hybrid grammar/model development result, with a shared question policy,
 not general paraphrase understanding or clinical validation. Frozen adapter source
-pins pass; saved proposals reproduce identical drafts through the final separate
-development adapter. Semantic state/conflict selection and longer-dialogue transfer
-remain next. H6/H7 and independent annotation/clinical validation remain unchanged.
+pins pass; saved proposals reproduce identical historical drafts through their
+authenticated source snapshots. These numbers describe the archived policy.
+
+The initial [P1 repairs](../nanoscribe/P1_REPAIRS.md) preserve checked medication
+conflicts and their evidence, keep bounded uncertainty local to its field, and
+retain valid fields in review drafts. Constrained medication/allergy choices
+require complete positive replies or explicit denials. Fresh synthetic regression
+cases inject raw proposals and test these software boundaries; those regressions
+alone establish no model quality result.
+
+The first [fresh development validation](../artifacts/p1_independent_dev_20261023/REPORT.md)
+used 24 separately authored synthetic encounters and two blinded AI-agent
+annotations, adjudicated and locked before inference. The cached base Qwen
+free-generation path failed exact-source parsing on all 24 responses. Constrained
+generation parsed all responses, but checking left all 120 fields uncertain
+(98 changed; 22 retained) and discarded three normalized-correct raw complaint values. Both
+modes abstained on 24/24 notes and emitted zero asserted content. All 24 sources
+triggered the bounded question policy's global uncertainty fallback. This is a
+failed development transfer result, not clinical validation; the annotations are
+not human dual-IAA. The full verification suite passed (1,720 tests, two skipped),
+and all 699 protected manifest files retained their hashes. That cohort and its
+complete results remain unchanged.
+
+The subsequent [question/scope repair](../artifacts/p1_scope_repair_dev_20261023/REPORT.md)
+adds anchored question attribution, field-local quarantine, bounded correction
+handling and strict independent-slot recovery, with 123 additional regression
+tests. A [second fresh validation](../artifacts/p1_scope_validation_20261023/REPORT.md)
+uses 24 new cases, two blinded AI annotators and a third blinded adjudicator,
+with implementation and annotation locks before offline base-Qwen inference.
+Both modes still abstain on 24/24 notes and emit no assertions. Free/constrained
+raw grounded-exact scores are 2/120 and 9/120; checked scores are 26/120 each,
+entirely uncertainty-state matches. Complete-evidence scores are only 8/120 and
+12/120. Strict primary scoring shows two/three exact assertions discarded;
+post-hoc local-slot analysis finds 16 correct free assertions discarded. No
+source triggers global uncertainty; individual rejection still empties the
+notes. In 76 constrained slots only M or U[] is available. This is another
+failed development transfer result, not a model-quality pass. Original-label
+sensitivity preserves the same zero-utility conclusion. Full verification:
+1,843 passed, two skipped; all 1,099 protected hashes unchanged, including the
+entire previous development validation. Next: improve question/reply interpretation,
+complete reply segmentation and concrete candidate coverage on separate new
+development cases, then validate on another fresh independently annotated set.
+H6/H7 and external human/clinical review remain unchanged.
+
+The [October 26 retention repair](../artifacts/p1_retention_repair_dev_20261026/REPORT.md)
+adds 80 new regressions for bounded question forms, complete-clause interpretation,
+local retractions, medication naming and valid-field retention. A [third fresh
+validation](../artifacts/p1_retention_validation_20261026/REPORT.md) again uses 24
+separate synthetic cases, two blinded AI annotations and independent adjudication
+locked before offline inference. Free generation abstains on all 24 notes;
+constrained generation abstains on 23 and retains one normalized-correct complaint
+with an annotation-boundary mismatch. Checked grounded-exact scores are 12/120
+and 21/120; neither mode emits an exact-correct assertion. Independent-slot
+analysis finds 13 exact-correct free assertions lost during checking. No source
+triggers global uncertainty, but only four of 120 constrained slots have concrete
+choices. Nineteen natural-language denial annotations fail legacy transport and
+remain in primary denominators. This is a failed development transfer result,
+not a quality pass. Full suite: 1,940 passed, two skipped; all 1,713 protected
+hashes unchanged. Next: improve semantic reply coverage, denial transport and
+field retention on separate development cases, then fresh blinded validation.
 
 | Class | Policy |
 |-------|--------|
