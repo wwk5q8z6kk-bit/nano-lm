@@ -66,3 +66,5 @@ experiments/**/runs/**
 
 # P1 harness outputs (external to git; summaries in frontier/*.json)
 artifacts/p1_runs/
+artifacts/native_checkpoints_fixed
+
