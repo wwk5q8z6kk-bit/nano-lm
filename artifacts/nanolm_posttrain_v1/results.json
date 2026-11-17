@@ -1,0 +1,302 @@
+{
+  "adapted_evaluation": {
+    "by_domain": {
+      "coding": {
+        "mean_score": 0.5,
+        "pass_rate": 0.5,
+        "tasks": 2
+      },
+      "diagrams_and_charts": {
+        "mean_score": 1.0,
+        "pass_rate": 1.0,
+        "tasks": 2
+      },
+      "long_context": {
+        "mean_score": 0.5,
+        "pass_rate": 0.5,
+        "tasks": 2
+      },
+      "reasoning": {
+        "mean_score": 0.5,
+        "pass_rate": 0.5,
+        "tasks": 2
+      },
+      "structured_extraction": {
+        "mean_score": 1.0,
+        "pass_rate": 1.0,
+        "tasks": 2
+      },
+      "summarization": {
+        "mean_score": 0.625,
+        "pass_rate": 0.5,
+        "tasks": 2
+      }
+    },
+    "mean_score": 0.6875,
+    "pass_rate": 0.6667,
+    "passed_count": 8,
+    "task_count": 12,
+    "tasks": [
+      {
+        "domain": "coding",
+        "passed": false,
+        "reason": "runtime_or_assertion_failure:AssertionError",
+        "response": "```python\ndef merge_intervals(intervals: list[tuple[int, int]]) -> list[tuple[int, int]]:\n    if not intervals:\n        return []\n    out = [intervals[0]]\n    for start, end in intervals[1:]:\n        if start <= out[-1][1]:\n            out[-1] = (out[-1][0], max(out[-1][1], end))\n        else:\n            out.append((start, end))\n    return out\n```",
+        "score": 0.0,
+        "task_id": "eval-code-01"
+      },
+      {
+        "domain": "coding",
+        "passed": true,
+        "reason": "all_assertions_passed",
+        "response": "```python\ndef topological_order(graph: dict[str, list[str]]) -> list[str]:\n    if not graph:\n        return []\n    in_degree = {node: 0 for node in graph}\n    for children in graph.values():\n        for child in children:\n            in_degree[child] += 1\n    queue = [node for node in graph if in_degree[node] == 0]\n    order = []\n    while queue:\n        node = queue.pop(0)\n        order.append(node)\n        for child in graph[node]:\n            in_degree[child] -= 1\n            if in_degree[child] == 0:\n                queue.append(child)\n    if any(in_degree.values()):\n        raise ValueError('cycle detected')\n    return order\n```",
+        "score": 1.0,
+        "task_id": "eval-code-02"
+      },
+      {
+        "domain": "reasoning",
+        "passed": true,
+        "reason": "exact_reasoning_match",
+        "response": "1. Baseline throughput = 360 / 6 = 60 jobs/hr.\n2. Upgraded throughput = 60 * 1.25 = 75 jobs/hr.\n3. With 4 workers for 3 hours: 75 * 4 * 3 = 900.\nFINAL_ANSWER: 900",
+        "score": 1.0,
+        "task_id": "eval-reason-01"
+      },
+      {
+        "domain": "reasoning",
+        "passed": false,
+        "reason": "wrong_answer:'69'!='67'",
+        "response": "1. a_1 = 3, a_2 = 5, a_3 = 9, a_4 = 17, a_5 = 33.\n2. Sum = 3 + 5 + 9 + 17 + 33 = 69.\nFINAL_ANSWER: 69",
+        "score": 0.0,
+        "task_id": "eval-reason-02"
+      },
+      {
+        "domain": "summarization",
+        "passed": false,
+        "reason": "exceeds_word_budget:48>32",
+        "response": "Helios adopted an append-only LSM tree in Q3 2026, reducing write amplification by 64%, lowering tail p99 read latency from 18.4 ms to 6.2 ms, and shortening snapshot recovery time to 11 seconds on a 4.8 TB shard. Compaction CPU utilization rose by 12% during peak ingestion windows.",
+        "score": 0.25,
+        "task_id": "eval-sum-01"
+      },
+      {
+        "domain": "summarization",
+        "passed": true,
+        "reason": "verified_summary",
+        "response": "Nereus-4 surveyed 412 km over 19 days, observing a 1.7 C thermocline shoaling at 85 m and an 2.3% packet loss.",
+        "score": 1.0,
+        "task_id": "eval-sum-02"
+      },
+      {
+        "domain": "structured_extraction",
+        "passed": true,
+        "reason": "exact_structured_json",
+        "response": "{\"service\": \"billing-gateway\", \"incident_id\": \"INC-4092\", \"duration_minutes\": 37, \"root_cause\": \"expired TLS certificate\", \"mitigated\": true}",
+        "score": 1.0,
+        "task_id": "eval-json-01"
+      },
+      {
+        "domain": "structured_extraction",
+        "passed": true,
+        "reason": "exact_structured_json",
+        "response": "{\"molecule\": \"acetone\", \"boiling_point_c\": 56, \"soluble_in_water\": true, \"hazard_class\": \"flammable-liquid\"}",
+        "score": 1.0,
+        "task_id": "eval-json-02"
+      },
+      {
+        "domain": "diagrams_and_charts",
+        "passed": true,
+        "reason": "verified_mermaid_diagram",
+        "response": "```mermaid\nflowchart LR\n    A[\"Lexer\"] --> B[\"Parser (AST)\"]\n    B --> C[\"Optimizer (SSA)\"]\n    C --> D[\"Codegen\"]\n```",
+        "score": 1.0,
+        "task_id": "eval-diag-01"
+      },
+      {
+        "domain": "diagrams_and_charts",
+        "passed": true,
+        "reason": "verified_quantitative_chart",
+        "response": "{\"chart_type\": \"bar\", \"x_labels\": [\"Q1\", \"Q2\", \"Q3\", \"Q4\"], \"series\": [120, 145, 110, 165], \"total\": 540}",
+        "score": 1.0,
+        "task_id": "eval-chart-02"
+      },
+      {
+        "domain": "long_context",
+        "passed": true,
+        "reason": "exact_long_context_synthesis",
+        "response": "{\"a17_code\": \"ZEPHYR-41\", \"b09_code\": \"KESTREL-88\", \"total_drift_ppm\": 43}",
+        "score": 1.0,
+        "task_id": "eval-long-01"
+      },
+      {
+        "domain": "long_context",
+        "passed": false,
+        "reason": "partial_long_context_match",
+        "response": "{\"alpha_custodian\": \"Vault shard alpha\", \"beta_custodian\": \"Vault shard beta\", \"remaining_active_keys\": 280}",
+        "score": 0.0,
+        "task_id": "eval-long-02"
+      }
+    ],
+    "wall_seconds": 75.576
+  },
+  "base_parameter_count": 1543714304,
+  "baseline_evaluation": {
+    "by_domain": {
+      "coding": {
+        "mean_score": 0.0,
+        "pass_rate": 0.0,
+        "tasks": 2
+      },
+      "diagrams_and_charts": {
+        "mean_score": 1.0,
+        "pass_rate": 1.0,
+        "tasks": 2
+      },
+      "long_context": {
+        "mean_score": 0.5,
+        "pass_rate": 0.5,
+        "tasks": 2
+      },
+      "reasoning": {
+        "mean_score": 0.0,
+        "pass_rate": 0.0,
+        "tasks": 2
+      },
+      "structured_extraction": {
+        "mean_score": 1.0,
+        "pass_rate": 1.0,
+        "tasks": 2
+      },
+      "summarization": {
+        "mean_score": 0.75,
+        "pass_rate": 0.5,
+        "tasks": 2
+      }
+    },
+    "mean_score": 0.5417,
+    "pass_rate": 0.5,
+    "passed_count": 6,
+    "task_count": 12,
+    "tasks": [
+      {
+        "domain": "coding",
+        "passed": false,
+        "reason": "runtime_or_assertion_failure:TypeError: 'tuple' object does not support item assignment",
+        "response": "```python\ndef merge_intervals(intervals):\n    # Sort the intervals based on their start times\n    intervals.sort(key=lambda x: x[0])\n    \n    merged = []\n    for interval in intervals:\n        if not merged or merged[-1][1] < interval[0]:\n            # If there are no elements in merged or the last element's end is less than current interval's start\n            merged.append(interval)\n        else:\n            # Merge the current interval with the last one in merged\n            merged[-1][1] = max(merged[-1][1], interval[1])\n    \n    return merged\n```",
+        "score": 0.0,
+        "task_id": "eval-code-01"
+      },
+      {
+        "domain": "coding",
+        "passed": false,
+        "reason": "runtime_or_assertion_failure:AssertionError",
+        "response": "```python\ndef topological_order(graph):\n    def dfs(node, visited, stack):\n        visited.add(node)\n        for neighbor in graph[node]:\n            if neighbor not in visited:\n                dfs(neighbor, visited, stack)\n        stack.append(node)\n\n    visited = set()\n    stack = []\n    \n    # Check for cycles and perform DFS to get topological order\n    for node in graph.keys():\n        if node not in visited:\n            dfs(node, visited, stack)\n    \n    # If there are no cycles, reverse the stack to get the correct order\n    return stack[::-1] if len(stack) == len(graph) else ValueError(\"Graph contains a cycle\")\n```",
+        "score": 0.0,
+        "task_id": "eval-code-02"
+      },
+      {
+        "domain": "reasoning",
+        "passed": false,
+        "reason": "wrong_answer:'5400'!='900'",
+        "response": "1. **Initial Setup**: The original setup is that the cluster processes 360 jobs per hour with 6 workers.\n   \n2. **Worker Reduction**: Two workers are taken offline, leaving \\(6 - 2 = 4\\) workers.\n\n3. **Throughput Increase**: Each of the remaining workers gets a kernel update that boosts their processing speed by 25%.\n\n   - Calculate the new individual throughput:\n     \\[\n     \\text{New Throughput} = 360 \\times (1 + 0.25) = 360 \\times 1.25 = 450 \\text{ jobs per hour}\n     \\]\n\n4. **Total Jobs Processed**: With 4 workers at the new throughput, calculate the total number of jobs processed in one hour:\n   \\[\n   \\text{Jobs per hour} = 450 \\times 4 = 1800 \\text{ jobs}\n   \\]\n\n5. **Time Calculation**: We need to find out how many jobs can be processed in 3 hours:\n   \\[\n   \\text{Total Jobs in 3 Hours} = 1800 \\times 3 = 5400 \\text{",
+        "score": 0.0,
+        "task_id": "eval-reason-01"
+      },
+      {
+        "domain": "reasoning",
+        "passed": false,
+        "reason": "wrong_answer:'9'!='67'",
+        "response": "To find the sum \\(a_1 + a_2 + a_3 + a_4 + a_5\\) for the given sequence, we first need to determine each term in the sequence using the recurrence relation \\(a_{n+1} = 2a_n - 1\\).\n\nStarting with \\(a_1 = 3\\):\n- For \\(a_2\\), we have \\(a_2 = 2 \\cdot 3 - 1 = 6 - 1 = 5\\).\n- For \\(a_3\\), we have \\(a_3 = 2 \\cdot 5 - 1 = 10 - 1 = 9\\).\n- For \\(a_4\\), we have \\(a_4 = 2 \\cdot 9 - 1 = 18 - 1 = 17\\).\n- For \\(a_5\\), we have \\(a_5 = 2 \\cdot 17 - 1 = 34 - 1 = 33\\).\n\nNow, we can compute the sum:\n\\[a_1 + a_2 + a_3 + a_4 + a_5 = 3 + 5 + 9 +",
+        "score": 0.0,
+        "task_id": "eval-reason-02"
+      },
+      {
+        "domain": "summarization",
+        "passed": false,
+        "reason": "missing_salient_terms:2/4",
+        "response": "Project Helios transitioned to an LSM tree for storage, reducing write amplification by 64%, improving read performance, and cutting snapshot recovery time but increasing compaction CPU usage during peak times.",
+        "score": 0.5,
+        "task_id": "eval-sum-01"
+      },
+      {
+        "domain": "summarization",
+        "passed": true,
+        "reason": "verified_summary",
+        "response": "Nereus-4 autonomously surveyed 412 km over 19 days with 1.7\u00b0C thermocline shoaling and 2.3% packet loss.",
+        "score": 1.0,
+        "task_id": "eval-sum-02"
+      },
+      {
+        "domain": "structured_extraction",
+        "passed": true,
+        "reason": "exact_structured_json",
+        "response": "```json\n{\n  \"service\": \"billing-gateway\",\n  \"incident_id\": \"INC-4092\",\n  \"duration_minutes\": 37,\n  \"root_cause\": \"expired TLS certificate\",\n  \"mitigated\": true\n}\n```",
+        "score": 1.0,
+        "task_id": "eval-json-01"
+      },
+      {
+        "domain": "structured_extraction",
+        "passed": true,
+        "reason": "exact_structured_json",
+        "response": "```json\n{\n  \"molecule\": \"acetone\",\n  \"boiling_point_c\": 56,\n  \"soluble_in_water\": true,\n  \"hazard_class\": \"flammable-liquid\"\n}\n```",
+        "score": 1.0,
+        "task_id": "eval-json-02"
+      },
+      {
+        "domain": "diagrams_and_charts",
+        "passed": true,
+        "reason": "verified_mermaid_diagram",
+        "response": "```mermaid\nflowchart LR\n    Lexer[Input Source] --> Parser(\"AST\") : Parse Input\n    Parser(\"AST\") --> Optimizer(\"SSA\") : Optimize AST\n    Optimizer(\"SSA\") --> Codegen(Code Generation)\n```",
+        "score": 1.0,
+        "task_id": "eval-diag-01"
+      },
+      {
+        "domain": "diagrams_and_charts",
+        "passed": true,
+        "reason": "verified_quantitative_chart",
+        "response": "```json\n{\n  \"chart_type\": \"bar\",\n  \"x_labels\": [\"Q1\", \"Q2\", \"Q3\", \"Q4\"],\n  \"series\": [120, 145, 110, 165],\n  \"total\": 540\n}\n```",
+        "score": 1.0,
+        "task_id": "eval-chart-02"
+      },
+      {
+        "domain": "long_context",
+        "passed": true,
+        "reason": "exact_long_context_synthesis",
+        "response": "```json\n{\n  \"a17_code\": \"ZEPHYR-41\",\n  \"b09_code\": \"KESTREL-88\",\n  \"total_drift_ppm\": 43\n}\n```",
+        "score": 1.0,
+        "task_id": "eval-long-01"
+      },
+      {
+        "domain": "long_context",
+        "passed": false,
+        "reason": "partial_long_context_match",
+        "response": "```json\n{\n  \"alpha_custodian\": \"Vault shard alpha\",\n  \"beta_custodian\": \"Vault shard beta\",\n  \"remaining_active_keys\": [\n    {\n      \"shard\": \"Vault shard alpha\",\n      \"active_keys\": 130,\n      \"custodian\": \"Lin\"\n    },\n    {\n      \"shard\": \"Vault shard beta\",\n      \"active_keys\": 245,\n      \"custodian\": \"Okafor\"\n    }\n  ]\n}\n```",
+        "score": 0.0,
+        "task_id": "eval-long-02"
+      }
+    ],
+    "wall_seconds": 125.254
+  },
+  "checkpoint_id": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "config_sha256": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+  "device": "mps",
+  "dtype": "torch.float16",
+  "lora_adaptation": {
+    "curriculum_size": 11,
+    "epoch_losses": [
+      0.397466,
+      0.20344,
+      0.084143,
+      0.02861,
+      0.011499,
+      0.001852
+    ],
+    "epochs": 6,
+    "learning_rate": 0.00015,
+    "lora_rank": 16,
+    "total_parameters": 1562179072,
+    "train_seconds": 81.81,
+    "trainable_fraction": 0.01182,
+    "trainable_parameters": 18464768,
+    "wrapped_linear_layers": 196
+  },
+  "schema_version": "nanolm.foundation_posttrain_eval.v1",
+  "within_2b_4b_ceiling": true
+}
