@@ -1,0 +1,7 @@
+--arm H3_delta_vres --tokens 4e6 --evals 1 --tag gpusmoke
+--arm T0_dense --tokens 600e6 --seed 0
+--arm H3_delta_vres --tokens 600e6 --seed 0
+--arm T0_dense --tokens 600e6 --seed 1
+--arm H3_delta_vres --tokens 600e6 --seed 1
+--arm R1_loop --tokens 600e6 --seed 0 --match flops
+--arm T0_dense --tokens 600e6 --seed 1 --optim muon

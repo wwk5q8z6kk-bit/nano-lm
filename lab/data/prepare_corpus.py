@@ -67,8 +67,10 @@ def parquet_texts(repo: str, prefix: str, col: str, idx: int, cache: Path):
 
 
 def ngrams13(text: str) -> set[int]:
+    # Stable 64-bit hash (Python's hash() is salted per process -> non-reproducible filtering; fixed in v2).
     w = text.split()
-    return {hash(" ".join(w[i:i + 13])) for i in range(0, max(0, len(w) - 12), 7)}
+    return {int.from_bytes(hashlib.blake2b(" ".join(w[i:i + 13]).encode(), digest_size=8).digest(), "little")
+            for i in range(0, max(0, len(w) - 12), 7)}
 
 
 def main() -> None:

@@ -1,0 +1,5 @@
+--arm H1_gla --tokens 600e6 --seed 0
+--arm R1_loop --tokens 600e6 --seed 0
+--arm H1_gla --tokens 600e6 --seed 1
+--arm R1_loop --tokens 600e6 --seed 1
+--arm R1_loop --tokens 600e6 --seed 1 --match flops
