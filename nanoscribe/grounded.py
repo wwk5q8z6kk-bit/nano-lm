@@ -247,6 +247,22 @@ _ALG_QUESTION_CUE_RE = re.compile(
     r"\b(?:allerg\w*|react badly|drug sensitivit\w*)\b",
     re.IGNORECASE,
 )
+_MED_CLAUSE_VERB_RE = re.compile(
+    r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using|on)|"
+    r"i\s+(?:have\s+)?(?:taken|took|used|tried|applied|rubbed|put|swallowed))\b",
+    re.IGNORECASE,
+)
+_ALG_CLAUSE_PRED_RE = re.compile(
+    r"\b(?:allergic\s+to|allerg(?:y|ies)\s+to|gives\s+me\s+(?:hives|a\s+rash|rash|itching|swelling)|"
+    r"causes\s+(?:me\s+to\s+develop\s+)?(?:hives|a\s+rash|rash|itching|swelling))\b",
+    re.IGNORECASE,
+)
+_EXPLICIT_SYMPTOM_DURATION_RE = re.compile(
+    r"\b(?:it\s+(?:started|began|has\s+been)|it's\s+been|going\s+on|hurting|aching|lasted|lasting|"
+    r"(?:symptom|pain|ache|cramps?|cough|headache|rash|swelling|fever|dizziness|soreness|ringing|itching)\s+"
+    r"(?:started|began|for|since))\b",
+    re.IGNORECASE,
+)
 
 _SPAN_OFFSET_RE = re.compile(r"^@(?P<start>\d+)\.\.(?P<end>\d+):(?P<text>.+)$", re.DOTALL)
 
@@ -562,6 +578,45 @@ def _coexisting_substance_clause(field: FieldName, clause_text: str) -> tuple[st
     return None
 
 
+def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
+    prev_clin = _preceding_clinician_turn(source, turn_idx)
+    prev_q = prev_clin.text if prev_clin is not None else ""
+    is_explicit_alg_q = bool(_ALG_QUESTION_CUE_RE.search(prev_q)) and not bool(
+        re.search(r"\b(?:taken|tried|used|applied|bothering|brought|symptoms?|how long|how bad|severe)\b", prev_q, re.IGNORECASE)
+    )
+    is_explicit_med_q = (
+        bool(_MED_QUESTION_CUE_RE.search(prev_q))
+        and not bool(_ALG_QUESTION_CUE_RE.search(prev_q))
+        and not bool(re.search(r"\b(?:bothering|brought|symptoms?|problem|concern|how long|when did|how bad|severe)\b", prev_q, re.IGNORECASE))
+    )
+    return is_explicit_med_q, is_explicit_alg_q, prev_q
+
+
+def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, clause_text: str) -> bool:
+    """Prevent medication/allergy event timestamps (e.g. 'took ibuprofen yesterday') from leaking into symptom duration."""
+    is_explicit_med_q, is_explicit_alg_q, _ = _question_flags(source, turn_idx)
+    in_med_or_alg = (
+        bool(_MED_CLAUSE_VERB_RE.search(clause_text))
+        or bool(_ALG_CLAUSE_PRED_RE.search(clause_text))
+        or is_explicit_med_q
+        or is_explicit_alg_q
+    )
+    return in_med_or_alg and not bool(_EXPLICIT_SYMPTOM_DURATION_RE.search(clause_text))
+
+
+def _turn_has_explicit_field_context(source: Source, turn_idx: int, field: FieldName) -> bool:
+    t_txt = source.turns[turn_idx].text
+    prev_c = _preceding_clinician_turn(source, turn_idx)
+    q_txt = prev_c.text if prev_c is not None else ""
+    if field is FieldName.MEDICATION:
+        return bool(_MED_CLAUSE_VERB_RE.search(t_txt)) or (
+            bool(_MED_QUESTION_CUE_RE.search(q_txt)) and not bool(_ALG_QUESTION_CUE_RE.search(q_txt))
+        )
+    if field is FieldName.ALLERGY:
+        return bool(_ALG_CLAUSE_PRED_RE.search(t_txt)) or bool(_ALG_QUESTION_CUE_RE.search(q_txt))
+    return True
+
+
 def verify_grounded_span(
     source: Source,
     field: FieldName,
@@ -589,6 +644,8 @@ def verify_grounded_span(
 
     clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
+        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, clause.text):
+            return False, "duration_scoped_to_medication_or_allergy"
         if not grounded_value_valid(field, span.text, clause.text):
             return False, "value_fails_field_type_guard"
         if _EPISTEMIC_HEDGE_RE.search(clause.text) or _NONUSE_ACTION_RE.search(clause.text):
@@ -786,36 +843,17 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
     for t_idx, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT:
             continue
-        prev_clin = _preceding_clinician_turn(source, t_idx)
-        prev_q = prev_clin.text if prev_clin is not None else ""
-        is_explicit_alg_q = bool(_ALG_QUESTION_CUE_RE.search(prev_q)) and not bool(
-            re.search(r"\b(?:taken|tried|used|applied|bothering|brought|symptoms?|how long|how bad|severe)\b", prev_q, re.IGNORECASE)
-        )
-        is_explicit_med_q = bool(_MED_QUESTION_CUE_RE.search(prev_q)) and not bool(_ALG_QUESTION_CUE_RE.search(prev_q)) and not bool(
-            re.search(r"\b(?:bothering|brought|symptoms?|problem|concern|how long|when did|how bad|severe)\b", prev_q, re.IGNORECASE)
-        )
+        is_explicit_med_q, is_explicit_alg_q, prev_q = _question_flags(source, t_idx)
 
         for clause in _reply_clauses(turn):
             c_text = clause.text.rstrip(";").rstrip()
             c_start = clause.start
-            has_med_verb = bool(
-                re.search(
-                    r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using)|"
-                    r"i\s+(?:took|used|tried|applied|rubbed|put|swallowed))\b",
-                    c_text,
-                    re.IGNORECASE,
-                )
-            )
-            has_alg_pred = bool(
-                re.search(
-                    r"\b(?:allergic\s+to|allerg(?:y|ies)\s+to|gives\s+me\s+(?:hives|a\s+rash|rash|itching|swelling)|"
-                    r"causes\s+(?:me\s+to\s+develop\s+)?(?:hives|a\s+rash|rash|itching|swelling))\b",
-                    c_text,
-                    re.IGNORECASE,
-                )
-            )
+            has_med_verb = bool(_MED_CLAUSE_VERB_RE.search(c_text))
+            has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text))
 
             if field is FieldName.DURATION:
+                if _duration_masked_by_med_or_alg(source, t_idx, c_text):
+                    continue
                 for m in _DURATION_VALUE_RE.finditer(c_text):
                     sp = _trim_span(source.text, c_start + m.start(), c_start + m.end())
                     if sp is not None:
@@ -1060,9 +1098,14 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
     pairs: list[tuple[CandidateSpan, ...]] = []
 
     if field in (FieldName.MEDICATION, FieldName.ALLERGY):
-        # Positive treatment/allergy + blanket denial in separate turns
+        # Positive treatment/allergy + blanket denial in separate turns (require explicit field context on positive turn)
         if sup_spans and abs_spans:
-            sup_turns = {_turn_index(source, s.start, s.end): s for s in sup_spans}
+            sup_turns = {
+                ti: s
+                for s in sup_spans
+                if (ti := _turn_index(source, s.start, s.end)) is not None
+                and _turn_has_explicit_field_context(source, ti, field)
+            }
             abs_turns = {_turn_index(source, s.start, s.end): s for s in abs_spans}
             for t_s, s_sp in sup_turns.items():
                 for t_a, a_sp in abs_turns.items():
@@ -1303,3 +1346,114 @@ class GroundedStateSpanSolver(StateSpanSolver):
             "recovered_field_count": sum(err is None for err in parse_errors) if strict_error else 0,
             "fields": traces,
         }
+
+
+def trace_proposal_conservation(
+    transcript: str,
+    raw_text: str,
+    *,
+    context_policy: str = "grounded",
+) -> list[dict[str, Any]]:
+    """Instrument every boundary (parse -> offset -> binder -> checker -> note) for silent assertion drops."""
+    from nanoscribe.check_note import assess_fields
+    from nanoscribe.compact import compact_solver
+    from nanoscribe.scribe import scribe
+
+    if context_policy not in ("context", "grounded"):
+        raise ValueError("trace_proposal_conservation supports 'context' or 'grounded'")
+
+    whole_syntax_failed = False
+    try:
+        raw_slots, parsed_props, parse_errors, _ = parse_grounded_summary(raw_text, transcript)
+    except StateSpanFormatError as exc:
+        whole_syntax_failed = True
+        raw_slots = [raw_text] * len(FIELD_ORDER)
+        parsed_props = [None] * len(FIELD_ORDER)
+        parse_errors = [str(exc)] * len(FIELD_ORDER)
+
+    solver = compact_solver(lambda _: raw_text, binder=context_policy)
+    result = scribe(transcript, solver=solver, context_policy=context_policy)
+    request = NanoInput("trace", transcript)
+
+    binder_by_field: dict[str, Any] = {}
+    if result.get("extraction"):
+        binder_by_field = {f["field"]: f for f in result["extraction"]["fields"]}
+
+    diag_by_field: dict[str, Any] = {}
+    if result.get("inference_diagnostics"):
+        diag_by_field = {f["field"]: f for f in result["inference_diagnostics"].get("fields", [])}
+
+    checker_by_field: dict[str, tuple[FieldState, tuple[str, ...]]] = {}
+    if result.get("extraction"):
+        if context_policy == "context":
+            ext_out: Any = solver.infer(request)
+        else:
+            ext_out, _ = solver.infer_grounded(request)
+        for assess in assess_fields(request, ext_out, context_policy=context_policy):
+            checker_by_field[assess.field.value] = (assess.state, assess.reasons)
+
+    note_claims: dict[str, dict[str, Any]] = {}
+    if result.get("note") and isinstance(result["note"], dict):
+        note_claims = {c["field"]: c for c in result["note"].get("claims", [])}
+
+    lineage: list[dict[str, Any]] = []
+    for field, raw_slot, prop, parse_err in zip(FIELD_ORDER, raw_slots, parsed_props, parse_errors, strict=True):
+        fname = field.value
+        diag = diag_by_field.get(fname, {})
+        b_field = binder_by_field.get(fname)
+        c_info = checker_by_field.get(fname)
+        c_state = c_info[0] if c_info is not None else None
+        c_reasons = list(c_info[1]) if c_info is not None else []
+        n_claim = note_claims.get(fname)
+
+        raw_state = prop.state.value if prop is not None else None
+        raw_spans = [s.to_dict() for s in prop.spans] if prop is not None else []
+        b_state = b_field["state"] if b_field is not None else None
+        b_spans = b_field.get("evidence", []) if b_field is not None else []
+        n_state = n_claim["state"] if n_claim is not None else None
+
+        if whole_syntax_failed:
+            loss_boundary = "whole_response_syntax"
+        elif parse_err is not None:
+            loss_boundary = "slot_parse_or_offset"
+        elif prop is not None and b_state != raw_state:
+            loss_boundary = "binder_rejected"
+        elif c_state is not None and c_state.value != b_state:
+            loss_boundary = "note_checker_quarantine"
+        elif raw_state in ("supported", "absent") and n_claim is None:
+            loss_boundary = "whole_note_withheld"
+        elif raw_state in ("supported", "absent") and n_state != raw_state:
+            loss_boundary = "note_claim_state_mismatch"
+        else:
+            loss_boundary = None
+
+        conserved = (
+            loss_boundary is None
+            and parse_err is None
+            and (
+                raw_state not in ("supported", "absent")
+                or (n_state == raw_state and b_spans == raw_spans)
+            )
+        )
+        lineage.append(
+            {
+                "field": fname,
+                "raw_slot": raw_slot,
+                "raw_state": raw_state,
+                "raw_spans": raw_spans,
+                "slot_parsed": parse_err is None,
+                "parse_error": parse_err,
+                "patient_offset_verified": parse_err is None and (raw_state not in ("supported", "absent", "conflicting") or bool(raw_spans)),
+                "binder_state": b_state,
+                "binder_spans": b_spans,
+                "binder_reason": diag.get("reason"),
+                "checker_state": c_state.value if c_state is not None else None,
+                "checker_reasons": c_reasons,
+                "note_rendered_state": n_state,
+                "note_rendered_value": n_claim.get("value") if n_claim is not None else None,
+                "note_disposition": result["disposition"],
+                "conserved": conserved,
+                "loss_boundary": loss_boundary,
+            }
+        )
+    return lineage
