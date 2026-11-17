@@ -1,9 +1,9 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
-  "updated": "2026-10-12",
-  "program_execution_status": "P1_SCRIBING_ACTIVE",
-  "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_H7_KAGGLE_EXECUTION_READY",
+  "updated": "2026-11-16",
+  "program_execution_status": "NANOLM_FOUNDATION_ACTIVE",
+  "capability_frontier": "NANOLM_2B_4B_GENERAL_FOUNDATION",
+  "current_gate": "NANOLM_ARCHITECTURE_AND_BASELINE_VALIDATION",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
   "training_backend": "KAGGLE_AND_RUNPOD",
   "training_status": "ACTIVE",
@@ -18,15 +18,18 @@
     "free_gpu_backend": "KAGGLE_WHEN_RUNTIME_FITS",
     "paid_gpu_backend": "RUNPOD_FOR_EXACT_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE",
     "training": "ACTIVE_ON_KAGGLE_AND_RUNPOD",
-    "local_compute": "APPLE_SILICON_AND_CPU_FOR_DEV_SMOKE_ANALYSIS_PREPROCESS_EVAL_AND_SMALL_EXPERIMENTS",
+    "local_compute": "APPLE_M3_MAX_64GB_FOR_DEV_2B_4B_PREFLIGHT_ABLATIONS_AND_EVAL",
     "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
     "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
     "confirmatory_evidential_run": "PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION",
-    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
+    "data": "DECONTAMINATED_PUBLIC_AND_SYNTHETIC_CORPORA_ONLY"
   },
   "bounded_work": [
-    "p1_h7_kaggle_two_seed_cpu_training",
-    "p1_h7_one_shot_control_treatment_screen"
+    "nanolm_2b_4b_architecture_and_parameter_accounting",
+    "e_tok_01_multidomain_bpe_compression_study",
+    "e_infra_2b4b_live_mps_hardware_preflight",
+    "e_arch_01_six_arm_controlled_ablation",
+    "e_cap_01_multistage_capability_benchmark"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -35,7 +38,7 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "EXECUTE_H7_TWO_STAGE_KAGGLE_PACKAGE",
-  "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "a5d0c5dac0663cd760224073439905b211c11b44"
+  "next_engineering": "SCALE_WINNING_NANOLM_2B_ARCHITECTURE_ON_MULTI_BILLION_TOKEN_CORPUS",
+  "docs_authority": "docs/PROJECT_CHARTER.md",
+  "integration_base_sha": "acc9b7e"
 }

@@ -1,81 +1,32 @@
-# Project Charter
+# Project Charter — NanoLM
 
 ## Mission
 
-> **Build the smallest useful, reliable intelligence system that can construct a faithful representation of messy evidence, compress it without corrupting it, maintain that representation across time, and ultimately reason, plan, and act over it while preserving provenance and uncertainty.**
+> **Build the most capable, reliable, and efficient general-purpose foundation language model achievable within a strict 2.0–4.0 billion parameter budget—maximizing useful intelligence per parameter, training token, unit of compute, and byte of inference memory.**
 
-Nano is **not** defined by parameter count, a single benchmark, or one application.
+NanoLM is **the foundation model itself**—not a domain-specific Scribe engine, clinical workflow, DevX feature, or hardcoded agent wrapper. Earlier medical scribing and 3.15M–160M mechanism studies remain preserved as historical empirical records ([`archive/legacy/PROJECT_CHARTER_SCRIBE_ERA_20261012.md`](archive/legacy/PROJECT_CHARTER_SCRIBE_ERA_20261012.md), [`PROJECT_AUTHORITY.md`](PROJECT_AUTHORITY.md)), not architectural or roadmap constraints.
 
-## Macro-phases (strategic intent)
+## Hard Parameter & Efficiency Constraints
 
-```text
-FOUNDATION I — P1 Master Scribing
-faithful capture: "What happened?"
+| Constraint | Specification |
+|------------|---------------|
+| Preferred target | **~2.0B** deployed parameters (`nanolm-2b-*` at `2.04B`) |
+| Permitted range | **2.0B – 4.0B** deployed parameters |
+| Hard maximum | **4,000,000,000** deployed parameters (never exceeded; enforced in [`nanolm/config.py`](../nanolm/config.py)) |
+| Accounting rule | Counts embeddings, output projections, all routed + shared experts, routers, norms, and deployed MTP heads |
 
-        ↓
+## Core Capability Objectives
 
-FOUNDATION II — P2 Summarization + P3 Charting
-faithful compression + longitudinal state:
-"What matters?" · "What is the state, and how has it changed?"
+1. **Software Engineering & Programming** — Multi-language generation, debugging, refactoring, algorithms, and repository-level comprehension verified by executable test suites.
+2. **Mathematical & Logical Reasoning** — Multi-step quantitative, deductive, constraint-satisfaction, and scientific reasoning with genuine out-of-distribution generalization.
+3. **Information Processing & Summarization** — Long-document synthesis and compression preserving exact metrics, relationships, qualifications, and exceptions.
+4. **Structured Generation, Charts, and Diagrams** — Native reasoning into strict JSON schemas, chart specifications (valid chart types, axes, units, values), and Mermaid diagrams (`flowchart`, `sequenceDiagram`, `stateDiagram`) with verified topology and directionality.
+5. **General Language & Knowledge** — High-clarity instruction following, technical communication, and broad factual synthesis.
+6. **Long-Context Intelligence** — Accurate multi-needle retrieval, cross-document connection, and distant contradiction detection across context positions.
 
-        ↓
+## Canonical NanoLM Documentation
 
-INTELLIGENCE EXPANSION — P4–P9
-synthesis → questioning → reasoning → planning → action → adaptation
-```
-
-The nine-program ladder ([CAPABILITY_LADDER.md](CAPABILITY_LADDER.md)) details P1–P9. Only **Foundation I** is the near-term capability frontier.
-
-## Capability-aware naming
-
-```text
-Nano Core + Medical DomainPack + P1  =  NanoScribe (faithful encounter record)
-
-Nano Core + Medical DomainPack + P1–P3
-  =  longitudinal medical documentation intelligence (not yet earned)
-
-P4–P9  =  progressively broader synthesis, reasoning, planning, action, adaptation
-```
-
-A scribe is **not** the full medical-intelligence system.
-
-## Optimization target
-
-Optimize the Pareto frontier across:
-
-```text
-capability × factual reliability × evidence grounding × controllability
-× privacy × memory × latency × compute × energy × monetary cost × human review burden
-```
-
-## Why medicine first
-
-Medical scribing is **DomainPack #1** — high-consequence, structured, measurable. Nano Core stays domain-general.
-
-## Model / software co-design
-
-> **Do not ask the model to learn what software can solve more reliably, and do not maintain brittle software for what learned representations can solve more generally.**
-
-## Compute
-
-Kaggle and RunPod are complementary active training backends: use free Kaggle
-when its runtime fits, and RunPod when exact GPU/runtime requirements,
-persistence, or managed inference justify it. Local zero-cost exploratory
-training is **ALLOWED**. Routine RunPod training is
-**ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET**. Materially costly runs require
-**EXPERIMENT_SCOPED_AUTHORIZATION**. Confirmatory evidential runs require
-**PREREG + EXPERIMENT_SCOPED_AUTHORIZATION**. PHI and private owner material are
-**NOT AUTHORIZED**. Canonical: [ACTIVE_NOW.md](ACTIVE_NOW.md),
-[infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
-
-## Three research layers
-
-| Layer | Role |
-|-------|------|
-| Mechanism models | Cheap controlled experiments (3M–100M from-scratch) |
-| Compact production models | Pretrained/adapted/distilled deployable models |
-| Teacher/reference models | Ceilings, synth data, judging — not default deploy |
-
-## Historical foundation
-
-The **3.15M from-scratch LM** remains the experimental foundation. Measured kills (E1, E4) apply to **tested regimes** — see typed authority in [PROJECT_AUTHORITY.md](PROJECT_AUTHORITY.md).
+- [Official NanoLM Charter](nanolm/CHARTER.md)
+- [Phase 1 Ground-Truth Audit](nanolm/PHASE1_AUDIT.md)
+- [Architecture, Data & Training Specification](nanolm/ARCHITECTURE_AND_TRAINING.md)
+- [Active Program Status](ACTIVE_NOW.md) · [RunPod Compute Policy](infrastructure/RUNPOD.md)

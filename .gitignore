@@ -66,3 +66,8 @@ experiments/**/runs/**
 
 # P1 harness outputs (external to git; summaries in frontier/*.json)
 artifacts/p1_runs/
+
+# NanoLM local run checkpoints and large tokenizer binaries (summaries tracked in docs/nanolm/)
+artifacts/nanolm_v1/
+artifacts/nanolm_cli_run/
+.worktrees/
