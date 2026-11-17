@@ -106,7 +106,10 @@ def verify_json_candidate(
         missing = sorted(required_keys - set(obj.keys()))
         return VerificationReport(False, "UNCERTAIN_OR_FAILED", cand, circ, f"Missing required JSON keys: {missing}.")
     if invariant_fn is not None:
-        ok, reason = invariant_fn(obj)
+        try:
+            ok, reason = invariant_fn(obj)
+        except Exception as exc:
+            return VerificationReport(False, "UNCERTAIN_OR_FAILED", cand, circ, f"Schema/type check failed: {exc}")
         if not ok:
             return VerificationReport(False, "UNCERTAIN_OR_FAILED", cand, circ, f"Schema/conservation check failed: {reason}")
     return VerificationReport(True, "VERIFIED_SCHEMA", json.dumps(obj), circ, "ok")

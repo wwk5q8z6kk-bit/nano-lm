@@ -54,6 +54,16 @@ def main() -> None:
         if "smollm3" in args.model.lower():
             msgs.append({"role": "system", "content": "/think" if args.think else "/no_think"})
         msgs.append({"role": "user", "content": p})
+        if "gpt-oss" in args.model.lower():
+            try:
+                return tok.apply_chat_template(
+                    msgs,
+                    tokenize=False,
+                    add_generation_prompt=True,
+                    reasoning_effort="medium" if args.think else "low",
+                )
+            except TypeError:
+                pass
         try:
             return tok.apply_chat_template(
                 msgs, tokenize=False, add_generation_prompt=True, enable_thinking=bool(args.think)

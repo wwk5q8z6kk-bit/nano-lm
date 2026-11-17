@@ -1,0 +1,22 @@
+{
+  "schema": "nanolm.trackb_phase2_distill.v1",
+  "mode": "rslora",
+  "student": "Qwen/Qwen3-1.7B",
+  "teacher": "Qwen/Qwen3-32B",
+  "data_jsonl": "/workspace/phase2_data/infodense.jsonl",
+  "alpha_kd": 0.85,
+  "lr": 5e-05,
+  "trainable_params": 34865152,
+  "total_params": 1755440128,
+  "encoded_examples": 420,
+  "kd_cache_seconds": 50.51,
+  "train_wall_seconds": 75.75,
+  "history": [
+    {
+      "epoch": 1,
+      "mean_ce": 0.3865,
+      "mean_kd_kl": 0.2341,
+      "elapsed_s": 72.5
+    }
+  ]
+}

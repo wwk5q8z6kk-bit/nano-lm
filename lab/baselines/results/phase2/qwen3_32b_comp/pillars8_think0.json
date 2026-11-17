@@ -1,0 +1,821 @@
+{
+  "schema": "nanolm.competitive_eval_8pillar.v1",
+  "model_id": "Qwen/Qwen3-32B__think0",
+  "meta": {
+    "hf_repo": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "think": false,
+    "total_params": 32762123264,
+    "active_params": 32762123264,
+    "dtype": "bfloat16",
+    "max_model_len": 16384
+  },
+  "total_items": 132,
+  "overall_pass_rate": 0.8939,
+  "leaderboards": {
+    "A_intelligence": {
+      "composite": 0.925,
+      "coding": 0.875,
+      "math_logic": 0.75,
+      "tool_calling": 1.0,
+      "tool_error_recovery": 1.0,
+      "long_context": 1.0,
+      "diagrams_charts": 1.0
+    },
+    "B_reliability": {
+      "composite": 0.8489,
+      "epistemic_reliability": 0.5833,
+      "tool_abstention_when2call": 1.0,
+      "structured_json": 0.875,
+      "summarization_faithfulness": 0.9375
+    },
+    "C_efficiency": {
+      "total_params": 32762123264,
+      "active_params": 32762123264,
+      "eval_wall_seconds": 63.08,
+      "approx_output_tok_per_s": 217.1,
+      "intelligence_per_B_active_params": 0.0282,
+      "gen_seconds": 63.07,
+      "input_tokens": 103718,
+      "output_tokens": 17331,
+      "measured_output_tok_per_s": 274.8,
+      "measured_input_tok_per_s": 1644.6
+    }
+  },
+  "failure_taxonomy_top15": [
+    [
+      "epistemic_reliability:wrong_answer_epistemic_reliability",
+      5
+    ],
+    [
+      "math_logic:wrong_answer_math_logic",
+      4
+    ],
+    [
+      "structured_json:semantic_check_failed",
+      2
+    ],
+    [
+      "coding:NameError: name 'rle_decode' is not defined. Did you mean: 'rle_encode'?",
+      1
+    ],
+    [
+      "coding:ValueError: Unexpected character at position 1: ' '",
+      1
+    ],
+    [
+      "summarization:missing_qualification",
+      1
+    ]
+  ],
+  "pillars": {
+    "tool_calling": {
+      "total": 32,
+      "passed": 32,
+      "score": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "tc_single_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_08",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "coding": {
+      "total": 16,
+      "passed": 14,
+      "score": 0.875,
+      "ci95": [
+        0.6875,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "code_01_dedup",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_02_intervals",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_03_brackets",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_04_top2",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_05_topo",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_06_lru",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_07_rle",
+          "passed": false,
+          "reason": "NameError: name 'rle_decode' is not defined. Did you mean: 'rle_encode'?"
+        },
+        {
+          "id": "code_08_lis",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_09_median_stream",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_10_semver",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_11_min_window",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_12_dijkstra",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_13_expr_eval",
+          "passed": false,
+          "reason": "ValueError: Unexpected character at position 1: ' '"
+        },
+        {
+          "id": "code_14_trie_prefix",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_15_bipartite",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_16_bugfix_retry",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "math_logic": {
+      "total": 16,
+      "passed": 12,
+      "score": 0.75,
+      "ci95": [
+        0.5,
+        0.9375
+      ],
+      "items": [
+        {
+          "id": "ml_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_06",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_08",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_09",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_10",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_11",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_12",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_13",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_14",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_15",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "structured_json": {
+      "total": 16,
+      "passed": 14,
+      "score": 0.875,
+      "ci95": [
+        0.6875,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "json_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_02",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_09",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_10",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_11",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_12",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_13",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_14",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_15",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "summarization": {
+      "total": 16,
+      "passed": 15,
+      "score": 0.9375,
+      "ci95": [
+        0.8125,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "sum_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_02",
+          "passed": false,
+          "reason": "missing_qualification"
+        },
+        {
+          "id": "sum_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_09",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_10",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_11",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_12",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_13",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_14",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_15",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "diagrams_charts": {
+      "total": 12,
+      "passed": 12,
+      "score": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "diag_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_06",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "long_context": {
+      "total": 12,
+      "passed": 12,
+      "score": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "lc_01_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_02_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_03_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_04_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_05_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_06_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_07_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_08_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_09_sec150",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_10_sec150",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_11_sec150",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_12_sec150",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "epistemic_reliability": {
+      "total": 12,
+      "passed": 7,
+      "score": 0.5833,
+      "ci95": [
+        0.3333,
+        0.8333
+      ],
+      "items": [
+        {
+          "id": "rel_01_unans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_02_ans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_03_unans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_04_false_prem",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_05_ans",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_06_unans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_07_contradict",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_08_ans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_09_unans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_10_false_prem",
+          "passed": false,
+          "reason": "wrong_answer_epistemic_reliability"
+        },
+        {
+          "id": "rel_11_ans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_12_unans",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    }
+  }
+}

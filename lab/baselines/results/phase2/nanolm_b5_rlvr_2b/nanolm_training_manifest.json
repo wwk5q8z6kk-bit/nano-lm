@@ -1,0 +1,12 @@
+{
+  "schema": "nanolm.trackb_rlvr.v1",
+  "base_student": "/workspace/models/nanolm_b4a_uniform_rslora_2b",
+  "prompts_evaluated": 100,
+  "active_variance_groups": 28,
+  "group_size": 4,
+  "kl_beta": 0.04,
+  "mean_reward_first_quarter": 0.59,
+  "mean_reward_last_quarter": 0.42,
+  "trainable_params": 17432576,
+  "wall_seconds": 817.38
+}

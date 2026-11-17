@@ -1,4 +1,4 @@
-# RunPod Spend Ledger (Track A + Track B — Final Closeout)
+# RunPod Spend Ledger (Track A + Track B + Frontier 120B Head-to-Head — Final Closeout)
 
 Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve untouched).
 
@@ -15,6 +15,11 @@ Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve u
 | `x6qlkebreuukep` | RTX 5090 32GB (secure) | 1.39 | 2026-11-17 10:54 | 2026-11-17 14:11 | `LAB-ARCH-03` `X1 s0`, `X2 s0`, `X3 s0` | \$4.56 |
 | `rxh6fj13xxjxbp` | RTX 5090 32GB (secure) | 1.39 | 2026-11-17 10:54 | 2026-11-17 14:20 | `LAB-ARCH-03` `X1 s1`, `X2 s1`, `X3 s1` | \$4.77 |
 | `w91r5t0zq1pr62` | L40S 48GB (secure) | 1.09 | 2026-11-17 10:53 | 2026-11-17 14:49 | `LAB-SCALE-01` `125M` `S0_dense_125m` + `S1_nanolm_v2_125m` (`Muon`) | \$4.28 |
+| `5yw0z6ebyic7qu` | H200 SXM 141GB (secure) | 5.29 | 2026-11-17 17:08 | 2026-11-17 20:59 | Phase 2: `Qwen3-32B` probe + `B4a/B4b/B4c` KD/FFT + `B5` RLVR + evals | \$20.37 |
+| `d6a3l21u5tkrlc` | RTX 4090 (secure) | 0.89 | 2026-11-17 17:08 | 2026-11-17 20:43 | `LAB-ARCH-04` `X5_atrd_muon s0` + `X6_pkm_muon s0` (`600M` tok each) | \$3.19 |
+| `84fdprlrg4uo8b` | RTX 4090 (secure) | 0.89 | 2026-11-17 17:08 | 2026-11-17 19:28 | `LAB-ARCH-04` `X5_atrd_muon s1` (OOM diag) + `X6_pkm_muon s1` (`600M` tok) | \$2.07 |
+| `6duh0m3bwqwt19` | H200 SXM 141GB (secure) | 5.29 | 2026-11-17 21:35 | 2026-11-17 23:20 | Step 4 Comparators: `Qwen3-1.7B`, `Qwen3-8B`, `Qwen3-32B`, `gpt-oss-120b` Comp 1 & 2 | \$9.26 |
 
-- **Active pods remaining:** `0` (`runpodctl get pod` verified empty)
-- **Final realized campaign spend:** **\$39.07 / \$180.00** (**21.7%** of autonomous budget; **\$140.93** remaining)
+- **Phase 1 realized spend (11 pods, all removed):** \$39.07
+- **Phase 2 realized spend (4 pods, all removed):** \$34.89
+- **Total realized campaign spend (15 pods, 0 active belonging to this session):** **\$73.96 / \$180.00** (`41.1%` of autonomous budget; **\$106.04** remaining)

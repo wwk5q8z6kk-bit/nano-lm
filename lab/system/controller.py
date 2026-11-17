@@ -58,7 +58,7 @@ class NanoLMSystem:
         generate_fn: GenerateFn,
         knowledge_store: PersistentKnowledgeStore | None = None,
         max_repairs: int = 2,
-        max_tool_turns: int = 5,
+        max_tool_turns: int = 7,
     ):
         self.generate = generate_fn
         self.knowledge = knowledge_store or PersistentKnowledgeStore()
@@ -188,19 +188,27 @@ class NanoLMSystem:
                     "present the concise proof and final answer in `\\boxed{...}` (or requested format). "
                     "If you find a bug in the script's formulation, explain and output the corrected final answer.]"
                 )
-                final_r = _ask([{"role": "user", "content": synth_prompt}], True, 1280)
-                ans = extract_canonical_answer(final_r)
+                final_r = _ask([{"role": "user", "content": synth_prompt}], False, 1024)
+                ans = extract_canonical_answer(final_r) or val_line
                 tier = "VERIFIED_COMPUTATION" if val_line in final_r else "PLAUSIBLE_UNVERIFIED"
                 return SystemEpisodeResult(
                     strip_thinking(final_r), ans, route, tier,
                     calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
                 )
-            # Fallback if Python script errored: repair script once or solve with bounded thinking
-            rep_prompt = (
-                f"Your verification script failed with: `{py_out}`.\n"
-                f"Solve the problem carefully and put the exact final answer in `\\boxed{{}}`:\n{prompt}"
+            # Fallback if Python script errored: repair script once and re-execute!
+            rep_py = _ask(
+                [{"role": "user", "content": f"Your Python solver failed with `{py_out}`. Fix the Python 3 script so it prints ONLY the exact answer:\n\n{prompt}"}],
+                False, 1024,
             )
-            final_r = _ask([{"role": "user", "content": rep_prompt}], True, 1536)
+            sbx += 1
+            ok_py2, py_out2 = execute_python_computation(strip_thinking(rep_py))
+            if ok_py2:
+                val2 = py_out2.splitlines()[-1].strip()
+                return SystemEpisodeResult(
+                    f"\\boxed{{{val2}}}", val2, route, "VERIFIED_COMPUTATION",
+                    calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
+                )
+            final_r = _ask([{"role": "user", "content": f"Solve carefully and put the final answer in `\\boxed{{}}`:\n{prompt}"}], True, 2560)
             return SystemEpisodeResult(
                 strip_thinking(final_r), extract_canonical_answer(final_r), route, "PLAUSIBLE_UNVERIFIED",
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
@@ -241,13 +249,13 @@ class NanoLMSystem:
                         {"role": "assistant", "content": strip_thinking(resp)},
                         {"role": "user", "content": f"Verification Engine Feedback: {rep.critique}"},
                     ]
-                    resp = _ask(cur_msgs, True, 1536)
+                    resp = _ask(cur_msgs, True, 2560)
             return SystemEpisodeResult(
                 strip_thinking(resp), rep.extracted_answer, route, "UNCERTAIN_OR_FAILED",
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 5. SCHEMA_VERIFY_JSON: Fast generation + deterministic schema/arithmetic critic & repair
+        # 5. SCHEMA_VERIFY_JSON: Fast generation + Python-assisted arithmetic/schema critic & repair
         if route == "SCHEMA_VERIFY_JSON":
             cur_msgs = [{"role": "user", "content": prompt}]
             resp = _ask(cur_msgs, False, 896)
@@ -260,12 +268,23 @@ class NanoLMSystem:
                         calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
                     )
                 if attempt < self.max_repairs:
-                    cur_msgs = [
-                        {"role": "user", "content": prompt},
-                        {"role": "assistant", "content": strip_thinking(resp)},
-                        {"role": "user", "content": f"Schema Critic: {rep.critique} Recompute every number carefully and output ONLY valid JSON."},
-                    ]
-                    resp = _ask(cur_msgs, True, 1280)
+                    # Let the model emit a Python script printing `json.dumps(...)` so arithmetic conservation is exact!
+                    py_json_p = (
+                        f"Schema Critic found an error in your previous JSON: `{rep.critique}`.\n"
+                        "Write a short Python 3 script using `import json` that computes every field accurately "
+                        "and prints ONLY `json.dumps(result_dict)` to stdout:\n\n"
+                        f"{prompt}"
+                    )
+                    py_cand = _ask([{"role": "user", "content": py_json_p}], False, 1024)
+                    sbx += 1
+                    ok_j, out_j = execute_python_computation(strip_thinking(py_cand))
+                    if ok_j:
+                        resp = out_j.splitlines()[-1].strip()
+                    else:
+                        resp = _ask(
+                            [{"role": "user", "content": f"{prompt}\n\nFix error: {rep.critique}. Output ONLY valid JSON."}],
+                            True, 2560,
+                        )
             return SystemEpisodeResult(
                 strip_thinking(resp), rep.extracted_answer, route, "UNCERTAIN_OR_FAILED",
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,

@@ -1,0 +1,36 @@
+{
+  "pool_total": 980,
+  "teacher": "Qwen/Qwen3-32B",
+  "student": "Qwen/Qwen3-1.7B",
+  "verified_teacher_kept": 748,
+  "teacher_rejected_by_verifier": 232,
+  "subset_size": 420,
+  "uniform_student_fail_frac": 0.1643,
+  "infodense_student_fail_frac": 0.3,
+  "category_breakdown": {
+    "tool_trajectories": {
+      "total": 250,
+      "student_0shot_acc": 0.952,
+      "teacher_verified_acc": 0.992,
+      "student_mean_nll": 0.023
+    },
+    "json_and_constraints": {
+      "total": 135,
+      "student_0shot_acc": 0.5037,
+      "teacher_verified_acc": 0.963,
+      "student_mean_nll": 0.0591
+    },
+    "code_exec": {
+      "total": 225,
+      "student_0shot_acc": 0.48,
+      "teacher_verified_acc": 0.4533,
+      "student_mean_nll": 0.0643
+    },
+    "math_reasoning": {
+      "total": 370,
+      "student_0shot_acc": 0.8676,
+      "teacher_verified_acc": 0.7243,
+      "student_mean_nll": 0.0561
+    }
+  }
+}

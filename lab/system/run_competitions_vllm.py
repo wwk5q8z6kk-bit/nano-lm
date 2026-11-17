@@ -26,7 +26,17 @@ from lab.trackb.eval_capabilities import TOOL_SYSTEM_INSTRUCTION, parse_tool_cal
 from nanolm.eval.validators import verify_math_or_logic, verify_python_solution
 
 
-def render_chat(tok, messages: list[dict[str, str]], think: bool) -> str:
+def render_chat(tok, messages: list[dict[str, str]], think: bool, is_gpt_oss: bool = False) -> str:
+    if is_gpt_oss:
+        try:
+            return tok.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True,
+                reasoning_effort="medium" if think else "low",
+            )
+        except TypeError:
+            pass
     try:
         return tok.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=True, enable_thinking=think
@@ -35,7 +45,7 @@ def render_chat(tok, messages: list[dict[str, str]], think: bool) -> str:
         return tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
 
-def run_batched_competition_1(llm: LLM, tok, tasks: list[dict[str, Any]], think: bool) -> dict[str, Any]:
+def run_batched_competition_1(llm: LLM, tok, tasks: list[dict[str, Any]], think: bool, is_gpt_oss: bool = False) -> dict[str, Any]:
     """Fast batched vLLM execution of Competition 1 (Naked Foundation Model) across all 100 tasks."""
     prompts_txt: list[str] = []
     for item in tasks:
@@ -43,9 +53,9 @@ def run_batched_competition_1(llm: LLM, tok, tasks: list[dict[str, Any]], think:
             p = f"{TOOL_SYSTEM_INSTRUCTION}\n\nAvailable tools:\n```json\n{json.dumps(WORKFLOW_SCHEMAS, indent=2)}\n```\nUser Objective: {item['prompt']}"
         else:
             p = item["prompt"]
-        prompts_txt.append(render_chat(tok, [{"role": "user", "content": p}], think))
+        prompts_txt.append(render_chat(tok, [{"role": "user", "content": p}], think, is_gpt_oss=is_gpt_oss))
 
-    max_toks = 3072 if think else 1536
+    max_toks = 3072 if (think or is_gpt_oss) else 1536
     t0 = time.perf_counter()
     outputs = llm.generate(prompts_txt, SamplingParams(temperature=0.0, max_tokens=max_toks))
     wall_s = time.perf_counter() - t0
@@ -113,28 +123,62 @@ def main() -> None:
     if "gpt-oss" not in args.model.lower() and "awq" not in args.model.lower():
         llm_kwargs["dtype"] = "bfloat16"
 
+    is_gpt_oss = "gpt-oss" in args.model.lower()
     llm = LLM(**llm_kwargs)
 
-    c1_fast = run_batched_competition_1(llm, tok, tasks, think=False)
+    c1_fast = run_batched_competition_1(llm, tok, tasks, think=False, is_gpt_oss=is_gpt_oss)
     print("COMP1_FAST:", json.dumps(c1_fast), flush=True)
 
     c1_think = None
     if not args.skip_think1_naked:
-        c1_think = run_batched_competition_1(llm, tok, tasks, think=True)
+        c1_think = run_batched_competition_1(llm, tok, tasks, think=True, is_gpt_oss=is_gpt_oss)
         print("COMP1_THINK:", json.dumps(c1_think), flush=True)
 
-    # Competition 2: Complete 5-Engine System using exact same loaded vLLM instance!
+    # Competition 2: Complete 5-Engine System with main-thread dynamic micro-batching across all 100 tasks!
+    from collections import defaultdict
+    from concurrent.futures import Future, ThreadPoolExecutor
+    import queue
+
     sys_toks = {"in": 0, "out": 0}
+    req_q: queue.Queue[tuple[str, int, Future[str]]] = queue.Queue()
 
     def _vllm_gen(msgs: list[dict[str, str]], think: bool, max_tok: int) -> str:
-        rendered = render_chat(tok, msgs, think)
-        res = llm.generate([rendered], SamplingParams(temperature=0.0, max_tokens=max_tok), use_tqdm=False)[0]
-        sys_toks["in"] += len(res.prompt_token_ids)
-        sys_toks["out"] += len(res.outputs[0].token_ids)
-        return res.outputs[0].text
+        rendered = render_chat(tok, msgs, think, is_gpt_oss=is_gpt_oss)
+        eff_max = max(max_tok, 2048) if is_gpt_oss else max_tok
+        fut: Future[str] = Future()
+        req_q.put((rendered, eff_max, fut))
+        return fut.result()
 
     t_sys0 = time.perf_counter()
-    c2_sys = evaluate_competition_2_system(_vllm_gen, mem_store, tasks)
+    with ThreadPoolExecutor(max_workers=1) as coord:
+        c2_fut = coord.submit(evaluate_competition_2_system, _vllm_gen, mem_store, tasks, 50)
+        while not c2_fut.done() or not req_q.empty():
+            try:
+                first = req_q.get(timeout=0.05)
+            except queue.Empty:
+                continue
+            batch = [first]
+            deadline = time.perf_counter() + 0.03
+            while len(batch) < 64 and time.perf_counter() < deadline:
+                try:
+                    batch.append(req_q.get_nowait())
+                except queue.Empty:
+                    time.sleep(0.004)
+            by_mtok: dict[int, list[tuple[str, Future[str]]]] = defaultdict(list)
+            for pr, mt, fu in batch:
+                by_mtok[mt].append((pr, fu))
+            for mt, grp in by_mtok.items():
+                try:
+                    outs = llm.generate([g[0] for g in grp], SamplingParams(temperature=0.0, max_tokens=mt), use_tqdm=False)
+                    for (_, fu), res in zip(grp, outs):
+                        sys_toks["in"] += len(res.prompt_token_ids)
+                        sys_toks["out"] += len(res.outputs[0].token_ids)
+                        fu.set_result(res.outputs[0].text)
+                except Exception as exc:
+                    for _, fu in grp:
+                        if not fu.done():
+                            fu.set_exception(exc)
+        c2_sys = c2_fut.result()
     sys_wall = time.perf_counter() - t_sys0
     c2_sys["wall_seconds"] = round(sys_wall, 2)
     c2_sys["input_tokens"] = sys_toks["in"]

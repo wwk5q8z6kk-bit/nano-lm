@@ -1,0 +1,833 @@
+{
+  "schema": "nanolm.competitive_eval_8pillar.v1",
+  "model_id": "/workspace/models/nanolm_b4a_uniform_rslora_2b__think0",
+  "meta": {
+    "hf_repo": "/workspace/models/nanolm_b4a_uniform_rslora_2b",
+    "revision": null,
+    "think": false,
+    "total_params": 1755440128,
+    "active_params": 1755440128,
+    "dtype": "bfloat16",
+    "max_model_len": 16384
+  },
+  "total_items": 132,
+  "overall_pass_rate": 0.7576,
+  "leaderboards": {
+    "A_intelligence": {
+      "composite": 0.7896,
+      "coding": 0.5625,
+      "math_logic": 0.6875,
+      "tool_calling": 0.7812,
+      "tool_error_recovery": 0.375,
+      "long_context": 1.0,
+      "diagrams_charts": 0.9167
+    },
+    "B_reliability": {
+      "composite": 0.8125,
+      "epistemic_reliability": 1.0,
+      "tool_abstention_when2call": 1.0,
+      "structured_json": 0.3125,
+      "summarization_faithfulness": 0.9375
+    },
+    "C_efficiency": {
+      "total_params": 1755440128,
+      "active_params": 1755440128,
+      "eval_wall_seconds": 3.41,
+      "approx_output_tok_per_s": 3960.8,
+      "intelligence_per_B_active_params": 0.4498,
+      "gen_seconds": 3.4,
+      "input_tokens": 103718,
+      "output_tokens": 17054,
+      "measured_output_tok_per_s": 5009.1,
+      "measured_input_tok_per_s": 30463.9
+    }
+  },
+  "failure_taxonomy_top15": [
+    [
+      "structured_json:semantic_check_failed",
+      10
+    ],
+    [
+      "coding:AssertionError",
+      6
+    ],
+    [
+      "tool_calling:error_recovery_failed",
+      5
+    ],
+    [
+      "math_logic:wrong_answer_math_logic",
+      5
+    ],
+    [
+      "tool_calling:missed_tool_call",
+      2
+    ],
+    [
+      "coding:ValueError: invalid literal for int() with base 10: '3+4*(2-5)+20'",
+      1
+    ],
+    [
+      "structured_json:invalid_json",
+      1
+    ],
+    [
+      "summarization:missing_qualification",
+      1
+    ],
+    [
+      "diagrams_charts:missing_edge:Router->SmallLM",
+      1
+    ]
+  ],
+  "pillars": {
+    "tool_calling": {
+      "total": 32,
+      "passed": 25,
+      "score": 0.7812,
+      "ci95": [
+        0.625,
+        0.9062
+      ],
+      "items": [
+        {
+          "id": "tc_single_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_single_07",
+          "passed": false,
+          "reason": "missed_tool_call"
+        },
+        {
+          "id": "tc_single_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_02",
+          "passed": false,
+          "reason": "missed_tool_call"
+        },
+        {
+          "id": "tc_par_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_par_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_abs_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_01",
+          "passed": false,
+          "reason": "error_recovery_failed"
+        },
+        {
+          "id": "tc_rec_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_03",
+          "passed": false,
+          "reason": "error_recovery_failed"
+        },
+        {
+          "id": "tc_rec_04",
+          "passed": false,
+          "reason": "error_recovery_failed"
+        },
+        {
+          "id": "tc_rec_05",
+          "passed": false,
+          "reason": "error_recovery_failed"
+        },
+        {
+          "id": "tc_rec_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "tc_rec_07",
+          "passed": false,
+          "reason": "error_recovery_failed"
+        },
+        {
+          "id": "tc_rec_08",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "coding": {
+      "total": 16,
+      "passed": 9,
+      "score": 0.5625,
+      "ci95": [
+        0.3125,
+        0.8125
+      ],
+      "items": [
+        {
+          "id": "code_01_dedup",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_02_intervals",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_03_brackets",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_04_top2",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_05_topo",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_06_lru",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_07_rle",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_08_lis",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_09_median_stream",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_10_semver",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_11_min_window",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_12_dijkstra",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_13_expr_eval",
+          "passed": false,
+          "reason": "ValueError: invalid literal for int() with base 10: '3+4*(2-5)+20'"
+        },
+        {
+          "id": "code_14_trie_prefix",
+          "passed": false,
+          "reason": "AssertionError"
+        },
+        {
+          "id": "code_15_bipartite",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "code_16_bugfix_retry",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "math_logic": {
+      "total": 16,
+      "passed": 11,
+      "score": 0.6875,
+      "ci95": [
+        0.4375,
+        0.875
+      ],
+      "items": [
+        {
+          "id": "ml_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_03",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_06",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_08",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_09",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_10",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_11",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_12",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_13",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_14",
+          "passed": false,
+          "reason": "wrong_answer_math_logic"
+        },
+        {
+          "id": "ml_15",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "ml_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "structured_json": {
+      "total": 16,
+      "passed": 5,
+      "score": 0.3125,
+      "ci95": [
+        0.125,
+        0.5625
+      ],
+      "items": [
+        {
+          "id": "json_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_02",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_04",
+          "passed": false,
+          "reason": "invalid_json"
+        },
+        {
+          "id": "json_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_06",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_07",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_08",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_09",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_10",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_11",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_12",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_13",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "json_14",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_15",
+          "passed": false,
+          "reason": "semantic_check_failed"
+        },
+        {
+          "id": "json_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "summarization": {
+      "total": 16,
+      "passed": 15,
+      "score": 0.9375,
+      "ci95": [
+        0.8125,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "sum_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_02",
+          "passed": false,
+          "reason": "missing_qualification"
+        },
+        {
+          "id": "sum_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_07",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_08",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_09",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_10",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_11",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_12",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_13",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_14",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_15",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "sum_16",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "diagrams_charts": {
+      "total": 12,
+      "passed": 11,
+      "score": 0.9167,
+      "ci95": [
+        0.75,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "diag_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "diag_05",
+          "passed": false,
+          "reason": "missing_edge:Router->SmallLM"
+        },
+        {
+          "id": "diag_06",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_01",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_02",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_03",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_04",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_05",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "chart_06",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "long_context": {
+      "total": 12,
+      "passed": 12,
+      "score": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "lc_01_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_02_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_03_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_04_sec45",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_05_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_06_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_07_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_08_sec90",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_09_sec150",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_10_sec150",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_11_sec150",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "lc_12_sec150",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    },
+    "epistemic_reliability": {
+      "total": 12,
+      "passed": 12,
+      "score": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "items": [
+        {
+          "id": "rel_01_unans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_02_ans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_03_unans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_04_false_prem",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_05_ans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_06_unans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_07_contradict",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_08_ans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_09_unans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_10_false_prem",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_11_ans",
+          "passed": true,
+          "reason": "passed"
+        },
+        {
+          "id": "rel_12_unans",
+          "passed": true,
+          "reason": "passed"
+        }
+      ]
+    }
+  }
+}

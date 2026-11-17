@@ -1,0 +1,61 @@
+{
+  "schema": "nanolm.frontier_competitions_1_2.v1",
+  "model": "/workspace/models/nanolm_b4c_infodense_fft_2b",
+  "competition_1_naked_fast": {
+    "competition": "Competition_1_Naked_Foundation",
+    "think": false,
+    "total_items": 100,
+    "passed": 14,
+    "overall_score": 0.14,
+    "tracks": {
+      "frontier_math": 0.15,
+      "frontier_coding": 0.5,
+      "stateful_tool_agents": 0.0,
+      "memory_spec_qa": 0.05,
+      "adversarial_conservation_json": 0.0
+    },
+    "wall_seconds": 4.41,
+    "input_tokens": 19578,
+    "output_tokens": 40909,
+    "measured_output_tok_per_s": 9267.9
+  },
+  "competition_1_naked_think": {
+    "competition": "Competition_1_Naked_Foundation",
+    "think": true,
+    "total_items": 100,
+    "passed": 14,
+    "overall_score": 0.14,
+    "tracks": {
+      "frontier_math": 0.0,
+      "frontier_coding": 0.0,
+      "stateful_tool_agents": 0.1,
+      "memory_spec_qa": 0.2,
+      "adversarial_conservation_json": 0.4
+    },
+    "wall_seconds": 15.88,
+    "input_tokens": 19178,
+    "output_tokens": 215903,
+    "measured_output_tok_per_s": 13594.2
+  },
+  "competition_2_complete_system": {
+    "competition": "Competition_2_Complete_System",
+    "total_items": 100,
+    "passed": 38,
+    "overall_score": 0.38,
+    "tracks": {
+      "frontier_math": 0.35,
+      "frontier_coding": 0.5,
+      "stateful_tool_agents": 0.0,
+      "memory_spec_qa": 0.9,
+      "adversarial_conservation_json": 0.15
+    },
+    "avg_llm_calls_per_task": 2.19,
+    "avg_output_chars_per_task": 3447.9,
+    "total_sandbox_runs": 117,
+    "total_memory_retrievals": 20,
+    "wall_seconds": 237.0,
+    "input_tokens": 57658,
+    "output_tokens": 117362,
+    "measured_output_tok_per_s": 495.2
+  }
+}

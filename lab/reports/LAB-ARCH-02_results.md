@@ -2,11 +2,13 @@
 
 ## 1. Iso-Parameter (~29.5M Non-Emb / ~46.2M Total) Architecture & Optimizer Grid
 
-Runs: 34. Values = mean over seeds; ± = half-range across seeds. Δ% is relative to `T0_dense/adamw/tokens` (negative = better).
+Runs: 37. Values = mean over seeds; ± = half-range across seeds. Δ% is relative to `T0_dense/adamw/tokens` (negative = better).
 
 | Arm | Optim | Match | n | Tokens | Train TFLOP·s | KV B/tok | Composite BPB | Δ% vs Ref | web | textbook | math | code | copy loss | ctx gain (nats) | tok/s | Decision / Notes |
 |---|---|---|---:|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| X5_atrd_muon | muon | tokens | 1 | 600M | 1.05e+05 | 3,072 | 0.9555 | -7.20% | 1.0689 | 0.7587 | 1.1065 | 0.7746 | 3.065 | +0.519 | 86,227 | promising (< -1%, 1 seed) |
 | X4_nanolm_v2_muon | muon | tokens | 2 | 600M | 1.06e+05 | 3,072 | 0.9575 ± 0.0008 | -7.01% | 1.0691 | 0.7580 | 1.1089 | 0.7821 | 0.763 | +0.523 | 166,225 | **WIN** (prereg rule met) |
+| X6_pkm_muon | muon | tokens | 2 | 600M | 1.06e+05 | 3,072 | 0.9575 ± 0.0003 | -7.01% | 1.0688 | 0.7581 | 1.1086 | 0.7831 | 1.649 | +0.522 | 150,917 | **WIN** (prereg rule met) |
 | T0_dense | muon | tokens | 2 | 600M | 1.85e+05 | 10,240 | 0.9645 ± 0.0004 | -6.33% | 1.0751 | 0.7589 | 1.1183 | 0.7951 | 1.177 | +0.525 | 248,599 | **WIN** (prereg rule met) |
 | X2_sharp_delta_vres | adamw | tokens | 2 | 600M | 1.06e+05 | 3,072 | 0.9689 ± 0.0009 | -5.90% | 1.0795 | 0.7725 | 1.1218 | 0.7910 | 0.536 | +0.517 | 238,809 | **WIN** (prereg rule met) |
 | X3_sgrd_delta | adamw | tokens | 2 | 600M | 1.06e+05 | 3,072 | 0.9815 ± 0.0005 | -4.67% | 1.0891 | 0.7832 | 1.1383 | 0.8079 | 0.802 | +0.509 | 90,977 | **WIN** (prereg rule met); SGRD loops=1.00, γ=0.852 |

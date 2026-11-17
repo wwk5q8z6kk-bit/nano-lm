@@ -603,16 +603,17 @@ def evaluate_competition_2_system(
     generate_fn: GenerateFn,
     mem_store: PersistentKnowledgeStore,
     tasks: list[dict[str, Any]],
+    num_workers: int = 1,
 ) -> dict[str, Any]:
     """Competition 2: Complete 5-Engine Intelligent System (identical harness for 2B, 8B, 32B, 120B)."""
-    sys_agent = NanoLMSystem(generate_fn, knowledge_store=mem_store, max_repairs=2, max_tool_turns=5)
+    sys_agent = NanoLMSystem(generate_fn, knowledge_store=mem_store, max_repairs=2, max_tool_turns=7)
     by_track: dict[str, list[int]] = {}
     llm_calls_tot = 0
     out_chars_tot = 0
     sbx_tot = 0
     mem_tot = 0
 
-    for item in tasks:
+    def _run_item(item: dict[str, Any]):
         tr = item["track"]
         if tr == "frontier_math":
             ep = sys_agent.solve(item["prompt"], task_hint="math_hard")
@@ -674,13 +675,25 @@ def evaluate_competition_2_system(
             from lab.system.verification_engine import verify_json_candidate
             ok = verify_json_candidate(ep.final_response, required_keys=item["required_keys"], invariant_fn=item["invariant_fn"]).passed
         else:
-            continue
+            return None
+        return tr, (1 if ok else 0), ep
 
+    if num_workers > 1:
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=num_workers) as pool:
+            item_outs = list(pool.map(_run_item, tasks))
+    else:
+        item_outs = [_run_item(it) for it in tasks]
+
+    for row in item_outs:
+        if row is None:
+            continue
+        tr, ok_i, ep = row
         llm_calls_tot += ep.llm_calls
         out_chars_tot += ep.output_chars
         sbx_tot += ep.sandbox_runs
         mem_tot += ep.memory_retrievals
-        by_track.setdefault(tr, []).append(1 if ok else 0)
+        by_track.setdefault(tr, []).append(ok_i)
 
     summary_tracks = {k: round(sum(v) / len(v), 4) for k, v in by_track.items()}
     total_passed = sum(sum(v) for v in by_track.values())
