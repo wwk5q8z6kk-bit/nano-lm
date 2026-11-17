@@ -44,6 +44,14 @@ _TOOL_TAG_RE = re.compile(r"<tool_call>\s*(.*?)\s*</tool_call>", re.DOTALL)
 
 def strip_thinking(text: str) -> str:
     s = _THINK_RE.sub("", text)
+    # Support OpenAI gpt-oss Harmony format (<|channel|>analysis...<|channel|>final<|message|>...)
+    if "<|channel|>final<|message|>" in s:
+        s = s.split("<|channel|>final<|message|>")[-1]
+    elif "<|channel|>analysis<|message|>" in s and "<|channel|>final" not in s:
+        # Unfinished Harmony analysis truncated at max_tokens
+        s = s.split("<|channel|>analysis<|message|>")[0]
+    for tok_tag in ("<|end|>", "<|return|>", "<|eot_id|>"):
+        s = s.replace(tok_tag, "")
     # If an unclosed <think> block truncated at max_tokens, drop the unfinished prefix
     if "<think>" in s and "</think>" not in s:
         s = s[: s.find("<think>")]

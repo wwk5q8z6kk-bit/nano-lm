@@ -21,23 +21,29 @@ def main() -> None:
     ap.add_argument("--think", type=int, default=0)
     ap.add_argument("--max-tokens", type=int, default=1536)
     ap.add_argument("--max-model-len", type=int, default=16384)
+    ap.add_argument("--gpu-mem", type=float, default=0.88)
     args = ap.parse_args()
 
     if Path(args.model).is_dir():
         rev = None
         mfile = Path(args.model) / "nanolm_training_manifest.json"
-        total_params = json.loads(mfile.read_text()).get("total_params") if mfile.exists() else None
+        if mfile.exists():
+            md = json.loads(mfile.read_text())
+            total_params = md.get("total_params") or md.get("unique_params")
+        else:
+            total_params = None
     else:
         info = model_info(args.model)
         rev = info.sha
         total_params = info.safetensors.total if info.safetensors else None
 
+    use_auto_dtype = any(k in args.model.lower() for k in ("gpt-oss", "awq", "fp8"))
     tok = AutoTokenizer.from_pretrained(args.model, revision=rev, trust_remote_code=False)
     llm = LLM(
         model=args.model,
         revision=rev,
-        dtype="bfloat16",
-        gpu_memory_utilization=0.85,
+        dtype="auto" if use_auto_dtype else "bfloat16",
+        gpu_memory_utilization=args.gpu_mem,
         max_model_len=args.max_model_len,
         trust_remote_code=False,
     )

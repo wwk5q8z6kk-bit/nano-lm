@@ -60,7 +60,7 @@ def stable_13grams(text: str) -> set[int]:
 
 
 def collect_eval_shield_ngrams(extra_texts: list[str] | None = None) -> set[int]:
-    """Build the forbidden 13-gram shield across all 132 8-pillar tasks plus any external test sets."""
+    """Build the forbidden 13-gram shield across all 132 8-pillar tasks, 100 Frontier-Hard tasks, & memory docs."""
     shield: set[int] = set()
     for builder in (
         build_tool_calling_suite,
@@ -74,6 +74,15 @@ def collect_eval_shield_ngrams(extra_texts: list[str] | None = None) -> set[int]
     ):
         for item in builder():
             shield |= stable_13grams(item["prompt"].replace(TOOL_SYSTEM_INSTRUCTION, ""))
+    try:
+        from lab.system.frontier_bench import build_frontier_100_suite
+        mem_store, f_tasks = build_frontier_100_suite()
+        for ft in f_tasks:
+            shield |= stable_13grams(ft["prompt"].replace(TOOL_SYSTEM_INSTRUCTION, ""))
+        for doc in mem_store.docs:
+            shield |= stable_13grams(doc.content)
+    except Exception:
+        pass
     for txt in extra_texts or []:
         shield |= stable_13grams(txt)
     return shield
