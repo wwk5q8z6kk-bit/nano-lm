@@ -1,7 +1,7 @@
 # Active Now
 
-**Updated:** 2026-10-26
-**Integration base:** `origin/master` @ `d6ed212` (PR #116 — isolated H7 package)
+**Updated:** 2026-11-16
+**Integration base:** `origin/master` @ `acc9b7e` (PR #118 — native Qwen loading security + research execution isolation)
 
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
@@ -255,6 +255,23 @@ remain in primary denominators. This is a failed development transfer result,
 not a quality pass. Full suite: 1,940 passed, two skipped; all 1,713 protected
 hashes unchanged. Next: improve semantic reply coverage, denial transport and
 field retention on separate development cases, then fresh blinded validation.
+
+The [November 16 information-density and Apple Silicon UMA pass](../artifacts/info_density_uma_v1/REPORT.md)
+adds [`nanoscribe/info_density.py`](../nanoscribe/info_density.py), entropy-aligned
+shared-prefix KV decoding (`typed-context-source-trie-v9-prefix-kv`, opt-in via
+`--compact-prefix-cache`), commit-gated two-tier KV eviction, read-only POSIX `mmap`
+`.safetensors` alignment auditing (`repack_safetensors_page_aligned` for 16 KiB VM
+pages), and the portable `nano.devx.uma_bridge.v1` host-headroom contract. Across
+the authenticated 5,000-field H6 evaluation (`cb612410…`), Native Nano H6 (`3.29M`,
+`6.27 MiB` FP16) delivers `0.1297` epistemic state MI bits/field/MiB (**279.45×**
+higher density than `Qwen2.5-1.5B` on its exposed 20-dialogue pilot ceiling). Live
+M3 Max (`mps` FP16) benchmarking across all 20 pilot dialogues verifies **20/20
+exact slot output identity** while cutting forward passes from `450` to `125`
+(`244` zero-entropy unary tokens coalesced; `1,008.19 GB` / `72.22%` DRAM weight-read
+reduction; **2.08×** wall-clock speedup from `43.55s` to `20.98s` for $0 paid compute).
+Preserved C11–C14 validation artifacts and `typed-context-source-trie-v8` defaults
+remain unchanged; P1 semantic reply coverage and denial transport remain the primary
+quality frontier.
 
 | Class | Policy |
 |-------|--------|

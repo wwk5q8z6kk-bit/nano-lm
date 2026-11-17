@@ -1,0 +1,156 @@
+{
+  "devx_uma_tier_routing": {
+    "critical_thermal_pressure": {
+      "available_memory_bytes": 17179869184,
+      "kv_eviction_policy": "commit_gated_symbolic_ledger",
+      "low_power_mode": false,
+      "recommended_solver_tier": "deterministic_reference",
+      "schema": "nano.devx.uma_bridge.v1",
+      "thermal": "critical",
+      "weight_sharing_transport": "in_process"
+    },
+    "nominal_64gb_free_28gb": {
+      "available_memory_bytes": 30064771072,
+      "kv_eviction_policy": "commit_gated_symbolic_ledger",
+      "low_power_mode": false,
+      "recommended_solver_tier": "compact_1_5b_fp16_prefix_kv",
+      "schema": "nano.devx.uma_bridge.v1",
+      "thermal": "nominal",
+      "weight_sharing_transport": "posix_mmap_readonly"
+    },
+    "nominal_compile_pressure_4gb": {
+      "available_memory_bytes": 4294967296,
+      "kv_eviction_policy": "commit_gated_symbolic_ledger",
+      "low_power_mode": false,
+      "recommended_solver_tier": "compact_1_5b_q4_prefix_kv",
+      "schema": "nano.devx.uma_bridge.v1",
+      "thermal": "nominal",
+      "weight_sharing_transport": "posix_mmap_readonly"
+    },
+    "serious_thermal_pressure": {
+      "available_memory_bytes": 17179869184,
+      "kv_eviction_policy": "commit_gated_symbolic_ledger",
+      "low_power_mode": false,
+      "recommended_solver_tier": "native_nano_3_3m",
+      "schema": "nano.devx.uma_bridge.v1",
+      "thermal": "serious",
+      "weight_sharing_transport": "posix_mmap_readonly"
+    }
+  },
+  "epistemic_density": {
+    "compact_qwen_c14_fresh_120_fields": {
+      "conditional_entropy_bits": 1.82211,
+      "fano_error_lower_bound": 0.420266,
+      "field_count": 120,
+      "grounded_exact_count": 21,
+      "grounded_exact_fields_per_megabyte": 0.007132,
+      "grounded_exact_rate": 0.175,
+      "mi_bits_per_field_per_megabyte": 2.6e-05,
+      "model_id": "compact/qwen2.5-1.5b-fp16",
+      "mutual_information_bits_per_field": 0.077079,
+      "normalized_mutual_information": 0.040585,
+      "observed_state_error_rate": 0.816667,
+      "parameter_count": 1543714816,
+      "source_sha256": "4097d42dc50cdd6808e98bc4f269c491f097d8ce3195ebcd274702a34e3f257c",
+      "target_entropy_bits": 1.899189,
+      "total_epistemic_bits": 39.882974,
+      "weight_bytes": 3087429632,
+      "weight_megabytes": 2944.402344
+    },
+    "compact_qwen_pilot_100_fields": {
+      "conditional_entropy_bits": 0.165293,
+      "fano_error_lower_bound": 0.017902,
+      "field_count": 100,
+      "grounded_exact_count": 95,
+      "grounded_exact_fields_per_megabyte": 0.032265,
+      "grounded_exact_rate": 0.95,
+      "mi_bits_per_field_per_megabyte": 0.000464,
+      "model_id": "compact/qwen2.5-1.5b-fp16",
+      "mutual_information_bits_per_field": 1.366038,
+      "normalized_mutual_information": 0.892059,
+      "observed_state_error_rate": 0.05,
+      "parameter_count": 1543714816,
+      "pilot_run": "run-09",
+      "target_entropy_bits": 1.531331,
+      "total_epistemic_bits": 145.476434,
+      "weight_bytes": 3087429632,
+      "weight_megabytes": 2944.402344
+    },
+    "native_nano_h6_5000_fields": {
+      "conditional_entropy_bits": 0.425619,
+      "fano_error_lower_bound": 0.056373,
+      "field_count": 5000,
+      "grounded_exact_count": 3901,
+      "grounded_exact_fields_per_megabyte": 622.202515,
+      "grounded_exact_rate": 0.7802,
+      "mi_bits_per_field_per_megabyte": 0.129664,
+      "model_id": "nano/h6-evidence-query-3.29m-fp16",
+      "mutual_information_bits_per_field": 0.81295,
+      "normalized_mutual_information": 0.656362,
+      "observed_state_error_rate": 0.0656,
+      "parameter_count": 3287109,
+      "source_sha256": "cb612410bd9530062147c1ed36bdcd606f9292a77b750376baf7a9860639e11a",
+      "target_entropy_bits": 1.238568,
+      "total_epistemic_bits": 4831.655095,
+      "weight_bytes": 6574218,
+      "weight_megabytes": 6.269663
+    },
+    "native_vs_compact_pilot_mi_density_ratio_x": 279.45
+  },
+  "live_apple_silicon_benchmark": {
+    "cached_checked_grounded_exact": 0.62,
+    "cached_forward_passes": 125,
+    "cached_raw_grounded_exact": 0.58,
+    "cached_v9_seconds": 20.9817,
+    "coalesced_zero_entropy_tokens": 244,
+    "commit_gated_kv_eviction": {
+      "encounters_audited": 20,
+      "mean_memory_reduction_ratio": 0.99981,
+      "total_symbolic_ledger_bytes": 11489,
+      "total_unbounded_kv_bytes": 60383232,
+      "uncommitted_erasure_events": 0
+    },
+    "device": "mps",
+    "dialogue_count": 20,
+    "exact_raw_slot_string_matches": 20,
+    "safetensors_zero_copy_mmap": {
+      "data_section_offset": 38536,
+      "file_size_bytes": 3087467144,
+      "header_sha256": "eac4d0168b061b8290204e7b5fffebb8a9fc122137656d41bb60d24b95706948",
+      "header_size_bytes": 38528,
+      "metal_64b_aligned": false,
+      "path": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+      "tensor_count": 338,
+      "total_tensor_bytes": 3087428608,
+      "vm_page_16k_aligned": false
+    },
+    "slot_call_count": 101,
+    "uma_roofline": {
+      "cached_dram_read_gb": 387.7637,
+      "chip_id": "Apple M3 Max (40-core GPU, 64 GB UMA)",
+      "dram_bandwidth_saved_gb": 1008.1857,
+      "dram_traffic_reduction_ratio": 0.7222,
+      "model_id": "compact/qwen2.5-1.5b-fp16",
+      "per_step_memory_bytes": 3102109696,
+      "slc_l2_cache_resident": false,
+      "theoretical_max_tokens_per_sec": 128.94,
+      "theoretical_min_step_ms": 7.7553,
+      "uncached_dram_read_gb": 1395.9494
+    },
+    "uncached_checked_grounded_exact": 0.62,
+    "uncached_forward_passes": 450,
+    "uncached_raw_grounded_exact": 0.58,
+    "uncached_v8_seconds": 43.5504,
+    "wall_clock_speedup_x": 2.076
+  },
+  "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
+  "schema_version": "nano.info_density_uma_benchmark.v1",
+  "sliding_window_kv_erasure_counterexample": {
+    "erased_epistemic_bits": 9.287712,
+    "evidence_spans_erased": 4,
+    "evidence_spans_total": 5,
+    "fano_min_field_error_rate": 0.8,
+    "total_tokens": 960,
+    "window_tokens": 256
+  }
+}

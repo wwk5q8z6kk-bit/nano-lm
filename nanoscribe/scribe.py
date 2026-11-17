@@ -141,6 +141,8 @@ def main(argv: list[str] | None = None) -> int:
                         help="Local pinned compact model snapshot; offline inference through the checked adapter")
     parser.add_argument("--compact-prompt-style", choices=("rules", "fewshot"), default="fewshot")
     parser.add_argument("--compact-decoding", choices=("free", "constrained"), default="free")
+    parser.add_argument("--compact-prefix-cache", action="store_true",
+                        help="Reuse shared (system, user) KV cache and coalesce zero-entropy trie steps")
     parser.add_argument("--context-policy", choices=("legacy", "context"), default="legacy",
                         help="Opt-in bounded question attribution; unsupported contexts still abstain")
     parser.add_argument("--format", choices=("json", "text"), default="json")
@@ -157,8 +159,11 @@ def main(argv: list[str] | None = None) -> int:
             if args.compact_decoding == "constrained":
                 prompt = STRUCTURED_PROMPT
                 options["decoding"] = "constrained"
+            if args.compact_prefix_cache:
+                options["prefix_cache"] = True
+            mode_tag = f"{args.compact_decoding}-prefix-kv" if args.compact_prefix_cache else args.compact_decoding
             solver = compact_solver(LocalCompactPredictor(str(args.compact_checkpoint), system_prompt=prompt, **options),
-                                    version=f"{args.compact_checkpoint.name}/{args.compact_prompt_style}/{args.compact_decoding}-v1",
+                                    version=f"{args.compact_checkpoint.name}/{args.compact_prompt_style}/{mode_tag}-v1",
                                     binder=args.context_policy)
         result = scribe(transcript, encounter_id=args.encounter_id, solver=solver, context_policy=args.context_policy)
     except (OSError, UnicodeError, ValueError) as exc:
