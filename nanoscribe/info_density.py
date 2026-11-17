@@ -13,11 +13,11 @@ epistemic representation contracts to physical unified-memory compute limits:
    state is not evidence"): transient ``KV`` cache pages may be evicted at zero
    epistemic erasure cost if and only if every covered turn's observations are
    committed to the symbolic ledger with exact UTF-8 byte/char offsets.
-3. **Apple Silicon UMA Roofline & Zero-Copy Bridge (``nano.devx.uma_bridge.v1``)** —
+3. **Unified-Memory Roofline & Hardware Tier Routing (``nano.uma_runtime.v1``)** —
    Inspects ``.safetensors`` tensor alignment via read-only POSIX ``mmap`` for
    zero-copy ``MTLBuffer(bytesNoCopy:)`` / multi-worker physical page sharing,
    computes unified-memory roofline bounds, and maps host thermal + available
-   memory headroom to solver tiers compatible with ``DevX`` ``host_resource_budget_v1``.
+   memory headroom to Nano model tiers within the <= 4B parameter envelope.
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ from pathlib import Path
 import struct
 from typing import Any
 
-UMA_BRIDGE_SCHEMA_VERSION = "nano.devx.uma_bridge.v1"
+UMA_RUNTIME_SCHEMA_VERSION = "nano.uma_runtime.v1"
 APPLE_SILICON_VM_PAGE_BYTES = 16_384
 METAL_BUFFER_ALIGNMENT_BYTES = 64
 
@@ -580,15 +580,14 @@ def recommend_uma_tier(
     low_power_mode: bool = False,
     available_memory_bytes: int = 16 * 1024**3,
 ) -> dict[str, Any]:
-    """Bridge ``DevX`` ``host_resource_budget_v1`` + UMA headroom to a Nano solver tier."""
+    """Map host thermal state and UMA headroom to a ``<= 4B`` Nano model tier."""
 
     thermal_norm = str(thermal or "nominal").strip().lower()
     if thermal_norm not in {"nominal", "fair", "serious", "critical"}:
         thermal_norm = "nominal"
     avail = max(0, int(available_memory_bytes))
 
-    # Reserve at least 2.5x weight footprint headroom to prevent macOS jetsam/swap
-    # during concurrent Xcode / SwiftPM / rustc builds in DevX.
+    # Reserve >= 2.5x weight footprint headroom to avoid swap/jetsam under load.
     fp16_floor = int(QWEN25_1_5B_FP16.weight_bytes * 2.5)
     q4_floor = int(QWEN25_1_5B_Q4.weight_bytes * 2.5)
     nano_floor = 128 * 1024 * 1024
@@ -607,7 +606,7 @@ def recommend_uma_tier(
         transport = "posix_mmap_readonly"
 
     return {
-        "schema": UMA_BRIDGE_SCHEMA_VERSION,
+        "schema": UMA_RUNTIME_SCHEMA_VERSION,
         "thermal": thermal_norm,
         "low_power_mode": bool(low_power_mode),
         "available_memory_bytes": avail,
@@ -631,7 +630,7 @@ __all__ = [
     "QWEN25_1_5B_FP16",
     "QWEN25_1_5B_Q4",
     "SafetensorsZeroCopyInspection",
-    "UMA_BRIDGE_SCHEMA_VERSION",
+    "UMA_RUNTIME_SCHEMA_VERSION",
     "UncommittedSpanErasureError",
     "compute_epistemic_density",
     "compute_uma_roofline",

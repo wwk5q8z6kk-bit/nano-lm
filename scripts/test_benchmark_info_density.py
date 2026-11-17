@@ -30,4 +30,4 @@ def test_build_report_bundle_deterministic():
     first = build_report_bundle()
     second = build_report_bundle()
     assert first["epistemic_density"] == second["epistemic_density"]
-    assert first["devx_uma_tier_routing"] == second["devx_uma_tier_routing"]
+    assert first["uma_tier_routing"] == second["uma_tier_routing"]

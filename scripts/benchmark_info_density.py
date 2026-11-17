@@ -276,7 +276,7 @@ def build_report_bundle(*, compact_checkpoint: Path | None = None) -> dict[str, 
             "native_vs_compact_pilot_mi_density_ratio_x": density_ratio_vs_pilot,
         },
         "sliding_window_kv_erasure_counterexample": erasure_demo,
-        "devx_uma_tier_routing": uma_tiers,
+        "uma_tier_routing": uma_tiers,
         "live_apple_silicon_benchmark": (
             benchmark_live_compact_prefix_kv(compact_checkpoint)
             if compact_checkpoint is not None

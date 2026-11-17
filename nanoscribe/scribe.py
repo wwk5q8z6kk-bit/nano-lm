@@ -97,22 +97,33 @@ def scribe(transcript: str, *, encounter_id: str = "encounter", solver: NanoSolv
     check also withholds the note. REVIEW/ABSTAIN are software dispositions,
     never authorization to use a draft as a clinical record.
     """
-    if context_policy not in ("legacy", "context"):
+    if context_policy not in ("legacy", "context", "grounded"):
         raise ValueError("unknown source context policy")
     request = NanoInput(encounter_id, transcript)
     selected_solver = solver if solver is not None else DeterministicV0Solver()
-    result = run_inference(selected_solver, request)
     base = {"schema_version": "nanoscribe.draft.v0", "encounter_id": encounter_id,
             "context_policy": context_policy,
             "source_sha256": hashlib.sha256(transcript.encode("utf-8")).hexdigest(),
             "status": "failed", "disposition": Disposition.ABSTAIN.value,
             "extraction": None, "encounter": None, "note": None, "verification": None,
-            "inference_diagnostics": result.diagnostics,
+            "inference_diagnostics": None,
             "limitations": ["Five patient-reported fields; no completeness or clinical readiness claim.",
                             "Deterministic source checks are not clinical entailment or human evaluation."]}
-    if result.failure:
-        return {**base, "failure": result.failure.to_dict()}
-    output = result.output
+    if context_policy == "grounded" and hasattr(selected_solver, "infer_grounded"):
+        from nano_ai.contract import ContractValidationError
+        try:
+            output, diagnostics = selected_solver.infer_grounded(request)
+            base["inference_diagnostics"] = diagnostics
+        except ContractValidationError as exc:
+            return {**base, "failure": {"category": "contract_violation", "code": exc.code, "message": str(exc)}}
+        except Exception as exc:
+            return {**base, "failure": {"category": "solver_exception", "code": type(exc).__name__, "message": str(exc)}}
+    else:
+        result = run_inference(selected_solver, request)
+        base["inference_diagnostics"] = result.diagnostics
+        if result.failure:
+            return {**base, "failure": result.failure.to_dict()}
+        output = result.output
     assert output is not None
     try:
         record = build_encounter(request, output, context_policy=context_policy)
@@ -143,8 +154,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--compact-decoding", choices=("free", "constrained"), default="free")
     parser.add_argument("--compact-prefix-cache", action="store_true",
                         help="Reuse shared (system, user) KV cache and coalesce zero-entropy trie steps")
-    parser.add_argument("--context-policy", choices=("legacy", "context"), default="legacy",
-                        help="Opt-in bounded question attribution; unsupported contexts still abstain")
+    parser.add_argument("--context-policy", choices=("legacy", "context", "grounded"), default="legacy",
+                        help="Opt-in bounded question attribution or grounded co-design; unsupported contexts abstain")
     parser.add_argument("--format", choices=("json", "text"), default="json")
     args = parser.parse_args(argv)
     try:
@@ -159,6 +170,8 @@ def main(argv: list[str] | None = None) -> int:
             if args.compact_decoding == "constrained":
                 prompt = STRUCTURED_PROMPT
                 options["decoding"] = "constrained"
+                if args.context_policy == "grounded":
+                    options["candidate_policy"] = "grounded"
             if args.compact_prefix_cache:
                 options["prefix_cache"] = True
             mode_tag = f"{args.compact_decoding}-prefix-kv" if args.compact_prefix_cache else args.compact_decoding

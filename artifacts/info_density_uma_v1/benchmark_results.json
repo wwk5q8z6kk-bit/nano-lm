@@ -1,11 +1,11 @@
 {
-  "devx_uma_tier_routing": {
+  "uma_tier_routing": {
     "critical_thermal_pressure": {
       "available_memory_bytes": 17179869184,
       "kv_eviction_policy": "commit_gated_symbolic_ledger",
       "low_power_mode": false,
       "recommended_solver_tier": "deterministic_reference",
-      "schema": "nano.devx.uma_bridge.v1",
+      "schema": "nano.uma_runtime.v1",
       "thermal": "critical",
       "weight_sharing_transport": "in_process"
     },
@@ -14,7 +14,7 @@
       "kv_eviction_policy": "commit_gated_symbolic_ledger",
       "low_power_mode": false,
       "recommended_solver_tier": "compact_1_5b_fp16_prefix_kv",
-      "schema": "nano.devx.uma_bridge.v1",
+      "schema": "nano.uma_runtime.v1",
       "thermal": "nominal",
       "weight_sharing_transport": "posix_mmap_readonly"
     },
@@ -23,7 +23,7 @@
       "kv_eviction_policy": "commit_gated_symbolic_ledger",
       "low_power_mode": false,
       "recommended_solver_tier": "compact_1_5b_q4_prefix_kv",
-      "schema": "nano.devx.uma_bridge.v1",
+      "schema": "nano.uma_runtime.v1",
       "thermal": "nominal",
       "weight_sharing_transport": "posix_mmap_readonly"
     },
@@ -32,7 +32,7 @@
       "kv_eviction_policy": "commit_gated_symbolic_ledger",
       "low_power_mode": false,
       "recommended_solver_tier": "native_nano_3_3m",
-      "schema": "nano.devx.uma_bridge.v1",
+      "schema": "nano.uma_runtime.v1",
       "thermal": "serious",
       "weight_sharing_transport": "posix_mmap_readonly"
     }

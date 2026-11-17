@@ -261,7 +261,7 @@ adds [`nanoscribe/info_density.py`](../nanoscribe/info_density.py), entropy-alig
 shared-prefix KV decoding (`typed-context-source-trie-v9-prefix-kv`, opt-in via
 `--compact-prefix-cache`), commit-gated two-tier KV eviction, read-only POSIX `mmap`
 `.safetensors` alignment auditing (`repack_safetensors_page_aligned` for 16 KiB VM
-pages), and the portable `nano.devx.uma_bridge.v1` host-headroom contract. Across
+pages), and the portable `nano.uma_runtime.v1` host-headroom contract. Across
 the authenticated 5,000-field H6 evaluation (`cb612410…`), Native Nano H6 (`3.29M`,
 `6.27 MiB` FP16) delivers `0.1297` epistemic state MI bits/field/MiB (**279.45×**
 higher density than `Qwen2.5-1.5B` on its exposed 20-dialogue pilot ceiling). Live

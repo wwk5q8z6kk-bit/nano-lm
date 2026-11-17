@@ -120,10 +120,16 @@ def uncovered_turns(source: Source, output: NanoOutput, *, context_policy: str =
     """Unrepresented context from any speaker can change a field's meaning."""
     covered = {_turn_index(source, span.start, span.end) for field in output.fields for span in field.evidence}
     known_questions = set().union(*QUESTIONS.values())
-    if context_policy == "context":
+    if context_policy in ("context", "grounded"):
         from nanoscribe.context import question_field
         known_questions |= {turn.text.casefold() for turn in source.turns
                             if turn.speaker is Speaker.CLINICIAN and question_field(turn.text) is not None}
+        if context_policy == "grounded":
+            for idx in list(covered):
+                if idx is not None and idx > 0 and source.turns[idx - 1].speaker is Speaker.CLINICIAN:
+                    prev_text = source.turns[idx - 1].text
+                    if not _outside_current_scope(prev_text) and not _source_reassignment(prev_text):
+                        covered.add(idx - 1)
         # A quoted value does not cover the rest of a multi-clause reply.
         # Retain such turns for review even when one clause supplies a fact.
         covered -= {i for i, turn in enumerate(source.turns)
@@ -418,6 +424,13 @@ def _observation_kind(source: Source, field: FieldName, span: CandidateSpan, *, 
         return None
     turn = source.turns[index]
     previous = source.turns[index - 1] if index else None
+    if context_policy == "grounded":
+        from nanoscribe.grounded import verify_grounded_span
+        if verify_grounded_span(source, field, FieldState.ABSENT, span)[0]:
+            return FieldState.ABSENT
+        if verify_grounded_span(source, field, FieldState.SUPPORTED, span)[0]:
+            return FieldState.SUPPORTED
+        return None
     if context_policy == "context":
         observations, _ = inspect_context(source)
         matches = {item.state for item in observations if item.field is field and item.span == span}
@@ -464,6 +477,10 @@ def assess_fields(request: NanoInput, output: NanoOutput, *, context_policy: str
         # Unknown source scope is global; a bad proposed span is local and is
         # checked below. Uncovered source remains in the encounter for review.
         unverified = False
+    elif context_policy == "grounded":
+        from nanoscribe.grounded import detect_grounded_conflicts, has_global_reassignment
+        unhandled = has_global_reassignment(source)
+        unverified = False
     assessments = []
     for field in output.fields:
         reasons = []
@@ -480,20 +497,30 @@ def assess_fields(request: NanoInput, output: NanoOutput, *, context_policy: str
                         reasons.append("competing_or_unresolved_source_observation")
                     elif field.state is FieldState.SUPPORTED and normalize_value(observation.span.text) != normalize_value(field.value):
                         reasons.append("inconsistent_supported_observations")
+            elif context_policy == "grounded":
+                if detect_grounded_conflicts(source, field.field):
+                    reasons.append("competing_or_unresolved_source_observation")
             for span in field.evidence:
                 if _observation_kind(source, field.field, span, context_policy=context_policy) is not field.state:
                     reasons.append("observation_state_not_verified")
                 if field.state is FieldState.SUPPORTED and normalize_value(span.text) != normalize_value(field.value):
                     reasons.append("inconsistent_supported_observations")
             state = FieldState.UNCERTAIN if reasons else field.state
-        elif context_policy == "context" and field.state is FieldState.CONFLICTING:
+        elif context_policy in ("context", "grounded") and field.state is FieldState.CONFLICTING:
             if unhandled:
                 reasons.append("unhandled_source_context")
-            retained = tuple(item for item in observations if item.field is field.field and item.span in field.evidence)
-            if not observations_conflict(field.field, retained):
-                reasons.append("conflict_not_verified")
-            if any(_observation_kind(source, field.field, span, context_policy=context_policy) is None for span in field.evidence):
-                reasons.append("unverified_source_observation")
+            if context_policy == "context":
+                retained = tuple(item for item in observations if item.field is field.field and item.span in field.evidence)
+                if not observations_conflict(field.field, retained):
+                    reasons.append("conflict_not_verified")
+                if any(_observation_kind(source, field.field, span, context_policy=context_policy) is None for span in field.evidence):
+                    reasons.append("unverified_source_observation")
+            else:
+                turns = {_turn_index(source, span.start, span.end) for span in field.evidence}
+                if (len(field.evidence) < 2 or None in turns or len(turns) < 2
+                        or any(source.turns[t].speaker is not Speaker.PATIENT for t in turns if t is not None)
+                        or len({normalize_value(span.text) for span in field.evidence}) < 2):
+                    reasons.append("conflict_not_verified")
             state = FieldState.UNCERTAIN if reasons else field.state
         else:
             state = field.state

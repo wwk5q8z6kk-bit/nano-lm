@@ -15,7 +15,7 @@ from nanoscribe.info_density import (
     NANO_V01_FP16,
     QWEN25_1_5B_FP16,
     QWEN25_1_5B_Q4,
-    UMA_BRIDGE_SCHEMA_VERSION,
+    UMA_RUNTIME_SCHEMA_VERSION,
     UncommittedSpanErasureError,
     compute_epistemic_density,
     compute_uma_roofline,
@@ -157,7 +157,7 @@ def test_safetensors_zero_copy_mmap_inspector_checks_alignment(tmp_path: Path):
     assert fixed_info.total_tensor_bytes == 80
 
 
-def test_uma_roofline_and_devx_tier_recommendations():
+def test_uma_roofline_and_tier_recommendations():
     nano_roof = compute_uma_roofline(NANO_V01_FP16, hardware=APPLE_M3_MAX_40GPU_64GB)
     assert nano_roof["slc_l2_cache_resident"] is True
 
@@ -180,7 +180,7 @@ def test_uma_roofline_and_devx_tier_recommendations():
         "recommended_solver_tier"
     ] == "native_nano_3_3m"
     critical = recommend_uma_tier(thermal="critical", available_memory_bytes=24 * 1024**3)
-    assert critical["schema"] == UMA_BRIDGE_SCHEMA_VERSION
+    assert critical["schema"] == UMA_RUNTIME_SCHEMA_VERSION
     assert critical["recommended_solver_tier"] == "deterministic_reference"
 
 

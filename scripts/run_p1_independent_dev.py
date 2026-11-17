@@ -193,12 +193,20 @@ def admit(data):
     return rows, tuple(cases), hashes
 
 
-def raw_fields(raw, transcript):
+def raw_fields(raw, transcript, *, policy="context"):
     """Parse exact source syntax without imposing the product's denial whitelist."""
+    if policy == "grounded":
+        from nanoscribe.grounded import parse_grounded_summary
+        _, proposals, errors, strict_error = parse_grounded_summary(raw, transcript)
+        if strict_error is not None or any(errors) or any(p is None for p in proposals):
+            raise ValueError(strict_error or "malformed grounded summary")
+        parsed = proposals
+    else:
+        parsed = parse_state_span_summary(raw, transcript)
     return tuple({"field": p.field.value, "state": p.state.value,
                   "value": normalize_value(p.spans[0].text) if p.state is FieldState.SUPPORTED else None,
                   "evidence": [span.to_dict() for span in p.spans]}
-                 for p in parse_state_span_summary(raw, transcript))
+                 for p in parsed)
 
 
 def field_score(predicted, gold):
@@ -392,17 +400,17 @@ class OncePredictor:
             self.records[transcript]["wall_seconds"] = time.perf_counter() - before
 
 
-def collect(cases, predictor, output, *, version="independent-development-v1"):
+def collect(cases, predictor, output, *, version="independent-development-v1", policy="context"):
     """Evaluate checked extraction and note, then parse the saved same raw output."""
     once = OncePredictor(predictor)
-    solver = compact_solver(once, version=version, binder="context")
+    solver = compact_solver(once, version=version, binder=policy)
     encounters = []
     for case in cases:
         before = time.perf_counter()
-        draft = scribe(case.request.transcript, encounter_id=case.case_id, solver=solver, context_policy="context")
+        draft = scribe(case.request.transcript, encounter_id=case.case_id, solver=solver, context_policy=policy)
         record = once.records.get(case.request.transcript, {})
         try:
-            raw = raw_fields(record.get("raw"), case.request.transcript)
+            raw = raw_fields(record.get("raw"), case.request.transcript, policy=policy)
             error = None
         except (TypeError, ValueError) as exc:
             raw, error = None, str(exc)
@@ -439,6 +447,8 @@ def main(argv=None):
     parser.add_argument("--output", type=Path)
     parser.add_argument("--checkpoint", type=Path)
     parser.add_argument("--decoding", choices=("free", "constrained"), default="free")
+    parser.add_argument("--policy", choices=("context", "grounded"), default="context")
+    parser.add_argument("--prefix-cache", action="store_true")
     parser.add_argument("--preflight", action="store_true")
     args = parser.parse_args(argv)
     if not args.preflight and (args.checkpoint is None or args.output is None):
@@ -452,7 +462,8 @@ def main(argv=None):
                   "frozen_evaluation": False, "incremental_paid_compute_usd": 0,
                   "started_utc": datetime.now(timezone.utc).isoformat(), "python": sys.version,
                   "platform": platform.platform(), "input_hashes": controls["input_hashes"],
-                  "code_hashes": {}, "decoding": args.decoding, "binder": "context",
+                  "code_hashes": {}, "decoding": args.decoding, "binder": args.policy,
+                  "prefix_cache": bool(args.prefix_cache),
                   "annotation_blinding": "See input_snapshot annotation protocol and independent annotation files.",
                   "status": "initializing"}
     save(args.output, "provenance.json", provenance)
@@ -474,19 +485,27 @@ def main(argv=None):
             return 0
         os.environ["HF_HUB_OFFLINE"] = "1"
         os.environ["TRANSFORMERS_OFFLINE"] = "1"
-        prompt = STRUCTURED_PROMPT if args.decoding == "constrained" else FEWSHOT_PROMPT
-        predictor = LocalCompactPredictor(str(args.checkpoint), system_prompt=prompt, decoding=args.decoding)
+        if args.decoding == "constrained" and args.policy == "grounded":
+            from nanoscribe.grounded import GROUNDED_SYSTEM_PROMPT
+            prompt = GROUNDED_SYSTEM_PROMPT
+            prompt_style = "grounded-english"
+            pred_kwargs = {"candidate_policy": "grounded", "prefix_cache": bool(args.prefix_cache)}
+        else:
+            prompt = STRUCTURED_PROMPT if args.decoding == "constrained" else FEWSHOT_PROMPT
+            prompt_style = "structured" if args.decoding == "constrained" else "fewshot"
+            pred_kwargs = {"prefix_cache": bool(args.prefix_cache)} if args.prefix_cache else {}
+        predictor = LocalCompactPredictor(str(args.checkpoint), system_prompt=prompt, decoding=args.decoding, **pred_kwargs)
         checkpoint = Path(predictor.checkpoint)
         provenance.update(checkpoint=str(checkpoint), checkpoint_revision=checkpoint.name,
                           checkpoint_hashes={p.name: digest(p) for p in sorted(checkpoint.iterdir()) if p.is_file()},
                           prompt_sha256=hashlib.sha256(prompt.encode()).hexdigest(),
-                          prompt_style="structured" if args.decoding == "constrained" else "fewshot",
+                          prompt_style=prompt_style,
                           max_new_tokens=predictor.max_new_tokens, do_sample=False, local_files_only=True,
                           status="running")
         save(args.output, "prompt.json", {"system": prompt})
         save(args.output, "provenance.json", provenance)
         verify_lock(args.data, controls["input_hashes"])
-        encounters = collect(cases, predictor, args.output, version=checkpoint.name)
+        encounters = collect(cases, predictor, args.output, version=checkpoint.name, policy=args.policy)
         verify_lock(args.data, controls["input_hashes"])
         if any(digest(ROOT / path) != sha for path, sha in code_hashes.items()):
             raise ValueError("evaluation source code changed during model run")

@@ -74,11 +74,14 @@ class LocalCompactPredictor:
 
     def __init__(self, checkpoint: str, *, max_new_tokens: int = 256,
                  system_prompt: str = SYSTEM_PROMPT, decoding: str = "free",
-                 prefix_cache: bool = False):
+                 prefix_cache: bool = False, candidate_policy: str = "context"):
         if decoding not in ("free", "constrained"):
             raise ValueError("unknown decoding mode")
+        if candidate_policy not in ("context", "grounded"):
+            raise ValueError("unknown candidate policy")
         self.decoding = decoding
         self.prefix_cache = bool(prefix_cache)
+        self.candidate_policy = candidate_policy
         path = Path(checkpoint).resolve(strict=True)
         if not path.is_dir():
             raise ValueError("checkpoint must be a local directory")
@@ -341,9 +344,77 @@ class LocalCompactPredictor:
         return raw, {"generated_tokens": len(continuation), "generation_seconds": time.perf_counter() - started,
                      "raw": raw, "messages": messages, "choices": len(choices), "device": device}
 
+    def _constrained_grounded(self, transcript: str) -> str:
+        from nano_ai.contract import FIELD_ORDER, NanoInput
+        from nanoscribe.check_note import transcript_source
+        from nanoscribe.grounded import (
+            GROUNDED_DECODING_PREFIX_KV_VERSION,
+            GROUNDED_DECODING_VERSION,
+            GROUNDED_SYSTEM_PROMPT,
+            build_grounded_english_menu,
+            parse_grounded_summary,
+            serialize_grounded_slot,
+        )
+
+        if len(transcript) > 20000:
+            raise ValueError("constrained development source exceeds 20000 characters")
+        source = transcript_source(NanoInput("grounded-constrained", transcript))
+        used_offsets: set[tuple[int, int]] = set()
+        eng_lines: list[str] = []
+        canonical_slots: list[str] = []
+        steps: list[dict] = []
+        try:
+            for field in FIELD_ORDER:
+                menu = build_grounded_english_menu(source, field, used_offsets)
+                choices = list(menu)
+                prefix = "\n".join([*eng_lines, f"{field.value}:"])
+                messages = [
+                    {"role": "system", "content": GROUNDED_SYSTEM_PROMPT},
+                    {"role": "user", "content": transcript},
+                    {"role": "assistant", "content": prefix},
+                ]
+                chosen, step = self._choose([*messages], choices)
+                if chosen not in menu:
+                    raise ValueError("unadmitted grounded constrained choice")
+                code, spans = menu[chosen]
+                for sp in spans:
+                    used_offsets.add((sp.start, sp.end))
+                eng_lines.append(f"{field.value}:{chosen}")
+                canonical_slots.append(serialize_grounded_slot(source, field, code, spans))
+                steps.append({"field": field.value, "canonical_slot": canonical_slots[-1], **step})
+            summary = "|".join(canonical_slots)
+            _, _, errs, strict_err = parse_grounded_summary(summary, transcript)
+            if strict_err is not None or any(errs):
+                raise ValueError(f"grounded constrained output failed strict parse: {strict_err}")
+        finally:
+            self._prefix_kv = None
+
+        decoding_id = (
+            GROUNDED_DECODING_PREFIX_KV_VERSION
+            if self.prefix_cache
+            else GROUNDED_DECODING_VERSION
+        )
+        record = {
+            "raw": summary,
+            "english_trace": "\n".join(eng_lines),
+            "steps": steps,
+            "generated_tokens": sum(s.get("generated_tokens", 0) for s in steps),
+            "generation_seconds": sum(s.get("generation_seconds", 0) for s in steps),
+            "token_limit_reached": False,
+            "device": steps[0].get("device", "test"),
+            "decoding": decoding_id,
+        }
+        if self.prefix_cache:
+            record["forward_passes"] = sum(s.get("forward_passes", 0) for s in steps)
+            record["coalesced_zero_entropy_tokens"] = sum(s.get("coalesced_zero_entropy_tokens", 0) for s in steps)
+        self.records[transcript] = record
+        return summary
+
     def _constrained(self, transcript):
         if transcript in self.records:
             return self.records[transcript]["raw"]
+        if self.candidate_policy == "grounded":
+            return self._constrained_grounded(transcript)
         self.source_choices(transcript)  # Validate the complete source budget first.
         used, slots, steps = set(), [], []
         fields = (("CC", "chief complaint"), ("DUR", "duration"), ("SEV", "severity"),
@@ -381,12 +452,16 @@ class LocalCompactPredictor:
                             and normalize_value(first) != normalize_value(second))
                 conflict_text = sorted(observations)
                 conflicts = {text: [other for other in conflict_text if incompatible(text, other)] for text in conflict_text}
-                choices = [":M", ":U[]"] + [f":S[{text}]" for text in available]
-                choices += [f":U[{text}]" for text in replies if text not in used]
-                choices += [f":C[{text}" for text, others in conflicts.items() if others]
-                if label in ("MED", "ALG"):
-                    choices += [f":A[{text}]" for text, (state, _) in sorted(observations.items())
-                                if state is FieldState.ABSENT]
+                if self.candidate_policy == "grounded":
+                    from nanoscribe.grounded import grounded_candidate_choices
+                    choices = grounded_candidate_choices(transcript, name, used)
+                else:
+                    choices = [":M", ":U[]"] + [f":S[{text}]" for text in available]
+                    choices += [f":U[{text}]" for text in replies if text not in used]
+                    choices += [f":C[{text}" for text, others in conflicts.items() if others]
+                    if label in ("MED", "ALG"):
+                        choices += [f":A[{text}]" for text, (state, _) in sorted(observations.items())
+                                    if state is FieldState.ABSENT]
                 # Qwen has tokens such as ':S'. Prefilling the colon separately
                 # changes the allowed continuation distribution and favored U.
                 prefix = "|".join([*slots, label])
@@ -432,8 +507,16 @@ class LocalCompactPredictor:
 
 def compact_solver(predict, *, version: str = "development-v1", binder: str = "legacy") -> StateSpanSolver:
     """Select the frozen adapter or explicitly versioned development policy."""
-    if binder not in ("legacy", "context"):
+    if binder not in ("legacy", "context", "grounded"):
         raise ValueError("unknown evidence binder")
+    if binder == "grounded":
+        from nanoscribe.grounded import GROUNDED_POLICY_VERSION, GroundedStateSpanSolver
+        return GroundedStateSpanSolver(
+            predict,
+            solver_id="compact/qwen2.5-1.5b-state-span",
+            version=f"{version}/{GROUNDED_POLICY_VERSION}",
+            parameter_count=1_543_714_816,
+        )
     from nanoscribe.context_solver import ContextStateSpanSolver
     from nanoscribe.context import VERSION as CONTEXT_VERSION
     adapter = ContextStateSpanSolver if binder == "context" else StateSpanSolver
