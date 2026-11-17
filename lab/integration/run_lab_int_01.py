@@ -111,26 +111,19 @@ def main() -> None:
     print("I1_PROGRESSIVE_RAD_KD:", json.dumps({"step0": eval_i1_step0, "final": eval_i1_final}), flush=True)
     del m_i1
 
-    # Arm I2: Exact Zero-Init Gated-VRes Highway Graft + Top-64+Tail KD (matched steps)
+    # Arm I2: Exact Zero-Init Gated-VRes Highway Graft (100% frozen backbone, highway_gate only!)
     t0 = time.perf_counter()
     m_i2 = graft_zero_init_gated_vres(base)
     eval_i2_step0 = evaluate(m_i2, data_dir, manifest, dev, dtype, args.seq)
-    # Train ONLY the lightweight highway gates + output projections gently with KD so pretrained features stay anchored
     for name, p in m_i2.named_parameters():
-        p.requires_grad_("highway_gate" in name or name.endswith("mix.o.weight"))
-    opt_i2 = torch.optim.AdamW([p for p in m_i2.parameters() if p.requires_grad], lr=1e-3, weight_decay=0.0)
-    from lab.trackb.posttrain_pipeline import extract_topk_teacher_targets, proper_topk_kd_loss
+        p.requires_grad_("highway_gate" in name)
+    opt_i2 = torch.optim.AdamW([p for p in m_i2.parameters() if p.requires_grad], lr=2e-4, weight_decay=0.0)
     m_i2.train()
     for xb, yb in batches_xy:
-        with torch.no_grad():
-            with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
-                tl = base(xb)
-            tk_i, tk_lp = extract_topk_teacher_targets(tl, k=64, temperature=1.5)
         with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
-            sl = m_i2(xb)
-        out_kd = proper_topk_kd_loss(sl, tk_i, tk_lp, yb, temperature=1.5, alpha_kd=0.5)
+            loss_i2 = m_i2(xb, yb)
         opt_i2.zero_grad(set_to_none=True)
-        out_kd["loss"].backward()
+        loss_i2.backward()
         torch.nn.utils.clip_grad_norm_([p for p in m_i2.parameters() if p.requires_grad], 1.0)
         opt_i2.step()
     eval_i2_final = evaluate(m_i2, data_dir, manifest, dev, dtype, args.seq)

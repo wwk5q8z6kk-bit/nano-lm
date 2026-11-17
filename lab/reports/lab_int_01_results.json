@@ -1,0 +1,143 @@
+{
+  "schema": "nanolm.lab_int_01.v1",
+  "pretrained_ckpt": "/Volumes/Express1M2/nanolm-lab/runs/S0_dense_125m__muon__tokens__600M__s0/final.pt",
+  "hybrid_layout": "DDDADDDADDDADDDA",
+  "adaptation_tokens": 122880,
+  "base": {
+    "bpb": {
+      "web": 1.04228,
+      "textbook": 0.72806,
+      "math": 1.12269,
+      "code": 0.80526
+    },
+    "web_loss_pos_0_64": 3.697,
+    "web_loss_pos_last_256": 3.1594,
+    "bpb_composite": 0.94811,
+    "copy_loss_second_half": 0.3585,
+    "copy_acc_second_half": 0.9706
+  },
+  "I0_naive_swap": {
+    "step0": {
+      "bpb": {
+        "web": 3.18724,
+        "textbook": 2.93714,
+        "math": 4.17169,
+        "code": 4.07702
+      },
+      "web_loss_pos_0_64": 9.9782,
+      "web_loss_pos_last_256": 9.9743,
+      "bpb_composite": 3.51207,
+      "copy_loss_second_half": 12.6729,
+      "copy_acc_second_half": 0.0
+    },
+    "final": {
+      "bpb": {
+        "web": 1.93359,
+        "textbook": 1.82058,
+        "math": 2.50926,
+        "code": 2.66382
+      },
+      "web_loss_pos_0_64": 6.1268,
+      "web_loss_pos_last_256": 6.0741,
+      "bpb_composite": 2.17217,
+      "copy_loss_second_half": 13.2177,
+      "copy_acc_second_half": 0.0
+    },
+    "wall_s": 188.69
+  },
+  "I1_progressive_rad_kd": {
+    "step0": {
+      "bpb": {
+        "web": 3.16289,
+        "textbook": 2.91705,
+        "math": 4.09979,
+        "code": 3.98036
+      },
+      "web_loss_pos_0_64": 9.8981,
+      "web_loss_pos_last_256": 9.9005,
+      "bpb_composite": 3.4646,
+      "copy_loss_second_half": 12.7985,
+      "copy_acc_second_half": 0.0001
+    },
+    "final": {
+      "bpb": {
+        "web": 1.21822,
+        "textbook": 0.92945,
+        "math": 1.45476,
+        "code": 1.18854
+      },
+      "web_loss_pos_0_64": 4.2268,
+      "web_loss_pos_last_256": 3.743,
+      "bpb_composite": 1.20184,
+      "copy_loss_second_half": 12.4586,
+      "copy_acc_second_half": 0.0011
+    },
+    "stage1_mse_start_end": [
+      206.07173,
+      131.37512
+    ],
+    "stage2_kl_start_end": [
+      0.33637,
+      0.30952
+    ],
+    "wall_s": 218.84
+  },
+  "I2a_unfrozen_o_proj_gated_vres": {
+    "step0": {
+      "bpb": {
+        "web": 1.04228,
+        "textbook": 0.72806,
+        "math": 1.12269,
+        "code": 0.80526
+      },
+      "web_loss_pos_0_64": 3.697,
+      "web_loss_pos_last_256": 3.1594,
+      "bpb_composite": 0.94811,
+      "copy_loss_second_half": 0.3585,
+      "copy_acc_second_half": 0.9706
+    },
+    "final": {
+      "bpb": {
+        "web": 1.06083,
+        "textbook": 0.7478,
+        "math": 1.14585,
+        "code": 0.82387
+      },
+      "web_loss_pos_0_64": 3.7519,
+      "web_loss_pos_last_256": 3.2228,
+      "bpb_composite": 0.96784,
+      "copy_loss_second_half": 0.4523,
+      "copy_acc_second_half": 0.9613
+    },
+    "wall_s": 86.36
+  },
+  "I2b_frozen_backbone_gated_vres": {
+    "step0": {
+      "bpb": {
+        "web": 1.04228,
+        "textbook": 0.72806,
+        "math": 1.12269,
+        "code": 0.80526
+      },
+      "web_loss_pos_0_64": 3.697,
+      "web_loss_pos_last_256": 3.1594,
+      "bpb_composite": 0.94811,
+      "copy_loss_second_half": 0.3585,
+      "copy_acc_second_half": 0.9706
+    },
+    "final": {
+      "bpb": {
+        "web": 1.0448,
+        "textbook": 0.73062,
+        "math": 1.12577,
+        "code": 0.8073
+      },
+      "web_loss_pos_0_64": 3.7028,
+      "web_loss_pos_last_256": 3.1675,
+      "bpb_composite": 0.95066,
+      "copy_loss_second_half": 0.5038,
+      "copy_acc_second_half": 0.9554
+    },
+    "wall_s": 35.84
+  }
+}
