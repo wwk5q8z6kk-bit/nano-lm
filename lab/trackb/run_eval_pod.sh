@@ -18,4 +18,4 @@ for item in $LIST; do
   rsync -a -e "ssh -o StrictHostKeyChecking=no -i $KEY -p $PORT" root@$IP:/workspace/results/ /Volumes/Express1M2/nanolm-lab/trackb-results/ < /dev/null
   echo "=== $(date -u +%FT%TZ) END $M"
 done
-echo "EVAL QUEUE COMPLETE"
+echo "QUEUE COMPLETE $POD"
