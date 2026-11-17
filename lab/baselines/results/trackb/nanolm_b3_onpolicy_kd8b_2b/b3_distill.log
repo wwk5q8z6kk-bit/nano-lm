@@ -1,0 +1,10 @@
+Encoded 467/467 verified on-policy dual-mode trajectories.
+Loading teacher Qwen/Qwen3-8B for Top-64 + Tail logit extraction...
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 5449.97it/s]
+Cached Top-64 teacher logprobs for 467 items in 60.1s.
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 7280.07it/s]
+Student loaded: 1,738,007,552 unique params (17,432,576 rsLoRA trainable)
+EPOCH {"epoch": 1, "mean_ce": 0.3705, "mean_kd_kl": 0.1826, "elapsed_s": 90.7}
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]Writing model shards: 100%|██████████| 1/1 [00:03<00:00,  3.30s/it]Writing model shards: 100%|██████████| 1/1 [00:03<00:00,  3.30s/it]
+SAVED_MERGED_MODEL /workspace/models/nanolm_b3_onpolicy_kd8b_2b

@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 from dataclasses import dataclass
 from typing import Any, Callable
 
@@ -27,6 +28,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from lab.trackb.eval_capabilities import (
+    TOOL_SYSTEM_INSTRUCTION,
     build_coding_suite,
     build_diagrams_charts_suite,
     build_epistemic_reliability_suite,
@@ -36,8 +38,11 @@ from lab.trackb.eval_capabilities import (
     build_summarization_suite,
     build_tool_calling_suite,
     parse_tool_calls,
+    strip_thinking,
 )
 from nanolm.eval.validators import verify_math_or_logic, verify_python_solution
+
+_BOXED_RE = re.compile(r"\\boxed\{([^{}]+)\}")
 
 
 # ---------------------------------------------------------------------------
@@ -68,7 +73,7 @@ def collect_eval_shield_ngrams(extra_texts: list[str] | None = None) -> set[int]
         build_epistemic_reliability_suite,
     ):
         for item in builder():
-            shield |= stable_13grams(item["prompt"])
+            shield |= stable_13grams(item["prompt"].replace(TOOL_SYSTEM_INSTRUCTION, ""))
     for txt in extra_texts or []:
         shield |= stable_13grams(txt)
     return shield
@@ -97,25 +102,59 @@ def filter_verified_trajectories(
         dom = ex.get("domain", "general_verified")
         spec = ex.get("verifier_spec", {})
         resp = ex.get("response", "")
+        if spec.get("expect_think") and ("<think>" not in resp or "</think>" not in resp):
+            stats["verification_failed"] += 1
+            continue
+        visible = strip_thinking(resp)
+        if not visible:
+            stats["verification_failed"] += 1
+            continue
         ok = False
         if dom == "math":
-            ok = verify_math_or_logic(resp, str(spec["expected"]))
+            exp_str = str(spec["expected"]).strip()
+            ok = verify_math_or_logic(visible, exp_str)
+            if not ok:
+                boxes = _BOXED_RE.findall(visible)
+                if boxes:
+                    ok = verify_math_or_logic(f"FINAL_ANSWER: {boxes[-1].strip()}", exp_str)
         elif dom == "code":
-            ok, _ = verify_python_solution(resp, str(spec["harness"]))
+            ok, _ = verify_python_solution(visible, str(spec["harness"]))
         elif dom == "tool":
-            calls, status = parse_tool_calls(resp)
+            calls, status = parse_tool_calls(visible)
             if calls is not None and status in ("ok", "plain_text_no_tool"):
                 if spec.get("expect_abstain"):
-                    ok = len(calls) == 0
+                    ok = len(calls) == 0 and len(visible) >= 12
                 else:
                     allowed = set(spec.get("allowed_tools", []))
                     req_keys = spec.get("required_arg_keys", {})
+                    exact_args = spec.get("expected_arg_values", {})
                     ok = len(calls) >= 1 and all(
                         c["name"] in allowed and set(req_keys.get(c["name"], [])).issubset(c["arguments"].keys())
                         for c in calls
                     )
+                    if ok and exact_args:
+                        by_name = {c["name"]: c["arguments"] for c in calls}
+                        for tname, kv in exact_args.items():
+                            if tname not in by_name or any(by_name[tname].get(k) != v for k, v in kv.items()):
+                                ok = False
+        elif dom == "json_exact":
+            try:
+                cand_txt = visible
+                if cand_txt.startswith("```"):
+                    cand_txt = re.sub(r"^```(?:json)?\s*|\s*```$", "", cand_txt, flags=re.IGNORECASE).strip()
+                obj = json.loads(cand_txt)
+                exp_obj = spec["expected_obj"]
+                ok = isinstance(obj, dict) and set(obj.keys()) == set(exp_obj.keys()) and all(
+                    (abs(float(obj[k]) - float(v)) < 1e-4 if isinstance(v, float) else obj[k] == v)
+                    for k, v in exp_obj.items()
+                )
+            except Exception:
+                ok = False
+        elif dom == "constraint":
+            fn = spec.get("check_fn")
+            ok = bool(fn(visible)) if callable(fn) else False
         elif dom == "general_verified":
-            ok = bool(resp.strip()) and len(resp.strip()) >= 16
+            ok = bool(visible) and len(visible) >= 16
         if not ok:
             stats["verification_failed"] += 1
             continue

@@ -1,0 +1,35 @@
+    "tool_error_recovery": 0.5,
+    "long_context": 0.5833,
+    "diagrams_charts": 1.0
+  },
+  "B_reliability": {
+    "composite": 0.6094,
+    "epistemic_reliability": 1.0,
+    "tool_abstention_when2call": 0.875,
+    "structured_json": 0.3125,
+    "summarization_faithfulness": 0.25
+  },
+  "C_efficiency": {
+    "total_params": 1543714304,
+    "active_params": 1543714304,
+    "eval_wall_seconds": 18.28,
+    "approx_output_tok_per_s": 1156.3,
+    "intelligence_per_B_active_params": 0.4683,
+    "gen_seconds": 18.26,
+    "input_tokens": 105962,
+    "output_tokens": 27358,
+    "measured_output_tok_per_s": 1498.1,
+    "measured_input_tok_per_s": 5802.5
+  }
+}
+(MainProcess pid=78648) INFO 11-17 08:16:23 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=79125) INFO 11-17 08:16:23 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=79125) INFO 11-17 08:16:23 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=79125) INFO 11-17 08:16:23 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=79125) INFO 11-17 08:16:23 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+(MainProcess pid=78648) WARNING 11-17 08:16:25 [core_client.py:869] [shutdown] MPClient: engine core exited unexpectedly; starting cleanup
+(MainProcess pid=78648) INFO 11-17 08:16:25 [core_client.py:822] [shutdown] MPClient: start timeout=default
+(MainProcess pid=78648) INFO 11-17 08:16:25 [core_client.py:824] [shutdown] MPClient: stopping engine manager
+(MainProcess pid=78648) INFO 11-17 08:16:25 [core_client.py:826] [shutdown] MPClient: engine manager stopped
+(MainProcess pid=78648) INFO 11-17 08:16:25 [core_client.py:827] [shutdown] MPClient: cleaning up background resources
+(MainProcess pid=78648) INFO 11-17 08:16:25 [core_client.py:829] [shutdown] MPClient: complete

@@ -1,12 +1,20 @@
-# RunPod spend ledger (Track A + B). Envelope $180 autonomous / $200 hard cap.
+# RunPod Spend Ledger (Track A + Track B)
 
-| Pod | GPU | $/h | Start (UTC) | Stop (UTC) | Purpose | Est. cost |
-|---|---|---|---|---|---|---|
-| e71ekqgldujy96 | RTX 4090 (secure, IE) | 0.89 | 2026-11-17 04:46 | | pilot P0, then grid worker q0 | |
-| l89h71yq2bd58j | H100 NVL (secure, US) | 3.19 | 2026-11-17 04:46 | | LAB-ARCH-02 pilot P0 | |
-| l89h71yq2bd58j stopped 2026-11-17 04:59 UTC (~13 min, ~$0.70) |
-| 2wjeaobs3gnszi | A40 (secure, CA) | 0.59 | 2026-11-17 05:02 | | LAB-BASE-03 Track B baselines | |
-| q44zayfv4tkgfx | RTX 4090 (secure) | 0.89 | 2026-11-17 05:07 | | LAB-ARCH-02 grid worker q1 | |
-| fx6y6jctxinfkx | RTX 4090 (secure) | 0.89 | 2026-11-17 05:07 | | LAB-ARCH-02 grid worker q2 | |
-| jyg0e9oyx8lnt6 | RTX 4090 (secure) | 0.89 | 2026-11-17 05:07 | | LAB-ARCH-02 grid worker q3 | |
-| pahl3151c37dlu | RTX 4090 (secure) | 0.89 | 2026-11-17 05:07 | | LAB-ARCH-02 grid worker q4 | |
+Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve untouched).
+
+| Pod ID | GPU | \$/h | Start (UTC) | Stop (UTC) | Purpose | Est. Cost |
+|---|---|---:|---|---|---|---:|
+| `l89h71yq2bd58j` | H100 NVL (secure, US) | 3.19 | 2026-11-17 04:46 | 2026-11-17 04:59 | `LAB-ARCH-02` Pilot P0 throughput calibration | \$0.70 |
+| `e71ekqgldujy96` | RTX 4090 (secure, IE) | 0.89 | 2026-11-17 04:46 | 2026-11-17 09:32 | Pilot P0 + `LAB-ARCH-02` grid worker `q0` (6 runs) | \$4.24 |
+| `q44zayfv4tkgfx` | RTX 4090 (secure, US) | 0.89 | 2026-11-17 05:07 | 2026-11-17 08:55 | `LAB-ARCH-02` grid worker `q1` (5 runs) | \$3.38 |
+| `jyg0e9oyx8lnt6` | RTX 4090 (secure, IE) | 0.89 | 2026-11-17 05:07 | 2026-11-17 09:03 | `LAB-ARCH-02` grid worker `q3` (5 runs) | \$3.50 |
+| `fx6y6jctxinfkx` | RTX 4090 (secure, IE) | 0.89 | 2026-11-17 05:07 | 2026-11-17 09:05 | `LAB-ARCH-02` grid worker `q2` (5 runs) | \$3.53 |
+| `pahl3151c37dlu` | RTX 4090 (secure, US) | 0.89 | 2026-11-17 05:07 | 2026-11-17 09:58 | `LAB-ARCH-02` grid worker `q4` (5 runs) | \$4.32 |
+| `2wjeaobs3gnszi` | A40 48GB (secure, CA) | 0.59 | 2026-11-17 05:02 | 2026-11-17 10:56 | Track B 6-baseline matrix + `B1` + `B2` + `B3` KD + evals | \$3.48 |
+| `0kakkj7pm077hz` | RTX 4090 (secure) | 0.89 | 2026-11-17 10:53 | running (auto-rm) | `LAB-ARCH-03` `X4_nanolm_v2_muon` (`s0, s1`) | ~\$1.55 |
+| `w91r5t0zq1pr62` | L40S 48GB (secure) | 1.09 | 2026-11-17 10:53 | running (auto-rm) | `LAB-SCALE-01` `125M` `S0_dense_125m` + `S1_nanolm_v2_125m` (`Muon`) | ~\$2.40 |
+| `x6qlkebreuukep` | RTX 5090 32GB (secure) | 1.39 | 2026-11-17 10:54 | running (auto-rm) | `LAB-ARCH-03` `X1_gated_vres s0`, `X2_sharp_delta_vres s0`, `X3_sgrd_delta s0` | ~\$1.95 |
+| `rxh6fj13xxjxbp` | RTX 5090 32GB (secure) | 1.39 | 2026-11-17 10:54 | running (auto-rm) | `LAB-ARCH-03` `X1_gated_vres s1`, `X2_sharp_delta_vres s1`, `X3_sgrd_delta s1` | ~\$1.95 |
+
+- **Realized spend (completed pods):** \$23.15
+- **Projected total campaign spend (including active auto-teardown runs):** ~\$31.00 / \$180.00 (17.2% of autonomous budget)

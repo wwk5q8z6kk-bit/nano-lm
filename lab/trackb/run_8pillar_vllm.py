@@ -23,9 +23,14 @@ def main() -> None:
     ap.add_argument("--max-model-len", type=int, default=16384)
     args = ap.parse_args()
 
-    info = model_info(args.model)
-    rev = info.sha
-    total_params = info.safetensors.total if info.safetensors else None
+    if Path(args.model).is_dir():
+        rev = None
+        mfile = Path(args.model) / "nanolm_training_manifest.json"
+        total_params = json.loads(mfile.read_text()).get("total_params") if mfile.exists() else None
+    else:
+        info = model_info(args.model)
+        rev = info.sha
+        total_params = info.safetensors.total if info.safetensors else None
 
     tok = AutoTokenizer.from_pretrained(args.model, revision=rev, trust_remote_code=False)
     llm = LLM(
