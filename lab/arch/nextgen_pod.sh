@@ -50,7 +50,7 @@ IFS=';' read -ra RUNS <<< "$SPECS"
 for line in "${RUNS[@]}"; do
   [ -z "$line" ] && continue
   echo "=== $(date -u +%FT%TZ) NEXTGEN START $line"
-  "${SSH[@]}" "cd /workspace/nl && NANOLM_FLA=1 python -m lab.arch.train_nextgen $line --compile --data /workspace/data --out /workspace/runs 2>&1 | grep -v -i warn | grep -E 'DONE|EVAL|NON-FINITE|Error|error|Traceback|\"step\": [0-9]*00,' " < /dev/null
+  "${SSH[@]}" "cd /workspace/nl && NANOLM_FLA=1 python -m lab.arch.train_nextgen $line --compile --data /workspace/data --out /workspace/runs 2>&1 | grep --line-buffered -v -i warn | grep --line-buffered -E 'DONE|EVAL|NON-FINITE|Error|error|Traceback|\"step\": [0-9]*00,' " < /dev/null
   rsync -a -e "$RS" --include='*/' --include='result.json' --exclude='*' "root@$IP:/workspace/runs/" "$OUT/" < /dev/null
   echo "=== $(date -u +%FT%TZ) NEXTGEN END $line"
 done
