@@ -1,6 +1,6 @@
 # Model Research Program
 
-Three layers run through all capability programs (P1–P9).
+Three layers run through all capability programs (P1–P9). For the full sub-4B foundation intelligence program, competing architectures (`A`–`G`), and forensic reconciliation across branches/worktrees, see [FOUNDATION_INTELLIGENCE_PROGRAM.md](FOUNDATION_INTELLIGENCE_PROGRAM.md), [ARCHITECTURE_PORTFOLIO.md](ARCHITECTURE_PORTFOLIO.md), and [EXPERIMENT_REGISTER.md](EXPERIMENT_REGISTER.md).
 
 ## Compute
 
