@@ -1,0 +1,806 @@
+{
+  "experiment": "X4_holonomic_sidecar_and_grpo_evolution",
+  "model_id": "Qwen/Qwen3-1.7B",
+  "decontamination": {
+    "sft": {
+      "train_examples": 35,
+      "eval_tasks": 56,
+      "overlaps": 0
+    },
+    "rl_challenging": {
+      "train_examples": 24,
+      "eval_tasks": 56,
+      "overlaps": 0
+    }
+  },
+  "arm": {
+    "arm": "Qwen3_1.7B_Holonomic_SFT2_GRPO",
+    "total_parameters": 1747149824,
+    "passed": 35,
+    "total_tasks": 56,
+    "accuracy": 0.625,
+    "bootstrap_ci95": [
+      0.5179,
+      0.7321
+    ],
+    "mean_partial_score": 0.7661,
+    "by_dimension": {
+      "coding": {
+        "passed": 2,
+        "total": 4,
+        "accuracy": 0.5,
+        "mean_score": 0.5
+      },
+      "math_logic": {
+        "passed": 4,
+        "total": 4,
+        "accuracy": 1.0,
+        "mean_score": 1.0
+      },
+      "summarization": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75,
+        "mean_score": 0.9167
+      },
+      "structured_json": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75,
+        "mean_score": 0.875
+      },
+      "diagrams_charts": {
+        "passed": 2,
+        "total": 4,
+        "accuracy": 0.5,
+        "mean_score": 0.8333
+      },
+      "long_context": {
+        "passed": 2,
+        "total": 4,
+        "accuracy": 0.5,
+        "mean_score": 0.75
+      },
+      "general_knowledge": {
+        "passed": 4,
+        "total": 4,
+        "accuracy": 1.0,
+        "mean_score": 1.0
+      },
+      "multi_step_reasoning": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75,
+        "mean_score": 0.75
+      },
+      "instruction_following": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75,
+        "mean_score": 0.95
+      },
+      "tool_use": {
+        "passed": 2,
+        "total": 4,
+        "accuracy": 0.5,
+        "mean_score": 0.5
+      },
+      "planning_decomposition": {
+        "passed": 1,
+        "total": 4,
+        "accuracy": 0.25,
+        "mean_score": 0.775
+      },
+      "ood_robustness": {
+        "passed": 2,
+        "total": 4,
+        "accuracy": 0.5,
+        "mean_score": 0.5
+      },
+      "hallucination_resistance": {
+        "passed": 3,
+        "total": 4,
+        "accuracy": 0.75,
+        "mean_score": 0.75
+      },
+      "memory_retention": {
+        "passed": 1,
+        "total": 4,
+        "accuracy": 0.25,
+        "mean_score": 0.625
+      },
+      "inference_efficiency": {
+        "capability_accuracy": 0.625,
+        "capability_per_billion_params": 0.3577,
+        "tokens_per_sec": 12.96,
+        "kv_cache_mb_at_4k": 448.0,
+        "efficiency_composite_score": 0.497,
+        "p50_ms": 2569.91,
+        "p95_ms": 10964.8,
+        "peak_vram_mb": 4246.31,
+        "total_parameters": 1747149824
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "passed": 12,
+        "total": 15,
+        "accuracy": 0.8
+      },
+      "medium": {
+        "passed": 12,
+        "total": 21,
+        "accuracy": 0.5714
+      },
+      "hard": {
+        "passed": 11,
+        "total": 20,
+        "accuracy": 0.55
+      }
+    },
+    "failure_taxonomy": {
+      "tool_call_mismatch:0/2": 2,
+      "runtime_or_assertion_failure:AttributeError: 'int' object has no attribute 'left'": 1,
+      "runtime_or_assertion_failure:ValueError: too many values to unpack (expected 2)": 1,
+      "missing_salient_terms:2/3": 1,
+      "value_mismatch:subtotal:400!=520": 1,
+      "incomplete_mermaid:hits=4/4,edges=2": 1,
+      "value_mismatch:sum_total:120!=100": 1,
+      "value_mismatch:net_hours:120!=165": 1,
+      "value_mismatch:remaining_crates:18!=13": 1,
+      "answer_mismatch:'Silver'": 1,
+      "words=34>28": 1,
+      "wrong_makespan:4!=9": 1
+    },
+    "tasks": [
+      {
+        "task_id": "cod-01",
+        "dim": "coding",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_assertions_passed",
+        "gen_tokens": 101,
+        "latency_ms": 7510.55,
+        "response_preview": "```python\ndef run_length_encode(s: str) -> list[tuple[str, int]]:\n    if not s:\n        return []\n    res = []\n    n = 1\n    for i in range(1, len(s)):\n        if s[i] != s[i-1]:\n            res.appen"
+      },
+      {
+        "task_id": "cod-02",
+        "dim": "coding",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_assertions_passed",
+        "gen_tokens": 115,
+        "latency_ms": 9598.2,
+        "response_preview": "```python\ndef eval_rpn(tokens: list[str]) -> int:\n    stack = []\n    for t in tokens:\n        if t in \"+-*/\":\n            b = stack.pop()\n            a = stack.pop()\n            if t == \"+\":\n         "
+      },
+      {
+        "task_id": "cod-03",
+        "dim": "coding",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.0,
+        "reason": "runtime_or_assertion_failure:AttributeError: 'int' object has no attribute 'left'",
+        "gen_tokens": 138,
+        "latency_ms": 10020.97,
+        "response_preview": "```python\ndef kth_smallest_bst(values: list[int], k: int) -> int:\n    def get_kth(node, k):\n        if not node:\n            return -1\n        if k == 1:\n            return node.val\n        left, righ"
+      },
+      {
+        "task_id": "cod-04",
+        "dim": "coding",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.0,
+        "reason": "runtime_or_assertion_failure:ValueError: too many values to unpack (expected 2)",
+        "gen_tokens": 160,
+        "latency_ms": 12135.06,
+        "response_preview": "```python\nimport heapq\n\ndef dijkstra(n: int, edges: list[tuple[int, int, int]], src: int, dst: int) -> int:\n    if src == dst:\n        return 0\n    dist = [float('inf')] * n\n    dist[src] = 0\n    heap"
+      },
+      {
+        "task_id": "mth-01",
+        "dim": "math_logic",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 43,
+        "latency_ms": 3454.81,
+        "response_preview": "Compute 17 * 23 = 391.\nSubtract 91: 300.\nInteger divide by 5: 60.\nFINAL_ANSWER: 60"
+      },
+      {
+        "task_id": "mth-02",
+        "dim": "math_logic",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 111,
+        "latency_ms": 7951.53,
+        "response_preview": "A number divisible by both 6 and 15 must be divisible by their least common multiple, which is 30.\nThe 3-digit numbers divisible by 30 are 120, 150, ..., 990.\nThis is an arithmetic sequence with first"
+      },
+      {
+        "task_id": "mth-03",
+        "dim": "math_logic",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 197,
+        "latency_ms": 13854.36,
+        "response_preview": "Let x = 7a + 3 for some integer a.\nThen x = 11b + 5 for some integer b.\nSo 7a + 3 = 11b + 5.\nSo 7a = 11b + 2.\nSo 7a \u2261 2 (mod 11).\nSo 7a \u2261 2 (mod 11).\nMultiply both sides by 8 (since 7*8=56\u22611 mod 11).\n"
+      },
+      {
+        "task_id": "mth-04",
+        "dim": "math_logic",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 150,
+        "latency_ms": 10964.8,
+        "response_preview": "a_0 = 1\na_1 = 2\na_2 = 2*a_1 + a_0 = 4 + 1 = 5\na_3 = 2*a_2 + a_1 = 10 + 2 = 12\na_4 = 2*a_3 + a_2 = 24 + 5 = 29\na_5 = 2*a_4 + a_3 = 58 + 12 = 70\na_6 = 2*a_5 + a_4 = 140 + 29 = 169\nFINAL_ANSWER: 169"
+      },
+      {
+        "task_id": "sum-01",
+        "dim": "summarization",
+        "difficulty": "easy",
+        "passed": false,
+        "score": 0.6667,
+        "reason": "missing_salient_terms:2/3",
+        "gen_tokens": 25,
+        "latency_ms": 1777.44,
+        "response_preview": "Orbiter Kestrel completed 48-hour thermal soak with 3.2% thruster mass leakage."
+      },
+      {
+        "task_id": "sum-02",
+        "dim": "summarization",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_summary",
+        "gen_tokens": 43,
+        "latency_ms": 3271.29,
+        "response_preview": "CinderDB replaced mutex-guarded buffers with wait-free ring slots, reducing P99 commit latency to 14.5 ms and maintaining 99.94% replication durability under chaos drills."
+      },
+      {
+        "task_id": "sum-03",
+        "dim": "summarization",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_summary",
+        "gen_tokens": 29,
+        "latency_ms": 2093.79,
+        "response_preview": "Survey crew drilled borehole BH-9 down to 620 m through fractured basalt, recovering 91% core integrity."
+      },
+      {
+        "task_id": "sum-04",
+        "dim": "summarization",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_summary",
+        "gen_tokens": 34,
+        "latency_ms": 2535.95,
+        "response_preview": "Loom-7 reduces transformer losses to 0.41 kWh per feeder and cuts evening peak draw by 28% across 12 substations."
+      },
+      {
+        "task_id": "jsn-01",
+        "dim": "structured_json",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "gen_tokens": 25,
+        "latency_ms": 1894.7,
+        "response_preview": "{\"host\": \"gw-04.internal\", \"port\": 8443, \"tls\": true}"
+      },
+      {
+        "task_id": "jsn-02",
+        "dim": "structured_json",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "gen_tokens": 24,
+        "latency_ms": 1989.12,
+        "response_preview": "{\"items\": 5, \"total_cost_usd\": 150, \"currency\": \"USD\"}"
+      },
+      {
+        "task_id": "jsn-03",
+        "dim": "structured_json",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "gen_tokens": 25,
+        "latency_ms": 2025.66,
+        "response_preview": "{\"active_regions\": [\"ap-south\", \"ca-central\", \"us-east\"], \"offline_count\": 2}"
+      },
+      {
+        "task_id": "jsn-04",
+        "dim": "structured_json",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:subtotal:400!=520",
+        "gen_tokens": 32,
+        "latency_ms": 2569.91,
+        "response_preview": "{\"subtotal\": 400, \"discount\": 40, \"tax\": 38, \"grand_total\": 468}"
+      },
+      {
+        "task_id": "dia-01",
+        "dim": "diagrams_charts",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_mermaid",
+        "gen_tokens": 21,
+        "latency_ms": 1997.98,
+        "response_preview": "```mermaid\nflowchart TD\n    Ingest --> Validate\n    Validate --> Archive\n```"
+      },
+      {
+        "task_id": "dia-02",
+        "dim": "diagrams_charts",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_mermaid",
+        "gen_tokens": 37,
+        "latency_ms": 3598.95,
+        "response_preview": "```mermaid\nstateDiagram-v2\n    [Idle] --> [Queued]\n    [Queued] --> [Running]\n    [Running] --> [Done]\n```"
+      },
+      {
+        "task_id": "dia-03",
+        "dim": "diagrams_charts",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.8333,
+        "reason": "incomplete_mermaid:hits=4/4,edges=2",
+        "gen_tokens": 39,
+        "latency_ms": 3496.75,
+        "response_preview": "```mermaid\nflowchart LR\nClient[\"Browser (UI)\"] --> Gateway[\"API Gateway\"] --> Worker[\"Job Runner (Async)\"]\nAlert[\"Alert\"] --> Gateway\n```"
+      },
+      {
+        "task_id": "dia-04",
+        "dim": "diagrams_charts",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:sum_total:120!=100",
+        "gen_tokens": 53,
+        "latency_ms": 4038.65,
+        "response_preview": "{\"chart_type\": \"bar\", \"x_labels\": [\"Q1\",\"Q2\",\"Q3\",\"Q4\"], \"values\": [14, 29, 21, 36], \"sum_total\": 120}"
+      },
+      {
+        "task_id": "lng-01",
+        "dim": "long_context",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "gen_tokens": 21,
+        "latency_ms": 2509.4,
+        "response_preview": "{\"owner_south\": \"Kiran\", \"final_north_latency_ms\": 27}"
+      },
+      {
+        "task_id": "lng-02",
+        "dim": "long_context",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:net_hours:120!=165",
+        "gen_tokens": 21,
+        "latency_ms": 2576.33,
+        "response_preview": "{\"ticket\": \"TKT-901\", \"net_hours\": 120}"
+      },
+      {
+        "task_id": "lng-03",
+        "dim": "long_context",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "gen_tokens": 33,
+        "latency_ms": 3068.62,
+        "response_preview": "{\"p1_rpm\": 310, \"p2_rpm\": 440, \"reported_rpm\": 310}"
+      },
+      {
+        "task_id": "lng-04",
+        "dim": "long_context",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:remaining_crates:18!=13",
+        "gen_tokens": 33,
+        "latency_ms": 3349.31,
+        "response_preview": "{\"remaining_crates\": 18, \"remaining_kg\": 540, \"seal_code\": \"BOREAL-719\"}"
+      },
+      {
+        "task_id": "knw-01",
+        "dim": "general_knowledge",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 29,
+        "latency_ms": 2107.1,
+        "response_preview": "The HTTP status code that means 'Too Many Requests' for rate limiting is 429. FINAL_ANSWER: 429"
+      },
+      {
+        "task_id": "knw-02",
+        "dim": "general_knowledge",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 26,
+        "latency_ms": 2284.59,
+        "response_preview": "The bit width of a standard double-precision float64 is 64 bits. FINAL_ANSWER: 64"
+      },
+      {
+        "task_id": "knw-03",
+        "dim": "general_knowledge",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 29,
+        "latency_ms": 2105.12,
+        "response_preview": "The worst-case time complexity of binary search on a sorted array of n elements is O(log n). FINAL_ANSWER: O(log n)"
+      },
+      {
+        "task_id": "knw-04",
+        "dim": "general_knowledge",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 29,
+        "latency_ms": 2093.95,
+        "response_preview": "The condition counter is used with `futex` to allow wait/wake without kernel calls unless contended.\nFINAL_ANSWER: futex"
+      },
+      {
+        "task_id": "msr-01",
+        "dim": "multi_step_reasoning",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 68,
+        "latency_ms": 5180.31,
+        "response_preview": "Step 1: 10 * 2 = 20\nStep 2: 20 - 6 = 14\nStep 3: 14 * 3 = 42\nStep 4: 42 + 8 = 50\nFINAL_ANSWER: 50"
+      },
+      {
+        "task_id": "msr-02",
+        "dim": "multi_step_reasoning",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.0,
+        "reason": "answer_mismatch:'Silver'",
+        "gen_tokens": 10,
+        "latency_ms": 781.39,
+        "response_preview": "Red contains Silver.\nFINAL_ANSWER: Silver"
+      },
+      {
+        "task_id": "msr-03",
+        "dim": "multi_step_reasoning",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 59,
+        "latency_ms": 4794.73,
+        "response_preview": "r0 = 3 + 5 = 8\nr2 = 2 * 8 = 16\nr3 = 7 XOR 5 = 2\nr1 = 16 - 2 = 14\nFINAL_ANSWER: 14"
+      },
+      {
+        "task_id": "msr-04",
+        "dim": "multi_step_reasoning",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 51,
+        "latency_ms": 3868.18,
+        "response_preview": "A is at 5.\nB is at 2.\nC is immediately left of B: C is at 1.\nD is immediately right of B: D is at 3.\nE is at 4.\nFINAL_ANSWER: 4"
+      },
+      {
+        "task_id": "ins-01",
+        "dim": "instruction_following",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_constraints_satisfied",
+        "gen_tokens": 14,
+        "latency_ms": 1016.22,
+        "response_preview": "kernel is the heart of the system, managing resources and processes."
+      },
+      {
+        "task_id": "ins-02",
+        "dim": "instruction_following",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_constraints_satisfied",
+        "gen_tokens": 37,
+        "latency_ms": 2625.8,
+        "response_preview": "- Test cases ensure code is correct for all possible inputs.\n- Unit tests verify that individual components work as expected.\n- Testing early identifies issues before they become complex. \n\nEND_CHECK"
+      },
+      {
+        "task_id": "ins-03",
+        "dim": "instruction_following",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.8,
+        "reason": "words=34>28",
+        "gen_tokens": 40,
+        "latency_ms": 2832.71,
+        "response_preview": "Hash tables use buckets to store key-value pairs, with collisions resolved by chaining or open addressing. Each bucket holds a list of entries, and collisions occur when two keys hash to the same buck"
+      },
+      {
+        "task_id": "ins-04",
+        "dim": "instruction_following",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "all_constraints_satisfied",
+        "gen_tokens": 22,
+        "latency_ms": 1576.82,
+        "response_preview": "- latency is critical for real-time systems\n- cache is used to reduce memory access time\n::done"
+      },
+      {
+        "task_id": "tol-01",
+        "dim": "tool_use",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_tool_calls",
+        "gen_tokens": 26,
+        "latency_ms": 1814.32,
+        "response_preview": "{\"tool\": \"read_metric\", \"args\": {\"service\": \"auth-api\", \"window_min\": 15}}"
+      },
+      {
+        "task_id": "tol-02",
+        "dim": "tool_use",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.0,
+        "reason": "tool_call_mismatch:0/2",
+        "gen_tokens": 45,
+        "latency_ms": 3509.47,
+        "response_preview": "{\"calls\": [{\"account_id\": 402, \"type\": \"fetch_balance\"}, {\"amount\": 250, \"from_ccy\": \"USD\", \"to_ccy\": \"EUR\"}]}"
+      },
+      {
+        "task_id": "tol-03",
+        "dim": "tool_use",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_tool_calls",
+        "gen_tokens": 22,
+        "latency_ms": 1544.51,
+        "response_preview": "{\"tool\": \"cache_lookup\", \"args\": {\"key\": \"cuda\", \"fallback\": true}}"
+      },
+      {
+        "task_id": "tol-04",
+        "dim": "tool_use",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.0,
+        "reason": "tool_call_mismatch:0/2",
+        "gen_tokens": 46,
+        "latency_ms": 3167.08,
+        "response_preview": "{\"calls\": [{\"type\": \"create_backup_dir\", \"path\": \"/tmp/recover\"}, {\"type\": \"write_default_config\", \"target\": \"/etc/missing.conf\", \"mode\": 644}]}"
+      },
+      {
+        "task_id": "pln-01",
+        "dim": "planning_decomposition",
+        "difficulty": "easy",
+        "passed": false,
+        "score": 0.7,
+        "reason": "wrong_makespan:4!=9",
+        "gen_tokens": 20,
+        "latency_ms": 1418.96,
+        "response_preview": "{\"order\": [\"A\", \"B\", \"C\"], \"makespan\": 4}"
+      },
+      {
+        "task_id": "pln-02",
+        "dim": "planning_decomposition",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.7,
+        "reason": "wrong_makespan:5!=9",
+        "gen_tokens": 24,
+        "latency_ms": 1675.39,
+        "response_preview": "{\"order\": [\"Spec\", \"Backend\", \"Frontend\", \"Deploy\"], \"makespan\": 5}"
+      },
+      {
+        "task_id": "pln-03",
+        "dim": "planning_decomposition",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.7,
+        "reason": "wrong_makespan:11!=13",
+        "gen_tokens": 32,
+        "latency_ms": 2590.69,
+        "response_preview": "{\"order\": [\"T1\", \"T2\", \"T3\", \"T4\", \"T5\"], \"makespan\": 11}"
+      },
+      {
+        "task_id": "pln-04",
+        "dim": "planning_decomposition",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "verified_dag_schedule_and_makespan",
+        "gen_tokens": 28,
+        "latency_ms": 1967.59,
+        "response_preview": "{\"order\": [\"Init\", \"Kernel\", \"Data\", \"Eval\", \"Signoff\"], \"makespan\": 10}"
+      },
+      {
+        "task_id": "ood-01",
+        "dim": "ood_robustness",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 47,
+        "latency_ms": 3354.77,
+        "response_preview": "a @ b = 2a + 3b\n5 @ 4 = 2*5 + 3*4 = 10 + 12 = 22\nFINAL_ANSWER: 22"
+      },
+      {
+        "task_id": "ood-02",
+        "dim": "ood_robustness",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.0,
+        "reason": "answer_mismatch:'10'",
+        "gen_tokens": 26,
+        "latency_ms": 1959.22,
+        "response_preview": "2 * 3 + 4 = 6 + 4 = 10\nFINAL_ANSWER: 10"
+      },
+      {
+        "task_id": "ood-03",
+        "dim": "ood_robustness",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.0,
+        "reason": "answer_mismatch:'64'",
+        "gen_tokens": 58,
+        "latency_ms": 4618.13,
+        "response_preview": "FLIP_ADD(14, 230) = FLIP_ADD(41, 023) = FLIP_ADD(41, 23) = 41 + 23 = 64\nFINAL_ANSWER: 64"
+      },
+      {
+        "task_id": "ood-04",
+        "dim": "ood_robustness",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_answer_match",
+        "gen_tokens": 43,
+        "latency_ms": 3246.97,
+        "response_preview": "f(4) = (16 + 1) mod 13 = 17 mod 13 = 4\nf(4) = 4\nFINAL_ANSWER: 4"
+      },
+      {
+        "task_id": "hal-01",
+        "dim": "hallucination_resistance",
+        "difficulty": "easy",
+        "passed": false,
+        "score": 0.0,
+        "reason": "confabulated_unsupported_answer",
+        "gen_tokens": 122,
+        "latency_ms": 9419.03,
+        "response_preview": "ABSTAIN:\nThe question contains an impossible premise. The invoice #88 says the buyer paid $250 in shipping, and zero taxes were itemized. This implies that the total amount paid by the buyer is $250, "
+      },
+      {
+        "task_id": "hal-02",
+        "dim": "hallucination_resistance",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "calibrated_abstention",
+        "gen_tokens": 12,
+        "latency_ms": 914.18,
+        "response_preview": "ABSTAIN: Premises are missing or contradictory."
+      },
+      {
+        "task_id": "hal-03",
+        "dim": "hallucination_resistance",
+        "difficulty": "medium",
+        "passed": true,
+        "score": 1.0,
+        "reason": "calibrated_abstention",
+        "gen_tokens": 27,
+        "latency_ms": 2063.6,
+        "response_preview": "ABSTAIN: The square of a prime number is even only if the prime is 2. No other prime is even."
+      },
+      {
+        "task_id": "hal-04",
+        "dim": "hallucination_resistance",
+        "difficulty": "hard",
+        "passed": true,
+        "score": 1.0,
+        "reason": "calibrated_abstention",
+        "gen_tokens": 25,
+        "latency_ms": 1965.49,
+        "response_preview": "ABSTAIN: The document does not provide information about the number of pallets held by Warehouse West in Q4."
+      },
+      {
+        "task_id": "mem-01",
+        "dim": "memory_retention",
+        "difficulty": "easy",
+        "passed": true,
+        "score": 1.0,
+        "reason": "exact_json_match",
+        "gen_tokens": 32,
+        "latency_ms": 2322.02,
+        "response_preview": "{\"user\": \"alice\", \"role\": \"editor\", \"region\": \"eu-west\", \"active\": false, \"quota\": 35}"
+      },
+      {
+        "task_id": "mem-02",
+        "dim": "memory_retention",
+        "difficulty": "medium",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:gpu:2!=3",
+        "gen_tokens": 20,
+        "latency_ms": 1919.19,
+        "response_preview": "{\"gpu\": 2, \"ssd\": 4, \"fan\": 5}"
+      },
+      {
+        "task_id": "mem-03",
+        "dim": "memory_retention",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:A:70!=80",
+        "gen_tokens": 15,
+        "latency_ms": 1279.72,
+        "response_preview": "{\"A\": 70, \"B\": 70}"
+      },
+      {
+        "task_id": "mem-04",
+        "dim": "memory_retention",
+        "difficulty": "hard",
+        "passed": false,
+        "score": 0.5,
+        "reason": "value_mismatch:branch:'main'!='release-1'",
+        "gen_tokens": 26,
+        "latency_ms": 1870.44,
+        "response_preview": "{\"branch\": \"main\", \"owner\": \"liam\", \"priority\": \"critical\", \"status\": \"merged\"}"
+      }
+    ],
+    "training_stats": {
+      "graft": {
+        "lora_layers": 196,
+        "holonomic_sidecar_layers": 8,
+        "total_parameters": 1747149824,
+        "trainable_parameters": 26574848,
+        "trainable_pct": 1.521,
+        "step0_max_abs_logit_diff": 0.0
+      },
+      "sft_early_stopped": {
+        "epochs": 2,
+        "steps": 70,
+        "epoch_losses": [
+          0.73689,
+          0.3092
+        ]
+      },
+      "grpo_challenging": {
+        "rounds": 3,
+        "total_prompt_groups": 72,
+        "gradient_updates": 18,
+        "skipped_zero_variance_groups": 54,
+        "round_mean_rewards": [
+          0.2271,
+          0.3636,
+          0.4279
+        ],
+        "mean_kl": 0.74203
+      },
+      "mean_abs_sidecar_gate": 0.000816,
+      "trainable_tensor_count": 440
+    }
+  }
+}
