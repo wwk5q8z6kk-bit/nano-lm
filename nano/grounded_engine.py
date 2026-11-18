@@ -765,12 +765,22 @@ def resolve_world_state(
             )
         elif hc.status == "incomparable":
             parent_res = resolutions.get(hc.parent_id)
+            c_spans = parent_res.spans if parent_res else ()
             conflicts[hc.parent_id] = (*conflicts.get(hc.parent_id, ()), ConflictPair(
                 node_id=hc.parent_id,
                 kind="incomparable_denomination",
-                spans=parent_res.spans if parent_res else (),
+                spans=c_spans,
                 reason=hc.reason,
             ))
+            resolutions[hc.parent_id] = NodeResolution(
+                node_id=hc.parent_id,
+                state=GroundedState.UNCERTAIN,
+                value_text=None,
+                quantity=parent_res.quantity if parent_res else None,
+                spans=c_spans,
+                verified=False,
+                reason=hc.reason,
+            )
 
     return GroundedWorldReport(
         source_id=source_id,

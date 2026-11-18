@@ -280,14 +280,31 @@ class OntologyGraph:
                     return False
         return True
 
+    def _postorder_nodes(self) -> tuple[OntologyNode, ...]:
+        visited: set[str] = set()
+        ordered: list[OntologyNode] = []
+
+        def dfs(nid: str) -> None:
+            if nid in visited:
+                return
+            visited.add(nid)
+            for cid in self._children.get(nid, ()):
+                dfs(cid)
+            ordered.append(self.nodes[nid])
+
+        for nid in self._order:
+            dfs(nid)
+        return tuple(ordered)
+
     def verify_rollups(
         self,
         resolved_quantities: dict[str, QuantityValue],
         registry: DenominationRegistry,
     ) -> list[HierarchyCheckResult]:
-        """Verify conservation and parent-child consistency across hierarchical trees."""
+        """Verify conservation and parent-child consistency across hierarchical trees (bottom-up post-order)."""
         results: list[HierarchyCheckResult] = []
-        for node in self.ordered_nodes:
+        working = dict(resolved_quantities)
+        for node in self._postorder_nodes():
             if not node.rollup_op:
                 continue
             children = [
@@ -297,20 +314,20 @@ class OntologyGraph:
             if not children:
                 continue
             child_ids = tuple(c.node_id for c in children)
-            present = [resolved_quantities[c.node_id] for c in children if c.node_id in resolved_quantities]
+            present = [working[c.node_id] for c in children if c.node_id in working]
             if len(present) < len(children):
-                if present or node.node_id in resolved_quantities:
+                if present or node.node_id in working:
                     results.append(HierarchyCheckResult(
                         parent_id=node.node_id,
                         status="incomplete",
                         reason=f"only {len(present)}/{len(children)} child components resolved",
-                        observed_quantity=resolved_quantities.get(node.node_id),
+                        observed_quantity=working.get(node.node_id),
                         child_ids=child_ids,
                     ))
                 continue
 
             target_denom = node.default_denomination or (
-                resolved_quantities[node.node_id].denomination if node.node_id in resolved_quantities else ""
+                working[node.node_id].denomination if node.node_id in working else ""
             )
             if node.rollup_op == "sum":
                 agg, status = registry.sum_quantities(present, target_denomination=target_denom)
@@ -319,7 +336,7 @@ class OntologyGraph:
                         parent_id=node.node_id,
                         status="incomparable",
                         reason=status,
-                        observed_quantity=resolved_quantities.get(node.node_id),
+                        observed_quantity=working.get(node.node_id),
                         child_ids=child_ids,
                     ))
                     continue
@@ -340,7 +357,7 @@ class OntologyGraph:
                 if err_reason:
                     results.append(HierarchyCheckResult(
                         parent_id=node.node_id, status="incomparable", reason=err_reason,
-                        observed_quantity=resolved_quantities.get(node.node_id), child_ids=child_ids,
+                        observed_quantity=working.get(node.node_id), child_ids=child_ids,
                     ))
                     continue
                 fn = max if node.rollup_op == "max" else min
@@ -357,8 +374,9 @@ class OntologyGraph:
                     base_max=agg_max,
                 )
 
-            parent_obs = resolved_quantities.get(node.node_id)
+            parent_obs = working.get(node.node_id)
             if parent_obs is None:
+                working[node.node_id] = agg
                 results.append(HierarchyCheckResult(
                     parent_id=node.node_id, status="consistent",
                     reason="derived_from_children", expected_quantity=agg,
