@@ -280,6 +280,49 @@ class TemporalExtent:
 # --------------------------------------------------------------------------
 
 @dataclass(frozen=True)
+class DomainAssertion:
+    """Domain-agnostic typed assertion over any hierarchical OntologyNode & denomination."""
+    subject_id: str
+    node_id: str
+    predicate: str
+    obj: str
+    original_wording: str
+    epistemic_status: EpistemicStatus
+    evidence_span_ids: tuple = ()
+    normalized_concept: str = ""
+    negated: bool = False
+    temporal: TemporalExtent = field(default_factory=TemporalExtent)
+    author: str = ""
+    extractor: str = "nano-engine-v1"
+    denomination: str = ""
+    unit: str = ""
+    quantity: Any = None
+    derivation: DerivationMode = DerivationMode.OBSERVED
+    assertion_id: str = ""
+
+    def __post_init__(self):
+        if not self.original_wording:
+            raise ValueError("original wording must be preserved")
+        if not self.evidence_span_ids and self.epistemic_status not in _ABSENCE_STATUSES:
+            raise ValueError(
+                f"assertion with status {self.epistemic_status.value} needs evidence "
+                "(absence-never-from-silence)")
+        if self.derivation in NON_OBSERVED_MODES and self.epistemic_status in _DIRECT_STATUSES:
+            raise ValueError(
+                f"derivation={self.derivation.value} cannot carry "
+                f"epistemic_status={self.epistemic_status.value} — "
+                "an inference is not a direct observation")
+        object.__setattr__(self, "assertion_id", _cid(
+            {"sub": self.subject_id, "n": self.node_id, "pr": self.predicate,
+             "o": self.obj, "e": self.epistemic_status.value, "d": self.denomination,
+             "neg": self.negated, "ev": list(self.evidence_span_ids)}, "dasrt"))
+
+    @property
+    def is_inferred(self) -> bool:
+        return self.epistemic_status in _INFERRED_STATUSES
+
+
+@dataclass(frozen=True)
 class ClinicalAssertion:
     """Successor to fabric.Claim: keeps original wording AND normalized concept."""
     patient_id: str

@@ -327,6 +327,43 @@ PRIMITIVES: tuple[Primitive, ...] = (
                         "says how the system produced it — orthogonal axes that "
                         "were being carried by one enum",
        splits_from="Uncertainty"),
+
+    _p(name="QuantityValue", plane="World model",
+       definition="Typed dimensional quantity with scale interval, unit, denomination, and role (stock/flow/duration/timepoint/ordinal).",
+       must_not_conflate_with=("Claim", "DomainAssertion"),
+       presence=Presence.IN_CODE, implementation="nano/units.py::QuantityValue",
+       admitted_because="flat strings fail equivalence and conservation checks across scales and denominations ($1.5M vs $1500k; 500mg vs 0.5g)"),
+
+    _p(name="ConversionEdge", plane="World model",
+       definition="Observed, evidence-backed conversion rate between denominations or custom units; never guessed silently.",
+       must_not_conflate_with=("QuantityValue",),
+       presence=Presence.IN_CODE, implementation="nano/units.py::ConversionEdge",
+       admitted_because="cross-denomination conversion (e.g. USD<->EUR, mg<->mL) is an empirical fact that requires provenance"),
+
+    _p(name="OntologyNode", plane="Identity & Authority",
+       definition="Declarative node in a runtime-extensible hierarchical schema with predicate cues, denomination typing, and rollup rules.",
+       must_not_conflate_with=("Entity", "Claim"),
+       presence=Presence.IN_CODE, implementation="nano/schema.py::OntologyNode",
+       admitted_because="hardcoded per-domain enums and regex branches collapse structural hierarchy and sibling exclusivity"),
+
+    _p(name="OntologyGraph", plane="World model",
+       definition="Dynamic hierarchical ontology DAG supporting sibling competition, relative tree-gauge coordinates, and mixed-denomination rollups.",
+       must_not_conflate_with=("DependencyGraph", "WorldStateProjection"),
+       presence=Presence.IN_CODE, implementation="nano/schema.py::OntologyGraph",
+       admitted_because="parent-child containment, subtype inheritance, and cross-slot competition must be schema-driven across all domains"),
+
+    _p(name="DomainAssertion", plane="World model",
+       definition="Domain-agnostic proposition bound to a dynamic OntologyNode, typed QuantityValue, denomination, and verifiable evidence.",
+       must_not_conflate_with=("Evidence", "Claim"),
+       presence=Presence.IN_CODE, implementation="nano/contracts.py::DomainAssertion",
+       admitted_because="core assertions cannot be restricted to clinical encounters and passive unit strings",
+       splits_from="Claim"),
+
+    _p(name="GroundedEngine", plane="Verification",
+       definition="Domain-agnostic verifier, joint non-destructive span allocator, and hierarchical/denomination consistency checker.",
+       must_not_conflate_with=("OntologyGraph", "VerificationReceipt"),
+       presence=Presence.IN_CODE, implementation="nano/grounded_engine.py::GroundedWorldReport",
+       admitted_because="verification, retraction, scope isolation, and custody invariants belong to a shared domain-independent kernel"),
 )
 
 
