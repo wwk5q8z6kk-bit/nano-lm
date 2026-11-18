@@ -1,0 +1,109 @@
+{
+  "schema": "nanolm.unified_loop.parallel_process_registry.v1",
+  "captured_at_local": "2026-11-18T14:23:00-05:00",
+  "non_interference_policy": "STRICT_ZERO_INTERRUPTION_ISOLATED_WORKTREE_ONLY",
+  "this_session": {
+    "worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-unified-loop",
+    "branch": "research/unified-discovery-loop-v1",
+    "base_commit": "f82d82a",
+    "new_paid_compute_usd": 0.0
+  },
+  "active_cloud_gpu_jobs": [
+    {
+      "provider": "RunPod",
+      "pod_id": "4srqwah0chgn82",
+      "name": "ws3-125m-bobo-v6",
+      "gpu": "1x NVIDIA A100 SXM",
+      "status": "RUNNING",
+      "owner_worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-v3",
+      "local_watcher_pids": [95151, 95174, 97294],
+      "command": "python3 -m lab.arch.train_ws3_scaling --arm S5_nanolm_v6_bobo_125m --tokens 600e6 --stop-step 2290 --micro 16 --seed 0 --compile",
+      "action_taken": "LEFT_UNTOUCHED"
+    },
+    {
+      "provider": "RunPod",
+      "pod_id": "7lgtpru2bcyczr",
+      "name": "nanolm-scale03-dense-350m-s0",
+      "gpu": "1x NVIDIA RTX 4090",
+      "status": "RUNNING",
+      "owner_worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab",
+      "local_watcher_pids": [75142],
+      "command": "lab.arch.train_nextgen --arm S0_dense_350m --optim muon --seed 0 --micro 8 --compile",
+      "action_taken": "LEFT_UNTOUCHED"
+    },
+    {
+      "provider": "RunPod",
+      "pod_id": "y2w6enx8kkw2fx",
+      "name": "nanolm-scale03-v3-125m-s1",
+      "gpu": "1x NVIDIA RTX 5090",
+      "status": "RUNNING",
+      "owner_worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab",
+      "local_watcher_pids": [8821],
+      "command": "lab.arch.train_arch04 --arm S2_nanolm_v3_125m --seed 1 --micro 16",
+      "action_taken": "LEFT_UNTOUCHED"
+    },
+    {
+      "provider": "RunPod",
+      "pod_id": "ydlvfq3siahi4d",
+      "name": "nanolm-scale03-v3-350m-s0",
+      "gpu": "1x NVIDIA RTX 4090",
+      "status": "RUNNING",
+      "owner_worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab",
+      "local_watcher_pids": [75200],
+      "command": "lab.arch.train_arch04 --arm S2_nanolm_v3_350m --seed 0 --micro 8",
+      "action_taken": "LEFT_UNTOUCHED"
+    }
+  ],
+  "recent_kaggle_kernels": [
+    {
+      "ref": "hassaneljesr/nanolm-ern-gen4-cycle3-gpu",
+      "last_run_utc": "2026-11-18T15:39:48Z",
+      "status": "COMPLETE",
+      "owner_worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-paradigm",
+      "retrieved_artifact": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-paradigm/artifacts/autonomous_discovery_v1/discovery_cycle3_kaggle_results.json",
+      "verified_summary": "nanolm-ern-125m (125.84M params, 2x Tesla T4 fp16, 8790s): Stage1 9.83M tok composite BPB 0.9182 (0/16 eval); Stage2 SFT 6/16 (37.5%); Stage3 GRPO RLVR 7/16 (43.75%: coding 4/4, math 2/4, charts 1/2, summarization 0/2, structured_json 0/2, long_context 0/2)."
+    },
+    {
+      "ref": "hassaneljesr/nanolm-discovery-cuda-v1",
+      "last_run_utc": "2026-11-18T06:29:33Z",
+      "status": "COMPLETE",
+      "owner_worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-discovery",
+      "retrieved_artifact": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-discovery/artifacts/nanolm_discovery_v1/kaggle_cuda_results.json",
+      "verified_summary": "18M 1,000-step 4x-horizon learning curves on 2x T4: b0_transformer ID 2.1188 BPB (ood2x 2.1526, +0.0338 cliff) vs g3_hmwr ID 2.1342 BPB (ood2x 2.1322, beats B0 on 2x OOD)."
+    },
+    {
+      "ref": "hassaneljesr/nanolm-omega-cuda-v1",
+      "last_run_utc": "2026-11-18T18:07:12Z",
+      "status": "ERROR",
+      "owner_worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-discovery",
+      "verified_summary": "KernelWorkerStatus.ERROR with 0 output files; peer session in nanolm-discovery is debugging locally."
+    }
+  ],
+  "active_local_processes": [
+    {
+      "pid": 33575,
+      "worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-discovery",
+      "command": "python3 scripts/run_nanolm_omega_suite.py --recalibrate-g4-only",
+      "action_taken": "LEFT_UNTOUCHED"
+    },
+    {
+      "pid": 52132,
+      "worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-holonomy",
+      "command": "gh -R wwk5q8z6kk-bit/nano-lm pr checks 174 --watch",
+      "action_taken": "LEFT_UNTOUCHED"
+    }
+  ],
+  "compute_financial_reconciliation": {
+    "autonomous_envelope_usd": 180.0,
+    "hard_campaign_cap_usd": 200.0,
+    "owner_reserve_floor_usd": 20.0,
+    "historical_snapshot_04c1c9c_spent_usd": 84.86,
+    "historical_snapshot_04c1c9c_remaining_usd": 95.14,
+    "nanolm_lab_phases_1_to_5_realized_usd": 112.03,
+    "holonomy_omega_pod_jiwcmt2i7qspab_account_delta_usd": 3.72,
+    "ws3_teardown_observed_wallet_floor_usd": 20.99,
+    "currently_accruing_peer_pods_count": 4,
+    "this_session_new_paid_spend_usd": 0.0,
+    "spending_decision": "NO_NEW_PAID_COMPUTE_LAUNCHED; LOCAL_M3_MAX_ONLY"
+  }
+}
