@@ -1,0 +1,482 @@
+{
+  "schema": "nanolm.unified_loop.u04.v1",
+  "elapsed_s": 200.61,
+  "paid_compute_usd": 0.0,
+  "part2_72_cases_aggregate": {
+    "asserted": 276,
+    "gold_real_grd": 226,
+    "menu_grd": 236,
+    "e2e_grd": 233,
+    "n03_grd": 0,
+    "useful_notes_grd": 72
+  },
+  "part2_adversarial_hazards": {
+    "total_hazards": 7,
+    "false_admissions": 0,
+    "custody_violations": 0,
+    "cases": [
+      {
+        "hazard_id": "third_party",
+        "disposition": "abstain",
+        "asserted_count": 0,
+        "n03_custody_ok": true
+      },
+      {
+        "hazard_id": "past_resolved",
+        "disposition": "abstain",
+        "asserted_count": 0,
+        "n03_custody_ok": true
+      },
+      {
+        "hazard_id": "stopped_med",
+        "disposition": "abstain",
+        "asserted_count": 0,
+        "n03_custody_ok": true
+      },
+      {
+        "hazard_id": "hedged_uncertainty",
+        "disposition": "abstain",
+        "asserted_count": 0,
+        "n03_custody_ok": true
+      },
+      {
+        "hazard_id": "retracted_slip",
+        "disposition": "abstain",
+        "asserted_count": 0,
+        "n03_custody_ok": true
+      },
+      {
+        "hazard_id": "leading_article",
+        "disposition": "abstain",
+        "asserted_count": 0,
+        "n03_custody_ok": true
+      },
+      {
+        "hazard_id": "source_reassignment",
+        "disposition": "abstain",
+        "asserted_count": 0,
+        "n03_custody_ok": true
+      }
+    ]
+  },
+  "part2_per_cohort": {
+    "C12_independent_dev_20261023": {
+      "cohort": "p1_independent_dev_20261023",
+      "cases": 24,
+      "total_slots": 120,
+      "total_asserted_gold_slots": 104,
+      "gold_candidates_x_oracle_adjudication": {
+        "context_transport_clean_cases": 24,
+        "grounded_transport_clean_cases": 24
+      },
+      "gold_candidates_x_real_verifier": {
+        "context_retained_asserted_slots": 26,
+        "grounded_retained_asserted_slots": 78,
+        "context_total_matches": 40,
+        "grounded_total_matches": 94,
+        "context_useful_notes": 18,
+        "grounded_useful_notes": 24
+      },
+      "real_candidate_menu_x_oracle_adjudication": {
+        "context_menu_covers_asserted_slots": 27,
+        "grounded_menu_covers_asserted_slots": 90
+      },
+      "real_candidate_menu_oracle_x_real_verifier": {
+        "context_end2end_retained_asserted_slots": 26,
+        "grounded_end2end_retained_asserted_slots": 89,
+        "context_useful_notes": 18,
+        "grounded_useful_notes": 24
+      },
+      "saved_qwen_responses_2x2": {
+        "constrained": {
+          "oracle_asserted_matches": 3,
+          "context_retained_asserted": 0,
+          "grounded_retained_asserted": 3,
+          "context_useful_notes": 0,
+          "grounded_useful_notes": 3
+        },
+        "free": {
+          "oracle_asserted_matches": 0,
+          "context_retained_asserted": 2,
+          "grounded_retained_asserted": 24,
+          "context_useful_notes": 3,
+          "grounded_useful_notes": 18
+        }
+      },
+      "n03_custody_violations": {
+        "context": 0,
+        "grounded": 0
+      }
+    },
+    "C13_scope_validation_20261023": {
+      "cohort": "p1_scope_validation_20261023",
+      "cases": 24,
+      "total_slots": 120,
+      "total_asserted_gold_slots": 92,
+      "gold_candidates_x_oracle_adjudication": {
+        "context_transport_clean_cases": 20,
+        "grounded_transport_clean_cases": 23
+      },
+      "gold_candidates_x_real_verifier": {
+        "context_retained_asserted_slots": 1,
+        "grounded_retained_asserted_slots": 72,
+        "context_total_matches": 28,
+        "grounded_total_matches": 98,
+        "context_useful_notes": 1,
+        "grounded_useful_notes": 24
+      },
+      "real_candidate_menu_x_oracle_adjudication": {
+        "context_menu_covers_asserted_slots": 8,
+        "grounded_menu_covers_asserted_slots": 73
+      },
+      "real_candidate_menu_oracle_x_real_verifier": {
+        "context_end2end_retained_asserted_slots": 2,
+        "grounded_end2end_retained_asserted_slots": 71,
+        "context_useful_notes": 2,
+        "grounded_useful_notes": 24
+      },
+      "saved_qwen_responses_2x2": {
+        "constrained": {
+          "oracle_asserted_matches": 3,
+          "context_retained_asserted": 0,
+          "grounded_retained_asserted": 3,
+          "context_useful_notes": 0,
+          "grounded_useful_notes": 8
+        },
+        "free": {
+          "oracle_asserted_matches": 3,
+          "context_retained_asserted": 1,
+          "grounded_retained_asserted": 14,
+          "context_useful_notes": 2,
+          "grounded_useful_notes": 15
+        }
+      },
+      "n03_custody_violations": {
+        "context": 0,
+        "grounded": 0
+      }
+    },
+    "C14_retention_validation_20261026": {
+      "cohort": "p1_retention_validation_20261026",
+      "cases": 24,
+      "total_slots": 120,
+      "total_asserted_gold_slots": 80,
+      "gold_candidates_x_oracle_adjudication": {
+        "context_transport_clean_cases": 19,
+        "grounded_transport_clean_cases": 24
+      },
+      "gold_candidates_x_real_verifier": {
+        "context_retained_asserted_slots": 0,
+        "grounded_retained_asserted_slots": 76,
+        "context_total_matches": 22,
+        "grounded_total_matches": 116,
+        "context_useful_notes": 0,
+        "grounded_useful_notes": 24
+      },
+      "real_candidate_menu_x_oracle_adjudication": {
+        "context_menu_covers_asserted_slots": 3,
+        "grounded_menu_covers_asserted_slots": 73
+      },
+      "real_candidate_menu_oracle_x_real_verifier": {
+        "context_end2end_retained_asserted_slots": 1,
+        "grounded_end2end_retained_asserted_slots": 73,
+        "context_useful_notes": 1,
+        "grounded_useful_notes": 24
+      },
+      "saved_qwen_responses_2x2": {
+        "constrained": {
+          "oracle_asserted_matches": 2,
+          "context_retained_asserted": 1,
+          "grounded_retained_asserted": 0,
+          "context_useful_notes": 1,
+          "grounded_useful_notes": 0
+        },
+        "free": {
+          "oracle_asserted_matches": 0,
+          "context_retained_asserted": 0,
+          "grounded_retained_asserted": 13,
+          "context_useful_notes": 0,
+          "grounded_useful_notes": 11
+        }
+      },
+      "n03_custody_violations": {
+        "context": 0,
+        "grounded": 0
+      }
+    }
+  },
+  "part3_c14_deterministic_baseline": {
+    "label": "Deterministic_0param_MenuRule",
+    "elapsed_s": 1.12,
+    "cases": 24,
+    "total_slots": 120,
+    "asserted_total": 80,
+    "track1_raw_all_match": 90,
+    "track1_raw_asserted_match": 63,
+    "track2_verified_all_match": 91,
+    "track2_verified_asserted_match": 63,
+    "useful_notes": 22,
+    "custody_violations": 0,
+    "sample_misses": [
+      {
+        "case_id": "retain-02",
+        "misses": [
+          {
+            "field": "DUR",
+            "gold": "S",
+            "raw": "CC:S[left ankle is sore]|DUR:S[Yesterday]|SEV:S[mild]|MED:A[I haven't taken or applied anything for it.]|ALG:S[Penicillin]",
+            "claim": {
+              "field": "duration",
+              "state": "supported",
+              "value": "Yesterday",
+              "evidence_ids": [
+                "e:duration:0"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-05",
+        "misses": [
+          {
+            "field": "CC",
+            "gold": "S",
+            "raw": "CC:U[Two days, or perhaps three. I can't pin down which day it started.]|DUR:U[I honestly can't decide whether to call it mild or moderate.]|SEV:U[I can't remember whether I have any.]|MED:S[Acetaminophen]|ALG:M",
+            "claim": {
+              "field": "chief_complaint",
+              "state": "uncertain",
+              "value": null,
+              "evidence_ids": [
+                "e:chief_complaint:0"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-06",
+        "misses": [
+          {
+            "field": "DUR",
+            "gold": "S",
+            "raw": "CC:U[I can't tell if it's an earache or pain in my jaw.]|DUR:U[I may have taken a tablet for it yesterday, but I can't remember whether I actually did.]|SEV:S[Mild, but annoying]|MED:M|ALG:S[latex]",
+            "claim": {
+              "field": "duration",
+              "state": "uncertain",
+              "value": null,
+              "evidence_ids": [
+                "e:duration:0"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-07",
+        "misses": [
+          {
+            "field": "CC",
+            "gold": "S",
+            "raw": "CC:U[I don't know when it started. It's three out of ten for how much it bothers me.]|DUR:U[I remember getting the syrup out, but I'm not sure whether I swallowed any.]|SEV:U[I don't know my medicine allergy history.]|MED:M|ALG:M",
+            "claim": {
+              "field": "chief_complaint",
+              "state": "uncertain",
+              "value": null,
+              "evidence_ids": [
+                "e:chief_complaint:0"
+              ]
+            }
+          },
+          {
+            "field": "SEV",
+            "gold": "S",
+            "raw": "CC:U[I don't know when it started. It's three out of ten for how much it bothers me.]|DUR:U[I remember getting the syrup out, but I'm not sure whether I swallowed any.]|SEV:U[I don't know my medicine allergy history.]|MED:M|ALG:M",
+            "claim": {
+              "field": "severity",
+              "state": "uncertain",
+              "value": null,
+              "evidence_ids": [
+                "e:severity:0"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-08",
+        "misses": [
+          {
+            "field": "CC",
+            "gold": "S",
+            "raw": "CC:U[@141..197:Somewhere between mild and moderate; I can't choose one.]|DUR:S[the evening before last]|SEV:M|MED:U[ibuprofen||an antacid]|ALG:U[penicillin||latex]",
+            "claim": {
+              "field": "chief_complaint",
+              "state": "uncertain",
+              "value": null,
+              "evidence_ids": [
+                "e:chief_complaint:0"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "part3_c14_live_qwen_grounded": {
+    "label": "Live_Qwen2.5_1.5B_GroundedMenu_PrefixKV",
+    "elapsed_s": 166.14,
+    "cases": 24,
+    "total_slots": 120,
+    "asserted_total": 80,
+    "track1_raw_all_match": 62,
+    "track1_raw_asserted_match": 33,
+    "track2_verified_all_match": 65,
+    "track2_verified_asserted_match": 33,
+    "useful_notes": 24,
+    "custody_violations": 0,
+    "sample_misses": [
+      {
+        "case_id": "retain-01",
+        "misses": [
+          {
+            "field": "CC",
+            "gold": "S",
+            "raw": "CC:S[It has been bothering me for three days]|DUR:M|SEV:S[Moderate, especially when I swallow]|MED:S[throat lozenges]|ALG:A[I have no medication allergies.]",
+            "claim": {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "It has been bothering me for three days",
+              "evidence_ids": [
+                "e:chief_complaint:0"
+              ]
+            }
+          },
+          {
+            "field": "DUR",
+            "gold": "S",
+            "raw": "CC:S[It has been bothering me for three days]|DUR:M|SEV:S[Moderate, especially when I swallow]|MED:S[throat lozenges]|ALG:A[I have no medication allergies.]",
+            "claim": {
+              "field": "duration",
+              "state": "missing",
+              "value": null,
+              "evidence_ids": []
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-02",
+        "misses": [
+          {
+            "field": "CC",
+            "gold": "S",
+            "raw": "CC:S[It's mild]|DUR:S[Yesterday]|SEV:M|MED:A[I haven't taken or applied anything for it.]|ALG:S[Penicillin gives me hives]",
+            "claim": {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "It's mild",
+              "evidence_ids": [
+                "e:chief_complaint:0"
+              ]
+            }
+          },
+          {
+            "field": "DUR",
+            "gold": "S",
+            "raw": "CC:S[It's mild]|DUR:S[Yesterday]|SEV:M|MED:A[I haven't taken or applied anything for it.]|ALG:S[Penicillin gives me hives]",
+            "claim": {
+              "field": "duration",
+              "state": "supported",
+              "value": "Yesterday",
+              "evidence_ids": [
+                "e:duration:0"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-03",
+        "misses": [
+          {
+            "field": "CC",
+            "gold": "S",
+            "raw": "CC:S[Nausea and bloating are the reason I came]|DUR:S[Two days so far]|SEV:S[five out of ten]|MED:M|ALG:M",
+            "claim": {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "Nausea and bloating are the reason I came",
+              "evidence_ids": [
+                "e:chief_complaint:0"
+              ]
+            }
+          },
+          {
+            "field": "MED",
+            "gold": "S",
+            "raw": "CC:S[Nausea and bloating are the reason I came]|DUR:S[Two days so far]|SEV:S[five out of ten]|MED:M|ALG:M",
+            "claim": {
+              "field": "medication",
+              "state": "missing",
+              "value": null,
+              "evidence_ids": []
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-04",
+        "misses": [
+          {
+            "field": "CC",
+            "gold": "S",
+            "raw": "CC:S[itchy rash on my forearm has been here a week]|DUR:M|SEV:S[Mild]|MED:A[Nothing at all for this rash.]|ALG:M",
+            "claim": {
+              "field": "chief_complaint",
+              "state": "supported",
+              "value": "itchy rash on my forearm has been here a week",
+              "evidence_ids": [
+                "e:chief_complaint:0"
+              ]
+            }
+          },
+          {
+            "field": "DUR",
+            "gold": "S",
+            "raw": "CC:S[itchy rash on my forearm has been here a week]|DUR:M|SEV:S[Mild]|MED:A[Nothing at all for this rash.]|ALG:M",
+            "claim": {
+              "field": "duration",
+              "state": "missing",
+              "value": null,
+              "evidence_ids": []
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "retain-05",
+        "misses": [
+          {
+            "field": "MED",
+            "gold": "S",
+            "raw": "CC:S[headache across my forehead]|DUR:U[Two days, or perhaps three. I can't pin down which day it started.]|SEV:U[I honestly can't decide whether to call it mild or moderate.]|MED:S[Acetaminophen, one time yesterday]|ALG:U[I can't remember whether I have any.]",
+            "claim": {
+              "field": "medication",
+              "state": "supported",
+              "value": "Acetaminophen, one time yesterday",
+              "evidence_ids": [
+                "e:medication:0"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "inference_stats": {
+      "total_forward_passes": 166,
+      "total_coalesced_tokens": 725,
+      "device": "mps"
+    }
+  }
+}
