@@ -97,10 +97,11 @@ class CognitiveLM(nn.Module):
             "C3_ebwm_counterfactual",
             "C4a_ulbp_latent_plan",
             "C4b_ulbp_equivariant",
+            "C5_de_bruijn_canonical",
         )
         self.arm = arm
-        self.is_c3_family = arm in ("C3_ebwm_counterfactual", "C4a_ulbp_latent_plan", "C4b_ulbp_equivariant")
-        self.is_c4 = arm in ("C4a_ulbp_latent_plan", "C4b_ulbp_equivariant")
+        self.is_c3_family = arm in ("C3_ebwm_counterfactual", "C4a_ulbp_latent_plan", "C4b_ulbp_equivariant", "C5_de_bruijn_canonical")
+        self.is_c4 = arm in ("C4a_ulbp_latent_plan", "C4b_ulbp_equivariant", "C5_de_bruijn_canonical")
         self.d = d
         self.n_slots = n_slots
         ffn_dim = 256 if self.is_c4 else 288
@@ -203,11 +204,25 @@ class CognitiveLM(nn.Module):
         }
 
     def init_c3_workspace(self, goal_ids: list[int], n_modules: int, val_spans: list[tuple[int, int]], dev: torch.device) -> dict[str, Any]:
-        """Initialize C3/C4 persistent 8-slot belief workspace from Goal + Repo declaration."""
+        """Initialize C3/C4/C5 persistent 8-slot belief workspace from Goal + Repo declaration."""
         z = self.init_belief.to(dev)                          # (1, S, d)
-        # C4b Sym(12) alpha-renaming equivariance: permute bound module symbols uniformly during training!
         if self.arm == "C4b_ulbp_equivariant" and self.training:
             perm = torch.randperm(12).tolist()
+        elif self.arm == "C5_de_bruijn_canonical":
+            # Left-to-right De Bruijn alpha-normal form: assign canonical indices 0, 1, 2... in order of first mention,
+            # with background pool >=3 uniformly rotated during training so arbitrary N<=12 never hits untrained slots!
+            tid_to_m = {MOD_TOKEN_IDS[m]: m for m in range(12)}
+            seen_order: list[int] = []
+            for tok in goal_ids:
+                if tok in tid_to_m and tid_to_m[tok] not in seen_order:
+                    seen_order.append(tid_to_m[tok])
+            for m in range(12):
+                if m not in seen_order:
+                    seen_order.append(m)
+            bg_slots = (torch.randperm(9) + 3).tolist() if self.training else list(range(3, 12))
+            perm = [0] * 12
+            for rank_i, orig_m in enumerate(seen_order):
+                perm[orig_m] = rank_i if rank_i < 3 else bg_slots[rank_i - 3]
         else:
             perm = list(range(12))
         ws = {
@@ -231,7 +246,7 @@ class CognitiveLM(nn.Module):
         z_prev = ws["z"]                                      # (1, S, d)
         perm: list[int] = ws.get("perm", list(range(12)))
         turn_idx: int = int(ws.get("turn_idx", 0))
-        if self.arm == "C4b_ulbp_equivariant":
+        if self.arm in ("C4b_ulbp_equivariant", "C5_de_bruijn_canonical"):
             id_remap = {MOD_TOKEN_IDS[m]: MOD_TOKEN_IDS[perm[m]] for m in range(12)}
             mapped_ids = [id_remap.get(t, t) for t in obs_ids]
         else:

@@ -339,8 +339,13 @@ def _encode_smollm3_example(tok, prompt: str, response: str, think: bool, max_le
     vis_resp = response if think else strip_thinking(response)
     msgs_prompt = [{"role": "system", "content": sys_msg}, {"role": "user", "content": prompt}]
     msgs_full = msgs_prompt + [{"role": "assistant", "content": vis_resp}]
-    p_ids = tok.apply_chat_template(msgs_prompt, tokenize=True, add_generation_prompt=True)
-    f_ids = tok.apply_chat_template(msgs_full, tokenize=True, add_generation_prompt=False)
+    # transformers>=5 returns BatchEncoding for tokenize=True (len()==2 keys!) -> render text then encode explicitly.
+    p_txt = tok.apply_chat_template(msgs_prompt, tokenize=False, add_generation_prompt=True)
+    f_txt = tok.apply_chat_template(msgs_full, tokenize=False, add_generation_prompt=False)
+    p_ids = tok.encode(p_txt, add_special_tokens=False)
+    f_ids = tok.encode(f_txt, add_special_tokens=False)
+    if f_ids[: len(p_ids)] != p_ids:
+        return None
     if len(f_ids) > max_len or len(f_ids) <= len(p_ids) + 2:
         return None
     inp = torch.tensor(f_ids, dtype=torch.long)

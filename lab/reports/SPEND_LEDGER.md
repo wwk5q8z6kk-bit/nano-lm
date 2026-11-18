@@ -1,4 +1,4 @@
-# RunPod Spend Ledger (Phases 1, 2 & 3 — Final Closeout)
+# RunPod Spend Ledger (Phases 1–4 — Final Closeout)
 
 Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve untouched).
 
@@ -21,9 +21,9 @@ Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve u
 | `6duh0m3bwqwt19` | H200 SXM 141GB (secure) | 5.29 | 2026-11-17 21:35 | 2026-11-17 23:20 | Phase 2 Step 4: `Qwen3-1.7B`, `8B`, `32B`, `gpt-oss-120b` Comp 1 & 2 (v1) | \$9.26 |
 | `d8fq11bqgf89h9` | RTX 4090 (secure) | 0.89 | 2026-11-18 01:39 | 2026-11-18 03:32 | `LAB-ARCH-05` `X8_margin_atrd_muon s0` (`600M` tok — `0.9548` BPB) | \$1.67 |
 | `3tgu2te6rwti8s` | RTX 4090 (secure) | 0.89 | 2026-11-18 01:39 | 2026-11-18 03:35 | `LAB-ARCH-05` `X8_margin_atrd_muon s1` (`600M` tok — `0.9538` BPB) | \$1.72 |
-| `fedq4pvk225egm` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 03:49 | 2026-11-18 05:14 | Phase 3: `32B+120B` Stratified KD + `NanoLM-B6-2B` + `NanoLM-B6-3B` + `System-v2` `1.7B..120B` | \$7.51 |
+| `fedq4pvk225egm` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 03:49 | 2026-11-18 05:14 | Phase 3: `32B+120B` Stratified KD + `NanoLM-B6-2B` + `NanoLM-B6-3B` + `System-v2` | \$7.51 |
+| `mqmxyjlqeevye8` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 05:55 | 2026-11-18 07:17 | Phase 4: `NanoLM-B6-3B-Fixed` (`473/480` SFT + GRPO) + `System-v3` `1.7B..120B` | \$7.25 |
 
-- **Phase 1 realized spend (11 pods, all removed):** \$39.07
-- **Phase 2 realized spend (4 pods, all removed):** \$34.89
-- **Phase 3 realized spend (3 pods, all removed):** \$10.90
-- **Total realized campaign spend (18 pods, 0 active):** **\$84.86 / \$180.00** (`47.1%` of autonomous budget; **\$95.14** remaining)
+- **Phases 1–3 realized spend (18 pods, all removed):** \$84.86
+- **Phase 4 realized spend (1 pod, removed):** \$7.25
+- **Total realized campaign spend (19 pods, 0 active):** **\$92.11 / \$180.00** (`51.2%` of autonomous budget; **\$87.89** remaining)

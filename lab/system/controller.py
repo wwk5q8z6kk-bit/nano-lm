@@ -165,60 +165,66 @@ class NanoLMSystem:
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 3. COMPUTE_VERIFY_MATH v2: Unanchored Dual-Channel (Analytical + Executable) & Neutral Arbiter!
+        # 3. COMPUTE_VERIFY_MATH v3: Executable-Specification Voting.
+        #    Channel A = analytical think=1; Channel B = exhaustive brute-force/exact-enumeration script
+        #    (directly encodes the problem's literal constraints; no closed formulas); Channel C = efficient
+        #    formula script. Majority vote; on 3-way split prefer B (literal specification) over A/C.
         if route == "COMPUTE_VERIFY_MATH":
             ana_prompt = f"Solve this mathematical problem step-by-step with exact reasoning and put your final answer inside `\\boxed{{}}`:\n\n{prompt}"
             ana_resp = _ask([{"role": "user", "content": ana_prompt}], True, 2560)
-            ana_ans = extract_canonical_answer(ana_resp)
+            ana_ans = (extract_canonical_answer(ana_resp) or "").strip()
 
-            py_prompt = (
+            def _run_channel(instr: str, timeout_s: float) -> tuple[bool, str]:
+                nonlocal sbx
+                resp = _ask([{"role": "user", "content": instr}], False, 1024)
+                sbx += 1
+                ok, out = execute_python_computation(strip_thinking(resp), timeout_sec=timeout_s)
+                if not ok:
+                    rep = _ask(
+                        [{"role": "user", "content": f"Your script failed with `{out}`. Fix it so it runs within {int(timeout_s)} seconds and prints ONLY the exact final answer on the last line:\n\n{instr}"}],
+                        False, 1024,
+                    )
+                    sbx += 1
+                    ok, out = execute_python_computation(strip_thinking(rep), timeout_sec=timeout_s)
+                return ok, (out.splitlines()[-1].strip() if ok and out.strip() else "")
+
+            brute_instr = (
+                "Write a Python 3 script that answers the problem below by EXHAUSTIVE BRUTE-FORCE ENUMERATION or "
+                "exact linear-system solving with `fractions.Fraction` (enumerate every candidate integer / permutation / "
+                "tuple / state directly from the problem's literal constraints; do NOT use any closed-form formula). "
+                "Respect every qualifier ('second smallest', 'exactly', 'non-negative', 'lowest terms'). "
+                "It must finish within 20 seconds and print ONLY the final answer on the last line.\n\n"
+                f"Problem:\n{prompt}"
+            )
+            formula_instr = (
                 "Write a short, exact Python 3 script (preferring exact integer/`fractions.Fraction`/`math` arithmetic; "
                 "read every qualifier like 'second smallest', 'non-negative', or 'lowest terms' carefully) "
                 "that computes the exact answer and prints ONLY the final answer on the last line via `print(...)`:\n\n"
                 f"Problem:\n{prompt}"
             )
-            py_resp = _ask([{"role": "user", "content": py_prompt}], False, 1024)
-            sbx += 1
-            ok_py, py_out = execute_python_computation(strip_thinking(py_resp))
-            used_py_code = strip_thinking(py_resp)
-            if not ok_py:
-                rep_py = _ask(
-                    [{"role": "user", "content": f"Your Python solver raised `{py_out}`. Fix the Python 3 script so it runs cleanly and prints ONLY the exact final answer:\n\n{prompt}"}],
-                    False, 1024,
-                )
-                sbx += 1
-                ok_py, py_out = execute_python_computation(strip_thinking(rep_py))
-                used_py_code = strip_thinking(rep_py)
+            ok_b, val_b = _run_channel(brute_instr, 20.0)
+            ok_c, val_c = _run_channel(formula_instr, 5.0)
 
-            trace.append(f"math_dual:ana={ana_ans},py_ok={ok_py},py={py_out[:40]}")
-            if not ok_py:
-                return SystemEpisodeResult(
-                    strip_thinking(ana_resp), ana_ans, route, "ANALYTICAL_UNVERIFIED",
-                    calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
-                )
-
-            val_py = py_out.splitlines()[-1].strip()
-            if ana_ans and ana_ans.strip() == val_py:
-                wm.record_fact("certified_dual_math", val_py)
-                return SystemEpisodeResult(
-                    f"\\boxed{{{val_py}}}", val_py, route, "CERTIFIED_DUAL_AGREEMENT",
-                    calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
-                )
-
-            arb_prompt = (
-                "Two independent solution channels disagreed on this problem:\n\n"
-                f"Problem:\n{prompt}\n\n"
-                f"- Channel A (Analytical derivation) obtained: `{ana_ans}`\n"
-                f"- Channel B (Python script below) printed: `{val_py}`\n"
-                f"```python\n{used_py_code}\n```\n\n"
-                "Audit BOTH candidates carefully: check whether the Python script misread a problem constraint "
-                "(such as 'second smallest' vs 'smallest', boundary conditions, or gcd normalization) OR whether "
-                "Channel A made an arithmetic calculation slip. Put the verified exact final answer in `\\boxed{}`."
-            )
-            arb_resp = _ask([{"role": "user", "content": arb_prompt}], True, 2048)
-            final_ans = extract_canonical_answer(arb_resp) or val_py
+            votes = [v for v in (ana_ans, val_b if ok_b else "", val_c if ok_c else "") if v]
+            trace.append(f"math_v3:A={ana_ans},B={val_b if ok_b else 'ERR'},C={val_c if ok_c else 'ERR'}")
+            final_ans, tier = "", "UNCERTAIN_OR_FAILED"
+            if votes:
+                counts: dict[str, int] = {}
+                for v in votes:
+                    counts[v] = counts.get(v, 0) + 1
+                top_v, top_n = max(counts.items(), key=lambda kv: kv[1])
+                if top_n >= 2:
+                    final_ans, tier = top_v, ("CERTIFIED_TRIPLE_AGREEMENT" if top_n == 3 else "CERTIFIED_MAJORITY")
+                elif ok_b and val_b:
+                    final_ans, tier = val_b, "BRUTE_FORCE_SPECIFICATION"
+                elif ana_ans:
+                    final_ans, tier = ana_ans, "ANALYTICAL_UNVERIFIED"
+                else:
+                    final_ans, tier = votes[0], "EXECUTABLE_UNVERIFIED"
+            if final_ans:
+                wm.record_fact("math_v3_answer", final_ans)
             return SystemEpisodeResult(
-                strip_thinking(arb_resp), final_ans, route, "ARBITER_RECONCILED",
+                f"\\boxed{{{final_ans}}}" if final_ans else strip_thinking(ana_resp), final_ans, route, tier,
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
@@ -318,7 +324,7 @@ class NanoLMSystem:
             )
             # Adaptive compute escalation: Turn 0 happy path uses fast think=False; recovery/multi-step uses think=True!
             use_think = bool(wm.has_unresolved_error or turn >= 1)
-            resp = _ask([{"role": "user", "content": turn_prompt}], use_think, 2048 if use_think else 768)
+            resp = _ask([{"role": "user", "content": turn_prompt}], use_think, 3584 if use_think else 768)
             last_vis = strip_thinking(resp)
             sbx += 1
             prev_hist_len = len(tool_env.call_history)
