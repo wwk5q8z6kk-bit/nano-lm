@@ -2,8 +2,10 @@
 
 - **Experiment ID:** `EXP-U01`
 - **Status:** Preregistered before execution
-- **Hardware / Cost:** Local Apple Silicon M3 Max (`mps` `bfloat16`), `$0.00` paid compute
+- **Hardware / Cost:** Local Apple Silicon M3 Max (`cpu` `float32`, `4` threads; amended before results because peer `real_keys_qwen` 16K eval contended Metal/MPS memory), `$0.00` paid compute
 - **Primary Question:** Do the failure mechanisms hypothesized on tiny synthetic toys (`SiLU` positive-orthant key collapse, output-gate saddle attenuation, `VRes` anchor saturation, and length-extrapolation / needle-recall degradation) actually occur inside real `600M`-token Muon-trained `46M` and `125M` checkpoints (`S0_dense_125m`, `S1_nanolm_v2_125m`, `X4_nanolm_v2_muon`)?
+
+> **Pre-Result Execution Amendment (2026-11-18):** Initial `mps` `bfloat16` `bs=16` run hung >11m behind concurrent peer `real_keys_qwen` (16K sequence eval saturating unified GPU memory). Amended strictly prior to any recorded measurements to run exact `cpu` `float32` arithmetic with `windows=48` (`bs=4`) on canonical 1024-tok domain eval, `(24, 24, 24, 16)` extrapolation windows, `24` MQAR trials per `(T, N)` with exact last-token logit slicing, and incremental per-model JSON saving (`X4 -> S0 -> S1`).
 
 ## Competing Hypotheses
 

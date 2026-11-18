@@ -25,11 +25,67 @@ LAB_WT = MAIN_REPO / ".worktrees" / "nanolm-lab"
 sys.path.insert(0, str(LAB_WT))
 
 from lab.arch.nextgen import NextGenCfg, NextGenDeltaMixer, NextGenLM  # noqa: E402
-from lab.arch.train import evaluate  # noqa: E402
 
 DATA_DIR = Path("/Volumes/Express1M2/nanolm-lab/data/v1")
 RUNS_DIR = Path("/Volumes/Express1M2/nanolm-lab/runs")
 OUT_JSON = WORKTREE_ROOT / "research" / "unified_loop" / "experiments" / "U01_real_125m_autopsy" / "results.json"
+
+
+@torch.no_grad()
+def evaluate_canonical_chunked(
+    model: NextGenLM,
+    data: Path,
+    manifest: dict[str, Any],
+    dev: torch.device,
+    dtype: torch.dtype,
+    seq: int = 1024,
+    windows: int = 48,
+    bs: int = 4,
+) -> dict[str, Any]:
+    """Memory-safe exact equivalent of lab.arch.train.evaluate with bs-chunked copy eval."""
+    model.eval()
+    out: dict[str, Any] = {"bpb": {}}
+    for dom, meta in manifest["domains"].items():
+        arr = np.fromfile(data / f"val_{dom}.bin", dtype=np.uint16)
+        n = min(windows, (len(arr) - 1) // (seq + 1))
+        idx = np.arange(n) * ((len(arr) - seq - 1) // n)
+        tot, cnt = 0.0, 0
+        pos_loss = torch.zeros(seq, device=dev)
+        for i in range(0, n, bs):
+            xb = np.stack([arr[j : j + seq + 1] for j in idx[i : i + bs]]).astype(np.int64)
+            x = torch.from_numpy(xb).to(dev)
+            with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
+                lg = model(x[:, :-1])
+            l = F.cross_entropy(lg.float().reshape(-1, lg.size(-1)), x[:, 1:].reshape(-1), reduction="none").view(x.size(0), seq)
+            pos_loss += l.sum(0)
+            tot += float(l.sum().item())
+            cnt += int(l.numel())
+        bpt = meta["val"]["bytes_per_token"]
+        out["bpb"][dom] = round((tot / cnt) / math.log(2) / bpt, 5)
+        pl = (pos_loss / n).cpu()
+        if dom == "web":
+            out["web_loss_pos_0_64"] = round(float(pl[:64].mean().item()), 4)
+            out["web_loss_pos_last_256"] = round(float(pl[-256:].mean().item()), 4)
+    w = {"web": 0.4, "textbook": 0.2, "math": 0.2, "code": 0.2}
+    out["bpb_composite"] = round(sum(out["bpb"][k] * w[k] for k in w), 5)
+
+    g = torch.Generator().manual_seed(1234)
+    L = seq // 2
+    xs = torch.randint(64, manifest["vocab"] - 64, (32, L), generator=g)
+    xc = torch.cat([xs, xs], 1)
+    tot_l, corr_c, tot_c = 0.0, 0, 0
+    for i in range(0, len(xc), bs):
+        xb = xc[i : i + bs].to(dev)
+        with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
+            lg = model(xb[:, :-1])
+        lg_h = lg[:, L:].float()
+        tg_h = xb[:, L + 1 :]
+        tot_l += float(F.cross_entropy(lg_h.reshape(-1, lg_h.size(-1)), tg_h.reshape(-1), reduction="sum").item())
+        corr_c += int((lg_h.argmax(-1) == tg_h).sum().item())
+        tot_c += int(tg_h.numel())
+    out["copy_loss_second_half"] = round(tot_l / tot_c, 4)
+    out["copy_acc_second_half"] = round(corr_c / tot_c, 4)
+    return out
 
 
 def load_nextgen_ckpt(run_name: str, dev: torch.device) -> tuple[NextGenLM, dict[str, Any]]:
@@ -140,8 +196,8 @@ def eval_length_extrapolation(
         res_L: dict[str, Any] = {"bpb": {}}
         for dom in ("web", "code"):
             arr = np.fromfile(DATA_DIR / f"val_{dom}.bin", dtype=np.uint16)
-            windows = 64 if L <= 1024 else 32
-            bs = 8 if L <= 1024 else 4
+            windows = 24 if L <= 1024 else 16
+            bs = 4 if L <= 1024 else 2
             n = min(windows, (len(arr) - 1) // (L + 1))
             idx = np.arange(n) * ((len(arr) - L - 1) // n)
             tot, cnt = 0.0, 0
@@ -150,7 +206,7 @@ def eval_length_extrapolation(
                 x = torch.from_numpy(xb).to(dev)
                 with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
                     lg = model(x[:, :-1])
-                loss = F.cross_entropy(lg.float().transpose(1, 2), x[:, 1:], reduction="sum")
+                loss = F.cross_entropy(lg.reshape(-1, lg.size(-1)).float(), x[:, 1:].reshape(-1), reduction="sum")
                 tot += float(loss.item())
                 cnt += int(x[:, 1:].numel())
             bpt = manifest["domains"][dom]["val"]["bytes_per_token"]
@@ -159,13 +215,20 @@ def eval_length_extrapolation(
         # Copy probe at L_copy = L // 2 -> sequence length L
         L_half = L // 2
         g = torch.Generator().manual_seed(1234 + L)
-        xs = torch.randint(64, manifest["vocab"] - 64, (24, L_half), generator=g)
-        xc = torch.cat([xs, xs], dim=1).to(dev)
-        with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
-            lgc = model(xc[:, :-1])
-        lc = F.cross_entropy(lgc.float().transpose(1, 2), xc[:, 1:], reduction="none")
-        res_L["copy_loss"] = round(float(lc[:, L_half:].mean().item()), 4)
-        res_L["copy_acc"] = round(float((lgc[:, L_half:].argmax(-1) == xc[:, L_half + 1 :]).float().mean().item()), 4)
+        xs = torch.randint(64, manifest["vocab"] - 64, (16, L_half), generator=g)
+        xc = torch.cat([xs, xs], dim=1)
+        corr_c, tot_loss, tot_c = 0, 0.0, 0
+        for i in range(0, len(xc), 4):
+            xb = xc[i : i + 4].to(dev)
+            with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
+                lgc = model(xb[:, :-1])
+            lg_half = lgc[:, L_half:, :].float()
+            tgt_half = xb[:, L_half + 1 :]
+            tot_loss += float(F.cross_entropy(lg_half.reshape(-1, lg_half.size(-1)), tgt_half.reshape(-1), reduction="sum").item())
+            corr_c += int((lg_half.argmax(-1) == tgt_half).sum().item())
+            tot_c += int(tgt_half.numel())
+        res_L["copy_loss"] = round(tot_loss / tot_c, 4)
+        res_L["copy_acc"] = round(corr_c / tot_c, 4)
         out[f"L_{L}"] = res_L
     return out
 
@@ -183,6 +246,7 @@ def eval_needle_mqar_real_distractors(
     then repeats a query key `K_target` at the end and checks whether top-1 logit predicts `V_target`.
     Separately tests common-range token IDs `[200..2000]` vs rare tail token IDs `[20000..32000]`.
     """
+    from lab.arch.model import rope_cache
     web_arr = np.fromfile(DATA_DIR / "val_web.bin", dtype=np.uint16)
     vocab = manifest["vocab"]
     results: dict[str, Any] = {}
@@ -190,10 +254,10 @@ def eval_needle_mqar_real_distractors(
         band_res: dict[str, Any] = {}
         for T_ctx, n_needles in ((256, 1), (256, 4), (512, 4), (512, 8), (1024, 8)):
             rng = np.random.default_rng(777 + T_ctx * 13 + n_needles + lo_id)
-            bs = 48
+            n_trials = 24
             seqs = []
             targets = []
-            for b in range(bs):
+            for b in range(n_trials):
                 offset = (b * 997) % (len(web_arr) - T_ctx - 10)
                 ctx = web_arr[offset : offset + T_ctx].astype(np.int64).copy()
                 # Ensure unique keys & values disjoint from background window
@@ -215,10 +279,20 @@ def eval_needle_mqar_real_distractors(
                 ctx[-1] = q_key
                 seqs.append(ctx)
                 targets.append(q_val)
-            x = torch.tensor(np.stack(seqs), dtype=torch.long, device=dev)
+            all_logits = []
+            hd = model.c.d // model.c.n_head
+            for i in range(0, n_trials, 4):
+                xb = torch.tensor(np.stack(seqs[i : i + 4]), dtype=torch.long, device=dev)
+                x_h = model.emb(xb)
+                rope = rope_cache(T_ctx, hd, model.c.rope_theta, dev)
+                v0 = None
+                for blk in model.blocks:
+                    x_h, v0, _ = blk(x_h, rope, v0)
+                h_last = model.nf(x_h[:, -1:, :])
+                lg_last = (h_last @ model.emb.weight.T if model.head is None else model.head(h_last)).squeeze(1).float()
+                all_logits.append(lg_last)
+            lg = torch.cat(all_logits, dim=0)
             tgt = torch.tensor(targets, dtype=torch.long, device=dev)
-            with torch.autocast(dev.type, dtype=dtype, enabled=dtype != torch.float32):
-                lg = model(x)[:, -1, :].float()  # predict token after ctx[-1]=q_key
             acc = float((lg.argmax(dim=-1) == tgt).float().mean().item())
             nll = float(F.cross_entropy(lg, tgt).item())
             band_res[f"T{T_ctx}_N{n_needles}"] = {"acc": round(acc, 4), "nll": round(nll, 4)}
@@ -257,12 +331,13 @@ def audit_legacy_checkpoints() -> dict[str, Any]:
 
 
 def main() -> int:
+    torch.set_num_threads(4)
     t0 = time.perf_counter()
-    dev = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    dtype = torch.bfloat16 if dev.type == "mps" else torch.float32
+    dev = torch.device("cpu")
+    dtype = torch.float32
     manifest = json.loads((DATA_DIR / "manifest.json").read_text())
 
-    # Prepare one fixed real code/web probe batch (8 x 512) for internal mechanism inspection
+    # Prepare one fixed real code/web probe batch (4 x 512) for internal mechanism inspection
     code_arr = np.fromfile(DATA_DIR / "val_code.bin", dtype=np.uint16)
     probe_code = torch.tensor(
         np.stack([code_arr[i * 512 : (i + 1) * 512] for i in range(4)]).astype(np.int64),
@@ -273,9 +348,9 @@ def main() -> int:
     probe_copy = torch.cat([half_c, half_c], dim=1)
 
     models_to_audit = [
+        "X4_nanolm_v2_muon__muon__tokens__600M__s0",
         "S0_dense_125m__muon__tokens__600M__s0",
         "S1_nanolm_v2_125m__muon__tokens__600M__s0",
-        "X4_nanolm_v2_muon__muon__tokens__600M__s0",
     ]
 
     report: dict[str, Any] = {
@@ -286,6 +361,7 @@ def main() -> int:
         "legacy_checkpoints_verified": audit_legacy_checkpoints(),
         "models": {},
     }
+    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
 
     for run_name in models_to_audit:
         mt0 = time.perf_counter()
@@ -293,18 +369,22 @@ def main() -> int:
         model, reported = load_nextgen_ckpt(run_name, dev)
         rep = model.param_report()
 
-        # 1. Exact reproduction of canonical 1024 eval (128 windows, copy L=512)
-        repro = evaluate(model, DATA_DIR, manifest, dev, dtype, seq=1024, windows=128, bs=16)
+        # 1. Exact reproduction of canonical 1024 eval (48 windows, bs=4, copy L=512)
+        repro = evaluate_canonical_chunked(model, DATA_DIR, manifest, dev, dtype, seq=1024, windows=48, bs=4)
+        print(f"  [1/4] repro done in {time.perf_counter()-mt0:.1f}s: BPB={repro['bpb_composite']} copy={repro['copy_acc_second_half']}", flush=True)
 
         # 2. Internal mechanism inspection on real val_code & random copy
         mech_code = inspect_delta_mechanisms(model, probe_code, dev, dtype)
         mech_copy = inspect_delta_mechanisms(model, probe_copy, dev, dtype)
+        print(f"  [2/4] mech probes done in {time.perf_counter()-mt0:.1f}s", flush=True)
 
         # 3. Length extrapolation (256 -> 2048)
         extrap = eval_length_extrapolation(model, manifest, dev, dtype, lengths=(256, 512, 1024, 2048))
+        print(f"  [3/4] extrap done in {time.perf_counter()-mt0:.1f}s: L2048 web={extrap['L_2048']['bpb']['web']} copy1024={extrap['L_2048']['copy_acc']}", flush=True)
 
         # 4. Zero-shot MQAR needle retrieval with real distractors
         mqar = eval_needle_mqar_real_distractors(model, manifest, dev, dtype)
+        print(f"  [4/4] mqar done in {time.perf_counter()-mt0:.1f}s", flush=True)
 
         report["models"][run_name] = {
             "cfg": vars(model.c),
@@ -317,20 +397,12 @@ def main() -> int:
             "needle_mqar_zero_shot": mqar,
             "elapsed_s": round(time.perf_counter() - mt0, 2),
         }
-        print(
-            f"  repro BPB={repro['bpb_composite']} (rep={reported.get('final', {}).get('bpb_composite')}), "
-            f"copy512={repro['copy_acc_second_half']}, "
-            f"L2048 web={extrap['L_2048']['bpb']['web']} copy1024={extrap['L_2048']['copy_acc']}",
-            flush=True,
-        )
+        report["total_elapsed_s"] = round(time.perf_counter() - t0, 2)
+        OUT_JSON.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        print(f"  [saved] {run_name} -> {OUT_JSON}", flush=True)
         del model
-        if dev.type == "mps":
-            torch.mps.empty_cache()
 
-    report["total_elapsed_s"] = round(time.perf_counter() - t0, 2)
-    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUT_JSON.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(f"[U-01] Wrote {OUT_JSON} in {report['total_elapsed_s']}s", flush=True)
+    print(f"[U-01] Complete in {report['total_elapsed_s']}s", flush=True)
     return 0
 
 
