@@ -1,0 +1,23 @@
+{
+  "schema": "nanolm.omega.checkpoints.v1",
+  "checkpoints": [
+    {
+      "name": "g4_omega_s42.pt",
+      "bytes": 82336525,
+      "sha256": "90f1155347f9d4daf6cc1cc851a69bd70cca5537723b20368a9676adeeeaca47",
+      "purpose": "Kaggle Dual-T4 float32 1000-step G4OmegaModel (20.57M, seed=42) checkpoint"
+    },
+    {
+      "name": "g4_omega_mech_s101.pt",
+      "bytes": 485189,
+      "sha256": "b6713c1a710de7b4e946eff6ebb5b7cbbab1962c9b04cc7b3a19e9cca9700f2c",
+      "purpose": "Cycle Omega trained G4OmegaModel (115k, multiplicative calibrated router) for reproducible inspection & unified router uncertainty"
+    },
+    {
+      "name": "omega_efe_planner_s0.pt",
+      "bytes": 1007943,
+      "sha256": "78a900d44847bcb0d15bb64bc5249626dafdcc86bc10aace9881c64418351c4c",
+      "purpose": "Cycle Omega trained OmegaEFEPlanner Super-OOD cognitive checkpoint"
+    }
+  ]
+}
