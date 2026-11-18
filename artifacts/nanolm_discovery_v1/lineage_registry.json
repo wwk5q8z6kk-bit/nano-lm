@@ -1,0 +1,115 @@
+{
+  "schema": "nanolm.discovery.lineage.v1",
+  "baseline": {
+    "name": "b0_transformer",
+    "tier": "discovery_18m",
+    "composite_bpb": 2.4651701310426852,
+    "ood_composite_acc": 0.18184430012506528,
+    "params": 20550528
+  },
+  "best": {
+    "name": "i3_hrwn",
+    "tier": "discovery_18m",
+    "composite_bpb": 2.452042368877514,
+    "ood_composite_acc": 0.17559885151950136,
+    "params": 20598918
+  },
+  "experimental": {
+    "name": "g3_no_depth_adapt",
+    "tier": "discovery_18m",
+    "composite_bpb": 2.520962813956094,
+    "ood_composite_acc": 0.7127557297033063,
+    "params": 20539122
+  },
+  "promoted_history": [
+    {
+      "name": "b0_transformer",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.4651701310426852,
+      "ood_composite_acc": 0.18184430012506528,
+      "params": 20550528
+    }
+  ],
+  "rejected": [
+    {
+      "name": "b1_gdn2_hybrid",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.4817703861927702,
+      "ood_composite_acc": 0.615124213722685,
+      "params": 20567544,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0166, ood_delta=+0.4333"
+    },
+    {
+      "name": "i1_phmn",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.482150206787374,
+      "ood_composite_acc": 0.7474638492190563,
+      "params": 20569176,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0170, ood_delta=+0.5656"
+    },
+    {
+      "name": "i2_nebn",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.4888716165161435,
+      "ood_composite_acc": 0.6619303759876382,
+      "params": 20553336,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0237, ood_delta=+0.4801"
+    },
+    {
+      "name": "g2_mprn",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.516075215687592,
+      "ood_composite_acc": 0.7372593590124973,
+      "params": 20527782,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0640, ood_delta=+0.5617"
+    },
+    {
+      "name": "g2_no_reflection",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.511364974207728,
+      "ood_composite_acc": 0.50147549979314,
+      "params": 20573790,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0593, ood_delta=+0.3259"
+    },
+    {
+      "name": "g2_no_precision",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.5046783977898253,
+      "ood_composite_acc": 0.751313127868745,
+      "params": 20571486,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0526, ood_delta=+0.5757"
+    },
+    {
+      "name": "g2_no_scam",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.489691951953917,
+      "ood_composite_acc": 0.6451422557809808,
+      "params": 20525472,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0376, ood_delta=+0.4695"
+    },
+    {
+      "name": "g2_std_swiglu",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.526429431998203,
+      "ood_composite_acc": 0.7148712404701945,
+      "params": 20534694,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0744, ood_delta=+0.5393"
+    },
+    {
+      "name": "g3_hmwr",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.5085429256726886,
+      "ood_composite_acc": 0.7393094681200895,
+      "params": 20551430,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0565, ood_delta=+0.5637"
+    },
+    {
+      "name": "g3_no_depth_adapt",
+      "tier": "discovery_18m",
+      "composite_bpb": 2.520962813956094,
+      "ood_composite_acc": 0.7127557297033063,
+      "params": 20539122,
+      "rejection_reason": "Failed promotion gate: bpb_delta=-0.0689, ood_delta=+0.5372"
+    }
+  ]
+}
