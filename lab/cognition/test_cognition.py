@@ -40,12 +40,24 @@ def test_all_four_cognitive_arms_forward_on_ood_9module_repo():
     assert len(spans) >= 1
 
     dev = torch.device("cpu")
-    for arm in ("C0_transcript_imitation", "C1_obs_world_model", "C2_latent_loop_only", "C3_ebwm_counterfactual"):
+    for arm in (
+        "C0_transcript_imitation",
+        "C1_obs_world_model",
+        "C2_latent_loop_only",
+        "C3_ebwm_counterfactual",
+        "C5_de_bruijn_canonical",
+        "C6_causal_suffix_canonical",
+    ):
         m = CognitiveLM(arm=arm, d=64, n_head=4, n_slots=6).to(dev)
-        if arm != "C3_ebwm_counterfactual":
+        if not m.is_c3_family:
             out = m.forward_transcript_step(ids, 9, spans, dev)
             assert out["mod_logits"].shape == (9,)
         else:
             ws = m.init_c3_workspace(ids, 9, spans, dev)
             assert ws["mod_logits"].shape == (9,)
             assert ws["unc_pred"].shape == (3,)
+
+    # Verify exact iso-parameter match between C5 and C6 (1,018,648 params)!
+    p_c5 = sum(p.numel() for p in CognitiveLM("C5_de_bruijn_canonical", d=128, n_head=4, n_slots=8).parameters())
+    p_c6 = sum(p.numel() for p in CognitiveLM("C6_causal_suffix_canonical", d=128, n_head=4, n_slots=8).parameters())
+    assert p_c5 == p_c6, f"Iso-parameter mismatch: C5={p_c5} vs C6={p_c6}"

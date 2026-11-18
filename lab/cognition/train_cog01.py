@@ -33,6 +33,7 @@ from lab.cognition.models import (
     val_to_4digits,
 )
 from lab.cognition.swe_env import (
+    ACT_INSPECT,
     ACT_PATCH,
     ACTION_NAMES,
     RepoEpisode,
@@ -141,7 +142,11 @@ def train_one_arm(arm: str, seed: int, n_episodes: int, dev: torch.device) -> Co
                     ws = model.update_c3_workspace(ws, ids_chunk, spans_chunk, dev)
 
                 l_act = F.cross_entropy(ws["act_logits"].unsqueeze(0), torch.tensor([st_item["opt_action"]], device=dev))
-                l_mod = F.cross_entropy(ws["mod_logits"].unsqueeze(0), torch.tensor([st_item["opt_mod"]], device=dev))
+                if arm == "C6_causal_suffix_canonical" and st_item["opt_action"] not in (ACT_INSPECT, ACT_PATCH):
+                    # Action-conditioned argument invariance: zero-argument actions do not chase dummy non-equivariant module 0!
+                    l_mod = torch.zeros((), device=dev)
+                else:
+                    l_mod = F.cross_entropy(ws["mod_logits"].unsqueeze(0), torch.tensor([st_item["opt_mod"]], device=dev))
                 d4 = val_to_4digits(st_item["opt_val"])
                 l_dig = sum(
                     F.cross_entropy(ws["digit_logits"][di].unsqueeze(0), torch.tensor([d4[di]], device=dev))

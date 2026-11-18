@@ -49,10 +49,11 @@ def main() -> None:
     ap.add_argument("--eval-episodes", type=int, default=180)
     ap.add_argument("--seeds", type=int, default=3)
     ap.add_argument("--workers", type=int, default=9)
+    ap.add_argument("--arms", nargs="+", default=["C3_ebwm_counterfactual", "C4a_ulbp_latent_plan", "C4b_ulbp_equivariant"])
     ap.add_argument("--out", default="/Users/mac/Projects/nano-lm/.worktrees/nanolm-lab/lab/reports/lab_cog_02_results.json")
     args = ap.parse_args()
 
-    arms = ["C3_ebwm_counterfactual", "C4a_ulbp_latent_plan", "C4b_ulbp_equivariant"]
+    arms = list(args.arms)
     jobs = [(arm, s, args.episodes, args.eval_episodes) for arm in arms for s in range(args.seeds)]
     grouped: dict[str, list[dict[str, Any]]] = {a: [] for a in arms}
     wall_by_arm: dict[str, float] = {a: 0.0 for a in arms}

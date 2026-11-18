@@ -29,6 +29,7 @@ from lab.trackb.posttrain_pipeline import (
     attach_rslora,
     collect_eval_shield_ngrams,
     extract_topk_teacher_targets,
+    filter_verified_trajectories,
     grpo_verifiable_loss,
     proper_topk_kd_loss,
 )
@@ -610,9 +611,386 @@ def run_train_b6_3b(args) -> None:
     print("SAVED_NANOLM_B6_3B", args.out_dir, json.dumps(manifest), flush=True)
 
 
+def run_train_b7_3b(args) -> None:
+    """Train NanoLM-B7-3B-Fixed (`3.075B` < 4.0B on `HuggingFaceTB/SmolLM3-3B`):
+    Causally Shifted (`x_t -> x_{t+1}`) Self-Anchored Top-64+Tail KL (`alpha_kd=0.35`, `T=1.5`,
+    effective Jacobian KL weight `0.35 * 1.5^2 = 0.7875` vs `0.65` CE) + Proximal L2 100% FFT + `G=8` `GRPO`.
+
+    Fixes Phase-5A unshifted `_encode_smollm3_example` label alignment (`f_ids[:-1] -> f_ids[1:]`) so
+    both `CE` and `Self-KD` supervise true next-token prediction (`x_t -> x_{t+1}`, including `<|im_end|>` EOS).
+    """
+    torch.manual_seed(args.seed)
+    dev = torch.device("cuda")
+    rows = [json.loads(ln) for ln in Path(args.data_jsonl).read_text().splitlines() if ln.strip()]
+    base_id = "HuggingFaceTB/SmolLM3-3B"
+    tok = AutoTokenizer.from_pretrained(base_id, trust_remote_code=False)
+    if tok.pad_token_id is None:
+        tok.pad_token_id = tok.eos_token_id
+    raw_encoded = [x for r in rows if (x := _encode_smollm3_example(tok, r["prompt"], r["response"], bool(r["think"]), max_len=1536)) is not None]
+    # Explicit causal shift (`f_ids[:-1]` -> `labels[1:]`) required by `proper_topk_kd_loss`!
+    encoded = [{"input_ids": ex["input_ids"][:-1], "labels": ex["labels"][1:]} for ex in raw_encoded]
+    print(f"[B7-3B-Fixed] Encoded & causally shifted {len(encoded)}/{len(rows)} stratified 32B+120B trajectories for SmolLM3-3B", flush=True)
+
+    # 1. Extract Self-Anchor Top-64+Tail next-token distributions from frozen pretrained SmolLM3-3B (theta_0)
+    t0_kd = time.perf_counter()
+    self_ref = AutoModelForCausalLM.from_pretrained(base_id, torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    self_ref.eval()
+    cached_self_kd = []
+    with torch.no_grad():
+        for ex in encoded:
+            tl = self_ref(ex["input_ids"].unsqueeze(0).to(dev), use_cache=False).logits
+            ik, lpk = extract_topk_teacher_targets(tl, k=64, temperature=1.5)
+            cached_self_kd.append((ik.squeeze(0).cpu(), lpk.squeeze(0).cpu()))
+    del self_ref
+    gc.collect()
+    torch.cuda.empty_cache()
+    kd_s = time.perf_counter() - t0_kd
+    print(f"[B7-3B-Fixed] Extracted Self-Anchor SmolLM3-3B Top-64+Tail next-token logits in {kd_s:.1f}s", flush=True)
+
+    # 2. 100% Full-Parameter Fine-Tuning with Jacobian-Balanced Self-Anchored KL (alpha_kd=0.35) + Proximal L2 Anchor!
+    student = AutoModelForCausalLM.from_pretrained(base_id, torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    anchor_params = [p.detach().clone() for p in student.parameters()]
+    for p in student.parameters():
+        p.requires_grad_(True)
+    student.gradient_checkpointing_enable()
+
+    lr = 1.2e-5
+    anchor_strength = 0.08
+    opt = torch.optim.AdamW(list(student.parameters()), lr=lr, weight_decay=0.0)
+    total_updates = max(1, len(encoded) // 8)
+    warmup_updates = max(1, int(0.12 * total_updates))
+
+    t0 = time.perf_counter()
+    rng = random.Random(args.seed)
+    order = list(range(len(encoded)))
+    rng.shuffle(order)
+    upd = 0
+    loss_sum, ce_sum, kl_sum = 0.0, 0.0, 0.0
+    student.train()
+    for step_i, idx_ex in enumerate(order, 1):
+        ex = encoded[idx_ex]
+        ik, lpk = cached_self_kd[idx_ex]
+        sl = student(ex["input_ids"].unsqueeze(0).to(dev), use_cache=False).logits
+        out = proper_topk_kd_loss(
+            sl,
+            ik.unsqueeze(0).to(dev),
+            lpk.unsqueeze(0).to(dev),
+            ex["labels"].unsqueeze(0).to(dev),
+            temperature=1.5,
+            alpha_kd=0.35,
+        )
+        (out["loss"] / 8.0).backward()
+        loss_sum += float(out["loss"].detach().item())
+        ce_sum += float(out["ce"].item())
+        kl_sum += float(out["kd_kl"].item())
+        if step_i % 8 == 0 or step_i == len(order):
+            upd += 1
+            lr_mult = upd / warmup_updates if upd <= warmup_updates else 0.15 + 0.425 * (1.0 + math.cos(math.pi * min(1.0, (upd - warmup_updates) / max(1, total_updates - warmup_updates))))
+            eff_lr = lr * lr_mult
+            for g in opt.param_groups:
+                g["lr"] = eff_lr
+            torch.nn.utils.clip_grad_norm_(student.parameters(), 1.0)
+            opt.step()
+            opt.zero_grad(set_to_none=True)
+            with torch.no_grad():
+                pull = min(0.02, anchor_strength * lr_mult * 0.01)
+                for p, p0 in zip(student.parameters(), anchor_params):
+                    p.lerp_(p0, pull)
+    n_ord = max(1, len(order))
+    print(
+        f"[B7-3B-Fixed] Self-Anchored KD+FFT epoch mean_loss={loss_sum/n_ord:.4f} "
+        f"(ce={ce_sum/n_ord:.4f}, self_kl={kl_sum/n_ord:.4f}) elapsed={time.perf_counter()-t0:.1f}s",
+        flush=True,
+    )
+
+    mid_dir = Path(args.out_dir + "_self_anchored_fft")
+    mid_dir.mkdir(parents=True, exist_ok=True)
+    student.gradient_checkpointing_disable()
+    unique_p = sum(p.numel() for p in student.parameters())
+    student.save_pretrained(mid_dir)
+    tok.save_pretrained(mid_dir)
+    fft_wall = time.perf_counter() - t0
+    del student, anchor_params, opt
+    gc.collect()
+    torch.cuda.empty_cache()
+
+    # 3. Online Verifiable GRPO (`G=8`, `kl_beta=0.05`)
+    grpo_stats = _run_grpo_stage(str(mid_dir), args.rlvr_jsonl, args.out_dir, steps=50, group_size=8, kl_beta=0.05, is_smollm3=True, seed=args.seed)
+    manifest = {
+        "schema": "nanolm.trackb_phase5b_b7_3b_fixed.v1",
+        "base_model": base_id,
+        "total_params": unique_p,
+        "active_params": unique_p,
+        "method": "Stratified_32B_120B_CausalShifted_SelfAnchored_Top64KL_L2Anchored_100pct_FFT_plus_G8_GRPO",
+        "self_kd_alpha": 0.35,
+        "mean_epoch_ce": round(ce_sum / n_ord, 4),
+        "mean_epoch_self_kl": round(kl_sum / n_ord, 4),
+        "self_kd_seconds": round(kd_s, 2),
+        "anchored_fft_seconds": round(fft_wall, 2),
+        **grpo_stats,
+    }
+    (Path(args.out_dir) / "nanolm_training_manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("SAVED_NANOLM_B7_3B_FIXED", args.out_dir, json.dumps(manifest), flush=True)
+
+
+def build_causal_completion_augmentations() -> list[dict[str, Any]]:
+    """Build strictly disjoint, shield-verified intermediate `ok: true -> next_tool` and grounded abstention trajectories.
+
+    Eliminates the Phase-3..5B spurious shortcut where 100% of `ok: true` tool observations in
+    `stratified_b6.jsonl` were terminal `{"tool_calls": [], "response": "..."}` examples (which caused
+    distilled students to stop after Turn-0 read-only lookups or Turn-2 token refreshes!), and preserves
+    `FINAL_ANSWER: INSUFFICIENT_EVIDENCE` epistemic abstention when retrieved specs omit an attribute.
+    """
+    schema_txt = json.dumps(DISJOINT_RECOVERY_TOOLS, indent=2)
+    cands: list[dict[str, Any]] = []
+
+    # A. 24 Read-Lookup (`ok: true`) -> Mutating Action (`update_dns_record_ttl`) transitions
+    for i in range(24):
+        dom = f"gateway-{600 + i}.mesh.example"
+        zcode = f"ZONE-AP-{600 + i}"
+        cur_ttl = 1600 + (i % 6) * 400
+        frac_label, div = ("25%", 4) if i % 2 == 0 else ("50%", 2)
+        tgt_ttl = cur_ttl // div
+        grant = f"GRANT-INIT-{600 + i}"
+        hist = (
+            f'Turn 1 Assistant: {{"tool_calls": [{{"name": "fetch_dns_zone_profile", "arguments": {{"domain_name": "{dom}"}}}}]}}\n'
+            f'Turn 1 Tool Observation: [{{"tool": "fetch_dns_zone_profile", "ok": true, "zone_code": "{zcode}", "current_ttl_sec": {cur_ttl}, "oauth_grant": "{grant}"}}]'
+        )
+        p = (
+            f"{TOOL_SYSTEM_INSTRUCTION}\n"
+            "Read Working Memory & API error messages carefully: never reuse an invalidated/stale parameter, "
+            "clamp numeric parameters if an API specifies a safety bound, and halt immediately without retrying "
+            "if an API reports a compliance/permission freeze. "
+            "When ALL required tool steps are verified complete (or halted due to freeze), "
+            'output `{"tool_calls": [], "response": "<final grounded summary with exact IDs and final values>"}`.\n\n'
+            f"Available tools:\n```json\n{schema_txt}\n```\n"
+            f"Working Memory:\nActive Verified State: zone_code='{zcode}', current_ttl_sec={cur_ttl}, oauth_grant='{grant}'\n\n"
+            f"Interaction Log:\n{hist}\n\n"
+            f"User Objective: Lower DNS TTL on `{dom}` to `{frac_label}` of its `current_ttl_sec` and confirm once updated."
+        )
+        resp = json.dumps({"tool_calls": [{"name": "update_dns_record_ttl", "arguments": {"zone_code": zcode, "oauth_grant": grant, "target_ttl_sec": tgt_ttl}}]})
+        cands.append({
+            "domain": "tool",
+            "sub": "multiturn_post_lookup_act",
+            "category": "tool_trajectories",
+            "think": False,
+            "prompt": p,
+            "response": resp,
+            "verifier_spec": {
+                "allowed_tools": ["update_dns_record_ttl"],
+                "required_arg_keys": {"update_dns_record_ttl": ["zone_code", "oauth_grant", "target_ttl_sec"]},
+                "expected_arg_values": {"update_dns_record_ttl": {"zone_code": zcode, "oauth_grant": grant, "target_ttl_sec": tgt_ttl}},
+            },
+        })
+
+    # B. 24 Credential-Refresh (`ok: true`) -> Mutating Action (`update_dns_record_ttl` with `fresh_oauth_grant`) transitions
+    for i in range(24):
+        dom = f"ingress-{700 + i}.edge.example"
+        zcode = f"ZONE-SA-{700 + i}"
+        cur_ttl = 2400 + (i % 4) * 400
+        tgt_ttl = cur_ttl // 4
+        stale_g = f"GRANT-STALE-{700 + i}"
+        fresh_g = f"GRANT-FRESH-{700 + i}"
+        hist = (
+            f'Turn 1 Assistant: {{"tool_calls": [{{"name": "fetch_dns_zone_profile", "arguments": {{"domain_name": "{dom}"}}}}]}}\n'
+            f'Turn 1 Tool Observation: [{{"tool": "fetch_dns_zone_profile", "ok": true, "zone_code": "{zcode}", "current_ttl_sec": {cur_ttl}, "oauth_grant": "{stale_g}"}}]\n'
+            f'Turn 2 Assistant: {{"tool_calls": [{{"name": "update_dns_record_ttl", "arguments": {{"zone_code": "{zcode}", "oauth_grant": "{stale_g}", "target_ttl_sec": {tgt_ttl}}}}}]}}\n'
+            f'Turn 2 Tool Observation: [{{"tool": "update_dns_record_ttl", "ok": false, "error": "ExpiredOAuthGrant", "message": "oauth_grant is expired; call rotate_oauth_grant first."}}]\n'
+            f'Turn 3 Assistant: {{"tool_calls": [{{"name": "rotate_oauth_grant", "arguments": {{"zone_code": "{zcode}"}}}}]}}\n'
+            f'Turn 3 Tool Observation: [{{"tool": "rotate_oauth_grant", "ok": true, "zone_code": "{zcode}", "fresh_oauth_grant": "{fresh_g}"}}]'
+        )
+        p = (
+            f"{TOOL_SYSTEM_INSTRUCTION}\n"
+            "Read Working Memory & API error messages carefully: never reuse an invalidated/stale parameter, "
+            "clamp numeric parameters if an API specifies a safety bound, and halt immediately without retrying "
+            "if an API reports a compliance/permission freeze. "
+            "When ALL required tool steps are verified complete (or halted due to freeze), "
+            'output `{"tool_calls": [], "response": "<final grounded summary with exact IDs and final values>"}`.\n\n'
+            f"Available tools:\n```json\n{schema_txt}\n```\n"
+            f"Working Memory:\nActive Verified State: zone_code='{zcode}', current_ttl_sec={cur_ttl}, fresh_oauth_grant='{fresh_g}'\n"
+            f"Superseded/Invalidated State: oauth_grant='{stale_g}' (INVALID/STALE - DO NOT USE)\n\n"
+            f"Interaction Log:\n{hist}\n\n"
+            f"User Objective: Lower DNS TTL on `{dom}` to `25%` of its `current_ttl_sec` and report final applied TTL and zone_code."
+        )
+        resp = json.dumps({"tool_calls": [{"name": "update_dns_record_ttl", "arguments": {"zone_code": zcode, "oauth_grant": fresh_g, "target_ttl_sec": tgt_ttl}}]})
+        cands.append({
+            "domain": "tool",
+            "sub": "multiturn_post_refresh_act",
+            "category": "tool_trajectories",
+            "think": False,
+            "prompt": p,
+            "response": resp,
+            "verifier_spec": {
+                "allowed_tools": ["update_dns_record_ttl"],
+                "required_arg_keys": {"update_dns_record_ttl": ["zone_code", "oauth_grant", "target_ttl_sec"]},
+                "expected_arg_values": {"update_dns_record_ttl": {"zone_code": zcode, "oauth_grant": fresh_g, "target_ttl_sec": tgt_ttl}},
+            },
+        })
+
+    # C. 18 Disjoint Epistemic Abstention (`INSUFFICIENT_EVIDENCE`) trajectories
+    disjoint_modules = [
+        ("cobalt-raid", "CobaltRAID Array Controller", "PCIe hot-swap debounce latency in microseconds"),
+        ("quicksilver-ipc", "Quicksilver IPC Ring", "NUMA cross-socket migration threshold"),
+        ("amber-kv", "AmberKV Compaction Engine", "Zstandard dictionary retrain interval in hours"),
+        ("granite-paxos", "GranitePaxos Consensus", "snapshot chunk encryption cipher"),
+        ("velvet-cdn", "VelvetCDN Origin Shield", "HTTP/3 QUIC 0-RTT replay window in seconds"),
+        ("phantom-sched", "Phantom Gang Dispatcher", "NVLink partition preemption grace period"),
+    ]
+    for i in range(18):
+        slug, title, missing_field = disjoint_modules[i % len(disjoint_modules)]
+        if i % 3 == 0:
+            p = (
+                "No verified document in persistent memory matched this query above the confidence threshold.\n"
+                "If the question asks for a specific private/unseen specification fact not in general math/science, "
+                "output `FINAL_ANSWER: INSUFFICIENT_EVIDENCE`; otherwise answer carefully.\n\n"
+                f"Question: Based strictly on `{slug}` internal specifications, what is its `{missing_field}`?"
+            )
+        else:
+            p = (
+                "Use ONLY the retrieved persistent-memory evidence below to answer. "
+                "If the retrieved evidence does NOT contain the exact answer requested, output `FINAL_ANSWER: INSUFFICIENT_EVIDENCE`.\n\n"
+                f"Retrieved Evidence:\n[DOC-{slug.upper()}-V2 | status=ACTIVE] `{title}` defines `queue_slots = {512 * ((i % 4) + 1)}` and `flush_ms = {15 + i}`.\n\n"
+                f"Question: From verified `{slug}` docs, state its `{missing_field}` (or abstain with `FINAL_ANSWER: INSUFFICIENT_EVIDENCE`)."
+            )
+        cands.append({
+            "domain": "general_verified",
+            "sub": "epistemic_abstain_preserve",
+            "category": "epistemic_abstention",
+            "think": False,
+            "prompt": p,
+            "response": "The retrieved specification does not define that attribute.\nFINAL_ANSWER: INSUFFICIENT_EVIDENCE",
+            "verifier_spec": {},
+        })
+
+    shield = collect_eval_shield_ngrams()
+    kept, stats = filter_verified_trajectories(cands, shield)
+    assert stats["contaminated_dropped"] == 0, f"Decontamination shield caught overlap: {stats}"
+    assert len(kept) == len(cands), f"Verification failed on synthetic causal completion items: {stats}"
+    return kept
+
+
+def _apply_wise_ft_interpolation(ckpt_dir: str, base_model_id: str, base_weight: float = 0.30) -> None:
+    """WiSE-FT weight-space convex combination: theta_final = (1 - base_weight)*theta_post + base_weight*theta_0."""
+    dev = torch.device("cpu")
+    post_m = AutoModelForCausalLM.from_pretrained(ckpt_dir, torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    base_m = AutoModelForCausalLM.from_pretrained(base_model_id, torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    with torch.no_grad():
+        for p_post, p_base in zip(post_m.parameters(), base_m.parameters()):
+            p_post.lerp_(p_base, base_weight)
+    post_m.save_pretrained(ckpt_dir)
+    del post_m, base_m
+    gc.collect()
+
+
+def run_train_b8_3b(args) -> None:
+    """Train NanoLM-B8-3B (`3.075B` < 4.0B on `HuggingFaceTB/SmolLM3-3B`):
+    Causal-Transition-Completed Stratified `32B+120B` Curriculum + Causally-Shifted Self-Anchored Top-64+Tail KL
+    (`alpha_kd=0.40`, `T=1.5`) + Proximal L2 100% FFT + `G=8` Verifiable `GRPO` + `WiSE-FT` (`base_weight=0.30`).
+    """
+    torch.manual_seed(args.seed)
+    dev = torch.device("cuda")
+    rows = [json.loads(ln) for ln in Path(args.data_jsonl).read_text().splitlines() if ln.strip()]
+    aug = build_causal_completion_augmentations()
+    all_rows = rows + aug
+    base_id = "HuggingFaceTB/SmolLM3-3B"
+    tok = AutoTokenizer.from_pretrained(base_id, trust_remote_code=False)
+    if tok.pad_token_id is None:
+        tok.pad_token_id = tok.eos_token_id
+    raw_encoded = [x for r in all_rows if (x := _encode_smollm3_example(tok, r["prompt"], r["response"], bool(r["think"]), max_len=1536)) is not None]
+    encoded = [{"input_ids": ex["input_ids"][:-1], "labels": ex["labels"][1:]} for ex in raw_encoded]
+    print(f"[B8-3B] Encoded & causally shifted {len(encoded)}/{len(all_rows)} ({len(aug)} causal-completion aug) trajectories", flush=True)
+
+    t0_kd = time.perf_counter()
+    self_ref = AutoModelForCausalLM.from_pretrained(base_id, torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    self_ref.eval()
+    cached_self_kd = []
+    with torch.no_grad():
+        for ex in encoded:
+            tl = self_ref(ex["input_ids"].unsqueeze(0).to(dev), use_cache=False).logits
+            ik, lpk = extract_topk_teacher_targets(tl, k=64, temperature=1.5)
+            cached_self_kd.append((ik.squeeze(0).cpu(), lpk.squeeze(0).cpu()))
+    del self_ref
+    gc.collect()
+    torch.cuda.empty_cache()
+    kd_s = time.perf_counter() - t0_kd
+
+    student = AutoModelForCausalLM.from_pretrained(base_id, torch_dtype=torch.bfloat16, trust_remote_code=False).to(dev)
+    anchor_params = [p.detach().clone() for p in student.parameters()]
+    for p in student.parameters():
+        p.requires_grad_(True)
+    student.gradient_checkpointing_enable()
+
+    lr = 1.0e-5
+    anchor_strength = 0.08
+    opt = torch.optim.AdamW(list(student.parameters()), lr=lr, weight_decay=0.0)
+    total_updates = max(1, len(encoded) // 8)
+    warmup_updates = max(1, int(0.12 * total_updates))
+
+    t0 = time.perf_counter()
+    rng = random.Random(args.seed)
+    order = list(range(len(encoded)))
+    rng.shuffle(order)
+    upd = 0
+    ce_sum, kl_sum = 0.0, 0.0
+    student.train()
+    for step_i, idx_ex in enumerate(order, 1):
+        ex = encoded[idx_ex]
+        ik, lpk = cached_self_kd[idx_ex]
+        sl = student(ex["input_ids"].unsqueeze(0).to(dev), use_cache=False).logits
+        out = proper_topk_kd_loss(sl, ik.unsqueeze(0).to(dev), lpk.unsqueeze(0).to(dev), ex["labels"].unsqueeze(0).to(dev), temperature=1.5, alpha_kd=0.40)
+        (out["loss"] / 8.0).backward()
+        ce_sum += float(out["ce"].item())
+        kl_sum += float(out["kd_kl"].item())
+        if step_i % 8 == 0 or step_i == len(order):
+            upd += 1
+            lr_mult = upd / warmup_updates if upd <= warmup_updates else 0.15 + 0.425 * (1.0 + math.cos(math.pi * min(1.0, (upd - warmup_updates) / max(1, total_updates - warmup_updates))))
+            for g in opt.param_groups:
+                g["lr"] = lr * lr_mult
+            torch.nn.utils.clip_grad_norm_(student.parameters(), 1.0)
+            opt.step()
+            opt.zero_grad(set_to_none=True)
+            with torch.no_grad():
+                pull = min(0.02, anchor_strength * lr_mult * 0.01)
+                for p, p0 in zip(student.parameters(), anchor_params):
+                    p.lerp_(p0, pull)
+
+    mid_dir = Path(args.out_dir + "_self_anchored_fft")
+    mid_dir.mkdir(parents=True, exist_ok=True)
+    student.gradient_checkpointing_disable()
+    unique_p = sum(p.numel() for p in student.parameters())
+    student.save_pretrained(mid_dir)
+    tok.save_pretrained(mid_dir)
+    fft_wall = time.perf_counter() - t0
+    del student, anchor_params, opt
+    gc.collect()
+    torch.cuda.empty_cache()
+
+    grpo_stats = _run_grpo_stage(str(mid_dir), args.rlvr_jsonl, args.out_dir, steps=50, group_size=8, kl_beta=0.05, is_smollm3=True, seed=args.seed)
+    # Apply WiSE-FT weight-space convex combination (0.70 B8_post + 0.30 SmolLM3-3B_base)!
+    _apply_wise_ft_interpolation(args.out_dir, base_id, base_weight=0.30)
+    n_ord = max(1, len(order))
+    manifest = {
+        "schema": "nanolm.trackb_phase5c_b8_3b.v1",
+        "base_model": base_id,
+        "total_params": unique_p,
+        "active_params": unique_p,
+        "method": "CausalCompleted_Stratified_32B_120B_SelfAnchored_Top64KL_L2FFT_G8_GRPO_plus_WiSE_FT_0p30",
+        "self_kd_alpha": 0.40,
+        "wise_ft_base_weight": 0.30,
+        "causal_completion_aug_count": len(aug),
+        "mean_epoch_ce": round(ce_sum / n_ord, 4),
+        "mean_epoch_self_kl": round(kl_sum / n_ord, 4),
+        "self_kd_seconds": round(kd_s, 2),
+        "anchored_fft_seconds": round(fft_wall, 2),
+        **grpo_stats,
+    }
+    (Path(args.out_dir) / "nanolm_training_manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("SAVED_NANOLM_B8_3B", args.out_dir, json.dumps(manifest), flush=True)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--phase", required=True, choices=["generate_stratified", "train_b6_2b", "train_b6_3b"])
+    ap.add_argument("--phase", required=True, choices=["generate_stratified", "train_b6_2b", "train_b6_3b", "train_b7_3b", "train_b8_3b"])
     ap.add_argument("--data-dir", default="/workspace/phase3_data")
     ap.add_argument("--data-jsonl", default="/workspace/phase3_data/stratified_b6.jsonl")
     ap.add_argument("--rlvr-jsonl", default="/workspace/phase3_data/rlvr_b6.jsonl")
@@ -626,8 +1004,12 @@ def main() -> None:
         run_generate_stratified(args)
     elif args.phase == "train_b6_2b":
         run_train_b6_2b(args)
-    else:
+    elif args.phase == "train_b6_3b":
         run_train_b6_3b(args)
+    elif args.phase == "train_b7_3b":
+        run_train_b7_3b(args)
+    else:
+        run_train_b8_3b(args)
 
 
 if __name__ == "__main__":

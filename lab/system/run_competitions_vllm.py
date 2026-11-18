@@ -127,7 +127,9 @@ def main() -> None:
         llm_kwargs["dtype"] = "bfloat16"
 
     is_gpt_oss = "gpt-oss" in args.model.lower()
-    is_smollm3 = any(k in args.model.lower() for k in ("smollm3", "b6_3b"))
+    is_smollm3 = any(k in args.model.lower() for k in ("smollm3", "b6_3b", "b7_3b", "b8_3b")) or (
+        "/no_think" in (getattr(tok, "chat_template", "") or "")
+    )
     llm = LLM(**llm_kwargs)
 
     c1_fast = run_batched_competition_1(llm, tok, tasks, think=False, is_gpt_oss=is_gpt_oss, is_smollm3=is_smollm3)

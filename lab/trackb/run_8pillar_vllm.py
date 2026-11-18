@@ -49,9 +49,13 @@ def main() -> None:
     )
     sp = SamplingParams(temperature=0.0, max_tokens=args.max_tokens)
 
+    is_smollm3 = any(k in args.model.lower() for k in ("smollm3", "b6_3b", "b7_3b", "b8_3b")) or (
+        "/no_think" in (getattr(tok, "chat_template", "") or "")
+    )
+
     def _format_prompt(p: str) -> str:
         msgs = []
-        if any(k in args.model.lower() for k in ("smollm3", "b6_3b")):
+        if is_smollm3:
             msgs.append({"role": "system", "content": "/think" if args.think else "/no_think"})
         msgs.append({"role": "user", "content": p})
         if "gpt-oss" in args.model.lower():

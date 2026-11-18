@@ -14,6 +14,7 @@ Every episode logs exact `llm_calls`, `output_tokens_est`, `sandbox_runs`, `memo
 
 from __future__ import annotations
 
+import ast
 import json
 import re
 import time
@@ -28,7 +29,7 @@ from lab.system.verification_engine import (
     verify_code_candidate,
     verify_json_candidate,
 )
-from lab.trackb.eval_capabilities import TOOL_SYSTEM_INSTRUCTION, strip_thinking
+from lab.trackb.eval_capabilities import TOOL_SYSTEM_INSTRUCTION, parse_tool_calls, strip_thinking
 
 
 @dataclass
@@ -165,24 +166,24 @@ class NanoLMSystem:
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 3. COMPUTE_VERIFY_MATH v3: Executable-Specification Voting.
+        # 3. COMPUTE_VERIFY_MATH v4: Executable-Specification Voting + Exact Rational State Elimination.
         #    Channel A = analytical think=1; Channel B = exhaustive brute-force/exact-enumeration script
-        #    (directly encodes the problem's literal constraints; no closed formulas); Channel C = efficient
-        #    formula script. Majority vote; on 3-way split prefer B (literal specification) over A/C.
+        #    (directly encodes the problem's literal constraints; no closed formulas, NEVER Monte Carlo);
+        #    Channel C = efficient exact formula script. Majority vote; on 3-way split prefer B over A/C.
         if route == "COMPUTE_VERIFY_MATH":
             ana_prompt = f"Solve this mathematical problem step-by-step with exact reasoning and put your final answer inside `\\boxed{{}}`:\n\n{prompt}"
-            ana_resp = _ask([{"role": "user", "content": ana_prompt}], True, 2560)
+            ana_resp = _ask([{"role": "user", "content": ana_prompt}], True, 3584)
             ana_ans = (extract_canonical_answer(ana_resp) or "").strip()
 
             def _run_channel(instr: str, timeout_s: float) -> tuple[bool, str]:
                 nonlocal sbx
-                resp = _ask([{"role": "user", "content": instr}], False, 1024)
+                resp = _ask([{"role": "user", "content": instr}], False, 1280)
                 sbx += 1
                 ok, out = execute_python_computation(strip_thinking(resp), timeout_sec=timeout_s)
                 if not ok:
                     rep = _ask(
-                        [{"role": "user", "content": f"Your script failed with `{out}`. Fix it so it runs within {int(timeout_s)} seconds and prints ONLY the exact final answer on the last line:\n\n{instr}"}],
-                        False, 1024,
+                        [{"role": "user", "content": f"Your script failed with `{out}`. Fix it so it runs within {int(timeout_s)} seconds using ONLY exact integer/`fractions.Fraction` arithmetic (NO random sampling) and prints ONLY the exact final answer on the last line:\n\n{instr}"}],
+                        False, 1280,
                     )
                     sbx += 1
                     ok, out = execute_python_computation(strip_thinking(rep), timeout_sec=timeout_s)
@@ -191,22 +192,24 @@ class NanoLMSystem:
             brute_instr = (
                 "Write a Python 3 script that answers the problem below by EXHAUSTIVE BRUTE-FORCE ENUMERATION or "
                 "exact linear-system solving with `fractions.Fraction` (enumerate every candidate integer / permutation / "
-                "tuple / state directly from the problem's literal constraints; do NOT use any closed-form formula). "
+                "tuple directly from the problem's literal constraints, or for Markov/random-walk/recurrence state transitions "
+                "solve the exact linear equations over states with `fractions.Fraction` Gaussian elimination; NEVER use `random` "
+                "Monte Carlo sampling or `float` approximations, and do NOT guess closed-form combinatorics formulas). "
                 "Respect every qualifier ('second smallest', 'exactly', 'non-negative', 'lowest terms'). "
                 "It must finish within 20 seconds and print ONLY the final answer on the last line.\n\n"
                 f"Problem:\n{prompt}"
             )
             formula_instr = (
-                "Write a short, exact Python 3 script (preferring exact integer/`fractions.Fraction`/`math` arithmetic; "
-                "read every qualifier like 'second smallest', 'non-negative', or 'lowest terms' carefully) "
-                "that computes the exact answer and prints ONLY the final answer on the last line via `print(...)`:\n\n"
+                "Write a short, exact Python 3 script (using ONLY exact `int`, `fractions.Fraction`, and `math` arithmetic—NEVER "
+                "`random` Monte Carlo or `float` rounding; read every qualifier like 'second smallest', 'non-negative', or "
+                "'lowest terms' carefully) that computes the exact answer and prints ONLY the final answer on the last line via `print(...)`:\n\n"
                 f"Problem:\n{prompt}"
             )
             ok_b, val_b = _run_channel(brute_instr, 20.0)
             ok_c, val_c = _run_channel(formula_instr, 5.0)
 
             votes = [v for v in (ana_ans, val_b if ok_b else "", val_c if ok_c else "") if v]
-            trace.append(f"math_v3:A={ana_ans},B={val_b if ok_b else 'ERR'},C={val_c if ok_c else 'ERR'}")
+            trace.append(f"math_v4:A={ana_ans},B={val_b if ok_b else 'ERR'},C={val_c if ok_c else 'ERR'}")
             final_ans, tier = "", "UNCERTAIN_OR_FAILED"
             if votes:
                 counts: dict[str, int] = {}
@@ -222,34 +225,48 @@ class NanoLMSystem:
                 else:
                     final_ans, tier = votes[0], "EXECUTABLE_UNVERIFIED"
             if final_ans:
-                wm.record_fact("math_v3_answer", final_ans)
+                wm.record_fact("math_v4_answer", final_ans)
             return SystemEpisodeResult(
                 f"\\boxed{{{final_ans}}}" if final_ans else strip_thinking(ana_resp), final_ans, route, tier,
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 4. CODE_VERIFY_REPAIR: Generate -> synthesize self-tests if none provided -> execute -> repair!
+        # 4. CODE_VERIFY_REPAIR v4: Differential Brute-Force/Smoke Self-Testing + Safe Best-Candidate Tracking!
         if route == "CODE_VERIFY_REPAIR":
             cur_msgs = [{"role": "user", "content": prompt}]
-            resp = _ask(cur_msgs, False, 1280)
+            resp = _ask(cur_msgs, False, 1536)
             harness = self_test_harness
             if not harness:
-                # Self-generate deterministic edge-case assertions from the problem specification!
+                # Synthesize AST-validated smoke & tiny-input brute-force differential checks (avoiding mental-math constants!)
                 test_p = (
-                    "Write 4 concise Python `assert` statements testing normal and tricky edge cases "
-                    "(empty inputs, negative numbers, ties, boundary indices) for the specification below. "
-                    "Output ONLY Python `assert ...` lines inside ```python``` (do NOT redefine the function):\n\n"
+                    "Write a short Python self-test snippet inside ```python``` to test an implementation of the specification below "
+                    "(do NOT redefine the target function/class). Prefer:\n"
+                    "1) Calling the target function/class on 4 boundary inputs (empty/0, negative numbers, ties, small corner cases) "
+                    "checking return types and obvious base cases (`n=0` or `n=1`), AND\n"
+                    "2) Where possible, a 5-line naive brute-force helper `_naive_ref(...)` on TINY inputs (`n <= 5`, coords `-3..5`) "
+                    "asserting `target_fn(x) == _naive_ref(x)` instead of guessing large mental-math numbers!\n\n"
                     f"{prompt}"
                 )
-                t_resp = strip_thinking(_ask([{"role": "user", "content": test_p}], False, 512))
+                t_resp = strip_thinking(_ask([{"role": "user", "content": test_p}], False, 640))
                 m = re.search(r"```(?:python)?\s*\n(.*?)```", t_resp, flags=re.DOTALL | re.IGNORECASE)
                 cand_asserts = (m.group(1) if m else t_resp).strip()
-                if "assert " in cand_asserts and "def " not in cand_asserts:
-                    harness = cand_asserts
+                if "assert " in cand_asserts and "class " not in cand_asserts:
+                    try:
+                        ast.parse(cand_asserts)
+                        harness = cand_asserts
+                    except SyntaxError:
+                        harness = ""
 
+            best_code = ""
+            best_raw = resp
             for attempt in range(self.max_repairs + 1):
                 sbx += 1
-                rep = verify_code_candidate(resp, self_tests=harness)
+                # Always check standalone syntax/compile validity first so we preserve a compiling fallback!
+                syn_rep = verify_code_candidate(resp, self_tests="")
+                if syn_rep.passed and not best_code:
+                    best_code = syn_rep.extracted_answer
+                    best_raw = resp
+                rep = verify_code_candidate(resp, self_tests=harness) if syn_rep.passed and harness else syn_rep
                 trace.append(f"code_try{attempt}:{rep.critique[:60]}")
                 if rep.passed:
                     vis = f"```python\n{rep.extracted_answer}\n```"
@@ -257,19 +274,29 @@ class NanoLMSystem:
                         vis, rep.extracted_answer, route, "VERIFIED_COMPUTATION",
                         calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
                     )
+                if syn_rep.passed:
+                    best_code = syn_rep.extracted_answer
+                    best_raw = resp
                 if attempt < self.max_repairs:
+                    # Attempt 0 repair uses fast think=False (avoids <think> truncation on <4B); Attempt 1 escalates to think=True!
+                    use_t = attempt >= 1
                     cur_msgs = [
                         {"role": "user", "content": prompt},
-                        {"role": "assistant", "content": strip_thinking(resp)},
+                        {"role": "assistant", "content": strip_thinking(resp) or best_code},
                         {"role": "user", "content": f"Verification Engine Feedback: {rep.critique}"},
                     ]
-                    resp = _ask(cur_msgs, True, 2560)
+                    resp = _ask(cur_msgs, use_t, 3584 if use_t else 1536)
+            if best_code:
+                return SystemEpisodeResult(
+                    f"```python\n{best_code}\n```", best_code, route, "UNCERTAIN_OR_FAILED",
+                    calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
+                )
             return SystemEpisodeResult(
-                strip_thinking(resp), rep.extracted_answer, route, "UNCERTAIN_OR_FAILED",
+                strip_thinking(best_raw), rep.extracted_answer, route, "UNCERTAIN_OR_FAILED",
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 5. SCHEMA_VERIFY_JSON: Fast generation + Python-assisted arithmetic/schema critic & repair
+        # 5. SCHEMA_VERIFY_JSON v4: Fast generation + Multi-line/Dict-Safe Python Conservation Synthesis
         if route == "SCHEMA_VERIFY_JSON":
             cur_msgs = [{"role": "user", "content": prompt}]
             resp = _ask(cur_msgs, False, 896)
@@ -282,7 +309,6 @@ class NanoLMSystem:
                         calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
                     )
                 if attempt < self.max_repairs:
-                    # Let the model emit a Python script printing `json.dumps(...)` so arithmetic conservation is exact!
                     py_json_p = (
                         f"Schema Critic found an error in your previous JSON: `{rep.critique}`.\n"
                         "Write a short Python 3 script using `import json` that computes every field accurately "
@@ -292,23 +318,39 @@ class NanoLMSystem:
                     py_cand = _ask([{"role": "user", "content": py_json_p}], False, 1024)
                     sbx += 1
                     ok_j, out_j = execute_python_computation(strip_thinking(py_cand))
-                    if ok_j:
-                        resp = out_j.splitlines()[-1].strip()
+                    if ok_j and out_j.strip():
+                        full_s = out_j.strip()
+                        if "{" in full_s and "}" in full_s:
+                            cand_s = full_s[full_s.find("{") : full_s.rfind("}") + 1]
+                            try:
+                                json.loads(cand_s)
+                                resp = cand_s
+                            except Exception:
+                                try:
+                                    py_obj = ast.literal_eval(cand_s)
+                                    resp = json.dumps(py_obj) if isinstance(py_obj, dict) else cand_s
+                                except Exception:
+                                    resp = cand_s
+                        else:
+                            resp = full_s.splitlines()[-1].strip()
                     else:
+                        use_t = attempt >= 1
                         resp = _ask(
                             [{"role": "user", "content": f"{prompt}\n\nFix error: {rep.critique}. Output ONLY valid JSON."}],
-                            True, 2560,
+                            use_t, 3072 if use_t else 1280,
                         )
             return SystemEpisodeResult(
                 strip_thinking(resp), rep.extracted_answer, route, "UNCERTAIN_OR_FAILED",
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 6. AGENTIC_TOOL_LOOP v2: Epistemic Belief-Revision WorkingMemory + Error-Triggered Thinking!
+        # 6. AGENTIC_TOOL_LOOP v4: Error-Only Adaptive Thinking + Truncation/Premature-Stop Guards + Grounded State!
         assert tool_env is not None
         schema_txt = json.dumps(tool_env.schemas, indent=2)
         history_lines: list[str] = []
         last_vis = ""
+        rejected_premature_stop = False
+        terminal_block_kws = ("freeze", "hold", "revok", "forbid", "denied", "compliance", "security")
         for turn in range(self.max_tool_turns):
             wm_txt = wm.render()
             wm_block = f"\nWorking Memory:\n{wm_txt}\n" if wm_txt else ""
@@ -322,21 +364,60 @@ class NanoLMSystem:
                 'output `{"tool_calls": [], "response": "<final grounded summary with exact IDs and final values>"}`.\n\n'
                 f"Available tools:\n```json\n{schema_txt}\n```{wm_block}{hist_block}\nUser Objective: {prompt}"
             )
-            # Adaptive compute escalation: Turn 0 happy path uses fast think=False; recovery/multi-step uses think=True!
-            use_think = bool(wm.has_unresolved_error or turn >= 1)
-            resp = _ask([{"role": "user", "content": turn_prompt}], use_think, 3584 if use_think else 768)
+            # Adaptive compute: ONLY invoke deep thinking when recovering from an active non-terminal API error!
+            saw_terminal_block = any(any(kw in ev.lower() for kw in terminal_block_kws) for ev in wm.events)
+            use_think = bool(wm.has_unresolved_error and not saw_terminal_block)
+            resp = _ask([{"role": "user", "content": turn_prompt}], use_think, 3584 if use_think else 1024)
             last_vis = strip_thinking(resp)
+
+            # Guard 1: Recover immediately if <think>/Harmony analysis truncated to empty string or malformed JSON!
+            chk_calls, chk_st = parse_tool_calls(last_vis)
+            if not last_vis.strip() or chk_calls is None:
+                trace.append(f"tool_turn{turn}_json_recovery:{chk_st}")
+                rec_prompt = (
+                    f"{turn_prompt}\n\n"
+                    'IMPORTANT: Respond ONLY with a valid JSON object `{"tool_calls": [{"name": "...", "arguments": {...}}]}` '
+                    'or `{"tool_calls": [], "response": "..."}` (no markdown prose outside JSON).'
+                )
+                resp = _ask([{"role": "user", "content": rec_prompt}], False, 1024)
+                last_vis = strip_thinking(resp)
+
             sbx += 1
             prev_hist_len = len(tool_env.call_history)
             done, obs_list, st = tool_env.step(last_vis)
             new_calls = tool_env.call_history[prev_hist_len:]
             trace.append(f"tool_turn{turn}:think={int(use_think)},done={done},obs={len(obs_list)},st={st}")
             if done:
+                # Guard 2: Reject premature stop (at most once) if 0 tools called in plain text OR recoverable error unresolved!
+                premature_zero_call = len(tool_env.call_history) == 0 and st == "plain_text_no_tool"
+                premature_unresolved = wm.has_unresolved_error and not saw_terminal_block
+                if not rejected_premature_stop and (premature_zero_call or premature_unresolved):
+                    rejected_premature_stop = True
+                    trace.append(f"tool_turn{turn}_premature_stop_rejected")
+                    history_lines.append(f"Turn {turn + 1} Assistant: {last_vis[:300]}")
+                    history_lines.append(
+                        f"Turn {turn + 1} Verification Critic: Objective not yet verified complete "
+                        "(recoverable API error or missing initial tool call, and no compliance/security freeze reported). "
+                        "Invoke the appropriate recovery/action tool call now."
+                    )
+                    continue
+
                 try:
                     parsed = json.loads(last_vis[last_vis.find("{") : last_vis.rfind("}") + 1])
                     final_text = str(parsed.get("response", last_vis))
                 except Exception:
                     final_text = last_vis
+                # Grounded WorkingMemory State Receipt: preserve verified live API IDs/values/freeze codes!
+                receipt_bits: list[str] = []
+                for fk, fv in wm.facts.items():
+                    if str(fv) not in final_text:
+                        receipt_bits.append(f"{fk}={fv}")
+                if saw_terminal_block:
+                    for ev in wm.events:
+                        if any(kw in ev.lower() for kw in terminal_block_kws) and ev not in final_text:
+                            receipt_bits.append(ev)
+                if receipt_bits:
+                    final_text = f"{final_text}\n[Verified Working Memory: {'; '.join(receipt_bits)}]"
                 tier = "VERIFIED_COMPUTATION" if any(o.get("observation", {}).get("ok") for o in tool_env.call_history) else "SUPPORTED_EVIDENCE"
                 return SystemEpisodeResult(
                     final_text, final_text, route, tier,

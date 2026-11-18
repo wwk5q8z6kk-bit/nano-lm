@@ -19,26 +19,33 @@ from lab.arch.arch04 import Arch04Cfg, Arch04LM
 from lab.arch.train import Muon, evaluate, wsd
 
 ARCH04_SPECS = {
-    "X5_atrd_muon": {"use_atrd": True, "use_margin_gate": False, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon"},
-    "X6_pkm_muon": {"use_atrd": False, "use_margin_gate": False, "atrd_frac": 0.0, "use_pkm": True, "optim": "muon"},
-    "X7_atrd_pkm_muon": {"use_atrd": True, "use_margin_gate": False, "atrd_frac": 0.25, "use_pkm": True, "optim": "muon"},
-    "X8_margin_atrd_muon": {"use_atrd": True, "use_margin_gate": True, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon"},
+    "X5_atrd_muon": {"scale": "46m", "d": 512, "n_head": 8, "n_kv": 4, "layout": "DDDADDDADA", "use_atrd": True, "use_margin_gate": False, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon", "muon_lr": 0.02},
+    "X6_pkm_muon": {"scale": "46m", "d": 512, "n_head": 8, "n_kv": 4, "layout": "DDDADDDADA", "use_atrd": False, "use_margin_gate": False, "atrd_frac": 0.0, "use_pkm": True, "optim": "muon", "muon_lr": 0.02},
+    "X7_atrd_pkm_muon": {"scale": "46m", "d": 512, "n_head": 8, "n_kv": 4, "layout": "DDDADDDADA", "use_atrd": True, "use_margin_gate": False, "atrd_frac": 0.25, "use_pkm": True, "optim": "muon", "muon_lr": 0.02},
+    "X8_margin_atrd_muon": {"scale": "46m", "d": 512, "n_head": 8, "n_kv": 4, "layout": "DDDADDDADA", "use_atrd": True, "use_margin_gate": True, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon", "muon_lr": 0.02},
+    # LAB-SCALE-02: 125M scale-up of NanoLM-v3 (X8_margin_atrd_muon) with spectral width/depth-scaled Muon LR!
+    # eta_Muon(d=768, L=16) = 0.02 * sqrt(512/768) * sqrt(10/16) = 0.01291
+    "S2_nanolm_v3_125m": {"scale": "125m", "d": 768, "n_head": 12, "n_kv": 4, "layout": "DDDADDDADDDADDDA", "use_atrd": True, "use_margin_gate": True, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon", "muon_lr": 0.01291},
 }
 
-TARGET_ACTIVE_NON_EMB = 29_377_080  # exact match to X4_nanolm_v2_muon!
+TARGETS_ACTIVE_NON_EMB = {
+    "46m": 29_377_080,   # exact match to X4_nanolm_v2_muon
+    "125m": 96_350_208,  # exact match to S0_dense_125m & S1_nanolm_v2_125m!
+}
 
 
 def build_arch04(arm: str, vocab: int, seq: int) -> Arch04LM:
     s = ARCH04_SPECS[arm]
-    lo, hi = 512, 2048
+    target = TARGETS_ACTIVE_NON_EMB[s["scale"]]
+    lo, hi = 512, 4096
     while hi - lo > 32:
         mid = (lo + hi) // 2 // 32 * 32
         cfg = Arch04Cfg(
-            vocab=vocab, seq=seq, ffn=mid,
-            use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
+            vocab=vocab, d=s["d"], n_head=s["n_head"], n_kv=s["n_kv"], layout=s["layout"],
+            seq=seq, ffn=mid, use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
             atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"],
         )
-        if Arch04LM(cfg).param_report()["active_non_embedding"] < TARGET_ACTIVE_NON_EMB:
+        if Arch04LM(cfg).param_report()["active_non_embedding"] < target:
             lo = mid
         else:
             hi = mid
@@ -46,27 +53,27 @@ def build_arch04(arm: str, vocab: int, seq: int) -> Arch04LM:
         (lo, hi),
         key=lambda f: abs(
             Arch04LM(Arch04Cfg(
-                vocab=vocab, seq=seq, ffn=f,
-                use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
+                vocab=vocab, d=s["d"], n_head=s["n_head"], n_kv=s["n_kv"], layout=s["layout"],
+                seq=seq, ffn=f, use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
                 atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"],
             )).param_report()["active_non_embedding"]
-            - TARGET_ACTIVE_NON_EMB
+            - target
         ),
     )
     return Arch04LM(Arch04Cfg(
-        vocab=vocab, seq=seq, ffn=best,
-        use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
+        vocab=vocab, d=s["d"], n_head=s["n_head"], n_kv=s["n_kv"], layout=s["layout"],
+        seq=seq, ffn=best, use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
         atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"],
     ))
 
 
-def make_arch04_optim(model: Arch04LM, lr: float, wd: float):
+def make_arch04_optim(model: Arch04LM, lr: float, wd: float, muon_lr: float = 0.02):
     # Sparse persistent memory tables & gates use AdamW (sparse row gradients should NOT be Newton-Schulz orthogonalized!)
     skip_muon = ("emb", "head", "v_gate", "pkm_banks", "step_emb")
     hidden2d = [p for n, p in model.named_parameters() if p.dim() == 2 and not any(t in n for t in skip_muon)]
     other = [p for n, p in model.named_parameters() if not (p.dim() == 2 and not any(t in n for t in skip_muon))]
     return [
-        Muon(hidden2d, lr=0.02, wd=wd * 0.1),
+        Muon(hidden2d, lr=muon_lr, wd=wd * 0.1),
         torch.optim.AdamW(other, lr=lr, betas=(0.9, 0.95), eps=1e-8, weight_decay=0.0),
     ]
 
@@ -96,7 +103,9 @@ def main() -> None:
     data = Path(a.data)
     manifest = json.loads((data / "manifest.json").read_text())
     model = build_arch04(a.arm, vocab=manifest["vocab"], seq=a.seq).to(dev)
-    opts = make_arch04_optim(model, a.lr, a.wd)
+    spec_cfg = ARCH04_SPECS[a.arm]
+    eff_adam_lr = a.lr * math.sqrt(512.0 / spec_cfg["d"]) if spec_cfg["scale"] == "125m" else a.lr
+    opts = make_arch04_optim(model, eff_adam_lr, a.wd, muon_lr=spec_cfg["muon_lr"])
     base_lrs = [[g["lr"] for g in o.param_groups] for o in opts]
     # Compile PKM arm (static graph); ATD uses dynamic sparse K_max gather so run eager+Triton FLA
     fwd = torch.compile(model) if (a.compile and not model.c.use_atrd) else model

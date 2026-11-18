@@ -1,0 +1,8 @@
+=== 2026-11-18T12:46:01Z STEP 0: INSTALL ===
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+virtualenv 20.35.4 requires filelock<4,>=3.12.2, but you have filelock 4.2.12 which is incompatible.
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+=== 2026-11-18T12:54:07Z STEP 1: TRAIN NANOLM-B8-3B (CAUSAL-COMPLETED + SELF-ANCHORED KL + GRPO + WISE-FT) ===
+=== 2026-11-18T13:17:29Z STEP 2: EVAL NANOLM-B8-3B (8-PILLAR + GSM8K/MATH-500/IFEVAL/HUMANEVAL) ===
+=== 2026-11-18T13:28:09Z STEP 3: FROZEN SYSTEM-V4 COMP 1 & 2 ON NANOLM-B8-3B ===
+PHASE5C_ALL_COMPLETE

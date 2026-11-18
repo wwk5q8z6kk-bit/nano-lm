@@ -1,0 +1,25 @@
+Processed prompts:  90%|█████████ | 489/541 [00:09<00:03, 14.45it/s, est. speed input: 5608.68 toks/s, output: 12389.42 toks/s][A
+Processed prompts:  91%|█████████ | 491/541 [00:10<00:03, 12.60it/s, est. speed input: 5508.04 toks/s, output: 12311.33 toks/s][A
+Processed prompts:  91%|█████████ | 493/541 [00:10<00:04, 11.52it/s, est. speed input: 5417.71 toks/s, output: 12249.81 toks/s][A
+Processed prompts:  92%|█████████▏| 496/541 [00:10<00:03, 11.26it/s, est. speed input: 5309.46 toks/s, output: 12224.97 toks/s][A
+Processed prompts:  92%|█████████▏| 498/541 [00:11<00:04,  9.32it/s, est. speed input: 5170.89 toks/s, output: 12066.24 toks/s][A
+Processed prompts:  93%|█████████▎| 501/541 [00:11<00:05,  7.20it/s, est. speed input: 4937.92 toks/s, output: 11754.21 toks/s][A
+Processed prompts:  93%|█████████▎| 502/541 [00:11<00:06,  6.04it/s, est. speed input: 4818.98 toks/s, output: 11541.85 toks/s][A
+Processed prompts: 100%|██████████| 541/541 [00:11<00:00,  6.04it/s, est. speed input: 5156.35 toks/s, output: 15698.11 toks/s][AProcessed prompts: 100%|██████████| 541/541 [00:11<00:00, 45.26it/s, est. speed input: 5156.35 toks/s, output: 15698.11 toks/s]
+Running generate_until requests:   0%|          | 1/541 [00:12<1:48:07, 12.01s/it]Running generate_until requests: 100%|██████████| 541/541 [00:12<00:00, 45.02it/s]
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+(MainProcess pid=4025) INFO 11-18 12:26:31 [utils.py:628] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=4292) INFO 11-18 12:26:31 [core.py:1698] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=4292) INFO 11-18 12:26:31 [core.py:1889] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=4292) INFO 11-18 12:26:31 [core.py:1920] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=4292) INFO 11-18 12:26:31 [core.py:1746] [shutdown] EngineCore: exiting busy loop
+2026-11-18:12:26:32 INFO     [loggers.evaluation_tracker:247] Saving results aggregated
+vllm ({'pretrained': '/workspace/models/nanolm_b7_3b_fixed', 'dtype': 'bfloat16', 'gpu_memory_utilization': 0.85, 'max_model_len': 8192}), gen_kwargs: ({'max_gen_toks': 1280, 'temperature': 0}), limit: None, num_fewshot: None, batch_size: auto
+|Tasks |Version|Filter|n-shot|        Metric         |   |Value |   |Stderr|
+|------|------:|------|-----:|-----------------------|---|-----:|---|------|
+|ifeval|      4|none  |     0|inst_level_loose_acc   |↑  |0.8082|±  |   N/A|
+|      |       |none  |     0|inst_level_strict_acc  |↑  |0.7794|±  |   N/A|
+|      |       |none  |     0|prompt_level_loose_acc |↑  |0.7375|±  |0.0189|
+|      |       |none  |     0|prompt_level_strict_acc|↑  |0.6987|±  |0.0197|
+

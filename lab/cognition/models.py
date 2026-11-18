@@ -98,10 +98,22 @@ class CognitiveLM(nn.Module):
             "C4a_ulbp_latent_plan",
             "C4b_ulbp_equivariant",
             "C5_de_bruijn_canonical",
+            "C6_causal_suffix_canonical",
         )
         self.arm = arm
-        self.is_c3_family = arm in ("C3_ebwm_counterfactual", "C4a_ulbp_latent_plan", "C4b_ulbp_equivariant", "C5_de_bruijn_canonical")
-        self.is_c4 = arm in ("C4a_ulbp_latent_plan", "C4b_ulbp_equivariant", "C5_de_bruijn_canonical")
+        self.is_c3_family = arm in (
+            "C3_ebwm_counterfactual",
+            "C4a_ulbp_latent_plan",
+            "C4b_ulbp_equivariant",
+            "C5_de_bruijn_canonical",
+            "C6_causal_suffix_canonical",
+        )
+        self.is_c4 = arm in (
+            "C4a_ulbp_latent_plan",
+            "C4b_ulbp_equivariant",
+            "C5_de_bruijn_canonical",
+            "C6_causal_suffix_canonical",
+        )
         self.d = d
         self.n_slots = n_slots
         ffn_dim = 256 if self.is_c4 else 288
@@ -208,7 +220,7 @@ class CognitiveLM(nn.Module):
         z = self.init_belief.to(dev)                          # (1, S, d)
         if self.arm == "C4b_ulbp_equivariant" and self.training:
             perm = torch.randperm(12).tolist()
-        elif self.arm == "C5_de_bruijn_canonical":
+        elif self.arm in ("C5_de_bruijn_canonical", "C6_causal_suffix_canonical"):
             # Left-to-right De Bruijn alpha-normal form: assign canonical indices 0, 1, 2... in order of first mention,
             # with background pool >=3 uniformly rotated during training so arbitrary N<=12 never hits untrained slots!
             tid_to_m = {MOD_TOKEN_IDS[m]: m for m in range(12)}
@@ -246,7 +258,7 @@ class CognitiveLM(nn.Module):
         z_prev = ws["z"]                                      # (1, S, d)
         perm: list[int] = ws.get("perm", list(range(12)))
         turn_idx: int = int(ws.get("turn_idx", 0))
-        if self.arm in ("C4b_ulbp_equivariant", "C5_de_bruijn_canonical"):
+        if self.arm in ("C4b_ulbp_equivariant", "C5_de_bruijn_canonical", "C6_causal_suffix_canonical"):
             id_remap = {MOD_TOKEN_IDS[m]: MOD_TOKEN_IDS[perm[m]] for m in range(12)}
             mapped_ids = [id_remap.get(t, t) for t in obs_ids]
         else:
@@ -254,7 +266,11 @@ class CognitiveLM(nn.Module):
 
         obs_t = torch.tensor([mapped_ids], dtype=torch.long, device=dev)
         x_obs = self.emb(obs_t)                               # (1, L, d)
-        cat_in = torch.cat([z_prev, x_obs], dim=1)            # (1, S + L, d)
+        # C6 Causal Read-Before-Belief Ordering: place observation FIRST and belief slots at CAUSAL SUFFIX [x_obs; z_prev]
+        # so every Sharp-Delta state sweeps 100% of x_obs into z_cand and global QK-Canon attention binds directly to
+        # AMBIGUOUS_SPEC / CLARIFIED / ALL_PASS at O(1) depth regardless of repo size N!
+        suffix_mode = self.arm == "C6_causal_suffix_canonical"
+        cat_in = torch.cat([x_obs, z_prev], dim=1) if suffix_mode else torch.cat([z_prev, x_obs], dim=1)
         hd = self.d // self.ng_cfg.n_head
         rope = rope_cache(cat_in.size(1), hd, 10000.0, dev)
         v0 = None
@@ -262,8 +278,13 @@ class CognitiveLM(nn.Module):
         for b in self.blocks:
             h, v0, _ = b(h, rope, v0)
         h = self.nf(h)
-        z_cand = h[:, : self.n_slots, :]
-        h_obs = h[0, self.n_slots :, :]                       # (L, d)
+        if suffix_mode:
+            obs_len = x_obs.size(1)
+            h_obs = h[0, :obs_len, :]                         # (L, d)
+            z_cand = h[:, obs_len:, :]                        # (1, S, d)
+        else:
+            z_cand = h[:, : self.n_slots, :]
+            h_obs = h[0, self.n_slots :, :]                   # (L, d)
 
         g = torch.sigmoid(self.slot_gate(torch.cat([z_prev, z_cand], dim=-1)))
         z_next = g * z_cand + (1.0 - g) * z_prev

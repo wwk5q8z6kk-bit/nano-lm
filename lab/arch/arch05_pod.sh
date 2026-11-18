@@ -32,12 +32,12 @@ for i in $(seq 30); do
 done
 
 cd "$LAB"
-COPYFILE_DISABLE=1 tar --no-xattrs --exclude="__pycache__" -czf - lab/__init__.py lab/arch | "${SSH[@]}" "mkdir -p /workspace/nl && tar xzf - -C /workspace/nl && test -s /workspace/nl/lab/arch/train_arch04.py"
+COPYFILE_DISABLE=1 tar --no-xattrs --exclude="__pycache__" -czf - lab/__init__.py lab/arch | "${SSH[@]}" "mkdir -p /workspace/nl && tar --no-same-owner -xzf - -C /workspace/nl && test -s /workspace/nl/lab/arch/train_arch04.py"
 "${SSH[@]}" "pip install -q --break-system-packages flash-linear-attention numpy >/dev/null 2>&1; mkdir -p /workspace/data /workspace/runs" < /dev/null
 
 for f in manifest.json tokenizer_32k.json val_web.bin val_textbook.bin val_math.bin val_code.bin train.bin; do
   for t in 1 2 3 4 5; do
-    rsync -a --partial -e "$RS" "$DATA/$f" "root@$IP:/workspace/data/" < /dev/null && break
+    rsync -rt --no-o --no-g --partial -e "$RS" "$DATA/$f" "root@$IP:/workspace/data/" < /dev/null && break
     sleep 5
   done
 done

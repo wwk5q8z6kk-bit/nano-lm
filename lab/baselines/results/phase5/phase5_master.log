@@ -1,0 +1,17 @@
+=== 2026-11-18T10:07:59Z STEP 0: INSTALL ===
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+virtualenv 20.35.4 requires filelock<4,>=3.12.2, but you have filelock 4.2.12 which is incompatible.
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+=== 2026-11-18T10:12:22Z STEP 1A: USING PRE-VERIFIED STRATIFIED 32B+120B CURRICULUM (480 rows) ===
+=== 2026-11-18T10:12:22Z STEP 1B: TRAIN NANOLM-B7-3B (SELF-ANCHORED TOP-64 KL + L2 FFT + G=8 GRPO) ===
+=== 2026-11-18T10:35:00Z STEP 1C: EVAL NANOLM-B7-3B (8-PILLAR + GSM8K/MATH-500/IFEVAL/HUMANEVAL) ===
+=== 2026-11-18T10:47:53Z STEP 2: REPRODUCE NANOLM-B6-2B FOR SYSTEM-V4 HEAD-TO-HEAD ===
+=== 2026-11-18T11:08:20Z STEP 3: SYSTEM-V4 HEAD-TO-HEAD (IDENTICAL HARNESS ACROSS 1.72B..120B) ===
+=== 2026-11-18T11:08:20Z COMP 1 & 2 (V4) ON /workspace/models/nanolm_b6_2b ===
+=== 2026-11-18T11:11:50Z COMP 1 & 2 (V4) ON /workspace/models/nanolm_b7_3b ===
+=== 2026-11-18T11:18:28Z COMP 1 & 2 (V4) ON Qwen/Qwen3-1.7B ===
+=== 2026-11-18T11:21:41Z COMP 1 & 2 (V4) ON HuggingFaceTB/SmolLM3-3B ===
+=== 2026-11-18T11:26:53Z COMP 1 & 2 (V4) ON Qwen/Qwen3-8B ===
+=== 2026-11-18T11:32:38Z COMP 1 & 2 (V4) ON Qwen/Qwen3-32B ===
+=== 2026-11-18T11:45:02Z COMP 1 & 2 (V4) ON openai/gpt-oss-120b ===
+PHASE5_ALL_COMPLETE

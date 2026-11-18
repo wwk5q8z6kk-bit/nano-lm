@@ -33,7 +33,7 @@ def execute_python_computation(script: str, timeout_sec: float = 3.0) -> tuple[b
         return False, "TimeoutExpired"
     if proc.returncode == 0:
         out = proc.stdout.strip()
-        return (True, out[:500]) if out else (False, "no_stdout_printed")
+        return (True, out[:4000]) if out else (False, "no_stdout_printed")
     err_lines = (proc.stderr or proc.stdout).strip().splitlines()
     return False, (err_lines[-1][:200] if err_lines else f"exit_{proc.returncode}")
 

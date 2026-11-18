@@ -1,0 +1,133 @@
+{
+  "schema": "nanolm.lab_cog_02.v1",
+  "episodes_train": 800,
+  "seeds": 3,
+  "arms": {
+    "C6_causal_suffix_canonical": {
+      "params": 1018648,
+      "wall_s": 70.57,
+      "id_verified_resolution_full": {
+        "mean": 0.9482,
+        "half_range": 0.0722
+      },
+      "ood_verified_resolution_full": {
+        "mean": 0.9722,
+        "half_range": 0.0333
+      },
+      "ood_verified_resolution_policy_only": {
+        "mean": 0.9722,
+        "half_range": 0.0333
+      },
+      "ood_premature_or_regression_rate": {
+        "mean": 0.0278,
+        "half_range": 0.0333
+      },
+      "ood_unseen_value_exact_match": {
+        "mean": 0.9163,
+        "half_range": 0.1255
+      },
+      "ood_belief_revision_acc": {
+        "mean": 1.0,
+        "half_range": 0.0
+      },
+      "extreme_ood_verified_resolution_full": {
+        "mean": 0.9593,
+        "half_range": 0.0472
+      },
+      "extreme_ood_policy_only": {
+        "mean": 0.9593,
+        "half_range": 0.0472
+      },
+      "extreme_ood_unseen_value_exact": {
+        "mean": 0.9103,
+        "half_range": 0.1346
+      },
+      "extreme_ood_belief_revision_acc": {
+        "mean": 0.9944,
+        "half_range": 0.0084
+      },
+      "extreme_ood_premature_rate": {
+        "mean": 0.0407,
+        "half_range": 0.0472
+      },
+      "seed_runs": [
+        {
+          "seed": 0,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 0.9889,
+            "verified_resolution_oracle_val": 0.9889,
+            "premature_or_regression_rate": 0.0167,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.9944,
+            "verified_resolution_oracle_val": 0.9944,
+            "premature_or_regression_rate": 0.0056,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.9722,
+            "verified_resolution_oracle_val": 0.9722,
+            "premature_or_regression_rate": 0.0278,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 0.9833
+          }
+        },
+        {
+          "seed": 1,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 0.8556,
+            "verified_resolution_oracle_val": 0.8556,
+            "premature_or_regression_rate": 0.1444,
+            "value_exact_match": 0.6337,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.9278,
+            "verified_resolution_oracle_val": 0.9278,
+            "premature_or_regression_rate": 0.0722,
+            "value_exact_match": 0.7489,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 0.9056,
+            "verified_resolution_oracle_val": 0.9056,
+            "premature_or_regression_rate": 0.0944,
+            "value_exact_match": 0.7309,
+            "belief_revision_after_contradiction": 1.0
+          }
+        },
+        {
+          "seed": 2,
+          "params": 1018648,
+          "in_dist": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "ood": {
+            "verified_resolution_full": 0.9944,
+            "verified_resolution_oracle_val": 0.9944,
+            "premature_or_regression_rate": 0.0056,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          },
+          "extreme_ood": {
+            "verified_resolution_full": 1.0,
+            "verified_resolution_oracle_val": 1.0,
+            "premature_or_regression_rate": 0.0,
+            "value_exact_match": 1.0,
+            "belief_revision_after_contradiction": 1.0
+          }
+        }
+      ]
+    }
+  },
+  "total_wall_s": 71.46
+}
