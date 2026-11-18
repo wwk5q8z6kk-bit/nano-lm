@@ -162,7 +162,7 @@ _BUILTIN_UNITS: dict[str, tuple[str, str, float, str]] = {
     "permille": ("ratio", "ratio", 1e-3, "rate"), "‰": ("ratio", "ratio", 1e-3, "rate"),
 }
 
-_APPROX_PREFIX_RE = re.compile(r"^(?:about|around|roughly|nearly|almost|approx(?:\.|imately)?|circa|~)\s+", re.IGNORECASE)
+_APPROX_PREFIX_RE = re.compile(r"^(?:about|around|roughly|nearly|almost|over|approx(?:\.|imately)?|circa|~)\s+", re.IGNORECASE)
 _BOUND_SUFFIX_RE = re.compile(r"(?:\s+(?:ago|so far|now|total|approx(?:\.|imately)?))+$", re.IGNORECASE)
 _TIMEPOINT_RE = re.compile(
     r"^(?:since\s+|from\s+|as of\s+|on\s+)?"
@@ -171,7 +171,10 @@ _TIMEPOINT_RE = re.compile(
     r"|tonight|last night|this (?:morning|afternoon|evening)"
     r"|(?:the\s+)?(?:morning|afternoon|evening|night)\s+before\s+last"
     r"|(?:last\s+|this\s+)?(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?:\s+(?:morning|afternoon|evening|night))?"
-    r"|noon|midnight|\d{4}-\d{2}-\d{2}|q[1-4]\s*\d{4})$",
+    r"|after\s+(?:breakfast|lunch|dinner|supper|waking\s+up|eating)(?:\s+[^.!?;]+)?"
+    r"|noon|midnight|\d{4}-\d{2}-\d{2}|q[1-4]\s*\d{4}"
+    r"|[a-z0-9 ,'-]{2,40})"
+    r"(?:,\s*(?:after|before|when|while)\s+[^.!?;]+)?$",
     re.IGNORECASE,
 )
 
@@ -245,8 +248,11 @@ class DenominationRegistry:
         raw = text.strip()
         if not raw:
             return None
+        allowed_dims = {d.strip() for d in expected_dimension.split("|") if d.strip()}
 
         work = raw
+        if not allowed_dims or "time_duration" in allowed_dims:
+            work = re.sub(r"^for\s+", "", work, flags=re.IGNORECASE)
         approx = False
         m_ap = _APPROX_PREFIX_RE.match(work)
         if m_ap:
@@ -256,10 +262,11 @@ class DenominationRegistry:
         work_low = work.lower()
 
         # 1. Ordinal scale check if caller/schema provides one (e.g. severity or priority)
-        if ordinal_scale or expected_dimension == "ordinal":
+        if ordinal_scale or "ordinal" in allowed_dims:
             m_out_of = re.fullmatch(
                 r"(?P<num>\d+(?:\.\d+)?|zero|one|two|three|four|five|six|seven|eight|nine|ten)"
-                r"\s*(?:out of|/)\s*(?P<den>\d+(?:\.\d+)?|ten|five|hundred)",
+                r"\s*(?:out of|/)\s*(?P<den>\d+(?:\.\d+)?|ten|five|hundred)"
+                r"(?:\s*(?:,\s*[^.!?;]+|\s+(?:when|while|especially|mostly|if|at)\s+[^.!?;]+))?",
                 work_low,
             )
             if m_out_of:
@@ -282,16 +289,30 @@ class DenominationRegistry:
                         approximate=True, canonical_label=label_pat,
                     )
 
-        # 2. Timepoint check (e.g. "Yesterday", "since yesterday", "Q1 2026", "last night")
-        m_tp = _TIMEPOINT_RE.fullmatch(work_low)
-        if m_tp:
-            anchor = re.sub(r"\s+", " ", m_tp.group("anchor").strip().lower())
-            return QuantityValue(
-                raw_text=raw, dimension="time_point", unit="anchor",
-                denomination="", role=role or "timepoint",
-                base_unit="anchor", base_min=0.0, base_max=0.0,
-                approximate=approx, canonical_label=anchor,
-            )
+        # 2. Timepoint check (e.g. "Yesterday", "since yesterday", "Q1 2026", "last night", "since eating lunch")
+        if not allowed_dims or "time_point" in allowed_dims:
+            m_tp = _TIMEPOINT_RE.fullmatch(work_low)
+            if m_tp:
+                # Arbitrary `[a-z0-9 ,'-]{2,40}` anchor ONLY valid when explicitly introduced by `since|from|as of`
+                has_tp_prep = bool(re.match(r"^(?:since|from|as of)\s+", work_low))
+                anchor_raw = re.sub(r"\s+", " ", m_tp.group("anchor").strip().lower())
+                is_named_anchor = bool(
+                    re.fullmatch(
+                        r"yesterday(?:\s+(?:morning|afternoon|evening|night))?|today(?:\s+(?:morning|afternoon|evening))?"
+                        r"|tonight|last night|this (?:morning|afternoon|evening)|(?:the\s+)?(?:morning|afternoon|evening|night)\s+before\s+last"
+                        r"|(?:last\s+|this\s+)?(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?:\s+(?:morning|afternoon|evening|night))?"
+                        r"|after\s+(?:breakfast|lunch|dinner|supper|waking\s+up|eating)(?:\s+[^.!?;]+)?"
+                        r"|noon|midnight|\d{4}-\d{2}-\d{2}|q[1-4]\s*\d{4}",
+                        anchor_raw,
+                    )
+                )
+                if is_named_anchor or has_tp_prep:
+                    return QuantityValue(
+                        raw_text=raw, dimension="time_point", unit="anchor",
+                        denomination="", role=role or "timepoint",
+                        base_unit="anchor", base_min=0.0, base_max=0.0,
+                        approximate=approx, canonical_label=anchor_raw,
+                    )
 
         # 3. Currency / Denomination amounts: "$1.5M", "USD 1,200k", "1500k EUR", "250 cents"
         cur_pre_pat = self._currency_prefix_pattern()
@@ -346,7 +367,7 @@ class DenominationRegistry:
                     mult = _MAG_MULTIPLIERS.get(mult_tok, 1.0) if (mult_tok and unit_tok) else 1.0
                     if uinfo is not None:
                         dim, base_u, u_factor, def_role = uinfo
-                        if expected_dimension and expected_dimension != dim:
+                        if allowed_dims and dim not in allowed_dims:
                             pass
                         else:
                             val = num_val * mult * u_factor
@@ -360,7 +381,7 @@ class DenominationRegistry:
                                 role=final_role, base_unit=base_u, base_min=lo, base_max=hi,
                                 approximate=approx, canonical_label=f"{val:g} {base_u}",
                             )
-                    elif expected_dimension == "count" and not post:
+                    elif "count" in allowed_dims and not post:
                         val = num_val * _MAG_MULTIPLIERS.get(mult_tok, 1.0)
                         return QuantityValue(
                             raw_text=raw, dimension="count", unit="count", denomination="",
@@ -381,17 +402,25 @@ class DenominationRegistry:
         """Find and parse candidate quantity substrings `(start, end, QuantityValue)` inside free prose."""
         found: list[tuple[int, int, QuantityValue]] = []
         # Scan general quantitative/currency/temporal/ordinal token spans without hardcoded domain nouns
+        allowed_dims = {d.strip() for d in expected_dimension.split("|") if d.strip()}
         cur_pre_pat = self._currency_prefix_pattern()
         ord_alts = [rf"\b(?:{pat})\b" for pat, _, _ in ordinal_scale if pat]
         ord_block = ("|" + "|".join(ord_alts)) if ord_alts else ""
+        tp_extra = (
+            r"|\b(?:since|from)\s+[^.!?;]+"
+            r"|\bafter\s+(?:breakfast|lunch|dinner|supper|waking\s+up|eating)(?:\s+(?:this\s+\w+|today|yesterday))?"
+            r"|\b(?:(?:last|this)\s+)?(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?:\s+(?:morning|afternoon|evening|night))?\b"
+            r"|\b(?:the\s+)?(?:morning|afternoon|evening|night)\s+before\s+last\b"
+        ) if (not allowed_dims or "time_point" in allowed_dims) else ""
         cand_pat = re.compile(
-            r"(?:(?:about|around|roughly|nearly|almost|approx\.?|~)\s+)?"
+            r"(?:(?:about|around|roughly|nearly|almost|over|approx\.?|~)\s+)?"
             rf"(?:(?:{cur_pre_pat})\s*)?"
             r"(?:(?<![\d.])-?(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)|a couple of|half an?|a few|several|"
-            r"zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|"
-            r"since\s+(?:yesterday|today|monday|tuesday|wednesday|thursday|friday|saturday|sunday|\d{4}-\d{2}-\d{2})|"
-            r"yesterday|today|tonight|last night|this morning|this afternoon|this evening|"
-            rf"mild(?:ly uncomfortable)?|moderate|severe{ord_block})"
+            r"\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|twenty|thirty|an?)\b|"
+            r"\bsince\s+(?:yesterday|today|monday|tuesday|wednesday|thursday|friday|saturday|sunday|\d{4}-\d{2}-\d{2})\b|"
+            r"\byesterday(?:\s+(?:morning|afternoon|evening|night))?\b|\btoday(?:\s+(?:morning|afternoon|evening))?\b|"
+            r"\b(?:tonight|last night|this morning|this afternoon|this evening|noon|midnight)\b|"
+            rf"\b(?:mild(?:ly uncomfortable)?|moderate|severe)\b{tp_extra}{ord_block})"
             r"(?:(?<=\d)[kmbt]|\s+(?:thousand|million|billion|trillion|mil|mn|bn))?"
             r"(?:\s*(?:out of\s*(?:10|5|100|ten)|/\s*(?:10|5|100)|us\$|[$€£¥]|cents?|pence|sats?|dollars?|euros?|pounds?|yen|[A-Za-z%‰]+(?:\s*/\s*[A-Za-z]+)?))?"
             r"(?:\s+(?:ago|so far|now))?",

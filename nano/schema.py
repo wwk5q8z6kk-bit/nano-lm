@@ -54,15 +54,28 @@ class OntologyNode:
     lead_strip_patterns: tuple[str, ...] = ()
     trail_strip_patterns: tuple[str, ...] = ()
     disallowed_value_patterns: tuple[str, ...] = ()
+    episode_disclaimer_cues: tuple[str, ...] = ()
+    coexisting_list_patterns: tuple[str, ...] = ()
+    contrast_disclaimer_patterns: tuple[str, ...] = ()
+    exception_cues: tuple[str, ...] = (r"\bexcept\b",)
+    exempt_leading_articles: tuple[str, ...] = ()
+    require_topic_cue: bool = True
     rollup_op: str = ""                      # "" | "sum" | "max" | "min" over children
     rollup_tolerance: float = 1e-3
     exclusive_siblings: bool = True
+    exclusive_values: bool | None = None
     supports_absence: bool = False
     reject_leading_articles: bool = False
     allow_quoted_or_self_ref: bool = False
     max_words: int = 14
     max_chars: int = 120
     aliases: tuple[str, ...] = ()
+
+    @property
+    def is_single_scalar_value(self) -> bool:
+        if self.exclusive_values is not None:
+            return self.exclusive_values
+        return self.value_kind in (ValueKind.QUANTITY, ValueKind.ORDINAL, ValueKind.BOOLEAN)
 
     def __post_init__(self) -> None:
         if not self.node_id or "." in self.node_id and self.node_id.startswith("."):
@@ -117,6 +130,10 @@ class OntologyGraph:
             "lead_strip": tuple(re.compile(p, re.IGNORECASE) for p in node.lead_strip_patterns),
             "trail_strip": tuple(re.compile(p, re.IGNORECASE) for p in node.trail_strip_patterns),
             "disallowed": tuple(re.compile(p, re.IGNORECASE) for p in node.disallowed_value_patterns),
+            "episode_disclaimer": tuple(re.compile(p, re.IGNORECASE) for p in node.episode_disclaimer_cues),
+            "coexisting_list": tuple(re.compile(p, re.IGNORECASE) for p in node.coexisting_list_patterns),
+            "contrast_disclaimer": tuple(re.compile(p, re.IGNORECASE) for p in node.contrast_disclaimer_patterns),
+            "exception": tuple(re.compile(p, re.IGNORECASE) for p in node.exception_cues),
         }
         self._validate_acyclic()
         return self
@@ -203,10 +220,6 @@ class OntologyGraph:
             q_hits = sum(1 for p in pats["topic"] if p.search(prev_question)) if prev_question else 0
             if q_hits:
                 s += 2.0
-            # Penalize disallowed sibling topic pollution explicitly listed by node
-            for p in pats["disallowed"]:
-                if p.search(clause_text):
-                    s -= 2.5
             scores[nid] = s
         return scores
 
@@ -230,9 +243,26 @@ class OntologyGraph:
         for other_id, other_node in self.nodes.items():
             if other_id == node_id:
                 continue
-            # Allow parent-child sharing ONLY when clause explicitly triggers me or doesn't belong solely to child/parent
             other_path = set(self.path_from_root(other_id))
-            if (other_id in my_path or node_id in other_path) and clause_has_me:
+            # Ancestor / descendant nodes: allow multi-attribute sharing (`ATTRIBUTE_OF` across distinct kinds/dims
+            # or when the clause explicitly names `node_id`), while preventing parent summary nodes from stealing child PART_OF spans.
+            if other_id in my_path or node_id in other_path:
+                is_attr_pair = (
+                    (other_id in my_path and node.relation_to_parent is NodeRelation.ATTRIBUTE_OF)
+                    or (node_id in other_path and other_node.relation_to_parent is NodeRelation.ATTRIBUTE_OF)
+                )
+                if clause_has_me or (is_attr_pair and (other_node.value_kind != node.value_kind or other_node.dimension != node.dimension)):
+                    continue
+            # Orthogonal attribute siblings under the same parent with distinct non-empty dimensions
+            # (e.g., `duration` vs `severity` inside "Moderate pain for three days") can coexist in one clause.
+            if (
+                other_node.parent_id == node.parent_id
+                and node.relation_to_parent is NodeRelation.ATTRIBUTE_OF
+                and other_node.relation_to_parent is NodeRelation.ATTRIBUTE_OF
+                and node.dimension
+                and other_node.dimension
+                and node.dimension != other_node.dimension
+            ):
                 continue
             other_pats = self._compiled[other_id]
             clause_has_other = any(
@@ -242,8 +272,8 @@ class OntologyGraph:
                 return False
             if clause_has_other and scores[other_id] > my_score + 0.5:
                 return False
-            # Also if question explicitly asked about a sibling and clause didn't mention me
-            if other_node.parent_id == node.parent_id and prev_question and not clause_has_me:
+            # Also if question explicitly asked about any non-ancestor/non-descendant node and clause didn't mention me
+            if other_id not in my_path and node_id not in other_path and prev_question and not clause_has_me:
                 q_has_other = any(p.search(prev_question) for p in other_pats["topic"])
                 q_has_me = any(p.search(prev_question) for p in self._compiled[node_id]["topic"])
                 if q_has_other and not q_has_me:

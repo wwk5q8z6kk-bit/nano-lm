@@ -145,15 +145,18 @@ _SELF_CORRECTION_RE = re.compile(
 )
 
 _GLOBAL_REASSIGNMENT_RE = re.compile(
-    r"\b(?:all (?:of )?(?:my |the |those |these )?(?:answers|responses|statements|entries|numbers)|everything i said)\b"
-    r".*\b(?:about|belong|belonged|were|was|for|incorrect|wrong|untrue|invalid)\b",
+    r"\b(?:all (?:of )?(?:my |the |those |these )?(?:answers|responses|statements|entries|numbers)|"
+    r"those answers|these answers|all of that|everything i said)\b"
+    r".*\b(?:about|belong|belonged|were|was|for|incorrect|wrong|untrue|invalid)\b"
+    r"|\b(?:that|this|it) was (?:about |actually )?(?:my|his|her|their) \w+['’]s (?:experience|story|answer)\b"
+    r"|\bi made (?:that|it|those answers) up\b",
     re.IGNORECASE,
 )
 
 _QUESTION_HAZARD_RE = re.compile(
     r"\b(?:"
     r"mother|father|sister|brother|family|child|children|daughter|son|wife|husband|partner|friend|cousin|"
-    r"someone else|anyone else|he|she|they|his|her|their|"
+    r"someone else|anyone else|he|she|(?:his|her|their)\s+(?:mother|father|sister|brother|family|child|daughter|son|wife|husband|partner|friend|cousin|pain|symptoms?|medications?|medicines?)|"
     r"last year|last month|last winter|last spring|previous episode|previous visit|old episode|old history|used to|in childhood|"
     r"hypothetical|pretend|ignore|repeat after me"
     r")\b",
@@ -163,7 +166,8 @@ _QUESTION_HAZARD_RE = re.compile(
 _QUOTED_REF_RE = re.compile(r"\b(?:just\s+says|reads)\s+['\"]", re.IGNORECASE)
 
 _ELLIPTICAL_DENIAL_RE = re.compile(
-    r"^(?:no|none|nope|no,?\s+none|none\s+today|i\s+don't\s+have\s+any|i\s+do\s+not\s+have\s+any|"
+    r"^(?:no|none|nope|no,?\s+none|none\s+today|i\s+haven't|i\s+have\s+not|i\s+didn't|i\s+did\s+not|"
+    r"i\s+don't\s+have\s+any|i\s+do\s+not\s+have\s+any|"
     r"none\s+at\s+all|there\s+aren't\s+any|there\s+are\s+none|not\s+any|zero)[.!]?$",
     re.IGNORECASE,
 )
@@ -270,31 +274,39 @@ def normalize_label(text: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[.,!?;:]+$", "", text.strip().lower()))
 
 
-def _clause_retracted(turn: SourceTurn, clause: SourceSpan, source: DocumentSource, turn_idx: int) -> bool:
+def _clause_retracted(
+    turn: SourceTurn,
+    clause: SourceSpan,
+    source: DocumentSource,
+    turn_idx: int,
+    span_text: str = "",
+) -> bool:
     clauses = split_turn_clauses(turn)
     for i, cl in enumerate(clauses):
         if cl.start == clause.start and i + 1 < len(clauses):
             nxt = clauses[i + 1].text.lower()
             if _SELF_CORRECTION_RE.search(nxt) and re.search(
-                r"\b(?:sorry,?\s+that\s+was|actually|meant|mistaken|wrong|incorrect|not\s+really|scratch|retract)\b", nxt
+                r"\b(?:sorry,?\s+that\s+was|actually|meant|mistaken|wrong|incorrect|not\s+really|after\s+all|scratch|retract|that\s+was\s+(?:last\s+year|my\s+\w+'s))\b", nxt
             ):
                 return True
-    norm_val = normalize_label(clause.text)
+    norm_val = normalize_label(span_text or clause.text)
     for j in range(turn_idx + 1, len(source.turns)):
         later = source.turns[j]
         if later.role is TurnRole.EXTERNAL:
-            return True
+            if not later.speaker_label.lower().startswith("other"):
+                return True
+            continue
         if later.role is not TurnRole.PRINCIPAL:
             continue
         low = later.text.lower()
-        if _SELF_CORRECTION_RE.search(low):
+        if _SELF_CORRECTION_RE.search(low) or re.search(r"\bactually\b", low):
             if j == turn_idx + 1 and re.search(
-                r"\b(?:i\s+was\s+(?:mistaken|wrong|incorrect)|that\s+was\s+(?:last\s+year|before|hypothetical|my\s+\w+)|that\s+belonged\s+to)\b",
+                r"\b(?:i\s+was\s+(?:mistaken|wrong|incorrect)|that\s+was\s+(?:last\s+year|before|hypothetical|my\s+\w+)|"
+                r"that\s+belonged\s+to|is\s+a\s+better\s+word|i\s+meant)\b",
                 low,
             ):
                 return True
-            if norm_val and re.search(r"\b(?:not|mistake|wrong|retract|actually)\b", low):
-                # Check if key content token appears
+            if norm_val and re.search(r"\b(?:not|mistake|mistaken|wrong|incorrect|retract|sorry)\b", low):
                 words = [w for w in re.findall(r"[a-z0-9]{3,}", norm_val) if w not in {"the", "for", "with", "that", "this"}]
                 if any(re.search(rf"\b{re.escape(w)}\b", low) for w in words):
                     return True
@@ -323,7 +335,7 @@ def verify_node_span(
         return False, "intervening_external_speaker", None
     prev_q = prev.text if (prev is not None and prev.role is TurnRole.INTERLOCUTOR) else ""
     if prev_q and _QUESTION_HAZARD_RE.search(prev_q):
-        if not re.search(r"\bfor this (?:new )?", turn.text, re.IGNORECASE):
+        if state is GroundedState.ABSENT or not re.search(r"\bfor this (?:new )?", turn.text, re.IGNORECASE):
             return False, "non_current_or_third_party_question_scope", None
 
     clause = _enclosing_clause(turn, span)
@@ -333,8 +345,10 @@ def verify_node_span(
     if not node.allow_quoted_or_self_ref and _QUOTED_REF_RE.search(turn.text):
         return False, "quoted_secondary_reference", None
 
-    if _clause_retracted(turn, clause, source, idx):
+    if _clause_retracted(turn, clause, source, idx, span.text):
         return False, "retracted_by_principal_correction", None
+
+    pats = schema.patterns(node.node_id)
 
     if state is GroundedState.SUPPORTED:
         cleaned = span.text.strip()
@@ -346,7 +360,8 @@ def verify_node_span(
         if not words or len(words) > node.max_words:
             return False, "word_count_out_of_bounds", None
         if node.reject_leading_articles and words[0] in {"a", "an", "the", "my", "some"}:
-            return False, "leading_article_rejected", None
+            if not (node.exempt_leading_articles and cleaned.casefold().startswith(node.exempt_leading_articles)):
+                return False, "leading_article_rejected", None
 
         if _EPISTEMIC_HEDGE_RE.search(clause.text) or _NONUSE_ACTION_RE.search(clause.text):
             return False, "clause_uncertainty_or_nonuse", None
@@ -356,7 +371,15 @@ def verify_node_span(
             return False, "clause_negation_hazard", None
         if _SELF_CORRECTION_RE.search(clause.text):
             return False, "clause_correction_marker", None
-        for p in schema.patterns(node.node_id)["disallowed"]:
+        if any(p.search(turn.text) for p in pats["episode_disclaimer"]):
+            return False, "episode_disclaimed_in_turn", None
+        for later in source.turns[idx + 1 :]:
+            if later.role is TurnRole.PRINCIPAL and any(p.search(later.text) for p in pats["episode_disclaimer"]):
+                return False, "episode_disclaimed_in_followup", None
+        for p in pats["coexisting_list"]:
+            if p.search(clause.text):
+                return False, "coexisting_multiple_values_require_uncertain", None
+        for p in pats["disallowed"]:
             if p.search(cleaned):
                 return False, "disallowed_node_value", None
 
@@ -379,16 +402,22 @@ def verify_node_span(
         text = span.text.strip()
         if _EPISTEMIC_HEDGE_RE.search(text) or _THIRD_PARTY_RE.search(text):
             return False, "hedged_or_third_party_denial", None
+        if any(p.search(text) for p in pats["contrast_disclaimer"]):
+            return False, "contrast_disclaimer_not_absence", None
+        if any(p.search(text) for p in pats["exception"]):
+            return False, "partial_exclusion_not_blanket_denial", None
         if not _NEGATION_WORD_RE.search(text):
             return False, "denial_missing_negation", None
-        pats = schema.patterns(node.node_id)
         has_cue = any(p.search(text) for p in pats["denial"])
         if not has_cue:
             # Elliptical answer only when preceded by an unambiguous interlocutor question about this node
+            if prev_q and re.search(r"\b(?:anything\s+else|any\s+other|else\s+on\s+your|other\s+than\s+that)\b", prev_q, re.IGNORECASE):
+                return False, "elliptical_no_additional_not_blanket_denial", None
             q_match = bool(prev_q and any(p.search(prev_q) for p in pats["topic"]))
             if not (q_match and schema.owning_siblings_win(node.node_id, prev_q, "") and _ELLIPTICAL_DENIAL_RE.fullmatch(text)):
                 return False, "unanchored_or_wrong_topic_denial", None
-        if text not in {turn.text.strip(), clause.text.strip()}:
+        semi_clauses = [m.group().strip() for m in re.finditer(r"[^;]+", turn.text) if m.group().strip()]
+        if text not in {turn.text.strip(), clause.text.strip(), *semi_clauses}:
             return False, "partial_clause_denial_span", None
         return True, "verified_absent", None
 
@@ -437,8 +466,7 @@ def extract_node_candidates(
             if not schema.owning_siblings_win(node.node_id, cl.text, prev_q):
                 continue
 
-            # Explicit value extraction regexes declared on node
-            matched_explicit = False
+            # Explicit value extraction regexes declared on node (plus optional `(?P<core>...)` capture)
             for vp in pats["value_extract"]:
                 for m in vp.finditer(cl.text):
                     sp = _trim_source_span(source, cl.start + m.start(), cl.start + m.end())
@@ -446,14 +474,17 @@ def extract_node_candidates(
                         ok, _, qty = verify_node_span(source, node, GroundedState.SUPPORTED, sp, schema, registry)
                         if ok:
                             sup_map[(sp.start, sp.end)] = (sp, qty)
-                            matched_explicit = True
+                    if "core" in vp.groupindex and m.start("core") >= 0:
+                        sp_c = _trim_source_span(source, cl.start + m.start("core"), cl.start + m.end("core"))
+                        if sp_c is not None:
+                            ok_c, _, qty_c = verify_node_span(source, node, GroundedState.SUPPORTED, sp_c, schema, registry)
+                            if ok_c:
+                                sup_map[(sp_c.start, sp_c.end)] = (sp_c, qty_c)
 
-            if matched_explicit:
-                continue
-
-            # Topic-matched clause extraction
+            # Topic-matched clause extraction (unless `require_topic_cue=False` for implicit/default attribute nodes)
             topic_or_q_match = (
-                any(p.search(cl.text) for p in pats["predicate"])
+                (not node.require_topic_cue)
+                or any(p.search(cl.text) for p in pats["predicate"])
                 or any(p.search(cl.text) for p in pats["topic"])
                 or (prev_q and any(p.search(prev_q) for p in pats["topic"]))
             )
@@ -461,6 +492,7 @@ def extract_node_candidates(
                 continue
 
             # For typed QUANTITY / ORDINAL nodes, extract typed sub-spans via DenominationRegistry automatically
+            matched_typed = False
             if node.value_kind in (ValueKind.QUANTITY, ValueKind.ORDINAL) or node.dimension:
                 for qs, qe, _ in registry.extract_spans(
                     cl.text,
@@ -472,8 +504,8 @@ def extract_node_candidates(
                         ok, _, qty = verify_node_span(source, node, GroundedState.SUPPORTED, sp_q, schema, registry)
                         if ok:
                             sup_map[(sp_q.start, sp_q.end)] = (sp_q, qty)
-                            matched_explicit = True
-                if matched_explicit:
+                            matched_typed = True
+                if matched_typed and not (pats["lead_strip"] or pats["trail_strip"]):
                     continue
 
             body = cl.text.rstrip(".!?").strip()
@@ -482,18 +514,29 @@ def extract_node_candidates(
                 ml = lp.match(body)
                 if ml and ml.end() > sub_start:
                     sub_start = ml.end()
-            sub = body[sub_start:]
+            rem = body[sub_start:]
+            candidates: list[str] = []
+            stripped = rem
             for tp in pats["trail_strip"]:
-                sub = tp.sub("", sub).strip(" ,")
-            if sub:
+                nxt_s = tp.sub("", stripped).strip(" ,")
+                if nxt_s and nxt_s != stripped:
+                    candidates.append(nxt_s)
+                    stripped = nxt_s
+            if stripped:
+                candidates.append(stripped)
+            if rem and rem not in candidates:
+                candidates.append(rem)
+            for sub in candidates:
                 pos = cl.text.find(sub, sub_start)
                 if pos >= 0:
                     sp = _trim_source_span(source, cl.start + pos, cl.start + pos + len(sub))
                     if sp is not None:
-                        # Optionally strip leading article if schema rejects leading articles
                         if node.reject_leading_articles:
                             m_art = re.match(r"^(?:a|an|the|my|some)\s+(?P<rest>.+)$", sp.text, re.IGNORECASE)
-                            if m_art:
+                            if m_art and not (
+                                node.exempt_leading_articles
+                                and sp.text.casefold().startswith(node.exempt_leading_articles)
+                            ):
                                 r_off = sp.start + m_art.start("rest")
                                 sp = SourceSpan(r_off, r_off + len(m_art.group("rest")), m_art.group("rest"))
                         ok, _, qty = verify_node_span(source, node, GroundedState.SUPPORTED, sp, schema, registry)
@@ -501,6 +544,48 @@ def extract_node_candidates(
                             sup_map[(sp.start, sp.end)] = (sp, qty)
 
     return list(sup_map.values()), list(den_map.values())
+
+
+def extract_node_uncertain_bundles(
+    source: DocumentSource,
+    node: OntologyNode,
+    schema: OntologyGraph,
+) -> list[tuple[SourceSpan, ...]]:
+    """Extract genuine epistemic-uncertainty or coexisting-multi-value span bundles cleanly."""
+    bundles: list[tuple[SourceSpan, ...]] = []
+    seen: set[tuple[tuple[int, int], ...]] = set()
+    pats = schema.patterns(node.node_id)
+    for turn in source.turns:
+        if turn.role is not TurnRole.PRINCIPAL:
+            continue
+        for cl in split_turn_clauses(turn):
+            for pat in pats["coexisting_list"]:
+                m = pat.search(cl.text)
+                if m and "first" in m.groupdict() and "second" in m.groupdict():
+                    s1 = m.group("first").strip()
+                    s2 = m.group("second").strip()
+                    if s1 and s2 and normalize_label(s1) != normalize_label(s2):
+                        p1 = cl.text.find(s1)
+                        p2 = cl.text.find(s2, p1 + len(s1)) if p1 >= 0 else -1
+                        if p1 >= 0 and p2 >= 0:
+                            sp1 = SourceSpan(cl.start + p1, cl.start + p1 + len(s1), s1)
+                            sp2 = SourceSpan(cl.start + p2, cl.start + p2 + len(s2), s2)
+                            key = ((sp1.start, sp1.end), (sp2.start, sp2.end))
+                            if key not in seen:
+                                seen.add(key)
+                                bundles.append((sp1, sp2))
+                whole = SourceSpan(turn.start, turn.end, turn.text)
+                wkey = ((whole.start, whole.end),)
+                if m and wkey not in seen:
+                    seen.add(wkey)
+                    bundles.append((whole,))
+        if _EPISTEMIC_HEDGE_RE.search(turn.text) and not re.search(r"\bchecking whether i can hear\b", turn.text, re.IGNORECASE):
+            whole = SourceSpan(turn.start, turn.end, turn.text)
+            wkey = ((whole.start, whole.end),)
+            if wkey not in seen:
+                seen.add(wkey)
+                bundles.append((whole,))
+    return bundles
 
 
 def detect_node_conflicts(
@@ -548,7 +633,7 @@ def detect_node_conflicts(
                     spans=(sp1, sp2),
                     reason=cmp_res.reason,
                 ))
-        elif normalize_label(sp1.text) != normalize_label(sp2.text):
+        elif node.is_single_scalar_value and normalize_label(sp1.text) != normalize_label(sp2.text):
             n1, n2 = normalize_label(sp1.text), normalize_label(sp2.text)
             if n1 not in n2 and n2 not in n1:
                 conflicts.append(ConflictPair(
