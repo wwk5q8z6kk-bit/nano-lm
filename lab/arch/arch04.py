@@ -47,7 +47,8 @@ class Arch04Cfg:
     chunk: int = 64
     tie: bool = True
     # Mechanism toggles:
-    use_atrd: bool = False            # X5: Causal Entropy-Routed Residual Depth
+    use_atrd: bool = False            # X5/X8: Causal Adaptive Token-Routed Residual Depth
+    use_margin_gate: bool = False     # X8: Vocabulary-invariant Top-2 margin u_t = 1 - (p_(1) - p_(2)) + copy shield
     atrd_frac: float = 0.25           # Target fraction of hard tokens routed to Pass 2
     anticirc_weight: float = 0.02     # Anti-circularity orthogonality penalty weight
     use_pkm: bool = False             # X6: Confidence-Gated Sparse Persistent Memory
@@ -108,6 +109,7 @@ class CausalEntropyRefiner(nn.Module):
         self.hd = c.d // c.n_head
         self.d = c.d
         self.target_frac = c.atrd_frac
+        self.use_margin_gate = c.use_margin_gate
         self.step_emb = nn.Parameter(torch.randn(1, 1, c.d) * 0.02)
         self.n1 = RMSNorm(c.d)
         self.q = nn.Linear(c.d, c.d, bias=False)
@@ -152,18 +154,26 @@ class CausalEntropyRefiner(nn.Module):
         tau = self.ema_entropy_tau
         # Strictly causal per-token routing mask: depends ONLY on u_t (causal) and buffer `tau`!
         hard_mask = entropies > tau                                         # B, T (bool)
-        soft_gate = torch.sigmoid((entropies - tau) * 2.0)                  # smooth gradient gate
-        # Straight-through gate: exact 0 on easy tokens, differentiable wrt u_t / hidden
-        gate = torch.where(hard_mask, soft_gate / soft_gate.detach().clamp_min(1e-4), torch.zeros_like(soft_gate))
+        temp_scale = 8.0 if self.use_margin_gate else 2.0
+        soft_gate = torch.sigmoid((entropies - tau) * temp_scale)
+        if self.use_margin_gate:
+            # Copy-protection damping: scales residual update by margin ambiguity u_t in [0, 1]
+            soft_gate = soft_gate * entropies.clamp(0.0, 1.0)
+        # Straight-through gate: exact 0 on easy tokens, differentiable wrt hidden
+        if self.use_margin_gate:
+            gate = torch.where(hard_mask, entropies.clamp(0.0, 1.0), torch.zeros_like(soft_gate))
+        else:
+            gate = torch.where(hard_mask, soft_gate / soft_gate.detach().clamp_min(1e-4), torch.zeros_like(soft_gate))
 
         routed_frac = float(hard_mask.float().mean().detach())
         if not bool(hard_mask.any()):
             zero = x1.sum() * 0.0
             return x1, {"routed_frac": 0.0, "anticirc_loss": zero, "entropy_tau": float(tau.detach())}
 
-        # Sparse gather per batch item up to max_k routed tokens -> true O(K_hard * T) compute!
+        # 32-bucket aligned sparse gather -> eliminates dynamic-shape CUDA allocator fragmentation!
         counts = hard_mask.sum(dim=-1)                                      # (B,)
-        max_k = int(counts.max().item())
+        raw_max_k = int(counts.max().item())
+        max_k = min(T, max(1, ((raw_max_k + 31) // 32) * 32)) if T >= 32 else raw_max_k
         # Pad batch rows with fewer than max_k hard tokens using index 0 (masked out before scatter!)
         topk_idx = torch.topk(hard_mask.int() * (T + 1) + torch.arange(T, device=x1.device), k=max_k, dim=-1).indices
         topk_idx, _ = torch.sort(topk_idx, dim=-1)                          # B, K_max in causal order
@@ -301,12 +311,19 @@ class Arch04LM(nn.Module):
 
         w_out = self.emb.weight if self.head is None else self.head.weight
         if self.refiner is not None and k1_anchor is not None and v1_anchor is not None:
-            # Compute strictly causal Pass-1 Shannon entropy u_t without tracking gradients into Pass-1 router
+            # Compute strictly causal Pass-1 uncertainty u_t without tracking gradients into Pass-1 router
             with torch.no_grad():
                 h1_norm = self.nf(x)
                 lg1 = (h1_norm @ w_out.T).float()
-                lp1 = F.log_softmax(lg1, dim=-1)
-                entropies = -(lp1.exp() * lp1).sum(dim=-1)                  # B, T
+                if self.c.use_margin_gate:
+                    # Vocabulary-invariant Top-2 hypothesis margin ambiguity: u_t = 1 - (p_(1) - p_(2)) in [0, 1]
+                    top2_lg = torch.topk(lg1, k=2, dim=-1).values
+                    lse = torch.logsumexp(lg1, dim=-1, keepdim=True)
+                    top2_p = (top2_lg - lse).exp()
+                    entropies = 1.0 - (top2_p[..., 0] - top2_p[..., 1])
+                else:
+                    lp1 = F.log_softmax(lg1, dim=-1)
+                    entropies = -(lp1.exp() * lp1).sum(dim=-1)              # B, T
             delta_h1 = (x - x0).detach()
             x, ref_aux = self.refiner(x, delta_h1, k1_anchor, v1_anchor, rope, entropies)
             aux.update(ref_aux)

@@ -26,7 +26,10 @@ from lab.trackb.eval_capabilities import TOOL_SYSTEM_INSTRUCTION, parse_tool_cal
 from nanolm.eval.validators import verify_math_or_logic, verify_python_solution
 
 
-def render_chat(tok, messages: list[dict[str, str]], think: bool, is_gpt_oss: bool = False) -> str:
+def render_chat(tok, messages: list[dict[str, str]], think: bool, is_gpt_oss: bool = False, is_smollm3: bool = False) -> str:
+    if is_smollm3:
+        sys_tag = "/think" if think else "/no_think"
+        messages = [{"role": "system", "content": sys_tag}] + list(messages)
     if is_gpt_oss:
         try:
             return tok.apply_chat_template(
@@ -45,7 +48,7 @@ def render_chat(tok, messages: list[dict[str, str]], think: bool, is_gpt_oss: bo
         return tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
 
-def run_batched_competition_1(llm: LLM, tok, tasks: list[dict[str, Any]], think: bool, is_gpt_oss: bool = False) -> dict[str, Any]:
+def run_batched_competition_1(llm: LLM, tok, tasks: list[dict[str, Any]], think: bool, is_gpt_oss: bool = False, is_smollm3: bool = False) -> dict[str, Any]:
     """Fast batched vLLM execution of Competition 1 (Naked Foundation Model) across all 100 tasks."""
     prompts_txt: list[str] = []
     for item in tasks:
@@ -53,7 +56,7 @@ def run_batched_competition_1(llm: LLM, tok, tasks: list[dict[str, Any]], think:
             p = f"{TOOL_SYSTEM_INSTRUCTION}\n\nAvailable tools:\n```json\n{json.dumps(WORKFLOW_SCHEMAS, indent=2)}\n```\nUser Objective: {item['prompt']}"
         else:
             p = item["prompt"]
-        prompts_txt.append(render_chat(tok, [{"role": "user", "content": p}], think, is_gpt_oss=is_gpt_oss))
+        prompts_txt.append(render_chat(tok, [{"role": "user", "content": p}], think, is_gpt_oss=is_gpt_oss, is_smollm3=is_smollm3))
 
     max_toks = 3072 if (think or is_gpt_oss) else 1536
     t0 = time.perf_counter()
@@ -124,14 +127,15 @@ def main() -> None:
         llm_kwargs["dtype"] = "bfloat16"
 
     is_gpt_oss = "gpt-oss" in args.model.lower()
+    is_smollm3 = any(k in args.model.lower() for k in ("smollm3", "b6_3b"))
     llm = LLM(**llm_kwargs)
 
-    c1_fast = run_batched_competition_1(llm, tok, tasks, think=False, is_gpt_oss=is_gpt_oss)
+    c1_fast = run_batched_competition_1(llm, tok, tasks, think=False, is_gpt_oss=is_gpt_oss, is_smollm3=is_smollm3)
     print("COMP1_FAST:", json.dumps(c1_fast), flush=True)
 
     c1_think = None
     if not args.skip_think1_naked:
-        c1_think = run_batched_competition_1(llm, tok, tasks, think=True, is_gpt_oss=is_gpt_oss)
+        c1_think = run_batched_competition_1(llm, tok, tasks, think=True, is_gpt_oss=is_gpt_oss, is_smollm3=is_smollm3)
         print("COMP1_THINK:", json.dumps(c1_think), flush=True)
 
     # Competition 2: Complete 5-Engine System with main-thread dynamic micro-batching across all 100 tasks!
@@ -143,7 +147,7 @@ def main() -> None:
     req_q: queue.Queue[tuple[str, int, Future[str]]] = queue.Queue()
 
     def _vllm_gen(msgs: list[dict[str, str]], think: bool, max_tok: int) -> str:
-        rendered = render_chat(tok, msgs, think, is_gpt_oss=is_gpt_oss)
+        rendered = render_chat(tok, msgs, think, is_gpt_oss=is_gpt_oss, is_smollm3=is_smollm3)
         eff_max = max(max_tok, 2048) if is_gpt_oss else max_tok
         fut: Future[str] = Future()
         req_q.put((rendered, eff_max, fut))

@@ -44,15 +44,32 @@ class RetrievalResult:
 
 
 class WorkingMemory:
-    """Compact episodic scratchpad tracking verified facts, tool outputs, and failures per episode."""
+    """Epistemic Belief-Revision Scratchpad tracking active facts, invalidated state, and unresolved errors."""
 
     def __init__(self, max_entries: int = 12):
         self.max_entries = max_entries
         self.facts: dict[str, Any] = {}
+        self.invalidated_facts: dict[str, Any] = {}
         self.events: list[str] = []
+        self.has_unresolved_error: bool = False
 
     def record_fact(self, key: str, value: Any) -> None:
+        for prefix in ("fresh_", "new_", "updated_", "active_"):
+            if key.startswith(prefix):
+                base_k = key[len(prefix) :]
+                if base_k in self.facts and self.facts[base_k] != value:
+                    self.invalidated_facts[base_k] = self.facts.pop(base_k)
         self.facts[key] = value
+
+    def revise_on_error(self, call_args: dict[str, Any], error_code: str, message: str) -> None:
+        self.has_unresolved_error = True
+        err_low = f"{error_code} {message}".lower()
+        for k, v in call_args.items():
+            if ("stale" in err_low or "expired" in err_low or "invalid" in err_low) and k.lower() in err_low:
+                self.invalidated_facts[k] = v
+                if self.facts.get(k) == v:
+                    self.facts.pop(k, None)
+        self.record_event(f"ERROR [{error_code}]: {message}")
 
     def record_event(self, summary: str) -> None:
         compact = " ".join(summary.strip().split())[:240]
@@ -61,14 +78,17 @@ class WorkingMemory:
             self.events = self.events[-self.max_entries :]
 
     def render(self) -> str:
-        if not self.facts and not self.events:
+        if not self.facts and not self.invalidated_facts and not self.events:
             return ""
         parts = []
         if self.facts:
             kv = ", ".join(f"{k}={v!r}" for k, v in self.facts.items())
-            parts.append(f"Verified State: {kv}")
+            parts.append(f"Active Verified State: {kv}")
+        if self.invalidated_facts:
+            bad = ", ".join(f"{k}={v!r} (INVALID/STALE - DO NOT USE)" for k, v in self.invalidated_facts.items())
+            parts.append(f"Superseded/Invalidated State: {bad}")
         if self.events:
-            parts.append("Recent Steps:\n" + "\n".join(f"  - {e}" for e in self.events[-6:]))
+            parts.append("Recent Diagnostic Events:\n" + "\n".join(f"  - {e}" for e in self.events[-6:]))
         return "\n".join(parts)
 
 

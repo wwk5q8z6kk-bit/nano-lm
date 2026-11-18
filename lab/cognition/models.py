@@ -90,12 +90,22 @@ class CognitiveLM(nn.Module):
 
     def __init__(self, arm: str, d: int = 128, n_head: int = 4, n_slots: int = 8):
         super().__init__()
-        assert arm in ("C0_transcript_imitation", "C1_obs_world_model", "C2_latent_loop_only", "C3_ebwm_counterfactual")
+        assert arm in (
+            "C0_transcript_imitation",
+            "C1_obs_world_model",
+            "C2_latent_loop_only",
+            "C3_ebwm_counterfactual",
+            "C4a_ulbp_latent_plan",
+            "C4b_ulbp_equivariant",
+        )
         self.arm = arm
+        self.is_c3_family = arm in ("C3_ebwm_counterfactual", "C4a_ulbp_latent_plan", "C4b_ulbp_equivariant")
+        self.is_c4 = arm in ("C4a_ulbp_latent_plan", "C4b_ulbp_equivariant")
         self.d = d
         self.n_slots = n_slots
+        ffn_dim = 256 if self.is_c4 else 288
         ng_cfg = NextGenCfg(
-            vocab=VOCAB_SIZE, d=d, n_head=n_head, n_kv=2, ffn=288,
+            vocab=VOCAB_SIZE, d=d, n_head=n_head, n_kv=2, ffn=ffn_dim,
             layout="DDDA", seq=512, gated_vres=True, sharp_v=True, qk_canon_attn=True,
         )
         self.ng_cfg = ng_cfg
@@ -118,8 +128,8 @@ class CognitiveLM(nn.Module):
             self.loop_step_emb = nn.Embedding(4, d)
             self.loop_norm = RMSNorm(d)
 
-        # C3 Persistent 8-Slot Belief Workspace + Epistemic + Counterfactual + Source-Pointer heads
-        if arm == "C3_ebwm_counterfactual":
+        # C3 / C4 Persistent 8-Slot Belief Workspace + Epistemic + Counterfactual + Source-Pointer heads
+        if self.is_c3_family:
             self.init_belief = nn.Parameter(torch.randn(1, n_slots, d) * 0.02)
             self.slot_gate = nn.Linear(2 * d, d)
             self.belief_post_q = nn.Linear(d, d, bias=False)
@@ -127,6 +137,17 @@ class CognitiveLM(nn.Module):
             self.cf_head = nn.Linear(d, len(ACTION_NAMES) * 2) # per-action (info_gain, reg_risk)
             self.ptr_q = nn.Linear(d, d, bias=False)
             self.ptr_k = nn.Linear(d, d, bias=False)
+
+        # C4 Uncertainty-Gated Latent Belief-Space Planner (O((S+N)^2 d)) + Predicate-Context Span Encoder
+        if self.is_c4:
+            self.plan_step_emb = nn.Embedding(3, d)
+            self.plan_norm1 = RMSNorm(d)
+            self.plan_attn = nn.MultiheadAttention(d, n_head, batch_first=True)
+            self.plan_norm2 = RMSNorm(d)
+            self.plan_ffn = nn.Sequential(nn.Linear(d, 2 * d, bias=False), nn.SiLU(), nn.Linear(2 * d, d, bias=False))
+            self.plan_unc_gate = nn.Linear(3, 1)
+            self.span_ctx_proj = nn.Linear(3 * d, d, bias=False)
+            self.turn_recency_emb = nn.Embedding(12, d)
 
     def _encode_seq(self, ids: torch.Tensor, loop_k: int = 1) -> torch.Tensor:
         B, T = ids.shape
@@ -182,13 +203,20 @@ class CognitiveLM(nn.Module):
         }
 
     def init_c3_workspace(self, goal_ids: list[int], n_modules: int, val_spans: list[tuple[int, int]], dev: torch.device) -> dict[str, Any]:
-        """Initialize C3's persistent 8-slot belief workspace from Goal + Repo declaration."""
+        """Initialize C3/C4 persistent 8-slot belief workspace from Goal + Repo declaration."""
         z = self.init_belief.to(dev)                          # (1, S, d)
+        # C4b Sym(12) alpha-renaming equivariance: permute bound module symbols uniformly during training!
+        if self.arm == "C4b_ulbp_equivariant" and self.training:
+            perm = torch.randperm(12).tolist()
+        else:
+            perm = list(range(12))
         ws = {
             "z": z,
             "mod_mem": None,
             "evidence_vecs": [],   # list[(Tensor(d,), int_val)]
             "n_modules": n_modules,
+            "perm": perm,
+            "turn_idx": 0,
         }
         return self.update_c3_workspace(ws, goal_ids, val_spans, dev)
 
@@ -199,11 +227,18 @@ class CognitiveLM(nn.Module):
         obs_val_spans: list[tuple[int, int]],
         dev: torch.device,
     ) -> dict[str, Any]:
-        """Recurrent belief update `Z_t = U_theta(Z_{t-1}, obs_t)` in bounded O(S + |obs_t|) compute!"""
+        """Recurrent belief update `Z_t = U_theta(Z_{t-1}, obs_t)` (+ C4 subspace latent planning)."""
         z_prev = ws["z"]                                      # (1, S, d)
-        obs_t = torch.tensor([obs_ids], dtype=torch.long, device=dev)
+        perm: list[int] = ws.get("perm", list(range(12)))
+        turn_idx: int = int(ws.get("turn_idx", 0))
+        if self.arm == "C4b_ulbp_equivariant":
+            id_remap = {MOD_TOKEN_IDS[m]: MOD_TOKEN_IDS[perm[m]] for m in range(12)}
+            mapped_ids = [id_remap.get(t, t) for t in obs_ids]
+        else:
+            mapped_ids = obs_ids
+
+        obs_t = torch.tensor([mapped_ids], dtype=torch.long, device=dev)
         x_obs = self.emb(obs_t)                               # (1, L, d)
-        # Prepend persistent belief slots `[Z_{t-1}; x_obs]` and run unified DDDA blocks!
         cat_in = torch.cat([z_prev, x_obs], dim=1)            # (1, S + L, d)
         hd = self.d // self.ng_cfg.n_head
         rope = rope_cache(cat_in.size(1), hd, 10000.0, dev)
@@ -215,38 +250,66 @@ class CognitiveLM(nn.Module):
         z_cand = h[:, : self.n_slots, :]
         h_obs = h[0, self.n_slots :, :]                       # (L, d)
 
-        # Gated belief consolidation (protects verified belief slots from distractor overwrite!)
         g = torch.sigmoid(self.slot_gate(torch.cat([z_prev, z_cand], dim=-1)))
         z_next = g * z_cand + (1.0 - g) * z_prev
 
-        # Update relational module representations & exact evidence value pointer memory
         n_mod = ws["n_modules"]
         prev_mods = ws["mod_mem"]
         new_mods = []
         for m in range(n_mod):
-            tid = MOD_TOKEN_IDS[m]
-            pos = [idx for idx, tok in enumerate(obs_ids) if tok == tid]
+            orig_tid = MOD_TOKEN_IDS[m]
+            emb_tid = MOD_TOKEN_IDS[perm[m]]
+            pos = [idx for idx, tok in enumerate(obs_ids) if tok == orig_tid]
             if pos:
                 v_m = h_obs[pos].mean(dim=0)
                 new_mods.append(0.5 * prev_mods[m] + 0.5 * v_m if prev_mods is not None else v_m)
             else:
-                new_mods.append(prev_mods[m] if prev_mods is not None else self.emb.weight[tid])
+                new_mods.append(prev_mods[m] if prev_mods is not None else self.emb.weight[emb_tid])
         mod_mat = torch.stack(new_mods, dim=0)                # (n_mod, d)
+
+        # C4: L=3 Uncertainty-Gated Subspace Belief-Graph Planning over [Z_t; M_mat] (<= 20 tokens!)
+        if self.is_c4:
+            joint = torch.cat([z_next, mod_mat.unsqueeze(0)], dim=1)  # (1, S + n_mod, d)
+            for l_step in range(3):
+                b_cur = joint[0, : self.n_slots].mean(dim=0)
+                u_cur = torch.sigmoid(self.unc_head(b_cur))
+                think_g = torch.sigmoid(self.plan_unc_gate(u_cur))    # scalar in (0, 1)
+                step_tag = torch.zeros_like(joint)
+                step_tag[:, : self.n_slots, :] = self.plan_step_emb.weight[l_step]
+                qn = self.plan_norm1(joint + step_tag)
+                attn_out, _ = self.plan_attn(qn, qn, qn, need_weights=False)
+                mid = joint + think_g * attn_out
+                joint = mid + think_g * self.plan_ffn(self.plan_norm2(mid))
+            z_next = joint[:, : self.n_slots, :]
+            mod_mat = joint[0, self.n_slots :, :]
 
         ev_list = list(ws["evidence_vecs"])
         for pos_i, val_int in obs_val_spans:
             if 0 <= pos_i < h_obs.size(0):
-                # Store contextualized VAL_MARKER vector + exact recoverable integer payload (`ECBS`!)
-                ev_list.append((h_obs[pos_i], val_int))
+                if self.is_c4:
+                    # 3-token left predicate context [pos-2, pos-1, pos] + turn recency embedding!
+                    h_m2 = h_obs[max(0, pos_i - 2)]
+                    h_m1 = h_obs[max(0, pos_i - 1)]
+                    h_0 = h_obs[pos_i]
+                    span_v = self.span_ctx_proj(torch.cat([h_m2, h_m1, h_0], dim=-1)) + self.turn_recency_emb.weight[min(turn_idx, 11)]
+                    ev_list.append((span_v, val_int))
+                else:
+                    ev_list.append((h_obs[pos_i], val_int))
 
         b_summary = z_next[0].mean(dim=0)                     # (d,)
         unc_pred = torch.sigmoid(self.unc_head(b_summary))    # (3,) in (0, 1): u_intent, u_state, u_verify
         cf_raw = self.cf_head(b_summary).view(len(ACTION_NAMES), 2)
-        pred_ig = F.softplus(cf_raw[:, 0])                    # predicted info gain >= 0
-        pred_risk = torch.sigmoid(cf_raw[:, 1])               # predicted regression/premature risk in (0, 1)
+        pred_ig = F.softplus(cf_raw[:, 0])
+        pred_risk = torch.sigmoid(cf_raw[:, 1])
 
-        # Decision-oriented action utility combining policy prior + counterfactual value-of-information - risk!
         act_logits = self.act_head(b_summary) + 1.2 * pred_ig - 2.0 * pred_risk
+        if self.is_c4:
+            # Differentiable Epistemic Sufficiency Shield: suppress premature PATCH & unverified STOP!
+            suff_pen = torch.zeros_like(act_logits)
+            suff_pen[4] = 2.2 * (unc_pred[0] + unc_pred[1])   # ACT_PATCH
+            suff_pen[6] = 2.2 * unc_pred[2]                   # ACT_STOP
+            act_logits = act_logits - suff_pen
+
         mod_logits = (self.mod_q(z_next[0, 0]) @ self.mod_k(mod_mat).T) / (self.d ** 0.5)
         belief_post_logits = (self.belief_post_q(z_next[0, 1]) @ self.mod_k(mod_mat).T) / (self.d ** 0.5)
         dig_logits = [dh(z_next[0, 2]) for dh in self.digit_heads]
@@ -261,6 +324,8 @@ class CognitiveLM(nn.Module):
             "mod_mem": mod_mat,
             "evidence_vecs": ev_list,
             "n_modules": n_mod,
+            "perm": perm,
+            "turn_idx": turn_idx + 1,
             "act_logits": act_logits,
             "mod_logits": mod_logits,
             "belief_post_logits": belief_post_logits,

@@ -96,7 +96,7 @@ def train_one_arm(arm: str, seed: int, n_episodes: int, dev: torch.device) -> Co
         opt.zero_grad(set_to_none=True)
         ep_loss = torch.zeros((), device=dev)
 
-        if arm != "C3_ebwm_counterfactual":
+        if not model.is_c3_family:
             running_ids: list[int] = []
             running_spans: list[tuple[int, int]] = []
             for st_item in traj:
@@ -178,10 +178,18 @@ def train_one_arm(arm: str, seed: int, n_episodes: int, dev: torch.device) -> Co
 
 
 @torch.no_grad()
-def evaluate_arm(model: CognitiveLM, n_eval: int, ood: bool, dev: torch.device, seed: int = 9001, inject_distractors: bool = True) -> dict[str, float]:
-    """Evaluate closed-loop autonomous episode completion on ID (`4–5` mod) or OOD (`7–9` mod, unseen 4-digit vals)."""
+def evaluate_arm(
+    model: CognitiveLM,
+    n_eval: int,
+    ood: bool,
+    dev: torch.device,
+    seed: int = 9001,
+    inject_distractors: bool = True,
+    extreme_ood: bool = False,
+) -> dict[str, float]:
+    """Evaluate closed-loop autonomous episode completion on ID (`4–5`), OOD (`7–9`), or Extreme-OOD (`10–12`)."""
     model.eval()
-    rng = random.Random(seed + (500 if ood else 0))
+    rng = random.Random(seed + (1000 if extreme_ood else (500 if ood else 0)))
 
     verified_full = 0            # Solved with exact model-predicted value
     verified_policy_only = 0     # Solved when oracle value is supplied (isolates pure cognitive policy vs value exactness!)
@@ -192,7 +200,7 @@ def evaluate_arm(model: CognitiveLM, n_eval: int, ood: bool, dev: torch.device, 
     contradiction_cases = 0
 
     for _ in range(n_eval):
-        base_ep = sample_episode(rng, ood=ood)
+        base_ep = sample_episode(rng, ood=ood, extreme_ood=extreme_ood)
 
         for use_oracle_val in (False, True):
             ep = copy.deepcopy(base_ep)
@@ -211,7 +219,7 @@ def evaluate_arm(model: CognitiveLM, n_eval: int, ood: bool, dev: torch.device, 
 
             for step_t in range(10):
                 ids_c, spans_c = encode_text_with_spans(obs_txt)
-                if model.arm != "C3_ebwm_counterfactual":
+                if not model.is_c3_family:
                     off = len(running_ids)
                     running_ids.extend(ids_c)
                     running_spans.extend((off + p, v) for p, v in spans_c)

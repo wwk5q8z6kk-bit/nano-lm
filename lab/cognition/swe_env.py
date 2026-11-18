@@ -29,6 +29,7 @@ ACT_STOP = 6
 ACTION_NAMES = ["INSPECT", "TRACE", "RUN_TESTS", "ASK_CLARIFY", "PATCH", "REVERT", "STOP_VERIFIED"]
 TRAIN_MOD_NAMES = ["auth", "gateway", "cache", "ledger", "worker", "router"]
 OOD_MOD_NAMES = ["chronos", "nebula", "vortex", "quasar", "pulsar", "aegis", "sentinel", "hydra", "zenith"]
+EXTREME_OOD_MOD_NAMES = OOD_MOD_NAMES + ["titan", "eclipse", "hyperion"]
 
 
 @dataclass
@@ -53,8 +54,16 @@ class RepoEpisode:
     steps: int = 0
 
 
-def sample_episode(rng: random.Random, ood: bool = False) -> RepoEpisode:
-    if not ood:
+def sample_episode(rng: random.Random, ood: bool = False, extreme_ood: bool = False) -> RepoEpisode:
+    if extreme_ood:
+        n_mod = rng.choice([10, 11, 12])
+        names = rng.sample(EXTREME_OOD_MOD_NAMES, n_mod)
+        c_true = rng.randint(1000, 9999)
+        c_decoy = rng.randint(1000, 9999)
+        while c_decoy == c_true:
+            c_decoy = rng.randint(1000, 9999)
+        ood = True
+    elif not ood:
         n_mod = rng.choice([4, 5])
         names = rng.sample(TRAIN_MOD_NAMES, n_mod)
         c_true = rng.randint(100, 999)
@@ -97,7 +106,7 @@ def initial_goal_observation(ep: RepoEpisode) -> str:
 
 
 def compute_exact_belief_and_uncertainty(ep: RepoEpisode, max_mods: int = 9) -> dict[str, Any]:
-    probs = [0.0] * max_mods
+    probs = [0.0] * max(max_mods, ep.n_modules)
     if ep.true_root_mod in ep.inspected:
         probs[ep.true_root_mod] = 1.0
     elif ep.rival_mod in ep.inspected:

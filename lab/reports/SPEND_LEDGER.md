@@ -1,4 +1,4 @@
-# RunPod Spend Ledger (Track A + Track B + Frontier 120B Head-to-Head — Final Closeout)
+# RunPod Spend Ledger (Phases 1, 2 & 3 — Final Closeout)
 
 Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve untouched).
 
@@ -18,8 +18,12 @@ Envelope: \$180.00 autonomous budget (\$200.00 hard cap, \$20.00 owner reserve u
 | `5yw0z6ebyic7qu` | H200 SXM 141GB (secure) | 5.29 | 2026-11-17 17:08 | 2026-11-17 20:59 | Phase 2: `Qwen3-32B` probe + `B4a/B4b/B4c` KD/FFT + `B5` RLVR + evals | \$20.37 |
 | `d6a3l21u5tkrlc` | RTX 4090 (secure) | 0.89 | 2026-11-17 17:08 | 2026-11-17 20:43 | `LAB-ARCH-04` `X5_atrd_muon s0` + `X6_pkm_muon s0` (`600M` tok each) | \$3.19 |
 | `84fdprlrg4uo8b` | RTX 4090 (secure) | 0.89 | 2026-11-17 17:08 | 2026-11-17 19:28 | `LAB-ARCH-04` `X5_atrd_muon s1` (OOM diag) + `X6_pkm_muon s1` (`600M` tok) | \$2.07 |
-| `6duh0m3bwqwt19` | H200 SXM 141GB (secure) | 5.29 | 2026-11-17 21:35 | 2026-11-17 23:20 | Step 4 Comparators: `Qwen3-1.7B`, `Qwen3-8B`, `Qwen3-32B`, `gpt-oss-120b` Comp 1 & 2 | \$9.26 |
+| `6duh0m3bwqwt19` | H200 SXM 141GB (secure) | 5.29 | 2026-11-17 21:35 | 2026-11-17 23:20 | Phase 2 Step 4: `Qwen3-1.7B`, `8B`, `32B`, `gpt-oss-120b` Comp 1 & 2 (v1) | \$9.26 |
+| `d8fq11bqgf89h9` | RTX 4090 (secure) | 0.89 | 2026-11-18 01:39 | 2026-11-18 03:32 | `LAB-ARCH-05` `X8_margin_atrd_muon s0` (`600M` tok — `0.9548` BPB) | \$1.67 |
+| `3tgu2te6rwti8s` | RTX 4090 (secure) | 0.89 | 2026-11-18 01:39 | 2026-11-18 03:35 | `LAB-ARCH-05` `X8_margin_atrd_muon s1` (`600M` tok — `0.9538` BPB) | \$1.72 |
+| `fedq4pvk225egm` | H200 SXM 141GB (secure) | 5.29 | 2026-11-18 03:49 | 2026-11-18 05:14 | Phase 3: `32B+120B` Stratified KD + `NanoLM-B6-2B` + `NanoLM-B6-3B` + `System-v2` `1.7B..120B` | \$7.51 |
 
 - **Phase 1 realized spend (11 pods, all removed):** \$39.07
 - **Phase 2 realized spend (4 pods, all removed):** \$34.89
-- **Total realized campaign spend (15 pods, 0 active belonging to this session):** **\$73.96 / \$180.00** (`41.1%` of autonomous budget; **\$106.04** remaining)
+- **Phase 3 realized spend (3 pods, all removed):** \$10.90
+- **Total realized campaign spend (18 pods, 0 active):** **\$84.86 / \$180.00** (`47.1%` of autonomous budget; **\$95.14** remaining)

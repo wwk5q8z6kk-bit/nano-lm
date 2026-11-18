@@ -165,52 +165,60 @@ class NanoLMSystem:
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 3. COMPUTE_VERIFY_MATH: Analytical derivation + independent Python verification & reconciliation!
+        # 3. COMPUTE_VERIFY_MATH v2: Unanchored Dual-Channel (Analytical + Executable) & Neutral Arbiter!
         if route == "COMPUTE_VERIFY_MATH":
-            # Step A: Ask model to write a self-contained Python solver printing the exact answer first!
+            ana_prompt = f"Solve this mathematical problem step-by-step with exact reasoning and put your final answer inside `\\boxed{{}}`:\n\n{prompt}"
+            ana_resp = _ask([{"role": "user", "content": ana_prompt}], True, 2560)
+            ana_ans = extract_canonical_answer(ana_resp)
+
             py_prompt = (
-                "Write a short, exact Python 3 script (using `fractions`, `math`, `itertools`, or `sympy` if installed, "
-                "preferring exact integer/rational standard-library arithmetic) that computes the exact answer to the problem "
-                "below and prints ONLY the final answer on the last line via `print(...)`.\n\n"
+                "Write a short, exact Python 3 script (preferring exact integer/`fractions.Fraction`/`math` arithmetic; "
+                "read every qualifier like 'second smallest', 'non-negative', or 'lowest terms' carefully) "
+                "that computes the exact answer and prints ONLY the final answer on the last line via `print(...)`:\n\n"
                 f"Problem:\n{prompt}"
             )
-            py_resp = _ask([{"role": "user", "content": py_prompt}], False, 896)
+            py_resp = _ask([{"role": "user", "content": py_prompt}], False, 1024)
             sbx += 1
             ok_py, py_out = execute_python_computation(strip_thinking(py_resp))
-            trace.append(f"math_py_ok={ok_py},out={py_out[:60]}")
-            if ok_py:
-                val_line = py_out.splitlines()[-1].strip()
-                wm.record_fact("python_verified_result", val_line)
-                synth_prompt = (
-                    f"{prompt}\n\n"
-                    f"[Verification Engine Note: Independent Python execution produced `{val_line}`. "
-                    "Verify this result analytically step-by-step; if your independent check confirms it, "
-                    "present the concise proof and final answer in `\\boxed{...}` (or requested format). "
-                    "If you find a bug in the script's formulation, explain and output the corrected final answer.]"
+            used_py_code = strip_thinking(py_resp)
+            if not ok_py:
+                rep_py = _ask(
+                    [{"role": "user", "content": f"Your Python solver raised `{py_out}`. Fix the Python 3 script so it runs cleanly and prints ONLY the exact final answer:\n\n{prompt}"}],
+                    False, 1024,
                 )
-                final_r = _ask([{"role": "user", "content": synth_prompt}], False, 1024)
-                ans = extract_canonical_answer(final_r) or val_line
-                tier = "VERIFIED_COMPUTATION" if val_line in final_r else "PLAUSIBLE_UNVERIFIED"
+                sbx += 1
+                ok_py, py_out = execute_python_computation(strip_thinking(rep_py))
+                used_py_code = strip_thinking(rep_py)
+
+            trace.append(f"math_dual:ana={ana_ans},py_ok={ok_py},py={py_out[:40]}")
+            if not ok_py:
                 return SystemEpisodeResult(
-                    strip_thinking(final_r), ans, route, tier,
+                    strip_thinking(ana_resp), ana_ans, route, "ANALYTICAL_UNVERIFIED",
                     calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
                 )
-            # Fallback if Python script errored: repair script once and re-execute!
-            rep_py = _ask(
-                [{"role": "user", "content": f"Your Python solver failed with `{py_out}`. Fix the Python 3 script so it prints ONLY the exact answer:\n\n{prompt}"}],
-                False, 1024,
+
+            val_py = py_out.splitlines()[-1].strip()
+            if ana_ans and ana_ans.strip() == val_py:
+                wm.record_fact("certified_dual_math", val_py)
+                return SystemEpisodeResult(
+                    f"\\boxed{{{val_py}}}", val_py, route, "CERTIFIED_DUAL_AGREEMENT",
+                    calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
+                )
+
+            arb_prompt = (
+                "Two independent solution channels disagreed on this problem:\n\n"
+                f"Problem:\n{prompt}\n\n"
+                f"- Channel A (Analytical derivation) obtained: `{ana_ans}`\n"
+                f"- Channel B (Python script below) printed: `{val_py}`\n"
+                f"```python\n{used_py_code}\n```\n\n"
+                "Audit BOTH candidates carefully: check whether the Python script misread a problem constraint "
+                "(such as 'second smallest' vs 'smallest', boundary conditions, or gcd normalization) OR whether "
+                "Channel A made an arithmetic calculation slip. Put the verified exact final answer in `\\boxed{}`."
             )
-            sbx += 1
-            ok_py2, py_out2 = execute_python_computation(strip_thinking(rep_py))
-            if ok_py2:
-                val2 = py_out2.splitlines()[-1].strip()
-                return SystemEpisodeResult(
-                    f"\\boxed{{{val2}}}", val2, route, "VERIFIED_COMPUTATION",
-                    calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
-                )
-            final_r = _ask([{"role": "user", "content": f"Solve carefully and put the final answer in `\\boxed{{}}`:\n{prompt}"}], True, 2560)
+            arb_resp = _ask([{"role": "user", "content": arb_prompt}], True, 2048)
+            final_ans = extract_canonical_answer(arb_resp) or val_py
             return SystemEpisodeResult(
-                strip_thinking(final_r), extract_canonical_answer(final_r), route, "PLAUSIBLE_UNVERIFIED",
+                strip_thinking(arb_resp), final_ans, route, "ARBITER_RECONCILED",
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
@@ -290,7 +298,7 @@ class NanoLMSystem:
                 calls, p_chars, o_chars, sbx, mem_q, round((time.perf_counter() - t0) * 1000, 1), trace,
             )
 
-        # 6. AGENTIC_TOOL_LOOP: Multi-step stateful tool orchestration with WorkingMemory & error recovery
+        # 6. AGENTIC_TOOL_LOOP v2: Epistemic Belief-Revision WorkingMemory + Error-Triggered Thinking!
         assert tool_env is not None
         schema_txt = json.dumps(tool_env.schemas, indent=2)
         history_lines: list[str] = []
@@ -301,15 +309,22 @@ class NanoLMSystem:
             hist_block = ("\nInteraction Log:\n" + "\n".join(history_lines) + "\n") if history_lines else ""
             turn_prompt = (
                 f"{TOOL_SYSTEM_INSTRUCTION}\n"
-                "When ALL required tool steps are verified complete (or if an API returns a permanent permission/revocation stop), "
-                'output `{"tool_calls": [], "response": "<final grounded summary with exact IDs/values>"}`.\n\n'
+                "Read Working Memory & API error messages carefully: never reuse an invalidated/stale parameter, "
+                "clamp numeric parameters if an API specifies a safety bound, and halt immediately without retrying "
+                "if an API reports a compliance/permission freeze. "
+                "When ALL required tool steps are verified complete (or halted due to freeze), "
+                'output `{"tool_calls": [], "response": "<final grounded summary with exact IDs and final values>"}`.\n\n'
                 f"Available tools:\n```json\n{schema_txt}\n```{wm_block}{hist_block}\nUser Objective: {prompt}"
             )
-            resp = _ask([{"role": "user", "content": turn_prompt}], False, 768)
+            # Adaptive compute escalation: Turn 0 happy path uses fast think=False; recovery/multi-step uses think=True!
+            use_think = bool(wm.has_unresolved_error or turn >= 1)
+            resp = _ask([{"role": "user", "content": turn_prompt}], use_think, 2048 if use_think else 768)
             last_vis = strip_thinking(resp)
             sbx += 1
+            prev_hist_len = len(tool_env.call_history)
             done, obs_list, st = tool_env.step(last_vis)
-            trace.append(f"tool_turn{turn}:done={done},obs={len(obs_list)},st={st}")
+            new_calls = tool_env.call_history[prev_hist_len:]
+            trace.append(f"tool_turn{turn}:think={int(use_think)},done={done},obs={len(obs_list)},st={st}")
             if done:
                 try:
                     parsed = json.loads(last_vis[last_vis.find("{") : last_vis.rfind("}") + 1])
@@ -323,13 +338,15 @@ class NanoLMSystem:
                 )
             history_lines.append(f"Turn {turn + 1} Assistant: {last_vis}")
             history_lines.append(f"Turn {turn + 1} Tool Observation: {json.dumps(obs_list)}")
-            for ob in obs_list:
+            for idx_ob, ob in enumerate(obs_list):
+                c_args = new_calls[idx_ob]["arguments"] if idx_ob < len(new_calls) and isinstance(new_calls[idx_ob].get("arguments"), dict) else {}
                 if ob.get("ok"):
+                    wm.has_unresolved_error = False
                     for k, v in ob.items():
                         if k not in ("tool", "ok"):
                             wm.record_fact(k, v)
                 else:
-                    wm.record_event(f"ERROR on {ob.get('tool')}: {ob.get('error')} - {ob.get('message')}")
+                    wm.revise_on_error(c_args, str(ob.get("error", "APIError")), str(ob.get("message", "")))
 
         return SystemEpisodeResult(
             last_vis, last_vis, route, "UNCERTAIN_OR_FAILED",

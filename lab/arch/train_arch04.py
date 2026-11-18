@@ -19,9 +19,10 @@ from lab.arch.arch04 import Arch04Cfg, Arch04LM
 from lab.arch.train import Muon, evaluate, wsd
 
 ARCH04_SPECS = {
-    "X5_atrd_muon": {"use_atrd": True, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon"},
-    "X6_pkm_muon": {"use_atrd": False, "atrd_frac": 0.0, "use_pkm": True, "optim": "muon"},
-    "X7_atrd_pkm_muon": {"use_atrd": True, "atrd_frac": 0.25, "use_pkm": True, "optim": "muon"},
+    "X5_atrd_muon": {"use_atrd": True, "use_margin_gate": False, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon"},
+    "X6_pkm_muon": {"use_atrd": False, "use_margin_gate": False, "atrd_frac": 0.0, "use_pkm": True, "optim": "muon"},
+    "X7_atrd_pkm_muon": {"use_atrd": True, "use_margin_gate": False, "atrd_frac": 0.25, "use_pkm": True, "optim": "muon"},
+    "X8_margin_atrd_muon": {"use_atrd": True, "use_margin_gate": True, "atrd_frac": 0.25, "use_pkm": False, "optim": "muon"},
 }
 
 TARGET_ACTIVE_NON_EMB = 29_377_080  # exact match to X4_nanolm_v2_muon!
@@ -32,7 +33,11 @@ def build_arch04(arm: str, vocab: int, seq: int) -> Arch04LM:
     lo, hi = 512, 2048
     while hi - lo > 32:
         mid = (lo + hi) // 2 // 32 * 32
-        cfg = Arch04Cfg(vocab=vocab, seq=seq, ffn=mid, use_atrd=s["use_atrd"], atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"])
+        cfg = Arch04Cfg(
+            vocab=vocab, seq=seq, ffn=mid,
+            use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
+            atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"],
+        )
         if Arch04LM(cfg).param_report()["active_non_embedding"] < TARGET_ACTIVE_NON_EMB:
             lo = mid
         else:
@@ -40,12 +45,19 @@ def build_arch04(arm: str, vocab: int, seq: int) -> Arch04LM:
     best = min(
         (lo, hi),
         key=lambda f: abs(
-            Arch04LM(Arch04Cfg(vocab=vocab, seq=seq, ffn=f, use_atrd=s["use_atrd"], atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"]))
-            .param_report()["active_non_embedding"]
+            Arch04LM(Arch04Cfg(
+                vocab=vocab, seq=seq, ffn=f,
+                use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
+                atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"],
+            )).param_report()["active_non_embedding"]
             - TARGET_ACTIVE_NON_EMB
         ),
     )
-    return Arch04LM(Arch04Cfg(vocab=vocab, seq=seq, ffn=best, use_atrd=s["use_atrd"], atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"]))
+    return Arch04LM(Arch04Cfg(
+        vocab=vocab, seq=seq, ffn=best,
+        use_atrd=s["use_atrd"], use_margin_gate=s["use_margin_gate"],
+        atrd_frac=s["atrd_frac"], use_pkm=s["use_pkm"],
+    ))
 
 
 def make_arch04_optim(model: Arch04LM, lr: float, wd: float):

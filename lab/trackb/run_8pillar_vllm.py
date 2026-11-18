@@ -51,7 +51,7 @@ def main() -> None:
 
     def _format_prompt(p: str) -> str:
         msgs = []
-        if "smollm3" in args.model.lower():
+        if any(k in args.model.lower() for k in ("smollm3", "b6_3b")):
             msgs.append({"role": "system", "content": "/think" if args.think else "/no_think"})
         msgs.append({"role": "user", "content": p})
         if "gpt-oss" in args.model.lower():
