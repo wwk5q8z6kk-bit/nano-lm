@@ -181,7 +181,7 @@ _TIME_UNIT = r"(?:minutes?|hours?|days?|weeks?|months?|years?)"
 
 _DURATION_VALUE_RE = re.compile(
     rf"(?:"
-    rf"(?:about |around |roughly |nearly |almost |over )?{_NUMBER_WORD}\s+{_TIME_UNIT}(?:\s+(?:ago|so far))?"
+    rf"(?:about |around |roughly |nearly |almost |over )?{_NUMBER_WORD}\s+{_TIME_UNIT}(?:\s+(?:ago|so far|now))?"
     rf"|(?:since|from)\s+[^.!?;]+"
     rf"|(?:yesterday|today|tonight|last night|this morning|this afternoon|this evening|"
     rf"(?:the )?(?:morning|afternoon|evening|night) before last|"
@@ -212,7 +212,7 @@ _MED_DENIAL_CUE_RE = re.compile(
     r"\b(?:haven't|have not|didn't|did not|never)\s+"
     r"(?:taken|take|used|use|tried|try|applied|apply|put|had|swallowed)"
     r"(?:\s+or\s+(?:taken|take|used|use|tried|try|applied|apply|put))?"
-    r"\s+(?:anything|any\b|no\b)"
+    r"\s+(?:anything|any\b|no\b|so\s+much\s+as\s+(?:a|an)\s+\w+)"
     r"|\bnothing(?:\s+at\s+all|\s+yet|\s+so\s+far)?(?:\s+(?:for|on)\b[^.!?;]*)?"
     r"|\bno\s+(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|remedies)\b"
     r"|\b(?:deny|denied|denies)\s+(?:taking\s+|using\s+|any\s+)?(?:medications?|medicines?|meds|drugs?|treatments?)\b"
@@ -234,7 +234,7 @@ _ALG_DENIAL_CUE_RE = re.compile(
 )
 
 _ELLIPTICAL_DENIAL_RE = re.compile(
-    r"^(?:no|none|nope|no,?\s+none|i\s+don't\s+have\s+any|i\s+do\s+not\s+have\s+any|"
+    r"^(?:no|none|nope|no,?\s+none|none\s+today|i\s+don't\s+have\s+any|i\s+do\s+not\s+have\s+any|"
     r"none\s+at\s+all|there\s+aren't\s+any|there\s+are\s+none|not\s+any)[.!]?$",
     re.IGNORECASE,
 )
@@ -448,6 +448,10 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
             return False
 
     text = span.text.strip()
+    if field is FieldName.MEDICATION and _ALG_DENIAL_CUE_RE.search(text):
+        return False
+    if field is FieldName.ALLERGY and _MED_DENIAL_CUE_RE.search(text) and not _ALG_DENIAL_CUE_RE.search(text):
+        return False
     if _is_field_denial(field, text):
         # Reject hedged v0 "Not that I know of." as uncertain, not absent!
         if _EPISTEMIC_HEDGE_RE.search(text):
@@ -466,7 +470,13 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
             # Allow short elliptical denials ONLY when directly answering a matching clinician question
             clin = _preceding_clinician_turn(source, idx)
             q_re = _MED_QUESTION_CUE_RE if field is FieldName.MEDICATION else _ALG_QUESTION_CUE_RE
-            if clin is None or not q_re.search(clin.text) or not _ELLIPTICAL_DENIAL_RE.fullmatch(text):
+            is_wrong_topic = False
+            if clin is not None:
+                if field is FieldName.MEDICATION and _ALG_QUESTION_CUE_RE.search(clin.text):
+                    is_wrong_topic = True
+                elif field is FieldName.ALLERGY and _MED_QUESTION_CUE_RE.search(clin.text) and not _ALG_QUESTION_CUE_RE.search(clin.text):
+                    is_wrong_topic = True
+            if clin is None or not q_re.search(clin.text) or is_wrong_topic or not _ELLIPTICAL_DENIAL_RE.fullmatch(text):
                 return False
 
     # Span must cover a complete turn or complete clause (not a tiny fragment inside a sentence).
@@ -816,6 +826,15 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
             )
 
             if field is FieldName.DURATION:
+                is_dose_timing_context = (
+                    has_med_verb or is_explicit_med_q or has_alg_pred or is_explicit_alg_q
+                ) and not re.search(
+                    r"\b(?:started|began|lasted|been\s+(?:there|here|going\s+on)|symptom\w*\s+since)\b",
+                    c_text,
+                    re.IGNORECASE,
+                )
+                if is_dose_timing_context:
+                    continue
                 for m in _DURATION_VALUE_RE.finditer(c_text):
                     sp = _trim_span(source.text, c_start + m.start(), c_start + m.end())
                     if sp is not None:
@@ -900,9 +919,9 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
                 continue
 
             if field is FieldName.MEDICATION:
-                if has_alg_pred or is_explicit_alg_q:
+                if has_alg_pred or is_explicit_alg_q or _ALG_DENIAL_CUE_RE.search(c_text) or _ALG_QUESTION_CUE_RE.search(prev_q):
                     continue
-                if not (has_med_verb or is_explicit_med_q or bool(_MED_QUESTION_CUE_RE.search(prev_q)) or re.search(r"\b(?:for|on)\s+(?:it|them|this|the|my)\b", c_text, re.IGNORECASE)):
+                if not (has_med_verb or is_explicit_med_q or bool(_MED_QUESTION_CUE_RE.search(prev_q))):
                     continue
                 body = c_text.rstrip(".!?").strip()
                 lead = re.match(
@@ -1112,9 +1131,25 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
         if len(by_turn) >= 2:
             t_indices = sorted(by_turn)
             sp_first, sp_last = by_turn[t_indices[0]], by_turn[t_indices[-1]]
-            if normalize_value(sp_first.text) != normalize_value(sp_last.text):
+            n1 = normalize_value(sp_first.text)
+            n2 = normalize_value(sp_last.text)
+            if field is FieldName.DURATION:
+                n1_cmp = re.sub(r"^(?:since|for|about|around)\s+", "", n1)
+                n2_cmp = re.sub(r"^(?:since|for|about|around)\s+", "", n2)
+            else:
+                def _sev_bucket(val: str) -> str:
+                    if re.search(r"\b(?:mild|mildly|slight|slightly|light|minimal|low-grade)\b", val):
+                        return "mild"
+                    if re.search(r"\bmoderate(?:ly)?\b", val):
+                        return "moderate"
+                    if re.search(r"\b(?:severe|severely|intense|terrible|awful|excruciating|unbearable)\b", val):
+                        return "severe"
+                    return val
+                n1_cmp, n2_cmp = _sev_bucket(n1), _sev_bucket(n2)
+            t1, t2 = source.turns[t_indices[0]], source.turns[t_indices[-1]]
+            quoted_old_note = any(re.search(r"\bjust\s+says\s+['\"]", t.text, re.IGNORECASE) for t in (t1, t2))
+            if n1_cmp != n2_cmp and not quoted_old_note:
                 # Check that they apply to the same episode (not unrelated resolved symptom)
-                t1, t2 = source.turns[t_indices[0]], source.turns[t_indices[-1]]
                 if not _PAST_OR_HYPOTHETICAL_RE.search(t1.text) and not _PAST_OR_HYPOTHETICAL_RE.search(t2.text):
                     c1 = _enclosing_clause(t1, sp_first)
                     c2 = _enclosing_clause(t2, sp_last)

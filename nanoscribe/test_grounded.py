@@ -155,3 +155,67 @@ def test_grounded_candidate_menu_offers_clean_spans_without_determiners_or_third
     med_choices = grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
     assert ":S[Dextromethorphan]" in med_choices
     assert ":S[Cetirizine]" not in med_choices
+
+
+def test_grounded_does_not_hallucinate_false_dur_or_med_conflicts_on_clean_encounters():
+    transcript = (
+        "Doctor: Why have you come in?\n"
+        "Patient: I've had a mild headache for three days. Swallowing isn't the issue.\n"
+        "Doctor: How severe is it?\n"
+        "Patient: Mild.\n"
+        "Doctor: Have you taken anything for it?\n"
+        "Patient: I took ibuprofen last night.\n"
+        "Doctor: Any medication allergies?\n"
+        "Patient: No medication allergies."
+    )
+    raw = "CC:S[headache]|DUR:S[three days]|SEV:S[Mild]|MED:S[ibuprofen last night]|ALG:A[No medication allergies.]"
+    draft = scribe(
+        transcript,
+        solver=compact_solver(lambda _: raw, binder="grounded"),
+        context_policy="grounded",
+    )
+    claims = {c["field"]: c for c in draft["note"]["claims"]}
+    assert claims["duration"]["state"] == "supported"
+    assert claims["duration"]["value"] == "three days"
+    assert claims["medication"]["state"] == "supported"
+    assert claims["medication"]["value"] == "ibuprofen last night"
+    assert claims["allergy"]["state"] == "absent"
+
+
+def test_grounded_retains_now_duration_and_elliptical_none_today_denial():
+    transcript = (
+        "Doctor: What brought you in?\n"
+        "Patient: Sore throat.\n"
+        "Doctor: For how many days?\n"
+        "Patient: Two days now.\n"
+        "Doctor: What medicines have you used today?\n"
+        "Patient: None today.\n"
+        "Doctor: Any allergies?\n"
+        "Patient: No medication allergies."
+    )
+    raw = "CC:S[Sore throat]|DUR:S[Two days now]|SEV:M|MED:A[None today.]|ALG:A[No medication allergies.]"
+    draft = scribe(
+        transcript,
+        solver=compact_solver(lambda _: raw, binder="grounded"),
+        context_policy="grounded",
+    )
+    claims = {c["field"]: c for c in draft["note"]["claims"]}
+    assert claims["duration"]["state"] == "supported"
+    assert claims["duration"]["value"] == "Two days now"
+    assert claims["medication"]["state"] == "absent"
+    assert claims["allergy"]["state"] == "absent"
+
+
+def test_grounded_does_not_extract_allergy_denial_or_window_phrase_as_medication():
+    transcript = (
+        "Doctor: What happened during quiet moments?\n"
+        "Patient: Quiet. I watched the rain on the window.\n"
+        "Doctor: What medicines have you used?\n"
+        "Patient: Nothing at all.\n"
+        "Doctor: Any allergies?\n"
+        "Patient: No medication allergies."
+    )
+    med_choices = grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+    assert any("Nothing at all" in ch for ch in med_choices)
+    assert not any("rain on the window" in ch for ch in med_choices)
+    assert not any("medication allergies" in ch for ch in med_choices)

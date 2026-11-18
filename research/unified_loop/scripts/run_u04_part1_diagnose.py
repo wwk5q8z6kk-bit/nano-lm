@@ -10,19 +10,15 @@ from typing import Any
 
 WORKTREE_ROOT = Path(__file__).resolve().parents[3]
 MAIN_REPO = Path("/Users/mac/Projects/nano-lm")
-for p in (str(WORKTREE_ROOT), str(MAIN_REPO)):
+for p in (str(MAIN_REPO), str(WORKTREE_ROOT)):
     if p not in sys.path:
         sys.path.insert(0, p)
 
 from evaluations.v2 import scribe_custody  # noqa: E402
-from nano_ai.contract import FieldState  # noqa: E402
-from nanoscribe.check_note import transcript_source  # noqa: E402
-from nanoscribe.grounded import (  # noqa: E402
-    grounded_candidate_choices,
-    parse_grounded_summary,
-    verify_grounded_span,
-)
-from nanoscribe.scribe import compact_solver, scribe  # noqa: E402
+from nano_ai.contract import FIELD_ORDER, NanoInput  # noqa: E402
+from nanoscribe.compact import compact_solver  # noqa: E402
+from nanoscribe.grounded import grounded_candidate_choices  # noqa: E402
+from nanoscribe.scribe import scribe  # noqa: E402
 
 OUT_DIR = WORKTREE_ROOT / "research" / "unified_loop" / "experiments" / "U04_nanoscribe_verifier_qwen"
 COHORTS = [
@@ -50,26 +46,22 @@ def main() -> int:
         for case in sources:
             cid = case["case_id"]
             transcript = case["transcript"]
-            source = transcript_source(transcript, encounter_id=cid)
+            item = NanoInput(item_id=cid, transcript=transcript)
             gfields = gold_by_id[cid]
 
             gold_raw = scribe_custody.serialize_gold_summary(transcript, gfields, policy="grounded")
-            parsed_gold = parse_grounded_summary(transcript, gold_raw, source=source)
-            draft = scribe(
-                transcript,
-                encounter_id=cid,
-                solver=compact_solver(lambda _, r=gold_raw: r, binder="grounded"),
-                context_policy="grounded",
-            )
+            solver = compact_solver(lambda _, r=gold_raw: r, binder="grounded")
+            _, diag = solver.infer_grounded(item)
+            trace_by_field = {t["field"]: t for t in diag["fields"]}
+            draft = scribe(transcript, encounter_id=cid, solver=solver, context_policy="grounded")
             claims_by_field = {c["field"]: c for c in draft["note"]["claims"]} if draft.get("note") else {}
 
             used_menu: set[str] = set()
             for label, field in scribe_custody.LABELS.items():
                 gspec = gfields[label]
                 gspans = scribe_custody.locate_gold_spans(transcript, gspec.get("spans", ()))
-                # Check menu coverage in exact LABEL order
                 choices = grounded_candidate_choices(transcript, field, used_menu)
-                cov = scribe_custody.menu_covers_gold(transcript, field, gspec, choices)
+                cov, matched_choice = scribe_custody.menu_covers_gold(choices, gspec["state"], gspans)
                 if gspec["state"] in ("S", "A"):
                     total_asserted += 1
                     if cov:
@@ -83,6 +75,7 @@ def main() -> int:
                             "gold_state": gspec["state"],
                             "gold_spans": [sp.text for sp in gspans],
                             "choices": choices,
+                            "transcript": transcript,
                         })
 
                 cl = claims_by_field.get(field.value)
@@ -91,37 +84,26 @@ def main() -> int:
                     if matched:
                         retained_asserted += 1
                     else:
-                        # Trace exact per-span verifier reasons on the parsed_gold slot!
-                        gslot = parsed_gold.fields[field]
-                        span_reasons = [
-                            {"span": sp.text, "start": sp.start, "end": sp.end, "verify": verify_grounded_span(source, field, gslot.state, sp)}
-                            for sp in gslot.spans
-                        ]
-                        reason_tag = "|".join(f"{r[1]}" for r in (sr["verify"] for sr in span_reasons)) or f"claim:{cl.get('state') if cl else 'none'}:{cl.get('abstain_reason') if cl else 'none'}"
-                        drop_reasons[reason_tag] += 1
+                        tr = trace_by_field.get(field.value, {})
+                        reason = f"{tr.get('decision')}:{tr.get('reason')}"
+                        drop_reasons[reason] += 1
                         drop_by_cohort_field[f"{cname}:{label}:{gspec['state']}"] += 1
-                        # Find turn text enclosing first span
-                        turn_snippets = []
-                        for sp in gslot.spans:
-                            for t in source.turns:
-                                if t.start <= sp.start and sp.end <= t.end:
-                                    turn_snippets.append(f"[{t.speaker.value}] {t.text}")
                         drop_examples.append({
                             "cohort": cname,
                             "case_id": cid,
                             "field": label,
                             "gold_state": gspec["state"],
                             "gold_spans": [sp.text for sp in gspans],
-                            "serialized_gold_raw": gold_raw,
+                            "gold_raw_slot": next((s for s in gold_raw.split("|") if s.startswith(label)), gold_raw),
                             "claim_state": cl.get("state") if cl else None,
                             "claim_abstain": cl.get("abstain_reason") if cl else None,
-                            "span_reasons": span_reasons,
-                            "turns": turn_snippets,
+                            "trace": tr,
+                            "transcript": transcript,
                         })
 
-                # Replicate oracle choice consumption from evaluate_cohort_2x2 if helpful
-                if choices:
-                    used_menu.add(choices[0])
+                if matched_choice is not None and matched_choice not in (":M", ":U[]"):
+                    inner = scribe_custody._menu_entry_text(matched_choice)
+                    used_menu.add(scribe_custody.normalize_value(inner))
 
     summary = {
         "total_asserted": total_asserted,
