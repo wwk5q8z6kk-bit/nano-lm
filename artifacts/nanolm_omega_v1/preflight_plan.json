@@ -1,0 +1,417 @@
+{
+  "omega_preflight": {
+    "campaign": "nanolm_omega_v1",
+    "selection": {
+      "recommended": {
+        "gpu_key": "runpod_a40_48gb",
+        "gpu_name": "RunPod NVIDIA A40 48GB",
+        "backend": "runpod",
+        "feasible": true,
+        "fits_vram": true,
+        "max_safe_vram_mb": 6539.47,
+        "gpu_vram_mb": 49152.0,
+        "total_minutes": 4.83,
+        "estimated_usd": 0.0322,
+        "workloads": [
+          {
+            "workload": "EXP_Omega1_S4_LieExp_SO3_3seeds_512",
+            "gpu": "RunPod NVIDIA A40 48GB",
+            "fits_vram": true,
+            "weights_mb": 1.24,
+            "trainable_grad_opt_mb": 9.92,
+            "state_or_kv_mb": 128.0,
+            "activation_mb": 672.0,
+            "estimated_peak_vram_mb": 991.16,
+            "safe_vram_required_mb": 1169.57,
+            "gpu_vram_mb": 49152.0,
+            "estimated_decode_ms_per_tok": 0.354,
+            "compute_seconds": 1.71,
+            "decode_seconds": 0.0,
+            "total_seconds": 1.71,
+            "estimated_usd": 0.0002
+          },
+          {
+            "workload": "EXP_Omega2_NullspaceLoRA_Continual_3seeds",
+            "gpu": "RunPod NVIDIA A40 48GB",
+            "fits_vram": true,
+            "weights_mb": 8.58,
+            "trainable_grad_opt_mb": 68.66,
+            "state_or_kv_mb": 48.0,
+            "activation_mb": 336.0,
+            "estimated_peak_vram_mb": 641.25,
+            "safe_vram_required_mb": 756.67,
+            "gpu_vram_mb": 49152.0,
+            "estimated_decode_ms_per_tok": 0.155,
+            "compute_seconds": 9.1,
+            "decode_seconds": 0.0,
+            "total_seconds": 9.1,
+            "estimated_usd": 0.001
+          },
+          {
+            "workload": "EXP_Omega3_Unified_1.7B_Nullspace_Cognitive",
+            "gpu": "RunPod NVIDIA A40 48GB",
+            "fits_vram": true,
+            "weights_mb": 3332.42,
+            "trainable_grad_opt_mb": 405.5,
+            "state_or_kv_mb": 56.0,
+            "activation_mb": 1568.0,
+            "estimated_peak_vram_mb": 5541.92,
+            "safe_vram_required_mb": 6539.47,
+            "gpu_vram_mb": 49152.0,
+            "estimated_decode_ms_per_tok": 9.282,
+            "compute_seconds": 12.04,
+            "decode_seconds": 106.74,
+            "total_seconds": 213.78,
+            "estimated_usd": 0.0238
+          }
+        ]
+      },
+      "all_candidates": [
+        {
+          "gpu_key": "runpod_a40_48gb",
+          "gpu_name": "RunPod NVIDIA A40 48GB",
+          "backend": "runpod",
+          "feasible": true,
+          "fits_vram": true,
+          "max_safe_vram_mb": 6539.47,
+          "gpu_vram_mb": 49152.0,
+          "total_minutes": 4.83,
+          "estimated_usd": 0.0322,
+          "workloads": [
+            {
+              "workload": "EXP_Omega1_S4_LieExp_SO3_3seeds_512",
+              "gpu": "RunPod NVIDIA A40 48GB",
+              "fits_vram": true,
+              "weights_mb": 1.24,
+              "trainable_grad_opt_mb": 9.92,
+              "state_or_kv_mb": 128.0,
+              "activation_mb": 672.0,
+              "estimated_peak_vram_mb": 991.16,
+              "safe_vram_required_mb": 1169.57,
+              "gpu_vram_mb": 49152.0,
+              "estimated_decode_ms_per_tok": 0.354,
+              "compute_seconds": 1.71,
+              "decode_seconds": 0.0,
+              "total_seconds": 1.71,
+              "estimated_usd": 0.0002
+            },
+            {
+              "workload": "EXP_Omega2_NullspaceLoRA_Continual_3seeds",
+              "gpu": "RunPod NVIDIA A40 48GB",
+              "fits_vram": true,
+              "weights_mb": 8.58,
+              "trainable_grad_opt_mb": 68.66,
+              "state_or_kv_mb": 48.0,
+              "activation_mb": 336.0,
+              "estimated_peak_vram_mb": 641.25,
+              "safe_vram_required_mb": 756.67,
+              "gpu_vram_mb": 49152.0,
+              "estimated_decode_ms_per_tok": 0.155,
+              "compute_seconds": 9.1,
+              "decode_seconds": 0.0,
+              "total_seconds": 9.1,
+              "estimated_usd": 0.001
+            },
+            {
+              "workload": "EXP_Omega3_Unified_1.7B_Nullspace_Cognitive",
+              "gpu": "RunPod NVIDIA A40 48GB",
+              "fits_vram": true,
+              "weights_mb": 3332.42,
+              "trainable_grad_opt_mb": 405.5,
+              "state_or_kv_mb": 56.0,
+              "activation_mb": 1568.0,
+              "estimated_peak_vram_mb": 5541.92,
+              "safe_vram_required_mb": 6539.47,
+              "gpu_vram_mb": 49152.0,
+              "estimated_decode_ms_per_tok": 9.282,
+              "compute_seconds": 12.04,
+              "decode_seconds": 106.74,
+              "total_seconds": 213.78,
+              "estimated_usd": 0.0238
+            }
+          ]
+        },
+        {
+          "gpu_key": "runpod_l40s_48gb",
+          "gpu_name": "RunPod NVIDIA L40S 48GB",
+          "backend": "runpod",
+          "feasible": true,
+          "fits_vram": true,
+          "max_safe_vram_mb": 6539.47,
+          "gpu_vram_mb": 49152.0,
+          "total_minutes": 4.26,
+          "estimated_usd": 0.0773,
+          "workloads": [
+            {
+              "workload": "EXP_Omega1_S4_LieExp_SO3_3seeds_512",
+              "gpu": "RunPod NVIDIA L40S 48GB",
+              "fits_vram": true,
+              "weights_mb": 1.24,
+              "trainable_grad_opt_mb": 9.92,
+              "state_or_kv_mb": 128.0,
+              "activation_mb": 672.0,
+              "estimated_peak_vram_mb": 991.16,
+              "safe_vram_required_mb": 1169.57,
+              "gpu_vram_mb": 49152.0,
+              "estimated_decode_ms_per_tok": 0.285,
+              "compute_seconds": 0.71,
+              "decode_seconds": 0.0,
+              "total_seconds": 0.71,
+              "estimated_usd": 0.0002
+            },
+            {
+              "workload": "EXP_Omega2_NullspaceLoRA_Continual_3seeds",
+              "gpu": "RunPod NVIDIA L40S 48GB",
+              "fits_vram": true,
+              "weights_mb": 8.58,
+              "trainable_grad_opt_mb": 68.66,
+              "state_or_kv_mb": 48.0,
+              "activation_mb": 336.0,
+              "estimated_peak_vram_mb": 641.25,
+              "safe_vram_required_mb": 756.67,
+              "gpu_vram_mb": 49152.0,
+              "estimated_decode_ms_per_tok": 0.125,
+              "compute_seconds": 3.76,
+              "decode_seconds": 0.0,
+              "total_seconds": 3.76,
+              "estimated_usd": 0.0011
+            },
+            {
+              "workload": "EXP_Omega3_Unified_1.7B_Nullspace_Cognitive",
+              "gpu": "RunPod NVIDIA L40S 48GB",
+              "fits_vram": true,
+              "weights_mb": 3332.42,
+              "trainable_grad_opt_mb": 405.5,
+              "state_or_kv_mb": 56.0,
+              "activation_mb": 1568.0,
+              "estimated_peak_vram_mb": 5541.92,
+              "safe_vram_required_mb": 6539.47,
+              "gpu_vram_mb": 49152.0,
+              "estimated_decode_ms_per_tok": 7.477,
+              "compute_seconds": 4.98,
+              "decode_seconds": 85.98,
+              "total_seconds": 185.96,
+              "estimated_usd": 0.0563
+            }
+          ]
+        },
+        {
+          "gpu_key": "runpod_h100_80gb",
+          "gpu_name": "RunPod NVIDIA H100 SXM 80GB",
+          "backend": "runpod",
+          "feasible": true,
+          "fits_vram": true,
+          "max_safe_vram_mb": 6539.47,
+          "gpu_vram_mb": 81920.0,
+          "total_minutes": 3.26,
+          "estimated_usd": 0.1625,
+          "workloads": [
+            {
+              "workload": "EXP_Omega1_S4_LieExp_SO3_3seeds_512",
+              "gpu": "RunPod NVIDIA H100 SXM 80GB",
+              "fits_vram": true,
+              "weights_mb": 1.24,
+              "trainable_grad_opt_mb": 9.92,
+              "state_or_kv_mb": 128.0,
+              "activation_mb": 672.0,
+              "estimated_peak_vram_mb": 991.16,
+              "safe_vram_required_mb": 1169.57,
+              "gpu_vram_mb": 81920.0,
+              "estimated_decode_ms_per_tok": 0.074,
+              "compute_seconds": 0.26,
+              "decode_seconds": 0.0,
+              "total_seconds": 0.26,
+              "estimated_usd": 0.0002
+            },
+            {
+              "workload": "EXP_Omega2_NullspaceLoRA_Continual_3seeds",
+              "gpu": "RunPod NVIDIA H100 SXM 80GB",
+              "fits_vram": true,
+              "weights_mb": 8.58,
+              "trainable_grad_opt_mb": 68.66,
+              "state_or_kv_mb": 48.0,
+              "activation_mb": 336.0,
+              "estimated_peak_vram_mb": 641.25,
+              "safe_vram_required_mb": 756.67,
+              "gpu_vram_mb": 81920.0,
+              "estimated_decode_ms_per_tok": 0.032,
+              "compute_seconds": 1.38,
+              "decode_seconds": 0.0,
+              "total_seconds": 1.38,
+              "estimated_usd": 0.0011
+            },
+            {
+              "workload": "EXP_Omega3_Unified_1.7B_Nullspace_Cognitive",
+              "gpu": "RunPod NVIDIA H100 SXM 80GB",
+              "fits_vram": true,
+              "weights_mb": 3332.42,
+              "trainable_grad_opt_mb": 405.5,
+              "state_or_kv_mb": 56.0,
+              "activation_mb": 1568.0,
+              "estimated_peak_vram_mb": 5541.92,
+              "safe_vram_required_mb": 6539.47,
+              "gpu_vram_mb": 81920.0,
+              "estimated_decode_ms_per_tok": 1.928,
+              "compute_seconds": 1.82,
+              "decode_seconds": 22.18,
+              "total_seconds": 119.0,
+              "estimated_usd": 0.0988
+            }
+          ]
+        },
+        {
+          "gpu_key": "runpod_h200_141gb",
+          "gpu_name": "RunPod NVIDIA H200 SXM 141GB",
+          "backend": "runpod",
+          "feasible": true,
+          "fits_vram": true,
+          "max_safe_vram_mb": 6539.47,
+          "gpu_vram_mb": 144384.0,
+          "total_minutes": 3.23,
+          "estimated_usd": 0.285,
+          "workloads": [
+            {
+              "workload": "EXP_Omega1_S4_LieExp_SO3_3seeds_512",
+              "gpu": "RunPod NVIDIA H200 SXM 141GB",
+              "fits_vram": true,
+              "weights_mb": 1.24,
+              "trainable_grad_opt_mb": 9.92,
+              "state_or_kv_mb": 128.0,
+              "activation_mb": 672.0,
+              "estimated_peak_vram_mb": 991.16,
+              "safe_vram_required_mb": 1169.57,
+              "gpu_vram_mb": 144384.0,
+              "estimated_decode_ms_per_tok": 0.051,
+              "compute_seconds": 0.26,
+              "decode_seconds": 0.0,
+              "total_seconds": 0.26,
+              "estimated_usd": 0.0004
+            },
+            {
+              "workload": "EXP_Omega2_NullspaceLoRA_Continual_3seeds",
+              "gpu": "RunPod NVIDIA H200 SXM 141GB",
+              "fits_vram": true,
+              "weights_mb": 8.58,
+              "trainable_grad_opt_mb": 68.66,
+              "state_or_kv_mb": 48.0,
+              "activation_mb": 336.0,
+              "estimated_peak_vram_mb": 641.25,
+              "safe_vram_required_mb": 756.67,
+              "gpu_vram_mb": 144384.0,
+              "estimated_decode_ms_per_tok": 0.022,
+              "compute_seconds": 1.38,
+              "decode_seconds": 0.0,
+              "total_seconds": 1.38,
+              "estimated_usd": 0.002
+            },
+            {
+              "workload": "EXP_Omega3_Unified_1.7B_Nullspace_Cognitive",
+              "gpu": "RunPod NVIDIA H200 SXM 141GB",
+              "fits_vram": true,
+              "weights_mb": 3332.42,
+              "trainable_grad_opt_mb": 405.5,
+              "state_or_kv_mb": 56.0,
+              "activation_mb": 1568.0,
+              "estimated_peak_vram_mb": 5541.92,
+              "safe_vram_required_mb": 6539.47,
+              "gpu_vram_mb": 144384.0,
+              "estimated_decode_ms_per_tok": 1.346,
+              "compute_seconds": 1.82,
+              "decode_seconds": 15.48,
+              "total_seconds": 112.3,
+              "estimated_usd": 0.165
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "cycle2_calibration": {
+    "gpu": "RunPod NVIDIA L40S 48GB",
+    "comparisons": [
+      {
+        "benchmark": "nanolm-transformer-4b@seq512",
+        "predicted_vram_mb": 7648.5,
+        "actual_vram_mb": 7524.65,
+        "vram_rel_error_pct": 1.65,
+        "actual_decode_ms": 18.741
+      },
+      {
+        "benchmark": "nanolm-transformer-4b@seq2048",
+        "predicted_vram_mb": 8062.5,
+        "actual_vram_mb": 7831.24,
+        "vram_rel_error_pct": 2.95,
+        "actual_decode_ms": 17.714
+      },
+      {
+        "benchmark": "nanolm-transformer-4b@seq8192",
+        "predicted_vram_mb": 9718.5,
+        "actual_vram_mb": 9039.79,
+        "vram_rel_error_pct": 7.51,
+        "actual_decode_ms": 23.99
+      },
+      {
+        "benchmark": "nanolm-transformer-4b@seq16384",
+        "predicted_vram_mb": 11926.5,
+        "actual_vram_mb": 10655.84,
+        "vram_rel_error_pct": 11.92,
+        "actual_decode_ms": 42.057
+      },
+      {
+        "benchmark": "nanolm-transformer-4b@seq32768",
+        "predicted_vram_mb": 16342.5,
+        "actual_vram_mb": 13887.97,
+        "vram_rel_error_pct": 17.67,
+        "actual_decode_ms": 75.026
+      },
+      {
+        "benchmark": "nanolm-hspa-4b@seq512",
+        "predicted_vram_mb": 7606.34,
+        "actual_vram_mb": 8408.57,
+        "vram_rel_error_pct": 9.54,
+        "actual_decode_ms": 74.452
+      },
+      {
+        "benchmark": "nanolm-hspa-4b@seq2048",
+        "predicted_vram_mb": 7606.34,
+        "actual_vram_mb": 9261.52,
+        "vram_rel_error_pct": 17.87,
+        "actual_decode_ms": 74.944
+      },
+      {
+        "benchmark": "nanolm-hspa-4b@seq8192",
+        "predicted_vram_mb": 7606.34,
+        "actual_vram_mb": 9261.57,
+        "vram_rel_error_pct": 17.87,
+        "actual_decode_ms": 75.294
+      },
+      {
+        "benchmark": "nanolm-hspa-4b@seq16384",
+        "predicted_vram_mb": 7606.34,
+        "actual_vram_mb": 9261.63,
+        "vram_rel_error_pct": 17.87,
+        "actual_decode_ms": 74.911
+      },
+      {
+        "benchmark": "nanolm-hspa-4b@seq32768",
+        "predicted_vram_mb": 7606.34,
+        "actual_vram_mb": 9261.76,
+        "vram_rel_error_pct": 17.87,
+        "actual_decode_ms": 74.264
+      },
+      {
+        "benchmark": "External_Opponent_Qwen3-8B",
+        "predicted_vram_mb": 16018.59,
+        "actual_vram_mb": 16541.46,
+        "vram_rel_error_pct": 3.16
+      },
+      {
+        "benchmark": "NanoLM_1.7B_Holonomic_v2_Greedy",
+        "predicted_vram_mb": 5541.92,
+        "actual_vram_mb": 4296.81,
+        "vram_rel_error_pct": 28.98
+      }
+    ],
+    "mean_vram_rel_error_pct": 12.91
+  }
+}

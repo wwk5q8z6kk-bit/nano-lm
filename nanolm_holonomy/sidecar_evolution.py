@@ -45,10 +45,10 @@ from nanolm_frontier.tournament import _evaluate_model_15d, _load_hf_model_and_t
 from nanolm_holonomy.spinor_algebra import (
     cayley_rotor,
     hamilton_product,
-    parallel_holonomy_scan,
     spinor_conjugate,
     step_holonomy,
 )
+from nanolm_holonomy.triton_holonomy import holonomy_scan_fast
 from nanolm_posttrain.architecture import ABSOLUTE_MAX_PARAMETERS, ParameterBudgetExceededError
 from nanolm_posttrain.lora import LoRAConfig, apply_lora, lora_state_dict
 
@@ -111,7 +111,7 @@ class HolonomicRegisterSidecar(nn.Module):
             self._cached_scan_state = nxt.detach()
             all_omega = nxt.unsqueeze(-2)
         else:
-            all_omega, nxt = parallel_holonomy_scan(g, s, init_state=None, chunk_size=256)
+            all_omega, nxt = holonomy_scan_fast(g, s, init_state=None, chunk_size=256)
             if not self.training:
                 self._cached_scan_state = nxt.detach()
 

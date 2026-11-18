@@ -229,3 +229,60 @@ def test_holonomic_sidecar_exact_step0_and_challenging_rl_decontam() -> None:
             ex.reference_response,
         )
         assert v.passed and v.score >= 0.99, f"Failed reference on {ex.example_id}: {v}"
+
+
+def test_holonomy_scan_fn_gradcheck_and_optional_cuda_triton() -> None:
+    from nanolm_holonomy.triton_holonomy import HAS_TRITON, holonomy_scan_fast
+
+    torch.manual_seed(17)
+    g = torch.randn(1, 2, 2, 6, 4, dtype=torch.float64, requires_grad=True)
+    s = torch.randn(1, 2, 2, 6, 4, dtype=torch.float64, requires_grad=True)
+    init = torch.randn(1, 2, 2, 4, dtype=torch.float64, requires_grad=True)
+
+    assert torch.autograd.gradcheck(lambda gg, ss: holonomy_scan_fast(gg, ss, init_state=None)[0], (g, s), eps=1e-6, atol=1e-5)
+    assert torch.autograd.gradcheck(lambda gg, ss, ii: holonomy_scan_fast(gg, ss, init_state=ii)[0], (g, s, init), eps=1e-6, atol=1e-5)
+
+    # On RunPod CUDA hosts, explicitly prove fused Triton kernel matches sequential ref in forward & backward
+    if HAS_TRITON and torch.cuda.is_available():
+        for seq_len in (31, 300):  # single-tile and multi-tile (> 256)
+            gc_t = cayley_rotor(torch.randn(2, 4, 4, seq_len, 3, device="cuda")).detach().requires_grad_(True)
+            sc_t = torch.randn(2, 4, 4, seq_len, 4, device="cuda", requires_grad=True)
+            ic_t = torch.randn(2, 4, 4, 4, device="cuda", requires_grad=True)
+
+            out_tr, _ = holonomy_scan_fast(gc_t, sc_t, init_state=ic_t)
+            out_tr.sum().backward()
+            dg_tr, ds_tr, di_tr = gc_t.grad.clone(), sc_t.grad.clone(), ic_t.grad.clone()
+
+            gc_r = gc_t.detach().clone().requires_grad_(True)
+            sc_r = sc_t.detach().clone().requires_grad_(True)
+            ic_r = ic_t.detach().clone().requires_grad_(True)
+            out_ref = sequential_holonomy_reference(gc_r, sc_r, init_state=ic_r)
+            out_ref.sum().backward()
+
+            assert torch.allclose(out_tr.float(), out_ref.float(), rtol=1e-4, atol=1e-4)
+            assert (dg_tr - gc_r.grad).abs().max().item() / gc_r.grad.abs().max().clamp_min(1.0).item() < 1e-4
+            assert (ds_tr - sc_r.grad).abs().max().item() / sc_r.grad.abs().max().clamp_min(1.0).item() < 1e-4
+            assert (di_tr - ic_r.grad).abs().max().item() / ic_r.grad.abs().max().clamp_min(1.0).item() < 1e-4
+
+
+def test_curriculum_v2_and_zero_oracle_syntax_gate() -> None:
+    from nanolm_holonomy.curriculum_v2 import build_curriculum_v2
+    from nanolm_holonomy.cycle2_experiments import is_syntax_valid_zero_oracle
+
+    eval_tasks = build_benchmark_15d_suite()
+    cur_v2 = build_curriculum_v2()
+    assert len(cur_v2) >= 60
+    assert verify_zero_contamination(cur_v2, eval_tasks)["overlaps"] == 0
+    for ex in cur_v2:
+        v = verify_benchmark_response(
+            BenchmarkTask(ex.example_id, ex.dim, "medium", ex.system_prompt, ex.user_prompt, ex.verifier_spec),
+            ex.reference_response,
+        )
+        assert v.passed and v.score >= 0.99, f"curriculum_v2 reference failure {ex.example_id}: {v}"
+
+    # Zero-oracle syntax gate only checks AST / JSON syntax without any task spec access
+    assert is_syntax_valid_zero_oracle("Return only valid Python.", "```python\ndef f(x):\n    return x + 1\n```")[0]
+    assert not is_syntax_valid_zero_oracle("Return only valid Python.", "```python\ndef broken(:\n```")[0]
+    assert is_syntax_valid_zero_oracle("Return only valid JSON.", '{"a": 1}')[0]
+    assert not is_syntax_valid_zero_oracle("Return only valid JSON.", '{"a": ')[0]
+    assert is_syntax_valid_zero_oracle("Solve step by step.", "unstructured prose")[0]

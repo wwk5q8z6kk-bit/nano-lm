@@ -30,10 +30,10 @@ from nanolm_holonomy.spinor_algebra import (
     complex_conjugate,
     complex_product,
     hamilton_product,
-    parallel_holonomy_scan,
     spinor_conjugate,
     step_holonomy,
 )
+from nanolm_holonomy.triton_holonomy import holonomy_scan_fast
 from nanolm_posttrain.architecture import (
     ABSOLUTE_MAX_PARAMETERS,
     ParameterBudgetExceededError,
@@ -47,6 +47,7 @@ class HSPAFamily(str, Enum):
     GEN1_H1_HSPA_SPINOR = "gen1_h1_hspa_spinor"
     GEN1_H2_HSPA_PREDCODE = "gen1_h2_hspa_predcode"
     GEN2_H3_HSPA_EVOLVED = "gen2_h3_hspa_evolved"
+    GEN3_H4_HSPA_WAVEPRED = "gen3_h4_hspa_wavepred"
 
 
 @dataclass(frozen=True, slots=True)
@@ -117,11 +118,19 @@ class HSPAArchConfig:
 
     @property
     def uses_predcode(self) -> bool:
-        return self.family == HSPAFamily.GEN1_H2_HSPA_PREDCODE
+        return self.family in (HSPAFamily.GEN1_H2_HSPA_PREDCODE, HSPAFamily.GEN3_H4_HSPA_WAVEPRED)
 
     @property
     def uses_gen2(self) -> bool:
         return self.family == HSPAFamily.GEN2_H3_HSPA_EVOLVED
+
+    @property
+    def uses_gen3(self) -> bool:
+        return self.family == HSPAFamily.GEN3_H4_HSPA_WAVEPRED
+
+    @property
+    def uses_wave_conv(self) -> bool:
+        return self.uses_gen2 or self.uses_gen3
 
     @property
     def parameter_count(self) -> int:
@@ -164,6 +173,9 @@ class HSPAArchConfig:
                 if self.uses_gen2:
                     # Causal wavepacket pre-filter on phi + Kuramoto cross-register coupling K
                     mix += self.d_fiber * K + R * R + self.d_fiber
+                elif self.uses_gen3:
+                    # Causal wavepacket pre-filter on phi + bifurcated unitary/episodic register biases
+                    mix += self.d_fiber * K + 2 * R
 
             if self.uses_predcode:
                 ffn = 3 * d * self.d_ff + d + 1  # W_enc, W_dec, W_err + err_norm + log_prec
@@ -176,9 +188,9 @@ class HSPAArchConfig:
         """Exact runtime state memory during inference at sequence length ``seq_len``."""
         if self.is_transformer:
             return 2 * self.n_layers * self.n_kv_heads * self.d_head * bytes_per_elem * seq_len
-        # Constant O(1) persistent state regardless of seq_len: [R, d_fiber] (plus conv ring (k-1) for Gen2)
+        # Constant O(1) persistent state regardless of seq_len: [R, d_fiber] (plus conv ring (k-1) for wave conv)
         base = self.n_layers * self.n_registers * self.d_fiber * bytes_per_elem
-        if self.uses_gen2:
+        if self.uses_wave_conv:
             base += self.n_layers * (self.conv_kernel - 1) * self.d_fiber * bytes_per_elem
         return base
 
@@ -242,6 +254,7 @@ def build_suite_configs(
         ("gen1-h1-hspa-spinor", HSPAFamily.GEN1_H1_HSPA_SPINOR),
         ("gen1-h2-hspa-predcode", HSPAFamily.GEN1_H2_HSPA_PREDCODE),
         ("gen2-h3-hspa-evolved", HSPAFamily.GEN2_H3_HSPA_EVOLVED),
+        ("gen3-h4-hspa-wavepred", HSPAFamily.GEN3_H4_HSPA_WAVEPRED),
     )
     out = [b0]
     for vname, fam in variants:
@@ -263,10 +276,10 @@ def build_suite_configs(
     return tuple(out)
 
 
-# ~2B Target and ~3.86B <= 4B Flagship Scaling Configurations
+# ~2B Target and ~3.85B <= 4B Flagship Scaling Configurations (Gen-3 WavePred + SU(2) Triton)
 HSPA_2B_CONFIG = HSPAArchConfig(
     name="nanolm-hspa-2b",
-    family=HSPAFamily.GEN2_H3_HSPA_EVOLVED,
+    family=HSPAFamily.GEN3_H4_HSPA_WAVEPRED,
     vocab_size=100_352,
     d_model=2_048,
     n_layers=32,
@@ -276,7 +289,7 @@ HSPA_2B_CONFIG = HSPAArchConfig(
     d_ff=6_656,
     n_registers=16,
     d_fiber=1_024,
-    max_seq_len=32_768,
+    max_seq_len=65_536,
 )
 
 TRANSFORMER_4B_CONFIG = HSPAArchConfig(
@@ -289,14 +302,14 @@ TRANSFORMER_4B_CONFIG = HSPAArchConfig(
     n_kv_heads=4,
     d_head=128,
     d_ff=7_680,
-    max_seq_len=32_768,
+    max_seq_len=65_536,
 )
 
 HSPA_4B_CONFIG = _iso_match_dff(
     TRANSFORMER_4B_CONFIG.parameter_count,
     HSPAArchConfig(
         name="nanolm-hspa-4b",
-        family=HSPAFamily.GEN2_H3_HSPA_EVOLVED,
+        family=HSPAFamily.GEN3_H4_HSPA_WAVEPRED,
         vocab_size=100_352,
         d_model=2_560,
         n_layers=48,
@@ -306,7 +319,7 @@ HSPA_4B_CONFIG = _iso_match_dff(
         d_ff=7_296,
         n_registers=16,
         d_fiber=1_024,
-        max_seq_len=32_768,
+        max_seq_len=65_536,
     ),
 )
 
@@ -456,7 +469,7 @@ class _AbelianRegisterMixer(nn.Module):
 
 
 class SpinorRegisterField(nn.Module):
-    """Non-Abelian SU(2) Parallel-Transport Spinor Field (Gen 1 & Gen 2 Evolved)."""
+    """Non-Abelian SU(2) Parallel-Transport Spinor Field (Gen 1, Gen 2, Gen 3 Evolved)."""
 
     def __init__(self, cfg: HSPAArchConfig) -> None:
         super().__init__()
@@ -465,6 +478,8 @@ class SpinorRegisterField(nn.Module):
         self.d_fiber = cfg.d_fiber
         self.chunk = cfg.scan_chunk_size
         self.use_gen2 = cfg.uses_gen2
+        self.use_gen3 = cfg.uses_gen3
+        self.use_conv = cfg.uses_wave_conv
         self.conv_k = cfg.conv_kernel
 
         self.phi_proj = nn.Linear(cfg.d_model, self.d_fiber, bias=False)
@@ -476,17 +491,24 @@ class SpinorRegisterField(nn.Module):
         self.rho_reg = nn.Parameter(torch.randn(self.R, self.G, 3) * 0.25)
         self.q_reg = nn.Parameter(torch.randn(self.R, self.G, 3) * 0.25)
 
-        if self.use_gen2:
-            # Causal wavepacket pre-filter over local n-gram syntax + Kuramoto cross-register coupling
+        if self.use_conv:
             self.wave_conv_weight = nn.Parameter(torch.randn(self.d_fiber, 1, self.conv_k) * 0.02)
+        if self.use_gen2:
             self.kuramoto_coupling = nn.Parameter(torch.zeros(self.R, self.R))
             self.kuramoto_scale = nn.Parameter(torch.zeros(self.d_fiber))
+        if self.use_gen3:
+            # Bifurcated connection initialization: first R//2 near unitary transport (long-horizon),
+            # second R//2 fast-refresh episodic binding slots.
+            half_r = max(1, self.R // 2)
+            beta_init = torch.cat((torch.full((half_r,), -3.5), torch.full((self.R - half_r,), 1.0)))
+            mob_init = torch.cat((torch.full((half_r,), 2.0), torch.full((self.R - half_r,), -2.0)))
+            self.beta_reg_bias = nn.Parameter(beta_init)
+            self.mob_reg_bias = nn.Parameter(mob_init)
 
         self.out_norm = nn.RMSNorm(self.d_fiber, eps=cfg.rms_eps)
         self.o_proj = nn.Linear(self.d_fiber, cfg.d_model, bias=False)
 
     def _causal_conv(self, x: Tensor, conv_buf: Tensor | None) -> tuple[Tensor, Tensor]:
-        # x: [B, T, D]
         xt = x.transpose(1, 2)
         if conv_buf is None:
             pad_xt = F.pad(xt, (self.conv_k - 1, 0))
@@ -506,13 +528,13 @@ class SpinorRegisterField(nn.Module):
         use_state: bool = False,
     ) -> tuple[Tensor, Any]:
         bsz, seq_len, _ = h.shape
-        if self.use_gen2 and isinstance(state, tuple):
+        if self.use_conv and isinstance(state, tuple):
             scan_state, conv_buf = state
         else:
             scan_state, conv_buf = state, None
 
         phi_raw = self.phi_proj(h)
-        if self.use_gen2:
+        if self.use_conv:
             phi_conv, new_conv_buf = self._causal_conv(phi_raw, conv_buf)
             phi_raw = phi_raw + F.silu(phi_conv)
         else:
@@ -520,6 +542,9 @@ class SpinorRegisterField(nn.Module):
 
         phi = phi_raw.view(bsz, seq_len, self.G, 4).permute(0, 2, 1, 3).unsqueeze(1)  # [B, 1, G, T, 4]
         w_l, b_l, m_l, r_l = self.gate_proj(h).chunk(4, dim=-1)
+        if self.use_gen3:
+            b_l = b_l + self.beta_reg_bias.view(1, 1, self.R)
+            m_l = m_l + self.mob_reg_bias.view(1, 1, self.R)
         w = F.softmax(w_l, dim=-1).transpose(1, 2).unsqueeze(2).unsqueeze(-1)  # [B, R, 1, T, 1]
         beta = torch.sigmoid(b_l).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
         mob = torch.sigmoid(m_l).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
@@ -544,18 +569,16 @@ class SpinorRegisterField(nn.Module):
         s = w * hamilton_product(cayley_rotor(rho), phi)
 
         if seq_len == 1 and scan_state is not None:
-            # Exact O(1)-state single-token recurrence path for decoding
             next_scan = step_holonomy(g.squeeze(-2), s.squeeze(-2), scan_state)
             all_omega = next_scan.unsqueeze(-2)
         else:
-            all_omega, next_scan = parallel_holonomy_scan(g, s, init_state=scan_state, chunk_size=self.chunk)
+            all_omega, next_scan = holonomy_scan_fast(g, s, init_state=scan_state, chunk_size=self.chunk)
 
         q_rot = cayley_rotor(q_gen)
         unbound = hamilton_product(spinor_conjugate(q_rot), all_omega)  # [B, R, G, T, 4]
         unbound_flat = unbound.permute(0, 1, 3, 2, 4).reshape(bsz, self.R, seq_len, self.d_fiber)
 
         if self.use_gen2:
-            # Kuramoto cross-register phase synchronization across register vectors
             reg_norm = F.normalize(unbound_flat.float(), dim=-1).to(unbound_flat.dtype)
             coup = torch.tanh(self.kuramoto_coupling).to(unbound_flat.dtype)  # [R, R]
             sync_drive = torch.einsum("rs,bstf->brtf", coup, reg_norm)
@@ -566,7 +589,7 @@ class SpinorRegisterField(nn.Module):
 
         if not use_state:
             return out, None
-        ret_state = (next_scan, new_conv_buf) if self.use_gen2 else next_scan
+        ret_state = (next_scan, new_conv_buf) if self.use_conv else next_scan
         return out, ret_state
 
 
@@ -641,6 +664,7 @@ class HSPAUnifiedLM(nn.Module):
         past_states: list[Any] | None = None,
         use_state: bool = False,
         past_len: int = 0,
+        logits_to_keep: int | None = None,
     ) -> Tensor | tuple[Tensor, list[Any]]:
         if input_ids.ndim != 2 or input_ids.shape[1] == 0:
             raise ValueError("input_ids must have shape [batch, seq_len >= 1]")
@@ -656,5 +680,6 @@ class HSPAUnifiedLM(nn.Module):
             h, nxt = block(h, cos, sin, state=st, use_state=use_state)
             if use_state:
                 next_states.append(nxt)
-        logits = F.linear(self.final_norm(h), self.tok_emb.weight)
+        h_sel = h[:, -logits_to_keep:, :] if logits_to_keep is not None else h
+        logits = F.linear(self.final_norm(h_sel), self.tok_emb.weight)
         return (logits, next_states) if use_state else logits

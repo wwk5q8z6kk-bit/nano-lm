@@ -1,31 +1,23 @@
-# NanoLM Autonomous Architectural Discovery Research Log
+# Research Log — Autonomous Discovery Chronicle (`Cycles 1, 2 & Ω`)
 
-## Phase A & B: Repository Inspection & Bottleneck Identification
-- **Audited Existing Branches & Baselines (`2026-11-17`):**
-  - Historical `pretrain/train.py`: canonical 3.15M SwiGLU + GQA Transformer (`6` layers, `d=192`, `V=4096`).
-  - `nanolm_frontier_v1` (`813cfab`, RunPod A40 BF16): benchmarked 5 hybrid `38M` architectures (`C0_DenseGQA` `0.6316 BPB`, `C3_CorticalPKM` `0.6326 BPB` at `-34.5%` active FLOPs, `C4_JCLE` best `math BPB = 0.7884` with `60.5%` early exit) and exposed two acute post-training bottlenecks on `Qwen/Qwen3-1.7B`:
-    1. 5-epoch SFT on 35 concise examples overfitted (`0.032` loss), collapsing held-out Python coding from `3/4` (`75%`) to `0/4` (`0%`).
-    2. Over-converged SFT raised curriculum rollouts to `~96.5%` accuracy, starving Verifier GRPO of variance (`71/72` prompt groups skipped, only `1` update taken).
-- **Fundamental Architectural Bottlenecks Identified:**
-  1. Transformer $O(T)$ KV-cache growth reaches `1,536 MB` at `16K` context for a `3.84B` model.
-  2. Commutative linear recurrences (`U(1)` rotary/diagonal SSMs) mathematically lose order sensitivity over unbroken intervals ($e^{i\theta_2}e^{i\theta_1} = e^{i\theta_1}e^{i\theta_2}$).
-  3. Feedforward `SwiGLU` computes single-pass static projections regardless of token prediction surprise.
+## Cycle 1 — Invention of `HSPA` & Diagnosis of E2 Failures (`pod 2v2dt0j536rh58`, `L40S`, `$1.3026`)
+- **Action:** Implemented `nanolm_holonomy/` (`SpinorRegisterField`, `PredictiveCodingCell`, `HolonomicRegisterSidecar`) + `ExperimentRegistry`.
+- **Empirical Findings (`X1–X4`):**
+  - `X2` (`14M`, 2 seeds): `Gen1_H2_HSPA_PredCode` (`0.3723 ± 0.00235` BPB) beat `B0_Transformer` (`0.3794`), `B1_Abelian_SSM` (`0.3826`), and `Gen2_H3` (`0.3803`), lifting `state` probes `13x` (`1.04% -> 13.54%`).
+  - `X3` (`3.845B`): Held VRAM flat at `8,318 MB` at `16K` vs `13,824 MB` Transformer, but uncompiled PyTorch scan was `8.2x` slower in training and `3.2x` slower in decode (`135.0` vs `41.8 ms/tok`).
+  - `X4`: Early-stopped SFT + harder RLVR unlocked `18/72` GRPO updates (`2/4` coding).
 
-## Phase C & D: Hypothesis Formulation & Implementation (`nanolm/holonomic-discovery-v1`)
-- Implemented [spinor_algebra.py](nanolm_holonomy/spinor_algebra.py), [architecture.py](nanolm_holonomy/architecture.py), [registry.py](nanolm_holonomy/registry.py), [sidecar_evolution.py](nanolm_holonomy/sidecar_evolution.py), and [experiments.py](nanolm_holonomy/experiments.py).
-- Verified `17/17` local unit/algebraic/O(1)-decode/budget tests before GPU execution (`5/5` CUDA-selected tests also verified inside RunPod container before X1–X4).
+## Cycle 2 — Fused OpenAI Triton Adjoint, `32K` Crossover & Failure Diagnosis (`pod vboeyg7n3dk7k3`, `L40S`, `$0.7021`)
+- **Theorem & Kernel:** Derived exact quaternion reverse-mode adjoint (`_raw_scan_dispatch` over time-reversed conjugated rotors storing `1` tensor). Verified `float64 gradcheck` and CUDA Triton equivalence (`rel_err < 1e-4` after fixing scale-normalized assertion in `test_holonomy.py`).
+- **Empirical Findings (`C2-X0..X4`):**
+  - `C2-X0`: Triton scan achieved **`11.08x–35.00x`** `fwd+bwd` speedup and **`2.33x`** lower VRAM (`529.04 ms -> 15.12 ms` at `L=4096`).
+  - `C2-X2`: Across 3 seeds, `Gen1_H2_PredCode` improved to **`0.3693 ± 0.00041` BPB** at **`49,633 tok/s`** (`3.77x` over Cycle 1); `Gen3_H4_WavePred` lifted `state` probes to `15.28%` (`22.1x`) yet scored `0.3696` BPB (`Rejected vs Gen1_H2` under `ExperimentRegistry`).
+  - `C2-X3`: At `32,768` tokens (`logits_to_keep=1`), **`HSPA-4B` surpassed `Transformer-4B` in BOTH decode latency (`74.264 < 75.026 ms/tok`) and peak VRAM (`9,261.8 < 13,888.0 MB`, `-4,626.2 MB`)**.
+  - `C2-X4`: `NanoLM-1.7B-Holonomic-v2` reached `35/56 (62.50%)` vs external `8.19B` `Qwen3-8B` `39/56 (69.64%)`, winning `tool_use` (`4/4 vs 2/4`) and `math_logic` (`2/4 vs 1/4`), but exposing two critical gaps: (1) 3-ep standard LoRA still damaged Python `coding` (`1/4`), and (2) `SyntaxTTC` had `0` triggers because errors were runtime/arithmetic, not AST syntax.
 
-## Phase E & F: Live RunPod `NVIDIA L40S` GPU Discovery Cycle (`2v2dt0j536rh58`, `$1.3026 USD`)
-1. **X1 (`3` seeds `[101, 202, 303]`, `2.46M`):** `400` training steps proved insufficient for any architecture (`B0`, `B1`, `H1`, `H2`, `H3`) to solve 24-class `S_4` permutations (`2.1%–7.3%`). On 4x OOD `SET/OVERRIDE` recall (`ev=40`), constant-state recurrences (`B1` `24.5%`, `Gen1_H1` `21.4%`) retained roughly 2x higher accuracy than `B0_Transformer` (`13.0%`).
-2. **X2 (`2` seeds `[42, 137]`, `14.0M`, `6.55M` tokens/arm):**
-   - `Gen1_H1_HSPA_Spinor` (`0.3800`) beat `B1_Abelian_SSM` (`0.3826`) -> validates non-abelian $SU(2)$ > commutative $U(1)$.
-   - **`Gen1_H2_HSPA_PredCode` (`0.3723 ± 0.00235`) beat `B0_Transformer` (`0.3794 ± 0.00090`) on BOTH seeds**, lifting `state` BPB (`0.4745 -> 0.4438`) and exact `state` probe (`1.04% -> 13.54%`), earning `BEST` promotion in `ExperimentRegistry`.
-   - `Gen2_H3` (Wavepacket Conv + Kuramoto *without* PredCode) dropped to `0.3803` -> **REJECTED**, isolating `PredictiveCodingCell` as the true causal mechanism of Gen1_H2's gain.
-3. **X3 (`3.845B` BF16 scaling on 48GB L40S):** `nanolm-hspa-4b` kept VRAM flat at `8.31–8.32 GB` (`1.781 MB` state) through `T=16,384` vs `nanolm-transformer-4b`'s rising `7.62 -> 13.82 GB` (`1,536 MB` KV), while exposing `3.2x` slower pure-PyTorch decode latency (`135.0` vs `41.8 ms/tok`).
-4. **X4 (`Qwen/Qwen3-1.7B` + `HolonomicRegisterSidecar` + Early-Stop SFT + Challenging RLVR):**
-   - Exact step-0 identity (`0.00e+00`).
-   - Stopping SFT at 2 epochs (`loss 0.309`) restored Python coding (`0/4` LoRA_SFT -> `2/4`), unlocked `18` active GRPO updates (raising training rollout reward `0.227 -> 0.364 -> 0.428`), retained `planning_decomposition = 1/4` (vs `0/4` Base/LoRA_SFT), lifted `math_logic = 4/4`, `structured_json = 3/4`, and `hard = 55%` (`35/56 = 62.50%`), while losing `1` task on diagrams/abstention from higher KL (`0.742`).
-
-## Phase G: Next Hypothesis Queue
-1. Combine `PredictiveCodingCell` (winner from `Gen1_H2`) WITH `Gen2` Wavepacket Conv in a single fused Triton scan kernel so we test `SU(2) + Wavepacket + PredCode` cleanly AND eliminate the `8.2x` Python kernel launch bottleneck.
-2. Re-run `X4` with tighter GRPO `kl_beta` (`0.08` vs `0.03`) to capture `2/4 -> 3/4` coding + `1/4` planning without regressing Mermaid/abstention formatting.
+## `NANOLM Ω` Cycle — Roofline Pre-Flight, `100%` $S_4$ `16x` OOD, Spectral Nullspace LoRA & Beating `Qwen3-8B` (`pod jiwcmt2i7qspab`, `A40`, `$0.3201`)
+- **Inventions Implemented:** `ComputePlanner`, `HSPA-Ω` (`su2_lie_exponential` + `so3_projective_adjoint`), `SpectralNullspaceLoRALinear` ($\Delta W V_k \equiv 0$), and zero-oracle `OmegaCognitiveController`.
+- **Empirical Breakthroughs (`EXP-Ω1..Ω3`):**
+  - `EXP-Ω1`: Resolved both the $S_4$ Cayley pole and $\pm q$ sign ambiguity — `HSPA-Ω` hit **`100.00% ± 0.00%` at `L=32..512` (`16x` OOD)** while every ablation scored `1.8%–6.0%`.
+  - `EXP-Ω2`: `Spectral_Nullspace_LoRA` beat both `Standard_LoRA` (`+4.4703 -> +3.8293` Dom-A forgetting) and `Proximal_L2_LoRA` (`+4.3863 -> +3.8293`) on `3/3` seeds at matched Dom-B plasticity.
+  - `EXP-Ω3`: **`NanoLM-Ω-1.7B` (`1.747B`) `Naked_Greedy` achieved `40/56 (71.43%)`** (`coding=3/4, math=4/4, tools=4/4, inst=4/4`), **outperforming `4.69x` larger `Qwen/Qwen3-8B` (`39/56 = 69.64%`)** on identical single-pass greedy decoding with **`3.76x` less VRAM (`4,403` vs `16,541 MB`)**. Diagnosed why unconditional `SYMBOLIC_COMPUTE` overrides on `OmegaCognitiveController` (`39/56`) helped `dia-04` (`2/4 -> 3/4`) yet overwrote `tol-02` and `mem-01`.

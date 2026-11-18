@@ -1,59 +1,28 @@
-# Mathematical Foundations of `HSPA`
+# Mathematical Foundations of `HSPA` & `HSPA-Ω`
 
-All algebraic primitives below are implemented in [spinor_algebra.py](nanolm_holonomy/spinor_algebra.py) and cell transitions in [architecture.py](nanolm_holonomy/architecture.py), verified programmatically to `<= 1e-5` numerical equivalence in [test_holonomy.py](nanolm_holonomy/tests/test_holonomy.py).
-
----
-
-## 1. Non-Abelian $SU(2)$ Spinor Representation & Hamilton Gauge Algebra
-
-A hidden fiber width $d_{\text{fiber}} = 4G$ is partitioned into $G$ quaternions $p = (p_0, p_1, p_2, p_3) \in \mathbb{H}^G \cong \mathbb{R}^{G \times 4}$.
-
-### 1.1 Exact Hamilton Product & Conjugate Unbinding
-Given two spinors $p, q \in \mathbb{H}$:
-$$p \star q = \begin{pmatrix} p_0 q_0 - p_1 q_1 - p_2 q_2 - p_3 q_3 \\ p_0 q_1 + p_1 q_0 + p_2 q_3 - p_3 q_2 \\ p_0 q_2 - p_1 q_3 + p_2 q_0 + p_3 q_1 \\ p_0 q_3 + p_1 q_2 - p_2 q_1 + p_3 q_0 \end{pmatrix}$$
-- **Strict Non-Commutativity:** $p \star q \neq q \star p$ generically in the $(i,j,k)$ vector components.
-- **Associativity:** $(a \star b) \star c = a \star (b \star c)$ holds identically, enabling exact parallel prefix scans.
-- **Norm Preservation:** $\|p \star q\|_2 = \|p\|_2 \|q\|_2$.
-- **Exact Unbinding via Conjugate $\bar{q} = (q_0, -q_1, -q_2, -q_3)$:**
-  $$\overline{H \star q} \star (H \star q \star v) = \bar{q} \star \bar{H} \star H \star q \star v = \|H\|_2^2 \|q\|_2^2 v.$$
-
-### 1.2 Algebraic Cayley Lie Map ($\mathfrak{su}(2) \to SU(2)$)
-Instead of trigonometric $\exp(\boldsymbol{\omega})$ calls, `cayley_rotor` maps any unconstrained generator vector $\boldsymbol{\omega} \in \mathbb{R}^3$ smoothly to $SU(2)$:
-$$u(\boldsymbol{\omega}) = \frac{(1, \, \omega_1, \, \omega_2, \, \omega_3)}{\sqrt{1 + \omega_1^2 + \omega_2^2 + \omega_3^2}}, \qquad \|u(\boldsymbol{\omega})\|_2 \equiv 1, \quad u(\mathbf{0}) = (1,0,0,0).$$
+Full proofs and derivations are unified here and in [NANOLM_MATHEMATICAL_FORMULATIONS.md](NANOLM_MATHEMATICAL_FORMULATIONS.md).
 
 ---
 
-## 2. Parallel $\lceil \log_2 T \rceil$ Non-Abelian Holonomy Scan & $O(1)$ Decode
+## 1. Non-Abelian Parallel Holonomy Recurrence
+Given $g_{t,r} = (1 - w_{t,r}\beta_{t,r}) q(\boldsymbol{\omega}_{t,r}) \in \mathbb{H}^G$ and $s_{t,r} = w_{t,r} (q(\boldsymbol{\rho}_{t,r}) \star \phi_t) \in \mathbb{H}^G$, transport follows associative Hamilton-product composition:
+$$(g_2, s_2) \circ (g_1, s_1) = \big(g_2 \star g_1,\; g_2 \star s_1 + s_2\big).$$
+Both chunked parallel prefill and $O(1)$-memory single-token decode evaluate the identical mathematical trajectory (`max_abs_diff < 2.2e-6`).
 
-Across time $t = 1, \dots, T$, each register $r \in \{1, \dots, R\}$ evolves via left-acting affine $SU(2)$ transport:
-$$\Omega_{t,r} = g_{t,r} \star \Omega_{t-1,r} + s_{t,r},$$
-where
-$$g_{t,r} = \max(10^{-4}, \, 1 - w_{t,r} \beta_{t,r}) \, u\big(m_{t,r} \boldsymbol{\omega}_{t,r}\big), \qquad s_{t,r} = w_{t,r} \big(u(\boldsymbol{\rho}_{t,r}) \star \phi_t\big).$$
+## 2. Exact Quaternion Reverse-Mode Adjoint Theorem (`triton_holonomy.py`)
+For $\Omega_t = g_t \star \Omega_{t-1} + s_t$ under Euclidean upstream gradients $\delta_t = \partial \mathcal{L} / \partial \Omega_t$:
+$$\lambda_t = \bar{g}_{t+1} \star \lambda_{t+1} + \delta_t \quad (\lambda_T = 0), \qquad \frac{\partial \mathcal{L}}{\partial s_t} = \lambda_t, \quad \frac{\partial \mathcal{L}}{\partial g_t} = \lambda_t \star \bar{\Omega}_{t-1}, \quad \frac{\partial \mathcal{L}}{\partial \Omega_{-1}} = \bar{g}_0 \star \lambda_0.$$
+Because Hamilton conjugation satisfies $\overline{u\star v} = \bar{v}\star\bar{u}$, reversing time and conjugating $g$ converts the exact VJP into a second pass of `_triton_holonomy_fwd_kernel` while saving only **1** trajectory tensor instead of $\log_2 T$ tree buffers (`gradcheck float64 atol=1e-5` & CUDA `rel_err < 1e-4` verified).
 
-### Associative Composition Law
-Composing transition tuple $A_1 = (g_1, s_1)$ followed temporally by $A_2 = (g_2, s_2)$ yields:
-$$A_2 \circ A_1 = \big(g_2 \star g_1, \; g_2 \star s_1 + s_2\big).$$
-Crucially, **left-multiplication order $(g_2 \star g_1)$ must be strictly preserved** because $SU(2)$ multiplication is non-commutative. The binary Hillis-Steele prefix scan evaluates all $T$ tokens in $\lceil \log_2 T \rceil$ vectorized GPU tensor operations during training/prefill (`max_abs_diff < 1e-5` vs sequential recurrence), while incremental generation updates a constant-shape register tensor $\Omega_r \in \mathbb{R}^{G \times 4}$ in exact $O(1)$ memory per token (`step_holonomy`).
+## 3. Abelian $S_4 / A_4 \cong \mathbb{Z}_2$ Ceiling vs $2O \subset SU(2) \to SO(3)$ Projective Holonomy
+1. **Abelian Ceiling:** Any homomorphism into commutative $U(1)^k$ factors through $S_4 / [S_4, S_4] = S_4/A_4 \cong \mathbb{Z}_2$, collapsing `24`-element group state tracking to `~1/12..1/24` (`5.99%` observed).
+2. **Double-Cover & Cayley Singularities:** Direct readout of $q \in SU(2)$ conflates antipodal fibers $\pm q \mapsto P \in SO(3)$ (`4.43%`), while the Cayley chart distorts $\theta=\pi/2$ involutions (`w=0`, decaying `36.46% -> 3.64%` over `L=32..512`).
+3. **Lie-Exp $SO(3)$ Solution:** Pairing $\exp_{\mathfrak{su}(2)}(\omega) = \cos\|\omega\| + \frac{\sin\|\omega\|}{\|\omega\|}\omega$ with $R(q) \in \mathbb{R}^{3\times 3}$ ($R(-q)=R(q)$ and $R(q_2\star q_1)=R(q_2)R(q_1)$) achieves **`100.00% ± 0.00%` up to `16x` OOD (`L=512`)**.
 
-### Conjugate Query Unbinding & Competitive Readout
-At query time $t$, register $r$ is rotated into the query's local gauge frame via $\bar{q}_{t,r} = \overline{u(\mathbf{q}_{t,r})}$ and pooled by soft read distribution $\pi_t \in \Delta^{R-1}$:
-$$y_t = W_o \, \text{RMSNorm}\!\left(\sum_{r=1}^R \pi_{t,r} \big(\bar{q}_{t,r} \star \Omega_{t,r}\big)\right).$$
+## 4. Spectral Nullspace Orthogonal LoRA Projection
+With frozen pretrained SVD top-$k$ right singular matrix $V_k \in \mathbb{R}^{d_{\text{in}}\times k}$ ($V_k^\top V_k = I_k$),
+$$P_\perp = I - V_k V_k^\top, \qquad \Delta W = \frac{\alpha}{r} B A P_\perp \implies \Delta W V_k \equiv 0,$$
+orthogonally isolating continual updates (`< 1e-5` verified leakage) from high-energy pretrained features.
 
----
-
-## 3. Matched Abelian $U(1)$ Control Formulation
-
-To isolate non-abelian $SU(2)$ order sensitivity from general complex-phase dynamics at identical real state width ($4G$ reals $= 2G$ complex scalars), `B1_Abelian_SSM` sets $\mathbb{C}^{2G}$ fibers with scalar angles $\theta_{t,r} \in \mathbb{R}^{2G}$ and commutative multiplication $(p_0 q_0 - p_1 q_1, \, p_0 q_1 + p_1 q_0)$. Here $u(\theta_2) u(\theta_1) \equiv u(\theta_1) u(\theta_2)$, making consecutive rotations over an unweighted interval order-invariant.
-
----
-
-## 4. Precision-Weighted Predictive-Coding Cell (`PredictiveCodingCell`)
-
-Given post-mixer normalized residual $z \in \mathbb{R}^d$, `PredictiveCodingCell` uses the exact same `3`-matrix parameter count (`3 * d * d_pc`) as SwiGLU (`gate`, `up`, `down`):
-1. Initial bottom-up latent state: $c^{(0)} = \text{SiLU}(W_{\text{enc}} z) \in \mathbb{R}^{d_{\text{pc}}}$.
-2. Iterative top-down free-energy revision for $k = 0, \dots, K-1$ (`K = 2`):
-   $$\varepsilon^{(k)} = z - W_{\text{dec}} c^{(k)}, \qquad \gamma_k = \sigma\!\left(\log \tau + \log \sqrt{\tfrac{1}{d}\|\varepsilon^{(k)}\|_2^2 + 10^{-6}}\right),$$
-   $$c^{(k+1)} = c^{(k)} + \gamma_k \, \text{SiLU}\!\big(W_{\text{err}} \, \text{RMSNorm}(\varepsilon^{(k)})\big).$$
-3. Output projection: $\text{PC}(z) = W_{\text{dec}} c^{(K)}$.
-
-Intuitively, tokens whose top-down reconstruction $W_{\text{dec}} c^{(k)}$ exhibits large surprise norm $\|\varepsilon^{(k)}\|_{\text{rms}}$ receive larger correction step $\gamma_k$, concentrating nonlinear refinement on unpredictable reasoning/state-transition tokens while keeping parameter count constant.
+## 5. Precision-Weighted Predictive Coding
+$$c^{(k+1)} = c^{(k)} + \sigma(\log \pi)\, W_{\text{err}} \operatorname{RMSNorm}\big(z - W_{\text{dec}} c^{(k)}\big), \qquad y_{\text{PC}}(z) = W_{\text{dec}} c^{(K)}.$$

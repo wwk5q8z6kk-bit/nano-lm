@@ -1,0 +1,110 @@
+{
+  "registry_version": "nanolm.omega.experiment-registry.v1",
+  "parameter_ceiling": 4000000000,
+  "active_branch": "nanolm/holonomic-discovery-v1",
+  "experiments": [
+    {
+      "id": "H6-CLINICAL",
+      "track": "origin/master (nano_ai)",
+      "hypothesis": "State-conditioned boundary query residual improves clinical scribing epistemic accuracy",
+      "backend": "Kaggle CPU one-shot ($0.00)",
+      "primary_metric": "n=5000 overall 0.7802; absence 0.4818, conflict 0.5720, uncertain 0.7600",
+      "status": "REJECTED_TERMINAL",
+      "artifact": "artifacts/nano_h6/H6_TERMINAL_DECISION.json"
+    },
+    {
+      "id": "E1-TOURNAMENT",
+      "track": "nanolm_frontier_v1",
+      "hypothesis": "Hybrid Delta + Cortical PKM + Damped Jacobi Loops improve efficiency & math BPB at ~38M",
+      "backend": "RunPod A40 (pod 58b79zdtdqcr9n, $0.3699 combined)",
+      "primary_metric": "C0_DenseGQA 0.6316 vs C3_CorticalPKM 0.6326 (-34.5% FLOPs) vs C4_JCLE 0.6368 (math 0.7884, 60.5% early exit)",
+      "status": "COMPLETED_MIXED",
+      "artifact": "artifacts/nanolm_frontier_v1/e1_tournament.json"
+    },
+    {
+      "id": "E2-FRONTIER-1.7B",
+      "track": "nanolm_frontier_v1",
+      "hypothesis": "DexDiff + ThalamocorticalVAnchor + SFT + GRPO lift 1.75B across 15 dimensions",
+      "backend": "RunPod A40 (pod 58b79zdtdqcr9n)",
+      "primary_metric": "Base 34/56 (60.71%), LoRA_SFT 36/56 (64.29%, coding 0/4), Frontier 35/56 (62.50%, hard 60%, 1/72 GRPO updates)",
+      "status": "COMPLETED_DIAGNOSTIC",
+      "artifact": "artifacts/nanolm_frontier_v1/e2_foundation_15d.json"
+    },
+    {
+      "id": "C1-X2-LM-EVOLUTION",
+      "track": "nanolm_holonomy Cycle-1",
+      "hypothesis": "Non-abelian SU(2) spinor transport + Iterative PredictiveCodingCell beats iso-param Transformer BPB",
+      "backend": "RunPod L40S (pod 2v2dt0j536rh58, $1.3026 combined)",
+      "seeds": [42, 137],
+      "primary_metric": "Gen1_H2_PredCode 0.3723 +/- 0.00235 BPB vs B0_Transformer 0.3794 +/- 0.00090 BPB (state probe 13x)",
+      "status": "PROMOTED_BEST_C1",
+      "artifact": "artifacts/nanolm_holonomy_v1/x2_lm_evolution.json"
+    },
+    {
+      "id": "C2-X0-TRITON-SCAN",
+      "track": "nanolm_holonomy Cycle-2",
+      "hypothesis": "Fused OpenAI Triton forward + time-reversed conjugate adjoint (1 saved tensor) accelerates SU(2) scan",
+      "backend": "RunPod L40S (pod vboeyg7n3dk7k3, $0.7021 combined)",
+      "primary_metric": "11.08x (L=256) to 35.00x (L=4096, 529.04ms -> 15.12ms) & 2.33x lower VRAM",
+      "status": "DEMONSTRATED_PROMOTED",
+      "artifact": "artifacts/nanolm_holonomy_v2/c2_x0_kernel_microbench.json"
+    },
+    {
+      "id": "C2-X2-TRITON-3SEED-LM",
+      "track": "nanolm_holonomy Cycle-2",
+      "hypothesis": "Triton acceleration + bifurcated Gen3_H4 beats Gen1_H2 across 3 seeds",
+      "backend": "RunPod L40S (pod vboeyg7n3dk7k3)",
+      "seeds": [42, 137, 271],
+      "primary_metric": "Gen1_H2 0.3693 +/- 0.00041 BPB (49,633 tok/s) < B0 0.3798 +/- 0.00093; Gen3_H4 0.3696 (state probe 15.28% = 22.1x)",
+      "status": "GEN1_H2_RETAINED_BEST_GEN3_REJECTED_ON_BPB",
+      "artifact": "artifacts/nanolm_holonomy_v2/c2_x2_triton_lm.json"
+    },
+    {
+      "id": "C2-X3-32K-4B-SCALING",
+      "track": "nanolm_holonomy Cycle-2",
+      "hypothesis": "HSPA-4B (3.845B) overtakes Transformer-4B in both VRAM and decode latency by 32,768 tokens",
+      "backend": "RunPod L40S (pod vboeyg7n3dk7k3)",
+      "primary_metric": "At L=32768: HSPA-4B 9261.76 MB & 74.264 ms/tok vs Transformer-4B 13887.97 MB & 75.026 ms/tok (1725x smaller state)",
+      "status": "DEMONSTRATED",
+      "artifact": "artifacts/nanolm_holonomy_v2/c2_x3_32k_scaling.json"
+    },
+    {
+      "id": "C2-X4-GIANT-KILLER-V2",
+      "track": "nanolm_holonomy Cycle-2",
+      "hypothesis": "3-epoch curriculum_v2 + zero-oracle SyntaxTTC bridges 1.75B vs 8.19B Qwen3-8B gap",
+      "backend": "RunPod L40S (pod vboeyg7n3dk7k3)",
+      "primary_metric": "NanoLM-v2 35/56 (62.50%, coding 1/4, SyntaxTTC 0 triggers) vs External Qwen3-8B 39/56 (69.64%)",
+      "status": "PARTIAL_INSIGHT_CODING_FORGOTTEN",
+      "artifact": "artifacts/nanolm_holonomy_v2/c2_x4_giant_killer.json"
+    },
+    {
+      "id": "EXP-OMEGA1-S4-LIE-SO3",
+      "track": "NANOLM Omega",
+      "hypothesis": "su2_lie_exponential + so3_projective_adjoint breaks Cayley poles & Z2 double-cover cancellation on S4 up to 16x OOD",
+      "backend": "RunPod A40 (pod jiwcmt2i7qspab, $0.3201 combined)",
+      "seeds": [101, 202, 303],
+      "primary_metric": "HSPA-Omega 100.0% +/- 0.0% across L=32/64/128/256/512 vs B0 3.91%, U(1) 5.99%, LieLinear 4.43%, CayleySO3 3.64%",
+      "status": "DEMONSTRATED_BREAKTHROUGH",
+      "artifact": "artifacts/nanolm_omega_v1/exp_omega1_s4_holonomy.json"
+    },
+    {
+      "id": "EXP-OMEGA2-NULLSPACE-LORA",
+      "track": "NANOLM Omega",
+      "hypothesis": "SpectralNullspaceLoRA (DeltaW V_k = 0) reduces continual Domain-A forgetting vs Standard LoRA and Proximal L2 LoRA",
+      "backend": "RunPod A40 (pod jiwcmt2i7qspab)",
+      "seeds": [42, 137, 271],
+      "primary_metric": "Dom-A forget +3.8293 +/- 0.4658 BPB vs Standard +4.4703 +/- 1.0759 & Proximal-L2 +4.3863 +/- 1.0705 (domB 1.4261 vs 1.4245)",
+      "status": "DEMONSTRATED_PROMOTED",
+      "artifact": "artifacts/nanolm_omega_v1/exp_omega2_nullspace_continual.json"
+    },
+    {
+      "id": "EXP-OMEGA3-UNIFIED-1.7B",
+      "track": "NANOLM Omega",
+      "hypothesis": "SpectralNullspaceLoRA + HSPAOmegaSidecar + Early-Stop SFT + High-KL GRPO preserves coding & lifts <=2B past 8.19B Qwen3-8B",
+      "backend": "RunPod A40 (pod jiwcmt2i7qspab)",
+      "primary_metric": "Naked Greedy 40/56 (71.43%, coding 3/4, math 4/4, tools 4/4) > External Qwen3-8B 39/56 (69.64%) at 4.69x fewer params & 3.76x less VRAM; Cognitive_Sys 39/56",
+      "status": "DEMONSTRATED_BREAKTHROUGH_NAKED_GUARD_NEEDED_FOR_SYS",
+      "artifact": "artifacts/nanolm_omega_v1/exp_omega3_unified_1p7b.json"
+    }
+  ]
+}

@@ -47,15 +47,23 @@ def _sync(device: torch.device) -> None:
         torch.mps.synchronize()
 
 
+def _cuda_amp_dtype() -> torch.dtype:
+    """Use BF16 on Ampere+ (SM >= 8.0) and FP16 on Turing (SM < 8.0, e.g. T4)."""
+    if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] >= 8:
+        return torch.bfloat16
+    return torch.float16
+
+
 def _autocast(device: torch.device) -> Any:
     if device.type == "cuda":
-        return torch.amp.autocast(device_type="cuda", dtype=torch.bfloat16)
+        return torch.amp.autocast(device_type="cuda", dtype=_cuda_amp_dtype())
     return nullcontext()
 
 
 def _peak_mb(device: torch.device) -> float:
     if device.type == "cuda":
-        return round(torch.cuda.max_memory_allocated(device) / (1024.0 * 1024.0), 2)
+        total = sum(torch.cuda.max_memory_allocated(i) for i in range(torch.cuda.device_count()))
+        return round(total / (1024.0 * 1024.0), 2)
     return 0.0
 
 

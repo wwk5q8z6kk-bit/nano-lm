@@ -1,28 +1,21 @@
-# NanoLM Architecture Research Roadmap
+# NanoLM Architecture & Intelligence Roadmap (`HSPA-Ω -> Next Horizon`)
 
-Guided strictly by experimental evidence from [EXPERIMENTS.md](EXPERIMENTS.md), [PERFORMANCE.md](PERFORMANCE.md), and [NOVELTY_ANALYSIS.md](NOVELTY_ANALYSIS.md), keeping total parameter count strictly **`<= 4,000,000,000` (`4B`)**.
-
----
-
-## Generation 1 (Completed) — `HSPA_Spinor` & `HSPA_PredCode` (`BEST` Promoted)
-- Proved non-abelian $SU(2)$ spinor transport beats matched commutative $U(1)$ SSM (`0.3800` vs `0.3826 BPB`).
-- Discovered that combining $SU(2)$ register transport with **precision-weighted `PredictiveCodingCell` (`Gen1_H2`)** beats Transformer baseline on 2 seeds (`0.3723` vs `0.3794`), yields a `13x` state-probe gain (`13.54%` vs `1.04%`), and holds 4B-class persistent VRAM flat at `8.32 GB` (`1.78 MB` state vs `1,536 MB` KV at `16K`).
+See [NANOLM_RESEARCH_BACKLOG.md](NANOLM_RESEARCH_BACKLOG.md) for the full 24-hypothesis ranked portfolio.
 
 ---
 
-## Generation 2 (Evaluated & Revised)
-- **Completed negative ablation:** `Gen2_H3` tested Wavepacket Conv + Kuramoto coupling *without* `PredictiveCodingCell` (`0.3803` -> Rejected cleanly).
-- **Generation 2B (Immediate Next Architectural Experiment):** Combine verified winner `PredictiveCodingCell` (`Gen1_H2`) WITH `ShortConv(k=4)` causal wavepacket pre-filter (`Gen2_H3_WavePred`) in a controlled 3-seed study against `Gen1_H2` (`0.3723`) to test whether local syntax convolution + predictive coding compounds both `code` (`0.2014` Transformer gap) and `state` (`0.4438`) simultaneously.
+## Completed Milestones (`Cycles 1, 2 & Ω`)
+- **Fused Non-Abelian Triton Engine (`C2-X0`, `C2-X2`):** `35.00x` speedup over PyTorch Blelloch scan (`L=4096`), `O(1)`-activation conjugated reverse adjoint, and multi-seed BPB dominance (`0.3693` vs `0.3798`).
+- **`32,768`-Token `3.845B` Crossover (`C2-X3`):** Flat `9,262 MB` VRAM & `74.26 ms/tok` decode beating `Transformer-4B` (`13,888 MB` & `75.03 ms/tok`).
+- **Exact `16x` OOD $S_4$ Composition (`EXP-Ω1`):** `HSPA-Ω` (`su2_lie_exponential + so3_projective_adjoint`) achieved `100.00% ± 0.00%` up to `L=512`.
+- **Spectral Nullspace Anti-Forgetting (`EXP-Ω2`, `EXP-Ω3`):** Cut forgetting across `3/3` seeds (`+4.47 -> +3.83`) and lifted `NanoLM-Ω-1.7B Naked_Greedy` to **`40/56 (71.43%)`**, outperforming `4.69x` larger `Qwen/Qwen3-8B` (`39/56 = 69.64%`).
 
 ---
 
-## Kernel & Systems Milestone (Critical Path to 4B Pretraining)
-1. **Fused Triton `hamilton_product` + Hillis-Steele Scan Kernel:** Eliminate the `~8.2x` Python training slowdown and `~3.2x` BF16 4B decode gap by computing the associative $SU(2)$ tree scan and chunk boundaries inside GPU SRAM/registers (`float32` accumulation, `bf16` I/O), cutting activation VRAM from `6.7 GB` to `< 1.8 GB` at `14M` scale and targeting `< 25 ms/tok` at `4B` scale.
-2. **Always-Chunked Prefill Boundary:** Enforce `chunk_size = 512–1024` universally even at `T = 512` (removing the transient `10.88 GB` X3 `T=512` spike down to `~8.3 GB`).
-
----
-
-## Scaling & Foundation Post-Training Milestones (`<= 4B`)
-1. **Extended `S_4` & Symbolic Algorithmic Curriculum (`X1-v2`):** Train fused-kernel `Gen1_H2` and `B0_Transformer` to convergence (`5,000+` steps on `8M` params with length curriculum) to test whether non-abelian `SU(2)` achieves `>90%` compositional length generalization on non-commutative groups where Transformers degrade.
-2. **Pretraining Scale Ramp (`14M -> 350M -> 2.0B -> 3.85B HSPA-PredCode`):** Validate scaling exponent on multi-billion-token real open code/math/web corpora (`<= 4B` strict cap) before making any capability comparison against larger Transformer checkpoints.
-3. **KL-Stabilized Foundation GRPO (`X4-v2`):** Tune GRPO `kl_beta` (`0.08` vs `0.03`) and merge `HolonomicRegisterSidecar` weights or `torch.compile` step functions so coding (`2/4` -> `3/4+`), math (`4/4`), structured JSON (`3/4`), and planning (`1/4+`) hold simultaneously without throughput loss.
+## Immediate Next Priorities
+1. **Priority #1 — Uncertainty-Gated `OmegaCognitiveController-v2`:**
+   Require schema-key & syntactic validity preservation before `SYMBOLIC_COMPUTE` overwrites an already valid JSON answer (fixing the `tol-02` / `mem-01` regressions so `Cognitive_System` strictly beats `40/56`, targeting `44+/56`).
+2. **Priority #2 — Persistent CUDA-Graph Decode & Triton Projection Fusion (`H-Ω20`):**
+   Eliminate eager per-layer Python launch overhead on `HSPA_4B` (`~74 ms/tok -> < 12 ms/tok`) and speed up `SpectralNullspaceLoRA` inference by folding `P_perp = I - V_k V_k^T` directly into merged `W_eff` at eval time (**0% inference overhead** when frozen!).
+3. **Priority #3 — `3:1` Hybrid `HSPA-Ω` + `Diff-GQA` Multi-Billion-Token Pretraining (`125M -> 350M`, Free Kaggle `T4 x 2` + `Muon`):**
+   Embed `HSPA-Ω` (`LieExp + SO(3)`) + `PredictiveCodingCell` + `Diff-GQA` sparse anchors at `125M–350M` using `Muon` + `Top-2 Margin` routing.

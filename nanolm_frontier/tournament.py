@@ -442,7 +442,13 @@ def _evaluate_model_15d(
 def _load_hf_model_and_tokenizer(model_id: str, device: torch.device) -> tuple[Any, Any]:
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    dtype = torch.bfloat16 if device.type == "cuda" else (torch.float16 if device.type == "mps" else torch.float32)
+    if device.type == "cuda":
+        sm_major = torch.cuda.get_device_capability(0)[0]
+        dtype = torch.bfloat16 if sm_major >= 8 else torch.float16
+    elif device.type == "mps":
+        dtype = torch.float16
+    else:
+        dtype = torch.float32
     tok = AutoTokenizer.from_pretrained(model_id)
     if tok.pad_token is None and tok.eos_token is not None:
         tok.pad_token = tok.eos_token
@@ -450,6 +456,13 @@ def _load_hf_model_and_tokenizer(model_id: str, device: torch.device) -> tuple[A
         model = AutoModelForCausalLM.from_pretrained(model_id, dtype=dtype).to(device)
     except TypeError:
         model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=dtype).to(device)
+    if device.type == "cuda" and dtype == torch.float16:
+        probe = tok("def f(x): return x + 1", return_tensors="pt").to(device)
+        model.eval()
+        with torch.no_grad():
+            probe_logits = model(**probe).logits
+        if not torch.isfinite(probe_logits).all():
+            model = model.to(dtype=torch.bfloat16)
     total = sum(p.numel() for p in model.parameters())
     if total > ABSOLUTE_MAX_PARAMETERS:
         raise ParameterBudgetExceededError(f"{model_id} has {total:,} > 4B limit")
