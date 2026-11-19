@@ -1,0 +1,56 @@
+schema: nanolm.unified_loop.research_state.v1
+updated_at: "2026-11-18"
+worktree: /Users/mac/Projects/nano-lm/.worktrees/nanolm-unified-loop
+branch: research/unified-discovery-loop-v1
+paid_compute_usd: 0.0
+architecture_topology: core_and_web_milky_way
+legacy_clinical_pack:
+  path: nanoscribe/
+  status: passive_legacy_regression_only
+  e2e_c12_c14: "235/276"
+  hazards: "0/7"
+  n03_violations: 0
+
+modular_symbolic_substrate:
+  modules:
+    - nano/units.py
+    - nano/schema.py
+    - nano/grounded_engine.py
+  zero_domain_branches_verified: true
+  exp_u05_accuracy_finance_sre_legal: "72/72 (100.0%)"
+  exp_u05_denom_only_flat_baseline: "66/72 (91.7%)"
+  exp_u05_flat_string_baseline: "17/72 (23.6%)"
+
+neural_core_frontier_u02:
+  part_a_micro_lab:
+    params_range: [55265, 56401]
+    tasks: 5
+    mechanisms: 10
+    seeds: 3
+    winners:
+      unseen_open_vocab_copy_ood: {model: M9_DualChannel_Pointer, score: 0.9619, non_pointer_best: 0.0088}
+      mqar_selective_overwrite_4x_ood: {model: M9_DualChannel_Pointer, score: 0.5764, overwritten_score: 0.5421, m0_rope: 0.0927}
+      hierarchy_denom_rollup_4x_ood: {model: M5_HSPA_LieSO3, score: 0.2588, close_acc: 0.1633, m0_rope: 0.1459}
+      parity_dyck_4x_ood: {model: M7_SkewCayley_Flow, score: 0.9279}
+    negative_findings:
+      s4_holonomy_8x_ood: "All 10 mechanisms at ~chance (~0.042) after 200 steps at 56K params"
+      m8_loopcd_vs_monotonic_guard: "Monotonic Margin Guard helped across tasks; naive LoopCD degraded MQAR & Hierarchy"
+  part_b_real_corpus:
+    non_emb_params: ~853121
+    steps: 1000
+    seeds: 2
+    winners:
+      code_bpb_256: {model: M9_DualChannel_Pointer, bpb: 2.1983, m0_rope: 2.8245, m1_gdn1: 3.1013}
+      math_bpb_256: {model: M9_DualChannel_Pointer, bpb: 2.3172, m0_rope: 2.7016, m1_gdn1: 2.8407}
+      web_bpb_256: {model: M9_DualChannel_Pointer, bpb: 1.9960, m5_hspa: 2.0324, m7_cayley: 2.0536, m0_rope: 2.0611, m1_gdn1: 2.1298}
+      textbook_bpb_128: {model: M5_HSPA_LieSO3, bpb: 1.9336, m0_rope: 1.9663, m9_pointer: 1.9844, m1_gdn1: 2.0457}
+      zeroshot_copy_128: {model: M9_DualChannel_Pointer, acc: 0.9257, all_non_pointer: 0.0}
+      zeroshot_mqar_T128_N4_common: {model: M9_DualChannel_Pointer, acc: 0.3125, all_non_pointer: 0.0}
+    diagnosed_bottlenecks:
+      - "Legacy GDN1 (M1) finished last on all 4 real-corpus domains and showed Layer 0->3 key rank collapse (12.82 -> 4.45 / 32)"
+      - "All non-pointer mechanisms scored 0.000 on zero-shot exact copy and real-haystack MQAR"
+      - "M9 pointer still uses O(T^2) prefix score map and softens overwritten keys (0.542) and rare MQAR tails (0.0416)"
+
+next_experiments_queue:
+  - "Test M5_HSPA_LieSO3 semantic backbone + sparse/O(T log T) overwrite-aware exact copy pointer (combining #1 textbook/hierarchy geometry with #1 code/math/copy channel)"
+  - "Test anti-collapse key regularization and SkewCayley+HSPA vectorization on MPS before scaling to 50M-150M data/v1 runs"

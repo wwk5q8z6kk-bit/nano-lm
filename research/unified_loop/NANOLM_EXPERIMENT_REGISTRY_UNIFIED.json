@@ -1,0 +1,140 @@
+{
+  "schema": "nanolm.unified_loop.experiment_registry.v1",
+  "updated_at": "2026-11-18",
+  "worktree": "/Users/mac/Projects/nano-lm/.worktrees/nanolm-unified-loop",
+  "branch": "research/unified-discovery-loop-v1",
+  "paid_compute_usd": 0.0,
+  "experiments": [
+    {
+      "id": "EXP-U01",
+      "title": "Forensic Autopsy of Real 600M-Token 125M & 46M Checkpoints",
+      "status": "COMPLETE",
+      "commits": ["1dac170", "01bdda7", "adcfdbb"],
+      "script": "research/unified_loop/scripts/run_u01_real_125m_autopsy.py",
+      "artifacts": [
+        "research/unified_loop/experiments/U01_real_125m_autopsy/protocol.md",
+        "research/unified_loop/experiments/U01_real_125m_autopsy/results.json",
+        "research/unified_loop/experiments/U01_real_125m_autopsy/analysis.md"
+      ],
+      "key_metrics": {
+        "s1_125m_layer_gt0_key_eff_rank_val_code": "2.9 to 11.3 / 64",
+        "s1_125m_layer_gt0_key_eff_rank_copy_probe": "2.06 to 5.92 / 64",
+        "l2048_web_bpb": {"S0_125m": 1.01, "S1_125m": 1.0068},
+        "l2048_copy_1024_acc": {"S0_125m": 0.0582, "S1_125m": 0.0021, "X4_46m": 0.0016},
+        "real_haystack_mqar_T256_N1": {"S0_common_rare": [0.25, 0.25], "S1_common_rare": [0.0833, 0.1667]}
+      }
+    },
+    {
+      "id": "EXP-U02-PartA",
+      "title": "Iso-Parameter Cross-Paradigm Micro-Lab Showdown (10 Mechanisms x 5 Tasks x 3 Seeds)",
+      "status": "COMPLETE",
+      "commits": ["5c1be63", "a4179f3", "5a178ae"],
+      "script": "research/unified_loop/scripts/run_u02_cross_paradigm_showdown.py",
+      "artifacts": [
+        "research/unified_loop/mechanisms/zoo.py",
+        "research/unified_loop/mechanisms/test_zoo.py",
+        "research/unified_loop/experiments/U02_cross_paradigm_showdown/protocol.md",
+        "research/unified_loop/experiments/U02_cross_paradigm_showdown/results_part_a.json",
+        "research/unified_loop/experiments/U02_cross_paradigm_showdown/analysis.md"
+      ],
+      "key_metrics": {
+        "wall_s": 426.7,
+        "unseen_open_vocab_copy_ood": {"M9_DualChannel_Pointer": 0.9619, "M5_HSPA_LieSO3": 0.0088, "others": 0.0},
+        "mqar_selective_overwrite_4x_ood": {"M9_DualChannel_Pointer": 0.5764, "M9_overwritten": 0.5421, "M0_Dense_GQA_RoPE": 0.0927, "M1_GDN1": 0.059},
+        "hierarchy_denom_rollup_4x_ood": {"M5_HSPA_LieSO3": 0.2588, "M7_SkewCayley_Flow": 0.256, "M1_GDN1": 0.2463, "M0_Dense_GQA_RoPE": 0.1459, "M8_guard": 0.1416},
+        "parity_dyck_4x_ood": {"M7_SkewCayley_Flow": 0.9279, "M9_DualChannel_Pointer": 0.9254, "M0_Dense_GQA_RoPE": 0.9188}
+      }
+    },
+    {
+      "id": "EXP-U02-PartB",
+      "title": "Real Subword Corpus Cross-Paradigm Transfer on data/v1 (5 Contenders x 1,000 Steps x 2 Seeds)",
+      "status": "COMPLETE",
+      "commits": ["5a178ae"],
+      "script": "research/unified_loop/scripts/run_u02_part_b_real_corpus.py",
+      "artifacts": [
+        "research/unified_loop/experiments/U02_cross_paradigm_showdown/protocol_part_b.md",
+        "research/unified_loop/experiments/U02_cross_paradigm_showdown/results_part_b.json",
+        "research/unified_loop/experiments/U02_cross_paradigm_showdown/analysis.md"
+      ],
+      "key_metrics": {
+        "wall_s": 819.88,
+        "non_emb_params": {"M0": 853121, "M1": 852241, "M5": 853313, "M7": 854273, "M9": 851858},
+        "web_bpb_128_256": {
+          "M9_DualChannel_Pointer": [2.0219, 1.996],
+          "M5_HSPA_LieSO3": [2.0369, 2.0324],
+          "M7_SkewCayley_Flow": [2.0609, 2.0536],
+          "M0_Dense_GQA_RoPE": [2.066, 2.0611],
+          "M1_GDN1_Cone_Closed": [2.1376, 2.1298]
+        },
+        "code_bpb_256": {"M9": 2.1983, "M0": 2.8245, "M5": 2.8547, "M7": 2.8991, "M1": 3.1013},
+        "math_bpb_256": {"M9": 2.3172, "M0": 2.7016, "M5": 2.7186, "M7": 2.7435, "M1": 2.8407},
+        "textbook_bpb_128": {"M5": 1.9336, "M0": 1.9663, "M9": 1.9844, "M7": 1.9681, "M1": 2.0457},
+        "zeroshot_copy_128": {"M9": 0.9257, "M0_M1_M5_M7": 0.0},
+        "zeroshot_mqar_T128_N4_common": {"M9": 0.3125, "M0_M1_M5_M7": 0.0}
+      }
+    },
+    {
+      "id": "EXP-U03",
+      "title": "E23 C7-Omega Scaffold Attribution & E24 HEM-ATRD Routing Paradox Audit",
+      "status": "COMPLETE",
+      "commits": ["f7ccb71", "adcfdbb"],
+      "script": "research/unified_loop/scripts/run_u03_scaffold_and_routing_audit.py",
+      "artifacts": [
+        "research/unified_loop/experiments/U03_scaffold_routing_audit/protocol.md",
+        "research/unified_loop/experiments/U03_scaffold_routing_audit/results.json",
+        "research/unified_loop/experiments/U03_scaffold_routing_audit/analysis.md"
+      ],
+      "key_metrics": {
+        "e23_a4_frontier_sym0_deep_ood": 1.0,
+        "e23_0param_rule_deep_ood": 1.0,
+        "e24_h1_x5": 1.0,
+        "e24_h4_hem": 0.7469,
+        "e24_h3_mm": 0.6922
+      }
+    },
+    {
+      "id": "EXP-U04",
+      "title": "NanoScribe Grounded Verifier Repair & Live Qwen2.5-1.5B C14 Evaluation (Legacy DomainPack Quarantine Baseline)",
+      "status": "COMPLETE_QUARANTINED_LEGACY",
+      "commits": ["5c1be63", "09f688c", "adcfdbb", "e7f4933"],
+      "script": "research/unified_loop/scripts/run_u04_part2_and_qwen.py",
+      "artifacts": [
+        "research/unified_loop/experiments/U04_nanoscribe_verifier_qwen/part1_diagnostics.json",
+        "research/unified_loop/experiments/U04_nanoscribe_verifier_qwen/results.json"
+      ],
+      "key_metrics": {
+        "pre_fix_gold_retained": "200/276",
+        "post_refactor_gold_retained": "228/276",
+        "post_refactor_menu_covered": "242/276",
+        "post_refactor_e2e_retained": "235/276",
+        "qwen25_1p5b_c14_asserted": "33/80 (41.2%)",
+        "deterministic_menu_c14_asserted": "63/80 (78.8%)",
+        "hazards": "0/7",
+        "n03_violations": 0
+      }
+    },
+    {
+      "id": "EXP-U05",
+      "title": "Cross-Domain Hierarchical & Denomination Verification Benchmark (Finance, SRE, Legal, Legacy Clinical)",
+      "status": "COMPLETE",
+      "commits": ["be9cd07", "e7f4933", "283b832", "01e42c6"],
+      "script": "research/unified_loop/scripts/run_u05_cross_domain_eval.py",
+      "artifacts": [
+        "nano/units.py",
+        "nano/schema.py",
+        "nano/grounded_engine.py",
+        "nano/test_modular_foundation.py",
+        "research/unified_loop/experiments/U05_cross_domain_hierarchy_denom/protocol.md",
+        "research/unified_loop/experiments/U05_cross_domain_hierarchy_denom/results.json",
+        "research/unified_loop/experiments/U05_cross_domain_hierarchy_denom/analysis.md"
+      ],
+      "key_metrics": {
+        "zero_domain_branches_verified": true,
+        "domains_1_to_3_full_modular_nano": "72/72 (100.0%)",
+        "domains_1_to_3_denom_only_flat": "66/72 (91.7%)",
+        "domains_1_to_3_flat_string": "17/72 (23.6%)",
+        "clinical_c12_c14_e2e": "235/276 (0/7 hazards)"
+      }
+    }
+  ]
+}

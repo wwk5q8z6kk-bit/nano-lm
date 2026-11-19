@@ -1,0 +1,1200 @@
+{
+  "schema": "nanolm.unified_loop.u02b.v1",
+  "paid_compute_usd": 0.0,
+  "elapsed_s": 819.88,
+  "config": {
+    "d_model": 128,
+    "n_heads": 4,
+    "batch_size": 8,
+    "seq_len": 128,
+    "steps": 1000,
+    "seeds": [
+      0,
+      1
+    ]
+  },
+  "models": {
+    "M0_Dense_GQA_RoPE": {
+      "device": "mps",
+      "total_params": 5047425,
+      "non_emb_params": 853121,
+      "mean_tok_per_s": 26652.0,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.066,
+            "std": 0.0042
+          },
+          "textbook": {
+            "mean": 1.9663,
+            "std": 0.0014
+          },
+          "math": {
+            "mean": 2.6573,
+            "std": 0.003
+          },
+          "code": {
+            "mean": 2.8517,
+            "std": 0.0137
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.0611,
+            "std": 0.0024
+          },
+          "textbook": {
+            "mean": 1.9672,
+            "std": 0.0009
+          },
+          "math": {
+            "mean": 2.7016,
+            "std": 0.0034
+          },
+          "code": {
+            "mean": 2.8245,
+            "std": 0.0116
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_128": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 384,
+          "total_params": 5047425,
+          "non_emb_params": 853121,
+          "train_s": 40.16,
+          "tok_per_s": 25496.4,
+          "train_loss_curve": {
+            "200": 7.2244,
+            "500": 6.3553,
+            "800": 6.5755,
+            "1000": 6.5313
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.06303,
+              "textbook": 1.96527,
+              "math": 2.65518,
+              "code": 2.86145
+            },
+            "L_256": {
+              "web": 2.05942,
+              "textbook": 1.96778,
+              "math": 2.69923,
+              "code": 2.83276
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 12.3049
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 12.1228
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 12.1192
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 10.728,
+              "mean_offdiag_key_cos": 0.3628
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 8.575,
+              "mean_offdiag_key_cos": 0.4048
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 4.39,
+              "mean_offdiag_key_cos": 0.5331
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 3.919,
+              "mean_offdiag_key_cos": 0.5851
+            }
+          ]
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 384,
+          "total_params": 5047425,
+          "non_emb_params": 853121,
+          "train_s": 36.82,
+          "tok_per_s": 27807.5,
+          "train_loss_curve": {
+            "200": 7.3515,
+            "500": 6.7829,
+            "800": 6.3114,
+            "1000": 6.4854
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.06901,
+              "textbook": 1.96731,
+              "math": 2.65944,
+              "code": 2.84201
+            },
+            "L_256": {
+              "web": 2.06288,
+              "textbook": 1.96655,
+              "math": 2.70407,
+              "code": 2.81634
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 11.8761
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.79
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 11.7545
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 13.053,
+              "mean_offdiag_key_cos": 0.3004
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 10.173,
+              "mean_offdiag_key_cos": 0.3246
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 4.667,
+              "mean_offdiag_key_cos": 0.5002
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 3.875,
+              "mean_offdiag_key_cos": 0.5573
+            }
+          ]
+        }
+      }
+    },
+    "M1_GDN1_Cone_Closed": {
+      "device": "mps",
+      "total_params": 5046545,
+      "non_emb_params": 852241,
+      "mean_tok_per_s": 12257.9,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.1376,
+            "std": 0.0064
+          },
+          "textbook": {
+            "mean": 2.0457,
+            "std": 0.0112
+          },
+          "math": {
+            "mean": 2.8021,
+            "std": 0.0378
+          },
+          "code": {
+            "mean": 3.118,
+            "std": 0.0144
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.1298,
+            "std": 0.0085
+          },
+          "textbook": {
+            "mean": 2.0492,
+            "std": 0.0124
+          },
+          "math": {
+            "mean": 2.8407,
+            "std": 0.0359
+          },
+          "code": {
+            "mean": 3.1013,
+            "std": 0.0104
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_128": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 334,
+          "total_params": 5046545,
+          "non_emb_params": 852241,
+          "train_s": 78.31,
+          "tok_per_s": 13076.5,
+          "train_loss_curve": {
+            "200": 7.3857,
+            "500": 7.2869,
+            "800": 6.7027,
+            "1000": 6.7452
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.13313,
+              "textbook": 2.03782,
+              "math": 2.7753,
+              "code": 3.10786
+            },
+            "L_256": {
+              "web": 2.12383,
+              "textbook": 2.04038,
+              "math": 2.81534,
+              "code": 3.09397
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 10.9744
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.0684
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 11.0176
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 12.815,
+              "mean_offdiag_key_cos": 0.2695
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 7.413,
+              "mean_offdiag_key_cos": 0.516
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 5.435,
+              "mean_offdiag_key_cos": 0.6092
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 4.449,
+              "mean_offdiag_key_cos": 0.6225
+            }
+          ]
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 334,
+          "total_params": 5046545,
+          "non_emb_params": 852241,
+          "train_s": 89.52,
+          "tok_per_s": 11439.3,
+          "train_loss_curve": {
+            "200": 7.4531,
+            "500": 6.9054,
+            "800": 6.2931,
+            "1000": 6.8427
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.14216,
+              "textbook": 2.05359,
+              "math": 2.82882,
+              "code": 3.12823
+            },
+            "L_256": {
+              "web": 2.13581,
+              "textbook": 2.05797,
+              "math": 2.86614,
+              "code": 3.10866
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 10.9747
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 10.9521
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 10.9321
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 13.452,
+              "mean_offdiag_key_cos": 0.2504
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 12.588,
+              "mean_offdiag_key_cos": 0.3035
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 5.371,
+              "mean_offdiag_key_cos": 0.5675
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 6.149,
+              "mean_offdiag_key_cos": 0.5231
+            }
+          ]
+        }
+      }
+    },
+    "M9_DualChannel_Pointer": {
+      "device": "mps",
+      "total_params": 5046162,
+      "non_emb_params": 851858,
+      "mean_tok_per_s": 9255.9,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.0219,
+            "std": 0.0074
+          },
+          "textbook": {
+            "mean": 1.9844,
+            "std": 0.0
+          },
+          "math": {
+            "mean": 2.4053,
+            "std": 0.005
+          },
+          "code": {
+            "mean": 2.4364,
+            "std": 0.0215
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 1.996,
+            "std": 0.0102
+          },
+          "textbook": {
+            "mean": 1.9619,
+            "std": 0.0021
+          },
+          "math": {
+            "mean": 2.3172,
+            "std": 0.0059
+          },
+          "code": {
+            "mean": 2.1983,
+            "std": 0.0136
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.9103,
+          "std": 0.0356
+        },
+        "copy_64": {
+          "mean": 0.933,
+          "std": 0.0245
+        },
+        "copy_128": {
+          "mean": 0.9257,
+          "std": 0.016
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.3125,
+            "std": 0.1474
+          },
+          "T256_N4": {
+            "mean": 0.1875,
+            "std": 0.0294
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.0416,
+            "std": 0.0589
+          },
+          "T256_N4": {
+            "mean": 0.0209,
+            "std": 0.0295
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 312,
+          "total_params": 5046162,
+          "non_emb_params": 851858,
+          "train_s": 102.53,
+          "tok_per_s": 9987.6,
+          "train_loss_curve": {
+            "200": 7.1153,
+            "500": 6.5829,
+            "800": 6.1652,
+            "1000": 6.1576
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.01668,
+              "textbook": 1.98435,
+              "math": 2.40181,
+              "code": 2.42119
+            },
+            "L_256": {
+              "web": 1.98878,
+              "textbook": 1.96041,
+              "math": 2.31305,
+              "code": 2.18864
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.9355,
+              "loss": 1.9089
+            },
+            "copy_64": {
+              "acc": 0.9504,
+              "loss": 2.1672
+            },
+            "copy_128": {
+              "acc": 0.937,
+              "loss": 2.5295
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.4167,
+              "T256_N4": 0.2083
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 10.647,
+              "mean_offdiag_key_cos": 0.3192
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 8.343,
+              "mean_offdiag_key_cos": 0.4631
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 6.155,
+              "mean_offdiag_key_cos": 0.6016
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 5.305,
+              "mean_offdiag_key_cos": 0.5897
+            }
+          ]
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 312,
+          "total_params": 5046162,
+          "non_emb_params": 851858,
+          "train_s": 120.13,
+          "tok_per_s": 8524.2,
+          "train_loss_curve": {
+            "200": 7.8722,
+            "500": 6.7906,
+            "800": 6.3262,
+            "1000": 5.2644
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.02709,
+              "textbook": 1.98435,
+              "math": 2.40882,
+              "code": 2.45164
+            },
+            "L_256": {
+              "web": 2.00326,
+              "textbook": 1.96334,
+              "math": 2.32142,
+              "code": 2.20787
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.8851,
+              "loss": 2.284
+            },
+            "copy_64": {
+              "acc": 0.9157,
+              "loss": 2.3375
+            },
+            "copy_128": {
+              "acc": 0.9144,
+              "loss": 2.5609
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.2083,
+              "T256_N4": 0.1667
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0833,
+              "T256_N4": 0.0417
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 10.352,
+              "mean_offdiag_key_cos": 0.3201
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 7.894,
+              "mean_offdiag_key_cos": 0.4897
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 6.549,
+              "mean_offdiag_key_cos": 0.5427
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 4.683,
+              "mean_offdiag_key_cos": 0.6427
+            }
+          ]
+        }
+      }
+    },
+    "M5_HSPA_LieSO3": {
+      "device": "cpu",
+      "total_params": 5047617,
+      "non_emb_params": 853313,
+      "mean_tok_per_s": 2253.1,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.0369,
+            "std": 0.0047
+          },
+          "textbook": {
+            "mean": 1.9336,
+            "std": 0.01
+          },
+          "math": {
+            "mean": 2.6749,
+            "std": 0.0208
+          },
+          "code": {
+            "mean": 2.8805,
+            "std": 0.0491
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.0324,
+            "std": 0.0032
+          },
+          "textbook": {
+            "mean": 1.9392,
+            "std": 0.0077
+          },
+          "math": {
+            "mean": 2.7186,
+            "std": 0.0251
+          },
+          "code": {
+            "mean": 2.8547,
+            "std": 0.042
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_128": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "cpu",
+          "ffn_hidden": 496,
+          "total_params": 5047617,
+          "non_emb_params": 853313,
+          "train_s": 455.08,
+          "tok_per_s": 2250.2,
+          "train_loss_curve": {
+            "200": 7.6191,
+            "500": 6.7949,
+            "800": 6.4678,
+            "1000": 5.8788
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.03351,
+              "textbook": 1.94063,
+              "math": 2.66022,
+              "code": 2.8458
+            },
+            "L_256": {
+              "web": 2.03007,
+              "textbook": 1.94461,
+              "math": 2.70084,
+              "code": 2.82502
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 11.9185
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.879
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 11.828
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            },
+            {
+              "layer": 1,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            },
+            {
+              "layer": 2,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            },
+            {
+              "layer": 3,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            }
+          ]
+        },
+        "1": {
+          "device": "cpu",
+          "ffn_hidden": 496,
+          "total_params": 5047617,
+          "non_emb_params": 853313,
+          "train_s": 453.93,
+          "tok_per_s": 2255.9,
+          "train_loss_curve": {
+            "200": 7.2834,
+            "500": 6.3727,
+            "800": 6.3084,
+            "1000": 6.4265
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.04019,
+              "textbook": 1.92655,
+              "math": 2.68965,
+              "code": 2.91522
+            },
+            "L_256": {
+              "web": 2.03464,
+              "textbook": 1.93377,
+              "math": 2.73632,
+              "code": 2.88438
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 11.8306
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.9229
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 11.8248
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            },
+            {
+              "layer": 1,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            },
+            {
+              "layer": 2,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            },
+            {
+              "layer": 3,
+              "mean_key_eff_rank": null,
+              "mean_offdiag_key_cos": null
+            }
+          ]
+        }
+      }
+    },
+    "M7_SkewCayley_Flow": {
+      "device": "cpu",
+      "total_params": 5048577,
+      "non_emb_params": 854273,
+      "mean_tok_per_s": 1269.2,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.0609,
+            "std": 0.0037
+          },
+          "textbook": {
+            "mean": 1.9681,
+            "std": 0.0006
+          },
+          "math": {
+            "mean": 2.7066,
+            "std": 0.0064
+          },
+          "code": {
+            "mean": 2.9259,
+            "std": 0.0186
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.0536,
+            "std": 0.0049
+          },
+          "textbook": {
+            "mean": 1.9719,
+            "std": 0.0002
+          },
+          "math": {
+            "mean": 2.7435,
+            "std": 0.0131
+          },
+          "code": {
+            "mean": 2.8991,
+            "std": 0.0153
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_128": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "cpu",
+          "ffn_hidden": 254,
+          "total_params": 5048577,
+          "non_emb_params": 854273,
+          "train_s": 806.41,
+          "tok_per_s": 1269.8,
+          "train_loss_curve": {
+            "200": 7.6244,
+            "500": 6.5704,
+            "800": 6.5866,
+            "1000": 6.5607
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.05826,
+              "textbook": 1.96765,
+              "math": 2.71112,
+              "code": 2.93906
+            },
+            "L_256": {
+              "web": 2.05016,
+              "textbook": 1.97211,
+              "math": 2.75272,
+              "code": 2.90997
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 11.9673
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.7693
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 11.6925
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 13.4,
+              "mean_offdiag_key_cos": 0.2768
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 7.958,
+              "mean_offdiag_key_cos": 0.3869
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 5.362,
+              "mean_offdiag_key_cos": 0.5058
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 4.458,
+              "mean_offdiag_key_cos": 0.526
+            }
+          ]
+        },
+        "1": {
+          "device": "cpu",
+          "ffn_hidden": 254,
+          "total_params": 5048577,
+          "non_emb_params": 854273,
+          "train_s": 807.28,
+          "tok_per_s": 1268.5,
+          "train_loss_curve": {
+            "200": 6.8837,
+            "500": 6.6745,
+            "800": 6.4508,
+            "1000": 6.357
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.06351,
+              "textbook": 1.96854,
+              "math": 2.70205,
+              "code": 2.91269
+            },
+            "L_256": {
+              "web": 2.05705,
+              "textbook": 1.97178,
+              "math": 2.73426,
+              "code": 2.88827
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 11.256
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.4728
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 11.3218
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0
+            }
+          },
+          "key_geometry": [
+            {
+              "layer": 0,
+              "hd": 32,
+              "mean_key_eff_rank": 12.12,
+              "mean_offdiag_key_cos": 0.3158
+            },
+            {
+              "layer": 1,
+              "hd": 32,
+              "mean_key_eff_rank": 8.136,
+              "mean_offdiag_key_cos": 0.3866
+            },
+            {
+              "layer": 2,
+              "hd": 32,
+              "mean_key_eff_rank": 5.605,
+              "mean_offdiag_key_cos": 0.4721
+            },
+            {
+              "layer": 3,
+              "hd": 32,
+              "mean_key_eff_rank": 4.344,
+              "mean_offdiag_key_cos": 0.5465
+            }
+          ]
+        }
+      }
+    }
+  }
+}

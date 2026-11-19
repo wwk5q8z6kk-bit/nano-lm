@@ -1,42 +1,43 @@
 {
   "total_asserted": 276,
-  "retained_asserted": 226,
-  "dropped_asserted": 50,
-  "menu_covered_asserted": 236,
-  "menu_missed_asserted": 40,
+  "retained_asserted": 228,
+  "dropped_asserted": 48,
+  "menu_covered_asserted": 242,
+  "menu_missed_asserted": 34,
   "drop_reasons_counts": {
-    "rejected_to_uncertain:value_fails_field_type_guard": 37,
-    "preserved_source_conflict:source_conflict_preserved": 5,
-    "rejected_to_uncertain:clause_contains_negation_hazard": 3,
-    "rejected_to_uncertain:invalid_or_hedged_denial_span": 3,
-    "rejected_to_uncertain:clause_contains_correction_marker": 1,
-    "rejected_to_uncertain:non_current_or_third_party_question_scope": 1
+    "rejected_to_uncertain:leading_article_rejected": 30,
+    "preserved_source_conflict:source_conflict_preserved": 9,
+    "rejected_to_uncertain:clause_negation_hazard": 2,
+    "rejected_to_uncertain:trailing_punctuation": 2,
+    "rejected_to_uncertain:partial_clause_denial_span": 2,
+    "rejected_to_uncertain:retracted_by_principal_correction": 1,
+    "rejected_to_uncertain:clause_uncertainty_or_nonuse": 1,
+    "rejected_to_uncertain:unanchored_or_wrong_topic_denial": 1
   },
   "drop_by_cohort_field": {
     "C12_independent_dev_20261023:CC:S": 23,
     "C13_scope_validation_20261023:CC:S": 10,
-    "C13_scope_validation_20261023:SEV:S": 3,
-    "C13_scope_validation_20261023:DUR:S": 3,
-    "C13_scope_validation_20261023:MED:A": 3,
     "C12_independent_dev_20261023:MED:S": 2,
+    "C13_scope_validation_20261023:MED:A": 2,
+    "C13_scope_validation_20261023:SEV:S": 2,
+    "C13_scope_validation_20261023:MED:S": 2,
     "C14_retention_validation_20261026:DUR:S": 2,
+    "C12_independent_dev_20261023:DUR:S": 1,
     "C12_independent_dev_20261023:ALG:S": 1,
-    "C13_scope_validation_20261023:MED:S": 1,
+    "C13_scope_validation_20261023:DUR:S": 1,
     "C14_retention_validation_20261026:MED:A": 1,
     "C14_retention_validation_20261026:ALG:A": 1
   },
   "menu_miss_by_cohort_field": {
-    "C12_independent_dev_20261023:CC:S": 11,
-    "C13_scope_validation_20261023:CC:S": 8,
+    "C12_independent_dev_20261023:CC:S": 10,
+    "C13_scope_validation_20261023:CC:S": 10,
     "C13_scope_validation_20261023:MED:S": 4,
-    "C14_retention_validation_20261026:DUR:S": 4,
-    "C13_scope_validation_20261023:MED:A": 3,
     "C12_independent_dev_20261023:MED:S": 2,
-    "C13_scope_validation_20261023:DUR:S": 2,
-    "C13_scope_validation_20261023:SEV:S": 2,
+    "C13_scope_validation_20261023:MED:A": 2,
+    "C14_retention_validation_20261026:DUR:S": 2,
     "C12_independent_dev_20261023:ALG:S": 1,
+    "C13_scope_validation_20261023:SEV:S": 1,
     "C14_retention_validation_20261026:CC:S": 1,
-    "C14_retention_validation_20261026:MED:A": 1,
     "C14_retention_validation_20261026:ALG:A": 1
   },
   "drop_examples": [
@@ -67,7 +68,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -107,7 +108,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -147,7 +148,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -187,7 +188,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -227,7 +228,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -267,7 +268,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -307,7 +308,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -347,7 +348,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -387,13 +388,59 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
             "start": 48,
             "end": 63,
             "text": "a mild headache",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "transcript": "Doctor: Why have you come in?\nPatient: I've had a mild headache for three days.\nDoctor: What did you take for it?\nPatient: Ibuprofen last night.\nDoctor: Have you taken anything else?\nPatient: I haven't taken any medicine at all for this headache.\nDoctor: Earlier you said ibuprofen last night. Which account should I use?\nPatient: I'm mixing things up, and I can't settle which is right.\nDoctor: Any medication allergies?\nPatient: Penicillin."
+    },
+    {
+      "cohort": "C12_independent_dev_20261023",
+      "case_id": "fresh-09",
+      "field": "DUR",
+      "gold_state": "S",
+      "gold_spans": [
+        "three days"
+      ],
+      "gold_raw_slot": "DUR:S[three days]",
+      "claim_state": "conflicting",
+      "claim_abstain": null,
+      "trace": {
+        "field": "duration",
+        "raw_slot": "DUR:S[three days]",
+        "raw_state_code": "S",
+        "raw_state": "supported",
+        "raw_spans": [
+          {
+            "start": 68,
+            "end": 78,
+            "text": "three days",
+            "speaker": "patient"
+          }
+        ],
+        "parse_error": null,
+        "verified": false,
+        "decision": "preserved_source_conflict",
+        "reason": "source_conflict_preserved",
+        "final_state": "conflicting",
+        "final_spans": [
+          {
+            "start": 64,
+            "end": 78,
+            "text": "for three days",
+            "speaker": "patient"
+          },
+          {
+            "start": 133,
+            "end": 143,
+            "text": "last night",
             "speaker": "patient"
           }
         ]
@@ -427,7 +474,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -467,7 +514,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "retracted_by_principal_correction",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -509,7 +556,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "clause_contains_negation_hazard",
+        "reason": "clause_negation_hazard",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -549,7 +596,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -637,7 +684,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -677,7 +724,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -717,7 +764,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -757,7 +804,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -797,7 +844,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -837,7 +884,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -877,7 +924,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -917,7 +964,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -957,7 +1004,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "trailing_punctuation",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -997,7 +1044,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1037,7 +1084,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1078,7 +1125,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "trailing_punctuation",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1118,59 +1165,13 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "clause_contains_negation_hazard",
+        "reason": "clause_negation_hazard",
         "final_state": "uncertain",
         "final_spans": [
           {
             "start": 559,
             "end": 570,
             "text": "sore throat",
-            "speaker": "patient"
-          }
-        ]
-      },
-      "transcript": "Doctor: What have you come in about today?\nPatient: My throat has been sore. Swallowing is a bit uncomfortable, although I can still eat.\nDoctor: How far back does that go?\nPatient: Three days. It started on Monday evening.\nDoctor: How much is it bothering you?\nPatient: It's mild, really. It's just hanging around.\nDoctor: Have you used anything for it?\nPatient: I took acetaminophen last night. That's all.\nDoctor: Are there any medicines you react badly to?\nPatient: Penicillin gives me hives.\nDoctor: Anything else you wanted to mention?\nPatient: No, the sore throat is why I'm here."
-    },
-    {
-      "cohort": "C13_scope_validation_20261023",
-      "case_id": "scope-01",
-      "field": "SEV",
-      "gold_state": "S",
-      "gold_spans": [
-        "mild"
-      ],
-      "gold_raw_slot": "SEV:S[mild]",
-      "claim_state": "conflicting",
-      "claim_abstain": null,
-      "trace": {
-        "field": "severity",
-        "raw_slot": "SEV:S[mild]",
-        "raw_state_code": "S",
-        "raw_state": "supported",
-        "raw_spans": [
-          {
-            "start": 276,
-            "end": 280,
-            "text": "mild",
-            "speaker": "patient"
-          }
-        ],
-        "parse_error": null,
-        "verified": false,
-        "decision": "preserved_source_conflict",
-        "reason": "source_conflict_preserved",
-        "final_state": "conflicting",
-        "final_spans": [
-          {
-            "start": 77,
-            "end": 136,
-            "text": "Swallowing is a bit uncomfortable, although I can still eat",
-            "speaker": "patient"
-          },
-          {
-            "start": 276,
-            "end": 280,
-            "text": "mild",
             "speaker": "patient"
           }
         ]
@@ -1204,7 +1205,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1216,86 +1217,6 @@
         ]
       },
       "transcript": "Doctor: What's going on with your ear?\nPatient: The right one feels full, like it won't pop.\nDoctor: Since when?\nPatient: Yesterday morning.\nDoctor: Is that painful, or mostly a pressure feeling?\nPatient: Mostly pressure. If you need a number, the discomfort is three out of ten.\nDoctor: Walk me through any medicines you're using.\nPatient: I take loratadine every morning for my seasonal allergies. I haven't used anything else for the ear.\nDoctor: Have any medicines caused an allergic reaction?\nPatient: Sulfa antibiotics caused a rash when I was a teenager.\nDoctor: Does the fullness come and go?\nPatient: It's been there continuously since yesterday."
-    },
-    {
-      "cohort": "C13_scope_validation_20261023",
-      "case_id": "scope-04",
-      "field": "DUR",
-      "gold_state": "S",
-      "gold_spans": [
-        "Yesterday morning"
-      ],
-      "gold_raw_slot": "DUR:S[Yesterday morning]",
-      "claim_state": "uncertain",
-      "claim_abstain": null,
-      "trace": {
-        "field": "duration",
-        "raw_slot": "DUR:S[Yesterday morning]",
-        "raw_state_code": "S",
-        "raw_state": "supported",
-        "raw_spans": [
-          {
-            "start": 122,
-            "end": 139,
-            "text": "Yesterday morning",
-            "speaker": "patient"
-          }
-        ],
-        "parse_error": null,
-        "verified": false,
-        "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
-        "final_state": "uncertain",
-        "final_spans": [
-          {
-            "start": 122,
-            "end": 139,
-            "text": "Yesterday morning",
-            "speaker": "patient"
-          }
-        ]
-      },
-      "transcript": "Doctor: What's going on with your ear?\nPatient: The right one feels full, like it won't pop.\nDoctor: Since when?\nPatient: Yesterday morning.\nDoctor: Is that painful, or mostly a pressure feeling?\nPatient: Mostly pressure. If you need a number, the discomfort is three out of ten.\nDoctor: Walk me through any medicines you're using.\nPatient: I take loratadine every morning for my seasonal allergies. I haven't used anything else for the ear.\nDoctor: Have any medicines caused an allergic reaction?\nPatient: Sulfa antibiotics caused a rash when I was a teenager.\nDoctor: Does the fullness come and go?\nPatient: It's been there continuously since yesterday."
-    },
-    {
-      "cohort": "C13_scope_validation_20261023",
-      "case_id": "scope-06",
-      "field": "DUR",
-      "gold_state": "S",
-      "gold_spans": [
-        "after breakfast this morning"
-      ],
-      "gold_raw_slot": "DUR:S[after breakfast this morning]",
-      "claim_state": "uncertain",
-      "claim_abstain": null,
-      "trace": {
-        "field": "duration",
-        "raw_slot": "DUR:S[after breakfast this morning]",
-        "raw_state_code": "S",
-        "raw_state": "supported",
-        "raw_spans": [
-          {
-            "start": 95,
-            "end": 123,
-            "text": "after breakfast this morning",
-            "speaker": "patient"
-          }
-        ],
-        "parse_error": null,
-        "verified": false,
-        "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
-        "final_state": "uncertain",
-        "final_spans": [
-          {
-            "start": 95,
-            "end": 123,
-            "text": "after breakfast this morning",
-            "speaker": "patient"
-          }
-        ]
-      },
-      "transcript": "Doctor: What's troubling you today?\nPatient: A burning feeling in my upper stomach. It started after breakfast this morning.\nDoctor: How uncomfortable would you say it is?\nPatient: Mild. I can go about my day, but I notice it.\nDoctor: What medicines have you used today?\nPatient: None today. I take no regular medicines either.\nDoctor: Are you allergic to any medications?\nPatient: I don't know. My old chart has an allergy flag, but I don't remember ever having a reaction or which medicine it means.\nDoctor: Do you recall what time you finished breakfast?\nPatient: Not exactly. I ate sometime before leaving for work.\nDoctor: And the burning is still there?\nPatient: Yes, the same mild burning."
     },
     {
       "cohort": "C13_scope_validation_20261023",
@@ -1324,7 +1245,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1364,7 +1285,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "invalid_or_hedged_denial_span",
+        "reason": "partial_clause_denial_span",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1408,55 +1329,15 @@
         "final_state": "conflicting",
         "final_spans": [
           {
-            "start": 84,
-            "end": 107,
-            "text": "It's been there a week.",
+            "start": 100,
+            "end": 106,
+            "text": "a week",
             "speaker": "patient"
           },
           {
-            "start": 720,
-            "end": 781,
-            "text": "It's just this one patch, and I first noticed it last Friday.",
-            "speaker": "patient"
-          }
-        ]
-      },
-      "transcript": "Doctor: What are we looking at today?\nPatient: This itchy patch on my left forearm. It's been there a week.\nDoctor: How troublesome is the itching?\nPatient: Moderate. I catch myself scratching it while I read.\nDoctor: Have you put anything on it or taken anything?\nPatient: I haven't. There was a bottle of cetirizine on the kitchen counter, but it's my housemate's.\nDoctor: Do you have any medicine allergies?\nPatient: No known ones.\nDoctor: Did you bring the note you mentioned when booking?\nPatient: Yes. It just says 'severe rash, three months, steroid cream.' I found it in a shared notebook and don't know who wrote it. It isn't a description of my arm.\nDoctor: What can you tell me about your own patch?\nPatient: It's just this one patch, and I first noticed it last Friday."
-    },
-    {
-      "cohort": "C13_scope_validation_20261023",
-      "case_id": "scope-11",
-      "field": "MED",
-      "gold_state": "A",
-      "gold_spans": [
-        "I haven't."
-      ],
-      "gold_raw_slot": "MED:A[I haven't.]",
-      "claim_state": "uncertain",
-      "claim_abstain": null,
-      "trace": {
-        "field": "medication",
-        "raw_slot": "MED:A[I haven't.]",
-        "raw_state_code": "A",
-        "raw_state": "absent",
-        "raw_spans": [
-          {
-            "start": 274,
-            "end": 284,
-            "text": "I haven't.",
-            "speaker": "patient"
-          }
-        ],
-        "parse_error": null,
-        "verified": false,
-        "decision": "rejected_to_uncertain",
-        "reason": "invalid_or_hedged_denial_span",
-        "final_state": "uncertain",
-        "final_spans": [
-          {
-            "start": 274,
-            "end": 284,
-            "text": "I haven't.",
+            "start": 769,
+            "end": 780,
+            "text": "last Friday",
             "speaker": "patient"
           }
         ]
@@ -1490,7 +1371,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "clause_uncertainty_or_nonuse",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1530,7 +1411,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1571,7 +1452,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1594,7 +1475,7 @@
         "I haven't even taken a painkiller."
       ],
       "gold_raw_slot": "MED:A[Not for the headache.]",
-      "claim_state": "conflicting",
+      "claim_state": "uncertain",
       "claim_abstain": null,
       "trace": {
         "field": "medication",
@@ -1611,25 +1492,65 @@
         ],
         "parse_error": null,
         "verified": false,
-        "decision": "preserved_source_conflict",
-        "reason": "source_conflict_preserved",
-        "final_state": "conflicting",
+        "decision": "rejected_to_uncertain",
+        "reason": "unanchored_or_wrong_topic_denial",
+        "final_state": "uncertain",
         "final_spans": [
           {
-            "start": 278,
-            "end": 281,
-            "text": "No.",
-            "speaker": "patient"
-          },
-          {
-            "start": 637,
-            "end": 660,
-            "text": "Just the levothyroxine.",
+            "start": 173,
+            "end": 194,
+            "text": "Not for the headache.",
             "speaker": "patient"
           }
         ]
       },
       "transcript": "Doctor: What has been happening?\nPatient: I've had a headache since yesterday. It's moderate, across the back of my head.\nDoctor: Are you taking medication for it?\nPatient: Not for the headache. I do take levothyroxine every morning.\nDoctor: Any other medicines today?\nPatient: No. I haven't even taken a painkiller.\nDoctor: Do you have any drug allergies?\nPatient: I don't have any known drug allergies. Codeine once made me nauseated, but I wasn't told it was an allergy.\nDoctor: Is that a medicine you still use?\nPatient: No, I only took it after dental work years ago.\nDoctor: Anything else on your regular medication list?\nPatient: Just the levothyroxine."
+    },
+    {
+      "cohort": "C13_scope_validation_20261023",
+      "case_id": "scope-15",
+      "field": "MED",
+      "gold_state": "S",
+      "gold_spans": [
+        "Hydrocortisone cream once last night"
+      ],
+      "gold_raw_slot": "MED:S[Hydrocortisone cream once last night]",
+      "claim_state": "conflicting",
+      "claim_abstain": null,
+      "trace": {
+        "field": "medication",
+        "raw_slot": "MED:S[Hydrocortisone cream once last night]",
+        "raw_state_code": "S",
+        "raw_state": "supported",
+        "raw_spans": [
+          {
+            "start": 217,
+            "end": 253,
+            "text": "Hydrocortisone cream once last night",
+            "speaker": "patient"
+          }
+        ],
+        "parse_error": null,
+        "verified": false,
+        "decision": "preserved_source_conflict",
+        "reason": "source_conflict_preserved",
+        "final_state": "conflicting",
+        "final_spans": [
+          {
+            "start": 217,
+            "end": 283,
+            "text": "Hydrocortisone cream once last night. I haven't taken any tablets.",
+            "speaker": "patient"
+          },
+          {
+            "start": 443,
+            "end": 473,
+            "text": "Nobody worked out which it was",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "transcript": "Doctor: Tell me about the skin problem.\nPatient: I have an itchy rash around my ankles. It appeared three days ago.\nDoctor: How bad is it?\nPatient: The itching is moderate.\nDoctor: What have you used so far?\nPatient: Hydrocortisone cream once last night. I haven't taken any tablets.\nDoctor: Do you have any allergies to medication?\nPatient: I'm not sure. I once developed a rash while taking amoxicillin, but I also had a new detergent then. Nobody worked out which it was.\nDoctor: Are you taking amoxicillin now?\nPatient: No. That was years ago.\nDoctor: Anything else being used on this rash?\nPatient: No, only the cream last night."
     },
     {
       "cohort": "C13_scope_validation_20261023",
@@ -1704,7 +1625,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1726,7 +1647,7 @@
         "moderate"
       ],
       "gold_raw_slot": "SEV:S[moderate]",
-      "claim_state": "uncertain",
+      "claim_state": "conflicting",
       "claim_abstain": null,
       "trace": {
         "field": "severity",
@@ -1743,10 +1664,16 @@
         ],
         "parse_error": null,
         "verified": false,
-        "decision": "rejected_to_uncertain",
-        "reason": "clause_contains_correction_marker",
-        "final_state": "uncertain",
+        "decision": "preserved_source_conflict",
+        "reason": "source_conflict_preserved",
+        "final_state": "conflicting",
         "final_spans": [
+          {
+            "start": 126,
+            "end": 132,
+            "text": "severe",
+            "speaker": "patient"
+          },
           {
             "start": 202,
             "end": 210,
@@ -1784,7 +1711,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1824,7 +1751,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1864,7 +1791,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1904,7 +1831,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
+        "reason": "leading_article_rejected",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -1919,43 +1846,49 @@
     },
     {
       "cohort": "C14_retention_validation_20261026",
-      "case_id": "retain-02",
+      "case_id": "retain-16",
       "field": "DUR",
       "gold_state": "S",
       "gold_spans": [
-        "Yesterday afternoon, after I got home"
+        "six days"
       ],
-      "gold_raw_slot": "DUR:S[Yesterday afternoon, after I got home]",
-      "claim_state": "uncertain",
+      "gold_raw_slot": "DUR:S[six days]",
+      "claim_state": "conflicting",
       "claim_abstain": null,
       "trace": {
         "field": "duration",
-        "raw_slot": "DUR:S[Yesterday afternoon, after I got home]",
+        "raw_slot": "DUR:S[six days]",
         "raw_state_code": "S",
         "raw_state": "supported",
         "raw_spans": [
           {
-            "start": 109,
-            "end": 146,
-            "text": "Yesterday afternoon, after I got home",
+            "start": 82,
+            "end": 90,
+            "text": "six days",
             "speaker": "patient"
           }
         ],
         "parse_error": null,
         "verified": false,
-        "decision": "rejected_to_uncertain",
-        "reason": "value_fails_field_type_guard",
-        "final_state": "uncertain",
+        "decision": "preserved_source_conflict",
+        "reason": "source_conflict_preserved",
+        "final_state": "conflicting",
         "final_spans": [
           {
-            "start": 109,
-            "end": 146,
-            "text": "Yesterday afternoon, after I got home",
+            "start": 78,
+            "end": 90,
+            "text": "for six days",
+            "speaker": "patient"
+          },
+          {
+            "start": 466,
+            "end": 471,
+            "text": "today",
             "speaker": "patient"
           }
         ]
       },
-      "transcript": "Doctor: Tell me what is bothering you.\nPatient: My left ankle is sore.\nDoctor: When did that start?\nPatient: Yesterday afternoon, after I got home.\nDoctor: How bad is the soreness, and have you tried treating it?\nPatient: It's mild. I haven't taken or applied anything for it.\nDoctor: What should I put in the medicine allergy box?\nPatient: Penicillin gives me hives."
+      "transcript": "Doctor: What is the reason for your visit?\nPatient: A runny nose. I've had it for six days.\nDoctor: How bad has it been today?\nPatient: It has been mild all day today.\nDoctor: What have you used for it?\nPatient: A saline spray.\nDoctor: Any medicine allergies?\nPatient: I said aspirin on the intake form, but that was a mistake. Penicillin is the medicine I'm allergic to.\nDoctor: Describe today's severity once more for the note.\nPatient: It has been severe all day today."
     },
     {
       "cohort": "C14_retention_validation_20261026",
@@ -1966,7 +1899,7 @@
         "I haven't taken or used anything for them."
       ],
       "gold_raw_slot": "MED:A[I haven't taken or used anything for them.]",
-      "claim_state": "uncertain",
+      "claim_state": "conflicting",
       "claim_abstain": null,
       "trace": {
         "field": "medication",
@@ -1983,14 +1916,20 @@
         ],
         "parse_error": null,
         "verified": false,
-        "decision": "rejected_to_uncertain",
-        "reason": "non_current_or_third_party_question_scope",
-        "final_state": "uncertain",
+        "decision": "preserved_source_conflict",
+        "reason": "source_conflict_preserved",
+        "final_state": "conflicting",
         "final_spans": [
           {
             "start": 229,
             "end": 271,
             "text": "I haven't taken or used anything for them.",
+            "speaker": "patient"
+          },
+          {
+            "start": 324,
+            "end": 392,
+            "text": "Sorry, that's my phone ringing. It's the person who's picking me up.",
             "speaker": "patient"
           }
         ]
@@ -2006,7 +1945,7 @@
         "Four days"
       ],
       "gold_raw_slot": "DUR:S[Four days]",
-      "claim_state": "uncertain",
+      "claim_state": "conflicting",
       "claim_abstain": null,
       "trace": {
         "field": "duration",
@@ -2023,14 +1962,20 @@
         ],
         "parse_error": null,
         "verified": false,
-        "decision": "rejected_to_uncertain",
-        "reason": "clause_contains_negation_hazard",
-        "final_state": "uncertain",
+        "decision": "preserved_source_conflict",
+        "reason": "source_conflict_preserved",
+        "final_state": "conflicting",
         "final_spans": [
           {
-            "start": 211,
-            "end": 220,
-            "text": "Four days",
+            "start": 336,
+            "end": 342,
+            "text": "Sunday",
+            "speaker": "patient"
+          },
+          {
+            "start": 459,
+            "end": 463,
+            "text": "noon",
             "speaker": "patient"
           }
         ]
@@ -2064,7 +2009,7 @@
         "parse_error": null,
         "verified": false,
         "decision": "rejected_to_uncertain",
-        "reason": "invalid_or_hedged_denial_span",
+        "reason": "partial_clause_denial_span",
         "final_state": "uncertain",
         "final_spans": [
           {
@@ -2121,8 +2066,7 @@
       "choices": [
         ":M",
         ":U[]",
-        ":S[lower back hurts]",
-        ":S[Mild, really]"
+        ":S[lower back hurts]"
       ],
       "transcript": "Doctor: Where are you having trouble?\nPatient: My lower back hurts.\nDoctor: How intense is that pain?\nPatient: Mild, really.\nDoctor: Have you tried a medicine for the back pain?\nPatient: No, I haven't tried any.\nDoctor: Are you allergic to any medications?\nPatient: Penicillin."
     },
@@ -2188,8 +2132,7 @@
       ],
       "choices": [
         ":M",
-        ":U[]",
-        ":S[moderate headache that's lasted four days]"
+        ":U[]"
       ],
       "transcript": "Doctor: What brought you here?\nPatient: A moderate headache that's lasted four days.\nDoctor: Which medicine have you tried for it?\nPatient: Aspirin.\nDoctor: When did you take the aspirin?\nPatient: Sorry, that was for a headache months ago. For this one I took ibuprofen yesterday, not aspirin.\nDoctor: Did you take any other medicine for the current headache?\nPatient: No, just the ibuprofen.\nDoctor: Do you have any medication allergies?\nPatient: Penicillin."
     },
@@ -2263,21 +2206,6 @@
     {
       "cohort": "C12_independent_dev_20261023",
       "case_id": "fresh-24",
-      "field": "CC",
-      "gold_state": "S",
-      "gold_spans": [
-        "This headache"
-      ],
-      "choices": [
-        ":M",
-        ":U[]",
-        ":S[headache]"
-      ],
-      "transcript": "Doctor: What would you like us to focus on?\nPatient: This headache. My back used to bother me, but that isn't the problem now.\nDoctor: When did it begin?\nPatient: Two days ago.\nDoctor: How bad is it?\nPatient: Mild.\nDoctor: Have you tried ibuprofen for it?\nPatient: Yes, I took it last night.\nDoctor: Are you allergic to penicillin?\nPatient: Yes, I am. That is my only medication allergy."
-    },
-    {
-      "cohort": "C12_independent_dev_20261023",
-      "case_id": "fresh-24",
       "field": "MED",
       "gold_state": "S",
       "gold_spans": [
@@ -2329,6 +2257,25 @@
     {
       "cohort": "C13_scope_validation_20261023",
       "case_id": "scope-03",
+      "field": "CC",
+      "gold_state": "S",
+      "gold_spans": [
+        "dry cough"
+      ],
+      "choices": [
+        ":M",
+        ":U[]",
+        ":S[This dry cough]",
+        ":S[It keeps interrupting me when I talk]",
+        ":S[I can work, but I'm coughing through meetings]",
+        ":S[dextromethorphan cough syrup at bedtime]",
+        ":S[I just want to talk about the cough]"
+      ],
+      "transcript": "Doctor: Tell me what's brought you in.\nPatient: This dry cough. It keeps interrupting me when I talk.\nDoctor: Has it been a matter of days or weeks?\nPatient: Six days now.\nDoctor: How rough has it been?\nPatient: Moderate. I can work, but I'm coughing through meetings.\nDoctor: What, if anything, are you using at the moment?\nPatient: A dextromethorphan cough syrup at bedtime.\nDoctor: Is there anything on your allergy list?\nPatient: I don't have any medicine allergies.\nDoctor: Is there another symptom you want to discuss today?\nPatient: No. I just want to talk about the cough."
+    },
+    {
+      "cohort": "C13_scope_validation_20261023",
+      "case_id": "scope-03",
       "field": "MED",
       "gold_state": "S",
       "gold_spans": [
@@ -2361,37 +2308,6 @@
     },
     {
       "cohort": "C13_scope_validation_20261023",
-      "case_id": "scope-04",
-      "field": "DUR",
-      "gold_state": "S",
-      "gold_spans": [
-        "Yesterday morning"
-      ],
-      "choices": [
-        ":M",
-        ":U[]",
-        ":S[Yesterday]",
-        ":S[since yesterday]"
-      ],
-      "transcript": "Doctor: What's going on with your ear?\nPatient: The right one feels full, like it won't pop.\nDoctor: Since when?\nPatient: Yesterday morning.\nDoctor: Is that painful, or mostly a pressure feeling?\nPatient: Mostly pressure. If you need a number, the discomfort is three out of ten.\nDoctor: Walk me through any medicines you're using.\nPatient: I take loratadine every morning for my seasonal allergies. I haven't used anything else for the ear.\nDoctor: Have any medicines caused an allergic reaction?\nPatient: Sulfa antibiotics caused a rash when I was a teenager.\nDoctor: Does the fullness come and go?\nPatient: It's been there continuously since yesterday."
-    },
-    {
-      "cohort": "C13_scope_validation_20261023",
-      "case_id": "scope-06",
-      "field": "DUR",
-      "gold_state": "S",
-      "gold_spans": [
-        "after breakfast this morning"
-      ],
-      "choices": [
-        ":M",
-        ":U[]",
-        ":U[I don't know. My old chart has an allergy flag, but I don't remember ever having a reaction or which medicine it means.]"
-      ],
-      "transcript": "Doctor: What's troubling you today?\nPatient: A burning feeling in my upper stomach. It started after breakfast this morning.\nDoctor: How uncomfortable would you say it is?\nPatient: Mild. I can go about my day, but I notice it.\nDoctor: What medicines have you used today?\nPatient: None today. I take no regular medicines either.\nDoctor: Are you allergic to any medications?\nPatient: I don't know. My old chart has an allergy flag, but I don't remember ever having a reaction or which medicine it means.\nDoctor: Do you recall what time you finished breakfast?\nPatient: Not exactly. I ate sometime before leaving for work.\nDoctor: And the burning is still there?\nPatient: Yes, the same mild burning."
-    },
-    {
-      "cohort": "C13_scope_validation_20261023",
       "case_id": "scope-09",
       "field": "MED",
       "gold_state": "A",
@@ -2408,16 +2324,18 @@
     {
       "cohort": "C13_scope_validation_20261023",
       "case_id": "scope-11",
-      "field": "MED",
-      "gold_state": "A",
+      "field": "CC",
+      "gold_state": "S",
       "gold_spans": [
-        "I haven't."
+        "itchy patch on my left forearm"
       ],
       "choices": [
         ":M",
         ":U[]",
-        ":S[There was a bottle of cetirizine]",
-        ":S[There was a bottle of cetirizine on the kitchen counter, but it's my housemate's]",
+        ":S[This itchy patch on my left forearm]",
+        ":S[It's been there a week]",
+        ":S[I catch myself scratching it while I read]",
+        ":S[It's just this one patch, and I first noticed it last Friday]",
         ":U[Yes. It just says 'severe rash, three months, steroid cream.' I found it in a shared notebook and don't know who wrote it. It isn't a description of my arm.]"
       ],
       "transcript": "Doctor: What are we looking at today?\nPatient: This itchy patch on my left forearm. It's been there a week.\nDoctor: How troublesome is the itching?\nPatient: Moderate. I catch myself scratching it while I read.\nDoctor: Have you put anything on it or taken anything?\nPatient: I haven't. There was a bottle of cetirizine on the kitchen counter, but it's my housemate's.\nDoctor: Do you have any medicine allergies?\nPatient: No known ones.\nDoctor: Did you bring the note you mentioned when booking?\nPatient: Yes. It just says 'severe rash, three months, steroid cream.' I found it in a shared notebook and don't know who wrote it. It isn't a description of my arm.\nDoctor: What can you tell me about your own patch?\nPatient: It's just this one patch, and I first noticed it last Friday."
@@ -2433,8 +2351,9 @@
       "choices": [
         ":M",
         ":U[]",
-        ":S[Yes, it described someone with severe back pain who took tramadol for years]",
         ":S[severe]",
+        ":S[severe back]",
+        ":S[Yes, it described someone with severe back pain who took tramadol for years]",
         ":U[Mild, maybe two out of ten.]"
       ],
       "transcript": "Doctor: What would you like help describing today?\nPatient: I've had a dull ache in my lower back since yesterday afternoon.\nDoctor: How strong is the ache?\nPatient: Mild, maybe two out of ten.\nDoctor: What medication are you using?\nPatient: None. I haven't taken anything for my back.\nDoctor: Any known medicine allergies?\nPatient: No known drug allergies.\nDoctor: You mentioned an article on the booking form.\nPatient: Yes, it described someone with severe back pain who took tramadol for years. I was asking about the article, not saying that's my situation.\nDoctor: Is there anything else about your symptoms?\nPatient: The ache is the main thing. My brother has kidney stones, but I've never had them."
@@ -2483,10 +2402,7 @@
       "choices": [
         ":M",
         ":U[]",
-        ":S[@646..659:levothyroxine]",
-        ":C[No.;Just the levothyroxine.]",
-        ":C[No.||@646..659:levothyroxine]",
-        ":A[No.]"
+        ":S[@646..659:levothyroxine]"
       ],
       "transcript": "Doctor: What has been happening?\nPatient: I've had a headache since yesterday. It's moderate, across the back of my head.\nDoctor: Are you taking medication for it?\nPatient: Not for the headache. I do take levothyroxine every morning.\nDoctor: Any other medicines today?\nPatient: No. I haven't even taken a painkiller.\nDoctor: Do you have any drug allergies?\nPatient: I don't have any known drug allergies. Codeine once made me nauseated, but I wasn't told it was an allergy.\nDoctor: Is that a medicine you still use?\nPatient: No, I only took it after dental work years ago.\nDoctor: Anything else on your regular medication list?\nPatient: Just the levothyroxine."
     },
@@ -2506,13 +2422,8 @@
         ":S[only tablet I've used was the naproxen]",
         ":S[only tablet I've used was the naproxen yesterday]",
         ":C[No regular prescriptions. I took naproxen yesterday for the ankle, though.||@464..467:No.]",
-        ":C[naproxen yesterday for the ankle, though||@464..467:No.]",
-        ":C[No regular prescriptions. I took naproxen yesterday for the ankle, though.||@587..590:No.]",
-        ":C[naproxen yesterday for the ankle, though||@587..590:No.]",
-        ":C[No. The only tablet I've used was the naproxen yesterday.||@587..590:No.]",
-        ":C[only tablet I've used was the naproxen yesterday||@587..590:No.]",
-        ":A[@464..467:No.]",
-        ":A[@587..590:No.]"
+        ":C[@275..283:naproxen||@464..467:No.]",
+        ":A[@464..467:No.]"
       ],
       "transcript": "Doctor: What brought you in today?\nPatient: I have a sore right ankle. It's been four days since I rolled it stepping off a curb.\nDoctor: How painful is it now?\nPatient: Four out of ten when I walk.\nDoctor: Are you on any medicines?\nPatient: No regular prescriptions. I took naproxen yesterday for the ankle, though.\nDoctor: Any known medication allergies?\nPatient: Yes, aspirin causes hives for me.\nDoctor: Have you taken aspirin during these four days?\nPatient: No. The only tablet I've used was the naproxen yesterday.\nDoctor: Is there anything else on your medication list?\nPatient: No."
     },
@@ -2528,11 +2439,9 @@
       "choices": [
         ":M",
         ":U[]",
-        ":S[right ear hurts]",
         ":S[Wait, I mean two days]",
         ":S[I was thinking about when I booked a different appointment]",
-        ":S[I keep saying right, but it's this left one that hurts]",
-        ":S[Mild, about two out of ten]"
+        ":S[I keep saying right, but it's this left one that hurts]"
       ],
       "transcript": "Doctor: What symptoms are you having?\nPatient: My right ear hurts.\nDoctor: How long has it hurt?\nPatient: Two weeks. Wait, I mean two days. I was thinking about when I booked a different appointment.\nDoctor: And which ear is it?\nPatient: Sorry, the left ear. I keep saying right, but it's this left one that hurts.\nDoctor: How bad is the pain?\nPatient: Mild, about two out of ten.\nDoctor: Have you taken anything?\nPatient: No medicine for it, and I don't take regular medicine.\nDoctor: Any medication allergies?\nPatient: None that I'm aware of."
     },
@@ -2550,23 +2459,8 @@
         ":S[throat has been sore]",
         ":S[throat has been sore for five days]",
         ":S[I'd say severe]",
+        ":S[Actually, moderate is a better word]",
         ":S[I can eat and talk]"
-      ],
-      "transcript": "Doctor: What's been bothering you?\nPatient: My throat has been sore for five days.\nDoctor: How severe is it?\nPatient: I'd say severe.\nDoctor: Can you tell me what you mean by severe?\nPatient: Actually, moderate is a better word. I can eat and talk; I'm just frustrated that it hasn't gone away.\nDoctor: Are you taking any medicine?\nPatient: Nothing. Oh, I did take acetaminophen before work this morning. I forgot about that.\nDoctor: Any known allergies to medication?\nPatient: No known allergies.\nDoctor: Any other medicine this week?\nPatient: No, just that acetaminophen this morning."
-    },
-    {
-      "cohort": "C13_scope_validation_20261023",
-      "case_id": "scope-18",
-      "field": "SEV",
-      "gold_state": "S",
-      "gold_spans": [
-        "moderate"
-      ],
-      "choices": [
-        ":M",
-        ":U[]",
-        ":S[I'd say severe]",
-        ":S[severe]"
       ],
       "transcript": "Doctor: What's been bothering you?\nPatient: My throat has been sore for five days.\nDoctor: How severe is it?\nPatient: I'd say severe.\nDoctor: Can you tell me what you mean by severe?\nPatient: Actually, moderate is a better word. I can eat and talk; I'm just frustrated that it hasn't gone away.\nDoctor: Are you taking any medicine?\nPatient: Nothing. Oh, I did take acetaminophen before work this morning. I forgot about that.\nDoctor: Any known allergies to medication?\nPatient: No known allergies.\nDoctor: Any other medicine this week?\nPatient: No, just that acetaminophen this morning."
     },
@@ -2619,7 +2513,7 @@
         ":U[]",
         ":S[left knee has been stiff and sore]",
         ":S[left knee has been stiff and sore for three weeks]",
-        ":S[Around five out of ten]",
+        ":S[Ibuprofen every day]",
         ":S[I may be mixing up this week and last week]"
       ],
       "transcript": "Doctor: What brought you here?\nPatient: My left knee has been stiff and sore for three weeks.\nDoctor: How much pain are you in?\nPatient: Around five out of ten.\nDoctor: What are you taking for it?\nPatient: Ibuprofen every day.\nDoctor: When was your last dose?\nPatient: I haven't taken any ibuprofen this week.\nDoctor: I'm hearing two different descriptions of your use. Can you clarify?\nPatient: I know, but I can't sort it out without checking the packets at home. I may be mixing up this week and last week.\nDoctor: Any drug allergies you know about?\nPatient: Sulfa antibiotics gave me hives."
@@ -2655,68 +2549,27 @@
         ":M",
         ":U[]",
         ":S[Yesterday]",
-        ":S[noon, after I got home]"
+        ":S[noon, after I got home]",
+        ":S[Yesterday afternoon]"
       ],
       "transcript": "Doctor: Tell me what is bothering you.\nPatient: My left ankle is sore.\nDoctor: When did that start?\nPatient: Yesterday afternoon, after I got home.\nDoctor: How bad is the soreness, and have you tried treating it?\nPatient: It's mild. I haven't taken or applied anything for it.\nDoctor: What should I put in the medicine allergy box?\nPatient: Penicillin gives me hives."
     },
     {
       "cohort": "C14_retention_validation_20261026",
-      "case_id": "retain-15",
-      "field": "DUR",
-      "gold_state": "S",
-      "gold_spans": [
-        "this morning"
-      ],
-      "choices": [
-        ":M",
-        ":U[]"
-      ],
-      "transcript": "Doctor: Which problem are we looking at today?\nPatient: My right wrist hurts right now; my left wrist doesn't hurt.\nDoctor: When did the wrist pain begin?\nPatient: Last night. Sorry, that was the other thing I was thinking of. The wrist pain began this morning.\nDoctor: How bad is it, and have you tried anything?\nPatient: It's moderate. I haven't tried anything for it.\nDoctor: Tell me which wrist is painful right now as I write this down.\nPatient: My left wrist hurts right now; my right wrist doesn't hurt."
-    },
-    {
-      "cohort": "C14_retention_validation_20261026",
-      "case_id": "retain-16",
+      "case_id": "retain-04",
       "field": "CC",
       "gold_state": "S",
       "gold_spans": [
-        "runny nose"
+        "itchy rash on my forearm"
       ],
       "choices": [
         ":M",
         ":U[]",
-        ":S[It has been mild all day today]"
+        ":S[This itchy rash on my forearm]",
+        ":S[This itchy rash on my forearm has been here a week]",
+        ":S[Mild is the right word]"
       ],
-      "transcript": "Doctor: What is the reason for your visit?\nPatient: A runny nose. I've had it for six days.\nDoctor: How bad has it been today?\nPatient: It has been mild all day today.\nDoctor: What have you used for it?\nPatient: A saline spray.\nDoctor: Any medicine allergies?\nPatient: I said aspirin on the intake form, but that was a mistake. Penicillin is the medicine I'm allergic to.\nDoctor: Describe today's severity once more for the note.\nPatient: It has been severe all day today."
-    },
-    {
-      "cohort": "C14_retention_validation_20261026",
-      "case_id": "retain-16",
-      "field": "DUR",
-      "gold_state": "S",
-      "gold_spans": [
-        "six days"
-      ],
-      "choices": [
-        ":M",
-        ":U[]",
-        ":S[@161..166:today]"
-      ],
-      "transcript": "Doctor: What is the reason for your visit?\nPatient: A runny nose. I've had it for six days.\nDoctor: How bad has it been today?\nPatient: It has been mild all day today.\nDoctor: What have you used for it?\nPatient: A saline spray.\nDoctor: Any medicine allergies?\nPatient: I said aspirin on the intake form, but that was a mistake. Penicillin is the medicine I'm allergic to.\nDoctor: Describe today's severity once more for the note.\nPatient: It has been severe all day today."
-    },
-    {
-      "cohort": "C14_retention_validation_20261026",
-      "case_id": "retain-23",
-      "field": "MED",
-      "gold_state": "A",
-      "gold_spans": [
-        "I haven't taken or used anything for them."
-      ],
-      "choices": [
-        ":M",
-        ":U[]",
-        ":U[@65..159:Spasms in my lower back. Maybe last Tuesday, maybe the Thursday before that; I can't remember.]"
-      ],
-      "transcript": "Doctor: What has been happening, and when did it start?\nPatient: Spasms in my lower back. Maybe last Tuesday, maybe the Thursday before that; I can't remember.\nDoctor: How bad are they, and what have you tried for them?\nPatient: I haven't taken or used anything for them.\nDoctor: What about allergies to medicines?\nPatient: Sorry, that's my phone ringing. It's the person who's picking me up.\nDoctor: Do you need a moment to answer?\nPatient: Yes, just a moment, please."
+      "transcript": "Doctor: What would you like us to look at today?\nPatient: This itchy rash on my forearm has been here a week.\nDoctor: Does the itching feel mild, moderate, or severe?\nPatient: Mild is the right word.\nDoctor: Anything you've put on it or taken for it?\nPatient: Nothing at all for this rash.\nDoctor: Tell me about medication allergies.\nPatient: There aren't any; I don't have medication allergies."
     },
     {
       "cohort": "C14_retention_validation_20261026",
@@ -2729,7 +2582,10 @@
       "choices": [
         ":M",
         ":U[]",
-        ":S[noon]"
+        ":S[Sunday]",
+        ":S[Saturday]",
+        ":S[noon]",
+        ":C[Sunday;noon]"
       ],
       "transcript": "Doctor: What would you like to talk about today?\nPatient: Pressure behind both eyes.\nDoctor: How long has it lasted, how bad is it, have you taken anything for it, and do you have medication allergies?\nPatient: Four days, and I have no medication allergies.\nDoctor: You mentioned travel when you checked in.\nPatient: Yes, I returned on Sunday. Actually, I checked the ticket: I returned on Saturday.\nDoctor: Was it a long trip home?\nPatient: Most of the afternoon, with a train change in the middle."
     },
