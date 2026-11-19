@@ -42,7 +42,7 @@ MECHANISM_SPECS: dict[str, MechanismSpec] = {
     "M4_BOBO_DualFastOp": MechanismSpec("M4_BOBO_DualFastOp", ffn_hidden=82, n_layers=4),
     "M5_HSPA_LieSO3": MechanismSpec("M5_HSPA_LieSO3", ffn_hidden=78, n_layers=4),
     "M6_NEBN_BayesFilter": MechanismSpec("M6_NEBN_BayesFilter", ffn_hidden=82, n_layers=4),
-    "M7_SkewCayley_Flow": MechanismSpec("M7_SkewCayley_Flow", ffn_hidden=40, n_layers=4),
+    "M7_SkewCayley_Flow": MechanismSpec("M7_SkewCayley_Flow", ffn_hidden=62, n_layers=4),
     "M8_TRM_Recursive_Loop": MechanismSpec("M8_TRM_Recursive_Loop", ffn_hidden=224, n_layers=2, loops=3),
     "M9_DualChannel_Pointer": MechanismSpec("M9_DualChannel_Pointer", ffn_hidden=72, n_layers=4, use_pointer=True),
 }
@@ -142,6 +142,113 @@ class GDN1Mixer(nn.Module):
         self.onorm = RMSNorm(self.hd)
         self.o = nn.Linear(d, d, bias=False)
 
+    def _forward_sequential(
+        self,
+        q: torch.Tensor,
+        k: torch.Tensor,
+        v: torch.Tensor,
+        decay: torch.Tensor,
+        beta: torch.Tensor,
+    ) -> torch.Tensor:
+        B, T, _, _ = q.shape
+        BH = B * self.h
+        q_t = q.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        k_t = k.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        v_t = v.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        d_t = decay.permute(1, 0, 2).reshape(T, BH, 1, 1).contiguous().unbind(0)
+        b_t = beta.permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+
+        S = torch.zeros(BH, self.hd, self.hd, device=q.device, dtype=torch.float32)
+        outs: list[torch.Tensor] = []
+        for t in range(T):
+            kt = k_t[t]
+            vt = v_t[t]
+            qt = q_t[t]
+            dt = d_t[t]
+            bt = b_t[t]
+            # S = decay * S - decay * beta * (S @ k) k^T + beta * v k^T
+            sk = torch.bmm(S, kt.unsqueeze(-1)).squeeze(-1)
+            S = dt * (S - (bt * sk).unsqueeze(-1) * kt.unsqueeze(-2)) + (bt * vt).unsqueeze(-1) * kt.unsqueeze(-2)
+            outs.append(torch.bmm(S, qt.unsqueeze(-1)).squeeze(-1))
+        return torch.stack(outs, dim=0).view(T, B, self.h, self.hd).permute(1, 0, 2, 3)
+
+    def _forward_chunked_wy(
+        self,
+        q: torch.Tensor,
+        k: torch.Tensor,
+        v: torch.Tensor,
+        log_d: torch.Tensor,
+        beta: torch.Tensor,
+        chunk_size: int = 32,
+    ) -> torch.Tensor:
+        B, T, _, _ = q.shape
+        BH = B * self.h
+        C = chunk_size
+        pad_t = (-T) % C
+
+        # Reorder to [BH, T, ...] before chunking
+        qf = q.permute(0, 2, 1, 3).reshape(BH, T, self.hd)
+        kf = k.permute(0, 2, 1, 3).reshape(BH, T, self.hd)
+        vf = v.permute(0, 2, 1, 3).reshape(BH, T, self.hd)
+        ldf = log_d.permute(0, 2, 1).reshape(BH, T)
+        bf = beta.permute(0, 2, 1).reshape(BH, T)
+
+        if pad_t:
+            qf = F.pad(qf, (0, 0, 0, pad_t))
+            kf = F.pad(kf, (0, 0, 0, pad_t))
+            vf = F.pad(vf, (0, 0, 0, pad_t))
+            ldf = F.pad(ldf, (0, pad_t))
+            bf = F.pad(bf, (0, pad_t))
+
+        T_pad = T + pad_t
+        n_chunks = T_pad // C
+        qc = qf.view(BH, n_chunks, C, self.hd)
+        kc = kf.view(BH, n_chunks, C, self.hd)
+        vc = vf.view(BH, n_chunks, C, self.hd)
+        ldc = ldf.view(BH, n_chunks, C)
+        bc = bf.view(BH, n_chunks, C)
+
+        g = ldc.cumsum(dim=-1)
+        mask_strict = torch.tril(torch.ones(C, C, device=q.device, dtype=torch.bool), diagonal=-1)
+        mask_causal = torch.tril(torch.ones(C, C, device=q.device, dtype=torch.bool), diagonal=0)
+        diff = (g.unsqueeze(-1) - g.unsqueeze(-2)).clamp(max=0.0)
+        decay_strict = torch.where(mask_strict, diff.exp(), torch.zeros_like(diff))
+        decay_causal = torch.where(mask_causal, diff.exp(), torch.zeros_like(diff))
+
+        L = bc.unsqueeze(-1) * decay_strict * torch.matmul(kc, kc.transpose(-1, -2))
+        eye_c = torch.eye(C, device=q.device, dtype=torch.float32)
+        # Exact Neumann expansion (I + L)^-1 via nilpotent doubling (L^32 == 0)
+        T_wy = eye_c - L
+        Lp = torch.matmul(L, L)
+        T_wy = torch.matmul(T_wy, eye_c + Lp)
+        Lp = torch.matmul(Lp, Lp)
+        T_wy = torch.matmul(T_wy, eye_c + Lp)
+        Lp = torch.matmul(Lp, Lp)
+        T_wy = torch.matmul(T_wy, eye_c + Lp)
+        Lp = torch.matmul(Lp, Lp)
+        T_wy = torch.matmul(T_wy, eye_c + Lp)
+
+        gamma = g.exp()
+        U = torch.matmul(T_wy, bc.unsqueeze(-1) * vc)
+        P = torch.matmul(T_wy, (bc * gamma).unsqueeze(-1) * kc)
+        M_intra = decay_causal * torch.matmul(qc, kc.transpose(-1, -2))
+        q_scaled = gamma.unsqueeze(-1) * qc
+        end_decay = (g[..., -1:] - g).clamp(max=0.0).exp()
+        k_end = end_decay.unsqueeze(-1) * kc
+        chunk_decay = gamma[..., -1].unsqueeze(-1).unsqueeze(-1)
+
+        S = torch.zeros(BH, self.hd, self.hd, device=q.device, dtype=torch.float32)
+        ys: list[torch.Tensor] = []
+        for ci in range(n_chunks):
+            St = S.transpose(1, 2)
+            W_c = U[:, ci] - torch.bmm(P[:, ci], St)
+            Y_c = torch.bmm(q_scaled[:, ci], St) + torch.bmm(M_intra[:, ci], W_c)
+            ys.append(Y_c)
+            S = chunk_decay[:, ci] * S + torch.bmm(W_c.transpose(1, 2), k_end[:, ci])
+
+        y_all = torch.cat(ys, dim=1)[:, :T]
+        return y_all.view(B, self.h, T, self.hd).permute(0, 2, 1, 3)
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, D = x.shape
         q, k, v = self.conv(self.qkv(x)).split(D, dim=-1)
@@ -149,22 +256,14 @@ class GDN1Mixer(nn.Module):
         k = _center_l2(k.view(B, T, self.h, self.hd), center=self.full_sphere)
         v = v.view(B, T, self.h, self.hd).float()
 
-        decay = (-F.softplus(self.a(x.float())) * self.A_log.exp()).exp()  # [B, T, H]
+        log_d = -F.softplus(self.a(x.float())) * self.A_log.exp()  # [B, T, H], <= 0
         beta = (2.0 * torch.sigmoid(self.b(x.float()))) if self.full_sphere else torch.sigmoid(self.b(x.float()))
 
-        S = torch.zeros(B, self.h, self.hd, self.hd, device=x.device, dtype=torch.float32)
-        outs = []
-        for t in range(T):
-            kt = k[:, t]  # [B, H, hd]
-            vt = v[:, t]
-            qt = q[:, t]
-            dt = decay[:, t].unsqueeze(-1).unsqueeze(-1)
-            bt = beta[:, t].unsqueeze(-1)
-            # S = decay * S - decay * beta * (S @ k) k^T + beta * v k^T
-            sk = torch.einsum("bhik,bhk->bhi", S, kt)
-            S = dt * (S - torch.einsum("bhi,bhk->bhik", bt * sk, kt)) + torch.einsum("bhi,bhk->bhik", bt * vt, kt)
-            outs.append(torch.einsum("bhik,bhk->bhi", S, qt))
-        y = self.onorm(torch.stack(outs, dim=1)).reshape(B, T, D)
+        if T >= 32:
+            y_heads = self._forward_chunked_wy(q, k, v, log_d, beta, chunk_size=32)
+        else:
+            y_heads = self._forward_sequential(q, k, v, log_d.exp(), beta)
+        y = self.onorm(y_heads).reshape(B, T, D)
         return self.o((y * F.silu(self.g(x.float()))).to(x.dtype))
 
 
@@ -188,6 +287,7 @@ class KDADeltaProduct2Mixer(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, D = x.shape
+        BH = B * self.h
         q, k, v = self.conv(self.qkv(x)).split(D, dim=-1)
         q = _center_l2(q.view(B, T, self.h, self.hd), center=True)
         k = _center_l2(k.view(B, T, self.h, self.hd), center=True)
@@ -202,22 +302,32 @@ class KDADeltaProduct2Mixer(nn.Module):
         b2 = 2.0 * torch.sigmoid(b2_raw)
         eta = torch.sigmoid(eta_raw)
 
-        S = torch.zeros(B, self.h, self.hd, self.hd, device=x.device, dtype=torch.float32)
-        outs = []
+        q_t = q.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        k_t = k.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        v_t = v.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        u1_t = u1.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        u2_t = u2.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        a_t = alpha.permute(1, 0, 2, 3).reshape(T, BH, self.hd, 1).contiguous().unbind(0)
+        b1_t = b1.permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+        b2_t = b2.permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+        eta_t = eta.permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+
+        S = torch.zeros(BH, self.hd, self.hd, device=x.device, dtype=torch.float32)
+        outs: list[torch.Tensor] = []
         for t in range(T):
-            u1t, u2t = u1[:, t], u2[:, t]
+            u1t, u2t = u1_t[t], u2_t[t]
             # Rank-2 orthogonal/contractive transition: S <- (I - b2 u2 u2^T)(I - b1 u1 u1^T) S
-            su1 = torch.einsum("bhik,bhk->bhi", S, u1t)
-            S = S - torch.einsum("bhi,bhk->bhik", b1[:, t].unsqueeze(-1) * su1, u1t)
-            su2 = torch.einsum("bhik,bhk->bhi", S, u2t)
-            S = S - torch.einsum("bhi,bhk->bhik", b2[:, t].unsqueeze(-1) * su2, u2t)
+            su1 = torch.bmm(S, u1t.unsqueeze(-1)).squeeze(-1)
+            S = S - (b1_t[t] * su1).unsqueeze(-1) * u1t.unsqueeze(-2)
+            su2 = torch.bmm(S, u2t.unsqueeze(-1)).squeeze(-1)
+            S = S - (b2_t[t] * su2).unsqueeze(-1) * u2t.unsqueeze(-2)
             # Channelwise KDA decay + selective Delta erase/write
-            S = S * alpha[:, t].unsqueeze(-1)
-            kt, vt = k[:, t], v[:, t]
-            err = vt - torch.einsum("bhik,bhk->bhi", S, kt)
-            S = S + torch.einsum("bhi,bhk->bhik", eta[:, t].unsqueeze(-1) * err, kt)
-            outs.append(torch.einsum("bhik,bhk->bhi", S, q[:, t]))
-        y = self.onorm(torch.stack(outs, dim=1)).reshape(B, T, D)
+            S = S * a_t[t]
+            kt, vt = k_t[t], v_t[t]
+            err = vt - torch.bmm(S, kt.unsqueeze(-1)).squeeze(-1)
+            S = S + (eta_t[t] * err).unsqueeze(-1) * kt.unsqueeze(-2)
+            outs.append(torch.bmm(S, q_t[t].unsqueeze(-1)).squeeze(-1))
+        y = self.onorm(torch.stack(outs, dim=0).view(T, B, self.h, self.hd).permute(1, 0, 2, 3)).reshape(B, T, D)
         return self.o((y * F.silu(self.g(x.float()))).to(x.dtype))
 
 
@@ -236,6 +346,7 @@ class BOBODualFastMixer(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, D = x.shape
+        BH = B * self.h
         q1, q2, k, v = self.proj(x).view(B, T, 4, self.h, self.hd).unbind(2)
         q1 = F.normalize(q1.float(), dim=-1)
         q2 = F.normalize(q2.float(), dim=-1)
@@ -243,16 +354,22 @@ class BOBODualFastMixer(nn.Module):
         v = v.float()
         decay = torch.sigmoid(self.a(x.float()))
         beta = torch.sigmoid(self.b(x.float()))
-        S = torch.zeros(B, self.h, self.hd, self.hd, device=x.device, dtype=torch.float32)
-        outs = []
+
+        q1_t = q1.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        q2_t = q2.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        k_t = k.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        v_t = v.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        d_t = decay.permute(1, 0, 2).reshape(T, BH, 1, 1).contiguous().unbind(0)
+        b_t = beta.permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+
+        S = torch.zeros(BH, self.hd, self.hd, device=x.device, dtype=torch.float32)
+        outs: list[torch.Tensor] = []
         for t in range(T):
-            dt = decay[:, t].unsqueeze(-1).unsqueeze(-1)
-            bt = beta[:, t].unsqueeze(-1)
-            S = dt * S + torch.einsum("bhi,bhk->bhik", bt * v[:, t], k[:, t])
-            r1 = torch.einsum("bhik,bhk->bhi", S, q1[:, t])
-            r2 = torch.einsum("bhik,bhk->bhi", S, q2[:, t])
+            S = d_t[t] * S + (b_t[t] * v_t[t]).unsqueeze(-1) * k_t[t].unsqueeze(-2)
+            r1 = torch.bmm(S, q1_t[t].unsqueeze(-1)).squeeze(-1)
+            r2 = torch.bmm(S, q2_t[t].unsqueeze(-1)).squeeze(-1)
             outs.append(r1 * F.silu(r2))
-        y = self.onorm(torch.stack(outs, dim=1)).reshape(B, T, D)
+        y = self.onorm(torch.stack(outs, dim=0).view(T, B, self.h, self.hd).permute(1, 0, 2, 3)).reshape(B, T, D)
         return self.o(y.to(x.dtype))
 
 
@@ -282,15 +399,15 @@ class HSPALieSO3Mixer(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, _ = x.shape
-        omega = self.w_omega(x).view(B, T, self.h, self.r, 3).float()
-        u_in = self.w_in(x).view(B, T, self.h, self.r, 3).float()
+        omega_t = self.w_omega(x).view(B, T, self.h, self.r, 3).float().permute(1, 0, 2, 3, 4).contiguous().unbind(0)
+        u_t = self.w_in(x).view(B, T, self.h, self.r, 3).float().permute(1, 0, 2, 3, 4).contiguous().unbind(0)
         a_raw, eta_raw = self.w_gate(x).view(B, T, 2, self.h, self.r).unbind(2)
-        decay = torch.sigmoid(a_raw.float()).unsqueeze(-1)
-        eta = torch.sigmoid(eta_raw.float()).unsqueeze(-1)
+        d_t = torch.sigmoid(a_raw.float()).unsqueeze(-1).permute(1, 0, 2, 3, 4).contiguous().unbind(0)
+        e_t = torch.sigmoid(eta_raw.float()).unsqueeze(-1).permute(1, 0, 2, 3, 4).contiguous().unbind(0)
         S = torch.zeros(B, self.h, self.r, 3, device=x.device, dtype=torch.float32)
-        outs = []
+        outs: list[torch.Tensor] = []
         for t in range(T):
-            S = decay[:, t] * self._rodrigues_step(S, omega[:, t]) + eta[:, t] * u_in[:, t]
+            S = d_t[t] * self._rodrigues_step(S, omega_t[t]) + e_t[t] * u_t[t]
             outs.append(S.reshape(B, self.fdim))
         y = self.onorm(torch.stack(outs, dim=1))
         return self.o(y.to(x.dtype))
@@ -313,38 +430,45 @@ class NEBNBayersFilterMixer(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, D = x.shape
+        BH = B * self.h
         q, k, v = self.qkv(x).view(B, T, 3, self.h, self.hd).unbind(2)
         q = _center_l2(q, center=True)
         k = _center_l2(k, center=True)
         v = v.float()
         decay = torch.sigmoid(self.a(x.float()))
         beta = torch.sigmoid(self.b(x.float()))
-        lam0 = self.lam_log.exp().view(1, self.h, 1)
+        lam0 = self.lam_log.exp().view(1, self.h, 1).expand(B, -1, -1).reshape(BH, 1)
 
-        H_mat = torch.zeros(B, self.h, self.hd, self.hd, device=x.device, dtype=torch.float32)
-        P_diag = torch.zeros(B, self.h, self.hd, device=x.device, dtype=torch.float32)
-        outs = []
+        q_t = q.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        k_t = k.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        v_t = v.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        d_t = decay.permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+        b_t = beta.permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+
+        H_mat = torch.zeros(BH, self.hd, self.hd, device=x.device, dtype=torch.float32)
+        P_diag = torch.zeros(BH, self.hd, device=x.device, dtype=torch.float32)
+        outs: list[torch.Tensor] = []
         for t in range(T):
-            dt = decay[:, t].unsqueeze(-1)
-            bt = beta[:, t].unsqueeze(-1)
-            kt = k[:, t]
-            vt = v[:, t]
+            dt = d_t[t]
+            bt = b_t[t]
+            kt = k_t[t]
+            vt = v_t[t]
+            qt = q_t[t]
             P_diag = dt * P_diag + bt * (kt * kt)
-            H_mat = dt.unsqueeze(-1) * H_mat + torch.einsum("bhi,bhk->bhik", bt * vt, kt)
-            qt = q[:, t]
+            H_mat = dt.unsqueeze(-1) * H_mat + (bt * vt).unsqueeze(-1) * kt.unsqueeze(-2)
             prec = (P_diag * (qt * qt)).sum(dim=-1, keepdim=True) + lam0
-            read = torch.einsum("bhik,bhk->bhi", H_mat, qt) / prec.clamp_min(1e-3)
+            read = torch.bmm(H_mat, qt.unsqueeze(-1)).squeeze(-1) / prec.clamp_min(1e-3)
             # Epistemic precision certainty weight
             cert = 1.0 - 1.0 / (1.0 + prec)
             outs.append(read * cert)
-        y = self.onorm(torch.stack(outs, dim=1)).reshape(B, T, D)
+        y = self.onorm(torch.stack(outs, dim=0).view(T, B, self.h, self.hd).permute(1, 0, 2, 3)).reshape(B, T, D)
         return self.o((y * F.silu(self.g(x.float()))).to(x.dtype))
 
 
 class SkewCayleyFlowMixer(nn.Module):
-    """Continuous-time skew-symmetric + dissipative Cayley flow: M = (I - A/2)^-1 (I + A/2)."""
+    """Continuous-time skew-symmetric + dissipative Cayley flow via analytical 2x2 Woodbury inverse."""
 
-    def __init__(self, d: int, h: int, rank: int = 2) -> None:
+    def __init__(self, d: int, h: int, rank: int = 1) -> None:
         super().__init__()
         self.h = h
         self.hd = d // h
@@ -356,48 +480,73 @@ class SkewCayleyFlowMixer(nn.Module):
         self.onorm = RMSNorm(self.hd)
         self.o = nn.Linear(d, d, bias=False)
 
+    @staticmethod
+    def _cayley_step_woodbury(
+        S: torch.Tensor,
+        u: torch.Tensor,
+        w: torch.Tensor,
+        gamma: torch.Tensor,
+        h_step: torch.Tensor,
+    ) -> torch.Tensor:
+        """Exact `S @ M^T` for `A = u w^T - w u^T - diag(gamma)`, `M = (I - h A)^-1 (I + h A)`."""
+        d = 1.0 / (1.0 + h_step * gamma)            # [BH, hd]
+        u_d = d * u
+        w_d = d * w
+        alpha = (w * u_d).sum(dim=-1)               # [BH]
+        beta = (u * u_d).sum(dim=-1)                # [BH]
+        g_val = (w * w_d).sum(dim=-1)               # [BH]
+        h_s = h_step.squeeze(-1)                    # [BH]
+        det = 1.0 + (h_s * h_s) * (beta * g_val - alpha * alpha).clamp_min(0.0)
+        inv_det = 2.0 / det                         # folds factor 2 into K = 2 * (C^-1)^T
+        P = torch.stack((w_d, u_d), dim=-1)         # [BH, hd, 2]
+        Q = torch.stack((-h_step * u_d, h_step * w_d), dim=-1)  # [BH, hd, 2]
+        row0 = torch.stack(((1.0 + h_s * alpha) * inv_det, (h_s * beta) * inv_det), dim=-1)
+        row1 = torch.stack(((-h_s * g_val) * inv_det, (1.0 - h_s * alpha) * inv_det), dim=-1)
+        K = torch.stack((row0, row1), dim=-2)       # [BH, 2, 2]
+        SP = torch.bmm(S, P)                        # [BH, hd, 2]
+        return S * (2.0 * d - 1.0).unsqueeze(1) - torch.bmm(torch.bmm(SP, K), Q.transpose(1, 2))
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, D = x.shape
+        BH = B * self.h
         q, k, v = self.qkv(x).view(B, T, 3, self.h, self.hd).unbind(2)
         q = _center_l2(q, center=True)
         k = _center_l2(k, center=True)
         v = v.float()
 
         u_raw, w_raw = self.uv(x.float()).view(B, T, 2, self.h, self.rank, self.hd).unbind(2)
-        u_raw = u_raw / math.sqrt(float(self.hd))
-        w_raw = w_raw / math.sqrt(float(self.hd))
-        # Rank-r skew-symmetric generator Omega = U^T W - W^T U  ([B, T, H, hd, hd])
-        Omega = torch.einsum("bthri,bthrj->bthij", u_raw, w_raw) - torch.einsum("bthri,bthrj->bthij", w_raw, u_raw)
-        Gamma = F.softplus(self.gamma(x.float())).view(B, T, self.h, self.hd)
+        if self.rank != 1:
+            raise ValueError("Woodbury Cayley flow requires rank=1 skew generator")
+        inv_s = 1.0 / math.sqrt(float(self.hd))
+        u_vecs = (u_raw.squeeze(-2) * inv_s).permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        w_vecs = (w_raw.squeeze(-2) * inv_s).permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        gamma_t = F.softplus(self.gamma(x.float())).view(B, T, self.h, self.hd).permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
         h_raw, eta_raw = self.h_eta(x.float()).split(self.h, dim=-1)
-        h_step = 0.5 * torch.sigmoid(h_raw).view(B, T, self.h, 1, 1)
-        eta = torch.sigmoid(eta_raw)
+        h_t = (0.5 * torch.sigmoid(h_raw)).permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
+        eta_t = torch.sigmoid(eta_raw).permute(1, 0, 2).reshape(T, BH, 1).contiguous().unbind(0)
 
-        A = Omega - torch.diag_embed(Gamma)
-        eye = torch.eye(self.hd, device=x.device, dtype=torch.float32).view(1, 1, 1, self.hd, self.hd)
-        lhs = eye - h_step * A
-        rhs = eye + h_step * A
-        M = torch.linalg.solve(lhs, rhs)  # guaranteed ||M||_2 <= 1
+        q_t = q.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        k_t = k.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
+        v_t = v.permute(1, 0, 2, 3).reshape(T, BH, self.hd).contiguous().unbind(0)
 
-        S = torch.zeros(B, self.h, self.hd, self.hd, device=x.device, dtype=torch.float32)
-        outs = []
+        S = torch.zeros(BH, self.hd, self.hd, device=x.device, dtype=torch.float32)
+        outs: list[torch.Tensor] = []
         for t in range(T):
-            # S_rot = S @ M_t^T (rotating key space!), then selective Delta erase/write
-            S_rot = torch.matmul(S, M[:, t].transpose(-1, -2))
-            kt, vt = k[:, t], v[:, t]
-            err = vt - torch.einsum("bhik,bhk->bhi", S_rot, kt)
-            S = S_rot + torch.einsum("bhi,bhk->bhik", eta[:, t].unsqueeze(-1) * err, kt)
-            outs.append(torch.einsum("bhik,bhk->bhi", S, q[:, t]))
-        y = self.onorm(torch.stack(outs, dim=1)).reshape(B, T, D)
+            S_rot = self._cayley_step_woodbury(S, u_vecs[t], w_vecs[t], gamma_t[t], h_t[t])
+            kt, vt = k_t[t], v_t[t]
+            err = vt - torch.bmm(S_rot, kt.unsqueeze(-1)).squeeze(-1)
+            S = S_rot + (eta_t[t] * err).unsqueeze(-1) * kt.unsqueeze(-2)
+            outs.append(torch.bmm(S, q_t[t].unsqueeze(-1)).squeeze(-1))
+        y = self.onorm(torch.stack(outs, dim=0).view(T, B, self.h, self.hd).permute(1, 0, 2, 3)).reshape(B, T, D)
         return self.o(y.to(x.dtype))
 
 
 class UnifiedBlock(nn.Module):
-    def __init__(self, spec: MechanismSpec, d: int, h: int, rope_theta: float) -> None:
+    def __init__(self, spec: MechanismSpec, d: int, h: int, rope_theta: float, ffn_hidden_override: int | None = None) -> None:
         super().__init__()
         self.n1 = RMSNorm(d)
         self.n2 = RMSNorm(d)
-        self.ffn = SwiGLU(d, spec.ffn_hidden)
+        self.ffn = SwiGLU(d, ffn_hidden_override if ffn_hidden_override is not None else spec.ffn_hidden)
         name = spec.name
         if name in ("M0_Dense_GQA_RoPE", "M8_TRM_Recursive_Loop"):
             self.mix: nn.Module = CausalSelfAttnMixer(d, h, rope_theta)
@@ -433,6 +582,7 @@ class UnifiedBlockLM(nn.Module):
         *,
         n_heads: int = 4,
         rope_theta: float = 10000.0,
+        ffn_hidden_override: int | None = None,
     ) -> None:
         super().__init__()
         self.spec = MECHANISM_SPECS[mechanism]
@@ -445,7 +595,8 @@ class UnifiedBlockLM(nn.Module):
         self.logit_scale = nn.Parameter(torch.tensor(math.log(12.0)))
 
         self.blocks = nn.ModuleList([
-            UnifiedBlock(self.spec, d_model, n_heads, rope_theta) for _ in range(self.spec.n_layers)
+            UnifiedBlock(self.spec, d_model, n_heads, rope_theta, ffn_hidden_override=ffn_hidden_override)
+            for _ in range(self.spec.n_layers)
         ])
         if self.spec.attn_res:
             self.depth_q = nn.ParameterList([nn.Parameter(torch.zeros(d_model)) for _ in range(self.spec.n_layers)])
