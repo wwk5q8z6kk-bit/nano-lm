@@ -6,6 +6,8 @@ import math
 import torch
 
 from research.unified_loop.mechanisms.zoo import (
+    CenteredRMSNorm,
+    ConceptSlotMemory,
     GDN1Mixer,
     GaugeSU2HolonomyMixer,
     HSPALieSO3Mixer,
@@ -374,3 +376,73 @@ def test_all_mechanisms_strictly_causal_param_parity_and_finite_grads() -> None:
         assert torch.isfinite(loss), f"{name} non-finite loss"
         for pname, p in m.named_parameters():
             assert p.grad is not None and torch.isfinite(p.grad).all(), f"{name}.{pname} bad grad"
+
+
+def test_concept_slot_memory_scan_matches_sequential_and_causality() -> None:
+    """U09 Upgrades 1 & 2: CenteredRMSNorm, ConceptSlotMemory parallel==sequential, t<=1 zero gate & MPS grads."""
+    cnorm = CenteredRMSNorm(32)
+    x_dc = torch.randn(2, 8, 32) + 5.0
+    yc = cnorm(x_dc)
+    assert yc.mean(dim=-1).abs().max().item() < 1e-5, "CenteredRMSNorm failed to remove DC mean"
+    assert (yc.pow(2).mean(dim=-1).sqrt() - 1.0).abs().max().item() < 1e-4, "CenteredRMSNorm RMS != 1"
+
+    devices = ["cpu"] + (["mps"] if torch.backends.mps.is_available() else [])
+    for dev in devices:
+        for T in (24, 64):
+            torch.manual_seed(71 + T)
+            B, D, V = 3, 32, 72
+            mem = ConceptSlotMemory(D, n_slots=16).to(dev)
+            h0 = torch.randn(B, T, D, device=dev)
+            emb0 = torch.nn.functional.normalize(torch.randn(B, T, D, device=dev), dim=-1)
+            probs0 = torch.softmax(torch.randn(B, T, V, device=dev), dim=-1)
+            en0 = torch.nn.functional.normalize(torch.randn(V, D, device=dev), dim=-1)
+            lscale = torch.tensor(math.log(12.0), device=dev)
+            w_mix = torch.randn_like(probs0)
+
+            def run_slot(seq_flag: bool) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
+                h = h0.clone().detach().requires_grad_(True)
+                emb = emb0.clone().detach().requires_grad_(True)
+                mem.zero_grad(set_to_none=True)
+                mixed, g_slot = mem(h, probs0, emb, en0, lscale, force_sequential=seq_flag)
+                loss = (mixed * w_mix).sum() + (g_slot ** 2).sum()
+                loss.backward()
+                pgrads = {pn: p.grad.detach().clone() for pn, p in mem.named_parameters() if p.grad is not None}
+                return mixed.detach(), g_slot.detach(), h.grad.detach().clone(), pgrads
+
+            mx_seq, gs_seq, hg_seq, pg_seq = run_slot(True)
+            mx_par, gs_par, hg_par, pg_par = run_slot(False)
+            assert float(gs_par[:, :2].abs().max().item()) == 0.0, f"{dev} T={T} t<=1 non-zero slot gate"
+            assert (mx_seq - mx_par).abs().max().item() < 1e-4, f"{dev} T={T} mixed scan mismatch"
+            assert (gs_seq - gs_par).abs().max().item() < 1e-4, f"{dev} T={T} gate scan mismatch"
+            assert (hg_seq - hg_par).abs().max().item() < 1e-4, f"{dev} T={T} h_grad scan mismatch"
+            for pn in pg_seq:
+                assert (pg_seq[pn] - pg_par[pn]).abs().max().item() < 1e-4, f"{dev} T={T} {pn} grad mismatch"
+
+        for mname in (
+            "M19_HSPA_ScaledNorm_EvidPtr",
+            "M20_HSPA_ScaledAttnRes_EvidPtr",
+            "M21_HSPA_ConceptSlot_EvidPtr",
+            "M22_HSPA_FullCore_U09",
+        ):
+            torch.manual_seed(109)
+            mm = UnifiedBlockLM(72, 32, mname).to(dev)
+            xm = torch.randint(0, 72, (2, 32), device=dev)
+            ym = torch.randint(0, 72, (2, 32), device=dev)
+            mix_lp, base_lg = mm(xm, return_base_logits=True)
+            assert mix_lp.shape == base_lg.shape == (2, 32, 72)
+            assert torch.isfinite(mix_lp).all() and torch.isfinite(base_lg).all()
+            loss = (
+                torch.nn.functional.nll_loss(mix_lp.reshape(-1, 72), ym.reshape(-1))
+                + 0.25 * torch.nn.functional.cross_entropy(base_lg.reshape(-1, 72), ym.reshape(-1))
+            )
+            mm.zero_grad(set_to_none=True)
+            loss.backward()
+            for pn, p in mm.named_parameters():
+                assert p.grad is not None and torch.isfinite(p.grad).all(), f"{dev} {mname} bad grad {pn}"
+            if mm.concept_slots is not None:
+                for sub in ("slot_k", "slot_q", "slot_write", "slot_gate"):
+                    w_grad = getattr(mm.concept_slots, sub).weight.grad
+                    assert w_grad is not None and float(w_grad.abs().max().item()) > 0.0, (
+                        f"{dev} {mname} concept_slots.{sub}.weight got zero grad"
+                    )
+

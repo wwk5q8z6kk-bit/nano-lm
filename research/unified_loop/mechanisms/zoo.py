@@ -34,6 +34,8 @@ class MechanismSpec:
     attn_res: bool = False
     use_pointer: bool = False
     pointer_mode: str = "none"  # "none" | "dense" | "sparse_ow" | "sparse_evid" | "sparse_hybrid"
+    scaled_residual: bool = False
+    use_concept_slots: bool = False
 
     @property
     def has_pointer(self) -> bool:
@@ -66,6 +68,10 @@ MECHANISM_SPECS: dict[str, MechanismSpec] = {
     "M16_FullSphereTri_EvidCosSparsePtr": MechanismSpec("M16_FullSphereTri_EvidCosSparsePtr", ffn_hidden=68, n_layers=4, use_pointer=True, pointer_mode="sparse_evid"),
     "M17_HSPA_MultiScale_EvidCosSparsePtr": MechanismSpec("M17_HSPA_MultiScale_EvidCosSparsePtr", ffn_hidden=68, n_layers=4, use_pointer=True, pointer_mode="sparse_evid"),
     "M18_HSPA_HybridSemLexPtr": MechanismSpec("M18_HSPA_HybridSemLexPtr", ffn_hidden=70, n_layers=4, use_pointer=True, pointer_mode="sparse_hybrid"),
+    "M19_HSPA_ScaledNorm_EvidPtr": MechanismSpec("M19_HSPA_ScaledNorm_EvidPtr", ffn_hidden=70, n_layers=4, use_pointer=True, pointer_mode="sparse_evid", scaled_residual=True),
+    "M20_HSPA_ScaledAttnRes_EvidPtr": MechanismSpec("M20_HSPA_ScaledAttnRes_EvidPtr", ffn_hidden=70, n_layers=4, attn_res=True, use_pointer=True, pointer_mode="sparse_evid", scaled_residual=True),
+    "M21_HSPA_ConceptSlot_EvidPtr": MechanismSpec("M21_HSPA_ConceptSlot_EvidPtr", ffn_hidden=67, n_layers=4, use_pointer=True, pointer_mode="sparse_evid", scaled_residual=True, use_concept_slots=True),
+    "M22_HSPA_FullCore_U09": MechanismSpec("M22_HSPA_FullCore_U09", ffn_hidden=67, n_layers=4, attn_res=True, use_pointer=True, pointer_mode="sparse_evid", scaled_residual=True, use_concept_slots=True),
 }
 
 
@@ -77,6 +83,120 @@ class RMSNorm(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return F.rms_norm(x.float(), (x.shape[-1],), self.weight.float(), self.eps).to(x.dtype)
+
+
+class CenteredRMSNorm(nn.Module):
+    """Zero-mean RMSNorm removing isotropic DC residual drift while preserving O(1) variance."""
+
+    def __init__(self, dim: int, eps: float = 1e-6) -> None:
+        super().__init__()
+        self.weight = nn.Parameter(torch.ones(dim))
+        self.eps = eps
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        xf = x.float()
+        xc = xf - xf.mean(dim=-1, keepdim=True)
+        return F.rms_norm(xc, (xc.shape[-1],), self.weight.float(), self.eps).to(x.dtype)
+
+
+class ConceptSlotMemory(nn.Module):
+    """O(T log T * C * D) strictly causal differentiable concept-slot overwrite memory.
+
+    Pairs contextual key h_{s-1} with value embedding emb_in_s (s >= 1) via associative overwrite:
+        alpha_{s, c} = sigmoid(slot_write(h_{s-1})) * softmax(slot_k(h_{s-1}))_c
+        M_s[c] = (1 - alpha_{s, c}) * M_{s-1}[c] + alpha_{s, c} * emb_in_s
+    Query at step t reads M_{t-1} (strictly s < t; zero at t <= 1) and mixes via norm-aware gate.
+    """
+
+    def __init__(self, d_model: int, n_slots: int = 16) -> None:
+        super().__init__()
+        self.d_model = d_model
+        self.n_slots = n_slots
+        self.slot_k = nn.Linear(d_model, n_slots, bias=False)
+        self.slot_q = nn.Linear(d_model, n_slots, bias=False)
+        self.slot_write = nn.Linear(d_model, 1, bias=True)
+        self.slot_gate = nn.Linear(d_model, 1, bias=True)
+        with torch.no_grad():
+            self.slot_write.bias.fill_(-1.0)
+            self.slot_gate.bias.fill_(-1.0)
+
+    @staticmethod
+    def _scan_sequential(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
+        B, L, C, D = b.shape
+        a_steps = a.unbind(dim=1)
+        b_steps = b.unbind(dim=1)
+        m = torch.zeros(B, C, D, device=b.device, dtype=torch.float32)
+        outs: list[torch.Tensor] = []
+        for t in range(L):
+            m = a_steps[t] * m + b_steps[t]
+            outs.append(m)
+        return torch.stack(outs, dim=1)
+
+    @staticmethod
+    def _scan_parallel(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
+        L = b.shape[1]
+        if L == 0:
+            return b
+        aa = a
+        ss = b
+        stride = 1
+        while stride < L:
+            a_prev, s_prev = aa[:, :-stride], ss[:, :-stride]
+            a_curr, s_curr = aa[:, stride:], ss[:, stride:]
+            aa = torch.cat((aa[:, :stride], a_curr * a_prev), dim=1)
+            ss = torch.cat((ss[:, :stride], a_curr * s_prev + s_curr), dim=1)
+            stride <<= 1
+        return ss
+
+    def forward(
+        self,
+        h_n: torch.Tensor,
+        probs_base: torch.Tensor,
+        emb_in: torch.Tensor,
+        en: torch.Tensor,
+        logit_scale: torch.Tensor,
+        *,
+        force_sequential: bool = False,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        B, T, D = h_n.shape
+        if T <= 2:
+            g_zero = torch.zeros(B, T, 1, device=h_n.device, dtype=torch.float32)
+            return probs_base, g_zero
+
+        h_nf = h_n.float()
+        h_w = h_nf[:, :-2]
+        v_w = emb_in[:, 1:-1].float()
+
+        w_gate = torch.sigmoid(self.slot_write(h_w))
+        w_slot = F.softmax(self.slot_k(h_w), dim=-1)
+        alpha = w_gate * w_slot
+        a = (1.0 - alpha).unsqueeze(-1)
+        b = alpha.unsqueeze(-1) * v_w.unsqueeze(2)
+
+        L = T - 2
+        if not force_sequential and L >= 8:
+            M_scan = self._scan_parallel(a, b)
+        else:
+            M_scan = self._scan_sequential(a, b)
+
+        zero_prefix = torch.zeros(B, 2, self.n_slots, D, device=h_n.device, dtype=torch.float32)
+        M_read = torch.cat((zero_prefix, M_scan), dim=1)
+
+        q_slot = F.softmax(self.slot_q(h_nf), dim=-1)
+        m_t = torch.einsum("btc,btcd->btd", q_slot, M_read)
+
+        m_sq = (m_t * m_t).sum(dim=-1, keepdim=True)
+        has_mem = (m_sq > 1e-10).float()
+        m_norm = torch.sqrt(m_sq + 1e-8)
+        m_dir = (m_t / m_norm) * has_mem
+
+        scale = logit_scale.exp().clamp(1.0, 50.0)
+        logits_slot = scale * F.linear(m_dir, en)
+        probs_slot = F.softmax(logits_slot, dim=-1)
+
+        g_slot = torch.sigmoid(self.slot_gate(h_nf)) * (m_norm * has_mem).clamp(0.0, 1.0)
+        mixed = (1.0 - g_slot) * probs_base + g_slot * probs_slot
+        return mixed, g_slot
 
 
 class CausalDepthwiseConv(nn.Module):
@@ -760,8 +880,9 @@ class SkewCayleyFlowMixer(nn.Module):
 class UnifiedBlock(nn.Module):
     def __init__(self, spec: MechanismSpec, d: int, h: int, rope_theta: float, ffn_hidden_override: int | None = None) -> None:
         super().__init__()
-        self.n1 = RMSNorm(d)
-        self.n2 = RMSNorm(d)
+        norm_cls = CenteredRMSNorm if spec.scaled_residual else RMSNorm
+        self.n1 = norm_cls(d)
+        self.n2 = norm_cls(d)
         self.ffn = SwiGLU(d, ffn_hidden_override if ffn_hidden_override is not None else spec.ffn_hidden)
         name = spec.name
         if name in ("M0_Dense_GQA_RoPE", "M8_TRM_Recursive_Loop"):
@@ -774,7 +895,17 @@ class UnifiedBlock(nn.Module):
             self.mix = KDADeltaProduct2Mixer(d, h)
         elif name == "M4_BOBO_DualFastOp":
             self.mix = BOBODualFastMixer(d, h)
-        elif name in ("M5_HSPA_LieSO3", "M10_HSPA_DensePointer", "M12_HSPA_SparseOWPointer", "M13_HSPA_EvidCosSparsePtr", "M18_HSPA_HybridSemLexPtr"):
+        elif name in (
+            "M5_HSPA_LieSO3",
+            "M10_HSPA_DensePointer",
+            "M12_HSPA_SparseOWPointer",
+            "M13_HSPA_EvidCosSparsePtr",
+            "M18_HSPA_HybridSemLexPtr",
+            "M19_HSPA_ScaledNorm_EvidPtr",
+            "M20_HSPA_ScaledAttnRes_EvidPtr",
+            "M21_HSPA_ConceptSlot_EvidPtr",
+            "M22_HSPA_FullCore_U09",
+        ):
             self.mix = HSPALieSO3Mixer(d, h, multiscale=False)
         elif name == "M17_HSPA_MultiScale_EvidCosSparsePtr":
             self.mix = HSPALieSO3Mixer(d, h, multiscale=True)
@@ -786,6 +917,13 @@ class UnifiedBlock(nn.Module):
             self.mix = SkewCayleyFlowMixer(d, h)
         else:
             raise ValueError(f"Unknown mechanism {name!r}")
+
+        if spec.scaled_residual:
+            scale = 1.0 / math.sqrt(2.0 * float(spec.n_layers))
+            with torch.no_grad():
+                if hasattr(self.mix, "o") and hasattr(self.mix.o, "weight"):
+                    self.mix.o.weight.mul_(scale)
+                self.ffn.w2.weight.mul_(scale)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x + self.mix(self.n1(x))
@@ -814,13 +952,14 @@ class UnifiedBlockLM(nn.Module):
             self.emb.weight.copy_(F.normalize(self.emb.weight, dim=-1))
         self.logit_scale = nn.Parameter(torch.tensor(math.log(12.0)))
 
+        norm_cls = CenteredRMSNorm if self.spec.scaled_residual else RMSNorm
         self.blocks = nn.ModuleList([
             UnifiedBlock(self.spec, d_model, n_heads, rope_theta, ffn_hidden_override=ffn_hidden_override)
             for _ in range(self.spec.n_layers)
         ])
         if self.spec.attn_res:
             self.depth_q = nn.ParameterList([nn.Parameter(torch.zeros(d_model)) for _ in range(self.spec.n_layers)])
-            self.depth_norm = RMSNorm(d_model)
+            self.depth_norm = norm_cls(d_model)
         if self.spec.loops > 1:
             self.loop_inject = nn.Linear(2 * d_model, d_model, bias=False)
         if self.spec.has_pointer:
@@ -837,7 +976,7 @@ class UnifiedBlockLM(nn.Module):
             self.ptr_slot_bias = nn.Parameter(torch.tensor(exact_bias + tail_bias, dtype=torch.float32))
             self.ptr_dist_decay = nn.Parameter(torch.tensor(-2.0, dtype=torch.float32))
         if pmode in ("sparse_evid", "sparse_hybrid"):
-            self.ptr_norm = RMSNorm(d_model)
+            self.ptr_norm = norm_cls(d_model)
             self.ptr_lex_conv = CausalDepthwiseConv(d_model, k=4, use_silu=False)
             with torch.no_grad():
                 taps = torch.tensor([0.125, 0.25, 0.5, 1.0], dtype=self.ptr_lex_conv.w.weight.dtype)
@@ -851,7 +990,10 @@ class UnifiedBlockLM(nn.Module):
         if pmode == "sparse_hybrid":
             self.ptr_salience = nn.Linear(d_model, 1, bias=False)
             self.ptr_sal_scale = nn.Parameter(torch.tensor(0.5, dtype=torch.float32))
-        self.nf = RMSNorm(d_model)
+        self.concept_slots: ConceptSlotMemory | None = (
+            ConceptSlotMemory(d_model, n_slots=16) if self.spec.use_concept_slots else None
+        )
+        self.nf = norm_cls(d_model)
 
     @staticmethod
     def _build_sparse_pointer_candidates_hash(
@@ -1113,6 +1255,10 @@ class UnifiedBlockLM(nn.Module):
     ) -> torch.Tensor:
         """O(T * K) evidential dual-basis cosine sparse pointer (bounded logits + Bayes/MDL gate)."""
         probs_base = F.softmax(base_logits, dim=-1)
+        if self.concept_slots is not None:
+            h_n = self.ptr_norm(h_final).float()
+            en = F.normalize(self.emb.weight.float(), dim=-1)
+            probs_base, _ = self.concept_slots(h_n, probs_base, emb_in, en, self.logit_scale)
         if x_toks.shape[1] <= 1:
             return torch.log(probs_base.clamp_min(1e-8))
         b_idx, cand_idx, _, attn_w, g, _ = self._compute_sparse_evid_components(h_final, x_toks, probs_base, emb_in)
@@ -1157,8 +1303,8 @@ class UnifiedBlockLM(nn.Module):
         return_base_logits: bool = False,
     ) -> Any:
         x_toks = x
-        h = F.normalize(self.emb(x).float(), dim=-1).to(self.emb.weight.dtype)
-        anchor = h
+        anchor = F.normalize(self.emb(x).float(), dim=-1).to(self.emb.weight.dtype)
+        h = (math.sqrt(float(self.d_model)) * anchor) if self.spec.scaled_residual else anchor
 
         if self.spec.loops > 1:
             loop_logits: list[torch.Tensor] = []
