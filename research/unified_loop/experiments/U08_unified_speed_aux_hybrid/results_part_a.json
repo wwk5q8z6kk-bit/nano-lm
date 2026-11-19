@@ -1,0 +1,476 @@
+{
+  "schema": "nanolm.unified_loop.u08a.v1",
+  "paid_compute_usd": 0.0,
+  "steps_per_run": 200,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "tasks": {
+    "S4_Holonomy_8x": {
+      "M13_Ctrl": {
+        "params": 55499,
+        "aux_base_weight": 0.0,
+        "wall_s": 48.97,
+        "id_acc": {
+          "mean": 0.1263,
+          "std": 0.1005
+        },
+        "ood_acc": {
+          "mean": 0.0586,
+          "std": 0.0138
+        }
+      },
+      "M13_AuxBase": {
+        "params": 55499,
+        "aux_base_weight": 0.25,
+        "wall_s": 48.72,
+        "id_acc": {
+          "mean": 0.1758,
+          "std": 0.0915
+        },
+        "ood_acc": {
+          "mean": 0.0489,
+          "std": 0.0052
+        }
+      },
+      "M17_AuxBase": {
+        "params": 55371,
+        "aux_base_weight": 0.25,
+        "wall_s": 55.23,
+        "id_acc": {
+          "mean": 0.2402,
+          "std": 0.2476
+        },
+        "ood_acc": {
+          "mean": 0.1428,
+          "std": 0.1811
+        }
+      },
+      "M18_AuxBase": {
+        "params": 55532,
+        "aux_base_weight": 0.25,
+        "wall_s": 49.75,
+        "id_acc": {
+          "mean": 0.0898,
+          "std": 0.023
+        },
+        "ood_acc": {
+          "mean": 0.043,
+          "std": 0.0143
+        }
+      },
+      "M16_AuxBase": {
+        "params": 55227,
+        "aux_base_weight": 0.25,
+        "wall_s": 60.21,
+        "id_acc": {
+          "mean": 0.0879,
+          "std": 0.0122
+        },
+        "ood_acc": {
+          "mean": 0.0634,
+          "std": 0.0105
+        }
+      }
+    },
+    "MQAR_Selective_Overwrite_4x": {
+      "M13_Ctrl": {
+        "params": 55499,
+        "aux_base_weight": 0.0,
+        "wall_s": 82.09,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9926,
+          "std": 0.0055
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9917,
+          "std": 0.0061
+        }
+      },
+      "M13_AuxBase": {
+        "params": 55499,
+        "aux_base_weight": 0.25,
+        "wall_s": 77.99,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9985,
+          "std": 0.0004
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9983,
+          "std": 0.0004
+        }
+      },
+      "M17_AuxBase": {
+        "params": 55371,
+        "aux_base_weight": 0.25,
+        "wall_s": 80.9,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9664,
+          "std": 0.029
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.962,
+          "std": 0.033
+        }
+      },
+      "M18_AuxBase": {
+        "params": 55532,
+        "aux_base_weight": 0.25,
+        "wall_s": 68.8,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9928,
+          "std": 0.004
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.992,
+          "std": 0.0044
+        }
+      },
+      "M16_AuxBase": {
+        "params": 55227,
+        "aux_base_weight": 0.25,
+        "wall_s": 75.4,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9978,
+          "std": 0.0026
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9976,
+          "std": 0.0029
+        }
+      }
+    },
+    "Unseen_OpenVocab_Copy": {
+      "M13_Ctrl": {
+        "params": 55499,
+        "aux_base_weight": 0.0,
+        "wall_s": 36.43,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9824,
+          "std": 0.0096
+        }
+      },
+      "M13_AuxBase": {
+        "params": 55499,
+        "aux_base_weight": 0.25,
+        "wall_s": 34.92,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.6211,
+          "std": 0.3242
+        }
+      },
+      "M17_AuxBase": {
+        "params": 55371,
+        "aux_base_weight": 0.25,
+        "wall_s": 38.0,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9876,
+          "std": 0.0039
+        }
+      },
+      "M18_AuxBase": {
+        "params": 55532,
+        "aux_base_weight": 0.25,
+        "wall_s": 32.26,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.6348,
+          "std": 0.3152
+        }
+      },
+      "M16_AuxBase": {
+        "params": 55227,
+        "aux_base_weight": 0.25,
+        "wall_s": 34.61,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9788,
+          "std": 0.0248
+        }
+      }
+    },
+    "Parity_Dyck_4x": {
+      "M13_Ctrl": {
+        "params": 55499,
+        "aux_base_weight": 0.0,
+        "wall_s": 47.76,
+        "id_acc": {
+          "mean": 0.8979,
+          "std": 0.0529
+        },
+        "ood_acc": {
+          "mean": 0.8991,
+          "std": 0.0064
+        }
+      },
+      "M13_AuxBase": {
+        "params": 55499,
+        "aux_base_weight": 0.25,
+        "wall_s": 48.28,
+        "id_acc": {
+          "mean": 0.8961,
+          "std": 0.0305
+        },
+        "ood_acc": {
+          "mean": 0.8588,
+          "std": 0.0613
+        }
+      },
+      "M17_AuxBase": {
+        "params": 55371,
+        "aux_base_weight": 0.25,
+        "wall_s": 53.78,
+        "id_acc": {
+          "mean": 0.9268,
+          "std": 0.014
+        },
+        "ood_acc": {
+          "mean": 0.9203,
+          "std": 0.0103
+        }
+      },
+      "M18_AuxBase": {
+        "params": 55532,
+        "aux_base_weight": 0.25,
+        "wall_s": 48.76,
+        "id_acc": {
+          "mean": 0.9174,
+          "std": 0.0211
+        },
+        "ood_acc": {
+          "mean": 0.9203,
+          "std": 0.0272
+        }
+      },
+      "M16_AuxBase": {
+        "params": 55227,
+        "aux_base_weight": 0.25,
+        "wall_s": 80.0,
+        "id_acc": {
+          "mean": 0.9065,
+          "std": 0.0306
+        },
+        "ood_acc": {
+          "mean": 0.9232,
+          "std": 0.0261
+        }
+      }
+    },
+    "Hierarchy_Denom_Rollup_4x": {
+      "M13_Ctrl": {
+        "params": 55499,
+        "aux_base_weight": 0.0,
+        "wall_s": 55.96,
+        "id_acc": {
+          "mean": 0.3065,
+          "std": 0.0182
+        },
+        "ood_acc": {
+          "mean": 0.2627,
+          "std": 0.0046
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1614,
+          "std": 0.0073
+        }
+      },
+      "M13_AuxBase": {
+        "params": 55499,
+        "aux_base_weight": 0.25,
+        "wall_s": 61.5,
+        "id_acc": {
+          "mean": 0.3037,
+          "std": 0.01
+        },
+        "ood_acc": {
+          "mean": 0.2575,
+          "std": 0.0086
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1597,
+          "std": 0.0188
+        }
+      },
+      "M17_AuxBase": {
+        "params": 55371,
+        "aux_base_weight": 0.25,
+        "wall_s": 63.5,
+        "id_acc": {
+          "mean": 0.3037,
+          "std": 0.0077
+        },
+        "ood_acc": {
+          "mean": 0.256,
+          "std": 0.006
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1501,
+          "std": 0.0177
+        }
+      },
+      "M18_AuxBase": {
+        "params": 55532,
+        "aux_base_weight": 0.25,
+        "wall_s": 49.11,
+        "id_acc": {
+          "mean": 0.3053,
+          "std": 0.0092
+        },
+        "ood_acc": {
+          "mean": 0.2577,
+          "std": 0.0088
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1583,
+          "std": 0.0208
+        }
+      },
+      "M16_AuxBase": {
+        "params": 55227,
+        "aux_base_weight": 0.25,
+        "wall_s": 40.24,
+        "id_acc": {
+          "mean": 0.2803,
+          "std": 0.003
+        },
+        "ood_acc": {
+          "mean": 0.2391,
+          "std": 0.0103
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1365,
+          "std": 0.0218
+        }
+      }
+    },
+    "MQAR_Alias_Semantic_4x": {
+      "M13_Ctrl": {
+        "params": 55499,
+        "aux_base_weight": 0.0,
+        "wall_s": 53.05,
+        "id_acc": {
+          "mean": 0.5243,
+          "std": 0.0157
+        },
+        "ood_acc": {
+          "mean": 0.026,
+          "std": 0.0081
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0258,
+          "std": 0.0087
+        }
+      },
+      "M13_AuxBase": {
+        "params": 55499,
+        "aux_base_weight": 0.25,
+        "wall_s": 53.26,
+        "id_acc": {
+          "mean": 0.5174,
+          "std": 0.0066
+        },
+        "ood_acc": {
+          "mean": 0.0201,
+          "std": 0.0053
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.02,
+          "std": 0.005
+        }
+      },
+      "M17_AuxBase": {
+        "params": 55371,
+        "aux_base_weight": 0.25,
+        "wall_s": 58.81,
+        "id_acc": {
+          "mean": 0.5182,
+          "std": 0.0358
+        },
+        "ood_acc": {
+          "mean": 0.0237,
+          "std": 0.0033
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0239,
+          "std": 0.0033
+        }
+      },
+      "M18_AuxBase": {
+        "params": 55532,
+        "aux_base_weight": 0.25,
+        "wall_s": 53.36,
+        "id_acc": {
+          "mean": 0.5868,
+          "std": 0.0737
+        },
+        "ood_acc": {
+          "mean": 0.0776,
+          "std": 0.0611
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0772,
+          "std": 0.0609
+        }
+      },
+      "M16_AuxBase": {
+        "params": 55227,
+        "aux_base_weight": 0.25,
+        "wall_s": 57.82,
+        "id_acc": {
+          "mean": 0.5122,
+          "std": 0.0288
+        },
+        "ood_acc": {
+          "mean": 0.0227,
+          "std": 0.0021
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0226,
+          "std": 0.0023
+        }
+      }
+    }
+  },
+  "elapsed_s": 337.16,
+  "has_nonfinite": false
+}

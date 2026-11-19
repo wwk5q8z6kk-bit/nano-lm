@@ -288,6 +288,84 @@
           "M14_GaugeSU2_Pure": [0.0, 0.0]
         }
       }
+    },
+    {
+      "id": "EXP-U08",
+      "title": "Unified Speed HSPA Body Scan, On-Device Sparse Index, AuxBase Loss, MultiScale M17, Hybrid Sem-Lex M18, & L0->L3 Rank Audit",
+      "status": "COMPLETE",
+      "commits": ["3e6bfd7"],
+      "script": "research/unified_loop/scripts/run_u08_unified_speed_aux_hybrid.py",
+      "artifacts": [
+        "research/unified_loop/mechanisms/zoo.py",
+        "research/unified_loop/mechanisms/test_zoo.py",
+        "research/unified_loop/experiments/U08_unified_speed_aux_hybrid/protocol.md",
+        "research/unified_loop/experiments/U08_unified_speed_aux_hybrid/results_part_a.json",
+        "research/unified_loop/experiments/U08_unified_speed_aux_hybrid/results_part_a2_algebra.json",
+        "research/unified_loop/experiments/U08_unified_speed_aux_hybrid/results_part_b.json",
+        "research/unified_loop/experiments/U08_unified_speed_aux_hybrid/analysis.md"
+      ],
+      "key_metrics": {
+        "wall_s_part_a": 337.16,
+        "wall_s_part_a2": 262.76,
+        "wall_s_part_b": 1201.01,
+        "has_nonfinite_anywhere": false,
+        "part_a_unseen_open_vocab_copy_ood": {
+          "M17_AuxBase": 0.9876,
+          "M13_Ctrl": 0.9824,
+          "M16_AuxBase": 0.9788,
+          "M18_AuxBase": 0.6348,
+          "M13_AuxBase": 0.6211
+        },
+        "part_a_mqar_alias_semantic_4x_ood": {
+          "M18_AuxBase": 0.0776,
+          "M13_Ctrl": 0.026,
+          "M17_AuxBase": 0.0237,
+          "M16_AuxBase": 0.0227,
+          "M13_AuxBase": 0.0201
+        },
+        "part_a2_s4_holonomy_600steps_ood": {
+          "M18_AuxBase": 0.6081,
+          "M13_AuxBase": 0.5273,
+          "M13_Ctrl": 0.4126,
+          "M5_Pure": 0.3664,
+          "M17_AuxBase": 0.2768
+        },
+        "part_a2_hierarchy_600steps_ood": {
+          "M18_AuxBase": 0.3376,
+          "M13_AuxBase": 0.3236,
+          "M13_Ctrl": 0.3085,
+          "M5_Pure": 0.2788,
+          "M17_AuxBase": 0.2759
+        },
+        "part_b_bpb_512": {
+          "M13_AuxBase": {"web": 1.8697, "textbook": 1.8107, "math": 2.1403, "code": 1.6285, "tok_s": 8256.8},
+          "M18_AuxBase": {"web": 1.8736, "textbook": 1.8144, "math": 2.1556, "code": 1.6468, "tok_s": 11063.6},
+          "M13_Ctrl": {"web": 1.8764, "textbook": 1.819, "math": 2.1605, "code": 1.6535, "tok_s": 11754.0},
+          "M16_AuxBase": {"web": 1.9729, "textbook": 1.9352, "math": 2.2302, "code": 1.7024, "tok_s": 7845.4},
+          "M17_AuxBase": {"web": 1.981, "textbook": 1.9518, "math": 2.2594, "code": 1.7308, "tok_s": 7636.4}
+        },
+        "part_b_copy_256": {
+          "M17_AuxBase": 0.9986,
+          "M16_AuxBase": 0.9967,
+          "M13_AuxBase": 0.9543,
+          "M18_AuxBase": 0.9543,
+          "M13_Ctrl": 0.7169
+        },
+        "part_b_mqar_T512_N4_common_rare": {
+          "M17_AuxBase": [0.8959, 0.9375],
+          "M16_AuxBase": [0.8125, 0.8958],
+          "M13_Ctrl": [0.8125, 0.8333],
+          "M18_AuxBase": [0.8125, 0.7709],
+          "M13_AuxBase": [0.7292, 0.8959]
+        },
+        "part_b_val_code_256_L3_state_eff_rank_range": {
+          "M18_AuxBase": [2.74, 3.73],
+          "M13_Ctrl": [1.75, 3.49],
+          "M13_AuxBase": [1.76, 2.57],
+          "M17_AuxBase": [2.09, 2.53],
+          "M16_AuxBase": [1.81, 2.31]
+        }
+      }
     }
   ]
 }

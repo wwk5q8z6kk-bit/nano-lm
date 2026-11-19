@@ -1,0 +1,2134 @@
+{
+  "schema": "nanolm.unified_loop.u08b.v1",
+  "paid_compute_usd": 0.0,
+  "elapsed_s": 1201.01,
+  "config": {
+    "d_model": 128,
+    "n_heads": 4,
+    "batch_size": 8,
+    "seq_len": 128,
+    "steps": 1000,
+    "seeds": [
+      0,
+      1
+    ]
+  },
+  "models": {
+    "M13_Ctrl": {
+      "mechanism": "M13_HSPA_EvidCosSparsePtr",
+      "aux_base_weight": 0.0,
+      "device": "mps",
+      "total_params": 5046891,
+      "non_emb_params": 852587,
+      "mean_tok_per_s": 11754.0,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 1.9507,
+            "std": 0.0003
+          },
+          "textbook": {
+            "mean": 1.8879,
+            "std": 0.0056
+          },
+          "math": {
+            "mean": 2.3266,
+            "std": 0.0206
+          },
+          "code": {
+            "mean": 2.303,
+            "std": 0.0398
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 1.9309,
+            "std": 0.0004
+          },
+          "textbook": {
+            "mean": 1.872,
+            "std": 0.0031
+          },
+          "math": {
+            "mean": 2.2603,
+            "std": 0.0193
+          },
+          "code": {
+            "mean": 2.1127,
+            "std": 0.0334
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.8764,
+            "std": 0.0023
+          },
+          "textbook": {
+            "mean": 1.819,
+            "std": 0.001
+          },
+          "math": {
+            "mean": 2.1605,
+            "std": 0.0118
+          },
+          "code": {
+            "mean": 1.6535,
+            "std": 0.0195
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.7641,
+          "std": 0.1112
+        },
+        "copy_64": {
+          "mean": 0.6795,
+          "std": 0.1487
+        },
+        "copy_128": {
+          "mean": 0.6981,
+          "std": 0.1319
+        },
+        "copy_256": {
+          "mean": 0.7169,
+          "std": 0.1723
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.8334,
+            "std": 0.0589
+          },
+          "T256_N4": {
+            "mean": 0.9167,
+            "std": 0.0
+          },
+          "T512_N4": {
+            "mean": 0.8125,
+            "std": 0.0294
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.9166,
+            "std": 0.0589
+          },
+          "T256_N4": {
+            "mean": 0.8958,
+            "std": 0.0884
+          },
+          "T512_N4": {
+            "mean": 0.8333,
+            "std": 0.0
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "mechanism": "M13_HSPA_EvidCosSparsePtr",
+          "aux_base_weight": 0.0,
+          "ffn_hidden": 463,
+          "total_params": 5046891,
+          "non_emb_params": 852587,
+          "train_s": 81.57,
+          "tok_per_s": 12554.2,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 6.4511,
+            "500": 6.2014,
+            "800": 6.179,
+            "1000": 6.1481
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.95053,
+              "textbook": 1.89184,
+              "math": 2.34113,
+              "code": 2.3312
+            },
+            "L_256": {
+              "web": 1.93059,
+              "textbook": 1.87423,
+              "math": 2.27401,
+              "code": 2.13629
+            },
+            "L_512": {
+              "web": 1.87476,
+              "textbook": 1.81978,
+              "math": 2.16883,
+              "code": 1.66722
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.6855,
+              "loss": 1.9184
+            },
+            "copy_64": {
+              "acc": 0.5744,
+              "loss": 2.0535
+            },
+            "copy_128": {
+              "acc": 0.6048,
+              "loss": 2.0639
+            },
+            "copy_256": {
+              "acc": 0.5951,
+              "loss": 2.0599
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.7917,
+              "T256_N4": 0.9167,
+              "T512_N4": 0.7917
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.8333,
+              "T512_N4": 0.8333
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 11.71,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.21076,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.91,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.17031
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 5.0,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.54508,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 4.94,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.32985
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 1.95,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.83847,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 3.23,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.61123
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 3.49,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.66514,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.23,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.78696
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 10.21,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.38644,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.14,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.33169
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 3.49,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.72335,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.67,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.74116
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 2.53,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.79175,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.27,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.77878
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.08,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.84635,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.26,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.74978
+              }
+            ]
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "mechanism": "M13_HSPA_EvidCosSparsePtr",
+          "aux_base_weight": 0.0,
+          "ffn_hidden": 463,
+          "total_params": 5046891,
+          "non_emb_params": 852587,
+          "train_s": 93.48,
+          "tok_per_s": 10953.7,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 6.2998,
+            "500": 6.1527,
+            "800": 6.3932,
+            "1000": 6.1584
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.9509,
+              "textbook": 1.88399,
+              "math": 2.31197,
+              "code": 2.27485
+            },
+            "L_256": {
+              "web": 1.93115,
+              "textbook": 1.86987,
+              "math": 2.24665,
+              "code": 2.08902
+            },
+            "L_512": {
+              "web": 1.87807,
+              "textbook": 1.81832,
+              "math": 2.15213,
+              "code": 1.63969
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.8427,
+              "loss": 1.7999
+            },
+            "copy_64": {
+              "acc": 0.7847,
+              "loss": 1.9013
+            },
+            "copy_128": {
+              "acc": 0.7913,
+              "loss": 1.8856
+            },
+            "copy_256": {
+              "acc": 0.8387,
+              "loss": 1.8498
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.9167,
+              "T512_N4": 0.8333
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.9583,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.8333
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 11.11,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.24552,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.57,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.18677
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 6.45,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.41006,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 5.25,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.26698
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 4.08,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.60018,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 4.94,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.37344
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.75,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.83989,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.38,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.75943
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 9.74,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.39016,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.01,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.33884
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 3.42,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.70409,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.71,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.74102
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 4.36,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.61882,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.94,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.67888
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.29,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.80574,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.4,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.74739
+              }
+            ]
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M13_AuxBase": {
+      "mechanism": "M13_HSPA_EvidCosSparsePtr",
+      "aux_base_weight": 0.25,
+      "device": "mps",
+      "total_params": 5046891,
+      "non_emb_params": 852587,
+      "mean_tok_per_s": 8256.8,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 1.9423,
+            "std": 0.0016
+          },
+          "textbook": {
+            "mean": 1.8791,
+            "std": 0.0069
+          },
+          "math": {
+            "mean": 2.3081,
+            "std": 0.0091
+          },
+          "code": {
+            "mean": 2.2382,
+            "std": 0.0135
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 1.9228,
+            "std": 0.0009
+          },
+          "textbook": {
+            "mean": 1.8627,
+            "std": 0.0067
+          },
+          "math": {
+            "mean": 2.2454,
+            "std": 0.01
+          },
+          "code": {
+            "mean": 2.06,
+            "std": 0.0135
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.8697,
+            "std": 0.0034
+          },
+          "textbook": {
+            "mean": 1.8107,
+            "std": 0.0119
+          },
+          "math": {
+            "mean": 2.1403,
+            "std": 0.0076
+          },
+          "code": {
+            "mean": 1.6285,
+            "std": 0.0104
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.9748,
+          "std": 0.0157
+        },
+        "copy_64": {
+          "mean": 0.9489,
+          "std": 0.0442
+        },
+        "copy_128": {
+          "mean": 0.9483,
+          "std": 0.0369
+        },
+        "copy_256": {
+          "mean": 0.9543,
+          "std": 0.0255
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.7916,
+            "std": 0.1179
+          },
+          "T256_N4": {
+            "mean": 0.8541,
+            "std": 0.0295
+          },
+          "T512_N4": {
+            "mean": 0.7292,
+            "std": 0.0884
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.9583,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.9375,
+            "std": 0.0294
+          },
+          "T512_N4": {
+            "mean": 0.8959,
+            "std": 0.0295
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "mechanism": "M13_HSPA_EvidCosSparsePtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 463,
+          "total_params": 5046891,
+          "non_emb_params": 852587,
+          "train_s": 132.3,
+          "tok_per_s": 7739.8,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 8.641,
+            "500": 7.7526,
+            "800": 6.9878,
+            "1000": 7.1649
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.94344,
+              "textbook": 1.88395,
+              "math": 2.31451,
+              "code": 2.24777
+            },
+            "L_256": {
+              "web": 1.92349,
+              "textbook": 1.86744,
+              "math": 2.25242,
+              "code": 2.06951
+            },
+            "L_512": {
+              "web": 1.86728,
+              "textbook": 1.81915,
+              "math": 2.14566,
+              "code": 1.63585
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.9637,
+              "loss": 1.2834
+            },
+            "copy_64": {
+              "acc": 0.9177,
+              "loss": 1.4483
+            },
+            "copy_128": {
+              "acc": 0.9222,
+              "loss": 1.4136
+            },
+            "copy_256": {
+              "acc": 0.9363,
+              "loss": 1.3905
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.875,
+              "T512_N4": 0.7917
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.9583,
+              "T256_N4": 0.9167,
+              "T512_N4": 0.875
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 11.22,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.22166,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.66,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.18038
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 2.59,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.76594,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 4.62,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.43636
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 6.14,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.43569,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 4.49,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.41807
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.57,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.76896,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 3.07,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.6587
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 9.84,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.39129,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.03,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.34162
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 2.71,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.78033,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.58,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.74655
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 2.38,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.81171,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.54,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.73954
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 3.12,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.7061,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.19,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.78663
+              }
+            ]
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "mechanism": "M13_HSPA_EvidCosSparsePtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 463,
+          "total_params": 5046891,
+          "non_emb_params": 852587,
+          "train_s": 116.71,
+          "tok_per_s": 8773.8,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 8.3494,
+            "500": 8.2665,
+            "800": 7.5623,
+            "1000": 7.6332
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.94118,
+              "textbook": 1.87426,
+              "math": 2.30164,
+              "code": 2.22861
+            },
+            "L_256": {
+              "web": 1.9222,
+              "textbook": 1.85796,
+              "math": 2.23829,
+              "code": 2.05043
+            },
+            "L_512": {
+              "web": 1.87213,
+              "textbook": 1.80226,
+              "math": 2.13487,
+              "code": 1.6212
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.9859,
+              "loss": 1.4491
+            },
+            "copy_64": {
+              "acc": 0.9802,
+              "loss": 1.5338
+            },
+            "copy_128": {
+              "acc": 0.9744,
+              "loss": 1.5703
+            },
+            "copy_256": {
+              "acc": 0.9723,
+              "loss": 1.5462
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.7083,
+              "T256_N4": 0.8333,
+              "T512_N4": 0.6667
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.9583,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.9167
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 11.4,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.23897,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.95,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.18033
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 4.86,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.51811,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 5.03,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.28594
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 2.27,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.80236,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 3.62,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.56023
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.76,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.87165,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.65,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.71044
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 9.49,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.4152,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.26,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.3212
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 3.79,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.67951,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.85,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.69407
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 3.29,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.6938,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.9,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.61719
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.24,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.78699,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.19,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.78041
+              }
+            ]
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M17_AuxBase": {
+      "mechanism": "M17_HSPA_MultiScale_EvidCosSparsePtr",
+      "aux_base_weight": 0.25,
+      "device": "mps",
+      "total_params": 5045995,
+      "non_emb_params": 851691,
+      "mean_tok_per_s": 7636.4,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.0629,
+            "std": 0.0224
+          },
+          "textbook": {
+            "mean": 2.0102,
+            "std": 0.0255
+          },
+          "math": {
+            "mean": 2.4529,
+            "std": 0.0214
+          },
+          "code": {
+            "mean": 2.4525,
+            "std": 0.0281
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.0381,
+            "std": 0.023
+          },
+          "textbook": {
+            "mean": 1.99,
+            "std": 0.0282
+          },
+          "math": {
+            "mean": 2.3766,
+            "std": 0.0206
+          },
+          "code": {
+            "mean": 2.2397,
+            "std": 0.0271
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.981,
+            "std": 0.0245
+          },
+          "textbook": {
+            "mean": 1.9518,
+            "std": 0.0272
+          },
+          "math": {
+            "mean": 2.2594,
+            "std": 0.0201
+          },
+          "code": {
+            "mean": 1.7308,
+            "std": 0.0256
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "copy_128": {
+          "mean": 0.999,
+          "std": 0.0007
+        },
+        "copy_256": {
+          "mean": 0.9986,
+          "std": 0.0004
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.9167,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.9791,
+            "std": 0.0295
+          },
+          "T512_N4": {
+            "mean": 0.8959,
+            "std": 0.0295
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.875,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.9791,
+            "std": 0.0295
+          },
+          "T512_N4": {
+            "mean": 0.9375,
+            "std": 0.0294
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "mechanism": "M17_HSPA_MultiScale_EvidCosSparsePtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 461,
+          "total_params": 5045995,
+          "non_emb_params": 851691,
+          "train_s": 146.46,
+          "tok_per_s": 6991.9,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 9.3803,
+            "500": 8.682,
+            "800": 8.0377,
+            "1000": 8.2302
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.07882,
+              "textbook": 2.02826,
+              "math": 2.46801,
+              "code": 2.47232
+            },
+            "L_256": {
+              "web": 2.05432,
+              "textbook": 2.00994,
+              "math": 2.39114,
+              "code": 2.25881
+            },
+            "L_512": {
+              "web": 1.99833,
+              "textbook": 1.97099,
+              "math": 2.27363,
+              "code": 1.74887
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 1.0,
+              "loss": 0.8706
+            },
+            "copy_64": {
+              "acc": 1.0,
+              "loss": 0.824
+            },
+            "copy_128": {
+              "acc": 0.9985,
+              "loss": 0.6796
+            },
+            "copy_256": {
+              "acc": 0.9983,
+              "loss": 0.6475
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.9167,
+              "T256_N4": 1.0,
+              "T512_N4": 0.9167
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 1.0,
+              "T512_N4": 0.9583
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 12.56,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.16766,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 6.66,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.11164
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 2.16,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.81702,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 1.75,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.86852
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 3.23,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.66743,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.24,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.74747
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.53,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.73109,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.1,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.74236
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 13.55,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.13439,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 4.31,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.52084
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 1.83,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.84739,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 1.39,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.94266
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 1.95,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.86033,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 1.34,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.94938
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.64,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.87813,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 1.19,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.96952
+              }
+            ]
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "mechanism": "M17_HSPA_MultiScale_EvidCosSparsePtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 461,
+          "total_params": 5045995,
+          "non_emb_params": 851691,
+          "train_s": 123.66,
+          "tok_per_s": 8280.9,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 10.0608,
+            "500": 7.8745,
+            "800": 7.6896,
+            "1000": 8.2112
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.04708,
+              "textbook": 1.99223,
+              "math": 2.43776,
+              "code": 2.4326
+            },
+            "L_256": {
+              "web": 2.02183,
+              "textbook": 1.97012,
+              "math": 2.362,
+              "code": 2.2205
+            },
+            "L_512": {
+              "web": 1.96369,
+              "textbook": 1.93259,
+              "math": 2.24526,
+              "code": 1.71267
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 1.0,
+              "loss": 0.9563
+            },
+            "copy_64": {
+              "acc": 1.0,
+              "loss": 0.7946
+            },
+            "copy_128": {
+              "acc": 0.9995,
+              "loss": 0.7202
+            },
+            "copy_256": {
+              "acc": 0.9988,
+              "loss": 0.7432
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.9167,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.875
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.9167
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 13.06,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.17014,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 6.73,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.14683
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 5.25,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.57536,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 3.48,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.59282
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 6.07,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.31328,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.22,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.7491
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.09,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.78307,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.87,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.56831
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 12.54,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.10212,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 4.57,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.49759
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 2.01,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.85627,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.63,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.77563
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 5.45,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.54567,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 1.66,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.89227
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.7,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.87903,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 1.95,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.85062
+              }
+            ]
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M18_AuxBase": {
+      "mechanism": "M18_HSPA_HybridSemLexPtr",
+      "aux_base_weight": 0.25,
+      "device": "mps",
+      "total_params": 5047020,
+      "non_emb_params": 852716,
+      "mean_tok_per_s": 11063.6,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 1.9492,
+            "std": 0.0024
+          },
+          "textbook": {
+            "mean": 1.8858,
+            "std": 0.0003
+          },
+          "math": {
+            "mean": 2.3204,
+            "std": 0.0065
+          },
+          "code": {
+            "mean": 2.2636,
+            "std": 0.0078
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 1.9296,
+            "std": 0.0005
+          },
+          "textbook": {
+            "mean": 1.8664,
+            "std": 0.0015
+          },
+          "math": {
+            "mean": 2.2628,
+            "std": 0.004
+          },
+          "code": {
+            "mean": 2.0869,
+            "std": 0.0084
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.8736,
+            "std": 0.0005
+          },
+          "textbook": {
+            "mean": 1.8144,
+            "std": 0.0002
+          },
+          "math": {
+            "mean": 2.1556,
+            "std": 0.0018
+          },
+          "code": {
+            "mean": 1.6468,
+            "std": 0.005
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.9708,
+          "std": 0.0128
+        },
+        "copy_64": {
+          "mean": 0.9544,
+          "std": 0.0042
+        },
+        "copy_128": {
+          "mean": 0.9439,
+          "std": 0.0174
+        },
+        "copy_256": {
+          "mean": 0.9543,
+          "std": 0.0095
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.8333,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.9166,
+            "std": 0.0589
+          },
+          "T512_N4": {
+            "mean": 0.8125,
+            "std": 0.0294
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.9791,
+            "std": 0.0295
+          },
+          "T256_N4": {
+            "mean": 0.9791,
+            "std": 0.0295
+          },
+          "T512_N4": {
+            "mean": 0.7709,
+            "std": 0.1473
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "mechanism": "M18_HSPA_HybridSemLexPtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 463,
+          "total_params": 5047020,
+          "non_emb_params": 852716,
+          "train_s": 90.7,
+          "tok_per_s": 11289.8,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 8.4696,
+            "500": 7.4217,
+            "800": 7.696,
+            "1000": 7.7382
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.9475,
+              "textbook": 1.88597,
+              "math": 2.32504,
+              "code": 2.2581
+            },
+            "L_256": {
+              "web": 1.92997,
+              "textbook": 1.8675,
+              "math": 2.25996,
+              "code": 2.08098
+            },
+            "L_512": {
+              "web": 1.87323,
+              "textbook": 1.81426,
+              "math": 2.15432,
+              "code": 1.64323
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.9798,
+              "loss": 1.4217
+            },
+            "copy_64": {
+              "acc": 0.9573,
+              "loss": 1.5984
+            },
+            "copy_128": {
+              "acc": 0.9562,
+              "loss": 1.5915
+            },
+            "copy_256": {
+              "acc": 0.961,
+              "loss": 1.5048
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.8333,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.7917
+            },
+            "rare_tail_ids": {
+              "T128_N4": 1.0,
+              "T256_N4": 1.0,
+              "T512_N4": 0.6667
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 11.77,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.2243,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.57,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.19608
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 5.28,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.50914,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 5.31,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.30886
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 1.76,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.86197,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 3.17,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.64036
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 3.73,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.66007,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 3.29,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.59552
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 10.13,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.38839,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.14,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.32829
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 3.75,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.6798,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.87,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.71703
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 2.5,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.79067,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.17,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.7916
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.91,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.85344,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.66,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.67273
+              }
+            ]
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "mechanism": "M18_HSPA_HybridSemLexPtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 463,
+          "total_params": 5047020,
+          "non_emb_params": 852716,
+          "train_s": 94.49,
+          "tok_per_s": 10837.5,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 8.9569,
+            "500": 7.5657,
+            "800": 7.6875,
+            "1000": 6.8099
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.95094,
+              "textbook": 1.88556,
+              "math": 2.31585,
+              "code": 2.26913
+            },
+            "L_256": {
+              "web": 1.92932,
+              "textbook": 1.86537,
+              "math": 2.26555,
+              "code": 2.09285
+            },
+            "L_512": {
+              "web": 1.8739,
+              "textbook": 1.81457,
+              "math": 2.1569,
+              "code": 1.65033
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.9617,
+              "loss": 1.3408
+            },
+            "copy_64": {
+              "acc": 0.9514,
+              "loss": 1.426
+            },
+            "copy_128": {
+              "acc": 0.9316,
+              "loss": 1.4661
+            },
+            "copy_256": {
+              "acc": 0.9475,
+              "loss": 1.3959
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.8333,
+              "T256_N4": 0.875,
+              "T512_N4": 0.8333
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.9583,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.875
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 11.8,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.20801,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.78,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.17747
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 8.45,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.33669,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 5.37,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.23792
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 2.47,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.77707,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 4.54,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.41817
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.74,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.72279,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 3.01,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.66976
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 8.89,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.42743,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 7.05,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.34294
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 3.72,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.70106,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.7,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.72791
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 3.38,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.68404,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 2.46,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.70758
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 3.07,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.6908,
+                "key_kind": "hspa_u_in",
+                "key_eff_rank": 1.93,
+                "key_max_rank": 12,
+                "key_offdiag_cos": 0.81392
+              }
+            ]
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M16_AuxBase": {
+      "mechanism": "M16_FullSphereTri_EvidCosSparsePtr",
+      "aux_base_weight": 0.25,
+      "device": "mps",
+      "total_params": 5046331,
+      "non_emb_params": 852027,
+      "mean_tok_per_s": 7845.4,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.0551,
+            "std": 0.0316
+          },
+          "textbook": {
+            "mean": 1.9937,
+            "std": 0.0293
+          },
+          "math": {
+            "mean": 2.4176,
+            "std": 0.0237
+          },
+          "code": {
+            "mean": 2.3984,
+            "std": 0.0411
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.0284,
+            "std": 0.0283
+          },
+          "textbook": {
+            "mean": 1.9751,
+            "std": 0.0274
+          },
+          "math": {
+            "mean": 2.3426,
+            "std": 0.0195
+          },
+          "code": {
+            "mean": 2.1897,
+            "std": 0.036
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.9729,
+            "std": 0.0275
+          },
+          "textbook": {
+            "mean": 1.9352,
+            "std": 0.0286
+          },
+          "math": {
+            "mean": 2.2302,
+            "std": 0.0187
+          },
+          "code": {
+            "mean": 1.7024,
+            "std": 0.0212
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.999,
+          "std": 0.0014
+        },
+        "copy_64": {
+          "mean": 0.998,
+          "std": 0.0014
+        },
+        "copy_128": {
+          "mean": 0.997,
+          "std": 0.0013
+        },
+        "copy_256": {
+          "mean": 0.9967,
+          "std": 0.0016
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.9375,
+            "std": 0.0294
+          },
+          "T256_N4": {
+            "mean": 0.875,
+            "std": 0.1178
+          },
+          "T512_N4": {
+            "mean": 0.8125,
+            "std": 0.0294
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.8959,
+            "std": 0.0295
+          },
+          "T256_N4": {
+            "mean": 0.875,
+            "std": 0.059
+          },
+          "T512_N4": {
+            "mean": 0.8958,
+            "std": 0.0884
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "mechanism": "M16_FullSphereTri_EvidCosSparsePtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 301,
+          "total_params": 5046331,
+          "non_emb_params": 852027,
+          "train_s": 128.87,
+          "tok_per_s": 7946.0,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 9.0491,
+            "500": 8.5045,
+            "800": 8.5181,
+            "1000": 7.5996
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.03276,
+              "textbook": 1.97293,
+              "math": 2.40077,
+              "code": 2.36928
+            },
+            "L_256": {
+              "web": 2.00839,
+              "textbook": 1.95578,
+              "math": 2.32884,
+              "code": 2.16429
+            },
+            "L_512": {
+              "web": 1.95348,
+              "textbook": 1.91497,
+              "math": 2.21693,
+              "code": 1.68745
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.998,
+              "loss": 1.1219
+            },
+            "copy_64": {
+              "acc": 0.997,
+              "loss": 1.1435
+            },
+            "copy_128": {
+              "acc": 0.9961,
+              "loss": 1.129
+            },
+            "copy_256": {
+              "acc": 0.9956,
+              "loss": 1.0715
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.9167,
+              "T256_N4": 0.7917,
+              "T512_N4": 0.7917
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.8333,
+              "T512_N4": 0.8333
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 9.21,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.32888,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 10.17,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.049
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 10.94,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.27981,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 5.67,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.56684
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 9.84,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.28712,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 5.75,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.54502
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 2.31,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.80116,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 6.03,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.48221
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 5.06,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.61561,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 2.9,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.77725
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 9.39,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.38924,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 2.91,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.79246
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 5.84,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.48319,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 5.3,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.60718
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.98,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.82404,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 3.22,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.74884
+              }
+            ]
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "mechanism": "M16_FullSphereTri_EvidCosSparsePtr",
+          "aux_base_weight": 0.25,
+          "ffn_hidden": 301,
+          "total_params": 5046331,
+          "non_emb_params": 852027,
+          "train_s": 132.22,
+          "tok_per_s": 7744.8,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 9.0572,
+            "500": 8.1212,
+            "800": 8.021,
+            "1000": 8.0368
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.07748,
+              "textbook": 2.01439,
+              "math": 2.43434,
+              "code": 2.42743
+            },
+            "L_256": {
+              "web": 2.04844,
+              "textbook": 1.99451,
+              "math": 2.35638,
+              "code": 2.2152
+            },
+            "L_512": {
+              "web": 1.99241,
+              "textbook": 1.95538,
+              "math": 2.24342,
+              "code": 1.7174
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 1.0,
+              "loss": 0.9931
+            },
+            "copy_64": {
+              "acc": 0.999,
+              "loss": 0.9856
+            },
+            "copy_128": {
+              "acc": 0.998,
+              "loss": 0.9285
+            },
+            "copy_256": {
+              "acc": 0.9978,
+              "loss": 0.9672
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.9583,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.8333
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.9167,
+              "T256_N4": 0.9167,
+              "T512_N4": 0.9583
+            }
+          },
+          "rank_audit": {
+            "val_code_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 11.7,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.20922,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 11.69,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.05867
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 11.66,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.29661,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 10.3,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.27787
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 5.96,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.52264,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 8.35,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.41225
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.81,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.86354,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 3.58,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.67735
+              }
+            ],
+            "copy_128_256": [
+              {
+                "layer": 0,
+                "state_eff_rank": 4.22,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.67037,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 4.41,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.66979
+              },
+              {
+                "layer": 1,
+                "state_eff_rank": 4.96,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.54951,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 3.57,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.73293
+              },
+              {
+                "layer": 2,
+                "state_eff_rank": 4.54,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.61163,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 3.19,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.75547
+              },
+              {
+                "layer": 3,
+                "state_eff_rank": 1.74,
+                "state_max_rank": 32,
+                "state_offdiag_cos": 0.86891,
+                "key_kind": "gdn1_k",
+                "key_eff_rank": 1.69,
+                "key_max_rank": 32,
+                "key_offdiag_cos": 0.90192
+              }
+            ]
+          },
+          "has_nonfinite": false
+        }
+      }
+    }
+  },
+  "has_nonfinite": false
+}
