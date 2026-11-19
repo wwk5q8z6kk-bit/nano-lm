@@ -14,4 +14,6 @@
 | `EXP-U05` (4-Domain Modular Eval) | Local CPU | 11.10s | `$0.00` | `experiments/U05_cross_domain_hierarchy_denom/results.json` |
 | `EXP-U02 Part A` (`10×5×3` Micro-Lab) | Local CPU (5 workers) | 426.70s | `$0.00` | `experiments/U02_cross_paradigm_showdown/results_part_a.json` |
 | `EXP-U02 Part B` (`data/v1`, `5×1000×2`) | Local MPS + 4 CPU workers | 819.88s | `$0.00` | `experiments/U02_cross_paradigm_showdown/results_part_b.json` |
-| **Total Loop** | **Local Only** | **7,077.17s** | **`$0.00`** | **6 Complete Experimental Suites** |
+| `EXP-U06 Part A` (`6×5×3` Micro-Lab) | Local CPU (5 workers) | 329.52s | `$0.00` | `experiments/U06_spinor_pointer_synthesis/results_part_a.json` |
+| `EXP-U06 Part B` (`data/v1`, `6×1000×2`, `1×/2×/4×`) | Local MPS | 1,960.85s | `$0.00` | `experiments/U06_spinor_pointer_synthesis/results_part_b.json` |
+| **Total Loop** | **Local Only** | **9,367.54s** | **`$0.00`** | **7 Complete Experimental Suites** |

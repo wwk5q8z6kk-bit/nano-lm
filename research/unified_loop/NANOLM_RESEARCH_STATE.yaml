@@ -1,5 +1,5 @@
 schema: nanolm.unified_loop.research_state.v1
-updated_at: "2026-11-18"
+updated_at: "2026-11-19"
 worktree: /Users/mac/Projects/nano-lm/.worktrees/nanolm-unified-loop
 branch: research/unified-discovery-loop-v1
 paid_compute_usd: 0.0
@@ -51,6 +51,23 @@ neural_core_frontier_u02:
       - "All non-pointer mechanisms scored 0.000 on zero-shot exact copy and real-haystack MQAR"
       - "M9 pointer still uses O(T^2) prefix score map and softens overwritten keys (0.542) and rare MQAR tails (0.0416)"
 
+neural_core_frontier_u06:
+  synthesis_2x2_verified:
+    part_a_micro_lab_wall_s: 329.52
+    part_b_real_corpus_wall_s: 1960.85
+    parallel_scan_speedup: "M5 HSPA O(log T) Kogge-Stone scan runs on MPS (4,784 tok/s) matching sequential (<1e-4); M12 runs 1.56x faster than M10 (6,260 vs 4,014 tok/s)"
+    part_a_winners:
+      mqar_overwrite_4x_overwritten_acc: {M11_FullSphere_SparseOW: 0.9266, M12_HSPA_SparseOW: 0.9198, M10_HSPA_Dense: 0.6433, M9_Dense: 0.5421, M0_RoPE: 0.0925}
+      hierarchy_denom_rollup_4x_ood: {M12_HSPA_SparseOW: 0.2624, M10_HSPA_Dense: 0.2610, M5_HSPA: 0.2602, M9_Dense: 0.2393, M0_RoPE: 0.1459}
+      unseen_open_vocab_copy_ood: {M11_FullSphere_SparseOW: 0.9840, M9_Dense: 0.9619, M12_HSPA_SparseOW: 0.9603}
+    part_b_1x_2x_4x_winners:
+      m10_best_bpb_all_4_domains: {web_512: 1.8659, textbook_512: 1.8094, math_512: 2.1175, code_512: 1.5959}
+      m12_balanced_stable_synthesis: {web_512: 1.8924, textbook_512: 1.8276, math_512: 2.1878, code_512: 1.7077, mqar_T512_common: 0.5625, mqar_T512_rare: 0.4375}
+      m11_sparse_mqar_leader: {mqar_T512_common: 0.6250, mqar_T512_rare: 0.6459, copy_128: 0.9543}
+    diagnosed_tradeoffs_and_failures:
+      - "Criterion 2 partial gap: M10 (copy_256=0.1808) and M12 (0.6416) lag FullSphere pointers M9 (0.8899) and M11 s1 (0.9520) on zero-shot uniform-random copying"
+      - "M11_FullSphere_SparseOW seed=0 hit NaN at L=512 (code512=NaN, copy256 acc=0.2039 loss=NaN; seed=1 finite: code512=1.7847, copy256=0.9520); SO(3) HSPA models M10 and M12 had zero NaNs"
+
 next_experiments_queue:
-  - "Test M5_HSPA_LieSO3 semantic backbone + sparse/O(T log T) overwrite-aware exact copy pointer (combining #1 textbook/hierarchy geometry with #1 code/math/copy channel)"
-  - "Test anti-collapse key regularization and SkewCayley+HSPA vectorization on MPS before scaling to 50M-150M data/v1 runs"
+  - "EXP-U07: Test RMSNorm/L2-normalized cosine pointer keys + unrotated lexical skip on M12_HSPA_SparseOWPointer to close the random-copy gap (0.642 -> 0.95+) while keeping #1 hierarchy, #1-#2 BPB, overwrite MQAR, and 4x stability"
+  - "Test RMSNorm / logit stabilization on M11_FullSphere_SparseOWPointer at 4x (L=512) and test anti-collapse key regularization before scaling above 5M"

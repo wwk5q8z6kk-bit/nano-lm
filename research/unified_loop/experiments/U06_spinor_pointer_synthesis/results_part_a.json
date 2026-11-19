@@ -1,0 +1,431 @@
+{
+  "schema": "nanolm.unified_loop.u06a.v1",
+  "paid_compute_usd": 0.0,
+  "steps_per_run": 200,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "tasks": {
+    "S4_Holonomy_8x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 14.53,
+        "id_acc": {
+          "mean": 0.0378,
+          "std": 0.0049
+        },
+        "ood_acc": {
+          "mean": 0.0422,
+          "std": 0.0023
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 34.83,
+        "id_acc": {
+          "mean": 0.1712,
+          "std": 0.1008
+        },
+        "ood_acc": {
+          "mean": 0.0465,
+          "std": 0.0126
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 43.21,
+        "id_acc": {
+          "mean": 0.0814,
+          "std": 0.0096
+        },
+        "ood_acc": {
+          "mean": 0.0329,
+          "std": 0.0041
+        }
+      },
+      "M10_HSPA_DensePointer": {
+        "params": 55042,
+        "wall_s": 35.81,
+        "id_acc": {
+          "mean": 0.0957,
+          "std": 0.0153
+        },
+        "ood_acc": {
+          "mean": 0.0507,
+          "std": 0.0128
+        }
+      },
+      "M11_FullSphere_SparseOWPointer": {
+        "params": 55571,
+        "wall_s": 52.24,
+        "id_acc": {
+          "mean": 0.0781,
+          "std": 0.0034
+        },
+        "ood_acc": {
+          "mean": 0.0358,
+          "std": 0.0028
+        }
+      },
+      "M12_HSPA_SparseOWPointer": {
+        "params": 55075,
+        "wall_s": 41.74,
+        "id_acc": {
+          "mean": 0.1074,
+          "std": 0.0211
+        },
+        "ood_acc": {
+          "mean": 0.0537,
+          "std": 0.0224
+        }
+      }
+    },
+    "MQAR_Selective_Overwrite_4x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 20.5,
+        "id_acc": {
+          "mean": 0.1701,
+          "std": 0.0167
+        },
+        "ood_acc": {
+          "mean": 0.0927,
+          "std": 0.0104
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0925,
+          "std": 0.0112
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 70.33,
+        "id_acc": {
+          "mean": 0.0582,
+          "std": 0.0054
+        },
+        "ood_acc": {
+          "mean": 0.0597,
+          "std": 0.0019
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0578,
+          "std": 0.0006
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 106.42,
+        "id_acc": {
+          "mean": 0.8811,
+          "std": 0.0395
+        },
+        "ood_acc": {
+          "mean": 0.5764,
+          "std": 0.0794
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.5421,
+          "std": 0.0832
+        }
+      },
+      "M10_HSPA_DensePointer": {
+        "params": 55042,
+        "wall_s": 73.03,
+        "id_acc": {
+          "mean": 0.9948,
+          "std": 0.0026
+        },
+        "ood_acc": {
+          "mean": 0.6795,
+          "std": 0.0762
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.6433,
+          "std": 0.0906
+        }
+      },
+      "M11_FullSphere_SparseOWPointer": {
+        "params": 55571,
+        "wall_s": 115.34,
+        "id_acc": {
+          "mean": 0.9792,
+          "std": 0.0069
+        },
+        "ood_acc": {
+          "mean": 0.9347,
+          "std": 0.0121
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9266,
+          "std": 0.0135
+        }
+      },
+      "M12_HSPA_SparseOWPointer": {
+        "params": 55075,
+        "wall_s": 78.98,
+        "id_acc": {
+          "mean": 0.9957,
+          "std": 0.0075
+        },
+        "ood_acc": {
+          "mean": 0.9286,
+          "std": 0.0282
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9198,
+          "std": 0.0313
+        }
+      }
+    },
+    "Unseen_OpenVocab_Copy": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 9.88,
+        "id_acc": {
+          "mean": 0.0924,
+          "std": 0.013
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 33.24,
+        "id_acc": {
+          "mean": 0.0273,
+          "std": 0.0103
+        },
+        "ood_acc": {
+          "mean": 0.0088,
+          "std": 0.008
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 41.76,
+        "id_acc": {
+          "mean": 0.9967,
+          "std": 0.0041
+        },
+        "ood_acc": {
+          "mean": 0.9619,
+          "std": 0.0244
+        }
+      },
+      "M10_HSPA_DensePointer": {
+        "params": 55042,
+        "wall_s": 33.25,
+        "id_acc": {
+          "mean": 0.9961,
+          "std": 0.0034
+        },
+        "ood_acc": {
+          "mean": 0.9189,
+          "std": 0.0284
+        }
+      },
+      "M11_FullSphere_SparseOWPointer": {
+        "params": 55571,
+        "wall_s": 49.51,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.984,
+          "std": 0.0251
+        }
+      },
+      "M12_HSPA_SparseOWPointer": {
+        "params": 55075,
+        "wall_s": 39.79,
+        "id_acc": {
+          "mean": 0.9974,
+          "std": 0.0045
+        },
+        "ood_acc": {
+          "mean": 0.9603,
+          "std": 0.0171
+        }
+      }
+    },
+    "Parity_Dyck_4x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 18.5,
+        "id_acc": {
+          "mean": 0.9273,
+          "std": 0.0203
+        },
+        "ood_acc": {
+          "mean": 0.9188,
+          "std": 0.0311
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 60.01,
+        "id_acc": {
+          "mean": 0.9096,
+          "std": 0.0316
+        },
+        "ood_acc": {
+          "mean": 0.9155,
+          "std": 0.0424
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 101.96,
+        "id_acc": {
+          "mean": 0.8982,
+          "std": 0.0334
+        },
+        "ood_acc": {
+          "mean": 0.9254,
+          "std": 0.0287
+        }
+      },
+      "M10_HSPA_DensePointer": {
+        "params": 55042,
+        "wall_s": 59.92,
+        "id_acc": {
+          "mean": 0.9214,
+          "std": 0.011
+        },
+        "ood_acc": {
+          "mean": 0.928,
+          "std": 0.0323
+        }
+      },
+      "M11_FullSphere_SparseOWPointer": {
+        "params": 55571,
+        "wall_s": 107.99,
+        "id_acc": {
+          "mean": 0.9023,
+          "std": 0.0271
+        },
+        "ood_acc": {
+          "mean": 0.9232,
+          "std": 0.0265
+        }
+      },
+      "M12_HSPA_SparseOWPointer": {
+        "params": 55075,
+        "wall_s": 65.83,
+        "id_acc": {
+          "mean": 0.9164,
+          "std": 0.028
+        },
+        "ood_acc": {
+          "mean": 0.9139,
+          "std": 0.0381
+        }
+      }
+    },
+    "Hierarchy_Denom_Rollup_4x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 12.92,
+        "id_acc": {
+          "mean": 0.2279,
+          "std": 0.0094
+        },
+        "ood_acc": {
+          "mean": 0.1459,
+          "std": 0.0091
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.114,
+          "std": 0.0151
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 40.5,
+        "id_acc": {
+          "mean": 0.3053,
+          "std": 0.0122
+        },
+        "ood_acc": {
+          "mean": 0.2602,
+          "std": 0.011
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1614,
+          "std": 0.0274
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 58.06,
+        "id_acc": {
+          "mean": 0.2791,
+          "std": 0.0107
+        },
+        "ood_acc": {
+          "mean": 0.2393,
+          "std": 0.0059
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.137,
+          "std": 0.0176
+        }
+      },
+      "M10_HSPA_DensePointer": {
+        "params": 55042,
+        "wall_s": 40.74,
+        "id_acc": {
+          "mean": 0.297,
+          "std": 0.0096
+        },
+        "ood_acc": {
+          "mean": 0.261,
+          "std": 0.0101
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1665,
+          "std": 0.0249
+        }
+      },
+      "M11_FullSphere_SparseOWPointer": {
+        "params": 55571,
+        "wall_s": 72.11,
+        "id_acc": {
+          "mean": 0.2842,
+          "std": 0.0046
+        },
+        "ood_acc": {
+          "mean": 0.2428,
+          "std": 0.0082
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1365,
+          "std": 0.0206
+        }
+      },
+      "M12_HSPA_SparseOWPointer": {
+        "params": 55075,
+        "wall_s": 49.79,
+        "id_acc": {
+          "mean": 0.2997,
+          "std": 0.0077
+        },
+        "ood_acc": {
+          "mean": 0.2624,
+          "std": 0.0119
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1671,
+          "std": 0.025
+        }
+      }
+    }
+  },
+  "elapsed_s": 329.52
+}
