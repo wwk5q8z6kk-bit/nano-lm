@@ -1,0 +1,157 @@
+{
+  "schema": "nanolm.unified_loop.u07a2.v1",
+  "paid_compute_usd": 0.0,
+  "steps_per_run": 600,
+  "seeds": [
+    0,
+    1
+  ],
+  "tasks": {
+    "S4_Holonomy_8x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 17.04,
+        "id_acc": {
+          "mean": 0.041,
+          "std": 0.0055
+        },
+        "ood_acc": {
+          "mean": 0.0419,
+          "std": 0.002
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 47.9,
+        "id_acc": {
+          "mean": 0.6494,
+          "std": 0.4958
+        },
+        "ood_acc": {
+          "mean": 0.4885,
+          "std": 0.6117
+        }
+      },
+      "M12_HSPA_SparseOWPointer": {
+        "params": 55075,
+        "wall_s": 53.72,
+        "id_acc": {
+          "mean": 0.54,
+          "std": 0.3107
+        },
+        "ood_acc": {
+          "mean": 0.0453,
+          "std": 0.0063
+        }
+      },
+      "M14_GaugeSU2_Pure": {
+        "params": 55521,
+        "wall_s": 59.76,
+        "id_acc": {
+          "mean": 0.5361,
+          "std": 0.656
+        },
+        "ood_acc": {
+          "mean": 0.5155,
+          "std": 0.6657
+        }
+      },
+      "M15_GaugeSU2_EvidCosSparsePtr": {
+        "params": 55371,
+        "wall_s": 74.15,
+        "id_acc": {
+          "mean": 0.1494,
+          "std": 0.0207
+        },
+        "ood_acc": {
+          "mean": 0.0461,
+          "std": 0.0177
+        }
+      }
+    },
+    "Hierarchy_Denom_Rollup_4x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 18.69,
+        "id_acc": {
+          "mean": 0.2728,
+          "std": 0.0125
+        },
+        "ood_acc": {
+          "mean": 0.1579,
+          "std": 0.0329
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1198,
+          "std": 0.0384
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 64.03,
+        "id_acc": {
+          "mean": 0.359,
+          "std": 0.0441
+        },
+        "ood_acc": {
+          "mean": 0.3023,
+          "std": 0.0406
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1815,
+          "std": 0.0131
+        }
+      },
+      "M12_HSPA_SparseOWPointer": {
+        "params": 55075,
+        "wall_s": 76.06,
+        "id_acc": {
+          "mean": 0.3387,
+          "std": 0.0014
+        },
+        "ood_acc": {
+          "mean": 0.2923,
+          "std": 0.0064
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1889,
+          "std": 0.0038
+        }
+      },
+      "M14_GaugeSU2_Pure": {
+        "params": 55521,
+        "wall_s": 79.7,
+        "id_acc": {
+          "mean": 0.3179,
+          "std": 0.0027
+        },
+        "ood_acc": {
+          "mean": 0.2732,
+          "std": 0.0057
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1823,
+          "std": 0.0131
+        }
+      },
+      "M15_GaugeSU2_EvidCosSparsePtr": {
+        "params": 55371,
+        "wall_s": 92.18,
+        "id_acc": {
+          "mean": 0.3215,
+          "std": 0.0095
+        },
+        "ood_acc": {
+          "mean": 0.2702,
+          "std": 0.0035
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1815,
+          "std": 0.0154
+        }
+      }
+    }
+  },
+  "elapsed_s": 138.53,
+  "has_nonfinite": false
+}

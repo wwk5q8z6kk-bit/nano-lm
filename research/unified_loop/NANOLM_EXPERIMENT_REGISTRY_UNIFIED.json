@@ -210,6 +210,84 @@
           "M0_M5_common_rare": [0.0, 0.0]
         }
       }
+    },
+    {
+      "id": "EXP-U07",
+      "title": "First-Principles Enhancements: Triangular WY + Evidential Cosine Sparse Pointer + GaugeSU2HolonomyMixer (Parts A, A2, B)",
+      "status": "COMPLETE",
+      "commits": ["f972828"],
+      "script": "research/unified_loop/scripts/run_u07_first_principles_enhancements.py",
+      "artifacts": [
+        "research/unified_loop/mechanisms/zoo.py",
+        "research/unified_loop/mechanisms/test_zoo.py",
+        "research/unified_loop/experiments/U07_first_principles_enhancements/protocol.md",
+        "research/unified_loop/experiments/U07_first_principles_enhancements/results_part_a.json",
+        "research/unified_loop/experiments/U07_first_principles_enhancements/results_part_a2_algebra.json",
+        "research/unified_loop/experiments/U07_first_principles_enhancements/results_part_b.json",
+        "research/unified_loop/experiments/U07_first_principles_enhancements/analysis.md"
+      ],
+      "key_metrics": {
+        "wall_s_part_a": 221.85,
+        "wall_s_part_a2": 138.53,
+        "wall_s_part_b": 1076.53,
+        "has_nonfinite_anywhere": false,
+        "part_a_mqar_overwritten_4x": {
+          "M16_FullSphereTri_EvidCosSparsePtr": 0.9954,
+          "M13_HSPA_EvidCosSparsePtr": 0.9944,
+          "M15_GaugeSU2_EvidCosSparsePtr": 0.9871,
+          "M12_HSPA_SparseOWPointer": 0.9198,
+          "M14_GaugeSU2_Pure": 0.0583
+        },
+        "part_a_unseen_open_vocab_copy_ood": {
+          "M15_GaugeSU2_EvidCosSparsePtr": 1.0,
+          "M16_FullSphereTri_EvidCosSparsePtr": 1.0,
+          "M13_HSPA_EvidCosSparsePtr": 0.9824,
+          "M12_HSPA_SparseOWPointer": 0.9603,
+          "M14_GaugeSU2_Pure": 0.0
+        },
+        "part_a_hierarchy_denom_rollup_4x_ood": {
+          "M13_HSPA_EvidCosSparsePtr": {"ood": 0.2628, "close": 0.16},
+          "M12_HSPA_SparseOWPointer": {"ood": 0.2624, "close": 0.1671},
+          "M14_GaugeSU2_Pure": {"ood": 0.2535, "close": 0.1474},
+          "M15_GaugeSU2_EvidCosSparsePtr": {"ood": 0.2467, "close": 0.1389},
+          "M16_FullSphereTri_EvidCosSparsePtr": {"ood": 0.2421, "close": 0.1447}
+        },
+        "part_a2_s4_holonomy_600steps_ood": {
+          "M14_GaugeSU2_Pure": 0.5155,
+          "M5_HSPA_LieSO3": 0.4885,
+          "M15_GaugeSU2_EvidCosSparsePtr": 0.0461,
+          "M12_HSPA_SparseOWPointer": 0.0453,
+          "M0_Dense_GQA_RoPE": 0.0419
+        },
+        "part_a2_hierarchy_600steps_ood": {
+          "M5_HSPA_LieSO3": 0.3023,
+          "M12_HSPA_SparseOWPointer": 0.2923,
+          "M14_GaugeSU2_Pure": 0.2732,
+          "M15_GaugeSU2_EvidCosSparsePtr": 0.2702,
+          "M0_Dense_GQA_RoPE": 0.1579
+        },
+        "part_b_bpb_512": {
+          "M13_HSPA_EvidCosSparsePtr": {"web": 1.8766, "textbook": 1.8222, "math": 2.1593, "code": 1.6596, "tok_s": 7439.9},
+          "M12_HSPA_SparseOWPointer": {"web": 1.8931, "textbook": 1.8272, "math": 2.191, "code": 1.7088, "tok_s": 9655.0},
+          "M16_FullSphereTri_EvidCosSparsePtr": {"web": 1.9864, "textbook": 1.956, "math": 2.2556, "code": 1.7416, "tok_s": 8706.0},
+          "M15_GaugeSU2_EvidCosSparsePtr": {"web": 2.1279, "textbook": 2.1039, "math": 2.431, "code": 1.8855, "tok_s": 12370.9},
+          "M14_GaugeSU2_Pure": {"web": 2.2839, "textbook": 2.1808, "math": 3.2672, "code": 3.4593, "tok_s": 19690.8}
+        },
+        "part_b_copy_256": {
+          "M15_GaugeSU2_EvidCosSparsePtr": 0.9981,
+          "M16_FullSphereTri_EvidCosSparsePtr": 0.9977,
+          "M13_HSPA_EvidCosSparsePtr": 0.9405,
+          "M12_HSPA_SparseOWPointer": 0.2902,
+          "M14_GaugeSU2_Pure": 0.0
+        },
+        "part_b_mqar_T512_N4_common_rare": {
+          "M15_GaugeSU2_EvidCosSparsePtr": [1.0, 1.0],
+          "M16_FullSphereTri_EvidCosSparsePtr": [0.9375, 0.9166],
+          "M13_HSPA_EvidCosSparsePtr": [0.75, 0.8125],
+          "M12_HSPA_SparseOWPointer": [0.5208, 0.3541],
+          "M14_GaugeSU2_Pure": [0.0, 0.0]
+        }
+      }
     }
   ]
 }

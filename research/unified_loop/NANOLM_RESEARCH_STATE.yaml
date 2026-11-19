@@ -68,6 +68,22 @@ neural_core_frontier_u06:
       - "Criterion 2 partial gap: M10 (copy_256=0.1808) and M12 (0.6416) lag FullSphere pointers M9 (0.8899) and M11 s1 (0.9520) on zero-shot uniform-random copying"
       - "M11_FullSphere_SparseOW seed=0 hit NaN at L=512 (code512=NaN, copy256 acc=0.2039 loss=NaN; seed=1 finite: code512=1.7847, copy256=0.9520); SO(3) HSPA models M10 and M12 had zero NaNs"
 
+neural_core_frontier_u07:
+  first_principles_enhancements_verified:
+    part_a_micro_lab_wall_s: 221.85
+    part_a2_algebra_600step_wall_s: 138.53
+    part_b_real_corpus_wall_s: 1076.53
+    has_nonfinite_anywhere: false
+    triangular_wy_stability_win: "solve_triangular(I+L, I) eliminated M11's 4x NaN completely: M16_FullSphereTri_EvidCosSparsePtr has_nonfinite=False across 1x/2x/4x, code@512=1.7416, copy_256=0.9977"
+    evidential_cosine_pointer_pareto_win:
+      m13_vs_m12_part_a: {mqar_overwritten_4x: "0.9944 vs 0.9198", unseen_copy: "0.9824 vs 0.9603", hierarchy_4x: "0.2628 vs 0.2624"}
+      m13_vs_m12_part_b: {copy_256: "0.9405 vs 0.2902 (U06 M12: 0.6416)", mqar_T512_rare: "0.8125 vs 0.3541", mqar_T512_common: "0.7500 vs 0.5208", web_512: "1.8766 vs 1.8931", textbook_512: "1.8222 vs 1.8272", math_512: "2.1593 vs 2.1910", code_512: "1.6596 vs 1.7088"}
+      m15_copy_mqar_ceiling: {copy_32_to_256: "1.0000 -> 0.9981", mqar_all_6_cells_T128_to_T512: 1.0000}
+    gauge_su2_holonomy_mixed_findings:
+      throughput_speedup: "M14=19,690.8 tok/s (2.04x M12), M15=12,370.9 tok/s (1.66x M13)"
+      s4_holonomy_8x_600steps: "M14 led OOD mean (0.5155+-0.6657 vs M5 0.4885+-0.6117, M0 0.0419) with 1/2 seed breakout; pointer models stayed near chance (~0.045 OOD)"
+      natural_lm_and_hierarchy_regression: "M14/M15 regressed on data/v1 BPB (M14 web@512=2.2839, M15=2.1279 vs M13=1.8766) and Hierarchy 600-step (0.2732/0.2702 vs M5=0.3023) due to 144-dim hol_6d+S readout starving SwiGLU FFN and injecting undamped rotational phase"
+
 next_experiments_queue:
-  - "EXP-U07: Test RMSNorm/L2-normalized cosine pointer keys + unrotated lexical skip on M12_HSPA_SparseOWPointer to close the random-copy gap (0.642 -> 0.95+) while keeping #1 hierarchy, #1-#2 BPB, overwrite MQAR, and 4x stability"
-  - "Test RMSNorm / logit stabilization on M11_FullSphere_SparseOWPointer at 4x (L=512) and test anti-collapse key regularization before scaling above 5M"
+  - "EXP-U08: Combine M13's exact damped 3D HSPA readout (48-dim, zero hol_6d bloat) with GaugeSU2's faster quaternion + body-frame scalar scan (M17_HSPA_GaugeBodyScan_EvidCosSparsePtr) to keep M13's #1 BPB, #1 hierarchy, and 0.94-0.99 copy/MQAR at ~1.7x-2x MPS throughput"
+  - "Verify Key-Rank Stability & Scale Screening: check L0->L3 key effective rank on M13/M16 vs M1 before scaling to 30M-100M on data/v1"

@@ -1,0 +1,1244 @@
+{
+  "schema": "nanolm.unified_loop.u07b.v1",
+  "paid_compute_usd": 0.0,
+  "elapsed_s": 1076.53,
+  "config": {
+    "d_model": 128,
+    "n_heads": 4,
+    "batch_size": 8,
+    "seq_len": 128,
+    "steps": 1000,
+    "seeds": [
+      0,
+      1
+    ]
+  },
+  "models": {
+    "M12_HSPA_SparseOWPointer": {
+      "device": "mps",
+      "total_params": 5046755,
+      "non_emb_params": 852451,
+      "mean_tok_per_s": 9655.0,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 1.9558,
+            "std": 0.0072
+          },
+          "textbook": {
+            "mean": 1.897,
+            "std": 0.0007
+          },
+          "math": {
+            "mean": 2.3516,
+            "std": 0.006
+          },
+          "code": {
+            "mean": 2.3117,
+            "std": 0.0141
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 1.9394,
+            "std": 0.0048
+          },
+          "textbook": {
+            "mean": 1.883,
+            "std": 0.0016
+          },
+          "math": {
+            "mean": 2.2858,
+            "std": 0.0047
+          },
+          "code": {
+            "mean": 2.1347,
+            "std": 0.0081
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.8931,
+            "std": 0.0042
+          },
+          "textbook": {
+            "mean": 1.8272,
+            "std": 0.0012
+          },
+          "math": {
+            "mean": 2.191,
+            "std": 0.0035
+          },
+          "code": {
+            "mean": 1.7088,
+            "std": 0.0031
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.3276,
+          "std": 0.047
+        },
+        "copy_64": {
+          "mean": 0.2986,
+          "std": 0.0098
+        },
+        "copy_128": {
+          "mean": 0.2522,
+          "std": 0.0275
+        },
+        "copy_256": {
+          "mean": 0.2902,
+          "std": 0.0533
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.6041,
+            "std": 0.0295
+          },
+          "T256_N4": {
+            "mean": 0.5416,
+            "std": 0.0589
+          },
+          "T512_N4": {
+            "mean": 0.5208,
+            "std": 0.0884
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.3125,
+            "std": 0.0294
+          },
+          "T256_N4": {
+            "mean": 0.5208,
+            "std": 0.0884
+          },
+          "T512_N4": {
+            "mean": 0.3541,
+            "std": 0.0295
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 474,
+          "total_params": 5046755,
+          "non_emb_params": 852451,
+          "train_s": 111.41,
+          "tok_per_s": 9191.5,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 6.7365,
+            "500": 5.9478,
+            "800": 5.8083,
+            "1000": 6.1423
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.95069,
+              "textbook": 1.89647,
+              "math": 2.34734,
+              "code": 2.30176
+            },
+            "L_256": {
+              "web": 1.93595,
+              "textbook": 1.88412,
+              "math": 2.2825,
+              "code": 2.12896
+            },
+            "L_512": {
+              "web": 1.89014,
+              "textbook": 1.82631,
+              "math": 2.18853,
+              "code": 1.70661
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.3609,
+              "loss": 2.9029
+            },
+            "copy_64": {
+              "acc": 0.3056,
+              "loss": 2.9255
+            },
+            "copy_128": {
+              "acc": 0.2717,
+              "loss": 2.9679
+            },
+            "copy_256": {
+              "acc": 0.3279,
+              "loss": 2.9593
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.5833,
+              "T256_N4": 0.5833,
+              "T512_N4": 0.5833
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.2917,
+              "T256_N4": 0.5833,
+              "T512_N4": 0.3333
+            }
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 474,
+          "total_params": 5046755,
+          "non_emb_params": 852451,
+          "train_s": 101.2,
+          "tok_per_s": 10118.4,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 6.1834,
+            "500": 6.3326,
+            "800": 6.5338,
+            "1000": 6.0292
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.96081,
+              "textbook": 1.89752,
+              "math": 2.35581,
+              "code": 2.32173
+            },
+            "L_256": {
+              "web": 1.9428,
+              "textbook": 1.88191,
+              "math": 2.28919,
+              "code": 2.14043
+            },
+            "L_512": {
+              "web": 1.89613,
+              "textbook": 1.82807,
+              "math": 2.19342,
+              "code": 1.71104
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.2944,
+              "loss": 2.9397
+            },
+            "copy_64": {
+              "acc": 0.2917,
+              "loss": 2.882
+            },
+            "copy_128": {
+              "acc": 0.2328,
+              "loss": 2.9372
+            },
+            "copy_256": {
+              "acc": 0.2525,
+              "loss": 2.9245
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.625,
+              "T256_N4": 0.5,
+              "T512_N4": 0.4583
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.3333,
+              "T256_N4": 0.4583,
+              "T512_N4": 0.375
+            }
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M13_HSPA_EvidCosSparsePtr": {
+      "device": "mps",
+      "total_params": 5046891,
+      "non_emb_params": 852587,
+      "mean_tok_per_s": 7439.9,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 1.9583,
+            "std": 0.0039
+          },
+          "textbook": {
+            "mean": 1.8893,
+            "std": 0.0041
+          },
+          "math": {
+            "mean": 2.3307,
+            "std": 0.0103
+          },
+          "code": {
+            "mean": 2.2984,
+            "std": 0.02
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 1.9327,
+            "std": 0.0055
+          },
+          "textbook": {
+            "mean": 1.8729,
+            "std": 0.0032
+          },
+          "math": {
+            "mean": 2.268,
+            "std": 0.013
+          },
+          "code": {
+            "mean": 2.1085,
+            "std": 0.0132
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.8766,
+            "std": 0.0029
+          },
+          "textbook": {
+            "mean": 1.8222,
+            "std": 0.0014
+          },
+          "math": {
+            "mean": 2.1593,
+            "std": 0.0153
+          },
+          "code": {
+            "mean": 1.6596,
+            "std": 0.0059
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.9597,
+          "std": 0.0342
+        },
+        "copy_64": {
+          "mean": 0.9142,
+          "std": 0.0807
+        },
+        "copy_128": {
+          "mean": 0.9276,
+          "std": 0.0682
+        },
+        "copy_256": {
+          "mean": 0.9405,
+          "std": 0.0609
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.875,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.8958,
+            "std": 0.0884
+          },
+          "T512_N4": {
+            "mean": 0.75,
+            "std": 0.0
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.8334,
+            "std": 0.0589
+          },
+          "T256_N4": {
+            "mean": 0.875,
+            "std": 0.059
+          },
+          "T512_N4": {
+            "mean": 0.8125,
+            "std": 0.0884
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 463,
+          "total_params": 5046891,
+          "non_emb_params": 852587,
+          "train_s": 133.86,
+          "tok_per_s": 7649.7,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 6.6234,
+            "500": 6.2073,
+            "800": 5.7751,
+            "1000": 6.5127
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.95552,
+              "textbook": 1.89219,
+              "math": 2.32348,
+              "code": 2.28425
+            },
+            "L_256": {
+              "web": 1.92887,
+              "textbook": 1.87518,
+              "math": 2.25874,
+              "code": 2.09923
+            },
+            "L_512": {
+              "web": 1.87451,
+              "textbook": 1.82124,
+              "math": 2.14852,
+              "code": 1.65542
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.9355,
+              "loss": 1.5768
+            },
+            "copy_64": {
+              "acc": 0.8571,
+              "loss": 1.6572
+            },
+            "copy_128": {
+              "acc": 0.8794,
+              "loss": 1.5899
+            },
+            "copy_256": {
+              "acc": 0.8975,
+              "loss": 1.5614
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.75
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.9167,
+              "T512_N4": 0.875
+            }
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 463,
+          "total_params": 5046891,
+          "non_emb_params": 852587,
+          "train_s": 141.63,
+          "tok_per_s": 7230.1,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 6.2062,
+            "500": 6.336,
+            "800": 6.1172,
+            "1000": 6.2788
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 1.96108,
+              "textbook": 1.88641,
+              "math": 2.33801,
+              "code": 2.31248
+            },
+            "L_256": {
+              "web": 1.93662,
+              "textbook": 1.87071,
+              "math": 2.27718,
+              "code": 2.11784
+            },
+            "L_512": {
+              "web": 1.87863,
+              "textbook": 1.82319,
+              "math": 2.17012,
+              "code": 1.6638
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.9839,
+              "loss": 1.3534
+            },
+            "copy_64": {
+              "acc": 0.9712,
+              "loss": 1.3381
+            },
+            "copy_128": {
+              "acc": 0.9759,
+              "loss": 1.4001
+            },
+            "copy_256": {
+              "acc": 0.9836,
+              "loss": 1.3714
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.8333,
+              "T512_N4": 0.75
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.7917,
+              "T256_N4": 0.8333,
+              "T512_N4": 0.75
+            }
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M14_GaugeSU2_Pure": {
+      "device": "mps",
+      "total_params": 5047105,
+      "non_emb_params": 852801,
+      "mean_tok_per_s": 19690.8,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.3088,
+            "std": 0.0164
+          },
+          "textbook": {
+            "mean": 2.1959,
+            "std": 0.0177
+          },
+          "math": {
+            "mean": 3.0737,
+            "std": 0.0404
+          },
+          "code": {
+            "mean": 3.5267,
+            "std": 0.0636
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.3026,
+            "std": 0.0134
+          },
+          "textbook": {
+            "mean": 2.2065,
+            "std": 0.0176
+          },
+          "math": {
+            "mean": 3.1215,
+            "std": 0.0346
+          },
+          "code": {
+            "mean": 3.5037,
+            "std": 0.0652
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 2.2839,
+            "std": 0.013
+          },
+          "textbook": {
+            "mean": 2.1808,
+            "std": 0.0117
+          },
+          "math": {
+            "mean": 3.2672,
+            "std": 0.0407
+          },
+          "code": {
+            "mean": 3.4593,
+            "std": 0.0965
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_128": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "copy_256": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T512_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          },
+          "T512_N4": {
+            "mean": 0.0,
+            "std": 0.0
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 462,
+          "total_params": 5047105,
+          "non_emb_params": 852801,
+          "train_s": 50.46,
+          "tok_per_s": 20295.2,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 8.0227,
+            "500": 8.1258,
+            "800": 7.4512,
+            "1000": 6.904
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.29716,
+              "textbook": 2.1834,
+              "math": 3.04512,
+              "code": 3.48173
+            },
+            "L_256": {
+              "web": 2.29314,
+              "textbook": 2.19406,
+              "math": 3.09706,
+              "code": 3.45758
+            },
+            "L_512": {
+              "web": 2.27468,
+              "textbook": 2.17255,
+              "math": 3.23842,
+              "code": 3.39102
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 12.1444
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.8751
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 11.8693
+            },
+            "copy_256": {
+              "acc": 0.0,
+              "loss": 11.8357
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0,
+              "T512_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0,
+              "T512_N4": 0.0
+            }
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 462,
+          "total_params": 5047105,
+          "non_emb_params": 852801,
+          "train_s": 53.65,
+          "tok_per_s": 19086.5,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 7.9994,
+            "500": 7.9279,
+            "800": 6.6354,
+            "1000": 6.748
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.32037,
+              "textbook": 2.20837,
+              "math": 3.10231,
+              "code": 3.57172
+            },
+            "L_256": {
+              "web": 2.31211,
+              "textbook": 2.21888,
+              "math": 3.14593,
+              "code": 3.54983
+            },
+            "L_512": {
+              "web": 2.29312,
+              "textbook": 2.18905,
+              "math": 3.29593,
+              "code": 3.52751
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 0.0,
+              "loss": 12.1899
+            },
+            "copy_64": {
+              "acc": 0.0,
+              "loss": 11.978
+            },
+            "copy_128": {
+              "acc": 0.0,
+              "loss": 12.0569
+            },
+            "copy_256": {
+              "acc": 0.0,
+              "loss": 12.0226
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0,
+              "T512_N4": 0.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.0,
+              "T256_N4": 0.0,
+              "T512_N4": 0.0
+            }
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M15_GaugeSU2_EvidCosSparsePtr": {
+      "device": "mps",
+      "total_params": 5046379,
+      "non_emb_params": 852075,
+      "mean_tok_per_s": 12370.9,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.2299,
+            "std": 0.0026
+          },
+          "textbook": {
+            "mean": 2.1535,
+            "std": 0.0046
+          },
+          "math": {
+            "mean": 2.6432,
+            "std": 0.0001
+          },
+          "code": {
+            "mean": 2.6786,
+            "std": 0.0217
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.1957,
+            "std": 0.0028
+          },
+          "textbook": {
+            "mean": 2.1371,
+            "std": 0.0005
+          },
+          "math": {
+            "mean": 2.5553,
+            "std": 0.0045
+          },
+          "code": {
+            "mean": 2.4338,
+            "std": 0.0164
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 2.1279,
+            "std": 0.0051
+          },
+          "textbook": {
+            "mean": 2.1039,
+            "std": 0.0013
+          },
+          "math": {
+            "mean": 2.431,
+            "std": 0.0045
+          },
+          "code": {
+            "mean": 1.8855,
+            "std": 0.0158
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "copy_128": {
+          "mean": 0.999,
+          "std": 0.0007
+        },
+        "copy_256": {
+          "mean": 0.9981,
+          "std": 0.0002
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "T512_N4": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "T256_N4": {
+            "mean": 1.0,
+            "std": 0.0
+          },
+          "T512_N4": {
+            "mean": 1.0,
+            "std": 0.0
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 429,
+          "total_params": 5046379,
+          "non_emb_params": 852075,
+          "train_s": 87.5,
+          "tok_per_s": 11703.1,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 7.3078,
+            "500": 7.03,
+            "800": 6.5003,
+            "1000": 7.237
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.22805,
+              "textbook": 2.15673,
+              "math": 2.64325,
+              "code": 2.69397
+            },
+            "L_256": {
+              "web": 2.19769,
+              "textbook": 2.13675,
+              "math": 2.55846,
+              "code": 2.44545
+            },
+            "L_512": {
+              "web": 2.13156,
+              "textbook": 2.10301,
+              "math": 2.43418,
+              "code": 1.89669
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 1.0,
+              "loss": 0.744
+            },
+            "copy_64": {
+              "acc": 1.0,
+              "loss": 0.6895
+            },
+            "copy_128": {
+              "acc": 0.9995,
+              "loss": 0.7046
+            },
+            "copy_256": {
+              "acc": 0.998,
+              "loss": 0.7507
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 1.0,
+              "T256_N4": 1.0,
+              "T512_N4": 1.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 1.0,
+              "T256_N4": 1.0,
+              "T512_N4": 1.0
+            }
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 429,
+          "total_params": 5046379,
+          "non_emb_params": 852075,
+          "train_s": 78.54,
+          "tok_per_s": 13038.6,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 7.2002,
+            "500": 7.1365,
+            "800": 6.9331,
+            "1000": 6.149
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.23176,
+              "textbook": 2.15017,
+              "math": 2.64305,
+              "code": 2.66324
+            },
+            "L_256": {
+              "web": 2.1937,
+              "textbook": 2.13748,
+              "math": 2.55215,
+              "code": 2.42222
+            },
+            "L_512": {
+              "web": 2.12432,
+              "textbook": 2.10485,
+              "math": 2.42777,
+              "code": 1.87439
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 1.0,
+              "loss": 0.7871
+            },
+            "copy_64": {
+              "acc": 1.0,
+              "loss": 0.7122
+            },
+            "copy_128": {
+              "acc": 0.9985,
+              "loss": 0.716
+            },
+            "copy_256": {
+              "acc": 0.9983,
+              "loss": 0.7278
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 1.0,
+              "T256_N4": 1.0,
+              "T512_N4": 1.0
+            },
+            "rare_tail_ids": {
+              "T128_N4": 1.0,
+              "T256_N4": 1.0,
+              "T512_N4": 1.0
+            }
+          },
+          "has_nonfinite": false
+        }
+      }
+    },
+    "M16_FullSphereTri_EvidCosSparsePtr": {
+      "device": "mps",
+      "total_params": 5046331,
+      "non_emb_params": 852027,
+      "mean_tok_per_s": 8706.0,
+      "any_nonfinite": false,
+      "val_bpb": {
+        "L_128": {
+          "web": {
+            "mean": 2.0665,
+            "std": 0.0109
+          },
+          "textbook": {
+            "mean": 2.0146,
+            "std": 0.0199
+          },
+          "math": {
+            "mean": 2.4527,
+            "std": 0.0131
+          },
+          "code": {
+            "mean": 2.4545,
+            "std": 0.0038
+          }
+        },
+        "L_256": {
+          "web": {
+            "mean": 2.0413,
+            "std": 0.011
+          },
+          "textbook": {
+            "mean": 1.995,
+            "std": 0.0186
+          },
+          "math": {
+            "mean": 2.3717,
+            "std": 0.0125
+          },
+          "code": {
+            "mean": 2.2391,
+            "std": 0.001
+          }
+        },
+        "L_512": {
+          "web": {
+            "mean": 1.9864,
+            "std": 0.0122
+          },
+          "textbook": {
+            "mean": 1.956,
+            "std": 0.0175
+          },
+          "math": {
+            "mean": 2.2556,
+            "std": 0.0128
+          },
+          "code": {
+            "mean": 1.7416,
+            "std": 0.011
+          }
+        }
+      },
+      "copy_probes": {
+        "copy_32": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "copy_64": {
+          "mean": 0.9985,
+          "std": 0.0007
+        },
+        "copy_128": {
+          "mean": 0.9983,
+          "std": 0.0004
+        },
+        "copy_256": {
+          "mean": 0.9977,
+          "std": 0.0008
+        }
+      },
+      "real_haystack_mqar": {
+        "common_ids": {
+          "T128_N4": {
+            "mean": 0.8959,
+            "std": 0.0295
+          },
+          "T256_N4": {
+            "mean": 0.9375,
+            "std": 0.0294
+          },
+          "T512_N4": {
+            "mean": 0.9375,
+            "std": 0.0294
+          }
+        },
+        "rare_tail_ids": {
+          "T128_N4": {
+            "mean": 0.9791,
+            "std": 0.0295
+          },
+          "T256_N4": {
+            "mean": 0.9583,
+            "std": 0.0
+          },
+          "T512_N4": {
+            "mean": 0.9166,
+            "std": 0.0589
+          }
+        }
+      },
+      "seeds": {
+        "0": {
+          "device": "mps",
+          "ffn_hidden": 301,
+          "total_params": 5046331,
+          "non_emb_params": 852027,
+          "train_s": 118.5,
+          "tok_per_s": 8641.5,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 7.7581,
+            "500": 6.5981,
+            "800": 6.3676,
+            "1000": 6.1726
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.05883,
+              "textbook": 2.00058,
+              "math": 2.44341,
+              "code": 2.45723
+            },
+            "L_256": {
+              "web": 2.03348,
+              "textbook": 1.9818,
+              "math": 2.36286,
+              "code": 2.23978
+            },
+            "L_512": {
+              "web": 1.9777,
+              "textbook": 1.94366,
+              "math": 2.24653,
+              "code": 1.74935
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 1.0,
+              "loss": 1.2799
+            },
+            "copy_64": {
+              "acc": 0.998,
+              "loss": 1.2693
+            },
+            "copy_128": {
+              "acc": 0.998,
+              "loss": 1.2113
+            },
+            "copy_256": {
+              "acc": 0.9971,
+              "loss": 1.2297
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.875,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.9167
+            },
+            "rare_tail_ids": {
+              "T128_N4": 1.0,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.9583
+            }
+          },
+          "has_nonfinite": false
+        },
+        "1": {
+          "device": "mps",
+          "ffn_hidden": 301,
+          "total_params": 5046331,
+          "non_emb_params": 852027,
+          "train_s": 116.76,
+          "tok_per_s": 8770.4,
+          "train_nonfinite": false,
+          "train_loss_curve": {
+            "200": 7.1696,
+            "500": 7.1284,
+            "800": 6.4792,
+            "1000": 6.0397
+          },
+          "val_bpb": {
+            "L_128": {
+              "web": 2.07421,
+              "textbook": 2.02872,
+              "math": 2.4619,
+              "code": 2.45186
+            },
+            "L_256": {
+              "web": 2.04905,
+              "textbook": 2.00814,
+              "math": 2.38058,
+              "code": 2.23839
+            },
+            "L_512": {
+              "web": 1.99501,
+              "textbook": 1.9684,
+              "math": 2.26462,
+              "code": 1.73384
+            }
+          },
+          "copy_probes": {
+            "copy_32": {
+              "acc": 1.0,
+              "loss": 1.2144
+            },
+            "copy_64": {
+              "acc": 0.999,
+              "loss": 1.1706
+            },
+            "copy_128": {
+              "acc": 0.9985,
+              "loss": 1.085
+            },
+            "copy_256": {
+              "acc": 0.9983,
+              "loss": 1.1012
+            }
+          },
+          "real_haystack_mqar": {
+            "common_ids": {
+              "T128_N4": 0.9167,
+              "T256_N4": 0.9167,
+              "T512_N4": 0.9583
+            },
+            "rare_tail_ids": {
+              "T128_N4": 0.9583,
+              "T256_N4": 0.9583,
+              "T512_N4": 0.875
+            }
+          },
+          "has_nonfinite": false
+        }
+      }
+    }
+  },
+  "has_nonfinite": false
+}
