@@ -1,10 +1,13 @@
 """Verification & speed sanity tests for EXP-U02 cross-paradigm mechanisms."""
 from __future__ import annotations
 
+import math
+
 import torch
 
 from research.unified_loop.mechanisms.zoo import (
     GDN1Mixer,
+    GaugeSU2HolonomyMixer,
     HSPALieSO3Mixer,
     MECHANISM_SPECS,
     SkewCayleyFlowMixer,
@@ -146,12 +149,135 @@ def test_sparse_ow_pointer_causality_and_overwrite_index() -> None:
                 assert p.grad is not None and torch.isfinite(p.grad).all(), f"{mname} MPS bad grad {pn}"
 
 
+def test_gdn1_aligned_keys_no_cancellation() -> None:
+    """Invention A: aligned unit keys + beta=1.9 + decay=0.999 must not cancel like Neumann doubling."""
+    devices = ["cpu"] + (["mps"] if torch.backends.mps.is_available() else [])
+    for dev in devices:
+        torch.manual_seed(7)
+        B, T, H, hd = 2, 128, 4, 8
+        mixer = GDN1Mixer(H * hd, H, full_sphere=True).to(dev)
+        k_base = torch.nn.functional.normalize(torch.randn(B, 1, H, hd, device=dev), dim=-1)
+        k = k_base.expand(B, T, H, hd).contiguous()
+        q = torch.nn.functional.normalize(torch.randn(B, T, H, hd, device=dev), dim=-1)
+        v0 = torch.randn(B, T, H, hd, device=dev)
+        log_d0 = torch.full((B, T, H), math.log(0.999), device=dev)
+        beta0 = torch.full((B, T, H), 1.9, device=dev)
+
+        def run_mode(chunked: bool) -> tuple[torch.Tensor, torch.Tensor]:
+            v = v0.clone().detach().requires_grad_(True)
+            yh = (
+                mixer._forward_chunked_wy(q, k, v, log_d0, beta0, chunk_size=32)
+                if chunked
+                else mixer._forward_sequential(q, k, v, log_d0.exp(), beta0)
+            )
+            (yh ** 2).mean().backward()
+            return yh.detach(), v.grad.detach().clone()
+
+        y_seq, vg_seq = run_mode(False)
+        y_chk, vg_chk = run_mode(True)
+        assert torch.isfinite(y_chk).all() and torch.isfinite(vg_chk).all(), f"{dev} non-finite aligned WY"
+        y_rel = float((y_seq - y_chk).abs().max().item()) / max(1.0, float(y_seq.abs().max().item()))
+        v_rel = float((vg_seq - vg_chk).abs().max().item()) / max(1e-6, float(vg_seq.abs().max().item()))
+        assert y_rel < 1e-4 and float((y_seq - y_chk).abs().max().item()) < 5e-4, f"{dev} aligned WY fwd rel={y_rel}"
+        assert v_rel < 1e-4 and float((vg_seq - vg_chk).abs().max().item()) < 5e-4, f"{dev} aligned WY grad rel={v_rel}"
+
+
+def test_gauge_su2_parallel_scan_matches_sequential() -> None:
+    """Invention C: Gauge-decoupled SU(2) quaternion scan == sequential recurrence, ||q||==1, Phi(-q)==Phi(q)."""
+    q_rand = torch.nn.functional.normalize(torch.randn(8, 4), dim=-1)
+    assert float((GaugeSU2HolonomyMixer._quat_to_so3_6d(q_rand) - GaugeSU2HolonomyMixer._quat_to_so3_6d(-q_rand)).abs().max().item()) < 1e-6
+
+    devices = ["cpu"] + (["mps"] if torch.backends.mps.is_available() else [])
+    for dev in devices:
+        for T in (16, 128):
+            torch.manual_seed(31)
+            B, D, H = 3, 32, 4
+            mixer = GaugeSU2HolonomyMixer(D, H).to(dev)
+            x0 = torch.randn(B, T, D, device=dev)
+
+            def run_mode(parallel: bool) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
+                x = x0.clone().detach().requires_grad_(True)
+                mixer.zero_grad(set_to_none=True)
+                xc = x + mixer.conv(x)
+                omega = mixer.w_omega(xc).view(B, T, H, mixer.r, 3).float()
+                u_in = mixer.w_in(xc).view(B, T, H, mixer.r, 3).float()
+                a_raw, eta_raw = mixer.w_gate(xc.float()).view(B, T, 2, H, mixer.r).unbind(2)
+                decay = torch.sigmoid(a_raw.float()).unsqueeze(-1)
+                eta = torch.sigmoid(eta_raw.float()).unsqueeze(-1)
+                dq = mixer._axis_angle_to_quat(omega)
+                yh = (
+                    mixer._forward_parallel_scan(dq, u_in, decay, eta)
+                    if parallel
+                    else mixer._forward_sequential(dq, u_in, decay, eta)
+                )
+                (yh ** 2).mean().backward()
+                pgrads = {n: p.grad.detach().clone() for n, p in mixer.named_parameters() if p.grad is not None}
+                return yh.detach(), x.grad.detach().clone(), pgrads
+
+            y_seq, xg_seq, pg_seq = run_mode(False)
+            y_par, xg_par, pg_par = run_mode(True)
+            assert torch.allclose(y_seq, y_par, atol=1e-4, rtol=1e-4), (
+                f"{dev} T={T} gauge_su2 fwd max={float((y_seq - y_par).abs().max().item())}"
+            )
+            assert torch.allclose(xg_seq, xg_par, atol=1e-4, rtol=1e-4), (
+                f"{dev} T={T} gauge_su2 xgrad max={float((xg_seq - xg_par).abs().max().item())}"
+            )
+            for kname in pg_seq:
+                assert torch.allclose(pg_seq[kname], pg_par[kname], atol=1e-4, rtol=1e-4), (
+                    f"{dev} T={T} gauge_su2 {kname} grad max={float((pg_seq[kname] - pg_par[kname]).abs().max().item())}"
+                )
+
+
+def test_evid_cos_sparse_pointer_causality_and_unseen_suffix() -> None:
+    """Invention B: unseen 4-gram suffix at distance 64 hits exact cos_lex == 1.0 at slot 0 + finite MPS grads."""
+    m = UnifiedBlockLM(72, 32, "M13_HSPA_EvidCosSparsePtr").eval()
+    torch.manual_seed(11)
+    seq = torch.randint(4, 44, (1, 80), dtype=torch.long)
+    suffix = torch.tensor([51, 52, 53, 54], dtype=torch.long)
+    seq[0, 4:8] = suffix
+    seq[0, 8] = 55
+    seq[0, 68:72] = suffix  # distance = 71 - 7 = 64
+
+    with torch.no_grad():
+        emb_in = torch.nn.functional.normalize(m.emb(seq).float(), dim=-1)
+        h_rand = torch.randn(1, 80, 32)
+        probs_base = torch.softmax(m._readout(h_rand), dim=-1)
+        _, cand_idx, cand_valid, attn_w, g, cos_lex = m._compute_sparse_evid_components(h_rand, seq, probs_base, emb_in)
+    assert bool(cand_valid[0, 71, 0]) and int(cand_idx[0, 71, 0]) == 7
+    assert abs(float(cos_lex[0, 71, 0].item()) - 1.0) < 1e-5, f"expected cos_lex=1.0, got {cos_lex[0, 71, 0].item()}"
+    assert bool((cand_idx[0, 71][cand_valid[0, 71]] < 71).all())
+    assert torch.isfinite(attn_w).all() and torch.isfinite(g).all()
+
+    if torch.backends.mps.is_available():
+        for mname in (
+            "M13_HSPA_EvidCosSparsePtr",
+            "M14_GaugeSU2_Pure",
+            "M15_GaugeSU2_EvidCosSparsePtr",
+            "M16_FullSphereTri_EvidCosSparsePtr",
+        ):
+            spec = MECHANISM_SPECS[mname]
+            xm = torch.randint(0, 72, (2, 24), device="mps")
+            ym = torch.randint(0, 72, (2, 24), device="mps")
+            mm = UnifiedBlockLM(72, 32, mname).to("mps")
+            out_m = mm(xm)
+            loss_m = (
+                torch.nn.functional.nll_loss(out_m.reshape(-1, 72), ym.reshape(-1))
+                if spec.has_pointer
+                else torch.nn.functional.cross_entropy(out_m.reshape(-1, 72), ym.reshape(-1))
+            )
+            mm.zero_grad(set_to_none=True)
+            loss_m.backward()
+            assert torch.isfinite(loss_m), f"{mname} MPS non-finite loss"
+            for pn, p in mm.named_parameters():
+                assert p.grad is not None and torch.isfinite(p.grad).all(), f"{mname} MPS bad grad {pn}"
+
+
 def test_all_mechanisms_strictly_causal_param_parity_and_finite_grads() -> None:
     report = verify_strict_causality(vocab_size=72, d_model=32)
     for name, info in report.items():
         assert info["causal_leak_max"] == 0.0, f"{name} leaked future tokens: {info}"
         assert info["finite"], f"{name} produced non-finite logits"
-        assert 54_500 <= info["params"] <= 57_500, f"{name} param parity out of range: {info['params']}"
+        assert 54_500 <= info["params"] <= 56_500, f"{name} param parity out of range: {info['params']}"
 
     torch.manual_seed(0)
     x = torch.randint(0, 72, (4, 16))
