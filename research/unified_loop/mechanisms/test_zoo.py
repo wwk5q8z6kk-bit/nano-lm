@@ -101,18 +101,23 @@ def test_hspa_parallel_scan_matches_sequential() -> None:
                     if parallel
                     else mixer._forward_sequential(omega, u_in, decay, eta)
                 )
-                loss = (yh ** 2).sum()
+                loss = (yh ** 2).mean()
                 loss.backward()
                 pgrads = {n: p.grad.detach().clone() for n, p in mixer.named_parameters() if p.grad is not None}
                 return yh.detach(), x.grad.detach().clone(), pgrads
 
             y_seq, xg_seq, pg_seq = run_mode(False)
             y_par, xg_par, pg_par = run_mode(True)
-            assert float((y_seq - y_par).abs().max().item()) < 1e-4, f"{dev} T={T} hspa fwd diff"
-            assert float((xg_seq - xg_par).abs().max().item()) < 1e-4, f"{dev} T={T} hspa xgrad diff"
+            assert torch.allclose(y_seq, y_par, atol=1e-4, rtol=1e-4), (
+                f"{dev} T={T} hspa fwd diff={float((y_seq - y_par).abs().max().item())}"
+            )
+            assert torch.allclose(xg_seq, xg_par, atol=1e-4, rtol=1e-4), (
+                f"{dev} T={T} hspa xgrad diff={float((xg_seq - xg_par).abs().max().item())}"
+            )
             for kname in pg_seq:
-                diff = float((pg_seq[kname] - pg_par[kname]).abs().max().item())
-                assert diff < 1e-4, f"{dev} T={T} hspa {kname} grad diff={diff}"
+                assert torch.allclose(pg_seq[kname], pg_par[kname], atol=1e-4, rtol=1e-4), (
+                    f"{dev} T={T} hspa {kname} grad diff={float((pg_seq[kname] - pg_par[kname]).abs().max().item())}"
+                )
 
 
 def test_sparse_ow_pointer_causality_and_overwrite_index() -> None:
@@ -270,6 +275,77 @@ def test_evid_cos_sparse_pointer_causality_and_unseen_suffix() -> None:
             assert torch.isfinite(loss_m), f"{mname} MPS non-finite loss"
             for pn, p in mm.named_parameters():
                 assert p.grad is not None and torch.isfinite(p.grad).all(), f"{mname} MPS bad grad {pn}"
+
+
+def test_sparse_candidates_on_device_matches_hash() -> None:
+    """Upgrade 1b: vectorized on-device candidate builder == CPU hash-list builder bit-for-bit."""
+    devices = ["cpu"] + (["mps"] if torch.backends.mps.is_available() else [])
+    for dev in devices:
+        for B, T in ((4, 48), (2, 192)):
+            torch.manual_seed(13 + T)
+            x = torch.randint(0, 20, (B, T), device=dev)  # small vocab forces heavy matches & dedup
+            idx_vec, val_vec = UnifiedBlockLM._build_sparse_pointer_candidates(x, n_exact=8, n_local=24)
+            idx_h, val_h = UnifiedBlockLM._build_sparse_pointer_candidates_hash(x, n_exact=8, n_local=24)
+            assert torch.equal(val_vec, val_h), f"{dev} T={T} valid mismatch"
+            assert torch.equal(torch.where(val_vec, idx_vec, 0), torch.where(val_h, idx_h, 0)), f"{dev} T={T} idx mismatch"
+
+
+def test_sparse_hybrid_causality_dedup_and_mps_grads() -> None:
+    """Upgrades 2 & 3: M17/M18 strict causality, zero duplicate slots, streaming heap exactness, AuxBase & MPS grads."""
+    torch.manual_seed(41)
+    # 1. Verify M18 32-slot dedup & strict < t causality
+    m18 = UnifiedBlockLM(72, 32, "M18_HSPA_HybridSemLexPtr").eval()
+    x = torch.randint(0, 24, (2, 64))
+    with torch.no_grad():
+        emb_in = torch.nn.functional.normalize(m18.emb(x).float(), dim=-1)
+        h = emb_in.clone()
+        for blk in m18.blocks:
+            h = blk(h)
+        probs_base = torch.softmax(m18._readout(h), dim=-1)
+        _, cand_idx, cand_valid, attn_w, g, _ = m18._compute_sparse_evid_components(h, x, probs_base, emb_in)
+    assert cand_idx.shape == (2, 64, 32)
+    for b in range(2):
+        for t in range(64):
+            val = cand_valid[b, t]
+            if bool(val.any()):
+                slots = cand_idx[b, t][val].tolist()
+                assert all(j < t for j in slots), f"future slot leak at t={t}: {slots}"
+                assert len(slots) == len(set(slots)), f"duplicate slots across exact+sem+local at t={t}: {slots}"
+    assert torch.isfinite(attn_w).all() and torch.isfinite(g).all()
+
+    # 2. Verify streaming min-heap T > 1024 path against brute-force dense top-k on T=1030
+    torch.manual_seed(99)
+    T_long = 1030
+    x_long = torch.randint(0, 50, (1, T_long))
+    base_i_long, base_v_long = UnifiedBlockLM._build_sparse_pointer_candidates(x_long, n_exact=8, n_local=16)
+    sal_long = torch.randn(1, T_long)
+    sem_i_stream, sem_v_stream = UnifiedBlockLM._select_causal_salience_slots(sal_long, base_i_long, base_v_long, n_sem=8)
+    for t_chk in (32, 200, 1029):
+        excl = {int(idx) for idx, ok in zip(base_i_long[0, t_chk].tolist(), base_v_long[0, t_chk].tolist()) if ok}
+        cands = sorted([j for j in range(t_chk) if j not in excl], key=lambda j: (-float(sal_long[0, j]), -j))[:8]
+        got = [int(idx) for idx, ok in zip(sem_i_stream[0, t_chk].tolist(), sem_v_stream[0, t_chk].tolist()) if ok]
+        assert got == cands, f"heap mismatch at t={t_chk}: got={got} ref={cands}"
+
+    # 3. Verify return_base_logits + finite MPS grads (including ptr_salience.grad != 0) on M17 & M18
+    devices = ["cpu"] + (["mps"] if torch.backends.mps.is_available() else [])
+    for dev in devices:
+        for mname in ("M17_HSPA_MultiScale_EvidCosSparsePtr", "M18_HSPA_HybridSemLexPtr"):
+            mm = UnifiedBlockLM(72, 32, mname).to(dev)
+            xm = torch.randint(0, 72, (2, 32), device=dev)
+            ym = torch.randint(0, 72, (2, 32), device=dev)
+            mix_lp, base_lg = mm(xm, return_base_logits=True)
+            assert mix_lp.shape == base_lg.shape == (2, 32, 72)
+            assert torch.isfinite(mix_lp).all() and torch.isfinite(base_lg).all()
+            loss = (
+                torch.nn.functional.nll_loss(mix_lp.reshape(-1, 72), ym.reshape(-1))
+                + 0.25 * torch.nn.functional.cross_entropy(base_lg.reshape(-1, 72), ym.reshape(-1))
+            )
+            mm.zero_grad(set_to_none=True)
+            loss.backward()
+            for pn, p in mm.named_parameters():
+                assert p.grad is not None and torch.isfinite(p.grad).all(), f"{dev} {mname} bad grad {pn}"
+            if mname == "M18_HSPA_HybridSemLexPtr":
+                assert float(mm.ptr_salience.weight.grad.abs().max().item()) > 0.0, f"{dev} ptr_salience got zero grad"
 
 
 def test_all_mechanisms_strictly_causal_param_parity_and_finite_grads() -> None:

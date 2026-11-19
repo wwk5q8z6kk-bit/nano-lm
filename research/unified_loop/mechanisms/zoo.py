@@ -15,6 +15,7 @@ so differences come purely from the mathematical state/transport/recursion primi
 """
 from __future__ import annotations
 
+import heapq
 import math
 from dataclasses import dataclass
 from typing import Any
@@ -32,7 +33,7 @@ class MechanismSpec:
     loops: int = 1
     attn_res: bool = False
     use_pointer: bool = False
-    pointer_mode: str = "none"  # "none" | "dense" | "sparse_ow" | "sparse_evid"
+    pointer_mode: str = "none"  # "none" | "dense" | "sparse_ow" | "sparse_evid" | "sparse_hybrid"
 
     @property
     def has_pointer(self) -> bool:
@@ -63,6 +64,8 @@ MECHANISM_SPECS: dict[str, MechanismSpec] = {
     "M14_GaugeSU2_Pure": MechanismSpec("M14_GaugeSU2_Pure", ffn_hidden=44, n_layers=4),
     "M15_GaugeSU2_EvidCosSparsePtr": MechanismSpec("M15_GaugeSU2_EvidCosSparsePtr", ffn_hidden=35, n_layers=4, use_pointer=True, pointer_mode="sparse_evid"),
     "M16_FullSphereTri_EvidCosSparsePtr": MechanismSpec("M16_FullSphereTri_EvidCosSparsePtr", ffn_hidden=68, n_layers=4, use_pointer=True, pointer_mode="sparse_evid"),
+    "M17_HSPA_MultiScale_EvidCosSparsePtr": MechanismSpec("M17_HSPA_MultiScale_EvidCosSparsePtr", ffn_hidden=68, n_layers=4, use_pointer=True, pointer_mode="sparse_evid"),
+    "M18_HSPA_HybridSemLexPtr": MechanismSpec("M18_HSPA_HybridSemLexPtr", ffn_hidden=70, n_layers=4, use_pointer=True, pointer_mode="sparse_hybrid"),
 }
 
 
@@ -383,17 +386,103 @@ class BOBODualFastMixer(nn.Module):
         return self.o(y.to(x.dtype))
 
 
+def _axis_angle_to_quat(omega: torch.Tensor) -> torch.Tensor:
+    r = torch.sqrt((omega * omega).sum(dim=-1, keepdim=True) + 1e-12)
+    half = 0.5 * r
+    sinc_half = torch.where(half < 1e-3, 1.0 - (half * half) / 6.0, torch.sin(half) / half.clamp_min(1e-6))
+    return torch.cat((torch.cos(half), 0.5 * sinc_half * omega), dim=-1)
+
+
+def _quat_mul(p: torch.Tensor, q: torch.Tensor) -> torch.Tensor:
+    pw, px, py, pz = p.unbind(-1)
+    qw, qx, qy, qz = q.unbind(-1)
+    return torch.stack((
+        pw * qw - px * qx - py * qy - pz * qz,
+        pw * qx + px * qw + py * qz - pz * qy,
+        pw * qy - px * qz + py * qw + pz * qx,
+        pw * qz + px * qy - py * qx + pz * qw,
+    ), dim=-1)
+
+
+def _quat_conj(q: torch.Tensor) -> torch.Tensor:
+    return torch.cat((q[..., :1], -q[..., 1:]), dim=-1)
+
+
+def _quat_rot(q: torch.Tensor, v: torch.Tensor) -> torch.Tensor:
+    w, u = q[..., :1], q[..., 1:]
+    t = 2.0 * torch.linalg.cross(u, v, dim=-1)
+    return v + w * t + torch.linalg.cross(u, t, dim=-1)
+
+
+def _quat_to_so3_6d(q: torch.Tensor) -> torch.Tensor:
+    w, x, y, z = q.unbind(-1)
+    yy, zz, xx = y * y, z * z, x * x
+    xy, wz, xz, wy, yz, wx = x * y, w * z, x * z, w * y, y * z, w * x
+    return torch.stack((
+        1.0 - 2.0 * (yy + zz),
+        2.0 * (xy + wz),
+        2.0 * (xz - wy),
+        2.0 * (xy - wz),
+        1.0 - 2.0 * (xx + zz),
+        2.0 * (yz + wx),
+    ), dim=-1)
+
+
+def _gauge_su2_scan_state(
+    dq: torch.Tensor,
+    u_in: torch.Tensor,
+    decay: torch.Tensor,
+    eta: torch.Tensor,
+    h: int,
+    r: int,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Exact O(log T) gauge-decoupled SU(2) holonomy scan + co-moving scalar affine body scan."""
+    B, T = dq.shape[:2]
+    BHR = B * h * r
+    q = dq.permute(0, 2, 3, 1, 4).reshape(BHR, T, 4).contiguous()
+    stride = 1
+    while stride < T:
+        q = torch.cat((q[:, :stride], _quat_mul(q[:, stride:], q[:, :-stride])), dim=1)
+        q = q / torch.linalg.norm(q, dim=-1, keepdim=True).clamp_min(1e-6)
+        stride <<= 1
+
+    s = _quat_rot(
+        _quat_conj(q),
+        (eta * u_in).permute(0, 2, 3, 1, 4).reshape(BHR, T, 3).contiguous(),
+    )
+    a = decay.permute(0, 2, 3, 1, 4).reshape(BHR, T, 1).contiguous()
+    stride = 1
+    while stride < T:
+        a_prev, s_prev = a[:, :-stride], s[:, :-stride]
+        a_curr, s_curr = a[:, stride:], s[:, stride:]
+        a = torch.cat((a[:, :stride], a_curr * a_prev), dim=1)
+        s = torch.cat((s[:, :stride], a_curr * s_prev + s_curr), dim=1)
+        stride <<= 1
+
+    S = _quat_rot(q, s)
+    return q, S
+
+
 class HSPALieSO3Mixer(nn.Module):
     """Exact SU(2) -> SO(3) spinor quaternion parallel transport over fiber registers."""
 
-    def __init__(self, d: int, h: int, n_reg: int = 4) -> None:
+    def __init__(self, d: int, h: int, n_reg: int = 4, multiscale: bool = False) -> None:
         super().__init__()
         self.h = h
         self.r = n_reg
+        self.multiscale = multiscale
         self.fdim = h * n_reg * 3  # 4*4*3 = 48
+        self.conv = CausalDepthwiseConv(d, k=4, use_silu=False) if multiscale else None
+        if self.conv is not None:
+            nn.init.normal_(self.conv.w.weight, mean=0.0, std=0.05)
         self.w_omega = nn.Linear(d, self.fdim, bias=False)
         self.w_in = nn.Linear(d, self.fdim, bias=False)
-        self.w_gate = nn.Linear(d, 2 * h * n_reg, bias=False)
+        self.w_gate = nn.Linear(d, 2 * h * n_reg, bias=multiscale)
+        if multiscale and self.w_gate.bias is not None:
+            with torch.no_grad():
+                a_bias = torch.linspace(0.0, 4.5, n_reg).view(1, n_reg).expand(h, n_reg).reshape(-1)
+                self.w_gate.bias[: h * n_reg].copy_(a_bias)
+                self.w_gate.bias[h * n_reg :].zero_()
         self.onorm = RMSNorm(self.fdim)
         self.o = nn.Linear(self.fdim, d, bias=False)
 
@@ -433,42 +522,23 @@ class HSPALieSO3Mixer(nn.Module):
         decay: torch.Tensor,
         eta: torch.Tensor,
     ) -> torch.Tensor:
-        """Exact O(log T) Kogge-Stone associative scan over 3x3 affine Rodrigues transitions."""
+        """Exact O(log T) gauge-decoupled SU(2) quaternion scan + scalar body-frame scan."""
         B, T = omega.shape[:2]
-        theta = torch.linalg.norm(omega, dim=-1, keepdim=True).clamp_min(1e-6)
-        ax, ay, az = (omega / theta).unbind(-1)
-        c = torch.cos(theta).squeeze(-1)
-        s = torch.sin(theta).squeeze(-1)
-        omc = 1.0 - c
-        r0 = torch.stack((c + omc * ax * ax, omc * ax * ay - s * az, omc * ax * az + s * ay), dim=-1)
-        r1 = torch.stack((omc * ay * ax + s * az, c + omc * ay * ay, omc * ay * az - s * ax), dim=-1)
-        r2 = torch.stack((omc * az * ax - s * ay, omc * az * ay + s * ax, c + omc * az * az), dim=-1)
-        R = torch.stack((r0, r1, r2), dim=-2)  # [B, T, H, R, 3, 3]
-
-        BHR = B * self.h * self.r
-        A = (decay.unsqueeze(-1) * R).permute(0, 2, 3, 1, 4, 5).reshape(BHR, T, 3, 3).contiguous()
-        b = (eta * u_in).permute(0, 2, 3, 1, 4).reshape(BHR, T, 3, 1).contiguous()
-
-        stride = 1
-        while stride < T:
-            A_prev, b_prev = A[:, :-stride], b[:, :-stride]
-            A_curr, b_curr = A[:, stride:], b[:, stride:]
-            A = torch.cat((A[:, :stride], torch.matmul(A_curr, A_prev)), dim=1)
-            b = torch.cat((b[:, :stride], torch.matmul(A_curr, b_prev) + b_curr), dim=1)
-            stride <<= 1
-
-        return b.squeeze(-1).view(B, self.h, self.r, T, 3).permute(0, 3, 1, 2, 4).reshape(B, T, self.fdim)
+        dq = _axis_angle_to_quat(omega)
+        _, S = _gauge_su2_scan_state(dq, u_in, decay, eta, self.h, self.r)
+        return S.view(B, self.h, self.r, T, 3).permute(0, 3, 1, 2, 4).reshape(B, T, self.fdim)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, _ = x.shape
-        omega = self.w_omega(x).view(B, T, self.h, self.r, 3).float()
-        u_in = self.w_in(x).view(B, T, self.h, self.r, 3).float()
-        a_raw, eta_raw = self.w_gate(x).view(B, T, 2, self.h, self.r).unbind(2)
+        xc = (x + self.conv(x)) if self.conv is not None else x
+        omega = self.w_omega(xc).view(B, T, self.h, self.r, 3).float()
+        u_in = self.w_in(xc).view(B, T, self.h, self.r, 3).float()
+        a_raw, eta_raw = self.w_gate(xc.float()).view(B, T, 2, self.h, self.r).unbind(2)
         decay = torch.sigmoid(a_raw.float()).unsqueeze(-1)
         eta = torch.sigmoid(eta_raw.float()).unsqueeze(-1)
         raw = (
             self._forward_parallel_scan(omega, u_in, decay, eta)
-            if T >= 16
+            if T >= 8
             else self._forward_sequential(omega, u_in, decay, eta)
         )
         y = self.onorm(raw)
@@ -477,6 +547,12 @@ class HSPALieSO3Mixer(nn.Module):
 
 class GaugeSU2HolonomyMixer(nn.Module):
     """Gauge-decoupled SU(2) holonomy scan (6D SO(3) group frame + multi-timescale co-moving state)."""
+
+    _axis_angle_to_quat = staticmethod(_axis_angle_to_quat)
+    _quat_mul = staticmethod(_quat_mul)
+    _quat_conj = staticmethod(_quat_conj)
+    _quat_rot = staticmethod(_quat_rot)
+    _quat_to_so3_6d = staticmethod(_quat_to_so3_6d)
 
     def __init__(self, d: int, h: int, n_reg: int = 4) -> None:
         super().__init__()
@@ -497,48 +573,6 @@ class GaugeSU2HolonomyMixer(nn.Module):
         self.onorm = RMSNorm(self.out_dim)
         self.o = nn.Linear(self.out_dim, d, bias=False)
 
-    @staticmethod
-    def _axis_angle_to_quat(omega: torch.Tensor) -> torch.Tensor:
-        r = torch.sqrt((omega * omega).sum(dim=-1, keepdim=True) + 1e-12)
-        half = 0.5 * r
-        sinc_half = torch.where(half < 1e-3, 1.0 - (half * half) / 6.0, torch.sin(half) / half.clamp_min(1e-6))
-        return torch.cat((torch.cos(half), 0.5 * sinc_half * omega), dim=-1)
-
-    @staticmethod
-    def _quat_mul(p: torch.Tensor, q: torch.Tensor) -> torch.Tensor:
-        pw, px, py, pz = p.unbind(-1)
-        qw, qx, qy, qz = q.unbind(-1)
-        return torch.stack((
-            pw * qw - px * qx - py * qy - pz * qz,
-            pw * qx + px * qw + py * qz - pz * qy,
-            pw * qy - px * qz + py * qw + pz * qx,
-            pw * qz + px * qy - py * qx + pz * qw,
-        ), dim=-1)
-
-    @staticmethod
-    def _quat_conj(q: torch.Tensor) -> torch.Tensor:
-        return torch.cat((q[..., :1], -q[..., 1:]), dim=-1)
-
-    @staticmethod
-    def _quat_rot(q: torch.Tensor, v: torch.Tensor) -> torch.Tensor:
-        w, u = q[..., :1], q[..., 1:]
-        t = 2.0 * torch.linalg.cross(u, v, dim=-1)
-        return v + w * t + torch.linalg.cross(u, t, dim=-1)
-
-    @staticmethod
-    def _quat_to_so3_6d(q: torch.Tensor) -> torch.Tensor:
-        w, x, y, z = q.unbind(-1)
-        yy, zz, xx = y * y, z * z, x * x
-        xy, wz, xz, wy, yz, wx = x * y, w * z, x * z, w * y, y * z, w * x
-        return torch.stack((
-            1.0 - 2.0 * (yy + zz),
-            2.0 * (xy + wz),
-            2.0 * (xz - wy),
-            2.0 * (xy - wz),
-            1.0 - 2.0 * (xx + zz),
-            2.0 * (yz + wx),
-        ), dim=-1)
-
     def _forward_sequential(
         self,
         dq: torch.Tensor,
@@ -555,10 +589,10 @@ class GaugeSU2HolonomyMixer(nn.Module):
         d_t = decay.unbind(1)
         outs: list[torch.Tensor] = []
         for t in range(T):
-            q = self._quat_mul(dq_t[t], q)
+            q = _quat_mul(dq_t[t], q)
             q = q / torch.linalg.norm(q, dim=-1, keepdim=True).clamp_min(1e-6)
-            S = d_t[t] * self._quat_rot(dq_t[t], S) + u_t[t]
-            outs.append(torch.cat((self._quat_to_so3_6d(q), S), dim=-1).reshape(B, self.out_dim))
+            S = d_t[t] * _quat_rot(dq_t[t], S) + u_t[t]
+            outs.append(torch.cat((_quat_to_so3_6d(q), S), dim=-1).reshape(B, self.out_dim))
         return torch.stack(outs, dim=1)
 
     def _forward_parallel_scan(
@@ -570,30 +604,9 @@ class GaugeSU2HolonomyMixer(nn.Module):
     ) -> torch.Tensor:
         """Exact O(log T) gauge-decoupled SU(2) quaternion scan + scalar body-frame scan."""
         B, T = dq.shape[:2]
-        BHR = B * self.h * self.r
-        q = dq.permute(0, 2, 3, 1, 4).reshape(BHR, T, 4).contiguous()
-        stride = 1
-        while stride < T:
-            q = torch.cat((q[:, :stride], self._quat_mul(q[:, stride:], q[:, :-stride])), dim=1)
-            q = q / torch.linalg.norm(q, dim=-1, keepdim=True).clamp_min(1e-6)
-            stride <<= 1
-
-        s = self._quat_rot(
-            self._quat_conj(q),
-            (eta * u_in).permute(0, 2, 3, 1, 4).reshape(BHR, T, 3).contiguous(),
-        )
-        a = decay.permute(0, 2, 3, 1, 4).reshape(BHR, T, 1).contiguous()
-        stride = 1
-        while stride < T:
-            a_prev, s_prev = a[:, :-stride], s[:, :-stride]
-            a_curr, s_curr = a[:, stride:], s[:, stride:]
-            a = torch.cat((a[:, :stride], a_curr * a_prev), dim=1)
-            s = torch.cat((s[:, :stride], a_curr * s_prev + s_curr), dim=1)
-            stride <<= 1
-
-        S = self._quat_rot(q, s)
+        q, S = _gauge_su2_scan_state(dq, u_in, decay, eta, self.h, self.r)
         return (
-            torch.cat((self._quat_to_so3_6d(q), S), dim=-1)
+            torch.cat((_quat_to_so3_6d(q), S), dim=-1)
             .view(B, self.h, self.r, T, 9)
             .permute(0, 3, 1, 2, 4)
             .reshape(B, T, self.out_dim)
@@ -607,7 +620,7 @@ class GaugeSU2HolonomyMixer(nn.Module):
         a_raw, eta_raw = self.w_gate(xc.float()).view(B, T, 2, self.h, self.r).unbind(2)
         decay = torch.sigmoid(a_raw.float()).unsqueeze(-1)
         eta = torch.sigmoid(eta_raw.float()).unsqueeze(-1)
-        dq = self._axis_angle_to_quat(omega)
+        dq = _axis_angle_to_quat(omega)
         raw = (
             self._forward_parallel_scan(dq, u_in, decay, eta)
             if T >= 8
@@ -761,8 +774,10 @@ class UnifiedBlock(nn.Module):
             self.mix = KDADeltaProduct2Mixer(d, h)
         elif name == "M4_BOBO_DualFastOp":
             self.mix = BOBODualFastMixer(d, h)
-        elif name in ("M5_HSPA_LieSO3", "M10_HSPA_DensePointer", "M12_HSPA_SparseOWPointer", "M13_HSPA_EvidCosSparsePtr"):
-            self.mix = HSPALieSO3Mixer(d, h)
+        elif name in ("M5_HSPA_LieSO3", "M10_HSPA_DensePointer", "M12_HSPA_SparseOWPointer", "M13_HSPA_EvidCosSparsePtr", "M18_HSPA_HybridSemLexPtr"):
+            self.mix = HSPALieSO3Mixer(d, h, multiscale=False)
+        elif name == "M17_HSPA_MultiScale_EvidCosSparsePtr":
+            self.mix = HSPALieSO3Mixer(d, h, multiscale=True)
         elif name in ("M14_GaugeSU2_Pure", "M15_GaugeSU2_EvidCosSparsePtr"):
             self.mix = GaugeSU2HolonomyMixer(d, h)
         elif name == "M6_NEBN_BayesFilter":
@@ -813,14 +828,15 @@ class UnifiedBlockLM(nn.Module):
             self.ptr_k = nn.Linear(d_model, d_model, bias=False)
             self.ptr_gate = nn.Linear(d_model, 1, bias=True)
         pmode = self.spec.resolved_pointer_mode
-        if pmode in ("sparse_ow", "sparse_evid"):
+        if pmode in ("sparse_ow", "sparse_evid", "sparse_hybrid"):
             self.ptr_n_exact = 8
-            self.ptr_n_local = 24
-            self.ptr_slot_bias = nn.Parameter(
-                torch.tensor([2.0, 0.5, 0.0, -0.5, -1.0, -1.5, -2.0, -2.5] + [0.0] * 24, dtype=torch.float32)
-            )
+            self.ptr_n_sem = 8 if pmode == "sparse_hybrid" else 0
+            self.ptr_n_local = 16 if pmode == "sparse_hybrid" else 24
+            exact_bias = [2.0, 0.5, 0.0, -0.5, -1.0, -1.5, -2.0, -2.5]
+            tail_bias = ([0.5] * 8 + [0.0] * 16) if pmode == "sparse_hybrid" else ([0.0] * 24)
+            self.ptr_slot_bias = nn.Parameter(torch.tensor(exact_bias + tail_bias, dtype=torch.float32))
             self.ptr_dist_decay = nn.Parameter(torch.tensor(-2.0, dtype=torch.float32))
-        if pmode == "sparse_evid":
+        if pmode in ("sparse_evid", "sparse_hybrid"):
             self.ptr_norm = RMSNorm(d_model)
             self.ptr_lex_conv = CausalDepthwiseConv(d_model, k=4, use_silu=False)
             with torch.no_grad():
@@ -832,15 +848,18 @@ class UnifiedBlockLM(nn.Module):
             self.ptr_tau_lex = nn.Parameter(torch.tensor(math.log(6.0), dtype=torch.float32))
             self.ptr_ev_gate = nn.Linear(6, 1, bias=False)
             nn.init.zeros_(self.ptr_ev_gate.weight)
+        if pmode == "sparse_hybrid":
+            self.ptr_salience = nn.Linear(d_model, 1, bias=False)
+            self.ptr_sal_scale = nn.Parameter(torch.tensor(0.5, dtype=torch.float32))
         self.nf = RMSNorm(d_model)
 
     @staticmethod
-    def _build_sparse_pointer_candidates(
+    def _build_sparse_pointer_candidates_hash(
         x_toks: torch.Tensor,
         n_exact: int = 8,
         n_local: int = 24,
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        """Strictly causal O(B * T * K) sparse candidate index: top-`n_exact` recency-ordered matches + `n_local` window."""
+        """Exact O(B * T * K) CPU hash-list sparse candidate builder (used for T > 1024)."""
         B, T = x_toks.shape
         K = n_exact + n_local
         x_list = x_toks.detach().cpu().tolist()
@@ -876,6 +895,98 @@ class UnifiedBlockLM(nn.Module):
         return (
             torch.tensor(idx_all, dtype=torch.long, device=x_toks.device),
             torch.tensor(val_all, dtype=torch.bool, device=x_toks.device),
+        )
+
+    @staticmethod
+    def _build_sparse_pointer_candidates(
+        x_toks: torch.Tensor,
+        n_exact: int = 8,
+        n_local: int = 24,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        """Strictly causal sparse candidate index: top-`n_exact` recency-ordered matches + deduplicated `n_local`."""
+        B, T = x_toks.shape
+        if T > 1024:
+            return UnifiedBlockLM._build_sparse_pointer_candidates_hash(x_toks, n_exact, n_local)
+        dev = x_toks.device
+        t_pos = torch.arange(T, device=dev)
+        j_pos = torch.arange(T, device=dev)
+        strict = j_pos.unsqueeze(0) < t_pos.unsqueeze(1)
+        eq = (x_toks.unsqueeze(2) == x_toks.unsqueeze(1)) & strict.unsqueeze(0)
+        rec_key = torch.where(eq, j_pos.view(1, 1, T).expand(B, T, T), x_toks.new_full((B, T, T), -1))
+        k_e = min(n_exact, T)
+        top_vals, _ = torch.topk(rec_key, k=k_e, dim=-1, largest=True, sorted=True)
+        exact_valid = top_vals >= 0
+        exact_idx = top_vals.clamp_min(0)
+        if k_e < n_exact:
+            pad = n_exact - k_e
+            exact_idx = F.pad(exact_idx, (0, pad), value=0)
+            exact_valid = F.pad(exact_valid, (0, pad), value=False)
+
+        w = torch.arange(n_local, device=dev).view(1, 1, n_local)
+        raw_loc = t_pos.view(1, T, 1) - 1 - w
+        loc_idx = raw_loc.clamp_min(0).expand(B, T, n_local)
+        dup = ((loc_idx.unsqueeze(-1) == exact_idx.unsqueeze(-2)) & exact_valid.unsqueeze(-2)).any(dim=-1)
+        loc_valid = (raw_loc >= 0) & (~dup)
+        loc_idx = torch.where(loc_valid, loc_idx, torch.zeros_like(loc_idx))
+        return torch.cat((exact_idx, loc_idx), dim=-1), torch.cat((exact_valid, loc_valid), dim=-1)
+
+    @staticmethod
+    def _select_causal_salience_slots(
+        sal_key: torch.Tensor,
+        excl_idx: torch.Tensor,
+        excl_valid: torch.Tensor,
+        n_sem: int,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        """Strictly causal (j < t) top-n_sem salient landmark selection, deduplicated against excl_idx."""
+        B, T = sal_key.shape
+        dev = sal_key.device
+        if n_sem <= 0 or T <= 1:
+            return (
+                torch.zeros((B, T, n_sem), dtype=torch.long, device=dev),
+                torch.zeros((B, T, n_sem), dtype=torch.bool, device=dev),
+            )
+        if T <= 1024:
+            t_pos = torch.arange(T, device=dev)
+            j_pos = torch.arange(T, device=dev)
+            strict = (j_pos.unsqueeze(0) < t_pos.unsqueeze(1)).unsqueeze(0)  # [1, T, T]
+            excl_mask = torch.zeros((B, T, T + 1), device=dev, dtype=torch.bool)
+            safe_slot = torch.where(excl_valid, excl_idx, torch.full_like(excl_idx, T))
+            excl_mask.scatter_(2, safe_slot, True)
+            blocked = (~strict) | excl_mask[:, :, :T]
+            cand_s = sal_key.unsqueeze(1).expand(B, T, T).masked_fill(blocked, -1e9)
+            k_s = min(n_sem, T)
+            top_s, top_i = torch.topk(cand_s, k=k_s, dim=-1, largest=True, sorted=True)
+            sem_valid = top_s > -1e8
+            sem_idx = torch.where(sem_valid, top_i, torch.zeros_like(top_i))
+            if k_s < n_sem:
+                pad = n_sem - k_s
+                sem_idx = F.pad(sem_idx, (0, pad), value=0)
+                sem_valid = F.pad(sem_valid, (0, pad), value=False)
+            return sem_idx, sem_valid
+
+        # O(T) streaming bounded min-heap exact via pigeonhole (cap = n_sem + excl_width)
+        cap = n_sem + excl_idx.shape[-1]
+        sal_cpu = sal_key.detach().cpu().tolist()
+        ex_i = excl_idx.detach().cpu().tolist()
+        ex_v = excl_valid.detach().cpu().tolist()
+        sem_i = [[[0] * n_sem for _ in range(T)] for _ in range(B)]
+        sem_v = [[[False] * n_sem for _ in range(T)] for _ in range(B)]
+        for b in range(B):
+            heap: list[tuple[float, int]] = []
+            for t in range(T):
+                excl = {idx for idx, ok in zip(ex_i[b][t], ex_v[b][t]) if ok}
+                top_sorted = sorted((j for _, j in heap if j not in excl), key=lambda j: (-sal_cpu[b][j], -j))
+                for rank, j in enumerate(top_sorted[:n_sem]):
+                    sem_i[b][t][rank] = j
+                    sem_v[b][t][rank] = True
+                item = (float(sal_cpu[b][t]), t)
+                if len(heap) < cap:
+                    heapq.heappush(heap, item)
+                elif item > heap[0]:
+                    heapq.heapreplace(heap, item)
+        return (
+            torch.tensor(sem_i, dtype=torch.long, device=dev),
+            torch.tensor(sem_v, dtype=torch.bool, device=dev),
         )
 
     def _mix_sparse_pointer_vocab(
@@ -934,12 +1045,25 @@ class UnifiedBlockLM(nn.Module):
         emb_in: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         B, T = x_toks.shape
-        K = self.ptr_n_exact + self.ptr_n_local
         dev = x_toks.device
-        cand_idx, cand_valid = self._build_sparse_pointer_candidates(x_toks, self.ptr_n_exact, self.ptr_n_local)
+        h_n = self.ptr_norm(h_final).float()
+
+        if self.ptr_n_sem > 0:
+            base_idx, base_valid = self._build_sparse_pointer_candidates(x_toks, self.ptr_n_exact, self.ptr_n_local)
+            sal = self.ptr_salience(h_n).squeeze(-1)
+            sal_key = sal.detach() + (0.02 * torch.randn_like(sal) if self.training else 0.0)
+            sem_idx, sem_valid = self._select_causal_salience_slots(sal_key, base_idx, base_valid, self.ptr_n_sem)
+            ex_idx, loc_idx = base_idx[..., : self.ptr_n_exact], base_idx[..., self.ptr_n_exact :]
+            ex_val, loc_val = base_valid[..., : self.ptr_n_exact], base_valid[..., self.ptr_n_exact :]
+            cand_idx = torch.cat((ex_idx, sem_idx, loc_idx), dim=-1)
+            cand_valid = torch.cat((ex_val, sem_valid, loc_val), dim=-1)
+        else:
+            sal = None
+            cand_idx, cand_valid = self._build_sparse_pointer_candidates(x_toks, self.ptr_n_exact, self.ptr_n_local)
+
+        K = cand_idx.shape[-1]
         b_idx = torch.arange(B, device=dev).view(B, 1, 1)
 
-        h_n = self.ptr_norm(h_final).float()
         q_ctx = F.normalize(self.ptr_q(h_n), dim=-1)
         k_ctx = F.normalize(self.ptr_k(h_n), dim=-1)
         cos_ctx = (q_ctx.unsqueeze(2) * k_ctx[b_idx, cand_idx]).sum(dim=-1)
@@ -956,7 +1080,12 @@ class UnifiedBlockLM(nn.Module):
             + tau_lex * cos_lex
             + self.ptr_slot_bias.view(1, 1, K)
             - F.softplus(self.ptr_dist_decay) * dist
-        ).masked_fill(~cand_valid, -1e9)
+        )
+        if sal is not None and self.ptr_n_sem > 0:
+            sem_mask = torch.zeros((1, 1, K), device=dev, dtype=scores.dtype)
+            sem_mask[:, :, self.ptr_n_exact : self.ptr_n_exact + self.ptr_n_sem] = 1.0
+            scores = scores + (self.ptr_sal_scale * torch.tanh(sal[b_idx, cand_idx])) * sem_mask
+        scores = scores.masked_fill(~cand_valid, -1e9)
 
         has_any = cand_valid.any(dim=-1, keepdim=True)
         attn_w = torch.where(has_any, F.softmax(scores, dim=-1), torch.zeros_like(scores)) * cand_valid.float()
@@ -1025,7 +1154,8 @@ class UnifiedBlockLM(nn.Module):
         x: torch.Tensor,
         *,
         return_loop_logits: bool = False,
-    ) -> torch.Tensor | tuple[torch.Tensor, list[torch.Tensor]]:
+        return_base_logits: bool = False,
+    ) -> Any:
         x_toks = x
         h = F.normalize(self.emb(x).float(), dim=-1).to(self.emb.weight.dtype)
         anchor = h
@@ -1039,6 +1169,8 @@ class UnifiedBlockLM(nn.Module):
                     h = blk(h)
                 loop_logits.append(self._readout(h))
             out = loop_logits[-1]
+            if return_base_logits:
+                return out, out
             return (out, loop_logits) if return_loop_logits else out
 
         if self.spec.attn_res:
@@ -1055,14 +1187,17 @@ class UnifiedBlockLM(nn.Module):
                 h = blk(h)
 
         logits = self._readout(h)
+        base_logits = logits
         pmode = self.spec.resolved_pointer_mode
         if pmode == "dense":
             logits = self._apply_pointer_probs(h, x_toks, logits)
         elif pmode == "sparse_ow":
             logits = self._apply_sparse_pointer_probs(h, x_toks, logits)
-        elif pmode == "sparse_evid":
+        elif pmode in ("sparse_evid", "sparse_hybrid"):
             logits = self._apply_evidential_sparse_pointer_probs(h, x_toks, logits, anchor)
-        return ([logits] if return_loop_logits else logits) if not return_loop_logits else (logits, [logits])
+        if return_base_logits:
+            return logits, base_logits
+        return (logits, [logits]) if return_loop_logits else logits
 
 
 def count_trainable_params(model: nn.Module) -> int:
