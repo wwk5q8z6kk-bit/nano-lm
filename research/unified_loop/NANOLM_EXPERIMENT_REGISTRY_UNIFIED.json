@@ -366,6 +366,97 @@
           "M16_AuxBase": [1.81, 2.31]
         }
       }
+    },
+    {
+      "id": "EXP-U09",
+      "title": "Pre-RunPod Hardening Gate: CenteredRMSNorm, Residual Variance Scaling, Block-AttnRes, Cosine-Annealed AuxBase, & ConceptSlotMemory",
+      "status": "completed_gate_hold",
+      "paid_compute_usd": 0.0,
+      "wall_clock_s": 1476.48,
+      "artifacts": [
+        "research/unified_loop/mechanisms/zoo.py",
+        "research/unified_loop/mechanisms/test_zoo.py",
+        "research/unified_loop/scripts/run_u09_rank_and_concept_slots.py",
+        "research/unified_loop/experiments/U09_rank_and_concept_slots/protocol.md",
+        "research/unified_loop/experiments/U09_rank_and_concept_slots/results_part_a.json",
+        "research/unified_loop/experiments/U09_rank_and_concept_slots/results_part_a2_algebra.json",
+        "research/unified_loop/experiments/U09_rank_and_concept_slots/results_part_b.json",
+        "research/unified_loop/experiments/U09_rank_and_concept_slots/analysis.md"
+      ],
+      "headline_metrics": {
+        "has_nonfinite_anywhere": false,
+        "pre_runpod_scale_gate": "HOLD",
+        "part_a_unseen_open_vocab_copy_ood": {
+          "M22_FullCore": 0.9964,
+          "M20_ScaledAttnRes": 0.8978,
+          "M13_AnnealAux": 0.6719,
+          "M19_ScaledNorm": 0.5843,
+          "M21_ConceptSlot": 0.4782
+        },
+        "part_a_mqar_overwrite_4x_overwritten": {
+          "M22_FullCore": 0.999,
+          "M20_ScaledAttnRes": 0.9973,
+          "M19_ScaledNorm": 0.9961,
+          "M21_ConceptSlot": 0.9961,
+          "M13_AnnealAux": 0.9958
+        },
+        "part_a_mqar_alias_semantic_4x_ood": {
+          "M22_FullCore": 0.4961,
+          "M21_ConceptSlot": 0.4424,
+          "M19_ScaledNorm": 0.0289,
+          "M20_ScaledAttnRes": 0.0234,
+          "M13_AnnealAux": 0.0201
+        },
+        "part_a2_s4_holonomy_600steps_ood": {
+          "M21_ConceptSlot": 0.8385,
+          "M20_ScaledAttnRes": 0.7495,
+          "M19_ScaledNorm": 0.7179,
+          "M13_AnnealAux": 0.6866,
+          "M22_FullCore": 0.5637
+        },
+        "part_a2_hierarchy_600steps_ood": {
+          "M13_AnnealAux": 0.3288,
+          "M19_ScaledNorm": 0.2793,
+          "M21_ConceptSlot": 0.2764,
+          "M22_FullCore": 0.2759,
+          "M20_ScaledAttnRes": 0.2729
+        },
+        "part_a2_mqar_alias_semantic_600steps_ood": {
+          "M22_FullCore": 0.2156,
+          "M21_ConceptSlot": 0.1367,
+          "M20_ScaledAttnRes": 0.0762,
+          "M19_ScaledNorm": 0.0711,
+          "M13_AnnealAux": 0.0641
+        },
+        "part_b_bpb_512": {
+          "M21_ConceptSlot": {"mean_512_bpb": 1.8384, "web": 1.8555, "textbook": 1.7869, "math": 2.1108, "code": 1.6006, "tok_s": 8959.5},
+          "M22_FullCore": {"mean_512_bpb": 1.8466, "web": 1.8578, "textbook": 1.7986, "math": 2.1183, "code": 1.6119, "tok_s": 8478.8},
+          "M20_ScaledAttnRes": {"mean_512_bpb": 1.8513, "web": 1.8639, "textbook": 1.7997, "math": 2.1253, "code": 1.6164, "tok_s": 12896.5},
+          "M19_ScaledNorm": {"mean_512_bpb": 1.8518, "web": 1.8573, "textbook": 1.7917, "math": 2.1352, "code": 1.6231, "tok_s": 13224.2},
+          "M13_AnnealAux": {"mean_512_bpb": 1.868, "web": 1.8737, "textbook": 1.8125, "math": 2.1451, "code": 1.6406, "tok_s": 13596.0}
+        },
+        "part_b_copy_256": {
+          "M22_FullCore": 0.97,
+          "M20_ScaledAttnRes": 0.9404,
+          "M21_ConceptSlot": 0.9213,
+          "M19_ScaledNorm": 0.9033,
+          "M13_AnnealAux": 0.8029
+        },
+        "part_b_mqar_T512_N4_common_rare": {
+          "M21_ConceptSlot": [0.7708, 0.9166],
+          "M19_ScaledNorm": [0.8125, 0.8334],
+          "M13_AnnealAux": [0.7917, 0.8541],
+          "M22_FullCore": [0.7709, 0.8542],
+          "M20_ScaledAttnRes": [0.7708, 0.7709]
+        },
+        "part_b_val_code_256_rank_and_norm": {
+          "M22_FullCore": {"L0_mix_to_h": 0.427, "L0_h_in_rms": 1.0, "L3_mix_cent": 4.88, "L3_h_in_cent": 11.18},
+          "M21_ConceptSlot": {"L0_mix_to_h": 0.39, "L0_h_in_rms": 1.0, "L3_mix_cent": 5.83, "L3_h_in_cent": 9.74},
+          "M20_ScaledAttnRes": {"L0_mix_to_h": 0.436, "L0_h_in_rms": 1.0, "L3_mix_cent": 6.53, "L3_h_in_cent": 10.29},
+          "M19_ScaledNorm": {"L0_mix_to_h": 0.396, "L0_h_in_rms": 1.0, "L3_mix_cent": 6.74, "L3_h_in_cent": 9.05},
+          "M13_AnnealAux": {"L0_mix_to_h": 7.511, "L0_h_in_rms": 0.088, "L3_mix_cent": 5.91, "L3_h_in_cent": 8.21}
+        }
+      }
     }
   ]
 }

@@ -1,0 +1,507 @@
+{
+  "schema": "nanolm.unified_loop.u09a.v1",
+  "paid_compute_usd": 0.0,
+  "steps_per_run": 200,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "aux_schedule": "cosine_0.25_to_0.0",
+  "tasks": {
+    "S4_Holonomy_8x": {
+      "M13_AnnealAux": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 28.86,
+        "id_acc": {
+          "mean": 0.0755,
+          "std": 0.0079
+        },
+        "ood_acc": {
+          "mean": 0.0414,
+          "std": 0.0041
+        }
+      },
+      "M19_ScaledNorm": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 28.46,
+        "id_acc": {
+          "mean": 0.7467,
+          "std": 0.4269
+        },
+        "ood_acc": {
+          "mean": 0.4427,
+          "std": 0.488
+        }
+      },
+      "M20_ScaledAttnRes": {
+        "params": 55659,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 27.88,
+        "id_acc": {
+          "mean": 0.4714,
+          "std": 0.4694
+        },
+        "ood_acc": {
+          "mean": 0.2512,
+          "std": 0.3052
+        }
+      },
+      "M21_ConceptSlot": {
+        "params": 55437,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 30.31,
+        "id_acc": {
+          "mean": 0.4824,
+          "std": 0.451
+        },
+        "ood_acc": {
+          "mean": 0.3482,
+          "std": 0.4616
+        }
+      },
+      "M22_FullCore": {
+        "params": 55597,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 31.29,
+        "id_acc": {
+          "mean": 0.7533,
+          "std": 0.4274
+        },
+        "ood_acc": {
+          "mean": 0.5698,
+          "std": 0.468
+        }
+      }
+    },
+    "MQAR_Selective_Overwrite_4x": {
+      "M13_AnnealAux": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 49.83,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9963,
+          "std": 0.002
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9958,
+          "std": 0.0023
+        }
+      },
+      "M19_ScaledNorm": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 50.16,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9965,
+          "std": 0.0049
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9961,
+          "std": 0.0056
+        }
+      },
+      "M20_ScaledAttnRes": {
+        "params": 55659,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 51.26,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9976,
+          "std": 0.0023
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9973,
+          "std": 0.0026
+        }
+      },
+      "M21_ConceptSlot": {
+        "params": 55437,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 56.35,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9965,
+          "std": 0.0008
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.9961,
+          "std": 0.0008
+        }
+      },
+      "M22_FullCore": {
+        "params": 55597,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 58.01,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9991,
+          "std": 0.001
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.999,
+          "std": 0.0011
+        }
+      }
+    },
+    "Unseen_OpenVocab_Copy": {
+      "M13_AnnealAux": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 26.04,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.6719,
+          "std": 0.3141
+        }
+      },
+      "M19_ScaledNorm": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 26.33,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.5843,
+          "std": 0.1669
+        }
+      },
+      "M20_ScaledAttnRes": {
+        "params": 55659,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 27.41,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.8978,
+          "std": 0.0958
+        }
+      },
+      "M21_ConceptSlot": {
+        "params": 55437,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 29.41,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.4782,
+          "std": 0.2558
+        }
+      },
+      "M22_FullCore": {
+        "params": 55597,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 30.56,
+        "id_acc": {
+          "mean": 1.0,
+          "std": 0.0
+        },
+        "ood_acc": {
+          "mean": 0.9964,
+          "std": 0.002
+        }
+      }
+    },
+    "Parity_Dyck_4x": {
+      "M13_AnnealAux": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 41.75,
+        "id_acc": {
+          "mean": 0.9208,
+          "std": 0.0196
+        },
+        "ood_acc": {
+          "mean": 0.9055,
+          "std": 0.026
+        }
+      },
+      "M19_ScaledNorm": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 42.29,
+        "id_acc": {
+          "mean": 0.9393,
+          "std": 0.0346
+        },
+        "ood_acc": {
+          "mean": 0.9053,
+          "std": 0.0591
+        }
+      },
+      "M20_ScaledAttnRes": {
+        "params": 55659,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 45.63,
+        "id_acc": {
+          "mean": 0.9227,
+          "std": 0.0382
+        },
+        "ood_acc": {
+          "mean": 0.9193,
+          "std": 0.0362
+        }
+      },
+      "M21_ConceptSlot": {
+        "params": 55437,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 47.97,
+        "id_acc": {
+          "mean": 0.9263,
+          "std": 0.0532
+        },
+        "ood_acc": {
+          "mean": 0.9029,
+          "std": 0.0139
+        }
+      },
+      "M22_FullCore": {
+        "params": 55597,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 48.95,
+        "id_acc": {
+          "mean": 0.9216,
+          "std": 0.0314
+        },
+        "ood_acc": {
+          "mean": 0.9213,
+          "std": 0.0266
+        }
+      }
+    },
+    "Hierarchy_Denom_Rollup_4x": {
+      "M13_AnnealAux": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 32.12,
+        "id_acc": {
+          "mean": 0.3021,
+          "std": 0.0057
+        },
+        "ood_acc": {
+          "mean": 0.2571,
+          "std": 0.0092
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1562,
+          "std": 0.0202
+        }
+      },
+      "M19_ScaledNorm": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 32.36,
+        "id_acc": {
+          "mean": 0.3017,
+          "std": 0.0108
+        },
+        "ood_acc": {
+          "mean": 0.2586,
+          "std": 0.0077
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1616,
+          "std": 0.0212
+        }
+      },
+      "M20_ScaledAttnRes": {
+        "params": 55659,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 33.82,
+        "id_acc": {
+          "mean": 0.2998,
+          "std": 0.0118
+        },
+        "ood_acc": {
+          "mean": 0.2545,
+          "std": 0.0097
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1515,
+          "std": 0.0255
+        }
+      },
+      "M21_ConceptSlot": {
+        "params": 55437,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 36.73,
+        "id_acc": {
+          "mean": 0.301,
+          "std": 0.0149
+        },
+        "ood_acc": {
+          "mean": 0.2586,
+          "std": 0.0067
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1594,
+          "std": 0.0165
+        }
+      },
+      "M22_FullCore": {
+        "params": 55597,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 38.6,
+        "id_acc": {
+          "mean": 0.299,
+          "std": 0.0203
+        },
+        "ood_acc": {
+          "mean": 0.2543,
+          "std": 0.0115
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1556,
+          "std": 0.0303
+        }
+      }
+    },
+    "MQAR_Alias_Semantic_4x": {
+      "M13_AnnealAux": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 49.16,
+        "id_acc": {
+          "mean": 0.5174,
+          "std": 0.015
+        },
+        "ood_acc": {
+          "mean": 0.0201,
+          "std": 0.0091
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.02,
+          "std": 0.0087
+        }
+      },
+      "M19_ScaledNorm": {
+        "params": 55499,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 50.06,
+        "id_acc": {
+          "mean": 0.5278,
+          "std": 0.025
+        },
+        "ood_acc": {
+          "mean": 0.0289,
+          "std": 0.0054
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0289,
+          "std": 0.0052
+        }
+      },
+      "M20_ScaledAttnRes": {
+        "params": 55659,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 51.97,
+        "id_acc": {
+          "mean": 0.5278,
+          "std": 0.0261
+        },
+        "ood_acc": {
+          "mean": 0.0234,
+          "std": 0.0089
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0231,
+          "std": 0.0086
+        }
+      },
+      "M21_ConceptSlot": {
+        "params": 55437,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 57.05,
+        "id_acc": {
+          "mean": 0.697,
+          "std": 0.0404
+        },
+        "ood_acc": {
+          "mean": 0.4424,
+          "std": 0.0726
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.4459,
+          "std": 0.0736
+        }
+      },
+      "M22_FullCore": {
+        "params": 55597,
+        "aux_base_start": 0.25,
+        "aux_base_end": 0.0,
+        "wall_s": 56.67,
+        "id_acc": {
+          "mean": 0.7326,
+          "std": 0.0651
+        },
+        "ood_acc": {
+          "mean": 0.4961,
+          "std": 0.0655
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.4995,
+          "std": 0.0653
+        }
+      }
+    }
+  },
+  "elapsed_s": 250.17,
+  "has_nonfinite": false
+}

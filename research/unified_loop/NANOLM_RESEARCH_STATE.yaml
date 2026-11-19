@@ -99,6 +99,27 @@ neural_core_frontier_u08:
     m18_hybrid_sem_lex_findings: "M18_AuxBase won Part A Alias_Semantic_4x (0.0776 vs 0.020-0.026) and #1 Part A2 S4/Hierarchy + 0.9543 copy_256 @ 11,064 tok/s, yet 600-step opposite-alias OOD remained unsolved (0.0672)"
     critical_rank_contraction_warning: "L0->L3 state_eff_rank on val_code_256 (max=32) contracted across ALL models: M13_Ctrl 11.1-11.7->1.75-3.49, M13_AuxBase 11.2-11.4->1.76-2.57, M17 12.6-13.1->2.09-2.53, M18 11.8->2.74-3.73, M16 9.2-11.7->1.81-2.31 (gdn1_k 10.2-11.7->3.58-6.03)"
 
+neural_core_frontier_u09:
+  hardening_gate_verified:
+    part_a_micro_lab_wall_s: 250.17
+    part_a2_algebra_600step_wall_s: 244.62
+    part_b_real_corpus_wall_s: 981.69
+    has_nonfinite_anywhere: false
+    pre_runpod_scale_gate: HOLD
+    residual_and_norm_repair_win:
+      l0_shock_resolved: "L0 ||mix||/||h|| fell from 7.511 (M13, h_in_rms=0.088) to 0.390-0.436 (M19-M22, h_in_rms=1.000)"
+      l3_residual_rank_lifted: "val_code L3 h_in_rank_cent reached 11.18 (M22) and 10.29 (M20), copy128 L3 h_in_rank_cent reached 16.09 (M22) vs M13 8.21/9.39"
+      m22_copy_and_alias_part_a: "M22_FullCore restored Unseen_OpenVocab_Copy=0.9964+-0.0020 (vs M13_AnnealAux 0.6719, U08 0.6211), MQAR_Overwrite=0.9991, Parity=0.9213, 200-step S4=0.5698, and 24.7x Alias_Semantic_4x breakout (0.4961 vs 0.0201)"
+    part_b_new_records:
+      m21_best_bpb_all_4_domains: {mean_512_bpb: 1.8384, web_512: 1.8555, textbook_512: 1.7869, math_512: 2.1108, code_512: 1.6006, rare_mqar_T512: 0.9166}
+      m22_best_copy_256: {copy_256: 0.9700, mean_512_bpb: 1.8466, web_512: 1.8578, textbook_512: 1.7986, math_512: 2.1183, code_512: 1.6119}
+      m21_600step_s4_leader: 0.8385
+    diagnosed_u09_bottlenecks:
+      - "HSPALieSO3Mixer hardcodes fdim = h * n_reg * 3 = 48 (12 dims/head), capping val_code L3 mix_rank_cent at 4.88-6.74 < 10/32 even after residual normalization"
+      - "ConceptSlotMemory 600-step MQAR_Alias_Semantic_4x ID climbed to 0.7643-0.8255 while 4x OOD regressed to 0.1367-0.2156 (< 0.70) due to contextual h_n length drift (T=48->192)"
+      - "Full-D [B, T, 16, 128] ConceptSlot scan lowered MPS throughput to 8,478.8-8,959.5 tok/s (< 9,500 tok/s gate vs M19/M20 12,896.5-13,224.2 tok/s)"
+      - "Cosine-annealed AuxBase (0.25->0.0) without Block-AttnRes only recovered M13 Unseen Copy to 0.6719 and slipped slightly on M13 BPB (1.8680 vs U08 1.8623)"
+
 next_experiments_queue:
-  - "EXP-U09 (Gate before 30M-125M RunPod): Solve L0->L3 state/key rank collapse (raise L3 state_eff_rank from 1.8-3.7/32 to >=8/32 via Block-AttnRes/Gram decorrelation/orthogonal residual mixing) + anneal AuxBase lambda (0.25->0.0) to keep 0.98+ Unseen Copy"
-  - "Upgrade semantic retrieval beyond scalar salience (metric/key-hash top-8 lookup) for cross-alias recall"
+  - "EXP-U10 (RunPod Unlock Gate, $0.00 local): Scale HSPALieSO3Mixer fiber count proportionally with d_model (n_reg ~ hd//3 so L3 mix_rank_cent >= 12/32)"
+  - "Upgrade ConceptSlotMemory v2: low-rank value subspace d_slot=min(32, D//4) for >10.5k tok/s MPS throughput + length-invariant embedding-anchored key/query routing for >=0.70 MQAR_Alias_Semantic_4x OOD at 200 & 600 steps + AuxBase floor 0.25->0.05"

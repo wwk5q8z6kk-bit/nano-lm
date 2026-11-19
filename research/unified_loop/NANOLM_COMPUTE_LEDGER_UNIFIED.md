@@ -22,4 +22,7 @@
 | `EXP-U08 Part A` (`5×6×3` Micro-Lab + Alias) | Local CPU (5 workers) | 337.16s | `$0.00` | `experiments/U08_unified_speed_aux_hybrid/results_part_a.json` |
 | `EXP-U08 Part A2` (`5×3×2`, 600-step Algebra+Alias) | Local CPU (5 workers) | 262.76s | `$0.00` | `experiments/U08_unified_speed_aux_hybrid/results_part_a2_algebra.json` |
 | `EXP-U08 Part B` (`data/v1`, `5×1000×2`, `1×/2×/4×` + Rank Audit) | Local MPS | 1,201.01s | `$0.00` | `experiments/U08_unified_speed_aux_hybrid/results_part_b.json` |
-| **Total Loop** | **Local Only** | **12,605.38s** | **`$0.00`** | **9 Complete Experimental Suites** |
+| `EXP-U09 Part A` (`5×6×3` Micro-Lab + Alias) | Local CPU (5 workers) | 250.17s | `$0.00` | `experiments/U09_rank_and_concept_slots/results_part_a.json` |
+| `EXP-U09 Part A2` (`5×3×2`, 600-step Algebra+Alias) | Local CPU (5 workers) | 244.62s | `$0.00` | `experiments/U09_rank_and_concept_slots/results_part_a2_algebra.json` |
+| `EXP-U09 Part B` (`data/v1`, `5×1000×2`, `1×/2×/4×` + Rank Audit v2) | Local MPS | 981.69s | `$0.00` | `experiments/U09_rank_and_concept_slots/results_part_b.json` |
+| **Total Loop** | **Local Only** | **14,081.86s** | **`$0.00`** | **10 Complete Experimental Suites** |
