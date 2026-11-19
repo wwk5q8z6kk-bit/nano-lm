@@ -193,6 +193,23 @@ requirement → decision rule before it is an experiment.
   Verify / Route / Vision / Audio converge into one model is open in **both**
   directions.
 
+
+### Frontier line (focus since 2026-11-19)
+
+Unlike the items above, these were measured. They are filed here because no comparison separated, so each remains a hypothesis.
+
+Assessed in `research/decision_records/2026-11-19-frontier-model-focus.md` §3.
+All of the artifacts below are cross-branch.
+
+- **`nanolm_frontier` E1 arm verdicts** (C3 RETAIN, C2 REJECT, C4 MODIFY):
+  **unsupported.** One seed, a BPB spread of 0.0052, and no noise estimate for this
+  instrument. Throughput differences are real: C0 runs 5.3–12.2× faster.
+- **E2: SFT or DexDiff+GRPO beats the Qwen3-1.7B base.** **NOT SEPARATED.** Paired
+  exact McNemar on 56 items gives p = 0.79, 1.00 and 1.00. GRPO made 1 of 72 updates.
+- **Kalman-Lag1 landmark recall** (arch-evolution-v3, 3 seeds, 0.178 ± 0.090 vs
+  0.068 ± 0.004): **not separated at 3 seeds** (Welch t = 2.1, df ≈ 2). It is the
+  first candidate for a ≥ 5-seed replication. Its single-run 2.3025 BPB "breakthrough" is NOT SEPARATED.
+
 ---
 
 ## VOID RESULTS
@@ -249,6 +266,12 @@ finding, the C1 UNRESOLVED verdict and the C3 void all rest on it. See
 ---
 
 ## NEXT CANDIDATE EXPERIMENTS
+
+> **Focus moved to the frontier model on 2026-11-19.** The scribe-line ranking below is
+> kept but dormant. Frontier-line candidates come first: **F0** (a seed-noise floor for
+> the `nanolm_frontier` E1 instrument) and **F1** (a powered capability eval, about 200
+> items for a 10 pp effect), per `research/decision_records/2026-11-19-frontier-model-focus.md` §4.
+> None is authorized.
 
 Ranked. None authorized. Each must supply the **eighteen-field standard**
 (`NANO_VNEXT_MASTER_SPEC.md` §20) and pass the **readiness gate** (§25) before it

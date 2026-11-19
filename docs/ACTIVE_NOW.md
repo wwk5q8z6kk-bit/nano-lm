@@ -16,6 +16,14 @@
 > `docs/NANO_VNEXT_MASTER_SPEC.md` became the canonical architecture entry
 > point. No experiment is currently authorized.
 
+> **2026-11-19: focus moved to the frontier model** (NanoLM, general-purpose,
+> about 2B parameters with a 4B ceiling, adapting an open base first). See
+> `research/decision_records/2026-11-19-frontier-model-focus.md`. P1 scribing is ON HOLD.
+> The status fields below are **left unchanged on purpose** until the owner confirms
+> the interpretation, because `capability_frontier = P1_SCRIBING` is superseded in
+> intent but not yet in the machine-readable field. Still no experiment is authorized.
+> The first candidates are F0 (a seed-noise floor) and F1 (a powered eval).
+
 ## Status (canonical — mirrored in `ACTIVE_NOW.json`)
 
 | Field | Value |

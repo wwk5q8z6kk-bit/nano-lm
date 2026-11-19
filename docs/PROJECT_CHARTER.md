@@ -1,5 +1,13 @@
 # Project Charter
 
+> **Amended 2026-11-19.** By owner decision, the focus is now the **frontier model**.
+> Under the owner's delegation the agent interpreted that as follows, and the owner can
+> correct any of it: NanoLM, a general-purpose local foundation LM of about 2B parameters
+> with a 4B ceiling. The primary path is adapting an open-weight base. Pretraining from
+> scratch is on hold for budget reasons, and P1 scribing is on hold as preserved
+> provenance, not refuted. Where this charter's P1-first framing conflicts, the record wins:
+> [`research/decision_records/2026-11-19-frontier-model-focus.md`](../research/decision_records/2026-11-19-frontier-model-focus.md).
+
 ## Mission
 
 > **Build the smallest useful, reliable intelligence system that can construct a faithful representation of messy evidence, compress it without corrupting it, maintain that representation across time, and ultimately reason, plan, and act over it while preserving provenance and uncertainty.**
