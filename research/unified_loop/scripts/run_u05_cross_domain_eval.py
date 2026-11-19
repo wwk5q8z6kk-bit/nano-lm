@@ -23,12 +23,13 @@ from typing import Any
 
 WORKTREE_ROOT = Path(__file__).resolve().parents[3]
 MAIN_REPO = Path("/Users/mac/Projects/nano-lm")
-for p in (str(WORKTREE_ROOT), str(MAIN_REPO), str(MAIN_REPO / "scripts")):
+for p in (str(MAIN_REPO / "scripts"), str(MAIN_REPO), str(WORKTREE_ROOT)):
     if p not in sys.path:
         sys.path.insert(0, p)
 
 from evaluations.v2 import scribe_custody  # noqa: E402
 import run_e07_scribe_decomposition as e07  # noqa: E402
+import nano.grounded_engine as nano_ge_mod  # noqa: E402
 from nano.grounded_engine import (  # noqa: E402
     GroundedState,
     TurnRole,
@@ -36,6 +37,7 @@ from nano.grounded_engine import (  # noqa: E402
     resolve_world_state,
     split_turn_clauses,
 )
+assert Path(nano_ge_mod.__file__).resolve().is_relative_to(WORKTREE_ROOT), nano_ge_mod.__file__
 from nano.schema import NodeRelation, OntologyGraph, OntologyNode, ValueKind  # noqa: E402
 from nano.units import ConversionEdge, DenominationRegistry  # noqa: E402
 

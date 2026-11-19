@@ -1,0 +1,624 @@
+{
+  "experiment": "EXP-U05",
+  "elapsed_s": 11.1,
+  "domain_independence_audit": {
+    "zero_domain_branches_verified": true,
+    "hits": {}
+  },
+  "domains_1_to_3_by_domain": {
+    "finance": {
+      "FlatString_NoDenom_NoHierarchy": {
+        "total": 24,
+        "passed": 6,
+        "accuracy": 0.25,
+        "hazard_failclosed_passed": 1,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 5,
+        "equiv_rollup_total": 11,
+        "failures": [
+          {
+            "case_id": "fin_01",
+            "kind": "equivalence",
+            "errs": [
+              "cash:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_02",
+            "kind": "equivalence",
+            "errs": [
+              "cash:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_03",
+            "kind": "equivalence",
+            "errs": [
+              "cash:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_07",
+            "kind": "clean",
+            "errs": [
+              "debt:got=GroundedState.CONFLICTING!=exp=GroundedState.ABSENT"
+            ]
+          },
+          {
+            "case_id": "fin_08",
+            "kind": "sibling",
+            "errs": [
+              "debt:got=GroundedState.SUPPORTED!=exp=GroundedState.ABSENT",
+              "cash:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_09",
+            "kind": "clean",
+            "errs": [
+              "cash:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_11",
+            "kind": "equivalence",
+            "errs": [
+              "fixed_assets:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_12",
+            "kind": "clean",
+            "errs": [
+              "cash:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_13",
+            "kind": "equivalence",
+            "errs": [
+              "receivables:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_14",
+            "kind": "clean",
+            "errs": [
+              "receivables:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED",
+              "cash:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "fin_16",
+            "kind": "equivalence",
+            "errs": [
+              "debt:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "fin_c01",
+            "kind": "rollup_violation",
+            "errs": [
+              "current_assets:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:current_assets"
+            ]
+          },
+          {
+            "case_id": "fin_c02",
+            "kind": "missing_fx",
+            "errs": [
+              "current_assets:got=GroundedState.SUPPORTED!=exp=GroundedState.UNCERTAIN",
+              "missed_conflict:current_assets"
+            ]
+          },
+          {
+            "case_id": "fin_h04",
+            "kind": "hazard",
+            "errs": [
+              "cash:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "fin_h05",
+            "kind": "hazard",
+            "errs": [
+              "cash:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "fin_h06",
+            "kind": "hazard",
+            "errs": [
+              "cash:got=GroundedState.SUPPORTED!=exp=GroundedState.UNCERTAIN"
+            ]
+          },
+          {
+            "case_id": "fin_h07",
+            "kind": "hazard",
+            "errs": [
+              "debt:got=GroundedState.ABSENT!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "fin_h08",
+            "kind": "hazard",
+            "errs": [
+              "cash:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          }
+        ]
+      },
+      "DenomOnly_FlatTopics": {
+        "total": 24,
+        "passed": 22,
+        "accuracy": 0.9167,
+        "hazard_failclosed_passed": 6,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 11,
+        "equiv_rollup_total": 11,
+        "failures": [
+          {
+            "case_id": "fin_c01",
+            "kind": "rollup_violation",
+            "errs": [
+              "current_assets:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:current_assets"
+            ]
+          },
+          {
+            "case_id": "fin_c02",
+            "kind": "missing_fx",
+            "errs": [
+              "current_assets:got=GroundedState.SUPPORTED!=exp=GroundedState.UNCERTAIN",
+              "missed_conflict:current_assets"
+            ]
+          }
+        ]
+      },
+      "Full_Modular_Nano": {
+        "total": 24,
+        "passed": 24,
+        "accuracy": 1.0,
+        "hazard_failclosed_passed": 8,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 11,
+        "equiv_rollup_total": 11,
+        "failures": []
+      }
+    },
+    "sre": {
+      "FlatString_NoDenom_NoHierarchy": {
+        "total": 24,
+        "passed": 5,
+        "accuracy": 0.2083,
+        "hazard_failclosed_passed": 1,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 4,
+        "equiv_rollup_total": 12,
+        "failures": [
+          {
+            "case_id": "sre_01",
+            "kind": "equivalence",
+            "errs": [
+              "mem_budget:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_02",
+            "kind": "equivalence",
+            "errs": [
+              "mem_budget:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_05",
+            "kind": "equivalence",
+            "errs": [
+              "db_latency:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_06",
+            "kind": "equivalence",
+            "errs": [
+              "db_latency:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_07",
+            "kind": "equivalence",
+            "errs": [
+              "incident_severity:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_09",
+            "kind": "clean",
+            "errs": [
+              "mem_budget:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_11",
+            "kind": "equivalence",
+            "errs": [
+              "api_latency:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_12",
+            "kind": "clean",
+            "errs": [
+              "db_latency:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_13",
+            "kind": "sibling",
+            "errs": [
+              "mem_budget:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED",
+              "db_latency:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "sre_14",
+            "kind": "equivalence",
+            "errs": [
+              "backend_sev:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_15",
+            "kind": "equivalence",
+            "errs": [
+              "e2e_latency:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_16",
+            "kind": "clean",
+            "errs": [
+              "mem_budget:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "sre_c02",
+            "kind": "rollup_violation",
+            "errs": [
+              "e2e_latency:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:e2e_latency"
+            ]
+          },
+          {
+            "case_id": "sre_c03",
+            "kind": "rollup_violation",
+            "errs": [
+              "incident_severity:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:incident_severity"
+            ]
+          },
+          {
+            "case_id": "sre_h04",
+            "kind": "hazard",
+            "errs": [
+              "db_latency:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "sre_h05",
+            "kind": "hazard",
+            "errs": [
+              "api_latency:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "sre_h06",
+            "kind": "hazard",
+            "errs": [
+              "api_latency:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "sre_h07",
+            "kind": "hazard",
+            "errs": [
+              "db_latency:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "sre_h08",
+            "kind": "hazard",
+            "errs": [
+              "mem_budget:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          }
+        ]
+      },
+      "DenomOnly_FlatTopics": {
+        "total": 24,
+        "passed": 22,
+        "accuracy": 0.9167,
+        "hazard_failclosed_passed": 6,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 12,
+        "equiv_rollup_total": 12,
+        "failures": [
+          {
+            "case_id": "sre_c02",
+            "kind": "rollup_violation",
+            "errs": [
+              "e2e_latency:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:e2e_latency"
+            ]
+          },
+          {
+            "case_id": "sre_c03",
+            "kind": "rollup_violation",
+            "errs": [
+              "incident_severity:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:incident_severity"
+            ]
+          }
+        ]
+      },
+      "Full_Modular_Nano": {
+        "total": 24,
+        "passed": 24,
+        "accuracy": 1.0,
+        "hazard_failclosed_passed": 8,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 12,
+        "equiv_rollup_total": 12,
+        "failures": []
+      }
+    },
+    "legal": {
+      "FlatString_NoDenom_NoHierarchy": {
+        "total": 24,
+        "passed": 6,
+        "accuracy": 0.25,
+        "hazard_failclosed_passed": 2,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 2,
+        "equiv_rollup_total": 12,
+        "failures": [
+          {
+            "case_id": "leg_01",
+            "kind": "equivalence",
+            "errs": [
+              "sla_penalty:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_02",
+            "kind": "equivalence",
+            "errs": [
+              "sla_penalty:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_03",
+            "kind": "equivalence",
+            "errs": [
+              "notice_period:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_04",
+            "kind": "equivalence",
+            "errs": [
+              "notice_period:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_06",
+            "kind": "equivalence",
+            "errs": [
+              "direct_cap:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_07",
+            "kind": "equivalence",
+            "errs": [
+              "indemnity_cap:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_09",
+            "kind": "sibling",
+            "errs": [
+              "notice_period:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED",
+              "indemnity_obligation:got=GroundedState.CONFLICTING!=exp=GroundedState.ABSENT"
+            ]
+          },
+          {
+            "case_id": "leg_10",
+            "kind": "equivalence",
+            "errs": [
+              "sla_penalty:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_12",
+            "kind": "equivalence",
+            "errs": [
+              "notice_period:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_13",
+            "kind": "clean",
+            "errs": [
+              "sla_penalty:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_14",
+            "kind": "equivalence",
+            "errs": [
+              "indemnity_cap:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_16",
+            "kind": "equivalence",
+            "errs": [
+              "overall_cap:got=GroundedState.CONFLICTING!=exp=GroundedState.SUPPORTED"
+            ]
+          },
+          {
+            "case_id": "leg_c03",
+            "kind": "rollup_violation",
+            "errs": [
+              "overall_cap:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:overall_cap"
+            ]
+          },
+          {
+            "case_id": "leg_h04",
+            "kind": "hazard",
+            "errs": [
+              "indemnity_obligation:got=GroundedState.ABSENT!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "leg_c05",
+            "kind": "missing_fx",
+            "errs": [
+              "overall_cap:got=GroundedState.SUPPORTED!=exp=GroundedState.UNCERTAIN",
+              "missed_conflict:overall_cap"
+            ]
+          },
+          {
+            "case_id": "leg_h06",
+            "kind": "hazard",
+            "errs": [
+              "notice_period:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "leg_h07",
+            "kind": "hazard",
+            "errs": [
+              "sla_penalty:got=GroundedState.SUPPORTED!=exp=GroundedState.MISSING"
+            ]
+          },
+          {
+            "case_id": "leg_h08",
+            "kind": "hazard",
+            "errs": [
+              "notice_period:got=GroundedState.SUPPORTED!=exp=GroundedState.UNCERTAIN"
+            ]
+          }
+        ]
+      },
+      "DenomOnly_FlatTopics": {
+        "total": 24,
+        "passed": 22,
+        "accuracy": 0.9167,
+        "hazard_failclosed_passed": 6,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 12,
+        "equiv_rollup_total": 12,
+        "failures": [
+          {
+            "case_id": "leg_c03",
+            "kind": "rollup_violation",
+            "errs": [
+              "overall_cap:got=GroundedState.SUPPORTED!=exp=GroundedState.CONFLICTING",
+              "missed_conflict:overall_cap"
+            ]
+          },
+          {
+            "case_id": "leg_c05",
+            "kind": "missing_fx",
+            "errs": [
+              "overall_cap:got=GroundedState.SUPPORTED!=exp=GroundedState.UNCERTAIN",
+              "missed_conflict:overall_cap"
+            ]
+          }
+        ]
+      },
+      "Full_Modular_Nano": {
+        "total": 24,
+        "passed": 24,
+        "accuracy": 1.0,
+        "hazard_failclosed_passed": 8,
+        "hazard_failclosed_total": 8,
+        "equiv_rollup_passed": 12,
+        "equiv_rollup_total": 12,
+        "failures": []
+      }
+    }
+  },
+  "domains_1_to_3_aggregate": {
+    "FlatString_NoDenom_NoHierarchy": {
+      "passed": 17,
+      "total": 72,
+      "haz_pass": 4,
+      "haz_tot": 24,
+      "eq_pass": 11,
+      "eq_tot": 35,
+      "accuracy": 0.2361
+    },
+    "DenomOnly_FlatTopics": {
+      "passed": 66,
+      "total": 72,
+      "haz_pass": 18,
+      "haz_tot": 24,
+      "eq_pass": 35,
+      "eq_tot": 35,
+      "accuracy": 0.9167
+    },
+    "Full_Modular_Nano": {
+      "passed": 72,
+      "total": 72,
+      "haz_pass": 24,
+      "haz_tot": 24,
+      "eq_pass": 35,
+      "eq_tot": 35,
+      "accuracy": 1.0
+    }
+  },
+  "domain_4_clinical_c12_c14": {
+    "cohorts": {
+      "C12_independent_dev_20261023": {
+        "total_asserted": 104,
+        "gold_real_grd": 77,
+        "menu_grd": 91,
+        "e2e_grd": 89,
+        "n03_grd": 0,
+        "useful_notes_grd": 24
+      },
+      "C13_scope_validation_20261023": {
+        "total_asserted": 92,
+        "gold_real_grd": 75,
+        "menu_grd": 75,
+        "e2e_grd": 72,
+        "n03_grd": 0,
+        "useful_notes_grd": 24
+      },
+      "C14_retention_validation_20261026": {
+        "total_asserted": 80,
+        "gold_real_grd": 76,
+        "menu_grd": 76,
+        "e2e_grd": 74,
+        "n03_grd": 0,
+        "useful_notes_grd": 24
+      }
+    },
+    "aggregate": {
+      "asserted": 276,
+      "gold_real_grd": 228,
+      "menu_grd": 242,
+      "e2e_grd": 235,
+      "n03_grd": 0,
+      "useful_notes_grd": 72
+    },
+    "adversarial_hazards": {
+      "false_admissions": 0,
+      "total_hazards": 7
+    }
+  }
+}

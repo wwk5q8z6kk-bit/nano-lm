@@ -17,8 +17,8 @@ from nano.units import DenomRelation, DenominationRegistry, QuantityValue
 
 
 class TurnRole(str, Enum):
-    PRINCIPAL = "principal"        # Patient / Client / Reporter / Primary Actor
-    INTERLOCUTOR = "interlocutor"  # Clinician / Auditor / Interviewer / Questioner
+    PRINCIPAL = "principal"        # Primary Actor / Reporter / Client / Engineer
+    INTERLOCUTOR = "interlocutor"  # Interviewer / Auditor / Reviewer / Questioner
     EXTERNAL = "external"          # Unverified Other / Unknown bystander
     SYSTEM = "system"
 
@@ -90,14 +90,15 @@ class GroundedWorldReport:
     global_unsafe: bool = False
 
 
-_DEFAULT_INTERLOCUTORS = frozenset({"doctor", "clinician", "physician", "nurse", "interviewer", "auditor", "analyst", "reviewer", "assistant"})
-_DEFAULT_PRINCIPALS = frozenset({"patient", "client", "user", "reporter", "borrower", "speaker", "engineer", "owner", "vendor", "applicant"})
+_DEFAULT_INTERLOCUTORS = frozenset({"interlocutor", "interviewer", "auditor", "analyst", "reviewer", "questioner", "assistant"})
+_DEFAULT_PRINCIPALS = frozenset({"principal", "client", "user", "reporter", "borrower", "speaker", "engineer", "owner", "vendor", "applicant", "counterparty"})
 _DEFAULT_EXTERNALS = frozenset({"other", "unknown", "third_party", "bystander"})
 
 _NEGATION_WORD_RE = re.compile(
     r"\b(?:no|not|none|nothing|neither|nor|never|without|zero|denies|denied|deny|"
     r"cannot|can't|don't|do not|didn't|did not|doesn't|does not|haven't|have not|"
-    r"hasn't|has not|hadn't|won't|wouldn't|isn't|is not|aren't|are not|wasn't|weren't)\b",
+    r"hasn't|has not|hadn't|won't|wouldn't|isn't|is not|aren't|are not|wasn't|weren't|"
+    r"[a-z]+-free|disclaims?|waives?)\b|\bfree\s+of\b",
     re.IGNORECASE,
 )
 
