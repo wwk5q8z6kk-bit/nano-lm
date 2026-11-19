@@ -26,3 +26,10 @@ orthogonally isolating continual updates (`< 1e-5` verified leakage) from high-e
 
 ## 5. Precision-Weighted Predictive Coding
 $$c^{(k+1)} = c^{(k)} + \sigma(\log \pi)\, W_{\text{err}} \operatorname{RMSNorm}\big(z - W_{\text{dec}} c^{(k)}\big), \qquad y_{\text{PC}}(z) = W_{\text{dec}} c^{(K)}.$$
+
+## 6. Deep Unitary/Episodic Split & $\mathbb{Z}_2$-Invariant $SO(3)$ Holonomy (`Gen4_Omega_SO3_PredCode`)
+With register split $r_0 = \lfloor R/2 \rfloor$, unitary holonomy $g_{t,r} = \exp_{\mathfrak{su}(2)}(\omega_{t,r})$ ($s_{t,r}=0$ for $r < r_0$, $H_{0,r}=I_2$), projective readout $R(q) = R(-q) \in SO(3)$, and scalar residual gate $\gamma_0 = 1, \gamma_{\ell \ge 1} = 0$, a full multi-layer causal LM achieves `100.00%` exact $S_4$ state match through `4x` OOD (`L128`) and `93.06%` at `8x` OOD (`L256`) without auxiliary probes.
+
+## 7. Exact Zero-Overhead Nullspace Weight Folding
+$$\Delta W_\perp = \alpha\, B (A (I - V_k V_k^\top)), \qquad W_{\text{merged}} = W_0 + \Delta W_\perp, \qquad \|\Delta W_\perp V_k\|_F / \|\Delta W_\perp\|_F \le 7\times 10^{-7}.$$
+Folding $\Delta W_\perp$ into `base.weight` matches unmerged outputs (`6/6` at `1.747B`) while lifting linear GEMMs `7.55x`, end-to-end HF decode `1.61x`, and static `CUDA Graph` HSPA decode `3.10x` (`1.808B`) / `2.35x` (`3.841B <= 4B`).

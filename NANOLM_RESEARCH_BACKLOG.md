@@ -6,13 +6,13 @@
 |---:|---|---|---:|---:|---:|---:|---:|---:|---|
 | **1** | **`H-Ω01`** | Lie-Exp $SU(2) \to SO(3)$ Adjoint Holonomy ($S_4$ `16x` OOD) | `9.8` | `9.6` | `9.8` | `9.8` | **`9.74`** | `\$0.01` | **Executing (`EXP-Ω1`)** |
 | **2** | **`H-Ω06`** | `SpectralNullspaceLoRA` Continual Anti-Forgetting | `9.3` | `9.5` | `9.7` | `9.6` | **`9.48`** | `\$0.02` | **Executing (`EXP-Ω2` & `Ω3`)** |
-| **3** | **`H-Ω15`** | Zero-Oracle `OmegaCognitiveController` (Sandbox Smoke + Symbolic + Mermaid) | `9.0` | `9.8` | `9.6` | `9.5` | **`9.45`** | `\$0.08` | **Executing (`EXP-Ω3`)** |
+| **3** | **`H-Ω15`** | Zero-Oracle `OmegaCognitiveController` (`v2`: Top-2 margin + JSON + Mermaid + Multi-Probe) | `9.0` | `9.8` | `9.6` | `9.5` | **`9.45`** | `\$0.00` | **Completed (`EXP-Ω7`, `41/56`)** |
 | **4** | **`H-Ω02`** | Fused OpenAI Triton Holonomy Scan + $O(1)$ Conjugate Adjoint | `9.5` | `9.2` | `9.2` | `9.5` | **`9.34`** | `\$0.70` | **Completed (`C2-X0`, `35x`)** |
 | **5** | **`H-Ω19`** | Roofline `ComputePlanner` Pre-Flight Estimator | `8.5` | `8.8` | `9.9` | `9.9` | **`9.08`** | `\$0.00` | **Implemented & Calibrated (`12.9%`)** |
 | **6** | **`H-Ω11`** | Precision-Weighted `PredictiveCodingCell` FFN | `9.2` | `9.0` | `9.0` | `9.2` | **`9.10`** | `\$1.30` | **Promoted (`BEST` in `C1/C2`)** |
 | **7** | **`H-Ω22`** | Early-Stop 2-Ep SFT + High-KL (`0.10`) Selective GRPO | `8.2` | `8.9` | `9.3` | `9.0` | **`8.77`** | `\$0.10` | **Executing (`EXP-Ω3`)** |
 | **8** | **`H-Ω12`** | Top-2 Hypothesis-Margin Routing ($1 - (p_{(1)}-p_{(2)})$) | `9.1` | `8.7` | `8.4` | `8.8` | **`8.79`** | Sibling Ref | **Verified (`nanolm-lab` `#1` BPB)** |
-| **9** | **`H-Ω20`** | CUDA-Graph + Projection-Fused Decode Kernel (`3.85B`) | `8.4` | `9.1` | `8.1` | `8.8` | **`8.58`** | `\$0.20` | **Next Cycle Priority #1** |
+| **9** | **`H-Ω20`** | CUDA-Graph + Projection-Fused Decode Kernel (`1.81B` & `3.84B <= 4B`) | `8.4` | `9.1` | `8.1` | `8.8` | **`8.58`** | `\$0.00` | **Completed (`EXP-Ω6`: `3.10x` / `2.35x`)** |
 | **10** | **`H-Ω04`** | `3:1` Hybrid `HSPA-Ω` + `Diff-GQA` Pretraining (`125M–350M`) | `9.0` | `9.0` | `7.2` | `8.2` | **`8.48`** | `\$4.50` | **Next Cycle Priority #2** |
 | **11** | **`H-Ω17`** | Small-$N$ Brute-Force Induction Oracle for Math Discovery | `8.6` | `8.9` | `8.0` | `8.4` | **`8.53`** | `\$0.15` | **Queued** |
 | **12** | **`H-Ω14`** | Margin-Driven Holonomic Register Write Allocation | `8.7` | `8.4` | `8.2` | `8.2` | **`8.44`** | `\$0.80` | **Queued** |

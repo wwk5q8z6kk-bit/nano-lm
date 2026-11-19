@@ -43,6 +43,47 @@ def cayley_rotor(omega: Tensor, eps: float = 1e-8) -> Tensor:
     return (raw / norm).to(omega.dtype)
 
 
+def su2_lie_exponential(omega: Tensor) -> Tensor:
+    """Exact SU(2) exponential map ``exp(sum w_i e_i)`` producing unit quaternions.
+
+    Smooth everywhere including ``||omega|| = pi/2`` (pure involutions ``w = 0``),
+    where the Cayley rational map has a coordinate pole at infinity.
+    """
+    wf = omega.float()
+    theta = torch.linalg.vector_norm(wf, dim=-1, keepdim=True)
+    cos_t = torch.cos(theta)
+    # 2nd-order Taylor fallback around 0 keeps autograd smooth and exact at origin
+    sinc_t = torch.where(
+        theta > 1e-4,
+        torch.sin(theta) / theta.clamp_min(1e-4),
+        1.0 - (theta * theta) / 6.0,
+    )
+    q = torch.cat((cos_t, sinc_t * wf), dim=-1)
+    return q.to(omega.dtype)
+
+
+def so3_projective_adjoint(q: Tensor) -> Tensor:
+    """Exact 3x3 SO(3) adjoint rotation representation ``R(q)`` flattened to ``[..., 9]``.
+
+    Satisfies:
+    - Exact ``Z_2`` double-cover invariance: ``R(-q) == R(q)``
+    - Homomorphism on non-abelian group multiplication: ``R(q2 * q1) == R(q2) @ R(q1)``
+    """
+    qf = q.float()
+    norm = torch.linalg.vector_norm(qf, dim=-1, keepdim=True).clamp_min(1e-8)
+    w, x, y, z = (qf / norm).unbind(dim=-1)
+    r00 = 1.0 - 2.0 * (y * y + z * z)
+    r01 = 2.0 * (x * y - w * z)
+    r02 = 2.0 * (x * z + w * y)
+    r10 = 2.0 * (x * y + w * z)
+    r11 = 1.0 - 2.0 * (x * x + z * z)
+    r12 = 2.0 * (y * z - w * x)
+    r20 = 2.0 * (x * z - w * y)
+    r21 = 2.0 * (y * z + w * x)
+    r22 = 1.0 - 2.0 * (x * x + y * y)
+    return torch.stack((r00, r01, r02, r10, r11, r12, r20, r21, r22), dim=-1).to(q.dtype)
+
+
 def step_holonomy(g_t: Tensor, s_t: Tensor, state: Tensor | None) -> Tensor:
     """Exact O(1)-memory single-step update ``Omega_t = g_t * Omega_{t-1} + s_t``."""
     if state is None:

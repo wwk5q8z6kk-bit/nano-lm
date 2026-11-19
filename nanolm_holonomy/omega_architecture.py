@@ -25,51 +25,16 @@ from torch import Tensor, nn
 from torch.nn import functional as F
 
 from nanolm_frontier.surgery_and_rlvr import _bypass_adapters
-from nanolm_holonomy.spinor_algebra import hamilton_product, spinor_conjugate, step_holonomy
+from nanolm_holonomy.spinor_algebra import (
+    hamilton_product,
+    so3_projective_adjoint,
+    spinor_conjugate,
+    step_holonomy,
+    su2_lie_exponential,
+)
 from nanolm_holonomy.triton_holonomy import holonomy_scan_fast
 from nanolm_posttrain.architecture import ABSOLUTE_MAX_PARAMETERS, ParameterBudgetExceededError
 from nanolm_posttrain.lora import LoRAConfig
-
-
-def su2_lie_exponential(omega: Tensor) -> Tensor:
-    """Exact SU(2) exponential map ``exp(sum w_i e_i)`` producing unit quaternions.
-
-    Smooth everywhere including ``||omega|| = pi/2`` (pure involutions ``w = 0``),
-    where the Cayley rational map has a coordinate pole at infinity.
-    """
-    wf = omega.float()
-    theta = torch.linalg.vector_norm(wf, dim=-1, keepdim=True)
-    cos_t = torch.cos(theta)
-    # 2nd-order Taylor fallback around 0 keeps autograd smooth and exact at origin
-    sinc_t = torch.where(
-        theta > 1e-4,
-        torch.sin(theta) / theta.clamp_min(1e-4),
-        1.0 - (theta * theta) / 6.0,
-    )
-    q = torch.cat((cos_t, sinc_t * wf), dim=-1)
-    return q.to(omega.dtype)
-
-
-def so3_projective_adjoint(q: Tensor) -> Tensor:
-    """Exact 3x3 SO(3) adjoint rotation representation ``R(q)`` flattened to ``[..., 9]``.
-
-    Satisfies:
-    - Exact ``Z_2`` double-cover invariance: ``R(-q) == R(q)``
-    - Homomorphism on non-abelian group multiplication: ``R(q2 * q1) == R(q2) @ R(q1)``
-    """
-    qf = q.float()
-    norm = torch.linalg.vector_norm(qf, dim=-1, keepdim=True).clamp_min(1e-8)
-    w, x, y, z = (qf / norm).unbind(dim=-1)
-    r00 = 1.0 - 2.0 * (y * y + z * z)
-    r01 = 2.0 * (x * y - w * z)
-    r02 = 2.0 * (x * z + w * y)
-    r10 = 2.0 * (x * y + w * z)
-    r11 = 1.0 - 2.0 * (x * x + z * z)
-    r12 = 2.0 * (y * z - w * x)
-    r20 = 2.0 * (x * z - w * y)
-    r21 = 2.0 * (y * z + w * x)
-    r22 = 1.0 - 2.0 * (x * x + y * y)
-    return torch.stack((r00, r01, r02, r10, r11, r12, r20, r21, r22), dim=-1).to(q.dtype)
 
 
 class SpectralNullspaceLoRALinear(nn.Module):
@@ -94,6 +59,8 @@ class SpectralNullspaceLoRALinear(nn.Module):
         self.rank = rank
         self.scaling = alpha / float(rank)
         self.drop = nn.Dropout(dropout) if dropout > 0.0 else nn.Identity()
+        self.merged: bool = False
+        self._cpu_base_backup: Tensor | None = None
 
         device = base.weight.device
         buf_dtype = base.weight.dtype if base.weight.dtype in (torch.float16, torch.bfloat16, torch.float32) else torch.float32
@@ -130,10 +97,41 @@ class SpectralNullspaceLoRALinear(nn.Module):
         vk = self.v_proj_subspace.float()
         return raw_d - (raw_d @ vk) @ vk.T
 
+    @torch.no_grad()
+    def merge(self) -> None:
+        """Fold ``DeltaW_perp`` into ``base.weight`` for 0%-overhead single-GEMM inference."""
+        if self.merged or self.scaling == 0.0:
+            return
+        self._cpu_base_backup = self.base.weight.detach().cpu().clone()
+        delta_w = self.effective_delta_weight()
+        merged_w = self.base.weight.detach().float() + delta_w
+        self.base.weight.data.copy_(merged_w.to(self.base.weight.dtype))
+        self.merged = True
+
+    @torch.no_grad()
+    def unmerge(self) -> None:
+        """Restore exact frozen ``base.weight`` from CPU backup and re-enable dynamic adapter."""
+        if not self.merged:
+            return
+        if self._cpu_base_backup is not None:
+            self.base.weight.data.copy_(
+                self._cpu_base_backup.to(device=self.base.weight.device, dtype=self.base.weight.dtype)
+            )
+            self._cpu_base_backup = None
+        self.merged = False
+
     def forward(self, x: Tensor) -> Tensor:
-        base_out = self.base(x)
         if self.scaling == 0.0:
-            return base_out
+            if self.merged and self._cpu_base_backup is not None:
+                return F.linear(
+                    x,
+                    self._cpu_base_backup.to(device=x.device, dtype=self.base.weight.dtype),
+                    self.base.bias,
+                )
+            return self.base(x)
+        if self.merged:
+            return self.base(x)
+        base_out = self.base(x)
         xd = self.drop(x)
         if self.nullspace_k > 0:
             vk = self.v_proj_subspace
@@ -335,3 +333,40 @@ def _bypass_omega_adapters(model: nn.Module) -> Iterator[None]:
                 mod.scaling = sc
             for mod, flg in saved_sc:
                 mod.bypass = flg
+
+
+def merge_omega_weights(model: nn.Module) -> int:
+    """Fold all ``SpectralNullspaceLoRALinear`` adapters into base weights (0% eval overhead)."""
+    count = 0
+    for mod in model.modules():
+        if isinstance(mod, SpectralNullspaceLoRALinear):
+            if not mod.merged:
+                mod.merge()
+                count += 1
+    return count
+
+
+def unmerge_omega_weights(model: nn.Module) -> int:
+    """Unfold previously merged ``SpectralNullspaceLoRALinear`` adapters back to frozen base."""
+    count = 0
+    for mod in model.modules():
+        if isinstance(mod, SpectralNullspaceLoRALinear):
+            if mod.merged:
+                mod.unmerge()
+                count += 1
+    return count
+
+
+@contextmanager
+def merged_omega_inference(model: nn.Module) -> Iterator[int]:
+    """Context manager merging newly folded nullspace LoRA weights and restoring on exit."""
+    newly_merged: list[SpectralNullspaceLoRALinear] = []
+    for mod in model.modules():
+        if isinstance(mod, SpectralNullspaceLoRALinear) and not mod.merged:
+            mod.merge()
+            newly_merged.append(mod)
+    try:
+        yield len(newly_merged)
+    finally:
+        for mod in newly_merged:
+            mod.unmerge()

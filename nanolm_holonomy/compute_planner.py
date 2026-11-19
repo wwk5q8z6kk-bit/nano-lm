@@ -341,6 +341,66 @@ def plan_omega_campaign(*, allow_kaggle: bool = False) -> dict[str, Any]:
     return {"campaign": "nanolm_omega_v1", "selection": sel}
 
 
+def plan_omega_v2_campaign(*, allow_kaggle: bool = True) -> dict[str, Any]:
+    """Pre-flight compute, VRAM, and USD cost plan for NANOLM Omega-v2 (EXP-Omega4..Omega7)."""
+    from nanolm_holonomy.architecture import HSPA_OMEGA_4B_CONFIG
+
+    workloads = [
+        WorkloadSpec(
+            name="EXP_Omega4_FullLM_S4_8xOOD",
+            total_params=2_470_000,
+            trainable_params=2_470_000,
+            n_layers=6,
+            d_model=192,
+            batch_size=64,
+            seq_len=256,
+            train_tokens=4 * 3 * 1_000 * 64 * 32,
+            decode_tokens=0,
+        ),
+        WorkloadSpec(
+            name="EXP_Omega5_Gen4_LM_3seed",
+            total_params=14_000_000,
+            trainable_params=14_000_000,
+            n_layers=8,
+            d_model=384,
+            batch_size=16,
+            seq_len=256,
+            train_tokens=3 * 3 * 800 * 16 * 256,
+            decode_tokens=0,
+        ),
+        WorkloadSpec(
+            name="EXP_Omega6_CUDAGraph_4B_Decode",
+            total_params=HSPA_OMEGA_4B_CONFIG.parameter_count,
+            trainable_params=0,
+            n_layers=48,
+            d_model=2560,
+            n_kv_heads=4,
+            d_head=128,
+            batch_size=1,
+            seq_len=512,
+            state_bytes_override=HSPA_OMEGA_4B_CONFIG.state_bytes_per_sequence(512, 2),
+            eval_chunk_size=512,
+            decode_tokens=96,
+        ),
+        WorkloadSpec(
+            name="EXP_Omega7_Unified_v2_1.7B_Merged",
+            total_params=1_747_444_768,
+            trainable_params=26_869_792,
+            n_layers=28,
+            d_model=2048,
+            n_kv_heads=8,
+            d_head=128,
+            batch_size=1,
+            seq_len=512,
+            train_tokens=2 * 62 * 256 + 32 * 4 * 128,
+            decode_tokens=14_000,
+            download_seconds=95.0,
+        ),
+    ]
+    sel = select_optimal_gpu(workloads, max_wall_minutes=90.0, allow_kaggle=allow_kaggle, allow_local=False)
+    return {"campaign": "nanolm_omega_v2", "selection": sel}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="NanoLM Roofline Compute & VRAM Pre-Flight Planner")
     parser.add_argument("--preflight", action="store_true", help="Print Omega pre-flight GPU/VRAM/cost estimate")
@@ -351,6 +411,7 @@ def main() -> int:
     out: dict[str, Any] = {}
     if args.preflight or not args.calibrate_v2:
         out["omega_preflight"] = plan_omega_campaign(allow_kaggle=args.allow_kaggle)
+        out["omega_v2_preflight"] = plan_omega_v2_campaign(allow_kaggle=args.allow_kaggle)
     if args.calibrate_v2:
         out["cycle2_calibration"] = build_cycle2_retrospective_calibration(args.calibrate_v2)
 

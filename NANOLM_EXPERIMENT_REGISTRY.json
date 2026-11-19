@@ -105,6 +105,42 @@
       "primary_metric": "Naked Greedy 40/56 (71.43%, coding 3/4, math 4/4, tools 4/4) > External Qwen3-8B 39/56 (69.64%) at 4.69x fewer params & 3.76x less VRAM; Cognitive_Sys 39/56",
       "status": "DEMONSTRATED_BREAKTHROUGH_NAKED_GUARD_NEEDED_FOR_SYS",
       "artifact": "artifacts/nanolm_omega_v1/exp_omega3_unified_1p7b.json"
+    },
+    {
+      "id": "EXP-OMEGA4-FULL-LM-S4",
+      "track": "NANOLM Omega-v2",
+      "hypothesis": "Unitary/episodic register split (g_holo=exp(omega), s_holo=0 on [:half_r]) + Z2-invariant so3_projective_adjoint readout + scalar res_mix_gate (1.0 layer 0, 0.0 deeper) solves the Deep Iterated Prefix-Product Obstruction in a full causal LM on unbroken S4",
+      "backend": "Kaggle Free GPU 2x Tesla T4 (hassaneljesr/nanolm-omega-v2, $0.00)",
+      "primary_metric": "Gen4_Omega_SO3_PredCode 3-seed state match: L32=100.00%, L64=100.00%, 4x OOD L128=100.00%, 8x OOD L256=93.06% (0.9306+-0.0354) vs B0 Transformer 2.77%, B1 Abelian SSM 5.56%, Gen1_H2 6.25% at L256",
+      "status": "DEMONSTRATED_BREAKTHROUGH",
+      "artifact": "artifacts/nanolm_omega_v2/exp_omega4_full_lm_s4.json"
+    },
+    {
+      "id": "EXP-OMEGA5-GEN4-3SEED-LM",
+      "track": "NANOLM Omega-v2",
+      "hypothesis": "Gen4_Omega_SO3_PredCode 14M LM (13.95M) outperforms Gen1_H2_PredCode (14.02M) on 3-seed general text validation BPB",
+      "backend": "Kaggle Free GPU 2x Tesla T4 (hassaneljesr/nanolm-omega-v2, $0.00)",
+      "primary_metric": "Gen4 val BPB 0.3775+-0.00437 beats B0 Transformer (0.3824+-0.00242), cuts VRAM -14.3% vs Gen1_H2 (3,263.9 vs 3,810.0 MB), and leads math probe (9.03% vs 8.33% H2, 2.78% B0), but did not beat Gen1_H2 on BPB (0.3701+-0.0047; state 3.47% vs 13.19%)",
+      "status": "REJECTED_ON_BPB_GEN1_H2_RETAINS_BEST",
+      "artifact": "artifacts/nanolm_omega_v2/exp_omega5_gen4_lm.json"
+    },
+    {
+      "id": "EXP-OMEGA6-CUDAGRAPH-MERGE",
+      "track": "NANOLM Omega-v2",
+      "hypothesis": "Static-buffer torch.cuda.CUDAGraph HSPA decode + zero-overhead SpectralNullspaceLoRALinear weight folding eliminate batch=1 Python launch bottlenecks at <=4B scale with exact parity",
+      "backend": "Kaggle Free GPU Tesla T4 FP16 (hassaneljesr/nanolm-omega-v2, $0.00)",
+      "primary_metric": "CUDA-Graph decode: 2B (1.808B) 158.413->51.023 ms/tok (3.10x, parity=True, 1.00 MB state); 4B (3.841B<=4B) 236.105->100.291 ms/tok (2.35x, parity=True, 1.50 MB state); NullspaceLoRA merge [2048,2048] 7.55x (252.24->33.42 us, ortho err 5e-7)",
+      "status": "DEMONSTRATED_BREAKTHROUGH",
+      "artifact": "artifacts/nanolm_omega_v2/exp_omega6_cudagraph_merge.json"
+    },
+    {
+      "id": "EXP-OMEGA7-UNIFIED-V2-1.7B",
+      "track": "NANOLM Omega-v2",
+      "hypothesis": "Zero-overhead nullspace merge + OmegaCognitiveController-v2 (Top-2 logit margin gating, schema-completeness JSON preservation, chained Mermaid repair, multi-probe falsification) preserves coding and boosts <=2B verified capability",
+      "backend": "Kaggle Free GPU 2x Tesla T4 FP16 (hassaneljesr/nanolm-omega-v2, $0.00)",
+      "primary_metric": "Merged_Greedy 38/56 (67.86%, 13.48 tok/s, 1.61x 6-task speedup & 6/6 exact match across 196 merged layers); Cognitive_v2 41/56 (73.21% [60.71%, 83.93%], coding 3/4, math 3/4, tools 4/4, diagrams_charts 4/4 (100%), cap/B=0.4190, eff=0.5710, 13.59 tok/s)",
+      "status": "DEMONSTRATED_BREAKTHROUGH",
+      "artifact": "artifacts/nanolm_omega_v2/exp_omega7_unified_v2_1p7b.json"
     }
   ]
 }

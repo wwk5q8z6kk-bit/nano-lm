@@ -56,3 +56,24 @@ For architecture with $N$ total parameters, $N_{\text{train}}$ trainable paramet
 $$\text{VRAM}_{\text{peak}} \approx M_{\text{weights}} + 16 N_{\text{train}} + M_{\text{state}}(B, L) + M_{\text{act}}(B, L_{\text{eff}}, N_{\text{train}} > 0) + M_{\text{ctx}},$$
 $$T_{\text{wall}} \approx T_{\text{boot}} + \frac{6 N D_{\text{tr}}}{\eta_{\text{mfu}} \Phi_{\text{gpu}}} + \frac{D_{\text{dec}}(M_{\text{weights}} + M_{\text{state}})}{\eta_{\text{bw}} \mathcal{B}_{\text{gpu}}}.$$
 Notice why **holonomic state $M_{\text{state}} = O(1)$ dominates Transformers $M_{\text{KV}} = O(L)$** at long sequences: in Decode, $T_{\text{dec}}/{\text{tok}}$ is linear in $M_{\text{weights}} + M_{\text{state}}$, so $O(L)$ KV reads overtake arithmetic cost as $L \to 32,768+$.
+
+---
+
+## Theorem 6 — Deep Iterated Prefix-Product Obstruction, $\mathfrak{su}(2)$ Exponential Splitting, & `res_mix_gate` (`Gen4_Omega_SO3_PredCode`)
+
+In an $L$-layer causal LM, stacking non-abelian $SU(2)$ scans creates iterated non-commutative prefix products:
+$$H_t^{(\ell)} = H_{t-1}^{(\ell)} A_t^{(\ell)}\big(X_{1:t}^{(\ell-1)}\big), \qquad A_t^{(\ell)} \in SU(2).$$
+Because small perturbations in $H_t^{(0)}$ alter every subsequent step $t$ of layer $\ell \ge 1$ nonlinearly, full residual mixing across deep stacks triggers chaotic prefix-of-prefix interference on non-abelian word problems (unbroken $S_4$), while adaptive optimizers restore downscaled projections in $< 10$ steps.
+
+`HSPAFamily.GEN4_OMEGA_SO3_PREDCODE` resolves this in an end-to-end multi-layer causal LM via three coupled invariants:
+1. **Unitary / Episodic Register Bifurcation ($r_0 = \lfloor R/2 \rfloor$):** Holonomy registers $r < r_0$ obey $g_{t,r} = \exp_{\mathfrak{su}(2)}(\omega_{t,r}) \in SU(2)$ (`su2_lie_exponential`) with strictly zero episodic coupling ($s_{t,r} = 0$) and normalized identity anchor (`scan_state[:, :r_0, :, 0] = 1.0`), ensuring exact norm conservation $\|H_{t,r}\|_F = \|H_{0,r}\|_F$. Episodic registers $r \ge r_0$ retain adaptive decay/binding ($s_{t,r} \neq 0$).
+2. **Sign-Invariant Projective $SO(3)$ Adjoint Readout:** Mapping unit spinor $q \in S^3$ via `so3_projective_adjoint` to its $3 \times 3$ rotation matrix $R(q) \in SO(3)$ guarantees $\mathbb{Z}_2$ antipodal invariance $R(-q) = R(q)$, eliminating sign-flip discontinuities across readouts.
+3. **Scalar Residual Highway Gate (`res_mix_gate`):** Initializing scalar gate $\gamma_0 = 1.0$ on layer $0$ and $\gamma_\ell = 0.0$ on layers $\ell \ge 1$ isolates exact group-state composition at layer $0$ (**`100.00%`** at $L \in \{32,64,128\}$ and **`93.06%`** at $8\times$ OOD $L=256$ in `EXP-Ω4`), while deeper layers engage selectively as gradient signal warrants (`0.3775` vs `0.3824` Transformer BPB, `-14.3%` VRAM vs `Gen1_H2`, and `9.03%` math probe in `EXP-Ω5`; though trailing all-active `Gen1_H2` `0.3701` BPB on short 800-step general text).
+
+---
+
+## Theorem 7 — Zero-Overhead Nullspace Weight Folding & Static CUDA-Graph Decode
+
+Because orthogonal nullspace projection $P_\perp = I - V_k V_k^\top$ is linear, `SpectralNullspaceLoRALinear` forward evaluation
+$$y = x W_0^\top + \alpha\, (x P_\perp) A^\top B^\top = x \Big(W_0 + \alpha\, B (A P_\perp)\Big)^\top = x W_{\text{merged}}^\top$$
+can be folded **exact to floating-point precision** (`6/6` exact greedy match at `1.747B`) into `base.weight` via `merge()` / `unmerge()` (CPU base backup = `0 MB` extra GPU VRAM), preserving nullspace orthogonality ($\|\Delta W_\perp V_k\|_F / \|\Delta W_\perp\|_F \le 7\times 10^{-7}$). Eliminating dual-path GEMM + Python kernel-launch overhead via static-buffer `torch.cuda.CUDAGraph` (`StaticGraphHSPADecoder`, $L_{\text{dec}}=1$) yields **`7.55x`** nullspace linear speedup (`252.24 -> 33.42 us`), **`1.61x`** end-to-end HF decode speedup (`8.73 -> 14.09 tok/s`), **`3.10x`** on `1.808B` (`158.413 -> 51.023 ms/tok`), and **`2.35x`** on flagship `3.841B <= 4B` (`236.105 -> 100.291 ms/tok`).

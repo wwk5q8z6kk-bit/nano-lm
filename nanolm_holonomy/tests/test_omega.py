@@ -14,18 +14,24 @@ from nanolm_holonomy.compute_planner import (
     WorkloadSpec,
     estimate_workload,
     plan_omega_campaign,
+    plan_omega_v2_campaign,
     select_optimal_gpu,
 )
 from nanolm_holonomy.omega_architecture import (
     SpectralNullspaceLoRALinear,
     apply_nullspace_lora,
+    merge_omega_weights,
+    merged_omega_inference,
     so3_projective_adjoint,
     su2_lie_exponential,
+    unmerge_omega_weights,
 )
 from nanolm_holonomy.omega_system import (
     classify_task_mode,
+    normalize_chained_mermaid_edges,
     omega_generate,
     preserve_valid_json_keys,
+    preserve_valid_json_structure,
     verify_python_smoke_zero_oracle,
 )
 from nanolm_holonomy.spinor_algebra import hamilton_product
@@ -149,3 +155,243 @@ def test_omega_schema_preserving_guard() -> None:
     assert preserve_valid_json_keys(existing, {"sum_total": 100, "label": "ok"})
     assert not preserve_valid_json_keys(existing, {"result": 100})
     assert preserve_valid_json_keys("invalid {json", {"sum_total": 100})
+
+
+def test_gen4_config_budget_and_incremental_decode() -> None:
+    from nanolm_holonomy.architecture import (
+        HSPA_OMEGA_2B_CONFIG,
+        HSPA_OMEGA_4B_CONFIG,
+        TRANSFORMER_4B_CONFIG,
+        HSPAArchConfig,
+        HSPAFamily,
+        HSPAUnifiedLM,
+    )
+    from nanolm_posttrain.architecture import ABSOLUTE_MAX_PARAMETERS
+
+    assert 1_700_000_000 <= HSPA_OMEGA_2B_CONFIG.parameter_count <= 2_100_000_000
+    assert 3_600_000_000 <= HSPA_OMEGA_4B_CONFIG.parameter_count <= ABSOLUTE_MAX_PARAMETERS
+    assert abs(HSPA_OMEGA_4B_CONFIG.parameter_count - TRANSFORMER_4B_CONFIG.parameter_count) / TRANSFORMER_4B_CONFIG.parameter_count < 0.01
+
+    cfg = HSPAArchConfig(
+        name="test-gen4",
+        family=HSPAFamily.GEN4_OMEGA_SO3_PREDCODE,
+        vocab_size=128,
+        d_model=64,
+        n_layers=3,
+        n_heads=4,
+        n_kv_heads=2,
+        d_head=16,
+        d_ff=128,
+        n_registers=4,
+        d_fiber=32,
+        max_seq_len=128,
+    )
+    m = HSPAUnifiedLM(cfg)
+    assert cfg.parameter_count == m.num_parameters
+    x = torch.randint(0, 128, (2, 16))
+    lg = m(x)
+    lg.sum().backward()
+    assert all(p.grad is not None and torch.isfinite(p.grad).all() for p in m.parameters() if p.requires_grad)
+
+    m.eval()
+    with torch.no_grad():
+        ref = m(x)
+        _, st = m(x[:, :8], use_state=True)
+        incs = []
+        for t in range(8, 16):
+            lt, st = m(x[:, t : t + 1], past_states=st, use_state=True, past_len=t)
+            incs.append(lt)
+        assert (ref[:, 8:] - torch.cat(incs, dim=1)).abs().max().item() < 1e-4
+
+
+def test_nullspace_lora_merge_unmerge_exact_equivalence() -> None:
+    torch.manual_seed(29)
+    lin = nn.Linear(64, 48, bias=False)
+    w_orig = lin.weight.detach().clone()
+    toy = nn.Sequential()
+    toy.add_module("q_proj", lin)
+    apply_nullspace_lora(toy, LoRAConfig(rank=8, alpha=16.0), nullspace_k=12)
+    wrapped = toy.q_proj
+    assert isinstance(wrapped, SpectralNullspaceLoRALinear)
+    with torch.no_grad():
+        nn.init.normal_(wrapped.lora_b, std=0.05)
+
+    x = torch.randn(3, 10, 64)
+    with torch.no_grad():
+        y_unmerged = toy(x).clone()
+
+    with merged_omega_inference(toy) as n_merged:
+        assert n_merged == 1
+        assert wrapped.merged is True
+        with torch.no_grad():
+            y_merged = toy(x).clone()
+        assert torch.allclose(y_unmerged, y_merged, atol=1e-5, rtol=1e-5)
+
+    assert wrapped.merged is False
+    assert torch.allclose(wrapped.base.weight, w_orig, atol=1e-6)
+    assert merge_omega_weights(toy) == 1
+    assert unmerge_omega_weights(toy) == 1
+
+
+def test_static_graph_hspa_decoder_greedy_parity() -> None:
+    from nanolm_holonomy.architecture import HSPAArchConfig, HSPAFamily, HSPAUnifiedLM
+    from nanolm_holonomy.cuda_graph_decode import StaticGraphHSPADecoder
+
+    torch.manual_seed(33)
+    dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    for fam in (HSPAFamily.GEN3_H4_HSPA_WAVEPRED, HSPAFamily.GEN4_OMEGA_SO3_PREDCODE):
+        cfg = HSPAArchConfig(
+            name=f"graph-{fam.value}",
+            family=fam,
+            vocab_size=96,
+            d_model=64,
+            n_layers=2,
+            n_heads=4,
+            n_kv_heads=2,
+            d_head=16,
+            d_ff=128,
+            n_registers=4,
+            d_fiber=32,
+            max_seq_len=128,
+        )
+        m = HSPAUnifiedLM(cfg).to(dev).eval()
+        prompt = torch.randint(0, 96, (1, 14), device=dev)
+
+        with torch.no_grad():
+            lg_p, st_p = m(prompt, use_state=True, logits_to_keep=1)
+            cur = lg_p[:, -1:, :].argmax(dim=-1)
+            ref_toks = [cur]
+            for s_i in range(6):
+                lg_s, st_p = m(cur, past_states=st_p, use_state=True, past_len=14 + s_i, logits_to_keep=1)
+                cur = lg_s[:, -1:, :].argmax(dim=-1)
+                ref_toks.append(cur)
+            ref_seq = torch.cat(ref_toks[:-1], dim=1)  # 6 generated tokens starting with first post-prompt
+
+        dec = StaticGraphHSPADecoder(m, batch_size=1, device=dev)
+        dec.capture_graph(warmup_steps=2)
+        gen_seq = dec.generate_greedy(prompt, max_new_tokens=6, chunk_size=8)
+        assert torch.equal(ref_seq, gen_seq)
+
+
+def test_omega_controller_v2_guards_mermaid_and_probes() -> None:
+    assert classify_task_mode("Return JSON.", "Init user Alice role viewer, update quota 35") == "STATE_JSON"
+    assert classify_task_mode("Return JSON.", "Compute subtotal, discount, tax, grand_total from 5 items") == "SYMBOLIC_COMPUTE"
+
+    ok1, _ = preserve_valid_json_structure('{"items": 5, "cost": 115}', {"items": 5, "cost": 150})
+    assert ok1
+    ok2, r2 = preserve_valid_json_structure('{"items": 5, "cost": 115}', {"items": [{"a": 1}], "cost": 150})
+    assert not ok2 and "type_mismatch" in r2
+
+    ok3, r3 = preserve_valid_json_structure(
+        '{"order": ["T1", "T2", "T3", "T4", "T5"], "makespan": 18}',
+        {"order": ["T1", "T2", "T4", "T5"], "makespan": 17},
+    )
+    assert not ok3 and "item_set_mismatch" in r3
+
+    ok4, _ = preserve_valid_json_structure(
+        '{"order": ["T1", "T2", "T3", "T4", "T5"], "makespan": 18}',
+        {"order": ["T1", "T3", "T2", "T4", "T5"], "makespan": 13},
+    )
+    assert ok4
+
+    chained = '```mermaid\nflowchart LR\n    Client["Browser (UI)"] --> Gateway["API Gateway"] --> Worker["Job Runner"]\n    Gateway --> Alert["Alert"]\n```'
+    normed = normalize_chained_mermaid_edges(chained)
+    assert normed.count("-->") == 3 and len(normed.splitlines()) == 6
+
+    ok_none, err_none = verify_python_smoke_zero_oracle("```python\ndef f(values: list[int], k: int) -> int:\n    pass\n```")
+    assert not ok_none and ("None" in err_none or "int" in err_none)
+
+    ok_sent, err_sent = verify_python_smoke_zero_oracle("```python\ndef kth_smallest_bst(values: list[int], k: int) -> int:\n    return -1\n```")
+    assert not ok_sent and "SentinelError" in err_sent
+
+
+def test_cycle3_omega_v2_planner_and_cpu_smoke() -> None:
+    from nanolm_holonomy.architecture import HSPAArchConfig, HSPAFamily
+    from nanolm_holonomy.cycle3_omega_v2 import (
+        run_exp_omega4_full_lm_s4,
+        run_exp_omega6_cudagraph_and_merge_speedup,
+    )
+
+    plan_v2 = plan_omega_v2_campaign(allow_kaggle=True)
+    rec = plan_v2["selection"]["recommended"]
+    assert rec["backend"] == "kaggle"
+    assert rec["estimated_usd"] == 0.0
+    assert rec["fits_vram"] is True
+
+    cpu = torch.device("cpu")
+    r4 = run_exp_omega4_full_lm_s4(
+        device=cpu,
+        seeds=(101,),
+        steps=2,
+        batch_size=4,
+        train_len=8,
+        lengths=(8, 16),
+        probe_batch=8,
+    )
+    assert len(r4["arms"]) == 4
+
+    tiny_cfg = HSPAArchConfig(
+        name="tiny-omega6",
+        family=HSPAFamily.GEN4_OMEGA_SO3_PREDCODE,
+        vocab_size=64,
+        d_model=64,
+        n_layers=2,
+        n_heads=4,
+        n_kv_heads=2,
+        d_head=16,
+        d_ff=128,
+        n_registers=4,
+        d_fiber=32,
+        max_seq_len=128,
+    )
+    r6 = run_exp_omega6_cudagraph_and_merge_speedup(
+        device=cpu,
+        seq_len=16,
+        n_decode=4,
+        configs=(tiny_cfg,),
+        merge_shapes=((64, 64),),
+    )
+    assert r6["decode_benchmarks"][0]["greedy_parity"] is True
+    assert all(row["nullspace_orthogonality_error"] < 1e-5 for row in r6["nullspace_merge_benchmarks"])
+
+
+def test_omega_wrapped_layer_gradient_checkpointing() -> None:
+    from types import SimpleNamespace
+    from torch.utils.checkpoint import checkpoint
+    from nanolm_holonomy.omega_architecture import _OmegaWrappedLayer, apply_omega_graft
+
+    class _Block(nn.Module):
+        def __init__(self, d: int) -> None:
+            super().__init__()
+            self.q_proj = nn.Linear(d, d, bias=False)
+            self.o_proj = nn.Linear(d, d, bias=False)
+
+        def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
+            return hidden_states + self.o_proj(torch.relu(self.q_proj(hidden_states)))
+
+    class _ToyLM(nn.Module):
+        def __init__(self, d: int = 32) -> None:
+            super().__init__()
+            self.config = SimpleNamespace(hidden_size=d)
+            self.layers = nn.ModuleList(_Block(d) for _ in range(2))
+
+    torch.manual_seed(41)
+    m = _ToyLM(d=32)
+    apply_omega_graft(
+        m,
+        lora_config=LoRAConfig(rank=4, alpha=8.0, target_suffixes=("q_proj", "o_proj")),
+        nullspace_k=4,
+        n_sidecar_layers=2,
+        n_registers=2,
+        d_fiber=16,
+    )
+    m.train()
+    x = torch.randn(2, 10, 32, requires_grad=True)
+    h = x
+    for layer in m.layers:
+        assert isinstance(layer, _OmegaWrappedLayer)
+        h_base = checkpoint(layer.base_layer, h, use_reentrant=False)
+        h = h_base + layer.sidecar(h_base)
+    h.sum().backward()
+    trainable = [p for p in m.parameters() if p.requires_grad]
+    assert trainable and all(p.grad is not None and torch.isfinite(p.grad).all() for p in trainable)

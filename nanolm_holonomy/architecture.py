@@ -30,8 +30,10 @@ from nanolm_holonomy.spinor_algebra import (
     complex_conjugate,
     complex_product,
     hamilton_product,
+    so3_projective_adjoint,
     spinor_conjugate,
     step_holonomy,
+    su2_lie_exponential,
 )
 from nanolm_holonomy.triton_holonomy import holonomy_scan_fast
 from nanolm_posttrain.architecture import (
@@ -48,6 +50,7 @@ class HSPAFamily(str, Enum):
     GEN1_H2_HSPA_PREDCODE = "gen1_h2_hspa_predcode"
     GEN2_H3_HSPA_EVOLVED = "gen2_h3_hspa_evolved"
     GEN3_H4_HSPA_WAVEPRED = "gen3_h4_hspa_wavepred"
+    GEN4_OMEGA_SO3_PREDCODE = "gen4_omega_so3_predcode"
 
 
 @dataclass(frozen=True, slots=True)
@@ -118,7 +121,11 @@ class HSPAArchConfig:
 
     @property
     def uses_predcode(self) -> bool:
-        return self.family in (HSPAFamily.GEN1_H2_HSPA_PREDCODE, HSPAFamily.GEN3_H4_HSPA_WAVEPRED)
+        return self.family in (
+            HSPAFamily.GEN1_H2_HSPA_PREDCODE,
+            HSPAFamily.GEN3_H4_HSPA_WAVEPRED,
+            HSPAFamily.GEN4_OMEGA_SO3_PREDCODE,
+        )
 
     @property
     def uses_gen2(self) -> bool:
@@ -127,6 +134,10 @@ class HSPAArchConfig:
     @property
     def uses_gen3(self) -> bool:
         return self.family == HSPAFamily.GEN3_H4_HSPA_WAVEPRED
+
+    @property
+    def uses_gen4(self) -> bool:
+        return self.family == HSPAFamily.GEN4_OMEGA_SO3_PREDCODE
 
     @property
     def uses_wave_conv(self) -> bool:
@@ -176,6 +187,9 @@ class HSPAArchConfig:
                 elif self.uses_gen3:
                     # Causal wavepacket pre-filter on phi + bifurcated unitary/episodic register biases
                     mix += self.d_fiber * K + 2 * R
+                elif self.uses_gen4:
+                    # SO(3) projective adjoint projection + unitary/episodic register biases + scalar highway gate
+                    mix += (9 * G) * self.d_fiber + 2 * R + 1
 
             if self.uses_predcode:
                 ffn = 3 * d * self.d_ff + d + 1  # W_enc, W_dec, W_err + err_norm + log_prec
@@ -255,6 +269,7 @@ def build_suite_configs(
         ("gen1-h2-hspa-predcode", HSPAFamily.GEN1_H2_HSPA_PREDCODE),
         ("gen2-h3-hspa-evolved", HSPAFamily.GEN2_H3_HSPA_EVOLVED),
         ("gen3-h4-hspa-wavepred", HSPAFamily.GEN3_H4_HSPA_WAVEPRED),
+        ("gen4-omega-so3-predcode", HSPAFamily.GEN4_OMEGA_SO3_PREDCODE),
     )
     out = [b0]
     for vname, fam in variants:
@@ -317,6 +332,39 @@ HSPA_4B_CONFIG = _iso_match_dff(
         n_kv_heads=4,
         d_head=128,
         d_ff=7_296,
+        n_registers=16,
+        d_fiber=1_024,
+        max_seq_len=65_536,
+    ),
+)
+
+HSPA_OMEGA_2B_CONFIG = HSPAArchConfig(
+    name="nanolm-hspa-omega-2b",
+    family=HSPAFamily.GEN4_OMEGA_SO3_PREDCODE,
+    vocab_size=100_352,
+    d_model=2_048,
+    n_layers=32,
+    n_heads=16,
+    n_kv_heads=4,
+    d_head=128,
+    d_ff=6_272,
+    n_registers=16,
+    d_fiber=1_024,
+    max_seq_len=65_536,
+)
+
+HSPA_OMEGA_4B_CONFIG = _iso_match_dff(
+    TRANSFORMER_4B_CONFIG.parameter_count,
+    HSPAArchConfig(
+        name="nanolm-hspa-omega-4b",
+        family=HSPAFamily.GEN4_OMEGA_SO3_PREDCODE,
+        vocab_size=100_352,
+        d_model=2_560,
+        n_layers=48,
+        n_heads=20,
+        n_kv_heads=4,
+        d_head=128,
+        d_ff=6_976,
         n_registers=16,
         d_fiber=1_024,
         max_seq_len=65_536,
@@ -469,7 +517,7 @@ class _AbelianRegisterMixer(nn.Module):
 
 
 class SpinorRegisterField(nn.Module):
-    """Non-Abelian SU(2) Parallel-Transport Spinor Field (Gen 1, Gen 2, Gen 3 Evolved)."""
+    """Non-Abelian SU(2) Parallel-Transport Spinor Field (Gen 1, Gen 2, Gen 3, Gen 4 Omega)."""
 
     def __init__(self, cfg: HSPAArchConfig) -> None:
         super().__init__()
@@ -479,6 +527,7 @@ class SpinorRegisterField(nn.Module):
         self.chunk = cfg.scan_chunk_size
         self.use_gen2 = cfg.uses_gen2
         self.use_gen3 = cfg.uses_gen3
+        self.use_gen4 = cfg.uses_gen4
         self.use_conv = cfg.uses_wave_conv
         self.conv_k = cfg.conv_kernel
 
@@ -504,6 +553,16 @@ class SpinorRegisterField(nn.Module):
             mob_init = torch.cat((torch.full((half_r,), 2.0), torch.full((self.R - half_r,), -2.0)))
             self.beta_reg_bias = nn.Parameter(beta_init)
             self.mob_reg_bias = nn.Parameter(mob_init)
+        if self.use_gen4:
+            half_r = max(1, self.R // 2)
+            beta_init = torch.cat((torch.full((half_r,), -4.5), torch.full((self.R - half_r,), 0.5)))
+            mob_init = torch.cat((torch.full((half_r,), 3.0), torch.zeros(self.R - half_r)))
+            self.beta_reg_bias = nn.Parameter(beta_init)
+            self.mob_reg_bias = nn.Parameter(mob_init)
+            self.so3_read_proj = nn.Linear(9 * self.G, self.d_fiber, bias=False)
+            nn.init.normal_(self.so3_read_proj.weight, std=1.0 / math.sqrt(9 * self.G))
+            with torch.no_grad():
+                self.omega_reg[:half_r].zero_()
 
         self.out_norm = nn.RMSNorm(self.d_fiber, eps=cfg.rms_eps)
         self.o_proj = nn.Linear(self.d_fiber, cfg.d_model, bias=False)
@@ -542,9 +601,9 @@ class SpinorRegisterField(nn.Module):
 
         phi = phi_raw.view(bsz, seq_len, self.G, 4).permute(0, 2, 1, 3).unsqueeze(1)  # [B, 1, G, T, 4]
         w_l, b_l, m_l, r_l = self.gate_proj(h).chunk(4, dim=-1)
-        if self.use_gen3:
-            b_l = b_l + self.beta_reg_bias.view(1, 1, self.R)
-            m_l = m_l + self.mob_reg_bias.view(1, 1, self.R)
+        if self.use_gen3 or self.use_gen4:
+            b_l = b_l + self.beta_reg_bias.to(b_l.dtype).view(1, 1, self.R)
+            m_l = m_l + self.mob_reg_bias.to(m_l.dtype).view(1, 1, self.R)
         w = F.softmax(w_l, dim=-1).transpose(1, 2).unsqueeze(2).unsqueeze(-1)  # [B, R, 1, T, 1]
         beta = torch.sigmoid(b_l).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
         mob = torch.sigmoid(m_l).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
@@ -560,13 +619,30 @@ class SpinorRegisterField(nn.Module):
         rm = torch.tanh(rm).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
         qm = torch.tanh(qm).transpose(1, 2).unsqueeze(2).unsqueeze(-1)
 
-        omega = mob * (o_tok * om + self.omega_reg.view(1, self.R, self.G, 1, 3))
-        rho = rho_tok * rm + self.rho_reg.view(1, self.R, self.G, 1, 3)
-        q_gen = q_tok * qm + self.q_reg.view(1, self.R, self.G, 1, 3)
+        if self.use_gen4:
+            half_r = max(1, self.R // 2)
+            omega = mob * (o_tok + om * self.omega_reg.to(o_tok.dtype).view(1, self.R, self.G, 1, 3))
+            rho = rho_tok + rm * self.rho_reg.to(rho_tok.dtype).view(1, self.R, self.G, 1, 3)
+            q_gen = q_tok + qm * self.q_reg.to(q_tok.dtype).view(1, self.R, self.G, 1, 3)
+            # Exact unitary/episodic fiber split: zero decay/additive drift on holonomy half [:half_r]
+            g_holo = su2_lie_exponential(omega[:, :half_r]).to(h.dtype)
+            s_holo = torch.zeros(bsz, half_r, self.G, seq_len, 4, device=h.device, dtype=h.dtype)
+            decay_ep = (1.0 - w[:, half_r:] * beta[:, half_r:]).clamp_min(1e-4)
+            g_ep = (decay_ep * su2_lie_exponential(omega[:, half_r:])).to(h.dtype)
+            s_ep = (w[:, half_r:] * hamilton_product(su2_lie_exponential(rho[:, half_r:]), phi)).to(h.dtype)
+            g = torch.cat((g_holo, g_ep), dim=1)
+            s = torch.cat((s_holo, s_ep), dim=1)
+            if scan_state is None:
+                scan_state = torch.zeros(bsz, self.R, self.G, 4, device=h.device, dtype=h.dtype)
+                scan_state[:, :half_r, :, 0] = 1.0
+        else:
+            omega = mob * (o_tok * om + self.omega_reg.view(1, self.R, self.G, 1, 3))
+            rho = rho_tok * rm + self.rho_reg.view(1, self.R, self.G, 1, 3)
+            q_gen = q_tok * qm + self.q_reg.view(1, self.R, self.G, 1, 3)
 
-        decay = (1.0 - w * beta).clamp_min(1e-4)
-        g = decay * cayley_rotor(omega)  # [B, R, G, T, 4]
-        s = w * hamilton_product(cayley_rotor(rho), phi)
+            decay = (1.0 - w * beta).clamp_min(1e-4)
+            g = decay * cayley_rotor(omega)  # [B, R, G, T, 4]
+            s = w * hamilton_product(cayley_rotor(rho), phi)
 
         if seq_len == 1 and scan_state is not None:
             next_scan = step_holonomy(g.squeeze(-2), s.squeeze(-2), scan_state)
@@ -574,15 +650,28 @@ class SpinorRegisterField(nn.Module):
         else:
             all_omega, next_scan = holonomy_scan_fast(g, s, init_state=scan_state, chunk_size=self.chunk)
 
-        q_rot = cayley_rotor(q_gen)
-        unbound = hamilton_product(spinor_conjugate(q_rot), all_omega)  # [B, R, G, T, 4]
-        unbound_flat = unbound.permute(0, 1, 3, 2, 4).reshape(bsz, self.R, seq_len, self.d_fiber)
-
-        if self.use_gen2:
-            reg_norm = F.normalize(unbound_flat.float(), dim=-1).to(unbound_flat.dtype)
-            coup = torch.tanh(self.kuramoto_coupling).to(unbound_flat.dtype)  # [R, R]
-            sync_drive = torch.einsum("rs,bstf->brtf", coup, reg_norm)
-            unbound_flat = unbound_flat + torch.tanh(self.kuramoto_scale).to(unbound_flat.dtype) * sync_drive
+        if self.use_gen4:
+            half_r = max(1, self.R // 2)
+            # Strictly Z2-invariant SO(3) projective adjoint on holonomy bundle (zero +/-q leak)
+            adj_holo = (
+                so3_projective_adjoint(all_omega[:, :half_r])
+                .permute(0, 1, 3, 2, 4)
+                .reshape(bsz, half_r, seq_len, 9 * self.G)
+            )
+            holo_read = self.so3_read_proj(adj_holo.to(h.dtype))
+            ep_q = su2_lie_exponential(q_gen[:, half_r:])
+            ep_unbound = hamilton_product(spinor_conjugate(ep_q.to(all_omega.dtype)), all_omega[:, half_r:])
+            ep_read = ep_unbound.permute(0, 1, 3, 2, 4).reshape(bsz, self.R - half_r, seq_len, self.d_fiber).to(h.dtype)
+            unbound_flat = torch.cat((holo_read, ep_read), dim=1)
+        else:
+            q_rot = cayley_rotor(q_gen)
+            unbound = hamilton_product(spinor_conjugate(q_rot), all_omega)  # [B, R, G, T, 4]
+            unbound_flat = unbound.permute(0, 1, 3, 2, 4).reshape(bsz, self.R, seq_len, self.d_fiber)
+            if self.use_gen2:
+                reg_norm = F.normalize(unbound_flat.float(), dim=-1).to(unbound_flat.dtype)
+                coup = torch.tanh(self.kuramoto_coupling).to(unbound_flat.dtype)  # [R, R]
+                sync_drive = torch.einsum("rs,bstf->brtf", coup, reg_norm)
+                unbound_flat = unbound_flat + torch.tanh(self.kuramoto_scale).to(unbound_flat.dtype) * sync_drive
 
         readout = (read_pi * unbound_flat).sum(dim=1)  # [B, T, d_fiber]
         out = self.o_proj(self.out_norm(readout))
@@ -594,7 +683,7 @@ class SpinorRegisterField(nn.Module):
 
 
 class _UnifiedBlock(nn.Module):
-    def __init__(self, cfg: HSPAArchConfig) -> None:
+    def __init__(self, cfg: HSPAArchConfig, *, layer_idx: int = 0) -> None:
         super().__init__()
         self.attn_norm = nn.RMSNorm(cfg.d_model, eps=cfg.rms_eps)
         self.ffn_norm = nn.RMSNorm(cfg.d_model, eps=cfg.rms_eps)
@@ -605,6 +694,11 @@ class _UnifiedBlock(nn.Module):
         else:
             self.mixer = SpinorRegisterField(cfg)
 
+        self.res_mix_gate: nn.Parameter | None = (
+            nn.Parameter(torch.tensor(1.0 if layer_idx == 0 else 0.0))
+            if cfg.uses_gen4
+            else None
+        )
         self.uses_predcode = cfg.uses_predcode
         if self.uses_predcode:
             self.ffn: nn.Module = PredictiveCodingCell(cfg.d_model, cfg.d_ff, iters=cfg.pc_iters, rms_eps=cfg.rms_eps)
@@ -623,7 +717,10 @@ class _UnifiedBlock(nn.Module):
         use_state: bool = False,
     ) -> tuple[Tensor, Any]:
         h_mix, next_state = self.mixer(self.attn_norm(x), cos, sin, state=state, use_state=use_state)
-        x = x + h_mix
+        if self.res_mix_gate is not None:
+            x = x + self.res_mix_gate.to(h_mix.dtype) * h_mix
+        else:
+            x = x + h_mix
         h2 = self.ffn_norm(x)
         if self.uses_predcode:
             return x + self.ffn(h2), next_state
@@ -638,7 +735,7 @@ class HSPAUnifiedLM(nn.Module):
         self.config = cfg
         self.tok_emb = nn.Embedding(cfg.vocab_size, cfg.d_model)
         nn.init.normal_(self.tok_emb.weight, std=0.02)
-        self.blocks = nn.ModuleList(_UnifiedBlock(cfg) for _ in range(cfg.n_layers))
+        self.blocks = nn.ModuleList(_UnifiedBlock(cfg, layer_idx=idx) for idx in range(cfg.n_layers))
         self.final_norm = nn.RMSNorm(cfg.d_model, eps=cfg.rms_eps)
 
     @property

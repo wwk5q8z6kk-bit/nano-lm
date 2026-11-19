@@ -77,3 +77,39 @@ Trained strictly on `L=32` (`600` steps), tested zero-shot up to `L=512`:
 | `External Qwen/Qwen3-8B` | **`8.191B`** | `39/56` | `69.64%` | **`4/4`** | `1/4` | `3/4` | **`3/4`** | **`4/4`** | `2/4` | **`1/4`** | **`3/4`** | `16,541.5` | `0.0850` |
 | **`NanoLM-Ω-1.7B` (`Naked_Greedy`)** | **`1.747B`** | **`40/56`** | **`71.43%` `[60.7, 82.1]`** | `3/4` | **`4/4`** | `3/4` | `2/4` | `2/4` | **`4/4`** | **`1/4`** | `2/4` | **`4,403.0`** | **`0.4088`** |
 | `NanoLM-Ω-1.7B` (`Cognitive_Sys`) | `1.747B` | `39/56` | `69.64%` `[57.1, 80.4]` | `3/4` | **`4/4`** | `3/4` | `2/4` | `3/4` | `3/4` | **`1/4`** | `1/4` | `4,417.3` | `0.3985` |
+| `NanoLM-Ω-v2` (`Merged_Greedy`, T4 FP16) | `1.747B` | `38/56` | `67.86%` `[55.4, 78.6]` | `3/4` | `3/4` | `3/4` | `2/4` | `1/4` | **`4/4`** | **`1/4`** | `2/4` | `6,164.5` | `0.3883` |
+| **`NanoLM-Ω-v2` (`Cognitive_v2`, T4 FP16)** | **`1.747B`** | **`41/56`** | **`73.21%` `[60.7, 83.9]`** | `3/4` | `3/4` | `3/4` | `2/4` | **`4/4`** | **`4/4`** | **`1/4`** | `2/4` | `6,501.4` | **`0.4190`** |
+
+*(Cycle 3 `EXP-Ω7` executed on Free Kaggle `2x Tesla T4` FP16 at `$0.00` with `196` merged nullspace layers, `6/6` exact greedy match, and `1.61x` end-to-end speedup `8.73 -> 14.09 tok/s`.)*
+
+---
+
+## 6. `EXP-Ω4` — Full-LM Non-Abelian $S_4$ Composition (`3` Seeds `101/202/303`, `steps=1200`, `train_len=32`, T4 `$0.00`)
+
+| Model Arm | Params | `L32` (ID) | `L64` (`2x`) | `L128` (`4x` OOD) | `L256` (`8x` OOD) |
+|---|---:|---:|---:|---:|---:|
+| `b0-transformer-small_x1` | `2,460,480` | `0.0416 ± 0.0148` | `0.0208 ± 0.0148` | `0.0625 ± 0.0225` | `0.0277 ± 0.0049` |
+| `b1-abelian-ssm-small_x1` | `2,460,864` | `0.0382 ± 0.0177` | `0.0452 ± 0.0049` | `0.0347 ± 0.0130` | `0.0556 ± 0.0196` |
+| `gen1-h2-hspa-predcode-small_x1` | `2,466,630` | `0.0416 ± 0.0148` | `0.0416 ± 0.0148` | `0.0382 ± 0.0130` | `0.0625 ± 0.0085` |
+| **`gen4-omega-so3-predcode-small_x1`** | **`2,466,732`** | **`1.0000 ± 0.0000`** | **`1.0000 ± 0.0000`** | **`1.0000 ± 0.0000`** | **`0.9306 ± 0.0354`** |
+
+---
+
+## 7. `EXP-Ω5` — 3-Seed `14M` `Gen4` LM Evolution (`seeds=42/137/271`, `train_steps=800`, T4 `$0.00`)
+
+| Model Arm | Params | Val BPB (`mean ± std`) | Throughput (`tok/s`) | Peak VRAM (`MB`) | Math Probe | State Probe | Registry Verdict |
+|---|---:|---:|---:|---:|---:|---:|---|
+| `b0-transformer-micro` | `13,966,464` | `0.3824 ± 0.00242` | `58,669.9` | `1,173.2` | `2.78%` | `1.39%` | Baseline |
+| **`gen1-h2-hspa-predcode-micro`** | `14,022,536` | **`0.3701 ± 0.00470`** | `6,945.4` | `3,810.0` | `8.33%` | **`13.19%`** | **Retains `BEST`** |
+| `gen4-omega-so3-predcode-micro` | `13,948,944` | `0.3775 ± 0.00437` | `7,775.8` | `3,263.9` (`-14.3%`) | **`9.03%`** | `3.47%` | **`did_not_beat_best` vs `Gen1_H2`** |
+
+---
+
+## 8. `EXP-Ω6` — Static CUDA-Graph HSPA Decode & Nullspace Merge Microbench (`Tesla T4` FP16, `$0.00`)
+
+| Benchmark | Config / Shape | Baseline Eager | Optimized (`CUDAGraph` / `Merge`) | Speedup | Parity / Error |
+|---|---|---:|---:|---:|---|
+| HSPA-Ω Decode (`seq=512, dec=32`) | `nanolm-hspa-omega-2b` (`1.808B`) | `158.413 ms/tok` | **`51.023 ms/tok`** (`1.00 MB` state) | **`3.10x`** | `greedy_parity=True`, `4,221.25 MB` VRAM |
+| HSPA-Ω Decode (`seq=512, dec=32`) | `nanolm-hspa-omega-4b` (`3.841B <= 4B`) | `236.105 ms/tok` | **`100.291 ms/tok`** (`1.50 MB` state) | **`2.35x`** | `greedy_parity=True`, `8,409.83 MB` VRAM |
+| Nullspace LoRA Merge | `[2048, 2048]` Linear (`k=48, r=16`) | `252.24 us` | **`33.42 us`** | **`7.55x`** | `max_diff=0.001953`, ortho err `5e-7` |
+| Nullspace LoRA Merge | `[2048, 6144]` Linear (`k=48, r=16`) | `267.62 us` | **`100.47 us`** | **`2.66x`** | `max_diff=0.001953`, ortho err `7e-7` |
