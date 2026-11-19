@@ -1,0 +1,799 @@
+{
+  "schema": "nanolm.unified_loop.u02a.v2",
+  "paid_compute_usd": 0.0,
+  "steps_per_run": 200,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "causality_and_params": {
+    "M0_Dense_GQA_RoPE": {
+      "params": 55841,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M1_GDN1_Cone_Closed": {
+      "params": 56401,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M2_NanoOmega_FullSphere_SFOR": {
+      "params": 55761,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M3_KDA_DeltaProduct2_AttnRes": {
+      "params": 55777,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M4_BOBO_DualFastOp": {
+      "params": 55617,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M5_HSPA_LieSO3": {
+      "params": 55265,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M6_NEBN_BayesFilter": {
+      "params": 55633,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M7_SkewCayley_Flow": {
+      "params": 56129,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M8_TRM_Recursive_Loop": {
+      "params": 55713,
+      "causal_leak_max": 0.0,
+      "finite": true
+    },
+    "M9_DualChannel_Pointer": {
+      "params": 55538,
+      "causal_leak_max": 0.0,
+      "finite": true
+    }
+  },
+  "tasks": {
+    "S4_Holonomy_8x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 10.29,
+        "id_acc": {
+          "mean": 0.0378,
+          "std": 0.0049
+        },
+        "ood_acc": {
+          "mean": 0.0422,
+          "std": 0.0023
+        }
+      },
+      "M1_GDN1_Cone_Closed": {
+        "params": 56401,
+        "wall_s": 33.07,
+        "id_acc": {
+          "mean": 0.0573,
+          "std": 0.0218
+        },
+        "ood_acc": {
+          "mean": 0.0404,
+          "std": 0.0032
+        }
+      },
+      "M2_NanoOmega_FullSphere_SFOR": {
+        "params": 55761,
+        "wall_s": 31.15,
+        "id_acc": {
+          "mean": 0.082,
+          "std": 0.0128
+        },
+        "ood_acc": {
+          "mean": 0.0335,
+          "std": 0.0063
+        }
+      },
+      "M3_KDA_DeltaProduct2_AttnRes": {
+        "params": 55777,
+        "wall_s": 39.5,
+        "id_acc": {
+          "mean": 0.0814,
+          "std": 0.0108
+        },
+        "ood_acc": {
+          "mean": 0.0436,
+          "std": 0.0021
+        }
+      },
+      "M4_BOBO_DualFastOp": {
+        "params": 55617,
+        "wall_s": 13.54,
+        "id_acc": {
+          "mean": 0.0456,
+          "std": 0.0092
+        },
+        "ood_acc": {
+          "mean": 0.0407,
+          "std": 0.0035
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 13.56,
+        "id_acc": {
+          "mean": 0.1029,
+          "std": 0.0127
+        },
+        "ood_acc": {
+          "mean": 0.0426,
+          "std": 0.0036
+        }
+      },
+      "M6_NEBN_BayesFilter": {
+        "params": 55633,
+        "wall_s": 15.4,
+        "id_acc": {
+          "mean": 0.0443,
+          "std": 0.0041
+        },
+        "ood_acc": {
+          "mean": 0.0414,
+          "std": 0.0015
+        }
+      },
+      "M7_SkewCayley_Flow": {
+        "params": 56129,
+        "wall_s": 31.15,
+        "id_acc": {
+          "mean": 0.0417,
+          "std": 0.0011
+        },
+        "ood_acc": {
+          "mean": 0.0415,
+          "std": 0.002
+        }
+      },
+      "M8_TRM_Recursive_Loop": {
+        "params": 55713,
+        "wall_s": 12.4,
+        "id_acc": {
+          "mean": 0.0456,
+          "std": 0.0011
+        },
+        "ood_acc": {
+          "mean": 0.0426,
+          "std": 0.0031
+        },
+        "ood_step1_acc": {
+          "mean": 0.0431,
+          "std": 0.0016
+        },
+        "ood_guard_acc": {
+          "mean": 0.0441,
+          "std": 0.0022
+        },
+        "ood_loopcd_acc": {
+          "mean": 0.0444,
+          "std": 0.0014
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 29.92,
+        "id_acc": {
+          "mean": 0.0814,
+          "std": 0.0096
+        },
+        "ood_acc": {
+          "mean": 0.0329,
+          "std": 0.0041
+        }
+      }
+    },
+    "MQAR_Selective_Overwrite_4x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 13.12,
+        "id_acc": {
+          "mean": 0.1701,
+          "std": 0.0167
+        },
+        "ood_acc": {
+          "mean": 0.0927,
+          "std": 0.0104
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0925,
+          "std": 0.0112
+        }
+      },
+      "M1_GDN1_Cone_Closed": {
+        "params": 56401,
+        "wall_s": 81.47,
+        "id_acc": {
+          "mean": 0.059,
+          "std": 0.006
+        },
+        "ood_acc": {
+          "mean": 0.059,
+          "std": 0.0014
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0576,
+          "std": 0.0006
+        }
+      },
+      "M2_NanoOmega_FullSphere_SFOR": {
+        "params": 55761,
+        "wall_s": 82.8,
+        "id_acc": {
+          "mean": 0.0573,
+          "std": 0.0045
+        },
+        "ood_acc": {
+          "mean": 0.0597,
+          "std": 0.0019
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0578,
+          "std": 0.0006
+        }
+      },
+      "M3_KDA_DeltaProduct2_AttnRes": {
+        "params": 55777,
+        "wall_s": 77.47,
+        "id_acc": {
+          "mean": 0.0582,
+          "std": 0.003
+        },
+        "ood_acc": {
+          "mean": 0.0597,
+          "std": 0.0019
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0576,
+          "std": 0.0005
+        }
+      },
+      "M4_BOBO_DualFastOp": {
+        "params": 55617,
+        "wall_s": 27.44,
+        "id_acc": {
+          "mean": 0.0582,
+          "std": 0.0054
+        },
+        "ood_acc": {
+          "mean": 0.0597,
+          "std": 0.0019
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0578,
+          "std": 0.0006
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 28.28,
+        "id_acc": {
+          "mean": 0.0582,
+          "std": 0.0054
+        },
+        "ood_acc": {
+          "mean": 0.0597,
+          "std": 0.0019
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0578,
+          "std": 0.0006
+        }
+      },
+      "M6_NEBN_BayesFilter": {
+        "params": 55633,
+        "wall_s": 34.85,
+        "id_acc": {
+          "mean": 0.0573,
+          "std": 0.0052
+        },
+        "ood_acc": {
+          "mean": 0.0579,
+          "std": 0.0007
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0569,
+          "std": 0.0013
+        }
+      },
+      "M7_SkewCayley_Flow": {
+        "params": 56129,
+        "wall_s": 78.19,
+        "id_acc": {
+          "mean": 0.0564,
+          "std": 0.0084
+        },
+        "ood_acc": {
+          "mean": 0.0612,
+          "std": 0.0023
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0598,
+          "std": 0.0036
+        }
+      },
+      "M8_TRM_Recursive_Loop": {
+        "params": 55713,
+        "wall_s": 29.12,
+        "id_acc": {
+          "mean": 0.1163,
+          "std": 0.0236
+        },
+        "ood_acc": {
+          "mean": 0.0753,
+          "std": 0.0037
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.0757,
+          "std": 0.0017
+        },
+        "ood_guard_acc": {
+          "mean": 0.0857,
+          "std": 0.0052
+        },
+        "ood_loopcd_acc": {
+          "mean": 0.0662,
+          "std": 0.0112
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 95.06,
+        "id_acc": {
+          "mean": 0.8811,
+          "std": 0.0395
+        },
+        "ood_acc": {
+          "mean": 0.5764,
+          "std": 0.0794
+        },
+        "ood_overwritten_acc": {
+          "mean": 0.5421,
+          "std": 0.0832
+        }
+      }
+    },
+    "Unseen_OpenVocab_Copy": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 9.54,
+        "id_acc": {
+          "mean": 0.0924,
+          "std": 0.013
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M1_GDN1_Cone_Closed": {
+        "params": 56401,
+        "wall_s": 39.84,
+        "id_acc": {
+          "mean": 0.0273,
+          "std": 0.0034
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M2_NanoOmega_FullSphere_SFOR": {
+        "params": 55761,
+        "wall_s": 38.8,
+        "id_acc": {
+          "mean": 0.0345,
+          "std": 0.0041
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M3_KDA_DeltaProduct2_AttnRes": {
+        "params": 55777,
+        "wall_s": 51.86,
+        "id_acc": {
+          "mean": 0.0326,
+          "std": 0.0069
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M4_BOBO_DualFastOp": {
+        "params": 55617,
+        "wall_s": 17.0,
+        "id_acc": {
+          "mean": 0.026,
+          "std": 0.0069
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 16.92,
+        "id_acc": {
+          "mean": 0.0267,
+          "std": 0.0092
+        },
+        "ood_acc": {
+          "mean": 0.0088,
+          "std": 0.008
+        }
+      },
+      "M6_NEBN_BayesFilter": {
+        "params": 55633,
+        "wall_s": 20.68,
+        "id_acc": {
+          "mean": 0.0234,
+          "std": 0.002
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M7_SkewCayley_Flow": {
+        "params": 56129,
+        "wall_s": 44.26,
+        "id_acc": {
+          "mean": 0.0339,
+          "std": 0.01
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M8_TRM_Recursive_Loop": {
+        "params": 55713,
+        "wall_s": 16.16,
+        "id_acc": {
+          "mean": 0.069,
+          "std": 0.0081
+        },
+        "ood_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "ood_guard_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        },
+        "ood_loopcd_acc": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 40.07,
+        "id_acc": {
+          "mean": 0.9967,
+          "std": 0.0041
+        },
+        "ood_acc": {
+          "mean": 0.9619,
+          "std": 0.0244
+        }
+      }
+    },
+    "Parity_Dyck_4x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 17.15,
+        "id_acc": {
+          "mean": 0.9273,
+          "std": 0.0203
+        },
+        "ood_acc": {
+          "mean": 0.9188,
+          "std": 0.0311
+        }
+      },
+      "M1_GDN1_Cone_Closed": {
+        "params": 56401,
+        "wall_s": 99.89,
+        "id_acc": {
+          "mean": 0.8958,
+          "std": 0.0321
+        },
+        "ood_acc": {
+          "mean": 0.9174,
+          "std": 0.0233
+        }
+      },
+      "M2_NanoOmega_FullSphere_SFOR": {
+        "params": 55761,
+        "wall_s": 99.23,
+        "id_acc": {
+          "mean": 0.9086,
+          "std": 0.028
+        },
+        "ood_acc": {
+          "mean": 0.9203,
+          "std": 0.0231
+        }
+      },
+      "M3_KDA_DeltaProduct2_AttnRes": {
+        "params": 55777,
+        "wall_s": 81.73,
+        "id_acc": {
+          "mean": 0.8974,
+          "std": 0.0298
+        },
+        "ood_acc": {
+          "mean": 0.912,
+          "std": 0.0182
+        }
+      },
+      "M4_BOBO_DualFastOp": {
+        "params": 55617,
+        "wall_s": 29.8,
+        "id_acc": {
+          "mean": 0.9141,
+          "std": 0.0302
+        },
+        "ood_acc": {
+          "mean": 0.9234,
+          "std": 0.0272
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 29.21,
+        "id_acc": {
+          "mean": 0.9005,
+          "std": 0.0094
+        },
+        "ood_acc": {
+          "mean": 0.9029,
+          "std": 0.0396
+        }
+      },
+      "M6_NEBN_BayesFilter": {
+        "params": 55633,
+        "wall_s": 33.96,
+        "id_acc": {
+          "mean": 0.9055,
+          "std": 0.0184
+        },
+        "ood_acc": {
+          "mean": 0.9229,
+          "std": 0.0201
+        }
+      },
+      "M7_SkewCayley_Flow": {
+        "params": 56129,
+        "wall_s": 71.39,
+        "id_acc": {
+          "mean": 0.918,
+          "std": 0.0126
+        },
+        "ood_acc": {
+          "mean": 0.9279,
+          "std": 0.0207
+        }
+      },
+      "M8_TRM_Recursive_Loop": {
+        "params": 55713,
+        "wall_s": 27.86,
+        "id_acc": {
+          "mean": 0.9076,
+          "std": 0.0293
+        },
+        "ood_acc": {
+          "mean": 0.9141,
+          "std": 0.0266
+        },
+        "ood_guard_acc": {
+          "mean": 0.9162,
+          "std": 0.0264
+        },
+        "ood_loopcd_acc": {
+          "mean": 0.9133,
+          "std": 0.0283
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 100.83,
+        "id_acc": {
+          "mean": 0.8982,
+          "std": 0.0334
+        },
+        "ood_acc": {
+          "mean": 0.9254,
+          "std": 0.0287
+        }
+      }
+    },
+    "Hierarchy_Denom_Rollup_4x": {
+      "M0_Dense_GQA_RoPE": {
+        "params": 55841,
+        "wall_s": 13.21,
+        "id_acc": {
+          "mean": 0.2279,
+          "std": 0.0094
+        },
+        "ood_acc": {
+          "mean": 0.1459,
+          "std": 0.0091
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.114,
+          "std": 0.0151
+        }
+      },
+      "M1_GDN1_Cone_Closed": {
+        "params": 56401,
+        "wall_s": 65.2,
+        "id_acc": {
+          "mean": 0.2874,
+          "std": 0.0142
+        },
+        "ood_acc": {
+          "mean": 0.2463,
+          "std": 0.0086
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1384,
+          "std": 0.0244
+        }
+      },
+      "M2_NanoOmega_FullSphere_SFOR": {
+        "params": 55761,
+        "wall_s": 63.88,
+        "id_acc": {
+          "mean": 0.2807,
+          "std": 0.0173
+        },
+        "ood_acc": {
+          "mean": 0.2396,
+          "std": 0.0159
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1378,
+          "std": 0.0242
+        }
+      },
+      "M3_KDA_DeltaProduct2_AttnRes": {
+        "params": 55777,
+        "wall_s": 65.73,
+        "id_acc": {
+          "mean": 0.2736,
+          "std": 0.0092
+        },
+        "ood_acc": {
+          "mean": 0.2326,
+          "std": 0.0058
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.136,
+          "std": 0.0134
+        }
+      },
+      "M4_BOBO_DualFastOp": {
+        "params": 55617,
+        "wall_s": 23.14,
+        "id_acc": {
+          "mean": 0.2894,
+          "std": 0.0085
+        },
+        "ood_acc": {
+          "mean": 0.2447,
+          "std": 0.0091
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1357,
+          "std": 0.0165
+        }
+      },
+      "M5_HSPA_LieSO3": {
+        "params": 55265,
+        "wall_s": 23.18,
+        "id_acc": {
+          "mean": 0.3029,
+          "std": 0.0143
+        },
+        "ood_acc": {
+          "mean": 0.2588,
+          "std": 0.0061
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1633,
+          "std": 0.0179
+        }
+      },
+      "M6_NEBN_BayesFilter": {
+        "params": 55633,
+        "wall_s": 26.86,
+        "id_acc": {
+          "mean": 0.2898,
+          "std": 0.0122
+        },
+        "ood_acc": {
+          "mean": 0.2454,
+          "std": 0.0086
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1357,
+          "std": 0.0116
+        }
+      },
+      "M7_SkewCayley_Flow": {
+        "params": 56129,
+        "wall_s": 58.9,
+        "id_acc": {
+          "mean": 0.2926,
+          "std": 0.012
+        },
+        "ood_acc": {
+          "mean": 0.256,
+          "std": 0.006
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1534,
+          "std": 0.0185
+        }
+      },
+      "M8_TRM_Recursive_Loop": {
+        "params": 55713,
+        "wall_s": 21.7,
+        "id_acc": {
+          "mean": 0.2065,
+          "std": 0.0172
+        },
+        "ood_acc": {
+          "mean": 0.1332,
+          "std": 0.0132
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.1024,
+          "std": 0.0252
+        },
+        "ood_guard_acc": {
+          "mean": 0.1416,
+          "std": 0.01
+        },
+        "ood_loopcd_acc": {
+          "mean": 0.1094,
+          "std": 0.0234
+        }
+      },
+      "M9_DualChannel_Pointer": {
+        "params": 55538,
+        "wall_s": 62.91,
+        "id_acc": {
+          "mean": 0.2791,
+          "std": 0.0107
+        },
+        "ood_acc": {
+          "mean": 0.2393,
+          "std": 0.0059
+        },
+        "ood_close_rollup_acc": {
+          "mean": 0.137,
+          "std": 0.0176
+        }
+      }
+    }
+  },
+  "elapsed_s": 426.7
+}
