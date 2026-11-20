@@ -543,7 +543,7 @@ class SpinorRegisterField(nn.Module):
         if self.use_conv:
             self.wave_conv_weight = nn.Parameter(torch.randn(self.d_fiber, 1, self.conv_k) * 0.02)
         if self.use_gen2:
-            self.kuramoto_coupling = nn.Parameter(torch.zeros(self.R, self.R))
+            self.kuramoto_coupling = nn.Parameter(torch.randn(self.R, self.R) * 0.02)
             self.kuramoto_scale = nn.Parameter(torch.zeros(self.d_fiber))
         if self.use_gen3:
             # Bifurcated connection initialization: first R//2 near unitary transport (long-horizon),

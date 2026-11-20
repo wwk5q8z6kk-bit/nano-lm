@@ -73,20 +73,22 @@ def apply_lora(model: nn.Module, config: LoRAConfig = LoRAConfig()) -> int:
     """Freeze base model (enforcing <= 4B ceiling) and attach LoRA adapters."""
 
     total_base = sum(p.numel() for p in model.parameters())
-    if total_base > ABSOLUTE_MAX_PARAMETERS:
-        raise ParameterBudgetExceededError(
-            f"base model has {total_base:,} parameters, exceeding NanoLM's 4B ceiling"
+    targets = [
+        (name, module) for name, module in model.named_modules()
+        if isinstance(module, nn.Linear) and any(
+            name == suffix or name.endswith("." + suffix) for suffix in config.target_suffixes
         )
+    ]
+    adapter_parameters = sum(config.rank * (module.in_features + module.out_features) for _, module in targets)
+    total = total_base + adapter_parameters
+    if total > ABSOLUTE_MAX_PARAMETERS:
+        raise ParameterBudgetExceededError(f"adapted model has {total:,} parameters, exceeding NanoLM's 4B ceiling")
+    if not targets:
+        raise ValueError(f"no linear layers matched target_suffixes={config.target_suffixes}")
     for param in model.parameters():
         param.requires_grad_(False)
 
-    replaced = 0
-    targets = list(model.named_modules())
     for full_name, module in targets:
-        if not isinstance(module, nn.Linear):
-            continue
-        if not any(full_name == s or full_name.endswith("." + s) for s in config.target_suffixes):
-            continue
         parts = full_name.split(".")
         parent = model
         for part in parts[:-1]:
@@ -96,10 +98,7 @@ def apply_lora(model: nn.Module, config: LoRAConfig = LoRAConfig()) -> int:
             parts[-1],
             LoRALinear(module, rank=config.rank, alpha=config.alpha, dropout=config.dropout),
         )
-        replaced += 1
-    if replaced == 0:
-        raise ValueError(f"no linear layers matched target_suffixes={config.target_suffixes}")
-    return replaced
+    return len(targets)
 
 
 def trainable_parameter_summary(model: nn.Module) -> dict[str, int | float]:

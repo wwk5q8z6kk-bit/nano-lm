@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 from contextlib import nullcontext
+from itertools import zip_longest
 import gc
 import json
 import math
@@ -557,7 +558,8 @@ def run_e2_foundation_evolution(
         BenchmarkDim.INSTRUCTION_FOLLOWING,
         BenchmarkDim.HALLUCINATION_RESISTANCE,
     }
-    rl_subset = [ex for ex in curriculum if ex.dim in rl_dims][:24]
+    groups = [[ex for ex in curriculum if ex.dim == dim] for dim in BenchmarkDim if dim in rl_dims]
+    rl_subset = [ex for row in zip_longest(*groups) for ex in row if ex is not None][:24]
     grpo_stats = grpo_verifier_posttrain(
         model2,
         tok,

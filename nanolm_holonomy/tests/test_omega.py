@@ -151,6 +151,7 @@ def test_omega_experiments_smoke_cpu() -> None:
 
 def test_omega_schema_preserving_guard() -> None:
     assert classify_task_mode('Return JSON `{"calls": [...]}`.', "Available tools: balance_get,subtotal=5") == "STRUCTURED_JSON"
+    assert not preserve_valid_json_keys('{"order":["A","B"]}', {"order": [{"name": "A"}, {}]})
     existing = '{"sum_total": 109, "label": "ok"}'
     assert preserve_valid_json_keys(existing, {"sum_total": 100, "label": "ok"})
     assert not preserve_valid_json_keys(existing, {"result": 100})

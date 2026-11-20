@@ -48,6 +48,7 @@ from nanolm_holonomy.experiments import (
     _STATE_OFFSET,
     _autocast,
     _build_x2_corpus,
+    _measure_scaling_row,
     _compose_perm,
     _cuda_amp_dtype,
     _peak_mb,
@@ -446,44 +447,8 @@ def run_c2_x3_32k_scaling(
             if device.type == "cuda":
                 torch.cuda.empty_cache()
             _reset_all_cuda_peaks(device)
-            inp = torch.randint(0, cfg.vocab_size, (1, slen), device=device)
             try:
-                with torch.no_grad():
-                    _sync(device)
-                    t0 = time.perf_counter()
-                    if not cfg.is_transformer and slen >= 512:
-                        st = None
-                        for cs in range(0, slen, 512):
-                            ce = min(slen, cs + 512)
-                            lg_c, st = model(inp[:, cs:ce], past_states=st, use_state=True, past_len=cs, logits_to_keep=1)
-                        cur = lg_c[:, -1:, :].argmax(dim=-1)
-                    else:
-                        lg, st = model(inp, use_state=True, past_len=0, logits_to_keep=1)
-                        cur = lg[:, -1:, :].argmax(dim=-1)
-                    _sync(device)
-                    prefill_s = max(time.perf_counter() - t0, 1e-6)
-
-                    _sync(device)
-                    td0 = time.perf_counter()
-                    for step_i in range(16):
-                        lg_d, st = model(cur, past_states=st, use_state=True, past_len=slen + step_i, logits_to_keep=1)
-                        cur = lg_d[:, -1:, :].argmax(dim=-1)
-                    _sync(device)
-                    decode_ms = round((time.perf_counter() - td0) * 1000.0 / 16.0, 3)
-
-                peak_mb = _peak_mb(device)
-                state_mb = round(cfg.state_bytes_per_sequence(slen, 2) / (1024.0 * 1024.0), 3)
-                rows.append(
-                    {
-                        "seq_len": slen,
-                        "status": "ok",
-                        "prefill_tok_per_sec": round(slen / prefill_s, 1),
-                        "decode_ms_per_tok": decode_ms,
-                        "analytical_state_mb": state_mb,
-                        "peak_vram_mb": peak_mb,
-                    }
-                )
-                del st, cur
+                rows.append(_measure_scaling_row(model, cfg, slen, device, prefill_chunk=512, logits_to_keep=1))
             except RuntimeError as exc:
                 rows.append({"seq_len": slen, "status": f"oom_or_err:{str(exc)[:120]}"})
 
