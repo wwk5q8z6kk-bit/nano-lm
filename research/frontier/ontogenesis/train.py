@@ -8,6 +8,7 @@ import numpy as np, torch, torch.nn.functional as F
 from bindings import Spec, make, guessers, NULL
 from demos import Demos
 from baselines import EventTransformer
+from structured import GraphMP, KeyStore
 
 
 def collate(spec, rng, batch, device):
@@ -28,9 +29,12 @@ def collate(spec, rng, batch, device):
             "M": np.mean([d["M"] for d in ds])}
 
 
+BLOCK_ARMS = ("demos", "graph", "keystore")
+
+
 def step_loss(model, arm, b):
     """Returns loss, and per-query (correct, hops) tensors."""
-    if arm.startswith("demos"):
+    if arm.startswith(BLOCK_ARMS):
         logits = model(b)
         y, hops = b["y"], b["q"][..., 1]
         loss = F.cross_entropy(logits.flatten(0, 2), y.flatten())
@@ -49,6 +53,9 @@ def build(arm, spec, d, device):
     if arm == "demos": m = Demos(spec.symbols, d=d)
     elif arm == "demos_nomass": m = Demos(spec.symbols, d=d, mass_dynamics=False)
     elif arm == "demos_noflow": m = Demos(spec.symbols, d=d, store_steps=0)
+    elif arm == "graph": m = GraphMP(spec.symbols, d=d)
+    elif arm == "keystore_token": m = KeyStore(spec.symbols, d=d, mode="token")
+    elif arm == "keystore_learned": m = KeyStore(spec.symbols, d=d, mode="learned")
     elif arm == "dense": m = EventTransformer(spec.symbols, d=d, layers=4)
     elif arm == "looped": m = EventTransformer(spec.symbols, d=d, layers=1, loops=4)
     else: raise SystemExit(arm)
