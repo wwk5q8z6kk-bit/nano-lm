@@ -231,8 +231,10 @@ _NONPATIENT_IDENTITY_WARNING_RE = re.compile(
     rf"(?:(?:all (?:of )?)?my (?:answers?|words|repl(?:y|ies)|responses?|statements?|voice)|"
     rf"everything i said|what i said|i) (?:was|were|got|have been) "
     rf"(?:(?:mistakenly|wrongly|incorrectly|accidentally) )?{_ROLE_ASSIGNMENT}\s+{_PATIENT_ROLE}"
-    rf"|(?:the )?(?:speaker|voice|person) {_ROLE_ASSIGNMENT}\s+{_PATIENT_ROLE} (?:was|is) "
+    rf"|(?:the )?(?:speaker|voice|person) {_ROLE_ASSIGNMENT}\s+{_PATIENT_ROLE}(?: earlier| above)? (?:was|is) "
     r"(?:(?:actually|really|in fact) )?(?:me|mine|my voice)"
+    r"|(?:(?:it|that) was me (?:speaking|answering)|i (?:spoke|answered|was (?:speaking|answering))) "
+    r"under (?:the )?[\"'“‘]?patient[\"'”’]? (?:label|tag|role)"
     r"|the patient (?:has(?: not|n['’]t) (?:spoken|answered|said anything)|"
     r"did(?: not|n['’]t) (?:speak|answer|say anything))(?: yet| at all)?"
     r")(?: in (?:this|the) (?:transcript|conversation|recording))?\s*(?=[.!;]|$)", re.I,
