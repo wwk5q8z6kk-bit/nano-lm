@@ -7,17 +7,8 @@ import model_nano as M
 BETA = 0.1            # KL-strength analog (vault default)
 LR = 1e-5            # STALL: vault gives NO DPO LR at any scale; DPO<<SFT LR -> nano 3e-4 SFT => ~1e-5
 EPOCHS = 3
-BS = 16              # Batch size for policy/reference evaluations
+BS = 16              # Batch size for frozen reference evaluations
 dev = M.dev
-
-pairs = json.load(open("pref_pairs.json"))
-print(f"{len(pairs)} preference pairs, beta={BETA}, lr={LR}, epochs={EPOCHS}", flush=True)
-
-policy = M.load("sft.pt"); policy.train()
-ref = M.load("sft.pt")                                  # frozen reference
-for p in ref.parameters(): p.requires_grad_(False)
-
-opt = torch.optim.AdamW(policy.parameters(), lr=LR, betas=(0.9, 0.95), weight_decay=0.0)
 
 def batched_seq_logprob(m, prs, comps):
     B = len(prs)
@@ -43,44 +34,54 @@ def batched_seq_logprob(m, prs, comps):
 
     return (log_probs * m_mask).sum(dim=-1)
 
-t0 = time.time(); step = 0
-for ep in range(EPOCHS):
-    order = list(range(len(pairs))); torch.manual_seed(ep)
-    idx = torch.randperm(len(pairs)).tolist()
-    accs = []; losses = []
+def train_batch(policy, ref, opt, batch):
+    prompts = [pair["prompt"] for pair in batch]
+    chosen = [pair["chosen"] for pair in batch]
+    rejected = [pair["rejected"] for pair in batch]
+    with torch.no_grad():
+        ref_chosen = batched_seq_logprob(ref, prompts, chosen)
+        ref_rejected = batched_seq_logprob(ref, prompts, rejected)
 
-    for b in range(0, len(idx), BS):
-        batch_idx = idx[b:b+BS]
-        prs, cws, cls = [], [], []
-        for j in batch_idx:
-            prs.append(pairs[j]["prompt"])
-            cws.append(pairs[j]["chosen"])
-            cls.append(pairs[j]["rejected"])
-
-        with torch.no_grad():
-            rw = batched_seq_logprob(ref, prs, cws)
-            rl = batched_seq_logprob(ref, prs, cls)
-
-        pw = batched_seq_logprob(policy, prs, cws)
-        pl = batched_seq_logprob(policy, prs, cls)
-
-        margin = BETA * ((pw - rw) - (pl - rl))
-        loss = -F.logsigmoid(margin).mean()
-
+    # Only the frozen reference can score multiple pairs at one parameter state.
+    for i, prompt in enumerate(prompts):
+        pw = M.seq_logprob(policy, prompt, chosen[i])
+        pl = M.seq_logprob(policy, prompt, rejected[i])
+        margin = BETA * ((pw - ref_chosen[i]) - (pl - ref_rejected[i]))
+        loss = -F.logsigmoid(margin)
         opt.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(policy.parameters(), 1.0)
         opt.step()
+        yield loss.item(), float(margin.item() > 0)
 
-        step += len(batch_idx)
-        losses.extend([-F.logsigmoid(m).item() for m in margin])
-        accs.extend([(m > 0).float().item() for m in margin])
 
-        if step % 200 < BS and step >= 200:
-            print(f"  ep{ep} step {step}  loss {sum(losses[-200:])/len(losses[-200:]):.3f}  "
-                  f"pref-acc {sum(accs[-200:])/len(accs[-200:]):.2f}  {(time.time()-t0)/60:.1f}min", flush=True)
+if __name__ == "__main__":
+    with open("pref_pairs.json") as input_file:
+        pairs = json.load(input_file)
+    print(f"{len(pairs)} preference pairs, beta={BETA}, lr={LR}, epochs={EPOCHS}", flush=True)
 
-    print(f"epoch {ep}: mean loss {sum(losses)/len(losses):.3f}  pref-acc {sum(accs)/len(accs):.2f}", flush=True)
+    policy = M.load("sft.pt"); policy.train()
+    ref = M.load("sft.pt")                                  # frozen reference
+    for p in ref.parameters(): p.requires_grad_(False)
 
-torch.save(policy.state_dict(), "dpo.pt")
-print(f"DPO done in {(time.time()-t0)/60:.1f} min -> dpo.pt", flush=True)
+    opt = torch.optim.AdamW(policy.parameters(), lr=LR, betas=(0.9, 0.95), weight_decay=0.0)
+
+    t0 = time.time(); step = 0
+    for ep in range(EPOCHS):
+        torch.manual_seed(ep)
+        idx = torch.randperm(len(pairs)).tolist()
+        accs = []; losses = []
+        for start in range(0, len(idx), BS):
+            batch = [pairs[j] for j in idx[start:start + BS]]
+            for loss, correct in train_batch(policy, ref, opt, batch):
+                step += 1
+                losses.append(loss)
+                accs.append(correct)
+                if step % 200 == 0:
+                    print(f"  ep{ep} step {step}  loss {sum(losses[-200:])/200:.3f}  "
+                          f"pref-acc {sum(accs[-200:])/200:.2f}  {(time.time()-t0)/60:.1f}min", flush=True)
+
+        print(f"epoch {ep}: mean loss {sum(losses)/len(losses):.3f}  pref-acc {sum(accs)/len(accs):.2f}", flush=True)
+
+    torch.save(policy.state_dict(), "dpo.pt")
+    print(f"DPO done in {(time.time()-t0)/60:.1f} min -> dpo.pt", flush=True)

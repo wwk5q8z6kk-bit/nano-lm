@@ -7,10 +7,10 @@ import json
 def logp(m, pr, comp):
     return M.seq_logprob(m, pr, comp)
 
-pairs = json.load(open("pref_pairs.json"))
-policy = M.load("sft.pt")
+pairs = json.load(open("benchmark_pref_pairs.json"))
+policy = M.load("benchmark_sft.pt")
 policy.train()
-ref = M.load("sft.pt")
+ref = M.load("benchmark_sft.pt")
 for p in ref.parameters(): p.requires_grad_(False)
 opt = torch.optim.AdamW(policy.parameters(), lr=1e-5, betas=(0.9, 0.95), weight_decay=0.0)
 BETA = 0.1
