@@ -151,6 +151,8 @@ class CampaignLedger:
         entry.ended_at = ended_at or datetime.now(UTC).isoformat()
 
     def release(self, entry: SpendEntry) -> None:
+        if entry.status != "committed" or not any(item is entry for item in self.entries):
+            raise ValueError("Attempted to release a spend entry not in pending.")
         entry.status = "released"
         entry.ended_at = datetime.now(UTC).isoformat()
 
