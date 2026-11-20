@@ -240,95 +240,89 @@ class InstanceMetrics:
         }
 
 
-def evaluate_method(
-    name: str,
+def _evaluate_single_item(
+    it: dict,
+    inst_i: int,
+    idx: int,
     predict_fn: Callable[[dict, str], ItemPred],
-    instances: List[List[dict]],
     verify_on: bool,
-    cost_c: float,
+    met: InstanceMetrics,
 ) -> dict:
-    per_inst = []
-    all_item_logs = []
-    for inst_i, items in enumerate(instances):
-        met = InstanceMetrics()
-        for idx, it in enumerate(items):
-            dia = dialogue_of(it)
-            truth = truth_of(it)
-            t0 = time.perf_counter()
-            try:
-                ip = predict_fn(it, f"m{inst_i}/{idx}")
-            except Exception as e:
-                ip = ItemPred(fields={f: FieldPred("none") for f in FIELDS},
-                              latency_s=time.perf_counter() - t0, raw=f"ERROR:{e}", parsed=False)
-            if ip.latency_s <= 0:
-                ip.latency_s = time.perf_counter() - t0
-            met.n_items += 1
-            met.latencies.append(ip.latency_s)
-            met.n_fields += 5
-            if not ip.parsed:
-                met.flagged += 5
-                all_item_logs.append({
-                    "id": f"m{inst_i}/{idx}", "held": it["held_values"],
-                    "parsed": False, "raw": ip.raw,
-                })
-                continue
-            met.parse_ok += 1
-            pred_vals = {f: ip.fields[f].value for f in FIELDS}
-            labels = score_fields(pred_vals, truth, "exact")
-            labels_n = score_fields(pred_vals, truth, "normalize")
-            bucket = "held" if it["held_values"] else "seen"
-            for f in FIELDS:
-                lab = labels[f]
-                if lab == "correct":
-                    met.correct += 1
-                    if bucket == "held":
-                        met.held_correct += 1
-                        met.held_total += 1
-                    else:
-                        met.seen_correct += 1
-                        met.seen_total += 1
-                else:
-                    if bucket == "held":
-                        met.held_total += 1
-                    else:
-                        met.seen_total += 1
-                    if lab == "omission":
-                        met.omission += 1
-                    else:
-                        met.halluc += 1
-                        # liability: would present without verify
-                        if not stage_a_flag(f, pred_vals[f], dia):
-                            met.liability_presented_bad += 1
-                if labels_n[f] == "correct":
-                    met.correct_norm += 1
+    dia = dialogue_of(it)
+    truth = truth_of(it)
+    t0 = time.perf_counter()
+    try:
+        ip = predict_fn(it, f"m{inst_i}/{idx}")
+    except Exception as e:
+        ip = ItemPred(fields={f: FieldPred("none") for f in FIELDS},
+                      latency_s=time.perf_counter() - t0, raw=f"ERROR:{e}", parsed=False)
+    if ip.latency_s <= 0:
+        ip.latency_s = time.perf_counter() - t0
+    met.n_items += 1
+    met.latencies.append(ip.latency_s)
+    met.n_fields += 5
+    if not ip.parsed:
+        met.flagged += 5
+        return {
+            "id": f"m{inst_i}/{idx}", "held": it["held_values"],
+            "parsed": False, "raw": ip.raw,
+        }
+    met.parse_ok += 1
+    pred_vals = {f: ip.fields[f].value for f in FIELDS}
+    labels = score_fields(pred_vals, truth, "exact")
+    labels_n = score_fields(pred_vals, truth, "normalize")
+    bucket = "held" if it["held_values"] else "seen"
+    for f in FIELDS:
+        lab = labels[f]
+        if lab == "correct":
+            met.correct += 1
+            if bucket == "held":
+                met.held_correct += 1
+                met.held_total += 1
+            else:
+                met.seen_correct += 1
+                met.seen_total += 1
+        else:
+            if bucket == "held":
+                met.held_total += 1
+            else:
+                met.seen_total += 1
+            if lab == "omission":
+                met.omission += 1
+            else:
+                met.halluc += 1
+                # liability: would present without verify
+                if not stage_a_flag(f, pred_vals[f], dia):
+                    met.liability_presented_bad += 1
+        if labels_n[f] == "correct":
+            met.correct_norm += 1
 
-            presented, flagged = apply_verify(ip, dia, verify_on)
-            met.flagged += flagged
-            for f in FIELDS:
-                pv = presented[f]
-                if pv is None:
-                    continue
-                met.presented += 1
-                if pv == truth[f]:
-                    met.presented_correct += 1
+    presented, flagged = apply_verify(ip, dia, verify_on)
+    met.flagged += flagged
+    for f in FIELDS:
+        pv = presented[f]
+        if pv is None:
+            continue
+        met.presented += 1
+        if pv == truth[f]:
+            met.presented_correct += 1
 
-            all_item_logs.append({
-                "id": f"m{inst_i}/{idx}",
-                "held": it["held_values"],
-                "pred": pred_vals,
-                "truth": truth,
-                "labels": labels,
-                "spans": {
-                    f: None if ip.fields[f].start is None else
-                    [ip.fields[f].start, ip.fields[f].end, ip.fields[f].text]
-                    for f in FIELDS
-                },
-                "latency_s": ip.latency_s,
-            })
-        rates = met.as_rates(cost_c)
-        rates["instance"] = f"m{inst_i}"
-        per_inst.append(rates)
+    return {
+        "id": f"m{inst_i}/{idx}",
+        "held": it["held_values"],
+        "pred": pred_vals,
+        "truth": truth,
+        "labels": labels,
+        "spans": {
+            f: None if ip.fields[f].start is None else
+            [ip.fields[f].start, ip.fields[f].end, ip.fields[f].text]
+            for f in FIELDS
+        },
+        "latency_s": ip.latency_s,
+    }
 
+
+def _calculate_summary(per_inst: List[dict]) -> dict:
     def mean_key(k):
         return sum(r[k] for r in per_inst) / len(per_inst)
 
@@ -342,6 +336,36 @@ def evaluate_method(
                 - w["lam"] * r["L_p50"] - w["kappa"] * r["C"]
             )
         summary["U_sensitivity"].append({"weights": w, "U_mean": sum(Us) / len(Us)})
+    return summary
+
+
+def evaluate_method(
+    name: str,
+    predict_fn: Callable[[dict, str], ItemPred],
+    instances: List[List[dict]],
+    verify_on: bool,
+    cost_c: float,
+) -> dict:
+    per_inst = []
+    all_item_logs = []
+    for inst_i, items in enumerate(instances):
+        met = InstanceMetrics()
+        for idx, it in enumerate(items):
+            log_entry = _evaluate_single_item(
+                it=it,
+                inst_i=inst_i,
+                idx=idx,
+                predict_fn=predict_fn,
+                verify_on=verify_on,
+                met=met,
+            )
+            all_item_logs.append(log_entry)
+        rates = met.as_rates(cost_c)
+        rates["instance"] = f"m{inst_i}"
+        per_inst.append(rates)
+
+    summary = _calculate_summary(per_inst)
+
     return {
         "method": name,
         "verify_on": verify_on,
