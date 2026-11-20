@@ -58,6 +58,20 @@ def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, rep
     assert not any(choice.startswith(" CONTRADICTED[") for choice in english)
 
 
+@pytest.mark.parametrize("field,question,reply,value", [
+    (ALG, "Any allergies?", "I would have to check with the pharmacy.", "I would have"),
+    (ALG, "Any allergies?", "I'd have to ask about nickel.", "nickel"),
+    (MED, "What medicine did you take?", "I need to check the aspirin bottle.", "aspirin"),
+    (MED, "What medicine did you take?", "Let me check the aspirin bottle.", "aspirin"),
+])
+def test_deferring_a_substance_answer_offers_no_reported_value(field, question, reply, value):
+    claim, direct, compact, english = observed(f"Doctor: {question}\nPatient: {reply}", field, value)
+    assert claim["value"] is None and claim["state"] == "uncertain"
+    assert direct is None
+    assert not any(choice.startswith(":S[") for choice in compact)
+    assert not any(choice.startswith(" REPORTED[") for choice in english)
+
+
 @pytest.mark.parametrize("field,report,value", [
     (MED, "Patient: I took Xyzalorfen-420mg.", "Xyzalorfen-420mg"),
     (MED, "Patient: I am on warfarin.", "warfarin"),

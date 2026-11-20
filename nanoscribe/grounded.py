@@ -1052,6 +1052,11 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
         if alg_q or not _INDICATION_RE.search(text):
             return None
 
+    # The question licenses a bare name. A first-person sentence still needs
+    # its own substance relation, including when the patient defers an answer.
+    if start == 0 and re.match(r"(?:i\b|let\s+me\b)", text, re.I):
+        return None
+
     # Neither an indication, reaction clause nor schedule names the substance.
     adjunct = _SUBSTANCE_ADJUNCT_RE.search(text, start)
     return start, adjunct.start() if adjunct else len(text)
