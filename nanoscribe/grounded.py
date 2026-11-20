@@ -1331,7 +1331,7 @@ def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> 
     return True
 
 
-_MEDICATION_JOIN_RE = re.compile(r"(?:,\s*(?:(?P<comma_join>and|plus|with)\s+)?|\s+(?P<join>and|plus|with)\s+)", re.I)
+_SUBSTANCE_JOIN_RE = re.compile(r"(?:,\s*(?:(?P<comma_join>and|plus|with)\s+)?|\s+(?P<join>and|plus|with)\s+)", re.I)
 _ADDITIONAL_TREATMENT_RE = re.compile(
     r"(?:(?:my|the|an?|another)\s+)*(?:(?:other|prescribed|regular)\s+)*"
     r"(?:medication|medicine|drug|prescription|supplement)\s+(?:(?:named|called)\s+)?", re.I,
@@ -1376,7 +1376,7 @@ def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
     adjunct = _SUBSTANCE_ADJUNCT_RE.search(text, lead.end(), end)
     if adjunct:
         end = adjunct.start()
-    joins = list(_MEDICATION_JOIN_RE.finditer(text, lead.end(), end))
+    joins = list(_SUBSTANCE_JOIN_RE.finditer(text, lead.end(), end))
     if not any(m["join"] or m["comma_join"] for m in joins):
         return ()
     objects = []
@@ -1413,21 +1413,52 @@ def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
     return tuple(objects) if len(objects) > 1 else ()
 
 
-def _coexisting_substance_clause(field: FieldName, text: str) -> tuple[tuple[int, int], ...]:
-    """Return the actual source ranges of compatible coexisting substances."""
+def _coexisting_substance_clause(field: FieldName, text: str,
+                                 allergen_object: tuple[int, int] | None = None) -> tuple[tuple[int, int], ...]:
+    """Return separate names from the substance relation established for this event."""
     if _NEGATION_WORD_RE.search(text) or _EPISTEMIC_HEDGE_RE.search(text):
         return ()
     if field is FieldName.MEDICATION:
         return _coordinated_medication_objects(text)
-    if field is not FieldName.ALLERGY:
+    if field is not FieldName.ALLERGY or allergen_object is None:
         return ()
-    pair = re.match(
-        rf"(?:{_PATIENT_REACTION}|i(?:'m| am)\s+allergic\s+to|i\s+have\s+(?:an?\s+)?allerg(?:y|ies)\s+to|allergic\s+to|yes,?|just)\s+"
-        rf"(?P<first>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)\s+(?:and|with|plus)\s+"
-        rf"(?P<second>(?:an?\s+)?{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)[.!]?$",
-        text, re.I,
-    )
-    return (pair.span("first"), pair.span("second")) if pair else ()
+    first = _substance_name_bounds(text, allergen_object, field)
+    if not first:
+        return ()
+    start, end = first[0], allergen_object[1]
+    # A parenthesized reaction may itself list symptoms. Keep offsets into
+    # the literal reply while scanning only the surrounding allergen list.
+    list_text = re.sub(r"\([^)]*(?:\)|$)", lambda match: " " * len(match[0]), text)
+    joins = list(_SUBSTANCE_JOIN_RE.finditer(list_text, start, end))
+    if not any(m["join"] or m["comma_join"] for m in joins):
+        return ()
+    names = []
+    for boundary in [*joins, None]:
+        stop = boundary.start() if boundary else end
+        phrase = text[start:stop].strip(" .!?")
+        # A second predicate or a description of the reaction is not another allergen.
+        if (_shared_activity(phrase) or re.search(r"\b(?:is|are|was|were|causes?|gives?)\b", phrase, re.I)
+                or re.fullmatch(_REACTION_SIGNS, phrase, re.I)):
+            break
+        name = _substance_name_bounds(text, (start, stop), field)
+        if not name:
+            break
+        names.append(name)
+        if boundary:
+            start = boundary.end()
+    return tuple(names) if len(names) > 1 else ()
+
+
+def _affirmative_allergy_question(question: str) -> bool:
+    # Interpret the local allergy predicate. A negative question gives a bare
+    # name no positive allergy evidence; a preceding, unrelated denial does not
+    # reverse an independently worded positive question.
+    for clause in reversed(re.split(r"[.!?;]", question)):
+        if _NEGATION_WORD_RE.search(clause):
+            return False
+        if _ALG_QUESTION_CUE_RE.search(clause):
+            return True
+    return False
 
 
 def _question_has_treatment_context(question: str) -> bool:
@@ -1581,7 +1612,8 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
             if reverse and reverse.start() <= allergy.start():
                 return 0, reverse.start()
             start = allergy.end()
-        elif med_verbs or _AMBIGUOUS_TREATMENT_RE.match(text) or not (first_answer and alg_q):
+        elif (med_verbs or _AMBIGUOUS_TREATMENT_RE.match(text)
+              or not (first_answer and alg_q and _affirmative_allergy_question(question))):
             return None
     elif allergy:
         return None
@@ -1984,7 +2016,7 @@ def _verify_local_span(
                 if not (name and start <= name[0] and name[1] <= end):
                     # Additional coordinated allergens have their own complete
                     # names. A disjoint reaction or dose has no such source.
-                    if (start, end) not in _coexisting_substance_clause(field, event.text):
+                    if (start, end) not in _coexisting_substance_clause(field, event.text, owned):
                         return False, "incomplete_substance_name"
         if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
             return False, "severity_not_linked_to_current_episode"
@@ -2361,7 +2393,7 @@ def _coexisting_substances(source: Source, field: FieldName,
     if local is None:
         local = _local_supported_spans(source, field)
     observed = []
-    for turn in source.turns:
+    for idx, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT:
             continue
         for clause in _reply_clauses(turn):
@@ -2372,7 +2404,8 @@ def _coexisting_substances(source: Source, field: FieldName,
                     if names:
                         observed.extend(item for item in names if item in local)
                         continue
-                    objects = _coexisting_substance_clause(field, event.text)
+                    owned = _substance_object(source, idx, event, field) if field is FieldName.ALLERGY else None
+                    objects = _coexisting_substance_clause(field, event.text, owned)
                     if objects:
                         for start, end in objects:
                             item = CandidateSpan(event.start + start, event.start + end, event.text[start:end])
