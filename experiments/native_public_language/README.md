@@ -2,6 +2,22 @@
 
 This evaluates next-token prediction by three recovered native NanoLM checkpoints. The passages come directly from 24 public 2025 documents, eight per publisher. Inputs and the analysis plan were committed before scoring. [Protocol](PROTOCOL.md) · [evaluation source URLs and text hashes](sources.json) · [checkpoint and tokenizer hashes](inputs.json).
 
+## Results
+
+All three models estimated natural text much more accurately than the shared unigram. S2 and M0 produced similar loss. M2 required 0.02538 more bits per byte than M0 overall. The 95% paired, within-publisher document bootstrap interval was +0.02088 to +0.02963. M2 had lower loss on two of 24 documents. The direction reverses the ordering of M2 and M0 in the historical four-domain validation. Six similar laws and adjacent meetings limit what the interval says about other texts.
+
+| Source | Bytes | S2 | M0 | M2 | Unigram |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Monetary-policy minutes | 29,188 | 0.99937 | 1.00087 | 1.01954 | 2.23184 |
+| Federal laws | 9,868 | 1.25109 | 1.25275 | 1.28189 | 3.01746 |
+| Hurricane discussions | 16,717 | 1.25456 | 1.25584 | 1.29073 | 2.37995 |
+| **Pooled natural text** | **55,773** | **1.12040** | **1.12186** | **1.14724** | **2.41524** |
+| Pooled shuffled tokens | 55,773 | 2.45533 | 2.48686 | 2.49897 | 2.41524 |
+
+Values are bits per UTF-8 byte, with lower values indicating better next-token prediction. All 12,076 targets were scored. Searches in the mixed 800-million-token training stream and separately in its four source streams found zero whole-document matches and zero matches for the 72 sampled 32-token spans. Shorter reused phrases and paraphrases remain possible. [Per-document losses and summary](results/) · [Additional source-stream checks](results/domain-overlap.json)
+
+Each recovered implementation matched the original on all 2,588,672 vocabulary logits for a 79-token input. An independent M2 run using the historical code, padded batches and direct log-sum-exp reproduced both conditions on all 24 documents within 0.00000017 bits per byte per document. [Recovery checks](results/recovery-parity.json) · [Full M2 replay comparison](results/independent-replay.json)
+
 ## Checkpoints and comparability
 
 | Arm | Architecture | Parameters | Training tokens | Historical four-domain mean BPB |
@@ -33,7 +49,7 @@ A reader with the published per-document loss totals can reproduce the table and
 python summarize.py --results results
 ```
 
-The archived module directory contains the inference definitions used by the recovered checkpoints. Source symbols, original file hashes and the historical Git revision are retained. Relative imports isolate the definitions. The evaluator uses the reference float32 CPU path, accumulates cross entropy in float64, and checks causal-prefix stability, native loss and a manually recomputed token loss. Each block restarts positional indices. The previous document token supplies one token of context at a block boundary. [Architecture provenance](archived/PROVENANCE.json)
+The archived module directory contains the inference definitions used by the recovered checkpoints. Source symbols, original file hashes and the historical Git revision are retained. Relative imports isolate the definitions. The evaluator uses the reference float32 CPU path, accumulates cross entropy in float64, and checks causal-prefix stability, native loss and a manually recomputed token loss. Each block restarts positional indices. The preceding token from the same document supplies one token of context at each subsequent block boundary. [Architecture provenance](archived/PROVENANCE.json)
 
 ## Source and training provenance
 
