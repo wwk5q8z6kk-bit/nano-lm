@@ -1,0 +1,120 @@
+{
+  "manifest": {
+    "schema": "nanolm.lab.corpus.v1",
+    "mix": {
+      "web": 0.62,
+      "textbook": 0.13,
+      "math": 0.13,
+      "code": 0.12
+    },
+    "domains": {
+      "web": {
+        "val": {
+          "tokens": 1000000,
+          "docs": 1024,
+          "bytes": 5240177,
+          "bytes_per_token": 4.5163,
+          "skipped_overlap": 0,
+          "sha256": "28c1dbcb75eab107a5db5bd61a9e023d05eacd22b5479779163b545b4439f27e"
+        },
+        "train": {
+          "tokens": 496000000,
+          "docs": 471040,
+          "bytes": 2184703545,
+          "bytes_per_token": 4.4029,
+          "skipped_overlap": 463,
+          "sha256": "c538a2106f7303d2f3996f4ddefe72a7bcc9163d3d2d9b4db8d1f047f56139af"
+        }
+      },
+      "textbook": {
+        "val": {
+          "tokens": 1000000,
+          "docs": 1536,
+          "bytes": 5755449,
+          "bytes_per_token": 5.0293,
+          "skipped_overlap": 0,
+          "sha256": "e6fc2bcea248793296af68fe05be1adda6ef6c64d6e4dad7b4d3c3806f22c90e"
+        },
+        "train": {
+          "tokens": 104000000,
+          "docs": 139776,
+          "bytes": 524705393,
+          "bytes_per_token": 5.0452,
+          "skipped_overlap": 1024,
+          "sha256": "7ac449f1ab5d05bae8e03cdca7b021ec149ebf83f4fbc6ee76d0ec7746048e90"
+        }
+      },
+      "math": {
+        "val": {
+          "tokens": 1000000,
+          "docs": 1024,
+          "bytes": 4846130,
+          "bytes_per_token": 3.0994,
+          "skipped_overlap": 0,
+          "sha256": "ea56aed8922cbf2cba3076bf51749da0354ee03a1bbd16817b4984343066dcb6"
+        },
+        "train": {
+          "tokens": 104000000,
+          "docs": 70144,
+          "bytes": 338459112,
+          "bytes_per_token": 3.2498,
+          "skipped_overlap": 8500,
+          "sha256": "0b2c7ebc1b2248e18bece9b332003a02b9e5aad533bbd0579a7d121af8929729"
+        }
+      },
+      "code": {
+        "val": {
+          "tokens": 1000000,
+          "docs": 1024,
+          "bytes": 5895760,
+          "bytes_per_token": 3.3728,
+          "skipped_overlap": 0,
+          "sha256": "a2ed084bcaa56e70be3eb86a7690472326050a9b559fff909a243db9ba208053"
+        },
+        "train": {
+          "tokens": 96000000,
+          "docs": 51200,
+          "bytes": 297246745,
+          "bytes_per_token": 3.0786,
+          "skipped_overlap": 13428,
+          "sha256": "f67186454917c8f6fedd8424aee7a34ca2f3c0f75c1801dbd249631da8ab0078"
+        }
+      }
+    },
+    "tokenizer_sha256": "2eb9b402d301ff801d402099e8d6a21aa3e4f4a4cacd17ef6b17fd07aadada64",
+    "vocab": 32768,
+    "train_tokens_total": 800000000,
+    "train_sha256": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4",
+    "build_seconds": 944.0
+  },
+  "sources": {
+    "HuggingFaceFW/fineweb-edu": {
+      "revision": "87f09149ef4734204d70ed1d046ddc9ca3f2b8f9",
+      "cached_parquet_objects": {
+        "sample/10BT/001_00000.parquet": "3fcf2dc69cd52503986276d3d2d26a8c356d0f2ea28a0de4fdbda8cf87755693",
+        "sample/10BT/000_00000.parquet": "b1ba7b2ce4cb5ea6ef42dca40263eabb85f37700d01693a68e9b30a31d78e871"
+      }
+    },
+    "HuggingFaceTB/finemath": {
+      "revision": "e92b25a616738fe95dc186b64dfb19f9c8525594",
+      "cached_parquet_objects": {
+        "finemath-4plus/train-00000-of-00064.parquet": "5d0b26114b4cf309c82a4ba8f6f45857480b27812e23a46b61b45e8bbed61fe5",
+        "finemath-4plus/train-00001-of-00064.parquet": "4f38efdb251638c1a71be4ed380119bdd9966b1d6f200f6ff637e4768cc3930c"
+      }
+    },
+    "HuggingFaceTB/smollm-corpus": {
+      "revision": "3ba9d605774198c5868892d7a8deda78031a781f",
+      "cached_parquet_objects": {
+        "cosmopedia-v2/train-00000-of-00104.parquet": "5a25721146377d6e7f288c244e991df93e672b8cc3e535fd4aac5da4cdb1491d",
+        "cosmopedia-v2/train-00001-of-00104.parquet": "6d7662f05a7652ce0075e5986bd69161943baf640c15b6ef720cfaef11c4ae60"
+      }
+    },
+    "codeparrot/github-code-clean": {
+      "revision": "c48d40f9e70f0196f8236901ee35807f7d6c44c0",
+      "cached_parquet_objects": {
+        "data/train-00001-of-00880.parquet": "2e1b2e8bc5823fd68a80a036f1a5db894aa89bd491992bda2dfd96c41187025f",
+        "data/train-00000-of-00880.parquet": "c05e4cad93aac3f978a2385f8c055a10d247b107afd8bf9cb8c762f8403bdc0f"
+      }
+    }
+  }
+}
