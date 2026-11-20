@@ -2,6 +2,7 @@
 # Run: python3 nanoscribe/test_evidence_transport.py
 from __future__ import annotations
 
+from dataclasses import replace
 import sys
 from pathlib import Path
 
@@ -141,6 +142,16 @@ def expect(code: str, fn) -> None:
         assert exc.code == code, f"expected {code}, got {exc.code}: {exc}"
         return
     raise AssertionError(f"expected EncounterError {code}")
+
+
+def test_reversed_turns_preserve_exact_and_normalized_ambiguity() -> None:
+    original = assemble_source(
+        "src", ((Speaker.PATIENT, "mild today"), (Speaker.CLINICIAN, "still mild"))
+    )
+    source = replace(original, turns=tuple(reversed(original.turns)))
+    assert match_count(source, "mild") == 2
+    assert relocate(source, "mild", evidence_id="ev") is None
+    assert snap_relocate(source, "MILD", evidence_id="ev") is None
 
 
 def test_copy_span_requires_exact_source_substring() -> None:

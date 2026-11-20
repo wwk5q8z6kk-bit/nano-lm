@@ -101,7 +101,7 @@ def _exact_hits(source: Source, quote: str) -> list[tuple[int, int]]:
         found = source_text.find(quote, found + 1)
 
     num_turns = len(source.turns)
-    turns = source.turns
+    turns = sorted(source.turns, key=lambda turn: turn.start)
     turn_idx = 0
 
     for f_start in found_positions:
@@ -148,7 +148,7 @@ def _surface_hits(source: Source, quote: str) -> list[tuple[int, int]]:
 
     quote_len = len(norm_quote)
     num_turns = len(source.turns)
-    turns = source.turns
+    turns = sorted(source.turns, key=lambda turn: turn.start)
     turn_idx = 0
 
     for f_start_norm in found_positions:
