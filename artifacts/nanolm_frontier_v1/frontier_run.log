@@ -1,0 +1,16 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/functional.py:2920: UserWarning: Mismatch dtype between input and weight: input dtype = c10::BFloat16, weight dtype = float, Cannot dispatch to fused implementation. (Triggered internally at /pytorch/aten/src/ATen/native/layer_norm.cpp:344.)
+  return torch.rms_norm(input, normalized_shape, weight, eps)
+[E1] c0-dense-gqa-micro       bpb=0.6316 ood={'len_256': 0.0, 'len_512': 0.0208, 'len_1024': 0.0} tok/s=63110 vram=2491.2MB
+[E1] c1-gated-delta-micro     bpb=0.6331 ood={'len_256': 0.0, 'len_512': 0.0, 'len_1024': 0.0417} tok/s=11822 vram=3829.9MB
+[E1] c2-diff-ns-delta-micro   bpb=0.6335 ood={'len_256': 0.0, 'len_512': 0.0, 'len_1024': 0.0417} tok/s=9705 vram=4348.0MB
+[E1] c3-cortical-pkm-micro    bpb=0.6326 ood={'len_256': 0.0, 'len_512': 0.0, 'len_1024': 0.0} tok/s=9420 vram=4463.3MB
+[E1] c4-jcle-frontier-micro   bpb=0.6368 ood={'len_256': 0.0, 'len_512': 0.0, 'len_1024': 0.0} tok/s=5181 vram=6824.6MB
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:01<00:01,  1.52s/it]Fetching 2 files: 100%|██████████| 2/2 [00:04<00:00,  2.57s/it]Fetching 2 files: 100%|██████████| 2/2 [00:04<00:00,  2.41s/it]
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   5%|▌         | 17/311 [00:00<00:01, 156.00it/s]Loading weights:  15%|█▌        | 47/311 [00:00<00:01, 227.27it/s]Loading weights:  23%|██▎       | 73/311 [00:00<00:01, 223.27it/s]Loading weights:  31%|███       | 96/311 [00:00<00:01, 214.13it/s]Loading weights:  41%|████      | 126/311 [00:00<00:00, 241.04it/s]Loading weights:  49%|████▉     | 152/311 [00:00<00:00, 241.47it/s]Loading weights:  85%|████████▍ | 263/311 [00:00<00:00, 509.47it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 405.15it/s]
+[E2] Base passed=34/56 acc=0.6071
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 8554.08it/s]
+[E2] LoRA_SFT passed=36/56 acc=0.6429
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 5575.89it/s]
+[E2] Frontier_DexDiff_SFT_GRPO passed=35/56 acc=0.6250 step0_diff=0.00e+00
+FRONTIER_TOURNAMENT_COMPLETE out_dir=artifacts/nanolm_frontier_v1
