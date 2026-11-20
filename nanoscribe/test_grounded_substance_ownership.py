@@ -35,6 +35,8 @@ def observed(report, field, value):
     (MED, "Any medicine?", "I am allergic to birch pollen.", "birch pollen"),
     (ALG, "Any allergies?", "I took a blue gel cap.", "blue gel cap"),
     (ALG, "Any allergies?", "Nickel gives me hives.", "hives"),
+    (ALG, "Tell me more.", "I am allergic to nickel because it causes a rash.", "rash"),
+    (MED, "Tell me more.", "My daily medicine is Xyzalorfen for my wrist pain.", "wrist pain"),
     (MED, "What brings you in?", "I am on edge.", "edge"),
     (MED, "Tell me more.", "I take the bus.", "bus"),
 ])
@@ -54,6 +56,8 @@ def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, rep
     (MED, "Patient: I take metformin.", "metformin"),
     (MED, "Patient: I use cedar gel for my rash.", "cedar gel"),
     (ALG, "Patient: My known allergen is cedar pollen.", "cedar pollen"),
+    (ALG, "Patient: I am allergic to nickel because it causes a rash.", "nickel"),
+    (MED, "Patient: My daily medicine is Xyzalorfen for my wrist pain.", "Xyzalorfen"),
     (MED, "Patient: Silver leaf drops for the headache.", "Silver leaf drops"),
     (ALG, "Patient: I am allergic to birch pollen.", "birch pollen"),
     (ALG, "Patient: Birch pollen gives me hives.", "Birch pollen"),
@@ -80,3 +84,20 @@ def test_free_proposal_is_not_limited_to_the_menu_spelling():
     assert claim["state"] == "supported" and claim["value"] == value
     assert direct is FieldState.SUPPORTED
     assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
+
+def test_later_emphatic_confirmation_uses_its_own_source_offsets():
+    report = "Patient: I took aspirin.\nPatient: I'm not sure whether I took it.\nPatient: I checked. I did take aspirin."
+    doc = transcript_source(NanoInput("later-confirmation", report))
+    start = report.rindex("aspirin")
+    span = EvidenceSpan(start, start + len("aspirin"), "aspirin")
+    tagged = f"@{start}..{span.end}:aspirin"
+    raw = f"CC:M|DUR:M|SEV:M|MED:S[{tagged}]|ALG:M"
+    draft = scribe(report, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert draft["verification"]["passed"]
+    claim = next(c for c in draft["extraction"]["fields"] if c["field"] == "medication")
+    assert claim["state"] == "supported" and claim["evidence"] == [span.to_dict()]
+    assert _observation_kind(doc, MED, span, context_policy="grounded") is FieldState.SUPPORTED
+    assert f":S[{tagged}]" in grounded_candidate_choices(report, MED, set())
+    earlier = report.index("aspirin")
+    menu = build_grounded_english_menu(doc, MED, {(earlier, earlier + len("aspirin"))})
+    assert menu[" REPORTED[aspirin]"] == ("S", (span,))

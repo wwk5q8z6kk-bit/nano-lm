@@ -348,6 +348,7 @@ _ALG_QUESTION_CUE_RE = re.compile(
 )
 _MED_CLAUSE_VERB_RE = re.compile(
     r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using)|"
+    r"i\s+did\s+(?:take|use|try|apply|swallow)|"
     r"i\s+(?:have\s+)?(?:also\s+)?(?:took|used|tried|applied|rubbed|put|swallowed))\b",
     re.IGNORECASE,
 )
@@ -385,6 +386,9 @@ _FAMILIAR_MEDICINE_RE = re.compile(
 )
 _INDICATION_RE = re.compile(rf"\s+for\s+(?:it|them|(?:this|that|the|my|these)\s+(?:[\w-]+\s+){{0,4}}"
                             rf"(?:{_SYMPTOM}|cramps?))\b", re.I)
+_SUBSTANCE_ADJUNCT_RE = re.compile(
+    r"\s+(?:for|on|to|because|when|while|after|before|today|yesterday|this morning|this evening|last night)\b", re.I,
+)
 _ALG_REVERSE_RE = re.compile(
     r"\s+(?:gives\s+me\b|causes\s+(?:me\s+to\s+develop\s+)?(?:hives|a\s+rash|rash|itching|swelling)\b|"
     r"is\s+(?:the\s+(?:medicine|medication|drug|substance)\s+)?(?:what\s+)?i(?:'m|\s+am)\s+allergic\s+to\b)",
@@ -906,24 +910,25 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
     first_answer = event.start == source.turns[idx].start
     text = event.text
     label = _SUBSTANCE_LABEL_RE.match(text)
-    if label:
-        named_field = FieldName.ALLERGY if label["field"].casefold() in {"allergy", "allergen"} else FieldName.MEDICATION
-        return (label.end(), len(text)) if named_field is field else None
-
     allergy = _ALG_CLAUSE_PRED_RE.search(text)
     med_verbs = _medication_verb_positions(text, question)
-    if field is FieldName.ALLERGY:
+    start = 0
+    if label:
+        named_field = FieldName.ALLERGY if label["field"].casefold() in {"allergy", "allergen"} else FieldName.MEDICATION
+        if named_field is not field:
+            return None
+        start = label.end()
+    elif field is FieldName.ALLERGY:
         if allergy:
             reverse = _ALG_REVERSE_RE.search(text)
-            return (0, reverse.start()) if reverse else (allergy.end(), len(text))
-        if med_verbs or not (first_answer and alg_q):
+            if reverse and reverse.start() <= allergy.start():
+                return 0, reverse.start()
+            start = allergy.end()
+        elif med_verbs or _AMBIGUOUS_TREATMENT_RE.match(text) or not (first_answer and alg_q):
             return None
-        return 0, len(text)
-
-    if allergy:
+    elif allergy:
         return None
-    start = 0
-    if med_verbs:
+    elif med_verbs:
         verb = _MED_CLAUSE_VERB_RE.match(text, med_verbs[0]) or _TAKEN_RE.match(text, med_verbs[0])
         start = verb.end()
         if verb.re is _TAKEN_RE:
@@ -939,10 +944,9 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
         if alg_q or not _INDICATION_RE.search(text):
             return None
 
-    # A quote beginning inside a reported indication or schedule is not the
-    # object of the medication assertion. An object can retain its qualifiers.
-    adjunct = re.search(r"\s+(?:for|on|to|because|when|today|yesterday|this morning|this evening|last night)\b", text[start:], re.I)
-    return start, start + adjunct.start() if adjunct else len(text)
+    # Neither an indication, reaction clause nor schedule names the substance.
+    adjunct = _SUBSTANCE_ADJUNCT_RE.search(text, start)
+    return start, adjunct.start() if adjunct else len(text)
 
 
 def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
@@ -1443,20 +1447,13 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                 if owned is None:
                     continue
                 body = c_text.rstrip(".!?").strip()
-                # Trailing reaction pattern: "Penicillin gives me hives" / "Penicillin is the medicine I'm allergic to"
-                m_trail = _ALG_REVERSE_RE.search(body)
-                if m_trail:
-                    sp = _trim_span(source.text, c_start, c_start + m_trail.start())
-                    if sp is not None:
-                        add(_strip_leading_determiner(source.text, sp))
-                    continue
                 lead = re.match(
                     r"^(?:yes,?\s+)?(?:i(?:'m|\s+am)\s+(?:also\s+)?allergic\s+to|i\s+have\s+(?:an?\s+)?(?:known\s+)?allerg(?:y|ies)\s+to|"
                     r"allergic\s+to|yes,?|just|only)\s+",
                     body,
                     re.IGNORECASE,
                 )
-                rem = body[max(lead.end() if lead else 0, owned[0]):].lstrip()
+                rem = body[max(lead.end() if lead else 0, owned[0]):owned[1]].strip()
                 pos = c_text.find(rem)
                 if pos >= 0 and rem:
                     sp = _trim_span(source.text, c_start + pos, c_start + pos + len(rem))
