@@ -10,7 +10,7 @@ The active research compares native NanoLM language models, starting with genera
 | Native dense and hybrid checkpoints | Recovered experimental weights | Strict loading, tokenizer identity, common-text evaluation, throughput and memory. Check checkpoint and training provenance before relating runs. |
 | Architecture discovery | [PR 174](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/174), [PR 175](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/175), [PR 176](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/176) | Cross-branch implementations and controlled comparisons. Similar names can represent different backbones. Use the exact revision and experiment manifest. |
 | Post-training and evaluation | [PR 171](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/171) | Distinguish native model training, external-weight adaptation, verifier behavior and measured student outcomes. |
-| Foundation model research proposals | [PR 172](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/172) | Candidate studies and evaluation designs. Parameter targets and proposed architectures are hypotheses. |
+| Foundation model research proposals | [November 17 proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md) | Candidate studies and evaluation designs. Parameter targets and proposed architectures are hypotheses. |
 | Historical scribing | Integrated `nanoscribe/`, `nano_ai/` and frozen artifacts | Reproduction of the former application's scoped findings. |
 
 ## Comparisons

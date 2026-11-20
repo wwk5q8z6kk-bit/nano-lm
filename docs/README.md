@@ -34,6 +34,7 @@ Agent operational map: [`knowledge/AGENT_PROGRAM_KNOWLEDGE.md`](knowledge/AGENT_
 | Document | Purpose |
 |----------|---------|
 | [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) | Native, adapted and tool-assisted model research |
+| [November 17 foundation proposal](research/FOUNDATION_INTELLIGENCE_PROGRAM.md) | Historical architecture portfolio, research questions and candidate experiments |
 | [research/SYSTEM_RESEARCH_PROGRAM.md](research/SYSTEM_RESEARCH_PROGRAM.md) | Retrieval, memory, verifiers, routing |
 | [research/EXPERIMENT_STRATEGY.md](research/EXPERIMENT_STRATEGY.md) | Prereg, gates, failure-to-architecture loop |
 
