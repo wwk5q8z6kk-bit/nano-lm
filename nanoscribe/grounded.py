@@ -2099,8 +2099,8 @@ def _contrasts_current_rating(text: str, prior: str, question: str) -> bool:
     return previous == subject.group().strip().casefold()
 
 
-def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: re.Match[str], question: str) -> bool:
-    if not _CURRENT_RATING_END_RE.fullmatch(report.text[rating.end():]):
+def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating_start: int, rating_end: int, question: str) -> bool:
+    if not _CURRENT_RATING_END_RE.fullmatch(report.text[rating_end:]):
         return False
     setting = False
     for turn in source.turns[idx:idx + 3]:
@@ -2112,7 +2112,7 @@ def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: r
             if following.start < report.end:
                 continue
             if setting:
-                return _contrasts_current_rating(following.text, report.text[:rating.start()].strip(), question)
+                return _contrasts_current_rating(following.text, report.text[:rating_start].strip(), question)
             correction = _RETROSPECTIVE_RATING_RE.fullmatch(following.text)
             if not correction:
                 return False
@@ -2124,7 +2124,63 @@ def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: r
     return False
 
 
-def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: CandidateSpan) -> bool:
+_QUESTION_SCALE_RE = re.compile(r"\b(?:on a scale (?:of|from)|from) (zero|one|0|1) to (?:ten|10)\b", re.I)
+_PROMPT_SYMPTOM = rf"(?:(?:the|your|this) (?:(?:left|right|upper|lower) )?(?:{_BODY_REGION} )?{_SYMPTOM}|it)"
+_CURRENT_SYMPTOM_PROMPT_RE = re.compile(
+    rf"(?:(?:how (?:bad|severe|intense) (?:is|are)|how (?:do|would) you rate|rate) (?P<subject>{_PROMPT_SYMPTOM})"
+    r"|what(?: is|'s) your (?:current )?pain (?:score|rating|level))(?: (?:right now|now|today|currently))?", re.I,
+)
+_RATING_ANSWER_RE = re.compile(
+    r"(?:(?:my (?:rating|score) is|i (?:would rate|rate) it|it(?:'s| is))\s+)?(?:an?\s+)?"
+    rf"(?P<value>(?:(?:about|around|roughly)\s+|{_BOUND_LEAD})?(?P<number>{_SCORE_NUMBER})(?P<denominator>{_SCALE_DENOMINATOR})?(?:\s+{_BOUND_SUFFIX})?"
+    r"|mild|moderate|severe)(?: (?:right now|now|today))?[.!]?", re.I,
+)
+
+
+def _current_symptom_prompt(text: str) -> tuple[str, int | None] | None:
+    """Return the requested subject and the lower bound of any explicit ten-point scale."""
+    question = text.strip(" .!?")
+    scale = _QUESTION_SCALE_RE.search(question)
+    if scale:
+        if scale.start() and scale.end() != len(question):
+            return None
+        question = (question[:scale.start()] + question[scale.end():]).strip(" ,")
+    request = _CURRENT_SYMPTOM_PROMPT_RE.fullmatch(question)
+    if not request:
+        return None
+    subject = (request["subject"] or "pain").casefold()
+    if re.search(r"\b(?:problem|concern)s?\b", subject):
+        return None
+    if scale is None:
+        return subject, None
+    return subject, 1 if scale[1].casefold() in ("one", "1") else 0
+
+
+def _prompted_rating(source: Source, idx: int, clause: Turn) -> CandidateSpan | None:
+    """Bind a complete patient reply to the adjacent request for a current symptom score."""
+    previous = _preceding_clinician_turn(source, idx)
+    if previous is None or clause.start != source.turns[idx].start:
+        return None
+    answer = _RATING_ANSWER_RE.fullmatch(clause.text.replace("’", "'"))
+    if not answer:
+        return None
+    request = _current_symptom_prompt(previous.text)
+    if not request:
+        return None
+    subject, floor = request
+    if subject == "it" and not _follows_presenting_complaint(source, idx, previous.text):
+        return None
+    if answer["number"]:
+        if floor is None and not answer["denominator"]:
+            return None
+        score = _exact_number(answer["number"])
+        if score is None or not (floor or 0) <= score <= 10:
+            return None
+    a, b = answer.span("value")
+    return CandidateSpan(clause.start + a, clause.start + b, clause.text[a:b])
+
+
+def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: CandidateSpan, *, prompted: bool) -> bool:
     previous = _preceding_clinician_turn(source, idx)
     portions = _split_events(event, _SEVERITY_JOIN_RE)
     selected = [p for p in portions if p.start < span.end and span.start < p.end]
@@ -2133,12 +2189,22 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
     report = selected[0]
     if _reciting_rating(previous, source.turns[idx], report):
         return False
+    if prompted:
+        return not _rating_redated_by_patient(
+            source, idx, report, span.start - report.start, span.end - report.start, previous.text,
+        )
     ratings = [m for m in _SEVERITY_CORE_RE.finditer(report.text)
                if span.start <= report.start + m.start() and report.start + m.end() <= span.end]
     if not ratings:
         return False
     current_request = _requests_current_rating(previous.text) if previous else None
     for rating in ratings:
+        if rating["score"]:
+            number = _exact_number(rating["score"])
+            request = _current_symptom_prompt(previous.text) if previous else None
+            floor = (request[1] or 0) if request else 0
+            if number is None or not floor <= number <= 10:
+                return False
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
         # A recent self-measurement dates the score. A date attached to a
@@ -2155,7 +2221,7 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
                      or _PAST_REPORTED_RATING_TIME_RE.match(after.lstrip()))):
             return False
         question = previous.text if current_request is True and report.start == source.turns[idx].start else ""
-        if _rating_redated_by_patient(source, idx, report, rating, question):
+        if _rating_redated_by_patient(source, idx, report, rating.start(), rating.end(), question):
             return False
         earlier = _EARLIER_RATING_RE.match(after)
         if earlier:
@@ -2320,7 +2386,10 @@ def _verify_local_span(
     clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
         start, end = span.start - turn.start, span.end - turn.start
-        tokens = (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
+        prompted = field is FieldName.SEVERITY and _prompted_rating(source, idx, clause) == span
+        # A complete solicited answer can have a grammatical article ("it's a seven").
+        # Its exact value and bounds were checked before trimming the article.
+        tokens = (_NUMERIC_TOKEN_RE,) if prompted else (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
         if field in (FieldName.CHIEF_COMPLAINT, FieldName.MEDICATION, FieldName.ALLERGY):
             complaint = field is FieldName.CHIEF_COMPLAINT
             words = _COMPLAINT_WORD_RE if complaint else _SUBSTANCE_WORD_RE
@@ -2390,19 +2459,20 @@ def _verify_local_span(
                     # names. A disjoint reaction or dose has no such source.
                     if (start, end) not in _coexisting_substance_clause(field, event.text, owned):
                         return False, "incomplete_substance_name"
-        if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
+        if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span, prompted=prompted):
             return False, "severity_not_linked_to_current_episode"
         if field is FieldName.DURATION:
             if reason := _duration_scope_rejection(source, idx, event, span):
                 return False, reason
-        if not grounded_value_valid(field, span.text, event.text):
+        if not prompted and not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
         scope_text = _complaint_scope_text(field, event.text)
         if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(scope_text):
             return False, "clause_contains_uncertainty_or_nonuse_hazard"
         if _THIRD_PARTY_RE.search(scope_text) or _PAST_OR_HYPOTHETICAL_RE.search(scope_text):
             return False, "clause_contains_third_party_or_past_scope_hazard"
-        if _contains_negation(field, scope_text):
+        # An exact requested zero is a score on a zero-based scale.
+        if not prompted and _contains_negation(field, scope_text):
             return False, "clause_contains_negation_hazard"
         if _SELF_CORRECTION_CLAUSE_RE.search(event.text):
             # Reject spans inside the mistake/retraction clause itself (e.g., "I said aspirin on the intake form, but that was a mistake.")
@@ -2636,6 +2706,7 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                 continue
 
             if field is FieldName.SEVERITY:
+                add(_prompted_rating(source, t_idx, clause))
                 # 1) Numeric scale ("five out of ten", "About four out of ten", "7/10")
                 for m in re.finditer(
                     rf"(?:(?:about|around|roughly)\s+|{_BOUND_LEAD})?{_SCALE}(?:\s+{_BOUND_SUFFIX})?",
