@@ -6,7 +6,7 @@ import os
 import time
 from collections.abc import Sequence
 
-from nanoscribe.adapt import ModelCandidateBatch, ModelInput, candidate_from_span_port_line
+from nanoscribe.adapt import ModelInput, candidate_from_span_port_line
 from nanoscribe.adapters import AtomSpec
 from nanoscribe.prompt import build_span_port_prompt, span_port_system_prompt
 
