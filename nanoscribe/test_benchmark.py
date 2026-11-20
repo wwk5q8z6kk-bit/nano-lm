@@ -14,7 +14,8 @@ sys.path[:] = [p for p in sys.path if p != _script_dir]
 
 from unittest.mock import MagicMock, patch
 
-from nanoscribe.benchmark import run_baseline
+from nanoscribe.benchmark import BASELINE_CASES, run_baseline
+from nanoscribe.test_adapt import _gold, _model_input
 from nanoscribe.adapters import Qwen25BaselineAdapter
 
 def test_run_baseline() -> None:
@@ -29,22 +30,26 @@ def test_run_baseline() -> None:
         mock_adapter.return_value = mock_adapter_instance
 
         mock_report = MagicMock()
-        mock_report.exact_gold_span = 4
-        mock_report.span_character_f1 = 1.0
-        mock_report.assertion_state_correct = 4
-        mock_report.support_direct_exact = 3
-        mock_report.support_normalized = 0
-        mock_report.support_review_required = 1
-        mock_report.wrong_source = 0
-        mock_report.wrong_mention = 0
-        mock_report.invalid_span = 0
-        mock_report.omission = 0
-        mock_report.correct_abstention = 1
-        mock_report.unnecessary_abstention = 0
-        mock_report.spurious_atom = 0
-        mock_report.malformed = 0
-        mock_report.critical_error = 0
-        mock_report.coverage = 1.0
+        expected_aggregate = {
+            "exact_gold_span": 1,
+            "span_character_f1": 0.8217,
+            "assertion_state_correct": 3,
+            "support_direct_exact": 4,
+            "support_normalized": 5,
+            "support_review_required": 6,
+            "wrong_source": 7,
+            "wrong_mention": 8,
+            "invalid_span": 9,
+            "omission": 10,
+            "correct_abstention": 11,
+            "unnecessary_abstention": 12,
+            "spurious_atom": 13,
+            "malformed": 14,
+            "critical_error": 15,
+            "coverage": 0.3719,
+        }
+        for field, value in expected_aggregate.items():
+            setattr(mock_report, field, value)
 
         # mock per atom results
         atom_result_mock = MagicMock()
@@ -67,15 +72,19 @@ def test_run_baseline() -> None:
 
             result = run_baseline()
 
-            assert mock_adapter.called
-            assert mock_pipeline.called
+            gold = _gold()
+            model_input = _model_input(gold.sources[0])
+            mock_adapter.assert_called_once_with()
+            mock_adapter_instance.propose.assert_called_once_with(model_input, BASELINE_CASES)
+            mock_pipeline.assert_called_once_with(
+                model_input, mock_adapter_instance.propose.return_value, gold=gold
+            )
 
             assert "baseline" in result
             assert result["baseline"] == "span_port_quote_generation"
             assert "model_family" in result
             assert "aggregate" in result
-            assert result["aggregate"]["exact_gold_span"] == 4
-            assert result["aggregate"]["coverage"] == 1.0
+            assert result["aggregate"] == expected_aggregate
 
             assert "layers" in result
             assert "layers" in result["layers"]
