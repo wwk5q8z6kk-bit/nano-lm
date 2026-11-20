@@ -63,6 +63,14 @@ def _authorized_model_input():
     )
 
 
+def test_hex_casing_preserves_signed_authorization(monkeypatch) -> None:
+    model_input = _authorized_model_input()
+    auth = model_input.external_egress
+    mixed = replace(auth, source_sha256=auth.source_sha256.upper(), signature=auth.signature.upper())
+    monkeypatch.setenv(EGRESS_AUTHORIZATION_HMAC_KEY_ENV, _TEST_AUTHORIZATION_KEY)
+    mixed.require_destination(model_input.source, ExternalEgressTarget.openai_api())
+
+
 def test_api_teacher_rejects_missing_authorization_before_client() -> None:
     with patch("nanoscribe.api_teacher._openai_client") as openai_client:
         try:

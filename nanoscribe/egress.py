@@ -137,6 +137,9 @@ class ExternalEgressAuthorization:
         ):
             raise TypeError("signature must be an HMAC-SHA256 hex digest")
 
+        object.__setattr__(self, "source_sha256", self.source_sha256.lower())
+        object.__setattr__(self, "signature", self.signature.lower())
+
     def signing_payload(self) -> bytes:
         """Serialize authorization claims for external approval verification."""
         return json.dumps(
