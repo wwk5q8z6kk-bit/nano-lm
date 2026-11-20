@@ -1904,15 +1904,26 @@ _ADMINISTRATIVE_EVENT_RE = re.compile(
 )
 
 
+# Specific complaint heads live in _COMPLAINT_HEAD_RE. These generic nouns are
+# the same symptom wording, so a clinic event that only modifies them is not
+# the event being dated.
+_GENERIC_SYMPTOM_HEAD_RE = re.compile(
+    rf"(?:{_COMPLAINT_PREFIX}\s+)*?(?:symptoms?|problems?|concerns?)\b", re.I,
+)
+
+
 def _asks_administrative_time(event: str) -> bool:
     request = _ADMINISTRATIVE_EVENT_RE.match(event)
     if request is None or request["event"] is None:
         return request is not None
-    # In "procedure-related lower back pain" the procedure modifies the
-    # symptom. In "procedure for lower back pain" it is the thing being dated.
+    # In "procedure-related lower back pain" or "procedure-related symptoms"
+    # the procedure modifies the symptom. In "procedure for lower back pain"
+    # it is the thing being dated.
     suffix = event[request.end():]
     suffix = re.sub(r"^[- ](?:related|associated|induced|triggered)\b", "", suffix, flags=re.I)
-    return _COMPLAINT_HEAD_RE.match(suffix.lstrip(" -")) is None
+    remainder = suffix.lstrip(" -")
+    return (_COMPLAINT_HEAD_RE.match(remainder) is None
+            and _GENERIC_SYMPTOM_HEAD_RE.match(remainder) is None)
 
 
 def _asks_treatment_time(source: Source, turn_idx: int, event: str) -> bool:
