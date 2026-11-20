@@ -8,11 +8,6 @@ V, d, L, H, KV, hd, ff, S = 4096, 192, 6, 6, 2, 32, 512, 512
 BATCH, STEPS, WARM, PEAK_LR, FLOOR = 16, 4000, 100, 3e-3, 0.1
 WD, CLIP, ZL = 0.1, 1.0, 1e-4
 
-try:
-    ids = np.load("shard_000.npy"); n_val = len(ids) // 50
-    train_ids, val_ids = torch.tensor(ids[:-n_val].astype(np.int64)), torch.tensor(ids[-n_val:].astype(np.int64))
-except FileNotFoundError:
-    train_ids, val_ids = torch.tensor([]), torch.tensor([])
 def batch(src, bs=BATCH):
     ix = torch.randint(len(src) - S - 1, (bs,))
     x = torch.stack([src[i:i+S] for i in ix]); y = torch.stack([src[i+1:i+S+1] for i in ix])
@@ -57,6 +52,10 @@ class GPT(nn.Module):
         return F.linear(s.nf(h), s.emb.weight)                               # tied head
 
 if __name__ == "__main__":
+    ids = np.load("shard_000.npy")
+    n_val = len(ids) // 50
+    train_ids = torch.tensor(ids[:-n_val].astype(np.int64))
+    val_ids = torch.tensor(ids[-n_val:].astype(np.int64))
     m = GPT().to(dev)
     n_params = sum(p.numel() for p in m.parameters())
     print(f"params={n_params/1e6:.2f}M  device={dev}  budget: 6ND={6*n_params*BATCH*S*STEPS/1e15:.2f} PFLOPs", flush=True)
