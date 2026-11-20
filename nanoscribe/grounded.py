@@ -778,15 +778,41 @@ class GroundedExtraction:
         }
 
 
+def _identified_nonpatient_speech(turn: Turn) -> str | None:
+    if turn.speaker is Speaker.OTHER:
+        return turn.text
+    if turn.speaker is Speaker.UNKNOWN and (label := _NONPATIENT_ROLE_LABEL_RE.match(turn.text)):
+        return turn.text[label.end():]
+    return None
+
+
+def _last_disputed_patient_turn(source: Source) -> int:
+    """A speaker-label warning disputes preceding evidence and ends at its own turn."""
+    for idx in range(len(source.turns) - 1, -1, -1):
+        speech = _identified_nonpatient_speech(source.turns[idx])
+        if speech is not None and _NONPATIENT_IDENTITY_WARNING_RE.search(speech):
+            return idx - 1
+    return -1
+
+
+def _ambiguous_reply_boundary(previous: Turn) -> bool:
+    if previous.speaker is not Speaker.UNKNOWN or previous.text.lower().startswith("other:"):
+        return False
+    speech = _identified_nonpatient_speech(previous)
+    if speech is None:
+        return True
+    # A standalone retrospective statement cannot set a question's experiencer.
+    # Additional speech after it may introduce another person or subject.
+    warning = _NONPATIENT_IDENTITY_WARNING_RE.match(speech)
+    return warning is None or bool(speech[warning.end():].strip(" .!;"))
+
+
 def _turn_reassigns_source(turn: Turn) -> bool:
     text = turn.text
-    label = _NONPATIENT_ROLE_LABEL_RE.match(text) if turn.speaker is Speaker.UNKNOWN else None
-    if label or turn.speaker is Speaker.OTHER:
+    content = _identified_nonpatient_speech(turn)
+    if content is not None:
         # The companion owns this first-person subject. Check the remaining
         # text as usual for a separate warning about the patient's answers.
-        content = text[label.end():] if label else text
-        if _NONPATIENT_IDENTITY_WARNING_RE.search(content):
-            return True
         text = re.sub(
             r"^\s*(?:(?:actually|sorry)[, ]+)?(?:everything i said|all (?:of )?my (?:answers|statements|responses))\b",
             "", content, count=1, flags=re.I,
@@ -1217,7 +1243,7 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
             continue
         later = source.turns[idx]
         if later.speaker is not Speaker.PATIENT:
-            if later.speaker is Speaker.UNKNOWN and not _NONPATIENT_ROLE_LABEL_RE.match(later.text):
+            if later.speaker is Speaker.UNKNOWN and _identified_nonpatient_speech(later) is None:
                 return True
             continue
         if not (_SELF_CORRECTION_CLAUSE_RE.search(later.text) or _DISAVOWAL_RE.search(later.text)):
@@ -1260,11 +1286,12 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     if has_global_reassignment(source):
         return False
     idx = _turn_index(source, span.start, span.end)
-    if idx is None or source.turns[idx].speaker is not Speaker.PATIENT or idx in _forward_proxy_turns(source):
+    if (idx is None or source.turns[idx].speaker is not Speaker.PATIENT or idx in _forward_proxy_turns(source)
+            or idx <= _last_disputed_patient_turn(source)):
         return False
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
-    if prev is not None and prev.speaker is Speaker.UNKNOWN and not prev.text.lower().startswith("other:"):
+    if prev is not None and _ambiguous_reply_boundary(prev):
         return False
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):
@@ -1925,12 +1952,14 @@ def _verify_local_span(
     idx = _turn_index(source, span.start, span.end)
     if idx is None or source.turns[idx].speaker is not Speaker.PATIENT:
         return False, "not_patient_turn"
+    if idx <= _last_disputed_patient_turn(source):
+        return False, "disputed_source_speaker"
     if idx in _forward_proxy_turns(source):
         return False, "forward_third_party_scope"
 
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
-    if prev is not None and prev.speaker is Speaker.UNKNOWN and not prev.text.lower().startswith("other:"):
+    if prev is not None and _ambiguous_reply_boundary(prev):
         return False, "intervening_unknown_speaker"
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):
@@ -2470,8 +2499,9 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     if coexisting:
         bundles.append(coexisting)
     proxy_turns = _forward_proxy_turns(source)
+    disputed_through = _last_disputed_patient_turn(source)
     for index, turn in enumerate(source.turns):
-        if turn.speaker is not Speaker.PATIENT or index in proxy_turns:
+        if turn.speaker is not Speaker.PATIENT or index in proxy_turns or index <= disputed_through:
             continue
         if coexisting and all(turn.start <= sp.start and sp.end <= turn.end for sp in coexisting):
             whole = CandidateSpan(turn.start, turn.end, turn.text)
@@ -2724,8 +2754,9 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
         observations = []
         contrast_turns = []
         proxy_turns = _forward_proxy_turns(source)
+        disputed_through = _last_disputed_patient_turn(source)
         for idx, turn in enumerate(source.turns):
-            if turn.speaker is not Speaker.PATIENT or idx in proxy_turns:
+            if turn.speaker is not Speaker.PATIENT or idx in proxy_turns or idx <= disputed_through:
                 continue
             prev = _preceding_clinician_turn(source, idx)
             if prev and (_outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text)):

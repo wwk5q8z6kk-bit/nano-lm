@@ -14,11 +14,11 @@ CC, DUR, SEV, MED, ALG = FIELD_ORDER
 REPORTED, DENIED = FieldState.SUPPORTED, FieldState.ABSENT
 
 
-def check(report, field, quote, *, state=REPORTED, licensed):
+def check(report, field, quote, *, state=REPORTED, licensed, after=0):
     """Exercise the offset-based verifier, both menus, and free proposal through note checking."""
     request = NanoInput("speaker-boundary", report)
     source = transcript_source(request)
-    start = report.index(quote)
+    start = report.index(quote, after)
     span = EvidenceSpan(start, start + len(quote), quote)
     code = "S" if state is REPORTED else "A"
     choice = f":{code}[{format_grounded_span_token(source, span)}]"
@@ -129,3 +129,53 @@ def test_other_voice_breaks_question_attribution():
 ])
 def test_reported_speaker_identity_warning(aside, licensed):
     check("Patient: I am allergic to nickel.\nSister: " + aside, ALG, "nickel", licensed=licensed)
+
+
+@pytest.mark.parametrize("field,reported,quote,state", [
+    (CC, "I have ear pain.", "ear pain", REPORTED),
+    (DUR, "It started three days ago.", "three days", REPORTED),
+    (SEV, "It is 7/10.", "7/10", REPORTED),
+    (MED, "I took ibuprofen.", "ibuprofen", REPORTED),
+    (ALG, "I am allergic to latex.", "latex", REPORTED),
+    (ALG, "No known allergies.", "No known allergies.", DENIED),
+])
+def test_identity_warning_has_a_turn_boundary(field, reported, quote, state):
+    warning = "Guardian: The patient has not spoken yet."
+    source = f"Patient: {reported}\n{warning}\nPatient: {reported}"
+    check(source, field, quote, state=state, licensed=False)
+    check(source, field, quote, state=state, licensed=True, after=source.index(warning))
+
+
+def test_global_reassignment_after_identity_warning_still_quarantines_new_answer():
+    source = ("Guardian: The patient has not spoken yet.\nDoctor: What do you take?\n"
+              "Patient: I take aspirin.\nPatient: Everything I said was about my sister.")
+    check(source, MED, "aspirin", licensed=False)
+
+
+def test_identity_warning_cannot_supply_third_party_question_scope():
+    source = ("Sister: The patient has not spoken yet. What do your children take?\n"
+              "Patient: I take aspirin.")
+    check(source, MED, "aspirin", licensed=False)
+
+
+def test_newest_identity_warning_supersedes_intervening_reports():
+    source = ("Guardian: The patient has not spoken yet.\nPatient: I take aspirin.\n"
+              "Sister: The speaker labeled Patient was actually me.\nPatient: I take zinc.")
+    check(source, MED, "aspirin", licensed=False)
+    check(source, MED, "zinc", licensed=True)
+
+
+def test_identity_warning_excludes_earlier_uncertainty_and_laterality_conflicts():
+    from nanoscribe.grounded import detect_grounded_conflicts, extract_field_uncertain_bundles
+
+    first = ("Patient: It was either three days or four days.\n"
+             "Patient: My right wrist hurts right now; my left wrist doesn't hurt.\n"
+             "Patient: My left wrist hurts right now; my right wrist doesn't hurt.")
+    last = ("\nSister: The patient has not spoken yet.\n"
+            "Patient: My left wrist hurts right now; my right wrist doesn't hurt.")
+    before = transcript_source(NanoInput("before-warning", first))
+    after = transcript_source(NanoInput("after-warning", first + last))
+    assert extract_field_uncertain_bundles(before, DUR)
+    assert detect_grounded_conflicts(before, CC)
+    assert not extract_field_uncertain_bundles(after, DUR)
+    assert not detect_grounded_conflicts(after, CC)
