@@ -1360,10 +1360,22 @@ def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...
     predicate = _CORRECTED_NONUSE_RE.match(text)
     if not predicate:
         return None
-    if _patient_question(text) or _EPISTEMIC_HEDGE_RE.search(text):
-        # The negative predicate is recognized, but establishes no withdrawal.
+    if _patient_question(text) or _EPISTEMIC_HEDGE_RE.search(text) or _PAST_OR_HYPOTHETICAL_RE.search(text):
+        # Scope can be clarified after the first negative predicate.
         return ()
-    body = _EVENT_JOIN_RE.split(text[predicate.end():], maxsplit=1)[0]
+    remainder = text[predicate.end():]
+    parts = _EVENT_JOIN_RE.split(remainder)
+    withdrawals = list(_withdrawn_objects_in_predicate(parts[0]))
+    for join, part in zip(_EVENT_JOIN_RE.finditer(remainder), parts[1:]):
+        if re.search(r"\b(?:because|so)\b", join[0], re.I):
+            break
+        if negative := re.match(_FIRST_PERSON_NONUSE, part, re.I):
+            withdrawals.extend(_withdrawn_objects_in_predicate(part[negative.end():]))
+    return tuple(withdrawals) or None
+
+
+def _withdrawn_objects_in_predicate(body: str) -> tuple[_MedicationWithdrawal, ...]:
+    """Each independent non-use predicate owns its own object list and qualifiers."""
     body = re.split(r"\bbecause\b", body, maxsplit=1, flags=re.I)[0].rstrip(" .,;!")
     body = re.sub(rf",?\s+(?:at all|after all|whatsoever|in fact)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
                   "", body, flags=re.I)
@@ -1378,7 +1390,7 @@ def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...
             break
         value = normalize_value(body[slice(*name)])
         if value in {"it", "that", "this", "them", "any"}:
-            return None
+            return ()
         generic = value == "anything" or re.fullmatch(rf"(?:any )?{_MED_DENIAL_NOUN}", value, re.I)
         dose = _MEDICATION_DOSE_RE.search(body, start, name[0])
         start = name[1]
@@ -1394,7 +1406,7 @@ def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...
     # A final indication or interval conservatively qualifies the coordinated
     # denial. Each dose, however, belongs to its individual object.
     restriction = body[start:].strip(" .,;!")
-    return tuple(_MedicationWithdrawal(name, dose, restriction) for name, dose in objects) or None
+    return tuple(_MedicationWithdrawal(name, dose, restriction) for name, dose in objects)
 
 
 def _medication_administration_text(text: str, name_start: int, name_end: int) -> str:
@@ -1430,7 +1442,11 @@ def _same_medication_administration(withdrawal: _MedicationWithdrawal, administr
         original = _medication_event_interval(source, span, administration)
         if not original or frame[0] != original[0] or (frame[1] and frame[1] != original[1]):
             return False
-        rest = _MED_CALENDAR_RE.sub(" ", rest)
+        if calendar := _MED_CALENDAR_RE.search(rest):
+            # "on Monday" and "Monday" identify the same day; the optional
+            # preposition is part of the interval, separate from any purpose.
+            preceding = re.sub(r"\bon\s+$", "", rest[:calendar.start()], flags=re.I)
+            rest = preceding + " " + rest[calendar.end():]
     elif not rest and frame is None:
         return False  # The inherited question refers to an indeterminate interval.
     restriction = " ".join(rest.strip(" .,;!").split())

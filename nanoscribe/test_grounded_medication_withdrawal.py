@@ -306,3 +306,40 @@ def test_unqualified_direct_answer_inherits_the_medication_questions_day(denied,
     text = ("Doctor: Which medicine did you take today?\nPatient: I took aspirin.\n"
             f"Patient: Actually, I didn't take any aspirin {denied}.")
     assert_medication(text, "aspirin", 0, supported)
+
+
+@pytest.mark.parametrize("second", ["and I didn't take", "but I did not use", "and I haven't taken"])
+def test_each_coordinated_negative_patient_predicate_retracts_its_own_name(second):
+    text = (f"Patient: I took aspirin and ibuprofen. I took naproxen.\n"
+            f"Patient: Actually, I didn't take aspirin, {second} ibuprofen.")
+    assert_medication(text, "aspirin", 0, False)
+    assert_medication(text, "ibuprofen", 0, False)
+    assert_medication(text, "naproxen", 0, True)
+
+
+def test_second_negative_predicate_has_its_own_date():
+    text = ("Patient: I took aspirin today. I took ibuprofen yesterday.\n"
+            "Patient: Actually, I didn't take aspirin today, and I didn't take ibuprofen today.")
+    assert_medication(text, "aspirin", 0, False)
+    assert_medication(text, "ibuprofen", 0, True)
+
+
+@pytest.mark.parametrize("original,withdrawn,supported", [
+    ("Monday", "on Monday", False), ("on Monday", "Monday", False),
+    ("Monday morning", "on Monday morning", False), ("Tuesday", "on Monday", True),
+    ("Monday evening", "on Monday morning", True), ("Monday", "before Monday", True),
+    ("Monday for my ankle", "on Monday for my ankle", False),
+    ("Monday for my knee", "on Monday for my ankle", True),
+])
+def test_calendar_preposition_belongs_to_the_date(original, withdrawn, supported):
+    text = f"Patient: I took aspirin {original}.\nPatient: Actually, I didn't take aspirin {withdrawn}."
+    assert_medication(text, "aspirin", 0, supported)
+
+
+@pytest.mark.parametrize("clarification", [
+    "but I am talking about last year", "and I mean the previous visit",
+    "because I was giving a hypothetical", "but I used to say that in childhood",
+])
+def test_later_historical_or_hypothetical_context_cannot_retract_current_report(clarification):
+    text = f"Patient: I took aspirin today.\nPatient: Actually, I didn't take aspirin, {clarification}."
+    assert_medication(text, "aspirin", 0, True)
