@@ -70,3 +70,34 @@ Evidence chooses the parts. A mechanism enters the unified model only after it b
 - Phase 1 confirmatory runs: protocol not yet committed; S2 and M21 not ported.
 - L0: needs a corpus of long documents; none is available locally.
 - Independent critic for this document: pending.
+
+## 7. Critic's findings (2026-11-20), overriding the text above
+
+Provenance: the critic read some PDFs directly; most numbers come from a fetch summariser or search snippets.
+
+- **"Evidence for explicit memory is stronger on the weight side" is not supported.** The memory-layers paper compares at matched FLOPs, not matched parameters (a 1.3B dense base carrying billions of extra memory parameters), on short-form question answering only, with mixed results at 8B. It shows capacity per FLOP, not sample efficiency or reversible storage.
+- **One-way fact storage: real, but the stated cause is contested.** The original result stands, and it does not occur for facts given in context. Published work attributes it to inconsistent entity representations, to the training objective, and to gradient dynamics, not to feed-forward layers being one-way memories. A standard Transformer reverses well on concept-level inputs and fails on surface names.
+- **Lead C is narrowed.** A 2026 paper already combines a joint-embedding design with memory layers and removes the effect on synthetic data. Reverse-order training nearly solves the easy direction. No published symmetric associative layer was found. As designed, REVERSE would have its augmentation arm at ceiling and so could not discriminate.
+- **Lead A is narrowed, and REUSE cannot test it yet.** Hypernetworks that turn context into low-rank weight updates exist and trail in-context baselines. Nothing in REUSE requires an operation to outlive one context, so a store cannot be told apart from in-context learning. It needs a cross-episode condition with the examples no longer available.
+- **Lead B is open, and most likely a baseline artefact.** Latest-write-wins is the published "flip-flop" task: Transformers reach near-perfect accuracy on it, with a tail of sporadic errors. In-context abilities appear abruptly after plateaus. Guess-rate after seven minutes looks like an unescaped plateau. Controls needed: train to convergence and report steps-to-threshold; match on examples as well as time; sweep learning rate and warm-up; give dense the same time coordinate; add an LSTM arm.
+- **Two-hop composition "unreliable" needs conditions:** it fails for separately learned synthetic facts and works when facts share a document.
+- **Compositionality "mostly a training question" is contested.**
+- **Persistence: "unsolved" is fair, "no" is too flat.** Self-editing and editing methods give partial gains and degrade with more edits.
+- **"A factor of several hundred" was not derived in the document.** It holds only against roughly 15-trillion-token budgets; "2B" and "frontier" were conflated.
+- **Overlooked:** the document says the training objective may matter most, yet no lead tests one. The cheapest decisive experiment is an objective sweep (causal, hybrid masked/causal, order-agnostic) on one small model. A credible sample-efficiency claim means beating the hybrid baseline on the public 10M- or 100M-word track, not a synthetic lookup result.
+
+## 8. DEMOS mixed-task failure: analysis (2026-11-20)
+
+Observation: with one- and two-hop queries mixed, DEMOS answered "no value" for everything, including one-hop queries it solves alone.
+
+**Derived structural limitation of the implemented hop step.** Between hops the probe is updated by z ← z + Kz with K antisymmetric (approximation A4, a first-order step of the conservative term). Then ⟨z, z + Kz⟩ = ‖z‖² exactly, because zᵀKz = 0. The new state keeps its full component along the old state, and its norm cannot shrink. Following a chain requires replacing the current key by the retrieved value. This step can add the value to the key but can never remove the key. Checked numerically: overlap 1.0000.
+- Consequence: after the step the probe carries both the old key and the new one, and is attracted to both facts. Clean two-hop retrieval is not representable by this step.
+- An exact rotation exp(K) can swap key and value coordinates (a reversible exchange), so the limitation belongs to the first-order approximation, not to conservative dynamics as such.
+- General point: replacing the query at each hop is an erasure. A purely conservative transition cannot erase; it can only exchange.
+
+**This does not explain the one-hop failure in the mixed setting.** Candidate causes, all being tested rather than assumed:
+1. Gradient interference: unnormalised interactions give heavy-tailed gradients (pilot: median 2.6, maximum 973 before clipping at 1), so two-hop noise may swamp the one-hop signal.
+2. The two-hop path corrupts shared parameters (the probe encoder and wells are shared by both hop counts).
+3. An unescaped plateau, as for dense.
+
+Diagnostics running (same data and budget, CPU): the original step; the original step with only one-hop queries in the loss; the exact rotation; an unconstrained linear map (which can erase and is not conservative).

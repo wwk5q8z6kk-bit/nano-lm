@@ -32,12 +32,14 @@ def collate(spec, rng, batch, device):
 BLOCK_ARMS = ("demos", "graph", "keystore")
 
 
-def step_loss(model, arm, b):
+def step_loss(model, arm, b, max_hop_in_loss=None):
     """Returns loss, and per-query (correct, hops) tensors."""
     if arm.startswith(BLOCK_ARMS):
         logits = model(b)
         y, hops = b["y"], b["q"][..., 1]
-        loss = F.cross_entropy(logits.flatten(0, 2), y.flatten())
+        per = F.cross_entropy(logits.flatten(0, 2), y.flatten(), reduction="none")
+        w = torch.ones_like(per) if max_hop_in_loss is None else (hops.flatten() <= max_hop_in_loss).float()
+        loss = (per * w).sum() / w.sum().clamp_min(1)
         return loss, (logits.argmax(-1) == y).flatten(), hops.flatten()
     ev = b["ev"]; logits = model(ev)
     mask = ev[..., 4] == 1
@@ -51,6 +53,8 @@ def step_loss(model, arm, b):
 
 def build(arm, spec, d, device):
     if arm == "demos": m = Demos(spec.symbols, d=d)
+    elif arm == "demos_expm": m = Demos(spec.symbols, d=d, hop_mode="expm")
+    elif arm == "demos_linear": m = Demos(spec.symbols, d=d, hop_mode="linear")
     elif arm == "demos_nomass": m = Demos(spec.symbols, d=d, mass_dynamics=False)
     elif arm == "demos_noflow": m = Demos(spec.symbols, d=d, store_steps=0)
     elif arm == "graph": m = GraphMP(spec.symbols, d=d)
@@ -82,7 +86,7 @@ if __name__ == "__main__":
     ap.add_argument("--symbols", type=int, default=256); ap.add_argument("--live", type=int, default=32)
     ap.add_argument("--churn", type=float, default=0.0); ap.add_argument("--hops", default="1")
     ap.add_argument("--groups", type=int, default=2); ap.add_argument("--queries", type=int, default=16)
-    ap.add_argument("--warmup", type=int, default=0)
+    ap.add_argument("--warmup", type=int, default=0); ap.add_argument("--max-hop-in-loss", type=int, default=None)
     ap.add_argument("--device", default="mps"); ap.add_argument("--out", default="")
     a = ap.parse_args()
     spec = Spec(symbols=a.symbols, live=a.live, churn=a.churn, hops=tuple(int(x) for x in a.hops.split(",")),
@@ -92,19 +96,19 @@ if __name__ == "__main__":
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=0.0)
     params = sum(p.numel() for p in model.parameters())
     g = guessers(spec, np.random.default_rng(a.seed + 1), 100)
-    t0, steps, log = time.time(), 0, []
+    t0, steps, log, gnorms = time.time(), 0, [], []
     while time.time() - t0 < a.seconds:
         b = collate(spec, rng, a.batch, a.device)
-        loss, c, _ = step_loss(model, a.arm, b)
+        loss, c, _ = step_loss(model, a.arm, b, a.max_hop_in_loss)
         if a.warmup:
             for gparam in opt.param_groups: gparam["lr"] = a.lr * min(1.0, (steps + 1) / a.warmup)
         opt.zero_grad(set_to_none=True); loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); opt.step(); steps += 1
+        gn = float(torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)); gnorms.append(gn); opt.step(); steps += 1
         if steps % 50 == 0:
             log.append((steps, round(time.time() - t0, 1), round(loss.item(), 4), round(c.float().mean().item(), 4)))
             print(*log[-1], flush=True)
     res = {"arm": a.arm, "lr": a.lr, "warmup": a.warmup, "seed": a.seed, "params": params, "steps": steps, "seconds": a.seconds,
            "spec": spec.__dict__, "guessers": g, "eval": evaluate(model, a.arm, spec, a.device, a.seed + 7),
-           "live_particles": getattr(model, "last_live", None), "log": log[-5:]}
+           "live_particles": getattr(model, "last_live", None), "grad_norm_median": float(np.median(gnorms)), "grad_norm_p95": float(np.percentile(gnorms, 95)), "grad_norm_max": float(np.max(gnorms)), "log": log[-5:]}
     print(json.dumps(res, default=str))
     if a.out: open(a.out, "w").write(json.dumps(res, default=str))
