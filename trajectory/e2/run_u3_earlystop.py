@@ -272,11 +272,7 @@ def flr_at(t, fsteps):
     return FLR * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * p)))
 
 
-def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int | None):
-    """Train until stop_at (inclusive) or early-stop plateau (fullft only when stop_at is None).
-
-    Returns (state_dict_cpu, meta).
-    """
+def _setup_model_and_optimizer(kind: str, base_sd: dict):
     from peft import LoraConfig, inject_adapter_in_model
 
     m = GPT()
@@ -313,6 +309,55 @@ def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int 
             eps=1e-8,
         )
         print(f"[u3/{kind}] full-FT params {sum(p.numel() for p in m.parameters())/1e6:.2f}M", flush=True)
+    return m, opt
+
+
+def _run_train_step(m, opt, scaler, X, M, idx):
+    opt.zero_grad(set_to_none=True)
+    loss = None
+    for a in range(ACCUM):
+        sub = idx[a * MICRO : (a + 1) * MICRO]
+        x, msk = X[sub].to(dev), M[sub].to(dev)
+        with torch.autocast("cuda", dtype=torch.float16):
+            logits = m(x)[:, :-1]
+            tgt = x[:, 1:]
+            mtgt = msk[:, 1:]
+            ce = F.cross_entropy(
+                logits.reshape(-1, V), tgt.reshape(-1), reduction="none"
+            ).reshape(tgt.shape)
+            loss_ = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)
+            loss = loss_
+        scaler.scale(loss_ / ACCUM).backward()
+    scaler.unscale_(opt)
+    torch.nn.utils.clip_grad_norm_(
+        (p for p in m.parameters() if p.requires_grad), 1.0
+    )
+    scaler.step(opt)
+    scaler.update()
+    return loss
+
+
+def _check_early_stop_plateau(kind, step, probes, min_steps):
+    if (
+        kind == "fullft"
+        and step >= min_steps
+        and len(probes) >= PLATEAU_WINDOW
+    ):
+        window = probes[-PLATEAU_WINDOW:]
+        gaps = [p["diluted_gap"] for p in window]
+        # plateau = held-gap not improving (diluted gap not falling) by ≥EPS
+        best_prev = min(gaps[:-1])
+        if gaps[-1] > best_prev - PLATEAU_EPS:
+            return True, gaps
+    return False, None
+
+
+def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int | None):
+    """Train until stop_at (inclusive) or early-stop plateau (fullft only when stop_at is None).
+
+    Returns (state_dict_cpu, meta).
+    """
+    m, opt = _setup_model_and_optimizer(kind, base_sd)
 
     scaler = torch.amp.GradScaler("cuda")
     N = X.shape[0]
@@ -330,25 +375,9 @@ def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int 
             g["lr"] = flr_at(step, fsteps)
         i0 = (step * BATCH) % (N - BATCH)
         idx = perm[i0 : i0 + BATCH]
-        opt.zero_grad(set_to_none=True)
-        for a in range(ACCUM):
-            sub = idx[a * MICRO : (a + 1) * MICRO]
-            x, msk = X[sub].to(dev), M[sub].to(dev)
-            with torch.autocast("cuda", dtype=torch.float16):
-                logits = m(x)[:, :-1]
-                tgt = x[:, 1:]
-                mtgt = msk[:, 1:]
-                ce = F.cross_entropy(
-                    logits.reshape(-1, V), tgt.reshape(-1), reduction="none"
-                ).reshape(tgt.shape)
-                loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)
-            scaler.scale(loss / ACCUM).backward()
-        scaler.unscale_(opt)
-        torch.nn.utils.clip_grad_norm_(
-            (p for p in m.parameters() if p.requires_grad), 1.0
-        )
-        scaler.step(opt)
-        scaler.update()
+
+        loss = _run_train_step(m, opt, scaler, X, M, idx)
+
         if step % 200 == 0 or step == 1:
             print(
                 f"[u3/{kind}] {step}/{limit} loss={loss.item():.3f} "
@@ -365,18 +394,9 @@ def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int 
                 flush=True,
             )
             m.train()
-            if (
-                kind == "fullft"
-                and stop_at is None
-                and early_step is None
-                and step >= min_steps
-                and len(probes) >= PLATEAU_WINDOW
-            ):
-                window = probes[-PLATEAU_WINDOW:]
-                gaps = [p["diluted_gap"] for p in window]
-                # plateau = held-gap not improving (diluted gap not falling) by ≥EPS
-                best_prev = min(gaps[:-1])
-                if gaps[-1] > best_prev - PLATEAU_EPS:
+            if stop_at is None and early_step is None:
+                plateaued, gaps = _check_early_stop_plateau(kind, step, probes, min_steps)
+                if plateaued:
                     early_step = step
                     early_sd = {k: v.detach().cpu().clone() for k, v in m.state_dict().items()}
                     print(
