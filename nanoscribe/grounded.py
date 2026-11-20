@@ -24,6 +24,7 @@ import re
 from fractions import Fraction
 from itertools import combinations
 from typing import Any
+from urllib.parse import quote
 
 from nano_ai.adapters.state_span import (
     StateSpanFormatError,
@@ -1684,8 +1685,10 @@ def _patient_occurrence_count(source: Source, text: str) -> int:
 
 
 def format_grounded_span_token(source: Source, span: CandidateSpan) -> str:
-    """Use plain text when unique across Patient turns and delimiter-safe; otherwise `@start..end:text`."""
-    if any(ch in span.text for ch in ";[]|\r\n") or _patient_occurrence_count(source, span.text) != 1:
+    """Keep legacy literals and offsets; percent-encode quotes containing wire syntax."""
+    if any(ch in span.text for ch in "[]|\r\n") or _SPAN_OFFSET_RE.fullmatch(span.text):
+        return f"@{span.start}..{span.end}:#{quote(span.text, safe='')}"
+    if ";" in span.text or _patient_occurrence_count(source, span.text) != 1:
         return f"@{span.start}..{span.end}:{span.text}"
     return span.text
 
@@ -1693,9 +1696,15 @@ def format_grounded_span_token(source: Source, span: CandidateSpan) -> str:
 def _resolve_grounded_span_token(transcript: str, source: Source, token: str) -> CandidateSpan:
     m = _SPAN_OFFSET_RE.match(token)
     if m:
-        start, end, text = int(m.group("start")), int(m.group("end")), m.group("text")
-        if start < 0 or end <= start or end > len(transcript) or transcript[start:end] != text:
-            raise StateSpanFormatError("offset-tagged evidence does not match exact transcript bytes")
+        start, end = int(m["start"]), int(m["end"])
+        if not 0 <= start < end <= len(transcript):
+            raise StateSpanFormatError("offset-tagged evidence is outside the transcript")
+        text = transcript[start:end]
+        payload = m["text"]
+        # Legacy verbatim quotes take precedence, including literal '#' and '%'.
+        # Check the canonical encoding against the actual slice before accepting it.
+        if payload != text and not (payload.startswith("#") and payload[1:] == quote(text, safe="")):
+            raise StateSpanFormatError("offset-tagged evidence does not match exact transcript text")
         idx = _turn_index(source, start, end)
         if idx is None or source.turns[idx].speaker is not Speaker.PATIENT:
             raise StateSpanFormatError("offset-tagged evidence is not inside a Patient turn")
@@ -1709,7 +1718,7 @@ def parse_grounded_summary(
     raw: object,
     transcript: str,
 ) -> tuple[list[str], list[StateSpanProposal | None], list[str | None], str | None]:
-    """Parse five-slot summary supporting both legacy `S[text]` and `@start..end:text` / `||` conflicts."""
+    """Resolve literal, verbatim offset-tagged, or percent-encoded offset-tagged evidence."""
     if not isinstance(raw, str):
         raise StateSpanFormatError("native-state summary must be text")
     pieces = raw.split("|")
