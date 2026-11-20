@@ -283,6 +283,16 @@ _SELF_CORRECTION_CLAUSE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# A correction marker can introduce a separate sentence. Keep this grammar
+# distinct from the generic correction heuristic, which can retract a whole field.
+_MEDICATION_CORRECTION_MARKER = r"(?:let me correct (?:that|myself|my answer)|correction|actually|sorry)"
+_MEDICATION_CORRECTION_RE = re.compile(rf"\b{_MEDICATION_CORRECTION_MARKER}\b", re.I)
+_CORRECTED_NONUSE_RE = re.compile(
+    rf"^{_MEDICATION_CORRECTION_MARKER}\b[\s.,:;—–-]+i "
+    r"(?:(?:did not|didn['’]t) (?:take|use|try|apply|swallow)|"
+    r"(?:have not|haven['’]t) (?:taken|used|tried|applied|swallowed))\s+", re.I,
+)
+
 _ROUTINE_DISCLAIMED_RE = re.compile(
     r"\b(?:usual routine|every morning|daily routine|isn't something i took for|"
     r"not something i took for|unrelated)\b",
@@ -1255,8 +1265,93 @@ def _correction_fields(clause: str) -> set[FieldName]:
     return targets
 
 
+def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
+    """Read the objects and qualifiers of a first-person negative correction."""
+    predicate = _CORRECTED_NONUSE_RE.match(text)
+    if not predicate:
+        return None
+    # A new affirmative predicate is not part of the negated object list.
+    body = re.split(
+        r"(?:,\s*(?:(?:but|and)\s+)?|\s+(?:but|and)\s+)i\s+(?:took|used|tried|applied|swallowed)\b",
+        text[predicate.end():], maxsplit=1, flags=re.I,
+    )[0]
+    start = 0
+    names = set()
+    doses = []
+    while name := _substance_name_bounds(body, (start, len(body)), FieldName.MEDICATION):
+        value = normalize_value(body[name[0]:name[1]])
+        if value in {"it", "that", "this", "them", "anything", "any", "any medication", "any medicine"}:
+            return None
+        names.add(value)
+        if dose := _MEDICATION_DOSE_RE.search(body, start, name[0]):
+            doses.append(dose[0])
+        start = name[1]
+        join = re.match(r"(?:,\s*(?:(?:and|or|plus)\s+)?|\s+(?:and|or|plus)\s+)", body[start:], re.I)
+        if not join:
+            break
+        start += join.end()
+    # A causal explanation for non-use does not narrow which administration
+    # was denied. A purpose, dose or date does.
+    tail = re.split(r"\bbecause\b", body[start:], maxsplit=1, flags=re.I)[0]
+    qualifier = " ".join([*doses, tail]).strip(" .,;!")
+    return (names, qualifier) if names else None
+
+
+def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
+                                 owned: tuple[int, int], span: CandidateSpan) -> bool:
+    """Match the retracted name and time to a specific earlier positive occurrence."""
+    if not _MEDICATION_CORRECTION_RE.search(source.text, event.end):
+        return False
+    original_name = _substance_name_bounds(event.text, owned, FieldName.MEDICATION)
+    value = normalize_value(span.text)
+    if (original_name and span.start <= event.start + original_name[0]
+            and event.start + original_name[1] <= span.end):
+        value = normalize_value(event.text[slice(*original_name)])
+    proxy = _forward_proxy_turns(source)
+    for index in range(idx, len(source.turns)):
+        turn = source.turns[index]
+        if (turn.speaker is not Speaker.PATIENT or index in proxy
+                or not _MEDICATION_CORRECTION_RE.search(turn.text)):
+            continue
+        previous = _preceding_clinician_turn(source, index)
+        if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
+            continue
+        clauses = _reply_clauses(turn)
+        for position, clause in enumerate(clauses):
+            if clause.start < event.end:
+                continue
+            text = clause.text
+            if (_MEDICATION_CORRECTION_RE.fullmatch(text.rstrip(" .!;"))
+                    and position + 1 < len(clauses)):
+                text += " " + clauses[position + 1].text
+            correction = _corrected_medication_objects(text)
+            if not correction or value not in correction[0]:
+                continue
+            qualifier = correction[1]
+            if qualifier and not _MED_CALENDAR_RE.fullmatch(qualifier):
+                # Only withdraw a qualified report if that qualification
+                # also names the original administration (e.g. its dose).
+                if (not _patient_question(text)
+                        and re.search(r"(?<!\w)" + re.escape(qualifier) + r"(?!\w)", event.text, re.I)):
+                    return True
+                continue
+            frame = _medication_interval(qualifier)
+            if not qualifier and position == 0 and previous and _MED_QUESTION_CUE_RE.search(previous.text):
+                frame = _medication_interval(previous.text)
+            if frame == ("", ""):
+                return True
+            original_frame = _medication_event_interval(source, span)
+            if (frame and original_frame and frame[0] == original_frame[0]
+                    and (not frame[1] or frame[1] == original_frame[1])):
+                return True
+    return False
+
+
 def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool) -> bool:
     if not _eligible_correction(correction):
+        return False
+    if _corrected_medication_objects(correction):
+        # Only the exact positive object and interval can be withdrawn.
         return False
     targets = _correction_fields(correction)
     if targets:
@@ -2499,6 +2594,8 @@ def _verify_local_span(
                 reason = _medication_name_rejection(event, owned, span)
                 if reason:
                     return False, reason
+                if _patient_withdrew_medication(source, idx, event, owned, span):
+                    return False, "retracted_by_patient_correction"
                 if _TAKEN_RE.search(event.text):
                     _, _, question = _question_flags(source, idx)
                     if not _medication_verb_positions(event.text, question):
