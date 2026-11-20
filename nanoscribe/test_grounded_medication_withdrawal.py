@@ -65,10 +65,17 @@ def test_unrelated_corrections_keep_original_report(statement):
     assert_medication("Patient: I took aspirin today.\n" + statement, "aspirin", 0, True)
 
 
-def test_only_corrected_object_is_withdrawn_from_coadministered_names():
-    text = "Patient: I took aspirin and ibuprofen.\nPatient: Actually, I didn't take ibuprofen."
+@pytest.mark.parametrize("denial", ["ibuprofen", "any ibuprofen", "my ibuprofen"])
+def test_only_corrected_object_is_withdrawn_from_coadministered_names(denial):
+    text = f"Patient: I took aspirin and ibuprofen.\nPatient: Actually, I didn't take {denial}."
     assert_medication(text, "ibuprofen", 0, False)
     assert_medication(text, "aspirin", 0, True)
+
+
+@pytest.mark.parametrize("denial", ["any aspirin", "my aspirin"])
+def test_determiner_before_named_drug_withdraws_that_drug(denial):
+    assert_medication(f"Patient: I took aspirin.\nPatient: Actually, I didn't take {denial}.",
+                      "aspirin", 0, False)
 
 
 def test_later_identical_reaffirmation_has_its_own_evidence():

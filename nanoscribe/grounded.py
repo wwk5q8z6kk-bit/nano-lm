@@ -1306,6 +1306,9 @@ def _corrected_medication_objects(text: str) -> tuple[set[str] | None, str] | No
         value = normalize_value(body[name[0]:name[1]])
         if value in {"it", "that", "this", "them", "any"}:
             return None
+        # "any" and "my" quantify the object. They are not part of the drug,
+        # and a category noun after them is still a category denial.
+        value = re.sub(r"^(?:(?:any|my)\s+)+", "", value)
         if value == "anything" or re.fullmatch(rf"(?:any )?{_MED_DENIAL_NOUN}", value, re.I):
             generic = True
         names.add(value)
