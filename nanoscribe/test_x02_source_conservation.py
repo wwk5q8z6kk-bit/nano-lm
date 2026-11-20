@@ -233,3 +233,29 @@ def test_open_treatment_indication_offers_bare_medication_answers_in_both_menus(
         source = transcript_source(NanoInput("other", transcript))
         assert not any(c.startswith(":S[") for c in grounded_candidate_choices(transcript, FieldName.MEDICATION, set()))
         assert not any(c.startswith(" REPORTED[") for c in build_grounded_english_menu(source, FieldName.MEDICATION, set()))
+
+
+def test_reported_treatment_indication_preserves_named_substance_in_both_menus():
+    from nano_ai.contract import NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import build_grounded_english_menu
+
+    for value, indication in (("aspirin", "my cramps"), ("ondansetron", "my nausea"),
+                              ("acetaminophen", "soreness")):
+        transcript = f"Doctor: Tell me more.\nPatient: I have taken {value} for {indication}."
+        source = transcript_source(NanoInput("treatment", transcript))
+        assert f":S[{value}]" in grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+        assert f" REPORTED[{value}]" in build_grounded_english_menu(source, FieldName.MEDICATION, set())
+        row = trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{value}]|ALG:M")[3]
+        assert row["note_rendered_value"] == value
+        name = indication.split()[-1]
+        assert trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{name}]|ALG:M")[3]["note_rendered_state"] == "uncertain"
+
+    for reply, proposed in (("I have taken a trip for my birthday.", "trip"),
+                            ("I have taken it for granted.", "it"),
+                            ("I have taken time off for my cramps.", "time off"),
+                            ("I have taken a break for my headache.", "break"),
+                            ("I have taken a break for two days.", "break")):
+        transcript = f"Doctor: Tell me more.\nPatient: {reply}"
+        assert not any(c.startswith(":S[") for c in grounded_candidate_choices(transcript, FieldName.MEDICATION, set()))
+        assert trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{proposed}]|ALG:M")[3]["note_rendered_state"] == "uncertain"

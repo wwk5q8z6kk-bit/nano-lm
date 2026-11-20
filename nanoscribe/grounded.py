@@ -42,6 +42,7 @@ from nano_ai.contract import (
     normalize_value,
 )
 from nanoscribe.check_note import (
+    _plain_value,
     _mentioned_fields,
     _outside_current_scope,
     _reply_clauses,
@@ -289,6 +290,10 @@ _MED_CLAUSE_VERB_RE = re.compile(
     re.IGNORECASE,
 )
 _TAKEN_RE = re.compile(r"\bi(?:'ve|\s+have)?\s+(?:also\s+)?taken\b", re.IGNORECASE)
+_TAKEN_NON_TREATMENT_OBJECT_RE = re.compile(
+    r"^\s*(?:(?:a|an|the|my|some)\s+)?(?:fall|trip|break|walk|time off|responsibility|credit|photographs?)\b",
+    re.IGNORECASE,
+)
 _TREATMENT_CONTEXT_RE = re.compile(
     r"\b(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|capsules?|doses?"
     r"|\d+(?:\.\d+)?\s*(?:mg|mcg|milligrams?|micrograms?)"
@@ -754,13 +759,29 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     return is_explicit_med_q, is_explicit_alg_q, prev_q
 
 
+def _taken_indication(subsequent: str) -> re.Match[str] | None:
+    """Identify a named object and purpose in the same 'taken X for Y' report."""
+    match = re.match(
+        r"\s*(?:some\s+)?(?P<name>[\w -]+?)\s+for\s+(?P<purpose>[^,;.!?]+)", subsequent, re.IGNORECASE,
+    )
+    if match is None:
+        return None
+    name, purpose = match.group("name"), match.group("purpose").strip()
+    if (not grounded_value_valid(FieldName.MEDICATION, name) or not _plain_value(FieldName.MEDICATION, name)
+            or re.match(r"granted\b", purpose, re.IGNORECASE) or _DURATION_VALUE_RE.fullmatch(purpose)):
+        return None
+    return match
+
+
 def _medication_verb_positions(text: str, question: str) -> list[int]:
     positions = [match.start() for match in _MED_CLAUSE_VERB_RE.finditer(text)]
     for match in _TAKEN_RE.finditer(text):
         # "Taken" can describe a fall, a trip or another event. Require an
         # independent treatment cue from the question or the same event.
         event = re.split(r"[,;]|\b(?:and|but|because|so)\b", text[match.end():], maxsplit=1, flags=re.I)[0]
-        if _question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(event):
+        if _TAKEN_NON_TREATMENT_OBJECT_RE.match(event):
+            continue
+        if _question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(event) or _taken_indication(event):
             positions.append(match.start())
     return positions
 
@@ -820,6 +841,13 @@ def _verify_local_span(
             _, _, question = _question_flags(source, idx)
             if not _medication_verb_positions(event.text, question):
                 return False, "taken_without_treatment_context"
+            taken = _TAKEN_RE.match(event.text)
+            indication = _taken_indication(event.text[taken.end():]) if taken else None
+            if taken and indication:
+                start, end = indication.span("name")
+                offset = event.start + taken.end()
+                if not (offset + start <= span.start < span.end <= offset + end):
+                    return False, "span_outside_reported_treatment_name"
         if not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
         if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(event.text):
@@ -1145,7 +1173,10 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                     rem,
                     flags=re.IGNORECASE,
                 ).strip(" ,")
-                for cand_str in dict.fromkeys((rem_clean, rem)):
+                taken = _TAKEN_RE.match(body)
+                indication = _taken_indication(body[taken.end():]) if taken else None
+                candidates = (indication.group("name"),) if indication else (rem_clean, rem)
+                for cand_str in dict.fromkeys(candidates):
                     if not cand_str:
                         continue
                     pos = c_text.find(cand_str)
