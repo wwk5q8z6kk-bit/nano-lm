@@ -214,7 +214,7 @@ def train_ownstack_lora(ft_seed: int = 0, force: bool = False):
             tgt = x[:, 1:]
             mtgt = mt[:, 1:]
             ce = F.cross_entropy(
-                logits.reshape(-1, V), tgt.reshape(-1), reduction="none"
+                logits.reshape(-1, logits.size(-1)), tgt.reshape(-1), reduction="none"
             ).reshape(tgt.shape)
             loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)
             (loss / ACCUM).backward()
