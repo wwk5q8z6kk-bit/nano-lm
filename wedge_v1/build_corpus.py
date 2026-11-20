@@ -2,11 +2,11 @@
 
 I*/X* frozen in inclusion_predicates.md. Seed fixed before scoring.
 """
+
 from __future__ import annotations
 
 import hashlib
 import json
-import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -200,13 +200,9 @@ Placebo was given at night. It had no effect.
 ]
 
 
-def build() -> dict:
-    CORPUS.mkdir(parents=True, exist_ok=True)
-    GOLD.mkdir(parents=True, exist_ok=True)
-    MANIFESTS.mkdir(parents=True, exist_ok=True)
-
+def _write_corpus(docs: list[dict]) -> list[dict]:
     corpus_meta = []
-    for d in DOCS:
+    for d in docs:
         path = CORPUS / f"{d['doc_id']}.md"
         path.write_text(d["body"], encoding="utf-8")
         corpus_meta.append(
@@ -222,17 +218,22 @@ def build() -> dict:
                 "n_chars": len(d["body"]),
             }
         )
+    return corpus_meta
 
-    # Gold atoms / task expectations (process-planted, not score-cherry-picked)
-    gold = {
+
+def _build_gold() -> dict:
+    return {
         "seed": SEED,
-        "docs": {d["doc_id"]: {
-            "title": d["title"],
-            "authors": d["authors"],
-            "year": d["year"],
-            "doc_type": d["doc_type"],
-            "doi": d["doi"],
-        } for d in DOCS},
+        "docs": {
+            d["doc_id"]: {
+                "title": d["title"],
+                "authors": d["authors"],
+                "year": d["year"],
+                "doc_type": d["doc_type"],
+                "doi": d["doi"],
+            }
+            for d in DOCS
+        },
         "planted": {
             "B1_numeric_contradiction": {
                 "field": "metformin_dose_mg",
@@ -290,7 +291,11 @@ def build() -> dict:
                 ]
             },
             "mentions": {
-                "metformin": ["bio_abs_metformin", "bio_abs_metformin_conflict", "binding_coref"],
+                "metformin": [
+                    "bio_abs_metformin",
+                    "bio_abs_metformin_conflict",
+                    "binding_coref",
+                ],
             },
             "definition": {
                 "doc_id": "tech_note_cache",
@@ -301,12 +306,10 @@ def build() -> dict:
         "probe_flags": {"B1": True, "B2": True, "B3": True, "B4": True},
     }
 
-    gold_path = GOLD / "gold.json"
-    gold_path.write_text(json.dumps(gold, indent=2), encoding="utf-8")
 
-    # Evidence spans for key planted strings
+def _build_spans(docs: list[dict]) -> dict:
     spans = {}
-    for d in DOCS:
+    for d in docs:
         body = d["body"]
         spans[d["doc_id"]] = {}
         for key, needle in [
@@ -328,7 +331,23 @@ def build() -> dict:
         if d["doc_id"] == "bio_abs_metformin":
             spans[d["doc_id"]]["dose"] = _span(body, "500 mg")
             spans[d["doc_id"]]["n"] = _span(body, "n=512")
+    return spans
 
+
+def build() -> dict:
+    CORPUS.mkdir(parents=True, exist_ok=True)
+    GOLD.mkdir(parents=True, exist_ok=True)
+    MANIFESTS.mkdir(parents=True, exist_ok=True)
+
+    corpus_meta = _write_corpus(DOCS)
+
+    # Gold atoms / task expectations (process-planted, not score-cherry-picked)
+    gold = _build_gold()
+    gold_path = GOLD / "gold.json"
+    gold_path.write_text(json.dumps(gold, indent=2), encoding="utf-8")
+
+    # Evidence spans for key planted strings
+    spans = _build_spans(DOCS)
     (GOLD / "spans.json").write_text(json.dumps(spans, indent=2), encoding="utf-8")
 
     manifest = {
@@ -344,7 +363,17 @@ def build() -> dict:
     }
     man_path = MANIFESTS / "corpus_manifest.json"
     man_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    print(json.dumps({"ok": True, "n_docs": len(corpus_meta), "probe_ok": manifest["probe_ok"], "manifest": str(man_path)}, indent=2))
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "n_docs": len(corpus_meta),
+                "probe_ok": manifest["probe_ok"],
+                "manifest": str(man_path),
+            },
+            indent=2,
+        )
+    )
     return manifest
 
 
