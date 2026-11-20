@@ -224,6 +224,28 @@ _NONPATIENT_ROLE_LABEL_RE = re.compile(
     re.I,
 )
 
+# An unknown voice can mention a physical object without changing the source
+# of earlier observations. Only complete logistical clauses qualify.
+_ASIDE_OBJECT = (
+    r"(?:(?:(?:the|a|an|my|your|our|this|that) )?"
+    r"(?:(?:parking|bus|train|coatroom|cloakroom|waiting room|visitor|entry|building) )?"
+    r"(?:tickets?|receipts?|fees?|passes|pass|meters?|bags?|coats?|jackets?|keys?|wallets?|"
+    r"umbrellas?|doors?|windows?|chairs?|seats?|desks?|counters?|lobb(?:y|ies)|garages?|"
+    r"entrances?|exits?|elevators?|lifts?|stairs|restrooms?|bathrooms?|rooms?|hallways?|"
+    r"buses|bus|trains?|taxis?|forms?|envelopes?|folders?|clipboards?|pens?|printers?|"
+    r"parking(?: lot)?|coatroom|cloakroom)(?: for (?:the )?parking(?: fee)?)?)"
+)
+_ASIDE_LOCATION = rf"(?:here|there|outside|inside|upstairs|downstairs|(?:at|by|near|on|in|into|beside|under|to|from|behind) {_ASIDE_OBJECT})"
+_ASIDE_ACTION = r"(?:bring|leave|put|take|move|collect|fetch|find|open|close|carry|hand over|pick up|drop off|validate|pay for)"
+_LOGISTICAL_CLAUSE_RE = re.compile(
+    rf"(?:{_ASIDE_OBJECT} (?:is|are|was|were) (?:already |still )?"
+    rf"(?:{_ASIDE_LOCATION}|open|closed|locked|unlocked|available|ready|full|empty)"
+    rf"|(?:i|we) (?:have|found|brought|left|put|paid for|picked up|dropped off|will {_ASIDE_ACTION}) {_ASIDE_OBJECT}(?: {_ASIDE_LOCATION})?"
+    rf"|(?:(?:shall|may|can|could|should) (?:i|we)|(?:can|could|would) you(?: please)?|please) {_ASIDE_ACTION} {_ASIDE_OBJECT}(?: {_ASIDE_LOCATION})?"
+    rf"|where (?:is|are) {_ASIDE_OBJECT}|(?:is|are) {_ASIDE_OBJECT} {_ASIDE_LOCATION})",
+    re.I,
+)
+
 _ROLE_ASSIGNMENT = r"(?:mislabel(?:l)?ed|label(?:l)?ed|tagged|marked|recorded|identified|attributed)"
 _PATIENT_ROLE = r"(?:(?:as|under|to)\s+)?(?:the\s+)?[\"'“‘]?patient[\"'”’]?"
 _NONPATIENT_IDENTITY_WARNING_RE = re.compile(
@@ -790,6 +812,13 @@ def _identified_nonpatient_speech(turn: Turn) -> str | None:
     return None
 
 
+def _unknown_logistical_aside(text: str) -> bool:
+    """Recognize self-contained logistical speech without granting it patient authority."""
+    speech = re.sub(r"^unknown\s*:\s*", "", text.strip(), count=1, flags=re.I)
+    clauses = re.split(r"[.!?;]+\s*", speech.rstrip(".!?;"))
+    return all(_LOGISTICAL_CLAUSE_RE.fullmatch(" ".join(clause.split())) for clause in clauses)
+
+
 def _last_disputed_patient_turn(source: Source) -> int:
     """A speaker-label warning disputes preceding evidence and ends at its own turn."""
     for idx in range(len(source.turns) - 1, -1, -1):
@@ -1262,7 +1291,12 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
         if later.speaker is not Speaker.PATIENT:
             speech = _identified_nonpatient_speech(later)
             if later.speaker is Speaker.UNKNOWN and speech is None:
-                return True
+                if not _unknown_logistical_aside(later.text):
+                    return True
+                # Preserve the referent of a later patient correction across a
+                # statement. A direct logistical question starts a new exchange.
+                immediate = immediate and not _nonpatient_prompt(later.text.partition(":")[-1])
+                continue
             if speech is None or _nonpatient_prompt(speech):
                 immediate = False
             continue

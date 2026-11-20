@@ -55,6 +55,37 @@ def test_later_identified_speaker_preserves_patient_evidence_and_remains_uncover
     assert aside in uncovered
 
 
+@pytest.mark.parametrize("aside", [
+    "Unknown: The jacket is by the chair.",
+    "uNkNoWn:  We found the parking pass. Could you please leave the pass at the desk?",
+    "The umbrella is upstairs.",
+])
+def test_unidentified_logistics_preserves_patient_evidence_and_remains_uncovered(aside):
+    uncovered = check(f"Patient: I took naproxen.\r\n{aside}", MED, "naproxen", licensed=True)
+    assert aside in uncovered
+
+
+@pytest.mark.parametrize("aside", [
+    "Unknown: The umbrella is upstairs. The answers marked Patient were mine.",
+    "Unknown: I found the bag. But the drug name was wrong.",
+    "Unknown: The parking pass is here, actually I took ibuprofen.",
+    "Unknown: Sorry, I was mistaken. My coat is by the desk.",
+    "Office: My coat is by the desk.",
+])
+def test_logistics_cannot_mask_an_unidentified_correction_or_unrecognized_label(aside):
+    check(f"Patient: I took naproxen.\n{aside}", MED, "naproxen", licensed=False)
+
+
+def test_unidentified_aside_preserves_a_later_patient_retraction():
+    check("Patient: I took naproxen.\nUnknown: The parking pass is here.\nPatient: Actually I was wrong.",
+          MED, "naproxen", licensed=False)
+
+
+def test_unidentified_logistics_cannot_supply_the_question_for_a_patient_answer():
+    check("Doctor: What medication did you take?\nUnknown: Where is the garage?\nPatient: Naproxen.",
+          MED, "Naproxen", licensed=False)
+
+
 @pytest.mark.parametrize("later,licensed", [
     ("Mother: I was mistaken about naproxen.", True),
     ("  pArTnEr  :  Actually I took ibuprofen instead.", True),
