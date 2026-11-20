@@ -877,6 +877,26 @@ def _symptom_owns_scalar(clause: Turn, field: FieldName, span: CandidateSpan) ->
     return True
 
 
+def _medication_has_local_context(clause: Turn, span: CandidateSpan) -> bool:
+    """After a logistical prompt, identify treatment context in the quoted event."""
+    for report in _reporting_events(clause):
+        for event in _treatment_events(report):
+            if not event.start <= span.start < span.end <= event.end:
+                continue
+            label = _SUBSTANCE_LABEL_RE.match(event.text)
+            if label and event.start + label.end() == span.start:
+                return True
+            use = (_MED_CLAUSE_VERB_RE.search(event.text) or _TAKEN_RE.search(event.text)
+                   or _AMBIGUOUS_TREATMENT_RE.match(event.text) or _SHARED_MEDICATION_RE.match(event.text))
+            if use:
+                obj = event.text[use.end():].lstrip()
+                if re.match(rf"{_LOGISTICS_ITEM}\b", obj, re.I):
+                    return False
+                return _action_has_treatment_context(obj, "")
+            return bool(_FAMILIAR_MEDICINE_RE.fullmatch(span.text))
+    return False
+
+
 def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn, span: CandidateSpan | None = None) -> bool:
     # A patient can start a new clinical report after a logistical interruption.
     # A bare answer to the aside has no clinician question to supply its field.
@@ -894,10 +914,7 @@ def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn, sp
             if re.fullmatch(_LOGISTICS_ITEM, span.text.strip(), re.I):
                 return True
             if aside_prompt:
-                label = _SUBSTANCE_LABEL_RE.match(clause.text)
-                labeled_object = label and label.end() == span.start - clause.start
-                return not (labeled_object or _FAMILIAR_MEDICINE_RE.fullmatch(span.text)
-                            or _TREATMENT_CONTEXT_RE.search(span.text))
+                return not _medication_has_local_context(clause, span)
         return False
     speech = _identified_nonpatient_speech(previous)
     if plain_other:
@@ -1093,10 +1110,14 @@ def _complaint_reports(clause: Turn) -> Iterator[Turn]:
 
 
 def _immediate_complaint_followup_ends(source: Source, idx: int, report: Turn, name: str) -> bool:
-    # A following resolution can qualify the preceding report. Only link an
-    # immediately adjacent patient report and a pronoun or matching subject.
-    turns = source.turns[idx:idx + 2]
-    for turn in turns:
+    # A logistical aside can change what a pronoun means. Only an explicitly
+    # named symptom can carry its resolution across that interruption.
+    crossed_aside = False
+    for pos in range(idx, len(source.turns)):
+        turn = source.turns[pos]
+        if _logistical_aside_prompt(turn) is not None:
+            crossed_aside = True
+            continue
         if turn.speaker is not Speaker.PATIENT:
             break
         if turn.end <= report.end:
@@ -1104,13 +1125,19 @@ def _immediate_complaint_followup_ends(source: Source, idx: int, report: Turn, n
         for part in _complaint_reports(turn):
             if part.start < report.end:
                 continue
-            subject = re.match(r"(?:it|they|this|that|(?:my|the)\s+" + re.escape(name)
-                               + r")\b", part.text, re.I)
+            subject_pattern = rf"(?:my|the)\s+{re.escape(name)}"
+            if not crossed_aside:
+                subject_pattern = rf"(?:it|they|this|that|{subject_pattern})"
+            subject = re.match(rf"{subject_pattern}\b", part.text, re.I)
             if subject is None:
+                if crossed_aside:
+                    continue
                 return False
             remainder = part.text[subject.end():].replace("’", "'")
             remainder = re.sub(r"^'s\b", " is", remainder, flags=re.I)
             return _complaint_ended(remainder)
+        if pos > idx:
+            break
     return False
 
 
@@ -2983,9 +3010,17 @@ def _uncertainty_names_field(field: FieldName, text: str) -> bool:
     clinical = bool(_COMPLAINT_HEAD_RE.search(text))
     if field is FieldName.CHIEF_COMPLAINT:
         return clinical and field in _correction_fields(text)
+    # An unknown magnitude can still have a known clinical subject. Couple
+    # the timing or rating expression to that subject; a different subject
+    # such as "how long the queue lasts with my headache" supplies neither.
+    target = rf"(?:my|the|this|these|an?)\s+(?:(?:left|right|upper|lower|{_BODY_REGION})\s+)*{_SYMPTOM}\b"
     if field is FieldName.DURATION:
-        return clinical and bool(_DURATION_VALUE_RE.search(text) or re.search(r"\b(?:when|how long|start\w*|began|lasted)\b", text, re.I))
-    return clinical and bool(_SEVERITY_CORE_RE.search(text) or re.search(r"\b(?:score|rating|how (?:bad|severe))\b", text, re.I))
+        question = rf"(?:when|how long)\s+(?:{target}|i(?:['’]ve| have)?\s+(?:had|felt)\s+{target})"
+        description = rf"(?:duration|onset|start time)\s+of\s+{target}|{target}\s+(?:(?:has|had|have)\s+)?(?:lasted|persisted|started|began)\b"
+    else:
+        question = rf"how\s+(?:bad|severe|intense)\s+{target}"
+        description = rf"(?:severity|intensity|score|rating)\s+of\s+{target}|{target}\s+(?:(?:is|was|feels)\s+)(?:mild|moderate|severe|\d)"
+    return bool(re.search(rf"\b(?:{question}|{description})", text, re.I))
 
 
 def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
@@ -3001,14 +3036,16 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     for index, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT or index in proxy_turns or index <= disputed_through:
             continue
-        if index and _ambiguous_reply_boundary(source.turns[index - 1], field, turn):
+        whole = CandidateSpan(turn.start, turn.end, turn.text)
+        follows_aside = index > 0 and _logistical_aside_prompt(source.turns[index - 1]) is not None
+        ambiguous = index > 0 and _ambiguous_reply_boundary(source.turns[index - 1], field, turn)
+        if ambiguous and not (scalar and follows_aside):
             continue
         if coexisting and all(turn.start <= sp.start and sp.end <= turn.end for sp in coexisting):
-            whole = CandidateSpan(turn.start, turn.end, turn.text)
             seen.add(((whole.start, whole.end),))
             bundles.append((whole,))
         # Keep evidence for an unresolved scalar choice on the relevant field.
-        if scalar and _EITHER_OR_RE.search(turn.text):
+        if scalar and not ambiguous and _EITHER_OR_RE.search(turn.text):
             for clause in _reply_clauses(turn):
                 for event in _reporting_events(clause):
                     for choice in _explicit_alternatives(event):
@@ -3018,9 +3055,8 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
         if _EPISTEMIC_HEDGE_RE.search(turn.text) and not re.search(
             r"\bchecking whether i can hear\b", turn.text, re.IGNORECASE
         ):
-            whole = CandidateSpan(turn.start, turn.end, turn.text)
             candidates = [whole]
-            if _uncertainty_follows_logistics(source, whole):
+            if follows_aside:
                 candidates = [CandidateSpan(part.start, part.end, part.text) for part in _reply_clauses(turn)
                               if _EPISTEMIC_HEDGE_RE.search(part.text) and _uncertainty_names_field(field, part.text)]
             for evidence in candidates:

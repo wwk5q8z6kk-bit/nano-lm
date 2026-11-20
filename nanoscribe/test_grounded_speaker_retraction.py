@@ -165,6 +165,15 @@ def test_plain_other_statement_preserves_previous_scalar_context(field, answer, 
     ("I am not sure whether I took the bus with aspirin in my bag.", MED, False),
     ("I am not sure whether I am allergic to nickel.", ALG, True),
     ("I am not sure whether I took naproxen.", MED, True),
+    ("I am not sure how long my headache has lasted.", DUR, True),
+    ("I cannot remember when my wrist pain started.", DUR, True),
+    ("I am not sure how severe my headache is.", SEV, True),
+    ("I cannot tell how bad the rash is.", SEV, True),
+    ("I am unsure of the duration of my headache.", DUR, True),
+    ("I cannot tell how long the parking pass lasts with my headache.", DUR, False),
+    ("I am unsure how bad the delay is for my headache.", SEV, False),
+    ("I am not sure how severe my headache is.", DUR, False),
+    ("I cannot remember when my wrist pain started.", SEV, False),
 ])
 @pytest.mark.parametrize("aside", ["Unknown: Where is the garage?", "Unknown: The umbrella is upstairs."])
 def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible, aside):
@@ -389,3 +398,40 @@ def test_neutral_aside_mentioning_time_preserves_patient_correction_adjacency():
 def test_routine_disclaimer_needs_a_medication_referent_across_an_aside(disclaimer, licensed):
     check(f"Patient: I took naproxen.\nOther: I paid for the parking.\nPatient: {disclaimer}",
           MED, "naproxen", licensed=licensed)
+
+
+@pytest.mark.parametrize("answer,quote,licensed", [
+    ("I took 10 mg of rimegepant.", "rimegepant", True),
+    ("I took rimegepant for my headache.", "rimegepant", True),
+    ("I took the bus, but I took rimegepant for my pain.", "rimegepant", True),
+    ("I took the bag holding 10 mg of rimegepant.", "rimegepant", False),
+    ("I took the bag holding 10 mg of rimegepant.", "the bag", False),
+    ("I took the bag with rimegepant in it.", "rimegepant", False),
+    ("I took the bag with aspirin in it.", "aspirin", False),
+    ("I took aspirin from the bag.", "aspirin", True),
+    ("I took my parking pass and I took 10 mg of rimegepant.", "parking pass", False),
+    ("I took my parking pass and I took 10 mg of rimegepant.", "rimegepant", True),
+    ("I plan to take 10 mg of rimegepant.", "rimegepant", False),
+])
+def test_medication_after_logistics_uses_its_own_treatment_event(answer, quote, licensed):
+    report = f"Other: Where is the garage?\nPatient: {answer}"
+    check(report, MED, quote, licensed=licensed)
+
+
+@pytest.mark.parametrize("intervening,followup,licensed", [
+    ("Unknown: The umbrella is upstairs.", "My headache has resolved.", False),
+    ("Other: Where is the garage?", "The headache has gone away.", False),
+    ("Other: Where is the garage?", "It is upstairs. My headache has gone away.", False),
+    ("Other: The umbrella is upstairs.\nUnknown: The lobby door is closed.", "My headache has stopped.", False),
+    ("Other: Where is the garage?", "It is gone.", True),
+    ("Other: Where is the garage?", "My rash has resolved.", True),
+    ("Other: Where is the garage?", "My headache has not resolved.", True),
+    ("Other: Where is the garage?", "My headache has gone away but it has returned.", True),
+    ("Doctor: Did the rash clear up?", "It is gone.", True),
+    ("Other: Where is the garage?", "My headache has resolved. I still have chest pain.", False),
+])
+def test_named_resolution_across_logistics(intervening, followup, licensed):
+    report = f"Patient: I have a headache.\n{intervening}\nPatient: {followup}"
+    check(report, CC, "headache", licensed=licensed)
+    if "chest pain" in followup:
+        check(report, CC, "chest pain", licensed=True)
