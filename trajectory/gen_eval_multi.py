@@ -22,7 +22,6 @@ inst0 = json.load(open(os.path.join(HERE, "..", "scribe", "scribe_eval.json")))
 instT = json.load(open(os.path.join(HERE, "scribe_eval_T.json")))
 prior_convos = {e["convo"][0]["content"] for e in inst0} | {e["convo"][0]["content"] for e in instT}
 
-all_items = []
 for k, seed in enumerate(SEEDS):
     random.seed(seed)
     items = []
@@ -33,18 +32,19 @@ for k, seed in enumerate(SEEDS):
                                 "med": t["med"] or "none", "alg": t["alg"] or "none"},
                       "held_values": held_vals, "convo": make_convo(t, True)})
     out = os.path.join(HERE, f"scribe_eval_m{k}.json")
-    json.dump(items, open(out, "w"), indent=1)
+    with open(out, "w") as handle:
+        json.dump(items, handle, indent=1)
     held_n = sum(e["held_values"] for e in items)
     coll = sum(1 for e in items if e["convo"][0]["content"] in prior_convos)
     prior_convos |= {e["convo"][0]["content"] for e in items}   # also dedup across the new instances
     print(f"m{k} seed {seed}: {len(items)} items ({held_n} held) -> {os.path.basename(out)}; "
           f"collisions vs prior instances: {coll}")
-    all_items.append(items)
 
 # schema + held-value integrity check across all five
 allok = True
 for k in range(len(SEEDS)):
-    items = all_items[k]
+    with open(os.path.join(HERE, f"scribe_eval_m{k}.json")) as handle:
+        items = json.load(handle)
     for e in items:
         if set(e["tuple"].keys()) != {"cc", "dur", "sev", "med", "alg"}: allok = False
         # a held-value dialogue must contain at least one held token; a seen-value one must not require it
