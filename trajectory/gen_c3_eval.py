@@ -24,13 +24,11 @@ for v in pools["c1b_bridges_rescored"]:
 HELD_TYPES = sorted(LABEL_OF)
 assert len(HELD_TYPES) == 59 + 34 == 93, f"expected 93 held types, got {len(HELD_TYPES)}"
 
-V1 = os.path.join(HERE, "..", "scribe", "build_scribe_data.py")
-src = open(V1).read()
-marker = "# ---------------- build sets ----------------"
-assert marker in src, "v1 generator layout changed; re-verify"
-ns = {}
-exec(compile(src.split(marker)[0], V1, "exec"), ns)
-sample_tuple, make_convo = ns["sample_tuple"], ns["make_convo"]
+sys.path.insert(0, os.path.join(HERE, "..", "scribe"))
+try:
+    from build_scribe_data import sample_tuple, make_convo
+finally:
+    sys.path.pop(0)
 
 SEEDS = [20260750, 20260751, 20260752, 20260753, 20260754]
 N = 400   # 93 held types x >=3/instance needs >=186 held slots; N=400 -> 200 held/instance

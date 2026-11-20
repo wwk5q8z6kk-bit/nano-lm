@@ -117,49 +117,51 @@ def make_convo(t, held: bool):
             {"role": "assistant", "content": summary_of(t)}]
 
 # ---------------- build sets ----------------
-N_TRAIN, N_EVAL = 8000, 40
-train = [make_convo(sample_tuple(False), False) for _ in range(N_TRAIN)]
+if __name__ == '__main__':
 
-eval_items = []
-for i in range(N_EVAL):
-    held_vals = i < 20                       # half the eval set uses held-out slot values
-    t = sample_tuple(held_vals)
-    eval_items.append({"tuple": {"cc": t["cc"][1], "dur": f"{t['n']} {t['unit']}", "sev": t["sev"],
-                                 "med": t["med"] or "none", "alg": t["alg"] or "none"},
-                       "held_values": held_vals,
-                       "convo": make_convo(t, True)})   # ALL eval dialogues use held-out templates
+    N_TRAIN, N_EVAL = 8000, 40
+    train = [make_convo(sample_tuple(False), False) for _ in range(N_TRAIN)]
 
-json.dump(eval_items, open("scribe_eval.json", "w"), indent=1)
+    eval_items = []
+    for i in range(N_EVAL):
+        held_vals = i < 20                       # half the eval set uses held-out slot values
+        t = sample_tuple(held_vals)
+        eval_items.append({"tuple": {"cc": t["cc"][1], "dur": f"{t['n']} {t['unit']}", "sev": t["sev"],
+                                     "med": t["med"] or "none", "alg": t["alg"] or "none"},
+                           "held_values": held_vals,
+                           "convo": make_convo(t, True)})   # ALL eval dialogues use held-out templates
 
-# ---------------- tokenize with the posttrain tokenizer (V=4098, has role tokens) ----------------
-tok = Tokenizer.from_file("tokenizer.json")
-IMS, IME = "<|im_start|>", "<|im_end|>"
-ims_id, ime_id = tok.token_to_id(IMS), tok.token_to_id(IME)
-S = 512
+    json.dump(eval_items, open("scribe_eval.json", "w"), indent=1)
 
-def render_ids(convo):
-    ids, mask = [], []
-    for m in convo:
-        head = tok.encode(f"{m['role']}\n", add_special_tokens=False).ids
-        body = tok.encode(m["content"], add_special_tokens=False).ids
-        seg = [ims_id] + head + body + [ime_id]
-        train_flag = 1 if m["role"] == "assistant" else 0
-        for j, tkn in enumerate(seg):
-            ids.append(tkn)
-            mask.append(1 if (train_flag and j >= 1 + len(head)) else 0)
-    return ids, mask
+    # ---------------- tokenize with the posttrain tokenizer (V=4098, has role tokens) ----------------
+    tok = Tokenizer.from_file("tokenizer.json")
+    IMS, IME = "<|im_start|>", "<|im_end|>"
+    ims_id, ime_id = tok.token_to_id(IMS), tok.token_to_id(IME)
+    S = 512
 
-X, M, dropped = [], [], 0
-for c in train:
-    ids, mask = render_ids(c)
-    if len(ids) > S:
-        dropped += 1; continue
-    X.append(ids + [0] * (S - len(ids)))
-    M.append(mask + [0] * (S - len(mask)))
+    def render_ids(convo):
+        ids, mask = [], []
+        for m in convo:
+            head = tok.encode(f"{m['role']}\n", add_special_tokens=False).ids
+            body = tok.encode(m["content"], add_special_tokens=False).ids
+            seg = [ims_id] + head + body + [ime_id]
+            train_flag = 1 if m["role"] == "assistant" else 0
+            for j, tkn in enumerate(seg):
+                ids.append(tkn)
+                mask.append(1 if (train_flag and j >= 1 + len(head)) else 0)
+        return ids, mask
 
-np.save("scribe_x.npy", np.array(X, dtype=np.uint16))
-np.save("scribe_mask.npy", np.array(M, dtype=np.uint8))
-sup = int(np.array(M).sum())
-print(f"train examples {len(X)} (dropped {dropped} >512tok); supervised tokens {sup}; "
-      f"eval {len(eval_items)} (all held-out templates; {sum(e['held_values'] for e in eval_items)} with held-out values)",
-      flush=True)
+    X, M, dropped = [], [], 0
+    for c in train:
+        ids, mask = render_ids(c)
+        if len(ids) > S:
+            dropped += 1; continue
+        X.append(ids + [0] * (S - len(ids)))
+        M.append(mask + [0] * (S - len(mask)))
+
+    np.save("scribe_x.npy", np.array(X, dtype=np.uint16))
+    np.save("scribe_mask.npy", np.array(M, dtype=np.uint8))
+    sup = int(np.array(M).sum())
+    print(f"train examples {len(X)} (dropped {dropped} >512tok); supervised tokens {sup}; "
+          f"eval {len(eval_items)} (all held-out templates; {sum(e['held_values'] for e in eval_items)} with held-out values)",
+          flush=True)
