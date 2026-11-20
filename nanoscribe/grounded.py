@@ -244,10 +244,12 @@ _NONPATIENT_IDENTITY_WARNING_RE = re.compile(
     re.I,
 )
 
+_PRESENTING_CORRECTION = (r"i\s+(?:misspoke|was\s+(?:mistaken|wrong|incorrect))\s+about\s+my\s+"
+                          r"(?:(?:main|presenting|current)\s+)?(?:symptoms?|complaint)")
 _SELF_CORRECTION_CLAUSE_RE = re.compile(
     r"\b(?:sorry|mistake|mistaken|wrong|incorrect|meant|correction|"
     r"other thing i was thinking of|intake form.*mistake)\b"
-    r"|\bactually\b",
+    rf"|\bactually\b|(?:^|(?<=[.!?;]))\s*{_PRESENTING_CORRECTION}(?=[.!?;]|$)",
     re.IGNORECASE,
 )
 
@@ -897,12 +899,19 @@ _COMPLAINT_LEAD_RE = re.compile(
     r"i\s+(?:(?:also|still|now|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
     r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with|"
     r"(?:on\s+my\s+period|menstruating)\s+with)|i(?:'m|\s+am)(?=\s+on\s+edge\b)|"
-    r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is)\s+)?", re.I,
+    r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is|"
+    r"(?P<presenter>my|the)\s+(?:main|primary|presenting|current)\s+(?:problem|concern|symptom|complaint)\s+is)\s+)?", re.I,
+)
+# A nominal symptom name can refer to a potential episode or a value copied
+# from a document. Its reporting frame alone cannot establish current symptoms.
+_PRESENTING_REFERENCE_RE = re.compile(
+    r"\b(?:may|might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year)|"
+    r"(?:from|in|on)\s+(?:the|my|that)\s+(?:form|chart|leaflet|worksheet|report|example))\b", re.I,
 )
 _COMPLAINT_JOIN_RE = re.compile(
     r",?\s+(?:(?:and|but|because|although|whereas)\s+(?=(?:i|please|my)\b)|"
     r"(?:and|but)\s+(?=(?:an?|the)\s+)|"
-    r"(?:and|but|while|whereas|after|since)\s+(?!(?:it|they|has|have|is|are)\b)(?=(?:(?:my|the)\s+)?(?:[\w-]+\s+){1,3}"
+    r"(?:and|but|while|whereas|after|since)\s+(?!(?:then|it|they|has|have|is|are)\b)(?=(?:(?:my|the)\s+)?(?:[\w-]+\s+){1,3}"
     r"(?:persists?|remains?|continues?|returned|resolved|has|have|is|are)\b))", re.I,
 )
 _DOCUMENT_CONTENT_RE = re.compile(r'\b(?:says?|states?|reads?|titled|labelled|labeled|quoting|lists?)\b|[“"]', re.I)
@@ -960,7 +969,7 @@ _COMPLAINT_ENDED_RE = re.compile(
     rf"(?:present|there|bothering\s+me))\b", re.I,
 )
 _COMPLAINT_RECURRED_RE = re.compile(
-    r"\s*(?:(?:briefly|yesterday|for\s+a\s+while)\s*)?,?\s*(?:but|then|and\s+then)\s+(?:(?:it|they|the\s+symptoms?)\s+)?"
+    r"\s*(?:(?:briefly|yesterday|for\s+a\s+while)\s*)?,?\s*(?:but(?:\s+then)?|then|and\s+then)\s+(?:(?:it|they|the\s+symptoms?)\s+)?"
     r"(?:(?:has|have|is|are|now|since)\s+)*(?:returned|recurred|came\s+back|back)\b", re.I,
 )
 _RECURRING_GONE_RE = re.compile(r"\b(?:has\s+)?gone\s+away" + _COMPLAINT_RECURRED_RE.pattern, re.I)
@@ -1028,6 +1037,16 @@ def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateS
     head = _COMPLAINT_HEAD_RE.match(text, lead.end())
     previous = _preceding_clinician_turn(source, idx)
     requested = question_field(previous.text) if previous else None
+    if lead["presenter"]:
+        # An impersonal description inherits its owner only from a direct
+        # presenting-symptom question. An explicit "my" names its own source.
+        if lead["presenter"].casefold() == "the" and requested is not FieldName.CHIEF_COMPLAINT:
+            turn = source.turns[idx]
+            prefix = turn.text[:report.start - turn.start].rstrip(" .!?;")
+            if not re.fullmatch(_PRESENTING_CORRECTION, prefix, re.I):
+                return False
+        if _EPISTEMIC_HEDGE_RE.search(text) or _PRESENTING_REFERENCE_RE.search(text):
+            return False
     if (report.start == source.turns[idx].start and lead.end() == 0
             and requested in (FieldName.MEDICATION, FieldName.ALLERGY)):
         return False
@@ -1038,8 +1057,9 @@ def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateS
         while following_head := _COMPLAINT_HEAD_RE.match(text, last.end()):
             last = following_head
         remainder = _INCOMPLETE_RESOLUTION_RE.sub("still present", text[last.end():])
+        episode = re.sub(r"^\s+(?:that|which)\s+", " ", remainder, flags=re.I) if lead["presenter"] else remainder
         name = re.sub(r"^(?:an?|the|my|some)\s+", "", text[lead.end():last.end()].strip(), flags=re.I)
-        if _complaint_ended(remainder) or _immediate_complaint_followup_ends(source, idx, report, name):
+        if _complaint_ended(episode) or _immediate_complaint_followup_ends(source, idx, report, name):
             return False
         following = re.match(r"\s+([^\W\d_]+)", remainder)
         functional = re.match(r"(?:trouble|difficulty)\s+", last["head"], re.I)

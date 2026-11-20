@@ -48,6 +48,8 @@ _QUESTION_PATTERNS = {
         r"what is troubling you" + _CURRENT_TIME,
         r"what (?:symptoms? )?(?:brings|brought) you (?:in|here|to (?:the|our) (?:clinic|office))" + _CURRENT_TIME,
         r"what (?:is|has been) bothering you" + _CURRENT_TIME,
+        r"tell me your (?:main |current |presenting )?symptoms?",
+        r"(?:which|what) symptoms? (?:are you here for|bothers? you)(?: right now| today)?",
         r"what (?:is|seems to be) (?:the|your) (?:main )?(?:problem|trouble|issue|concern)" + _CURRENT_TIME,
         r"(?:describe|tell me about) (?:the|your) (?:main )?(?:symptoms?|problem|concern|issue)(?: you are having)?" + _CURRENT_TIME,
         r"tell me what (?:is|has been) (?:going on|bothering you)" + _CURRENT_TIME,
