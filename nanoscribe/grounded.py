@@ -852,18 +852,47 @@ def _nonpatient_prompt(speech: str) -> bool:
         r"are you|is (?:your|the)|let['’]s (?:talk|discuss))\b", speech, re.I))
 
 
-def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn) -> bool:
+_PERSONAL_SYMPTOM_REPORT_RE = re.compile(rf"\bi (?:have|have had|feel) (?:[\w-]+ ){{0,3}}{_SYMPTOM}\b", re.I)
+_SCALAR_PREDICATE_TAIL_RE = re.compile(
+    r"(?:\s+(?:been|lasted|persisted|continued|started|began|hurting|aching|rated|feels?|is|at|a|an|"
+    r"about|around|roughly|only|currently|now|for|since|on|nearly|almost|really|very))*\s*", re.I,
+)
+
+
+def _symptom_owns_scalar(clause: Turn, field: FieldName, span: CandidateSpan) -> bool:
+    # Bind the specific measurement to its predicate. A symptom elsewhere in
+    # the sentence can coexist with a time or rating that answers the aside.
+    measure = _DURATION_VALUE_RE if field is FieldName.DURATION else _SEVERITY_CORE_RE
+    values = list(measure.finditer(span.text))
+    if not values:
+        return False
+    for value in values:
+        prefix = clause.text[:span.start - clause.start + value.start()]
+        if not any(_SCALAR_PREDICATE_TAIL_RE.fullmatch(prefix[match.end():])
+                   for predicate in (_SYMPTOM_SUBJECT_RE, _BODY_SENSATION_RE, _PERSONAL_SYMPTOM_REPORT_RE)
+                   for match in predicate.finditer(prefix)):
+            return False
+    return True
+
+
+def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn, span: CandidateSpan | None = None) -> bool:
     # A patient can start a new clinical report after a logistical interruption.
     # A bare answer to the aside has no clinician question to supply its field.
     aside_prompt = _logistical_aside_prompt(previous)
     if aside_prompt is not None:
-        text = clause.text
         if field in (FieldName.SEVERITY, FieldName.DURATION):
-            return not (_SYMPTOM_SUBJECT_RE.search(text) or _BODY_SENSATION_RE.search(text)
-                        or re.match(rf"i (?:have|have had|feel) (?:[\w-]+ ){{0,3}}{_SYMPTOM}\b", text, re.I))
-        if field is FieldName.MEDICATION and aside_prompt:
-            return not (_TREATMENT_CONTEXT_RE.search(text) or _FAMILIAR_MEDICINE_RE.search(text)
-                        or _MEDICAL_PURPOSE_RE.search(text))
+            evidence = span or CandidateSpan(clause.start, clause.end, clause.text)
+            return not _symptom_owns_scalar(clause, field, evidence)
+        if field is FieldName.MEDICATION and span is not None:
+            if _is_field_denial(field, span.text):
+                return aside_prompt and not _TREATMENT_CONTEXT_RE.search(span.text)
+            if re.fullmatch(_LOGISTICS_ITEM, span.text.strip(), re.I):
+                return True
+            if aside_prompt:
+                label = _SUBSTANCE_LABEL_RE.match(clause.text)
+                labeled_object = label and label.end() == span.start - clause.start
+                return not (labeled_object or _FAMILIAR_MEDICINE_RE.fullmatch(span.text)
+                            or _TREATMENT_CONTEXT_RE.search(span.text))
         return False
     speech = _identified_nonpatient_speech(previous)
     if previous.speaker is Speaker.OTHER or previous.text.lower().startswith("other:"):
@@ -1383,7 +1412,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
         return False
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
-    if prev is not None and _ambiguous_reply_boundary(prev, field, _enclosing_clause(turn, span)):
+    if prev is not None and _ambiguous_reply_boundary(prev, field, _enclosing_clause(turn, span), span):
         return False
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):
@@ -2376,7 +2405,7 @@ def _verify_local_span(
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
     clause = _enclosing_clause(turn, span)
-    if prev is not None and _ambiguous_reply_boundary(prev, field, clause):
+    if prev is not None and _ambiguous_reply_boundary(prev, field, clause, span):
         return False, "intervening_unknown_speaker"
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):

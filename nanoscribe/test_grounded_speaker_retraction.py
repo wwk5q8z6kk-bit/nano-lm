@@ -131,6 +131,19 @@ def test_field_specific_patient_statement_after_a_logistical_question(field, ans
     check(f"Unknown: Where is the garage?\nPatient: {answer}", field, quote, licensed=True)
 
 
+@pytest.mark.parametrize("answer,field,quote,licensed", [
+    ("Monday for the pass, but my headache has lasted four days.", DUR, "Monday", False),
+    ("Monday for the pass, but my headache has lasted four days.", DUR, "four days", True),
+    ("My headache has lasted four days, but the pass expires Monday.", DUR, "Monday", False),
+    ("I took the bag with my aspirin in it.", MED, "bag", False),
+    ("I took the bag with my aspirin in it.", MED, "aspirin", False),
+    ("I took aspirin from the bag.", MED, "aspirin", True),
+])
+def test_patient_measurement_or_substance_belongs_to_the_cited_object(answer, field, quote, licensed):
+    report = f"Unknown: Can you bring the bag?\nPatient: {answer}"
+    check(report, field, quote, licensed=licensed, after=report.index("Patient:"))
+
+
 @pytest.mark.parametrize("later,licensed", [
     ("Mother: I was mistaken about naproxen.", True),
     ("  pArTnEr  :  Actually I took ibuprofen instead.", True),
