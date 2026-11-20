@@ -130,7 +130,7 @@ _SUBSTANCE_OBJECT_RE = re.compile(
     r"\s+(?:(?:a|an|some|the|just|only)\s+)?"
     r"(?P<name>(?:(?!\b(?:for|on|to|with|without|before|after|at|in|since|by|because|"
     r"and|or|but|that|which|then|once|twice|every|yesterday|today|tonight|last|this|next|so|"
-    r"as|during|prescribed|daily|nightly|weekly|occasionally|regularly|recently|instead)\b)"
+    r"as|during|prescribed|daily|nightly|weekly|occasionally|regularly|recently|earlier|later|again|instead)\b)"
     r"[^\W\d_][\w‐‑'’/-]*(?:\s+|(?=[.,;!?]|$)))+)", re.I,
 )
 _FOLLOWUP_DOUBT_RE = re.compile(
@@ -1177,9 +1177,10 @@ def _verify_local_span(
             for phrase in _SUBSTANCE_OBJECT_RE.finditer(clause.text):
                 left = clause.start + phrase.start("name")
                 name = phrase["name"]
-                duration = _DURATION_VALUE_RE.search(name)
-                if duration and duration.start() > 0:
-                    name = name[:duration.start()]
+                for time_pattern in (_DURATION_VALUE_RE, _MED_TIME_QUALIFIER_RE):
+                    timing = time_pattern.search(name)
+                    if timing and timing.start() > 0:
+                        name = name[:timing.start()]
                 right = left + len(name.rstrip())
                 if left <= span.start and span.end <= right and (left, right) != (span.start, span.end):
                     return False, "incomplete_substance_name"
@@ -1543,8 +1544,8 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                 )
                 rem = body[max(lead.end() if lead else 0, owned[0]):].lstrip()
                 rem_clean = re.sub(
-                    r"(?:,?\s*(?:one\s+time|twice|once)?\s*(?:today|yesterday|this\s+morning|this\s+evening|last\s+night|so\s+far|"
-                    r"every\s+(?:night|day|morning)[^.!?;]*|but\s+it\s+barely\s+helps)|"
+                    r"(?:,?\s*(?:one\s+time|twice|once)?\s*\b(?:today|yesterday|this\s+morning|this\s+evening|last\s+night|so\s+far|"
+                    r"earlier|later|again|every\s+(?:night|day|morning)[^.!?;]*|but\s+it\s+barely\s+helps)|"
                     r"\s+(?:for|on|to)\s+(?:it|them|this|the|my)\b[^.!?;]*)+$",
                     "",
                     rem,

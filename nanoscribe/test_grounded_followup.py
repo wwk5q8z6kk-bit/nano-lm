@@ -107,3 +107,13 @@ def test_field_wide_denial_is_also_qualified_by_a_later_uncertain_instance(state
     span = EvidenceSpan(start, start + len(statement), statement)
     assert _observation_kind(doc, field, span, context_policy="grounded") is None
     assert f":A[{statement}]" not in grounded_candidate_choices(source, field, set())
+
+
+@pytest.mark.parametrize("turn", [
+    "I took aspirin earlier, but I will take ibuprofen later.",
+    "I took aspirin later.",
+    "I took aspirin again.",
+])
+def test_administration_adverb_is_outside_the_complete_substance_name(turn):
+    source = "Patient: " + turn
+    check(source, "MED", FieldName.MEDICATION, "aspirin", source.index("aspirin"), True)
