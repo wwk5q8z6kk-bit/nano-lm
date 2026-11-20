@@ -48,8 +48,39 @@ from nanoscribe.grounded import build_grounded_english_menu, format_grounded_spa
     ("My bus ride is three out of ten.", "three out of ten", False),
 ])
 def test_current_severity_source_paths(reply, quote, accepted):
+    _check_rating("How bad is the pain now?", reply, quote, accepted)
+
+
+@pytest.mark.parametrize("question, reply, quote, accepted", [
+    ("How bad was the pain last Friday?", "7/10 was my score when you just asked me.", "7/10", False),
+    ("How bad was the pain?", "7/10 was my score when you just asked me.", "7/10", False),
+    ("How would you rate your pain yesterday?", "7/10 was my score when you asked me just now.", "7/10", False),
+    ("What was your pain score last month?", "7/10 was my rating when you asked me just now.", "7/10", False),
+    ("How bad was the pain last Friday?", "7/10.", "7/10", False),
+    ("How bad was the pain last Friday?", "7/10 was my score when you just asked me, but it is 2/10 now.", "7/10", False),
+    ("How bad was the pain last Friday?", "7/10 was my score when you just asked me, but it is 2/10 now.", "2/10", True),
+    ("What was your pain score last month?", "Right now it is 2/10.", "2/10", True),
+    ("How bad was your wrist pain yesterday?", "4/10 was my score when I checked my wrist pain just now.", "4/10", True),
+    ("What is your pain score right now?", "4/10 was my score when you asked me just now.", "4/10", True),
+    ("How severe is your wrist pain right now?", "4/10 was my score when I checked my wrist pain just now.", "4/10", True),
+    ("How bad is the pain now?", "4/10 was my score when I assessed my left knee pain just now.", "4/10", True),
+    ("How bad is the pain now?", "4/10 was my score when I checked my wrist pain diary just now.", "4/10", False),
+    ("How bad is the pain now?", "4/10 was my score when I checked my sister's wrist pain just now.", "4/10", False),
+    ("How bad is the pain now?", "4/10 was my score when I checked my wrist pain yesterday.", "4/10", False),
+    ("How bad was your mother's pain last month?", "Right now it is 2/10.", "2/10", False),
+    ("How bad was the pain just now?", "7/10 was my score when you just asked me.", "7/10", True),
+    ("On a scale from zero to ten, how bad is your pain now?", "7/10 was my score when you just asked me.", "7/10", True),
+    ("What was your pain score last month?", "My wrist pain right now is 2/10.", "2/10", True),
+    ("What was your pain score last month?", "Now I remember my wrist pain was 7/10.", "7/10", False),
+    ("Who drove you today?", "7/10 was my score when you just asked me.", "7/10", False),
+])
+def test_current_measurement_and_time_requested(question, reply, quote, accepted):
+    _check_rating(question, reply, quote, accepted)
+
+
+def _check_rating(question, reply, quote, accepted):
     field = FieldName.SEVERITY
-    request = NanoInput("current-rating", "Doctor: How bad is the pain now?\nPatient: " + reply)
+    request = NanoInput("current-rating", f"Doctor: {question}\nPatient: {reply}")
     source = transcript_source(request)
     start = request.transcript.index(quote)
     span = EvidenceSpan(start, start + len(quote), quote)

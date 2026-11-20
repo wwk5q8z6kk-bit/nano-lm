@@ -1777,14 +1777,41 @@ _EARLIER_RATING_RE = re.compile(
 # A current check can be expressed in the past tense, even under "when".
 # The time must qualify the patient's own measurement, not a chart lookup
 # or somebody else's rating mentioned in the same answer.
-_RATING_MEASUREMENT = r"(?:checked|rechecked|measured|rated|assessed|reassessed)(?:\s+(?:it|my\s+(?:pain|symptoms?)))?"
-_RATING_PROMPT = r"asked\s+me(?:\s+about\s+my\s+(?:pain|symptoms?))?"
+_RATED_SYMPTOM = (
+    rf"(?:(?:(?:left|right|lower|upper)\s+)?{_BODY_REGION}\s+)?"
+    r"(?:pain|symptoms?|swelling|soreness|stiffness|tightness)"
+)
+_RATING_MEASUREMENT = rf"(?:checked|rechecked|measured|rated|assessed|reassessed)(?:\s+(?:it|my\s+{_RATED_SYMPTOM}))?"
+_RATING_PROMPT = rf"asked\s+me(?:\s+about\s+my\s+{_RATED_SYMPTOM})?"
 _RECENT_RATING_TIME = r"(?:(?:(?:just|right)\s+)?now|at\s+(?:this|the)\s+moment|a\s+(?:moment|second)\s+ago)"
-_RECENT_RATING_TIME_RE = re.compile(_RECENT_RATING_TIME, re.I)
+_RECENT_RATING_TIME_RE = re.compile(rf"\b{_RECENT_RATING_TIME}\b", re.I)
 _CURRENT_RATING_CHECK_RE = re.compile(
-    rf"\s*(?:i\s+(?P<measured_just>just\s+)?{_RATING_MEASUREMENT}|you\s+(?P<asked_just>just\s+)?{_RATING_PROMPT})"
+    rf"\s*(?:(?P<measured>i)\s+(?P<measured_just>just\s+)?{_RATING_MEASUREMENT}|you\s+(?P<asked_just>just\s+)?{_RATING_PROMPT})"
     rf"(?:\s+(?P<time>{_RECENT_RATING_TIME}))?\s*[.!?;]?\s*$", re.I,
 )
+_RATING_SUBJECT = rf"(?:it|(?:my|the)\s+{_RATED_SYMPTOM})"
+_CURRENT_RATING_LEAD_RE = re.compile(
+    rf"(?:{_RECENT_RATING_TIME}[\s,]*(?:{_RATING_SUBJECT}\s+(?:is|feels?))?|"
+    rf"{_RATING_SUBJECT}\s+(?:(?:is|feels?)\s+{_RECENT_RATING_TIME}|{_RECENT_RATING_TIME}\s+(?:is|feels?)))", re.I,
+)
+_PAST_RATING_TIME_RE = re.compile(
+    rf"\s+(?:yesterday|earlier|(?:on\s+)?(?:last\s+)?{_DAY_NAME}|last\s+(?:{_DAY_PART}|week|month|year)|"
+    r"at\s+(?:first|its\s+(?:worst|peak)))$"
+)
+
+
+def _requests_current_rating(text: str) -> bool | None:
+    """True for current severity questions, False for past ones, None for other requests."""
+    question = text.casefold().strip(" .!?")
+    timeless = _PAST_RATING_TIME_RE.sub("", question)
+    present = re.sub(r"\bwas\b", "is", timeless)
+    present = re.sub(r"\bwere\b", "are", present)
+    normalized = _RECENT_RATING_TIME_RE.sub("now", present)
+    normalized = re.sub(r"^on a scale (?:of|from) (?:0|1|zero|one) to (?:10|ten),?\s+", "", normalized)
+    if (question_field(normalized) is FieldName.SEVERITY
+            or re.fullmatch(r"(?:what is|what's) (?:your|the) (?:current )?pain (?:score|rating|level)(?: now)?", normalized)):
+        return timeless == question and (present == timeless or bool(_RECENT_RATING_TIME_RE.search(timeless)))
+    return None
 
 
 def _severity_subject(text: str) -> bool | None:
@@ -1802,16 +1829,26 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
                if span.start <= report.start + m.start() and report.start + m.end() <= span.end]
     if not ratings:
         return False
+    previous = _preceding_clinician_turn(source, idx)
+    current_request = _requests_current_rating(previous.text) if previous else None
     for rating in ratings:
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
         earlier = _EARLIER_RATING_RE.match(after)
+        self_check = False
         if earlier:
             check = earlier["when"] and _CURRENT_RATING_CHECK_RE.match(after, earlier.end())
             if not check or not any(check.group("measured_just", "asked_just", "time")):
                 return False
-        # An elliptical score can end in a current time adjunct of its own.
-        if _RECENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?")):
+            # A recent question may request a past score. Only measuring the
+            # symptom independently supplies the time of the measurement.
+            self_check = bool(check["measured"])
+            if not self_check and current_request is not True:
+                return False
+        trailing_now = _RECENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?"))
+        if current_request is False and not (self_check or trailing_now or _CURRENT_RATING_LEAD_RE.fullmatch(before)):
+            return False
+        if trailing_now:
             after = ""
         # Stop before a separate subject, adjunct or predicate.
         noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
@@ -1831,7 +1868,6 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
             continue
         if not _RATING_LEAD_RE.fullmatch(before):
             return False
-        previous = _preceding_clinician_turn(source, idx)
         if report.start != source.turns[idx].start:
             prior = source.text[source.turns[idx].start:report.start]
         elif previous:
@@ -1942,7 +1978,11 @@ def _verify_local_span(
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):
             # Allow only if patient explicitly pivots back to current self without repeating third-party/past hazard
-            if not re.search(r"\bfor this (?:new )?", turn.text, re.IGNORECASE):
+            # A recognized past severity question can also receive an explicit
+            # current measurement. The selected rating is checked below.
+            past_rating = (field is FieldName.SEVERITY and state is FieldState.SUPPORTED
+                           and _requests_current_rating(prev.text) is False)
+            if not past_rating and not re.search(r"\bfor this (?:new )?", turn.text, re.IGNORECASE):
                 return False, "non_current_or_third_party_question_scope"
 
     clause = _enclosing_clause(turn, span)
