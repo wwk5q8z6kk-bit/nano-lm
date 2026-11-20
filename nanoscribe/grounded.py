@@ -906,7 +906,9 @@ _COMPLAINT_LEAD_RE = re.compile(
 # from a document. Its reporting frame alone cannot establish current symptoms.
 _PRESENTING_REFERENCE_RE = re.compile(
     r"\b(?:may|might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year)|"
-    r"(?:from|in|on)\s+(?:the|my|that)\s+(?:form|chart|leaflet|worksheet|report|example))\b", re.I,
+    r"(?:will|(?:am|is|are)\s+going\s+to)\s+(?:(?:first|only|soon|probably|likely)\s+)*"
+    r"(?:develop|start|begin|appear|arise|occur|emerge|experience|get|have|feel|set\s+in|come\s+on)|"
+    r"(?:from|in|on)\s+(?:an?|the|my|this|that|our|your)\s+(?:form|chart|leaflet|worksheet|report|example))\b", re.I,
 )
 _COMPLAINT_JOIN_RE = re.compile(
     r",?\s+(?:(?:and|but|because|although|whereas)\s+(?=(?:i|please|my)\b)|"
