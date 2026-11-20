@@ -27,11 +27,12 @@ The distinction is experiment fit, cost, risk, and evidential significance.
 | PHI / private data on cloud | **NOT_AUTHORIZED** |
 
 ```text
-training_backend = KAGGLE_AND_RUNPOD
+training_backend = KAGGLE_GOOGLE_CLOUD_AND_RUNPOD
 training_status = ACTIVE
 
 backend_policy =
 KAGGLE_FREE_WHEN_RUNTIME_FITS;
+GOOGLE_CLOUD_CREDIT_BACKED_FINITE_EXPERIMENTS;
 RUNPOD_FOR_EXACT_GPU_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE
 
 routine_runpod_training =
