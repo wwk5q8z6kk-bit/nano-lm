@@ -31,7 +31,7 @@ METHODS = [
 ]
 
 
-def main() -> None:
+def compute_stats() -> dict:
     stats = {}
     for method in METHODS:
         for arm in ("voff", "von"):
@@ -73,7 +73,10 @@ def main() -> None:
                 "gap_shrink_pts": (norm_ok - exact_ok) / n_fields * 100,
                 "error_types_exact_fail": dict(err_types),
             }
+    return stats
 
+
+def get_m0_disagreements_and_errors() -> tuple[list, list, dict]:
     m0 = json.loads((TRAJ / "results_e1_items_M0_scale_voff.json").read_text())
     instances = load_instances()
     dlg_index = {
@@ -104,6 +107,10 @@ def main() -> None:
             elif not ex:
                 exact_errors.append({**row, "stratum": "exact_error"})
 
+    return disagreements, exact_errors, dlg_index
+
+
+def sample_human_pack(disagreements: list, exact_errors: list, dlg_index: dict) -> tuple[list, str]:
     rng = random.Random(SEED)
     rng.shuffle(disagreements)
     rng.shuffle(exact_errors)
@@ -131,7 +138,10 @@ def main() -> None:
             }
         )
     sha = hashlib.sha256(json.dumps(pack_items, sort_keys=True).encode()).hexdigest()
+    return pack_items, sha
 
+
+def write_outputs(stats: dict, pack_items: list, sha: str, disagreements: list, exact_errors: list) -> None:
     auto = {
         "prereg": "trajectory/PREREG_E3_faithfulness_construct.md",
         "source_e1_items": "trajectory/results_e1_items_M0_scale_voff.json",
@@ -194,6 +204,13 @@ def main() -> None:
     )
     print(json.dumps(auto["decision_auto"], indent=2))
     print(f"human pack n={len(pack_items)} sha={sha[:16]}")
+
+
+def main() -> None:
+    stats = compute_stats()
+    disagreements, exact_errors, dlg_index = get_m0_disagreements_and_errors()
+    pack_items, sha = sample_human_pack(disagreements, exact_errors, dlg_index)
+    write_outputs(stats, pack_items, sha, disagreements, exact_errors)
 
 
 if __name__ == "__main__":
