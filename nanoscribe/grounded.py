@@ -879,6 +879,9 @@ def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn, sp
     # A patient can start a new clinical report after a logistical interruption.
     # A bare answer to the aside has no clinician question to supply its field.
     aside_prompt = _logistical_aside_prompt(previous)
+    plain_other = previous.speaker is Speaker.OTHER or previous.text.lower().startswith("other:")
+    if aside_prompt is False and plain_other:
+        return False
     if aside_prompt is not None:
         if field in (FieldName.SEVERITY, FieldName.DURATION):
             evidence = span or CandidateSpan(clause.start, clause.end, clause.text)
@@ -895,7 +898,7 @@ def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn, sp
                             or _TREATMENT_CONTEXT_RE.search(span.text))
         return False
     speech = _identified_nonpatient_speech(previous)
-    if previous.speaker is Speaker.OTHER or previous.text.lower().startswith("other:"):
+    if plain_other:
         # Plain Other asides retain their existing behavior. A direct question
         # about somebody else cannot set the scope of a patient response.
         return speech is not None and _nonpatient_prompt(speech) and _outside_current_scope(speech)
@@ -1269,7 +1272,8 @@ def _retracts_value(correction: str, original: str, field: FieldName, span_text:
     return False
 
 
-def _doubts_observation(text: str, original: Turn, field: FieldName, value: str | None, adjacent: bool) -> bool:
+def _doubts_observation(text: str, original: Turn, field: FieldName, value: str | None,
+                        adjacent: bool, intervening_aside: bool) -> bool:
     hedge = _FOLLOWUP_DOUBT_RE.search(text)
     if (not hedge or _patient_question(text) or _THIRD_PARTY_RE.search(text)
             or _PERSONAL_SUBJECT_RE.search(text) or _ATTRIBUTED_ASSERTION_RE.search(text)):
@@ -1279,7 +1283,7 @@ def _doubts_observation(text: str, original: Turn, field: FieldName, value: str 
         return False
     rest = text[hedge.end():].strip(" .?!;")
     if re.fullmatch(r"(?:about (?:that|it|my answer)|(?:that |if )?(?:that|it) (?:was|is) (?:right|correct))?", rest, re.I):
-        return adjacent
+        return adjacent and not intervening_aside
 
     # Doubt about efficacy, dose or time of administration leaves use intact.
     if field in _DOUBTED_SUBSTANCE:
@@ -1311,6 +1315,7 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
     if not _FOLLOWUP_DOUBT_RE.search(source.text, original.end):
         return False
     adjacent = True
+    intervening_aside = False
     outside_scope = False
     proxy_turns = _forward_proxy_turns(source)
     for index, turn in enumerate(source.turns[idx:], start=idx):
@@ -1320,6 +1325,7 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
         if turn.speaker is not Speaker.PATIENT:
             aside_prompt = _logistical_aside_prompt(turn)
             if aside_prompt is not None:
+                intervening_aside = True
                 adjacent = adjacent and not aside_prompt
                 continue
             outside_scope = (turn.speaker is not Speaker.CLINICIAN or _outside_current_scope(turn.text)
@@ -1332,7 +1338,7 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
         for later in _reply_clauses(turn):
             if later.start < original.end:
                 continue
-            if not outside_scope and _doubts_observation(later.text, original, field, value, adjacent):
+            if not outside_scope and _doubts_observation(later.text, original, field, value, adjacent, intervening_aside):
                 return True
             adjacent = False
     return False
@@ -2202,14 +2208,27 @@ def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: r
     if not _CURRENT_RATING_END_RE.fullmatch(report.text[rating.end():]):
         return False
     setting = False
-    for turn in source.turns[idx:idx + 3]:
+    patient_turns = 0
+    crossed_prompt = False
+    for turn_idx in range(idx, len(source.turns)):
+        turn = source.turns[turn_idx]
         if turn.speaker is not Speaker.PATIENT:
-            break
+            prompt = _logistical_aside_prompt(turn)
+            if prompt is None:
+                break
+            crossed_prompt |= prompt
+            continue
+        patient_turns += 1
         for following in _reply_clauses(turn):
             if following.start < report.end < following.end:
                 return False
             if following.start < report.end:
                 continue
+            # After a logistical question, “that” or “that number” could refer
+            # to the logistics. A patient naming the rating removes this ambiguity.
+            if crossed_prompt and not re.search(r"\bthat (?:score|rating) was\b", following.text, re.I):
+                return False
+            crossed_prompt = False
             if setting:
                 return _contrasts_current_rating(following.text, report.text[:rating.start()].strip(), question)
             correction = _RETROSPECTIVE_RATING_RE.fullmatch(following.text)
@@ -2220,6 +2239,8 @@ def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: r
             # "That was at work" identifies a place. It takes a contrasting
             # current rating to establish that the earlier score was historic.
             setting = True
+        if patient_turns == 3:
+            break
     return False
 
 
@@ -2940,6 +2961,26 @@ def extract_field_denial_spans(source: Source, field: FieldName) -> list[Candida
     return list(out.values())
 
 
+def _uncertainty_follows_logistics(source: Source, span: CandidateSpan) -> bool:
+    idx = _turn_index(source, span.start, span.end)
+    return idx is not None and idx > 0 and _logistical_aside_prompt(source.turns[idx - 1]) is True
+
+
+def _uncertainty_names_field(field: FieldName, text: str) -> bool:
+    if field is FieldName.ALLERGY:
+        return bool(_ALG_QUESTION_CUE_RE.search(text))
+    if field is FieldName.MEDICATION:
+        hedge = _FOLLOWUP_DOUBT_RE.search(text)
+        subject = _DOUBTED_SUBSTANCE[field].match(text[hedge.end():].strip()) if hedge else None
+        return bool(subject and _action_has_treatment_context(subject[1], ""))
+    clinical = bool(_COMPLAINT_HEAD_RE.search(text))
+    if field is FieldName.CHIEF_COMPLAINT:
+        return clinical and field in _correction_fields(text)
+    if field is FieldName.DURATION:
+        return clinical and bool(_DURATION_VALUE_RE.search(text) or re.search(r"\b(?:when|how long|start\w*|began|lasted)\b", text, re.I))
+    return clinical and bool(_SEVERITY_CORE_RE.search(text) or re.search(r"\b(?:score|rating|how (?:bad|severe))\b", text, re.I))
+
+
 def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
     """Extract genuine epistemic-uncertainty or coexisting-multi-substance span bundles."""
     bundles: list[tuple[CandidateSpan, ...]] = []
@@ -2971,10 +3012,15 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
             r"\bchecking whether i can hear\b", turn.text, re.IGNORECASE
         ):
             whole = CandidateSpan(turn.start, turn.end, turn.text)
-            wkey = ((whole.start, whole.end),)
-            if wkey not in seen:
-                seen.add(wkey)
-                bundles.append((whole,))
+            candidates = [whole]
+            if _uncertainty_follows_logistics(source, whole):
+                candidates = [CandidateSpan(part.start, part.end, part.text) for part in _reply_clauses(turn)
+                              if _EPISTEMIC_HEDGE_RE.search(part.text) and _uncertainty_names_field(field, part.text)]
+            for evidence in candidates:
+                key = ((evidence.start, evidence.end),)
+                if key not in seen:
+                    seen.add(key)
+                    bundles.append((evidence,))
     return bundles
 
 
@@ -3363,7 +3409,8 @@ class GroundedStateSpanSolver(StateSpanSolver):
         traces: list[dict[str, object]] = []
         for field, slot, proposal, parse_error in zip(FIELD_ORDER, slots, proposals, parse_errors, strict=True):
             detected_conflicts = detect_grounded_conflicts(document, field)
-            coexisting = [b for b in extract_field_uncertain_bundles(document, field) if len(b) >= 2]
+            uncertain_bundles = extract_field_uncertain_bundles(document, field)
+            coexisting = [b for b in uncertain_bundles if len(b) >= 2]
 
             if detected_conflicts and not global_unsafe:
                 # Preserve un-retracted source contradiction; prefer model's conflict spans if valid, else primary pair
@@ -3392,8 +3439,12 @@ class GroundedStateSpanSolver(StateSpanSolver):
                         if all(u_spans[0].start <= b.start and b.end <= u_spans[0].end for b in bundle):
                             u_spans = bundle
                             break
-                final = GroundedFieldOutput(field, FieldState.UNCERTAIN, evidence=u_spans)
-                verified, reason, decision = True, "verified_uncertainty", "accepted"
+                if any(_uncertainty_follows_logistics(document, sp) for sp in u_spans) and u_spans not in uncertain_bundles:
+                    final = GroundedFieldOutput(field, FieldState.UNCERTAIN)
+                    verified, reason, decision = False, "uncertainty_without_clinical_target", "rejected_to_uncertain"
+                else:
+                    final = GroundedFieldOutput(field, FieldState.UNCERTAIN, evidence=u_spans)
+                    verified, reason, decision = True, "verified_uncertainty", "accepted"
             elif proposal.state in (FieldState.SUPPORTED, FieldState.ABSENT):
                 span = proposal.spans[0]
                 ok, reason = verify_grounded_span(document, field, proposal.state, span)

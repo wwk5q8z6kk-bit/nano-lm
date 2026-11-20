@@ -87,6 +87,7 @@ def test_unidentified_aside_preserves_a_later_patient_retraction():
     ("The umbrella is upstairs.", "I'm not sure whether I took it.", False),
     ("Where is the garage?", "I'm not sure whether I took naproxen.", False),
     ("Where is the garage?", "I'm not sure about that.", True),
+    ("The umbrella is upstairs.", "I am not sure about that. The umbrella is downstairs.", True),
     ("The umbrella is upstairs.", "I'm not sure whether I took loratadine.", True),
 ])
 def test_logistical_asides_preserve_the_scope_of_patient_doubt(aside, doubt, licensed):
@@ -142,6 +143,38 @@ def test_field_specific_patient_statement_after_a_logistical_question(field, ans
 def test_patient_measurement_or_substance_belongs_to_the_cited_object(answer, field, quote, licensed):
     report = f"Unknown: Can you bring the bag?\nPatient: {answer}"
     check(report, field, quote, licensed=licensed, after=report.index("Patient:"))
+
+
+@pytest.mark.parametrize("field,answer,quote", [
+    (DUR, "It started six days ago.", "six days"),
+    (SEV, "It is mild.", "mild"),
+])
+def test_plain_other_statement_preserves_previous_scalar_context(field, answer, quote):
+    check(f"Patient: I have a headache.\nOther: The umbrella is upstairs.\nPatient: {answer}",
+          field, quote, licensed=True)
+
+
+@pytest.mark.parametrize("answer,field,eligible", [
+    ("I am not sure.", CC, False),
+    ("I am not sure.", ALG, False),
+    ("I am not sure where the garage is.", MED, False),
+    ("I am not sure whether I took the bus with aspirin in my bag.", MED, False),
+    ("I am not sure whether I am allergic to nickel.", ALG, True),
+    ("I am not sure whether I took naproxen.", MED, True),
+])
+def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible):
+    report = f"Unknown: Where is the garage?\nPatient: {answer}"
+    request = NanoInput("logistics-uncertainty", report)
+    source = transcript_source(request)
+    candidate = f":U[{answer}]"
+    index = FIELD_ORDER.index(field)
+    assert (candidate in grounded_candidate_choices(report, field, set())) == eligible
+    assert (f" UNCERTAIN[{answer}]" in build_grounded_english_menu(source, field, set())) == eligible
+    raw = "|".join(label + (candidate if idx == index else ":M")
+                   for idx, label in enumerate(("CC", "DUR", "SEV", "MED", "ALG")))
+    result, diagnostics = compact_solver(lambda _: raw, binder="grounded").infer_grounded(request)
+    assert diagnostics["fields"][index]["verified"] is eligible
+    assert bool(result.fields[index].evidence) == eligible
 
 
 @pytest.mark.parametrize("later,licensed", [
