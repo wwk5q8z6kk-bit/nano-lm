@@ -213,9 +213,16 @@ _EVENT_JOIN_RE = re.compile(
     r"(?:then\s+)?(?=i\b|i'|(?:could|would|will|should|might|took|used)\b)", re.IGNORECASE,
 )
 
+_CURRENT_USE_MODIFIERS = r"(?:(?:currently|now|still|also|regularly|already)\s+)*"
+_CURRENT_USE = (rf"i(?:'m|'ve|\s+am|\s+have)?\s+{_CURRENT_USE_MODIFIERS}"
+                rf"(?:been\s+{_CURRENT_USE_MODIFIERS})?(?:taking|using|applying)")
 _REPORTED_TREATMENT_RE = re.compile(
-    r"\bi(?:'m|'ve|\s+am|\s+have)?\s+(?:also\s+)?(?:been\s+)?"
-    r"(?:taking|using|applying|taken|took|used|tried|applied|rubbed|put|swallowed|allergic\s+to)\b", re.I,
+    rf"\b(?:{_CURRENT_USE}|i(?:'m|'ve|\s+am|\s+have)?\s+(?:also\s+)?"
+    r"(?:taken|took|used|tried|applied|rubbed|put|swallowed|allergic\s+to))\b", re.I,
+)
+_POSTPOSED_ALLERGY_RE = re.compile(
+    r"\bi(?:\s+have(?:\s+got)?|'ve\s+got)\s+(?:an?\s+)?(?:(?:known|confirmed|documented|severe)\s+)*"
+    r"(?P<value>[\w-]+(?:\s+[\w-]+){0,5}?)\s+allerg(?:y|ies)\b", re.I,
 )
 _ROUTINE_JOIN_RE = re.compile(r",?\s+(?:but|whereas|while)\s+", re.I)
 _ROUTINE_CLARIFICATION_RE = re.compile(
@@ -347,7 +354,7 @@ _ALG_QUESTION_CUE_RE = re.compile(
     re.IGNORECASE,
 )
 _MED_CLAUSE_VERB_RE = re.compile(
-    r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using)|"
+    rf"\b(?:{_CURRENT_USE}|"
     r"i\s+did\s+(?:take|use|try|apply|swallow)|"
     r"i\s+(?:have\s+)?(?:also\s+)?(?:took|used|tried|applied|rubbed|put|swallowed))\b",
     re.IGNORECASE,
@@ -586,7 +593,8 @@ def _span_in_attributed_quote(turn: Turn, span: CandidateSpan) -> bool:
 def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
     if _ROUTINE_DISCLAIMED_RE.search(clause.text):
         return _split_events(clause, _ROUTINE_JOIN_RE)
-    if _PROSPECTIVE_TREATMENT_RE.search(clause.text) or len(_REPORTED_TREATMENT_RE.findall(clause.text)) > 1:
+    reports = len(_REPORTED_TREATMENT_RE.findall(clause.text)) + len(_POSTPOSED_ALLERGY_RE.findall(clause.text))
+    if _PROSPECTIVE_TREATMENT_RE.search(clause.text) or reports > 1:
         return _split_events(clause, _EVENT_JOIN_RE)
     return (clause,)
 
@@ -909,6 +917,11 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
     med_q, alg_q, question = _question_flags(source, idx)
     first_answer = event.start == source.turns[idx].start
     text = event.text
+    postposed = _POSTPOSED_ALLERGY_RE.match(text)
+    if postposed:
+        if field is FieldName.ALLERGY and _plain_value(field, postposed["value"]):
+            return postposed.span("value")
+        return None
     label = _SUBSTANCE_LABEL_RE.match(text)
     allergy = _ALG_CLAUSE_PRED_RE.search(text)
     med_verbs = _medication_verb_positions(text, question)
@@ -1009,7 +1022,8 @@ def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, d
     med_question, allergy_question, question = _question_flags(source, turn_idx)
     inherits_question = event.start == turn.start
     events = [(pos, True) for pos in _medication_verb_positions(context, question if inherits_question else "")]
-    events.extend((match.start(), True) for match in _ALG_CLAUSE_PRED_RE.finditer(context))
+    events.extend((match.start(), True) for pattern in (_ALG_CLAUSE_PRED_RE, _POSTPOSED_ALLERGY_RE)
+                  for match in pattern.finditer(context))
     if re.match(r"(?:(?:my|the|that)\s+)?(?:(?:first|last|previous|most recent)\s+)?(?:dose|medication|allergy)\b",
                 context, re.I):
         events.append((0, True))
@@ -1319,7 +1333,7 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
             c_text = clause.text.rstrip(";").rstrip()
             c_start = clause.start
             has_med_verb = bool(_medication_verb_positions(c_text, prev_q))
-            has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text))
+            has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text) or _POSTPOSED_ALLERGY_RE.match(c_text))
 
             if field is FieldName.DURATION:
                 for m in _DURATION_VALUE_RE.finditer(c_text):

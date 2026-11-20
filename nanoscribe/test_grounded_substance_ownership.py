@@ -39,6 +39,15 @@ def observed(report, field, value):
     (MED, "Tell me more.", "My daily medicine is Xyzalorfen for my wrist pain.", "wrist pain"),
     (MED, "What brings you in?", "I am on edge.", "edge"),
     (MED, "Tell me more.", "I take the bus.", "bus"),
+    (ALG, "Tell me more.", "I do not have a penicillin allergy.", "penicillin"),
+    (ALG, "Tell me more.", "I had a penicillin allergy in childhood.", "penicillin"),
+    (ALG, "Tell me more.", "If I have a penicillin allergy I will call.", "penicillin"),
+    (ALG, "Tell me more.", "My sister has a penicillin allergy.", "penicillin"),
+    (MED, "Tell me more.", "I am not currently taking aspirin.", "aspirin"),
+    (MED, "Tell me more.", "I was previously taking aspirin.", "aspirin"),
+    (MED, "Tell me more.", "If I am currently taking aspirin, I will check.", "aspirin"),
+    (MED, "Tell me more.", "My sister is currently taking aspirin.", "aspirin"),
+    (MED, "Tell me more.", "I am currently taking aspirin for my thumb pain.", "thumb pain"),
 ])
 def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, reply, value):
     claim, direct, compact, english = observed(f"Doctor: {question}\nPatient: {reply}", field, value)
@@ -54,6 +63,12 @@ def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, rep
     (MED, "Patient: I am on warfarin.", "warfarin"),
     (MED, "Patient: My daily medicine is Xyzalorfen.", "Xyzalorfen"),
     (MED, "Patient: I take metformin.", "metformin"),
+    (ALG, "Doctor: Tell me more.\nPatient: I have a penicillin allergy.", "penicillin"),
+    (ALG, "Patient: I've got a known red cedar pollen allergy.", "red cedar pollen"),
+    (ALG, "Patient: I have an almond allergy that causes hives.", "almond"),
+    (MED, "Doctor: Tell me more.\nPatient: I am currently taking aspirin.", "aspirin"),
+    (MED, "Patient: I'm still using cedar gel.", "cedar gel"),
+    (MED, "Patient: I have also been regularly applying cedar gel.", "cedar gel"),
     (MED, "Patient: I use cedar gel for my rash.", "cedar gel"),
     (ALG, "Patient: My known allergen is cedar pollen.", "cedar pollen"),
     (ALG, "Patient: I am allergic to nickel because it causes a rash.", "nickel"),
@@ -84,6 +99,7 @@ def test_free_proposal_is_not_limited_to_the_menu_spelling():
     assert claim["state"] == "supported" and claim["value"] == value
     assert direct is FieldState.SUPPORTED
     assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
+
 
 def test_later_emphatic_confirmation_uses_its_own_source_offsets():
     report = "Patient: I took aspirin.\nPatient: I'm not sure whether I took it.\nPatient: I checked. I did take aspirin."
