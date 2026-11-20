@@ -10,6 +10,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from nanoscribe.adapt import (
+    AdapterExecutionMode,
     CANDIDATE_SCHEMA_VERSION,
     AdaptError,
     CandidateAtom,
@@ -403,6 +404,7 @@ def test_qwen_skeleton_falls_back_to_fixture() -> None:
         (default_baseline_specs()[0],),
     )
     assert batch.atoms[0].quotes == ("neck",)
+    assert batch.execution_mode is AdapterExecutionMode.FIXTURE
 
 
 def test_run_pipeline_smoke_with_encounter_probe() -> None:
@@ -450,11 +452,26 @@ def test_run_eval_fixture_only_smoke() -> None:
             os.environ["NANOSCIBE_QWEN_WEIGHTS"] = saved
 
     assert result["fixture_only"] is True
+    assert result["execution_mode"] == "fixture"
     assert set(result) >= {"aggregate", "layers", "per_atom"}
     assert result["layers"]["layers"]["malformed"] == 0
     assert result["layers"]["layers"]["commission"] == 0
     assert result["aggregate"]["correct_abstention"] == 1
     assert result["per_atom"]["atom-neck"]["exact_gold_span"]
+
+
+def test_run_eval_labels_implicit_fixture_fallback() -> None:
+    from nanoscribe.run_eval import run_baseline_eval
+
+    saved = os.environ.pop("NANOSCIBE_QWEN_WEIGHTS", None)
+    try:
+        result = run_baseline_eval()
+    finally:
+        if saved is not None:
+            os.environ["NANOSCIBE_QWEN_WEIGHTS"] = saved
+
+    assert result["fixture_only"] is True
+    assert result["execution_mode"] == "fixture"
 
 
 def test_extract_span_port_line_from_multiline() -> None:
@@ -498,6 +515,7 @@ def test_run_campaign_eval_fixture_smoke() -> None:
             os.environ["NANOSCIBE_QWEN_WEIGHTS"] = saved
 
     assert result["fixture_only"] is True
+    assert result["execution_modes"] == ["fixture"]
     assert result["suite"] == "campaign_v1"
     assert len(result["encounters"]) == 3
     agg = result["suite_aggregate"]

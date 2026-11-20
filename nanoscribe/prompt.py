@@ -25,7 +25,8 @@ _SPAN_PORT_SYSTEM = (
 )
 
 
-def _format_transcript(source: Source) -> str:
+def format_transcript(source: Source) -> str:
+    """Serialize the exact transcript portion included in a span-port prompt."""
     lines: list[str] = []
     for turn in source.turns:
         lines.append(f"{turn.speaker.value}: {turn.text}")
@@ -80,7 +81,7 @@ def _answer_hint(spec: _AtomSpecLike) -> str:
 
 def build_span_port_prompt(source: Source, spec: _AtomSpecLike) -> str:
     """Build a single-atom span-port probe prompt from encounter source."""
-    transcript = _format_transcript(source)
+    transcript = format_transcript(source)
     task = topic_for_spec(spec)
     who = "clinician" if spec.speaker is Speaker.CLINICIAN else "patient"
     hint = _answer_hint(spec)

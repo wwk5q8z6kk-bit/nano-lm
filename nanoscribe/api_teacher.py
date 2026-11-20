@@ -8,9 +8,11 @@ from collections.abc import Sequence
 
 from nanoscribe.adapt import ModelCandidateBatch, ModelInput, candidate_from_span_port_line
 from nanoscribe.adapters import AtomSpec
+from nanoscribe.egress import ExternalEgressTarget, require_external_egress
 from nanoscribe.prompt import build_span_port_prompt, span_port_system_prompt
 
 DEFAULT_API_MODEL = "gpt-4o-mini"
+OPENAI_API_BASE_URL = "https://api.openai.com/v1"
 
 
 def _openai_client():
@@ -23,7 +25,7 @@ def _openai_client():
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError("OPENAI_API_KEY not set")
-    return OpenAI(api_key=api_key)
+    return OpenAI(api_key=api_key, base_url=OPENAI_API_BASE_URL)
 
 
 def _generate_line(client, model: str, user_prompt: str) -> str:
@@ -47,6 +49,7 @@ def generate_api_span_port_lines(
     model: str = DEFAULT_API_MODEL,
 ) -> tuple[dict[str, str], float, int]:
     """Run one API call per atom; return lines + latency + zero memory."""
+    require_external_egress(model_input, ExternalEgressTarget.openai_api())
     client = _openai_client()
     started = time.perf_counter()
     lines: dict[str, str] = {}
