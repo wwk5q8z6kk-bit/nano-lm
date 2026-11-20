@@ -1,0 +1,483 @@
+{
+  "experiment": "C2_X2_triton_3seed_lm",
+  "seeds": [
+    42,
+    137,
+    271
+  ],
+  "train_steps": 800,
+  "arms": [
+    {
+      "config": {
+        "name": "b0-transformer-micro",
+        "family": "b0_transformer",
+        "total_parameters": 13966464,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 25165824,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.00093,
+        "mean_tok_per_sec": 139238.2,
+        "mean_peak_vram_mb": 1198.2,
+        "mean_decode_ms_per_tok": 5.508,
+        "state_kb_at_8k": 24576.0,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "mean_val_bpb": 0.3785,
+            "domain_bpb": {
+              "code": 0.2084,
+              "math": 0.7527,
+              "prose": 0.0914,
+              "state": 0.4613
+            },
+            "probe_exact_acc": {
+              "math": 0.0208,
+              "state": 0.0208
+            },
+            "train_tok_per_sec": 147398.2,
+            "decode_ms_per_tok": 6.742,
+            "peak_vram_mb": 1173.79
+          },
+          {
+            "seed": 137,
+            "mean_val_bpb": 0.3803,
+            "domain_bpb": {
+              "code": 0.1943,
+              "math": 0.7482,
+              "prose": 0.0913,
+              "state": 0.4876
+            },
+            "probe_exact_acc": {
+              "math": 0.0625,
+              "state": 0.0
+            },
+            "train_tok_per_sec": 135412.0,
+            "decode_ms_per_tok": 4.715,
+            "peak_vram_mb": 1207.7
+          },
+          {
+            "seed": 271,
+            "mean_val_bpb": 0.3806,
+            "domain_bpb": {
+              "code": 0.2105,
+              "math": 0.7473,
+              "prose": 0.0915,
+              "state": 0.4731
+            },
+            "probe_exact_acc": {
+              "math": 0.0625,
+              "state": 0.0
+            },
+            "train_tok_per_sec": 134904.3,
+            "decode_ms_per_tok": 5.067,
+            "peak_vram_mb": 1213.2
+          }
+        ]
+      },
+      "bpb": 0.3798,
+      "std_bpb": 0.00093,
+      "registry_decision": {
+        "promoted": true,
+        "reason": "registered_baseline"
+      }
+    },
+    {
+      "config": {
+        "name": "gen1-h2-hspa-predcode-micro",
+        "family": "gen1_h2_hspa_predcode",
+        "total_parameters": 14022536,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 192,
+        "state_bytes_at_seq": 24576,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.00041,
+        "mean_tok_per_sec": 49633.3,
+        "mean_peak_vram_mb": 3811.6,
+        "mean_decode_ms_per_tok": 12.198,
+        "state_kb_at_8k": 24.0,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "mean_val_bpb": 0.3688,
+            "domain_bpb": {
+              "code": 0.2092,
+              "math": 0.7406,
+              "prose": 0.0905,
+              "state": 0.4349
+            },
+            "probe_exact_acc": {
+              "math": 0.0417,
+              "state": 0.1667
+            },
+            "train_tok_per_sec": 49668.3,
+            "decode_ms_per_tok": 12.315,
+            "peak_vram_mb": 3814.04
+          },
+          {
+            "seed": 137,
+            "mean_val_bpb": 0.3693,
+            "domain_bpb": {
+              "code": 0.2044,
+              "math": 0.7432,
+              "prose": 0.0904,
+              "state": 0.4392
+            },
+            "probe_exact_acc": {
+              "math": 0.0833,
+              "state": 0.125
+            },
+            "train_tok_per_sec": 49726.7,
+            "decode_ms_per_tok": 12.114,
+            "peak_vram_mb": 3810.55
+          },
+          {
+            "seed": 271,
+            "mean_val_bpb": 0.3698,
+            "domain_bpb": {
+              "code": 0.2094,
+              "math": 0.739,
+              "prose": 0.0905,
+              "state": 0.4403
+            },
+            "probe_exact_acc": {
+              "math": 0.0833,
+              "state": 0.1042
+            },
+            "train_tok_per_sec": 49504.8,
+            "decode_ms_per_tok": 12.166,
+            "peak_vram_mb": 3810.11
+          }
+        ]
+      },
+      "bpb": 0.3693,
+      "std_bpb": 0.00041,
+      "registry_decision": {
+        "candidate": "gen1-h2-hspa-predcode-micro",
+        "promoted": true,
+        "reason": "beat_best:b0-transformer-micro(0.3798->0.3693)"
+      }
+    },
+    {
+      "config": {
+        "name": "gen3-h4-hspa-wavepred-micro",
+        "family": "gen3_h4_hspa_wavepred",
+        "total_parameters": 14028808,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 192,
+        "state_bytes_at_seq": 33792,
+        "sample_seq_len": 8192
+      },
+      "metrics": {
+        "std_val_bpb": 0.00082,
+        "mean_tok_per_sec": 49142.8,
+        "mean_peak_vram_mb": 3842.3,
+        "mean_decode_ms_per_tok": 13.131,
+        "state_kb_at_8k": 33.0,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "mean_val_bpb": 0.3705,
+            "domain_bpb": {
+              "code": 0.205,
+              "math": 0.7429,
+              "prose": 0.0903,
+              "state": 0.4438
+            },
+            "probe_exact_acc": {
+              "math": 0.0625,
+              "state": 0.1458
+            },
+            "train_tok_per_sec": 49268.0,
+            "decode_ms_per_tok": 13.158,
+            "peak_vram_mb": 3843.08
+          },
+          {
+            "seed": 137,
+            "mean_val_bpb": 0.3685,
+            "domain_bpb": {
+              "code": 0.2066,
+              "math": 0.7387,
+              "prose": 0.0904,
+              "state": 0.4385
+            },
+            "probe_exact_acc": {
+              "math": 0.0833,
+              "state": 0.1875
+            },
+            "train_tok_per_sec": 49090.7,
+            "decode_ms_per_tok": 13.216,
+            "peak_vram_mb": 3843.32
+          },
+          {
+            "seed": 271,
+            "mean_val_bpb": 0.3697,
+            "domain_bpb": {
+              "code": 0.2046,
+              "math": 0.7423,
+              "prose": 0.0904,
+              "state": 0.4414
+            },
+            "probe_exact_acc": {
+              "math": 0.0417,
+              "state": 0.125
+            },
+            "train_tok_per_sec": 49069.6,
+            "decode_ms_per_tok": 13.02,
+            "peak_vram_mb": 3840.51
+          }
+        ]
+      },
+      "bpb": 0.3696,
+      "std_bpb": 0.00082,
+      "registry_decision": {
+        "candidate": "gen3-h4-hspa-wavepred-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3696_vs_0.3693"
+      }
+    }
+  ],
+  "registry": {
+    "higher_is_better": false,
+    "baseline": {
+      "name": "b0-transformer-micro",
+      "family": "b0_transformer",
+      "total_parameters": 13966464,
+      "mean_primary_metric": 0.3798,
+      "seed_scores": [
+        0.3785,
+        0.3803,
+        0.3806
+      ],
+      "metrics": {
+        "std_val_bpb": 0.00093,
+        "mean_tok_per_sec": 139238.2,
+        "mean_peak_vram_mb": 1198.2,
+        "mean_decode_ms_per_tok": 5.508,
+        "state_kb_at_8k": 24576.0,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "mean_val_bpb": 0.3785,
+            "domain_bpb": {
+              "code": 0.2084,
+              "math": 0.7527,
+              "prose": 0.0914,
+              "state": 0.4613
+            },
+            "probe_exact_acc": {
+              "math": 0.0208,
+              "state": 0.0208
+            },
+            "train_tok_per_sec": 147398.2,
+            "decode_ms_per_tok": 6.742,
+            "peak_vram_mb": 1173.79
+          },
+          {
+            "seed": 137,
+            "mean_val_bpb": 0.3803,
+            "domain_bpb": {
+              "code": 0.1943,
+              "math": 0.7482,
+              "prose": 0.0913,
+              "state": 0.4876
+            },
+            "probe_exact_acc": {
+              "math": 0.0625,
+              "state": 0.0
+            },
+            "train_tok_per_sec": 135412.0,
+            "decode_ms_per_tok": 4.715,
+            "peak_vram_mb": 1207.7
+          },
+          {
+            "seed": 271,
+            "mean_val_bpb": 0.3806,
+            "domain_bpb": {
+              "code": 0.2105,
+              "math": 0.7473,
+              "prose": 0.0915,
+              "state": 0.4731
+            },
+            "probe_exact_acc": {
+              "math": 0.0625,
+              "state": 0.0
+            },
+            "train_tok_per_sec": 134904.3,
+            "decode_ms_per_tok": 5.067,
+            "peak_vram_mb": 1213.2
+          }
+        ]
+      },
+      "notes": ""
+    },
+    "best": {
+      "name": "gen1-h2-hspa-predcode-micro",
+      "family": "gen1_h2_hspa_predcode",
+      "total_parameters": 14022536,
+      "mean_primary_metric": 0.3693,
+      "seed_scores": [
+        0.3688,
+        0.3693,
+        0.3698
+      ],
+      "metrics": {
+        "std_val_bpb": 0.00041,
+        "mean_tok_per_sec": 49633.3,
+        "mean_peak_vram_mb": 3811.6,
+        "mean_decode_ms_per_tok": 12.198,
+        "state_kb_at_8k": 24.0,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "mean_val_bpb": 0.3688,
+            "domain_bpb": {
+              "code": 0.2092,
+              "math": 0.7406,
+              "prose": 0.0905,
+              "state": 0.4349
+            },
+            "probe_exact_acc": {
+              "math": 0.0417,
+              "state": 0.1667
+            },
+            "train_tok_per_sec": 49668.3,
+            "decode_ms_per_tok": 12.315,
+            "peak_vram_mb": 3814.04
+          },
+          {
+            "seed": 137,
+            "mean_val_bpb": 0.3693,
+            "domain_bpb": {
+              "code": 0.2044,
+              "math": 0.7432,
+              "prose": 0.0904,
+              "state": 0.4392
+            },
+            "probe_exact_acc": {
+              "math": 0.0833,
+              "state": 0.125
+            },
+            "train_tok_per_sec": 49726.7,
+            "decode_ms_per_tok": 12.114,
+            "peak_vram_mb": 3810.55
+          },
+          {
+            "seed": 271,
+            "mean_val_bpb": 0.3698,
+            "domain_bpb": {
+              "code": 0.2094,
+              "math": 0.739,
+              "prose": 0.0905,
+              "state": 0.4403
+            },
+            "probe_exact_acc": {
+              "math": 0.0833,
+              "state": 0.1042
+            },
+            "train_tok_per_sec": 49504.8,
+            "decode_ms_per_tok": 12.166,
+            "peak_vram_mb": 3810.11
+          }
+        ]
+      },
+      "notes": ""
+    },
+    "experimental": {
+      "name": "gen3-h4-hspa-wavepred-micro",
+      "family": "gen3_h4_hspa_wavepred",
+      "total_parameters": 14028808,
+      "mean_primary_metric": 0.3696,
+      "seed_scores": [
+        0.3705,
+        0.3685,
+        0.3697
+      ],
+      "metrics": {
+        "std_val_bpb": 0.00082,
+        "mean_tok_per_sec": 49142.8,
+        "mean_peak_vram_mb": 3842.3,
+        "mean_decode_ms_per_tok": 13.131,
+        "state_kb_at_8k": 33.0,
+        "seed_runs": [
+          {
+            "seed": 42,
+            "mean_val_bpb": 0.3705,
+            "domain_bpb": {
+              "code": 0.205,
+              "math": 0.7429,
+              "prose": 0.0903,
+              "state": 0.4438
+            },
+            "probe_exact_acc": {
+              "math": 0.0625,
+              "state": 0.1458
+            },
+            "train_tok_per_sec": 49268.0,
+            "decode_ms_per_tok": 13.158,
+            "peak_vram_mb": 3843.08
+          },
+          {
+            "seed": 137,
+            "mean_val_bpb": 0.3685,
+            "domain_bpb": {
+              "code": 0.2066,
+              "math": 0.7387,
+              "prose": 0.0904,
+              "state": 0.4385
+            },
+            "probe_exact_acc": {
+              "math": 0.0833,
+              "state": 0.1875
+            },
+            "train_tok_per_sec": 49090.7,
+            "decode_ms_per_tok": 13.216,
+            "peak_vram_mb": 3843.32
+          },
+          {
+            "seed": 271,
+            "mean_val_bpb": 0.3697,
+            "domain_bpb": {
+              "code": 0.2046,
+              "math": 0.7423,
+              "prose": 0.0904,
+              "state": 0.4414
+            },
+            "probe_exact_acc": {
+              "math": 0.0417,
+              "state": 0.125
+            },
+            "train_tok_per_sec": 49069.6,
+            "decode_ms_per_tok": 13.02,
+            "peak_vram_mb": 3840.51
+          }
+        ]
+      },
+      "notes": ""
+    },
+    "audit_log": [
+      {
+        "event": "register_baseline",
+        "name": "b0-transformer-micro",
+        "metric": 0.3798
+      },
+      {
+        "candidate": "gen1-h2-hspa-predcode-micro",
+        "promoted": true,
+        "reason": "beat_best:b0-transformer-micro(0.3798->0.3693)"
+      },
+      {
+        "candidate": "gen3-h4-hspa-wavepred-micro",
+        "promoted": false,
+        "reason": "did_not_beat_best:0.3696_vs_0.3693"
+      }
+    ]
+  }
+}

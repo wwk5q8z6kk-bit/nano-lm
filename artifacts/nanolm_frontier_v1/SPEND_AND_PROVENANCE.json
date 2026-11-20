@@ -1,0 +1,13 @@
+{
+  "pod_id": "58b79zdtdqcr9n",
+  "gpu_type": "NVIDIA A40",
+  "image": "runpod/pytorch:1.0.3-cu1281-torch291-ubuntu2404",
+  "model_id": "Qwen/Qwen3-1.7B",
+  "wall_seconds": 2257,
+  "cost_per_hr_usd": 0.59,
+  "pod_attributed_spend_usd": 0.3699,
+  "account_balance_before_usd": 79.9512,
+  "account_balance_after_usd": 74.8589,
+  "account_balance_delta_usd": 5.0923,
+  "note": "Account delta includes any concurrent peer pods active during window; pod_attributed_spend_usd reflects this pod alone."
+}

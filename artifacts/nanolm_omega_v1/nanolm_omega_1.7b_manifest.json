@@ -1,0 +1,9 @@
+{
+  "model_id": "Qwen/Qwen3-1.7B",
+  "total_parameters": 1747444768,
+  "trainable_parameters": 26869792,
+  "nullspace_k": 48,
+  "adapter_tensor_count": 456,
+  "adapter_l2_norm": 156.8438,
+  "adapter_sha256_prefix": "75458a98c76cb65e"
+}

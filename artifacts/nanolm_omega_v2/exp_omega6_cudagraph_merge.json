@@ -1,0 +1,72 @@
+{
+  "experiment": "EXP_Omega6_CUDAGraph_And_NullspaceMerge",
+  "device": "cuda",
+  "decode_benchmarks": [
+    {
+      "config": {
+        "name": "nanolm-hspa-omega-2b",
+        "family": "gen4_omega_so3_predcode",
+        "total_parameters": 1808108608,
+        "within_4b_ceiling": true,
+        "n_registers": 16,
+        "d_fiber": 1024,
+        "state_bytes_at_seq": 1048576,
+        "sample_seq_len": 512
+      },
+      "weight_mb": 3448.7,
+      "seq_len": 512,
+      "decode_steps": 32,
+      "cuda_graph_captured": true,
+      "eager_ms_per_tok": 158.413,
+      "cudagraph_ms_per_tok": 51.023,
+      "speedup_x": 3.1,
+      "greedy_parity": true,
+      "peak_vram_mb": 4221.25
+    },
+    {
+      "config": {
+        "name": "nanolm-hspa-omega-4b",
+        "family": "gen4_omega_so3_predcode",
+        "total_parameters": 3840503904,
+        "within_4b_ceiling": true,
+        "n_registers": 16,
+        "d_fiber": 1024,
+        "state_bytes_at_seq": 1572864,
+        "sample_seq_len": 512
+      },
+      "weight_mb": 7325.2,
+      "seq_len": 512,
+      "decode_steps": 32,
+      "cuda_graph_captured": true,
+      "eager_ms_per_tok": 236.105,
+      "cudagraph_ms_per_tok": 100.291,
+      "speedup_x": 2.35,
+      "greedy_parity": true,
+      "peak_vram_mb": 8409.83
+    }
+  ],
+  "nullspace_merge_benchmarks": [
+    {
+      "shape": [
+        2048,
+        2048
+      ],
+      "unmerged_us": 252.24,
+      "merged_us": 33.42,
+      "speedup_x": 7.55,
+      "max_logit_diff": 0.001953,
+      "nullspace_orthogonality_error": 5e-07
+    },
+    {
+      "shape": [
+        2048,
+        6144
+      ],
+      "unmerged_us": 267.62,
+      "merged_us": 100.47,
+      "speedup_x": 2.66,
+      "max_logit_diff": 0.001953,
+      "nullspace_orthogonality_error": 7e-07
+    }
+  ]
+}

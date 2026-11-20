@@ -1,0 +1,100 @@
+{
+  "experiment": "X3_4b_class_scaling_law",
+  "device": "cuda",
+  "models": [
+    {
+      "config": {
+        "name": "nanolm-transformer-4b",
+        "family": "b0_transformer",
+        "total_parameters": 3843291648,
+        "within_4b_ceiling": true,
+        "n_registers": 8,
+        "d_fiber": 128,
+        "state_bytes_at_seq": 1610612736,
+        "sample_seq_len": 16384
+      },
+      "weight_mb": 7330.5,
+      "scaling": [
+        {
+          "seq_len": 512,
+          "status": "ok",
+          "prefill_tok_per_sec": 8006.2,
+          "decode_ms_per_tok": 35.932,
+          "analytical_state_mb": 48.0,
+          "peak_vram_mb": 7622.35
+        },
+        {
+          "seq_len": 2048,
+          "status": "ok",
+          "prefill_tok_per_sec": 17972.6,
+          "decode_ms_per_tok": 34.197,
+          "analytical_state_mb": 192.0,
+          "peak_vram_mb": 8220.44
+        },
+        {
+          "seq_len": 8192,
+          "status": "ok",
+          "prefill_tok_per_sec": 16772.6,
+          "decode_ms_per_tok": 34.511,
+          "analytical_state_mb": 768.0,
+          "peak_vram_mb": 10607.49
+        },
+        {
+          "seq_len": 16384,
+          "status": "ok",
+          "prefill_tok_per_sec": 13277.0,
+          "decode_ms_per_tok": 41.778,
+          "analytical_state_mb": 1536.0,
+          "peak_vram_mb": 13824.34
+        }
+      ]
+    },
+    {
+      "config": {
+        "name": "nanolm-hspa-4b",
+        "family": "gen2_h3_hspa_evolved",
+        "total_parameters": 3845356032,
+        "within_4b_ceiling": true,
+        "n_registers": 16,
+        "d_fiber": 1024,
+        "state_bytes_at_seq": 1867776,
+        "sample_seq_len": 16384
+      },
+      "weight_mb": 7334.4,
+      "scaling": [
+        {
+          "seq_len": 512,
+          "status": "ok",
+          "prefill_tok_per_sec": 834.2,
+          "decode_ms_per_tok": 122.59,
+          "analytical_state_mb": 1.781,
+          "peak_vram_mb": 10877.26
+        },
+        {
+          "seq_len": 2048,
+          "status": "ok",
+          "prefill_tok_per_sec": 779.4,
+          "decode_ms_per_tok": 144.367,
+          "analytical_state_mb": 1.781,
+          "peak_vram_mb": 8308.06
+        },
+        {
+          "seq_len": 8192,
+          "status": "ok",
+          "prefill_tok_per_sec": 751.3,
+          "decode_ms_per_tok": 143.188,
+          "analytical_state_mb": 1.781,
+          "peak_vram_mb": 8317.38
+        },
+        {
+          "seq_len": 16384,
+          "status": "ok",
+          "prefill_tok_per_sec": 735.3,
+          "decode_ms_per_tok": 135.042,
+          "analytical_state_mb": 1.781,
+          "peak_vram_mb": 8318.09
+        }
+      ]
+    }
+  ]
+}

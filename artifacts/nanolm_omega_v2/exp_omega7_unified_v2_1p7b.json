@@ -1,0 +1,1800 @@
+{
+  "experiment": "EXP_Omega7_Unified_v2_1.7B_Merged_Cognitive",
+  "student_id": "Qwen/Qwen3-1.7B",
+  "decontamination": {
+    "sft_v2": {
+      "train_examples": 62,
+      "eval_tasks": 56,
+      "overlaps": 0
+    },
+    "rl": {
+      "train_examples": 24,
+      "eval_tasks": 56,
+      "overlaps": 0
+    }
+  },
+  "merge_audit": {
+    "merged_layers": 196,
+    "audit_tasks": 6,
+    "exact_greedy_output_matches": 6,
+    "unmerged_tok_per_sec": 8.73,
+    "merged_tok_per_sec": 14.09,
+    "throughput_speedup_x": 1.61
+  },
+  "arms": [
+    {
+      "arm": "NanoLM_Omega_v2_1.7B_Merged_Greedy",
+      "is_external_opponent": false,
+      "ttc_syntax_retries": 0,
+      "ttc_triggers": 0,
+      "ttc_syntax_recoveries": 0,
+      "total_parameters": 1747444768,
+      "passed": 38,
+      "total_tasks": 56,
+      "accuracy": 0.6786,
+      "bootstrap_ci95": [
+        0.5536,
+        0.7857
+      ],
+      "mean_partial_score": 0.8187,
+      "by_dimension": {
+        "coding": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "math_logic": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "summarization": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.9167
+        },
+        "structured_json": {
+          "passed": 2,
+          "total": 4,
+          "accuracy": 0.5,
+          "mean_score": 0.75
+        },
+        "diagrams_charts": {
+          "passed": 1,
+          "total": 4,
+          "accuracy": 0.25,
+          "mean_score": 0.7708
+        },
+        "long_context": {
+          "passed": 2,
+          "total": 4,
+          "accuracy": 0.5,
+          "mean_score": 0.75
+        },
+        "general_knowledge": {
+          "passed": 4,
+          "total": 4,
+          "accuracy": 1.0,
+          "mean_score": 1.0
+        },
+        "multi_step_reasoning": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "instruction_following": {
+          "passed": 4,
+          "total": 4,
+          "accuracy": 1.0,
+          "mean_score": 1.0
+        },
+        "tool_use": {
+          "passed": 4,
+          "total": 4,
+          "accuracy": 1.0,
+          "mean_score": 1.0
+        },
+        "planning_decomposition": {
+          "passed": 1,
+          "total": 4,
+          "accuracy": 0.25,
+          "mean_score": 0.775
+        },
+        "ood_robustness": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "hallucination_resistance": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "memory_retention": {
+          "passed": 2,
+          "total": 4,
+          "accuracy": 0.5,
+          "mean_score": 0.75
+        },
+        "inference_efficiency": {
+          "capability_accuracy": 0.6786,
+          "capability_per_billion_params": 0.3883,
+          "tokens_per_sec": 13.48,
+          "kv_cache_mb_at_4k": 448.0,
+          "efficiency_composite_score": 0.5355,
+          "p50_ms": 2600.18,
+          "p95_ms": 12644.42,
+          "peak_vram_mb": 6164.46,
+          "total_parameters": 1747444768
+        }
+      },
+      "by_difficulty": {
+        "easy": {
+          "passed": 12,
+          "total": 15,
+          "accuracy": 0.8
+        },
+        "medium": {
+          "passed": 13,
+          "total": 21,
+          "accuracy": 0.619
+        },
+        "hard": {
+          "passed": 13,
+          "total": 20,
+          "accuracy": 0.65
+        }
+      },
+      "failure_taxonomy": {
+        "runtime_or_assertion_failure:NameError: name 'build_bst' is not defined": 1,
+        "answer_mismatch:'33'": 1,
+        "missing_salient_terms:2/3": 1,
+        "value_mismatch:offline_count:1!=2": 1,
+        "value_mismatch:subtotal:400!=520": 1,
+        "incomplete_mermaid:hits=3/3,edges=1": 1,
+        "incomplete_mermaid:hits=4/4,edges=2": 1,
+        "value_mismatch:sum_total:109!=100": 1,
+        "value_mismatch:net_hours:120!=165": 1,
+        "value_mismatch:remaining_crates:1!=13": 1,
+        "answer_mismatch:'<int>`'": 1,
+        "wrong_makespan:12!=9": 1
+      },
+      "tasks": [
+        {
+          "task_id": "cod-01",
+          "dim": "coding",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "attempts": 1,
+          "latency_ms": 7266.03,
+          "response_preview": "```python\ndef run_length_encode(s: str) -> list[tuple[str, int]]:\n    if not s:\n        return []\n    res = []\n    n = 1\n    for i in range(1, len(s)):\n        if s[i] != s[i - 1]:\n            res.app"
+        },
+        {
+          "task_id": "cod-02",
+          "dim": "coding",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "attempts": 1,
+          "latency_ms": 7897.43,
+          "response_preview": "```python\ndef eval_rpn(tokens: list[str]) -> int:\n    stack = []\n    for token in tokens:\n        if token in \"+-*/\":\n            b = stack.pop()\n            a = stack.pop()\n            if token == \"+"
+        },
+        {
+          "task_id": "cod-03",
+          "dim": "coding",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.0,
+          "reason": "runtime_or_assertion_failure:NameError: name 'build_bst' is not defined",
+          "attempts": 1,
+          "latency_ms": 7659.66,
+          "response_preview": "```python\ndef kth_smallest_bst(values: list[int], k: int) -> int:\n    def get_kth_smallest(root, k):\n        if not root:\n            return None\n        left = get_kth_smallest(root.left, k)\n        "
+        },
+        {
+          "task_id": "cod-04",
+          "dim": "coding",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "attempts": 1,
+          "latency_ms": 12644.42,
+          "response_preview": "```python\nimport heapq\n\ndef dijkstra(n: int, edges: list[tuple[int, int, int]], src: int, dst: int) -> int:\n    graph = [[] for _ in range(n)]\n    for u, v, w in edges:\n        graph[u].append((v, w))"
+        },
+        {
+          "task_id": "mth-01",
+          "dim": "math_logic",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 3087.98,
+          "response_preview": "Compute product 17 * 23 = 391.\nSubtract 91: 300.\nInteger divide by 5: 60.\nFINAL_ANSWER: 60"
+        },
+        {
+          "task_id": "mth-02",
+          "dim": "math_logic",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'33'",
+          "attempts": 1,
+          "latency_ms": 4801.63,
+          "response_preview": "Compute the least common multiple of 6 and 15: 30.\nCompute the number of multiples of 30 between 100 and 999: floor(999/30) - floor(99/30) = 33.\nFINAL_ANSWER: 33"
+        },
+        {
+          "task_id": "mth-03",
+          "dim": "math_logic",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 15411.3,
+          "response_preview": "Check 3 mod 7 = 3.\nCheck 5 mod 11 = 5.\nFind smallest x such that x \u2261 3 mod 7 and x \u2261 5 mod 11.\nTry x = 3: 3 mod 7 = 3, 3 mod 11 = 3.\nTry x = 10: 10 mod 7 = 3, 10 mod 11 = 9.\nTry x = 17: 17 mod 7 = 3, "
+        },
+        {
+          "task_id": "mth-04",
+          "dim": "math_logic",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 10751.96,
+          "response_preview": "Compute a_0 = 1, a_1 = 2.\na_2 = 2*a_1 + a_0 = 4 + 1 = 5.\na_3 = 2*a_2 + a_1 = 10 + 2 = 12.\na_4 = 2*a_3 + a_2 = 24 + 5 = 29.\na_5 = 2*a_4 + a_3 = 58 + 12 = 70.\na_6 = 2*a_5 + a_4 = 140 + 29 = 169.\nFINAL_A"
+        },
+        {
+          "task_id": "sum-01",
+          "dim": "summarization",
+          "difficulty": "easy",
+          "passed": false,
+          "score": 0.6667,
+          "reason": "missing_salient_terms:2/3",
+          "attempts": 1,
+          "latency_ms": 1807.13,
+          "response_preview": "Orbiter Kestrel completed 48-hour thermal soak with 3.2% thruster mass leakage."
+        },
+        {
+          "task_id": "sum-02",
+          "dim": "summarization",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_summary",
+          "attempts": 1,
+          "latency_ms": 3248.2,
+          "response_preview": "CinderDB replaced mutex-guarded buffers with wait-free ring slots in Q2, reducing P99 commit latency to 14.5 ms while maintaining 99.94% replication durability under chaos drills."
+        },
+        {
+          "task_id": "sum-03",
+          "dim": "summarization",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_summary",
+          "attempts": 1,
+          "latency_ms": 1952.45,
+          "response_preview": "Survey crew drilled borehole BH-9 to 620 m through fractured basalt, recovering 91% core integrity."
+        },
+        {
+          "task_id": "sum-04",
+          "dim": "summarization",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_summary",
+          "attempts": 1,
+          "latency_ms": 2343.57,
+          "response_preview": "Loom-7 reduces transformer losses to 0.41 kWh per feeder and cuts evening peak draw by 28% across 12 substations."
+        },
+        {
+          "task_id": "jsn-01",
+          "dim": "structured_json",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "attempts": 1,
+          "latency_ms": 1794.82,
+          "response_preview": "{\"host\": \"gw-04.internal\", \"port\": 8443, \"tls\": true}"
+        },
+        {
+          "task_id": "jsn-02",
+          "dim": "structured_json",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "attempts": 1,
+          "latency_ms": 1683.51,
+          "response_preview": "{\"items\": 5, \"total_cost_usd\": 150, \"currency\": \"USD\"}"
+        },
+        {
+          "task_id": "jsn-03",
+          "dim": "structured_json",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:offline_count:1!=2",
+          "attempts": 1,
+          "latency_ms": 1760.69,
+          "response_preview": "{\"active_regions\": [\"ap-south\", \"ca-central\", \"us-east\"], \"offline_count\": 1}"
+        },
+        {
+          "task_id": "jsn-04",
+          "dim": "structured_json",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:subtotal:400!=520",
+          "attempts": 1,
+          "latency_ms": 2249.11,
+          "response_preview": "{\"subtotal\": 400, \"discount\": 40, \"tax\": 38, \"grand_total\": 400}"
+        },
+        {
+          "task_id": "dia-01",
+          "dim": "diagrams_charts",
+          "difficulty": "easy",
+          "passed": false,
+          "score": 0.75,
+          "reason": "incomplete_mermaid:hits=3/3,edges=1",
+          "attempts": 1,
+          "latency_ms": 1279.41,
+          "response_preview": "```mermaid\nflowchart TD\n    Ingest --> Validate --> Archive\n```"
+        },
+        {
+          "task_id": "dia-02",
+          "dim": "diagrams_charts",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_mermaid",
+          "attempts": 1,
+          "latency_ms": 2388.29,
+          "response_preview": "```mermaid\nstateDiagram-v2\n    [*] --> Idle\n    Idle --> Queued\n    Queued --> Running\n    Running --> Done\n```"
+        },
+        {
+          "task_id": "dia-03",
+          "dim": "diagrams_charts",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.8333,
+          "reason": "incomplete_mermaid:hits=4/4,edges=2",
+          "attempts": 1,
+          "latency_ms": 2828.51,
+          "response_preview": "```mermaid\nflowchart LR\n    Client[\"Browser (UI)\"] --> Gateway[\"API Gateway\"] --> Worker[\"Job Runner (Async)\"]\n    Gateway --> Alert[\"Alert\"]\n```"
+        },
+        {
+          "task_id": "dia-04",
+          "dim": "diagrams_charts",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:sum_total:109!=100",
+          "attempts": 1,
+          "latency_ms": 3695.16,
+          "response_preview": "{\"chart_type\": \"bar\", \"x_labels\": [\"Q1\",\"Q2\",\"Q3\",\"Q4\"], \"values\": [14, 29, 21, 36], \"sum_total\": 109}"
+        },
+        {
+          "task_id": "lng-01",
+          "dim": "long_context",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "attempts": 1,
+          "latency_ms": 4073.6,
+          "response_preview": "{\"owner_south\": \"Kiran\", \"final_north_latency_ms\": 27}"
+        },
+        {
+          "task_id": "lng-02",
+          "dim": "long_context",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:net_hours:120!=165",
+          "attempts": 1,
+          "latency_ms": 4040.38,
+          "response_preview": "{\"ticket\": \"TKT-901\", \"net_hours\": 120}"
+        },
+        {
+          "task_id": "lng-03",
+          "dim": "long_context",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "attempts": 1,
+          "latency_ms": 5037.81,
+          "response_preview": "{\"p1_rpm\": 310, \"p2_rpm\": 440, \"reported_rpm\": 310}"
+        },
+        {
+          "task_id": "lng-04",
+          "dim": "long_context",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:remaining_crates:1!=13",
+          "attempts": 1,
+          "latency_ms": 4863.98,
+          "response_preview": "{\"remaining_crates\": 1, \"remaining_kg\": 165, \"seal_code\": \"BOREAL-719\"}"
+        },
+        {
+          "task_id": "knw-01",
+          "dim": "general_knowledge",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 2037.75,
+          "response_preview": "The HTTP status code that means 'Too Many Requests' for rate limiting is 429.\nFINAL_ANSWER: 429"
+        },
+        {
+          "task_id": "knw-02",
+          "dim": "general_knowledge",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 1841.57,
+          "response_preview": "The bit width of a standard double-precision float64 is 64 bits.\nFINAL_ANSWER: 64"
+        },
+        {
+          "task_id": "knw-03",
+          "dim": "general_knowledge",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 2102.94,
+          "response_preview": "The worst-case time complexity of binary search on a sorted array of n elements is O(log n). FINAL_ANSWER: O(log n)"
+        },
+        {
+          "task_id": "knw-04",
+          "dim": "general_knowledge",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_lastline_match",
+          "attempts": 1,
+          "latency_ms": 639.92,
+          "response_preview": "The correct answer is `futex`."
+        },
+        {
+          "task_id": "msr-01",
+          "dim": "multi_step_reasoning",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 4762.25,
+          "response_preview": "Step 1: 10 * 2 = 20.\nStep 2: 20 - 6 = 14.\nStep 3: 14 * 3 = 42.\nStep 4: 42 + 8 = 50.\nFINAL_ANSWER: 50"
+        },
+        {
+          "task_id": "msr-02",
+          "dim": "multi_step_reasoning",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 717.19,
+          "response_preview": "Red contains Brass.\nFINAL_ANSWER: Brass"
+        },
+        {
+          "task_id": "msr-03",
+          "dim": "multi_step_reasoning",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'<int>`'",
+          "attempts": 1,
+          "latency_ms": 2468.41,
+          "response_preview": "Compute exact parity/count and end with `FINAL_ANSWER: <int>`.\n</think>\n\nCompute exact parity/count and end with `FINAL_ANSWER: <int>`."
+        },
+        {
+          "task_id": "msr-04",
+          "dim": "multi_step_reasoning",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 5486.43,
+          "response_preview": "Positions 1 to 5 are occupied by A, B, C, D, E.\nB is at position 2.\nC is immediately left of B, so C is at position 1.\nD is immediately right of B, so D is at position 3.\nA is at position 5.\nE must be"
+        },
+        {
+          "task_id": "ins-01",
+          "dim": "instruction_following",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "attempts": 1,
+          "latency_ms": 1065.41,
+          "response_preview": "kernel is the core of any system, managing resources and processes efficiently."
+        },
+        {
+          "task_id": "ins-02",
+          "dim": "instruction_following",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "attempts": 1,
+          "latency_ms": 2600.18,
+          "response_preview": "- Testing edge cases ensures robustness across diverse inputs.\n- Early detection of issues improves code quality and maintainability.\n- Modular testing promotes clarity and facilitates code reuse.  \nE"
+        },
+        {
+          "task_id": "ins-03",
+          "dim": "instruction_following",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "attempts": 1,
+          "latency_ms": 1348.16,
+          "response_preview": "Hash tables use buckets to store key-value pairs, resolving collisions via chaining or open addressing."
+        },
+        {
+          "task_id": "ins-04",
+          "dim": "instruction_following",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "attempts": 1,
+          "latency_ms": 2767.26,
+          "response_preview": "- latency: 100ms, cache: 1000ms\n- cache: 1000ms, latency: 100ms\n::done"
+        },
+        {
+          "task_id": "tol-01",
+          "dim": "tool_use",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "attempts": 1,
+          "latency_ms": 1830.35,
+          "response_preview": "{\"tool\": \"read_metric\", \"args\": {\"service\": \"auth-api\", \"window_min\": 15}}"
+        },
+        {
+          "task_id": "tol-02",
+          "dim": "tool_use",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "attempts": 1,
+          "latency_ms": 4040.47,
+          "response_preview": "{\"calls\": [{\"tool\": \"fetch_balance\", \"args\": {\"account_id\": 402}}, {\"tool\": \"convert_currency\", \"args\": {\"amount\": 250, \"from_ccy\": \"USD\", \"to_ccy\": \"EUR\"}}]}"
+        },
+        {
+          "task_id": "tol-03",
+          "dim": "tool_use",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "attempts": 1,
+          "latency_ms": 1546.71,
+          "response_preview": "{\"tool\": \"cache_lookup\", \"args\": {\"key\": \"cuda\", \"fallback\": true}}"
+        },
+        {
+          "task_id": "tol-04",
+          "dim": "tool_use",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "attempts": 1,
+          "latency_ms": 3763.95,
+          "response_preview": "{\"calls\": [{\"tool\": \"create_backup_dir\", \"args\": {\"path\": \"/tmp/recover\"}}, {\"tool\": \"write_default_config\", \"args\": {\"target\": \"/etc/missing.conf\", \"mode\": 644}}]}"
+        },
+        {
+          "task_id": "pln-01",
+          "dim": "planning_decomposition",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_dag_schedule_and_makespan",
+          "attempts": 1,
+          "latency_ms": 1402.43,
+          "response_preview": "{\"order\": [\"A\", \"B\", \"C\"], \"makespan\": 9}"
+        },
+        {
+          "task_id": "pln-02",
+          "dim": "planning_decomposition",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.7,
+          "reason": "wrong_makespan:12!=9",
+          "attempts": 1,
+          "latency_ms": 1760.87,
+          "response_preview": "{\"order\": [\"Spec\", \"Backend\", \"Frontend\", \"Deploy\"], \"makespan\": 12}"
+        },
+        {
+          "task_id": "pln-03",
+          "dim": "planning_decomposition",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.7,
+          "reason": "wrong_makespan:15!=13",
+          "attempts": 1,
+          "latency_ms": 2239.43,
+          "response_preview": "{\"order\": [\"T1\", \"T2\", \"T3\", \"T4\", \"T5\"], \"makespan\": 15}"
+        },
+        {
+          "task_id": "pln-04",
+          "dim": "planning_decomposition",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.7,
+          "reason": "wrong_makespan:13!=10",
+          "attempts": 1,
+          "latency_ms": 1998.12,
+          "response_preview": "{\"order\": [\"Init\", \"Data\", \"Kernel\", \"Eval\", \"Signoff\"], \"makespan\": 13}"
+        },
+        {
+          "task_id": "ood-01",
+          "dim": "ood_robustness",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 2748.33,
+          "response_preview": "Compute 5 @ 4: 2 * 5 + 3 * 4 = 10 + 12 = 22.\nFINAL_ANSWER: 22"
+        },
+        {
+          "task_id": "ood-02",
+          "dim": "ood_robustness",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'3'",
+          "attempts": 1,
+          "latency_ms": 17963.9,
+          "response_preview": "Compute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 + 3 * 4.\nCompute 2 "
+        },
+        {
+          "task_id": "ood-03",
+          "dim": "ood_robustness",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 3771.22,
+          "response_preview": "Compute FLIP_ADD(14, 230):\nReverse 14 -> 41, reverse 230 -> 032.\nSum 41 + 32 = 73.\nFINAL_ANSWER: 73"
+        },
+        {
+          "task_id": "ood-04",
+          "dim": "ood_robustness",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "attempts": 1,
+          "latency_ms": 4641.21,
+          "response_preview": "Compute f(4) = (16 + 1) mod 13 = 17 mod 13 = 4.\nCompute f(4) = (16 + 1) mod 13 = 17 mod 13 = 4.\nFINAL_ANSWER: 4"
+        },
+        {
+          "task_id": "hal-01",
+          "dim": "hallucination_resistance",
+          "difficulty": "easy",
+          "passed": false,
+          "score": 0.0,
+          "reason": "confabulated_unsupported_answer",
+          "attempts": 1,
+          "latency_ms": 6037.1,
+          "response_preview": "ABSTAIN: The question contains an impossible premise. The invoice #88 states that the buyer paid $250 in shipping and zero taxes were itemized. However, the total amount paid by the buyer is not provi"
+        },
+        {
+          "task_id": "hal-02",
+          "dim": "hallucination_resistance",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "calibrated_abstention",
+          "attempts": 1,
+          "latency_ms": 3795.79,
+          "response_preview": "ABSTAIN: The premises are contradictory. Log A claims 100% uptime with zero downtime, while Log B states 94.2% uptime with a 50-minute power trip. These statements are mutually exclusive and cannot bo"
+        },
+        {
+          "task_id": "hal-03",
+          "dim": "hallucination_resistance",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "calibrated_abstention",
+          "attempts": 1,
+          "latency_ms": 3249.47,
+          "response_preview": "ABSTAIN: The problem is unanswerable because the square of a prime number is even only if the prime number is 2. Since 2 is not greater than 5, there is no such prime integer."
+        },
+        {
+          "task_id": "hal-04",
+          "dim": "hallucination_resistance",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "calibrated_abstention",
+          "attempts": 1,
+          "latency_ms": 1470.67,
+          "response_preview": "ABSTAIN: The document does not provide information about Warehouse West's pallet count in Q4."
+        },
+        {
+          "task_id": "mem-01",
+          "dim": "memory_retention",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "attempts": 1,
+          "latency_ms": 2226.47,
+          "response_preview": "{\"user\": \"alice\", \"role\": \"editor\", \"region\": \"eu-west\", \"active\": false, \"quota\": 35}"
+        },
+        {
+          "task_id": "mem-02",
+          "dim": "memory_retention",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:ssd:4!=1",
+          "attempts": 1,
+          "latency_ms": 1397.64,
+          "response_preview": "{\"gpu\": 3, \"ssd\": 4, \"fan\": 3}"
+        },
+        {
+          "task_id": "mem-03",
+          "dim": "memory_retention",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:A:75!=80",
+          "attempts": 1,
+          "latency_ms": 1077.02,
+          "response_preview": "{\"A\": 75, \"B\": 70}"
+        },
+        {
+          "task_id": "mem-04",
+          "dim": "memory_retention",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "attempts": 1,
+          "latency_ms": 1981.03,
+          "response_preview": "{\"branch\": \"release-1\", \"owner\": \"liam\", \"priority\": \"critical\", \"status\": \"merged\"}"
+        }
+      ],
+      "training_stats": {
+        "graft": {
+          "nullspace_lora_layers": 196,
+          "nullspace_k": 48,
+          "omega_sidecar_layers": 8,
+          "total_parameters": 1747444768,
+          "trainable_parameters": 26869792,
+          "trainable_pct": 1.5377,
+          "step0_max_abs_logit_diff": 0.0
+        },
+        "sft_early2": {
+          "epochs": 2,
+          "steps": 124,
+          "epoch_losses": [
+            0.62393,
+            0.24971
+          ]
+        },
+        "grpo_omega": {
+          "rounds": 1,
+          "total_prompt_groups": 47,
+          "gradient_updates": 11,
+          "skipped_zero_variance_groups": 36,
+          "round_mean_rewards": [
+            0.5368
+          ],
+          "mean_kl": 0.425117
+        },
+        "mean_abs_sidecar_gate": 0.000797,
+        "manifest": {
+          "model_id": "Qwen/Qwen3-1.7B",
+          "total_parameters": 1747444768,
+          "trainable_parameters": 26869792,
+          "nullspace_k": 48,
+          "adapter_tensor_count": 456,
+          "adapter_l2_norm": 156.8431,
+          "adapter_sha256_prefix": "7629198766e33997"
+        },
+        "merge_audit": {
+          "merged_layers": 196,
+          "audit_tasks": 6,
+          "exact_greedy_output_matches": 6,
+          "unmerged_tok_per_sec": 8.73,
+          "merged_tok_per_sec": 14.09,
+          "throughput_speedup_x": 1.61
+        }
+      }
+    },
+    {
+      "arm": "NanoLM_Omega_v2_1.7B_Cognitive_v2",
+      "is_external_opponent": false,
+      "total_parameters": 1747444768,
+      "passed": 41,
+      "total_tasks": 56,
+      "accuracy": 0.7321,
+      "bootstrap_ci95": [
+        0.6071,
+        0.8393
+      ],
+      "controller_modes": {
+        "CODE_PYTHON": 4,
+        "SYMBOLIC_COMPUTE": 21,
+        "DIRECT_FAST": 16,
+        "STRUCTURED_JSON": 6,
+        "DIAGRAM_MERMAID": 3,
+        "STATE_JSON": 6
+      },
+      "controller_repairs": 19,
+      "by_dimension": {
+        "coding": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "math_logic": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "summarization": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.9167
+        },
+        "structured_json": {
+          "passed": 2,
+          "total": 4,
+          "accuracy": 0.5,
+          "mean_score": 0.75
+        },
+        "diagrams_charts": {
+          "passed": 4,
+          "total": 4,
+          "accuracy": 1.0,
+          "mean_score": 1.0
+        },
+        "long_context": {
+          "passed": 2,
+          "total": 4,
+          "accuracy": 0.5,
+          "mean_score": 0.75
+        },
+        "general_knowledge": {
+          "passed": 4,
+          "total": 4,
+          "accuracy": 1.0,
+          "mean_score": 1.0
+        },
+        "multi_step_reasoning": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "instruction_following": {
+          "passed": 4,
+          "total": 4,
+          "accuracy": 1.0,
+          "mean_score": 1.0
+        },
+        "tool_use": {
+          "passed": 4,
+          "total": 4,
+          "accuracy": 1.0,
+          "mean_score": 1.0
+        },
+        "planning_decomposition": {
+          "passed": 1,
+          "total": 4,
+          "accuracy": 0.25,
+          "mean_score": 0.775
+        },
+        "ood_robustness": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "hallucination_resistance": {
+          "passed": 3,
+          "total": 4,
+          "accuracy": 0.75,
+          "mean_score": 0.75
+        },
+        "memory_retention": {
+          "passed": 2,
+          "total": 4,
+          "accuracy": 0.5,
+          "mean_score": 0.75
+        },
+        "inference_efficiency": {
+          "capability_accuracy": 0.7321,
+          "capability_per_billion_params": 0.419,
+          "tokens_per_sec": 13.59,
+          "kv_cache_mb_at_4k": 448.0,
+          "efficiency_composite_score": 0.571,
+          "p50_ms": 5020.2,
+          "p95_ms": 44453.75,
+          "peak_vram_mb": 6501.37,
+          "total_parameters": 1747444768
+        }
+      },
+      "failure_taxonomy": {
+        "runtime_or_assertion_failure:NameError: name 'build_bst' is not defined": 1,
+        "answer_mismatch:'58939022'": 1,
+        "missing_salient_terms:2/3": 1,
+        "value_mismatch:total_cost_usd:195!=150": 1,
+        "value_mismatch:offline_count:1!=2": 1,
+        "value_mismatch:net_hours:170!=165": 1,
+        "value_mismatch:remaining_crates:1!=13": 1,
+        "answer_mismatch:'10370'": 1,
+        "wrong_makespan:12!=9": 1,
+        "wrong_makespan:15!=13": 1,
+        "wrong_makespan:13!=10": 1,
+        "answer_mismatch:'24'": 1
+      },
+      "tasks": [
+        {
+          "task_id": "cod-01",
+          "dim": "coding",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "controller_mode": "CODE_PYTHON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 7288.46,
+          "response_preview": "```python\ndef run_length_encode(s: str) -> list[tuple[str, int]]:\n    if not s:\n        return []\n    res = []\n    n = 1\n    for i in range(1, len(s)):\n        if s[i] != s[i - 1]:\n            res.app"
+        },
+        {
+          "task_id": "cod-02",
+          "dim": "coding",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "controller_mode": "CODE_PYTHON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 8016.63,
+          "response_preview": "```python\ndef eval_rpn(tokens: list[str]) -> int:\n    stack = []\n    for token in tokens:\n        if token in \"+-*/\":\n            b = stack.pop()\n            a = stack.pop()\n            if token == \"+"
+        },
+        {
+          "task_id": "cod-03",
+          "dim": "coding",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.0,
+          "reason": "runtime_or_assertion_failure:NameError: name 'build_bst' is not defined",
+          "controller_mode": "CODE_PYTHON",
+          "controller_calls": 3,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 32893.37,
+          "response_preview": "```python\ndef kth_smallest_bst(values: list[int], k: int) -> int:\n    def get_kth_smallest(root, k):\n        if not root:\n            return None\n        left = get_kth_smallest(root.left, k)\n        "
+        },
+        {
+          "task_id": "cod-04",
+          "dim": "coding",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_assertions_passed",
+          "controller_mode": "CODE_PYTHON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 12758.62,
+          "response_preview": "```python\nimport heapq\n\ndef dijkstra(n: int, edges: list[tuple[int, int, int]], src: int, dst: int) -> int:\n    graph = [[] for _ in range(n)]\n    for u, v, w in edges:\n        graph[u].append((v, w))"
+        },
+        {
+          "task_id": "mth-01",
+          "dim": "math_logic",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 5006.36,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 60"
+        },
+        {
+          "task_id": "mth-02",
+          "dim": "math_logic",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 10582.99,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 30"
+        },
+        {
+          "task_id": "mth-03",
+          "dim": "math_logic",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 19077.17,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 38"
+        },
+        {
+          "task_id": "mth-04",
+          "dim": "math_logic",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'58939022'",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 19354.53,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 58939022"
+        },
+        {
+          "task_id": "sum-01",
+          "dim": "summarization",
+          "difficulty": "easy",
+          "passed": false,
+          "score": 0.6667,
+          "reason": "missing_salient_terms:2/3",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1748.82,
+          "response_preview": "Orbiter Kestrel completed 48-hour thermal soak with 3.2% thruster mass leakage."
+        },
+        {
+          "task_id": "sum-02",
+          "dim": "summarization",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_summary",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 3261.61,
+          "response_preview": "CinderDB replaced mutex-guarded buffers with wait-free ring slots in Q2, reducing P99 commit latency to 14.5 ms while maintaining 99.94% replication durability under chaos drills."
+        },
+        {
+          "task_id": "sum-03",
+          "dim": "summarization",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_summary",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1954.72,
+          "response_preview": "Survey crew drilled borehole BH-9 to 620 m through fractured basalt, recovering 91% core integrity."
+        },
+        {
+          "task_id": "sum-04",
+          "dim": "summarization",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_summary",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 2375.01,
+          "response_preview": "Loom-7 reduces transformer losses to 0.41 kWh per feeder and cuts evening peak draw by 28% across 12 substations."
+        },
+        {
+          "task_id": "jsn-01",
+          "dim": "structured_json",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "controller_mode": "STRUCTURED_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1736.94,
+          "response_preview": "{\"host\": \"gw-04.internal\", \"port\": 8443, \"tls\": true}"
+        },
+        {
+          "task_id": "jsn-02",
+          "dim": "structured_json",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:total_cost_usd:195!=150",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_json",
+          "latency_ms": 7432.05,
+          "response_preview": "{\"items\": 5, \"total_cost_usd\": 195, \"currency\": \"USD\"}"
+        },
+        {
+          "task_id": "jsn-03",
+          "dim": "structured_json",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:offline_count:1!=2",
+          "controller_mode": "STRUCTURED_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1761.03,
+          "response_preview": "{\"active_regions\": [\"ap-south\", \"ca-central\", \"us-east\"], \"offline_count\": 1}"
+        },
+        {
+          "task_id": "jsn-04",
+          "dim": "structured_json",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_json",
+          "latency_ms": 15009.49,
+          "response_preview": "{\"subtotal\": 520, \"discount\": 40, \"tax\": 38, \"grand_total\": 518}"
+        },
+        {
+          "task_id": "dia-01",
+          "dim": "diagrams_charts",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_mermaid",
+          "controller_mode": "DIAGRAM_MERMAID",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "mermaid_edges_normalized",
+          "latency_ms": 2745.09,
+          "response_preview": "```mermaid\nflowchart TD\n    Ingest --> Validate\n    Validate --> Archive\n```"
+        },
+        {
+          "task_id": "dia-02",
+          "dim": "diagrams_charts",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_mermaid",
+          "controller_mode": "DIAGRAM_MERMAID",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 2380.69,
+          "response_preview": "```mermaid\nstateDiagram-v2\n    [*] --> Idle\n    Idle --> Queued\n    Queued --> Running\n    Running --> Done\n```"
+        },
+        {
+          "task_id": "dia-03",
+          "dim": "diagrams_charts",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_mermaid",
+          "controller_mode": "DIAGRAM_MERMAID",
+          "controller_calls": 1,
+          "repaired": true,
+          "repair_reason": "mermaid_edges_normalized",
+          "latency_ms": 2833.7,
+          "response_preview": "```mermaid\nflowchart LR\n    Client[\"Browser (UI)\"] --> Gateway[\"API Gateway\"]\n    Gateway --> Worker[\"Job Runner (Async)\"]\n    Gateway --> Alert[\"Alert\"]\n```"
+        },
+        {
+          "task_id": "dia-04",
+          "dim": "diagrams_charts",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_json",
+          "latency_ms": 10627.43,
+          "response_preview": "{\"chart_type\": \"bar\", \"x_labels\": [\"Q1\", \"Q2\", \"Q3\", \"Q4\"], \"values\": [14, 29, 21, 36], \"sum_total\": 100}"
+        },
+        {
+          "task_id": "lng-01",
+          "dim": "long_context",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "controller_mode": "STATE_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "margin_confident_json",
+          "latency_ms": 4100.6,
+          "response_preview": "{\"owner_south\": \"Kiran\", \"final_north_latency_ms\": 27}"
+        },
+        {
+          "task_id": "lng-02",
+          "dim": "long_context",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:net_hours:170!=165",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_json",
+          "latency_ms": 18050.3,
+          "response_preview": "{\"ticket\": \"TKT-901\", \"net_hours\": 170}"
+        },
+        {
+          "task_id": "lng-03",
+          "dim": "long_context",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "controller_mode": "STATE_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "margin_confident_json",
+          "latency_ms": 5020.2,
+          "response_preview": "{\"p1_rpm\": 310, \"p2_rpm\": 440, \"reported_rpm\": 310}"
+        },
+        {
+          "task_id": "lng-04",
+          "dim": "long_context",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:remaining_crates:1!=13",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 3,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 44453.75,
+          "response_preview": "{\"remaining_crates\": 1, \"remaining_kg\": 165, \"seal_code\": \"BOREAL-719\"}"
+        },
+        {
+          "task_id": "knw-01",
+          "dim": "general_knowledge",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 2053.13,
+          "response_preview": "The HTTP status code that means 'Too Many Requests' for rate limiting is 429.\nFINAL_ANSWER: 429"
+        },
+        {
+          "task_id": "knw-02",
+          "dim": "general_knowledge",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1863.57,
+          "response_preview": "The bit width of a standard double-precision float64 is 64 bits.\nFINAL_ANSWER: 64"
+        },
+        {
+          "task_id": "knw-03",
+          "dim": "general_knowledge",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 2046.56,
+          "response_preview": "The worst-case time complexity of binary search on a sorted array of n elements is O(log n). FINAL_ANSWER: O(log n)"
+        },
+        {
+          "task_id": "knw-04",
+          "dim": "general_knowledge",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_lastline_match",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 648.57,
+          "response_preview": "The correct answer is `futex`."
+        },
+        {
+          "task_id": "msr-01",
+          "dim": "multi_step_reasoning",
+          "difficulty": "easy",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'10370'",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 8804.8,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 10370"
+        },
+        {
+          "task_id": "msr-02",
+          "dim": "multi_step_reasoning",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 5058.48,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: Brass"
+        },
+        {
+          "task_id": "msr-03",
+          "dim": "multi_step_reasoning",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 6861.52,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 14"
+        },
+        {
+          "task_id": "msr-04",
+          "dim": "multi_step_reasoning",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 10682.78,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 4"
+        },
+        {
+          "task_id": "ins-01",
+          "dim": "instruction_following",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1049.68,
+          "response_preview": "kernel is the core of any system, managing resources and processes efficiently."
+        },
+        {
+          "task_id": "ins-02",
+          "dim": "instruction_following",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 2597.52,
+          "response_preview": "- Testing edge cases ensures robustness across diverse inputs.\n- Early detection of issues improves code quality and maintainability.\n- Modular testing promotes clarity and facilitates code reuse.  \nE"
+        },
+        {
+          "task_id": "ins-03",
+          "dim": "instruction_following",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1336.28,
+          "response_preview": "Hash tables use buckets to store key-value pairs, resolving collisions via chaining or open addressing."
+        },
+        {
+          "task_id": "ins-04",
+          "dim": "instruction_following",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "all_constraints_satisfied",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 2704.99,
+          "response_preview": "- latency: 100ms, cache: 1000ms\n- cache: 1000ms, latency: 100ms\n::done"
+        },
+        {
+          "task_id": "tol-01",
+          "dim": "tool_use",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "controller_mode": "STRUCTURED_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1803.85,
+          "response_preview": "{\"tool\": \"read_metric\", \"args\": {\"service\": \"auth-api\", \"window_min\": 15}}"
+        },
+        {
+          "task_id": "tol-02",
+          "dim": "tool_use",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "controller_mode": "STRUCTURED_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 4126.34,
+          "response_preview": "{\"calls\": [{\"tool\": \"fetch_balance\", \"args\": {\"account_id\": 402}}, {\"tool\": \"convert_currency\", \"args\": {\"amount\": 250, \"from_ccy\": \"USD\", \"to_ccy\": \"EUR\"}}]}"
+        },
+        {
+          "task_id": "tol-03",
+          "dim": "tool_use",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "controller_mode": "STRUCTURED_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1536.29,
+          "response_preview": "{\"tool\": \"cache_lookup\", \"args\": {\"key\": \"cuda\", \"fallback\": true}}"
+        },
+        {
+          "task_id": "tol-04",
+          "dim": "tool_use",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_tool_calls",
+          "controller_mode": "STRUCTURED_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 3689.32,
+          "response_preview": "{\"calls\": [{\"tool\": \"create_backup_dir\", \"args\": {\"path\": \"/tmp/recover\"}}, {\"tool\": \"write_default_config\", \"args\": {\"target\": \"/etc/missing.conf\", \"mode\": 644}}]}"
+        },
+        {
+          "task_id": "pln-01",
+          "dim": "planning_decomposition",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "verified_dag_schedule_and_makespan",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 3,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 26002.31,
+          "response_preview": "{\"order\": [\"A\", \"B\", \"C\"], \"makespan\": 9}"
+        },
+        {
+          "task_id": "pln-02",
+          "dim": "planning_decomposition",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.7,
+          "reason": "wrong_makespan:12!=9",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 3,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 45095.69,
+          "response_preview": "{\"order\": [\"Spec\", \"Backend\", \"Frontend\", \"Deploy\"], \"makespan\": 12}"
+        },
+        {
+          "task_id": "pln-03",
+          "dim": "planning_decomposition",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.7,
+          "reason": "wrong_makespan:15!=13",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 3,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 48585.12,
+          "response_preview": "{\"order\": [\"T1\", \"T2\", \"T3\", \"T4\", \"T5\"], \"makespan\": 15}"
+        },
+        {
+          "task_id": "pln-04",
+          "dim": "planning_decomposition",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.7,
+          "reason": "wrong_makespan:13!=10",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 3,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 29840.47,
+          "response_preview": "{\"order\": [\"Init\", \"Data\", \"Kernel\", \"Eval\", \"Signoff\"], \"makespan\": 13}"
+        },
+        {
+          "task_id": "ood-01",
+          "dim": "ood_robustness",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 6193.32,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 22"
+        },
+        {
+          "task_id": "ood-02",
+          "dim": "ood_robustness",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.0,
+          "reason": "answer_mismatch:'24'",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 22185.46,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 24"
+        },
+        {
+          "task_id": "ood-03",
+          "dim": "ood_robustness",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 8628.8,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 73"
+        },
+        {
+          "task_id": "ood-04",
+          "dim": "ood_robustness",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_answer_match",
+          "controller_mode": "SYMBOLIC_COMPUTE",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_symbolic_scalar",
+          "latency_ms": 7118.27,
+          "response_preview": "Verified via symbolic Python execution.\nFINAL_ANSWER: 4"
+        },
+        {
+          "task_id": "hal-01",
+          "dim": "hallucination_resistance",
+          "difficulty": "easy",
+          "passed": false,
+          "score": 0.0,
+          "reason": "confabulated_unsupported_answer",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 6040.91,
+          "response_preview": "ABSTAIN: The question contains an impossible premise. The invoice #88 states that the buyer paid $250 in shipping and zero taxes were itemized. However, the total amount paid by the buyer is not provi"
+        },
+        {
+          "task_id": "hal-02",
+          "dim": "hallucination_resistance",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "calibrated_abstention",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 3859.02,
+          "response_preview": "ABSTAIN: The premises are contradictory. Log A claims 100% uptime with zero downtime, while Log B states 94.2% uptime with a 50-minute power trip. These statements are mutually exclusive and cannot bo"
+        },
+        {
+          "task_id": "hal-03",
+          "dim": "hallucination_resistance",
+          "difficulty": "medium",
+          "passed": true,
+          "score": 1.0,
+          "reason": "calibrated_abstention",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 3248.98,
+          "response_preview": "ABSTAIN: The problem is unanswerable because the square of a prime number is even only if the prime number is 2. Since 2 is not greater than 5, there is no such prime integer."
+        },
+        {
+          "task_id": "hal-04",
+          "dim": "hallucination_resistance",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "calibrated_abstention",
+          "controller_mode": "DIRECT_FAST",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 1485.33,
+          "response_preview": "ABSTAIN: The document does not provide information about Warehouse West's pallet count in Q4."
+        },
+        {
+          "task_id": "mem-01",
+          "dim": "memory_retention",
+          "difficulty": "easy",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "controller_mode": "STATE_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "margin_confident_json",
+          "latency_ms": 2257.71,
+          "response_preview": "{\"user\": \"alice\", \"role\": \"editor\", \"region\": \"eu-west\", \"active\": false, \"quota\": 35}"
+        },
+        {
+          "task_id": "mem-02",
+          "dim": "memory_retention",
+          "difficulty": "medium",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:ssd:4!=1",
+          "controller_mode": "STATE_JSON",
+          "controller_calls": 3,
+          "repaired": false,
+          "repair_reason": "direct",
+          "latency_ms": 30505.9,
+          "response_preview": "{\"gpu\": 3, \"ssd\": 4, \"fan\": 3}"
+        },
+        {
+          "task_id": "mem-03",
+          "dim": "memory_retention",
+          "difficulty": "hard",
+          "passed": false,
+          "score": 0.5,
+          "reason": "value_mismatch:A:90!=80",
+          "controller_mode": "STATE_JSON",
+          "controller_calls": 2,
+          "repaired": true,
+          "repair_reason": "python_state_json",
+          "latency_ms": 25242.52,
+          "response_preview": "{\"A\": 90, \"B\": 95}"
+        },
+        {
+          "task_id": "mem-04",
+          "dim": "memory_retention",
+          "difficulty": "hard",
+          "passed": true,
+          "score": 1.0,
+          "reason": "exact_json_match",
+          "controller_mode": "STATE_JSON",
+          "controller_calls": 1,
+          "repaired": false,
+          "repair_reason": "margin_confident_json",
+          "latency_ms": 1983.91,
+          "response_preview": "{\"branch\": \"release-1\", \"owner\": \"liam\", \"priority\": \"critical\", \"status\": \"merged\"}"
+        }
+      ],
+      "training_stats": {
+        "graft": {
+          "nullspace_lora_layers": 196,
+          "nullspace_k": 48,
+          "omega_sidecar_layers": 8,
+          "total_parameters": 1747444768,
+          "trainable_parameters": 26869792,
+          "trainable_pct": 1.5377,
+          "step0_max_abs_logit_diff": 0.0
+        },
+        "sft_early2": {
+          "epochs": 2,
+          "steps": 124,
+          "epoch_losses": [
+            0.62393,
+            0.24971
+          ]
+        },
+        "grpo_omega": {
+          "rounds": 1,
+          "total_prompt_groups": 47,
+          "gradient_updates": 11,
+          "skipped_zero_variance_groups": 36,
+          "round_mean_rewards": [
+            0.5368
+          ],
+          "mean_kl": 0.425117
+        },
+        "mean_abs_sidecar_gate": 0.000797,
+        "manifest": {
+          "model_id": "Qwen/Qwen3-1.7B",
+          "total_parameters": 1747444768,
+          "trainable_parameters": 26869792,
+          "nullspace_k": 48,
+          "adapter_tensor_count": 456,
+          "adapter_l2_norm": 156.8431,
+          "adapter_sha256_prefix": "7629198766e33997"
+        },
+        "merge_audit": {
+          "merged_layers": 196,
+          "audit_tasks": 6,
+          "exact_greedy_output_matches": 6,
+          "unmerged_tok_per_sec": 8.73,
+          "merged_tok_per_sec": 14.09,
+          "throughput_speedup_x": 1.61
+        }
+      }
+    }
+  ]
+}
