@@ -1,0 +1,511 @@
+{
+  "schema": "nanolm.omega.exp01_cuda.v1",
+  "hardware": {
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "torch": "2.11.0+cu130",
+    "cuda_available": true,
+    "cuda_version": "13.0",
+    "gpu_count": 2,
+    "gpu_names": [
+      "Tesla T4",
+      "Tesla T4"
+    ],
+    "amp_dtype": "float32",
+    "paid_compute_usd": 0.0
+  },
+  "corpus_manifest_digest": {
+    "vocab": 32768,
+    "train_tokens_total": 800000000,
+    "train_sha256": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
+  },
+  "kaggle_kernel_versions": {
+    "x8_dual_unembed_atrd": 4,
+    "g4_omega": 4,
+    "g4_no_vres": 5,
+    "g4_no_sparse_refiner": 5
+  },
+  "cuda_invariant_audit": {
+    "x8_dual_unembed_atrd": {
+      "params": 114780,
+      "unembed_passes": 2,
+      "causality_max_err": 0.0,
+      "duality_max_err": null,
+      "grads_finite": true
+    },
+    "g4_omega": {
+      "params": 115283,
+      "unembed_passes": 1,
+      "causality_max_err": 0.0,
+      "duality_max_err": 1.1920928955078125e-06,
+      "grads_finite": true
+    },
+    "g4_no_vres": {
+      "params": 115153,
+      "unembed_passes": 1,
+      "causality_max_err": 0.0,
+      "duality_max_err": 1.2814998626708984e-06,
+      "grads_finite": true
+    },
+    "g4_no_sparse_refiner": {
+      "params": 115218,
+      "unembed_passes": 1,
+      "causality_max_err": 0.0,
+      "duality_max_err": 1.430511474609375e-06,
+      "grads_finite": true
+    }
+  },
+  "omega_exp_01_corpus": {
+    "x8_dual_unembed_atrd": {
+      "deployed_params": 20544572,
+      "unembed_passes": 2,
+      "true_flops_per_token_4k": 78555784,
+      "state_bytes_t32768_bf16": 50537472,
+      "train_tokens_per_seed": 4096000,
+      "tok_per_sec": {
+        "mean": 10450.502171976053,
+        "std": 272.03122557172094,
+        "n": 2
+      },
+      "composite_bpb": {
+        "mean": 2.0797424419891373,
+        "std": 0.0066060180515390135,
+        "n": 2
+      },
+      "ood2x_composite_bpb": {
+        "mean": 2.0759401942493962,
+        "std": 0.006564034931541189,
+        "n": 2
+      },
+      "domain_bpb": {
+        "web": {
+          "mean": 1.8355555328935615,
+          "std": 0.0006657347113854558,
+          "n": 2
+        },
+        "textbook": {
+          "mean": 1.6598106358566667,
+          "std": 0.0005896915830886285,
+          "n": 2
+        },
+        "math": {
+          "mean": 2.406452697139981,
+          "std": 0.004749077599012933,
+          "n": 2
+        },
+        "code": {
+          "mean": 2.417150902066339,
+          "std": 0.021751037735440733,
+          "n": 2
+        }
+      },
+      "learning_curve_bpb": {
+        "250": 2.382457458226405,
+        "500": 2.200707014724166,
+        "750": 2.114102328128557,
+        "1000": 2.0797424419891373
+      },
+      "peak_vram_mb": 4122.01220703125,
+      "checkpoint_sha256": null,
+      "per_seed": [
+        {
+          "seed": 42,
+          "device": "cuda:0",
+          "deployed_params": 20544572,
+          "unembed_passes": 2,
+          "true_flops_per_token_4k": 78555784,
+          "state_bytes_t32768_bf16": 50537472,
+          "train_tokens": 4096000,
+          "train_seconds": 384.859054855,
+          "tok_per_sec": 10642.857296272305,
+          "tail_train_ce": 5.614885368347168,
+          "learning_curve_bpb": {
+            "250": 2.384492304732206,
+            "500": 2.2063238492986015,
+            "750": 2.119277330407012,
+            "1000": 2.084413602150021
+          },
+          "composite_bpb": 2.084413602150021,
+          "domain_bpb": {
+            "web": 1.8350847873646696,
+            "textbook": 1.6602276107738771,
+            "math": 2.4098108021146243,
+            "code": 2.4325312083469135
+          },
+          "ood2x_composite_bpb": 2.080581667861434,
+          "peak_vram_mb": 4122.01220703125,
+          "refiner_ema_tau": 0.9877906441688538,
+          "checkpoint_sha256": null
+        },
+        {
+          "seed": 137,
+          "device": "cuda:1",
+          "deployed_params": 20544572,
+          "unembed_passes": 2,
+          "true_flops_per_token_4k": 78555784,
+          "state_bytes_t32768_bf16": 50537472,
+          "train_tokens": 4096000,
+          "train_seconds": 399.292384966,
+          "tok_per_sec": 10258.147047679802,
+          "tail_train_ce": 5.634391422271729,
+          "learning_curve_bpb": {
+            "250": 2.380422611720604,
+            "500": 2.1950901801497302,
+            "750": 2.108927325850102,
+            "1000": 2.075071281828253
+          },
+          "composite_bpb": 2.075071281828253,
+          "domain_bpb": {
+            "web": 1.8360262784224535,
+            "textbook": 1.659393660939456,
+            "math": 2.403094592165338,
+            "code": 2.4017705957857642
+          },
+          "ood2x_composite_bpb": 2.071298720637358,
+          "peak_vram_mb": 4122.01220703125,
+          "refiner_ema_tau": 0.9878321290016174,
+          "checkpoint_sha256": null
+        }
+      ]
+    },
+    "g4_omega": {
+      "deployed_params": 20565285,
+      "unembed_passes": 1,
+      "true_flops_per_token_4k": 40914952,
+      "state_bytes_t32768_bf16": 1802496,
+      "train_tokens_per_seed": 4096000,
+      "tok_per_sec": {
+        "mean": 8884.256701458675,
+        "std": 106.00274942985214,
+        "n": 2
+      },
+      "composite_bpb": {
+        "mean": 2.117531276594159,
+        "std": 0.0031699103063042864,
+        "n": 2
+      },
+      "ood2x_composite_bpb": {
+        "mean": 2.1148351547534805,
+        "std": 0.003194724325273507,
+        "n": 2
+      },
+      "domain_bpb": {
+        "web": {
+          "mean": 1.8532279612274234,
+          "std": 0.0012473496901912367,
+          "n": 2
+        },
+        "textbook": {
+          "mean": 1.6796678774386118,
+          "std": 0.0016053920975183649,
+          "n": 2
+        },
+        "math": {
+          "mean": 2.4487966483190786,
+          "std": 0.0007154804637270056,
+          "n": 2
+        },
+        "code": {
+          "mean": 2.4884326193915225,
+          "std": 0.016247863476653124,
+          "n": 2
+        }
+      },
+      "learning_curve_bpb": {
+        "250": 2.4030967689765252,
+        "500": 2.225609823081518,
+        "750": 2.149225966898043,
+        "1000": 2.117531276594159
+      },
+      "peak_vram_mb": 5526.65673828125,
+      "checkpoint_sha256": "90f1155347f9d4daf6cc1cc851a69bd70cca5537723b20368a9676adeeeaca47",
+      "per_seed": [
+        {
+          "seed": 42,
+          "device": "cuda:0",
+          "deployed_params": 20565285,
+          "unembed_passes": 1,
+          "true_flops_per_token_4k": 40914952,
+          "state_bytes_t32768_bf16": 1802496,
+          "train_tokens": 4096000,
+          "train_seconds": 457.1830665770001,
+          "tok_per_sec": 8959.211964404942,
+          "tail_train_ce": 5.699307861328125,
+          "learning_curve_bpb": {
+            "250": 2.407541597378074,
+            "500": 2.2316903410257223,
+            "750": 2.151981209800094,
+            "1000": 2.1197727416675
+          },
+          "composite_bpb": 2.1197727416675,
+          "domain_bpb": {
+            "web": 1.8523459518029781,
+            "textbook": 1.6785326937999934,
+            "math": 2.4482907272313708,
+            "code": 2.499921593835657
+          },
+          "ood2x_composite_bpb": 2.1170941659879032,
+          "peak_vram_mb": 5526.65673828125,
+          "refiner_ema_tau": 0.48502516746520996,
+          "checkpoint_sha256": "90f1155347f9d4daf6cc1cc851a69bd70cca5537723b20368a9676adeeeaca47"
+        },
+        {
+          "seed": 137,
+          "device": "cuda:1",
+          "deployed_params": 20565285,
+          "unembed_passes": 1,
+          "true_flops_per_token_4k": 40914952,
+          "state_bytes_t32768_bf16": 1802496,
+          "train_tokens": 4096000,
+          "train_seconds": 464.96308800300005,
+          "tok_per_sec": 8809.301438512408,
+          "tail_train_ce": 5.736128082275391,
+          "learning_curve_bpb": {
+            "250": 2.3986519405749767,
+            "500": 2.2195293051373133,
+            "750": 2.146470723995992,
+            "1000": 2.1152898115208183
+          },
+          "composite_bpb": 2.1152898115208183,
+          "domain_bpb": {
+            "web": 1.8541099706518684,
+            "textbook": 1.6808030610772304,
+            "math": 2.4493025694067865,
+            "code": 2.476943644947388
+          },
+          "ood2x_composite_bpb": 2.112576143519058,
+          "peak_vram_mb": 5514.6669921875,
+          "refiner_ema_tau": 0.4885067045688629,
+          "checkpoint_sha256": null
+        }
+      ]
+    },
+    "g4_no_vres": {
+      "deployed_params": 20553735,
+      "unembed_passes": 1,
+      "true_flops_per_token_4k": 40891852,
+      "state_bytes_t32768_bf16": 1802496,
+      "train_tokens_per_seed": 4096000,
+      "tok_per_sec": {
+        "mean": 7214.749632707406,
+        "std": 11.932299069159892,
+        "n": 2
+      },
+      "composite_bpb": {
+        "mean": 2.1507905316800615,
+        "std": 0.014601438002507851,
+        "n": 2
+      },
+      "ood2x_composite_bpb": {
+        "mean": 2.147993473402961,
+        "std": 0.014220640459012935,
+        "n": 2
+      },
+      "domain_bpb": {
+        "web": {
+          "mean": 1.8814122402766087,
+          "std": 0.00921712888656933,
+          "n": 2
+        },
+        "textbook": {
+          "mean": 1.7171728667303847,
+          "std": 0.012929442398162735,
+          "n": 2
+        },
+        "math": {
+          "mean": 2.4870458605186343,
+          "std": 0.01209630371306777,
+          "n": 2
+        },
+        "code": {
+          "mean": 2.5175311591946166,
+          "std": 0.02416287701223188,
+          "n": 2
+        }
+      },
+      "learning_curve_bpb": {
+        "250": 2.464486217260583,
+        "500": 2.2674332071399714,
+        "750": 2.1836906302171015,
+        "1000": 2.1507905316800615
+      },
+      "peak_vram_mb": 5134.00927734375,
+      "checkpoint_sha256": null,
+      "per_seed": [
+        {
+          "seed": 42,
+          "device": "cuda:0",
+          "deployed_params": 20553735,
+          "unembed_passes": 1,
+          "true_flops_per_token_4k": 40891852,
+          "state_bytes_t32768_bf16": 1802496,
+          "train_tokens": 4096000,
+          "train_seconds": 568.390582198,
+          "tok_per_sec": 7206.312223120457,
+          "tail_train_ce": 5.815805549621582,
+          "learning_curve_bpb": {
+            "250": 2.473901450185748,
+            "500": 2.2785974014460137,
+            "750": 2.194016101510615,
+            "1000": 2.1611153075067095
+          },
+          "composite_bpb": 2.1611153075067095,
+          "domain_bpb": {
+            "web": 1.8879297346153723,
+            "textbook": 1.7263153631270864,
+            "math": 2.4955992389014368,
+            "code": 2.5346168933829425
+          },
+          "ood2x_composite_bpb": 2.1580489847043447,
+          "peak_vram_mb": 5134.00927734375,
+          "refiner_ema_tau": 0.5070272088050842,
+          "skipped_grad_steps": 0,
+          "checkpoint_sha256": null
+        },
+        {
+          "seed": 137,
+          "device": "cuda:1",
+          "deployed_params": 20553735,
+          "unembed_passes": 1,
+          "true_flops_per_token_4k": 40891852,
+          "state_bytes_t32768_bf16": 1802496,
+          "train_tokens": 4096000,
+          "train_seconds": 567.062707364,
+          "tok_per_sec": 7223.187042294355,
+          "tail_train_ce": 5.808368644714355,
+          "learning_curve_bpb": {
+            "250": 2.4550709843354177,
+            "500": 2.2562690128339296,
+            "750": 2.173365158923588,
+            "1000": 2.140465755853413
+          },
+          "composite_bpb": 2.140465755853413,
+          "domain_bpb": {
+            "web": 1.874894745937845,
+            "textbook": 1.708030370333683,
+            "math": 2.4784924821358323,
+            "code": 2.500445425006291
+          },
+          "ood2x_composite_bpb": 2.137937962101577,
+          "peak_vram_mb": 5127.25390625,
+          "refiner_ema_tau": 0.5070992112159729,
+          "skipped_grad_steps": 0,
+          "checkpoint_sha256": null
+        }
+      ]
+    },
+    "g4_no_sparse_refiner": {
+      "deployed_params": 20563364,
+      "unembed_passes": 1,
+      "true_flops_per_token_4k": 41577544,
+      "state_bytes_t32768_bf16": 1802496,
+      "train_tokens_per_seed": 4096000,
+      "tok_per_sec": {
+        "mean": 7398.636865076271,
+        "std": 53.50658406034726,
+        "n": 2
+      },
+      "composite_bpb": {
+        "mean": 2.1112315082333994,
+        "std": 0.008121855310719444,
+        "n": 2
+      },
+      "ood2x_composite_bpb": {
+        "mean": 2.1079113816419524,
+        "std": 0.008158942121820527,
+        "n": 2
+      },
+      "domain_bpb": {
+        "web": {
+          "mean": 1.8499556098240402,
+          "std": 0.0006756438220094511,
+          "n": 2
+        },
+        "textbook": {
+          "mean": 1.6770701505056156,
+          "std": 0.001745637971157787,
+          "n": 2
+        },
+        "math": {
+          "mean": 2.443761779778953,
+          "std": 0.0012744311838300845,
+          "n": 2
+        },
+        "code": {
+          "mean": 2.4741384928249905,
+          "std": 0.028791708265879824,
+          "n": 2
+        }
+      },
+      "learning_curve_bpb": {
+        "250": 2.398313914767698,
+        "500": 2.2207549324414178,
+        "750": 2.1429090877029964,
+        "1000": 2.1112315082333994
+      },
+      "peak_vram_mb": 5105.6669921875,
+      "checkpoint_sha256": null,
+      "per_seed": [
+        {
+          "seed": 42,
+          "device": "cuda:0",
+          "deployed_params": 20563364,
+          "unembed_passes": 1,
+          "true_flops_per_token_4k": 41577544,
+          "state_bytes_t32768_bf16": 1802496,
+          "train_tokens": 4096000,
+          "train_seconds": 550.7988393940002,
+          "tok_per_sec": 7436.47173350347,
+          "tail_train_ce": 5.694820289611816,
+          "learning_curve_bpb": {
+            "250": 2.402135135278552,
+            "500": 2.230424725979986,
+            "750": 2.1491953449253804,
+            "1000": 2.1169745271994254
+          },
+          "composite_bpb": 2.1169745271994254,
+          "domain_bpb": {
+            "web": 1.8504333621522497,
+            "textbook": 1.6783045029525179,
+            "math": 2.4446629387111947,
+            "code": 2.494497304981739
+          },
+          "ood2x_composite_bpb": 2.1136806249436,
+          "peak_vram_mb": 5105.6669921875,
+          "refiner_ema_tau": null,
+          "skipped_grad_steps": 0,
+          "checkpoint_sha256": null
+        },
+        {
+          "seed": 137,
+          "device": "cuda:1",
+          "deployed_params": 20563364,
+          "unembed_passes": 1,
+          "true_flops_per_token_4k": 41577544,
+          "state_bytes_t32768_bf16": 1802496,
+          "train_tokens": 4096000,
+          "train_seconds": 556.461103269,
+          "tok_per_sec": 7360.801996649071,
+          "tail_train_ce": 5.7129531097412105,
+          "learning_curve_bpb": {
+            "250": 2.3944926942568436,
+            "500": 2.211085138902849,
+            "750": 2.1366228304806123,
+            "1000": 2.105488489267374
+          },
+          "composite_bpb": 2.105488489267374,
+          "domain_bpb": {
+            "web": 1.8494778574958304,
+            "textbook": 1.675835798058713,
+            "math": 2.442860620846711,
+            "code": 2.453779680668242
+          },
+          "ood2x_composite_bpb": 2.1021421383403043,
+          "peak_vram_mb": 5105.6669921875,
+          "refiner_ema_tau": null,
+          "skipped_grad_steps": 0,
+          "checkpoint_sha256": null
+        }
+      ]
+    }
+  }
+}

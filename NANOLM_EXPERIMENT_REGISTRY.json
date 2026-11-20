@@ -1,0 +1,199 @@
+{
+  "schema": "nanolm.omega.experiment_registry.v1",
+  "branch": "nanolm/architecture-invention-v1",
+  "paid_cloud_spend_usd": 0.0,
+  "corpus_manifest_digest": {
+    "schema": "nanolm.lab.corpus.v1",
+    "vocab": 32768,
+    "train_tokens_total": 800000000,
+    "train_sha256": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
+  },
+  "artifacts_sha256": {
+    "artifacts/nanolm_discovery_v1/discovery_results.json": "3f878c079643a7a54b6afd8b6e3479ee3e09b2ee4c9b55e79b55775601b31104",
+    "artifacts/nanolm_discovery_v1/kaggle_cuda_results.json": "47a007a702fe157a7e538385fbc1612e12f0df4b43edaae39afc0cad93011669",
+    "artifacts/nanolm_discovery_v1/lineage_registry.json": "442aa811c34ee037c3784ef3fb27fade09b69c3f0d040e01936ddf725a5deeab",
+    "artifacts/nanolm_omega_v1/checkpoint_manifest.json": "2b0bff99b1014c30728a252eccc9d1052fbf83cb8f0aed9f4d7e940c6a5ffaa9",
+    "artifacts/nanolm_omega_v1/omega_kaggle_cuda_results.json": "d3259761b1bc03133f34f1d2db0babe148e6ac8f5c9839e8abb32d6322c48458",
+    "artifacts/nanolm_omega_v1/omega_local_results.json": "bc458993a436da46c6ae55100624bae5bd387ff7c6e187c1d749677eac458253"
+  },
+  "preserved_checkpoints_gitignored": [
+    {
+      "path": "artifacts/nanolm_omega_v1/checkpoints/g4_omega_s42.pt",
+      "bytes": 82336525,
+      "sha256": "90f1155347f9d4daf6cc1cc851a69bd70cca5537723b20368a9676adeeeaca47"
+    },
+    {
+      "path": "artifacts/nanolm_omega_v1/checkpoints/g4_omega_mech_s101.pt",
+      "bytes": 485189,
+      "sha256": "b6713c1a710de7b4e946eff6ebb5b7cbbab1962c9b04cc7b3a19e9cca9700f2c"
+    },
+    {
+      "path": "artifacts/nanolm_omega_v1/checkpoints/omega_efe_planner_s0.pt",
+      "bytes": 1007943,
+      "sha256": "78a900d44847bcb0d15bb64bc5249626dafdcc86bc10aace9881c64418351c4c"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "EXP-INV-01",
+      "script": "scripts/run_autonomous_discovery_cycles.py",
+      "backend": "Apple M3 Max (mps/cpu, 115k, 3 seeds x 360 steps)",
+      "artifact": "artifacts/nanolm_discovery_v1/discovery_results.json",
+      "verdict": "CONFIRMED",
+      "summary": {
+        "b0_transformer_ood_comp": 0.1818,
+        "i3_hrwn_ood_comp": 0.1756,
+        "g2_no_precision_ood_comp": 0.7513,
+        "g3_hmwr_ood_comp": 0.7393,
+        "g3_hmwr_epist_auroc_internal": 0.686,
+        "g3_hmwr_epist_auroc_entropy": 0.875
+      }
+    },
+    {
+      "id": "EXP-INV-02-04",
+      "script": "scripts/run_autonomous_discovery_cycles.py",
+      "backend": "Apple M3 Max (mps bfloat16, 20.55M, 2 seeds x 250 steps)",
+      "artifact": "artifacts/nanolm_discovery_v1/discovery_results.json",
+      "verdict": "DIAGNOSTIC_SHORT_HORIZON",
+      "summary": {
+        "b0_transformer_comp_bpb": 2.4652,
+        "i3_hrwn_comp_bpb": 2.452,
+        "g2_mprn_comp_bpb": 2.5161,
+        "g3_hmwr_comp_bpb": 2.5085,
+        "g3_no_depth_adapt_comp_bpb": 2.521
+      }
+    },
+    {
+      "id": "EXP-INV-03-05A",
+      "script": "scripts/run_autonomous_discovery_cycles.py",
+      "backend": "Apple M3 Max (mps bfloat16, 8.65M / 20.55M / 47.64M x 250 steps)",
+      "artifact": "artifacts/nanolm_discovery_v1/discovery_results.json",
+      "verdict": "CONFIRMED_SCALING_AND_JEP_PENALTY",
+      "summary": {
+        "i3_hrwn_muon_jep_250_bpb": 2.4864,
+        "scale_42m_b0_comp_bpb": 2.4668,
+        "scale_42m_i3_comp_bpb": 2.4551
+      }
+    },
+    {
+      "id": "EXP-INV-05B",
+      "script": "scripts/run_autonomous_discovery_cycles.py",
+      "backend": "Apple M3 Max (64 GB UMA bfloat16, ~3.88B-3.89B live profiling)",
+      "artifact": "artifacts/nanolm_discovery_v1/discovery_results.json",
+      "verdict": "CONFIRMED_STRICT_SUB4B_AND_STATE_REDUCTION",
+      "summary": {
+        "b0_transformer_4b_params": 3887254272,
+        "b0_transformer_4b_32k_state_mib": 5632.0,
+        "g3_hmwr_4b_params": 3882612303,
+        "g3_hmwr_4b_32k_state_mib": 83.71
+      }
+    },
+    {
+      "id": "EXP-INV-06A",
+      "script": "scripts/kaggle_discovery_horizon_benchmark.py",
+      "backend": "Kaggle 2x NVIDIA Tesla T4 (hassaneljesr/nanolm-discovery-cuda-v1, 1,000 steps x 2 seeds)",
+      "artifact": "artifacts/nanolm_discovery_v1/kaggle_cuda_results.json",
+      "verdict": "PROMOTED_CROSSOVER",
+      "summary": {
+        "b0_transformer_adamw_bpb": 2.1188,
+        "b0_transformer_adamw_ood2x": 2.1526,
+        "i3_hrwn_adamw_bpb": 2.1654,
+        "g3_hmwr_adamw_bpb": 2.1342,
+        "g3_hmwr_adamw_ood2x": 2.1322,
+        "g3_hmwr_muon_ce_bpb": 2.1457,
+        "g3_hmwr_muon_ce_ood2x": 2.1445
+      }
+    },
+    {
+      "id": "EXP-INV-06B",
+      "script": "scripts/kaggle_discovery_horizon_benchmark.py",
+      "backend": "Kaggle NVIDIA Tesla T4 (222M ctx 512..32k)",
+      "artifact": "artifacts/nanolm_discovery_v1/kaggle_cuda_results.json",
+      "verdict": "CONFIRMED_KV_WALL_AND_CHUNKED_PREFILL_NEED",
+      "summary": {
+        "b0_32k_decode_ms_per_tok": 74.42,
+        "g3_32k_decode_ms_per_tok": 77.58,
+        "g3_32k_state_mib": 13.22,
+        "g3_unchunked_32k_peak_vram_mib": 7876.73
+      }
+    },
+    {
+      "id": "OMEGA-EXP-01-MECH",
+      "script": "scripts/run_nanolm_omega_suite.py",
+      "backend": "Apple M3 Max (115k, 3 seeds [101, 202, 303] x 360 steps)",
+      "artifact": "artifacts/nanolm_omega_v1/omega_local_results.json",
+      "verdict": "CONFIRMED_GATED_VRES_AND_ROUTER_PARADOX",
+      "summary": {
+        "x8_dual_unembed_ood_comp": 0.6559,
+        "x8_dual_unembed_epist_int": 0.8151,
+        "g4_omega_ood_comp": 0.6477,
+        "g4_omega_epist_int": 0.526,
+        "g4_omega_epist_entropy": 0.7852,
+        "g4_uncalibrated_epist_int": 0.3854,
+        "g4_no_vres_ood_comp": 0.5704,
+        "g4_no_sparse_refiner_ood_comp": 0.6431,
+        "g4_no_sparse_refiner_epist_int": 0.6185
+      }
+    },
+    {
+      "id": "OMEGA-EXP-01",
+      "script": "scripts/kaggle_omega_backbone_experiment.py",
+      "backend": "Kaggle 2x NVIDIA Tesla T4 (hassaneljesr/nanolm-omega-cuda-v1 v4+v5, float32, 20.55M x 1,000 steps x 2 seeds [42, 137])",
+      "artifact": "artifacts/nanolm_omega_v1/omega_kaggle_cuda_results.json",
+      "verdict": "G4_SINGLE_BEATS_B0_AND_FALSIFIES_PASS2_REFINER",
+      "summary": {
+        "x8_dual_unembed_atrd_bpb": 2.0797,
+        "x8_dual_unembed_atrd_ood2x": 2.0759,
+        "x8_32k_state_bytes": 50537472,
+        "g4_omega_bpb": 2.1175,
+        "g4_omega_ood2x": 2.1148,
+        "g4_no_vres_bpb": 2.1508,
+        "g4_no_vres_ood2x": 2.148,
+        "g4_no_sparse_refiner_bpb": 2.1112,
+        "g4_no_sparse_refiner_ood2x": 2.1079,
+        "g4_32k_state_bytes": 1802496,
+        "flagship_4b_g4_single_params": 3883581092,
+        "flagship_4b_g4_single_32k_state_bytes": 87773184
+      }
+    },
+    {
+      "id": "OMEGA-EXP-02",
+      "script": "scripts/run_nanolm_omega_suite.py",
+      "backend": "Apple M3 Max (HardCausalSWEEnv N=4..24, 248,328 params, 3 seeds [0, 1, 2])",
+      "artifact": "artifacts/nanolm_omega_v1/omega_local_results.json",
+      "verdict": "BREAKTHROUGH_SUPER_OOD_WITHOUT_SHIELDS",
+      "summary": {
+        "c0_id": 0.4417,
+        "c0_super_ood": 0.0583,
+        "c4b_sym12_ood": 0.2278,
+        "c4b_sym12_super_ood": 0.0528,
+        "c5_shielded_super_ood": 0.0417,
+        "c5_unshielded_premature_super_ood": 0.0917,
+        "omega_efe_planner_id": 0.8472,
+        "omega_efe_planner_ood": 0.9556,
+        "omega_efe_planner_super_ood": 0.8333,
+        "omega_efe_planner_premature_all": 0.0,
+        "omega_no_efe_risk_ood": 0.7556,
+        "omega_no_graph_prop_super_ood": 0.3583
+      }
+    },
+    {
+      "id": "OMEGA-EXP-03",
+      "script": "scripts/run_nanolm_omega_suite.py",
+      "backend": "Apple M3 Max (OMEGA-BENCH-01, 60 unlabelled tasks across 6 pillars)",
+      "artifact": "artifacts/nanolm_omega_v1/omega_local_results.json",
+      "verdict": "CONFIRMED_UNIFIED_SYMBOLIC_NEURAL_SYSTEM",
+      "summary": {
+        "naked_pass1_acc": 0.2333,
+        "legacy_keyword_system_v2_acc": 0.2833,
+        "legacy_cost_per_win": 4.5882,
+        "omega_no_slw_provenance_acc": 0.7833,
+        "omega_no_early_halt_calls": 1.8833,
+        "omega_unified_system_acc": 1.0,
+        "omega_unified_abstention_conflict_acc": 1.0,
+        "omega_unified_calls": 1.8167,
+        "omega_unified_cost_per_win": 2.225
+      }
+    }
+  ]
+}
