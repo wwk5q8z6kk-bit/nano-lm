@@ -18,7 +18,7 @@ from __future__ import annotations
 import heapq
 import math
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal
 
 import torch
 import torch.nn as nn
@@ -586,12 +586,21 @@ def _gauge_su2_scan_state(
 class HSPALieSO3Mixer(nn.Module):
     """Exact SU(2) -> SO(3) spinor quaternion parallel transport over fiber registers."""
 
-    def __init__(self, d: int, h: int, n_reg: int = 4, multiscale: bool = False) -> None:
+    def __init__(
+        self, d: int, h: int, n_reg: int | Literal["full_head"] = 4, multiscale: bool = False
+    ) -> None:
         super().__init__()
+        if n_reg == "full_head":
+            if h < 1 or d < 1 or d % h:
+                raise ValueError("full_head requires a positive, integral head dimension")
+            # Three coordinates per register; preserve the four-register floor.
+            n_reg = max(4, (d // h + 2) // 3)
+        if type(n_reg) is not int or n_reg < 1:
+            raise ValueError("n_reg must be a positive integer or 'full_head'")
         self.h = h
         self.r = n_reg
         self.multiscale = multiscale
-        self.fdim = h * n_reg * 3  # 4*4*3 = 48
+        self.fdim = h * n_reg * 3
         self.conv = CausalDepthwiseConv(d, k=4, use_silu=False) if multiscale else None
         if self.conv is not None:
             nn.init.normal_(self.conv.w.weight, mean=0.0, std=0.05)
@@ -878,7 +887,10 @@ class SkewCayleyFlowMixer(nn.Module):
 
 
 class UnifiedBlock(nn.Module):
-    def __init__(self, spec: MechanismSpec, d: int, h: int, rope_theta: float, ffn_hidden_override: int | None = None) -> None:
+    def __init__(
+        self, spec: MechanismSpec, d: int, h: int, rope_theta: float, ffn_hidden_override: int | None = None,
+        *, hspa_registers: int | Literal["full_head"] = 4,
+    ) -> None:
         super().__init__()
         norm_cls = CenteredRMSNorm if spec.scaled_residual else RMSNorm
         self.n1 = norm_cls(d)
@@ -906,9 +918,9 @@ class UnifiedBlock(nn.Module):
             "M21_HSPA_ConceptSlot_EvidPtr",
             "M22_HSPA_FullCore_U09",
         ):
-            self.mix = HSPALieSO3Mixer(d, h, multiscale=False)
+            self.mix = HSPALieSO3Mixer(d, h, n_reg=hspa_registers, multiscale=False)
         elif name == "M17_HSPA_MultiScale_EvidCosSparsePtr":
-            self.mix = HSPALieSO3Mixer(d, h, multiscale=True)
+            self.mix = HSPALieSO3Mixer(d, h, n_reg=hspa_registers, multiscale=True)
         elif name in ("M14_GaugeSU2_Pure", "M15_GaugeSU2_EvidCosSparsePtr"):
             self.mix = GaugeSU2HolonomyMixer(d, h)
         elif name == "M6_NEBN_BayesFilter":
@@ -917,6 +929,9 @@ class UnifiedBlock(nn.Module):
             self.mix = SkewCayleyFlowMixer(d, h)
         else:
             raise ValueError(f"Unknown mechanism {name!r}")
+
+        if hspa_registers != 4 and not isinstance(self.mix, HSPALieSO3Mixer):
+            raise ValueError("hspa_registers only applies to an HSPA mixer")
 
         if spec.scaled_residual:
             scale = 1.0 / math.sqrt(2.0 * float(spec.n_layers))
@@ -941,6 +956,7 @@ class UnifiedBlockLM(nn.Module):
         n_heads: int = 4,
         rope_theta: float = 10000.0,
         ffn_hidden_override: int | None = None,
+        hspa_registers: int | Literal["full_head"] = 4,
     ) -> None:
         super().__init__()
         self.spec = MECHANISM_SPECS[mechanism]
@@ -954,7 +970,7 @@ class UnifiedBlockLM(nn.Module):
 
         norm_cls = CenteredRMSNorm if self.spec.scaled_residual else RMSNorm
         self.blocks = nn.ModuleList([
-            UnifiedBlock(self.spec, d_model, n_heads, rope_theta, ffn_hidden_override=ffn_hidden_override)
+            UnifiedBlock(self.spec, d_model, n_heads, rope_theta, ffn_hidden_override, hspa_registers=hspa_registers)
             for _ in range(self.spec.n_layers)
         ])
         if self.spec.attn_res:

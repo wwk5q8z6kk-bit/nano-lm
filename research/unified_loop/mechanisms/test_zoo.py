@@ -446,3 +446,27 @@ def test_concept_slot_memory_scan_matches_sequential_and_causality() -> None:
                         f"{dev} {mname} concept_slots.{sub}.weight got zero grad"
                     )
 
+
+
+def test_hspa_register_width_policy() -> None:
+    import pytest
+
+    for d, h, expected in [(32, 4, 4), (96, 4, 8), (128, 4, 11), (256, 4, 22)]:
+        mixer = HSPALieSO3Mixer(d, h, n_reg="full_head")
+        assert (mixer.r, mixer.fdim) == (expected, 3 * h * expected)
+    for value in (-1, 0, False, 2.5, "unknown"):
+        with pytest.raises(ValueError, match="n_reg"):
+            HSPALieSO3Mixer(32, 4, n_reg=value)
+    with pytest.raises(ValueError, match="head dimension"):
+        HSPALieSO3Mixer(31, 4, n_reg="full_head")
+    with pytest.raises(ValueError, match="only applies"):
+        UnifiedBlockLM(72, 32, "M0_Dense_GQA_RoPE", hspa_registers="full_head")
+    for name in ("M17_HSPA_MultiScale_EvidCosSparsePtr", "M22_HSPA_FullCore_U09"):
+        torch.manual_seed(17)
+        old = UnifiedBlockLM(72, 32, name)
+        torch.manual_seed(17)
+        full = UnifiedBlockLM(72, 32, name, hspa_registers="full_head")
+        for key, value in old.state_dict().items():
+            assert torch.equal(value, full.state_dict()[key])
+        configurable = UnifiedBlockLM(72, 32, name, hspa_registers=5)
+        assert all(block.mix.r == 5 for block in configurable.blocks)
