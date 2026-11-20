@@ -63,7 +63,9 @@ def main() -> int:
     if not base or base in BAD:
         errs.append(f"bad integration_base_sha {base!r}")
     expected = {
-        "training_backend": "KAGGLE_AND_RUNPOD",
+        "program_execution_status": "FRONTIER_MODEL_RESEARCH_ACTIVE",
+        "capability_frontier": "GENERAL_PURPOSE_LANGUAGE_MODEL",
+        "training_backend": "KAGGLE_GOOGLE_CLOUD_AND_RUNPOD",
         "training_status": "ACTIVE",
         "local_zero_cost_exploratory_training": "ALLOWED",
         "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",

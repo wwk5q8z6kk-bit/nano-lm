@@ -1,5 +1,7 @@
 # System Architecture
 
+The active research concerns the causal language model, including its tokenizer, backbone, training objective and weights. Integrated native training code lives in `pretrain/` and `sft/`. The [model research map](research/MODEL_RESEARCH_PROGRAM.md) identifies additional experimental backbones. The symbolic runtime and historical medical application described below have their own contracts.
+
 ## Nano Core (domain-general)
 
 ```text
@@ -51,7 +53,7 @@ domain negation/temporality semantics · evaluation sets · transformations
 
 Do not hardwire medicine into every Core interface. Do not generalize away medically necessary semantics.
 
-## Deployment shape
+## Historical medical deployment design
 
 ```text
 Nano Core + Medical DomainPack + P1  =  NanoScribe
@@ -99,7 +101,7 @@ User task → classify → cheapest sufficient solver
 → verification → present | abstain | review
 ```
 
-## P1 scribe pipeline (target)
+## Historical P1 scribe pipeline
 
 ```text
 audio / transcript → immutable source → turns & speakers
@@ -112,7 +114,7 @@ audio / transcript → immutable source → turns & speakers
 **Canonical truth object:** structured, evidence-grounded encounter representation.  
 **Free-form note:** a rendering — not the primary truth object.
 
-## P2/P3 future contract (design now, build later)
+## Historical P2/P3 design
 
 Encounter records should support references:
 
