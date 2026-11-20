@@ -1413,6 +1413,20 @@ def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
     return tuple(objects) if len(objects) > 1 else ()
 
 
+# In a list of exposures, a reaction can have severity or body-site
+# modifiers. Look at its head so a substance such as "rash cream" stays a name.
+_ALLERGY_MANIFESTATION_RE = re.compile(
+    r"\b(?:hives|rash(?:es)?|itching|swelling|irritation|redness|eruptions?|blisters?|"
+    r"dermatitis|urticaria|wheezing|anaphylaxis|nausea|vomiting|diarrhea|dizziness|"
+    r"shortness of breath|(?:difficulty|trouble) breathing)"
+    r"(?:\s+(?:on|in|of|around|across|all over)\s+.+)?$", re.I,
+)
+_LIST_QUALIFIER_RE = re.compile(
+    r"^(?:especially|mostly|mainly|usually|particularly|primarily|sometimes|"
+    r"for example|for instance|such as|etc|thank you|yes)\b", re.I,
+)
+
+
 def _coexisting_substance_clause(field: FieldName, text: str,
                                  allergen_object: tuple[int, int] | None = None) -> tuple[tuple[int, int], ...]:
     """Return separate names from the substance relation established for this event."""
@@ -1430,33 +1444,62 @@ def _coexisting_substance_clause(field: FieldName, text: str,
     # the literal reply while scanning only the surrounding allergen list.
     list_text = re.sub(r"\([^)]*(?:\)|$)", lambda match: " " * len(match[0]), text)
     joins = list(_SUBSTANCE_JOIN_RE.finditer(list_text, start, end))
-    if not any(m["join"] or m["comma_join"] for m in joins):
+    if not joins:
         return ()
     names = []
     for boundary in [*joins, None]:
         stop = boundary.start() if boundary else end
-        phrase = text[start:stop].strip(" .!?")
-        # A second predicate or a description of the reaction is not another allergen.
-        if (_shared_activity(phrase) or re.search(r"\b(?:is|are|was|were|causes?|gives?)\b", phrase, re.I)
-                or re.fullmatch(_REACTION_SIGNS, phrase, re.I)):
+        phrase = list_text[start:stop].strip(" .!?")
+        if (_shared_activity(phrase) or _LIST_QUALIFIER_RE.match(phrase)
+                or re.search(r"\b(?:is|are|was|were|causes?|gives?)\b", phrase, re.I)):
             break
-        name = _substance_name_bounds(text, (start, stop), field)
-        if not name:
-            break
-        names.append(name)
+        # A reaction may follow a comma or "with". A subsequent conjunct can
+        # still add another allergen, as in "nickel with hives, and latex".
+        if not _ALLERGY_MANIFESTATION_RE.search(phrase):
+            name = _substance_name_bounds(text, (start, stop), field)
+            if not name:
+                break
+            names.append(name)
         if boundary:
             start = boundary.end()
     return tuple(names) if len(names) > 1 else ()
 
 
+_OTHER_REPORT_FIELD = rf"(?:{_MED_DENIAL_NOUN}|(?:side|adverse)\s+effects?|symptoms?|reactions?|diagnoses|conditions?)"
+_OTHER_REPORT_OBJECT = rf"(?:(?:the|any|your|other|daily|current|known|regular|prescribed)\s+)*{_OTHER_REPORT_FIELD}"
+_OTHER_LIST_EXCLUSION_RE = re.compile(
+    r"(?:please\s+)?(?:(?:(?:do\s+not|don['’]t|not|never)\s+"
+    r"(?:(?:list|name|mention|include|report|give|count|record)\s+)?)|"
+    r"(?:exclude|omit|skip|leave out|rather than|instead of)\s+)"
+    rf"(?:me\s+)?{_OTHER_REPORT_OBJECT}(?:\s+(?:and|or)\s+{_OTHER_REPORT_OBJECT})*"
+    r"(?:\s+(?:list|here|today|this time))?", re.I,
+)
+_NEGATED_RECORD_STATUS_RE = re.compile(
+    r"\b(?:not|never|(?:is|are|was|were|has|have|had)n['’]t)\s+"
+    r"(?:(?:yet|already|previously|currently|been)\s+)*"
+    r"(?:listed|recorded|documented|reported|entered|mentioned)\b", re.I,
+)
+
+
+def _allergy_request_clauses(question: str) -> tuple[str, ...]:
+    # An exclusion naming a different reporting object does not reverse an
+    # allergy request. Retain other negative clauses, including bare followups
+    # such as "Which do you not have?".
+    clauses = re.split(r"[.!?;,]|\bbut\b|\band\s+(?=(?:please\s+)?(?:do not|don['’]t))", question, flags=re.I)
+    return tuple(clause for clause in clauses if clause.strip() and not _OTHER_LIST_EXCLUSION_RE.fullmatch(clause.strip()))
+
+
 def _affirmative_allergy_question(question: str) -> bool:
-    # Interpret the local allergy predicate. A negative question gives a bare
-    # name no positive allergy evidence; a preceding, unrelated denial does not
-    # reverse an independently worded positive question.
-    for clause in reversed(re.split(r"[.!?;]", question)):
+    for clause in reversed(_allergy_request_clauses(question)):
+        cue = _ALG_QUESTION_CUE_RE.search(clause)
+        recorded = _NEGATED_RECORD_STATUS_RE.search(clause)
+        if cue and recorded and cue.end() <= recorded.start():
+            # "Allergies not listed in your chart" asks for actual allergies.
+            # "Not listed as allergies" supplies only a chart classification.
+            clause = clause[:recorded.start()] + clause[recorded.end():]
         if _NEGATION_WORD_RE.search(clause):
             return False
-        if _ALG_QUESTION_CUE_RE.search(clause):
+        if cue:
             return True
     return False
 
@@ -1492,12 +1535,14 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     prev_q = prev_clin.text if prev_clin is not None else ""
     if _TAKEN_TREATMENT_QUESTION_RE.fullmatch(prev_q.strip()):
         return True, False, prev_q
-    is_explicit_alg_q = bool(_ALG_QUESTION_CUE_RE.search(prev_q)) and not bool(
-        re.search(r"\b(?:taken|tried|used|applied|bothering|brought|symptoms?|how long|how bad|severe)\b", prev_q, re.IGNORECASE)
+    allergy_cue = _ALG_QUESTION_CUE_RE.search(prev_q)
+    is_explicit_alg_q = bool(allergy_cue) and not re.search(
+        r"\b(?:taken|tried|used|applied|bothering|brought|symptoms?|how long|how bad|severe)\b",
+        " ".join(_allergy_request_clauses(prev_q)), re.I,
     )
     is_explicit_med_q = (
         bool(_MED_QUESTION_CUE_RE.search(prev_q))
-        and not bool(_ALG_QUESTION_CUE_RE.search(prev_q))
+        and not allergy_cue
         and not bool(re.search(r"\b(?:bothering|brought|symptoms?|problem|concern|how long|when did|how bad|severe)\b", prev_q, re.IGNORECASE))
     )
     if is_explicit_med_q and re.search(r"\btaken\b", prev_q, re.I):
