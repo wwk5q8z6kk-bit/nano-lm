@@ -282,6 +282,11 @@ def ocr_normalize(doc_id: str, text: str) -> Claim:
     return Claim("T37", doc_id, val, evidence=[])
 
 
+
+_COREF_SENT_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
+_COREF_ENT_RE = re.compile(r"\b(Metformin|Placebo)\b", re.I)
+_COREF_IT_RE = re.compile(r"^It\b")
+
 def coref_binding(doc_id: str, text: str) -> Claim:
     """Bind 'It' to nearest prior Metformin/Placebo mention (sentence-level)."""
     # Strip headings / metadata lines for binding body
@@ -292,15 +297,14 @@ def coref_binding(doc_id: str, text: str) -> Claim:
             continue
         body_lines.append(s)
     body = " ".join(body_lines)
-    sents = [s.strip() for s in re.split(r"(?<=[.!?])\s+", body) if s.strip()]
+    sents = [s.strip() for s in _COREF_SENT_SPLIT_RE.split(body) if s.strip()]
     binds = []
     last = None
-    ent = re.compile(r"\b(Metformin|Placebo)\b", re.I)
     for sent in sents:
-        ents = ent.findall(sent)
+        ents = _COREF_ENT_RE.findall(sent)
         if ents:
             last = ents[-1].lower()
-        if re.match(r"^It\b", sent) and last:
+        if _COREF_IT_RE.match(sent) and last:
             binds.append({"pronoun_sentence": sent, "antecedent": last})
     if not binds:
         return Claim("T39", doc_id, [], status="ABSTAIN")
