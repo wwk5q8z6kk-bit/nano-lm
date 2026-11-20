@@ -10,7 +10,7 @@ from wedge_v1.build_corpus import build
 from wedge_v1.auth_gate import require_auth
 from wedge_v1.eval.claim_report import claim_level_report
 from wedge_v1.classical import solvers as S
-from wedge_v1.classical.eclass_probes import apply_eclass_overrides, lm_still_needed
+from wedge_v1.classical.eclass_probes import apply_eclass_overrides
 from wedge_v1.run_classical_baseline import score as score_classical
 
 ROOT = Path(__file__).resolve().parent
