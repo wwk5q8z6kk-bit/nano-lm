@@ -13,11 +13,11 @@ from dataclasses import dataclass
 
 from nano_ai.contract import (
     FIELD_ORDER, EvidenceSpan as CandidateSpan, FieldName, FieldState,
-    NanoInput, NanoOutput, normalize_value,
+    NanoInput, NanoOutput,
 )
 from nanoscribe.encounter import (
     AssertionState, AtomType, Certainty, EncounterRecord, Experiencer,
-    Source, Speaker, TemporalState, Temporality, Turn,
+    Source, Speaker, TemporalState, Temporality, Turn, normalize_value,
 )
 
 
@@ -229,7 +229,9 @@ def _reply_clauses(turn: Turn) -> tuple[Turn, ...]:
     """Split sentence/semicolon boundaries while preserving original offsets."""
     return tuple(Turn(turn.turn_id, turn.source_id, turn.speaker,
                       turn.start + match.start(), turn.start + match.end(), match.group())
-                 for match in re.finditer(r"[^\s.!?;][^.!?;]*(?:[.!?;]+|$)", turn.text)
+                 for match in re.finditer(
+                     r"(?:[^\s.!?;]|(?<!\w)\.(?=\d))(?:[^.!?;]|(?:(?<=\d)|(?<!\w))\.(?=\d))*[.!?;]*",
+                     turn.text)
                  if match.group().strip())
 
 

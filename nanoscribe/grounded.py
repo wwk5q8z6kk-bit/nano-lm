@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
+from fractions import Fraction
 from itertools import combinations
 from typing import Any
 
@@ -39,7 +40,6 @@ from nano_ai.contract import (
     FieldState,
     NanoInput,
     _is_field_denial,
-    normalize_value,
 )
 from nanoscribe.check_note import (
     _mentioned_fields,
@@ -49,7 +49,8 @@ from nanoscribe.check_note import (
     _turn_index,
     transcript_source,
 )
-from nanoscribe.encounter import Source, Speaker, Turn
+from nanoscribe.context import question_field
+from nanoscribe.encounter import Source, Speaker, Turn, normalize_value
 
 GROUNDED_POLICY_VERSION = "evidence-grounded-v1"
 GROUNDED_DIAGNOSTICS_VERSION = "nanoscribe.grounded-state-diagnostics.v1"
@@ -208,31 +209,40 @@ _GROUNDED_REASSIGNMENT_RE = re.compile(
     re.IGNORECASE,
 )
 
-_NUMBER_WORD = (
-    r"(?:\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten|"
-    r"eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|"
-    r"a|an|half a|a couple of|a few|several)"
-)
+_WORD_NUMBERS = dict(zip(
+    "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen "
+    "sixteen seventeen eighteen nineteen twenty".split(), range(21),
+))
+_WORD_NUMBERS.update({"thirty": 30, "a": 1, "an": 1, "half a": Fraction(1, 2), "half an": Fraction(1, 2)})
+_DECIMAL = r"(?:\d+(?:\.\d+)?|\.\d+)"
+_NUMBER_WORD = rf"(?:{_DECIMAL}|{'|'.join(_WORD_NUMBERS)}|a couple of|a few|several)"
 _TIME_UNIT = r"(?:minutes?|hours?|days?|weeks?|months?|years?)"
-
+# A free proposal may quote any substring. Check offsets against whole numeric
+# tokens, including decimals, signed values, ranges, fractions and scale denominators.
+_NUMERIC_TOKEN_RE = re.compile(
+    r"[+−-]?(?:\d+(?:,\d{3})*(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?"
+    r"(?:[/–−-]\d+(?:\.\d+)?)*"
+)
+_QUANTITY = rf"(?P<amount>{_NUMBER_WORD})\s+(?P<unit>{_TIME_UNIT})"
+_QUANTITY_RE = re.compile(rf"(?<!\w){_QUANTITY}\b", re.I)
 _DURATION_VALUE_RE = re.compile(
-    rf"(?:"
-    rf"(?:about |around |roughly |nearly |almost |over )?{_NUMBER_WORD}\s+{_TIME_UNIT}(?:\s+(?:ago|so far))?"
+    rf"(?<!\w)(?:"
+    rf"(?:about |around |roughly |nearly |almost |over )?{_QUANTITY}(?:\s+(?:ago|so far))?"
     rf"|(?:since|from)\s+[^.!?;]+"
     rf"|(?:yesterday|today|tonight|last night|this morning|this afternoon|this evening|"
     rf"(?:the )?(?:morning|afternoon|evening|night) before last|"
     rf"(?:last |this )?(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?:\s+(?:morning|afternoon|evening|night))?|"
     rf"noon|midnight)"
     rf"(?:,\s*(?:after|before|when|while)\s+[^.!?;]+)?"
-    rf")",
-    re.IGNORECASE,
+    rf")\b", re.IGNORECASE,
 )
-
+_SCALE_VALUE = rf"(?P<score>{_DECIMAL}|zero|one|two|three|four|five|six|seven|eight|nine|ten)"
+_SCALE = rf"(?<!\w){_SCALE_VALUE}\s*(?:out of\s*(?:10|ten)|/\s*10)\b"
+_SCALE_RE = re.compile(_SCALE, re.I)
 _SEVERITY_CORE_RE = re.compile(
     r"\b(?:mild(?:ly)?|moderate(?:ly)?|severe(?:ly)?|slight(?:ly)?|intense|uncomfortable|"
-    r"bad|terrible|awful|excruciating|unbearable|minimal|strong|horrible|light|low-grade|"
-    r"(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s*(?:out of\s*(?:10|ten)|/\s*10))\b",
-    re.IGNORECASE,
+    r"bad|terrible|awful|excruciating|unbearable|minimal|strong|horrible|light|low-grade)\b"
+    rf"|{_SCALE}", re.IGNORECASE,
 )
 
 _UNNAMED_MED_PLACEHOLDER_RE = re.compile(
@@ -249,7 +259,7 @@ _MED_DENIAL_CUE_RE = re.compile(
     r"(?:taken|take|used|use|tried|try|applied|apply|put|had|swallowed)"
     r"(?:\s+or\s+(?:taken|take|used|use|tried|try|applied|apply|put))?"
     r"\s+(?:anything\b|(?:any|no)\s+(?:medications?|medicines?|meds|drugs?|treatments?)\b)"
-    r"|\bnothing(?:\s+at\s+all|\s+yet|\s+so\s+far)?(?:\s+(?:for|on)\b[^.!?;]*)?"
+    r"|\b(?:took|used|tried|applied|taken)\s+nothing\b"
     r"|\bno\s+(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|remedies)\b"
     r"|\b(?:deny|denied|denies)\s+(?:taking\s+|using\s+|any\s+)?(?:medications?|medicines?|meds|drugs?|treatments?)\b"
     r"|\bused\s+no\s+(?:medications?|medicines?|meds|drugs?|treatments?)\b"
@@ -264,14 +274,13 @@ _ALG_DENIAL_CUE_RE = re.compile(
     r"|\b(?:don't|do not|doesn't|does not|have\s+no|haven't\s+got\s+any)\s+"
     r"(?:have\s+)?(?:any\s+)?(?:known\s+|medication\s+|medicine\s+|drug\s+|material\s+)*allerg(?:y|ies)\b"
     r"|\b(?:deny|denied|denies)\s+(?:any\s+)?(?:known\s+|medication\s+|medicine\s+|drug\s+)*allerg(?:y|ies)\b"
-    r"|\bnone\s+whatsoever\b"
     r")",
     re.IGNORECASE,
 )
 
 _ELLIPTICAL_DENIAL_RE = re.compile(
-    r"^(?:no|none|nope|no,?\s+none|i\s+don't\s+have\s+any|i\s+do\s+not\s+have\s+any|"
-    r"none\s+at\s+all|there\s+aren't\s+any|there\s+are\s+none|not\s+any)[.!]?$",
+    r"^(?:no|nope|(?:no,?\s+)?(?:none|nothing)(?:\s+(?:whatsoever|at all|yet|so far))?|"
+    r"i\s+(?:don't|do not)\s+have\s+any|there\s+aren't\s+any|there\s+are\s+none|not\s+any)[.!]?$",
     re.IGNORECASE,
 )
 
@@ -408,18 +417,6 @@ def has_global_reassignment(source: Source) -> bool:
     )
 
 
-def _sentence_clauses(turn: Turn) -> tuple[Turn, ...]:
-    """Split on sentence boundaries (. ! ?) while keeping semicolon units intact when needed, plus subclauses."""
-    clauses = []
-    for match in re.finditer(r"[^\s.!?][^.!?;]*(?:[.!?;]+|$)", turn.text):
-        raw = match.group()
-        if raw.strip():
-            clauses.append(
-                Turn(turn.turn_id, turn.source_id, turn.speaker, turn.start + match.start(), turn.start + match.end(), raw)
-            )
-    return tuple(clauses)
-
-
 def _enclosing_clause(turn: Turn, span: CandidateSpan) -> Turn:
     for clause in _reply_clauses(turn):
         content = clause.text.rstrip(";").rstrip()
@@ -485,15 +482,11 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
     return False
 
 
-def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName) -> bool:
-    """An immediate correction can retract a value in the same patient reply."""
-    clauses = _reply_clauses(turn)
-    for current, following in zip(clauses, clauses[1:]):
-        if current.start != clause.start or not _SELF_CORRECTION_CLAUSE_RE.search(following.text):
-            continue
-        targets = _correction_fields(following.text)
-        return (not targets or field in targets) and not _ADDITIVE_RE.search(following.text)
-    return False
+def _eligible_correction(text: str) -> bool:
+    return bool(_SELF_CORRECTION_CLAUSE_RE.search(text) and not (
+        _ADDITIVE_RE.search(text) or _THIRD_PARTY_RE.search(text)
+        or _PAST_OR_HYPOTHETICAL_RE.search(text) or _patient_question(text)
+    ))
 
 
 def _correction_fields(clause: str) -> set[FieldName]:
@@ -512,39 +505,45 @@ def _correction_fields(clause: str) -> set[FieldName]:
     return targets
 
 
+def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool) -> bool:
+    if not _eligible_correction(correction):
+        return False
+    targets = _correction_fields(correction)
+    if targets:
+        return field in targets
+    value = normalize_value(span_text)
+    if value and re.search(r"(?<!\w)" + re.escape(value) + r"(?!\w)", correction, re.I):
+        return True
+    if immediate and _correction_fields(original) == {field}:
+        return bool(_BARE_REPLACEMENT_RE.fullmatch(correction) or re.fullmatch(
+            r"(?:actually,?\s+)?i was (?:mistaken|wrong|incorrect)[.!]?", correction, re.I
+        ))
+    return False
+
+
+def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, span_text: str = "") -> bool:
+    """An immediate correction can retract a value in the same patient reply."""
+    clauses = _reply_clauses(turn)
+    return any(current.start == clause.start and
+               _retracts_value(following.text, current.text, field, span_text, immediate=True)
+               for current, following in zip(clauses, clauses[1:]))
+
+
 def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, span_text: str) -> bool:
-    norm_val = normalize_value(span_text)
     for idx in range(turn_idx + 1, len(source.turns)):
         later = source.turns[idx]
         if later.speaker is not Speaker.PATIENT:
             if later.speaker is Speaker.UNKNOWN and not later.text.lower().startswith("other:"):
                 return True
             continue
-        lowered = later.text.casefold()
-        if _SELF_CORRECTION_CLAUSE_RE.search(lowered):
-            previous = _preceding_clinician_turn(source, idx)
-            if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
-                continue
-            for clause in _reply_clauses(later):
-                if (not _SELF_CORRECTION_CLAUSE_RE.search(clause.text) or _ADDITIVE_RE.search(clause.text)
-                        or _THIRD_PARTY_RE.search(clause.text) or _PAST_OR_HYPOTHETICAL_RE.search(clause.text)
-                        or clause.text.rstrip().endswith("?")):
-                    continue
-                targets = _correction_fields(clause.text)
-                if field in targets:
-                    return True
-                if not targets and idx == turn_idx + 1 and _BARE_REPLACEMENT_RE.fullmatch(clause.text):
-                    previous_fields = _correction_fields(source.turns[turn_idx].text)
-                    if previous_fields == {field}:
-                        return True
-            if norm_val and re.search(r"(?<!\w)" + re.escape(norm_val) + r"(?!\w)", lowered):
-                return True
-            if idx == turn_idx + 1 and re.search(
-                r"\b(?:i\s+was\s+(?:mistaken|wrong|incorrect)|that\s+was\s+(?:last\s+year|before|hypothetical|my\s+\w+)|"
-                r"that\s+belonged\s+to)\b",
-                lowered,
-            ):
-                return True
+        if not _SELF_CORRECTION_CLAUSE_RE.search(later.text):
+            continue
+        previous = _preceding_clinician_turn(source, idx)
+        if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
+            continue
+        if any(_retracts_value(clause.text, source.turns[turn_idx].text, field, span_text, idx == turn_idx + 1)
+               for clause in _reply_clauses(later)):
+            return True
     return False
 
 
@@ -555,6 +554,17 @@ def _preceding_clinician_turn(source: Source, turn_idx: int) -> Turn | None:
     if prev.speaker is Speaker.CLINICIAN:
         return prev
     return None
+
+
+def _field_wide_question(text: str, field: FieldName) -> bool:
+    """Only an unqualified category question can give an elliptical 'no' field-wide scope."""
+    if question_field(text) is field:
+        return True
+    extra = {
+        FieldName.ALLERGY: r"any (?:drug sensitivities|allergies)(?: on (?:file|your chart))?",
+        FieldName.MEDICATION: r"any (?:meds|treatments)(?: for (?:it|this))?",
+    }
+    return bool(re.fullmatch(extra[field], text.rstrip("?.!").strip(), re.I))
 
 
 def is_explicit_patient_denial(source: Source, field: FieldName, span: CandidateSpan) -> bool:
@@ -575,35 +585,18 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
             return False
 
     text = span.text.strip()
-    if _is_field_denial(field, text):
-        # Reject hedged v0 "Not that I know of." as uncertain, not absent!
-        if _EPISTEMIC_HEDGE_RE.search(text):
+    if (_EPISTEMIC_HEDGE_RE.search(text) or _THIRD_PARTY_RE.search(text)
+            or _SIDE_EFFECT_CONTRAST_RE.search(text)
+            or re.search(r"\b(?:except|apart from|other than|allerg(?:y|ies) to)\b", text, re.I)):
+        return False
+    if _ELLIPTICAL_DENIAL_RE.fullmatch(text):
+        if (span.start != turn.start or prev is None or prev.speaker is not Speaker.CLINICIAN
+                or not _field_wide_question(prev.text, field)):
             return False
-    else:
-        if _EPISTEMIC_HEDGE_RE.search(text):
-            return False
-        if _THIRD_PARTY_RE.search(text) or _SIDE_EFFECT_CONTRAST_RE.search(text):
-            return False
-        if re.search(r"\bexcept\b", text, re.IGNORECASE):
-            return False
-        if not _NEGATION_WORD_RE.search(text):
-            return False
+    elif not _is_field_denial(field, text):
         cue_re = _MED_DENIAL_CUE_RE if field is FieldName.MEDICATION else _ALG_DENIAL_CUE_RE
-        cue = cue_re.search(text)
-        if cue and re.search(r"\b(?:except|apart from|other than|allerg(?:y|ies) to)\b", text, re.IGNORECASE):
+        if not (_NEGATION_WORD_RE.search(text) and cue_re.search(text)):
             return False
-        if not cue:
-            # Allow short elliptical denials ONLY when directly answering a matching clinician question
-            clin = _preceding_clinician_turn(source, idx)
-            q_re = _MED_QUESTION_CUE_RE if field is FieldName.MEDICATION else _ALG_QUESTION_CUE_RE
-            # A short "no" can only settle the whole field when the question
-            # asks about the category, not whether a named substance applies.
-            specific_question = clin and re.search(
-                r"\b(?:allergic to|sensitive to|take|taken|used|tried)\s+(?!(?:any|anything|medications?|medicines?|meds|drugs?|treatments?)\b)\w+",
-                clin.text, re.IGNORECASE,
-            )
-            if clin is None or specific_question or not q_re.search(clin.text) or not _ELLIPTICAL_DENIAL_RE.fullmatch(text):
-                return False
 
     # Span must cover a complete turn or complete clause (not a tiny fragment inside a sentence).
     clause = _enclosing_clause(turn, span)
@@ -618,7 +611,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
         return False
     if _PAST_OR_HYPOTHETICAL_RE.search(clause_clean) or _THIRD_PARTY_RE.search(clause_clean):
         return False
-    if _clause_is_retracted_in_turn(turn, clause, field) or _later_turn_retracts_span(source, idx, field, text):
+    if _clause_is_retracted_in_turn(turn, clause, field, text) or _later_turn_retracts_span(source, idx, field, text):
         return False
     return True
 
@@ -729,6 +722,10 @@ def _verify_local_span(
 
     clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
+        start, end = span.start - turn.start, span.end - turn.start
+        if any(m.start() < start < m.end() or m.start() < end < m.end()
+               for m in _NUMERIC_TOKEN_RE.finditer(turn.text)):
+            return False, "incomplete_numeric_token"
         reporting = [part for part in _reporting_events(clause)
                      if part.start < span.end and span.start < part.end]
         if any(_patient_question(part.text) for part in reporting):
@@ -757,7 +754,7 @@ def _verify_local_span(
                 return False, "clause_contains_correction_marker"
         if field is FieldName.MEDICATION and _routine_medication_disclaimed(source, idx, event, span):
             return False, "routine_medication_disclaimed_for_complaint"
-        if _clause_is_retracted_in_turn(turn, clause, field) or _later_turn_retracts_span(source, idx, field, span.text):
+        if _clause_is_retracted_in_turn(turn, clause, field, span.text) or _later_turn_retracts_span(source, idx, field, span.text):
             return False, "retracted_by_patient_correction"
         return True, "verified_grounded_supported"
 
@@ -902,6 +899,8 @@ def parse_grounded_summary(
 
 def _trim_span(source_text: str, start: int, end: int) -> CandidateSpan | None:
     while start < end and source_text[start] in " \t\r\n.,;:!?\"'":
+        if source_text[start] == "." and source_text[start + 1:start + 2].isdigit():
+            break
         start += 1
     while end > start and source_text[end - 1] in " \t\r\n.,;:!?\"'":
         end -= 1
@@ -990,7 +989,7 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
             if field is FieldName.SEVERITY:
                 # 1) Numeric scale ("five out of ten", "About four out of ten", "7/10")
                 for m in re.finditer(
-                    r"(?:about\s+|around\s+|roughly\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s*(?:out of\s*(?:10|ten)|/\s*10)",
+                    rf"(?:about\s+|around\s+|roughly\s+)?{_SCALE}",
                     c_text,
                     re.IGNORECASE,
                 ):
@@ -1237,6 +1236,60 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     return bundles
 
 
+_UNIT_SCALES = {
+    "minute": ("minutes", 1), "hour": ("minutes", 60), "day": ("minutes", 1440),
+    "week": ("minutes", 10080), "month": ("months", 1), "year": ("months", 12),
+}
+_ORDINAL_RE = re.compile(r"\b(?:mild|moderate|severe)\b", re.I)
+_IMPRECISE_SCALAR_RE = re.compile(
+    r"\b(?:about|around|roughly|approximately|nearly|almost|over|under|less|more|at least|up to|"
+    r"between|or|to)\b|\d\s*[-–]\s*\d", re.I,
+)
+
+
+def _exact_number(text: str) -> Fraction | None:
+    if text.casefold() in _WORD_NUMBERS:
+        return Fraction(_WORD_NUMBERS[text.casefold()])
+    if re.fullmatch(_DECIMAL, text) and len(text) <= 24:
+        return Fraction(text)
+    return None
+
+
+def _scalar_report(field: FieldName, clause: Turn, question: str):
+    """Return comparable measurement, scale and reporting frame, only for exact reports."""
+    if _IMPRECISE_SCALAR_RE.search(clause.text):
+        return None
+    if field is FieldName.DURATION:
+        matches = list(_QUANTITY_RE.finditer(clause.text))
+        if len(matches) != 1:
+            return None
+        match = matches[0]
+        amount = _exact_number(match["amount"])
+        if amount is None:
+            return None
+        scale, factor = _UNIT_SCALES[match["unit"].casefold().rstrip("s")]
+        value = amount * factor
+    else:
+        matches = list(_SCALE_RE.finditer(clause.text)) + list(_ORDINAL_RE.finditer(clause.text))
+        if len(matches) != 1:
+            return None
+        match = matches[0]
+        if match.re is _SCALE_RE:
+            value = _exact_number(match["score"])
+            if value is None or not 0 <= value <= 10:
+                return None
+            scale = "ten-point score"
+        else:
+            scale, value = "qualitative severity", match.group().casefold()
+
+    # Keep explicit time, condition, symptom and question scope. Different or
+    # unrecognized frames cannot prove a contradiction merely from unequal values.
+    frame = clause.text[:match.start()] + " " + clause.text[match.end():]
+    frame = re.sub(r"\b(?:it(?:'s| is| has been| feels)|the pain is)\b", " ", frame, flags=re.I)
+    frame = re.sub(r"\b(?:started|began)\b", "began", frame, flags=re.I)
+    return (question.casefold().strip(), tuple(re.findall(r"\w+", frame.casefold())), scale), value
+
+
 def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
     """Detect unretracted incompatible patient observations in distinct source clauses."""
     if has_global_reassignment(source):
@@ -1297,19 +1350,19 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
     if field in (FieldName.DURATION, FieldName.SEVERITY):
         # Extractors also offer alternate renderings of one observation. Retain
         # one representative per clause, even when several clauses share a turn.
-        by_clause: dict[int, tuple[Turn, CandidateSpan]] = {}
+        by_clause = {}
         for span in sup_spans:
             idx = _turn_index(source, span.start, span.end)
-            if idx is not None:
-                turn = source.turns[idx]
-                clause = _enclosing_clause(turn, span)
-                by_clause.setdefault(clause.start, (turn, span))
-        representatives: dict[str, tuple[Turn, CandidateSpan]] = {}
-        for _, (turn, span) in sorted(by_clause.items()):
-            representatives.setdefault(normalize_value(span.text), (turn, span))
-        for (t1, first), (t2, second) in combinations(representatives.values(), 2):
-            c1 = _enclosing_clause(t1, first)
-            c2 = _enclosing_clause(t2, second)
+            if idx is None:
+                continue
+            clause = _enclosing_clause(source.turns[idx], span)
+            if clause.start not in by_clause:
+                question = _preceding_clinician_turn(source, idx)
+                report = _scalar_report(field, clause, question.text if question else "")
+                by_clause[clause.start] = (clause, span, report)
+        for (c1, first, left), (c2, second, right) in combinations(by_clause.values(), 2):
+            if left is None or right is None or left[0] != right[0] or left[1] == right[1]:
+                continue
             words1, words2 = c1.text.split(), c2.text.split()
             if len(words1) >= 4 and len(words2) >= 4 and words1[0].casefold() == words2[0].casefold():
                 pairs.append((CandidateSpan(c1.start, c1.end, source.text[c1.start:c1.end]),
