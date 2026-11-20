@@ -213,3 +213,23 @@ def test_taken_with_a_treatment_question_or_dose_offers_the_medication():
         assert ":S[yesterday]" not in grounded_candidate_choices(source, FieldName.DURATION, set())
         raw = f"CC:M|DUR:M|SEV:M|MED:S[{value}]|ALG:M"
         assert trace_proposal_conservation(source, raw)[3]["note_rendered_value"] == value
+
+
+def test_open_treatment_indication_offers_bare_medication_answers_in_both_menus():
+    from nano_ai.contract import NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import build_grounded_english_menu
+
+    for indication, answer in (("the cramps", "Ibuprofen"), ("nausea", "Ondansetron"),
+                               ("these symptoms", "Acetaminophen"), ("your allergies", "Cetirizine")):
+        transcript = f"Doctor: What have you taken for {indication}?\nPatient: {answer}."
+        source = transcript_source(NanoInput("treatment", transcript))
+        assert f":S[{answer}]" in grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+        assert f" REPORTED[{answer}]" in build_grounded_english_menu(source, FieldName.MEDICATION, set())
+        assert not any(c.startswith(":S[") for c in grounded_candidate_choices(transcript, FieldName.ALLERGY, set()))
+
+    for question in ("What have you taken for granted?", "Have you taken a trip for the holidays?"):
+        transcript = f"Doctor: {question}\nPatient: Travel."
+        source = transcript_source(NanoInput("other", transcript))
+        assert not any(c.startswith(":S[") for c in grounded_candidate_choices(transcript, FieldName.MEDICATION, set()))
+        assert not any(c.startswith(" REPORTED[") for c in build_grounded_english_menu(source, FieldName.MEDICATION, set()))

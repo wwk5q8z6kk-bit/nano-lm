@@ -295,6 +295,10 @@ _TREATMENT_CONTEXT_RE = re.compile(
     r"|for (?:it|them|(?:this|the|my|your) (?:pain|headache|cough|rash|symptoms?)))\b",
     re.IGNORECASE,
 )
+# The open object is the treatment. Its indication can be any symptom phrase.
+_TAKEN_TREATMENT_QUESTION_RE = re.compile(
+    r"what\s+have\s+you\s+taken(?:\s+for\s+(?!granted\b)[^.!?;]+)?[?.!]?", re.IGNORECASE,
+)
 _ON_DECLARATION_RE = re.compile(r"^i(?:'m|\s+am)\s+on\b", re.IGNORECASE)
 _ALG_CLAUSE_PRED_RE = re.compile(
     r"\b(?:allergic\s+to|allerg(?:y|ies)\s+to|gives\s+me\s+(?:hives|a\s+rash|rash|itching|swelling)|"
@@ -729,12 +733,14 @@ def _coexisting_substance_clause(field: FieldName, clause_text: str) -> tuple[st
 def _question_has_treatment_context(question: str) -> bool:
     return bool(_TREATMENT_CONTEXT_RE.search(question)
                 or re.search(r"\btaken anything\b", question, re.I)
-                or re.fullmatch(r"what have you taken[?.!]?", question.strip(), re.I))
+                or _TAKEN_TREATMENT_QUESTION_RE.fullmatch(question.strip()))
 
 
 def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     prev_clin = _preceding_clinician_turn(source, turn_idx)
     prev_q = prev_clin.text if prev_clin is not None else ""
+    if _TAKEN_TREATMENT_QUESTION_RE.fullmatch(prev_q.strip()):
+        return True, False, prev_q
     is_explicit_alg_q = bool(_ALG_QUESTION_CUE_RE.search(prev_q)) and not bool(
         re.search(r"\b(?:taken|tried|used|applied|bothering|brought|symptoms?|how long|how bad|severe)\b", prev_q, re.IGNORECASE)
     )
