@@ -271,6 +271,16 @@ _EVENT_JOIN_RE = re.compile(
 _CURRENT_USE_MODIFIERS = r"(?:(?:currently|now|still|also|regularly|already)\s+)*"
 _CURRENT_USE = (rf"i(?:['’]m|['’]ve|\s+am|\s+have)?\s+{_CURRENT_USE_MODIFIERS}"
                 rf"(?:been\s+{_CURRENT_USE_MODIFIERS})?(?:taking|using|applying)")
+_REACTION_SIGNS = r"(?:hives|(?:an?\s+)?rash|itching|swelling)"
+_PATIENT_REACTION = (
+    rf"i\s+(?:(?:get|develop|break\s+out\s+in)\s+{_REACTION_SIGNS}\s+from|"
+    r"react\s+(?:badly|adversely)\s+to|have\s+an?\s+allergic\s+reaction\s+to)"
+)
+_NON_SUBSTANCE_TRIGGER_RE = re.compile(
+    r"\s*(?:(?:the|my|a|an)\s+)?(?:being|feeling|getting|having|hearing|seeing|walking|exercising|"
+    r"people|someone|anyone|(?:bad\s+)?news|"
+    r"(?:stress|anxiety|exercise|weather|traffic|criticism)(?=\s*(?:$|[.,;!?])))\b", re.I,
+)
 _SHARED_MEDICATION_ACTION = (rf"{_CURRENT_USE_MODIFIERS}(?:take|took|use|used|try|tried|apply|applied|swallowed|"
                              rf"am\s+{_CURRENT_USE_MODIFIERS}(?:taking|using|applying))\b")
 _SHARED_MEDICATION_RE = re.compile(_SHARED_MEDICATION_ACTION, re.I)
@@ -278,7 +288,7 @@ _SHARED_SUBJECT_JOIN_RE = re.compile(
     rf",?\s+(?:and|but)\s+(?=(?:am\s+(?:also\s+|not\s+)?allergic\s+to\b|{_SHARED_MEDICATION_ACTION}))", re.I,
 )
 _REPORTED_TREATMENT_RE = re.compile(
-    rf"\b(?:{_CURRENT_USE}|i(?:'m|'ve|\s+am|\s+have)?\s+(?:also\s+)?"
+    rf"\b(?:{_CURRENT_USE}|{_PATIENT_REACTION}|i(?:'m|'ve|\s+am|\s+have)?\s+(?:also\s+)?"
     r"(?:taken|took|used|tried|applied|rubbed|put|swallowed|allergic\s+to))\b", re.I,
 )
 _POSTPOSED_ALLERGY_RE = re.compile(
@@ -505,7 +515,7 @@ _ALG_REVERSE_RE = re.compile(
     re.I,
 )
 _ALG_CLAUSE_PRED_RE = re.compile(
-    r"\b(?:allergic\s+to|allerg(?:y|ies)\s+to|gives\s+me\s+(?:hives|a\s+rash|rash|itching|swelling)|"
+    rf"\b(?:(?P<reaction>{_PATIENT_REACTION})|allergic\s+to|allerg(?:y|ies)\s+to|gives\s+me\s+{_REACTION_SIGNS}|"
     r"causes\s+(?:me\s+to\s+develop\s+)?(?:hives|a\s+rash|rash|itching|swelling))\b",
     re.IGNORECASE,
 )
@@ -1035,8 +1045,9 @@ def _coexisting_substance_clause(field: FieldName, clause_text: str) -> tuple[st
         )
         if field is FieldName.MEDICATION
         else (
-            r"(?:i(?:'m| am)\s+allergic\s+to|i\s+have\s+(?:an?\s+)?allerg(?:y|ies)\s+to|allergic\s+to|yes,?|just)\s+"
-            r"(?P<first>[A-Za-z][A-Za-z0-9 -]{1,30}?)\s+(?:and|with|plus)\s+(?P<second>(?:an?\s+)?[A-Za-z][A-Za-z0-9 -]{1,30}?)[.!]?$"
+            rf"(?:{_PATIENT_REACTION}|i(?:'m| am)\s+allergic\s+to|i\s+have\s+(?:an?\s+)?allerg(?:y|ies)\s+to|allergic\s+to|yes,?|just)\s+"
+            rf"(?P<first>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)\s+(?:and|with|plus)\s+"
+            rf"(?P<second>(?:an?\s+)?{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)[.!]?$"
         )
     )
     m = re.match(patterns, clause_text.strip(), re.IGNORECASE)
@@ -1136,6 +1147,8 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
         start = label.end()
     elif field is FieldName.ALLERGY:
         if allergy:
+            if allergy["reaction"] and _NON_SUBSTANCE_TRIGGER_RE.match(text, allergy.end()):
+                return None
             reverse = _ALG_REVERSE_RE.search(text)
             if reverse and reverse.start() <= allergy.start():
                 return 0, reverse.start()

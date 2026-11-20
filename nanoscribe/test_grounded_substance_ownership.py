@@ -54,6 +54,16 @@ def observed(report, field, value):
     (ALG, "Tell me more.", "I took aspirin and am not allergic to penicillin.", "penicillin"),
     (MED, "Tell me more.", "I have taken amoxicillin/clavulanate for my nausea.", "clavulanate"),
     (MED, "Tell me more.", "I have taken St John's wort for my nausea.", "John's"),
+    (ALG, "Tell me more.", "I get hives from red cedar pollen.", "hives"),
+    (ALG, "Tell me more.", "I get hives from red cedar pollen.", "cedar"),
+    (MED, "Tell me more.", "I react badly to penicillin.", "penicillin"),
+    (ALG, "Tell me more.", "My daughter gets hives from latex.", "latex"),
+    (ALG, "Tell me more.", "I do not react badly to latex.", "latex"),
+    (ALG, "Tell me more.", "I sometimes get hives after walking outdoors.", "walking outdoors"),
+    (ALG, "Tell me more.", "I get hives from being nervous.", "being nervous"),
+    (ALG, "Tell me more.", "I react badly to bad news.", "bad news"),
+    (ALG, "Tell me more.", "I react badly to people interrupting me.", "people interrupting me"),
+    (ALG, "Tell me more.", "I get hives from penicillin, but it is a side effect, not an allergy.", "penicillin"),
     (ALG, "Tell me more.", "I do not have a penicillin allergy.", "penicillin"),
     (ALG, "Tell me more.", "I had a penicillin allergy in childhood.", "penicillin"),
     (ALG, "Tell me more.", "If I have a penicillin allergy I will call.", "penicillin"),
@@ -115,6 +125,11 @@ def test_deferring_a_substance_answer_offers_no_reported_value(field, question, 
     (ALG, "Patient: I am allergic to nickel because it causes a rash.", "nickel"),
     (MED, "Patient: My daily medicine is Xyzalorfen for my wrist pain.", "Xyzalorfen"),
     (MED, "Patient: Silver leaf drops for the headache.", "Silver leaf drops"),
+    (ALG, "Doctor: Tell me more.\nPatient: I get hives from penicillin.", "penicillin"),
+    (ALG, "Doctor: Tell me more.\nPatient: I react badly to penicillin.", "penicillin"),
+    (ALG, "Patient: I develop a rash from red cedar pollen.", "red cedar pollen"),
+    (ALG, "Patient: I break out in hives from co-trimoxazole.", "co-trimoxazole"),
+    (ALG, "Patient: I have an allergic reaction to natural rubber latex.", "natural rubber latex"),
     (ALG, "Patient: I am allergic to birch pollen.", "birch pollen"),
     (ALG, "Patient: Birch pollen gives me hives.", "Birch pollen"),
     (MED, "Doctor: What medication did you take?\nPatient: Blueberry gel caps.", "Blueberry gel caps"),
@@ -143,6 +158,17 @@ def test_blanket_medication_denial_preserves_an_indicated_named_drug():
     assert [item["text"] for item in field["evidence"]] == [
         "I am on apixaban for atrial fibrillation.", "No medications.",
     ]
+    assert all(report[item["start"]:item["end"]] == item["text"] for item in field["evidence"])
+
+
+def test_blanket_allergy_denial_preserves_a_first_person_reaction():
+    report = "Patient: I get hives from penicillin.\nPatient: No allergies."
+    raw = "CC:M|DUR:M|SEV:M|MED:M|ALG:A[No allergies.]"
+    result = scribe(report, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert result["verification"]["passed"]
+    field = next(item for item in result["extraction"]["fields"] if item["field"] == "allergy")
+    assert field["state"] == "conflicting" and field["value"] is None
+    assert [item["text"] for item in field["evidence"]] == ["I get hives from penicillin.", "No allergies."]
     assert all(report[item["start"]:item["end"]] == item["text"] for item in field["evidence"])
 
 
@@ -209,6 +235,8 @@ def test_taken_for_indication_preserves_the_original_substance_punctuation(value
     "I took aspirin and am allergic to penicillin.",
     "I took aspirin, but am allergic to penicillin.",
     "I am allergic to penicillin and took aspirin.",
+    "I get hives from penicillin and took aspirin.",
+    "I took aspirin and I react badly to penicillin.",
     "I am allergic to penicillin but currently take aspirin.",
 ])
 def test_separate_treatment_and_allergy_can_share_a_patient_subject(report):
@@ -242,3 +270,12 @@ def test_reported_relationship_owns_the_substance_across_free_and_constrained_pa
     claim, direct, compact, english = observed(report, other, value)
     assert claim["value"] is None and direct is None
     assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
+
+
+@pytest.mark.parametrize("first,second", [("penicillin", "latex"), ("St John's wort", "sodium/chloride")])
+def test_distinct_substances_in_one_reaction_do_not_collapse_to_one_allergen(first, second):
+    report = f"Patient: I get hives from {first} and {second}."
+    for value in (first, second):
+        claim, direct, compact, english = observed(report, ALG, value)
+        assert claim["state"] == "uncertain" and claim["value"] is None and direct is None
+        assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
