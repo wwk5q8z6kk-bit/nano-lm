@@ -2199,13 +2199,18 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
         return False
     current_request = _requests_current_rating(previous.text) if previous else None
     for rating in ratings:
+        before = report.text[:rating.start()].strip().replace("’", "'")
         if rating["score"]:
             number = _exact_number(rating["score"])
-            request = _current_symptom_prompt(previous.text) if previous else None
-            floor = (request[1] or 0) if request else 0
-            if number is None or not floor <= number <= 10:
+            if number is None or not 0 <= number <= 10:
                 return False
-        before = report.text[:rating.start()].strip().replace("’", "'")
+            if number == 0 and previous and report.start == source.turns[idx].start:
+                request = _current_symptom_prompt(previous.text)
+                if request and request[1] == 1:
+                    # An independently named symptom may have its own rating.
+                    subject = _named_rating_subject(before)
+                    if not subject or subject == _named_rating_subject(request[0]):
+                        return False
         after = report.text[rating.end():]
         # A recent self-measurement dates the score. A date attached to a
         # relative onset clause dates the symptom, while a separate date on

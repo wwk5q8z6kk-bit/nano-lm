@@ -31,6 +31,8 @@ SCALE = "On a scale of one to ten, how severe is your pain?"
     (SCALE, "−3/10.", "−3/10", False),
     (SCALE, "Minus three out of ten.", "Minus three out of ten", False),
     ("How would you rate the coffee on a scale of one to ten?", "My headache is 0/10.", "0/10", True),
+    ("On a scale from one to ten, how severe is your headache?", "My knee pain is 0/10.", "0/10", True),
+    ("On a scale from one to ten, how severe is your headache?", "My headache is 0/10.", "0/10", False),
     (SCALE, "Three out of five.", "Three", False),
     (SCALE, "Seven days.", "Seven", False),
     (SCALE, "Seven or nine.", "Seven", False),
