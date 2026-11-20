@@ -8,6 +8,19 @@ from nanoscribe.grounded import build_grounded_english_menu, format_grounded_spa
 
 
 @pytest.mark.parametrize("report,medicines", [
+    ("I take aspirin and go to bed.", ("aspirin",)),
+    ("I take aspirin and read a book.", ("aspirin",)),
+    ("I take aspirin and feel better.", ("aspirin",)),
+    ("I am taking aspirin and walk daily.", ("aspirin",)),
+    ("I took aspirin and then went home.", ("aspirin",)),
+    ("I take aspirin and pack my bag.", ("aspirin",)),
+    ("I take aspirin, eat lunch and read the paper.", ("aspirin",)),
+    ("I take aspirin and read a book with ibuprofen.", ("aspirin",)),
+    ("I have taken aspirin and read a book for my headache.", ("aspirin",)),
+    ("I take aspirin and ibuprofen and feel better.", ("aspirin", "ibuprofen")),
+    ("I take aspirin and Xylora.", ("aspirin", "Xylora")),
+    ("I take aspirin and vitamin A.", ("aspirin", "vitamin A")),
+    ("I take aspirin and milk thistle.", ("aspirin", "milk thistle")),
     ("I take aspirin and ibuprofen.", ("aspirin", "ibuprofen")),
     ("I currently take aspirin and ibuprofen.", ("aspirin", "ibuprofen")),
     ("I am taking aspirin and ibuprofen.", ("aspirin", "ibuprofen")),

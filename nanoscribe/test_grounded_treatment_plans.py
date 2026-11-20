@@ -89,3 +89,30 @@ def test_scheduled_action_preserves_a_separate_actual_medication(reply):
     assert claim["value"] == "aspirin" and direct is FieldState.SUPPORTED
     assert ":S[aspirin]" in compact and " REPORTED[aspirin]" in english
     assert not any("ibuprofen" in x for x in (*compact, *english))
+
+
+@pytest.mark.parametrize("reply", [
+    "I am currently taking aspirin for my procedure tomorrow.",
+    "I am taking aspirin for my scheduled dental surgery next week.",
+    "I am taking aspirin ahead of my appointment tomorrow.",
+    "I am taking aspirin because my operation is tomorrow.",
+    "I am taking aspirin for my procedure that is scheduled for tomorrow.",
+    "I take aspirin for my outpatient procedure in three days.",
+])
+def test_future_time_can_belong_to_the_reason_for_current_use(reply):
+    claim, direct, compact, english = observed(f"Patient: {reply}", MED, "aspirin")
+    assert claim["value"] == "aspirin" and direct is FieldState.SUPPORTED
+    assert ":S[aspirin]" in compact and " REPORTED[aspirin]" in english
+
+
+@pytest.mark.parametrize("reply", [
+    "I am taking aspirin tomorrow for my procedure.",
+    "I am taking aspirin starting tomorrow for my appointment.",
+    "I am taking aspirin for my procedure starting tomorrow.",
+    "I am taking aspirin tomorrow morning before my surgery.",
+])
+def test_future_administration_is_still_planned_before_a_procedure(reply):
+    claim, direct, compact, english = observed(f"Patient: {reply}", MED, "aspirin")
+    assert claim["value"] is None and direct is None
+    assert not any(x.startswith(":S[") for x in compact)
+    assert not any(x.startswith(" REPORTED[") for x in english)
