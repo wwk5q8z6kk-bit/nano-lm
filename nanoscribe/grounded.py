@@ -1505,8 +1505,16 @@ _SEVERITY_JOIN_RE = re.compile(
 _RATING_LEAD_RE = re.compile(
     rf"(?:(?:yes|well|actually|definitely|only|about|roughly|around|maybe|very|really|pretty|"
     rf"quite|just|at|a|an|little|bit|honestly|mostly|it's|it|is|was|has|been|feels?|felt|"
-    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|now|today|"
+    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|right\s+now|now|today|"
     rf"mildly|moderately|severely|this|morning|tonight)\b[\s,']*|{_BOUND_LEAD})*", re.I,
+)
+
+# In "seven out of ten was my score yesterday" the cited number belongs
+# to an earlier measurement, even after a question about current severity.
+_EARLIER_RATING_RE = re.compile(
+    r"^\s+was\s+(?:(?:my|the|that)\s+)?(?:number|rating|score)\s+"
+    r"(?:(?:just|right|immediately)\s+)?(?:before|after|when|yesterday|earlier|initially|"
+    r"last\s+(?:night|week)|at\s+(?:first|(?:the|its|my)\s+(?:start|onset|worst|peak)))\b", re.I,
 )
 
 
@@ -1528,6 +1536,8 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
     for rating in ratings:
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
+        if _EARLIER_RATING_RE.match(after):
+            return False
         # Stop before a separate subject, adjunct or predicate.
         noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
                         after, maxsplit=1, flags=re.I)[0]
