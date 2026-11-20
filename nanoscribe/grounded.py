@@ -752,18 +752,32 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     return is_explicit_med_q, is_explicit_alg_q, prev_q
 
 
-def _taken_indication(subsequent: str) -> re.Match[str] | None:
-    """Identify a named object and purpose in the same 'taken X for Y' report."""
-    match = re.match(
-        r"\s*(?:some\s+)?(?P<name>[\w -]+?)\s+for\s+(?P<purpose>[^,;.!?]+)", subsequent, re.IGNORECASE,
-    )
-    if match is None:
-        return None
-    name, purpose = match.group("name"), match.group("purpose").strip()
-    if (not grounded_value_valid(FieldName.MEDICATION, name) or not _plain_value(FieldName.MEDICATION, name)
-            or re.match(r"granted\b", purpose, re.IGNORECASE) or _DURATION_VALUE_RE.fullmatch(purpose)):
-        return None
-    return match
+def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[CandidateSpan, ...]:
+    """Find reported objects of 'taken' with a shared or individual indication."""
+    event = re.split(r"[;.!?]|\b(?:but|because|so)\b", subsequent, maxsplit=1, flags=re.I)[0]
+    join = re.compile(r"\s*,\s*(?:and\s+)?|\s+(?:and|plus|with)\s+", re.I)
+    boundaries = [(item.start(), item.end()) for item in join.finditer(event)]
+    names = []
+    pending = []
+    start = 0
+    for end, following in [*boundaries, (len(event), len(event))]:
+        part = re.fullmatch(r"\s*(?:some\s+)?(?P<name>[\w -]+?)(?:\s+for\s+(?P<purpose>.+?))?\s*",
+                            event[start:end], re.I)
+        if part:
+            value, purpose = part.group("name", "purpose")
+            if (not _TAKEN_NON_TREATMENT_OBJECT_RE.match(value)
+                    and grounded_value_valid(FieldName.MEDICATION, value) and _plain_value(FieldName.MEDICATION, value)):
+                span = CandidateSpan(offset + start + part.start("name"), offset + start + part.end("name"), value)
+                if purpose and not re.match(r"granted\b", purpose, re.I) and not _DURATION_VALUE_RE.fullmatch(purpose):
+                    names.extend(pending)
+                    names.append(span)
+                    pending.clear()
+                elif not purpose and not names:
+                    # Names before the first indication may share it. Bare words
+                    # after an indication may instead continue the reported purpose.
+                    pending.append(span)
+        start = following
+    return tuple(names)
 
 
 def _medication_verb_positions(text: str, question: str) -> list[int]:
@@ -774,7 +788,7 @@ def _medication_verb_positions(text: str, question: str) -> list[int]:
         event = re.split(r"[,;]|\b(?:and|but|because|so)\b", text[match.end():], maxsplit=1, flags=re.I)[0]
         if _TAKEN_NON_TREATMENT_OBJECT_RE.match(event):
             continue
-        if _question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(event) or _taken_indication(event):
+        if _question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(event) or _taken_indication_names(text[match.end():]):
             positions.append(match.start())
     return positions
 
@@ -868,12 +882,9 @@ def _verify_local_span(
             if not _medication_verb_positions(event.text, question):
                 return False, "taken_without_treatment_context"
             taken = _TAKEN_RE.match(event.text)
-            indication = _taken_indication(event.text[taken.end():]) if taken else None
-            if taken and indication:
-                start, end = indication.span("name")
-                offset = event.start + taken.end()
-                if not (offset + start <= span.start < span.end <= offset + end):
-                    return False, "span_outside_reported_treatment_name"
+            names = _taken_indication_names(event.text[taken.end():], event.start + taken.end()) if taken else ()
+            if names and not any(item.start <= span.start < span.end <= item.end for item in names):
+                return False, "span_outside_reported_treatment_name"
         if not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
         if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(event.text):
@@ -1202,9 +1213,12 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                     flags=re.IGNORECASE,
                 ).strip(" ,")
                 taken = _TAKEN_RE.match(body)
-                indication = _taken_indication(body[taken.end():]) if taken else None
-                candidates = (indication.group("name"),) if indication else (rem_clean, rem)
-                for cand_str in dict.fromkeys(candidates):
+                names = _taken_indication_names(body[taken.end():], c_start + taken.end()) if taken else ()
+                if names:
+                    for name in names:
+                        add(name)
+                    continue
+                for cand_str in dict.fromkeys((rem_clean, rem)):
                     if not cand_str:
                         continue
                     pos = c_text.find(cand_str)
@@ -1264,6 +1278,11 @@ def _coexisting_substances(source: Source, field: FieldName,
         for clause in _reply_clauses(turn):
             for report in _reporting_events(clause):
                 for event in _treatment_events(report):
+                    taken = _TAKEN_RE.match(event.text) if field is FieldName.MEDICATION else None
+                    names = _taken_indication_names(event.text[taken.end():], event.start + taken.end()) if taken else ()
+                    if names:
+                        observed.extend(item for item in names if item in local)
+                        continue
                     pair = _coexisting_substance_clause(field, event.text)
                     if pair:
                         offset = 0
@@ -1736,29 +1755,24 @@ def trace_proposal_conservation(
         b_spans = b_field.get("evidence", []) if b_field is not None else []
         n_state = n_claim["state"] if n_claim is not None else None
 
+        requires_evidence = raw_state in ("supported", "absent", "conflicting")
         if whole_syntax_failed:
             loss_boundary = "whole_response_syntax"
         elif parse_err is not None:
             loss_boundary = "slot_parse_or_offset"
-        elif prop is not None and b_state != raw_state:
+        elif prop is not None and (
+            b_state != raw_state or (requires_evidence and not all(span in b_spans for span in raw_spans))
+        ):
             loss_boundary = "binder_rejected"
         elif c_state is not None and c_state.value != b_state:
             loss_boundary = "note_checker_quarantine"
-        elif raw_state in ("supported", "absent") and n_claim is None:
+        elif requires_evidence and n_claim is None:
             loss_boundary = "whole_note_withheld"
-        elif raw_state in ("supported", "absent") and n_state != raw_state:
+        elif requires_evidence and n_state != raw_state:
             loss_boundary = "note_claim_state_mismatch"
         else:
             loss_boundary = None
 
-        conserved = (
-            loss_boundary is None
-            and parse_err is None
-            and (
-                raw_state not in ("supported", "absent")
-                or (n_state == raw_state and all(span in b_spans for span in raw_spans))
-            )
-        )
         lineage.append(
             {
                 "field": fname,
@@ -1776,7 +1790,7 @@ def trace_proposal_conservation(
                 "note_rendered_state": n_state,
                 "note_rendered_value": n_claim.get("value") if n_claim is not None else None,
                 "note_disposition": result["disposition"],
-                "conserved": conserved,
+                "conserved": loss_boundary is None,
                 "loss_boundary": loss_boundary,
             }
         )

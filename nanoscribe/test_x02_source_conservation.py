@@ -295,3 +295,43 @@ def test_medication_answer_timing_stays_with_the_treatment():
         assert f":S[{duration}]" not in grounded_candidate_choices(transcript, FieldName.DURATION, set())
         row = trace_proposal_conservation(transcript, f"CC:M|DUR:S[{duration}]|SEV:M|MED:M|ALG:M")[1]
         assert row["note_rendered_state"] == "uncertain"
+
+
+def test_conservation_checks_the_actual_conflict_evidence_at_the_binder():
+    text = "Patient: I took aspirin.\nPatient: No medications.\nPatient: I took ibuprofen."
+    raw = "CC:M|DUR:M|SEV:M|MED:C[{}]|ALG:M"
+    replaced = trace_proposal_conservation(text, raw.format("aspirin;ibuprofen"))[3]
+    assert replaced["binder_state"] == replaced["raw_state"] == "conflicting"
+    assert not replaced["conserved"] and replaced["loss_boundary"] == "binder_rejected"
+    assert [s["text"] for s in replaced["binder_spans"]] == ["I took aspirin.", "No medications."]
+    for pair in ("I took aspirin.;No medications.", "No medications.;I took aspirin."):
+        retained = trace_proposal_conservation(text, raw.format(pair))[3]
+        assert retained["conserved"] and retained["loss_boundary"] is None
+        assert retained["raw_spans"] == retained["binder_spans"]
+
+
+def test_coordinated_taken_names_keep_the_exact_coexisting_treatment_evidence():
+    from nano_ai.contract import NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import build_grounded_english_menu
+
+    for text in ("aspirin for my headache and ibuprofen for my cramps",
+                 "aspirin and ibuprofen for my cramps"):
+        transcript = f"Doctor: Tell me more.\nPatient: I have taken {text}."
+        source = transcript_source(NanoInput("taken", transcript))
+        menu = grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+        assert ":U[aspirin||ibuprofen]" in menu
+        assert not any(item.startswith(":S[") for item in menu)
+        english = build_grounded_english_menu(source, FieldName.MEDICATION, set())
+        assert any([s.text for s in spans] == ["aspirin", "ibuprofen"] for code, spans in english.values() if code == "U")
+        for name in ("aspirin", "ibuprofen"):
+            result = trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{name}]|ALG:M")[3]
+            assert result["binder_state"] == "uncertain"
+            assert [(s["start"], s["end"], s["text"]) for s in result["binder_spans"]] == [
+                (transcript.index(v), transcript.index(v) + len(v), v) for v in ("aspirin", "ibuprofen")]
+
+    transcript = "Patient: I have taken aspirin for my headache and sore throat."
+    assert ":S[aspirin]" in grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+    for proposed in ("headache", "sore throat"):
+        result = trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{proposed}]|ALG:M")[3]
+        assert result["note_rendered_state"] == "uncertain"
