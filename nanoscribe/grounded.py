@@ -1482,6 +1482,24 @@ def _same_medication_administration(withdrawal: _MedicationWithdrawal, administr
                                               administration, re.I))
 
 
+def _continued_correction(clauses: tuple[Turn, ...], position: int) -> str:
+    """Join a bare correction marker with the sentence that carries the correction."""
+    text = clauses[position].text
+    if (_MEDICATION_CORRECTION_RE.fullmatch(text.rstrip(" .!;"))
+            and position + 1 < len(clauses)):
+        return text + " " + clauses[position + 1].text
+    return text
+
+
+def _retraction_correction(clauses: tuple[Turn, ...], position: int) -> str:
+    """Join a marker only when the next sentence is a parsed medication non-use."""
+    text = clauses[position].text
+    continued = _continued_correction(clauses, position)
+    if continued != text and _corrected_medication_objects(continued) is not None:
+        return continued
+    return text
+
+
 def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
                                  owned: tuple[int, int], span: CandidateSpan) -> bool:
     """Match the retracted name and time to a specific earlier positive occurrence."""
@@ -1506,10 +1524,7 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
         for position, clause in enumerate(clauses):
             if clause.start < event.end:
                 continue
-            text = clause.text
-            if (_MEDICATION_CORRECTION_RE.fullmatch(text.rstrip(" .!;"))
-                    and position + 1 < len(clauses)):
-                text += " " + clauses[position + 1].text
+            text = _continued_correction(clauses, position)
             question = (previous.text if position == 0 and previous
                         and _MED_QUESTION_CUE_RE.search(previous.text) else "")
             for withdrawal in _corrected_medication_objects(text) or ():
@@ -1521,8 +1536,8 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
 
 def _retracts_value(source: Source, turn_idx: int, correction: str, original: str,
                     field: FieldName, span_text: str, immediate: bool) -> bool:
-    if not _eligible_correction(correction):
-        return False
+    # "Let me correct that" is not a generic correction word. A parsed non-use
+    # is still the correction that can retract a later coordinated field.
     withdrawals = _corrected_medication_objects(correction)
     if withdrawals is not None:
         # The medication verifier checks the actual administration. A second
@@ -1542,6 +1557,8 @@ def _retracts_value(source: Source, turn_idx: int, correction: str, original: st
             if (scope == "all" or (scope == "name" and value == named)
                     or (scope == "category" and named == _reported_allergen_category(source, turn_idx, value))):
                 return True
+        return False
+    if not _eligible_correction(correction):
         return False
     targets = _correction_fields(correction)
     if targets:
@@ -1633,9 +1650,10 @@ def _clause_is_retracted_in_turn(source: Source, turn_idx: int, clause: Turn,
                                  field: FieldName, span_text: str = "") -> bool:
     """An immediate correction can retract a value in the same patient reply."""
     clauses = _reply_clauses(source.turns[turn_idx])
-    return any(current.start == clause.start and
-               _retracts_value(source, turn_idx, following.text, current.text, field, span_text, immediate=True)
-               for current, following in zip(clauses, clauses[1:]))
+    return any(current.start == clause.start and _retracts_value(
+        source, turn_idx, _retraction_correction(clauses, index + 1), current.text,
+        field, span_text, immediate=True)
+               for index, current in enumerate(clauses[:-1]))
 
 
 def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, span_text: str) -> bool:
@@ -1659,14 +1677,16 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
             continue
         adjacent_patient_answer = immediate
         immediate = False
-        if not (_SELF_CORRECTION_CLAUSE_RE.search(later.text) or _DISAVOWAL_RE.search(later.text)):
+        if not (_SELF_CORRECTION_CLAUSE_RE.search(later.text) or _DISAVOWAL_RE.search(later.text)
+                or _MEDICATION_CORRECTION_RE.search(later.text)):
             continue
         previous = _preceding_clinician_turn(source, idx)
         if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
             continue
-        if any(_retracts_value(source, turn_idx, clause.text, source.turns[turn_idx].text,
-                              field, span_text, adjacent_patient_answer)
-               for clause in _reply_clauses(later)):
+        clauses = _reply_clauses(later)
+        if any(_retracts_value(source, turn_idx, _retraction_correction(clauses, position),
+                               source.turns[turn_idx].text, field, span_text, adjacent_patient_answer)
+               for position in range(len(clauses))):
             return True
     return False
 

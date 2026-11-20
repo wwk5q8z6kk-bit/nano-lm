@@ -275,6 +275,27 @@ def test_independent_allergy_statement_has_its_own_polarity_and_object(answer, s
     assert_substance(text, FieldName.ALLERGY, "aspirin", 0, supported)
 
 
+@pytest.mark.parametrize("correction,allergen,supported", [
+    ("Let me correct that. I did not take aspirin, and I'm not allergic to it.", "aspirin", False),
+    ("Let me correct that! I did not take aspirin, and I'm not allergic to it.", "aspirin", False),
+    ("Let me correct my answer: I haven't taken aspirin, and I'm not allergic to it.", "aspirin", False),
+    ("Correction. I did not take aspirin, and I'm not allergic to it.", "aspirin", False),
+    ("Sorry. I did not take aspirin, and I'm not allergic to it.", "aspirin", False),
+    ("Let me correct that. I did not take aspirin, and I'm not allergic to latex.", "aspirin", True),
+    ("Let me correct that. I did not take aspirin, but I am allergic to it.", "aspirin", True),
+    ("Let me correct that. I did not take aspirin, and I'm not allergic to it.", "latex", True),
+])
+def test_separate_correction_marker_retracts_only_the_coordinated_allergy(correction, allergen, supported):
+    text = f"Patient: I am allergic to {allergen}.\nPatient: {correction}"
+    assert_substance(text, FieldName.ALLERGY, allergen, 0, supported)
+
+
+def test_same_reply_separate_marker_retracts_the_coordinated_allergy():
+    text = ("Patient: I am allergic to aspirin. Let me correct that. "
+            "I did not take aspirin, and I'm not allergic to it.")
+    assert_substance(text, FieldName.ALLERGY, "aspirin", 0, False)
+
+
 def test_reference_to_another_medication_does_not_retract_unrelated_allergen():
     text = "Patient: I am allergic to latex.\nPatient: Actually, I didn't take aspirin, and I'm not allergic to it."
     assert_substance(text, FieldName.ALLERGY, "latex", 0, True)
