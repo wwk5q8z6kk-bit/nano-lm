@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from nanoscribe.compact import compact_solver
 from nanoscribe.grounded import grounded_candidate_choices, trace_proposal_conservation
 from nanoscribe.scribe import scribe
@@ -401,3 +403,43 @@ def test_administration_adjuncts_do_not_displace_reported_medications():
     for coordinated in ("aspirin with ibuprofen", "aspirin with milk thistle"):
         transcript = f"Patient: I have taken {coordinated} for my cramps."
         assert ":U[" + coordinated.replace(" with ", "||") + "]" in grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+
+
+@pytest.mark.parametrize(("event", "duration"), (
+    ("I tried to sleep but my headache kept me awake", "three hours"),
+    ("I used my phone while the ringing in my ears persisted", "two days"),
+    ("I tried to work through it, but my vertigo returned", "four hours"),
+    ("I used my calendar because the nausea had been bothering me", "three days"),
+    ("I tried aspirin but my headache kept me awake", "three hours"),
+    ("I used nasal spray and my cough kept waking me", "two days"),
+))
+def test_temporal_evidence_follows_the_symptom_subject_after_an_activity(event, duration):
+    transcript = f"Doctor: Tell me more.\nPatient: {event} for {duration}."
+    row = trace_proposal_conservation(transcript, f"CC:M|DUR:S[{duration}]|SEV:M|MED:M|ALG:M")[1]
+    assert row["conserved"] and row["note_rendered_value"] == duration
+    assert f":S[{duration}]" in grounded_candidate_choices(transcript, FieldName.DURATION, set())
+
+
+@pytest.mark.parametrize(("question", "event", "reason"), (
+    ("Tell me more.", "I tried to sleep", "duration_scoped_to_other_activity"),
+    ("Tell me more.", "I used my phone", "duration_scoped_to_other_activity"),
+    ("Tell me more.", "I tried aspirin", "duration_scoped_to_medication_or_allergy"),
+    ("Tell me more.", "I tried my new tablets", "duration_scoped_to_medication_or_allergy"),
+    ("Tell me more.", "I used nasal spray for my headache and nausea", "duration_scoped_to_medication_or_allergy"),
+    ("Which medication did you try?", "I tried Falpren", "duration_scoped_to_medication_or_allergy"),
+))
+def test_treatment_and_activity_intervals_are_not_symptom_duration(question, event, reason):
+    from nano_ai.contract import EvidenceSpan, FieldState, NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import verify_grounded_span
+
+    transcript = f"Doctor: {question}\nPatient: {event} for three hours."
+    source = transcript_source(NanoInput("interval", transcript))
+    duration = "three hours"
+    start = transcript.index(duration)
+    ok, rejection = verify_grounded_span(source, FieldName.DURATION, FieldState.SUPPORTED,
+                                         EvidenceSpan(start, start + len(duration), duration))
+    assert not ok and rejection == reason
+    row = trace_proposal_conservation(transcript, "CC:M|DUR:S[three hours]|SEV:M|MED:M|ALG:M")[1]
+    assert row["note_rendered_state"] == "uncertain"
+    assert ":S[three hours]" not in grounded_candidate_choices(transcript, FieldName.DURATION, set())

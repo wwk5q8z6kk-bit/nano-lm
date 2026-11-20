@@ -526,6 +526,16 @@ _EXPLICIT_SYMPTOM_DURATION_RE = re.compile(
     re.IGNORECASE,
 )
 
+# A new subject and predicate can date a symptom even when an earlier action
+# was a genuine treatment. An indication or coordinated noun is not a clause.
+_SYMPTOM_SUBJECT_RE = re.compile(
+    rf"(?:^|,\s*|\b(?:and|but|while|because|although|whereas|so)\s+)"
+    rf"(?:(?:my|the|this|that)\s+)?(?:[\w-]+\s+){{0,2}}?{_SYMPTOM}\b"
+    r"(?:\s+(?:in|around|of|on)\s+(?:my|the)\s+[\w-]+)?\s+"
+    r"(?:has|had|have|is|was|were|kept|keeps|woke|wakes|persist\w*|return\w*|"
+    r"continu\w*|last\w*|start\w*|began|got|gets|spread\w*|prevent\w*)\b", re.I,
+)
+
 _BARE_REPLACEMENT_RE = re.compile(
     r"(?:actually[, ]+|sorry[, ]+|correction[: ,]+|i meant\s+)(?:i meant\s+)?"
     r"(?!i\b|it\b|that\b|this\b|the\b|my\b|we\b|he\b|she\b|they\b)"
@@ -1242,7 +1252,7 @@ def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
     return False
 
 
-def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, duration: CandidateSpan) -> bool:
+def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, duration: CandidateSpan) -> str | None:
     """Assign a timestamp to the local event. Only the first answer inherits the question."""
     turn = source.turns[turn_idx]
     context = source.text[event.start:duration.start]
@@ -1268,12 +1278,28 @@ def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, d
 
     med_question, allergy_question, question = _question_flags(source, turn_idx)
     inherits_question = event.start == turn.start
-    events = [(pos, True) for pos in _medication_verb_positions(context, question if inherits_question else "")]
-    events.extend((match.start(), True) for pattern in (_ALG_CLAUSE_PRED_RE, _POSTPOSED_ALLERGY_RE)
+    treatment = "duration_scoped_to_medication_or_allergy"
+    events: list[tuple[int, str | None]] = []
+    medication_positions = set(_medication_verb_positions(context, question if inherits_question else ""))
+    for verb in _MED_CLAUSE_VERB_RE.finditer(context):
+        reason = treatment if verb.start() in medication_positions else "duration_scoped_to_other_activity"
+        if reason == treatment and re.search(r"\b(?:try|tried|use|used|using)$", verb[0], re.I):
+            # Trying and using also describe ordinary activities. Their own clock
+            # gives no symptom duration, even when there is no medication at all.
+            obj = re.split(r"[,;.!?]|\b(?:and|but|while|because|although|so)\b",
+                           context[verb.end():], maxsplit=1, flags=re.I)[0]
+            if not ((med_question and inherits_question) or _TREATMENT_CONTEXT_RE.search(obj)
+                    or _FAMILIAR_MEDICINE_RE.search(obj) or _INDICATION_RE.search(obj)):
+                reason = "duration_scoped_to_other_activity"
+        events.append((verb.start(), reason))
+    for verb in _TAKEN_RE.finditer(context):
+        reason = treatment if verb.start() in medication_positions else "duration_scoped_to_other_activity"
+        events.append((verb.start(), reason))
+    events.extend((match.start(), treatment) for pattern in (_ALG_CLAUSE_PRED_RE, _POSTPOSED_ALLERGY_RE)
                   for match in pattern.finditer(context))
     if re.match(r"(?:(?:my|the|that)\s+)?(?:(?:first|last|previous|most recent)\s+)?(?:dose|medication|allergy)\b",
                 context, re.I):
-        events.append((0, True))
+        events.append((0, treatment))
     medication_action = re.search(
         r"\bi(?:'ve| have)?\s+(?:started|stopped|resumed|discontinued|finished)\s+(?:(?:taking|using)\s+)?(?:it|them)\b", context, re.I
     )
@@ -1283,14 +1309,17 @@ def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, d
         r"finished|ended|was|did)(?:\s+(?:it|them))?(?:\s+(?:on|at|by|for|around|about))?\s*", context, re.I
     ):
         # An answer echoing the requested action inherits its subject just as a bare date does.
-        return True
+        return treatment
     if (med_question or treatment_time) and medication_action:
-        events.append((medication_action.start(), True))
-    events.extend((match.start(), False) for match in _EXPLICIT_SYMPTOM_DURATION_RE.finditer(context))
+        events.append((medication_action.start(), treatment))
+    events.extend((match.start(), None) for pattern in (_EXPLICIT_SYMPTOM_DURATION_RE, _SYMPTOM_SUBJECT_RE)
+                  for match in pattern.finditer(context))
     if events:
-        nearest = min(events) if looking_forward else max(events)
+        nearest = (min if looking_forward else max)(events, key=lambda item: item[0])
         return nearest[1]
-    return inherits_question and (med_question or allergy_question or (treatment_time and elliptical_time))
+    if inherits_question and (med_question or allergy_question or (treatment_time and elliptical_time)):
+        return treatment
+    return None
 
 
 def _verify_local_span(
@@ -1371,8 +1400,9 @@ def _verify_local_span(
             if name and span.start < name[1] and name[0] < span.end:
                 if span.start > name[0] or span.end < name[1]:
                     return False, "incomplete_substance_name"
-        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, event, span):
-            return False, "duration_scoped_to_medication_or_allergy"
+        if field is FieldName.DURATION:
+            if reason := _duration_scope_rejection(source, idx, event, span):
+                return False, reason
         if field is FieldName.MEDICATION and _TAKEN_RE.search(event.text):
             _, _, question = _question_flags(source, idx)
             if not _medication_verb_positions(event.text, question):
