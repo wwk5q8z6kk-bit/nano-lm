@@ -53,6 +53,14 @@ from nanoscribe.scribe import scribe
     ("Doctor: What brings you in?\nPatient: The main problem is a headache that disappeared last year.", "headache", False),
     ("Doctor: What brings you in?\nPatient: The main problem is parking. I have sharp joint pain.", "sharp joint pain", True),
     ("Doctor: What brings you in?\nPatient: The main problem is a headache.\nPatient: I was mistaken about my symptom.", "headache", False),
+    ("Doctor: What brings you in?\nPatient: My main symptom is a cough.", "cough", True),
+    ("Doctor: What brings you in?\nPatient: My main complaint is joint pain.", "joint pain", True),
+    ("Doctor: What brings you in?\nPatient: My main symptom is pain that will develop after surgery.", "pain", False),
+    ("Doctor: What brings you in?\nPatient: My main complaint is pain from the form I was reading.", "pain", False),
+    ("Doctor: What brings you in?\nPatient: My main symptom is a cough since May.", "cough", True),
+    ("Doctor: What brings you in?\nPatient: The main problem is a cough since May.", "cough", True),
+    ("Doctor: What brings you in?\nPatient: The main problem is a cough in May.", "cough in May", True),
+    ("Doctor: What brings you in?\nPatient: The main problem is pain that may develop after surgery.", "pain", False),
 ])
 def test_presenting_problem_owns_the_current_symptom(text, quote, valid):
     field = FieldName.CHIEF_COMPLAINT

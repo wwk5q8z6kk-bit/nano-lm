@@ -899,14 +899,15 @@ _COMPLAINT_LEAD_RE = re.compile(
     r"i\s+(?:(?:also|still|now|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
     r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with|"
     r"(?:on\s+my\s+period|menstruating)\s+with)|i(?:'m|\s+am)(?=\s+on\s+edge\b)|"
-    r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is|"
-    r"(?P<presenter>my|the)\s+(?:main|primary|presenting|current)\s+(?:problem|concern|symptom|complaint)\s+is)\s+)?", re.I,
+    r"(?P<presenter>my|the)\s+(?:main|primary|presenting|current)\s+(?:problem|concern|symptom|complaint)\s+is|"
+    r"my\s+(?:complaint|symptom)\s+is)\s+)?", re.I,
 )
 # A nominal symptom name can refer to a potential episode or a value copied
 # from a document. Its reporting frame alone cannot establish current symptoms.
+# "may" needs a following verb so the month name is not read as a modal.
 _PRESENTING_REFERENCE_RE = re.compile(
-    r"\b(?:may|might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year)|"
-    r"(?:will|(?:am|is|are)\s+going\s+to)\s+(?:(?:first|only|soon|probably|likely)\s+)*"
+    r"\b(?:might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year)|"
+    r"(?:may|will|(?:am|is|are)\s+going\s+to)\s+(?:(?:first|only|soon|probably|likely)\s+)*"
     r"(?:develop|start|begin|appear|arise|occur|emerge|experience|get|have|feel|set\s+in|come\s+on)|"
     r"(?:from|in|on)\s+(?:an?|the|my|this|that|our|your)\s+(?:form|chart|leaflet|worksheet|report|example))\b", re.I,
 )
