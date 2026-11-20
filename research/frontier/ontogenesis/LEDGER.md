@@ -52,3 +52,51 @@ The one authoritative status list. Updated 2026-11-20. Status values: Establishe
 - Names Gen3/4/5, S2, M0/M2, Omega each mean several things; cite path and commit, never the bare name.
 - Five competing 2B–3.9B "flagship" plans in the archive: none funded; all superseded by this ledger.
 - CLOSURE is merged into RELATOR.
+
+## Research tree (2026-11-20)
+
+Root: one unified language model with better capability per parameter, token and unit of compute.
+
+| Branch | Question | State | Next action | Where |
+|---|---|---|---|---|
+| B1 Learning speed on changing facts | Why did DEMOS learn updates when dense did not? | Running | tuned dense, looped, message passing, KEYSTORE; then ablations | `train.py`, handoff `ontogenesis-pilots/` |
+| B2 Knowledge in the weights | Does two-way binding remove one-way fact storage? | Not started | critic review, then REVERSE | `MISSION.md` lead C |
+| B3 Reusable operations | Does an operation store beat a meta-trained Transformer? | Not started | critic review, then REUSE | `MISSION.md` lead A |
+| B4 Size of the long-context gain | How much, on which tokens, prose vs code? | Blocked | obtain a corpus of long documents | `theory/ONTOGENESIS-PHASE2-20261120.md` L0 |
+| B5 Exact keyed memory in context | Can discrete keys be learned from a prediction loss? | Arm built | pilot queued | `structured.py` |
+| B6 Relational closure | Hard causal training for RELATOR | Blocked | design training without the smooth semiring | round 2, section 9 |
+| B7 Identity merging | FILTRA | Not built | after B5 | round 2 |
+| B8 Copy and recurrent baselines | Port S2 and M21 to the harness | Not started | after B1 baselines | master `research/frontier/m21_dense_code`, `experiments/native_public_language/archived/gen3.py` |
+| B9 Compute | TPU price and availability | Partly done | verify hourly price on the billing page before any run | handoff `tpu-probe/RESULT.md` |
+
+A branch is closed when its decisive experiment is reported, pass or fail. New branches are added here before work starts.
+
+## Archive, with where each item lives
+
+Source: two read-only surveys on 2026-11-20 (repository and Antigravity records). Sub-readers opened most files; treat rows as Observed unless marked.
+
+| Item | Mechanism | Largest scale | Result against dense | Location | Status |
+|---|---|---|---|---|---|
+| Gen2 hybrid (X4, X8) | recurrent delta blocks between attention blocks | 46M | 0.9575 vs 0.9645 bits/byte, two seeds | branch `nanolm/discovery-lab-v1`, `lab/arch/` (local only) | Pilot |
+| S2 / Gen3 | Gen2 plus erase and differential attention | 350M | 0.86339 vs 0.86774, one seed | branch `nanolm/arch-evolution-v3`, `lab/arch/gen3.py`; archived copy on master | Pilot |
+| S2 at 125M, second implementation | same name, different code | 125M | 0.91355, worse than dense | worktree `nanolm-v3` | Contradicts the row above |
+| Gen5 / M2 | Gen3 plus physics-style attention | 350M | ahead historically, behind on public text | `gen5_foundations.py`; evals on master | Demonstrated (public text) |
+| BOBO, Kalman landmarks | fast-weight mixer, surprise anchors | 125M | document claim only | `nanolm/arch-evolution-v3` | Unverified |
+| ERN | surprise-driven constant-state recurrence | 125.8M | 2/16 in every arm | branch `nanolm/autonomous-discovery-v1` | Disproven |
+| Holonomy / HSPA | rotation registers | 14M | 0.3751 vs 0.3784 at ~8x cost | PR #174 | Abandoned |
+| "Omega-1.7B beats Qwen3-8B" | a Qwen LoRA, not a native model | — | 40 vs 39 of 56; 32 replies truncated | PRs #171, #174 | Disproven as stated |
+| G3/G4 discovery backbone | Householder scan | 20.6M | 2.1112 vs 2.1188, within noise | PR #176 | Unverified |
+| Tool-recovery 60/60 vs 17/60 | — | — | outcome was hard-coded | PR #176 | Disproven |
+| Mechanism lab X03–X07 | recurrent cells | toy | mixed after correction | PR #175 | Pilot |
+| M13–M22 zoo, M21 | rotation, slots, copy pointer | 5M | see measured table | branch `research/unified-discovery-loop-v1`; port on master | Demonstrated |
+| Omega core, ACE-X9.2, IVE | router, memory tiers, verifier | 47M | ACE lost at scale; leak fixed in #191 | unpublished local commits on `codex/p1-h7-scribing-path` | Disproven (ACE) / Unverified (rest) |
+| Interaction mesh E27, bitemporal E28 | signed node mesh | <65k | 0.258–0.516 vs 0.521; one tie | same local commits, `reports/E27`, `reports/E28` | Disproven at toy scale |
+| UII candidates A–F | mesh, field, attractor, automaton | 9k | 0.573 vs 0.621 | same, `reports/UII` | Disproven at toy scale |
+| V3 exact recall | copy pointer | toy | original contaminated; clean rerun seed-dependent | branch `research/v3-exact-recall`; #187 on master | Demonstrated (rerun) |
+| V4 first principles | event-state operator | — | never run | untracked files in worktree `nanolm-v4-fp` | Open, at risk (uncommitted) |
+| V5 Gödel model | max–min message passing | 19k | 0.845 vs 0.39 on 5-hop graphs | branch `research/v5-distributed-systems` | Pilot (synthetic) |
+| FP1–FP4 | first-principles benchmark | 2.5M | FP4 zero-parameter arm 11/30; learned arm not run | branch `recovery/nanolm-cycle4-first-principles-20261119` | Open |
+| 2B and 4B presets | configurations | 1.98B–3.93B | untrained | `nanolm/arch-evolution-v3`, #171 | Unverified |
+| "1.54B NanoLM" | — | — | was unmodified Qwen2.5-1.5B | Antigravity audit note | Disproven |
+
+Not yet audited: seven openresearch worktrees and the `orx/*` branches; 12 foundation documents on `origin/research/foundation-intelligence-program`; the holonomy publication draft. V4's work exists only as untracked files and should be committed by its owner before any cleanup.
