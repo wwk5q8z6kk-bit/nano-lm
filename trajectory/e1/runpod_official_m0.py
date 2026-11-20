@@ -414,7 +414,9 @@ def _run_pythia_training(model, opt, scaler, examples, micro_batch, accum, epoch
                         flush=True,
                     )
     print(f"[pythia] done {(time.time()-t0)/60:.1f} min", flush=True)
-    return round(time.time() - t0)
+    return t0
+
+
 def train_pythia_lora():
     # peft trap on some images
     os.system("pip uninstall -y -q torchao 2>/dev/null")
@@ -461,7 +463,7 @@ def train_pythia_lora():
     )
     scaler = torch.amp.GradScaler("cuda")
 
-    train_secs = _run_pythia_training(
+    training_start = _run_pythia_training(
         model, opt, scaler, examples, MICRO_BATCH, ACCUM, EPOCHS, EOS
     )
 
@@ -470,7 +472,7 @@ def train_pythia_lora():
     tok.save_pretrained(str(out_dir))
     (out_dir / "e1_train_meta.json").write_text(json.dumps({
         "model": MODEL, "seed": SEED, "lora": LORA, "venue": "runpod-cuda",
-        "train_secs": train_secs,
+        "train_secs": round(time.time() - training_start),
     }, indent=2))
     return out_dir
 
