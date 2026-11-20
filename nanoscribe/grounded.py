@@ -3061,6 +3061,28 @@ def _uncertainty_names_field(field: FieldName, text: str) -> bool:
     return bool(re.search(rf"\b(?:{question}|{description})", text, re.I))
 
 
+def _matches_uncertainty_evidence(field: FieldName, excerpt: CandidateSpan, evidence: CandidateSpan) -> bool:
+    if excerpt == evidence:
+        return True
+    if not evidence.start <= excerpt.start < excerpt.end <= evidence.end:
+        return False
+    start, end = excerpt.start - evidence.start, excerpt.end - evidence.start
+    if any(word.start() < start < word.end() or word.start() < end < word.end()
+           for word in _SUBSTANCE_WORD_RE.finditer(evidence.text)):
+        return False
+    # An excerpt may elide first-person framing and discourse, but must keep
+    # the speaker, hedge, alternatives and clinically meaningful qualifiers.
+    discourse = r"(?:to be honest|honestly|frankly|well|actually|you know)"
+    prefix = evidence.text[:start].strip(" \t.,;:!?")
+    if not re.fullmatch(rf"(?:{discourse}(?:[,\s]+|$))*(?:i(?:\s+am|['’]m)?)?", prefix, re.I):
+        return False
+    tail = evidence.text[end:].strip(" \t.,;:!?")
+    if tail and not re.fullmatch(discourse, tail, re.I):
+        return False
+    retains_hedge = any(match.group().casefold() != "whether" for match in _EPISTEMIC_HEDGE_RE.finditer(excerpt.text))
+    return retains_hedge and _uncertainty_names_field(field, excerpt.text)
+
+
 def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
     """Extract genuine epistemic-uncertainty or coexisting-multi-substance span bundles."""
     bundles: list[tuple[CandidateSpan, ...]] = []
@@ -3524,7 +3546,12 @@ class GroundedStateSpanSolver(StateSpanSolver):
                         if all(u_spans[0].start <= b.start and b.end <= u_spans[0].end for b in bundle):
                             u_spans = bundle
                             break
-                if any(_uncertainty_follows_logistics(document, sp) for sp in u_spans) and u_spans not in uncertain_bundles:
+                after_aside = any(_uncertainty_follows_logistics(document, span) for span in u_spans)
+                if after_aside and not any(
+                    len(bundle) == len(u_spans) and all(_matches_uncertainty_evidence(field, span, owned)
+                                                       for span, owned in zip(u_spans, bundle))
+                    for bundle in uncertain_bundles
+                ):
                     final = GroundedFieldOutput(field, FieldState.UNCERTAIN)
                     verified, reason, decision = False, "uncertainty_without_clinical_target", "rejected_to_uncertain"
                 else:

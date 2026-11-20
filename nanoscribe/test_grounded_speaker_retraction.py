@@ -435,3 +435,35 @@ def test_named_resolution_across_logistics(intervening, followup, licensed):
     check(report, CC, "headache", licensed=licensed)
     if "chest pain" in followup:
         check(report, CC, "chest pain", licensed=True)
+
+
+@pytest.mark.parametrize("field,answer,excerpt,eligible", [
+    (MED, "I am not sure whether I took naproxen.", "I am not sure whether I took naproxen", True),
+    (MED, "To be honest, I am not sure whether I took naproxen.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen, to be honest.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen. My bus is late.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen.", "I am not sure", False),
+    (MED, "I am not sure whether I took naproxen.", "I took naproxen", False),
+    (MED, "I am not sure whether I took naproxen.", "I am not sure whether I took naprox", False),
+    (MED, "I am not sure whether I took naproxen after lunch.", "not sure whether I took naproxen", False),
+    (ALG, "To be honest, I am unsure if I have drug allergies.", "unsure if I have drug allergies", True),
+    (ALG, "I am unsure if I have drug allergies.", "drug allergies", False),
+    (DUR, "Honestly, I cannot remember when my wrist pain began.", "cannot remember when my wrist pain began", True),
+    (SEV, "Honestly, I am unsure how severe my headache is.", "unsure how severe my headache is", True),
+    (SEV, "I am unsure how long the delay is. My headache is severe.", "I am unsure how long the delay is", False),
+    (SEV, "My sister is unsure how severe my headache is.", "unsure how severe my headache is", False),
+    (ALG, "I am unsure whether I have allergies.", "whether I have allergies", False),
+    (SEV, "The leaflet asks whether my headache is severe.", "whether my headache is severe", False),
+    (DUR, "My headache lasted either two or three days.", "either two", False),
+    (MED, "I am not sure whether I took naproxen or aspirin.", "not sure whether I took naproxen", False),
+    (MED, "I am not sure whether I took naproxen.", "I am not sure whether I took naproxen||naproxen", False),
+])
+def test_uncertain_excerpt_retains_hedge_and_clinical_target(field, answer, excerpt, eligible):
+    text = "Other: Where is the garage?\nPatient: " + answer
+    request = NanoInput("uncertain-excerpt", text)
+    index = FIELD_ORDER.index(field)
+    raw = "|".join(label + (f":U[{excerpt}]" if idx == index else ":M")
+                   for idx, label in enumerate(("CC", "DUR", "SEV", "MED", "ALG")))
+    extraction, trace = compact_solver(lambda _: raw, binder="grounded").infer_grounded(request)
+    assert trace["fields"][index]["verified"] is eligible
+    assert [span.text for span in extraction.fields[index].evidence] == ([excerpt] if eligible else [])
