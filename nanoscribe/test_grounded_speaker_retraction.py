@@ -100,3 +100,25 @@ def test_nonpatient_report_is_never_patient_evidence(speaker):
 def test_other_voice_breaks_question_attribution():
     check("Doctor: What medication did you take?\nCompanion: How about your sister?\nPatient: Loratadine.",
           MED, "Loratadine", licensed=False)
+
+
+@pytest.mark.parametrize("aside,licensed", [
+    ("All my answers were mistakenly labeled Patient.", False),
+    ("What I said was recorded as the patient.", False),
+    ("My statements were wrongly attributed to the patient in this transcript.", False),
+    ("The speaker labeled Patient was actually me.", False),
+    ("The voice tagged as 'Patient' was mine.", False),
+    ("The patient has not said anything yet.", False),
+    ("Actually, the patient hasn't spoken yet.", False),
+    ("My answers were marked Family. The patient answered separately.", True),
+    ("My answers were not labeled Patient.", True),
+    ("Were my answers labeled Patient?", True),
+    ("My answers were about the patient.", True),
+    ("I found a folder labeled Patient.", True),
+    ("The speaker labeled Patient was the patient.", True),
+    ("The patient has not said anything about the parking.", True),
+    ("The patient has not spoken to me yet.", True),
+    ("If the patient has not spoken yet, let me know.", True),
+])
+def test_reported_speaker_identity_warning(aside, licensed):
+    check("Patient: I am allergic to nickel.\nSister: " + aside, ALG, "nickel", licensed=licensed)

@@ -224,6 +224,20 @@ _NONPATIENT_ROLE_LABEL_RE = re.compile(
     re.I,
 )
 
+_ROLE_ASSIGNMENT = r"(?:mislabel(?:l)?ed|label(?:l)?ed|tagged|marked|recorded|identified|attributed)"
+_PATIENT_ROLE = r"(?:(?:as|under|to)\s+)?(?:the\s+)?[\"'“‘]?patient[\"'”’]?"
+_NONPATIENT_IDENTITY_WARNING_RE = re.compile(
+    r"(?:^|[.!?;])\s*(?:(?:actually|sorry|correction)[,: ]+)?(?:"
+    rf"(?:(?:all (?:of )?)?my (?:answers?|words|repl(?:y|ies)|responses?|statements?|voice)|"
+    rf"everything i said|what i said|i) (?:was|were|got|have been) "
+    rf"(?:(?:mistakenly|wrongly|incorrectly|accidentally) )?{_ROLE_ASSIGNMENT}\s+{_PATIENT_ROLE}"
+    rf"|(?:the )?(?:speaker|voice|person) {_ROLE_ASSIGNMENT}\s+{_PATIENT_ROLE} (?:was|is) "
+    r"(?:(?:actually|really|in fact) )?(?:me|mine|my voice)"
+    r"|the patient (?:has(?: not|n['’]t) (?:spoken|answered|said anything)|"
+    r"did(?: not|n['’]t) (?:speak|answer|say anything))(?: yet| at all)?"
+    r")(?: in (?:this|the) (?:transcript|conversation|recording))?\s*(?=[.!;]|$)", re.I,
+)
+
 _SELF_CORRECTION_CLAUSE_RE = re.compile(
     r"\b(?:sorry|mistake|mistaken|wrong|incorrect|meant|correction|"
     r"other thing i was thinking of|intake form.*mistake)\b"
@@ -769,6 +783,8 @@ def _turn_reassigns_source(turn: Turn) -> bool:
         # The companion owns this first-person subject. Check the remaining
         # text as usual for a separate warning about the patient's answers.
         content = text[label.end():] if label else text
+        if _NONPATIENT_IDENTITY_WARNING_RE.search(content):
+            return True
         text = re.sub(
             r"^\s*(?:(?:actually|sorry)[, ]+)?(?:everything i said|all (?:of )?my (?:answers|statements|responses))\b",
             "", content, count=1, flags=re.I,
