@@ -733,10 +733,10 @@ def _enclosing_clause(turn: Turn, span: CandidateSpan | Turn) -> Turn:
     return turn
 
 
-def _split_events(clause: Turn, boundary: re.Pattern[str]) -> tuple[Turn, ...]:
+def _split_events(clause: Turn, boundary: re.Pattern[str], *, stop_at: int | None = None) -> tuple[Turn, ...]:
     start = 0
     events = []
-    for join in boundary.finditer(clause.text):
+    for join in boundary.finditer(clause.text, 0, len(clause.text) if stop_at is None else stop_at):
         events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
                            clause.start + start, clause.start + join.start(), clause.text[start:join.start()]))
         start = join.end()
@@ -766,6 +766,97 @@ def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
         else:
             reports.append(part)
     return tuple(reports)
+
+
+# A complaint must be the object of a personal report, or a symptom phrase
+# answering a clinical question. Keep the clinical head's literal position:
+# an address or a medicine elsewhere in the same reply cannot borrow it.
+_COMPLAINT_LEAD_RE = re.compile(
+    r"^(?:(?:well|actually|mostly|mainly|yes)[, ]+\s*)*"
+    r"(?:(?:i(?:'ve|\s+have)\s+(?:been\s+(?:having|experiencing|dealing\s+with)|got|felt|had)|"
+    r"i\s+(?:(?:also|still|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
+    r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with)|"
+    r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is)\s+)?", re.I,
+)
+_COMPLAINT_JOIN_RE = re.compile(
+    r",?\s+(?:(?:and|but|because|although|whereas)\s+(?=(?:i|please|my)\b)|"
+    r"(?:and|but)\s+(?=(?:an?|the)\s+))", re.I,
+)
+_DOCUMENT_CONTENT_RE = re.compile(r'\b(?:says?|states?|reads?|titled|labelled|labeled|quoting|lists?)\b|[“"]', re.I)
+_COMPLAINT_PREFIX = (
+    rf"(?:an?|the|my|some|this|both|really|very|quite|unusually|sudden|persistent|"
+    rf"acute|chronic|severe|mild|moderate|sharp|dull|constant|intermittent|painless|dry|stabbing|"
+    rf"left(?:[-‑]sided)?|right(?:[-‑]sided)?|lower|upper|{_BODY_REGION}|"
+    rf"heels?|thumbs?|cheeks?|forehead|knuckles?|nose|scalp|joints?|form\s+of|"
+    rf"i\s+need\s+to\s+address|(?:has|have|had)\s+(?:been|felt)|feels?|is|are|was|were)"
+)
+_COMPLAINT_HEAD_RE = re.compile(
+    rf"[\s‘’'\"“(\[]*(?:{_COMPLAINT_PREFIX}[\s‘’'\"“(\[]+)*?"
+    r"(?P<head>pain(?:s)?|discomfort|headaches?|earaches?|aches?|aching|cough(?:ing)?|"
+    r"nausea|dizz(?:y|iness)|nauseous|vertigo|ringing|swelling|rash(?:es)?|itching|fever|fatigue|"
+    r"soreness|numbness|tingling|vomiting|diarrhea|bleeding|breathlessness|cramps?|cramping|"
+    r"tightness|pressure|stiffness|throbbing|chills|clicking|twitching|stings?|burns?|hurts?|itches?|shakes?|tremors?|"
+    r"shortness\s+of\s+breath|loss\s+of\s+(?:taste|smell|hearing|vision)|palpitations|hoarseness|pins\s+and\s+needles|paper\s+cut|swimmer['’]s\s+ear|"
+    r"caf[eé]\u0301?\s+spots|(?:blurred|blurry|double)\s+vision|(?:runny|stuffy)\s+nose|"
+    r"(?:trouble|difficulty)\s+(?:remembering|recalling|forming|breathing|walking|swallowing)|"
+    rf"(?:{_SENSATION}|shaking)(?:\s+(?:{_BODY_REGION}|knuckles?|scalp))?)\b", re.I,
+)
+# A following bare noun makes the clinical word its modifier ('cough drops',
+# 'headache diary'). A symptom head can instead end, introduce its location,
+# timing or trigger, or carry an independent predicate ('the pain returned').
+_COMPLAINT_CONTINUATION_RE = re.compile(
+    rf"(?:{_BODY_REGION}|knuckles?|joints?|heels?|thumbs?|scalp|today|yesterday|every|each|all|now|"
+    r"especially|mainly|mostly|again|when|whenever|which|that|in|on|at|near|of|with|through|"
+    r"behind|around|across|along|after|before|during|for|from|since|while|because|like|upon|"
+    r"and|or|but|is|are|was|were|has|have|began|started|returned|lasts?|lasted|"
+    r"woke|wakes?|keeps?|gets?|got|spread|continues?|persists?|hurts?|aches?)\b", re.I,
+)
+# The question can supply the reporting predicate for an unfamiliar sensation
+# described by its location (e.g. 'zigzag lines across my vision').
+_LOCATED_SENSATION_RE = re.compile(
+    r"(?:(?:[\w'-]+\s+){0,2}(?:lines?|spots?|flashes?|lights?|floaters?|sounds?|"
+    r"buzzing|sensations?|pulsing|fluttering|vibrations?))\s+(?:across|in|behind|around|along|under)\s+(?:my|both)\s+"
+    rf"(?:{_BODY_REGION}|vision|hearing|sight)\b", re.I,
+)
+
+
+def _complaint_reports(clause: Turn) -> Iterator[Turn]:
+    # A document may quote a separate-looking first-person proposition.
+    for sentence in _reply_clauses(clause):
+        for report in _reporting_events(sentence):
+            content = _DOCUMENT_CONTENT_RE.search(report.text)
+            pieces = _split_events(report, _COMPLAINT_JOIN_RE, stop_at=content.start() if content else None)
+            yield from pieces
+
+
+def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateSpan) -> bool:
+    text = report.text.replace("’", "'")
+    lead = _COMPLAINT_LEAD_RE.match(text)
+    head = _COMPLAINT_HEAD_RE.match(text, lead.end())
+    previous = _preceding_clinician_turn(source, idx)
+    requested = question_field(previous.text) if previous else None
+    if (report.start == source.turns[idx].start and lead.end() == 0
+            and requested in (FieldName.MEDICATION, FieldName.ALLERGY)):
+        return False
+    if head:
+        # Adjacent symptom words can form one object, e.g. "itchy rash".
+        # Validate the noun after the complete description as well.
+        last = head
+        while following_head := _COMPLAINT_HEAD_RE.match(text, last.end()):
+            last = following_head
+        following = re.match(r"\s+([^\W\d_]+)", text[last.end():])
+        functional = re.match(r"(?:trouble|difficulty)\s+", last["head"], re.I)
+        if (following and not _COMPLAINT_CONTINUATION_RE.match(following[1])
+                and not (functional and following[1].casefold() in {"my", "the", "words", "names"})):
+            return False
+        return (span.start <= report.start + head.start("head")
+                and report.start + head.end("head") <= span.end)
+
+    if requested is FieldName.CHIEF_COMPLAINT:
+        located = _LOCATED_SENSATION_RE.match(text, lead.end())
+        return bool(located and span.start <= report.start + located.start()
+                    and report.start + located.end() <= span.end)
+    return False
 
 
 def _explicit_alternatives(event: Turn) -> Iterator[CandidateSpan]:
@@ -1599,6 +1690,12 @@ def _verify_local_span(
         if any(_patient_question(part.text) for part in reporting):
             return False, "patient_question"
         event = reporting[0] if len(reporting) == 1 else clause
+        if field is FieldName.CHIEF_COMPLAINT:
+            reports = [part for part in _complaint_reports(clause)
+                       if part.start <= span.start and span.end <= part.end]
+            if len(reports) != 1 or not _complaint_evidence(source, idx, reports[0], span):
+                return False, "no_clinical_complaint_at_span"
+            event = reports[0]
         if field in (FieldName.MEDICATION, FieldName.ALLERGY):
             treatments = [part for part in _treatment_events(event) if part.start < span.end and span.start < part.end]
             if any(_PROSPECTIVE_TREATMENT_RE.search(part.text) for part in treatments):
@@ -1844,18 +1941,16 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
     for t_idx, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT:
             continue
-        is_explicit_med_q, is_explicit_alg_q, prev_q = _question_flags(source, t_idx)
-
         reports = (part for clause in _reply_clauses(turn) for part in _reporting_events(clause))
         events = (event for report in reports for event in _treatment_events(report)) if field in (
             FieldName.MEDICATION, FieldName.ALLERGY) else reports
+        if field is FieldName.CHIEF_COMPLAINT:
+            events = _complaint_reports(turn)
         for clause in events:
             # Both apostrophes occupy one character. Match conventional English
             # spelling while slicing every proposed quote from the literal source.
             c_text = clause.text.rstrip(";").rstrip().replace("’", "'")
             c_start = clause.start
-            has_med_verb = bool(_medication_verb_positions(c_text, prev_q))
-            has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text) or _POSTPOSED_ALLERGY_RE.match(c_text))
 
             if field is FieldName.DURATION:
                 for m in _DURATION_VALUE_RE.finditer(c_text):
@@ -1906,19 +2001,8 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                 continue
 
             if field is FieldName.CHIEF_COMPLAINT:
-                if has_med_verb or has_alg_pred or is_explicit_alg_q or is_explicit_med_q:
-                    continue
                 body = c_text.rstrip(".!?").strip()
-                # Strip leading patient complaint wrappers
-                lead = re.match(
-                    r"^(?:i've\s+been\s+(?:having|experiencing|dealing\s+with)|i\s+have\s+been\s+having|"
-                    r"i've\s+(?:got|felt|had)|i\s+(?:have|got|feel|came\s+in\s+(?:because\s+of|for|with)|"
-                    r"am\s+(?:here\s+(?:because\s+of|about|for)|having|dealing\s+with))|"
-                    r"i'm\s+(?:here\s+(?:because\s+of|about|for)|having|dealing\s+with)|"
-                    r"mostly\s+)?",
-                    body,
-                    re.IGNORECASE,
-                )
+                lead = _COMPLAINT_LEAD_RE.match(body)
                 sub_start = lead.end() if lead else 0
                 rem = body[sub_start:]
                 # Strip trailing visit-reason / temporal / duration suffixes
