@@ -212,6 +212,16 @@ _PAST_OR_HYPOTHETICAL_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Only Doctor and Patient become typed roles in the plain-text source. A
+# recognized third-party role label can still rule out the patient as speaker.
+# Keep unknown labels and unattributed continuations conservative.
+_NONPATIENT_ROLE_LABEL_RE = re.compile(
+    r"^(?:(?:patient['’]s\s+)?(?:companion|caregiver|carer|guardian|support person|"
+    r"family(?: member)?|relative|parent|mother|father|sibling|sister|brother|daughter|son|grandmother|"
+    r"grandfather|aunt|uncle|cousin|partner|spouse|husband|wife|friend)|other|interpreter|nurse)\s*:",
+    re.I,
+)
+
 _SELF_CORRECTION_CLAUSE_RE = re.compile(
     r"\b(?:sorry|mistake|mistaken|wrong|incorrect|meant|correction|"
     r"other thing i was thinking of|intake form.*mistake)\b"
@@ -750,10 +760,24 @@ class GroundedExtraction:
         }
 
 
+def _turn_reassigns_source(turn: Turn) -> bool:
+    text = turn.text
+    label = _NONPATIENT_ROLE_LABEL_RE.match(text) if turn.speaker is Speaker.UNKNOWN else None
+    if label or turn.speaker is Speaker.OTHER:
+        # The companion owns this first-person subject. Check the remaining
+        # text as usual for a separate warning about the patient's answers.
+        content = text[label.end():] if label else text
+        text = re.sub(
+            r"^\s*(?:(?:actually|sorry)[, ]+)?(?:everything i said|all (?:of )?my (?:answers|statements|responses))\b",
+            "", content, count=1, flags=re.I,
+        )
+    return _source_reassignment(text) or bool(_GROUNDED_REASSIGNMENT_RE.search(text))
+
+
 def has_global_reassignment(source: Source) -> bool:
     proxy_turns = _forward_proxy_turns(source)
     return any(
-        _source_reassignment(turn.text) or bool(_GROUNDED_REASSIGNMENT_RE.search(turn.text))
+        _turn_reassigns_source(turn)
         for index, turn in enumerate(source.turns) if index not in proxy_turns
         and (turn.speaker is not Speaker.CLINICIAN or not _proxy_question_count(turn.text))
     )
@@ -1173,7 +1197,7 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
             continue
         later = source.turns[idx]
         if later.speaker is not Speaker.PATIENT:
-            if later.speaker is Speaker.UNKNOWN and not later.text.lower().startswith("other:"):
+            if later.speaker is Speaker.UNKNOWN and not _NONPATIENT_ROLE_LABEL_RE.match(later.text):
                 return True
             continue
         if not (_SELF_CORRECTION_CLAUSE_RE.search(later.text) or _DISAVOWAL_RE.search(later.text)):
