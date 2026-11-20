@@ -1,4 +1,13 @@
+import sys
 from dataclasses import dataclass
+from enum import Enum
+from pathlib import Path
+
+if __name__ == "__main__":
+    package_dir = Path(__file__).resolve().parent
+    sys.path = [str(package_dir.parent)] + [
+        path for path in sys.path if Path(path).resolve() != package_dir
+    ]
 from nanoscribe.prompt import (
     topic_for_spec,
     _answer_hint,
@@ -60,7 +69,11 @@ def test_topic_for_spec_no_raw_value_mapping():
     assert topic_for_spec(spec) == "Does the transcript mention any measurement or vital sign?"
 
 def test_topic_for_spec_fallback():
-    pass
+    class ExtraType(Enum):
+        OTHER = "other"
+
+    spec = MockSpec(atom_id="1", atom_type=ExtraType.OTHER, raw_value="", speaker=Speaker.PATIENT)
+    assert topic_for_spec(spec) == "Does the transcript mention the other field?"
 
 def test_answer_hint_allergy():
     spec = MockSpec(atom_id="1", atom_type=AtomType.ALLERGY, raw_value="", speaker=Speaker.PATIENT)
