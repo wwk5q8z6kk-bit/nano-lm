@@ -1347,8 +1347,22 @@ _SHARED_ACTIVITY_RE = re.compile(
     r"stay|stayed|sleep|slept|rest|rested|wake|woke|walk|walked|run|ran|"
     r"sit|sat|lie|lay|work|worked|eat|ate|drink|drank|read|write|wrote|"
     r"watch|watched|drive|drove|exercise|exercised|return|returned|"
-    r"[a-z]+\s+(?:(?:(?-i:a)|an|the|my|our|your|his|her|their)\s+\w+|me|us|them|myself))\b", re.I,
+    r"[a-z]+\s+(?:(?:(?-i:a)|an|the|my|our|your|his|her|their)\s+\w+|me|us|them|myself))"
+    r"(?=\s|[.,;!?]|$)", re.I,
 )
+
+# A potential verb can instead modify a treatment noun ("sleep tablets").
+# A determiner/argument or adverb between the two still identifies an action,
+# e.g. "read my tablets" and "go buy tablets".
+_MODIFIED_TREATMENT_NOUN_RE = re.compile(
+    rf"^\s*{_SUBSTANCE_WORD}\s+(?:medicines?|medications?|aids?|supplements?|remed(?:y|ies)|"
+    rf"{_MEDICATION_DOSE_FORM}|inhalers?|sprays?|creams?|gels?|syrups?|patch(?:es)?)"
+    r"(?=\s*(?:[.,;!?]|$)|\s+(?:for|at|with|before|after|each|daily|every)\b)", re.I,
+)
+
+
+def _shared_activity(text: str) -> bool:
+    return bool(_SHARED_ACTIVITY_RE.match(text) and not _MODIFIED_TREATMENT_NOUN_RE.match(text))
 
 
 def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
@@ -1373,7 +1387,7 @@ def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
         stop = boundary.start() if boundary else end
         phrase = text[start:stop]
         value = phrase.strip()
-        if start != lead.end() and _SHARED_ACTIVITY_RE.match(value):
+        if start != lead.end() and _shared_activity(value):
             break
         label = _ADDITIONAL_TREATMENT_RE.match(value)
         name_start = start + len(phrase) - len(phrase.lstrip()) + (label.end() if label else 0)
@@ -1471,7 +1485,7 @@ def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[Candidate
     pending = []
     start = 0
     for end, following in [*boundaries, (len(event), len(event))]:
-        if start and _SHARED_ACTIVITY_RE.match(event[start:end]):
+        if start and _shared_activity(event[start:end]):
             break
         part = re.fullmatch(rf"\s*(?:some\s+)?(?P<name>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD})*?)(?:\s+for\s+(?P<purpose>.+?))?\s*",
                             event[start:end], re.I)
