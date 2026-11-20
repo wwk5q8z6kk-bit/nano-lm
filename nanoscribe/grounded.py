@@ -1747,11 +1747,11 @@ _EARLIER_RATING_RE = re.compile(
 # or somebody else's rating mentioned in the same answer.
 _RATING_MEASUREMENT = r"(?:checked|rechecked|measured|rated|assessed|reassessed)(?:\s+(?:it|my\s+(?:pain|symptoms?)))?"
 _RATING_PROMPT = r"asked\s+me(?:\s+about\s+my\s+(?:pain|symptoms?))?"
+_RECENT_RATING_TIME = r"(?:(?:(?:just|right)\s+)?now|at\s+(?:this|the)\s+moment|a\s+(?:moment|second)\s+ago)"
+_RECENT_RATING_TIME_RE = re.compile(_RECENT_RATING_TIME, re.I)
 _CURRENT_RATING_CHECK_RE = re.compile(
-    rf"\s*(?:i\s+just\s+{_RATING_MEASUREMENT}|you\s+just\s+{_RATING_PROMPT}|"
-    rf"(?:i\s+{_RATING_MEASUREMENT}|you\s+{_RATING_PROMPT})\s+"
-    r"(?:(?:(?:just|right)\s+)?now|at\s+(?:this|the)\s+moment|a\s+(?:moment|second)\s+ago))"
-    r"\s*[.!?;]?\s*$", re.I,
+    rf"\s*(?:i\s+(?P<measured_just>just\s+)?{_RATING_MEASUREMENT}|you\s+(?P<asked_just>just\s+)?{_RATING_PROMPT})"
+    rf"(?:\s+(?P<time>{_RECENT_RATING_TIME}))?\s*[.!?;]?\s*$", re.I,
 )
 
 
@@ -1774,8 +1774,13 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
         earlier = _EARLIER_RATING_RE.match(after)
-        if earlier and not (earlier["when"] and _CURRENT_RATING_CHECK_RE.match(after, earlier.end())):
-            return False
+        if earlier:
+            check = earlier["when"] and _CURRENT_RATING_CHECK_RE.match(after, earlier.end())
+            if not check or not any(check.group("measured_just", "asked_just", "time")):
+                return False
+        # An elliptical score can end in a current time adjunct of its own.
+        if _RECENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?")):
+            after = ""
         # Stop before a separate subject, adjunct or predicate.
         noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
                         after, maxsplit=1, flags=re.I)[0]
