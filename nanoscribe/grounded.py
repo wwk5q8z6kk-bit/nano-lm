@@ -3330,9 +3330,12 @@ def _matches_uncertainty_evidence(field: FieldName, excerpt: CandidateSpan, evid
     prefix = evidence.text[:start].strip(" \t.,;:!?")
     if not re.fullmatch(rf"(?:{discourse}(?:[,\s]+|$))*(?:i(?:\s+am|['’]m)?)?", prefix, re.I):
         return False
-    tail = evidence.text[end:].strip(" \t.,;:!?")
-    if tail and not re.fullmatch(discourse, tail, re.I):
-        return False
+    tail = evidence.text[end:]
+    if tail.strip(" \t.,;:!?"):
+        # Without the parenthetical boundary, a final word can modify a
+        # clinically meaningful predicate (for example, "felt well").
+        if not re.fullmatch(rf"\s*[,—–]\s*{discourse}[\s.!?]*", tail, re.I):
+            return False
     retains_hedge = any(match.group().casefold() != "whether" for match in _EPISTEMIC_HEDGE_RE.finditer(excerpt.text))
     return retains_hedge and _uncertainty_names_field(field, excerpt.text)
 
