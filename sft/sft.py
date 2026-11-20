@@ -2,7 +2,12 @@
 # for the two chat-role tokens (LLM.md §Resize the Model's Token Embeddings: new rows
 # initialized from an existing token's embedding, here <|endoftext|>=0).
 # Loss masking: cross-entropy ONLY on assistant completion tokens (Recipe ③ §Stage 1 "critical").
-import math, time, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+import time, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+
+if __package__:
+    from .sft_schedule import FLOOR, PEAK_LR, lr_at
+else:
+    from sft_schedule import FLOOR, PEAK_LR, lr_at
 
 torch.manual_seed(0)
 dev = "mps" if torch.backends.mps.is_available() else "cpu"
@@ -10,7 +15,7 @@ BASE = "../pretrain/ckpt.pt"
 V_OLD, V = 4096, 4098
 d, L, H, KV, hd, ff, S = 192, 6, 6, 2, 32, 512, 512
 # Recipe ③ Stage 1 config, nano-scaled (STALL #3: recipe LR assumes >=7B; scaled from nano 3e-3 pretrain peak)
-EPOCHS, PEAK_LR, WARM_FRAC, FLOOR, WD, CLIP = 3, 3e-4, 0.03, 0.1, 0.1, 1.0   # 3 = recipe ceiling (1-3)
+EPOCHS, WARM_FRAC, WD, CLIP = 3, 0.03, 0.1, 1.0   # 3 = recipe ceiling (1-3)
 BATCH = 32
 
 def rope(q, k):
@@ -46,11 +51,6 @@ class GPT(nn.Module):
         h = s.emb(x)
         for b in s.blocks: h = b(h)
         return F.linear(s.nf(h), s.emb.weight)          # tied head
-
-def lr_at(t, steps, warm):
-    if t < warm: return PEAK_LR * t / max(1, warm)
-    p = (t - warm) / max(1, steps - warm)
-    return PEAK_LR * (FLOOR + (1 - FLOOR) * 0.5 * (1 + math.cos(math.pi * p)))
 
 if __name__ == "__main__":
     # ---- load base, resize embedding 4096 -> 4098 (init new rows from <|endoftext|>=0) ----

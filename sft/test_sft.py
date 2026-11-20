@@ -1,6 +1,6 @@
 import math
 import pytest
-from sft import lr_at, PEAK_LR, FLOOR
+from sft_schedule import lr_at, PEAK_LR, FLOOR
 
 def test_lr_at_warmup():
     steps = 1000
