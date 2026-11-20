@@ -82,6 +82,7 @@ if __name__ == "__main__":
     ap.add_argument("--symbols", type=int, default=256); ap.add_argument("--live", type=int, default=32)
     ap.add_argument("--churn", type=float, default=0.0); ap.add_argument("--hops", default="1")
     ap.add_argument("--groups", type=int, default=2); ap.add_argument("--queries", type=int, default=16)
+    ap.add_argument("--warmup", type=int, default=0)
     ap.add_argument("--device", default="mps"); ap.add_argument("--out", default="")
     a = ap.parse_args()
     spec = Spec(symbols=a.symbols, live=a.live, churn=a.churn, hops=tuple(int(x) for x in a.hops.split(",")),
@@ -95,12 +96,14 @@ if __name__ == "__main__":
     while time.time() - t0 < a.seconds:
         b = collate(spec, rng, a.batch, a.device)
         loss, c, _ = step_loss(model, a.arm, b)
+        if a.warmup:
+            for gparam in opt.param_groups: gparam["lr"] = a.lr * min(1.0, (steps + 1) / a.warmup)
         opt.zero_grad(set_to_none=True); loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); opt.step(); steps += 1
         if steps % 50 == 0:
             log.append((steps, round(time.time() - t0, 1), round(loss.item(), 4), round(c.float().mean().item(), 4)))
             print(*log[-1], flush=True)
-    res = {"arm": a.arm, "seed": a.seed, "params": params, "steps": steps, "seconds": a.seconds,
+    res = {"arm": a.arm, "lr": a.lr, "warmup": a.warmup, "seed": a.seed, "params": params, "steps": steps, "seconds": a.seconds,
            "spec": spec.__dict__, "guessers": g, "eval": evaluate(model, a.arm, spec, a.device, a.seed + 7),
            "live_particles": getattr(model, "last_live", None), "log": log[-5:]}
     print(json.dumps(res, default=str))
