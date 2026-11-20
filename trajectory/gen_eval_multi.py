@@ -4,15 +4,17 @@
 # scaled from 40 -> 200 dialogues (100 held + 100 seen) and drawn at 5 fixed
 # fresh seeds. Execs the v1 definitions verbatim; only N and the seed change.
 import json, random, os
+from pathlib import Path
+import sys
 
-V1 = os.path.join(os.path.dirname(__file__), "..", "scribe", "build_scribe_data.py")
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from nano_ai.benchmarks.fresh_v0 import load_v1_definitions, sample_v1_eval_item
 SEEDS = [20260720, 20260721, 20260722, 20260723, 20260724]   # fixed in PREREG_Tv2
 N = 200                                                        # 100 held + 100 seen
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scribe"))
-from build_scribe_data import sample_tuple, make_convo
+definitions = load_v1_definitions(ROOT)
 
 HELD_VALS = {"toothache", "neck pain", "heartburn", "melatonin", "throat lozenges", "sulfa drugs"}
 inst0 = json.load(open(os.path.join(HERE, "..", "scribe", "scribe_eval.json")))
@@ -20,14 +22,8 @@ instT = json.load(open(os.path.join(HERE, "scribe_eval_T.json")))
 prior_convos = {e["convo"][0]["content"] for e in inst0} | {e["convo"][0]["content"] for e in instT}
 
 for k, seed in enumerate(SEEDS):
-    random.seed(seed)
-    items = []
-    for i in range(N):
-        held_vals = i < N // 2
-        t = sample_tuple(held_vals)
-        items.append({"tuple": {"cc": t["cc"][1], "dur": f"{t['n']} {t['unit']}", "sev": t["sev"],
-                                "med": t["med"] or "none", "alg": t["alg"] or "none"},
-                      "held_values": held_vals, "convo": make_convo(t, True)})
+    rng = random.Random(seed)
+    items = [sample_v1_eval_item(rng, definitions, held=i < N // 2) for i in range(N)]
     out = os.path.join(HERE, f"scribe_eval_m{k}.json")
     json.dump(items, open(out, "w"), indent=1)
     held_n = sum(e["held_values"] for e in items)

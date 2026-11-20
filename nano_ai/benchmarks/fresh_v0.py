@@ -542,6 +542,30 @@ def _v1_render(
     return "\n".join(lines)
 
 
+def sample_v1_eval_item(
+    rng: random.Random, definitions: V1Definitions, *, held: bool
+) -> dict[str, Any]:
+    """Render a historical v1 evaluation item with held-out dialogue templates."""
+    values = _sample_tuple(rng, definitions, held)
+    fields = {
+        "cc": values.cc[1],
+        "dur": f"{values.n} {values.unit}",
+        "sev": values.sev,
+        "med": values.med or "none",
+        "alg": values.alg or "none",
+    }
+    dialogue = _v1_render(rng, definitions, values, held=True)
+    summary = " | ".join(f"{key.upper()}: {value}" for key, value in fields.items())
+    return {
+        "tuple": fields,
+        "held_values": held,
+        "convo": [
+            {"role": "user", "content": dialogue + _INSTRUCTION_SUFFIX},
+            {"role": "assistant", "content": summary},
+        ],
+    }
+
+
 def _strip_instruction(record: Any) -> str:
     try:
         message = record["convo"][0]
