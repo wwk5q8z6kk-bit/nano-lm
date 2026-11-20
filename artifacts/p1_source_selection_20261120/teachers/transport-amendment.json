@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-20T14:54:48.144154+00:00",
+  "reason": "Three requests returned only HTTP 429 at all three attempts at high concurrency, including the two retries. No successful completion or parsed result existed for these prompts.",
+  "operational_change": "One extra HTTP-429 recovery attempt allowed only after 120 seconds and serial cadence for the three originally unavailable events. Reduce Pro to one in flight and separate successful call starts by at least 5 seconds. No successful prompt replay.",
+  "field_outcomes_examined": false,
+  "ids": [
+    "prospective-15-00",
+    "prospective-00-01",
+    "prospective-01-01"
+  ],
+  "sealed_inputs_unchanged": true
+}
