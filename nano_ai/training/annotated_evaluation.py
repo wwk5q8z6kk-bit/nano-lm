@@ -270,29 +270,47 @@ def verify_evaluator_negative_controls(
 
     # 5. Corrupted-offset negative (shifted span offset must fail contract validation)
     evidence_cases = tuple(c for c in cases if any(f.evidence for f in c.gold.fields))
-    if evidence_cases:
-        def _corrupt_out(req: NanoInput) -> tuple[FieldOutput, ...]:
-            new_fields, done = [], False
-            for f in gold_by_id[req.item_id].fields:
-                if f.evidence and not done:
-                    sp = f.evidence[0]
-                    new_fields.append(FieldOutput(
-                        f.field, f.state, value=f.value,
-                        evidence=(EvidenceSpan(sp.start + 1, sp.end + 1, sp.text), *f.evidence[1:]),
-                    ))
-                    done = True
-                else:
-                    new_fields.append(f)
-            return tuple(new_fields)
-        corrupt_report = evaluate_solver(
-            _ControlledSolver("control-corrupted-offset", _corrupt_out), evidence_cases, exact_evidence=True
+    offset_cases = evidence_cases
+    if not offset_cases:
+        # Keep the corruption inside patient text so the check exercises offset
+        # agreement even when the supplied corpus has no cited patient spans.
+        req = NanoInput("offset-probe", "Patient: headache.")
+        start = req.transcript.index("headache")
+        span = EvidenceSpan(start, start + len("headache"), "headache")
+        fields = (
+            FieldOutput(FieldName.CHIEF_COMPLAINT, FieldState.SUPPORTED, value=span.text, evidence=(span,)),
+            *(FieldOutput(f, FieldState.MISSING) for f in FIELD_ORDER[1:]),
         )
-        corrupted_ok = (
-            corrupt_report.failures["count"] == len(evidence_cases)
-            and corrupt_report.quality["grounded_exact_field_accuracy"] == 0.0
+        offset_cases = (FixtureCase(
+            req.item_id, "control", req, NanoOutput(req.item_id, "annotated-state-span-gold-v1", fields),
+            provenance={"role": "negative_control_offset"},
+        ),)
+
+    offset_gold = {case.case_id: case.gold.fields for case in offset_cases}
+
+    def _corrupt_out(req: NanoInput) -> tuple[FieldOutput, ...]:
+        fields = list(offset_gold[req.item_id])
+        index = next(i for i, field in enumerate(fields) if field.evidence)
+        field = fields[index]
+        span = field.evidence[0]
+        fields[index] = FieldOutput(
+            field.field, field.state, value=field.value,
+            evidence=(EvidenceSpan(span.start + 1, span.end + 1, span.text), *field.evidence[1:]),
         )
-    else:
-        corrupted_ok = True
+        return tuple(fields)
+
+    corrupt_report = evaluate_solver(
+        _ControlledSolver("control-corrupted-offset", _corrupt_out), offset_cases, exact_evidence=True
+    )
+    offset_rejections = sum(
+        item["status"] == "failure"
+        and item["failure"]["validation_code"] in {"evidence_bounds", "evidence_text_mismatch"}
+        for item in corrupt_report.items
+    )
+    corrupted_ok = (
+        offset_rejections == len(offset_cases)
+        and corrupt_report.quality["grounded_exact_field_accuracy"] == 0.0
+    )
 
     # 6. Denial != missing/uncertain, conflict collapse rejected, and no-data abstain passes
     denial_contract_ok = _raises(
@@ -343,6 +361,8 @@ def verify_evaluator_negative_controls(
         "corrupted_offset_negative": {
             "passed": corrupted_ok,
             "evidence_cases_checked": len(evidence_cases),
+            "synthetic_cases_checked": len(offset_cases) - len(evidence_cases),
+            "offset_rejections": offset_rejections,
         },
         "denial_conflict_and_abstain_controls": {
             "passed": denial_contract_ok and conflict_collapse_ok and abstain_ok,

@@ -102,6 +102,9 @@ def test_all_six_mandatory_negative_controls_pass():
     assert report.controls["all_missing_negative"]["quota_mismatch_failed_closed"] is True
     assert report.controls["all_missing_negative"]["all_missing_grounded_exact"] < 1.0
     assert report.controls["denial_conflict_and_abstain_controls"]["abstain_control_presented"] == 0
+    assert report.controls["corrupted_offset_negative"] == {
+        "passed": True, "evidence_cases_checked": 2, "synthetic_cases_checked": 0, "offset_rejections": 2,
+    }
 
 
 def test_doctor_only_gold_annotation_rejected_before_controls_run():
@@ -133,3 +136,35 @@ def test_identical_annotations_leave_rotation_inapplicable():
     report = verify_evaluator_negative_controls((first, second), expected_counts=counts)
     assert report.passed
     assert report.controls["shuffled_labels_negative"]["cross_case_ok"] is None
+
+
+@pytest.mark.parametrize("accept_mismatched_offset", (False, True))
+def test_offset_control_exercises_real_evaluator_without_annotated_evidence(
+    monkeypatch, accept_mismatched_offset
+):
+    from nano_ai.contract import ContractValidationError, EvidenceSpan
+
+    rows, _ = _fixture_corpus()
+    row = replace(rows[0], transcript="Patient: Hello.", target_state=FieldState.MISSING,
+                  target="CC:M|DUR:M|SEV:M|MED:M|ALG:M")
+    counts = {field: {state: int(state is FieldState.MISSING) for state in FieldState}
+              for field in FIELD_ORDER}
+    if accept_mismatched_offset:
+        validate = EvidenceSpan.validate_against
+
+        def accept_text_mismatch(self, transcript, **kwargs):
+            try:
+                validate(self, transcript, **kwargs)
+            except ContractValidationError as exc:
+                if exc.code != "evidence_text_mismatch":
+                    raise
+
+        monkeypatch.setattr(EvidenceSpan, "validate_against", accept_text_mismatch)
+
+    report = verify_evaluator_negative_controls((row,), expected_counts=counts)
+    offset = report.controls["corrupted_offset_negative"]
+    assert offset["passed"] is (not accept_mismatched_offset)
+    assert report.passed is (not accept_mismatched_offset)
+    assert offset["evidence_cases_checked"] == 0
+    assert offset["synthetic_cases_checked"] == 1
+    assert offset["offset_rejections"] == int(not accept_mismatched_offset)
