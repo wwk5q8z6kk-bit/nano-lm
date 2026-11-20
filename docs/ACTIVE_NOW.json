@@ -1,11 +1,11 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
-  "updated": "2026-11-16",
-  "program_execution_status": "P1_SCRIBING_ACTIVE",
-  "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_H7_CONSUMED_INVALID_GOLD_INSTRUMENT",
+  "updated": "2026-11-20",
+  "program_execution_status": "FRONTIER_MODEL_RESEARCH_ACTIVE",
+  "capability_frontier": "GENERAL_PURPOSE_LANGUAGE_MODEL",
+  "current_gate": "MATCHED_GENERAL_MODEL_BASELINE",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
-  "training_backend": "KAGGLE_AND_RUNPOD",
+  "training_backend": "KAGGLE_GOOGLE_CLOUD_AND_RUNPOD",
   "training_status": "ACTIVE",
   "local_zero_cost_exploratory_training": "ALLOWED",
   "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
@@ -17,19 +17,20 @@
   "compute_posture": {
     "free_gpu_backend": "KAGGLE_WHEN_RUNTIME_FITS",
     "paid_gpu_backend": "RUNPOD_FOR_EXACT_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE",
-    "training": "ACTIVE_ON_KAGGLE_AND_RUNPOD",
+    "training": "ACTIVE_ON_KAGGLE_GOOGLE_CLOUD_AND_RUNPOD",
     "local_compute": "APPLE_SILICON_AND_CPU_FOR_DEV_SMOKE_ANALYSIS_PREPROCESS_EVAL_AND_SMALL_EXPERIMENTS",
     "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
     "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
     "confirmatory_evidential_run": "PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION",
     "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM",
     "selection_objective": "USEFUL_EVIDENCE_PER_DOLLAR_AND_WALL_CLOCK_HOUR",
-    "runpod_speed": "ALLOWED_WHEN_TIME_SAVED_JUSTIFIES_COST_WITHIN_ACTIVE_EXPERIMENT_BUDGET"
+    "runpod_speed": "ALLOWED_WHEN_TIME_SAVED_JUSTIFIES_COST_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
+    "google_cloud": "CREDIT_BACKED_FINITE_RUNS_WITHIN_VERIFIED_BALANCE"
   },
   "bounded_work": [
-    "p1_h7_terminal_capture_and_instrument_diagnosis",
-    "p1_preserved_compact_model_comparison",
-    "p1_transcript_to_checked_review_draft"
+    "recover_and_evaluate_native_checkpoints_on_common_public_text",
+    "compare_general_model_architectures_with_matched_training_budgets",
+    "audit_general_posttraining_and_benchmark_attribution"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -38,10 +39,10 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "IMPROVE_SEMANTIC_REPLY_COVERAGE_DENIAL_TRANSPORT_AND_VALID_FIELD_RETENTION_ON_SEPARATE_DEVELOPMENT_CASES_THEN_FRESH_BLINDED_VALIDATION",
+  "next_engineering": "MEASURE_NATIVE_BASELINES_AND_TEST_THE_STRONGEST_ARCHITECTURE_CANDIDATE_AGAINST_A_MATCHED_CONTROL",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "acc9b7e896c3b8189d29761d8401e6833c222a28",
-  "bounded_work_completed": [
+  "integration_base_sha": "46c65f0044e81ac73251e18a5a7d69a7299a8079",
+  "historical_scribing_work_completed": [
     "h7_two_seed_training_and_single_screen_execution",
     "preserved_compact_orx_comparison",
     "transcript_to_checked_reference_review_draft",

@@ -1,5 +1,7 @@
 # Evaluation Framework
 
+Measure the general language model on held-out text, reasoning and instruction following with explicit model identity and a matched baseline. Report any additional retrieval, tools, graders or external model assistance. The historical P1 exit criteria below applied to the former medical product.
+
 ## Principles
 
 1. **Pre-register** what would change the roadmap before running.
@@ -22,11 +24,7 @@ The research question this frames:
 > evidence changes, produce correct engineering outcomes, and establish that those outcomes are
 > sufficiently verified?
 
-Consequences for sequencing: public suites are a later diagnostic/validation layer subject to
-authorization and compute constraints; they are not the primary scientific target and are not an
-execution queue. Native process evaluations are the research contribution. Identity and
-reproducibility gaps that would make future system evaluations non-comparable are closed first —
-see [`../benchmarks/AGENT_RUN_IDENTITY.schema.json`](../benchmarks/AGENT_RUN_IDENTITY.schema.json)
+In the agent-system study, native process evaluations were the research contribution. For the current base model, use public held-out language and task evaluations directly. When evaluating an agentic system, record the additional components and execution conditions using [`../benchmarks/AGENT_RUN_IDENTITY.schema.json`](../benchmarks/AGENT_RUN_IDENTITY.schema.json)
 and, for the program design, [`../papers/SWE_CAPABILITY_EVALUATION_PROPOSAL.md`](../papers/SWE_CAPABILITY_EVALUATION_PROPOSAL.md)
 (design proposal — not authorization).
 
@@ -38,7 +36,7 @@ U = Q - w_E E - w_R R - w_L L - w_C C
 
 Symbols vary by program; always freeze weights before scoring. Kill/keep: arm must beat best cheaper solver by \(\delta\) (default 0.05 unless preregistered).
 
-## By capability program
+## Historical application measures
 
 | Program | Primary measures |
 |---------|-------------------|
@@ -47,7 +45,7 @@ Symbols vary by program; always freeze weights before scoring. Kill/keep: arm mu
 | P3 Charting | entity resolution, timeline correctness, supersession, contradiction handling, traceability to source events |
 | P4+ | program-specific — see [CAPABILITY_LADDER.md](CAPABILITY_LADDER.md) |
 
-## P1 exit gate (not yet satisfied)
+## Historical P1 exit gate
 
 Stage-1 mastery requires satisfactory performance across the scribing metric set **plus** external medical-dialogue evaluation and **blinded human evaluation**.
 
