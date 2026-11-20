@@ -478,7 +478,7 @@ def assess_fields(request: NanoInput, output: NanoOutput, *, context_policy: str
         # checked below. Uncovered source remains in the encounter for review.
         unverified = False
     elif context_policy == "grounded":
-        from nanoscribe.grounded import detect_grounded_conflicts, has_global_reassignment
+        from nanoscribe.grounded import detect_grounded_conflicts, has_global_reassignment, recognized_conflict
         unhandled = has_global_reassignment(source)
         unverified = False
     assessments = []
@@ -516,14 +516,7 @@ def assess_fields(request: NanoInput, output: NanoOutput, *, context_policy: str
                 if any(_observation_kind(source, field.field, span, context_policy=context_policy) is None for span in field.evidence):
                     reasons.append("unverified_source_observation")
             else:
-                turns = {_turn_index(source, span.start, span.end) for span in field.evidence}
-                recognized_pair = any(
-                    set(pair).issubset(field.evidence)
-                    for pair in detect_grounded_conflicts(source, field.field)
-                )
-                if (len(field.evidence) < 2 or None in turns or (len(turns) < 2 and not recognized_pair)
-                        or any(source.turns[t].speaker is not Speaker.PATIENT for t in turns if t is not None)
-                        or len({normalize_value(span.text) for span in field.evidence}) < 2):
+                if not recognized_conflict(field.evidence, detect_grounded_conflicts(source, field.field)):
                     reasons.append("conflict_not_verified")
             state = FieldState.UNCERTAIN if reasons else field.state
         else:

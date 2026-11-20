@@ -196,3 +196,67 @@ def test_scalar_conflict_survives_matching_first_and_last_reports(field, slot, v
     assert claim["state"] == "conflicting"
     spans = {e["evidence_id"]: e["text"] for e in draft["encounter"]["evidence"]}
     assert all(value in spans[ref] for value, ref in zip(values[:2], claim["evidence_ids"], strict=True))
+
+
+def _grounded_claim(transcript, field, proposal):
+    raw = "|".join(proposal if key == proposal.split(":")[0] else key + ":M"
+                   for key in ("CC", "DUR", "SEV", "MED", "ALG"))
+    draft = scribe(transcript, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert draft["verification"]["passed"]
+    claim = next(c for c in draft["note"]["claims"] if c["field"] == field.value)
+    spans = {e["evidence_id"]: e["text"] for e in draft["encounter"]["evidence"]}
+    return claim["state"], [spans[ref] for ref in claim["evidence_ids"]]
+
+
+@pytest.mark.parametrize("replacement, expected", [
+    ("Actually, I took acetaminophen.", "uncertain"),
+    ("Actually, I meant acetaminophen.", "uncertain"),
+    ("Actually, I'm allergic to latex.", "supported"),
+    ("Actually, I also took acetaminophen.", "supported"),
+])
+@pytest.mark.parametrize("separator", [" ", "\nPatient: "])
+def test_replacement_quarantines_only_the_corrected_field(replacement, expected, separator):
+    source = "Patient: I took ibuprofen." + separator + replacement
+    state, _ = _grounded_claim(source, FieldName.MEDICATION, "MED:S[ibuprofen]")
+    assert state == expected
+
+
+@pytest.mark.parametrize("separator", [". ", "; ", ".\nPatient: "])
+def test_scalar_contradiction_preserves_both_clauses(separator):
+    source = "Patient: It has been mild all day today" + separator + "It has been severe all day today."
+    state, spans = _grounded_claim(source, FieldName.SEVERITY, "SEV:S[mild]")
+    assert state == "conflicting"
+    assert len(spans) == 2 and "mild" in spans[0] and "severe" in spans[1]
+
+
+def test_laterality_can_coexist_and_requires_an_opposing_claim_on_the_same_side():
+    source = "Patient: My right wrist hurts.\nPatient: My left wrist hurts."
+    claim, _ = _grounded_claim(source, FieldName.CHIEF_COMPLAINT, "CC:C[right wrist hurts;left wrist hurts]")
+    assert claim == "uncertain"
+    claim, _ = _grounded_claim(source, FieldName.CHIEF_COMPLAINT, "CC:S[right wrist hurts]")
+    assert claim == "supported"
+    observed = ["My right wrist hurts right now; my left wrist doesn't hurt.",
+                "My left wrist hurts right now; my right wrist doesn't hurt."]
+    state, spans = _grounded_claim("\n".join("Patient: " + s for s in observed), FieldName.CHIEF_COMPLAINT, "CC:M")
+    assert (state, spans) == ("conflicting", observed)
+
+
+def test_conflict_must_cite_the_field_specific_pair_in_solver_and_independent_check():
+    from dataclasses import replace
+    from nano_ai.contract import EvidenceSpan, FieldState, NanoInput
+    from nanoscribe.check_note import assess_fields
+
+    source = "Patient: I took aspirin.\nPatient: I have taken no medications.\nPatient: Throat soreness.\nPatient: Four days."
+    invalid = ["Throat soreness", "Four days"]
+    state, spans = _grounded_claim(source, FieldName.MEDICATION, f"MED:C[{';'.join(invalid)}]")
+    assert (state, spans) == ("conflicting", ["I took aspirin.", "I have taken no medications."])
+    state, spans = _grounded_claim(source, FieldName.MEDICATION, "MED:C[I have taken no medications.;aspirin]")
+    assert (state, spans) == ("conflicting", ["I have taken no medications.", "aspirin"])
+    request = NanoInput("audit", source)
+    solver = compact_solver(lambda _: "CC:M|DUR:M|SEV:M|MED:M|ALG:M", binder="grounded")
+    output, _ = solver.infer_grounded(request)
+    bad = tuple(EvidenceSpan(source.index(t), source.index(t) + len(t), t) for t in invalid)
+    fields = tuple(replace(f, evidence=bad) if f.field is FieldName.MEDICATION else f for f in output.fields)
+    assessment = next(a for a in assess_fields(request, replace(output, fields=fields), context_policy="grounded")
+                      if a.field is FieldName.MEDICATION)
+    assert assessment.state is FieldState.UNCERTAIN and "conflict_not_verified" in assessment.reasons

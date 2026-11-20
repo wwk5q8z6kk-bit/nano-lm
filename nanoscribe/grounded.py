@@ -42,6 +42,7 @@ from nano_ai.contract import (
     normalize_value,
 )
 from nanoscribe.check_note import (
+    _mentioned_fields,
     _outside_current_scope,
     _reply_clauses,
     _source_reassignment,
@@ -249,6 +250,21 @@ _ALG_QUESTION_CUE_RE = re.compile(
     re.IGNORECASE,
 )
 
+_BARE_REPLACEMENT_RE = re.compile(
+    r"(?:actually[, ]+|sorry[, ]+|correction[: ,]+|i meant\s+)(?:i meant\s+)?"
+    r"(?!i\b|it\b|that\b|this\b|the\b|my\b|we\b|he\b|she\b|they\b)"
+    r"[\w-]+(?:\s+[\w-]+){0,3}[.!]?", re.I,
+)
+_ADDITIVE_RE = re.compile(r"\b(?:also|too|as well|in addition|additionally|both)\b", re.I)
+
+_LATERAL_PAIN_RE = re.compile(
+    r"my\s+(?P<side>left|right)\s+(?P<part>\w+)\s+"
+    r"(?:(?P<positive>hurts|aches|is\s+(?:painful|sore))"
+    r"|(?:doesn't|does not)\s+(?:hurt|ache)|(?:isn't|is not)\s+(?:painful|sore))"
+    r"(?:\s+(?:right now|now|today|at present))?[.!;]*",
+    re.IGNORECASE,
+)
+
 _SPAN_OFFSET_RE = re.compile(r"^@(?P<start>\d+)\.\.(?P<end>\d+):(?P<text>.+)$", re.DOTALL)
 
 
@@ -379,29 +395,34 @@ def _enclosing_clause(turn: Turn, span: CandidateSpan) -> Turn:
     return turn
 
 
-def _clause_is_retracted_in_turn(turn: Turn, clause: Turn) -> bool:
-    """True if this clause itself is a self-correction slip OR the immediately next clause retracts it."""
-    if _SELF_CORRECTION_CLAUSE_RE.search(clause.text):
-        # E.g. "I said aspirin on the intake form, but that was a mistake." or "Actually, I meant ten days."
-        # Check if the span is in the mistake part vs replacement: handled at span level too.
-        pass
-    clauses = list(_reply_clauses(turn))
-    for i, c in enumerate(clauses):
-        c_trim = c.text.rstrip(";").rstrip()
-        if c.start == clause.start:
-            if i + 1 < len(clauses) and _SELF_CORRECTION_CLAUSE_RE.search(clauses[i + 1].text):
-                nxt = clauses[i + 1].text.casefold()
-                # If the next clause says "Sorry, that was..." or "Actually, I meant..." or "I was mistaken"
-                if re.search(
-                    r"\b(?:sorry,?\s+that\s+was|actually|meant|mistaken|wrong|incorrect|not\s+really|after\s+all|"
-                    r"that\s+was\s+(?:last\s+year|my\s+\w+'s))\b",
-                    nxt,
-                ):
-                    return True
+def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName) -> bool:
+    """An immediate correction can retract a value in the same patient reply."""
+    clauses = _reply_clauses(turn)
+    for current, following in zip(clauses, clauses[1:]):
+        if current.start != clause.start or not _SELF_CORRECTION_CLAUSE_RE.search(following.text):
+            continue
+        targets = _correction_fields(following.text)
+        return (not targets or field in targets) and not _ADDITIVE_RE.search(following.text)
     return False
 
 
-def _later_turn_retracts_span(source: Source, turn_idx: int, span_text: str) -> bool:
+def _correction_fields(clause: str) -> set[FieldName]:
+    """Identify the subject of a correction for quarantine, never for promotion."""
+    targets = _mentioned_fields(clause, ())
+    if _ALG_QUESTION_CUE_RE.search(clause):
+        targets.add(FieldName.ALLERGY)
+    if re.search(r"\bi (?:used|tried|applied|rubbed|put|swallowed)\b", clause, re.I):
+        targets.add(FieldName.MEDICATION)
+    if targets.intersection({FieldName.ALLERGY, FieldName.MEDICATION}):
+        return targets.intersection({FieldName.ALLERGY, FieldName.MEDICATION})
+    if _SEVERITY_CORE_RE.search(clause):
+        targets.add(FieldName.SEVERITY)
+    if _DURATION_VALUE_RE.search(clause):
+        targets.add(FieldName.DURATION)
+    return targets
+
+
+def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, span_text: str) -> bool:
     norm_val = normalize_value(span_text)
     for idx in range(turn_idx + 1, len(source.turns)):
         later = source.turns[idx]
@@ -411,6 +432,21 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, span_text: str) -> 
             continue
         lowered = later.text.casefold()
         if _SELF_CORRECTION_CLAUSE_RE.search(lowered):
+            previous = _preceding_clinician_turn(source, idx)
+            if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
+                continue
+            for clause in _reply_clauses(later):
+                if (not _SELF_CORRECTION_CLAUSE_RE.search(clause.text) or _ADDITIVE_RE.search(clause.text)
+                        or _THIRD_PARTY_RE.search(clause.text) or _PAST_OR_HYPOTHETICAL_RE.search(clause.text)
+                        or clause.text.rstrip().endswith("?")):
+                    continue
+                targets = _correction_fields(clause.text)
+                if field in targets:
+                    return True
+                if not targets and idx == turn_idx + 1 and _BARE_REPLACEMENT_RE.fullmatch(clause.text):
+                    previous_fields = _correction_fields(source.turns[turn_idx].text)
+                    if previous_fields == {field}:
+                        return True
             if norm_val and re.search(r"(?<!\w)" + re.escape(norm_val) + r"(?!\w)", lowered):
                 return True
             if idx == turn_idx + 1 and re.search(
@@ -490,7 +526,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
 
     if _PAST_OR_HYPOTHETICAL_RE.search(clause_clean) or _THIRD_PARTY_RE.search(clause_clean):
         return False
-    if _clause_is_retracted_in_turn(turn, clause) or _later_turn_retracts_span(source, idx, text):
+    if _clause_is_retracted_in_turn(turn, clause, field) or _later_turn_retracts_span(source, idx, field, text):
         return False
     return True
 
@@ -625,7 +661,7 @@ def verify_grounded_span(
                     return False, "routine_medication_disclaimed_in_followup"
         if _coexisting_substance_clause(field, clause.text) is not None:
             return False, "coexisting_multiple_substances_require_uncertain"
-        if _clause_is_retracted_in_turn(turn, clause) or _later_turn_retracts_span(source, idx, span.text):
+        if _clause_is_retracted_in_turn(turn, clause, field) or _later_turn_retracts_span(source, idx, field, span.text):
             return False, "retracted_by_patient_correction"
         return True, "verified_grounded_supported"
 
@@ -1063,7 +1099,7 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
 
 
 def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
-    """Detect un-retracted incompatible cross-turn patient claims for `field`."""
+    """Detect unretracted incompatible patient observations in distinct source clauses."""
     if has_global_reassignment(source):
         return []
 
@@ -1087,47 +1123,51 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
                         pairs.append(pair)
         return pairs
 
-    # For CC, DUR, SEV: check opposing laterality turns ("My right wrist hurts...; my left wrist doesn't" vs "My left wrist hurts...; my right wrist doesn't")
     if field is FieldName.CHIEF_COMPLAINT:
-        laterality_turns: list[tuple[str, CandidateSpan]] = []
-        for turn in source.turns:
+        observations = []
+        contrast_turns = []
+        for idx, turn in enumerate(source.turns):
             if turn.speaker is not Speaker.PATIENT:
                 continue
-            m_lat = re.search(r"\b(left|right)\s+(\w+)\s+(?:hurts|aches|is\s+painful|is\s+sore)\b", turn.text, re.IGNORECASE)
-            if m_lat and not _SELF_CORRECTION_CLAUSE_RE.search(turn.text):
-                laterality_turns.append((m_lat.group(1).casefold() + ":" + m_lat.group(2).casefold(), CandidateSpan(turn.start, turn.end, turn.text)))
-        if len(laterality_turns) >= 2:
-            sides = {k.split(":")[0] for k, _ in laterality_turns}
-            nouns = {k.split(":")[1] for k, _ in laterality_turns}
-            if len(sides) >= 2 and len(nouns) == 1:
-                pairs.append((laterality_turns[0][1], laterality_turns[-1][1]))
-
-    # Distinct incompatible scalar values across different turns for DUR or SEV
-    if field in (FieldName.DURATION, FieldName.SEVERITY):
-        by_turn: dict[int, CandidateSpan] = {}
-        for sp in sup_spans:
-            t_idx = _turn_index(source, sp.start, sp.end)
-            if t_idx is None:
+            prev = _preceding_clinician_turn(source, idx)
+            if prev and (_outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text)):
                 continue
-            # Also check turn-level "all day today" severity or "This <symptom> began <dur>."
-            if t_idx not in by_turn:
-                by_turn[t_idx] = sp
-        # Also catch "It has been mild all day today." vs "It has been severe all day today." (stripped from scalar if 'all day today' was present)
-        if field is FieldName.SEVERITY and len(by_turn) < 2:
-            for idx, turn in enumerate(source.turns):
-                if turn.speaker is Speaker.PATIENT and not _SELF_CORRECTION_CLAUSE_RE.search(turn.text) and not _EPISTEMIC_HEDGE_RE.search(turn.text):
-                    m = re.search(r"\b(mild|moderate|severe)\b", turn.text, re.IGNORECASE)
-                    if m and not _NEGATION_WORD_RE.search(turn.text):
-                        candidate = CandidateSpan(turn.start + m.start(), turn.start + m.end(), m.group(1))
-                        if verify_grounded_span(source, field, FieldState.SUPPORTED, candidate)[0]:
-                            by_turn.setdefault(idx, candidate)
-        # Keep the earliest current observation of each value. An agreeing final
-        # turn does not retract an intervening incompatible report.
+            clauses = _reply_clauses(turn)
+            local = []
+            for clause in clauses:
+                match = _LATERAL_PAIN_RE.fullmatch(clause.text.strip())
+                if not match or _clause_is_retracted_in_turn(turn, clause, field):
+                    continue
+                if _later_turn_retracts_span(source, idx, field, clause.text):
+                    continue
+                side, part = match.group("side").casefold(), match.group("part").casefold()
+                span = CandidateSpan(clause.start, clause.end, clause.text)
+                local.append((side, part, bool(match.group("positive")), span))
+            observations.extend(local)
+            if len(local) == len(clauses) == 2:
+                left, right = local
+                if left[0] != right[0] and left[1] == right[1] and left[2] != right[2]:
+                    contrast_turns.append((left[:3], right[:3], CandidateSpan(turn.start, turn.end, turn.text)))
+        for first, second in combinations(contrast_turns, 2):
+            if any(a[:2] == b[:2] and a[2] != b[2] for a in first[:2] for b in second[:2]):
+                pairs.append((first[2], second[2]))
+        for first, second in combinations(observations, 2):
+            if first[:2] == second[:2] and first[2] != second[2]:
+                pairs.append((first[3], second[3]))
+
+    if field in (FieldName.DURATION, FieldName.SEVERITY):
+        # Extractors also offer alternate renderings of one observation. Retain
+        # one representative per clause, even when several clauses share a turn.
+        by_clause: dict[int, tuple[Turn, CandidateSpan]] = {}
+        for span in sup_spans:
+            idx = _turn_index(source, span.start, span.end)
+            if idx is not None:
+                turn = source.turns[idx]
+                clause = _enclosing_clause(turn, span)
+                by_clause.setdefault(clause.start, (turn, span))
         representatives: dict[str, tuple[Turn, CandidateSpan]] = {}
-        for idx, span in sorted(by_turn.items()):
-            turn = source.turns[idx]
-            if not _PAST_OR_HYPOTHETICAL_RE.search(turn.text):
-                representatives.setdefault(normalize_value(span.text), (turn, span))
+        for _, (turn, span) in sorted(by_clause.items()):
+            representatives.setdefault(normalize_value(span.text), (turn, span))
         for (t1, first), (t2, second) in combinations(representatives.values(), 2):
             c1 = _enclosing_clause(t1, first)
             c2 = _enclosing_clause(t2, second)
@@ -1137,6 +1177,11 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
                               CandidateSpan(c2.start, c2.end, source.text[c2.start:c2.end])))
             pairs.append((first, second))
     return pairs
+
+
+def recognized_conflict(spans: tuple[CandidateSpan, ...], pairs: list[tuple[CandidateSpan, ...]]) -> bool:
+    """Require the two cited observations to be an actual source pair in either order."""
+    return len(spans) == 2 and any(spans == pair or spans == pair[::-1] for pair in pairs)
 
 
 def grounded_candidate_choices(transcript: str, field: FieldName, used: set[str]) -> list[str]:
@@ -1237,7 +1282,8 @@ class GroundedStateSpanSolver(StateSpanSolver):
 
             if detected_conflicts and not global_unsafe:
                 # Preserve un-retracted source contradiction; prefer model's conflict spans if valid, else primary pair
-                if proposal is not None and proposal.state is FieldState.CONFLICTING and len(proposal.spans) >= 2:
+                if (proposal is not None and proposal.state is FieldState.CONFLICTING
+                        and recognized_conflict(proposal.spans, detected_conflicts)):
                     c_spans = proposal.spans
                     verified, reason, decision = True, "verified_grounded_conflict", "accepted"
                 else:
@@ -1275,15 +1321,8 @@ class GroundedStateSpanSolver(StateSpanSolver):
                     final = GroundedFieldOutput(field, FieldState.UNCERTAIN, evidence=ev)
                     verified, decision = False, "rejected_to_uncertain"
             elif proposal.state is FieldState.CONFLICTING:
-                s1, s2 = proposal.spans[0], proposal.spans[1]
-                t1 = _turn_index(document, s1.start, s1.end)
-                t2 = _turn_index(document, s2.start, s2.end)
-                if t1 is not None and t2 is not None and t1 != t2 and normalize_value(s1.text) != normalize_value(s2.text):
-                    final = GroundedFieldOutput(field, FieldState.CONFLICTING, evidence=proposal.spans)
-                    verified, reason, decision = True, "verified_grounded_conflict", "accepted"
-                else:
-                    final = GroundedFieldOutput(field, FieldState.UNCERTAIN, evidence=proposal.spans)
-                    verified, reason, decision = False, "unverified_conflict_pair", "rejected_to_uncertain"
+                final = GroundedFieldOutput(field, FieldState.UNCERTAIN, evidence=proposal.spans)
+                verified, reason, decision = False, "unverified_conflict_pair", "rejected_to_uncertain"
             else:
                 final = GroundedFieldOutput(field, FieldState.UNCERTAIN, evidence=proposal.spans)
                 verified, reason, decision = False, "unhandled_state", "rejected_to_uncertain"
