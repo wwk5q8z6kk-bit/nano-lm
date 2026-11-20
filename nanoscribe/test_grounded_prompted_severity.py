@@ -44,6 +44,10 @@ SCALE = "On a scale of one to ten, how severe is your pain?"
     (SCALE, "My sister's rating is seven.", "seven", False),
     (SCALE, "My rating was severe yesterday.", "severe", False),
     (SCALE, "It’s a seven. That rating was yesterday.", "seven", False),
+    (SCALE, "It's a seven today.", "seven", True),
+    (SCALE, "It's a seven today. That rating was yesterday.", "seven", False),
+    (SCALE, "It's a seven;", "seven", True),
+    (SCALE, "It's a seven; That rating was yesterday.", "seven", False),
     (CURRENT, "Seven.", "Seven", False),
     ("How bad might your pain get tomorrow on a scale from one to ten?", "Seven.", "Seven", False),
     ("How bad was your pain yesterday on a scale from one to ten?", "My rating is severe.", "severe", False),
@@ -119,3 +123,26 @@ def test_inherited_ratings_compared_at_same_scope(first, second, question, confl
 def test_withdrawing_a_prompted_rating(reply, quote, supported):
     source = f"Doctor: {SCALE}\nPatient: {reply}"
     check(source, "SEV", FieldName.SEVERITY, quote, source.rindex(quote), supported)
+
+
+@pytest.mark.parametrize("complaint, later, conflict", [
+    ("I have a headache.", "My headache is 8/10.", True),
+    ("I have a headache.", "My knee pain is 8/10.", False),
+    ("I've been having left knee pain.", "My left knee pain is 8/10.", True),
+    ("I've been having left knee pain.", "My pain is 8/10.", False),
+])
+def test_pronoun_rating_shares_the_complaint_head(complaint, later, conflict):
+    source = (
+        "Doctor: What brings you in?\n"
+        f"Patient: {complaint}\n"
+        "Doctor: On a scale of one to ten, how severe is it?\n"
+        "Patient: It's a seven.\n"
+        f"Patient: {later}"
+    )
+    doc = transcript_source(NanoInput("rating", source))
+    field = FieldName.SEVERITY
+    pairs = detect_grounded_conflicts(doc, field)
+    assert bool(pairs) == conflict
+    if conflict:
+        left, right = pairs[0]
+        assert left.text in "It's a seven." and right.text in later

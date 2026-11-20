@@ -2050,7 +2050,7 @@ _CURRENT_RATING_OWNER_RE = re.compile(
     r"(?:(?:(?:right )?now|at the moment|currently)[, ]+)?(?P<article>my|the) (?P<subject>.+?) "
     r"(?:is|are|feels?)(?: currently)?", re.I,
 )
-_CURRENT_RATING_END_RE = re.compile(r"(?:\s+(?:(?:right )?now|at the moment))?[.!;]*", re.I)
+_CURRENT_RATING_END_RE = re.compile(r"(?:\s+(?:(?:right )?now|today|at the moment))?[.!;]*", re.I)
 
 
 def _reciting_rating(clinician: Turn | None, reply: Turn, report: Turn) -> bool:
@@ -2110,7 +2110,9 @@ def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating_st
         if turn.speaker is not Speaker.PATIENT:
             break
         for following in _reply_clauses(turn):
-            if following.start < report.end < following.end:
+            # Verification trims a trailing semicolon that clause splitting keeps.
+            if (following.start < report.end < following.end
+                    and source.text[report.end:following.end].strip(" ;")):
                 return False
             if following.start < report.end:
                 continue
@@ -2136,7 +2138,7 @@ _CURRENT_SYMPTOM_PROMPT_RE = re.compile(
 _RATING_ANSWER_RE = re.compile(
     r"(?:(?:my (?:rating|score) is|i (?:would rate|rate) it|it(?:'s| is))\s+)?(?:an?\s+)?"
     rf"(?P<value>(?:(?:about|around|roughly)\s+|{_BOUND_LEAD})?(?P<number>{_SCORE_NUMBER})(?P<denominator>{_SCALE_DENOMINATOR})?(?:\s+{_BOUND_SUFFIX})?"
-    r"|mild|moderate|severe)(?: (?:right now|now|today))?[.!]?", re.I,
+    r"|mild|moderate|severe)(?: (?:right now|now|today))?[.!;]?", re.I,
 )
 
 
@@ -2167,6 +2169,18 @@ class _PromptedRating:
     exact_value: Fraction | str | None
 
 
+def _presenting_complaint_subject(source: Source, complaint: Turn) -> str | None:
+    """Return the clinical head when this turn verifies exactly one complaint."""
+    heads = []
+    for span in _local_supported_spans(source, FieldName.CHIEF_COMPLAINT):
+        if complaint.start <= span.start < span.end <= complaint.end:
+            head = _COMPLAINT_HEAD_RE.search(span.text)
+            if head:
+                heads.append(head.group().strip().casefold())
+    distinct = tuple(dict.fromkeys(heads))
+    return distinct[0] if len(distinct) == 1 else None
+
+
 def _prompted_rating(source: Source, idx: int, clause: Turn) -> _PromptedRating | None:
     """Bind a complete patient reply to the adjacent request for a current symptom score."""
     previous = _preceding_clinician_turn(source, idx)
@@ -2183,7 +2197,8 @@ def _prompted_rating(source: Source, idx: int, clause: Turn) -> _PromptedRating 
         complaint = _preceding_presenting_complaint(source, idx, previous.text)
         if complaint is None:
             return None
-        subject = complaint.text.casefold()
+        # Conflict identity uses the same clinical head as a later named rating.
+        subject = _presenting_complaint_subject(source, complaint) or complaint.text.casefold()
     else:
         subject = re.sub(r"^(?:the|your|this) ", "", subject)
     exact_value: Fraction | str | None = answer["value"].casefold()
