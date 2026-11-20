@@ -1,0 +1,698 @@
+{
+  "batch_and_suffix_stock": {
+    "X8r_reimpl_quantile__muon__tokens__600M__s0": {
+      "identical": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-future": {
+        "positions": 1024,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "repeated-future": {
+        "positions": 1024,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "constant-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "periodic-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      }
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+      "identical": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-future": {
+        "positions": 1024,
+        "mask_flips": 59,
+        "positions_delta_gt_1e_4": 43,
+        "greedy_flips": 2
+      },
+      "repeated-future": {
+        "positions": 1024,
+        "mask_flips": 99,
+        "positions_delta_gt_1e_4": 64,
+        "greedy_flips": 6
+      },
+      "natural-neighbor": {
+        "positions": 2048,
+        "mask_flips": 189,
+        "positions_delta_gt_1e_4": 129,
+        "greedy_flips": 10
+      },
+      "constant-neighbor": {
+        "positions": 2048,
+        "mask_flips": 612,
+        "positions_delta_gt_1e_4": 391,
+        "greedy_flips": 28
+      },
+      "periodic-neighbor": {
+        "positions": 2048,
+        "mask_flips": 606,
+        "positions_delta_gt_1e_4": 386,
+        "greedy_flips": 27
+      }
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+      "identical": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-future": {
+        "positions": 1024,
+        "mask_flips": 15,
+        "positions_delta_gt_1e_4": 9,
+        "greedy_flips": 0
+      },
+      "repeated-future": {
+        "positions": 1024,
+        "mask_flips": 149,
+        "positions_delta_gt_1e_4": 87,
+        "greedy_flips": 11
+      },
+      "natural-neighbor": {
+        "positions": 2048,
+        "mask_flips": 146,
+        "positions_delta_gt_1e_4": 99,
+        "greedy_flips": 6
+      },
+      "constant-neighbor": {
+        "positions": 2048,
+        "mask_flips": 550,
+        "positions_delta_gt_1e_4": 356,
+        "greedy_flips": 28
+      },
+      "periodic-neighbor": {
+        "positions": 2048,
+        "mask_flips": 639,
+        "positions_delta_gt_1e_4": 403,
+        "greedy_flips": 39
+      }
+    }
+  },
+  "batch_and_suffix_repaired": {
+    "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+      "identical": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-future": {
+        "positions": 1024,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "repeated-future": {
+        "positions": 1024,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "constant-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "periodic-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      }
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+      "identical": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-future": {
+        "positions": 1024,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "repeated-future": {
+        "positions": 1024,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "natural-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "constant-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      },
+      "periodic-neighbor": {
+        "positions": 2048,
+        "mask_flips": 0,
+        "positions_delta_gt_1e_4": 0,
+        "greedy_flips": 0
+      }
+    }
+  },
+  "train_mode_ema": {
+    "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+      "stock": {
+        "identical": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "natural-neighbor": {
+          "count": 1536,
+          "mask_flips": 3,
+          "positions_delta_gt_1e_4": 3,
+          "greedy_flips": 0
+        },
+        "periodic-neighbor": {
+          "count": 1536,
+          "mask_flips": 15,
+          "positions_delta_gt_1e_4": 15,
+          "greedy_flips": 0
+        },
+        "periodic-future": {
+          "count": 768,
+          "mask_flips": 2,
+          "positions_delta_gt_1e_4": 2,
+          "greedy_flips": 0
+        }
+      },
+      "lagged": {
+        "identical": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "natural-neighbor": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "periodic-neighbor": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "periodic-future": {
+          "count": 768,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        }
+      }
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+      "stock": {
+        "identical": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "natural-neighbor": {
+          "count": 1536,
+          "mask_flips": 4,
+          "positions_delta_gt_1e_4": 4,
+          "greedy_flips": 0
+        },
+        "periodic-neighbor": {
+          "count": 1536,
+          "mask_flips": 16,
+          "positions_delta_gt_1e_4": 16,
+          "greedy_flips": 0
+        },
+        "periodic-future": {
+          "count": 768,
+          "mask_flips": 2,
+          "positions_delta_gt_1e_4": 2,
+          "greedy_flips": 1
+        }
+      },
+      "lagged": {
+        "identical": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "natural-neighbor": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "periodic-neighbor": {
+          "count": 1536,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        },
+        "periodic-future": {
+          "count": 768,
+          "mask_flips": 0,
+          "positions_delta_gt_1e_4": 0,
+          "greedy_flips": 0
+        }
+      }
+    }
+  },
+  "four_domain_language": {
+    "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+      "stock": {
+        "domains": {
+          "web": {
+            "mean_bpb": 1.2066327200437712,
+            "endpoint_bpb": 1.1965623175686075,
+            "requested": 0.2887369791666667,
+            "committed": 0.18522135416666666
+          },
+          "textbook": {
+            "mean_bpb": 0.8361939775328691,
+            "endpoint_bpb": 0.7965302944058518,
+            "requested": 0.2854817708333333,
+            "committed": 0.17610677083333334
+          },
+          "math": {
+            "mean_bpb": 1.2816534335389982,
+            "endpoint_bpb": 0.9246407316388933,
+            "requested": 0.2779947916666667,
+            "committed": 0.19108072916666666
+          },
+          "code": {
+            "mean_bpb": 1.149266974508599,
+            "endpoint_bpb": 1.1563699764669202,
+            "requested": 0.251953125,
+            "committed": 0.16145833333333334
+          }
+        },
+        "weighted": {
+          "mean_bpb": 1.1360759651336019,
+          "endpoint_bpb": 1.054133127529776,
+          "requested": 0.2785807291666667,
+          "committed": 0.17981770833333333
+        }
+      },
+      "causal": {
+        "domains": {
+          "web": {
+            "mean_bpb": 1.2056375133645871,
+            "endpoint_bpb": 1.1958127082496128,
+            "requested": 0.2923177083333333,
+            "committed": 0.19075520833333334
+          },
+          "textbook": {
+            "mean_bpb": 0.8351151876049268,
+            "endpoint_bpb": 0.7899118917457858,
+            "requested": 0.2825520833333333,
+            "committed": 0.17838541666666666
+          },
+          "math": {
+            "mean_bpb": 1.2814619501988833,
+            "endpoint_bpb": 0.9288800033163415,
+            "requested": 0.2587890625,
+            "committed": 0.1708984375
+          },
+          "code": {
+            "mean_bpb": 1.1475830361461583,
+            "endpoint_bpb": 1.1430231087177312,
+            "requested": 0.23079427083333334,
+            "committed": 0.14322916666666666
+          }
+        },
+        "weighted": {
+          "mean_bpb": 1.1350870401358286,
+          "endpoint_bpb": 1.0506880840558168,
+          "requested": 0.2713541666666667,
+          "committed": 0.1748046875
+        }
+      },
+      "serving": {
+        "domains": {
+          "web": {
+            "mean_bpb": 1.2065979494368306,
+            "endpoint_bpb": 1.1965623175686075,
+            "requested": 0.3196614583333333,
+            "committed": 0.2080078125
+          },
+          "textbook": {
+            "mean_bpb": 0.8362780302220857,
+            "endpoint_bpb": 0.7965302944058518,
+            "requested": 0.3095703125,
+            "committed": 0.19596354166666666
+          },
+          "math": {
+            "mean_bpb": 1.2820844722019338,
+            "endpoint_bpb": 0.9246407316388933,
+            "requested": 0.2945963541666667,
+            "committed": 0.19986979166666666
+          },
+          "code": {
+            "mean_bpb": 1.1491486624990923,
+            "endpoint_bpb": 1.1563699764669202,
+            "requested": 0.236328125,
+            "committed": 0.1484375
+          }
+        },
+        "weighted": {
+          "mean_bpb": 1.1361414127593545,
+          "endpoint_bpb": 1.054133127529776,
+          "requested": 0.2959635416666667,
+          "committed": 0.19205729166666669
+        }
+      }
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+      "stock": {
+        "domains": {
+          "web": {
+            "mean_bpb": 1.2172058437593787,
+            "endpoint_bpb": 1.0844670745566918,
+            "requested": 0.2893880208333333,
+            "committed": 0.19108072916666666
+          },
+          "textbook": {
+            "mean_bpb": 0.8392073571322989,
+            "endpoint_bpb": 0.833784792825417,
+            "requested": 0.2825520833333333,
+            "committed": 0.17643229166666666
+          },
+          "math": {
+            "mean_bpb": 1.2884240943955905,
+            "endpoint_bpb": 1.0657962962776981,
+            "requested": 0.2740885416666667,
+            "committed": 0.17024739583333334
+          },
+          "code": {
+            "mean_bpb": 1.1386353913858818,
+            "endpoint_bpb": 1.2038191140795431,
+            "requested": 0.23697916666666666,
+            "committed": 0.15397135416666666
+          }
+        },
+        "weighted": {
+          "mean_bpb": 1.1401357060865056,
+          "endpoint_bpb": 1.0544668704592084,
+          "requested": 0.27447916666666666,
+          "committed": 0.1765625
+        }
+      },
+      "causal": {
+        "domains": {
+          "web": {
+            "mean_bpb": 1.2168679402276064,
+            "endpoint_bpb": 1.0872970019584525,
+            "requested": 0.2932942708333333,
+            "committed": 0.1787109375
+          },
+          "textbook": {
+            "mean_bpb": 0.8391832873237021,
+            "endpoint_bpb": 0.8294321071236509,
+            "requested": 0.2845052083333333,
+            "committed": 0.1748046875
+          },
+          "math": {
+            "mean_bpb": 1.2868584857299032,
+            "endpoint_bpb": 1.061210959270538,
+            "requested": 0.2555338541666667,
+            "committed": 0.15690104166666666
+          },
+          "code": {
+            "mean_bpb": 1.1390854108709523,
+            "endpoint_bpb": 1.1880303863966142,
+            "requested": 0.2197265625,
+            "committed": 0.1376953125
+          }
+        },
+        "weighted": {
+          "mean_bpb": 1.1397726128759542,
+          "endpoint_bpb": 1.0506534913415417,
+          "requested": 0.26927083333333335,
+          "committed": 0.16536458333333334
+        }
+      },
+      "serving": {
+        "domains": {
+          "web": {
+            "mean_bpb": 1.2172657157171358,
+            "endpoint_bpb": 1.0844670745566918,
+            "requested": 0.3170572916666667,
+            "committed": 0.21158854166666666
+          },
+          "textbook": {
+            "mean_bpb": 0.8389456184458719,
+            "endpoint_bpb": 0.833784792825417,
+            "requested": 0.3014322916666667,
+            "committed": 0.1884765625
+          },
+          "math": {
+            "mean_bpb": 1.2885710339294913,
+            "endpoint_bpb": 1.0657962962776981,
+            "requested": 0.291015625,
+            "committed": 0.18294270833333334
+          },
+          "code": {
+            "mean_bpb": 1.1393096780561605,
+            "endpoint_bpb": 1.2038191140795431,
+            "requested": 0.23697916666666666,
+            "committed": 0.15657552083333334
+          }
+        },
+        "weighted": {
+          "mean_bpb": 1.140271552373159,
+          "endpoint_bpb": 1.0544668704592084,
+          "requested": 0.29270833333333335,
+          "committed": 0.190234375
+        }
+      }
+    }
+  },
+  "causal_minus_stock_single_sequence_serving_bpb": {
+    "mean_fixed_seeds": -0.0007766560603655884,
+    "paired_window_bootstrap_95": [
+      -0.0011681532084113595,
+      -0.0003655865582902438
+    ],
+    "bootstrap_draws": 20000,
+    "observations": "96 shared windows, stratified over four domains; two fixed checkpoint seeds. Interval is an approximate window sampling diagnostic only; time, within-document correlations and training seed uncertainty are not sampled."
+  },
+  "streaming_reference_validation": {
+    "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+      "n": 24,
+      "max_abs_delta": 1.33514404296875e-05,
+      "mismatches": 0
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+      "n": 24,
+      "max_abs_delta": 1.71661376953125e-05,
+      "mismatches": 0
+    }
+  },
+  "copy_transfer": {
+    "X8r_reimpl_quantile__muon__tokens__600M__s0": {
+      "x8": {
+        "repeat": {
+          "accuracy": 0.9642857142857143,
+          "nll": 0.5085682375356555,
+          "correct": 1944,
+          "total": 2016
+        },
+        "shuffled": {
+          "accuracy": 0.013392857142857142,
+          "nll": 12.224836379289627,
+          "correct": 27,
+          "total": 2016
+        }
+      }
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+      "serving": {
+        "repeat": {
+          "accuracy": 0.9494047619047619,
+          "nll": 0.7897400110960007,
+          "correct": 1914,
+          "total": 2016
+        },
+        "shuffled": {
+          "accuracy": 0.007936507936507936,
+          "nll": 11.829649060964584,
+          "correct": 16,
+          "total": 2016
+        }
+      },
+      "causal": {
+        "repeat": {
+          "accuracy": 0.9494047619047619,
+          "nll": 0.790261147543788,
+          "correct": 1914,
+          "total": 2016
+        },
+        "shuffled": {
+          "accuracy": 0.007936507936507936,
+          "nll": 11.829649060964584,
+          "correct": 16,
+          "total": 2016
+        }
+      }
+    },
+    "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+      "serving": {
+        "repeat": {
+          "accuracy": 0.9384920634920635,
+          "nll": 0.8314202399924397,
+          "correct": 1892,
+          "total": 2016
+        },
+        "shuffled": {
+          "accuracy": 0.005952380952380952,
+          "nll": 11.98737433552742,
+          "correct": 12,
+          "total": 2016
+        }
+      },
+      "causal": {
+        "repeat": {
+          "accuracy": 0.9389880952380952,
+          "nll": 0.830979255028069,
+          "correct": 1893,
+          "total": 2016
+        },
+        "shuffled": {
+          "accuracy": 0.005952380952380952,
+          "nll": 11.98383554816246,
+          "correct": 12,
+          "total": 2016
+        }
+      }
+    }
+  },
+  "weights": {
+    "web": 0.4,
+    "textbook": 0.2,
+    "math": 0.2,
+    "code": 0.2
+  },
+  "source_scope": "Standalone pinned Omega research implementation. No deployment or frontier superiority claim.",
+  "code_source_transfer": {
+    "sources": {
+      "val_code.bin": "2aeac093eff2a1329771ac09e02f61275a18f47d41e10259c43489f3285c8bcf",
+      "val_code.jsonl": "6e060ce360e4929d6079ec953977200cacc310aabd79145bf355cd51c23402c3"
+    },
+    "windows": 64,
+    "exact_matches": 3,
+    "samples": {
+      "all": {
+        "files_and_repositories": 64,
+        "targets_per_model": 8192,
+        "mean_nats_per_target": {
+          "X8r_reimpl_quantile__muon__tokens__600M__s0": {
+            "x8": 2.5273438096046448
+          },
+          "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+            "stock_causal_serving": 2.545049431733787,
+            "causal_budget": 2.5442043538205326
+          },
+          "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+            "stock_causal_serving": 2.5458742319606245,
+            "causal_budget": 2.544817069079727
+          }
+        },
+        "mean_causal_minus_serving_nats": -0.0009511203970760107,
+        "paired_repo_window_bootstrap_95": [
+          -0.002362838451517746,
+          0.00044470562716014683
+        ]
+      },
+      "exact_full_window_found": {
+        "files_and_repositories": 3,
+        "targets_per_model": 384,
+        "mean_nats_per_target": {
+          "X8r_reimpl_quantile__muon__tokens__600M__s0": {
+            "x8": 1.8280777136484783
+          },
+          "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+            "stock_causal_serving": 1.8045559525489807,
+            "causal_budget": 1.8053578039010365
+          },
+          "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+            "stock_causal_serving": 1.7901694277922313,
+            "causal_budget": 1.786050985256831
+          }
+        },
+        "mean_causal_minus_serving_nats": -0.0016582955916722615,
+        "paired_repo_window_bootstrap_95": [
+          -0.004392147064208984,
+          0.000380590558052063
+        ]
+      },
+      "no_exact_full_window_found": {
+        "files_and_repositories": 61,
+        "targets_per_model": 7808,
+        "mean_nats_per_target": {
+          "X8r_reimpl_quantile__muon__tokens__600M__s0": {
+            "x8": 2.5617339454713415
+          },
+          "X9_acex9_v2_muon__muon__tokens__600M__s0": {
+            "stock_causal_serving": 2.581467143824843,
+            "causal_budget": 2.580541069390344
+          },
+          "X9_acex9_v2_muon__muon__tokens__600M__s1": {
+            "stock_causal_serving": 2.583040042001693,
+            "causal_budget": 2.5821334338579023
+          }
+        },
+        "mean_causal_minus_serving_nats": -0.0009163412891450475,
+        "paired_repo_window_bootstrap_95": [
+          -0.002381616244550611,
+          0.000524960580419319
+        ]
+      }
+    }
+  }
+}
