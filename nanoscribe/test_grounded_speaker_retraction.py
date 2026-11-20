@@ -184,6 +184,16 @@ def test_plain_other_statement_preserves_previous_scalar_context(field, answer, 
     ("I am unsure how severe her headaches are.", SEV, False),
     ("I am unsure how long my sister's headaches lasted.", DUR, False),
     ("I am unsure how long ago my parking pass expired.", DUR, False),
+    ("I am not sure whether my sister is allergic to nickel.", ALG, False),
+    ("I am not sure whether Jordan is allergic to nickel.", ALG, False),
+    ("I am unsure if he has allergies.", ALG, False),
+    ("She is unsure whether I took naproxen.", MED, False),
+    ("My sister is unsure how severe my headache is.", SEV, False),
+    ("Jordan cannot remember when my wrist pain began.", DUR, False),
+    ("The leaflet asks whether I am allergic to nickel.", ALG, False),
+    ("Honestly, I am unsure if I have drug allergies.", ALG, True),
+    ("I am unsure about my allergy to nickel.", ALG, True),
+    ("Not sure whether I took naproxen.", MED, True),
 ])
 @pytest.mark.parametrize("aside", ["Unknown: Where is the garage?", "Unknown: The umbrella is upstairs."])
 def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible, aside):

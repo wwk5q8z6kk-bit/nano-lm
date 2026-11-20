@@ -3046,9 +3046,27 @@ def _uncertainty_follows_logistics(source: Source, span: CandidateSpan) -> bool:
     return idx is not None and idx > 0 and _logistical_aside_prompt(source.turns[idx - 1]) is not None
 
 
+def _owns_post_aside_uncertainty(text: str) -> bool:
+    if (_THIRD_PARTY_RE.search(text) or _PERSONAL_SUBJECT_RE.search(text)
+            or _ATTRIBUTED_ASSERTION_RE.search(text) or _patient_question(text)):
+        return False
+    hedge = _EPISTEMIC_HEDGE_RE.search(text)
+    if not hedge or hedge.group().casefold() == "whether":
+        return False
+    # A direct patient hedge can omit its first-person subject. A named
+    # speaker or document preceding the hedge cannot express the patient's doubt.
+    return bool(re.fullmatch(
+        r"(?:(?:to be honest|honestly|frankly|well|actually|you know)[,\s]+)*"
+        r"(?:i(?:\s+am|['’]m)?\s*)?", text[:hedge.start()].strip(), re.I))
+
+
 def _uncertainty_names_field(field: FieldName, text: str) -> bool:
     if field is FieldName.ALLERGY:
-        return bool(_ALG_QUESTION_CUE_RE.search(text))
+        return bool(_ALG_QUESTION_CUE_RE.search(text) and re.search(
+            r"\b(?:my\s+(?:(?:drug|food|environmental|medication)\s+)?allerg(?:y|ies)\b|"
+            r"i(?:['’]m|\s+(?:am|was|might be|may be))\s+(?:really\s+)?allergic\b|"
+            r"i\s+(?:have|had)\s+(?:(?:an?|any|drug|food|medication|environmental)\s+)*allerg(?:y|ies)\b|"
+            r"being allergic to\b)", text, re.I))
     if field is FieldName.MEDICATION:
         hedge = _FOLLOWUP_DOUBT_RE.search(text)
         subject = _DOUBTED_SUBSTANCE[field].match(text[hedge.end():].strip()) if hedge else None
@@ -3146,7 +3164,7 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
             candidates = [whole]
             if follows_aside:
                 candidates = [CandidateSpan(part.start, part.end, part.text) for part in _reply_clauses(turn)
-                              if _EPISTEMIC_HEDGE_RE.search(part.text) and _uncertainty_names_field(field, part.text)]
+                              if _owns_post_aside_uncertainty(part.text) and _uncertainty_names_field(field, part.text)]
             for evidence in candidates:
                 key = ((evidence.start, evidence.end),)
                 if key not in seen:
