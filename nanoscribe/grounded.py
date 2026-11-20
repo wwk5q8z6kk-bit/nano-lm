@@ -453,7 +453,7 @@ _TAKEN_TREATMENT_QUESTION_RE = re.compile(
 _SUBSTANCE_LABEL_RE = re.compile(
     r"^my\s+(?:(?:current|regular|daily|known)\s+)?(?P<field>medication|medicine|allergy|allergen)\s+is\s+", re.I,
 )
-_AMBIGUOUS_TREATMENT_RE = re.compile(r"^(?:i(?:'m|\s+am)\s+on|i\s+(?:take|use))\b", re.I)
+_AMBIGUOUS_TREATMENT_RE = re.compile(r"^(?:i(?:['’]m|\s+am)\s+on|i\s+(?:take|use))\b", re.I)
 # Without a medication question, "on", "take" and "use" have everyday senses.
 # A familiar drug name can also disambiguate these otherwise untyped relations.
 _FAMILIAR_MEDICINE_RE = re.compile(
@@ -462,6 +462,25 @@ _FAMILIAR_MEDICINE_RE = re.compile(
 )
 _INDICATION_RE = re.compile(rf"\s+for\s+(?:it|them|(?:this|that|the|my|these)\s+(?:[\w-]+\s+){{0,4}}"
                             rf"(?:{_SYMPTOM}|cramps?))\b", re.I)
+# A health-related reason can also explain time off, travel or logistics.
+# These complete ordinary objects do not become a drug in that context.
+_NONMEDICAL_RELATION_OBJECT_RE = re.compile(
+    r"\s*(?:(?:a|an|the|my|some)\s+)?(?:(?:(?:medical|sick|paid|unpaid)\s+)?leave|time off|"
+    r"call|duty|hold|edge|work|(?:waiting|wait)\s*list|bus|train|plane|ferry|taxi|cash|calendar)\s*", re.I,
+)
+# A purpose supplies independent clinical context for otherwise ambiguous
+# first-person "on/take/use". Explicit treatment predicates accept an open
+# disease name. For a bare "for" phrase require the diagnosis itself to be
+# the noun head: a diabetes *appointment* is not a treatment indication.
+_MEDICAL_PURPOSE_RE = re.compile(
+    r"\s+(?:to\s+(?:treat|prevent|manage)\s+(?:my\s+)?(?:diagnosed\s+)?(?:condition|illness|disease)\b|"
+    r"for\s+(?:(?:the\s+)?(?:medical\s+)?(?:treatment|management|prevention)\s+of\b|"
+    r"(?:(?:a|my|the|this)\s+)?(?:diagnosed\s+)?(?:condition|disease|disorder|illness)\s+(?:called|named)\b|"
+    r"(?:[\w'’-]+\s+){0,7}(?:disease|disorder|syndrome|condition|infection|fibrillation|arrhythmia|"
+    r"failure|diabetes|asthma|eczema|migraine|epilepsy|cancer|[a-z-]+(?:itis|osis|emia|aemia|opathy|"
+    r"plasia|plegia|edema|oedema|algia|thyroidism))s?\b"
+    r"(?=\s*(?:$|[.,;!?]|\b(?:since|starting|during|today|yesterday|and|but)\b))))", re.I,
+)
 _LOCATION_ANSWER_RE = re.compile(
     r"^(?:it|this|that|they|these|those|(?:the|my)\s+(?:list|bottle|package|label|record))"
     r"(?:['’](?:s|re)|\s+(?:is|are|was|were))\s+(?:(?:still|back|currently)\s+)?"
@@ -1116,11 +1135,15 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
             return None
         start = shared_action.end()
     elif relation := _AMBIGUOUS_TREATMENT_RE.match(text):
-        known_medicine = _FAMILIAR_MEDICINE_RE.match(text[relation.end():].lstrip())
-        if not ((first_answer and med_q) or _TREATMENT_CONTEXT_RE.search(text)
-                or _INDICATION_RE.search(text) or known_medicine):
-            return None
         start = relation.end()
+        adjunct = _SUBSTANCE_ADJUNCT_RE.search(text, start)
+        obj = text[start:adjunct.start()] if adjunct else text[start:].rstrip(".!?")
+        if _NONMEDICAL_RELATION_OBJECT_RE.fullmatch(obj) or _TAKEN_NON_TREATMENT_OBJECT_RE.match(obj):
+            return None
+        disease_indication = adjunct and _MEDICAL_PURPOSE_RE.match(text, adjunct.start())
+        if not ((first_answer and med_q) or _TREATMENT_CONTEXT_RE.search(text)
+                or _INDICATION_RE.search(text) or disease_indication or _FAMILIAR_MEDICINE_RE.match(obj.lstrip())):
+            return None
     elif not (first_answer and med_q):
         if alg_q or not _INDICATION_RE.search(text):
             return None

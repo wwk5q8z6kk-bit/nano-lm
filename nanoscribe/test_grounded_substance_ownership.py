@@ -38,6 +38,16 @@ def observed(report, field, value):
     (ALG, "Tell me more.", "I am allergic to nickel because it causes a rash.", "rash"),
     (MED, "Tell me more.", "My daily medicine is Xyzalorfen for my wrist pain.", "wrist pain"),
     (MED, "What brings you in?", "I am on edge.", "edge"),
+    (MED, "Tell me more.", "I am on apixaban for atrial fibrillation.", "atrial fibrillation"),
+    (MED, "Tell me more.", "I am on the train for my diabetes appointment.", "train"),
+    (MED, "Tell me more.", "I am on leave for a week.", "leave"),
+    (MED, "Tell me more.", "I am on medical leave for atrial fibrillation.", "medical leave"),
+    (MED, "Tell me more.", "I take the train for my diabetes.", "train"),
+    (MED, "Tell me more.", "I take time off for eczema.", "time off"),
+    (MED, "Tell me more.", "I use cash for the parking meter.", "cash"),
+    (MED, "Tell me more.", "I use a calendar for my diabetes appointments.", "calendar"),
+    (MED, "Tell me more.", "My sister is on apixaban for atrial fibrillation.", "apixaban"),
+    (MED, "Tell me more.", "I am not on apixaban for atrial fibrillation.", "apixaban"),
     (MED, "Tell me more.", "I take the bus.", "bus"),
     (MED, "Tell me more.", "My sister is allergic to nickel and took aspirin.", "aspirin"),
     (MED, "Tell me more.", "I am allergic to nickel. Took aspirin.", "aspirin"),
@@ -85,6 +95,12 @@ def test_deferring_a_substance_answer_offers_no_reported_value(field, question, 
     (MED, "Patient: I took aspirin in the car.", "aspirin"),
     (MED, "Patient: I took aspirin and am not allergic to penicillin.", "aspirin"),
     (MED, "Patient: I am on warfarin.", "warfarin"),
+    (MED, "Doctor: Tell me more.\nPatient: I am on apixaban for atrial fibrillation.", "apixaban"),
+    (MED, "Patient: I’m on mesalamine for ulcerative colitis.", "mesalamine"),
+    (MED, "Patient: I take linagliptin for type 2 diabetes.", "linagliptin"),
+    (MED, "Patient: I use tacrolimus for my skin condition.", "tacrolimus"),
+    (MED, "Patient: I take Xyzalorfen for my diagnosed condition called Ardu.", "Xyzalorfen"),
+    (MED, "Patient: I use silver leaf drops for the treatment of Ardu.", "silver leaf drops"),
     (MED, "Patient: My daily medicine is Xyzalorfen.", "Xyzalorfen"),
     (MED, "Patient: I take metformin.", "metformin"),
     (ALG, "Doctor: Tell me more.\nPatient: I have a penicillin allergy.", "penicillin"),
@@ -115,6 +131,19 @@ def test_source_owned_substance_and_contrary_denial_survive(field, report, value
     assert claim["state"] == "conflicting" and claim["value"] is None
     assert any(choice.startswith(":C[") for choice in compact)
     assert any(choice.startswith(" CONTRADICTED[") for choice in english)
+
+
+def test_blanket_medication_denial_preserves_an_indicated_named_drug():
+    report = "Doctor: Tell me more.\nPatient: I am on apixaban for atrial fibrillation.\nPatient: No medications."
+    raw = "CC:M|DUR:M|SEV:M|MED:A[No medications.]|ALG:M"
+    result = scribe(report, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert result["verification"]["passed"]
+    field = next(item for item in result["extraction"]["fields"] if item["field"] == "medication")
+    assert field["state"] == "conflicting" and field["value"] is None
+    assert [item["text"] for item in field["evidence"]] == [
+        "I am on apixaban for atrial fibrillation.", "No medications.",
+    ]
+    assert all(report[item["start"]:item["end"]] == item["text"] for item in field["evidence"])
 
 
 def test_free_proposal_is_not_limited_to_the_menu_spelling():
