@@ -1866,6 +1866,10 @@ _PAST_RATING_TIME = (
     rf"(?:yesterday|earlier|(?:on\s+)?(?:last\s+)?{_DAY_NAME}|last\s+(?:{_DAY_PART}|week|month|year)|"
     r"at\s+(?:first|its\s+(?:worst|peak)))"
 )
+_DATED_SELF_MEASUREMENT_RE = re.compile(
+    rf"\s*i\s+(?:(?:last|previously)\s+)?{_RATING_MEASUREMENT}\s+"
+    rf"(?:{_PAST_REPORTED_RATING_TIME}|{_PAST_RATING_TIME})\b", re.I,
+)
 _PAST_RATING_TIME_RE = re.compile(rf"\s+{_PAST_RATING_TIME}$")
 _EPISODE_TIME_SHIFT_RE = re.compile(rf"\b(?:{_PAST_RATING_TIME}|tomorrow|next (?:week|month|year))\b", re.I)
 
@@ -2050,6 +2054,8 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
         when = re.match(r"\s+when\b", after, re.I)
         measurement = _CURRENT_RATING_CHECK_RE.match(after, when.end()) if when else None
         self_check = bool(measurement and measurement["measured"] and (measurement["measured_just"] or measurement["time"]))
+        if when and not self_check and _DATED_SELF_MEASUREMENT_RE.match(after, when.end()):
+            return False
         measured_before = _DATED_SYMPTOM_ONSET_RE.sub("", before) if self_check else before
         if (re.search(r"\b(?:was|were|felt)\s*$", before, re.I)
                 and (_PAST_REPORTED_RATING_TIME_RE.search(measured_before)

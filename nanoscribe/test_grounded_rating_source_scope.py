@@ -81,3 +81,16 @@ def test_dated_onset_and_measurement(report, accepted):
 def test_bare_answer_inherits_requested_symptom(question, lead, later, accepted):
     source = f"Doctor: {question}\nPatient: {lead}7/10. That was at work. Right now {later} is 2/10."
     check(source, "SEV", FieldName.SEVERITY, "7/10", source.index("7/10"), accepted)
+
+
+@pytest.mark.parametrize("timing,accepted", [
+    ("when I checked last Monday", False),
+    ("when I last checked it on Friday", False),
+    ("when I rated my wrist pain yesterday afternoon", False),
+    ("when I rechecked it two days ago", False),
+    ("when I checked just now", True),
+    ("when I checked it a moment ago", True),
+])
+def test_time_of_the_rating_measurement(timing, accepted):
+    source = f"Doctor: How bad is your pain now?\nPatient: The pain was 4/10 {timing}."
+    check(source, "SEV", FieldName.SEVERITY, "4/10", source.index("4/10"), accepted)
