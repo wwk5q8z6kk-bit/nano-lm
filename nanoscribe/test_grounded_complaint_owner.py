@@ -41,6 +41,17 @@ from nanoscribe.grounded import build_grounded_english_menu, format_grounded_spa
     ("Patient: I have joint pain.", "joint pain", True),
     ("Patient: I have twitching.", "twitching", True),
     ("Patient: I have acute pain.", "acute pain", True),
+    ("Doctor: What brings you in?\nPatient: I am on my period with cramps.", "cramps", True),
+    ("Patient: I'm menstruating with sharp abdominal pain.", "sharp abdominal pain", True),
+    ("Patient: I am on my period tracker.", "period tracker", False),
+    ("Patient: I am on aspirin for cramps.", "cramps", False),
+    ("Doctor: What brings you in?\nPatient: I am on edge.", "on edge", True),
+    ("Patient: I've been feeling on edge.", "on edge", True),
+    ("Patient: I am on edge of the platform.", "on edge", False),
+    ("Patient: I am on the edge of my seat.", "edge", False),
+    ("Patient: I need a refill and my wrist hurts.", "my wrist hurts", True),
+    ("Patient: I need a refill and my wrist hurts.", "refill", False),
+    ("Patient: I took a fall and my left ankle aches.", "my left ankle aches", True),
 ])
 def test_grounded_complaint_and_injected_supported_record(transcript, quote, expected):
     item = NanoInput("clinical-complaint", transcript)
@@ -59,4 +70,3 @@ def test_grounded_complaint_and_injected_supported_record(transcript, quote, exp
     assert (checked.state is FieldState.SUPPORTED) == expected
     choices = build_grounded_english_menu(source, field, set())
     assert any(code == "S" and span in evidence for code, evidence in choices.values()) == expected
-

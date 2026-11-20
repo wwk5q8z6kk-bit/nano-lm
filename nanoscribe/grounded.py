@@ -773,9 +773,10 @@ def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
 # an address or a medicine elsewhere in the same reply cannot borrow it.
 _COMPLAINT_LEAD_RE = re.compile(
     r"^(?:(?:well|actually|mostly|mainly|yes)[, ]+\s*)*"
-    r"(?:(?:i(?:'ve|\s+have)\s+(?:been\s+(?:having|experiencing|dealing\s+with)|got|felt|had)|"
+    r"(?:(?:i(?:'ve|\s+have)\s+(?:been\s+(?:having|feeling|experiencing|dealing\s+with)|got|felt|had)|"
     r"i\s+(?:(?:also|still|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
-    r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with)|"
+    r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with|"
+    r"(?:on\s+my\s+period|menstruating)\s+with)|i(?:'m|\s+am)(?=\s+on\s+edge\b)|"
     r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is)\s+)?", re.I,
 )
 _COMPLAINT_JOIN_RE = re.compile(
@@ -785,7 +786,7 @@ _COMPLAINT_JOIN_RE = re.compile(
 _DOCUMENT_CONTENT_RE = re.compile(r'\b(?:says?|states?|reads?|titled|labelled|labeled|quoting|lists?)\b|[“"]', re.I)
 _COMPLAINT_PREFIX = (
     rf"(?:an?|the|my|some|this|both|really|very|quite|unusually|sudden|persistent|"
-    rf"acute|chronic|severe|mild|moderate|sharp|dull|constant|intermittent|painless|dry|stabbing|"
+    rf"acute|chronic|severe|mild|moderate|sharp|dull|constant|intermittent|painless|dry|stabbing|abdominal|pelvic|"
     rf"left(?:[-‑]sided)?|right(?:[-‑]sided)?|lower|upper|{_BODY_REGION}|"
     rf"heels?|thumbs?|cheeks?|forehead|knuckles?|nose|scalp|joints?|form\s+of|"
     rf"i\s+need\s+to\s+address|(?:has|have|had)\s+(?:been|felt)|feels?|is|are|was|were)"
@@ -793,7 +794,7 @@ _COMPLAINT_PREFIX = (
 _COMPLAINT_HEAD_RE = re.compile(
     rf"[\s‘’'\"“(\[]*(?:{_COMPLAINT_PREFIX}[\s‘’'\"“(\[]+)*?"
     r"(?P<head>pain(?:s)?|discomfort|headaches?|earaches?|aches?|aching|cough(?:ing)?|"
-    r"nausea|dizz(?:y|iness)|nauseous|vertigo|ringing|swelling|rash(?:es)?|itching|fever|fatigue|"
+    r"nausea|dizz(?:y|iness)|nauseous|vertigo|ringing|swelling|rash(?:es)?|itching|fever|fatigue|on\s+edge(?!\s+of\b)|"
     r"soreness|numbness|tingling|vomiting|diarrhea|bleeding|breathlessness|cramps?|cramping|"
     r"tightness|pressure|stiffness|throbbing|chills|clicking|twitching|stings?|burns?|hurts?|itches?|shakes?|tremors?|"
     r"shortness\s+of\s+breath|loss\s+of\s+(?:taste|smell|hearing|vision)|palpitations|hoarseness|pins\s+and\s+needles|paper\s+cut|swimmer['’]s\s+ear|"
@@ -817,6 +818,10 @@ _LOCATED_SENSATION_RE = re.compile(
     r"(?:(?:[\w'-]+\s+){0,2}(?:lines?|spots?|flashes?|lights?|floaters?|sounds?|"
     r"buzzing|sensations?|pulsing|fluttering|vibrations?))\s+(?:across|in|behind|around|along|under)\s+(?:my|both)\s+"
     rf"(?:{_BODY_REGION}|vision|hearing|sight)\b", re.I,
+)
+_POSSESSIVE_BODY_CLAUSE_RE = re.compile(
+    rf"^my\s+(?:(?:left|right|upper|lower)\s+)*{_BODY_REGION}\s+"
+    r"(?:hurts?|aches?|itches?|stings?|burns?|shakes?|twitches|feels?|is|are|has|have)\b", re.I,
 )
 
 
@@ -1159,7 +1164,10 @@ def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> 
         return False
     first_word = words[0]
     if field is not FieldName.DURATION and first_word in {"a", "an", "the", "my", "some"}:
-        return False
+        # In "my wrist hurts", the possessive belongs to the subject of a
+        # complete patient report. A noun phrase still uses its bare value.
+        if field is not FieldName.CHIEF_COMPLAINT or not _POSSESSIVE_BODY_CLAUSE_RE.match(cleaned):
+            return False
     if field is FieldName.DURATION and first_word in {"the", "my", "some"} and not cleaned.casefold().startswith(
         ("the evening", "the morning", "the afternoon", "the night", "the day")
     ):
@@ -2023,6 +2031,8 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                     sp = _trim_span(source.text, c_start + pos, c_start + pos + len(rem))
                     if sp is not None:
                         add(_strip_leading_determiner(source.text, sp))
+                        if c_start > turn.start and _POSSESSIVE_BODY_CLAUSE_RE.match(rem):
+                            add(sp)
                 continue
 
             owned = _substance_object(source, t_idx, clause, field)
