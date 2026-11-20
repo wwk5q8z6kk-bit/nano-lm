@@ -478,7 +478,8 @@ _AMBIGUOUS_TREATMENT_RE = re.compile(r"^(?:i(?:['’]m|\s+am)\s+on|i\s+(?:take|u
 # A familiar drug name can also disambiguate these otherwise untyped relations.
 _FAMILIAR_MEDICINE_RE = re.compile(
     r"\b(?:warfarin|metformin|insulin|aspirin|ibuprofen|acetaminophen|paracetamol|"
-    r"naproxen|lisinopril|levothyroxine|cetirizine)\b", re.I,
+    r"naproxen|lisinopril|levothyroxine|cetirizine|loratadine|fexofenadine|ketoprofen|zinc|"
+    r"(?:dihydro)?codeine|co[-‐‑]codamol|hydrocortisone|sodium chloride|calcium carbonate)\b", re.I,
 )
 _INDICATION_RE = re.compile(rf"\s+for\s+(?:it|them|(?:this|that|the|my|these)\s+(?:[\w-]+\s+){{0,4}}"
                             rf"(?:{_SYMPTOM}|cramps?))\b", re.I)
@@ -519,6 +520,34 @@ _ALG_CLAUSE_PRED_RE = re.compile(
     r"causes\s+(?:me\s+to\s+develop\s+)?(?:hives|a\s+rash|rash|itching|swelling))\b",
     re.IGNORECASE,
 )
+_EXPLICIT_SYMPTOM_DURATION_RE = re.compile(
+    r"\b(?:it\s+(?:started|began|has\s+been)|it's\s+been|going\s+on|hurting|aching|(?:it|this|that|they)(?:['’](?:s|ve)|\s+(?:has|had|have))?\s+(?:lasted|lasts|lasting)|"
+    r"(?:symptom|pain|ache|cramps?|cough|headache|rash|swelling|fever|dizziness|soreness|ringing|itching)\s+"
+    r"(?:started|began|for|since)|(?:has|have|had)\s+(?:been\s+)?(?:hurt|hurting|ached|aching|painful|sore))\b",
+    re.IGNORECASE,
+)
+
+# A new subject and predicate can date a symptom even when an earlier action
+# was a genuine treatment. An indication or coordinated noun is not a clause.
+_SYMPTOM_SUBJECT_RE = re.compile(
+    rf"(?:^|,\s*|\b(?:and|but|while|because|although|whereas|so)\s+)"
+    rf"(?:(?:my|the|this|that)\s+)?(?:[\w-]+\s+){{0,2}}?{_SYMPTOM}\b"
+    r"(?:\s+(?:in|around|of|on)\s+(?:my|the)\s+[\w-]+)?\s+"
+    r"(?:has|had|have|is|was|were|kept|keeps|woke|wakes|persist\w*|return\w*|"
+    r"continu\w*|last\w*|start\w*|began|got|gets|spread\w*|prevent\w*)\b", re.I,
+)
+
+# A duration following an independent activity does not time the symptom.
+# Match the subject as well as the action so later symptom clauses can own their interval.
+_ACTIVITY_PREDICATE_RE = re.compile(
+    r"\b(?:i|we)\s+(?:(?:had|have|was|were|have\s+been|had\s+been)\s+)?"
+    r"(?:(?:on|aboard)\s+(?:a|the|my)\s+(?:bus|train|plane|tram|ferry|flight)|at\s+(?:work|school)|"
+    r"driv(?:e|ing)|drove|travel(?:l?ed|l?ing)?|commut(?:e|ed|ing)|work(?:ed|ing)?|"
+    r"wait(?:ed|ing)?|slept|sleep(?:ing)?|walk(?:ed|ing)?|hiked|hik(?:e|ing)|"
+    r"exercis(?:e|ed|ing)|jogg(?:ed|ing)|read(?:ing)?|watch(?:ed|ing)?|"
+    r"stud(?:y|ied|ying)|shop(?:ped|ping)?|play(?:ed|ing)?)\b", re.I,
+)
+
 _BARE_REPLACEMENT_RE = re.compile(
     r"(?:actually[, ]+|sorry[, ]+|correction[: ,]+|i meant\s+)(?:i meant\s+)?"
     r"(?!i\b|it\b|that\b|this\b|the\b|my\b|we\b|he\b|she\b|they\b)"
@@ -1106,13 +1135,39 @@ def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[Candidate
     return tuple(names)
 
 
+_SUBSTANCE_FORM_RE = re.compile(
+    r"\b(?:drops?|spray|gel|cream|ointment|syrup|lozenges?|inhaler|patch(?:es)?|gel\s+caps?)\b", re.I,
+)
+_ORDINARY_OBJECT_RE = re.compile(
+    r"^\s*(?:(?:a|an|the|my|our|some|short|long|new|old|usual|daily|early|late|next|last)\s+)*"
+    r"(?:taxi|cab|bus|train|plane|ferry|tram|subway|flight|car|bike|bicycle|commute|"
+    r"phone|calendar|computer|camera|cash|job|course|class|test|exam|picture|photo(?:graph)?|lesson|"
+    r"appointment|break|walk|trip|nap|route|ride|yoga|exercise)\b", re.I,
+)
+
+
+def _action_has_treatment_context(text: str, question: str) -> bool:
+    """Require independent treatment evidence for verbs with ordinary activity senses."""
+    clause = re.split(r"[;!?]|\b(?:and\s+i|but|because|while|although)\b", text, maxsplit=1, flags=re.I)[0]
+    adjunct = _SUBSTANCE_ADJUNCT_RE.search(clause)
+    obj = clause[:adjunct.start()] if adjunct else clause
+    obj = obj.strip(" .,;!?")
+    if (not obj or _TAKEN_NON_TREATMENT_OBJECT_RE.match(obj) or _ORDINARY_OBJECT_RE.match(obj)
+            or _NONMEDICAL_RELATION_OBJECT_RE.fullmatch(obj) or re.match(r"(?:to|for)\b", obj, re.I)):
+        return False
+    return bool(_question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(obj)
+                or _FAMILIAR_MEDICINE_RE.search(obj) or _SUBSTANCE_FORM_RE.search(obj)
+                or _INDICATION_RE.search(clause) or (adjunct and _MEDICAL_PURPOSE_RE.match(clause, adjunct.start())))
+
+
 def _medication_verb_positions(text: str, question: str) -> list[int]:
-    positions = [match.start() for match in _MED_CLAUSE_VERB_RE.finditer(text)]
+    positions = [match.start() for match in _MED_CLAUSE_VERB_RE.finditer(text)
+                 if _action_has_treatment_context(text[match.end():], question)]
     for match in _TAKEN_RE.finditer(text):
         # "Taken" can describe a fall, a trip or another event. Require an
         # independent treatment cue from the question or the same event.
         event = re.split(r"[,;]|\b(?:and|but|because|so)\b", text[match.end():], maxsplit=1, flags=re.I)[0]
-        if _TAKEN_NON_TREATMENT_OBJECT_RE.match(event):
+        if _TAKEN_NON_TREATMENT_OBJECT_RE.match(event) or _ORDINARY_OBJECT_RE.match(event):
             continue
         if _question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(event) or _taken_indication_names(text[match.end():]):
             positions.append(match.start())
@@ -1157,6 +1212,8 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
             # The verifier checks each exact coordinated name and its indication.
             return start, len(text)
     elif shared_action := _SHARED_MEDICATION_RE.match(text):
+        if not _action_has_treatment_context(text[shared_action.end():], question):
+            return None
         # Only an actual continuation of the same first-person clause can
         # inherit its subject. A separate sentence with no subject cannot.
         clause = _enclosing_clause(source.turns[idx], event)
@@ -1200,6 +1257,107 @@ def _owned_substance_name(event: Turn, owned: tuple[int, int]) -> tuple[int, int
             name = name[:timing.start()]
     start = event.start + phrase.start("name")
     return start, start + len(name.rstrip())
+
+
+def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
+    """Identify the event whose timing is requested, including an immediately named drug."""
+    request = re.search(
+        r"\b(?:when|how long|how many (?:minutes|hours|days|weeks|months)|(?:what|which) (?:day|date|time))\b"
+        r"(?P<event>[^?.!;]*)", question, re.I
+    )
+    if not request:
+        return False
+    # A treatment mentioned in a subordinate clause need not be the event being dated.
+    event = re.split(r"\b(?:after|before|while|because|although|despite)\b", request["event"], maxsplit=1, flags=re.I)[0]
+    if re.match(r"\s*(?:was|is|were|are)\s+(?:your|the)\s+(?:(?:first|last|next|most recent)\s+)?dose\b", event, re.I):
+        return True
+    action = re.search(
+        r"\byou\s+(?:(?:first|last|ever|been|still)\s+)*(?:start(?:ed)?|beg[iu]n|began|stop(?:ped)?|"
+        r"finish(?:ed)?|resumed?|discontinued?|take|taking|taken|use|using|used|have|receive|on)\b", event, re.I,
+    )
+    if not action:
+        return False
+    obj = event[action.end():]
+    if re.match(r"\s+(?:(?:taking|using|a|an|the|this|that|these|those|your|first|last|new|current|"
+                r"usual|prescribed|daily|regular|pain|allergy)\s+)*(?:medications?|medicines?|meds|drugs?|"
+                r"tablets?|pills?|doses?|treatments?)\b", obj, re.I):
+        return True
+    # Resolve a pronoun or a repeated name only within the immediately preceding
+    # treatment question and answer. A symptom question can use the same verbs.
+    if turn_idx >= 3:
+        prior = source.turns[turn_idx - 2]
+        if prior.speaker is Speaker.PATIENT and _question_flags(source, turn_idx - 2)[0]:
+            name = prior.text.strip(" .,!?;")
+            return bool(re.fullmatch(r"\s*(?:(?:taking|using)\s+)?(?:it|them|that|those|" + re.escape(name) + r")\s*", obj, re.I))
+    return False
+
+
+def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, duration: CandidateSpan) -> str | None:
+    """Assign a timestamp to the local event. Only the first answer inherits the question."""
+    turn = source.turns[turn_idx]
+    context = source.text[event.start:duration.start]
+    looking_forward = False
+    timing_fragment = re.fullmatch(
+        r"(?:\s*(?:just|only|for|on|at|by|since|from|about|around|roughly)\b)*\s*", context, re.I
+    )
+    elliptical_time = False
+    if timing_fragment:
+        # A bare timing fragment ("Aspirin. Just yesterday.") continues its
+        # preceding report. A new sentence with its own subject starts a new report.
+        following = source.text[duration.end:event.end].strip(" ,.!?;")
+        elliptical_time = bool(re.fullmatch(r"(?:ago|so far|(?:in the )?(?:morning|afternoon|evening|night))?", following, re.I))
+        if not re.fullmatch(r"(?:ago|so far)?", following, re.I):
+            context = following
+            looking_forward = True
+        elif event.start > turn.start:
+            preceding = [part for clause in _reply_clauses(turn) for part in _reporting_events(clause)
+                         if part.end <= event.start]
+            if preceding:
+                event = preceding[-1]
+                context = event.text
+
+    med_question, allergy_question, question = _question_flags(source, turn_idx)
+    inherits_question = event.start == turn.start
+    treatment = "duration_scoped_to_medication_or_allergy"
+    events: list[tuple[int, str | None]] = []
+    medication_positions = set(_medication_verb_positions(context, question if inherits_question else ""))
+    for verb in (*_MED_CLAUSE_VERB_RE.finditer(context), *_TAKEN_RE.finditer(context)):
+        reason = treatment if verb.start() in medication_positions else "duration_scoped_to_other_activity"
+        events.append((verb.start(), reason))
+    events.extend((match.start(), "duration_scoped_to_other_activity") for match in _ACTIVITY_PREDICATE_RE.finditer(context))
+    events.extend((match.start(), treatment) for pattern in (_ALG_CLAUSE_PRED_RE, _POSTPOSED_ALLERGY_RE)
+                  for match in pattern.finditer(context))
+    if re.match(r"(?:(?:my|the|that)\s+)?(?:(?:first|last|previous|most recent)\s+)?(?:dose|medication|allergy)\b",
+                context, re.I):
+        events.append((0, treatment))
+    medication_action = re.search(
+        r"\bi(?:'ve| have)?\s+(?:started|stopped|resumed|discontinued|finished)\s+(?:(?:taking|using)\s+)?(?:it|them)\b", context, re.I
+    )
+    treatment_time = inherits_question and _asks_treatment_time(source, turn_idx, question)
+    if treatment_time and re.fullmatch(
+        r"\s*(?:(?:is|was) when )?(?:i|it)\s+(?:first\s+|last\s+)?(?:started|began|stopped|resumed|"
+        r"finished|ended|was|did)(?:\s+(?:it|them))?(?:\s+(?:on|at|by|for|around|about))?\s*", context, re.I
+    ):
+        # An answer echoing the requested action inherits its subject just as a bare date does.
+        return treatment
+    if (med_question or treatment_time) and medication_action:
+        events.append((medication_action.start(), treatment))
+    events.extend((match.start(), None) for pattern in (_EXPLICIT_SYMPTOM_DURATION_RE, _SYMPTOM_SUBJECT_RE)
+                  for match in pattern.finditer(context))
+    if events:
+        nearest = (min if looking_forward else max)(events, key=lambda item: item[0])
+        return nearest[1]
+    if inherits_question and (med_question or allergy_question or (treatment_time and elliptical_time)):
+        return treatment
+    # A bare interval is an elliptical answer. A full report must tie its
+    # own clock to the episode, even if some other turn discussed symptoms.
+    if elliptical_time or re.search(rf"\b(?:{_SYMPTOM}|cramps?|hurt(?:s|ing)?|sore|painful|dizzy|nauseous)\b", context, re.I):
+        return None
+    if re.fullmatch(r"\s*(?:(?:well|actually|sorry|yes)[, ]+)*(?:(?:i (?:meant|noticed (?:it|this)|first felt it)|"
+                    r"(?:it|this|that)(?:['’]s| (?:has|had))? (?:first )?(?:started|began|came on|appeared|been)|"
+                    r"(?:it|that) was|started|began|since|for|about|around)\s*)*", context, re.I):
+        return None
+    return "duration_not_linked_to_current_episode"
 
 
 def _verify_local_span(
@@ -1280,6 +1438,9 @@ def _verify_local_span(
             if name and span.start < name[1] and name[0] < span.end:
                 if span.start > name[0] or span.end < name[1]:
                     return False, "incomplete_substance_name"
+        if field is FieldName.DURATION:
+            if reason := _duration_scope_rejection(source, idx, event, span):
+                return False, reason
         if field is FieldName.MEDICATION and _TAKEN_RE.search(event.text):
             _, _, question = _question_flags(source, idx)
             if not _medication_verb_positions(event.text, question):
