@@ -40,7 +40,8 @@ def test_dual_memory_preserves_rare_verbatim_facts_where_fast_sketch_collides():
     for k, v in items:
         assert ctrl.verify_no_corruption(subject_id="subj-1", key=k, expected_verbatim=v) is True
     acct = ctrl.resource_accounting()
-    assert acct["fast_state_bytes"] == 64
+    assert acct["fast_value_capacity_bytes"] == 64
+    assert acct["fast_state_bytes"] > 64
     assert acct["evidence_store_bytes"] > 0
     assert acct["index_overhead_bytes"] > 0
     assert acct["total_dual_bytes"] > acct["fast_state_bytes"]
@@ -98,3 +99,29 @@ def test_cross_subject_supersession_rejected():
     # Invalid record metadata fails fast
     with pytest.raises(ValueError):
         EvidenceRecord("id", "", "k", "v", "s", 0, 1, 1, 1)
+
+
+def test_uncertainty_and_invalid_supersession_preserve_prior_evidence():
+    ctrl = DualMemoryController()
+    fields = dict(subject_id="s", key="k", verbatim_value="v", start=0, end=1,
+                  valid_time=1, observed_time=1, polarity="uncertain")
+    prior = ctrl.commit(source_id="src1", **fields)
+    with pytest.raises(ValueError):
+        ctrl.commit(source_id="src2", supersedes_id=prior.record_id, **dict(fields, start=-1))
+    assert ctrl.query_dual(subject_id="s", key="k").record_ids == (prior.record_id,)
+    ctrl.commit(source_id="src2", **fields)
+    assert ctrl.query_dual(subject_id="s", key="k").status == "uncertain"
+    assert not ctrl.verify_no_corruption(subject_id="s", key="k", expected_verbatim="v")
+
+
+def test_fast_identity_and_utf8_capacity_survive_slot_collisions():
+    ctrl = DualMemoryController(fast_slots=1, slot_bytes=5)
+    fast = ctrl.fast
+    fast.write("a:b", "c", "🙂🙂", "uncertain")
+    assert fast.query("a", "b:c").status == "missing"
+    fast.delete_key("a", "b:c")
+    assert fast.query("a:b", "c").values == ("🙂",)
+    assert fast.fast_state_bytes == 5 + len(b"a:bcuncertain")
+    fast.write("a", "b:c", "x")
+    assert fast.overwrites == 1
+    assert fast.query("a:b", "c").status == "missing"

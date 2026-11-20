@@ -1,7 +1,7 @@
 """Source-preserving dual-memory interface (MM01 / B06 / X07).
 
 Pure Python standard library (zero third-party deps) so it runs in all CI
-environments. Separates lossy fixed-byte fast state (`CompressedFastSketch`)
+environments. Separates lossy fixed-value-capacity fast state (`CompressedFastSketch`)
 from an immutable, content-addressed verbatim store (`ExactEvidenceStore`) with
 supersession chains, conflict detection, verifiable deletion receipts, and
 honest total byte + scan-operation accounting.
@@ -112,7 +112,6 @@ class ExactEvidenceStore:
             prior = self._records[supersedes_id]
             if prior.subject_id != subject_id:
                 raise ValueError("cross-subject supersession forbidden")
-            self._superseded.add(supersedes_id)
 
         rec_id = "ev-" + _sha256_hex(
             {
@@ -141,6 +140,8 @@ class ExactEvidenceStore:
             polarity=polarity,
             supersedes_id=supersedes_id,
         )
+        if supersedes_id is not None:
+            self._superseded.add(supersedes_id)
         self._records[rec_id] = rec
         bucket = self._by_subject_key.setdefault((subject_id, key), [])
         if rec_id not in bucket:
@@ -186,7 +187,7 @@ class ExactEvidenceStore:
         distinct_vals = tuple(dict.fromkeys(r.verbatim_value for r in active))
         rec_ids = tuple(r.record_id for r in active)
 
-        if "uncertain" in polarities and len(active) == 1:
+        if polarities == {"uncertain"}:
             return MemoryQueryResult(key=key, status="uncertain", values=distinct_vals, record_ids=rec_ids, source_exact=True, bytes_read=bytes_read, scan_ops=1)
         if len(polarities) > 1 or (polarities == {"supported"} and len(distinct_vals) > 1):
             return MemoryQueryResult(key=key, status="conflicting", values=distinct_vals, record_ids=rec_ids, source_exact=True, bytes_read=bytes_read, scan_ops=1)
@@ -212,39 +213,53 @@ class CompressedFastSketch:
             raise ValueError("num_slots and slot_bytes must be positive")
         self.num_slots = num_slots
         self.slot_bytes = slot_bytes
-        self._slots: list[tuple[str, str, str] | None] = [None] * num_slots
+        self._slots: list[tuple[tuple[str, str], str, str] | None] = [None] * num_slots
         self.overwrites: int = 0
         self.scan_ops: int = 0
 
     def _slot_idx(self, subject_id: str, key: str) -> int:
-        digest = hashlib.blake2b(f"{subject_id}:{key}".encode("utf-8"), digest_size=8).digest()
+        identity = json.dumps([subject_id, key], ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        digest = hashlib.blake2b(identity, digest_size=8).digest()
         return int.from_bytes(digest, "little") % self.num_slots
 
     def write(self, subject_id: str, key: str, value: str, polarity: str = "supported") -> None:
         idx = self._slot_idx(subject_id, key)
-        if self._slots[idx] is not None and self._slots[idx][0] != f"{subject_id}:{key}":
+        if self._slots[idx] is not None and self._slots[idx][0] != (subject_id, key):
             self.overwrites += 1
-        truncated = value[: self.slot_bytes]
-        self._slots[idx] = (f"{subject_id}:{key}", truncated, polarity)
+        truncated = value.encode("utf-8")[:self.slot_bytes].decode("utf-8", errors="ignore")
+        self._slots[idx] = ((subject_id, key), truncated, polarity)
 
     def delete_key(self, subject_id: str, key: str) -> None:
         idx = self._slot_idx(subject_id, key)
         slot = self._slots[idx]
-        if slot is not None and slot[0] == f"{subject_id}:{key}":
+        if slot is not None and slot[0] == (subject_id, key):
             self._slots[idx] = None
 
     def query(self, subject_id: str, key: str) -> MemoryQueryResult:
         self.scan_ops += 1
         idx = self._slot_idx(subject_id, key)
         slot = self._slots[idx]
-        if slot is None or slot[0] != f"{subject_id}:{key}":
+        if slot is None or slot[0] != (subject_id, key):
             return MemoryQueryResult(key=key, status="missing", values=(), record_ids=(), source_exact=False, bytes_read=self.slot_bytes, scan_ops=1)
         status = "denied" if slot[2] == "denied" else "uncertain" if slot[2] == "uncertain" else "supported"
         return MemoryQueryResult(key=key, status=status, values=(slot[1],), record_ids=(), source_exact=False, bytes_read=self.slot_bytes, scan_ops=1)
 
     @property
-    def fast_state_bytes(self) -> int:
+    def fast_value_capacity_bytes(self) -> int:
         return self.num_slots * self.slot_bytes
+
+    @property
+    def fast_state_bytes(self) -> int:
+        """Logical byte capacity plus the actual UTF-8 identity and polarity payload.
+
+        This excludes Python allocation and object overhead.
+        """
+        metadata = sum(
+            len(text.encode("utf-8"))
+            for slot in self._slots if slot is not None
+            for text in (*slot[0], slot[2])
+        )
+        return self.fast_value_capacity_bytes + metadata
 
 
 class DualMemoryController:
@@ -310,6 +325,8 @@ class DualMemoryController:
         idx_b = self.store.index_overhead_bytes
         return {
             "fast_state_bytes": fast_b,
+            "fast_value_capacity_bytes": self.fast.fast_value_capacity_bytes,
+            "byte_measure": "logical capacity and payload estimates, excluding Python object overhead",
             "evidence_store_bytes": store_b,
             "index_overhead_bytes": idx_b,
             "total_dual_bytes": fast_b + store_b + idx_b,
