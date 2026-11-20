@@ -38,7 +38,7 @@ The one authoritative status list. Updated 2026-11-20. Status values: Establishe
 | Datalog + union-find unification | Established | egglog |
 | Time-threshold (filtration) for causal relational memory | Derived | one-line corollary of provenance semirings; use in LM training not found |
 | STRATA | Unverified | every component published; learning of structure is the open row |
-| PATHWAY (unified design) | Unverified | `theory/UNIFIED-ARCHITECTURE-20261120.md` |
+| PATHWAY (unified design) | Abandoned as written | critic: algebra misnamed, linear star weaker than a looped layer, cost claim unsupported, components published; see section 11 of `theory/UNIFIED-ARCHITECTURE-20261120.md` |
 
 ## Open scientific questions, in order of information per cost
 

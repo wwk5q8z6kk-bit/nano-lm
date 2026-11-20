@@ -99,3 +99,20 @@ Attention diffusion and personalised-PageRank attention; deep equilibrium and Un
 5. 350M, then 1B, then the 2B decision. Each step only on a repeatable win at the previous one.
 
 At the measured TPU speed (65k tokens/s for a 336M dense model on one chip), the credits cover the 125M and 350M stages comfortably. They do not cover a 2B model trained to frontier quality; that needs a separate compute decision if the evidence earns it.
+
+## 11. Critic's findings (2026-11-20), overriding the text above
+
+Verdict: every component is published; the combination is partly published and incremental. The critic opened no paper; its external facts come from search summaries.
+
+1. **The algebra is misnamed.** A Kleene algebra needs idempotent addition; ordinary real addition is not. Over the reals the star is a resolvent (I − γA)⁻¹, a Neumann series, and the completeness theorem for Kleene algebra with tests transfers nothing to soft attention. Corrected: weights in a star-semiring; Kleene-algebra results apply only in the hard Boolean or (min, max) limit.
+2. **The Transformer comparison understated the baseline.** Attention matrices depend on earlier layers, so depth L reaches about 2^L hops by pointer doubling. STAR with frozen links gains one hop per round, which is slower per round.
+3. **STAR as specified is flawed.** At inference the causal closure is forward substitution, one sparse row per token, so "early stopping" saves nothing. T rounds exist only in training and truncate to T hops: a train/test mismatch. The output mixes all path lengths with weights γ^t; it does not select h hops. Unnormalised accumulated links can blow up.
+4. **READ cannot be soft attention and an exact sort-based lookup in one differentiable operation.** They are two mechanisms, and the hand-off between them is unsolved.
+5. **"No cost grows with N" is unsupported.** Choosing the strongest links needs scoring candidates; sort or index costs O(log N); items and links grow with N and with layers. Reusing attention maps across layers is already published as a cost saving.
+6. **Linear STAR is strictly weaker than a looped layer.** It cannot handle a next hop whose key is a nonlinear function of the retrieved value. That needs a fresh READ per hop, which is the looped Transformer.
+7. **Write-back has no invalidation.** A stored derived result goes stale after an upstream update.
+8. **Experiment.** Claim 2 passes trivially (any model with a cache can copy an earlier answer). Claim 1 needs a factorial design to show interaction. Claim 3 needs a tuned baseline at its ceiling and operation counts, plus a log-depth dense model. Add a task STAR cannot do, and insert updates between repeated queries.
+9. **Scale statement corrected.** TPU list price is roughly 1.20–2.70 USD per chip-hour (from a search summary, unverified). About 500 USD buys roughly 185–417 chip-hours: enough for short equal-time comparisons at 125M and at most one under-trained 350M pilot. A 2B model at published token budgets is about 500 times beyond it.
+10. **Capability table.** Rows 4, 7, 8 and 9 were still overclaimed; rows 1 and 5 ignore stale write-back.
+
+**Standing of PATHWAY after review:** not a viable design as written. What survives is narrower: a persistent set of exact keyed reads alongside ordinary attention, with iteration done by a looped layer and not by a linear star.
