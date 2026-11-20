@@ -852,10 +852,18 @@ def _nonpatient_prompt(speech: str) -> bool:
         r"are you|is (?:your|the)|let['’]s (?:talk|discuss))\b", speech, re.I))
 
 
-def _ambiguous_reply_boundary(previous: Turn) -> bool:
-    # A logistical aside cannot make the following patient statement about a
-    # different experiencer. It still interrupts clinician-question attribution.
-    if _logistical_aside_prompt(previous) is not None:
+def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn) -> bool:
+    # A patient can start a new clinical report after a logistical interruption.
+    # A bare answer to the aside has no clinician question to supply its field.
+    aside_prompt = _logistical_aside_prompt(previous)
+    if aside_prompt is not None:
+        text = clause.text
+        if field in (FieldName.SEVERITY, FieldName.DURATION):
+            return not (_SYMPTOM_SUBJECT_RE.search(text) or _BODY_SENSATION_RE.search(text)
+                        or re.match(rf"i (?:have|have had|feel) (?:[\w-]+ ){{0,3}}{_SYMPTOM}\b", text, re.I))
+        if field is FieldName.MEDICATION and aside_prompt:
+            return not (_TREATMENT_CONTEXT_RE.search(text) or _FAMILIAR_MEDICINE_RE.search(text)
+                        or _MEDICAL_PURPOSE_RE.search(text))
         return False
     speech = _identified_nonpatient_speech(previous)
     if previous.speaker is Speaker.OTHER or previous.text.lower().startswith("other:"):
@@ -1375,7 +1383,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
         return False
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
-    if prev is not None and _ambiguous_reply_boundary(prev):
+    if prev is not None and _ambiguous_reply_boundary(prev, field, _enclosing_clause(turn, span)):
         return False
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):
@@ -2367,7 +2375,8 @@ def _verify_local_span(
 
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
-    if prev is not None and _ambiguous_reply_boundary(prev):
+    clause = _enclosing_clause(turn, span)
+    if prev is not None and _ambiguous_reply_boundary(prev, field, clause):
         return False, "intervening_unknown_speaker"
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):
@@ -2379,7 +2388,6 @@ def _verify_local_span(
             if not past_rating and not re.search(r"\bfor this (?:new )?", turn.text, re.IGNORECASE):
                 return False, "non_current_or_third_party_question_scope"
 
-    clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
         start, end = span.start - turn.start, span.end - turn.start
         tokens = (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
@@ -2916,7 +2924,7 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     for index, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT or index in proxy_turns or index <= disputed_through:
             continue
-        if index and _ambiguous_reply_boundary(source.turns[index - 1]):
+        if index and _ambiguous_reply_boundary(source.turns[index - 1], field, turn):
             continue
         if coexisting and all(turn.start <= sp.start and sp.end <= turn.end for sp in coexisting):
             whole = CandidateSpan(turn.start, turn.end, turn.text)
@@ -3173,7 +3181,7 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
         for idx, turn in enumerate(source.turns):
             if turn.speaker is not Speaker.PATIENT or idx in proxy_turns or idx <= disputed_through:
                 continue
-            if idx and _ambiguous_reply_boundary(source.turns[idx - 1]):
+            if idx and _ambiguous_reply_boundary(source.turns[idx - 1], field, turn):
                 continue
             prev = _preceding_clinician_turn(source, idx)
             if prev and (_outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text)):

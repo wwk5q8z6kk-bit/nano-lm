@@ -109,9 +109,26 @@ def test_subsequent_explicit_patient_evidence_still_exposes_the_conflict(field, 
     assert choices("Unknown: The main entrance is closed.\n") == baseline
 
 
-def test_unidentified_logistics_cannot_supply_the_question_for_a_patient_answer():
-    check("Doctor: What medication did you take?\nUnknown: Where is the garage?\nPatient: Naproxen.",
-          MED, "Naproxen", licensed=False)
+@pytest.mark.parametrize("question,answer,field,quote,state", [
+    ("What medication did you take?", "Naproxen.", MED, "Naproxen", REPORTED),
+    ("What medication did you take?", "I haven't taken anything.", MED, "I haven't taken anything.", DENIED),
+    ("How severe is your pain?", "7/10.", SEV, "7/10", REPORTED),
+    ("How severe is your pain?", "It is mild.", SEV, "mild", REPORTED),
+    ("When did it start?", "Monday.", DUR, "Monday", REPORTED),
+    ("How long has it hurt?", "I have a headache. Four days.", DUR, "Four days", REPORTED),
+])
+def test_unidentified_logistics_cannot_supply_the_question_for_a_patient_answer(question, answer, field, quote, state):
+    check(f"Doctor: {question}\nUnknown: Where is the garage?\nPatient: {answer}",
+          field, quote, state=state, licensed=False)
+
+
+@pytest.mark.parametrize("field,answer,quote", [
+    (SEV, "My foot pain is 7/10.", "7/10"),
+    (DUR, "I have had a headache for three days.", "three days"),
+    (MED, "I took naproxen.", "naproxen"),
+])
+def test_field_specific_patient_statement_after_a_logistical_question(field, answer, quote):
+    check(f"Unknown: Where is the garage?\nPatient: {answer}", field, quote, licensed=True)
 
 
 @pytest.mark.parametrize("later,licensed", [
