@@ -364,3 +364,17 @@ def test_decoding_attention_flops_match_value_width_and_loop_count() -> None:
         av_width = cfg.n_heads * value_width
         expected_delta = 2 * softmax_layers * (qk_width + av_width)
         assert cfg.active_flops_per_token(2048) - cfg.active_flops_per_token(2047) == expected_delta
+
+def test_instruction_constraint_words_and_suffix():
+    tasks = {task.task_id: task for task in build_benchmark_15d_suite()}
+    def passes(key, text):
+        return verify_benchmark_response(tasks[key], text).passed
+
+    assert not passes("ins-01", "superkernel")
+    assert passes("ins-01", "the kernel, under a cloudless sky.")
+    assert not passes("ins-01", "kernel on the cloud.")
+    good = "- tests support debugging\n- tests document behavior\n- tests enable refactoring END_CHECK"
+    assert passes("ins-02", good)
+    assert not passes("ins-02", good.replace("debugging", "a BUG!"))
+    assert not passes("ins-02", good.replace("END_CHECK", "END_CHECK."))
+    assert passes("ins-03", "A COLLISION occurs when items hash to the same BUCKET and the table must resolve that conflict.")

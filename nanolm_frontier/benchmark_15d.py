@@ -168,16 +168,19 @@ def _verify_instruction_following(response: str, spec: dict[str, Any]) -> TaskVe
         else:
             failures.append(f"words={wc}<{spec['min_words']}")
 
+    def contains_word(word: str) -> bool:
+        return re.search(r"(?<!\w)" + re.escape(word) + r"(?!\w)", txt, re.IGNORECASE) is not None
+
     for fw in spec.get("forbidden_words", ()):
         total_checks += 1
-        if fw.casefold() not in txt.casefold():
+        if not contains_word(fw):
             checks_passed += 1
         else:
             failures.append(f"forbidden_present:{fw}")
 
     for rw in spec.get("required_words", ()):
         total_checks += 1
-        if rw.casefold() in txt.casefold():
+        if contains_word(rw):
             checks_passed += 1
         else:
             failures.append(f"required_missing:{rw}")
