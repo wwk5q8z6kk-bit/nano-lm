@@ -1746,8 +1746,10 @@ _EARLIER_RATING_RE = re.compile(
 # The time must qualify the patient's own measurement, not a chart lookup
 # or somebody else's rating mentioned in the same answer.
 _RATING_MEASUREMENT = r"(?:checked|rechecked|measured|rated|assessed|reassessed)(?:\s+(?:it|my\s+(?:pain|symptoms?)))?"
+_RATING_PROMPT = r"asked\s+me(?:\s+about\s+my\s+(?:pain|symptoms?))?"
 _CURRENT_RATING_CHECK_RE = re.compile(
-    rf"\s+i\s+(?:just\s+{_RATING_MEASUREMENT}|{_RATING_MEASUREMENT}\s+"
+    rf"\s*(?:i\s+just\s+{_RATING_MEASUREMENT}|you\s+just\s+{_RATING_PROMPT}|"
+    rf"(?:i\s+{_RATING_MEASUREMENT}|you\s+{_RATING_PROMPT})\s+"
     r"(?:(?:(?:just|right)\s+)?now|at\s+(?:this|the)\s+moment|a\s+(?:moment|second)\s+ago))"
     r"\s*[.!?;]?\s*$", re.I,
 )
