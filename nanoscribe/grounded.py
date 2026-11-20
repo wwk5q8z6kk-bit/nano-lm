@@ -672,7 +672,7 @@ _SYMPTOM_SUBJECT_RE = re.compile(
     rf"(?:(?:my|the|this|that)\s+)?(?:(?:[\w-]+\s+){{0,2}}?{_SYMPTOM}|"
     rf"(?:(?:left|right|lower|upper)\s+)?(?:{_BODY_REGION}\s+)?(?:tightness|pressure|stiffness|burning|throbbing))\b"
     r"(?:\s+(?:in|around|of|on)\s+(?:my|the)\s+[\w-]+)?\s+"
-    r"(?:has|had|have|is|was|were|kept|keeps|woke|wakes|persist\w*|return\w*|"
+    r"(?:has|had|have|is|was|were|feels?|felt|kept|keeps|woke|wakes|persist\w*|return\w*|"
     r"continu\w*|last\w*|start\w*|began|got|gets|spread\w*|prevent\w*)\b", re.I,
 )
 
@@ -855,7 +855,8 @@ def _nonpatient_prompt(speech: str) -> bool:
 _PERSONAL_SYMPTOM_REPORT_RE = re.compile(rf"\bi (?:have|have had|feel) (?:[\w-]+ ){{0,3}}{_SYMPTOM}\b", re.I)
 _SCALAR_PREDICATE_TAIL_RE = re.compile(
     r"(?:\s+(?:been|lasted|persisted|continued|started|began|hurting|aching|rated|feels?|is|at|a|an|"
-    r"about|around|roughly|only|currently|now|for|since|on|nearly|almost|really|very))*\s*", re.I,
+    r"about|around|roughly|only|currently|now|for|since|on|nearly|almost|really|very|constant|continuous|"
+    r"intermittent|persistent|unchanged|present|ongoing))*\s*", re.I,
 )
 
 
@@ -868,6 +869,7 @@ def _symptom_owns_scalar(clause: Turn, field: FieldName, span: CandidateSpan) ->
         return False
     for value in values:
         prefix = clause.text[:span.start - clause.start + value.start()]
+        prefix = re.sub(r"^(?:right now|currently)\s+", "", prefix, flags=re.I)
         if not any(_SCALAR_PREDICATE_TAIL_RE.fullmatch(prefix[match.end():])
                    for predicate in (_SYMPTOM_SUBJECT_RE, _BODY_SENSATION_RE, _PERSONAL_SYMPTOM_REPORT_RE)
                    for match in predicate.finditer(prefix)):
@@ -1208,6 +1210,7 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
                          span.text, maxsplit=1, flags=re.I)[0].strip()
     named_item = re.compile(r"(?<!\w)" + re.escape(substance) + r"(?!\w)", re.I) if substance else None
     adjacent = True
+    intervening_aside = False
     proxy_turns = _forward_proxy_turns(source)
     for index, turn in enumerate(source.turns[idx:], start=idx):
         if index in proxy_turns:
@@ -1215,6 +1218,7 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
             continue
         aside_prompt = _logistical_aside_prompt(turn)
         if aside_prompt is not None:
+            intervening_aside = True
             adjacent = adjacent and not aside_prompt
             continue
         later_events = (event for part in _reply_clauses(turn) for event in _treatment_events(part))
@@ -1223,7 +1227,10 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
                 continue
             if turn.speaker is Speaker.PATIENT and _ROUTINE_DISCLAIMED_RE.search(later.text):
                 if not _patient_question(later.text) and not (_THIRD_PARTY_RE.search(later.text) or _PERSONAL_SUBJECT_RE.search(later.text)):
-                    if (named_item and named_item.search(later.text)) or (adjacent and _ROUTINE_REFERENCE_RE.match(later.text)):
+                    reference = _ROUTINE_REFERENCE_RE.match(later.text)
+                    if reference and intervening_aside and not _TREATMENT_CONTEXT_RE.search(reference[0]):
+                        reference = None
+                    if (named_item and named_item.search(later.text)) or (adjacent and reference):
                         return True
             if (turn.speaker is Speaker.CLINICIAN and adjacent and
                     ((named_item and named_item.search(later.text)) or _ROUTINE_CLARIFICATION_RE.search(later.text))):
@@ -2963,7 +2970,7 @@ def extract_field_denial_spans(source: Source, field: FieldName) -> list[Candida
 
 def _uncertainty_follows_logistics(source: Source, span: CandidateSpan) -> bool:
     idx = _turn_index(source, span.start, span.end)
-    return idx is not None and idx > 0 and _logistical_aside_prompt(source.turns[idx - 1]) is True
+    return idx is not None and idx > 0 and _logistical_aside_prompt(source.turns[idx - 1]) is not None
 
 
 def _uncertainty_names_field(field: FieldName, text: str) -> bool:
