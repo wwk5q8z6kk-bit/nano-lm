@@ -529,7 +529,7 @@ _EXPLICIT_SYMPTOM_DURATION_RE = re.compile(
 
 # A new subject and predicate can date a symptom even when an earlier action
 # was a genuine treatment. An indication or coordinated noun is not a clause.
-_BODY_REGION = (r"(?:chest|head|face|jaw|neck|throat|back|shoulders?|arms?|elbows?|wrists?|hands?|fingers?|"
+_BODY_REGION = (r"(?:chest|head|face|jaw|neck|throat|back|shoulders?|arms?|elbows?|wrists?|hands?|palms?|fingers?|"
                 r"abdomen|stomach|hips?|legs?|knees?|ankles?|feet|foot|toes?|eyes?|ears?|skin)")
 _SYMPTOM_SUBJECT_RE = re.compile(
     rf"(?:^|,\s*|\b(?:and|but|while|because|although|whereas|so)\s+)"
@@ -542,10 +542,12 @@ _SYMPTOM_SUBJECT_RE = re.compile(
 
 # A sensation located in the patient's body can date the episode without
 # repeating a complaint noun: "my throat has felt scratchy for four days".
+_SENSATION = r"(?:scratchy|tight|stiff|tender|sore|swollen|numb|itchy|painful|prickly|tingly|burning)"
 _BODY_SENSATION_RE = re.compile(
-    rf"\b(?:my|the)\s+(?:(?:left|right|lower|upper)\s+)?{_BODY_REGION}\s+"
+    rf"\b(?:(?:my|the)\s+(?:(?:left|right|lower|upper)\s+)?{_BODY_REGION}\s+"
     r"(?:(?:has|have|had)\s+)?(?:felt|feels?|been|was|were|is|are)\s+"
-    r"(?:(?:very|quite|unusually|really)\s+)?(?:scratchy|tight|stiff|tender|sore|swollen|numb|itchy|painful)\b", re.I,
+    rf"(?:(?:very|quite|unusually|really)\s+)?{_SENSATION}|"
+    rf"i\s+(?:have|have\s+had|feel)\s+(?:an?\s+)?{_SENSATION}\s+{_BODY_REGION})\b", re.I,
 )
 
 # A duration following an independent activity does not time the symptom.
