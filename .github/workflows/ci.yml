@@ -38,5 +38,10 @@ jobs:
       - name: Model adapter pins
         run: python3 nanoscribe/test_adapt.py
 
+      - name: NanoScribe unit tests
+        run: |
+          python3 -m pip install pytest
+          python3 -m pytest -q nanoscribe/
+
       - name: Model adapter baseline smoke
         run: python3 nanoscribe/benchmark.py

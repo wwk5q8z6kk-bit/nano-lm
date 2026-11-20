@@ -31,8 +31,8 @@ def test_topic_for_spec_clinician_speaker():
     assert topic_for_spec(spec) == "Does the clinician state 'surgery'?"
 
 def test_topic_for_spec_assessment():
-    spec = MockSpec(atom_type=AtomType.ASSESSMENT, raw_value="hypertension")
-    assert topic_for_spec(spec) == "Does the clinician's assessment include 'hypertension'?"
+    spec = MockSpec(atom_type=AtomType.ASSESSMENT, raw_value="hypertension", speaker=Speaker.CLINICIAN)
+    assert topic_for_spec(spec) == "Does the clinician state 'hypertension'?"
 
 def test_topic_for_spec_raw_value_only():
     spec = MockSpec(raw_value="cough")
