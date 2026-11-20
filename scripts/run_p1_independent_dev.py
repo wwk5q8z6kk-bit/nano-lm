@@ -26,12 +26,12 @@ sys.path.insert(0, str(ROOT))
 from nano_ai.adapters.state_span import parse_state_span_summary
 from nano_ai.contract import (
     FIELD_ORDER, EvidenceSpan, FieldOutput, FieldState, NanoInput, NanoOutput,
-    normalize_value,
 )
 from nano_ai.evaluation import evaluate_solver
 from nano_ai.fixtures import FixtureCase
 from nano_ai.solver import SolverDescriptor, SolverKind
 from nanoscribe.compact import FEWSHOT_PROMPT, STRUCTURED_PROMPT, LocalCompactPredictor, compact_solver
+from nanoscribe.encounter import normalize_value
 from nanoscribe.scribe import scribe
 
 LABELS = dict(zip(("CC", "DUR", "SEV", "MED", "ALG"), FIELD_ORDER, strict=True))

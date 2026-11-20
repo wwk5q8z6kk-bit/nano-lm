@@ -320,6 +320,79 @@ def _outside_current_scope(text: str) -> bool:
         text.casefold()))
 
 
+_QUESTION_SERIES_RE = re.compile(
+    r"\b(?:next|following|remaining|subsequent)\s+(?:(?P<count>\d{1,4}|few|several|one|two|three|four|five|six|seven|eight|nine|ten)\s+)?"
+    r"(?P<unit>questions?|answers?|responses?)\b", re.I,
+)
+_OPEN_SERIES_RE = re.compile(
+    r"\b(?:from (?:now|here) on|for the rest of (?:the|this|our) (?:visit|interview|questions|conversation))\b", re.I,
+)
+_COUNT_WORDS = "zero one two three four five six seven eight nine ten".split()
+_PROXY_TARGET_RE = re.compile(
+    r"\b(?:about|for|as|on behalf of)\s+(?:(?:your|the|his|her|their)\s+)?"
+    r"(?:child(?:ren)?|son|daughter|mother|father|sibling|brother|sister|parent|partner|husband|wife|friend|"
+    r"grandmother|grandfather|caregiver|him|her|them)\b", re.I,
+)
+# A proposed, delayed or negated switch is not an actual change of subject.
+_SELF_SCOPE_RE = re.compile(
+    r"(?:^|[.!;]\s*)(?:(?:okay|thanks|all right)[, ]+)?(?:now[ ,]+)?"
+    r"(?:(?:(?:let['’]s|let us|we are|we['’]re)\s+)?(?:now\s+)?"
+    r"(?:back to|(?:switch|return)(?:ing)? (?:back )?to|talk about|focus on)"
+    r"|(?:the |these )?(?:(?:next|following|remaining) )?questions? (?:are |is )?about)"
+    r"\s+(?:you(?:rself)?\b|your own\s+[\w -]+?)(?:\s+(?:now|again))?"
+    r"(?:,\s*(?:not|rather than|instead of)\s+[^.!?;]+)?\s*(?=[.!?;]|$)", re.I,
+)
+
+
+def _proxy_question_count(text: str) -> int:
+    """Zero means no directive, and -1 means an open-ended series."""
+    if not _PROXY_TARGET_RE.search(text) or _SELF_SCOPE_RE.search(text):
+        return 0
+    series = _QUESTION_SERIES_RE.search(text)
+    if series is None:
+        return -1 if _OPEN_SERIES_RE.search(text) else 0
+    count = (series["count"] or "").casefold()
+    if count.isdigit():
+        return int(count)
+    if count in _COUNT_WORDS:
+        return _COUNT_WORDS.index(count)
+    return -1 if series["unit"].casefold().endswith("s") else 1
+
+
+def _forward_proxy_turns(source: Source) -> set[int]:
+    """Return patient turns attributed by an explicit forward clinician directive.
+
+    A finite question ends at the next question after its answer, so adjacent
+    patient continuations remain with the same experiencer. A neutral question
+    leaves an open-ended series in effect until an explicit switch to the patient.
+    """
+    hidden = set()
+    remaining = 0
+    in_answer = False
+    pending_question = False
+    for index, turn in enumerate(source.turns):
+        if turn.speaker is Speaker.CLINICIAN:
+            declared = _proxy_question_count(turn.text)
+            if declared:
+                remaining = declared
+                in_answer = False
+                pending_question = turn.text.rstrip().endswith("?")
+            elif _SELF_SCOPE_RE.search(turn.text):
+                remaining = 0
+                in_answer = pending_question = False
+            elif turn.text.rstrip().endswith("?") or re.match(r"(?:tell me|list|describe)\\b", turn.text, re.I):
+                in_answer = False
+                pending_question = True
+        elif turn.speaker is Speaker.PATIENT and (remaining or in_answer):
+            hidden.add(index)
+            if pending_question:
+                if remaining > 0:
+                    remaining -= 1
+                in_answer = True
+                pending_question = False
+    return hidden
+
+
 def _source_reassignment(text: str) -> bool:
     return bool(re.search(
         r"\b(?:those answers|these answers|all (?:my |the )?answers|everything (?:i|the patient) said|all of that)\b"
@@ -369,8 +442,12 @@ def inspect_context(source: Source) -> tuple[tuple[SourceObservation, ...], bool
     from nanoscribe.context import question_field, _BLOCK
     observations = []
     global_unsafe = False
+    proxy_turns = _forward_proxy_turns(source)
     for index, turn in enumerate(source.turns):
-        global_unsafe |= _source_reassignment(turn.text)
+        if index in proxy_turns:
+            continue
+        if turn.speaker is not Speaker.CLINICIAN or not _proxy_question_count(turn.text):
+            global_unsafe |= _source_reassignment(turn.text)
         if turn.speaker is Speaker.CLINICIAN:
             field = question_field(turn.text)
             if field is not None and (index + 1 == len(source.turns) or source.turns[index + 1].speaker is not Speaker.PATIENT):
