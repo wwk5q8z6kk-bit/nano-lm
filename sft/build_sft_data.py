@@ -8,10 +8,7 @@
 # Nano scale adaptation (logged): drop heavy-LaTeX/code (nano web-BPE vocab under-tokenizes them);
 #   keep short general + multi-turn + format + refusal; seed a verifiable "length" slice for Stage 4.
 import json, re, random
-from datasets import load_dataset
-from tokenizers import Tokenizer
 
-random.seed(0)
 IMS, IME = "<|im_start|>", "<|im_end|>"
 N_TARGET = 24000          # filtered general/chat examples
 MAX_CHARS = 900           # keep short so rendered seq fits S=512 under nano fertility
@@ -30,6 +27,10 @@ def ok(msgs):
     return True
 
 if __name__ == "__main__":
+    from datasets import load_dataset
+    from tokenizers import Tokenizer
+
+    random.seed(0)
     print("streaming SmolTalk, filtering...", flush=True)
     ds = load_dataset("HuggingFaceTB/smoltalk", "all", split="train", streaming=True)
     convos, seen = [], 0
