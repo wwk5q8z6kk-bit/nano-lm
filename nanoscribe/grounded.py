@@ -1880,7 +1880,9 @@ _ADMINISTRATIVE_EVENT_RE = re.compile(
     r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
     r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b|"
     r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
-    r"(?:(?:liv(?:e|ed|ing)|mov(?:e|ed|ing))\s+(?:at|to|in|into|out of)\b|"
+    r"(?:(?:liv(?:e|ed|ing)|mov(?:e|ed|ing))\s+(?:here|there|(?:at|to|in|into|out of)\s+"
+    r"(?:(?:the|an?|this|that|your|my|our|a new|your new)\s+)?(?:(?:new|old|current|previous|last)\s+)?"
+    r"(?:addresses|address|apartment|residence|house|home|building|neighbou?rhood|city|town|country))\b|"
     r"(?:(?:have|had|get|got)\s+)?(?:your|the)\s+(?:prescription|medication)\s+(?:renewed|refilled)\b|"
     r"(?:renew|refill|schedule|book|attend)\s+(?:your|the|an?)\s+"
     r"(?:prescription|medication|appointment|visit|scan|test)\b))", re.I,
