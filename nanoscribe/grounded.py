@@ -153,6 +153,40 @@ _ROUTINE_DISCLAIMED_RE = re.compile(
     re.IGNORECASE,
 )
 
+_ROUTINE_REFERENCE_RE = re.compile(
+    r"^(?:(?:yes|no|actually),?\s+)?(?:that|this|it|the latter)(?:\s+(?:medicine|medication|one|drug))?"
+    r"(?:'s|\s+(?:is|was|isn't|wasn't|belongs|has))\b|^i\s+(?:take|use)\s+(?:it|that)\b",
+    re.IGNORECASE,
+)
+_EMBEDDED_DENIAL_RE = re.compile(
+    r"\b(?:not|never)\s+(?:really\s+)?(?:true|correct|accurate|right|the case|as if)\b"
+    r"|\b(?:false|untrue|incorrect|wrong|mistaken|inaccurate)\b"
+    r"|\b(?:didn't|did not|never|don't|do not|can't|cannot|wouldn't|would not)\s+(?:say|tell|mean|believe|think|agree|confirm|claim)\b"
+    r"|\b(?:chart|record|form|note|doctor|nurse)\s+(?:says?|said|lists?|listed|shows?|claims?|states?)\b"
+    r"|\b(?:said|saying|told|quoted|written|recorded|asked)\b|[\"“”]",
+    re.IGNORECASE,
+)
+_QUESTION_START = r"(?:am|can|could|would|will|should|did|do|does|is|are|what|which|who|where|when|why|how)\b"
+_QUESTION_JOIN_RE = re.compile(rf"(?:,\s*|\s+and\s+)(?={_QUESTION_START})", re.I)
+_PROSPECTIVE_TREATMENT_RE = re.compile(
+    r"(?:\b(?:could|would|will|should|might|(?:plan(?:ning)?|intend(?:ing)?|going|want|scheduled)\s+to)|['’]ll)"
+    r"\s+(?:(?:start|begin|be)\s+)?(?:take|use|try|apply|taking|using|trying|applying)\b",
+    re.IGNORECASE,
+)
+_EVENT_JOIN_RE = re.compile(
+    r"(?:,\s*(?:(?:and|but|so|because)\s+)?|\s+(?:and|but|so|because)\s+)"
+    r"(?:then\s+)?(?=i\b|i'|(?:could|would|will|should|might|took|used)\b)", re.IGNORECASE,
+)
+
+_REPORTED_TREATMENT_RE = re.compile(
+    r"\bi(?:'m|'ve|\s+am|\s+have)?\s+(?:also\s+)?(?:been\s+)?"
+    r"(?:taking|using|applying|taken|took|used|tried|applied|rubbed|put|swallowed|allergic\s+to)\b", re.I,
+)
+_ROUTINE_JOIN_RE = re.compile(r",?\s+(?:but|whereas|while)\s+", re.I)
+_ROUTINE_CLARIFICATION_RE = re.compile(
+    r"\b(?:it|that (?:medication|medicine|drug))\b.*\b(?:for|routine|usual|daily)\b", re.I,
+)
+
 _SIDE_EFFECT_CONTRAST_RE = re.compile(
     r"\b(?:side effect,?\s+not an? allerg\w*|not an? allerg\w*,\s+a side effect)\b",
     re.IGNORECASE,
@@ -251,22 +285,14 @@ _ALG_QUESTION_CUE_RE = re.compile(
 )
 _MED_CLAUSE_VERB_RE = re.compile(
     r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using)|"
-    r"i\s+(?:have\s+)?(?:took|used|tried|applied|rubbed|put|swallowed))\b",
+    r"i\s+(?:have\s+)?(?:also\s+)?(?:took|used|tried|applied|rubbed|put|swallowed))\b",
     re.IGNORECASE,
 )
-_TAKEN_RE = re.compile(r"\bi(?:'ve|\s+have)?\s+taken\b", re.IGNORECASE)
+_TAKEN_RE = re.compile(r"\bi(?:'ve|\s+have)?\s+(?:also\s+)?taken\b", re.IGNORECASE)
 _TREATMENT_CONTEXT_RE = re.compile(
     r"\b(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|capsules?|doses?"
     r"|\d+(?:\.\d+)?\s*(?:mg|mcg|milligrams?|micrograms?)"
     r"|for (?:it|them|(?:this|the|my|your) (?:pain|headache|cough|rash|symptoms?)))\b",
-    re.IGNORECASE,
-)
-_PROSPECTIVE_TREATMENT_RE = re.compile(
-    r"\b(?:could|would|will|should|might|plan to|planning to)\s+(?:take|use|try|apply)\b",
-    re.IGNORECASE,
-)
-_EVENT_JOIN_RE = re.compile(
-    r"(?:,\s*|\s+)(?:(?:and|but|so|because)\s+)(?=i\b|i'|(?:could|would|will|should|might|took|used)\b)",
     re.IGNORECASE,
 )
 _ON_DECLARATION_RE = re.compile(r"^i(?:'m|\s+am)\s+on\b", re.IGNORECASE)
@@ -427,6 +453,62 @@ def _enclosing_clause(turn: Turn, span: CandidateSpan) -> Turn:
     return turn
 
 
+def _split_events(clause: Turn, boundary: re.Pattern[str]) -> tuple[Turn, ...]:
+    start = 0
+    events = []
+    for join in boundary.finditer(clause.text):
+        events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
+                           clause.start + start, clause.start + join.start(), clause.text[start:join.start()]))
+        start = join.end()
+    events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
+                       clause.start + start, clause.end, clause.text[start:]))
+    return tuple(events)
+
+
+def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
+    if clause.text.endswith("?") and not re.match(_QUESTION_START, clause.text, re.I):
+        return _split_events(clause, _QUESTION_JOIN_RE)
+    return (clause,)
+
+
+def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
+    if _ROUTINE_DISCLAIMED_RE.search(clause.text):
+        return _split_events(clause, _ROUTINE_JOIN_RE)
+    if _PROSPECTIVE_TREATMENT_RE.search(clause.text) or len(_REPORTED_TREATMENT_RE.findall(clause.text)) > 1:
+        return _split_events(clause, _EVENT_JOIN_RE)
+    return (clause,)
+
+
+def _patient_question(text: str) -> bool:
+    return text.rstrip().endswith("?") or bool(re.match(
+        r"(?:am|can|could|would|will|should|did|do|does|is|are)\s+(?:i|we|you|this|that|it)\b", text, re.I
+    ))
+
+
+def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span: CandidateSpan) -> bool:
+    if _ROUTINE_DISCLAIMED_RE.search(clause.text):
+        return True
+    # Match the named item even if the proposed source span includes its indication.
+    substance = re.split(r"\s+(?:for|on|to|today|yesterday|this morning|this evening|last night)\b",
+                         span.text, maxsplit=1, flags=re.I)[0].strip()
+    named_item = re.compile(r"(?<!\w)" + re.escape(substance) + r"(?!\w)", re.I) if substance else None
+    adjacent = True
+    for turn in source.turns[idx:]:
+        later_events = (event for part in _reply_clauses(turn) for event in _treatment_events(part))
+        for later in later_events:
+            if later.start < clause.end:
+                continue
+            if turn.speaker is Speaker.PATIENT and _ROUTINE_DISCLAIMED_RE.search(later.text):
+                if not _patient_question(later.text) and not _THIRD_PARTY_RE.search(later.text):
+                    if (named_item and named_item.search(later.text)) or (adjacent and _ROUTINE_REFERENCE_RE.match(later.text)):
+                        return True
+            if (turn.speaker is Speaker.CLINICIAN and adjacent and
+                    ((named_item and named_item.search(later.text)) or _ROUTINE_CLARIFICATION_RE.search(later.text))):
+                continue
+            adjacent = False
+    return False
+
+
 def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName) -> bool:
     """An immediate correction can retract a value in the same patient reply."""
     clauses = _reply_clauses(turn)
@@ -556,6 +638,8 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     if text not in {turn_clean, clause_clean, *semi_clauses}:
         return False
 
+    if _patient_question(clause_clean) or _EMBEDDED_DENIAL_RE.search(clause_clean):
+        return False
     if _PAST_OR_HYPOTHETICAL_RE.search(clause_clean) or _THIRD_PARTY_RE.search(clause_clean):
         return False
     if _clause_is_retracted_in_turn(turn, clause, field) or _later_turn_retracts_span(source, idx, field, text):
@@ -664,21 +748,6 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     return is_explicit_med_q, is_explicit_alg_q, prev_q
 
 
-def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
-    """Separate coordinated events only when a prospective treatment needs disambiguation."""
-    if not _PROSPECTIVE_TREATMENT_RE.search(clause.text):
-        return (clause,)
-    start = 0
-    events = []
-    for join in _EVENT_JOIN_RE.finditer(clause.text):
-        events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
-                           clause.start + start, clause.start + join.start(), clause.text[start:join.start()]))
-        start = join.end()
-    events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
-                       clause.start + start, clause.end, clause.text[start:]))
-    return tuple(events)
-
-
 def _medication_verb_positions(text: str, question: str) -> list[int]:
     positions = [match.start() for match in _MED_CLAUSE_VERB_RE.finditer(text)]
     for match in _TAKEN_RE.finditer(text):
@@ -701,7 +770,7 @@ def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, before_duratio
     return med_question or allergy_question
 
 
-def verify_grounded_span(
+def _verify_local_span(
     source: Source,
     field: FieldName,
     state: FieldState,
@@ -728,40 +797,40 @@ def verify_grounded_span(
 
     clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
-        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, clause.text[:span.start - clause.start]):
-            return False, "duration_scoped_to_medication_or_allergy"
-        if field is FieldName.MEDICATION and _TAKEN_RE.search(clause.text):
-            _, _, question = _question_flags(source, idx)
-            if not _medication_verb_positions(clause.text, question):
-                return False, "taken_without_treatment_context"
+        reporting = [part for part in _reporting_events(clause)
+                     if part.start < span.end and span.start < part.end]
+        if any(_patient_question(part.text) for part in reporting):
+            return False, "patient_question"
+        event = reporting[0] if len(reporting) == 1 else clause
         if field in (FieldName.MEDICATION, FieldName.ALLERGY):
-            if any(event.start < span.end and span.start < event.end and _PROSPECTIVE_TREATMENT_RE.search(event.text)
-                   for event in _treatment_events(clause)):
+            treatments = [part for part in _treatment_events(event) if part.start < span.end and span.start < part.end]
+            if any(_PROSPECTIVE_TREATMENT_RE.search(part.text) for part in treatments):
                 return False, "prospective_treatment"
-        if not grounded_value_valid(field, span.text, clause.text):
+            if len(treatments) == 1:
+                event = treatments[0]
+        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, event.text[:span.start - event.start]):
+            return False, "duration_scoped_to_medication_or_allergy"
+        if field is FieldName.MEDICATION and _TAKEN_RE.search(event.text):
+            _, _, question = _question_flags(source, idx)
+            if not _medication_verb_positions(event.text, question):
+                return False, "taken_without_treatment_context"
+        if not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
-        if _EPISTEMIC_HEDGE_RE.search(clause.text) or _NONUSE_ACTION_RE.search(clause.text):
+        if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(event.text):
             return False, "clause_contains_uncertainty_or_nonuse_hazard"
-        if _THIRD_PARTY_RE.search(clause.text) or _PAST_OR_HYPOTHETICAL_RE.search(clause.text):
+        if _THIRD_PARTY_RE.search(event.text) or _PAST_OR_HYPOTHETICAL_RE.search(event.text):
             return False, "clause_contains_third_party_or_past_scope_hazard"
-        if _NEGATION_WORD_RE.search(clause.text):
+        if _NEGATION_WORD_RE.search(event.text):
             return False, "clause_contains_negation_hazard"
-        if _SELF_CORRECTION_CLAUSE_RE.search(clause.text):
+        if _SELF_CORRECTION_CLAUSE_RE.search(event.text):
             # Reject spans inside the mistake/retraction clause itself (e.g., "I said aspirin on the intake form, but that was a mistake.")
             # Allow only if "actually" introduces a clean replacement after mistake was in prior sentence, not when mistake/wrong/sorry is in same clause.
-            if re.search(r"\b(?:mistake|mistaken|wrong|incorrect|sorry|other thing|not really)\b", clause.text, re.IGNORECASE):
+            if re.search(r"\b(?:mistake|mistaken|wrong|incorrect|sorry|other thing|not really)\b", event.text, re.IGNORECASE):
                 return False, "clause_is_retraction_or_mistake"
-            if re.search(r"\bactually\b", clause.text, re.IGNORECASE):
+            if re.search(r"\bactually\b", event.text, re.IGNORECASE):
                 return False, "clause_contains_correction_marker"
-        if field is FieldName.MEDICATION and _ROUTINE_DISCLAIMED_RE.search(turn.text):
+        if field is FieldName.MEDICATION and _routine_medication_disclaimed(source, idx, event, span):
             return False, "routine_medication_disclaimed_for_complaint"
-        # Check later turns in encounter for routine-medication disclaimer of this item
-        if field is FieldName.MEDICATION:
-            for later in source.turns[idx + 1 :]:
-                if later.speaker is Speaker.PATIENT and _ROUTINE_DISCLAIMED_RE.search(later.text):
-                    return False, "routine_medication_disclaimed_in_followup"
-        if _coexisting_substance_clause(field, clause.text) is not None:
-            return False, "coexisting_multiple_substances_require_uncertain"
         if _clause_is_retracted_in_turn(turn, clause, field) or _later_turn_retracts_span(source, idx, field, span.text):
             return False, "retracted_by_patient_correction"
         return True, "verified_grounded_supported"
@@ -772,6 +841,15 @@ def verify_grounded_span(
         return False, "invalid_or_hedged_denial_span"
 
     return False, "state_not_directly_presentable"
+
+
+def verify_grounded_span(
+    source: Source, field: FieldName, state: FieldState, span: CandidateSpan,
+) -> tuple[bool, str]:
+    valid, reason = _verify_local_span(source, field, state, span)
+    if valid and state is FieldState.SUPPORTED and _coexisting_substances(source, field):
+        return False, "coexisting_multiple_substances_require_uncertain"
+    return valid, reason
 
 
 def _patient_occurrence_count(source: Source, text: str) -> int:
@@ -919,7 +997,7 @@ def _strip_leading_determiner(source_text: str, span: CandidateSpan, *, keep_dur
     return trimmed if trimmed is not None else span
 
 
-def extract_field_supported_spans(source: Source, field: FieldName) -> list[CandidateSpan]:
+def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSpan]:
     """Extract clean, high-recall verbatim Patient candidate value spans for `field`."""
     out: dict[tuple[int, int], CandidateSpan] = {}
     if has_global_reassignment(source):
@@ -928,7 +1006,7 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
     def add(sp: CandidateSpan | None) -> None:
         if sp is None:
             return
-        ok, _ = verify_grounded_span(source, field, FieldState.SUPPORTED, sp)
+        ok, _ = _verify_local_span(source, field, FieldState.SUPPORTED, sp)
         if ok and (sp.start, sp.end) not in out:
             out[(sp.start, sp.end)] = sp
 
@@ -937,12 +1015,16 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
             continue
         is_explicit_med_q, is_explicit_alg_q, prev_q = _question_flags(source, t_idx)
 
-        clauses = _reply_clauses(turn)
-        if field in (FieldName.MEDICATION, FieldName.ALLERGY):
-            clauses = tuple(event for clause in clauses for event in _treatment_events(clause))
-        for clause in clauses:
+        reports = (part for clause in _reply_clauses(turn) for part in _reporting_events(clause))
+        events = (event for report in reports for event in _treatment_events(report)) if field in (
+            FieldName.MEDICATION, FieldName.ALLERGY) else reports
+        for clause in events:
             c_text = clause.text.rstrip(";").rstrip()
             c_start = clause.start
+            # An elliptical answer inherits the clinician's question once. Later
+            # clauses must explicitly report a substance to enter its candidate set.
+            selected_med_q = is_explicit_med_q and c_start == turn.start
+            selected_alg_q = is_explicit_alg_q and c_start == turn.start
             has_med_verb = bool(_medication_verb_positions(c_text, prev_q))
             has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text))
 
@@ -1031,19 +1113,19 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
                 continue
 
             if field is FieldName.MEDICATION:
-                if _ON_DECLARATION_RE.match(c_text) and not is_explicit_med_q and not re.search(
+                if _ON_DECLARATION_RE.match(c_text) and not selected_med_q and not re.search(
                     r"\b(?:for\s+(?:it|them|this|my|the)|medication|medicine|tablets?|pills?|\d+\s*(?:mg|mcg))\b",
                     c_text, re.IGNORECASE,
                 ):
                     continue
-                if has_alg_pred or is_explicit_alg_q:
+                if has_alg_pred or selected_alg_q:
                     continue
-                if not (has_med_verb or is_explicit_med_q or bool(_MED_QUESTION_CUE_RE.search(prev_q)) or re.search(r"\b(?:for|on)\s+(?:it|them|this|the|my)\b", c_text, re.IGNORECASE)):
+                if not (has_med_verb or selected_med_q or re.search(r"\b(?:for|on)\s+(?:it|them|this|the|my)\b", c_text, re.IGNORECASE)):
                     continue
                 body = c_text.rstrip(".!?").strip()
                 lead = re.match(
                     r"^(?:i've\s+been\s+(?:taking|using|applying)|i\s+have\s+been\s+(?:taking|using|applying)|"
-                    r"i(?:'m|\s+am)\s+(?:taking|using|on)|i(?:'ve|\s+have)?\s+taken|i\s+(?:have\s+)?(?:took|used|tried|applied|rubbed|put)|"
+                    r"i(?:'m|\s+am)\s+(?:taking|using|on)|i(?:'ve|\s+have)?\s+(?:also\s+)?taken|i\s+(?:have\s+)?(?:also\s+)?(?:took|used|tried|applied|rubbed|put)|"
                     r"only|just|some)\s+",
                     body,
                     re.IGNORECASE,
@@ -1068,9 +1150,9 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
                 continue
 
             if field is FieldName.ALLERGY:
-                if has_med_verb or is_explicit_med_q:
+                if has_med_verb or selected_med_q:
                     continue
-                if not (has_alg_pred or is_explicit_alg_q or bool(_ALG_QUESTION_CUE_RE.search(prev_q))):
+                if not (has_alg_pred or selected_alg_q):
                     continue
                 body = c_text.rstrip(".!?").strip()
                 # Trailing reaction pattern: "Penicillin gives me hives" / "Penicillin is the medicine I'm allergic to"
@@ -1088,7 +1170,7 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
                         if sp is not None:
                             add(_strip_leading_determiner(source.text, sp))
                 lead = re.match(
-                    r"^(?:yes,?\s+)?(?:i(?:'m|\s+am)\s+allergic\s+to|i\s+have\s+(?:an?\s+)?(?:known\s+)?allerg(?:y|ies)\s+to|"
+                    r"^(?:yes,?\s+)?(?:i(?:'m|\s+am)\s+(?:also\s+)?allergic\s+to|i\s+have\s+(?:an?\s+)?(?:known\s+)?allerg(?:y|ies)\s+to|"
                     r"allergic\s+to|yes,?|just|only)\s+",
                     body,
                     re.IGNORECASE,
@@ -1101,6 +1183,45 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
                         add(_strip_leading_determiner(source.text, sp))
 
     return list(out.values())
+
+
+def _coexisting_substances(source: Source, field: FieldName,
+                           local: list[CandidateSpan] | None = None) -> tuple[CandidateSpan, ...]:
+    """Collect verified independent observations, keeping one source quote per distinct substance."""
+    if field not in (FieldName.MEDICATION, FieldName.ALLERGY):
+        return ()
+    if local is None:
+        local = _local_supported_spans(source, field)
+    observed = []
+    for turn in source.turns:
+        if turn.speaker is not Speaker.PATIENT:
+            continue
+        for clause in _reply_clauses(turn):
+            for report in _reporting_events(clause):
+                for event in _treatment_events(report):
+                    pair = _coexisting_substance_clause(field, event.text)
+                    if pair:
+                        offset = 0
+                        for name in pair:
+                            start = event.text.index(name, offset)
+                            offset = start + len(name)
+                            item = CandidateSpan(event.start + start, event.start + offset, name)
+                            if _verify_local_span(source, field, FieldState.SUPPORTED, item)[0]:
+                                observed.append(item)
+                    else:
+                        alternatives = [sp for sp in local if event.start <= sp.start and sp.end <= event.end]
+                        if alternatives:
+                            # A short drug name and the same name with a time or indication are one observation.
+                            observed.append(min(alternatives, key=lambda sp: (len(sp.text), sp.start)))
+    unique = {}
+    for span in observed:
+        unique.setdefault(normalize_value(span.text), span)
+    return tuple(unique.values()) if len(unique) > 1 else ()
+
+
+def extract_field_supported_spans(source: Source, field: FieldName) -> list[CandidateSpan]:
+    local = _local_supported_spans(source, field)
+    return [] if _coexisting_substances(source, field, local) else local
 
 
 def extract_field_denial_spans(source: Source, field: FieldName) -> list[CandidateSpan]:
@@ -1152,28 +1273,16 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     """Extract genuine epistemic-uncertainty or coexisting-multi-substance span bundles."""
     bundles: list[tuple[CandidateSpan, ...]] = []
     seen: set[tuple[tuple[int, int], ...]] = set()
+    coexisting = _coexisting_substances(source, field)
+    if coexisting:
+        bundles.append(coexisting)
     for turn in source.turns:
         if turn.speaker is not Speaker.PATIENT:
             continue
-        # 1) Check coexisting multiple substances for MED / ALG
-        for clause in _reply_clauses(turn):
-            coex = _coexisting_substance_clause(field, clause.text)
-            if coex is not None:
-                first_s, second_s = coex
-                p1 = clause.text.find(first_s)
-                p2 = clause.text.find(second_s, p1 + len(first_s)) if p1 >= 0 else -1
-                if p1 >= 0 and p2 >= 0:
-                    sp1 = CandidateSpan(clause.start + p1, clause.start + p1 + len(first_s), first_s)
-                    sp2 = CandidateSpan(clause.start + p2, clause.start + p2 + len(second_s), second_s)
-                    key = ((sp1.start, sp1.end), (sp2.start, sp2.end))
-                    if key not in seen:
-                        seen.add(key)
-                        bundles.append((sp1, sp2))
-                whole = CandidateSpan(turn.start, turn.end, turn.text)
-                wkey = ((whole.start, whole.end),)
-                if wkey not in seen:
-                    seen.add(wkey)
-                    bundles.append((whole,))
+        if coexisting and all(turn.start <= sp.start and sp.end <= turn.end for sp in coexisting):
+            whole = CandidateSpan(turn.start, turn.end, turn.text)
+            seen.add(((whole.start, whole.end),))
+            bundles.append((whole,))
         # 2) Explicit epistemic uncertainty turns
         if _EPISTEMIC_HEDGE_RE.search(turn.text) and not re.search(
             r"\bchecking whether i can hear\b", turn.text, re.IGNORECASE
@@ -1191,7 +1300,7 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
     if has_global_reassignment(source):
         return []
 
-    sup_spans = extract_field_supported_spans(source, field)
+    sup_spans = _local_supported_spans(source, field)
     abs_spans = extract_field_denial_spans(source, field)
     pairs: list[tuple[CandidateSpan, ...]] = []
 
