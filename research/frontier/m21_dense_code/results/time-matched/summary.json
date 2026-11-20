@@ -1,0 +1,66 @@
+{
+  "decision": "dense leads at equal training time",
+  "dense_updates": 21100,
+  "cells": [
+    {
+      "seed": 0,
+      "dense_time_bits_per_token": 4.6537686,
+      "m21_bits_per_token": 5.0087946,
+      "gain": -0.355026,
+      "dense_training_seconds": 696.4,
+      "m21_training_seconds": 528.7,
+      "pointer_strata": {
+        "available": {
+          "dense_time": 2.1655053,
+          "m21": 1.7818215
+        },
+        "absent": {
+          "dense_time": 6.7010648,
+          "m21": 7.6638873
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "dense_time_bits_per_token": 4.6548444,
+      "m21_bits_per_token": 5.0276581,
+      "gain": -0.3728136,
+      "dense_training_seconds": 658.9,
+      "m21_training_seconds": 536.4,
+      "pointer_strata": {
+        "available": {
+          "dense_time": 2.1631757,
+          "m21": 1.7925464
+        },
+        "absent": {
+          "dense_time": 6.7049425,
+          "m21": 7.6894471
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "dense_time_bits_per_token": 4.6334054,
+      "m21_bits_per_token": 5.02341,
+      "gain": -0.3900046,
+      "dense_training_seconds": 546.9,
+      "m21_training_seconds": 607.4,
+      "pointer_strata": {
+        "available": {
+          "dense_time": 2.120022,
+          "m21": 1.7967153
+        },
+        "absent": {
+          "dense_time": 6.7013699,
+          "m21": 7.6782737
+        }
+      }
+    }
+  ],
+  "mean_gain_pooled": -0.3726148,
+  "mean_gain_repo_macro": -0.482336,
+  "repository_bootstrap_95pct": [
+    -0.5203157,
+    -0.4443741
+  ]
+}
