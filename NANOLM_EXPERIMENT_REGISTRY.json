@@ -17,7 +17,7 @@
       "track": "nanolm_frontier_v1",
       "hypothesis": "Hybrid Delta + Cortical PKM + Damped Jacobi Loops improve efficiency & math BPB at ~38M",
       "backend": "RunPod A40 (pod 58b79zdtdqcr9n, $0.3699 combined)",
-      "primary_metric": "C0_DenseGQA 0.6316 vs C3_CorticalPKM 0.6326 (-34.5% FLOPs) vs C4_JCLE 0.6368 (math 0.7884, 60.5% early exit)",
+      "primary_metric": "C0_DenseGQA 0.6316 vs C3_CorticalPKM 0.6326 (29.5% lower estimated FLOPs at 2K, corrected differential value width) vs C4_JCLE 0.6368 (math 0.7884, 60.5% early exit)",
       "status": "COMPLETED_MIXED",
       "artifact": "artifacts/nanolm_frontier_v1/e1_tournament.json"
     },

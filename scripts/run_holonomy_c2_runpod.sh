@@ -140,8 +140,8 @@ export TOKENIZERS_PARALLELISM=false
 export HF_HOME=/workspace/hf_cache
 mkdir -p /workspace/hf_cache
 nvidia-smi
-if ! python3 -c "import numpy, transformers, accelerate, pytest, triton; v=tuple(int(x) for x in transformers.__version__.split('.')[:2]); assert v >= (4, 51)" >/dev/null 2>&1; then
-  python3 -m pip install --break-system-packages -q --upgrade "transformers>=4.51.0" accelerate sentencepiece protobuf pytest numpy
+if ! python3 -c "import numpy, transformers, accelerate, pytest, triton, pydantic_monty; from importlib.metadata import version; assert version('pydantic-monty') == '1.6.0'; v=tuple(int(x) for x in transformers.__version__.split('.')[:2]); assert v >= (4, 51)" >/dev/null 2>&1; then
+  python3 -m pip install --break-system-packages -q --upgrade "transformers>=4.51.0" accelerate sentencepiece protobuf pytest numpy "pydantic-monty==1.6.0"
 fi
 cd /workspace/nanolm_repo
 mkdir -p artifacts/nanolm_holonomy_v2

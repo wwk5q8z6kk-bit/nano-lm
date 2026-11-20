@@ -122,13 +122,15 @@ def _verify_summarization(response: str, spec: dict[str, Any]) -> TaskVerdict:
     )
 
 
-def _json_equal(actual: Any, expected: Any) -> bool:
+def _json_equal(actual: Any, expected: Any, float_tolerance: float | None = None) -> bool:
+    if float_tolerance is not None and isinstance(expected, float):
+        return type(actual) in (int, float) and expected - float_tolerance <= actual <= expected + float_tolerance
     if type(actual) is not type(expected):
         return False
     if isinstance(expected, dict):
-        return actual.keys() == expected.keys() and all(_json_equal(actual[k], v) for k, v in expected.items())
+        return actual.keys() == expected.keys() and all(_json_equal(actual[k], v, float_tolerance) for k, v in expected.items())
     if isinstance(expected, list):
-        return len(actual) == len(expected) and all(_json_equal(x, y) for x, y in zip(actual, expected))
+        return len(actual) == len(expected) and all(_json_equal(x, y, float_tolerance) for x, y in zip(actual, expected))
     return actual == expected
 
 
@@ -163,7 +165,12 @@ _NODE = re.compile(r'(?P<id>\[\*\]|[\w-]+?)(?:\["(?P<quoted>[^"]+)"\]|\[(?P<labe
 _ARROW = re.compile(r'\s*(?:-->>|-->|-\.->|->>)(?:\|[^|]+\|)?\s*')
 
 
-def _mermaid_chain(lines: list[str], required: list[str], min_edges: int) -> TaskVerdict:
+def _mermaid_graph(
+    lines: list[str],
+    required: list[str],
+    min_edges: int,
+    allowed_parents: dict[str, list[str]] | None = None,
+) -> TaskVerdict:
     labels: dict[str, str] = {}
     edges: set[tuple[str, str]] = set()
     for line in lines:
@@ -192,11 +199,30 @@ def _mermaid_chain(lines: list[str], required: list[str], min_edges: int) -> Tas
         label = labels.get(identifier, identifier)
         return re.search(r"(?<!\w)" + re.escape(concept) + r"(?!\w)", label, re.I) is not None
 
-    # Walk the same connected vertices even when a label appears on two nodes.
-    reachable = {src for src, _ in edges if required and matches(src, required[0])}
-    for concept in required[1:]:
-        reachable = {dst for src, dst in edges if src in reachable and matches(dst, concept)}
-    passed = bool(reachable) and len(edges) >= min_edges
+    # Bind concepts to actual vertices so separate nodes with the same label
+    # cannot stand in for a single connected chain or branch.
+    vertices = {vertex for edge in edges for vertex in edge}
+    candidates = {concept: [v for v in vertices if matches(v, concept)] for concept in required}
+    bound: dict[str, str] = {}
+    parents = allowed_parents or {}
+
+    def match_topology(index: int) -> bool:
+        if index == len(required):
+            return True
+        concept = required[index]
+        predecessors = parents.get(concept, required[index - 1:index])
+        for vertex in candidates[concept]:
+            if vertex in bound.values():
+                continue
+            if predecessors and not any((bound[parent], vertex) in edges for parent in predecessors):
+                continue
+            bound[concept] = vertex
+            if match_topology(index + 1):
+                return True
+            del bound[concept]
+        return False
+
+    passed = len(edges) >= min_edges and bool(required) and match_topology(0)
     return TaskVerdict(passed, float(passed), "verified_mermaid" if passed else "incomplete_topology",
                        {"edges": len(edges)})
 
@@ -215,7 +241,7 @@ def _verify_diagrams_and_charts(response: str, spec: dict[str, Any]) -> TaskVerd
             for bracket_content in re.findall(r"\b[A-Za-z0-9_]+\[(?!\")([^\]]+)\]", ln):
                 if "(" in bracket_content or ")" in bracket_content:
                     return TaskVerdict(False, 0.3, "unquoted_special_chars_in_node_label", {"line": ln})
-        return _mermaid_chain(lines[1:], list(spec["required_concepts"]), int(spec["min_edges"]))
+        return _mermaid_graph(lines[1:], list(spec["required_concepts"]), int(spec["min_edges"]), spec.get("allowed_parents"))
 
     # Quantitative JSON chart specification
     try:
@@ -243,10 +269,10 @@ def _verify_long_context(response: str, spec: dict[str, Any]) -> TaskVerdict:
     except json.JSONDecodeError:
         return TaskVerdict(False, 0.0, "invalid_json_output", {})
     expected = spec["expected_json"]
-    if parsed == expected:
+    if _json_equal(parsed, expected):
         return TaskVerdict(True, 1.0, "exact_long_context_synthesis", {})
     if isinstance(parsed, dict):
-        hits = sum(1 for k, v in expected.items() if parsed.get(k) == v)
+        hits = sum(1 for k, v in expected.items() if k in parsed and _json_equal(parsed[k], v))
         return TaskVerdict(False, round(hits / max(len(expected), 1), 4), "partial_long_context_match", {})
     return TaskVerdict(False, 0.0, "long_context_mismatch", {})
 

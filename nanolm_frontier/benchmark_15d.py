@@ -19,7 +19,8 @@ from typing import Any
 from nanolm_posttrain.eval_suite import (
     TaskVerdict,
     _extract_fenced_or_raw,
-    _mermaid_chain,
+    _json_equal,
+    _mermaid_graph,
     _verify_coding,
     _verify_summarization,
 )
@@ -107,15 +108,12 @@ def _verify_json_invariant(response: str, spec: dict[str, Any]) -> TaskVerdict:
 
     expected: dict[str, Any] = spec["expected_json"]
     if set(parsed.keys()) != set(expected.keys()):
-        hits = sum(1 for k, v in expected.items() if parsed.get(k) == v)
+        hits = sum(1 for k, v in expected.items() if k in parsed and _json_equal(parsed[k], v, 1e-3))
         return TaskVerdict(False, round(0.5 * hits / max(len(expected), 1), 4), f"schema_keys_mismatch:{sorted(parsed.keys())}", {})
 
     for k, exp_val in expected.items():
         got = parsed.get(k)
-        if isinstance(exp_val, float) and isinstance(got, (int, float)):
-            if abs(float(got) - exp_val) > 1e-3:
-                return TaskVerdict(False, 0.4, f"float_mismatch:{k}", {})
-        elif got != exp_val:
+        if not _json_equal(got, exp_val, 1e-3):
             return TaskVerdict(False, 0.5, f"value_mismatch:{k}:{got!r}!={exp_val!r}", {})
     return TaskVerdict(True, 1.0, "exact_json_match", {})
 
@@ -135,7 +133,7 @@ def _verify_diagram_or_chart(response: str, spec: dict[str, Any]) -> TaskVerdict
         for bracket_content in re.findall(r"\b[A-Za-z0-9_]+\[(?!\")([^\]]+)\]", ln):
             if "(" in bracket_content or ")" in bracket_content:
                 return TaskVerdict(False, 0.3, "unquoted_special_chars_in_label", {"line": ln})
-    return _mermaid_chain(lines[1:], list(spec["required_tokens"]), int(spec["min_edges"]))
+    return _mermaid_graph(lines[1:], list(spec["required_tokens"]), int(spec["min_edges"]), spec.get("allowed_parents"))
 
 
 def _verify_instruction_following(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -231,7 +229,7 @@ def _verify_tool_use(response: str, spec: dict[str, Any]) -> TaskVerdict:
 
     matched = 0
     for got, exp in zip(got_calls, expected_calls):
-        if isinstance(got, dict) and got.get("tool") == exp["tool"] and got.get("args") == exp["args"]:
+        if isinstance(got, dict) and got.get("tool") == exp["tool"] and _json_equal(got.get("args"), exp["args"]):
             matched += 1
     passed = matched == len(expected_calls)
     return TaskVerdict(
@@ -272,7 +270,7 @@ def _verify_planning_dag(response: str, spec: dict[str, Any]) -> TaskVerdict:
         start_t = max((finish[d] for d in deps), default=0)
         finish[name] = start_t + int(nodes[name]["dur"])
     expected_makespan = max(finish.values(), default=0)
-    if makespan != expected_makespan:
+    if not _json_equal(makespan, expected_makespan):
         return TaskVerdict(False, 0.7, f"wrong_makespan:{makespan}!={expected_makespan}", {})
     return TaskVerdict(True, 1.0, "verified_dag_schedule_and_makespan", {"makespan": expected_makespan})
 
@@ -560,7 +558,8 @@ def build_benchmark_15d_suite() -> tuple[BenchmarkTask, ...]:
             "medium",
             "Return only Mermaid inside ```mermaid``` fence. Quote labels containing parentheses.",
             'Write a `flowchart LR` showing `Client["Browser (UI)"]` --> `Gateway["API Gateway"]` --> `Worker["Job Runner (Async)"]` and error edge back to `Alert`.',
-            {"subkind": "mermaid", "expected_header": "flowchart LR", "required_tokens": ["Browser", "Gateway", "Job Runner", "Alert"], "min_edges": 3},
+            {"subkind": "mermaid", "expected_header": "flowchart LR", "required_tokens": ["Browser", "Gateway", "Job Runner", "Alert"],
+             "allowed_parents": {"Alert": ["Gateway", "Job Runner"]}, "min_edges": 3},
         ),
         BenchmarkTask(
             "dia-04",

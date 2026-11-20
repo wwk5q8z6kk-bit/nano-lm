@@ -393,10 +393,14 @@ class FrontierArchConfig:
             if self.is_delta_layer(idx):
                 attn_mac = 5 * d * d + 3 * d * self.short_conv_kernel + self.n_heads * self.d_head * self.d_head
             else:
+                # Each differential call pairs half the query heads with a
+                # double-width value. Across both calls QK costs one product
+                # per head and AV costs two.
+                attention_products = 3 if self.uses_diff_and_whitening else 2
                 attn_mac = (
                     2 * d * (self.n_heads * self.d_head)
                     + 2 * d * (self.n_kv_heads * self.d_head)
-                    + 2 * seq_len * self.n_heads * self.d_head
+                    + attention_products * seq_len * self.n_heads * self.d_head
                 )
             pkm_mac = 0
             if self.uses_pkm:
