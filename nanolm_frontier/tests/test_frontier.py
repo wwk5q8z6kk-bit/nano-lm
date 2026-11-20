@@ -82,6 +82,9 @@ def test_five_architectures_forward_backward_and_budget() -> None:
         assert logits.shape == (2, 24, 256)
         loss = logits.sum()
         loss.backward()
+        for name, p in model.named_parameters():
+            if "lambda_k" in name:
+                assert p.grad is not None and p.grad.abs().max() > 0
         grads = [p.grad for p in model.parameters() if p.requires_grad]
         assert grads and all(g is not None and torch.isfinite(g).all() for g in grads)
 
@@ -307,3 +310,23 @@ def test_local_e1_smoke_tournament() -> None:
     c4_arm = res["arms"][-1]
     assert "jcle_test_time_scaling" in c4_arm
     assert len(c4_arm["jcle_test_time_scaling"]) == 4
+
+
+def test_reviewed_verifier_boundaries() -> None:
+    tasks = {task.task_id: task for task in build_benchmark_15d_suite()}
+
+    def passes(task_id, text):
+        return verify_benchmark_response(tasks[task_id], text).passed
+
+    assert passes("dia-03", 'flowchart LR\nA["Browser"] --> B[Gateway] --> C["Job Runner"] --> Alert')
+    assert not passes("dia-01", 'flowchart TD\nIngest -->\nValidate -->\nArchive -->')
+    assert not passes("mth-03", "FINAL_ANSWER: 39, not 38")
+    assert not passes("mth-03", "I reject 38")
+    assert not passes("pln-02", json.dumps({"order": [{}, {}, {}, {}], "makespan": 9}))
+    assert passes("hal-01", "ABSTAIN: $250 was for shipping.")
+    assert passes("hal-04", "ABSTAIN: Warehouse East holds 4,200 pallets, West is unknown.")
+    assert passes("hal-04", "ABSTAIN: The 4,200 pallets refer to Warehouse East; Warehouse West is not provided.")
+    assert not passes("hal-04", "ABSTAIN: East is unknown and West held 4,200 pallets.")
+    assert not passes("hal-04", "ABSTAIN: West held 4,200 pallets.")
+    mean, lo, hi = bootstrap_accuracy_ci([0, 1] * 28)
+    assert lo < mean < hi

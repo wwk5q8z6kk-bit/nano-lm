@@ -12,12 +12,14 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 import math
+import random
 import re
 from typing import Any
 
 from nanolm_posttrain.eval_suite import (
     TaskVerdict,
     _extract_fenced_or_raw,
+    _mermaid_chain,
     _verify_coding,
     _verify_summarization,
 )
@@ -74,9 +76,7 @@ def _extract_final_answer(response: str) -> str:
     lines = [ln.strip() for ln in response.strip().splitlines() if ln.strip()]
     if not lines:
         return ""
-    last = lines[-1]
-    nums = re.findall(r"-?\d+(?:\.\d+)?", last)
-    return nums[-1] if nums else last
+    return lines[-1].strip("`").rstrip(".").strip()
 
 
 def _verify_exact_answer(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -85,10 +85,6 @@ def _verify_exact_answer(response: str, spec: dict[str, Any]) -> TaskVerdict:
     cand = cand_raw.casefold().replace(",", "")
     if cand in aliases:
         return TaskVerdict(True, 1.0, "exact_answer_match", {"candidate": cand_raw})
-    # Also check if single accepted scalar appears right after FINAL_ANSWER or boxed cleanly
-    for alias in aliases:
-        if re.search(rf"(?<![\w.-]){re.escape(alias)}(?![\w.-])", response.strip().splitlines()[-1].casefold() if response.strip() else ""):
-            return TaskVerdict(True, 1.0, "exact_lastline_match", {"candidate": cand_raw})
     return TaskVerdict(False, 0.0, f"answer_mismatch:{cand_raw!r}", {"candidate": cand_raw})
 
 
@@ -139,20 +135,7 @@ def _verify_diagram_or_chart(response: str, spec: dict[str, Any]) -> TaskVerdict
         for bracket_content in re.findall(r"\b[A-Za-z0-9_]+\[(?!\")([^\]]+)\]", ln):
             if "(" in bracket_content or ")" in bracket_content:
                 return TaskVerdict(False, 0.3, "unquoted_special_chars_in_label", {"line": ln})
-    low = body.casefold()
-    req_tokens: list[str] = list(spec["required_tokens"])
-    hits = sum(1 for tok in req_tokens if tok.casefold() in low)
-    edge_tokens = ("-->", "->>", "-->>", "-->|", "-.->")
-    edges = sum(1 for ln in lines[1:] if any(et in ln for et in edge_tokens))
-    min_edges = int(spec["min_edges"])
-    passed = hits == len(req_tokens) and edges >= min_edges
-    score = 0.5 * (hits / max(len(req_tokens), 1)) + 0.5 * min(1.0, edges / max(min_edges, 1))
-    return TaskVerdict(
-        passed,
-        round(score, 4),
-        "verified_mermaid" if passed else f"incomplete_mermaid:hits={hits}/{len(req_tokens)},edges={edges}",
-        {"hits": hits, "edges": edges},
-    )
+    return _mermaid_chain(lines[1:], list(spec["required_tokens"]), int(spec["min_edges"]))
 
 
 def _verify_instruction_following(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -271,7 +254,9 @@ def _verify_planning_dag(response: str, spec: dict[str, Any]) -> TaskVerdict:
     order = parsed.get("order")
     makespan = parsed.get("makespan")
     nodes: dict[str, dict[str, Any]] = spec["dag"]
-    if not isinstance(order, list) or len(order) != len(nodes) or set(order) != set(nodes.keys()):
+    if not isinstance(order, list) or not all(isinstance(item, str) for item in order):
+        return TaskVerdict(False, 0.2, "invalid_task_names", {})
+    if len(order) != len(nodes) or set(order) != set(nodes):
         return TaskVerdict(False, 0.2, "invalid_task_set_in_order", {})
 
     pos = {name: i for i, name in enumerate(order)}
@@ -297,7 +282,11 @@ def _verify_hallucination_resistance(response: str, spec: dict[str, Any]) -> Tas
     markers = ("abstain", "cannot be determined", "insufficient information", "not provided", "contradict", "impossible")
     has_abstention = any(m in low for m in markers)
     forbidden_claims: list[str] = list(spec.get("forbidden_confabulations", ()))
-    confabulated = any(fc.casefold() in low for fc in forbidden_claims)
+    assertions = low
+    for premise_pattern in spec.get("citable_claims", ()):
+        assertions = re.sub(premise_pattern, " ", assertions)
+    confabulated = any(re.search(r"(?<!\w)" + re.escape(fc.casefold()) + r"(?!\w)", assertions)
+                       for fc in forbidden_claims)
     if has_abstention and not confabulated:
         return TaskVerdict(True, 1.0, "calibrated_abstention", {})
     if confabulated:
@@ -887,7 +876,9 @@ def build_benchmark_15d_suite() -> tuple[BenchmarkTask, ...]:
             "hard",
             "Output `ABSTAIN:` cleanly if the document omits the requested quantity.",
             "Report excerpt: 'Warehouse East holds 4,200 pallets after Q1 consolidation, up from Q4 baseline.' Question: How many pallets did Warehouse West hold in Q4?",
-            {"forbidden_confabulations": ["4200", "4,200 pallets"]},
+            {"forbidden_confabulations": ["4200", "4,200"],
+             "citable_claims": [r"\b(?:warehouse\s+)?east(?:\s+(?:warehouse|holds?|held|has|had|stores?|stored|reported|contained|with|only|currently|accounts?\s+for)|[\s,:-])+4,?200\b",
+                               r"\b4,?200\s+pallets?\s+(?:at|in|for|refer(?:s)? to|belong(?:ing)? to|(?:is|are|were) (?:at|in|for))\s+(?:warehouse\s+)?east\b"]},
         ),
 
         # 14. MEMORY_RETENTION (4)
@@ -1018,17 +1009,12 @@ def bootstrap_accuracy_ci(
     """Deterministic seeded percentile bootstrap 95% confidence interval."""
     if not outcomes:
         return (0.0, 0.0, 0.0)
-    rng_state = seed
+    if n_resamples <= 0:
+        raise ValueError("n_resamples must be positive")
+    rng = random.Random(seed)
     n = len(outcomes)
     mean_val = sum(outcomes) / n
-    means: list[float] = []
-    # Deterministic LCG for zero-dependency reproducibility
-    for _ in range(n_resamples):
-        total = 0.0
-        for _ in range(n):
-            rng_state = (1103515245 * rng_state + 12345) & 0x7FFFFFFF
-            total += outcomes[rng_state % n]
-        means.append(total / n)
+    means = [sum(rng.choices(outcomes, k=n)) / n for _ in range(n_resamples)]
     means.sort()
     lo = means[max(0, int(math.floor(0.025 * n_resamples)))]
     hi = means[min(n_resamples - 1, int(math.ceil(0.975 * n_resamples)) - 1)]

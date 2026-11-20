@@ -29,9 +29,12 @@ To test high-density multi-domain post-training within the `<= 4B` budget, we ev
 | **Long Context (`long_context`)** | `50.0%` (`1/2`) | `50.0%` (`1/2`) | `0.500` | `0.500` | Exact 30-section multi-needle retrieval & arithmetic synthesis (`eval-long-01`) |
 | **Overall (All 6 Pillars)** | **`50.0%` (`6/12`)** | **`66.7%` (`8/12`)** | **`0.5417`** | **`0.6875`** | **`+16.7 pp` pass rate, `+0.1458` mean score** |
 
+The table records the original verifier. Its topological-order checks missed lexicographic ties. Current coding evaluations use the Monty Python subset and enforce those ties. Standard-library availability differs from CPython. Fresh scores require rescoring.
+
 ## 3. Reproduce
 
 ```bash
+python3 -m pip install pydantic-monty==1.6.0
 python3 -m pytest -q nanolm_posttrain/
-python3 -m nanolm_posttrain.runner --checkpoint /path/to/local/model --adapt-epochs 6 --lora-rank 16
+python3 -m nanolm_posttrain.runner --checkpoint /path/to/local/model --adapt-epochs 6 --lora-rank 16 --lr 0.00015
 ```

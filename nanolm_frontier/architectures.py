@@ -678,9 +678,9 @@ class _SoftmaxOrDiffGQABlockAttn(nn.Module):
             self.n_diff_heads = self.n_heads // 2
             self.n_diff_kv = self.n_kv_heads // 2
             self.lambda_init = 0.8 - 0.6 * math.exp(-0.3 * float(layer_idx))
-            self.lambda_q1 = nn.Parameter(torch.zeros(self.d_head))
+            self.lambda_q1 = nn.Parameter(torch.randn(self.d_head) * 0.1)
             self.lambda_k1 = nn.Parameter(torch.zeros(self.d_head))
-            self.lambda_q2 = nn.Parameter(torch.zeros(self.d_head))
+            self.lambda_q2 = nn.Parameter(torch.randn(self.d_head) * 0.1)
             self.lambda_k2 = nn.Parameter(torch.zeros(self.d_head))
             self.subhead_norm = nn.RMSNorm(2 * self.d_head, eps=config.rms_eps)
 

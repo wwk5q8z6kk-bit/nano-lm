@@ -12,13 +12,10 @@ subjective LLM judges:
 
 from __future__ import annotations
 
-import ast
 from dataclasses import dataclass
 from enum import Enum
 import json
 import re
-import subprocess
-import sys
 from typing import Any
 
 
@@ -70,36 +67,13 @@ def _extract_fenced_or_raw(text: str) -> str:
 
 
 def _verify_coding(response: str, spec: dict[str, Any]) -> TaskVerdict:
-    code = _extract_fenced_or_raw(response)
-    try:
-        ast.parse(code)
-    except SyntaxError as exc:
-        return TaskVerdict(False, 0.0, f"syntax_error:{exc.msg}", {"code_len": len(code)})
+    from nanolm_posttrain.code_guest import run_guest
 
-    assertions: list[str] = list(spec["assertions"])
-    harness = (
-        code
-        + "\n\n_passed = 0\n_checks = "
-        + repr(assertions)
-        + "\nfor _chk in _checks:\n"
-        + "    exec(_chk, globals())\n"
-        + "    _passed += 1\n"
-        + "print('PASS_COUNT:' + str(_passed))\n"
-    )
-    try:
-        proc = subprocess.run(
-            [sys.executable, "-I", "-B", "-c", harness],
-            capture_output=True,
-            text=True,
-            timeout=4.0,
-        )
-    except subprocess.TimeoutExpired:
-        return TaskVerdict(False, 0.0, "execution_timeout", {})
-
-    if proc.returncode == 0 and f"PASS_COUNT:{len(assertions)}" in proc.stdout:
-        return TaskVerdict(True, 1.0, "all_assertions_passed", {"assertions": len(assertions)})
-    err_tail = (proc.stderr or proc.stdout).strip().splitlines()[-1:] or ["assertion_failed"]
-    return TaskVerdict(False, 0.0, f"runtime_or_assertion_failure:{err_tail[0][:80]}", {})
+    checks = tuple(spec["assertions"])
+    passed, error = run_guest(_extract_fenced_or_raw(response), checks)
+    if not passed:
+        return TaskVerdict(False, 0.0, f"guest_error:{error}", {})
+    return TaskVerdict(True, 1.0, "all_assertions_passed", {"assertions": len(checks)})
 
 
 def _verify_reasoning(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -130,8 +104,8 @@ def _verify_summarization(response: str, spec: dict[str, Any]) -> TaskVerdict:
     if len(words) > max_words:
         return TaskVerdict(False, 0.25, f"exceeds_word_budget:{len(words)}>{max_words}", {"words": len(words)})
 
-    src_nums = set(re.findall(r"\b\d+(?:\.\d+)?%?\b", source))
-    sum_nums = set(re.findall(r"\b\d+(?:\.\d+)?%?\b", summary))
+    src_nums = set(re.findall(r"(?<![\w.])[+\-−]?(?:\d+(?:\.\d+)?|\.\d+)%?(?!\w)", source))
+    sum_nums = set(re.findall(r"(?<![\w.])[+\-−]?(?:\d+(?:\.\d+)?|\.\d+)%?(?!\w)", summary))
     hallucinated_nums = sorted(sum_nums - src_nums)
     if hallucinated_nums:
         return TaskVerdict(False, 0.0, f"hallucinated_numbers:{hallucinated_nums}", {})
@@ -146,6 +120,16 @@ def _verify_summarization(response: str, spec: dict[str, Any]) -> TaskVerdict:
         "verified_summary" if passed else f"missing_salient_terms:{hits}/{len(required_terms)}",
         {"words": len(words), "term_recall": recall},
     )
+
+
+def _json_equal(actual: Any, expected: Any) -> bool:
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(expected, dict):
+        return actual.keys() == expected.keys() and all(_json_equal(actual[k], v) for k, v in expected.items())
+    if isinstance(expected, list):
+        return len(actual) == len(expected) and all(_json_equal(x, y) for x, y in zip(actual, expected))
+    return actual == expected
 
 
 def _verify_structured_extraction(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -165,7 +149,7 @@ def _verify_structured_extraction(response: str, spec: dict[str, Any]) -> TaskVe
             f"schema_keys_mismatch:{sorted(parsed.keys())}!={sorted(expected.keys())}",
             {},
         )
-    matches = sum(1 for k, v in expected.items() if parsed.get(k) == v)
+    matches = sum(1 for k, v in expected.items() if _json_equal(parsed[k], v))
     score = matches / len(expected) if expected else 1.0
     return TaskVerdict(
         matches == len(expected),
@@ -173,6 +157,48 @@ def _verify_structured_extraction(response: str, spec: dict[str, Any]) -> TaskVe
         "exact_structured_json" if matches == len(expected) else f"field_mismatch:{matches}/{len(expected)}",
         {"matched_fields": matches},
     )
+
+
+_NODE = re.compile(r'(?P<id>\[\*\]|[\w-]+?)(?:\["(?P<quoted>[^"]+)"\]|\[(?P<label>[^\]()]+)\])?(?=\s|$|-->|-\.->|->>)')
+_ARROW = re.compile(r'\s*(?:-->>|-->|-\.->|->>)(?:\|[^|]+\|)?\s*')
+
+
+def _mermaid_chain(lines: list[str], required: list[str], min_edges: int) -> TaskVerdict:
+    labels: dict[str, str] = {}
+    edges: set[tuple[str, str]] = set()
+    for line in lines:
+        for statement in line.split("%%", 1)[0].split(";"):
+            rest = statement.strip()
+            previous = None
+            while rest:
+                node = _NODE.match(rest)
+                if node is None:
+                    return TaskVerdict(False, 0.0, "invalid_mermaid_endpoint", {})
+                identifier = node["id"]
+                label = node["quoted"] or node["label"]
+                if label:
+                    labels[identifier] = label
+                if previous is not None:
+                    edges.add((previous, identifier))
+                rest = rest[node.end():].strip()
+                if not rest or rest.startswith(":"):  # state transition annotation
+                    break
+                arrow = _ARROW.match(rest)
+                if arrow is None or not rest[arrow.end():].strip():
+                    return TaskVerdict(False, 0.0, "invalid_mermaid_edge", {})
+                previous, rest = identifier, rest[arrow.end():].strip()
+
+    def matches(identifier: str, concept: str) -> bool:
+        label = labels.get(identifier, identifier)
+        return re.search(r"(?<!\w)" + re.escape(concept) + r"(?!\w)", label, re.I) is not None
+
+    # Walk the same connected vertices even when a label appears on two nodes.
+    reachable = {src for src, _ in edges if required and matches(src, required[0])}
+    for concept in required[1:]:
+        reachable = {dst for src, dst in edges if src in reachable and matches(dst, concept)}
+    passed = bool(reachable) and len(edges) >= min_edges
+    return TaskVerdict(passed, float(passed), "verified_mermaid" if passed else "incomplete_topology",
+                       {"edges": len(edges)})
 
 
 def _verify_diagrams_and_charts(response: str, spec: dict[str, Any]) -> TaskVerdict:
@@ -189,19 +215,7 @@ def _verify_diagrams_and_charts(response: str, spec: dict[str, Any]) -> TaskVerd
             for bracket_content in re.findall(r"\b[A-Za-z0-9_]+\[(?!\")([^\]]+)\]", ln):
                 if "(" in bracket_content or ")" in bracket_content:
                     return TaskVerdict(False, 0.3, "unquoted_special_chars_in_node_label", {"line": ln})
-        low = body.casefold()
-        req_nodes: list[str] = list(spec.get("required_concepts", ()))
-        hits = sum(1 for c in req_nodes if c.casefold() in low)
-        edge_count = sum(1 for ln in lines[1:] if "-->" in ln or "->>" in ln or "-->|" in ln)
-        min_edges = int(spec.get("min_edges", 2))
-        passed = hits == len(req_nodes) and edge_count >= min_edges
-        score = 0.5 * (hits / max(len(req_nodes), 1)) + 0.5 * min(1.0, edge_count / max(min_edges, 1))
-        return TaskVerdict(
-            passed,
-            round(score, 4),
-            "verified_mermaid_diagram" if passed else f"incomplete_topology:concepts={hits}/{len(req_nodes)},edges={edge_count}",
-            {"concepts_hit": hits, "edges": edge_count},
-        )
+        return _mermaid_chain(lines[1:], list(spec["required_concepts"]), int(spec["min_edges"]))
 
     # Quantitative JSON chart specification
     try:
@@ -209,13 +223,15 @@ def _verify_diagrams_and_charts(response: str, spec: dict[str, Any]) -> TaskVerd
     except json.JSONDecodeError as exc:
         return TaskVerdict(False, 0.0, f"invalid_chart_json:{exc.msg}", {})
     req_keys = {"chart_type", "x_labels", "series", "total"}
-    if not isinstance(chart, dict) or not req_keys.issubset(chart.keys()):
+    if not isinstance(chart, dict) or req_keys != chart.keys():
         return TaskVerdict(False, 0.1, "missing_chart_schema_keys", {})
+    if chart["chart_type"] != spec["expected_chart_type"]:
+        return TaskVerdict(False, 0.2, "chart_type_mismatch", {})
     if chart.get("x_labels") != spec["expected_x_labels"]:
         return TaskVerdict(False, 0.3, "x_labels_mismatch", {})
-    if chart.get("series") != spec["expected_series"]:
+    if not _json_equal(chart["series"], spec["expected_series"]):
         return TaskVerdict(False, 0.4, "series_values_not_conserved", {})
-    if chart.get("total") != spec["expected_total"]:
+    if not _json_equal(chart["total"], spec["expected_total"]):
         return TaskVerdict(False, 0.7, "computed_total_mismatch", {})
     return TaskVerdict(True, 1.0, "verified_quantitative_chart", {})
 
@@ -322,6 +338,8 @@ def build_foundation_eval_suite() -> tuple[FoundationTask, ...]:
             spec={
                 "assertions": [
                     "assert topological_order({'a': ['c'], 'b': ['c'], 'c': []}) == ['a', 'b', 'c']",
+                    "assert topological_order({'b': [], 'a': []}) == ['a', 'b']",
+                    "assert topological_order({'z': [], 'a': ['b'], 'b': []}) == ['a', 'b', 'z']",
                     "assert topological_order({'x': []}) == ['x']",
                     "try:\n    topological_order({'a': ['b'], 'b': ['a']})\n    assert False\nexcept ValueError:\n    pass",
                 ]
@@ -433,6 +451,7 @@ def build_foundation_eval_suite() -> tuple[FoundationTask, ...]:
             ),
             spec={
                 "subkind": "chart_json",
+                "expected_chart_type": "bar",
                 "expected_x_labels": ["Q1", "Q2", "Q3", "Q4"],
                 "expected_series": [120, 145, 110, 165],
                 "expected_total": 540,
@@ -625,7 +644,7 @@ def build_foundation_train_curriculum() -> tuple[FoundationTask, ...]:
             domain=FoundationDomain.DIAGRAMS_AND_CHARTS,
             system_prompt="Return only a valid JSON chart specification with exact keys `chart_type`, `x_labels`, `series`, `total`.",
             user_prompt="Compile a line chart JSON (`chart_type`: `'line'`) for monthly active nodes: Jan=40, Feb=55, Mar=65, Apr=80. Include `x_labels`, `series`, and exact `total`.",
-            spec={"subkind": "chart_json", "expected_x_labels": ["Jan", "Feb", "Mar", "Apr"], "expected_series": [40, 55, 65, 80], "expected_total": 240},
+            spec={"subkind": "chart_json", "expected_chart_type": "line", "expected_x_labels": ["Jan", "Feb", "Mar", "Apr"], "expected_series": [40, 55, 65, 80], "expected_total": 240},
             reference_response='{"chart_type": "line", "x_labels": ["Jan", "Feb", "Mar", "Apr"], "series": [40, 55, 65, 80], "total": 240}',
         ),
         FoundationTask(

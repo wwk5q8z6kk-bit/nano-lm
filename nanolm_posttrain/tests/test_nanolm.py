@@ -144,3 +144,23 @@ def test_pure_pytorch_lora_freezes_base_and_reduces_masked_sft_loss():
     assert final_loss < initial_loss * 0.6
     assert torch.equal(model.tok_emb.weight, base_snapshot)
     assert len(lora_state_dict(model)) == wrapped * 2
+
+
+def test_coding_guest_and_foundation_contracts():
+    from nanolm_posttrain.eval_suite import _verify_coding, _verify_structured_extraction
+
+    assert _verify_coding("def increment(x): return x + 1", {"assertions": ["assert increment(2) == 3"]}).passed
+    assert not _verify_coding("print('PASS_COUNT:1')", {"assertions": ["assert False"]}).passed
+    assert not _verify_structured_extraction('{"v": [1]}', {"expected_json": {"v": [True]}}).passed
+    tasks = {task.task_id: task for task in build_foundation_eval_suite()}
+    diagram = tasks["eval-diag-01"]
+    assert verify_foundation_response(diagram, "flowchart LR\nLexer --> Parser --> Optimizer --> Codegen").passed
+    assert not verify_foundation_response(diagram, "flowchart LR\nLexer --> Optimizer --> Parser --> Codegen").passed
+    assert not verify_foundation_response(tasks["eval-sum-01"],
+        "Helios LSM cut amplification by 64%, latency reached -6.2 ms, and CPU increased 12%.").passed
+    chart = tasks["eval-chart-02"]
+    for payload in (
+        '{"chart_type":"pie","x_labels":["Q1","Q2","Q3","Q4"],"series":[120,145,110,165],"total":540}',
+        '{"chart_type":"bar","x_labels":["Q1","Q2","Q3","Q4"],"series":[120,145,110,165],"total":540,"x":1}',
+    ):
+        assert not verify_foundation_response(chart, payload).passed
