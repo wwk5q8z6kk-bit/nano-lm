@@ -1,0 +1,244 @@
+"""A supplied source quote needs a local medication or allergen relationship."""
+import pytest
+
+from nano_ai.contract import EvidenceSpan, FieldName, FieldState, NanoInput
+from nanoscribe.check_note import _observation_kind, transcript_source
+from nanoscribe.compact import compact_solver
+from nanoscribe.grounded import build_grounded_english_menu, grounded_candidate_choices
+from nanoscribe.scribe import scribe
+
+MED, ALG = FieldName.MEDICATION, FieldName.ALLERGY
+
+
+def observed(report, field, value):
+    doc = transcript_source(NanoInput("ownership", report))
+    key = "MED" if field is MED else "ALG"
+    raw = "|".join(f"{slot}:S[{value}]" if slot == key else f"{slot}:M"
+                   for slot in ("CC", "DUR", "SEV", "MED", "ALG"))
+    draft = scribe(report, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert draft["verification"]["passed"]
+    claim = next(c for c in draft["note"]["claims"] if c["field"] == field.value)
+    start = report.index(value, report.index("Patient:"))
+    direct = _observation_kind(doc, field, EvidenceSpan(start, start + len(value), value), context_policy="grounded")
+    return claim, direct, grounded_candidate_choices(report, field, set()), build_grounded_english_menu(doc, field, set())
+
+
+@pytest.mark.parametrize("field,question,reply,value", [
+    (MED, "Tell me more.", "Wrist pain.", "Wrist pain"),
+    (ALG, "Tell me more.", "Wrist pain.", "Wrist pain"),
+    (MED, "Tell me more.", "Aspirin.", "Aspirin"),
+    (ALG, "Tell me more.", "Nickel.", "Nickel"),
+    (MED, "What brings you in?", "Wrist pain.\nPatient: No medications.", "Wrist pain"),
+    (ALG, "What brings you in?", "Wrist pain.\nPatient: No allergies.", "Wrist pain"),
+    (MED, "Tell me more.", "Cash for the parking meter.\nPatient: No medications.", "Cash"),
+    (MED, "Any medicine?", "I took aspirin for my wrist pain.", "wrist pain"),
+    (MED, "Any medicine?", "I am allergic to birch pollen.", "birch pollen"),
+    (ALG, "Any allergies?", "I took a blue gel cap.", "blue gel cap"),
+    (ALG, "Any allergies?", "Nickel gives me hives.", "hives"),
+    (ALG, "Tell me more.", "I am allergic to nickel because it causes a rash.", "rash"),
+    (MED, "Tell me more.", "My daily medicine is Xyzalorfen for my wrist pain.", "wrist pain"),
+    (MED, "What brings you in?", "I am on edge.", "edge"),
+    (MED, "Tell me more.", "I am on apixaban for atrial fibrillation.", "atrial fibrillation"),
+    (MED, "Tell me more.", "I am on the train for my diabetes appointment.", "train"),
+    (MED, "Tell me more.", "I am on leave for a week.", "leave"),
+    (MED, "Tell me more.", "I am on medical leave for atrial fibrillation.", "medical leave"),
+    (MED, "Tell me more.", "I take the train for my diabetes.", "train"),
+    (MED, "Tell me more.", "I take time off for eczema.", "time off"),
+    (MED, "Tell me more.", "I use cash for the parking meter.", "cash"),
+    (MED, "Tell me more.", "I use a calendar for my diabetes appointments.", "calendar"),
+    (MED, "Tell me more.", "My sister is on apixaban for atrial fibrillation.", "apixaban"),
+    (MED, "Tell me more.", "I am not on apixaban for atrial fibrillation.", "apixaban"),
+    (MED, "Tell me more.", "I take the bus.", "bus"),
+    (MED, "Tell me more.", "My sister is allergic to nickel and took aspirin.", "aspirin"),
+    (MED, "Tell me more.", "I am allergic to nickel. Took aspirin.", "aspirin"),
+    (ALG, "Tell me more.", "I took aspirin and am not allergic to penicillin.", "penicillin"),
+    (MED, "Tell me more.", "I have taken amoxicillin/clavulanate for my nausea.", "clavulanate"),
+    (MED, "Tell me more.", "I have taken St John's wort for my nausea.", "John's"),
+    (ALG, "Tell me more.", "I do not have a penicillin allergy.", "penicillin"),
+    (ALG, "Tell me more.", "I had a penicillin allergy in childhood.", "penicillin"),
+    (ALG, "Tell me more.", "If I have a penicillin allergy I will call.", "penicillin"),
+    (ALG, "Tell me more.", "My sister has a penicillin allergy.", "penicillin"),
+    (MED, "Tell me more.", "I am not currently taking aspirin.", "aspirin"),
+    (MED, "Tell me more.", "I was previously taking aspirin.", "aspirin"),
+    (MED, "Tell me more.", "If I am currently taking aspirin, I will check.", "aspirin"),
+    (MED, "Tell me more.", "My sister is currently taking aspirin.", "aspirin"),
+    (MED, "Tell me more.", "I am currently taking aspirin for my thumb pain.", "thumb pain"),
+])
+def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, reply, value):
+    claim, direct, compact, english = observed(f"Doctor: {question}\nPatient: {reply}", field, value)
+    assert claim["state"] == "uncertain" and claim["value"] is None
+    assert direct is None
+    assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
+    assert not any(choice.startswith(":C[") for choice in compact)
+    assert not any(choice.startswith(" CONTRADICTED[") for choice in english)
+
+
+@pytest.mark.parametrize("field,question,reply,value", [
+    (ALG, "Any allergies?", "I would have to check with the pharmacy.", "I would have"),
+    (MED, "Any medications?", "It is in the car.", "It is"),
+    (MED, "Any medications?", "It’s at home.", "home"),
+    (ALG, "Any allergies?", "They are on the kitchen shelf.", "They are"),
+    (ALG, "Any allergies?", "I'd have to ask about nickel.", "nickel"),
+    (MED, "What medicine did you take?", "I need to check the aspirin bottle.", "aspirin"),
+    (MED, "What medicine did you take?", "Let me check the aspirin bottle.", "aspirin"),
+])
+def test_deferring_a_substance_answer_offers_no_reported_value(field, question, reply, value):
+    claim, direct, compact, english = observed(f"Doctor: {question}\nPatient: {reply}", field, value)
+    assert claim["value"] is None and claim["state"] == "uncertain"
+    assert direct is None
+    assert not any(choice.startswith(":S[") for choice in compact)
+    assert not any(choice.startswith(" REPORTED[") for choice in english)
+
+
+@pytest.mark.parametrize("field,report,value", [
+    (MED, "Patient: I took Xyzalorfen-420mg.", "Xyzalorfen-420mg"),
+    (MED, "Patient: I took aspirin in the car.", "aspirin"),
+    (MED, "Patient: I took aspirin and am not allergic to penicillin.", "aspirin"),
+    (MED, "Patient: I am on warfarin.", "warfarin"),
+    (MED, "Doctor: Tell me more.\nPatient: I am on apixaban for atrial fibrillation.", "apixaban"),
+    (MED, "Patient: I’m on mesalamine for ulcerative colitis.", "mesalamine"),
+    (MED, "Patient: I take linagliptin for type 2 diabetes.", "linagliptin"),
+    (MED, "Patient: I use tacrolimus for my skin condition.", "tacrolimus"),
+    (MED, "Patient: I take Xyzalorfen for my diagnosed condition called Ardu.", "Xyzalorfen"),
+    (MED, "Patient: I use silver leaf drops for the treatment of Ardu.", "silver leaf drops"),
+    (MED, "Patient: My daily medicine is Xyzalorfen.", "Xyzalorfen"),
+    (MED, "Patient: I take metformin.", "metformin"),
+    (ALG, "Doctor: Tell me more.\nPatient: I have a penicillin allergy.", "penicillin"),
+    (ALG, "Patient: I've got a known red cedar pollen allergy.", "red cedar pollen"),
+    (ALG, "Patient: I have an almond allergy that causes hives.", "almond"),
+    (ALG, "Patient: I have an allergy to nickel.", "nickel"),
+    (MED, "Doctor: Tell me more.\nPatient: I am currently taking aspirin.", "aspirin"),
+    (MED, "Patient: I'm still using cedar gel.", "cedar gel"),
+    (MED, "Patient: I have also been regularly applying cedar gel.", "cedar gel"),
+    (MED, "Patient: I use cedar gel for my rash.", "cedar gel"),
+    (ALG, "Patient: My known allergen is cedar pollen.", "cedar pollen"),
+    (ALG, "Patient: I am allergic to nickel because it causes a rash.", "nickel"),
+    (MED, "Patient: My daily medicine is Xyzalorfen for my wrist pain.", "Xyzalorfen"),
+    (MED, "Patient: Silver leaf drops for the headache.", "Silver leaf drops"),
+    (ALG, "Patient: I am allergic to birch pollen.", "birch pollen"),
+    (ALG, "Patient: Birch pollen gives me hives.", "Birch pollen"),
+    (MED, "Doctor: What medication did you take?\nPatient: Blueberry gel caps.", "Blueberry gel caps"),
+    (ALG, "Doctor: Any known allergies?\nPatient: Birch pollen.", "Birch pollen"),
+])
+def test_source_owned_substance_and_contrary_denial_survive(field, report, value):
+    claim, direct, compact, english = observed(report, field, value)
+    assert claim["state"] == "supported" and claim["value"] == value
+    assert direct is FieldState.SUPPORTED
+    assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+
+    denial = "No medications." if field is MED else "No allergies."
+    claim, _, compact, english = observed(report + "\nPatient: " + denial, field, value)
+    assert claim["state"] == "conflicting" and claim["value"] is None
+    assert any(choice.startswith(":C[") for choice in compact)
+    assert any(choice.startswith(" CONTRADICTED[") for choice in english)
+
+
+def test_blanket_medication_denial_preserves_an_indicated_named_drug():
+    report = "Doctor: Tell me more.\nPatient: I am on apixaban for atrial fibrillation.\nPatient: No medications."
+    raw = "CC:M|DUR:M|SEV:M|MED:A[No medications.]|ALG:M"
+    result = scribe(report, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert result["verification"]["passed"]
+    field = next(item for item in result["extraction"]["fields"] if item["field"] == "medication")
+    assert field["state"] == "conflicting" and field["value"] is None
+    assert [item["text"] for item in field["evidence"]] == [
+        "I am on apixaban for atrial fibrillation.", "No medications.",
+    ]
+    assert all(report[item["start"]:item["end"]] == item["text"] for item in field["evidence"])
+
+
+def test_free_proposal_is_not_limited_to_the_menu_spelling():
+    report = "Patient: I took aspirin earlier in the evening."
+    value = "aspirin earlier"
+    claim, direct, compact, english = observed(report, MED, value)
+    assert claim["state"] == "supported" and claim["value"] == value
+    assert direct is FieldState.SUPPORTED
+    assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
+
+
+def test_later_emphatic_confirmation_uses_its_own_source_offsets():
+    report = "Patient: I took aspirin.\nPatient: I'm not sure whether I took it.\nPatient: I checked. I did take aspirin."
+    doc = transcript_source(NanoInput("later-confirmation", report))
+    start = report.rindex("aspirin")
+    span = EvidenceSpan(start, start + len("aspirin"), "aspirin")
+    tagged = f"@{start}..{span.end}:aspirin"
+    raw = f"CC:M|DUR:M|SEV:M|MED:S[{tagged}]|ALG:M"
+    draft = scribe(report, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert draft["verification"]["passed"]
+    claim = next(c for c in draft["extraction"]["fields"] if c["field"] == "medication")
+    assert claim["state"] == "supported" and claim["evidence"] == [span.to_dict()]
+    assert _observation_kind(doc, MED, span, context_policy="grounded") is FieldState.SUPPORTED
+    assert f":S[{tagged}]" in grounded_candidate_choices(report, MED, set())
+    earlier = report.index("aspirin")
+    menu = build_grounded_english_menu(doc, MED, {(earlier, earlier + len("aspirin"))})
+    assert menu[" REPORTED[aspirin]"] == ("S", (span,))
+
+
+@pytest.mark.parametrize("field,report,name,part", [
+    (ALG, "Patient: I have a red cedar pollen allergy.", "red cedar pollen", "cedar"),
+    (ALG, "Patient: I’ve got a red cedar pollen allergy.", "red cedar pollen", "red"),
+    (MED, "Patient: I’ve been taking sodium chloride.", "sodium chloride", "sodium"),
+    (ALG, "Patient: Birch pollen gives me hives.", "Birch pollen", "Birch"),
+    (ALG, "Patient: My known allergen is red cedar pollen.", "red cedar pollen", "pollen"),
+    (ALG, "Doctor: Any allergies?\nPatient: Red cedar pollen.", "Red cedar pollen", "cedar"),
+    (MED, "Patient: I am currently taking sodium chloride.", "sodium chloride", "sodium"),
+    (MED, "Patient: I use cedar gel for my rash.", "cedar gel", "gel"),
+    (MED, "Patient: My daily medicine is sodium chloride.", "sodium chloride", "chloride"),
+    (MED, "Doctor: Any medicine?\nPatient: Sodium chloride.", "Sodium chloride", "Sodium"),
+    (MED, "Patient: I did take sodium chloride earlier.", "sodium chloride", "chloride"),
+    (MED, "Patient: I have been using sodium chloride because my rash returned.", "sodium chloride", "chloride"),
+])
+def test_all_substance_relations_preserve_the_complete_source_name(field, report, name, part):
+    claim, direct, compact, english = observed(report, field, part)
+    assert claim["value"] is None and claim["state"] == "uncertain" and direct is None
+    assert f":S[{part}]" not in compact and f" REPORTED[{part}]" not in english
+    claim, direct, compact, english = observed(report, field, name)
+    assert claim["state"] == "supported" and claim["value"] == name
+    assert direct is FieldState.SUPPORTED
+    assert f":S[{name}]" in compact and f" REPORTED[{name}]" in english
+
+
+@pytest.mark.parametrize("value", ["amoxicillin/clavulanate", "St John's wort", "St John’s wort", "co‑trimoxazole"])
+def test_taken_for_indication_preserves_the_original_substance_punctuation(value):
+    report = f"Doctor: Tell me more.\nPatient: I have taken {value} for my nausea."
+    claim, direct, compact, english = observed(report, MED, value)
+    assert claim["state"] == "supported" and claim["value"] == value and direct is FieldState.SUPPORTED
+    assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+
+
+@pytest.mark.parametrize("report", [
+    "I took aspirin and am allergic to penicillin.",
+    "I took aspirin, but am allergic to penicillin.",
+    "I am allergic to penicillin and took aspirin.",
+    "I am allergic to penicillin but currently take aspirin.",
+])
+def test_separate_treatment_and_allergy_can_share_a_patient_subject(report):
+    source = "Doctor: Tell me more.\nPatient: " + report
+    for field, value, wrong, denial in [
+        (MED, "aspirin", "penicillin", "No medications."),
+        (ALG, "penicillin", "aspirin", "No allergies."),
+    ]:
+        claim, direct, compact, english = observed(source, field, value)
+        assert claim["state"] == "supported" and claim["value"] == value and direct is FieldState.SUPPORTED
+        assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+        claim, direct, compact, english = observed(source, field, wrong)
+        assert claim["value"] is None and direct is None
+        assert f":S[{wrong}]" not in compact and f" REPORTED[{wrong}]" not in english
+        claim, _, compact, english = observed(source + "\nPatient: " + denial, field, value)
+        assert claim["state"] == "conflicting" and claim["value"] is None
+        assert any(choice.startswith(":C[") for choice in compact)
+        assert any(choice.startswith(" CONTRADICTED[") for choice in english)
+
+
+@pytest.mark.parametrize("reply,owner,other,value", [
+    ("I took aspirin.", MED, ALG, "aspirin"),
+    ("I am allergic to penicillin.", ALG, MED, "penicillin"),
+])
+@pytest.mark.parametrize("prompt", ["", "Doctor: Tell me more.\n", "Doctor: Any allergies?\n", "Doctor: Any medicine?\n"])
+def test_reported_relationship_owns_the_substance_across_free_and_constrained_paths(reply, owner, other, value, prompt):
+    report = prompt + "Patient: " + reply
+    claim, direct, compact, english = observed(report, owner, value)
+    assert (claim["state"], claim["value"], direct) == ("supported", value, FieldState.SUPPORTED)
+    assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+    claim, direct, compact, english = observed(report, other, value)
+    assert claim["value"] is None and direct is None
+    assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
