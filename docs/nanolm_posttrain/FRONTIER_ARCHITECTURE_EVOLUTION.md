@@ -11,9 +11,9 @@ Implemented in [architectures.py](../../nanolm_frontier/architectures.py) with e
 ### 1.1 Scaling Configurations
 | Preset | Family | Total Parameters | Delta / Softmax Layers | PKM Slots / Layer | KV Cache / Token (BF16) | Active FLOPs / Token @ 2K |
 |---|---|---:|---:|---:|---:|---:|
-| `C0..C4` Micro Tournament | All 5 | `38.01M – 38.27M` | `0/12` (`C0`) or `9/3` (`C1..C4`) | `4,096` (`C3, C4`) | `6,144 B` -> `1,536 B` | `89.0M – 143.8M` |
-| **`FRONTIER_2B_CONFIG`** | `C4_JCLE_Frontier` | **`1,915,969,316`** | `24 / 8` | `65,536` (`C=256`) | `16,384 B` | `5.63 BFLOPs` |
-| **`FRONTIER_4B_CONFIG`** | `C4_JCLE_Frontier` | **`3,865,666,516`** | `36 / 12` | `65,536` (`C=256`) | `24,576 B` | `11.86 BFLOPs` |
+| `C0..C4` Micro Tournament | All 5 | `38.01M – 38.27M` | `0/12` (`C0`) or `9/3` (`C1..C4`) | `4,096` (`C3, C4`) | `6,144 B` (C0), `1,536 B` (C1–C3), `2,560 B` (C4 at two loops) | `89.0M – 143.8M` |
+| **`FRONTIER_2B_CONFIG`** | `C4_JCLE_Frontier` | **`1,915,969,316`** | `24 / 8` | `65,536` (`C=256`) | `26,624 B` (two loops) | `5.63 BFLOPs` |
+| **`FRONTIER_4B_CONFIG`** | `C4_JCLE_Frontier` | **`3,865,666,516`** | `36 / 12` | `65,536` (`C=256`) | `40,960 B` (two loops) | `11.86 BFLOPs` |
 
 ### 1.2 Competing Innovations Investigated
 1. **`C1_GatedDeltaHybrid` (3:1 Chunkwise Gated Delta-Rule Control):** Interleaves 3 chunkwise WY Householder Gated Delta-Rule layers ($S_t = a_t S_{t-1}(I - \beta_t k_t k_t^\top) + \beta_t v_t k_t^\top$, exact match to token-by-token reference recurrence within `2.38e-6`) with 1 global GQA layer (`-75%` KV cache).

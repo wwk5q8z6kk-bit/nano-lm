@@ -222,8 +222,8 @@
         "delta_layers": 9,
         "softmax_layers": 3,
         "pkm_total_slots_per_layer": 4096,
-        "kv_cache_bytes_per_token_bf16": 1536,
-        "recurrent_state_bytes_bf16": 589824,
+        "kv_cache_bytes_per_token_bf16": 2560,
+        "recurrent_state_bytes_bf16": 983040,
         "active_flops_per_token_2k": 133341184
       },
       "train_steps": 700,
