@@ -1421,6 +1421,13 @@ _ALLERGY_MANIFESTATION_RE = re.compile(
     r"shortness of breath|(?:difficulty|trouble) breathing)"
     r"(?:\s+(?:on|in|of|around|across|all over)\s+.+)?$", re.I,
 )
+# Read the unsplit suffix: "with" may belong to a passive predicate, while
+# the same participle in "treated leather" modifies a substance name.
+_ALLERGY_PASSIVE_ADJUNCT_RE = re.compile(
+    r"\s*(?:(?:both|all|each|then|later|[a-z]+ly)\s+)*"
+    r"(?:treated|managed|relieved|controlled|resolved|tested|diagnosed|confirmed|verified|documented|detected|identified|evaluated|assessed)\s+"
+    r"(?:with|by|using|via|after|before|during|through|in|at|on|as|for|to)\b", re.I,
+)
 _LIST_QUALIFIER_RE = re.compile(
     r"^(?:especially|mostly|mainly|usually|particularly|primarily|sometimes|"
     r"for example|for instance|such as|etc|thank you|yes)\b", re.I,
@@ -1449,6 +1456,8 @@ def _coexisting_substance_clause(field: FieldName, text: str,
     names = []
     for boundary in [*joins, None]:
         stop = boundary.start() if boundary else end
+        if names and _ALLERGY_PASSIVE_ADJUNCT_RE.match(list_text, start, end):
+            break
         phrase = list_text[start:stop].strip(" .!?")
         if (_shared_activity(phrase) or _LIST_QUALIFIER_RE.match(phrase)
                 or re.search(r"\b(?:is|are|was|were|causes?|gives?)\b", phrase, re.I)):

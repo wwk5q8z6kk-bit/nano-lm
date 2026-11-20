@@ -15,6 +15,9 @@ from nanoscribe.test_grounded_substance_ownership import ALG, observed
     ("Any allergies?", "Nickel (redness, irritation), cobalt, latex.", ("Nickel", "cobalt", "latex")),
     ("Any allergies?", "Nickel with severe hives, and latex.", ("Nickel", "latex")),
     ("Any allergies?", "Nickel, latex, etc.", ("Nickel", "latex")),
+    ("Any allergies?", "Nickel, latex, both confirmed by patch testing.", ("Nickel", "latex")),
+    ("Any allergies?", "Nickel, ragweed with latex.", ("Nickel", "ragweed", "latex")),
+    ("Any allergies?", "Nickel, treated leather.", ("Nickel", "treated leather")),
     ("Any allergies?", "Nickel with latex.", ("Nickel", "latex")),
     ("Any allergies?", "Nickel and a rash cream.", ("Nickel", "rash cream")),
     ("Do you have any allergies?", "Penicillin, latex and bee venom.", ("Penicillin", "latex", "bee venom")),
@@ -79,6 +82,11 @@ def test_coordinated_objects_preserve_every_allergen_in_scalar_uncertainty(quest
     ("Any allergies?", "Latex, facial swelling and difficulty breathing.", "Latex", True),
     ("Any allergies?", "Latex, facial swelling and difficulty breathing.", "facial swelling", False),
     ("Any allergies?", "Nickel, especially in jewelry.", "Nickel", True),
+    ("Any allergies?", "Penicillin, treated with antihistamines.", "Penicillin", True),
+    ("Any allergies?", "Penicillin, treated with antihistamines.", "antihistamines", False),
+    ("Any allergies?", "Penicillin, confirmed with a skin test.", "Penicillin", True),
+    ("Any allergies?", "Penicillin, confirmed with a skin test.", "skin test", False),
+    ("Any allergies?", "Nickel, clinically diagnosed by a specialist.", "Nickel", True),
 ])
 def test_bare_allergen_requires_positive_question_or_its_own_positive_relation(question, answer, value, supported):
     report = f"Doctor: {question}\nPatient: {answer}"
