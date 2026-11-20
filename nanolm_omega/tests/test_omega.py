@@ -296,3 +296,29 @@ def test_training_refiner_uses_threshold_from_previous_batch(use_cross_attention
     assert not torch.equal(a[:, :4], hidden[:, :4])
     torch.testing.assert_close(a[:, :4], b[:, :4])
     assert refiner.ema_tau < other.ema_tau
+
+
+@pytest.mark.parametrize("fast,brute", [
+    ("raise ValueError()", "raise ValueError()"),
+    ("print(2)", "print(3)"),
+    ("pass", "pass"),
+])
+def test_math_fallback_requires_verifier_agreement(fast, brute):
+    from dataclasses import replace
+
+    task = replace(build_omega_bench_01()[0], pass1_guess="1", fast_formula_code=fast, brute_spec_code=brute)
+    answer, status, _, _ = OmegaUnifiedCognitiveSystem().solve_task(task)
+    assert answer in {"1", "3"}
+    assert status == EpistemicStatus.UNCERTAIN
+
+
+def test_assertion_only_harness_and_missing_harness():
+    from dataclasses import replace
+
+    base = build_omega_bench_01()[0]
+    task = replace(base, prompt="Implement def solve(xs)", code_candidates=(
+        "def solve(xs): return 0", "def solve(xs): return sum(xs)"
+    ), test_harness="assert solve([1, 2, 3]) == 6")
+    system = OmegaUnifiedCognitiveSystem()
+    assert system.solve_task(task) == ("PASS_VERIFIED", EpistemicStatus.DIRECT_MEASUREMENT, 2, 2)
+    assert system.solve_task(replace(task, test_harness=""))[1] == EpistemicStatus.UNCERTAIN

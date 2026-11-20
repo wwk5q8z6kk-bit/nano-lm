@@ -85,7 +85,7 @@ def wy_metriplectic_chunk_scan(
     beta: Tensor,
     log_gamma: Tensor,
     init_state: Tensor | None = None,
-    chunk_size: int = 64,
+    chunk_size: int = 32,
 ) -> tuple[Tensor, Tensor]:
     """Exact nilpotent WY solver for scalar-decayed rank-1 updates:
 
@@ -467,7 +467,7 @@ class GQAAttentionOperator(nn.Module):
 class GDN2Operator(nn.Module):
     """Modern Gated DeltaNet-2 baseline operator via exact WY chunk scan + asymmetric key-shift."""
 
-    def __init__(self, d_model: int, n_heads: int, head_dim: int, chunk_size: int = 64) -> None:
+    def __init__(self, d_model: int, n_heads: int, head_dim: int, chunk_size: int = 32) -> None:
         super().__init__()
         self.n_heads = n_heads
         self.head_dim = head_dim
@@ -521,7 +521,7 @@ class PortHamiltonianOperator(nn.Module):
     Homogeneous transition spectral norm satisfies ||A_t||_2 <= gamma_t <= 1 unconditionally.
     """
 
-    def __init__(self, d_model: int, n_heads: int, head_dim: int, chunk_size: int = 64) -> None:
+    def __init__(self, d_model: int, n_heads: int, head_dim: int, chunk_size: int = 32) -> None:
         super().__init__()
         self.n_heads = n_heads
         self.head_dim = head_dim
@@ -734,7 +734,7 @@ class HRWNOperator(nn.Module):
             lagged = F.pad(wave_re[:, :-1, :], (0, 0, 1, 0))
         else:
             lagged = torch.cat([prev_env, wave_re[:, :-1, :]], dim=1) if t_len > 1 else prev_env
-        pred_err = (re_in - lagged).float().pow(2).mean(dim=-1).sqrt()
+        pred_err = (re_in - lagged).float().norm(dim=-1) / re_in.size(-1) ** 0.5
         surp_score = pred_err + F.softplus(self.surp_gate(x).squeeze(-1).float())
 
         wave_out = wave_re * torch.tanh(re_ph) + im_in * torch.tanh(im_ph)
@@ -836,7 +836,7 @@ class HMWROperator(nn.Module):
             lagged = F.pad(wave_re[:, :-1, :], (0, 0, 1, 0))
         else:
             lagged = torch.cat([prev_env, wave_re[:, :-1, :]], dim=1) if t_len > 1 else prev_env
-        pred_err = (re_in - lagged).float().pow(2).mean(dim=-1).sqrt()
+        pred_err = (re_in - lagged).float().norm(dim=-1) / re_in.size(-1) ** 0.5
         surp_score = pred_err + F.softplus(self.surp_gate(x).squeeze(-1).float())
         wave_out = wave_re * torch.tanh(re_ph)
 
@@ -886,7 +886,7 @@ class MPRNOperator(nn.Module):
         d_model: int,
         n_heads: int,
         head_dim: int,
-        chunk_size: int = 64,
+        chunk_size: int = 32,
         scam_slots: int = 32,
         *,
         use_symplectic_reflection: bool = True,
@@ -978,7 +978,7 @@ class MPRNOperator(nn.Module):
                     q_raw, k_raw, log_gamma, tau, prior_prec, init_state=prec_state
                 )
             # Subspace-energy epistemic uncertainty + centered precision confidence scaling
-            subspace_energy = y_met.pow(2).mean(dim=-1).sqrt() + 1e-2
+            subspace_energy = y_met.norm(dim=-1) / y_met.size(-1) ** 0.5 + 1e-2
             conf = 2.0 / (1.0 + unc.clamp(max=10.0).unsqueeze(-1))
             y_met = y_met * conf
             unc_out = (unc / subspace_energy).transpose(1, 2).to(x.dtype)  # [B, T, H]

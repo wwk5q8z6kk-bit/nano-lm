@@ -233,3 +233,22 @@ def test_recurrent_ring_storage_matches_logical_state(kind):
                 assert tensor.untyped_storage().nbytes() == tensor.numel() * tensor.element_size()
                 checked.add(name)
     assert {"wave_ring", "prev_wave"} <= checked
+
+
+@pytest.mark.parametrize("kind", [ParadigmKind.G3_HMWR, ParadigmKind.I3_HRWN])
+def test_zero_wave_residual_has_finite_gradient(kind):
+    model = NanoLMDiscoveryModel(make_iso_param_suite("mech")[kind])
+    operator = next(m for m in model.modules() if m.__class__.__name__ in {"HMWROperator", "HRWNOperator"})
+    inputs = torch.zeros(2, 8, operator.d_model, requires_grad=True)
+    out, uncertainty, state = operator(inputs)
+    loss = out.sum() + uncertainty.sum()
+    loss.backward()
+    assert torch.isfinite(inputs.grad).all()
+
+
+def test_default_reflection_chunks_match_experiment_config():
+    from inspect import signature
+    from nanolm_discovery.operators import MPRNOperator, PortHamiltonianOperator, wy_metriplectic_chunk_scan
+
+    for op in (wy_metriplectic_chunk_scan, MPRNOperator, PortHamiltonianOperator):
+        assert signature(op).parameters["chunk_size"].default == 32

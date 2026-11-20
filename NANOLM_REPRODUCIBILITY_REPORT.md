@@ -1,6 +1,6 @@
 # NANOLM Ω — Reproducibility, Integrity & Verification Report
 
-Every codebase claim, model census check, multi-seed experiment, JSON output, and `.pt` checkpoint on branch `nanolm/architecture-invention-v1` is independently reproducible from committed source files at `$0.00` cloud spend.
+The archived measurements below belong to the implementation at commit `1e6848b92a1fe77cb9530b67fa36dc48f3eccdec`. Its Omega tool evaluation supplied the expected outcome to the executor. The tool-recovery scores, aggregate accuracy and cost-per-win numbers that include this pillar are withdrawn as evidence of system performance. The current implementation executes the same in-memory task for both routers. The archive's checksum identifies the historical output. Reading the checksum does not reproduce a measurement.
 
 ---
 
@@ -45,7 +45,7 @@ OMP_NUM_THREADS=2 python3.14 -m pytest -rs nano nanoscribe nano_ai/tests benchma
 (cd artifacts/nanolm_discovery_v1 && shasum -a 256 -c SHA256SUMS)
 (cd artifacts/nanolm_omega_v1 && shasum -a 256 -c SHA256SUMS)
 
-# Reproduce Omega local suite (OMEGA-EXP-01-MECH, EXP-02, EXP-03) and Kaggle CUDA tournament
+# Run the Omega local suite and CUDA tournament for the checked-out implementation
 OMP_NUM_THREADS=2 python3.14 scripts/run_nanolm_omega_suite.py
 python3.14 scripts/kaggle_omega_backbone_experiment.py --data-dir <CORPUS_DIR> --steps 1000 --seeds 42 137
 ```

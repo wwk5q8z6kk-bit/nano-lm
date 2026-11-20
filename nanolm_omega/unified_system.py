@@ -159,8 +159,9 @@ def _run_sandboxed_python(code: str, timeout_s: float = 4.0) -> tuple[bool, str]
             timeout=timeout_s,
             check=False,
         )
-        if proc.returncode == 0 and proc.stdout.strip():
-            return True, proc.stdout.strip().splitlines()[-1].strip()
+        if proc.returncode == 0:
+            lines = proc.stdout.strip().splitlines()
+            return True, lines[-1].strip() if lines else ""
         return False, (proc.stderr or proc.stdout).strip()[:200]
     except subprocess.TimeoutExpired:
         return False, "TIMEOUT"
@@ -272,7 +273,7 @@ class OmegaUnifiedCognitiveSystem:
             ok_c, ans_c = _run_sandboxed_python(task.fast_formula_code)
             sbx = 1
             use_early_halt = self.mode in ("omega_unified_system", "omega_no_slw_provenance")
-            if use_early_halt and ok_c and ans_c == ans_a:
+            if use_early_halt and ok_c and ans_c and ans_c == ans_a:
                 return ans_c, EpistemicStatus.DIRECT_MEASUREMENT, calls, sbx
             calls += 1
             ok_b, ans_b = _run_sandboxed_python(task.brute_spec_code)
@@ -281,9 +282,11 @@ class OmegaUnifiedCognitiveSystem:
             for v in votes:
                 if votes.count(v) >= 2:
                     return v, EpistemicStatus.DIRECT_MEASUREMENT, calls, sbx
-            return (ans_b if ok_b and ans_b else ans_a), EpistemicStatus.DIRECT_MEASUREMENT, calls, sbx
+            return (ans_b if ok_b and ans_b else ans_a), EpistemicStatus.UNCERTAIN, calls, sbx
 
         if route in ("CODE_REPAIR", "DIFF_CODE_VERIFY"):
+            if not task.test_harness.strip():
+                return "UNVERIFIED", EpistemicStatus.UNCERTAIN, 0, 0
             cand1, cand2 = task.code_candidates
             ok1, _ = _run_sandboxed_python(cand1 + "\n" + task.test_harness)
             if ok1:
