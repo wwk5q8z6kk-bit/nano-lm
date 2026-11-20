@@ -1,0 +1,8 @@
+{
+  "documents": 335,
+  "repositories": 329,
+  "input_tokens_including_final_delimiters": 516368,
+  "decoded_utf8_bytes_excluding_final_delimiters": 1670271,
+  "targets": 516033,
+  "chunks": 4196
+}

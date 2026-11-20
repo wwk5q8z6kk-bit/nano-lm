@@ -1,0 +1,83 @@
+{
+  "allowed_row_labels": [
+    "0bsd",
+    "apache-2.0",
+    "bsd-2-clause",
+    "bsd-3-clause",
+    "cc0-1.0",
+    "isc",
+    "mit"
+  ],
+  "dataset": "codeparrot/github-code-clean",
+  "dtype": "uint16-le",
+  "eos_id": 1,
+  "revision": "c48d40f9e70f0196f8236901ee35807f7d6c44c0",
+  "splits": {
+    "train": {
+      "accepted": 7041,
+      "accepted_by_label": {
+        "apache-2.0": 2271,
+        "bsd-2-clause": 165,
+        "bsd-3-clause": 701,
+        "cc0-1.0": 34,
+        "isc": 40,
+        "mit": 3830
+      },
+      "length": 561,
+      "records_sha256": "e6366b6eebb6249097b7f8ea9f519e7527e14f553e21f4c9faef98a930019118",
+      "rejected_by_label": {
+        "agpl-3.0": 328,
+        "artistic-2.0": 9,
+        "epl-1.0": 95,
+        "gpl-2.0": 1749,
+        "gpl-3.0": 1486,
+        "lgpl-2.1": 193,
+        "lgpl-3.0": 239,
+        "mpl-2.0": 134,
+        "unlicense": 83
+      },
+      "repositories": 6582,
+      "sampling_skipped": 49034,
+      "sampling_threshold_u64": 3671640797147335154,
+      "scanned": 61400,
+      "shard": "train-00000-of-00880.parquet",
+      "shard_sha256": "c05e4cad93aac3f978a2385f8c055a10d247b107afd8bf9cb8c762f8403bdc0f",
+      "target": 12000000,
+      "tokens": 12000300,
+      "tokens_sha256": "c4304caacfbda7746ae746e7d7e347579cdbe3e099ca61eab1b6a07c06426ae4",
+      "validation_repo": 448
+    },
+    "val": {
+      "accepted": 335,
+      "accepted_by_label": {
+        "apache-2.0": 111,
+        "bsd-2-clause": 7,
+        "bsd-3-clause": 36,
+        "isc": 1,
+        "mit": 180
+      },
+      "length": 27,
+      "records_sha256": "6e060ce360e4929d6079ec953977200cacc310aabd79145bf355cd51c23402c3",
+      "rejected_by_label": {
+        "agpl-3.0": 7,
+        "epl-1.0": 4,
+        "gpl-2.0": 75,
+        "gpl-3.0": 43,
+        "lgpl-2.1": 7,
+        "lgpl-3.0": 8,
+        "mpl-2.0": 4,
+        "unlicense": 4
+      },
+      "repositories": 329,
+      "sampling_skipped": 61749,
+      "sampling_threshold_u64": 152985033214472298,
+      "scanned": 62263,
+      "shard": "train-00001-of-00880.parquet",
+      "shard_sha256": "2e1b2e8bc5823fd68a80a036f1a5db894aa89bd491992bda2dfd96c41187025f",
+      "target": 500000,
+      "tokens": 516368,
+      "tokens_sha256": "2aeac093eff2a1329771ac09e02f61275a18f47d41e10259c43489f3285c8bcf"
+    }
+  },
+  "tokenizer_sha256": "2eb9b402d301ff801d402099e8d6a21aa3e4f4a4cacd17ef6b17fd07aadada64"
+}
