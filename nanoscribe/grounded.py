@@ -1815,7 +1815,7 @@ _SEVERITY_JOIN_RE = re.compile(
 _RATING_LEAD_RE = re.compile(
     rf"(?:(?:yes|well|actually|definitely|only|about|roughly|around|maybe|very|really|pretty|"
     rf"quite|just|at|a|an|little|bit|honestly|mostly|it's|it|is|was|has|been|feels?|felt|"
-    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|right\s+now|now|today|"
+    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|right\s+now|now|currently|today|"
     rf"mildly|moderately|severely|this|morning|tonight)\b[\s,']*|{_BOUND_LEAD})*", re.I,
 )
 
@@ -1844,9 +1844,13 @@ _CURRENT_RATING_CHECK_RE = re.compile(
     rf"(?:\s+(?P<time>{_RECENT_RATING_TIME}))?\s*[.!?;]?\s*$", re.I,
 )
 _RATING_SUBJECT = rf"(?:it|(?:my|the)\s+{_RATED_SYMPTOM})"
+_PRESENT_RATING_TIME = rf"(?:{_RECENT_RATING_TIME}|currently|at present)"
+_PRESENT_RATING_TIME_RE = re.compile(_PRESENT_RATING_TIME, re.I)
 _CURRENT_RATING_LEAD_RE = re.compile(
-    rf"(?:{_RECENT_RATING_TIME}[\s,]*(?:{_RATING_SUBJECT}\s+(?:is|feels?))?|"
-    rf"{_RATING_SUBJECT}\s+(?:(?:is|feels?)\s+{_RECENT_RATING_TIME}|{_RECENT_RATING_TIME}\s+(?:is|feels?)))", re.I,
+    rf"(?:(?:my|the)\s+(?:current|present)\s+{_RATED_SYMPTOM}\s+(?:is|feels?)|"
+    rf"{_PRESENT_RATING_TIME}[\s,]*(?:{_RATING_SUBJECT}\s+(?:is|feels?))?|"
+    rf"{_RATING_SUBJECT}\s+(?:(?:is|feels?)\s+{_PRESENT_RATING_TIME}|{_PRESENT_RATING_TIME}\s+(?:is|feels?)))",
+    re.I,
 )
 _PAST_RATING_TIME = (
     rf"(?:yesterday|earlier|(?:on\s+)?(?:last\s+)?{_DAY_NAME}|last\s+(?:{_DAY_PART}|week|month|year)|"
@@ -1935,7 +1939,7 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
             self_check = bool(check["measured"])
             if not self_check and current_request is not True:
                 return False
-        trailing_now = _RECENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?"))
+        trailing_now = _PRESENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?"))
         if current_request is False and not (self_check or trailing_now or _CURRENT_RATING_LEAD_RE.fullmatch(before)):
             direct_answer = not after.strip(" .!?") and _RATING_LEAD_RE.fullmatch(before)
             if not (direct_answer and _follows_presenting_complaint(source, idx, previous.text)):

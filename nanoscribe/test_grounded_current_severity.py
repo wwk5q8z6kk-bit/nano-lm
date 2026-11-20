@@ -72,6 +72,15 @@ def test_current_severity_source_paths(reply, quote, accepted):
     ("On a scale from zero to ten, how bad is your pain now?", "7/10 was my score when you just asked me.", "7/10", True),
     ("What was your pain score last month?", "My wrist pain right now is 2/10.", "2/10", True),
     ("What was your pain score last month?", "Now I remember my wrist pain was 7/10.", "7/10", False),
+    ("How bad was the pain yesterday?", "My current pain is 2/10.", "2/10", True),
+    ("How bad was the pain yesterday?", "My pain is currently 2/10.", "2/10", True),
+    ("How bad was the pain yesterday?", "My left wrist pain currently feels 2/10.", "2/10", True),
+    ("How bad was the pain yesterday?", "Currently it is 2/10.", "2/10", True),
+    ("How bad was the pain yesterday?", "2/10 currently.", "2/10", True),
+    ("How bad was the pain yesterday?", "My current pain was 7/10 yesterday.", "7/10", False),
+    ("How bad was the pain yesterday?", "I am currently remembering my pain was 7/10.", "7/10", False),
+    ("How bad was the pain yesterday?", "My current commute is 7/10.", "7/10", False),
+    ("How bad was the pain yesterday?", "My sister's pain is currently 7/10.", "7/10", False),
     ("Who drove you today?", "7/10 was my score when you just asked me.", "7/10", False),
 ])
 def test_current_measurement_and_time_requested(question, reply, quote, accepted):
