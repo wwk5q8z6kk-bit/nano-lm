@@ -144,3 +144,42 @@ def test_tentative_withdrawal_does_not_certify_unique_replacement():
             "I didn't take aspirin, perhaps. I took ibuprofen.")
     menu = assert_medication(text, "ibuprofen", 0, False)
     assert " UNCERTAIN[aspirin; ibuprofen]" in menu
+
+
+@pytest.mark.parametrize("aside", ["after all", "though", "this time"])
+def test_discourse_aside_does_not_block_named_withdrawal(aside):
+    text = f"Patient: I took aspirin.\nPatient: Actually, I didn't take aspirin {aside}."
+    assert_medication(text, "aspirin", 0, False)
+
+
+@pytest.mark.parametrize("original", ["aspirin 500 mg for my ankle", "500 mg of aspirin for my ankle"])
+def test_mixed_dose_and_purpose_withdraws_same_administration(original):
+    text = (f"Patient: I took {original}.\n"
+            "Patient: Actually, I didn't take 500 mg of aspirin for my ankle.")
+    assert_medication(text, "aspirin", 0, False)
+
+
+def test_mixed_qualification_preserves_partial_overlap():
+    assert_medication("Patient: I took aspirin 500 mg.\n"
+                      "Patient: Actually, I didn't take 500 mg of aspirin for my ankle.",
+                      "aspirin", 0, True)
+
+
+def test_sibling_dose_does_not_withdraw_coadministered_drug():
+    text = ("Patient: I took aspirin 500 mg and ibuprofen.\n"
+            "Patient: Actually, I didn't take ibuprofen 500 mg.")
+    menu = assert_medication(text, "ibuprofen", 0, False)
+    assert_medication(text, "aspirin", 0, False)
+    assert " UNCERTAIN[aspirin; ibuprofen]" in menu
+    reversed_dose = ("Patient: I took ibuprofen and aspirin 500 mg.\n"
+                     "Patient: Actually, I didn't take ibuprofen 500 mg.")
+    menu = assert_medication(reversed_dose, "ibuprofen", 0, False)
+    assert_medication(reversed_dose, "aspirin", 0, False)
+    assert " UNCERTAIN[ibuprofen; aspirin]" in menu
+
+
+def test_qualified_conjunct_can_still_be_withdrawn():
+    text = ("Patient: I took aspirin and ibuprofen 500 mg.\n"
+            "Patient: Actually, I didn't take ibuprofen 500 mg.")
+    assert_medication(text, "ibuprofen", 0, False)
+    assert_medication(text, "aspirin", 0, True)

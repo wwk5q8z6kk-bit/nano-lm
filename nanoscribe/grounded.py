@@ -292,6 +292,10 @@ _CORRECTED_NONUSE_RE = re.compile(
     r"(?:(?:did not|didn['’]t) (?:take|use|try|apply|swallow)|"
     r"(?:have not|haven['’]t) (?:taken|used|tried|applied|swallowed))\s+", re.I,
 )
+# A follow-on such as "after all" does not say which administration was denied.
+_NONRESTRICTING_ASIDE_RE = re.compile(
+    r"(?:,\s*|\s+)\b(?:after all|though|this time)\b", re.I,
+)
 
 _ROUTINE_DISCLAIMED_RE = re.compile(
     r"\b(?:usual routine|every morning|daily routine|isn't something i took for|"
@@ -1265,6 +1269,40 @@ def _correction_fields(clause: str) -> set[FieldName]:
     return targets
 
 
+def _medication_conjunct(text: str, start: int, end: int) -> str:
+    """Coordinated phrase containing this name, including only its own modifiers."""
+    left, right = 0, len(text)
+    for join in _SUBSTANCE_JOIN_RE.finditer(text):
+        if join.end() <= start:
+            left = join.end()
+        elif join.start() >= end:
+            right = join.start()
+            break
+    return text[left:right]
+
+
+def _qualifier_names_administration(qualifier: str, administration: str) -> bool:
+    """Each dose and remaining qualification must occur on this administration.
+
+    The pieces need not be contiguous, so a leading dose plus a purpose still
+    names both "500 mg of aspirin for my ankle" and "aspirin 500 mg for my ankle".
+    """
+    parts = []
+    cursor = 0
+    for dose in _MEDICATION_DOSE_RE.finditer(qualifier):
+        gap = " ".join(qualifier[cursor:dose.start()].split()).strip(" .,;!")
+        if gap:
+            parts.append(gap)
+        parts.append(dose.group())
+        cursor = dose.end()
+    gap = " ".join(qualifier[cursor:].split()).strip(" .,;!")
+    if gap:
+        parts.append(gap)
+    return bool(parts) and all(
+        re.search(rf"(?<!\w){re.escape(part)}(?!\w)", administration, re.I) for part in parts
+    )
+
+
 def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
     """Read the objects and qualifiers of a first-person negative correction."""
     predicate = _CORRECTED_NONUSE_RE.match(text)
@@ -1279,6 +1317,8 @@ def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
         r"(?:,\s*(?:(?:but|and)\s+)?|\s+(?:but|and)\s+)i\s+(?:took|used|tried|applied|swallowed)\b",
         text[predicate.end():], maxsplit=1, flags=re.I,
     )[0]
+    # Drop discourse before naming, so "though" is not absorbed into the drug.
+    body = _NONRESTRICTING_ASIDE_RE.sub("", body)
     start = 0
     names = set()
     doses = []
@@ -1296,8 +1336,8 @@ def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
         start += join.end()
     # A causal explanation for non-use does not narrow which administration
     # was denied. A purpose, dose or date does.
-    tail = re.split(r"\bbecause\b", body[start:], maxsplit=1, flags=re.I)[0]
-    qualifier = " ".join([*doses, tail]).strip(" .,;!")
+    tail = " ".join(re.split(r"\bbecause\b", body[start:], maxsplit=1, flags=re.I)[0].split()).strip(" .,;!")
+    qualifier = " ".join(part for part in (*doses, tail) if part)
     return (names, qualifier) if names else None
 
 
@@ -1334,9 +1374,11 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
             qualifier = correction[1]
             if qualifier and not _MED_CALENDAR_RE.fullmatch(qualifier):
                 # Only withdraw a qualified report if that qualification
-                # also names the original administration (e.g. its dose).
+                # names this administration, not a coadministered sibling.
+                administration = _medication_conjunct(
+                    event.text, span.start - event.start, span.end - event.start)
                 if (not _patient_question(text)
-                        and re.search(r"(?<!\w)" + re.escape(qualifier) + r"(?!\w)", event.text, re.I)):
+                        and _qualifier_names_administration(qualifier, administration)):
                     return True
                 continue
             frame = _medication_interval(qualifier)
