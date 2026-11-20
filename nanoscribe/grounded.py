@@ -426,6 +426,28 @@ _MED_DENIAL_CUE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Category words can qualify either a denial or the question answered by "no".
+_ALLERGEN_CATEGORY_WORDS = {
+    "drug": r"(?:drugs?|medications?|medicines?|meds?)",
+    "material": r"(?:materials?|contact)",
+    "food": r"foods?",
+    "environmental": r"(?:environmental|seasonal)",
+}
+_ALLERGEN_CATEGORY = "(?:" + "|".join(_ALLERGEN_CATEGORY_WORDS.values()) + ")"
+_ALLERGEN_CATEGORY_RE = re.compile(rf"\b{_ALLERGEN_CATEGORY}\b", re.I)
+_TYPED_ALLERGY_QUESTION_RE = re.compile(
+    rf"(?:do you have |are there )?any (?:known )?{_ALLERGEN_CATEGORY} allerg(?:y|ies)", re.I,
+)
+_ALLERGY_DENIAL_NOUN_RE = re.compile(
+    rf"(?:(?:no,? )?(?:i (?:have |have got )?no|no|i (?:do not|don't) have(?: any)?|"
+    rf"i (?:deny|denied)(?: any)?|i (?:haven't|have not) got any) )"
+    rf"(?:known )?(?:(?P<type>{_ALLERGEN_CATEGORY}) )?allerg(?:y|ies)"
+    rf"(?: to (?:any )?(?P<object_type>{_ALLERGEN_CATEGORY}))?(?: at all)?", re.I,
+)
+_ALLERGY_DENIAL_OBJECT_RE = re.compile(
+    r"(?:i(?: am|'m) not allergic(?: to (?P<object>.+))?)", re.I,
+)
+
 _ALG_DENIAL_CUE_RE = re.compile(
     r"(?:"
     r"\bno\s+(?:known\s+|medication\s+|medicine\s+|drug\s+|material\s+)*allerg(?:y|ies)\b"
@@ -643,7 +665,7 @@ class GroundedFieldOutput:
             span.validate_against(request.transcript, path=f"{path}.evidence[{idx}]")
         if self.state is FieldState.ABSENT:
             source = transcript_source(request)
-            if not any(is_explicit_patient_denial(source, self.field, span) for span in self.evidence):
+            if not any(verify_grounded_span(source, self.field, self.state, span)[0] for span in self.evidence):
                 raise ContractValidationError(
                     "absence_without_denial",
                     "absent fields require an explicit non-hedged patient denial",
@@ -955,6 +977,8 @@ def _field_wide_question(text: str, field: FieldName) -> bool:
     """Only an unqualified category question can give an elliptical 'no' field-wide scope."""
     if question_field(text) is field:
         return True
+    if field is FieldName.ALLERGY and _TYPED_ALLERGY_QUESTION_RE.fullmatch(text.rstrip("?.!").strip()):
+        return True
     extra = {
         FieldName.ALLERGY: r"any (?:drug sensitivities|allergies)(?: on (?:file|your chart))?",
         FieldName.MEDICATION: r"any (?:meds|treatments)(?: for (?:it|this))?",
@@ -982,13 +1006,16 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     text = span.text.strip()
     if (_EPISTEMIC_HEDGE_RE.search(text) or _THIRD_PARTY_RE.search(text) or _PERSONAL_SUBJECT_RE.search(text)
             or _SIDE_EFFECT_CONTRAST_RE.search(text)
-            or re.search(r"\b(?:except|apart from|other than|allerg(?:y|ies) to)\b", text, re.I)):
+            or re.search(r"\b(?:except|apart from|other than)\b", text, re.I)
+            or (re.search(r"\ballerg(?:y|ies) to\b", text, re.I)
+                and not (field is FieldName.ALLERGY and _ALLERGY_DENIAL_NOUN_RE.fullmatch(text.strip(" .!?;"))))):
         return False
     if _ELLIPTICAL_DENIAL_RE.fullmatch(text):
         if (span.start != turn.start or prev is None or prev.speaker is not Speaker.CLINICIAN
                 or not _field_wide_question(prev.text, field)):
             return False
-    elif not _is_field_denial(field, text):
+    elif (not _is_field_denial(field, text)
+          and not (field is FieldName.ALLERGY and _allergy_denial_scope(text)[0] != "unknown")):
         cue_re = _MED_DENIAL_CUE_RE if field is FieldName.MEDICATION else _ALG_DENIAL_CUE_RE
         if not (_NEGATION_WORD_RE.search(text) and cue_re.search(text)):
             return False
@@ -1631,9 +1658,11 @@ def verify_grounded_span(
     valid, reason = _verify_local_span(source, field, state, span)
     if valid and state is FieldState.SUPPORTED and _coexisting_substances(source, field):
         return False, "coexisting_multiple_substances_require_uncertain"
-    if valid and field is FieldName.MEDICATION and state is FieldState.ABSENT:
-        if any(not _denial_covers_treatment(source, span, taken) for taken in _local_supported_spans(source, field)):
-            return False, "scoped_denial_does_not_cover_reported_treatment"
+    if valid and state is FieldState.ABSENT:
+        if field is FieldName.ALLERGY and _allergy_denial_scope(span.text)[0] == "name":
+            return False, "named_allergen_denial_is_not_field_wide"
+        if any(not _denial_covers_substance(source, field, span, item) for item in _local_supported_spans(source, field)):
+            return False, "scoped_denial_does_not_cover_reported_substance"
     return valid, reason
 
 
@@ -2203,6 +2232,83 @@ def _denial_covers_treatment(source: Source, denial: CandidateSpan, treatment: C
     return bool(denied and taken and denied[0] == taken[0] and (not denied[1] or denied[1] == taken[1]))
 
 
+def _allergen_category(word: str) -> str | None:
+    return next((category for category, pattern in _ALLERGEN_CATEGORY_WORDS.items()
+                 if re.fullmatch(pattern, word, re.I)), None)
+
+
+def _allergy_denial_scope(text: str) -> tuple[str, str | None]:
+    """A complete qualifier determines the denial; unmatched modifiers never imply 'all'."""
+    clean = text.casefold().replace("’", "'").strip(" .!?;")
+    noun = _ALLERGY_DENIAL_NOUN_RE.fullmatch(clean)
+    if noun:
+        category = noun["type"] or noun["object_type"]
+        if noun["type"] and noun["object_type"]:
+            return "unknown", None
+        return ("category", _allergen_category(category)) if category else ("all", None)
+    relation = _ALLERGY_DENIAL_OBJECT_RE.fullmatch(clean)
+    if relation:
+        obj = relation["object"]
+        if obj in (None, "anything"):
+            return "all", None
+        category = _allergen_category(obj.removeprefix("any "))
+        if category:
+            return "category", category
+        if re.fullmatch(rf"{_SUBSTANCE_WORD}(?: {_SUBSTANCE_WORD}){{0,5}}", obj):
+            return "name", normalize_value(obj)
+    return "unknown", None
+
+
+def _allergy_question_scope(text: str) -> tuple[str, str | None]:
+    if not _field_wide_question(text, FieldName.ALLERGY):
+        return "unknown", None
+    category = _ALLERGEN_CATEGORY_RE.search(text)
+    return ("category", _allergen_category(category[0])) if category else ("all", None)
+
+
+def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | None:
+    # A new or ambiguous name only inherits a category as a direct answer to a
+    # typed question. An independently worded report retains its own scope.
+    idx = _turn_index(source, span.start, span.end)
+    if idx is None:
+        return None
+    name = normalize_value(span.text)
+    # These mineral names also identify exposures in food and materials; a
+    # drug-specific question can still establish their use as medications.
+    if _FAMILIAR_MEDICINE_RE.fullmatch(name) and name not in {"zinc", "sodium chloride", "calcium carbonate"}:
+        return "drug"
+    for category, pattern in (
+        ("material", r"(?:natural rubber )?latex(?: gloves)?|nickel|adhesive(?: tape)?"),
+        ("food", r"peanuts?|tree nuts?|almonds?|eggs?|shellfish|shrimp|cow's milk"),
+        ("environmental", r"(?:[\w-]+ )*pollen|dust mites?|(?:cat|dog) dander"),
+    ):
+        if re.fullmatch(pattern, name):
+            return category
+    question = _preceding_clinician_turn(source, idx)
+    if question and normalize_value(source.turns[idx].text) == name:
+        category = _allergy_question_scope(question.text)[1]
+        if category:
+            return category
+    # A patient's own account may establish that an unfamiliar name is a drug.
+    if any(normalize_value(med.text) == name for med in _local_supported_spans(source, FieldName.MEDICATION)):
+        return "drug"
+    return None
+
+
+def _denial_covers_substance(source: Source, field: FieldName, denial: CandidateSpan, item: CandidateSpan) -> bool:
+    if field is FieldName.MEDICATION:
+        return _denial_covers_treatment(source, denial, item)
+    scope, value = _allergy_denial_scope(denial.text)
+    if _ELLIPTICAL_DENIAL_RE.fullmatch(denial.text.strip()):
+        idx = _turn_index(source, denial.start, denial.end)
+        question = _preceding_clinician_turn(source, idx) if idx is not None else None
+        if question:
+            scope, value = _allergy_question_scope(question.text)
+    if scope == "name":
+        return normalize_value(item.text) == value
+    return scope == "all" or (scope == "category" and _reported_allergen_category(source, item) == value)
+
+
 def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
     """Detect unretracted incompatible patient observations in distinct source clauses."""
     if has_global_reassignment(source):
@@ -2222,7 +2328,7 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
             for denial in abs_spans:
                 if positive.start < denial.end and denial.start < positive.end:
                     continue
-                if field is FieldName.MEDICATION and not _denial_covers_treatment(source, denial, supported):
+                if not _denial_covers_substance(source, field, denial, supported):
                     continue
                 for claim in (positive, supported):
                     pair = tuple(sorted((claim, denial), key=lambda span: span.start))
