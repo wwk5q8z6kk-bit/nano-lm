@@ -299,6 +299,39 @@ def test_evaluate_malformed_invented_and_critical() -> None:
     assert report.invalid_span >= 1
     assert atom_result(report, "atom-assess").invalid_span
 
+def test_evaluate_exceptions_handled() -> None:
+    gold = _gold()
+    pred = PredictedEncounter(
+        atoms=(
+            _pred_from_gold(gold, "atom-neck"),
+        )
+    )
+
+    import nanoscribe.evaluate
+
+    # We test multiple exception types that should all trigger the same handler.
+    # We use a manual swap here because this file uses direct invocation (no pytest features).
+    original = nanoscribe.evaluate._resolve_pred_spans
+
+    try:
+        for exc in [
+            EncounterError("mock_error", "Mock EncounterError"),
+            TypeError("Mock TypeError"),
+            ValueError("Mock ValueError"),
+            AttributeError("Mock AttributeError")
+        ]:
+            def mock_resolve(*args, **kwargs):
+                raise exc
+
+            nanoscribe.evaluate._resolve_pred_spans = mock_resolve
+
+            report = evaluate(gold, pred)
+            assert report.malformed == 1
+            assert report.critical_error == 1
+            assert atom_result(report, "atom-neck").malformed
+            assert atom_result(report, "atom-neck").critical_error
+    finally:
+        nanoscribe.evaluate._resolve_pred_spans = original
 
 def test_evaluate_ambiguity_is_not_a_guessed_span() -> None:
     source = assemble_source(
