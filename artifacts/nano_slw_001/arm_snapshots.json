@@ -1,0 +1,90 @@
+{
+  "baseline_a_full_rebuild": {
+    "10": {
+      "signature_hash": "sig_ac0fb67bfb23ce06",
+      "ledger_version": 373,
+      "facts": 216,
+      "uncertain": 24,
+      "recomputed": 516
+    },
+    "20": {
+      "signature_hash": "sig_d88a8b0bf5f27ff9",
+      "ledger_version": 470,
+      "facts": 203,
+      "uncertain": 37,
+      "recomputed": 601
+    },
+    "30": {
+      "signature_hash": "sig_b0705f7b2b3a978c",
+      "ledger_version": 561,
+      "facts": 192,
+      "uncertain": 48,
+      "recomputed": 678
+    },
+    "40": {
+      "signature_hash": "sig_3846b6c50f36e10c",
+      "ledger_version": 653,
+      "facts": 198,
+      "uncertain": 42,
+      "recomputed": 752
+    },
+    "50": {
+      "signature_hash": "sig_51eca281d4433188",
+      "ledger_version": 753,
+      "facts": 199,
+      "uncertain": 41,
+      "recomputed": 842
+    },
+    "60": {
+      "signature_hash": "sig_bcb190088623f363",
+      "ledger_version": 845,
+      "facts": 195,
+      "uncertain": 45,
+      "recomputed": 918
+    }
+  },
+  "candidate_b_incremental": {
+    "10": {
+      "signature_hash": "sig_ac0fb67bfb23ce06",
+      "ledger_version": 373,
+      "facts": 216,
+      "uncertain": 24,
+      "recomputed": 516
+    },
+    "20": {
+      "signature_hash": "sig_d88a8b0bf5f27ff9",
+      "ledger_version": 470,
+      "facts": 203,
+      "uncertain": 37,
+      "recomputed": 149
+    },
+    "30": {
+      "signature_hash": "sig_b0705f7b2b3a978c",
+      "ledger_version": 561,
+      "facts": 192,
+      "uncertain": 48,
+      "recomputed": 137
+    },
+    "40": {
+      "signature_hash": "sig_3846b6c50f36e10c",
+      "ledger_version": 653,
+      "facts": 198,
+      "uncertain": 42,
+      "recomputed": 131
+    },
+    "50": {
+      "signature_hash": "sig_51eca281d4433188",
+      "ledger_version": 753,
+      "facts": 199,
+      "uncertain": 41,
+      "recomputed": 154
+    },
+    "60": {
+      "signature_hash": "sig_bcb190088623f363",
+      "ledger_version": 845,
+      "facts": 195,
+      "uncertain": 45,
+      "recomputed": 138
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "cm1_rule_family_ids": [
+    "cm1_canonical_qa"
+  ],
+  "eval_template_family_ids": [
+    "eval_asr_noisy",
+    "eval_multi_candidate",
+    "eval_note_free",
+    "eval_para_disfluent",
+    "eval_weak_cue"
+  ],
+  "train_template_family_ids": [
+    "train_note_brief",
+    "train_qa_soft",
+    "train_qa_stable"
+  ],
+  "disjoint_eval_vs_cm1": true,
+  "cm1_cues": {
+    "cc": [
+      "what brings you in today",
+      "what seems to be the trouble",
+      "what can i do for you"
+    ],
+    "dur": [
+      "how long has this been going on",
+      "when did it start",
+      "how many days has it been"
+    ],
+    "sev": [
+      "how bad would you say it is",
+      "is it mild, moderate, or severe"
+    ],
+    "med": [
+      "have you taken anything for it",
+      "are you on any medication for this"
+    ],
+    "alg": [
+      "any allergies i should know about",
+      "are you allergic to anything"
+    ]
+  }
+}

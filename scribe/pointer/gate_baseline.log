@@ -1,0 +1,24 @@
+eval: 40 dialogues; 20 held-value items
+
+=== BASE CONTROL (dpo.pt, greedy plain) ===
+[base] parse 0/40=0%  recall 0/200=0%  halluc 0/200=0.0%  omission 0
+        ITEM-level: held 0% seen 0%  -> gap 0 pts   VALUE-level(held fields): held 0% seen 0% -> gap 0 pts
+        out: "I'm not able to help with."
+        truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+        out: "I'm not able to help with."
+        truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+
+=== ARM B baseline (baseline.pt, greedy) ===
+[baseline] parse 39/40=98%  recall 159/200=80%  halluc 26/200=13.0%  omission 10
+        ITEM-level: held 71% seen 92%  -> gap 21 pts   VALUE-level(held fields): held 0% seen 92% -> gap 92 pts
+        out: 'CC: shortness of breath | DUR: 6 weeks | SEV: moderate | MED: none | ALG: penicillin'
+        truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+        out: 'CC: hand | DUR: 3 days | SEV: mild | MED: none | ALG: none'
+        truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+
+--- pre-registered bars ---
+  arm clears bars (parse>=90 recall>=80 halluc<=10): False
+  base control fails (discrimination): True
+  GATE FAIL
+  OOD item-gap=21 pts (ref v2=22, scale=23) | value-gap=92 pts
+  wrote result_baseline.json

@@ -1,0 +1,15 @@
+MODE=baseline  loaded trunk from dpo.pt  params=3.1486M (added over 3.149M: -0.39k)
+12000 examples, 1125 steps, 3 epochs, batch 32
+step     1/1125  loss 6.623  gnorm 17.56  lr 4.5e-06  8k tok/s
+step   100/1125  loss 0.009  gnorm 0.11  lr 1.5e-04  68k tok/s
+step   200/1125  loss 0.001  gnorm 0.02  lr 1.4e-04  69k tok/s
+step   300/1125  loss 0.000  gnorm 0.00  lr 1.3e-04  68k tok/s
+step   400/1125  loss 0.000  gnorm 0.00  lr 1.2e-04  66k tok/s
+step   500/1125  loss 0.000  gnorm 0.00  lr 9.8e-05  63k tok/s
+step   600/1125  loss 0.000  gnorm 0.00  lr 7.8e-05  60k tok/s
+step   700/1125  loss 0.000  gnorm 0.00  lr 5.9e-05  57k tok/s
+step   800/1125  loss 0.000  gnorm 0.00  lr 4.2e-05  55k tok/s
+step   900/1125  loss 0.000  gnorm 0.00  lr 2.9e-05  4k tok/s
+step  1000/1125  loss 0.000  gnorm 0.00  lr 1.9e-05  3k tok/s
+step  1100/1125  loss 0.000  gnorm 0.00  lr 1.5e-05  2k tok/s
+baseline done in 187.7 min -> baseline.pt

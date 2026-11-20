@@ -1,0 +1,15 @@
+MODE=pointer2 (copy-supervised, lambda=1.0, gate_bias=-2) params=3.1736M
+12000 examples, 1125 steps
+step     1/1125  nll 6.614  Lcopy 4.787  copy_share 0.41  gnorm 21.82  10k tok/s
+step   100/1125  nll 0.005  Lcopy 0.002  copy_share 0.51  gnorm 0.12  60k tok/s
+step   200/1125  nll 0.001  Lcopy 0.001  copy_share 0.50  gnorm 0.08  62k tok/s
+step   300/1125  nll 0.000  Lcopy 0.000  copy_share 0.53  gnorm 0.02  62k tok/s
+step   400/1125  nll 0.000  Lcopy 0.000  copy_share 0.52  gnorm 0.01  63k tok/s
+step   500/1125  nll 0.000  Lcopy 0.000  copy_share 0.51  gnorm 0.00  61k tok/s
+step   600/1125  nll 0.000  Lcopy 0.000  copy_share 0.52  gnorm 0.00  59k tok/s
+step   700/1125  nll 0.000  Lcopy 0.000  copy_share 0.52  gnorm 0.00  57k tok/s
+step   800/1125  nll 0.000  Lcopy 0.000  copy_share 0.52  gnorm 0.00  55k tok/s
+step   900/1125  nll 0.000  Lcopy 0.000  copy_share 0.50  gnorm 0.00  54k tok/s
+step  1000/1125  nll 0.000  Lcopy 0.000  copy_share 0.50  gnorm 0.00  53k tok/s
+step  1100/1125  nll 0.000  Lcopy 0.000  copy_share 0.52  gnorm 0.00  53k tok/s
+pointer2 done in 5.8 min -> pointer2.pt

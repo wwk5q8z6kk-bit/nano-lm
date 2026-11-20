@@ -1,0 +1,36 @@
+# Program 0 infrastructure sentinel — not a scientific claim.
+# Ground truth is bound by digest in the Python task_adapter / runner;
+# this YAML is the harness registration surface.
+task: nano_held_value_sentinel
+task_alias: nano_held_value_sentinel
+tag:
+  - sentinel
+  - held_value
+  - program0
+dataset_path: json
+dataset_name: null
+dataset_kwargs:
+  data_files:
+    validation: ../fixtures/held_value_sentinel_n4.json
+output_type: generate_until
+test_split: validation
+num_fewshot: 0
+doc_to_text: "{{convo[0].content}}"
+doc_to_target: "{{convo[1].content}}"
+generation_kwargs:
+  until: ["\n\n"]
+  do_sample: false
+  temperature: 0.0
+  max_gen_toks: 64
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 0.1.0
+  nano_lm_program: BENCHMARK_SUPREMACY_LAB_PROGRAM0
+  source_instrument: benchmarks/adapters/lm_eval/fixtures/held_value_sentinel_n4.json
+  source_instrument_sha256: ed5e8171cf13a4e802ecc6635740e8ad3977064eea7e4149b331a20792dee0a2
+  record_count: 4
+  evidence_ledger_eligible: false
+  leaderboard_eligible: false

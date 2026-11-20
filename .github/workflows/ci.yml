@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  push:
+    branches: [master, 'docs/**']
+  pull_request:
+
+jobs:
+  canonical-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: ACTIVE_NOW consistency
+        run: python3 scripts/check_active_now.py
+
+      - name: Documentation integrity
+        run: python3 scripts/check_docs_integrity.py
+
+      - name: Fabric regression pins
+        run: python3 fabric/test_fabric.py
+
+      - name: C3 recompute regression pins
+        run: python3 trajectory/test_recompute_c3.py
+
+      - name: Encounter Representation v0
+        run: python3 nanoscribe/test_encounter_v0.py
+
+      - name: Evidence transport pins
+        run: python3 nanoscribe/test_evidence_transport.py
+
+      - name: Model adapter pins
+        run: python3 nanoscribe/test_adapt.py
+
+      - name: Model adapter baseline smoke
+        run: python3 nanoscribe/benchmark.py
+
+      # benchmarks/ is absent from pytest.ini testpaths, so these run in no other
+      # job — including the pre-existing Program 0 Gate 0 property tests.
+      - name: Benchmark contract test deps
+        run: pip install -r requirements-bench-test.txt
+
+      - name: Benchmark contracts (Program 0 + agentic instruments)
+        run: pytest benchmarks/ -q

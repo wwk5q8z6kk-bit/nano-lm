@@ -1,0 +1,26 @@
+{
+  "base": {
+    "parse": 0.0,
+    "recall": 0.0,
+    "halluc": 0.0,
+    "omission": 0,
+    "item_held": 0.0,
+    "item_seen": 0.0,
+    "item_gap": 0.0,
+    "val_held": 0.0,
+    "val_seen": 0.0,
+    "val_gap": 0.0
+  },
+  "arm": {
+    "parse": 0.975,
+    "recall": 0.795,
+    "halluc": 0.13,
+    "omission": 10,
+    "item_held": 0.7052631578947368,
+    "item_seen": 0.92,
+    "item_gap": 21.473684210526322,
+    "val_held": 0.0,
+    "val_seen": 0.9193548387096774,
+    "val_gap": 91.93548387096774
+  }
+}

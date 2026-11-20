@@ -1,0 +1,133 @@
+{
+  "tech_note_cache": {
+    "title_line": {
+      "start": 2,
+      "end": 26,
+      "text": "Cache Invalidation Notes"
+    },
+    "year": {
+      "start": 70,
+      "end": 74,
+      "text": "2024"
+    },
+    "ttl": {
+      "start": 136,
+      "end": 147,
+      "text": "300 seconds"
+    },
+    "email": {
+      "start": 84,
+      "end": 99,
+      "text": "ada@example.org"
+    },
+    "url": {
+      "start": 320,
+      "end": 349,
+      "text": "https://example.org/cache-rfc"
+    },
+    "n": {
+      "start": 270,
+      "end": 275,
+      "text": "n=240"
+    },
+    "def": {
+      "start": 188,
+      "end": 244,
+      "text": "Latency is the end-to-end response time measured at p50."
+    }
+  },
+  "tech_note_cache_v2": {
+    "title_line": {
+      "start": 2,
+      "end": 30,
+      "text": "Cache Invalidation Follow-up"
+    },
+    "year": {
+      "start": 60,
+      "end": 64,
+      "text": "2025"
+    }
+  },
+  "bio_abs_metformin": {
+    "title_line": {
+      "start": 2,
+      "end": 40,
+      "text": "Metformin Kinetics in Synthetic Cohort"
+    },
+    "year": {
+      "start": 82,
+      "end": 86,
+      "text": "2023"
+    },
+    "dose": {
+      "start": 208,
+      "end": 214,
+      "text": "500 mg"
+    },
+    "n": {
+      "start": 379,
+      "end": 384,
+      "text": "n=512"
+    }
+  },
+  "bio_abs_metformin_conflict": {
+    "title_line": {
+      "start": 2,
+      "end": 32,
+      "text": "Metformin Kinetics Replication"
+    },
+    "year": {
+      "start": 61,
+      "end": 65,
+      "text": "2024"
+    }
+  },
+  "semi_structured_lab": {
+    "title_line": {
+      "start": 2,
+      "end": 20,
+      "text": "Lab Instrument Log"
+    },
+    "year": {
+      "start": 55,
+      "end": 59,
+      "text": "2022"
+    }
+  },
+  "tableish_throughput": {
+    "title_line": {
+      "start": 2,
+      "end": 23,
+      "text": "Throughput Table Dump"
+    },
+    "year": {
+      "start": 55,
+      "end": 59,
+      "text": "2021"
+    }
+  },
+  "noisy_ocr_line": {
+    "title_line": {
+      "start": 2,
+      "end": 22,
+      "text": "OCR Recovery Fixture"
+    },
+    "year": {
+      "start": 49,
+      "end": 53,
+      "text": "2020"
+    }
+  },
+  "binding_coref": {
+    "title_line": {
+      "start": 2,
+      "end": 21,
+      "text": "Entity Binding Note"
+    },
+    "year": {
+      "start": 53,
+      "end": 57,
+      "text": "2024"
+    }
+  }
+}

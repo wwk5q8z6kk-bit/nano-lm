@@ -1,0 +1,6 @@
+[04:14:54] poll 1
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+ALIVE

@@ -1,4 +1,16 @@
-# NanoScribe — Master Plan (owner rewrite, 2026-07-20)
+# NanoScribe — Master Plan (historical architecture note)
+
+> **NONCLAIM / Constitutional role (from 2026-07-31):** Historical architecture note only — **not** Layer-1 evidence, **not** the laboratory constitution, and **not** the execution queue.  
+> Use instead:  
+> - `LABORATORY_CONSTITUTION.md` — layer separation  
+> - `EVIDENCE_LEDGER.md` — Layer 1 (conservative)  
+> - `RESEARCH_PORTFOLIO.md` — Layer 3 (expansive questions)  
+> - `TECHNOLOGY_ROADMAP.md` — Layer 2 (ambitious conditional build vision)  
+> - `EXECUTION_QUEUE.md` — authorized now  
+> - `DECISION_GATES.md` — promotion rules  
+>  
+> Historical Phases 3–4 remain **`STOP` as execution**. Imagination lives in the Technology Roadmap and Research Portfolio.  
+> Science: `IDLE_AFTER_E4_KILL`. Operating posture: see `LABORATORY_CONSTITUTION.md` / `EXECUTION_QUEUE.md`.
 
 *Condensed-faithful capture of the owner's rewritten master plan; supersedes the
 roadmap portions of NANOSCRIBE_VNEXT.md (whose architectural content it absorbs).
@@ -10,6 +22,9 @@ quantification slot is filled by C-1b (interference classes), not the coverage
 continuum.*
 
 ## Vision (protected from drift)
+
+> **Architecture truth:** NanoScribe is an architectural research program. Beyond the fabric vertical slice, its control plane, memory, routing, tools, permissions, distributed execution, and user interface remain unimplemented unless separately evidenced. Fabric vertical slice ≠ NanoScribe architecture.
+
 NanoScribe is a **factorized, evidence-first, verification-gated cognitive system**
 whose linguistic core is a small model; memory, routing, verification, tools, and claim
 management are bounded, typed, auditable modules. nano-lm's empirical results are the
@@ -53,9 +68,9 @@ abstention) → human reviews residual → memory stores only validated state.
   rates + full provenance per claim.
 - **Phase 2 — residual first-class:** ledger tracks slot diversity + coverage; run
   C-1b (interference); verifier flags binding failures, not just surface mismatches.
-- **Phase 3 — controlled expansion:** one bounded module at a time; each declares
+- **Phase 3 — controlled expansion: `STOP` (not authorized):** one bounded module at a time; each declares
   read/write contracts, passes the regression suite, shows no contamination increase.
-- **Phase 4 — functional scalability dashboard:** clean gap (primary), unverifiable-
+- **Phase 4 — functional scalability dashboard: `STOP` (not authorized):** clean gap (primary), unverifiable-
   claim rate, provenance completeness, contamination rate, failure recovery.
 
 ## Decision points

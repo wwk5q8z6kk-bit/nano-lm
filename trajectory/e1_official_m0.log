@@ -1,0 +1,67 @@
+=== ARM 1: ownstack Chinchilla+LoRA ===
+[ownstack] loaded pretrain step=195312
+[ownstack] LoRA trainables 4.028M
+[ownstack] 1/1125 loss=3.421 (0.0 min)
+[ownstack] 100/1125 loss=0.109 (0.9 min)
+[ownstack] 200/1125 loss=0.104 (1.9 min)
+[ownstack] 300/1125 loss=0.101 (2.8 min)
+[ownstack] 400/1125 loss=0.103 (3.8 min)
+[ownstack] 500/1125 loss=0.102 (4.7 min)
+[ownstack] 600/1125 loss=0.102 (5.7 min)
+[ownstack] 700/1125 loss=0.104 (6.6 min)
+[ownstack] 800/1125 loss=0.105 (7.6 min)
+[ownstack] 900/1125 loss=0.100 (8.5 min)
+[ownstack] 1000/1125 loss=0.101 (9.5 min)
+[ownstack] 1100/1125 loss=0.106 (10.4 min)
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+  U=0.8985 P=0.979 rec=0.979 gap=4.24 rho=0.001
+
+=== ARM 2: Pythia-160M LoRA ===
+[pythia] examples 12000 dropped 0
+[pythia] ep0 1/1125 loss=4.923 (0.0 min)
+[pythia] ep0 100/1125 loss=0.001 (0.2 min)
+[pythia] ep0 200/1125 loss=0.000 (0.5 min)
+[pythia] ep0 300/1125 loss=0.000 (0.7 min)
+[pythia] ep1 400/1125 loss=0.000 (0.9 min)
+[pythia] ep1 500/1125 loss=0.000 (1.2 min)
+[pythia] ep1 600/1125 loss=0.000 (1.4 min)
+[pythia] ep1 700/1125 loss=0.000 (1.6 min)
+[pythia] ep2 800/1125 loss=0.000 (1.9 min)
+[pythia] ep2 900/1125 loss=0.000 (2.1 min)
+[pythia] ep2 1000/1125 loss=0.000 (2.3 min)
+[pythia] ep2 1100/1125 loss=0.000 (2.6 min)
+[pythia] done 2.6 min
+E1 M0_pythia160m_lora verify=off
+  U=0.9160 P=0.987 rec=0.987 gap=2.64 rho=0.000
+E1 M0_pythia160m_lora verify=on
+  U=0.9252 P=1.000 rec=0.987 gap=2.64 rho=0.013
+{
+  "verdict": "KILL",
+  "m0": "M0_pythia160m_lora",
+  "U_m0": 0.9252173639550433,
+  "best_nonlm": "M1_template",
+  "U_best_nonlm": 0.9989993963311425,
+  "delta": 0.05,
+  "margin": 0.07378203237609926,
+  "sensitivity_flip": false,
+  "U_all": {
+    "M1_template": 0.9989993963311425,
+    "M2_dict_span": 0.8862985693320633,
+    "M4_constrained": 0.8194994600038044,
+    "M3_crf_lite": 0.2484762860178173,
+    "M5_span_clf": 0.6885453884944915,
+    "M0_scale": 0.8539283563496702,
+    "M0_ownstack_chinchilla_lora": 0.8984580063518905,
+    "M0_pythia160m_lora": 0.9252173639550433
+  },
+  "official_m0_candidates": {
+    "M0_pythia160m_lora": 0.9252173639550433,
+    "M0_ownstack_chinchilla_lora": 0.8984580063518905
+  },
+  "provisional_m0_scale": 0.8539283563496702,
+  "venue": "runpod-cuda"
+}
+E1_OFFICIAL_M0_DONE

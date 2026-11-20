@@ -1,0 +1,33 @@
+{
+  "interventions": 47,
+  "outcomes": {
+    "effective": 24,
+    "ineffective": 16,
+    "delayed": 7
+  },
+  "changes_caused_by_an_intervention": 30,
+  "documented_links": 11,
+  "action_records": 47,
+  "basis_aware": {
+    "candidates": 590,
+    "stated_as_cause": 9,
+    "reported_as_association_only": 13,
+    "abstained": 568,
+    "correct_causal_claims": 9,
+    "false_causal_claims": 0,
+    "missed_documented_links": 0
+  },
+  "post_hoc_control": {
+    "candidates": 590,
+    "stated_as_cause": 22,
+    "reported_as_association_only": 0,
+    "abstained": 568,
+    "correct_causal_claims": 11,
+    "false_causal_claims": 11,
+    "missed_documented_links": 0
+  },
+  "false_causal_claims_avoided": 11,
+  "control_is_worse": true,
+  "ineffective_interventions": 16,
+  "intended_values_leaked_into_state": 0
+}

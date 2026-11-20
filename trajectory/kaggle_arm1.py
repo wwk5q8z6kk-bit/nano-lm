@@ -122,7 +122,7 @@ def _compute_gap_metrics(held, seen):
         seen_rec = sum(d[1] for d in seen) / (5 * len(seen))
         gap = seen_rec - held_rec
         # Bootstrap reseeds default_rng(SEED) on every call DELIBERATELY: the
-        # reported CI is a deterministic function of the measurements. Not a bug.
+        # reported CI is a deterministic function of the measurements. Intended behavior.
         rng = np.random.default_rng(SEED)
         h_hits = np.array([d[1] for d in held]); s_hits = np.array([d[1] for d in seen])
         gaps = []

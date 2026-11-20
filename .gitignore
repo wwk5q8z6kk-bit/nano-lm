@@ -1,8 +1,68 @@
+# Large / local training artifacts
 *.pt
 *.npy
 *.jsonl
 raw_corpus*
 clean_corpus*
 sft_convos.json
-__pycache__/
 checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Editor / OS
+.DS_Store
+.cursor/
+.idea/
+.vscode/
+*.swp
+
+# Local agent scratch (not evidence)
+.autonomous/
+audit/**/PRE_EDIT_SNAPSHOT.*
+
+# LaTeX intermediates (PDF tracked when rebuilt)
+papers/latex/*.aux
+papers/latex/*.log
+papers/latex/*.out
+papers/latex/*.toc
+papers/latex/*.blg
+
+# Durable raw evidence (explicitly tracked; overrides *.jsonl ignore)
+!artifacts/durable_raw/
+!artifacts/durable_raw/**
+
+# Benchmark instrument fixtures (explicitly tracked; overrides *.jsonl ignore).
+# The v1.0 corpus was silently excluded by the rule above at the freeze commit
+# 18e410c; its content is pinned by digest in benchmarks/tests/test_v1_0_freeze.py.
+!benchmarks/fixtures/transcripts/*.jsonl
+!benchmarks/v1_1/fixtures/synthetic/*.jsonl
+
+# Preregistered synthetic evaluation instruments (small, immutable, hash-pinned).
+!artifacts/nano_h7/screen-v1/screen.jsonl
+
+# Local, reproducible H7 execution bundles (large; source and hashes are tracked).
+artifacts/nano_h7/execution-package-*/
+
+
+# Benchmark lab generated runs (Program 0+)
+experiments/**/runs/
+experiments/**/runs/**
+!experiments/**/runs/.gitkeep
+# Allow committed golden fixtures under adapters
+!benchmarks/adapters/**/fixtures/**
+!benchmarks/adapters/**/fixtures/**/*.json
+
+.venv-bench/
+
+# P1 harness outputs (external to git; summaries in frontier/*.json)
+artifacts/p1_runs/

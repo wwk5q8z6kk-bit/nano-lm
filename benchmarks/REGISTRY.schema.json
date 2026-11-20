@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "benchmarks/REGISTRY.schema.json",
+  "title": "BenchmarkLabRegistry",
+  "type": "object",
+  "required": ["registry_version", "resource_classes", "suites", "tasks", "harness_pin"],
+  "additionalProperties": true,
+  "properties": {
+    "registry_version": {"type": "string"},
+    "schema": {"type": "string"},
+    "program": {"type": "string"},
+    "harness_pin": {
+      "type": "object",
+      "required": ["package", "version", "git_commit"],
+      "properties": {
+        "package": {"type": "string"},
+        "version": {"type": "string"},
+        "git_commit": {"type": "string", "minLength": 40, "maxLength": 40},
+        "pin_doc": {"type": "string"}
+      }
+    },
+    "resource_classes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "definition_status", "budget_units", "version"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "name": {"type": "string"},
+          "definition_status": {"type": "string"},
+          "parameter_bounds": {"type": ["object", "null"]},
+          "hardware_bounds": {"type": ["object", "null"]},
+          "budget_units": {"type": "string"},
+          "version": {"type": "string"}
+        }
+      }
+    },
+    "suites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "family", "version", "status", "owner", "task_ids",
+                     "required_metrics", "protected_metrics", "contamination_status", "visibility"],
+        "properties": {
+          "id": {"type": "string"},
+          "family": {"type": "string"},
+          "version": {"type": "string"},
+          "status": {"enum": ["operational", "planned", "deprecated"]},
+          "owner": {"type": "string"},
+          "task_ids": {"type": "array", "items": {"type": "string"}},
+          "required_metrics": {"type": "array", "items": {"type": "string"}},
+          "protected_metrics": {"type": "array", "items": {"type": "string"}},
+          "source": {"type": ["string", "null"]},
+          "license": {"type": "string"},
+          "contamination_status": {"type": "string"},
+          "visibility": {"type": "string"}
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "version", "status", "suite_id"],
+        "properties": {
+          "id": {"type": "string"},
+          "version": {"type": "string"},
+          "status": {"type": "string"},
+          "suite_id": {"type": "string"},
+          "source_instrument_sha256": {"type": "string"},
+          "record_count": {"type": "integer", "minimum": 1},
+          "classical_baseline_required": {"type": "boolean"},
+          "evidence_ledger_eligible": {"type": "boolean"},
+          "leaderboard_eligible": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "base": {
+    "parse": 0.0,
+    "recall": 0.0,
+    "halluc": 0.0,
+    "omission": 0,
+    "item_held": 0.0,
+    "item_seen": 0.0,
+    "item_gap": 0.0,
+    "val_held": 0.0,
+    "val_seen": 0.0,
+    "val_gap": 0.0
+  },
+  "arm": {
+    "parse": 0.9,
+    "recall": 0.76,
+    "halluc": 0.12,
+    "omission": 4,
+    "item_held": 0.7125,
+    "item_seen": 0.95,
+    "item_gap": 23.749999999999993,
+    "val_held": 0.1,
+    "val_seen": 0.9322033898305084,
+    "val_gap": 83.22033898305085
+  },
+  "manip": {
+    "M": 0.1810320924258683,
+    "p_gen": 0.8253692396079628,
+    "copy_mass": 0.04660354626285823,
+    "n": 118,
+    "verdict": "VOID(unused)"
+  }
+}

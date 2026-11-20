@@ -1,0 +1,64 @@
+{
+  "schema": "nano-lm.e4.builder_checklist.v1",
+  "auth": "AUTHORIZE_E4_BUILDER_AND_EXECUTE",
+  "items": {
+    "B1": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/build_rstar.py"
+    },
+    "B2": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/data/rstar_{train,dev,eval}.json"
+    },
+    "B3": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/data/rstar_leakage_report.json"
+    },
+    "B4": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/c_m1_rules.json"
+    },
+    "B5": {
+      "status": "DONE",
+      "artifact": "trajectory/results_e4_classical_probe.json"
+    },
+    "B6": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/checkpoints/gref_nano_rstar_sft_v1.meta.json"
+    },
+    "B7": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/verify.py"
+    },
+    "B8": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/utility.py"
+    },
+    "B9": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/recipe_freeze.json#M_rubric_preassigned"
+    },
+    "B10": {
+      "status": "DONE",
+      "note": "apple-mps; L measured; C preassigned E1-scale"
+    },
+    "B11": {
+      "status": "DONE",
+      "note": "consequences table unchanged"
+    },
+    "B12": {
+      "status": "DONE",
+      "artifact": "trajectory/e4/AUTH_RECORD.md"
+    },
+    "B13": {
+      "status": "DONE",
+      "note": "local MPS $0"
+    },
+    "B14": {
+      "status": "DONE",
+      "note": "weights frozen in recipe_freeze before scores"
+    }
+  },
+  "verdict": "KILL",
+  "utility": "trajectory/results_e4_utility.json"
+}

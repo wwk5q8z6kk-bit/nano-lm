@@ -1,0 +1,15 @@
+MODE=pointer  loaded trunk from dpo.pt  params=3.1736M (added over 3.149M: 24.57k)
+12000 examples, 1125 steps, 3 epochs, batch 32
+step     1/1125  loss 6.029  gnorm 12.61  lr 4.5e-06  10k tok/s  copy_share 0.33
+step   100/1125  loss 0.005  gnorm 0.06  lr 1.5e-04  1k tok/s  copy_share 0.07
+step   200/1125  loss 0.001  gnorm 0.01  lr 1.4e-04  1k tok/s  copy_share 0.07
+step   300/1125  loss 0.000  gnorm 0.00  lr 1.3e-04  1k tok/s  copy_share 0.08
+step   400/1125  loss 0.000  gnorm 0.00  lr 1.2e-04  1k tok/s  copy_share 0.07
+step   500/1125  loss 0.000  gnorm 0.00  lr 9.8e-05  1k tok/s  copy_share 0.08
+step   600/1125  loss 0.000  gnorm 0.00  lr 7.8e-05  1k tok/s  copy_share 0.08
+step   700/1125  loss 0.000  gnorm 0.00  lr 5.9e-05  1k tok/s  copy_share 0.08
+step   800/1125  loss 0.000  gnorm 0.00  lr 4.2e-05  2k tok/s  copy_share 0.07
+step   900/1125  loss 0.000  gnorm 0.00  lr 2.9e-05  2k tok/s  copy_share 0.07
+step  1000/1125  loss 0.000  gnorm 0.00  lr 1.9e-05  2k tok/s  copy_share 0.08
+step  1100/1125  loss 0.000  gnorm 0.00  lr 1.5e-05  2k tok/s  copy_share 0.08
+pointer done in 143.0 min -> pointer.pt

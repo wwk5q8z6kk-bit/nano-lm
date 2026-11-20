@@ -1,0 +1,41 @@
+{
+  "schema": "nano-lm.docs.active_now.v1",
+  "updated": "2026-10-12",
+  "program_execution_status": "P1_SCRIBING_ACTIVE",
+  "capability_frontier": "P1_SCRIBING",
+  "current_gate": "P1_H7_KAGGLE_EXECUTION_READY",
+  "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
+  "training_backend": "KAGGLE_AND_RUNPOD",
+  "training_status": "ACTIVE",
+  "local_zero_cost_exploratory_training": "ALLOWED",
+  "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
+  "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
+  "confirmatory_evidential_run": "PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION",
+  "phi_on_cloud": "NOT_AUTHORIZED",
+  "phi_or_private_data": "NOT_AUTHORIZED",
+  "clinical_claims": "FORBIDDEN_WITHOUT_EXTERNAL_HUMAN_VALIDATION",
+  "compute_posture": {
+    "free_gpu_backend": "KAGGLE_WHEN_RUNTIME_FITS",
+    "paid_gpu_backend": "RUNPOD_FOR_EXACT_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE",
+    "training": "ACTIVE_ON_KAGGLE_AND_RUNPOD",
+    "local_compute": "APPLE_SILICON_AND_CPU_FOR_DEV_SMOKE_ANALYSIS_PREPROCESS_EVAL_AND_SMALL_EXPERIMENTS",
+    "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
+    "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
+    "confirmatory_evidential_run": "PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION",
+    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
+  },
+  "bounded_work": [
+    "p1_h7_kaggle_two_seed_cpu_training",
+    "p1_h7_one_shot_control_treatment_screen"
+  ],
+  "owner_gates": [
+    "materially_costly_runs_outside_active_experiment_budget",
+    "confirmatory_evidential_runs_without_prereg",
+    "phi_or_private_clinical_data",
+    "protected_tag_moves",
+    "publication_claims"
+  ],
+  "next_engineering": "EXECUTE_H7_TWO_STAGE_KAGGLE_PACKAGE",
+  "docs_authority": "docs/PROJECT_AUTHORITY.md",
+  "integration_base_sha": "a5d0c5dac0663cd760224073439905b211c11b44"
+}

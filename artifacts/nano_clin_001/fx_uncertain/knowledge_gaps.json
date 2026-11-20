@@ -1,0 +1,20 @@
+[
+  {
+    "patient_id": "synth-003",
+    "expected_information": "I do not see a colonoscopy in your record.",
+    "kind": "not_found",
+    "why_expected": "clinician searched and reported",
+    "search_scope": "record at encounter time",
+    "clinical_importance": "unknown",
+    "gap_id": "gap_288328ea97a1729c"
+  },
+  {
+    "patient_id": "synth-003",
+    "expected_information": "You had no adverse reaction documented to penicillin.",
+    "kind": "not_found",
+    "why_expected": "clinician searched and reported",
+    "search_scope": "record at encounter time",
+    "clinical_importance": "unknown",
+    "gap_id": "gap_8ebc927551d8fe3f"
+  }
+]

@@ -1,0 +1,86 @@
+=== TRAJECTORY JSONL IGNORE ===
+.gitignore:3:*.jsonl	trajectory/replications/c3/w2k42qy6gaqu3z/outputs_c3_seed0.jsonl
+=== GITIGNORE CONTENT ===
+*.pt
+*.npy
+*.jsonl
+raw_corpus*
+clean_corpus*
+sft_convos.json
+__pycache__/
+checkpoints/
+
+# Scientific result JSONs under trajectory/results_*.json and PREREG_*.md
+# must remain tracked (not ignored). Only *.jsonl / checkpoints are excluded above.
+=== DIFF GITIGNORE ===
+diff --git a/.gitignore b/.gitignore
+index d44667b..1244903 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -6,3 +6,6 @@ clean_corpus*
+ sft_convos.json
+ __pycache__/
+ checkpoints/
++
++# Scientific result JSONs under trajectory/results_*.json and PREREG_*.md
++# must remain tracked (not ignored). Only *.jsonl / checkpoints are excluded above.
+=== E2 SEARCH ===
+./.autonomous/e1-e2-runpod-gates
+./trajectory/e2
+./trajectory/PREREG_E2_lora_universes.md
+./trajectory/runpod_partial/e2_setup.log
+./trajectory/runpod_partial/e2_gpu.txt
+./trajectory/runpod_partial/e2_port.txt
+./trajectory/runpod_partial/e2_host.txt
+./trajectory/runpod_partial/e2_monitor.log
+./trajectory/runpod_partial/e2_pod.txt
+./scribe/pointer/gate2.py
+trajectory/e2/:
+total 48
+drwxr-xr-x@   5 mac  staff    160 Jul 31 00:16 .
+drwxr-xr-x  151 mac  staff   4832 Jul 31 08:06 ..
+-rw-r--r--@   1 mac  staff     70 Jul 31 00:15 __init__.py
+drwxr-xr-x@   3 mac  staff     96 Jul 31 00:16 __pycache__
+-rw-r--r--@   1 mac  staff  19008 Jul 31 00:16 run_u3_earlystop.py
+
+trajectory/runpod_partial/:
+total 88
+drwxr-xr-x@  13 mac  staff   416 Jul 31 01:01 .
+drwxr-xr-x  151 mac  staff  4832 Jul 31 08:06 ..
+-rw-r--r--@   1 mac  staff  3072 Jul 31 00:34 e1_close_monitor.log
+-rw-r--r--@   1 mac  staff  4932 Jul 31 00:35 e1_monitor.log
+-rw-r--r--@   1 mac  staff   180 Jul 31 00:14 e1_monitor_outer.log
+-rw-r--r--@   1 mac  staff  2387 Jul 31 00:34 e1_official_m0.log
+-rw-r--r--@   1 mac  staff    28 Jul 31 01:01 e2_gpu.txt
+-rw-r--r--@   1 mac  staff    15 Jul 31 01:01 e2_host.txt
+-rw-r--r--@   1 mac  staff     0 Jul 31 00:44 e2_monitor.log
+-rw-r--r--@   1 mac  staff    15 Jul 31 01:01 e2_pod.txt
+-rw-r--r--@   1 mac  staff     6 Jul 31 01:01 e2_port.txt
+-rw-r--r--@   1 mac  staff   607 Jul 31 01:02 e2_setup.log
+-rw-r--r--@   1 mac  staff  3751 Jul 31 00:11 results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json
+=== EXISTING MANIFEST ===
+-rw-r--r--@ 1 mac  staff  7245 Jul 31 08:49 papers/EVIDENCE_MANIFEST.json
+{
+  "schema": "nano-lm.evidence_manifest.v1",
+  "updated": "2026-07-31",
+  "authority_hierarchy": [
+    "prereg (frozen design + decision rule)",
+    "code (harness implementing the prereg)",
+    "inputs (content-addressed eval / recipes)",
+    "outputs (results_*.json)",
+    "decision lock / ledger (interpretation)",
+    "paper / tag (public freeze)"
+  ],
+  "public_freeze": {
+    "tag": "paper-alpha-v1",
+    "commit": "0e01d73205e9c35ea32925fd4d6c7e5fceb61137",
+    "note": "Anchors Paper \u03b1
+=== CHECKPOINTS HASHES ===
+ 12609917 38d1f56415e59de3670d27e453a1e61759967da5eac72a2de7089538f9bc1524 checkpoints/anchors/scribe.pt
+ 40028229 f5aca5f04bd1045cc158d46a27b84024bb94baa349ed330933631c8b8d5acf0d checkpoints/anchors/scale10m_scribe.pt
+ 637183751 0763a8237ab015f2addd7145ba3760ae0ac1d310b704ecc527c87912eed254b6 checkpoints/chinchilla-160m/ownstack160m_scribe.pt
+ 1911572243 5a93b36d4aa368fd600c983d1300a8d32317be03dfc870f8be9581698b4e48ba checkpoints/chinchilla-160m/ownstack160m_pretrain.pt
+=== TOKENIZER ===
+  262846 bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9 trajectory/tokenizer.json
+  262474 7a302eaeb9d7aebcd91dc0133466a315eea66b6a0993e6e18902be665e1b2785 pretrain/tokenizer.json
+  262846 bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9 sft/tokenizer.json

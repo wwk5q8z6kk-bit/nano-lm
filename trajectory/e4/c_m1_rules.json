@@ -1,0 +1,22 @@
+{
+  "schema": "nano-lm.e4.c_m1_rules.v1",
+  "frozen_before_eval_reveal": true,
+  "rule_family_ids": ["cm1_canonical_qa"],
+  "note": "C-M1 only fires on canonical Doctor Q/A cue strings from the old closed-world style. Eval R★ families are disjoint by construction (I1).",
+  "cues": {
+    "cc": ["what brings you in today", "what seems to be the trouble", "what can i do for you"],
+    "dur": ["how long has this been going on", "when did it start", "how many days has it been"],
+    "sev": ["how bad would you say it is", "is it mild, moderate, or severe"],
+    "med": ["have you taken anything for it", "are you on any medication for this"],
+    "alg": ["any allergies i should know about", "are you allergic to anything"]
+  },
+  "capture_patterns": {
+    "cc": ["I've been having (.+)\\.", "I came in because of (.+)\\.", "It's (.+), doctor\\."],
+    "dur": ["For about (\\d+) (days|weeks)", "It started (\\d+) (days|weeks) ago", "Around (\\d+) (days|weeks)"],
+    "sev": ["I'd call it (mild|moderate|severe)", "It's (mild|moderate|severe)", "Pretty (mild|moderate|severe)"],
+    "med_yes": ["I've been taking (.+)\\.", "Just (.+)\\.", "Some (.+), but"],
+    "med_no": ["No, nothing yet\\.", "I haven't taken anything\\."],
+    "alg_yes": ["I'm allergic to (.+)\\.", "Yes, (.+)\\.", "Just (.+)\\."],
+    "alg_no": ["No allergies\\.", "Not that I know of\\."]
+  }
+}

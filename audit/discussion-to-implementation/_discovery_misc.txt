@@ -1,0 +1,252 @@
+=== JSONL LOCAL (gitignored?) ===
+./trajectory/outputs_if_seed1.jsonl
+./trajectory/outputs_if_seed0.jsonl
+./trajectory/outputs_c3_seed2.jsonl
+./trajectory/outputs_c3_seed0.jsonl
+./trajectory/replications/c3/w2k42qy6gaqu3z/outputs_c3_seed2.jsonl
+./trajectory/replications/c3/w2k42qy6gaqu3z/outputs_c3_seed0.jsonl
+./trajectory/replications/c3/w2k42qy6gaqu3z/outputs_c3_seed1.jsonl
+./trajectory/outputs_c3_seed1.jsonl
+./fabric/ledger_nano_m4_v2.jsonl
+./fabric/ledger_scale_m2_v2.jsonl
+./fabric/ledger_scale_m3_v2.jsonl
+./fabric/ledger_scale_inst0_v1.jsonl
+./fabric/ledger_nano_m3_v1.jsonl
+./fabric/ledger_nano_m2_v1.jsonl
+./fabric/ledger_scale_inst0.jsonl
+./fabric/ledger_scale_m4_v1.jsonl
+./fabric/ledger_nano_m4_v1.jsonl
+./fabric/ledger_scale_inst0_v2.jsonl
+./fabric/ledger_scale_m2_v1.jsonl
+./fabric/ledger_scale_m3_v1.jsonl
+./fabric/ledger_nano_inst0.jsonl
+./fabric/ledger_nano_m3_v2.jsonl
+./fabric/ledger_nano_m2_v2.jsonl
+./fabric/ledger_scale_m4_v2.jsonl
+./fabric/ledger_nano_inst0_v1.jsonl
+./fabric/ledger_nano_m0_v1.jsonl
+./fabric/ledger_nano_m1_v1.jsonl
+./fabric/ledger_scale_m1_v2.jsonl
+./fabric/ledger_scale_m0_v2.jsonl
+./fabric/ledger_nano_inst0_v2.jsonl
+./fabric/ledger_nano_m0_v2.jsonl
+./fabric/ledger_nano_m1_v2.jsonl
+./fabric/ledger_scale_m1_v1.jsonl
+./fabric/ledger_scale_m0_v1.jsonl
+count: 34
+=== FABRIC LEDGERS ===
+      26
+=== CHECKPOINTS ===
+checkpoints/anchors/scribe.pt
+checkpoints/anchors/scale10m_scribe.pt
+checkpoints/chinchilla-160m/ownstack160m_scribe.pt
+checkpoints/chinchilla-160m/ownstack160m_pretrain.pt
+=== C3 RECOMPUTE ATTEMPT ===
+loaded 3000 records from /Users/mac/Projects/nano-lm/trajectory; cap-confound (excluded from truncation metric): 1
+
+== FROZEN CONTRASTS (independent recompute) ==
+  H-transition (T-avail - T-sep)    : +1.7 pts -> REFUTED
+  H-boundary  (B-sub - B-space)     : -8.3 pts -> REFUTED
+  H-length    (short - long)        : +25.0 pts -> UNRESOLVED
+  T-full control: 100%  -> PASS
+
+== FREQUENCY DOSE-RESPONSE WITHIN T-avail (junction count vs per-type recall) ==
+  n=24 T-avail types; Spearman(junction_count, recall) = +0.47  (graded on transition frequency)
+
+== TYPE-BOOTSTRAP 90% CI on H-transition (resample types, 2000 draws) ==
+  dT = +1.7  90% CI [-19.2, +23.3]  (n=2000 bootstraps)
+
+== SEED STABILITY == 12/48 cell types seed-unstable (25%)
+
+-> results_c3_recompute.json (cross-check against kernel's results_c3_10m.json)
+EXIT:0
+=== GITIGNORE ===
+*.pt
+*.npy
+*.jsonl
+raw_corpus*
+clean_corpus*
+sft_convos.json
+__pycache__/
+checkpoints/
+=== CI ===
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  cpu-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install CPU deps
+        run: pip install -r requirements.txt
+      - name: Fabric + C3 recompute tests (no GPU)
+        run: pytest fabric/test_fabric.py trajectory/test_recompute_c3.py
+=== REQUIREMENTS ===
+# CPU-safe CI / packaging baseline (no GPU required).
+# For training and model scoring, also install requirements-ml.txt.
+pytest>=8.0,<9
+numpy>=1.26,<3
+---
+# Full ML stack for training / finetune / scoring (GPU or Apple MPS).
+# Pin notes match trajectory/REPRODUCIBILITY.md recorded environments where known.
+-r requirements.txt
+torch>=2.2,<3
+tokenizers>=0.19,<0.22
+datasets>=2.19,<4
+transformers>=4.44,<5.1
+peft>=0.12,<0.20
+matplotlib>=3.8,<4
+---
+[project]
+name = "nano-lm"
+version = "0.1.0"
+description = "Small from-scratch LM testbed for held-out value-copying measurement and verification-gated evaluation."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+dependencies = [
+  "pytest>=8.0,<9",
+  "numpy>=1.26,<3",
+]
+
+[project.optional-dependencies]
+ml = [
+  "torch>=2.2,<3",
+  "tokenizers>=0.19,<0.22",
+  "datasets>=2.19,<4",
+  "transformers>=4.44,<5.1",
+  "peft>=0.12,<0.20",
+  "matplotlib>=3.8,<4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["fabric", "trajectory"]
+python_files = ["test_*.py"]
+addopts = "-q"
+=== RUNPOD PARTIAL ===
+== trajectory/runpod_partial/e1_close_monitor.log ==
+=== close-gate monitor Fri Jul 31 04:26:13 UTC 2026 ===
+[04:26:14] poll 1
+[pythia] ep0 100/1125 loss=0.001 (0.2 min)
+[pythia] ep0 200/1125 loss=0.000 (0.5 min)
+[pythia] ep0 300/1125 loss=0.000 (0.7 min)
+[pythia] ep1 400/1125 loss=0.000 (0.9 min)
+[pythia] ep1 500/1125 loss=0.000 (1.2 min)
+[pythia] ep
+== trajectory/runpod_partial/e1_monitor.log ==
+[04:15:19] poll 1
+[ownstack] 1100/1125 loss=0.106 (10.4 min)
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+ALIVE
+=== monitor restart Fri Jul 31 04:17:00 UTC 2026 ===
+[04:17:00] poll 1
+[ownst
+== trajectory/runpod_partial/e1_monitor_outer.log ==
+[04:14:54] poll 1
+[ownstack] done 10.6 min
+E1 M0_ownstack_chinchilla_lora verify=off
+  U=0.8980 P=0.979 rec=0.979 gap=4.24 rho=0.000
+E1 M0_ownstack_chinchilla_lora verify=on
+ALIVE
+
+== trajectory/runpod_partial/e1_official_m0.log ==
+=== ARM 1: ownstack Chinchilla+LoRA ===
+[ownstack] loaded pretrain step=195312
+[ownstack] LoRA trainables 4.028M
+[ownstack] 1/1125 loss=3.421 (0.0 min)
+[ownstack] 100/1125 loss=0.109 (0.9 min)
+[ownstack] 200/1125 loss=0.104 (1.9 min)
+[ownstack] 300/1125 loss=0.101 (2.8 min)
+[ownstack] 400/1125 loss=
+== trajectory/runpod_partial/e2_gpu.txt ==
+RTX 3090 community $0.22/hr
+
+== trajectory/runpod_partial/e2_host.txt ==
+64.119.209.250
+
+== trajectory/runpod_partial/e2_monitor.log ==
+
+== trajectory/runpod_partial/e2_pod.txt ==
+kgqwiko411rhua
+
+== trajectory/runpod_partial/e2_port.txt ==
+10588
+
+== trajectory/runpod_partial/e2_setup.log ==
+debconf: delaying package configuration, since apt-utils is not installed
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead
+== trajectory/runpod_partial/results_e1_nonlm_M0_ownstack_chinchilla_lora_voff.json ==
+{
+  "method": "M0_ownstack_chinchilla_lora",
+  "verify_on": false,
+  "cost_C": 1.1,
+  "summary": {
+    "parse": 1.0,
+    "recall": 0.9788,
+    "halluc": 0.0206,
+    "omission": 0.0006000000000000001,
+    "held_recall": 0.9576,
+    "seen_recall": 1.0,
+    "gap_pts": 4.240000000000004,
+    "P": 0.9788
+=== PROVIDER CHECK (no launch) ===
+/opt/homebrew/bin/runpodctl
+=== JSONL count ===
+      34
+./trajectory/outputs_if_seed1.jsonl
+./trajectory/outputs_if_seed0.jsonl
+./trajectory/outputs_c3_seed2.jsonl
+./trajectory/outputs_c3_seed0.jsonl
+./trajectory/replications/c3/w2k42qy6gaqu3z/outputs_c3_seed2.jsonl
+./trajectory/replications/c3/w2k42qy6gaqu3z/outputs_c3_seed0.jsonl
+./trajectory/replications/c3/w2k42qy6gaqu3z/outputs_c3_seed1.jsonl
+./trajectory/outputs_c3_seed1.jsonl
+./fabric/ledger_nano_m4_v2.jsonl
+./fabric/ledger_scale_m2_v2.jsonl
+./fabric/ledger_scale_m3_v2.jsonl
+./fabric/ledger_scale_inst0_v1.jsonl
+./fabric/ledger_nano_m3_v1.jsonl
+./fabric/ledger_nano_m2_v1.jsonl
+./fabric/ledger_scale_inst0.jsonl
+./fabric/ledger_scale_m4_v1.jsonl
+./fabric/ledger_nano_m4_v1.jsonl
+./fabric/ledger_scale_inst0_v2.jsonl
+./fabric/ledger_scale_m2_v1.jsonl
+./fabric/ledger_scale_m3_v1.jsonl
+./fabric/ledger_nano_inst0.jsonl
+./fabric/ledger_nano_m3_v2.jsonl
+./fabric/ledger_nano_m2_v2.jsonl
+./fabric/ledger_scale_m4_v2.jsonl
+./fabric/ledger_nano_inst0_v1.jsonl
+./fabric/ledger_nano_m0_v1.jsonl
+./fabric/ledger_nano_m1_v1.jsonl
+./fabric/ledger_scale_m1_v2.jsonl
+./fabric/ledger_scale_m0_v2.jsonl
+./fabric/ledger_nano_inst0_v2.jsonl
+./fabric/ledger_nano_m0_v2.jsonl
+./fabric/ledger_nano_m1_v2.jsonl
+./fabric/ledger_scale_m1_v1.jsonl
+./fabric/ledger_scale_m0_v1.jsonl
+=== C3 outputs ===
+-rw-r--r--  1 mac  staff  545946 Jul 20 09:24 trajectory/outputs_c3_seed0.jsonl
+-rw-r--r--  1 mac  staff  545869 Jul 20 09:24 trajectory/outputs_c3_seed1.jsonl
+-rw-r--r--  1 mac  staff  543430 Jul 20 09:24 trajectory/outputs_c3_seed2.jsonl
+-rw-r--r--  1 mac  staff  100733 Jul 20 01:32 trajectory/outputs_if_seed0.jsonl
+-rw-r--r--  1 mac  staff   98173 Jul 20 01:32 trajectory/outputs_if_seed1.jsonl
+=== runpodctl pods (read-only list) ===
+warning: 'runpodctl get pod' is deprecated, use 'runpodctl pod list' instead
+ID	NAME	GPU	IMAGE NAME	STATUS 
+=== results_c3_recompute head ===
+{}
+keys ['independent_recompute', 'source_dir', 'n_records', 'cap_confound_excluded', 'contrasts', 'verdicts', 'T_freq_disjoint_by_design', 'within_Tavail_dose_rho', 'bootstrap_dT_90ci', 'seed_unstable_frac']
+null

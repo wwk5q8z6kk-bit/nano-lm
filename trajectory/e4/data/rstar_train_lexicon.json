@@ -1,0 +1,38 @@
+{
+  "alg": [
+    "latex",
+    "peanuts",
+    "penicillin",
+    "pollen",
+    "shellfish",
+    "sulfa drugs"
+  ],
+  "cc": [
+    "back pain",
+    "chest pain",
+    "cough",
+    "dizziness",
+    "earache",
+    "fatigue",
+    "fever",
+    "headache",
+    "joint pain",
+    "nausea",
+    "rash",
+    "shortness of breath",
+    "sore throat",
+    "stomach pain"
+  ],
+  "med": [
+    "allergy pills",
+    "antacids",
+    "aspirin",
+    "cough syrup",
+    "ibuprofen",
+    "magnesium",
+    "naproxen",
+    "paracetamol",
+    "vitamin c",
+    "zinc tablets"
+  ]
+}

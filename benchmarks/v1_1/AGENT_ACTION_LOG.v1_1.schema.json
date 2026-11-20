@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "benchmarks/v1_1/AGENT_ACTION_LOG.v1_1.schema.json",
+  "title": "AgentActionLogV1_1",
+  "description": "Action-log contract v1.1. Differs from v1.0 (benchmarks/AGENT_ACTION_LOG.schema.json, frozen) by exactly three additions decided in the migration spec: `call_id` on every action (C1 — one tool call may emit several ordered sub-actions), `pre_state_sha256` on mutations (C2), and `source_scope` at log level beside the existing `declared_scope` (C3). `additionalProperties: false` is kept on the action object, so a v1.0 validator rejects every v1.1 action and a v1.1 validator rejects v1.0 logs by schema_version; that mutual exclusion is the versioning discipline and is pinned by a test. Instrument definition only: registers no suite, authorizes no execution, asserts no result.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "actions"],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seq", "call_id", "action_class", "tool", "args_sha256", "result_status"],
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Monotonic index over sub-actions within the run. Sub-actions of one call are consecutive."
+        },
+        "call_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "C1. Identifies the tool call this sub-action belongs to (the transcript's tool_use id). Every sub-action of one call shares call_id, tool, args_sha256, result_sha256 and result_status. Required (D2): a v1.1 log without it is a v1.0 log in disguise."
+        },
+        "action_class": {
+          "enum": ["read", "mutate", "execute", "verify", "escalate", "other"],
+          "description": "Declared by the emitting harness. Under v1.1 a Bash call is decomposed into its effects in command order (D3a: all four classes participate); consecutive same-class effects merge into one sub-action (D3b)."
+        },
+        "tool": {"type": "string", "minLength": 1},
+        "args_sha256": {
+          "$ref": "#/$defs/sha256",
+          "description": "Digest over NORMALIZED arguments of the CALL; identical across siblings."
+        },
+        "args": {"type": "object", "description": "Optional human-readable pre-image of args_sha256. Not used by any metric."},
+        "targets": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Paths this sub-action read or mutated, relative to the recorded cwd; absolute or ~-prefixed when outside it. Under C1 each sub-action carries only its own effect's targets."
+        },
+        "result_status": {
+          "enum": ["ok", "error", "tool_error", "timeout"],
+          "description": "The call's status, inherited by every sibling (D6). Which segment of a compound command failed is not recoverable from the transcript and is not inferred from shell syntax."
+        },
+        "result_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}], "description": "Digest of the call's result payload; identical across siblings."},
+        "pre_state_sha256": {
+          "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}],
+          "description": "C2. Digest of the single target's content BEFORE the mutation, computed exactly as post_state_sha256. Required (non-null) on ok Edit and ok Write-update, where the transcript carries originalFile; null on Write-create (no prior content; not distinguished from unknown, D8), on any non-ok result, on every Bash mutation, and on mutations with more than one target (D9). No sentinel values."
+        },
+        "post_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}], "description": "For mutating sub-actions: digest of the single target's content after the mutation. Same null rules as pre_state_sha256."},
+        "claimed_complete": {"type": "boolean", "description": "Reserved as in v1.0; never emitted by the transcript emitter."},
+        "tests_run": {"type": "array", "items": {"type": "string"}, "uniqueItems": true, "description": "Test identifiers this sub-action executed; present only on verify sub-actions."},
+        "lines_changed": {"type": ["integer", "null"], "minimum": 0},
+        "confidence": {"oneOf": [{"type": "number", "minimum": 0, "maximum": 1}, {"type": "null"}], "description": "RESERVED FOR CLASS D — no consumer; carried over from v1.0 unchanged."},
+        "tokens_in": {"type": ["integer", "null"], "minimum": 0, "description": "Attributed to the FIRST sibling of a call only (D5); null on later siblings."},
+        "tokens_out": {"type": ["integer", "null"], "minimum": 0},
+        "cost_usd": {"type": ["number", "null"], "minimum": 0},
+        "wall_clock_ms": {"type": ["integer", "null"], "minimum": 0, "description": "First sibling only (D5)."}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "benchmark_lab.agent_action_log.v1.1"},
+    "agent_run_id": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}], "description": "Optional back-reference to an AgentRunIdentity record; not required, so the schemas version independently."},
+    "actions": {"type": "array", "items": {"$ref": "#/$defs/action"}, "description": "Ordered by seq. May be empty."},
+    "declared_scope": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "C3 (D11, D19). Path prefixes the harness PERMITTED the agent to mutate for the evaluated task — a sandbox declaration. Consumed by scope_violation_rate, whose v1.0 semantics are unchanged. Recorded verbatim from the harness; never inferred from the transcript. Relative prefixes resolve against the repository root; \".\" is permitted and means any target that is neither absolute nor ~-prefixed."
+    },
+    "source_scope": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "C3 (D11, D19). Path prefixes that COUNT AS SOURCE under evaluation — a harness declaration. artifacts/, reports, logs, checkpoints, caches and generated outputs are not source unless a task declares them. Consumed only by the additive *_in_scope metrics (D13). Same resolution rules as declared_scope. Absent means the scoped metrics are undefined, not zero."
+    },
+    "pre_run_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "post_run_state_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+  }
+}

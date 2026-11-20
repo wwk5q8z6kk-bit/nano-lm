@@ -1,0 +1,127 @@
+{
+  "schema": "nano.p1.acceleration_checkpoint.v0",
+  "campaign_id": "p1_acceleration_campaign_v0",
+  "timestamp": "2026-08-23T01:30:00Z",
+  "branch": "frontier/p1-acceleration-campaign-v0",
+  "base_commit": "3d3d2c7",
+  "origin_master": "d3f3369",
+  "mandate": "Autonomous Acceleration Mandate v1.0",
+  "campaign_spend": {
+    "campaign_spend_actual": 0.37,
+    "campaign_spend_committed": 0.0,
+    "campaign_spend_remaining": 179.63,
+    "posture": "NORMAL",
+    "runpod_account_balance_usd": 89.99,
+    "notes": "At $90 account balance \u2192 review threshold per mandate; campaign envelope healthy"
+  },
+  "pods_status": {
+    "all_stopped": true,
+    "active_pods": [],
+    "last_pod": {
+      "id": "zed3vrrl0zxaoj",
+      "lane": "compact",
+      "gpu": "RTX 4090",
+      "rate_usd_hr": 0.74,
+      "status": "terminated"
+    },
+    "stray_pod_dh34imsfdm84oe": "not_found_already_deleted"
+  },
+  "comparison_table": {
+    "tiny_fixture_enc1": [
+      {
+        "track": "fixture",
+        "model": "fixture/qwen2.5-1.5b-span-port",
+        "span_character_f1": 1.0,
+        "exact_gold_span": 4,
+        "assertion_state_correct": 4,
+        "cost_class": "zero_local",
+        "artifact": "artifacts/p1_runs/accel_api_baseline.json"
+      },
+      {
+        "track": "A_api_teacher",
+        "model": "api/gpt-4o-mini-span-port",
+        "span_character_f1": 0.5808,
+        "exact_gold_span": 1,
+        "assertion_state_correct": 4,
+        "failure_modes": [
+          "wrong_mention:3 (over-long quotes)"
+        ],
+        "cost_class": "api_teacher_low",
+        "artifact": "artifacts/p1_runs/accel_api_baseline.json"
+      },
+      {
+        "track": "C_compact",
+        "model": "Qwen/Qwen2.5-1.5B-Instruct",
+        "span_character_f1": 0.0,
+        "exact_gold_span": 0,
+        "assertion_state_correct": 0,
+        "failure_modes": [
+          "malformed quotes",
+          "unnecessary abstention",
+          "empty DENIED spans"
+        ],
+        "cost_class": "routine_runpod_4090",
+        "artifact": "frontier/p1_qwen_baseline_smoke_v0_results.json"
+      }
+    ]
+  },
+  "architecture_decision": {
+    "teacher": "API gpt-4o-mini PRIMARY for Track A ceiling \u2014 $0.05/tiny eval vs $1.59+/hr for 72B self-host",
+    "rejected_self_host": [
+      "DeepSeek-V4-Flash-0731: 304B, official 4\u00d7GB300 \u2014 will NOT fit 2\u00d7B300",
+      "GLM-5.2: 753B / ~1.51TB \u2014 not self-hostable"
+    ],
+    "student": "Qwen2.5-32B on A100 for Track B when failure decomposition justifies distillation",
+    "compact": "Qwen2.5-1.5B zero-shot inadequate \u2014 needs SFT/distillation not bigger GPU",
+    "native": "30-100M evidence-bottleneck hypotheses (nanoscribe.native) \u2014 local screening first"
+  },
+  "model_ladder": {
+    "screen": "10M-300M native (Track D) \u2014 DESIGN_ONLY, local MPS",
+    "control": "1.5B Qwen compact (Track C) \u2014 baseline confirmed poor zero-shot",
+    "student": "32B Qwen specialist (Track B) \u2014 deferred until teacher hard-case decomposition",
+    "teacher": "API gpt-4o-mini (Track A) \u2014 assertion-correct, span precision gap identified"
+  },
+  "failure_decomposition": {
+    "compact_zero_shot": "Model emits DENIED: with empty quotes; abstains on stated facts",
+    "api_teacher": "Correct assertion states but quotes are conversational not minimal gold spans",
+    "next_targeted_probe": "Teacher few-shot with minimal-span examples on hard atoms (atom-neck, atom-hist)"
+  },
+  "infra_built": [
+    "nanoscribe/campaign.py \u2014 spend ledger with budget gates",
+    "nanoscribe/api_teacher.py \u2014 Track A API adapter",
+    "scripts/campaign_spend.py \u2014 spend CLI",
+    "scripts/p1_acceleration_launch.sh \u2014 cost-gated RunPod launcher",
+    "frontier/p1_acceleration_campaign_v0.json \u2014 campaign manifest"
+  ],
+  "git_state": {
+    "merged": [
+      "PR #40 adapter baseline @ 89a7939",
+      "PR #38 evidence transport",
+      "PR #37 encounter v0"
+    ],
+    "open": [
+      "PR #41 qwen smoke branch",
+      "PR #39 model adapter v0"
+    ],
+    "campaign_branch": "frontier/p1-acceleration-campaign-v0 (local, not pushed)"
+  },
+  "next_continuation": {
+    "budget_available_usd": 179.63,
+    "recommended_spend_usd": 35,
+    "actions": [
+      "Add minimal-span few-shot to API teacher prompt; re-run tiny_fixture ($0.05)",
+      "SFT compact Qwen1.5B on span-port fixture data on 4090 (~$2-5, 2-4hr)",
+      "Launch student 32B probe only if teacher decomposition shows distillation value (~$1.60/hr \u00d7 1hr)",
+      "Native H1 evidence-bottleneck local training smoke on MPS (zero cost)"
+    ],
+    "do_not": [
+      "Provision B300/B200 for 304B+ checkpoints",
+      "Self-host 72B without quant justification",
+      "Blind 5-lane burst without per-lane information value"
+    ]
+  },
+  "inference_pivot": {
+    "serverless_qwen38_27b": "Supersedes raw-pod compact lane for inference; implementation owned by agent 82a04724 on frontier/p1-serverless-qwen38-v0",
+    "campaign_branch_scope": "Spend tracking, API teacher track, harness wiring only \u2014 no serverless implementation in this PR"
+  }
+}

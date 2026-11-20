@@ -1,0 +1,187 @@
+{
+  "seed": 20260731,
+  "docs": {
+    "tech_note_cache": {
+      "title": "Cache Invalidation Notes",
+      "authors": [
+        "Ada Lovelace",
+        "Grace Hopper"
+      ],
+      "year": 2024,
+      "doc_type": "note",
+      "doi": null
+    },
+    "tech_note_cache_v2": {
+      "title": "Cache Invalidation Follow-up",
+      "authors": [
+        "Ada Lovelace"
+      ],
+      "year": 2025,
+      "doc_type": "note",
+      "doi": null
+    },
+    "bio_abs_metformin": {
+      "title": "Metformin Kinetics in Synthetic Cohort",
+      "authors": [
+        "Alan Turing",
+        "Joan Clarke"
+      ],
+      "year": 2023,
+      "doc_type": "abstract",
+      "doi": "10.0000/fake.metformin.2023"
+    },
+    "bio_abs_metformin_conflict": {
+      "title": "Metformin Kinetics Replication",
+      "authors": [
+        "Alan Turing"
+      ],
+      "year": 2024,
+      "doc_type": "abstract",
+      "doi": "10.0000/fake.metformin.2024"
+    },
+    "semi_structured_lab": {
+      "title": "Lab Instrument Log",
+      "authors": [
+        "Katherine Johnson"
+      ],
+      "year": 2022,
+      "doc_type": "note",
+      "doi": null
+    },
+    "tableish_throughput": {
+      "title": "Throughput Table Dump",
+      "authors": [
+        "Claude Shannon"
+      ],
+      "year": 2021,
+      "doc_type": "table_dump",
+      "doi": null
+    },
+    "noisy_ocr_line": {
+      "title": "OCR Recovery Fixture",
+      "authors": [
+        "Noisy Bot"
+      ],
+      "year": 2020,
+      "doc_type": "note",
+      "doi": null
+    },
+    "binding_coref": {
+      "title": "Entity Binding Note",
+      "authors": [
+        "Binding Author"
+      ],
+      "year": 2024,
+      "doc_type": "note",
+      "doi": null
+    }
+  },
+  "planted": {
+    "B1_numeric_contradiction": {
+      "field": "metformin_dose_mg",
+      "docs": {
+        "bio_abs_metformin": 500,
+        "bio_abs_metformin_conflict": 850
+      }
+    },
+    "B1b_ttl_contradiction": {
+      "field": "ttl_seconds",
+      "docs": {
+        "tech_note_cache": 300,
+        "tech_note_cache_v2": 600
+      }
+    },
+    "B2_entity_collision": {
+      "string": "ibuprofen",
+      "as_reagent_doc": "semi_structured_lab",
+      "note": "same string must not auto-type as allergy"
+    },
+    "B3_missing_field": {
+      "doc": "semi_structured_lab",
+      "field": "patient_id",
+      "expected": "ABSTAIN"
+    },
+    "B4_paraphrastic": {
+      "query": "How long before cached entries expire?",
+      "target_doc": "tech_note_cache",
+      "lexical_overlap_forbidden_terms": [
+        "expire",
+        "expiration"
+      ],
+      "answer_span": "300 seconds"
+    },
+    "dosages": [
+      {
+        "doc_id": "bio_abs_metformin",
+        "text": "500 mg"
+      },
+      {
+        "doc_id": "bio_abs_metformin_conflict",
+        "text": "850 mg"
+      }
+    ],
+    "compounds": [
+      "metformin",
+      "placebo"
+    ],
+    "sample_sizes": {
+      "tech_note_cache": 240,
+      "bio_abs_metformin": 512,
+      "bio_abs_metformin_conflict": 480
+    },
+    "emails": {
+      "tech_note_cache": "ada@example.org"
+    },
+    "urls": {
+      "tech_note_cache": "https://example.org/cache-rfc"
+    },
+    "citation_keys": {
+      "tech_note_cache": "CACHE2024"
+    },
+    "kv": {
+      "semi_structured_lab": {
+        "device": "spectrometer-7",
+        "wavelength_nm": "532",
+        "operator": "KJ",
+        "status": "calibrated"
+      }
+    },
+    "table_rows": {
+      "tableish_throughput": [
+        {
+          "region": "us-east",
+          "qps": "1000",
+          "error_rate": "0.01"
+        },
+        {
+          "region": "eu-west",
+          "qps": "800",
+          "error_rate": "0.02"
+        },
+        {
+          "region": "ap-south",
+          "qps": "600",
+          "error_rate": "0.015"
+        }
+      ]
+    },
+    "mentions": {
+      "metformin": [
+        "bio_abs_metformin",
+        "bio_abs_metformin_conflict",
+        "binding_coref"
+      ]
+    },
+    "definition": {
+      "doc_id": "tech_note_cache",
+      "term": "Latency",
+      "text": "Latency is the end-to-end response time measured at p50."
+    }
+  },
+  "probe_flags": {
+    "B1": true,
+    "B2": true,
+    "B3": true,
+    "B4": true
+  }
+}

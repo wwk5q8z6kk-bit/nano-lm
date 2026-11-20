@@ -1,4 +1,27 @@
-# nano-lm — session progress (updated 2026-07-19)
+# nano-lm — session progress (updated 2026-07-26)
+
+## STAGE P / P2 (2026-07-26): explicit pointer/copy head — H-copy REFUTED (measured)
+The scribe OOD copying gap survived Stage C (curriculum) and Stage S (scale); Stage S's audit
+named "an architectural copy mechanism" as the next suspect. Built it: pointer/copy head
+`P = p_gen·P_vocab + (1−p_gen)·P_copy` (+0.78% params) on the nano trunk, both arms full-FT
+from dpo.pt, seed-11 v2 data, frozen 40-dialogue eval. Two pre-registrations, each committed
+before its run (`scribe/pointer/PREREG_pointer_head*.md`), with a BLOCKING manipulation check.
+- **P1 (unsupervised head): VOID** — copy pathway never engaged (M=0.18, p_gen=0.83). Full-FT
+  on memorizable templates never rewarded copying. The manipulation check prevented a false
+  REFUTE. Pre-authorized a fix (not bar-chasing).
+- **P2 (copy-supervised, gate-bias −2, λ=1): H-copy REFUTED** — manipulation PASSED (M=0.97,
+  p_gen=0.09, copy-dominant), so the gap rule is binding; item-gap **25 pts** ≥15 ⇒ REFUTED.
+  Confound-free: engagement 0→dominant moved free-running held value-recall **10%→10%**.
+  Mechanism MEASURED (teacher-forced top-1 held-value = 21% first-token vs 92% seen):
+  content-addressed **source selection does not generalize OOD**; the copy channel just
+  relocates v1's position-anchoring into the copy-attention's query–key addressing. Exposure
+  bias compounds on multi-token spans but is secondary.
+- **Takeaway:** the OOD gap is NOT an output-mixture problem. With curriculum + scale +
+  architecture all failing to move it, suspects narrow to retrieval/induction-circuit capacity,
+  much-larger scale, or the objective (→ Stage M / Paper 3). Stage G/A verification stays
+  load-bearing. Full trail: `scribe/AUDIT.md` (Stage P / P2), `scribe/pointer/`.
+  Runtime lesson: copy attn is ~30× slower on MPS; restricting keys to the source region → 16×.
+
 
 ## Where the program stands (one paragraph)
 Paper 1 is complete and camera-ready (13pp PDF, `papers/latex/paper1.pdf`): the held-out
@@ -7,7 +30,7 @@ field-localized via the open/closed control, sharpened by the clean value-level 
 (~80–87 pts at the anchors), failure-mode-characterized (omission vs memorized
 substitution), and — as of tonight — **deconfounded**: the pre-registered own-stack 160M
 control ran (7h Kaggle T4) and fired **STACK-dominant** (diluted 16.9±1.7; own-stack flat
-across 50× scale while Pythia-160M reads 3.5). The Pythia fieldwise runs completed too:
+across evaluated own-stack configs (unequal token budgets; not a parameter-only 50× law) while Pythia-160M reads 3.5). The Pythia fieldwise runs completed too:
 the entire Pythia residual is the 5-training-value allergy slot (clean cc/med 0.0, alg
 83.6→100), grounding the slot-diversity hypothesis. All results immutable in
 `trajectory/results_*.json`; everything pushed to origin/master.
@@ -117,7 +140,7 @@ move to a representation-level probe. Paper 2 reconciliation for C-3 not yet don
 ## Next steps, in order (updated after the LoRA-arm launch)
 1. ☑ **LoRA arm DONE** (v3; v1 mount-glob, v2 torchao — each ~10min fail-fast): diluted
    7.1±1.2, clean 29.6±3.7 → METHOD carries ~73% of the stack effect; both methods
-   memorize (≈0 train loss) but only full-FT destroys the copy pathway; LoRA@160M solves
+   memorize (≈0 train loss) but full-FT on the weak base leaves a large gap; LoRA@160M reduces it (mechanism unidentified; E2 STOP)
    cc (clean 0.0), alg 100 in own-stack configs (NOT universal: py-1b draw3 = 24.6; type-level n=1 caveat). Folded into paper2_draft + P1 addendum.
    CHINCHILLA CONTROL DONE (peer session, RunPod H100, ~$37): 3.2B tokens + full FT =
    7.0±1.0 / 29.4±4.0 — IDENTICAL to 200M+LoRA → data & method are SUBSTITUTES
@@ -129,7 +152,7 @@ move to a representation-level probe. Paper 2 reconciliation for C-3 not yet don
    scale from scale10m_pretrain.pt (raw pretrain) — the LoRA cells must use the SAME base
    per anchor (nano-LoRA from dpo.pt, scale-LoRA from scale10m_pretrain.pt; all v0.1
    release assets, downloadable in-kernel). Write a short PREREG paragraph before running.
-1b. (was) **LoRA arm ⏳ RUNNING** (`nano-lm-ownstack-160m-lora` v2): peft wrap VALIDATED locally
+1b. (was) **LoRA arm** (`nano-lm-ownstack-160m-lora` v2; historical RUNNING note superseded): peft wrap VALIDATED locally
    (98 modules, 4.028M trainables; scratchpad venv `venv-peft`, peft 0.19.1); kernel
    reuses the fullft pretrain ckpt via kernel_sources — NOTE: mounts land under
    `/kaggle/input/notebooks/...`, use a recursive glob (v1 failed fast on this, ~10 min).

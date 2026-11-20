@@ -1,0 +1,5 @@
+device=mps  ckdir=/Users/mac/Projects/nano-lm/../../ckpt
+[ownstack-lora] loaded pretrain step=195312 on mps
+[ownstack-lora] trainables 4.028M
+[ownstack-lora] 1/1125 loss=3.582 (0.1 min)
+[ownstack-lora] 50/1125 loss=0.393 (3.2 min)

@@ -1,0 +1,88 @@
+{
+  "train_lexicon_sha256": "732587cc696abcd4745be691cf91a33e436f009c496f1b723a15d6184216129d",
+  "eval_open_in_train_lex_count": 0,
+  "eval_open_absent_count": 252,
+  "note": "I3 requires \u226540% absent; presence of train-overlap cells is allowed for the complement",
+  "sample_absent": [
+    {
+      "field": "cc",
+      "value": "epigastric burning"
+    },
+    {
+      "field": "med",
+      "value": "melatonin"
+    },
+    {
+      "field": "alg",
+      "value": "erythromycin"
+    },
+    {
+      "field": "cc",
+      "value": "postnasal drip"
+    },
+    {
+      "field": "alg",
+      "value": "contrast dye"
+    },
+    {
+      "field": "cc",
+      "value": "cervical stiffness"
+    },
+    {
+      "field": "alg",
+      "value": "erythromycin"
+    },
+    {
+      "field": "cc",
+      "value": "palpitations"
+    },
+    {
+      "field": "alg",
+      "value": "strawberries"
+    },
+    {
+      "field": "cc",
+      "value": "epigastric burning"
+    },
+    {
+      "field": "cc",
+      "value": "temporal throbbing"
+    },
+    {
+      "field": "med",
+      "value": "cetirizine"
+    },
+    {
+      "field": "alg",
+      "value": "strawberries"
+    },
+    {
+      "field": "alg",
+      "value": "nickel"
+    },
+    {
+      "field": "med",
+      "value": "melatonin"
+    },
+    {
+      "field": "med",
+      "value": "cetirizine"
+    },
+    {
+      "field": "alg",
+      "value": "codeine"
+    },
+    {
+      "field": "cc",
+      "value": "orbital pressure"
+    },
+    {
+      "field": "alg",
+      "value": "codeine"
+    },
+    {
+      "field": "alg",
+      "value": "bee venom"
+    }
+  ]
+}

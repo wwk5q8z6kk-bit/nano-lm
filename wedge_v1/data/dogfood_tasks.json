@@ -1,0 +1,90 @@
+{
+  "schema": "nano-lm.wedge_v1.dogfood.v1",
+  "corpus": "papers",
+  "note": "Owner research-doc dogfood; classical locate + abstain. Not Layer-1.",
+  "tasks": [
+    {
+      "id": "D01",
+      "query": "official M0 utility 0.925",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "0.925"
+      ]
+    },
+    {
+      "id": "D02",
+      "query": "E1 KILL M1_template",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "KILL",
+        "M1_template",
+        "0.999"
+      ]
+    },
+    {
+      "id": "D03",
+      "query": "post-alpha-evidence-freeze-2026-07-31",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "post-alpha-evidence-freeze-2026-07-31"
+      ]
+    },
+    {
+      "id": "D04",
+      "query": "What is the clinical accuracy of NanoScribe in hospitals?",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    },
+    {
+      "id": "D05",
+      "query": "rho review load not hallucination",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "review load",
+        "hallucination",
+        "\u03c1"
+      ]
+    },
+    {
+      "id": "D06",
+      "query": "E4 KILL 0.638",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "0.638",
+        "KILL"
+      ]
+    },
+    {
+      "id": "D07",
+      "query": "What did GPT-4 score on the official E1 Pythia-160M LoRA arm?",
+      "expect_status": [
+        "ABSTAIN"
+      ],
+      "must_contain_any": []
+    },
+    {
+      "id": "D08",
+      "query": "Nano Runtime smallest sufficient solver",
+      "expect_status": [
+        "SUPPORTED"
+      ],
+      "must_contain_any": [
+        "smallest sufficient",
+        "Nano Runtime",
+        "verification"
+      ]
+    }
+  ]
+}

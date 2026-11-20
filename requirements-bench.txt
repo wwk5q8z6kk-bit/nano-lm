@@ -1,0 +1,3 @@
+# Benchmark-only optional deps (NOT default runtime).
+# Pin: EleutherAI/lm-evaluation-harness v0.4.12 @ 6d642546f4688648fced259eb3302efd36ece5af
+lm-eval==0.4.12

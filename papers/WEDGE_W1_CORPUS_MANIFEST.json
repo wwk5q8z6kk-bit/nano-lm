@@ -1,0 +1,155 @@
+{
+  "wedge": "W1",
+  "created": "2026-07-31",
+  "gate": "G1",
+  "corpus_sha256": "0dd23d5bd57f4821965be8624e85ba83428d06db17952f99f94fc8850f963ecf",
+  "file_count": 29,
+  "files": [
+    {
+      "path": "papers/AMBITION.md",
+      "sha256": "b94284c6f07774e0a0081c11128b6bdf255863286a10a2d31bbf0951ee8f9c50",
+      "bytes": 2421
+    },
+    {
+      "path": "papers/ANOMALY_LOG.md",
+      "sha256": "9387e6a9e26a744a99aa650b5e0b444908c21a9482c37ced44633e60c8ff3a76",
+      "bytes": 2692
+    },
+    {
+      "path": "papers/ASSESSMENT_2026-07-20.md",
+      "sha256": "d03d279f6ae6dcd7a51f2306dc72d76794cafd1ccc8e4ef8a8184734ad726084",
+      "bytes": 5207
+    },
+    {
+      "path": "papers/AZ_EXECUTION_PLAN.md",
+      "sha256": "991cc25fe1151a10c7f669eb2bda9aaad500a4de8dc8cc4a36094051146caa0d",
+      "bytes": 9945
+    },
+    {
+      "path": "papers/CLAIM_GLOSSARY.md",
+      "sha256": "61c73b776a078da72816701847a4fe5c743e3dcf9a2f0159fdc00a603de097cd",
+      "bytes": 3390
+    },
+    {
+      "path": "papers/DECISION_GATES.md",
+      "sha256": "f2f362a916c7ab84ce97cb9d8b34a85d2dd9a8a75d92d26e32bd2eaee0febafa",
+      "bytes": 3078
+    },
+    {
+      "path": "papers/EMPIRICAL_FOUNDATION.md",
+      "sha256": "87803907764d9877c7bbf7f0f34c2c916908200cd5b2ab0afeaabb6f1ac4c846",
+      "bytes": 22699
+    },
+    {
+      "path": "papers/EVIDENCE_LEDGER.md",
+      "sha256": "89b29027976c72e569113bfaaced86fae610a19a4ac419aaf9cb58605810de57",
+      "bytes": 16052
+    },
+    {
+      "path": "papers/EXECUTION_QUEUE.md",
+      "sha256": "52c91695a413cecf52d7b4e76eb0db1b6e446ec66779c737ae9822d7c8fd4f1d",
+      "bytes": 1439
+    },
+    {
+      "path": "papers/FIRST_PRINCIPLES_RISK_MITIGATION.md",
+      "sha256": "7fa506370f19e6db37e275f4e7b8e33f5701214d5ca52e2334a72988994cd6be",
+      "bytes": 13688
+    },
+    {
+      "path": "papers/LABORATORY_CONSTITUTION.md",
+      "sha256": "d110e32a1538bd931dbdc533458ee9488c8df2f29812dacd9f490ded77158ad1",
+      "bytes": 5843
+    },
+    {
+      "path": "papers/MASTER_PLAN.md",
+      "sha256": "0e0589ed08d43d1e48001e488ab2d319adcc31db44e1383cd152220f758dd6a1",
+      "bytes": 5944
+    },
+    {
+      "path": "papers/NANOSCRIBE_VNEXT.md",
+      "sha256": "6251d76bd0674d6b06989a9996228efe74b1943f443f35f26fc0b8752d2053bf",
+      "bytes": 8641
+    },
+    {
+      "path": "papers/PAPER_ALPHA_CORRECTION_NOTE.md",
+      "sha256": "baa0af4bda9fe3373a67975c8cf94ac3a8e8c3a1e6d18e329d07268915c354eb",
+      "bytes": 1418
+    },
+    {
+      "path": "papers/README.md",
+      "sha256": "89327c6e9a729a03bf0b6e800dee0b70ef078bbb78beff9aa3713b2914d36c36",
+      "bytes": 5223
+    },
+    {
+      "path": "papers/RESEARCH_PORTFOLIO.md",
+      "sha256": "75647d81767c5d30efb2a30cddce4ea049803c4e3759fdae4036712f3f1d1873",
+      "bytes": 5728
+    },
+    {
+      "path": "papers/RESEARCH_PROGRAM.md",
+      "sha256": "fc7719497cd9967d402d9c0af4aa7be9e5ce1921328c6b504efc9f1aa27dd934",
+      "bytes": 9517
+    },
+    {
+      "path": "papers/SEQUENTIAL_PIPELINE.md",
+      "sha256": "b1bf96e9d248870f63db940a0e0669e24b629ff7cbec6c5d522e459ea17e93a4",
+      "bytes": 7873
+    },
+    {
+      "path": "papers/STRATEGIC_RESET.md",
+      "sha256": "b69c50e92a9c4a91ed366701c8d13ac4dab887684fe720524459652332e0b069",
+      "bytes": 8754
+    },
+    {
+      "path": "papers/TECHNOLOGY_ROADMAP.md",
+      "sha256": "509e3cc31ba8833e511b231613a2199366021cb3161b337dcdd1c509618b1521",
+      "bytes": 3717
+    },
+    {
+      "path": "papers/WEDGE_V1.md",
+      "sha256": "23f7024c003f9295b16e1f585a126eccd75faa7364a54df05c0ac10107ea42f5",
+      "bytes": 17763
+    },
+    {
+      "path": "papers/WEDGE_W1.md",
+      "sha256": "78398f7e4ac3242c973cd0b425c47244f077dd06e6f640a71b17b5f04e85365f",
+      "bytes": 13340
+    },
+    {
+      "path": "papers/paper1_draft.md",
+      "sha256": "32bafcb6541eb99474f7aac9c9dcb9b334cb11b85be5dfe5edba878e58556ce8",
+      "bytes": 49989
+    },
+    {
+      "path": "papers/paper2_draft.md",
+      "sha256": "8daaa4628f0d61ce2d196dd1dfb8d1da8d4f9d8f8105bbf4c7f8e1d388a0fdc0",
+      "bytes": 25411
+    },
+    {
+      "path": "papers/writing_audit.md",
+      "sha256": "f7ffa49ff6fe7ad47858ceb7bf547ff2a45b2718c4df9abac0463dcfb02a0723",
+      "bytes": 16983
+    },
+    {
+      "path": "papers/EVIDENCE_LEDGER.json",
+      "sha256": "3e345d362a647350a6d800ed8faebf4d6e38211fc28a92c837157a43ce338550",
+      "bytes": 35565
+    },
+    {
+      "path": "trajectory/FINDINGS.md",
+      "sha256": "ea0069d189b063f42c49923bd39335db50df2c62480f4853db3ed0b1a245e40c",
+      "bytes": 7905
+    },
+    {
+      "path": "trajectory/e4/AUTH_RECORD.md",
+      "sha256": "a497ce2d3eb69d2d79596d4f625da9736465105c55cdda4cf531751666a3daf2",
+      "bytes": 1470
+    },
+    {
+      "path": "audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md",
+      "sha256": "4efecd6046de1c547c0b7d8f6be02097dcd516d88107ccfbbf670a662be298d4",
+      "bytes": 2470
+    }
+  ],
+  "exclude_note": "latex/PDF/figures/jsonl/PHI excluded by WEDGE_W1.md"
+}

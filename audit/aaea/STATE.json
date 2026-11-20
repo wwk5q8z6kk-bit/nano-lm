@@ -1,0 +1,135 @@
+{
+  "schema_version": "aaea-1.0",
+  "session": "20260731T141706Z",
+  "generated_at_utc": "2026-07-31T14:17:06.932456+00:00",
+  "repo_head_before_aaea_commit": "a9d12cb1c456f6c465284e1d469c6326cb14d329",
+  "constraints": {
+    "no_e2_e4": true,
+    "no_push_tag": true,
+    "no_fabric_nanoscribe_expansion": true,
+    "auto_commit_engineering_only": true
+  },
+  "severity_counts": {
+    "CRITICAL": 0,
+    "HIGH": 3,
+    "MEDIUM": 6,
+    "LOW": 3
+  },
+  "gaps": [
+    {
+      "id": "G-TEST-COLLECT-GPU",
+      "severity": "HIGH",
+      "category": "testing",
+      "title": "Default pytest collection fails on CPU because Kaggle script asserts CUDA at import",
+      "evidence": "scale/kaggle_scale_test.py module-level assert; pytest collects *_test.py",
+      "status": "FIXED",
+      "fix": "Added pytest.ini scoping testpaths to fabric/ + trajectory/test_*.py"
+    },
+    {
+      "id": "G-GITIGNORE-THIN",
+      "severity": "MEDIUM",
+      "category": "configuration",
+      "title": ".gitignore omitted editor/OS/venv/pytest caches",
+      "evidence": ".DS_Store, .cursor/, .venv noise in status",
+      "status": "FIXED",
+      "fix": "Expanded .gitignore"
+    },
+    {
+      "id": "G-NO-PACKAGING",
+      "severity": "MEDIUM",
+      "category": "configuration",
+      "title": "No root pyproject.toml / requirements.txt in tree for deterministic env bootstrap",
+      "evidence": "ls pyproject.toml requirements.txt missing at audit time",
+      "status": "DEFERRED",
+      "fix": "Do not invent deps mid-freeze; owner can restore packaging files separately"
+    },
+    {
+      "id": "G-TEST-COVERAGE-THIN",
+      "severity": "HIGH",
+      "category": "testing",
+      "title": "Only 15 automated tests; E1/E3 recomputes not in pytest suite",
+      "evidence": "fabric 8 + c3 7; no test_e1_utility.py",
+      "status": "DEFERRED",
+      "fix": "P1: add offline U-recompute and E3 normalize unit tests from committed JSON (no GPU)"
+    },
+    {
+      "id": "G-SCRIPT-AS-LIBRARY",
+      "severity": "MEDIUM",
+      "category": "architecture",
+      "title": "Many training entrypoints are import-unsafe scripts with side effects",
+      "evidence": "kaggle_*.py, run_* assert CUDA / download / train at import",
+      "status": "DEFERRED",
+      "fix": "P2: wrap bodies in main(); keep historical scripts byte-stable where results depend on them"
+    },
+    {
+      "id": "G-FABRIC-SLICE-BOUNDARY",
+      "severity": "LOW",
+      "category": "documentation",
+      "title": "Fabric module docstring still narrates Intent\u2192Control pipeline aspirationally",
+      "evidence": "fabric/slice.py header lines 1-7",
+      "status": "DEFERRED",
+      "fix": "README already bounds Fabric; optional docstring align under freeze"
+    },
+    {
+      "id": "G-NANOSCRIBE-UNIMPLEMENTED",
+      "severity": "MEDIUM",
+      "category": "architecture",
+      "title": "NanoScribe architecture largely specified but unimplemented beyond Fabric slice",
+      "evidence": "papers/NANOSCRIBE_VNEXT.md; architecture gap analysis",
+      "status": "ACCEPTED_FREEZE",
+      "fix": "Not a defect to 'fix' under evidence freeze; keep as research program boundary"
+    },
+    {
+      "id": "G-PUBLIC-PROVENANCE-LAG",
+      "severity": "HIGH",
+      "category": "documentation",
+      "title": "Local remediation+evidence commits not on origin; public tag still paper-alpha-v1",
+      "evidence": "HEAD a9d12cb1c456f6c465284e1d469c6326cb14d329 ahead of origin/master",
+      "status": "OWNER_GATED",
+      "fix": "Push/tag only on explicit owner authorization"
+    },
+    {
+      "id": "G-L-C-RUNTIME-AUDIT",
+      "severity": "MEDIUM",
+      "category": "testing",
+      "title": "E1 L/C components need structured runtime provenance separate from excluded logs",
+      "evidence": "results_e1_utility.json has L_p50/C; logs partially archived",
+      "status": "DEFERRED",
+      "fix": "P1 documentation of normalization formula + optional results_e1_runtime.json schema"
+    },
+    {
+      "id": "G-SECRET-SURFACE",
+      "severity": "LOW",
+      "category": "security",
+      "title": "No obvious hardcoded API secrets in scanned py files; env-driven RunPod/Kaggle paths",
+      "evidence": "rg api_key/password scan",
+      "status": "OK",
+      "fix": "Keep secrets out of commits; do not embed tokens"
+    },
+    {
+      "id": "G-SUBPROCESS-PIP",
+      "severity": "MEDIUM",
+      "category": "security",
+      "title": "stage_m_kernel auto-pip installs packages via subprocess",
+      "evidence": "stage_m/stage_m_kernel.py subprocess pip install",
+      "status": "DEFERRED",
+      "fix": "P2: fail closed with requirements pin instead of runtime pip"
+    },
+    {
+      "id": "G-SYMLINK-TOKENIZER",
+      "severity": "LOW",
+      "category": "configuration",
+      "title": "trajectory/tokenizer.json may be symlink; fragile across clones",
+      "evidence": "git may track symlink from prior archive commit",
+      "status": "DEFERRED",
+      "fix": "Verify symlink target exists in clone README bootstrap"
+    }
+  ],
+  "validation": {
+    "pytest_collected": 15,
+    "pytest_passed": 15,
+    "py_compile_ok": true
+  },
+  "next_owner_decision": "OWNER_APPROVAL_REQUIRED",
+  "report_path": "audit/aaea/REPORT.md"
+}

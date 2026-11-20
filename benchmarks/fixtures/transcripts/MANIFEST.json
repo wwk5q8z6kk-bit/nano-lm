@@ -1,0 +1,42 @@
+[
+ {
+  "fixture": "session_large_varied",
+  "source_chat": "81a40cb0",
+  "source_file": "f2ca9613",
+  "raw_kb": 4377,
+  "fixture_kb": 956,
+  "records_kept": 954,
+  "records_dropped": 969,
+  "tool_uses": 269
+ },
+ {
+  "fixture": "session_small_errors",
+  "source_chat": "01175017",
+  "source_file": "344e873f",
+  "raw_kb": 191,
+  "fixture_kb": 31,
+  "records_kept": 36,
+  "records_dropped": 31,
+  "tool_uses": 14
+ },
+ {
+  "fixture": "session_small_reads",
+  "source_chat": "21a46e30",
+  "source_file": "e57f3b74",
+  "raw_kb": 320,
+  "fixture_kb": 29,
+  "records_kept": 24,
+  "records_dropped": 21,
+  "tool_uses": 10
+ },
+ {
+  "fixture": "session_trivial",
+  "source_chat": "21a46e30",
+  "source_file": "b34036d1",
+  "raw_kb": 29,
+  "fixture_kb": 3,
+  "records_kept": 5,
+  "records_dropped": 9,
+  "tool_uses": 1
+ }
+]

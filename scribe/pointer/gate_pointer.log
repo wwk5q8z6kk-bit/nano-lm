@@ -1,0 +1,26 @@
+eval: 40 dialogues; 20 held-value items
+
+=== BASE CONTROL (dpo.pt, greedy plain) ===
+[base] parse 0/40=0%  recall 0/200=0%  halluc 0/200=0.0%  omission 0
+        ITEM-level: held 0% seen 0%  -> gap 0 pts   VALUE-level(held fields): held 0% seen 0% -> gap 0 pts
+        out: "I'm not able to help with."
+        truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+        out: "I'm not able to help with."
+        truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+
+=== ARM P pointer (pointer.pt, greedy mixture) ===
+[pointer] parse 36/40=90%  recall 152/200=76%  halluc 24/200=12.0%  omission 4
+        ITEM-level: held 71% seen 95%  -> gap 24 pts   VALUE-level(held fields): held 10% seen 93% -> gap 83 pts
+        out: 'CC: shortness of breath | DUR: 6 weeks | SEV: moderate | MED: none | ALG: penicillin'
+        truth: {'cc': 'shortness of breath', 'dur': '6 weeks', 'sev': 'moderate', 'med': 'none', 'alg': 'penicillin'}
+        out: 'CC: severe | DUR: 3 days | SEV: severe | MED: sore | MED: sore | MED: sore | MED: sore | MED: sore | MED: sore | MED: sore | M'
+        truth: {'cc': 'neck pain', 'dur': '3 days', 'sev': 'mild', 'med': 'none', 'alg': 'sulfa drugs'}
+[manipulation] held-value tokens n=118  M(copy-share)=0.18  mean p_gen=0.83  mean copy-mass(correct id)=0.05
+[manipulation] M=0.18 -> copy pathway VOID(unused)  (>=0.5 exercised, <0.2 VOID)
+
+--- pre-registered bars ---
+  arm clears bars (parse>=90 recall>=80 halluc<=10): False
+  base control fails (discrimination): True
+  GATE FAIL
+  OOD item-gap=24 pts (ref v2=22, scale=23) | value-gap=83 pts
+  wrote result_pointer.json

@@ -1,0 +1,30 @@
+{
+  "date": "2026-07-31",
+  "status": "limitation_locked",
+  "bounded_new_human_check": "SKIPPED",
+  "existing_bounded_check": {
+    "name": "E3 auto normalize-then-match",
+    "result": "0/486 M0 exact failures rescued",
+    "artifact": "trajectory/results_e3_normalize_construct.json"
+  },
+  "techniques_survey": [
+    "soft string match (edit distance / token F1)",
+    "normalized match (case/punct/whitespace)",
+    "span/token-level overlap",
+    "human graded equivalence rubric",
+    "inter-annotator agreement",
+    "known exact-match failure modes (morphology, synonymy, formatting)"
+  ],
+  "threat_to_reported_gap": "Exact-match may overstate failure vs human-acceptable paraphrase/morphology; normalize pass suggests formatting is not the driver. Qualitative open-slot localization is unlikely to be an exact-match artifact alone.",
+  "paper_alpha_limitation_paragraph": "Primary science metrics use exact string match on field values. Automated normalize-then-match does not rescue M0 exact failures (0/486), but exact-match has not been validated against human-accepted equivalence. Reported gaps may overstate failure relative to a soft/human rubric; this is an explicit limitation pending a bounded human study.",
+  "future_minimal_study": {
+    "n": 100,
+    "pack": "trajectory/e3_human_rating_pack.json",
+    "rubric": [
+      "exact",
+      "normalized",
+      "acceptable_paraphrase"
+    ],
+    "decision_rule": "If soft/human acceptance erases open-slot gap qualitatively, reinterpret \u03b1; else keep exact-match for this world."
+  }
+}

@@ -1,5 +1,12 @@
 # Stage T — Findings (calibrated write-up)
 
+> **SRC baseline note (2026-07-30):** this file remains the calibrated Stage T
+> write-up. Program-level interpretation lock and paper split live in
+> `papers/RESEARCH_PROGRAM.md` / `papers/EMPIRICAL_FOUNDATION.md`. Subsequent
+> within-stack / diversity / corner / Phase C results are summarized there and in
+> the Paper-1 measurement companion (`papers/paper2_draft.md`, reclassified).
+
+
 Authoritative, calibrated summary of Stage T / T-v2. Where this and the working
 notes (EQUIVALENCE_STOP.md, DETERMINISM_1B.md) differ in tone, this file governs.
 Claims are held to what was measured; the causal question is left open explicitly.
@@ -91,3 +98,40 @@ not a prerequisite for the main claim (owner call, recorded).
 All eval instances, recipe, scorer, and library versions content-addressed in
 REPRODUCIBILITY.md; frozen at git tag stage-t-v2-results. Raw per-rung JSONs
 (v1 and v2) retained unchanged.
+
+
+## E1 / E3 validation gates (2026-07-30)
+
+### E1 — non-LM utility kill-gate: **KILL**
+
+On frozen utility \(U = P - 0.5 M - 0.3\rho - 0.02 L - 0.05 C\) (verify-on; ρ =
+review/flagged load), the best non-generative baseline **M1** (hand-template)
+achieves \(U\approx0.999\) and strictly dominates official generative M0
+(Pythia-160M LoRA \(U=0.925\); ownstack Chinchilla+LoRA \(U=0.898\); local 10M
+scale \(U\approx0.854\)). **M2** (dict+span) \(U\approx0.886\) is below official
+M0 but within the pre-registered \(\delta=0.05\) non-necessity margin of it.
+Sensitivity grid does not flip the kill. This falsifies the generative-substrate
+product thesis for that frozen regime; it does **not** establish that no
+generative-value regime exists. Non-transformer methods also show open-slot
+held gaps → ecology **general**. Primary artifact: `results_e1_utility.json`
+(venue `runpod-cuda`).
+
+### E3 — exact-match construct: **EXACT_SURVIVES** (scoped)
+
+Frozen normalize-then-match rescues **0** of 486 M0 exact field failures (gap
+shrink 0.0 pts; `results_e3_normalize_construct.json`).
+
+A bounded **agent-applied rubric audit** of 100 sampled errors
+(`results_e3_human.json`, rater `agent-rubric-pass-1`) found **zero** acceptable
+semantic equivalents (faithful-rate 0.00). This does **not** substitute for
+independent clinician annotation, inter-rater agreement, or validation of a
+synonym ontology. Prereg: `PREREG_E3_faithfulness_construct.md`.
+
+### E2 — LoRA universes: **GATED / STOP** (no RESULT)
+
+Design frozen in `PREREG_E2_lora_universes.md`. Implementation present
+(`trajectory/e2/run_u3_earlystop.py`). Partial RunPod residue exists under
+`trajectory/runpod_partial/e2_*` (empty monitor log). **No**
+`results_e2_*.json`. No complete external U3 artifact found in local search.
+Active RunPod pods: none (checked 2026-07-31). Stopped after E1 KILL: mechanism
+ID does not restore the killed product frame without written re-scope.
