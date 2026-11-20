@@ -1,5 +1,7 @@
 # External Replication & Reproducibility Registry
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 **Verification standard:** No empirical number enters canonical `docs/` or publication claims unless accompanied by its exact git SHA, immutable artifact hash, reproduction command, and explicit scope boundaries.
 
 ---

@@ -1,0 +1,42 @@
+{
+  "revision": "293e454917c562361409232f65e9d870a45af026",
+  "file": "data/aci-bench/src_experiment_data/train_aci_asrcorr.csv",
+  "url": "https://raw.githubusercontent.com/microsoft/clinical_visit_note_summarization_corpus/293e454917c562361409232f65e9d870a45af026/data/aci-bench/src_experiment_data/train_aci_asrcorr.csv",
+  "license": "CC BY 4.0",
+  "attribution": "Yim et al. (2023), ACI-BENCH. Scientific Data 10, 586. https://doi.org/10.1038/s41597-023-02487-3",
+  "changes": "Used only the ASR-corrected ACI train transcript. Replaced speaker tags and normalized inside-turn whitespace. Paired notes and metadata never used.",
+  "csv_sha256": "3e454b134829ec0f30d881f33f98e9f51676e55c5e1d80c99a97138c0490701f",
+  "rows_in_split_variant": 35,
+  "selected": [
+    {
+      "id": "ACI093",
+      "turns": 51,
+      "words": 1318
+    },
+    {
+      "id": "ACI031",
+      "turns": 95,
+      "words": 1547
+    },
+    {
+      "id": "ACI074",
+      "turns": 26,
+      "words": 985
+    },
+    {
+      "id": "ACI027",
+      "turns": 48,
+      "words": 1585
+    },
+    {
+      "id": "ACI075",
+      "turns": 61,
+      "words": 1636
+    },
+    {
+      "id": "ACI001",
+      "turns": 50,
+      "words": 1169
+    }
+  ]
+}

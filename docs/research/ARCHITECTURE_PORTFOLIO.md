@@ -1,5 +1,7 @@
 # Architecture Portfolio & Strict Parameter Accounting
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 **Constraint:** Preferred ~2B total deployed learned parameters; absolute hard cap strictly `< 4,000,000,000` parameters across backbone, input/output embeddings, routers, shared/routed experts, fast weights, adapters, and any auxiliary learned modules retained at inference.
 
 ---

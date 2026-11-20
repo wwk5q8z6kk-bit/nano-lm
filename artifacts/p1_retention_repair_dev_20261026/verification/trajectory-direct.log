@@ -1,0 +1,8 @@
+  PASS test_boundary_contrast_isolated_from_T
+  PASS test_cell_coverage
+  PASS test_majority_flip
+  PASS test_seed_unstable_types_are_excluded
+  PASS test_transition_contrast_refuted
+  PASS test_transition_contrast_supported
+  PASS test_verdict_thresholds
+recompute_c3 fixture tests: 7/7 PASS

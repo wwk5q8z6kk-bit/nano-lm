@@ -1,0 +1,33 @@
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<04:02,  1.39it/s]Loading weights:  43%|████▎     | 147/338 [00:00<00:00, 239.15it/s]Loading weights:  67%|██████▋   | 225/338 [00:01<00:00, 178.05it/s]Loading weights:  81%|████████  | 274/338 [00:01<00:00, 206.07it/s]Loading weights:  94%|█████████▍| 317/338 [00:01<00:00, 230.04it/s]Loading weights: 100%|██████████| 338/338 [00:01<00:00, 198.23it/s]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+varied-01 draft review 31
+varied-02 draft review 30
+varied-03 draft review 33
+varied-04 draft review 30
+varied-05 draft review 19
+varied-06 draft review 21
+varied-07 draft review 19
+varied-08 draft review 19
+varied-09 draft review 20
+varied-10 draft review 21
+varied-11 draft review 20
+varied-12 draft review 19
+varied-13 draft review 19
+varied-14 draft review 28
+varied-15 draft review 18
+varied-16 draft review 20
+varied-17 draft review 15
+varied-18 draft review 14
+varied-19 draft review 14
+varied-20 draft review 14
+varied-21 draft review 19
+varied-22 draft review 18
+varied-23 draft review 18
+varied-24 draft review 18
+Traceback (most recent call last):
+  File "/Users/mac/Projects/nano-lm/scripts/run_p1_independent_dev.py", line 512, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Users/mac/Projects/nano-lm/scripts/run_p1_independent_dev.py", line 492, in main
+    raise ValueError("evaluation source code changed during model run")
+ValueError: evaluation source code changed during model run

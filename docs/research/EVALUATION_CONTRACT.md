@@ -1,5 +1,7 @@
 # Evaluation Contract & Contamination Safeguards
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 Operates under [EVALUATION_FRAMEWORK.md](../EVALUATION_FRAMEWORK.md). Resolves the historical gap between 42-item smoke diagnostics (`suite_15pillar.py`) and defensible foundation-model evaluation.
 
 ---

@@ -1,0 +1,37 @@
+[
+  {
+    "example_id": "pilot-00-canonical",
+    "world_id": "pilot-world-00",
+    "variant": "canonical",
+    "generation": {
+      "raw": "CC:I have an allergy to nickel.|DUR:S[11 days]|SEV:A[moderate]|MED:C[naproxen]|ALG:A[nickel allergy]",
+      "generated_tokens": 39,
+      "token_limit_reached": false,
+      "generation_seconds": 3.346590000001015,
+      "device": "cpu"
+    },
+    "raw_parse_error": "CC has malformed native-state syntax",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-canonical",
+      "source_sha256": "449f638874a2ac25924d4c2d465c1c36fb197144f1a43dcb1b55f71a6848aaa4",
+      "status": "failed",
+      "disposition": "abstain",
+      "extraction": null,
+      "encounter": null,
+      "note": null,
+      "verification": null,
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "failure": {
+        "category": "solver_exception",
+        "message": "CC has malformed native-state syntax",
+        "exception_type": "StateSpanFormatError",
+        "validation_code": null
+      }
+    },
+    "total_seconds": 8.365375958004734
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "schema": "nano.h7-capture-tools-local-test.v1",
+  "checked_at_utc": "2026-10-22T20:43:10.020721+00:00",
+  "command": "python3 artifacts/runops/h7-20261022/capture-tools/run_fixture_tests.py -v",
+  "cwd": "/Users/mac/Projects/nano-lm",
+  "python": "3.14.7",
+  "packages": {
+    "torch": "2.11.0",
+    "tokenizers": "0.22.2",
+    "pytest": "9.0.2"
+  },
+  "exit_code": 0,
+  "tests_run": 11,
+  "elapsed_seconds_reported": 3.842,
+  "outcome": "OK",
+  "target": "preserved evaluation helper via single import redirect",
+  "fixture": "invented rows and archives; no scientific evaluation",
+  "preserved_copies_byte_identical_to_originals": true,
+  "training_helper_validation": "syntax only; not executed; no dedicated training fixture suite",
+  "limitations": [
+    "Hardcoded repository root and locally retained frozen package are required.",
+    "Local fixture runtime is distinct from the captured provider runtime.",
+    "Archived fixture should be run through run_fixture_tests.py to target the preserved helper."
+  ],
+  "provider_actions": false,
+  "model_inference": false,
+  "screen_input_access": false,
+  "checkpoint_loading": false,
+  "checksum_review_suite": {
+    "result": "CHECKSUM_REVIEW_TEST_RESULT.json",
+    "command": "python3 artifacts/runops/h7-20261022/capture-tools/run_checksum_review_fixture_tests.py -v",
+    "exit_code": 0,
+    "tests_run": 19,
+    "outcome": "OK",
+    "original_result_retained": true
+  }
+}

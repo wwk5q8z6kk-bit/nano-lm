@@ -1,0 +1,27 @@
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<02:11,  2.56it/s]Loading weights:  29%|██▉       | 99/338 [00:00<00:00, 250.77it/s]Loading weights:  44%|████▍     | 148/338 [00:00<00:01, 176.23it/s]Loading weights:  53%|█████▎    | 180/338 [00:01<00:01, 137.98it/s]Loading weights:  60%|██████    | 203/338 [00:01<00:00, 135.21it/s]Loading weights:  66%|██████▌   | 223/338 [00:01<00:00, 138.73it/s]Loading weights:  72%|███████▏  | 243/338 [00:01<00:00, 146.61it/s]Loading weights:  79%|███████▉  | 267/338 [00:01<00:00, 163.04it/s]Loading weights:  90%|████████▉ | 303/338 [00:01<00:00, 189.26it/s]Loading weights:  96%|█████████▌| 325/338 [00:02<00:00, 186.57it/s]Loading weights: 100%|██████████| 338/338 [00:02<00:00, 159.85it/s]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+retain-01 draft abstain 33
+retain-02 draft abstain 40
+retain-03 failed abstain 33
+retain-04 failed abstain 31
+retain-05 draft abstain 47
+retain-06 draft abstain 38
+retain-07 draft abstain 40
+retain-08 draft abstain 49
+retain-09 draft abstain 48
+retain-10 draft abstain 34
+retain-11 draft abstain 48
+retain-12 failed abstain 30
+retain-13 draft abstain 25
+retain-14 draft abstain 37
+retain-15 draft abstain 37
+retain-16 draft abstain 37
+retain-17 failed abstain 28
+retain-18 draft abstain 59
+retain-19 failed abstain 30
+retain-20 failed abstain 80
+retain-21 draft abstain 50
+retain-22 draft abstain 55
+retain-23 failed abstain 70
+retain-24 draft abstain 35
+{"raw": 0.0, "checked": 0.1}

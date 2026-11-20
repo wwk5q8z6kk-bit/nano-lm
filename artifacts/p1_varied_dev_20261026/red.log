@@ -1,0 +1,276 @@
+FFFFFFFFFFFF....F                                                        [100%]
+=================================== FAILURES ===================================
+_ test_direct_requests_offer_the_requested_field[What symptoms are you having?-chief_complaint] _
+
+question = 'What symptoms are you having?'
+field = <FieldName.CHIEF_COMPLAINT: 'chief_complaint'>
+
+    @pytest.mark.parametrize("question,field", [
+        ("What symptoms are you having?", FieldName.CHIEF_COMPLAINT),
+        ("What is troubling you?", FieldName.CHIEF_COMPLAINT),
+        ("How long has it hurt?", FieldName.DURATION),
+        ("How painful is it now?", FieldName.SEVERITY),
+        ("How strong is the ache?", FieldName.SEVERITY),
+        ("What are you taking for it?", FieldName.MEDICATION),
+    ])
+    def test_direct_requests_offer_the_requested_field(question, field):
+>       assert question_field(question) is field
+E       AssertionError: assert None is <FieldName.CHIEF_COMPLAINT: 'chief_complaint'>
+E        +  where None = question_field('What symptoms are you having?')
+
+nanoscribe/test_varied_replies.py:19: AssertionError
+_ test_direct_requests_offer_the_requested_field[What is troubling you?-chief_complaint] _
+
+question = 'What is troubling you?'
+field = <FieldName.CHIEF_COMPLAINT: 'chief_complaint'>
+
+    @pytest.mark.parametrize("question,field", [
+        ("What symptoms are you having?", FieldName.CHIEF_COMPLAINT),
+        ("What is troubling you?", FieldName.CHIEF_COMPLAINT),
+        ("How long has it hurt?", FieldName.DURATION),
+        ("How painful is it now?", FieldName.SEVERITY),
+        ("How strong is the ache?", FieldName.SEVERITY),
+        ("What are you taking for it?", FieldName.MEDICATION),
+    ])
+    def test_direct_requests_offer_the_requested_field(question, field):
+>       assert question_field(question) is field
+E       AssertionError: assert None is <FieldName.CHIEF_COMPLAINT: 'chief_complaint'>
+E        +  where None = question_field('What is troubling you?')
+
+nanoscribe/test_varied_replies.py:19: AssertionError
+_ test_direct_requests_offer_the_requested_field[How long has it hurt?-duration] _
+
+question = 'How long has it hurt?', field = <FieldName.DURATION: 'duration'>
+
+    @pytest.mark.parametrize("question,field", [
+        ("What symptoms are you having?", FieldName.CHIEF_COMPLAINT),
+        ("What is troubling you?", FieldName.CHIEF_COMPLAINT),
+        ("How long has it hurt?", FieldName.DURATION),
+        ("How painful is it now?", FieldName.SEVERITY),
+        ("How strong is the ache?", FieldName.SEVERITY),
+        ("What are you taking for it?", FieldName.MEDICATION),
+    ])
+    def test_direct_requests_offer_the_requested_field(question, field):
+>       assert question_field(question) is field
+E       AssertionError: assert None is <FieldName.DURATION: 'duration'>
+E        +  where None = question_field('How long has it hurt?')
+
+nanoscribe/test_varied_replies.py:19: AssertionError
+_ test_direct_requests_offer_the_requested_field[How painful is it now?-severity] _
+
+question = 'How painful is it now?', field = <FieldName.SEVERITY: 'severity'>
+
+    @pytest.mark.parametrize("question,field", [
+        ("What symptoms are you having?", FieldName.CHIEF_COMPLAINT),
+        ("What is troubling you?", FieldName.CHIEF_COMPLAINT),
+        ("How long has it hurt?", FieldName.DURATION),
+        ("How painful is it now?", FieldName.SEVERITY),
+        ("How strong is the ache?", FieldName.SEVERITY),
+        ("What are you taking for it?", FieldName.MEDICATION),
+    ])
+    def test_direct_requests_offer_the_requested_field(question, field):
+>       assert question_field(question) is field
+E       AssertionError: assert None is <FieldName.SEVERITY: 'severity'>
+E        +  where None = question_field('How painful is it now?')
+
+nanoscribe/test_varied_replies.py:19: AssertionError
+_ test_direct_requests_offer_the_requested_field[How strong is the ache?-severity] _
+
+question = 'How strong is the ache?', field = <FieldName.SEVERITY: 'severity'>
+
+    @pytest.mark.parametrize("question,field", [
+        ("What symptoms are you having?", FieldName.CHIEF_COMPLAINT),
+        ("What is troubling you?", FieldName.CHIEF_COMPLAINT),
+        ("How long has it hurt?", FieldName.DURATION),
+        ("How painful is it now?", FieldName.SEVERITY),
+        ("How strong is the ache?", FieldName.SEVERITY),
+        ("What are you taking for it?", FieldName.MEDICATION),
+    ])
+    def test_direct_requests_offer_the_requested_field(question, field):
+>       assert question_field(question) is field
+E       AssertionError: assert None is <FieldName.SEVERITY: 'severity'>
+E        +  where None = question_field('How strong is the ache?')
+
+nanoscribe/test_varied_replies.py:19: AssertionError
+_ test_direct_requests_offer_the_requested_field[What are you taking for it?-medication] _
+
+question = 'What are you taking for it?'
+field = <FieldName.MEDICATION: 'medication'>
+
+    @pytest.mark.parametrize("question,field", [
+        ("What symptoms are you having?", FieldName.CHIEF_COMPLAINT),
+        ("What is troubling you?", FieldName.CHIEF_COMPLAINT),
+        ("How long has it hurt?", FieldName.DURATION),
+        ("How painful is it now?", FieldName.SEVERITY),
+        ("How strong is the ache?", FieldName.SEVERITY),
+        ("What are you taking for it?", FieldName.MEDICATION),
+    ])
+    def test_direct_requests_offer_the_requested_field(question, field):
+>       assert question_field(question) is field
+E       AssertionError: assert None is <FieldName.MEDICATION: 'medication'>
+E        +  where None = question_field('What are you taking for it?')
+
+nanoscribe/test_varied_replies.py:19: AssertionError
+___ test_whole_duration_reply_preserves_exact_value[For two days.-two days] ____
+
+reply = 'For two days.', value = 'two days'
+
+    @pytest.mark.parametrize("reply,value", [("For two days.", "two days"),
+                                               ("Three weeks ago.", "Three weeks"),
+                                               ("About four hours.", "four hours")])
+    def test_whole_duration_reply_preserves_exact_value(reply, value):
+        source = "Doctor: How long?\nPatient: " + reply
+        field = extract_context_fields(NanoInput("duration", source))[1]
+>       assert field.state is FieldState.SUPPORTED
+E       AssertionError: assert <FieldState.UNCERTAIN: 'uncertain'> is <FieldState.SUPPORTED: 'supported'>
+E        +  where <FieldState.UNCERTAIN: 'uncertain'> = FieldOutput(field=<FieldName.DURATION: 'duration'>, state=<FieldState.UNCERTAIN: 'uncertain'>, value=None, evidence=(EvidenceSpan(start=27, end=40, text='For two days.', speaker='patient'),)).state
+E        +  and   <FieldState.SUPPORTED: 'supported'> = FieldState.SUPPORTED
+
+nanoscribe/test_varied_replies.py:28: AssertionError
+_ test_whole_duration_reply_preserves_exact_value[Three weeks ago.-Three weeks] _
+
+reply = 'Three weeks ago.', value = 'Three weeks'
+
+    @pytest.mark.parametrize("reply,value", [("For two days.", "two days"),
+                                               ("Three weeks ago.", "Three weeks"),
+                                               ("About four hours.", "four hours")])
+    def test_whole_duration_reply_preserves_exact_value(reply, value):
+        source = "Doctor: How long?\nPatient: " + reply
+        field = extract_context_fields(NanoInput("duration", source))[1]
+>       assert field.state is FieldState.SUPPORTED
+E       AssertionError: assert <FieldState.UNCERTAIN: 'uncertain'> is <FieldState.SUPPORTED: 'supported'>
+E        +  where <FieldState.UNCERTAIN: 'uncertain'> = FieldOutput(field=<FieldName.DURATION: 'duration'>, state=<FieldState.UNCERTAIN: 'uncertain'>, value=None, evidence=(EvidenceSpan(start=27, end=43, text='Three weeks ago.', speaker='patient'),)).state
+E        +  and   <FieldState.SUPPORTED: 'supported'> = FieldState.SUPPORTED
+
+nanoscribe/test_varied_replies.py:28: AssertionError
+_ test_whole_duration_reply_preserves_exact_value[About four hours.-four hours] _
+
+reply = 'About four hours.', value = 'four hours'
+
+    @pytest.mark.parametrize("reply,value", [("For two days.", "two days"),
+                                               ("Three weeks ago.", "Three weeks"),
+                                               ("About four hours.", "four hours")])
+    def test_whole_duration_reply_preserves_exact_value(reply, value):
+        source = "Doctor: How long?\nPatient: " + reply
+        field = extract_context_fields(NanoInput("duration", source))[1]
+>       assert field.state is FieldState.SUPPORTED
+E       AssertionError: assert <FieldState.UNCERTAIN: 'uncertain'> is <FieldState.SUPPORTED: 'supported'>
+E        +  where <FieldState.UNCERTAIN: 'uncertain'> = FieldOutput(field=<FieldName.DURATION: 'duration'>, state=<FieldState.UNCERTAIN: 'uncertain'>, value=None, evidence=(EvidenceSpan(start=27, end=44, text='About four hours.', speaker='patient'),)).state
+E        +  and   <FieldState.SUPPORTED: 'supported'> = FieldState.SUPPORTED
+
+nanoscribe/test_varied_replies.py:28: AssertionError
+___ test_natural_blanket_denial_cannot_erase_medication_use[No medication.] ____
+
+denial = 'No medication.'
+
+    @pytest.mark.parametrize("denial", ["No medication.", "No meds!", "I deny taking medicine."])
+    def test_natural_blanket_denial_cannot_erase_medication_use(denial):
+        source = ("Doctor: What symptoms?\nPatient: I have finger soreness.\n"
+                  "Doctor: What are you taking for it?\nPatient: I take celecoxib.\n"
+                  "Doctor: Any medicine?\nPatient: " + denial)
+        raw = "CC:S[finger soreness]|DUR:M|SEV:M|MED:A[" + denial + "]|ALG:M"
+        result = scribe(source, solver=compact_solver(lambda _: raw, binder="context"), context_policy="context")
+        assert result["verification"]["passed"]
+        assert result["disposition"] == "review"
+>       assert result["note"]["claims"][3]["state"] == "conflicting"
+E       AssertionError: assert 'uncertain' == 'conflicting'
+E         
+E         - conflicting
+E         + uncertain
+
+nanoscribe/test_varied_replies.py:41: AssertionError
+______ test_natural_blanket_denial_cannot_erase_medication_use[No meds!] _______
+
+denial = 'No meds!'
+
+    @pytest.mark.parametrize("denial", ["No medication.", "No meds!", "I deny taking medicine."])
+    def test_natural_blanket_denial_cannot_erase_medication_use(denial):
+        source = ("Doctor: What symptoms?\nPatient: I have finger soreness.\n"
+                  "Doctor: What are you taking for it?\nPatient: I take celecoxib.\n"
+                  "Doctor: Any medicine?\nPatient: " + denial)
+        raw = "CC:S[finger soreness]|DUR:M|SEV:M|MED:A[" + denial + "]|ALG:M"
+        result = scribe(source, solver=compact_solver(lambda _: raw, binder="context"), context_policy="context")
+        assert result["verification"]["passed"]
+        assert result["disposition"] == "review"
+>       assert result["note"]["claims"][3]["state"] == "conflicting"
+E       AssertionError: assert 'uncertain' == 'conflicting'
+E         
+E         - conflicting
+E         + uncertain
+
+nanoscribe/test_varied_replies.py:41: AssertionError
+_ test_natural_blanket_denial_cannot_erase_medication_use[I deny taking medicine.] _
+
+denial = 'I deny taking medicine.'
+
+    @pytest.mark.parametrize("denial", ["No medication.", "No meds!", "I deny taking medicine."])
+    def test_natural_blanket_denial_cannot_erase_medication_use(denial):
+        source = ("Doctor: What symptoms?\nPatient: I have finger soreness.\n"
+                  "Doctor: What are you taking for it?\nPatient: I take celecoxib.\n"
+                  "Doctor: Any medicine?\nPatient: " + denial)
+        raw = "CC:S[finger soreness]|DUR:M|SEV:M|MED:A[" + denial + "]|ALG:M"
+        result = scribe(source, solver=compact_solver(lambda _: raw, binder="context"), context_policy="context")
+        assert result["verification"]["passed"]
+        assert result["disposition"] == "review"
+>       assert result["note"]["claims"][3]["state"] == "conflicting"
+E       AssertionError: assert 'uncertain' == 'conflicting'
+E         
+E         - conflicting
+E         + uncertain
+
+nanoscribe/test_varied_replies.py:41: AssertionError
+____ test_constrained_medication_conflict_is_available_with_natural_denial _____
+
+tmp_path = PosixPath('/private/var/folders/v5/38p4vtr16t9f_30dt3n01khr0000gn/T/pytest-of-mac/pytest-1625/test_constrained_medication_co0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10d7cdba0>
+
+    def test_constrained_medication_conflict_is_available_with_natural_denial(tmp_path, monkeypatch):
+        source = ("Doctor: Any medicine?\nPatient: I take celecoxib.\n"
+                  "Doctor: Any medicine?\nPatient: No medication.")
+        predictor = LocalCompactPredictor(str(tmp_path), decoding="constrained")
+        def choose(messages, choices):
+            if messages[-1]["content"].endswith("MED"):
+                assert ":C[celecoxib" in choices
+                assert ":A[No medication.]" in choices
+                return ":C[celecoxib", {}
+            if messages[-1]["content"].endswith(":C[celecoxib"):
+                assert ";No medication.]" in choices
+                return ";No medication.]", {}
+            return ":M", {}
+        monkeypatch.setattr(predictor, "_choose", choose)
+>       assert "MED:C[celecoxib;No medication.]" in predictor(source)
+                                                    ^^^^^^^^^^^^^^^^^
+
+nanoscribe/test_varied_replies.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+nanoscribe/compact.py:107: in __call__
+    return self._constrained(transcript)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+nanoscribe/compact.py:280: in _constrained
+    raw, step = self._choose([
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+messages = [{'content': 'Extract only patient-reported encounter facts from the transcript.\nReturn exactly one line, no explanat...or: Any medicine?\nPatient: No medication.', 'role': 'user'}, {'content': 'CC:M|DUR:M|SEV:M|MED', 'role': 'assistant'}]
+choices = [':M', ':U[]', ':U[I take celecoxib.]', ':U[No medication.]']
+
+    def choose(messages, choices):
+        if messages[-1]["content"].endswith("MED"):
+>           assert ":C[celecoxib" in choices
+E           AssertionError: assert ':C[celecoxib' in [':M', ':U[]', ':U[I take celecoxib.]', ':U[No medication.]']
+
+nanoscribe/test_varied_replies.py:60: AssertionError
+=========================== short test summary info ============================
+FAILED nanoscribe/test_varied_replies.py::test_direct_requests_offer_the_requested_field[What symptoms are you having?-chief_complaint]
+FAILED nanoscribe/test_varied_replies.py::test_direct_requests_offer_the_requested_field[What is troubling you?-chief_complaint]
+FAILED nanoscribe/test_varied_replies.py::test_direct_requests_offer_the_requested_field[How long has it hurt?-duration]
+FAILED nanoscribe/test_varied_replies.py::test_direct_requests_offer_the_requested_field[How painful is it now?-severity]
+FAILED nanoscribe/test_varied_replies.py::test_direct_requests_offer_the_requested_field[How strong is the ache?-severity]
+FAILED nanoscribe/test_varied_replies.py::test_direct_requests_offer_the_requested_field[What are you taking for it?-medication]
+FAILED nanoscribe/test_varied_replies.py::test_whole_duration_reply_preserves_exact_value[For two days.-two days]
+FAILED nanoscribe/test_varied_replies.py::test_whole_duration_reply_preserves_exact_value[Three weeks ago.-Three weeks]
+FAILED nanoscribe/test_varied_replies.py::test_whole_duration_reply_preserves_exact_value[About four hours.-four hours]
+FAILED nanoscribe/test_varied_replies.py::test_natural_blanket_denial_cannot_erase_medication_use[No medication.]
+FAILED nanoscribe/test_varied_replies.py::test_natural_blanket_denial_cannot_erase_medication_use[No meds!]
+FAILED nanoscribe/test_varied_replies.py::test_natural_blanket_denial_cannot_erase_medication_use[I deny taking medicine.]
+FAILED nanoscribe/test_varied_replies.py::test_constrained_medication_conflict_is_available_with_natural_denial
+13 failed, 4 passed in 0.19s

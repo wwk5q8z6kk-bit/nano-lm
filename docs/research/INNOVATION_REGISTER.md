@@ -1,6 +1,8 @@
 # Innovation Register & Admission Rubric
 
-All 91 research candidates (`AX01–AX15`, `MM01–MM15`, `RP01–RP08`, `RE01–RE12`, `OP01–OP12`, `DT01–DT15`, `SY01–SY14`) are tracked below.  
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
+All 91 research candidates (`AX01–AX15`, `MM01–MM15`, `RP01–RP08`, `RE01–RE12`, `OP01–OP12`, `DT01–DT15`, `SY01–SY14`) are tracked below.
 **Rule:** Literature mechanisms are **prior art**, not Nano inventions. Statuses: `PROPOSED`, `PROTOTYPED`, `MEASURED`, `REPLICATED`, `ACCEPTED`, `SCOPED_ONLY`, `REJECTED`, `INVALID`, `PARKED`.
 
 ---

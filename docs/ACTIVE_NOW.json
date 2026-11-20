@@ -1,11 +1,11 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
-  "updated": "2026-10-12",
-  "program_execution_status": "P1_SCRIBING_ACTIVE",
-  "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_H7_KAGGLE_EXECUTION_READY",
+  "updated": "2026-11-20",
+  "program_execution_status": "FRONTIER_MODEL_RESEARCH_ACTIVE",
+  "capability_frontier": "GENERAL_PURPOSE_LANGUAGE_MODEL",
+  "current_gate": "MATCHED_GENERAL_MODEL_BASELINE",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
-  "training_backend": "KAGGLE_AND_RUNPOD",
+  "training_backend": "KAGGLE_GOOGLE_CLOUD_AND_RUNPOD",
   "training_status": "ACTIVE",
   "local_zero_cost_exploratory_training": "ALLOWED",
   "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
@@ -17,16 +17,20 @@
   "compute_posture": {
     "free_gpu_backend": "KAGGLE_WHEN_RUNTIME_FITS",
     "paid_gpu_backend": "RUNPOD_FOR_EXACT_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE",
-    "training": "ACTIVE_ON_KAGGLE_AND_RUNPOD",
+    "training": "ACTIVE_ON_KAGGLE_GOOGLE_CLOUD_AND_RUNPOD",
     "local_compute": "APPLE_SILICON_AND_CPU_FOR_DEV_SMOKE_ANALYSIS_PREPROCESS_EVAL_AND_SMALL_EXPERIMENTS",
     "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
     "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
     "confirmatory_evidential_run": "PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION",
-    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
+    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM",
+    "selection_objective": "USEFUL_EVIDENCE_PER_DOLLAR_AND_WALL_CLOCK_HOUR",
+    "runpod_speed": "ALLOWED_WHEN_TIME_SAVED_JUSTIFIES_COST_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
+    "google_cloud": "CREDIT_BACKED_FINITE_RUNS_WITHIN_VERIFIED_BALANCE"
   },
   "bounded_work": [
-    "p1_h7_kaggle_two_seed_cpu_training",
-    "p1_h7_one_shot_control_treatment_screen"
+    "recover_and_evaluate_native_checkpoints_on_common_public_text",
+    "compare_general_model_architectures_with_matched_training_budgets",
+    "audit_general_posttraining_and_benchmark_attribution"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -35,7 +39,24 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "EXECUTE_H7_TWO_STAGE_KAGGLE_PACKAGE",
+  "next_engineering": "MEASURE_NATIVE_BASELINES_AND_TEST_THE_STRONGEST_ARCHITECTURE_CANDIDATE_AGAINST_A_MATCHED_CONTROL",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "a5d0c5dac0663cd760224073439905b211c11b44"
+  "integration_base_sha": "46c65f0044e81ac73251e18a5a7d69a7299a8079",
+  "historical_scribing_work_completed": [
+    "h7_two_seed_training_and_single_screen_execution",
+    "preserved_compact_orx_comparison",
+    "transcript_to_checked_reference_review_draft",
+    "annotation_owned_evaluator_with_independent_quota_preflight",
+    "twenty_dialogue_compact_checked_scribing_development_pilot",
+    "constrained_exact_source_compact_generation",
+    "bounded_paraphrase_context_checked_path",
+    "twenty_dialogue_structured_rerun_with_current_adapter_replay",
+    "p1_field_local_uncertainty_and_source_conflict_preservation",
+    "p1_fresh_blinded_agent_development_validation",
+    "p1_bounded_question_scope_and_partial_output_repair",
+    "p1_second_fresh_blinded_agent_validation_failed_transfer",
+    "p1_bounded_clause_retention_and_question_coverage_repair",
+    "p1_third_fresh_blinded_agent_validation_failed_transfer",
+    "p1_epistemic_info_density_prefix_kv_and_uma_alignment"
+  ]
 }

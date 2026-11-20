@@ -1,5 +1,7 @@
 # Novelty Audit & Contemporary Literature Registry (Through Nov 2026)
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 **Policy:** Existing published mechanisms are **prior art**, never Nano inventions. A Nano novelty claim is permitted only after prior-art review, controlled ablation isolating the exact mechanism, analytic/Jacobian verification, multi-seed replication, and matched modern baselines.
 
 ---

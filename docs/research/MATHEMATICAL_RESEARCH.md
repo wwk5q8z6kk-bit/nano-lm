@@ -1,5 +1,7 @@
 # Mathematical Research Laboratory
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 **Discipline:** An equation is a hypothesis about a computational inductive bias, not evidence of cognitive superiority. Every mathematical mechanism below pairs an explicit domain of validity with empirical Jacobian/spectral diagnostics and a falsifier.
 
 ---

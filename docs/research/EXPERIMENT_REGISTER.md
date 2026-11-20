@@ -1,5 +1,7 @@
 # Experiment Register & Forensic Reconciliation (`X00`–`X20`)
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 This ledger enforces strict provenance separation between **VERIFIED** (in accessible commits/artifacts with passing integrity checks), **REPORTED / CONFOUNDED**, **INVALID**, **CROSS_BRANCH** (on `origin/codex/p1-h7-scribing-path` or `origin/nanolm/posttrain-v1`), and **LOCAL_WORKTREE_UNMERGED** (only in `.worktrees/*` locally).
 
 ---

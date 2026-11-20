@@ -1,0 +1,24 @@
+{
+  "sealed_utc": "2026-11-20T15:24:43.654134+00:00",
+  "sha256_manifest": "b2566ccfce3cf7edafcf01f11d3a074e0db2ce757b4fad71b7f2ff794724cdf3",
+  "source_inputs": {
+    "PREREGISTRATION.md": "bbee025d894eb1a3ec3ba37c826d745fbd8374eba6b641a1f2b51008baac3d12",
+    "aligned_reference.py": "22cd611e0ad9d962b9e7f5948672ddea658235253a1143a9cc7eaa5364d3f2b7",
+    "run.py": "5a8ef485e5706f5ab7f89096a9f7cef677bad8e3fea12ad204fc4efc30819028",
+    "episodes.py": "b296d3ddef54aec4364f32c96810e5eece835caca4bcaf74c3abeb44ff34b319",
+    "control.py": "f450493407f602ebeab43f4b405f3960a94fd5d4e21580252ec11675d5c624ee",
+    "launch_matrix.py": "d85a0743092c65823e3a2de85357ec474b250f7539f5026306d8157f31ded203",
+    "cloud/job.py": "1e2b0d6f5b6a9d760d587ca010cdbb0441f4cd3e20cc5e5366e0aae828aaa260",
+    "seal.py": "df105c82addee7f42db2a8009999ecfdbd5a9f39d3bdb501ca565d6a53d5418b",
+    "research/cycle1/exp_pba_01.py": "d59a71454a5876484647940645651aefd4c6ae0735c0876435a05fca1a780b8d",
+    "research/cycle1/exp_recurrent_operator_01.py": "1c308fdcf1297a3747a9c1f81f251bd19e745edff2a9fcd432f599819aeda084",
+    "research/cycle1/primitives.py": "c2a9f3888af000c7a9b303d5fd9045cde0a4e3cd7941c84ab724f5679b38d75a",
+    "research/cycle2/exp_byte_vs_token_01.py": "9b29a531ff092898fb1d7cbba09c7b47a1aba3008ceddbaf0fa2a1832f2ef891",
+    "research/cycle2/exp_hybrid_interference_01.py": "2d85d43a770d270bc1fc9f444c4f6e08ee0225b86b090b567899483f1a12d5fe",
+    "research/cycle3/exp_nanoscribe_p1_synthesis_01.py": "6790ce880455f22c5706f9a83d5161a9b74354dd105f05fae6dd0d6570025f35",
+    "data/dev.jsonl": "686a34d3a6393cc826fce231cc94531bbd28d69cb348d50de5a136e9616b9901",
+    "data/familiar.jsonl": "ab890692fe87510199edc2cd7b27f7278a005566bbe485fbce8916d77990d137",
+    "data/train.jsonl": "8c19753e29b3700c63fd4872f3fbde2e43fc453572b50b0401aa4085c1547f01",
+    "data/transfer.jsonl": "1b3c711b55ef7009f91cd1374d4371273e71b417f78bf29231e863887413f1a0"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "nano.h7.run-spec.v1",
+  "experiment_id": "nano-p1-h7-boundary-margin-screen-v1",
+  "created_at_utc": "2026-10-22T19:29:41.619193+00:00",
+  "scientific_git_sha": "d6ed212c32384c1d50089e50260918028af88bfd",
+  "authorized_cost_usd": 0,
+  "max_total_runtime_hours": 4,
+  "backend": "Kaggle free CPU",
+  "training_kernel": "hassaneljesr/nano-h7-train-run-d6ed212",
+  "training_dataset": "hassaneljesr/nano-h7-training-d6ed212",
+  "training_seeds": [
+    20260805,
+    20260806
+  ],
+  "archives": {
+    "evaluation": {
+      "filename": "nano-h7-kaggle-evaluation.tar.gz",
+      "sha256": "c2c7fbfe49aea183db11c2c2c15ee9705b57d38ed72d5cde5a847c76cc9d16ec",
+      "bytes": 12468430
+    },
+    "training": {
+      "filename": "nano-h7-kaggle-training.tar.gz",
+      "sha256": "1098761fd287dea1d106a32383308032d47c1061d3525877d57888bc7a15cb3f",
+      "bytes": 12458936
+    }
+  },
+  "inputs": {
+    "base_checkpoint": {
+      "bytes": 12609917,
+      "sha256": "0e4f348eea00c660236cfd9e5bc2d9a71274adfc4d738db6f664664c9a06725b"
+    },
+    "calibration": {
+      "bytes": 734627,
+      "filename": "calibration.jsonl",
+      "sha256": "ce0562ccb44ee83963eace0d873773addaee8e49f29499a6b720b16335930e70"
+    },
+    "control_checkpoint": {
+      "bytes": 13168916,
+      "sha256": "07547ec5c01b46fa87e8d53a40497a7c4b4a6bc92b596dddd67f4be4d18c89e0"
+    },
+    "fit": {
+      "bytes": 9134638,
+      "filename": "fit.jsonl",
+      "sha256": "79f7581efbd989f48a474bdd2079e7ca163c2a2682bb48fb8398bd99febe22fb"
+    },
+    "screen": {
+      "bytes": 881266,
+      "sha256": "9b18c5eef105d0fa2ff0a1e575e764c0014a4ff62e40e8b8205dc12674c436f2"
+    },
+    "screen_manifest": {
+      "bytes": 1425,
+      "sha256": "a766a41ed99bcffcd8e078c652c8a85fe6d796fe44268e03e0e309d9070cd6a6"
+    },
+    "tokenizer": {
+      "bytes": 262846,
+      "sha256": "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"
+    },
+    "training_manifest": {
+      "bytes": 31213,
+      "filename": "manifest.json",
+      "sha256": "2569e7b27b53ef741fc92d1545ca323367155d960e77ff0e6852b32db0d32f31"
+    }
+  },
+  "isolation": {
+    "base_checkpoint_in_evaluation_archive": false,
+    "control_in_training_archive": false,
+    "control_scoring_passes": 1,
+    "evaluation_transfer_only_after_two_report_hashes_frozen": true,
+    "screen_in_training_archive": false,
+    "third_seed_allowed": false,
+    "threshold_sweep_allowed": false,
+    "training_data_in_evaluation_archive": false,
+    "treatment_scoring_passes": 2
+  },
+  "runtime_observed": {
+    "python": "3.13.15",
+    "torch": "2.11.0+cpu",
+    "accelerator": null
+  },
+  "operational_changes_only": [
+    "pip --target bootstrap with PYTHONPATH replaces unsupported ensurepip venv creation",
+    "evaluation sha256sum runs relative to treatments directory",
+    "external no-clobber stage reservation and durable local start/terminal logs"
+  ],
+  "stop_rules": [
+    "single two-seed training execution",
+    "single control and two treatment scoring passes on new H7 screen only",
+    "four-hour total cap",
+    "no retry after screen open",
+    "no threshold or prompt changes",
+    "no H6 known-development rerun"
+  ],
+  "result_destination": "artifacts/nano_h7/kaggle/h7-boundary-margin-v1",
+  "reservation_authority": "/Users/mac/.codex/nano-evaluation-authority/nano-p1-h7-boundary-margin-screen-v1",
+  "status": "PREPARED_NOT_LAUNCHED"
+}

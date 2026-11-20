@@ -1,7 +1,9 @@
 # Nano Foundation Intelligence Program
 
-**Status:** Proposed research plan and engineering roadmap (reconciled against `origin/master` @ `acc9b7e`); not a claim of implementation or 2B experimental validation.  
-**Date:** 2026-11-17  
+The November 17 proposal below preserves its original experiment portfolio. The November 20 [project charter](../PROJECT_CHARTER.md) places NanoScribe outside active work, leaves model size open, and prioritizes matched general-language baselines. Use the [current execution plan](../EXECUTION_PLAN.md) for training decisions.
+
+**Status:** Proposed research plan and engineering roadmap (reconciled against `origin/master` @ `acc9b7e`); not a claim of implementation or 2B experimental validation.
+**Date:** 2026-11-17
 **Target envelope:** Preferred ~2B deployed learned parameters; hard ceiling strictly `< 4,000,000,000` deployed learned parameters across all weights, embeddings, routers, experts, adapters, and auxiliary learned modules.
 
 ---
@@ -10,7 +12,7 @@
 
 This document operates under [PROJECT_AUTHORITY.md](../PROJECT_AUTHORITY.md) and [PROJECT_CHARTER.md](../PROJECT_CHARTER.md). It does not override [ACTIVE_NOW.md](../ACTIVE_NOW.md), [CAPABILITY_LADDER.md](../CAPABILITY_LADDER.md), or tagged empirical artifacts in `papers/` and `trajectory/`.
 
-1. **Domain-general core + consequential proving domain:** `Nano Core` (`nano/`) is domain-general. Medical scribing (**P1 — NanoScribe**) remains the near-term capability frontier because transforming messy clinical dialogue into an evidence-grounded encounter record forces exact source transport, negation/denial preservation, uncertainty calibration, and verification. Summarization (**P2**), longitudinal charting (**P3**), and broader intelligence expansion (**P4–P9**) follow sequentially.
+1. **Original application assumption (superseded November 20).** The November 17 proposal used medical scribing as a proving application. The current model program measures general language, reasoning and transfer on separate benchmarks.
 2. **Strict parameter ceiling (`< 4B` total deployed):** Every candidate counts all deployed learned parameters (`backbone + embeddings + output head + all MoE experts + routers + adapters + auxiliary learned verifiers/fast weights`). A model with 2B active and 5B total parameters is out-of-cap.
 3. **Two strictly separated evaluation tracks (no conflation):**
    - **Track 1 — Self-Contained Foundation Model:** Naked checkpoint weights only; zero external retrieval, Python execution, tools, or helper models.

@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-20T14:56:38.876287+00:00",
+  "model": "gemini-3.1-pro-preview",
+  "id": "prospective-05-01",
+  "raw": "HTTP 200 STOP without candidate text or generated tokens",
+  "action": "Retain, score through original scribe as returned. No resample. No source, label, metric or cohort exclusion change."
+}

@@ -1,0 +1,9 @@
+  PASS test_absence_never_from_silence
+  PASS test_decision_policy
+  PASS test_v1_grounds_correct_value
+  PASS test_v1_known_blindspots
+  PASS test_v1_rejects_doctor_line_word
+  PASS test_v2_article_normalization
+  PASS test_v2_catches_all_three_classes
+  PASS test_v2_verifies_correct_bindings
+fabric regression pins: 8/8 PASS

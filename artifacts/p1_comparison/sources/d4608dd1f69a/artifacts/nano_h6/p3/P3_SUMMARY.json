@@ -1,0 +1,75 @@
+{
+  "floors": {
+    "g1_min_control_class_recall": 0.2,
+    "g2_min_arm_state_accuracy": 0.75,
+    "g3_max_disjoint_rate": 0.03,
+    "g4_max_no_match_rate": 0.1
+  },
+  "gates": {
+    "G1_all_seeds_interpretable": true,
+    "G2_state_confirmed": true,
+    "G3_grounding_clean": true,
+    "G4_span_replicated": false,
+    "evaluator_cross_checks_ok": true
+  },
+  "lexicon_sha256": "bb801c1f02008a067c61ea819770e83ac1944854193d2ab63df0b1ed3f9b401d",
+  "lora": {
+    "batch_size": 4,
+    "iters": 400,
+    "max_seq_length": 768,
+    "num_layers": 8
+  },
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "overall": "proceed_to_p4_planning",
+  "preregistration": "papers/PREREG_P3_MULTISEED.md",
+  "schema": "nano.p3-multiseed.v1",
+  "seeds": {
+    "20260806": {
+      "agreement_rate": 0.9866,
+      "control_worst_class_recall": 0.7333,
+      "disjoint_rate": 0.0134,
+      "evaluator_cross_check": true,
+      "g1_interpretable": true,
+      "g2_state": true,
+      "g3_grounding": true,
+      "g4_span": true,
+      "min_arm": "EXTERNAL[9]",
+      "min_arm_state_accuracy": 0.7667,
+      "post_snap_no_match_rate": 0.0913,
+      "snap_rescued": 62
+    },
+    "20260810": {
+      "agreement_rate": 1.0,
+      "control_worst_class_recall": 1.0,
+      "disjoint_rate": 0.0,
+      "evaluator_cross_check": true,
+      "g1_interpretable": true,
+      "g2_state": true,
+      "g3_grounding": true,
+      "g4_span": false,
+      "min_arm": "EXTERNAL[9]",
+      "min_arm_state_accuracy": 0.9,
+      "post_snap_no_match_rate": 0.2079,
+      "snap_rescued": 53
+    },
+    "20260811": {
+      "agreement_rate": 0.9977,
+      "control_worst_class_recall": 0.7333,
+      "disjoint_rate": 0.0023,
+      "evaluator_cross_check": true,
+      "g1_interpretable": true,
+      "g2_state": true,
+      "g3_grounding": true,
+      "g4_span": false,
+      "min_arm": "EXTERNAL[9]",
+      "min_arm_state_accuracy": 0.9667,
+      "post_snap_no_match_rate": 0.1381,
+      "snap_rescued": 44
+    }
+  },
+  "train_seconds": {
+    "20260806": null,
+    "20260810": 268.6,
+    "20260811": 327.6
+  }
+}

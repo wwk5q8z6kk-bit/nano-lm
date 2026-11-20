@@ -8,23 +8,12 @@ mission = docs/PROJECT_CHARTER.md
 current_state = docs/ACTIVE_NOW.json + docs/ACTIVE_NOW.md
 execution = docs/EXECUTION_PLAN.md
 
-capability_frontier = P1_SCRIBING
-proving_application = NanoScribe
-nano_core = nano/                  # domain-general symbolic substrate
-nano_learned_core = nano_ai/       # learned scribing path through frozen H6
-
-macro_sequence =
-P1 faithful scribing
-→ P2 summarization
-→ P3 longitudinal charting
-→ P4–P9 intelligence expansion
-
-training_backends = KAGGLE + RUNPOD
+capability_frontier = GENERAL_PURPOSE_LANGUAGE_MODEL
+model_objective = FRONTIER_CAPABILITY
+current_gate = MATCHED_GENERAL_MODEL_BASELINE
+historical_application = NanoScribe (outside active scope)
+training_backends = KAGGLE + GOOGLE_CLOUD + RUNPOD
 training_status = ACTIVE
-
-backend_policy =
-KAGGLE_FREE_WHEN_RUNTIME_FITS;
-RUNPOD_FOR_EXACT_GPU_RUNTIME_OR_MANAGED_INFERENCE
 
 routine_runpod_training =
 ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET
@@ -89,24 +78,11 @@ python3 -m pytest -q nano_ai/tests
 python3 -m pytest -q benchmarks/
 ```
 
-## Learned User Preferences
+## Execution principles
 
-- Operate autonomously on Nano P1: build, test, measure, and continue without routine owner prompts or stopping after a single PR or experiment.
-- Maximize intelligence gained per dollar and wall-clock hour; do not default to self-hosting the largest open-weight checkpoint available.
-- Treat B300 availability as a feasibility gate, not proof that arbitrary frontier checkpoints fit on one or two GPUs.
-- Prefer hosted API/inference for the frontier teacher when cheaper; reserve self-hosted B200/B300 for student training, distillation, Native Nano, and verifier work.
-- Prefer Kaggle for free, reproducible experiments when its runtime fits; use RunPod only when the exact GPU/runtime, persistence, or managed inference surface is required.
-- Enforce RunPod cost discipline: $180 autonomous spend envelope, $200 hard campaign cap, $20 owner reserve not for routine use; tear down idle pods promptly.
-- Use `origin/master` as development truth; never trust or push from a stale local `master`.
-- Do not reopen the documentation-reset program or turn work back into governance exercises when implementation can proceed.
-
-## Learned Workspace Facts
-
-- Current capability frontier is P1 faithful scribing; NanoScribe is the proving application for the AI, not a separate product scope. Kaggle and RunPod are complementary training backends selected by experiment fit and cost.
-- Nano Core (`nano/`), its reproducible clinical/synthetic-world evidence, and the coherent learned Nano AI package through H6 (`nano_ai/`) are integrated on `master` via PRs #107–#109.
-- The agentic benchmark instrument and v1.1 action-log contracts are integrated on `master` via PR #110.
-- P1 foundation PRs landed on master: #37 Encounter Representation v0, #38 constrained evidence transport/evaluation, #40 minimal model adapter and baseline bridge, #41 Qwen inference + three-track harness (`origin/master` ~c4822b9).
-- P1 model research runs four parallel tracks: frontier teacher (capability ceiling), large student, compact control (e.g. Qwen2.5-1.5B baseline adapter), and native Nano vNext screening (~30M–100M).
-- Qwen is a compact control / baseline adapter path, not Nano itself; Nano is the broader faithful-representation program, not merely a tiny LM, Qwen wrapper, or LoRA baseline.
-- Large frontier checkpoints may exceed practical self-host limits (e.g. 300B+ models often need multi-node serving); choose teacher modality by economics and fit, not checkpoint size alone.
-- Historical local `master` at `9fe5b6b6` diverged from canonical remote and must not be treated as push target.
+- Build and measure the native model. Report teacher, adapted-checkpoint and tool-assisted results under their own identities.
+- Prefer controlled comparisons on public or licensed data with recorded code, tokenizer, seeds, compute and held-out sources. Check data overlap before claiming generalization.
+- Choose local, Kaggle, credit-backed Google Cloud or RunPod according to runtime fit and useful evidence per dollar and wall-clock hour. Bind each paid job to an experiment budget, termination condition and durable result destination. Google credits and RunPod funds are separate.
+- The existing RunPod campaign allows $180 autonomous spend, $200 hard cap and a $20 owner reserve. Shut down idle resources promptly.
+- Use `origin/master` as development truth. Preserve unmerged experiments and distinguish a measured branch result from code integrated on master.
+- NanoScribe, including its P1 backlog, is historical. Maintain its reproduction path. Future work on a separate application requires its own scope.

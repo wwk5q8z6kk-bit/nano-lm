@@ -100,15 +100,17 @@ def _span_key(span: Any) -> tuple[int, int, str, str]:
     return (span.start, span.end, span.text, span.speaker)
 
 
-def _evidence_aligned(predicted: FieldOutput, gold: FieldOutput) -> bool:
+def _evidence_aligned(predicted: FieldOutput, gold: FieldOutput, *, exact: bool) -> bool:
     """Check field evidence against evaluator-owned annotations, not just offsets."""
 
     if predicted.state is not gold.state:
         return False
-    if predicted.state not in _EVIDENCE_REQUIRED_STATES:
+    if not exact and predicted.state not in _EVIDENCE_REQUIRED_STATES:
         return True
     predicted_spans = {_span_key(span) for span in predicted.evidence}
     gold_spans = {_span_key(span) for span in gold.evidence}
+    if exact:
+        return predicted_spans == gold_spans
     minimum_matches = 2 if predicted.state is FieldState.CONFLICTING else 1
     return len(predicted_spans & gold_spans) >= minimum_matches
 
@@ -127,17 +129,6 @@ def _content_correct(
             return normalize_value(predicted.value) == normalize_value(gold.value)
         return predicted.value == gold.value
     return True
-
-
-def _grounded_field_correct(
-    predicted: FieldOutput,
-    gold: FieldOutput,
-    *,
-    normalized: bool,
-) -> bool:
-    return _content_correct(
-        predicted, gold, normalized=normalized
-    ) and _evidence_aligned(predicted, gold)
 
 
 def _validate_fixture_case(case: FixtureCase) -> None:
@@ -291,6 +282,7 @@ def evaluate_solver(
     cases: Iterable[FixtureCase],
     *,
     measure_latency: bool = False,
+    exact_evidence: bool = False,
 ) -> EvaluationReport:
     """Evaluate a solver without ever placing fixture truth in its request.
 
@@ -452,12 +444,10 @@ def evaluate_solver(
             gold = case.gold.field(field_name)
             exact = _content_correct(predicted, gold, normalized=False)
             normalized = _content_correct(predicted, gold, normalized=True)
-            grounded_exact = _grounded_field_correct(predicted, gold, normalized=False)
-            grounded_normalized = _grounded_field_correct(
-                predicted, gold, normalized=True
-            )
             state_correct = predicted.state is gold.state
-            evidence_aligned = _evidence_aligned(predicted, gold)
+            evidence_aligned = _evidence_aligned(predicted, gold, exact=exact_evidence)
+            grounded_exact = exact and evidence_aligned
+            grounded_normalized = normalized and evidence_aligned
             if exact:
                 exact_count += 1
                 per_field[field_name.value]["exact"] += 1
@@ -493,7 +483,7 @@ def evaluate_solver(
             elif predicted.state in _ABSTENTION_STATES:
                 intentional_abstention_count += 1
 
-            if predicted.state in _EVIDENCE_REQUIRED_STATES:
+            if predicted.state in _EVIDENCE_REQUIRED_STATES or (exact_evidence and (gold.evidence or predicted.evidence)):
                 evidence_required_count += 1
                 per_field[field_name.value]["evidence_required"] += 1
                 if evidence_aligned:

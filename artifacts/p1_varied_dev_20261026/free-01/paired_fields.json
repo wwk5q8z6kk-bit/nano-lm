@@ -1,0 +1,6554 @@
+[
+  {
+    "case_id": "varied-01",
+    "stratum": "direct_question_reply_variation",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "heel soreness",
+      "evidence": [
+        {
+          "start": 54,
+          "end": 67,
+          "text": "heel soreness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-01",
+    "stratum": "direct_question_reply_variation",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "supported",
+      "value": "two days",
+      "evidence": [
+        {
+          "start": 112,
+          "end": 120,
+          "text": "two days",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "duration",
+        "state": "supported",
+        "value": "two days",
+        "evidence": [
+          {
+            "start": 112,
+            "end": 120,
+            "text": "two days",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "supported",
+        "value": "two days",
+        "evidence": [
+          {
+            "start": 112,
+            "end": 120,
+            "text": "two days",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "supported",
+        "value": "two days",
+        "evidence": [
+          {
+            "start": 112,
+            "end": 120,
+            "text": "two days",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-01",
+    "stratum": "direct_question_reply_variation",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "mild",
+      "evidence": [
+        {
+          "start": 171,
+          "end": 175,
+          "text": "mild",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "mild",
+        "evidence": [
+          {
+            "start": 171,
+            "end": 175,
+            "text": "mild",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "mild",
+        "evidence": [
+          {
+            "start": 171,
+            "end": 175,
+            "text": "mild",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "mild",
+        "evidence": [
+          {
+            "start": 171,
+            "end": 175,
+            "text": "mild",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-01",
+    "stratum": "direct_question_reply_variation",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "supported",
+      "value": "celecoxib",
+      "evidence": [
+        {
+          "start": 229,
+          "end": 238,
+          "text": "celecoxib",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "celecoxib",
+        "evidence": [
+          {
+            "start": 229,
+            "end": 238,
+            "text": "celecoxib",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "celecoxib",
+        "evidence": [
+          {
+            "start": 229,
+            "end": 238,
+            "text": "celecoxib",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "celecoxib",
+        "evidence": [
+          {
+            "start": 229,
+            "end": 238,
+            "text": "celecoxib",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-01",
+    "stratum": "direct_question_reply_variation",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "supported",
+      "value": "nickel",
+      "evidence": [
+        {
+          "start": 298,
+          "end": 304,
+          "text": "nickel",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "nickel",
+        "evidence": [
+          {
+            "start": 298,
+            "end": 304,
+            "text": "nickel",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "nickel",
+        "evidence": [
+          {
+            "start": 298,
+            "end": 304,
+            "text": "nickel",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "nickel",
+        "evidence": [
+          {
+            "start": 298,
+            "end": 304,
+            "text": "nickel",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-02",
+    "stratum": "direct_question_reply_variation",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "dry cough",
+      "evidence": [
+        {
+          "start": 47,
+          "end": 56,
+          "text": "dry cough",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-02",
+    "stratum": "direct_question_reply_variation",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "supported",
+      "value": "three weeks",
+      "evidence": [
+        {
+          "start": 97,
+          "end": 108,
+          "text": "Three weeks",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 97,
+            "end": 108,
+            "text": "Three weeks",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 97,
+            "end": 108,
+            "text": "Three weeks",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-02",
+    "stratum": "direct_question_reply_variation",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "moderate",
+      "evidence": [
+        {
+          "start": 163,
+          "end": 171,
+          "text": "moderate",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "moderate",
+        "evidence": [
+          {
+            "start": 163,
+            "end": 171,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "moderate",
+        "evidence": [
+          {
+            "start": 163,
+            "end": 171,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-02",
+    "stratum": "direct_question_reply_variation",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "supported",
+      "value": "famotidine",
+      "evidence": [
+        {
+          "start": 225,
+          "end": 235,
+          "text": "famotidine",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 225,
+            "end": 235,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 225,
+            "end": 235,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-02",
+    "stratum": "direct_question_reply_variation",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "supported",
+      "value": "latex",
+      "evidence": [
+        {
+          "start": 295,
+          "end": 300,
+          "text": "latex",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "latex",
+        "evidence": [
+          {
+            "start": 295,
+            "end": 300,
+            "text": "latex",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "latex",
+        "evidence": [
+          {
+            "start": 295,
+            "end": 300,
+            "text": "latex",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-03",
+    "stratum": "direct_question_reply_variation",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "neck stiffness",
+      "evidence": [
+        {
+          "start": 51,
+          "end": 65,
+          "text": "neck stiffness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-03",
+    "stratum": "direct_question_reply_variation",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "supported",
+      "value": "four hours",
+      "evidence": [
+        {
+          "start": 112,
+          "end": 122,
+          "text": "four hours",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 112,
+            "end": 122,
+            "text": "four hours",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 112,
+            "end": 122,
+            "text": "four hours",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-03",
+    "stratum": "direct_question_reply_variation",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "severe",
+      "evidence": [
+        {
+          "start": 173,
+          "end": 179,
+          "text": "severe",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "severe",
+        "evidence": [
+          {
+            "start": 173,
+            "end": 179,
+            "text": "severe",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "severe",
+        "evidence": [
+          {
+            "start": 173,
+            "end": 179,
+            "text": "severe",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-03",
+    "stratum": "direct_question_reply_variation",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "supported",
+      "value": "loratadine",
+      "evidence": [
+        {
+          "start": 233,
+          "end": 243,
+          "text": "loratadine",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "loratadine",
+        "evidence": [
+          {
+            "start": 233,
+            "end": 243,
+            "text": "loratadine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "loratadine",
+        "evidence": [
+          {
+            "start": 233,
+            "end": 243,
+            "text": "loratadine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-03",
+    "stratum": "direct_question_reply_variation",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "supported",
+      "value": "penicillin",
+      "evidence": [
+        {
+          "start": 303,
+          "end": 313,
+          "text": "penicillin",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "penicillin",
+        "evidence": [
+          {
+            "start": 303,
+            "end": 313,
+            "text": "penicillin",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "penicillin",
+        "evidence": [
+          {
+            "start": 303,
+            "end": 313,
+            "text": "penicillin",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-04",
+    "stratum": "direct_question_reply_variation",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "finger pain",
+      "evidence": [
+        {
+          "start": 53,
+          "end": 64,
+          "text": "finger pain",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "finger pain",
+        "evidence": [
+          {
+            "start": 53,
+            "end": 64,
+            "text": "finger pain",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "finger pain",
+        "evidence": [
+          {
+            "start": 53,
+            "end": 64,
+            "text": "finger pain",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "finger pain",
+        "evidence": [
+          {
+            "start": 53,
+            "end": 64,
+            "text": "finger pain",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-04",
+    "stratum": "direct_question_reply_variation",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "supported",
+      "value": "six months",
+      "evidence": [
+        {
+          "start": 105,
+          "end": 115,
+          "text": "six months",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "duration",
+        "state": "supported",
+        "value": "six months",
+        "evidence": [
+          {
+            "start": 105,
+            "end": 115,
+            "text": "six months",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "supported",
+        "value": "six months",
+        "evidence": [
+          {
+            "start": 105,
+            "end": 115,
+            "text": "six months",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "supported",
+        "value": "six months",
+        "evidence": [
+          {
+            "start": 105,
+            "end": 115,
+            "text": "six months",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-04",
+    "stratum": "direct_question_reply_variation",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "mild",
+      "evidence": [
+        {
+          "start": 166,
+          "end": 170,
+          "text": "mild",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "mild",
+        "evidence": [
+          {
+            "start": 166,
+            "end": 170,
+            "text": "mild",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "mild",
+        "evidence": [
+          {
+            "start": 166,
+            "end": 170,
+            "text": "mild",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "supported",
+        "value": "mild",
+        "evidence": [
+          {
+            "start": 166,
+            "end": 170,
+            "text": "mild",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-04",
+    "stratum": "direct_question_reply_variation",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "supported",
+      "value": "naproxen",
+      "evidence": [
+        {
+          "start": 224,
+          "end": 232,
+          "text": "naproxen",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "naproxen",
+        "evidence": [
+          {
+            "start": 224,
+            "end": 232,
+            "text": "naproxen",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "naproxen",
+        "evidence": [
+          {
+            "start": 224,
+            "end": 232,
+            "text": "naproxen",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "supported",
+        "value": "naproxen",
+        "evidence": [
+          {
+            "start": 224,
+            "end": 232,
+            "text": "naproxen",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-04",
+    "stratum": "direct_question_reply_variation",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "supported",
+      "value": "cobalt",
+      "evidence": [
+        {
+          "start": 292,
+          "end": 298,
+          "text": "cobalt",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "cobalt",
+        "evidence": [
+          {
+            "start": 292,
+            "end": 298,
+            "text": "cobalt",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "cobalt",
+        "evidence": [
+          {
+            "start": 292,
+            "end": 298,
+            "text": "cobalt",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "supported",
+        "value": "cobalt",
+        "evidence": [
+          {
+            "start": 292,
+            "end": 298,
+            "text": "cobalt",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-05",
+    "stratum": "unresolved_medication_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "heel soreness",
+      "evidence": [
+        {
+          "start": 54,
+          "end": 67,
+          "text": "heel soreness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-05",
+    "stratum": "unresolved_medication_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-05",
+    "stratum": "unresolved_medication_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-05",
+    "stratum": "unresolved_medication_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "conflicting",
+      "value": null,
+      "evidence": [
+        {
+          "start": 126,
+          "end": 135,
+          "text": "celecoxib",
+          "speaker": "patient"
+        },
+        {
+          "start": 168,
+          "end": 182,
+          "text": "No medication.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "conflicting",
+        "value": null,
+        "evidence": [
+          {
+            "start": 126,
+            "end": 135,
+            "text": "celecoxib",
+            "speaker": "patient"
+          },
+          {
+            "start": 168,
+            "end": 182,
+            "text": "No medication.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "conflicting",
+        "value": null,
+        "evidence": [
+          {
+            "start": 126,
+            "end": 135,
+            "text": "celecoxib",
+            "speaker": "patient"
+          },
+          {
+            "start": 168,
+            "end": 182,
+            "text": "No medication.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-05",
+    "stratum": "unresolved_medication_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-06",
+    "stratum": "unresolved_medication_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "dry cough",
+      "evidence": [
+        {
+          "start": 47,
+          "end": 56,
+          "text": "dry cough",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-06",
+    "stratum": "unresolved_medication_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-06",
+    "stratum": "unresolved_medication_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-06",
+    "stratum": "unresolved_medication_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "conflicting",
+      "value": null,
+      "evidence": [
+        {
+          "start": 155,
+          "end": 165,
+          "text": "famotidine",
+          "speaker": "patient"
+        },
+        {
+          "start": 89,
+          "end": 97,
+          "text": "No meds!",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-06",
+    "stratum": "unresolved_medication_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-07",
+    "stratum": "unresolved_medication_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "neck stiffness",
+      "evidence": [
+        {
+          "start": 51,
+          "end": 65,
+          "text": "neck stiffness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-07",
+    "stratum": "unresolved_medication_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 124,
+            "end": 134,
+            "text": "loratadine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 124,
+            "end": 134,
+            "text": "loratadine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-07",
+    "stratum": "unresolved_medication_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-07",
+    "stratum": "unresolved_medication_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "conflicting",
+      "value": null,
+      "evidence": [
+        {
+          "start": 124,
+          "end": 134,
+          "text": "loratadine",
+          "speaker": "patient"
+        },
+        {
+          "start": 167,
+          "end": 190,
+          "text": "I deny taking medicine.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "conflicting",
+        "value": null,
+        "evidence": [
+          {
+            "start": 124,
+            "end": 134,
+            "text": "loratadine",
+            "speaker": "patient"
+          },
+          {
+            "start": 167,
+            "end": 190,
+            "text": "I deny taking medicine.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "conflicting",
+        "value": null,
+        "evidence": [
+          {
+            "start": 124,
+            "end": 134,
+            "text": "loratadine",
+            "speaker": "patient"
+          },
+          {
+            "start": 167,
+            "end": 190,
+            "text": "I deny taking medicine.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-07",
+    "stratum": "unresolved_medication_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-08",
+    "stratum": "unresolved_medication_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "finger pain",
+      "evidence": [
+        {
+          "start": 53,
+          "end": 64,
+          "text": "finger pain",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-08",
+    "stratum": "unresolved_medication_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-08",
+    "stratum": "unresolved_medication_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-08",
+    "stratum": "unresolved_medication_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "conflicting",
+      "value": null,
+      "evidence": [
+        {
+          "start": 170,
+          "end": 178,
+          "text": "naproxen",
+          "speaker": "patient"
+        },
+        {
+          "start": 97,
+          "end": 112,
+          "text": "Nothing at all.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-08",
+    "stratum": "unresolved_medication_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-09",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "heel soreness",
+      "evidence": [
+        {
+          "start": 54,
+          "end": 67,
+          "text": "heel soreness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-09",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 168,
+            "end": 178,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 168,
+            "end": 178,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-09",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-09",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 121,
+          "end": 130,
+          "text": "celecoxib",
+          "speaker": "patient"
+        },
+        {
+          "start": 168,
+          "end": 178,
+          "text": "famotidine",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 121,
+            "end": 130,
+            "text": "celecoxib",
+            "speaker": "patient"
+          },
+          {
+            "start": 168,
+            "end": 178,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 121,
+            "end": 130,
+            "text": "celecoxib",
+            "speaker": "patient"
+          },
+          {
+            "start": 168,
+            "end": 178,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-09",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 168,
+            "end": 178,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 168,
+            "end": 178,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-10",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "dry cough",
+      "evidence": [
+        {
+          "start": 47,
+          "end": 56,
+          "text": "dry cough",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-10",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 110,
+            "end": 120,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 110,
+            "end": 120,
+            "text": "famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-10",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-10",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 110,
+          "end": 120,
+          "text": "famotidine",
+          "speaker": "patient"
+        },
+        {
+          "start": 158,
+          "end": 168,
+          "text": "loratadine",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 110,
+            "end": 120,
+            "text": "famotidine",
+            "speaker": "patient"
+          },
+          {
+            "start": 158,
+            "end": 168,
+            "text": "loratadine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 110,
+            "end": 120,
+            "text": "famotidine",
+            "speaker": "patient"
+          },
+          {
+            "start": 158,
+            "end": 168,
+            "text": "loratadine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-10",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-11",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "neck stiffness",
+      "evidence": [
+        {
+          "start": 51,
+          "end": 65,
+          "text": "neck stiffness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-11",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-11",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-11",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 119,
+          "end": 129,
+          "text": "loratadine",
+          "speaker": "patient"
+        },
+        {
+          "start": 167,
+          "end": 175,
+          "text": "naproxen",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-11",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-12",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "finger pain",
+      "evidence": [
+        {
+          "start": 53,
+          "end": 64,
+          "text": "finger pain",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-12",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-12",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-12",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 118,
+          "end": 126,
+          "text": "naproxen",
+          "speaker": "patient"
+        },
+        {
+          "start": 164,
+          "end": 173,
+          "text": "celecoxib",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-12",
+    "stratum": "coexisting_medicines_not_conflict",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-13",
+    "stratum": "field_local_uncertainty",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "heel soreness",
+      "evidence": [
+        {
+          "start": 54,
+          "end": 67,
+          "text": "heel soreness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-13",
+    "stratum": "field_local_uncertainty",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-13",
+    "stratum": "field_local_uncertainty",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "moderate",
+      "evidence": [
+        {
+          "start": 197,
+          "end": 205,
+          "text": "moderate",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 197,
+            "end": 205,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 197,
+            "end": 205,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-13",
+    "stratum": "field_local_uncertainty",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 114,
+          "end": 144,
+          "text": "I cannot remember what I took.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 114,
+            "end": 144,
+            "text": "I cannot remember what I took.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 114,
+            "end": 144,
+            "text": "I cannot remember what I took.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-13",
+    "stratum": "field_local_uncertainty",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-14",
+    "stratum": "field_local_uncertainty",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "dry cough",
+      "evidence": [
+        {
+          "start": 47,
+          "end": 56,
+          "text": "dry cough",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-14",
+    "stratum": "field_local_uncertainty",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 194,
+            "end": 202,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 194,
+            "end": 202,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-14",
+    "stratum": "field_local_uncertainty",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "moderate",
+      "evidence": [
+        {
+          "start": 194,
+          "end": 202,
+          "text": "moderate",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 194,
+            "end": 202,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 194,
+            "end": 202,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-14",
+    "stratum": "field_local_uncertainty",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 103,
+          "end": 141,
+          "text": "I am not sure whether I took anything.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 103,
+            "end": 141,
+            "text": "I am not sure whether I took anything.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 103,
+            "end": 141,
+            "text": "I am not sure whether I took anything.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-14",
+    "stratum": "field_local_uncertainty",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-15",
+    "stratum": "field_local_uncertainty",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "neck stiffness",
+      "evidence": [
+        {
+          "start": 51,
+          "end": 65,
+          "text": "neck stiffness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-15",
+    "stratum": "field_local_uncertainty",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 187,
+            "end": 195,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 187,
+            "end": 195,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-15",
+    "stratum": "field_local_uncertainty",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "moderate",
+      "evidence": [
+        {
+          "start": 187,
+          "end": 195,
+          "text": "moderate",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 187,
+            "end": 195,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 187,
+            "end": 195,
+            "text": "moderate",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-15",
+    "stratum": "field_local_uncertainty",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 112,
+          "end": 134,
+          "text": "No regular medication.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 112,
+            "end": 134,
+            "text": "No regular medication.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 112,
+            "end": 134,
+            "text": "No regular medication.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-15",
+    "stratum": "field_local_uncertainty",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-16",
+    "stratum": "field_local_uncertainty",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "finger pain",
+      "evidence": [
+        {
+          "start": 53,
+          "end": 64,
+          "text": "finger pain",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-16",
+    "stratum": "field_local_uncertainty",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-16",
+    "stratum": "field_local_uncertainty",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "supported",
+      "value": "moderate",
+      "evidence": [
+        {
+          "start": 175,
+          "end": 183,
+          "text": "moderate",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-16",
+    "stratum": "field_local_uncertainty",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 111,
+          "end": 122,
+          "text": "No aspirin.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-16",
+    "stratum": "field_local_uncertainty",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-17",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "heel soreness",
+      "evidence": [
+        {
+          "start": 56,
+          "end": 69,
+          "text": "heel soreness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-17",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-17",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-17",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-17",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-18",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "dry cough",
+      "evidence": [
+        {
+          "start": 49,
+          "end": 58,
+          "text": "dry cough",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 49,
+            "end": 58,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 49,
+            "end": 58,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-18",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-18",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-18",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-18",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-19",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "neck stiffness",
+      "evidence": [
+        {
+          "start": 53,
+          "end": 67,
+          "text": "neck stiffness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 53,
+            "end": 67,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 53,
+            "end": 67,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-19",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-19",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-19",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "missing",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "missing",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-19",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-20",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "finger pain",
+      "evidence": [
+        {
+          "start": 55,
+          "end": 66,
+          "text": "finger pain",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-20",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-20",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-20",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-20",
+    "stratum": "missing_fields_unrelated_context",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-21",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "heel soreness",
+      "evidence": [
+        {
+          "start": 54,
+          "end": 67,
+          "text": "heel soreness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "heel soreness",
+        "evidence": [
+          {
+            "start": 54,
+            "end": 67,
+            "text": "heel soreness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-21",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-21",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-21",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 100,
+          "end": 132,
+          "text": "I take celecoxib, but I stopped.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 100,
+            "end": 132,
+            "text": "I take celecoxib, but I stopped.",
+            "speaker": "patient"
+          },
+          {
+            "start": 100,
+            "end": 116,
+            "text": "I take celecoxib",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 100,
+            "end": 132,
+            "text": "I take celecoxib, but I stopped.",
+            "speaker": "patient"
+          },
+          {
+            "start": 100,
+            "end": 116,
+            "text": "I take celecoxib",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-21",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "absent",
+      "value": null,
+      "evidence": [
+        {
+          "start": 185,
+          "end": 198,
+          "text": "No allergies.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "absent",
+        "value": null,
+        "evidence": [
+          {
+            "start": 185,
+            "end": 198,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "absent",
+        "value": null,
+        "evidence": [
+          {
+            "start": 185,
+            "end": 198,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-22",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "dry cough",
+      "evidence": [
+        {
+          "start": 47,
+          "end": 56,
+          "text": "dry cough",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "dry cough",
+        "evidence": [
+          {
+            "start": 47,
+            "end": 56,
+            "text": "dry cough",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-22",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-22",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "missing",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "missing",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-22",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 89,
+          "end": 117,
+          "text": "No medication for my mother.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 89,
+            "end": 117,
+            "text": "No medication for my mother.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 89,
+            "end": 117,
+            "text": "No medication for my mother.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-22",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "absent",
+      "value": null,
+      "evidence": [
+        {
+          "start": 170,
+          "end": 183,
+          "text": "No allergies.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 170,
+            "end": 183,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 170,
+            "end": 183,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-23",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "neck stiffness",
+      "evidence": [
+        {
+          "start": 51,
+          "end": 65,
+          "text": "neck stiffness",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 51,
+            "end": 65,
+            "text": "neck stiffness",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-23",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 104,
+            "end": 112,
+            "text": "naproxen",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 104,
+            "end": 112,
+            "text": "naproxen",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-23",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-23",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 98,
+          "end": 113,
+          "text": "Maybe naproxen.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 98,
+            "end": 113,
+            "text": "Maybe naproxen.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 98,
+            "end": 113,
+            "text": "Maybe naproxen.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-23",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "absent",
+      "value": null,
+      "evidence": [
+        {
+          "start": 166,
+          "end": 179,
+          "text": "No allergies.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 166,
+            "end": 179,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 166,
+            "end": 179,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-24",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "chief_complaint",
+    "gold": {
+      "field": "chief_complaint",
+      "state": "supported",
+      "value": "finger pain",
+      "evidence": [
+        {
+          "start": 53,
+          "end": 64,
+          "text": "finger pain",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "finger pain",
+        "evidence": [
+          {
+            "start": 53,
+            "end": 64,
+            "text": "finger pain",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "chief_complaint",
+        "state": "supported",
+        "value": "finger pain",
+        "evidence": [
+          {
+            "start": 53,
+            "end": 64,
+            "text": "finger pain",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-24",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "duration",
+    "gold": {
+      "field": "duration",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 102,
+            "end": 124,
+            "text": "considering famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "duration",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 102,
+            "end": 124,
+            "text": "considering famotidine",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-24",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "severity",
+    "gold": {
+      "field": "severity",
+      "state": "missing",
+      "value": null,
+      "evidence": []
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "severity",
+        "state": "uncertain",
+        "value": null,
+        "evidence": []
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  },
+  {
+    "case_id": "varied-24",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "medication",
+    "gold": {
+      "field": "medication",
+      "state": "uncertain",
+      "value": null,
+      "evidence": [
+        {
+          "start": 97,
+          "end": 125,
+          "text": "I am considering famotidine.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 97,
+            "end": 125,
+            "text": "I am considering famotidine.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    },
+    "final_note": {
+      "prediction": {
+        "field": "medication",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 97,
+            "end": 125,
+            "text": "I am considering famotidine.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": true,
+      "normalized_content_correct": true,
+      "exact_evidence_aligned": true,
+      "grounded_exact_correct": true,
+      "complete_evidence_exact_correct": true
+    }
+  },
+  {
+    "case_id": "varied-24",
+    "stratum": "qualified_and_other_person_medication",
+    "field": "allergy",
+    "gold": {
+      "field": "allergy",
+      "state": "absent",
+      "value": null,
+      "evidence": [
+        {
+          "start": 178,
+          "end": 191,
+          "text": "No allergies.",
+          "speaker": "patient"
+        }
+      ]
+    },
+    "raw": {
+      "prediction": null,
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "checked": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 178,
+            "end": 191,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    },
+    "final_note": {
+      "prediction": {
+        "field": "allergy",
+        "state": "uncertain",
+        "value": null,
+        "evidence": [
+          {
+            "start": 178,
+            "end": 191,
+            "text": "No allergies.",
+            "speaker": "patient"
+          }
+        ]
+      },
+      "state_correct": false,
+      "normalized_content_correct": false,
+      "exact_evidence_aligned": false,
+      "grounded_exact_correct": false,
+      "complete_evidence_exact_correct": false
+    }
+  }
+]

@@ -1,0 +1,85 @@
+{
+  "seed": 1481,
+  "test_encounters": 96,
+  "repeated_seed": true,
+  "arms": {
+    "full": {
+      "torch": "2.11.0",
+      "architecture": "arm64",
+      "local_checkpoint_sha256": "b3f2d603d22d73a83f0c5c738d659c95ec6809121d5568eab81ae70ced31ceda",
+      "counts": {
+        "present_wrong": 102,
+        "fields": 384,
+        "exact": 164,
+        "present": 183,
+        "competing_present": 92,
+        "competing_present_exact": 0,
+        "wrong_not_whole_source_text": 139,
+        "absent_exact": 164,
+        "absent": 201,
+        "retracted": 52,
+        "retracted_false_fill": 12,
+        "present_abstain": 81,
+        "absent_fill": 37
+      },
+      "vertex_torch": "2.4.0+cpu",
+      "same_initial_parameters": false,
+      "same_trained_parameters": false,
+      "fields_agree": 275,
+      "fields": 384
+    },
+    "answer": {
+      "torch": "2.11.0",
+      "architecture": "arm64",
+      "local_checkpoint_sha256": "9adbd408c96c99ce51633c3d3127cc068127665ff34c9af5ba60adf2c220333e",
+      "counts": {
+        "present_wrong": 175,
+        "fields": 384,
+        "exact": 174,
+        "present": 183,
+        "competing_present": 92,
+        "competing_present_exact": 3,
+        "wrong_not_whole_source_text": 206,
+        "absent_fill": 31,
+        "absent": 201,
+        "retracted": 52,
+        "retracted_false_fill": 3,
+        "absent_exact": 170,
+        "present_abstain": 4,
+        "present_exact": 4
+      },
+      "vertex_torch": "2.4.0+cpu",
+      "same_initial_parameters": false,
+      "same_trained_parameters": false,
+      "fields_agree": 180,
+      "fields": 384
+    },
+    "aligned": {
+      "torch": "2.11.0",
+      "architecture": "arm64",
+      "local_checkpoint_sha256": "50d45e70f5e495b1dd48d1f19f7829885b711f5a797ca66fe221e47f447a61b7",
+      "counts": {
+        "present_exact": 114,
+        "fields": 384,
+        "exact": 282,
+        "present": 183,
+        "competing_present": 92,
+        "competing_present_exact": 66,
+        "absent_exact": 168,
+        "absent": 201,
+        "retracted": 52,
+        "retracted_false_fill": 13,
+        "present_abstain": 16,
+        "present_wrong": 53,
+        "wrong_not_whole_source_text": 67,
+        "absent_fill": 33,
+        "wrong_previously_reported_for_slot": 5
+      },
+      "vertex_torch": "2.4.0+cpu",
+      "same_initial_parameters": false,
+      "same_trained_parameters": false,
+      "fields_agree": 244,
+      "fields": 384
+    }
+  }
+}

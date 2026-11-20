@@ -1,5 +1,7 @@
 # Training Ladder, Data Provenance & Compute Governance
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 ---
 
 ## 1. Data Provenance, Deduplication & Safety Gates

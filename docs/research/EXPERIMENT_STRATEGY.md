@@ -19,21 +19,15 @@ Never run an experiment that cannot change the roadmap.
 - Distinguish agent-applied rubric audits from human/clinician evaluation
 - E3-style audits are **not** dual-clinician IAA
 
-## Regime discipline (post-E1)
+## Regime discipline
 
-E1 closed the **old closed task**. New generative experiments require:
+For general-model studies, specify the capability being tested, a baseline, matched inputs and a result that would change the next training decision. The [execution plan](../EXECUTION_PLAN.md) defines current comparisons.
 
-1. Written regime where classical is insufficient
-2. Frozen utility for that regime
-3. Kill gate result — E4 executed this for R★ v1 (KILL)
+E1 closed its original task. E4 tested the frozen utility for the historical R★ regime and returned KILL. Those verdicts retain their original scope.
 
 ## Compute backends
 
-Kaggle and RunPod are complementary active backends. Local Apple Silicon/CPU
-covers development, smoke tests, analysis, preprocessing, evaluation, and
-small/cheap experiments. Prefer free Kaggle when its runtime fits. Use RunPod
-when the experiment needs an exact GPU/runtime, persistence, or managed
-inference.
+Use local CPU or Apple Silicon for development, preprocessing, evaluation and affordable training. Prefer free Kaggle when the runtime fits. Google Cloud can support finite jobs within the verified credit allocation. RunPod provides exact GPU runtimes, persistent storage and managed inference under its separate campaign budget. Record the chosen backend and expected cost with each paid experiment.
 
 ```text
 research question

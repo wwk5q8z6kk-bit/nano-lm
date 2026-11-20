@@ -1,5 +1,7 @@
 # Results & Pareto Frontier Ledger
 
+This is part of the [November 17 research proposal](FOUNDATION_INTELLIGENCE_PROGRAM.md). Its size limits, experiments and reported scores belong to that proposal. The [current charter](../PROJECT_CHARTER.md) defines NanoLM’s scope.
+
 **Strict honesty rule:** Every table below separates verified measurements from confounded/preliminary runs, discloses parameter counts and denominators, and avoids collapsing capability, calibration, latency, and memory into one synthetic score.
 
 ---

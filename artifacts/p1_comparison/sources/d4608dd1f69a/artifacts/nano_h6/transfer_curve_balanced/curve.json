@@ -1,0 +1,84 @@
+{
+  "bar": 0.75,
+  "lora": {
+    "batch_size": 4,
+    "iters": 400,
+    "max_seq_length": 768,
+    "num_layers": 8,
+    "seed": 20260806
+  },
+  "points": [
+    {
+      "base": "SmolLM2-135M",
+      "clears_bar": false,
+      "control_accuracy": 0.2667,
+      "dev_arm": 0.5667,
+      "held_out_mean": 0.7889,
+      "in_distribution_mean": 0.7583,
+      "interpretable": false,
+      "license": "Apache-2.0",
+      "repo": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "status": "ok",
+      "train_seconds": 45.0,
+      "worst_class_recall": 0.0667
+    },
+    {
+      "base": "SmolLM2-360M",
+      "clears_bar": false,
+      "control_accuracy": 0.6333,
+      "dev_arm": 0.0,
+      "held_out_mean": 0.0722,
+      "in_distribution_mean": 0.0583,
+      "interpretable": true,
+      "license": "Apache-2.0",
+      "repo": "HuggingFaceTB/SmolLM2-360M-Instruct",
+      "status": "ok",
+      "train_seconds": 114.7,
+      "worst_class_recall": 0.5333
+    },
+    {
+      "base": "Qwen2.5-0.5B",
+      "clears_bar": false,
+      "control_accuracy": 0.5667,
+      "dev_arm": 0.2,
+      "held_out_mean": 0.4083,
+      "in_distribution_mean": 0.775,
+      "interpretable": true,
+      "license": "Apache-2.0",
+      "repo": "Qwen/Qwen2.5-0.5B-Instruct",
+      "status": "ok",
+      "train_seconds": 116.8,
+      "worst_class_recall": 0.2667
+    },
+    {
+      "base": "Qwen2.5-1.5B",
+      "clears_bar": true,
+      "control_accuracy": 0.8,
+      "dev_arm": 1.0,
+      "held_out_mean": 0.9972,
+      "in_distribution_mean": 1.0,
+      "interpretable": true,
+      "license": "Apache-2.0",
+      "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+      "status": "ok",
+      "train_seconds": 302.0,
+      "worst_class_recall": 0.6
+    },
+    {
+      "base": "SmolLM2-1.7B",
+      "clears_bar": true,
+      "control_accuracy": 0.6,
+      "dev_arm": 0.8,
+      "held_out_mean": 0.9111,
+      "in_distribution_mean": 0.8833,
+      "interpretable": true,
+      "license": "Apache-2.0",
+      "repo": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "status": "ok",
+      "train_seconds": 340.8,
+      "worst_class_recall": 0.2
+    }
+  ],
+  "preregistration": "papers/PREREG_TRANSFER_CURVE.md",
+  "status": "SCREENING -- one seed per base; coarse conclusions only"
+}

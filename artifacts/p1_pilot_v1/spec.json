@@ -1,0 +1,45 @@
+{
+  "id": "p1-compact-development-pilot-v1",
+  "records": 20,
+  "worlds": 10,
+  "split": "development",
+  "synthetic": true,
+  "confirmatory": false,
+  "expected_counts": {
+    "chief_complaint": {
+      "supported": 20,
+      "absent": 0,
+      "missing": 0,
+      "uncertain": 0,
+      "conflicting": 0
+    },
+    "duration": {
+      "supported": 12,
+      "absent": 0,
+      "missing": 4,
+      "uncertain": 2,
+      "conflicting": 2
+    },
+    "severity": {
+      "supported": 14,
+      "absent": 0,
+      "missing": 4,
+      "uncertain": 2,
+      "conflicting": 0
+    },
+    "medication": {
+      "supported": 10,
+      "absent": 6,
+      "missing": 2,
+      "uncertain": 0,
+      "conflicting": 2
+    },
+    "allergy": {
+      "supported": 10,
+      "absent": 8,
+      "missing": 2,
+      "uncertain": 0,
+      "conflicting": 0
+    }
+  }
+}

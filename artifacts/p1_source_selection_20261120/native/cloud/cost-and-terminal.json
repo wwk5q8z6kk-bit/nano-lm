@@ -1,0 +1,15 @@
+{
+  "job": "9019587804438462464",
+  "terminal_state": "JOB_STATE_SUCCEEDED",
+  "cpu_ram_usd_per_hour": 0.1943316,
+  "disk_estimate_usd_per_hour": 0.006301369863013699,
+  "disk_rate_assumed_month_hours": 730,
+  "cap_seconds": 5400,
+  "timeout_estimate_usd": 0.3009494547945205,
+  "invoice": "Not observed. Estimates at default US list rates, before credits or tax.",
+  "resources": "One managed ephemeral worker with one boot disk. No bucket, persistent VM, or serving endpoint was created by this experiment.",
+  "worker_to_terminal_seconds": 848.0,
+  "worker_to_terminal_list_estimate_usd": 0.04726021067884322,
+  "submission_to_terminal_seconds": 1590.593235,
+  "submission_to_terminal_list_estimate_usd": 0.08864595682835234
+}

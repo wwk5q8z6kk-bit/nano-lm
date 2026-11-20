@@ -1,0 +1,10 @@
+Doctor: Good morning, what brings you in today?
+Patient: I've been having a headache.
+Doctor: How long has this been going on?
+Patient: For about 3 days now.
+Doctor: How bad would you say it is?
+Patient: I'd call it mild.
+Doctor: Have you taken anything for it?
+Patient: I've been taking acetaminophen.
+Doctor: Any allergies I should know about?
+Patient: No allergies.
