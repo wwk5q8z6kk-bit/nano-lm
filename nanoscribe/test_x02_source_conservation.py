@@ -443,3 +443,19 @@ def test_treatment_and_activity_intervals_are_not_symptom_duration(question, eve
     row = trace_proposal_conservation(transcript, "CC:M|DUR:S[three hours]|SEV:M|MED:M|ALG:M")[1]
     assert row["note_rendered_state"] == "uncertain"
     assert ":S[three hours]" not in grounded_candidate_choices(transcript, FieldName.DURATION, set())
+
+
+@pytest.mark.parametrize(("report", "expected"), (
+    ("My left wrist stiffness has persisted", True),
+    ("My skin has felt unusually itchy", True),
+    ("My right ankle was swollen", True),
+    ("The tire pressure has returned", False),
+    ("My shoes have felt very tight", False),
+    ("The door has been stiff", False),
+))
+def test_only_patient_body_sensations_date_the_complaint(report, expected):
+    text = f"Patient: {report} for two days."
+    menu = grounded_candidate_choices(text, FieldName.DURATION, set())
+    assert (":S[two days]" in menu) is expected
+    row = trace_proposal_conservation(text, "CC:M|DUR:S[two days]|SEV:M|MED:M|ALG:M")[1]
+    assert (row["note_rendered_state"] == "supported") is expected

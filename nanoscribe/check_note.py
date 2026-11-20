@@ -383,7 +383,7 @@ def _forward_proxy_turns(source: Source) -> set[int]:
             elif _SELF_SCOPE_RE.search(turn.text):
                 remaining = 0
                 in_answer = pending_question = False
-            elif turn.text.rstrip().endswith("?") or re.match(r"(?:tell me|list|describe)\\b", turn.text, re.I):
+            elif turn.text.rstrip().endswith("?") or re.match(r"(?:please\s+)?(?:tell me|list|describe)\b", turn.text, re.I):
                 in_answer = False
                 pending_question = True
         elif turn.speaker is Speaker.PATIENT and (remaining or in_answer):
