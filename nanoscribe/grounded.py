@@ -251,7 +251,14 @@ _ALG_QUESTION_CUE_RE = re.compile(
 )
 _MED_CLAUSE_VERB_RE = re.compile(
     r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using)|"
-    r"i\s+(?:have\s+)?(?:taken|took|used|tried|applied|rubbed|put|swallowed))\b",
+    r"i\s+(?:have\s+)?(?:took|used|tried|applied|rubbed|put|swallowed))\b",
+    re.IGNORECASE,
+)
+_TAKEN_RE = re.compile(r"\bi(?:'ve|\s+have)?\s+taken\b", re.IGNORECASE)
+_TREATMENT_CONTEXT_RE = re.compile(
+    r"\b(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|capsules?|doses?"
+    r"|\d+(?:\.\d+)?\s*(?:mg|mcg|milligrams?|micrograms?)"
+    r"|for (?:it|them|(?:this|the|my|your) (?:pain|headache|cough|rash|symptoms?)))\b",
     re.IGNORECASE,
 )
 _PROSPECTIVE_TREATMENT_RE = re.compile(
@@ -635,6 +642,12 @@ def _coexisting_substance_clause(field: FieldName, clause_text: str) -> tuple[st
     return None
 
 
+def _question_has_treatment_context(question: str) -> bool:
+    return bool(_TREATMENT_CONTEXT_RE.search(question)
+                or re.search(r"\btaken anything\b", question, re.I)
+                or re.fullmatch(r"what have you taken[?.!]?", question.strip(), re.I))
+
+
 def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     prev_clin = _preceding_clinician_turn(source, turn_idx)
     prev_q = prev_clin.text if prev_clin is not None else ""
@@ -646,6 +659,8 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
         and not bool(_ALG_QUESTION_CUE_RE.search(prev_q))
         and not bool(re.search(r"\b(?:bothering|brought|symptoms?|problem|concern|how long|when did|how bad|severe)\b", prev_q, re.IGNORECASE))
     )
+    if is_explicit_med_q and re.search(r"\btaken\b", prev_q, re.I):
+        is_explicit_med_q = _question_has_treatment_context(prev_q)
     return is_explicit_med_q, is_explicit_alg_q, prev_q
 
 
@@ -664,14 +679,25 @@ def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
     return tuple(events)
 
 
+def _medication_verb_positions(text: str, question: str) -> list[int]:
+    positions = [match.start() for match in _MED_CLAUSE_VERB_RE.finditer(text)]
+    for match in _TAKEN_RE.finditer(text):
+        # "Taken" can describe a fall, a trip or another event. Require an
+        # independent treatment cue from the question or the same event.
+        event = re.split(r"[,;]|\b(?:and|but|because|so)\b", text[match.end():], maxsplit=1, flags=re.I)[0]
+        if _question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(event):
+            positions.append(match.start())
+    return positions
+
+
 def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, before_duration: str) -> bool:
     """Assign the duration to its nearest preceding event, falling back to question scope."""
-    events = [(match.start(), True) for pattern in (_MED_CLAUSE_VERB_RE, _ALG_CLAUSE_PRED_RE)
-              for match in pattern.finditer(before_duration)]
+    med_question, allergy_question, question = _question_flags(source, turn_idx)
+    events = [(pos, True) for pos in _medication_verb_positions(before_duration, question)]
+    events.extend((match.start(), True) for match in _ALG_CLAUSE_PRED_RE.finditer(before_duration))
     events.extend((match.start(), False) for match in _EXPLICIT_SYMPTOM_DURATION_RE.finditer(before_duration))
     if events:
         return max(events)[1]
-    med_question, allergy_question, _ = _question_flags(source, turn_idx)
     return med_question or allergy_question
 
 
@@ -704,6 +730,10 @@ def verify_grounded_span(
     if state is FieldState.SUPPORTED:
         if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, clause.text[:span.start - clause.start]):
             return False, "duration_scoped_to_medication_or_allergy"
+        if field is FieldName.MEDICATION and _TAKEN_RE.search(clause.text):
+            _, _, question = _question_flags(source, idx)
+            if not _medication_verb_positions(clause.text, question):
+                return False, "taken_without_treatment_context"
         if field in (FieldName.MEDICATION, FieldName.ALLERGY):
             if any(event.start < span.end and span.start < event.end and _PROSPECTIVE_TREATMENT_RE.search(event.text)
                    for event in _treatment_events(clause)):
@@ -913,7 +943,7 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
         for clause in clauses:
             c_text = clause.text.rstrip(";").rstrip()
             c_start = clause.start
-            has_med_verb = bool(_MED_CLAUSE_VERB_RE.search(c_text))
+            has_med_verb = bool(_medication_verb_positions(c_text, prev_q))
             has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text))
 
             if field is FieldName.DURATION:
@@ -1013,7 +1043,7 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
                 body = c_text.rstrip(".!?").strip()
                 lead = re.match(
                     r"^(?:i've\s+been\s+(?:taking|using|applying)|i\s+have\s+been\s+(?:taking|using|applying)|"
-                    r"i(?:'m|\s+am)\s+(?:taking|using|on)|i\s+(?:have\s+)?(?:taken|took|used|tried|applied|rubbed|put)|"
+                    r"i(?:'m|\s+am)\s+(?:taking|using|on)|i(?:'ve|\s+have)?\s+taken|i\s+(?:have\s+)?(?:took|used|tried|applied|rubbed|put)|"
                     r"only|just|some)\s+",
                     body,
                     re.IGNORECASE,

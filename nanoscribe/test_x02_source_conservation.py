@@ -180,3 +180,36 @@ def test_ambiguous_on_requires_medication_context():
         assert not any(c.startswith(":S[") for c in grounded_candidate_choices(source, FieldName.MEDICATION, set()))
     reply = "Doctor: What medication are you taking?\nPatient: I am on cetirizine."
     assert ":S[cetirizine]" in grounded_candidate_choices(reply, FieldName.MEDICATION, set())
+
+
+def test_taken_requires_treatment_context_in_both_grounded_menus_and_verification():
+    from nano_ai.contract import NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import build_grounded_english_menu
+
+    transcript = "Doctor: What brings you in?\nPatient: I have taken a fall and my wrist hurts."
+    source = transcript_source(NanoInput("fall", transcript))
+    chief = grounded_candidate_choices(transcript, FieldName.CHIEF_COMPLAINT, set())
+    assert any("my wrist hurts" in c for c in chief if c.startswith(":S["))
+    repeated = transcript.replace("What brings you in?", "Have you taken a fall?")
+    assert any(c.startswith(":S[") for c in grounded_candidate_choices(repeated, FieldName.CHIEF_COMPLAINT, set()))
+    english = build_grounded_english_menu(source, FieldName.CHIEF_COMPLAINT, set())
+    assert any("my wrist hurts" in c for c in english if c.startswith(" REPORTED["))
+    assert not any(c.startswith(":S[") for c in grounded_candidate_choices(transcript, FieldName.MEDICATION, set()))
+    assert not any(c.startswith(" REPORTED[") for c in build_grounded_english_menu(source, FieldName.MEDICATION, set()))
+    raw = "CC:M|DUR:M|SEV:M|MED:S[fall]|ALG:M"
+    assert trace_proposal_conservation(transcript, raw)[3]["note_rendered_state"] == "uncertain"
+
+
+def test_taken_with_a_treatment_question_or_dose_offers_the_medication():
+    for question, reply, value in (
+        ("What medicines have you tried?", "I have taken ibuprofen.", "ibuprofen"),
+        ("Tell me more.", "I've taken ibuprofen 200 mg yesterday.", "ibuprofen 200 mg"),
+        ("Tell me more.", "I have taken aspirin for my headache.", "aspirin"),
+    ):
+        source = f"Doctor: {question}\nPatient: {reply}"
+        assert f":S[{value}]" in grounded_candidate_choices(source, FieldName.MEDICATION, set())
+        assert not any(c.startswith(":S[") for c in grounded_candidate_choices(source, FieldName.CHIEF_COMPLAINT, set()))
+        assert ":S[yesterday]" not in grounded_candidate_choices(source, FieldName.DURATION, set())
+        raw = f"CC:M|DUR:M|SEV:M|MED:S[{value}]|ALG:M"
+        assert trace_proposal_conservation(source, raw)[3]["note_rendered_value"] == value
