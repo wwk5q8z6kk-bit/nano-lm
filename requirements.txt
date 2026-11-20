@@ -1,5 +1,5 @@
-accelerate==1.14.0
-datasets==4.8.4
+accelerate==1.15.0
+datasets==5.0.1
 filelock==3.28.0
 fsspec==2026.2.0
 numpy==2.5.0
