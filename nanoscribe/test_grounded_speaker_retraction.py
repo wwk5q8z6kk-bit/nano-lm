@@ -441,6 +441,8 @@ def test_named_resolution_across_logistics(intervening, followup, licensed):
     (MED, "I am not sure whether I took naproxen.", "I am not sure whether I took naproxen", True),
     (MED, "To be honest, I am not sure whether I took naproxen.", "not sure whether I took naproxen", True),
     (MED, "I am not sure whether I took naproxen, to be honest.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen, well.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen well.", "not sure whether I took naproxen", False),
     (MED, "I am not sure whether I took naproxen. My bus is late.", "not sure whether I took naproxen", True),
     (MED, "I am not sure whether I took naproxen.", "I am not sure", False),
     (MED, "I am not sure whether I took naproxen.", "I took naproxen", False),
