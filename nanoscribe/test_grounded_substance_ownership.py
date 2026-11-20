@@ -1,0 +1,82 @@
+"""A supplied source quote needs a local medication or allergen relationship."""
+import pytest
+
+from nano_ai.contract import EvidenceSpan, FieldName, FieldState, NanoInput
+from nanoscribe.check_note import _observation_kind, transcript_source
+from nanoscribe.compact import compact_solver
+from nanoscribe.grounded import build_grounded_english_menu, grounded_candidate_choices
+from nanoscribe.scribe import scribe
+
+MED, ALG = FieldName.MEDICATION, FieldName.ALLERGY
+
+
+def observed(report, field, value):
+    doc = transcript_source(NanoInput("ownership", report))
+    key = "MED" if field is MED else "ALG"
+    raw = "|".join(f"{slot}:S[{value}]" if slot == key else f"{slot}:M"
+                   for slot in ("CC", "DUR", "SEV", "MED", "ALG"))
+    draft = scribe(report, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    assert draft["verification"]["passed"]
+    claim = next(c for c in draft["note"]["claims"] if c["field"] == field.value)
+    start = report.index(value, report.index("Patient:"))
+    direct = _observation_kind(doc, field, EvidenceSpan(start, start + len(value), value), context_policy="grounded")
+    return claim, direct, grounded_candidate_choices(report, field, set()), build_grounded_english_menu(doc, field, set())
+
+
+@pytest.mark.parametrize("field,question,reply,value", [
+    (MED, "Tell me more.", "Wrist pain.", "Wrist pain"),
+    (ALG, "Tell me more.", "Wrist pain.", "Wrist pain"),
+    (MED, "Tell me more.", "Aspirin.", "Aspirin"),
+    (ALG, "Tell me more.", "Nickel.", "Nickel"),
+    (MED, "What brings you in?", "Wrist pain.\nPatient: No medications.", "Wrist pain"),
+    (ALG, "What brings you in?", "Wrist pain.\nPatient: No allergies.", "Wrist pain"),
+    (MED, "Tell me more.", "Cash for the parking meter.\nPatient: No medications.", "Cash"),
+    (MED, "Any medicine?", "I took aspirin for my wrist pain.", "wrist pain"),
+    (MED, "Any medicine?", "I am allergic to birch pollen.", "birch pollen"),
+    (ALG, "Any allergies?", "I took a blue gel cap.", "blue gel cap"),
+    (ALG, "Any allergies?", "Nickel gives me hives.", "hives"),
+    (MED, "What brings you in?", "I am on edge.", "edge"),
+    (MED, "Tell me more.", "I take the bus.", "bus"),
+])
+def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, reply, value):
+    claim, direct, compact, english = observed(f"Doctor: {question}\nPatient: {reply}", field, value)
+    assert claim["state"] == "uncertain" and claim["value"] is None
+    assert direct is None
+    assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
+    assert not any(choice.startswith(":C[") for choice in compact)
+    assert not any(choice.startswith(" CONTRADICTED[") for choice in english)
+
+
+@pytest.mark.parametrize("field,report,value", [
+    (MED, "Patient: I took Xyzalorfen-420mg.", "Xyzalorfen-420mg"),
+    (MED, "Patient: I am on warfarin.", "warfarin"),
+    (MED, "Patient: My daily medicine is Xyzalorfen.", "Xyzalorfen"),
+    (MED, "Patient: I take metformin.", "metformin"),
+    (MED, "Patient: I use cedar gel for my rash.", "cedar gel"),
+    (ALG, "Patient: My known allergen is cedar pollen.", "cedar pollen"),
+    (MED, "Patient: Silver leaf drops for the headache.", "Silver leaf drops"),
+    (ALG, "Patient: I am allergic to birch pollen.", "birch pollen"),
+    (ALG, "Patient: Birch pollen gives me hives.", "Birch pollen"),
+    (MED, "Doctor: What medication did you take?\nPatient: Blueberry gel caps.", "Blueberry gel caps"),
+    (ALG, "Doctor: Any known allergies?\nPatient: Birch pollen.", "Birch pollen"),
+])
+def test_source_owned_substance_and_contrary_denial_survive(field, report, value):
+    claim, direct, compact, english = observed(report, field, value)
+    assert claim["state"] == "supported" and claim["value"] == value
+    assert direct is FieldState.SUPPORTED
+    assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+
+    denial = "No medications." if field is MED else "No allergies."
+    claim, _, compact, english = observed(report + "\nPatient: " + denial, field, value)
+    assert claim["state"] == "conflicting" and claim["value"] is None
+    assert any(choice.startswith(":C[") for choice in compact)
+    assert any(choice.startswith(" CONTRADICTED[") for choice in english)
+
+
+def test_free_proposal_is_not_limited_to_the_menu_spelling():
+    report = "Patient: I took Xyzalorfen-420mg extended release."
+    value = "Xyzalorfen-420mg"
+    claim, direct, compact, english = observed(report, MED, value)
+    assert claim["state"] == "supported" and claim["value"] == value
+    assert direct is FieldState.SUPPORTED
+    assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
