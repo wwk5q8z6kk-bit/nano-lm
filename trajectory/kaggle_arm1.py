@@ -81,19 +81,19 @@ tok = AutoTokenizer.from_pretrained(MODEL)
 tok.pad_token = tok.eos_token
 EOS = tok.eos_token_id
 
-def encode_example(convo):
-    # prompt: dialogue + "\nSummarize the visit.\n"   target: one-line summary + EOS
-    prompt = convo[0]["content"] + "\n"
-    target = convo[1]["content"]
-    p_ids = tok.encode(prompt)
-    t_ids = tok.encode(target) + [EOS]
-    return p_ids + t_ids, [-100] * len(p_ids) + t_ids
-
 examples, dropped = [], 0
-for c in convos:
-    ids, labels = encode_example(c)
+prompts = [c[0]["content"] + "\n" for c in convos]
+targets = [c[1]["content"] for c in convos]
+p_ids_list = tok(prompts)["input_ids"]
+t_ids_list = tok(targets)["input_ids"]
+
+for p_ids, t_ids in zip(p_ids_list, t_ids_list):
+    t_ids = t_ids + [EOS]
+    ids = p_ids + t_ids
+    labels = [-100] * len(p_ids) + t_ids
     if len(ids) > MAX_LEN:
-        dropped += 1; continue
+        dropped += 1
+        continue
     examples.append((ids, labels))
 print(f"train examples {len(examples)} (dropped {dropped} >{MAX_LEN} tok)", flush=True)
 
@@ -169,7 +169,7 @@ def score(model, items, label=""):
         held_pct, seen_pct = held_rec, seen_rec
     else:                       # e.g. base control: nothing parses; None -> JSON null (not NaN)
         held_pct = seen_pct = gap_pts = ci = None
-    print(f"[{label}] parse {parsed}/{n}={parsed/n:.0%}  recall {recall:.0%}  halluc {hal:.1%}  "
+    print(f"[{label}] parse {parsed}/{n}={parsed / n:.0%}  recall {recall:.0%}  halluc {hal:.1%}  "
           f"omission {omi}", flush=True)
     if gap_pts is not None:
         print(f"          seen {seen_pct:.0%} ({len(seen)} parsed)  held {held_pct:.0%} "
