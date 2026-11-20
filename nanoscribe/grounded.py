@@ -103,19 +103,18 @@ allergy: UNCERTAIN[I'm not sure if I have any drug allergies.]"""
 
 _NEGATION_WORD_RE = re.compile(
     r"\b(?:no|not|none|nothing|neither|nor|never|without|zero|denies|denied|deny|"
-    r"cannot|can't|don't|do not|didn't|did not|doesn't|does not|haven't|have not|"
-    r"hasn't|has not|hadn't|won't|wouldn't|isn't|is not|aren't|are not|wasn't|weren't)\b",
+    r"cannot|(?:ca|do|did|does|have|has|had|wo|would|is|are|was|were|could|should|must|need)n['’]t)\b",
     re.IGNORECASE,
 )
 
 _EPISTEMIC_HEDGE_RE = re.compile(
     r"\b(?:unsure|uncertain|unknown|maybe|perhaps|possibly|possible|probably|potentially|"
-    r"might|may have|not sure|am not sure|i'm not sure|"
-    r"can't remember|cannot remember|don't remember|do not remember|"
-    r"can't recall|cannot recall|don't recall|"
-    r"don't know|do not know|not that i know of|"
-    r"can't tell|cannot tell|can't decide|cannot decide|can't choose|cannot choose|"
-    r"can't pin down|cannot pin down|can't put it|cannot put it|hard to judge|"
+    r"might|may have|not sure|am not sure|i['’]m not sure|"
+    r"can['’]t remember|cannot remember|don['’]t remember|do not remember|"
+    r"can['’]t recall|cannot recall|don['’]t recall|"
+    r"don['’]t know|do not know|not that i know of|"
+    r"can['’]t tell|cannot tell|can['’]t decide|cannot decide|can['’]t choose|cannot choose|"
+    r"can['’]t pin down|cannot pin down|can['’]t put it|cannot put it|hard to judge|"
     r"whether|different accounts|or perhaps|guess|suppose|wonder)\b",
     re.IGNORECASE,
 )
@@ -172,6 +171,21 @@ _THIRD_PARTY_RE = re.compile(
     r"grandmother|grandfather|someone else|anyone else|his|her|their)\b",
     re.IGNORECASE,
 )
+
+# He and she denote a person. Plural symptoms can also be called "they"
+# ("my headaches ... they lasted two days"), so require a personal predicate
+# for that pronoun, such as taking medication or reporting a symptom.
+_PERSONAL_SUBJECT_RE = re.compile(
+    r"\b(?:he|she)\b|\bthey(?:['’](?:ve|re|d|ll)\s+|\s+)"
+    r"(?:(?:did|do|will|would|could|might|have|had|are|were|been|started|began)\s+){0,3}"
+    r"(?:take|took|taken|taking|use|used|using|tried|applied|prescribed|allergic|said|say|report|reported|"
+    r"deny|denied|experience|experienced|suffer|suffered|(?:have|had)\s+(?:an?|the|some|no|pain|symptoms?)\b)\b", re.I,
+)
+_SUBJECT_JOIN_RE = re.compile(
+    r"(?:,\s*(?:(?:and|but|while|because|although|whereas|so)\s+)?|"
+    r"\s+(?:and|but|while|because|although|whereas|so)\s+)(?=(?:i|he|she|they)\b)", re.I,
+)
+_PERSONAL_PRONOUN_RE = re.compile(r"\b(?:he|she|they)\b", re.I)
 
 _PAST_OR_HYPOTHETICAL_RE = re.compile(
     r"\b(?:used to|previously|formerly|last year|last month|last winter|last spring|"
@@ -329,11 +343,21 @@ _ELIDED_UNIT_FRACTION = rf"{_SPOKEN_FRACTION}(?=\s*(?:$|[.!?;,]|(?:ago|so far|no
 _COMPOUND_TAIL = rf"(?:,\s*(?:and\s+)?|\s+and\s+)(?:{_SIMPLE_QUANTITY}|{_ELIDED_UNIT_FRACTION})"
 _DURATION_QUANTITY = rf"{_SIMPLE_QUANTITY}(?:{_COMPOUND_TAIL})*"
 _COMPOUND_DURATION_RE = re.compile(rf"(?<!\w){_SIMPLE_QUANTITY}(?:{_COMPOUND_TAIL})+\b", re.I)
+_DURATION_BOUND_PREFIX = (
+    r"(?:(?:no\s+)?(?:more|less|fewer|greater)\s+than|at\s+(?:least|most)|up\s+to|"
+    r"within|(?:just\s+|a\s+little\s+)?(?:under|over))"
+)
+_DURATION_BOUND_SUFFIX = r"(?:or\s+(?:more|less|fewer|longer|shorter)|at\s+(?:most|least))"
+_BOUNDED_DURATION_RE = re.compile(
+    rf"(?<!\w)(?:{_DURATION_BOUND_PREFIX}\s+{_DURATION_QUANTITY}(?:\s+{_DURATION_BOUND_SUFFIX})?"
+    rf"|{_DURATION_QUANTITY}\s+{_DURATION_BOUND_SUFFIX})\b", re.I,
+)
 _QUANTITY = rf"(?P<amount>{_NUMBER_WORD})\s+(?P<unit>{_TIME_UNIT})"
 _QUANTITY_RE = re.compile(rf"(?<!\w){_QUANTITY}\b", re.I)
 _DURATION_VALUE_RE = re.compile(
     rf"(?<!\w)(?:"
-    rf"(?:about |around |roughly |nearly |almost |over )?{_DURATION_QUANTITY}(?:\s+(?:ago|so far))?"
+    rf"(?:(?:about|around|roughly|nearly|almost|{_DURATION_BOUND_PREFIX})\s+)?{_DURATION_QUANTITY}"
+    rf"(?:\s+{_DURATION_BOUND_SUFFIX})?(?:\s+(?:ago|so far))?"
     rf"|(?:since|from)\s+[^.!?;]+"
     rf"|(?:yesterday|today|tonight|last night|this morning|this afternoon|this evening|"
     rf"(?:the )?(?:morning|afternoon|evening|night) before last|"
@@ -607,8 +631,18 @@ def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
     parts = (clause,)
     if _ATTRIBUTED_ASSERTION_RE.search(clause.text) or _DISAVOWAL_RE.search(clause.text):
         parts = _split_events(clause, _ATTRIBUTION_PIVOT_RE)
-    reports = []
+    # Separate independently voiced subjects before assessing who owns a
+    # quote. A coordinating conjunction inside an attributed report cannot
+    # turn either half into a new observation by the patient.
+    subjects = []
     for part in parts:
+        if (_PERSONAL_PRONOUN_RE.search(part.text) and not _ATTRIBUTED_ASSERTION_RE.search(part.text)
+                and not _patient_question(part.text) and not _EPISTEMIC_HEDGE_RE.search(part.text)):
+            subjects.extend(_split_events(part, _SUBJECT_JOIN_RE))
+        else:
+            subjects.append(part)
+    reports = []
+    for part in subjects:
         if part.text.endswith("?") and not re.match(_QUESTION_START, part.text, re.I):
             reports.extend(_split_events(part, _QUESTION_JOIN_RE))
         else:
@@ -669,7 +703,7 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
             if later.start < clause.end:
                 continue
             if turn.speaker is Speaker.PATIENT and _ROUTINE_DISCLAIMED_RE.search(later.text):
-                if not _patient_question(later.text) and not _THIRD_PARTY_RE.search(later.text):
+                if not _patient_question(later.text) and not (_THIRD_PARTY_RE.search(later.text) or _PERSONAL_SUBJECT_RE.search(later.text)):
                     if (named_item and named_item.search(later.text)) or (adjacent and _ROUTINE_REFERENCE_RE.match(later.text)):
                         return True
             if (turn.speaker is Speaker.CLINICIAN and adjacent and
@@ -681,7 +715,7 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
 
 def _eligible_correction(text: str) -> bool:
     return bool((_SELF_CORRECTION_CLAUSE_RE.search(text) or _DISAVOWAL_RE.search(text)) and not (
-        _ADDITIVE_RE.search(text) or _THIRD_PARTY_RE.search(text)
+        _ADDITIVE_RE.search(text) or _THIRD_PARTY_RE.search(text) or _PERSONAL_SUBJECT_RE.search(text)
         or _PAST_OR_HYPOTHETICAL_RE.search(text) or _patient_question(text)
     ))
 
@@ -721,7 +755,8 @@ def _retracts_value(correction: str, original: str, field: FieldName, span_text:
 
 def _doubts_observation(text: str, original: Turn, field: FieldName, value: str | None, adjacent: bool) -> bool:
     hedge = _FOLLOWUP_DOUBT_RE.search(text)
-    if not hedge or _patient_question(text) or _THIRD_PARTY_RE.search(text) or _ATTRIBUTED_ASSERTION_RE.search(text):
+    if (not hedge or _patient_question(text) or _THIRD_PARTY_RE.search(text)
+            or _PERSONAL_SUBJECT_RE.search(text) or _ATTRIBUTED_ASSERTION_RE.search(text)):
         return False
     # "Not sure if I took it" is a memory report; "if I" normally signals a hypothetical.
     if _PAST_OR_HYPOTHETICAL_RE.search(re.sub(r"\b(?:whether|if) i\b", "", text, flags=re.I)):
@@ -843,7 +878,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
             return False
 
     text = span.text.strip()
-    if (_EPISTEMIC_HEDGE_RE.search(text) or _THIRD_PARTY_RE.search(text)
+    if (_EPISTEMIC_HEDGE_RE.search(text) or _THIRD_PARTY_RE.search(text) or _PERSONAL_SUBJECT_RE.search(text)
             or _SIDE_EFFECT_CONTRAST_RE.search(text)
             or re.search(r"\b(?:except|apart from|other than|allerg(?:y|ies) to)\b", text, re.I)):
         return False
@@ -878,6 +913,14 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     return True
 
 
+def _contains_negation(field: FieldName, text: str) -> bool:
+    # "No more than two days" asserts a duration bound. A separate "not"
+    # negating the observation must still block the claim.
+    if field is FieldName.DURATION and re.search(r"\bno\s+(?:more|less|fewer|greater)\s+than\b", text, re.I):
+        text = _BOUNDED_DURATION_RE.sub("", text)
+    return bool(_NEGATION_WORD_RE.search(text))
+
+
 def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> bool:
     """Field-domain sanity guard that accepts natural clinical English while blocking hazards."""
     cleaned = text.strip()
@@ -897,7 +940,7 @@ def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> 
         return False
     if _EPISTEMIC_HEDGE_RE.search(cleaned) or _NONUSE_ACTION_RE.search(cleaned):
         return False
-    if _NEGATION_WORD_RE.search(cleaned):
+    if _contains_negation(field, cleaned):
         return False
     if _THIRD_PARTY_RE.search(cleaned) or _PAST_OR_HYPOTHETICAL_RE.search(cleaned):
         return False
@@ -1219,7 +1262,7 @@ def _verify_local_span(
                    for m in _SUBSTANCE_WORD_RE.finditer(turn.text)):
                 return False, "incomplete_substance_word"
         if field is FieldName.DURATION:
-            tokens += (_COMPOUND_DURATION_RE,)
+            tokens += (_COMPOUND_DURATION_RE, _BOUNDED_DURATION_RE,)
             # A trailing fraction can elide the time unit only in its source
             # context. Quoting "two days and a half" before "bottle" drops it.
             compound = _COMPOUND_DURATION_RE.search(span.text)
@@ -1239,6 +1282,8 @@ def _verify_local_span(
             _ATTRIBUTED_ASSERTION_RE.search(part.text) or _DISAVOWAL_RE.search(part.text) for part in reporting
         )):
             return False, "attributed_or_disavowed_assertion"
+        if any(_PERSONAL_SUBJECT_RE.search(part.text) for part in reporting):
+            return False, "third_party_subject"
         if any(_patient_question(part.text) for part in reporting):
             return False, "patient_question"
         event = reporting[0] if len(reporting) == 1 else clause
@@ -1273,7 +1318,7 @@ def _verify_local_span(
             return False, "clause_contains_uncertainty_or_nonuse_hazard"
         if _THIRD_PARTY_RE.search(event.text) or _PAST_OR_HYPOTHETICAL_RE.search(event.text):
             return False, "clause_contains_third_party_or_past_scope_hazard"
-        if _NEGATION_WORD_RE.search(event.text):
+        if _contains_negation(field, event.text):
             return False, "clause_contains_negation_hazard"
         if _SELF_CORRECTION_CLAUSE_RE.search(event.text):
             # Reject spans inside the mistake/retraction clause itself (e.g., "I said aspirin on the intake form, but that was a mistake.")
@@ -1479,7 +1524,9 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
         events = (event for report in reports for event in _treatment_events(report)) if field in (
             FieldName.MEDICATION, FieldName.ALLERGY) else reports
         for clause in events:
-            c_text = clause.text.rstrip(";").rstrip()
+            # Both apostrophes occupy one character. Match conventional English
+            # spelling while slicing every proposed quote from the literal source.
+            c_text = clause.text.rstrip(";").rstrip().replace("’", "'")
             c_start = clause.start
             has_med_verb = bool(_medication_verb_positions(c_text, prev_q))
             has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text) or _POSTPOSED_ALLERGY_RE.match(c_text))
@@ -1594,7 +1641,7 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                     flags=re.IGNORECASE,
                 ).strip(" ,")
                 taken = _TAKEN_RE.match(body)
-                names = _taken_indication_names(body[taken.end():], c_start + taken.end()) if taken else ()
+                names = _taken_indication_names(clause.text[taken.end():], c_start + taken.end()) if taken else ()
                 if names:
                     for name in names:
                         add(name)
@@ -1756,7 +1803,7 @@ _UNIT_SCALES = {
 }
 _ORDINAL_RE = re.compile(r"\b(?:mild|moderate|severe)\b", re.I)
 _IMPRECISE_SCALAR_RE = re.compile(
-    r"\b(?:about|around|roughly|approximately|nearly|almost|over|under|less|more|at least|up to|"
+    r"\b(?:about|around|roughly|approximately|nearly|almost|over|under|less|more|at least|at most|within|greater|fewer|up to|"
     r"between|or|to)\b|\d\s*[-–]\s*\d", re.I,
 )
 

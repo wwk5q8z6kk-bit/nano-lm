@@ -152,7 +152,7 @@ def test_later_emphatic_confirmation_uses_its_own_source_offsets():
     (MED, "Patient: My daily medicine is sodium chloride.", "sodium chloride", "chloride"),
     (MED, "Doctor: Any medicine?\nPatient: Sodium chloride.", "Sodium chloride", "Sodium"),
     (MED, "Patient: I did take sodium chloride earlier.", "sodium chloride", "chloride"),
-    (MED, "Patient: I use sodium chloride because my rash returned.", "sodium chloride", "chloride"),
+    (MED, "Patient: I have been using sodium chloride because my rash returned.", "sodium chloride", "chloride"),
 ])
 def test_all_substance_relations_preserve_the_complete_source_name(field, report, name, part):
     claim, direct, compact, english = observed(report, field, part)
