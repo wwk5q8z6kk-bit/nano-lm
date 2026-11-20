@@ -262,7 +262,8 @@ class LocalCompactPredictor:
                 forward_passes += 1
 
                 while node and len(generated) < bound:
-                    allowed_tokens = list(node)
+                    # torch.argmax returns the first maximum in vocabulary order.
+                    allowed_tokens = sorted(node)
                     allowed_idx = torch.tensor(allowed_tokens, dtype=torch.long, device=device)
                     best_pos = int(out.logits[0, -1].index_select(0, allowed_idx).argmax().item())
                     best_tok = allowed_tokens[best_pos]
