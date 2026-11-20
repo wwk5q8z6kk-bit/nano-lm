@@ -118,14 +118,25 @@ def summary_of(t):
             f"MED: {t['med'] or 'none'} | ALG: {t['alg'] or 'none'}")
 
 
-if __name__ == '__main__':
-    N_TRAIN = 12000
+def generate_convos(n_train):
     convos = []
-    for _ in range(N_TRAIN):
-        t = sample_tuple()
-        convos.append([{"role": "user", "content": render_dialogue(t) + "\nSummarize the visit."},
-                       {"role": "assistant", "content": summary_of(t)}])
+    for _ in range(n_train):
+        values = sample_tuple()
+        convos.append([
+            {"role": "user", "content": render_dialogue(values) + "\nSummarize the visit."},
+            {"role": "assistant", "content": summary_of(values)},
+        ])
+    return convos
 
+# Historical training scripts slice the file at this assignment to load definitions,
+# or at tokenizer initialization to load the deterministic corpus into an empty namespace.
+N_TRAIN = 12000
+if globals().get("__name__") in (None, "__main__"):
+    convos = generate_convos(N_TRAIN)
+
+
+def write_training_arrays(convos):
+    """Encode the generated corpus and write the training arrays."""
     tok = Tokenizer.from_file("tokenizer.json")
     ims_id, ime_id = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
     S = 512
@@ -152,3 +163,7 @@ if __name__ == '__main__':
     print(f"v2 train examples {len(X)} (dropped {dropped}); CC value space = {len(CC_TRAIN) + len(CC_COMP)}; "
           f"eval set NOT regenerated (v1 scribe_eval.json reused)", flush=True)
 
+
+
+if __name__ == "__main__":
+    write_training_arrays(convos)
