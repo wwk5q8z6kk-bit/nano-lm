@@ -9,7 +9,7 @@ ns = {}
 exec(src, ns)
 GPT, dev, V, S = ns["GPT"], ns["dev"], ns["V"], ns["S"]
 
-m = GPT().to(dev); m.load_state_dict(torch.load("ckpt.pt", map_location=dev)); m.eval()
+m = GPT().to(dev); m.load_state_dict(torch.load("ckpt.pt", map_location=dev, weights_only=True)); m.eval()
 tok = Tokenizer.from_file("tokenizer.json")
 prompt = sys.argv[1] if len(sys.argv) > 1 else "The history of"
 ids = tok.encode(prompt).ids
