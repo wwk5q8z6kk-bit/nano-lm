@@ -148,6 +148,12 @@ def test_duration_uses_the_event_the_question_dates(question, reply, value, supp
     ("I have a headache.", "When did you start the medication? How long ago?", "Three weeks ago.", "Three weeks ago", False),
     ("I have a headache.", "When was your last visit? What date?", "Last Friday.", "Last Friday", False),
     ("I have a headache.", "When did the pain start? What time?", "Yesterday.", "Yesterday", True),
+    ("I have a headache.", "When was your last appointment? When was that?", "Last Friday.", "Last Friday", False),
+    ("I have a headache.", "When was your last appointment? What date was that?", "Last Tuesday.", "Last Tuesday", False),
+    ("I have a headache.", "When was your last appointment? How long ago was that?", "Three weeks ago.", "Three weeks ago", False),
+    ("I have a headache.", "When did the pain start? When was that?", "Yesterday.", "Yesterday", True),
+    ("I have a headache.", "When was your last appointment, do you remember?", "Last Friday.", "Last Friday", False),
+    ("I have a headache.", "When was your last appointment here?", "Last Monday.", "Last Monday", False),
 ])
 def test_duration_resolves_patient_onset_and_clinician_restatements(prior, question, reply, value, supported):
     transcript = f"Patient: {prior}\nDoctor: {question}\nPatient: {reply}"

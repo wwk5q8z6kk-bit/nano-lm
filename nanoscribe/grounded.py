@@ -1875,18 +1875,20 @@ def _timed_question_event(question: str) -> str:
         if request:
             event = re.split(r"\b(?:after|before|while|because|although|despite)\b",
                              request["event"], maxsplit=1, flags=re.I)[0].strip(" ,")
-            if event:
+            # "When was that?" restates the event already asked; it does not name a new one.
+            if event and not re.fullmatch(r"(?:was|is|were|are)\s+(?:that|this|it)", event, re.I):
                 return event
     return ""
 
 
 # Match the dated event or action itself. A mention of the clinic later in a
 # question about symptom onset does not change what the patient is dating.
+# "-related" continues the noun into another head; other trailing words do not.
 _ADMINISTRATIVE_EVENT_RE = re.compile(
     r"\s*(?:(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
     r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
     r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b"
-    r"(?=\s*$|[, ]+(?:for|at|on|with|in|to|when|that|which|last|take|scheduled|booked|performed|done)\b)|"
+    r"(?!-related\b)|"
     r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
     r"(?:(?:liv(?:e|ed|ing)|mov(?:e|ed|ing))\s+(?:here|there|(?:at|to|in|into|out of)\s+"
     r"(?:(?:the|an?|this|that|your|my|our|a new|your new)\s+)?(?:(?:new|old|current|previous|last)\s+)?"
