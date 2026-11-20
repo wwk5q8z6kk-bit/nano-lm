@@ -462,6 +462,11 @@ _FAMILIAR_MEDICINE_RE = re.compile(
 )
 _INDICATION_RE = re.compile(rf"\s+for\s+(?:it|them|(?:this|that|the|my|these)\s+(?:[\w-]+\s+){{0,4}}"
                             rf"(?:{_SYMPTOM}|cramps?))\b", re.I)
+_LOCATION_ANSWER_RE = re.compile(
+    r"^(?:it|this|that|they|these|those|(?:the|my)\s+(?:list|bottle|package|label|record))"
+    r"(?:['’](?:s|re)|\s+(?:is|are|was|were))\s+(?:(?:still|back|currently)\s+)?"
+    r"(?:in|inside|at|on|under|near|beside|with|by|upstairs|downstairs|outside)\b", re.I,
+)
 _SUBSTANCE_ADJUNCT_RE = re.compile(
     r"\s+(?:for|on|to|because|when|while|after|before|today|yesterday|this morning|this evening|last night)\b", re.I,
 )
@@ -1122,7 +1127,7 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
 
     # The question licenses a bare name. A first-person sentence still needs
     # its own substance relation, including when the patient defers an answer.
-    if start == 0 and re.match(r"(?:i\b|let\s+me\b)", text, re.I):
+    if start == 0 and (re.match(r"(?:i\b|let\s+me\b)", text, re.I) or _LOCATION_ANSWER_RE.match(text)):
         return None
 
     # Neither an indication, reaction clause nor schedule names the substance.

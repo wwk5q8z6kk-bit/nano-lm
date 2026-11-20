@@ -65,6 +65,9 @@ def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, rep
 
 @pytest.mark.parametrize("field,question,reply,value", [
     (ALG, "Any allergies?", "I would have to check with the pharmacy.", "I would have"),
+    (MED, "Any medications?", "It is in the car.", "It is"),
+    (MED, "Any medications?", "It’s at home.", "home"),
+    (ALG, "Any allergies?", "They are on the kitchen shelf.", "They are"),
     (ALG, "Any allergies?", "I'd have to ask about nickel.", "nickel"),
     (MED, "What medicine did you take?", "I need to check the aspirin bottle.", "aspirin"),
     (MED, "What medicine did you take?", "Let me check the aspirin bottle.", "aspirin"),
@@ -79,6 +82,7 @@ def test_deferring_a_substance_answer_offers_no_reported_value(field, question, 
 
 @pytest.mark.parametrize("field,report,value", [
     (MED, "Patient: I took Xyzalorfen-420mg.", "Xyzalorfen-420mg"),
+    (MED, "Patient: I took aspirin in the car.", "aspirin"),
     (MED, "Patient: I took aspirin and am not allergic to penicillin.", "aspirin"),
     (MED, "Patient: I am on warfarin.", "warfarin"),
     (MED, "Patient: My daily medicine is Xyzalorfen.", "Xyzalorfen"),
