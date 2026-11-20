@@ -52,3 +52,34 @@ def test_an_imperative_request_begins_the_next_answer(prompt, count, supported):
               "Doctor: Any allergies?\nPatient: Nickel.\n"
               f"Doctor: {prompt}\nPatient: I took ibuprofen.")
     check(source, "MED", FieldName.MEDICATION, "ibuprofen", source.rindex("ibuprofen"), supported)
+
+
+@pytest.mark.parametrize("prompt,reply,interval,supported", [
+    ("Any medicines?", "Ibuprofen; the pressure has returned every day for two weeks.", "two weeks", True),
+    ("Any allergies?", "Penicillin. My throat has felt scratchy for four days.", "four days", True),
+    ("When did you start the medication?", "On Monday my jaw tightness returned.", "Monday", True),
+    ("", "I waited for a bus, but my left wrist stiffness has persisted for two days.", "two days", True),
+    ("", "I drove home, and my skin has felt unusually itchy for two days.", "two days", True),
+    ("", "My right ankle was swollen for two days.", "two days", True),
+    ("", "The tire pressure has returned every day for two weeks.", "two weeks", False),
+    ("", "My shoes have felt very tight for two days.", "two days", False),
+    ("", "I have prickly palms for nine hours.", "nine hours", True),
+    ("", "I have had burning feet for two days.", "two days", True),
+    ("", "I have a scratchy sweater for two days.", "two days", False),
+    ("", "The door has been stiff for two days.", "two days", False),
+])
+def test_patient_episode_can_be_dated_by_its_local_sensation(prompt, reply, interval, supported):
+    source = (f"Doctor: {prompt}\n" if prompt else "") + f"Patient: {reply}"
+    check(source, "DUR", FieldName.DURATION, interval, source.rindex(interval), supported)
+
+
+@pytest.mark.parametrize("value,expected", [
+    ("co-trimoxazole", True),
+    ("amoxicillin/clavulanate", True),
+    ("doxycycline", True),
+    ("co-working space", False),
+    ("park-and-ride shuttle", False),
+])
+def test_past_action_can_identify_a_named_treatment(value, expected):
+    source = f"Patient: I took {value}."
+    check(source, "MED", FieldName.MEDICATION, value, source.index(value), expected)

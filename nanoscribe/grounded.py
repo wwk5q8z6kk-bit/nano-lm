@@ -479,6 +479,7 @@ _AMBIGUOUS_TREATMENT_RE = re.compile(r"^(?:i(?:['’]m|\s+am)\s+on|i\s+(?:take|u
 _FAMILIAR_MEDICINE_RE = re.compile(
     r"\b(?:warfarin|metformin|insulin|aspirin|ibuprofen|acetaminophen|paracetamol|"
     r"naproxen|lisinopril|levothyroxine|cetirizine|loratadine|fexofenadine|ketoprofen|zinc|"
+    r"[a-z]{2,}(?:azole|cillin|cycline|sartan|statin)|"
     r"(?:dihydro)?codeine|co[-‐‑]codamol|hydrocortisone|sodium chloride|calcium carbonate)\b", re.I,
 )
 _INDICATION_RE = re.compile(rf"\s+for\s+(?:it|them|(?:this|that|the|my|these)\s+(?:[\w-]+\s+){{0,4}}"
@@ -529,12 +530,25 @@ _EXPLICIT_SYMPTOM_DURATION_RE = re.compile(
 
 # A new subject and predicate can date a symptom even when an earlier action
 # was a genuine treatment. An indication or coordinated noun is not a clause.
+_BODY_REGION = (r"(?:chest|head|face|jaw|neck|throat|back|shoulders?|arms?|elbows?|wrists?|hands?|palms?|fingers?|"
+                r"abdomen|stomach|hips?|legs?|knees?|ankles?|feet|foot|toes?|eyes?|ears?|skin)")
 _SYMPTOM_SUBJECT_RE = re.compile(
     rf"(?:^|,\s*|\b(?:and|but|while|because|although|whereas|so)\s+)"
-    rf"(?:(?:my|the|this|that)\s+)?(?:[\w-]+\s+){{0,2}}?{_SYMPTOM}\b"
+    rf"(?:(?:my|the|this|that)\s+)?(?:(?:[\w-]+\s+){{0,2}}?{_SYMPTOM}|"
+    rf"(?:(?:left|right|lower|upper)\s+)?(?:{_BODY_REGION}\s+)?(?:tightness|pressure|stiffness|burning|throbbing))\b"
     r"(?:\s+(?:in|around|of|on)\s+(?:my|the)\s+[\w-]+)?\s+"
     r"(?:has|had|have|is|was|were|kept|keeps|woke|wakes|persist\w*|return\w*|"
     r"continu\w*|last\w*|start\w*|began|got|gets|spread\w*|prevent\w*)\b", re.I,
+)
+
+# A sensation located in the patient's body can date the episode without
+# repeating a complaint noun: "my throat has felt scratchy for four days".
+_SENSATION = r"(?:scratchy|tight|stiff|tender|sore|swollen|numb|itchy|painful|prickly|tingly|burning)"
+_BODY_SENSATION_RE = re.compile(
+    rf"\b(?:(?:my|the)\s+(?:(?:left|right|lower|upper)\s+)?{_BODY_REGION}\s+"
+    r"(?:(?:has|have|had)\s+)?(?:felt|feels?|been|was|were|is|are)\s+"
+    rf"(?:(?:very|quite|unusually|really)\s+)?{_SENSATION}|"
+    rf"i\s+(?:have|have\s+had|feel)\s+(?:an?\s+)?{_SENSATION}\s+{_BODY_REGION})\b", re.I,
 )
 
 # A duration following an independent activity does not time the symptom.
@@ -1342,7 +1356,7 @@ def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, durati
         return treatment
     if (med_question or treatment_time) and medication_action:
         events.append((medication_action.start(), treatment))
-    events.extend((match.start(), None) for pattern in (_EXPLICIT_SYMPTOM_DURATION_RE, _SYMPTOM_SUBJECT_RE)
+    events.extend((match.start(), None) for pattern in (_EXPLICIT_SYMPTOM_DURATION_RE, _SYMPTOM_SUBJECT_RE, _BODY_SENSATION_RE)
                   for match in pattern.finditer(context))
     if events:
         nearest = (min if looking_forward else max)(events, key=lambda item: item[0])
