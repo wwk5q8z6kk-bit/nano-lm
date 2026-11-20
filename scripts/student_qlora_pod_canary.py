@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from pull_native_weights import resolve_direct_scp
+from pull_native_weights import pinned_ssh_options, resolve_direct_scp
 
 MANIFEST = ROOT / "artifacts/campaign/manifests/student_qlora_canary_v1.json"
 OUT_PATH = ROOT / "artifacts/campaign/student_qlora_canary_results.json"
@@ -106,6 +106,7 @@ def _ssh(pod_id: str, cmd: str, *, retries: int = 3) -> str:
             proc = subprocess.run(
                 [
                     "ssh",
+                    *pinned_ssh_options(),
                     "-i",
                     str(ssh_key),
                     "-p",
@@ -114,8 +115,6 @@ def _ssh(pod_id: str, cmd: str, *, retries: int = 3) -> str:
                     "BatchMode=yes",
                     "-o",
                     "ConnectTimeout=30",
-                    "-o",
-                    "StrictHostKeyChecking=accept-new",
                     f"root@{host}",
                     cmd,
                 ],
@@ -319,6 +318,7 @@ def _upload_train_script_fallback(pod_id: str) -> None:
     proc = subprocess.run(
         [
             "scp",
+            *pinned_ssh_options(),
             "-i",
             str(ssh_key),
             "-P",
@@ -327,8 +327,6 @@ def _upload_train_script_fallback(pod_id: str) -> None:
             "BatchMode=yes",
             "-o",
             "ConnectTimeout=30",
-            "-o",
-            "StrictHostKeyChecking=accept-new",
             str(local),
             f"root@{host}:{remote}",
         ],

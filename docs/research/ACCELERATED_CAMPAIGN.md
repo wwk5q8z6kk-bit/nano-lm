@@ -109,7 +109,7 @@ See [infrastructure/TOOL_CALLING.md](../infrastructure/TOOL_CALLING.md).
 
 Sandboxed coding-agent tools for autonomous campaign scripts:
 
-- `nanoscribe/coding_tools.py` — `read_file`, `list_directory`, `search_code`, `apply_patch` (dry-run), `run_command` (allowlisted)
+- `nanoscribe/coding_tools.py` — `read_file`, `list_directory`, `search_code`, `apply_patch` (dry-run)
 - `nanoscribe/agent_canary.py` — agent canary bench path
 - `scripts/agent_canary_bench.py` — campaign automation entry
 

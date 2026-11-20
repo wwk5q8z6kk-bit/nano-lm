@@ -119,7 +119,7 @@ class CapabilityToolParser:
     """Parse provider tool calls into validated capability artifacts."""
 
     def __init__(self, *, allowed_capabilities: Sequence[CapabilityId] | None = None) -> None:
-        self._allowed = frozenset(allowed_capabilities) if allowed_capabilities else None
+        self._allowed = frozenset(allowed_capabilities) if allowed_capabilities is not None else None
         self._legacy = ToolCallParser()
 
     def parse_tool_call(self, call: Any) -> ToolResult:

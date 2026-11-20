@@ -235,8 +235,10 @@ def test_coding_tools_reject_path_escape() -> None:
     assert "sandbox" in (result.error or "").lower()
 
 
-def test_coding_tool_definitions_count() -> None:
-    assert len(coding_tool_definitions()) == 5
+def test_coding_tool_definitions() -> None:
+    assert {tool.name for tool in coding_tool_definitions()} == {
+        "read_file", "list_directory", "search_code", "apply_patch"
+    }
 
 
 def test_scribing_tools_include_submit_only_by_default() -> None:

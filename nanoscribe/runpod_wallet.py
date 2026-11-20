@@ -24,7 +24,7 @@ def query_live_balance() -> dict[str, Any]:
     if proc.returncode != 0:
         return {
             "ok": False,
-            "error": proc.stderr.strip() or proc.stdout.strip() or "runpodctl user failed",
+            "error": f"runpodctl user failed (exit {proc.returncode})",
         }
     data = json.loads(proc.stdout)
     balance = float(data.get("clientBalance", 0.0))
@@ -33,8 +33,6 @@ def query_live_balance() -> dict[str, Any]:
         "ok": True,
         "client_balance_usd": round(balance, 4),
         "current_spend_per_hr": round(spend_per_hr, 4),
-        "user_id": data.get("id"),
-        "email": data.get("email"),
     }
 
 

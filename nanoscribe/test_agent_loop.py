@@ -165,5 +165,25 @@ def test_agent_scribe_payload_roundtrip() -> None:
     assert len(result.artifacts) == 1
 
 
+@pytest.mark.parametrize(("settings", "name", "arguments"), [
+    ({"include_coding_tools": False}, READ_FILE_TOOL, {"path": "README.md"}),
+    ({"include_capabilities": False}, SUBMIT_CANDIDATE_ATOMS_TOOL, {}),
+    ({"scribe_only": True}, LIST_DIRECTORY_TOOL, {"path": "."}),
+    ({"scribe_only": True, "capability_ids": ()}, SUBMIT_CANDIDATE_ATOMS_TOOL, {}),
+    ({"include_coding_tools": False, "include_capabilities": False}, READ_FILE_TOOL, {"path": "README.md"}),
+    ({}, "run_command", {"argv": ["ls"]}),
+])
+def test_executor_only_accepts_advertised_tools(settings, name, arguments):
+    client = _mock_client_sequence([
+        {"tool_calls": [{"name": name, "arguments": arguments}]},
+        {"content": "Done."},
+    ])
+    agent = NanoAgent(client, AgentConfig(**settings))
+    assert name not in {tool.name for tool in agent.tool_definitions()}
+    result = agent.run("Check the available tools.")
+    assert result.steps[0].tool_results[0]["error"] == "tool is disabled"
+    assert not result.artifacts
+
+
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__, "-q"]))

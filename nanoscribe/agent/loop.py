@@ -12,7 +12,7 @@ from typing import Any
 
 from nanoscribe.artifacts import Artifact
 from nanoscribe.capabilities import CapabilityId, CapabilityToolParser, capability_for_tool
-from nanoscribe.coding_tools import CodingToolExecutor, coding_tool_definitions, execute_coding_tool_call
+from nanoscribe.coding_tools import coding_tool_definitions, execute_coding_tool_call
 from nanoscribe.inference.qwen3_coder import Qwen3CoderInferenceAdapter, normalize_openai_message
 from nanoscribe.inference.tool_registry import (
     agent_tool_definitions,
@@ -20,7 +20,6 @@ from nanoscribe.inference.tool_registry import (
     inference_tool_definitions,
     openai_tools_payload,
     resolve_inference_tool_choice,
-    scribe_only_tool_definitions,
 )
 from nanoscribe.tool_calling import ToolCallParseOutcome, log_tool_call_event, resolve_vllm_tool_env
 
@@ -28,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_AGENT_SYSTEM = (
     "You are Nano, a coding and analysis agent working in a repository sandbox. "
-    "Use tools to inspect the codebase, run allowlisted commands, and submit structured "
+    "Use tools to inspect the codebase and submit structured "
     "artifacts when the task requires scribing, summarization, or tables. "
     "When you have a final answer, respond in plain text without calling more tools. "
     "Stay within the repository sandbox."
@@ -113,12 +112,15 @@ class AgentToolExecutor:
         *,
         sandbox_root: Path,
         capability_parser: CapabilityToolParser,
+        allowed_tools: frozenset[str],
     ) -> None:
         self._sandbox_root = sandbox_root
         self._capability_parser = capability_parser
-        self._coding = CodingToolExecutor(sandbox_root=sandbox_root)
+        self._allowed_tools = allowed_tools
 
     def execute(self, name: str, arguments_raw: str, *, call_id: str) -> dict[str, Any]:
+        if name not in self._allowed_tools:
+            return {"ok": False, "tool": name, "error": "tool is disabled"}
         if capability_for_tool(name) is not None:
             return self._execute_capability(name, arguments_raw, call_id=call_id)
         if name in _CODING_TOOL_NAMES:
@@ -168,6 +170,7 @@ class NanoAgent:
         self._executor = AgentToolExecutor(
             sandbox_root=sandbox,
             capability_parser=self._capability_parser,
+            allowed_tools=frozenset(tool.name for tool in self.tool_definitions()),
         )
         self._adapter = Qwen3CoderInferenceAdapter(env=self._env, parser=self._capability_parser)
 
@@ -181,24 +184,21 @@ class NanoAgent:
 
     def tool_definitions(self) -> list[Any]:
         tools: list[Any] = []
-        if self._config.include_coding_tools:
+        if self._config.include_coding_tools and not self._config.scribe_only:
             tools.extend(coding_tool_definitions())
-        if self._config.include_capabilities:
-            if self._config.scribe_only:
-                tools.extend(scribe_only_tool_definitions())
-            else:
-                tools.extend(
-                    inference_tool_definitions(
-                        include_scribe=CapabilityId.SCRIBE in self._config.capability_ids,
-                        include_summarize=CapabilityId.SUMMARIZE in self._config.capability_ids,
-                        include_table=CapabilityId.TABLE in self._config.capability_ids,
-                    )
-                )
+        capabilities = self._resolve_allowed_capabilities()
+        tools.extend(inference_tool_definitions(
+            include_scribe=CapabilityId.SCRIBE in capabilities,
+            include_summarize=CapabilityId.SUMMARIZE in capabilities,
+            include_table=CapabilityId.TABLE in capabilities,
+        ))
         return tools
 
     def _resolve_allowed_capabilities(self) -> tuple[CapabilityId, ...]:
+        if not self._config.include_capabilities:
+            return ()
         if self._config.scribe_only:
-            return allowed_capability_ids(include_scribe=True)
+            return allowed_capability_ids(include_scribe=CapabilityId.SCRIBE in self._config.capability_ids)
         return allowed_capability_ids(
             include_scribe=CapabilityId.SCRIBE in self._config.capability_ids,
             include_summarize=CapabilityId.SUMMARIZE in self._config.capability_ids,
@@ -219,7 +219,9 @@ class NanoAgent:
             "max_tokens": self._config.max_tokens,
             "tools": openai_tools_payload(tools),
         }
-        if tool_choice != "none":
+        if not tools:
+            kwargs.pop("tools")
+        elif tool_choice != "none":
             kwargs["tool_choice"] = tool_choice
         return kwargs
 

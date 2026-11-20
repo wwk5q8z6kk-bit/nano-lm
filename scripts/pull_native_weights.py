@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import base64
 import json
+import ipaddress
 import os
 import re
 import subprocess
@@ -24,6 +25,28 @@ CHUNK_BYTES = 4 * 1024 * 1024
 SSH = ROOT / "scripts" / "runpod_pod_ssh.sh"
 DEFAULT_SSH_KEY = Path.home() / ".runpod/ssh/runpodctl-ssh-key"
 _SSH_CMD_RE = re.compile(r"@([\d.]+)\s+-p\s+(\d+)")
+
+
+def pinned_ssh_options() -> list[str]:
+    """Use an operator-provisioned OpenSSH known_hosts file for this endpoint."""
+    return ["-F", os.devnull, "-o", "StrictHostKeyChecking=yes", "-o", "VerifyHostKeyDNS=no"]
+
+
+def checkpoint_run_dir(checkpoint_dir: Path, run_id: str) -> Path:
+    if not isinstance(run_id, str) or not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}", run_id):
+        raise ValueError("invalid native run ID")
+    root = checkpoint_dir.resolve()
+    target = root / run_id
+    if target.is_symlink() or target.resolve().parent != root:
+        raise ValueError("invalid native checkpoint directory")
+    return target
+
+
+def weight_path(checkpoint_dir: Path, run_id: str) -> Path:
+    path = checkpoint_run_dir(checkpoint_dir, run_id) / "latest.pt"
+    if path.is_symlink():
+        raise ValueError("invalid native checkpoint file")
+    return path
 
 
 def pod_ssh(pod_id: str, remote_cmd: str) -> str:
@@ -59,7 +82,7 @@ def pull_chunk(pod_id: str, remote_path: str, offset: int, length: int) -> bytes
 
 
 def verify_weights(run_id: str, checkpoint_dir: Path = Path("artifacts/native_checkpoints")) -> tuple[bool, str]:
-    path = checkpoint_dir / run_id / "latest.pt"
+    path = weight_path(checkpoint_dir, run_id)
     if not path.is_file():
         return False, f"missing {path}"
     size = path.stat().st_size
@@ -68,7 +91,7 @@ def verify_weights(run_id: str, checkpoint_dir: Path = Path("artifacts/native_ch
     try:
         import torch
 
-        payload = torch.load(path, map_location="cpu", weights_only=False)
+        payload = torch.load(path, map_location="cpu", weights_only=True)
         if not payload.get("model_state"):
             return False, f"invalid checkpoint payload at {path}"
     except Exception as exc:
@@ -117,8 +140,12 @@ def resolve_direct_scp(pod_id: str) -> tuple[str, int, Path] | None:
             host = match.group(1)
             port = int(match.group(2))
 
-    if host and port and ssh_key.is_file():
-        return str(host), port, ssh_key
+    if host and port and 0 < port <= 65535 and ssh_key.is_file():
+        try:
+            address = ipaddress.IPv4Address(host)
+        except ipaddress.AddressValueError:
+            return None
+        return str(address), port, ssh_key
     return None
 
 
@@ -128,18 +155,19 @@ def pull_via_scp(
     *,
     checkpoint_dir: Path = Path("artifacts/native_checkpoints"),
 ) -> Path | None:
+    out = weight_path(checkpoint_dir, run_id)
     endpoint = resolve_direct_scp(pod_id)
     if endpoint is None:
         return None
     host, port, ssh_key = endpoint
     remote_path = f"/workspace/nano-lm/artifacts/native_checkpoints/{run_id}/latest.pt"
-    out = checkpoint_dir / run_id / "latest.pt"
     out.parent.mkdir(parents=True, exist_ok=True)
     if out.is_file():
         out.unlink()
     proc = subprocess.run(
         [
             "scp",
+            *pinned_ssh_options(),
             "-i",
             str(ssh_key),
             "-P",
@@ -148,8 +176,6 @@ def pull_via_scp(
             "BatchMode=yes",
             "-o",
             "ConnectTimeout=45",
-            "-o",
-            "StrictHostKeyChecking=accept-new",
             f"root@{host}:{remote_path}",
             str(out),
         ],
@@ -179,10 +205,10 @@ def pull_via_ssh_chunks(
     checkpoint_dir: Path = Path("artifacts/native_checkpoints"),
 ) -> Path:
     remote_path = f"/workspace/nano-lm/artifacts/native_checkpoints/{run_id}/latest.pt"
+    out = weight_path(checkpoint_dir, run_id)
     total = remote_size(pod_id, remote_path)
     if total < MIN_WEIGHT_BYTES:
         raise RuntimeError(f"remote file too small: {total}")
-    out = checkpoint_dir / run_id / "latest.pt"
     out.parent.mkdir(parents=True, exist_ok=True)
     if out.is_file():
         out.unlink()

@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import subprocess
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -21,19 +20,6 @@ RUN_COMMAND_TOOL = "run_command"
 
 DEFAULT_COMMAND_TIMEOUT_S = 30
 DEFAULT_READ_MAX_BYTES = 256_000
-ALLOWED_COMMANDS = frozenset(
-    {
-        "python3",
-        "pytest",
-        "git",
-        "rg",
-        "ls",
-        "cat",
-        "head",
-        "tail",
-        "wc",
-    }
-)
 
 
 @dataclass(frozen=True, slots=True)
@@ -116,30 +102,6 @@ def coding_tool_definitions() -> list[ToolDefinition]:
                 "additionalProperties": False,
             },
         ),
-        ToolDefinition(
-            name=RUN_COMMAND_TOOL,
-            description=(
-                "Run an allowlisted read-only command in the sandbox. "
-                f"Allowed: {', '.join(sorted(ALLOWED_COMMANDS))}."
-            ),
-            parameters={
-                "type": "object",
-                "properties": {
-                    "argv": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "description": "Command argv; first element must be allowlisted",
-                    },
-                    "cwd": {"type": "string", "description": "Working directory relative to sandbox"},
-                    "timeout_s": {
-                        "type": "integer",
-                        "default": DEFAULT_COMMAND_TIMEOUT_S,
-                    },
-                },
-                "required": ["argv"],
-                "additionalProperties": False,
-            },
-        ),
     ]
 
 
@@ -164,7 +126,7 @@ class CodingToolExecutor:
             if name == APPLY_PATCH_TOOL:
                 return self._apply_patch(arguments)
             if name == RUN_COMMAND_TOOL:
-                return self._run_command(arguments)
+                return CodingToolResult(False, name, {}, "host command execution is disabled")
             return CodingToolResult(
                 ok=False,
                 tool=name,
@@ -209,10 +171,11 @@ class CodingToolExecutor:
         pattern = str(arguments["pattern"])
         rel = str(arguments.get("path", "."))
         search_path = _resolve_sandbox_path(rel, sandbox_root=self.sandbox_root)
-        cmd = ["rg", "--json", pattern, str(search_path)]
+        cmd = ["rg", "--no-config", "--json", "--regexp", pattern]
         glob = arguments.get("glob")
         if glob:
             cmd.extend(["--glob", str(glob)])
+        cmd.extend(["--", str(search_path)])
         proc = subprocess.run(
             cmd,
             cwd=self.sandbox_root,
@@ -284,39 +247,6 @@ class CodingToolExecutor:
             data={"applied": proc.returncode == 0},
             error=None if proc.returncode == 0 else proc.stderr.strip(),
         )
-
-    def _run_command(self, arguments: Mapping[str, Any]) -> CodingToolResult:
-        argv = [str(item) for item in arguments.get("argv") or []]
-        if not argv:
-            raise ValueError("argv is required")
-        binary = Path(argv[0]).name
-        if binary not in ALLOWED_COMMANDS:
-            raise ValueError(f"command not allowlisted: {binary}")
-        cwd_rel = str(arguments.get("cwd", "."))
-        cwd = _resolve_sandbox_path(cwd_rel, sandbox_root=self.sandbox_root)
-        timeout_s = int(arguments.get("timeout_s", DEFAULT_COMMAND_TIMEOUT_S))
-        if re.search(r"[;&|`$]", " ".join(argv[1:])):
-            raise ValueError("shell metacharacters are not allowed in argv")
-        proc = subprocess.run(
-            argv,
-            cwd=cwd,
-            capture_output=True,
-            text=True,
-            timeout=timeout_s,
-            check=False,
-        )
-        return CodingToolResult(
-            ok=proc.returncode == 0,
-            tool=RUN_COMMAND_TOOL,
-            data={
-                "argv": argv,
-                "exit_code": proc.returncode,
-                "stdout": proc.stdout[:8000],
-                "stderr": proc.stderr[:4000],
-            },
-            error=None if proc.returncode == 0 else f"exit {proc.returncode}",
-        )
-
 
 def execute_coding_tool_call(
     name: str,

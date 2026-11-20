@@ -11,12 +11,13 @@ import subprocess
 import sys
 import tarfile
 import time
-from pathlib import Path
+import tempfile
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from pull_native_weights import CHUNK_BYTES, resolve_direct_scp
+from pull_native_weights import CHUNK_BYTES, pinned_ssh_options, resolve_direct_scp
 
 SSH = ROOT / "scripts" / "runpod_pod_ssh.sh"
 REMOTE_DIR = "/workspace/qlora_canary_adapter"
@@ -77,7 +78,42 @@ def verify_adapter(local_dir: Path) -> tuple[bool, str, int]:
     return True, str(local_dir), total
 
 
-def pull_via_scp_tar(pod_id: str, local_dir: Path) -> bool:
+def install_adapter(archive: Path, local_dir: Path) -> None:
+    local_dir.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=local_dir.parent) as staging:
+        ready = Path(staging) / "adapter"
+        ready.mkdir()
+        with tarfile.open(archive, "r:gz") as tar:
+            for member in tar:
+                parts = PurePosixPath(member.name).parts
+                if not parts or parts[0] != "qlora_canary_adapter" or ".." in parts:
+                    raise ValueError("unexpected adapter archive path")
+                target = ready.joinpath(*parts[1:])
+                if member.isdir():
+                    target.mkdir(parents=True, exist_ok=True)
+                elif member.isfile() and len(parts) > 1:
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    with tar.extractfile(member) as src, target.open("xb") as output:
+                        shutil.copyfileobj(src, output)
+                else:
+                    raise ValueError("adapter archive must contain only files and directories")
+        ok, msg, _ = verify_adapter(ready)
+        if not ok:
+            raise ValueError(msg)
+        if local_dir.is_symlink():
+            raise ValueError("refusing a symlink adapter destination")
+        old = Path(staging) / "previous"
+        if local_dir.exists():
+            local_dir.rename(old)
+        try:
+            ready.rename(local_dir)
+        except OSError:
+            if old.exists():
+                old.rename(local_dir)
+            raise
+
+
+def pull_via_scp_tar(pod_id: str, local_dir: Path, local_tar: Path) -> bool:
     endpoint = resolve_direct_scp(pod_id)
     if endpoint is None:
         return False
@@ -87,12 +123,10 @@ def pull_via_scp_tar(pod_id: str, local_dir: Path) -> bool:
         print(f"remote adapter not ready ({remote_bytes} bytes)", file=sys.stderr)
         return False
     pod_ssh(pod_id, f"tar -czf {REMOTE_TAR} -C /workspace qlora_canary_adapter")
-    local_tar = local_dir.parent / "qlora_canary_adapter.tar.gz"
-    if local_tar.is_file():
-        local_tar.unlink()
     proc = subprocess.run(
         [
             "scp",
+            *pinned_ssh_options(),
             "-i",
             str(ssh_key),
             "-P",
@@ -101,8 +135,6 @@ def pull_via_scp_tar(pod_id: str, local_dir: Path) -> bool:
             "BatchMode=yes",
             "-o",
             "ConnectTimeout=60",
-            "-o",
-            "StrictHostKeyChecking=accept-new",
             f"root@{host}:{REMOTE_TAR}",
             str(local_tar),
         ],
@@ -113,11 +145,7 @@ def pull_via_scp_tar(pod_id: str, local_dir: Path) -> bool:
     if proc.returncode != 0:
         print(f"scp failed: {proc.stderr[-400:]}", file=sys.stderr)
         return False
-    if local_dir.exists():
-        shutil.rmtree(local_dir)
-    local_dir.parent.mkdir(parents=True, exist_ok=True)
-    with tarfile.open(local_tar, "r:gz") as tar:
-        tar.extractall(path=local_dir.parent)
+    install_adapter(local_tar, local_dir)
     ok, msg, total = verify_adapter(local_dir)
     if not ok:
         print(f"scp verify failed: {msg}", file=sys.stderr)
@@ -126,15 +154,12 @@ def pull_via_scp_tar(pod_id: str, local_dir: Path) -> bool:
     return True
 
 
-def pull_via_ssh_tar_chunks(pod_id: str, local_dir: Path) -> None:
+def pull_via_ssh_tar_chunks(pod_id: str, local_dir: Path, local_tar: Path) -> None:
     ready, remote_bytes = remote_adapter_ready(pod_id)
     if not ready:
         raise RuntimeError(f"remote adapter not ready ({remote_bytes} bytes)")
     pod_ssh(pod_id, f"tar -czf {REMOTE_TAR} -C /workspace qlora_canary_adapter")
     size = int(pod_ssh(pod_id, f"stat -c%s {REMOTE_TAR}"))
-    local_tar = local_dir.parent / "qlora_canary_adapter.tar.gz"
-    if local_tar.is_file():
-        local_tar.unlink()
     offset = 0
     with local_tar.open("wb") as handle:
         while offset < size:
@@ -144,29 +169,31 @@ def pull_via_ssh_tar_chunks(pod_id: str, local_dir: Path) -> None:
                 f"f.seek({offset}); print(base64.b64encode(f.read({length})).decode())\""
             )
             out = pod_ssh(pod_id, cmd)
-            data = base64.b64decode("".join(out.split()))
+            data = base64.b64decode("".join(out.split()), validate=True)
+            if len(data) != length:
+                raise ValueError("adapter chunk length mismatch")
             handle.write(data)
             offset += length
             print(f"pulled {offset}/{size}", file=sys.stderr, flush=True)
-    if local_dir.exists():
-        shutil.rmtree(local_dir)
-    with tarfile.open(local_tar, "r:gz") as tar:
-        tar.extractall(path=local_dir.parent)
+    install_adapter(local_tar, local_dir)
 
 
 def pull_adapter(pod_id: str, local_dir: Path) -> tuple[bool, str, int]:
+    local_dir.parent.mkdir(parents=True, exist_ok=True)
     ok, msg, total = verify_adapter(local_dir)
     if ok:
         return True, msg, total
 
-    for attempt in range(1, MAX_PULL_ATTEMPTS + 1):
-        print(f"pull attempt {attempt}/{MAX_PULL_ATTEMPTS}", file=sys.stderr)
-        if pull_via_scp_tar(pod_id, local_dir):
-            return verify_adapter(local_dir)
-        time.sleep(10)
+    with tempfile.TemporaryDirectory(dir=local_dir.parent) as transfer:
+        local_tar = Path(transfer) / "adapter.tar.gz"
+        for attempt in range(1, MAX_PULL_ATTEMPTS + 1):
+            print(f"pull attempt {attempt}/{MAX_PULL_ATTEMPTS}", file=sys.stderr)
+            if pull_via_scp_tar(pod_id, local_dir, local_tar):
+                return verify_adapter(local_dir)
+            time.sleep(10)
 
-    print("scp unavailable or failed; falling back to ssh base64 chunks", file=sys.stderr)
-    pull_via_ssh_tar_chunks(pod_id, local_dir)
+        print("scp unavailable or failed; falling back to ssh base64 chunks", file=sys.stderr)
+        pull_via_ssh_tar_chunks(pod_id, local_dir, local_tar)
     return verify_adapter(local_dir)
 
 

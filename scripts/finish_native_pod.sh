@@ -7,6 +7,10 @@ cd "$ROOT"
 
 POD_ID="${1:?pod id required}"
 RUN_ID="${2:-native100_evidence_bottleneck_s1}"
+if ! [[ "$RUN_ID" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$ ]]; then
+  echo "invalid native run ID" >&2
+  exit 1
+fi
 MARKER="${NATIVE_DONE_MARKER:-NATIVE100_EXTENDED_DONE}"
 LOG_PATH="${NATIVE_LOG_PATH:-/workspace/native100_extended.log}"
 MIN_BYTES="${NATIVE_MIN_WEIGHT_BYTES:-1000000}"
@@ -64,24 +68,8 @@ echo "WEIGHT_PULL_OK path=${LOCAL_PT} bytes=${SIZE} torch_load=ok"
 
 echo "==> Pulling step JSON metrics"
 bash scripts/runpod_pod_ssh.sh "${POD_ID}" \
-  "for f in /workspace/nano-lm/artifacts/native_checkpoints/${RUN_ID}/step_*.json; do echo ===FILE=== \$f; cat \$f; done" \
-  | python3 - <<'PY'
-import json, sys
-from pathlib import Path
-buf = sys.stdin.read()
-for part in buf.split("===FILE=== ")[1:]:
-    lines = part.strip().split("\n", 1)
-    if len(lines) < 2:
-        continue
-    remote = lines[0].strip()
-    name = Path(remote).name
-    data = json.loads(lines[1])
-    run_id = data["config"]["run_id"]
-    out = Path("artifacts/native_checkpoints") / run_id / name
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(data, indent=2) + "\n")
-    print("wrote", out)
-PY
+  "for f in /workspace/nano-lm/artifacts/native_checkpoints/${RUN_ID}/step_*.json; do test -f \"\$f\" || exit 1; printf '===FILE=== %s\\n' \"\${f##*/}\"; cat -- \"\$f\" || exit 1; printf '\\n'; done" \
+  | python3 scripts/pull_native_metrics.py "${RUN_ID}"
 
 if [[ "${SKIP_TERMINATE:-0}" == "1" ]]; then
   echo "SKIP_TERMINATE=1 — pod ${POD_ID} left running for post-pull eval"

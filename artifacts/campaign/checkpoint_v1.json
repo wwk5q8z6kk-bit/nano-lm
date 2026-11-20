@@ -14,9 +14,7 @@
     "wallet": {
       "client_balance_usd": 161.7619,
       "current_spend_per_hr": 0.004,
-      "email": "rill-mud-9i@icloud.com",
-      "ok": true,
-      "user_id": "user_3Gipqdtq5P6GQgrqGiAJ2FIWvPJ"
+      "ok": true
     },
     "wallet_floor_usd": 10.0
   },
@@ -407,9 +405,7 @@
   "wallet": {
     "client_balance_usd": 161.7619,
     "current_spend_per_hr": 0.004,
-    "email": "rill-mud-9i@icloud.com",
-    "ok": true,
-    "user_id": "user_3Gipqdtq5P6GQgrqGiAJ2FIWvPJ"
+    "ok": true
   },
   "wave_v2_followup_teardown": {
     "active_pods_after_teardown": 0,

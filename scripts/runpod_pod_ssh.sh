@@ -8,22 +8,24 @@ REMOTE_CMD="${*:-echo ok}"
 
 SSH_KEY="${RUNPOD_SSH_KEY:-${HOME}/.runpod/ssh/runpodctl-ssh-key}"
 
-ssh_command_from_api() {
-  local pod_id="$1"
-  local cmd=""
-  cmd="$(runpodctl pod get "$pod_id" -o json 2>/dev/null | python3 -c "
-import sys, json
-d = json.load(sys.stdin)
-print(d.get('ssh', {}).get('ssh_command') or d.get('sshCmd', '') or '')
-" 2>/dev/null || true)"
-  if [[ -z "$cmd" ]]; then
-    cmd="$(runpodctl ssh info "$pod_id" -o json 2>/dev/null | python3 -c "
-import sys, json
-d = json.load(sys.stdin)
-print(d.get('ssh_command', '') or d.get('command', '') or '')
-" 2>/dev/null || true)"
-  fi
-  printf '%s' "$cmd"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if ! [[ "$POD_ID" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$ ]]; then
+  echo "invalid pod ID" >&2
+  exit 1
+fi
+
+# Provision the endpoint's public key through a trusted channel in ~/.ssh/known_hosts.
+SSH_OPTIONS=(-F /dev/null -o StrictHostKeyChecking=yes -o VerifyHostKeyDNS=no -o BatchMode=yes)
+
+direct_endpoint() {
+  python3 - "$SCRIPT_DIR" "$POD_ID" <<'PYHOST'
+import sys
+sys.path.insert(0, sys.argv[1])
+from pull_native_weights import resolve_direct_scp
+endpoint = resolve_direct_scp(sys.argv[2])
+if endpoint:
+    print(endpoint[0], endpoint[1])
+PYHOST
 }
 
 pod_host_id() {
@@ -57,17 +59,10 @@ print(pod.get("machine", {}).get("podHostId", "") or "")
 PY
 }
 
-run_direct() {
-  local ssh_cmd="$1"
-  local cmd="$2"
-  # shellcheck disable=SC2086
-  bash -c "${ssh_cmd} -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=accept-new $(printf %q "$cmd")" 2>/dev/null
-}
-
 run_proxy() {
   local host_id="$1"
   local cmd="$2"
-  ssh -tt -o BatchMode=yes -o ConnectTimeout=45 -o StrictHostKeyChecking=accept-new \
+  ssh -tt "${SSH_OPTIONS[@]}" -o ConnectTimeout=45 \
     -i "$SSH_KEY" "${host_id}@ssh.runpod.io" \
     "bash -lc $(printf %q "$cmd"); exit" 2>&1 \
     | grep -v -F 'WARNING: connection is not using' \
@@ -82,16 +77,16 @@ run_proxy() {
     | grep -v -E '^root@.*:.*#$'
 }
 
-SSH_CMD="$(ssh_command_from_api "$POD_ID")"
-if [[ -n "$SSH_CMD" ]]; then
-  if out="$(run_direct "$SSH_CMD" "$REMOTE_CMD")" && [[ -n "$out" ]]; then
+if read -r host port < <(direct_endpoint) && [[ -n "$host" && -n "$port" ]]; then
+  if out="$(ssh "${SSH_OPTIONS[@]}" -o ConnectTimeout=20 -i "$SSH_KEY" -p "$port" \
+    "root@$host" "$REMOTE_CMD")"; then
     printf '%s\n' "$out"
     exit 0
   fi
 fi
 
 HOST_ID="$(pod_host_id "$POD_ID")"
-if [[ -z "$HOST_ID" ]]; then
+if ! [[ "$HOST_ID" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]*$ ]]; then
   echo "ssh unavailable for pod $POD_ID (no ssh_command or podHostId)" >&2
   exit 1
 fi

@@ -85,7 +85,7 @@ python3 scripts/tool_call_harness.py --fixture valid_tool_calls.json
 
 `nanoscribe/coding_tools.py` provides typed, sandboxed tools for agentic campaign scripts:
 
-- `read_file`, `list_directory`, `search_code`, `apply_patch` (dry-run default), `run_command` (allowlisted binaries only)
+- `read_file`, `list_directory`, `search_code`, `apply_patch` (dry-run default)
 
 Paths are confined to a sandbox root; no unrestricted shell.
 

@@ -59,7 +59,7 @@ def load_checkpoint(
     path = checkpoint_path(cfg, step)
     if not path.is_file():
         raise FileNotFoundError(f"checkpoint not found: {path}")
-    payload = torch.load(path, map_location="cpu", weights_only=False)
+    payload = torch.load(path, map_location="cpu", weights_only=True)
     model.load_state_dict(payload["model_state"])
     if optimizer is not None and payload.get("optimizer_state"):
         optimizer.load_state_dict(payload["optimizer_state"])
