@@ -138,14 +138,17 @@ def uncovered_turns(source: Source, output: NanoOutput, *, context_policy: str =
                  if i not in covered and (turn.speaker is not Speaker.CLINICIAN or turn.text.casefold() not in known_questions))
 
 
-def _plain_value(field: FieldName, text: str) -> bool:
+_PLAIN_VALUE_RE = re.compile(r"[^\W_]+(?:[ -][^\W_]+)*")
+
+
+def _plain_value(field: FieldName, text: str, *, syntax: re.Pattern[str] = _PLAIN_VALUE_RE) -> bool:
     if field is FieldName.DURATION:
         return re.fullmatch(r"(?:[1-9]\d{0,2}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) (?:hours?|days?|weeks?|months?)", text.casefold()) is not None
     if field is FieldName.SEVERITY:
         return text.casefold() in {"mild", "moderate", "severe"}
     tokens = re.findall(r"\w+", text.casefold())
     return (0 < len(tokens) <= 5 and len(text) <= 80
-            and re.fullmatch(r"[^\W_]+(?:[ -][^\W_]+)*", text, re.UNICODE) is not None
+            and syntax.fullmatch(text) is not None
             and not _QUALIFIERS.intersection(tokens)
             and not _CONTEXTUAL_VALUE_WORDS.intersection(tokens)
             and not _NONVALUE_WORDS.intersection(tokens)

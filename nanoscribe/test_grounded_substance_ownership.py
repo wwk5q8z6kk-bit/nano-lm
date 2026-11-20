@@ -39,6 +39,11 @@ def observed(report, field, value):
     (MED, "Tell me more.", "My daily medicine is Xyzalorfen for my wrist pain.", "wrist pain"),
     (MED, "What brings you in?", "I am on edge.", "edge"),
     (MED, "Tell me more.", "I take the bus.", "bus"),
+    (MED, "Tell me more.", "My sister is allergic to nickel and took aspirin.", "aspirin"),
+    (MED, "Tell me more.", "I am allergic to nickel. Took aspirin.", "aspirin"),
+    (ALG, "Tell me more.", "I took aspirin and am not allergic to penicillin.", "penicillin"),
+    (MED, "Tell me more.", "I have taken amoxicillin/clavulanate for my nausea.", "clavulanate"),
+    (MED, "Tell me more.", "I have taken St John's wort for my nausea.", "John's"),
     (ALG, "Tell me more.", "I do not have a penicillin allergy.", "penicillin"),
     (ALG, "Tell me more.", "I had a penicillin allergy in childhood.", "penicillin"),
     (ALG, "Tell me more.", "If I have a penicillin allergy I will call.", "penicillin"),
@@ -74,6 +79,7 @@ def test_deferring_a_substance_answer_offers_no_reported_value(field, question, 
 
 @pytest.mark.parametrize("field,report,value", [
     (MED, "Patient: I took Xyzalorfen-420mg.", "Xyzalorfen-420mg"),
+    (MED, "Patient: I took aspirin and am not allergic to penicillin.", "aspirin"),
     (MED, "Patient: I am on warfarin.", "warfarin"),
     (MED, "Patient: My daily medicine is Xyzalorfen.", "Xyzalorfen"),
     (MED, "Patient: I take metformin.", "metformin"),
@@ -108,8 +114,8 @@ def test_source_owned_substance_and_contrary_denial_survive(field, report, value
 
 
 def test_free_proposal_is_not_limited_to_the_menu_spelling():
-    report = "Patient: I took Xyzalorfen-420mg because my cough returned."
-    value = "Xyzalorfen-420mg"
+    report = "Patient: I took aspirin earlier in the evening."
+    value = "aspirin earlier"
     claim, direct, compact, english = observed(report, MED, value)
     assert claim["state"] == "supported" and claim["value"] == value
     assert direct is FieldState.SUPPORTED
@@ -132,3 +138,59 @@ def test_later_emphatic_confirmation_uses_its_own_source_offsets():
     earlier = report.index("aspirin")
     menu = build_grounded_english_menu(doc, MED, {(earlier, earlier + len("aspirin"))})
     assert menu[" REPORTED[aspirin]"] == ("S", (span,))
+
+
+@pytest.mark.parametrize("field,report,name,part", [
+    (ALG, "Patient: I have a red cedar pollen allergy.", "red cedar pollen", "cedar"),
+    (ALG, "Patient: I’ve got a red cedar pollen allergy.", "red cedar pollen", "red"),
+    (MED, "Patient: I’ve been taking sodium chloride.", "sodium chloride", "sodium"),
+    (ALG, "Patient: Birch pollen gives me hives.", "Birch pollen", "Birch"),
+    (ALG, "Patient: My known allergen is red cedar pollen.", "red cedar pollen", "pollen"),
+    (ALG, "Doctor: Any allergies?\nPatient: Red cedar pollen.", "Red cedar pollen", "cedar"),
+    (MED, "Patient: I am currently taking sodium chloride.", "sodium chloride", "sodium"),
+    (MED, "Patient: I use cedar gel for my rash.", "cedar gel", "gel"),
+    (MED, "Patient: My daily medicine is sodium chloride.", "sodium chloride", "chloride"),
+    (MED, "Doctor: Any medicine?\nPatient: Sodium chloride.", "Sodium chloride", "Sodium"),
+    (MED, "Patient: I did take sodium chloride earlier.", "sodium chloride", "chloride"),
+    (MED, "Patient: I use sodium chloride because my rash returned.", "sodium chloride", "chloride"),
+])
+def test_all_substance_relations_preserve_the_complete_source_name(field, report, name, part):
+    claim, direct, compact, english = observed(report, field, part)
+    assert claim["value"] is None and claim["state"] == "uncertain" and direct is None
+    assert f":S[{part}]" not in compact and f" REPORTED[{part}]" not in english
+    claim, direct, compact, english = observed(report, field, name)
+    assert claim["state"] == "supported" and claim["value"] == name
+    assert direct is FieldState.SUPPORTED
+    assert f":S[{name}]" in compact and f" REPORTED[{name}]" in english
+
+
+@pytest.mark.parametrize("value", ["amoxicillin/clavulanate", "St John's wort", "St John’s wort", "co‑trimoxazole"])
+def test_taken_for_indication_preserves_the_original_substance_punctuation(value):
+    report = f"Doctor: Tell me more.\nPatient: I have taken {value} for my nausea."
+    claim, direct, compact, english = observed(report, MED, value)
+    assert claim["state"] == "supported" and claim["value"] == value and direct is FieldState.SUPPORTED
+    assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+
+
+@pytest.mark.parametrize("report", [
+    "I took aspirin and am allergic to penicillin.",
+    "I took aspirin, but am allergic to penicillin.",
+    "I am allergic to penicillin and took aspirin.",
+    "I am allergic to penicillin but currently take aspirin.",
+])
+def test_separate_treatment_and_allergy_can_share_a_patient_subject(report):
+    source = "Doctor: Tell me more.\nPatient: " + report
+    for field, value, wrong, denial in [
+        (MED, "aspirin", "penicillin", "No medications."),
+        (ALG, "penicillin", "aspirin", "No allergies."),
+    ]:
+        claim, direct, compact, english = observed(source, field, value)
+        assert claim["state"] == "supported" and claim["value"] == value and direct is FieldState.SUPPORTED
+        assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+        claim, direct, compact, english = observed(source, field, wrong)
+        assert claim["value"] is None and direct is None
+        assert f":S[{wrong}]" not in compact and f" REPORTED[{wrong}]" not in english
+        claim, _, compact, english = observed(source + "\nPatient: " + denial, field, value)
+        assert claim["state"] == "conflicting" and claim["value"] is None
+        assert any(choice.startswith(":C[") for choice in compact)
+        assert any(choice.startswith(" CONTRADICTED[") for choice in english)

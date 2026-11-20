@@ -122,17 +122,23 @@ _EPISTEMIC_HEDGE_RE = re.compile(
 
 # Hyphens, slashes and apostrophes between word characters can be part of the
 # substance name (co-codamol, amoxicillin/clavulanate, St John's wort).
-_SUBSTANCE_WORD_RE = re.compile(r"[\w\u0300-\u036f]+(?:[-‐‑/'’+][\w\u0300-\u036f]+)*")
+_SUBSTANCE_WORD = r"[\w\u0300-\u036f]+(?:[-‐‑/'’+][\w\u0300-\u036f]+)*"
+_SUBSTANCE_WORD_RE = re.compile(_SUBSTANCE_WORD)
+_SUBSTANCE_WORDS = rf"{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD})*"
+_SUBSTANCE_WORDS_RE = re.compile(_SUBSTANCE_WORDS)
 # Preserve multiword names identified by a direct substance predicate. A time,
 # purpose, coordination or other event modifier ends the object phrase.
-_SUBSTANCE_OBJECT_RE = re.compile(
-    r"\b(?:i (?:did |have )?(?:take|took|taken|used|tried|applied|swallowed)|allergic to|allergy to)"
-    r"\s+(?:(?:a|an|some|the|just|only)\s+)?"
+_SUBSTANCE_NAME = (
     r"(?P<name>(?:(?!\b(?:for|on|to|with|without|before|after|at|in|since|by|because|"
     r"and|or|but|that|which|then|once|twice|every|yesterday|today|tonight|last|this|next|so|"
     r"as|during|prescribed|daily|nightly|weekly|occasionally|regularly|recently|earlier|later|again|instead)\b)"
-    r"[^\W\d_][\w‐‑'’/-]*(?:\s+|(?=[.,;!?]|$)))+)", re.I,
+    rf"(?=[^\W\d_]){_SUBSTANCE_WORD}(?:\s+|(?=[.,;!?]|$)))+)"
 )
+_SUBSTANCE_OBJECT_RE = re.compile(
+    r"\b(?:i (?:did |have )?(?:take|took|taken|used|tried|applied|swallowed)|allergic to|allergy to)"
+    r"\s+(?:(?:a|an|some|the|just|only)\s+)?" + _SUBSTANCE_NAME, re.I,
+)
+_OWNED_SUBSTANCE_NAME_RE = re.compile(r"\s*(?:(?:a|an|some|the|yes,?|just|only)\s+)*" + _SUBSTANCE_NAME, re.I)
 _FOLLOWUP_DOUBT_RE = re.compile(
     r"\b(?:not (?:sure|certain)|no longer (?:sure|certain)|unsure|uncertain|"
     r"(?:can['’]t|cannot|don['’]t|do not) (?:remember|recall|know))\b", re.I,
@@ -247,15 +253,21 @@ _EVENT_JOIN_RE = re.compile(
 )
 
 _CURRENT_USE_MODIFIERS = r"(?:(?:currently|now|still|also|regularly|already)\s+)*"
-_CURRENT_USE = (rf"i(?:'m|'ve|\s+am|\s+have)?\s+{_CURRENT_USE_MODIFIERS}"
+_CURRENT_USE = (rf"i(?:['’]m|['’]ve|\s+am|\s+have)?\s+{_CURRENT_USE_MODIFIERS}"
                 rf"(?:been\s+{_CURRENT_USE_MODIFIERS})?(?:taking|using|applying)")
+_SHARED_MEDICATION_ACTION = (rf"{_CURRENT_USE_MODIFIERS}(?:take|took|use|used|try|tried|apply|applied|swallowed|"
+                             rf"am\s+{_CURRENT_USE_MODIFIERS}(?:taking|using|applying))\b")
+_SHARED_MEDICATION_RE = re.compile(_SHARED_MEDICATION_ACTION, re.I)
+_SHARED_SUBJECT_JOIN_RE = re.compile(
+    rf",?\s+(?:and|but)\s+(?=(?:am\s+(?:also\s+|not\s+)?allergic\s+to\b|{_SHARED_MEDICATION_ACTION}))", re.I,
+)
 _REPORTED_TREATMENT_RE = re.compile(
     rf"\b(?:{_CURRENT_USE}|i(?:'m|'ve|\s+am|\s+have)?\s+(?:also\s+)?"
     r"(?:taken|took|used|tried|applied|rubbed|put|swallowed|allergic\s+to))\b", re.I,
 )
 _POSTPOSED_ALLERGY_RE = re.compile(
-    r"\bi(?:\s+have(?:\s+got)?|'ve\s+got)\s+(?:an?\s+)?(?:(?:known|confirmed|documented|severe)\s+)*"
-    r"(?P<value>(?!an?\b)[\w-]+(?:\s+[\w-]+){0,5}?)\s+allerg(?:y|ies)\b(?!\s+to\b)", re.I,
+    r"\bi(?:\s+have(?:\s+got)?|['’]ve\s+got)\s+(?:an?\s+)?(?:(?:known|confirmed|documented|severe)\s+)*"
+    rf"(?P<value>(?!an?\b){_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)\s+allerg(?:y|ies)\b(?!\s+to\b)", re.I,
 )
 _ROUTINE_JOIN_RE = re.compile(r",?\s+(?:but|whereas|while)\s+", re.I)
 _ROUTINE_CLARIFICATION_RE = re.compile(
@@ -570,7 +582,7 @@ def has_global_reassignment(source: Source) -> bool:
     )
 
 
-def _enclosing_clause(turn: Turn, span: CandidateSpan) -> Turn:
+def _enclosing_clause(turn: Turn, span: CandidateSpan | Turn) -> Turn:
     for clause in _reply_clauses(turn):
         content = clause.text.rstrip(";").rstrip()
         trimmed_end = clause.start + len(content)
@@ -626,6 +638,11 @@ def _span_in_attributed_quote(turn: Turn, span: CandidateSpan) -> bool:
 def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
     if _ROUTINE_DISCLAIMED_RE.search(clause.text):
         return _split_events(clause, _ROUTINE_JOIN_RE)
+    # In a coordinated first-person report, only the predicate is repeated.
+    # Splitting at the conjunction keeps both objects tied to their own verb.
+    if (_REPORTED_TREATMENT_RE.match(clause.text) or _MED_CLAUSE_VERB_RE.match(clause.text)
+            or _POSTPOSED_ALLERGY_RE.match(clause.text)) and _SHARED_SUBJECT_JOIN_RE.search(clause.text):
+        return _split_events(clause, _SHARED_SUBJECT_JOIN_RE)
     reports = len(_REPORTED_TREATMENT_RE.findall(clause.text)) + len(_POSTPOSED_ALLERGY_RE.findall(clause.text))
     if _PROSPECTIVE_TREATMENT_RE.search(clause.text) or reports > 1:
         return _split_events(clause, _EVENT_JOIN_RE)
@@ -975,12 +992,12 @@ def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[Candidate
     pending = []
     start = 0
     for end, following in [*boundaries, (len(event), len(event))]:
-        part = re.fullmatch(r"\s*(?:some\s+)?(?P<name>[\w -]+?)(?:\s+for\s+(?P<purpose>.+?))?\s*",
+        part = re.fullmatch(rf"\s*(?:some\s+)?(?P<name>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD})*?)(?:\s+for\s+(?P<purpose>.+?))?\s*",
                             event[start:end], re.I)
         if part:
             value, purpose = part.group("name", "purpose")
             if (not _TAKEN_NON_TREATMENT_OBJECT_RE.match(value)
-                    and grounded_value_valid(FieldName.MEDICATION, value) and _plain_value(FieldName.MEDICATION, value)):
+                    and grounded_value_valid(FieldName.MEDICATION, value) and _plain_value(FieldName.MEDICATION, value, syntax=_SUBSTANCE_WORDS_RE)):
                 span = CandidateSpan(offset + start + part.start("name"), offset + start + part.end("name"), value)
                 if purpose and not re.match(r"granted\b", purpose, re.I) and not _DURATION_VALUE_RE.fullmatch(purpose):
                     names.extend(pending)
@@ -1014,7 +1031,7 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
     text = event.text
     postposed = _POSTPOSED_ALLERGY_RE.match(text)
     if postposed:
-        if field is FieldName.ALLERGY and _plain_value(field, postposed["value"]):
+        if field is FieldName.ALLERGY and _plain_value(field, postposed["value"], syntax=_SUBSTANCE_WORDS_RE):
             return postposed.span("value")
         return None
     label = _SUBSTANCE_LABEL_RE.match(text)
@@ -1042,6 +1059,14 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
         if verb.re is _TAKEN_RE:
             # The verifier checks each exact coordinated name and its indication.
             return start, len(text)
+    elif shared_action := _SHARED_MEDICATION_RE.match(text):
+        # Only an actual continuation of the same first-person clause can
+        # inherit its subject. A separate sentence with no subject cannot.
+        clause = _enclosing_clause(source.turns[idx], event)
+        if (not any(clause.start + join.end() == event.start for join in _SHARED_SUBJECT_JOIN_RE.finditer(clause.text))
+                or event not in _treatment_events(clause)):
+            return None
+        start = shared_action.end()
     elif relation := _AMBIGUOUS_TREATMENT_RE.match(text):
         known_medicine = _FAMILIAR_MEDICINE_RE.match(text[relation.end():].lstrip())
         if not ((first_answer and med_q) or _TREATMENT_CONTEXT_RE.search(text)
@@ -1060,6 +1085,20 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
     # Neither an indication, reaction clause nor schedule names the substance.
     adjunct = _SUBSTANCE_ADJUNCT_RE.search(text, start)
     return start, adjunct.start() if adjunct else len(text)
+
+
+def _owned_substance_name(event: Turn, owned: tuple[int, int]) -> tuple[int, int] | None:
+    """Absolute source range of the complete name before its timing or purpose."""
+    phrase = _OWNED_SUBSTANCE_NAME_RE.match(event.text, *owned)
+    if not phrase:
+        return None
+    name = phrase["name"]
+    for pattern in (_DURATION_VALUE_RE, _MED_TIME_QUALIFIER_RE):
+        timing = pattern.search(name)
+        if timing and timing.start() > 0:
+            name = name[:timing.start()]
+    start = event.start + phrase.start("name")
+    return start, start + len(name.rstrip())
 
 
 def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
@@ -1179,16 +1218,6 @@ def _verify_local_span(
             if any(m.start() < start < m.end() or m.start() < end < m.end()
                    for m in _SUBSTANCE_WORD_RE.finditer(turn.text)):
                 return False, "incomplete_substance_word"
-            for phrase in _SUBSTANCE_OBJECT_RE.finditer(clause.text):
-                left = clause.start + phrase.start("name")
-                name = phrase["name"]
-                for time_pattern in (_DURATION_VALUE_RE, _MED_TIME_QUALIFIER_RE):
-                    timing = time_pattern.search(name)
-                    if timing and timing.start() > 0:
-                        name = name[:timing.start()]
-                right = left + len(name.rstrip())
-                if left <= span.start and span.end <= right and (left, right) != (span.start, span.end):
-                    return False, "incomplete_substance_name"
         if field is FieldName.DURATION:
             tokens += (_COMPOUND_DURATION_RE,)
             # A trailing fraction can elide the time unit only in its source
@@ -1224,6 +1253,10 @@ def _verify_local_span(
             if (owned is None or not owned[0] <= span.start - event.start < owned[1]
                     or (field is FieldName.ALLERGY and span.end - event.start > owned[1])):
                 return False, "no_field_owned_substance_at_span"
+            name = _owned_substance_name(event, owned)
+            if name and span.start < name[1] and name[0] < span.end:
+                if span.start > name[0] or span.end < name[1]:
+                    return False, "incomplete_substance_name"
         if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, event, span):
             return False, "duration_scoped_to_medication_or_allergy"
         if field is FieldName.MEDICATION and _TAKEN_RE.search(event.text):
@@ -1232,7 +1265,7 @@ def _verify_local_span(
                 return False, "taken_without_treatment_context"
             taken = _TAKEN_RE.match(event.text)
             names = _taken_indication_names(event.text[taken.end():], event.start + taken.end()) if taken else ()
-            if names and not any(item.start <= span.start < span.end <= item.end for item in names):
+            if names and not any((span.start, span.end) == (item.start, item.end) for item in names):
                 return False, "span_outside_reported_treatment_name"
         if not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
@@ -1535,10 +1568,14 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                         add(_strip_leading_determiner(source.text, sp))
                 continue
 
+            owned = _substance_object(source, t_idx, clause, field)
+            if owned is None:
+                continue
+            name = _owned_substance_name(clause, owned)
+            if name is not None:
+                add(_trim_span(source.text, *name))
+
             if field is FieldName.MEDICATION:
-                owned = _substance_object(source, t_idx, clause, field)
-                if owned is None:
-                    continue
                 body = c_text.rstrip(".!?").strip()
                 lead = re.match(
                     r"^(?:i've\s+been\s+(?:taking|using|applying)|i\s+have\s+been\s+(?:taking|using|applying)|"
@@ -1573,9 +1610,6 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                 continue
 
             if field is FieldName.ALLERGY:
-                owned = _substance_object(source, t_idx, clause, field)
-                if owned is None:
-                    continue
                 body = c_text.rstrip(".!?").strip()
                 lead = re.match(
                     r"^(?:yes,?\s+)?(?:i(?:'m|\s+am)\s+(?:also\s+)?allergic\s+to|i\s+have\s+(?:an?\s+)?(?:known\s+)?allerg(?:y|ies)\s+to|"
