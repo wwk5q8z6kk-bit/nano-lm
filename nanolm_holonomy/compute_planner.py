@@ -37,11 +37,11 @@ GPU_CATALOG: dict[str, GPUSpec] = {
         startup_overhead_s=5.0,
     ),
     "kaggle_t4_x2": GPUSpec(
-        name="Kaggle NVIDIA T4 x2 (32 GB)",
+        name="Kaggle NVIDIA T4 (16 GB per device, dual T4 host)",
         backend="kaggle",
-        vram_gb=32.0,
-        bf16_tflops=130.0,  # FP16 tensor cores across 2x T4
-        mem_bw_gb_s=640.0,
+        vram_gb=16.0,
+        bf16_tflops=65.0,  # T4 FP16 tensor-core proxy on the single device used by the runners
+        mem_bw_gb_s=320.0,
         usd_per_hr=0.0,
         startup_overhead_s=110.0,
     ),

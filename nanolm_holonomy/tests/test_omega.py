@@ -97,6 +97,21 @@ def test_spectral_nullspace_lora_orthogonality_and_step0() -> None:
         assert interference < 1e-5, f"Spectral leakage into top-k subspace: {interference}"
 
 
+def test_kaggle_plans_against_one_t4() -> None:
+    kaggle = GPU_CATALOG["kaggle_t4_x2"]
+    assert (kaggle.vram_gb, kaggle.bf16_tflops, kaggle.mem_bw_gb_s) == (16.0, 65.0, 320.0)
+    # All current runners place their workload on one device, including on dual T4 hosts.
+    spec = WorkloadSpec(name="single-device", total_params=10**9, trainable_params=10**9,
+                        n_layers=24, d_model=2048, seq_len=512)
+    estimate = estimate_workload(spec, kaggle)
+    assert 16 * 1024 < estimate["safe_vram_required_mb"] < 32 * 1024
+    assert not estimate["fits_vram"]
+    selection = select_optimal_gpu([spec])
+    assert selection["recommended"]["backend"] == "runpod"
+    assert selection["recommended"]["feasible"]
+    assert not next(c["feasible"] for c in selection["all_candidates"] if c["backend"] == "kaggle")
+
+
 def test_compute_planner_preflight_and_selection() -> None:
     w_fit = WorkloadSpec(name="1.7b-sft", total_params=1_747_149_824, trainable_params=26_574_848, train_tokens=20_000, decode_tokens=5_000)
     est_l40s = estimate_workload(w_fit, GPU_CATALOG["runpod_l40s_48gb"])
