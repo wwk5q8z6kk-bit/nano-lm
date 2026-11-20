@@ -368,3 +368,40 @@ def test_hedged_second_denial_leaves_only_its_own_source_supported():
             "Patient: Actually, I didn't take aspirin, and I didn't take ibuprofen, perhaps.")
     assert_medication(text, "aspirin", 0, False)
     assert_medication(text, "ibuprofen", 0, True)
+
+
+@pytest.mark.parametrize("question,denial,supported", [
+    ("Which drugs are you allergic to?", "any drugs", False),
+    ("Which drugs are you allergic to?", "any foods", True),
+    ("Which foods are you allergic to?", "any foods", False),
+    ("Which foods are you allergic to?", "any drugs", True),
+    ("What are your allergies?", "any drugs", True),
+])
+def test_mixed_correction_retains_typed_allergen_source(question, denial, supported):
+    transcript = (f"Doctor: {question}\nPatient: zinc.\n"
+                  f"Patient: Actually, I didn't take aspirin, and I'm not allergic to {denial}.")
+    assert_substance(transcript, FieldName.ALLERGY, "zinc", 0, supported)
+
+
+@pytest.mark.parametrize("tail,supported", [
+    (", but I am answering for my mother", True),
+    (", and I meant my father", True),
+    (", but I am answering for myself", False),
+    (" because I ran out", False),
+    (" because my mother kept the bottle", False),
+    (" because I was answering for my mother", True),
+])
+def test_retraction_requires_the_patient_to_own_the_denial(tail, supported):
+    text = f"Patient: I took aspirin today.\nPatient: Actually, I didn't take aspirin{tail}."
+    assert_medication(text, "aspirin", 0, supported)
+
+
+@pytest.mark.parametrize("names,withdrawn,survivor", [
+    ("aspirin and ibuprofen", "aspirin", "ibuprofen"),
+    ("naproxen and cetirizine", "cetirizine", "naproxen"),
+    ("aspirin, ibuprofen, and naproxen", "aspirin or ibuprofen", "naproxen"),
+])
+def test_single_surviving_coordinated_medication_can_be_selected(names, withdrawn, survivor):
+    text = f"Patient: I took {names}.\nPatient: Actually, I didn't take {withdrawn}."
+    menu = assert_medication(text, survivor, 0, True)
+    assert not any(kind == "U" and len(spans) > 1 for kind, spans in menu.values())

@@ -1360,6 +1360,14 @@ def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...
     predicate = _CORRECTED_NONUSE_RE.match(text)
     if not predicate:
         return None
+    # Keep a correction attributed to another person out of the patient's
+    # record. A causal aside can mention family without transferring ownership.
+    attribution, *reasons = re.split(r"\bbecause\b", text, flags=re.I)
+    if (_THIRD_PARTY_RE.search(attribution) or _PERSONAL_SUBJECT_RE.search(attribution)
+            or any(_THIRD_PARTY_RE.search(reason) and re.search(
+                r"\b(?:answer(?:ed|ing)?|speak(?:ing)?|spoke|mean|meant|referr(?:ed|ing)|"
+                r"talk(?:ed|ing)?)\b", reason, re.I) for reason in reasons)):
+        return ()
     remainder = text[predicate.end():]
     parts = _EVENT_JOIN_RE.split(remainder)
     first = _withdrawn_objects_in_predicate(parts[0])
@@ -1503,7 +1511,8 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
     return False
 
 
-def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool) -> bool:
+def _retracts_value(source: Source, turn_idx: int, correction: str, original: str,
+                    field: FieldName, span_text: str, immediate: bool) -> bool:
     if not _eligible_correction(correction):
         return False
     withdrawals = _corrected_medication_objects(correction)
@@ -1523,7 +1532,7 @@ def _retracts_value(correction: str, original: str, field: FieldName, span_text:
             if scope == "name" and named in {"it", "that", "this"}:
                 named = withdrawals[0].name if len(withdrawals) == 1 else None
             if (scope == "all" or (scope == "name" and value == named)
-                    or (scope == "category" and named == _named_allergen_category(value))):
+                    or (scope == "category" and named == _reported_allergen_category(source, turn_idx, value))):
                 return True
         return False
     targets = _correction_fields(correction)
@@ -1612,11 +1621,12 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
     return False
 
 
-def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, span_text: str = "") -> bool:
+def _clause_is_retracted_in_turn(source: Source, turn_idx: int, clause: Turn,
+                                 field: FieldName, span_text: str = "") -> bool:
     """An immediate correction can retract a value in the same patient reply."""
-    clauses = _reply_clauses(turn)
+    clauses = _reply_clauses(source.turns[turn_idx])
     return any(current.start == clause.start and
-               _retracts_value(following.text, current.text, field, span_text, immediate=True)
+               _retracts_value(source, turn_idx, following.text, current.text, field, span_text, immediate=True)
                for current, following in zip(clauses, clauses[1:]))
 
 
@@ -1646,7 +1656,8 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
         previous = _preceding_clinician_turn(source, idx)
         if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
             continue
-        if any(_retracts_value(clause.text, source.turns[turn_idx].text, field, span_text, adjacent_patient_answer)
+        if any(_retracts_value(source, turn_idx, clause.text, source.turns[turn_idx].text,
+                              field, span_text, adjacent_patient_answer)
                for clause in _reply_clauses(later)):
             return True
     return False
@@ -1727,7 +1738,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
         return False
     if _later_doubt(source, idx, clause, field, None):
         return False
-    if _clause_is_retracted_in_turn(turn, clause, field, text) or _later_turn_retracts_span(source, idx, field, text):
+    if _clause_is_retracted_in_turn(source, idx, clause, field, text) or _later_turn_retracts_span(source, idx, field, text):
         return False
     return True
 
@@ -2805,7 +2816,7 @@ def _verify_local_span(
             return False, "routine_medication_disclaimed_for_complaint"
         if _later_doubt(source, idx, clause, field, span.text):
             return False, "source_report_later_in_doubt"
-        if _clause_is_retracted_in_turn(turn, clause, field, span.text) or _later_turn_retracts_span(source, idx, field, span.text):
+        if _clause_is_retracted_in_turn(source, idx, clause, field, span.text) or _later_turn_retracts_span(source, idx, field, span.text):
             return False, "retracted_by_patient_correction"
         return True, "verified_grounded_supported"
 
@@ -3094,6 +3105,9 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
             name = _substance_name_bounds(clause.text, owned, field)
             if name is not None:
                 add(_trim_span(source.text, c_start + name[0], c_start + name[1]))
+            # Each coordinated object can survive or be withdrawn independently.
+            for start, end in _coexisting_substance_clause(field, clause.text, owned):
+                add(_trim_span(source.text, c_start + start, c_start + end))
 
             if field is FieldName.MEDICATION:
                 body = c_text.rstrip(".!?").strip()
@@ -3171,7 +3185,7 @@ def _coexisting_substances(source: Source, field: FieldName,
                     if objects:
                         for start, end in objects:
                             item = CandidateSpan(event.start + start, event.start + end, event.text[start:end])
-                            if _verify_local_span(source, field, FieldState.SUPPORTED, item)[0]:
+                            if item in local:
                                 observed.append(item)
                     else:
                         alternatives = [sp for sp in local if event.start <= sp.start and sp.end <= event.end]
@@ -3478,6 +3492,10 @@ def _allergy_denial_scope(text: str) -> tuple[str, str | None]:
 
 
 def _allergy_question_scope(text: str) -> tuple[str, str | None]:
+    typed = re.fullmatch(rf"(?:what|which) (?P<category>{_ALLERGEN_CATEGORY}) are you allergic to[?.!]?",
+                         text.strip(), re.I)
+    if typed:
+        return "category", _allergen_category(typed["category"])
     if not _field_wide_question(text, FieldName.ALLERGY):
         return "unknown", None
     category = _ALLERGEN_CATEGORY_RE.search(text)
@@ -3499,13 +3517,11 @@ def _named_allergen_category(name: str) -> str | None:
     return None
 
 
-def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | None:
+def _reported_allergen_category(source: Source, idx: int | None, name: str) -> str | None:
     # A new or ambiguous name only inherits a category as a direct answer to a
     # typed question. An independently worded report retains its own scope.
-    idx = _turn_index(source, span.start, span.end)
     if idx is None:
         return None
-    name = normalize_value(span.text)
     if category := _named_allergen_category(name):
         return category
     question = _preceding_clinician_turn(source, idx)
@@ -3530,7 +3546,8 @@ def _denial_covers_substance(source: Source, field: FieldName, denial: Candidate
             scope, value = _allergy_question_scope(question.text)
     if scope == "name":
         return normalize_value(item.text) == value
-    return scope == "all" or (scope == "category" and _reported_allergen_category(source, item) == value)
+    return scope == "all" or (scope == "category" and _reported_allergen_category(
+        source, _turn_index(source, item.start, item.end), normalize_value(item.text)) == value)
 
 
 def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
@@ -3577,7 +3594,7 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
             local = []
             for clause in clauses:
                 match = _LATERAL_PAIN_RE.fullmatch(clause.text.strip())
-                if not match or _clause_is_retracted_in_turn(turn, clause, field):
+                if not match or _clause_is_retracted_in_turn(source, idx, clause, field):
                     continue
                 if _later_turn_retracts_span(source, idx, field, clause.text):
                     continue
