@@ -115,6 +115,8 @@ def test_constrained_nested_citations_match_free_grounded_fields_and_exclude_exa
     ("How long have you been living in a constant state of pain?", "Two months.", "Two months", True),
     ("How long did you live in the apartment with that cough?", "For three weeks.", "three weeks", False),
     ("When did you move into your current house?", "Last Friday.", "Last Friday", False),
+    ("How long ago did you move to this address?", "Two months ago.", "Two months ago", False),
+    ("How many weeks ago did you have your prescription renewed?", "Two months ago.", "Two months ago", False),
     ("When did the pain start after your appointment?", "Two days ago.", "Two days ago", True),
     ("How long have you had a headache at your new address?", "Three weeks.", "Three weeks", True),
     ("What date did you notice the rash after your scan?", "Last Tuesday.", "Last Tuesday", True),

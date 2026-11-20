@@ -1876,7 +1876,7 @@ def _timed_question_event(question: str) -> str:
 # Match the dated event or action itself. A mention of the clinic later in a
 # question about symptom onset does not change what the patient is dating.
 _ADMINISTRATIVE_EVENT_RE = re.compile(
-    r"\s*(?:(?:ago\s+)?(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
+    r"\s*(?:ago\s+)?(?:(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
     r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
     r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b|"
     r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
