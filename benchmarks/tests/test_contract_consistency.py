@@ -29,7 +29,9 @@ if str(REPO) not in sys.path:
 
 from benchmarks import gold_metrics, process_metrics  # noqa: E402
 
-ACTION_LOG_SCHEMA = json.loads((REPO / "benchmarks/AGENT_ACTION_LOG.schema.json").read_text())
+ACTION_LOG_SCHEMA = json.loads(
+    (REPO / "benchmarks/AGENT_ACTION_LOG.schema.json").read_text()
+)
 ACTION_PROPS = ACTION_LOG_SCHEMA["$defs"]["action"]["properties"]
 ACTION_CLASSES = frozenset(ACTION_PROPS["action_class"]["enum"])
 RESULT_STATUSES = frozenset(ACTION_PROPS["result_status"]["enum"])
@@ -43,7 +45,9 @@ def test_every_action_class_constant_exists_in_the_schema_enum():
     for name in ("MUTATING_CLASSES", "READING_CLASSES", "VERIFYING_CLASSES"):
         values = getattr(process_metrics, name)
         assert values, f"{name} is empty"
-        assert values <= ACTION_CLASSES, f"{name} has values outside the schema enum: {values - ACTION_CLASSES}"
+        assert (
+            values <= ACTION_CLASSES
+        ), f"{name} has values outside the schema enum: {values - ACTION_CLASSES}"
 
 
 def test_invalid_statuses_exist_in_the_schema_enum():
@@ -88,8 +92,10 @@ def test_no_metric_module_declares_a_dead_taxonomy_constant():
             value = getattr(module, name)
             if not isinstance(value, (frozenset, set)):
                 continue
-            uses = source.count(name)
-            assert uses > 1, f"{module.__name__}.{name} is declared but never used"
+            first = source.find(name)
+            assert first != -1, f"{module.__name__}.{name} is declared but never used"
+            second = source.find(name, first + len(name))
+            assert second != -1, f"{module.__name__}.{name} is declared but never used"
 
 
 # --- schema fields vs consumers ---------------------------------------------
@@ -123,7 +129,9 @@ def _code_identifiers(path: Path) -> set[str]:
     docstrings = {
         ast.get_docstring(n)
         for n in ast.walk(tree)
-        if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))
+        if isinstance(
+            n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
+        )
     }
     return names - {d for d in docstrings if d}
 
@@ -156,9 +164,15 @@ def test_no_metric_module_defines_a_numeric_constant():
             if not isinstance(node, (ast.Assign, ast.AnnAssign)):
                 continue
             value = node.value
-            if isinstance(value, ast.Constant) and isinstance(value.value, (int, float)):
-                target = ast.unparse(node.targets[0] if isinstance(node, ast.Assign) else node.target)
-                raise AssertionError(f"{path} defines numeric constant {target} = {value.value}")
+            if isinstance(value, ast.Constant) and isinstance(
+                value.value, (int, float)
+            ):
+                target = ast.unparse(
+                    node.targets[0] if isinstance(node, ast.Assign) else node.target
+                )
+                raise AssertionError(
+                    f"{path} defines numeric constant {target} = {value.value}"
+                )
 
 
 def test_confidence_module_requires_an_explicit_epsilon():
