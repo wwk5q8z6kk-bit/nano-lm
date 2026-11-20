@@ -158,7 +158,7 @@ def write_json(path: Path, obj: Any) -> str:
     if isinstance(obj, (dict, list)):
         path.write_text(json.dumps(obj, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     else:
-        path.write_text(str(obj), encoding="utf-8")
+        path.write_text(text, encoding="utf-8")
     return sha256_file(str(path))
 
 
@@ -167,6 +167,90 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> str:
         for row in rows:
             f.write(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n")
     return sha256_file(str(path))
+
+
+def _get_predictor_and_manifest(mode: str) -> tuple[Predictor, Any, str]:
+    if mode == "mock":
+        predictor: Predictor = MockedModel()
+        solver_or_model = mocked_model_manifest()
+        manifest_name = "model_manifest.json"
+    elif mode == "deterministic":
+        predictor = DeterministicTemplateSolver()
+        solver_or_model = deterministic_solver_manifest()
+        manifest_name = "solver_manifest.json"
+    else:
+        raise ValueError(f"unknown mode: {mode}")
+    return predictor, solver_or_model, manifest_name
+
+
+def _write_artifacts(
+    run_dir: Path,
+    mode: str,
+    run_manifest: RunManifest,
+    bench: BenchmarkManifest,
+    solver_or_model: Any,
+    manifest_name: str,
+    config: dict[str, Any],
+    env: dict[str, Any],
+    raw_rows: list[dict[str, Any]],
+    score_rows: list[dict[str, Any]],
+    metrics: dict[str, Any],
+) -> dict[str, str]:
+    hashes: dict[str, str] = {}
+    hashes["benchmark_manifest.json"] = write_json(
+        run_dir / "benchmark_manifest.json", bench.to_dict()
+    )
+    hashes[manifest_name] = write_json(
+        run_dir / manifest_name, solver_or_model.to_dict()
+    )
+    hashes["config.yaml"] = write_json(run_dir / "config.yaml", config)
+    # store config also as yaml-like json for simplicity; filename config.yaml content is JSON
+    (run_dir / "config.yaml").write_text(
+        "\n".join(f"{k}: {json.dumps(v)}" for k, v in config.items()) + "\n",
+        encoding="utf-8",
+    )
+    hashes["config.yaml"] = sha256_file(str(run_dir / "config.yaml"))
+    hashes["environment.json"] = write_json(run_dir / "environment.json", env)
+    hashes["raw_outputs.jsonl"] = write_jsonl(run_dir / "raw_outputs.jsonl", raw_rows)
+    hashes["per_item_scores.jsonl"] = write_jsonl(
+        run_dir / "per_item_scores.jsonl", score_rows
+    )
+    hashes["metrics.json"] = write_json(run_dir / "metrics.json", metrics)
+    hashes["cost.json"] = write_json(run_dir / "cost.json", run_manifest.cost_reference)
+
+    decision_obj = {
+        "decision": run_manifest.decision_status,
+        "promote": run_manifest.promote,
+        "leaderboard_eligible": run_manifest.leaderboard_eligible,
+        "evidence_ledger_eligible": run_manifest.evidence_ledger_eligible,
+        "mode": mode,
+        "run_id": run_manifest.run_id,
+    }
+    hashes["decision.json"] = write_json(run_dir / "decision.json", decision_obj)
+
+    report = (
+        f"# Program 0 smoke report\n\n"
+        f"- mode: `{mode}`\n"
+        f"- run_id: `{run_manifest.run_id}`\n"
+        f"- decision: `{run_manifest.decision_status}`\n"
+        f"- promote: false\n"
+        f"- metrics: `{json.dumps(metrics, sort_keys=True)}`\n"
+        f"- evidence_ledger_eligible: false\n"
+        f"- leaderboard_eligible: false\n"
+    )
+    (run_dir / "report.md").write_text(report, encoding="utf-8")
+    hashes["report.md"] = sha256_file(str(run_dir / "report.md"))
+
+    run_manifest.artifact_paths_and_hashes = hashes
+    # Exclude start/end from identity; still stored.
+    hashes["run_manifest.json"] = write_json(
+        run_dir / "run_manifest.json", run_manifest.to_dict()
+    )
+
+    sums_lines = [f"{digest}  {name}" for name, digest in sorted(hashes.items())]
+    (run_dir / "SHA256SUMS").write_text("\n".join(sums_lines) + "\n", encoding="utf-8")
+
+    return hashes
 
 
 def run_smoke(
@@ -190,16 +274,7 @@ def run_smoke(
     bench = build_benchmark_manifest(bound, task_yaml)
     bench_hash = bench.digest()
 
-    if mode == "mock":
-        predictor: Predictor = MockedModel()
-        solver_or_model = mocked_model_manifest()
-        manifest_name = "model_manifest.json"
-    elif mode == "deterministic":
-        predictor = DeterministicTemplateSolver()
-        solver_or_model = deterministic_solver_manifest()
-        manifest_name = "solver_manifest.json"
-    else:
-        raise ValueError(f"unknown mode: {mode}")
+    predictor, solver_or_model, manifest_name = _get_predictor_and_manifest(mode)
 
     solver_hash = solver_or_model.digest()
     config = {
@@ -243,55 +318,12 @@ def run_smoke(
 
     end = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    hashes: dict[str, str] = {}
-    hashes["benchmark_manifest.json"] = write_json(
-        run_dir / "benchmark_manifest.json", bench.to_dict()
-    )
-    hashes[manifest_name] = write_json(
-        run_dir / manifest_name, solver_or_model.to_dict()
-    )
-    hashes["config.yaml"] = write_json(run_dir / "config.yaml", config)
-    # store config also as yaml-like json for simplicity; filename config.yaml content is JSON
-    (run_dir / "config.yaml").write_text(
-        "\n".join(f"{k}: {json.dumps(v)}" for k, v in config.items()) + "\n",
-        encoding="utf-8",
-    )
-    hashes["config.yaml"] = sha256_file(str(run_dir / "config.yaml"))
-    hashes["environment.json"] = write_json(run_dir / "environment.json", env)
-    hashes["raw_outputs.jsonl"] = write_jsonl(run_dir / "raw_outputs.jsonl", raw_rows)
-    hashes["per_item_scores.jsonl"] = write_jsonl(
-        run_dir / "per_item_scores.jsonl", score_rows
-    )
-    hashes["metrics.json"] = write_json(run_dir / "metrics.json", metrics)
     cost = {
         "currency": "USD",
         "amount": 0.0,
         "measurement_state": "not_measured",
         "units_note": "Program 0 local CPU smoke; cost unknown/zero",
     }
-    hashes["cost.json"] = write_json(run_dir / "cost.json", cost)
-    decision_obj = {
-        "decision": decision.value,
-        "promote": False,
-        "leaderboard_eligible": False,
-        "evidence_ledger_eligible": False,
-        "mode": mode,
-        "run_id": run_id,
-    }
-    hashes["decision.json"] = write_json(run_dir / "decision.json", decision_obj)
-
-    report = (
-        f"# Program 0 smoke report\n\n"
-        f"- mode: `{mode}`\n"
-        f"- run_id: `{run_id}`\n"
-        f"- decision: `{decision.value}`\n"
-        f"- promote: false\n"
-        f"- metrics: `{json.dumps(metrics, sort_keys=True)}`\n"
-        f"- evidence_ledger_eligible: false\n"
-        f"- leaderboard_eligible: false\n"
-    )
-    (run_dir / "report.md").write_text(report, encoding="utf-8")
-    hashes["report.md"] = sha256_file(str(run_dir / "report.md"))
 
     run_manifest = RunManifest(
         schema_version=SCHEMA_VERSION,
@@ -305,20 +337,27 @@ def run_smoke(
         end_utc=end,
         run_status=run_status.value,
         decision_status=decision.value,
-        artifact_paths_and_hashes=hashes,
+        artifact_paths_and_hashes={},
         cost_reference=cost,
         failure_information=failure,
         promote=False,
         leaderboard_eligible=False,
         evidence_ledger_eligible=False,
     )
-    # Exclude start/end from identity; still stored.
-    hashes["run_manifest.json"] = write_json(
-        run_dir / "run_manifest.json", run_manifest.to_dict()
-    )
 
-    sums_lines = [f"{digest}  {name}" for name, digest in sorted(hashes.items())]
-    (run_dir / "SHA256SUMS").write_text("\n".join(sums_lines) + "\n", encoding="utf-8")
+    hashes = _write_artifacts(
+        run_dir=run_dir,
+        mode=mode,
+        run_manifest=run_manifest,
+        bench=bench,
+        solver_or_model=solver_or_model,
+        manifest_name=manifest_name,
+        config=config,
+        env=env,
+        raw_rows=raw_rows,
+        score_rows=score_rows,
+        metrics=metrics,
+    )
 
     return {
         "run_id": run_id,
