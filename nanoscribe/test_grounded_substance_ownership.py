@@ -78,7 +78,7 @@ def test_source_owned_substance_and_contrary_denial_survive(field, report, value
 
 
 def test_free_proposal_is_not_limited_to_the_menu_spelling():
-    report = "Patient: I took Xyzalorfen-420mg extended release."
+    report = "Patient: I took Xyzalorfen-420mg because my cough returned."
     value = "Xyzalorfen-420mg"
     claim, direct, compact, english = observed(report, MED, value)
     assert claim["state"] == "supported" and claim["value"] == value
