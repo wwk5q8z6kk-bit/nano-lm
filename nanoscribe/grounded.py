@@ -24,6 +24,7 @@ import re
 from fractions import Fraction
 from itertools import combinations
 from typing import Any
+from urllib.parse import quote
 
 from nano_ai.adapters.state_span import (
     StateSpanFormatError,
@@ -123,8 +124,12 @@ _EPISTEMIC_HEDGE_RE = re.compile(
 
 # Hyphens, slashes and apostrophes between word characters can be part of the
 # substance name (co-codamol, amoxicillin/clavulanate, St John's wort).
-_SUBSTANCE_WORD = r"[\w\u0300-\u036f]+(?:[-‐‑/'’+][\w\u0300-\u036f]+)*"
+_WORD_SEGMENT = r"[\w\u0300-\u036f]+"
+_SUBSTANCE_WORD = rf"{_WORD_SEGMENT}(?:[-‐‑/'’+]{_WORD_SEGMENT})*"
 _SUBSTANCE_WORD_RE = re.compile(_SUBSTANCE_WORD)
+# A slash can list separate complaints. A hyphen or apostrophe within a word
+# can change its meaning, as in “headache-free” or “swimmer’s ear”.
+_COMPLAINT_WORD_RE = re.compile(rf"{_WORD_SEGMENT}(?:[-‐‑'’]{_WORD_SEGMENT})*")
 _SUBSTANCE_WORDS = rf"{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD})*"
 _SUBSTANCE_WORDS_RE = re.compile(_SUBSTANCE_WORDS)
 # Preserve multiword names identified by a direct substance predicate. A time,
@@ -140,6 +145,15 @@ _SUBSTANCE_OBJECT_RE = re.compile(
     r"\s+(?:(?:a|an|some|the|just|only)\s+)?" + _SUBSTANCE_NAME, re.I,
 )
 _OWNED_SUBSTANCE_NAME_RE = re.compile(r"\s*(?:(?:a|an|some|the|yes,?|just|only)\s+)*" + _SUBSTANCE_NAME, re.I)
+_MEDICATION_AMOUNT = r"(?:\d+(?:\.\d+)?|\.\d+|one|two|three|half)"
+_MEDICATION_DOSE_UNIT = r"(?:mg|mcg|[μµ]g|g|ml|milligrams?|micrograms?|grams?|millilit(?:er|re)s?|units?)"
+_MEDICATION_DOSE_FORM = r"(?:tablets?|pills?|capsules?|doses?|puffs?|drops?)"
+_MEDICATION_DOSE_RE = re.compile(
+    rf"(?<!\S){_MEDICATION_AMOUNT}[\s‐‑-]*(?:{_MEDICATION_DOSE_UNIT}(?:\s+{_MEDICATION_DOSE_FORM})?|{_MEDICATION_DOSE_FORM})\b", re.I,
+)
+_MEDICATION_DOSE_PREFIX_RE = re.compile(
+    rf"\s*(?:(?:a|an|the|some|just|only)\s+)*(?:{_MEDICATION_DOSE_RE.pattern})(?:\s+(?P<link>of)\b)?\s*", re.I,
+)
 _FOLLOWUP_DOUBT_RE = re.compile(
     r"\b(?:not (?:sure|certain)|no longer (?:sure|certain)|unsure|uncertain|"
     r"(?:can['’]t|cannot|don['’]t|do not) (?:remember|recall|know))\b", re.I,
@@ -417,6 +431,28 @@ _MED_DENIAL_CUE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Category words can qualify either a denial or the question answered by "no".
+_ALLERGEN_CATEGORY_WORDS = {
+    "drug": r"(?:drugs?|medications?|medicines?|meds?)",
+    "material": r"(?:materials?|contact)",
+    "food": r"foods?",
+    "environmental": r"(?:environmental|seasonal)",
+}
+_ALLERGEN_CATEGORY = "(?:" + "|".join(_ALLERGEN_CATEGORY_WORDS.values()) + ")"
+_ALLERGEN_CATEGORY_RE = re.compile(rf"\b{_ALLERGEN_CATEGORY}\b", re.I)
+_TYPED_ALLERGY_QUESTION_RE = re.compile(
+    rf"(?:do you have |are there )?any (?:known )?{_ALLERGEN_CATEGORY} allerg(?:y|ies)", re.I,
+)
+_ALLERGY_DENIAL_NOUN_RE = re.compile(
+    rf"(?:(?:no,? )?(?:i (?:have |have got )?no|no|i (?:do not|don't) have(?: any)?|"
+    rf"i (?:deny|denied)(?: any)?|i (?:haven't|have not) got any) )"
+    rf"(?:known )?(?:(?P<type>{_ALLERGEN_CATEGORY}) )?allerg(?:y|ies)"
+    rf"(?: to (?:any )?(?P<object_type>{_ALLERGEN_CATEGORY}))?(?: at all)?", re.I,
+)
+_ALLERGY_DENIAL_OBJECT_RE = re.compile(
+    r"(?:i(?: am|'m) not allergic(?: to (?P<object>.+))?)", re.I,
+)
+
 _ALG_DENIAL_CUE_RE = re.compile(
     r"(?:"
     r"\bno\s+(?:known\s+|medication\s+|medicine\s+|drug\s+|material\s+)*allerg(?:y|ies)\b"
@@ -634,7 +670,7 @@ class GroundedFieldOutput:
             span.validate_against(request.transcript, path=f"{path}.evidence[{idx}]")
         if self.state is FieldState.ABSENT:
             source = transcript_source(request)
-            if not any(is_explicit_patient_denial(source, self.field, span) for span in self.evidence):
+            if not any(verify_grounded_span(source, self.field, self.state, span)[0] for span in self.evidence):
                 raise ContractValidationError(
                     "absence_without_denial",
                     "absent fields require an explicit non-hedged patient denial",
@@ -697,10 +733,10 @@ def _enclosing_clause(turn: Turn, span: CandidateSpan | Turn) -> Turn:
     return turn
 
 
-def _split_events(clause: Turn, boundary: re.Pattern[str]) -> tuple[Turn, ...]:
+def _split_events(clause: Turn, boundary: re.Pattern[str], *, stop_at: int | None = None) -> tuple[Turn, ...]:
     start = 0
     events = []
-    for join in boundary.finditer(clause.text):
+    for join in boundary.finditer(clause.text, 0, len(clause.text) if stop_at is None else stop_at):
         events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
                            clause.start + start, clause.start + join.start(), clause.text[start:join.start()]))
         start = join.end()
@@ -730,6 +766,102 @@ def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
         else:
             reports.append(part)
     return tuple(reports)
+
+
+# A complaint must be the object of a personal report, or a symptom phrase
+# answering a clinical question. Keep the clinical head's literal position:
+# an address or a medicine elsewhere in the same reply cannot borrow it.
+_COMPLAINT_LEAD_RE = re.compile(
+    r"^(?:(?:well|actually|mostly|mainly|yes)[, ]+\s*)*"
+    r"(?:(?:i(?:'ve|\s+have)\s+(?:been\s+(?:having|feeling|experiencing|dealing\s+with)|got|felt|had)|"
+    r"i\s+(?:(?:also|still|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
+    r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with|"
+    r"(?:on\s+my\s+period|menstruating)\s+with)|i(?:'m|\s+am)(?=\s+on\s+edge\b)|"
+    r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is)\s+)?", re.I,
+)
+_COMPLAINT_JOIN_RE = re.compile(
+    r",?\s+(?:(?:and|but|because|although|whereas)\s+(?=(?:i|please|my)\b)|"
+    r"(?:and|but)\s+(?=(?:an?|the)\s+))", re.I,
+)
+_DOCUMENT_CONTENT_RE = re.compile(r'\b(?:says?|states?|reads?|titled|labelled|labeled|quoting|lists?)\b|[“"]', re.I)
+_COMPLAINT_PREFIX = (
+    rf"(?:an?|the|my|some|this|both|really|very|quite|unusually|sudden|persistent|"
+    rf"acute|chronic|severe|mild|moderate|sharp|dull|constant|intermittent|painless|dry|stabbing|abdominal|pelvic|"
+    rf"left(?:[-‑]sided)?|right(?:[-‑]sided)?|lower|upper|{_BODY_REGION}|"
+    rf"heels?|thumbs?|cheeks?|forehead|knuckles?|nose|scalp|joints?|form\s+of|"
+    rf"i\s+need\s+to\s+address|(?:has|have|had)\s+(?:been|felt)|feels?|is|are|was|were)"
+)
+_COMPLAINT_HEAD_RE = re.compile(
+    rf"[\s‘’'\"“(\[]*(?:{_COMPLAINT_PREFIX}[\s‘’'\"“(\[]+)*?"
+    r"(?P<head>pain(?:s)?|discomfort|headaches?|earaches?|aches?|aching|cough(?:ing)?|"
+    r"nausea|dizz(?:y|iness)|nauseous|vertigo|ringing|swelling|rash(?:es)?|itching|fever|fatigue|on\s+edge(?!\s+of\b)|"
+    r"soreness|numbness|tingling|vomiting|diarrhea|bleeding|breathlessness|cramps?|cramping|"
+    r"tightness|pressure|stiffness|throbbing|chills|clicking|twitching|stings?|burns?|hurts?|itches?|shakes?|tremors?|"
+    r"shortness\s+of\s+breath|loss\s+of\s+(?:taste|smell|hearing|vision)|palpitations|hoarseness|pins\s+and\s+needles|paper\s+cut|swimmer['’]s\s+ear|"
+    r"caf[eé]\u0301?\s+spots|(?:blurred|blurry|double)\s+vision|(?:runny|stuffy)\s+nose|"
+    r"(?:trouble|difficulty)\s+(?:remembering|recalling|forming|breathing|walking|swallowing)|"
+    rf"(?:{_SENSATION}|shaking)(?:\s+(?:{_BODY_REGION}|knuckles?|scalp))?)\b", re.I,
+)
+# A following bare noun makes the clinical word its modifier ('cough drops',
+# 'headache diary'). A symptom head can instead end, introduce its location,
+# timing or trigger, or carry an independent predicate ('the pain returned').
+_COMPLAINT_CONTINUATION_RE = re.compile(
+    rf"(?:{_BODY_REGION}|knuckles?|joints?|heels?|thumbs?|scalp|today|yesterday|every|each|all|now|"
+    r"especially|mainly|mostly|again|when|whenever|which|that|in|on|at|near|of|with|through|"
+    r"behind|around|across|along|after|before|during|for|from|since|while|because|like|upon|"
+    r"and|or|but|is|are|was|were|has|have|began|started|returned|lasts?|lasted|"
+    r"woke|wakes?|keeps?|gets?|got|spread|continues?|persists?|hurts?|aches?)\b", re.I,
+)
+# The question can supply the reporting predicate for an unfamiliar sensation
+# described by its location (e.g. 'zigzag lines across my vision').
+_LOCATED_SENSATION_RE = re.compile(
+    r"(?:(?:[\w'-]+\s+){0,2}(?:lines?|spots?|flashes?|lights?|floaters?|sounds?|"
+    r"buzzing|sensations?|pulsing|fluttering|vibrations?))\s+(?:across|in|behind|around|along|under)\s+(?:my|both)\s+"
+    rf"(?:{_BODY_REGION}|vision|hearing|sight)\b", re.I,
+)
+_POSSESSIVE_BODY_CLAUSE_RE = re.compile(
+    rf"^my\s+(?:(?:left|right|upper|lower)\s+)*{_BODY_REGION}\s+"
+    r"(?:hurts?|aches?|itches?|stings?|burns?|shakes?|twitches|feels?|is|are|has|have)\b", re.I,
+)
+
+
+def _complaint_reports(clause: Turn) -> Iterator[Turn]:
+    # A document may quote a separate-looking first-person proposition.
+    for sentence in _reply_clauses(clause):
+        for report in _reporting_events(sentence):
+            content = _DOCUMENT_CONTENT_RE.search(report.text)
+            pieces = _split_events(report, _COMPLAINT_JOIN_RE, stop_at=content.start() if content else None)
+            yield from pieces
+
+
+def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateSpan) -> bool:
+    text = report.text.replace("’", "'")
+    lead = _COMPLAINT_LEAD_RE.match(text)
+    head = _COMPLAINT_HEAD_RE.match(text, lead.end())
+    previous = _preceding_clinician_turn(source, idx)
+    requested = question_field(previous.text) if previous else None
+    if (report.start == source.turns[idx].start and lead.end() == 0
+            and requested in (FieldName.MEDICATION, FieldName.ALLERGY)):
+        return False
+    if head:
+        # Adjacent symptom words can form one object, e.g. "itchy rash".
+        # Validate the noun after the complete description as well.
+        last = head
+        while following_head := _COMPLAINT_HEAD_RE.match(text, last.end()):
+            last = following_head
+        following = re.match(r"\s+([^\W\d_]+)", text[last.end():])
+        functional = re.match(r"(?:trouble|difficulty)\s+", last["head"], re.I)
+        if (following and not _COMPLAINT_CONTINUATION_RE.match(following[1])
+                and not (functional and following[1].casefold() in {"my", "the", "words", "names"})):
+            return False
+        return (span.start <= report.start + head.start("head")
+                and report.start + head.end("head") <= span.end)
+
+    if requested is FieldName.CHIEF_COMPLAINT:
+        located = _LOCATED_SENSATION_RE.match(text, lead.end())
+        return bool(located and span.start <= report.start + located.start()
+                    and report.start + located.end() <= span.end)
+    return False
 
 
 def _explicit_alternatives(event: Turn) -> Iterator[CandidateSpan]:
@@ -946,6 +1078,8 @@ def _field_wide_question(text: str, field: FieldName) -> bool:
     """Only an unqualified category question can give an elliptical 'no' field-wide scope."""
     if question_field(text) is field:
         return True
+    if field is FieldName.ALLERGY and _TYPED_ALLERGY_QUESTION_RE.fullmatch(text.rstrip("?.!").strip()):
+        return True
     extra = {
         FieldName.ALLERGY: r"any (?:drug sensitivities|allergies)(?: on (?:file|your chart))?",
         FieldName.MEDICATION: r"any (?:meds|treatments)(?: for (?:it|this))?",
@@ -973,13 +1107,16 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     text = span.text.strip()
     if (_EPISTEMIC_HEDGE_RE.search(text) or _THIRD_PARTY_RE.search(text) or _PERSONAL_SUBJECT_RE.search(text)
             or _SIDE_EFFECT_CONTRAST_RE.search(text)
-            or re.search(r"\b(?:except|apart from|other than|allerg(?:y|ies) to)\b", text, re.I)):
+            or re.search(r"\b(?:except|apart from|other than)\b", text, re.I)
+            or (re.search(r"\ballerg(?:y|ies) to\b", text, re.I)
+                and not (field is FieldName.ALLERGY and _ALLERGY_DENIAL_NOUN_RE.fullmatch(text.strip(" .!?;"))))):
         return False
     if _ELLIPTICAL_DENIAL_RE.fullmatch(text):
         if (span.start != turn.start or prev is None or prev.speaker is not Speaker.CLINICIAN
                 or not _field_wide_question(prev.text, field)):
             return False
-    elif not _is_field_denial(field, text):
+    elif (not _is_field_denial(field, text)
+          and not (field is FieldName.ALLERGY and _allergy_denial_scope(text)[0] != "unknown")):
         cue_re = _MED_DENIAL_CUE_RE if field is FieldName.MEDICATION else _ALG_DENIAL_CUE_RE
         if not (_NEGATION_WORD_RE.search(text) and cue_re.search(text)):
             return False
@@ -1027,7 +1164,10 @@ def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> 
         return False
     first_word = words[0]
     if field is not FieldName.DURATION and first_word in {"a", "an", "the", "my", "some"}:
-        return False
+        # In "my wrist hurts", the possessive belongs to the subject of a
+        # complete patient report. A noun phrase still uses its bare value.
+        if field is not FieldName.CHIEF_COMPLAINT or not _POSSESSIVE_BODY_CLAUSE_RE.match(cleaned):
+            return False
     if field is FieldName.DURATION and first_word in {"the", "my", "some"} and not cleaned.casefold().startswith(
         ("the evening", "the morning", "the afternoon", "the night", "the day")
     ):
@@ -1134,9 +1274,17 @@ def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[Candidate
                             event[start:end], re.I)
         if part:
             value, purpose = part.group("name", "purpose")
+            name_start, name_end = part.span("name")
+            if _MEDICATION_DOSE_RE.search(value):
+                bounds = _substance_name_bounds(value, (0, len(value)), FieldName.MEDICATION)
+                if bounds is None:
+                    start = following
+                    continue
+                name_start, name_end = name_start + bounds[0], name_start + bounds[1]
+                value = event[start + name_start:start + name_end]
             if (not _TAKEN_NON_TREATMENT_OBJECT_RE.match(value)
                     and grounded_value_valid(FieldName.MEDICATION, value) and _plain_value(FieldName.MEDICATION, value, syntax=_SUBSTANCE_WORDS_RE)):
-                span = CandidateSpan(offset + start + part.start("name"), offset + start + part.end("name"), value)
+                span = CandidateSpan(offset + start + name_start, offset + start + name_end, value)
                 if purpose and not re.match(r"granted\b", purpose, re.I) and not _DURATION_VALUE_RE.fullmatch(purpose):
                     names.extend(pending)
                     names.append(span)
@@ -1259,9 +1407,25 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
     return start, adjunct.start() if adjunct else len(text)
 
 
-def _owned_substance_name(event: Turn, owned: tuple[int, int]) -> tuple[int, int] | None:
-    """Absolute source range of the complete name before its timing or purpose."""
-    phrase = _OWNED_SUBSTANCE_NAME_RE.match(event.text, *owned)
+def _substance_name_bounds(text: str, owned: tuple[int, int], field: FieldName) -> tuple[int, int] | None:
+    """Locate the complete substance name inside its grammatical object."""
+    start, end = owned
+    if field is FieldName.MEDICATION:
+        dose = _MEDICATION_DOSE_PREFIX_RE.match(text, start, end)
+        if dose:
+            start = dose.end()
+            # A dose can be followed by a route, schedule or source as easily
+            # as a drug. "of" names the object explicitly. Without it, require
+            # independent evidence of a name at this position.
+            if not dose["link"] and not _FAMILIAR_MEDICINE_RE.match(text, start, end):
+                return None
+            if re.match(r"(?:from|out|off|into|through|per|as|of|it|them|that|this|my|something|anything)\b", text[start:end], re.I):
+                return None
+        else:
+            trailing_dose = _MEDICATION_DOSE_RE.search(text, start, end)
+            if trailing_dose:
+                end = trailing_dose.start()
+    phrase = _OWNED_SUBSTANCE_NAME_RE.match(text, start, end)
     if not phrase:
         return None
     name = phrase["name"]
@@ -1269,8 +1433,30 @@ def _owned_substance_name(event: Turn, owned: tuple[int, int]) -> tuple[int, int
         timing = pattern.search(name)
         if timing and timing.start() > 0:
             name = name[:timing.start()]
-    start = event.start + phrase.start("name")
+    start = phrase.start("name")
     return start, start + len(name.rstrip())
+
+
+def _medication_name_rejection(event: Turn, owned: tuple[int, int], span: CandidateSpan) -> str | None:
+    taken = _TAKEN_RE.match(event.text)
+    if taken:
+        names = _taken_indication_names(event.text[taken.end():], event.start + taken.end())
+        if names:
+            return None if span in names else "span_outside_reported_treatment_name"
+
+    start, end = span.start - event.start, span.end - event.start
+    name = _substance_name_bounds(event.text, owned, FieldName.MEDICATION)
+    if name and start <= name[0] and name[1] <= end:
+        return None
+
+    # A second coordinated medication is evidence in its own right. Only its
+    # grammatical object can license it; the dose and other trailing words cannot.
+    pair = _coexisting_substance_clause(FieldName.MEDICATION, event.text)
+    if pair and span.text == pair[1] and start == event.text.rfind(pair[1]):
+        bounds = _substance_name_bounds(span.text, (0, len(span.text)), FieldName.MEDICATION)
+        if bounds:
+            return None
+    return "incomplete_substance_name"
 
 
 def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
@@ -1304,6 +1490,79 @@ def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
             name = prior.text.strip(" .,!?;")
             return bool(re.fullmatch(r"\s*(?:(?:taking|using)\s+)?(?:it|them|that|those|" + re.escape(name) + r")\s*", obj, re.I))
     return False
+
+
+_SEVERITY_SUBJECT_RE = re.compile(
+    rf"\b(?:(?P<symptom>{_SYMPTOM}|cramps?|tightness|pressure|stiffness|breathing|burning|throbbing|"
+    r"hurt(?:s|ing)?|ach(?:es|ing)|sore|dizzy|nauseous|hoarseness|cramping|palpitations)"
+    r"|allerg(?:y|ies|ic)|reactions?|side effects?|medications?|medicines?|doses?|traffic|commute|delay|ride)\b", re.I,
+)
+_SEVERITY_JOIN_RE = re.compile(
+    r",?\s+(?:but|and|although|whereas|while|because)\s+(?=(?:my|the|i|it|a|an|this|that)\b)", re.I,
+)
+# An elliptical rating can answer a question or continue the preceding report.
+# It cannot change an explicitly identified subject such as a medication allergy.
+_RATING_LEAD_RE = re.compile(
+    rf"(?:(?:yes|well|actually|definitely|only|about|roughly|around|maybe|very|really|pretty|"
+    rf"quite|just|at|a|an|little|bit|honestly|mostly|it's|it|is|was|has|been|feels?|felt|"
+    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|now|today|"
+    rf"mildly|moderately|severely|this|morning|tonight)\b[\s,']*|{_BOUND_LEAD})*", re.I,
+)
+
+
+def _severity_subject(text: str) -> bool | None:
+    matches = list(_SEVERITY_SUBJECT_RE.finditer(text))
+    return bool(matches[-1]["symptom"]) if matches else None
+
+
+def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: CandidateSpan) -> bool:
+    portions = _split_events(event, _SEVERITY_JOIN_RE)
+    selected = [p for p in portions if p.start < span.end and span.start < p.end]
+    if len(selected) != 1:
+        return False
+    report = selected[0]
+    ratings = [m for m in _SEVERITY_CORE_RE.finditer(report.text)
+               if span.start <= report.start + m.start() and report.start + m.end() <= span.end]
+    if not ratings:
+        return False
+    for rating in ratings:
+        before = report.text[:rating.start()].strip().replace("’", "'")
+        after = report.text[rating.end():]
+        # Stop before a separate subject, adjunct or predicate.
+        noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
+                        after, maxsplit=1, flags=re.I)[0]
+        # A following noun is the thing rated. A bare adjective plus a time
+        # or degree modifier remains an elliptical description.
+        subject = _severity_subject(noun)
+        if (noun.strip() and subject is None and not re.match(
+                r"\s*(?:all\s+(?:day|night)|this\s+(?:morning|afternoon|evening)|"
+                r"uncomfortable|really|mostly|especially|particularly|worse|last\s+night|either\s+way|or\b)", noun, re.I)):
+            return False
+        if subject is None:
+            subject = _severity_subject(before)
+        if subject is not None:
+            if not subject:
+                return False
+            continue
+        if not _RATING_LEAD_RE.fullmatch(before):
+            return False
+        previous = _preceding_clinician_turn(source, idx)
+        if report.start != source.turns[idx].start:
+            prior = source.text[source.turns[idx].start:report.start]
+        elif previous:
+            prior = previous.text
+        elif idx and source.turns[idx - 1].speaker is Speaker.PATIENT:
+            prior = source.turns[idx - 1].text
+        else:
+            prior = ""
+        if previous and prior == previous.text and re.search(
+                r"\b(?:how (?:bad|severe|intense|strong)|(?:would|do) you rate)\s+"
+                r"(?:(?:is|are|was|were)\s+)?(?:the|your|my|an?)\s+", prior, re.I
+        ) and _severity_subject(prior) is None and question_field(prior) is not FieldName.SEVERITY:
+            return False
+        if _severity_subject(prior) is False:
+            return False
+    return True
 
 
 def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, duration: CandidateSpan) -> str | None:
@@ -1405,10 +1664,12 @@ def _verify_local_span(
     if state is FieldState.SUPPORTED:
         start, end = span.start - turn.start, span.end - turn.start
         tokens = (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
-        if field in (FieldName.MEDICATION, FieldName.ALLERGY):
+        if field in (FieldName.CHIEF_COMPLAINT, FieldName.MEDICATION, FieldName.ALLERGY):
+            complaint = field is FieldName.CHIEF_COMPLAINT
+            words = _COMPLAINT_WORD_RE if complaint else _SUBSTANCE_WORD_RE
             if any(m.start() < start < m.end() or m.start() < end < m.end()
-                   for m in _SUBSTANCE_WORD_RE.finditer(turn.text)):
-                return False, "incomplete_substance_word"
+                   for m in words.finditer(turn.text)):
+                return False, "incomplete_complaint_word" if complaint else "incomplete_substance_word"
         if field is FieldName.SEVERITY:
             tokens += (_BOUNDED_SCALE_RE,)
         if field is FieldName.DURATION:
@@ -1437,6 +1698,12 @@ def _verify_local_span(
         if any(_patient_question(part.text) for part in reporting):
             return False, "patient_question"
         event = reporting[0] if len(reporting) == 1 else clause
+        if field is FieldName.CHIEF_COMPLAINT:
+            reports = [part for part in _complaint_reports(clause)
+                       if part.start <= span.start and span.end <= part.end]
+            if len(reports) != 1 or not _complaint_evidence(source, idx, reports[0], span):
+                return False, "no_clinical_complaint_at_span"
+            event = reports[0]
         if field in (FieldName.MEDICATION, FieldName.ALLERGY):
             treatments = [part for part in _treatment_events(event) if part.start < span.end and span.start < part.end]
             if any(_PROSPECTIVE_TREATMENT_RE.search(part.text) for part in treatments):
@@ -1448,21 +1715,24 @@ def _verify_local_span(
             if (owned is None or not owned[0] <= span.start - event.start < owned[1]
                     or (field is FieldName.ALLERGY and span.end - event.start > owned[1])):
                 return False, "no_field_owned_substance_at_span"
-            name = _owned_substance_name(event, owned)
-            if name and span.start < name[1] and name[0] < span.end:
-                if span.start > name[0] or span.end < name[1]:
+            start, end = span.start - event.start, span.end - event.start
+            if field is FieldName.MEDICATION:
+                reason = _medication_name_rejection(event, owned, span)
+                if reason:
+                    return False, reason
+                if _TAKEN_RE.search(event.text):
+                    _, _, question = _question_flags(source, idx)
+                    if not _medication_verb_positions(event.text, question):
+                        return False, "taken_without_treatment_context"
+            else:
+                name = _substance_name_bounds(event.text, owned, field)
+                if name and start < name[1] and name[0] < end and not (start <= name[0] and name[1] <= end):
                     return False, "incomplete_substance_name"
+        if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
+            return False, "severity_not_linked_to_current_episode"
         if field is FieldName.DURATION:
             if reason := _duration_scope_rejection(source, idx, event, span):
                 return False, reason
-        if field is FieldName.MEDICATION and _TAKEN_RE.search(event.text):
-            _, _, question = _question_flags(source, idx)
-            if not _medication_verb_positions(event.text, question):
-                return False, "taken_without_treatment_context"
-            taken = _TAKEN_RE.match(event.text)
-            names = _taken_indication_names(event.text[taken.end():], event.start + taken.end()) if taken else ()
-            if names and not any((span.start, span.end) == (item.start, item.end) for item in names):
-                return False, "span_outside_reported_treatment_name"
         if not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
         if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(event.text):
@@ -1500,9 +1770,11 @@ def verify_grounded_span(
     valid, reason = _verify_local_span(source, field, state, span)
     if valid and state is FieldState.SUPPORTED and _coexisting_substances(source, field):
         return False, "coexisting_multiple_substances_require_uncertain"
-    if valid and field is FieldName.MEDICATION and state is FieldState.ABSENT:
-        if any(not _denial_covers_treatment(source, span, taken) for taken in _local_supported_spans(source, field)):
-            return False, "scoped_denial_does_not_cover_reported_treatment"
+    if valid and state is FieldState.ABSENT:
+        if field is FieldName.ALLERGY and _allergy_denial_scope(span.text)[0] == "name":
+            return False, "named_allergen_denial_is_not_field_wide"
+        if any(not _denial_covers_substance(source, field, span, item) for item in _local_supported_spans(source, field)):
+            return False, "scoped_denial_does_not_cover_reported_substance"
     return valid, reason
 
 
@@ -1518,8 +1790,10 @@ def _patient_occurrence_count(source: Source, text: str) -> int:
 
 
 def format_grounded_span_token(source: Source, span: CandidateSpan) -> str:
-    """Use plain text when unique across Patient turns and delimiter-safe; otherwise `@start..end:text`."""
-    if any(ch in span.text for ch in ";[]|\r\n") or _patient_occurrence_count(source, span.text) != 1:
+    """Keep legacy literals and offsets; percent-encode quotes containing wire syntax."""
+    if any(ch in span.text for ch in "[]|\r\n") or _SPAN_OFFSET_RE.fullmatch(span.text):
+        return f"@{span.start}..{span.end}:#{quote(span.text, safe='')}"
+    if ";" in span.text or _patient_occurrence_count(source, span.text) != 1:
         return f"@{span.start}..{span.end}:{span.text}"
     return span.text
 
@@ -1527,9 +1801,15 @@ def format_grounded_span_token(source: Source, span: CandidateSpan) -> str:
 def _resolve_grounded_span_token(transcript: str, source: Source, token: str) -> CandidateSpan:
     m = _SPAN_OFFSET_RE.match(token)
     if m:
-        start, end, text = int(m.group("start")), int(m.group("end")), m.group("text")
-        if start < 0 or end <= start or end > len(transcript) or transcript[start:end] != text:
-            raise StateSpanFormatError("offset-tagged evidence does not match exact transcript bytes")
+        start, end = int(m["start"]), int(m["end"])
+        if not 0 <= start < end <= len(transcript):
+            raise StateSpanFormatError("offset-tagged evidence is outside the transcript")
+        text = transcript[start:end]
+        payload = m["text"]
+        # Legacy verbatim quotes take precedence, including literal '#' and '%'.
+        # Check the canonical encoding against the actual slice before accepting it.
+        if payload != text and not (payload.startswith("#") and payload[1:] == quote(text, safe="")):
+            raise StateSpanFormatError("offset-tagged evidence does not match exact transcript text")
         idx = _turn_index(source, start, end)
         if idx is None or source.turns[idx].speaker is not Speaker.PATIENT:
             raise StateSpanFormatError("offset-tagged evidence is not inside a Patient turn")
@@ -1543,7 +1823,7 @@ def parse_grounded_summary(
     raw: object,
     transcript: str,
 ) -> tuple[list[str], list[StateSpanProposal | None], list[str | None], str | None]:
-    """Parse five-slot summary supporting both legacy `S[text]` and `@start..end:text` / `||` conflicts."""
+    """Resolve literal, verbatim offset-tagged, or percent-encoded offset-tagged evidence."""
     if not isinstance(raw, str):
         raise StateSpanFormatError("native-state summary must be text")
     pieces = raw.split("|")
@@ -1669,18 +1949,16 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
     for t_idx, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT:
             continue
-        is_explicit_med_q, is_explicit_alg_q, prev_q = _question_flags(source, t_idx)
-
         reports = (part for clause in _reply_clauses(turn) for part in _reporting_events(clause))
         events = (event for report in reports for event in _treatment_events(report)) if field in (
             FieldName.MEDICATION, FieldName.ALLERGY) else reports
+        if field is FieldName.CHIEF_COMPLAINT:
+            events = _complaint_reports(turn)
         for clause in events:
             # Both apostrophes occupy one character. Match conventional English
             # spelling while slicing every proposed quote from the literal source.
             c_text = clause.text.rstrip(";").rstrip().replace("’", "'")
             c_start = clause.start
-            has_med_verb = bool(_medication_verb_positions(c_text, prev_q))
-            has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text) or _POSTPOSED_ALLERGY_RE.match(c_text))
 
             if field is FieldName.DURATION:
                 for m in _DURATION_VALUE_RE.finditer(c_text):
@@ -1731,19 +2009,8 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                 continue
 
             if field is FieldName.CHIEF_COMPLAINT:
-                if has_med_verb or has_alg_pred or is_explicit_alg_q or is_explicit_med_q:
-                    continue
                 body = c_text.rstrip(".!?").strip()
-                # Strip leading patient complaint wrappers
-                lead = re.match(
-                    r"^(?:i've\s+been\s+(?:having|experiencing|dealing\s+with)|i\s+have\s+been\s+having|"
-                    r"i've\s+(?:got|felt|had)|i\s+(?:have|got|feel|came\s+in\s+(?:because\s+of|for|with)|"
-                    r"am\s+(?:here\s+(?:because\s+of|about|for)|having|dealing\s+with))|"
-                    r"i'm\s+(?:here\s+(?:because\s+of|about|for)|having|dealing\s+with)|"
-                    r"mostly\s+)?",
-                    body,
-                    re.IGNORECASE,
-                )
+                lead = _COMPLAINT_LEAD_RE.match(body)
                 sub_start = lead.end() if lead else 0
                 rem = body[sub_start:]
                 # Strip trailing visit-reason / temporal / duration suffixes
@@ -1764,14 +2031,16 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                     sp = _trim_span(source.text, c_start + pos, c_start + pos + len(rem))
                     if sp is not None:
                         add(_strip_leading_determiner(source.text, sp))
+                        if c_start > turn.start and _POSSESSIVE_BODY_CLAUSE_RE.match(rem):
+                            add(sp)
                 continue
 
             owned = _substance_object(source, t_idx, clause, field)
             if owned is None:
                 continue
-            name = _owned_substance_name(clause, owned)
+            name = _substance_name_bounds(clause.text, owned, field)
             if name is not None:
-                add(_trim_span(source.text, *name))
+                add(_trim_span(source.text, c_start + name[0], c_start + name[1]))
 
             if field is FieldName.MEDICATION:
                 body = c_text.rstrip(".!?").strip()
@@ -2072,6 +2341,83 @@ def _denial_covers_treatment(source: Source, denial: CandidateSpan, treatment: C
     return bool(denied and taken and denied[0] == taken[0] and (not denied[1] or denied[1] == taken[1]))
 
 
+def _allergen_category(word: str) -> str | None:
+    return next((category for category, pattern in _ALLERGEN_CATEGORY_WORDS.items()
+                 if re.fullmatch(pattern, word, re.I)), None)
+
+
+def _allergy_denial_scope(text: str) -> tuple[str, str | None]:
+    """A complete qualifier determines the denial; unmatched modifiers never imply 'all'."""
+    clean = text.casefold().replace("’", "'").strip(" .!?;")
+    noun = _ALLERGY_DENIAL_NOUN_RE.fullmatch(clean)
+    if noun:
+        category = noun["type"] or noun["object_type"]
+        if noun["type"] and noun["object_type"]:
+            return "unknown", None
+        return ("category", _allergen_category(category)) if category else ("all", None)
+    relation = _ALLERGY_DENIAL_OBJECT_RE.fullmatch(clean)
+    if relation:
+        obj = relation["object"]
+        if obj in (None, "anything"):
+            return "all", None
+        category = _allergen_category(obj.removeprefix("any "))
+        if category:
+            return "category", category
+        if re.fullmatch(rf"{_SUBSTANCE_WORD}(?: {_SUBSTANCE_WORD}){{0,5}}", obj):
+            return "name", normalize_value(obj)
+    return "unknown", None
+
+
+def _allergy_question_scope(text: str) -> tuple[str, str | None]:
+    if not _field_wide_question(text, FieldName.ALLERGY):
+        return "unknown", None
+    category = _ALLERGEN_CATEGORY_RE.search(text)
+    return ("category", _allergen_category(category[0])) if category else ("all", None)
+
+
+def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | None:
+    # A new or ambiguous name only inherits a category as a direct answer to a
+    # typed question. An independently worded report retains its own scope.
+    idx = _turn_index(source, span.start, span.end)
+    if idx is None:
+        return None
+    name = normalize_value(span.text)
+    # These mineral names also identify exposures in food and materials; a
+    # drug-specific question can still establish their use as medications.
+    if _FAMILIAR_MEDICINE_RE.fullmatch(name) and name not in {"zinc", "sodium chloride", "calcium carbonate"}:
+        return "drug"
+    for category, pattern in (
+        ("material", r"(?:natural rubber )?latex(?: gloves)?|nickel|adhesive(?: tape)?"),
+        ("food", r"peanuts?|tree nuts?|almonds?|eggs?|shellfish|shrimp|cow's milk"),
+        ("environmental", r"(?:[\w-]+ )*pollen|dust mites?|(?:cat|dog) dander"),
+    ):
+        if re.fullmatch(pattern, name):
+            return category
+    question = _preceding_clinician_turn(source, idx)
+    if question and normalize_value(source.turns[idx].text) == name:
+        category = _allergy_question_scope(question.text)[1]
+        if category:
+            return category
+    # A patient's own account may establish that an unfamiliar name is a drug.
+    if any(normalize_value(med.text) == name for med in _local_supported_spans(source, FieldName.MEDICATION)):
+        return "drug"
+    return None
+
+
+def _denial_covers_substance(source: Source, field: FieldName, denial: CandidateSpan, item: CandidateSpan) -> bool:
+    if field is FieldName.MEDICATION:
+        return _denial_covers_treatment(source, denial, item)
+    scope, value = _allergy_denial_scope(denial.text)
+    if _ELLIPTICAL_DENIAL_RE.fullmatch(denial.text.strip()):
+        idx = _turn_index(source, denial.start, denial.end)
+        question = _preceding_clinician_turn(source, idx) if idx is not None else None
+        if question:
+            scope, value = _allergy_question_scope(question.text)
+    if scope == "name":
+        return normalize_value(item.text) == value
+    return scope == "all" or (scope == "category" and _reported_allergen_category(source, item) == value)
+
+
 def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
     """Detect unretracted incompatible patient observations in distinct source clauses."""
     if has_global_reassignment(source):
@@ -2091,7 +2437,7 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
             for denial in abs_spans:
                 if positive.start < denial.end and denial.start < positive.end:
                     continue
-                if field is FieldName.MEDICATION and not _denial_covers_treatment(source, denial, supported):
+                if not _denial_covers_substance(source, field, denial, supported):
                     continue
                 for claim in (positive, supported):
                     pair = tuple(sorted((claim, denial), key=lambda span: span.start))
