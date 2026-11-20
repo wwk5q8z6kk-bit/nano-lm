@@ -1729,8 +1729,16 @@ _SEVERITY_JOIN_RE = re.compile(
 _RATING_LEAD_RE = re.compile(
     rf"(?:(?:yes|well|actually|definitely|only|about|roughly|around|maybe|very|really|pretty|"
     rf"quite|just|at|a|an|little|bit|honestly|mostly|it's|it|is|was|has|been|feels?|felt|"
-    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|now|today|"
+    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|right\s+now|now|today|"
     rf"mildly|moderately|severely|this|morning|tonight)\b[\s,']*|{_BOUND_LEAD})*", re.I,
+)
+
+# In "seven out of ten was my score yesterday" the cited number belongs
+# to an earlier measurement, even after a question about current severity.
+_EARLIER_RATING_RE = re.compile(
+    r"^\s+was\s+(?:(?:my|the|that)\s+)?(?:number|rating|score)\s+"
+    r"(?:(?:just|right|immediately)\s+)?(?:before|after|when|yesterday|earlier|initially|"
+    r"last\s+(?:night|week)|at\s+(?:first|(?:the|its|my)\s+(?:start|onset|worst|peak)))\b", re.I,
 )
 
 
@@ -1752,6 +1760,8 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
     for rating in ratings:
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
+        if _EARLIER_RATING_RE.match(after):
+            return False
         # Stop before a separate subject, adjunct or predicate.
         noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
                         after, maxsplit=1, flags=re.I)[0]
@@ -2900,3 +2910,108 @@ class GroundedStateSpanSolver(StateSpanSolver):
             "recovered_field_count": sum(err is None for err in parse_errors) if strict_error else 0,
             "fields": traces,
         }
+
+def trace_proposal_conservation(
+    transcript: str,
+    raw_text: str,
+    *,
+    context_policy: str = "grounded",
+) -> list[dict[str, Any]]:
+    """Instrument every boundary (parse -> offset -> binder -> checker -> note) for silent assertion drops."""
+    from nanoscribe.check_note import assess_fields
+    from nanoscribe.compact import compact_solver
+    from nanoscribe.scribe import scribe
+
+    if context_policy not in ("context", "grounded"):
+        raise ValueError("trace_proposal_conservation supports 'context' or 'grounded'")
+
+    whole_syntax_failed = False
+    try:
+        raw_slots, parsed_props, parse_errors, _ = parse_grounded_summary(raw_text, transcript)
+    except StateSpanFormatError as exc:
+        whole_syntax_failed = True
+        raw_slots = [raw_text] * len(FIELD_ORDER)
+        parsed_props = [None] * len(FIELD_ORDER)
+        parse_errors = [str(exc)] * len(FIELD_ORDER)
+
+    solver = compact_solver(lambda _: raw_text, binder=context_policy)
+    result = scribe(transcript, solver=solver, context_policy=context_policy)
+    request = NanoInput("trace", transcript)
+
+    binder_by_field: dict[str, Any] = {}
+    if result.get("extraction"):
+        binder_by_field = {f["field"]: f for f in result["extraction"]["fields"]}
+
+    diag_by_field: dict[str, Any] = {}
+    if result.get("inference_diagnostics"):
+        diag_by_field = {f["field"]: f for f in result["inference_diagnostics"].get("fields", [])}
+
+    checker_by_field: dict[str, tuple[FieldState, tuple[str, ...]]] = {}
+    if result.get("extraction"):
+        if context_policy == "context":
+            ext_out: Any = solver.infer(request)
+        else:
+            ext_out, _ = solver.infer_grounded(request)
+        for assess in assess_fields(request, ext_out, context_policy=context_policy):
+            checker_by_field[assess.field.value] = (assess.state, assess.reasons)
+
+    note_claims: dict[str, dict[str, Any]] = {}
+    if result.get("note") and isinstance(result["note"], dict):
+        note_claims = {c["field"]: c for c in result["note"].get("claims", [])}
+
+    lineage: list[dict[str, Any]] = []
+    for field, raw_slot, prop, parse_err in zip(FIELD_ORDER, raw_slots, parsed_props, parse_errors, strict=True):
+        fname = field.value
+        diag = diag_by_field.get(fname, {})
+        b_field = binder_by_field.get(fname)
+        c_info = checker_by_field.get(fname)
+        c_state = c_info[0] if c_info is not None else None
+        c_reasons = list(c_info[1]) if c_info is not None else []
+        n_claim = note_claims.get(fname)
+
+        raw_state = prop.state.value if prop is not None else None
+        raw_spans = [s.to_dict() for s in prop.spans] if prop is not None else []
+        b_state = b_field["state"] if b_field is not None else None
+        b_spans = b_field.get("evidence", []) if b_field is not None else []
+        n_state = n_claim["state"] if n_claim is not None else None
+
+        requires_evidence = raw_state in ("supported", "absent", "conflicting")
+        if whole_syntax_failed:
+            loss_boundary = "whole_response_syntax"
+        elif parse_err is not None:
+            loss_boundary = "slot_parse_or_offset"
+        elif prop is not None and (
+            b_state != raw_state or (requires_evidence and not all(span in b_spans for span in raw_spans))
+        ):
+            loss_boundary = "binder_rejected"
+        elif c_state is not None and c_state.value != b_state:
+            loss_boundary = "note_checker_quarantine"
+        elif requires_evidence and n_claim is None:
+            loss_boundary = "whole_note_withheld"
+        elif requires_evidence and n_state != raw_state:
+            loss_boundary = "note_claim_state_mismatch"
+        else:
+            loss_boundary = None
+
+        lineage.append(
+            {
+                "field": fname,
+                "raw_slot": raw_slot,
+                "raw_state": raw_state,
+                "raw_spans": raw_spans,
+                "slot_parsed": parse_err is None,
+                "parse_error": parse_err,
+                "patient_offset_verified": parse_err is None and (raw_state not in ("supported", "absent", "conflicting") or bool(raw_spans)),
+                "binder_state": b_state,
+                "binder_spans": b_spans,
+                "binder_reason": diag.get("reason"),
+                "checker_state": c_state.value if c_state is not None else None,
+                "checker_reasons": c_reasons,
+                "note_rendered_state": n_state,
+                "note_rendered_value": n_claim.get("value") if n_claim is not None else None,
+                "note_disposition": result["disposition"],
+                "conserved": loss_boundary is None,
+                "loss_boundary": loss_boundary,
+            }
+        )
+    return lineage
