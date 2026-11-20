@@ -120,6 +120,39 @@ _EPISTEMIC_HEDGE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Hyphens, slashes and apostrophes between word characters can be part of the
+# substance name (co-codamol, amoxicillin/clavulanate, St John's wort).
+_SUBSTANCE_WORD_RE = re.compile(r"[\w\u0300-\u036f]+(?:[-‐‑/'’+][\w\u0300-\u036f]+)*")
+# Preserve multiword names identified by a direct substance predicate. A time,
+# purpose, coordination or other event modifier ends the object phrase.
+_SUBSTANCE_OBJECT_RE = re.compile(
+    r"\b(?:i (?:did |have )?(?:take|took|taken|used|tried|applied|swallowed)|allergic to|allergy to)"
+    r"\s+(?:(?:a|an|some|the|just|only)\s+)?"
+    r"(?P<name>(?:(?!\b(?:for|on|to|with|without|before|after|at|in|since|by|because|"
+    r"and|or|but|that|which|then|once|twice|every|yesterday|today|tonight|last|this|next|so|"
+    r"as|during|prescribed|daily|nightly|weekly|occasionally|regularly|recently|instead)\b)"
+    r"[^\W\d_][\w‐‑'’/-]*(?:\s+|(?=[.,;!?]|$)))+)", re.I,
+)
+_FOLLOWUP_DOUBT_RE = re.compile(
+    r"\b(?:not (?:sure|certain)|no longer (?:sure|certain)|unsure|uncertain|"
+    r"(?:can['’]t|cannot|don['’]t|do not) (?:remember|recall|know))\b", re.I,
+)
+_DOUBTED_SUBSTANCE = {
+    FieldName.MEDICATION: re.compile(
+        r"^(?:(?:whether|if|that) i (?:actually |really )?(?:(?:have|had) )?"
+        r"(?:took|taken|used|tried|applied|swallowed|treat(?:ed)? myself with)|(?:taking|using|trying|applying))\s+(.+)", re.I),
+    FieldName.ALLERGY: re.compile(
+        r"^(?:(?:whether|if|that) i(?:['’]m| am| was) (?:really )?allergic to|"
+        r"(?:whether|if|that) i (?:have|had) an? allergy to|being allergic to)\s+(.+)", re.I),
+}
+_DOUBTED_SCALAR = {
+    FieldName.DURATION: re.compile(r"^(?:(?:exactly )?when (?:it|this|that|the pain|my pain) (?:began|started|came on)\b|"
+                                   r"how long (?:it|this|that|the pain|my pain) (?:lasted|persisted|has (?:lasted|persisted|been present))\b|"
+                                   r"(?:whether|if) (?:it|the pain|my pain) (?:started|began|lasted)\b)", re.I),
+    FieldName.SEVERITY: re.compile(r"^(?:(?:just )?how (?:mild|bad|severe|intense) (?:it|the pain|my pain)\b|"
+                                   r"(?:whether|if) (?:it|the pain|my pain) (?:is|was|feels)\b)", re.I),
+}
+
 _NONUSE_ACTION_RE = re.compile(
     r"\b(?:avoid|avoided|avoiding|avoidance|skip|skipped|skipping|"
     r"withhold|withheld|withholding|stop|stopped|stopping|"
@@ -669,6 +702,66 @@ def _retracts_value(correction: str, original: str, field: FieldName, span_text:
     return False
 
 
+def _doubts_observation(text: str, original: Turn, field: FieldName, value: str | None, adjacent: bool) -> bool:
+    hedge = _FOLLOWUP_DOUBT_RE.search(text)
+    if not hedge or _patient_question(text) or _THIRD_PARTY_RE.search(text) or _ATTRIBUTED_ASSERTION_RE.search(text):
+        return False
+    # "Not sure if I took it" is a memory report; "if I" normally signals a hypothetical.
+    if _PAST_OR_HYPOTHETICAL_RE.search(re.sub(r"\b(?:whether|if) i\b", "", text, flags=re.I)):
+        return False
+    rest = text[hedge.end():].strip(" .?!;")
+    if re.fullmatch(r"(?:about (?:that|it|my answer)|(?:that |if )?(?:that|it) (?:was|is) (?:right|correct))?", rest, re.I):
+        return adjacent
+
+    # Doubt about efficacy, dose or time of administration leaves use intact.
+    if field in _DOUBTED_SUBSTANCE:
+        match = _DOUBTED_SUBSTANCE[field].match(rest)
+        if not match:
+            return False
+        if field is FieldName.MEDICATION:
+            later_time = _medication_interval(text)
+            if later_time != ("", "") and (later_time is None or later_time != _medication_interval(original.text)):
+                return False
+        if value is None:
+            # A field-wide denial cannot coexist with doubt about an instance.
+            return True
+        subject = match[1]
+        for phrase in _SUBSTANCE_OBJECT_RE.finditer(original.text):
+            name = phrase["name"].strip()
+            if value == name or value.startswith(name + " "):
+                value = name
+                break
+        named = re.match(re.escape(value) + r"(?![\w‐‑'’/-])", subject, re.I)
+        return bool(named or (adjacent and re.match(r"(?:it|that|this|them|any(?:thing)?)(?:\b|$)", subject, re.I)))
+    if adjacent and field in _DOUBTED_SCALAR and _DOUBTED_SCALAR[field].match(rest):
+        # A different effect or attribute can also follow "whether it is".
+        return field is FieldName.DURATION or rest.lower().startswith(("how ", "just how ")) or bool(_SEVERITY_CORE_RE.search(rest))
+    return False
+
+
+def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, value: str | None) -> bool:
+    if not _FOLLOWUP_DOUBT_RE.search(source.text, original.end):
+        return False
+    adjacent = True
+    outside_scope = False
+    for turn in source.turns[idx:]:
+        if turn.speaker is not Speaker.PATIENT:
+            outside_scope = (turn.speaker is not Speaker.CLINICIAN or _outside_current_scope(turn.text)
+                             or bool(_QUESTION_HAZARD_RE.search(turn.text)))
+            # A direct request to confirm the last answer preserves its referent.
+            adjacent = adjacent and turn.speaker is Speaker.CLINICIAN and bool(re.fullmatch(
+                r"(?:are you (?:sure|certain)(?: about (?:that|it))?|are you sure you (?:took|used) it)[?.!]*",
+                turn.text, re.I))
+            continue
+        for later in _reply_clauses(turn):
+            if later.start < original.end:
+                continue
+            if not outside_scope and _doubts_observation(later.text, original, field, value, adjacent):
+                return True
+            adjacent = False
+    return False
+
+
 def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, span_text: str = "") -> bool:
     """An immediate correction can retract a value in the same patient reply."""
     clauses = _reply_clauses(turn)
@@ -760,6 +853,8 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     if _patient_question(clause_clean) or _EMBEDDED_DENIAL_RE.search(clause_clean):
         return False
     if _PAST_OR_HYPOTHETICAL_RE.search(clause_clean) or _THIRD_PARTY_RE.search(clause_clean):
+        return False
+    if _later_doubt(source, idx, clause, field, None):
         return False
     if _clause_is_retracted_in_turn(turn, clause, field, text) or _later_turn_retracts_span(source, idx, field, text):
         return False
@@ -1075,6 +1170,19 @@ def _verify_local_span(
     if state is FieldState.SUPPORTED:
         start, end = span.start - turn.start, span.end - turn.start
         tokens = (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
+        if field in (FieldName.MEDICATION, FieldName.ALLERGY):
+            if any(m.start() < start < m.end() or m.start() < end < m.end()
+                   for m in _SUBSTANCE_WORD_RE.finditer(turn.text)):
+                return False, "incomplete_substance_word"
+            for phrase in _SUBSTANCE_OBJECT_RE.finditer(clause.text):
+                left = clause.start + phrase.start("name")
+                name = phrase["name"]
+                duration = _DURATION_VALUE_RE.search(name)
+                if duration and duration.start() > 0:
+                    name = name[:duration.start()]
+                right = left + len(name.rstrip())
+                if left <= span.start and span.end <= right and (left, right) != (span.start, span.end):
+                    return False, "incomplete_substance_name"
         if field is FieldName.DURATION:
             tokens += (_COMPOUND_DURATION_RE,)
             # A trailing fraction can elide the time unit only in its source
@@ -1137,6 +1245,8 @@ def _verify_local_span(
                 return False, "clause_contains_correction_marker"
         if field is FieldName.MEDICATION and _routine_medication_disclaimed(source, idx, event, span):
             return False, "routine_medication_disclaimed_for_complaint"
+        if _later_doubt(source, idx, clause, field, span.text):
+            return False, "source_report_later_in_doubt"
         if _clause_is_retracted_in_turn(turn, clause, field, span.text) or _later_turn_retracts_span(source, idx, field, span.text):
             return False, "retracted_by_patient_correction"
         return True, "verified_grounded_supported"
