@@ -123,8 +123,12 @@ _EPISTEMIC_HEDGE_RE = re.compile(
 
 # Hyphens, slashes and apostrophes between word characters can be part of the
 # substance name (co-codamol, amoxicillin/clavulanate, St John's wort).
-_SUBSTANCE_WORD = r"[\w\u0300-\u036f]+(?:[-‐‑/'’+][\w\u0300-\u036f]+)*"
+_WORD_SEGMENT = r"[\w\u0300-\u036f]+"
+_SUBSTANCE_WORD = rf"{_WORD_SEGMENT}(?:[-‐‑/'’+]{_WORD_SEGMENT})*"
 _SUBSTANCE_WORD_RE = re.compile(_SUBSTANCE_WORD)
+# A slash can list separate complaints. A hyphen or apostrophe within a word
+# can change its meaning, as in “headache-free” or “swimmer’s ear”.
+_COMPLAINT_WORD_RE = re.compile(rf"{_WORD_SEGMENT}(?:[-‐‑'’]{_WORD_SEGMENT})*")
 _SUBSTANCE_WORDS = rf"{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD})*"
 _SUBSTANCE_WORDS_RE = re.compile(_SUBSTANCE_WORDS)
 # Preserve multiword names identified by a direct substance predicate. A time,
@@ -1560,10 +1564,12 @@ def _verify_local_span(
     if state is FieldState.SUPPORTED:
         start, end = span.start - turn.start, span.end - turn.start
         tokens = (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
-        if field in (FieldName.MEDICATION, FieldName.ALLERGY):
+        if field in (FieldName.CHIEF_COMPLAINT, FieldName.MEDICATION, FieldName.ALLERGY):
+            complaint = field is FieldName.CHIEF_COMPLAINT
+            words = _COMPLAINT_WORD_RE if complaint else _SUBSTANCE_WORD_RE
             if any(m.start() < start < m.end() or m.start() < end < m.end()
-                   for m in _SUBSTANCE_WORD_RE.finditer(turn.text)):
-                return False, "incomplete_substance_word"
+                   for m in words.finditer(turn.text)):
+                return False, "incomplete_complaint_word" if complaint else "incomplete_substance_word"
         if field is FieldName.SEVERITY:
             tokens += (_BOUNDED_SCALE_RE,)
         if field is FieldName.DURATION:
