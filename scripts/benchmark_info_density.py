@@ -17,8 +17,11 @@ import hashlib
 import json
 from pathlib import Path
 import platform
+import sys
 import time
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from nano_ai.evaluation import evaluate_solver
 from nano_ai.training.diagnose_h6 import CANONICAL_H6_EVALUATION_SHA256

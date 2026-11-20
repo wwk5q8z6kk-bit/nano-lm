@@ -141,3 +141,13 @@ def test_supported_value_is_normalized_but_evidence_remains_verbatim():
     case, = api().annotated_cases([row], expected_counts=quotas())
     assert case.gold.fields[0].value == "headache"
     assert case.gold.fields[0].evidence[0].text == "Headache"
+
+
+def test_annotated_evidence_requires_exact_set_including_uncertainty():
+    row = example()
+    case, = api().annotated_cases([row], expected_counts=quotas())
+    fields = list(case.gold.fields)
+    fields[0] = replace(fields[0], evidence=fields[0].evidence + fields[2].evidence)
+    fields[2] = replace(fields[2], evidence=())
+    report = api().evaluate_annotated(ToySolver(tuple(fields)), [row], expected_counts=quotas())
+    assert report.quality["grounded_exact_field_accuracy"] == 3 / 5

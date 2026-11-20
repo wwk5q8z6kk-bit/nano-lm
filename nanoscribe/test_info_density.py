@@ -115,8 +115,8 @@ def test_sliding_window_erasure_quantifies_lost_early_evidence():
         window_tokens=100,
     )
     assert result["evidence_spans_erased"] == 2
-    assert result["erased_epistemic_bits"] > 4.6
-    assert result["fano_min_field_error_rate"] == pytest.approx(2 / 3, rel=1e-5)
+    assert result["estimated_erased_bits"] > 4.6
+    assert result["erased_evidence_fraction"] == pytest.approx(2 / 3, rel=1e-5)
 
 
 def test_safetensors_zero_copy_mmap_inspector_checks_alignment(tmp_path: Path):
@@ -151,6 +151,7 @@ def test_safetensors_zero_copy_mmap_inspector_checks_alignment(tmp_path: Path):
 
     repacked = tmp_path / "uma_page_aligned.safetensors"
     fixed_info = repack_safetensors_page_aligned(misaligned, repacked)
+    assert fixed_info == inspect_safetensors_zero_copy(repacked)
     assert fixed_info.data_section_offset == 16_384
     assert fixed_info.metal_64b_aligned is True
     assert fixed_info.vm_page_16k_aligned is True
@@ -244,3 +245,19 @@ def test_prefix_cached_constrained_decoder_coalesces_unary_chains_and_evicts_kv(
     # 1 base prefill + 5 single-branch steps = 6 forward calls total (all long quote tails coalesced!).
     assert record["forward_passes"] == 6
     assert record["coalesced_zero_entropy_tokens"] >= len("toe pain]") + len("diclofenac]")
+
+
+@pytest.mark.parametrize("alias", ["self", "symlink", "hardlink"])
+def test_repack_preserves_source_on_alias(tmp_path, alias):
+    src = tmp_path / "source"
+    src.write_bytes(b"original checkpoint")
+    dst = src
+    if alias == "symlink":
+        dst = tmp_path / "symlink"
+        dst.symlink_to(src)
+    elif alias == "hardlink":
+        dst = tmp_path / "hardlink"
+        dst.hardlink_to(src)
+    with pytest.raises(ValueError, match="different files"):
+        repack_safetensors_page_aligned(src, dst)
+    assert src.read_bytes() == b"original checkpoint"

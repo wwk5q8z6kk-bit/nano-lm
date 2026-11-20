@@ -196,3 +196,20 @@ def test_additional_model_challenge_replays_and_preserves_failure(tmp_path):
     assert not conflict["passed"]
     assert conflict["draft"]["disposition"] == "abstain"
     assert all(c["state"] not in ("supported", "absent") for c in conflict["draft"]["note"]["claims"])
+
+
+def test_generation_failure_replays_for_all_pilot_binders():
+    from scripts.run_p1_pilot import PilotGeneration
+
+    calls = []
+    def transient(transcript):
+        calls.append(transcript)
+        if len(calls) == 1:
+            raise ValueError("initial decode failed")
+        return "unobserved"
+
+    generate = PilotGeneration(transient)
+    for _ in range(3):
+        with pytest.raises(ValueError, match="initial decode failed"):
+            generate("same transcript")
+    assert calls == ["same transcript"]

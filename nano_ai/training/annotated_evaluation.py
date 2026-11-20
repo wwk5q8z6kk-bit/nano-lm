@@ -107,4 +107,4 @@ def evaluate_annotated(
 ) -> EvaluationReport:
     """Validate all gold first; the standard evaluator sends only inputs to solver."""
     cases = annotated_cases(examples, expected_counts=expected_counts)
-    return evaluate_solver(solver, cases, measure_latency=measure_latency)
+    return evaluate_solver(solver, cases, measure_latency=measure_latency, exact_evidence=True)
