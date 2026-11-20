@@ -1,0 +1,11 @@
+{
+  "rebuilt_tokenizer_sha256": "2eb9b402d301ff801d402099e8d6a21aa3e4f4a4cacd17ef6b17fd07aadada64",
+  "rebuilt_validation_sha256": {
+    "web": "28c1dbcb75eab107a5db5bd61a9e023d05eacd22b5479779163b545b4439f27e",
+    "textbook": "e6fc2bcea248793296af68fe05be1adda6ef6c64d6e4dad7b4d3c3806f22c90e",
+    "math": "ea56aed8922cbf2cba3076bf51749da0354ee03a1bbd16817b4984343066dcb6",
+    "code": "a2ed084bcaa56e70be3eb86a7690472326050a9b559fff909a243db9ba208053"
+  },
+  "rebuilt_validation_tokens": 4000000,
+  "training_stream_verification": "Archived 800M token file hash checked before fitting. Full source-to-train rebuild not performed."
+}

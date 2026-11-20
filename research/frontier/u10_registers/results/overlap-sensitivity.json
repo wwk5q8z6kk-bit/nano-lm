@@ -1,0 +1,25 @@
+{
+  "seed": 0,
+  "omitted": {
+    "domain": "math",
+    "length": 512,
+    "index": 15
+  },
+  "arms": {
+    "m21": {
+      "removed_window_bpb": 2.7913091,
+      "remaining_domain_bpb": 2.0596461,
+      "remaining_macro_bpb": 1.8218547
+    },
+    "m22": {
+      "removed_window_bpb": 2.7924213,
+      "remaining_domain_bpb": 2.0636379,
+      "remaining_macro_bpb": 1.827254
+    },
+    "m22_wide": {
+      "removed_window_bpb": 2.802407,
+      "remaining_domain_bpb": 2.061909,
+      "remaining_macro_bpb": 1.8270332
+    }
+  }
+}
