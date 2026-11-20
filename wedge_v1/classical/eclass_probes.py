@@ -75,6 +75,8 @@ def probe_t36(docs: dict[str, str]) -> Claim:
     return Claim("T36", None, {"relation": "implies_dose_change", "method": "symbolic_compare"}, status="ABSTAIN", notes="eclass_symbolic_dose_change")
 
 
+_ENTITY_RE = re.compile(r"\b(Metformin|Placebo)\b")
+
 def probe_t39(docs: dict[str, str]) -> Claim:
     text = docs.get("binding_coref", "")
     if not text:
@@ -88,11 +90,10 @@ def probe_t39(docs: dict[str, str]) -> Claim:
     body = " ".join(body_lines)
     sents = [s.strip() for s in re.split(r"(?<=[.!?])\s+", body) if s.strip()]
     bindings = []
-    entity_re = re.compile(r"\b(Metformin|Placebo)\b")
     for i, sent in enumerate(sents):
         if not re.match(r"^It\b", sent) or i == 0:
             continue
-        ents = entity_re.findall(sents[i - 1])
+        ents = _ENTITY_RE.findall(sents[i - 1])
         if len(ents) == 1:
             bindings.append({"pronoun_sent": sent, "antecedent": ents[0], "prev": sents[i - 1]})
     if bindings:
