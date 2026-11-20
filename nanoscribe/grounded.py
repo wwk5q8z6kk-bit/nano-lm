@@ -214,9 +214,24 @@ _WORD_NUMBERS = dict(zip(
     "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen "
     "sixteen seventeen eighteen nineteen twenty".split(), range(21),
 ))
-_WORD_NUMBERS.update({"thirty": 30, "a": 1, "an": 1, "half a": Fraction(1, 2), "half an": Fraction(1, 2)})
+_TENS = dict(zip("twenty thirty forty fifty sixty seventy eighty ninety".split(), range(20, 100, 10)))
+_WORD_NUMBERS.update(_TENS)
 _DECIMAL = r"(?:\d+(?:\.\d+)?|\.\d+)"
-_NUMBER_WORD = rf"(?:{_DECIMAL}|{'|'.join(_WORD_NUMBERS)}|a couple of|a few|several)"
+_CARDINAL_WORD = rf"(?:{'|'.join(_WORD_NUMBERS)}|hundred|thousand|million|billion|dozen)"
+_NUMBER_JOIN = r"[\s‐‑–-]+"
+_SPOKEN_INTEGER = rf"(?:(?:a\s+(?=hundred|thousand|million|billion))?{_CARDINAL_WORD}(?:{_NUMBER_JOIN}(?:and\s+)?{_CARDINAL_WORD}){{0,12}})"
+_WHOLE = rf"(?:{_DECIMAL}|{_SPOKEN_INTEGER})"
+_FRACTION_UNIT = r"(?:half|halves|quarters?|thirds?|fourths?|fifths?|sixths?|eighths?|tenths?)"
+_SPOKEN_FRACTION = rf"(?:(?:{_WHOLE}|an?){_NUMBER_JOIN})?{_FRACTION_UNIT}(?:\s+(?:of\s+)?an?)?"
+_NUMBER_WORD = rf"(?:{_WHOLE}\s+and\s+{_SPOKEN_FRACTION}|{_SPOKEN_FRACTION}|{_WHOLE}|a couple of|a few|several|an?)"
+# Bound every entry point, including free quotes that start inside a compound
+# amount and ranges or decimal words that the duration grammar cannot interpret.
+_NUMBER_COMPONENT = rf"(?:{_CARDINAL_WORD}|{_DECIMAL}|{_FRACTION_UNIT}|an?)"
+_SPOKEN_NUMBER_TOKEN_RE = re.compile(
+    rf"(?<!\w)(?:(?:minus|negative|plus|positive|point){_NUMBER_JOIN}(?={_NUMBER_COMPONENT})|"
+    rf"{_NUMBER_COMPONENT}{_NUMBER_JOIN}(?:(?:and|of|or|to|point){_NUMBER_JOIN})?)"
+    rf"{_NUMBER_COMPONENT}(?:{_NUMBER_JOIN}(?:(?:and|of|or|to|point){_NUMBER_JOIN})?{_NUMBER_COMPONENT})*(?!\w)", re.I
+)
 _TIME_UNIT = r"(?:minutes?|hours?|days?|weeks?|months?|years?)"
 # A free proposal may quote any substring. Check offsets against whole numeric
 # tokens, including decimals, signed values, ranges, fractions and scale denominators.
@@ -224,11 +239,16 @@ _NUMERIC_TOKEN_RE = re.compile(
     r"[+−-]?(?:\d+(?:,\d{3})*(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?"
     r"(?:[/–−-]\d+(?:\.\d+)?)*"
 )
+_SIMPLE_QUANTITY = rf"{_NUMBER_WORD}\s+{_TIME_UNIT}"
+_ELIDED_UNIT_FRACTION = rf"{_SPOKEN_FRACTION}(?=\s*(?:$|[.!?;,]|(?:ago|so far|now|before|after)\b))"
+_COMPOUND_TAIL = rf"(?:,\s*(?:and\s+)?|\s+and\s+)(?:{_SIMPLE_QUANTITY}|{_ELIDED_UNIT_FRACTION})"
+_DURATION_QUANTITY = rf"{_SIMPLE_QUANTITY}(?:{_COMPOUND_TAIL})*"
+_COMPOUND_DURATION_RE = re.compile(rf"(?<!\w){_SIMPLE_QUANTITY}(?:{_COMPOUND_TAIL})+\b", re.I)
 _QUANTITY = rf"(?P<amount>{_NUMBER_WORD})\s+(?P<unit>{_TIME_UNIT})"
 _QUANTITY_RE = re.compile(rf"(?<!\w){_QUANTITY}\b", re.I)
 _DURATION_VALUE_RE = re.compile(
     rf"(?<!\w)(?:"
-    rf"(?:about |around |roughly |nearly |almost |over )?{_QUANTITY}(?:\s+(?:ago|so far))?"
+    rf"(?:about |around |roughly |nearly |almost |over )?{_DURATION_QUANTITY}(?:\s+(?:ago|so far))?"
     rf"|(?:since|from)\s+[^.!?;]+"
     rf"|(?:yesterday|today|tonight|last night|this morning|this afternoon|this evening|"
     rf"(?:the )?(?:morning|afternoon|evening|night) before last|"
@@ -861,8 +881,18 @@ def _verify_local_span(
     clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
         start, end = span.start - turn.start, span.end - turn.start
+        tokens = (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
+        if field is FieldName.DURATION:
+            tokens += (_COMPOUND_DURATION_RE,)
+            # A trailing fraction can elide the time unit only in its source
+            # context. Quoting "two days and a half" before "bottle" drops it.
+            compound = _COMPOUND_DURATION_RE.search(span.text)
+            if compound:
+                actual = _COMPOUND_DURATION_RE.match(turn.text, start + compound.start())
+                if actual is None or actual.end() != start + compound.end():
+                    return False, "incomplete_duration_quantity"
         if any(m.start() < start < m.end() or m.start() < end < m.end()
-               for m in _NUMERIC_TOKEN_RE.finditer(turn.text)):
+               for pattern in tokens for m in pattern.finditer(turn.text)):
             return False, "incomplete_numeric_token"
         reporting = [part for part in _reporting_events(clause)
                      if part.start < span.end and span.start < part.end]
@@ -920,6 +950,9 @@ def verify_grounded_span(
     valid, reason = _verify_local_span(source, field, state, span)
     if valid and state is FieldState.SUPPORTED and _coexisting_substances(source, field):
         return False, "coexisting_multiple_substances_require_uncertain"
+    if valid and field is FieldName.MEDICATION and state is FieldState.ABSENT:
+        if any(not _denial_covers_treatment(source, span, taken) for taken in _local_supported_spans(source, field)):
+            return False, "scoped_denial_does_not_cover_reported_treatment"
     return valid, reason
 
 
@@ -1107,7 +1140,7 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                     if sp is not None:
                         add(_strip_leading_determiner(source.text, sp, keep_duration_article=True))
                         # Also offer bare number+unit without trailing 'ago'/'so far' when present
-                        sub = re.match(rf"^(?:about |around |roughly )?(?P<core>{_NUMBER_WORD}\s+{_TIME_UNIT})\b", sp.text, re.IGNORECASE)
+                        sub = re.match(rf"^(?:about |around |roughly )?(?P<core>{_DURATION_QUANTITY})\b", sp.text, re.IGNORECASE)
                         if sub:
                             core_sp = _trim_span(source.text, sp.start + sub.start("core"), sp.start + sub.end("core"))
                             add(core_sp)
@@ -1391,8 +1424,16 @@ _IMPRECISE_SCALAR_RE = re.compile(
 
 
 def _exact_number(text: str) -> Fraction | None:
-    if text.casefold() in _WORD_NUMBERS:
-        return Fraction(_WORD_NUMBERS[text.casefold()])
+    words = re.split(_NUMBER_JOIN, text.casefold())
+    if len(words) == 1:
+        if words[0] in _WORD_NUMBERS:
+            return Fraction(_WORD_NUMBERS[words[0]])
+        if words[0] in ("a", "an"):
+            return Fraction(1)
+    if len(words) == 2 and words[0] in _TENS and 0 < _WORD_NUMBERS.get(words[1], 0) < 10:
+        return Fraction(_TENS[words[0]] + _WORD_NUMBERS[words[1]])
+    if words in (["half", "a"], ["half", "an"], ["a", "half"], ["half"]):
+        return Fraction(1, 2)
     if re.fullmatch(_DECIMAL, text) and len(text) <= 24:
         return Fraction(text)
     return None
@@ -1404,7 +1445,7 @@ def _scalar_report(field: FieldName, clause: Turn, question: str):
         return None
     if field is FieldName.DURATION:
         matches = list(_QUANTITY_RE.finditer(clause.text))
-        if len(matches) != 1:
+        if len(matches) != 1 or _COMPOUND_DURATION_RE.search(clause.text):
             return None
         match = matches[0]
         amount = _exact_number(match["amount"])
@@ -1433,6 +1474,67 @@ def _scalar_report(field: FieldName, clause: Turn, question: str):
     return (question.casefold().strip(), tuple(re.findall(r"\w+", frame.casefold())), scale), value
 
 
+_DAY_PART = r"(?:morning|afternoon|evening|night)"
+_DAY_NAME = r"(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
+_MED_CALENDAR_RE = re.compile(
+    rf"\b(?:(today|yesterday|tomorrow|(?:last |this |next )?{_DAY_NAME})(?:\s+({_DAY_PART}))?"
+    rf"|(this|last|tomorrow)\s+({_DAY_PART})|(tonight))\b", re.I
+)
+# A remaining time qualifier makes the interval indeterminate. For example,
+# "since yesterday" and "before yesterday" are different from "yesterday".
+_MED_TIME_QUALIFIER_RE = re.compile(
+    r"\b(?:before|after|since|until|during|between|from|ago|earlier|later|then|now|currently|"
+    r"last|this (?:week|month|year)|past|previous|next|recently|overnight|daily|"
+    r"morning|afternoon|evening|night|breakfast|lunch|dinner|bedtime|midnight|noon|"
+    r"minutes?|hours?|days?|weeks?|months?|years?)\b|\b(?:at|on)\s+\d|\b\d{1,2}(?::\d{2}|\s*[ap]\.?m\b)|\b\d+[/-]\d+", re.I
+)
+
+
+def _medication_interval(text: str) -> tuple[str, str] | None:
+    """Return a day and optional part, an unrestricted frame, or an unknown interval."""
+    matches = list(_MED_CALENDAR_RE.finditer(text))
+    if len(matches) > 1 or _MED_TIME_QUALIFIER_RE.search(_MED_CALENDAR_RE.sub(" ", text)):
+        return None
+    if not matches:
+        return ("", "")
+    day, part, relative, relative_part, tonight = matches[0].groups()
+    if relative:
+        day, part = {"this": "today", "last": "yesterday", "tomorrow": "tomorrow"}[relative.lower()], relative_part
+    if tonight:
+        day, part = "today", "night"
+    return (day.casefold(), (part or "").casefold())
+
+
+def _medication_event_interval(source: Source, span: CandidateSpan) -> tuple[str, str] | None:
+    idx = _turn_index(source, span.start, span.end)
+    if idx is None:
+        return None
+    clause = _enclosing_clause(source.turns[idx], span)
+    interval = _medication_interval(clause.text)
+    question = _preceding_clinician_turn(source, idx)
+    if interval == ("", "") and question and _MED_QUESTION_CUE_RE.search(question.text):
+        if clause.start == source.turns[idx].start:
+            return _medication_interval(question.text)
+    return interval
+
+
+def _denial_covers_treatment(source: Source, denial: CandidateSpan, treatment: CandidateSpan) -> bool:
+    denied = _medication_event_interval(source, denial)
+    if denied == ("", ""):
+        # A novel qualifier has no proven coverage. Only certify an unrestricted
+        # denial from a complete denial form or familiar unqualified remainder.
+        text = denial.text.strip(" .!?;")
+        if _ELLIPTICAL_DENIAL_RE.fullmatch(text):
+            return True
+        cue = _MED_DENIAL_CUE_RE.search(text)
+        return bool(cue and re.fullmatch(r"(?:no,? |i |have |had |taken |used |tried |really |actually )*",
+                                         text[:cue.start()], re.I)
+                    and re.fullmatch(r"(?: at all| yet| so far| for (?:it|this|that|the pain|this complaint))*",
+                                     text[cue.end():], re.I))
+    taken = _medication_event_interval(source, treatment)
+    return bool(denied and taken and denied[0] == taken[0] and (not denied[1] or denied[1] == taken[1]))
+
+
 def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
     """Detect unretracted incompatible patient observations in distinct source clauses."""
     if has_global_reassignment(source):
@@ -1451,6 +1553,8 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
             positive = CandidateSpan(clause.start, clause.end, source.text[clause.start:clause.end])
             for denial in abs_spans:
                 if positive.start < denial.end and denial.start < positive.end:
+                    continue
+                if field is FieldName.MEDICATION and not _denial_covers_treatment(source, denial, supported):
                     continue
                 for claim in (positive, supported):
                     pair = tuple(sorted((claim, denial), key=lambda span: span.start))
@@ -1542,6 +1646,8 @@ def grounded_candidate_choices(transcript: str, field: FieldName, used: set[str]
             choices.append(f":C[{t1}{sep}{t2}]")
     if field in (FieldName.MEDICATION, FieldName.ALLERGY):
         for sp in extract_field_denial_spans(source, field):
+            if not verify_grounded_span(source, field, FieldState.ABSENT, sp)[0]:
+                continue
             tok = format_grounded_span_token(source, sp)
             if sp.text not in used and tok not in used:
                 choices.append(f":A[{tok}]")
@@ -1557,7 +1663,7 @@ def build_grounded_english_menu(
     menu: dict[str, tuple[str, tuple[CandidateSpan, ...]]] = {" MISSING": ("M", ())}
 
     def avail(spans: tuple[CandidateSpan, ...]) -> bool:
-        return all(not any(not (sp.end <= u0 or sp.start >= u1) for (u0, u1) in used_offsets) for sp in spans)
+        return all((sp.start, sp.end) not in used_offsets for sp in spans)
 
     for sp in extract_field_supported_spans(source, field):
         if avail((sp,)):
@@ -1566,7 +1672,7 @@ def build_grounded_english_menu(
 
     if field in (FieldName.MEDICATION, FieldName.ALLERGY):
         for sp in extract_field_denial_spans(source, field):
-            if avail((sp,)):
+            if avail((sp,)) and verify_grounded_span(source, field, FieldState.ABSENT, sp)[0]:
                 key = f" DENIED[{sp.text}]"
                 menu.setdefault(key, ("A", (sp,)))
 
