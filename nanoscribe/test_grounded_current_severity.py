@@ -78,9 +78,32 @@ def test_current_measurement_and_time_requested(question, reply, quote, accepted
     _check_rating(question, reply, quote, accepted)
 
 
-def _check_rating(question, reply, quote, accepted):
+_PRESENTING_TIGHTNESS = "Doctor: Why did you schedule this visit?\nPatient: chest tightness"
+_DURATION_FOLLOWUP = "\nDoctor: How long did the tightness last?\nPatient: about forty minutes"
+
+
+@pytest.mark.parametrize("context, question, reply, quote, accepted", [
+    (_PRESENTING_TIGHTNESS + _DURATION_FOLLOWUP, "How bad was it?", "severe", "severe", True),
+    (_PRESENTING_TIGHTNESS, "How bad was the tightness?", "5/10.", "5/10", True),
+    ("Patient: My wrist pain is bothering me.", "How severe was the pain?", "moderate", "moderate", True),
+    (_PRESENTING_TIGHTNESS + _DURATION_FOLLOWUP, "How bad was it last Friday?", "severe", "severe", False),
+    (_PRESENTING_TIGHTNESS + _DURATION_FOLLOWUP, "How bad was it?", "7/10 was my rating when you just asked me.", "7/10", False),
+    (_PRESENTING_TIGHTNESS, "How bad was the headache?", "severe", "severe", False),
+    (_PRESENTING_TIGHTNESS + "\nDoctor: How long did the train ride last?\nPatient: about forty minutes",
+     "How bad was it?", "severe", "severe", False),
+    ("Doctor: What problems did you have last Friday?\nPatient: chest tightness",
+     "How bad was it?", "severe", "severe", False),
+    ("Doctor: Last Friday, what symptoms did you have?\nPatient: chest tightness",
+     "How bad was it?", "severe", "severe", False),
+    ("Doctor: What medication did you take?\nPatient: Aspirin.", "How bad was it?", "severe", "severe", False),
+])
+def test_past_tense_rating_of_presenting_episode(context, question, reply, quote, accepted):
+    _check_rating(question, reply, quote, accepted, context=context + "\n")
+
+
+def _check_rating(question, reply, quote, accepted, *, context=""):
     field = FieldName.SEVERITY
-    request = NanoInput("current-rating", f"Doctor: {question}\nPatient: {reply}")
+    request = NanoInput("current-rating", f"{context}Doctor: {question}\nPatient: {reply}")
     source = transcript_source(request)
     start = request.transcript.index(quote)
     span = EvidenceSpan(start, start + len(quote), quote)

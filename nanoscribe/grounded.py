@@ -1848,10 +1848,12 @@ _CURRENT_RATING_LEAD_RE = re.compile(
     rf"(?:{_RECENT_RATING_TIME}[\s,]*(?:{_RATING_SUBJECT}\s+(?:is|feels?))?|"
     rf"{_RATING_SUBJECT}\s+(?:(?:is|feels?)\s+{_RECENT_RATING_TIME}|{_RECENT_RATING_TIME}\s+(?:is|feels?)))", re.I,
 )
-_PAST_RATING_TIME_RE = re.compile(
-    rf"\s+(?:yesterday|earlier|(?:on\s+)?(?:last\s+)?{_DAY_NAME}|last\s+(?:{_DAY_PART}|week|month|year)|"
-    r"at\s+(?:first|its\s+(?:worst|peak)))$"
+_PAST_RATING_TIME = (
+    rf"(?:yesterday|earlier|(?:on\s+)?(?:last\s+)?{_DAY_NAME}|last\s+(?:{_DAY_PART}|week|month|year)|"
+    r"at\s+(?:first|its\s+(?:worst|peak)))"
 )
+_PAST_RATING_TIME_RE = re.compile(rf"\s+{_PAST_RATING_TIME}$")
+_EPISODE_TIME_SHIFT_RE = re.compile(rf"\b(?:{_PAST_RATING_TIME}|tomorrow|next (?:week|month|year))\b", re.I)
 
 
 def _requests_current_rating(text: str) -> bool | None:
@@ -1866,6 +1868,40 @@ def _requests_current_rating(text: str) -> bool | None:
             or re.fullmatch(r"(?:what is|what's) (?:your|the) (?:current )?pain (?:score|rating|level)(?: now)?", normalized)):
         return timeless == question and (present == timeless or bool(_RECENT_RATING_TIME_RE.search(timeless)))
     return None
+
+
+def _follows_presenting_complaint(source: Source, idx: int, question: str) -> bool:
+    """Resolve a past-tense rating against the adjacent complaint and its optional duration."""
+    if idx < 2 or _EPISODE_TIME_SHIFT_RE.search(question):
+        return False
+    antecedent = idx - 2
+    references = [question]
+    answer = source.turns[antecedent]
+    if answer.speaker is not Speaker.PATIENT:
+        return False
+    if _DURATION_VALUE_RE.fullmatch(answer.text.strip(" .!?")):
+        timing = _preceding_clinician_turn(source, antecedent)
+        if (antecedent < 2 or timing is None
+                or not (question_field(timing.text) is FieldName.DURATION
+                        or re.fullmatch(r"how long did (?:it|(?:the|your) [\w -]+) last\??", timing.text, re.I))):
+            return False
+        references.append(timing.text)
+        antecedent -= 2
+    complaint = source.turns[antecedent]
+    asked = _preceding_clinician_turn(source, antecedent)
+    if complaint.speaker is not Speaker.PATIENT or any(
+            _EPISODE_TIME_SHIFT_RE.search(text) or _QUESTION_HAZARD_RE.search(text)
+            for text in (complaint.text, asked.text if asked else "", answer.text, *references)):
+        return False
+    names = []
+    for reference in references:
+        subjects = [match.group() for match in _SEVERITY_SUBJECT_RE.finditer(reference)]
+        if not subjects and not re.search(r"\b(?:it|this|that|they|these|those)\b", reference, re.I):
+            return False
+        names.extend(subjects)
+    return any(complaint.start <= span.start < span.end <= complaint.end and all(
+        re.search(r"\b" + re.escape(name) + r"\b", span.text, re.I) for name in names
+    ) for span in _local_supported_spans(source, FieldName.CHIEF_COMPLAINT))
 
 
 def _severity_subject(text: str) -> bool | None:
@@ -1901,7 +1937,9 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
                 return False
         trailing_now = _RECENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?"))
         if current_request is False and not (self_check or trailing_now or _CURRENT_RATING_LEAD_RE.fullmatch(before)):
-            return False
+            direct_answer = not after.strip(" .!?") and _RATING_LEAD_RE.fullmatch(before)
+            if not (direct_answer and _follows_presenting_complaint(source, idx, previous.text)):
+                return False
         if trailing_now:
             after = ""
         # Stop before a separate subject, adjunct or predicate.
