@@ -259,3 +259,39 @@ def test_reported_treatment_indication_preserves_named_substance_in_both_menus()
         transcript = f"Doctor: Tell me more.\nPatient: {reply}"
         assert not any(c.startswith(":S[") for c in grounded_candidate_choices(transcript, FieldName.MEDICATION, set()))
         assert trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{proposed}]|ALG:M")[3]["note_rendered_state"] == "uncertain"
+
+
+def test_duration_after_answer_belongs_to_the_separate_patient_report():
+    from nano_ai.contract import NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import build_grounded_english_menu
+
+    for question, field, value, reply, duration in (
+        ("Any medicines?", FieldName.MEDICATION, "Aspirin", "Aspirin. My headache has persisted for three days.", "three days"),
+        ("Any medicines?", FieldName.MEDICATION, "Ibuprofen", "Ibuprofen; the pressure has returned every day for two weeks.", "two weeks"),
+        ("Any medicines?", FieldName.MEDICATION, "Aspirin", "Aspirin. Three days ago my headache returned.", "Three days ago"),
+        ("Any allergies?", FieldName.ALLERGY, "Penicillin", "Penicillin. My throat has felt scratchy for four days.", "four days"),
+    ):
+        transcript = f"Doctor: {question}\nPatient: {reply}"
+        source = transcript_source(NanoInput("separate", transcript))
+        assert f":S[{duration}]" in grounded_candidate_choices(transcript, FieldName.DURATION, set())
+        english = build_grounded_english_menu(source, FieldName.DURATION, set())
+        spans = english[f" REPORTED[{duration}]"][1]
+        assert [(s.start, s.end) for s in spans] == [(transcript.index(duration), transcript.index(duration) + len(duration))]
+        assert f":S[{value}]" in grounded_candidate_choices(transcript, field, set())
+        rows = trace_proposal_conservation(transcript, f"CC:M|DUR:S[{duration}]|SEV:M|MED:M|ALG:M")
+        assert rows[1]["conserved"] and rows[1]["note_rendered_value"] == duration
+
+
+def test_medication_answer_timing_stays_with_the_treatment():
+    for reply, duration in (("Aspirin yesterday.", "yesterday"),
+                            ("Aspirin. I took it yesterday.", "yesterday"),
+                            ("Aspirin. Just yesterday.", "yesterday"),
+                            ("Aspirin. I stopped taking it yesterday.", "yesterday"),
+                            ("Aspirin. Yesterday I took it because my back has hurt for three days.", "Yesterday"),
+                            ("Aspirin. For two days.", "two days"),
+                            ("Aspirin. My last dose was two days ago.", "two days ago")):
+        transcript = f"Doctor: Any medicines?\nPatient: {reply}"
+        assert f":S[{duration}]" not in grounded_candidate_choices(transcript, FieldName.DURATION, set())
+        row = trace_proposal_conservation(transcript, f"CC:M|DUR:S[{duration}]|SEV:M|MED:M|ALG:M")[1]
+        assert row["note_rendered_state"] == "uncertain"

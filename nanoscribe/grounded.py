@@ -779,15 +779,44 @@ def _medication_verb_positions(text: str, question: str) -> list[int]:
     return positions
 
 
-def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, before_duration: str) -> bool:
-    """Assign the duration to its nearest preceding event, falling back to question scope."""
+def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, duration: CandidateSpan) -> bool:
+    """Assign a timestamp to the local event. Only the first answer inherits the question."""
+    turn = source.turns[turn_idx]
+    context = source.text[event.start:duration.start]
+    looking_forward = False
+    if re.fullmatch(
+        r"(?:\s*(?:just|only|for|since|from|about|around|roughly)\b)*\s*", context, re.I
+    ):
+        # A bare timing fragment ("Aspirin. Just yesterday.") continues its
+        # preceding report. A new sentence with its own subject starts a new report.
+        following = source.text[duration.end:event.end].strip(" ,.!?;")
+        if not re.fullmatch(r"(?:ago|so far)?", following, re.I):
+            context = following
+            looking_forward = True
+        elif event.start > turn.start:
+            preceding = [part for clause in _reply_clauses(turn) for part in _reporting_events(clause)
+                         if part.end <= event.start]
+            if preceding:
+                event = preceding[-1]
+                context = event.text
+
     med_question, allergy_question, question = _question_flags(source, turn_idx)
-    events = [(pos, True) for pos in _medication_verb_positions(before_duration, question)]
-    events.extend((match.start(), True) for match in _ALG_CLAUSE_PRED_RE.finditer(before_duration))
-    events.extend((match.start(), False) for match in _EXPLICIT_SYMPTOM_DURATION_RE.finditer(before_duration))
+    inherits_question = event.start == turn.start
+    events = [(pos, True) for pos in _medication_verb_positions(context, question if inherits_question else "")]
+    events.extend((match.start(), True) for match in _ALG_CLAUSE_PRED_RE.finditer(context))
+    if re.match(r"(?:(?:my|the|that)\s+)?(?:(?:first|last|previous|most recent)\s+)?(?:dose|medication|allergy)\b",
+                context, re.I):
+        events.append((0, True))
+    medication_action = re.search(
+        r"\bi(?:'ve| have)?\s+(?:started|stopped|resumed|discontinued|finished)\s+(?:(?:taking|using)\s+)?(?:it|them)\b", context, re.I
+    )
+    if med_question and medication_action:
+        events.append((medication_action.start(), True))
+    events.extend((match.start(), False) for match in _EXPLICIT_SYMPTOM_DURATION_RE.finditer(context))
     if events:
-        return max(events)[1]
-    return med_question or allergy_question
+        nearest = min(events) if looking_forward else max(events)
+        return nearest[1]
+    return inherits_question and (med_question or allergy_question)
 
 
 def _verify_local_span(
@@ -832,7 +861,7 @@ def _verify_local_span(
                 return False, "prospective_treatment"
             if len(treatments) == 1:
                 event = treatments[0]
-        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, event.text[:span.start - event.start]):
+        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, event, span):
             return False, "duration_scoped_to_medication_or_allergy"
         if field is FieldName.MEDICATION and _TAKEN_RE.search(event.text):
             _, _, question = _question_flags(source, idx)
