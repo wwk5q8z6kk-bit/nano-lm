@@ -179,3 +179,66 @@ def test_identity_warning_excludes_earlier_uncertainty_and_laterality_conflicts(
     assert detect_grounded_conflicts(before, CC)
     assert not extract_field_uncertain_bundles(after, DUR)
     assert not detect_grounded_conflicts(after, CC)
+
+
+@pytest.mark.parametrize("aside, licensed", [
+    ("I was mislabeled as Patient, so those allergies are mine.", False),
+    ("What I said was recorded as the patient, please correct the transcript.", False),
+    ("The speaker labeled Patient was actually me — those were my words.", False),
+    ("I was mislabeled as Patient, on a separate training form.", True),
+    ("If I was mislabeled as Patient, please fix the label.", True),
+    ("My answers were not labeled Patient, so the speaker is correct.", True),
+])
+def test_continued_identity_warning(aside, licensed):
+    check("Patient: I am allergic to nickel.\nSister: " + aside, ALG, "nickel", licensed=licensed)
+
+
+@pytest.mark.parametrize("field, value, quote, state", [
+    (ALG, "No known allergies.", "No known allergies.", DENIED),
+    (MED, "I took naproxen.", "naproxen", REPORTED),
+])
+@pytest.mark.parametrize("intervening, licensed", [
+    ("Nurse: We already paid for parking.", False),
+    ("Nurse: We paid for parking.\nOther: Thanks for the receipt.", False),
+    ("Nurse: We paid for parking.\nNurse: Actually I was wrong.", False),
+    ("Patient: My phone is in my bag.", True),
+    ("Doctor: Has your address changed?", True),
+    ("Sister: What about your husband's medicine?", True),
+])
+def test_patient_corrects_last_answer_across_asides(field, value, quote, state, intervening, licensed):
+    check(f"Patient: {value}\n{intervening}\nPatient: Actually I was wrong.",
+          field, quote, state=state, licensed=licensed)
+
+
+@pytest.mark.parametrize("intervening, conflicting", [
+    ("", True),
+    ("Doctor: What about your pain right now?\n", True),
+    ("Sister: What about your husband's pain?\n", False),
+    ("Other: What about your husband's pain?\n", False),
+    ("Receptionist: What about your child's pain?\n", False),
+    ("Sister: What about your husband's pain?\nDoctor: Now tell me about your pain.\n", True),
+])
+def test_forced_laterality_conflict_requires_eligible_reply(intervening, conflicting):
+    from nanoscribe.grounded import detect_grounded_conflicts
+    text = ("Patient: My right wrist hurts right now; my left wrist doesn't hurt.\n"
+            + intervening + "Patient: My left wrist hurts right now; my right wrist doesn't hurt.")
+    source = transcript_source(NanoInput("laterality-reply", text))
+    solver = compact_solver(lambda _: "CC:M|DUR:M|SEV:M|MED:M|ALG:M", binder="grounded")
+    output = scribe(text, solver=solver, context_policy="grounded")
+    assert output["verification"]["passed"]
+    assert bool(detect_grounded_conflicts(source, CC)) == conflicting
+    assert (output["note"]["claims"][0]["state"] == "conflicting") == conflicting
+    assert any(choice.startswith(":C[") for choice in grounded_candidate_choices(text, CC, set())) == conflicting
+    assert any(c == "C" for c, _ in build_grounded_english_menu(source, CC, set()).values()) == conflicting
+
+
+@pytest.mark.parametrize("intervening, eligible", [
+    ("Doctor: How long did your symptoms last?", True),
+    ("Sister: How long did your husband's symptoms last?", False),
+    ("Other: How long did your husband's symptoms last?", False),
+])
+def test_uncertainty_bundle_requires_eligible_reply(intervening, eligible):
+    from nanoscribe.grounded import extract_field_uncertain_bundles
+    text = intervening + "\nPatient: It was either three days or four days."
+    source = transcript_source(NanoInput("uncertainty-reply", text))
+    assert bool(extract_field_uncertain_bundles(source, DUR)) == eligible

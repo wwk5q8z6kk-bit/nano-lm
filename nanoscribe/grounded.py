@@ -237,7 +237,11 @@ _NONPATIENT_IDENTITY_WARNING_RE = re.compile(
     r"under (?:the )?[\"'“‘]?patient[\"'”’]? (?:label|tag|role)"
     r"|the patient (?:has(?: not|n['’]t) (?:spoken|answered|said anything)|"
     r"did(?: not|n['’]t) (?:speak|answer|say anything))(?: yet| at all)?"
-    r")(?: in (?:this|the) (?:transcript|conversation|recording))?\s*(?=[.!;]|$)", re.I,
+    r")(?: in (?:this|the) (?:transcript|conversation|recording))?\s*"
+    # A subsequent independent clause can continue the warning. A comma before
+    # a location or time qualifier can refer to a different recording.
+    r"(?=[.!;]|$|[,–—](?!\s*(?:(?:(?:only|back)\s+)?(?:in|on|at|for|during|before|after|when)\b|not\s+(?:in|on|here)\b)))",
+    re.I,
 )
 
 _SELF_CORRECTION_CLAUSE_RE = re.compile(
@@ -796,9 +800,13 @@ def _last_disputed_patient_turn(source: Source) -> int:
 
 
 def _ambiguous_reply_boundary(previous: Turn) -> bool:
-    if previous.speaker is not Speaker.UNKNOWN or previous.text.lower().startswith("other:"):
-        return False
     speech = _identified_nonpatient_speech(previous)
+    if previous.speaker is Speaker.OTHER or previous.text.lower().startswith("other:"):
+        # Plain Other asides retain their existing behavior. A direct question
+        # about somebody else cannot set the scope of a patient response.
+        return speech is not None and _outside_current_scope(speech)
+    if previous.speaker is not Speaker.UNKNOWN:
+        return False
     if speech is None:
         return True
     # A standalone retrospective statement cannot set a question's experiencer.
@@ -1238,20 +1246,27 @@ def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, spa
 
 def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, span_text: str) -> bool:
     proxy_turns = _forward_proxy_turns(source)
+    immediate = True
     for idx in range(turn_idx + 1, len(source.turns)):
         if idx in proxy_turns:
+            immediate = False
             continue
         later = source.turns[idx]
         if later.speaker is not Speaker.PATIENT:
-            if later.speaker is Speaker.UNKNOWN and _identified_nonpatient_speech(later) is None:
+            speech = _identified_nonpatient_speech(later)
+            if later.speaker is Speaker.UNKNOWN and speech is None:
                 return True
+            if speech is None or "?" in speech or _outside_current_scope(speech):
+                immediate = False
             continue
+        adjacent_patient_answer = immediate
+        immediate = False
         if not (_SELF_CORRECTION_CLAUSE_RE.search(later.text) or _DISAVOWAL_RE.search(later.text)):
             continue
         previous = _preceding_clinician_turn(source, idx)
         if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
             continue
-        if any(_retracts_value(clause.text, source.turns[turn_idx].text, field, span_text, idx == turn_idx + 1)
+        if any(_retracts_value(clause.text, source.turns[turn_idx].text, field, span_text, adjacent_patient_answer)
                for clause in _reply_clauses(later)):
             return True
     return False
@@ -2503,6 +2518,8 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     for index, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT or index in proxy_turns or index <= disputed_through:
             continue
+        if index and _ambiguous_reply_boundary(source.turns[index - 1]):
+            continue
         if coexisting and all(turn.start <= sp.start and sp.end <= turn.end for sp in coexisting):
             whole = CandidateSpan(turn.start, turn.end, turn.text)
             seen.add(((whole.start, whole.end),))
@@ -2757,6 +2774,8 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
         disputed_through = _last_disputed_patient_turn(source)
         for idx, turn in enumerate(source.turns):
             if turn.speaker is not Speaker.PATIENT or idx in proxy_turns or idx <= disputed_through:
+                continue
+            if idx and _ambiguous_reply_boundary(source.turns[idx - 1]):
                 continue
             prev = _preceding_clinician_turn(source, idx)
             if prev and (_outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text)):
