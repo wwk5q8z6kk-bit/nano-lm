@@ -1879,9 +1879,9 @@ def _timed_question_event(question: str) -> str:
             # retains the last named event. An explicit new subject replaces it.
             restatement = re.fullmatch(
                 r"(?:(?:exactly|roughly|approximately)\s+)?"
-                r"(?:(?:was|were|is|did|would|could|might)\s+)?(?:it|this|that)"
+                r"(?:(?:was|were|is|did|has|have|had|would|could|might)\s+)?(?:it|this|that)"
                 r"(?:\s+(?:have|been|be|happen(?:ed)?|occur(?:red)?|take place|start(?:ed)?|begin|end(?:ed)?))*"
-                r"(?:\s+(?:exactly|again|then))?", event, re.I,
+                r"(?:\s+(?:on|at))?(?:\s+(?:exactly|again|then))?", event, re.I,
             )
             if event and not restatement:
                 return event
@@ -1893,9 +1893,7 @@ def _timed_question_event(question: str) -> str:
 _ADMINISTRATIVE_EVENT_RE = re.compile(
     r"\s*(?:(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
     r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
-    r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b"
-    rf"(?!(?:[- ](?:related|associated|induced|triggered))?[- ]+(?:(?:{_BODY_REGION}|severe|mild)\s+)?"
-    rf"(?:{_SYMPTOM}|aching|stiffness|tightness|pressure|burning|throbbing)\b)|"
+    r"(?P<event>appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b|"
     r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
     r"(?:(?:liv(?:e|ed|ing)|mov(?:e|ed|ing))\s+(?:here|there|(?:at|to|in|into|out of)\s+"
     r"(?:(?:the|an?|this|that|your|my|our|a new|your new)\s+)?(?:(?:new|old|current|previous|last)\s+)?"
@@ -1904,6 +1902,17 @@ _ADMINISTRATIVE_EVENT_RE = re.compile(
     r"(?:renew|refill|schedule|book|attend)\s+(?:your|the|an?)\s+"
     r"(?:prescription|medication|appointment|visit|scan|test)\b))", re.I,
 )
+
+
+def _asks_administrative_time(event: str) -> bool:
+    request = _ADMINISTRATIVE_EVENT_RE.match(event)
+    if request is None or request["event"] is None:
+        return request is not None
+    # In "procedure-related lower back pain" the procedure modifies the
+    # symptom. In "procedure for lower back pain" it is the thing being dated.
+    suffix = event[request.end():]
+    suffix = re.sub(r"^[- ](?:related|associated|induced|triggered)\b", "", suffix, flags=re.I)
+    return _COMPLAINT_HEAD_RE.match(suffix.lstrip(" -")) is None
 
 
 def _asks_treatment_time(source: Source, turn_idx: int, event: str) -> bool:
@@ -2314,7 +2323,7 @@ def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, durati
     # own clock to the episode, even if some other turn discussed symptoms.
     if re.search(rf"\b(?:{_SYMPTOM}|cramps?|hurt(?:s|ing)?|sore|painful|dizzy|nauseous)\b", context, re.I):
         return None
-    administrative_time = _ADMINISTRATIVE_EVENT_RE.match(timed_event)
+    administrative_time = _asks_administrative_time(timed_event)
     if (administrative_time and re.fullmatch(r"\s*(?:(?:well|actually|sorry|yes)[, ]+)*"
                                               r"i (?:first felt|noticed) (?:it|this)\s*", context, re.I)
             and _follows_presenting_complaint(source, turn_idx, context)):
