@@ -1,0 +1,1211 @@
+{
+  "replay_torch": "2.11.0",
+  "runs": {
+    "aligned-1481": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "127MG",
+          "scalar_replay": "127MG",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CARMAVIN",
+          "scalar_replay": "CARMAVIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "D9/90S9AA0SSAAAS",
+          "scalar_replay": "D9/90S9AA0SSAAAS",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CARVIL",
+          "scalar_replay": "CARVIL",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "141/90 .",
+          "scalar_replay": "141/90 .",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "38MG",
+          "scalar_replay": "38MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "125/822822822822",
+          "scalar_replay": "125/822822822822",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "38MG",
+          "scalar_replay": "38MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        }
+      ]
+    },
+    "aligned-3527": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "127MG",
+          "scalar_replay": "127MG",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CARMAVIN",
+          "scalar_replay": "CARMAVIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "1//9T1/90",
+          "scalar_replay": "1//9T1/90",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CARVIL",
+          "scalar_replay": "CARVIL",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "141/90",
+          "scalar_replay": "141/90",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "38MG",
+          "scalar_replay": "38MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "SOMG",
+          "scalar_replay": "SOMG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "125/82 . scratchIN",
+          "scalar_replay": "125/82 . scratchIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "38MG",
+          "scalar_replay": "38MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        }
+      ]
+    },
+    "aligned-6029": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "127MG",
+          "scalar_replay": "127MG",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CARMAVIN",
+          "scalar_replay": "CARMAVIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "OMIN",
+          "scalar_replay": "OMIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CARVIL",
+          "scalar_replay": "CARVIL",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "141/90 .141/90 .",
+          "scalar_replay": "141/90 .141/90 .",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "38MG",
+          "scalar_replay": "38MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "SOMAVIN",
+          "scalar_replay": "SOMAVIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "125/82 .1.",
+          "scalar_replay": "125/82 .1.",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "38MG",
+          "scalar_replay": "38MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "135/88",
+          "scalar_replay": "135/88",
+          "match": true
+        }
+      ]
+    },
+    "answer-1481": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "127/77777777777/",
+          "scalar_replay": "127/77777777777/",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CNTCAN",
+          "scalar_replay": "CNTCAN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "ORDI/90IN",
+          "scalar_replay": "ORDI/90IN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CATE/9999IN",
+          "scalar_replay": "CATE/9999IN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "14/99",
+          "scalar_replay": "14/99",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "38R/82",
+          "scalar_replay": "38R/82",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "SANT3A3333333333",
+          "scalar_replay": "SANT3A3333333333",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "125252525252525O",
+          "scalar_replay": "125252525252525O",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "3333333333333333",
+          "scalar_replay": "3333333333333333",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        }
+      ]
+    },
+    "answer-3527": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "127MG",
+          "scalar_replay": "127MG",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CVATALTAITAVAVCA",
+          "scalar_replay": "CVATALTAITAVAVCA",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "ORILIIIIIIIIIIII",
+          "scalar_replay": "ORILIIIIIIIIIIII",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "141/79",
+          "scalar_replay": "141/79",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "3MG",
+          "scalar_replay": "3MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "SANTG",
+          "scalar_replay": "SANTG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "1255/85",
+          "scalar_replay": "1255/85",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "3MG",
+          "scalar_replay": "3MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        }
+      ]
+    },
+    "answer-6029": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "127MG",
+          "scalar_replay": "127MG",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CARRAAL",
+          "scalar_replay": "CARRAAL",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CARTALAN",
+          "scalar_replay": "CARTALAN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "141/90 141/99 1/",
+          "scalar_replay": "141/90 141/99 1/",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "38M 585",
+          "scalar_replay": "38M 585",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "SANT  S",
+          "scalar_replay": "SANT  S",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "125T3.T3.T3.T3.T",
+          "scalar_replay": "125T3.T3.T3.T3.T",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "38M8333333333333",
+          "scalar_replay": "38M8333333333333",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        }
+      ]
+    },
+    "full-1481": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "MEDICATION updated to DAN",
+          "scalar_replay": "MEDICATION updated to DAN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CORAVEL",
+          "scalar_replay": "CORAVEL",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CORAVEL",
+          "scalar_replay": "CORAVEL",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "121/79",
+          "scalar_replay": "121/79",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "3QOR updated",
+          "scalar_replay": "3QOR updated",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "127/81",
+          "scalar_replay": "127/81",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "121/79",
+          "scalar_replay": "121/79",
+          "match": true
+        }
+      ]
+    },
+    "full-3527": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "13MG",
+          "scalar_replay": "13MG",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CORAVEL",
+          "scalar_replay": "CORAVEL",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "13MG",
+          "scalar_replay": "13MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CORAVEL",
+          "scalar_replay": "CORAVEL",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "113/71",
+          "scalar_replay": "113/71",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "3MG",
+          "scalar_replay": "3MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "133/85",
+          "scalar_replay": "133/85",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "3MG",
+          "scalar_replay": "3MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "133/85",
+          "scalar_replay": "133/85",
+          "match": true
+        }
+      ]
+    },
+    "full-6029": {
+      "equal": 16,
+      "checked": 16,
+      "details": [
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "DOSE",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "ALLERGY",
+          "stored": "CORAVEL",
+          "scalar_replay": "CORAVEL",
+          "match": true
+        },
+        {
+          "split": "dev",
+          "encounter": 7,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "DOSE",
+          "stored": "109MG",
+          "scalar_replay": "109MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "ALLERGY",
+          "stored": "CORAVEL",
+          "scalar_replay": "CORAVEL",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 3,
+          "slot": "VITAL_BP",
+          "stored": "127/81",
+          "scalar_replay": "127/81",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "DOSE",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 53,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "MEDICATION",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "DOSE",
+          "stored": "109MG",
+          "scalar_replay": "109MG",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "ALLERGY",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        },
+        {
+          "split": "test",
+          "encounter": 84,
+          "slot": "VITAL_BP",
+          "stored": "ABSTAIN",
+          "scalar_replay": "ABSTAIN",
+          "match": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,484 @@
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-encounters","id":"chart-correction","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-encounters","id":"heel-calendar","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-encounters","id":"household-scope","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-encounters","id":"two-clocks","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-fresh-nov20","id":"mica","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"long-fresh-nov20","id":"wren","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"all-missing","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[My left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:S[a stuffy nose]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[My throat is sore when I speak on the phone]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[a stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[My fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:M|SEV:M|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"direct-reader/finetuned","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:M|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"direct-reader/finetuned","cohort":"long-encounters","id":"household-scope","slots":"CC:S[a dry cough]|DUR:S[six days]|SEV:M|MED:A[I have not taken any medicine for it.]|ALG:S[latex]"}
+{"arm":"direct-reader/finetuned","cohort":"long-encounters","id":"mailing-record","slots":"CC:S[ankle pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling in my fingertips]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[my right wrist hurts]|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"direct-reader/finetuned","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:S[My lips are burning]|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"direct-reader/finetuned","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[an itchy scalp]|DUR:M|SEV:M|MED:A[No medications.]|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10]|MED:S[naproxen]|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:M|DUR:M|SEV:S[fine]|MED:A[I do not take any medications.]|ALG:A[I do not know whether I have any allergies.]"}
+{"arm":"direct-reader/finetuned","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[a dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:S[amlodipine]|ALG:S[penicillin]"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:S[metformin]"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:M|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[My right ear aches]|DUR:M|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:S[dry cough]|DUR:S[two nights]|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:M|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:S[knee stiffness]|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:S[A dry cough]|DUR:S[Six days ago]|SEV:M|MED:S[loratadine]|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:M|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"direct-reader/finetuned","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:S[Ringing in my left ear]|DUR:S[Three weeks]|SEV:M|MED:S[ibuprofen]|ALG:M"}
+{"arm":"direct-reader/finetuned","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:M|DUR:M|SEV:S[3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:S[Can the office mail a copy of my test results]|DUR:S[Can the office mail a copy of my test results to my new doctor]|SEV:S[Can the office mail a copy of my test results]|MED:S[test results]|ALG:A[office mail a copy of my test results to my new doctor]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[My left heel aches]|DUR:S[I lost the receipt for my copay]|SEV:S[My left heel aches]|MED:S[copay]|ALG:S[left heel]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:S[a stuffy nose]|DUR:S[my birthday]|SEV:S[stuffy nose]|MED:S[a stuffy nose]|ALG:A[computer]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:S[Please update my telephone number]|SEV:S[itchy rash]|MED:A[telephone number]|ALG:A[telephone number]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[two days]|DUR:S[two days]|SEV:S[two days]|MED:S[two days]|ALG:S[two days]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[a stabbing pain]|DUR:S[a stabbing pain in my lower back]|SEV:S[a stabbing pain in my lower back]|MED:A[a stabbing pain in my lower back]|ALG:A[lower back]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:S[emergency contact]|DUR:S[I want to update my emergency contact]|SEV:S[I want to update my emergency contact]|MED:A[emergency contact]|ALG:A[emergency contact]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:S[charges from last month]|DUR:S[last month]|SEV:S[I would like a printout of the charges from last month]|MED:A[printout of the charges from last month]|ALG:A[printout of the charges from last month]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[My fingers hurt]|DUR:S[My fingers hurt when I write my signature]|SEV:S[My fingers hurt]|MED:S[My fingers hurt when I write my signature]|ALG:S[My fingers hurt]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:S[I still have shoulder pain]|SEV:S[shoulder pain]|MED:S[shoulder pain]|ALG:S[shoulder pain]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:S[The time on my reminder letter is wrong]|DUR:S[time on my reminder letter is wrong]|SEV:S[wrong]|MED:A[reminder letter]|ALG:A[reminder letter]"}
+{"arm":"direct-reader/pretrained","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy]|DUR:S[each time I stand]|SEV:S[dizzy]|MED:S[dizzy]|ALG:S[dizzy]"}
+{"arm":"direct-reader/pretrained","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:S[when it began]|SEV:S[swelling in my left ankle]|MED:S[naproxen]|ALG:S[ibuprofen]"}
+{"arm":"direct-reader/pretrained","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[allergies]|DUR:S[four days ago]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:S[acetaminophen]"}
+{"arm":"direct-reader/pretrained","cohort":"long-encounters","id":"household-scope","slots":"CC:S[@593..626:my son; my visit is for the cough]|DUR:S[six days]|SEV:S[six days]|MED:A[six days]|ALG:S[latex]"}
+{"arm":"direct-reader/pretrained","cohort":"long-encounters","id":"mailing-record","slots":"CC:S[ankle pain]|DUR:S[eight months]|SEV:S[ankle pain]|MED:S[ankle pain]|ALG:S[ankle pain]"}
+{"arm":"direct-reader/pretrained","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[allergies]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:S[metformin]"}
+{"arm":"direct-reader/pretrained","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[three out of ten]|DUR:S[three out of ten]|SEV:S[three out of ten]|MED:S[penicillin]|ALG:S[penicillin]"}
+{"arm":"direct-reader/pretrained","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:S[allergies]|DUR:S[three days]|SEV:S[three days]|MED:S[cetirizine]|ALG:S[cetirizine]"}
+{"arm":"direct-reader/pretrained","cohort":"long-fresh-nov20","id":"larch","slots":"CC:S[The envelope from the copy desk arrived without the attachment]|DUR:M|SEV:M|MED:A[The second page of the itemized bill]|ALG:S[blue stamp]"}
+{"arm":"direct-reader/pretrained","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:S[started]|SEV:S[itchy scalp]|MED:S[No medications]|ALG:S[itchy scalp]"}
+{"arm":"direct-reader/pretrained","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[heel pain]|DUR:S[eleven days]|SEV:S[3/10]|MED:S[naproxen]|ALG:S[naproxen]"}
+{"arm":"direct-reader/pretrained","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[allergies]|DUR:S[@445..446:.]|SEV:S[fine]|MED:S[allergies]|ALG:A[I do not know whether I have any allergies]"}
+{"arm":"direct-reader/pretrained","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:S[dry cough]|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:S[amlodipine]|DUR:S[morning]|SEV:S[penicillin]|MED:S[penicillin]|ALG:S[penicillin]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[two days]|DUR:S[two days]|SEV:S[two days]|MED:S[ibuprofen]|ALG:A[ibuprofen]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[forty minutes]|DUR:S[forty minutes]|SEV:S[forty minutes]|MED:S[forty minutes]|ALG:S[forty minutes]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:S[metformin]|DUR:S[metformin]|SEV:S[metformin]|MED:S[metformin]|ALG:S[metformin]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:S[allergies]|DUR:S[Monday]|SEV:S[No known allergies]|MED:A[Monday]|ALG:A[Monday]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:S[nothing yet]|SEV:S[nausea]|MED:S[nausea]|ALG:S[nausea]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:S[cetirizine]|DUR:S[last Friday]|SEV:S[cetirizine]|MED:S[cetirizine]|ALG:S[cetirizine]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:S[last month]|DUR:S[since last month]|SEV:S[since last month]|MED:A[The portal]|ALG:A[The portal]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[naproxen]|DUR:S[yesterday]|SEV:S[naproxen]|MED:S[naproxen]|ALG:S[naproxen]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[three hours]|DUR:S[three hours]|SEV:S[three hours]|MED:A[three hours]|ALG:A[three hours]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:S[I cannot recall]|DUR:S[after this call]|SEV:S[I cannot recall]|MED:A[I cannot recall]|ALG:A[I cannot recall]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:S[dry cough]|DUR:S[two nights]|SEV:S[two nights]|MED:A[two nights]|ALG:A[two nights]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:S[five weeks ago]|DUR:S[five weeks ago]|SEV:S[five weeks ago]|MED:S[five weeks ago]|ALG:S[five weeks ago]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:S[knee stiffness]|DUR:S[yesterday]|SEV:S[knee stiffness]|MED:S[aspirin]|ALG:S[aspirin]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:S[walnuts]|DUR:S[unsure]|SEV:S[unsure]|MED:S[walnuts]|ALG:S[walnuts]"}
+{"arm":"direct-reader/pretrained","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:S[invoice]|DUR:S[tomorrow]|SEV:S[I need a copy of my invoice]|MED:A[invoice]|ALG:A[invoice]"}
+{"arm":"direct-reader/pretrained","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:S[A dry cough]|DUR:S[Six days ago]|SEV:S[dry cough]|MED:S[loratadine]|ALG:S[loratadine]"}
+{"arm":"direct-reader/pretrained","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:S[two days ago]|SEV:S[Four days]|MED:S[naproxen]|ALG:S[naproxen]"}
+{"arm":"direct-reader/pretrained","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:S[Three weeks]|DUR:S[Three weeks]|SEV:S[Three weeks]|MED:S[@407..414:aspirin]|ALG:S[ibuprofen]"}
+{"arm":"direct-reader/pretrained","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[nickel]|DUR:S[it started]|SEV:S[3/10]|MED:S[No medications]|ALG:S[nickel]"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:S[stuffy nose]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[throat is sore when I speak on the phone]|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:M|SEV:M|MED:M|ALG:A[No known allergies.]"}
+{"arm":"first-assertion","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[yesterday]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"first-assertion","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:M|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"first-assertion","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:S[eight months]|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling in my fingertips]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"first-assertion","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[right wrist hurts]|DUR:M|SEV:S[three out of ten]|MED:M|ALG:S[penicillin]"}
+{"arm":"first-assertion","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"first-assertion","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:M|SEV:M|MED:A[No medications.]|ALG:S[Nickel]"}
+{"arm":"first-assertion","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10]|MED:S[naproxen]|ALG:M"}
+{"arm":"first-assertion","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[fingers feel numb]|DUR:M|SEV:M|MED:A[I do not take any medications.]|ALG:M"}
+{"arm":"first-assertion","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:A[nothing yet]|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:S[last Friday]|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[right ear aches]|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:S[dry cough]|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:S[five weeks ago]|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:S[knee stiffness]|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"first-assertion","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"first-assertion","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[hands shake]|DUR:M|SEV:S[3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:M|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:M|SEV:M|MED:M|ALG:A[No known allergies.]"}
+{"arm":"oracle","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[four days ago]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"oracle","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:M|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"oracle","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling in my fingertips]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"oracle","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[my right wrist hurts]|DUR:M|SEV:S[three out of ten]|MED:M|ALG:S[penicillin]"}
+{"arm":"oracle","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"oracle","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:M|SEV:M|MED:A[No medications.]|ALG:S[Nickel]"}
+{"arm":"oracle","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10]|MED:S[naproxen]|ALG:M"}
+{"arm":"oracle","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:M|DUR:M|SEV:M|MED:A[I do not take any medications.]|ALG:M"}
+{"arm":"oracle","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:A[nothing yet]|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:M|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:M|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:S[dry cough]|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:M|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:S[knee stiffness]|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"oracle","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"oracle","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:M|DUR:M|SEV:S[3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:S[stuffy nose]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[throat is sore when I speak on the phone]|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:U[I cannot tell when it began.]|SEV:M|MED:U[naproxen||ibuprofen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-1.5b/base","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[four days]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"qwen-1.5b/base","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:U[I do not know whether I have any allergies myself.]|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:S[eight months]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling in my fingertips]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[my right wrist hurts]|DUR:U[I cannot remember whether I took anything before the shift.]|SEV:S[Right now it is three out of ten]|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-1.5b/base","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[Right now it is 2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"qwen-1.5b/base","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:U[I cannot remember when it started.]|SEV:M|MED:A[No medications.]|ALG:S[Nickel]"}
+{"arm":"qwen-1.5b/base","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10 now]|MED:S[naproxen after lunch]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[fingers feel numb]|DUR:U[I am not sure how severe it is.]|SEV:U[I do not know whether I have any allergies.]|MED:A[I do not take any medications.]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:A[nothing yet]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:S[last Friday]|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[right ear aches]|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:U[I cannot recall.]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:S[dry cough]|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:S[five weeks ago]|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:S[knee stiffness]|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:U[I am unsure.]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:U[I don't know. My older records may have the answer.]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-1.5b/base","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/base","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[hands shake]|DUR:U[I haven't kept track. I don't know when it started.]|SEV:S[Right now my shaking is 3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:S[stuffy nose]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[throat is sore when I speak on the phone]|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:U[I cannot tell when it began.]|SEV:M|MED:U[naproxen||ibuprofen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-1.5b/learned","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[four days]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"qwen-1.5b/learned","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:U[I do not know whether I have any allergies myself.]|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:S[eight months]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling in my fingertips]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[right wrist hurts]|DUR:U[I cannot remember whether I took anything before the shift.]|SEV:S[three out of ten]|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-1.5b/learned","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"qwen-1.5b/learned","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:M|SEV:M|MED:A[No medications.]|ALG:S[Nickel]"}
+{"arm":"qwen-1.5b/learned","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10]|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[fingers feel numb]|DUR:U[I do not know whether I have any allergies.]|SEV:U[I am not sure how severe it is.]|MED:A[I do not take any medications.]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:A[nothing yet]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:S[last Friday]|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[right ear aches]|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:U[I cannot recall.]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:S[dry cough]|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:S[five weeks]|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:S[knee stiffness]|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:U[I am unsure.]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:M|DUR:U[I don't know. My older records may have the answer.]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-1.5b/learned","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-1.5b/learned","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[hands shake]|DUR:U[I haven't kept track. I don't know when it started.]|SEV:S[Right now my shaking is 3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[throat is sore when I speak on the phone]|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:M|SEV:M|MED:U[naproxen||ibuprofen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[four days ago]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:M|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:S[eight months]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling started two hours ago]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[my right wrist hurts]|DUR:M|SEV:S[Right now it is three out of ten]|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:U[I cannot remember when it started.]|SEV:M|MED:A[No medications.]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10]|MED:S[naproxen after lunch]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[fingers feel numb]|DUR:M|SEV:U[I am not sure how severe it is.]|MED:A[I do not take any medications.]|ALG:U[I do not know whether I have any allergies.]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:M|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[right ear aches]|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:U[I cannot recall.]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:S[five weeks]|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:M|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:M|SEV:U[I am unsure.]|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:U[I don't know. My older records may have the answer.]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-adapter","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[hands shake]|DUR:U[I haven't kept track. I don't know when it started.]|SEV:S[Right now my shaking is 3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[throat is sore when I speak on the phone]|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:M|SEV:M|MED:U[naproxen||ibuprofen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[four days ago]|SEV:S[moderate]|MED:S[acetaminophen before leaving home]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:M|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:S[eight months]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling started two hours ago]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[my right wrist hurts]|DUR:M|SEV:S[three out of ten]|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:U[I cannot remember when it started.]|SEV:M|MED:A[No medications.]|ALG:S[Nickel]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10 now]|MED:S[naproxen after lunch]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[fingers feel numb]|DUR:M|SEV:U[I am not sure how severe it is.]|MED:A[I do not take any medications.]|ALG:U[I do not know whether I have any allergies.]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:S[last Friday]|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[right ear aches]|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:U[I cannot recall.]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:S[five weeks]|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:M|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:U[I am unsure.]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:U[I don't know. My older records may have the answer.]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b-lora/slate-base","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[hands shake]|DUR:M|SEV:S[Right now my shaking is 3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:S[stuffy nose]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[throat is sore when I speak on the phone]|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:U[I cannot tell when it began.]|SEV:M|MED:U[naproxen||ibuprofen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b/base","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[four days]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"qwen-7b/base","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:U[I do not know whether I have any allergies myself.]|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:S[eight months]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling in my fingertips]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[my right wrist hurts]|DUR:U[I cannot remember whether I took anything before the shift.]|SEV:S[Right now it is three out of ten]|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-7b/base","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"qwen-7b/base","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:U[I cannot remember when it started.]|SEV:M|MED:A[No medications.]|ALG:S[Nickel]"}
+{"arm":"qwen-7b/base","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10 now]|MED:S[naproxen after lunch]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[fingers feel numb]|DUR:U[I do not know whether I have any allergies.]|SEV:U[I am not sure how severe it is.]|MED:A[I do not take any medications.]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:A[nothing yet]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:S[last Friday]|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[right ear aches]|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:U[I cannot recall.]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:S[dry cough]|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:S[five weeks ago]|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:S[knee stiffness]|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:U[I am unsure.]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:U[I don't know. My older records may have the answer.]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b/base","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/base","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[hands shake]|DUR:U[I haven't kept track. I don't know when it started.]|SEV:S[Right now my shaking is 3/10]|MED:A[No medications.]|ALG:S[nickel]"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-ash","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-carob","slots":"CC:S[left heel aches]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-cypress","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-hickory","slots":"CC:S[itchy rash]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-juniper","slots":"CC:S[throat is sore when I speak on the phone]|DUR:S[two days]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-laurel","slots":"CC:S[stabbing pain in my lower back]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-nutmeg","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-oat","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-palm","slots":"CC:S[fingers hurt when I write my signature]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-pear","slots":"CC:S[shoulder pain]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-quince","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"administrative-fresh-12","id":"admin-followup-sesame","slots":"CC:S[dizzy each time I stand]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"long-encounters","id":"chart-correction","slots":"CC:S[swelling in my left ankle]|DUR:U[I cannot tell when it began.]|SEV:M|MED:U[naproxen||ibuprofen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b/learned","cohort":"long-encounters","id":"heel-calendar","slots":"CC:S[burning in my left heel]|DUR:S[four days]|SEV:S[moderate]|MED:S[acetaminophen]|ALG:A[I have no known allergies.]"}
+{"arm":"qwen-7b/learned","cohort":"long-encounters","id":"household-scope","slots":"CC:S[dry cough]|DUR:S[six days]|SEV:M|MED:A[I have not taken any medicine for it.]|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"long-encounters","id":"mailing-record","slots":"CC:M|DUR:S[eight months]|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"long-encounters","id":"two-clocks","slots":"CC:S[tingling in my fingertips]|DUR:S[two hours ago]|SEV:S[mild]|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"long-encounters","id":"wrist-and-shift","slots":"CC:S[my right wrist hurts]|DUR:M|SEV:S[Right now it is three out of ten]|MED:U[I cannot remember whether I took anything before the shift.]|ALG:S[penicillin]"}
+{"arm":"qwen-7b/learned","cohort":"long-fresh-nov20","id":"kiln","slots":"CC:M|DUR:S[three days]|SEV:S[2/10]|MED:S[cetirizine]|ALG:A[I have no allergies.]"}
+{"arm":"qwen-7b/learned","cohort":"long-fresh-nov20","id":"larch","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"long-fresh-nov20","id":"mica","slots":"CC:S[itchy scalp]|DUR:M|SEV:M|MED:A[No medications.]|ALG:S[Nickel]"}
+{"arm":"qwen-7b/learned","cohort":"long-fresh-nov20","id":"quartz","slots":"CC:S[pain in my heel]|DUR:S[eleven days]|SEV:S[3/10 now]|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"long-fresh-nov20","id":"thistle","slots":"CC:S[fingers feel numb]|DUR:M|SEV:U[I am not sure how severe it is.]|MED:A[I do not take any medications.]|ALG:U[I do not know whether I have any allergies.]"}
+{"arm":"qwen-7b/learned","cohort":"long-fresh-nov20","id":"wren","slots":"CC:S[dry cough]|DUR:S[eight days]|SEV:M|MED:S[acetaminophen]|ALG:S[latex]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"bellflower","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[penicillin]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"birchwood","slots":"CC:S[right thumb pain]|DUR:S[two days]|SEV:S[mild]|MED:S[ibuprofen]|ALG:S[latex]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"cobblestone","slots":"CC:S[chest tightness]|DUR:S[about forty minutes]|SEV:S[severe]|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"copperleaf","slots":"CC:M|DUR:M|SEV:M|MED:S[metformin]|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"driftwood","slots":"CC:M|DUR:M|SEV:M|MED:S[levothyroxine]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"fireweed","slots":"CC:S[nausea]|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"hazelwood","slots":"CC:M|DUR:M|SEV:M|MED:S[cetirizine]|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"lighthouse","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"meadowlark","slots":"CC:S[right ear aches]|DUR:S[yesterday]|SEV:M|MED:S[naproxen]|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"milkweed","slots":"CC:S[itchy eyes]|DUR:S[three hours]|SEV:M|MED:S[loratadine]|ALG:S[ragweed]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"moorland","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:U[I cannot recall.]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"pinecone","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:S[adhesive tape]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"sandbar","slots":"CC:M|DUR:M|SEV:S[six out of ten]|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"sweetfern","slots":"CC:M|DUR:M|SEV:S[moderate]|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"willowherb","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:U[I am unsure.]"}
+{"arm":"qwen-7b/learned","cohort":"novel-synthetic-screen","id":"windmill","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"speaker-transfer-nov20","id":"coatroom-ticket","slots":"CC:M|DUR:M|SEV:M|MED:U[I don't know. My older records may have the answer.]|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"speaker-transfer-nov20","id":"rescheduled-rehearsal","slots":"CC:S[Left ankle swelling]|DUR:M|SEV:S[Moderate]|MED:S[naproxen]|ALG:A[No known allergies.]"}
+{"arm":"qwen-7b/learned","cohort":"speaker-transfer-nov20","id":"waiting-room-receipt","slots":"CC:M|DUR:M|SEV:M|MED:M|ALG:M"}
+{"arm":"qwen-7b/learned","cohort":"speaker-transfer-nov20","id":"window-seat","slots":"CC:S[hands shake]|DUR:M|SEV:S[Right now my shaking is 3/10]|MED:A[No medications.]|ALG:S[nickel]"}

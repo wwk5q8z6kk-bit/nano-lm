@@ -1,0 +1,86 @@
+{
+  "first-assertion-checked": {
+    "exact": 12,
+    "excluded": 6,
+    "expected_assertions": 14,
+    "fields": 24,
+    "malformed_fields": 0,
+    "nonexact_assertions": 2,
+    "omissions": 10,
+    "positive_exact": 2,
+    "unsupported": 0,
+    "unusable_fields": 0
+  },
+  "flash-checked": {
+    "exact": 11,
+    "excluded": 6,
+    "expected_assertions": 14,
+    "fields": 24,
+    "malformed_fields": 0,
+    "nonexact_assertions": 1,
+    "omissions": 12,
+    "positive_exact": 1,
+    "unsupported": 0,
+    "unusable_fields": 0
+  },
+  "flash-raw": {
+    "exact": 17,
+    "excluded": 6,
+    "expected_assertions": 14,
+    "fields": 24,
+    "malformed_fields": 3,
+    "nonexact_assertions": 3,
+    "omissions": 1,
+    "positive_exact": 7,
+    "unsupported": 0,
+    "unusable_fields": 0
+  },
+  "pro-checked": {
+    "exact": 12,
+    "excluded": 6,
+    "expected_assertions": 14,
+    "fields": 24,
+    "malformed_fields": 0,
+    "nonexact_assertions": 0,
+    "omissions": 9,
+    "positive_exact": 3,
+    "unsupported": 0,
+    "unusable_fields": 3
+  },
+  "pro-raw": {
+    "exact": 14,
+    "excluded": 6,
+    "expected_assertions": 14,
+    "fields": 24,
+    "malformed_fields": 4,
+    "nonexact_assertions": 4,
+    "omissions": 2,
+    "positive_exact": 5,
+    "unsupported": 0,
+    "unusable_fields": 0
+  },
+  "reader-checked": {
+    "exact": 10,
+    "excluded": 6,
+    "expected_assertions": 14,
+    "fields": 24,
+    "malformed_fields": 0,
+    "nonexact_assertions": 0,
+    "omissions": 14,
+    "positive_exact": 0,
+    "unsupported": 0,
+    "unusable_fields": 0
+  },
+  "reference-checked": {
+    "exact": 12,
+    "excluded": 6,
+    "expected_assertions": 14,
+    "fields": 24,
+    "malformed_fields": 0,
+    "nonexact_assertions": 0,
+    "omissions": 12,
+    "positive_exact": 2,
+    "unsupported": 0,
+    "unusable_fields": 0
+  }
+}

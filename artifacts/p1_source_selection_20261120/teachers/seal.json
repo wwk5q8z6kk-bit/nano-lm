@@ -1,0 +1,14 @@
+{
+  "utc": "2026-11-20T14:51:11.758808+00:00",
+  "master": "d109d068a8388a564a769a6d93d8d88c790ecce6",
+  "inputs": {
+    "build.py": "daa5bd594c004a38c7be42901adf6b726736b49eca598c27dc61f00801725106",
+    "fixture.json": "ea2edf0d0ff42690e6d3c4226ff302c25720070b8de0246fd068f49b0b10c0e5",
+    "plan.md": "a8ea0e9ef13bf757af788e2e784be1f4ebf842ed86e67e1427041f6bdc8cdb80",
+    "../master-source/nanoscribe/compact.py": "ce47e2594281b9e1c87968d57ff0a5a3e5dffaec04c6c1cb78d274c7d84044a1",
+    "../master-source/nanoscribe/grounded.py": "5232ce404251bd99c7cfd14d8f5272c38b85c08a51bf586be2be99cbac465e2f",
+    "../master-source/nanoscribe/scribe.py": "d87250c09a94418d74a2532907447457933f983891721bffce8b0ad1d3c667ff"
+  },
+  "provider_calls_at_seal": 0,
+  "offline_scoring_at_seal": false
+}
