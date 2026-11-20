@@ -396,3 +396,42 @@ def test_omega_wrapped_layer_gradient_checkpointing() -> None:
     h.sum().backward()
     trainable = [p for p in m.parameters() if p.requires_grad]
     assert trainable and all(p.grad is not None and torch.isfinite(p.grad).all() for p in trainable)
+
+def test_omega_cache_tracks_independent_requests_and_continues_each_stream():
+    from nanolm_holonomy.omega_architecture import HSPAOmegaSidecar, _OmegaWrappedLayer
+
+    class Cache:
+        length = 0
+
+        def get_seq_length(self, layer):
+            assert layer == 2
+            return self.length
+
+    class Layer(nn.Module):
+        def forward(self, h, past_key_values=None, use_cache=True):
+            if use_cache and past_key_values is not None:
+                past_key_values.length += h.shape[1]
+            return (h, "base metadata")
+
+    torch.manual_seed(921)
+    sc = HSPAOmegaSidecar(16, n_registers=2, d_fiber=8)
+    wrapper = _OmegaWrappedLayer(Layer(), sc, 2).eval()
+    with torch.inference_mode():
+        sc.sidecar_gate.fill_(0.7)
+        a, b = torch.randn(2, 1, 6, 16)
+        full_a = wrapper(a)[0]
+        full_b = wrapper(b)[0]
+        fresh, metadata = wrapper(a[:, -1:])
+        assert metadata == "base metadata"
+        ca, cb = Cache(), Cache()
+        wrapper(a[:, :2], past_key_values=ca)
+        wrapper(b[:, :4], past_key_values=cb)
+        torch.testing.assert_close(wrapper(a[:, 2:5], past_key_values=ca)[0], full_a[:, 2:5])
+        torch.testing.assert_close(wrapper(b[:, 4:], past_key_values=cb)[0], full_b[:, 4:])
+        torch.testing.assert_close(wrapper(a[:, -1:])[0], fresh)
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=ca, use_cache=False)[0], fresh)
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=ca)[0], full_a[:, -1:])
+        ca.length = 0
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=ca)[0], fresh)
+        sc.reset_cache()
+        torch.testing.assert_close(wrapper(a[:, -1:], past_key_values=cb)[0], fresh)

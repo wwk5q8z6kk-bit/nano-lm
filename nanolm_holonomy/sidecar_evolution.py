@@ -112,7 +112,7 @@ class HolonomicRegisterSidecar(nn.Module):
 
 
 class _SidecarWrappedDecoderLayer(nn.Module):
-    def __init__(self, base_layer: nn.Module, sidecar: HolonomicRegisterSidecar, layer_idx: int) -> None:
+    def __init__(self, base_layer: nn.Module, sidecar: nn.Module, layer_idx: int) -> None:
         super().__init__()
         self.layer_idx = layer_idx
         self.base_layer = base_layer
@@ -127,9 +127,11 @@ class _SidecarWrappedDecoderLayer(nn.Module):
             if not hasattr(cache, "_nanolm_sidecars"):
                 cache._nanolm_sidecars = {}
             entry = cache._nanolm_sidecars.setdefault(self.layer_idx, {})
-            if length > 0 and length == entry.get("length"):
+            generation = getattr(self.sidecar, "_cache_generation", None)
+            if length > 0 and length == entry.get("length") and entry.get("generation") is generation:
                 state = entry.get("scan")
             entry.clear()
+            entry["generation"] = generation
         out = self.base_layer(hidden_states, *args, **kwargs)
         h = out[0] if isinstance(out, tuple) else out
         delta = self.sidecar(h, state=state, cache_state=entry)
