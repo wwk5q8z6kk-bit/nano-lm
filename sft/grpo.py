@@ -6,9 +6,11 @@
 #   -> policy-gradient with a KL leash to the frozen ref. (On-policy single update/batch => PPO clip
 #    ratio==1 and is inactive; this is the GRPO first-order form. Logged as a documented nano simplification.)
 import json, time, random, torch, torch.nn.functional as F
-import model_nano as M
+if __package__:
+    from . import model_nano as M
+else:
+    import model_nano as M
 
-random.seed(0); torch.manual_seed(0)
 dev = M.dev
 G = 6                 # group size (rollouts/prompt) — vault range 8-64; 6 to bound nano wall-clock
 NMAX = 8              # verifiable brevity threshold (words)
@@ -26,7 +28,6 @@ def make_prompt(q): return f"In a few words, {q}?"
 
 held = ["what is a cat", "name a vegetable", "what is the moon", "say a kind word",
         "what is snow", "name a bird", "what is a river", "how do you do"]     # disjoint gate set
-json.dump(held, open("grpo_gate_prompts.json", "w"))
 
 def verify(out, stopped):
     """binary verifiable reward: brief AND terminated."""
@@ -35,6 +36,9 @@ def verify(out, stopped):
     return 1.0 if (1 <= words <= NMAX) else 0.0
 
 if __name__ == '__main__':
+    random.seed(0); torch.manual_seed(0)
+    with open('grpo_gate_prompts.json', 'w') as output:
+        json.dump(held, output)
     policy = M.load("sft.pt"); policy.train()
     ref = M.load("sft.pt")
     for p in ref.parameters(): p.requires_grad_(False)
