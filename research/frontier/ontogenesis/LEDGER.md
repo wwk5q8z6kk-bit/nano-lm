@@ -100,3 +100,35 @@ Source: two read-only surveys on 2026-11-20 (repository and Antigravity records)
 | "1.54B NanoLM" | — | — | was unmodified Qwen2.5-1.5B | Antigravity audit note | Disproven |
 
 Not yet audited: seven openresearch worktrees and the `orx/*` branches; 12 foundation documents on `origin/research/foundation-intelligence-program`; the holonomy publication draft. V4's work exists only as untracked files and should be committed by its owner before any cleanup.
+
+## Pilot results added 2026-11-20 (evening)
+
+One-step lookup with updates, 48 live facts, 7 minutes, one seed, guess rate 20.4% (`results/pilots/pilot2-*`, `pilot3-*`):
+
+| Arm | Accuracy |
+|---|---|
+| KEYSTORE, given keys | 100% |
+| Looped Transformer, lr 1e-3 with warm-up | 99.95% |
+| Dense Transformer, lr 1e-3 with warm-up | 99.8% |
+| DEMOS | 98.3% |
+| Sparse message passing with forgetting | 98.0% |
+| Dense, lr 3e-3 no warm-up; dense, lr 3e-4 | 20.4% |
+| KEYSTORE, learned keys | 20.4% |
+
+- DEMOS learning-speed advantage: **Disproven** (baseline was mis-tuned).
+- Learned discrete keys by straight-through estimation: **Pilot, failed**.
+- Mixed one- and two-step task: every arm run so far is at guess rate; under-budget, **Open**.
+- DEMOS first-order hop step cannot remove the current key: **Derived**, overlap checked numerically (`MISSION.md` section 8).
+
+PLASTICITY v0, 200 successive tasks of 256 facts, three seeds, predictions written before the run (`plasticity.py`, `results/pilots/plasticity-v0-summary.json`):
+
+| Arm | Steps to 95%, first 50 tasks | Last 50 tasks | Retention of earlier tasks (chance 1.6%) |
+|---|---|---|---|
+| Plain MLP | 61–72 | never reached within 300 | 1.5% |
+| MLP with layer normalisation and weight decay | 33–34 | 37–38 | 4% |
+| Sparse key-value memory | 254–267 | never reached within 300 | 3.4% |
+
+- P1 (a plain dense network loses its ability to learn): **Demonstrated at pilot scale**, all three seeds.
+- P2 (a sparse key-value memory keeps its speed and retains more): **Disproven** in this implementation. It was slower from the start, lost plasticity, and retained nothing.
+- A standard remedy (normalisation plus weight decay) keeps learning speed almost flat. It is the strongest simpler alternative for any plasticity claim.
+- No arm retains earlier tasks. Plasticity and retention are separate problems here.
