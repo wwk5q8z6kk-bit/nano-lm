@@ -417,18 +417,28 @@ _UNNAMED_MED_PLACEHOLDER_RE = re.compile(
     re.IGNORECASE,
 )
 
-_MED_DENIAL_CUE_RE = re.compile(
-    r"(?:"
-    r"\b(?:haven't|have not|didn't|did not|never)\s+"
-    r"(?:taken|take|used|use|tried|try|applied|apply|put|had|swallowed)"
-    r"(?:\s+or\s+(?:taken|take|used|use|tried|try|applied|apply|put))?"
-    r"\s+(?:anything\b|(?:any|no)\s+(?:medications?|medicines?|meds|drugs?|treatments?)\b)"
-    r"|\b(?:took|used|tried|applied|taken)\s+nothing\b"
-    r"|\bno\s+(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|remedies)\b"
-    r"|\b(?:deny|denied|denies)\s+(?:taking\s+|using\s+|any\s+)?(?:medications?|medicines?|meds|drugs?|treatments?)\b"
-    r"|\bused\s+no\s+(?:medications?|medicines?|meds|drugs?|treatments?)\b"
-    r")",
-    re.IGNORECASE,
+# The denied noun must finish the object. An adjunct can specify an
+# administration interval, but a following noun changes what was denied.
+_DAY_PART = r"(?:morning|afternoon|evening|night)"
+_DAY_NAME = r"(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
+_DENIAL_INTERVAL = (
+    rf"(?:(?:on )?(?:today|yesterday|tomorrow|tonight|(?:last |this |next )?{_DAY_NAME})(?: {_DAY_PART})?"
+    rf"|now|currently|at present|recently|overnight|(?:last|this|next) (?:{_DAY_PART}|week|month|year)|(?:before|after|at) (?:breakfast|lunch|dinner|bedtime|noon)"
+    r"|on \d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?|at \d{1,2}(?::\d{2})?(?: ?[ap]m)?)"
+)
+_DENIAL_EMPHASIS = r"(?:at all|yet|\[yet\]|so far)"
+_MED_DENIAL_NOUN = r"(?:medications?|medicines?|meds?|drugs?|treatments?|tablets?|pills?|remedy|remedies)"
+_MED_DENIAL_VERB = r"(?:take|taken|use|used|try|tried|apply|applied|put|have|had|swallowed)"
+_MED_DENIAL_PREDICATE_RE = re.compile(
+    r"(?:no,? )?(?:"
+    rf"(?:i (?:have |have got |take |took |use |used |tried |applied |have taken |have used ))?no {_MED_DENIAL_NOUN}"
+    rf"|(?:i )?(?:haven't|have not|didn't|did not|don't|do not|never) {_MED_DENIAL_VERB}"
+    rf"(?: or {_MED_DENIAL_VERB})? (?:anything|any {_MED_DENIAL_NOUN})"
+    r"|(?:i )?(?:have )?(?:took|taken|used|tried|applied) nothing"
+    rf"|i (?:deny|denied) (?:(?:taking|using) )?(?:any )?{_MED_DENIAL_NOUN})"
+    r"(?: (?:on it|for (?:it|this|that|the pain|this complaint)))?"
+    rf"(?P<interval> (?:since |until )?{_DENIAL_INTERVAL})?(?: {_DENIAL_EMPHASIS})?",
+    re.I,
 )
 
 # Category words can qualify either a denial or the question answered by "no".
@@ -447,21 +457,11 @@ _ALLERGY_DENIAL_NOUN_RE = re.compile(
     rf"(?:(?:no,? )?(?:i (?:have |have got )?no|no|i (?:do not|don't) have(?: any)?|"
     rf"i (?:deny|denied)(?: any)?|i (?:haven't|have not) got any) )"
     rf"(?:known )?(?:(?P<type>{_ALLERGEN_CATEGORY}) )?allerg(?:y|ies)"
-    rf"(?: to (?:any )?(?P<object_type>{_ALLERGEN_CATEGORY}))?(?: at all)?", re.I,
+    rf"(?: to (?:any )?(?P<object_type>{_ALLERGEN_CATEGORY}))?(?: at all)?"
+    r"(?P<condition> (?:when|while) [^.!?;]+)?", re.I,
 )
 _ALLERGY_DENIAL_OBJECT_RE = re.compile(
-    r"(?:i(?: am|'m) not allergic(?: to (?P<object>.+))?)", re.I,
-)
-
-_ALG_DENIAL_CUE_RE = re.compile(
-    r"(?:"
-    r"\bno\s+(?:known\s+|medication\s+|medicine\s+|drug\s+|material\s+)*allerg(?:y|ies)\b"
-    r"|(?:\bnot|n't)\s+allergic(?:\s+to\s+(?:anything|any\s+(?:medications?|medicines?|drugs?)))?\s*[.!?;]?$"
-    r"|\b(?:don't|do not|doesn't|does not|have\s+no|haven't\s+got\s+any)\s+"
-    r"(?:have\s+)?(?:any\s+)?(?:known\s+|medication\s+|medicine\s+|drug\s+|material\s+)*allerg(?:y|ies)\b"
-    r"|\b(?:deny|denied|denies)\s+(?:any\s+)?(?:known\s+|medication\s+|medicine\s+|drug\s+)*allerg(?:y|ies)\b"
-    r")",
-    re.IGNORECASE,
+    r"(?:no,? )?(?:i(?: am|'m) )?not allergic(?: to (?P<object>.+))?", re.I,
 )
 
 _ELLIPTICAL_DENIAL_RE = re.compile(
@@ -774,14 +774,16 @@ def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
 _COMPLAINT_LEAD_RE = re.compile(
     r"^(?:(?:well|actually|mostly|mainly|yes)[, ]+\s*)*"
     r"(?:(?:i(?:'ve|\s+have)\s+(?:been\s+(?:having|feeling|experiencing|dealing\s+with)|got|felt|had)|"
-    r"i\s+(?:(?:also|still|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
+    r"i\s+(?:(?:also|still|now|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
     r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with|"
     r"(?:on\s+my\s+period|menstruating)\s+with)|i(?:'m|\s+am)(?=\s+on\s+edge\b)|"
     r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is)\s+)?", re.I,
 )
 _COMPLAINT_JOIN_RE = re.compile(
     r",?\s+(?:(?:and|but|because|although|whereas)\s+(?=(?:i|please|my)\b)|"
-    r"(?:and|but)\s+(?=(?:an?|the)\s+))", re.I,
+    r"(?:and|but)\s+(?=(?:an?|the)\s+)|"
+    r"(?:and|but|while|whereas|after|since)\s+(?!(?:it|they|has|have|is|are)\b)(?=(?:(?:my|the)\s+)?(?:[\w-]+\s+){1,3}"
+    r"(?:persists?|remains?|continues?|returned|resolved|has|have|is|are)\b))", re.I,
 )
 _DOCUMENT_CONTENT_RE = re.compile(r'\b(?:says?|states?|reads?|titled|labelled|labeled|quoting|lists?)\b|[“"]', re.I)
 _COMPLAINT_PREFIX = (
@@ -808,8 +810,8 @@ _COMPLAINT_HEAD_RE = re.compile(
 _COMPLAINT_CONTINUATION_RE = re.compile(
     rf"(?:{_BODY_REGION}|knuckles?|joints?|heels?|thumbs?|scalp|today|yesterday|every|each|all|now|"
     r"especially|mainly|mostly|again|when|whenever|which|that|in|on|at|near|of|with|through|"
-    r"behind|around|across|along|after|before|during|for|from|since|while|because|like|upon|"
-    r"and|or|but|is|are|was|were|has|have|began|started|returned|lasts?|lasted|"
+    r"behind|around|over|across|along|after|before|during|for|from|since|while|because|like|upon|"
+    r"and|or|but|still|is|are|was|were|has|have|began|started|returned|resolved|stopped|lasts?|lasted|"
     r"woke|wakes?|keeps?|gets?|got|spread|continues?|persists?|hurts?|aches?)\b", re.I,
 )
 # The question can supply the reporting predicate for an unfamiliar sensation
@@ -819,6 +821,50 @@ _LOCATED_SENSATION_RE = re.compile(
     r"buzzing|sensations?|pulsing|fluttering|vibrations?))\s+(?:across|in|behind|around|along|under)\s+(?:my|both)\s+"
     rf"(?:{_BODY_REGION}|vision|hearing|sight)\b", re.I,
 )
+_RESOLUTION = (r"(?:resolved|gone(?:\s+away)?|went\s+away|disappeared|ended|stopped|"
+               r"cleared(?:\s+up)?|subsided\s+(?:fully|completely)|(?:is|was)\s+over(?!\s+(?:my|the|both|an?)\b))")
+# Mask only the explicitly incomplete resolution. A separate negation still
+# reaches the ordinary polarity guard, and the source span stays verbatim.
+_INCOMPLETE_RESOLUTION_RE = re.compile(
+    rf"\b(?:(?:hasn['’]t|haven['’]t|hadn['’]t|isn['’]t|aren['’]t|wasn['’]t|"
+    rf"didn['’]t|(?:has|have|had|is|are|was|did)\s+not|never|not)\s+(?:(?:quite|yet|"
+    rf"completely|fully|totally|really|entirely)\s+)*(?:{_RESOLUTION}|resolve|go\s+away|"
+    rf"disappear|clear\s+up|stop|over)|(?:partially|partly|mostly|almost|nearly)\s+{_RESOLUTION})\b", re.I,
+)
+_COMPLAINT_ENDED_RE = re.compile(
+    rf"^\s*(?:(?:in|around|behind|on|over)\s+(?:my|the)\s+(?:left\s+|right\s+)?[\w-]+\s+)?"
+    rf"(?:(?:yesterday|today|last\s+night|from\s+yesterday)\s+)?"
+    rf"(?:(?:,\s*|\s*(?:and|but)\s+)(?:it|they|that)\s+)?"
+    rf"(?:(?:has|have|had|is|was|were|are|been|now|already|completely|fully|totally|"
+    rf"finally|entirely|since|just)\s+)*(?:{_RESOLUTION}|no\s+longer\s+"
+    rf"(?:present|there|bothering\s+me))\b", re.I,
+)
+_COMPLAINT_RECURRED_RE = re.compile(
+    r"\s*(?:(?:briefly|yesterday|for\s+a\s+while)\s*)?,?\s*(?:but|then|and\s+then)\s+(?:(?:it|they|the\s+symptoms?)\s+)?"
+    r"(?:(?:has|have|is|are|now|since)\s+)*(?:returned|recurred|came\s+back|back)\b", re.I,
+)
+_RECURRING_GONE_RE = re.compile(r"\b(?:has\s+)?gone\s+away" + _COMPLAINT_RECURRED_RE.pattern, re.I)
+_STOPPED_COMPLEMENT_RE = re.compile(
+    r"\bstopped(?=\s+(?:me|us|him|her|responding|getting|worsening|improving)\b)", re.I,
+)
+
+
+def _complaint_scope_text(field: FieldName, text: str) -> str:
+    if field is not FieldName.CHIEF_COMPLAINT:
+        return text
+    text = _INCOMPLETE_RESOLUTION_RE.sub("still present", text)
+    text = _RECURRING_GONE_RE.sub("returned", text)
+    return _STOPPED_COMPLEMENT_RE.sub("affected", text)
+
+
+def _complaint_ended(text: str) -> bool:
+    text = _complaint_scope_text(FieldName.CHIEF_COMPLAINT, text)
+    ending = _COMPLAINT_ENDED_RE.match(text)
+    if ending is None:
+        return False
+    return not _COMPLAINT_RECURRED_RE.match(text[ending.end():])
+
+
 _POSSESSIVE_BODY_CLAUSE_RE = re.compile(
     rf"^my\s+(?:(?:left|right|upper|lower)\s+)*{_BODY_REGION}\s+"
     r"(?:hurts?|aches?|itches?|stings?|burns?|shakes?|twitches|feels?|is|are|has|have)\b", re.I,
@@ -832,6 +878,28 @@ def _complaint_reports(clause: Turn) -> Iterator[Turn]:
             content = _DOCUMENT_CONTENT_RE.search(report.text)
             pieces = _split_events(report, _COMPLAINT_JOIN_RE, stop_at=content.start() if content else None)
             yield from pieces
+
+
+def _immediate_complaint_followup_ends(source: Source, idx: int, report: Turn, name: str) -> bool:
+    # A following resolution can qualify the preceding report. Only link an
+    # immediately adjacent patient report and a pronoun or matching subject.
+    turns = source.turns[idx:idx + 2]
+    for turn in turns:
+        if turn.speaker is not Speaker.PATIENT:
+            break
+        if turn.end <= report.end:
+            continue
+        for part in _complaint_reports(turn):
+            if part.start < report.end:
+                continue
+            subject = re.match(r"(?:it|they|this|that|(?:my|the)\s+" + re.escape(name)
+                               + r")\b", part.text, re.I)
+            if subject is None:
+                return False
+            remainder = part.text[subject.end():].replace("’", "'")
+            remainder = re.sub(r"^'s\b", " is", remainder, flags=re.I)
+            return _complaint_ended(remainder)
+    return False
 
 
 def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateSpan) -> bool:
@@ -849,7 +917,11 @@ def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateS
         last = head
         while following_head := _COMPLAINT_HEAD_RE.match(text, last.end()):
             last = following_head
-        following = re.match(r"\s+([^\W\d_]+)", text[last.end():])
+        remainder = _INCOMPLETE_RESOLUTION_RE.sub("still present", text[last.end():])
+        name = re.sub(r"^(?:an?|the|my|some)\s+", "", text[lead.end():last.end()].strip(), flags=re.I)
+        if _complaint_ended(remainder) or _immediate_complaint_followup_ends(source, idx, report, name):
+            return False
+        following = re.match(r"\s+([^\W\d_]+)", remainder)
         functional = re.match(r"(?:trouble|difficulty)\s+", last["head"], re.I)
         if (following and not _COMPLAINT_CONTINUATION_RE.match(following[1])
                 and not (functional and following[1].casefold() in {"my", "the", "words", "names"})):
@@ -859,7 +931,9 @@ def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateS
 
     if requested is FieldName.CHIEF_COMPLAINT:
         located = _LOCATED_SENSATION_RE.match(text, lead.end())
-        return bool(located and span.start <= report.start + located.start()
+        return bool(located and not _complaint_ended(text[located.end():])
+                    and not _immediate_complaint_followup_ends(source, idx, report, located[0])
+                    and span.start <= report.start + located.start()
                     and report.start + located.end() <= span.end)
     return False
 
@@ -1115,10 +1189,11 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
         if (span.start != turn.start or prev is None or prev.speaker is not Speaker.CLINICIAN
                 or not _field_wide_question(prev.text, field)):
             return False
-    elif (not _is_field_denial(field, text)
-          and not (field is FieldName.ALLERGY and _allergy_denial_scope(text)[0] != "unknown")):
-        cue_re = _MED_DENIAL_CUE_RE if field is FieldName.MEDICATION else _ALG_DENIAL_CUE_RE
-        if not (_NEGATION_WORD_RE.search(text) and cue_re.search(text)):
+    elif not _is_field_denial(field, text):
+        if field is FieldName.ALLERGY:
+            if _allergy_denial_scope(text)[0] == "unknown":
+                return False
+        elif not _MED_DENIAL_PREDICATE_RE.fullmatch(text.casefold().replace("’", "'").strip(" .!?;")):
             return False
 
     # Span must cover a complete turn or complete clause (not a tiny fragment inside a sentence).
@@ -1172,11 +1247,12 @@ def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> 
         ("the evening", "the morning", "the afternoon", "the night", "the day")
     ):
         return False
-    if _EPISTEMIC_HEDGE_RE.search(cleaned) or _NONUSE_ACTION_RE.search(cleaned):
+    scope_text = _complaint_scope_text(field, cleaned)
+    if _EPISTEMIC_HEDGE_RE.search(cleaned) or _NONUSE_ACTION_RE.search(scope_text):
         return False
-    if _contains_negation(field, cleaned):
+    if _contains_negation(field, scope_text):
         return False
-    if _THIRD_PARTY_RE.search(cleaned) or _PAST_OR_HYPOTHETICAL_RE.search(cleaned):
+    if _THIRD_PARTY_RE.search(scope_text) or _PAST_OR_HYPOTHETICAL_RE.search(scope_text):
         return False
 
     if field is FieldName.DURATION:
@@ -1735,11 +1811,12 @@ def _verify_local_span(
                 return False, reason
         if not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
-        if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(event.text):
+        scope_text = _complaint_scope_text(field, event.text)
+        if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(scope_text):
             return False, "clause_contains_uncertainty_or_nonuse_hazard"
-        if _THIRD_PARTY_RE.search(event.text) or _PAST_OR_HYPOTHETICAL_RE.search(event.text):
+        if _THIRD_PARTY_RE.search(scope_text) or _PAST_OR_HYPOTHETICAL_RE.search(scope_text):
             return False, "clause_contains_third_party_or_past_scope_hazard"
-        if _contains_negation(field, event.text):
+        if _contains_negation(field, scope_text):
             return False, "clause_contains_negation_hazard"
         if _SELF_CORRECTION_CLAUSE_RE.search(event.text):
             # Reject spans inside the mistake/retraction clause itself (e.g., "I said aspirin on the intake form, but that was a mistake.")
@@ -2151,15 +2228,12 @@ def extract_field_denial_spans(source: Source, field: FieldName) -> list[Candida
         semi_parts = list(re.finditer(r"[^;]+", turn.text))
         explicit_semi: list[CandidateSpan] = []
         if len(semi_parts) > 1:
-            cue_re = _MED_DENIAL_CUE_RE if field is FieldName.MEDICATION else _ALG_DENIAL_CUE_RE
             for m in semi_parts:
-                sp = _trim_span(source.text, turn.start + m.start(), turn.start + m.end())
-                # Keep trailing period!
                 raw_txt = m.group().strip()
                 if raw_txt:
                     raw_pos = turn.text.find(raw_txt, m.start())
                     sp_full = CandidateSpan(turn.start + raw_pos, turn.start + raw_pos + len(raw_txt), raw_txt)
-                    if cue_re.search(raw_txt) and is_explicit_patient_denial(source, field, sp_full):
+                    if not _ELLIPTICAL_DENIAL_RE.fullmatch(raw_txt) and is_explicit_patient_denial(source, field, sp_full):
                         explicit_semi.append(sp_full)
         if explicit_semi:
             for sp in explicit_semi:
@@ -2280,8 +2354,6 @@ def _scalar_report(field: FieldName, clause: Turn, question: str):
     return (question.casefold().strip(), tuple(re.findall(r"\w+", frame.casefold())), scale), value
 
 
-_DAY_PART = r"(?:morning|afternoon|evening|night)"
-_DAY_NAME = r"(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
 _MED_CALENDAR_RE = re.compile(
     rf"\b(?:(today|yesterday|tomorrow|(?:last |this |next )?{_DAY_NAME})(?:\s+({_DAY_PART}))?"
     rf"|(this|last|tomorrow)\s+({_DAY_PART})|(tonight))\b", re.I
@@ -2327,16 +2399,13 @@ def _medication_event_interval(source: Source, span: CandidateSpan) -> tuple[str
 def _denial_covers_treatment(source: Source, denial: CandidateSpan, treatment: CandidateSpan) -> bool:
     denied = _medication_event_interval(source, denial)
     if denied == ("", ""):
-        # A novel qualifier has no proven coverage. Only certify an unrestricted
-        # denial from a complete denial form or familiar unqualified remainder.
-        text = denial.text.strip(" .!?;")
+        # A recognized denial with an explicit interval cannot cover an
+        # unrelated administration unless the intervals themselves agree.
+        text = denial.text.casefold().replace("’", "'").strip(" .!?;")
         if _ELLIPTICAL_DENIAL_RE.fullmatch(text):
             return True
-        cue = _MED_DENIAL_CUE_RE.search(text)
-        return bool(cue and re.fullmatch(r"(?:no,? |i |have |had |taken |used |tried |really |actually )*",
-                                         text[:cue.start()], re.I)
-                    and re.fullmatch(r"(?: at all| yet| so far| for (?:it|this|that|the pain|this complaint))*",
-                                     text[cue.end():], re.I))
+        predicate = _MED_DENIAL_PREDICATE_RE.fullmatch(text)
+        return bool(predicate and predicate["interval"] is None)
     taken = _medication_event_interval(source, treatment)
     return bool(denied and taken and denied[0] == taken[0] and (not denied[1] or denied[1] == taken[1]))
 
@@ -2351,6 +2420,8 @@ def _allergy_denial_scope(text: str) -> tuple[str, str | None]:
     clean = text.casefold().replace("’", "'").strip(" .!?;")
     noun = _ALLERGY_DENIAL_NOUN_RE.fullmatch(clean)
     if noun:
+        if noun["condition"]:
+            return "conditional", None
         category = noun["type"] or noun["object_type"]
         if noun["type"] and noun["object_type"]:
             return "unknown", None
