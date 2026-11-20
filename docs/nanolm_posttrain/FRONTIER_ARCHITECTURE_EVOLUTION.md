@@ -11,9 +11,9 @@ Implemented in [architectures.py](../../nanolm_frontier/architectures.py) with e
 ### 1.1 Scaling Configurations
 | Preset | Family | Total Parameters | Delta / Softmax Layers | PKM Slots / Layer | KV Cache / Token (BF16) | Active FLOPs / Token @ 2K |
 |---|---|---:|---:|---:|---:|---:|
-| `C0..C4` Micro Tournament | All 5 | `38.01M – 38.27M` | `0/12` (`C0`) or `9/3` (`C1..C4`) | `4,096` (`C3, C4`) | `6,144 B` -> `1,536 B` | `82.7M – 133.3M` |
-| **`FRONTIER_2B_CONFIG`** | `C4_JCLE_Frontier` | **`1,915,969,316`** | `24 / 8` | `65,536` (`C=256`) | `16,384 B` | `5.52 BFLOPs` |
-| **`FRONTIER_4B_CONFIG`** | `C4_JCLE_Frontier` | **`3,865,666,516`** | `36 / 12` | `65,536` (`C=256`) | `24,576 B` | `11.65 BFLOPs` |
+| `C0..C4` Micro Tournament | All 5 | `38.01M – 38.27M` | `0/12` (`C0`) or `9/3` (`C1..C4`) | `4,096` (`C3, C4`) | `6,144 B` -> `1,536 B` | `89.0M – 143.8M` |
+| **`FRONTIER_2B_CONFIG`** | `C4_JCLE_Frontier` | **`1,915,969,316`** | `24 / 8` | `65,536` (`C=256`) | `16,384 B` | `5.63 BFLOPs` |
+| **`FRONTIER_4B_CONFIG`** | `C4_JCLE_Frontier` | **`3,865,666,516`** | `36 / 12` | `65,536` (`C=256`) | `24,576 B` | `11.86 BFLOPs` |
 
 ### 1.2 Competing Innovations Investigated
 1. **`C1_GatedDeltaHybrid` (3:1 Chunkwise Gated Delta-Rule Control):** Interleaves 3 chunkwise WY Householder Gated Delta-Rule layers ($S_t = a_t S_{t-1}(I - \beta_t k_t k_t^\top) + \beta_t v_t k_t^\top$, exact match to token-by-token reference recurrence within `2.38e-6`) with 1 global GQA layer (`-75%` KV cache).
@@ -32,7 +32,7 @@ See full tables, per-task deltas, bootstrap 95% CIs, failure taxonomies, and Ret
 
 - **Experiment E1 (`2.87M` tokens, 5 iso-parameter architectures):**
   - `C0_DenseGQA` achieved fastest training throughput (`63,110 tok/s`, `2,491 MB` VRAM) and lowest overall BPB (`0.6316`).
-  - `C3_CorticalPKM` cut active FLOPs by `34.5%` (`82.7M` vs `126.4M`), lowered overall BPB relative to `C1/C2` (`0.6326` vs `0.6331 / 0.6335`), and outperformed `C0/C1/C2` on `math` (`0.8001`).
+  - `C3_CorticalPKM` used an estimated `29.5%` fewer active FLOPs per token at 2K (`89.0M` vs `126.4M`, recomputed with the differential value width), lowered overall BPB relative to `C1/C2` (`0.6326` vs `0.6331 / 0.6335`), and outperformed `C0/C1/C2` on `math` (`0.8001`).
   - `C4_JCLE_Frontier` achieved the lowest `math` BPB overall (`0.7884` at `r=4` with entropy halting), with **60.5% token early-exit rate** (`mean_loops_used = 2.184` vs `4.000` unhalted), while showing pure-PyTorch recurrent throughput penalties (`5,181 tok/s`) and `structured` BPB regression (`0.4288`) — identifying fused CUDA delta kernels and task-conditioned looping as the priority engineering targets.
 - **Experiment E2 (`Qwen/Qwen3-1.7B`, `1.72B–1.75B <= 4B`, 15-Dimension Suite, `0` contamination overlaps):**
   - `Base`: `34/56` (`60.71%`, `CI95 [48.2%, 71.4%]`), `33.53 tok/s`.

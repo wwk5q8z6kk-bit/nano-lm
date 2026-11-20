@@ -150,6 +150,8 @@ def test_coding_guest_and_foundation_contracts():
     from nanolm_posttrain.eval_suite import _verify_coding, _verify_structured_extraction
 
     assert _verify_coding("def increment(x): return x + 1", {"assertions": ["assert increment(2) == 3"]}).passed
+    assert _verify_coding("import heapq\ndef first(h): heapq.heapify(h); return heapq.heappop(h)",
+                          {"assertions": ["assert first([3, 1, 4]) == 1"]}).passed
     assert not _verify_coding("print('PASS_COUNT:1')", {"assertions": ["assert False"]}).passed
     assert not _verify_structured_extraction('{"v": [1]}', {"expected_json": {"v": [True]}}).passed
     tasks = {task.task_id: task for task in build_foundation_eval_suite()}
@@ -164,3 +166,15 @@ def test_coding_guest_and_foundation_contracts():
         '{"chart_type":"bar","x_labels":["Q1","Q2","Q3","Q4"],"series":[120,145,110,165],"total":540,"x":1}',
     ):
         assert not verify_foundation_response(chart, payload).passed
+
+
+def test_lora_ceiling_includes_adapter_parameters_before_mutation(monkeypatch):
+    from nanolm_posttrain import lora
+
+    model = torch.nn.Module()
+    model.q_proj = torch.nn.Linear(4, 4, bias=False)
+    base = model.q_proj
+    monkeypatch.setattr(lora, "ABSOLUTE_MAX_PARAMETERS", 20)
+    with pytest.raises(lora.ParameterBudgetExceededError):
+        lora.apply_lora(model, lora.LoRAConfig(rank=1))
+    assert model.q_proj is base and base.weight.requires_grad
