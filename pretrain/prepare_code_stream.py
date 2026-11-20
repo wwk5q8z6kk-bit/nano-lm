@@ -32,7 +32,7 @@ def build_split(shard, tokenizer, eos, split, target, directory, val_repos, seen
     accepted_digests = set()
     bin_path = directory / f"{split}_code.bin"
     rows_path = directory / f"{split}_code.jsonl"
-    with bin_path.open("wb") as stream, rows_path.open("w", encoding="utf-8") as rows:
+    with bin_path.open("wb") as stream, rows_path.open("w", encoding="utf-8", newline="\n") as rows:
         parquet = pq.ParquetFile(shard)
         # The upstream shards group records by license. Spread candidates across
         # the shard using their source row numbers before any content filtering.
