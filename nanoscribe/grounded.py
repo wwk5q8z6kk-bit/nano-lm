@@ -1935,6 +1935,9 @@ _PERSONAL_RATING_REQUEST_RE = re.compile(
     r"(?:[.!?;]|\b(?:then|and)\b)[, ]*(?:please )?(?:tell me|give me|report|describe|rate) "
     r"your (?:(?:actual|own|current|present) )+[^.!?;]*\b(?:rating|score|severity|symptom|pain)\b", re.I,
 )
+_FINAL_PERSONAL_QUESTION_RE = re.compile(
+    r"(?:[.!?;]|\bthen\b)[, ]*(?P<question>(?:how|what|would|is|are)\b[^.!?;]*\byou(?:r)?\b[^.!?;]*)\??\s*$", re.I,
+)
 _DECLINED_RECITATION_RE = re.compile(
     rf"i (?:cannot|can['’]t|could not|couldn['’]t|am unable to) (?:see|read|repeat|recite) "
     rf"(?:it|(?:(?:that|the|this) )?{_RECITED_MATERIAL})[.!;]*", re.I,
@@ -1950,6 +1953,10 @@ def _reciting_rating(clinician: Turn | None, reply: Turn, report: Turn) -> bool:
     prompt = clinician.text if clinician else ""
     directions = list(_RATING_RECITATION_RE.finditer(prompt))
     if not directions or _PERSONAL_RATING_REQUEST_RE.search(prompt, directions[-1].end()):
+        return False
+    # Only a separate, direct question to the patient supersedes the reading.
+    question = _FINAL_PERSONAL_QUESTION_RE.search(prompt, directions[-1].end())
+    if question and _requests_current_rating(question["question"]) is True:
         return False
     # A patient's explicit refusal to read the material ends the exercise.
     prior = [part for part in _reply_clauses(reply) if part.end <= report.start]
@@ -1970,9 +1977,14 @@ def _contrasts_current_rating(text: str, prior: str) -> bool:
     if not subject:
         return False
     # A new rating of a different named symptom does not date the first.
-    previous = _CURRENT_RATING_OWNER_RE.fullmatch(prior)
-    previous_subject = previous and _COMPLAINT_HEAD_RE.fullmatch(previous["subject"])
-    return not previous_subject or subject.group().casefold() == previous_subject.group().casefold()
+    # Recover the subject independently of how the patient introduced or
+    # qualified the score ("I would rate my headache at", "is about").
+    for lead in re.finditer(r"\b(?:my|the)\s+|^", prior, re.I):
+        previous = _COMPLAINT_HEAD_RE.match(prior, lead.end())
+        if previous:
+            return previous.group().strip().casefold() == subject.group().strip().casefold()
+    # A bare answer can acquire its referent from the explicit replacement.
+    return bool(_RATING_LEAD_RE.fullmatch(prior))
 
 
 def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: re.Match[str]) -> bool:

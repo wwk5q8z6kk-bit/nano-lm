@@ -19,3 +19,35 @@ from nanoscribe.test_grounded_followup import check
 ])
 def test_local_statement_owner(source, quote, accepted):
     check(source, "SEV", FieldName.SEVERITY, quote, source.index(quote), accepted)
+
+
+@pytest.mark.parametrize("question,accepted", [
+    ("Read the example aloud. How severe is your pain now?", True),
+    ("Read the card. How bad is your pain?", True),
+    ("Repeat the sample, then what is your current pain score?", True),
+    ("Please read the script. How severe was your pain yesterday?", False),
+    ("Read the example aloud. How bad is your mother's pain?", False),
+    ('Read the sentence aloud: "How severe is your pain now?"', False),
+    ("Read the example aloud. The example asks how severe your pain is now.", False),
+    ("How severe is your pain now? Read the example aloud.", False),
+])
+def test_personal_rating_question_after_reading(question, accepted):
+    source = f"Doctor: {question}\nPatient: My pain is 5/10."
+    check(source, "SEV", FieldName.SEVERITY, "5/10", source.index("5/10"), accepted)
+
+
+@pytest.mark.parametrize("earlier,later,accepted", [
+    ("My headache is about", "my right knee pain", True),
+    ("My headache is about", "my headache", False),
+    ("My left wrist pain feels roughly", "my right wrist pain", True),
+    ("My left wrist pain feels roughly", "my left wrist pain", False),
+    ("I would rate my headache at", "my knee pain", True),
+    ("I would rate my headache at", "my headache", False),
+    ("I would say", "my knee pain", False),
+])
+def test_setting_compares_the_original_named_symptom(earlier, later, accepted):
+    source = f"Doctor: How bad is it now?\nPatient: {earlier} 7/10. That was at work. Right now {later} is 2/10."
+    # The constrained choices preserve the modifier as part of the evidence.
+    modifier = earlier.split()[-1]
+    quote = f"{modifier} 7/10" if modifier in ("about", "roughly") else "7/10"
+    check(source, "SEV", FieldName.SEVERITY, quote, source.index(quote), accepted)
