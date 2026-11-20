@@ -1900,8 +1900,18 @@ _SEVERITY_SUBJECT_RE = re.compile(
     r"hurt(?:s|ing)?|ach(?:es|ing)|sore|dizzy|nauseous|hoarseness|cramping|palpitations)"
     r"|allerg(?:y|ies|ic)|reactions?|side effects?|medications?|medicines?|doses?|traffic|commute|delay|ride)\b", re.I,
 )
+_PAST_REPORTED_RATING_TIME = (
+    rf"(?:yesterday(?: {_DAY_PART})?|earlier(?: today)?|last (?:{_DAY_NAME}|{_DAY_PART}|week|month|year)|"
+    rf"{_DURATION_QUANTITY} ago)"
+)
+_PAST_REPORTED_RATING_TIME_RE = re.compile(rf"\b{_PAST_REPORTED_RATING_TIME}\b", re.I)
+_DATED_SYMPTOM_ONSET_RE = re.compile(
+    rf"\b(?:that|which) (?:(?:had|first|initially) )*(?:started|began|appeared|developed|returned) "
+    rf"(?:on )?{_PAST_REPORTED_RATING_TIME}\b", re.I,
+)
 _SEVERITY_JOIN_RE = re.compile(
-    r",?\s+(?:but|and|although|whereas|while|because)\s+(?=(?:my|the|i|it|a|an|this|that)\b)", re.I,
+    r",?\s+(?:but|and|although|whereas|while|because)\s+"
+    rf"(?=(?:(?:{_PAST_REPORTED_RATING_TIME}|(?:right )?now|currently|today)[, ]+)?(?:my|the|i|it|a|an|this|that)\b)", re.I,
 )
 # An elliptical rating can answer a question or continue the preceding report.
 # It cannot change an explicitly identified subject such as a medication allergy.
@@ -1948,6 +1958,10 @@ _CURRENT_RATING_LEAD_RE = re.compile(
 _PAST_RATING_TIME = (
     rf"(?:yesterday|earlier|(?:on\s+)?(?:last\s+)?{_DAY_NAME}|last\s+(?:{_DAY_PART}|week|month|year)|"
     r"at\s+(?:first|its\s+(?:worst|peak)))"
+)
+_DATED_SELF_MEASUREMENT_RE = re.compile(
+    rf"\s*i\s+(?:(?:last|previously)\s+)?{_RATING_MEASUREMENT}\s+"
+    rf"(?:{_PAST_REPORTED_RATING_TIME}|{_PAST_RATING_TIME})\b", re.I,
 )
 _PAST_RATING_TIME_RE = re.compile(rf"\s+{_PAST_RATING_TIME}$")
 _EPISODE_TIME_SHIFT_RE = re.compile(rf"\b(?:{_PAST_RATING_TIME}|tomorrow|next (?:week|month|year))\b", re.I)
@@ -2006,23 +2020,144 @@ def _severity_subject(text: str) -> bool | None:
     return bool(matches[-1]["symptom"]) if matches else None
 
 
+# A directly following patient clarification can redate an otherwise valid answer.
+# Keep the referent local. A different speaker or an intervening sentence breaks it.
+_RETROSPECTIVE_RATING_RE = re.compile(
+    r"(?:(?:wait|sorry|actually)[, ]+)?that(?: (?:score|number|rating))? was "
+    rf"(?:{_PAST_REPORTED_RATING_TIME}|this {_DAY_PART}|(?:before|after) (?:the |my )?(?:visit|fall|injury|procedure)|"
+    r"(?P<setting>(?:on|aboard) (?:the|a|my) (?:bus|train|plane|tram|ferry|flight)|at (?:work|school)))[.!;]*", re.I,
+)
+_RECITED_MATERIAL = r"(?:example|sample|script|sentence|line|card|text|passage)"
+_RATING_RECITATION_RE = re.compile(
+    r"(?:^|[.!?;]\s*)(?:(?:could|can|would) you )?(?:please )?(?:read|recite|repeat|quote) "
+    rf"(?:me )?(?:from )?(?:this|that|the|a|an) (?:(?:printed|written) )?{_RECITED_MATERIAL}\b", re.I,
+)
+_PERSONAL_RATING_REQUEST_RE = re.compile(
+    r"(?:[.!?;]|\b(?:then|and)\b)[, ]*(?:please )?(?:tell me|give me|report|describe|rate) "
+    r"your (?:(?:actual|own|current|present) )+[^.!?;]*\b(?:rating|score|severity|symptom|pain)\b", re.I,
+)
+_FINAL_PERSONAL_QUESTION_RE = re.compile(
+    r"(?:[.!?;]|\bthen\b)[, ]*(?P<question>(?:how|what|would|is|are)\b[^.!?;]*\byou(?:r)?\b[^.!?;]*)\??\s*$", re.I,
+)
+_DECLINED_RECITATION_RE = re.compile(
+    rf"i (?:cannot|can['’]t|could not|couldn['’]t|am unable to) (?:see|read|repeat|recite) "
+    rf"(?:it|(?:(?:that|the|this) )?{_RECITED_MATERIAL})[.!;]*", re.I,
+)
+_CURRENT_RATING_OWNER_RE = re.compile(
+    r"(?:(?:(?:right )?now|at the moment|currently)[, ]+)?(?P<article>my|the) (?P<subject>.+?) "
+    r"(?:is|are|feels?)(?: currently)?", re.I,
+)
+_CURRENT_RATING_END_RE = re.compile(r"(?:\s+(?:(?:right )?now|at the moment))?[.!;]*", re.I)
+
+
+def _reciting_rating(clinician: Turn | None, reply: Turn, report: Turn) -> bool:
+    prompt = clinician.text if clinician else ""
+    directions = list(_RATING_RECITATION_RE.finditer(prompt))
+    if not directions or _PERSONAL_RATING_REQUEST_RE.search(prompt, directions[-1].end()):
+        return False
+    # Only a separate, direct question to the patient supersedes the reading.
+    question = _FINAL_PERSONAL_QUESTION_RE.search(prompt, directions[-1].end())
+    if question and _requests_current_rating(question["question"]) is True:
+        return False
+    # A patient's explicit refusal to read the material ends the exercise.
+    prior = [part for part in _reply_clauses(reply) if part.end <= report.start]
+    return not (prior and _DECLINED_RECITATION_RE.fullmatch(prior[-1].text))
+
+
+def _named_rating_subject(text: str) -> str | None:
+    for lead in re.finditer(r"\b(?:my|your|the)\s+|^", text, re.I):
+        subject = _COMPLAINT_HEAD_RE.match(text, lead.end())
+        if subject:
+            return subject.group().strip().casefold()
+    return None
+
+
+def _contrasts_current_rating(text: str, prior: str, question: str) -> bool:
+    rating = _SEVERITY_CORE_RE.search(text)
+    if not rating or not re.search(r"\b(?:now|currently|at the moment)\b", text, re.I):
+        return False
+    before = text[:rating.start()].strip()
+    if not _CURRENT_RATING_END_RE.fullmatch(text[rating.end():]):
+        return False
+    if re.fullmatch(r"(?:(?:right now|now|currently|at the moment)[, ]+)?it (?:is|feels)(?: currently)?", before, re.I):
+        return True
+    owner = _CURRENT_RATING_OWNER_RE.fullmatch(before)
+    subject = owner and _COMPLAINT_HEAD_RE.fullmatch(owner["subject"])
+    if not subject:
+        return False
+    # A new rating of a different named symptom does not date the first.
+    # Recover the subject independently of how the patient introduced or
+    # qualified the score ("I would rate my headache at", "is about").
+    previous = _named_rating_subject(prior)
+    if previous is None:
+        if not _RATING_LEAD_RE.fullmatch(prior):
+            return False
+        previous = _named_rating_subject(question)
+        # A general pain or severity question leaves the specific site open.
+        if previous in (None, "pain", "pains", "discomfort"):
+            return True
+    return previous == subject.group().strip().casefold()
+
+
+def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: re.Match[str], question: str) -> bool:
+    if not _CURRENT_RATING_END_RE.fullmatch(report.text[rating.end():]):
+        return False
+    setting = False
+    for turn in source.turns[idx:idx + 3]:
+        if turn.speaker is not Speaker.PATIENT:
+            break
+        for following in _reply_clauses(turn):
+            if following.start < report.end < following.end:
+                return False
+            if following.start < report.end:
+                continue
+            if setting:
+                return _contrasts_current_rating(following.text, report.text[:rating.start()].strip(), question)
+            correction = _RETROSPECTIVE_RATING_RE.fullmatch(following.text)
+            if not correction:
+                return False
+            if not correction["setting"]:
+                return True
+            # "That was at work" identifies a place. It takes a contrasting
+            # current rating to establish that the earlier score was historic.
+            setting = True
+    return False
+
+
 def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: CandidateSpan) -> bool:
+    previous = _preceding_clinician_turn(source, idx)
     portions = _split_events(event, _SEVERITY_JOIN_RE)
     selected = [p for p in portions if p.start < span.end and span.start < p.end]
     if len(selected) != 1:
         return False
     report = selected[0]
+    if _reciting_rating(previous, source.turns[idx], report):
+        return False
     ratings = [m for m in _SEVERITY_CORE_RE.finditer(report.text)
                if span.start <= report.start + m.start() and report.start + m.end() <= span.end]
     if not ratings:
         return False
-    previous = _preceding_clinician_turn(source, idx)
     current_request = _requests_current_rating(previous.text) if previous else None
     for rating in ratings:
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
+        # A recent self-measurement dates the score. A date attached to a
+        # relative onset clause dates the symptom, while a separate date on
+        # the measurement still applies.
+        when = re.match(r"\s+when\b", after, re.I)
+        measurement = _CURRENT_RATING_CHECK_RE.match(after, when.end()) if when else None
+        self_check = bool(measurement and measurement["measured"] and (measurement["measured_just"] or measurement["time"]))
+        if when and not self_check and _DATED_SELF_MEASUREMENT_RE.match(after, when.end()):
+            return False
+        measured_before = _DATED_SYMPTOM_ONSET_RE.sub("", before) if self_check else before
+        if (re.search(r"\b(?:was|were|felt)\s*$", before, re.I)
+                and (_PAST_REPORTED_RATING_TIME_RE.search(measured_before)
+                     or _PAST_REPORTED_RATING_TIME_RE.match(after.lstrip()))):
+            return False
+        question = previous.text if current_request is True and report.start == source.turns[idx].start else ""
+        if _rating_redated_by_patient(source, idx, report, rating, question):
+            return False
         earlier = _EARLIER_RATING_RE.match(after)
-        self_check = False
         if earlier:
             check = earlier["when"] and _CURRENT_RATING_CHECK_RE.match(after, earlier.end())
             if not check or not any(check.group("measured_just", "asked_just", "time")):
@@ -2039,6 +2174,12 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
                 return False
         if trailing_now:
             after = ""
+        # Accept a directly asserted present rating of an independently recognized
+        # symptom such as "my shaking". Match the full subject and time adjunct.
+        current = _CURRENT_RATING_OWNER_RE.fullmatch(before)
+        if (current and current["article"].lower() == "my" and _CURRENT_RATING_END_RE.fullmatch(after)
+                and _COMPLAINT_HEAD_RE.fullmatch(current["subject"])):
+            continue
         # Stop before a separate subject, adjunct or predicate.
         noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
                         after, maxsplit=1, flags=re.I)[0]
