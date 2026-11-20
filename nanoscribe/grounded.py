@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
+from itertools import combinations
 from typing import Any
 
 from nano_ai.adapters.state_span import (
@@ -487,6 +488,8 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     if text not in {turn_clean, clause_clean, *semi_clauses}:
         return False
 
+    if _PAST_OR_HYPOTHETICAL_RE.search(clause_clean) or _THIRD_PARTY_RE.search(clause_clean):
+        return False
     if _clause_is_retracted_in_turn(turn, clause) or _later_turn_retracts_span(source, idx, text):
         return False
     return True
@@ -1118,21 +1121,21 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
                         candidate = CandidateSpan(turn.start + m.start(), turn.start + m.end(), m.group(1))
                         if verify_grounded_span(source, field, FieldState.SUPPORTED, candidate)[0]:
                             by_turn.setdefault(idx, candidate)
-        if len(by_turn) >= 2:
-            t_indices = sorted(by_turn)
-            sp_first, sp_last = by_turn[t_indices[0]], by_turn[t_indices[-1]]
-            if normalize_value(sp_first.text) != normalize_value(sp_last.text):
-                # Check that they apply to the same episode (not unrelated resolved symptom)
-                t1, t2 = source.turns[t_indices[0]], source.turns[t_indices[-1]]
-                if not _PAST_OR_HYPOTHETICAL_RE.search(t1.text) and not _PAST_OR_HYPOTHETICAL_RE.search(t2.text):
-                    c1 = _enclosing_clause(t1, sp_first)
-                    c2 = _enclosing_clause(t2, sp_last)
-                    c1_full = CandidateSpan(c1.start, c1.end, source.text[c1.start : c1.end])
-                    c2_full = CandidateSpan(c2.start, c2.end, source.text[c2.start : c2.end])
-                    # When both clauses share parallel sentence framing ("This headache began X." / "It has been X all day today."), prefer complete conflicting clauses!
-                    if len(c1_full.text.split()) >= 4 and len(c2_full.text.split()) >= 4 and c1_full.text.split()[0].casefold() == c2_full.text.split()[0].casefold():
-                        pairs.append((c1_full, c2_full))
-                    pairs.append((sp_first, sp_last))
+        # Keep the earliest current observation of each value. An agreeing final
+        # turn does not retract an intervening incompatible report.
+        representatives: dict[str, tuple[Turn, CandidateSpan]] = {}
+        for idx, span in sorted(by_turn.items()):
+            turn = source.turns[idx]
+            if not _PAST_OR_HYPOTHETICAL_RE.search(turn.text):
+                representatives.setdefault(normalize_value(span.text), (turn, span))
+        for (t1, first), (t2, second) in combinations(representatives.values(), 2):
+            c1 = _enclosing_clause(t1, first)
+            c2 = _enclosing_clause(t2, second)
+            words1, words2 = c1.text.split(), c2.text.split()
+            if len(words1) >= 4 and len(words2) >= 4 and words1[0].casefold() == words2[0].casefold():
+                pairs.append((CandidateSpan(c1.start, c1.end, source.text[c1.start:c1.end]),
+                              CandidateSpan(c2.start, c2.end, source.text[c2.start:c2.end])))
+            pairs.append((first, second))
     return pairs
 
 
