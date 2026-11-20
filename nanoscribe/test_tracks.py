@@ -13,6 +13,7 @@ from nanoscribe.tracks import (
     SERVERLESS_STRONG_MODEL,
     SERVERLESS_ENDPOINT_ID,
 )
+from nanoscribe.adapters import ApiTeacherAdapter, Qwen25BaselineAdapter, ServerlessQwen38Adapter
 from nanoscribe.harness import HarnessCase, TrackConfig, ModelTrack, P1TestSet
 
 
@@ -43,17 +44,23 @@ def test_compact_track() -> None:
     assert track.model_id == COMPACT_MODEL
     assert track.cost_class == "routine_runpod_4090"
 
-    # Test custom weights path
-    track_custom = compact_track("my-custom-model")
-    assert track_custom.model_id == "my-custom-model"
+    for builder in (compact_track, student_track, frontier_track):
+        custom = builder("my-custom-model")
+        adapter = custom.adapter_factory()
+        assert isinstance(adapter, Qwen25BaselineAdapter)
+        assert custom.model_id == adapter.model_id == adapter.weights_path == "my-custom-model"
 
 
 def test_serverless_strong_control_track() -> None:
     track = serverless_strong_control_track()
     assert isinstance(track, TrackConfig)
-    assert track.track is ModelTrack.FRONTIER
+    assert track.track is ModelTrack.SERVERLESS
     assert track.model_id == "serverless/qwen3.8-27b-strong-control"
     assert track.cost_class == "serverless_strong_control"
+    adapter = serverless_strong_control_track("test-endpoint", "test-model").adapter_factory()
+    assert isinstance(adapter, ServerlessQwen38Adapter)
+    assert adapter.endpoint_id == "test-endpoint"
+    assert adapter.api_model == "test-model"
 
 
 def test_api_teacher_track() -> None:
@@ -66,6 +73,9 @@ def test_api_teacher_track() -> None:
     # Test custom api model
     track_custom = api_teacher_track("gpt-4-turbo")
     assert track_custom.model_id == "api/gpt-4-turbo-span-port"
+    adapter = track_custom.adapter_factory()
+    assert isinstance(adapter, ApiTeacherAdapter)
+    assert adapter.api_model == "gpt-4-turbo"
 
 
 def test_student_track() -> None:

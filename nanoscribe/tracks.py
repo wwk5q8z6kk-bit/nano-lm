@@ -66,7 +66,7 @@ def serverless_strong_control_track(
     api_model: str = SERVERLESS_STRONG_MODEL,
 ) -> TrackConfig:
     return TrackConfig(
-        track=ModelTrack.FRONTIER,
+        track=ModelTrack.SERVERLESS,
         model_id="serverless/qwen3.8-27b-strong-control",
         adapter_factory=lambda: ServerlessQwen38Adapter(
             endpoint_id=endpoint_id,
