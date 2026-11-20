@@ -42,6 +42,11 @@ def test_smoke_wave_writes_train_and_summary(tmp_path: Path, monkeypatch) -> Non
     # a wave artifact (recoverable only because step_001800.pt survives beside
     # it). Observed twice on 2026-08-25.
     monkeypatch.setenv("NANO_NATIVE_CHECKPOINT_DIR", str(tmp_path / "checkpoints"))
+    # Use the checked-in trainer fixture for this two-step smoke. The full
+    # screen partition is generated separately for research runs.
+    from nanoscribe.native import config
+
+    monkeypatch.setattr(config, "REVALIDATION_DATASET", "artifacts/campaign/p1_distill_train_v1.json")
     results = tmp_path / "reval_results"
     out = tmp_path / "summary.json"
     failed, _ = run_revalidation_wave(
@@ -50,12 +55,14 @@ def test_smoke_wave_writes_train_and_summary(tmp_path: Path, monkeypatch) -> Non
         max_steps=2,
         suite="p1_contract_smoke_v1",
         eval_cpu=True,
+        cpu_smoke=True,
     )
     assert not failed
     train_marker = results / "reval30_decoder_control_s0_train.json"
     assert train_marker.is_file()
     payload = json.loads(train_marker.read_text())
-    assert payload["steps_completed"] >= 2
+    assert payload["smoke"] and payload["device"] == "cpu"
+    assert payload["steps_completed"] == 2
 
     imported, expected = import_train_results(
         results, out, surface="test", run_ids=("reval30_decoder_control_s0",)
