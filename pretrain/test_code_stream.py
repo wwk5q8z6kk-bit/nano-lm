@@ -45,6 +45,10 @@ class CodeStreamTest(unittest.TestCase):
                 self.assertEqual(report["train"]["replayed_tokens"], 4001)
                 with self.assertRaises(FileExistsError):
                     build.build(root, tokenizer_path, output, 4000, 4000)
+                small = root / "small"
+                tiny = build.build(root, tokenizer_path, small, 1, 1)
+                self.assertEqual(tiny["splits"]["train"]["sampling_threshold_u64"], 2**64)
+                self.assertEqual(replay.verify(root, tokenizer_path, small)["train"]["replayed_tokens"], 4001)
                 with (output / "train_code.bin").open("ab") as stream:
                     stream.write(b"\x00\x00")
                 with self.assertRaisesRegex(ValueError, "digest mismatch"):

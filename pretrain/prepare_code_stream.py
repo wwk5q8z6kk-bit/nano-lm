@@ -24,18 +24,19 @@ def sha256(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def build_split(shard, tokenizer, eos, split, target, directory, val_repos, seen):
+def build_split(shard, tokenizer, eos, split, target, directory, val_repos, seen, full_scan=False):
     counts = Counter()
     licenses = Counter()
     skipped_licenses = Counter()
     repos = set()
+    accepted_digests = set()
     bin_path = directory / f"{split}_code.bin"
     rows_path = directory / f"{split}_code.jsonl"
-    with bin_path.open("xb") as stream, rows_path.open("x", encoding="utf-8") as rows:
+    with bin_path.open("wb") as stream, rows_path.open("w", encoding="utf-8") as rows:
         parquet = pq.ParquetFile(shard)
         # The upstream shards group records by license. Spread candidates across
         # the shard using their source row numbers before any content filtering.
-        threshold = min(2**64, (target * 2**64) // max(1, parquet.metadata.num_rows * 475))
+        threshold = 2**64 if full_scan else min(2**64, (target * 2**64) // max(1, parquet.metadata.num_rows * 475))
         for batch in parquet.iter_batches(batch_size=128, columns=["repo_name", "path", "license", "code"]):
             for row in batch.to_pylist():
                 row_index = counts["scanned"]
@@ -60,7 +61,7 @@ def build_split(shard, tokenizer, eos, split, target, directory, val_repos, seen
                     counts["length"] += 1
                     continue
                 digest = hashlib.sha256(code.encode("utf-8")).hexdigest()
-                if digest in seen:
+                if digest in seen or digest in accepted_digests:
                     counts["duplicate_content"] += 1
                     continue
                 ids = tokenizer.encode(code, add_special_tokens=False).ids
@@ -71,7 +72,7 @@ def build_split(shard, tokenizer, eos, split, target, directory, val_repos, seen
                                            license=label, token_offset=offset, tokens=len(tokens))) + "\n")
                 counts["tokens"] += len(tokens)
                 counts["accepted"] += 1
-                seen.add(digest)
+                accepted_digests.add(digest)
                 repos.add(repo)
                 licenses[label] += 1
                 if counts["tokens"] >= target:
@@ -79,7 +80,12 @@ def build_split(shard, tokenizer, eos, split, target, directory, val_repos, seen
             if counts["tokens"] >= target:
                 break
     if counts["tokens"] < target:
+        if threshold < 2**64:
+            # Retry inside the same unpublished staging directory. No digest from
+            # the undersized sample has been committed to the other split.
+            return build_split(shard, tokenizer, eos, split, target, directory, val_repos, seen, full_scan=True)
         raise ValueError(f"{split} source exhausted at {counts['tokens']} tokens, target {target}")
+    seen.update(accepted_digests)
     return repos, dict(target=target, sampling_threshold_u64=threshold, **counts, repositories=len(repos), accepted_by_label=dict(licenses),
                        rejected_by_label=dict(skipped_licenses), tokens_sha256=sha256(bin_path),
                        records_sha256=sha256(rows_path))
