@@ -63,11 +63,11 @@ class CausalKeyShift(nn.Module):
             win = torch.cat([ring_buf, x_t], dim=-1)  # [B, D, 4]
             w = self.conv.weight.squeeze(1).to(x.dtype)
             out = F.silu((win * w.unsqueeze(0)).sum(dim=-1)).unsqueeze(1)
-            next_ring = win[:, :, 1:].detach()
+            next_ring = win[:, :, 1:].detach().clone()
             return out, next_ring
         sig_full = torch.cat([ring_buf, x_t], dim=-1)
         out = F.silu(self.conv(sig_full)).transpose(1, 2)
-        next_ring = sig_full[:, :, -pad_len:].detach()
+        next_ring = sig_full[:, :, -pad_len:].detach().clone()
         return out, next_ring
 
 
@@ -692,7 +692,7 @@ def _apply_dilated_wave_bank(
             need = t_len + pad_left
             seg = sig_full[:, :, -need:] if cur_len >= need else F.pad(sig_full, (need - cur_len, 0))
             acc = acc + conv(seg)
-    next_ring = sig_full[:, :, -max_hist:].detach()
+    next_ring = sig_full[:, :, -max_hist:].detach().clone()
     return acc / float(len(dilations)), next_ring
 
 
@@ -756,7 +756,7 @@ class HRWNOperator(nn.Module):
         unc_proxy = (1.0 / (1.0 + surp_score)).unsqueeze(-1).to(x.dtype)
         next_state = {
             "wave_ring": next_ring,
-            "prev_wave": wave_re[:, -1:, :].detach(),
+            "prev_wave": wave_re[:, -1:, :].detach().clone(),
             "scam": next_scam,
         }
         return out, unc_proxy, next_state
@@ -872,7 +872,7 @@ class HMWROperator(nn.Module):
             "s": s_next,
             "shift": next_shift,
             "wave_ring": next_ring,
-            "prev_wave": wave_re[:, -1:, :].detach(),
+            "prev_wave": wave_re[:, -1:, :].detach().clone(),
             "scam": next_scam,
         }
         return out, unc_proxy, next_state

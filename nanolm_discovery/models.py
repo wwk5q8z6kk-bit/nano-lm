@@ -177,7 +177,9 @@ class NanoLMDiscoveryModel(nn.Module):
                 n_h = getattr(mod, "n_heads", self.cfg.n_heads)
                 with torch.no_grad():
                     b = mod.gate_proj.bias.view(n_h, -1)
-                    if b.shape[1] == 2:
+                    if isinstance(mod, MPRNOperator):
+                        b[:, -1].fill_(-3.0)
+                    elif b.shape[1] == 2:
                         b[:, 0].fill_(-3.0)
                     elif b.shape[1] == 3:
                         b[:, 2].fill_(-3.0)

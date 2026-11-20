@@ -316,6 +316,7 @@ class _SparseCausalCrossRefiner(nn.Module):
     ) -> tuple[Tensor, float, Tensor]:
         bsz, t_len, d_model = x1.shape
         u_f = uncertainty.float()
+        tau = self.ema_tau.detach().clone()
         if self.training:
             with torch.no_grad():
                 q_val = torch.quantile(u_f.detach(), 1.0 - self.target_frac)
@@ -325,7 +326,6 @@ class _SparseCausalCrossRefiner(nn.Module):
                 else:
                     self.ema_tau.lerp_(q_val, 0.05)
 
-        tau = self.ema_tau
         hard_mask = u_f > tau
         routed_frac = float(hard_mask.float().mean().detach())
         if not bool(hard_mask.any()):
@@ -606,7 +606,7 @@ class _OmegaHMWRBlock(nn.Module):
         u_feat = torch.log1p(unc.float().unsqueeze(-1).clamp(min=0.0)).to(xn.dtype)
         gain = 0.5 + torch.sigmoid(self.adapt_gate(u_feat))
         h_out = x_mid + self.synthesis(self.norm2(x_mid)) * gain
-        next_state = {"s": s_next, "shift": next_shift, "wave_ring": next_ring, "prev_wave": wave_re[:, -1:, :].detach(), "scam": next_scam}
+        next_state = {"s": s_next, "shift": next_shift, "wave_ring": next_ring, "prev_wave": wave_re[:, -1:, :].detach().clone(), "scam": next_scam}
         return h_out, unc, v0_next, next_state, k, v.float()
 
 
@@ -636,6 +636,7 @@ class _LatentTokenRefiner(nn.Module):
     ) -> tuple[Tensor, float, Tensor]:
         bsz, t_len, d_model = x1.shape
         u_f = uncertainty.float()
+        tau = self.ema_tau.detach().clone()
         if self.training:
             with torch.no_grad():
                 q_val = torch.quantile(u_f.detach(), 1.0 - self.target_frac)
@@ -645,7 +646,6 @@ class _LatentTokenRefiner(nn.Module):
                 else:
                     self.ema_tau.lerp_(q_val, 0.05)
 
-        tau = self.ema_tau
         hard_mask = u_f > tau
         routed_frac = float(hard_mask.float().mean().detach())
         if not bool(hard_mask.any()):

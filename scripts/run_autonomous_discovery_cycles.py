@@ -494,11 +494,26 @@ def main() -> int:
     registry = LineageRegistry(out_dir / "lineage_registry.json")
 
     results_path = out_dir / "discovery_results.json"
+    # The runner owns arm definitions, seeds, optimizer settings and ablations.
+    # Include its dependencies so a changed implementation cannot reuse old measurements.
+    source_paths = [Path(__file__), *sorted((ROOT / "nanolm_discovery").glob("*.py"))]
+    settings = {
+        "mechanistic_steps": args.mech_steps,
+        "corpus_steps": args.corpus_steps,
+        "corpus": stream.manifest,
+        "device": str(device),
+        "torch": str(torch.__version__),
+        "sources": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in source_paths},
+    }
+    fingerprint = hashlib.sha256(json.dumps(settings, sort_keys=True).encode()).hexdigest()
     if results_path.exists():
         results = json.loads(results_path.read_text(encoding="utf-8"))
+        if results.get("settings_sha256") != fingerprint:
+            raise ValueError("Cached discovery settings differ or are unversioned. Select a new --out-dir.")
     else:
         results = {
             "schema": "nanolm.discovery.results.v1",
+            "settings_sha256": fingerprint,
             "hardware": {
                 "platform": platform.platform(),
                 "machine": platform.machine(),

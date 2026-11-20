@@ -155,6 +155,22 @@ def test_hard_causal_swe_super_ood_24_and_omega_efe():
         assert out["act_logits"].shape == (7,)
 
 
+def test_tool_recovery_requires_successful_simulated_verification(monkeypatch):
+    from nanolm_omega.cognition_efe import ACT_STOP, HardCausalSWEEnv
+    from nanolm_omega.unified_system import _verify_tool_episode
+
+    assert _verify_tool_episode({"verified_outcome": "RESOLVED_VERIFIED"})[0] == "UNVERIFIED"
+    assert _verify_tool_episode({"episode_seed": 17000})[0] == "RESOLVED_VERIFIED"
+    step = HardCausalSWEEnv.step
+
+    def reject_stop(episode, action, module, value):
+        obs, done, verified = step(episode, action, module, value)
+        return obs, done, False if action == ACT_STOP else verified
+
+    monkeypatch.setattr(HardCausalSWEEnv, "step", staticmethod(reject_stop))
+    assert _verify_tool_episode({"episode_seed": 17000})[0] == "UNVERIFIED"
+
+
 def test_slw_provenance_identity_guard_and_unified_bench():
     ledger = SLWContinualMemoryLedger(subject_id="omega_unit_subj")
     other = Identity(subject_id="wrong_subj", kind="subject")
@@ -163,6 +179,7 @@ def test_slw_provenance_identity_guard_and_unified_bench():
 
     ledger.ingest_fact("svc", "timeout", "100", version=1)
     ledger.ingest_fact("svc", "timeout", "450", version=2)
+    ledger.ingest_fact("svc", "timeout", "125", version=1)
     assert ledger.query("svc", "timeout") == ("450", EpistemicStatus.DIRECT_DOCUMENTATION)
     assert ledger.query("svc", "missing") == ("INSUFFICIENT_EVIDENCE", EpistemicStatus.NOT_FOUND)
     ledger.ingest_fact("svc", "quorum", "3", version=2)
@@ -254,3 +271,28 @@ def test_g4_self_calibrated_router_correlation_and_duality():
             seq.append(so.logits[:, 0])
             st = so.states
     assert (par - torch.stack(seq, dim=1)).abs().max().item() < 1e-4
+
+
+@pytest.mark.parametrize("use_cross_attention", [False, True])
+def test_training_refiner_uses_threshold_from_previous_batch(use_cross_attention):
+    import copy
+    from nanolm_omega.backbone import _LatentTokenRefiner, _SparseCausalCrossRefiner
+
+    torch.manual_seed(29)
+    hidden = torch.randn(1, 8, 8)
+    if use_cross_attention:
+        refiner = _SparseCausalCrossRefiner(8, 1, 8, 16)
+        memory = hidden[:, None]
+        args = (hidden, hidden, memory, memory)
+    else:
+        refiner = _LatentTokenRefiner(8, 16)
+        args = (hidden, hidden, hidden)
+    other = copy.deepcopy(refiner)
+    first = torch.tensor([[0.6] * 4 + [0.1] * 4])
+    second = torch.tensor([[0.6] * 4 + [0.9] * 4])
+    with torch.no_grad():
+        a = refiner(*args, first)[0]
+        b = other(*args, second)[0]
+    assert not torch.equal(a[:, :4], hidden[:, :4])
+    torch.testing.assert_close(a[:, :4], b[:, :4])
+    assert refiner.ema_tau < other.ema_tau

@@ -144,6 +144,7 @@ def run_single_horizon_arm(
     _sync_cuda(device)
     t0 = time.perf_counter()
 
+    validation_seconds = 0.0
     ckpt_set = set(checkpoints)
     for step in range(steps):
         model.train()
@@ -179,6 +180,8 @@ def run_single_horizon_arm(
 
         human_step = step + 1
         if human_step in ckpt_set and human_step < steps:
+            _sync_cuda(device)
+            validation_start = time.perf_counter()
             v_mid = stream.evaluate_validation_bpb(
                 model,
                 device=device,
@@ -188,10 +191,12 @@ def run_single_horizon_arm(
                 use_bf16=(device.type in ("cuda", "mps")),
                 amp_dtype=amp_dtype,
             )
+            _sync_cuda(device)
+            validation_seconds += time.perf_counter() - validation_start
             curve[str(human_step)] = float(v_mid["composite_bpb"])
 
     _sync_cuda(device)
-    train_sec = time.perf_counter() - t0
+    train_sec = time.perf_counter() - t0 - validation_seconds
     train_tokens = steps * batch_size * seq_len
 
     val_id = stream.evaluate_validation_bpb(

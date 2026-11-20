@@ -142,6 +142,7 @@ def run_single_arm(
     curve: dict[str, float] = {}
     tail_losses: list[float] = []
     skipped_grad_steps = 0
+    validation_seconds = 0.0
 
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats(device)
@@ -175,9 +176,8 @@ def run_single_arm(
             if not grads_ok:
                 opt.zero_grad(set_to_none=True)
                 skipped_grad_steps += 1
-                scaler.update()
-                continue
-            scaler.step(opt)
+            else:
+                scaler.step(opt)
             scaler.update()
         else:
             loss.backward()
@@ -188,14 +188,16 @@ def run_single_arm(
             if not grads_ok:
                 opt.zero_grad(set_to_none=True)
                 skipped_grad_steps += 1
-                continue
-            opt.step()
+            else:
+                opt.step()
 
         if step >= steps - 25:
             tail_losses.append(float(out.ce_loss.item()))
 
         h_step = step + 1
         if h_step in ckpt_steps and h_step < steps:
+            _sync(device)
+            validation_start = time.perf_counter()
             v_mid = stream.evaluate_validation_bpb(
                 model,
                 device=device,
@@ -205,10 +207,12 @@ def run_single_arm(
                 use_bf16=use_amp,
                 amp_dtype=amp_dtype,
             )
+            _sync(device)
+            validation_seconds += time.perf_counter() - validation_start
             curve[str(h_step)] = float(v_mid["composite_bpb"])
 
     _sync(device)
-    train_s = time.perf_counter() - t0
+    train_s = time.perf_counter() - t0 - validation_seconds
     train_tokens = steps * batch_size * seq_len
 
     val_id = stream.evaluate_validation_bpb(

@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from fractions import Fraction
 import math
+import random
 import subprocess
 import sys
 import time
@@ -26,6 +27,10 @@ import torch
 from nano.causal import CausalBasis, CausalLink
 from nano.contracts import DerivationMode, EpistemicStatus
 from nano.kernel import Identity
+from nanolm_omega.cognition_efe import (
+    ACT_ASK_CLARIFY, ACT_INSPECT, ACT_PATCH, ACT_RUN_TESTS, ACT_STOP, ACT_TRACE,
+    HardCausalSWEEnv,
+)
 
 
 @dataclass(frozen=True)
@@ -76,6 +81,9 @@ class SLWContinualMemoryLedger:
                     has_higher = True
                     updated.append(r)
                 else:
+                    if r.status == EpistemicStatus.SUPERSEDED:
+                        updated.append(r)
+                        continue
                     if r.value != value:
                         has_same_conflict = True
                     st = EpistemicStatus.CONFLICTING if r.value != value else r.status
@@ -187,6 +195,39 @@ class SystemEvalMetrics:
     wall_ms_total: float
 
 
+def _verify_tool_episode(spec: dict[str, Any]) -> tuple[str, EpistemicStatus, int, int]:
+    """Run the same observation-based policy for either router in the in-memory simulator."""
+    seed = spec.get("episode_seed")
+    if type(seed) is not int:
+        return "UNVERIFIED", EpistemicStatus.UNCERTAIN, 0, 0
+    env = HardCausalSWEEnv()
+    episode = env.sample_episode(random.Random(seed))
+    goal = env.initial_observation(episode)
+    symptom = goal["alert_mod"]
+    values = goal["spec_vals"]
+    if goal["ambiguous"]:
+        obs, _, _ = env.step(episode, ACT_ASK_CLARIFY, symptom, 0)
+        values = obs["spec_vals"]
+
+    trace, _, _ = env.step(episode, ACT_TRACE, symptom, 0)
+    candidates = [source for source, dest in goal["edges"] if dest == symptom]
+    if trace.get("new_edge"):
+        candidates.append(trace["new_edge"][0])
+    for module in dict.fromkeys(candidates):
+        obs, done, _ = env.step(episode, ACT_INSPECT, module, 0)
+        if done:
+            break
+        if obs["status"] != "FAULT_AT" or len(values) != 1:
+            continue
+        env.step(episode, ACT_PATCH, module, values[0])
+        env.step(episode, ACT_RUN_TESTS, module, 0)
+        _, _, verified = env.step(episode, ACT_STOP, module, 0)
+        if verified:
+            return "RESOLVED_VERIFIED", EpistemicStatus.DIRECT_MEASUREMENT, 0, 0
+        break
+    return "UNVERIFIED", EpistemicStatus.UNCERTAIN, 0, 0
+
+
 class OmegaUnifiedCognitiveSystem:
     """Unified 10-capability NanoLM-Omega architecture executing hint-free across all 6 pillars."""
 
@@ -274,10 +315,7 @@ class OmegaUnifiedCognitiveSystem:
             return "TEMPORAL_COOCCURRENCE_ONLY", EpistemicStatus.UNCERTAIN, 1, 0
 
         if route in ("TOOL_LOOP", "EFE_TOOL_LOOP"):
-            ts = task.tool_spec
-            if self.mode == "legacy_keyword_system_v2" and ts.get("requires_clarify_or_trace", False):
-                return "REGRESSION_FAILURE", EpistemicStatus.UNCERTAIN, 2, 1
-            return ts.get("verified_outcome", "RESOLVED_VERIFIED"), EpistemicStatus.DIRECT_MEASUREMENT, 3, 1
+            return _verify_tool_episode(task.tool_spec)
 
         return task.pass1_guess, EpistemicStatus.INFERRED, 1, 0
 
@@ -359,7 +397,7 @@ def build_omega_bench_01() -> list[OmegaBenchTask]:
                 gold_answer="RESOLVED_VERIFIED",
                 pass1_guess="UNVERIFIED_GUESS",
                 fast_formula_code="",
-                tool_spec={"requires_clarify_or_trace": (i >= 3), "verified_outcome": "RESOLVED_VERIFIED"},
+                tool_spec={"episode_seed": 17000 + i},
                 neural_unc=0.75,
             )
         )

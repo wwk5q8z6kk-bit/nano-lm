@@ -1,5 +1,8 @@
 # NANOLM Ω — Verified Scientific Breakthroughs & Discovery Report
 
+**Measurement correction.** The archived Omega benchmark supplied the tool-recovery outcome to the executor. Its recovery scores and aggregate comparisons that include that pillar are invalid. The corrected runner executes the in-memory recovery task and verifies its final state. Historical throughput included intermediate validation time, and the no-reflection control used a different initial decay. Corrected values require fresh measurements.
+
+
 All claims below come directly from cryptographic `SHA256SUMS`-verified multi-seed JSON outputs (`artifacts/nanolm_discovery_v1/`, `artifacts/nanolm_omega_v1/`) executed at **`$0.00` cloud spend** on Apple M3 Max and Kaggle `2x NVIDIA Tesla T4`.
 
 ---

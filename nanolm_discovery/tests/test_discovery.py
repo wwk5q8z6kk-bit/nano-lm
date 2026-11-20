@@ -216,3 +216,20 @@ def test_mps_or_cpu_bfloat16_autocast_finite_grad(kind: ParadigmKind):
     for p in model.parameters():
         if p.grad is not None:
             assert torch.isfinite(p.grad).all()
+
+
+@pytest.mark.parametrize("kind", [ParadigmKind.I3_HRWN, ParadigmKind.G3_HMWR])
+def test_recurrent_ring_storage_matches_logical_state(kind):
+    cfg = make_iso_param_suite("mech")[kind]
+    model = NanoLMDiscoveryModel(cfg).eval()
+    with torch.no_grad():
+        states = model(torch.randint(0, cfg.vocab_size, (2, 128)), return_states=True).states
+    assert states
+    checked = set()
+    for layer in states:
+        for name in ("shift", "wave_ring", "prev_wave"):
+            tensor = layer.get(name)
+            if isinstance(tensor, torch.Tensor):
+                assert tensor.untyped_storage().nbytes() == tensor.numel() * tensor.element_size()
+                checked.add(name)
+    assert {"wave_ring", "prev_wave"} <= checked
