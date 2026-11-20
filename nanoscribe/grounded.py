@@ -1873,8 +1873,10 @@ def _timed_question_event(question: str) -> str:
     for clause in reversed(clauses):
         request = re.search(timing_request + r"(?P<event>.*)", clause, re.I)
         if request:
-            return re.split(r"\b(?:after|before|while|because|although|despite)\b",
-                            request["event"], maxsplit=1, flags=re.I)[0]
+            event = re.split(r"\b(?:after|before|while|because|although|despite)\b",
+                             request["event"], maxsplit=1, flags=re.I)[0].strip(" ,")
+            if event:
+                return event
     return ""
 
 
@@ -1883,7 +1885,8 @@ def _timed_question_event(question: str) -> str:
 _ADMINISTRATIVE_EVENT_RE = re.compile(
     r"\s*(?:(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
     r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
-    r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b|"
+    r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b"
+    r"(?=\s*$|[, ]+(?:for|at|on|with|in|to|when|that|which|last|take|scheduled|booked|performed|done)\b)|"
     r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
     r"(?:(?:liv(?:e|ed|ing)|mov(?:e|ed|ing))\s+(?:here|there|(?:at|to|in|into|out of)\s+"
     r"(?:(?:the|an?|this|that|your|my|our|a new|your new)\s+)?(?:(?:new|old|current|previous|last)\s+)?"
@@ -2302,10 +2305,15 @@ def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, durati
     # own clock to the episode, even if some other turn discussed symptoms.
     if re.search(rf"\b(?:{_SYMPTOM}|cramps?|hurt(?:s|ing)?|sore|painful|dizzy|nauseous)\b", context, re.I):
         return None
+    administrative_time = _ADMINISTRATIVE_EVENT_RE.match(timed_event)
+    if (administrative_time and re.fullmatch(r"\s*(?:(?:well|actually|sorry|yes)[, ]+)*"
+                                              r"i (?:first felt|noticed) (?:it|this)\s*", context, re.I)
+            and _follows_presenting_complaint(source, turn_idx, context)):
+        return None
     if elliptical_time or re.fullmatch(r"\s*(?:(?:well|actually|sorry|yes)[, ]+)*(?:(?:i (?:meant|noticed (?:it|this)|first felt it)|"
                     r"(?:it|this|that)(?:['’]s| (?:has|had))? (?:first )?(?:started|began|came on|appeared|been)|"
                     r"(?:it|that) was|started|began|since|for|about|around)\s*)*", context, re.I):
-        return "duration_scoped_to_other_activity" if _ADMINISTRATIVE_EVENT_RE.match(timed_event) else None
+        return "duration_scoped_to_other_activity" if administrative_time else None
     return "duration_not_linked_to_current_episode"
 
 

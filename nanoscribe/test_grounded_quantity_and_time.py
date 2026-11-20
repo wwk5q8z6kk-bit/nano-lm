@@ -136,3 +136,21 @@ def test_duration_uses_the_event_the_question_dates(question, reply, value, supp
     assert (f" REPORTED[{value}]" in menu) is supported
     claim = draft(transcript, {"DUR": f"S[{value}]"})["duration"]
     assert (claim["state"] == "supported") is supported
+
+
+@pytest.mark.parametrize("prior,question,reply,value,supported", [
+    ("I have a headache.", "When was your last appointment?", "I first felt it three weeks ago.", "three weeks ago", True),
+    ("I have a headache.", "When was your last scan?", "I noticed it last Friday.", "last Friday", True),
+    ("I booked an appointment.", "When was your last appointment?", "I noticed it last Friday.", "last Friday", False),
+    ("I have a headache.", "When was your last appointment?", "It was three weeks ago.", "three weeks ago", False),
+    ("I have a headache.", "How long was your last procedure-related headache?", "Three days.", "Three days", True),
+    ("I have a rash.", "How long was your last scan-related rash?", "Two weeks.", "Two weeks", True),
+    ("I have a headache.", "When did you start the medication? How long ago?", "Three weeks ago.", "Three weeks ago", False),
+    ("I have a headache.", "When was your last visit? What date?", "Last Friday.", "Last Friday", False),
+    ("I have a headache.", "When did the pain start? What time?", "Yesterday.", "Yesterday", True),
+])
+def test_duration_resolves_patient_onset_and_clinician_restatements(prior, question, reply, value, supported):
+    transcript = f"Patient: {prior}\nDoctor: {question}\nPatient: {reply}"
+    source = transcript_source(NanoInput("duration-referent", transcript))
+    assert (f" REPORTED[{value}]" in build_grounded_english_menu(source, FieldName.DURATION, set())) is supported
+    assert (draft(transcript, {"DUR": f"S[{value}]"})["duration"]["state"] == "supported") is supported
