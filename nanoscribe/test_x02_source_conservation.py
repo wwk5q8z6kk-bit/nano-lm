@@ -129,3 +129,25 @@ def test_x02_probe_7_medication_timestamp_does_not_leak_into_symptom_duration():
     assert trace["duration"]["conserved"] is True
     assert trace["duration"]["binder_state"] == "supported"
     assert trace["duration"]["note_rendered_value"] == "the evening before last"
+
+
+def test_volunteered_treatment_conflicts_with_blanket_denial():
+    source = "Doctor: Tell me more.\nPatient: Aspirin for the headache.\nPatient: No medications."
+    trace = trace_proposal_conservation(source, "CC:M|DUR:M|SEV:M|MED:A[No medications.]|ALG:M")
+    assert trace[3]["binder_state"] == "conflicting"
+
+
+def test_mixed_clause_duration_uses_the_nearest_event():
+    source = "Doctor: Tell me more.\nPatient: I took ibuprofen yesterday because my back has hurt for three days."
+    raw = "CC:M|DUR:S[three days]|SEV:M|MED:M|ALG:M"
+    assert trace_proposal_conservation(source, raw)[1]["conserved"]
+    choices = grounded_candidate_choices(source, FieldName.DURATION, set())
+    assert ":S[three days]" in choices
+    assert ":S[yesterday]" not in choices
+
+
+def test_context_lineage_retains_added_support():
+    source = "Doctor: What brings you in?\nPatient: Headache.\nDoctor: What brings you in?\nPatient: A headache."
+    row = trace_proposal_conservation(source, "CC:S[Headache]|DUR:M|SEV:M|MED:M|ALG:M", context_policy="context")[0]
+    assert len(row["binder_spans"]) > len(row["raw_spans"])
+    assert row["conserved"]

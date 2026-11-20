@@ -121,3 +121,15 @@ def test_quota_disagreement_fails_closed():
     bad_counts[FieldName.CHIEF_COMPLAINT][FieldState.MISSING] = 1
     with pytest.raises(ValueError, match="counts"):
         verify_evaluator_negative_controls(rows, expected_counts=bad_counts)
+
+
+def test_identical_annotations_leave_rotation_inapplicable():
+    from nano_ai.tests.test_annotated_evaluation import example, quotas
+
+    first = example()
+    second = replace(first, example_id="another", world_id="other-world",
+                     transcript=first.transcript + "\nDoctor: Thank you.")
+    counts = {f: {s: 2 * n for s, n in cells.items()} for f, cells in quotas().items()}
+    report = verify_evaluator_negative_controls((first, second), expected_counts=counts)
+    assert report.passed
+    assert report.controls["shuffled_labels_negative"]["cross_case_ok"] is None

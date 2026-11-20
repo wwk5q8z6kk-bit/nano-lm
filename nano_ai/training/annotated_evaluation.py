@@ -221,12 +221,15 @@ def verify_evaluator_negative_controls(
         ),
         cases,
     )
-    cross_case_ok = True
-    if len(cases) >= 2:
-        rotated = {
-            cases[i].case_id: cases[(i + 1) % len(cases)].gold.fields
-            for i in range(len(cases))
-        }
+    rotated = {
+        case.case_id: cases[(i + 1) % len(cases)].gold.fields
+        for i, case in enumerate(cases)
+    }
+    cross_case_ok = None
+    def label_key(fields: tuple[FieldOutput, ...]) -> tuple:
+        return tuple((f.field, f.state, f.value, frozenset(f.evidence)) for f in fields)
+
+    if any(label_key(rotated[c.case_id]) != label_key(c.gold.fields) for c in cases):
         cross_report = evaluate_solver(
             _ControlledSolver("control-cross-case-shuffle", lambda req: rotated[req.item_id]),
             cases,
@@ -238,7 +241,7 @@ def verify_evaluator_negative_controls(
     shuffled_ok = (
         shuffled_report.quality["state_accuracy"] == 0.0
         and shuffled_report.quality["grounded_exact_field_accuracy"] == 0.0
-        and cross_case_ok
+        and cross_case_ok is not False
     )
 
     # 4. Wrong-patient negative (evidence inside Doctor: turn must fail)

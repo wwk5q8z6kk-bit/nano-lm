@@ -260,7 +260,7 @@ _ALG_CLAUSE_PRED_RE = re.compile(
 _EXPLICIT_SYMPTOM_DURATION_RE = re.compile(
     r"\b(?:it\s+(?:started|began|has\s+been)|it's\s+been|going\s+on|hurting|aching|lasted|lasting|"
     r"(?:symptom|pain|ache|cramps?|cough|headache|rash|swelling|fever|dizziness|soreness|ringing|itching)\s+"
-    r"(?:started|began|for|since))\b",
+    r"(?:started|began|for|since)|(?:has|have|had)\s+(?:been\s+)?(?:hurt|hurting|ached|aching|painful|sore))\b",
     re.IGNORECASE,
 )
 
@@ -592,29 +592,15 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     return is_explicit_med_q, is_explicit_alg_q, prev_q
 
 
-def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, clause_text: str) -> bool:
-    """Prevent medication/allergy event timestamps (e.g. 'took ibuprofen yesterday') from leaking into symptom duration."""
-    is_explicit_med_q, is_explicit_alg_q, _ = _question_flags(source, turn_idx)
-    in_med_or_alg = (
-        bool(_MED_CLAUSE_VERB_RE.search(clause_text))
-        or bool(_ALG_CLAUSE_PRED_RE.search(clause_text))
-        or is_explicit_med_q
-        or is_explicit_alg_q
-    )
-    return in_med_or_alg and not bool(_EXPLICIT_SYMPTOM_DURATION_RE.search(clause_text))
-
-
-def _turn_has_explicit_field_context(source: Source, turn_idx: int, field: FieldName) -> bool:
-    t_txt = source.turns[turn_idx].text
-    prev_c = _preceding_clinician_turn(source, turn_idx)
-    q_txt = prev_c.text if prev_c is not None else ""
-    if field is FieldName.MEDICATION:
-        return bool(_MED_CLAUSE_VERB_RE.search(t_txt)) or (
-            bool(_MED_QUESTION_CUE_RE.search(q_txt)) and not bool(_ALG_QUESTION_CUE_RE.search(q_txt))
-        )
-    if field is FieldName.ALLERGY:
-        return bool(_ALG_CLAUSE_PRED_RE.search(t_txt)) or bool(_ALG_QUESTION_CUE_RE.search(q_txt))
-    return True
+def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, before_duration: str) -> bool:
+    """Assign the duration to its nearest preceding event, falling back to question scope."""
+    events = [(match.start(), True) for pattern in (_MED_CLAUSE_VERB_RE, _ALG_CLAUSE_PRED_RE)
+              for match in pattern.finditer(before_duration)]
+    events.extend((match.start(), False) for match in _EXPLICIT_SYMPTOM_DURATION_RE.finditer(before_duration))
+    if events:
+        return max(events)[1]
+    med_question, allergy_question, _ = _question_flags(source, turn_idx)
+    return med_question or allergy_question
 
 
 def verify_grounded_span(
@@ -644,7 +630,7 @@ def verify_grounded_span(
 
     clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
-        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, clause.text):
+        if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, clause.text[:span.start - clause.start]):
             return False, "duration_scoped_to_medication_or_allergy"
         if not grounded_value_valid(field, span.text, clause.text):
             return False, "value_fails_field_type_guard"
@@ -852,8 +838,6 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
             has_alg_pred = bool(_ALG_CLAUSE_PRED_RE.search(c_text))
 
             if field is FieldName.DURATION:
-                if _duration_masked_by_med_or_alg(source, t_idx, c_text):
-                    continue
                 for m in _DURATION_VALUE_RE.finditer(c_text):
                     sp = _trim_span(source.text, c_start + m.start(), c_start + m.end())
                     if sp is not None:
@@ -1104,7 +1088,6 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
                 ti: s
                 for s in sup_spans
                 if (ti := _turn_index(source, s.start, s.end)) is not None
-                and _turn_has_explicit_field_context(source, ti, field)
             }
             abs_turns = {_turn_index(source, s.start, s.end): s for s in abs_spans}
             for t_s, s_sp in sup_turns.items():
@@ -1432,7 +1415,7 @@ def trace_proposal_conservation(
             and parse_err is None
             and (
                 raw_state not in ("supported", "absent")
-                or (n_state == raw_state and b_spans == raw_spans)
+                or (n_state == raw_state and all(span in b_spans for span in raw_spans))
             )
         )
         lineage.append(
