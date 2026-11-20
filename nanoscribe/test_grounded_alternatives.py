@@ -71,6 +71,9 @@ def test_disjunctive_medication_denial_does_not_verify_absence():
 
 @pytest.mark.parametrize("field,report,quote,allowed", [
     (FieldName.DURATION, "My headache has lasted either two or three days.", "either two or three days", True),
+    (FieldName.DURATION, "My headache has lasted either two or three days ago.", "either two or three days ago", True),
+    (FieldName.DURATION, "My headache lasted either two or it is three days.", "either two or it is three days", True),
+    (FieldName.SEVERITY, "My pain is either 3 or it is 5/10.", "either 3 or it is 5/10", True),
     (FieldName.DURATION, "My headache started either Monday or Tuesday.", "either Monday or Tuesday", True),
     (FieldName.SEVERITY, "My pain is either mild, moderate, or severe.", "either mild, moderate, or severe", True),
     (FieldName.SEVERITY, "Either my pain is 3.5/10 or it is 6.5/10.", "Either my pain is 3.5/10 or it is 6.5/10", True),

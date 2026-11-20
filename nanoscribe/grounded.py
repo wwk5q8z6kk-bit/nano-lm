@@ -480,6 +480,8 @@ def _bounded_measurement(measurement: str) -> re.Pattern:
 _BOUNDED_DURATION_RE = _bounded_measurement(_DURATION_QUANTITY)
 _QUANTITY = rf"(?P<amount>{_NUMBER_WORD})\s+(?P<unit>{_TIME_UNIT})"
 _QUANTITY_RE = re.compile(rf"(?<!\w){_QUANTITY}\b", re.I)
+# A shared unit can carry the same duration tail as a complete duration value.
+_SHARED_DURATION_RE = re.compile(rf"(?<!\w){_QUANTITY}\b(?:\s+(?:ago|so far))?", re.I)
 _DURATION_VALUE_RE = re.compile(
     rf"(?<!\w)(?:"
     rf"(?:(?:about|around|roughly|nearly|almost)\s+|{_BOUND_LEAD})?{_DURATION_QUANTITY}"
@@ -885,6 +887,16 @@ def _symptom_owns_scalar(clause: Turn, field: FieldName, span: CandidateSpan) ->
     return True
 
 
+def _treatment_uses(text: str) -> list[re.Match[str]]:
+    """Treatment verbs in order. A later verb can own a different object."""
+    uses = [*_MED_CLAUSE_VERB_RE.finditer(text), *_TAKEN_RE.finditer(text)]
+    anchored = _AMBIGUOUS_TREATMENT_RE.match(text) or _SHARED_MEDICATION_RE.match(text)
+    if anchored and all(use.start() != anchored.start() for use in uses):
+        uses.append(anchored)
+    uses.sort(key=lambda use: use.start())
+    return uses
+
+
 def _medication_has_local_context(clause: Turn, span: CandidateSpan) -> bool:
     """After a logistical prompt, identify treatment context in the quoted event."""
     for report in _reporting_events(clause):
@@ -894,14 +906,19 @@ def _medication_has_local_context(clause: Turn, span: CandidateSpan) -> bool:
             label = _SUBSTANCE_LABEL_RE.match(event.text)
             if label and event.start + label.end() == span.start:
                 return True
-            use = (_MED_CLAUSE_VERB_RE.search(event.text) or _TAKEN_RE.search(event.text)
-                   or _AMBIGUOUS_TREATMENT_RE.match(event.text) or _SHARED_MEDICATION_RE.match(event.text))
-            if use:
-                obj = event.text[use.end():].lstrip()
-                if re.match(rf"{_LOGISTICS_ITEM}\b", obj, re.I):
-                    return False
-                return _action_has_treatment_context(obj, "")
-            return bool(_FAMILIAR_MEDICINE_RE.fullmatch(span.text))
+            # Bind the verb that owns this span. An earlier logistics object
+            # must not reject a later drug, and a verb after the span must
+            # still leave a familiar medicine to the span itself.
+            uses = _treatment_uses(event.text)
+            rel = span.start - event.start
+            owner = next((use for use in reversed(uses) if use.end() <= rel), None)
+            if owner is None:
+                return bool(_FAMILIAR_MEDICINE_RE.fullmatch(span.text))
+            boundary = next((use.start() for use in uses if use.start() > owner.start()), len(event.text))
+            obj = event.text[owner.end():boundary].lstrip()
+            if re.match(rf"{_LOGISTICS_ITEM}\b", obj, re.I):
+                return False
+            return _action_has_treatment_context(obj, "")
     return False
 
 
@@ -1213,13 +1230,15 @@ def _symptom_owns_alternatives(event: Turn, choice: CandidateSpan, measure: re.P
         alternatives[0] = first[value.start():]
     if not _symptom_predicate_before(prefix):
         return False
-    shared_unit = _QUANTITY_RE if measure is _DURATION_VALUE_RE else _SCALE_RE
+    shared_unit = _SHARED_DURATION_RE if measure is _DURATION_VALUE_RE else _SCALE_RE
+    reference = r"^it\s+(?:is|was|feels|started|began|lasted)\s+"
+    last = re.sub(reference, "", alternatives[-1], flags=re.I)
     for index, alternative in enumerate(alternatives):
-        value = re.sub(r"^it\s+(?:is|was|feels|started|began|lasted)\s+", "", alternative, flags=re.I)
+        value = re.sub(reference, "", alternative, flags=re.I)
         if measure.fullmatch(value):
             continue
         # A shared unit or denominator may be written only on the last value.
-        if index < len(alternatives) - 1 and re.fullmatch(_WHOLE, value, re.I) and shared_unit.fullmatch(alternatives[-1]):
+        if index < len(alternatives) - 1 and re.fullmatch(_WHOLE, value, re.I) and shared_unit.fullmatch(last):
             continue
         return False
     return True
@@ -3051,9 +3070,10 @@ def _uncertainty_names_field(field: FieldName, text: str) -> bool:
     # An unknown magnitude can still have a known clinical subject. Couple
     # the timing or rating expression to that subject; a different subject
     # such as "how long the queue lasts with my headache" supplies neither.
-    target = rf"(?:my|the|this|these|an?)\s+(?:(?:left|right|upper|lower|{_BODY_REGION})\s+)*{_SYMPTOM}\b"
+    symptom = rf"(?:{_SYMPTOM}|tightness|pressure|stiffness|burning|throbbing)s?"
+    target = rf"(?:my|the|this|that|these|an?)\s+(?:(?:left|right|upper|lower|{_BODY_REGION})\s+)*{symptom}\b"
     if field is FieldName.DURATION:
-        question = rf"(?:when|how long)\s+(?:{target}|i(?:['’]ve| have)?\s+(?:had|felt)\s+{target})"
+        question = rf"(?:when|how long(?:\s+ago)?)\s+(?:{target}|i(?:['’]ve| have)?\s+(?:had|felt)\s+{target})"
         description = rf"(?:duration|onset|start time)\s+of\s+{target}|{target}\s+(?:(?:has|had|have)\s+)?(?:lasted|persisted|started|began)\b"
     else:
         question = rf"how\s+(?:bad|severe|intense)\s+{target}"
