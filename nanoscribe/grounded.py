@@ -136,7 +136,7 @@ _SUBSTANCE_WORDS_RE = re.compile(_SUBSTANCE_WORDS)
 # purpose, coordination or other event modifier ends the object phrase.
 _SUBSTANCE_NAME = (
     r"(?P<name>(?:(?!\b(?:for|on|to|with|without|before|after|at|in|since|by|because|"
-    r"and|or|but|that|which|then|once|twice|every|yesterday|today|tonight|last|this|next|so|"
+    r"and|or|plus|but|that|which|then|once|twice|every|yesterday|today|tonight|last|this|next|so|"
     r"as|during|prescribed|daily|nightly|weekly|occasionally|regularly|recently|earlier|later|again|instead)\b)"
     rf"(?=[^\W\d_]){_SUBSTANCE_WORD}(?:\s+|(?=[.,;!?]|$)))+)"
 )
@@ -277,6 +277,28 @@ _PROSPECTIVE_TREATMENT_RE = re.compile(
     r"\s+(?:(?:start|begin|be)\s+)?(?:take|use|try|apply|taking|using|trying|applying)\b",
     re.IGNORECASE,
 )
+# For a bare reply the question supplies the missing predicate. Bind plans to
+# their treatment action so "would you tell me what you took" stays retrospective.
+_PLANNED_ACTION = r"(?:take|use|try|apply|start|begin|resume|switch|receive|continue|be\s+(?:taking|using|on))"
+_PLANNED_PARTICIPLE = r"(?:taking|using|trying|applying|starting|beginning|resuming|switching|receiving|continuing)"
+_FUTURE_TIME = r"(?:tomorrow|next\s+(?:week|month|time|year)|in\s+the\s+future)"
+_PLANNED_QUESTION_RE = re.compile(
+    rf"\b(?:will|would|could|should|might|may|can)\s+you\s+(?:{_PLANNED_ACTION}|consider\s+{_PLANNED_PARTICIPLE})\b|"
+    rf"\b(?:(?:plan(?:ning)?|intend(?:ing)?|want|hope|expect|going|supposed|scheduled|meant|like)\s+to\s+{_PLANNED_ACTION}|"
+    rf"(?:plan(?:ning)?\s+on|consider(?:ing)?)\s+{_PLANNED_PARTICIPLE})\b|"
+    rf"\b(?:{_PLANNED_PARTICIPLE}|on|take|use)\s+(?:(?:as\s+of|starting|from)\s+)?{_FUTURE_TIME}\b|"
+    rf"^\s*{_FUTURE_TIME}\s*[,;:]?\s+(?:what|which|are|do)\b|"
+    r"\b(?:plan\s+for\s+(?:your|the)\s+(?:next\s+)?(?:medicine|medication|treatment)|"
+    r"(?:medications?|medicines?|treatments?|drugs?)\s+(?:planned|scheduled|being\s+considered))\b",
+    re.IGNORECASE,
+)
+# Present-tense reports can still describe a scheduled administration. An
+# endpoint ("until tomorrow") and a future appointment are not start times.
+_SCHEDULE_TIME = rf"(?:{_FUTURE_TIME}|in\s+(?:\d+|one|two|three|four|five|six|seven|a|an)\s+(?:hours?|days?|weeks?|months?))"
+_PATIENT_USE_RE = re.compile(r"\bi(?:['’]m|\s+am)?\s+(?:(?:also|now|currently)\s+)*(?:taking|using|applying|take|use|apply)\b", re.I)
+_SCHEDULE_FRONT_RE = re.compile(rf"^\s*{_SCHEDULE_TIME}\s*,?\s*$", re.I)
+_SCHEDULE_END_RE = re.compile(rf"\b{_SCHEDULE_TIME}(?:\s+(?:morning|afternoon|evening|night))?\s*[.!?]?$", re.I)
+_SCHEDULE_ENDPOINT_RE = re.compile(r"\b(?:until|through|till|ends?|stops?|today\s+and)\s*$", re.I)
 _EVENT_JOIN_RE = re.compile(
     r"(?:,\s*(?:(?:and|but|so|because)\s+)?|\s+(?:and|but|so|because)\s+)"
     r"(?:then\s+)?(?=i\b|i'|(?:could|would|will|should|might|took|used)\b)", re.IGNORECASE,
@@ -491,10 +513,13 @@ _TAKEN_NON_TREATMENT_OBJECT_RE = re.compile(
 )
 # A vehicle or meal modifies how an item was taken. Match the complete
 # accompaniment so a substance such as "milk thistle" remains an object.
-_TAKEN_ADMINISTRATION_ADJUNCT_RE = re.compile(
-    r"\s+with\s+(?:(?:a|an|the|my|some)\s+)?(?:(?:full\s+)?(?:glass|cup|sip|bottle)\s+of\s+)?"
+_ADMINISTRATION_VEHICLE = (
+    r"(?:(?:a|an|the|my|some)\s+)?(?:(?:full\s+)?(?:glass|cup|sip|bottle)\s+of\s+)?"
     r"(?:water|juice|milk|tea|coffee|food|meals?|breakfast|lunch|dinner|snacks?)"
-    r"(?=\s*(?:[,;.!?]|$)|\s+(?:for|and|plus|with)\b)", re.I,
+)
+_ADMINISTRATION_VEHICLE_RE = re.compile(_ADMINISTRATION_VEHICLE, re.I)
+_TAKEN_ADMINISTRATION_ADJUNCT_RE = re.compile(
+    rf"\s+with\s+{_ADMINISTRATION_VEHICLE}(?=\s*(?:[,;.!?]|$)|\s+(?:for|and|plus|with)\b)", re.I,
 )
 _TREATMENT_CONTEXT_RE = re.compile(
     r"\b(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|capsules?|doses?"
@@ -509,7 +534,9 @@ _TAKEN_TREATMENT_QUESTION_RE = re.compile(
 _SUBSTANCE_LABEL_RE = re.compile(
     r"^my\s+(?:(?:current|regular|daily|known)\s+)?(?P<field>medication|medicine|allergy|allergen)\s+is\s+", re.I,
 )
-_AMBIGUOUS_TREATMENT_RE = re.compile(r"^(?:i(?:['’]m|\s+am)\s+on|i\s+(?:take|use))\b", re.I)
+_AMBIGUOUS_TREATMENT_RE = re.compile(
+    rf"^(?:i(?:['’]m|\s+am)\s+{_CURRENT_USE_MODIFIERS}on|i\s+{_CURRENT_USE_MODIFIERS}(?:take|use))\b", re.I,
+)
 # Without a medication question, "on", "take" and "use" have everyday senses.
 # A familiar drug name can also disambiguate these otherwise untyped relations.
 _FAMILIAR_MEDICINE_RE = re.compile(
@@ -957,6 +984,16 @@ def _span_in_attributed_quote(turn: Turn, span: CandidateSpan) -> bool:
     return False
 
 
+def _scheduled_treatment(text: str) -> bool:
+    patient_use = _PATIENT_USE_RE.search(text)
+    if not patient_use:
+        return False
+    if _SCHEDULE_FRONT_RE.fullmatch(text[:patient_use.start()]):
+        return True
+    time = _SCHEDULE_END_RE.search(text, patient_use.end())
+    return bool(time and not _SCHEDULE_ENDPOINT_RE.search(text[:time.start()]))
+
+
 def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
     if _ROUTINE_DISCLAIMED_RE.search(clause.text):
         return _split_events(clause, _ROUTINE_JOIN_RE)
@@ -1283,38 +1320,100 @@ def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> 
     return True
 
 
-def _coexisting_substance_clause(field: FieldName, clause_text: str) -> tuple[str, ...] | None:
-    """Detect two compatible coexisting medications or allergens in one affirmative clause."""
-    if field not in (FieldName.MEDICATION, FieldName.ALLERGY):
-        return None
-    if _NEGATION_WORD_RE.search(clause_text) or _EPISTEMIC_HEDGE_RE.search(clause_text):
-        return None
-    patterns = (
-        (
-            r"(?:i(?:'ve| have)?\s+(?:been\s+)?(?:taking|using|took|used|tried|applied)|only|just)\s+"
-            r"(?P<first>[A-Za-z][A-Za-z0-9 -]{1,30}?)\s+(?:and|with|plus)\s+(?P<second>(?:an?\s+)?[A-Za-z][A-Za-z0-9 -]{1,30}?)"
-            r"(?:\s+(?:for|today|yesterday|this morning|this evening|last night|so far)\b[^.!?;]*)?[.!]?$"
-        )
-        if field is FieldName.MEDICATION
-        else (
-            rf"(?:{_PATIENT_REACTION}|i(?:'m| am)\s+allergic\s+to|i\s+have\s+(?:an?\s+)?allerg(?:y|ies)\s+to|allergic\s+to|yes,?|just)\s+"
-            rf"(?P<first>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)\s+(?:and|with|plus)\s+"
-            rf"(?P<second>(?:an?\s+)?{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)[.!]?$"
-        )
+_MEDICATION_JOIN_RE = re.compile(r"(?:,\s*(?:(?P<comma_join>and|plus|with)\s+)?|\s+(?P<join>and|plus|with)\s+)", re.I)
+_ADDITIONAL_TREATMENT_RE = re.compile(
+    r"(?:(?:my|the|an?|another)\s+)*(?:(?:other|prescribed|regular)\s+)*"
+    r"(?:medication|medicine|drug|prescription|supplement)\s+(?:(?:named|called)\s+)?", re.I,
+)
+
+
+def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
+    # Use the same actual-use predicates as single observations. Each candidate
+    # still has to pass _verify_local_span in its original patient event.
+    lead = (_MED_CLAUSE_VERB_RE.match(text) or _TAKEN_RE.match(text) or _AMBIGUOUS_TREATMENT_RE.match(text)
+            or _SHARED_MEDICATION_RE.match(text) or re.match(r"(?:only|just)\b", text, re.I))
+    if not lead:
+        return ()
+    end = len(text.rstrip(" ;.!?"))
+    adjunct = _SUBSTANCE_ADJUNCT_RE.search(text, lead.end(), end)
+    if adjunct:
+        end = adjunct.start()
+    joins = list(_MEDICATION_JOIN_RE.finditer(text, lead.end(), end))
+    if not any(m["join"] or m["comma_join"] for m in joins):
+        return ()
+    objects = []
+    start = lead.end()
+    accompaniment = False
+    comma_item = False
+    for boundary in [*joins, None]:
+        stop = boundary.start() if boundary else end
+        phrase = text[start:stop]
+        value = phrase.strip()
+        label = _ADDITIONAL_TREATMENT_RE.match(value)
+        name_start = start + len(phrase) - len(phrase.lstrip()) + (label.end() if label else 0)
+        name = _substance_name_bounds(text, (name_start, stop), FieldName.MEDICATION)
+        if name and not _ORDINARY_OBJECT_RE.match(value):
+            # 'and/plus' coordinate direct objects. 'with' can introduce a
+            # companion or vehicle, so it needs affirmative treatment evidence.
+            drug = text[name[0]:name[1]]
+            familiar = _FAMILIAR_MEDICINE_RE.search(drug)
+            compound = familiar and familiar.end() == len(drug) and (
+                familiar.start() == 0 or drug[familiar.start() - 1] in "-‐‑/+"
+            )
+            treatment = (label or compound or _MEDICATION_FORM_NOUN_RE.search(drug)
+                         or _MEDICATION_DOSE_RE.search(value))
+            vehicle = _ADMINISTRATION_VEHICLE_RE.fullmatch(drug)
+            if not vehicle and (not (accompaniment or comma_item) or treatment):
+                objects.append(name)
+        if boundary:
+            start = boundary.end()
+            connector = boundary["join"] or boundary["comma_join"]
+            comma_item = connector is None
+            accompaniment = accompaniment or bool(connector and connector.casefold() == "with")
+    return tuple(objects) if len(objects) > 1 else ()
+
+
+def _coexisting_substance_clause(field: FieldName, text: str) -> tuple[tuple[int, int], ...]:
+    """Return the actual source ranges of compatible coexisting substances."""
+    if _NEGATION_WORD_RE.search(text) or _EPISTEMIC_HEDGE_RE.search(text):
+        return ()
+    if field is FieldName.MEDICATION:
+        return _coordinated_medication_objects(text)
+    if field is not FieldName.ALLERGY:
+        return ()
+    pair = re.match(
+        rf"(?:{_PATIENT_REACTION}|i(?:'m| am)\s+allergic\s+to|i\s+have\s+(?:an?\s+)?allerg(?:y|ies)\s+to|allergic\s+to|yes,?|just)\s+"
+        rf"(?P<first>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)\s+(?:and|with|plus)\s+"
+        rf"(?P<second>(?:an?\s+)?{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)[.!]?$",
+        text, re.I,
     )
-    m = re.match(patterns, clause_text.strip(), re.IGNORECASE)
-    if not m:
-        return None
-    first, second = m.group("first").strip(), m.group("second").strip()
-    if first and second and normalize_value(first) != normalize_value(second):
-        return (first, second)
-    return None
+    return (pair.span("first"), pair.span("second")) if pair else ()
 
 
 def _question_has_treatment_context(question: str) -> bool:
     return bool(_TREATMENT_CONTEXT_RE.search(question)
                 or re.search(r"\btaken anything\b", question, re.I)
                 or _TAKEN_TREATMENT_QUESTION_RE.fullmatch(question.strip()))
+
+
+_CURRENT_OR_COMPLETED_USE_RE = re.compile(
+    r"\b(?:(?:do|did)\s+you\s+(?:(?:actually|already|usually|regularly|currently)\s+)*(?:take|use|try|apply)|"
+    r"(?:have\s+you|you(?:['’]ve|\s+have))\s+(?:already\s+)?(?:taken|used|tried|applied|been\s+(?:taking|using))|"
+    r"(?:are\s+you|you(?:['’]re|\s+are))\s+(?:(?:still|currently|regularly|actually)\s+)*(?:taking|using|on)|"
+    r"you\s+(?:took|used|tried|applied))\b",
+    re.I,
+)
+_MEDICATION_LIST_REQUEST_RE = re.compile(
+    r"(?:any|(?:what|which)\s+(?:is|are)\s+your|(?:name|list)\s+your)\s+"
+    r"(?:(?:current|regular|daily|usual)\s+)?(?:meds|medicines?|medications?|drugs?|treatments?|tablets?|pills?)"
+    r"(?:\s+to\s+(?:list|record|report))?[?.!]?", re.I,
+)
+
+
+def _question_confirms_medication_use(question: str) -> bool:
+    return bool(question_field(question) is FieldName.MEDICATION
+                or _CURRENT_OR_COMPLETED_USE_RE.search(question)
+                or _MEDICATION_LIST_REQUEST_RE.fullmatch(question.strip()))
 
 
 def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
@@ -1376,6 +1475,7 @@ def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[Candidate
 _SUBSTANCE_FORM_RE = re.compile(
     r"\b(?:drops?|spray|gel|cream|ointment|syrup|lozenges?|inhaler|patch(?:es)?|gel\s+caps?)\b", re.I,
 )
+_MEDICATION_FORM_NOUN_RE = re.compile(rf"(?:{_SUBSTANCE_FORM_RE.pattern}|\b{_MEDICATION_DOSE_FORM})$", re.I)
 _ORDINARY_OBJECT_RE = re.compile(
     r"^\s*(?:(?:a|an|the|my|our|some|short|long|new|old|usual|daily|early|late|next|last)\s+)*"
     r"(?:taxi|cab|bus|train|plane|ferry|tram|subway|flight|car|bike|bicycle|commute|"
@@ -1407,7 +1507,7 @@ def _medication_verb_positions(text: str, question: str) -> list[int]:
         event = re.split(r"[,;]|\b(?:and|but|because|so)\b", text[match.end():], maxsplit=1, flags=re.I)[0]
         if _TAKEN_NON_TREATMENT_OBJECT_RE.match(event) or _ORDINARY_OBJECT_RE.match(event):
             continue
-        if _question_has_treatment_context(question) or _TREATMENT_CONTEXT_RE.search(event) or _taken_indication_names(text[match.end():]):
+        if _action_has_treatment_context(event, question) or _taken_indication_names(text[match.end():]):
             positions.append(match.start())
     return positions
 
@@ -1469,6 +1569,10 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
         if not ((first_answer and med_q) or _TREATMENT_CONTEXT_RE.search(text)
                 or _INDICATION_RE.search(text) or disease_indication or _FAMILIAR_MEDICINE_RE.match(obj.lstrip())):
             return None
+    elif _PLANNED_QUESTION_RE.search(question) or (med_q and not _question_confirms_medication_use(question)):
+        # A bare name, even with an indication, only answers what is planned.
+        # Explicit patient predicates above independently document actual use.
+        return None
     elif not (first_answer and med_q):
         if alg_q or not _INDICATION_RE.search(text):
             return None
@@ -1525,13 +1629,10 @@ def _medication_name_rejection(event: Turn, owned: tuple[int, int], span: Candid
     if name and start <= name[0] and name[1] <= end:
         return None
 
-    # A second coordinated medication is evidence in its own right. Only its
-    # grammatical object can license it; the dose and other trailing words cannot.
-    pair = _coexisting_substance_clause(FieldName.MEDICATION, event.text)
-    if pair and span.text == pair[1] and start == event.text.rfind(pair[1]):
-        bounds = _substance_name_bounds(span.text, (0, len(span.text)), FieldName.MEDICATION)
-        if bounds:
-            return None
+    # Each additional medication needs its own exact object. A dose or an
+    # administration detail following a substance cannot supply its name.
+    if (start, end) in _coexisting_substance_clause(FieldName.MEDICATION, event.text):
+        return None
     return "incomplete_substance_name"
 
 
@@ -1782,7 +1883,9 @@ def _verify_local_span(
             event = reports[0]
         if field in (FieldName.MEDICATION, FieldName.ALLERGY):
             treatments = [part for part in _treatment_events(event) if part.start < span.end and span.start < part.end]
-            if any(_PROSPECTIVE_TREATMENT_RE.search(part.text) for part in treatments):
+            if any(_PROSPECTIVE_TREATMENT_RE.search(part.text)
+                   or (field is FieldName.MEDICATION and _scheduled_treatment(part.text))
+                   for part in treatments):
                 return False, "prospective_treatment"
             if len(treatments) != 1:
                 return False, "span_crosses_treatment_events"
@@ -2190,13 +2293,10 @@ def _coexisting_substances(source: Source, field: FieldName,
                     if names:
                         observed.extend(item for item in names if item in local)
                         continue
-                    pair = _coexisting_substance_clause(field, event.text)
-                    if pair:
-                        offset = 0
-                        for name in pair:
-                            start = event.text.index(name, offset)
-                            offset = start + len(name)
-                            item = CandidateSpan(event.start + start, event.start + offset, name)
+                    objects = _coexisting_substance_clause(field, event.text)
+                    if objects:
+                        for start, end in objects:
+                            item = CandidateSpan(event.start + start, event.start + end, event.text[start:end])
                             if _verify_local_span(source, field, FieldState.SUPPORTED, item)[0]:
                                 observed.append(item)
                     else:
