@@ -283,6 +283,18 @@ _SELF_CORRECTION_CLAUSE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# A correction marker can introduce a separate sentence. Keep this grammar
+# distinct from the generic correction heuristic, which can retract a whole field.
+_MEDICATION_CORRECTION_MARKER = r"(?:let me correct (?:that|myself|my answer)|correction|actually|sorry)"
+_MEDICATION_CORRECTION_RE = re.compile(rf"\b{_MEDICATION_CORRECTION_MARKER}\b", re.I)
+_FIRST_PERSON_NONUSE = (
+    r"i (?:(?:did not|didn['’]t) (?:take|use|try|apply|swallow)|"
+    r"(?:have not|haven['’]t) (?:taken|used|tried|applied|swallowed))\s+"
+)
+_CORRECTED_NONUSE_RE = re.compile(
+    rf"^{_MEDICATION_CORRECTION_MARKER}\b[\s.,!:;—–-]+{_FIRST_PERSON_NONUSE}", re.I,
+)
+
 _ROUTINE_DISCLAIMED_RE = re.compile(
     r"\b(?:usual routine|every morning|daily routine|isn't something i took for|"
     r"not something i took for|unrelated)\b",
@@ -579,6 +591,12 @@ _MED_CLAUSE_VERB_RE = re.compile(
     re.IGNORECASE,
 )
 _TAKEN_RE = re.compile(r"\bi(?:'ve|\s+have)?\s+(?:also\s+)?taken\b", re.IGNORECASE)
+# A subsequent affirmative patient action owns its own object, including
+# emphatic and perfect forms such as "I did take" and "I have taken".
+_MEDICATION_REPLACEMENT_JOIN_RE = re.compile(
+    rf"(?:,\s*(?:(?:and|but)\s+)?|\s+(?:and|but)\s+)(?={_MED_CLAUSE_VERB_RE.pattern}|{_TAKEN_RE.pattern})",
+    re.I,
+)
 _TAKEN_NON_TREATMENT_OBJECT_RE = re.compile(
     r"^\s*(?:(?:a|an|the|my|some)\s+)?(?:fall|trip|break|walk|time off|responsibility|credit|photographs?)\b",
     re.IGNORECASE,
@@ -1258,6 +1276,9 @@ def _scheduled_treatment(text: str) -> bool:
 def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
     if _ROUTINE_DISCLAIMED_RE.search(clause.text):
         return _split_events(clause, _ROUTINE_JOIN_RE)
+    if ((_CORRECTED_NONUSE_RE.match(clause.text) or re.match(_FIRST_PERSON_NONUSE, clause.text, re.I))
+            and _MEDICATION_REPLACEMENT_JOIN_RE.search(clause.text)):
+        return _split_events(clause, _MEDICATION_REPLACEMENT_JOIN_RE)
     # In a coordinated first-person report, only the predicate is repeated.
     # Splitting at the conjunction keeps both objects tied to their own verb.
     if (_REPORTED_TREATMENT_RE.match(clause.text) or _MED_CLAUSE_VERB_RE.match(clause.text)
@@ -1335,8 +1356,192 @@ def _correction_fields(clause: str) -> set[FieldName]:
     return targets
 
 
-def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool) -> bool:
+@dataclass(frozen=True)
+class _MedicationWithdrawal:
+    name: str | None  # An explicit medication category applies to any name.
+    dose: str
+    restriction: str
+
+
+def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...] | None:
+    """Read the patient’s named or categorical denials with their restrictions."""
+    predicate = _CORRECTED_NONUSE_RE.match(text)
+    if not predicate:
+        return None
+    # Keep a correction attributed to another person out of the patient's
+    # record. A causal aside can mention family without transferring ownership.
+    attribution, *reasons = re.split(r"\bbecause\b", text, flags=re.I)
+    if (_THIRD_PARTY_RE.search(attribution) or _PERSONAL_SUBJECT_RE.search(attribution)
+            or any(_THIRD_PARTY_RE.search(reason) and re.search(
+                r"\b(?:answer(?:ed|ing)?|speak(?:ing)?|spoke|mean|meant|referr(?:ed|ing)|"
+                r"talk(?:ed|ing)?)\b", reason, re.I) for reason in reasons)):
+        return ()
+    remainder = text[predicate.end():]
+    parts = _EVENT_JOIN_RE.split(remainder)
+    first = _withdrawn_objects_in_predicate(parts[0])
+    withdrawals = list(first or ())
+    for join, part in zip(_EVENT_JOIN_RE.finditer(remainder), parts[1:]):
+        if negative := re.match(_FIRST_PERSON_NONUSE, part, re.I):
+            if not re.search(r"\b(?:because|so)\b", join[0], re.I):
+                withdrawals.extend(_withdrawn_objects_in_predicate(part[negative.end():]) or ())
+            continue
+        # An independently described treatment (even a tentative or historical
+        # replacement) does not qualify the preceding denial. A bare hedge or
+        # a retrospective clarification about the denial itself still does.
+        if re.search(r"\b(?:take|took|taken|use|used|try|tried|apply|applied|swallow(?:ed)?)\s+"
+                     r"(?!(?:to|it|that|this|them)\b)[\w-]+", part, re.I):
+            continue
+        reason = bool(re.search(r"\bbecause\b", join[0], re.I))
+        if (_PAST_OR_HYPOTHETICAL_RE.search(part) or _patient_question(part)
+                or (not reason and _EPISTEMIC_HEDGE_RE.search(part))):
+            return ()
+    return tuple(withdrawals) if withdrawals or first is not None else None
+
+
+def _withdrawn_objects_in_predicate(body: str) -> tuple[_MedicationWithdrawal, ...] | None:
+    """Each independent non-use predicate owns its own object list and qualifiers."""
+    if _patient_question(body):
+        return ()
+    body = re.split(r"\bbecause\b", body, maxsplit=1, flags=re.I)[0].rstrip(" .,;!")
+    if _EPISTEMIC_HEDGE_RE.search(body) or _PAST_OR_HYPOTHETICAL_RE.search(body):
+        return ()
+    body = re.sub(rf",?\s+(?:at all|after all|whatsoever|in fact)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
+                  "", body, flags=re.I)
+    start = 0
+    objects = []
+    while start < len(body):
+        quantifier = re.match(r"(?:any|either)\s+(?:of\s+(?:the|my)\s+)?", body[start:], re.I)
+        if quantifier:
+            start += quantifier.end()
+        name = _substance_name_bounds(body, (start, len(body)), FieldName.MEDICATION)
+        if not name:
+            break
+        value = normalize_value(body[slice(*name)])
+        if value in {"it", "that", "this", "them", "any"}:
+            return None
+        generic = value == "anything" or re.fullmatch(rf"(?:any )?{_MED_DENIAL_NOUN}", value, re.I)
+        dose = _MEDICATION_DOSE_RE.search(body, start, name[0])
+        start = name[1]
+        following = start + len(body[start:]) - len(body[start:].lstrip())
+        if trailing_dose := _MEDICATION_DOSE_RE.match(body, following):
+            dose = trailing_dose
+            start = dose.end()
+        objects.append((None if generic else value, dose[0] if dose else ""))
+        join = re.match(r"(?:,\s*(?:(?:and|or|plus)\s+)?|\s+(?:and|or|plus)\s+)", body[start:], re.I)
+        if not join:
+            break
+        start += join.end()
+    # A final indication or interval conservatively qualifies the coordinated
+    # denial. Each dose, however, belongs to its individual object.
+    restriction = body[start:].strip(" .,;!")
+    return tuple(_MedicationWithdrawal(name, dose, restriction) for name, dose in objects) or None
+
+
+def _medication_administration_text(text: str, name_start: int, name_end: int) -> str:
+    """Bound the original administration so a sibling drug cannot lend its dose or indication."""
+    begin, end = 0, len(text)
+    for join in _SUBSTANCE_JOIN_RE.finditer(text):
+        if _TAKEN_ADMINISTRATION_ADJUNCT_RE.match(text, join.start()):
+            continue
+        if not (join["join"] or join["comma_join"]):
+            dose = _MEDICATION_DOSE_RE.match(text, join.end())
+            if dose and re.match(r"\s*(?:$|[.,;!]|(?:for|at|on|with|today|yesterday)\b)", text[dose.end():], re.I):
+                continue
+            if _MED_CALENDAR_RE.match(text, join.end()):
+                continue
+        if join.end() <= name_start:
+            begin = join.end()
+        elif join.start() >= name_end:
+            end = join.start()
+            break
+    return text[begin:end]
+
+
+def _same_medication_administration(withdrawal: _MedicationWithdrawal, administration: str,
+                                    source: Source, span: CandidateSpan, question: str) -> bool:
+    if withdrawal.dose:
+        amount = re.sub(r"[\s‐‑-]+", "", withdrawal.dose.casefold())
+        if not any(re.sub(r"[\s‐‑-]+", "", match[0].casefold()) == amount
+                   for match in _MEDICATION_DOSE_RE.finditer(administration)):
+            return False
+    rest = withdrawal.restriction
+    frame = _medication_interval(rest or question)
+    if frame and frame != ("", ""):
+        original = _medication_event_interval(source, span, administration)
+        if not original or frame[0] != original[0] or (frame[1] and frame[1] != original[1]):
+            return False
+        if calendar := _MED_CALENDAR_RE.search(rest):
+            # "on Monday" and "Monday" identify the same day; the optional
+            # preposition is part of the interval, separate from any purpose.
+            preceding = re.sub(r"\bon\s+$", "", rest[:calendar.start()], flags=re.I)
+            rest = preceding + " " + rest[calendar.end():]
+    elif not rest and frame is None:
+        return False  # The inherited question refers to an indeterminate interval.
+    restriction = " ".join(rest.strip(" .,;!").split())
+    return not restriction or bool(re.search(r"(?<!\w)" + re.escape(restriction) + r"(?!\w)",
+                                              administration, re.I))
+
+
+def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
+                                 owned: tuple[int, int], span: CandidateSpan) -> bool:
+    """Match the retracted name and time to a specific earlier positive occurrence."""
+    if not _MEDICATION_CORRECTION_RE.search(source.text, event.end):
+        return False
+    original_name = _substance_name_bounds(event.text, owned, FieldName.MEDICATION)
+    name_start, name_end = span.start - event.start, span.end - event.start
+    if original_name and name_start <= original_name[0] and original_name[1] <= name_end:
+        name_start, name_end = original_name
+    value = normalize_value(event.text[name_start:name_end])
+    administration = _medication_administration_text(event.text, name_start, name_end)
+    proxy = _forward_proxy_turns(source)
+    for index in range(idx, len(source.turns)):
+        turn = source.turns[index]
+        if (turn.speaker is not Speaker.PATIENT or index in proxy
+                or not _MEDICATION_CORRECTION_RE.search(turn.text)):
+            continue
+        previous = _preceding_clinician_turn(source, index)
+        if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
+            continue
+        clauses = _reply_clauses(turn)
+        for position, clause in enumerate(clauses):
+            if clause.start < event.end:
+                continue
+            text = clause.text
+            if (_MEDICATION_CORRECTION_RE.fullmatch(text.rstrip(" .!;"))
+                    and position + 1 < len(clauses)):
+                text += " " + clauses[position + 1].text
+            question = (previous.text if position == 0 and previous
+                        and _MED_QUESTION_CUE_RE.search(previous.text) else "")
+            for withdrawal in _corrected_medication_objects(text) or ():
+                if (withdrawal.name is None or value == withdrawal.name) and _same_medication_administration(
+                        withdrawal, administration, source, span, question):
+                    return True
+    return False
+
+
+def _retracts_value(source: Source, turn_idx: int, correction: str, original: str,
+                    field: FieldName, span_text: str, immediate: bool) -> bool:
     if not _eligible_correction(correction):
+        return False
+    withdrawals = _corrected_medication_objects(correction)
+    if withdrawals is not None:
+        # The medication verifier checks the actual administration. A second
+        # first-person predicate can independently correct a different field.
+        if field is FieldName.MEDICATION:
+            return False
+        predicate = _CORRECTED_NONUSE_RE.match(correction)
+        value = normalize_value(span_text)
+        for statement in _EVENT_JOIN_RE.split(correction[predicate.end():])[1:]:
+            if field is not FieldName.ALLERGY:
+                if field in _correction_fields(statement):
+                    return True
+                continue
+            scope, named = _allergy_denial_scope(statement)
+            if scope == "name" and named in {"it", "that", "this"}:
+                named = withdrawals[0].name if len(withdrawals) == 1 else None
+            if (scope == "all" or (scope == "name" and value == named)
+                    or (scope == "category" and named == _reported_allergen_category(source, turn_idx, value))):
+                return True
         return False
     targets = _correction_fields(correction)
     if targets:
@@ -1424,11 +1629,12 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
     return False
 
 
-def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, span_text: str = "") -> bool:
+def _clause_is_retracted_in_turn(source: Source, turn_idx: int, clause: Turn,
+                                 field: FieldName, span_text: str = "") -> bool:
     """An immediate correction can retract a value in the same patient reply."""
-    clauses = _reply_clauses(turn)
+    clauses = _reply_clauses(source.turns[turn_idx])
     return any(current.start == clause.start and
-               _retracts_value(following.text, current.text, field, span_text, immediate=True)
+               _retracts_value(source, turn_idx, following.text, current.text, field, span_text, immediate=True)
                for current, following in zip(clauses, clauses[1:]))
 
 
@@ -1458,7 +1664,8 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
         previous = _preceding_clinician_turn(source, idx)
         if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
             continue
-        if any(_retracts_value(clause.text, source.turns[turn_idx].text, field, span_text, adjacent_patient_answer)
+        if any(_retracts_value(source, turn_idx, clause.text, source.turns[turn_idx].text,
+                              field, span_text, adjacent_patient_answer)
                for clause in _reply_clauses(later)):
             return True
     return False
@@ -1539,7 +1746,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
         return False
     if _later_doubt(source, idx, clause, field, None):
         return False
-    if _clause_is_retracted_in_turn(turn, clause, field, text) or _later_turn_retracts_span(source, idx, field, text):
+    if _clause_is_retracted_in_turn(source, idx, clause, field, text) or _later_turn_retracts_span(source, idx, field, text):
         return False
     return True
 
@@ -2579,6 +2786,8 @@ def _verify_local_span(
                 reason = _medication_name_rejection(event, owned, span)
                 if reason:
                     return False, reason
+                if _patient_withdrew_medication(source, idx, event, owned, span):
+                    return False, "retracted_by_patient_correction"
                 if _TAKEN_RE.search(event.text):
                     _, _, question = _question_flags(source, idx)
                     if not _medication_verb_positions(event.text, question):
@@ -2615,7 +2824,7 @@ def _verify_local_span(
             return False, "routine_medication_disclaimed_for_complaint"
         if _later_doubt(source, idx, clause, field, span.text):
             return False, "source_report_later_in_doubt"
-        if _clause_is_retracted_in_turn(turn, clause, field, span.text) or _later_turn_retracts_span(source, idx, field, span.text):
+        if _clause_is_retracted_in_turn(source, idx, clause, field, span.text) or _later_turn_retracts_span(source, idx, field, span.text):
             return False, "retracted_by_patient_correction"
         return True, "verified_grounded_supported"
 
@@ -2904,6 +3113,9 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
             name = _substance_name_bounds(clause.text, owned, field)
             if name is not None:
                 add(_trim_span(source.text, c_start + name[0], c_start + name[1]))
+            # Each coordinated object can survive or be withdrawn independently.
+            for start, end in _coexisting_substance_clause(field, clause.text, owned):
+                add(_trim_span(source.text, c_start + start, c_start + end))
 
             if field is FieldName.MEDICATION:
                 body = c_text.rstrip(".!?").strip()
@@ -2981,7 +3193,7 @@ def _coexisting_substances(source: Source, field: FieldName,
                     if objects:
                         for start, end in objects:
                             item = CandidateSpan(event.start + start, event.start + end, event.text[start:end])
-                            if _verify_local_span(source, field, FieldState.SUPPORTED, item)[0]:
+                            if item in local:
                                 observed.append(item)
                     else:
                         alternatives = [sp for sp in local if event.start <= sp.start and sp.end <= event.end]
@@ -3267,12 +3479,13 @@ def _medication_interval(text: str) -> tuple[str, str] | None:
     return (day.casefold(), (part or "").casefold())
 
 
-def _medication_event_interval(source: Source, span: CandidateSpan) -> tuple[str, str] | None:
+def _medication_event_interval(source: Source, span: CandidateSpan,
+                               administration: str | None = None) -> tuple[str, str] | None:
     idx = _turn_index(source, span.start, span.end)
     if idx is None:
         return None
     clause = _enclosing_clause(source.turns[idx], span)
-    interval = _medication_interval(clause.text)
+    interval = _medication_interval(administration if administration is not None else clause.text)
     question = _preceding_clinician_turn(source, idx)
     if interval == ("", "") and question and _MED_QUESTION_CUE_RE.search(question.text):
         if clause.start == source.turns[idx].start:
@@ -3324,19 +3537,17 @@ def _allergy_denial_scope(text: str) -> tuple[str, str | None]:
 
 
 def _allergy_question_scope(text: str) -> tuple[str, str | None]:
+    typed = re.fullmatch(rf"(?:what|which) (?P<category>{_ALLERGEN_CATEGORY}) are you allergic to[?.!]?",
+                         text.strip(), re.I)
+    if typed:
+        return "category", _allergen_category(typed["category"])
     if not _field_wide_question(text, FieldName.ALLERGY):
         return "unknown", None
     category = _ALLERGEN_CATEGORY_RE.search(text)
     return ("category", _allergen_category(category[0])) if category else ("all", None)
 
 
-def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | None:
-    # A new or ambiguous name only inherits a category as a direct answer to a
-    # typed question. An independently worded report retains its own scope.
-    idx = _turn_index(source, span.start, span.end)
-    if idx is None:
-        return None
-    name = normalize_value(span.text)
+def _named_allergen_category(name: str) -> str | None:
     # These mineral names also identify exposures in food and materials; a
     # drug-specific question can still establish their use as medications.
     if _FAMILIAR_MEDICINE_RE.fullmatch(name) and name not in {"zinc", "sodium chloride", "calcium carbonate"}:
@@ -3348,6 +3559,16 @@ def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | No
     ):
         if re.fullmatch(pattern, name):
             return category
+    return None
+
+
+def _reported_allergen_category(source: Source, idx: int | None, name: str) -> str | None:
+    # A new or ambiguous name only inherits a category as a direct answer to a
+    # typed question. An independently worded report retains its own scope.
+    if idx is None:
+        return None
+    if category := _named_allergen_category(name):
+        return category
     question = _preceding_clinician_turn(source, idx)
     if question and normalize_value(source.turns[idx].text) == name:
         category = _allergy_question_scope(question.text)[1]
@@ -3370,7 +3591,8 @@ def _denial_covers_substance(source: Source, field: FieldName, denial: Candidate
             scope, value = _allergy_question_scope(question.text)
     if scope == "name":
         return normalize_value(item.text) == value
-    return scope == "all" or (scope == "category" and _reported_allergen_category(source, item) == value)
+    return scope == "all" or (scope == "category" and _reported_allergen_category(
+        source, _turn_index(source, item.start, item.end), normalize_value(item.text)) == value)
 
 
 def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[CandidateSpan, ...]]:
@@ -3417,7 +3639,7 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
             local = []
             for clause in clauses:
                 match = _LATERAL_PAIN_RE.fullmatch(clause.text.strip())
-                if not match or _clause_is_retracted_in_turn(turn, clause, field):
+                if not match or _clause_is_retracted_in_turn(source, idx, clause, field):
                     continue
                 if _later_turn_retracts_span(source, idx, field, clause.text):
                     continue
