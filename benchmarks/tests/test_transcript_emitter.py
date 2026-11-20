@@ -35,7 +35,6 @@ from benchmarks.process_metrics import class_a_profile  # noqa: E402
 from benchmarks.transcript_emitter import (  # noqa: E402
     TOOL_CLASS,
     classify_bash,
-    emit,
     emit_file,
     relativize,
     result_status,
