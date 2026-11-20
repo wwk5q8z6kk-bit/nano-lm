@@ -964,6 +964,7 @@ _INCOMPLETE_RESOLUTION_RE = re.compile(
 )
 _COMPLAINT_ENDED_RE = re.compile(
     rf"^\s*(?:(?:in|around|behind|on|over)\s+(?:my|the)\s+(?:left\s+|right\s+)?[\w-]+\s+)?"
+    rf"(?:(?:that|which)\s+)?"
     rf"(?:(?:yesterday|today|last\s+night|from\s+yesterday)\s+)?"
     rf"(?:(?:,\s*|\s*(?:and|but)\s+)(?:it|they|that)\s+)?"
     rf"(?:(?:has|have|had|is|was|were|are|been|now|already|completely|fully|totally|"
@@ -1059,9 +1060,8 @@ def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateS
         while following_head := _COMPLAINT_HEAD_RE.match(text, last.end()):
             last = following_head
         remainder = _INCOMPLETE_RESOLUTION_RE.sub("still present", text[last.end():])
-        episode = re.sub(r"^\s+(?:that|which)\s+", " ", remainder, flags=re.I) if lead["presenter"] else remainder
         name = re.sub(r"^(?:an?|the|my|some)\s+", "", text[lead.end():last.end()].strip(), flags=re.I)
-        if _complaint_ended(episode) or _immediate_complaint_followup_ends(source, idx, report, name):
+        if _complaint_ended(remainder) or _immediate_complaint_followup_ends(source, idx, report, name):
             return False
         following = re.match(r"\s+([^\W\d_]+)", remainder)
         functional = re.match(r"(?:trouble|difficulty)\s+", last["head"], re.I)
