@@ -1054,6 +1054,7 @@ _COMPLAINT_CONTINUATION_RE = re.compile(
     r"especially|mainly|mostly|again|when|whenever|which|that|in|on|at|near|of|with|through|"
     r"behind|around|over|across|along|after|before|during|for|from|since|while|because|like|upon|"
     r"and|or|but|still|is|are|was|were|has|have|began|started|returned|resolved|stopped|lasts?|lasted|"
+    r"broke|breaks|peaked|peaks|ended|ends|worsened|worsens|improved|improves|"
     r"woke|wakes?|keeps?|gets?|got|spread|continues?|persists?|hurts?|aches?)\b", re.I,
 )
 # The question can supply the reporting predicate for an unfamiliar sensation
@@ -1220,10 +1221,13 @@ def _symptom_owns_alternatives(event: Turn, choice: CandidateSpan, measure: re.P
         return False
     values = [re.sub(r"^it\s+(?:is|was|feels|started|began|lasted)\s+", "", part, flags=re.I)
               for part in alternatives]
-    # A date or qualitative severity can be a complete alternative but cannot
-    # supply the omitted unit of an earlier number.
-    final_unit = (re.fullmatch(rf"{_DURATION_QUANTITY}(?:\s+(?:ago|so far))?", values[-1], re.I)
-                  if measure is _DURATION_VALUE_RE else _SCALE_RE.fullmatch(values[-1]))
+    # A complete duration, including an approximator or bound, may supply the
+    # omitted unit of an earlier number. A date or qualitative severity cannot.
+    final_unit = (re.fullmatch(
+        rf"(?:(?:about|around|roughly|nearly|almost)\s+|{_BOUND_LEAD})?"
+        rf"{_DURATION_QUANTITY}(?:\s+{_BOUND_SUFFIX})?(?:\s+(?:ago|so far))?",
+        values[-1], re.I,
+    ) if measure is _DURATION_VALUE_RE else _SCALE_RE.fullmatch(values[-1]))
     for index, value in enumerate(values):
         if measure.fullmatch(value):
             continue
@@ -3062,10 +3066,16 @@ def _owns_post_aside_uncertainty(text: str) -> bool:
 
 def _uncertainty_names_field(field: FieldName, text: str) -> bool:
     if field is FieldName.ALLERGY:
+        # A named substance can modify the allergy noun. "react badly" and
+        # "drug sensitivity" are the other patient-owned allergy predicates.
+        substance = rf"(?:{_SUBSTANCE_WORD}\s+)?"
         return bool(_ALG_QUESTION_CUE_RE.search(text) and re.search(
-            r"\b(?:my\s+(?:(?:drug|food|environmental|medication)\s+)?allerg(?:y|ies)\b|"
-            r"i(?:['’]m|\s+(?:am|was|might be|may be))\s+(?:really\s+)?allergic\b|"
-            r"i\s+(?:have|had)\s+(?:(?:an?|any|drug|food|medication|environmental)\s+)*allerg(?:y|ies)\b|"
+            rf"\b(?:my\s+(?:(?:drug|food|environmental|medication)\s+)?{substance}allerg(?:y|ies)\b|"
+            rf"i(?:['’]m|\s+(?:am|was|might be|may be))\s+(?:really\s+)?allergic\b|"
+            rf"i\s+(?:have|had)\s+(?:(?:any|drug|food|medication|environmental)\s+)*"
+            rf"(?:an?\s+{substance})?allerg(?:y|ies)\b|"
+            rf"i\s+(?:(?:might|may)\s+)?react\s+badly\b|"
+            rf"(?:my\s+|i(?:['’]m|\s+(?:am|was))\s+|i\s+(?:have|had)\s+(?:(?:an?|any)\s+)?)drug\s+sensitivit\w*|"
             r"being allergic to\b)", text, re.I))
     if field is FieldName.MEDICATION:
         hedge = _FOLLOWUP_DOUBT_RE.search(text)
