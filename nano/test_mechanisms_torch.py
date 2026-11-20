@@ -104,3 +104,31 @@ def test_complex_roto_ssm_rotation_and_memory_profile():
     assert prof_short["recurrent_state_bytes"] == prof_long["recurrent_state_bytes"]
     assert prof_long["kv_cache_bytes"] > prof_short["kv_cache_bytes"]
     assert not math.isnan(model(torch.randint(0, 32, (2, 12))).sum().item())
+
+
+def test_independent_delta_preserves_orthogonal_key_after_channel_decay():
+    cell = GDN2IndependentGateCell(2, 1)
+    with torch.no_grad():
+        cell.qkv_proj.weight.zero_()
+        cell.qkv_proj.weight[2, 0] = 1  # key [1, 0], value [0, 0]
+        cell.erase_proj.weight.zero_()
+        cell.erase_proj.bias.zero_()
+        state = torch.tensor([[[[0., 0.], [1., 0.]]]])
+        _, updated = cell(torch.tensor([[[1., 0.]]]), state)
+    torch.testing.assert_close(updated, 0.5 * state)
+
+
+def test_differential_attention_preserves_relative_position_in_each_branch():
+    torch.manual_seed(319)
+    cell = DenseGQACell(8, 1, use_diff_attn=True).eval()
+    # Use the cached key projections to observe each branch's positional transform.
+    x = torch.randn(1, 3, 8)
+    with torch.no_grad():
+        _, base = cell(x)
+        prefix = cell.init_state(1, x.device)
+        prefix = {name: torch.zeros(1, 1, 5, 8) for name in prefix}
+        _, shifted = cell(x, prefix)
+        for base_half, shifted_half in zip(base["k"].chunk(2, dim=-1),
+                                            shifted["k"][:, :, 5:].chunk(2, dim=-1)):
+            torch.testing.assert_close(base_half @ base_half.transpose(-2, -1),
+                                       shifted_half @ shifted_half.transpose(-2, -1))

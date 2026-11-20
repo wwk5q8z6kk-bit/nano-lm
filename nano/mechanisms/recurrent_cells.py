@@ -89,8 +89,13 @@ class DenseGQACell(nn.Module):
         v = self.v_proj(x).view(bsz, seq_len, self.n_kv_heads, self.head_dim).transpose(1, 2)
 
         offset = state["k"].shape[2] if state is not None else 0
-        q = _apply_rope_1d(q, offset=offset)
-        k = _apply_rope_1d(k, offset=offset)
+        # Each differential attention map needs complete rotary pairs within its own head.
+        if self.use_diff_attn:
+            q = torch.cat([_apply_rope_1d(part, offset) for part in q.chunk(2, dim=-1)], dim=-1)
+            k = torch.cat([_apply_rope_1d(part, offset) for part in k.chunk(2, dim=-1)], dim=-1)
+        else:
+            q = _apply_rope_1d(q, offset)
+            k = _apply_rope_1d(k, offset)
 
         if state is not None and state["k"].shape[2] > 0:
             k_full = torch.cat([state["k"], k], dim=2)
@@ -353,8 +358,7 @@ class GDN2IndependentGateCell(nn.Module):
             pred_v = torch.einsum("bhd,bhde->bhe", kt, S_erased)
             err = vt - pred_v
             # Rank-1 delta erase on S_erased plus channelwise gated write
-            proj = torch.einsum("bhde,bhe->bhd", S_erased, kt)
-            S = (S_erased - bt[..., None, None] * torch.einsum("bhd,bhe->bhde", proj, kt)) + torch.einsum(
+            S = (S_erased - bt[..., None, None] * torch.einsum("bhd,bhe->bhde", kt, pred_v)) + torch.einsum(
                 "bhd,bhe->bhde", kt, wg_t * err
             )
             ys.append(torch.einsum("bhd,bhde->bhe", qt, S))
