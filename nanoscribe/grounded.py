@@ -255,7 +255,7 @@ _REPORTED_TREATMENT_RE = re.compile(
 )
 _POSTPOSED_ALLERGY_RE = re.compile(
     r"\bi(?:\s+have(?:\s+got)?|'ve\s+got)\s+(?:an?\s+)?(?:(?:known|confirmed|documented|severe)\s+)*"
-    r"(?P<value>[\w-]+(?:\s+[\w-]+){0,5}?)\s+allerg(?:y|ies)\b", re.I,
+    r"(?P<value>(?!an?\b)[\w-]+(?:\s+[\w-]+){0,5}?)\s+allerg(?:y|ies)\b(?!\s+to\b)", re.I,
 )
 _ROUTINE_JOIN_RE = re.compile(r",?\s+(?:but|whereas|while)\s+", re.I)
 _ROUTINE_CLARIFICATION_RE = re.compile(

@@ -66,6 +66,7 @@ def test_unlicensed_supplied_span_cannot_become_a_substance(field, question, rep
     (ALG, "Doctor: Tell me more.\nPatient: I have a penicillin allergy.", "penicillin"),
     (ALG, "Patient: I've got a known red cedar pollen allergy.", "red cedar pollen"),
     (ALG, "Patient: I have an almond allergy that causes hives.", "almond"),
+    (ALG, "Patient: I have an allergy to nickel.", "nickel"),
     (MED, "Doctor: Tell me more.\nPatient: I am currently taking aspirin.", "aspirin"),
     (MED, "Patient: I'm still using cedar gel.", "cedar gel"),
     (MED, "Patient: I have also been regularly applying cedar gel.", "cedar gel"),
