@@ -1864,13 +1864,18 @@ def _medication_name_rejection(event: Turn, owned: tuple[int, int], span: Candid
 
 def _timed_question_event(question: str) -> str:
     """Extract the main event being dated, excluding a subordinate time reference."""
-    request = re.search(
-        r"\b(?:when|how (?:long|many (?:minutes|hours|days|weeks|months|years))(?:\s+ago)?|(?:what|which) (?:day|date|time))\b"
-        r"(?P<event>[^?.!;]*)", question, re.I
+    timing_request = (
+        r"\b(?:when|how (?:long|many (?:minutes|hours|days|weeks|months|years))(?:\s+ago)?|"
+        r"(?:what|which) (?:day|date|time))\b"
     )
-    if not request:
-        return ""
-    return re.split(r"\b(?:after|before|while|because|although|despite)\b", request["event"], maxsplit=1, flags=re.I)[0]
+    clauses = re.split(rf"[?.!;]|\b(?:actually|sorry|i mean|i meant|rather)\b[, ]*(?={timing_request})",
+                       question, flags=re.I)
+    for clause in reversed(clauses):
+        request = re.search(timing_request + r"(?P<event>.*)", clause, re.I)
+        if request:
+            return re.split(r"\b(?:after|before|while|because|although|despite)\b",
+                            request["event"], maxsplit=1, flags=re.I)[0]
+    return ""
 
 
 # Match the dated event or action itself. A mention of the clinic later in a
