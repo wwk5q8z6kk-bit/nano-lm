@@ -1737,8 +1737,19 @@ _RATING_LEAD_RE = re.compile(
 # to an earlier measurement, even after a question about current severity.
 _EARLIER_RATING_RE = re.compile(
     r"^\s+was\s+(?:(?:my|the|that)\s+)?(?:number|rating|score)\s+"
-    r"(?:(?:just|right|immediately)\s+)?(?:before|after|when|yesterday|earlier|initially|"
+    r"(?:(?:just|right|immediately)\s+)?(?:before|after|(?P<when>when)|yesterday|earlier|initially|"
     r"last\s+(?:night|week)|at\s+(?:first|(?:the|its|my)\s+(?:start|onset|worst|peak)))\b", re.I,
+)
+
+
+# A current check can be expressed in the past tense, even under "when".
+# The time must qualify the patient's own measurement, not a chart lookup
+# or somebody else's rating mentioned in the same answer.
+_RATING_MEASUREMENT = r"(?:checked|rechecked|measured|rated|assessed|reassessed)(?:\s+(?:it|my\s+(?:pain|symptoms?)))?"
+_CURRENT_RATING_CHECK_RE = re.compile(
+    rf"\s+i\s+(?:just\s+{_RATING_MEASUREMENT}|{_RATING_MEASUREMENT}\s+"
+    r"(?:(?:(?:just|right)\s+)?now|at\s+(?:this|the)\s+moment|a\s+(?:moment|second)\s+ago))"
+    r"\s*[.!?;]?\s*$", re.I,
 )
 
 
@@ -1760,7 +1771,8 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
     for rating in ratings:
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
-        if _EARLIER_RATING_RE.match(after):
+        earlier = _EARLIER_RATING_RE.match(after)
+        if earlier and not (earlier["when"] and _CURRENT_RATING_CHECK_RE.match(after, earlier.end())):
             return False
         # Stop before a separate subject, adjunct or predicate.
         noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
