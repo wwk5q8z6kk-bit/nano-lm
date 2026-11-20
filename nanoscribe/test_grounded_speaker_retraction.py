@@ -174,6 +174,16 @@ def test_plain_other_statement_preserves_previous_scalar_context(field, answer, 
     ("I am unsure how bad the delay is for my headache.", SEV, False),
     ("I am not sure how severe my headache is.", DUR, False),
     ("I cannot remember when my wrist pain started.", SEV, False),
+    ("I cannot remember how long ago my headaches began.", DUR, True),
+    ("I cannot tell how bad my cramps are.", SEV, True),
+    ("I am not sure when the ringing started.", DUR, True),
+    ("I am unsure how severe the shortness of breath is.", SEV, True),
+    ("I cannot remember the onset of my palpitations.", DUR, True),
+    ("I am unsure how bad my headache diary is.", SEV, False),
+    ("I am unsure how long the cough drops lasted.", DUR, False),
+    ("I am unsure how severe her headaches are.", SEV, False),
+    ("I am unsure how long my sister's headaches lasted.", DUR, False),
+    ("I am unsure how long ago my parking pass expired.", DUR, False),
 ])
 @pytest.mark.parametrize("aside", ["Unknown: Where is the garage?", "Unknown: The umbrella is upstairs."])
 def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible, aside):
@@ -412,6 +422,12 @@ def test_routine_disclaimer_needs_a_medication_referent_across_an_aside(disclaim
     ("I took my parking pass and I took 10 mg of rimegepant.", "parking pass", False),
     ("I took my parking pass and I took 10 mg of rimegepant.", "rimegepant", True),
     ("I plan to take 10 mg of rimegepant.", "rimegepant", False),
+    ("I took the bus then I took aspirin.", "aspirin", True),
+    ("After I took the bus I took 10 mg of rimegepant.", "rimegepant", True),
+    ("I took the bus before I took aspirin.", "aspirin", True),
+    ("I took aspirin before I took the bus.", "aspirin", True),
+    ("I took aspirin before I took the bag holding naproxen.", "naproxen", False),
+    ("I took the bag with naproxen in it before I took aspirin.", "naproxen", False),
 ])
 def test_medication_after_logistics_uses_its_own_treatment_event(answer, quote, licensed):
     report = f"Other: Where is the garage?\nPatient: {answer}"

@@ -894,13 +894,18 @@ def _medication_has_local_context(clause: Turn, span: CandidateSpan) -> bool:
             label = _SUBSTANCE_LABEL_RE.match(event.text)
             if label and event.start + label.end() == span.start:
                 return True
-            use = (_MED_CLAUSE_VERB_RE.search(event.text) or _TAKEN_RE.search(event.text)
-                   or _AMBIGUOUS_TREATMENT_RE.match(event.text) or _SHARED_MEDICATION_RE.match(event.text))
-            if use:
-                obj = event.text[use.end():].lstrip()
-                if re.match(rf"{_LOGISTICS_ITEM}\b", obj, re.I):
-                    return False
-                return _action_has_treatment_context(obj, "")
+            uses = sorted({(match.start(), match.end()) for regex in (_MED_CLAUSE_VERB_RE, _TAKEN_RE)
+                           for match in regex.finditer(event.text)})
+            relation = _AMBIGUOUS_TREATMENT_RE.match(event.text) or _SHARED_MEDICATION_RE.match(event.text)
+            if relation and not uses:
+                uses = [(relation.start(), relation.end())]
+            if uses:
+                for index, (_, start) in enumerate(uses):
+                    end = uses[index + 1][0] if index + 1 < len(uses) else len(event.text)
+                    if event.start + start <= span.start < span.end <= event.start + end:
+                        obj = event.text[start:end].lstrip()
+                        return not re.match(rf"{_LOGISTICS_ITEM}\b", obj, re.I) and _action_has_treatment_context(obj, "")
+                return False
             return bool(_FAMILIAR_MEDICINE_RE.fullmatch(span.text))
     return False
 
@@ -1213,13 +1218,16 @@ def _symptom_owns_alternatives(event: Turn, choice: CandidateSpan, measure: re.P
         alternatives[0] = first[value.start():]
     if not _symptom_predicate_before(prefix):
         return False
-    shared_unit = _QUANTITY_RE if measure is _DURATION_VALUE_RE else _SCALE_RE
-    for index, alternative in enumerate(alternatives):
-        value = re.sub(r"^it\s+(?:is|was|feels|started|began|lasted)\s+", "", alternative, flags=re.I)
+    values = [re.sub(r"^it\s+(?:is|was|feels|started|began|lasted)\s+", "", part, flags=re.I)
+              for part in alternatives]
+    # A date or qualitative severity can be a complete alternative but cannot
+    # supply the omitted unit of an earlier number.
+    final_unit = (re.fullmatch(rf"{_DURATION_QUANTITY}(?:\s+(?:ago|so far))?", values[-1], re.I)
+                  if measure is _DURATION_VALUE_RE else _SCALE_RE.fullmatch(values[-1]))
+    for index, value in enumerate(values):
         if measure.fullmatch(value):
             continue
-        # A shared unit or denominator may be written only on the last value.
-        if index < len(alternatives) - 1 and re.fullmatch(_WHOLE, value, re.I) and shared_unit.fullmatch(alternatives[-1]):
+        if index < len(values) - 1 and final_unit and re.fullmatch(_WHOLE, value, re.I):
             continue
         return False
     return True
@@ -3051,14 +3059,30 @@ def _uncertainty_names_field(field: FieldName, text: str) -> bool:
     # An unknown magnitude can still have a known clinical subject. Couple
     # the timing or rating expression to that subject; a different subject
     # such as "how long the queue lasts with my headache" supplies neither.
-    target = rf"(?:my|the|this|these|an?)\s+(?:(?:left|right|upper|lower|{_BODY_REGION})\s+)*{_SYMPTOM}\b"
     if field is FieldName.DURATION:
-        question = rf"(?:when|how long)\s+(?:{target}|i(?:['’]ve| have)?\s+(?:had|felt)\s+{target})"
-        description = rf"(?:duration|onset|start time)\s+of\s+{target}|{target}\s+(?:(?:has|had|have)\s+)?(?:lasted|persisted|started|began)\b"
+        cues = r"when|how long(?: ago)?(?: (?:i(?:['’]ve| have)?|have i) (?:had|felt))?|(?:duration|onset|start time) of"
+        predicate = r"(?:has |had |have )?(?:lasted|persisted|started|began)\b"
     else:
-        question = rf"how\s+(?:bad|severe|intense)\s+{target}"
-        description = rf"(?:severity|intensity|score|rating)\s+of\s+{target}|{target}\s+(?:(?:is|was|feels)\s+)(?:mild|moderate|severe|\d)"
-    return bool(re.search(rf"\b(?:{question}|{description})", text, re.I))
+        cues = r"how (?:bad|severe|intense)|(?:severity|intensity|score|rating) of"
+        predicate = r"(?:is|was|are|were|feels?) (?:mild|moderate|severe|\d)"
+    # Match the same symptom head grammar used for complaints. A clinical
+    # modifier in an administrative noun phrase ('headache diary') is no target.
+    def symptom_at(position: int):
+        head = _COMPLAINT_HEAD_RE.match(text, position)
+        if not head:
+            return None
+        tail = text[head.end():].lstrip()
+        if tail and tail[0].isalpha() and not _COMPLAINT_CONTINUATION_RE.match(tail):
+            return None
+        return head
+
+    if any(symptom_at(cue.end()) for cue in re.finditer(rf"\b(?:{cues})\s+", text, re.I)):
+        return True
+    for subject in re.finditer(r"\b(?:my|the|this|these|an?)\s+", text, re.I):
+        head = symptom_at(subject.end())
+        if head and re.match(rf"\s+{predicate}", text[head.end():], re.I):
+            return True
+    return False
 
 
 def _matches_uncertainty_evidence(field: FieldName, excerpt: CandidateSpan, evidence: CandidateSpan) -> bool:
