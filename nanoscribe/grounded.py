@@ -140,6 +140,15 @@ _SUBSTANCE_OBJECT_RE = re.compile(
     r"\s+(?:(?:a|an|some|the|just|only)\s+)?" + _SUBSTANCE_NAME, re.I,
 )
 _OWNED_SUBSTANCE_NAME_RE = re.compile(r"\s*(?:(?:a|an|some|the|yes,?|just|only)\s+)*" + _SUBSTANCE_NAME, re.I)
+_MEDICATION_AMOUNT = r"(?:\d+(?:\.\d+)?|\.\d+|one|two|three|half)"
+_MEDICATION_DOSE_UNIT = r"(?:mg|mcg|[μµ]g|g|ml|milligrams?|micrograms?|grams?|millilit(?:er|re)s?|units?)"
+_MEDICATION_DOSE_FORM = r"(?:tablets?|pills?|capsules?|doses?|puffs?|drops?)"
+_MEDICATION_DOSE_RE = re.compile(
+    rf"(?<!\S){_MEDICATION_AMOUNT}[\s‐‑-]*(?:{_MEDICATION_DOSE_UNIT}(?:\s+{_MEDICATION_DOSE_FORM})?|{_MEDICATION_DOSE_FORM})\b", re.I,
+)
+_MEDICATION_DOSE_PREFIX_RE = re.compile(
+    rf"\s*(?:(?:a|an|the|some|just|only)\s+)*(?:{_MEDICATION_DOSE_RE.pattern})(?:\s+(?P<link>of)\b)?\s*", re.I,
+)
 _FOLLOWUP_DOUBT_RE = re.compile(
     r"\b(?:not (?:sure|certain)|no longer (?:sure|certain)|unsure|uncertain|"
     r"(?:can['’]t|cannot|don['’]t|do not) (?:remember|recall|know))\b", re.I,
@@ -1134,9 +1143,17 @@ def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[Candidate
                             event[start:end], re.I)
         if part:
             value, purpose = part.group("name", "purpose")
+            name_start, name_end = part.span("name")
+            if _MEDICATION_DOSE_RE.search(value):
+                bounds = _substance_name_bounds(value, (0, len(value)), FieldName.MEDICATION)
+                if bounds is None:
+                    start = following
+                    continue
+                name_start, name_end = name_start + bounds[0], name_start + bounds[1]
+                value = event[start + name_start:start + name_end]
             if (not _TAKEN_NON_TREATMENT_OBJECT_RE.match(value)
                     and grounded_value_valid(FieldName.MEDICATION, value) and _plain_value(FieldName.MEDICATION, value, syntax=_SUBSTANCE_WORDS_RE)):
-                span = CandidateSpan(offset + start + part.start("name"), offset + start + part.end("name"), value)
+                span = CandidateSpan(offset + start + name_start, offset + start + name_end, value)
                 if purpose and not re.match(r"granted\b", purpose, re.I) and not _DURATION_VALUE_RE.fullmatch(purpose):
                     names.extend(pending)
                     names.append(span)
@@ -1259,9 +1276,25 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
     return start, adjunct.start() if adjunct else len(text)
 
 
-def _owned_substance_name(event: Turn, owned: tuple[int, int]) -> tuple[int, int] | None:
-    """Absolute source range of the complete name before its timing or purpose."""
-    phrase = _OWNED_SUBSTANCE_NAME_RE.match(event.text, *owned)
+def _substance_name_bounds(text: str, owned: tuple[int, int], field: FieldName) -> tuple[int, int] | None:
+    """Locate the complete substance name inside its grammatical object."""
+    start, end = owned
+    if field is FieldName.MEDICATION:
+        dose = _MEDICATION_DOSE_PREFIX_RE.match(text, start, end)
+        if dose:
+            start = dose.end()
+            # A dose can be followed by a route, schedule or source as easily
+            # as a drug. "of" names the object explicitly. Without it, require
+            # independent evidence of a name at this position.
+            if not dose["link"] and not _FAMILIAR_MEDICINE_RE.match(text, start, end):
+                return None
+            if re.match(r"(?:from|out|off|into|through|per|as|of|it|them|that|this|my|something|anything)\b", text[start:end], re.I):
+                return None
+        else:
+            trailing_dose = _MEDICATION_DOSE_RE.search(text, start, end)
+            if trailing_dose:
+                end = trailing_dose.start()
+    phrase = _OWNED_SUBSTANCE_NAME_RE.match(text, start, end)
     if not phrase:
         return None
     name = phrase["name"]
@@ -1269,8 +1302,30 @@ def _owned_substance_name(event: Turn, owned: tuple[int, int]) -> tuple[int, int
         timing = pattern.search(name)
         if timing and timing.start() > 0:
             name = name[:timing.start()]
-    start = event.start + phrase.start("name")
+    start = phrase.start("name")
     return start, start + len(name.rstrip())
+
+
+def _medication_name_rejection(event: Turn, owned: tuple[int, int], span: CandidateSpan) -> str | None:
+    taken = _TAKEN_RE.match(event.text)
+    if taken:
+        names = _taken_indication_names(event.text[taken.end():], event.start + taken.end())
+        if names:
+            return None if span in names else "span_outside_reported_treatment_name"
+
+    start, end = span.start - event.start, span.end - event.start
+    name = _substance_name_bounds(event.text, owned, FieldName.MEDICATION)
+    if name and start <= name[0] and name[1] <= end:
+        return None
+
+    # A second coordinated medication is evidence in its own right. Only its
+    # grammatical object can license it; the dose and other trailing words cannot.
+    pair = _coexisting_substance_clause(FieldName.MEDICATION, event.text)
+    if pair and span.text == pair[1] and start == event.text.rfind(pair[1]):
+        bounds = _substance_name_bounds(span.text, (0, len(span.text)), FieldName.MEDICATION)
+        if bounds:
+            return None
+    return "incomplete_substance_name"
 
 
 def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
@@ -1521,23 +1576,24 @@ def _verify_local_span(
             if (owned is None or not owned[0] <= span.start - event.start < owned[1]
                     or (field is FieldName.ALLERGY and span.end - event.start > owned[1])):
                 return False, "no_field_owned_substance_at_span"
-            name = _owned_substance_name(event, owned)
-            if name and span.start < name[1] and name[0] < span.end:
-                if span.start > name[0] or span.end < name[1]:
+            start, end = span.start - event.start, span.end - event.start
+            if field is FieldName.MEDICATION:
+                reason = _medication_name_rejection(event, owned, span)
+                if reason:
+                    return False, reason
+                if _TAKEN_RE.search(event.text):
+                    _, _, question = _question_flags(source, idx)
+                    if not _medication_verb_positions(event.text, question):
+                        return False, "taken_without_treatment_context"
+            else:
+                name = _substance_name_bounds(event.text, owned, field)
+                if name and start < name[1] and name[0] < end and not (start <= name[0] and name[1] <= end):
                     return False, "incomplete_substance_name"
         if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
             return False, "severity_not_linked_to_current_episode"
         if field is FieldName.DURATION:
             if reason := _duration_scope_rejection(source, idx, event, span):
                 return False, reason
-        if field is FieldName.MEDICATION and _TAKEN_RE.search(event.text):
-            _, _, question = _question_flags(source, idx)
-            if not _medication_verb_positions(event.text, question):
-                return False, "taken_without_treatment_context"
-            taken = _TAKEN_RE.match(event.text)
-            names = _taken_indication_names(event.text[taken.end():], event.start + taken.end()) if taken else ()
-            if names and not any((span.start, span.end) == (item.start, item.end) for item in names):
-                return False, "span_outside_reported_treatment_name"
         if not grounded_value_valid(field, span.text, event.text):
             return False, "value_fails_field_type_guard"
         if _EPISTEMIC_HEDGE_RE.search(event.text) or _NONUSE_ACTION_RE.search(event.text):
@@ -1844,9 +1900,9 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
             owned = _substance_object(source, t_idx, clause, field)
             if owned is None:
                 continue
-            name = _owned_substance_name(clause, owned)
+            name = _substance_name_bounds(clause.text, owned, field)
             if name is not None:
-                add(_trim_span(source.text, *name))
+                add(_trim_span(source.text, c_start + name[0], c_start + name[1]))
 
             if field is FieldName.MEDICATION:
                 body = c_text.rstrip(".!?").strip()
