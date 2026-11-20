@@ -1331,7 +1331,7 @@ def grounded_value_valid(field: FieldName, text: str, clause_text: str = "") -> 
     return True
 
 
-_MEDICATION_JOIN_RE = re.compile(r"(?:,\s*(?:(?P<comma_join>and|plus|with)\s+)?|\s+(?P<join>and|plus|with)\s+)", re.I)
+_SUBSTANCE_JOIN_RE = re.compile(r"(?:,\s*(?:(?P<comma_join>and|plus|with)\s+)?|\s+(?P<join>and|plus|with)\s+)", re.I)
 _ADDITIONAL_TREATMENT_RE = re.compile(
     r"(?:(?:my|the|an?|another)\s+)*(?:(?:other|prescribed|regular)\s+)*"
     r"(?:medication|medicine|drug|prescription|supplement)\s+(?:(?:named|called)\s+)?", re.I,
@@ -1376,7 +1376,7 @@ def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
     adjunct = _SUBSTANCE_ADJUNCT_RE.search(text, lead.end(), end)
     if adjunct:
         end = adjunct.start()
-    joins = list(_MEDICATION_JOIN_RE.finditer(text, lead.end(), end))
+    joins = list(_SUBSTANCE_JOIN_RE.finditer(text, lead.end(), end))
     if not any(m["join"] or m["comma_join"] for m in joins):
         return ()
     objects = []
@@ -1413,21 +1413,104 @@ def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
     return tuple(objects) if len(objects) > 1 else ()
 
 
-def _coexisting_substance_clause(field: FieldName, text: str) -> tuple[tuple[int, int], ...]:
-    """Return the actual source ranges of compatible coexisting substances."""
+# In a list of exposures, a reaction can have severity or body-site
+# modifiers. Look at its head so a substance such as "rash cream" stays a name.
+_ALLERGY_MANIFESTATION_RE = re.compile(
+    r"\b(?:hives|rash(?:es)?|itching|swelling|irritation|redness|eruptions?|blisters?|"
+    r"dermatitis|urticaria|wheezing|anaphylaxis|nausea|vomiting|diarrhea|dizziness|"
+    r"shortness of breath|(?:difficulty|trouble) breathing)"
+    r"(?:\s+(?:on|in|of|around|across|all over)\s+.+)?$", re.I,
+)
+# Read the unsplit suffix: "with" may belong to a passive predicate, while
+# the same participle in "treated leather" modifies a substance name.
+_ALLERGY_PASSIVE_ADJUNCT_RE = re.compile(
+    r"\s*(?:(?:both|all|each|then|later|[a-z]+ly)\s+)*"
+    r"(?:treated|managed|relieved|controlled|resolved|tested|diagnosed|confirmed|verified|documented|detected|identified|evaluated|assessed)\s+"
+    r"(?:with|by|using|via|after|before|during|through|in|at|on|as|for|to)\b", re.I,
+)
+_LIST_QUALIFIER_RE = re.compile(
+    r"^(?:especially|mostly|mainly|usually|particularly|primarily|sometimes|"
+    r"for example|for instance|such as|etc|thank you|yes)\b", re.I,
+)
+
+
+def _coexisting_substance_clause(field: FieldName, text: str,
+                                 allergen_object: tuple[int, int] | None = None) -> tuple[tuple[int, int], ...]:
+    """Return separate names from the substance relation established for this event."""
     if _NEGATION_WORD_RE.search(text) or _EPISTEMIC_HEDGE_RE.search(text):
         return ()
     if field is FieldName.MEDICATION:
         return _coordinated_medication_objects(text)
-    if field is not FieldName.ALLERGY:
+    if field is not FieldName.ALLERGY or allergen_object is None:
         return ()
-    pair = re.match(
-        rf"(?:{_PATIENT_REACTION}|i(?:'m| am)\s+allergic\s+to|i\s+have\s+(?:an?\s+)?allerg(?:y|ies)\s+to|allergic\s+to|yes,?|just)\s+"
-        rf"(?P<first>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)\s+(?:and|with|plus)\s+"
-        rf"(?P<second>(?:an?\s+)?{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD}){{0,5}}?)[.!]?$",
-        text, re.I,
-    )
-    return (pair.span("first"), pair.span("second")) if pair else ()
+    first = _substance_name_bounds(text, allergen_object, field)
+    if not first:
+        return ()
+    start, end = first[0], allergen_object[1]
+    # A parenthesized reaction may itself list symptoms. Keep offsets into
+    # the literal reply while scanning only the surrounding allergen list.
+    list_text = re.sub(r"\([^)]*(?:\)|$)", lambda match: " " * len(match[0]), text)
+    joins = list(_SUBSTANCE_JOIN_RE.finditer(list_text, start, end))
+    if not joins:
+        return ()
+    names = []
+    for boundary in [*joins, None]:
+        stop = boundary.start() if boundary else end
+        if names and _ALLERGY_PASSIVE_ADJUNCT_RE.match(list_text, start, end):
+            break
+        phrase = list_text[start:stop].strip(" .!?")
+        if (_shared_activity(phrase) or _LIST_QUALIFIER_RE.match(phrase)
+                or re.search(r"\b(?:is|are|was|were|causes?|gives?)\b", phrase, re.I)):
+            break
+        # A reaction may follow a comma or "with". A subsequent conjunct can
+        # still add another allergen, as in "nickel with hives, and latex".
+        if not _ALLERGY_MANIFESTATION_RE.search(phrase):
+            name = _substance_name_bounds(text, (start, stop), field)
+            if not name:
+                break
+            names.append(name)
+        if boundary:
+            start = boundary.end()
+    return tuple(names) if len(names) > 1 else ()
+
+
+_OTHER_REPORT_FIELD = rf"(?:{_MED_DENIAL_NOUN}|(?:side|adverse)\s+effects?|symptoms?|reactions?|diagnoses|conditions?)"
+_OTHER_REPORT_OBJECT = rf"(?:(?:the|any|your|other|daily|current|known|regular|prescribed)\s+)*{_OTHER_REPORT_FIELD}"
+_OTHER_LIST_EXCLUSION_RE = re.compile(
+    r"(?:please\s+)?(?:(?:(?:do\s+not|don['’]t|not|never)\s+"
+    r"(?:(?:list|name|mention|include|report|give|count|record)\s+)?)|"
+    r"(?:exclude|omit|skip|leave out|rather than|instead of)\s+)"
+    rf"(?:me\s+)?{_OTHER_REPORT_OBJECT}(?:\s+(?:and|or)\s+{_OTHER_REPORT_OBJECT})*"
+    r"(?:\s+(?:list|here|today|this time))?", re.I,
+)
+_NEGATED_RECORD_STATUS_RE = re.compile(
+    r"\b(?:not|never|(?:is|are|was|were|has|have|had)n['’]t)\s+"
+    r"(?:(?:yet|already|previously|currently|been)\s+)*"
+    r"(?:listed|recorded|documented|reported|entered|mentioned)\b", re.I,
+)
+
+
+def _allergy_request_clauses(question: str) -> tuple[str, ...]:
+    # An exclusion naming a different reporting object does not reverse an
+    # allergy request. Retain other negative clauses, including bare followups
+    # such as "Which do you not have?".
+    clauses = re.split(r"[.!?;,]|\bbut\b|\band\s+(?=(?:please\s+)?(?:do not|don['’]t))", question, flags=re.I)
+    return tuple(clause for clause in clauses if clause.strip() and not _OTHER_LIST_EXCLUSION_RE.fullmatch(clause.strip()))
+
+
+def _affirmative_allergy_question(question: str) -> bool:
+    for clause in reversed(_allergy_request_clauses(question)):
+        cue = _ALG_QUESTION_CUE_RE.search(clause)
+        recorded = _NEGATED_RECORD_STATUS_RE.search(clause)
+        if cue and recorded and cue.end() <= recorded.start():
+            # "Allergies not listed in your chart" asks for actual allergies.
+            # "Not listed as allergies" supplies only a chart classification.
+            clause = clause[:recorded.start()] + clause[recorded.end():]
+        if _NEGATION_WORD_RE.search(clause):
+            return False
+        if cue:
+            return True
+    return False
 
 
 def _question_has_treatment_context(question: str) -> bool:
@@ -1461,12 +1544,14 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     prev_q = prev_clin.text if prev_clin is not None else ""
     if _TAKEN_TREATMENT_QUESTION_RE.fullmatch(prev_q.strip()):
         return True, False, prev_q
-    is_explicit_alg_q = bool(_ALG_QUESTION_CUE_RE.search(prev_q)) and not bool(
-        re.search(r"\b(?:taken|tried|used|applied|bothering|brought|symptoms?|how long|how bad|severe)\b", prev_q, re.IGNORECASE)
+    allergy_cue = _ALG_QUESTION_CUE_RE.search(prev_q)
+    is_explicit_alg_q = bool(allergy_cue) and not re.search(
+        r"\b(?:taken|tried|used|applied|bothering|brought|symptoms?|how long|how bad|severe)\b",
+        " ".join(_allergy_request_clauses(prev_q)), re.I,
     )
     is_explicit_med_q = (
         bool(_MED_QUESTION_CUE_RE.search(prev_q))
-        and not bool(_ALG_QUESTION_CUE_RE.search(prev_q))
+        and not allergy_cue
         and not bool(re.search(r"\b(?:bothering|brought|symptoms?|problem|concern|how long|when did|how bad|severe)\b", prev_q, re.IGNORECASE))
     )
     if is_explicit_med_q and re.search(r"\btaken\b", prev_q, re.I):
@@ -1581,7 +1666,8 @@ def _substance_object(source: Source, idx: int, event: Turn, field: FieldName) -
             if reverse and reverse.start() <= allergy.start():
                 return 0, reverse.start()
             start = allergy.end()
-        elif med_verbs or _AMBIGUOUS_TREATMENT_RE.match(text) or not (first_answer and alg_q):
+        elif (med_verbs or _AMBIGUOUS_TREATMENT_RE.match(text)
+              or not (first_answer and alg_q and _affirmative_allergy_question(question))):
             return None
     elif allergy:
         return None
@@ -1729,7 +1815,7 @@ _SEVERITY_JOIN_RE = re.compile(
 _RATING_LEAD_RE = re.compile(
     rf"(?:(?:yes|well|actually|definitely|only|about|roughly|around|maybe|very|really|pretty|"
     rf"quite|just|at|a|an|little|bit|honestly|mostly|it's|it|is|was|has|been|feels?|felt|"
-    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|right\s+now|now|today|"
+    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|right\s+now|now|currently|today|"
     rf"mildly|moderately|severely|this|morning|tonight)\b[\s,']*|{_BOUND_LEAD})*", re.I,
 )
 
@@ -1737,9 +1823,89 @@ _RATING_LEAD_RE = re.compile(
 # to an earlier measurement, even after a question about current severity.
 _EARLIER_RATING_RE = re.compile(
     r"^\s+was\s+(?:(?:my|the|that)\s+)?(?:number|rating|score)\s+"
-    r"(?:(?:just|right|immediately)\s+)?(?:before|after|when|yesterday|earlier|initially|"
+    r"(?:(?:just|right|immediately)\s+)?(?:before|after|(?P<when>when)|yesterday|earlier|initially|"
     r"last\s+(?:night|week)|at\s+(?:first|(?:the|its|my)\s+(?:start|onset|worst|peak)))\b", re.I,
 )
+
+
+# A current check can be expressed in the past tense, even under "when".
+# The time must qualify the patient's own measurement, not a chart lookup
+# or somebody else's rating mentioned in the same answer.
+_RATED_SYMPTOM = (
+    rf"(?:(?:(?:left|right|lower|upper)\s+)?{_BODY_REGION}\s+)?"
+    r"(?:pain|symptoms?|swelling|soreness|stiffness|tightness)"
+)
+_RATING_MEASUREMENT = rf"(?:checked|rechecked|measured|rated|assessed|reassessed)(?:\s+(?:it|my\s+{_RATED_SYMPTOM}))?"
+_RATING_PROMPT = rf"asked\s+me(?:\s+about\s+my\s+{_RATED_SYMPTOM})?"
+_RECENT_RATING_TIME = r"(?:(?:(?:just|right)\s+)?now|at\s+(?:this|the)\s+moment|a\s+(?:moment|second)\s+ago)"
+_RECENT_RATING_TIME_RE = re.compile(rf"\b{_RECENT_RATING_TIME}\b", re.I)
+_CURRENT_RATING_CHECK_RE = re.compile(
+    rf"\s*(?:(?P<measured>i)\s+(?P<measured_just>just\s+)?{_RATING_MEASUREMENT}|you\s+(?P<asked_just>just\s+)?{_RATING_PROMPT})"
+    rf"(?:\s+(?P<time>{_RECENT_RATING_TIME}))?\s*[.!?;]?\s*$", re.I,
+)
+_RATING_SUBJECT = rf"(?:it|(?:my|the)\s+{_RATED_SYMPTOM})"
+_PRESENT_RATING_TIME = rf"(?:{_RECENT_RATING_TIME}|currently|at present)"
+_PRESENT_RATING_TIME_RE = re.compile(_PRESENT_RATING_TIME, re.I)
+_CURRENT_RATING_LEAD_RE = re.compile(
+    rf"(?:(?:my|the)\s+(?:current|present)\s+{_RATED_SYMPTOM}\s+(?:is|feels?)|"
+    rf"{_PRESENT_RATING_TIME}[\s,]*(?:{_RATING_SUBJECT}\s+(?:is|feels?))?|"
+    rf"{_RATING_SUBJECT}\s+(?:(?:is|feels?)\s+{_PRESENT_RATING_TIME}|{_PRESENT_RATING_TIME}\s+(?:is|feels?)))",
+    re.I,
+)
+_PAST_RATING_TIME = (
+    rf"(?:yesterday|earlier|(?:on\s+)?(?:last\s+)?{_DAY_NAME}|last\s+(?:{_DAY_PART}|week|month|year)|"
+    r"at\s+(?:first|its\s+(?:worst|peak)))"
+)
+_PAST_RATING_TIME_RE = re.compile(rf"\s+{_PAST_RATING_TIME}$")
+_EPISODE_TIME_SHIFT_RE = re.compile(rf"\b(?:{_PAST_RATING_TIME}|tomorrow|next (?:week|month|year))\b", re.I)
+
+
+def _requests_current_rating(text: str) -> bool | None:
+    """True for current severity questions, False for past ones, None for other requests."""
+    question = text.casefold().strip(" .!?")
+    timeless = _PAST_RATING_TIME_RE.sub("", question)
+    present = re.sub(r"\bwas\b", "is", timeless)
+    present = re.sub(r"\bwere\b", "are", present)
+    normalized = _RECENT_RATING_TIME_RE.sub("now", present)
+    normalized = re.sub(r"^on a scale (?:of|from) (?:0|1|zero|one) to (?:10|ten),?\s+", "", normalized)
+    if (question_field(normalized) is FieldName.SEVERITY
+            or re.fullmatch(r"(?:what is|what's) (?:your|the) (?:current )?pain (?:score|rating|level)(?: now)?", normalized)):
+        return timeless == question and (present == timeless or bool(_RECENT_RATING_TIME_RE.search(timeless)))
+    return None
+
+
+def _follows_presenting_complaint(source: Source, idx: int, question: str) -> bool:
+    """Resolve a past-tense rating against the adjacent complaint and its optional duration."""
+    if idx < 2 or _EPISODE_TIME_SHIFT_RE.search(question):
+        return False
+    antecedent = idx - 2
+    references = [question]
+    answer = source.turns[antecedent]
+    if answer.speaker is not Speaker.PATIENT:
+        return False
+    if _DURATION_VALUE_RE.fullmatch(answer.text.strip(" .!?")):
+        timing = _preceding_clinician_turn(source, antecedent)
+        if (antecedent < 2 or timing is None
+                or not (question_field(timing.text) is FieldName.DURATION
+                        or re.fullmatch(r"how long did (?:it|(?:the|your) [\w -]+) last\??", timing.text, re.I))):
+            return False
+        references.append(timing.text)
+        antecedent -= 2
+    complaint = source.turns[antecedent]
+    asked = _preceding_clinician_turn(source, antecedent)
+    if complaint.speaker is not Speaker.PATIENT or any(
+            _EPISODE_TIME_SHIFT_RE.search(text) or _QUESTION_HAZARD_RE.search(text)
+            for text in (complaint.text, asked.text if asked else "", answer.text, *references)):
+        return False
+    names = []
+    for reference in references:
+        subjects = [match.group() for match in _SEVERITY_SUBJECT_RE.finditer(reference)]
+        if not subjects and not re.search(r"\b(?:it|this|that|they|these|those)\b", reference, re.I):
+            return False
+        names.extend(subjects)
+    return any(complaint.start <= span.start < span.end <= complaint.end and all(
+        re.search(r"\b" + re.escape(name) + r"\b", span.text, re.I) for name in names
+    ) for span in _local_supported_spans(source, FieldName.CHIEF_COMPLAINT))
 
 
 def _severity_subject(text: str) -> bool | None:
@@ -1757,11 +1923,29 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
                if span.start <= report.start + m.start() and report.start + m.end() <= span.end]
     if not ratings:
         return False
+    previous = _preceding_clinician_turn(source, idx)
+    current_request = _requests_current_rating(previous.text) if previous else None
     for rating in ratings:
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
-        if _EARLIER_RATING_RE.match(after):
-            return False
+        earlier = _EARLIER_RATING_RE.match(after)
+        self_check = False
+        if earlier:
+            check = earlier["when"] and _CURRENT_RATING_CHECK_RE.match(after, earlier.end())
+            if not check or not any(check.group("measured_just", "asked_just", "time")):
+                return False
+            # A recent question may request a past score. Only measuring the
+            # symptom independently supplies the time of the measurement.
+            self_check = bool(check["measured"])
+            if not self_check and current_request is not True:
+                return False
+        trailing_now = _PRESENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?"))
+        if current_request is False and not (self_check or trailing_now or _CURRENT_RATING_LEAD_RE.fullmatch(before)):
+            direct_answer = not after.strip(" .!?") and _RATING_LEAD_RE.fullmatch(before)
+            if not (direct_answer and _follows_presenting_complaint(source, idx, previous.text)):
+                return False
+        if trailing_now:
+            after = ""
         # Stop before a separate subject, adjunct or predicate.
         noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
                         after, maxsplit=1, flags=re.I)[0]
@@ -1780,7 +1964,6 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
             continue
         if not _RATING_LEAD_RE.fullmatch(before):
             return False
-        previous = _preceding_clinician_turn(source, idx)
         if report.start != source.turns[idx].start:
             prior = source.text[source.turns[idx].start:report.start]
         elif previous:
@@ -1891,7 +2074,11 @@ def _verify_local_span(
     if prev is not None and prev.speaker is Speaker.CLINICIAN:
         if _outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text):
             # Allow only if patient explicitly pivots back to current self without repeating third-party/past hazard
-            if not re.search(r"\bfor this (?:new )?", turn.text, re.IGNORECASE):
+            # A recognized past severity question can also receive an explicit
+            # current measurement. The selected rating is checked below.
+            past_rating = (field is FieldName.SEVERITY and state is FieldState.SUPPORTED
+                           and _requests_current_rating(prev.text) is False)
+            if not past_rating and not re.search(r"\bfor this (?:new )?", turn.text, re.IGNORECASE):
                 return False, "non_current_or_third_party_question_scope"
 
     clause = _enclosing_clause(turn, span)
@@ -1965,7 +2152,7 @@ def _verify_local_span(
                 if not (name and start <= name[0] and name[1] <= end):
                     # Additional coordinated allergens have their own complete
                     # names. A disjoint reaction or dose has no such source.
-                    if (start, end) not in _coexisting_substance_clause(field, event.text):
+                    if (start, end) not in _coexisting_substance_clause(field, event.text, owned):
                         return False, "incomplete_substance_name"
         if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
             return False, "severity_not_linked_to_current_episode"
@@ -2342,7 +2529,7 @@ def _coexisting_substances(source: Source, field: FieldName,
     if local is None:
         local = _local_supported_spans(source, field)
     observed = []
-    for turn in source.turns:
+    for idx, turn in enumerate(source.turns):
         if turn.speaker is not Speaker.PATIENT:
             continue
         for clause in _reply_clauses(turn):
@@ -2353,7 +2540,8 @@ def _coexisting_substances(source: Source, field: FieldName,
                     if names:
                         observed.extend(item for item in names if item in local)
                         continue
-                    objects = _coexisting_substance_clause(field, event.text)
+                    owned = _substance_object(source, idx, event, field) if field is FieldName.ALLERGY else None
+                    objects = _coexisting_substance_clause(field, event.text, owned)
                     if objects:
                         for start, end in objects:
                             item = CandidateSpan(event.start + start, event.start + end, event.text[start:end])
