@@ -374,19 +374,26 @@ class FrontierArchConfig:
             )
         return total
 
+    def _layer_pass_counts(self, loops: int) -> tuple[int, ...]:
+        start, end = self.resolved_loop_span
+        return tuple(loops if self.uses_jcle and start <= idx < end else 1 for idx in range(self.n_layers))
+
     def kv_cache_bytes_per_token(self, bytes_per_elem: int = 2) -> int:
-        softmax_layers = sum(1 for i in range(self.n_layers) if not self.is_delta_layer(i))
-        return 2 * softmax_layers * self.n_kv_heads * self.d_head * bytes_per_elem
+        """Estimate K/V storage for a token at the configured fixed decoding depth."""
+        passes = self._layer_pass_counts(self.active_loops)
+        softmax_passes = sum(n for idx, n in enumerate(passes) if not self.is_delta_layer(idx))
+        return 2 * softmax_passes * self.n_kv_heads * self.d_head * bytes_per_elem
 
     def recurrent_state_bytes_per_sequence(self, bytes_per_elem: int = 2) -> int:
-        delta_layers = sum(1 for i in range(self.n_layers) if self.is_delta_layer(i))
-        return delta_layers * self.n_heads * self.d_head * self.d_head * bytes_per_elem
+        """Estimate storage for the recurrent delta matrices at the supplied precision."""
+        passes = self._layer_pass_counts(self.active_loops)
+        delta_passes = sum(n for idx, n in enumerate(passes) if self.is_delta_layer(idx))
+        return delta_passes * self.n_heads * self.d_head * self.d_head * bytes_per_elem
 
     def active_flops_per_token(self, seq_len: int = 2048, *, loops: int | None = None) -> int:
         """Estimate active multiply-add FLOPs (2 * MACs) for a single decoding token."""
         d = self.d_model
         active_r = self.active_loops if loops is None else loops
-        start, end = self.resolved_loop_span
 
         def _layer_flops(idx: int) -> int:
             ffn_mac = 3 * d * self.d_ff
@@ -408,10 +415,7 @@ class FrontierArchConfig:
                 pkm_mac = d * d_key + 2 * self.pkm_side * (d_key // 2) + self.pkm_top_k * self.pkm_d_val + self.pkm_d_val * d
             return 2 * (attn_mac + ffn_mac + pkm_mac)
 
-        total = 0
-        for idx in range(self.n_layers):
-            mult = active_r if (self.uses_jcle and start <= idx < end) else 1
-            total += mult * _layer_flops(idx)
+        total = sum(passes * _layer_flops(idx) for idx, passes in enumerate(self._layer_pass_counts(active_r)))
         total += 2 * d * self.vocab_size  # lm_head
         if self.uses_jcle:
             total += active_r * 2 * d * d
@@ -577,7 +581,7 @@ def build_micro_tournament_configs(vocab_size: int = 8_192, max_seq_len: int = 2
     return tuple(out)
 
 
-# Preferred ~2B Frontier Architecture (~2.04B params, 65,536 sparse PKM slots/layer, -75% KV cache)
+# Preferred ~2B Frontier Architecture (~2.04B params, 65,536 sparse PKM slots/layer)
 FRONTIER_2B_CONFIG = FrontierArchConfig(
     name="nanolm-frontier-2b",
     family=ArchitectureFamily.C4_JCLE_FRONTIER,

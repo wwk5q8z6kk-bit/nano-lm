@@ -103,8 +103,23 @@ def test_iso_param_tournament_configs_and_kv_reduction() -> None:
     # All 5 architectures stay within 1% parameter spread
     assert (max(counts) - min(counts)) / min(counts) < 0.015
     kv_c0 = cfgs[0].kv_cache_bytes_per_token()
-    for c in cfgs[1:]:
+    for c in cfgs[1:4]:
         assert c.kv_cache_bytes_per_token() == kv_c0 // 4
+
+
+@pytest.mark.parametrize("loops,softmax_passes,delta_passes", [(1, 3, 9), (2, 5, 15), (4, 9, 27)])
+def test_cache_estimates_count_recurrent_core_passes(loops, softmax_passes, delta_passes) -> None:
+    micro = build_micro_tournament_configs()
+    c4 = replace(micro[4], active_loops=loops)
+    report = c4.parameter_breakdown()
+    # The 12-layer micro core spans indices [2, 10), including softmax layers 3 and 7.
+    assert report["kv_cache_bytes_per_token_bf16"] == softmax_passes * 512
+    assert report["recurrent_state_bytes_bf16"] == delta_passes * 65_536
+    assert c4.kv_cache_bytes_per_token(4) == 2 * report["kv_cache_bytes_per_token_bf16"]
+    assert c4.recurrent_state_bytes_per_sequence(4) == 2 * report["recurrent_state_bytes_bf16"]
+    for cfg in micro[:4]:
+        assert replace(cfg, active_loops=loops).kv_cache_bytes_per_token() == cfg.kv_cache_bytes_per_token()
+        assert replace(cfg, active_loops=loops).recurrent_state_bytes_per_sequence() == cfg.recurrent_state_bytes_per_sequence()
 
 
 def test_chunkwise_delta_and_ema_key_energy_match_reference() -> None:
