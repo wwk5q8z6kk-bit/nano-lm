@@ -2,7 +2,12 @@
 # for the two chat-role tokens (LLM.md §Resize the Model's Token Embeddings: new rows
 # initialized from an existing token's embedding, here <|endoftext|>=0).
 # Loss masking: cross-entropy ONLY on assistant completion tokens (Recipe ③ §Stage 1 "critical").
-import math, time, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+import time, numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+
+if __package__:
+    from .sft_schedule import FLOOR, PEAK_LR, lr_at
+else:
+    from sft_schedule import FLOOR, PEAK_LR, lr_at
 
 torch.manual_seed(0)
 dev = "mps" if torch.backends.mps.is_available() else "cpu"
@@ -10,7 +15,7 @@ BASE = "../pretrain/ckpt.pt"
 V_OLD, V = 4096, 4098
 d, L, H, KV, hd, ff, S = 192, 6, 6, 2, 32, 512, 512
 # Recipe ③ Stage 1 config, nano-scaled (STALL #3: recipe LR assumes >=7B; scaled from nano 3e-3 pretrain peak)
-EPOCHS, PEAK_LR, WARM_FRAC, FLOOR, WD, CLIP = 3, 3e-4, 0.03, 0.1, 0.1, 1.0   # 3 = recipe ceiling (1-3)
+EPOCHS, WARM_FRAC, WD, CLIP = 3, 0.03, 0.1, 1.0   # 3 = recipe ceiling (1-3)
 BATCH = 32
 
 def rope(q, k):
@@ -47,48 +52,45 @@ class GPT(nn.Module):
         for b in s.blocks: h = b(h)
         return F.linear(s.nf(h), s.emb.weight)          # tied head
 
-# ---- load base, resize embedding 4096 -> 4098 (init new rows from <|endoftext|>=0) ----
-base = torch.load(BASE, map_location="cpu", weights_only=True)
-m = GPT(V)
-old_emb = base["emb.weight"]                            # (4096, 192)
-new_emb = torch.empty(V, d); new_emb[:V_OLD] = old_emb
-new_emb[V_OLD:] = old_emb[0].unsqueeze(0).repeat(V - V_OLD, 1)   # LLM.md: init-from-existing-token
-base["emb.weight"] = new_emb
-m.load_state_dict(base); m.to(dev)
-print(f"loaded base, resized emb {tuple(old_emb.shape)} -> {tuple(new_emb.shape)} "
-      f"(new rows <- <|endoftext|>); params={sum(p.numel() for p in m.parameters())/1e6:.2f}M", flush=True)
+if __name__ == "__main__":
+    # ---- load base, resize embedding 4096 -> 4098 (init new rows from <|endoftext|>=0) ----
+    base = torch.load(BASE, map_location="cpu", weights_only=True)
+    m = GPT(V)
+    old_emb = base["emb.weight"]                            # (4096, 192)
+    new_emb = torch.empty(V, d); new_emb[:V_OLD] = old_emb
+    new_emb[V_OLD:] = old_emb[0].unsqueeze(0).repeat(V - V_OLD, 1)   # LLM.md: init-from-existing-token
+    base["emb.weight"] = new_emb
+    m.load_state_dict(base); m.to(dev)
+    print(f"loaded base, resized emb {tuple(old_emb.shape)} -> {tuple(new_emb.shape)} "
+          f"(new rows <- <|endoftext|>); params={sum(p.numel() for p in m.parameters())/1e6:.2f}M", flush=True)
 
-X = torch.tensor(np.load("sft_x.npy").astype(np.int64))
-Mk = torch.tensor(np.load("sft_mask.npy").astype(np.int64))
-N = X.shape[0]; STEPS = (N // BATCH) * EPOCHS; WARM = int(WARM_FRAC * STEPS)
-print(f"{N} examples, {STEPS} steps, {EPOCHS} epochs, batch {BATCH}", flush=True)
+    X = torch.tensor(np.load("sft_x.npy").astype(np.int64))
+    Mk = torch.tensor(np.load("sft_mask.npy").astype(np.int64))
+    N = X.shape[0]; STEPS = (N // BATCH) * EPOCHS; WARM = int(WARM_FRAC * STEPS)
+    print(f"{N} examples, {STEPS} steps, {EPOCHS} epochs, batch {BATCH}", flush=True)
 
-decay = [p for p in m.parameters() if p.dim() >= 2]; nodecay = [p for p in m.parameters() if p.dim() < 2]
-opt = torch.optim.AdamW([{"params": decay, "weight_decay": WD}, {"params": nodecay, "weight_decay": 0.0}],
-                        lr=PEAK_LR, betas=(0.9, 0.95), eps=1e-8)
-def lr_at(t):
-    if t < WARM: return PEAK_LR * t / max(1, WARM)
-    p = (t - WARM) / max(1, STEPS - WARM)
-    return PEAK_LR * (FLOOR + (1 - FLOOR) * 0.5 * (1 + math.cos(math.pi * p)))
+    decay = [p for p in m.parameters() if p.dim() >= 2]; nodecay = [p for p in m.parameters() if p.dim() < 2]
+    opt = torch.optim.AdamW([{"params": decay, "weight_decay": WD}, {"params": nodecay, "weight_decay": 0.0}],
+                            lr=PEAK_LR, betas=(0.9, 0.95), eps=1e-8)
 
-perm = torch.randperm(N)
-def get(step):
-    i0 = (step * BATCH) % (N - BATCH)
-    idx = perm[i0:i0 + BATCH]
-    return X[idx].to(dev), Mk[idx].to(dev)
+    perm = torch.randperm(N)
+    def get(step):
+        i0 = (step * BATCH) % (N - BATCH)
+        idx = perm[i0:i0 + BATCH]
+        return X[idx].to(dev), Mk[idx].to(dev)
 
-t0 = time.time()
-for step in range(1, STEPS + 1):
-    for g in opt.param_groups: g["lr"] = lr_at(step)
-    x, msk = get(step)
-    logits = m(x)[:, :-1]; tgt = x[:, 1:]; mtgt = msk[:, 1:]        # next-token; align mask to targets
-    ce = F.cross_entropy(logits.reshape(-1, V), tgt.reshape(-1), reduction="none").reshape(tgt.shape)
-    loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)             # masked mean over assistant tokens
-    opt.zero_grad(set_to_none=True); loss.backward()
-    gn = torch.nn.utils.clip_grad_norm_(m.parameters(), CLIP)
-    opt.step()
-    if step % 100 == 0 or step == 1:
-        print(f"step {step:5d}/{STEPS}  sft_loss {loss.item():.3f}  gnorm {gn.item():.2f}  lr {lr_at(step):.1e}  "
-              f"{step*BATCH*S/(time.time()-t0)/1e3:.0f}k tok/s", flush=True)
-torch.save(m.state_dict(), "sft.pt")
-print(f"SFT done in {(time.time()-t0)/60:.1f} min -> sft.pt", flush=True)
+    t0 = time.time()
+    for step in range(1, STEPS + 1):
+        for g in opt.param_groups: g["lr"] = lr_at(step, STEPS, WARM)
+        x, msk = get(step)
+        logits = m(x)[:, :-1]; tgt = x[:, 1:]; mtgt = msk[:, 1:]        # next-token; align mask to targets
+        ce = F.cross_entropy(logits.reshape(-1, V), tgt.reshape(-1), reduction="none").reshape(tgt.shape)
+        loss = (ce * mtgt).sum() / mtgt.sum().clamp(min=1)             # masked mean over assistant tokens
+        opt.zero_grad(set_to_none=True); loss.backward()
+        gn = torch.nn.utils.clip_grad_norm_(m.parameters(), CLIP)
+        opt.step()
+        if step % 100 == 0 or step == 1:
+            print(f"step {step:5d}/{STEPS}  sft_loss {loss.item():.3f}  gnorm {gn.item():.2f}  lr {lr_at(step, STEPS, WARM):.1e}  "
+                  f"{step*BATCH*S/(time.time()-t0)/1e3:.0f}k tok/s", flush=True)
+    torch.save(m.state_dict(), "sft.pt")
+    print(f"SFT done in {(time.time()-t0)/60:.1f} min -> sft.pt", flush=True)
