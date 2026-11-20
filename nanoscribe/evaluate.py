@@ -25,6 +25,7 @@ from nanoscribe.encounter import (
     EncounterRecord,
     EvidenceSpan,
     Experiencer,
+    Source,
     Speaker,
     TemporalState,
     normalize_value,
@@ -172,13 +173,6 @@ def atom_result(report: EvalReport, atom_id: str) -> AtomEval:
     raise KeyError(atom_id)
 
 
-def _source_by_id(record: EncounterRecord, source_id: str):
-    for source in record.sources:
-        if source.source_id == source_id:
-            return source
-    return None
-
-
 def _span_by_id(record: EncounterRecord, evidence_id: str) -> EvidenceSpan | None:
     for span in record.evidence:
         if span.evidence_id == evidence_id:
@@ -225,8 +219,8 @@ def _resolve_pred_spans(gold: EncounterRecord, pred: PredictedAtom) -> tuple[Evi
     return tuple(resolved)
 
 
-def _transport_status(gold: EncounterRecord, span: EvidenceSpan) -> str:
-    source = _source_by_id(gold, span.source_id)
+def _transport_status(sources: Mapping[str, Source], span: EvidenceSpan) -> str:
+    source = sources.get(span.source_id)
     if source is None:
         return "unknown_source"
     if span.start < 0 or span.end <= span.start or span.end > len(source.text):
@@ -339,6 +333,7 @@ def _extra_prediction_result(
     gold: EncounterRecord,
     predicted: PredictedAtom,
     verifier_relation: SupportRelation | None,
+    sources: Mapping[str, Source],
 ) -> AtomEval:
     if predicted.malformed:
         return AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
@@ -347,7 +342,7 @@ def _extra_prediction_result(
     spans = _resolve_pred_spans(gold, predicted)
     if spans is None:
         return AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
-    statuses = [_transport_status(gold, span) for span in spans]
+    statuses = [_transport_status(sources, span) for span in spans]
     if any(status == "unknown_source" for status in statuses):
         return AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
     if any(status == "invalid_span" for status in statuses):
@@ -380,6 +375,7 @@ def evaluate(
     verifier_results: Mapping[str, SupportRelation] | Sequence[VerifierResult] | None = None,
 ) -> EvalReport:
     source = source_for_quotes or (gold.sources[0] if gold.sources else None)
+    sources = {item.source_id: item for item in gold.sources}
     presented = list(gold.atoms)
     gold_ids = {atom.atom_id for atom in presented}
     unresolved_ids = {item.unresolved_id for item in gold.unresolved} | {
@@ -446,7 +442,7 @@ def evaluate(
                 results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
                 continue
 
-            statuses = [_transport_status(gold, span) for span in spans]
+            statuses = [_transport_status(sources, span) for span in spans]
             transport_critical = False
             if any(status == "unknown_source" for status in statuses):
                 critical_error += 1
@@ -540,7 +536,7 @@ def evaluate(
             continue
         try:
             extra = _extra_prediction_result(
-                gold, predicted, verifier.get(predicted.atom_id)
+                gold, predicted, verifier.get(predicted.atom_id), sources
             )
         except (EncounterError, TypeError, ValueError, AttributeError):
             extra = AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
