@@ -125,6 +125,9 @@ def test_unidentified_logistics_cannot_supply_the_question_for_a_patient_answer(
 
 @pytest.mark.parametrize("field,answer,quote", [
     (SEV, "My foot pain is 7/10.", "7/10"),
+    (SEV, "Currently my neck pain is 2/10.", "2/10"),
+    (SEV, "My headache feels severe.", "severe"),
+    (DUR, "My headache has been constant for three days.", "three days"),
     (DUR, "I have had a headache for three days.", "three days"),
     (MED, "I took naproxen.", "naproxen"),
 ])
@@ -157,13 +160,15 @@ def test_plain_other_statement_preserves_previous_scalar_context(field, answer, 
 @pytest.mark.parametrize("answer,field,eligible", [
     ("I am not sure.", CC, False),
     ("I am not sure.", ALG, False),
+    ("I am not sure where the umbrella is.", CC, False),
     ("I am not sure where the garage is.", MED, False),
     ("I am not sure whether I took the bus with aspirin in my bag.", MED, False),
     ("I am not sure whether I am allergic to nickel.", ALG, True),
     ("I am not sure whether I took naproxen.", MED, True),
 ])
-def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible):
-    report = f"Unknown: Where is the garage?\nPatient: {answer}"
+@pytest.mark.parametrize("aside", ["Unknown: Where is the garage?", "Unknown: The umbrella is upstairs."])
+def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible, aside):
+    report = f"{aside}\nPatient: {answer}"
     request = NanoInput("logistics-uncertainty", report)
     source = transcript_source(request)
     candidate = f":U[{answer}]"
@@ -374,3 +379,13 @@ def test_other_aside_mentioning_a_relative_keeps_an_independent_patient_report()
 def test_neutral_aside_mentioning_time_preserves_patient_correction_adjacency():
     check("Patient: No known allergies.\nNurse: We paid for parking last month.\nPatient: Actually I was wrong.",
           ALG, "No known allergies.", state=DENIED, licensed=False)
+
+
+@pytest.mark.parametrize("disclaimer, licensed", [
+    ("That is my usual routine. I pay for parking every morning.", True),
+    ("Naproxen is just my usual routine.", False),
+    ("That medication is just my usual routine.", False),
+])
+def test_routine_disclaimer_needs_a_medication_referent_across_an_aside(disclaimer, licensed):
+    check(f"Patient: I took naproxen.\nOther: I paid for the parking.\nPatient: {disclaimer}",
+          MED, "naproxen", licensed=licensed)
