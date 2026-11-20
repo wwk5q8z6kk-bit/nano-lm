@@ -99,3 +99,28 @@ def test_constrained_nested_citations_match_free_grounded_fields_and_exclude_exa
     assert " REPORTED[four days]" in menu(FieldName.DURATION, reserved)
     claims = draft(source, {"CC": "S[Severe headache]", "SEV": "S[Severe]", "DUR": "S[four days]"})
     assert all(claims[field]["state"] == "supported" for field in ("chief_complaint", "severity", "duration"))
+
+
+@pytest.mark.parametrize("question,reply,value,supported", [
+    ("How long have you lived at the new address?", "For eight months.", "eight months", False),
+    ("When was your last appointment?", "five weeks ago", "five weeks ago", False),
+    ("When did you last have your prescription renewed?", "last Friday", "last Friday", False),
+    ("What date was the scan for your headache?", "Last Tuesday.", "Last Tuesday", False),
+    ("When did you move to this address after the headache began?", "Two months ago.", "Two months ago", False),
+    ("When was your last appointment?", "It was three weeks ago.", "three weeks ago", False),
+    ("When did you renew the prescription for your cough?", "Yesterday.", "Yesterday", False),
+    ("How long have you lived at the new address?", "My headache began two days ago.", "two days ago", True),
+    ("When was your last appointment?", "My cough has lasted three weeks.", "three weeks", True),
+    ("When did the pain start after your appointment?", "Two days ago.", "Two days ago", True),
+    ("How long have you had a headache at your new address?", "Three weeks.", "Three weeks", True),
+    ("What date did you notice the rash after your scan?", "Last Tuesday.", "Last Tuesday", True),
+])
+def test_duration_uses_the_event_the_question_dates(question, reply, value, supported):
+    transcript = f"Doctor: {question}\nPatient: {reply}"
+    source = transcript_source(NanoInput("duration-owner", transcript))
+    choices = grounded_candidate_choices(transcript, FieldName.DURATION, set())
+    menu = build_grounded_english_menu(source, FieldName.DURATION, set())
+    assert (f":S[{value}]" in choices) is supported
+    assert (f" REPORTED[{value}]" in menu) is supported
+    claim = draft(transcript, {"DUR": f"S[{value}]"})["duration"]
+    assert (claim["state"] == "supported") is supported

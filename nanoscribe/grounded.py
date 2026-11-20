@@ -1862,16 +1862,33 @@ def _medication_name_rejection(event: Turn, owned: tuple[int, int], span: Candid
     return "incomplete_substance_name"
 
 
-def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
-    """Identify the event whose timing is requested, including an immediately named drug."""
+def _timed_question_event(question: str) -> str:
+    """Extract the main event being dated, excluding a subordinate time reference."""
     request = re.search(
         r"\b(?:when|how long|how many (?:minutes|hours|days|weeks|months)|(?:what|which) (?:day|date|time))\b"
         r"(?P<event>[^?.!;]*)", question, re.I
     )
     if not request:
-        return False
-    # A treatment mentioned in a subordinate clause need not be the event being dated.
-    event = re.split(r"\b(?:after|before|while|because|although|despite)\b", request["event"], maxsplit=1, flags=re.I)[0]
+        return ""
+    return re.split(r"\b(?:after|before|while|because|although|despite)\b", request["event"], maxsplit=1, flags=re.I)[0]
+
+
+# Match the dated event or action itself. A mention of the clinic later in a
+# question about symptom onset does not change what the patient is dating.
+_ADMINISTRATIVE_EVENT_RE = re.compile(
+    r"\s*(?:(?:ago\s+)?(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
+    r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
+    r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b|"
+    r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
+    r"(?:(?:liv(?:e|ed|ing)|mov(?:e|ed|ing))\s+(?:at|to|in|into|out of)\b|"
+    r"(?:(?:have|had|get|got)\s+)?(?:your|the)\s+(?:prescription|medication)\s+(?:renewed|refilled)\b|"
+    r"(?:renew|refill|schedule|book|attend)\s+(?:your|the|an?)\s+"
+    r"(?:prescription|medication|appointment|visit|scan|test)\b))", re.I,
+)
+
+
+def _asks_treatment_time(source: Source, turn_idx: int, event: str) -> bool:
+    """Identify timing of treatment use, including an immediately named drug."""
     if re.match(r"\s*(?:was|is|were|are)\s+(?:your|the)\s+(?:(?:first|last|next|most recent)\s+)?dose\b", event, re.I):
         return True
     action = re.search(
@@ -2257,7 +2274,8 @@ def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, durati
     medication_action = re.search(
         r"\bi(?:'ve| have)?\s+(?:started|stopped|resumed|discontinued|finished)\s+(?:(?:taking|using)\s+)?(?:it|them)\b", context, re.I
     )
-    treatment_time = inherits_question and _asks_treatment_time(source, turn_idx, question)
+    timed_event = _timed_question_event(question) if inherits_question else ""
+    treatment_time = bool(timed_event) and _asks_treatment_time(source, turn_idx, timed_event)
     if treatment_time and re.fullmatch(
         r"\s*(?:(?:is|was) when )?(?:i|it)\s+(?:first\s+|last\s+)?(?:started|began|stopped|resumed|"
         r"finished|ended|was|did)(?:\s+(?:it|them))?(?:\s+(?:on|at|by|for|around|about))?\s*", context, re.I
@@ -2275,12 +2293,12 @@ def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, durati
         return treatment
     # A bare interval is an elliptical answer. A full report must tie its
     # own clock to the episode, even if some other turn discussed symptoms.
-    if elliptical_time or re.search(rf"\b(?:{_SYMPTOM}|cramps?|hurt(?:s|ing)?|sore|painful|dizzy|nauseous)\b", context, re.I):
+    if re.search(rf"\b(?:{_SYMPTOM}|cramps?|hurt(?:s|ing)?|sore|painful|dizzy|nauseous)\b", context, re.I):
         return None
-    if re.fullmatch(r"\s*(?:(?:well|actually|sorry|yes)[, ]+)*(?:(?:i (?:meant|noticed (?:it|this)|first felt it)|"
+    if elliptical_time or re.fullmatch(r"\s*(?:(?:well|actually|sorry|yes)[, ]+)*(?:(?:i (?:meant|noticed (?:it|this)|first felt it)|"
                     r"(?:it|this|that)(?:['’]s| (?:has|had))? (?:first )?(?:started|began|came on|appeared|been)|"
                     r"(?:it|that) was|started|began|since|for|about|around)\s*)*", context, re.I):
-        return None
+        return "duration_scoped_to_other_activity" if _ADMINISTRATIVE_EVENT_RE.match(timed_event) else None
     return "duration_not_linked_to_current_episode"
 
 
