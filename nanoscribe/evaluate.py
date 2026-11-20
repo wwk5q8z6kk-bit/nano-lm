@@ -27,7 +27,7 @@ from nanoscribe.encounter import (
     Experiencer,
     Speaker,
     TemporalState,
-    normalize_value,
+    match_evidence_value,
 )
 from nanoscribe.select import match_count
 
@@ -248,10 +248,10 @@ def _transport_status(gold: EncounterRecord, span: EvidenceSpan) -> str:
 
 
 def _mechanical_support(raw_value: str, spans: Sequence[EvidenceSpan]) -> SupportRelation | None:
-    if any(raw_value in span.text for span in spans):
+    matches = {match_evidence_value(raw_value, span.text) for span in spans}
+    if "direct_exact" in matches:
         return SupportRelation.DIRECT_EXACT
-    grounded = normalize_value(raw_value)
-    if grounded and any(grounded in normalize_value(span.text) for span in spans):
+    if "normalized" in matches:
         return SupportRelation.NORMALIZED
     return None
 
