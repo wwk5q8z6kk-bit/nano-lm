@@ -345,6 +345,10 @@ def test_symptom_duration_does_not_inherit_time_requested_for_a_treatment():
     intro = "Doctor: What medication are you taking now?\nPatient: levothyroxine\n"
     for question, reply, timing in (
         ("When did you start that medication?", "on Monday", "Monday"),
+        ("When did you start that medication?", "I started on Saturday.", "Saturday"),
+        ("When did you start the treatment?", "It began on Tuesday.", "Tuesday"),
+        ("When did you start that medication?", "On Friday it started.", "Friday"),
+        ("When did you start that medication?", "since 10/02/2026", "since 10/02/2026"),
         ("When was your last dose?", "Yesterday morning.", "Yesterday"),
         ("How long have you been taking it?", "about forty minutes", "about forty minutes"),
         ("What date did you stop taking the tablets?", "since 10/02/2026", "since 10/02/2026"),
@@ -361,6 +365,7 @@ def test_symptom_duration_does_not_inherit_time_requested_for_a_treatment():
         ("When did your headache start after you took the tablets?", "on Monday", "Monday"),
         ("When did you start feeling dizzy on that medication?", "on Monday", "Monday"),
         ("When did you start that medication?", "On Monday my jaw tightness returned.", "Monday"),
+        ("When did you start that medication?", "It started hurting on Tuesday.", "Tuesday"),
         ("How long has the pressure lasted?", "about forty minutes", "about forty minutes"),
         ("When did your symptoms start?", "since 10/02/2026", "since 10/02/2026"),
         ("When was your last dose?", "On Monday. My headache has persisted for three days.", "three days"),

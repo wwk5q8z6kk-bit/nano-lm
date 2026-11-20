@@ -890,6 +890,12 @@ def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, d
         r"\bi(?:'ve| have)?\s+(?:started|stopped|resumed|discontinued|finished)\s+(?:(?:taking|using)\s+)?(?:it|them)\b", context, re.I
     )
     treatment_time = inherits_question and _asks_treatment_time(source, turn_idx, question)
+    if treatment_time and re.fullmatch(
+        r"\s*(?:(?:is|was) when )?(?:i|it)\s+(?:first\s+|last\s+)?(?:started|began|stopped|resumed|"
+        r"finished|ended|was|did)(?:\s+(?:it|them))?(?:\s+(?:on|at|by|for|around|about))?\s*", context, re.I
+    ):
+        # An answer echoing the requested action inherits its subject just as a bare date does.
+        return True
     if (med_question or treatment_time) and medication_action:
         events.append((medication_action.start(), True))
     events.extend((match.start(), False) for match in _EXPLICIT_SYMPTOM_DURATION_RE.finditer(context))
