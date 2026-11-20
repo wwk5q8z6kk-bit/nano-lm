@@ -6,8 +6,6 @@ import hashlib
 import io
 import json
 from pathlib import Path
-import subprocess
-import sys
 import tarfile
 
 import pytest
@@ -35,15 +33,6 @@ def canonical(stage: str = "training") -> str:
             "python -m pip install --disable-pip-version-check --no-cache-dir -r requirements-h7-kaggle.txt\n" + commands)
 
 
-def reserve_args(tmp_path: Path, stage: str = "training") -> argparse.Namespace:
-    path = tmp_path / f"{stage}-metadata.json"
-    path.write_text(json.dumps(metadata(stage)))
-    return argparse.Namespace(stage=stage, registry=tmp_path / "authority", kernel_metadata=path,
-        stage_dataset=f"owner/{stage}", treatment_dataset="owner/treatments" if stage == "evaluation" else None,
-        treatment_archive_sha256="a" * 64 if stage == "evaluation" else None,
-        verified_private_dataset=metadata(stage)["dataset_sources"], training_terminal=None)
-
-
 def synthetic_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     root = tmp_path / "input/nano-h7-training"
     root.mkdir(parents=True)
@@ -62,32 +51,14 @@ def synthetic_bundle(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     return root
 
 
-def test_reservation_is_create_only_and_bound_to_script(tmp_path: Path) -> None:
-    args = reserve_args(tmp_path)
-    path = runner.reserve(args)
-    original = path.read_bytes()
-    assert runner.validate_reservation(json.loads(original)) == "training"
-    with pytest.raises(FileExistsError):
-        runner.reserve(args)
-    assert path.read_bytes() == original
-    changed = json.loads(original)
-    changed["runner_sha256"] = "0" * 64
-    with pytest.raises(runner.H7OperationError, match="Runner differs"):
-        runner.validate_reservation(changed)
-
-
-def test_evaluation_receives_only_remaining_runtime(tmp_path: Path) -> None:
-    training = json.loads(runner.reserve(reserve_args(tmp_path)).read_bytes())
-    terminal = tmp_path / "terminal.json"
-    terminal.write_text(json.dumps({"attempt_id": training["attempt_id"], "status": "completed", "exit_code": 0, "error": None, "elapsed_seconds": 5000.2}))
-    args = reserve_args(tmp_path, "evaluation")
-    args.training_terminal = terminal
-    evaluation = json.loads(runner.reserve(args).read_bytes())
-    assert evaluation["max_runtime_seconds"] == 9399
-    assert runner.validate_reservation(evaluation) == "evaluation"
-    evaluation["max_runtime_seconds"] = 14400
-    with pytest.raises(runner.H7OperationError, match="remaining cumulative"):
-        runner.validate_reservation(evaluation)
+@pytest.mark.parametrize("operation", [runner.reserve, runner.run])
+@pytest.mark.parametrize("stage", ["training", "evaluation"])
+def test_consumed_h7_blocks_all_stages_before_reading_or_writing(operation, stage, tmp_path):
+    args = argparse.Namespace(stage=stage, registry=tmp_path / "registry",
+                              marker_root=tmp_path / "fresh-kernel")
+    with pytest.raises(runner.H7OperationError, match="H7 is consumed"):
+        operation(args)
+    assert list(tmp_path.iterdir()) == []
 
 
 @pytest.mark.parametrize("change", [{"is_private": False}, {"enable_gpu": True}, {"dataset_sources": ["owner/training", "owner/screen"]}, {"kernel_sources": ["owner/other"]}])
@@ -147,38 +118,6 @@ def test_treatment_archive_rejects_traversal(tmp_path: Path) -> None:
     assert not (tmp_path / "escape").exists()
 
 
-def test_failure_preserves_markers_logs_and_prevents_reentry(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    source = synthetic_bundle(tmp_path, monkeypatch)
-    frozen_before = {p.name: p.read_bytes() for p in source.iterdir()}
-    reservation = runner.reserve(reserve_args(tmp_path))
-    def fail(command, cwd, env, log, remaining):
-        assert 0 < remaining <= runner.MAX_SECONDS
-        log.write_text("synthetic execution failure\n")
-        (cwd / "results").mkdir()
-        (cwd / "results/partial.log").write_text("partial evidence\n")
-        return 9
-    monkeypatch.setattr(runner, "run_process", fail)
-    args = argparse.Namespace(reservation=reservation, source_dir=source, input_root=tmp_path / "input", output_dir=tmp_path / "output", marker_root=tmp_path / "markers", treatment_archive=None)
-    assert runner.run(args) == 9
-    evidence = args.output_dir / "evidence"
-    terminal = json.loads((evidence / "terminal.json").read_bytes())
-    assert terminal["status"] == "failed_or_interrupted"
-    assert terminal["retry_authorized"] is False
-    assert (evidence / "runner.log").read_text() == "synthetic execution failure\n"
-    assert (args.output_dir / "nano-h7-training-attempt-evidence.tar.gz").is_file()
-    assert {p.name: p.read_bytes() for p in source.iterdir()} == frozen_before
-    args.output_dir = tmp_path / "different-output"
-    with pytest.raises(FileExistsError):
-        runner.run(args)
-
-
-def test_subprocess_timeout_keeps_partial_log(tmp_path: Path) -> None:
-    log = tmp_path / "timeout.log"
-    with pytest.raises(subprocess.TimeoutExpired):
-        runner.run_process([sys.executable, "-c", "import time; print('started', flush=True); time.sleep(60)"], tmp_path, {}, log, 0.2)
-    assert log.read_text() == "started\n"
-
-
 def test_checksum_inventory_rejects_unlisted_treatment_file(tmp_path: Path) -> None:
     results = tmp_path / "results"
     results.mkdir()
@@ -189,3 +128,15 @@ def test_checksum_inventory_rejects_unlisted_treatment_file(tmp_path: Path) -> N
     (results / "extra").write_text("unlisted")
     with pytest.raises(runner.H7OperationError, match="inventory"):
         runner.verify_checksum_file(tmp_path, checksums, complete=True)
+
+
+def test_archived_runtime_probe_rejects_mismatched_pins_under_optimization(tmp_path, monkeypatch):
+    import sys
+    from types import SimpleNamespace
+
+    monkeypatch.setenv("H7_RUNTIME_JSON", str(tmp_path / "runtime.json"))
+    monkeypatch.setitem(sys.modules, "torch", SimpleNamespace(__version__="wrong",
+                        version=SimpleNamespace(cuda=None), cuda=SimpleNamespace(is_available=lambda: False)))
+    monkeypatch.setitem(sys.modules, "tokenizers", SimpleNamespace(__version__="0.22.2"))
+    with pytest.raises(SystemExit, match="runtime mismatch"):
+        exec(compile(runner.RUNTIME_PROBE, "<runtime_probe>", "exec", optimize=2), {})

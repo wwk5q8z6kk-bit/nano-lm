@@ -132,7 +132,7 @@ def evaluate_annotated(
 ) -> EvaluationReport:
     """Validate all gold first; the standard evaluator sends only inputs to solver."""
     cases = annotated_cases(examples, expected_counts=expected_counts)
-    return evaluate_solver(solver, cases, measure_latency=measure_latency)
+    return evaluate_solver(solver, cases, measure_latency=measure_latency, exact_evidence=True)
 
 
 def _first_speaker_span(transcript: str, speaker_prefix: str) -> EvidenceSpan | None:
@@ -168,7 +168,7 @@ def verify_evaluator_negative_controls(
 
     # 1. Gold oracle must score 1.000 exactly with zero failures
     oracle_report = evaluate_solver(
-        _ControlledSolver("control-oracle", lambda req: gold_by_id[req.item_id].fields), cases
+        _ControlledSolver("control-oracle", lambda req: gold_by_id[req.item_id].fields), cases, exact_evidence=True
     )
     oracle_ok = (
         oracle_report.failures["count"] == 0
@@ -183,6 +183,7 @@ def verify_evaluator_negative_controls(
             lambda req: tuple(FieldOutput(f, FieldState.MISSING) for f in FIELD_ORDER),
         ),
         cases,
+        exact_evidence=True,
     )
     has_non_missing = any(
         count > 0
@@ -220,6 +221,7 @@ def verify_evaluator_negative_controls(
             ),
         ),
         cases,
+        exact_evidence=True,
     )
     rotated = {
         case.case_id: cases[(i + 1) % len(cases)].gold.fields
@@ -233,6 +235,7 @@ def verify_evaluator_negative_controls(
         cross_report = evaluate_solver(
             _ControlledSolver("control-cross-case-shuffle", lambda req: rotated[req.item_id]),
             cases,
+            exact_evidence=True,
         )
         cross_case_ok = (
             cross_report.failures["count"] > 0
@@ -254,7 +257,7 @@ def verify_evaluator_negative_controls(
                 FieldOutput(FieldName.CHIEF_COMPLAINT, FieldState.SUPPORTED, value=sp.text, evidence=(sp,)),
                 *(FieldOutput(f, FieldState.MISSING) for f in FIELD_ORDER[1:]),
             )
-        wp_report = evaluate_solver(_ControlledSolver("control-wrong-patient", _doc_out), doctor_cases)
+        wp_report = evaluate_solver(_ControlledSolver("control-wrong-patient", _doc_out), doctor_cases, exact_evidence=True)
         wrong_patient_ok = (
             wp_report.failures["count"] == len(doctor_cases)
             and wp_report.quality["grounded_exact_field_accuracy"] == 0.0
@@ -282,7 +285,7 @@ def verify_evaluator_negative_controls(
                     new_fields.append(f)
             return tuple(new_fields)
         corrupt_report = evaluate_solver(
-            _ControlledSolver("control-corrupted-offset", _corrupt_out), evidence_cases
+            _ControlledSolver("control-corrupted-offset", _corrupt_out), evidence_cases, exact_evidence=True
         )
         corrupted_ok = (
             corrupt_report.failures["count"] == len(evidence_cases)
@@ -309,6 +312,7 @@ def verify_evaluator_negative_controls(
     abstain_report = evaluate_solver(
         _ControlledSolver("control-abstain", lambda req: abstain_fields),
         (abstain_case,),
+        exact_evidence=True,
     )
     abstain_ok = (
         abstain_report.failures["count"] == 0

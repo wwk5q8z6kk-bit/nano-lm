@@ -517,7 +517,11 @@ def assess_fields(request: NanoInput, output: NanoOutput, *, context_policy: str
                     reasons.append("unverified_source_observation")
             else:
                 turns = {_turn_index(source, span.start, span.end) for span in field.evidence}
-                if (len(field.evidence) < 2 or None in turns or len(turns) < 2
+                recognized_pair = any(
+                    set(pair).issubset(field.evidence)
+                    for pair in detect_grounded_conflicts(source, field.field)
+                )
+                if (len(field.evidence) < 2 or None in turns or (len(turns) < 2 and not recognized_pair)
                         or any(source.turns[t].speaker is not Speaker.PATIENT for t in turns if t is not None)
                         or len({normalize_value(span.text) for span in field.evidence}) < 2):
                     reasons.append("conflict_not_verified")

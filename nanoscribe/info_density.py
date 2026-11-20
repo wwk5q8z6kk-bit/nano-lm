@@ -24,12 +24,13 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import hashlib
 import json
 import math
 import mmap
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 import struct
 from typing import Any
 
@@ -415,8 +416,8 @@ def simulate_sliding_window_erasure(
         "window_tokens": window_tokens,
         "evidence_spans_total": len(evidence_turn_indices),
         "evidence_spans_erased": len(lost),
-        "erased_epistemic_bits": round(erased_bits, 6),
-        "fano_min_field_error_rate": round(
+        "estimated_erased_bits": round(erased_bits, 6),
+        "erased_evidence_fraction": round(
             len(lost) / len(evidence_turn_indices) if evidence_turn_indices else 0.0, 6
         ),
     }
@@ -520,6 +521,8 @@ def repack_safetensors_page_aligned(
         raise ValueError("alignment must be a positive multiple of 64 bytes")
     src_path = Path(src).resolve(strict=True)
     dst_path = Path(dst)
+    if dst_path.exists() and src_path.samefile(dst_path):
+        raise ValueError("source and destination must refer to different files")
     with src_path.open("rb") as reader:
         prefix = reader.read(8)
         if len(prefix) != 8:
@@ -530,12 +533,20 @@ def repack_safetensors_page_aligned(
         pad = (alignment - ((8 + len(header_bytes)) % alignment)) % alignment
         aligned_header = header_bytes + (b" " * pad)
         dst_path.parent.mkdir(parents=True, exist_ok=True)
-        with dst_path.open("wb") as writer:
-            writer.write(struct.pack("<Q", len(aligned_header)))
-            writer.write(aligned_header)
-            while chunk := reader.read(4 * 1024 * 1024):
-                writer.write(chunk)
-    return inspect_safetensors_zero_copy(dst_path)
+        with NamedTemporaryFile(dir=dst_path.parent, delete=False) as writer:
+            temporary = Path(writer.name)
+            try:
+                writer.write(struct.pack("<Q", len(aligned_header)))
+                writer.write(aligned_header)
+                while chunk := reader.read(4 * 1024 * 1024):
+                    writer.write(chunk)
+                writer.flush()
+                inspection = inspect_safetensors_zero_copy(temporary)
+                temporary.replace(dst_path)
+            finally:
+                temporary.unlink(missing_ok=True)
+    return replace(inspection, path=dst_path.name)
+
 
 
 def compute_uma_roofline(

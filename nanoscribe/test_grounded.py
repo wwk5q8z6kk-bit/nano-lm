@@ -155,3 +155,23 @@ def test_grounded_candidate_menu_offers_clean_spans_without_determiners_or_third
     med_choices = grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
     assert ":S[Dextromethorphan]" in med_choices
     assert ":S[Cetirizine]" not in med_choices
+
+
+def test_grounded_conflicts_and_denials_respect_clause_scope():
+    scenarios = [
+        ("Patient: I took aspirin. I haven't taken anything.",
+         "CC:M|DUR:M|SEV:M|MED:A[I haven't taken anything.]|ALG:M", "medication", "conflicting"),
+        ("Doctor: How severe is your pain?\nPatient: Mild.\nDoctor: How severe is your mother's pain?\nPatient: Severe.",
+         "CC:M|DUR:M|SEV:S[Mild]|MED:M|ALG:M", "severity", "supported"),
+        ("Patient: I'm allergic to latex.\nPatient: I'm not allergic to penicillin.",
+         "CC:M|DUR:M|SEV:M|MED:M|ALG:S[latex]", "allergy", "supported"),
+        ("Patient: I'm not allergic to penicillin.",
+         "CC:M|DUR:M|SEV:M|MED:M|ALG:A[I'm not allergic to penicillin.]", "allergy", "uncertain"),
+        ("Patient: I haven't taken any aspirin.",
+         "CC:M|DUR:M|SEV:M|MED:A[I haven't taken any aspirin.]|ALG:M", "medication", "uncertain"),
+    ]
+    for transcript, raw, field, expected in scenarios:
+        draft = scribe(transcript, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+        assert draft["verification"]["passed"]
+        claim = next(c for c in draft["note"]["claims"] if c["field"] == field)
+        assert claim["state"] == expected, (transcript, claim)

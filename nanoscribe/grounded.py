@@ -212,7 +212,7 @@ _MED_DENIAL_CUE_RE = re.compile(
     r"\b(?:haven't|have not|didn't|did not|never)\s+"
     r"(?:taken|take|used|use|tried|try|applied|apply|put|had|swallowed)"
     r"(?:\s+or\s+(?:taken|take|used|use|tried|try|applied|apply|put))?"
-    r"\s+(?:anything|any\b|no\b)"
+    r"\s+(?:anything\b|(?:any|no)\s+(?:medications?|medicines?|meds|drugs?|treatments?)\b)"
     r"|\bnothing(?:\s+at\s+all|\s+yet|\s+so\s+far)?(?:\s+(?:for|on)\b[^.!?;]*)?"
     r"|\bno\s+(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|remedies)\b"
     r"|\b(?:deny|denied|denies)\s+(?:taking\s+|using\s+|any\s+)?(?:medications?|medicines?|meds|drugs?|treatments?)\b"
@@ -224,7 +224,7 @@ _MED_DENIAL_CUE_RE = re.compile(
 _ALG_DENIAL_CUE_RE = re.compile(
     r"(?:"
     r"\bno\s+(?:known\s+|medication\s+|medicine\s+|drug\s+|material\s+)*allerg(?:y|ies)\b"
-    r"|\b(?:not|n't)\s+allergic(?:\s+to\s+(?:any|anything)\b[^.!?;]*)?"
+    r"|(?:\bnot|n't)\s+allergic(?:\s+to\s+(?:anything|any\s+(?:medications?|medicines?|drugs?)))?\s*[.!?;]?$"
     r"|\b(?:don't|do not|doesn't|does not|have\s+no|haven't\s+got\s+any)\s+"
     r"(?:have\s+)?(?:any\s+)?(?:known\s+|medication\s+|medicine\s+|drug\s+|material\s+)*allerg(?:y|ies)\b"
     r"|\b(?:deny|denied|denies)\s+(?:any\s+)?(?:known\s+|medication\s+|medicine\s+|drug\s+)*allerg(?:y|ies)\b"
@@ -478,11 +478,20 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
         if not _NEGATION_WORD_RE.search(text):
             return False
         cue_re = _MED_DENIAL_CUE_RE if field is FieldName.MEDICATION else _ALG_DENIAL_CUE_RE
-        if not cue_re.search(text):
+        cue = cue_re.search(text)
+        if cue and re.search(r"\b(?:except|apart from|other than|allerg(?:y|ies) to)\b", text, re.IGNORECASE):
+            return False
+        if not cue:
             # Allow short elliptical denials ONLY when directly answering a matching clinician question
             clin = _preceding_clinician_turn(source, idx)
             q_re = _MED_QUESTION_CUE_RE if field is FieldName.MEDICATION else _ALG_QUESTION_CUE_RE
-            if clin is None or not q_re.search(clin.text) or not _ELLIPTICAL_DENIAL_RE.fullmatch(text):
+            # A short "no" can only settle the whole field when the question
+            # asks about the category, not whether a named substance applies.
+            specific_question = clin and re.search(
+                r"\b(?:allergic to|sensitive to|take|taken|used|tried)\s+(?!(?:any|anything|medications?|medicines?|meds|drugs?|treatments?)\b)\w+",
+                clin.text, re.IGNORECASE,
+            )
+            if clin is None or specific_question or not q_re.search(clin.text) or not _ELLIPTICAL_DENIAL_RE.fullmatch(text):
                 return False
 
     # Span must cover a complete turn or complete clause (not a tiny fragment inside a sentence).
@@ -632,6 +641,11 @@ def verify_grounded_span(
     if state is FieldState.SUPPORTED:
         if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, clause.text[:span.start - clause.start]):
             return False, "duration_scoped_to_medication_or_allergy"
+        if field in (FieldName.MEDICATION, FieldName.ALLERGY) and re.search(
+            r"\b(?:could|would|will|should|might|plan to|planning to)\s+(?:take|use|try|apply)\b",
+            clause.text, re.IGNORECASE,
+        ):
+            return False, "prospective_treatment"
         if not grounded_value_valid(field, span.text, clause.text):
             return False, "value_fails_field_type_guard"
         if _EPISTEMIC_HEDGE_RE.search(clause.text) or _NONUSE_ACTION_RE.search(clause.text):
@@ -1082,25 +1096,19 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
     pairs: list[tuple[CandidateSpan, ...]] = []
 
     if field in (FieldName.MEDICATION, FieldName.ALLERGY):
-        # Positive treatment/allergy + blanket denial in separate turns (require explicit field context on positive turn)
-        if sup_spans and abs_spans:
-            sup_turns = {
-                ti: s
-                for s in sup_spans
-                if (ti := _turn_index(source, s.start, s.end)) is not None
-            }
-            abs_turns = {_turn_index(source, s.start, s.end): s for s in abs_spans}
-            for t_s, s_sp in sup_turns.items():
-                for t_a, a_sp in abs_turns.items():
-                    if t_s is not None and t_a is not None and t_s != t_a:
-                        # Prefer full sentence/turn quotes when full sentences contrast, plus scalar+denial
-                        t_sup_turn = source.turns[t_s]
-                        full_s = CandidateSpan(t_sup_turn.start, t_sup_turn.end, t_sup_turn.text)
-                        ordered_full = (full_s, a_sp) if full_s.start < a_sp.start else (a_sp, full_s)
-                        ordered_val = (s_sp, a_sp) if s_sp.start < a_sp.start else (a_sp, s_sp)
-                        pairs.append(ordered_full)
-                        if ordered_val != ordered_full:
-                            pairs.append(ordered_val)
+        for supported in sup_spans:
+            idx = _turn_index(source, supported.start, supported.end)
+            if idx is None:
+                continue
+            clause = _enclosing_clause(source.turns[idx], supported)
+            positive = CandidateSpan(clause.start, clause.end, source.text[clause.start:clause.end])
+            for denial in abs_spans:
+                if positive.start < denial.end and denial.start < positive.end:
+                    continue
+                for claim in (positive, supported):
+                    pair = tuple(sorted((claim, denial), key=lambda span: span.start))
+                    if pair not in pairs:
+                        pairs.append(pair)
         return pairs
 
     # For CC, DUR, SEV: check opposing laterality turns ("My right wrist hurts...; my left wrist doesn't" vs "My left wrist hurts...; my right wrist doesn't")
@@ -1134,7 +1142,9 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
                 if turn.speaker is Speaker.PATIENT and not _SELF_CORRECTION_CLAUSE_RE.search(turn.text) and not _EPISTEMIC_HEDGE_RE.search(turn.text):
                     m = re.search(r"\b(mild|moderate|severe)\b", turn.text, re.IGNORECASE)
                     if m and not _NEGATION_WORD_RE.search(turn.text):
-                        by_turn.setdefault(idx, CandidateSpan(turn.start + m.start(), turn.start + m.end(), m.group(1)))
+                        candidate = CandidateSpan(turn.start + m.start(), turn.start + m.end(), m.group(1))
+                        if verify_grounded_span(source, field, FieldState.SUPPORTED, candidate)[0]:
+                            by_turn.setdefault(idx, candidate)
         if len(by_turn) >= 2:
             t_indices = sorted(by_turn)
             sp_first, sp_last = by_turn[t_indices[0]], by_turn[t_indices[-1]]

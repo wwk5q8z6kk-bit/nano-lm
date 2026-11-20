@@ -1,33 +1,19 @@
 #!/usr/bin/env python3
-"""Operational wrapper for the already-frozen H7 Kaggle packages.
+"""Read-only operational helpers for the consumed H7 Kaggle experiment.
 
-The operator first runs ``reserve`` on the canonical local authority directory,
-then embeds that reservation and this exact script in one private Kaggle kernel.
-``run`` accepts an expanded, immutable stage dataset, never regenerates a package,
-and never releases a reservation. An interrupted/unknown attempt requires review;
-changing output directories or kernel names does not authorize another attempt.
-
-Dataset privacy is an operator attestation checked against the submitted kernel
-metadata, not something the remote filesystem can establish. The local reservation
-is the cross-kernel authority; remote markers also prevent reuse in one runtime.
+The terminal decision in artifacts/nano_h7/H7_TERMINAL_DECISION.json records
+the invalid gold instrument. Neither stage accepts new reservations or runs.
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path, PurePosixPath
-import platform
 import re
 import shutil
-import signal
-import subprocess
 import sys
 import tarfile
-import threading
-import time
-import uuid
 
 
 EXPERIMENT = "nano-p1-h7-boundary-margin-screen-v1"
@@ -66,20 +52,6 @@ def digest(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             hasher.update(block)
     return hasher.hexdigest()
-
-
-def write_new(path: Path, payload: dict) -> None:
-    """Create-only, durable markers: a failure must never erase attempt evidence."""
-    with path.open("x", encoding="utf-8") as handle:
-        json.dump(payload, handle, sort_keys=True, indent=2)
-        handle.write("\n")
-        handle.flush()
-        os.fsync(handle.fileno())
-    directory = os.open(path.parent, os.O_RDONLY)
-    try:
-        os.fsync(directory)
-    finally:
-        os.close(directory)
 
 
 def safe_name(name: str) -> bool:
@@ -134,47 +106,14 @@ def validate_metadata(metadata: dict, stage: str, stage_dataset: str, treatment_
         require(not metadata.get(key), f"Unexpected kernel input: {key}")
 
 
+TERMINAL_MESSAGE = (
+    "H7 is consumed. See artifacts/nano_h7/H7_TERMINAL_DECISION.json. "
+    "New training and evaluation attempts are closed."
+)
+
+
 def reserve(args: argparse.Namespace) -> Path:
-    metadata = json.loads(args.kernel_metadata.read_bytes())
-    validate_metadata(metadata, args.stage, args.stage_dataset, args.treatment_dataset)
-    expected_private = {args.stage_dataset} | ({args.treatment_dataset} if args.treatment_dataset else set())
-    require(set(args.verified_private_dataset) == expected_private, "Operator must attest verified privacy of every input dataset")
-    require((args.stage == "evaluation") == bool(args.treatment_archive_sha256), "Only evaluation requires a frozen treatment archive hash")
-    if args.treatment_archive_sha256:
-        require(bool(re.fullmatch("[0-9a-f]{64}", args.treatment_archive_sha256)), "Invalid treatment archive SHA-256")
-    remaining, training_terminal = MAX_SECONDS, None
-    if args.stage == "evaluation":
-        require(args.training_terminal is not None, "Evaluation requires the preserved successful training terminal record")
-        training_terminal = json.loads(args.training_terminal.read_bytes())
-        training_reservation = json.loads((args.registry / "training.reservation.json").read_bytes())
-        require(training_terminal.get("attempt_id") == training_reservation["attempt_id"], "Training terminal does not match the global reservation")
-        require(training_terminal.get("status") == "completed" and training_terminal.get("exit_code") == 0 and training_terminal.get("error") is None, "Failed or unknown training cannot admit evaluation")
-        elapsed = training_terminal.get("elapsed_seconds")
-        require(isinstance(elapsed, (int, float)) and 0 < elapsed < MAX_SECONDS, "Invalid or exhausted cumulative runtime")
-        remaining = int(MAX_SECONDS - elapsed)
-        require(remaining > 0, "Four-hour cumulative runtime exhausted")
-    else:
-        require(args.training_terminal is None, "Training cannot reuse a prior terminal record")
-    args.registry.mkdir(parents=True, exist_ok=True)
-    path = args.registry / f"{args.stage}.reservation.json"
-    reservation = {
-        "schema": "nano.h7-operational-reservation.v1", "experiment": EXPERIMENT,
-        "stage": args.stage, "attempt_id": str(uuid.uuid4()), "reserved_at_utc": utc_now(),
-        "canonical_authority": str(args.registry.resolve()), "package": PACKAGES[args.stage],
-        "runner_sha256": digest(Path(__file__)), "kernel_metadata": metadata,
-        "stage_dataset": args.stage_dataset, "treatment_dataset": args.treatment_dataset,
-        "verified_private_datasets": sorted(expected_private),
-        "treatment_archive_sha256": args.treatment_archive_sha256,
-        "max_runtime_seconds": remaining, "campaign_runtime_cap_seconds": MAX_SECONDS,
-        "training_terminal": training_terminal, "authorization_cost_usd": 0,
-        "retry_policy": "Never automatically retry or release; terminal or unknown attempts require review.",
-    }
-    write_new(path, reservation)
-    return path
-
-
-def utc_now() -> str:
-    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    raise H7OperationError(TERMINAL_MESSAGE)
 
 
 def validate_reservation(reservation: dict) -> str:
@@ -226,9 +165,10 @@ runtime = {"python": platform.python_version(), "torch": torch.__version__,
            "tokenizers": tokenizers.__version__, "pytest": pytest.__version__}
 Path(os.environ["H7_RUNTIME_JSON"]).write_text(json.dumps(runtime, sort_keys=True, indent=2) + "\\n")
 print("H7_RUNTIME", json.dumps(runtime, sort_keys=True), flush=True)
-assert runtime["python"] == "3.13.15", runtime
-assert runtime["torch"] == "2.11.0+cpu" and runtime["torch_cuda"] is None and not runtime["cuda_available"], runtime
-assert runtime["tokenizers"] == "0.22.2" and runtime["pytest"] == "9.0.2", runtime
+expected = {"python": "3.13.15", "torch": "2.11.0+cpu", "torch_cuda": None,
+            "cuda_available": False, "tokenizers": "0.22.2", "pytest": "9.0.2"}
+if runtime != expected:
+    raise SystemExit(f"H7 runtime mismatch: {runtime}")
 '''
 
 EVENT_MARKER = '''import json, os, sys, time
@@ -293,118 +233,14 @@ def validate_mounts(input_root: Path, source: Path, treatments: Path | None) -> 
         require(path.resolve().is_relative_to(source) or path.resolve() == allowed_treatment, f"Unexpected mounted input: {path}")
 
 
-def run_process(command: list[str], cwd: Path, env: dict, log: Path, remaining: float) -> int:
-    require(remaining > 0, "Four-hour stage budget expired before launch")
-    with log.open("ab", buffering=0) as handle:
-        process = subprocess.Popen(command, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
-        def tee() -> None:
-            for line in iter(process.stdout.readline, b""):
-                handle.write(line)
-                print(line.decode("utf-8", errors="replace"), end="", flush=True)
-        pump = threading.Thread(target=tee, daemon=True)
-        pump.start()
-        try:
-            return process.wait(timeout=remaining)
-        except BaseException:
-            if process.poll() is None:
-                os.killpg(process.pid, signal.SIGTERM)
-            try:
-                process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
-                process.wait()
-            raise
-        finally:
-            pump.join(timeout=15)
-            handle.flush()
-            os.fsync(handle.fileno())
-
-
-def preserve_evidence(output: Path, bundle: Path, stage: str) -> None:
-    files = [path for path in (output / "evidence").rglob("*") if path.is_file() and not path.is_symlink()]
-    results = bundle / "results"
-    if results.exists():
-        regular_tree(results)
-        files.extend(path for path in results.rglob("*") if path.is_file())
-    for name in (PACKAGES[stage]["result"], PACKAGES[stage]["result"] + ".sha256"):
-        path = bundle / name
-        if path.is_file() and not path.is_symlink():
-            shutil.copyfile(path, output / name)
-            files.append(output / name)
-    sums = output / "ATTEMPT_SHA256SUMS"
-    with sums.open("x") as handle:
-        for path in sorted(files):
-            handle.write(f"{digest(path)}  {path.relative_to(output).as_posix()}\n")
-    archive_path = output / f"nano-h7-{stage}-attempt-evidence.tar.gz"
-    with tarfile.open(archive_path, "x:gz") as archive:
-        for path in sorted(files + [sums]):
-            archive.add(path, arcname=path.relative_to(output).as_posix(), recursive=False)
-    (output / (archive_path.name + ".sha256")).write_text(f"{digest(archive_path)}  {archive_path.name}\n")
-
-
 def run(args: argparse.Namespace) -> int:
-    reservation = json.loads(args.reservation.read_bytes())
-    stage = validate_reservation(reservation)
-    require((stage == "evaluation") == bool(args.treatment_archive), "Stage/treatment input mismatch")
-    output = args.output_dir.resolve()
-    output.mkdir(parents=True, exist_ok=False)
-    evidence = output / "evidence"
-    evidence.mkdir()
-    args.marker_root.mkdir(parents=True, exist_ok=True)
-    marker = args.marker_root / f"{EXPERIMENT}.{stage}.started.json"
-    started = {"attempt_id": reservation["attempt_id"], "stage": stage, "started_at_utc": utc_now(), "reservation_sha256": digest(args.reservation)}
-    write_new(marker, started)
-    write_new(evidence / "started.json", started)
-    write_new(evidence / "reservation.json", reservation)
-    bundle = output / PACKAGES[stage]["root"]
-    start = time.monotonic()
-    phase, exit_code, error = "input_validation", 1, None
-    def interrupted(signum: int, _frame: object) -> None:
-        raise H7OperationError(f"Interrupted by signal {signum}; no retry authorized")
-    previous_signals = {sig: signal.signal(sig, interrupted) for sig in (signal.SIGTERM, signal.SIGHUP)}
-    try:
-        validate_mounts(args.input_root, args.source_dir, args.treatment_archive)
-        validate_bundle(args.source_dir, stage)
-        shutil.copytree(args.source_dir, bundle)
-        validate_bundle(bundle, stage)
-        write_new(evidence / "package-validation.json", {"manifest_sha256": PACKAGES[stage]["manifest_sha256"], "full_tree_verified": True, "frozen_archive_sha256_provenance": PACKAGES[stage]["archive_sha256"], "archive_verification": "Expanded dataset authenticated by pinned manifest and every member; compressed archive is not mounted."})
-        if args.treatment_archive:
-            extract_treatments(args.treatment_archive, reservation["treatment_archive_sha256"], bundle / "treatments")
-        canonical = bundle / PACKAGES[stage]["script"]
-        wrapper = bundle / "RUN_H7_KAGGLE_OPERATIONAL.sh"
-        wrapper.write_text(derive_wrapper(canonical.read_text(), stage))
-        shutil.copyfile(wrapper, evidence / wrapper.name)
-        probe = evidence / "runtime_probe.py"
-        probe.write_text(RUNTIME_PROBE)
-        event_marker = evidence / "event_marker.py"
-        event_marker.write_text(EVENT_MARKER)
-        env = os.environ.copy()
-        env.pop("PYTHONPATH", None)
-        env.update(H7_RUNTIME_PROBE=str(probe), H7_RUNTIME_JSON=str(evidence / "runtime.json"), H7_EVENT_MARKER=str(event_marker), H7_EVIDENCE_DIR=str(evidence), PYTHONUNBUFFERED="1")
-        phase = "packaged_stage_execution"
-        exit_code = run_process(["bash", wrapper.name], bundle, env, evidence / "runner.log", reservation["max_runtime_seconds"] - (time.monotonic() - start))
-        require(exit_code == 0, f"Packaged {stage} exited with status {exit_code}; no retry authorized")
-        require((bundle / PACKAGES[stage]["result"]).is_file(), "Stage exited without its required result archive")
-        phase = "completed"
-    except BaseException as exc:
-        error = f"{type(exc).__name__}: {exc}"
-        if exit_code == 0:
-            exit_code = 1
-        print(error, file=sys.stderr, flush=True)
-    finally:
-        terminal = {**started, "finished_at_utc": utc_now(), "elapsed_seconds": round(time.monotonic() - start, 3), "phase": phase, "exit_code": exit_code, "error": error, "status": "completed" if exit_code == 0 else "failed_or_interrupted", "retry_authorized": False}
-        write_new(evidence / "terminal.json", terminal)
-        write_new(args.marker_root / f"{EXPERIMENT}.{stage}.terminal.json", terminal)
-        preserve_evidence(output, bundle, stage)
-        for sig, previous in previous_signals.items():
-            signal.signal(sig, previous)
-    return exit_code if 0 <= exit_code <= 255 else 1
+    raise H7OperationError(TERMINAL_MESSAGE)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
-    reservation = sub.add_parser("reserve", help="Locally reserve the sole stage attempt before provider submission")
+    reservation = sub.add_parser("reserve", help="Retired reservation interface")
     reservation.add_argument("--stage", choices=PACKAGES, required=True)
     reservation.add_argument("--registry", type=Path, default=AUTHORITY)
     reservation.add_argument("--kernel-metadata", type=Path, required=True)
@@ -413,7 +249,7 @@ def main() -> int:
     reservation.add_argument("--treatment-archive-sha256")
     reservation.add_argument("--training-terminal", type=Path)
     reservation.add_argument("--verified-private-dataset", action="append", required=True)
-    execution = sub.add_parser("run", help="Execute one reserved stage in a fresh Kaggle CPU kernel")
+    execution = sub.add_parser("run", help="Retired execution interface")
     execution.add_argument("--reservation", type=Path, required=True)
     execution.add_argument("--source-dir", type=Path, required=True)
     execution.add_argument("--input-root", type=Path, default=Path("/kaggle/input"))

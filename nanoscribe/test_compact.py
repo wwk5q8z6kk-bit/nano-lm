@@ -79,3 +79,11 @@ def test_cli_constrained_context_path_reaches_paraphrased_review(tmp_path, monke
     assert result["disposition"] == "review"
     assert result["context_policy"] == "context"
     assert result["note"]["claims"][3]["value"] == "diclofenac"
+
+
+def test_binders_have_distinct_serialized_solver_identities():
+    identities = [
+        compact_solver(lambda _: "", binder=binder, version="same-checkpoint").descriptor.to_dict()
+        for binder in ("legacy", "context", "grounded")
+    ]
+    assert len({(item["solver_id"], item["version"]) for item in identities}) == 3

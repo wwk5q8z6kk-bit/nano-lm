@@ -146,10 +146,10 @@
   "platform": "macOS-26.7.3-arm64-arm-64bit-Mach-O",
   "schema_version": "nano.info_density_uma_benchmark.v1",
   "sliding_window_kv_erasure_counterexample": {
-    "erased_epistemic_bits": 9.287712,
+    "estimated_erased_bits": 9.287712,
     "evidence_spans_erased": 4,
     "evidence_spans_total": 5,
-    "fano_min_field_error_rate": 0.8,
+    "erased_evidence_fraction": 0.8,
     "total_tokens": 960,
     "window_tokens": 256
   }

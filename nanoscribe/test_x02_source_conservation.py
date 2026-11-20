@@ -135,6 +135,9 @@ def test_volunteered_treatment_conflicts_with_blanket_denial():
     source = "Doctor: Tell me more.\nPatient: Aspirin for the headache.\nPatient: No medications."
     trace = trace_proposal_conservation(source, "CC:M|DUR:M|SEV:M|MED:A[No medications.]|ALG:M")
     assert trace[3]["binder_state"] == "conflicting"
+    for unasserted in ("I could take aspirin for the headache.", "I did not take aspirin for the headache."):
+        negative = source.replace("Aspirin for the headache.", unasserted)
+        assert trace_proposal_conservation(negative, "CC:M|DUR:M|SEV:M|MED:A[No medications.]|ALG:M")[3]["binder_state"] == "absent"
 
 
 def test_mixed_clause_duration_uses_the_nearest_event():

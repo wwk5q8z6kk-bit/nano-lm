@@ -75,6 +75,24 @@ class Replay:
         return NanoOutput(request.item_id, self.descriptor.solver_id, fields)
 
 
+class PilotGeneration:
+    """Replay each development transcript's first model output or failure."""
+    def __init__(self, predictor):
+        self.predictor = predictor
+        self.outcomes = {}
+
+    def __call__(self, transcript):
+        if transcript not in self.outcomes:
+            try:
+                self.outcomes[transcript] = self.predictor(transcript)
+            except Exception as exc:
+                self.outcomes[transcript] = exc
+        outcome = self.outcomes[transcript]
+        if isinstance(outcome, Exception):
+            raise outcome.with_traceback(None)
+        return outcome
+
+
 def proposal_fields(raw, transcript):
     return tuple(FieldOutput(p.field, p.state,
         normalize_value(p.spans[0].text) if p.state is FieldState.SUPPORTED else None, p.spans)
@@ -129,8 +147,9 @@ def main():
     for source in ("nanoscribe/context.py", "nanoscribe/context_solver.py", "nanoscribe/check_note.py", "nanoscribe/scribe.py", "nano_ai/adapters/state_span.py"):
         (args.output / (Path(source).name + ".txt")).write_bytes((ROOT / source).read_bytes())
     save("provenance.json", provenance)
-    solver = compact_solver(predictor, version=checkpoint.name, binder=args.binder)
-    legacy_solver = compact_solver(predictor, version=checkpoint.name, binder="legacy")
+    generation = PilotGeneration(predictor)
+    solver = compact_solver(generation, version=checkpoint.name, binder=args.binder)
+    legacy_solver = compact_solver(generation, version=checkpoint.name, binder="legacy")
     legacy_results = []
     raw_outputs = {}
     results = []
@@ -140,8 +159,13 @@ def main():
         draft = scribe(row["transcript"], encounter_id=row["example_id"], solver=solver, context_policy=args.binder)
         record = predictor.records.get(row["transcript"], {})
         try:
-            raw_outputs[row["example_id"]] = proposal_fields(record["raw"], row["transcript"])
-            raw_error = None
+            outcome = generation.outcomes[row["transcript"]]
+            if isinstance(outcome, Exception):
+                raw_outputs[row["example_id"]] = outcome
+                raw_error = str(outcome)
+            else:
+                raw_outputs[row["example_id"]] = proposal_fields(outcome, row["transcript"])
+                raw_error = None
         except (KeyError, ValueError) as exc:
             raw_outputs[row["example_id"]] = exc
             raw_error = str(exc)
@@ -156,7 +180,7 @@ def main():
     import torch
     import transformers
     provenance.update(torch=torch.__version__, transformers=transformers.__version__,
-                      device=predictor._loaded[2], total_seconds=time.perf_counter() - started)
+                      device=predictor._loaded[2] if predictor._loaded else None, total_seconds=time.perf_counter() - started)
     save("provenance.json", provenance)
     # Cached transcript generation: no second model invocation when evaluating.
     save("checked_evaluation.json", evaluate_solver(solver, cases).to_dict())
