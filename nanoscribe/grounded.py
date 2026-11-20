@@ -1161,7 +1161,7 @@ def _correction_fields(clause: str) -> set[FieldName]:
     return targets
 
 
-def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool) -> bool:
+def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool, *, prompted: bool = False) -> bool:
     if not _eligible_correction(correction):
         return False
     targets = _correction_fields(correction)
@@ -1170,7 +1170,7 @@ def _retracts_value(correction: str, original: str, field: FieldName, span_text:
     value = normalize_value(span_text)
     if value and re.search(r"(?<!\w)" + re.escape(value) + r"(?!\w)", correction, re.I):
         return True
-    if immediate and _correction_fields(original) == {field}:
+    if immediate and (prompted or _correction_fields(original) == {field}):
         return bool(_BARE_REPLACEMENT_RE.fullmatch(correction) or _DISAVOWAL_RE.fullmatch(correction.rstrip(".!;"))
                     or re.fullmatch(
             r"(?:actually,?\s+)?i was (?:mistaken|wrong|incorrect)[.!]?", correction, re.I
@@ -1243,15 +1243,15 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
     return False
 
 
-def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, span_text: str = "") -> bool:
+def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, span_text: str = "", *, prompted: bool = False) -> bool:
     """An immediate correction can retract a value in the same patient reply."""
     clauses = _reply_clauses(turn)
     return any(current.start == clause.start and
-               _retracts_value(following.text, current.text, field, span_text, immediate=True)
+               _retracts_value(following.text, current.text, field, span_text, immediate=True, prompted=prompted)
                for current, following in zip(clauses, clauses[1:]))
 
 
-def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, span_text: str) -> bool:
+def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, span_text: str, *, prompted: bool = False) -> bool:
     proxy_turns = _forward_proxy_turns(source)
     immediate = True
     for idx in range(turn_idx + 1, len(source.turns)):
@@ -1273,8 +1273,9 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
         previous = _preceding_clinician_turn(source, idx)
         if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
             continue
-        if any(_retracts_value(clause.text, source.turns[turn_idx].text, field, span_text, adjacent_patient_answer)
-               for clause in _reply_clauses(later)):
+        if any(_retracts_value(clause.text, source.turns[turn_idx].text, field, span_text,
+                               adjacent_patient_answer and (not prompted or pos == 0), prompted=prompted)
+               for pos, clause in enumerate(_reply_clauses(later))):
             return True
     return False
 
@@ -1981,21 +1982,21 @@ def _requests_current_rating(text: str) -> bool | None:
     return None
 
 
-def _follows_presenting_complaint(source: Source, idx: int, question: str) -> bool:
-    """Resolve a past-tense rating against the adjacent complaint and its optional duration."""
+def _preceding_presenting_complaint(source: Source, idx: int, question: str) -> Turn | None:
+    """Find the verified presenting complaint before a rating question and its optional timing exchange."""
     if idx < 2 or _EPISODE_TIME_SHIFT_RE.search(question):
-        return False
+        return None
     antecedent = idx - 2
     references = [question]
     answer = source.turns[antecedent]
     if answer.speaker is not Speaker.PATIENT:
-        return False
+        return None
     if _DURATION_VALUE_RE.fullmatch(answer.text.strip(" .!?")):
         timing = _preceding_clinician_turn(source, antecedent)
         if (antecedent < 2 or timing is None
                 or not (question_field(timing.text) is FieldName.DURATION
                         or re.fullmatch(r"how long did (?:it|(?:the|your) [\w -]+) last\??", timing.text, re.I))):
-            return False
+            return None
         references.append(timing.text)
         antecedent -= 2
     complaint = source.turns[antecedent]
@@ -2003,16 +2004,18 @@ def _follows_presenting_complaint(source: Source, idx: int, question: str) -> bo
     if complaint.speaker is not Speaker.PATIENT or any(
             _EPISODE_TIME_SHIFT_RE.search(text) or _QUESTION_HAZARD_RE.search(text)
             for text in (complaint.text, asked.text if asked else "", answer.text, *references)):
-        return False
+        return None
     names = []
     for reference in references:
         subjects = [match.group() for match in _SEVERITY_SUBJECT_RE.finditer(reference)]
         if not subjects and not re.search(r"\b(?:it|this|that|they|these|those)\b", reference, re.I):
-            return False
+            return None
         names.extend(subjects)
-    return any(complaint.start <= span.start < span.end <= complaint.end and all(
+    if any(complaint.start <= span.start < span.end <= complaint.end and all(
         re.search(r"\b" + re.escape(name) + r"\b", span.text, re.I) for name in names
-    ) for span in _local_supported_spans(source, FieldName.CHIEF_COMPLAINT))
+    ) for span in _local_supported_spans(source, FieldName.CHIEF_COMPLAINT)):
+        return complaint
+    return None
 
 
 def _severity_subject(text: str) -> bool | None:
@@ -2156,7 +2159,15 @@ def _current_symptom_prompt(text: str) -> tuple[str, int | None] | None:
     return subject, 1 if scale[1].casefold() in ("one", "1") else 0
 
 
-def _prompted_rating(source: Source, idx: int, clause: Turn) -> CandidateSpan | None:
+@dataclass(frozen=True)
+class _PromptedRating:
+    span: CandidateSpan
+    subject: str
+    # A bounded or approximate answer has an evidence span but no exact scalar.
+    exact_value: Fraction | str | None
+
+
+def _prompted_rating(source: Source, idx: int, clause: Turn) -> _PromptedRating | None:
     """Bind a complete patient reply to the adjacent request for a current symptom score."""
     previous = _preceding_clinician_turn(source, idx)
     if previous is None or clause.start != source.turns[idx].start:
@@ -2168,16 +2179,23 @@ def _prompted_rating(source: Source, idx: int, clause: Turn) -> CandidateSpan | 
     if not request:
         return None
     subject, floor = request
-    if subject == "it" and not _follows_presenting_complaint(source, idx, previous.text):
-        return None
+    if subject == "it":
+        complaint = _preceding_presenting_complaint(source, idx, previous.text)
+        if complaint is None:
+            return None
+        subject = complaint.text.casefold()
+    else:
+        subject = re.sub(r"^(?:the|your|this) ", "", subject)
+    exact_value: Fraction | str | None = answer["value"].casefold()
     if answer["number"]:
         if floor is None and not answer["denominator"]:
             return None
         score = _exact_number(answer["number"])
         if score is None or not (floor or 0) <= score <= 10:
             return None
+        exact_value = score if answer["value"] == answer["number"] + (answer["denominator"] or "") else None
     a, b = answer.span("value")
-    return CandidateSpan(clause.start + a, clause.start + b, clause.text[a:b])
+    return _PromptedRating(CandidateSpan(clause.start + a, clause.start + b, clause.text[a:b]), subject, exact_value)
 
 
 def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: CandidateSpan, *, prompted: bool) -> bool:
@@ -2241,7 +2259,7 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
         trailing_now = _PRESENT_RATING_TIME_RE.fullmatch(after.strip(" .,!;?"))
         if current_request is False and not (self_check or trailing_now or _CURRENT_RATING_LEAD_RE.fullmatch(before)):
             direct_answer = not after.strip(" .!?") and _RATING_LEAD_RE.fullmatch(before)
-            if not (direct_answer and _follows_presenting_complaint(source, idx, previous.text)):
+            if not (direct_answer and _preceding_presenting_complaint(source, idx, previous.text)):
                 return False
         if trailing_now:
             after = ""
@@ -2391,7 +2409,8 @@ def _verify_local_span(
     clause = _enclosing_clause(turn, span)
     if state is FieldState.SUPPORTED:
         start, end = span.start - turn.start, span.end - turn.start
-        prompted = field is FieldName.SEVERITY and _prompted_rating(source, idx, clause) == span
+        rating = _prompted_rating(source, idx, clause) if field is FieldName.SEVERITY else None
+        prompted = rating is not None and rating.span == span
         # A complete solicited answer can have a grammatical article ("it's a seven").
         # Its exact value and bounds were checked before trimming the article.
         tokens = (_NUMERIC_TOKEN_RE,) if prompted else (_NUMERIC_TOKEN_RE, _SPOKEN_NUMBER_TOKEN_RE)
@@ -2490,7 +2509,9 @@ def _verify_local_span(
             return False, "routine_medication_disclaimed_for_complaint"
         if _later_doubt(source, idx, clause, field, span.text):
             return False, "source_report_later_in_doubt"
-        if _clause_is_retracted_in_turn(turn, clause, field, span.text) or _later_turn_retracts_span(source, idx, field, span.text):
+        if (_clause_is_retracted_in_turn(turn, clause, field, span.text, prompted=prompted)
+                or _later_turn_retracts_span(source, idx, field, span.text,
+                                             prompted=prompted and clause == _reply_clauses(turn)[-1])):
             return False, "retracted_by_patient_correction"
         return True, "verified_grounded_supported"
 
@@ -2711,7 +2732,8 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
                 continue
 
             if field is FieldName.SEVERITY:
-                add(_prompted_rating(source, t_idx, clause))
+                if rating := _prompted_rating(source, t_idx, clause):
+                    add(rating.span)
                 # 1) Numeric scale ("five out of ten", "About four out of ten", "7/10")
                 for m in re.finditer(
                     rf"(?:(?:about|around|roughly)\s+|{_BOUND_LEAD})?{_SCALE}(?:\s+{_BOUND_SUFFIX})?",
@@ -2982,8 +3004,13 @@ def _exact_number(text: str) -> Fraction | None:
     return None
 
 
-def _scalar_report(field: FieldName, clause: Turn, question: str):
+def _scalar_report(field: FieldName, clause: Turn, question: str, rating: _PromptedRating | None):
     """Return comparable measurement, scale and reporting frame, only for exact reports."""
+    if rating is not None:
+        if rating.exact_value is None:
+            return None
+        scale = "ten-point score" if isinstance(rating.exact_value, Fraction) else "qualitative severity"
+        return (rating.subject, (), scale), rating.exact_value
     if _IMPRECISE_SCALAR_RE.search(clause.text) or (field is FieldName.SEVERITY and _BOUNDED_SCALE_RE.search(clause.text)):
         return None
     if field is FieldName.DURATION:
@@ -3008,6 +3035,12 @@ def _scalar_report(field: FieldName, clause: Turn, question: str):
             scale = "ten-point score"
         else:
             scale, value = "qualitative severity", match.group().casefold()
+
+        if not question or _current_symptom_prompt(question):
+            owner = _CURRENT_RATING_OWNER_RE.fullmatch(clause.text[:match.start()].strip())
+            if (owner and _COMPLAINT_HEAD_RE.fullmatch(owner["subject"])
+                    and _CURRENT_RATING_END_RE.fullmatch(clause.text[match.end():])):
+                return (owner["subject"].casefold(), (), scale), value
 
     # Keep explicit time, condition, symptom and question scope. Different or
     # unrecognized frames cannot prove a contradiction merely from unequal values.
@@ -3226,7 +3259,8 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
             clause = _enclosing_clause(source.turns[idx], span)
             if clause.start not in by_clause:
                 question = _preceding_clinician_turn(source, idx)
-                report = _scalar_report(field, clause, question.text if question else "")
+                rating = _prompted_rating(source, idx, clause) if field is FieldName.SEVERITY else None
+                report = _scalar_report(field, clause, question.text if question else "", rating)
                 by_clause[clause.start] = (clause, span, report)
         for (c1, first, left), (c2, second, right) in combinations(by_clause.values(), 2):
             if left is None or right is None or left[0] != right[0] or left[1] == right[1]:

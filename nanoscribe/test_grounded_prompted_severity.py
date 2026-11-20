@@ -1,7 +1,10 @@
 """A patient can answer a current symptom rating question in the question's scale."""
 import pytest
 
-from nano_ai.contract import FieldName
+from nano_ai.contract import FieldName, NanoInput
+from nanoscribe.check_note import transcript_source
+from nanoscribe.grounded import build_grounded_english_menu, detect_grounded_conflicts, grounded_candidate_choices
+from nanoscribe.test_grounded import _grounded_claim
 from nanoscribe.test_grounded_followup import check
 
 
@@ -68,3 +71,51 @@ def test_turn_that_supplies_the_scale(turns):
 def test_an_unresolved_pronoun_does_not_inherit_an_unrelated_subject():
     source = "Doctor: How was the parking?\nPatient: The lot was crowded.\nDoctor: How bad is it now?\nPatient: My rating is severe."
     check(source, "SEV", FieldName.SEVERITY, "severe", source.index("severe"), False)
+
+
+@pytest.mark.parametrize("first, second, question, conflict", [
+    ("7.", "8.", SCALE, True),
+    ("It’s a seven.", "My rating is eight out of ten.", SCALE, True),
+    ("My rating is 7/10.", "Eight.", "Rate your pain from one to ten.", True),
+    ("7/10.", "The pain is 8/10.", SCALE, True),
+    ("7.", "My pain is 8/10.", SCALE, True),
+    ("7.", "My wrist pain is 8/10.", SCALE, False),
+    ("My rating is mild.", "It is severe.", SCALE, True),
+    ("Seven.", "7/10.", SCALE, False),
+    ("About seven.", "Eight.", SCALE, False),
+    ("At least six.", "Eight.", SCALE, False),
+    ("Eight.", "Moderate.", SCALE, False),
+    ("Eight.", "Three.", "Rate your headache from one to ten.", False),
+])
+def test_inherited_ratings_compared_at_same_scope(first, second, question, conflict):
+    source = f"Doctor: {SCALE}\nPatient: {first}\nDoctor: {question}\nPatient: {second}"
+    doc = transcript_source(NanoInput("rating", source))
+    field = FieldName.SEVERITY
+    pairs = detect_grounded_conflicts(doc, field)
+    assert bool(pairs) == conflict
+    assert any(key.startswith(":C[") for key in grounded_candidate_choices(source, field, set())) == conflict
+    assert any(code == "C" for code, _ in build_grounded_english_menu(doc, field, set()).values()) == conflict
+    if conflict:
+        left, right = pairs[0]
+        assert left.text in first and right.text in second
+        for span in (left, right):
+            state, evidence = _grounded_claim(source, field, f"SEV:S[{span.text}]")
+            assert state == "conflicting" and evidence == [left.text, right.text]
+
+
+@pytest.mark.parametrize("reply, quote, supported", [
+    ("7. I was wrong.", "7", False),
+    ("It's a seven. I was mistaken.", "seven", False),
+    ("7.\nPatient: I was wrong.", "7", False),
+    ("Seven. I was mistaken about the appointment.", "Seven", True),
+    ("7.\nPatient: I took aspirin. I was wrong.", "7", True),
+    ("7. I took aspirin.\nPatient: I was wrong.", "7", True),
+    ("7.\nDoctor: What about your medication?\nPatient: I was wrong.", "7", True),
+    ("7.\nOther: I was wrong.", "7", True),
+    ("7.\nPatient: My brother was wrong.", "7", True),
+    ("7.\nPatient: If I was mistaken, I would call.", "7", True),
+    ("7. I was wrong.\nDoctor: Rate your pain from one to ten.\nPatient: Eight.", "Eight", True),
+])
+def test_withdrawing_a_prompted_rating(reply, quote, supported):
+    source = f"Doctor: {SCALE}\nPatient: {reply}"
+    check(source, "SEV", FieldName.SEVERITY, quote, source.rindex(quote), supported)
