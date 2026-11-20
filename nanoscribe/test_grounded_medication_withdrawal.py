@@ -45,6 +45,7 @@ def assert_substance(transcript, field, named, occurrence, supported):
 
 
 @pytest.mark.parametrize("prefix", ["Let me correct that. I did not take", "Correction: I didn’t take",
+                                    "Let me correct that! I did not take", "Sorry! I haven’t taken",
                                     "Actually, I didn't take", "Let me correct my answer: I haven't taken"])
 @pytest.mark.parametrize("boundary", [" ", "\nPatient: "])
 def test_withdrawal_changes_both_menus_and_free_source_verification(prefix, boundary):
@@ -57,6 +58,7 @@ def test_withdrawal_changes_both_menus_and_free_source_verification(prefix, boun
 
 @pytest.mark.parametrize("statement", [
     "Other: Let me correct that. I did not take aspirin.",
+    "Patient: Let me correct that? I did not take aspirin.",
     "Patient: If I need to correct that, I didn't take aspirin.",
     "Patient: Let me correct that. Did I not take aspirin?",
     "Patient: Let me correct that. My mother did not take aspirin.",
