@@ -144,6 +144,28 @@ def test_question_with_an_explanation_preserves_original_administration():
     assert_medication(text, "aspirin", 0, True)
 
 
+@pytest.mark.parametrize("correction", [
+    "Actually, I didn't take aspirin, but I took ibuprofen perhaps.",
+    "Actually, I didn't take aspirin because I might have left it at home.",
+    "Actually, I didn't take aspirin, but I took ibuprofen?",
+    "Let me correct that. I didn't take aspirin because it might have expired.",
+])
+def test_hedge_or_question_on_followup_keeps_named_withdrawal(correction):
+    text = f"Patient: I took aspirin.\nPatient: {correction}"
+    menu = assert_medication(text, "aspirin", 0, False)
+    assert " REPORTED[aspirin]" not in menu
+    assert " UNCERTAIN[aspirin; ibuprofen]" not in menu
+
+
+@pytest.mark.parametrize("correction", [
+    "Actually, I didn't take aspirin, I might be wrong.",
+    "Actually, I didn't take aspirin, but I took ibuprofen, and I might be wrong.",
+])
+def test_epistemic_aside_does_not_withdraw_the_named_medication(correction):
+    text = f"Patient: I took aspirin.\nPatient: {correction}"
+    assert_medication(text, "aspirin", 0, True)
+
+
 def test_tentative_withdrawal_does_not_certify_unique_replacement():
     text = ("Patient: I took aspirin.\nPatient: Let me correct that. "
             "I didn't take aspirin, perhaps. I took ibuprofen.")

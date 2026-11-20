@@ -1355,15 +1355,56 @@ class _MedicationWithdrawal:
     restriction: str
 
 
+def _replacement_followup(following: str) -> bool:
+    """A new medication predicate, not an epistemic aside, follows the join."""
+    return bool(_MED_CLAUSE_VERB_RE.match(following) or _TAKEN_RE.match(following)
+                or re.match(r"(?:took|used)\b", following, re.I))
+
+
+def _denial_qualification(text: str, predicate_end: int) -> tuple[str, str]:
+    """Return the questioned denial and the text whose hedges can qualify it.
+
+    A replacement conjunct and a because-reason are not part of the nonuse.
+    The reason remains in the denial sentence, so a "?" there still questions
+    it. An epistemic aside does too, including one after the replacement.
+    """
+    remainder = text[predicate_end:]
+    kept = []
+    question_end, question_bounded = len(text), False
+    cursor = 0
+    while True:
+        event_join = _EVENT_JOIN_RE.search(remainder, cursor)
+        if not event_join:
+            kept.append(remainder[cursor:])
+            break
+        following = remainder[event_join.end():]
+        because = bool(re.search(r"\bbecause\b", event_join.group(), re.I))
+        if not (because or _replacement_followup(following)):
+            kept.append(remainder[cursor:event_join.end()])
+            cursor = event_join.end()
+            continue
+        kept.append(remainder[cursor:event_join.start()])
+        if not because and not question_bounded:
+            question_end = predicate_end + event_join.start()
+            question_bounded = True
+        later = _EVENT_JOIN_RE.search(following)
+        cursor = event_join.end() + (later.start() if later else len(following))
+    hedge_text = re.split(r"\bbecause\b", "".join(kept), maxsplit=1, flags=re.I)[0]
+    return text[:question_end], hedge_text
+
+
 def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...] | None:
     """Read the patient’s named or categorical denials with their restrictions."""
     predicate = _CORRECTED_NONUSE_RE.match(text)
     if not predicate:
         return None
-    if _patient_question(text) or _EPISTEMIC_HEDGE_RE.search(text):
+    questioned, hedge_scope = _denial_qualification(text, predicate.end())
+    if _patient_question(questioned) or _EPISTEMIC_HEDGE_RE.search(hedge_scope):
         # The negative predicate is recognized, but establishes no withdrawal.
         return ()
-    body = _EVENT_JOIN_RE.split(text[predicate.end():], maxsplit=1)[0]
+    remainder = text[predicate.end():]
+    event_join = _EVENT_JOIN_RE.search(remainder)
+    body = remainder[:event_join.start()] if event_join else remainder
     body = re.split(r"\bbecause\b", body, maxsplit=1, flags=re.I)[0].rstrip(" .,;!")
     body = re.sub(rf",?\s+(?:at all|after all|whatsoever|in fact)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
                   "", body, flags=re.I)
