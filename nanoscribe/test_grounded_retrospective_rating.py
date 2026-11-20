@@ -100,3 +100,29 @@ def test_dated_measurement_is_local_to_the_selected_rating(report, quote, accept
 ])
 def test_context_of_timing_and_recitation(source, accepted):
     check(source, "SEV", FieldName.SEVERITY, "5/10", source.index("5/10"), accepted)
+
+
+@pytest.mark.parametrize("turns,quote,accepted", [
+    ("Unknown: The umbrella is upstairs.\nPatient: That score was yesterday.", "7/10", False),
+    ("Other: The lobby door is closed.\nUnknown: The umbrella is upstairs.\n"
+     "Patient: That rating was two days ago.", "7/10", False),
+    ("Unknown: The umbrella is upstairs.\nPatient: That was at work.\n"
+     "Unknown: The door is closed.\nPatient: My neck pain is 2/10 now.", "7/10", False),
+    ("Unknown: The umbrella is upstairs.\nPatient: That was at work.\n"
+     "Unknown: The door is closed.\nPatient: My neck pain is 2/10 now.", "2/10", True),
+    ("Unknown: The umbrella is upstairs.\nPatient: That was at work.", "7/10", True),
+    ("Unknown: The umbrella is upstairs.\nPatient: I took the bus. That score was yesterday.", "7/10", True),
+    ("Unknown: The umbrella is upstairs.\nDoctor: When did you rate the shuttle?\n"
+     "Patient: That score was yesterday.", "7/10", True),
+    ("Unknown: The umbrella is upstairs.\nOther: That score was yesterday.", "7/10", True),
+    ("Unknown: The umbrella is upstairs.\nOther: I gave the parking app an 8/10.\n"
+     "Patient: That rating was yesterday.", "7/10", True),
+    ("Unknown: The umbrella is upstairs. That was my neck pain, not the patient's.\n"
+     "Patient: That score was yesterday.", "7/10", False),
+    ("Unknown: When can I collect the ticket?\nPatient: That was yesterday.", "7/10", True),
+    ("Unknown: Where is the lift?\nPatient: That score was yesterday.", "7/10", False),
+    ("Unknown: When can I collect the ticket?\nPatient: That number was yesterday.", "7/10", True),
+])
+def test_rating_correction_across_logistical_asides(turns, quote, accepted):
+    source = "Patient: My neck pain is 7/10.\n" + turns
+    check(source, "SEV", FieldName.SEVERITY, quote, source.index(quote), accepted)

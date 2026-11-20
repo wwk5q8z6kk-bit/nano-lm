@@ -67,3 +67,43 @@ def test_disjunctive_medication_denial_does_not_verify_absence():
     span = EvidenceSpan(start, start + len(value), value)
     assert _observation_kind(doc, FieldName.MEDICATION, span, context_policy="grounded") is None
     assert f":A[{value}]" not in grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+
+
+@pytest.mark.parametrize("field,report,quote,allowed", [
+    (FieldName.DURATION, "My headache has lasted either two or three days.", "either two or three days", True),
+    (FieldName.DURATION, "My headache started either Monday or Tuesday.", "either Monday or Tuesday", True),
+    (FieldName.SEVERITY, "My pain is either mild, moderate, or severe.", "either mild, moderate, or severe", True),
+    (FieldName.SEVERITY, "Either my pain is 3.5/10 or it is 6.5/10.", "Either my pain is 3.5/10 or it is 6.5/10", True),
+    (FieldName.SEVERITY, "My pain is either two or it is four out of ten.", "either two or it is four out of ten", True),
+    (FieldName.DURATION, "My headache began either two or three days ago.", "either two or three days ago", True),
+    (FieldName.DURATION, "My headache began either two or it started three days ago.", "either two or it started three days ago", True),
+    (FieldName.DURATION, "My headache began either two or it started Tuesday.", "either two or it started Tuesday", False),
+    (FieldName.SEVERITY, "My pain is either two or the wait is four out of ten.", "either two or the wait is four out of ten", False),
+    (FieldName.SEVERITY, "My pain is either two or severe.", "either two or severe", False),
+    (FieldName.DURATION, "My pain started either two or Tuesday.", "either two or Tuesday", False),
+    (FieldName.SEVERITY, "My pain is either mild or the traffic is bad.", "either mild or the traffic is bad", False),
+    (FieldName.DURATION, "The pass lasts either two or three days.", "either two or three days", False),
+    (FieldName.DURATION, "It started either Monday or Tuesday.", "either Monday or Tuesday", False),
+    (FieldName.SEVERITY, "I have a headache but the parking is either 3/10 or 4/10.", "either 3/10 or 4/10", False),
+    (FieldName.SEVERITY, "My sister's pain is either mild or severe.", "either mild or severe", False),
+])
+def test_after_logistics_the_clinical_subject_must_own_each_alternative(field, report, quote, allowed):
+    text = "Other: Where is the garage?\nPatient: " + report
+    request = NanoInput("logistical-alternatives", text)
+    doc = transcript_source(request)
+    menu = grounded_candidate_choices(text, field, set())
+    english = build_grounded_english_menu(doc, field, set())
+    assert (f":U[{quote}]" in menu) is allowed
+    assert (f" UNCERTAIN[{quote}]" in english) is allowed
+    raw = "|".join(s + (f":U[{quote}]" if s == ("DUR" if field is FieldName.DURATION else "SEV") else ":M")
+                   for s in ("CC", "DUR", "SEV", "MED", "ALG"))
+    extraction, diagnostics = compact_solver(lambda _: raw, binder="grounded").infer_grounded(request)
+    index = 1 if field is FieldName.DURATION else 2
+    assert diagnostics["fields"][index]["verified"] is allowed
+    assert bool(extraction.fields[index].evidence) is allowed
+
+
+def test_plain_other_statement_preserves_preceding_context_for_alternatives():
+    text = ("Doctor: How long did the headache last?\nOther: The umbrella is upstairs.\n"
+            "Patient: It lasted either two or three days.")
+    assert ":U[either two or three days]" in grounded_candidate_choices(text, FieldName.DURATION, set())
