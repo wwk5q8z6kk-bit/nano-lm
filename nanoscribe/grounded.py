@@ -1647,6 +1647,11 @@ def _substance_name_bounds(text: str, owned: tuple[int, int], field: FieldName) 
             trailing_dose = _MEDICATION_DOSE_RE.search(text, start, end)
             if trailing_dose:
                 end = trailing_dose.start()
+    elif field is FieldName.ALLERGY:
+        # The annotation can be attached directly to the name: "latex(hives)".
+        annotation = text.find("(", start, end)
+        if annotation >= 0:
+            end = annotation
     phrase = _OWNED_SUBSTANCE_NAME_RE.match(text, start, end)
     if not phrase:
         return None
@@ -1947,8 +1952,11 @@ def _verify_local_span(
                         return False, "taken_without_treatment_context"
             else:
                 name = _substance_name_bounds(event.text, owned, field)
-                if name and start < name[1] and name[0] < end and not (start <= name[0] and name[1] <= end):
-                    return False, "incomplete_substance_name"
+                if not (name and start <= name[0] and name[1] <= end):
+                    # Additional coordinated allergens have their own complete
+                    # names. A disjoint reaction or dose has no such source.
+                    if (start, end) not in _coexisting_substance_clause(field, event.text):
+                        return False, "incomplete_substance_name"
         if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
             return False, "severity_not_linked_to_current_episode"
         if field is FieldName.DURATION:

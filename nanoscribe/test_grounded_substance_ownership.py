@@ -279,3 +279,21 @@ def test_distinct_substances_in_one_reaction_do_not_collapse_to_one_allergen(fir
         claim, direct, compact, english = observed(report, ALG, value)
         assert claim["state"] == "uncertain" and claim["value"] is None and direct is None
         assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
+
+
+@pytest.mark.parametrize("report,name,detail", [
+    ("Patient: I am allergic to penicillin (severe rash).", "penicillin", "rash"),
+    ("Patient: I am allergic to penicillin 500 mg.", "penicillin", "mg"),
+    ("Patient: I am allergic to penicillin(hives).", "penicillin", "hives"),
+    ("Patient: I am allergic to natural rubber latex (severe rash).", "natural rubber latex", "severe rash"),
+    ("Doctor: Any known allergies?\nPatient: Red cedar pollen (hives).", "Red cedar pollen", "hives"),
+    ("Patient: I have an allergy to co-trimoxazole (itching).", "co-trimoxazole", "itching"),
+])
+def test_allergy_evidence_must_include_the_complete_named_allergen(report, name, detail):
+    claim, direct, compact, english = observed(report, ALG, detail)
+    assert claim["value"] is None and direct is None
+    assert f":S[{detail}]" not in compact and f" REPORTED[{detail}]" not in english
+
+    claim, direct, compact, english = observed(report, ALG, name)
+    assert (claim["state"], claim["value"], direct) == ("supported", name, FieldState.SUPPORTED)
+    assert f":S[{name}]" in compact and f" REPORTED[{name}]" in english
