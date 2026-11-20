@@ -1,0 +1,802 @@
+[
+  {
+    "doc": "fed-0129",
+    "end": 640,
+    "native_tokens": 138,
+    "reference_tokens": 128,
+    "sha256": "5b6b7f7c128f52ddd4050903d5d420fc6b01bd58b2bb6e3492ee7e87b0c446b8",
+    "start": 0
+  },
+  {
+    "doc": "fed-0129",
+    "end": 1271,
+    "native_tokens": 147,
+    "reference_tokens": 137,
+    "sha256": "6ccda5c9384cd49acdf247ab64940faea01890fb6fb4f34ac392f9c89065a47a",
+    "start": 640
+  },
+  {
+    "doc": "fed-0129",
+    "end": 1910,
+    "native_tokens": 152,
+    "reference_tokens": 136,
+    "sha256": "0e8247ae71579b428bed1cd9539ce6f0cff947c69cd5647caddef8995d389d87",
+    "start": 1271
+  },
+  {
+    "doc": "fed-0129",
+    "end": 2550,
+    "native_tokens": 119,
+    "reference_tokens": 119,
+    "sha256": "00828a16a6cfa06e61a6bc7d5fd35a7336a837d22933ce1e4b97e7cd1541ca25",
+    "start": 1910
+  },
+  {
+    "doc": "fed-0129",
+    "end": 3186,
+    "native_tokens": 125,
+    "reference_tokens": 120,
+    "sha256": "fc7123aa22da2519e9ca1bfd465f117f28a781f5f50cca475dc5f0cf791c0aab",
+    "start": 2550
+  },
+  {
+    "doc": "fed-0129",
+    "end": 3824,
+    "native_tokens": 123,
+    "reference_tokens": 121,
+    "sha256": "64b5f633ad1a77335cf5d24ada7b39645b59722dfe33fe701e7b945857b7beee",
+    "start": 3186
+  },
+  {
+    "doc": "fed-0129",
+    "end": 3923,
+    "native_tokens": 16,
+    "reference_tokens": 16,
+    "sha256": "f65db155bb96e6075940a57dac55d6a77d3c2c802d52f9221a5c1ac489582b2f",
+    "start": 3824
+  },
+  {
+    "doc": "fed-0319",
+    "end": 639,
+    "native_tokens": 126,
+    "reference_tokens": 120,
+    "sha256": "ca7d17962adcac334ac315c8c39eca49f5e9959c71d572e532acd150ac01ac8e",
+    "start": 0
+  },
+  {
+    "doc": "fed-0319",
+    "end": 1277,
+    "native_tokens": 143,
+    "reference_tokens": 133,
+    "sha256": "b6d62721c81e46a3063bc6e6e9b63cd3f49966e45a23bf3415986fb6e8400607",
+    "start": 639
+  },
+  {
+    "doc": "fed-0319",
+    "end": 1916,
+    "native_tokens": 147,
+    "reference_tokens": 132,
+    "sha256": "1bb56953227f1b369512154d095f0384c86aba678a242eb9e54c80002443cb4d",
+    "start": 1277
+  },
+  {
+    "doc": "fed-0319",
+    "end": 2550,
+    "native_tokens": 122,
+    "reference_tokens": 118,
+    "sha256": "b81e78c6854db25b7593f809b5249b124e1efb8c2e3863c6d15dfb983b0f7b43",
+    "start": 1916
+  },
+  {
+    "doc": "fed-0319",
+    "end": 3183,
+    "native_tokens": 126,
+    "reference_tokens": 121,
+    "sha256": "baa5aababe4570501371249507f4d8d6df6dc244beb2757596c87b214cc964c7",
+    "start": 2550
+  },
+  {
+    "doc": "fed-0319",
+    "end": 3822,
+    "native_tokens": 117,
+    "reference_tokens": 115,
+    "sha256": "3702a98419f9f653b69846222ef1ce7706616d576abc2c51668359299a01813c",
+    "start": 3183
+  },
+  {
+    "doc": "fed-0319",
+    "end": 3847,
+    "native_tokens": 5,
+    "reference_tokens": 5,
+    "sha256": "aff6a9e88714dbe48805ab21c870bdcad24d48f0bbff275143abf73f365dbf46",
+    "start": 3822
+  },
+  {
+    "doc": "fed-0507",
+    "end": 638,
+    "native_tokens": 130,
+    "reference_tokens": 120,
+    "sha256": "56bcf9e6bb4ba43086d01b26c34f93fb7fc93cf3ede7596403d936eccdcbb328",
+    "start": 0
+  },
+  {
+    "doc": "fed-0507",
+    "end": 1278,
+    "native_tokens": 149,
+    "reference_tokens": 134,
+    "sha256": "41e02663e4310749a78e406a0bead5af31024d8bbaa8aa5657efaa15b8899ee4",
+    "start": 638
+  },
+  {
+    "doc": "fed-0507",
+    "end": 1912,
+    "native_tokens": 134,
+    "reference_tokens": 122,
+    "sha256": "c2f158bad5e35f3d0d148e427ebf77d2d77d97ba8ae2521c84141b3c9d36c0e8",
+    "start": 1278
+  },
+  {
+    "doc": "fed-0507",
+    "end": 2548,
+    "native_tokens": 113,
+    "reference_tokens": 113,
+    "sha256": "009ebbf69da53be4ddd51cba6c3bb597946376f1b4f9288555520e42b52e364c",
+    "start": 1912
+  },
+  {
+    "doc": "fed-0507",
+    "end": 3186,
+    "native_tokens": 126,
+    "reference_tokens": 119,
+    "sha256": "bb8c86b97c10824e07975d3ef87745de94bcb0355799128cd3f9fcfa7c8b20c8",
+    "start": 2548
+  },
+  {
+    "doc": "fed-0507",
+    "end": 3392,
+    "native_tokens": 36,
+    "reference_tokens": 35,
+    "sha256": "4aaf208eac38aeb4ee5aa623e6b4732f6a8549d3394f2dd525b0e21d3ce5296b",
+    "start": 3186
+  },
+  {
+    "doc": "fed-0618",
+    "end": 636,
+    "native_tokens": 126,
+    "reference_tokens": 121,
+    "sha256": "22ad6982e29632219e77e7d7bc8b921cc307e11f5bc00741e1549fce4fc6b529",
+    "start": 0
+  },
+  {
+    "doc": "fed-0618",
+    "end": 1274,
+    "native_tokens": 118,
+    "reference_tokens": 117,
+    "sha256": "ce772ff254f347caf230930ca481aa1b5bebc4af2eadc2281945c045bdbb5661",
+    "start": 636
+  },
+  {
+    "doc": "fed-0618",
+    "end": 1911,
+    "native_tokens": 132,
+    "reference_tokens": 125,
+    "sha256": "0c1e0603545605f7fb5d54317610bc293e2922ed6133744e593c9a0c866120c9",
+    "start": 1274
+  },
+  {
+    "doc": "fed-0618",
+    "end": 2549,
+    "native_tokens": 124,
+    "reference_tokens": 120,
+    "sha256": "68807add28591ae5711717dd19c5da7476985a9536d748a66bbb1f19c8913753",
+    "start": 1911
+  },
+  {
+    "doc": "fed-0618",
+    "end": 3188,
+    "native_tokens": 144,
+    "reference_tokens": 136,
+    "sha256": "69b941df3f6d578b9056cf658004a26e71f86f21a3c5a043cc04069785c0a0ca",
+    "start": 2549
+  },
+  {
+    "doc": "fed-0618",
+    "end": 3825,
+    "native_tokens": 117,
+    "reference_tokens": 115,
+    "sha256": "3276ce0e7352902f37c3462327e96d4d934f8145c179063187caf0724942eab7",
+    "start": 3188
+  },
+  {
+    "doc": "fed-0618",
+    "end": 3972,
+    "native_tokens": 21,
+    "reference_tokens": 21,
+    "sha256": "f20570a7eee6f98e0a5aa55899f8be70e047577423623cb3f8fc92f2e0fdf156",
+    "start": 3825
+  },
+  {
+    "doc": "fed-0730",
+    "end": 640,
+    "native_tokens": 127,
+    "reference_tokens": 120,
+    "sha256": "18b7dda1ceea617074e198023e0f0066cbe792d4dc5c44451c082f8e34bfe7c7",
+    "start": 0
+  },
+  {
+    "doc": "fed-0730",
+    "end": 1277,
+    "native_tokens": 139,
+    "reference_tokens": 132,
+    "sha256": "6c761a3b87d51c63f12faf6c112576b785d0c2044da1435ae889b3eadae6413d",
+    "start": 640
+  },
+  {
+    "doc": "fed-0730",
+    "end": 1917,
+    "native_tokens": 128,
+    "reference_tokens": 124,
+    "sha256": "a74800acc81cb79deb8edccf0560a26fc1ee718c2ccc707d2866382884ede7dc",
+    "start": 1277
+  },
+  {
+    "doc": "fed-0730",
+    "end": 2554,
+    "native_tokens": 126,
+    "reference_tokens": 124,
+    "sha256": "1ee10b5259bf69506439e062877c60e662f9d03d33598b26d8782dfdb932daff",
+    "start": 1917
+  },
+  {
+    "doc": "fed-0730",
+    "end": 3192,
+    "native_tokens": 121,
+    "reference_tokens": 118,
+    "sha256": "68a8236148e3c5bcb717b97466ce7da4465abd5482adb42c69db54847dd91711",
+    "start": 2554
+  },
+  {
+    "doc": "fed-0730",
+    "end": 3411,
+    "native_tokens": 37,
+    "reference_tokens": 37,
+    "sha256": "59b12c3f38a85883a7c0ff34a304555c6d5edd435c972358223321a3ba97b9ce",
+    "start": 3192
+  },
+  {
+    "doc": "fed-0917",
+    "end": 636,
+    "native_tokens": 126,
+    "reference_tokens": 121,
+    "sha256": "9c1d310506e72dc35cbc79f0149d9d39830d3ac211f0fb1ff1fc5ae20035c975",
+    "start": 0
+  },
+  {
+    "doc": "fed-0917",
+    "end": 1270,
+    "native_tokens": 134,
+    "reference_tokens": 130,
+    "sha256": "c5b799d71e060cb6952d933a78193625307118b73169e6fec809ae586e02a4df",
+    "start": 636
+  },
+  {
+    "doc": "fed-0917",
+    "end": 1905,
+    "native_tokens": 149,
+    "reference_tokens": 127,
+    "sha256": "e4334eb4c560938cd34fba2a776a44405f82dd131e71bc8bd5d85e7a42fe85db",
+    "start": 1270
+  },
+  {
+    "doc": "fed-0917",
+    "end": 2545,
+    "native_tokens": 119,
+    "reference_tokens": 118,
+    "sha256": "db1f820fa9fcd696d50e8cae5ccb9bc67063bfca3f61049a2f81ad1a23b183a6",
+    "start": 1905
+  },
+  {
+    "doc": "fed-0917",
+    "end": 3179,
+    "native_tokens": 127,
+    "reference_tokens": 124,
+    "sha256": "6d77fed23b83596905b5cc5c24e0ff81d3510959083a111f69164af6d1fd5b0e",
+    "start": 2545
+  },
+  {
+    "doc": "fed-0917",
+    "end": 3664,
+    "native_tokens": 96,
+    "reference_tokens": 95,
+    "sha256": "2d2e03d3b2fbb86bafe89ad9b6e75170cdfd1888b3619863baf671eef1aee491",
+    "start": 3179
+  },
+  {
+    "doc": "fed-1029",
+    "end": 640,
+    "native_tokens": 117,
+    "reference_tokens": 114,
+    "sha256": "36c02b8616339fde73ef3033a078dcf21795c69413496e04b989b755a0462a9e",
+    "start": 0
+  },
+  {
+    "doc": "fed-1029",
+    "end": 1280,
+    "native_tokens": 134,
+    "reference_tokens": 127,
+    "sha256": "d2a0daac97fe33b26ee9f7f46b2c918fe69a3f10d4ac4ca9cc97d6e2dab928c6",
+    "start": 640
+  },
+  {
+    "doc": "fed-1029",
+    "end": 1916,
+    "native_tokens": 120,
+    "reference_tokens": 115,
+    "sha256": "d8b29b22e2727e035964d2afc2597de77723bf35a05d2f6685915e22e4a78900",
+    "start": 1280
+  },
+  {
+    "doc": "fed-1029",
+    "end": 2546,
+    "native_tokens": 117,
+    "reference_tokens": 112,
+    "sha256": "04c17c6771890e9defc7db89ab81b8965244938b6afec08314848ab68e0d5452",
+    "start": 1916
+  },
+  {
+    "doc": "fed-1029",
+    "end": 3183,
+    "native_tokens": 126,
+    "reference_tokens": 123,
+    "sha256": "b8c43a56cd6d954dca3cdfb756b014e7af7e7b73b3a14aee08a4a2640f6028f5",
+    "start": 2546
+  },
+  {
+    "doc": "fed-1029",
+    "end": 3490,
+    "native_tokens": 71,
+    "reference_tokens": 70,
+    "sha256": "b572a481f037a85409a398bda71dec03fc58886c448b4fc39c490e466ab2914a",
+    "start": 3183
+  },
+  {
+    "doc": "fed-1210",
+    "end": 640,
+    "native_tokens": 117,
+    "reference_tokens": 114,
+    "sha256": "bb38410e44e8c7ec3a305379fe47e435351ac9a2bf224f2035370617a22db238",
+    "start": 0
+  },
+  {
+    "doc": "fed-1210",
+    "end": 1280,
+    "native_tokens": 122,
+    "reference_tokens": 113,
+    "sha256": "24cef868d3eb8824b89f5d80781e386734e2d5758b3d873efe25ebf9d7d26a5b",
+    "start": 640
+  },
+  {
+    "doc": "fed-1210",
+    "end": 1919,
+    "native_tokens": 130,
+    "reference_tokens": 123,
+    "sha256": "cda732491fc3dc896ee3704edaa0b74625e2bf7e67d74c41b862e1d5dea711c0",
+    "start": 1280
+  },
+  {
+    "doc": "fed-1210",
+    "end": 2551,
+    "native_tokens": 119,
+    "reference_tokens": 115,
+    "sha256": "27fd514893528809a1aca7c24df979a6a01c312f701b0cc48125378ace224bf4",
+    "start": 1919
+  },
+  {
+    "doc": "fed-1210",
+    "end": 3185,
+    "native_tokens": 125,
+    "reference_tokens": 119,
+    "sha256": "873c1f501c616d07e2ad7faed62894f7818352e36d7389855eb4b31ce1d11e40",
+    "start": 2551
+  },
+  {
+    "doc": "fed-1210",
+    "end": 3489,
+    "native_tokens": 56,
+    "reference_tokens": 56,
+    "sha256": "8373d3fff314d4e49b06e19b176a1378849a2ece9ba65d8fd711db34664670e6",
+    "start": 3185
+  },
+  {
+    "doc": "law-1",
+    "end": 637,
+    "native_tokens": 209,
+    "reference_tokens": 188,
+    "sha256": "0d94f6c54730bc3206162fc5d4259e610791cfd78bea520cabb4f4ee9526ac66",
+    "start": 0
+  },
+  {
+    "doc": "law-1",
+    "end": 1274,
+    "native_tokens": 157,
+    "reference_tokens": 151,
+    "sha256": "5b7043319f42c8e4837b25013d891d658c28ed184b84d95f55620b3529d4b8d4",
+    "start": 637
+  },
+  {
+    "doc": "law-1",
+    "end": 1914,
+    "native_tokens": 181,
+    "reference_tokens": 162,
+    "sha256": "e4cf786b945460216305255e88720213a14d5c7a58ecb41fc48009287cbd6545",
+    "start": 1274
+  },
+  {
+    "doc": "law-1",
+    "end": 2551,
+    "native_tokens": 126,
+    "reference_tokens": 119,
+    "sha256": "956fd80295900545910548c26f87604cc43602fbc9a3ab454c87a5a5a55631b1",
+    "start": 1914
+  },
+  {
+    "doc": "law-1",
+    "end": 3191,
+    "native_tokens": 170,
+    "reference_tokens": 153,
+    "sha256": "fe7d00250d435a6b8d5d4751812c56dd7eac01bf704d990db6750f381426ace6",
+    "start": 2551
+  },
+  {
+    "doc": "law-1",
+    "end": 3830,
+    "native_tokens": 122,
+    "reference_tokens": 113,
+    "sha256": "3da5d5daa7390fe8a736994fa68219a536354c270585641b6bc639691b10be2e",
+    "start": 3191
+  },
+  {
+    "doc": "law-1",
+    "end": 4038,
+    "native_tokens": 59,
+    "reference_tokens": 49,
+    "sha256": "7e74ea68bc5d89df626fbe1e09f132c15ee0d970be6eb39f36e417d600bbc113",
+    "start": 3830
+  },
+  {
+    "doc": "law-2",
+    "end": 428,
+    "native_tokens": 101,
+    "reference_tokens": 90,
+    "sha256": "3a69db638b0c57b0535c6f56cbb955ad5f585bd327e756bd65afa2986e65768a",
+    "start": 0
+  },
+  {
+    "doc": "law-3",
+    "end": 341,
+    "native_tokens": 79,
+    "reference_tokens": 70,
+    "sha256": "0a79f85c99116cbf639c4a6ef7f989642a27b433cf23654d43d82f9a78140c4f",
+    "start": 0
+  },
+  {
+    "doc": "law-4",
+    "end": 637,
+    "native_tokens": 210,
+    "reference_tokens": 189,
+    "sha256": "02915c60c9676b3e5029d2c4214385b2e071fed95ad14be97aa3fae42e6ece6f",
+    "start": 0
+  },
+  {
+    "doc": "law-4",
+    "end": 1273,
+    "native_tokens": 246,
+    "reference_tokens": 217,
+    "sha256": "7d4a7dd05f2a9bbac6e3254c8d01f1b6fb7c65c572ed7c622472334e1db92c62",
+    "start": 637
+  },
+  {
+    "doc": "law-4",
+    "end": 1912,
+    "native_tokens": 163,
+    "reference_tokens": 135,
+    "sha256": "8afc1e473dcb06cabe00fdcbf36154fb60f57e070536b57f7c7979fd1acbe698",
+    "start": 1273
+  },
+  {
+    "doc": "law-4",
+    "end": 2545,
+    "native_tokens": 179,
+    "reference_tokens": 144,
+    "sha256": "6839b2e825b8984abc9d66133a1c7e88039be6f3be8a42bbfe2c17d4ea802cd9",
+    "start": 1912
+  },
+  {
+    "doc": "law-4",
+    "end": 3179,
+    "native_tokens": 166,
+    "reference_tokens": 138,
+    "sha256": "ab18e8e0906f2b0131832c7af8660b400f2095738733d8251bf9205b4f79ab51",
+    "start": 2545
+  },
+  {
+    "doc": "law-4",
+    "end": 3430,
+    "native_tokens": 60,
+    "reference_tokens": 55,
+    "sha256": "9a2204a2f7c1a0560541c621344f07fd233fe2b75f86badaeceaedf54d821adc",
+    "start": 3179
+  },
+  {
+    "doc": "law-5",
+    "end": 388,
+    "native_tokens": 92,
+    "reference_tokens": 81,
+    "sha256": "b7aade9dcc23ace7e27b5216043827b557bf02d7d45903ea641c6e73931d7d25",
+    "start": 0
+  },
+  {
+    "doc": "law-6",
+    "end": 394,
+    "native_tokens": 89,
+    "reference_tokens": 77,
+    "sha256": "76e6d7074dc7498f265f7ff5f39239bca136701ef89131a038f6e63667c88735",
+    "start": 0
+  },
+  {
+    "doc": "law-7",
+    "end": 383,
+    "native_tokens": 92,
+    "reference_tokens": 81,
+    "sha256": "5e31e3b3f6cb66233a0cd9f5e719a988f12cd6ccade357c17fa71d01fbadc3a9",
+    "start": 0
+  },
+  {
+    "doc": "law-8",
+    "end": 466,
+    "native_tokens": 98,
+    "reference_tokens": 89,
+    "sha256": "d06db5b754f876475a6606447a45c59ff366c3057b38e18578284bb3a2a56b24",
+    "start": 0
+  },
+  {
+    "doc": "weather-al01",
+    "end": 637,
+    "native_tokens": 139,
+    "reference_tokens": 126,
+    "sha256": "449a7c24d3d05aa35642f393b7610d74e67e738cf61ce615724d0fd2bd1b6378",
+    "start": 0
+  },
+  {
+    "doc": "weather-al01",
+    "end": 912,
+    "native_tokens": 78,
+    "reference_tokens": 73,
+    "sha256": "d04a4258c4e65f66e080a6abc3f5ca6bd798aab6b39873c398e524dafb0fb581",
+    "start": 637
+  },
+  {
+    "doc": "weather-al02",
+    "end": 640,
+    "native_tokens": 132,
+    "reference_tokens": 124,
+    "sha256": "328b7668651b6844c9c06155550a536f8169fa1a52f3996f5c986519765f88e9",
+    "start": 0
+  },
+  {
+    "doc": "weather-al02",
+    "end": 1273,
+    "native_tokens": 116,
+    "reference_tokens": 114,
+    "sha256": "f26eedb18397a34d0bd137d352e8a1aeebca7901339d1c85f177b6b6d0a5f370",
+    "start": 640
+  },
+  {
+    "doc": "weather-al02",
+    "end": 1657,
+    "native_tokens": 75,
+    "reference_tokens": 75,
+    "sha256": "c3f500b0d4618e421fbef39d219ac5b45ac1519d77a985f45359de1d502184a0",
+    "start": 1273
+  },
+  {
+    "doc": "weather-al03",
+    "end": 634,
+    "native_tokens": 128,
+    "reference_tokens": 122,
+    "sha256": "3976b0d1f21a6972827ebf0fe73494b9de9793cd59a4b3fbd3e5dff129468146",
+    "start": 0
+  },
+  {
+    "doc": "weather-al03",
+    "end": 1272,
+    "native_tokens": 137,
+    "reference_tokens": 134,
+    "sha256": "a662937570127e2f10c2264aacaa346711894ae061706f12d4e14142ba4882bc",
+    "start": 634
+  },
+  {
+    "doc": "weather-al03",
+    "end": 1912,
+    "native_tokens": 150,
+    "reference_tokens": 139,
+    "sha256": "fdc5ac93d767a066b7005a74cac27cab6e1c68e141a03d2c540a94e76be3f193",
+    "start": 1272
+  },
+  {
+    "doc": "weather-al03",
+    "end": 2550,
+    "native_tokens": 144,
+    "reference_tokens": 128,
+    "sha256": "76930a6b6118263696de8d2bdcc2f7e487cfe04538d6a6bdcbf1e2765aeb6444",
+    "start": 1912
+  },
+  {
+    "doc": "weather-al03",
+    "end": 3182,
+    "native_tokens": 147,
+    "reference_tokens": 137,
+    "sha256": "a835177a8969ae668e5fd9f6164678b1163e97e781cfe5581c5c118c7620fc8c",
+    "start": 2550
+  },
+  {
+    "doc": "weather-al03",
+    "end": 3798,
+    "native_tokens": 115,
+    "reference_tokens": 115,
+    "sha256": "e1c8e58e48e8d123ff94bb9db266fd789c3dc948324d4606af1c84e088a2f95c",
+    "start": 3182
+  },
+  {
+    "doc": "weather-al04",
+    "end": 635,
+    "native_tokens": 148,
+    "reference_tokens": 137,
+    "sha256": "2509f0d2fd8048a3dccedb0de322255fee66fb2a75c69e586557ca5e0f182e90",
+    "start": 0
+  },
+  {
+    "doc": "weather-al04",
+    "end": 1266,
+    "native_tokens": 137,
+    "reference_tokens": 129,
+    "sha256": "f20c9ace672c6b3f2cf0b36c08dd92eb001db64a5c2c26894f10c27f0c432f0b",
+    "start": 635
+  },
+  {
+    "doc": "weather-al04",
+    "end": 1902,
+    "native_tokens": 140,
+    "reference_tokens": 126,
+    "sha256": "5156d83a3f21f0c0c814b3a57b75a84da67afca2eb925527ce5eae173b73b614",
+    "start": 1266
+  },
+  {
+    "doc": "weather-al04",
+    "end": 2270,
+    "native_tokens": 79,
+    "reference_tokens": 73,
+    "sha256": "7495df5452a38412ccc0cf5e8818527ac4e0caf1c4b6e8513e8274342ea05eee",
+    "start": 1902
+  },
+  {
+    "doc": "weather-al05",
+    "end": 634,
+    "native_tokens": 155,
+    "reference_tokens": 132,
+    "sha256": "2964e50f1cb3d5bce0bdbb462e6bcf7fd5b3fc9ac0c9b50d0a6a2bac8542f0c4",
+    "start": 0
+  },
+  {
+    "doc": "weather-al05",
+    "end": 1272,
+    "native_tokens": 144,
+    "reference_tokens": 139,
+    "sha256": "90efda835dcab5416f96d9780dfc8c68fde05949e13a81b8d1ad882945969842",
+    "start": 634
+  },
+  {
+    "doc": "weather-al05",
+    "end": 1910,
+    "native_tokens": 147,
+    "reference_tokens": 136,
+    "sha256": "68ed3db1a5ef3b5e51aa4105ba1c3c517ad209451cb9e60173427bb046a8ddab",
+    "start": 1272
+  },
+  {
+    "doc": "weather-al05",
+    "end": 2548,
+    "native_tokens": 146,
+    "reference_tokens": 138,
+    "sha256": "4f09e063f2ecd9ae3a43a4343ecc81b45a0dd3d39c3a4e6b11b0dc3ffdc0a303",
+    "start": 1910
+  },
+  {
+    "doc": "weather-al05",
+    "end": 2614,
+    "native_tokens": 13,
+    "reference_tokens": 14,
+    "sha256": "13c742286683c9fc43ee85e78dc939321acc47bfabd52453c22908d85a5e1822",
+    "start": 2548
+  },
+  {
+    "doc": "weather-al06",
+    "end": 633,
+    "native_tokens": 145,
+    "reference_tokens": 133,
+    "sha256": "f1d53d848ab8c8473fb9b23c2968b8935b593bca113443ec180f0bd38a145a5b",
+    "start": 0
+  },
+  {
+    "doc": "weather-al06",
+    "end": 1270,
+    "native_tokens": 135,
+    "reference_tokens": 127,
+    "sha256": "710d75e849ee004f92781c76caa0e36f552ff6ab68988f32eebcff7371a0cbf6",
+    "start": 633
+  },
+  {
+    "doc": "weather-al06",
+    "end": 1539,
+    "native_tokens": 64,
+    "reference_tokens": 56,
+    "sha256": "c697d4bf29779d7deeaa231e5a7f06db6427dca0fd40454d53456f3d5b87f2ec",
+    "start": 1270
+  },
+  {
+    "doc": "weather-al07",
+    "end": 639,
+    "native_tokens": 134,
+    "reference_tokens": 127,
+    "sha256": "2453c7b25ed5c2c08b670838f2dbc936ef94c95dceaed01c93f826b9149e48bc",
+    "start": 0
+  },
+  {
+    "doc": "weather-al07",
+    "end": 1279,
+    "native_tokens": 128,
+    "reference_tokens": 127,
+    "sha256": "3bc4ee43ea0fceac6b7ef6ae00b9d271424f0bfb642e0df58126be3e71d6660d",
+    "start": 639
+  },
+  {
+    "doc": "weather-al07",
+    "end": 1910,
+    "native_tokens": 125,
+    "reference_tokens": 120,
+    "sha256": "16e37bcd44cb1b47ca9dfef292b598df4b39147a24569df5377bae4c85fc088b",
+    "start": 1279
+  },
+  {
+    "doc": "weather-al07",
+    "end": 2162,
+    "native_tokens": 49,
+    "reference_tokens": 49,
+    "sha256": "a6501f7c4c44369e084b7ff6d5a72932b58a281e68ea0b5cf83d5a47055ac56e",
+    "start": 1910
+  },
+  {
+    "doc": "weather-al08",
+    "end": 636,
+    "native_tokens": 133,
+    "reference_tokens": 123,
+    "sha256": "2988bd587ef7806bca4f3f3cf648a68c91f63b9b20fc7ccfc52a818dcc8888c1",
+    "start": 0
+  },
+  {
+    "doc": "weather-al08",
+    "end": 1274,
+    "native_tokens": 133,
+    "reference_tokens": 129,
+    "sha256": "6722cab361d5d411f7df20a5b23014dc73c4178aa6b53081dbb99d2c8063854c",
+    "start": 636
+  },
+  {
+    "doc": "weather-al08",
+    "end": 1765,
+    "native_tokens": 102,
+    "reference_tokens": 100,
+    "sha256": "75a77dddefb6d99a21f32f542c00b65f5d854969cd9b8a4de77ebe2d0e9f3e8c",
+    "start": 1274
+  }
+]
