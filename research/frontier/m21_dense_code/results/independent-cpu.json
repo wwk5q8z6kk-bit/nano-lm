@@ -1,0 +1,582 @@
+{
+  "groups_per_cell": 8,
+  "comparisons": [
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 8.22e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 1.99e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 5.56e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 3.7e-08
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 5.1e-08
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 9.8e-08
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 3.66e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 1.72e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 7.24e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 2.9e-08
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 7.28e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 6.2e-08
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 9.8e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 1.08e-07
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "primary",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 1.022e-06
+    },
+    {
+      "seed": 0,
+      "arm": "m21",
+      "head": "base",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 2.1e-08
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 7.7e-08
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 4.8e-08
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 2.8e-08
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 3.24e-07
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 8.8e-08
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 1.33e-07
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 1.29e-07
+    },
+    {
+      "seed": 0,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 0.0
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 1.87e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 1.9e-08
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 6.7e-08
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 9.9e-08
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 2.388e-06
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 2.13e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 8.41e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 2.72e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 6.19e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 5.2e-08
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 9.75e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 1.12e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 8.8e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 1.19e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "primary",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 8.51e-07
+    },
+    {
+      "seed": 1,
+      "arm": "m21",
+      "head": "base",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 6.8e-08
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 8.1e-08
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 1.51e-07
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 1.16e-07
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 1.4e-07
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 3.6e-08
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 1.33e-07
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 3e-08
+    },
+    {
+      "seed": 1,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 1.52e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 2.87e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 1.74e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 1.45e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 7.6e-08
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 1.284e-06
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 3.53e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 1.579e-06
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 1.1e-08
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 9.78e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 9.9e-08
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 8.54e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 7.4e-08
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 1.132e-06
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 1.64e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "primary",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 3.33e-07
+    },
+    {
+      "seed": 2,
+      "arm": "m21",
+      "head": "base",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 4e-09
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 0,
+      "targets": 430,
+      "absolute_delta_bits_per_token": 1.66e-07
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 1,
+      "targets": 783,
+      "absolute_delta_bits_per_token": 1.06e-07
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 2,
+      "targets": 260,
+      "absolute_delta_bits_per_token": 6e-09
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 3,
+      "targets": 221,
+      "absolute_delta_bits_per_token": 2.57e-07
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 4,
+      "targets": 685,
+      "absolute_delta_bits_per_token": 9.5e-08
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 5,
+      "targets": 1823,
+      "absolute_delta_bits_per_token": 1.06e-07
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 8,
+      "targets": 549,
+      "absolute_delta_bits_per_token": 8.3e-08
+    },
+    {
+      "seed": 2,
+      "arm": "gqa",
+      "head": "primary",
+      "group": 9,
+      "targets": 405,
+      "absolute_delta_bits_per_token": 1.31e-07
+    }
+  ],
+  "maximum_absolute_delta_bits_per_token": 2.388e-06
+}
