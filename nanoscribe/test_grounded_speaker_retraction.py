@@ -93,6 +93,22 @@ def test_logistical_asides_preserve_the_scope_of_patient_doubt(aside, doubt, lic
     check(f"Patient: I took naproxen.\nUnknown: {aside}\nPatient: {doubt}", MED, "naproxen", licensed=licensed)
 
 
+@pytest.mark.parametrize("field,first,second", [
+    (MED, "I took naproxen.", "I haven't taken anything."),
+    (ALG, "No known allergies.", "I am allergic to nickel."),
+    (SEV, "My neck pain is 3/10.", "My neck pain is 7/10."),
+])
+def test_subsequent_explicit_patient_evidence_still_exposes_the_conflict(field, first, second):
+    def choices(aside):
+        report = f"Patient: {first}\n{aside}Patient: {second}"
+        source = transcript_source(NanoInput("speaker-boundary", report))
+        return set(build_grounded_english_menu(source, field, set()))
+
+    baseline = choices("")
+    assert any(label.lstrip().startswith("CONTRADICTED[") for label in baseline)
+    assert choices("Unknown: The main entrance is closed.\n") == baseline
+
+
 def test_unidentified_logistics_cannot_supply_the_question_for_a_patient_answer():
     check("Doctor: What medication did you take?\nUnknown: Where is the garage?\nPatient: Naproxen.",
           MED, "Naproxen", licensed=False)

@@ -230,28 +230,29 @@ _LOGISTICS_NOUN = (
     r"(?:tickets?|receipts?|fees?|passes|pass|meters?|pay stations?|machines?|bags?|coats?|jackets?|"
     r"keys?|wallets?|umbrellas?|doors?|windows?|chairs?|seats?|desks?|counters?|lobb(?:y|ies)|"
     r"garages?|lots?|entrances?|exits?|elevators?|lifts?|stairs|restrooms?|bathrooms?|rooms?|"
-    r"hallways?|buses|bus|trains?|taxis?|forms?|envelopes?|folders?|clipboards?|pens?|printers?|"
+    r"hallways?|buses|bus|trains?|shuttles?|taxis?|forms?|envelopes?|folders?|maps?|clipboards?|pens?|printers?|"
     r"parking|coatrooms?|cloakrooms?)"
 )
 _LOGISTICS_ITEM = (
     r"(?:(?:the|a|an|my|your|our|this|that) )?"
     r"(?:(?:parking|bus|train|coat[- ]?check|coatroom|cloakroom|waiting|visitor|entry|"
-    r"building|registration|reception|front|side|back|main) )?" + _LOGISTICS_NOUN
+    r"building|registration|reception|lobby|queue|front|side|back|main|north|south|east|west) )?" + _LOGISTICS_NOUN
 )
-_LOGISTICS_PREP = r"(?:at|by|near|on|in|into|beside|under|to|from|behind|next to|across from|in front of)"
+_LOGISTICS_PREP = r"(?:at|by|near|on|in|into|beside|under|to|from|past|behind|opposite|next to|across from|in front of)"
 _LOGISTICS_PLACE = (
     rf"(?:here|there|outside|inside|upstairs|downstairs|on the (?:left|right)|{_LOGISTICS_PREP} {_LOGISTICS_ITEM})"
 )
 _LOGISTICS_SUBJECT = rf"{_LOGISTICS_ITEM}(?: (?:for|to|near|beside) {_LOGISTICS_ITEM})?"
-_LOGISTICS_ACTION = r"(?:bring|leave|put|take|move|collect|fetch|find|open|close|carry|hand over|pick up|drop off|validate|pay for)"
+_LOGISTICS_ACTION = r"(?:bring|leave|put|take|move|collect|fetch|find|open|close|carry|return|hand over|pick up|drop off|validate|pay for)"
 _LOGISTICS_TIME = r"(?:noon|midnight|(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]{1,2})(?::[0-5][0-9])?(?: [ap]m)?)"
 _LOGISTICAL_CLAUSE_RE = re.compile(
     rf"(?:{_LOGISTICS_SUBJECT} (?:is|are|was|were) (?:already |still )?"
     rf"(?:{_LOGISTICS_PLACE}|open|closed|locked|unlocked|available|ready|full|empty)"
-    rf"|{_LOGISTICS_SUBJECT} (?:opens?|closes?|arrives?|leaves?) at {_LOGISTICS_TIME}"
-    rf"|(?:i|we) (?:have|found|brought|left|put|paid for|picked up|dropped off|will {_LOGISTICS_ACTION}) {_LOGISTICS_SUBJECT}(?: {_LOGISTICS_PLACE})?"
+    rf"|{_LOGISTICS_SUBJECT} (?:opens?|closes?|arrives?|leaves?|departs?)(?: at {_LOGISTICS_TIME}| {_LOGISTICS_PLACE})"
+    rf"|(?:i|we) (?:have|found|brought|left|put|paid for|picked up|dropped off|(?:can|will) {_LOGISTICS_ACTION}) {_LOGISTICS_SUBJECT}(?: {_LOGISTICS_PLACE})?"
     rf"|(?:where |when )?(?:(?:shall|may|can|could|should) (?:i|we)|(?:can|could|would) you(?: please)?|please) {_LOGISTICS_ACTION} {_LOGISTICS_SUBJECT}(?: {_LOGISTICS_PLACE})?"
-    rf"|where (?:is|are) {_LOGISTICS_SUBJECT}|(?:is|are) {_LOGISTICS_SUBJECT} {_LOGISTICS_PLACE})",
+    rf"|where (?:is|are) {_LOGISTICS_SUBJECT}|(?:is|are) {_LOGISTICS_SUBJECT} {_LOGISTICS_PLACE}"
+    rf"|(?:which {_LOGISTICS_NOUN}|{_LOGISTICS_SUBJECT}) (?:takes?|accepts?) (?:coins?|cash|cards?))",
     re.I,
 )
 
@@ -831,7 +832,7 @@ def _logistical_aside_prompt(turn: Turn) -> bool | None:
     clauses = [" ".join(part.split()) for part in re.split(r"[.!?;]+\s*", speech.strip().rstrip(".!?;"))]
     if not all(_LOGISTICAL_CLAUSE_RE.fullmatch(clause) for clause in clauses):
         return None
-    return "?" in speech or any(re.match(r"(?:where|when|shall|may|can|could|would|should|please|is|are)\b",
+    return "?" in speech or any(re.match(r"(?:where|when|which|shall|may|can|could|would|should|please|is|are)\b",
                                           clause, re.I) for clause in clauses)
 
 
@@ -852,6 +853,10 @@ def _nonpatient_prompt(speech: str) -> bool:
 
 
 def _ambiguous_reply_boundary(previous: Turn) -> bool:
+    # A logistical aside cannot make the following patient statement about a
+    # different experiencer. It still interrupts clinician-question attribution.
+    if _logistical_aside_prompt(previous) is not None:
+        return False
     speech = _identified_nonpatient_speech(previous)
     if previous.speaker is Speaker.OTHER or previous.text.lower().startswith("other:"):
         # Plain Other asides retain their existing behavior. A direct question
