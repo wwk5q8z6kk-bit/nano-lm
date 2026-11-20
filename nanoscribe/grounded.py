@@ -18,6 +18,7 @@ and reply comprehension) from what deterministic software verifies reliably:
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 import re
 from fractions import Fraction
@@ -190,6 +191,15 @@ _ATTRIBUTION_PIVOT_RE = re.compile(
     rf"|and\s+(?=(?:my|the)\s+{_RECORD_SOURCE}\b|according to\b))", re.I
 )
 _QUOTED_PASSAGE_RE = re.compile(r""""[^"]+"|“[^”]+”|‘[^’]+’|(?<!\w)'(?!\s).+?(?<!\s)'(?!\w)""")
+
+_EITHER_OR_RE = re.compile(r"\beither\b(?!\s+(?:way|case)\b)(?:(?!\beither\b).)*?\bor\b", re.I)
+# A new asserted predicate can follow the alternatives in the same sentence.
+_ALTERNATIVE_END_RE = re.compile(
+    r"(?:,\s*(?:(?:and|but|yet|while|whereas)\s+)?|\s+(?:and|but|yet|while|whereas)\s+)"
+    r"(?=(?:i|it|this|that|(?:the|my)\s+[\w -]+?)"
+    r"(?:['’](?:m|s|ve)\b|\s+(?:am|is|was|are|were|have|has|had|began|started|feels?|took|used|tried|applied)\b))",
+    re.I,
+)
 
 _QUESTION_START = r"(?:am|can|could|would|will|should|did|do|does|is|are|what|which|who|where|when|why|how)\b"
 _QUESTION_JOIN_RE = re.compile(rf"(?:,\s*|\s+and\s+)(?={_QUESTION_START})", re.I)
@@ -534,6 +544,16 @@ def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
     return tuple(reports)
 
 
+def _explicit_alternatives(event: Turn) -> Iterator[CandidateSpan]:
+    """Yield the exact source range of each explicit either/or expression."""
+    for pair in _EITHER_OR_RE.finditer(event.text):
+        boundary = _ALTERNATIVE_END_RE.search(event.text, pair.end())
+        end = boundary.start() if boundary else len(event.text)
+        text = event.text[pair.start():end].rstrip(" .!?;,")
+        start = event.start + pair.start()
+        yield CandidateSpan(start, start + len(text), text)
+
+
 def _span_in_attributed_quote(turn: Turn, span: CandidateSpan) -> bool:
     for quote in _QUOTED_PASSAGE_RE.finditer(turn.text):
         if turn.start + quote.start() < span.end and turn.start + quote.end() > span.start:
@@ -707,6 +727,8 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     if text not in {turn_clean, clause_clean, *semi_clauses}:
         return False
 
+    if any(_explicit_alternatives(clause)):
+        return False
     if _patient_question(clause_clean) or _EMBEDDED_DENIAL_RE.search(clause_clean):
         return False
     if _PAST_OR_HYPOTHETICAL_RE.search(clause_clean) or _THIRD_PARTY_RE.search(clause_clean):
@@ -988,6 +1010,9 @@ def _verify_local_span(
             return False, "incomplete_numeric_token"
         reporting = [part for part in _reporting_events(clause)
                      if part.start < span.end and span.start < part.end]
+        if any(choice.start < span.end and span.start < choice.end
+               for part in reporting for choice in _explicit_alternatives(part)):
+            return False, "explicit_source_alternatives"
         if (_span_in_attributed_quote(turn, span) or any(
             _ATTRIBUTED_ASSERTION_RE.search(part.text) or _DISAVOWAL_RE.search(part.text) for part in reporting
         )):
@@ -1487,6 +1512,7 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     bundles: list[tuple[CandidateSpan, ...]] = []
     seen: set[tuple[tuple[int, int], ...]] = set()
     coexisting = _coexisting_substances(source, field)
+    scalar = {FieldName.DURATION: _DURATION_VALUE_RE, FieldName.SEVERITY: _SEVERITY_CORE_RE}.get(field)
     if coexisting:
         bundles.append(coexisting)
     for turn in source.turns:
@@ -1496,6 +1522,13 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
             whole = CandidateSpan(turn.start, turn.end, turn.text)
             seen.add(((whole.start, whole.end),))
             bundles.append((whole,))
+        # Keep evidence for an unresolved scalar choice on the relevant field.
+        if scalar and _EITHER_OR_RE.search(turn.text):
+            for clause in _reply_clauses(turn):
+                for event in _reporting_events(clause):
+                    for choice in _explicit_alternatives(event):
+                        if scalar.search(choice.text):
+                            bundles.append((choice,))
         # 2) Explicit epistemic uncertainty turns
         if _EPISTEMIC_HEDGE_RE.search(turn.text) and not re.search(
             r"\bchecking whether i can hear\b", turn.text, re.IGNORECASE
