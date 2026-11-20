@@ -7,7 +7,7 @@
 #   - add special tokens <|im_start|> <|im_end|> (tokenizer-training §4) then resize embeddings (LLM.md)
 # Nano scale adaptation (logged): drop heavy-LaTeX/code (nano web-BPE vocab under-tokenizes them);
 #   keep short general + multi-turn + format + refusal; seed a verifiable "length" slice for Stage 4.
-import json, re, random
+import json, random
 from datasets import load_dataset
 from tokenizers import Tokenizer
 
@@ -78,7 +78,8 @@ fmt = [[{"role": "user", "content": random.choice(SHORT_Q)},
 
 allc = convos + refusals + fmt
 random.shuffle(allc)
-json.dump(allc, open("sft_convos.json", "w"))
+with open("sft_convos.json", "w") as f:
+    json.dump(allc, f)
 print(f"total SFT convos: {len(allc)} (general {len(convos)}, refusal {n_ref}, format {n_fmt})", flush=True)
 
 # ---------- tokenizer: add special tokens, retokenize, build masked shards ----------
