@@ -715,7 +715,8 @@ def test_normalize_value() -> None:
 
     # Punctuation removal combined with article stripping
     assert normalize_value(".,the ,.,. quick brown;") == "quick brown"
-    assert normalize_value("the.,;") == "the"
+    for article in ("a.", "An!", "the.,;"):
+        assert normalize_value(article) == ""
 
 if __name__ == "__main__":
     fns = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]

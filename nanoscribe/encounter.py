@@ -167,6 +167,8 @@ def normalize_value(value: str) -> str:
     """Named superficial normalization. Does not change clinical meaning."""
     normalized = unicodedata.normalize("NFKC", value).casefold()
     normalized = " ".join(normalized.split()).strip(_SURROUNDING)
+    if normalized in {"a", "an", "the"}:
+        return ""
     for article in ("a ", "an ", "the "):
         if normalized.startswith(article):
             return normalized[len(article) :].strip(_SURROUNDING)
