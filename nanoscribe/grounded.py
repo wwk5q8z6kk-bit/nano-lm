@@ -1865,7 +1865,7 @@ def _medication_name_rejection(event: Turn, owned: tuple[int, int], span: Candid
 def _timed_question_event(question: str) -> str:
     """Extract the main event being dated, excluding a subordinate time reference."""
     request = re.search(
-        r"\b(?:when|how long|how many (?:minutes|hours|days|weeks|months)|(?:what|which) (?:day|date|time))\b"
+        r"\b(?:when|how (?:long|many (?:minutes|hours|days|weeks|months|years))(?:\s+ago)?|(?:what|which) (?:day|date|time))\b"
         r"(?P<event>[^?.!;]*)", question, re.I
     )
     if not request:
@@ -1876,7 +1876,7 @@ def _timed_question_event(question: str) -> str:
 # Match the dated event or action itself. A mention of the clinic later in a
 # question about symptom onset does not change what the patient is dating.
 _ADMINISTRATIVE_EVENT_RE = re.compile(
-    r"\s*(?:(?:ago\s+)?(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
+    r"\s*(?:(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
     r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
     r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b|"
     r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
