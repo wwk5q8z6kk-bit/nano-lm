@@ -218,7 +218,9 @@ _PAST_OR_HYPOTHETICAL_RE = re.compile(
 _NONPATIENT_ROLE_LABEL_RE = re.compile(
     r"^(?:(?:patient['’]s\s+)?(?:companion|caregiver|carer|guardian|support person|"
     r"family(?: member)?|relative|parent|mother|father|sibling|sister|brother|daughter|son|grandmother|"
-    r"grandfather|aunt|uncle|cousin|partner|spouse|husband|wife|friend)|other|interpreter|nurse)\s*:",
+    r"grandfather|aunt|uncle|cousin|partner|spouse|husband|wife|friend)|other|interpreter|nurse|"
+    r"receptionist|registrar|scheduler|secretary|(?:front[- ]desk|office|billing|scheduling|registration|"
+    r"administrative) (?:staff(?: member)?|clerk|assistant|coordinator))\s*:",
     re.I,
 )
 

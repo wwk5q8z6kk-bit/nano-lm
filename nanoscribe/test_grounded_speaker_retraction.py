@@ -61,6 +61,13 @@ def test_later_identified_speaker_preserves_patient_evidence_and_remains_uncover
     ("Family member: I was mistaken about my own medication.", True),
     ("Patient’s spouse: I was mistaken about naproxen.", True),
     ("Interpreter: I need a different microphone.", True),
+    ("Receptionist: Your receipt is in the envelope.", True),
+    ("Billing clerk: I was mistaken about my appointment time.", True),
+    ("Front-desk staff: Everything I said was about my own visit.", True),
+    ("Scheduling coordinator: I will put the forms outside.", True),
+    ("Office: I was mistaken about naproxen.", False),
+    ("Registration status: I was mistaken about naproxen.", False),
+    ("Registrar: Everything the patient said was about her husband.", False),
     ("Other: I was mistaken about naproxen.", True),
     ("Doctor: I was mistaken about naproxen.", True),
     ("Patient: I was mistaken about naproxen.", False),
@@ -85,7 +92,7 @@ def test_later_correction_owner_and_scope(later, licensed):
     check("Patient: I took naproxen.\n" + later, MED, "naproxen", licensed=licensed)
 
 
-@pytest.mark.parametrize("speaker", ["Companion", "Family", "Caregiver", "Unknown"])
+@pytest.mark.parametrize("speaker", ["Companion", "Family", "Caregiver", "Receptionist", "Unknown"])
 def test_nonpatient_report_is_never_patient_evidence(speaker):
     check(f"Patient: Thanks.\n{speaker}: I took cetirizine.", MED, "cetirizine", licensed=False)
 
