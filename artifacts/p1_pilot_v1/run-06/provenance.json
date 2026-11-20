@@ -1,0 +1,29 @@
+{
+  "checkpoint_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "finetuned_adapter": false,
+  "checkpoint_hashes": {
+    "config.json": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+    "generation_config.json": "e558847a8b4402616f1273797b015104dc266fe4b520056fca88823ba8f8ebe6",
+    "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+    "model.safetensors": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+    "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "prompt_sha256": "6ccfe710c469b65686025ff8a2a06e948fffbd69658d8e928b568b87a81fdaa5",
+  "prompt_style": "rules",
+  "code_hashes": {
+    "nanoscribe/compact.py": "c1cb48645337b759e9e1594ac6ef6dd213495990fca0a196db8006e6107c2daa",
+    "scripts/run_p1_pilot.py": "3ea24b2b76ce8cce3fa23343e3073e4f0ecc575b9c891ab74997211567a94df6",
+    "nanoscribe/context.py": "63b6aa7be343b1448aa51b0f94c896b6b5164113e15e9093bf567a0d720e232b",
+    "nanoscribe/check_note.py": "6676cd18ef68e185158592410794ab7a8d81886bd17042fbd72e89e0c11839e1",
+    "nanoscribe/scribe.py": "5b4e7d8c30bbc8d2f7317292cb84763dd423f50272d9500566045c3bb2d11ad9",
+    "nano_ai/adapters/state_span.py": "a3cfb784804b194216ad20398e39276478271eb6a831465ee044b2c57d605fcd"
+  },
+  "incremental_paid_compute_usd": 0,
+  "max_new_tokens": 256,
+  "decoding": "constrained",
+  "binder": "context",
+  "development_only": true
+}

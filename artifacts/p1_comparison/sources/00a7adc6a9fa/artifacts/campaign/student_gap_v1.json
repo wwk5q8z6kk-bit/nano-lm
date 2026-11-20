@@ -1,0 +1,208 @@
+{
+  "gap_vs_managed_ref_c2": {
+    "assertion_state_correct_rate": -0.0552,
+    "correct_abstention_rate": 0.0,
+    "coverage_rate": -0.0009,
+    "exact_gold_span_rate": 0.0005,
+    "support_direct_exact_rate": 0.0315
+  },
+  "gap_vs_qwen38_c2": {
+    "assertion_state_correct_rate": -0.1521,
+    "correct_abstention_rate": 0.0,
+    "coverage_rate": -0.0245,
+    "exact_gold_span_rate": -0.0018,
+    "support_direct_exact_rate": -0.063
+  },
+  "hybrid_warranted": false,
+  "leakage_gate": "pass",
+  "managed_reference": {
+    "c2_screening": {
+      "assertion_state_correct_count": 118,
+      "assertion_state_correct_eligible": 150,
+      "assertion_state_correct_rate": 0.7867,
+      "assertion_state_correct_wilson95": [
+        0.7144,
+        0.8446
+      ],
+      "correct_abstention_count": 0,
+      "correct_abstention_eligible": 150,
+      "correct_abstention_rate": 0.0,
+      "correct_abstention_wilson95": [
+        0.0,
+        0.025
+      ],
+      "coverage_count": 129,
+      "coverage_eligible": 150,
+      "coverage_rate": 0.86,
+      "coverage_wilson95": [
+        0.7954,
+        0.9066
+      ],
+      "exact_gold_span_count": 13,
+      "exact_gold_span_eligible": 150,
+      "exact_gold_span_rate": 0.0867,
+      "exact_gold_span_wilson95": [
+        0.0513,
+        0.1426
+      ],
+      "malformed": 11,
+      "model": "Qwen/Qwen3-32B-AWQ",
+      "n_atoms": 150,
+      "n_cases": 128,
+      "omission": 0,
+      "source": "artifacts/p1_runs/managed_ref_qwen3_32b_awq_c2_20260823T043749Z.json",
+      "spurious_atom": 0,
+      "support_direct_exact_count": 105,
+      "support_direct_exact_eligible": 150,
+      "support_direct_exact_rate": 0.7,
+      "support_direct_exact_wilson95": [
+        0.6224,
+        0.7676
+      ],
+      "unnecessary_abstention": 0
+    },
+    "model": "Qwen3-32B-AWQ"
+  },
+  "next_action": "No QLoRA \u2014 close assertion gap first or accept managed ref ceiling",
+  "qlora_gate_unlocked": false,
+  "qlora_rationale": "Assertion gap -0.055 vs managed ref on C2; malformed=6",
+  "qwen38_serverless": {
+    "c2_screening": {
+      "assertion_state_correct_count": 129,
+      "assertion_state_correct_eligible": 146,
+      "assertion_state_correct_rate": 0.8836,
+      "assertion_state_correct_wilson95": [
+        0.8214,
+        0.926
+      ],
+      "correct_abstention_count": 0,
+      "correct_abstention_eligible": 146,
+      "correct_abstention_rate": 0.0,
+      "correct_abstention_wilson95": [
+        0.0,
+        0.0256
+      ],
+      "coverage_count": 129,
+      "coverage_eligible": 146,
+      "coverage_rate": 0.8836,
+      "coverage_wilson95": [
+        0.8214,
+        0.926
+      ],
+      "exact_gold_span_count": 13,
+      "exact_gold_span_eligible": 146,
+      "exact_gold_span_rate": 0.089,
+      "exact_gold_span_wilson95": [
+        0.0528,
+        0.1464
+      ],
+      "malformed": 0,
+      "model": "Qwen/Qwen3.8-27B",
+      "n_atoms": 146,
+      "n_cases": 128,
+      "omission": 0,
+      "source": "artifacts/p1_runs/fanout_screening_p1_qwen_structured_20260823T021717Z.json",
+      "spurious_atom": 0,
+      "support_direct_exact_count": 116,
+      "support_direct_exact_eligible": 146,
+      "support_direct_exact_rate": 0.7945,
+      "support_direct_exact_wilson95": [
+        0.7218,
+        0.8521
+      ],
+      "unnecessary_abstention": 0
+    },
+    "model": "Qwen/Qwen3.8-27B"
+  },
+  "schema": "nano.campaign.student_gap.v1",
+  "semantic_gap_meaningful": true,
+  "student_a": {
+    "c1_canary": {
+      "assertion_state_correct_count": 26,
+      "assertion_state_correct_eligible": 32,
+      "assertion_state_correct_rate": 0.8125,
+      "assertion_state_correct_wilson95": [
+        0.6469,
+        0.9111
+      ],
+      "correct_abstention_count": 0,
+      "correct_abstention_eligible": 32,
+      "correct_abstention_rate": 0.0,
+      "correct_abstention_wilson95": [
+        0.0,
+        0.1072
+      ],
+      "coverage_count": 32,
+      "coverage_eligible": 32,
+      "coverage_rate": 1.0,
+      "coverage_wilson95": [
+        0.8928,
+        1.0
+      ],
+      "exact_gold_span_count": 7,
+      "exact_gold_span_eligible": 32,
+      "exact_gold_span_rate": 0.2188,
+      "exact_gold_span_wilson95": [
+        0.1102,
+        0.3876
+      ],
+      "malformed": 0,
+      "n_atoms": 32,
+      "n_cases": 32,
+      "omission": 0,
+      "spurious_atom": 0,
+      "support_direct_exact_count": 25,
+      "support_direct_exact_eligible": 32,
+      "support_direct_exact_rate": 0.7812,
+      "support_direct_exact_wilson95": [
+        0.6124,
+        0.8898
+      ],
+      "unnecessary_abstention": 0
+    },
+    "c2_screening": {
+      "assertion_state_correct_count": 109,
+      "assertion_state_correct_eligible": 149,
+      "assertion_state_correct_rate": 0.7315,
+      "assertion_state_correct_wilson95": [
+        0.6552,
+        0.7962
+      ],
+      "correct_abstention_count": 0,
+      "correct_abstention_eligible": 149,
+      "correct_abstention_rate": 0.0,
+      "correct_abstention_wilson95": [
+        0.0,
+        0.0251
+      ],
+      "coverage_count": 128,
+      "coverage_eligible": 149,
+      "coverage_rate": 0.8591,
+      "coverage_wilson95": [
+        0.7941,
+        0.9059
+      ],
+      "exact_gold_span_count": 13,
+      "exact_gold_span_eligible": 149,
+      "exact_gold_span_rate": 0.0872,
+      "exact_gold_span_wilson95": [
+        0.0517,
+        0.1435
+      ],
+      "malformed": 6,
+      "n_atoms": 149,
+      "n_cases": 128,
+      "omission": 1,
+      "spurious_atom": 0,
+      "support_direct_exact_count": 109,
+      "support_direct_exact_eligible": 149,
+      "support_direct_exact_rate": 0.7315,
+      "support_direct_exact_wilson95": [
+        0.6552,
+        0.7962
+      ],
+      "unnecessary_abstention": 0
+    }
+  },
+  "timestamp": "2026-08-23T15:43:49.600592+00:00"
+}

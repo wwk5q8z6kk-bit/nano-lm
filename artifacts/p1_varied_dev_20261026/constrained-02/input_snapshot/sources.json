@@ -1,0 +1,122 @@
+[
+  {
+    "case_id": "varied-01",
+    "stratum": "direct_question_reply_variation",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: I have heel soreness.\nDoctor: How long has it hurt?\nPatient: For two days.\nDoctor: How painful is it now?\nPatient: It feels mild.\nDoctor: What are you taking for it?\nPatient: I take celecoxib.\nDoctor: Any drug allergies?\nPatient: I have an allergy to nickel."
+  },
+  {
+    "case_id": "varied-02",
+    "stratum": "direct_question_reply_variation",
+    "transcript": "Doctor: What is troubling you?\nPatient: I have dry cough.\nDoctor: How long has it hurt?\nPatient: Three weeks ago.\nDoctor: How painful is it now?\nPatient: It feels moderate.\nDoctor: What are you taking for it?\nPatient: I take famotidine.\nDoctor: Any drug allergies?\nPatient: I have an allergy to latex."
+  },
+  {
+    "case_id": "varied-03",
+    "stratum": "direct_question_reply_variation",
+    "transcript": "Doctor: What brought you in today?\nPatient: I have neck stiffness.\nDoctor: How long has it hurt?\nPatient: About four hours.\nDoctor: How painful is it now?\nPatient: It feels severe.\nDoctor: What are you taking for it?\nPatient: I take loratadine.\nDoctor: Any drug allergies?\nPatient: I have an allergy to penicillin."
+  },
+  {
+    "case_id": "varied-04",
+    "stratum": "direct_question_reply_variation",
+    "transcript": "Doctor: Tell me about your symptoms.\nPatient: I have finger pain.\nDoctor: How long has it hurt?\nPatient: six months.\nDoctor: How painful is it now?\nPatient: It feels mild.\nDoctor: What are you taking for it?\nPatient: I take naproxen.\nDoctor: Any drug allergies?\nPatient: I have an allergy to cobalt."
+  },
+  {
+    "case_id": "varied-05",
+    "stratum": "unresolved_medication_conflict",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: I have heel soreness.\nDoctor: What are you taking for it?\nPatient: I am taking celecoxib.\nDoctor: Any medicine?\nPatient: No medication."
+  },
+  {
+    "case_id": "varied-06",
+    "stratum": "unresolved_medication_conflict",
+    "transcript": "Doctor: What is troubling you?\nPatient: I have dry cough.\nDoctor: Any medicine?\nPatient: No meds!\nDoctor: What are you taking for it?\nPatient: I am taking famotidine."
+  },
+  {
+    "case_id": "varied-07",
+    "stratum": "unresolved_medication_conflict",
+    "transcript": "Doctor: What brought you in today?\nPatient: I have neck stiffness.\nDoctor: What are you taking for it?\nPatient: I am taking loratadine.\nDoctor: Any medicine?\nPatient: I deny taking medicine."
+  },
+  {
+    "case_id": "varied-08",
+    "stratum": "unresolved_medication_conflict",
+    "transcript": "Doctor: Tell me about your symptoms.\nPatient: I have finger pain.\nDoctor: Any medicine?\nPatient: Nothing at all.\nDoctor: What are you taking for it?\nPatient: I am taking naproxen."
+  },
+  {
+    "case_id": "varied-09",
+    "stratum": "coexisting_medicines_not_conflict",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: I have heel soreness.\nDoctor: Which medicine did you try?\nPatient: I take celecoxib.\nDoctor: Any medicine?\nPatient: Just famotidine."
+  },
+  {
+    "case_id": "varied-10",
+    "stratum": "coexisting_medicines_not_conflict",
+    "transcript": "Doctor: What is troubling you?\nPatient: I have dry cough.\nDoctor: Which medicine did you try?\nPatient: I take famotidine.\nDoctor: Any medicine?\nPatient: Just loratadine."
+  },
+  {
+    "case_id": "varied-11",
+    "stratum": "coexisting_medicines_not_conflict",
+    "transcript": "Doctor: What brought you in today?\nPatient: I have neck stiffness.\nDoctor: Which medicine did you try?\nPatient: I take loratadine.\nDoctor: Any medicine?\nPatient: Just naproxen."
+  },
+  {
+    "case_id": "varied-12",
+    "stratum": "coexisting_medicines_not_conflict",
+    "transcript": "Doctor: Tell me about your symptoms.\nPatient: I have finger pain.\nDoctor: Which medicine did you try?\nPatient: I take naproxen.\nDoctor: Any medicine?\nPatient: Just celecoxib."
+  },
+  {
+    "case_id": "varied-13",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: I have heel soreness.\nDoctor: What are you taking for it?\nPatient: I cannot remember what I took.\nDoctor: How strong is the ache?\nPatient: Definitely moderate."
+  },
+  {
+    "case_id": "varied-14",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: What is troubling you?\nPatient: I have dry cough.\nDoctor: What are you taking for it?\nPatient: I am not sure whether I took anything.\nDoctor: How strong is the ache?\nPatient: Definitely moderate."
+  },
+  {
+    "case_id": "varied-15",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: What brought you in today?\nPatient: I have neck stiffness.\nDoctor: What are you taking for it?\nPatient: No regular medication.\nDoctor: How strong is the ache?\nPatient: Definitely moderate."
+  },
+  {
+    "case_id": "varied-16",
+    "stratum": "field_local_uncertainty",
+    "transcript": "Doctor: Tell me about your symptoms.\nPatient: I have finger pain.\nDoctor: What are you taking for it?\nPatient: No aspirin.\nDoctor: How strong is the ache?\nPatient: Definitely moderate."
+  },
+  {
+    "case_id": "varied-17",
+    "stratum": "missing_fields_unrelated_context",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: I've got heel soreness.\nDoctor: Did you arrive by bus?\nPatient: Yes, the bus was on time."
+  },
+  {
+    "case_id": "varied-18",
+    "stratum": "missing_fields_unrelated_context",
+    "transcript": "Doctor: What is troubling you?\nPatient: I've got dry cough.\nDoctor: Did you arrive by bus?\nPatient: Yes, the bus was on time."
+  },
+  {
+    "case_id": "varied-19",
+    "stratum": "missing_fields_unrelated_context",
+    "transcript": "Doctor: What brought you in today?\nPatient: I've got neck stiffness.\nDoctor: Did you arrive by bus?\nPatient: Yes, the bus was on time."
+  },
+  {
+    "case_id": "varied-20",
+    "stratum": "missing_fields_unrelated_context",
+    "transcript": "Doctor: Tell me about your symptoms.\nPatient: I've got finger pain.\nDoctor: Did you arrive by bus?\nPatient: Yes, the bus was on time."
+  },
+  {
+    "case_id": "varied-21",
+    "stratum": "qualified_and_other_person_medication",
+    "transcript": "Doctor: What symptoms are you having?\nPatient: I have heel soreness.\nDoctor: Any medicine?\nPatient: I take celecoxib, but I stopped.\nDoctor: Any allergies I should know about?\nPatient: No allergies."
+  },
+  {
+    "case_id": "varied-22",
+    "stratum": "qualified_and_other_person_medication",
+    "transcript": "Doctor: What is troubling you?\nPatient: I have dry cough.\nDoctor: Any medicine?\nPatient: No medication for my mother.\nDoctor: Any allergies I should know about?\nPatient: No allergies."
+  },
+  {
+    "case_id": "varied-23",
+    "stratum": "qualified_and_other_person_medication",
+    "transcript": "Doctor: What brought you in today?\nPatient: I have neck stiffness.\nDoctor: Any medicine?\nPatient: Maybe naproxen.\nDoctor: Any allergies I should know about?\nPatient: No allergies."
+  },
+  {
+    "case_id": "varied-24",
+    "stratum": "qualified_and_other_person_medication",
+    "transcript": "Doctor: Tell me about your symptoms.\nPatient: I have finger pain.\nDoctor: Any medicine?\nPatient: I am considering famotidine.\nDoctor: Any allergies I should know about?\nPatient: No allergies."
+  }
+]

@@ -105,6 +105,21 @@ Training venue ≠ deployment venue. Compact/local/private deployment remains a 
 
 Full table: [`audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md`](audit/discussion-to-implementation/CANONICAL_STATUS_TABLE.md)
 
+## Checked scribing development path
+
+The compact model can produce a source-checked five-field review draft from a
+transcript using a pinned local checkpoint:
+
+```sh
+python3 -m nanoscribe.scribe --transcript /absolute/path/to/transcript.txt \
+  --compact-checkpoint /absolute/path/to/pinned/local/snapshot \
+  --compact-decoding constrained --context-policy context --format text
+```
+
+This opt-in route uses bounded question/reply grammars and retains abstentions;
+it is not clinical validation. The [20-dialogue pilot report](artifacts/p1_pilot_v1/REPORT.md)
+records 14 useful review drafts, six abstentions and the remaining semantic limits.
+
 ## Quick repository verification
 
 ```bash

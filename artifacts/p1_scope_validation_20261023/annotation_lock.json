@@ -1,0 +1,18 @@
+{
+  "recorded_utc": "2026-10-24T00:39:32.635069+00:00",
+  "purpose": "Pre-inference source, independent annotation, adjudication and protocol lock; development integrity record, not a frozen experiment.",
+  "files": {
+    "adjudication.md": "b739d1d87559c1939d93a68421ddc8afacc7e5417d9733d710dc92380ba50804",
+    "agreement.json": "dd07d30e38c7c782c9b7cf2224e84a5fee105012a11b76d334a77f83ff988729",
+    "annotation_a_process.md": "a3001bc0dbbb2c1ec147efac29de4d43c9221ef71af3ffbe6b4ffbf7c5b7b996",
+    "annotation_b_process.md": "99b896355fb22266772bd863c48f405c351f7550e15b179ed3b156c72080a46e",
+    "annotation_rubric.md": "01d1781a620e8a1d42018715569b4eb5571b4bca04741982bcc98c7a0bc27657",
+    "annotations_a.json": "1a09b448e578594b4dbd78cb920b849a224a5ec7912bd152badecae77e23a6ad",
+    "annotations_b.json": "be377df9c61187a6e806cd0127f5e727f6d61b6856e9143b40aacf9fa8fcb2d9",
+    "authoring.md": "623a9fe04c7385c19b0131349a934c05a70b4da3f44ca48fc31e6850d01558b1",
+    "gold.json": "49764e59a37a75ed1e660b2dd7e463b26c4a902fc5c6f798355f39b4e3fae378",
+    "implementation_lock.json": "3598502c25c8c199d902dbbfdd1ea5f19f868d04736bfe7d1be95774fa3f024f",
+    "protocol.md": "8e92c6dd5078fd088b46dd8ec92471230b3d6c1c1900bae6528b24176307be27",
+    "sources.json": "66aaa2a0a4dda24a805626e49e9412794978a7e9f664ba385eeb0266e3b6a699"
+  }
+}

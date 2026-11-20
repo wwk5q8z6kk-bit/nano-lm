@@ -1,0 +1,49 @@
+{
+  "attempt_id": "c6177067-487f-4872-a84e-cd2c9eab8278",
+  "authorization_cost_usd": 0,
+  "campaign_runtime_cap_seconds": 14400,
+  "canonical_authority": "/Users/mac/.codex/nano-evaluation-authority/nano-p1-h7-boundary-margin-screen-v1",
+  "experiment": "nano-p1-h7-boundary-margin-screen-v1",
+  "kernel_metadata": {
+    "code_file": "h7_training.ipynb",
+    "competition_sources": [],
+    "dataset_sources": [
+      "hassaneljesr/nano-h7-training-d6ed212"
+    ],
+    "docker_image": "gcr.io/kaggle-images/python@sha256:81b1e7c4b4f0f2a7e0a33943c95754b1b7af6b30d65221633a284b6b601cd84a",
+    "docker_image_pinning_type": "original",
+    "enable_gpu": false,
+    "enable_internet": true,
+    "enable_tpu": false,
+    "id": "hassaneljesr/nano-h7-train-run-d6ed212",
+    "id_no": 138359905,
+    "is_private": true,
+    "kernel_sources": [],
+    "kernel_type": "notebook",
+    "keywords": [],
+    "language": "python",
+    "machine_shape": "None",
+    "model_sources": [],
+    "title": "nano-h7-train-run-d6ed212"
+  },
+  "max_runtime_seconds": 14400,
+  "package": {
+    "archive_sha256": "1098761fd287dea1d106a32383308032d47c1061d3525877d57888bc7a15cb3f",
+    "manifest_sha256": "ed5781f7728b4f7401b5a06f15b9760efc2584e0d977600966f1eb62395050dd",
+    "result": "nano-h7-treatment-results.tar.gz",
+    "root": "nano-h7-training",
+    "script": "RUN_H7_TRAIN.sh"
+  },
+  "reserved_at_utc": "2026-10-22T19:33:05Z",
+  "retry_policy": "Never automatically retry or release; terminal or unknown attempts require review.",
+  "runner_sha256": "f0d7eed99f6b1eaf28e214c0e73924585ec91b92333379a460f2d4d53f8d8c86",
+  "schema": "nano.h7-operational-reservation.v1",
+  "stage": "training",
+  "stage_dataset": "hassaneljesr/nano-h7-training-d6ed212",
+  "training_terminal": null,
+  "treatment_archive_sha256": null,
+  "treatment_dataset": null,
+  "verified_private_datasets": [
+    "hassaneljesr/nano-h7-training-d6ed212"
+  ]
+}

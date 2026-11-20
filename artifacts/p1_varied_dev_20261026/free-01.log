@@ -1,0 +1,27 @@
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<01:32,  3.63it/s]Loading weights:  36%|███▋      | 123/338 [00:00<00:00, 368.70it/s]Loading weights:  52%|█████▏    | 175/338 [00:00<00:00, 354.19it/s]Loading weights:  65%|██████▍   | 219/338 [00:00<00:00, 334.30it/s]Loading weights:  76%|███████▌  | 257/338 [00:00<00:00, 264.49it/s]Loading weights:  86%|████████▌ | 291/338 [00:01<00:00, 259.43it/s]Loading weights:  97%|█████████▋| 327/338 [00:01<00:00, 254.36it/s]Loading weights: 100%|██████████| 338/338 [00:01<00:00, 275.26it/s]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+varied-01 draft review 35
+varied-02 draft review 35
+varied-03 draft review 36
+varied-04 draft review 34
+varied-05 draft review 45
+varied-06 failed abstain 15
+varied-07 draft abstain 36
+varied-08 failed abstain 15
+varied-09 draft review 40
+varied-10 draft review 38
+varied-11 failed abstain 28
+varied-12 failed abstain 24
+varied-13 draft review 32
+varied-14 draft review 35
+varied-15 draft abstain 31
+varied-16 failed abstain 25
+varied-17 failed abstain 26
+varied-18 draft review 25
+varied-19 draft abstain 26
+varied-20 failed abstain 19
+varied-21 draft review 39
+varied-22 draft review 31
+varied-23 draft abstain 37
+varied-24 draft review 32
+{"raw": 0.08333333333333333, "checked": 0.325}

@@ -1,0 +1,623 @@
+{
+  "status": "posthoc_diagnostic",
+  "method": "Replay transcript_source, inspect_context and question_field on preserved sources; no model calls or annotation changes. Unknown context forces all extracted source fields to U in extract_context_fields.",
+  "cases_with_unknown_context": 24,
+  "cases": [
+    {
+      "case_id": "fresh-01",
+      "unknown_source_context": true,
+      "recognized_source_observations": 2,
+      "clinician_turns": [
+        {
+          "text": "What brought you in?",
+          "recognized_field": null
+        },
+        {
+          "text": "How long has it been there?",
+          "recognized_field": null
+        },
+        {
+          "text": "How bad is it?",
+          "recognized_field": "severity"
+        },
+        {
+          "text": "Have you taken anything for it?",
+          "recognized_field": "medication"
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-02",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "Tell me about the problem today.",
+          "recognized_field": "chief_complaint"
+        },
+        {
+          "text": "When did the cough start?",
+          "recognized_field": null
+        },
+        {
+          "text": "Would you call it mild, moderate, or severe?",
+          "recognized_field": null
+        },
+        {
+          "text": "What have you used for it so far?",
+          "recognized_field": null
+        },
+        {
+          "text": "Do you have any drug allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-03",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What's the main reason for this visit?",
+          "recognized_field": null
+        },
+        {
+          "text": "For how many days?",
+          "recognized_field": null
+        },
+        {
+          "text": "How would you describe the severity?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-04",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "Where are you having trouble?",
+          "recognized_field": null
+        },
+        {
+          "text": "How intense is that pain?",
+          "recognized_field": null
+        },
+        {
+          "text": "Have you tried a medicine for the back pain?",
+          "recognized_field": null
+        },
+        {
+          "text": "Are you allergic to any medications?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-05",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What's troubling you?",
+          "recognized_field": null
+        },
+        {
+          "text": "When did it begin, and how strong is it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Did you take anything for the headache?",
+          "recognized_field": null
+        },
+        {
+          "text": "Can you be certain either way?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any allergies to medicines?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-06",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "Tell me what hurts.",
+          "recognized_field": null
+        },
+        {
+          "text": "How bad does it feel?",
+          "recognized_field": null
+        },
+        {
+          "text": "Have you used anything from the medicine cabinet?",
+          "recognized_field": null
+        },
+        {
+          "text": "And your medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-07",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What are we discussing today?",
+          "recognized_field": null
+        },
+        {
+          "text": "How severe is the headache?",
+          "recognized_field": null
+        },
+        {
+          "text": "What have you taken for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Do you remember the name on the packet?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-08",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "What symptom is bothering you most?",
+          "recognized_field": null
+        },
+        {
+          "text": "Is it mild, moderate, or severe?",
+          "recognized_field": "severity"
+        },
+        {
+          "text": "Have you tried ibuprofen or anything else?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any drugs you are allergic to?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-09",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "Why have you come in?",
+          "recognized_field": null
+        },
+        {
+          "text": "What did you take for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Have you taken anything else?",
+          "recognized_field": null
+        },
+        {
+          "text": "Earlier you said ibuprofen last night. Which account should I use?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-10",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "What's the problem today?",
+          "recognized_field": null
+        },
+        {
+          "text": "How severe is it?",
+          "recognized_field": "severity"
+        },
+        {
+          "text": "What have you tried for the pain?",
+          "recognized_field": null
+        },
+        {
+          "text": "Were those both for this back pain?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-11",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "What brought you here?",
+          "recognized_field": "chief_complaint"
+        },
+        {
+          "text": "Which medicine have you tried for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "When did you take the aspirin?",
+          "recognized_field": null
+        },
+        {
+          "text": "Did you take any other medicine for the current headache?",
+          "recognized_field": null
+        },
+        {
+          "text": "Do you have any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-12",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What's been bothering you?",
+          "recognized_field": null
+        },
+        {
+          "text": "How bad is the soreness?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medicine tried for this?",
+          "recognized_field": null
+        },
+        {
+          "text": "You mentioned a tablet earlier. Was that for this throat?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any other medicine for it since then?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any drug allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-13",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "What would you like to discuss?",
+          "recognized_field": null
+        },
+        {
+          "text": "How intense is it?",
+          "recognized_field": "severity"
+        },
+        {
+          "text": "Have you tried any medication?",
+          "recognized_field": null
+        },
+        {
+          "text": "Are you allergic to any medicines?",
+          "recognized_field": null
+        },
+        {
+          "text": "Has that ever been confirmed?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-14",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What is the main complaint?",
+          "recognized_field": null
+        },
+        {
+          "text": "Have you taken a medicine for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "The intake question mentions penicillin. Is that an allergy you have?",
+          "recognized_field": null
+        },
+        {
+          "text": "Is there another symptom you want to discuss?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-15",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "Tell me about today's symptom.",
+          "recognized_field": null
+        },
+        {
+          "text": "What have you taken for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Which medicines are you allergic to?",
+          "recognized_field": null
+        },
+        {
+          "text": "Are you naming two separate allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-16",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What's the concern today?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication tried for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        },
+        {
+          "text": "Can you identify it more precisely?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-17",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "What is bothering you?",
+          "recognized_field": "chief_complaint"
+        },
+        {
+          "text": "How long have you had it?",
+          "recognized_field": null
+        },
+        {
+          "text": "How bad is the headache?",
+          "recognized_field": null
+        },
+        {
+          "text": "Have you tried any medicine for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "What medication allergies do you have?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-18",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What symptom are you here for?",
+          "recognized_field": null
+        },
+        {
+          "text": "How would you rate the severity?",
+          "recognized_field": null
+        },
+        {
+          "text": "What medicine have you tried?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-19",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "How was the bus ride over?",
+          "recognized_field": null
+        },
+        {
+          "text": "What brings you in today?",
+          "recognized_field": null
+        },
+        {
+          "text": "How long have you had it?",
+          "recognized_field": null
+        },
+        {
+          "text": "How bad would you say it is?",
+          "recognized_field": "severity"
+        },
+        {
+          "text": "Have you tried any medicine for the cough?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-20",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "What has been hurting?",
+          "recognized_field": null
+        },
+        {
+          "text": "What level of pain is it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Have you taken anything for it?",
+          "recognized_field": "medication"
+        },
+        {
+          "text": "Can you tell me anything else about that tablet?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-21",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What's the main reason you're here?",
+          "recognized_field": null
+        },
+        {
+          "text": "How long has each been going on?",
+          "recognized_field": null
+        },
+        {
+          "text": "How severe is the headache?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medicine tried for the headache?",
+          "recognized_field": null
+        },
+        {
+          "text": "Do you have any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-22",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "What is troubling you?",
+          "recognized_field": null
+        },
+        {
+          "text": "You look uncomfortable; I'll describe the headache as severe.",
+          "recognized_field": null
+        },
+        {
+          "text": "Have you taken a medicine for the headache?",
+          "recognized_field": null
+        },
+        {
+          "text": "Do you have any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-23",
+      "unknown_source_context": true,
+      "recognized_source_observations": 0,
+      "clinician_turns": [
+        {
+          "text": "Tell me what's brought you in.",
+          "recognized_field": null
+        },
+        {
+          "text": "When did this episode start?",
+          "recognized_field": null
+        },
+        {
+          "text": "How would you describe its severity?",
+          "recognized_field": null
+        },
+        {
+          "text": "What have you tried for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Any medication allergies?",
+          "recognized_field": null
+        }
+      ]
+    },
+    {
+      "case_id": "fresh-24",
+      "unknown_source_context": true,
+      "recognized_source_observations": 1,
+      "clinician_turns": [
+        {
+          "text": "What would you like us to focus on?",
+          "recognized_field": null
+        },
+        {
+          "text": "When did it begin?",
+          "recognized_field": null
+        },
+        {
+          "text": "How bad is it?",
+          "recognized_field": "severity"
+        },
+        {
+          "text": "Have you tried ibuprofen for it?",
+          "recognized_field": null
+        },
+        {
+          "text": "Are you allergic to penicillin?",
+          "recognized_field": null
+        }
+      ]
+    }
+  ]
+}
