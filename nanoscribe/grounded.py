@@ -799,12 +799,19 @@ def _last_disputed_patient_turn(source: Source) -> int:
     return -1
 
 
+def _nonpatient_prompt(speech: str) -> bool:
+    """A third-party question or directive can change the referent of an answer."""
+    return "?" in speech or bool(re.match(
+        r"\s*(?:please\s+)?(?:tell|describe|answer|what|which|how|when|do you|did you|"
+        r"are you|is (?:your|the)|let['’]s (?:talk|discuss))\b", speech, re.I))
+
+
 def _ambiguous_reply_boundary(previous: Turn) -> bool:
     speech = _identified_nonpatient_speech(previous)
     if previous.speaker is Speaker.OTHER or previous.text.lower().startswith("other:"):
         # Plain Other asides retain their existing behavior. A direct question
         # about somebody else cannot set the scope of a patient response.
-        return speech is not None and _outside_current_scope(speech)
+        return speech is not None and _nonpatient_prompt(speech) and _outside_current_scope(speech)
     if previous.speaker is not Speaker.UNKNOWN:
         return False
     if speech is None:
@@ -1256,7 +1263,7 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
             speech = _identified_nonpatient_speech(later)
             if later.speaker is Speaker.UNKNOWN and speech is None:
                 return True
-            if speech is None or "?" in speech or _outside_current_scope(speech):
+            if speech is None or _nonpatient_prompt(speech):
                 immediate = False
             continue
         adjacent_patient_answer = immediate

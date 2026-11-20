@@ -242,3 +242,13 @@ def test_uncertainty_bundle_requires_eligible_reply(intervening, eligible):
     text = intervening + "\nPatient: It was either three days or four days."
     source = transcript_source(NanoInput("uncertainty-reply", text))
     assert bool(extract_field_uncertain_bundles(source, DUR)) == eligible
+
+
+def test_other_aside_mentioning_a_relative_keeps_an_independent_patient_report():
+    check("Other: I left your husband's umbrella by the door.\nPatient: I take naproxen.",
+          MED, "naproxen", licensed=True)
+
+
+def test_neutral_aside_mentioning_time_preserves_patient_correction_adjacency():
+    check("Patient: No known allergies.\nNurse: We paid for parking last month.\nPatient: Actually I was wrong.",
+          ALG, "No known allergies.", state=DENIED, licensed=False)
