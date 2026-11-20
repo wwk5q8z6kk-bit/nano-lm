@@ -227,3 +227,18 @@ def test_separate_treatment_and_allergy_can_share_a_patient_subject(report):
         assert claim["state"] == "conflicting" and claim["value"] is None
         assert any(choice.startswith(":C[") for choice in compact)
         assert any(choice.startswith(" CONTRADICTED[") for choice in english)
+
+
+@pytest.mark.parametrize("reply,owner,other,value", [
+    ("I took aspirin.", MED, ALG, "aspirin"),
+    ("I am allergic to penicillin.", ALG, MED, "penicillin"),
+])
+@pytest.mark.parametrize("prompt", ["", "Doctor: Tell me more.\n", "Doctor: Any allergies?\n", "Doctor: Any medicine?\n"])
+def test_reported_relationship_owns_the_substance_across_free_and_constrained_paths(reply, owner, other, value, prompt):
+    report = prompt + "Patient: " + reply
+    claim, direct, compact, english = observed(report, owner, value)
+    assert (claim["state"], claim["value"], direct) == ("supported", value, FieldState.SUPPORTED)
+    assert f":S[{value}]" in compact and f" REPORTED[{value}]" in english
+    claim, direct, compact, english = observed(report, other, value)
+    assert claim["value"] is None and direct is None
+    assert f":S[{value}]" not in compact and f" REPORTED[{value}]" not in english
