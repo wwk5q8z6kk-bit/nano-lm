@@ -165,6 +165,12 @@ def test_plain_other_statement_preserves_previous_scalar_context(field, answer, 
     ("I am not sure whether I took the bus with aspirin in my bag.", MED, False),
     ("I am not sure whether I am allergic to nickel.", ALG, True),
     ("I am not sure whether I took naproxen.", MED, True),
+    ("I don't know how bad my headache is.", SEV, True),
+    ("I'm not sure when my headache started.", DUR, True),
+    ("I am not sure how long my headache has lasted.", DUR, True),
+    ("I am not sure.", SEV, False),
+    ("I am not sure.", DUR, False),
+    ("I don't know where the garage is.", DUR, False),
 ])
 @pytest.mark.parametrize("aside", ["Unknown: Where is the garage?", "Unknown: The umbrella is upstairs."])
 def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible, aside):
@@ -180,6 +186,27 @@ def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, e
     result, diagnostics = compact_solver(lambda _: raw, binder="grounded").infer_grounded(request)
     assert diagnostics["fields"][index]["verified"] is eligible
     assert bool(result.fields[index].evidence) == eligible
+
+
+@pytest.mark.parametrize("answer,field,quote", [
+    ("It was either three days or four days.", DUR, "either three days or four days"),
+    ("The pain is either mild or severe.", SEV, "either mild or severe"),
+    ("I don't know how bad my headache is. It is either mild or severe.", SEV, "either mild or severe"),
+])
+@pytest.mark.parametrize("aside", ["Unknown: Where is the garage?", "Unknown: The umbrella is upstairs."])
+def test_scalar_choice_after_logistics_stays_uncertain(answer, field, quote, aside):
+    report = f"{aside}\nPatient: {answer}"
+    request = NanoInput("logistics-scalar-choice", report)
+    source = transcript_source(request)
+    candidate = f":U[{quote}]"
+    index = FIELD_ORDER.index(field)
+    assert candidate in grounded_candidate_choices(report, field, set())
+    assert f" UNCERTAIN[{quote}]" in build_grounded_english_menu(source, field, set())
+    raw = "|".join(label + (candidate if idx == index else ":M")
+                   for idx, label in enumerate(("CC", "DUR", "SEV", "MED", "ALG")))
+    result, diagnostics = compact_solver(lambda _: raw, binder="grounded").infer_grounded(request)
+    assert diagnostics["fields"][index]["verified"] is True
+    assert result.fields[index].evidence
 
 
 @pytest.mark.parametrize("later,licensed", [

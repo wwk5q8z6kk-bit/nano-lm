@@ -885,9 +885,10 @@ def _ambiguous_reply_boundary(previous: Turn, field: FieldName, clause: Turn, sp
     if aside_prompt is False and plain_other:
         return False
     if aside_prompt is not None:
-        if field in (FieldName.SEVERITY, FieldName.DURATION):
-            evidence = span or CandidateSpan(clause.start, clause.end, clause.text)
-            return not _symptom_owns_scalar(clause, field, evidence)
+        # A cited rating or interval must belong to its symptom. The whole turn
+        # has no span: a named hedge or either-or choice is filtered later.
+        if field in (FieldName.SEVERITY, FieldName.DURATION) and span is not None:
+            return not _symptom_owns_scalar(clause, field, span)
         if field is FieldName.MEDICATION and span is not None:
             if _is_field_denial(field, span.text):
                 return aside_prompt and not _TREATMENT_CONTEXT_RE.search(span.text)
