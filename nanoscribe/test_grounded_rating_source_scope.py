@@ -51,3 +51,33 @@ def test_setting_compares_the_original_named_symptom(earlier, later, accepted):
     modifier = earlier.split()[-1]
     quote = f"{modifier} 7/10" if modifier in ("about", "roughly") else "7/10"
     check(source, "SEV", FieldName.SEVERITY, quote, source.index(quote), accepted)
+
+
+@pytest.mark.parametrize("report,accepted", [
+    ("The headache that started yesterday was 5/10 when I checked just now.", True),
+    ("My wrist pain which began last Friday was 5/10 when I just rechecked it.", True),
+    ("The headache that started two days ago was 5/10 when I measured it a moment ago.", True),
+    ("The headache that started yesterday was 5/10 when I checked it yesterday.", False),
+    ("The headache that started yesterday was 5/10 when she checked just now.", False),
+    ("Yesterday on the bus the headache was 5/10.", False),
+    ("Last Friday the headache that started yesterday was 5/10 when I checked just now.", False),
+    ("The headache that started yesterday was 5/10 last night.", False),
+])
+def test_dated_onset_and_measurement(report, accepted):
+    source = f"Doctor: How bad is your pain now?\nPatient: {report}"
+    check(source, "SEV", FieldName.SEVERITY, "5/10", source.index("5/10"), accepted)
+
+
+@pytest.mark.parametrize("question,lead,later,accepted", [
+    ("How severe is your headache now?", "", "my knee pain", True),
+    ("How severe is your headache now?", "", "my headache", False),
+    ("How bad is your left wrist pain?", "I would say ", "my right wrist pain", True),
+    ("How bad is your left wrist pain?", "I would say ", "my left wrist pain", False),
+    ("How severe is the nausea?", "", "my knee pain", True),
+    ("How severe is it now?", "", "my knee pain", False),
+    ("How bad is the pain now?", "", "my knee pain", False),
+    ("How bad is your headache?", "My wrist pain is ", "my wrist pain", False),
+])
+def test_bare_answer_inherits_requested_symptom(question, lead, later, accepted):
+    source = f"Doctor: {question}\nPatient: {lead}7/10. That was at work. Right now {later} is 2/10."
+    check(source, "SEV", FieldName.SEVERITY, "7/10", source.index("7/10"), accepted)

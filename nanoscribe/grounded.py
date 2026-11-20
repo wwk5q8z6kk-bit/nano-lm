@@ -1812,6 +1812,10 @@ _PAST_REPORTED_RATING_TIME = (
     rf"{_DURATION_QUANTITY} ago)"
 )
 _PAST_REPORTED_RATING_TIME_RE = re.compile(rf"\b{_PAST_REPORTED_RATING_TIME}\b", re.I)
+_DATED_SYMPTOM_ONSET_RE = re.compile(
+    rf"\b(?:that|which) (?:(?:had|first|initially) )*(?:started|began|appeared|developed|returned) "
+    rf"(?:on )?{_PAST_REPORTED_RATING_TIME}\b", re.I,
+)
 _SEVERITY_JOIN_RE = re.compile(
     r",?\s+(?:but|and|although|whereas|while|because)\s+"
     rf"(?=(?:(?:{_PAST_REPORTED_RATING_TIME}|(?:right )?now|currently|today)[, ]+)?(?:my|the|i|it|a|an|this|that)\b)", re.I,
@@ -1963,7 +1967,15 @@ def _reciting_rating(clinician: Turn | None, reply: Turn, report: Turn) -> bool:
     return not (prior and _DECLINED_RECITATION_RE.fullmatch(prior[-1].text))
 
 
-def _contrasts_current_rating(text: str, prior: str) -> bool:
+def _named_rating_subject(text: str) -> str | None:
+    for lead in re.finditer(r"\b(?:my|your|the)\s+|^", text, re.I):
+        subject = _COMPLAINT_HEAD_RE.match(text, lead.end())
+        if subject:
+            return subject.group().strip().casefold()
+    return None
+
+
+def _contrasts_current_rating(text: str, prior: str, question: str) -> bool:
     rating = _SEVERITY_CORE_RE.search(text)
     if not rating or not re.search(r"\b(?:now|currently|at the moment)\b", text, re.I):
         return False
@@ -1979,15 +1991,18 @@ def _contrasts_current_rating(text: str, prior: str) -> bool:
     # A new rating of a different named symptom does not date the first.
     # Recover the subject independently of how the patient introduced or
     # qualified the score ("I would rate my headache at", "is about").
-    for lead in re.finditer(r"\b(?:my|the)\s+|^", prior, re.I):
-        previous = _COMPLAINT_HEAD_RE.match(prior, lead.end())
-        if previous:
-            return previous.group().strip().casefold() == subject.group().strip().casefold()
-    # A bare answer can acquire its referent from the explicit replacement.
-    return bool(_RATING_LEAD_RE.fullmatch(prior))
+    previous = _named_rating_subject(prior)
+    if previous is None:
+        if not _RATING_LEAD_RE.fullmatch(prior):
+            return False
+        previous = _named_rating_subject(question)
+        # A general pain or severity question leaves the specific site open.
+        if previous in (None, "pain", "pains", "discomfort"):
+            return True
+    return previous == subject.group().strip().casefold()
 
 
-def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: re.Match[str]) -> bool:
+def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: re.Match[str], question: str) -> bool:
     if not _CURRENT_RATING_END_RE.fullmatch(report.text[rating.end():]):
         return False
     setting = False
@@ -2000,7 +2015,7 @@ def _rating_redated_by_patient(source: Source, idx: int, report: Turn, rating: r
             if following.start < report.end:
                 continue
             if setting:
-                return _contrasts_current_rating(following.text, report.text[:rating.start()].strip())
+                return _contrasts_current_rating(following.text, report.text[:rating.start()].strip(), question)
             correction = _RETROSPECTIVE_RATING_RE.fullmatch(following.text)
             if not correction:
                 return False
@@ -2029,13 +2044,21 @@ def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: Ca
     for rating in ratings:
         before = report.text[:rating.start()].strip().replace("’", "'")
         after = report.text[rating.end():]
+        # A recent self-measurement dates the score. A date attached to a
+        # relative onset clause dates the symptom, while a separate date on
+        # the measurement still applies.
+        when = re.match(r"\s+when\b", after, re.I)
+        measurement = _CURRENT_RATING_CHECK_RE.match(after, when.end()) if when else None
+        self_check = bool(measurement and measurement["measured"] and (measurement["measured_just"] or measurement["time"]))
+        measured_before = _DATED_SYMPTOM_ONSET_RE.sub("", before) if self_check else before
         if (re.search(r"\b(?:was|were|felt)\s*$", before, re.I)
-                and (_PAST_REPORTED_RATING_TIME_RE.search(before) or _PAST_REPORTED_RATING_TIME_RE.match(after.lstrip()))):
+                and (_PAST_REPORTED_RATING_TIME_RE.search(measured_before)
+                     or _PAST_REPORTED_RATING_TIME_RE.match(after.lstrip()))):
             return False
-        if _rating_redated_by_patient(source, idx, report, rating):
+        question = previous.text if current_request is True and report.start == source.turns[idx].start else ""
+        if _rating_redated_by_patient(source, idx, report, rating, question):
             return False
         earlier = _EARLIER_RATING_RE.match(after)
-        self_check = False
         if earlier:
             check = earlier["when"] and _CURRENT_RATING_CHECK_RE.match(after, earlier.end())
             if not check or not any(check.group("measured_just", "asked_just", "time")):
