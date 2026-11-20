@@ -1306,6 +1306,79 @@ def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
     return False
 
 
+_SEVERITY_SUBJECT_RE = re.compile(
+    rf"\b(?:(?P<symptom>{_SYMPTOM}|cramps?|tightness|pressure|stiffness|breathing|burning|throbbing|"
+    r"hurt(?:s|ing)?|ach(?:es|ing)|sore|dizzy|nauseous|hoarseness|cramping|palpitations)"
+    r"|allerg(?:y|ies|ic)|reactions?|side effects?|medications?|medicines?|doses?|traffic|commute|delay|ride)\b", re.I,
+)
+_SEVERITY_JOIN_RE = re.compile(
+    r",?\s+(?:but|and|although|whereas|while|because)\s+(?=(?:my|the|i|it|a|an|this|that)\b)", re.I,
+)
+# An elliptical rating can answer a question or continue the preceding report.
+# It cannot change an explicitly identified subject such as a medication allergy.
+_RATING_LEAD_RE = re.compile(
+    rf"(?:(?:yes|well|actually|definitely|only|about|roughly|around|maybe|very|really|pretty|"
+    rf"quite|just|at|a|an|little|bit|honestly|mostly|it's|it|is|was|has|been|feels?|felt|"
+    rf"i|i'd|i'm|would|say|call|describe|rate|rated|as|think|the|moment|now|today|"
+    rf"mildly|moderately|severely|this|morning|tonight)\b[\s,']*|{_BOUND_LEAD})*", re.I,
+)
+
+
+def _severity_subject(text: str) -> bool | None:
+    matches = list(_SEVERITY_SUBJECT_RE.finditer(text))
+    return bool(matches[-1]["symptom"]) if matches else None
+
+
+def _severity_belongs_to_episode(source: Source, idx: int, event: Turn, span: CandidateSpan) -> bool:
+    portions = _split_events(event, _SEVERITY_JOIN_RE)
+    selected = [p for p in portions if p.start < span.end and span.start < p.end]
+    if len(selected) != 1:
+        return False
+    report = selected[0]
+    ratings = [m for m in _SEVERITY_CORE_RE.finditer(report.text)
+               if span.start <= report.start + m.start() and report.start + m.end() <= span.end]
+    if not ratings:
+        return False
+    for rating in ratings:
+        before = report.text[:rating.start()].strip().replace("’", "'")
+        after = report.text[rating.end():]
+        # Stop before a separate subject, adjunct or predicate.
+        noun = re.split(r"[,.;!?]|\b(?:and|but|because|for|from|when|while|after|before|since|with|as|at|on|in|is|was|today|now)\b",
+                        after, maxsplit=1, flags=re.I)[0]
+        # A following noun is the thing rated. A bare adjective plus a time
+        # or degree modifier remains an elliptical description.
+        subject = _severity_subject(noun)
+        if (noun.strip() and subject is None and not re.match(
+                r"\s*(?:all\s+(?:day|night)|this\s+(?:morning|afternoon|evening)|"
+                r"uncomfortable|really|mostly|especially|particularly|worse|last\s+night|either\s+way|or\b)", noun, re.I)):
+            return False
+        if subject is None:
+            subject = _severity_subject(before)
+        if subject is not None:
+            if not subject:
+                return False
+            continue
+        if not _RATING_LEAD_RE.fullmatch(before):
+            return False
+        previous = _preceding_clinician_turn(source, idx)
+        if report.start != source.turns[idx].start:
+            prior = source.text[source.turns[idx].start:report.start]
+        elif previous:
+            prior = previous.text
+        elif idx and source.turns[idx - 1].speaker is Speaker.PATIENT:
+            prior = source.turns[idx - 1].text
+        else:
+            prior = ""
+        if previous and prior == previous.text and re.search(
+                r"\b(?:how (?:bad|severe|intense|strong)|(?:would|do) you rate)\s+"
+                r"(?:(?:is|are|was|were)\s+)?(?:the|your|my|an?)\s+", prior, re.I
+        ) and _severity_subject(prior) is None and question_field(prior) is not FieldName.SEVERITY:
+            return False
+        if _severity_subject(prior) is False:
+            return False
+    return True
+
+
 def _duration_scope_rejection(source: Source, turn_idx: int, event: Turn, duration: CandidateSpan) -> str | None:
     """Assign a timestamp to the local event. Only the first answer inherits the question."""
     turn = source.turns[turn_idx]
@@ -1452,6 +1525,8 @@ def _verify_local_span(
             if name and span.start < name[1] and name[0] < span.end:
                 if span.start > name[0] or span.end < name[1]:
                     return False, "incomplete_substance_name"
+        if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
+            return False, "severity_not_linked_to_current_episode"
         if field is FieldName.DURATION:
             if reason := _duration_scope_rejection(source, idx, event, span):
                 return False, reason
