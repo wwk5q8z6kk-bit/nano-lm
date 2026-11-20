@@ -1,0 +1,18 @@
+{
+  "train_code.bin": {
+    "full": 0,
+    "anchors": 0
+  },
+  "train_math.bin": {
+    "full": 0,
+    "anchors": 0
+  },
+  "train_textbook.bin": {
+    "full": 0,
+    "anchors": 0
+  },
+  "train_web.bin": {
+    "full": 0,
+    "anchors": 0
+  }
+}

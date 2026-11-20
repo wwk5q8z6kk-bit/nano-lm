@@ -1,0 +1,16 @@
+{
+  "archive": "10e141081475afa6ef76b26f9350c8c5caf00635",
+  "arm": "M2",
+  "documents": 24,
+  "method": "Original archive architecture, independently retokenized conditions, padded batches of three and logsumexp minus target logit in float64. Primary used unpadded single blocks and unreduced categorical cross entropy.",
+  "ordered_bits": {
+    "archived_bpb": 1.147240735144362,
+    "max_abs_difference_per_byte": 9.949054555900733e-08,
+    "primary_bpb": 1.147240741196394
+  },
+  "shuffled_bits": {
+    "archived_bpb": 2.498971420261404,
+    "max_abs_difference_per_byte": 1.6128543830689902e-07,
+    "primary_bpb": 2.4989714226779167
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "repo": "HuggingFaceFW/fineweb-edu",
+    "revision": "87f09149ef4734204d70ed1d046ddc9ca3f2b8f9",
+    "license": "odc-by",
+    "shards": [
+      "sample/10BT/000_00000.parquet",
+      "sample/10BT/001_00000.parquet"
+    ]
+  },
+  {
+    "repo": "HuggingFaceTB/smollm-corpus",
+    "revision": "3ba9d605774198c5868892d7a8deda78031a781f",
+    "license": "odc-by",
+    "shards": [
+      "cosmopedia-v2/train-00000-of-00104.parquet",
+      "cosmopedia-v2/train-00001-of-00104.parquet"
+    ]
+  },
+  {
+    "repo": "HuggingFaceTB/finemath",
+    "revision": "e92b25a616738fe95dc186b64dfb19f9c8525594",
+    "license": "odc-by",
+    "shards": [
+      "finemath-4plus/train-00000-of-00064.parquet",
+      "finemath-4plus/train-00001-of-00064.parquet"
+    ]
+  },
+  {
+    "repo": "codeparrot/github-code-clean",
+    "revision": "c48d40f9e70f0196f8236901ee35807f7d6c44c0",
+    "license": "apache-2.0",
+    "shards": [
+      "data/train-00000-of-00880.parquet",
+      "data/train-00001-of-00880.parquet"
+    ]
+  }
+]

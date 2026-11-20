@@ -1,0 +1,34 @@
+{
+  "architecture_commit": "10e141081475afa6ef76b26f9350c8c5caf00635",
+  "arms": {
+    "M0": {
+      "params": 348966912,
+      "result_sha256": "d33e1d17475873dd1cb7eff522071e32baf3e3e97063ee5c6ee72e78a0de13b9",
+      "run": "M0_dense_350m__muon__tokens__400M__s0",
+      "sha256": "da288dea9ff7f8b909ca30eef928bf4d33d134e322adfcac4b2c942117d50a0a",
+      "size": 1395938603,
+      "tokens": 399900672,
+      "training_stream": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
+    },
+    "M2": {
+      "params": 350397134,
+      "result_sha256": "d54a9b703a063301bfe849ed8f650d6e7636935fb84e05e7fcddc208e50402f7",
+      "run": "M2_nanolm_v5_350m__muon__tokens__400M__s0",
+      "sha256": "cb7ae63f111f08cdbee0f55197730d9992d21745a7e87aaa7c04341128197d2a",
+      "size": 1401732739,
+      "tokens": 399900672,
+      "training_stream": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
+    },
+    "S2": {
+      "params": 121668990,
+      "result_sha256": "4c20039664cd2d95c90179bff5285db34fd82a067e6fa2c58cf11f739c6b58fc",
+      "run": "S2_nanolm_v3_125m__muon__tokens__600M__s0",
+      "sha256": "8eaf9a4c5a94e22d85adf5f038a82190e2f287530fc8a1002cf93c372df2b6e7",
+      "size": 486764699,
+      "tokens": 599916544,
+      "training_stream": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
+    }
+  },
+  "tokenizer_sha256": "2eb9b402d301ff801d402099e8d6a21aa3e4f4a4cacd17ef6b17fd07aadada64",
+  "train_sha256": "867beb0d8d4c3977acaaf97fb91da39be29fb9fb040d86ea0bfdf78c9de72ac4"
+}
