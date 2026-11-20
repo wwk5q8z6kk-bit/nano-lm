@@ -15,27 +15,32 @@ MED = FieldName.MEDICATION
 
 
 def assert_medication(transcript, named, occurrence, supported):
+    return assert_substance(transcript, MED, named, occurrence, supported)
+
+
+def assert_substance(transcript, field, named, occurrence, supported):
     source = transcript_source(NanoInput("correction", transcript))
     start = -1
     for _ in range(occurrence + 1):
         start = transcript.index(named, start + 1)
     span = EvidenceSpan(start, start + len(named), named)
-    assert verify_grounded_span(source, MED, FieldState.SUPPORTED, span)[0] == supported
+    assert verify_grounded_span(source, field, FieldState.SUPPORTED, span)[0] == supported
     state = FieldState.SUPPORTED if supported else None
-    assert _observation_kind(source, MED, span, context_policy="grounded") is state
+    assert _observation_kind(source, field, span, context_policy="grounded") is state
     token = format_grounded_span_token(source, span)
     proposal = f":S[{token}]"
-    assert (proposal in grounded_candidate_choices(transcript, MED, set())) == supported
-    menu = build_grounded_english_menu(source, MED, set())
+    assert (proposal in grounded_candidate_choices(transcript, field, set())) == supported
+    menu = build_grounded_english_menu(source, field, set())
     assert (("S", (span,)) in menu.values()) == supported
-    summary = f"CC:M|DUR:M|SEV:M|MED{proposal}|ALG:M"
+    med, alg = (proposal, ":M") if field is MED else (":M", proposal)
+    summary = f"CC:M|DUR:M|SEV:M|MED{med}|ALG{alg}"
     note = scribe(transcript, solver=compact_solver(lambda _: summary, binder="grounded"),
                   context_policy="grounded")
     assert note["verification"]["passed"]
-    medication = next(c for c in note["note"]["claims"] if c["field"] == MED.value)
-    assert medication["state"] == ("supported" if supported else "uncertain")
+    claim = next(c for c in note["note"]["claims"] if c["field"] == field.value)
+    assert claim["state"] == ("supported" if supported else "uncertain")
     if supported:
-        assert medication["value"] == named
+        assert claim["value"] == named
     return menu
 
 
@@ -245,3 +250,59 @@ def test_accompaniment_remains_part_of_the_named_administration():
     text = ("Patient: I took aspirin with water.\n"
             "Patient: Actually, I didn't take aspirin with water.")
     assert_medication(text, "aspirin", 0, False)
+
+
+@pytest.mark.parametrize("denial,withdrawn", [
+    ("any aspirin", True), ("any of the aspirin", True),
+    ("either aspirin or ibuprofen", True), ("either ibuprofen or aspirin", True),
+    ("any ibuprofen", False), ("any more aspirin", False),
+    ("any aspirin yesterday", False),
+])
+def test_named_denial_quantifier_keeps_the_correct_name_and_scope(denial, withdrawn):
+    text = f"Patient: I took aspirin today.\nPatient: Actually, I didn't take {denial}."
+    assert_medication(text, "aspirin", 0, not withdrawn)
+
+
+@pytest.mark.parametrize("answer,supported", [
+    ("and I'm not allergic to it", False), ("and I'm not allergic to aspirin", False),
+    ("and I have no allergies", False), ("and I'm not allergic to latex", True),
+    ("but I am allergic to it", True), ("and I took ibuprofen", True),
+])
+def test_independent_allergy_statement_has_its_own_polarity_and_object(answer, supported):
+    text = (f"Patient: I am allergic to aspirin.\nPatient: Actually, I didn't take aspirin, {answer}.")
+    assert_substance(text, FieldName.ALLERGY, "aspirin", 0, supported)
+
+
+def test_reference_to_another_medication_does_not_retract_unrelated_allergen():
+    text = "Patient: I am allergic to latex.\nPatient: Actually, I didn't take aspirin, and I'm not allergic to it."
+    assert_substance(text, FieldName.ALLERGY, "latex", 0, True)
+
+
+def test_independent_allergy_retraction_does_not_absorb_the_medication_object():
+    text = "Patient: I took aspirin.\nPatient: Actually, I didn't take aspirin, and I'm not allergic to it."
+    assert_medication(text, "aspirin", 0, False)
+
+
+@pytest.mark.parametrize("denied,first_remains", [("yesterday", False), ("today", True)])
+def test_coordinated_repeated_name_has_an_interval_for_each_occurrence(denied, first_remains):
+    text = (f"Patient: I took aspirin yesterday and I took aspirin today.\n"
+            f"Patient: Actually, I didn't take aspirin {denied}.")
+    assert_medication(text, "aspirin", 0, first_remains)
+    assert_medication(text, "aspirin", 1, not first_remains)
+
+
+@pytest.mark.parametrize("allergen,scope,supported", [
+    ("aspirin", "any drugs", False), ("latex", "any drugs", True),
+    ("latex", "latex", False), ("aspirin", "latex", True),
+])
+def test_second_medication_or_allergy_clause_respects_object_category(allergen, scope, supported):
+    text = (f"Patient: I am allergic to {allergen}.\n"
+            f"Patient: Actually, I didn't take aspirin, and I'm not allergic to {scope}.")
+    assert_substance(text, FieldName.ALLERGY, allergen, 0, supported)
+
+
+@pytest.mark.parametrize("denied,supported", [("today", False), ("yesterday", True)])
+def test_unqualified_direct_answer_inherits_the_medication_questions_day(denied, supported):
+    text = ("Doctor: Which medicine did you take today?\nPatient: I took aspirin.\n"
+            f"Patient: Actually, I didn't take any aspirin {denied}.")
+    assert_medication(text, "aspirin", 0, supported)

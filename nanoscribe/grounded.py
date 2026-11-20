@@ -1298,13 +1298,19 @@ def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...
     if _patient_question(text) or _EPISTEMIC_HEDGE_RE.search(text):
         # The negative predicate is recognized, but establishes no withdrawal.
         return ()
-    body = _MEDICATION_REPLACEMENT_JOIN_RE.split(text[predicate.end():], maxsplit=1)[0]
+    body = _EVENT_JOIN_RE.split(text[predicate.end():], maxsplit=1)[0]
     body = re.split(r"\bbecause\b", body, maxsplit=1, flags=re.I)[0].rstrip(" .,;!")
     body = re.sub(rf",?\s+(?:at all|after all|whatsoever|in fact)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
                   "", body, flags=re.I)
     start = 0
     objects = []
-    while name := _substance_name_bounds(body, (start, len(body)), FieldName.MEDICATION):
+    while start < len(body):
+        quantifier = re.match(r"(?:any|either)\s+(?:of\s+(?:the|my)\s+)?", body[start:], re.I)
+        if quantifier:
+            start += quantifier.end()
+        name = _substance_name_bounds(body, (start, len(body)), FieldName.MEDICATION)
+        if not name:
+            break
         value = normalize_value(body[slice(*name)])
         if value in {"it", "that", "this", "them", "any"}:
             return None
@@ -1407,8 +1413,25 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
 def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool) -> bool:
     if not _eligible_correction(correction):
         return False
-    if _corrected_medication_objects(correction) is not None:
-        # The medication-specific verifier owns both named and category denials.
+    withdrawals = _corrected_medication_objects(correction)
+    if withdrawals is not None:
+        # The medication verifier checks the actual administration. A second
+        # first-person predicate can independently correct a different field.
+        if field is FieldName.MEDICATION:
+            return False
+        predicate = _CORRECTED_NONUSE_RE.match(correction)
+        value = normalize_value(span_text)
+        for statement in _EVENT_JOIN_RE.split(correction[predicate.end():])[1:]:
+            if field is not FieldName.ALLERGY:
+                if field in _correction_fields(statement):
+                    return True
+                continue
+            scope, named = _allergy_denial_scope(statement)
+            if scope == "name" and named in {"it", "that", "this"}:
+                named = withdrawals[0].name if len(withdrawals) == 1 else None
+            if (scope == "all" or (scope == "name" and value == named)
+                    or (scope == "category" and named == _named_allergen_category(value))):
+                return True
         return False
     targets = _correction_fields(correction)
     if targets:
@@ -3333,13 +3356,7 @@ def _allergy_question_scope(text: str) -> tuple[str, str | None]:
     return ("category", _allergen_category(category[0])) if category else ("all", None)
 
 
-def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | None:
-    # A new or ambiguous name only inherits a category as a direct answer to a
-    # typed question. An independently worded report retains its own scope.
-    idx = _turn_index(source, span.start, span.end)
-    if idx is None:
-        return None
-    name = normalize_value(span.text)
+def _named_allergen_category(name: str) -> str | None:
     # These mineral names also identify exposures in food and materials; a
     # drug-specific question can still establish their use as medications.
     if _FAMILIAR_MEDICINE_RE.fullmatch(name) and name not in {"zinc", "sodium chloride", "calcium carbonate"}:
@@ -3351,6 +3368,18 @@ def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | No
     ):
         if re.fullmatch(pattern, name):
             return category
+    return None
+
+
+def _reported_allergen_category(source: Source, span: CandidateSpan) -> str | None:
+    # A new or ambiguous name only inherits a category as a direct answer to a
+    # typed question. An independently worded report retains its own scope.
+    idx = _turn_index(source, span.start, span.end)
+    if idx is None:
+        return None
+    name = normalize_value(span.text)
+    if category := _named_allergen_category(name):
+        return category
     question = _preceding_clinician_turn(source, idx)
     if question and normalize_value(source.turns[idx].text) == name:
         category = _allergy_question_scope(question.text)[1]
