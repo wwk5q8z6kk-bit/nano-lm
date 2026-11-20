@@ -59,6 +59,8 @@ def test_later_identified_speaker_preserves_patient_evidence_and_remains_uncover
     "Unknown: The jacket is by the chair.",
     "uNkNoWn:  We found the parking pass. Could you please leave the pass at the desk?",
     "The umbrella is upstairs.",
+    "Unknown: The main entrance closes at noon. Our taxi is by the side door.",
+    "Unknown: Where could we collect the visitor passes?",
 ])
 def test_unidentified_logistics_preserves_patient_evidence_and_remains_uncovered(aside):
     uncovered = check(f"Patient: I took naproxen.\r\n{aside}", MED, "naproxen", licensed=True)
@@ -79,6 +81,16 @@ def test_logistics_cannot_mask_an_unidentified_correction_or_unrecognized_label(
 def test_unidentified_aside_preserves_a_later_patient_retraction():
     check("Patient: I took naproxen.\nUnknown: The parking pass is here.\nPatient: Actually I was wrong.",
           MED, "naproxen", licensed=False)
+
+
+@pytest.mark.parametrize("aside,doubt,licensed", [
+    ("The umbrella is upstairs.", "I'm not sure whether I took it.", False),
+    ("Where is the garage?", "I'm not sure whether I took naproxen.", False),
+    ("Where is the garage?", "I'm not sure about that.", True),
+    ("The umbrella is upstairs.", "I'm not sure whether I took loratadine.", True),
+])
+def test_logistical_asides_preserve_the_scope_of_patient_doubt(aside, doubt, licensed):
+    check(f"Patient: I took naproxen.\nUnknown: {aside}\nPatient: {doubt}", MED, "naproxen", licensed=licensed)
 
 
 def test_unidentified_logistics_cannot_supply_the_question_for_a_patient_answer():

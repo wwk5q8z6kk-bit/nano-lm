@@ -226,23 +226,32 @@ _NONPATIENT_ROLE_LABEL_RE = re.compile(
 
 # An unknown voice can mention a physical object without changing the source
 # of earlier observations. Only complete logistical clauses qualify.
-_ASIDE_OBJECT = (
-    r"(?:(?:(?:the|a|an|my|your|our|this|that) )?"
-    r"(?:(?:parking|bus|train|coatroom|cloakroom|waiting room|visitor|entry|building) )?"
-    r"(?:tickets?|receipts?|fees?|passes|pass|meters?|bags?|coats?|jackets?|keys?|wallets?|"
-    r"umbrellas?|doors?|windows?|chairs?|seats?|desks?|counters?|lobb(?:y|ies)|garages?|"
-    r"entrances?|exits?|elevators?|lifts?|stairs|restrooms?|bathrooms?|rooms?|hallways?|"
-    r"buses|bus|trains?|taxis?|forms?|envelopes?|folders?|clipboards?|pens?|printers?|"
-    r"parking(?: lot)?|coatroom|cloakroom)(?: for (?:the )?parking(?: fee)?)?)"
+_LOGISTICS_NOUN = (
+    r"(?:tickets?|receipts?|fees?|passes|pass|meters?|pay stations?|machines?|bags?|coats?|jackets?|"
+    r"keys?|wallets?|umbrellas?|doors?|windows?|chairs?|seats?|desks?|counters?|lobb(?:y|ies)|"
+    r"garages?|lots?|entrances?|exits?|elevators?|lifts?|stairs|restrooms?|bathrooms?|rooms?|"
+    r"hallways?|buses|bus|trains?|taxis?|forms?|envelopes?|folders?|clipboards?|pens?|printers?|"
+    r"parking|coatrooms?|cloakrooms?)"
 )
-_ASIDE_LOCATION = rf"(?:here|there|outside|inside|upstairs|downstairs|(?:at|by|near|on|in|into|beside|under|to|from|behind) {_ASIDE_OBJECT})"
-_ASIDE_ACTION = r"(?:bring|leave|put|take|move|collect|fetch|find|open|close|carry|hand over|pick up|drop off|validate|pay for)"
+_LOGISTICS_ITEM = (
+    r"(?:(?:the|a|an|my|your|our|this|that) )?"
+    r"(?:(?:parking|bus|train|coat[- ]?check|coatroom|cloakroom|waiting|visitor|entry|"
+    r"building|registration|reception|front|side|back|main) )?" + _LOGISTICS_NOUN
+)
+_LOGISTICS_PREP = r"(?:at|by|near|on|in|into|beside|under|to|from|behind|next to|across from|in front of)"
+_LOGISTICS_PLACE = (
+    rf"(?:here|there|outside|inside|upstairs|downstairs|on the (?:left|right)|{_LOGISTICS_PREP} {_LOGISTICS_ITEM})"
+)
+_LOGISTICS_SUBJECT = rf"{_LOGISTICS_ITEM}(?: (?:for|to|near|beside) {_LOGISTICS_ITEM})?"
+_LOGISTICS_ACTION = r"(?:bring|leave|put|take|move|collect|fetch|find|open|close|carry|hand over|pick up|drop off|validate|pay for)"
+_LOGISTICS_TIME = r"(?:noon|midnight|(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]{1,2})(?::[0-5][0-9])?(?: [ap]m)?)"
 _LOGISTICAL_CLAUSE_RE = re.compile(
-    rf"(?:{_ASIDE_OBJECT} (?:is|are|was|were) (?:already |still )?"
-    rf"(?:{_ASIDE_LOCATION}|open|closed|locked|unlocked|available|ready|full|empty)"
-    rf"|(?:i|we) (?:have|found|brought|left|put|paid for|picked up|dropped off|will {_ASIDE_ACTION}) {_ASIDE_OBJECT}(?: {_ASIDE_LOCATION})?"
-    rf"|(?:(?:shall|may|can|could|should) (?:i|we)|(?:can|could|would) you(?: please)?|please) {_ASIDE_ACTION} {_ASIDE_OBJECT}(?: {_ASIDE_LOCATION})?"
-    rf"|where (?:is|are) {_ASIDE_OBJECT}|(?:is|are) {_ASIDE_OBJECT} {_ASIDE_LOCATION})",
+    rf"(?:{_LOGISTICS_SUBJECT} (?:is|are|was|were) (?:already |still )?"
+    rf"(?:{_LOGISTICS_PLACE}|open|closed|locked|unlocked|available|ready|full|empty)"
+    rf"|{_LOGISTICS_SUBJECT} (?:opens?|closes?|arrives?|leaves?) at {_LOGISTICS_TIME}"
+    rf"|(?:i|we) (?:have|found|brought|left|put|paid for|picked up|dropped off|will {_LOGISTICS_ACTION}) {_LOGISTICS_SUBJECT}(?: {_LOGISTICS_PLACE})?"
+    rf"|(?:where |when )?(?:(?:shall|may|can|could|should) (?:i|we)|(?:can|could|would) you(?: please)?|please) {_LOGISTICS_ACTION} {_LOGISTICS_SUBJECT}(?: {_LOGISTICS_PLACE})?"
+    rf"|where (?:is|are) {_LOGISTICS_SUBJECT}|(?:is|are) {_LOGISTICS_SUBJECT} {_LOGISTICS_PLACE})",
     re.I,
 )
 
@@ -812,11 +821,18 @@ def _identified_nonpatient_speech(turn: Turn) -> str | None:
     return None
 
 
-def _unknown_logistical_aside(text: str) -> bool:
-    """Recognize self-contained logistical speech without granting it patient authority."""
-    speech = re.sub(r"^unknown\s*:\s*", "", text.strip(), count=1, flags=re.I)
-    clauses = re.split(r"[.!?;]+\s*", speech.rstrip(".!?;"))
-    return all(_LOGISTICAL_CLAUSE_RE.fullmatch(" ".join(clause.split())) for clause in clauses)
+def _logistical_aside_prompt(turn: Turn) -> bool | None:
+    """Return prompt status for a wholly logistical aside, or None for other speech."""
+    if turn.speaker not in {Speaker.UNKNOWN, Speaker.OTHER}:
+        return None
+    speech = _identified_nonpatient_speech(turn)
+    if speech is None:
+        speech = re.sub(r"^unknown\s*:\s*", "", turn.text.strip(), count=1, flags=re.I)
+    clauses = [" ".join(part.split()) for part in re.split(r"[.!?;]+\s*", speech.strip().rstrip(".!?;"))]
+    if not all(_LOGISTICAL_CLAUSE_RE.fullmatch(clause) for clause in clauses):
+        return None
+    return "?" in speech or any(re.match(r"(?:where|when|shall|may|can|could|would|should|please|is|are)\b",
+                                          clause, re.I) for clause in clauses)
 
 
 def _last_disputed_patient_turn(source: Source) -> int:
@@ -1152,6 +1168,10 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
         if index in proxy_turns:
             adjacent = False
             continue
+        aside_prompt = _logistical_aside_prompt(turn)
+        if aside_prompt is not None:
+            adjacent = adjacent and not aside_prompt
+            continue
         later_events = (event for part in _reply_clauses(turn) for event in _treatment_events(part))
         for later in later_events:
             if later.start < clause.end:
@@ -1256,6 +1276,10 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
             adjacent = False
             continue
         if turn.speaker is not Speaker.PATIENT:
+            aside_prompt = _logistical_aside_prompt(turn)
+            if aside_prompt is not None:
+                adjacent = adjacent and not aside_prompt
+                continue
             outside_scope = (turn.speaker is not Speaker.CLINICIAN or _outside_current_scope(turn.text)
                              or bool(_QUESTION_HAZARD_RE.search(turn.text)))
             # A direct request to confirm the last answer preserves its referent.
@@ -1290,13 +1314,12 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
         later = source.turns[idx]
         if later.speaker is not Speaker.PATIENT:
             speech = _identified_nonpatient_speech(later)
-            if later.speaker is Speaker.UNKNOWN and speech is None:
-                if not _unknown_logistical_aside(later.text):
-                    return True
-                # Preserve the referent of a later patient correction across a
-                # statement. A direct logistical question starts a new exchange.
-                immediate = immediate and not _nonpatient_prompt(later.text.partition(":")[-1])
+            aside_prompt = _logistical_aside_prompt(later)
+            if aside_prompt is not None:
+                immediate = immediate and not aside_prompt
                 continue
+            if later.speaker is Speaker.UNKNOWN and speech is None:
+                return True
             if speech is None or _nonpatient_prompt(speech):
                 immediate = False
             continue
