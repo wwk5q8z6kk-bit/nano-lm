@@ -385,6 +385,7 @@ class X8DualUnembedModel(nn.Module):
         self.cfg = cfg
         self.census = compute_omega_census(cfg, enforce_strict_4b=True)
         self.tok_emb = nn.Embedding(cfg.vocab_size, cfg.d_model)
+        self.output_projection = None if cfg.tie_embeddings else nn.Linear(cfg.d_model, cfg.vocab_size, bias=False)
         self.blocks = nn.ModuleList()
         self.ffns = nn.ModuleList()
         self.norms1 = nn.ModuleList()
@@ -449,9 +450,10 @@ class X8DualUnembedModel(nn.Module):
             hidden = hidden + op_out
             hidden = hidden + ffn(n2(hidden))
 
+        output_weight = self.tok_emb.weight if self.output_projection is None else self.output_projection.weight
         # Dual unembedding #1 (16.78M-param vocab GEMM inside X8!)
         with torch.no_grad():
-            lg1 = F.linear(self.norm_f(hidden), self.tok_emb.weight).float()
+            lg1 = F.linear(self.norm_f(hidden), output_weight).float()
             top2 = torch.topk(lg1, k=2, dim=-1).values
             lse = torch.logsumexp(lg1, dim=-1, keepdim=True)
             probs = (top2 - lse).exp()
@@ -462,7 +464,7 @@ class X8DualUnembedModel(nn.Module):
             hidden, _, anticirc = self.refiner(hidden, (hidden - x0).detach(), k_anchor, v_anchor, margin_unc, temp_scale=8.0)
 
         # Dual unembedding #2
-        logits = F.linear(self.norm_f(hidden), self.tok_emb.weight)
+        logits = F.linear(self.norm_f(hidden), output_weight)
         loss = None
         ce_loss = None
         if targets is not None:
@@ -682,6 +684,7 @@ class G4OmegaModel(nn.Module):
         self.cfg = cfg
         self.census = compute_omega_census(cfg, enforce_strict_4b=True)
         self.tok_emb = nn.Embedding(cfg.vocab_size, cfg.d_model)
+        self.output_projection = None if cfg.tie_embeddings else nn.Linear(cfg.d_model, cfg.vocab_size, bias=False)
         self.blocks = nn.ModuleList([_OmegaHMWRBlock(cfg, i) for i in range(cfg.n_layers)])
         self.norm_f = DiscoveryRMSNorm(cfg.d_model)
         if cfg.use_latent_refiner:
@@ -768,7 +771,9 @@ class G4OmegaModel(nn.Module):
         else:
             tok_unc = mem_unc
 
-        logits = F.linear(self.norm_f(hidden), self.tok_emb.weight)
+        output_weight = self.tok_emb.weight if self.output_projection is None else self.output_projection.weight
+
+        logits = F.linear(self.norm_f(hidden), output_weight)
         loss = ce_loss = None
         if targets is not None:
             ce_per_tok = F.cross_entropy(

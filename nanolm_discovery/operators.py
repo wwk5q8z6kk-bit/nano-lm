@@ -369,9 +369,9 @@ def scam_causal_topk_attention(
             mem_v[:, :k_eff] = sel_v[:, -1]
             mem_s[:, :k_eff] = top_s[:, -1]
         else:
-            mem_k = sel_k[:, -1]
-            mem_v = sel_v[:, -1]
-            mem_s = top_s[:, -1]
+            mem_k = sel_k[:, -1].clone()
+            mem_v = sel_v[:, -1].clone()
+            mem_s = top_s[:, -1].clone()
 
     return torch.cat(outs, dim=1), {"k": mem_k, "v": mem_v, "s": mem_s, "step": step_offset + t_len}
 

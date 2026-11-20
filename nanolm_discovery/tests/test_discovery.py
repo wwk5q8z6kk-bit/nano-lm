@@ -232,7 +232,12 @@ def test_recurrent_ring_storage_matches_logical_state(kind):
             if isinstance(tensor, torch.Tensor):
                 assert tensor.untyped_storage().nbytes() == tensor.numel() * tensor.element_size()
                 checked.add(name)
-    assert {"wave_ring", "prev_wave"} <= checked
+        if layer.get("scam") is not None:
+            for name in ("k", "v", "s"):
+                tensor = layer["scam"][name]
+                assert tensor.untyped_storage().nbytes() == tensor.numel() * tensor.element_size()
+                checked.add("scam_" + name)
+    assert {"wave_ring", "prev_wave", "scam_k", "scam_v", "scam_s"} <= checked
 
 
 @pytest.mark.parametrize("kind", [ParadigmKind.G3_HMWR, ParadigmKind.I3_HRWN])

@@ -322,3 +322,27 @@ def test_assertion_only_harness_and_missing_harness():
     system = OmegaUnifiedCognitiveSystem()
     assert system.solve_task(task) == ("PASS_VERIFIED", EpistemicStatus.DIRECT_MEASUREMENT, 2, 2)
     assert system.solve_task(replace(task, test_harness=""))[1] == EpistemicStatus.UNCERTAIN
+
+
+@pytest.mark.parametrize("variant", list(OmegaVariant))
+def test_untied_vocabulary_projection_matches_census(variant, monkeypatch):
+    from dataclasses import replace
+    from torch.nn import functional as F
+
+    cfg = replace(make_omega_suite("mech")[variant], tie_embeddings=False)
+    model = build_omega_model(cfg).eval()
+    assert model.deployed_parameter_count() == compute_omega_census(cfg).total_deployed_parameters
+    assert model.output_projection.weight.data_ptr() != model.tok_emb.weight.data_ptr()
+    linear = F.linear
+    projections = []
+
+    def record_projection(x, weight, bias=None):
+        if weight is model.output_projection.weight or weight is model.tok_emb.weight:
+            projections.append(weight)
+        return linear(x, weight, bias)
+
+    monkeypatch.setattr(F, "linear", record_projection)
+    model(torch.randint(cfg.vocab_size, (1, 8))).logits.sum().backward()
+    assert len(projections) == compute_omega_census(cfg).unembed_passes
+    assert all(weight is model.output_projection.weight for weight in projections)
+    assert model.output_projection.weight.grad.abs().sum() > 0
