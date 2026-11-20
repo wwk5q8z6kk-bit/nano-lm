@@ -167,6 +167,29 @@ _EMBEDDED_DENIAL_RE = re.compile(
     r"|\b(?:said|saying|told|quoted|written|recorded|asked)\b|[\"“”]",
     re.IGNORECASE,
 )
+_RECORD_SOURCE = r"(?:chart|records?|forms?|notes?|report|file|list|doctor|nurse)"
+_ATTRIBUTED_ASSERTION_RE = re.compile(
+    rf"\b{_RECORD_SOURCE}\s+(?:(?:incorrectly|wrongly|mistakenly|falsely)\s+)?"
+    r"(?:says?|said|reads?|lists?|listed|shows?|claims?|states?|stated|reports?|reported|told|wrote)\b"
+    rf"|\baccording to (?:my |the |our |that )?(?:medical )?{_RECORD_SOURCE}\b"
+    r"|\b(?:i was told|i (?:said|claimed|wrote) that|"
+    r"i (?:never|didn't|did not) (?:say|claim|confirm|report|write)|(?:listed|recorded) as)\b", re.I
+)
+_DISAVOWAL_RE = re.compile(
+    r"\b(?:that|this|it|(?:that|the|this) (?:entry|statement|claim|part))"
+    r"(?:'s| is| was)\s+(?:(?:simply|completely)\s+)?"
+    r"(?:false|untrue|inaccurate|incorrect|wrong|not (?:true|accurate|correct|right|mine))\b"
+    r"|\bi (?:dispute|disavow|reject|disagree with) (?:that|this|the (?:entry|statement))\b", re.I
+)
+# Only split a separately voiced assertion. A comma after "the chart says"
+# still introduces the attributed text.
+_ATTRIBUTION_PIVOT_RE = re.compile(
+    rf"(?:,\s*|\s+)(?:(?:but|although|however,?|whereas)\s+"
+    rf"(?=(?:i\b|i'|it\s+(?:began|started|is|has)|(?:my|the)\s+{_RECORD_SOURCE}\b|according to\b))"
+    rf"|and\s+(?=(?:my|the)\s+{_RECORD_SOURCE}\b|according to\b))", re.I
+)
+_QUOTED_PASSAGE_RE = re.compile(r""""[^"]+"|“[^”]+”|‘[^’]+’|(?<!\w)'(?!\s).+?(?<!\s)'(?!\w)""")
+
 _QUESTION_START = r"(?:am|can|could|would|will|should|did|do|does|is|are|what|which|who|where|when|why|how)\b"
 _QUESTION_JOIN_RE = re.compile(rf"(?:,\s*|\s+and\s+)(?={_QUESTION_START})", re.I)
 _PROSPECTIVE_TREATMENT_RE = re.compile(
@@ -459,9 +482,25 @@ def _split_events(clause: Turn, boundary: re.Pattern[str]) -> tuple[Turn, ...]:
 
 
 def _reporting_events(clause: Turn) -> tuple[Turn, ...]:
-    if clause.text.endswith("?") and not re.match(_QUESTION_START, clause.text, re.I):
-        return _split_events(clause, _QUESTION_JOIN_RE)
-    return (clause,)
+    parts = (clause,)
+    if _ATTRIBUTED_ASSERTION_RE.search(clause.text) or _DISAVOWAL_RE.search(clause.text):
+        parts = _split_events(clause, _ATTRIBUTION_PIVOT_RE)
+    reports = []
+    for part in parts:
+        if part.text.endswith("?") and not re.match(_QUESTION_START, part.text, re.I):
+            reports.extend(_split_events(part, _QUESTION_JOIN_RE))
+        else:
+            reports.append(part)
+    return tuple(reports)
+
+
+def _span_in_attributed_quote(turn: Turn, span: CandidateSpan) -> bool:
+    for quote in _QUOTED_PASSAGE_RE.finditer(turn.text):
+        if turn.start + quote.start() < span.end and turn.start + quote.end() > span.start:
+            introduction = re.split(r"[.!?;]", turn.text[:quote.start()])[-1]
+            if _ATTRIBUTED_ASSERTION_RE.search(introduction):
+                return True
+    return False
 
 
 def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
@@ -503,7 +542,7 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
 
 
 def _eligible_correction(text: str) -> bool:
-    return bool(_SELF_CORRECTION_CLAUSE_RE.search(text) and not (
+    return bool((_SELF_CORRECTION_CLAUSE_RE.search(text) or _DISAVOWAL_RE.search(text)) and not (
         _ADDITIVE_RE.search(text) or _THIRD_PARTY_RE.search(text)
         or _PAST_OR_HYPOTHETICAL_RE.search(text) or _patient_question(text)
     ))
@@ -535,7 +574,8 @@ def _retracts_value(correction: str, original: str, field: FieldName, span_text:
     if value and re.search(r"(?<!\w)" + re.escape(value) + r"(?!\w)", correction, re.I):
         return True
     if immediate and _correction_fields(original) == {field}:
-        return bool(_BARE_REPLACEMENT_RE.fullmatch(correction) or re.fullmatch(
+        return bool(_BARE_REPLACEMENT_RE.fullmatch(correction) or _DISAVOWAL_RE.fullmatch(correction.rstrip(".!;"))
+                    or re.fullmatch(
             r"(?:actually,?\s+)?i was (?:mistaken|wrong|incorrect)[.!]?", correction, re.I
         ))
     return False
@@ -556,7 +596,7 @@ def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, s
             if later.speaker is Speaker.UNKNOWN and not later.text.lower().startswith("other:"):
                 return True
             continue
-        if not _SELF_CORRECTION_CLAUSE_RE.search(later.text):
+        if not (_SELF_CORRECTION_CLAUSE_RE.search(later.text) or _DISAVOWAL_RE.search(later.text)):
             continue
         previous = _preceding_clinician_turn(source, idx)
         if previous and (_outside_current_scope(previous.text) or _QUESTION_HAZARD_RE.search(previous.text)):
@@ -758,6 +798,10 @@ def _verify_local_span(
             return False, "incomplete_numeric_token"
         reporting = [part for part in _reporting_events(clause)
                      if part.start < span.end and span.start < part.end]
+        if (_span_in_attributed_quote(turn, span) or any(
+            _ATTRIBUTED_ASSERTION_RE.search(part.text) or _DISAVOWAL_RE.search(part.text) for part in reporting
+        )):
+            return False, "attributed_or_disavowed_assertion"
         if any(_patient_question(part.text) for part in reporting):
             return False, "patient_question"
         event = reporting[0] if len(reporting) == 1 else clause
