@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from unittest.mock import patch, MagicMock
 from nanoscribe.benchmark import run_baseline
@@ -26,6 +28,9 @@ def test_run_baseline_with_mocks(mock_model_input, mock_gold, mock_adapter, mock
     mock_report.support_direct_exact = 3
     mock_report.support_normalized = 1
     mock_report.support_review_required = 0
+    mock_report.support_semantically_supported = 1
+    mock_report.support_unsupported = 2
+    mock_report.support_contradicted = 3
     mock_report.wrong_source = 0
     mock_report.wrong_mention = 0
     mock_report.invalid_span = 0
@@ -78,7 +83,8 @@ def test_run_baseline_with_mocks(mock_model_input, mock_gold, mock_adapter, mock
 
     # Check layers
     assert "layers" in result["layers"]
-    assert "support_mix" in result["layers"]
+    assert result["layers"]["layers"]["support"] == 5
+    assert json.loads(json.dumps(result)) == result
 
     # Check per_atom
     per_atom = result["per_atom"]
