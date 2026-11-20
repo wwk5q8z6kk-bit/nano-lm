@@ -69,3 +69,32 @@ def test_loss_counts_each_target_at_correct_shift():
     assert loss_bits(TransitionModel(), target) == pytest.approx(len(target), abs=1e-4)
     wrong = [0] * 260
     assert loss_bits(TransitionModel(), wrong) == pytest.approx(len(wrong) * math.log2(6), abs=1e-4)
+
+
+def test_common_byte_chunks_preserve_whitespace_and_multibyte_text():
+    from reference.compare import split_bytes
+    for text in ("A group of words around a new boundary.", "三四五六七八九", "一丁 一丁 " * 5,
+                 "Ends with a space. ", " alpha"):
+        original = text.encode()
+        chunks = list(split_bytes(original, limit=7))
+        assert "".join(c[2] for c in chunks) == text
+        assert all(0 < end - start <= 7 and original[start:end] == s.encode() for start, end, s in chunks)
+        assert [a[1] for a in chunks[:-1]] == [b[0] for b in chunks[1:]]
+
+
+def test_reference_batch_scores_leading_targets_and_ignores_padding():
+    import math
+    torch = pytest.importorskip("torch")
+    from reference.compare import measure
+
+    def predict(x):
+        logits = torch.zeros((*x.shape, 4))
+        return logits.scatter_(-1, ((x + 1) % 4).unsqueeze(-1), math.log(3))
+
+    sample = [({"doc": "b", "start": 12}, [2, 3, 0], [1, 2, 3, 3]),
+              ({"doc": "a", "start": 0}, [2], [3])]
+    native = measure(sample, "M0", predict)
+    public = measure(sample, "Pythia-step256", predict)
+    assert [r["doc"] for r in public] == ["a", "b"]
+    assert [r["bits"] for r in native] == pytest.approx([1, 3], abs=1e-6)
+    assert [r["bits"] for r in public] == pytest.approx([math.log2(6), 3 + math.log2(6)], abs=1e-6)

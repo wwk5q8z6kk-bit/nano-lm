@@ -18,6 +18,8 @@ Values are bits per UTF-8 byte, with lower values indicating better next-token p
 
 Each recovered implementation matched the original on all 2,588,672 vocabulary logits for a 79-token input. An independent M2 run using the historical code, padded batches and direct log-sum-exp reproduced both conditions on all 24 documents within 0.00000017 bits per byte per document. [Recovery checks](results/recovery-parity.json) · [Full M2 replay comparison](results/independent-replay.json)
 
+A separate five-arm comparison re-scores these same bytes with a shared byte-based context policy and two public Pythia-410M checkpoints. Final Pythia achieved 0.92001 bits per byte, followed by S2 at 1.17753, M0 at 1.18451, M2 at 1.20727 and Pythia at step 256 at 2.01115. [Shared-byte reference experiment](reference/README.md)
+
 ## Checkpoints and comparability
 
 | Arm | Architecture | Parameters | Training tokens | Historical four-domain mean BPB |
