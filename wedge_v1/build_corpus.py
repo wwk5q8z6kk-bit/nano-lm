@@ -2,11 +2,11 @@
 
 I*/X* frozen in inclusion_predicates.md. Seed fixed before scoring.
 """
+
 from __future__ import annotations
 
 import hashlib
 import json
-import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -226,13 +226,16 @@ def build() -> dict:
     # Gold atoms / task expectations (process-planted, not score-cherry-picked)
     gold = {
         "seed": SEED,
-        "docs": {d["doc_id"]: {
-            "title": d["title"],
-            "authors": d["authors"],
-            "year": d["year"],
-            "doc_type": d["doc_type"],
-            "doi": d["doi"],
-        } for d in DOCS},
+        "docs": {
+            d["doc_id"]: {
+                "title": d["title"],
+                "authors": d["authors"],
+                "year": d["year"],
+                "doc_type": d["doc_type"],
+                "doi": d["doi"],
+            }
+            for d in DOCS
+        },
         "planted": {
             "B1_numeric_contradiction": {
                 "field": "metformin_dose_mg",
@@ -290,7 +293,11 @@ def build() -> dict:
                 ]
             },
             "mentions": {
-                "metformin": ["bio_abs_metformin", "bio_abs_metformin_conflict", "binding_coref"],
+                "metformin": [
+                    "bio_abs_metformin",
+                    "bio_abs_metformin_conflict",
+                    "binding_coref",
+                ],
             },
             "definition": {
                 "doc_id": "tech_note_cache",
@@ -344,7 +351,17 @@ def build() -> dict:
     }
     man_path = MANIFESTS / "corpus_manifest.json"
     man_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    print(json.dumps({"ok": True, "n_docs": len(corpus_meta), "probe_ok": manifest["probe_ok"], "manifest": str(man_path)}, indent=2))
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "n_docs": len(corpus_meta),
+                "probe_ok": manifest["probe_ok"],
+                "manifest": str(man_path),
+            },
+            indent=2,
+        )
+    )
     return manifest
 
 
