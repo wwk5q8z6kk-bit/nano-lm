@@ -186,3 +186,62 @@ def test_category_with_same_date_withdraws_only_matching_occurrence():
 def test_emphasis_before_calendar_qualifier_keeps_real_restriction(day, supported):
     text = f"Patient: I took aspirin today.\nPatient: Actually, I didn't take aspirin at all {day}."
     assert_medication(text, "aspirin", 0, supported)
+
+
+@pytest.mark.parametrize("denial", ["aspirin after all", "aspirin, after all",
+                                    "500 mg of aspirin for my knee", "aspirin 500 mg for my knee",
+                                    "500 mg of aspirin today", "aspirin 500 mg today",
+                                    "500 mg of aspirin for my knee today"])
+def test_explicit_matching_dose_date_and_indication_do_not_need_contiguous_source(denial):
+    text = (f"Patient: I took 500 mg of aspirin today for my knee.\n"
+            f"Patient: Actually, I didn't take {denial}.")
+    assert_medication(text, "aspirin", 0, False)
+
+
+@pytest.mark.parametrize("denial", ["500 mg of aspirin today", "200 mg of aspirin yesterday",
+                                    "200 mg of aspirin for my knee"])
+def test_each_supplied_administration_restriction_must_match(denial):
+    text = (f"Patient: I took 200 mg of aspirin today for my ankle.\n"
+            f"Patient: Actually, I didn't take {denial}.")
+    assert_medication(text, "aspirin", 0, True)
+
+
+@pytest.mark.parametrize("original,denial", [
+    ("aspirin and ibuprofen 500 mg", "500 mg of aspirin"),
+    ("500 mg of aspirin and ibuprofen", "500 mg of ibuprofen"),
+    ("aspirin and ibuprofen for my knee", "aspirin for my knee"),
+    ("aspirin and ibuprofen yesterday", "aspirin yesterday"),
+])
+def test_another_coadministered_name_cannot_supply_a_restriction(original, denial):
+    text = f"Patient: I took {original}.\nPatient: Actually, I didn't take {denial}."
+    source = transcript_source(NanoInput("coadministration", text))
+    menu = build_grounded_english_menu(source, MED, set())
+    values = [[s.text for s in spans] for code, spans in menu.values() if code == "U"]
+    assert ["aspirin", "ibuprofen"] in values
+    assert not any(code == "S" for code, _ in menu.values())
+
+
+@pytest.mark.parametrize("denial", ["500 mg of ibuprofen", "ibuprofen 500 mg"])
+def test_same_coadministered_name_can_supply_its_own_dose(denial):
+    text = (f"Patient: I took aspirin and ibuprofen 500 mg.\n"
+            f"Patient: Actually, I didn't take {denial}.")
+    assert_medication(text, "aspirin", 0, True)
+    assert_medication(text, "ibuprofen", 0, False)
+
+
+@pytest.mark.parametrize("withdrawn,expected", [
+    ("500 mg of aspirin and 200 mg of ibuprofen", "naproxen"),
+    ("aspirin 500 mg and ibuprofen 200 mg", "naproxen"),
+])
+def test_coordinated_correction_compares_each_dose_with_its_target(withdrawn, expected):
+    text = ("Patient: I took 500 mg of aspirin. I took ibuprofen 200 mg. I took naproxen.\n"
+            f"Patient: Actually, I didn't take {withdrawn}.")
+    assert_medication(text, "aspirin", 0, False)
+    assert_medication(text, "ibuprofen", 0, False)
+    assert_medication(text, expected, 0, True)
+
+
+def test_accompaniment_remains_part_of_the_named_administration():
+    text = ("Patient: I took aspirin with water.\n"
+            "Patient: Actually, I didn't take aspirin with water.")
+    assert_medication(text, "aspirin", 0, False)

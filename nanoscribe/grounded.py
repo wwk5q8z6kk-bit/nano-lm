@@ -1283,45 +1283,88 @@ def _correction_fields(clause: str) -> set[FieldName]:
     return targets
 
 
-def _corrected_medication_objects(text: str) -> tuple[set[str] | None, str] | None:
-    """Read the objects and qualifiers of a first-person negative correction."""
+@dataclass(frozen=True)
+class _MedicationWithdrawal:
+    name: str | None  # An explicit medication category applies to any name.
+    dose: str
+    restriction: str
+
+
+def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...] | None:
+    """Read the patient’s named or categorical denials with their restrictions."""
     predicate = _CORRECTED_NONUSE_RE.match(text)
     if not predicate:
         return None
     if _patient_question(text) or _EPISTEMIC_HEDGE_RE.search(text):
-        # A question or tentative denial cannot definitively withdraw a
-        # particular medicine or invoke the field-wide correction fallback.
-        return set(), ""
+        # The negative predicate is recognized, but establishes no withdrawal.
+        return ()
     body = _MEDICATION_REPLACEMENT_JOIN_RE.split(text[predicate.end():], maxsplit=1)[0]
-    # Neither a reason for non-use nor emphasis distinguishes one
-    # administration from another. Keep any separately stated restriction.
     body = re.split(r"\bbecause\b", body, maxsplit=1, flags=re.I)[0].rstrip(" .,;!")
-    body = re.sub(rf"\s+(?:at all|whatsoever)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
+    body = re.sub(rf",?\s+(?:at all|after all|whatsoever|in fact)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
                   "", body, flags=re.I)
     start = 0
-    names = set()
-    doses = []
-    generic = False
+    objects = []
     while name := _substance_name_bounds(body, (start, len(body)), FieldName.MEDICATION):
-        value = normalize_value(body[name[0]:name[1]])
+        value = normalize_value(body[slice(*name)])
         if value in {"it", "that", "this", "them", "any"}:
             return None
-        if value == "anything" or re.fullmatch(rf"(?:any )?{_MED_DENIAL_NOUN}", value, re.I):
-            generic = True
-        names.add(value)
-        if dose := _MEDICATION_DOSE_RE.search(body, start, name[0]):
-            doses.append(dose[0])
+        generic = value == "anything" or re.fullmatch(rf"(?:any )?{_MED_DENIAL_NOUN}", value, re.I)
+        dose = _MEDICATION_DOSE_RE.search(body, start, name[0])
         start = name[1]
+        following = start + len(body[start:]) - len(body[start:].lstrip())
+        if trailing_dose := _MEDICATION_DOSE_RE.match(body, following):
+            dose = trailing_dose
+            start = dose.end()
+        objects.append((None if generic else value, dose[0] if dose else ""))
         join = re.match(r"(?:,\s*(?:(?:and|or|plus)\s+)?|\s+(?:and|or|plus)\s+)", body[start:], re.I)
         if not join:
             break
         start += join.end()
-    qualifier = " ".join([*doses, body[start:]]).strip(" .,;!")
-    # A generic object retracts any medicine subject to this restriction.
-    # The empty set returned for tentative speech matches no medicine.
-    if generic:
-        return None, qualifier
-    return (names, qualifier) if names else None
+    # A final indication or interval conservatively qualifies the coordinated
+    # denial. Each dose, however, belongs to its individual object.
+    restriction = body[start:].strip(" .,;!")
+    return tuple(_MedicationWithdrawal(name, dose, restriction) for name, dose in objects) or None
+
+
+def _medication_administration_text(text: str, name_start: int, name_end: int) -> str:
+    """Bound the original administration so a sibling drug cannot lend its dose or indication."""
+    begin, end = 0, len(text)
+    for join in _SUBSTANCE_JOIN_RE.finditer(text):
+        if _TAKEN_ADMINISTRATION_ADJUNCT_RE.match(text, join.start()):
+            continue
+        if not (join["join"] or join["comma_join"]):
+            dose = _MEDICATION_DOSE_RE.match(text, join.end())
+            if dose and re.match(r"\s*(?:$|[.,;!]|(?:for|at|on|with|today|yesterday)\b)", text[dose.end():], re.I):
+                continue
+            if _MED_CALENDAR_RE.match(text, join.end()):
+                continue
+        if join.end() <= name_start:
+            begin = join.end()
+        elif join.start() >= name_end:
+            end = join.start()
+            break
+    return text[begin:end]
+
+
+def _same_medication_administration(withdrawal: _MedicationWithdrawal, administration: str,
+                                    source: Source, span: CandidateSpan, question: str) -> bool:
+    if withdrawal.dose:
+        amount = re.sub(r"[\s‐‑-]+", "", withdrawal.dose.casefold())
+        if not any(re.sub(r"[\s‐‑-]+", "", match[0].casefold()) == amount
+                   for match in _MEDICATION_DOSE_RE.finditer(administration)):
+            return False
+    rest = withdrawal.restriction
+    frame = _medication_interval(rest or question)
+    if frame and frame != ("", ""):
+        original = _medication_event_interval(source, span, administration)
+        if not original or frame[0] != original[0] or (frame[1] and frame[1] != original[1]):
+            return False
+        rest = _MED_CALENDAR_RE.sub(" ", rest)
+    elif not rest and frame is None:
+        return False  # The inherited question refers to an indeterminate interval.
+    restriction = " ".join(rest.strip(" .,;!").split())
+    return not restriction or bool(re.search(r"(?<!\w)" + re.escape(restriction) + r"(?!\w)",
+                                              administration, re.I))
 
 
 def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
@@ -1330,10 +1373,11 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
     if not _MEDICATION_CORRECTION_RE.search(source.text, event.end):
         return False
     original_name = _substance_name_bounds(event.text, owned, FieldName.MEDICATION)
-    value = normalize_value(span.text)
-    if (original_name and span.start <= event.start + original_name[0]
-            and event.start + original_name[1] <= span.end):
-        value = normalize_value(event.text[slice(*original_name)])
+    name_start, name_end = span.start - event.start, span.end - event.start
+    if original_name and name_start <= original_name[0] and original_name[1] <= name_end:
+        name_start, name_end = original_name
+    value = normalize_value(event.text[name_start:name_end])
+    administration = _medication_administration_text(event.text, name_start, name_end)
     proxy = _forward_proxy_turns(source)
     for index in range(idx, len(source.turns)):
         turn = source.turns[index]
@@ -1351,35 +1395,19 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
             if (_MEDICATION_CORRECTION_RE.fullmatch(text.rstrip(" .!;"))
                     and position + 1 < len(clauses)):
                 text += " " + clauses[position + 1].text
-            correction = _corrected_medication_objects(text)
-            if not correction:
-                continue
-            names, qualifier = correction
-            if names is not None and value not in names:
-                continue
-            if qualifier and not _MED_CALENDAR_RE.fullmatch(qualifier):
-                # Only withdraw a qualified report if that qualification
-                # also names the original administration (e.g. its dose).
-                if (not _patient_question(text)
-                        and re.search(r"(?<!\w)" + re.escape(qualifier) + r"(?!\w)", event.text, re.I)):
+            question = (previous.text if position == 0 and previous
+                        and _MED_QUESTION_CUE_RE.search(previous.text) else "")
+            for withdrawal in _corrected_medication_objects(text) or ():
+                if (withdrawal.name is None or value == withdrawal.name) and _same_medication_administration(
+                        withdrawal, administration, source, span, question):
                     return True
-                continue
-            frame = _medication_interval(qualifier)
-            if not qualifier and position == 0 and previous and _MED_QUESTION_CUE_RE.search(previous.text):
-                frame = _medication_interval(previous.text)
-            if frame == ("", ""):
-                return True
-            original_frame = _medication_event_interval(source, span)
-            if (frame and original_frame and frame[0] == original_frame[0]
-                    and (not frame[1] or frame[1] == original_frame[1])):
-                return True
     return False
 
 
 def _retracts_value(correction: str, original: str, field: FieldName, span_text: str, immediate: bool) -> bool:
     if not _eligible_correction(correction):
         return False
-    if _corrected_medication_objects(correction):
+    if _corrected_medication_objects(correction) is not None:
         # The medication-specific verifier owns both named and category denials.
         return False
     targets = _correction_fields(correction)
@@ -3241,12 +3269,13 @@ def _medication_interval(text: str) -> tuple[str, str] | None:
     return (day.casefold(), (part or "").casefold())
 
 
-def _medication_event_interval(source: Source, span: CandidateSpan) -> tuple[str, str] | None:
+def _medication_event_interval(source: Source, span: CandidateSpan,
+                               administration: str | None = None) -> tuple[str, str] | None:
     idx = _turn_index(source, span.start, span.end)
     if idx is None:
         return None
     clause = _enclosing_clause(source.turns[idx], span)
-    interval = _medication_interval(clause.text)
+    interval = _medication_interval(administration if administration is not None else clause.text)
     question = _preceding_clinician_turn(source, idx)
     if interval == ("", "") and question and _MED_QUESTION_CUE_RE.search(question.text):
         if clause.start == source.turns[idx].start:
