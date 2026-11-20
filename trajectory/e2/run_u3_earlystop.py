@@ -272,13 +272,9 @@ def flr_at(t, fsteps):
     return FLR * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * p)))
 
 
-def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int | None):
-    """Train until stop_at (inclusive) or early-stop plateau (fullft only when stop_at is None).
 
-    Returns (state_dict_cpu, meta).
-    """
+def setup_model_and_opt(kind, base_sd):
     from peft import LoraConfig, inject_adapter_in_model
-
     m = GPT()
     m.load_state_dict(base_sd)
     m.to(dev)
@@ -313,6 +309,29 @@ def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int 
             eps=1e-8,
         )
         print(f"[u3/{kind}] full-FT params {sum(p.numel() for p in m.parameters())/1e6:.2f}M", flush=True)
+    return m, opt
+
+def check_plateau(probes, kind, m, step):
+    window = probes[-PLATEAU_WINDOW:]
+    gaps = [p["diluted_gap"] for p in window]
+    best_prev = min(gaps[:-1])
+    if gaps[-1] > best_prev - PLATEAU_EPS:
+        early_step = step
+        early_sd = {k: v.detach().cpu().clone() for k, v in m.state_dict().items()}
+        print(
+            f"[u3/{kind}] EARLY-STOP plateau at step={early_step} "
+            f"gap={gaps[-1]:.2f} window={gaps}",
+            flush=True,
+        )
+        return early_step, early_sd
+    return None, None
+
+def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int | None):
+    """Train until stop_at (inclusive) or early-stop plateau (fullft only when stop_at is None).
+
+    Returns (state_dict_cpu, meta).
+    """
+    m, opt = setup_model_and_opt(kind, base_sd)
 
     scaler = torch.amp.GradScaler("cuda")
     N = X.shape[0]
@@ -372,19 +391,9 @@ def train_arm(kind: str, base_sd: dict, X, M, fsteps, probe_items, stop_at: int 
                 and step >= min_steps
                 and len(probes) >= PLATEAU_WINDOW
             ):
-                window = probes[-PLATEAU_WINDOW:]
-                gaps = [p["diluted_gap"] for p in window]
-                # plateau = held-gap not improving (diluted gap not falling) by ≥EPS
-                best_prev = min(gaps[:-1])
-                if gaps[-1] > best_prev - PLATEAU_EPS:
-                    early_step = step
-                    early_sd = {k: v.detach().cpu().clone() for k, v in m.state_dict().items()}
-                    print(
-                        f"[u3/{kind}] EARLY-STOP plateau at step={early_step} "
-                        f"gap={gaps[-1]:.2f} window={gaps}",
-                        flush=True,
-                    )
-                    # U3: stop full-FT at plateau (do not continue wasting budget)
+                _step, _sd = check_plateau(probes, kind, m, step)
+                if _step is not None:
+                    early_step, early_sd = _step, _sd
                     break
         if snapshot_at is not None and step == snapshot_at and early_sd is None:
             early_step = step
