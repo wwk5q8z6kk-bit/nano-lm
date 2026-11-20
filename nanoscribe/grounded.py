@@ -292,7 +292,7 @@ _FIRST_PERSON_NONUSE = (
     r"(?:have not|haven['’]t) (?:taken|used|tried|applied|swallowed))\s+"
 )
 _CORRECTED_NONUSE_RE = re.compile(
-    rf"^{_MEDICATION_CORRECTION_MARKER}\b[\s.,:;—–-]+{_FIRST_PERSON_NONUSE}", re.I,
+    rf"^{_MEDICATION_CORRECTION_MARKER}\b[\s.,:;!—–-]+{_FIRST_PERSON_NONUSE}", re.I,
 )
 
 _ROUTINE_DISCLAIMED_RE = re.compile(

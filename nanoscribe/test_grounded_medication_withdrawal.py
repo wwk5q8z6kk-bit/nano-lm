@@ -45,7 +45,8 @@ def assert_substance(transcript, field, named, occurrence, supported):
 
 
 @pytest.mark.parametrize("prefix", ["Let me correct that. I did not take", "Correction: I didn’t take",
-                                    "Actually, I didn't take", "Let me correct my answer: I haven't taken"])
+                                    "Actually, I didn't take", "Let me correct my answer: I haven't taken",
+                                    "Let me correct that! I did not take", "Sorry! I did not take"])
 @pytest.mark.parametrize("boundary", [" ", "\nPatient: "])
 def test_withdrawal_changes_both_menus_and_free_source_verification(prefix, boundary):
     text = "Patient: I took naproxen." + boundary + prefix + " naproxen. I took aspirin."
