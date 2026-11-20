@@ -1360,23 +1360,35 @@ def _corrected_medication_objects(text: str) -> tuple[_MedicationWithdrawal, ...
     predicate = _CORRECTED_NONUSE_RE.match(text)
     if not predicate:
         return None
-    if _patient_question(text) or _EPISTEMIC_HEDGE_RE.search(text) or _PAST_OR_HYPOTHETICAL_RE.search(text):
-        # Scope can be clarified after the first negative predicate.
-        return ()
     remainder = text[predicate.end():]
     parts = _EVENT_JOIN_RE.split(remainder)
-    withdrawals = list(_withdrawn_objects_in_predicate(parts[0]))
+    first = _withdrawn_objects_in_predicate(parts[0])
+    withdrawals = list(first or ())
     for join, part in zip(_EVENT_JOIN_RE.finditer(remainder), parts[1:]):
-        if re.search(r"\b(?:because|so)\b", join[0], re.I):
-            break
         if negative := re.match(_FIRST_PERSON_NONUSE, part, re.I):
-            withdrawals.extend(_withdrawn_objects_in_predicate(part[negative.end():]))
-    return tuple(withdrawals) or None
+            if not re.search(r"\b(?:because|so)\b", join[0], re.I):
+                withdrawals.extend(_withdrawn_objects_in_predicate(part[negative.end():]) or ())
+            continue
+        # An independently described treatment (even a tentative or historical
+        # replacement) does not qualify the preceding denial. A bare hedge or
+        # a retrospective clarification about the denial itself still does.
+        if re.search(r"\b(?:take|took|taken|use|used|try|tried|apply|applied|swallow(?:ed)?)\s+"
+                     r"(?!(?:to|it|that|this|them)\b)[\w-]+", part, re.I):
+            continue
+        reason = bool(re.search(r"\bbecause\b", join[0], re.I))
+        if (_PAST_OR_HYPOTHETICAL_RE.search(part) or _patient_question(part)
+                or (not reason and _EPISTEMIC_HEDGE_RE.search(part))):
+            return ()
+    return tuple(withdrawals) if withdrawals or first is not None else None
 
 
-def _withdrawn_objects_in_predicate(body: str) -> tuple[_MedicationWithdrawal, ...]:
+def _withdrawn_objects_in_predicate(body: str) -> tuple[_MedicationWithdrawal, ...] | None:
     """Each independent non-use predicate owns its own object list and qualifiers."""
+    if _patient_question(body):
+        return ()
     body = re.split(r"\bbecause\b", body, maxsplit=1, flags=re.I)[0].rstrip(" .,;!")
+    if _EPISTEMIC_HEDGE_RE.search(body) or _PAST_OR_HYPOTHETICAL_RE.search(body):
+        return ()
     body = re.sub(rf",?\s+(?:at all|after all|whatsoever|in fact)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
                   "", body, flags=re.I)
     start = 0
@@ -1390,7 +1402,7 @@ def _withdrawn_objects_in_predicate(body: str) -> tuple[_MedicationWithdrawal, .
             break
         value = normalize_value(body[slice(*name)])
         if value in {"it", "that", "this", "them", "any"}:
-            return ()
+            return None
         generic = value == "anything" or re.fullmatch(rf"(?:any )?{_MED_DENIAL_NOUN}", value, re.I)
         dose = _MEDICATION_DOSE_RE.search(body, start, name[0])
         start = name[1]
@@ -1406,7 +1418,7 @@ def _withdrawn_objects_in_predicate(body: str) -> tuple[_MedicationWithdrawal, .
     # A final indication or interval conservatively qualifies the coordinated
     # denial. Each dose, however, belongs to its individual object.
     restriction = body[start:].strip(" .,;!")
-    return tuple(_MedicationWithdrawal(name, dose, restriction) for name, dose in objects)
+    return tuple(_MedicationWithdrawal(name, dose, restriction) for name, dose in objects) or None
 
 
 def _medication_administration_text(text: str, name_start: int, name_end: int) -> str:

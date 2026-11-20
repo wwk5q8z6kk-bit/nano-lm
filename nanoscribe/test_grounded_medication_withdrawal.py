@@ -343,3 +343,28 @@ def test_calendar_preposition_belongs_to_the_date(original, withdrawn, supported
 def test_later_historical_or_hypothetical_context_cannot_retract_current_report(clarification):
     text = f"Patient: I took aspirin today.\nPatient: Actually, I didn't take aspirin, {clarification}."
     assert_medication(text, "aspirin", 0, True)
+
+
+@pytest.mark.parametrize("suffix,remains", [
+    (", but I might have taken ibuprofen instead.", False),
+    (", and I am not sure whether I took ibuprofen.", False),
+    (", but should I take ibuprofen?", False),
+    (" because I might be allergic to its coating.", False),
+    (" because I was not sure of the dose.", False),
+    (" because the bottle might have been expired.", False),
+    (", but I took ibuprofen last year.", False),
+    (", but I'm not sure of that.", True),
+    (", but I might be wrong about that.", True),
+    (", but did I?", True),
+    ("?", True),
+])
+def test_uncertainty_belongs_to_its_own_predicate(suffix, remains):
+    text = "Patient: I took aspirin.\nPatient: Actually, I didn't take aspirin" + suffix
+    assert_medication(text, "aspirin", 0, remains)
+
+
+def test_hedged_second_denial_leaves_only_its_own_source_supported():
+    text = ("Patient: I took aspirin. I took ibuprofen.\n"
+            "Patient: Actually, I didn't take aspirin, and I didn't take ibuprofen, perhaps.")
+    assert_medication(text, "aspirin", 0, False)
+    assert_medication(text, "ibuprofen", 0, True)
