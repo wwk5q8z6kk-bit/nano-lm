@@ -1,0 +1,150 @@
+{
+  "benchmark": {
+    "benchmark_id": "nano-v0-test-20260802",
+    "case_count": 220,
+    "case_set_sha256": "68364b4e90a85843e0d863fa14f52e6950ec007dd03d0e40a193eddcf3a7d6c1",
+    "field_count": 1100,
+    "manifest_sha256": "7f83db592722ccea4051eb6b1ca6b78754d08fb57192962c3edd3a30d7f03b31",
+    "partition_sha256": "f534e0550ce05b9089663a31ecece38fcc5ed958ca03800c1cf537f53eeed89a"
+  },
+  "comparisons": {
+    "scale_minus_nano_grounded_exact_accuracy": 0.08545454545454545,
+    "scale_to_nano_parameter_ratio": 3.176108299286542,
+    "scale_to_nano_peak_rss_ratio": 1.2863796173690698,
+    "scale_to_nano_p50_latency_ratio": 2.0823004715699907,
+    "scale_to_nano_p95_latency_ratio": 2.8110489837634303
+  },
+  "decision": {
+    "held_constant": [
+      "Nano 3.15M architecture and parameter count",
+      "tokenizer",
+      "greedy decoding",
+      "evidence verifier"
+    ],
+    "hypothesis_id": "H1_NATIVE_STATE_COPY",
+    "next_intervention": "Adapt the current Nano checkpoint to emit an exact five-slot candidate grammar with explicit supported, absent, missing, uncertain, and conflicting states, trained on state-balanced dialogue with disjoint lexical pools and copy-oriented value diversity.",
+    "selection_policy": "Select and freeze the candidate on a new train/dev family that excludes every fresh-v0 transcript and lexical value. Do not tune on fresh-v0; use it only as a post-selection historical regression, and require a later independent test for a new generalization claim.",
+    "why_not_scale": "Scale improves grounded exact field accuracy but retains the same held-value, missing-state, and malformed-output failure families at materially higher local cost."
+  },
+  "evidence_limits": [
+    "The benchmark is synthetic and closed-world.",
+    "The deterministic solver is generator-aware and is a diagnostic ceiling for this grammar, not evidence of open-world capability.",
+    "The comparison does not establish clinical validity, representative transcript performance, or independent human evaluation.",
+    "The measured benchmark selected H1_NATIVE_STATE_COPY and is historical after this run."
+  ],
+  "observed_residuals": [
+    {
+      "evidence": "Nano failed 25 cases and scale failed 16; every failure was LegacySummaryFormatError for not returning exactly CC, DUR, SEV, MED, and ALG.",
+      "id": "R1_OUTPUT_GRAMMAR"
+    },
+    {
+      "evidence": "Nano held-value accuracy was 0.601818 versus 0.86 seen; scale was 0.707273 versus 0.925455 seen.",
+      "id": "R2_HELD_VALUE_COPY"
+    },
+    {
+      "evidence": "On the 20 challenge cases whose target field was missing, both trained solvers scored 0/20. Every successfully parsed missing target became uncertain because the legacy proposal and adapter have no native missing-state path.",
+      "id": "R3_MISSING_STATE"
+    },
+    {
+      "evidence": "Across successfully parsed trained-model fields, the verifier exposed zero incorrect supported or absent values; residual mistakes were safe uncertainty rather than unsupported presentation.",
+      "id": "R4_SAFE_COVERAGE"
+    }
+  ],
+  "protocol": {
+    "device": "cpu",
+    "git_state_identical": true,
+    "id": "fresh-v0-cpu-single-thread-no-retry",
+    "run_order": [
+      "deterministic",
+      "nano",
+      "scale"
+    ],
+    "source_hashes_identical": true
+  },
+  "result_artifacts": {
+    "deterministic": {
+      "bytes": 498543,
+      "sha256": "85ea32a4025f7a42046291d132d5c2ff40b69dd5f215d7be8f9aadd99faa4f3a"
+    },
+    "nano": {
+      "bytes": 691576,
+      "sha256": "a59f3efdb0e7293869971c2072ffe571243885d439597246885afa5eca3f2afa"
+    },
+    "scale": {
+      "bytes": 721030,
+      "sha256": "fa6ec248b5688f1bf9bfc82f26520aa89cc4e6e6a5aec8e5202f512b50a78dd1"
+    }
+  },
+  "results": {
+    "deterministic": {
+      "failure_cases": 0,
+      "grounded_exact_field_accuracy": 1.0,
+      "grounded_exact_field_count": 1100,
+      "held_accuracy": 1.0,
+      "p50_latency_ms": 0.070833,
+      "p95_latency_ms": 0.093542,
+      "parameter_count": 0,
+      "peak_rss_bytes": 308772864,
+      "seen_accuracy": 1.0
+    },
+    "nano": {
+      "challenge_accuracy": 0.5766666666666667,
+      "challenge_target": {
+        "conflicting_accuracy": 0.9,
+        "conflicting_correct": 18,
+        "missing_accuracy": 0.0,
+        "missing_correct": 0,
+        "overall_accuracy": 0.5333333333333333,
+        "overall_correct": 32,
+        "target_count_per_state": 20,
+        "uncertain_accuracy": 0.7,
+        "uncertain_correct": 14
+      },
+      "failure_cases": 25,
+      "grounded_exact_field_accuracy": 0.730909090909091,
+      "grounded_exact_field_count": 804,
+      "held_accuracy": 0.6018181818181818,
+      "native_abstention_count": 0,
+      "normal_accuracy": 0.78875,
+      "p50_latency_ms": 711.598292,
+      "p95_latency_ms": 883.0375,
+      "parameter_count": 3148608,
+      "peak_rss_bytes": 358825984,
+      "raw_strict_accuracy": 0.7018181818181818,
+      "seen_accuracy": 0.86,
+      "verification_false_presented_fields_after": 0,
+      "verification_false_presented_fields_before": 203,
+      "verifier_gain": 0.029090909090909167
+    },
+    "scale": {
+      "challenge_accuracy": 0.6333333333333333,
+      "challenge_target": {
+        "conflicting_accuracy": 1.0,
+        "conflicting_correct": 20,
+        "missing_accuracy": 0.0,
+        "missing_correct": 0,
+        "overall_accuracy": 0.55,
+        "overall_correct": 33,
+        "target_count_per_state": 20,
+        "uncertain_accuracy": 0.65,
+        "uncertain_correct": 13
+      },
+      "failure_cases": 16,
+      "grounded_exact_field_accuracy": 0.8163636363636364,
+      "grounded_exact_field_count": 898,
+      "held_accuracy": 0.7072727272727273,
+      "native_abstention_count": 0,
+      "normal_accuracy": 0.885,
+      "p50_latency_ms": 1481.761459,
+      "p95_latency_ms": 2482.261667,
+      "parameter_count": 10000320,
+      "peak_rss_bytes": 461586432,
+      "raw_strict_accuracy": 0.7863636363636364,
+      "seen_accuracy": 0.9254545454545454,
+      "verification_false_presented_fields_after": 0,
+      "verification_false_presented_fields_before": 155,
+      "verifier_gain": 0.030000000000000027
+    }
+  },
+  "schema_version": "nano.benchmark-comparison.v0"
+}

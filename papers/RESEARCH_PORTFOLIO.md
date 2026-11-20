@@ -87,6 +87,9 @@ Status tags for each program (portfolio hygiene, not evidence):
 **Questions:** Can nano-lm run one pinned, reproducible, per-item-logged benchmark path (Gate 0)? Later: where do existing checkpoints lose under fair eval?  
 **Does not require:** a separate research institution; NanoScribe; training.  
 **Non-claim:** Program 0 smoke ≠ leadership on any public suite.
+**See also:** [`SWE_CAPABILITY_EVALUATION_PROPOSAL.md`](SWE_CAPABILITY_EVALUATION_PROPOSAL.md) — proposed
+evaluation program for a software-engineering capability. Proposal only; unauthorized; does not amend
+`docs/EVALUATION_FRAMEWORK.md` or displace `P1_SCRIBING` as the declared frontier.
 
 
 ## Program O — Compiler-assisted reasoning / runtime

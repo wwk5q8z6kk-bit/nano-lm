@@ -1,0 +1,21 @@
+.......F.........                                                        [100%]
+=================================== FAILURES ===================================
+_ test_whole_duration_reply_preserves_exact_value[Three weeks ago.-Three weeks] _
+
+reply = 'Three weeks ago.', value = 'Three weeks'
+
+    @pytest.mark.parametrize("reply,value", [("For two days.", "two days"),
+                                               ("Three weeks ago.", "Three weeks"),
+                                               ("About four hours.", "four hours")])
+    def test_whole_duration_reply_preserves_exact_value(reply, value):
+        source = "Doctor: How long?\nPatient: " + reply
+        field = extract_context_fields(NanoInput("duration", source))[1]
+>       assert field.state is FieldState.SUPPORTED
+E       AssertionError: assert <FieldState.UNCERTAIN: 'uncertain'> is <FieldState.SUPPORTED: 'supported'>
+E        +  where <FieldState.UNCERTAIN: 'uncertain'> = FieldOutput(field=<FieldName.DURATION: 'duration'>, state=<FieldState.UNCERTAIN: 'uncertain'>, value=None, evidence=(EvidenceSpan(start=27, end=43, text='Three weeks ago.', speaker='patient'),)).state
+E        +  and   <FieldState.SUPPORTED: 'supported'> = FieldState.SUPPORTED
+
+nanoscribe/test_varied_replies.py:28: AssertionError
+=========================== short test summary info ============================
+FAILED nanoscribe/test_varied_replies.py::test_whole_duration_reply_preserves_exact_value[Three weeks ago.-Three weeks]
+1 failed, 16 passed in 0.19s

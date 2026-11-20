@@ -1,0 +1,18 @@
+{
+  "checkpoint": "/Users/mac/.cache/huggingface/hub/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "paid_compute_usd": 0,
+  "development_only": true,
+  "total_seconds": 43.873537874998874,
+  "source_sha256": "f6ed5fbc9c442b2ad74d2188833a8eff02d14e3305dea48ee85152bced406747",
+  "prompt_sha256": "6ccfe710c469b65686025ff8a2a06e948fffbd69658d8e928b568b87a81fdaa5",
+  "code_hashes": {
+    "nanoscribe/compact.py": "72c131da7054513dbbe53e136c992318b2689aa97a3d1911aca3fac7c68ba849",
+    "nanoscribe/context.py": "6eb9b1a6851dde453754df222c63c2d9671cf1497d9fc7c968a6153acd13ee11",
+    "nanoscribe/context_solver.py": "dc02f7f886db50d22d26fa98b3fd21e46e5ab0d8d75e707dfc4f9f9f5c01c2dc",
+    "nanoscribe/check_note.py": "73eadd38670f5221e2bbafb18f612d3126243d92d7b625f008326cd8488e746d",
+    "nanoscribe/scribe.py": "5b4e7d8c30bbc8d2f7317292cb84763dd423f50272d9500566045c3bb2d11ad9",
+    "nano_ai/adapters/state_span.py": "b0ffd2a6cf9909e919a12311077d47b8426567b239e8dde52794dc5aef0a86f5"
+  },
+  "passed": 5,
+  "total": 6
+}

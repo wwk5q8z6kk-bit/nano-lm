@@ -1,0 +1,86 @@
+{
+  "recorded_utc": "2026-10-23T23:44:15.753845+00:00",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1"
+  },
+  "pytest": [
+    {
+      "command": "python3 -m pytest -q -p no:cacheprovider -o addopts='' nanoscribe",
+      "exit_code": 0,
+      "passed": 252,
+      "skipped": 0,
+      "log": "verification/nanoscribe.log"
+    },
+    {
+      "command": "python3 -m pytest -q -p no:cacheprovider -o addopts='' nano",
+      "exit_code": 0,
+      "passed": 316,
+      "skipped": 0,
+      "log": "verification/nano.log"
+    },
+    {
+      "command": "python3 -m pytest -q -p no:cacheprovider -o addopts='' nano_ai/tests",
+      "exit_code": 0,
+      "passed": 499,
+      "skipped": 1,
+      "log": "verification/learned.log"
+    },
+    {
+      "command": "python3 -m pytest -q -p no:cacheprovider -o addopts='' benchmarks/",
+      "exit_code": 0,
+      "passed": 500,
+      "skipped": 1,
+      "log": "verification/benchmarks.log"
+    },
+    {
+      "command": "python3 -m pytest -q -p no:cacheprovider -o addopts='' fabric trajectory wedge_v1",
+      "exit_code": 0,
+      "passed": 32,
+      "skipped": 0,
+      "log": "verification/foundations.log"
+    },
+    {
+      "command": "python3 -m pytest -q -p no:cacheprovider -o addopts='' scripts/test_reconcile_p1_comparison.py scripts/test_run_h7_kaggle.py scripts/test_run_p1_pilot.py",
+      "exit_code": 0,
+      "passed": 90,
+      "skipped": 0,
+      "log": "verification/scripts.log"
+    },
+    {
+      "command": "python3 -m pytest -q -p no:cacheprovider -o addopts='' scripts/test_run_p1_independent_dev.py",
+      "exit_code": 0,
+      "passed": 31,
+      "skipped": 0,
+      "summary": "31 passed in 4.13s; root verification after final harness changes"
+    }
+  ],
+  "total_passed": 1720,
+  "total_skipped": 2,
+  "additional_gates": {
+    "python3 fabric/test_fabric.py": "8/8 PASS",
+    "python3 trajectory/test_recompute_c3.py": "7/7 PASS",
+    "python3 nanoscribe/benchmark.py": "PASS: 4 exact gold spans, 0 critical errors; software simulation, no weights loaded"
+  },
+  "reporting_gates": {
+    "verified_utc": "2026-10-23T23:51:22.802347+00:00",
+    "commands": [
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_active_now.py",
+        "exit_code": 0,
+        "result": "ACTIVE_NOW_OK"
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 scripts/check_docs_integrity.py",
+        "exit_code": 0,
+        "result": "DOCS_INTEGRITY_OK"
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0,
+        "result": "clean"
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "verified_utc": "2026-10-23T23:48:59.422223+00:00",
+  "protected_file_count": 699,
+  "protected_mismatches": [],
+  "annotation_lock_sha256": "a3764f3bb23440a9810db51ede32e27aaf8264e238d9f7fbfa3c0dad85209f60",
+  "locked_file_count": 11,
+  "locked_input_mismatches": [],
+  "runs": {
+    "free-01": {
+      "status": "complete",
+      "input_snapshot_mismatches": [],
+      "live_input_mismatches": [],
+      "source_snapshot_mismatches": [],
+      "live_code_mismatches": []
+    },
+    "constrained-01": {
+      "status": "complete",
+      "input_snapshot_mismatches": [],
+      "live_input_mismatches": [],
+      "source_snapshot_mismatches": [],
+      "live_code_mismatches": []
+    }
+  },
+  "identical_run_inputs_code_checkpoint": {
+    "input_hashes": true,
+    "code_hashes": true,
+    "checkpoint_hashes": true
+  },
+  "scope": "Protected-file SHA-256 comparison against the pre-validation manifest; separate pre-inference annotation/input/source snapshot verification. No tag creation, movement, or historical evaluation rerun."
+}

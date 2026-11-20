@@ -40,3 +40,20 @@ jobs:
 
       - name: Model adapter baseline smoke
         run: python3 nanoscribe/benchmark.py
+
+      # benchmarks/ is absent from pytest.ini testpaths, so these run in no other
+      # job — including the pre-existing Program 0 Gate 0 property tests.
+      - name: Benchmark contract test deps
+        run: pip install -r requirements-bench-test.txt
+
+      - name: Nano Core cognitive substrate and contracts
+        run: python3 -m pytest nano/ -q
+
+      - name: NanoScribe contracts and end-to-end path
+        run: python3 -m pytest nanoscribe/ -q
+
+      - name: P1 evidence comparison, H7 launch controls, and density diagnostics
+        run: python3 -m pytest scripts/test_reconcile_p1_comparison.py scripts/test_run_h7_kaggle.py scripts/test_run_p1_pilot.py scripts/test_run_p1_independent_dev.py scripts/test_benchmark_info_density.py nano_ai/tests/test_annotated_evaluation.py -q
+
+      - name: Benchmark contracts (Program 0 + agentic instruments)
+        run: pytest benchmarks/ -q

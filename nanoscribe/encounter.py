@@ -7,15 +7,20 @@ canonical JSON, and fail-closed invariants. It does not extract facts.
 from __future__ import annotations
 
 import json
+import re
 import unicodedata
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 
 SCHEMA_VERSION = "nano.encounter.v0"
 STRIP_ARTICLES_NFKC = "strip_articles_nfkc"
 _SURROUNDING = " \t\r\n.,;:!?\"'`‘’"
+
+# A period introducing a fractional number is part of its value. Preserve it
+# even when the source quote also includes surrounding punctuation.
+_LEADING_PUNCTUATION = re.compile(rf"^(?:[{re.escape(_SURROUNDING.replace('.', ''))}]|\.(?!\d))+")
 
 
 class EncounterError(ValueError):
@@ -165,13 +170,16 @@ def _canonical_json(value: Mapping[str, Any]) -> str:
 
 def normalize_value(value: str) -> str:
     """Named superficial normalization. Does not change clinical meaning."""
-    normalized = unicodedata.normalize("NFKC", value).casefold()
-    normalized = " ".join(normalized.split()).strip(_SURROUNDING)
+    folded = " ".join(unicodedata.normalize("NFKC", value).casefold().split())
+    # An undecorated single letter can be the complete value (e.g. blood group A).
+    if folded == "a":
+        return folded
+    normalized = _LEADING_PUNCTUATION.sub("", folded.rstrip(_SURROUNDING))
     if normalized in {"a", "an", "the"}:
         return ""
     for article in ("a ", "an ", "the "):
         if normalized.startswith(article):
-            return normalized[len(article) :].strip(_SURROUNDING)
+            return _LEADING_PUNCTUATION.sub("", normalized[len(article) :])
     return normalized
 
 
@@ -181,12 +189,24 @@ def apply_normalization(name: str, value: str) -> str:
     return normalize_value(value)
 
 
-def _value_grounded_in_span(raw_value: str, span_text: str) -> bool:
-    """Literal containment after only superficial normalization. Not semantic inference."""
+def match_evidence_value(raw_value: str, span_text: str) -> Literal["direct_exact", "normalized"] | None:
+    """Return the strongest literal match available in this evidence span."""
+    value = normalize_value(raw_value)
+    if not value:
+        return None
+    if value == "a":
+        # A letter label must stand on its own in the original or folded evidence.
+        if re.search(rf"(?<!\w){re.escape(raw_value)}(?!\w)", span_text):
+            return "direct_exact"
+        folded_span = unicodedata.normalize("NFKC", span_text).casefold()
+        return "normalized" if re.search(r"\ba\b", folded_span) else None
     if raw_value in span_text:
-        return True
-    grounded = normalize_value(raw_value)
-    return bool(grounded) and grounded in normalize_value(span_text)
+        return "direct_exact"
+    return "normalized" if value in normalize_value(span_text) else None
+
+
+def _value_grounded_in_span(raw_value: str, span_text: str) -> bool:
+    return match_evidence_value(raw_value, span_text) is not None
 
 
 def _require_id_tuple(value: object, path: str) -> tuple[str, ...]:

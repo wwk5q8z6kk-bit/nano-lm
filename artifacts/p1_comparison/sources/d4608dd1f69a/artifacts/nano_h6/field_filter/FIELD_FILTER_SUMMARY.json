@@ -1,0 +1,83 @@
+{
+  "floors": {
+    "g1": 0.2,
+    "g2": 0.75,
+    "g3": 0.03,
+    "g4": 0.1,
+    "g5_min_agreement": 0.95,
+    "g6_max_missing_span": 0.15
+  },
+  "gates": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "G4": true,
+    "G5_agreement": true,
+    "G6_refusal": true,
+    "evaluator_cross_checks_ok": true,
+    "state_identity_all": true
+  },
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "overall": "accepted_all_floors",
+  "preregistration": "papers/PREREG_FIELD_FILTER.md",
+  "schema": "nano.field-filter-eval.v1",
+  "seeds": {
+    "20260823": {
+      "agreement_rate": 1.0,
+      "control_worst_class_recall": 0.7333,
+      "disjoint_rate": 0.0,
+      "evaluator_cross_check": true,
+      "field_filtered_probe": 14,
+      "g1_interpretable": true,
+      "g2_state": true,
+      "g3_grounding": true,
+      "g4_span": true,
+      "g5_agreement": true,
+      "g6_refusal": true,
+      "min_arm": "DEV",
+      "min_arm_state_accuracy": 1.0,
+      "missing_span_rate": 0.0275,
+      "post_snap_no_match_rate": 0.0222,
+      "snap_rescued": 44,
+      "state_identity_vs_augment": true
+    },
+    "20260824": {
+      "agreement_rate": 0.9979,
+      "control_worst_class_recall": 0.7333,
+      "disjoint_rate": 0.0021,
+      "evaluator_cross_check": true,
+      "field_filtered_probe": 1,
+      "g1_interpretable": true,
+      "g2_state": true,
+      "g3_grounding": true,
+      "g4_span": true,
+      "g5_agreement": true,
+      "g6_refusal": true,
+      "min_arm": "DEV",
+      "min_arm_state_accuracy": 0.8333,
+      "missing_span_rate": 0.0333,
+      "post_snap_no_match_rate": 0.0284,
+      "snap_rescued": 14,
+      "state_identity_vs_augment": true
+    },
+    "20260825": {
+      "agreement_rate": 1.0,
+      "control_worst_class_recall": 0.7333,
+      "disjoint_rate": 0.0,
+      "evaluator_cross_check": true,
+      "field_filtered_probe": 19,
+      "g1_interpretable": true,
+      "g2_state": true,
+      "g3_grounding": true,
+      "g4_span": true,
+      "g5_agreement": true,
+      "g6_refusal": true,
+      "min_arm": "EXTERNAL[10]",
+      "min_arm_state_accuracy": 0.7667,
+      "missing_span_rate": 0.1176,
+      "post_snap_no_match_rate": 0.0578,
+      "snap_rescued": 17,
+      "state_identity_vs_augment": true
+    }
+  }
+}

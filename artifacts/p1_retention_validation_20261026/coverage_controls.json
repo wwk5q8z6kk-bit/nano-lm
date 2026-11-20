@@ -1,0 +1,5649 @@
+{
+  "created_utc": "2026-10-26T13:42:45.900396+00:00",
+  "input_hashes": {
+    "annotation_lock.json": "db7f8ef86b95b6ed9c4318484b236c7a936775dfae31f34c51f60ffc2cbcd109",
+    "sources.json": "0a8d45569f8bcec8e387c0ed7db94c6dd4f9f636b6679cf4126ab3fc1893c628",
+    "annotations_a.json": "fa4b74e0447043f673f19bbf5fbe6baea7d6a23ae46ecd5b98d593ebde318cc0",
+    "annotations_b.json": "a6a3be5c1c3ffd131d8356d1164cc3979000c4bcc967c6c6ff8a327779a49297",
+    "gold.json": "14899430ba5f2e4cf1c32cace97a4f1a82d1e2b8d050aee5d7a23ddd9f67e6c9",
+    "annotation_a_process.md": "82e397378154e93a8457e8d78514128d1face31a8e4423046d7ee8d8c3b84a32",
+    "annotation_b_process.md": "623b53bfb59864dfe1976cb3be3f47abf5fbc88c82691cba382352173f63050b",
+    "adjudication.md": "b91297440e3131d50e405165eef5b32207255ede09e88b16b31a4bc29cb082b6",
+    "annotation_rubric.md": "01d1781a620e8a1d42018715569b4eb5571b4bca04741982bcc98c7a0bc27657",
+    "authoring.md": "15879defc0cdad00135ceaaaba7982edc78c3ad75369450d4b1219f62f876523",
+    "protocol.md": "948a6d0c4eb94007321f91b7404f331f04a4143fd1503e56822b58a2a5631a42",
+    "implementation_lock.json": "11a2b93a610d857dc268626f47aecda047bfc2cccb5d6e79ae18b3be13b5c031"
+  },
+  "explanation": "Menu coverage uses M selections for all earlier slots. Actual model choices may consume spans and reduce later menus. This is policy availability, not a model score.",
+  "all_u_control": {
+    "cases": 24,
+    "fields": 120,
+    "metrics": {
+      "raw": {
+        "fields": 120,
+        "state_correct": 16,
+        "normalized_content_correct": 16,
+        "exact_evidence_aligned": 16,
+        "grounded_exact_correct": 16,
+        "complete_evidence_exact_correct": 0,
+        "emitted_asserted_fields": 0,
+        "asserted_state_or_content_mismatch": 0,
+        "asserted_exact_evidence_mismatch": 0,
+        "asserted_exact_field_mismatch": 0,
+        "gold_asserted_fields": 80,
+        "correct_asserted_fields": 0,
+        "gold_conflict_fields": 4,
+        "conflict_state_recalled": 0,
+        "conflict_exact_recalled": 0,
+        "state_accuracy": 0.13333333333333333,
+        "normalized_content_accuracy": 0.13333333333333333,
+        "grounded_exact_field_accuracy": 0.13333333333333333,
+        "complete_evidence_exact_field_accuracy": 0.0,
+        "conflict_state_recall": 0.0,
+        "conflict_exact_recall": 0.0,
+        "state_confusion": {
+          "supported": {
+            "uncertain": 61
+          },
+          "absent": {
+            "uncertain": 19
+          },
+          "uncertain": {
+            "uncertain": 16
+          },
+          "conflicting": {
+            "uncertain": 4
+          },
+          "missing": {
+            "uncertain": 20
+          }
+        }
+      },
+      "checked": {
+        "fields": 120,
+        "state_correct": 16,
+        "normalized_content_correct": 16,
+        "exact_evidence_aligned": 16,
+        "grounded_exact_correct": 16,
+        "complete_evidence_exact_correct": 0,
+        "emitted_asserted_fields": 0,
+        "asserted_state_or_content_mismatch": 0,
+        "asserted_exact_evidence_mismatch": 0,
+        "asserted_exact_field_mismatch": 0,
+        "gold_asserted_fields": 80,
+        "correct_asserted_fields": 0,
+        "gold_conflict_fields": 4,
+        "conflict_state_recalled": 0,
+        "conflict_exact_recalled": 0,
+        "state_accuracy": 0.13333333333333333,
+        "normalized_content_accuracy": 0.13333333333333333,
+        "grounded_exact_field_accuracy": 0.13333333333333333,
+        "complete_evidence_exact_field_accuracy": 0.0,
+        "conflict_state_recall": 0.0,
+        "conflict_exact_recall": 0.0,
+        "state_confusion": {
+          "supported": {
+            "uncertain": 61
+          },
+          "absent": {
+            "uncertain": 19
+          },
+          "uncertain": {
+            "uncertain": 16
+          },
+          "conflicting": {
+            "uncertain": 4
+          },
+          "missing": {
+            "uncertain": 20
+          }
+        }
+      }
+    },
+    "by_field": {
+      "allergy": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.20833333333333334,
+          "grounded_exact_field_accuracy": 0.20833333333333334
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.20833333333333334,
+          "grounded_exact_field_accuracy": 0.20833333333333334
+        }
+      },
+      "chief_complaint": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.041666666666666664,
+          "grounded_exact_field_accuracy": 0.041666666666666664
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.041666666666666664,
+          "grounded_exact_field_accuracy": 0.041666666666666664
+        }
+      },
+      "duration": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.125,
+          "grounded_exact_field_accuracy": 0.125
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.125,
+          "grounded_exact_field_accuracy": 0.125
+        }
+      },
+      "medication": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.16666666666666666,
+          "grounded_exact_field_accuracy": 0.16666666666666666
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.16666666666666666,
+          "grounded_exact_field_accuracy": 0.16666666666666666
+        }
+      },
+      "severity": {
+        "raw": {
+          "fields": 24,
+          "state_accuracy": 0.125,
+          "grounded_exact_field_accuracy": 0.125
+        },
+        "checked": {
+          "fields": 24,
+          "state_accuracy": 0.125,
+          "grounded_exact_field_accuracy": 0.125
+        }
+      }
+    },
+    "by_stratum": {
+      "corrections and unresolved conflicts": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        }
+      },
+      "field-local uncertainty": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.55,
+          "grounded_exact_field_accuracy": 0.55
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.55,
+          "grounded_exact_field_accuracy": 0.55
+        }
+      },
+      "irrelevant history/other speakers": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.1,
+          "grounded_exact_field_accuracy": 0.1
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.1,
+          "grounded_exact_field_accuracy": 0.1
+        }
+      },
+      "medication/allergy scope": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.1,
+          "grounded_exact_field_accuracy": 0.1
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.1,
+          "grounded_exact_field_accuracy": 0.1
+        }
+      },
+      "missing/compound requests": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.05,
+          "grounded_exact_field_accuracy": 0.05
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.05,
+          "grounded_exact_field_accuracy": 0.05
+        }
+      },
+      "ordinary current-fact replies": {
+        "raw": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        },
+        "checked": {
+          "fields": 20,
+          "state_accuracy": 0.0,
+          "grounded_exact_field_accuracy": 0.0
+        }
+      }
+    },
+    "final_note": {
+      "emitted_asserted_fields": 0,
+      "asserted_state_or_content_mismatch": 0,
+      "asserted_exact_field_mismatch": 0,
+      "gold_asserted_fields": 80,
+      "correct_asserted_fields_emitted": 0
+    },
+    "paired_changes": {
+      "exact_fields_salvaged": 0,
+      "exact_fields_lost": 0,
+      "correct_asserted_fields_lost": 0,
+      "correct_asserted_fields_salvaged": 0,
+      "correct_asserted_fields_retained": 0,
+      "asserted_normalized_content_mismatches_removed": 0,
+      "asserted_normalized_content_mismatches_introduced": 0,
+      "asserted_exact_mismatches_removed": 0,
+      "asserted_exact_mismatches_introduced": 0
+    },
+    "malformed_raw_cases": 0,
+    "checked_inference_failure_cases": 0,
+    "gold_usable_cases": 24,
+    "whole_note_abstention_with_gold_usable_content": 24,
+    "whole_note_abstention_with_gold_usable_content_rate": 1.0,
+    "definitions": {
+      "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+      "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+      "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+      "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+      "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+      "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+      "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+      "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+    }
+  },
+  "menus": {
+    "slots": 120,
+    "only_missing_or_empty_uncertain": 27,
+    "with_concrete_choices": 4,
+    "by_field": {
+      "CC": {
+        "total": 24,
+        "concrete": 2
+      },
+      "DUR": {
+        "total": 24,
+        "concrete": 1
+      },
+      "SEV": {
+        "total": 24,
+        "concrete": 0
+      },
+      "MED": {
+        "total": 24,
+        "concrete": 1
+      },
+      "ALG": {
+        "total": 24,
+        "concrete": 0
+      }
+    },
+    "details": [
+      {
+        "case_id": "retain-01",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A sore throat. It has been bothering me for three days.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-01",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A sore throat. It has been bothering me for three days.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-01",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Moderate, especially when I swallow.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-01",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I have no medication allergies.]",
+          ":U[I've been using throat lozenges.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-01",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I have no medication allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-02",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My left ankle is sore.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-02",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Yesterday afternoon, after I got home.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-02",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[It's mild. I haven't taken or applied anything for it.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-02",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[It's mild. I haven't taken or applied anything for it.]",
+          ":U[Penicillin gives me hives.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-02",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Penicillin gives me hives.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-03",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-03",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Two days so far. I'd call it five out of ten.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-03",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Two days so far. I'd call it five out of ten.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-03",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[No, I'm not allergic to any medicines.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-03",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[No, I'm not allergic to any medicines.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-04",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-04",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[This itchy rash on my forearm has been here a week.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-04",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Mild is the right word.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-04",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Nothing at all for this rash.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-04",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-05",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-05",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Two days, or perhaps three. I can't pin down which day it started.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-05",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I honestly can't decide whether to call it mild or moderate.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-05",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Acetaminophen, one time yesterday.]",
+          ":U[I can't remember whether I have any.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-05",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I can't remember whether I have any.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-06",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I can't tell if it's an earache or pain in my jaw.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-06",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":S[Four days]",
+          ":U[Four days ago.]"
+        ],
+        "concrete_choices": 1
+      },
+      {
+        "case_id": "retain-06",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Mild, but annoying.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-06",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I may have taken a tablet for it yesterday, but I can't remember whether I actually did.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-06",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I'm allergic to latex.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-07",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":S[A dry cough]",
+          ":U[A dry cough.]"
+        ],
+        "concrete_choices": 1
+      },
+      {
+        "case_id": "retain-07",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I don't know when it started. It's three out of ten for how much it bothers me.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-07",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I don't know when it started. It's three out of ten for how much it bothers me.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-07",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I don't know my medicine allergy history.]",
+          ":U[I remember getting the syrup out, but I'm not sure whether I swallowed any.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-07",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I don't know my medicine allergy history.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-08",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-08",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-08",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-08",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I took ibuprofen and an antacid for them yesterday.]",
+          ":U[I'm allergic to penicillin and latex.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-08",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I'm allergic to penicillin and latex.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-09",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My neck has felt stiff since I woke up this morning.]",
+          ":U[No, I haven't used anything for the neck stiffness. I do take my thyroid tablet every morning.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-09",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-09",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-09",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I have no allergies to medicines.]",
+          ":U[No, I haven't used anything for the neck stiffness. I do take my thyroid tablet every morning.]",
+          ":U[Yes, it isn't something I took for my neck.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-09",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I have no allergies to medicines.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-10",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My right elbow aches. It started four days ago and feels moderate.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-10",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My right elbow aches. It started four days ago and feels moderate.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-10",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My right elbow aches. It started four days ago and feels moderate.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-10",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I don't have any medication allergies.]",
+          ":U[Naproxen yesterday.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-10",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Codeine upset my stomach years ago. I'm describing a side effect, not an allergy.]",
+          ":U[I don't have any medication allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-11",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I took ibuprofen for a shoulder injury last winter. For this new ache, I haven't tried any treatment.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-11",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My shoulder started aching two days ago.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-11",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[About four out of ten.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-11",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I had a rash as a child, but I don't know whether an antibiotic or a new soap caused it.]",
+          ":U[I took ibuprofen for a shoulder injury last winter. For this new ache, I haven't tried any treatment.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-11",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I had a rash as a child, but I don't know whether an antibiotic or a new soap caused it.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-12",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-12",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A toothache for two days.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-12",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Seven out of ten.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-12",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I am not allergic to any medicines.]",
+          ":U[I took one tablet from a packet the dentist gave me before, but I cannot remember its name.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-12",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I am not allergic to any medicines.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-13",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":S[A headache]",
+          ":U[A headache. This headache began two days ago.]",
+          ":U[This headache began five days ago.]"
+        ],
+        "concrete_choices": 1
+      },
+      {
+        "case_id": "retain-13",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A headache. This headache began two days ago.]",
+          ":U[This headache began five days ago.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-13",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Mostly at the back of my head. It is mild.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-13",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I haven't used any treatment for it.]",
+          ":U[No medication allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-13",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[No medication allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-14",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[An itchy patch on my left calf, for one week.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-14",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[An itchy patch on my left calf, for one week.]",
+          ":U[I haven't taken or applied anything for this itch at any point this week.]",
+          ":U[I used hydrocortisone on this itch every night this week.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-14",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[It's mild.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-14",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I have no drug allergies.]",
+          ":U[I haven't taken or applied anything for this itch at any point this week.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-14",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I have no drug allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-15",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Last night. Sorry, that was the other thing I was thinking of. The wrist pain began this morning.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-15",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Last night. Sorry, that was the other thing I was thinking of. The wrist pain began this morning.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-15",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[It's moderate. I haven't tried anything for it.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-15",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[It's moderate. I haven't tried anything for it.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-15",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-16",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-16",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A runny nose. I've had it for six days.]",
+          ":U[It has been mild all day today.]",
+          ":U[It has been severe all day today.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-16",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[It has been mild all day today.]",
+          ":U[It has been severe all day today.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-16",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":S[A saline spray]",
+          ":U[A saline spray.]",
+          ":U[I said aspirin on the intake form, but that was a mistake. Penicillin is the medicine I'm allergic to.]"
+        ],
+        "concrete_choices": 1
+      },
+      {
+        "case_id": "retain-16",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I said aspirin on the intake form, but that was a mistake. Penicillin is the medicine I'm allergic to.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-17",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My knee aches, and it has been doing that for three days.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-17",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My knee aches, and it has been doing that for three days.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-17",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Mild.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-17",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I don't have any.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-17",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I don't have any.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-18",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Numbness in my right hand.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-18",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-18",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-18",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-18",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My sister is allergic to aspirin. She's the one that note is about.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-19",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-19",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A scratchy throat is what I'm here about.]",
+          ":U[The dizziness from last spring has gone away. I had that for a month, but it's unrelated to why I booked today.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-19",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A scratchy throat is what I'm here about.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-19",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-19",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-20",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I've felt dizzy since this morning.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-20",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-20",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I find it hard to judge. I can't put it into mild, moderate, or severe.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-20",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My brother does like to talk. We came together on the bus.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-20",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-21",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[A persistent cough.]",
+          ":U[Could you move the chair a little closer? I have trouble hearing from here.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-21",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I haven't tried any treatment for the cough.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-21",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I haven't tried any treatment for the cough.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-21",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-21",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-22",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-22",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-22",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Could we start by checking whether I can hear properly?]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-22",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My left ear is ringing. I'm allergic to sulfa antibiotics.]",
+          ":U[Take your time.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-22",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[My left ear is ringing. I'm allergic to sulfa antibiotics.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-23",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-23",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-23",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I haven't taken or used anything for them.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-23",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[I haven't taken or used anything for them.]",
+          ":U[Sorry, that's my phone ringing. It's the person who's picking me up.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-23",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Sorry, that's my phone ringing. It's the person who's picking me up.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-24",
+        "field": "CC",
+        "choices": [
+          ":M",
+          ":U[]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-24",
+        "field": "DUR",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Four days, and I have no medication allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-24",
+        "field": "SEV",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Four days, and I have no medication allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-24",
+        "field": "MED",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Four days, and I have no medication allergies.]"
+        ],
+        "concrete_choices": 0
+      },
+      {
+        "case_id": "retain-24",
+        "field": "ALG",
+        "choices": [
+          ":M",
+          ":U[]",
+          ":U[Four days, and I have no medication allergies.]"
+        ],
+        "concrete_choices": 0
+      }
+    ]
+  },
+  "binder": {
+    "state_counts": {
+      "uncertain": 97,
+      "missing": 21,
+      "supported": 2
+    },
+    "grounded_exact_fields": 22,
+    "exact_assertions": 0,
+    "details": [
+      {
+        "case_id": "retain-01",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 53,
+              "end": 108,
+              "text": "A sore throat. It has been bothering me for three days.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "sore throat",
+          "evidence": [
+            {
+              "start": 55,
+              "end": 66,
+              "text": "sore throat",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-01",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 53,
+              "end": 108,
+              "text": "A sore throat. It has been bothering me for three days.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "three days",
+          "evidence": [
+            {
+              "start": 97,
+              "end": 107,
+              "text": "three days",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-01",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 167,
+              "end": 203,
+              "text": "Moderate, especially when I swallow.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "moderate, especially when i swallow",
+          "evidence": [
+            {
+              "start": 167,
+              "end": 202,
+              "text": "Moderate, especially when I swallow",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-01",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 253,
+              "end": 285,
+              "text": "I've been using throat lozenges.",
+              "speaker": "patient"
+            },
+            {
+              "start": 331,
+              "end": 362,
+              "text": "I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "supported",
+          "value": "throat lozenges",
+          "evidence": [
+            {
+              "start": 269,
+              "end": 284,
+              "text": "throat lozenges",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-01",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 331,
+              "end": 362,
+              "text": "I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 331,
+              "end": 362,
+              "text": "I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-02",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 48,
+              "end": 70,
+              "text": "My left ankle is sore.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "left ankle is sore",
+          "evidence": [
+            {
+              "start": 51,
+              "end": 69,
+              "text": "left ankle is sore",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-02",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 109,
+              "end": 147,
+              "text": "Yesterday afternoon, after I got home.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "yesterday afternoon, after i got home",
+          "evidence": [
+            {
+              "start": 109,
+              "end": 146,
+              "text": "Yesterday afternoon, after I got home",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-02",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 222,
+              "end": 276,
+              "text": "It's mild. I haven't taken or applied anything for it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "mild",
+          "evidence": [
+            {
+              "start": 227,
+              "end": 231,
+              "text": "mild",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-02",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 222,
+              "end": 276,
+              "text": "It's mild. I haven't taken or applied anything for it.",
+              "speaker": "patient"
+            },
+            {
+              "start": 341,
+              "end": 367,
+              "text": "Penicillin gives me hives.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 233,
+              "end": 276,
+              "text": "I haven't taken or applied anything for it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-02",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 341,
+              "end": 367,
+              "text": "Penicillin gives me hives.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "supported",
+          "value": "penicillin",
+          "evidence": [
+            {
+              "start": 341,
+              "end": 351,
+              "text": "Penicillin",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-03",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "nausea and bloating",
+          "evidence": [
+            {
+              "start": 44,
+              "end": 63,
+              "text": "Nausea and bloating",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-03",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 149,
+              "end": 194,
+              "text": "Two days so far. I'd call it five out of ten.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "two days so far",
+          "evidence": [
+            {
+              "start": 149,
+              "end": 164,
+              "text": "Two days so far",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-03",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 149,
+              "end": 194,
+              "text": "Two days so far. I'd call it five out of ten.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "five out of ten",
+          "evidence": [
+            {
+              "start": 178,
+              "end": 193,
+              "text": "five out of ten",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-03",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 358,
+              "end": 396,
+              "text": "No, I'm not allergic to any medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "supported",
+          "value": "peppermint tea",
+          "evidence": [
+            {
+              "start": 260,
+              "end": 274,
+              "text": "peppermint tea",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-03",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 358,
+              "end": 396,
+              "text": "No, I'm not allergic to any medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 358,
+              "end": 396,
+              "text": "No, I'm not allergic to any medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-04",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "itchy rash on my forearm",
+          "evidence": [
+            {
+              "start": 63,
+              "end": 87,
+              "text": "itchy rash on my forearm",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-04",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 58,
+              "end": 109,
+              "text": "This itchy rash on my forearm has been here a week.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "week",
+          "evidence": [
+            {
+              "start": 102,
+              "end": 108,
+              "text": "a week",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-04",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 176,
+              "end": 199,
+              "text": "Mild is the right word.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "mild",
+          "evidence": [
+            {
+              "start": 176,
+              "end": 180,
+              "text": "Mild",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-04",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 260,
+              "end": 289,
+              "text": "Nothing at all for this rash.",
+              "speaker": "patient"
+            },
+            {
+              "start": 343,
+              "end": 395,
+              "text": "There aren't any; I don't have medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 260,
+              "end": 289,
+              "text": "Nothing at all for this rash.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-04",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 343,
+              "end": 395,
+              "text": "There aren't any; I don't have medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 361,
+              "end": 395,
+              "text": "I don't have medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-05",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "headache across my forehead",
+          "evidence": [
+            {
+              "start": 53,
+              "end": 80,
+              "text": "headache across my forehead",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-05",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 132,
+              "end": 159,
+              "text": "Two days, or perhaps three.",
+              "speaker": "patient"
+            },
+            {
+              "start": 160,
+              "end": 198,
+              "text": "I can't pin down which day it started.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 132,
+              "end": 198,
+              "text": "Two days, or perhaps three. I can't pin down which day it started.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-05",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 235,
+              "end": 295,
+              "text": "I honestly can't decide whether to call it mild or moderate.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 235,
+              "end": 295,
+              "text": "I honestly can't decide whether to call it mild or moderate.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-05",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 355,
+              "end": 389,
+              "text": "Acetaminophen, one time yesterday.",
+              "speaker": "patient"
+            },
+            {
+              "start": 441,
+              "end": 477,
+              "text": "I can't remember whether I have any.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "supported",
+          "value": "acetaminophen",
+          "evidence": [
+            {
+              "start": 355,
+              "end": 368,
+              "text": "Acetaminophen",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-05",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 441,
+              "end": 477,
+              "text": "I can't remember whether I have any.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 441,
+              "end": 477,
+              "text": "I can't remember whether I have any.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-06",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 43,
+              "end": 93,
+              "text": "I can't tell if it's an earache or pain in my jaw.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 43,
+              "end": 93,
+              "text": "I can't tell if it's an earache or pain in my jaw.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-06",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "supported",
+          "value": "four days",
+          "evidence": [
+            {
+              "start": 154,
+              "end": 163,
+              "text": "Four days",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "four days ago",
+          "evidence": [
+            {
+              "start": 154,
+              "end": 167,
+              "text": "Four days ago",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-06",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 211,
+              "end": 230,
+              "text": "Mild, but annoying.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "mild, but annoying",
+          "evidence": [
+            {
+              "start": 211,
+              "end": 229,
+              "text": "Mild, but annoying",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-06",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 271,
+              "end": 359,
+              "text": "I may have taken a tablet for it yesterday, but I can't remember whether I actually did.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 271,
+              "end": 359,
+              "text": "I may have taken a tablet for it yesterday, but I can't remember whether I actually did.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-06",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 410,
+              "end": 432,
+              "text": "I'm allergic to latex.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "supported",
+          "value": "latex",
+          "evidence": [
+            {
+              "start": 426,
+              "end": 431,
+              "text": "latex",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-07",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "dry cough",
+          "evidence": [
+            {
+              "start": 44,
+              "end": 55,
+              "text": "A dry cough",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "dry cough",
+          "evidence": [
+            {
+              "start": 46,
+              "end": 55,
+              "text": "dry cough",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-07",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 119,
+              "end": 198,
+              "text": "I don't know when it started. It's three out of ten for how much it bothers me.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 119,
+              "end": 148,
+              "text": "I don't know when it started.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-07",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 119,
+              "end": 198,
+              "text": "I don't know when it started. It's three out of ten for how much it bothers me.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "three out of ten",
+          "evidence": [
+            {
+              "start": 154,
+              "end": 170,
+              "text": "three out of ten",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-07",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 250,
+              "end": 325,
+              "text": "I remember getting the syrup out, but I'm not sure whether I swallowed any.",
+              "speaker": "patient"
+            },
+            {
+              "start": 382,
+              "end": 423,
+              "text": "I don't know my medicine allergy history.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 250,
+              "end": 325,
+              "text": "I remember getting the syrup out, but I'm not sure whether I swallowed any.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-07",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 382,
+              "end": 423,
+              "text": "I don't know my medicine allergy history.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 382,
+              "end": 423,
+              "text": "I don't know my medicine allergy history.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-08",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "stomach cramps",
+          "evidence": [
+            {
+              "start": 49,
+              "end": 63,
+              "text": "Stomach cramps",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-08",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "evening before last",
+          "evidence": [
+            {
+              "start": 74,
+              "end": 97,
+              "text": "the evening before last",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-08",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 141,
+              "end": 197,
+              "text": "Somewhere between mild and moderate; I can't choose one.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 141,
+              "end": 197,
+              "text": "Somewhere between mild and moderate; I can't choose one.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-08",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 251,
+              "end": 302,
+              "text": "I took ibuprofen and an antacid for them yesterday.",
+              "speaker": "patient"
+            },
+            {
+              "start": 356,
+              "end": 393,
+              "text": "I'm allergic to penicillin and latex.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 258,
+              "end": 267,
+              "text": "ibuprofen",
+              "speaker": "patient"
+            },
+            {
+              "start": 272,
+              "end": 282,
+              "text": "an antacid",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-08",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 356,
+              "end": 393,
+              "text": "I'm allergic to penicillin and latex.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 372,
+              "end": 382,
+              "text": "penicillin",
+              "speaker": "patient"
+            },
+            {
+              "start": 387,
+              "end": 392,
+              "text": "latex",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-09",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 42,
+              "end": 94,
+              "text": "My neck has felt stiff since I woke up this morning.",
+              "speaker": "patient"
+            },
+            {
+              "start": 220,
+              "end": 314,
+              "text": "No, I haven't used anything for the neck stiffness. I do take my thyroid tablet every morning.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "neck has felt stiff",
+          "evidence": [
+            {
+              "start": 45,
+              "end": 64,
+              "text": "neck has felt stiff",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-09",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "since i woke up this morning",
+          "evidence": [
+            {
+              "start": 65,
+              "end": 93,
+              "text": "since I woke up this morning",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-09",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "only mildly uncomfortable",
+          "evidence": [
+            {
+              "start": 137,
+              "end": 162,
+              "text": "Only mildly uncomfortable",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-09",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 220,
+              "end": 314,
+              "text": "No, I haven't used anything for the neck stiffness. I do take my thyroid tablet every morning.",
+              "speaker": "patient"
+            },
+            {
+              "start": 385,
+              "end": 428,
+              "text": "Yes, it isn't something I took for my neck.",
+              "speaker": "patient"
+            },
+            {
+              "start": 482,
+              "end": 515,
+              "text": "I have no allergies to medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 220,
+              "end": 271,
+              "text": "No, I haven't used anything for the neck stiffness.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-09",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 482,
+              "end": 515,
+              "text": "I have no allergies to medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 482,
+              "end": 515,
+              "text": "I have no allergies to medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-10",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 60,
+              "end": 126,
+              "text": "My right elbow aches. It started four days ago and feels moderate.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "right elbow aches",
+          "evidence": [
+            {
+              "start": 63,
+              "end": 80,
+              "text": "right elbow aches",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-10",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 60,
+              "end": 126,
+              "text": "My right elbow aches. It started four days ago and feels moderate.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "four days ago",
+          "evidence": [
+            {
+              "start": 93,
+              "end": 106,
+              "text": "four days ago",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-10",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 60,
+              "end": 126,
+              "text": "My right elbow aches. It started four days ago and feels moderate.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "moderate",
+          "evidence": [
+            {
+              "start": 117,
+              "end": 125,
+              "text": "moderate",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-10",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 179,
+              "end": 198,
+              "text": "Naproxen yesterday.",
+              "speaker": "patient"
+            },
+            {
+              "start": 437,
+              "end": 475,
+              "text": "I don't have any medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "supported",
+          "value": "naproxen",
+          "evidence": [
+            {
+              "start": 179,
+              "end": 187,
+              "text": "Naproxen",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-10",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 300,
+              "end": 381,
+              "text": "Codeine upset my stomach years ago. I'm describing a side effect, not an allergy.",
+              "speaker": "patient"
+            },
+            {
+              "start": 437,
+              "end": 475,
+              "text": "I don't have any medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 437,
+              "end": 475,
+              "text": "I don't have any medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-11",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 203,
+              "end": 304,
+              "text": "I took ibuprofen for a shoulder injury last winter. For this new ache, I haven't tried any treatment.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "shoulder started aching",
+          "evidence": [
+            {
+              "start": 47,
+              "end": 70,
+              "text": "shoulder started aching",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-11",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 44,
+              "end": 84,
+              "text": "My shoulder started aching two days ago.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "two days ago",
+          "evidence": [
+            {
+              "start": 71,
+              "end": 83,
+              "text": "two days ago",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-11",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 131,
+              "end": 153,
+              "text": "About four out of ten.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "about four out of ten",
+          "evidence": [
+            {
+              "start": 131,
+              "end": 152,
+              "text": "About four out of ten",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-11",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 203,
+              "end": 304,
+              "text": "I took ibuprofen for a shoulder injury last winter. For this new ache, I haven't tried any treatment.",
+              "speaker": "patient"
+            },
+            {
+              "start": 353,
+              "end": 441,
+              "text": "I had a rash as a child, but I don't know whether an antibiotic or a new soap caused it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 255,
+              "end": 304,
+              "text": "For this new ache, I haven't tried any treatment.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-11",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 353,
+              "end": 441,
+              "text": "I had a rash as a child, but I don't know whether an antibiotic or a new soap caused it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 353,
+              "end": 441,
+              "text": "I had a rash as a child, but I don't know whether an antibiotic or a new soap caused it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-12",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "toothache",
+          "evidence": [
+            {
+              "start": 46,
+              "end": 55,
+              "text": "toothache",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-12",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 44,
+              "end": 69,
+              "text": "A toothache for two days.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "two days",
+          "evidence": [
+            {
+              "start": 60,
+              "end": 68,
+              "text": "two days",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-12",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 116,
+              "end": 133,
+              "text": "Seven out of ten.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "seven out of ten",
+          "evidence": [
+            {
+              "start": 116,
+              "end": 132,
+              "text": "Seven out of ten",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-12",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 202,
+              "end": 293,
+              "text": "I took one tablet from a packet the dentist gave me before, but I cannot remember its name.",
+              "speaker": "patient"
+            },
+            {
+              "start": 346,
+              "end": 381,
+              "text": "I am not allergic to any medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 202,
+              "end": 293,
+              "text": "I took one tablet from a packet the dentist gave me before, but I cannot remember its name.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-12",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 346,
+              "end": 381,
+              "text": "I am not allergic to any medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 346,
+              "end": 381,
+              "text": "I am not allergic to any medicines.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-13",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 40,
+              "end": 50,
+              "text": "A headache",
+              "speaker": "patient"
+            },
+            {
+              "start": 52,
+              "end": 85,
+              "text": "This headache began two days ago.",
+              "speaker": "patient"
+            },
+            {
+              "start": 439,
+              "end": 473,
+              "text": "This headache began five days ago.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "headache",
+          "evidence": [
+            {
+              "start": 42,
+              "end": 50,
+              "text": "headache",
+              "speaker": "patient"
+            },
+            {
+              "start": 144,
+              "end": 173,
+              "text": "Mostly at the back of my head",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-13",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 52,
+              "end": 85,
+              "text": "This headache began two days ago.",
+              "speaker": "patient"
+            },
+            {
+              "start": 439,
+              "end": 473,
+              "text": "This headache began five days ago.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "conflicting",
+          "value": null,
+          "evidence": [
+            {
+              "start": 52,
+              "end": 85,
+              "text": "This headache began two days ago.",
+              "speaker": "patient"
+            },
+            {
+              "start": 439,
+              "end": 473,
+              "text": "This headache began five days ago.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-13",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 144,
+              "end": 186,
+              "text": "Mostly at the back of my head. It is mild.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "mild",
+          "evidence": [
+            {
+              "start": 181,
+              "end": 185,
+              "text": "mild",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-13",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 244,
+              "end": 280,
+              "text": "I haven't used any treatment for it.",
+              "speaker": "patient"
+            },
+            {
+              "start": 325,
+              "end": 349,
+              "text": "No medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 244,
+              "end": 280,
+              "text": "I haven't used any treatment for it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-13",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 325,
+              "end": 349,
+              "text": "No medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 325,
+              "end": 349,
+              "text": "No medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-14",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 39,
+              "end": 84,
+              "text": "An itchy patch on my left calf, for one week.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "itchy patch on my left calf",
+          "evidence": [
+            {
+              "start": 42,
+              "end": 69,
+              "text": "itchy patch on my left calf",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-14",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 39,
+              "end": 84,
+              "text": "An itchy patch on my left calf, for one week.",
+              "speaker": "patient"
+            },
+            {
+              "start": 211,
+              "end": 284,
+              "text": "I haven't taken or applied anything for this itch at any point this week.",
+              "speaker": "patient"
+            },
+            {
+              "start": 445,
+              "end": 502,
+              "text": "I used hydrocortisone on this itch every night this week.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "one week",
+          "evidence": [
+            {
+              "start": 75,
+              "end": 83,
+              "text": "one week",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-14",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 131,
+              "end": 141,
+              "text": "It's mild.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "mild",
+          "evidence": [
+            {
+              "start": 136,
+              "end": 140,
+              "text": "mild",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-14",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 211,
+              "end": 284,
+              "text": "I haven't taken or applied anything for this itch at any point this week.",
+              "speaker": "patient"
+            },
+            {
+              "start": 336,
+              "end": 361,
+              "text": "I have no drug allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "conflicting",
+          "value": null,
+          "evidence": [
+            {
+              "start": 211,
+              "end": 284,
+              "text": "I haven't taken or applied anything for this itch at any point this week.",
+              "speaker": "patient"
+            },
+            {
+              "start": 445,
+              "end": 502,
+              "text": "I used hydrocortisone on this itch every night this week.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-14",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 336,
+              "end": 361,
+              "text": "I have no drug allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 336,
+              "end": 361,
+              "text": "I have no drug allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-15",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 56,
+              "end": 115,
+              "text": "My right wrist hurts right now; my left wrist doesn't hurt.",
+              "speaker": "patient"
+            },
+            {
+              "start": 227,
+              "end": 261,
+              "text": "The wrist pain began this morning.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "conflicting",
+          "value": null,
+          "evidence": [
+            {
+              "start": 56,
+              "end": 115,
+              "text": "My right wrist hurts right now; my left wrist doesn't hurt.",
+              "speaker": "patient"
+            },
+            {
+              "start": 451,
+              "end": 510,
+              "text": "My left wrist hurts right now; my right wrist doesn't hurt.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-15",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 164,
+              "end": 175,
+              "text": "Last night.",
+              "speaker": "patient"
+            },
+            {
+              "start": 176,
+              "end": 226,
+              "text": "Sorry, that was the other thing I was thinking of.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "this morning",
+          "evidence": [
+            {
+              "start": 248,
+              "end": 260,
+              "text": "this morning",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-15",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 323,
+              "end": 370,
+              "text": "It's moderate. I haven't tried anything for it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "moderate",
+          "evidence": [
+            {
+              "start": 328,
+              "end": 336,
+              "text": "moderate",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-15",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 323,
+              "end": 370,
+              "text": "It's moderate. I haven't tried anything for it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 338,
+              "end": 370,
+              "text": "I haven't tried anything for it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-15",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-16",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "runny nose",
+          "evidence": [
+            {
+              "start": 54,
+              "end": 64,
+              "text": "runny nose",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-16",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 52,
+              "end": 91,
+              "text": "A runny nose. I've had it for six days.",
+              "speaker": "patient"
+            },
+            {
+              "start": 136,
+              "end": 167,
+              "text": "It has been mild all day today.",
+              "speaker": "patient"
+            },
+            {
+              "start": 439,
+              "end": 472,
+              "text": "It has been severe all day today.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "six days",
+          "evidence": [
+            {
+              "start": 82,
+              "end": 90,
+              "text": "six days",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-16",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 136,
+              "end": 167,
+              "text": "It has been mild all day today.",
+              "speaker": "patient"
+            },
+            {
+              "start": 439,
+              "end": 472,
+              "text": "It has been severe all day today.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "conflicting",
+          "value": null,
+          "evidence": [
+            {
+              "start": 136,
+              "end": 167,
+              "text": "It has been mild all day today.",
+              "speaker": "patient"
+            },
+            {
+              "start": 439,
+              "end": 472,
+              "text": "It has been severe all day today.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-16",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 212,
+              "end": 226,
+              "text": "A saline spray",
+              "speaker": "patient"
+            },
+            {
+              "start": 328,
+              "end": 371,
+              "text": "Penicillin is the medicine I'm allergic to.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "supported",
+          "value": "saline spray",
+          "evidence": [
+            {
+              "start": 214,
+              "end": 226,
+              "text": "saline spray",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-16",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 269,
+              "end": 327,
+              "text": "I said aspirin on the intake form, but that was a mistake.",
+              "speaker": "patient"
+            },
+            {
+              "start": 328,
+              "end": 371,
+              "text": "Penicillin is the medicine I'm allergic to.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "supported",
+          "value": "penicillin",
+          "evidence": [
+            {
+              "start": 328,
+              "end": 338,
+              "text": "Penicillin",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-17",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 46,
+              "end": 103,
+              "text": "My knee aches, and it has been doing that for three days.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "knee aches",
+          "evidence": [
+            {
+              "start": 49,
+              "end": 59,
+              "text": "knee aches",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-17",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 46,
+              "end": 103,
+              "text": "My knee aches, and it has been doing that for three days.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "three days",
+          "evidence": [
+            {
+              "start": 92,
+              "end": 102,
+              "text": "three days",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-17",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 289,
+              "end": 294,
+              "text": "Mild.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "supported",
+          "value": "mild",
+          "evidence": [
+            {
+              "start": 289,
+              "end": 293,
+              "text": "Mild",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-17",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 428,
+              "end": 445,
+              "text": "I don't have any.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 341,
+              "end": 378,
+              "text": "I haven't tried any treatment for it.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-17",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 428,
+              "end": 445,
+              "text": "I don't have any.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 428,
+              "end": 445,
+              "text": "I don't have any.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-18",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 44,
+              "end": 70,
+              "text": "Numbness in my right hand.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "numbness in my right hand",
+          "evidence": [
+            {
+              "start": 44,
+              "end": 69,
+              "text": "Numbness in my right hand",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-18",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-18",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-18",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-18",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 396,
+              "end": 463,
+              "text": "My sister is allergic to aspirin. She's the one that note is about.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-19",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "scratchy throat",
+          "evidence": [
+            {
+              "start": 125,
+              "end": 140,
+              "text": "scratchy throat",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-19",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 123,
+              "end": 164,
+              "text": "A scratchy throat is what I'm here about.",
+              "speaker": "patient"
+            },
+            {
+              "start": 243,
+              "end": 354,
+              "text": "The dizziness from last spring has gone away. I had that for a month, but it's unrelated to why I booked today.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-19",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 123,
+              "end": 164,
+              "text": "A scratchy throat is what I'm here about.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-19",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-19",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 437,
+              "end": 527,
+              "text": "I can't tell you whether I'm allergic to penicillin; my family gave me different accounts.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 437,
+              "end": 527,
+              "text": "I can't tell you whether I'm allergic to penicillin; my family gave me different accounts.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-20",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 54,
+              "end": 89,
+              "text": "I've felt dizzy since this morning.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "dizzy",
+          "evidence": [
+            {
+              "start": 64,
+              "end": 69,
+              "text": "dizzy",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-20",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "since this morning",
+          "evidence": [
+            {
+              "start": 70,
+              "end": 88,
+              "text": "since this morning",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-20",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 135,
+              "end": 206,
+              "text": "I find it hard to judge. I can't put it into mild, moderate, or severe.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 135,
+              "end": 206,
+              "text": "I find it hard to judge. I can't put it into mild, moderate, or severe.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-20",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 380,
+              "end": 438,
+              "text": "My brother does like to talk. We came together on the bus.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-20",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-21",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 60,
+              "end": 79,
+              "text": "A persistent cough.",
+              "speaker": "patient"
+            },
+            {
+              "start": 288,
+              "end": 363,
+              "text": "Could you move the chair a little closer? I have trouble hearing from here.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "persistent cough",
+          "evidence": [
+            {
+              "start": 62,
+              "end": 78,
+              "text": "persistent cough",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-21",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 168,
+              "end": 212,
+              "text": "I haven't tried any treatment for the cough.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-21",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 168,
+              "end": 212,
+              "text": "I haven't tried any treatment for the cough.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-21",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 168,
+              "end": 212,
+              "text": "I haven't tried any treatment for the cough.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-21",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-22",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "left ear is ringing",
+          "evidence": [
+            {
+              "start": 108,
+              "end": 127,
+              "text": "left ear is ringing",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-22",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "duration",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": true
+      },
+      {
+        "case_id": "retain-22",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 220,
+              "end": 275,
+              "text": "Could we start by checking whether I can hear properly?",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-22",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 105,
+              "end": 163,
+              "text": "My left ear is ringing. I'm allergic to sulfa antibiotics.",
+              "speaker": "patient"
+            },
+            {
+              "start": 439,
+              "end": 454,
+              "text": "Take your time.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-22",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 105,
+              "end": 163,
+              "text": "My left ear is ringing. I'm allergic to sulfa antibiotics.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "supported",
+          "value": "sulfa antibiotics",
+          "evidence": [
+            {
+              "start": 145,
+              "end": 162,
+              "text": "sulfa antibiotics",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-23",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "spasms in my lower back",
+          "evidence": [
+            {
+              "start": 65,
+              "end": 88,
+              "text": "Spasms in my lower back",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-23",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 65,
+              "end": 159,
+              "text": "Spasms in my lower back. Maybe last Tuesday, maybe the Thursday before that; I can't remember.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 90,
+              "end": 159,
+              "text": "Maybe last Tuesday, maybe the Thursday before that; I can't remember.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": true,
+        "normalized_content_correct": true,
+        "exact_evidence_aligned": true,
+        "grounded_exact_correct": true,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-23",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 229,
+              "end": 271,
+              "text": "I haven't taken or used anything for them.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-23",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 229,
+              "end": 271,
+              "text": "I haven't taken or used anything for them.",
+              "speaker": "patient"
+            },
+            {
+              "start": 324,
+              "end": 392,
+              "text": "Sorry, that's my phone ringing. It's the person who's picking me up.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 229,
+              "end": 271,
+              "text": "I haven't taken or used anything for them.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-23",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 324,
+              "end": 392,
+              "text": "Sorry, that's my phone ringing. It's the person who's picking me up.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-24",
+        "field": "chief_complaint",
+        "prediction": {
+          "field": "chief_complaint",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "gold": {
+          "field": "chief_complaint",
+          "state": "supported",
+          "value": "pressure behind both eyes",
+          "evidence": [
+            {
+              "start": 58,
+              "end": 83,
+              "text": "Pressure behind both eyes",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-24",
+        "field": "duration",
+        "prediction": {
+          "field": "duration",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 211,
+              "end": 257,
+              "text": "Four days, and I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "duration",
+          "state": "supported",
+          "value": "four days",
+          "evidence": [
+            {
+              "start": 211,
+              "end": 220,
+              "text": "Four days",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-24",
+        "field": "severity",
+        "prediction": {
+          "field": "severity",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 211,
+              "end": 257,
+              "text": "Four days, and I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "severity",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-24",
+        "field": "medication",
+        "prediction": {
+          "field": "medication",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 211,
+              "end": 257,
+              "text": "Four days, and I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "medication",
+          "state": "missing",
+          "value": null,
+          "evidence": []
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      },
+      {
+        "case_id": "retain-24",
+        "field": "allergy",
+        "prediction": {
+          "field": "allergy",
+          "state": "uncertain",
+          "value": null,
+          "evidence": [
+            {
+              "start": 211,
+              "end": 257,
+              "text": "Four days, and I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "gold": {
+          "field": "allergy",
+          "state": "absent",
+          "value": null,
+          "evidence": [
+            {
+              "start": 226,
+              "end": 257,
+              "text": "I have no medication allergies.",
+              "speaker": "patient"
+            }
+          ]
+        },
+        "state_correct": false,
+        "normalized_content_correct": false,
+        "exact_evidence_aligned": false,
+        "grounded_exact_correct": false,
+        "complete_evidence_exact_correct": false
+      }
+    ]
+  }
+}

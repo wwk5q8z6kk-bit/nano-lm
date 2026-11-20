@@ -8,6 +8,28 @@
 4. **Scope claims** — verifier relation, distribution, and utility function must accompany every metric.
 5. **Human review** for consequential domains — automatic metrics necessary, not sufficient.
 
+## Three evaluation layers (frozen)
+
+Frozen by owner directive, 2026-08-27, quoted verbatim:
+
+> Public benchmarks measure capabilities. Native evaluations measure the engineering process.
+> System evaluations measure whether those capabilities survive contact with tools, environments,
+> budgets, uncertainty, and verification.
+
+The research question this frames:
+
+> Can the system reduce uncertainty, take evidence-justified actions, revise its beliefs when
+> evidence changes, produce correct engineering outcomes, and establish that those outcomes are
+> sufficiently verified?
+
+Consequences for sequencing: public suites are a later diagnostic/validation layer subject to
+authorization and compute constraints; they are not the primary scientific target and are not an
+execution queue. Native process evaluations are the research contribution. Identity and
+reproducibility gaps that would make future system evaluations non-comparable are closed first —
+see [`../benchmarks/AGENT_RUN_IDENTITY.schema.json`](../benchmarks/AGENT_RUN_IDENTITY.schema.json)
+and, for the program design, [`../papers/SWE_CAPABILITY_EVALUATION_PROPOSAL.md`](../papers/SWE_CAPABILITY_EVALUATION_PROPOSAL.md)
+(design proposal — not authorization).
+
 ## Utility pattern (when comparing solvers)
 
 \[

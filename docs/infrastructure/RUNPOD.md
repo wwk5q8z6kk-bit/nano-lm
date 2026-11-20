@@ -1,16 +1,22 @@
 # RunPod
 
-**RunPod is Nano's active primary GPU training and experimental-compute backend.**
+**RunPod is Nano's paid exact-runtime, persistent-storage, and managed-inference backend.**
 
 Nano uses RunPod for pretrained-model adaptation, controlled training experiments, CUDA-dependent validation, scaling experiments, and other workloads that exceed or are poorly suited to local Apple Silicon.
 
 RunPod is execution infrastructure, not scientific authority: experiment identity comes from the preregistration, manifest, code revision, dataset manifest, configuration, seeds, checkpoints, and resulting immutable artifacts.
 
-**Cross-branch note:** `artifacts/nano_h6/runops/` bundles may exist only on feature branches — **not** on integration base `origin/master` @ `2ad06d2`. See [MODEL_RESEARCH_PROGRAM.md](../research/MODEL_RESEARCH_PROGRAM.md).
+Kaggle is the preferred free GPU backend when its runtime fits. RunPod remains
+the right backend when the experiment requires a specific GPU/runtime,
+persistent network volume, or managed inference surface.
+
+H6's terminal result is integrated under `artifacts/nano_h6/`. Historical
+`runops/` lifecycle bundles may remain on feature branches; they are not live
+authority for launching H6 again.
 
 ## Policy (current program)
 
-The distinction is **cost / risk / evidential significance**, not “free local versus paid cloud.”
+The distinction is experiment fit, cost, risk, and evidential significance.
 
 | Class | Policy |
 |-------|--------|
@@ -21,8 +27,12 @@ The distinction is **cost / risk / evidential significance**, not “free local 
 | PHI / private data on cloud | **NOT_AUTHORIZED** |
 
 ```text
-training_backend = RUNPOD
+training_backend = KAGGLE_AND_RUNPOD
 training_status = ACTIVE
+
+backend_policy =
+KAGGLE_FREE_WHEN_RUNTIME_FITS;
+RUNPOD_FOR_EXACT_GPU_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE
 
 routine_runpod_training =
 ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET

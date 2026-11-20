@@ -1,0 +1,404 @@
+[
+  {
+    "example_id": "pilot-00-canonical",
+    "draft": {
+      "schema_version": "nanoscribe.draft.v0",
+      "encounter_id": "pilot-00-canonical",
+      "context_policy": "legacy",
+      "source_sha256": "449f638874a2ac25924d4c2d465c1c36fb197144f1a43dcb1b55f71a6848aaa4",
+      "status": "draft",
+      "disposition": "review",
+      "extraction": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-00-canonical",
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "jaw pain",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 79,
+                "text": "jaw pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "11 days",
+            "evidence": [
+              {
+                "start": 141,
+                "end": 148,
+                "text": "11 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 212,
+                "end": 220,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "naproxen",
+            "evidence": [
+              {
+                "start": 288,
+                "end": 296,
+                "text": "naproxen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "nickel",
+            "evidence": [
+              {
+                "start": 366,
+                "end": 372,
+                "text": "nickel",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "encounter": {
+        "schema_version": "nano.encounter.v0",
+        "encounter_id": "pilot-00-canonical",
+        "sources": [
+          {
+            "source_id": "source",
+            "text": "Doctor: What brings you to the clinic today?\nPatient: I've been having jaw pain.\nDoctor: How long has this been going on?\nPatient: For about 11 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: I've been taking naproxen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to nickel.",
+            "turns": [
+              {
+                "turn_id": "source:t0",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 8,
+                "end": 44,
+                "text": "What brings you to the clinic today?"
+              },
+              {
+                "turn_id": "source:t1",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 54,
+                "end": 80,
+                "text": "I've been having jaw pain."
+              },
+              {
+                "turn_id": "source:t2",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 89,
+                "end": 121,
+                "text": "How long has this been going on?"
+              },
+              {
+                "turn_id": "source:t3",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 131,
+                "end": 153,
+                "text": "For about 11 days now."
+              },
+              {
+                "turn_id": "source:t4",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 162,
+                "end": 190,
+                "text": "How bad would you say it is?"
+              },
+              {
+                "turn_id": "source:t5",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 200,
+                "end": 221,
+                "text": "I'd call it moderate."
+              },
+              {
+                "turn_id": "source:t6",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 230,
+                "end": 261,
+                "text": "Have you taken anything for it?"
+              },
+              {
+                "turn_id": "source:t7",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 271,
+                "end": 297,
+                "text": "I've been taking naproxen."
+              },
+              {
+                "turn_id": "source:t8",
+                "source_id": "source",
+                "speaker": "clinician",
+                "start": 306,
+                "end": 340,
+                "text": "Any allergies I should know about?"
+              },
+              {
+                "turn_id": "source:t9",
+                "source_id": "source",
+                "speaker": "patient",
+                "start": 350,
+                "end": 373,
+                "text": "I'm allergic to nickel."
+              }
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "e:chief_complaint:0",
+            "source_id": "source",
+            "turn_id": "source:t1",
+            "speaker": "patient",
+            "start": 71,
+            "end": 79,
+            "text": "jaw pain"
+          },
+          {
+            "evidence_id": "e:duration:0",
+            "source_id": "source",
+            "turn_id": "source:t3",
+            "speaker": "patient",
+            "start": 141,
+            "end": 148,
+            "text": "11 days"
+          },
+          {
+            "evidence_id": "e:severity:0",
+            "source_id": "source",
+            "turn_id": "source:t5",
+            "speaker": "patient",
+            "start": 212,
+            "end": 220,
+            "text": "moderate"
+          },
+          {
+            "evidence_id": "e:medication:0",
+            "source_id": "source",
+            "turn_id": "source:t7",
+            "speaker": "patient",
+            "start": 288,
+            "end": 296,
+            "text": "naproxen"
+          },
+          {
+            "evidence_id": "e:allergy:0",
+            "source_id": "source",
+            "turn_id": "source:t9",
+            "speaker": "patient",
+            "start": 366,
+            "end": 372,
+            "text": "nickel"
+          }
+        ],
+        "atoms": [
+          {
+            "atom_id": "a:chief_complaint",
+            "atom_type": "symptom",
+            "raw_value": "jaw pain",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:duration",
+            "atom_type": "symptom",
+            "raw_value": "11 days",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:duration:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:severity",
+            "atom_type": "symptom",
+            "raw_value": "moderate",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:severity:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:medication",
+            "atom_type": "medication",
+            "raw_value": "naproxen",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:medication:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          },
+          {
+            "atom_id": "a:allergy",
+            "atom_type": "allergy",
+            "raw_value": "nickel",
+            "normalized_value": null,
+            "assertion_state": "asserted",
+            "speaker": "patient",
+            "experiencer": "patient",
+            "temporality": {
+              "kind": "unknown",
+              "onset_raw": null,
+              "duration_raw": null,
+              "time_expression_raw": null
+            },
+            "certainty": "stated",
+            "evidence_ids": [
+              "e:allergy:0"
+            ],
+            "normalization_transform": null,
+            "review_required": true
+          }
+        ],
+        "conflicts": [],
+        "unresolved": [
+          {
+            "unresolved_id": "u:scope",
+            "topic": "scope",
+            "reason": "Five patient-reported fields only; source checks are bounded and human review is required. No diagnosis, plan, or full encounter completeness is established.",
+            "review_required": true,
+            "evidence_ids": []
+          }
+        ]
+      },
+      "note": {
+        "claims": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "jaw pain",
+            "evidence_ids": [
+              "e:chief_complaint:0"
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "11 days",
+            "evidence_ids": [
+              "e:duration:0"
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence_ids": [
+              "e:severity:0"
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "naproxen",
+            "evidence_ids": [
+              "e:medication:0"
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "nickel",
+            "evidence_ids": [
+              "e:allergy:0"
+            ]
+          }
+        ],
+        "text": "Patient-reported encounter draft — human review required\nChief complaint: patient reports \"jaw pain\" [e:chief_complaint:0]\nDuration: patient reports \"11 days\" [e:duration:0]\nSeverity: patient reports \"moderate\" [e:severity:0]\nMedication: patient reports \"naproxen\" [e:medication:0]\nAllergy: patient reports \"nickel\" [e:allergy:0]",
+        "review_required": true
+      },
+      "verification": {
+        "passed": true,
+        "errors": [],
+        "scope": "bounded_source_and_representation"
+      },
+      "limitations": [
+        "Five patient-reported fields; no completeness or clinical readiness claim.",
+        "Deterministic source checks are not clinical entailment or human evaluation."
+      ],
+      "solver": {
+        "solver_id": "compact/qwen2.5-1.5b-state-span",
+        "kind": "legacy_adapter",
+        "version": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "parameter_count": 1543714816,
+        "artifact_bytes": null
+      },
+      "failure": null
+    }
+  }
+]

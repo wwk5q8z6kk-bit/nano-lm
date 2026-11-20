@@ -1,0 +1,2854 @@
+{
+  "schema_version": "nano.evaluation.v0",
+  "solver": {
+    "solver_id": "diagnostic/raw-compact-proposals",
+    "kind": "reference",
+    "version": "0",
+    "parameter_count": null,
+    "artifact_bytes": null
+  },
+  "quality": {
+    "items": 20,
+    "fields": 100,
+    "inference_success_count": 18,
+    "inference_success_rate": 0.9,
+    "contract_valid_output_count": 18,
+    "contract_valid_output_rate": 0.9,
+    "exact_field_count": 85,
+    "exact_field_accuracy": 0.85,
+    "normalized_field_count": 85,
+    "normalized_field_accuracy": 0.85,
+    "grounded_exact_field_count": 85,
+    "grounded_exact_field_accuracy": 0.85,
+    "grounded_normalized_field_count": 85,
+    "grounded_normalized_field_accuracy": 0.85,
+    "state_correct_count": 85,
+    "state_accuracy": 0.85,
+    "presented_field_count": 74,
+    "coverage": 0.74,
+    "presented_content_correct_count": 72,
+    "content_selective_accuracy": 0.972972972972973,
+    "presented_correct_count": 72,
+    "selective_accuracy": 0.972972972972973,
+    "normalized_presented_content_correct_count": 72,
+    "normalized_content_selective_accuracy": 0.972972972972973,
+    "normalized_presented_correct_count": 72,
+    "normalized_selective_accuracy": 0.972972972972973,
+    "false_presented_count": 2,
+    "false_presented_rate": 0.02702702702702703,
+    "intentional_abstention_count": 16,
+    "intentional_abstention_rate": 0.16,
+    "failed_inference_field_count": 10,
+    "assertion_grounded_count": 72,
+    "assertion_grounded_rate": 0.972972972972973,
+    "evidence_required_field_count": 76,
+    "evidence_aligned_field_count": 74,
+    "evidence_alignment_rate": 0.9736842105263158,
+    "contract_evidence_span_count": 78,
+    "contract_evidence_span_valid_count": 78,
+    "contract_evidence_span_valid_rate": 1.0,
+    "by_field": {
+      "chief_complaint": {
+        "exact": 18,
+        "normalized": 18,
+        "grounded_exact": 18,
+        "grounded_normalized": 18,
+        "state_correct": 18,
+        "evidence_aligned": 18,
+        "evidence_required": 18,
+        "total": 20,
+        "exact_accuracy": 0.9,
+        "normalized_accuracy": 0.9,
+        "grounded_exact_accuracy": 0.9,
+        "grounded_normalized_accuracy": 0.9,
+        "state_accuracy": 0.9,
+        "evidence_alignment_rate": 1.0
+      },
+      "duration": {
+        "exact": 16,
+        "normalized": 16,
+        "grounded_exact": 16,
+        "grounded_normalized": 16,
+        "state_correct": 16,
+        "evidence_aligned": 12,
+        "evidence_required": 12,
+        "total": 20,
+        "exact_accuracy": 0.8,
+        "normalized_accuracy": 0.8,
+        "grounded_exact_accuracy": 0.8,
+        "grounded_normalized_accuracy": 0.8,
+        "state_accuracy": 0.8,
+        "evidence_alignment_rate": 1.0
+      },
+      "severity": {
+        "exact": 18,
+        "normalized": 18,
+        "grounded_exact": 18,
+        "grounded_normalized": 18,
+        "state_correct": 18,
+        "evidence_aligned": 14,
+        "evidence_required": 14,
+        "total": 20,
+        "exact_accuracy": 0.9,
+        "normalized_accuracy": 0.9,
+        "grounded_exact_accuracy": 0.9,
+        "grounded_normalized_accuracy": 0.9,
+        "state_accuracy": 0.9,
+        "evidence_alignment_rate": 1.0
+      },
+      "medication": {
+        "exact": 15,
+        "normalized": 15,
+        "grounded_exact": 15,
+        "grounded_normalized": 15,
+        "state_correct": 15,
+        "evidence_aligned": 14,
+        "evidence_required": 16,
+        "total": 20,
+        "exact_accuracy": 0.75,
+        "normalized_accuracy": 0.75,
+        "grounded_exact_accuracy": 0.75,
+        "grounded_normalized_accuracy": 0.75,
+        "state_accuracy": 0.75,
+        "evidence_alignment_rate": 0.875
+      },
+      "allergy": {
+        "exact": 18,
+        "normalized": 18,
+        "grounded_exact": 18,
+        "grounded_normalized": 18,
+        "state_correct": 18,
+        "evidence_aligned": 16,
+        "evidence_required": 16,
+        "total": 20,
+        "exact_accuracy": 0.9,
+        "normalized_accuracy": 0.9,
+        "grounded_exact_accuracy": 0.9,
+        "grounded_normalized_accuracy": 0.9,
+        "state_accuracy": 0.9,
+        "evidence_alignment_rate": 1.0
+      }
+    },
+    "state_confusion": {
+      "supported": {
+        "supported": 60,
+        "absent": 0,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 0
+      },
+      "absent": {
+        "supported": 0,
+        "absent": 12,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 0
+      },
+      "missing": {
+        "supported": 0,
+        "absent": 0,
+        "missing": 11,
+        "uncertain": 1,
+        "conflicting": 0
+      },
+      "uncertain": {
+        "supported": 0,
+        "absent": 0,
+        "missing": 2,
+        "uncertain": 0,
+        "conflicting": 0
+      },
+      "conflicting": {
+        "supported": 0,
+        "absent": 2,
+        "missing": 0,
+        "uncertain": 0,
+        "conflicting": 2
+      }
+    },
+    "held_seen": null,
+    "paired_robustness": null
+  },
+  "failures": {
+    "count": 2,
+    "rate": 0.1,
+    "by_category": {
+      "invalid_request": 0,
+      "invalid_solver": 0,
+      "solver_exception": 0,
+      "invalid_output_type": 0,
+      "invalid_diagnostics": 0,
+      "solver_id_mismatch": 0,
+      "contract_violation": 2
+    },
+    "synthetic_abstentions_created": 0
+  },
+  "operational": {
+    "latency_measured": false,
+    "inference_latency_ms_p50": null,
+    "inference_latency_ms_p95": null,
+    "cold_load_ms": null,
+    "parameter_count": null,
+    "artifact_bytes": null,
+    "peak_memory_bytes": null
+  },
+  "pipeline": {
+    "diagnostic_protocol_counts": {},
+    "raw_proposal": {
+      "available": false,
+      "protocol_version": null,
+      "items": 0,
+      "fields": 0,
+      "presented_field_count": 0,
+      "coverage": null,
+      "strict_content_correct_count": 0,
+      "strict_content_selective_accuracy": null,
+      "strict_false_presented_count": 0,
+      "strict_false_presented_rate": null,
+      "normalized_content_correct_count": 0,
+      "normalized_content_selective_accuracy": null,
+      "normalized_false_presented_count": 0,
+      "normalized_false_presented_rate": null,
+      "native_abstention_count": 0,
+      "by_field": {
+        "chief_complaint": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "duration": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "severity": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "medication": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        },
+        "allergy": {
+          "presented": 0,
+          "exact_presented_correct": 0,
+          "normalized_presented_correct": 0,
+          "native_abstention": 0,
+          "total": 0,
+          "coverage": null,
+          "strict_content_selective_accuracy": null,
+          "normalized_content_selective_accuracy": null
+        }
+      }
+    },
+    "verification": {
+      "decision_counts": {
+        "accepted_supported": 0,
+        "accepted_absent": 0,
+        "rejected_ungrounded": 0,
+        "rejected_unproven_absence": 0,
+        "preserved_conflict": 0,
+        "native_abstention": 0
+      },
+      "accepted_count": 0,
+      "rejected_count": 0,
+      "preserved_conflict_count": 0,
+      "native_abstention_count": 0,
+      "acceptance_rate_over_decisions": null
+    }
+  },
+  "items": [
+    {
+      "case_id": "pilot-00-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-00-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "jaw pain",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 79,
+                "text": "jaw pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "11 days",
+            "evidence": [
+              {
+                "start": 141,
+                "end": 148,
+                "text": "11 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 212,
+                "end": 220,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "naproxen",
+            "evidence": [
+              {
+                "start": 288,
+                "end": 296,
+                "text": "naproxen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "nickel",
+            "evidence": [
+              {
+                "start": 366,
+                "end": 372,
+                "text": "nickel",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "jaw pain",
+          "predicted_state": "supported",
+          "predicted_value": "jaw pain",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "11 days",
+          "predicted_state": "supported",
+          "predicted_value": "11 days",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "moderate",
+          "predicted_state": "supported",
+          "predicted_value": "moderate",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "naproxen",
+          "predicted_state": "supported",
+          "predicted_value": "naproxen",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "nickel",
+          "predicted_state": "supported",
+          "predicted_value": "nickel",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-00-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-00-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "jaw pain",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 86,
+                "text": "jaw pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "11 days",
+            "evidence": [
+              {
+                "start": 162,
+                "end": 169,
+                "text": "11 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 237,
+                "end": 245,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "naproxen",
+            "evidence": [
+              {
+                "start": 327,
+                "end": 335,
+                "text": "naproxen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "nickel",
+            "evidence": [
+              {
+                "start": 420,
+                "end": 426,
+                "text": "nickel",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "jaw pain",
+          "predicted_state": "supported",
+          "predicted_value": "jaw pain",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "11 days",
+          "predicted_state": "supported",
+          "predicted_value": "11 days",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "moderate",
+          "predicted_state": "supported",
+          "predicted_value": "moderate",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "naproxen",
+          "predicted_state": "supported",
+          "predicted_value": "naproxen",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "nickel",
+          "predicted_state": "supported",
+          "predicted_value": "nickel",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-01-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-01-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ankle soreness",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 85,
+                "text": "ankle soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "6 weeks",
+            "evidence": [
+              {
+                "start": 147,
+                "end": 154,
+                "text": "6 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 218,
+                "end": 222,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "acetaminophen",
+            "evidence": [
+              {
+                "start": 290,
+                "end": 303,
+                "text": "acetaminophen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "latex",
+            "evidence": [
+              {
+                "start": 373,
+                "end": 378,
+                "text": "latex",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "ankle soreness",
+          "predicted_state": "supported",
+          "predicted_value": "ankle soreness",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "6 weeks",
+          "predicted_state": "supported",
+          "predicted_value": "6 weeks",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "mild",
+          "predicted_state": "supported",
+          "predicted_value": "mild",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "acetaminophen",
+          "predicted_state": "supported",
+          "predicted_value": "acetaminophen",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "latex",
+          "predicted_state": "supported",
+          "predicted_value": "latex",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-01-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-01-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ankle soreness",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 92,
+                "text": "ankle soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "6 weeks",
+            "evidence": [
+              {
+                "start": 168,
+                "end": 175,
+                "text": "6 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 243,
+                "end": 247,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "acetaminophen",
+            "evidence": [
+              {
+                "start": 329,
+                "end": 342,
+                "text": "acetaminophen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "latex",
+            "evidence": [
+              {
+                "start": 427,
+                "end": 432,
+                "text": "latex",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "ankle soreness",
+          "predicted_state": "supported",
+          "predicted_value": "ankle soreness",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "6 weeks",
+          "predicted_state": "supported",
+          "predicted_value": "6 weeks",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "mild",
+          "predicted_state": "supported",
+          "predicted_value": "mild",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "acetaminophen",
+          "predicted_state": "supported",
+          "predicted_value": "acetaminophen",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "latex",
+          "predicted_state": "supported",
+          "predicted_value": "latex",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-02-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-02-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "dry cough",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 80,
+                "text": "dry cough",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "9 days",
+            "evidence": [
+              {
+                "start": 142,
+                "end": 148,
+                "text": "9 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "severe",
+            "evidence": [
+              {
+                "start": 212,
+                "end": 218,
+                "text": "severe",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 269,
+                "end": 285,
+                "text": "No, nothing yet.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 338,
+                "end": 351,
+                "text": "No allergies.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "dry cough",
+          "predicted_state": "supported",
+          "predicted_value": "dry cough",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "9 days",
+          "predicted_state": "supported",
+          "predicted_value": "9 days",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "severe",
+          "predicted_state": "supported",
+          "predicted_value": "severe",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-02-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-02-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "dry cough",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 87,
+                "text": "dry cough",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "9 days",
+            "evidence": [
+              {
+                "start": 163,
+                "end": 169,
+                "text": "9 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "severe",
+            "evidence": [
+              {
+                "start": 237,
+                "end": 243,
+                "text": "severe",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 308,
+                "end": 324,
+                "text": "No, nothing yet.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 392,
+                "end": 405,
+                "text": "No allergies.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "dry cough",
+          "predicted_state": "supported",
+          "predicted_value": "dry cough",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "9 days",
+          "predicted_state": "supported",
+          "predicted_value": "9 days",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "severe",
+          "predicted_state": "supported",
+          "predicted_value": "severe",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-03-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-03-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "wrist ache",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 81,
+                "text": "wrist ache",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 141,
+                "end": 149,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "uncertain",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "amoxicillin",
+            "evidence": [
+              {
+                "start": 219,
+                "end": 230,
+                "text": "amoxicillin",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "wrist ache",
+          "predicted_state": "supported",
+          "predicted_value": "wrist ache",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "moderate",
+          "predicted_state": "supported",
+          "predicted_value": "moderate",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "uncertain",
+          "predicted_value": null,
+          "exact": false,
+          "normalized": false,
+          "grounded_exact": false,
+          "grounded_normalized": false,
+          "state_correct": false,
+          "evidence_aligned": null
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "amoxicillin",
+          "predicted_state": "supported",
+          "predicted_value": "amoxicillin",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-03-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-03-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "wrist ache",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 88,
+                "text": "wrist ache",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 152,
+                "end": 160,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "amoxicillin",
+            "evidence": [
+              {
+                "start": 245,
+                "end": 256,
+                "text": "amoxicillin",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "wrist ache",
+          "predicted_state": "supported",
+          "predicted_value": "wrist ache",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "moderate",
+          "predicted_state": "supported",
+          "predicted_value": "moderate",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "amoxicillin",
+          "predicted_state": "supported",
+          "predicted_value": "amoxicillin",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-04-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-04-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ear pressure",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 83,
+                "text": "ear pressure",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "3 weeks",
+            "evidence": [
+              {
+                "start": 145,
+                "end": 152,
+                "text": "3 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "ibuprofen",
+            "evidence": [
+              {
+                "start": 224,
+                "end": 233,
+                "text": "ibuprofen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "ear pressure",
+          "predicted_state": "supported",
+          "predicted_value": "ear pressure",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "3 weeks",
+          "predicted_state": "supported",
+          "predicted_value": "3 weeks",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "ibuprofen",
+          "predicted_state": "supported",
+          "predicted_value": "ibuprofen",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-04-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-04-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "ear pressure",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 90,
+                "text": "ear pressure",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "3 weeks",
+            "evidence": [
+              {
+                "start": 166,
+                "end": 173,
+                "text": "3 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "ibuprofen",
+            "evidence": [
+              {
+                "start": 259,
+                "end": 268,
+                "text": "ibuprofen",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "ear pressure",
+          "predicted_state": "supported",
+          "predicted_value": "ear pressure",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "3 weeks",
+          "predicted_state": "supported",
+          "predicted_value": "3 weeks",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "ibuprofen",
+          "predicted_state": "supported",
+          "predicted_value": "ibuprofen",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-05-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-05-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "heel pain",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 80,
+                "text": "heel pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 230,
+                "end": 234,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 285,
+                "end": 310,
+                "text": "I haven't taken anything.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "adhesive",
+            "evidence": [
+              {
+                "start": 379,
+                "end": 387,
+                "text": "adhesive",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "heel pain",
+          "predicted_state": "supported",
+          "predicted_value": "heel pain",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "uncertain",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": false,
+          "normalized": false,
+          "grounded_exact": false,
+          "grounded_normalized": false,
+          "state_correct": false,
+          "evidence_aligned": null
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "mild",
+          "predicted_state": "supported",
+          "predicted_value": "mild",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "adhesive",
+          "predicted_state": "supported",
+          "predicted_value": "adhesive",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-05-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-05-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "heel pain",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 87,
+                "text": "heel pain",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 255,
+                "end": 259,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 324,
+                "end": 349,
+                "text": "I haven't taken anything.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "adhesive",
+            "evidence": [
+              {
+                "start": 433,
+                "end": 441,
+                "text": "adhesive",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "heel pain",
+          "predicted_state": "supported",
+          "predicted_value": "heel pain",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "uncertain",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": false,
+          "normalized": false,
+          "grounded_exact": false,
+          "grounded_normalized": false,
+          "state_correct": false,
+          "evidence_aligned": null
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "mild",
+          "predicted_state": "supported",
+          "predicted_value": "mild",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "adhesive",
+          "predicted_state": "supported",
+          "predicted_value": "adhesive",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-06-canonical",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "contract_violation",
+        "message": "absent fields require an explicit denial for that field",
+        "exception_type": "ContractValidationError",
+        "validation_code": "absence_without_denial"
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-06-paraphrase",
+      "partition": "development",
+      "status": "failure",
+      "failure": {
+        "category": "contract_violation",
+        "message": "absent fields require an explicit denial for that field",
+        "exception_type": "ContractValidationError",
+        "validation_code": "absence_without_denial"
+      },
+      "output": null,
+      "diagnostics": null,
+      "field_results": null
+    },
+    {
+      "case_id": "pilot-07-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-07-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "shoulder ache",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 84,
+                "text": "shoulder ache",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "conflicting",
+            "value": null,
+            "evidence": [
+              {
+                "start": 146,
+                "end": 152,
+                "text": "4 days",
+                "speaker": "patient"
+              },
+              {
+                "start": 218,
+                "end": 224,
+                "text": "7 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 288,
+                "end": 296,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "aspirin",
+            "evidence": [
+              {
+                "start": 364,
+                "end": 371,
+                "text": "aspirin",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 425,
+                "end": 441,
+                "text": "None whatsoever.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "shoulder ache",
+          "predicted_state": "supported",
+          "predicted_value": "shoulder ache",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "conflicting",
+          "gold_value": null,
+          "predicted_state": "conflicting",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "moderate",
+          "predicted_state": "supported",
+          "predicted_value": "moderate",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "aspirin",
+          "predicted_state": "supported",
+          "predicted_value": "aspirin",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-07-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-07-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "shoulder ache",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 91,
+                "text": "shoulder ache",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "conflicting",
+            "value": null,
+            "evidence": [
+              {
+                "start": 167,
+                "end": 173,
+                "text": "4 days",
+                "speaker": "patient"
+              },
+              {
+                "start": 253,
+                "end": 259,
+                "text": "7 days",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "moderate",
+            "evidence": [
+              {
+                "start": 327,
+                "end": 335,
+                "text": "moderate",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "supported",
+            "value": "aspirin",
+            "evidence": [
+              {
+                "start": 417,
+                "end": 424,
+                "text": "aspirin",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 493,
+                "end": 509,
+                "text": "None whatsoever.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "shoulder ache",
+          "predicted_state": "supported",
+          "predicted_value": "shoulder ache",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "conflicting",
+          "gold_value": null,
+          "predicted_state": "conflicting",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "moderate",
+          "predicted_state": "supported",
+          "predicted_value": "moderate",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "supported",
+          "gold_value": "aspirin",
+          "predicted_state": "supported",
+          "predicted_value": "aspirin",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-08-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-08-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "nasal congestion",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 87,
+                "text": "nasal congestion",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "2 weeks",
+            "evidence": [
+              {
+                "start": 149,
+                "end": 156,
+                "text": "2 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 220,
+                "end": 224,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 353,
+                "end": 369,
+                "text": "No, nothing yet.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "penicillin",
+            "evidence": [
+              {
+                "start": 438,
+                "end": 448,
+                "text": "penicillin",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "nasal congestion",
+          "predicted_state": "supported",
+          "predicted_value": "nasal congestion",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "2 weeks",
+          "predicted_state": "supported",
+          "predicted_value": "2 weeks",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "mild",
+          "predicted_state": "supported",
+          "predicted_value": "mild",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "conflicting",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": false,
+          "normalized": false,
+          "grounded_exact": false,
+          "grounded_normalized": false,
+          "state_correct": false,
+          "evidence_aligned": false
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "penicillin",
+          "predicted_state": "supported",
+          "predicted_value": "penicillin",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-08-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-08-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "nasal congestion",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 94,
+                "text": "nasal congestion",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "supported",
+            "value": "2 weeks",
+            "evidence": [
+              {
+                "start": 170,
+                "end": 177,
+                "text": "2 weeks",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "severity",
+            "state": "supported",
+            "value": "mild",
+            "evidence": [
+              {
+                "start": 245,
+                "end": 249,
+                "text": "mild",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 406,
+                "end": 422,
+                "text": "No, nothing yet.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "supported",
+            "value": "penicillin",
+            "evidence": [
+              {
+                "start": 506,
+                "end": 516,
+                "text": "penicillin",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "nasal congestion",
+          "predicted_state": "supported",
+          "predicted_value": "nasal congestion",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "supported",
+          "gold_value": "2 weeks",
+          "predicted_state": "supported",
+          "predicted_value": "2 weeks",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "severity",
+          "gold_state": "supported",
+          "gold_value": "mild",
+          "predicted_state": "supported",
+          "predicted_value": "mild",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "medication",
+          "gold_state": "conflicting",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": false,
+          "normalized": false,
+          "grounded_exact": false,
+          "grounded_normalized": false,
+          "state_correct": false,
+          "evidence_aligned": false
+        },
+        {
+          "field": "allergy",
+          "gold_state": "supported",
+          "gold_value": "penicillin",
+          "predicted_state": "supported",
+          "predicted_value": "penicillin",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-09-canonical",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-09-canonical",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "finger soreness",
+            "evidence": [
+              {
+                "start": 71,
+                "end": 86,
+                "text": "finger soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "severity",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 137,
+                "end": 152,
+                "text": "Nothing at all.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 205,
+                "end": 218,
+                "text": "No allergies.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "finger soreness",
+          "predicted_state": "supported",
+          "predicted_value": "finger soreness",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "severity",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "medication",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    },
+    {
+      "case_id": "pilot-09-paraphrase",
+      "partition": "development",
+      "status": "ok",
+      "failure": null,
+      "output": {
+        "schema_version": "nano.scribe.v0",
+        "item_id": "pilot-09-paraphrase",
+        "solver_id": "diagnostic/raw-compact-proposals",
+        "fields": [
+          {
+            "field": "chief_complaint",
+            "state": "supported",
+            "value": "finger soreness",
+            "evidence": [
+              {
+                "start": 78,
+                "end": 93,
+                "text": "finger soreness",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "duration",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "severity",
+            "state": "missing",
+            "value": null,
+            "evidence": []
+          },
+          {
+            "field": "medication",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 158,
+                "end": 173,
+                "text": "Nothing at all.",
+                "speaker": "patient"
+              }
+            ]
+          },
+          {
+            "field": "allergy",
+            "state": "absent",
+            "value": null,
+            "evidence": [
+              {
+                "start": 241,
+                "end": 254,
+                "text": "No allergies.",
+                "speaker": "patient"
+              }
+            ]
+          }
+        ]
+      },
+      "diagnostics": null,
+      "field_results": [
+        {
+          "field": "chief_complaint",
+          "gold_state": "supported",
+          "gold_value": "finger soreness",
+          "predicted_state": "supported",
+          "predicted_value": "finger soreness",
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "duration",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "severity",
+          "gold_state": "missing",
+          "gold_value": null,
+          "predicted_state": "missing",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": null
+        },
+        {
+          "field": "medication",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        },
+        {
+          "field": "allergy",
+          "gold_state": "absent",
+          "gold_value": null,
+          "predicted_state": "absent",
+          "predicted_value": null,
+          "exact": true,
+          "normalized": true,
+          "grounded_exact": true,
+          "grounded_normalized": true,
+          "state_correct": true,
+          "evidence_aligned": true
+        }
+      ]
+    }
+  ]
+}

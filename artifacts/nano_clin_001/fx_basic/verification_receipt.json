@@ -1,0 +1,64 @@
+{
+  "artifact_id": "art_2c12f045413beb7b",
+  "claim_results": [
+    {
+      "text": "Documented: What brings you in today?",
+      "evidence_span_ids": [
+        "ev_8d616a842ad06c64"
+      ],
+      "epistemic_status": "direct_documentation",
+      "supported": true
+    },
+    {
+      "text": "Patient-reported: I have had a sore throat for about three days. [time approximate as stated]",
+      "evidence_span_ids": [
+        "ev_f3a97dc8fa25fc82"
+      ],
+      "epistemic_status": "patient_reported",
+      "supported": true
+    },
+    {
+      "text": "Documented: Any fever?",
+      "evidence_span_ids": [
+        "ev_05d579adba069fc2"
+      ],
+      "epistemic_status": "direct_documentation",
+      "supported": true
+    },
+    {
+      "text": "Patient denies: No fever.",
+      "evidence_span_ids": [
+        "ev_f92750bbe14e12ff"
+      ],
+      "epistemic_status": "patient_reported",
+      "supported": true
+    },
+    {
+      "text": "Measured: Your temperature is 37.1 degrees celsius.",
+      "evidence_span_ids": [
+        "ev_8a63cd1a84f4fcd4"
+      ],
+      "epistemic_status": "direct_measurement",
+      "supported": true
+    },
+    {
+      "text": "Clinician assessment: I think this is a viral pharyngitis.",
+      "evidence_span_ids": [
+        "ev_2a6b347a1f69a5f8"
+      ],
+      "epistemic_status": "clinician_asserted",
+      "supported": true
+    },
+    {
+      "text": "Measured: Start ibuprofen 400 mg as needed.",
+      "evidence_span_ids": [
+        "ev_825a2567c3bc59c5"
+      ],
+      "epistemic_status": "direct_measurement",
+      "supported": true
+    }
+  ],
+  "coverage_status": "complete",
+  "verifier_version": "nano-clin-001",
+  "receipt_id": "vrfy_b19d462136dddec4"
+}

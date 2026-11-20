@@ -1,0 +1,1652 @@
+{
+  "created_utc": "2026-10-26T13:48:51.910378+00:00",
+  "method": "Prespecified annotation sensitivity; same captured predictions, unchanged scorer. No new inference.",
+  "input_hashes": {
+    "annotation_lock.json": "db7f8ef86b95b6ed9c4318484b236c7a936775dfae31f34c51f60ffc2cbcd109",
+    "sources.json": "0a8d45569f8bcec8e387c0ed7db94c6dd4f9f636b6679cf4126ab3fc1893c628",
+    "annotations_a.json": "fa4b74e0447043f673f19bbf5fbe6baea7d6a23ae46ecd5b98d593ebde318cc0",
+    "annotations_b.json": "a6a3be5c1c3ffd131d8356d1164cc3979000c4bcc967c6c6ff8a327779a49297",
+    "gold.json": "14899430ba5f2e4cf1c32cace97a4f1a82d1e2b8d050aee5d7a23ddd9f67e6c9",
+    "annotation_a_process.md": "82e397378154e93a8457e8d78514128d1face31a8e4423046d7ee8d8c3b84a32",
+    "annotation_b_process.md": "623b53bfb59864dfe1976cb3be3f47abf5fbc88c82691cba382352173f63050b",
+    "adjudication.md": "b91297440e3131d50e405165eef5b32207255ede09e88b16b31a4bc29cb082b6",
+    "annotation_rubric.md": "01d1781a620e8a1d42018715569b4eb5571b4bca04741982bcc98c7a0bc27657",
+    "authoring.md": "15879defc0cdad00135ceaaaba7982edc78c3ad75369450d4b1219f62f876523",
+    "protocol.md": "948a6d0c4eb94007321f91b7404f331f04a4143fd1503e56822b58a2a5631a42",
+    "implementation_lock.json": "11a2b93a610d857dc268626f47aecda047bfc2cccb5d6e79ae18b3be13b5c031"
+  },
+  "analysis_sha256": "a4a50ba3997f630292f4cbdeecb452450ebf61c81e3488ab792b8a9a919fe170",
+  "variants": {
+    "adjudicated": {
+      "free": {
+        "comparison": {
+          "cases": 24,
+          "fields": 120,
+          "metrics": {
+            "raw": {
+              "fields": 120,
+              "state_correct": 0,
+              "normalized_content_correct": 0,
+              "exact_evidence_aligned": 0,
+              "grounded_exact_correct": 0,
+              "complete_evidence_exact_correct": 0,
+              "emitted_asserted_fields": 0,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 0,
+              "asserted_exact_field_mismatch": 0,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.0,
+              "normalized_content_accuracy": 0.0,
+              "grounded_exact_field_accuracy": 0.0,
+              "complete_evidence_exact_field_accuracy": 0.0,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "failure": 61
+                },
+                "absent": {
+                  "failure": 19
+                },
+                "uncertain": {
+                  "failure": 16
+                },
+                "conflicting": {
+                  "failure": 4
+                },
+                "missing": {
+                  "failure": 20
+                }
+              }
+            },
+            "checked": {
+              "fields": 120,
+              "state_correct": 12,
+              "normalized_content_correct": 12,
+              "exact_evidence_aligned": 12,
+              "grounded_exact_correct": 12,
+              "complete_evidence_exact_correct": 6,
+              "emitted_asserted_fields": 0,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 0,
+              "asserted_exact_field_mismatch": 0,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.1,
+              "normalized_content_accuracy": 0.1,
+              "grounded_exact_field_accuracy": 0.1,
+              "complete_evidence_exact_field_accuracy": 0.05,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "uncertain": 44,
+                  "failure": 17
+                },
+                "absent": {
+                  "uncertain": 12,
+                  "failure": 7
+                },
+                "uncertain": {
+                  "uncertain": 12,
+                  "failure": 4
+                },
+                "conflicting": {
+                  "uncertain": 4
+                },
+                "missing": {
+                  "uncertain": 13,
+                  "failure": 7
+                }
+              }
+            }
+          },
+          "by_field": {
+            "allergy": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            },
+            "chief_complaint": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.041666666666666664,
+                "grounded_exact_field_accuracy": 0.041666666666666664
+              }
+            },
+            "duration": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.08333333333333333
+              }
+            },
+            "medication": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.125,
+                "grounded_exact_field_accuracy": 0.125
+              }
+            },
+            "severity": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.08333333333333333
+              }
+            }
+          },
+          "by_stratum": {
+            "corrections and unresolved conflicts": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "field-local uncertainty": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.55,
+                "grounded_exact_field_accuracy": 0.55
+              }
+            },
+            "irrelevant history/other speakers": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "medication/allergy scope": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.05,
+                "grounded_exact_field_accuracy": 0.05
+              }
+            },
+            "missing/compound requests": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "ordinary current-fact replies": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            }
+          },
+          "final_note": {
+            "emitted_asserted_fields": 0,
+            "asserted_state_or_content_mismatch": 0,
+            "asserted_exact_field_mismatch": 0,
+            "gold_asserted_fields": 80,
+            "correct_asserted_fields_emitted": 0
+          },
+          "paired_changes": {
+            "exact_fields_salvaged": 12,
+            "exact_fields_lost": 0,
+            "correct_asserted_fields_lost": 0,
+            "correct_asserted_fields_salvaged": 0,
+            "correct_asserted_fields_retained": 0,
+            "asserted_normalized_content_mismatches_removed": 0,
+            "asserted_normalized_content_mismatches_introduced": 0,
+            "asserted_exact_mismatches_removed": 0,
+            "asserted_exact_mismatches_introduced": 0
+          },
+          "malformed_raw_cases": 24,
+          "checked_inference_failure_cases": 7,
+          "gold_usable_cases": 24,
+          "whole_note_abstention_with_gold_usable_content": 24,
+          "whole_note_abstention_with_gold_usable_content_rate": 1.0,
+          "definitions": {
+            "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+            "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+            "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+            "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+            "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+            "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+            "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+            "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+          }
+        },
+        "normalized_correct_assertion_transitions": {
+          "retained": 0,
+          "lost": 0,
+          "salvaged": 0
+        }
+      },
+      "constrained": {
+        "comparison": {
+          "cases": 24,
+          "fields": 120,
+          "metrics": {
+            "raw": {
+              "fields": 120,
+              "state_correct": 24,
+              "normalized_content_correct": 24,
+              "exact_evidence_aligned": 22,
+              "grounded_exact_correct": 22,
+              "complete_evidence_exact_correct": 19,
+              "emitted_asserted_fields": 2,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 2,
+              "asserted_exact_field_mismatch": 2,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.2,
+              "normalized_content_accuracy": 0.2,
+              "grounded_exact_field_accuracy": 0.18333333333333332,
+              "complete_evidence_exact_field_accuracy": 0.15833333333333333,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "missing": 57,
+                  "uncertain": 2,
+                  "supported": 2
+                },
+                "absent": {
+                  "uncertain": 6,
+                  "missing": 13
+                },
+                "uncertain": {
+                  "missing": 12,
+                  "uncertain": 4
+                },
+                "conflicting": {
+                  "missing": 4
+                },
+                "missing": {
+                  "missing": 18,
+                  "uncertain": 2
+                }
+              }
+            },
+            "checked": {
+              "fields": 120,
+              "state_correct": 22,
+              "normalized_content_correct": 22,
+              "exact_evidence_aligned": 21,
+              "grounded_exact_correct": 21,
+              "complete_evidence_exact_correct": 14,
+              "emitted_asserted_fields": 1,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 1,
+              "asserted_exact_field_mismatch": 1,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.18333333333333332,
+              "normalized_content_accuracy": 0.18333333333333332,
+              "grounded_exact_field_accuracy": 0.175,
+              "complete_evidence_exact_field_accuracy": 0.11666666666666667,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "uncertain": 47,
+                  "missing": 13,
+                  "supported": 1
+                },
+                "absent": {
+                  "uncertain": 18,
+                  "missing": 1
+                },
+                "uncertain": {
+                  "uncertain": 16
+                },
+                "conflicting": {
+                  "uncertain": 4
+                },
+                "missing": {
+                  "missing": 5,
+                  "uncertain": 15
+                }
+              }
+            }
+          },
+          "by_field": {
+            "allergy": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              }
+            },
+            "chief_complaint": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.041666666666666664
+              }
+            },
+            "duration": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            },
+            "medication": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.20833333333333334,
+                "grounded_exact_field_accuracy": 0.20833333333333334
+              }
+            },
+            "severity": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            }
+          },
+          "by_stratum": {
+            "corrections and unresolved conflicts": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.1,
+                "grounded_exact_field_accuracy": 0.05
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.05,
+                "grounded_exact_field_accuracy": 0.05
+              }
+            },
+            "field-local uncertainty": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.15,
+                "grounded_exact_field_accuracy": 0.1
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.6,
+                "grounded_exact_field_accuracy": 0.55
+              }
+            },
+            "irrelevant history/other speakers": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.45,
+                "grounded_exact_field_accuracy": 0.45
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.2,
+                "grounded_exact_field_accuracy": 0.2
+              }
+            },
+            "medication/allergy scope": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.1,
+                "grounded_exact_field_accuracy": 0.1
+              }
+            },
+            "missing/compound requests": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.5,
+                "grounded_exact_field_accuracy": 0.5
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.15,
+                "grounded_exact_field_accuracy": 0.15
+              }
+            },
+            "ordinary current-fact replies": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            }
+          },
+          "final_note": {
+            "emitted_asserted_fields": 1,
+            "asserted_state_or_content_mismatch": 0,
+            "asserted_exact_field_mismatch": 1,
+            "gold_asserted_fields": 80,
+            "correct_asserted_fields_emitted": 0
+          },
+          "paired_changes": {
+            "exact_fields_salvaged": 12,
+            "exact_fields_lost": 13,
+            "correct_asserted_fields_lost": 0,
+            "correct_asserted_fields_salvaged": 0,
+            "correct_asserted_fields_retained": 0,
+            "asserted_normalized_content_mismatches_removed": 0,
+            "asserted_normalized_content_mismatches_introduced": 0,
+            "asserted_exact_mismatches_removed": 1,
+            "asserted_exact_mismatches_introduced": 0
+          },
+          "malformed_raw_cases": 0,
+          "checked_inference_failure_cases": 0,
+          "gold_usable_cases": 24,
+          "whole_note_abstention_with_gold_usable_content": 23,
+          "whole_note_abstention_with_gold_usable_content_rate": 0.9583333333333334,
+          "definitions": {
+            "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+            "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+            "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+            "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+            "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+            "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+            "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+            "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+          }
+        },
+        "normalized_correct_assertion_transitions": {
+          "retained": 1,
+          "lost": 1,
+          "salvaged": 0
+        }
+      }
+    },
+    "original_a": {
+      "free": {
+        "comparison": {
+          "cases": 24,
+          "fields": 120,
+          "metrics": {
+            "raw": {
+              "fields": 120,
+              "state_correct": 0,
+              "normalized_content_correct": 0,
+              "exact_evidence_aligned": 0,
+              "grounded_exact_correct": 0,
+              "complete_evidence_exact_correct": 0,
+              "emitted_asserted_fields": 0,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 0,
+              "asserted_exact_field_mismatch": 0,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.0,
+              "normalized_content_accuracy": 0.0,
+              "grounded_exact_field_accuracy": 0.0,
+              "complete_evidence_exact_field_accuracy": 0.0,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "failure": 61
+                },
+                "absent": {
+                  "failure": 19
+                },
+                "uncertain": {
+                  "failure": 16
+                },
+                "conflicting": {
+                  "failure": 4
+                },
+                "missing": {
+                  "failure": 20
+                }
+              }
+            },
+            "checked": {
+              "fields": 120,
+              "state_correct": 12,
+              "normalized_content_correct": 12,
+              "exact_evidence_aligned": 12,
+              "grounded_exact_correct": 12,
+              "complete_evidence_exact_correct": 6,
+              "emitted_asserted_fields": 0,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 0,
+              "asserted_exact_field_mismatch": 0,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.1,
+              "normalized_content_accuracy": 0.1,
+              "grounded_exact_field_accuracy": 0.1,
+              "complete_evidence_exact_field_accuracy": 0.05,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "uncertain": 44,
+                  "failure": 17
+                },
+                "absent": {
+                  "uncertain": 12,
+                  "failure": 7
+                },
+                "uncertain": {
+                  "uncertain": 12,
+                  "failure": 4
+                },
+                "conflicting": {
+                  "uncertain": 4
+                },
+                "missing": {
+                  "uncertain": 13,
+                  "failure": 7
+                }
+              }
+            }
+          },
+          "by_field": {
+            "allergy": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            },
+            "chief_complaint": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.041666666666666664,
+                "grounded_exact_field_accuracy": 0.041666666666666664
+              }
+            },
+            "duration": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.08333333333333333
+              }
+            },
+            "medication": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.125,
+                "grounded_exact_field_accuracy": 0.125
+              }
+            },
+            "severity": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.08333333333333333
+              }
+            }
+          },
+          "by_stratum": {
+            "corrections and unresolved conflicts": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "field-local uncertainty": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.55,
+                "grounded_exact_field_accuracy": 0.55
+              }
+            },
+            "irrelevant history/other speakers": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "medication/allergy scope": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.05,
+                "grounded_exact_field_accuracy": 0.05
+              }
+            },
+            "missing/compound requests": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "ordinary current-fact replies": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            }
+          },
+          "final_note": {
+            "emitted_asserted_fields": 0,
+            "asserted_state_or_content_mismatch": 0,
+            "asserted_exact_field_mismatch": 0,
+            "gold_asserted_fields": 80,
+            "correct_asserted_fields_emitted": 0
+          },
+          "paired_changes": {
+            "exact_fields_salvaged": 12,
+            "exact_fields_lost": 0,
+            "correct_asserted_fields_lost": 0,
+            "correct_asserted_fields_salvaged": 0,
+            "correct_asserted_fields_retained": 0,
+            "asserted_normalized_content_mismatches_removed": 0,
+            "asserted_normalized_content_mismatches_introduced": 0,
+            "asserted_exact_mismatches_removed": 0,
+            "asserted_exact_mismatches_introduced": 0
+          },
+          "malformed_raw_cases": 24,
+          "checked_inference_failure_cases": 7,
+          "gold_usable_cases": 24,
+          "whole_note_abstention_with_gold_usable_content": 24,
+          "whole_note_abstention_with_gold_usable_content_rate": 1.0,
+          "definitions": {
+            "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+            "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+            "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+            "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+            "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+            "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+            "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+            "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+          }
+        },
+        "normalized_correct_assertion_transitions": {
+          "retained": 0,
+          "lost": 0,
+          "salvaged": 0
+        }
+      },
+      "constrained": {
+        "comparison": {
+          "cases": 24,
+          "fields": 120,
+          "metrics": {
+            "raw": {
+              "fields": 120,
+              "state_correct": 24,
+              "normalized_content_correct": 24,
+              "exact_evidence_aligned": 23,
+              "grounded_exact_correct": 23,
+              "complete_evidence_exact_correct": 19,
+              "emitted_asserted_fields": 2,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 1,
+              "asserted_exact_field_mismatch": 1,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 1,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.2,
+              "normalized_content_accuracy": 0.2,
+              "grounded_exact_field_accuracy": 0.19166666666666668,
+              "complete_evidence_exact_field_accuracy": 0.15833333333333333,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "missing": 57,
+                  "uncertain": 2,
+                  "supported": 2
+                },
+                "absent": {
+                  "uncertain": 6,
+                  "missing": 13
+                },
+                "uncertain": {
+                  "missing": 12,
+                  "uncertain": 4
+                },
+                "conflicting": {
+                  "missing": 4
+                },
+                "missing": {
+                  "missing": 18,
+                  "uncertain": 2
+                }
+              }
+            },
+            "checked": {
+              "fields": 120,
+              "state_correct": 22,
+              "normalized_content_correct": 22,
+              "exact_evidence_aligned": 21,
+              "grounded_exact_correct": 21,
+              "complete_evidence_exact_correct": 14,
+              "emitted_asserted_fields": 1,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 1,
+              "asserted_exact_field_mismatch": 1,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.18333333333333332,
+              "normalized_content_accuracy": 0.18333333333333332,
+              "grounded_exact_field_accuracy": 0.175,
+              "complete_evidence_exact_field_accuracy": 0.11666666666666667,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "uncertain": 47,
+                  "missing": 13,
+                  "supported": 1
+                },
+                "absent": {
+                  "uncertain": 18,
+                  "missing": 1
+                },
+                "uncertain": {
+                  "uncertain": 16
+                },
+                "conflicting": {
+                  "uncertain": 4
+                },
+                "missing": {
+                  "missing": 5,
+                  "uncertain": 15
+                }
+              }
+            }
+          },
+          "by_field": {
+            "allergy": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              }
+            },
+            "chief_complaint": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.041666666666666664
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.041666666666666664
+              }
+            },
+            "duration": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            },
+            "medication": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.20833333333333334,
+                "grounded_exact_field_accuracy": 0.20833333333333334
+              }
+            },
+            "severity": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            }
+          },
+          "by_stratum": {
+            "corrections and unresolved conflicts": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.1,
+                "grounded_exact_field_accuracy": 0.1
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.05,
+                "grounded_exact_field_accuracy": 0.05
+              }
+            },
+            "field-local uncertainty": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.15,
+                "grounded_exact_field_accuracy": 0.1
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.6,
+                "grounded_exact_field_accuracy": 0.55
+              }
+            },
+            "irrelevant history/other speakers": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.45,
+                "grounded_exact_field_accuracy": 0.45
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.2,
+                "grounded_exact_field_accuracy": 0.2
+              }
+            },
+            "medication/allergy scope": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.1,
+                "grounded_exact_field_accuracy": 0.1
+              }
+            },
+            "missing/compound requests": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.5,
+                "grounded_exact_field_accuracy": 0.5
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.15,
+                "grounded_exact_field_accuracy": 0.15
+              }
+            },
+            "ordinary current-fact replies": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            }
+          },
+          "final_note": {
+            "emitted_asserted_fields": 1,
+            "asserted_state_or_content_mismatch": 0,
+            "asserted_exact_field_mismatch": 1,
+            "gold_asserted_fields": 80,
+            "correct_asserted_fields_emitted": 0
+          },
+          "paired_changes": {
+            "exact_fields_salvaged": 12,
+            "exact_fields_lost": 14,
+            "correct_asserted_fields_lost": 1,
+            "correct_asserted_fields_salvaged": 0,
+            "correct_asserted_fields_retained": 0,
+            "asserted_normalized_content_mismatches_removed": 0,
+            "asserted_normalized_content_mismatches_introduced": 0,
+            "asserted_exact_mismatches_removed": 0,
+            "asserted_exact_mismatches_introduced": 0
+          },
+          "malformed_raw_cases": 0,
+          "checked_inference_failure_cases": 0,
+          "gold_usable_cases": 24,
+          "whole_note_abstention_with_gold_usable_content": 23,
+          "whole_note_abstention_with_gold_usable_content_rate": 0.9583333333333334,
+          "definitions": {
+            "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+            "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+            "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+            "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+            "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+            "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+            "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+            "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+          }
+        },
+        "normalized_correct_assertion_transitions": {
+          "retained": 1,
+          "lost": 1,
+          "salvaged": 0
+        }
+      }
+    },
+    "original_b": {
+      "free": {
+        "comparison": {
+          "cases": 24,
+          "fields": 120,
+          "metrics": {
+            "raw": {
+              "fields": 120,
+              "state_correct": 0,
+              "normalized_content_correct": 0,
+              "exact_evidence_aligned": 0,
+              "grounded_exact_correct": 0,
+              "complete_evidence_exact_correct": 0,
+              "emitted_asserted_fields": 0,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 0,
+              "asserted_exact_field_mismatch": 0,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.0,
+              "normalized_content_accuracy": 0.0,
+              "grounded_exact_field_accuracy": 0.0,
+              "complete_evidence_exact_field_accuracy": 0.0,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "failure": 61
+                },
+                "absent": {
+                  "failure": 19
+                },
+                "uncertain": {
+                  "failure": 16
+                },
+                "conflicting": {
+                  "failure": 4
+                },
+                "missing": {
+                  "failure": 20
+                }
+              }
+            },
+            "checked": {
+              "fields": 120,
+              "state_correct": 12,
+              "normalized_content_correct": 12,
+              "exact_evidence_aligned": 12,
+              "grounded_exact_correct": 12,
+              "complete_evidence_exact_correct": 6,
+              "emitted_asserted_fields": 0,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 0,
+              "asserted_exact_field_mismatch": 0,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.1,
+              "normalized_content_accuracy": 0.1,
+              "grounded_exact_field_accuracy": 0.1,
+              "complete_evidence_exact_field_accuracy": 0.05,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "uncertain": 44,
+                  "failure": 17
+                },
+                "absent": {
+                  "uncertain": 12,
+                  "failure": 7
+                },
+                "uncertain": {
+                  "uncertain": 12,
+                  "failure": 4
+                },
+                "conflicting": {
+                  "uncertain": 4
+                },
+                "missing": {
+                  "uncertain": 13,
+                  "failure": 7
+                }
+              }
+            }
+          },
+          "by_field": {
+            "allergy": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            },
+            "chief_complaint": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.041666666666666664,
+                "grounded_exact_field_accuracy": 0.041666666666666664
+              }
+            },
+            "duration": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.08333333333333333
+              }
+            },
+            "medication": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.125,
+                "grounded_exact_field_accuracy": 0.125
+              }
+            },
+            "severity": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.08333333333333333
+              }
+            }
+          },
+          "by_stratum": {
+            "corrections and unresolved conflicts": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "field-local uncertainty": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.55,
+                "grounded_exact_field_accuracy": 0.55
+              }
+            },
+            "irrelevant history/other speakers": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "medication/allergy scope": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.05,
+                "grounded_exact_field_accuracy": 0.05
+              }
+            },
+            "missing/compound requests": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            },
+            "ordinary current-fact replies": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            }
+          },
+          "final_note": {
+            "emitted_asserted_fields": 0,
+            "asserted_state_or_content_mismatch": 0,
+            "asserted_exact_field_mismatch": 0,
+            "gold_asserted_fields": 80,
+            "correct_asserted_fields_emitted": 0
+          },
+          "paired_changes": {
+            "exact_fields_salvaged": 12,
+            "exact_fields_lost": 0,
+            "correct_asserted_fields_lost": 0,
+            "correct_asserted_fields_salvaged": 0,
+            "correct_asserted_fields_retained": 0,
+            "asserted_normalized_content_mismatches_removed": 0,
+            "asserted_normalized_content_mismatches_introduced": 0,
+            "asserted_exact_mismatches_removed": 0,
+            "asserted_exact_mismatches_introduced": 0
+          },
+          "malformed_raw_cases": 24,
+          "checked_inference_failure_cases": 7,
+          "gold_usable_cases": 24,
+          "whole_note_abstention_with_gold_usable_content": 24,
+          "whole_note_abstention_with_gold_usable_content_rate": 1.0,
+          "definitions": {
+            "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+            "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+            "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+            "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+            "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+            "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+            "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+            "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+          }
+        },
+        "normalized_correct_assertion_transitions": {
+          "retained": 0,
+          "lost": 0,
+          "salvaged": 0
+        }
+      },
+      "constrained": {
+        "comparison": {
+          "cases": 24,
+          "fields": 120,
+          "metrics": {
+            "raw": {
+              "fields": 120,
+              "state_correct": 24,
+              "normalized_content_correct": 24,
+              "exact_evidence_aligned": 22,
+              "grounded_exact_correct": 22,
+              "complete_evidence_exact_correct": 19,
+              "emitted_asserted_fields": 2,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 2,
+              "asserted_exact_field_mismatch": 2,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.2,
+              "normalized_content_accuracy": 0.2,
+              "grounded_exact_field_accuracy": 0.18333333333333332,
+              "complete_evidence_exact_field_accuracy": 0.15833333333333333,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "missing": 57,
+                  "uncertain": 2,
+                  "supported": 2
+                },
+                "absent": {
+                  "uncertain": 6,
+                  "missing": 13
+                },
+                "uncertain": {
+                  "missing": 12,
+                  "uncertain": 4
+                },
+                "conflicting": {
+                  "missing": 4
+                },
+                "missing": {
+                  "missing": 18,
+                  "uncertain": 2
+                }
+              }
+            },
+            "checked": {
+              "fields": 120,
+              "state_correct": 22,
+              "normalized_content_correct": 22,
+              "exact_evidence_aligned": 21,
+              "grounded_exact_correct": 21,
+              "complete_evidence_exact_correct": 14,
+              "emitted_asserted_fields": 1,
+              "asserted_state_or_content_mismatch": 0,
+              "asserted_exact_evidence_mismatch": 1,
+              "asserted_exact_field_mismatch": 1,
+              "gold_asserted_fields": 80,
+              "correct_asserted_fields": 0,
+              "gold_conflict_fields": 4,
+              "conflict_state_recalled": 0,
+              "conflict_exact_recalled": 0,
+              "state_accuracy": 0.18333333333333332,
+              "normalized_content_accuracy": 0.18333333333333332,
+              "grounded_exact_field_accuracy": 0.175,
+              "complete_evidence_exact_field_accuracy": 0.11666666666666667,
+              "conflict_state_recall": 0.0,
+              "conflict_exact_recall": 0.0,
+              "state_confusion": {
+                "supported": {
+                  "uncertain": 47,
+                  "missing": 13,
+                  "supported": 1
+                },
+                "absent": {
+                  "uncertain": 18,
+                  "missing": 1
+                },
+                "uncertain": {
+                  "uncertain": 16
+                },
+                "conflicting": {
+                  "uncertain": 4
+                },
+                "missing": {
+                  "missing": 5,
+                  "uncertain": 15
+                }
+              }
+            }
+          },
+          "by_field": {
+            "allergy": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              }
+            },
+            "chief_complaint": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.08333333333333333,
+                "grounded_exact_field_accuracy": 0.041666666666666664
+              }
+            },
+            "duration": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            },
+            "medication": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.20833333333333334,
+                "grounded_exact_field_accuracy": 0.20833333333333334
+              }
+            },
+            "severity": {
+              "raw": {
+                "fields": 24,
+                "state_accuracy": 0.2916666666666667,
+                "grounded_exact_field_accuracy": 0.2916666666666667
+              },
+              "checked": {
+                "fields": 24,
+                "state_accuracy": 0.16666666666666666,
+                "grounded_exact_field_accuracy": 0.16666666666666666
+              }
+            }
+          },
+          "by_stratum": {
+            "corrections and unresolved conflicts": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.1,
+                "grounded_exact_field_accuracy": 0.05
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.05,
+                "grounded_exact_field_accuracy": 0.05
+              }
+            },
+            "field-local uncertainty": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.15,
+                "grounded_exact_field_accuracy": 0.1
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.6,
+                "grounded_exact_field_accuracy": 0.55
+              }
+            },
+            "irrelevant history/other speakers": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.45,
+                "grounded_exact_field_accuracy": 0.45
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.2,
+                "grounded_exact_field_accuracy": 0.2
+              }
+            },
+            "medication/allergy scope": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.1,
+                "grounded_exact_field_accuracy": 0.1
+              }
+            },
+            "missing/compound requests": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.5,
+                "grounded_exact_field_accuracy": 0.5
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.15,
+                "grounded_exact_field_accuracy": 0.15
+              }
+            },
+            "ordinary current-fact replies": {
+              "raw": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              },
+              "checked": {
+                "fields": 20,
+                "state_accuracy": 0.0,
+                "grounded_exact_field_accuracy": 0.0
+              }
+            }
+          },
+          "final_note": {
+            "emitted_asserted_fields": 1,
+            "asserted_state_or_content_mismatch": 0,
+            "asserted_exact_field_mismatch": 1,
+            "gold_asserted_fields": 80,
+            "correct_asserted_fields_emitted": 0
+          },
+          "paired_changes": {
+            "exact_fields_salvaged": 12,
+            "exact_fields_lost": 13,
+            "correct_asserted_fields_lost": 0,
+            "correct_asserted_fields_salvaged": 0,
+            "correct_asserted_fields_retained": 0,
+            "asserted_normalized_content_mismatches_removed": 0,
+            "asserted_normalized_content_mismatches_introduced": 0,
+            "asserted_exact_mismatches_removed": 1,
+            "asserted_exact_mismatches_introduced": 0
+          },
+          "malformed_raw_cases": 0,
+          "checked_inference_failure_cases": 0,
+          "gold_usable_cases": 24,
+          "whole_note_abstention_with_gold_usable_content": 23,
+          "whole_note_abstention_with_gold_usable_content_rate": 0.9583333333333334,
+          "definitions": {
+            "state_accuracy": "Correct state; all fields of malformed/missing outputs count incorrect.",
+            "normalized_content_accuracy": "Correct state and, for S, normalized first annotated value; span boundaries ignored.",
+            "grounded_exact_field_accuracy": "Correct normalized content plus at least one exact annotated span for S/A or every annotated span for C; U/M need only the state.",
+            "complete_evidence_exact_field_accuracy": "Correct normalized content and identical complete evidence sets, including U/C evidence.",
+            "checked": "Checked extraction scores precede note withholding; final_note separately measures actually emitted claims.",
+            "asserted_exact_field_mismatch": "Exact annotation mismatch, not an adjudicated clinical error count.",
+            "whole_note_abstention": "ABSTAIN disposition on a source with at least one gold S/A; it does not establish the safety of a draft.",
+            "independence": "Agent annotation independence must be documented separately; not human or clinician evaluation."
+          }
+        },
+        "normalized_correct_assertion_transitions": {
+          "retained": 1,
+          "lost": 1,
+          "salvaged": 0
+        }
+      }
+    }
+  },
+  "run_hashes": {
+    "free": {
+      "provenance.json": "b6a7c7163c2c7c02a8915abb4275d958f53e6bc03405936f328e77ee2792ec55",
+      "encounters.json": "56e9a485ca1456127899caa31e4b28c8dddc3bcb8474de5f79ffefcaf557754d",
+      "comparison.json": "6318036f81e48145d60c8280b878f0612a2306f38cb21538a92c7d791e7c249d",
+      "paired_fields.json": "15dccabc7d96d1208600d73f3f100974514eb9943c119757ff024e85c9b089c2"
+    },
+    "constrained": {
+      "provenance.json": "6cf4114bcc6287d655a6a753a2e14f23c9faab3f82bdd6821801ecdd0722ee41",
+      "encounters.json": "bc05b4d8d3fe2153191d185ebd5ad0cbbf73fb7a190270e9aeee0729b44b6044",
+      "comparison.json": "e6b107599bddbe29c251c01ce9db1c249dc574d8ccf5ea378388fb11b3094ee9",
+      "paired_fields.json": "4097d42dc50cdd6808e98bc4f269c491f097d8ce3195ebcd274702a34e3f257c"
+    }
+  }
+}

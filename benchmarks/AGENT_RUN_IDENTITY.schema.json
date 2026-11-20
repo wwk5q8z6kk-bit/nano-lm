@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "benchmarks/AGENT_RUN_IDENTITY.schema.json",
+  "title": "AgentRunIdentity",
+  "description": "Content-addressed identity for an agentic evaluation run. Additive to benchmarks/REGISTRY.schema.json; does not modify the Program 0 run_id contract. Infrastructure only: this schema authorizes no execution, registers no suite, and asserts no result.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "agent_run_id",
+    "components"
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "not": {"const": "0000000000000000000000000000000000000000000000000000000000000000"},
+      "description": "Lowercase sha256 hex. The null digest is rejected so that placeholder pins fail closed."
+    },
+    "git_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "benchmark_lab.agent_run_identity.v1"
+    },
+    "agent_run_id": {
+      "$ref": "#/$defs/sha256",
+      "description": "SHA256 over canonical JSON of the eight component digests."
+    },
+    "base_run_id": {
+      "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}],
+      "description": "Lineage only. The legacy 4-input run_id, retained so agentic runs can be traced to the Program 0 contract without rewriting historical identities."
+    },
+    "notes": {"type": "string"},
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Exactly the eight identity-bearing components. No component is optional: an unpinned component must stop the run rather than silently produce a non-distinguishing identity.",
+      "required": [
+        "model_pin_sha256",
+        "agent_policy_pin_sha256",
+        "tool_pin_sha256",
+        "environment_pin_sha256",
+        "task_spec_pin_sha256",
+        "budget_pin_sha256",
+        "evaluator_pin_sha256",
+        "code_pin_sha256"
+      ],
+      "properties": {
+        "model_pin_sha256": {"$ref": "#/$defs/sha256"},
+        "agent_policy_pin_sha256": {"$ref": "#/$defs/sha256"},
+        "tool_pin_sha256": {"$ref": "#/$defs/sha256"},
+        "environment_pin_sha256": {"$ref": "#/$defs/sha256"},
+        "task_spec_pin_sha256": {"$ref": "#/$defs/sha256"},
+        "budget_pin_sha256": {"$ref": "#/$defs/sha256"},
+        "evaluator_pin_sha256": {"$ref": "#/$defs/sha256"},
+        "code_pin_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "component_sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional but strongly recommended: the pre-image of the six components that have structured pins, so that an identity mismatch localizes to a field rather than to an opaque hash. Model and task-spec digests come from the existing Program 0 manifests and have no entry here. NOTE: schema validation does not recompute digests from these pre-images — the relation is a producer obligation, exercised in benchmarks/tests/test_agent_identity.py.",
+      "properties": {
+        "agent_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["policy_id", "policy_source_sha256", "system_prompt_sha256"],
+          "properties": {
+            "policy_id": {"type": "string", "minLength": 1},
+            "policy_source_sha256": {"$ref": "#/$defs/sha256"},
+            "system_prompt_sha256": {"$ref": "#/$defs/sha256"},
+            "context_policy": {"type": "string"}
+          }
+        },
+        "tools": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tool_manifest_sha256", "tool_ids", "permissions"],
+          "properties": {
+            "tool_manifest_sha256": {"$ref": "#/$defs/sha256"},
+            "tool_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+            "permissions": {
+              "type": "object",
+              "description": "Per-tool permission. Permissions are identity-bearing: the same inventory read-only versus writable is a different system.",
+              "additionalProperties": {"type": "string"}
+            }
+          }
+        },
+        "environment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["image_digest", "network_policy", "deterministic"],
+          "properties": {
+            "image_digest": {
+              "type": "string",
+              "minLength": 1,
+              "not": {"pattern": ":latest"},
+              "description": "Immutable container digest. A mutable tag is not an identity."
+            },
+            "network_policy": {"enum": ["none", "allowlist", "open"]},
+            "deterministic": {"type": "boolean"},
+            "seed": {"type": ["integer", "null"]}
+          }
+        },
+        "budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["retry_policy", "repeats"],
+          "properties": {
+            "retry_policy": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Explicit; use 'none' when there are no retries. Unreported retries are a benchmark-integrity failure, so the policy is pinned into identity rather than reported alongside the result."
+            },
+            "repeats": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Independent executions. Required because pass^k is undefined without it."
+            },
+            "max_steps": {"type": ["integer", "null"]},
+            "max_wall_clock_s": {"type": ["integer", "null"]},
+            "max_tokens": {"type": ["integer", "null"]},
+            "max_cost_usd": {"type": ["number", "null"]}
+          }
+        },
+        "evaluator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["evaluator_id", "evaluator_version", "scorer_sha256"],
+          "properties": {
+            "evaluator_id": {"type": "string", "minLength": 1},
+            "evaluator_version": {"type": "string", "minLength": 1},
+            "scorer_sha256": {"$ref": "#/$defs/sha256"},
+            "judge_calibration_sha256": {
+              "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}],
+              "description": "Null unless an LLM judge contributes to the score. When non-null, points at a calibration record; see papers/SWE_CAPABILITY_EVALUATION_PROPOSAL.md."
+            }
+          }
+        },
+        "code": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code_git_commit", "config_sha256"],
+          "properties": {
+            "code_git_commit": {"$ref": "#/$defs/git_sha"},
+            "config_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      }
+    }
+  }
+}

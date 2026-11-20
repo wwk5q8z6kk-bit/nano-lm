@@ -1,0 +1,17 @@
+[
+  {
+    "patient_id": "synth-002",
+    "conflict_type": "date_disagreement",
+    "claim_set": [
+      "asrt_54f12f39d60eadee",
+      "prior_chart:2018-05-02 note: No hist",
+      "prior_chart:2020-11-14 note: Type 2 "
+    ],
+    "supporting_evidence": [],
+    "contradictory_evidence": [],
+    "clinical_importance": "unknown",
+    "resolution_status": "unresolved",
+    "human_disposition": "",
+    "conflict_id": "cfl_291e8e980c1974da"
+  }
+]

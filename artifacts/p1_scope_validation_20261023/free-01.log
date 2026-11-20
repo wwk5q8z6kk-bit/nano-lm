@@ -1,0 +1,27 @@
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  47%|████▋     | 159/338 [00:00<00:00, 1557.10it/s]Loading weights:  93%|█████████▎| 315/338 [00:00<00:00, 662.71it/s] Loading weights: 100%|██████████| 338/338 [00:00<00:00, 748.83it/s]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+scope-01 draft abstain 35
+scope-02 draft abstain 45
+scope-03 draft abstain 36
+scope-04 draft abstain 38
+scope-05 draft abstain 40
+scope-06 draft abstain 43
+scope-07 draft abstain 35
+scope-08 draft abstain 34
+scope-09 draft abstain 36
+scope-10 draft abstain 38
+scope-11 draft abstain 43
+scope-12 draft abstain 45
+scope-13 draft abstain 35
+scope-14 draft abstain 35
+scope-15 draft abstain 39
+scope-16 draft abstain 37
+scope-17 failed abstain 27
+scope-18 draft abstain 34
+scope-19 draft abstain 45
+scope-20 draft abstain 41
+scope-21 draft abstain 25
+scope-22 draft abstain 40
+scope-23 draft abstain 35
+scope-24 draft abstain 36
+{"raw": 0.016666666666666666, "checked": 0.21666666666666667}

@@ -1,0 +1,850 @@
+[
+  {
+    "case_id": "retain-01",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "sore throat"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three days"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Moderate, especially when I swallow"
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "throat lozenges"
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I have no medication allergies."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-02",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "left ankle is sore"
+        ],
+        "rationale": "The phrase preserves the complete reported complaint and its location; the patient-speaker context makes the initial possessive My redundant."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Yesterday afternoon, after I got home"
+        ],
+        "rationale": "The onset is yesterday afternoon after arriving home; retain the local temporal qualifier rather than discard that reported refinement."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ]
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't taken or applied anything for it."
+        ]
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-03",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "Nausea and bloating"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Two days so far"
+        ],
+        "rationale": "Retain so far because the patient explicitly describes the duration accrued through the present."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "five out of ten"
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "peppermint tea"
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No, I'm not allergic to any medicines."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-04",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "itchy rash on my forearm"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "a week"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ]
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "Nothing at all for this rash."
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have medication allergies."
+        ],
+        "rationale": "The retained complete denial clause explicitly names medication allergies. The earlier clause is redundant, and the rubric permits a complete denial clause."
+      }
+    }
+  },
+  {
+    "case_id": "retain-05",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "headache across my forehead"
+        ]
+      },
+      "DUR": {
+        "state": "U",
+        "spans": [
+          "Two days, or perhaps three. I can't pin down which day it started."
+        ]
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "I honestly can't decide whether to call it mild or moderate."
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Acetaminophen"
+        ]
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I can't remember whether I have any."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-06",
+    "fields": {
+      "CC": {
+        "state": "U",
+        "spans": [
+          "I can't tell if it's an earache or pain in my jaw."
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Four days ago"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild, but annoying"
+        ],
+        "rationale": "The patient gives a clear mild severity with an explicit bothersomeness qualifier. Retain the complete short qualified phrase; it does not create scalar uncertainty."
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I may have taken a tablet for it yesterday, but I can't remember whether I actually did."
+        ]
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "latex"
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-07",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dry cough"
+        ]
+      },
+      "DUR": {
+        "state": "U",
+        "spans": [
+          "I don't know when it started."
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "three out of ten"
+        ]
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I remember getting the syrup out, but I'm not sure whether I swallowed any."
+        ]
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I don't know my medicine allergy history."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-08",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "Stomach cramps"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "the evening before last"
+        ]
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "Somewhere between mild and moderate; I can't choose one."
+        ]
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "ibuprofen",
+          "an antacid"
+        ],
+        "rationale": "Two compatible treatments are reported; the scalar field cannot retain both."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "penicillin",
+          "latex"
+        ],
+        "rationale": "Two compatible allergies are reported; the scalar field cannot retain both."
+      }
+    }
+  },
+  {
+    "case_id": "retain-09",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "neck has felt stiff"
+        ],
+        "rationale": "The phrase preserves the complete reported complaint and its location; the patient-speaker context makes the initial possessive My redundant."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "since I woke up this morning"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Only mildly uncomfortable"
+        ]
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "No, I haven't used anything for the neck stiffness."
+        ],
+        "rationale": "The usual thyroid tablet is explicitly unrelated to treatment of this complaint."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I have no allergies to medicines."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-10",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "right elbow aches"
+        ],
+        "rationale": "The phrase preserves the complete reported complaint and its location; the patient-speaker context makes the initial possessive My redundant."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "four days ago"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ]
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "Naproxen"
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have any medication allergies."
+        ],
+        "rationale": "The patient explicitly identifies the old codeine reaction as a side effect, not an allergy."
+      }
+    }
+  },
+  {
+    "case_id": "retain-11",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "shoulder started aching"
+        ],
+        "rationale": "The phrase preserves the complete reported complaint and its location; the patient-speaker context makes the initial possessive My redundant."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days ago"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "About four out of ten"
+        ]
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "For this new ache, I haven't tried any treatment."
+        ],
+        "rationale": "The ibuprofen report refers to a different episode last winter."
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I had a rash as a child, but I don't know whether an antibiotic or a new soap caused it."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-12",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          {
+            "text": "toothache",
+            "start": 46
+          }
+        ],
+        "rationale": "The quote also appears elsewhere in the transcript; the explicit offset selects its unique patient occurrence."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "two days"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Seven out of ten"
+        ]
+      },
+      "MED": {
+        "state": "U",
+        "spans": [
+          "I took one tablet from a packet the dentist gave me before, but I cannot remember its name."
+        ],
+        "rationale": "Use is affirmed, but the identity of the medication is explicitly uncertain."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I am not allergic to any medicines."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-13",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          {
+            "text": "headache",
+            "start": 42
+          },
+          "Mostly at the back of my head"
+        ],
+        "rationale": "The first span is the shortest complete complaint value, with an offset selecting the initial patient occurrence of the repeated word. The additional patient span retains the reported location without inventing a noncontiguous combined quote. The unresolved onset conflict does not make the complaint uncertain."
+      },
+      "DUR": {
+        "state": "C",
+        "spans": [
+          "This headache began two days ago.",
+          "This headache began five days ago."
+        ],
+        "rationale": "The two incompatible onset reports explicitly concern the same headache; neither is retracted."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ]
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't used any treatment for it."
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "No medication allergies."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-14",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "itchy patch on my left calf"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "one week"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "mild"
+        ]
+      },
+      "MED": {
+        "state": "C",
+        "spans": [
+          "I haven't taken or applied anything for this itch at any point this week.",
+          "I used hydrocortisone on this itch every night this week."
+        ],
+        "rationale": "The blanket denial and positive treatment report cover the same itch and week without a correction."
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I have no drug allergies."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-15",
+    "fields": {
+      "CC": {
+        "state": "C",
+        "spans": [
+          "My right wrist hurts right now; my left wrist doesn't hurt.",
+          "My left wrist hurts right now; my right wrist doesn't hurt."
+        ],
+        "rationale": "Opposing current laterality reports conflict, with no explicit correction."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "this morning"
+        ],
+        "rationale": "The patient explicitly retracts last night as referring to another matter."
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "moderate"
+        ]
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't tried anything for it."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "retain-16",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "runny nose"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "six days"
+        ]
+      },
+      "SEV": {
+        "state": "C",
+        "spans": [
+          "It has been mild all day today.",
+          "It has been severe all day today."
+        ],
+        "rationale": "Both reports cover all of today; neither is retracted."
+      },
+      "MED": {
+        "state": "S",
+        "spans": [
+          "saline spray"
+        ]
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "Penicillin"
+        ],
+        "rationale": "The patient explicitly corrects the earlier aspirin entry."
+      }
+    }
+  },
+  {
+    "case_id": "retain-17",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "knee aches"
+        ],
+        "rationale": "The phrase preserves the complete reported complaint and its location; the patient-speaker context makes the initial possessive My redundant."
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "three days"
+        ]
+      },
+      "SEV": {
+        "state": "S",
+        "spans": [
+          "Mild"
+        ]
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't tried any treatment for it."
+        ]
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I don't have any."
+        ],
+        "rationale": "The immediately preceding question makes this an explicit denial of the patient's medicine allergies."
+      }
+    }
+  },
+  {
+    "case_id": "retain-18",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "Numbness in my right hand"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": [],
+        "rationale": "The patient does not answer the duration question."
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "M",
+        "spans": [],
+        "rationale": "Disclaiming ownership of another person's bottle does not establish treatment used or denied for this complaint."
+      },
+      "ALG": {
+        "state": "M",
+        "spans": [],
+        "rationale": "The allergy report concerns the patient's sister."
+      }
+    }
+  },
+  {
+    "case_id": "retain-19",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "scratchy throat"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": [],
+        "rationale": "The booking message is a clinician report; the patient's month-long dizziness is explicitly unrelated."
+      },
+      "SEV": {
+        "state": "M",
+        "spans": [],
+        "rationale": "The patient does not affirm the booking message's severity."
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "U",
+        "spans": [
+          "I can't tell you whether I'm allergic to penicillin; my family gave me different accounts."
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-20",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "dizzy"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "since this morning"
+        ],
+        "rationale": "Retain since with this morning to preserve the explicit onset-to-present temporal relation."
+      },
+      "SEV": {
+        "state": "U",
+        "spans": [
+          "I find it hard to judge. I can't put it into mild, moderate, or severe."
+        ]
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "M",
+        "spans": [],
+        "rationale": "The latex allergy is reported by another speaker about themself."
+      }
+    }
+  },
+  {
+    "case_id": "retain-21",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "persistent cough"
+        ]
+      },
+      "DUR": {
+        "state": "M",
+        "spans": [],
+        "rationale": "Persistent is a complaint qualifier, with no reported onset or duration value; the duration question is unanswered."
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't tried any treatment for the cough."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": []
+      }
+    }
+  },
+  {
+    "case_id": "retain-22",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "left ear is ringing"
+        ],
+        "rationale": "The phrase preserves the complete reported complaint and its location; the patient-speaker context makes the initial possessive My redundant."
+      },
+      "DUR": {
+        "state": "M",
+        "spans": []
+      },
+      "SEV": {
+        "state": "M",
+        "spans": [],
+        "rationale": "A request to check hearing does not provide a severity value or explicit severity uncertainty."
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "S",
+        "spans": [
+          "sulfa antibiotics"
+        ]
+      }
+    }
+  },
+  {
+    "case_id": "retain-23",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "Spasms in my lower back"
+        ]
+      },
+      "DUR": {
+        "state": "U",
+        "spans": [
+          "Maybe last Tuesday, maybe the Thursday before that; I can't remember."
+        ]
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "A",
+        "spans": [
+          "I haven't taken or used anything for them."
+        ]
+      },
+      "ALG": {
+        "state": "M",
+        "spans": [],
+        "rationale": "The allergy question is interrupted and never answered."
+      }
+    }
+  },
+  {
+    "case_id": "retain-24",
+    "fields": {
+      "CC": {
+        "state": "S",
+        "spans": [
+          "Pressure behind both eyes"
+        ]
+      },
+      "DUR": {
+        "state": "S",
+        "spans": [
+          "Four days"
+        ]
+      },
+      "SEV": {
+        "state": "M",
+        "spans": []
+      },
+      "MED": {
+        "state": "M",
+        "spans": []
+      },
+      "ALG": {
+        "state": "A",
+        "spans": [
+          "I have no medication allergies."
+        ]
+      }
+    }
+  }
+]

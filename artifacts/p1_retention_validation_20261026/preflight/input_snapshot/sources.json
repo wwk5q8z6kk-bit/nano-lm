@@ -1,0 +1,122 @@
+[
+  {
+    "case_id": "retain-01",
+    "stratum": "ordinary current-fact replies",
+    "transcript": "Doctor: What brought you in this afternoon?\nPatient: A sore throat. It has been bothering me for three days.\nDoctor: How would you describe how bad it feels?\nPatient: Moderate, especially when I swallow.\nDoctor: Have you tried anything for it?\nPatient: I've been using throat lozenges.\nDoctor: Any allergies to medicines?\nPatient: I have no medication allergies."
+  },
+  {
+    "case_id": "retain-02",
+    "stratum": "ordinary current-fact replies",
+    "transcript": "Doctor: Tell me what is bothering you.\nPatient: My left ankle is sore.\nDoctor: When did that start?\nPatient: Yesterday afternoon, after I got home.\nDoctor: How bad is the soreness, and have you tried treating it?\nPatient: It's mild. I haven't taken or applied anything for it.\nDoctor: What should I put in the medicine allergy box?\nPatient: Penicillin gives me hives."
+  },
+  {
+    "case_id": "retain-03",
+    "stratum": "ordinary current-fact replies",
+    "transcript": "Doctor: How have you been feeling?\nPatient: Nausea and bloating are the reason I came.\nDoctor: Give me a sense of the timing and intensity.\nPatient: Two days so far. I'd call it five out of ten.\nDoctor: What have you done to try to settle it?\nPatient: I tried peppermint tea.\nDoctor: Before we finish the history, are you allergic to any medicines?\nPatient: No, I'm not allergic to any medicines."
+  },
+  {
+    "case_id": "retain-04",
+    "stratum": "ordinary current-fact replies",
+    "transcript": "Doctor: What would you like us to look at today?\nPatient: This itchy rash on my forearm has been here a week.\nDoctor: Does the itching feel mild, moderate, or severe?\nPatient: Mild is the right word.\nDoctor: Anything you've put on it or taken for it?\nPatient: Nothing at all for this rash.\nDoctor: Tell me about medication allergies.\nPatient: There aren't any; I don't have medication allergies."
+  },
+  {
+    "case_id": "retain-05",
+    "stratum": "field-local uncertainty",
+    "transcript": "Doctor: What has been happening?\nPatient: I've got a headache across my forehead.\nDoctor: How long has that been going on?\nPatient: Two days, or perhaps three. I can't pin down which day it started.\nDoctor: And how bad is it?\nPatient: I honestly can't decide whether to call it mild or moderate.\nDoctor: Have you tried anything for the headache?\nPatient: Acetaminophen, one time yesterday.\nDoctor: Do you have medication allergies?\nPatient: I can't remember whether I have any."
+  },
+  {
+    "case_id": "retain-06",
+    "stratum": "field-local uncertainty",
+    "transcript": "Doctor: What is the main problem?\nPatient: I can't tell if it's an earache or pain in my jaw.\nDoctor: When did you first notice that discomfort?\nPatient: Four days ago.\nDoctor: How strong does it feel?\nPatient: Mild, but annoying.\nDoctor: Anything taken for it?\nPatient: I may have taken a tablet for it yesterday, but I can't remember whether I actually did.\nDoctor: Any allergies you want recorded?\nPatient: I'm allergic to latex."
+  },
+  {
+    "case_id": "retain-07",
+    "stratum": "field-local uncertainty",
+    "transcript": "Doctor: What's your concern today?\nPatient: A dry cough.\nDoctor: How long have you had it, and how bad is it?\nPatient: I don't know when it started. It's three out of ten for how much it bothers me.\nDoctor: Have you used any cough medicine?\nPatient: I remember getting the syrup out, but I'm not sure whether I swallowed any.\nDoctor: Do you know of any medicine allergies?\nPatient: I don't know my medicine allergy history."
+  },
+  {
+    "case_id": "retain-08",
+    "stratum": "field-local uncertainty",
+    "transcript": "Doctor: What would you like to discuss?\nPatient: Stomach cramps, starting the evening before last.\nDoctor: How would you rate them?\nPatient: Somewhere between mild and moderate; I can't choose one.\nDoctor: What have you tried for the cramps?\nPatient: I took ibuprofen and an antacid for them yesterday.\nDoctor: Any medicine or material allergies?\nPatient: I'm allergic to penicillin and latex."
+  },
+  {
+    "case_id": "retain-09",
+    "stratum": "medication/allergy scope",
+    "transcript": "Doctor: What is the new concern?\nPatient: My neck has felt stiff since I woke up this morning.\nDoctor: How uncomfortable is it?\nPatient: Only mildly uncomfortable.\nDoctor: Have you taken anything for your neck?\nPatient: No, I haven't used anything for the neck stiffness. I do take my thyroid tablet every morning.\nDoctor: So the thyroid tablet is part of your usual routine?\nPatient: Yes, it isn't something I took for my neck.\nDoctor: Do you have allergies to medicines?\nPatient: I have no allergies to medicines."
+  },
+  {
+    "case_id": "retain-10",
+    "stratum": "medication/allergy scope",
+    "transcript": "Doctor: Tell me about the problem you're here for.\nPatient: My right elbow aches. It started four days ago and feels moderate.\nDoctor: What have you taken for that ache?\nPatient: Naproxen yesterday.\nDoctor: I see a mention of nausea with codeine in the old history. What does that refer to?\nPatient: Codeine upset my stomach years ago. I'm describing a side effect, not an allergy.\nDoctor: Do you have any medication allergies?\nPatient: I don't have any medication allergies."
+  },
+  {
+    "case_id": "retain-11",
+    "stratum": "medication/allergy scope",
+    "transcript": "Doctor: What has changed recently?\nPatient: My shoulder started aching two days ago.\nDoctor: How bad is the current ache?\nPatient: About four out of ten.\nDoctor: Have you tried medicine for it?\nPatient: I took ibuprofen for a shoulder injury last winter. For this new ache, I haven't tried any treatment.\nDoctor: What about medicine allergies?\nPatient: I had a rash as a child, but I don't know whether an antibiotic or a new soap caused it."
+  },
+  {
+    "case_id": "retain-12",
+    "stratum": "medication/allergy scope",
+    "transcript": "Doctor: What's been troubling you?\nPatient: A toothache for two days.\nDoctor: How bad would you say it is?\nPatient: Seven out of ten.\nDoctor: Any tablets or other treatment for this toothache?\nPatient: I took one tablet from a packet the dentist gave me before, but I cannot remember its name.\nDoctor: Are you allergic to any medicines?\nPatient: I am not allergic to any medicines."
+  },
+  {
+    "case_id": "retain-13",
+    "stratum": "corrections and unresolved conflicts",
+    "transcript": "Doctor: What brought you here?\nPatient: A headache. This headache began two days ago.\nDoctor: Where do you feel it, and how bad is it?\nPatient: Mostly at the back of my head. It is mild.\nDoctor: Have you taken or used anything for it?\nPatient: I haven't used any treatment for it.\nDoctor: Any allergies to medicine?\nPatient: No medication allergies.\nDoctor: Before I finish this part, tell me again when this same headache began.\nPatient: This headache began five days ago."
+  },
+  {
+    "case_id": "retain-14",
+    "stratum": "corrections and unresolved conflicts",
+    "transcript": "Doctor: What's bothering you?\nPatient: An itchy patch on my left calf, for one week.\nDoctor: How much does it bother you?\nPatient: It's mild.\nDoctor: Have you treated this itch at all during this week?\nPatient: I haven't taken or applied anything for this itch at any point this week.\nDoctor: Do you have medication allergies?\nPatient: I have no drug allergies.\nDoctor: Walk me through your evening routine while you've had this patch.\nPatient: I used hydrocortisone on this itch every night this week."
+  },
+  {
+    "case_id": "retain-15",
+    "stratum": "corrections and unresolved conflicts",
+    "transcript": "Doctor: Which problem are we looking at today?\nPatient: My right wrist hurts right now; my left wrist doesn't hurt.\nDoctor: When did the wrist pain begin?\nPatient: Last night. Sorry, that was the other thing I was thinking of. The wrist pain began this morning.\nDoctor: How bad is it, and have you tried anything?\nPatient: It's moderate. I haven't tried anything for it.\nDoctor: Tell me which wrist is painful right now as I write this down.\nPatient: My left wrist hurts right now; my right wrist doesn't hurt."
+  },
+  {
+    "case_id": "retain-16",
+    "stratum": "corrections and unresolved conflicts",
+    "transcript": "Doctor: What is the reason for your visit?\nPatient: A runny nose. I've had it for six days.\nDoctor: How bad has it been today?\nPatient: It has been mild all day today.\nDoctor: What have you used for it?\nPatient: A saline spray.\nDoctor: Any medicine allergies?\nPatient: I said aspirin on the intake form, but that was a mistake. Penicillin is the medicine I'm allergic to.\nDoctor: Describe today's severity once more for the note.\nPatient: It has been severe all day today."
+  },
+  {
+    "case_id": "retain-17",
+    "stratum": "irrelevant history/other speakers",
+    "transcript": "Doctor: Tell me what brought you in.\nPatient: My knee aches, and it has been doing that for three days.\nOther: I'm here to drive her home. My own migraines are severe, so I know what it's like to wait for an appointment.\nDoctor: Let's come back to your knee. How bad is the ache?\nPatient: Mild.\nDoctor: Have you treated it at home?\nPatient: I haven't tried any treatment for it.\nDoctor: Any medicine allergies for you?\nPatient: I don't have any."
+  },
+  {
+    "case_id": "retain-18",
+    "stratum": "irrelevant history/other speakers",
+    "transcript": "Doctor: What is your main concern?\nPatient: Numbness in my right hand.\nDoctor: How long has the numbness been there?\nOther: Excuse me, the parking meter is about to run out.\nPatient: The keys are in the side pocket of my bag.\nDoctor: Is the ibuprofen bottle on the desk yours?\nPatient: No, that's my husband's bottle for his back.\nDoctor: I also see a family history note about aspirin.\nPatient: My sister is allergic to aspirin. She's the one that note is about."
+  },
+  {
+    "case_id": "retain-19",
+    "stratum": "irrelevant history/other speakers",
+    "transcript": "Doctor: The booking message says a severe sore throat for a week. Can you describe the problem in your own words?\nPatient: A scratchy throat is what I'm here about.\nDoctor: Anything else you'd like me to know before we go through it?\nPatient: The dizziness from last spring has gone away. I had that for a month, but it's unrelated to why I booked today.\nDoctor: Let's check the allergy history while the booking message loads.\nPatient: I can't tell you whether I'm allergic to penicillin; my family gave me different accounts.\nDoctor: Is this still your current address on the screen?\nPatient: Yes, apartment six, not apartment nine."
+  },
+  {
+    "case_id": "retain-20",
+    "stratum": "irrelevant history/other speakers",
+    "transcript": "Doctor: How can I help with today's concern?\nPatient: I've felt dizzy since this morning.\nDoctor: How severe is that feeling?\nPatient: I find it hard to judge. I can't put it into mild, moderate, or severe.\nOther: For my own appointments I always say severe. And I have a latex allergy, if you're asking the whole family.\nDoctor: I'm taking this patient's history first.\nPatient: My brother does like to talk. We came together on the bus.\nDoctor: We'll continue the history after I check the room number."
+  },
+  {
+    "case_id": "retain-21",
+    "stratum": "missing/compound requests",
+    "transcript": "Doctor: What problem would you like to start with?\nPatient: A persistent cough.\nDoctor: How long has it been going on, how bad is it, and what have you tried?\nPatient: I haven't tried any treatment for the cough.\nDoctor: All right, let me get those other questions down as well.\nPatient: Could you move the chair a little closer? I have trouble hearing from here.\nDoctor: Is that better?\nPatient: Yes, I can hear you now."
+  },
+  {
+    "case_id": "retain-22",
+    "stratum": "missing/compound requests",
+    "transcript": "Doctor: Tell me what's wrong, when it began, anything you've taken, and any medicine allergies.\nPatient: My left ear is ringing. I'm allergic to sulfa antibiotics.\nDoctor: How much is the ringing bothering you?\nPatient: Could we start by checking whether I can hear properly?\nDoctor: I'll write down that request. Are you comfortable in that chair?\nPatient: Yes, thank you.\nDoctor: I need to bring up the rest of the intake page.\nPatient: Take your time."
+  },
+  {
+    "case_id": "retain-23",
+    "stratum": "missing/compound requests",
+    "transcript": "Doctor: What has been happening, and when did it start?\nPatient: Spasms in my lower back. Maybe last Tuesday, maybe the Thursday before that; I can't remember.\nDoctor: How bad are they, and what have you tried for them?\nPatient: I haven't taken or used anything for them.\nDoctor: What about allergies to medicines?\nPatient: Sorry, that's my phone ringing. It's the person who's picking me up.\nDoctor: Do you need a moment to answer?\nPatient: Yes, just a moment, please."
+  },
+  {
+    "case_id": "retain-24",
+    "stratum": "missing/compound requests",
+    "transcript": "Doctor: What would you like to talk about today?\nPatient: Pressure behind both eyes.\nDoctor: How long has it lasted, how bad is it, have you taken anything for it, and do you have medication allergies?\nPatient: Four days, and I have no medication allergies.\nDoctor: You mentioned travel when you checked in.\nPatient: Yes, I returned on Sunday. Actually, I checked the ticket: I returned on Saturday.\nDoctor: Was it a long trip home?\nPatient: Most of the afternoon, with a train change in the middle."
+  }
+]

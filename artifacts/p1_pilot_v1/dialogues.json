@@ -1,0 +1,162 @@
+[
+  {
+    "example_id": "pilot-00-canonical",
+    "world_id": "pilot-world-00",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having jaw pain.\nDoctor: How long has this been going on?\nPatient: For about 11 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: I've been taking naproxen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to nickel.",
+    "target": "CC:S[jaw pain]|DUR:S[11 days]|SEV:S[moderate]|MED:S[naproxen]|ALG:S[nickel]"
+  },
+  {
+    "example_id": "pilot-00-paraphrase",
+    "world_id": "pilot-world-00",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having jaw pain.\nDoctor: For what length of time have you noticed this?\nPatient: For about 11 days now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it moderate.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking naproxen.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to nickel.",
+    "target": "CC:S[jaw pain]|DUR:S[11 days]|SEV:S[moderate]|MED:S[naproxen]|ALG:S[nickel]"
+  },
+  {
+    "example_id": "pilot-01-canonical",
+    "world_id": "pilot-world-01",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having ankle soreness.\nDoctor: How long has this been going on?\nPatient: For about 6 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking acetaminophen.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to latex.",
+    "target": "CC:S[ankle soreness]|DUR:S[6 weeks]|SEV:S[mild]|MED:S[acetaminophen]|ALG:S[latex]"
+  },
+  {
+    "example_id": "pilot-01-paraphrase",
+    "world_id": "pilot-world-01",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having ankle soreness.\nDoctor: For what length of time have you noticed this?\nPatient: For about 6 weeks now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it mild.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking acetaminophen.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to latex.",
+    "target": "CC:S[ankle soreness]|DUR:S[6 weeks]|SEV:S[mild]|MED:S[acetaminophen]|ALG:S[latex]"
+  },
+  {
+    "example_id": "pilot-02-canonical",
+    "world_id": "pilot-world-02",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having dry cough.\nDoctor: How long has this been going on?\nPatient: For about 9 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it severe.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: No allergies.",
+    "target": "CC:S[dry cough]|DUR:S[9 days]|SEV:S[severe]|MED:A[No, nothing yet.]|ALG:A[No allergies.]"
+  },
+  {
+    "example_id": "pilot-02-paraphrase",
+    "world_id": "pilot-world-02",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having dry cough.\nDoctor: For what length of time have you noticed this?\nPatient: For about 9 days now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it severe.\nDoctor: What medicine have you used for this problem?\nPatient: No, nothing yet.\nDoctor: Tell me about any substances you are allergic to.\nPatient: No allergies.",
+    "target": "CC:S[dry cough]|DUR:S[9 days]|SEV:S[severe]|MED:A[No, nothing yet.]|ALG:A[No allergies.]"
+  },
+  {
+    "example_id": "pilot-03-canonical",
+    "world_id": "pilot-world-03",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having wrist ache.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to amoxicillin.",
+    "target": "CC:S[wrist ache]|DUR:M|SEV:S[moderate]|MED:M|ALG:S[amoxicillin]"
+  },
+  {
+    "example_id": "pilot-03-paraphrase",
+    "world_id": "pilot-world-03",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having wrist ache.\nDoctor: Describe how intense this feels.\nPatient: I'd call it moderate.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to amoxicillin.",
+    "target": "CC:S[wrist ache]|DUR:M|SEV:S[moderate]|MED:M|ALG:S[amoxicillin]"
+  },
+  {
+    "example_id": "pilot-04-canonical",
+    "world_id": "pilot-world-04",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having ear pressure.\nDoctor: How long has this been going on?\nPatient: For about 3 weeks now.\nDoctor: Have you taken anything for it?\nPatient: I've been taking ibuprofen.",
+    "target": "CC:S[ear pressure]|DUR:S[3 weeks]|SEV:M|MED:S[ibuprofen]|ALG:M"
+  },
+  {
+    "example_id": "pilot-04-paraphrase",
+    "world_id": "pilot-world-04",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having ear pressure.\nDoctor: For what length of time have you noticed this?\nPatient: For about 3 weeks now.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking ibuprofen.",
+    "target": "CC:S[ear pressure]|DUR:S[3 weeks]|SEV:M|MED:S[ibuprofen]|ALG:M"
+  },
+  {
+    "example_id": "pilot-05-canonical",
+    "world_id": "pilot-world-05",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having heel pain.\nDoctor: How long has this been going on?\nPatient: I cannot remember how long it has been.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I haven't taken anything.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to adhesive.",
+    "target": "CC:S[heel pain]|DUR:U[I cannot remember how long it has been.]|SEV:S[mild]|MED:A[I haven't taken anything.]|ALG:S[adhesive]"
+  },
+  {
+    "example_id": "pilot-05-paraphrase",
+    "world_id": "pilot-world-05",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having heel pain.\nDoctor: For what length of time have you noticed this?\nPatient: I cannot remember how long it has been.\nDoctor: Describe how intense this feels.\nPatient: I'd call it mild.\nDoctor: What medicine have you used for this problem?\nPatient: I haven't taken anything.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to adhesive.",
+    "target": "CC:S[heel pain]|DUR:U[I cannot remember how long it has been.]|SEV:S[mild]|MED:A[I haven't taken anything.]|ALG:S[adhesive]"
+  },
+  {
+    "example_id": "pilot-06-canonical",
+    "world_id": "pilot-world-06",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having eye irritation.\nDoctor: How long has this been going on?\nPatient: For about 8 days now.\nDoctor: How bad would you say it is?\nPatient: I am not sure how intense it is.\nDoctor: Have you taken anything for it?\nPatient: I've been taking loratadine.\nDoctor: Any allergies I should know about?\nPatient: No allergies.",
+    "target": "CC:S[eye irritation]|DUR:S[8 days]|SEV:U[I am not sure how intense it is.]|MED:S[loratadine]|ALG:A[No allergies.]"
+  },
+  {
+    "example_id": "pilot-06-paraphrase",
+    "world_id": "pilot-world-06",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having eye irritation.\nDoctor: For what length of time have you noticed this?\nPatient: For about 8 days now.\nDoctor: Describe how intense this feels.\nPatient: I am not sure how intense it is.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking loratadine.\nDoctor: Tell me about any substances you are allergic to.\nPatient: No allergies.",
+    "target": "CC:S[eye irritation]|DUR:S[8 days]|SEV:U[I am not sure how intense it is.]|MED:S[loratadine]|ALG:A[No allergies.]"
+  },
+  {
+    "example_id": "pilot-07-canonical",
+    "world_id": "pilot-world-07",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having shoulder ache.\nDoctor: How long has this been going on?\nPatient: For about 4 days now.\nDoctor: How long has this been going on?\nPatient: For about 7 days now.\nDoctor: How bad would you say it is?\nPatient: I'd call it moderate.\nDoctor: Have you taken anything for it?\nPatient: I've been taking aspirin.\nDoctor: Any allergies I should know about?\nPatient: None whatsoever.",
+    "target": "CC:S[shoulder ache]|DUR:C[4 days;7 days]|SEV:S[moderate]|MED:S[aspirin]|ALG:A[None whatsoever.]"
+  },
+  {
+    "example_id": "pilot-07-paraphrase",
+    "world_id": "pilot-world-07",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having shoulder ache.\nDoctor: For what length of time have you noticed this?\nPatient: For about 4 days now.\nDoctor: For what length of time have you noticed this?\nPatient: For about 7 days now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it moderate.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking aspirin.\nDoctor: Tell me about any substances you are allergic to.\nPatient: None whatsoever.",
+    "target": "CC:S[shoulder ache]|DUR:C[4 days;7 days]|SEV:S[moderate]|MED:S[aspirin]|ALG:A[None whatsoever.]"
+  },
+  {
+    "example_id": "pilot-08-canonical",
+    "world_id": "pilot-world-08",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having nasal congestion.\nDoctor: How long has this been going on?\nPatient: For about 2 weeks now.\nDoctor: How bad would you say it is?\nPatient: I'd call it mild.\nDoctor: Have you taken anything for it?\nPatient: I've been taking cetirizine.\nDoctor: Have you taken anything for it?\nPatient: No, nothing yet.\nDoctor: Any allergies I should know about?\nPatient: I'm allergic to penicillin.",
+    "target": "CC:S[nasal congestion]|DUR:S[2 weeks]|SEV:S[mild]|MED:C[cetirizine;No, nothing yet.]|ALG:S[penicillin]"
+  },
+  {
+    "example_id": "pilot-08-paraphrase",
+    "world_id": "pilot-world-08",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having nasal congestion.\nDoctor: For what length of time have you noticed this?\nPatient: For about 2 weeks now.\nDoctor: Describe how intense this feels.\nPatient: I'd call it mild.\nDoctor: What medicine have you used for this problem?\nPatient: I've been taking cetirizine.\nDoctor: What medicine have you used for this problem?\nPatient: No, nothing yet.\nDoctor: Tell me about any substances you are allergic to.\nPatient: I'm allergic to penicillin.",
+    "target": "CC:S[nasal congestion]|DUR:S[2 weeks]|SEV:S[mild]|MED:C[cetirizine;No, nothing yet.]|ALG:S[penicillin]"
+  },
+  {
+    "example_id": "pilot-09-canonical",
+    "world_id": "pilot-world-09",
+    "split": "development",
+    "variant": "canonical",
+    "transcript": "Doctor: What brings you to the clinic today?\nPatient: I've been having finger soreness.\nDoctor: Have you taken anything for it?\nPatient: Nothing at all.\nDoctor: Any allergies I should know about?\nPatient: No allergies.",
+    "target": "CC:S[finger soreness]|DUR:M|SEV:M|MED:A[Nothing at all.]|ALG:A[No allergies.]"
+  },
+  {
+    "example_id": "pilot-09-paraphrase",
+    "world_id": "pilot-world-09",
+    "split": "development",
+    "variant": "paraphrase",
+    "transcript": "Doctor: Describe the problem that brought you here.\nPatient: I've been having finger soreness.\nDoctor: What medicine have you used for this problem?\nPatient: Nothing at all.\nDoctor: Tell me about any substances you are allergic to.\nPatient: No allergies.",
+    "target": "CC:S[finger soreness]|DUR:M|SEV:M|MED:A[Nothing at all.]|ALG:A[No allergies.]"
+  }
+]

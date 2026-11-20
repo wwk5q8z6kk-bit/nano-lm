@@ -1,0 +1,26 @@
+[
+  {
+    "event_id": "evt_9185df98dfa48876",
+    "type": "encounter_utterance",
+    "precision": "year",
+    "event_time": "2016"
+  },
+  {
+    "event_id": "evt_f60e9e76e9f8b72d",
+    "type": "encounter_utterance",
+    "precision": "year",
+    "event_time": "2019"
+  },
+  {
+    "event_id": "evt_fe20102e077fc8cd",
+    "type": "encounter_utterance",
+    "precision": "unknown",
+    "event_time": ""
+  },
+  {
+    "event_id": "evt_e564f83432fc4d08",
+    "type": "encounter_utterance",
+    "precision": "unknown",
+    "event_time": ""
+  }
+]

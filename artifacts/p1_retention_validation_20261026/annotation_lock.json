@@ -1,0 +1,16 @@
+{
+  "utc": "2026-10-26T13:40:48.156909+00:00",
+  "files": {
+    "sources.json": "0a8d45569f8bcec8e387c0ed7db94c6dd4f9f636b6679cf4126ab3fc1893c628",
+    "annotations_a.json": "fa4b74e0447043f673f19bbf5fbe6baea7d6a23ae46ecd5b98d593ebde318cc0",
+    "annotations_b.json": "a6a3be5c1c3ffd131d8356d1164cc3979000c4bcc967c6c6ff8a327779a49297",
+    "gold.json": "14899430ba5f2e4cf1c32cace97a4f1a82d1e2b8d050aee5d7a23ddd9f67e6c9",
+    "annotation_a_process.md": "82e397378154e93a8457e8d78514128d1face31a8e4423046d7ee8d8c3b84a32",
+    "annotation_b_process.md": "623b53bfb59864dfe1976cb3be3f47abf5fbc88c82691cba382352173f63050b",
+    "adjudication.md": "b91297440e3131d50e405165eef5b32207255ede09e88b16b31a4bc29cb082b6",
+    "annotation_rubric.md": "01d1781a620e8a1d42018715569b4eb5571b4bca04741982bcc98c7a0bc27657",
+    "authoring.md": "15879defc0cdad00135ceaaaba7982edc78c3ad75369450d4b1219f62f876523",
+    "protocol.md": "948a6d0c4eb94007321f91b7404f331f04a4143fd1503e56822b58a2a5631a42",
+    "implementation_lock.json": "11a2b93a610d857dc268626f47aecda047bfc2cccb5d6e79ae18b3be13b5c031"
+  }
+}

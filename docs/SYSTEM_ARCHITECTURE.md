@@ -66,18 +66,23 @@ P4–P9  =  broader synthesis, reasoning, planning, action, adaptation
 
 ```text
 Local Apple Silicon / CPU  →  development, smoke, analysis, preprocess, eval, small experiments
-RunPod (primary GPU)       →  training, adaptation, CUDA validation, scaling research
+Kaggle (free GPU)          →  bounded training/evaluation when its runtime fits
+RunPod                     →  exact GPU/runtime, persistence, managed inference
 Deployment target          →  chosen independently (compact/local/private remains an axis)
 ```
 
-RunPod is active established infrastructure; costly/confirmatory runs stay experiment-scoped. No PHI on cloud. See [ACTIVE_NOW.md](ACTIVE_NOW.md) and [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
+Kaggle and RunPod are established complementary infrastructure;
+costly/confirmatory runs stay experiment-scoped. No PHI on cloud. See
+[ACTIVE_NOW.md](ACTIVE_NOW.md) and [infrastructure/RUNPOD.md](infrastructure/RUNPOD.md).
 
 ## Subsystems in this repository
 
 | Component | Path | Role |
 |-----------|------|------|
 | Mechanism / compact models | `pretrain/`, `sft/`, `scribe/` | Integrated training experiments |
-| Model core (future) | `nano_ai/` | **Cross-branch — not yet integrated** — see [research/MODEL_RESEARCH_PROGRAM.md](research/MODEL_RESEARCH_PROGRAM.md) |
+| Learned Nano AI | `nano_ai/` | Integrated transcript-to-structure contract and frozen H1–H6 research lineage |
+| P1 encounter path | `nanoscribe/` | Candidate proposals, constrained evidence binding, encounter evaluation |
+| Nano Core | `nano/` | Domain-general contracts, state, evidence, retrieval, causality, and runtime |
 | Verification harness | `fabric/` | Typed claims, verifiers, abstention regression |
 | Verified document intelligence | `wedge_v1/` | Local corpus Q&A with span evidence ([subsystems/WEDGE.md](subsystems/WEDGE.md)) |
 | Experimental record | `trajectory/` | Result JSONs, prereg companions |

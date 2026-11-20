@@ -1,11 +1,11 @@
 {
   "schema": "nano-lm.docs.active_now.v1",
-  "updated": "2026-08-22",
+  "updated": "2026-11-16",
   "program_execution_status": "P1_SCRIBING_ACTIVE",
   "capability_frontier": "P1_SCRIBING",
-  "current_gate": "P1_ENCOUNTER_REPRESENTATION_AND_EVIDENCE_TRANSPORT",
+  "current_gate": "P1_H7_CONSUMED_INVALID_GOLD_INSTRUMENT",
   "evidence_core": "FROZEN_UNTOUCHED_BY_DOC_PR",
-  "training_backend": "RUNPOD",
+  "training_backend": "KAGGLE_AND_RUNPOD",
   "training_status": "ACTIVE",
   "local_zero_cost_exploratory_training": "ALLOWED",
   "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
@@ -15,16 +15,21 @@
   "phi_or_private_data": "NOT_AUTHORIZED",
   "clinical_claims": "FORBIDDEN_WITHOUT_EXTERNAL_HUMAN_VALIDATION",
   "compute_posture": {
-    "primary_gpu_training_backend": "RUNPOD",
-    "training": "ACTIVE_ON_RUNPOD",
+    "free_gpu_backend": "KAGGLE_WHEN_RUNTIME_FITS",
+    "paid_gpu_backend": "RUNPOD_FOR_EXACT_RUNTIME_PERSISTENCE_OR_MANAGED_INFERENCE",
+    "training": "ACTIVE_ON_KAGGLE_AND_RUNPOD",
     "local_compute": "APPLE_SILICON_AND_CPU_FOR_DEV_SMOKE_ANALYSIS_PREPROCESS_EVAL_AND_SMALL_EXPERIMENTS",
     "routine_runpod_training": "ALLOWED_WITHIN_ACTIVE_EXPERIMENT_BUDGET",
     "materially_costly_run": "EXPERIMENT_SCOPED_AUTHORIZATION",
     "confirmatory_evidential_run": "PREREG_PLUS_EXPERIMENT_SCOPED_AUTHORIZATION",
-    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM"
+    "data": "NO_PHI_OR_PRIVATE_OWNER_MATERIAL_IN_CURRENT_PROGRAM",
+    "selection_objective": "USEFUL_EVIDENCE_PER_DOLLAR_AND_WALL_CLOCK_HOUR",
+    "runpod_speed": "ALLOWED_WHEN_TIME_SAVED_JUSTIFIES_COST_WITHIN_ACTIVE_EXPERIMENT_BUDGET"
   },
   "bounded_work": [
-    "p1_encounter_representation_v0"
+    "p1_h7_terminal_capture_and_instrument_diagnosis",
+    "p1_preserved_compact_model_comparison",
+    "p1_transcript_to_checked_review_draft"
   ],
   "owner_gates": [
     "materially_costly_runs_outside_active_experiment_budget",
@@ -33,7 +38,24 @@
     "protected_tag_moves",
     "publication_claims"
   ],
-  "next_engineering": "ENCOUNTER_REPRESENTATION_V0",
+  "next_engineering": "IMPROVE_SEMANTIC_REPLY_COVERAGE_DENIAL_TRANSPORT_AND_VALID_FIELD_RETENTION_ON_SEPARATE_DEVELOPMENT_CASES_THEN_FRESH_BLINDED_VALIDATION",
   "docs_authority": "docs/PROJECT_AUTHORITY.md",
-  "integration_base_sha": "c4822b9980ce50adad01efbc6f61c5228794ce2f"
+  "integration_base_sha": "acc9b7e896c3b8189d29761d8401e6833c222a28",
+  "bounded_work_completed": [
+    "h7_two_seed_training_and_single_screen_execution",
+    "preserved_compact_orx_comparison",
+    "transcript_to_checked_reference_review_draft",
+    "annotation_owned_evaluator_with_independent_quota_preflight",
+    "twenty_dialogue_compact_checked_scribing_development_pilot",
+    "constrained_exact_source_compact_generation",
+    "bounded_paraphrase_context_checked_path",
+    "twenty_dialogue_structured_rerun_with_current_adapter_replay",
+    "p1_field_local_uncertainty_and_source_conflict_preservation",
+    "p1_fresh_blinded_agent_development_validation",
+    "p1_bounded_question_scope_and_partial_output_repair",
+    "p1_second_fresh_blinded_agent_validation_failed_transfer",
+    "p1_bounded_clause_retention_and_question_coverage_repair",
+    "p1_third_fresh_blinded_agent_validation_failed_transfer",
+    "p1_epistemic_info_density_prefix_kv_and_uma_alignment"
+  ]
 }

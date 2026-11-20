@@ -1,0 +1,62 @@
+{
+  "experiment_id": "nano-p1-h7-boundary-margin-screen-v1",
+  "observed_at_utc": "2026-10-22T20:53:53.177896+00:00",
+  "training_kernel": "hassaneljesr/nano-h7-train-run-d6ed212",
+  "training_version": 1,
+  "provider_status": "COMPLETE",
+  "training_completed": true,
+  "evaluation_submitted": true,
+  "decision": "REJECT",
+  "new_paid_compute_usd": 0,
+  "training_progress": {
+    "source": "downloaded provider artifacts; archive, inventory, reports and checkpoint hashes verified",
+    "completed_seeds": [
+      20260805,
+      20260806
+    ],
+    "active_seed": null,
+    "expected_epochs_per_seed": 3,
+    "expected_seeds": [
+      20260805,
+      20260806
+    ],
+    "selected_epochs": [
+      2,
+      2
+    ]
+  },
+  "ci_status": "SUCCESS",
+  "review_pr": "https://github.com/wwk5q8z6kk-bit/nano-lm/pull/117",
+  "training_capture": "training-evidence/CAPTURE_VALIDATION.json",
+  "training_elapsed_seconds": 3694.707,
+  "remaining_runtime_seconds": 10382.535,
+  "evaluation_kernel": "hassaneljesr/nano-h7-eval-run-d6ed212",
+  "evaluation_version": 2,
+  "evaluation_provider_status": "COMPLETE",
+  "evaluation_attempt_id": "abd33a51-419d-44c9-87ff-4b165acfd235",
+  "evaluation_notebook_sha256": "940a9e9356c1b05c647810b4c3f31415a3e499cdd00682036a6d4f10a6004c43",
+  "evaluation_scoring_started": true,
+  "evaluation_bootstrap_history": [
+    {
+      "version": 1,
+      "status": "PREEXECUTION_PATH_ASSERTION_FAILURE",
+      "scientific_started": false,
+      "review": "evaluation-v1-preexecution-failure/FAILURE_REVIEW.json"
+    },
+    {
+      "version": 2,
+      "status": "COMPLETE",
+      "same_reservation": true
+    }
+  ],
+  "evaluation_start_observation": "Completed terminal and single invocation markers authenticated; stored diagnostics checked without model replay.",
+  "evaluation_completed": true,
+  "scientific_validity": "INVALID_GOLD_ANNOTATIONS",
+  "evaluation_capture": "evaluation-evidence/CAPTURE_VALIDATION.json",
+  "evaluation_elapsed_seconds": 322.758,
+  "total_training_and_evaluation_runtime_seconds": 4017.465,
+  "retry_authorized": false,
+  "terminal_decision": "../../nano_h7/H7_TERMINAL_DECISION.json",
+  "ci_verified_commit": "4ad140d4760f75baaa76b3f473a85dd259e76948",
+  "ci_workflow_run": "https://github.com/wwk5q8z6kk-bit/nano-lm/actions/runs/39848361408"
+}
