@@ -43,9 +43,11 @@ from nano_ai.contract import (
     _is_field_denial,
 )
 from nanoscribe.check_note import (
-    _plain_value,
+    _forward_proxy_turns,
     _mentioned_fields,
     _outside_current_scope,
+    _plain_value,
+    _proxy_question_count,
     _reply_clauses,
     _source_reassignment,
     _turn_index,
@@ -343,21 +345,27 @@ _ELIDED_UNIT_FRACTION = rf"{_SPOKEN_FRACTION}(?=\s*(?:$|[.!?;,]|(?:ago|so far|no
 _COMPOUND_TAIL = rf"(?:,\s*(?:and\s+)?|\s+and\s+)(?:{_SIMPLE_QUANTITY}|{_ELIDED_UNIT_FRACTION})"
 _DURATION_QUANTITY = rf"{_SIMPLE_QUANTITY}(?:{_COMPOUND_TAIL})*"
 _COMPOUND_DURATION_RE = re.compile(rf"(?<!\w){_SIMPLE_QUANTITY}(?:{_COMPOUND_TAIL})+\b", re.I)
-_DURATION_BOUND_PREFIX = (
-    r"(?:(?:no\s+)?(?:more|less|fewer|greater)\s+than|at\s+(?:least|most)|up\s+to|"
-    r"within|(?:just\s+|a\s+little\s+)?(?:under|over))"
+_BOUND_PREFIX = (
+    r"(?:(?:no\s+)?(?:more|less|fewer|greater|higher|lower)\s+than|at\s+(?:least|most)|up\s+to|"
+    r"within|(?:just\s+|a\s+little\s+)?(?:under|over|above|below))"
 )
-_DURATION_BOUND_SUFFIX = r"(?:or\s+(?:more|less|fewer|longer|shorter)|at\s+(?:most|least))"
-_BOUNDED_DURATION_RE = re.compile(
-    rf"(?<!\w)(?:{_DURATION_BOUND_PREFIX}\s+{_DURATION_QUANTITY}(?:\s+{_DURATION_BOUND_SUFFIX})?"
-    rf"|{_DURATION_QUANTITY}\s+{_DURATION_BOUND_SUFFIX})\b", re.I,
-)
+_BOUND_SUFFIX = r"(?:or\s+(?:more|less|fewer|longer|shorter|higher|lower|above|below)|at\s+(?:most|least))"
+_BOUND_LEAD = rf"(?:{_BOUND_PREFIX}\s+|(?:<=|>=|[<>≤≥])\s*)"
+
+
+def _bounded_measurement(measurement: str) -> re.Pattern:
+    return re.compile(
+        rf"(?<!\w)(?:{_BOUND_LEAD}{measurement}(?:\s+{_BOUND_SUFFIX})?|{measurement}\s+{_BOUND_SUFFIX})\b", re.I,
+    )
+
+
+_BOUNDED_DURATION_RE = _bounded_measurement(_DURATION_QUANTITY)
 _QUANTITY = rf"(?P<amount>{_NUMBER_WORD})\s+(?P<unit>{_TIME_UNIT})"
 _QUANTITY_RE = re.compile(rf"(?<!\w){_QUANTITY}\b", re.I)
 _DURATION_VALUE_RE = re.compile(
     rf"(?<!\w)(?:"
-    rf"(?:(?:about|around|roughly|nearly|almost|{_DURATION_BOUND_PREFIX})\s+)?{_DURATION_QUANTITY}"
-    rf"(?:\s+{_DURATION_BOUND_SUFFIX})?(?:\s+(?:ago|so far))?"
+    rf"(?:(?:about|around|roughly|nearly|almost)\s+|{_BOUND_LEAD})?{_DURATION_QUANTITY}"
+    rf"(?:\s+{_BOUND_SUFFIX})?(?:\s+(?:ago|so far))?"
     rf"|(?:since|from)\s+[^.!?;]+"
     rf"|(?:yesterday|today|tonight|last night|this morning|this afternoon|this evening|"
     rf"(?:the )?(?:morning|afternoon|evening|night) before last|"
@@ -366,8 +374,10 @@ _DURATION_VALUE_RE = re.compile(
     rf"(?:,\s*(?:after|before|when|while)\s+[^.!?;]+)?"
     rf")\b", re.IGNORECASE,
 )
-_SCALE_VALUE = rf"(?P<score>{_DECIMAL}|zero|one|two|three|four|five|six|seven|eight|nine|ten)"
-_SCALE = rf"(?<!\w){_SCALE_VALUE}\s*(?:out of\s*(?:10|ten)|/\s*10)\b"
+_SCORE_NUMBER = rf"(?:{_DECIMAL}|zero|one|two|three|four|five|six|seven|eight|nine|ten)"
+_SCALE_DENOMINATOR = r"\s*(?:out of\s*(?:10|ten)|/\s*10)"
+_SCALE = rf"(?<!\w)(?P<score>{_SCORE_NUMBER}){_SCALE_DENOMINATOR}\b"
+_BOUNDED_SCALE_RE = _bounded_measurement(_SCORE_NUMBER + _SCALE_DENOMINATOR)
 _SCALE_RE = re.compile(_SCALE, re.I)
 _SEVERITY_CORE_RE = re.compile(
     r"\b(?:mild(?:ly)?|moderate(?:ly)?|severe(?:ly)?|slight(?:ly)?|intense|uncomfortable|"
@@ -624,9 +634,11 @@ class GroundedExtraction:
 
 
 def has_global_reassignment(source: Source) -> bool:
+    proxy_turns = _forward_proxy_turns(source)
     return any(
         _source_reassignment(turn.text) or bool(_GROUNDED_REASSIGNMENT_RE.search(turn.text))
-        for turn in source.turns
+        for index, turn in enumerate(source.turns) if index not in proxy_turns
+        and (turn.speaker is not Speaker.CLINICIAN or not _proxy_question_count(turn.text))
     )
 
 
@@ -721,7 +733,11 @@ def _routine_medication_disclaimed(source: Source, idx: int, clause: Turn, span:
                          span.text, maxsplit=1, flags=re.I)[0].strip()
     named_item = re.compile(r"(?<!\w)" + re.escape(substance) + r"(?!\w)", re.I) if substance else None
     adjacent = True
-    for turn in source.turns[idx:]:
+    proxy_turns = _forward_proxy_turns(source)
+    for index, turn in enumerate(source.turns[idx:], start=idx):
+        if index in proxy_turns:
+            adjacent = False
+            continue
         later_events = (event for part in _reply_clauses(turn) for event in _treatment_events(part))
         for later in later_events:
             if later.start < clause.end:
@@ -820,7 +836,11 @@ def _later_doubt(source: Source, idx: int, original: Turn, field: FieldName, val
         return False
     adjacent = True
     outside_scope = False
-    for turn in source.turns[idx:]:
+    proxy_turns = _forward_proxy_turns(source)
+    for index, turn in enumerate(source.turns[idx:], start=idx):
+        if index in proxy_turns:
+            adjacent = False
+            continue
         if turn.speaker is not Speaker.PATIENT:
             outside_scope = (turn.speaker is not Speaker.CLINICIAN or _outside_current_scope(turn.text)
                              or bool(_QUESTION_HAZARD_RE.search(turn.text)))
@@ -847,7 +867,10 @@ def _clause_is_retracted_in_turn(turn: Turn, clause: Turn, field: FieldName, spa
 
 
 def _later_turn_retracts_span(source: Source, turn_idx: int, field: FieldName, span_text: str) -> bool:
+    proxy_turns = _forward_proxy_turns(source)
     for idx in range(turn_idx + 1, len(source.turns)):
+        if idx in proxy_turns:
+            continue
         later = source.turns[idx]
         if later.speaker is not Speaker.PATIENT:
             if later.speaker is Speaker.UNKNOWN and not later.text.lower().startswith("other:"):
@@ -891,7 +914,7 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     if has_global_reassignment(source):
         return False
     idx = _turn_index(source, span.start, span.end)
-    if idx is None or source.turns[idx].speaker is not Speaker.PATIENT:
+    if idx is None or source.turns[idx].speaker is not Speaker.PATIENT or idx in _forward_proxy_turns(source):
         return False
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
@@ -940,8 +963,9 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
 def _contains_negation(field: FieldName, text: str) -> bool:
     # "No more than two days" asserts a duration bound. A separate "not"
     # negating the observation must still block the claim.
-    if field is FieldName.DURATION and re.search(r"\bno\s+(?:more|less|fewer|greater)\s+than\b", text, re.I):
-        text = _BOUNDED_DURATION_RE.sub("", text)
+    if field in (FieldName.DURATION, FieldName.SEVERITY) and re.search(r"\bno\s+(?:more|less|fewer|greater|higher|lower)\s+than\b", text, re.I):
+        rule = _BOUNDED_DURATION_RE if field is FieldName.DURATION else _BOUNDED_SCALE_RE
+        text = rule.sub("", text)
     return bool(_NEGATION_WORD_RE.search(text))
 
 
@@ -1270,6 +1294,8 @@ def _verify_local_span(
     idx = _turn_index(source, span.start, span.end)
     if idx is None or source.turns[idx].speaker is not Speaker.PATIENT:
         return False, "not_patient_turn"
+    if idx in _forward_proxy_turns(source):
+        return False, "forward_third_party_scope"
 
     turn = source.turns[idx]
     prev = source.turns[idx - 1] if idx > 0 else None
@@ -1289,6 +1315,8 @@ def _verify_local_span(
             if any(m.start() < start < m.end() or m.start() < end < m.end()
                    for m in _SUBSTANCE_WORD_RE.finditer(turn.text)):
                 return False, "incomplete_substance_word"
+        if field is FieldName.SEVERITY:
+            tokens += (_BOUNDED_SCALE_RE,)
         if field is FieldName.DURATION:
             tokens += (_COMPOUND_DURATION_RE, _BOUNDED_DURATION_RE,)
             # A trailing fraction can elide the time unit only in its source
@@ -1574,7 +1602,7 @@ def _local_supported_spans(source: Source, field: FieldName) -> list[CandidateSp
             if field is FieldName.SEVERITY:
                 # 1) Numeric scale ("five out of ten", "About four out of ten", "7/10")
                 for m in re.finditer(
-                    rf"(?:about\s+|around\s+|roughly\s+)?{_SCALE}",
+                    rf"(?:(?:about|around|roughly)\s+|{_BOUND_LEAD})?{_SCALE}(?:\s+{_BOUND_SUFFIX})?",
                     c_text,
                     re.IGNORECASE,
                 ):
@@ -1799,8 +1827,9 @@ def extract_field_uncertain_bundles(source: Source, field: FieldName) -> list[tu
     scalar = {FieldName.DURATION: _DURATION_VALUE_RE, FieldName.SEVERITY: _SEVERITY_CORE_RE}.get(field)
     if coexisting:
         bundles.append(coexisting)
-    for turn in source.turns:
-        if turn.speaker is not Speaker.PATIENT:
+    proxy_turns = _forward_proxy_turns(source)
+    for index, turn in enumerate(source.turns):
+        if turn.speaker is not Speaker.PATIENT or index in proxy_turns:
             continue
         if coexisting and all(turn.start <= sp.start and sp.end <= turn.end for sp in coexisting):
             whole = CandidateSpan(turn.start, turn.end, turn.text)
@@ -1854,7 +1883,7 @@ def _exact_number(text: str) -> Fraction | None:
 
 def _scalar_report(field: FieldName, clause: Turn, question: str):
     """Return comparable measurement, scale and reporting frame, only for exact reports."""
-    if _IMPRECISE_SCALAR_RE.search(clause.text):
+    if _IMPRECISE_SCALAR_RE.search(clause.text) or (field is FieldName.SEVERITY and _BOUNDED_SCALE_RE.search(clause.text)):
         return None
     if field is FieldName.DURATION:
         matches = list(_QUANTITY_RE.finditer(clause.text))
@@ -1978,8 +2007,9 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
     if field is FieldName.CHIEF_COMPLAINT:
         observations = []
         contrast_turns = []
+        proxy_turns = _forward_proxy_turns(source)
         for idx, turn in enumerate(source.turns):
-            if turn.speaker is not Speaker.PATIENT:
+            if turn.speaker is not Speaker.PATIENT or idx in proxy_turns:
                 continue
             prev = _preceding_clinician_turn(source, idx)
             if prev and (_outside_current_scope(prev.text) or _QUESTION_HAZARD_RE.search(prev.text)):

@@ -286,3 +286,26 @@ def test_preflight_never_overwrites_prior_run(tmp_path):
     with pytest.raises(FileExistsError):
         runner.main(["--data", str(data), "--output", str(output), "--preflight"])
     assert (output / "sentinel").read_text() == "preserved"
+
+
+def test_grounded_development_scoring_preserves_fractional_decimal_content(tmp_path):
+    source = "Patient: The pain is .5/10."
+    fields = {label: {"state": "M", "spans": []} for label in runner.LABELS}
+    fields["SEV"] = {"state": "S", "spans": [".5/10"]}
+    data = write_data(tmp_path, source=source, gold=[{"case_id":"toy-1", "fields":fields}])
+    _, cases, _ = runner.admit(data)
+    gold = cases[0].fields[2]
+    raw = runner.raw_fields("CC:M|DUR:M|SEV:S[.5/10]|MED:M|ALG:M", source, policy="grounded")[2]
+    assert raw["value"] == gold["value"] == ".5/10"
+    assert runner.field_score(raw, gold)["grounded_exact_correct"]
+    corrupted = {**raw, "value": "5/10"}
+    score = runner.field_score(corrupted, gold)
+    assert score["exact_evidence_aligned"]
+    assert not score["normalized_content_correct"] and not score["grounded_exact_correct"]
+
+
+def test_two_decimal_disagreement_annotations_remain_distinct():
+    source = "Patient: .5/10. Patient: 5/10."
+    annotation = {"state": "C", "spans": [{"start": 9, "text": ".5/10"},
+                                          {"start": source.rindex("5/10"), "text": "5/10"}]}
+    assert runner._field_annotation("SEV", annotation, source)["state"] == "conflicting"
