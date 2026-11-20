@@ -287,10 +287,12 @@ _SELF_CORRECTION_CLAUSE_RE = re.compile(
 # distinct from the generic correction heuristic, which can retract a whole field.
 _MEDICATION_CORRECTION_MARKER = r"(?:let me correct (?:that|myself|my answer)|correction|actually|sorry)"
 _MEDICATION_CORRECTION_RE = re.compile(rf"\b{_MEDICATION_CORRECTION_MARKER}\b", re.I)
+_FIRST_PERSON_NONUSE = (
+    r"i (?:(?:did not|didn['’]t) (?:take|use|try|apply|swallow)|"
+    r"(?:have not|haven['’]t) (?:taken|used|tried|applied|swallowed))\s+"
+)
 _CORRECTED_NONUSE_RE = re.compile(
-    rf"^{_MEDICATION_CORRECTION_MARKER}\b[\s.,:;—–-]+i "
-    r"(?:(?:did not|didn['’]t) (?:take|use|try|apply|swallow)|"
-    r"(?:have not|haven['’]t) (?:taken|used|tried|applied|swallowed))\s+", re.I,
+    rf"^{_MEDICATION_CORRECTION_MARKER}\b[\s.,:;—–-]+{_FIRST_PERSON_NONUSE}", re.I,
 )
 
 _ROUTINE_DISCLAIMED_RE = re.compile(
@@ -589,6 +591,12 @@ _MED_CLAUSE_VERB_RE = re.compile(
     re.IGNORECASE,
 )
 _TAKEN_RE = re.compile(r"\bi(?:'ve|\s+have)?\s+(?:also\s+)?taken\b", re.IGNORECASE)
+# A subsequent affirmative patient action owns its own object, including
+# emphatic and perfect forms such as "I did take" and "I have taken".
+_MEDICATION_REPLACEMENT_JOIN_RE = re.compile(
+    rf"(?:,\s*(?:(?:and|but)\s+)?|\s+(?:and|but)\s+)(?={_MED_CLAUSE_VERB_RE.pattern}|{_TAKEN_RE.pattern})",
+    re.I,
+)
 _TAKEN_NON_TREATMENT_OBJECT_RE = re.compile(
     r"^\s*(?:(?:a|an|the|my|some)\s+)?(?:fall|trip|break|walk|time off|responsibility|credit|photographs?)\b",
     re.IGNORECASE,
@@ -1193,6 +1201,9 @@ def _scheduled_treatment(text: str) -> bool:
 def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
     if _ROUTINE_DISCLAIMED_RE.search(clause.text):
         return _split_events(clause, _ROUTINE_JOIN_RE)
+    if ((_CORRECTED_NONUSE_RE.match(clause.text) or re.match(_FIRST_PERSON_NONUSE, clause.text, re.I))
+            and _MEDICATION_REPLACEMENT_JOIN_RE.search(clause.text)):
+        return _split_events(clause, _MEDICATION_REPLACEMENT_JOIN_RE)
     # In a coordinated first-person report, only the predicate is repeated.
     # Splitting at the conjunction keeps both objects tied to their own verb.
     if (_REPORTED_TREATMENT_RE.match(clause.text) or _MED_CLAUSE_VERB_RE.match(clause.text)
@@ -1265,7 +1276,7 @@ def _correction_fields(clause: str) -> set[FieldName]:
     return targets
 
 
-def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
+def _corrected_medication_objects(text: str) -> tuple[set[str] | None, str] | None:
     """Read the objects and qualifiers of a first-person negative correction."""
     predicate = _CORRECTED_NONUSE_RE.match(text)
     if not predicate:
@@ -1274,18 +1285,22 @@ def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
         # A question or tentative denial cannot definitively withdraw a
         # particular medicine or invoke the field-wide correction fallback.
         return set(), ""
-    # A new affirmative predicate is not part of the negated object list.
-    body = re.split(
-        r"(?:,\s*(?:(?:but|and)\s+)?|\s+(?:but|and)\s+)i\s+(?:took|used|tried|applied|swallowed)\b",
-        text[predicate.end():], maxsplit=1, flags=re.I,
-    )[0]
+    body = _MEDICATION_REPLACEMENT_JOIN_RE.split(text[predicate.end():], maxsplit=1)[0]
+    # Neither a reason for non-use nor emphasis distinguishes one
+    # administration from another. Keep any separately stated restriction.
+    body = re.split(r"\bbecause\b", body, maxsplit=1, flags=re.I)[0].rstrip(" .,;!")
+    body = re.sub(rf"\s+(?:at all|whatsoever)(?=$|\s+(?:{_DENIAL_INTERVAL}|for|with|without)\b)",
+                  "", body, flags=re.I)
     start = 0
     names = set()
     doses = []
+    generic = False
     while name := _substance_name_bounds(body, (start, len(body)), FieldName.MEDICATION):
         value = normalize_value(body[name[0]:name[1]])
-        if value in {"it", "that", "this", "them", "anything", "any", "any medication", "any medicine"}:
+        if value in {"it", "that", "this", "them", "any"}:
             return None
+        if value == "anything" or re.fullmatch(rf"(?:any )?{_MED_DENIAL_NOUN}", value, re.I):
+            generic = True
         names.add(value)
         if dose := _MEDICATION_DOSE_RE.search(body, start, name[0]):
             doses.append(dose[0])
@@ -1294,10 +1309,11 @@ def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
         if not join:
             break
         start += join.end()
-    # A causal explanation for non-use does not narrow which administration
-    # was denied. A purpose, dose or date does.
-    tail = re.split(r"\bbecause\b", body[start:], maxsplit=1, flags=re.I)[0]
-    qualifier = " ".join([*doses, tail]).strip(" .,;!")
+    qualifier = " ".join([*doses, body[start:]]).strip(" .,;!")
+    # A generic object retracts any medicine subject to this restriction.
+    # The empty set returned for tentative speech matches no medicine.
+    if generic:
+        return None, qualifier
     return (names, qualifier) if names else None
 
 
@@ -1329,9 +1345,11 @@ def _patient_withdrew_medication(source: Source, idx: int, event: Turn,
                     and position + 1 < len(clauses)):
                 text += " " + clauses[position + 1].text
             correction = _corrected_medication_objects(text)
-            if not correction or value not in correction[0]:
+            if not correction:
                 continue
-            qualifier = correction[1]
+            names, qualifier = correction
+            if names is not None and value not in names:
+                continue
             if qualifier and not _MED_CALENDAR_RE.fullmatch(qualifier):
                 # Only withdraw a qualified report if that qualification
                 # also names the original administration (e.g. its dose).
@@ -1355,7 +1373,7 @@ def _retracts_value(correction: str, original: str, field: FieldName, span_text:
     if not _eligible_correction(correction):
         return False
     if _corrected_medication_objects(correction):
-        # Only the exact positive object and interval can be withdrawn.
+        # The medication-specific verifier owns both named and category denials.
         return False
     targets = _correction_fields(correction)
     if targets:

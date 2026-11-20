@@ -144,3 +144,45 @@ def test_tentative_withdrawal_does_not_certify_unique_replacement():
             "I didn't take aspirin, perhaps. I took ibuprofen.")
     menu = assert_medication(text, "ibuprofen", 0, False)
     assert " UNCERTAIN[aspirin; ibuprofen]" in menu
+
+
+@pytest.mark.parametrize("emphasis", ["at all", "whatsoever"])
+def test_emphasis_does_not_limit_denial_to_a_different_administration(emphasis):
+    text = f"Patient: I took aspirin today.\nPatient: Actually, I did not take aspirin {emphasis}."
+    assert_medication(text, "aspirin", 0, False)
+
+
+@pytest.mark.parametrize("replacement", ["but I did take", "and I took", "but I have taken"])
+def test_corrected_predicate_and_affirmed_replacement_own_separate_sources(replacement):
+    text = (f"Patient: I took aspirin.\nPatient: Actually, I did not take aspirin, {replacement} "
+            "ibuprofen.")
+    assert_medication(text, "aspirin", 0, False)
+    assert_medication(text, "ibuprofen", 0, True)
+
+
+@pytest.mark.parametrize("noun", ["any drugs", "any meds", "any pills", "medication",
+                                  "any treatments", "any medicines", "anything"])
+@pytest.mark.parametrize("marker", ["Actually, ", "Let me correct myself. "])
+def test_generic_medication_correction_withdraws_prior_named_report(noun, marker):
+    text = f"Patient: I took aspirin.\nPatient: {marker}I didn't take {noun}."
+    assert_medication(text, "aspirin", 0, False)
+
+
+@pytest.mark.parametrize("restriction", ["any medication yesterday", "any pills for my knee",
+                                        "any drugs yesterday at all", "allergy medication at all"])
+def test_restricted_or_specific_denial_preserves_different_administration(restriction):
+    text = f"Patient: I took aspirin today.\nPatient: Actually, I didn't take {restriction}."
+    assert_medication(text, "aspirin", 0, True)
+
+
+def test_category_with_same_date_withdraws_only_matching_occurrence():
+    text = ("Patient: I took aspirin yesterday.\nPatient: I took aspirin today.\n"
+            "Patient: Let me correct that. I did not take any drugs today at all.")
+    assert_medication(text, "aspirin", 0, True)
+    assert_medication(text, "aspirin", 1, False)
+
+
+@pytest.mark.parametrize("day,supported", [("yesterday", True), ("today", False)])
+def test_emphasis_before_calendar_qualifier_keeps_real_restriction(day, supported):
+    text = f"Patient: I took aspirin today.\nPatient: Actually, I didn't take aspirin at all {day}."
+    assert_medication(text, "aspirin", 0, supported)
