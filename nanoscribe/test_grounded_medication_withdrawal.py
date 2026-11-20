@@ -132,3 +132,15 @@ def test_explanation_for_nonuse_preserves_correction():
             "I didn't take aspirin because I never opened the packet. I took ibuprofen.")
     assert_medication(text, "aspirin", 0, False)
     assert_medication(text, "ibuprofen", 0, True)
+
+
+def test_question_with_an_explanation_preserves_original_administration():
+    text = "Patient: I took aspirin.\nPatient: Actually, I didn't take aspirin because I felt better?"
+    assert_medication(text, "aspirin", 0, True)
+
+
+def test_tentative_withdrawal_does_not_certify_unique_replacement():
+    text = ("Patient: I took aspirin.\nPatient: Let me correct that. "
+            "I didn't take aspirin, perhaps. I took ibuprofen.")
+    menu = assert_medication(text, "ibuprofen", 0, False)
+    assert " UNCERTAIN[aspirin; ibuprofen]" in menu

@@ -1270,6 +1270,10 @@ def _corrected_medication_objects(text: str) -> tuple[set[str], str] | None:
     predicate = _CORRECTED_NONUSE_RE.match(text)
     if not predicate:
         return None
+    if _patient_question(text) or _EPISTEMIC_HEDGE_RE.search(text):
+        # A question or tentative denial cannot definitively withdraw a
+        # particular medicine or invoke the field-wide correction fallback.
+        return set(), ""
     # A new affirmative predicate is not part of the negated object list.
     body = re.split(
         r"(?:,\s*(?:(?:but|and)\s+)?|\s+(?:but|and)\s+)i\s+(?:took|used|tried|applied|swallowed)\b",
