@@ -479,6 +479,7 @@ _AMBIGUOUS_TREATMENT_RE = re.compile(r"^(?:i(?:['’]m|\s+am)\s+on|i\s+(?:take|u
 _FAMILIAR_MEDICINE_RE = re.compile(
     r"\b(?:warfarin|metformin|insulin|aspirin|ibuprofen|acetaminophen|paracetamol|"
     r"naproxen|lisinopril|levothyroxine|cetirizine|loratadine|fexofenadine|ketoprofen|zinc|"
+    r"[a-z]{2,}(?:azole|cillin|cycline|sartan|statin)|"
     r"(?:dihydro)?codeine|co[-‐‑]codamol|hydrocortisone|sodium chloride|calcium carbonate)\b", re.I,
 )
 _INDICATION_RE = re.compile(rf"\s+for\s+(?:it|them|(?:this|that|the|my|these)\s+(?:[\w-]+\s+){{0,4}}"
