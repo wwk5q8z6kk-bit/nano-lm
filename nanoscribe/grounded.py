@@ -297,7 +297,15 @@ _PLANNED_QUESTION_RE = re.compile(
 _SCHEDULE_TIME = rf"(?:{_FUTURE_TIME}|in\s+(?:\d+|one|two|three|four|five|six|seven|a|an)\s+(?:hours?|days?|weeks?|months?))"
 _PATIENT_USE_RE = re.compile(r"\bi(?:['’]m|\s+am)?\s+(?:(?:also|now|currently)\s+)*(?:taking|using|applying|take|use|apply)\b", re.I)
 _SCHEDULE_FRONT_RE = re.compile(rf"^\s*{_SCHEDULE_TIME}\s*,?\s*$", re.I)
-_SCHEDULE_END_RE = re.compile(rf"\b{_SCHEDULE_TIME}(?:\s+(?:morning|afternoon|evening|night))?\s*[.!?]?$", re.I)
+_SCHEDULE_ADVERB_RE = re.compile(
+    rf"\b{_SCHEDULE_TIME}(?:\s+(?:morning|afternoon|evening|night))?"
+    r"(?=\s*[.!?]?$|\s+(?:for|before|ahead of|in preparation for)\b)", re.I,
+)
+_SCHEDULED_PURPOSE_RE = re.compile(
+    r"\b(?:for|before|ahead of|in preparation for|because)\s+(?:(?:my|our|the|an?)\s+)?(?:[\w-]+\s+){0,4}"
+    r"(?:appointments?|procedures?|operations?|surgery|surgeries|visits?|scans?|tests?|exams?|infusions?)"
+    r"(?:\s+(?:that|which))?(?:\s+(?:is|are))?(?:\s+(?:scheduled|planned|booked|set)(?:\s+for)?)?\s*$", re.I,
+)
 _SCHEDULE_ENDPOINT_RE = re.compile(r"\b(?:until|through|till|ends?|stops?|today\s+and)\s*$", re.I)
 _EVENT_JOIN_RE = re.compile(
     r"(?:,\s*(?:(?:and|but|so|because)\s+)?|\s+(?:and|but|so|because)\s+)"
@@ -572,7 +580,7 @@ _LOCATION_ANSWER_RE = re.compile(
     r"(?:in|inside|at|on|under|near|beside|with|by|upstairs|downstairs|outside)\b", re.I,
 )
 _SUBSTANCE_ADJUNCT_RE = re.compile(
-    r"\s+(?:for|on|to|because|when|while|after|before|today|yesterday|this morning|this evening|last night)\b", re.I,
+    r"\s+(?:for|on|to|because|when|while|after|before|ahead of|in preparation for|today|yesterday|this morning|this evening|last night)\b", re.I,
 )
 _ALG_REVERSE_RE = re.compile(
     r"\s+(?:gives\s+me\b|causes\s+(?:me\s+to\s+develop\s+)?(?:hives|a\s+rash|rash|itching|swelling)\b|"
@@ -990,8 +998,11 @@ def _scheduled_treatment(text: str) -> bool:
         return False
     if _SCHEDULE_FRONT_RE.fullmatch(text[:patient_use.start()]):
         return True
-    time = _SCHEDULE_END_RE.search(text, patient_use.end())
-    return bool(time and not _SCHEDULE_ENDPOINT_RE.search(text[:time.start()]))
+    for time in _SCHEDULE_ADVERB_RE.finditer(text, patient_use.end()):
+        preceding = text[patient_use.end():time.start()]
+        if not (_SCHEDULE_ENDPOINT_RE.search(preceding) or _SCHEDULED_PURPOSE_RE.search(preceding)):
+            return True
+    return False
 
 
 def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
@@ -1326,6 +1337,33 @@ _ADDITIONAL_TREATMENT_RE = re.compile(
     r"(?:medication|medicine|drug|prescription|supplement)\s+(?:(?:named|called)\s+)?", re.I,
 )
 
+# In a first-person report, "and" can introduce another predicate with the
+# same subject. Inspect the whole conjunct before shortening it to a name:
+# "go to bed" otherwise looks like an unknown single-word medicine "go".
+_SHARED_ACTIVITY_RE = re.compile(
+    r"^\s*(?:(?:then|also|usually|sometimes|immediately|later)\s+)*"
+    r"(?:i|we|am|was|do|did|have|had|can|could|will|would|should|"
+    r"go|went|going|get|got|getting|feel|felt|feeling|become|became|"
+    r"stay|stayed|sleep|slept|rest|rested|wake|woke|walk|walked|run|ran|"
+    r"sit|sat|lie|lay|work|worked|eat|ate|drink|drank|read|write|wrote|"
+    r"watch|watched|drive|drove|exercise|exercised|return|returned|"
+    r"[a-z]+\s+(?:(?:(?-i:a)|an|the|my|our|your|his|her|their)\s+\w+|me|us|them|myself))"
+    r"(?=\s|[.,;!?]|$)", re.I,
+)
+
+# A potential verb can instead modify a treatment noun ("sleep tablets").
+# A determiner/argument or adverb between the two still identifies an action,
+# e.g. "read my tablets" and "go buy tablets".
+_MODIFIED_TREATMENT_NOUN_RE = re.compile(
+    rf"^\s*{_SUBSTANCE_WORD}\s+(?:medicines?|medications?|aids?|supplements?|remed(?:y|ies)|"
+    rf"{_MEDICATION_DOSE_FORM}|inhalers?|sprays?|creams?|gels?|syrups?|patch(?:es)?)"
+    r"(?=\s*(?:[.,;!?]|$)|\s+(?:for|at|with|before|after|each|daily|every)\b)", re.I,
+)
+
+
+def _shared_activity(text: str) -> bool:
+    return bool(_SHARED_ACTIVITY_RE.match(text) and not _MODIFIED_TREATMENT_NOUN_RE.match(text))
+
 
 def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
     # Use the same actual-use predicates as single observations. Each candidate
@@ -1349,6 +1387,8 @@ def _coordinated_medication_objects(text: str) -> tuple[tuple[int, int], ...]:
         stop = boundary.start() if boundary else end
         phrase = text[start:stop]
         value = phrase.strip()
+        if start != lead.end() and _shared_activity(value):
+            break
         label = _ADDITIONAL_TREATMENT_RE.match(value)
         name_start = start + len(phrase) - len(phrase.lstrip()) + (label.end() if label else 0)
         name = _substance_name_bounds(text, (name_start, stop), FieldName.MEDICATION)
@@ -1445,6 +1485,8 @@ def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[Candidate
     pending = []
     start = 0
     for end, following in [*boundaries, (len(event), len(event))]:
+        if start and _shared_activity(event[start:end]):
+            break
         part = re.fullmatch(rf"\s*(?:some\s+)?(?P<name>{_SUBSTANCE_WORD}(?:\s+{_SUBSTANCE_WORD})*?)(?:\s+for\s+(?P<purpose>.+?))?\s*",
                             event[start:end], re.I)
         if part:
@@ -1605,6 +1647,11 @@ def _substance_name_bounds(text: str, owned: tuple[int, int], field: FieldName) 
             trailing_dose = _MEDICATION_DOSE_RE.search(text, start, end)
             if trailing_dose:
                 end = trailing_dose.start()
+    elif field is FieldName.ALLERGY:
+        # The annotation can be attached directly to the name: "latex(hives)".
+        annotation = text.find("(", start, end)
+        if annotation >= 0:
+            end = annotation
     phrase = _OWNED_SUBSTANCE_NAME_RE.match(text, start, end)
     if not phrase:
         return None
@@ -1915,8 +1962,11 @@ def _verify_local_span(
                         return False, "taken_without_treatment_context"
             else:
                 name = _substance_name_bounds(event.text, owned, field)
-                if name and start < name[1] and name[0] < end and not (start <= name[0] and name[1] <= end):
-                    return False, "incomplete_substance_name"
+                if not (name and start <= name[0] and name[1] <= end):
+                    # Additional coordinated allergens have their own complete
+                    # names. A disjoint reaction or dose has no such source.
+                    if (start, end) not in _coexisting_substance_clause(field, event.text):
+                        return False, "incomplete_substance_name"
         if field is FieldName.SEVERITY and not _severity_belongs_to_episode(source, idx, event, span):
             return False, "severity_not_linked_to_current_episode"
         if field is FieldName.DURATION:
