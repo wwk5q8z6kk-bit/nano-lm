@@ -148,6 +148,17 @@ def test_duration_uses_the_event_the_question_dates(question, reply, value, supp
     ("I have a headache.", "When did you start the medication? How long ago?", "Three weeks ago.", "Three weeks ago", False),
     ("I have a headache.", "When was your last visit? What date?", "Last Friday.", "Last Friday", False),
     ("I have a headache.", "When did the pain start? What time?", "Yesterday.", "Yesterday", True),
+    ("I have a headache.", "When was your last appointment? How long ago was that?", "Three days ago.", "Three days ago", False),
+    ("I have a headache.", "When did you start your medication? When exactly did that happen?", "Yesterday.", "Yesterday", False),
+    ("I have a headache.", "When did the pain begin? What date was that?", "Yesterday.", "Yesterday", True),
+    ("I have a rash.", "When was your last scan? When did that rash appear?", "Last Friday.", "Last Friday", True),
+    ("I have a headache.", "When was your last appointment originally planned?", "Last Friday.", "Last Friday", False),
+    ("I have a headache.", "When was your last visit again?", "Yesterday.", "Yesterday", False),
+    ("I have a headache.", "How long did your scan typically last?", "Two hours.", "Two hours", False),
+    ("My head hurts.", "How long did your scan headache last?", "Two hours.", "Two hours", True),
+    ("I have a headache.", "How long did your procedure-induced headache last?", "Two hours.", "Two hours", True),
+    ("I have a headache.", "How long did your procedure-related paperwork take?", "Two hours.", "Two hours", False),
+    ("I have a headache.", "How long did your procedure-related neck pain last?", "Two hours.", "Two hours", True),
 ])
 def test_duration_resolves_patient_onset_and_clinician_restatements(prior, question, reply, value, supported):
     transcript = f"Patient: {prior}\nDoctor: {question}\nPatient: {reply}"

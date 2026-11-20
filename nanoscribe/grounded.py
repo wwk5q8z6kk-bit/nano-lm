@@ -1875,7 +1875,15 @@ def _timed_question_event(question: str) -> str:
         if request:
             event = re.split(r"\b(?:after|before|while|because|although|despite)\b",
                              request["event"], maxsplit=1, flags=re.I)[0].strip(" ,")
-            if event:
+            # A date restatement such as "when exactly did that happen?"
+            # retains the last named event. An explicit new subject replaces it.
+            restatement = re.fullmatch(
+                r"(?:(?:exactly|roughly|approximately)\s+)?"
+                r"(?:(?:was|were|is|did|would|could|might)\s+)?(?:it|this|that)"
+                r"(?:\s+(?:have|been|be|happen(?:ed)?|occur(?:red)?|take place|start(?:ed)?|begin|end(?:ed)?))*"
+                r"(?:\s+(?:exactly|again|then))?", event, re.I,
+            )
+            if event and not restatement:
                 return event
     return ""
 
@@ -1886,7 +1894,8 @@ _ADMINISTRATIVE_EVENT_RE = re.compile(
     r"\s*(?:(?:was|is|were|are|did)\s+(?:your|the|that|this|my)\s+"
     r"(?:(?:first|last|next|previous|most recent|scheduled|follow[- ]up)\s+)*"
     r"(?:appointments?|visits?|scans?|tests?|procedures?|prescription renewals?|refills?)\b"
-    r"(?=\s*$|[, ]+(?:for|at|on|with|in|to|when|that|which|last|take|scheduled|booked|performed|done)\b)|"
+    rf"(?!(?:[- ](?:related|associated|induced|triggered))?[- ]+(?:(?:{_BODY_REGION}|severe|mild)\s+)?"
+    rf"(?:{_SYMPTOM}|aching|stiffness|tightness|pressure|burning|throbbing)\b)|"
     r"(?:did|have|had|were|are|will)\s+you\s+(?:(?:first|last|ever|been)\s+)*"
     r"(?:(?:liv(?:e|ed|ing)|mov(?:e|ed|ing))\s+(?:here|there|(?:at|to|in|into|out of)\s+"
     r"(?:(?:the|an?|this|that|your|my|our|a new|your new)\s+)?(?:(?:new|old|current|previous|last)\s+)?"
