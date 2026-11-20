@@ -18,7 +18,7 @@ class MockModel:
 
         pos_idx = torch.arange(S_dim, device=x.device).unsqueeze(1)
         tok_idx = torch.arange(V, device=x.device).unsqueeze(0)
-        logits = (pos_idx + tok_idx).float()
+        logits = -(pos_idx - tok_idx).abs().float()
         return (logits,)
 
 def test_seq_logprob_happy_path():
@@ -32,7 +32,7 @@ def test_seq_logprob_happy_path():
     tot = 0.0
     for pos in range(3, 5):
         tok = comp_ids[pos - 3]
-        pos_logits = torch.arange(V, device=model_nano.dev).float() + (pos - 1)
+        pos_logits = -(torch.arange(V, device=model_nano.dev) - (pos - 1)).abs().float()
         lp = F.log_softmax(pos_logits, dim=-1)
         tot += lp[tok].item()
 
@@ -60,7 +60,7 @@ def test_seq_logprob_truncation():
     tot = 0.0
     for pos in range(S - 2, S):
         tok = comp_ids[pos - (S - 2)]
-        pos_logits = torch.arange(V, device=model_nano.dev).float() + (pos - 1)
+        pos_logits = -(torch.arange(V, device=model_nano.dev) - (pos - 1)).abs().float()
         lp = F.log_softmax(pos_logits, dim=-1)
         tot += lp[tok].item()
 
