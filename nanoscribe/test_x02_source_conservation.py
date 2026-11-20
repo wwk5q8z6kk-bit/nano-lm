@@ -335,3 +335,64 @@ def test_coordinated_taken_names_keep_the_exact_coexisting_treatment_evidence():
     for proposed in ("headache", "sore throat"):
         result = trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{proposed}]|ALG:M")[3]
         assert result["note_rendered_state"] == "uncertain"
+
+
+def test_symptom_duration_does_not_inherit_time_requested_for_a_treatment():
+    from nano_ai.contract import NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import build_grounded_english_menu
+
+    intro = "Doctor: What medication are you taking now?\nPatient: levothyroxine\n"
+    for question, reply, timing in (
+        ("When did you start that medication?", "on Monday", "Monday"),
+        ("When was your last dose?", "Yesterday morning.", "Yesterday"),
+        ("How long have you been taking it?", "about forty minutes", "about forty minutes"),
+        ("What date did you stop taking the tablets?", "since 10/02/2026", "since 10/02/2026"),
+        ("When did you start levothyroxine?", "I started it on Tuesday.", "Tuesday"),
+    ):
+        transcript = intro + f"Doctor: {question}\nPatient: {reply}"
+        source = transcript_source(NanoInput("drug-timing", transcript))
+        assert not any(t.startswith(":S[") for t in grounded_candidate_choices(transcript, FieldName.DURATION, set()))
+        assert not any(t.startswith(" REPORTED[") for t in build_grounded_english_menu(source, FieldName.DURATION, set()))
+        result = trace_proposal_conservation(transcript, f"CC:M|DUR:S[{timing}]|SEV:M|MED:M|ALG:M")[1]
+        assert result["binder_state"] == "uncertain"
+
+    for question, reply, timing in (
+        ("When did your headache start after you took the tablets?", "on Monday", "Monday"),
+        ("When did you start feeling dizzy on that medication?", "on Monday", "Monday"),
+        ("When did you start that medication?", "On Monday my jaw tightness returned.", "Monday"),
+        ("How long has the pressure lasted?", "about forty minutes", "about forty minutes"),
+        ("When did your symptoms start?", "since 10/02/2026", "since 10/02/2026"),
+        ("When was your last dose?", "On Monday. My headache has persisted for three days.", "three days"),
+        ("When did you take your medication?", "My jaw tightness has persisted for two days.", "two days"),
+    ):
+        transcript = intro + f"Doctor: {question}\nPatient: {reply}"
+        assert f":S[{timing}]" in grounded_candidate_choices(transcript, FieldName.DURATION, set())
+        assert trace_proposal_conservation(transcript, f"CC:M|DUR:S[{timing}]|SEV:M|MED:M|ALG:M")[1]["conserved"]
+
+
+def test_administration_adjuncts_do_not_displace_reported_medications():
+    from nano_ai.contract import NanoInput
+    from nanoscribe.check_note import transcript_source
+    from nanoscribe.grounded import build_grounded_english_menu
+
+    for adjunct in ("water", "a full glass of water", "a sip of juice", "food", "my breakfast"):
+        for medication in ("aspirin", "aspirin and ibuprofen"):
+            transcript = f"Doctor: Tell me more.\nPatient: I have taken {medication} with {adjunct} for my headache."
+            source = transcript_source(NanoInput("adjunct", transcript))
+            choices = grounded_candidate_choices(transcript, FieldName.MEDICATION, set())
+            english = build_grounded_english_menu(source, FieldName.MEDICATION, set())
+            result = trace_proposal_conservation(transcript, "CC:M|DUR:M|SEV:M|MED:S[aspirin]|ALG:M")[3]
+            if medication == "aspirin":
+                assert ":S[aspirin]" in choices and " REPORTED[aspirin]" in english
+                assert result["conserved"] and result["note_rendered_value"] == "aspirin"
+            else:
+                assert ":U[aspirin||ibuprofen]" in choices
+                assert any([s.text for s in spans] == ["aspirin", "ibuprofen"] for code, spans in english.values() if code == "U")
+            assert all(s["text"] not in adjunct for s in result["binder_spans"])
+            rejected = trace_proposal_conservation(transcript, f"CC:M|DUR:M|SEV:M|MED:S[{adjunct}]|ALG:M")[3]
+            assert not rejected["conserved"]
+
+    for coordinated in ("aspirin with ibuprofen", "aspirin with milk thistle"):
+        transcript = f"Patient: I have taken {coordinated} for my cramps."
+        assert ":U[" + coordinated.replace(" with ", "||") + "]" in grounded_candidate_choices(transcript, FieldName.MEDICATION, set())

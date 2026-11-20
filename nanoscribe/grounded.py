@@ -323,6 +323,13 @@ _TAKEN_NON_TREATMENT_OBJECT_RE = re.compile(
     r"^\s*(?:(?:a|an|the|my|some)\s+)?(?:fall|trip|break|walk|time off|responsibility|credit|photographs?)\b",
     re.IGNORECASE,
 )
+# A vehicle or meal modifies how an item was taken. Match the complete
+# accompaniment so a substance such as "milk thistle" remains an object.
+_TAKEN_ADMINISTRATION_ADJUNCT_RE = re.compile(
+    r"\s+with\s+(?:(?:a|an|the|my|some)\s+)?(?:(?:full\s+)?(?:glass|cup|sip|bottle)\s+of\s+)?"
+    r"(?:water|juice|milk|tea|coffee|food|meals?|breakfast|lunch|dinner|snacks?)"
+    r"(?=\s*(?:[,;.!?]|$)|\s+(?:for|and|plus|with)\b)", re.I,
+)
 _TREATMENT_CONTEXT_RE = re.compile(
     r"\b(?:medications?|medicines?|meds|drugs?|treatments?|tablets?|pills?|capsules?|doses?"
     r"|\d+(?:\.\d+)?\s*(?:mg|mcg|milligrams?|micrograms?)"
@@ -775,6 +782,8 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
 def _taken_indication_names(subsequent: str, offset: int = 0) -> tuple[CandidateSpan, ...]:
     """Find reported objects of 'taken' with a shared or individual indication."""
     event = re.split(r"[;.!?]|\b(?:but|because|so)\b", subsequent, maxsplit=1, flags=re.I)[0]
+    # Blanking the adjunct keeps all following names at their verbatim offsets.
+    event = _TAKEN_ADMINISTRATION_ADJUNCT_RE.sub(lambda m: " " * len(m[0]), event)
     join = re.compile(r"\s*,\s*(?:and\s+)?|\s+(?:and|plus|with)\s+", re.I)
     boundaries = [(item.start(), item.end()) for item in join.finditer(event)]
     names = []
@@ -813,17 +822,53 @@ def _medication_verb_positions(text: str, question: str) -> list[int]:
     return positions
 
 
+def _asks_treatment_time(source: Source, turn_idx: int, question: str) -> bool:
+    """Identify the event whose timing is requested, including an immediately named drug."""
+    request = re.search(
+        r"\b(?:when|how long|how many (?:minutes|hours|days|weeks|months)|(?:what|which) (?:day|date|time))\b"
+        r"(?P<event>[^?.!;]*)", question, re.I
+    )
+    if not request:
+        return False
+    # A treatment mentioned in a subordinate clause need not be the event being dated.
+    event = re.split(r"\b(?:after|before|while|because|although|despite)\b", request["event"], maxsplit=1, flags=re.I)[0]
+    if re.match(r"\s*(?:was|is|were|are)\s+(?:your|the)\s+(?:(?:first|last|next|most recent)\s+)?dose\b", event, re.I):
+        return True
+    action = re.search(
+        r"\byou\s+(?:(?:first|last|ever|been|still)\s+)*(?:start(?:ed)?|beg[iu]n|began|stop(?:ped)?|"
+        r"finish(?:ed)?|resumed?|discontinued?|take|taking|taken|use|using|used|have|receive|on)\b", event, re.I,
+    )
+    if not action:
+        return False
+    obj = event[action.end():]
+    if re.match(r"\s+(?:(?:taking|using|a|an|the|this|that|these|those|your|first|last|new|current|"
+                r"usual|prescribed|daily|regular|pain|allergy)\s+)*(?:medications?|medicines?|meds|drugs?|"
+                r"tablets?|pills?|doses?|treatments?)\b", obj, re.I):
+        return True
+    # Resolve a pronoun or a repeated name only within the immediately preceding
+    # treatment question and answer. A symptom question can use the same verbs.
+    if turn_idx >= 3:
+        prior = source.turns[turn_idx - 2]
+        if prior.speaker is Speaker.PATIENT and _question_flags(source, turn_idx - 2)[0]:
+            name = prior.text.strip(" .,!?;")
+            return bool(re.fullmatch(r"\s*(?:(?:taking|using)\s+)?(?:it|them|that|those|" + re.escape(name) + r")\s*", obj, re.I))
+    return False
+
+
 def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, duration: CandidateSpan) -> bool:
     """Assign a timestamp to the local event. Only the first answer inherits the question."""
     turn = source.turns[turn_idx]
     context = source.text[event.start:duration.start]
     looking_forward = False
-    if re.fullmatch(
-        r"(?:\s*(?:just|only|for|since|from|about|around|roughly)\b)*\s*", context, re.I
-    ):
+    timing_fragment = re.fullmatch(
+        r"(?:\s*(?:just|only|for|on|at|by|since|from|about|around|roughly)\b)*\s*", context, re.I
+    )
+    elliptical_time = False
+    if timing_fragment:
         # A bare timing fragment ("Aspirin. Just yesterday.") continues its
         # preceding report. A new sentence with its own subject starts a new report.
         following = source.text[duration.end:event.end].strip(" ,.!?;")
+        elliptical_time = bool(re.fullmatch(r"(?:ago|so far|(?:in the )?(?:morning|afternoon|evening|night))?", following, re.I))
         if not re.fullmatch(r"(?:ago|so far)?", following, re.I):
             context = following
             looking_forward = True
@@ -844,13 +889,14 @@ def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, event: Turn, d
     medication_action = re.search(
         r"\bi(?:'ve| have)?\s+(?:started|stopped|resumed|discontinued|finished)\s+(?:(?:taking|using)\s+)?(?:it|them)\b", context, re.I
     )
-    if med_question and medication_action:
+    treatment_time = inherits_question and _asks_treatment_time(source, turn_idx, question)
+    if (med_question or treatment_time) and medication_action:
         events.append((medication_action.start(), True))
     events.extend((match.start(), False) for match in _EXPLICIT_SYMPTOM_DURATION_RE.finditer(context))
     if events:
         nearest = min(events) if looking_forward else max(events)
         return nearest[1]
-    return inherits_question and (med_question or allergy_question)
+    return inherits_question and (med_question or allergy_question or (treatment_time and elliptical_time))
 
 
 def _verify_local_span(
