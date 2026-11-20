@@ -175,3 +175,24 @@ def test_grounded_conflicts_and_denials_respect_clause_scope():
         assert draft["verification"]["passed"]
         claim = next(c for c in draft["note"]["claims"] if c["field"] == field)
         assert claim["state"] == expected, (transcript, claim)
+
+
+@pytest.mark.parametrize("text", ["Last year I had no allergies.", "If I had no allergies, I would take it."])
+def test_denial_must_establish_current_absence(text):
+    draft = scribe(f"Patient: {text}", solver=compact_solver(lambda _: f"CC:M|DUR:M|SEV:M|MED:M|ALG:A[{text}]", binder="grounded"), context_policy="grounded")
+    assert draft["note"]["claims"][4]["state"] == "uncertain"
+    assert f":A[{text}]" not in grounded_candidate_choices(f"Patient: {text}", FieldName.ALLERGY, set())
+
+
+@pytest.mark.parametrize("field, slot, values, pattern", [
+    ("severity", "SEV", ("mild", "severe", "mild"), "It has been {} all day today."),
+    ("duration", "DUR", ("three days", "six days", "three days"), "This headache began {} ago."),
+])
+def test_scalar_conflict_survives_matching_first_and_last_reports(field, slot, values, pattern):
+    source = "\n".join("Patient: " + pattern.format(value) for value in values)
+    raw = "CC:M|DUR:M|SEV:M|MED:M|ALG:M".replace(f"{slot}:M", f"{slot}:S[{values[1]}]")
+    draft = scribe(source, solver=compact_solver(lambda _: raw, binder="grounded"), context_policy="grounded")
+    claim = next(c for c in draft["note"]["claims"] if c["field"] == field)
+    assert claim["state"] == "conflicting"
+    spans = {e["evidence_id"]: e["text"] for e in draft["encounter"]["evidence"]}
+    assert all(value in spans[ref] for value, ref in zip(values[:2], claim["evidence_ids"], strict=True))

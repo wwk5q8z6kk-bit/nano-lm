@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
+from itertools import combinations
 from typing import Any
 
 from nano_ai.adapters.state_span import (
@@ -248,10 +249,19 @@ _ALG_QUESTION_CUE_RE = re.compile(
     re.IGNORECASE,
 )
 _MED_CLAUSE_VERB_RE = re.compile(
-    r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using|on)|"
+    r"\b(?:i(?:'ve|\s+have)?\s+(?:been\s+)?(?:taking|using|applying)|i(?:'m|\s+am)\s+(?:taking|using)|"
     r"i\s+(?:have\s+)?(?:taken|took|used|tried|applied|rubbed|put|swallowed))\b",
     re.IGNORECASE,
 )
+_PROSPECTIVE_TREATMENT_RE = re.compile(
+    r"\b(?:could|would|will|should|might|plan to|planning to)\s+(?:take|use|try|apply)\b",
+    re.IGNORECASE,
+)
+_EVENT_JOIN_RE = re.compile(
+    r"(?:,\s*|\s+)(?:(?:and|but|so|because)\s+)(?=i\b|i'|(?:could|would|will|should|might|took|used)\b)",
+    re.IGNORECASE,
+)
+_ON_DECLARATION_RE = re.compile(r"^i(?:'m|\s+am)\s+on\b", re.IGNORECASE)
 _ALG_CLAUSE_PRED_RE = re.compile(
     r"\b(?:allergic\s+to|allerg(?:y|ies)\s+to|gives\s+me\s+(?:hives|a\s+rash|rash|itching|swelling)|"
     r"causes\s+(?:me\s+to\s+develop\s+)?(?:hives|a\s+rash|rash|itching|swelling))\b",
@@ -503,6 +513,8 @@ def is_explicit_patient_denial(source: Source, field: FieldName, span: Candidate
     if text not in {turn_clean, clause_clean, *semi_clauses}:
         return False
 
+    if _PAST_OR_HYPOTHETICAL_RE.search(clause_clean) or _THIRD_PARTY_RE.search(clause_clean):
+        return False
     if _clause_is_retracted_in_turn(turn, clause) or _later_turn_retracts_span(source, idx, text):
         return False
     return True
@@ -601,6 +613,21 @@ def _question_flags(source: Source, turn_idx: int) -> tuple[bool, bool, str]:
     return is_explicit_med_q, is_explicit_alg_q, prev_q
 
 
+def _treatment_events(clause: Turn) -> tuple[Turn, ...]:
+    """Separate coordinated events only when a prospective treatment needs disambiguation."""
+    if not _PROSPECTIVE_TREATMENT_RE.search(clause.text):
+        return (clause,)
+    start = 0
+    events = []
+    for join in _EVENT_JOIN_RE.finditer(clause.text):
+        events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
+                           clause.start + start, clause.start + join.start(), clause.text[start:join.start()]))
+        start = join.end()
+    events.append(Turn(clause.turn_id, clause.source_id, clause.speaker,
+                       clause.start + start, clause.end, clause.text[start:]))
+    return tuple(events)
+
+
 def _duration_masked_by_med_or_alg(source: Source, turn_idx: int, before_duration: str) -> bool:
     """Assign the duration to its nearest preceding event, falling back to question scope."""
     events = [(match.start(), True) for pattern in (_MED_CLAUSE_VERB_RE, _ALG_CLAUSE_PRED_RE)
@@ -641,11 +668,10 @@ def verify_grounded_span(
     if state is FieldState.SUPPORTED:
         if field is FieldName.DURATION and _duration_masked_by_med_or_alg(source, idx, clause.text[:span.start - clause.start]):
             return False, "duration_scoped_to_medication_or_allergy"
-        if field in (FieldName.MEDICATION, FieldName.ALLERGY) and re.search(
-            r"\b(?:could|would|will|should|might|plan to|planning to)\s+(?:take|use|try|apply)\b",
-            clause.text, re.IGNORECASE,
-        ):
-            return False, "prospective_treatment"
+        if field in (FieldName.MEDICATION, FieldName.ALLERGY):
+            if any(event.start < span.end and span.start < event.end and _PROSPECTIVE_TREATMENT_RE.search(event.text)
+                   for event in _treatment_events(clause)):
+                return False, "prospective_treatment"
         if not grounded_value_valid(field, span.text, clause.text):
             return False, "value_fails_field_type_guard"
         if _EPISTEMIC_HEDGE_RE.search(clause.text) or _NONUSE_ACTION_RE.search(clause.text):
@@ -845,7 +871,10 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
             continue
         is_explicit_med_q, is_explicit_alg_q, prev_q = _question_flags(source, t_idx)
 
-        for clause in _reply_clauses(turn):
+        clauses = _reply_clauses(turn)
+        if field in (FieldName.MEDICATION, FieldName.ALLERGY):
+            clauses = tuple(event for clause in clauses for event in _treatment_events(clause))
+        for clause in clauses:
             c_text = clause.text.rstrip(";").rstrip()
             c_start = clause.start
             has_med_verb = bool(_MED_CLAUSE_VERB_RE.search(c_text))
@@ -936,6 +965,11 @@ def extract_field_supported_spans(source: Source, field: FieldName) -> list[Cand
                 continue
 
             if field is FieldName.MEDICATION:
+                if _ON_DECLARATION_RE.match(c_text) and not is_explicit_med_q and not re.search(
+                    r"\b(?:for\s+(?:it|them|this|my|the)|medication|medicine|tablets?|pills?|\d+\s*(?:mg|mcg))\b",
+                    c_text, re.IGNORECASE,
+                ):
+                    continue
                 if has_alg_pred or is_explicit_alg_q:
                     continue
                 if not (has_med_verb or is_explicit_med_q or bool(_MED_QUESTION_CUE_RE.search(prev_q)) or re.search(r"\b(?:for|on)\s+(?:it|them|this|the|my)\b", c_text, re.IGNORECASE)):
@@ -1145,21 +1179,21 @@ def detect_grounded_conflicts(source: Source, field: FieldName) -> list[tuple[Ca
                         candidate = CandidateSpan(turn.start + m.start(), turn.start + m.end(), m.group(1))
                         if verify_grounded_span(source, field, FieldState.SUPPORTED, candidate)[0]:
                             by_turn.setdefault(idx, candidate)
-        if len(by_turn) >= 2:
-            t_indices = sorted(by_turn)
-            sp_first, sp_last = by_turn[t_indices[0]], by_turn[t_indices[-1]]
-            if normalize_value(sp_first.text) != normalize_value(sp_last.text):
-                # Check that they apply to the same episode (not unrelated resolved symptom)
-                t1, t2 = source.turns[t_indices[0]], source.turns[t_indices[-1]]
-                if not _PAST_OR_HYPOTHETICAL_RE.search(t1.text) and not _PAST_OR_HYPOTHETICAL_RE.search(t2.text):
-                    c1 = _enclosing_clause(t1, sp_first)
-                    c2 = _enclosing_clause(t2, sp_last)
-                    c1_full = CandidateSpan(c1.start, c1.end, source.text[c1.start : c1.end])
-                    c2_full = CandidateSpan(c2.start, c2.end, source.text[c2.start : c2.end])
-                    # When both clauses share parallel sentence framing ("This headache began X." / "It has been X all day today."), prefer complete conflicting clauses!
-                    if len(c1_full.text.split()) >= 4 and len(c2_full.text.split()) >= 4 and c1_full.text.split()[0].casefold() == c2_full.text.split()[0].casefold():
-                        pairs.append((c1_full, c2_full))
-                    pairs.append((sp_first, sp_last))
+        # Keep the earliest current observation of each value. An agreeing final
+        # turn does not retract an intervening incompatible report.
+        representatives: dict[str, tuple[Turn, CandidateSpan]] = {}
+        for idx, span in sorted(by_turn.items()):
+            turn = source.turns[idx]
+            if not _PAST_OR_HYPOTHETICAL_RE.search(turn.text):
+                representatives.setdefault(normalize_value(span.text), (turn, span))
+        for (t1, first), (t2, second) in combinations(representatives.values(), 2):
+            c1 = _enclosing_clause(t1, first)
+            c2 = _enclosing_clause(t2, second)
+            words1, words2 = c1.text.split(), c2.text.split()
+            if len(words1) >= 4 and len(words2) >= 4 and words1[0].casefold() == words2[0].casefold():
+                pairs.append((CandidateSpan(c1.start, c1.end, source.text[c1.start:c1.end]),
+                              CandidateSpan(c2.start, c2.end, source.text[c2.start:c2.end])))
+            pairs.append((first, second))
     return pairs
 
 

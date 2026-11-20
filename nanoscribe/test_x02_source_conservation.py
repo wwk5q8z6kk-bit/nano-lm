@@ -154,3 +154,29 @@ def test_context_lineage_retains_added_support():
     row = trace_proposal_conservation(source, "CC:S[Headache]|DUR:M|SEV:M|MED:M|ALG:M", context_policy="context")[0]
     assert len(row["binder_spans"]) > len(row["raw_spans"])
     assert row["conserved"]
+
+
+def test_grounded_actual_fact_and_planned_treatment_in_same_sentence():
+    examples = [
+        ("I am allergic to penicillin, so I will take aspirin.", FieldName.ALLERGY, "penicillin", "aspirin"),
+        ("I took aspirin earlier, but I will take ibuprofen later.", FieldName.MEDICATION, "aspirin", "ibuprofen"),
+        ("I will take ibuprofen later, but I took aspirin earlier.", FieldName.MEDICATION, "aspirin", "ibuprofen"),
+    ]
+    for reply, field, actual, planned in examples:
+        source = "Doctor: Tell me more.\nPatient: " + reply
+        label, ordinal = ("ALG", 4) if field == FieldName.ALLERGY else ("MED", 3)
+        template = "CC:M|DUR:M|SEV:M|MED:M|ALG:M"
+        row = trace_proposal_conservation(source, template.replace(label + ":M", f"{label}:S[{actual}]"))[ordinal]
+        assert row["note_rendered_value"] == actual
+        planned_row = trace_proposal_conservation(source, template.replace("MED:M", f"MED:S[{planned}]"))[3]
+        assert planned_row["note_rendered_state"] == "uncertain"
+        assert not any(planned in choice for choice in grounded_candidate_choices(source, FieldName.MEDICATION, set()) if choice.startswith(":S["))
+
+
+def test_ambiguous_on_requires_medication_context():
+    for reply in ("I am on my period with cramps.", "I am on edge."):
+        source = "Doctor: What brings you in?\nPatient: " + reply
+        assert any(c.startswith(":S[") for c in grounded_candidate_choices(source, FieldName.CHIEF_COMPLAINT, set()))
+        assert not any(c.startswith(":S[") for c in grounded_candidate_choices(source, FieldName.MEDICATION, set()))
+    reply = "Doctor: What medication are you taking?\nPatient: I am on cetirizine."
+    assert ":S[cetirizine]" in grounded_candidate_choices(reply, FieldName.MEDICATION, set())
