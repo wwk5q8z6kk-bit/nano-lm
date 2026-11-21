@@ -65,8 +65,34 @@ def build(arm, spec, d, device):
     elif arm == "dense1": m = EventTransformer(spec.symbols, d=d, layers=1, loops=1)          # same weights as looped, one pass
     elif arm == "looped_wide": m = EventTransformer(spec.symbols, d=96, layers=1, loops=4)    # parameters close to dense
     elif arm == "looped2x2": m = EventTransformer(spec.symbols, d=d, layers=2, loops=2)
+    elif arm.startswith("tf-"):                                                                # generic: tf-<layers>x<loops>-d<width>
+        lr_, d_ = arm[3:].split("-d"); L, R = lr_.split("x")
+        m = EventTransformer(spec.symbols, d=int(d_), layers=int(L), loops=int(R))
     else: raise SystemExit(arm)
     return m.to(device)
+
+
+def probes(model, arm, spec, device, seed):
+    """After training, no further fitting. For Transformer arms only.
+    (a) accuracy by hop count, including untrained three-step chains, at the trained number of loops and with more;
+    (b) how much the state still moves at each outer loop (relative change), on the training distribution."""
+    if not hasattr(model, "loops"): return None
+    import dataclasses
+    trained, out = model.loops, {"trained_loops": model.loops}
+    spec3 = dataclasses.replace(spec, hops=(1, 2, 3))
+    for loops in sorted({trained, trained + 1, 2 * trained}):
+        model.loops = loops; out[f"acc_loops{loops}"] = evaluate(model, arm, spec3, device, seed + 99)
+    model.loops = trained; model.eval()
+    b = collate(spec, np.random.default_rng(seed + 98), 16, device); ev = b["ev"] if "ev" in b else None
+    if ev is not None:
+        with torch.no_grad():
+            x = model.inp(torch.cat([model.op(ev[..., 0]), model.sym(ev[..., 1]), model.sym(ev[..., 2])], -1)); moves = []
+            for _ in range(2 * trained):
+                y = x
+                for blk in model.blocks: y = blk(y)
+                moves.append(round(float((y - x).norm(dim=-1).mean() / x.norm(dim=-1).mean()), 4)); x = y
+        out["relative_move_per_loop"] = moves
+    model.train(); return out
 
 
 def evaluate(model, arm, spec, device, seed, batches=8, batch=16):
@@ -116,6 +142,7 @@ if __name__ == "__main__":
             print(*log[-1], flush=True)
     res = {"curve": curve, "train_seconds": round(time.time() - t0, 1), "arm": a.arm, "lr": a.lr, "warmup": a.warmup, "seed": a.seed, "params": params, "steps": steps, "seconds": a.seconds,
            "spec": spec.__dict__, "guessers": g, "eval": evaluate(model, a.arm, spec, a.device, a.seed + 7),
-           "live_particles": getattr(model, "last_live", None), "grad_norm_median": float(np.median(gnorms)), "grad_norm_p95": float(np.percentile(gnorms, 95)), "grad_norm_max": float(np.max(gnorms)), "log": log[-5:]}
+           "live_particles": getattr(model, "last_live", None), "grad_norm_median": float(np.median(gnorms)), "grad_norm_p95": float(np.percentile(gnorms, 95)), "grad_norm_max": float(np.max(gnorms)), "log": log[-5:],
+           "probes": probes(model, a.arm, spec, a.device, a.seed)}
     print(json.dumps(res, default=str))
     if a.out: open(a.out, "w").write(json.dumps(res, default=str))
