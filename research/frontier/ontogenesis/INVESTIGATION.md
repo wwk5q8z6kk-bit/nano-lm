@@ -284,3 +284,15 @@ Fixed-address memory in the first 15 phases: acquire 69%, retain 86%, iterate 68
 - P1 held only where one-step facts were retained. Iterating a one-step read composes untrained chains exactly as well as the facts themselves are remembered; the one-pass read never composes. That is nearly true by construction.
 - **Not predicted: the fixed-address memory stopped acquiring.** New-fact accuracy fell from 69% early to 2.5% late, with 7,680 facts in 16,384 slots read 8 at a time. It did not forget so much as fill up and refuse. Retention and acquisition traded off inside one learner.
 - This benchmark uses arbitrary facts, so it shows only the storage side of the problem. Its replacement is `cab_s.py`.
+
+### Language-model store pilot: threats to validity recorded before any arm result was read (2026-11-21)
+
+Written while `lm_store.py` was still training its first arm; no arm result had been printed or read. These do not change the registered predictions S1–S4 or the 0.01 bits-per-byte threshold. They limit what either outcome can mean.
+
+1. **Same-document leakage in training.** On training text the store's counts leave out only the current position. Other occurrences of the same n-gram in the same document stay in. On held-out text the whole document is absent from the store. So during training the store looks more reliable than it will be at test time, and a jointly trained core may learn to lean on the store for within-document repetition that the store cannot supply later. This biases **against** the joint arms. If joint training fails S2, that is not yet evidence that routing fails on text; a leave-document-out store is needed first. If it passes, it passes despite this handicap.
+2. **Static, not causal.** The store is built from the whole training subset, including text that comes after a given position. That is legitimate for a fixed training-set model, in the same way that weights are a function of the whole training set. It is not an online or streaming memory and must not be described as one.
+3. **Held-out separation.** The store contains training text only. The mixing table for the post-hoc arms is fitted on training text with the core frozen, not on held-out text. No model selection uses the held-out sets. Near-duplicate documents between training and held-out sets were removed when the corpus was built (the manifest records skipped overlaps) but this was not re-audited here.
+4. **The mixture is a proper probability model.** The gate depends only on the context (order matched and context count), so the reported bits per byte are valid for the combined system.
+5. **System cost.** The store for 48M tokens is 1.02 GB against about 57 MB of model weights. Any gain is a system-level gain and must be reported with that storage.
+6. **One seed.** Differences under about 0.01 bits per byte are not evidence, as registered.
+7. **Operational.** The run shared the laptop with eleven other jobs and the machine was swapping heavily; wall-clock times from this run are not usable as efficiency measurements.
