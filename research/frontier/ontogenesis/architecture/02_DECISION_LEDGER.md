@@ -4,6 +4,12 @@
 **Existing authority:** [`research/frontier/ontogenesis/LEDGER.md`](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/research/ontogenesis-phase1/research/frontier/ontogenesis/LEDGER.md) on `research/ontogenesis-phase1`. This is a **proposed reconciled decision supplement**, not a replacement for that canonical research ledger or the original protocols. It may be integrated through review.  
 **Source hierarchy:** registered raw results and code > later reviewed corrections > original experimental reports > transcripts > hypotheses and prose blueprints > outside analogies. Repository contents read through the GitHub connection; local running jobs and unpublished worktrees were **not** directly inspected.
 
+### Addendum — new synthetic migration decision (D-023, 2026-11-21)
+
+| ID | Question | Decision | Evidence | Limitation / next gate |
+|---|---|---|---|---|
+| D-023 | How many paired anchors uniquely identify unknown representation migration? | For an **unrestricted linear** map on \(\mathbb R^d\), full-span input anchors suffice and are necessary for unique map identification | Elementary rank proof in [Proposition A.1](01_ARCHITECTURE_AND_THEOREMS.md), five-seed constructed 16D diagnostic: 4/8/12/16 anchors restored 46.8/59.8/73.4/100% top-1 agreement | No learned LM result; test structured/low-rank drift, migration writes, replay and total resources; do not elevate to general necessity for preserving selected predictions |
+
 ## A. One-page decision register
 
 | ID | Question | Decision made now | Why / alternatives | Evidence classification | State and next test |
