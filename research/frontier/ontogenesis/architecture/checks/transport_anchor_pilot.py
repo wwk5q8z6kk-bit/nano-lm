@@ -5,6 +5,7 @@ Output: results/transport_anchor_pilot_v0.json
 """
 from __future__ import annotations
 import json
+import argparse
 from pathlib import Path
 import numpy as np
 
@@ -55,9 +56,12 @@ def main():
         "rows": rows,
         "summary": summary,
     }
-    out = Path(__file__).resolve().parents[1] / "results" / "transport_anchor_pilot_v0.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(result, indent=2))
+    parser = argparse.ArgumentParser(description="Synthetic rank diagnostic; read-only by default")
+    parser.add_argument("--out", default=None, help="Optional NEW JSON result; existing output is preserved")
+    args = parser.parse_args()
+    if args.out:
+        with Path(args.out).open("x", encoding="utf-8") as f:
+            json.dump(result, f, indent=2)
     print(json.dumps(summary, indent=2))
 
 
