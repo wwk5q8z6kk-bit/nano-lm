@@ -146,3 +146,36 @@ Common weaknesses: single seeds in several places; one hyperparameter setting pe
 - Savings for the memory are uninformative: both hit the step cap.
 
 Lesson for method: a probe needs its own control before its result is read.
+
+## Question 4. Is forgetting caused by distributed representations, or by how we optimise them?
+
+**Why it matters.** If forgetting is built into shared parameters, the answer is a different substrate. If it comes from the update rule, the answer is a different way of learning. The remedies differ completely.
+
+**What one gradient step does to old knowledge.** [Derived, first order] A step on a new task changes the parameters by −η∇L_new. The old task's loss changes by about −η ∇L_old·∇L_new. So:
+- if the two gradients point the same way, learning the new task also improves the old one: transfer;
+- if they oppose, it damages the old one: interference;
+- if they are orthogonal, neither.
+
+**Transfer and interference are one quantity with opposite signs.** Any design that removes interference by keeping tasks in separate parameters also removes transfer between them. This is why the frozen-address memory retains more and composes nothing, and it is a trade-off, not an engineering defect. [Derived; the trade-off is discussed in published continual-learning work]
+
+**Forgetting is not forced by distributed representations.** The same network, trained on all tasks at once, holds all of them. The capacity is there. What the sequential learner lacks is information about what the old tasks still require. [Derived] Ordinary large-scale training avoids forgetting by showing everything repeatedly in shuffled order, which is replay at full scale.
+
+**The exact answer is known, and it is expensive.** Exact Bayesian updating never forgets: yesterday's posterior is today's prior, and it records which parameter directions past data has pinned down. [Established] Gradient descent keeps a single point and throws that record away. Forgetting is the cost of that approximation. Published methods approximate the record (importance weights per parameter, variational posteriors) and work partially. A published result states that optimal continual learning in general requires perfect memory and is computationally hard. [Published, from memory, unchecked] So there is no free solution in the worst case; any practical one must exploit structure in what is being learned.
+
+**Alternatives to updating shared numbers.** [Published, from memory]
+- Local learning rules (Hebbian, predictive coding, equilibrium propagation, forward-only methods): updates touch fewer parameters, which lowers interference and transfer together.
+- Structural growth: add capacity for each new task; no forgetting by construction, no improvement of old skills, growth without bound.
+- Learning operations instead of numbers: systems that add reusable programs to a library do not overwrite earlier entries. Knowledge of that kind is cumulative by construction; the cost moves to searching for programs.
+
+**Assumptions rarely questioned.**
+1. One point estimate of the weights, with no record of how firmly each is determined.
+2. Shuffled, repeated data as the normal condition for learning.
+3. Fixed capacity.
+4. The same update rule for facts and for skills.
+5. The same learning rate for a parameter whatever past data depends on it.
+
+**A reading of our own result.** [Hypothesis] Weight decay kept the plain network able to learn by continually shrinking weights, which is also a mechanism of erasure. If so, the plasticity it bought and the retention it lost are the same effect. Untested: we never ran normalisation without decay.
+
+**Evidence that would distinguish the explanations.** Measure the gradient inner product between old and new tasks for each learner. Run normalisation and weight decay separately. Add a learner that projects each update to be orthogonal to stored old gradients. If forgetting tracks the inner product across all of them, the first-order account is sufficient.
+
+**Not understood.** Whether a representation can be learned in which related tasks share directions and unrelated tasks do not, so that transfer is kept and interference removed. That is question 5.
