@@ -112,3 +112,31 @@ Old regular facts on entities with no irregular fact: 100%, 99.9%, 100%. On enti
 2. Referee and prior-art search on T4 and on conclusion 1.
 3. A world whose rules change for some types part-way, to separate "exception" from "rule changed".
 4. Order-sensitivity measurement (T1) for every learner we have.
+
+---
+
+## 8. Referee corrections (2026-11-21). These override the text above.
+
+The referee read the note, the three scripts and all result files, and replayed the world's random stream. Literature was found by search; titles are leads, not verified readings.
+
+**Conclusion 1 is not supported as written.**
+- **The loss of old regular facts tracks corrections, not exceptions.** It is flat across exception rates (92.1%, 92.9%, 90.9% at 10%, 30%, 60%) while corrections were a constant 16 per phase. At 60% exceptions almost every entity carries an irregular fact, yet retention is still 91%. The referee's fit attributes about 0.31 loss to corrected entities and about 0.02 to exception-only ones (nine points; the first is effectively an intercept).
+- **A simpler mechanism fits.** A correction to an old entity trains its address on that one fact for 200 Adam steps with none of the entity's other facts in the batch. With Adam the address can move far, breaking the entity's other answers directly. That is ordinary single-fact fine-tuning interference and possibly an optimiser artefact. Decoder drift is not needed, and nothing in the code measured address displacement or decoder drift. **T4's formula is unsupported.**
+- **The intervention did not discriminate.** With irregular facts withheld, every entity is a clean entity that is never touched again, and clean entities were already at 99.9%. The oracle arm also removed four things at once.
+- **The ten-point inference gain is a different effect.** The deficit exists immediately after each phase and survives full replay, so it is not forgetting. It is label-noise removal with an oracle: fitting an address to an arbitrary value corrupts type identification. Published as low-rank-plus-sparse and noise-robust training.
+- **The "no irregular content, no forgetting" control was confounded**: it set exceptions and corrections to zero together.
+- The per-seed figures in section 5.2 came from an inline script that was not saved; the routing "mixed" arm reproduces the pattern on other seeds.
+- R3 was uninformative rather than failed: with nothing flagged, the arm is identical to the baseline by construction.
+
+**Conclusion 2 does not follow.** The additive learner does put exceptions in its model (33–40% model-alone accuracy on them against 3% chance), is not order-free (addresses are solved against the current decoder, with sampling), and its model-alone retention (89.3%) is below the gradient learner's (93.5%). Its real difference is that it re-solves a corrected entity's address from all that entity's facts jointly, with ridge regularisation. There is also a latent bookkeeping bug if a new relation is added to an entity already in the statistics; not triggered in this world.
+
+**Theory.**
+- T1 holds in one direction only and needs exact commutation, acquisition at every reachable state, and no conflicting keys. Corrections are last-writer-wins and do not commute, so T1 does not apply to our own world. An append-only log never forgets and is order-dependent, so "the same as" is false.
+- T2 is a heuristic use of the theorem (it bounds real dimension, needs regularity conditions, and concerns sufficiency for a parameter, not retention of facts). **It is already published as a continual-learning limit** (a 2024 paper using the same theorem; a 2020 result that optimal continual learning needs perfect memory).
+- T3 is published in its general form (description length of models; continual learning as compression; prequential coding).
+
+**Prior art for the main idea.** Keeping unpredictable content out of the slow shared model is published (2023 and 2024 consolidation models; 2022 sparse over-parameterisation for label noise; 2021 noisy-stream replay; example-forgetting studies). The correction mechanism and the store-plus-router remedy are published in model editing (2022 onward), including the open problem of deciding scope. The per-entity statement is at most a small increment.
+
+**What survives.** In this bilinear model under Adam, old regular facts are lost almost only on entities that later received an irregular write, and withholding those writes removes the loss. Separately, keeping arbitrary values out of address fitting raises inference to the ceiling. Neither is new.
+
+**Controls requested by the referee, running:** exceptions only (`--eps 0.1 --fix 0`) and corrections only (`--eps 0 --fix 16`). Results will be appended below.
