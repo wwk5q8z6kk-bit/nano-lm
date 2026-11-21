@@ -143,3 +143,39 @@ N5 (state-conditioned block) is not scheduled. By D3(a) it adds no function clas
 2. Agree that outcomes are analysed as jump probability and jump time, not mean accuracy.
 3. Agree a reduced task for the 20-seed factorial, fixed before running.
 4. Agree that N5 stays unscheduled unless stage 3 calls for it.
+
+---
+
+## 10. Referee corrections (2026-11-21). These override the text above.
+
+An independent referee checked the note against the code, the result files and the literature. Literature items were found by search; most were read as abstracts or snippets only, none in full.
+
+**Errors in the derivations.**
+- **D2 is wrong as stated.** The interaction measure is positive only when the inner depth is enough for one step but not for the whole chain. On our own task one layer suffices for a step, so by expressivity the measure is not positive. "A shallow block fails for any number of passes" was an assumption about the task, not a consequence. Also, k steps do not need k passes: depth of order log k suffices in published constructions (conditional on a conjecture, and for size-bounded models).
+- **D3(a) is overstated.** "A state-conditioned block adds no function class" holds only if the block is already expressive enough, which is empty at fixed size. Published work states multiplicative interactions strictly enlarge what a fixed-size layer represents. So D3(a) does **not** justify leaving the state-conditioned block unscheduled; the remaining reason is only that no observation of ours points at it.
+- **D3(b) is overstated.** A store is more state. The real difference is that state grows. Other positions in a Transformer are already a content-addressed store read by attention.
+- **D4 and D5 were mislabelled Established.** One pass is a parallel computation, so the right correspondence is circuit depth, and only as an upper bound. "Logical depth" is a property of strings and was used as a loose analogy. "Reuse helps by at most the repetition factor" is a hypothesis.
+- **The three-way split in D1 cannot be tested with our harness**, which draws fresh data each step, so "fewer examples" and "easier optimisation" are the same number. Separating them needs fixed finite training sets.
+- **N3:** the two residual forms are not usefully "the same family", and the convex form does not bound the state because our block is an unbounded residual map.
+- **Energy test:** symmetry of the Jacobian must hold on an open set, not along sampled trajectories. A non-symmetric Jacobian does not rule out a decreasing Lyapunov function. With a causal mask the cross-position Jacobian is triangular, so the ratio is non-zero by construction. **The DEMOS remark was wrong**: its conservative term is an antisymmetric map, a rotation, which is the opposite of a gradient field, so it is not evidence about imposing an energy.
+- **N4:** PonderNet's objective is an expected loss plus a divergence from a geometric prior, not "task loss plus λ·E[T]"; that form is ACT's.
+- **N2:** input re-injection is reported as helpful for running beyond trained iterations in some settings, not as "necessary".
+
+**Evidence statements.**
+- **"5 of 7 against 0 of 7" must not be used.** It pooled two budgets and an interim look at a registered run, and left out tied arms that failed. Registered result at 13,000 steps: tied arms 4 of 9 in total, dense 0 of 3. The follow-up is reported separately when complete.
+- "Every curve is flat then jumps" is overstated: several runs show a fast rise with a slow tail at 1,000-step resolution.
+- The seed 21–25 results and the acquisition smoke test are not in the repository's result files; they are in the handoff folder and the session record only. Until copied in, they are unverifiable from the repository.
+
+**The bridge hypothesis (section 4) is largely published.**
+- Structural half: a 2024 paper on grokked implicit reasoning describes the bridge entity, attributes failure to the non-recurrent design forbidding sharing across layers, and reports that a parameter-sharing variant helps. A 2026 mechanistic study of weight-tied Transformers reports a small looped model following 15 hops where a much larger untied one of equal depth stops at three, on all seeds, with one hop decoded per iteration.
+- Dynamical half: a 2025 paper on in-context two-hop reasoning reports guessing followed by an abrupt transition to a bridge-then-target mechanism, with a three-parameter model of the dynamics. Another attributes multi-step plateaus to small softmax gradients; this is a rival explanation the note omitted.
+- **Not found** (which is not the same as new): how tying changes the distribution of jump times across seeds.
+- **Internal errors in H-bridge.** The first circuit is supervised directly by one-step queries, so "both factors small" is wrong. The stated escape time is only logarithmically sensitive to initial alignment and would give clustered, not heavy-tailed, times. Prediction row 1 is ill-posed: a query position cannot see whether a hop follows, so it is always trained to output the one-step answer and the bridge is present there in every run, including failures.
+
+**Experiment design.**
+- Stage 1 cannot use "existing checkpoints": none were saved. The copied-initialisation control is not decisive in either direction. Replace with: untie a looped model at one-step mastery (control: untie at step 0), causal patching instead of linear probes, and a per-arm learning-rate sweep on separate seeds.
+- Tying is confounded with the optimiser: tied weights receive a summed gradient, and successful runs had median gradient norm above the clipping threshold while failures sat below it.
+- The stage 2 gate (interaction on log-hazard) is undefined when a cell has no events and rested on D2. Gate instead on tied against untied at matched depth and at matched parameters.
+- Not cited and relevant: a 2025 hierarchical model with nested recurrence, and a later critique that its hierarchy adds little.
+
+**Standing after review.** The architecture family is published. The explanation of the jump is largely published. What remains possibly open is narrow: jump-time distributions under tying for in-context lookup, and why our tied runs fail on some seeds when published work reports success on all.

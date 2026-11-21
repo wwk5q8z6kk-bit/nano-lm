@@ -143,3 +143,47 @@ Scored on importance, impact, feasibility, and information per unit of compute.
 ## 7. What starts without further approval
 
 Theory and laptop-only work, within existing authorisation: the hand construction for Direction 2; the reduced fast task; the traffic measurement once the machine is idle. No paid compute.
+
+---
+
+## 8. Critic's corrections and revised ranking (2026-11-21). These override the text above.
+
+A prior-art critic reviewed this note. Literature was found by search and read mostly as abstracts or snippets.
+
+**Sections 1–2.**
+- "2–4 bits per parameter" is supported by two published measurements (about 2, and about 3.6), both on synthetic data, so they are capacity ceilings.
+- "A system that knows what a large model knows cannot be small" is overstated: the bound is on the incompressible content K, which nobody has estimated for a real model. Correct form: total size cannot fall below K.
+- "Every parameter is used on every token" is false for embedding rows, and under batching each weight is used many times per load.
+- The log-k depth bound is conditional on a conjecture, applies to size-bounded models, and has nothing to do with tying. The one-layer bound is a size bound. Written intermediate tokens trade depth for steps and must be counted.
+- The energy ratio should read: a main-memory read costs roughly 170 times a 32-bit floating-point multiply and thousands of times an integer add (2014 figures at 45 nm, from the critic's recall).
+- **"Locality" and "reuse" are not new measures.** They are the active-parameter fraction (or working set) and the arithmetic intensity of the roofline model. Use those names.
+
+**Direction 1** is more published than stated: abrupt in-context two-hop learning with a bridge mechanism and a reduced dynamical model (2025); tied beating untied at equal depth on pointer following on all seeds (2026); soft tying and tie-then-untie as methods (1992, 2021, 2025). Not found: jump-time distributions across seeds, tied against untied. My remark that the tied and copied-untied updates differ "because of Adam" was wrong as implied: they differ under plain gradient descent too.
+
+**Direction 2.** "Machine learning almost never measures the gap" is overstated; teacher–student work reports overheads of about 4, not orders of magnitude, so the hypothesis as worded is probably false for simple settings. A log-depth construction for k-step lookup is published. Prediction (b) discriminates nothing. What survives: basin radius and overhead compared across tied, untied and soft-tied models, in bits rather than parameters, with embeddings excluded. The hand construction is real work, not "almost free".
+
+**Direction 3.** The mechanism, including frozen keys resisting forgetting, is published several times over. **The critic found no clean solution to learned addressing without interference**, and found published evidence that learned identifiers forget under continual indexing. "A keyed write has zero interference" fails as soon as keys are shared so that the store can generalise; that is the whole problem.
+
+**Direction 4.** Published as a design argument for on-device models, with a small latency cost rather than a gain. My measurement as designed would show nothing: at our sizes everything fits in cache, at real sizes nothing does, and framework overhead dominates at batch one.
+
+**Direction 5.** The precondition (a fast exact scorer) stands. "Evolution yes, reinforcement learning no" does not: reinforcement learning has found real algorithms where scoring was fast and exact. Sequential stopping gives fewer expected runs, but only keeps the error rate if thresholds are calibrated by simulation.
+
+**Statistics.** The 66-event figure is right. But hazard ratios break down when an arm has no events, and never-jumping runs make this a cure-fraction problem. Use the fraction jumped by a fixed budget with an exact test, or a cure model. My jump definition looked into the future; use a fixed confirmation window and treat jumps inside the last window as censored. Twenty per cell detects a ratio of about 2.4 if nothing is censored, not "near 3".
+
+**Directions I missed, which the critic rates above several of mine.**
+- **Supervising intermediate steps**: per-pass auxiliary losses on the bridge, or distilling from a constructed solution. Tests directly whether the jump is a credit-assignment problem.
+- **Written scratchpad against latent loop at matched compute.** The standard way to buy depth; any small-core claim needs it as a baseline.
+- **Curriculum over hop count, or a variable number of passes in training.** Reported as what made a published loop robust across seeds.
+
+### Revised ranking
+
+| Rank | Direction | Reason |
+|---|---|---|
+| 1 | Learned addressing without interference (the open core of Direction 3) | The only item the literature search left open and important. Our acquisition benchmark already measures it. |
+| 2 | Why our tied runs fail on some seeds when published work reports all seeds succeeding | Cheap, and it decides whether our harness is sound: per-arm learning rate, clipping, hop-count curriculum, per-pass supervision. A replication with diagnosis, not a discovery. |
+| 3 | Jump-time distributions, tied against untied against soft-tied | The unpublished sliver of Direction 1; needs the fixed statistics and a fast task. |
+| 4 | Basin radius and overhead across architectures (Direction 2, redefined) | Possibly new, narrow, and needs the hand construction first. |
+| 5 | Scratchpad baseline at matched compute | Not a discovery; a control every later claim needs. |
+| — | Traffic measurement; automated discovery | Dropped as designed. The first is published and my design was void; the second lacks its precondition. |
+
+**Assessment of the line as a whole.** Two notes, two reviews: the architecture family, the bridge mechanism, the tied-beats-untied result, the organisation measures and the hardware argument are all published. The composition toy is now a replication exercise. The programme's distinctive open problem is the one from the cumulative-learning side: a store that generalises through its addresses without overwriting what it holds.
