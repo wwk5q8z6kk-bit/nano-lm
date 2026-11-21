@@ -209,3 +209,60 @@ One-step accuracy was 98–100% in every run.
 **Status change.** "Looping learns two-step chains that dense does not" is downgraded from pilot observation to: mixed under pre-registration, two of three seeds. It must not be cited as a demonstrated advantage.
 
 **What would settle it.** Longer budget for all arms (does dense jump later, or never), ten or more seeds to estimate jump probability and timing per arm, a learning-rate sweep for the wide arm, and the narrow dense control. These are cheap on the laptop.
+
+### Question 3: result of the pre-registered follow-up, `PROTOCOL-LOOP2.md` (2026-11-21)
+
+26,000 steps, five new seeds, raw files in `results/loop2/`. [Observed]
+
+| Seed | Dense two-step | Looped two-step | Dense first at 90% | Looped first at 90% |
+|---|---|---|---|---|
+| 21 | 19.7% | 98.8% | never | 21,000 |
+| 22 | 23.1% | 98.8% | never | 6,000 |
+| 23 | 21.7% | 99.2% | never | 23,000 |
+| 24 | 22.0% | 22.3% | never | never |
+| 25 | 90.1% | 22.9% | 25,000 | never |
+
+Looped learned in 3 of 5, dense in 1 of 5. **Verdict by the registered rules: mixed.** "More likely" needed looped in at least 4; "only slower" needed dense in at least 3; "no difference" needed counts within 1.
+
+- **Dense does make the jump.** Seed 25 jumped at step 25,000. "Dense cannot learn two-step chains" is refuted at this budget; "dense is later or less likely" survives as a possibility.
+- Across both registered tests: looped 5 of 8, dense 1 of 8, at two different budgets. That is not a pooled estimate and no test is attached to it.
+- Published work reports weight-tied models succeeding on all seeds on related tasks (referee's search, section 10 of the nested note). Ours fail on 3 of 8. The difference is unexplained and points at our optimiser settings before it points at anything about tying.
+
+## Question 6. Does our acquisition benchmark measure cumulative learning?
+
+**Answer: no.** [Derived] `cab.py` uses arbitrary facts. A plain lookup table scores 100% on acquisition, retention and correction, and 100% on composition by iterating its lookups. So the benchmark cannot tell learning from storage, and my prediction P3 for it ("no learner gets all four above 80%") is false for a learner I did not include.
+
+**A definition that excludes the lookup table.** [Proposed] A learner is cumulative if, as the stream grows: (1) what it held stays correct; (2) new things get easier because of old things (forward transfer); (3) cost per new item stays bounded. A lookup table has 1 and 3. A network trained by gradient may have 2 and loses 1. Property 2 can only be measured in a world with structure to discover.
+
+**A candidate principle for having all three.** [Derived; components published, see below] Interference is the price of sharing. With a linear read, writing one fact changes the answer for another in proportion to the overlap of their addresses. If addresses are fixed, sequential least squares already gives exact, order-independent, non-forgetting writes. The unsolved part is changing addresses. That is cheap and exact when:
+- every item has its own address, so changing one address touches one item;
+- everything shared is a **sum** of per-item statistics, so an item's contribution can be subtracted and re-added exactly;
+- the raw facts sit in an exact store, which is authoritative for anything seen.
+
+Gradient steps are neither additive nor reversible. Sums of statistics are both.
+
+**Test.** `cab_s.py`: 16 hidden types, 8 relations, 32 values, 10% exceptions; 40 phases of 64 new entities with 3 of 8 relations shown; 16 corrections per phase. Predictions P1–P4 were committed (`cdfae59`) before any run. Hyperparameters were tuned on seed 4000 only; results below are seeds 4001–4003, last ten phases. Raw files: `results/cab_s/`. [Observed]
+
+| Learner | Infer, new entities | Infer, old entities | Retain (model alone) | Retain (with store) | Correct | Seconds |
+|---|---|---|---|---|---|---|
+| Lookup table | 13.5% | 13.5% | 13.1% | 100% | 100% | 0.4 |
+| Gradient, current phase only | 79.4% | 69.5% | 93.5% | 93.5% | 100% | 86 |
+| Gradient, replay of everything seen (lr 0.003) | 78.2% | 71.7% | 99.9% | 99.9% | 60.4% | 96 |
+| Gradient, replay of everything seen (lr 0.01) | 76.4% | 70.3% | 100% | 100% | 97.5% | 92 |
+| Additive statistics with exact store | 86.7% | 82.8% | 89.4% | 100% | 100% | 5.8 |
+
+Chance is 3.1%; the ceiling for inference is about 90%. Seed-to-seed spread was under one point for every learner.
+
+**Predictions against results.**
+- P1 (table retains, cannot infer): held.
+- P2 (gradient learner forgets heavily; old-entity inference at least 20 points below new): **failed.** It kept 93.5% and the gap was 10 points. Forgetting was mild in this world.
+- P3 (additive: exact retention, inference at least 75%, old within 10 points of new): held.
+- P4 (full replay comes within 10 points of additive on inference): held, at 8.5 points. By the rule set in advance this means **the additive write buys exactness and cost, not a decisive accuracy gain.** It was nonetheless ahead on every seed.
+
+**Limits.**
+- The world matches the learner's model exactly (a bilinear rule). Every learner used that same model, so the comparison is fair, but nothing here shows the principle survives when the shared part needs deep features. Then a change to the shared encoder touches every item and exact re-addition costs time proportional to everything stored.
+- Timings compare a closed-form solver with 200 Adam steps per phase; they show order of magnitude only.
+- The ridge strength chosen was at the edge of the three values tried.
+- The components are published: online alternating least squares, decremental least squares, frozen-key stores for continual learning. No novelty is claimed. What this adds for us is a learner that meets all three parts of the definition on a structured stream, and a benchmark a lookup table fails.
+
+**Next question.** Can the shared part be made deep while keeping writes additive and local? Candidates: fixed random features under the statistics; a shared encoder that is re-fitted only when the store has doubled, so the re-addition cost per fact stays constant on average.
