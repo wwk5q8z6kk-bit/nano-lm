@@ -2,13 +2,14 @@
 
 **Cutoff:** 2026-11-21. This register distinguishes: **[N]** Nano LM repositories and uploaded work; **[P]** published/official literature; **[H]** newly stated hypotheses; **[M]** elementary mathematical propositions and numerical checks. Literature claims below have been checked against the accessible official abstracts, full abstracts, author/model documentation or primary pages; a complete paper-by-paper methods replication, source-code audit and dataset-license legal assessment **has not** been carried out. Do not treat abstracts as validated independent replication.
 
-### New evidence — synthetic migration demonstration, 2026-11-21
-
-| ID | Source | Finding and classification | Explicit limitation |
-|---|---|---|---|
-| N-11 | Companion package `checks/transport_anchor_pilot.py`, `results/transport_anchor_pilot_v0.json`; [Proposition A.1](01_ARCHITECTURE_AND_THEOREMS.md) | Constructed 16D orthogonal basis migration; five seeds; generic inverse estimator reached 100% top-1 agreement from full-rank 16-anchor set | **Synthetic linear experiment only;** no model training, no language evidence, no demonstrated runtime/energy advantage; arbitrary full linear map assumption |
-
 ## 1. Repository and historical data provenance
+
+**Additive current research evidence:**
+
+| ID | Source | Scope | Next verification |
+|---|---|---|---|
+| N-11 | `checks/transport_anchor_pilot.py` + `results/transport_anchor_pilot_v0.json` (new local 2026-11-21) | Five-seed synthetic 16D linear basis migration, not a neural-language experiment | Replicate controlled drift in learned LM features with total-cost accounting |
+
 
 | ID | Source | What is actually supported | Priority verification |
 |---|---|---|---|
@@ -83,3 +84,23 @@
 - **Mathematical:** conditional result with an explicit proof; 'verified by numerical checks' means only that illustrative calculations succeeded.
 - **Architecture hypothesis:** proposed mechanism and falsifiable outcomes, not evidence of effectiveness.
 - **Research strategy:** managerial decision tied to current risks/resources; may be revised without changing past results.
+
+## 8. 2026-11-21 v2 primary-source audit (newly checked)
+
+These sources were checked through public primary abstracts/model documentation for identity and stated scope during the v2 review. They have **not** all been read at full methods/appendix depth or independently reproduced. Use exact paper URLs to distinguish bibliographic verification from experimental validation.
+
+| ID | Primary source | Specific relevance | Limitation for Nano LM |
+|---|---|---|---|
+| V2-P01 | [Qwen3.5 official model-family documentation](https://huggingface.co/docs/transformers/model_doc/qwen3_5) and [Qwen3.5-4B model card](https://huggingface.co/Qwen/Qwen3.5-4B-Base/blob/main/README.md) | 3:1 Gated DeltaNet/full attention, actual vocabulary/width/layer configuration | Published architecture is not an optimal ratio for our budget or hardware |
+| V2-P02 | [Ye et al., ICML 2026](https://proceedings.mlr.press/v306/ye26h.html) | Scope-limited formal expressiveness separation in sequential composition | Does not show every hybrid worse or address model training efficiency |
+| V2-P03 | [Kim et al., ICML 2025](https://proceedings.mlr.press/v267/kim25p.html) | Representation-discrepancy measurements | Does not demonstrate a learned state-migration algorithm that improves Nano LM |
+| V2-P04 | [Anthes et al., Lifelong Learning Agents 2025](https://proceedings.mlr.press/v274/anthes25a.html) | Task-relevant readout subspaces and plasticity/stability diagnostics | Direct prior art for linear/nonlinear subspace ideas, so no novelty presumption |
+| V2-P05 | [Lyle et al., Lifelong Learning Agents 2025](https://proceedings.mlr.press/v274/lyle25a.html) | Multiple plasticity-loss causes; normalization + weight decay in their settings | Not a knowledge-retention cure |
+| V2-P06 | [Zhang et al., Lifelong Learning Agents 2025](https://proceedings.mlr.press/v274/zhang25a.html) | Separate present, past and cross-task consolidation objectives | Different unsupervised continual learning setting |
+| V2-P07 | [Berges et al., ICML 2025](https://proceedings.mlr.press/v267/berges25a.html) | Trainable sparse memory with capacity-per-FLOP advantages in tested conditions | Extra memory parameters count toward model size; no free sample efficiency claim |
+| V2-P08 | [LOTUS preprint, 2026](https://arxiv.org/abs/2606.31779) | Looped latent reasoning with intermediate supervision | Can't attribute its result to looping alone |
+| V2-P09 | [CopyGen preprint, 2026](https://arxiv.org/abs/2610.28393) | Selective exact span-copy controls on frozen models | Strong external/decode competitor, not native weights improvement |
+| V2-P10 | [Nested Learning, NeurIPS 2025](https://proceedings.neurips.cc/paper_files/paper/2025/hash/4309616aaed8e848009bc4a7ef73b493-Abstract-Conference.html) | Multiple learning timescales and learned update logic | Published hypothesis, needs exact implementation/compute comparison |
+| V2-P11 | [Dohare et al., Nature 2024](https://www.nature.com/articles/s41586-024-07711-7) | Loss of plasticity under prolonged nonstationarity | Separate from factual forgetting and target-task transfer |
+
+**Important historical evidence review:** [PR #194](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/194) contains a time-*calibrated* rather than perfectly time-equal 5M comparison; do not call 4.65 vs 5.02 a robust equal-clock-speed frontier result. [INVESTIGATION.md](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/research/ontogenesis-phase1/research/frontier/ontogenesis/INVESTIGATION.md) separately records one-seed memory saturation and three-seed write-time routing, which must not be pooled into one finding. [DISCOVERY-CYCLE-1](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/research/ontogenesis-phase1/research/frontier/ontogenesis/theory/DISCOVERY-CYCLE-1-20261121.md) overturns the earlier broad exception-collateral story. A citation to one of these is not a replay of its raw results.
