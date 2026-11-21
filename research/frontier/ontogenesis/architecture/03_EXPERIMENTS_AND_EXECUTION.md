@@ -79,6 +79,10 @@ Construct tasks where identities and relations persist while the encoder basis c
 
 Report old prediction drift before/after migration, new-task sample complexity, storage bytes, all memory writes and reconstruction work, effect on compositional OOD tasks, and results when the true transformation is noninvertible or changes different semantic factors differently. A purely orthogonal synthetic task is insufficient to promote a general language-model mechanism.
 
+### G05 exploratory five-seed diagnostic — synthetic only
+
+In a constructed 16D Gaussian linear teacher with an unknown orthogonal basis change, exact known transport maintained 100% top-1 consistency, but omitting transport maintained only 21.0%. A pseudoinverse map estimated from **4, 8, 12, 16** paired old/new states achieved **46.8%, 59.8%, 73.4%, 100%** mean prediction consistency across five random seeds, respectively. This matches the elementary full-rank identifiability requirement for *arbitrary* linear maps, not a universal lower bound for all tasks. See [theorem A.1](01_ARCHITECTURE_AND_THEOREMS.md) and the companion local package's `checks/transport_anchor_pilot.py` and `results/transport_anchor_pilot_v0.json`. Next: test structured low-rank or sparse basis drift with overhead versus full replay on real frozen feature models. **No trained LM, no new training compute.**
+
 ## D. Procedural reuse and positive transfer (G07–G08)
 
 Train on compositions of simple *hidden* functions $f_i$ in a finite domain, with training families disjoint from novel test compositions and novel primitives. After each episode, remove examples from the context; allow the model to retain only whatever explicitly counted internal state or slow weights the protocol permits. A second control can keep a compact exact operation library, counted at equal total bytes.
