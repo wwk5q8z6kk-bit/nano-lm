@@ -132,3 +132,19 @@ PLASTICITY v0, 200 successive tasks of 256 facts, three seeds, predictions writt
 - P2 (a sparse key-value memory keeps its speed and retains more): **Disproven** in this implementation. It was slower from the start, lost plasticity, and retained nothing.
 - A standard remedy (normalisation plus weight decay) keeps learning speed almost flat. It is the strongest simpler alternative for any plasticity claim.
 - No arm retains earlier tasks. Plasticity and retention are separate problems here.
+
+## Additive research reconciliation — 2026-11-21
+
+**Scope:** Proposed review-branch update; earlier results, preregistrations and negative findings above remain unmodified. The linked [architecture/theory package](architecture/README.md) is a candidate, not a selected Nano LM backbone or claim of a scientific breakthrough.
+
+| Decision ID | Updated observation / design status | Source | Required next gate |
+|---|---|---|---|
+| D-005 | Dense code LM 4.65 BPB/token vs M21 5.02 at time-oriented budget; M21 conditional-copy subset remains interesting | [Merged PR #194](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/194), including ~30% timing drift | Conditional-copy control in real text/code |
+| D-006 | DEMOS 'learns faster' interpretation superseded by tuned dense result | Historical pilots and [INVESTIGATION.md](INVESTIGATION.md) | Preserve negative result; no large DEMOS scale |
+| D-007 | Exception-collateral interpretation refuted: corrections-only reduce old regular fact retention; exception-only does not | [DISCOVERY-CYCLE-1](theory/DISCOVERY-CYCLE-1-20261121.md) §8.1 | Same-entity replay × optimizer control |
+| D-008 | Hashing and Adam-history reset separately improve late acquisition on one-seed addressing pilot (original 3.4%; hash 99.9%; reset 86.1%) | [INVESTIGATION.md](INVESTIGATION.md), Question 7 | Multi-seed address × optimizer factorial |
+| D-009 | Non-oracle leave-one-out write-time routing yields 81.4% vs baseline 77.6%, oracle 88.9% in 3-seed toy study | [INVESTIGATION.md](INVESTIGATION.md), Question 8 | Distinguish exceptions from changing general rules without oracle |
+| D-019 | Five *conditional* mathematical/algorithmic properties specified; five numerical sanity checks passed locally; **no LM superiority proof** | [Propositions](architecture/01_ARCHITECTURE_AND_THEOREMS.md) | Independent derivation audit, then experiments |
+| D-020 | Native dense baseline remains reference; APS, hybrid, and recurrent candidates unselected | [Decision register](architecture/02_DECISION_LEDGER.md) | Preregister [18-gate plan](architecture/03_EXPERIMENTS_AND_EXECUTION.md) in authorized environment |
+
+**Maintenance rule:** integrate an update into this canonical ledger on each meaningful completed experiment/independent review, with exact code revision, data provenance, seeds, hardware and supersession links; not simply because a theory was proposed. This review branch does not merge or modify running experiments or raw results.
