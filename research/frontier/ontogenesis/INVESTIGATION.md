@@ -55,3 +55,52 @@ These predict different things. A says a task whose answers are fully determined
 - DEMOS "advantage" vanished with a tuned baseline.
 - Dense learned the one-step task at one learning rate and not at the two either side.
 - All chain results are single-seed until the replication reports.
+
+## Question 2. What is retained when knowledge is retained?
+
+**Why it matters.** It decides how the forgetting results should be read, and what "persistent knowledge" has to preserve.
+
+**Three different things can survive.**
+1. *Values:* the stored content still exists somewhere in the parameters.
+2. *Access:* the system's ordinary forward computation still reaches that content.
+3. *Reconstructability:* the content can be recovered at low cost, for example by a few steps of relearning ("savings").
+
+They can come apart. Information can be present and unreachable (1 without 2), or absent in usable form yet cheap to rebuild (3 without 2). This is the accessibility distinction from question 1 applied to memory. [Derived] Published work reports that a network's internal features often survive when its outputs have forgotten, recoverable by refitting only the last layer. [Published evidence, from memory]
+
+**What we believed.** "The learned-address memory forgot because its addresses moved." [Hypothesis]
+
+**What was measured.** Learned addresses: 3.4% retention. Frozen addresses: 38–39%. Three seeds, 200 tasks, chance 1.6%. [Observed]
+
+**Why that does not establish the explanation.** Freezing addresses changed several things at once:
+- the address map stopped moving (the claimed cause);
+- queries stayed spread across slots, where learned keys may have collapsed onto a few slots and overwritten each other's values;
+- the input embeddings stopped changing, so old inputs still looked the same;
+- learning became faster early on, which changes how hard each task presses on the stored values.
+
+**Competing explanations.**
+- Drift: values intact, path moved.
+- Overwrite: values destroyed by later tasks sharing slots.
+- Both.
+- Neither is "forgetting" in the strong sense if relearning is much faster than learning.
+
+**Evidence that distinguishes them** (`retention_probe.py`, readings committed before the run). Read each old task with a snapshot of the addressing taken when it was learned, against today's values. High accuracy means the values survived and only access was lost. Chance means the values were destroyed. Separately, compare steps to relearn an old task with steps to learn a new one.
+
+**Is stable addressing required?** Not by any theorem I know. [Unknown] If a representation changes by a transformation the system can track, old entries could be re-keyed instead of frozen. Whether that can be learned cheaply is open. [Speculation]
+
+**Is forgetting always destructive?** No in principle: merging two memories into one abstraction loses detail and can gain reach. We have measured nothing that separates harmful loss from useful reorganisation. [Unknown]
+
+## Audit of our own conclusions
+
+| Conclusion | Directly measured | Inferred or hypothesised | Not ruled out | Can the design support it? |
+|---|---|---|---|---|
+| A plain network loses plasticity | Steps per task rose from about 65 to never-within-300 over 200 tasks, three seeds | That this is the published "loss of plasticity" | Step cap too low late on; one learning rate; one optimiser | Supports "slower under these settings", not a general law |
+| Normalisation and weight decay preserve learning speed | 33 → 37 steps, three seeds | Which of the two matters | Not separated; interaction untested | Supports the pair, not either alone |
+| Learned-address memory fails | Slow and no retention, three seeds | That learned addressing is the cause | Slot count, temperature, top-k, learning rate all untuned | Weak: one configuration |
+| Frozen addresses improve retention | 3.4% → 38% | That drift was the cause | Overwrite through key collapse; frozen input embeddings | No: several variables changed at once (probe running) |
+| Looping beats dense on two-step chains | 98.2% vs 21.7% at 15 minutes | That reuse of weights is the cause | Seed; model size; learning rate tuned on dense only at one step | No: one seed (replication running) |
+| DEMOS has no learning-speed advantage | Tuned dense 99.8% vs DEMOS 98.3% | — | DEMOS itself untuned | Supports "no advantage shown", not "worse" |
+| DEMOS cannot follow chains | At guess rate in every variant, 7 minutes | That the hop step is the reason | Budget; the erasing variant also failed | Weak: derivation shows a limit of one variant only |
+| Learned discrete keys do not train | Guess rate after 7 minutes, one seed | That exact match gives no gradient | Budget; codebook size; estimator | Weak: one configuration, one seed |
+| Learning speed and retention are separate | Normalised network fast and forgetful | That they are independent in general | Only one task family | Supports "can dissociate", which is all it claims |
+
+Common weaknesses: single seeds in several places; one hyperparameter setting per arm; synthetic fact tasks only; short budgets on tasks known to show sudden late jumps.
