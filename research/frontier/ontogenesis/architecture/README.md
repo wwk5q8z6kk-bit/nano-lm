@@ -39,7 +39,7 @@ A constructed 16D example tested whether predictions survive an unknown change o
 |---|---:|---:|---:|---:|---:|
 | Held-out top-1 agreement | 21.0% | 46.8% | 59.8% | 73.4% | 100% |
 
-See [the scoped proof](01_ARCHITECTURE_AND_THEOREMS.md) and the companion downloadable package for the raw JSON and chart. This **does not** establish a new LM mechanism. Reproduce using `checks/transport_anchor_pilot.py` when available.
+See [the scoped proof](01_ARCHITECTURE_AND_THEOREMS.md) and the companion downloadable package for the raw JSON and chart. This **does not** establish a new LM mechanism. Reproduce with [the committed experiment script](checks/transport_anchor_pilot.py) (requires NumPy); the output is a JSON file under `results/`. The companion downloadable package also includes raw results and the chart.
 
 ## Research-architecture lifecycle
 
