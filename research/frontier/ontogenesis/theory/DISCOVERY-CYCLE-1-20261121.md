@@ -140,3 +140,17 @@ The referee read the note, the three scripts and all result files, and replayed 
 **What survives.** In this bilinear model under Adam, old regular facts are lost almost only on entities that later received an irregular write, and withholding those writes removes the loss. Separately, keeping arbitrary values out of address fitting raises inference to the ceiling. Neither is new.
 
 **Controls requested by the referee, running:** exceptions only (`--eps 0.1 --fix 0`) and corrections only (`--eps 0 --fix 16`). Results will be appended below.
+
+### 8.1 Result of the two controls (2026-11-21)
+
+Gradient learner, seeds 5001–5003, no code change. Raw files in `results/forgetting_split/`. [Observed]
+
+| Condition | Regular facts, 20+ phases old | Irregular facts, 20+ phases old |
+|---|---|---|
+| Exceptions only (10%), no corrections | 99.7%, 99.6%, 99.6% | 59.1%, 59.4%, 56.1% |
+| Corrections only (16 per phase), no exceptions | 90.9%, 91.0%, 91.5% | 66.4%, 68.1%, 63.8% |
+
+**The referee was right and T4 as written is refuted.** Exceptions stored beside regular facts cause no loss of the regular facts. Corrections alone reproduce the whole loss. The cause is a late write to an old entity's address, trained on one fact without that entity's other facts, not exception-bent addresses meeting decoder drift.
+
+What stands: (1) exceptions themselves are forgotten (to about 58%) while regular facts are not; (2) a correction written by gradient steps on one fact damages that entity's other facts; (3) both are standard, published effects.
+Not yet separated: whether the damage in (2) is specific to Adam or to training without the entity's other facts. The referee's proposed arm (train the correction together with the entity's stored facts) would decide it.
