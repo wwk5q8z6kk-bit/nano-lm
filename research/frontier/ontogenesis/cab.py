@@ -26,12 +26,18 @@ Predictions written before the first full run (seeds 3001-3003; seed 3000 was a 
      fixing it; the fixed-address memory retains most facts but is worst at corrections
      (it keeps answering the stale value) and slowest to acquire.
   P3 no learner ends with acquisition, retention, correction and composition all above 80%.
+
+Correction, 2026-11-21, made before any full-run result existed: the first full run never
+finished. With 4 relations there are only 1024 x 4 = 4,096 possible facts, and 60 phases of
+128 need 7,680, so the sampler looped forever at phase 32. Relations raised from 4 to 8
+(8,192 possible facts) and a guard added. The 6-phase smoke test used 4 relations. The
+predictions above are unchanged.
 """
 from __future__ import annotations
 import argparse, json, time
 import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 
-E, R = 1024, 4
+E, R = 1024, 8
 
 
 class Net(nn.Module):
@@ -92,6 +98,7 @@ def run(kind, replay, seed, phases, new, fix, steps, lr):
     model = Net(kind); opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=lr, weight_decay=0.01 if kind == "mlp" else 0.0)
     table, birth, stale, buffer, log = {}, {}, {}, [], []
     T = lambda rows, j: torch.tensor([r[j] for r in rows], dtype=torch.long)
+    assert phases * new <= E * R, f"world too small: {phases * new} facts needed, {E * R} possible"
     for ph in range(phases):
         fresh = {}
         while len(fresh) < new:

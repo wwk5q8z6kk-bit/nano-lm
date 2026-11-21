@@ -199,12 +199,12 @@ One-step accuracy was 98–100% in every run.
 **Verdict by the pre-registered rules: mixed.** "Replicated" needed looped to win in all three seeds; it won in two. "Not replicated" and "it is model size" both fail as well.
 
 **What the data do and do not say.**
-- [Observed] Every run is either at guessing or above 95%. Where learning happens it is a jump between 5,000 and 8,000 steps, never gradual. The outcome at this budget is a matter of whether the jump has happened yet.
+- [Observed] Every run is either at guessing or above 95%. Where learning happens it is a jump that starts between 5,000 and 7,000 steps, never gradual. The outcome at this budget is a matter of whether the jump has happened yet.
 - [Observed] Weight-tied arms at width 64 made the jump in 4 of 6 runs; untied dense in 0 of 3. With counts this small the difference is suggestive, not established (Fisher exact, 4/6 against 0/3, p is about 0.17).
 - [Observed] The wide looped model failed in all three seeds. This contradicts the simple reading "tying weights helps". It also had the same learning rate as the narrow one, which may be too high for it; the protocol named the lack of per-arm tuning as a limitation.
 - [Observed] One layer applied once never learned two steps, so E4 in its simplest form (smaller is easier) is not supported. The narrow four-layer dense control is still missing.
 - E5 (chance) is not eliminated: jump timing varies by seed, and a seed-dependent jump is exactly what E5 describes. What survives is a weaker claim: tying may make the jump more likely or earlier at this budget.
-- E3 predicted the two-step jump soon after one-step mastery. One-step was mastered by step 1,000 to 2,000; the jump came 4,000 to 6,000 steps later. E3 as stated is not supported.
+- E3 predicted the two-step jump soon after one-step mastery. **Corrected 2026-11-21 after re-reading the curves; the first version of this line was wrong.** One-step accuracy itself sat at guessing for 3,000 to 5,000 steps and then jumped (above 90% at step 4,000 to 6,000 in all fifteen runs). In the four runs that learned two steps, that jump began within 0 to 3,000 steps of one-step mastery. So E3 is consistent with the successes, but it does not explain the looped runs that mastered one step and never made the second jump.
 
 **Status change.** "Looping learns two-step chains that dense does not" is downgraded from pilot observation to: mixed under pre-registration, two of three seeds. It must not be cited as a demonstrated advantage.
 
