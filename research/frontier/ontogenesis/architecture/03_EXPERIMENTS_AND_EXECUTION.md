@@ -2,6 +2,8 @@
 
 **Status:** research designs, not executed GPU/TPU model-training experiments. Do not retrospectively add them to existing frozen protocols. All local and paid experiments require the live repository rules, data rights, code revision, and resources to be verified. **No paid compute authorized by this document.**
 
+> **V2 protocol notice:** The 18 existing gate IDs G00–G17 are **candidate experiments**, not simultaneously authorized jobs. The formal proof audit and cost controls in [05](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md) modify their interpretation without altering any previously preregistered protocol. Choose the first decisive cause test before proliferating new branches.
+
 ## Executive plan: test causes before building expensive architecture
 
 | Stage | Purpose | Concrete output | Advance condition |
@@ -79,9 +81,13 @@ Construct tasks where identities and relations persist while the encoder basis c
 
 Report old prediction drift before/after migration, new-task sample complexity, storage bytes, all memory writes and reconstruction work, effect on compositional OOD tasks, and results when the true transformation is noninvertible or changes different semantic factors differently. A purely orthogonal synthetic task is insufficient to promote a general language-model mechanism.
 
-### G05 exploratory five-seed diagnostic — synthetic only
+### G05 exploratory pilot completed — synthetic linear basis transport only
 
-In a constructed 16D Gaussian linear teacher with an unknown orthogonal basis change, exact known transport maintained 100% top-1 consistency, but omitting transport maintained only 21.0%. A pseudoinverse map estimated from **4, 8, 12, 16** paired old/new states achieved **46.8%, 59.8%, 73.4%, 100%** mean prediction consistency across five random seeds, respectively. This matches the elementary full-rank identifiability requirement for *arbitrary* linear maps, not a universal lower bound for all tasks. See [theorem A.1](01_ARCHITECTURE_AND_THEOREMS.md) and the companion local package's `checks/transport_anchor_pilot.py` and `results/transport_anchor_pilot_v0.json`. Next: test structured low-rank or sparse basis drift with overhead versus full replay on real frozen feature models. **No trained LM, no new training compute.**
+Across five deterministic seeds, an original 16D linear classifier was viewed through a hidden orthogonal change of basis. Top-1 prediction agreement without correcting the basis was **21.0%**. With a known exact inverse it was **100%**. A general linear inverse estimated by pseudoinverse from **4/8/12/16 paired feature vectors** gave **46.8%/59.8%/73.4%/100%**, respectively. The exact scores, seeds and test sizes are in `results/transport_anchor_pilot_v0.json`; the code is `checks/transport_anchor_pilot.py`.
+
+This illustrates the restricted rank-identification theorem. It does not demonstrate learned representation migration, transfer, retention, lower energy or superior language modeling. The next experiment must use evolving learned features and structural transport priors and compare *both* old-output retention and newly learned capability against replay and frozen controls under equal cost.
+
+![Synthetic 16D migration pilot](figures/transport_anchor_cost.png)
 
 ## D. Procedural reuse and positive transfer (G07–G08)
 
@@ -93,7 +99,7 @@ Train on compositions of simple *hidden* functions $f_i$ in a finite domain, wit
 
 ## E. Native language-model replication (G10–G16)
 
-**Existing local program:** `BUILD-PLAN.md` reports a 32k tokenizer, a four-domain 800M-token v1 corpus, 15M native pilot plans and TPU calibration results. These were reported by the research agent; the files' existence on the owner's laptop and original licensing were not independently checked here. Corpus proportions and 1M validation per domain were recorded in that plan.
+**Repository-reported local program (owner machine not inspected here):** `BUILD-PLAN.md` reports a 32k tokenizer, a four-domain 800M-token v1 corpus, 15M native pilot plans and TPU calibration results. These were reported by the research agent; the files' existence on the owner's laptop and original licensing were not independently checked here. Corpus proportions and 1M validation per domain were recorded in that plan.
 
 **Evaluation contract:** same training bytes, tokens where tokenizer matches, supervised target handling, sequence length, domain mixture, optimizer per-arm tuning budget, validation cutoffs, hardware, and reporting frequency. If input methods differ, compare BPB on the same *raw UTF-8 bytes*, and show token/patch counts and throughput separately. Report:
 
@@ -161,3 +167,36 @@ This is a dependency order, **not** a promise to deliver days later or evidence 
 **Scientific claims:** 'proved' means the theorem and assumptions were checked, not that benchmarks passed. 'Published' means another team's measurements, not Nano evidence. 'Pilot' is not 'replicated'. 'System-level win' must show all retrieval/verification costs. No benchmark contamination, leaked future values, misleading token-matched comparison or miscounted external model allowed.
 
 **Authorized writes:** New documents, code and local CPU checks are in scope. Destructive branch operations, blanket merges, local worktree cleanup, PHI, private owner data, and materially costly compute are not. Prior experiments and raw result files remain frozen.
+
+## J. V2 executable protocol contract and stopping logic
+
+The next action is **G02 (address × optimizer)** followed by **G03 (correction × replay)**, unless the canonical ledger already contains newer completed evidence. Do not overwrite running protocols or edit raw results. The exact baseline/cost of each arm must be measured before any conclusion; a toy success cannot authorize 125M training.
+
+**Pre-registration template (fill and commit before confirmatory runs):**
+
+```yaml
+experiment_id: G02-<unique revision>
+branch_sha: <exact SHA>
+research_question: <one causal contrast>
+status: proposed              # proposed | preregistered | exploratory | confirmatory | completed
+seed_rule: <fixed deterministic seed derivation; development and final seeds separate>
+independent_unit: <data-generating seed / task family / document, not token>
+train_data_sha256: <exact manifest/checksum>
+evaluation_manifest_sha256: <exact held-out split>
+comparators: <arms and independently tuned search budgets>
+primary_endpoint: <one measurable outcome, direction, denominator and horizon>
+secondary_endpoints: <acquisition, retention, stale edits, latency, state bytes>
+fail_or_stop: <decided before reading final seeds>
+censoring_rule: <if time-to-learn threshold does not occur>
+resource_budget: <device, precision, total maximum run time, known prices if paid>
+permission: <free exploratory / experiment-authorized paid>
+output_dir: <immutable artifact destination>
+```
+
+**Model quality versus resource:** compare paired quality at equal verified train-time budget *and* time/energy to reach a fixed quality, not just final loss after equal steps; matching total tokens does not guarantee equal wall time. Keep native weights, externally adapted weights and augmented tool/store systems on separate scoreboards. If the same corpus is reused for several seeds, seed is a replication unit for optimization, **not** independent evidence of data-distribution generality. Confirm with a second held-out corpus and data-family split.
+
+**Required failure-path checks:** incomplete/failed seeds included; hyperparameter tuning accounted; never infer 'no improvement' from an under-trained baseline; record numerical precision/kernels; dropout and state reset deterministic; no future-token or oracle-label access to controllers; report the primary endpoint even if negative. If G02 is resolved by a simple address/optimizer fix, close that research branch rather than inventing a new mechanism to rescue it.
+
+**Negative-transfer budget:** For an auxiliary loss or state memory, track the clean general-language and code BPB difference by domain, not just an aggregate. If it regresses outside the targeted task, rollback the integration candidate and preserve the result. Extra compute is acceptable only if verified task value pays for it under an explicit workload/resource contract.
+
+**Scaling:** The 2B–4B ambition is a *conditional* destination; it is not an approved 4B model config or a promise to train frontier quality on the current credit pool. Instantiated parameter counts, data rights, measured throughput, device-specific kernels and an authorization receipt precede any nontrivial paid run.
