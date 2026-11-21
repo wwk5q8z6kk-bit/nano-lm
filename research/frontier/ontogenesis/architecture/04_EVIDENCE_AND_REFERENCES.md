@@ -2,6 +2,12 @@
 
 **Cutoff:** 2026-11-21. This register distinguishes: **[N]** Nano LM repositories and uploaded work; **[P]** published/official literature; **[H]** newly stated hypotheses; **[M]** elementary mathematical propositions and numerical checks. Literature claims below have been checked against the accessible official abstracts, full abstracts, author/model documentation or primary pages; a complete paper-by-paper methods replication, source-code audit and dataset-license legal assessment **has not** been carried out. Do not treat abstracts as validated independent replication.
 
+### New evidence — synthetic migration demonstration, 2026-11-21
+
+| ID | Source | Finding and classification | Explicit limitation |
+|---|---|---|---|
+| N-11 | Companion package `checks/transport_anchor_pilot.py`, `results/transport_anchor_pilot_v0.json`; [Proposition A.1](01_ARCHITECTURE_AND_THEOREMS.md) | Constructed 16D orthogonal basis migration; five seeds; generic inverse estimator reached 100% top-1 agreement from full-rank 16-anchor set | **Synthetic linear experiment only;** no model training, no language evidence, no demonstrated runtime/energy advantage; arbitrary full linear map assumption |
+
 ## 1. Repository and historical data provenance
 
 | ID | Source | What is actually supported | Priority verification |
