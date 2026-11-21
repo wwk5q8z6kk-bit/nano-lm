@@ -1,8 +1,10 @@
 # 01 — Nano LM candidate architecture, falsifiable hypotheses and mathematical propositions
 
-**Research status:** candidate, not an adopted architecture; 2026-11-21. **Repository name unchanged:** Nano LM.  
+**Research status:** V2 candidate revision, not an adopted architecture; 2026-11-21. **Repository name unchanged:** Nano LM.  
 **Scientific aim:** one native-trained model, multiple controlled research alternatives, maximum verified language/code/reasoning competence for constrained compute, power, memory and data.  
 **Theorem scope:** the proofs in this document establish properties of particular algorithms *under stated assumptions*. They neither prove that the proposed neural model can learn those algorithms nor that it will exceed a dense Transformer.
+
+> **V2 corrected interpretation (2026-11-21).** Read [the reviewed gap-closure and formal-claims audit](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md) alongside this architecture. APS is an **unselected interface hypothesis**, not an approved architecture, a novel mathematical result or a project rename. Theorems below are conditional and do not imply trainable continual learning. Precise causal state boundaries, proof limitations, remaining gaps, modern literature and review gates are now explicit. The native model has no required external database or tool dependency.
 
 ## Executive summary
 
@@ -68,7 +70,7 @@ $$
  z_{t,k+1}=z_{t,k} + \alpha_\theta(z_{t,k},c_t,m_t) F_\theta(z_{t,k},c_t,m_t).
 $$
 
-**Important:** reintroduce causal input $c_t$ on **every** iteration, not only the first. The learned integer $K_t$ may be replaced by a fixed value in the cheapest ablation. The head produces
+**Important:** reintroduce causal input $c_t$ on **every** iteration, not only the first. The integer $K_t$ is a discrete routing decision and **does not become trainable by ordinary backpropagation simply because it appears in this equation**; fixed-$K$ and oracle-policy bounds must precede a documented causal training algorithm. The head produces
 
 $$
  p_\theta(x_{t+1}\mid x_{\le t})=\operatorname{softmax}(W_\mathrm{out}z_{t,K_t}).
@@ -110,19 +112,23 @@ $$D'(E'(x))=D(T^{-1}(T(E(x))))=D(E(x)).$$
 
 **Linear case.** If $D(z)=Wz$, $T(z)=Az$ with invertible $A$, use $W'=WA^{-1}$ and transform every state $z_i'=Az_i$. For orthogonal $A$, $A^{-1}=A^\top$. The accompanying deterministic check verifies this at floating-point precision.
 
-**Bounded approximation result.** Suppose original logits $\ell$ and remapped logits $\ell'$ satisfy $\|\ell'-\ell\|_\infty\le\varepsilon$. If the original top-1 margin $\ell_{(1)}-\ell_{(2)}>2\varepsilon$, the predicted class is unchanged. **Proof:** the winner can decrease by at most $\varepsilon$ and a competitor increase by at most $\varepsilon$. This is a **classification** guarantee under an assumed logit-error bound, not a guarantee about factual truth, calibration, or language distribution equality.
+**Bounded approximation result.** Suppose original logits $\ell$ and remapped logits $\ell'$ satisfy $\|\ell'-\ell\|_\infty\le\varepsilon$. If the original top-1 margin $\ell_{(1)}-\ell_{(2)}>2\varepsilon$, the predicted class is unchanged. **Proof:** the winner can decrease by at most $\varepsilon$ and a competitor increase by at most $\varepsilon$. This is a **classification** guarantee under an assumed logit-error bound, not a guarantee about factual truth or calibration. Moreover, the softmax log-probabilities satisfy $|\log p_i-\log p_i'|\le 2\varepsilon$ and $D_{KL}(p\|p')\le2\varepsilon$: the log-normalizer changes by at most $\varepsilon$. These are assumed-perturbation bounds for one prediction step, not claims of low generative-sequence drift.
 
 **Counterexample.** A rank-deficient $T$ can merge $z_1\ne z_2$, making them indistinguishable for any downstream decoder. Then exact old behavior generally cannot be recovered. The problem of *learning* a valid, low-cost migration is precisely the research question.
 
-**Prior art:** representation-discrepancy analysis in Kim, Kim & Sohn, ICML 2025 [R07]. Proposed novelty is **not** the algebra; the untested claim is that approximately covariance-preserving learned migrations can improve the acquisition/retention/cost trade-off in an LM without full replay.
+**Prior art:** representation-discrepancy analysis in Kim, Kim & Sohn, ICML 2025 [R07]; task-relevant readout subspace analyses in Anthes et al., LLA 2025 [V2-P04]. Proposed novelty is **not** the algebra; the untested claim is that approximately covariance-preserving learned migrations can improve the acquisition/retention/cost trade-off in an LM without full replay.
 
-### 3.1 Linear migration identifiability: a scoped additional proposition (2026-11-21)
+### 3.1 Proposition A.1 — identifying a completely unknown linear migration
 
-Let an unknown linear map \(A\in\mathbb R^{d\times d}\) act on paired anchors \((x_i,Ax_i)\). With \(X=[x_1\cdots x_m]\), if \(\operatorname{rank}(X)=d\), the map is uniquely determined by \(AX\): \(A=(AX)X^+\). If \(\operatorname{rank}(X)<d\), choose nonzero \(u\in\ker(X^\top)\) and nonzero \(v\); then \(A'=A+vu^\top\neq A\) but \(A'X=AX\). Thus unrestricted linear maps cannot be uniquely identified from rank-deficient anchors, **without additional assumptions**. This is elementary linear algebra, not a general impossibility theorem for preserving selected predictions. Structural assumptions (orthogonality, sparsity, low rank or output-specific invariance) may reduce sample needs.
+Let \(A\in\mathbb R^{d\times d}\) be an unknown linear transformation, and let \(m\) anchor pairs \((x_i, Ax_i)\) be observed. Stack anchors into \(X\in\mathbb R^{d\times m}\). If \(\operatorname{rank}(X)=d\), then \(A=(AX)X^+\) is uniquely identified. Otherwise choose nonzero \(u\in\ker(X^\top)\) and \(v\neq0\); \(A'=A+vu^\top\) differs from \(A\) but matches it on all observed anchors since \(A'X=AX\). QED.
 
-A **new local 5-seed synthetic diagnostic**, now stored in the companion package and available with reproducible code, measured preservation of top-1 predictions under a hidden 16-dimensional rotation. An exactly known inverse preserves 100%; no inverse gives 21.0%; a generic linear inverse estimated from 4 / 8 / 12 / 16 paired anchors gave **46.8% / 59.8% / 73.4% / 100%**. This is not a trained language model, efficiency result, or new architecture proof.
+**Scope:** This is basic linear identifiability of an unrestricted map, NOT a universal lower bound on how many examples are necessary to preserve useful predictions. Low-rank, orthogonal, sparse, or output-specific transformations may be learned from fewer well-chosen observations.
 
-**Consequence and cost:** discovering or storing full transport may require \(O(d^2)\) parameters/work plus migration of existing states. G05 must test structured/sparse migrations versus replay and frozen representations, including the cost of anchors and write amplification.
+**Synthetic five-seed demonstration (2026-11-21).** With 16D Gaussian features and an unknown orthogonal basis rotation, the constructed teacher's top-1 agreement under no transport was 21.0%; an exactly known inverse restored 100%. Pseudoinverse estimates using 4, 8, 12 and 16 paired anchors yielded 46.8%, 59.8%, 73.4% and 100%, respectively. This is NOT training an LM or demonstrating efficient self-improving intelligence. Reproduction code: `checks/transport_anchor_pilot.py`; raw JSON `results/transport_anchor_pilot_v0.json`.
+
+![Synthetic 16D transport anchor test](figures/transport_anchor_cost.png)
+
+**Decision implication:** structured migration is worth investigating only if it beats replay, freezing and re-encoding when counting anchor selection, read/write amplification, model-state accuracy and actual energy.
 
 ## 4. Mathematical proposition B — local constraints can protect previous outputs to first order
 
@@ -136,7 +142,7 @@ $$f_{\theta+\Delta\theta}=f_\theta+O(\|\Delta\theta\|^2)$$
 
 provided the model is differentiable and the relevant second derivatives are bounded near $\theta$.
 
-**What this proves:** old *sampled anchor logits* do not change to first order. **What it does not prove:** no forgetting on unsampled tasks, preservation under large steps, numerical stability, efficient computation at billions of weights, or successful acquisition. If $g\in\operatorname{row}(J)$, then $P_\perp g=0$ and *new learning is completely blocked*. That is the crucial adverse control.
+**What this proves:** old *sampled anchor logits* do not change to first order. If the Jacobian of these logits is $L$-Lipschitz along the update segment, then their finite-step displacement satisfies $\|f(\theta+\Delta)-f(\theta)\|_2\le(L/2)\|\Delta\|_2^2$ when $J\Delta=0$. An approximate projection adds $\|J\Delta\|_2$ to this bound. This does **not** extend to unseen anchors without additional assumptions. **What it does not prove:** no forgetting on unsampled tasks, preservation under large steps, numerical stability, efficient computation at billions of weights, or successful acquisition. If $g\in\operatorname{row}(J)$, then $P_\perp g=0$ and *new learning is completely blocked*. That is the crucial adverse control.
 
 **Experiment:** compare replay, no replay, weight regularization, projected-update approximations, and state transport on identical correction streams. Measure both retention *and* new-rule acquisition. This is related to published orthogonal-gradient/continual-learning methods; no novelty claim.
 
@@ -152,7 +158,7 @@ $$ b\ge \lceil n\log_2 V\rceil.$$
 
 ## 6. Mathematical proposition D — a correctly versioned exact record can answer history consistently
 
-Represent events $e=(k,v,\tau,id,action)$ with unique $id$ and a deterministic total order on $(\tau,id)$. For a key $k$ and time $t$, define
+Represent events $e=(k,v,\tau,id,action)$ with unique $id$ and a deterministic total order on $(\tau,id)$. For a key $k$ and time $t$, define the following **single-timestamp special case**; a real store needs separate valid time, recorded time, authoritative source, and conflict/permission policies (see [V2 §2.4](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md#24-bitemporal-events-index-correctness-does-not-prove-factual-truth)):
 
 $$ e^*(k,t)=\arg\max_{e:\;e.k=k,\;e.\tau\le t}(e.\tau,e.id).$$
 
@@ -168,7 +174,7 @@ Let a candidate extra computation step have conditional expected verified utilit
 
 $$\mathbb E[\Delta U\mid s]>\lambda\Delta C(s)+C_0(s).$$
 
-**Proof:** compare the objective for `stop` and `continue`, cancel their shared terms. **Key limit:** $\mathbb E[\Delta U\mid s]$ is a counterfactual quantity that the model may estimate badly. A learned controller cannot assume perfect calibration; it may stop before a necessary step, spend more compute on easy questions, or overfit to the benchmark. Actual joules include controller operation and all additional memory traffic.
+**Proof:** compare the objective for `stop` and `continue`, cancel their shared terms **for one candidate additional action**. This is a myopic rule, **not** a multi-step optimal stopping theorem: a budgeted Bellman recursion is required if the value of more than one step depends on future states. See V2 §2.5 for the correct recurrence. **Key limit:** $\mathbb E[\Delta U\mid s]$ is a counterfactual quantity that the model may estimate badly. A learned controller cannot assume perfect calibration; it may stop before a necessary step, spend more compute on easy questions, or overfit to the benchmark. Actual joules include controller operation and all additional memory traffic.
 
 ## 8. The conjecture that would actually matter scientifically
 
@@ -246,3 +252,19 @@ stateDiagram-v2
 - [R14] OpenAI 2026 SWE benchmark audits, [Verified](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/) and [Pro](https://openai.com/index/separating-signal-from-noise-coding-evaluations/): do not assume public benchmark labels establish valid generalization.
 
 Repository evidence sources and a larger bibliography are in `04_EVIDENCE_AND_REFERENCES.md`.
+
+## 12. V2 research and implementation corrections
+
+The full [gap-closure audit and implementation contract](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md) has precedence where a v1 informal statement could be interpreted more broadly. Its 18 findings (F-01–F-18) address causal state semantics, unknown representation transport, approximate prediction error, anchor selection, nonlinear update remainder, bitemporal history, adaptive stopping, exact capacity accounting, optimizer-state confounds, baseline fairness, and explicit limits of the synthetic diagnostic.
+
+**Architecture status remains unselected.** Strong modern dense D0 is the measurement reference, published hybrid H1 and recurrent R1 are genuine competitors, A1/APS is merely one potentially testable interface, and X0 reserves space for new mathematical structures. One native parametric model is the eventual scientific output; an optional source ledger forms a separate, resource-counted augmented system. Never promote a mechanism on theoretical elegance, a toy result, or novelty alone.
+
+### Nonnegotiable experimental outcomes
+
+- **Language:** per-domain same-byte held-out BPB and cross-domain generalization, tokenizer and training-energy receipts.
+- **Learning:** acquisition, *new-rule* transfer, corrected-current accuracy, stale-answer rate, retention at matched old-task difficulty, and past-task access after features evolve.
+- **Reasoning:** unseen heterogeneous compositions where additional latent steps have a matched explicit-scratchpad and untied-depth control.
+- **Compute:** measured time, physical joules when available, activation and external bytes, memory bandwidth, retry cost and separate prefill/decode.
+- **Scientific validation:** independent seeds, separate dev vs confirmation, published-equivalent searches, causal ablations, and an explicit stop/reject path.
+
+**The scientific conjecture remains open:** a new trainable organization might improve *both* retention and the ability to learn new capabilities at fixed end-to-end resource cost. None of the present proofs or scripts verifies that conjecture.
