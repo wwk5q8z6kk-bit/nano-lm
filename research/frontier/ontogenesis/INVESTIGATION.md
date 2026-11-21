@@ -296,3 +296,50 @@ Written while `lm_store.py` was still training its first arm; no arm result had 
 5. **System cost.** The store for 48M tokens is 1.02 GB against about 57 MB of model weights. Any gain is a system-level gain and must be reported with that storage.
 6. **One seed.** Differences under about 0.01 bits per byte are not evidence, as registered.
 7. **Operational.** The run shared the laptop with eleven other jobs and the machine was swapping heavily; wall-clock times from this run are not usable as efficiency measurements.
+
+## Question 7. Why does the fixed-address memory stop acquiring? (2026-11-21)
+
+Diagnostic `memory_saturation.py`, predictions committed in `7132497` before any run. One seed (3001), so effect sizes matter and small differences do not. Raw files: `results/memory_saturation/`. [Observed]
+
+Measured without training: 16,384 slots, 4,619 ever addressed, effective number of slots 526; two queries with the same relation share 0.60 of 8 slots against 0.004 for a uniform hash.
+
+| Arm | New-fact accuracy, phases 1–15 | 16–30 | 31–45 | 46–60 | Retention, phases 46–60 |
+|---|---|---|---|---|---|
+| Original addresses | 88.1% | 28.9% | 6.9% | 3.4% | 63.9% |
+| Uniformly hashed addresses | 100% | 100% | 100% | 99.9% | 89.2% |
+| Original addresses, learning rate ×10 | 99.9% | 94.9% | 76.6% | 59.9% | 86.3% |
+| Original addresses, optimiser state reset every phase | 99.3% | 96.4% | 91.2% | 86.1% | 82.7% |
+
+- D1 (the collapse reproduces): held, 3.4%, without the chain loss that `cab.py` also trains.
+- D2 (hashing keeps acquisition above 90% and retention above 80%): held.
+- D3 (a higher learning rate helps but stays at least 20 points below hashing): held.
+- D4 (resetting the optimiser does not restore acquisition): **failed.** Resetting Adam's state each phase took late acquisition from 3.4% to 86.1% and retention from 64% to 83%, with the addresses unchanged.
+
+**Reading.** The memory was never full: in every arm with the original addresses the same 4,549 slots were in use. Two interventions each remove most of the collapse, so it has two necessary ingredients: queries concentrated on a few slots, **and** optimiser state carried across phases on those slots. Neither nominal capacity nor address concentration alone explains it.
+**Mechanism, not yet tested.** [Hypothesis] Adam's running second-moment estimate stays large on rows that receive a burst of large gradients at the start of every phase, which shrinks the effective step so new facts cannot be fitted in 200 steps. Predicts: a faster-forgetting second moment (smaller β2) or plain gradient descent restores acquisition without resets.
+**Limits.** One seed. Hashing changes the query representation as well as the address distribution, so its success supports congestion without excluding other causes. Loss of plasticity through optimiser state, and resetting it as a remedy, are reported in the continual-learning literature [Published, from memory, unchecked]; this is a diagnosis of our own learner, not a discovery.
+**Consequence for an earlier claim.** "Fixed addresses trade retention for acquisition" (first acquisition benchmark) was an over-reading. With the optimiser reset, the same fixed addresses acquire 86% and retain 83%.
+
+## Question 8. Does the routing gain need an oracle? (2026-11-21)
+
+`routing_loo.py`, predictions committed in `7132497`. Seeds 7001–7003. Raw files: `results/routing_loo/`. [Observed]
+
+The detector judges each fact before fitting it: fit a temporary address to the entity's other facts with the decoder frozen, and ask whether this fact is predicted. No labels, no look-ahead.
+
+| Arm | Inference on unseen relations | Old regular facts, entities with an irregular write | Old regular facts, clean entities | Sent to exact store |
+|---|---|---|---|---|
+| Everything trains the model | 77.6% | 78.4% | 100% | 0% |
+| Oracle routing | 88.9% | 99.8% | 100% | 16.2% |
+| Leave-one-out detector | 81.4% (84.5, 81.9, 77.7) | 95.0% | 96.0% | 17.4% |
+
+Detector quality: recall 88.3% on truly irregular facts, false alarms 6.5% on regular ones.
+
+- L1 (the oracle gap reproduces): held, 11.3 points.
+- L2 (the detector recovers at least half the inference gap): **failed.** It recovered 3.8 of 11.3 points, about a third, and one seed was within a point of the baseline.
+- L3 (old regular facts on irregular-carrying entities stay at 95% or more): **not met**, 94.997% on average and below 95% on one seed.
+- L4 (recall at least 70%, false alarms at most 15%): held.
+- The registered failure condition (within 2 points of the baseline on inference) was not triggered on the mean, but was on one seed.
+
+**Reading.** A write-time detector with no oracle keeps most of the retention benefit and about a third of the inference benefit. It also has a cost the oracle does not: clean entities lost 4 points, because a false alarm takes away one of only three facts that identify the entity.
+**Unresolved.** The spread across seeds suggests a feedback loop: a weak model detects poorly, so it trains on more noise, so it stays weak. Untested.
+**Scope.** Exceptions and corrections only. Nothing here separates a one-off exception from the first example of a new rule, or from a rule that has changed; a detector of this kind would send all three to the store, and for the last two that is the wrong decision.
