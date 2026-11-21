@@ -116,6 +116,14 @@ $$D'(E'(x))=D(T^{-1}(T(E(x))))=D(E(x)).$$
 
 **Prior art:** representation-discrepancy analysis in Kim, Kim & Sohn, ICML 2025 [R07]. Proposed novelty is **not** the algebra; the untested claim is that approximately covariance-preserving learned migrations can improve the acquisition/retention/cost trade-off in an LM without full replay.
 
+### 3.1 Linear migration identifiability: a scoped additional proposition (2026-11-21)
+
+Let an unknown linear map \(A\in\mathbb R^{d\times d}\) act on paired anchors \((x_i,Ax_i)\). With \(X=[x_1\cdots x_m]\), if \(\operatorname{rank}(X)=d\), the map is uniquely determined by \(AX\): \(A=(AX)X^+\). If \(\operatorname{rank}(X)<d\), choose nonzero \(u\in\ker(X^\top)\) and nonzero \(v\); then \(A'=A+vu^\top\neq A\) but \(A'X=AX\). Thus unrestricted linear maps cannot be uniquely identified from rank-deficient anchors, **without additional assumptions**. This is elementary linear algebra, not a general impossibility theorem for preserving selected predictions. Structural assumptions (orthogonality, sparsity, low rank or output-specific invariance) may reduce sample needs.
+
+A **new local 5-seed synthetic diagnostic**, now stored in the companion package and available with reproducible code, measured preservation of top-1 predictions under a hidden 16-dimensional rotation. An exactly known inverse preserves 100%; no inverse gives 21.0%; a generic linear inverse estimated from 4 / 8 / 12 / 16 paired anchors gave **46.8% / 59.8% / 73.4% / 100%**. This is not a trained language model, efficiency result, or new architecture proof.
+
+**Consequence and cost:** discovering or storing full transport may require \(O(d^2)\) parameters/work plus migration of existing states. G05 must test structured/sparse migrations versus replay and frozen representations, including the cost of anchors and write amplification.
+
 ## 4. Mathematical proposition B — local constraints can protect previous outputs to first order
 
 Let old anchor logits be concatenated in $f_\theta\in\mathbb R^m$, with Jacobian $J=\partial f_\theta/\partial\theta\in\mathbb R^{m\times P}$. Let $P_\perp=I-J^+J$, where $J^+$ is the Moore–Penrose pseudoinverse. For an update direction $g$ choose $\Delta\theta=-\eta P_\perp g$. Then
