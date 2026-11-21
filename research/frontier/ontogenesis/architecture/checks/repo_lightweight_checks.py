@@ -62,7 +62,12 @@ def check_bounded_logprob():
 def check_nonzero_second_order_drift():
     h=.13
     # f(theta0,theta1)=theta0+theta1**2/2; J(0,0)=[1,0]
-    assert 0<.5*h*h<=h*h/2+1e-14
+    def f(t0,t1):
+        return t0+t1*t1/2
+    delta=(0.,h)
+    linear=sum(a*b for a,b in zip((1.,0.),delta))
+    remainder=f(*delta)-f(0.,0.)-linear
+    assert abs(linear)<=1e-14 and 0<remainder<=h*h/2+1e-14
 
 def check_myopic_can_fail():
     assert -.2<0<-.2+1.
