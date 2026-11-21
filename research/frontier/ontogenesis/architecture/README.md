@@ -19,10 +19,17 @@
 2. [Decision and research ledger](02_DECISION_LEDGER.md) — 22 decisions, corrections/reversals, evidence inventory, open hypotheses, maintenance rule.
 3. [Experimental program and engineering plan](03_EXPERIMENTS_AND_EXECUTION.md) — 18 experiment gates, controls, native training and scale budgets.
 4. [Evidence and primary research register](04_EVIDENCE_AND_REFERENCES.md) — repository citations, contemporary literature and audit limitations.
-5. [Executable mathematical sanity checks](checks/formal_sanity.py) and [results](results/formal_sanity_20261121.json) — deterministic CPU checks, not neural-model experiments.
-6. [Memory-addressing diagnostic chart](figures/memory_acquisition_controls.png) — prior repository data, one seed.
+5. The companion downloadable research package contains an executable CPU sanity-check script and its JSON output (five passed; **not** neural model experiments).
+6. The companion package contains a rendered diagnostic chart. For GitHub review, the exact pre-existing values are shown below.
 
-![Prior repository memory-acquisition result, one-seed pilot](figures/memory_acquisition_controls.png)
+| Task phases | Original | Uniform hash | Original + Adam state reset | Original + 10× LR |
+|---|---:|---:|---:|---:|
+| 1–15 | 88.1% | 100.0% | 99.3% | 99.9% |
+| 16–30 | 28.9% | 100.0% | 96.4% | 94.9% |
+| 31–45 | 6.9% | 100.0% | 91.2% | 76.6% |
+| 46–60 | 3.4% | 99.9% | 86.1% | 59.9% |
+
+*Source: `INVESTIGATION.md`, Question 7; one seed (3001). These are historical reported pilot values, not new model experiments.*
 
 ## Research-architecture lifecycle
 
