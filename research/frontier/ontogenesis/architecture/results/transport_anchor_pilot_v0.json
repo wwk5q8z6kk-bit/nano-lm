@@ -1,0 +1,136 @@
+{
+  "experiment": "transport_anchor_pilot_v0",
+  "n_seeds": 5,
+  "d": 16,
+  "hypothesis": "a generic unknown full-rank rotation needs enough independent paired anchors to reconstruct globally",
+  "claim_limit": "purely synthetic linear features; no LM learning or energy measurement",
+  "rows": [
+    {
+      "seed": 1100,
+      "dim": 16,
+      "reference": 1,
+      "without_transport": 0.243,
+      "known_transform": 1,
+      "n_test": 5000,
+      "estimate_by_anchor_count": {
+        "4": 0.4886,
+        "8": 0.6478,
+        "12": 0.8204,
+        "16": 1,
+        "24": 1,
+        "32": 1,
+        "64": 1
+      }
+    },
+    {
+      "seed": 1101,
+      "dim": 16,
+      "reference": 1,
+      "without_transport": 0.2294,
+      "known_transform": 1,
+      "n_test": 5000,
+      "estimate_by_anchor_count": {
+        "4": 0.432,
+        "8": 0.5284,
+        "12": 0.6474,
+        "16": 1,
+        "24": 1,
+        "32": 1,
+        "64": 1
+      }
+    },
+    {
+      "seed": 1102,
+      "dim": 16,
+      "reference": 1,
+      "without_transport": 0.1942,
+      "known_transform": 1,
+      "n_test": 5000,
+      "estimate_by_anchor_count": {
+        "4": 0.4982,
+        "8": 0.5976,
+        "12": 0.7744,
+        "16": 1,
+        "24": 1,
+        "32": 1,
+        "64": 1
+      }
+    },
+    {
+      "seed": 1103,
+      "dim": 16,
+      "reference": 1,
+      "without_transport": 0.1596,
+      "known_transform": 1,
+      "n_test": 5000,
+      "estimate_by_anchor_count": {
+        "4": 0.4904,
+        "8": 0.6022,
+        "12": 0.7292,
+        "16": 1,
+        "24": 1,
+        "32": 1,
+        "64": 1
+      }
+    },
+    {
+      "seed": 1104,
+      "dim": 16,
+      "reference": 1,
+      "without_transport": 0.2248,
+      "known_transform": 1,
+      "n_test": 5000,
+      "estimate_by_anchor_count": {
+        "4": 0.4318,
+        "8": 0.6136,
+        "12": 0.6966,
+        "16": 1,
+        "24": 1,
+        "32": 1,
+        "64": 1
+      }
+    }
+  ],
+  "summary": {
+    "reference": 1,
+    "without_transport": 0.2102,
+    "known_transform": 1,
+    "estimated": {
+      "4": {
+        "mean": 0.4682,
+        "min": 0.4318,
+        "max": 0.4982
+      },
+      "8": {
+        "mean": 0.5979,
+        "min": 0.5284,
+        "max": 0.6478
+      },
+      "12": {
+        "mean": 0.7336,
+        "min": 0.6474,
+        "max": 0.8204
+      },
+      "16": {
+        "mean": 1,
+        "min": 1,
+        "max": 1
+      },
+      "24": {
+        "mean": 1,
+        "min": 1,
+        "max": 1
+      },
+      "32": {
+        "mean": 1,
+        "min": 1,
+        "max": 1
+      },
+      "64": {
+        "mean": 1,
+        "min": 1,
+        "max": 1
+      }
+    }
+  }
+}
