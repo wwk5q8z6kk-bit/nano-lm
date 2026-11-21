@@ -1,0 +1,21 @@
+flowchart TD
+    X[Observed token prefix] --> A{Select candidate causal core}
+    A --> D0[D0: strong dense reference]
+    A --> H1[H1: published hybrid]
+    A --> R1[R1: recurrent depth]
+    A --> A1[A1: adaptive predictive state hypothesis]
+    A --> X0[X0: new independent principle]
+    D0 --> Z[Native latent state]
+    H1 --> Z
+    R1 --> Z
+    A1 --> Z
+    X0 --> Z
+    Z --> K{Another bounded causal step?}
+    K -->|Evidence supported| T[State transition]
+    T --> Z
+    K -->|Stop| Y[Native next token distribution]
+    W[Resettable scoped working state] <--> Z
+    L[Optional bitemporal exact store] -.->|Augmented system only| W
+    Y --> E[Independent held out evaluation]
+    E --> LED[Evidence and decision ledger]
+    LED --> V[Reject, revise or promote]
