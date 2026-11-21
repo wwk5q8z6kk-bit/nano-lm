@@ -154,3 +154,24 @@ PLASTICITY v0, 200 successive tasks of 256 facts, three seeds, predictions writt
 | D-020 | Native dense baseline remains reference; APS, hybrid, and recurrent candidates unselected | [Decision register](architecture/02_DECISION_LEDGER.md) | Preregister [18-gate plan](architecture/03_EXPERIMENTS_AND_EXECUTION.md) in authorized environment |
 
 **Maintenance rule:** integrate an update into this canonical ledger on each meaningful completed experiment/independent review, with exact code revision, data provenance, seeds, hardware and supersession links; not simply because a theory was proposed. This review branch does not merge or modify running experiments or raw results.
+
+## Review supplement V2 — theory and empirical gaps (2026-11-21)
+
+**Canonical precedence:** preserve the original experimental record, independent referee corrections and registered protocols above. The [v2 review](architecture/05_GAP_CLOSURE_AND_FORMAL_REVIEW.md) is a *candidate scientific review*, not an adopted backbone or new language-model result. Its [machine decision events](architecture/ledger_events.jsonl) and [schema](architecture/ledger_event.schema.json) are an additive audit supplement. [Validator](architecture/checks/validate_research_package.py) checks documentary integrity, not scientific truth.
+
+| ID | Decision and reason | Evidence status | Next gate |
+|---|---|---|---|
+| D-024 | Do not promote elementary conditional transport, projection, memory and compute equations into a proof of LM superiority | Scoped math only | Independent mathematical review; G05/G06/G15 |
+| D-025 | Unknown feature-map identification, migration and end-to-end state rewrite costs must be measured | Hypothesis | G05 against frozen/replay controls |
+| D-026 | Null-space edits guarantee only local first-order anchor invariance, with a second-order remainder under smoothness | Conditional bound; prior art | G06; compare acquisition and retained old skill |
+| D-027 | Bitemporal, permission-aware records are **augmented-system** consistency, not intrinsic knowledge or truth | Deterministic policy | Version/conflict/retraction tests |
+| D-028 | One-step compute threshold is myopic; multi-step stopping needs budgeted value and causal estimates | Mathematical correction | G15 fixed-depth and scratchpad comparisons |
+| D-029 | Dense D0, published hybrid H1, recurrent R1, APS candidate A1 and new X0 remain competing architectures | Unselected | Fresh native language/code Pareto evaluation |
+| D-030 | Plasticity, retention, correction, transfer and sample efficiency require separate endpoints | Existing toy results; open transfer | G03/G07 |
+| D-031 | A live write router must distinguish rule changes, exceptions and noise without oracle future labels | Repo pilot, mechanism unresolved | G04 prequential stream |
+| D-032 | Human decisions now have an append-only event schema and validation contract; canonical history stays in this ledger | Review-only process | Independent review before PR merge |
+| D-033 | Research scripts must not silently overwrite frozen result JSONs | Reproduced operational defect, fixed in review branch | Read-only test and no-overwrite negative test |
+
+**Current explicit open gaps:** no learned state-migration result on actual language models; no proven positive forward transfer; no confirmed model-level Pareto gain; no authoritative inventory of owner-local uncommitted worktrees; no verified TPU/GPU price for scale; no blanket rights to restricted data. Historical comparison in D-005 is **bits per token**, not “BPB/token”; calibrated wall time drifted in [PR #194](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/194). Preserve the paper's and repo's actual domains/metrics.
+
+**Maintenance policy:** new evidence is an append-only event with ID, code/data checkpoint and protocol SHA, independent unit/seeds, time/resource accounting, reviewer, contradicting alternatives and next gate. Avoid daily prose churn when nothing changed. This branch remains a draft PR; no registered results modified or paid run authorized.
