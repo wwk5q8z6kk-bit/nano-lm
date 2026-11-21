@@ -1,0 +1,1 @@
+{"id": "hassaneljesr/nanolm-baseline-dense-v1", "title": "nanolm-baseline-dense-v1", "code_file": "baseline.py", "language": "python", "kernel_type": "script", "is_private": true, "enable_gpu": true, "enable_internet": false, "dataset_sources": ["hassaneljesr/nanolm-corpus-v1-800m"], "competition_sources": [], "kernel_sources": []}
