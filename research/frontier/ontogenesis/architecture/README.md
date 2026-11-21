@@ -31,6 +31,16 @@
 
 *Source: `INVESTIGATION.md`, Question 7; one seed (3001). These are historical reported pilot values, not new model experiments.*
 
+## New first-principles diagnostic: representation transport (2026-11-21)
+
+A constructed 16D example tested whether predictions survive an unknown change of feature basis. An exactly known inverse preserves outputs by construction. Recovering a *general* linear inverse from anchor pairs requires a full-rank span; fewer observations may work if structured priors or task-specific invariants hold. The experimental evidence (five seeds, not an LM) was:
+
+| Paired anchors | 0 | 4 | 8 | 12 | 16 |
+|---|---:|---:|---:|---:|---:|
+| Held-out top-1 agreement | 21.0% | 46.8% | 59.8% | 73.4% | 100% |
+
+See [the scoped proof](01_ARCHITECTURE_AND_THEOREMS.md) and the companion downloadable package for the raw JSON and chart. This **does not** establish a new LM mechanism. Reproduce using `checks/transport_anchor_pilot.py` when available.
+
 ## Research-architecture lifecycle
 
 ```mermaid
