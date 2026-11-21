@@ -19,7 +19,7 @@
 2. [Decision and research ledger](02_DECISION_LEDGER.md) — 22 decisions, corrections/reversals, evidence inventory, open hypotheses, maintenance rule.
 3. [Experimental program and engineering plan](03_EXPERIMENTS_AND_EXECUTION.md) — 18 experiment gates, controls, native training and scale budgets.
 4. [Evidence and primary research register](04_EVIDENCE_AND_REFERENCES.md) — repository citations, contemporary literature and audit limitations.
-5. The companion downloadable research package contains an executable CPU sanity-check script and its JSON output (five passed; **not** neural model experiments).
+5. [Repository lightweight sanity-check script](checks/repo_lightweight_checks.py) — five pure-Python deterministic checks, independently executed locally; the companion downloadable pack contains the more extensive NumPy check and its JSON result. Both are **not** neural model experiments.
 6. The companion package contains a rendered diagnostic chart. For GitHub review, the exact pre-existing values are shown below.
 
 | Task phases | Original | Uniform hash | Original + Adam state reset | Original + 10× LR |
