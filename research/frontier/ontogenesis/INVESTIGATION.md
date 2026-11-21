@@ -266,3 +266,21 @@ Chance is 3.1%; the ceiling for inference is about 90%. Seed-to-seed spread was 
 - The components are published: online alternating least squares, decremental least squares, frozen-key stores for continual learning. No novelty is claimed. What this adds for us is a learner that meets all three parts of the definition on a structured stream, and a benchmark a lookup table fails.
 
 **Next question.** Can the shared part be made deep while keeping writes additive and local? Candidates: fixed random features under the statistics; a shared encoder that is re-fitted only when the store has doubled, so the re-addition cost per fact stays constant on average.
+
+### First acquisition benchmark (`cab.py`), full run (2026-11-21)
+
+Seeds 3001–3003, 60 phases, raw file `results/cab/cab-v0.json`. Run with 8 relations after the sampler fix recorded in the file header. Means over the last 15 phases; seed spread was a few points at most. [Observed]
+
+| Learner | Acquire new facts | Retain old facts | Apply corrections | Still answers the stale value | Two-step chains by iterating | Two-step chains in one pass |
+|---|---|---|---|---|---|---|
+| Plain network | 100% | 4.7% | 6.6% | 0.2% | 8.3% | 2.3% |
+| Network with 10% replay | 100% | 19.5% | 21.6% | 0.2% | 21.4% | 1.8% |
+| Fixed-address memory | 2.5% | 60.7% | 10.8% | 75.8% | 2.0% | 0.1% |
+
+Fixed-address memory in the first 15 phases: acquire 69%, retain 86%, iterate 68.5%, stale answers 91%.
+
+- P2 held: the plain network kept almost nothing, replay helped without fixing it, and the fixed-address memory retained most but kept answering stale values.
+- P3 held as worded (no learner got all four above 80%), but is empty: a lookup table would get all four (Question 6).
+- P1 held only where one-step facts were retained. Iterating a one-step read composes untrained chains exactly as well as the facts themselves are remembered; the one-pass read never composes. That is nearly true by construction.
+- **Not predicted: the fixed-address memory stopped acquiring.** New-fact accuracy fell from 69% early to 2.5% late, with 7,680 facts in 16,384 slots read 8 at a time. It did not forget so much as fill up and refuse. Retention and acquisition traded off inside one learner.
+- This benchmark uses arbitrary facts, so it shows only the storage side of the problem. Its replacement is `cab_s.py`.
