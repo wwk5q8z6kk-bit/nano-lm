@@ -126,7 +126,7 @@ Let \(A\in\mathbb R^{d\times d}\) be an unknown linear transformation, and let \
 
 **Synthetic five-seed demonstration (2026-11-21).** With 16D Gaussian features and an unknown orthogonal basis rotation, the constructed teacher's top-1 agreement under no transport was 21.0%; an exactly known inverse restored 100%. Pseudoinverse estimates using 4, 8, 12 and 16 paired anchors yielded 46.8%, 59.8%, 73.4% and 100%, respectively. This is NOT training an LM or demonstrating efficient self-improving intelligence. Reproduction code: `checks/transport_anchor_pilot.py`; raw JSON `results/transport_anchor_pilot_v0.json`.
 
-![Synthetic 16D transport anchor test](figures/transport_anchor_cost.png)
+![Synthetic 16D transport anchor test](figures/transport_anchor_cost.svg)
 
 **Decision implication:** structured migration is worth investigating only if it beats replay, freezing and re-encoding when counting anchor selection, read/write amplification, model-state accuracy and actual energy.
 
