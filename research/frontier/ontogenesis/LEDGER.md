@@ -133,6 +133,12 @@ PLASTICITY v0, 200 successive tasks of 256 facts, three seeds, predictions writt
 - A standard remedy (normalisation plus weight decay) keeps learning speed almost flat. It is the strongest simpler alternative for any plasticity claim.
 - No arm retains earlier tasks. Plasticity and retention are separate problems here.
 
+### 2026-11-21 companion diagnostic (additive, no change to prior verdicts)
+
+| Decision ID | Scoped result | Experiment provenance | Interpretation and next gate |
+|---|---|---|---|
+| D-023 | Synthetic 16D orthogonal basis migration: no inverse 21.0%, estimated generic inverse from 4/8/12/16 paired anchors 46.8/59.8/73.4/100% top-1 agreement (5 seeds) | [Candidate architecture and rank proof](architecture/01_ARCHITECTURE_AND_THEOREMS.md); companion downloadable code/raw results | Consistent with full-rank linear map identifiability; **not** neural-model continual learning or efficiency; test structured real feature drift against replay and total write/read cost |
+
 ## Additive research reconciliation — 2026-11-21
 
 **Scope:** Proposed review-branch update; earlier results, preregistrations and negative findings above remain unmodified. The linked [architecture/theory package](architecture/README.md) is a candidate, not a selected Nano LM backbone or claim of a scientific breakthrough.
