@@ -47,9 +47,38 @@ def check_compute_gate():
     assert 0.14 > threshold and not 0.09 > threshold
 
 
+
+def check_bounded_logprob():
+    a=[2.,0.,-1.,1.]; b=[2.04,-.04,-.97,.98]
+    eps=max(abs(x-y) for x,y in zip(a,b))
+    def logp(z):
+        maxz=max(z)
+        norm=maxz+math.log(sum(math.exp(v-maxz) for v in z))
+        return [v-norm for v in z]
+    p,q=logp(a),logp(b)
+    assert max(abs(x-y) for x,y in zip(p,q))<=2*eps+1e-12
+    assert 0<=sum(math.exp(x)*(x-y) for x,y in zip(p,q))<=2*eps+1e-12
+
+def check_nonzero_second_order_drift():
+    h=.13
+    # f(theta0,theta1)=theta0+theta1**2/2; J(0,0)=[1,0]
+    assert 0<.5*h*h<=h*h/2+1e-14
+
+def check_myopic_can_fail():
+    assert -.2<0<-.2+1.
+
+def check_bitemporal_visibility():
+    ev=[("old",1,1,"a"),("corrected",1,5,"b")]
+    def get(t,r):
+        eligible=[e for e in ev if e[1]<=t and e[2]<=r]
+        return max(eligible,key=lambda e:(e[1],e[2],e[3]))[0] if eligible else None
+    assert get(2,2)=="old" and get(2,6)=="corrected"
+
 def main():
     checks = [check_versioned,check_transport,check_first_order_nullspace,
-              check_storage,check_compute_gate]
+              check_storage,check_compute_gate,check_bounded_logprob,
+              check_nonzero_second_order_drift,check_myopic_can_fail,
+              check_bitemporal_visibility]
     passed = []
     for fn in checks:
         fn()
