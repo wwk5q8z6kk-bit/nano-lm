@@ -62,11 +62,11 @@ The following values are **from the existing repo's one-seed** `INVESTIGATION.md
 | 31–45 | 6.9% | 100.0% | 91.2% | 76.6% |
 | 46–60 | 3.4% | 99.9% | 86.1% | 59.9% |
 
-![Historical one-seed memory pilot](figures/memory_acquisition_controls.png)
+![Historical one-seed memory pilot](figures/memory_acquisition_controls.svg)
 
 A separate **constructed** 16-dimensional linear teacher and orthogonal hidden-basis shift yielded five-seed average class agreement 21.0% without correction; pseudoinverse estimated from 4, 8, 12, 16 independent paired anchors yielded 46.8%, 59.8%, 73.4%, 100%. A known inverse also reached 100%. This shows general linear-map identification under the construction, **not** efficient learned LM memory, retention or self-improvement.
 
-![Five-seed constructed rank diagnostic](figures/transport_anchor_cost.png)
+![Five-seed constructed rank diagnostic](figures/transport_anchor_cost.svg)
 
 ## Reproduction and safety
 
