@@ -179,3 +179,33 @@ Lesson for method: a probe needs its own control before its result is read.
 **Evidence that would distinguish the explanations.** Measure the gradient inner product between old and new tasks for each learner. Run normalisation and weight decay separately. Add a learner that projects each update to be orthogonal to stored old gradients. If forgetting tracks the inner product across all of them, the first-order account is sufficient.
 
 **Not understood.** Whether a representation can be learned in which related tasks share directions and unrelated tasks do not, so that transfer is kept and interference removed. That is question 5.
+
+### Question 3: result of the pre-registered looping replication (2026-11-21)
+
+Protocol: `PROTOCOL-LOOP.md`, committed before the fits. 13,000 steps, three seeds, one learning rate for all arms. Raw files: `results/loop/`. [Observed]
+
+Two-step accuracy at the end (guessing is about 21%):
+
+| Arm | Parameters | Seed 11 | Seed 12 | Seed 13 | Seeds that learned |
+|---|---|---|---|---|---|
+| dense, 4 layers | 278k | 20.7% | 22.6% | 22.4% | 0 of 3 |
+| looped, 1 layer × 4 | 129k | 20.5% | 98.1% | 95.1% | 2 of 3 |
+| looped, 2 layers × 2 | 178k | 96.5% | 95.6% | 22.2% | 2 of 3 |
+| looped wide, 1 layer × 4, width 96 | 239k | 20.9% | 22.9% | 22.3% | 0 of 3 |
+| one layer, one pass | 129k | 20.6% | 22.2% | 21.7% | 0 of 3 |
+
+One-step accuracy was 98–100% in every run.
+
+**Verdict by the pre-registered rules: mixed.** "Replicated" needed looped to win in all three seeds; it won in two. "Not replicated" and "it is model size" both fail as well.
+
+**What the data do and do not say.**
+- [Observed] Every run is either at guessing or above 95%. Where learning happens it is a jump between 5,000 and 8,000 steps, never gradual. The outcome at this budget is a matter of whether the jump has happened yet.
+- [Observed] Weight-tied arms at width 64 made the jump in 4 of 6 runs; untied dense in 0 of 3. With counts this small the difference is suggestive, not established (Fisher exact, 4/6 against 0/3, p is about 0.17).
+- [Observed] The wide looped model failed in all three seeds. This contradicts the simple reading "tying weights helps". It also had the same learning rate as the narrow one, which may be too high for it; the protocol named the lack of per-arm tuning as a limitation.
+- [Observed] One layer applied once never learned two steps, so E4 in its simplest form (smaller is easier) is not supported. The narrow four-layer dense control is still missing.
+- E5 (chance) is not eliminated: jump timing varies by seed, and a seed-dependent jump is exactly what E5 describes. What survives is a weaker claim: tying may make the jump more likely or earlier at this budget.
+- E3 predicted the two-step jump soon after one-step mastery. One-step was mastered by step 1,000 to 2,000; the jump came 4,000 to 6,000 steps later. E3 as stated is not supported.
+
+**Status change.** "Looping learns two-step chains that dense does not" is downgraded from pilot observation to: mixed under pre-registration, two of three seeds. It must not be cited as a demonstrated advantage.
+
+**What would settle it.** Longer budget for all arms (does dense jump later, or never), ten or more seeds to estimate jump probability and timing per arm, a learning-rate sweep for the wide arm, and the narrow dense control. These are cheap on the laptop.
