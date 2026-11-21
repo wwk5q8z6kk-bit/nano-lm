@@ -32,13 +32,15 @@ class MLP(nn.Module):
 
 class SparseMemory(nn.Module):
     """Query -> top-k of `slots` learned keys -> weighted sum of slot values -> classes."""
-    def __init__(self, tasks, d=64, slots=8192, k=8):
+    def __init__(self, tasks, d=64, slots=8192, k=8, frozen_address=False):
         super().__init__()
         self.sym, self.task = nn.Embedding(S, d), nn.Embedding(tasks, d)
         self.q = nn.Linear(2 * d, d)
         self.keys = nn.Parameter(torch.randn(slots, d) / d ** 0.5)
         self.values = nn.Embedding(slots, C); nn.init.zeros_(self.values.weight)
         self.k = k
+        if frozen_address:      # addresses never change: embeddings, query map and keys are fixed at initialisation
+            for prm in (self.sym.weight, self.task.weight, self.q.weight, self.q.bias, self.keys): prm.requires_grad_(False)
 
     def forward(self, t, x):
         q = F.normalize(self.q(torch.cat([self.task(t), self.sym(x)], -1)), dim=-1)
@@ -50,8 +52,9 @@ class SparseMemory(nn.Module):
 def run(arm, tasks, cap, seed, lr):
     torch.manual_seed(seed); rng = np.random.default_rng(seed)
     model = {"mlp": lambda: MLP(tasks), "mlp_norm_wd": lambda: MLP(tasks, norm=True),
-             "sparse_memory": lambda: SparseMemory(tasks)}[arm]()
-    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01 if arm == "mlp_norm_wd" else 0.0)
+             "sparse_memory": lambda: SparseMemory(tasks),
+             "sparse_memory_frozen_address": lambda: SparseMemory(tasks, frozen_address=True)}[arm]()
+    opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=lr, weight_decay=0.01 if arm == "mlp_norm_wd" else 0.0)
     data, steps_needed = [], []
     for t in range(tasks):
         x = torch.from_numpy(rng.choice(S, FACTS, replace=False)); y = torch.from_numpy(rng.integers(0, C, FACTS))
@@ -76,9 +79,10 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--tasks", type=int, default=200); ap.add_argument("--cap", type=int, default=300)
     ap.add_argument("--seeds", type=int, default=3); ap.add_argument("--lr", type=float, default=1e-3)
-    ap.add_argument("--out", default="")
+    ap.add_argument("--out", default=""); ap.add_argument("--arms", default="mlp,mlp_norm_wd,sparse_memory")
     a = ap.parse_args(); rows = []
-    for arm in ("mlp", "mlp_norm_wd", "sparse_memory"):
+    ap2 = a.arms.split(",")
+    for arm in ap2:
         for seed in range(a.seeds):
             t0 = time.time(); r = run(arm, a.tasks, a.cap, 2000 + seed, a.lr); r["seconds"] = round(time.time() - t0, 1)
             rows.append(r); print({k: (round(v, 3) if isinstance(v, float) else v) for k, v in r.items() if k != "steps"}, flush=True)

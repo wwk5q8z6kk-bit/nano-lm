@@ -62,6 +62,9 @@ def build(arm, spec, d, device):
     elif arm == "keystore_learned": m = KeyStore(spec.symbols, d=d, mode="learned")
     elif arm == "dense": m = EventTransformer(spec.symbols, d=d, layers=4)
     elif arm == "looped": m = EventTransformer(spec.symbols, d=d, layers=1, loops=4)
+    elif arm == "dense1": m = EventTransformer(spec.symbols, d=d, layers=1, loops=1)          # same weights as looped, one pass
+    elif arm == "looped_wide": m = EventTransformer(spec.symbols, d=96, layers=1, loops=4)    # parameters close to dense
+    elif arm == "looped2x2": m = EventTransformer(spec.symbols, d=d, layers=2, loops=2)
     else: raise SystemExit(arm)
     return m.to(device)
 
@@ -86,6 +89,7 @@ if __name__ == "__main__":
     ap.add_argument("--symbols", type=int, default=256); ap.add_argument("--live", type=int, default=32)
     ap.add_argument("--churn", type=float, default=0.0); ap.add_argument("--hops", default="1")
     ap.add_argument("--groups", type=int, default=2); ap.add_argument("--queries", type=int, default=16)
+    ap.add_argument("--steps", type=int, default=0); ap.add_argument("--eval-every", type=int, default=0)
     ap.add_argument("--warmup", type=int, default=0); ap.add_argument("--max-hop-in-loss", type=int, default=None)
     ap.add_argument("--device", default="mps"); ap.add_argument("--out", default="")
     a = ap.parse_args()
@@ -97,17 +101,20 @@ if __name__ == "__main__":
     params = sum(p.numel() for p in model.parameters())
     g = guessers(spec, np.random.default_rng(a.seed + 1), 100)
     t0, steps, log, gnorms = time.time(), 0, [], []
-    while time.time() - t0 < a.seconds:
+    curve = []
+    while (steps < a.steps) if a.steps else (time.time() - t0 < a.seconds):
         b = collate(spec, rng, a.batch, a.device)
         loss, c, _ = step_loss(model, a.arm, b, a.max_hop_in_loss)
         if a.warmup:
             for gparam in opt.param_groups: gparam["lr"] = a.lr * min(1.0, (steps + 1) / a.warmup)
         opt.zero_grad(set_to_none=True); loss.backward()
         gn = float(torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)); gnorms.append(gn); opt.step(); steps += 1
+        if a.eval_every and steps % a.eval_every == 0:
+            curve.append((steps, round(time.time() - t0, 1), evaluate(model, a.arm, spec, a.device, 424242, batches=4)))
         if steps % 50 == 0:
             log.append((steps, round(time.time() - t0, 1), round(loss.item(), 4), round(c.float().mean().item(), 4)))
             print(*log[-1], flush=True)
-    res = {"arm": a.arm, "lr": a.lr, "warmup": a.warmup, "seed": a.seed, "params": params, "steps": steps, "seconds": a.seconds,
+    res = {"curve": curve, "train_seconds": round(time.time() - t0, 1), "arm": a.arm, "lr": a.lr, "warmup": a.warmup, "seed": a.seed, "params": params, "steps": steps, "seconds": a.seconds,
            "spec": spec.__dict__, "guessers": g, "eval": evaluate(model, a.arm, spec, a.device, a.seed + 7),
            "live_particles": getattr(model, "last_live", None), "grad_norm_median": float(np.median(gnorms)), "grad_norm_p95": float(np.percentile(gnorms, 95)), "grad_norm_max": float(np.max(gnorms)), "log": log[-5:]}
     print(json.dumps(res, default=str))
