@@ -4,11 +4,7 @@
 **Existing authority:** [`research/frontier/ontogenesis/LEDGER.md`](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/research/ontogenesis-phase1/research/frontier/ontogenesis/LEDGER.md) on `research/ontogenesis-phase1`. This is a **proposed reconciled decision supplement**, not a replacement for that canonical research ledger or the original protocols. It may be integrated through review.  
 **Source hierarchy:** registered raw results and code > later reviewed corrections > original experimental reports > transcripts > hypotheses and prose blueprints > outside analogies. Repository contents read through the GitHub connection; local running jobs and unpublished worktrees were **not** directly inspected.
 
-### Addendum — new synthetic migration decision (D-023, 2026-11-21)
-
-| ID | Question | Decision | Evidence | Limitation / next gate |
-|---|---|---|---|---|
-| D-023 | How many paired anchors uniquely identify unknown representation migration? | For an **unrestricted linear** map on \(\mathbb R^d\), full-span input anchors suffice and are necessary for unique map identification | Elementary rank proof in [Proposition A.1](01_ARCHITECTURE_AND_THEOREMS.md), five-seed constructed 16D diagnostic: 4/8/12/16 anchors restored 46.8/59.8/73.4/100% top-1 agreement | No learned LM result; test structured/low-rank drift, migration writes, replay and total resources; do not elevate to general necessity for preserving selected predictions |
+> **V2 correction notice:** The decision rows below are a historical snapshot, not universally complete executable evidence. **Do not read 'mathematically checked' as 'empirically proven'** or 'experiment specified' as 'experiment executed'. The existing `research/frontier/ontogenesis/LEDGER.md` remains canonical once the draft PR is merged. The machine-readable new decision events in [`ledger_events.jsonl`](ledger_events.jsonl) are an audited supplement, not a replacement for frozen protocols. Consult [the V2 formal review](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md).
 
 ## A. One-page decision register
 
@@ -36,6 +32,7 @@
 | D-020 | Should paid scale training begin? | No new material spend on this task | Need baseline, provenance, confirmed budgets, and authorization | `docs/ACTIVE_NOW.md` | Future experiment-scoped approval |
 | D-021 | How to maintain the ledger? | Record every proposal, experiment, review and reversal by ID | Multiple research branches share overlapping names | Existing canonical ledger | Review PR, keep source of truth singular |
 | D-022 | How to deploy this package? | Safe additive documents and tests, no destructive changes to research | Protect pending registered experiments and uncommitted worktrees | Repo inventory | Draft PR, review before merge |
+| D-023 | How many anchors uniquely identify an unrestricted linear feature migration? | Full-span paired anchors suffice and are necessary for the general linear map, absent structural assumptions | Elementary rank proof; 16D five-seed constructed example, not LM training | Derived + synthetic check | Test structured low-rank/orthogonal transport vs replay and true write/energy cost |
 
 ## B. Contradiction and correction chain (never delete the original claim)
 
@@ -76,7 +73,7 @@
 
 ## E. Ledger maintenance protocol
 
-**One decision = one stable identifier.** Each row must capture UTC timestamp, author/reviewer, exact code/data/benchmark/checkpoint commit, evidence status, alternatives considered, decision rationale, affected experiments, permission class, next gate, and reversal link. Do not treat a draft proposal, independent referee note, raw measurement, or merged code as equivalent authority.
+**One decision = one stable identifier, append-only events and explicit supersession.** Each row must capture UTC timestamp, author/reviewer, exact code/data/benchmark/checkpoint commit, evidence status, alternatives considered, decision rationale, affected experiments, permission class, next gate, and reversal link. Do not treat a draft proposal, independent referee note, raw measurement, or merged code as equivalent authority.
 
 State transitions: `proposed` → `mathematically checked` → `preregistered` → `exploratory` → `replicated` → `integrated` or `rejected`; `superseded` retains a back-reference to the new decision. Results never disappear when theory changes. Every metric stores numerator, denominator, distribution, seeds, experimental budget, model size, hardware/precision, and evaluation lineage. Distinguish *unknown* from *zero*.
 
@@ -97,3 +94,22 @@ flowchart TD
 ```
 
 **Cadence:** update on every completed meaningful experiment or new verified contradictory source, not by rewriting research documents daily without new evidence. A periodic automation may review the ledger, but it cannot claim that a new result exists unless actual commits/artifacts demonstrate one.
+
+## F. V2 decisions, consequences and evidence gaps (append-only)
+
+The following rows are **review decisions about how to investigate**, not selections of a final Nano LM model. Each is repeated in the machine-readable `ledger_events.jsonl` with a UTC timestamp, status, alternative, reason, evidence URL and next gate; `checks/validate_research_package.py` checks the event contract.
+
+| ID | Reviewed decision | Reason and competing alternative | Evidence status | Next experiment / dependency |
+|---|---|---|---|---|
+| D-024 | Do **not** treat the original five propositions as LM superiority or lifelong learning proofs | Known bijection, local linearization, storage bound, versioned retrieval, and single-step cost decision are independent elementary results | Mathematics, conditional; [05 §2](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md#2-theorems-exactly-what-has-and-has-not-been-proved) | Independently check assumptions, then G05/G06/G15 |
+| D-025 | Require *unknown* representation-map identification and all-dependent-state migration | A known inverse is an oracle and migration cost can exceed replay | Hypothesis not experimentally validated | G05 vs frozen/replay including state/caches and cost |
+| D-026 | Compare nonlinear finite-step edits, not just projected Jacobians | Local anchor Jacobian only controls first order; constraint may block acquisition | Conditional second-order bound; direct prior art exists | G06 same-entity replay, damping, trainability |
+| D-027 | Define versioning as bitemporal, permission-aware **system-only** option | Latest stored event is neither a medical truth nor a learnable concept; event time differs from ingestion time | Deterministic data structure, no model result | Bitemporal conflict/retraction tests |
+| D-028 | Adaptive compute must be budgeted multi-step decision; one-step gate is only myopic | Counterfactual value/calibration and future state matter | Mathematical formulation, open learned policy | G15 vs equal-budget fixed depth and scratchpad |
+| D-029 | Continue architecture competition D0/H1/R1/A1/X0; do not freeze APS | Hybrid is established but has task-specific expressiveness limits; dense is currently best verified code baseline | Repository + primary abstracts; model choice open | G10–G16 |
+| D-030 | Split plasticity, retention, generalization and positive forward transfer into separate endpoints | The project's normalized MLP retained almost no past facts; an 'adaptable' model can still forget | Repo synthetic pilot; published LLA work | G03/G07 with zero-oracle controls |
+| D-031 | Keep true revision/exception/new-rule distinction and no future-label routing | Correction damage refuted the earlier exception hypothesis; LOO detector recovers only part of oracle benefit | Repo 3-seed synthetic result; mechanism incomplete | G04, prequential dynamic change data |
+| D-032 | Register all new decision events in a validated append-only machine ledger; retain original human-ledger history | Free-text-only decision tables drift, duplicate metrics and mix hypotheses with results | Procedure implemented in this PR; does not validate historical artifacts | Validate manifest, review merge, independent source audit |
+| D-033 | Rerunnable checks must work without writing inside the package | Prior numerical scripts used fixed output paths and failed on protected backing files | Local reproducibility defect reproduced | Run checks read-only, explicit --out to writable location |
+
+**Known blockers requiring a real experiment, not another document:** unfinished/owner-local worktrees; full audits of source-specific licenses and held-out corpora; full papers/implementations beyond primary abstracts; unknown model-scale effects; verified hardware prices/energy; and proof of non-interfering *learning* rather than algebraic transport. These remain open and cannot be closed by the v2 document.
