@@ -87,7 +87,7 @@ Across five deterministic seeds, an original 16D linear classifier was viewed th
 
 This illustrates the restricted rank-identification theorem. It does not demonstrate learned representation migration, transfer, retention, lower energy or superior language modeling. The next experiment must use evolving learned features and structural transport priors and compare *both* old-output retention and newly learned capability against replay and frozen controls under equal cost.
 
-![Synthetic 16D migration pilot](figures/transport_anchor_cost.png)
+![Synthetic 16D migration pilot](figures/transport_anchor_cost.svg)
 
 ## D. Procedural reuse and positive transfer (G07–G08)
 
