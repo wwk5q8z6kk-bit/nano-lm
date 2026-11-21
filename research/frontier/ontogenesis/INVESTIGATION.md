@@ -130,3 +130,19 @@ Common weaknesses: single seeds in several places; one hyperparameter setting pe
 **Prediction recorded before the language-model pilot reports.** At equal steps, the looped model with fewer parameters will be no better than dense on bits per byte, and probably slightly worse. If it is clearly better, the two-kinds view is wrong or incomplete.
 
 **Not understood.** Why gradient descent finds the iterative solution when it does. Whether natural tasks separate cleanly into procedures and facts. Whether a system can be given capacity for facts and reuse for procedures without being told which is which.
+
+### Question 2: results of the retention probe (2026-11-20)
+
+80 tasks, two seeds, chance 1.6% (`retention_probe.py`, `results/pilots/retention-probe.json`). [Observed]
+
+| Learner | Old tasks, read normally | Old tasks, read with their original addressing | Relearn an old task | Learn a new task |
+|---|---|---|---|---|
+| Sparse memory, learned addresses | 1.4–1.6% | 50–55% | 300 steps (cap) | 300 steps (cap) |
+| Plain network with normalisation and weight decay | 1.6–2.1% | not applicable | 34–35 steps | 33–35 steps |
+
+- **Memory: the pre-stated reading "both" applies.** About half of the stored values survived and became unreachable because the addressing moved; the other half was destroyed. Address drift is a real cause, and it is not the whole cause.
+- **Plain network: no savings.** Relearning an old task takes as long as learning a new one, so by this measure nothing reusable was left.
+- **The output-layer probe proved nothing, and a control shows why.** Refitting only the output layer recovered 65% of old tasks, which looked like surviving features. The same refit on tasks the network had never seen recovered 64%. With 256 facts and wide features the output layer can simply memorise. The probe is discarded.
+- Savings for the memory are uninformative: both hit the step cap.
+
+Lesson for method: a probe needs its own control before its result is read.

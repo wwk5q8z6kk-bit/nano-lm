@@ -1,0 +1,38 @@
+[
+ {
+  "kind": "memory",
+  "seed": 4001,
+  "steps_last_ten": 300.0,
+  "current": 0.014453125,
+  "old_address": 0.548046875,
+  "relearn_steps": 300.0,
+  "fresh_steps": 300.0
+ },
+ {
+  "kind": "memory",
+  "seed": 4002,
+  "steps_last_ten": 300.0,
+  "current": 0.016015625,
+  "old_address": 0.50234375,
+  "relearn_steps": 300.0,
+  "fresh_steps": 300.0
+ },
+ {
+  "kind": "mlp",
+  "seed": 4001,
+  "steps_last_ten": 35.5,
+  "current": 0.021484375,
+  "probe": 0.6453125,
+  "relearn_steps": 35.0,
+  "fresh_steps": 33.0
+ },
+ {
+  "kind": "mlp",
+  "seed": 4002,
+  "steps_last_ten": 36.5,
+  "current": 0.01640625,
+  "probe": 0.660546875,
+  "relearn_steps": 34.0,
+  "fresh_steps": 35.0
+ }
+]
