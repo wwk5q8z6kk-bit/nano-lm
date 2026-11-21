@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-21",
+  "suite": "Nano-LM mathematical sanity checks",
+  "n_tests": 5,
+  "n_passed": 5,
+  "note": "Historical deterministic numerical checks only; not neural-model experiments or novel proofs.",
+  "tests": [
+    {
+      "test": "versioned_correctness",
+      "permutations": 6,
+      "passed": true,
+      "claim_scope": "deterministic latest-event semantics, not truth of event content"
+    },
+    {
+      "test": "invertible_transport",
+      "max_abs_logit_error": 1.7763568394002505e-15,
+      "passed": true,
+      "claim_scope": "fixed decoder and exact known orthogonal transport"
+    },
+    {
+      "test": "first_order_nullspace",
+      "constraint_linear_change": 1.4621413987396308e-16,
+      "conflicting_direction_residual": 3.703159674658233e-15,
+      "passed": true,
+      "claim_scope": "linearized preserved logits, no guarantee for finite nonlinear updates"
+    },
+    {
+      "test": "exact_independent_storage",
+      "n": 4,
+      "value_count": 8,
+      "minimum_bits": 12,
+      "passed": true,
+      "claim_scope": "worst-case injective lossless encoding without shared side information"
+    },
+    {
+      "test": "compute_policy_inequality",
+      "continue_for_gain_0_14": true,
+      "stop_for_gain_0_09": true,
+      "passed": true,
+      "claim_scope": "algebraic decision rule, not an estimate of actual model benefit"
+    }
+  ]
+}
