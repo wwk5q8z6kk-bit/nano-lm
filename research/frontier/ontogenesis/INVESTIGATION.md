@@ -343,3 +343,32 @@ Detector quality: recall 88.3% on truly irregular facts, false alarms 6.5% on re
 **Reading.** A write-time detector with no oracle keeps most of the retention benefit and about a third of the inference benefit. It also has a cost the oracle does not: clean entities lost 4 points, because a false alarm takes away one of only three facts that identify the entity.
 **Unresolved.** The spread across seeds suggests a feedback loop: a weak model detects poorly, so it trains on more noise, so it stays weak. Untested.
 **Scope.** Exceptions and corrections only. Nothing here separates a one-off exception from the first example of a new rule, or from a rule that has changed; a detector of this kind would send all three to the store, and for the last two that is the wrong decision.
+
+### Language-model store pilot: result (2026-11-21)
+
+`lm_store.py`, predictions S1–S4 committed in `6e26dc2`; validity threats committed in `5cac076` before any arm result was read. One seed, 48M-token training subset, 2,000 steps. Raw file: `results/lm/store-pilot.json`. Bits per byte on held-out text, lower is better. [Observed]
+
+| Arm | Parameters | Web | Textbook | Mathematics | Code | Weighted mix |
+|---|---|---|---|---|---|---|
+| 8 blocks, no store | 14.3M | 1.499 | 1.242 | 1.704 | 1.543 | 1.497 |
+| 8 blocks, store added after training | 14.3M | 1.451 | 1.168 | 1.639 | 1.457 | 1.439 |
+| 8 blocks, trained with the store | 14.3M | 1.533 | 1.238 | 1.868 | 1.902 | 1.583 |
+| 4 blocks, no store | 11.3M | 1.526 | 1.272 | 1.776 | 1.612 | 1.536 |
+| 4 blocks, store added after training | 11.3M | 1.476 | 1.194 | 1.704 | 1.521 | 1.475 |
+| 4 blocks, trained with the store | 11.3M | 1.536 | 1.242 | 1.853 | 1.884 | 1.581 |
+
+The store is 1.02 GB for 48M tokens of text, against about 57 MB of weights for the 8-block model.
+
+**Against the registered predictions.**
+- S1 (adding the store after training helps): **held.** 0.058 bits per byte better on the mix at 8 blocks, 0.062 at 4 blocks, on every domain.
+- S2 (training with the store beats adding it afterwards by at least 0.01): **failed decisively.** Training with the store was 0.14 worse than adding it afterwards, and 0.085 worse than using no store at all.
+- S3 (4 blocks trained with the store match 8 blocks alone): **failed**, 1.581 against 1.497.
+- S4 (the store helps most on code and least on web): **held** for the post-hoc arms (code 0.087, web 0.048).
+
+**Verdict by the registered rule.** Training the core through the store adds nothing beyond mixing the store in afterwards; in this implementation it does harm. The claim that routing memorisable content away from the core during training carries over to text is **not supported**.
+
+**What the pre-recorded caveat allows and does not allow.** Before any result was read I recorded that same-document leakage biases this test against the joint arms. The pattern fits: the damage is concentrated in code (+0.36 over no store) and mathematics (+0.16), where repetition inside a document is heaviest, and is near zero on textbook text. That is a reading made after seeing the pattern, so it is a hypothesis. It does not rescue S2. It does mean the registered failure cannot yet be read as "the principle is false for text": a store that excludes the whole current document during training is the control that would separate the two.
+
+**Not registered, but visible in the table.** Four blocks with the store added after training (1.475) beat eight blocks without it (1.497). So the capacity claim behind S3 holds for the post-hoc store, which is the published inference-time effect, and fails for joint training. One seed, and the margin (0.023) is above the 0.01 noise floor I set but not by much.
+
+**Cost.** Any gain here is a system-level gain bought with 1.02 GB of exact storage. Per stored byte that is a poor exchange: doubling the blocks costs about 12 MB and buys 0.039; the store costs 1,022 MB and buys 0.058. Wall-clock times are unusable (the machine was swapping).
