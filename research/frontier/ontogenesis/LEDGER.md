@@ -355,3 +355,25 @@ Cache-M's four domain gains(0.0012,−0.0003,0.0036,0.0059BPB) satisfy the regis
 Store-M's mixed gain is−0.0014BPB; it does not decide the source's100,684,032-parameter L/approximately101M gate. Cache-S mixed gain is0.0036 and cache-M mixed gain0.0018. Source model/evaluation ASTs and exchange-script blobs match their earlier versions, while the new training sampler is a separate implementation change without a completed repaired-sampler result in this addendum. No corpus or model was run by this audit.
 
 The package now includes a24-group final local gate and90frozen source copies. Publication uses the fixed c597d5f research integration base; later unreviewed artifacts, if any, are separately queued.
+
+---
+
+## 2026-11-21 — Address concentration dose-response (additive)
+
+Recorded 2026-11-22T03:35Z by the separate reviewing session that ran the factorial. Everything above is unchanged. No decision ID is assigned here.
+
+Second protocol on branch `research/memory-saturation-factorial` (draft [PR #199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199)): protocol `c492b0e` committed before any confirmatory run, results `b292420`. Adam reset each phase in every arm, seeds 3101–3105. M of each query's 8 slots is replaced with uniformly random slots; read weights are kept.
+
+| M | Late acquisition, range over seeds | Mean | Mean late retention | Effective slots, range |
+|---|---|---|---|---|
+| 0 (from the factorial) | 0.547–0.694 | 0.635 | 0.600 | 212–313 |
+| 2 | 0.842–0.924 | 0.885 | 0.846 | 369–549 |
+| 4 | 0.969–0.995 | 0.984 | 0.955 | 799–1,166 |
+| 6 | 0.997–1.000 | 0.999 | 0.987 | 2,599–3,659 |
+| 8 | 1.000 | 1.000 | 0.996 | 12,977–13,045 |
+
+- G1 (acquisition never falls as M rises) held on five of five seeds. G2 (the original read weights on random slots reach at least 0.95) held. G3 (a graded response) **failed**: the response saturates early, with half of each query's reads spread recovering nearly all of the gap.
+- With the factorial this gives an account of the collapse that holds on five seeds: queries concentrate on a few hundred effective slots of 16,384; carried Adam state turns that into near-total failure (0.02); removing the carried state recovers about two thirds (0.64); decongesting half of each query's reads recovers the rest (0.98).
+- Seen after the fact, so a hypothesis: effective slot count tracks late acquisition across seeds and doses. Exploratory seed 3001 has 526 effective slots at M = 0 against 212–313 for the five confirmatory seeds, which is why the one-seed reset figure of 86.1% was high.
+- Correction to a figure quoted in several summaries: "two queries with the same relation share 0.60 of their 8 slots" in `memory_saturation.py` is a count of 0.6 slots (0.076 of the 8), not 60%. Pairwise overlap is small; the concentration is in the effective slot count.
+- Limits: arbitrary facts that an exact lookup table solves, so this cannot show what random replacement costs a learner that generalises through its addresses (`cab_s.py` is the place to test that); thresholds set after the factorial; mixed addresses at M > 0 are a manipulation of concentration, not an isolation of it; not evidence about a language model.
