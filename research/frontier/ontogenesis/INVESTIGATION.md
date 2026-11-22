@@ -468,3 +468,42 @@ A difference counts only if it exceeds twice the difference between the two base
 **Predictions.** 14M gains 0.01 to 0.03 ("partial"). 40M gains under 0.015. Teacher-only training is no better than α 0.5.
 **Controls.** The teacher, evaluated inside the student run, must reproduce its own reported score to 0.001. The second-version baseline at 14M shows what the sampling fix changed: I expect it within 0.005 of the first-version result (1.1441).
 **Not tested.** Distillation with a different temperature, a larger teacher, or more training tokens.
+
+## Corrections and status changes, 2026-11-22 (UTC)
+
+### The store pilot's S2/S3 verdict is confounded; status changed from "failed" to "unsettled"
+
+Found by the literature-verification workflow and confirmed by reading `lm_store.py:112-116`. [Verified: mechanism. Inferred: size of its effect.]
+
+In the arms trained through the store, the gate table started at zero (mixing weight 0.5). It was trained by the model's own AdamW optimiser: learning rate 1e-3, 200 warm-up steps, then cosine decay to 10% over 2,000 steps. Adam moves a parameter by at most about the learning rate per step, and the schedule sums to about 1.1. So the gate logit could move at most about ±1.1. **Wherever the store had a match, it kept between 0.25 and 0.75 of the mixture, even where it was wrong.** At a position where the store gives the true token probability 0, the mixture can reach at most 0.75 even if the core is certain, which costs at least 0.42 bits there. The after-training arms fitted the same table with Adam at learning rate 0.05, with nothing holding the weight in.
+
+So the joint arms carried a handicap the post-hoc arms did not have, in addition to the same-document leakage recorded before the run. This alone could produce a loss of the size observed (0.14). S2 and S3 are therefore **not evidence** that training through a store hurts. The S1 and S4 results (post-hoc arms) are unaffected.
+
+A valid re-test needs both a leave-document-out store and a free gate: a separate gate learning rate, or a gate initialised closed. It is low priority. The n-gram store adds at most 0.004 bits per byte to models trained on 800M tokens (below), and the registered rule for this line is read on the 101M checkpoint.
+
+### All first-version TPU baseline scores carry a sampling skew; status "provisional"
+
+Found by the independent code review of `tpu/train_jax.py`. [Verified by reading the code; the effect on scores is unmeasured.]
+
+In the first version, crop starts came from `jax.random.randint` over about 8e8 positions. Without 64-bit mode in JAX 0.6.2 that draw is not uniform. The first 294,969,861 start positions each had 6 chances in the draw, the rest 5. So 41.2% of crops began in the first 36.9% of the training file: that region was sampled about 12% more often than the rest. The domains are interleaved in 64k-token blocks, so the domain mix is unaffected. The model still saw an uneven sample of documents.
+
+This affects every run in the bucket under `runs/ladder-v5e/`, `runs/ladder-v5e-2/` and `runs/ladder-v6e/`, including the 14M result (1.1441) and the 40M result (1.0481), and the checkpoints used by the store-exchange and cache tests. Comparisons inside that set are like-for-like, because every run shares the skew. Comparisons with runs that sample uniformly are not.
+
+Fixed in the second version of the script (commit `96c1863`). Crops are now drawn on the host with numpy, as in the PyTorch harness, and run names end in `-hs`. The effect is measured directly by Question 10's baselines: 14M seeds 1000 and 1001 and 40M seed 1000, with the fixed sampler, the same seeds and the same recipe. Until that reading, no first-version score should be cited as settled.
+
+### In-context cache test on the 40M checkpoint: registered rule read
+
+`tpu/cache_exchange.py`, rule registered in its header before any run. Raw files: `results/lm/cache-exchange-S.json`, `results/lm/cache-exchange-M.json`. [Observed: one checkpoint each, first-version sampler.]
+
+| Model | Web | Textbook | Mathematics | Code | Mix | Same-window tokens the cache could copy |
+|---|---|---|---|---|---|---|
+| 14M | 0.0023 | −0.0005 | 0.0068 | 0.0114 | 0.0036 | web 13%, textbook 9%, maths 33%, code 45% |
+| 40M | 0.0012 | −0.0003 | 0.0036 | 0.0059 | 0.0018 | same windows |
+
+Gain in bits per byte from mixing an exact causal cache over the same 512-token window into the trained model. Controls: causality check passed; a cache filled from a different window gives 0.0000; the model alone reproduces the training run's own scores to 0.0001.
+
+**By the registered rule:** under 0.01 on every domain at 40M, so the explicit-copy line is closed at this scale and context length. Up to 45% of code tokens repeat something earlier in the window. The trained model already predicts those tokens about as well as an exact cache does, and the gain halves from 14M to 40M.
+
+Limits. The cache sees only the model's own 512-token window, so this says nothing about copying from beyond the context. These are first-version checkpoints, but a sampling skew of this size cannot plausibly move a gain of 0.006 past 0.01.
+
+M21's 0.36-bits-per-token advantage on copyable code tokens was measured against a 5M model trained for minutes. It does not survive against dense models trained on 800M tokens.

@@ -153,10 +153,12 @@ Full write-ups with registered predictions: `INVESTIGATION.md`. Decision note: `
 | Correction damage is caused by missing constraints: not by capacity, write size, the optimiser, or lack of general replay | Demonstrated, toy | same, `margins-*`, `optimizer-*` |
 | A correction written into the model decays under later training whatever its margin; only the exact store keeps it | Demonstrated, toy | same |
 | Exact 4-gram store added after training: 0.058 bits per byte better for a 14M model trained on 33M tokens | Pilot (one seed) | `results/lm/store-pilot.json` |
-| Training the model through that store: 0.14 worse than adding it afterwards | Pilot (one seed; biased against by a recorded design flaw) | same |
+| Training the model through that store: 0.14 worse than adding it afterwards | **Unsettled** (2026-11-22): the joint arms' gate could not drop the store's weight below 0.25; see `INVESTIGATION.md`, corrections 2026-11-22 | same |
 | The same store adds 0.004 bits per byte to the same model once trained on 800M tokens | Pilot (one checkpoint) | `results/lm/store-exchange-S.json` |
 | JAX model for TPU matches the PyTorch reference to 2e-6 | Verified | `tpu/parity_check.py` |
-| Dense baseline, 14.3M parameters, one pass of 800M tokens: 1.144 bits per byte | Demonstrated (one seed) | bucket `runs/ladder-v5e/` |
+| Dense baseline, 14.3M parameters, one pass of 800M tokens: 1.144 bits per byte | Provisional (one seed; first-version sampler oversampled the first 37% of the corpus by about 12%; fixed-sampler rerun queued) | bucket `runs/ladder-v5e/` |
+| Exact in-context cache adds under 0.01 bits per byte on every domain to the trained 40M model (code 0.006) | Registered rule read: explicit-copy line closed at this scale | `results/lm/cache-exchange-M.json` |
+| The n-gram store adds 0.004 to the trained 14M model and −0.001 to the 40M one | Pilot (one checkpoint each) | `results/lm/store-exchange-*.json` |
 
 ### Status changes
 
@@ -170,6 +172,7 @@ Full write-ups with registered predictions: `INVESTIGATION.md`. Decision note: `
 | "Fixed addresses trade retention for acquisition" | Disproven as stated | optimiser reset removes most of the trade |
 | "Never forgetting equals order-independence"; "pick two" trilemma | Withdrawn | not theorems as stated; the second is published in a narrower form |
 | n-gram store as a core component | Close unless the 101M checkpoint shows a gain of 0.01 or more | rule registered in the decision note |
+| Exact in-context copy mechanism (M21 line) | Closed at this scale and context | registered rule read on the 40M checkpoint, 2026-11-22 |
 
 ### Compute facts
 
