@@ -1,0 +1,347 @@
+[
+ {
+  "arm": "dense",
+  "seed": 9101,
+  "params": 24615,
+  "train_curve": [
+   [
+    300,
+    0.2177
+   ],
+   [
+    600,
+    0.4917
+   ],
+   [
+    900,
+    0.8796
+   ],
+   [
+    1200,
+    0.6364
+   ],
+   [
+    1500,
+    0.7661
+   ],
+   [
+    1800,
+    0.8852
+   ],
+   [
+    2100,
+    0.8968
+   ],
+   [
+    2400,
+    0.8356
+   ],
+   [
+    2700,
+    0.9351
+   ],
+   [
+    3000,
+    0.9727
+   ]
+  ],
+  "train_seconds": 32.7,
+  "meta_probe/trained": {
+   "k2": {
+    "unshown": 0.8452,
+    "shown": 1.0
+   },
+   "k4": {
+    "unshown": 1.0,
+    "shown": 1.0
+   },
+   "k8": {
+    "unshown": 1.0,
+    "shown": 1.0
+   },
+   "k16": {
+    "unshown": 1.0,
+    "shown": 1.0
+   }
+  },
+  "meta_probe/novel_comp": {
+   "k2": {
+    "unshown": 0.0179,
+    "shown": 0.8125
+   },
+   "k4": {
+    "unshown": 0.0526,
+    "shown": 0.3438
+   },
+   "k8": {
+    "unshown": 0.0333,
+    "shown": 0.1562
+   },
+   "k16": {
+    "unshown": 0.0536,
+    "shown": 0.1016
+   }
+  },
+  "meta_probe/novel_prim": {
+   "k2": {
+    "unshown": 0.0238,
+    "shown": 0.625
+   },
+   "k4": {
+    "unshown": 0.0395,
+    "shown": 0.5
+   },
+   "k8": {
+    "unshown": 0.0333,
+    "shown": 0.125
+   },
+   "k16": {
+    "unshown": 0.1429,
+    "shown": 0.1094
+   }
+  },
+  "registered_probe/novel_comp": {
+   "novel_comp/embed/k2": 0.0238,
+   "novel_comp/embed/k4": 0.0329,
+   "novel_comp/embed/k8": 0.0083,
+   "novel_comp/embed/k16": 0.0179
+  },
+  "registered_probe/novel_prim": {
+   "novel_prim/embed/k2": 0.0357,
+   "novel_prim/embed/k4": 0.0526,
+   "novel_prim/embed/k8": 0.0833,
+   "novel_prim/embed/k16": 0.0
+  },
+  "seconds": 34.2
+ },
+ {
+  "arm": "dense",
+  "seed": 9102,
+  "params": 24615,
+  "train_curve": [
+   [
+    300,
+    0.2067
+   ],
+   [
+    600,
+    0.4918
+   ],
+   [
+    900,
+    0.75
+   ],
+   [
+    1200,
+    0.8514
+   ],
+   [
+    1500,
+    0.6377
+   ],
+   [
+    1800,
+    0.9364
+   ],
+   [
+    2100,
+    0.9925
+   ],
+   [
+    2400,
+    1.0
+   ],
+   [
+    2700,
+    0.9571
+   ],
+   [
+    3000,
+    0.9627
+   ]
+  ],
+  "train_seconds": 35.0,
+  "meta_probe/trained": {
+   "k2": {
+    "unshown": 0.9286,
+    "shown": 1.0
+   },
+   "k4": {
+    "unshown": 0.9803,
+    "shown": 1.0
+   },
+   "k8": {
+    "unshown": 1.0,
+    "shown": 1.0
+   },
+   "k16": {
+    "unshown": 1.0,
+    "shown": 1.0
+   }
+  },
+  "meta_probe/novel_comp": {
+   "k2": {
+    "unshown": 0.006,
+    "shown": 0.4375
+   },
+   "k4": {
+    "unshown": 0.0263,
+    "shown": 0.3438
+   },
+   "k8": {
+    "unshown": 0.0583,
+    "shown": 0.1406
+   },
+   "k16": {
+    "unshown": 0.0357,
+    "shown": 0.1172
+   }
+  },
+  "meta_probe/novel_prim": {
+   "k2": {
+    "unshown": 0.0476,
+    "shown": 0.875
+   },
+   "k4": {
+    "unshown": 0.0789,
+    "shown": 0.1875
+   },
+   "k8": {
+    "unshown": 0.05,
+    "shown": 0.375
+   },
+   "k16": {
+    "unshown": 0.0714,
+    "shown": 0.0938
+   }
+  },
+  "registered_probe/novel_comp": {
+   "novel_comp/embed/k2": 0.0119,
+   "novel_comp/embed/k4": 0.0066,
+   "novel_comp/embed/k8": 0.025,
+   "novel_comp/embed/k16": 0.0179
+  },
+  "registered_probe/novel_prim": {
+   "novel_prim/embed/k2": 0.0476,
+   "novel_prim/embed/k4": 0.0263,
+   "novel_prim/embed/k8": 0.0167,
+   "novel_prim/embed/k16": 0.0357
+  },
+  "seconds": 36.4
+ },
+ {
+  "arm": "dense",
+  "seed": 9103,
+  "params": 24615,
+  "train_curve": [
+   [
+    300,
+    0.2778
+   ],
+   [
+    600,
+    0.5821
+   ],
+   [
+    900,
+    0.6692
+   ],
+   [
+    1200,
+    0.9375
+   ],
+   [
+    1500,
+    0.9274
+   ],
+   [
+    1800,
+    0.9672
+   ],
+   [
+    2100,
+    0.9203
+   ],
+   [
+    2400,
+    0.95
+   ],
+   [
+    2700,
+    0.8692
+   ],
+   [
+    3000,
+    0.9397
+   ]
+  ],
+  "train_seconds": 28.7,
+  "meta_probe/trained": {
+   "k2": {
+    "unshown": 0.9405,
+    "shown": 1.0
+   },
+   "k4": {
+    "unshown": 0.9934,
+    "shown": 1.0
+   },
+   "k8": {
+    "unshown": 1.0,
+    "shown": 1.0
+   },
+   "k16": {
+    "unshown": 1.0,
+    "shown": 1.0
+   }
+  },
+  "meta_probe/novel_comp": {
+   "k2": {
+    "unshown": 0.0298,
+    "shown": 0.875
+   },
+   "k4": {
+    "unshown": 0.0329,
+    "shown": 0.3438
+   },
+   "k8": {
+    "unshown": 0.0417,
+    "shown": 0.1719
+   },
+   "k16": {
+    "unshown": 0.0357,
+    "shown": 0.1172
+   }
+  },
+  "meta_probe/novel_prim": {
+   "k2": {
+    "unshown": 0.0476,
+    "shown": 0.75
+   },
+   "k4": {
+    "unshown": 0.0132,
+    "shown": 0.1875
+   },
+   "k8": {
+    "unshown": 0.0,
+    "shown": 0.1875
+   },
+   "k16": {
+    "unshown": 0.1429,
+    "shown": 0.0156
+   }
+  },
+  "registered_probe/novel_comp": {
+   "novel_comp/embed/k2": 0.0179,
+   "novel_comp/embed/k4": 0.0197,
+   "novel_comp/embed/k8": 0.025,
+   "novel_comp/embed/k16": 0.0357
+  },
+  "registered_probe/novel_prim": {
+   "novel_prim/embed/k2": 0.0357,
+   "novel_prim/embed/k4": 0.0132,
+   "novel_prim/embed/k8": 0.0,
+   "novel_prim/embed/k16": 0.0
+  },
+  "seconds": 30.1
+ }
+]
