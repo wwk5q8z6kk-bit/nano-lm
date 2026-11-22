@@ -211,7 +211,7 @@ if __name__ == "__main__":
     ap.add_argument("--train-tokens", type=float, default=0, help="token budget; 0 = one pass over the corpus")
     ap.add_argument("--max-train-tokens", type=int, default=0, help="load only this many corpus tokens (smoke tests)")
     ap.add_argument("--f32", action="store_true"); ap.add_argument("--save", action="store_true"); ap.add_argument("--resume", action="store_true")
-    ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS]];..."')
+    ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED]]];..."')
     a = ap.parse_args()
     if not a.multi: raise SystemExit(run(a))
     jobs = queue.Queue()
@@ -219,6 +219,7 @@ if __name__ == "__main__":
         f = spec.split(":"); b = copy.copy(a); b.size, b.lr, b.micro = f[0], float(f[1]), int(f[2])
         if len(f) > 3 and f[3]: b.tag = f[3]
         if len(f) > 4 and f[4]: b.train_tokens = float(f[4])
+        if len(f) > 5 and f[5]: b.seed = int(f[5])
         jobs.put(b)
     codes = []
     def worker(k):
