@@ -1,0 +1,11 @@
+#!/bin/zsh
+cd /Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis
+for s in 4101 4102 4103 4104 4105; do
+  for fx in 200 2000; do
+    out="results/memory_rule_writepass/fix$fx-s$s.json"
+    [[ -s $out ]] && continue
+    [[ -e $out ]] && rm -f -- "$out"
+    nice -n 10 /Users/mac/Projects/nano-lm/.venv/bin/python memory_rule_writepass.py $s $out 1e-3 200 $fx || echo "FAIL $fx $s"
+  done
+done
+echo DONE
