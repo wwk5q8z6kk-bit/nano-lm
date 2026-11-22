@@ -215,6 +215,14 @@ Deadlines:
 
 Kaggle is free. No RunPod spend.
 
+## Results from other sessions, 2026-11-22 (checked here against their committed files, not re-run)
+
+| Item | Status | Evidence |
+|---|---|---|
+| In a world where rules change, a label-free "seen twice" write policy keeps exceptions (100%) and resists one-off noise (96%), but revises a changed rule no better than plain training: 52% of old entities give the new value | Demonstrated, toy (three seeds; predictions shaped on a development seed, so a replication, not a discovery) | G04, session d5, draft PR #204, `RULE-CHANGE-20261122.md`; predictions `e4dd5fd`, scorer `780b934`, both before the registered runs |
+| An oracle that writes the revision into the shared decoder with addresses frozen reaches 96–100%; retraining old addresses instead does worse than plain on new entities (57% against 69%) | Demonstrated, toy; the oracle uses the world's hidden types, so it is an upper reference, not a candidate | same |
+| Consequence for Question 8: a detector that sends every surprise to private storage would also miss rule changes; routing needs a third outcome, "revise the shared rule" | Inferred | same, with `results/routing_loo/` |
+
 ## Sections added on research/first-principles-architecture-ledger-20261121 (PR #195)
 
 Reconciled 2026-11-22: the two branches appended at the same point. Both are kept verbatim: the sections above are from research/ontogenesis-phase1, those below from PR #195, in their original order. Where a row below conflicts with a later dated row above, or the reverse, the later date governs, as the header says.

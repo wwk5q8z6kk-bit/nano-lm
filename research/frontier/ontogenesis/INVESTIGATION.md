@@ -373,6 +373,27 @@ The store is 1.02 GB for 48M tokens of text, against about 57 MB of weights for 
 
 **Cost.** Any gain here is a system-level gain bought with 1.02 GB of exact storage. Per stored byte that is a poor exchange: doubling the blocks costs about 12 MB and buys 0.039; the store costs 1,022 MB and buys 0.058. Wall-clock times are unusable (the machine was swapping).
 
+**Question 8, follow-up from another session (2026-11-22; checked here against the raw files, not re-run).** A label-free detector in a different setting: the first-principles session's typed fixed-address memory, `cab_s` rule world. Branch research/memory-saturation-factorial (draft PR #199): `PROTOCOL-MEMRULE-ROUTING.md` (6da758f, before any held-out run), `RESULTS-MEMRULE-ROUTING.md` (d5e5bab), raw files `results/memory_rule_routing/`. Seeds 4101–4105; the means below were recomputed here from the raw files and match.
+
+The detector flags a fact when the memory's answer disagrees and the memory is confident (top probability at least τ). Flagged facts go to private slots with a larger budget.
+
+| Arm | Corrections | Inference, new entities | False positives (regular facts flagged) |
+|---|---|---|---|
+| No routing | 0.037 | 0.736 | — |
+| Detector, τ = 0.1 | 0.810 | 0.701 | 0.089 |
+| Random, same fraction routed | 0.194 | 0.703 | 0.189 |
+| Detector, τ = 0.2 | 0.499 | 0.728 | 0.010 |
+| Labelled ceiling | 0.891 | 0.714 | — |
+
+- **Registered rules, read by their authors:** R1 and R2 held. R3 failed on its inference clause: the detector beats random by about 0.6 on corrections, but its inference equals random's. R4 held at τ = 0.1 and failed narrowly at τ = 0.2.
+- **What this changes here.** This question's leave-one-out detector recovered about a third of the oracle gain. In the other session's memory, a confidence-gated detector recovers most of the labelled result (0.81 against 0.89) at the same inference. The question "does routing need an oracle" therefore has a setting-dependent answer. Corrections can be found without labels when the memory is confident about the rule.
+- **Development-seed finding, not confirmed on held-out seeds.** With no confidence gate, an empty memory disagrees with everything, so everything goes private and inference falls to chance (0.048). Leave-one-out avoids this because it judges a fact against the entity's other facts.
+- **Limits:**
+  - stationary world: G04 (PR #204) shows that a router of this kind would keep an old rule after a real rule change;
+  - τ chosen on one development seed, and those development runs were not saved as files;
+  - private slots are per-fact storage, so this is an augmented-memory result, not native model knowledge;
+  - not evidence about language models.
+
 ## Question 9. How should a correction be written, and does a harmless write exist? (2026-11-21)
 
 `correction_interference.py`, predictions K1–K6 committed in `0443ef6` before any registered run. Seeds 8001–8003. World with corrections only (no exceptions). Raw files: `results/correction_interference/`. Model alone unless stated. [Observed]
@@ -838,6 +859,27 @@ The 211M model trained on 4.2B tokens of corpus v2:
 
 **Question 13, operational note (15:20 UTC).** Measured: four v5e chips give 439k tokens per second at 101M, so each rate check takes about 30 minutes. Scaled to 386M, the main run takes about 18.6 hours and would finish about 20 minutes before the 12:00 deadline. All three deadlines were therefore moved two hours later: on-machine 14:00, Cloud Scheduler 14:02, laptop watcher 14:10 on 23 November. The bound rises to about $111, with about $95 expected. Nothing in the design changed.
 
+**Question 13, step 1 result and Q1 (2026-11-22, 17:00 UTC).** 101M, Muon, 1% floor, 0.8B tokens, one seed; held-out mix:
+
+| Rate | Mix |
+|---|---|
+| 2e-3 | 0.9540 |
+| 4e-3 | 0.9544 |
+| 8e-3 | 0.9577 |
+
+- **Q1, first part (best rate is 4e-3): failed, narrowly.** 2e-3 is lower by 0.0004, well inside one-seed noise; read as registered. The three rates are within 0.004 of each other, so the rate is flat across 2e-3–8e-3 at this size.
+- **Q1, second part (beats 0.9775 by at least 0.02): held.** Gain 0.0235.
+- The registered rule chooses 2e-3 for the 386M model.
+
+**Question 13, operational failure and relaunch (2026-11-22, 17:20 UTC).** The 386M run failed about a minute after starting, before its first checkpoint.
+- Two defects in `tpu/job_scale2.sh`:
+  - The glob that implements the rate rule did not match the result files' names. It fell back to 2e-3, which by luck is also the rule's answer.
+  - The script retried only on divergence (exit 2). It treated the failure as success, benchmarked nothing, and the machine deleted itself as designed, taking the job log with it.
+- The error text is therefore lost. Most likely cause: device memory. An estimate for 16 sequences of 512 per chip without activation recomputation comes to about 24 GB, against 16 GB per v5e chip.
+- Relaunch: `tpu/job_scale2b.sh` on a new v5e-4. Same rate, tokens, batch, seed and recipe. It tries the batch in 1 pass first (which records the actual error), then in 2, 4 or 8 passes with gradients averaged; this is the same update, and the number of passes is not part of the run's identity. Any failure now counts as a failure, and the job log goes to the bucket every 3 minutes. `job_scale2.sh` is kept unchanged as the record of what ran.
+- Cost: the first machine ran about 2 hours (about $10); the relaunch needs about 20 hours (about $96–100). Total about $106–110, inside the $111 bound above.
+- New deadlines: on-machine 2026-11-23 16:00 UTC, Cloud Scheduler 16:02, laptop watcher 16:10.
+
 **Question 9 summary, amended (2026-11-22).** "Durability is a separate problem that no in-model write here solves" is **superseded**, by G06 (session d5, draft PR #202, `NULLSPACE-DURABILITY-20261122.md`; predictions committed before its runs).
 - Its unprotected arm reproduces this branch's `constrained` arm exactly, seed by seed.
 - Projecting later decoder updates away from old entities' address directions (OWM, published 2019) keeps computed-edit corrections at 98.5% after 20+ phases, against 21.5% without.
@@ -865,4 +907,26 @@ Limits:
 
 Whether it survives a nonlinear model is untested.
 
+**G06b, review note (2026-11-22, 17:00 UTC).** An automated review of PR #202 found a defect in the corrected-entities arm (`owm_ent`), checked here against the code. An entity corrected again in a later phase is dropped from protection for that phase's training, so its earlier corrections go unprotected for 200 steps. The defect can only remove protection. The 99.6% for corrected entities at width 96 is therefore a lower bound, and the conclusion above stands. A fix and rerun are proposed on the PR; this note will cite the rerun when it exists.
+Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on research/g06-nullspace-durability, originals kept; checked here against the files): width 24, corrections kept 98.4% → 98.8%, inference 91.4% → 91.2%; width 96, corrections 99.6% → 99.9%, inference 99.1% → 98.9%. The bias ran against the arm, as expected; no conclusion changes.
+
 **Question 12, caveat on the Pythia comparison (2026-11-22).** Beating Pythia-160M on ARC-Easy and PIQA is a low bar. Pythia was trained in 2023 on the Pile. Our corpus comes from education-filtered sources (FineWeb-Edu, Cosmopedia, FineMath), which are known to lift exactly these benchmarks. The win mostly shows good text and a sound recipe, not competitiveness with current small models. Modern references trained on similar text, SmolLM2-135M and SmolLM2-360M (Apache-2.0), are being scored through the same calibrated harness. Question 13's model will be compared with them, not with Pythia.
+
+**Question 12, modern references scored (2026-11-22, 17:40 UTC).** Same harness, same formatted items, each model with its own tokenizer, full validation and test sets. Cells give accuracy / length-normalised accuracy.
+
+| Task | Ours, 211M, 4.2B tokens | SmolLM2-135M | SmolLM2-360M |
+|---|---|---|---|
+| HellaSwag | 0.308 / 0.346 | 0.355 / 0.432 | 0.432 / 0.564 |
+| ARC-Easy | 0.521 / 0.466 | 0.644 / 0.597 | 0.704 / 0.695 |
+| ARC-Challenge | 0.226 / 0.257 | 0.281 / 0.294 | 0.365 / 0.387 |
+| PIQA | 0.648 / 0.629 | 0.684 / 0.687 | 0.721 / 0.720 |
+| WinoGrande | 0.511 | 0.530 | 0.590 |
+| OpenBookQA | 0.184 / 0.302 | 0.218 / 0.332 | 0.246 / 0.374 |
+| LAMBADA accuracy | 0.326 | 0.429 | 0.538 |
+| LAMBADA perplexity | 49.01 | 19.26 | 9.44 |
+
+- Our 211M model is behind SmolLM2-135M on every task, by 0.02 (WinoGrande) to 0.13 (ARC-Easy, normalised); LAMBADA perplexity is 49 against 19. SmolLM2-135M has 0.6 times our parameters and about 500 times our tokens (2T against 4.2B).
+- Where SmolLM2's model card gives numbers from its own evaluation, ours are close: HellaSwag about 42 and 54.5, PIQA about 68 and 72. This is a second check on the harness, from memory of the card, not re-read.
+- This is the bar for Question 13. At 7.7B tokens the 386M model is not expected to reach SmolLM2-135M. The useful comparison is our tokens-to-score curve against theirs. Matching a 2T-token model at about 1/250 of the tokens is not a claim we can make.
+- Raw results: `results/lm/eval-reference-SmolLM2-135M.json` and `-360M.json`. The first attempt ran out of laptop memory at batch 32; the rerun used batch 8, with the scorer unchanged.
+
