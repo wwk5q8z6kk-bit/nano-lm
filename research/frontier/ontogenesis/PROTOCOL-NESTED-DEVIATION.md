@@ -14,3 +14,9 @@ Date: 2026-11-21. The registered protocol text is unchanged. This file records h
 If the two evaluations disagree, the result is reported as device-sensitive and no rule is declared met.
 
 **What does not change.** Arms, seeds, step budget, optimiser settings, the definition of "learned", the decision rules R1–R4, and the statement that a one-seed difference is not a finding.
+
+## Update, same day, still before any nested result exists
+
+The cloud CPU plan above is withdrawn before use. Two measurements made it the wrong choice: the project's cloud CPU quota is 12 cores in total, and one CPU thread needs about 2.5 to 5 hours per run (71 to 138 seconds per 200 steps, measured locally), against roughly half an hour to an hour on the laptop GPU.
+
+**Execution now.** The five new arms run on the laptop GPU, the registered device, with the registered code and arguments. The only difference from the first attempt is scheduling: three runs at a time from one queue, and no other job on the GPU. So no device deviation applies, the `dense` and `looped` arms are reused from `PROTOCOL-LOOP2.md` as registered, and the decision rules are evaluated once, as registered. The extra `dense` and `looped` CPU re-runs are not performed.
