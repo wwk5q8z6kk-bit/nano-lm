@@ -1,6 +1,7 @@
 """Question 11 (INVESTIGATION.md): the 14M recipe grid and the mechanical choice of what phase B runs.
 
   recipe_select.py grid                      -> phase A job list for train_jax.py --multi
+  recipe_select.py gridm                     -> the 40M grid for the v6e machine (no phase B)
   recipe_select.py pick <out4> <out3>        -> JSON: every finished 14M cell (seed 1000, 4 micro-batches), the best
                                                 AdamW cell and the best Muon cell by final held-out mix
   recipe_select.py phaseb <pick.json>        -> phase B job list: seeds 1001 and 1002 for both winners (none for the
@@ -25,6 +26,22 @@ def grid():
                 if (lr, wd, fl) != ("1e-3", "0.1", "0.1"): j.append(f"S:{lr}:4:::1000:none:wd={wd}:floor={fl}")
     j.append("S:1e-3:4:::1000:none:wdon=matrices")             # decay on matrices and embedding only
     j.append("S:1e-3:2:m2::1000:none")                         # micro-batch control: default cell with 2 micro-batches
+    return ";".join(j)
+
+
+
+def gridm():
+    """The same grid at 40M on the v6e machine (2 micro-batches), with its own three-seed default cell."""
+    j = [f"M:1e-3:2:::{sd}:none" for sd in (1000, 1001, 1002)]
+    for lr in ("1e-3", "2e-3", "4e-3"):
+        for wd in ("0.1", "0.5"):
+            j.append(f"M:{lr}:2:::1000:none:wd={wd}:floor=0.01:opt=muon")
+    j.append("M:1e-3:2:::1000:none:opt=muon")
+    for lr in ("1e-3", "2e-3", "4e-3"):
+        for wd in ("0.1", "0.5"):
+            for fl in ("0.1", "0.01"):
+                if (lr, wd, fl) != ("1e-3", "0.1", "0.1"): j.append(f"M:{lr}:2:::1000:none:wd={wd}:floor={fl}")
+    j.append("M:1e-3:2:::1000:none:wdon=matrices")
     return ";".join(j)
 
 
@@ -63,5 +80,6 @@ def phaseb(p):
 
 if __name__ == "__main__":
     if sys.argv[1] == "grid": print(grid())
+    elif sys.argv[1] == "gridm": print(gridm())
     elif sys.argv[1] == "pick": print(json.dumps(pick(sys.argv[2], sys.argv[3]), indent=1))
     elif sys.argv[1] == "phaseb": print(phaseb(json.load(open(sys.argv[2]))))

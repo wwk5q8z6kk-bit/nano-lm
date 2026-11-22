@@ -552,3 +552,13 @@ Published results say recipe effects are larger than architecture effects at thi
 - Results are reported at equal tokens. Throughput per arm is reported beside them, and a gain is also stated at equal wall-clock, read from the curve, wherever an arm's step time differs by more than 5%.
 
 **Not tested.** Other schedules (warm-up, stable, decay), batch size, longer training, other model sizes beyond the 40M transfer check.
+
+### Question 11, 40M extension (registered 2026-11-22, 03:40 UTC, before any run)
+
+The second TPU machine (v6e) would otherwise delete itself at about 04:15, so it runs the same grid at 40M. Job `tpu/job_recipe_m.sh`, list `recipe_select.py gridm`, 22 runs. Settings: 2 micro-batches, seed 1000, its own default cell at seeds 1000, 1001 and 1002; AdamW and Muon cells as at 14M. Its deadline moves from 07:33 to 08:30 UTC, adding at most about $13.
+
+This grid is compared only within itself (one chip type, one micro-batch setting), with the same rules as at 14M. s is the standard deviation of its own three default-cell seeds. The phase B check of the 14M winners at 40M runs on the v5e with 4 micro-batches, and is read separately.
+
+Added prediction:
+- P7: at 40M the best rate is no higher than at 14M, for each optimiser.
+- P1 to P5 are predicted to hold at 40M as stated for 14M.
