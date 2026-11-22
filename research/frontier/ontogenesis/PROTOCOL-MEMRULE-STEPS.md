@@ -34,3 +34,13 @@ Only one new step count is run. The machine is shared and heavily loaded (load a
 - Steps and learning rate both change how far values move; together with the learning-rate observation this is two partial probes of one question, not a full sweep.
 - Same synthetic world and given type information as before. Not evidence about a language model.
 - Results under `results/memory_rule_steps/`, created exclusively.
+
+## Addendum: a flaw in the interpretation, recorded before any sweep result was read (2026-11-22)
+
+One of the five runs had finished when this was written; its file has not been opened, and no value from it has been printed.
+
+The sweep changes the step count for **every** phase, not just for the correction. Adam moves each touched value by roughly the learning rate per step whatever the gradient's size. So the values that same-type neighbours accumulate in shared slots grow with the step count by about the same factor as a correction's own movement does. If the budget account is right, what matters is the correction's budget **relative** to the neighbours' accumulated mass, and a uniform change in steps (or in learning rate) leaves that ratio roughly unchanged. Under that reading, S1 holding would **not** refute the budget account, and the learning-rate observation in `RESULTS-MEMRULE-DUAL.md` does not count against it either.
+
+This came from a development-seed pilot of the write-pass test (`memory_rule_writepass.py`, seed 4100). Written alone in the loss with the phase's step count and learning rate, corrections moved only from 0.031 to 0.038, and nothing else changed (collateral zero to three decimals). A write that moves nothing is what a budget limit predicts when the correction gets the same budget as each earlier write.
+
+The sweep's runs will finish and be reported as registered, but S1 will be read under this addendum: it tests whether a uniform change in budget matters, not whether a correction's relative budget does. The test of the relative budget is the write-pass protocol, where only the correction pass gets more steps.
