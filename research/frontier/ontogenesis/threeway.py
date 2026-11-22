@@ -17,6 +17,7 @@ import json, sys
 import numpy as np, torch, torch.nn.functional as F
 from cab_s import Z, R, V, K
 import rule_change as rc
+import memory_rule_sharing as msr
 from memory_rule_sharing import addresses, SLOTS
 
 torch.set_num_threads(2)
@@ -46,16 +47,22 @@ def build_world(seed, phases=rc.PHASES):
     return rng, rule, typ, shown, exc, changes, rule_at
 
 
-def run(arm, seed, phases=rc.PHASES):
+def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_on=True):
+    """p_slots, private_steps, changes_on: exploration settings added after the registered run (THREEWAY-COST);
+    their defaults reproduce the registered behaviour exactly."""
     NEW = rc.NEW; n = phases * NEW
+    p_slots = p_slots or SLOTS; private_steps = PRIVATE_STEPS if private_steps is None else private_steps
     tau = 0.2 if arm in ("private_t02", "threeway_t02") else 0.1
     rev_steps = 200 if arm == "threeway_rev200" else PRIVATE_STEPS
     rng, rule, typ, shown, exc, changes, rule_at = build_world(seed, phases)
+    if not changes_on: changes = []; rule_at = np.repeat(rule[None], phases, 0).copy()
     truth_at = lambda ph, e, r: int(exc[e, r]) if exc[e, r] >= 0 else int(rule_at[ph, typ[e], r])
     i1, w1, typ_m, _ = addresses("typed", 0, seed, n)
-    i2, w2, _, _ = addresses("typed", 8, seed, n)
+    msr.SLOTS = p_slots
+    try: i2, w2, _, _ = addresses("typed", 8, seed, n)
+    finally: msr.SLOTS = SLOTS
     assert np.array_equal(typ_m, typ), "memory addresses must use the world's types"
-    T1 = torch.nn.Parameter(torch.zeros(SLOTS, V)); T2 = torch.nn.Parameter(torch.zeros(SLOTS, V))
+    T1 = torch.nn.Parameter(torch.zeros(SLOTS, V)); T2 = torch.nn.Parameter(torch.zeros(p_slots, V))
     key = lambda e, r: torch.as_tensor(np.asarray(e) * R + np.asarray(r))
     read = lambda q: (w1[q][..., None] * T1[i1[q]]).sum(1) + (w2[q][..., None] * T2[i2[q]]).sum(1)
     sel = np.random.default_rng(seed + 50_000)
@@ -159,7 +166,7 @@ def run(arm, seed, phases=rc.PHASES):
                 for e, r, v, _ in old_obs:                               # seen twice, consistently -> private; else held
                     if shown[e, r] and truth_at(int(born[e]), e, r) == v: private.append((e, r, v))
         fit(joint, [T1, T2], JOINT_STEPS)
-        fit(private, [T2], PRIVATE_STEPS); n_private += len(private)
+        fit(private, [T2], private_steps); n_private += len(private)
         fit(revision, [T1], rev_steps)
         nf = np.array(new_facts); log.append({"phase": ph, "acquire_now": float((predict(nf[:, 0], nf[:, 1])[0] == nf[:, 2]).mean())})
 
@@ -174,6 +181,10 @@ def run(arm, seed, phases=rc.PHASES):
     out = {"arm": arm, "seed": seed, "acquire_now": round(float(np.mean([x["acquire_now"] for x in log])), 4),
            "infer_stable": round(acc(ue[st], ur[st]), 4),
            "infer_stable_fa_pairs": round(acc(ue[st & fa], ur[st & fa]), 4), "infer_stable_other_pairs": round(acc(ue[st & ~fa], ur[st & ~fa]), 4)}
+    with torch.no_grad():                                                # diagnostic (memory-line session): unseen keys were never
+        q = key(ue[st], ur[st])                                          # written privately, so their private read is pure leakage
+        shared_only = (w1[q][..., None] * T1[i1[q]]).sum(1).argmax(-1).numpy()
+        out["infer_stable_shared_only"] = round(float((shared_only == T(ue[st], ur[st])).mean()), 4)
     r5, r10, ro = [], [], []
     for p, z, r, v in changes:
         for lo, hi, bucket in ((p + 1, p + 6, r5), (p + 6, p + 11, r10)):
