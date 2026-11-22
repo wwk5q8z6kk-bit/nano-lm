@@ -20,3 +20,9 @@ If the two evaluations disagree, the result is reported as device-sensitive and 
 The cloud CPU plan above is withdrawn before use. Two measurements made it the wrong choice: the project's cloud CPU quota is 12 cores in total, and one CPU thread needs about 2.5 to 5 hours per run (71 to 138 seconds per 200 steps, measured locally), against roughly half an hour to an hour on the laptop GPU.
 
 **Execution now.** The five new arms run on the laptop GPU, the registered device, with the registered code and arguments. The only difference from the first attempt is scheduling: three runs at a time from one queue, and no other job on the GPU. So no device deviation applies, the `dense` and `looped` arms are reused from `PROTOCOL-LOOP2.md` as registered, and the decision rules are evaluated once, as registered. The extra `dense` and `looped` CPU re-runs are not performed.
+
+## Second update, same day, still before any nested result exists
+
+The laptop-GPU execution was stopped again after ten minutes, with no result written. Three processes had reached 5.7 GB each and the laptop, which also runs the owner's own applications, was back to 41 GB of swap and 18 GB of free disk. The laptop cannot host this protocol without harming the machine.
+
+**Execution now (final).** A rented cloud machine with 112 CPU cores became available (the host of a TPU node, whose CPU cores are not limited by the 12-core quota). The protocol runs there on CPU, one thread per run, all runs in parallel. This is the device deviation described in the first section of this file, and that section's control applies in full: `dense` and `looped` are re-run on the same machine for the same seeds, and the registered rules are evaluated twice (as registered against the reused laptop-GPU arms, and device-consistently with all seven arms from this machine). If the two evaluations disagree the result is reported as device-sensitive and no rule is declared met.
