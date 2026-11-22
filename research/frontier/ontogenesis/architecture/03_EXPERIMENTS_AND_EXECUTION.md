@@ -1,5 +1,7 @@
 # 03 — Preregisterable experiment program, engineering implementation and scale gates
 
+**V5 current execution notice.** A fixed three-seed native synthetic update-allocation comparison has executed; its protocol was locally frozen before first execution and is not prior Git preregistration. [14](14_NATIVE_UPDATE_COMPARISON.md) reports all arms, exposures and negative/mixed outcomes. The five-seed address/optimizer factorial and correction-optimizer controls are audited in [12](12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md); the 101M store gate remains pending and the 40M cache now meets a qualified numerical stopping branch in [13](13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md). A natural-language G03b efficacy result remains open. Historical notices below are not current execution status.
+
 **V4 current execution notice.** The margin pilot previously pending at 8d3b03e is complete at 9d88a2c; see [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md) for M1–M4 outcomes. Tiny native training and the event instrument are implemented in [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md). Fixed-fixture integration is engineering evidence, while a fresh-seed native G03b comparison and corpus-scale training remain unexecuted here. The following V3 notices are retained as dated history.
 
 > **V3 current execution notice — 2026-11-21.** The completed store pilot and three-seed correction study are now incorporated in [09 Evidence refresh](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md). G03 has an existing pilot; its successor is G03b with common event streams and paired durability cohorts. [07 Implementation contract](07_IMPLEMENTATION_CONTRACT.md) supplies a concrete causal reference. This file is an updated research plan, not a preregistration receipt or evidence that a new training job ran. Earlier frozen protocols remain unchanged.
@@ -233,3 +235,20 @@ The completed margin pilot is evidence about its registered finite arms. M2 and 
 G03b must count prefill, backward/optimizer work, replay exposures, retained state, preprocessing, constraint construction, inference, monitoring and evaluation. Use per-seed paired contrasts as the statistical unit; repeated keys and events within a seed are correlated. Prespecify a primary endpoint/horizon and guardrails, then report the other horizons descriptively or adjust multiplicity. Three pilot seeds do not determine adequate confirmatory power; estimate variability independently before setting the final seed count. Time- and token-matched comparisons answer different questions and should be named explicitly.
 
 For native evaluation, define tokenizer/byte accounting, clean document splits, revised fact templates and paraphrase splits before training. Keep unrelated held-out language/code quality, new-fact acquisition, retention and forward-transfer curves separate. A fixed training fixture supplies none of these held-out outcomes. The existing experiment authorization rules continue to govern real corpus and hardware runs; this plan does not initiate them.
+
+## V5 ordered continuation and completion criteria
+
+| Stage | Concrete artifact | Current state | Completion criterion |
+|---|---|---|---|
+| Evidence identity | 85-copy source manifest and exact raw/protocol copies | Complete at fixed cutoffs | Hashes and source revisions agree; later evidence is a separate review |
+| Finite hypotheses | Literal factorial F1–F6 and correction O1 predicates | Reconciled | Preserve successes, failures and partial outcomes without changing thresholds |
+| Causal comparator | Prefix-only cache and independent fixture review | Implemented and checked | Valid distributions, no suffix/target leakage, explicit boundaries and numerical handling |
+| Native allocation instrument | Four paired arms, three seeds, exact checkpoints/receipts | Executed exploratory comparison | Full denominators, fixed recipes, actual updates and no seed exclusions |
+| Real data contract | Tokenizer/data/checkpoint identities and raw byte accounting | Open | Rights/splits/duplicates/crop IDs and observable scoring boundaries documented |
+| Matched native efficacy | Tuned baselines, fresh seeds, meaningful horizons and unrelated quality | Open | Prespecified primary improvement plus guardrails at stated exposure/cost |
+| Store/cache language evaluation | Corrected same-prefix evaluator at registered 101M/40M scales |40M numerical stop met with control qualifications;101M pending | Valid full-contract results; historical invalid measurements stay invalidated |
+| Architecture adoption | Quality/resource frontier and independent repeat | Open | Material advantage for the intended workload; no selection from fixture scores |
+
+The next experiment must address the mixed endpoint trade-off instead of retuning until one seed looks favorable. If replay allocation is revised, record a new recipe with a separate development set and freeze it before fresh evaluation. Longer horizons require an event schedule that leaves eligible corrections at those horizons; an empty cohort is undefined, not zero retention. State that total target presentations match only where they actually do; the additive replay arm remains more expensive.
+
+No new paid compute, remote training job, corpus-scale run or merge is initiated by this continuation. Existing source plans are preserved, with execution status bounded by the reviewed repository cutoff.

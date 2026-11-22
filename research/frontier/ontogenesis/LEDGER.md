@@ -311,3 +311,47 @@ A separate agent looked up all 44 references of the blueprint at primary sources
 ### Checks of this package rerun independently at `176ece7`
 
 Mathematical examples 12/12, NumPy checks 5/5, forward reference 13/13 and the package validator (PASS, 27 events) reproduced on a separate machine. The 35-case package regression suite was not rerun there. Nothing at `0c0a369` (V4) has been rerun independently.
+
+
+---
+
+## V5 architecture continuation — November 21, 2026, America/New_York
+
+This additive continuation preserves the complete preceding PR ledger, including the parallel factorial/reference contribution. Reviewed research cutoff: 0afd5629990b4e442fb3aa8f7c700b030d8faede. Separate factorial protocol/result: b82d0f018ebcbe1e6604afc129731d96774d0f69 / 767857e72bfa51e3fa6f32d047507aabef077fde. Existing experiment source/results are retained.
+
+### Current high-level outcomes
+
+| Workstream | Evidence and result | Decision |
+|---|---|---|
+| Address × optimizer factorial | Five fresh seeds: original carried Adam2.4167%, reset63.5%, hash variants100%; F1/F2/F4 hold, F3/F6 fail, F5 intermediate | Narrow D-008;61.083pp reset contrast and62.596% conditional recovery fraction do not uniquely allocate causes |
+| Correction optimizer controls | Finite collateral condition holds across9 runs; fitted efficacy and update counts differ; duplicate entity candidates can enter assignment | Require deployed post-update predictions and exact cost counters; no universal optimizer-irrelevance claim |
+| Exact edit geometry | Target-only minimum L1 is4; protected margin mu>=0 costs4+10mu/3; endpoint(2,5) is tied | Correct tie language and scope all minimality to coordinates/metric |
+| Store/cache evidence | Store-S reported1.1442→1.1398BPB with1022224980 bytes; unequal crop context and0.0001 baseline differences remain | Qualified result; old scalar control and0.62 cache claim remain invalidated;101M/40M gates pending |
+| Causal comparator | New prefix-only, resettable cache with proper distributions and reviewed floating-point handling | Small optional augmented reference; no new language score |
+| Native update allocation | Three frozen seeds, four common-state arms; H1means51.32/44.71/43.65/22.22% for current/matched replay/additive/frozen | Preserve mixed/negative primary result; additive replay uses50%extra post-prefix updates |
+| Evidence maintenance |85 frozen source copies;43 primary identities;62humanIDs,45events covering39decisions | Full prior history and external contribution preserved |
+
+The native main run executes876 optimizer calls and1236 scored target presentations. Its model has840 learned scalars and a native22-token head. These are synthetic engineering counts; validation reruns are additional work. Replay improves some new-fact/current-fact endpoints while worsening the prespecified one-phase correction mean. The permanently unobserved random-label control is not a generalization benchmark, and long horizons with no eligible events remain undefined.
+
+### New decision identities
+
+D-055 audits the factorial; D-056 separates candidate fit from shared-state deployment; D-057 corrects exact edit geometry; D-058 qualifies store/cache evidence; D-059 implements a causal comparator; D-060 retains all native comparison outcomes; D-061 defines the quality/resource frontier gate; D-062 preserves evidence and parallel contributions. D-054 receives a linked continuation event. The human and machine detail is in [the architecture ledger](architecture/02_DECISION_LEDGER.md).
+
+### Current architecture and next gates
+
+The dense/shared native causal core, analytical optimizer and versioned inference snapshots remain the executable architecture. Optional replay affects training, while optional causal caches affect an explicitly augmented distribution; their state and cost are distinct. No novel backbone, learned transport, adaptive controller or store is adopted. APS/AETHER remain unselected research hypotheses; Nano LM is the project.
+
+The full theory and new results are in [chapter12](architecture/12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md), [chapter13](architecture/13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md) and [chapter14](architecture/14_NATIVE_UPDATE_COMPARISON.md). Unresolved scientific gates require real data/checkpoint identities, corrected equal-information evaluation, meaningful uncensored horizons, independently tuned baselines and measured quality/resource trade-offs. They are not closed by mathematical examples or artifact validation.
+
+Maintain PR #195 as draft and unmerged. This continuation authorizes no new material spend, external training job, corpus-scale run, protected result rewrite or tag move.
+
+
+### V5 bounded late-evidence addendum: D-058 revision
+
+After the core V5 snapshot, exact cache-S, cache-M and store-M JSONs were recovered at fixed cutoff c597d5fefdd378c3e5c66a51e7690cdb90853287. Five new source copies supplement the unchanged85-copy manifest; the machine ledger adds one linked D-058 revision, for46events covering39decisions and62human IDs. All45core V5 events remain an unchanged prefix.
+
+Cache-M's four domain gains(0.0012,−0.0003,0.0036,0.0059BPB) satisfy the registered numerical stopping branch at the source-derived40,379,904-parameter size. Full control clearance is not claimed: maximum baseline differences remain0.0001, checkpoint/raw-byte/crop identities are incomplete and foreign controls have unresolved information assumptions. The old0.62 result remains invalidated; these are new qualified results.
+
+Store-M's mixed gain is−0.0014BPB; it does not decide the source's100,684,032-parameter L/approximately101M gate. Cache-S mixed gain is0.0036 and cache-M mixed gain0.0018. Source model/evaluation ASTs and exchange-script blobs match their earlier versions, while the new training sampler is a separate implementation change without a completed repaired-sampler result in this addendum. No corpus or model was run by this audit.
+
+The package now includes a24-group final local gate and90frozen source copies. Publication uses the fixed c597d5f research integration base; later unreviewed artifacts, if any, are separately queued.

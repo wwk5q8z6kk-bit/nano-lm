@@ -1,5 +1,7 @@
 # 08 — Primary-source audit and literature decision boundaries
 
+**V5 current source notice.** The register now has 43 primary identities. This continuation adds two cache/retrieval methods references inspected through selected PDF methods and one versioned official indexing contract. The original 40 entries retain their source-specific historical inspection depth. A separate contributor's reported 44-reference headline check is preserved as an attributed ledger contribution; it is not treated as a full-method audit or added arithmetically to this register.
+
 **Audit date:** 2026-11-21, America/New_York. **Scope:** the P-01–P-24 register in `04_EVIDENCE_AND_REFERENCES.md`, aliases in `01_ARCHITECTURE_AND_THEOREMS.md` and `05_GAP_CLOSURE_AND_FORMAL_REVIEW.md`, plus missing direct prior art. The preserved V2 baseline was not modified. The working evidence register has been corrected to reflect this audit. This audit concerns bibliographic identity and whether each source supports the nearby narrow claim. It is not an experimental reproduction or full theorem-appendix review.
 
 ## Executive finding
@@ -186,3 +188,13 @@ These four additions document the exact training components now implemented. The
 | P-40 | Noam Shazeer (2020), [GLU Variants Improve Transformer](https://arxiv.org/abs/2002.05202v1) | primary abstract. Studies gated feed-forward variants in Transformers; direct precedent for the SwiGLU component family. | Author-reported benchmark gains do not show a Nano architecture advantage; local gradients are checked independently. |
 
 Current machine index: [literature_audit_v4.json](results/literature_audit_v4.json). The earlier audit remains unchanged.
+
+## V5 primary additions P-41–P-43
+
+| ID | Primary source and identity | Actual inspection and supported use | Boundary |
+|---|---|---|---|
+| P-41 | Edouard Grave, Armand Joulin, Nicolas Usunier (2016), [Improving Neural Language Models with a Continuous Cache](https://arxiv.org/abs/1612.04426v1) | Abstract and selected PDF pages 1–3, including recent-history cache and distribution equations; preprint submitted to ICLR2017 | Supports causal memory/interpolation precedent, not NanoLM gains or n-gram implementation efficiency |
+| P-42 | Urvashi Khandelwal, Omer Levy, Dan Jurafsky, Luke Zettlemoyer, Mike Lewis (2020), [Generalization through Memorization: Nearest Neighbor Language Models](https://arxiv.org/abs/1911.00172v2) | ICLR2020; selected PDF pages 1–3 on datastore, neighbor aggregation, interpolation and context convention; initial preprint2019 | Semantic training-datastore retrieval differs from recent-context caching and n-gram counts |
+| P-43 | PyTorch contributors, [Tensor.index_put_, version2.11 documentation](https://docs.pytorch.org/docs/2.11/generated/torch.Tensor.index_put_.html) | Official contract says assignment without accumulation has undefined behavior for duplicate indices; accessed2026-11-21 | Does not identify historical scatter order, errors or the missing correction runtime version |
+
+Current machine index: [literature_audit_v5.json](results/literature_audit_v5.json), 43 identities. No publisher results were rerun. The earlier40 records and their limitations are retained without upgrading inspection depth. The separate external ledger contribution reporting44 headline reference checks is attributed historical context; overlapping lists are not added to inflate a source count.

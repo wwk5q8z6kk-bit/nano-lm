@@ -1,12 +1,20 @@
 flowchart TD
-    P["Observed prefix and request ID"] --> C["Checkpoint and cache-version checks"]
-    C --> B["Causal dense or shared-block core"]
-    K["One KV cache per logical depth"] <--> B
-    B --> N["Final normalization"]
-    N --> H["Tied native next-token head"]
-    N -. "separate diagnostic" .-> T["Compatible boundary transport"]
-    T -. "coherent inverse readout" .-> H
-    H --> Y["Next-token distribution"]
-    Y --> E["Held-out quality and total cost"]
-    E --> L["Evidence and decision history"]
-    L -. "reviewed training experiment" .-> B
+    P["Allowed visible prefix"] --> C["Snapshot and context identity"]
+    C --> B["Causal dense or shared core"]
+    K["State per logical depth"] <--> B
+    B --> H["Normalization and tied head"]
+    H --> N["Native probabilities"]
+    P --> A["Optional causal cache"]
+    N --> M["Declared augmented mixture"]
+    A --> M
+    N --> S["Score next target"]
+    M --> S
+    S --> O["Observe revealed token"]
+    O --> A
+    E["Delivered training events"] --> U["Current and replay allocation"]
+    U --> D["Gradients and AdamW candidate"]
+    D --> V["Validate and commit actual update"]
+    V --> B
+    V --> L["Evidence and decision ledger"]
+    S --> L
+    L --> G["Quality and resource gates"]

@@ -1,5 +1,7 @@
 # 06 — V4 validation, readiness and unresolved work
 
+**V5 current validation notice.** The new combined gate is [validate_release_v5.py](analysis/validate_release_v5.py); its final receipt is written as results/validation_v5_final.json in the [results directory](results/). Historical V3/V4 receipts and all 17 previous result files remain unchanged. The24-group current gate checks the entire36-event V4 machine prefix and the45-event core V5 prefix and the later PR canonical-ledger prefix, including the external contribution. Current commands and remaining research appear at the end of this chapter; old receipts retain their original counts and scope.
+
 **Review date:** November 21, 2026, America/New_York. **Scope:** architecture and conditional proofs, frozen-source reanalysis, tiny native training and correction integration, independent measurement review, and append-only research records. Local synthetic training is now executed. No corpus-scale training, new held-out language benchmark, device efficiency result or paid compute is part of this release.
 
 **Readiness:** the tiny implementation and measurement interfaces are ready for scientific and engineering review. They do not establish an effective general-purpose continual learner or select an architecture. APS remains an unselected Nano LM hypothesis.
@@ -135,3 +137,45 @@ Checksum verification deliberately scans parameter bytes on calls in this tiny r
 
 The final dense and shared-block tests agree between full-prefix and incremental evaluation to maximum absolute logit errors of approximately `6.14e-16` and `1.42e-15`, respectively. This is agreement for these configurations, not a universal error bound.
 
+
+
+## V5 reproduction, exact history and limits
+
+Run from the architecture directory with Python3 and the existing requirements file. The baseline paths must identify separately preserved preceding material, not the current files.
+
+```sh
+python3 -B analysis/validate_release_v5.py \
+  --baseline-package /absolute/path/to/preserved-v4-architecture \
+  --baseline-ledger /absolute/path/to/preserved-v4-architecture/ledger_events.jsonl \
+  --baseline-canonical /absolute/path/to/canonical-ledger-at-0a1d11f.md \
+  --out /absolute/path/to/new-validation-receipt.json
+```
+
+The explicit output must not already exist. Omitting it prints a new check result without changing package files. The command executes bounded synthetic CPU training/checks, not corpus or remote training.
+
+| Current check area | Cases or invariant |
+|---|---|
+| Existing contracts | All16 V4 command groups retained, with current ledger-count expectations only |
+| Late source addendum | Five new copies,15rounded rows,8unchanged model/evaluation ASTs and scale-specific qualified gates |
+| Optimizer reanalysis |8 focused tests,53 exact inputs, raw phase-log means and literal finite predicates |
+| Edit geometry |7 cases plus exact rational diagnostics; independent numeric LP cross-check |
+| Causal cache |8 grouped checks,1,093 oracle prefixes,40 suffix variants, reviewed input and subnormal-mixing cases |
+| Store/cache source audit |10 exact copies, decimal arithmetic and executed information-boundary counterexamples |
+| Native comparison |14 behavioral tests; exact parsed stdout equality with losslessly compressed full receipt |
+| Human/machine history |62 human IDs;46 events covering39 decisions;36-event prior prefix unchanged |
+| Canonical history |Entire current PR prefix retained, including the external43-line append |
+| Frozen sources |85core plus5late copies;90total, including the original21-copy manifest |
+| Historical outputs |All17 prior V4 result files preserved byte-for-byte |
+| Mutation contract |Package, canonical ledger and supplied baselines match before/after; new receipt created afterward |
+
+The native suite itself emits the full comparison receipt. The gate compares it with the gzip artifact and every projected field in the readable summary, then stores a compact command summary and canonical parsed-JSON digest. It does not run a separate additional comparison merely to populate the final receipt. The full event, prediction, checkpoint and exposure records remain in the gzip file; compaction of the gate receipt does not discard experimental data.
+
+The first cache fixture summary and the final repaired-cache summary have identical named-group results; both remain preserved. Final code/test hashes and the independent review distinguish the expanded numerical assertions. The old summary is not silently rewritten to imply it checked code that did not yet exist.
+
+The gate verifies local reproducibility and package contracts, not an external lab replication, a formal proof-assistant certificate, full-repository CI or architecture superiority. Exact output equality is scoped to the observed Python/NumPy environment. The elementary mathematical proofs have separate assumptions and independent review notes.
+
+### Work still unresolved after V5
+
+The actual language evaluator still needs equal prefix/reset information, raw byte/crop accounting and checkpoint/data identities. The40M cache has met the numerical stopping condition in the late reported rows while full control clearance remains open; the registered101M/L store gate still lacks its required result. Native language-quality and long-term continual-learning claims require meaningful held-out tasks, sufficient eligible cohorts, independent tuning/evaluation and full cost. The tiny run shows why favorable acquisition alone cannot close a correction-durability gate.
+
+The source audits do not recreate historical Torch execution order or recover missing model/corpus bytes. The parallel contributor's V3 subset rerun remains that contributor's attributed historical check, not an independent rerun of the complete V5 gate.

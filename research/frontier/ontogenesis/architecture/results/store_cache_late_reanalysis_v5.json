@@ -1,0 +1,287 @@
+{
+  "schema": "store-cache-late-reanalysis-v1",
+  "core_cutoff": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+  "late_cutoff": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+  "scope": "bounded late addendum; rounded JSON arithmetic and source AST comparison only",
+  "language_model_evaluation": false,
+  "verified_late_source_files": 5,
+  "verified_prior_source_files": 10,
+  "late_rows_reconciled": 15,
+  "source_configuration_parameter_counts": {
+    "S": {
+      "config": {
+        "d": 256,
+        "layers": 8,
+        "ffn": 704,
+        "heads": 4,
+        "kv": 2
+      },
+      "shape_derived_parameters": 14292224
+    },
+    "M": {
+      "config": {
+        "d": 512,
+        "layers": 8,
+        "ffn": 1408,
+        "heads": 8,
+        "kv": 4
+      },
+      "shape_derived_parameters": 40379904
+    },
+    "L": {
+      "config": {
+        "d": 768,
+        "layers": 12,
+        "ffn": 2048,
+        "heads": 12,
+        "kv": 4
+      },
+      "shape_derived_parameters": 100684032
+    }
+  },
+  "unchanged_model_and_evaluation_function_asts": {
+    "init": true,
+    "rms": true,
+    "rope_tables": true,
+    "apply_rope": true,
+    "forward": true,
+    "count": true,
+    "loss_fn": true,
+    "evaluate": true
+  },
+  "unchanged_exchange_script_blobs": 2,
+  "results": {
+    "cache-exchange-S.json": {
+      "size": "S",
+      "shape_derived_parameters": 14292224,
+      "fit_target_presentations": 524288,
+      "rows": [
+        {
+          "domain": "web",
+          "model_bpb": "1.1945",
+          "augmented_bpb": "1.1922",
+          "gain": "0.0023",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "textbook",
+          "model_bpb": "0.894",
+          "augmented_bpb": "0.8945",
+          "gain": "-0.0005",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.000",
+          "baseline_difference_from_cross_record_reference": "0.000"
+        },
+        {
+          "domain": "math",
+          "model_bpb": "1.2963",
+          "augmented_bpb": "1.2895",
+          "gain": "0.0068",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "code",
+          "model_bpb": "0.9903",
+          "augmented_bpb": "0.9789",
+          "gain": "0.0114",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "mix",
+          "model_bpb": "1.1442",
+          "augmented_bpb": "1.1406",
+          "gain": "0.0036",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        }
+      ],
+      "baseline_reference": "store-exchange-S.json reported_by_training_run",
+      "baseline_reference_is_cross_record_inference": true,
+      "baseline_reference_checkpoint_path_agrees": true,
+      "baseline_reference_model_rows_agree": true,
+      "baseline_discrepant_rows": 4,
+      "reported_max_baseline_difference": "0.0001",
+      "literal_baseline_equality_satisfied": false,
+      "reported_causality_check_passed": true,
+      "store_array_bytes": null,
+      "whole_script_seconds_reported": 277,
+      "checkpoint_uses_host_sampler_name": false
+    },
+    "cache-exchange-M.json": {
+      "size": "M",
+      "shape_derived_parameters": 40379904,
+      "fit_target_presentations": 524288,
+      "rows": [
+        {
+          "domain": "web",
+          "model_bpb": "1.1076",
+          "augmented_bpb": "1.1064",
+          "gain": "0.0012",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "textbook",
+          "model_bpb": "0.7903",
+          "augmented_bpb": "0.7906",
+          "gain": "-0.0003",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "math",
+          "model_bpb": "1.1823",
+          "augmented_bpb": "1.1787",
+          "gain": "0.0036",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "code",
+          "model_bpb": "0.875",
+          "augmented_bpb": "0.8691",
+          "gain": "0.0059",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.000",
+          "baseline_difference_from_cross_record_reference": "0.000"
+        },
+        {
+          "domain": "mix",
+          "model_bpb": "1.0481",
+          "augmented_bpb": "1.0463",
+          "gain": "0.0018",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0000"
+        }
+      ],
+      "baseline_reference": "store-exchange-M.json reported_by_training_run",
+      "baseline_reference_is_cross_record_inference": true,
+      "baseline_reference_checkpoint_path_agrees": true,
+      "baseline_reference_model_rows_agree": true,
+      "baseline_discrepant_rows": 3,
+      "reported_max_baseline_difference": "0.0001",
+      "literal_baseline_equality_satisfied": false,
+      "reported_causality_check_passed": true,
+      "store_array_bytes": null,
+      "whole_script_seconds_reported": 720,
+      "checkpoint_uses_host_sampler_name": false
+    },
+    "store-exchange-M.json": {
+      "size": "M",
+      "shape_derived_parameters": 40379904,
+      "fit_target_presentations": 1048576,
+      "rows": [
+        {
+          "domain": "web",
+          "model_bpb": "1.1076",
+          "augmented_bpb": "1.1102",
+          "gain": "-0.0026",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "textbook",
+          "model_bpb": "0.7903",
+          "augmented_bpb": "0.7917",
+          "gain": "-0.0014",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "math",
+          "model_bpb": "1.1823",
+          "augmented_bpb": "1.1807",
+          "gain": "0.0016",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0001"
+        },
+        {
+          "domain": "code",
+          "model_bpb": "0.875",
+          "augmented_bpb": "0.8734",
+          "gain": "0.0016",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.000",
+          "baseline_difference_from_cross_record_reference": "0.000"
+        },
+        {
+          "domain": "mix",
+          "model_bpb": "1.0481",
+          "augmented_bpb": "1.0495",
+          "gain": "-0.0014",
+          "gain_arithmetic_agrees": true,
+          "control_gain": "0.0000",
+          "baseline_difference_from_cross_record_reference": "0.0000"
+        }
+      ],
+      "baseline_reference": "store-exchange-M.json reported_by_training_run",
+      "baseline_reference_is_cross_record_inference": false,
+      "baseline_reference_checkpoint_path_agrees": true,
+      "baseline_reference_model_rows_agree": true,
+      "baseline_discrepant_rows": 3,
+      "reported_max_baseline_difference": "0.0001",
+      "literal_baseline_equality_satisfied": false,
+      "reported_causality_check_passed": null,
+      "store_array_bytes": 1022224980,
+      "whole_script_seconds_reported": 682,
+      "checkpoint_uses_host_sampler_name": false
+    }
+  },
+  "cache_support_share": {
+    "S_M_identical": true,
+    "values": {
+      "web": "0.132",
+      "textbook": "0.094",
+      "math": "0.325",
+      "code": "0.445"
+    },
+    "interpretation": "fraction of true targets with positive exact-cache mass; not accuracy"
+  },
+  "registered_cache_40M_gate": {
+    "applicable_result": "cache-exchange-M.json",
+    "scale_parameters": 40379904,
+    "all_four_domain_gains_below_0_01": true,
+    "numeric_branch": "close_explicit_copy_line_at_tested_scale",
+    "source_controls_fully_satisfied": false,
+    "classification": "registered numerical stopping branch met, with unresolved control/provenance qualifications",
+    "not_a_proof_all_copy_mechanisms_are_useless": true
+  },
+  "registered_store_101M_gate": {
+    "required_size": "L",
+    "required_scale_parameters": 100684032,
+    "new_result_size": "M",
+    "decision": "pending_registered_L_result"
+  },
+  "training_sampler": {
+    "source_now_uses_host_numpy_sampling": true,
+    "prior_source_used_device_jax_randint": true,
+    "new_run_naming_uses_hs": true,
+    "reported_old_sampling_bias_independently_verified": false,
+    "late_checkpoint_sampler_attribution": "legacy naming suggests first-version checkpoints; payload/recipe not independently recovered",
+    "no_repaired_sampler_training_result_in_this_addendum": true
+  },
+  "remaining_qualifications": [
+    "no checkpoint payload/hash or executed command",
+    "no raw per-target losses or frozen exact mixture weights",
+    "corpus byte denominator and mix weights not independently reconstructed",
+    "store retains demonstrated extra pre-crop context and no document exclusion",
+    "cache resets crops; underlying document boundaries and foreign-window disjointness not established",
+    "model baseline comparison differs by 0.0001; direct zero-weight identity remains untested; zero rounded foreign gain does not prove independence",
+    "no matched resource comparison or uncertainty interval",
+    "no new language model evaluation by this audit"
+  ]
+}

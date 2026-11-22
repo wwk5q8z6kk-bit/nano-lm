@@ -1,0 +1,774 @@
+{
+  "schema_version": 1,
+  "research_cutoff": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+  "factorial_cutoff": "767857e72bfa51e3fa6f32d047507aabef077fde",
+  "prior_pr_head": "0a1d11f19b91e3d3efb2ab5cad4cbad617a56971",
+  "scope": "85 frozen source-file copies across historical experiments; duplicates across revisions are intentional, not independent replications. Original V4 manifest and its 21 entries remain unchanged. Source bytes, Git blobs and SHA-256 are checked; hashes do not authenticate research claims.",
+  "files": [
+    {
+      "source_path": "research/frontier/ontogenesis/correction_interference.py",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "cb8386a62380499fc94ffa22bf990049acb1419e",
+      "local_path": "evidence/upstream/correction_interference.py.txt",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/correction_interference.py",
+      "sha256": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7",
+      "bytes": 10251
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/cab_s.py",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "11568dc425474425925ae1daaa3b9adbcd4f6a95",
+      "local_path": "evidence/upstream/cab_s.py.txt",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/cab_s.py",
+      "sha256": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b",
+      "bytes": 10343
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/lm_store.py",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "041afbba9810458074260b90099c6222437f290d",
+      "local_path": "evidence/upstream/lm_store.py.txt",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/lm_store.py",
+      "sha256": "37ba723b00edffc9ffad1640330871aa531e1c6514c5fdcb0cd749a82d617578",
+      "bytes": 9879
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/lm/store-pilot.json",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "cd02f67f45fc045e8cfe5095b9dd2a81424e6d4b",
+      "local_path": "evidence/upstream/results/lm/store-pilot.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/results/lm/store-pilot.json",
+      "sha256": "53acac818d3c77e30951a3c14f2709c228f1ef67a155d4d0f4902595c4089ea7",
+      "bytes": 882
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/constrained.json",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "8c5e00cc0772842da890e200321744621f3de3b5",
+      "local_path": "evidence/upstream/results/correction_interference/constrained.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/results/correction_interference/constrained.json",
+      "sha256": "ec30002fc3f937543e79ebca6c42d76740d5afca7dd3996f2c2ad94850863405",
+      "bytes": 765
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/entity_replay.json",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "265c277de1e90c56fc53aad222ff714231ed26dd",
+      "local_path": "evidence/upstream/results/correction_interference/entity_replay.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/results/correction_interference/entity_replay.json",
+      "sha256": "8b5c27875d661bf345ef3558fcdfc496c7c288d319ee006f3a951a4e7595f7c8",
+      "bytes": 683
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/frozen_address.json",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "af9fd8516ab0b7a39490860485d5fc3952fb8bed",
+      "local_path": "evidence/upstream/results/correction_interference/frozen_address.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/results/correction_interference/frozen_address.json",
+      "sha256": "a09e4707b93e3d12b72860b3c4ea4830c2fcff0e91ada06952741d6429069e73",
+      "bytes": 696
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/random_replay.json",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "04f6f938d5d7fbb153372cb1dd5173bf8fcb032f",
+      "local_path": "evidence/upstream/results/correction_interference/random_replay.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/results/correction_interference/random_replay.json",
+      "sha256": "aa0d4f5defcabeffbf4ee757439219ad205b4eb360e9c6669f6ec6e4e794bb33",
+      "bytes": 684
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/single.json",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "2c1279043ddd829198deee3e7814ce2675ae7701",
+      "local_path": "evidence/upstream/results/correction_interference/single.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/results/correction_interference/single.json",
+      "sha256": "b266cb3b84b360857b0baef118b5dd7c28c96e63894ed68c3315163a67a3ae19",
+      "bytes": 670
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/store.json",
+      "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
+      "git_blob_sha": "e04ec6c5ae29e431bc2a4816c7a9c835ef451e09",
+      "local_path": "evidence/upstream/results/correction_interference/store.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0/research/frontier/ontogenesis/results/correction_interference/store.json",
+      "sha256": "ee0d07c3b7203f00f69201928e123d2695ecf0a7efc651307929c70ed7b5d91e",
+      "bytes": 674
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/PROTOCOL-NESTED-DEVIATION.md",
+      "source_commit": "8d3b03e08a5c14d2e9ab330ac8d5006e87e61613",
+      "git_blob_sha": "0cddf105d3f72fabdd82d0a7e788e8fd9ab79781",
+      "local_path": "evidence/upstream/PROTOCOL-NESTED-DEVIATION.md.txt",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/8d3b03e08a5c14d2e9ab330ac8d5006e87e61613/research/frontier/ontogenesis/PROTOCOL-NESTED-DEVIATION.md",
+      "sha256": "e8c4c9267bb802392a860a43f38811d4b61db3a42eefecc2831c7bc818b8588a",
+      "bytes": 3916
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/correction_margins.py",
+      "source_commit": "8d3b03e08a5c14d2e9ab330ac8d5006e87e61613",
+      "git_blob_sha": "4e14e8f25a22fa743dd6ffcc51a812df11ecad16",
+      "local_path": "evidence/upstream/correction_margins.py.txt",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/8d3b03e08a5c14d2e9ab330ac8d5006e87e61613/research/frontier/ontogenesis/correction_margins.py",
+      "sha256": "ffc4eb6fdfdf209d23c2cfe19a491645de7d2fb749a74c83b4859867ae98f0d8",
+      "bytes": 5721
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "a515cf06826e8c870a1a613125b867d6b94d8014",
+      "sha256": "cb22a2ad5bf3b563d26a5b33fba8d6f7444fe2bd00a544044c399b22eb939a9f",
+      "bytes": 46661,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/INVESTIGATION.md"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/correction_margins.py",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "4e14e8f25a22fa743dd6ffcc51a812df11ecad16",
+      "sha256": "ffc4eb6fdfdf209d23c2cfe19a491645de7d2fb749a74c83b4859867ae98f0d8",
+      "bytes": 5721,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/correction_margins.py",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/correction_margins.py"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-half-m1.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "2521f0c73a1030cce4576106eb4ad6e8c04388da",
+      "sha256": "1da9008689f57d13b16342b39fbec4b70c7bcd0f083580f959040832361f9564",
+      "bytes": 537,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m1.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-half-m1.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-half-m3.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "e0eb016eacff27c9a2784427e935db9295e883d8",
+      "sha256": "6b14ba351e2263d3b79a687b23a028a520284043a05a7f59e69542aa5305fa71",
+      "bytes": 527,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m3.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-half-m3.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-half-m6.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "e1472743f870865e962a72f7df27630a567206e3",
+      "sha256": "5d6e65584e5011a16737d514106cc5ccc1031655a72d1861630ef7809e4e115d",
+      "bytes": 532,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m6.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-half-m6.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-keep-m3.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "4285b969152367f49225d0b89ff3fe39e5eaeb79",
+      "sha256": "4796e5f636d055d21f1f41c0c29fa552e528fb40049f6ee9b3342febf89a4166",
+      "bytes": 529,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-keep-m3.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-keep-m3.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-none-m1.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "1e264103d19c04a7237212ab47d311a9943d4da8",
+      "sha256": "055c14b2109181d3bd9fe3d50f60a41cdc769c42243694ce3f80c7123b2505b7",
+      "bytes": 526,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-none-m1.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-none-m1.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/cab_s.py",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "11568dc425474425925ae1daaa3b9adbcd4f6a95",
+      "sha256": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b",
+      "bytes": 10343,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/cab_s.py",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/cab_s.py"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/correction_interference.py",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "cb8386a62380499fc94ffa22bf990049acb1419e",
+      "sha256": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7",
+      "bytes": 10251,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/correction_interference.py",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/correction_interference.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/PROTOCOL-MEMSAT-FACTORIAL.md.txt",
+      "source_path": "research/frontier/ontogenesis/PROTOCOL-MEMSAT-FACTORIAL.md",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "1a6fca6467ac212d22d7262c2fa2c9bfd7ba4cb7",
+      "sha256": "8ef1a2a201dcea58ea365454049483601fb3d6c0c5fc9b8510ffdc39e73f76aa",
+      "bytes": 4835,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/PROTOCOL-MEMSAT-FACTORIAL.md"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/RESULTS-MEMSAT-FACTORIAL.md.txt",
+      "source_path": "research/frontier/ontogenesis/RESULTS-MEMSAT-FACTORIAL.md",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "7a4731aa23deaad7379cd7fde91e26436ddb7ee8",
+      "sha256": "b1971b0c9e7d77c5b8d50ff3299053390ff9664fcd2764acd191d21fc6b82e49",
+      "bytes": 5515,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/RESULTS-MEMSAT-FACTORIAL.md"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/memory_saturation_factorial.py",
+      "source_path": "research/frontier/ontogenesis/memory_saturation_factorial.py",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "c6a22b62097e7f55dd8355f54f2845822d0c592b",
+      "sha256": "c883d11fd39602546357d256d25031913cbb9242fbd086d1595d712c3ed147f8",
+      "bytes": 4366,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/memory_saturation_factorial.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/memory_saturation_factorial_score.py",
+      "source_path": "research/frontier/ontogenesis/memory_saturation_factorial_score.py",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "2e863d6c4636c96e89d12acd5f23cd0d60e16446",
+      "sha256": "384acea8df0e885a60023997b2cc7c1493f5561a4a0dc876c88374f611b768cb",
+      "bytes": 2966,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/memory_saturation_factorial_score.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/memory_saturation.py",
+      "source_path": "research/frontier/ontogenesis/memory_saturation.py",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "f6624e06c09582b9e48a2771cddc6c067d4711a1",
+      "sha256": "4456c7136088267c8da3db821246901edee376fe6880fbf33c462b89fbe652b4",
+      "bytes": 5126,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/memory_saturation.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.py.txt",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/driver.py.txt",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "c24667e052856216ad7c94a50b7c624b231f9ce4",
+      "sha256": "4cdced5bebebb9d7942833e71d94e375e692d0c83a6dc3440219393c6fd88534",
+      "bytes": 2198,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.py.txt"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/correction_optimizer.py",
+      "source_path": "research/frontier/ontogenesis/correction_optimizer.py",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "bcf329aec01b1a659efe6127f87258c7c9a38ad0",
+      "sha256": "653f0af7438385a00ea12a482535780622d92343671f2120e2a42baa1f966790",
+      "bytes": 4921,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/correction_optimizer.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "source_path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "d99e7a6e9163728be3556c3ef4e42f51c7a0b12b",
+      "sha256": "ecaf6427870382d523dfc0158b4c0c86defbdf8e8353f33f620d6bac172eb294",
+      "bytes": 48316,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/INVESTIGATION.md"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_200.json",
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/optimizer-adam_200.json",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "a1c38dd37a1ebb00a95a06119428178f4f593caa",
+      "sha256": "8f2ba3d6bf3bc357d144871c37b57aefb94aeeb71329d81aa193ef599d933cf8",
+      "bytes": 488,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_200.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_stop.json",
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/optimizer-adam_stop.json",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "293113310ccbe8e9a306b0acfd29bb52317c1267",
+      "sha256": "729d9a99a331507dae545540d741e5ed4f7bb8fd11749bab0b8a8c7f80c6b290",
+      "bytes": 492,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_stop.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/results/correction_interference/optimizer-gd_stop.json",
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/optimizer-gd_stop.json",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "6f324702a00ddd195f235312e026fb720b5c50c3",
+      "sha256": "e9ad22a2da7166caa25de803cfd9ae19dc777ee549c93b0c961b1c5f9f46d607",
+      "bytes": 485,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/results/correction_interference/optimizer-gd_stop.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr1-s3001.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr1-s3001.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "dba3cc8725113384f936c24942bbf8c42d87e850",
+      "sha256": "27c5c4d4ccd48fd11b75f4b85df7d04dd4095f95def88876814ffdbd023374b1",
+      "bytes": 6930,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr1-s3001.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr10-s3001.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr10-s3001.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "c5fdf30cb8316882a973dc989c9610fb2af7d76d",
+      "sha256": "9ee24b31ffc20605bd64bcb78aab2ff35bbae906191d07b14a474ad484b2dd2f",
+      "bytes": 6936,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr10-s3001.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr100-s3001.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr100-s3001.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "81f2cf3a2d42e01255eac9347d9cd26446e786de",
+      "sha256": "2d06b860d2e1d9342406203a2878a75120a44aff8c6d0a22ae325a200caef4dd",
+      "bytes": 6254,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr100-s3001.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr3-s3001.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr3-s3001.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "ff2d5a7d635515fda031d9e82743f053e8255d88",
+      "sha256": "4e63d0780a55b19bf55d3d763ceda55c55ec04ce2972a8d08e4d8502b9c93adf",
+      "bytes": 6930,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr3-s3001.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr30-s3001.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr30-s3001.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "ea895c0a1b6cb04d7aea74f77850e2bbe94e6bab",
+      "sha256": "0facd16340236bb7b42838af06e79a62f8762bdcb682f05f58cef46e8c331895",
+      "bytes": 6909,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr30-s3001.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr300-s3001.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr300-s3001.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "c1185e9e37283adfc0ee7d39552660376a53b4d0",
+      "sha256": "0df518cc237a2e94f12dae134bd7173744361f8371409d38ba005f75db8a1624",
+      "bytes": 6296,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr300-s3001.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-sgd-selection.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-sgd-selection.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "4876655c0d73709127eac58b7d7c06ae0c214075",
+      "sha256": "18308a430d27b51d50b9d7920c27524d16798c8e84f9970697a0a1f144a65c22",
+      "bytes": 127,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-sgd-selection.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "6af44c14f147d61f1f6c53e2d485b4a96a6a6ac4",
+      "sha256": "1be6bf699bf69526bae756b2f039e39c9b9f54e97e33c43c600a60d0c2f41d9f",
+      "bytes": 7677,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log.run1",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log.run1",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "83be75463c8222a83f3eb39dfdbbd2e6d3e3994c",
+      "sha256": "934f576823c83ae1125c8dc8563fceba33dab2f0fae3ebe3adccbf1bf3e6bbaf",
+      "bytes": 4384,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log.run1"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3101.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3101.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "47fb019320747d934ec424b5827fffd99bc2ea14",
+      "sha256": "eb47e9980448e8d90e01d19f04c609caa3ad66e6f22cc82c4574807b2c0f3849",
+      "bytes": 6939,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3101.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3102.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3102.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "8375d24eefe8ad96059669a49e66648f53eed9df",
+      "sha256": "323ee371c32d8f87fdc709468ff29ee82a8205adf201b7d5205ee7f0dde08ff0",
+      "bytes": 6938,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3102.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3103.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3103.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "6c825bb60ebddb86375a4f7d482343abb92387c9",
+      "sha256": "25b589b73955e64d9970d5ab6c0c628990b0540e8d4ec1c7a7db7acf95a5ab53",
+      "bytes": 6954,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3103.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3104.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3104.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "a01032ab83373cb1a22af08dcc34e018f2aeeef0",
+      "sha256": "2049688556a892f0694be4b32d2ff40898134ee9e507173101c4f93442b814d6",
+      "bytes": 6945,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3104.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3105.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3105.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "d0d8b2c802297833d218aa0d13795f0c82ce0895",
+      "sha256": "907d04db1c05fe8710688631ecf96456a80bc5ad9bdcfeebf6c3775cfa82a3ae",
+      "bytes": 6925,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3105.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3101.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3101.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "c5db1ba9ffd5784e6f511db6e29dc3353794a24d",
+      "sha256": "383898abfd29366905e002397eefe1b5f2fffb046912631baddd520d2de2c6ec",
+      "bytes": 6858,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3101.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3102.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3102.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "ceac24422ec48c4fffd0ab53751ee987db9e59ff",
+      "sha256": "20b4a716582e151c43c6407d4bd8133ce720ddf0d80201b5e4e170480b36d3da",
+      "bytes": 6796,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3102.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3103.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3103.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "c54022cc07d9daa8937ec384244ab8ce6d19a1fe",
+      "sha256": "b85ef8de7ab2cf62ac611cb7f68beec21d9eac0aae4ab59d20e5eefe9d801d1e",
+      "bytes": 6944,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3103.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3104.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3104.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "6ca6e839300d646ebd8bcf6332fcc4f5b5757f76",
+      "sha256": "68e6c3282ca63a5000e4b0ab6d52d984ddf31bb0fc47b9886a89ff8d79a1a7a3",
+      "bytes": 6843,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3104.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3105.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3105.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "f2fce0b348089c3c1aa524c98cb05be57bb13185",
+      "sha256": "e0ab2d9ed9096230863aeb1ac0b5990ac7c7ef1c99d443f32316ae52cdd1ad7d",
+      "bytes": 6888,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3105.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3101.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3101.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "4f866ddb1fe8226866acd807bd5038928a49de4b",
+      "sha256": "e26a68f2a20dfb57b55d1d7f0d2b845a377426660c9143e0f5321a1b4eb9f235",
+      "bytes": 7195,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3101.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3102.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3102.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "706b2e5a930453528c160e302c9ec929fc299201",
+      "sha256": "8b274fdddd5129c560519e4ca1261e5c8dd96914799a1267ca11746442a46175",
+      "bytes": 7198,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3102.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3103.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3103.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "07b6dfee9ff8ab8e1ebc3af11f612fe5cdd2fee1",
+      "sha256": "9942debaedd392d73c39883535d4c388ac5bcb5c5e351d4dedaceacd932f2111",
+      "bytes": 7184,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3103.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3104.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3104.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "56e915336ecaabe282daa8a09393e0363e69d47f",
+      "sha256": "131d51a1e9e2a41c5ddfc4ca464410cccc3a91edaf93dc794548398944fd28fa",
+      "bytes": 7196,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3104.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3105.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3105.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "85e1ad09d9e222dd28e0b981e5baf3ad9c56d297",
+      "sha256": "fbb60b31febc8cacc42d1b10d9d06e57be111bdf04428fb7905aac9c9edcc699",
+      "bytes": 7209,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3105.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3101.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3101.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "a5629726db057077f645cb19ab0dbfc6c703f6ef",
+      "sha256": "e44db177ff8cdf9367a2d4a5b8ded3788b61b3609f614d36e2e5a552509286c5",
+      "bytes": 7208,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3101.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3102.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3102.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "08f8119abf6084daca1783147e4fdfc18312ca45",
+      "sha256": "a1abe7b81d55b02239779b9141d9632e1ec24f7705ecf66280ec7752ebb05a7c",
+      "bytes": 7163,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3102.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3103.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3103.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "772698dbe83ca567cd6ebb8497ef4247d4b7ef88",
+      "sha256": "42644957f798b445f11d48d5568413609e298402d6790dac8fbdcc8781535503",
+      "bytes": 7191,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3103.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3104.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3104.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "a11951a21632990abc44bf71a3bc92d768e701d0",
+      "sha256": "5288de3db40a42ad86038eb361756d2f34299fcc5be4189b668ed4c3d06817c6",
+      "bytes": 7187,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3104.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3105.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3105.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "d4d33edf0334a1bca3e907560a01366884ac4406",
+      "sha256": "5fcfe0a23beb30b0c44b22c6d629ef5c569f8c37527adf7bfee0725920458947",
+      "bytes": 7217,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3105.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3101.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3101.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "afe7becfd7e9f3a99f82889f700cb89711007c5b",
+      "sha256": "7bb38c98c2c72c472beefaa12b180a4cb335d82af7df88b1c8ac603e511c3ed1",
+      "bytes": 7200,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3101.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3102.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3102.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "308d4e88d091c3dab757b9eb0c3fe428f67e4988",
+      "sha256": "d5f536ca492892cbe8f9def55a700b08a67110854244a94fad32aab204fba99f",
+      "bytes": 7143,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3102.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3103.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3103.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "a42acb449987a7e61325494db05686c3ce204d73",
+      "sha256": "8ef72acfe6c5bf02821b3edc9f75af955f70f0f1410b47443a4a8ce3e81b478a",
+      "bytes": 7220,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3103.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3104.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3104.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "481e430f213909d38a1af62147b8522fa6a8d211",
+      "sha256": "1589f8a698615a1206034c6989af16513bd265eadf443f0c6992c30482272d16",
+      "bytes": 7183,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3104.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3105.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3105.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "384202754d0c3cdb644426ed1c8b0e47ba4abe5e",
+      "sha256": "1fab4b3e5df9df9df661dae190380898a3c755a0d52b581e4b2ad87149b80e43",
+      "bytes": 7157,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3105.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3101.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3101.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "422fdf5fdc81158d3242e02929683e179bcba9a7",
+      "sha256": "01f79f49d3d9f314ed85d3abd260b85fa8d57d3e786509fa0d8b26267d3eb051",
+      "bytes": 7197,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3101.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3102.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3102.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "7cb82af1585996bb72bc0f8a332c8f812b1c15c3",
+      "sha256": "3bf7280d237fd44e8351186c4984bee7958d038e4d961e4e25aab5ae0d4de18a",
+      "bytes": 7188,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3102.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3103.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3103.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "9fb557ee3c36d5aeeef5806edb7dfbb2ef38a5be",
+      "sha256": "faa2507728874d80591e1ca6f7cb3addfab731e6ef6c6afac04e03d1d13a4fc5",
+      "bytes": 7196,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3103.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3104.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3104.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "85a46491090754e98b3cd7d05a9e351fbdde6d7f",
+      "sha256": "043a7061ee4fc439eb60d6007b621da2a00c282b8b4f2b7ab78be24bf420d440",
+      "bytes": 7165,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3104.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3105.json",
+      "source_path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3105.json",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "813cf74b3ba1201676b8440259d8ea9c280e4980",
+      "sha256": "c7b2fd630648f37f32a119812f97675bb6e1be122aaa03fff0a4f544df3b70c9",
+      "bytes": 7201,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3105.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/factorial/research/frontier/ontogenesis/cab.py",
+      "source_path": "research/frontier/ontogenesis/cab.py",
+      "source_commit": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "git_blob_sha": "867faa0017d5bb0b2c39d43578cdb8f25c11297c",
+      "sha256": "7826f2132024b2cf28cdba3ab2e6aa664982b07a416c2a990686fc78e621470c",
+      "bytes": 10056,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/767857e72bfa51e3fa6f32d047507aabef077fde/research/frontier/ontogenesis/cab.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/cab_s.py",
+      "source_path": "research/frontier/ontogenesis/cab_s.py",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "11568dc425474425925ae1daaa3b9adbcd4f6a95",
+      "sha256": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b",
+      "bytes": 10343,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/cab_s.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_optimizer/correction/research/frontier/ontogenesis/correction_interference.py",
+      "source_path": "research/frontier/ontogenesis/correction_interference.py",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "cb8386a62380499fc94ffa22bf990049acb1419e",
+      "sha256": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7",
+      "bytes": 10251,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/correction_interference.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/tpu/store_exchange.py",
+      "source_path": "research/frontier/ontogenesis/tpu/store_exchange.py",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "5df9cd372c3d841479aae8478a71b7323d9d4979",
+      "sha256": "01233c322aac26731d3d482f3e5d9d5a4ddc0a8cd21801b37335a9829878920f",
+      "bytes": 8804,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/tpu/store_exchange.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "source_path": "research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "2eb6c34e50366154976bf0c8be844cd4a5fa72e4",
+      "sha256": "081f9588585165e45a5245a404b03a6204aeb1dfc9cdb8a93a6dffd282a194ff",
+      "bytes": 9207,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/tpu/cache_exchange.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "7f945ddff6f6fae34a3a39da1e4dcdb5f9882bca",
+      "sha256": "c5429693dbfecba6ec2906361fc49f7d309909040eb901125228f4e25732e02b",
+      "bytes": 1040,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/results/lm/store-exchange-S.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/theory/RESEARCH-DECISION-20261121.md.txt",
+      "source_path": "research/frontier/ontogenesis/theory/RESEARCH-DECISION-20261121.md",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "d556fd174bfb2faa94cd6936560ec630ff582d7b",
+      "sha256": "45ba61d176952875d1e85999d9498d214649c6878d5f3aaaa6deccf45615170a",
+      "bytes": 16223,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/theory/RESEARCH-DECISION-20261121.md"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "source_path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "d99e7a6e9163728be3556c3ef4e42f51c7a0b12b",
+      "sha256": "ecaf6427870382d523dfc0158b4c0c86defbdf8e8353f33f620d6bac172eb294",
+      "bytes": 48316,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/INVESTIGATION.md"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/current/research/frontier/ontogenesis/LEDGER.md.txt",
+      "source_path": "research/frontier/ontogenesis/LEDGER.md",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "f4cd493b544a9e40d609901c0d92825b719b0292",
+      "sha256": "9a25961a3c144a95e6be8124e4b4ee4fba72432f056c40f2dba3e03560b1cc9a",
+      "bytes": 15214,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/LEDGER.md"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/store_initial/research/frontier/ontogenesis/tpu/store_exchange.py",
+      "source_path": "research/frontier/ontogenesis/tpu/store_exchange.py",
+      "source_commit": "d8c55b47ad43e64cc5d7054c75e1c7254a9a1ebd",
+      "git_blob_sha": "9a8d42ce5d6b31799346f2eea9a10349e619eae9",
+      "sha256": "40641d34007e8c0e8c70c820a7266a22f144856712c4fcfa438503c7a05e9b1e",
+      "bytes": 7197,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/d8c55b47ad43e64cc5d7054c75e1c7254a9a1ebd/research/frontier/ontogenesis/tpu/store_exchange.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/cache_initial/research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "source_path": "research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "source_commit": "fdd4a0c7032dd468e8d0392a53d0ce85de3ecd8b",
+      "git_blob_sha": "7c8649280e3818cff6a08c7d030a2217d750f039",
+      "sha256": "0884965f47dde77edc240241c9d7e3e091a409d0cf78c4f30b3bd95a7a05f23d",
+      "bytes": 7749,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/fdd4a0c7032dd468e8d0392a53d0ce85de3ecd8b/research/frontier/ontogenesis/tpu/cache_exchange.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/train_current/research/frontier/ontogenesis/tpu/train_jax.py",
+      "source_path": "research/frontier/ontogenesis/tpu/train_jax.py",
+      "source_commit": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "git_blob_sha": "c2ff949866a61bd501014b681b6b80bdb2863a39",
+      "sha256": "878ec45c1bd9863ca07e4cd5db93b04d3857650b49da00facc00c2d81251df34",
+      "bytes": 13498,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0afd5629990b4e442fb3aa8f7c700b030d8faede/research/frontier/ontogenesis/tpu/train_jax.py"
+    },
+    {
+      "local_path": "evidence/upstream_v5_store/store_result_initial/research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+      "source_commit": "7351fb137985d3cfefc71b0eb96e850cab53ec81",
+      "git_blob_sha": "7c1e0be9bc6ebf1138f47b140147578e1491e9ba",
+      "sha256": "60cec1fe915f5a854a4227bdfae154205c06cba1412914d43625d38d0d3be92d",
+      "bytes": 996,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/7351fb137985d3cfefc71b0eb96e850cab53ec81/research/frontier/ontogenesis/results/lm/store-exchange-S.json"
+    },
+    {
+      "local_path": "evidence/upstream_v5_context/pr_ledger_before_v5.md.txt",
+      "source_path": "research/frontier/ontogenesis/LEDGER.md",
+      "source_commit": "0a1d11f19b91e3d3efb2ab5cad4cbad617a56971",
+      "git_blob_sha": "2a13e02106b1a3c6a567fa87ff8046c1bab49fd3",
+      "sha256": "35bdedb2cfec4abe9fd334ea8f18877df244a0aa3784b8cb9af7d860a6220625",
+      "bytes": 35722,
+      "source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/0a1d11f19b91e3d3efb2ab5cad4cbad617a56971/research/frontier/ontogenesis/LEDGER.md"
+    }
+  ]
+}

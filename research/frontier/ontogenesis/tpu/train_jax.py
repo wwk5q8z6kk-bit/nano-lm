@@ -5,12 +5,20 @@ earlier language-model run): pre-norm RMSNorm, rotary positions, RMS-normalised 
 grouped key/value heads, gated SiLU feed-forward, tied input/output embeddings, same initialisation
 scales. `parity_check.py` loads PyTorch weights into this code and compares logits.
 
-Training recipe mirrors lm_compare.py and the Kaggle baseline: random crops of length 512, AdamW
+Training recipe mirrors lm_compare.py and the Kaggle baseline: uniform random crops of length 512, AdamW
 (0.9, 0.95), weight decay 0.1, gradient clipping 1.0, linear warm-up then cosine decay to 10% of peak,
 one pass over the corpus in token count. Evaluation uses the identical held-out crops as the PyTorch
 harness (numpy default_rng(0), 20 batches of 16 per domain) and reports bits per byte.
 
-Compute is bfloat16 with float32 normalisation statistics, attention softmax and logits.
+Compute is bfloat16 with float32 normalisation statistics and attention softmax; the logits are computed
+in bfloat16 and cast to float32 for the loss. Evaluation uses the same precision as training.
+
+Second version (run names end in "-hs"). The first version drew crop positions on the device with
+jax.random.randint, which is not uniform for ranges above 65,536 without 64-bit mode: on the 800M-token
+corpus the first 37% of the file was drawn about 12% too often. Crops are now drawn on the host with numpy,
+exactly as the PyTorch harness does, and the corpus stays in host memory, so it may be larger than a chip's
+memory. Also new: uploads and downloads are checked and retried, a resumed run must match its recipe,
+two jobs may not share a name, and a diverged run is recorded as such. The model code is unchanged.
 """
 from __future__ import annotations
 import argparse, copy, json, math, os, queue, subprocess, threading, time
@@ -90,28 +98,44 @@ def loss_fn(params, tok, c, dt):
     return optax.softmax_cross_entropy_with_integer_labels(lg, tok[:, 1:]).mean()
 
 
-def make_chunk(c, opt, B, T, micro, K, dt):
-    def one(carry, _):
-        p, st, key, data = carry
-        key, sub = jax.random.split(key)
-        ix = jax.random.randint(sub, (B,), 0, data.shape[0] - T - 1)
-        tok = data[ix[:, None] + jnp.arange(T + 1)[None]].astype(jnp.int32)
-        if micro == 1:
-            l, g = jax.value_and_grad(loss_fn)(p, tok, c, dt)
-        else:                                                   # same update from `micro` smaller passes
-            def acc(a, tk):
-                l, g = jax.value_and_grad(loss_fn)(p, tk, c, dt)
-                return (a[0] + l / micro, jax.tree_util.tree_map(lambda x, y: x + y / micro, a[1], g)), None
-            (l, g), _ = jax.lax.scan(acc, (jnp.zeros((), jnp.float32), jax.tree_util.tree_map(jnp.zeros_like, p)),
-                                     tok.reshape(micro, B // micro, T + 1))
-        u, st = opt.update(g, st, p)
-        return (optax.apply_updates(p, u), st, key, data), l
+def kd_loss(params, tparams, tok, c, tc, dt, alpha):
+    """alpha * cross-entropy on the data + (1 - alpha) * KL(teacher || student). The teacher gets no gradient."""
+    lg = forward(params, tok[:, :-1], c, dt)
+    ce = optax.softmax_cross_entropy_with_integer_labels(lg, tok[:, 1:]).mean()
+    tl = jax.lax.stop_gradient(forward(tparams, tok[:, :-1], tc, dt))
+    tlp = jax.nn.log_softmax(tl, -1)
+    kl = (jnp.exp(tlp) * (tlp - jax.nn.log_softmax(lg, -1))).sum(-1).mean()
+    return alpha * ce + (1.0 - alpha) * kl
 
-    @jax.jit
-    def chunk(p, st, key, data):
-        (p, st, key, _), ls = jax.lax.scan(one, (p, st, key, data), None, length=K)
-        return p, st, key, ls
-    return chunk
+
+def make_chunk(c, opt, micro, dt, kd=None):
+    """One compiled call runs a whole chunk of steps. toks is [steps, batch, T+1], sampled on the host.
+    kd = (teacher config, alpha) switches the objective to distillation; teacher parameters are passed at call time."""
+    def chunk(p, st, toks, tp):
+        lossf = (lambda q, tk: kd_loss(q, tp, tk, c, kd[0], dt, kd[1])) if kd else (lambda q, tk: loss_fn(q, tk, c, dt))
+
+        def one(carry, tok):
+            p, st = carry
+            if micro == 1:
+                l, g = jax.value_and_grad(lossf)(p, tok)
+            else:                                               # same update from `micro` smaller passes
+                def acc(a, tk):
+                    l, g = jax.value_and_grad(lossf)(p, tk)
+                    return (a[0] + l / micro, jax.tree_util.tree_map(lambda x, y: x + y / micro, a[1], g)), None
+                (l, g), _ = jax.lax.scan(acc, (jnp.zeros((), jnp.float32), jax.tree_util.tree_map(jnp.zeros_like, p)),
+                                         tok.reshape(micro, tok.shape[0] // micro, tok.shape[1]))
+            u, st = opt.update(g, st, p)
+            return (optax.apply_updates(p, u), st), l
+
+        (p, st), ls = jax.lax.scan(one, (p, st), toks)
+        return p, st, ls
+    return jax.jit(chunk)
+
+
+def load_params(path):
+    z = np.load(path); n = 1 + max(int(k[1:].split(".")[0]) for k in z.files if k.startswith("b"))
+    return dict(emb=jnp.asarray(z["emb"]), nf=jnp.asarray(z["nf"]),
+                blocks=[{k.split(".", 1)[1]: jnp.asarray(z[k]) for k in z.files if k.startswith(f"b{i}.")} for i in range(n)])
 
 
 def evaluate(ev, params, vals, manifest, T):
@@ -126,15 +150,33 @@ def evaluate(ev, params, vals, manifest, T):
     return {k: round(v, 4) for k, v in out.items()}
 
 
+def _gcloud(args, tries=3):
+    """Run a gcloud storage command with retries. Returns (ok, stderr)."""
+    err = ""
+    for k in range(tries):
+        r = subprocess.run(["gcloud", "storage"] + args, capture_output=True, text=True)
+        if r.returncode == 0: return True, ""
+        err = (r.stderr or "")[-400:]
+        if "matched no objects" in err or "No URLs matched" in err or "not found" in err.lower(): return False, "absent"
+        time.sleep(2 * (k + 1))
+    return False, err
+
+
 def push(path, gcs):
-    if gcs:
-        subprocess.run(["gcloud", "storage", "cp", path, gcs.rstrip("/") + "/" + os.path.basename(path)], capture_output=True)
+    """Upload one file. Returns True when it is safely in the bucket (or no bucket is in use)."""
+    if not gcs: return True
+    ok, err = _gcloud(["cp", path, gcs.rstrip("/") + "/" + os.path.basename(path)])
+    if not ok: print(json.dumps({"upload_failed": os.path.basename(path), "stderr": err}), flush=True)
+    return ok
 
 
 def pull(path, gcs):
-    if gcs and not os.path.exists(path):
-        subprocess.run(["gcloud", "storage", "cp", gcs.rstrip("/") + "/" + os.path.basename(path), path], capture_output=True)
-    return os.path.exists(path)
+    """Fetch one file if it is not on disk. True if present afterwards. A failed download is an error, not 'absent'."""
+    if os.path.exists(path): return True
+    if not gcs: return False
+    ok, err = _gcloud(["cp", gcs.rstrip("/") + "/" + os.path.basename(path), path])
+    if not ok and err != "absent": raise SystemExit(f"download of {os.path.basename(path)} failed, refusing to start from scratch: {err}")
+    return ok and os.path.exists(path)
 
 
 def save_tree(path, tree, **extra):
@@ -148,57 +190,96 @@ def load_tree(path, like):
     return jax.tree_util.tree_unflatten(treedef, [jnp.asarray(z[f"leaf_{i}"], dtype=x.dtype) for i, x in enumerate(leaves)]), z
 
 
+def run_name(a):
+    kd = bool(a.teacher) and a.kd_alpha is not None
+    n = f"dense-{a.size}-lr{a.lr:g}-s{a.seed}"
+    if a.bs != 64: n += f"-bs{a.bs}"
+    if a.seq != 512: n += f"-seq{a.seq}"
+    if a.warmup != 500: n += f"-wu{a.warmup}"
+    if a.train_tokens: n += f"-tok{float(a.train_tokens):g}"
+    if a.f32: n += "-f32"
+    if kd: n += f"-kd{a.teacher_size}a{a.kd_alpha:g}"
+    return n + "-hs" + (f"-{a.tag}" if a.tag else "")       # hs: crops sampled uniformly on the host (second version of this script)
+
+
 def run(a):
-    """One training run on one device. Resumable: state is saved at every evaluation and reloaded if present."""
+    """One training run on one device. Resumable: state is saved at every evaluation and reloaded if it matches this recipe."""
     dev = jax.devices()[a.device]
     c = SIZES[a.size]; dt = jnp.float32 if a.f32 else jnp.bfloat16
-    name = f"dense-{a.size}-lr{a.lr:g}-s{a.seed}" + (f"-{a.tag}" if a.tag else "")
+    kd = (SIZES[a.teacher_size], float(a.kd_alpha)) if a.teacher and a.kd_alpha is not None else None
+    name = run_name(a)
     say = lambda d: print(json.dumps({"run": name, **d}), flush=True)
     manifest = json.load(open(f"{a.data}/manifest.json"))
-    train = np.fromfile(f"{a.data}/train.bin", dtype=np.uint16, count=a.max_train_tokens or -1)
+    train = np.memmap(f"{a.data}/train.bin", dtype=np.uint16, mode="r")
+    if a.max_train_tokens: train = train[:a.max_train_tokens]
     vals = {dom: np.fromfile(f"{a.data}/val_{dom}.bin", dtype=np.uint16) for dom in ("web", "textbook", "math", "code")}
     budget = int(a.train_tokens) or len(train)
     steps = budget // (a.bs * a.seq) // a.chunk * a.chunk
+    if steps <= 0: raise SystemExit("token budget is smaller than one chunk of steps")
     sched = lambda n: a.lr * jnp.minimum(1.0, (n + 1) / a.warmup) * (0.1 + 0.9 * 0.5 * (1 + jnp.cos(jnp.pi * jnp.minimum(1.0, (n + 1) / steps))))
     opt = optax.chain(optax.clip_by_global_norm(1.0), optax.adamw(sched, b1=0.9, b2=0.95, eps=1e-8, weight_decay=0.1))
     os.makedirs(a.out, exist_ok=True); res_path = f"{a.out}/{name}.json"; ck_path = f"{a.out}/{name}.state.npz"
+    if a.gcs:                                                  # fail before any paid step if the bucket cannot be written
+        mark = f"{a.out}/{name}.started"; open(mark, "w").write(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+        if not push(mark, a.gcs): raise SystemExit("cannot write to the bucket; not starting")
+    head = {"name": name, "cfg": c, "lr": a.lr, "warmup": a.warmup, "bs": a.bs, "seq": a.seq, "micro": a.micro, "seed": a.seed,
+            "steps": steps, "train_tokens": steps * a.bs * a.seq, "corpus_tokens": int(len(train)), "dtype": "float32" if a.f32 else "bfloat16",
+            "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": jax.__version__, "device": str(dev), "n_devices": len(jax.devices()),
+            "objective": (f"distillation from {os.path.basename(a.teacher)}, alpha {kd[1]}" if kd else "cross-entropy")}
+    ident = ("cfg", "lr", "warmup", "bs", "seq", "seed", "steps", "corpus_tokens", "dtype", "sampler", "objective")
+    rng = np.random.default_rng(a.seed + 1)
     with jax.default_device(dev):
-        params = init(jax.random.PRNGKey(a.seed), c); st = opt.init(params); key = jax.random.PRNGKey(a.seed + 1)
+        params = init(jax.random.PRNGKey(a.seed), c); st = opt.init(params)
         done, curve, t_train, compile_s, prior_hours = 0, [], 0.0, None, 0.0
-        if a.resume and pull(ck_path, a.gcs) and pull(res_path, a.gcs):
-            (params, st, key), z = load_tree(ck_path, (params, st, key)); done = int(z["done"])
-            old = json.load(open(res_path)); curve = old["curve"]; prior_hours = curve[-1]["hours"] if curve else 0.0
-            say({"resumed_at_step": done})
-        params, st, key, data = (jax.device_put(x, dev) for x in (params, st, key, jnp.asarray(train)))
-        chunk = make_chunk(c, opt, a.bs, a.seq, a.micro, a.chunk, dt)
+        if a.resume and pull(res_path, a.gcs):
+            old = json.load(open(res_path))
+            bad = [k for k in ident if old.get(k) != head[k]]
+            if bad: raise SystemExit(f"{res_path} belongs to a different recipe (differs in {bad}); use a new --tag or --out")
+            if old.get("status") == "diverged": say({"skipped": "this recipe diverged before", "at_step": old.get("diverged_at")}); return 2
+            if old.get("finished"): say({"skipped": "already finished", "final": old["curve"][-1]}); return 0
+            if pull(ck_path, a.gcs):
+                (params, st), z = load_tree(ck_path, (params, st)); done = int(z["done"])
+                rng.bit_generator.state = json.loads(str(z["rng_state"]))
+                curve = [r for r in old["curve"] if r["step"] <= done]; prior_hours = curve[-1]["hours"] if curve else 0.0
+                say({"resumed_at_step": done})
+        params, st = (jax.device_put(x, dev) for x in (params, st))
+        tp = jax.device_put(load_params(a.teacher), dev) if kd else {}
+        chunk = make_chunk(c, opt, a.micro, dt, kd)
         ev = jax.jit(lambda p, tok: loss_fn(p, tok, c, dt))
-        head = {"name": name, "params": count(params), "cfg": c, "lr": a.lr, "warmup": a.warmup, "bs": a.bs, "seq": a.seq, "micro": a.micro, "seed": a.seed,
-                "steps": steps, "train_tokens": steps * a.bs * a.seq, "corpus_tokens": int(len(train)), "dtype": "float32" if a.f32 else "bfloat16",
-                "jax": jax.__version__, "device": str(dev), "n_devices": len(jax.devices())}
-        say(head)
-        t0 = time.time(); start = done; timed = 0
+        head["params"] = count(params); say(head)
+        if kd:                                                  # the teacher must reproduce its own reported score here
+            tev = jax.jit(lambda p, tok: loss_fn(p, tok, kd[0], dt)); say({"teacher": a.teacher, "alpha": kd[1], "teacher_eval": evaluate(tev, tp, vals, manifest, a.seq)})
+        t0 = time.time(); start = done; timed = 0; span = np.arange(a.seq + 1, dtype=np.int64); n_start = len(train) - a.seq - 1
+        def write(extra):
+            json.dump({**head, "compile_seconds": compile_s, "curve": curve, **extra}, open(res_path, "w")); return push(res_path, a.gcs)
         while done < steps:
-            t = time.time(); params, st, key, ls = chunk(params, st, key, data); ls = np.asarray(ls); dtc = time.time() - t
+            ix = rng.integers(0, n_start, (a.chunk, a.bs))
+            toks = np.asarray(train[(ix[..., None] + span).ravel()]).reshape(a.chunk, a.bs, a.seq + 1).astype(np.int32)
+            t = time.time(); params, st, ls = chunk(params, st, toks, tp); ls = np.asarray(ls); dtc = time.time() - t
             if compile_s is None: compile_s = round(dtc, 1)      # the first chunk includes compilation; excluded from throughput
             else: t_train += dtc; timed += a.chunk
-            done += a.chunk
-            if not np.isfinite(ls).all(): say({"error": "non-finite loss", "step": done}); return 2
+            prev = done; done += a.chunk
+            if not np.isfinite(ls).all():
+                say({"error": "non-finite loss", "step": done}); write({"finished": False, "status": "diverged", "diverged_at": done}); return 2
             tps = round(timed * a.bs * a.seq / max(t_train, 1e-9))
-            if done % 500 == 0: say({"step": done, "loss": round(float(ls.mean()), 4), "tok_s": tps})
-            if done % a.eval_every == 0 or done == steps:
+            if done // 500 > prev // 500: say({"step": done, "loss": round(float(ls.mean()), 4), "tok_s": tps})
+            if done // a.eval_every > prev // a.eval_every or done == steps:
                 row = {"step": done, "tokens": done * a.bs * a.seq, "hours": round(prior_hours + (time.time() - t0) / 3600, 4), "train_loss": round(float(ls.mean()), 4),
                        "tokens_per_second": tps, **evaluate(ev, params, vals, manifest, a.seq)}
                 try: row["device_gb_in_use"] = round(dev.memory_stats()["bytes_in_use"] / 2 ** 30, 2)
                 except Exception: pass
                 curve.append(row); say(row)
-                json.dump({**head, "compile_seconds": compile_s, "curve": curve, "finished": done == steps}, open(res_path, "w")); push(res_path, a.gcs)
-                if a.resume and done < steps: save_tree(ck_path, (params, st, key), done=done); push(ck_path, a.gcs)
+                if a.resume and done < steps:                   # state first, then the curve that points at it
+                    save_tree(ck_path, (params, st), done=done, rng_state=json.dumps(rng.bit_generator.state)); push(ck_path, a.gcs)
+                write({"finished": False})
+        ok = True
         if a.save:
             flat = {"emb": np.asarray(params["emb"]), "nf": np.asarray(params["nf"])}
             for i, b in enumerate(params["blocks"]): flat.update({f"b{i}.{k}": np.asarray(v) for k, v in b.items()})
-            np.savez(f"{a.out}/{name}.npz", **flat); push(f"{a.out}/{name}.npz", a.gcs)
-        say({"finished": True, "wall_hours": round((time.time() - t0) / 3600, 3), "steps_this_session": done - start})
-    return 0
+            np.savez(f"{a.out}/{name}.npz", **flat); ok = push(f"{a.out}/{name}.npz", a.gcs)
+        ok = write({"finished": True}) and ok
+        say({"finished": True, "wall_hours": round((time.time() - t0) / 3600, 3), "steps_this_session": done - start, "uploads_ok": ok})
+    return 0 if ok else 3
 
 
 if __name__ == "__main__":
@@ -211,7 +292,9 @@ if __name__ == "__main__":
     ap.add_argument("--train-tokens", type=float, default=0, help="token budget; 0 = one pass over the corpus")
     ap.add_argument("--max-train-tokens", type=int, default=0, help="load only this many corpus tokens (smoke tests)")
     ap.add_argument("--f32", action="store_true"); ap.add_argument("--save", action="store_true"); ap.add_argument("--resume", action="store_true")
-    ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED]]];..."')
+    ap.add_argument("--teacher", default="", help="checkpoint (.npz) of a trained model to distil from"); ap.add_argument("--teacher-size", default="L")
+    ap.add_argument("--kd-alpha", type=float, default=None, help="weight of the data loss; 1 - alpha goes to matching the teacher")
+    ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED[:ALPHA]]]];..." (ALPHA "none" = no teacher)')
     a = ap.parse_args()
     if not a.multi: raise SystemExit(run(a))
     jobs = queue.Queue()
@@ -220,7 +303,11 @@ if __name__ == "__main__":
         if len(f) > 3 and f[3]: b.tag = f[3]
         if len(f) > 4 and f[4]: b.train_tokens = float(f[4])
         if len(f) > 5 and f[5]: b.seed = int(f[5])
+        if len(f) > 6 and f[6]: b.kd_alpha = None if f[6] == "none" else float(f[6])
         jobs.put(b)
+    names = [run_name(b) for b in list(jobs.queue)]
+    dup = sorted({n for n in names if names.count(n) > 1})
+    if dup: raise SystemExit(f"two jobs would write the same files: {dup}; give them different tags")
     codes = []
     def worker(k):
         while True:

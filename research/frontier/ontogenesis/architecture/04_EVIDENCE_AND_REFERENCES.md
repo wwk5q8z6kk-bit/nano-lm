@@ -1,5 +1,7 @@
 # 04 — Evidence register, primary references, boundaries and open verification work
 
+**V5 current evidence notice.** [12](12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md) and [13](13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md) incorporate the fixed research cutoff 0afd562 and separate factorial result 767857e. [14](14_NATIVE_UPDATE_COMPARISON.md) adds a new locally executed synthetic comparison. The source register now contains 43 primary identities, including P-41–P-43 appended below; earlier reading depths are retained, not silently upgraded. The [V5 source manifest](evidence/source_manifest_v5.json) tracks85core exact source-file copies; a [separate late manifest](evidence/source_manifest_v5_addendum.json) adds5, for90copies including duplicate historical revisions, not90independent studies.
+
 **V4 register update.** The current source register has 40 primary identities; P-37–P-40 and their reading-depth limits appear at the end. Completed margin results are reviewed in [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md). Pilot fields previously described as immediate are phase-end observations; use the exact endpoint definitions in 11.
 
 **Cutoff:** 2026-11-21. This register distinguishes: **[N]** Nano LM repositories and uploaded work; **[P]** published/official literature; **[H]** newly stated hypotheses; **[M]** elementary mathematical propositions and numerical checks. Primary-source identities and the narrow claims summarized below were rechecked on 2026-11-21. Inspection depth varies by source: abstract, official documentation, model card, author repository, selected methods text, or primary search/PDF excerpt. The [independent source audit](08_LITERATURE_AUDIT.md) records the evidence depth, retrieval limits, reference aliases and corrections for 36 sources. No literature result was independently reproduced. Most full methods and appendices, implementations, and data/model licenses remain unaudited.
@@ -145,3 +147,13 @@ These four additions document the exact training components now implemented. The
 | P-40 | Noam Shazeer (2020), [GLU Variants Improve Transformer](https://arxiv.org/abs/2002.05202v1) | primary abstract. Studies gated feed-forward variants in Transformers; direct precedent for the SwiGLU component family. | Author-reported benchmark gains do not show a Nano architecture advantage; local gradients are checked independently. |
 
 Current machine index: [literature_audit_v4.json](results/literature_audit_v4.json). The earlier audit remains unchanged.
+
+## V5 primary additions P-41–P-43
+
+| ID | Primary source and identity | Actual inspection and supported use | Boundary |
+|---|---|---|---|
+| P-41 | Edouard Grave, Armand Joulin, Nicolas Usunier (2016), [Improving Neural Language Models with a Continuous Cache](https://arxiv.org/abs/1612.04426v1) | Abstract and selected PDF pages 1–3, including recent-history cache and distribution equations; preprint submitted to ICLR2017 | Supports causal memory/interpolation precedent, not NanoLM gains or n-gram implementation efficiency |
+| P-42 | Urvashi Khandelwal, Omer Levy, Dan Jurafsky, Luke Zettlemoyer, Mike Lewis (2020), [Generalization through Memorization: Nearest Neighbor Language Models](https://arxiv.org/abs/1911.00172v2) | ICLR2020; selected PDF pages 1–3 on datastore, neighbor aggregation, interpolation and context convention; initial preprint2019 | Semantic training-datastore retrieval differs from recent-context caching and n-gram counts |
+| P-43 | PyTorch contributors, [Tensor.index_put_, version2.11 documentation](https://docs.pytorch.org/docs/2.11/generated/torch.Tensor.index_put_.html) | Official contract says assignment without accumulation has undefined behavior for duplicate indices; accessed2026-11-21 | Does not identify historical scatter order, errors or the missing correction runtime version |
+
+Current machine index: [literature_audit_v5.json](results/literature_audit_v5.json), 43 identities. No publisher results were rerun. The earlier40 records and their limitations are retained without upgrading inspection depth. The separate external ledger contribution reporting44 headline reference checks is attributed historical context; overlapping lists are not added to inflate a source count.

@@ -1,0 +1,1872 @@
+{
+  "scope": "Read-only source-and-result audit; no neural run, independent replication, or global causal theorem.",
+  "provenance": {
+    "repository": "wwk5q8z6kk-bit/nano-lm",
+    "cutoffs": {
+      "correction": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+      "factorial": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "external_ledger": "0a1d11f19b91e3d3efb2ab5cad4cbad617a56971"
+    },
+    "correction_registration": {
+      "sha": "27cc27c80d969f765785a5c5da5ca8d3870278b6",
+      "parents": [
+        "9d88a2c20233f42b4a49c4430264b20f842895ad"
+      ],
+      "committer_date": "2026-11-22T01:32:08Z",
+      "files": [
+        {
+          "path": "research/frontier/ontogenesis/correction_optimizer.py",
+          "status": "added",
+          "git_blob": "bcf329aec01b1a659efe6127f87258c7c9a38ad0"
+        }
+      ]
+    },
+    "correction_result_introductions": {
+      "correction_gd_history": [
+        {
+          "sha": "f1a66b00f4d6e584518b0fd5825c3b249d8742c9",
+          "committer_date": "2026-11-22T01:45:05Z"
+        }
+      ],
+      "correction_200_history": [
+        {
+          "sha": "f1a66b00f4d6e584518b0fd5825c3b249d8742c9",
+          "committer_date": "2026-11-22T01:45:05Z"
+        }
+      ],
+      "correction_adamstop_history": [
+        {
+          "sha": "7351fb137985d3cfefc71b0eb96e850cab53ec81",
+          "committer_date": "2026-11-22T01:54:49Z"
+        }
+      ]
+    },
+    "factorial_registration": {
+      "sha": "b82d0f018ebcbe1e6604afc129731d96774d0f69",
+      "parents": [
+        "46fd5387ed41dc3e787d1ea5c37d4c6b91a81890"
+      ],
+      "committer_date": "2026-11-22T00:36:45Z",
+      "files": [
+        {
+          "path": "research/frontier/ontogenesis/PROTOCOL-MEMSAT-FACTORIAL.md",
+          "status": "added",
+          "git_blob": "1a6fca6467ac212d22d7262c2fa2c9bfd7ba4cb7"
+        },
+        {
+          "path": "research/frontier/ontogenesis/memory_saturation_factorial.py",
+          "status": "added",
+          "git_blob": "c6a22b62097e7f55dd8355f54f2845822d0c592b"
+        }
+      ]
+    },
+    "factorial_results": {
+      "sha": "767857e72bfa51e3fa6f32d047507aabef077fde",
+      "parents": [
+        "b82d0f018ebcbe1e6604afc129731d96774d0f69"
+      ],
+      "committer_date": "2026-11-22T02:05:38Z",
+      "files": [
+        {
+          "path": "research/frontier/ontogenesis/RESULTS-MEMSAT-FACTORIAL.md",
+          "status": "added",
+          "git_blob": "7a4731aa23deaad7379cd7fde91e26436ddb7ee8"
+        },
+        {
+          "path": "research/frontier/ontogenesis/memory_saturation_factorial_score.py",
+          "status": "added",
+          "git_blob": "2e863d6c4636c96e89d12acd5f23cd0d60e16446"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr1-s3001.json",
+          "status": "added",
+          "git_blob": "dba3cc8725113384f936c24942bbf8c42d87e850"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr10-s3001.json",
+          "status": "added",
+          "git_blob": "c5fdf30cb8316882a973dc989c9610fb2af7d76d"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr100-s3001.json",
+          "status": "added",
+          "git_blob": "81f2cf3a2d42e01255eac9347d9cd26446e786de"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr3-s3001.json",
+          "status": "added",
+          "git_blob": "ff2d5a7d635515fda031d9e82743f053e8255d88"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr30-s3001.json",
+          "status": "added",
+          "git_blob": "ea895c0a1b6cb04d7aea74f77850e2bbe94e6bab"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr300-s3001.json",
+          "status": "added",
+          "git_blob": "c1185e9e37283adfc0ee7d39552660376a53b4d0"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/dev-sgd-selection.json",
+          "status": "added",
+          "git_blob": "4876655c0d73709127eac58b7d7c06ae0c214075"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log",
+          "status": "added",
+          "git_blob": "6af44c14f147d61f1f6c53e2d485b4a96a6a6ac4"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log.run1",
+          "status": "added",
+          "git_blob": "83be75463c8222a83f3eb39dfdbbd2e6d3e3994c"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/driver.py.txt",
+          "status": "added",
+          "git_blob": "c24667e052856216ad7c94a50b7c624b231f9ce4"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3101.json",
+          "status": "added",
+          "git_blob": "47fb019320747d934ec424b5827fffd99bc2ea14"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3102.json",
+          "status": "added",
+          "git_blob": "8375d24eefe8ad96059669a49e66648f53eed9df"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3103.json",
+          "status": "added",
+          "git_blob": "6c825bb60ebddb86375a4f7d482343abb92387c9"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3104.json",
+          "status": "added",
+          "git_blob": "a01032ab83373cb1a22af08dcc34e018f2aeeef0"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3105.json",
+          "status": "added",
+          "git_blob": "d0d8b2c802297833d218aa0d13795f0c82ce0895"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3101.json",
+          "status": "added",
+          "git_blob": "c5db1ba9ffd5784e6f511db6e29dc3353794a24d"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3102.json",
+          "status": "added",
+          "git_blob": "ceac24422ec48c4fffd0ab53751ee987db9e59ff"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3103.json",
+          "status": "added",
+          "git_blob": "c54022cc07d9daa8937ec384244ab8ce6d19a1fe"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3104.json",
+          "status": "added",
+          "git_blob": "6ca6e839300d646ebd8bcf6332fcc4f5b5757f76"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3105.json",
+          "status": "added",
+          "git_blob": "f2fce0b348089c3c1aa524c98cb05be57bb13185"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3101.json",
+          "status": "added",
+          "git_blob": "4f866ddb1fe8226866acd807bd5038928a49de4b"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3102.json",
+          "status": "added",
+          "git_blob": "706b2e5a930453528c160e302c9ec929fc299201"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3103.json",
+          "status": "added",
+          "git_blob": "07b6dfee9ff8ab8e1ebc3af11f612fe5cdd2fee1"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3104.json",
+          "status": "added",
+          "git_blob": "56e915336ecaabe282daa8a09393e0363e69d47f"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3105.json",
+          "status": "added",
+          "git_blob": "85e1ad09d9e222dd28e0b981e5baf3ad9c56d297"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3101.json",
+          "status": "added",
+          "git_blob": "a5629726db057077f645cb19ab0dbfc6c703f6ef"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3102.json",
+          "status": "added",
+          "git_blob": "08f8119abf6084daca1783147e4fdfc18312ca45"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3103.json",
+          "status": "added",
+          "git_blob": "772698dbe83ca567cd6ebb8497ef4247d4b7ef88"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3104.json",
+          "status": "added",
+          "git_blob": "a11951a21632990abc44bf71a3bc92d768e701d0"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3105.json",
+          "status": "added",
+          "git_blob": "d4d33edf0334a1bca3e907560a01366884ac4406"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3101.json",
+          "status": "added",
+          "git_blob": "afe7becfd7e9f3a99f82889f700cb89711007c5b"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3102.json",
+          "status": "added",
+          "git_blob": "308d4e88d091c3dab757b9eb0c3fe428f67e4988"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3103.json",
+          "status": "added",
+          "git_blob": "a42acb449987a7e61325494db05686c3ce204d73"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3104.json",
+          "status": "added",
+          "git_blob": "481e430f213909d38a1af62147b8522fa6a8d211"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3105.json",
+          "status": "added",
+          "git_blob": "384202754d0c3cdb644426ed1c8b0e47ba4abe5e"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3101.json",
+          "status": "added",
+          "git_blob": "422fdf5fdc81158d3242e02929683e179bcba9a7"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3102.json",
+          "status": "added",
+          "git_blob": "7cb82af1585996bb72bc0f8a332c8f812b1c15c3"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3103.json",
+          "status": "added",
+          "git_blob": "9fb557ee3c36d5aeeef5806edb7dfbb2ef38a5be"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3104.json",
+          "status": "added",
+          "git_blob": "85a46491090754e98b3cd7d05a9e351fbdde6d7f"
+        },
+        {
+          "path": "research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3105.json",
+          "status": "added",
+          "git_blob": "813cf74b3ba1201676b8440259d8ea9c280e4980"
+        }
+      ]
+    },
+    "note": "Repository metadata supports source-only protocol commits before result commits; it does not independently timestamp execution start or establish complete execution provenance.",
+    "correction_commit_details": {
+      "correction_result_first_commit": {
+        "sha": "f1a66b00f4d6e584518b0fd5825c3b249d8742c9",
+        "parents": [
+          "27cc27c80d969f765785a5c5da5ca8d3870278b6"
+        ],
+        "committer_date": "2026-11-22T01:45:05Z",
+        "files": [
+          {
+            "path": "research/frontier/ontogenesis/results/correction_interference/optimizer-adam_200.json",
+            "status": "added",
+            "git_blob": "a1c38dd37a1ebb00a95a06119428178f4f593caa"
+          },
+          {
+            "path": "research/frontier/ontogenesis/results/correction_interference/optimizer-gd_stop.json",
+            "status": "added",
+            "git_blob": "6f324702a00ddd195f235312e026fb720b5c50c3"
+          },
+          {
+            "path": "research/frontier/ontogenesis/theory/RESEARCH-DECISION-20261121.md",
+            "status": "added",
+            "git_blob": "22bbb3b44ead2f6b6a083dda2e3a6c254e59be00"
+          }
+        ]
+      },
+      "correction_result_second_commit": {
+        "sha": "7351fb137985d3cfefc71b0eb96e850cab53ec81",
+        "parents": [
+          "d8c55b47ad43e64cc5d7054c75e1c7254a9a1ebd"
+        ],
+        "committer_date": "2026-11-22T01:54:49Z",
+        "files": [
+          {
+            "path": "research/frontier/ontogenesis/INVESTIGATION.md",
+            "status": "modified",
+            "git_blob": "d99e7a6e9163728be3556c3ef4e42f51c7a0b12b"
+          },
+          {
+            "path": "research/frontier/ontogenesis/results/correction_interference/optimizer-adam_stop.json",
+            "status": "added",
+            "git_blob": "293113310ccbe8e9a306b0acfd29bb52317c1267"
+          },
+          {
+            "path": "research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+            "status": "added",
+            "git_blob": "7c1e0be9bc6ebf1138f47b140147578e1491e9ba"
+          },
+          {
+            "path": "research/frontier/ontogenesis/theory/RESEARCH-DECISION-20261121.md",
+            "status": "modified",
+            "git_blob": "d556fd174bfb2faa94cd6936560ec630ff582d7b"
+          },
+          {
+            "path": "research/frontier/ontogenesis/tpu/store_exchange.py",
+            "status": "modified",
+            "git_blob": "5df9cd372c3d841479aae8478a71b7323d9d4979"
+          }
+        ]
+      },
+      "correction_cutoff_commit": {
+        "sha": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+        "parents": [
+          "154da120a0040ec03fd025fdadf7c2f878bec5ac"
+        ],
+        "committer_date": "2026-11-22T02:08:18Z",
+        "files": [
+          {
+            "path": "research/frontier/ontogenesis/results/lm/store-exchange-S.json",
+            "status": "modified",
+            "git_blob": "7f945ddff6f6fae34a3a39da1e4dcdb5f9882bca"
+          },
+          {
+            "path": "research/frontier/ontogenesis/tpu/cache_exchange.py",
+            "status": "modified",
+            "git_blob": "2eb6c34e50366154976bf0c8be844cd4a5fa72e4"
+          }
+        ]
+      }
+    }
+  },
+  "verified_input_count": 53,
+  "manifest_sha256": "0442caf4885aa4df807571099e2aa3b10badeb2d21849e1d6ec664e53ea57712",
+  "input_hashes": {
+    "factorial/research/frontier/ontogenesis/PROTOCOL-MEMSAT-FACTORIAL.md.txt": "8ef1a2a201dcea58ea365454049483601fb3d6c0c5fc9b8510ffdc39e73f76aa",
+    "factorial/research/frontier/ontogenesis/RESULTS-MEMSAT-FACTORIAL.md.txt": "b1971b0c9e7d77c5b8d50ff3299053390ff9664fcd2764acd191d21fc6b82e49",
+    "factorial/research/frontier/ontogenesis/memory_saturation_factorial.py": "c883d11fd39602546357d256d25031913cbb9242fbd086d1595d712c3ed147f8",
+    "factorial/research/frontier/ontogenesis/memory_saturation_factorial_score.py": "384acea8df0e885a60023997b2cc7c1493f5561a4a0dc876c88374f611b768cb",
+    "factorial/research/frontier/ontogenesis/memory_saturation.py": "4456c7136088267c8da3db821246901edee376fe6880fbf33c462b89fbe652b4",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.py.txt": "4cdced5bebebb9d7942833e71d94e375e692d0c83a6dc3440219393c6fd88534",
+    "correction/research/frontier/ontogenesis/correction_optimizer.py": "653f0af7438385a00ea12a482535780622d92343671f2120e2a42baa1f966790",
+    "correction/research/frontier/ontogenesis/INVESTIGATION.md.txt": "ecaf6427870382d523dfc0158b4c0c86defbdf8e8353f33f620d6bac172eb294",
+    "correction/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_200.json": "8f2ba3d6bf3bc357d144871c37b57aefb94aeeb71329d81aa193ef599d933cf8",
+    "correction/research/frontier/ontogenesis/results/correction_interference/optimizer-adam_stop.json": "729d9a99a331507dae545540d741e5ed4f7bb8fd11749bab0b8a8c7f80c6b290",
+    "correction/research/frontier/ontogenesis/results/correction_interference/optimizer-gd_stop.json": "e9ad22a2da7166caa25de803cfd9ae19dc777ee549c93b0c961b1c5f9f46d607",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr1-s3001.json": "27c5c4d4ccd48fd11b75f4b85df7d04dd4095f95def88876814ffdbd023374b1",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr10-s3001.json": "9ee24b31ffc20605bd64bcb78aab2ff35bbae906191d07b14a474ad484b2dd2f",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr100-s3001.json": "2d06b860d2e1d9342406203a2878a75120a44aff8c6d0a22ae325a200caef4dd",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr3-s3001.json": "4e63d0780a55b19bf55d3d763ceda55c55ec04ce2972a8d08e4d8502b9c93adf",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr30-s3001.json": "0facd16340236bb7b42838af06e79a62f8762bdcb682f05f58cef46e8c331895",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-hash-sgd-lr300-s3001.json": "0df518cc237a2e94f12dae134bd7173744361f8371409d38ba005f75db8a1624",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/dev-sgd-selection.json": "18308a430d27b51d50b9d7920c27524d16798c8e84f9970697a0a1f144a65c22",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log": "1be6bf699bf69526bae756b2f039e39c9b9f54e97e33c43c600a60d0c2f41d9f",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/driver.log.run1": "934f576823c83ae1125c8dc8563fceba33dab2f0fae3ebe3adccbf1bf3e6bbaf",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3101.json": "eb47e9980448e8d90e01d19f04c609caa3ad66e6f22cc82c4574807b2c0f3849",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3102.json": "323ee371c32d8f87fdc709468ff29ee82a8205adf201b7d5205ee7f0dde08ff0",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3103.json": "25b589b73955e64d9970d5ab6c0c628990b0540e8d4ec1c7a7db7acf95a5ab53",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3104.json": "2049688556a892f0694be4b32d2ff40898134ee9e507173101c4f93442b814d6",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam-s3105.json": "907d04db1c05fe8710688631ecf96456a80bc5ad9bdcfeebf6c3775cfa82a3ae",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3101.json": "383898abfd29366905e002397eefe1b5f2fffb046912631baddd520d2de2c6ec",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3102.json": "20b4a716582e151c43c6407d4bd8133ce720ddf0d80201b5e4e170480b36d3da",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3103.json": "b85ef8de7ab2cf62ac611cb7f68beec21d9eac0aae4ab59d20e5eefe9d801d1e",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3104.json": "68e6c3282ca63a5000e4b0ab6d52d984ddf31bb0fc47b9886a89ff8d79a1a7a3",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/hash-adam_reset-s3105.json": "e0ab2d9ed9096230863aeb1ac0b5990ac7c7ef1c99d443f32316ae52cdd1ad7d",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3101.json": "e26a68f2a20dfb57b55d1d7f0d2b845a377426660c9143e0f5321a1b4eb9f235",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3102.json": "8b274fdddd5129c560519e4ca1261e5c8dd96914799a1267ca11746442a46175",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3103.json": "9942debaedd392d73c39883535d4c388ac5bcb5c5e351d4dedaceacd932f2111",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3104.json": "131d51a1e9e2a41c5ddfc4ca464410cccc3a91edaf93dc794548398944fd28fa",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam-s3105.json": "fbb60b31febc8cacc42d1b10d9d06e57be111bdf04428fb7905aac9c9edcc699",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3101.json": "e44db177ff8cdf9367a2d4a5b8ded3788b61b3609f614d36e2e5a552509286c5",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3102.json": "a1abe7b81d55b02239779b9141d9632e1ec24f7705ecf66280ec7752ebb05a7c",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3103.json": "42644957f798b445f11d48d5568413609e298402d6790dac8fbdcc8781535503",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3104.json": "5288de3db40a42ad86038eb361756d2f34299fcc5be4189b668ed4c3d06817c6",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_b2_09-s3105.json": "5fcfe0a23beb30b0c44b22c6d629ef5c569f8c37527adf7bfee0725920458947",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3101.json": "7bb38c98c2c72c472beefaa12b180a4cb335d82af7df88b1c8ac603e511c3ed1",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3102.json": "d5f536ca492892cbe8f9def55a700b08a67110854244a94fad32aab204fba99f",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3103.json": "8ef72acfe6c5bf02821b3edc9f75af955f70f0f1410b47443a4a8ce3e81b478a",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3104.json": "1589f8a698615a1206034c6989af16513bd265eadf443f0c6992c30482272d16",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-adam_reset-s3105.json": "1fab4b3e5df9df9df661dae190380898a3c755a0d52b581e4b2ad87149b80e43",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3101.json": "01f79f49d3d9f314ed85d3abd260b85fa8d57d3e786509fa0d8b26267d3eb051",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3102.json": "3bf7280d237fd44e8351186c4984bee7958d038e4d961e4e25aab5ae0d4de18a",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3103.json": "faa2507728874d80591e1ca6f7cb3addfab731e6ef6c6afac04e03d1d13a4fc5",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3104.json": "043a7061ee4fc439eb60d6007b621da2a00c282b8b4f2b7ab78be24bf420d440",
+    "factorial/research/frontier/ontogenesis/results/memory_saturation_factorial/original-sgd-s3105.json": "c7b2fd630648f37f32a119812f97675bb6e1be122aaa03fff0a4f544df3b70c9",
+    "factorial/research/frontier/ontogenesis/cab.py": "7826f2132024b2cf28cdba3ab2e6aa664982b07a416c2a990686fc78e621470c",
+    "correction/research/frontier/ontogenesis/cab_s.py": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b",
+    "correction/research/frontier/ontogenesis/correction_interference.py": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7"
+  },
+  "correction": {
+    "arms": {
+      "adam_200": {
+        "per_seed": [
+          {
+            "arm": "adam_200",
+            "seed": 8001,
+            "write_steps": 199.0,
+            "corrected_now": 0.4647,
+            "collateral_now": 0.686,
+            "rule_old_corrected": 0.6582,
+            "corrected_old": 0.3824
+          },
+          {
+            "arm": "adam_200",
+            "seed": 8002,
+            "write_steps": 199.0,
+            "corrected_now": 0.4984,
+            "collateral_now": 0.6076,
+            "rule_old_corrected": 0.6087,
+            "corrected_old": 0.3971
+          },
+          {
+            "arm": "adam_200",
+            "seed": 8003,
+            "write_steps": 199.0,
+            "corrected_now": 0.4728,
+            "collateral_now": 0.5823,
+            "rule_old_corrected": 0.5599,
+            "corrected_old": 0.3889
+          }
+        ],
+        "metrics": {
+          "write_steps": {
+            "mean": 199.0,
+            "min": 199.0,
+            "max": 199.0,
+            "values": [
+              199.0,
+              199.0,
+              199.0
+            ]
+          },
+          "corrected_now": {
+            "mean": 0.47863333333333336,
+            "min": 0.4647,
+            "max": 0.4984,
+            "values": [
+              0.4647,
+              0.4984,
+              0.4728
+            ]
+          },
+          "collateral_now": {
+            "mean": 0.6253000000000001,
+            "min": 0.5823,
+            "max": 0.686,
+            "values": [
+              0.686,
+              0.6076,
+              0.5823
+            ]
+          },
+          "rule_old_corrected": {
+            "mean": 0.6089333333333333,
+            "min": 0.5599,
+            "max": 0.6582,
+            "values": [
+              0.6582,
+              0.6087,
+              0.5599
+            ]
+          },
+          "corrected_old": {
+            "mean": 0.3894666666666667,
+            "min": 0.3824,
+            "max": 0.3971,
+            "values": [
+              0.3824,
+              0.3971,
+              0.3889
+            ]
+          }
+        },
+        "O1_collateral_le_085_seed_count": 3,
+        "rival_trigger_collateral_ge_095_seed_count": 0
+      },
+      "adam_stop": {
+        "per_seed": [
+          {
+            "arm": "adam_stop",
+            "seed": 8001,
+            "write_steps": 4103.4,
+            "corrected_now": 0.992,
+            "collateral_now": 0.3981,
+            "rule_old_corrected": 0.3925,
+            "corrected_old": 0.4963
+          },
+          {
+            "arm": "adam_stop",
+            "seed": 8002,
+            "write_steps": 4324.5,
+            "corrected_now": 0.992,
+            "collateral_now": 0.4175,
+            "rule_old_corrected": 0.4092,
+            "corrected_old": 0.4621
+          },
+          {
+            "arm": "adam_stop",
+            "seed": 8003,
+            "write_steps": 4118.8,
+            "corrected_now": 0.9872,
+            "collateral_now": 0.3795,
+            "rule_old_corrected": 0.3701,
+            "corrected_old": 0.463
+          }
+        ],
+        "metrics": {
+          "write_steps": {
+            "mean": 4182.233333333334,
+            "min": 4103.4,
+            "max": 4324.5,
+            "values": [
+              4103.4,
+              4324.5,
+              4118.8
+            ]
+          },
+          "corrected_now": {
+            "mean": 0.9904,
+            "min": 0.9872,
+            "max": 0.992,
+            "values": [
+              0.992,
+              0.992,
+              0.9872
+            ]
+          },
+          "collateral_now": {
+            "mean": 0.39836666666666665,
+            "min": 0.3795,
+            "max": 0.4175,
+            "values": [
+              0.3981,
+              0.4175,
+              0.3795
+            ]
+          },
+          "rule_old_corrected": {
+            "mean": 0.3906,
+            "min": 0.3701,
+            "max": 0.4092,
+            "values": [
+              0.3925,
+              0.4092,
+              0.3701
+            ]
+          },
+          "corrected_old": {
+            "mean": 0.4738,
+            "min": 0.4621,
+            "max": 0.4963,
+            "values": [
+              0.4963,
+              0.4621,
+              0.463
+            ]
+          }
+        },
+        "O1_collateral_le_085_seed_count": 3,
+        "rival_trigger_collateral_ge_095_seed_count": 0
+      },
+      "gd_stop": {
+        "per_seed": [
+          {
+            "arm": "gd_stop",
+            "seed": 8001,
+            "write_steps": 703.1,
+            "corrected_now": 0.9968,
+            "collateral_now": 0.1554,
+            "rule_old_corrected": 0.1242,
+            "corrected_old": 0.7022
+          },
+          {
+            "arm": "gd_stop",
+            "seed": 8002,
+            "write_steps": 913.5,
+            "corrected_now": 0.9936,
+            "collateral_now": 0.144,
+            "rule_old_corrected": 0.1176,
+            "corrected_old": 0.6426
+          },
+          {
+            "arm": "gd_stop",
+            "seed": 8003,
+            "write_steps": 629.6,
+            "corrected_now": 0.9904,
+            "collateral_now": 0.1306,
+            "rule_old_corrected": 0.1171,
+            "corrected_old": 0.6148
+          }
+        ],
+        "metrics": {
+          "write_steps": {
+            "mean": 748.7333333333333,
+            "min": 629.6,
+            "max": 913.5,
+            "values": [
+              703.1,
+              913.5,
+              629.6
+            ]
+          },
+          "corrected_now": {
+            "mean": 0.9936,
+            "min": 0.9904,
+            "max": 0.9968,
+            "values": [
+              0.9968,
+              0.9936,
+              0.9904
+            ]
+          },
+          "collateral_now": {
+            "mean": 0.14333333333333334,
+            "min": 0.1306,
+            "max": 0.1554,
+            "values": [
+              0.1554,
+              0.144,
+              0.1306
+            ]
+          },
+          "rule_old_corrected": {
+            "mean": 0.11963333333333333,
+            "min": 0.1171,
+            "max": 0.1242,
+            "values": [
+              0.1242,
+              0.1176,
+              0.1171
+            ]
+          },
+          "corrected_old": {
+            "mean": 0.6532,
+            "min": 0.6148,
+            "max": 0.7022,
+            "values": [
+              0.7022,
+              0.6426,
+              0.6148
+            ]
+          }
+        },
+        "O1_collateral_le_085_seed_count": 3,
+        "rival_trigger_collateral_ge_095_seed_count": 0
+      }
+    },
+    "exogenous_streams": [
+      {
+        "seed": 8001,
+        "correction_event_count": 624,
+        "correction_phase_count": 39,
+        "same_value_assignment_count": 16,
+        "repeat_key_assignment_count": 37,
+        "unique_corrected_keys": 587,
+        "phases_with_duplicate_entity_candidates": 2,
+        "candidates_beyond_distinct_entities": 2,
+        "collision_details": [
+          {
+            "phase": 1,
+            "repeated_entity_groups": {
+              "30": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          },
+          {
+            "phase": 29,
+            "repeated_entity_groups": {
+              "1015": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          }
+        ],
+        "collateral_phase_denominators": [
+          29,
+          31,
+          29,
+          31,
+          31,
+          29,
+          32,
+          30,
+          31,
+          31,
+          31,
+          29,
+          28,
+          26,
+          27,
+          31,
+          29,
+          32,
+          31,
+          32,
+          30,
+          28,
+          31,
+          30,
+          31,
+          30,
+          26,
+          30,
+          25,
+          31,
+          28,
+          28,
+          29,
+          28,
+          29,
+          31,
+          30,
+          29,
+          29
+        ],
+        "final_old_correction_denominator": 272,
+        "final_old_regular_corrected_entity_denominator": 749,
+        "stream_sha256": "51e14adb0d79b0508a20b4752493391f5b54b6e5886297fb925f018e426fec3f",
+        "numpy_version": "2.3.5",
+        "scope": "Exogenous source stream only; does not reconstruct learned predictions, scatter order, or historical error causes."
+      },
+      {
+        "seed": 8002,
+        "correction_event_count": 624,
+        "correction_phase_count": 39,
+        "same_value_assignment_count": 18,
+        "repeat_key_assignment_count": 35,
+        "unique_corrected_keys": 589,
+        "phases_with_duplicate_entity_candidates": 4,
+        "candidates_beyond_distinct_entities": 4,
+        "collision_details": [
+          {
+            "phase": 3,
+            "repeated_entity_groups": {
+              "29": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          },
+          {
+            "phase": 7,
+            "repeated_entity_groups": {
+              "357": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          },
+          {
+            "phase": 8,
+            "repeated_entity_groups": {
+              "399": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          },
+          {
+            "phase": 28,
+            "repeated_entity_groups": {
+              "246": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          }
+        ],
+        "collateral_phase_denominators": [
+          32,
+          30,
+          28,
+          31,
+          29,
+          30,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          29,
+          31,
+          31,
+          31,
+          28,
+          27,
+          29,
+          30,
+          31,
+          29,
+          26,
+          29,
+          29,
+          30,
+          32,
+          29,
+          31,
+          28,
+          30,
+          32,
+          27,
+          30,
+          31,
+          28,
+          31,
+          31,
+          28
+        ],
+        "final_old_correction_denominator": 277,
+        "final_old_regular_corrected_entity_denominator": 782,
+        "stream_sha256": "01bd4a8ede0c7eb481f1ddcdeb86e65577f03d158262e1b1dc068328969f6c09",
+        "numpy_version": "2.3.5",
+        "scope": "Exogenous source stream only; does not reconstruct learned predictions, scatter order, or historical error causes."
+      },
+      {
+        "seed": 8003,
+        "correction_event_count": 624,
+        "correction_phase_count": 39,
+        "same_value_assignment_count": 19,
+        "repeat_key_assignment_count": 41,
+        "unique_corrected_keys": 583,
+        "phases_with_duplicate_entity_candidates": 5,
+        "candidates_beyond_distinct_entities": 6,
+        "collision_details": [
+          {
+            "phase": 1,
+            "repeated_entity_groups": {
+              "28": 2,
+              "26": 2
+            },
+            "candidates_beyond_distinct_entities": 2
+          },
+          {
+            "phase": 2,
+            "repeated_entity_groups": {
+              "75": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          },
+          {
+            "phase": 10,
+            "repeated_entity_groups": {
+              "94": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          },
+          {
+            "phase": 13,
+            "repeated_entity_groups": {
+              "78": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          },
+          {
+            "phase": 37,
+            "repeated_entity_groups": {
+              "2236": 2
+            },
+            "candidates_beyond_distinct_entities": 1
+          }
+        ],
+        "collateral_phase_denominators": [
+          26,
+          28,
+          31,
+          30,
+          28,
+          29,
+          32,
+          28,
+          30,
+          26,
+          31,
+          31,
+          26,
+          29,
+          29,
+          30,
+          32,
+          29,
+          30,
+          29,
+          30,
+          27,
+          30,
+          26,
+          32,
+          28,
+          29,
+          30,
+          29,
+          26,
+          31,
+          29,
+          29,
+          29,
+          32,
+          29,
+          23,
+          28,
+          32
+        ],
+        "final_old_correction_denominator": 270,
+        "final_old_regular_corrected_entity_denominator": 743,
+        "stream_sha256": "79017d914379abe6e29f5c88b1bfa1616714c9d07bb4ece0fc93908e456068a8",
+        "numpy_version": "2.3.5",
+        "scope": "Exogenous source stream only; does not reconstruct learned predictions, scatter order, or historical error causes."
+      }
+    ],
+    "counterexample": {
+      "candidates": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "individual_target_margins": [
+        1.0,
+        1.0
+      ],
+      "joint_target_margins_for_each_candidate": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "jointly_feasible_state": [
+        1.0,
+        1.0
+      ],
+      "scope": "Two individually successful detached candidates need not preserve each other's target margin in one shared row; no assumed duplicate-index ordering and no reconstructed historical cause."
+    }
+  },
+  "factorial": {
+    "selection": {
+      "best": 1.0,
+      "chosen_lr": 1,
+      "informative": true,
+      "sweep": [
+        [
+          1,
+          1.0
+        ],
+        [
+          3,
+          1.0
+        ],
+        [
+          10,
+          1.0
+        ],
+        [
+          30,
+          1.0
+        ],
+        [
+          100,
+          1.0
+        ],
+        [
+          300,
+          1.0
+        ]
+      ]
+    },
+    "cells": {
+      "original/adam": {
+        "per_seed": [
+          {
+            "seed": 3101,
+            "late_acquire": 0.019270833333333334,
+            "late_retain": 0.5720652937889099,
+            "early_acquire": 0.721875,
+            "stored_rounded": {
+              "late_acquire": 0.0193,
+              "late_retain": 0.5721,
+              "early_acquire": 0.7219
+            },
+            "final_slots_used": 2539,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 472.2
+          },
+          {
+            "seed": 3102,
+            "late_acquire": 0.020833333333333332,
+            "late_retain": 0.5842971404393514,
+            "early_acquire": 0.7557291666666667,
+            "stored_rounded": {
+              "late_acquire": 0.0208,
+              "late_retain": 0.5843,
+              "early_acquire": 0.7557
+            },
+            "final_slots_used": 3361,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 471.6
+          },
+          {
+            "seed": 3103,
+            "late_acquire": 0.028125,
+            "late_retain": 0.5863202611605326,
+            "early_acquire": 0.7875,
+            "stored_rounded": {
+              "late_acquire": 0.0281,
+              "late_retain": 0.5863,
+              "early_acquire": 0.7875
+            },
+            "final_slots_used": 3280,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 470.9
+          },
+          {
+            "seed": 3104,
+            "late_acquire": 0.0234375,
+            "late_retain": 0.5936007658640544,
+            "early_acquire": 0.7552083333333334,
+            "stored_rounded": {
+              "late_acquire": 0.0234,
+              "late_retain": 0.5936,
+              "early_acquire": 0.7552
+            },
+            "final_slots_used": 3080,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 816.9
+          },
+          {
+            "seed": 3105,
+            "late_acquire": 0.029166666666666667,
+            "late_retain": 0.6025590340296427,
+            "early_acquire": 0.7723958333333333,
+            "stored_rounded": {
+              "late_acquire": 0.0292,
+              "late_retain": 0.6026,
+              "early_acquire": 0.7724
+            },
+            "final_slots_used": 3840,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 816.9
+          }
+        ],
+        "metrics": {
+          "late_acquire": {
+            "mean": 0.024166666666666666,
+            "min": 0.019270833333333334,
+            "max": 0.029166666666666667,
+            "values": [
+              0.019270833333333334,
+              0.020833333333333332,
+              0.028125,
+              0.0234375,
+              0.029166666666666667
+            ]
+          },
+          "late_retain": {
+            "mean": 0.5877684990564982,
+            "min": 0.5720652937889099,
+            "max": 0.6025590340296427,
+            "values": [
+              0.5720652937889099,
+              0.5842971404393514,
+              0.5863202611605326,
+              0.5936007658640544,
+              0.6025590340296427
+            ]
+          },
+          "early_acquire": {
+            "mean": 0.7585416666666667,
+            "min": 0.721875,
+            "max": 0.7875,
+            "values": [
+              0.721875,
+              0.7557291666666667,
+              0.7875,
+              0.7552083333333334,
+              0.7723958333333333
+            ]
+          },
+          "final_slots_used": {
+            "mean": 3220,
+            "min": 2539,
+            "max": 3840,
+            "values": [
+              2539,
+              3361,
+              3280,
+              3080,
+              3840
+            ]
+          }
+        }
+      },
+      "original/adam_reset": {
+        "per_seed": [
+          {
+            "seed": 3101,
+            "late_acquire": 0.5473958333333333,
+            "late_retain": 0.5017048438390096,
+            "early_acquire": 0.9557291666666666,
+            "stored_rounded": {
+              "late_acquire": 0.5474,
+              "late_retain": 0.5017,
+              "early_acquire": 0.9557
+            },
+            "final_slots_used": 2539,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 817.0
+          },
+          {
+            "seed": 3102,
+            "late_acquire": 0.6296875,
+            "late_retain": 0.5973154783248902,
+            "early_acquire": 0.9890625,
+            "stored_rounded": {
+              "late_acquire": 0.6297,
+              "late_retain": 0.5973,
+              "early_acquire": 0.9891
+            },
+            "final_slots_used": 3361,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 588.3
+          },
+          {
+            "seed": 3103,
+            "late_acquire": 0.6395833333333333,
+            "late_retain": 0.6204519232114156,
+            "early_acquire": 0.9697916666666667,
+            "stored_rounded": {
+              "late_acquire": 0.6396,
+              "late_retain": 0.6205,
+              "early_acquire": 0.9698
+            },
+            "final_slots_used": 3280,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 588.8
+          },
+          {
+            "seed": 3104,
+            "late_acquire": 0.6645833333333333,
+            "late_retain": 0.6198716839154561,
+            "early_acquire": 0.9848958333333333,
+            "stored_rounded": {
+              "late_acquire": 0.6646,
+              "late_retain": 0.6199,
+              "early_acquire": 0.9849
+            },
+            "final_slots_used": 3080,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 588.9
+          },
+          {
+            "seed": 3105,
+            "late_acquire": 0.69375,
+            "late_retain": 0.6602625131607056,
+            "early_acquire": 0.9807291666666667,
+            "stored_rounded": {
+              "late_acquire": 0.6937,
+              "late_retain": 0.6603,
+              "early_acquire": 0.9807
+            },
+            "final_slots_used": 3840,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 433.1
+          }
+        ],
+        "metrics": {
+          "late_acquire": {
+            "mean": 0.635,
+            "min": 0.5473958333333333,
+            "max": 0.69375,
+            "values": [
+              0.5473958333333333,
+              0.6296875,
+              0.6395833333333333,
+              0.6645833333333333,
+              0.69375
+            ]
+          },
+          "late_retain": {
+            "mean": 0.5999212884902955,
+            "min": 0.5017048438390096,
+            "max": 0.6602625131607056,
+            "values": [
+              0.5017048438390096,
+              0.5973154783248902,
+              0.6204519232114156,
+              0.6198716839154561,
+              0.6602625131607056
+            ]
+          },
+          "early_acquire": {
+            "mean": 0.9760416666666667,
+            "min": 0.9557291666666666,
+            "max": 0.9890625,
+            "values": [
+              0.9557291666666666,
+              0.9890625,
+              0.9697916666666667,
+              0.9848958333333333,
+              0.9807291666666667
+            ]
+          },
+          "final_slots_used": {
+            "mean": 3220,
+            "min": 2539,
+            "max": 3840,
+            "values": [
+              2539,
+              3361,
+              3280,
+              3080,
+              3840
+            ]
+          }
+        }
+      },
+      "hash/adam": {
+        "per_seed": [
+          {
+            "seed": 3101,
+            "late_acquire": 1.0,
+            "late_retain": 0.8931438406308492,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.8931,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15995,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 435.9
+          },
+          {
+            "seed": 3102,
+            "late_acquire": 1.0,
+            "late_retain": 0.8917117913564047,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.8917,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 16011,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 437.2
+          },
+          {
+            "seed": 3103,
+            "late_acquire": 1.0,
+            "late_retain": 0.8933784365653992,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.8934,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15990,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 563.0
+          },
+          {
+            "seed": 3104,
+            "late_acquire": 1.0,
+            "late_retain": 0.890878438949585,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.8909,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15979,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 566.2
+          },
+          {
+            "seed": 3105,
+            "late_acquire": 1.0,
+            "late_retain": 0.8920014182726542,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.892,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15999,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 563.8
+          }
+        ],
+        "metrics": {
+          "late_acquire": {
+            "mean": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "values": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "late_retain": {
+            "mean": 0.8922227851549784,
+            "min": 0.890878438949585,
+            "max": 0.8933784365653992,
+            "values": [
+              0.8931438406308492,
+              0.8917117913564047,
+              0.8933784365653992,
+              0.890878438949585,
+              0.8920014182726542
+            ]
+          },
+          "early_acquire": {
+            "mean": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "values": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "final_slots_used": {
+            "mean": 15994.8,
+            "min": 15979,
+            "max": 16011,
+            "values": [
+              15995,
+              16011,
+              15990,
+              15979,
+              15999
+            ]
+          }
+        }
+      },
+      "hash/adam_reset": {
+        "per_seed": [
+          {
+            "seed": 3101,
+            "late_acquire": 1.0,
+            "late_retain": 0.9962766408920288,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.9963,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15995,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 398.0
+          },
+          {
+            "seed": 3102,
+            "late_acquire": 1.0,
+            "late_retain": 0.9975232164065043,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.9975,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 16011,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 398.4
+          },
+          {
+            "seed": 3103,
+            "late_acquire": 1.0,
+            "late_retain": 0.9970898707707723,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.9971,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15990,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 398.9
+          },
+          {
+            "seed": 3104,
+            "late_acquire": 1.0,
+            "late_retain": 0.9967256903648376,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.9967,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15979,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 374.7
+          },
+          {
+            "seed": 3105,
+            "late_acquire": 1.0,
+            "late_retain": 0.9967267274856567,
+            "early_acquire": 1.0,
+            "stored_rounded": {
+              "late_acquire": 1.0,
+              "late_retain": 0.9967,
+              "early_acquire": 1.0
+            },
+            "final_slots_used": 15999,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 374.9
+          }
+        ],
+        "metrics": {
+          "late_acquire": {
+            "mean": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "values": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "late_retain": {
+            "mean": 0.9968684291839599,
+            "min": 0.9962766408920288,
+            "max": 0.9975232164065043,
+            "values": [
+              0.9962766408920288,
+              0.9975232164065043,
+              0.9970898707707723,
+              0.9967256903648376,
+              0.9967267274856567
+            ]
+          },
+          "early_acquire": {
+            "mean": 1.0,
+            "min": 1.0,
+            "max": 1.0,
+            "values": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "final_slots_used": {
+            "mean": 15994.8,
+            "min": 15979,
+            "max": 16011,
+            "values": [
+              15995,
+              16011,
+              15990,
+              15979,
+              15999
+            ]
+          }
+        }
+      },
+      "original/adam_b2_09": {
+        "per_seed": [
+          {
+            "seed": 3101,
+            "late_acquire": 0.334375,
+            "late_retain": 0.4921467423439026,
+            "early_acquire": 0.8723958333333334,
+            "stored_rounded": {
+              "late_acquire": 0.3344,
+              "late_retain": 0.4921,
+              "early_acquire": 0.8724
+            },
+            "final_slots_used": 2539,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 372.0
+          },
+          {
+            "seed": 3102,
+            "late_acquire": 0.40572916666666664,
+            "late_retain": 0.5781532208124797,
+            "early_acquire": 0.9515625,
+            "stored_rounded": {
+              "late_acquire": 0.4057,
+              "late_retain": 0.5782,
+              "early_acquire": 0.9516
+            },
+            "final_slots_used": 3361,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 597.9
+          },
+          {
+            "seed": 3103,
+            "late_acquire": 0.4328125,
+            "late_retain": 0.6101954738299052,
+            "early_acquire": 0.925,
+            "stored_rounded": {
+              "late_acquire": 0.4328,
+              "late_retain": 0.6102,
+              "early_acquire": 0.925
+            },
+            "final_slots_used": 3280,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 597.0
+          },
+          {
+            "seed": 3104,
+            "late_acquire": 0.43854166666666666,
+            "late_retain": 0.6029678463935852,
+            "early_acquire": 0.9395833333333333,
+            "stored_rounded": {
+              "late_acquire": 0.4385,
+              "late_retain": 0.603,
+              "early_acquire": 0.9396
+            },
+            "final_slots_used": 3080,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 599.3
+          },
+          {
+            "seed": 3105,
+            "late_acquire": 0.4817708333333333,
+            "late_retain": 0.6411899566650391,
+            "early_acquire": 0.9203125,
+            "stored_rounded": {
+              "late_acquire": 0.4818,
+              "late_retain": 0.6412,
+              "early_acquire": 0.9203
+            },
+            "final_slots_used": 3840,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 279.0
+          }
+        ],
+        "metrics": {
+          "late_acquire": {
+            "mean": 0.41864583333333333,
+            "min": 0.334375,
+            "max": 0.4817708333333333,
+            "values": [
+              0.334375,
+              0.40572916666666664,
+              0.4328125,
+              0.43854166666666666,
+              0.4817708333333333
+            ]
+          },
+          "late_retain": {
+            "mean": 0.5849306480089824,
+            "min": 0.4921467423439026,
+            "max": 0.6411899566650391,
+            "values": [
+              0.4921467423439026,
+              0.5781532208124797,
+              0.6101954738299052,
+              0.6029678463935852,
+              0.6411899566650391
+            ]
+          },
+          "early_acquire": {
+            "mean": 0.9217708333333333,
+            "min": 0.8723958333333334,
+            "max": 0.9515625,
+            "values": [
+              0.8723958333333334,
+              0.9515625,
+              0.925,
+              0.9395833333333333,
+              0.9203125
+            ]
+          },
+          "final_slots_used": {
+            "mean": 3220,
+            "min": 2539,
+            "max": 3840,
+            "values": [
+              2539,
+              3361,
+              3280,
+              3080,
+              3840
+            ]
+          }
+        }
+      },
+      "original/sgd": {
+        "per_seed": [
+          {
+            "seed": 3101,
+            "late_acquire": 0.4953125,
+            "late_retain": 0.4604249159495036,
+            "early_acquire": 0.9166666666666666,
+            "stored_rounded": {
+              "late_acquire": 0.4953,
+              "late_retain": 0.4604,
+              "early_acquire": 0.9167
+            },
+            "final_slots_used": 2539,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 179.8
+          },
+          {
+            "seed": 3102,
+            "late_acquire": 0.575,
+            "late_retain": 0.5460860927899679,
+            "early_acquire": 0.9838541666666667,
+            "stored_rounded": {
+              "late_acquire": 0.575,
+              "late_retain": 0.5461,
+              "early_acquire": 0.9839
+            },
+            "final_slots_used": 3361,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 180.8
+          },
+          {
+            "seed": 3103,
+            "late_acquire": 0.6104166666666667,
+            "late_retain": 0.5955861965815227,
+            "early_acquire": 0.9479166666666666,
+            "stored_rounded": {
+              "late_acquire": 0.6104,
+              "late_retain": 0.5956,
+              "early_acquire": 0.9479
+            },
+            "final_slots_used": 3280,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 180.1
+          },
+          {
+            "seed": 3104,
+            "late_acquire": 0.5947916666666667,
+            "late_retain": 0.5594457030296326,
+            "early_acquire": 0.9604166666666667,
+            "stored_rounded": {
+              "late_acquire": 0.5948,
+              "late_retain": 0.5594,
+              "early_acquire": 0.9604
+            },
+            "final_slots_used": 3080,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 145.4
+          },
+          {
+            "seed": 3105,
+            "late_acquire": 0.6484375,
+            "late_retain": 0.6172855774561564,
+            "early_acquire": 0.95625,
+            "stored_rounded": {
+              "late_acquire": 0.6484,
+              "late_retain": 0.6173,
+              "early_acquire": 0.9563
+            },
+            "final_slots_used": 3840,
+            "torch": "2.11.0",
+            "threads": 2,
+            "seconds_uncontrolled": 145.8
+          }
+        ],
+        "metrics": {
+          "late_acquire": {
+            "mean": 0.5847916666666667,
+            "min": 0.4953125,
+            "max": 0.6484375,
+            "values": [
+              0.4953125,
+              0.575,
+              0.6104166666666667,
+              0.5947916666666667,
+              0.6484375
+            ]
+          },
+          "late_retain": {
+            "mean": 0.5557656971613566,
+            "min": 0.4604249159495036,
+            "max": 0.6172855774561564,
+            "values": [
+              0.4604249159495036,
+              0.5460860927899679,
+              0.5955861965815227,
+              0.5594457030296326,
+              0.6172855774561564
+            ]
+          },
+          "early_acquire": {
+            "mean": 0.9530208333333333,
+            "min": 0.9166666666666666,
+            "max": 0.9838541666666667,
+            "values": [
+              0.9166666666666666,
+              0.9838541666666667,
+              0.9479166666666666,
+              0.9604166666666667,
+              0.95625
+            ]
+          },
+          "final_slots_used": {
+            "mean": 3220,
+            "min": 2539,
+            "max": 3840,
+            "values": [
+              2539,
+              3361,
+              3280,
+              3080,
+              3840
+            ]
+          }
+        }
+      }
+    },
+    "registered_outcomes": {
+      "seed_count": 5,
+      "counts": {
+        "F1": 5,
+        "F2": 5,
+        "F3": 0,
+        "F4": 5,
+        "F5_pass": 0,
+        "F5_refutation": 0,
+        "F6": 0
+      },
+      "verdicts": {
+        "F1": "holds",
+        "F2": "holds",
+        "F3": "fails",
+        "F4": "holds",
+        "F5": "partial",
+        "F6": "fails"
+      }
+    },
+    "acquisition_contrasts": {
+      "reset_effect_original": {
+        "mean": 0.6108333333333333,
+        "min": 0.528125,
+        "max": 0.6645833333333333,
+        "values": [
+          0.528125,
+          0.6088541666666666,
+          0.6114583333333333,
+          0.6411458333333333,
+          0.6645833333333333
+        ]
+      },
+      "reset_effect_hash": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "interaction_reset_original_minus_hash": {
+        "mean": 0.6108333333333333,
+        "min": 0.528125,
+        "max": 0.6645833333333333,
+        "values": [
+          0.528125,
+          0.6088541666666666,
+          0.6114583333333333,
+          0.6411458333333333,
+          0.6645833333333333
+        ]
+      },
+      "reset_recovery_fraction_per_seed": {
+        "mean": 0.6261093718045927,
+        "min": 0.538502389803505,
+        "max": 0.6845493562231759,
+        "values": [
+          0.538502389803505,
+          0.6218085106382978,
+          0.6291532690246516,
+          0.6565333333333333,
+          0.6845493562231759
+        ]
+      },
+      "reset_recovery_ratio_of_means": 0.6259607173356107,
+      "interpretation": "Conditional descriptive contrasts under these recipes; no unique causal allocation to optimizer state or collisions."
+    },
+    "secondary_retention_reset_contrasts": {
+      "original": {
+        "mean": 0.012152789433797207,
+        "min": -0.07036044994990032,
+        "max": 0.057703479131062885,
+        "values": [
+          -0.07036044994990032,
+          0.013018337885538744,
+          0.03413166205088303,
+          0.026270918051401693,
+          0.057703479131062885
+        ]
+      },
+      "hash": {
+        "mean": 0.10464564402898151,
+        "min": 0.10313280026117966,
+        "max": 0.10584725141525264,
+        "values": [
+          0.10313280026117966,
+          0.10581142505009966,
+          0.1037114342053731,
+          0.10584725141525264,
+          0.1047253092130025
+        ]
+      }
+    },
+    "unit": "Seed; 15 late phases are repeated measurements, not independent runs."
+  }
+}

@@ -1,5 +1,7 @@
 # 09 — New repository evidence, independent reanalysis and repaired experiment contracts
 
+**V5 current evidence notice.** This chapter preserves earlier completed pilot evidence. Later source controls, the store-S result and the invalidated cache claim are audited in [12](12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md) and [13](13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md). Earlier scalar-shuffle results are not valid negative-control evidence, and the later store result has an equal-prefix qualification. Original raw summaries remain preserved.
+
 **V4 evidence precedence.** [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md) supersedes the pending margin status in section7 at a new immutable cutoff, 9d88a2c. It also refines endpoint terminology: the source pilot fields called corrected_now and collateral_now are measured after all writes in each phase, not individually after each write. References below to immediate pilot accuracy mean that phase-end endpoint; they do not establish per-write acquisition or harm. [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md) implements the separate observations and cohort rules.
 
 **Review date:** 2026-11-21, America/New_York. **Evidence cutoff:** research branch commit `2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0`. **Status:** existing repository results reanalysed; new CPU source diagnostics executed; no neural experiment rerun.

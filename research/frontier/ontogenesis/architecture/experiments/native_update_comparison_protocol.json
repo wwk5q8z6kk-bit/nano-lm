@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "experiment_id": "native-update-allocation-v1",
+  "classification": "Exploratory synthetic native mechanism comparison; not preregistered/confirmatory G03b or a language benchmark.",
+  "local_recipe_frozen_at_utc": "2026-11-22T02:21:42Z",
+  "freeze_scope": "Recipe written before the first local execution. This timestamp/hash is not an independent prior Git preregistration or proof of execution custody.",
+  "seeds": [
+    9201,
+    9202,
+    9203
+  ],
+  "world": {
+    "phases": 7,
+    "entities_per_phase": 2,
+    "relations": 3,
+    "shown_relations": 2,
+    "values": 4,
+    "assignments_per_phase": 2
+  },
+  "model": {
+    "vocab_size": 22,
+    "d_model": 8,
+    "n_heads": 2,
+    "d_ff": 16,
+    "logical_layers": 2,
+    "unique_layers": 1,
+    "max_context": 3,
+    "rms_eps": 1e-06,
+    "rope_base": 10000.0
+  },
+  "model_seed_rule": "world seed + 10000; separate initialization generator; replay is deterministic",
+  "optimizer": {
+    "learning_rate": 0.01,
+    "beta1": 0.9,
+    "beta2": 0.95,
+    "epsilon": 1e-08,
+    "weight_decay": 0.01,
+    "max_grad_norm": 1.0
+  },
+  "codec": {
+    "entity_tokens": [
+      0,
+      13
+    ],
+    "relation_tokens": [
+      14,
+      16
+    ],
+    "query_marker": 17,
+    "value_tokens": [
+      18,
+      21
+    ],
+    "document": "entity, relation, marker, observed value",
+    "scored_mask": [
+      false,
+      false,
+      true
+    ],
+    "decoding": "Full22-token native argmax; non-value token is explicit abstention"
+  },
+  "common_prefix": {
+    "phase": 0,
+    "observed_facts": 4,
+    "steps": 40,
+    "batch_size": 4,
+    "scored_target_presentations": 160,
+    "branch_state": "Identical copied model weights, Adam first/second moments, step and hyperparameters; no optimizer reset"
+  },
+  "arms": {
+    "current_only": {
+      "current_steps_per_event": 2,
+      "replay_steps_per_event": 0,
+      "frozen": false
+    },
+    "replay_matched_total": {
+      "current_steps_per_event": 1,
+      "replay_steps_per_event": 1,
+      "frozen": false
+    },
+    "replay_additive": {
+      "current_steps_per_event": 2,
+      "replay_steps_per_event": 1,
+      "frozen": false
+    },
+    "frozen": {
+      "current_steps_per_event": 0,
+      "replay_steps_per_event": 0,
+      "frozen": true
+    }
+  },
+  "update_schedule": "For every post-prefix event, train current target the declared number of times, then latest observed replay target if the arm requests it. Initial observations and same-value assignments consume exposure.",
+  "replay_policy": "Exclude current key. Choose latest-visible target on same entity if available, then lowest latest-event order/key. Otherwise choose lowest latest-event order/key across other visible facts. If no other key exists, repeat current event and label fallback explicitly. No future labels or stale superseded replay targets.",
+  "negative_control": "Each introduced entity has one permanently unobserved relation. Coordinator-only PCG64(SeedSequence([seed,5129033])) supplies random labels in fixed key order. Targets never reach learner, event generator, initialization or replay. This is an unlearnable-random-label diagnostic, not a language/generalization metric.",
+  "censor_policy": "new_revision",
+  "horizons": [
+    0,
+    1,
+    5,
+    10,
+    20
+  ],
+  "primary_descriptive_endpoint": "all-assignment phase-end horizon1 accuracy, retaining failed acquisition and explicit censored/not-yet-due/missing counts",
+  "other_endpoints": [
+    "individual assignment acquisition",
+    "post-prefix new-fact acquisition immediately after its event",
+    "phase-end current observed-fact accuracy",
+    "phase-end previously observed current facts (latest observation before current phase)",
+    "never-revised common-prefix facts",
+    "coordinator-only unobserved-relation negative control",
+    "semantic-change and same-value assignment strata",
+    "all horizons and acquired-only secondary rates"
+  ],
+  "cost_contract": "Report exact current/replay target presentations, optimizer calls, query inputs, algorithmic replay payload bytes, instrumentation history bytes, parameter/Adam array bytes. Matched-total arms equate updates and total targets only; additive replay spends50% more post-branch updates. No measured FLOPs, runtime or energy comparison. Frozen is a no-learning reference, not matched cost.",
+  "aggregation": "Three paired seeds; all per-seed values and denominators. Descriptive paired differences/means/min/max only. No p-values, confidence intervals, winner threshold or confirmatory efficacy claim; do not average away undefined endpoints.",
+  "limits": [
+    "All data synthetic and generated; no corpus, tokenizer or natural-language claims.",
+    "No hyperparameter tuning, outcome-dependent seed selection or early stop.",
+    "A replay improvement can trade against current-event learning; report both matched-total and same-current-exposure additive controls.",
+    "Shared common-prefix pretraining is executed once per seed and attributed transparently to each arm.",
+    "Frozen state may answer a changed label by chance; it cannot acquire through training.",
+    "Small instance and three seeds do not establish useful scale or a general retention mechanism."
+  ]
+}

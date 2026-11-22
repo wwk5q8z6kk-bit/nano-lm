@@ -1,5 +1,7 @@
 # 10 — Native training and controlled-update measurement
 
+**V5 current integration notice.** The V4 training and measurement implementation below is unchanged. [14](14_NATIVE_UPDATE_COMPARISON.md) now branches four arms from identical weights and optimizer states on a locally frozen synthetic protocol. This progresses beyond a single bridge smoke fixture, while remaining short-horizon, untuned and separate from a natural-language G03b result. Exact target/optimizer-call matching is not measured FLOP or energy equality.
+
 **Review date:** November 21, 2026, America/New_York. V4 extends the immutable forward architecture in [07](07_IMPLEMENTATION_CONTRACT.md) with an explicit training implementation and a causal correction-measurement interface. These are small NumPy reference components. The executed learning fixtures demonstrate mechanics; they do not establish general-purpose language quality, continual-learning superiority or hardware efficiency.
 
 ## 1. Implementation boundary

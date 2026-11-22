@@ -1,5 +1,7 @@
 # 11 — Correction margins, sequential writes and conditional durability
 
+**V5 current theory notice.** The finite V4 margin results and cumulative-drift theorem remain valid within their stated scope. [12](12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md) supplies a separate exact L1 feasibility trade-off and corrects tie-versus-error language. [14](14_NATIVE_UPDATE_COMPARISON.md) adds short synthetic native trajectories; it does not establish the theorem's sufficient bound for useful language tasks or long-horizon retention.
+
 **Review date:** November 21, 2026, America/New_York. **Evidence cutoff:** research commit 9d88a2c20233f42b4a49c4430264b20f842895ad. This chapter supersedes the pending margin-result status recorded at the V3 cutoff; it preserves the earlier protocol, raw results and ledger event. It adds a conditional theorem about accumulated margin drift, not a proof that Nano LM has solved continual learning.
 
 ## 1. High-level result

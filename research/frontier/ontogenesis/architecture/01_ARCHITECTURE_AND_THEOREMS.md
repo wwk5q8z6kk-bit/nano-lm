@@ -1,5 +1,7 @@
 # 01 — Nano LM candidate architecture, falsifiable hypotheses and mathematical propositions
 
+**V5 current architecture notice.** The implemented native core is unchanged; [12](12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md) adds exact update geometry and audited optimizer evidence, [13](13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md) specifies the optional causal cache and full resource frontier, and [14](14_NATIVE_UPDATE_COMPARISON.md) executes a frozen three-seed synthetic update comparison. The primary correction-horizon result is mixed/negative for the replay arms. This is an executable research architecture, not an adopted superior model. Earlier V4/V3 statements below retain their historical scope.
+
 **V4 implementation and theory update.** [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md) now implements tiny native training, optimizer/checkpoint semantics and causal correction measurement. [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md) incorporates the completed margin pilot and proves a conditional cumulative-drift result. Earlier architecture hypotheses remain unselected; engineering learning fixtures do not establish general-purpose competence.
 
 **Research status:** reviewed candidate specification, not an adopted architecture; 2026-11-21. **Repository name unchanged:** Nano LM.  
@@ -351,3 +353,20 @@ These sources establish the methods and operation definitions cited above. The c
 - **FREF02:** Zhang and Sennrich (2019), [Root Mean Square Layer Normalization](https://arxiv.org/abs/1910.07467). Definition and motivation of RMS normalization.
 - **FREF03:** Su et al. (2021; revised 2023), [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864). Rotary operations and relative-position attention.
 - **FREF04:** Banino, Balaguer and Blundell (2021), [PonderNet: Learning to Ponder](https://arxiv.org/abs/2107.05407). Prior art for learned allocation of computation.
+
+## V5 implementation state and ownership of information
+
+The current executable architecture is the dense/shared causal reference with native tied next-token head, analytical backward, AdamW and versioned snapshots. A shared block reuses parameters while maintaining separate logical-depth activations and KV state. The V5 native fixture uses 840 trainable parameters, width 8, one unique block reused at two logical depths, and a full 22-token output vocabulary. These are diagnostic dimensions, not the planned language-model scale.
+
+| State | Owner and lifetime | May affect prediction or training when? | Accounting and invariant |
+|---|---|---|---|
+| Model weights | A named training/checkpoint version | Inference from a fixed snapshot; training only through an explicit committed update | Exact named tensors and parameter bytes; no stale snapshot after mutation |
+| Adam moments and step | The corresponding training trajectory | Only while computing declared updates | Clone/reset policy is part of the intervention; weight equality alone is insufficient |
+| KV/activation state | One document/crop and logical depth | Only after the relevant token has been observed | Reset at boundaries; shared weights do not merge logical-depth caches |
+| Latest visible replay facts | Optional training-arm algorithmic state | Targets already delivered in the event stream; superseded values removed from current replay | Replay target counts and serialized payload are separate from model bytes |
+| Causal n-gram cache | Optional augmented inference state | Only complete transitions in the currently allowed prefix window | Document/crop reset; score before insertion; normalized mixture |
+| Audit/event ledger | Evaluation coordinator and research record | Records observations and provenance; hidden labels never feed learner decisions | Not counted as a learned memory advantage; report instrumentation overhead separately |
+
+The new comparison changes the update allocation only. It does not replace the backbone, change its decoding head, introduce an oracle target into the forward pass, or train a mechanism for learning reusable operations. The optional cache is also separate from targeted training replay: the former changes an explicitly augmented predictive distribution, while the latter changes the native model's learned weights through extra or reallocated examples.
+
+The next useful architecture improvement must survive three tests at once: it learns the intended new information, preserves relevant prior competence, and remains feasible under declared total costs. In the current tiny run, replay improves some acquisition/retention endpoints while worsening the chosen one-phase correction endpoint. The architecture remains a controlled research platform, with adoption decisions deferred to the specified evidence gates.

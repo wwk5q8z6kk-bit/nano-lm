@@ -1,0 +1,47 @@
+"""Driver for PROTOCOL-MEMSAT-FACTORIAL.md. Runs cells 3 at a time; never overwrites results."""
+import json, subprocess, sys, pathlib
+from concurrent.futures import ThreadPoolExecutor
+
+PY = "/Users/mac/Projects/nano-lm/.venv/bin/python"
+SRC = pathlib.Path("/Volumes/Express1M2/Scratch/builds/memsat-factorial/src/research/frontier/ontogenesis")
+OUT = SRC / "results" / "memory_saturation_factorial"
+OUT.mkdir(parents=True, exist_ok=True)
+SEEDS = [3101, 3102, 3103, 3104, 3105]
+
+
+def job(address, opt, seed, lr=None, tag=None):
+    name = tag or f"{address}-{opt}-s{seed}"
+    out = OUT / f"{name}.json"
+    if out.exists() and out.stat().st_size > 0:
+        return name, "exists"
+    if out.exists():
+        out.unlink()  # empty file left by a killed run: no result was ever written
+    cmd = [PY, "memory_saturation_factorial.py", address, opt, str(seed), str(out)]
+    if lr is not None:
+        cmd += ["--lr", str(lr)]
+    p = subprocess.run(cmd, cwd=SRC, capture_output=True, text=True)
+    print(name, p.returncode, p.stdout.strip()[-300:], p.stderr.strip()[-300:], flush=True)
+    return name, p.returncode
+
+
+first = [("hash", "sgd", 3001, lr, f"dev-hash-sgd-lr{lr:g}-s3001") for lr in (1, 3, 10, 30, 100, 300)]
+for cell in (("original", "adam"), ("original", "adam_reset"), ("hash", "adam"), ("hash", "adam_reset"), ("original", "adam_b2_09")):
+    first += [(cell[0], cell[1], s, None, None) for s in SEEDS]
+with ThreadPoolExecutor(3) as ex:
+    list(ex.map(lambda a: job(*a), first))
+
+dev = []
+for lr in (1, 3, 10, 30, 100, 300):
+    f = OUT / f"dev-hash-sgd-lr{lr:g}-s3001.json"
+    if f.exists() and f.stat().st_size:
+        dev.append((lr, json.load(open(f))["late_acquire"]))
+print("SGD dev sweep", dev, flush=True)
+best = max(v for _, v in dev)
+chosen = min(lr for lr, v in dev if v >= best - 0.01)
+json.dump({"sweep": dev, "best": best, "chosen_lr": chosen, "informative": best >= 0.9}, open(OUT / "dev-sgd-selection.json", "w"))
+if best >= 0.9:
+    with ThreadPoolExecutor(3) as ex:
+        list(ex.map(lambda s: job("original", "sgd", s, chosen), SEEDS))
+else:
+    print("SGD cannot fit hashed addresses; F6 uninformative, arm not run", flush=True)
+print("DONE", flush=True)

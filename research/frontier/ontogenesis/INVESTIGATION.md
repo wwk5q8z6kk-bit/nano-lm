@@ -429,3 +429,42 @@ For comparison, from the table above: trained alone 64.7% / 59.6% / 66.2%; train
 **Two conclusions that now have direct evidence in this world.**
 1. *At the moment of writing*, harm comes from absent constraints. Supplying them, either as the entity's own facts or as the model's own current answers, removes it. Making the write smaller does not.
 2. *Afterwards*, anything the later data does not re-assert is eroded, whatever the margin. A constraint has to be present at every later update that can disturb it, not only at the moment of writing.
+
+### Question 9, second follow-up: is it the optimiser? (2026-11-21)
+
+`correction_optimizer.py`, prediction O1 committed in `27cc27c`. Same three seeds. The correction is written by gradient steps on the entity's address only (decoder frozen), using only the corrected fact. [Observed]
+
+| Write | Steps taken | Correction right, at once | Entity's other facts, at once | Old regular facts on corrected entities, at the end |
+|---|---|---|---|---|
+| Plain gradient descent, stopped at a 1-logit lead | about 750 | 99.4% | 14.3% | 12.0% |
+| Adam with fresh state, stopped at a 1-logit lead | about 4,180 | 99.0% | 39.8% | 39.1% |
+| Adam with fresh state, 200 steps | 200 | 47.9% | 62.5% | 60.9% |
+
+- O1 (every gradient-only write damages the entity's other facts, 85% or less): held for all three. None came near 95%.
+- **The optimiser is not the cause of the correction damage.** Plain gradient descent stopped the moment the correction takes is the most destructive write we have measured. Fresh optimiser state does not help. Fewer steps help only by not completing the write.
+- This differs from the memory-saturation result (Question 7), where carried-over optimiser state was a main cause. The two failures look alike and have different causes.
+
+**Explanations of the correction damage, final status in this world.** Capacity: rejected (a harmless state exists for 99.8%). Size of the write: rejected (the smallest write keeps 35%). Optimiser: rejected (14% to 63%). Replay in general: rejected (other entities' facts keep 67%). Missing constraints on the written address: supported (the entity's own facts 100%; the model's own current answers 98%).
+
+## Question 10. Is a small model limited by its capacity or by its training signal? (registered 2026-11-21, before any run)
+
+**Why.** Between 14M and 40M parameters the dense model improves by 0.096 bits per byte on the same 800M tokens. Two mechanisms we tested on real text (an exact n-gram store, an exact in-context cache) add under 0.005 to the trained 14M model. Before testing further mechanisms we should know whether the 14M model could do better at all with the same parameters and data, given a better target to learn from.
+
+**Test.** Distil the finished 101M model into fresh 14M and 40M models: loss = α · (cross-entropy on the data) + (1 − α) · KL(teacher ‖ student). Same data, token budget, schedule and seed as the baselines. Script: `tpu/train_jax.py`, second version; job: `tpu/job_kd.sh`. Teacher fixed in advance: the 101M model at learning rate 1e-3, seed 1000.
+
+| Arm | Size | α |
+|---|---|---|
+| Baseline, second-version sampler | 14M, seeds 1000 and 1001; 40M, seed 1000 | — |
+| Distilled | 14M | 0.5 |
+| Distilled, teacher only | 14M | 0.0 |
+| Distilled | 40M | 0.5 |
+
+**Rules, fixed now.** Read on the 14M model, α 0.5, against its same-sampler baseline:
+- gain of 0.03 bits per byte or more (about a third of the 14M-to-40M gap): the training signal is a major lever for small models;
+- under 0.01: the 14M model is capacity-limited on this data; a better signal is not the lever;
+- between: partial.
+A difference counts only if it exceeds twice the difference between the two baseline seeds.
+
+**Predictions.** 14M gains 0.01 to 0.03 ("partial"). 40M gains under 0.015. Teacher-only training is no better than α 0.5.
+**Controls.** The teacher, evaluated inside the student run, must reproduce its own reported score to 0.001. The second-version baseline at 14M shows what the sampling fix changed: I expect it within 0.005 of the first-version result (1.1441).
+**Not tested.** Distillation with a different temperature, a larger teacher, or more training tokens.

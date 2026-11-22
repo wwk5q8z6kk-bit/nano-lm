@@ -1,5 +1,7 @@
 # 05 — Independent gap closure, theory audit, and implementation contracts (v2)
 
+**V5 current gap notice.** The new register at the end of this chapter distinguishes repaired engineering defects, narrowed claims and unresolved empirical work. The [optimizer/geometry review](12_OPTIMIZER_FACTORIAL_AND_UPDATE_GEOMETRY.md), [causal memory review](13_CAUSAL_MEMORY_AND_RESOURCE_FRONTIER.md) and [native comparison](14_NATIVE_UPDATE_COMPARISON.md) control current conclusions. A documented experiment or conditional proof does not close an unexecuted language-quality gate.
+
 **V4 precedence.** The new F-31–F-39 register at the end records additional closures. Current training/measurement contracts are in [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md); completed margin evidence and cumulative-drift proofs are in [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md). V2/V3 findings below retain their original review scope.
 
 **V3 precedence notice:** This document retains the 18-item V2 review and now includes follow-up repairs. Current theorem statements are in [01](01_ARCHITECTURE_AND_THEOREMS.md), executable tensor/cache details in [07](07_IMPLEMENTATION_CONTRACT.md), source inspection depths in [08](08_LITERATURE_AUDIT.md), and new repository evidence in [09](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md). A repair to wording or a diagnostic is not closure of an empirical learning claim.
@@ -222,3 +224,28 @@ The rough `6ND` dense-LM training-FLOP proxy is useful for budgeting only; recur
 | F-39 | Training and measurement could remain disconnected specifications | Tiny native bridge with actual updates/predictions and event/state/exposure receipts | Fixed engineering fixture; scientific G03b benchmark remains open |
 
 These closures repair definitions, executable mechanics, evidence and mathematical scope. Native language quality, learned representation migration, forward transfer, compute/energy advantages and universal continual learning are not closed. Their acceptance artifacts are named in [03](03_EXPERIMENTS_AND_EXECUTION.md), [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md) and [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md).
+
+## V5 gap register: repaired contracts and still-open science
+
+| Gap ID | Finding | Action in this revision | State and remaining evidence |
+|---|---|---|---|
+| F-40 | One-seed memory-reset result overstated robust recovery | Recompute five-seed paired factorial; keep F3/F6 failures and F5 partial outcome | Arithmetic/interpretation closed; unique causal mechanism remains open |
+| F-41 | “Two thirds caused by optimizer” conflates descriptive ratio with attribution | Define 62.596% ratio-of-means and observed address/reset interaction | Claim narrowed; mechanism-isolating interventions remain needed |
+| F-42 | Detached correction candidates can share deployed entity rows | Reconstruct duplicate-index events, cite API limits, require joint/ordered deployment receipts | Defect documented; historical outcome attribution and corrected upstream rerun open |
+| F-43 | Stored loop index presented as update cost | Distinguish 199 from200 updates and stopping summaries from per-write counters | Interpretation repaired; resource measurements remain absent |
+| F-44 | Tie in minimum-edit example labeled universally wrong | Prove all minimizers and exact protected-margin trade-off | Elementary proof corrected; no global model theorem |
+| F-45 | Store receives pre-crop context unavailable to native baseline | Execute source counterexample; implement explicit crop/reset contract | Reference fixed; actual upstream language evaluation still requires correction |
+| F-46 | Scalar shuffled probabilities and identity-routed cache are invalid | Preserve invalidated values, reproduce mechanisms, separate proper shifted control from independence | Historical claims excluded; new valid language outcomes pending |
+| F-47 | Baseline and weighted-byte claims exceed available summaries | Record0.0001 mismatch and missing raw mixture/byte/crop manifest | Open until valid evaluator receipts exist |
+| F-48 | Causal cache input/mixture numeric boundaries are incomplete | Independent review fixes real-number serialization, malformed predictions and tiny-positive mixing | Local code/checks closed; no LM performance implication |
+| F-49 | Replay advantage can hide reallocated or extra exposure | Four common-state arms distinguish matched total updates from additive work | Instrumented; primary H1 endpoint does not favor replay here |
+| F-50 | Hidden labels could affect learner or reported transfer | Coordinator-only independent random labels, counterfactual tests, explicit negative-control status | Causal fixture checked; useful forward transfer not tested |
+| F-51 | Short horizon cohorts can be empty or selectively acquired | Preserve full revision/censor counts, failed acquisitions and undefined endpoints | Short fixture accurately measured; meaningful long horizons remain open |
+| F-52 | Parallel contributor evidence could be erased or overclaimed | Preserve full latestPR canonical prefix, separate fixed cutoffs and historical audit scopes | Maintenance contract closed locally; publication independently verified |
+| F-53 | Reference count confuses headline lookup with full methods review | Add3 explicit primary sources and retain historical reading depths |43 identities; deeper assumptions/licensing/reproduction still source-specific |
+| F-54 | Complete architecture cannot yet claim useful quality/cost superiority | Tie current interfaces to next real-data and frontier gates | Open; no proof or fixture substitutes for that evidence |
+
+“Closed locally” refers to the specified code, arithmetic or documentation defect. It does not mean all research issues are solved. The three current chapters and individual review notes provide evidence and qualification for each row.
+
+
+**Late-evidence refinement of F-46/F-47.** The c597d5f addendum supplies S/M cache and M store results. The40M cache's numerical stopping branch is met, with unresolved baseline/provenance controls; the101M/L store gate remains pending. All90source copies are accounted for across the unchanged85-copy core manifest and separate5-copy addendum. The earlier absence statements are cutoff-specific history, not current claims. D-058 records the revision.

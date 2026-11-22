@@ -1,0 +1,121 @@
+{
+  "schema": "store-cache-late-evidence-v1",
+  "core_cutoff": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+  "late_cutoff": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+  "repository": "wwk5q8z6kk-bit/nano-lm",
+  "files": [
+    {
+      "path": "research/frontier/ontogenesis/results/lm/cache-exchange-M.json",
+      "local_path": "research/frontier/ontogenesis/results/lm/cache-exchange-M.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/cache-exchange-M.json",
+      "commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "github_blob_sha": "799c64b014c9f71fe40aa81bc1f5d5d64f3c21ab",
+      "bytes": 1048,
+      "sha256": "1e732d08c7fa2c6d037b5743e87b9a3b850e2ab6d7ad6e427e92e15dc653d1c3",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/results/lm/cache-exchange-M.json"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/lm/cache-exchange-S.json",
+      "local_path": "research/frontier/ontogenesis/results/lm/cache-exchange-S.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/cache-exchange-S.json",
+      "commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "github_blob_sha": "3120320aee8c133f804ee3d9a816c03601bb7bb4",
+      "bytes": 1048,
+      "sha256": "55b85cb92775bfc4c257a1df73a9ad0790e8dbccb8f63da55e2edcfe152d9327",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/results/lm/cache-exchange-S.json"
+    },
+    {
+      "path": "research/frontier/ontogenesis/results/lm/store-exchange-M.json",
+      "local_path": "research/frontier/ontogenesis/results/lm/store-exchange-M.json",
+      "source_path": "research/frontier/ontogenesis/results/lm/store-exchange-M.json",
+      "commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "github_blob_sha": "6a7921ca27d4a88db61935a4d780c7ee5bc46b19",
+      "bytes": 1043,
+      "sha256": "d8880f082ec26ea31c66f3e9162a317f791adc0fdc20de741fbe9f25a418dda6",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/results/lm/store-exchange-M.json"
+    },
+    {
+      "path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "local_path": "research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "source_path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "github_blob_sha": "447ec7e9645d919a0e76bd4b20c0cf519b0805f1",
+      "bytes": 50321,
+      "sha256": "f155d4b90cf2131d2c11f08318e83208b38b85984ca466d96e42ff1fbc912d47",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/INVESTIGATION.md"
+    },
+    {
+      "path": "research/frontier/ontogenesis/tpu/train_jax.py",
+      "local_path": "research/frontier/ontogenesis/tpu/train_jax.py",
+      "source_path": "research/frontier/ontogenesis/tpu/train_jax.py",
+      "commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "source_commit": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+      "github_blob_sha": "e1d34ed3e8ab8f20fa136a1d9a3ceb2f74b77c11",
+      "bytes": 19669,
+      "sha256": "6d769c89cf3dbcc748693730ebbbc6cb8e364391688523ee93004297fc91a1f6",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/tpu/train_jax.py"
+    }
+  ],
+  "unchanged_script_identities": [
+    {
+      "source_path": "research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "github_blob_sha_at_both_cutoffs": "2eb6c34e50366154976bf0c8be844cd4a5fa72e4",
+      "sha256": "081f9588585165e45a5245a404b03a6204aeb1dfc9cdb8a93a6dffd282a194ff",
+      "late_source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/tpu/cache_exchange.py",
+      "prior_local_path": "current/research/frontier/ontogenesis/tpu/cache_exchange.py"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/tpu/store_exchange.py",
+      "github_blob_sha_at_both_cutoffs": "5df9cd372c3d841479aae8478a71b7323d9d4979",
+      "sha256": "01233c322aac26731d3d482f3e5d9d5a4ddc0a8cd21801b37335a9829878920f",
+      "late_source_url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/c597d5fefdd378c3e5c66a51e7690cdb90853287/research/frontier/ontogenesis/tpu/store_exchange.py",
+      "prior_local_path": "current/research/frontier/ontogenesis/tpu/store_exchange.py"
+    }
+  ],
+  "bounded_compare": {
+    "url": "https://api.github.com/repos/wwk5q8z6kk-bit/nano-lm/compare/0afd5629990b4e442fb3aa8f7c700b030d8faede...c597d5fefdd378c3e5c66a51e7690cdb90853287",
+    "base": "0afd5629990b4e442fb3aa8f7c700b030d8faede",
+    "head": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+    "ahead_by": 4,
+    "total_commits": 4,
+    "changed_paths": [
+      "research/frontier/ontogenesis/INVESTIGATION.md",
+      "research/frontier/ontogenesis/results/lm/cache-exchange-M.json",
+      "research/frontier/ontogenesis/results/lm/cache-exchange-S.json",
+      "research/frontier/ontogenesis/results/lm/store-exchange-M.json",
+      "research/frontier/ontogenesis/tpu/bench_nested.sh",
+      "research/frontier/ontogenesis/tpu/build_corpus_v2.py",
+      "research/frontier/ontogenesis/tpu/job_corpus_v2.sh",
+      "research/frontier/ontogenesis/tpu/job_kd.sh",
+      "research/frontier/ontogenesis/tpu/train_jax.py",
+      "research/frontier/ontogenesis/tpu/vm_guard.sh"
+    ],
+    "commits": [
+      {
+        "sha": "96c1863113dd8755f93d6a56655da955d2ab4acb",
+        "date": "2026-11-22T02:25:41Z",
+        "message": "TPU script v2 (uniform host sampling, checked uploads, safe resume, distillation); register the distillation test"
+      },
+      {
+        "sha": "df43eb9152345f2525ebb249375f677f41d0b53e",
+        "date": "2026-11-22T02:30:09Z",
+        "message": "Corpus v2 builder (same pinned sources and recipe as v1, larger quota; reproduces v1 held-out sets and training prefix exactly)"
+      },
+      {
+        "sha": "4bf4223d52ec2526bbff19c8381b3ec6a609905f",
+        "date": "2026-11-22T02:30:48Z",
+        "message": "Corpus launcher: locate the builder next to itself"
+      },
+      {
+        "sha": "c597d5fefdd378c3e5c66a51e7690cdb90853287",
+        "date": "2026-11-22T02:35:42Z",
+        "message": "TPU controllers: guard against the end-of-batch deletion race; timing probe for the CPU runs"
+      }
+    ]
+  },
+  "packaging_note": "Source bytes retained exactly; .md source uses .md.txt suffix."
+}
