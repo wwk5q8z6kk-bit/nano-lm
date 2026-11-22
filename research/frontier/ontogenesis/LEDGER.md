@@ -436,3 +436,20 @@ Recorded by the session that owns `research/memory-saturation-factorial`, at the
 - Whole-model protection makes corrections durable but costs the rule (G06). Localising the protection to what was corrected keeps both (G06b); at width 96 nothing measured is lost.
 - Caveats as that session recorded them: the readout is bilinear, so the projectors are exact; one world; three seeds.
 - Relation to this session's rule-world memory test (PR #199): both find that durability of individual facts and use of shared rules compete through shared structure. They are different learners. PR #199's fixed-address memory could not be separated by spreading reads; G06b separates the conflict by restricting which update directions are protected. G06b does not show that a fixed-address memory can be fixed the same way.
+
+---
+
+## 2026-11-22 — Why corrections fail in the typed shared-path memory (additive)
+
+Recorded by the session that owns `research/memory-saturation-factorial` (draft [PR #199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199)). Everything above is unchanged. No decision ID is assigned here. Same rule world and typed-address probe as the previous section; seeds 4101–4105; each protocol was committed before its confirmatory run.
+
+| Test | Protocol → results | Result | Status |
+|---|---|---|---|
+| Shared + private read, summed, no router | `1f05f7e` → `a2f61a5` | The single shared path at learning rate 1e-2 already reaches 0.90 acquisition and 0.79 inference. At that rate the private path adds 0.06 acquisition and 0.18 corrections (0.04 → 0.22) at 0.03 inference. | E1, E2, E4 held; E3 (second path free at the same rate) failed narrowly |
+| 5× steps for every phase | `c67b4b7`; interpretation addendum `3c8d0d7` recorded before any result → `84b923c` | Corrections flat (0.034 → 0.035). Acquisition, inference and retention all rose. | S1 held; read as "a uniform budget change does not move corrections", not as a refutation of a budget account |
+| Corrections written alone, 200 vs 2,000 steps for the correction pass only | `0126fb7` → `9ee8701` | Alone with the phase's budget: 0.026 → 0.035. With 10× steps: 0.029 → 0.919. Collateral at writing at most 0.022. Late inference on new entities 0.74 → 0.61. | W1–W4 held |
+
+- **Demonstrated, in this synthetic memory:** corrections fail for lack of budget relative to what same-type neighbours have accumulated in shared slots. Conflict inside the phase's objective is not the main cause. Nor is reachability: the corrected values are reachable here. Reachability is the different limit nano-lm-d5 found in a frozen nonlinear decoder (flat from 100 to 3,000 steps; commit `d6e05c3` on `research/g06-nullspace-durability`, development seeds only). The write-alone falsifier came from that session.
+- **Cost:** forcing corrections in is cheap at the moment of writing but damages later generalisation, because the write lands in slots shared with same-type entities. The write is already as local as the addressing allows (sparse reads), so a narrower write cannot help. A different place to write, such as a private slot, might.
+- **Side finding:** the inherited default (200 steps at 1e-3) under-trains this memory. Comparisons within each test are unaffected, because all arms of a test shared the budget.
+- **Limits:** the correction pass is given an explicit edit label; type information is given, not learned; value table, frozen addresses, synthetic world. Not evidence about a language model.
