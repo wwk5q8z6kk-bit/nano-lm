@@ -507,3 +507,12 @@ Gain in bits per byte from mixing an exact causal cache over the same 512-token 
 Limits. The cache sees only the model's own 512-token window, so this says nothing about copying from beyond the context. These are first-version checkpoints, but a sampling skew of this size cannot plausibly move a gain of 0.006 past 0.01.
 
 M21's 0.36-bits-per-token advantage on copyable code tokens was measured against a 5M model trained for minutes. It does not survive against dense models trained on 800M tokens.
+
+### Question 10: amendment before any run (2026-11-22, 03:15 UTC; the batch had not started)
+
+The independent review found two weaknesses in the registration above. Both are corrected before any run:
+
+1. **Micro-batch confound.** The 14M baselines were set to 2 micro-batches and the distilled arms to 4. Accumulation gives the same update in exact arithmetic but not in floating point, and the review measured unexplained offsets of 0.002 to 0.006 between runs that differed in micro-batch count and chip. Now every arm uses 4 micro-batches on the same chip type (v5e).
+2. **Noise rule.** "Twice the difference between two baseline seeds" passes a null effect about 30% of the time. Now there are three 14M baseline seeds (1000, 1001, 1002). A difference counts only if it exceeds t(0.975, 2 df) · s · √(1 + 1/3) ≈ 4.97 s, where s is the standard deviation of the three baseline seeds. The decision thresholds (0.03 major lever, under 0.01 capacity-limited) are unchanged.
+
+Every result file now records the chip type and a hash of the training script. The sampling-fix check compares the mean of the three 14M seeds with the single first-version run (1.1441). It is informative only: one first-version seed. Job file: `tpu/job_kd.sh` as of this commit.

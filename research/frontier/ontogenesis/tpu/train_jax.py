@@ -19,13 +19,17 @@ corpus the first 37% of the file was drawn about 12% too often. Crops are now dr
 exactly as the PyTorch harness does, and the corpus stays in host memory, so it may be larger than a chip's
 memory. Also new: uploads and downloads are checked and retried, a resumed run must match its recipe,
 two jobs may not share a name, and a diverged run is recorded as such. The model code is unchanged.
+
+Additions on 2026-11-22 (defaults reproduce the earlier behaviour exactly): --wd, --wd-on matrices (no decay on
+one-dimensional gains), --lr-floor; every result file records the chip type and a hash of this file.
 """
 from __future__ import annotations
-import argparse, copy, json, math, os, queue, subprocess, threading, time
+import argparse, copy, hashlib, json, math, os, queue, subprocess, threading, time
 import numpy as np
 import jax, jax.numpy as jnp, optax
 
 VOCAB = 32768
+CODE_SHA = hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:16]
 SIZES = {
     "T": dict(d=64, layers=2, ffn=176, heads=4, kv=2),        # smoke tests only
     "S": dict(d=256, layers=8, ffn=704, heads=4, kv=2),       # ~14M, the local pilot model
@@ -198,6 +202,9 @@ def run_name(a):
     if a.warmup != 500: n += f"-wu{a.warmup}"
     if a.train_tokens: n += f"-tok{float(a.train_tokens):g}"
     if a.f32: n += "-f32"
+    if a.wd != 0.1: n += f"-wd{a.wd:g}"
+    if a.wd_on != "all": n += "-wdmat"
+    if a.lr_floor != 0.1: n += f"-fl{a.lr_floor:g}"
     if kd: n += f"-kd{a.teacher_size}a{a.kd_alpha:g}"
     return n + "-hs" + (f"-{a.tag}" if a.tag else "")       # hs: crops sampled uniformly on the host (second version of this script)
 
@@ -216,17 +223,19 @@ def run(a):
     budget = int(a.train_tokens) or len(train)
     steps = budget // (a.bs * a.seq) // a.chunk * a.chunk
     if steps <= 0: raise SystemExit("token budget is smaller than one chunk of steps")
-    sched = lambda n: a.lr * jnp.minimum(1.0, (n + 1) / a.warmup) * (0.1 + 0.9 * 0.5 * (1 + jnp.cos(jnp.pi * jnp.minimum(1.0, (n + 1) / steps))))
-    opt = optax.chain(optax.clip_by_global_norm(1.0), optax.adamw(sched, b1=0.9, b2=0.95, eps=1e-8, weight_decay=0.1))
+    sched = lambda n: a.lr * jnp.minimum(1.0, (n + 1) / a.warmup) * (a.lr_floor + (1 - a.lr_floor) * 0.5 * (1 + jnp.cos(jnp.pi * jnp.minimum(1.0, (n + 1) / steps))))
+    mask = (lambda p: jax.tree_util.tree_map(lambda x: x.ndim >= 2, p)) if a.wd_on == "matrices" else None
+    opt = optax.chain(optax.clip_by_global_norm(1.0), optax.adamw(sched, b1=0.9, b2=0.95, eps=1e-8, weight_decay=a.wd, mask=mask))
     os.makedirs(a.out, exist_ok=True); res_path = f"{a.out}/{name}.json"; ck_path = f"{a.out}/{name}.state.npz"
     if a.gcs:                                                  # fail before any paid step if the bucket cannot be written
         mark = f"{a.out}/{name}.started"; open(mark, "w").write(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
         if not push(mark, a.gcs): raise SystemExit("cannot write to the bucket; not starting")
     head = {"name": name, "cfg": c, "lr": a.lr, "warmup": a.warmup, "bs": a.bs, "seq": a.seq, "micro": a.micro, "seed": a.seed,
             "steps": steps, "train_tokens": steps * a.bs * a.seq, "corpus_tokens": int(len(train)), "dtype": "float32" if a.f32 else "bfloat16",
-            "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": jax.__version__, "device": str(dev), "n_devices": len(jax.devices()),
+            "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": jax.__version__, "device": str(dev), "device_kind": dev.device_kind, "code_sha256": CODE_SHA, "n_devices": len(jax.devices()),
+            "wd": a.wd, "wd_on": a.wd_on, "lr_floor": a.lr_floor,
             "objective": (f"distillation from {os.path.basename(a.teacher)}, alpha {kd[1]}" if kd else "cross-entropy")}
-    ident = ("cfg", "lr", "warmup", "bs", "seq", "seed", "steps", "corpus_tokens", "dtype", "sampler", "objective")
+    ident = ("cfg", "lr", "warmup", "bs", "seq", "seed", "steps", "corpus_tokens", "dtype", "sampler", "objective", "wd", "wd_on", "lr_floor")
     rng = np.random.default_rng(a.seed + 1)
     with jax.default_device(dev):
         params = init(jax.random.PRNGKey(a.seed), c); st = opt.init(params)
@@ -294,7 +303,10 @@ if __name__ == "__main__":
     ap.add_argument("--f32", action="store_true"); ap.add_argument("--save", action="store_true"); ap.add_argument("--resume", action="store_true")
     ap.add_argument("--teacher", default="", help="checkpoint (.npz) of a trained model to distil from"); ap.add_argument("--teacher-size", default="L")
     ap.add_argument("--kd-alpha", type=float, default=None, help="weight of the data loss; 1 - alpha goes to matching the teacher")
-    ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED[:ALPHA]]]];..." (ALPHA "none" = no teacher)')
+    ap.add_argument("--wd", type=float, default=0.1); ap.add_argument("--wd-on", default="all", choices=("all", "matrices"))
+    ap.add_argument("--lr-floor", type=float, default=0.1, help="cosine schedule ends at this fraction of the peak rate")
+    ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED[:ALPHA[:key=value...]]]]];..." '
+                    '(ALPHA "none" = no teacher; keys wd, wdon, floor)')
     a = ap.parse_args()
     if not a.multi: raise SystemExit(run(a))
     jobs = queue.Queue()
@@ -304,6 +316,12 @@ if __name__ == "__main__":
         if len(f) > 4 and f[4]: b.train_tokens = float(f[4])
         if len(f) > 5 and f[5]: b.seed = int(f[5])
         if len(f) > 6 and f[6]: b.kd_alpha = None if f[6] == "none" else float(f[6])
+        for kv in f[7:]:
+            k, v = kv.split("=")
+            if k == "wd": b.wd = float(v)
+            elif k == "wdon": b.wd_on = v
+            elif k == "floor": b.lr_floor = float(v)
+            else: raise SystemExit(f"unknown job setting {k}")
         jobs.put(b)
     names = [run_name(b) for b in list(jobs.queue)]
     dup = sorted({n for n in names if names.count(n) > 1})
