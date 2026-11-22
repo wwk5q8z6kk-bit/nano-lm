@@ -6,7 +6,8 @@ B=$1; RUN=$2
 cd ~; mkdir -p nested-out; LOG=~/$RUN.log
 log(){ echo "$(date -u +%H:%M:%S) $*" >> $LOG; gcloud storage cp $LOG $B/runs/$RUN/log.txt >/dev/null 2>&1; }
 log "setup start; cpus $(nproc)"
-pip install -q uv >> $LOG 2>&1; export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+command -v uv >/dev/null 2>&1 || (curl -LsSf https://astral.sh/uv/install.sh | sh) >> $LOG 2>&1
 uv venv ~/venv-torch --python 3.12 >> $LOG 2>&1
 uv pip install --python ~/venv-torch/bin/python numpy==2.5.1 >> $LOG 2>&1
 uv pip install --python ~/venv-torch/bin/python torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu >> $LOG 2>&1
