@@ -7,7 +7,6 @@ import json
 import shutil
 import subprocess
 import sys
-from pathlib import Path
 
 from .runner import DEFAULT_TASK_YAML, REPO_ROOT, run_smoke
 from .task_adapter import load_and_bind_instrument
