@@ -453,3 +453,20 @@ Recorded by the session that owns `research/memory-saturation-factorial` (draft 
 - **Cost:** forcing corrections in is cheap at the moment of writing but damages later generalisation, because the write lands in slots shared with same-type entities. The write is already as local as the addressing allows (sparse reads), so a narrower write cannot help. A different place to write, such as a private slot, might.
 - **Side finding:** the inherited default (200 steps at 1e-3) under-trains this memory. Comparisons within each test are unaffected, because all arms of a test shared the budget.
 - **Limits:** the correction pass is given an explicit edit label; type information is given, not learned; value table, frozen addresses, synthetic world. Not evidence about a language model.
+
+---
+
+## 2026-11-22 — Private-slot corrections (additive)
+
+Recorded by the session that owns `research/memory-saturation-factorial` (draft [PR #199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199)). Protocol `9df7ddf` committed before any confirmatory run; results `e265596`. Seeds 4101–4105. Two separate value tables (shared typed slots and private random slots, summed); corrections written alone after each phase.
+
+| Correction pass | Corrections after the pass | Later inference, new entities | Retention |
+|---|---|---|---|
+| private table, 200 steps | 0.029 | 0.735 | 0.820 |
+| private table, 2,000 steps | 0.891 | 0.714 | 0.881 |
+| both tables, 2,000 steps | 0.998 | 0.659 | 0.874 |
+
+- P1–P4 held on all five seeds. A correction written to a private slot with a larger budget takes, costs 0.02 of later inference instead of 0.08, and disturbs nothing at writing.
+- With the previous section, this closes the line on the typed fixed-address memory in this world. Shared slots carry generalisation and resist corrections. Corrections need a larger relative budget. Written into shared slots they cost later generalisation; written into private slots they mostly do not.
+- **Status: demonstrated in this synthetic memory only.** The edit label is given to the learner, and the private table is per-fact storage (an augmented-memory result, not native model knowledge). Type information is given, not learned. Not evidence about a language model.
+- **Open, not started:** whether a learner can make this choice itself without the edit label. `INVESTIGATION.md`, Question 8, is the existing evidence there: a detector with no oracle recovered about a third of the oracle's gain.
