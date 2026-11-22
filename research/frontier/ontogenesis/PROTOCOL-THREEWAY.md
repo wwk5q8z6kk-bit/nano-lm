@@ -74,3 +74,39 @@ Development seed 1; registered seeds 7301–7305 (new; five, so both sessions us
 1. Should `private` use τ = 0.1 or the cautious 0.2? Proposed: 0.1 as primary, 0.2 as a sensitivity row.
 2. Is "seen twice" the right noise/exception rule for this memory, or should the private path also require the confidence gate?
 3. Should the shared-table revision for old group members use the 2,000-step budget the memory session found necessary for corrections? It is a write against accumulated neighbour mass, which is the budget limit it found. Proposed: yes.
+
+## Development check (seed 1 only) and the settings it fixed
+
+1. **As first written, the change detector collapsed.** Its signature is the memory's own answers. Early on, this memory has barely learned the rule, so in 12 phases it flagged 638 groups, 637 of them false. Each triggered a 2,000-step shared write, which drove stable inference to 18%, at 33 minutes per 12 phases. With no routing, the memory itself learned fine (99.7% acquisition).
+2. **Fixes:**
+   - warm-up of 3 phases;
+   - revision of only the changed relation, for at most 64 older members (typed addresses mean members of a type share slots);
+   - a confidence gate.
+3. **The gate's form came from the memory session's measured confidence scale** for this memory: median top probability 0.034 at phase 1 and 0.17 at phase 39, with right and wrong answers overlapping. On its advice, only the older members' answer on the changed relation is gated; the signature is not.
+
+   | Setting (seed 1, 40 phases) | Old entities revised | Exceptions kept | Noise resisted | Stable rule | Flags / false | Missed |
+   |---|---|---|---|---|---|---|
+   | none (reference) | 21% | 31% | 93% | 83% | — | — |
+   | oracle (reference) | 99.9% | 99.7% | 91% | 68% | — | — |
+   | signature gated, 0.2 | 25% | 97% | 93% | 78% | 2 / 0 | 11 |
+   | older members only, 0.08 | 72% | 73% | 80% | 69% | 146 / 121 | 1 |
+   | **older members only, 0.12 (chosen)** | **76%** | **84%** | **91%** | **71%** | **72 / 50** | **1** |
+
+   Chosen by revision, with noise held within 0.03 of none. The setting is tuned on seed 1 and declared as such.
+
+## Predictions (registered seeds 7301–7305; informed by seed 1, so a replication)
+
+A prediction holds when its bound holds on the mean over the five seeds. The protocol's 4-of-5-seeds rule is reported beside each.
+
+- Z1 **Routing revises rule changes:** threeway revise_old at least 0.30 above none.
+- Z2 **Private routing alone holds old rules:** threeway revise_old at least 0.30 above private (τ = 0.1).
+- Z3 **Exceptions are kept:** threeway exception_kept at least 0.30 above none.
+- Z4 **Order matters:** threeway (change detector first) beats threeway_privfirst on revise_old by at least 0.15.
+- Z5 **The exemption costs exceptions:** among exceptions inside falsely flagged groups, the fraction kept is at least 0.20 below threeway's overall exception_kept.
+- Z6 **False alarms cost the rule where they land:** in threeway, stable-rule accuracy on (type, relation) pairs hit by a false alarm is at least 0.10 below its accuracy on other stable pairs.
+- Z7 **Which facts go private matters for exceptions:** threeway_random exception_kept at least 0.20 below threeway.
+- Z8 **The revision budget matters:** threeway_rev200 revise_old at least 0.10 below threeway.
+
+**Reading.** If Z1–Z4 hold, one label-free router handles all three kinds of surprise in this world, and the order of its detectors is what makes change revision possible. If Z5 and Z6 hold as well, the router's remaining cost is its false alarms, in exceptions and in the rule where they land. Calibrating that trade-off, not the router's structure, is then the open problem.
+
+**Limit, stated with the result:** typed addresses give this memory the types for free (see the review section).
