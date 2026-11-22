@@ -28,6 +28,7 @@ from nanoscribe.encounter import (
     UnresolvedItem,
     apply_normalization,
     assemble_source,
+    normalize_value,
 )
 
 TRANSFORM = "strip_articles_nfkc"
@@ -691,6 +692,74 @@ def test_clinician_evidence_is_allowed() -> None:
     span = rec.span("ev-assess")
     assert span.speaker is Speaker.CLINICIAN
     assert source.text[span.start : span.end] == "cervical strain"
+
+
+
+
+def test_normalize_value() -> None:
+    # Unicode NFKC normalization and casefolding
+    assert normalize_value("ﬁsh") == "fish"
+
+    # Whitespace collapsing and surrounding punctuation removal
+    assert normalize_value("  The    Quick.,  Brown   ") == "quick., brown"
+    assert normalize_value("  A   \t   Patient.  ") == "patient"
+    assert normalize_value("!!??..") == ""
+    assert normalize_value("  ") == ""
+
+    # Article stripping
+    assert normalize_value("The patient") == "patient"
+    assert normalize_value("a apple") == "apple"
+    assert normalize_value("an apple") == "apple"
+    assert normalize_value("theology") == "theology"
+    assert normalize_value("the     theology") == "theology"
+
+    # Punctuation removal combined with article stripping
+    assert normalize_value(".,the ,.,. quick brown;") == "quick brown"
+    for article in ("a.", "An!", "the.,;"):
+        assert normalize_value(article) == ""
+
+
+def test_normalize_value_retains_letter_labels_and_decimal_points() -> None:
+    for raw in ("A", "a", "Ａ", "ａ", " A "):
+        assert apply_normalization(TRANSFORM, raw) == "a"
+    assert normalize_value("blood group A") == "blood group a"
+    assert normalize_value("vitamin A") == "vitamin a"
+    for raw in ("The", "AN", "'the'", "A.", "a.", "Ａ．"):
+        assert normalize_value(raw) == ""
+    assert normalize_value("the '.5/10.'") == ".5/10"
+    assert normalize_value("Ａ .０５/１０.") == ".05/10"
+
+
+def test_article_and_letter_evidence_in_record_and_evaluator() -> None:
+    from nanoscribe.evaluate import SupportRelation, _mechanical_support
+
+    for raw, text, expected in (
+        ("A", "A", SupportRelation.DIRECT_EXACT),
+        ("a", "a", SupportRelation.DIRECT_EXACT),
+        ("a", "blood group A", SupportRelation.NORMALIZED),
+        ("A", "vitamin A", SupportRelation.DIRECT_EXACT),
+        ("Ａ", "vitamin A", SupportRelation.NORMALIZED),
+        ("a", "pain", None),
+        ("A", "AB", None),
+        ("the", "theology", None),
+        ("An!", "An!", None),
+        ("the.,;", "the.,; theology", None),
+        ("the.,;", "theology", None),
+        (".05/10", "rated .05/10", SupportRelation.DIRECT_EXACT),
+        ("ﬁsh", "fish soup", SupportRelation.NORMALIZED),
+    ):
+        source = assemble_source("src-label", ((Speaker.PATIENT, text),))
+        span = _span(source, 0, text, "ev-label")
+        atom = _atom(raw_value=raw, evidence_ids=(span.evidence_id,))
+
+        def record():
+            return EncounterRecord(encounter_id="enc-label", sources=(source,), evidence=(span,), atoms=(atom,))
+
+        assert _mechanical_support(raw, (span,)) is expected, (raw, text)
+        if expected is None:
+            expect("value_not_grounded", record)
+        else:
+            record().validate()
 
 
 if __name__ == "__main__":
