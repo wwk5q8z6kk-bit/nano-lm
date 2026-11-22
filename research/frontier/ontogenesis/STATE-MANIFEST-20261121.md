@@ -30,7 +30,7 @@ Squash merges did not carry this work to `origin`: for 69 of the 76 branches, fi
 
 ## What was preserved
 
-Nothing was pushed, because the repository is public and publishing unreviewed branches is the owner's decision. Local copies were made on the external volume, in one dated directory:
+Nothing was pushed to this public repository. After the owner's go-ahead ("do all necessary"), the local branches were pushed to a separate **private** repository, `nano-lm-archive`, after a secrets scan of the local-only history found only hashes, names, run labels and one test-fixture dummy. That covers commits and code, not the git-ignored checkpoints below, which GitHub cannot hold. Local copies were also made on the external volume, in one dated directory:
 
 | Copy | Contents | Check |
 |---|---|---|
@@ -110,7 +110,7 @@ Git-ignored files that are not caches or virtual environments total about 13 GB 
 
 ## What remains for G00
 
-1. Owner decision: whether the 76 branches with local-only commits may be pushed to the public repository, or should stay as the local bundle.
+1. The git-ignored checkpoints (about 13 GB) have no off-site copy. A private cloud bucket was proposed; creating it was refused by the session's permission check and needs the owner's approval.
 2. The eight worktrees with uncommitted files need a commit by whoever is working in them. Largest: `nanolm-lab` (44 files), `nanolm-master-cycle1` (12), `nanolm-holonomy` (10).
 3. The retirement tool counted 21 worktrees against a cap of 12 and found none removable: each is unmerged, has uncommitted files, or holds git-ignored data.
 4. Nobody has yet decided, branch by branch, which of the 69 branches with local-only content is live research, which is superseded, and which should be merged or archived.
