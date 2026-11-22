@@ -33,16 +33,32 @@ No curve rises with experience: at 0, 2, 4, 8, 16 and 24 families every arm is b
 - T6 (transfer grows with experience): **failed**; there was nothing to grow.
 - T7 (nothing transfers to never-used primitives): **held**; no arm above 8.3%.
 
-Under the reading written before the run, the T4 branch does not apply either: not even the menu transferred. Handing over the structure was not sufficient; the learned tables are not the primitives.
+Under the reading written before the run, the T4 branch does not apply either: not even the menu transferred. Handing over the structure was not sufficient. The menu's learned tables are not the primitives (measured in the positive control below).
 
 ## Instrument check (post hoc)
 
 Because every arm is at guessing level, the probe was checked after the results were read (`forward_transfer_oracle.py`): the menu's tables were set by hand to the true primitives and the registered probe applied unchanged. It scored 25–62% at 2 examples, 53–88% at 8 and 88–100% at 16 on new combinations, and stayed at guessing level on never-used primitives. So the probe detects transfer when the parts exist, and the null result for the trained arms is a property of what they learned. It also shows the probe's own adaptation step is lossy: with perfect primitives it reaches 72% at 8 examples, so T5's 90% bound could not have been met by any arm. That bound was mis-set.
 
+## Positive control (post hoc)
+
+The hand-set menu validates the probe only for the menu architecture. For dense and loop, a guessing-level score could also mean that adapting a zero task vector simply fails. `forward_transfer_control.py` (written after the results were read) retrains each replay arm as registered and applies the unchanged probe to 8 families the arm **was trained on**, where a suitable task vector certainly exists. It also logs accuracy on the examples that were shown. Raw file: `results/forward_transfer/control.json`. Mean of three seeds.
+
+| Arm (with replay) | Trained family, unshown inputs, 8 / 16 examples | New combination, unshown inputs, 8 / 16 | Trained family, the shown examples, 8 | New combination, the shown examples, 8 / 16 |
+|---|---|---|---|---|
+| Dense | 41% / 66% | 3% / 3% | 89% | 34% / 16% |
+| Loop | 42% / 64% | 4% / 4% | 86% | 37% / 13% |
+| Menu | 24% / 38% | 4% / 4% | 67% | 55% / 32% |
+
+- For dense and loop the probe does find a family the network already holds, well above guessing, so it can read these arms. It is lossy: 41% at 8 examples, not 100%.
+- On a new combination the task vector cannot even fit the examples it is shown, and the more examples, the worse the fit (16% and 13% of 16). No setting of the task vector makes these networks compute a new combination. That is direct evidence of no recombinable parts, and stronger than the guessing-level score alone.
+- Starting the menu's probe vector at random instead of zero changes nothing (4% on new combinations), so a dead start is not the explanation for the menu.
+- The menu's learned tables agree with their best-matching true primitive on 4–26% of inputs (guessing is 4%). The tables are not the primitives.
+- The probe is weak for the menu even on trained families (24% at 8 examples), so the menu's result is less well supported than the dense and loop results.
+
 ## What this does and does not establish
 
 - **Observed:** fitting a set of compositions, even perfectly and with a matching architecture, did not yield parts that recombine. Fit and reuse came apart completely here.
-- **Likely cause, not tested:** a composition f_b(f_a(x)) can be split into two steps in many ways, and nothing in the training loss prefers the split that is shared across families. The menu fits each family with its own mixture of tables.
+- **Likely cause, partly tested:** a composition f_b(f_a(x)) can be split into two steps in many ways, and nothing in the training loss prefers the split that is shared across families. Consistent with this, the menu's tables do not match the primitives. Why dense and loop fail was not examined beyond the control above.
 - **Not established:** that forward transfer is impossible for these arms. No arm was trained with an objective or episode structure that rewards reuse (for example, meta-training on held-out combinations), and no learning-rate or adaptation search was done.
 - One synthetic world, three seeds, two-step compositions only. Nothing here is a language-model result.
 
