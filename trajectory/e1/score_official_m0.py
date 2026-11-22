@@ -44,6 +44,11 @@ OUT_CKPT = REPO / "checkpoints" / "e1_official_m0"
 OUT_CKPT.mkdir(parents=True, exist_ok=True)
 TRAJ = REPO / "trajectory"
 
+RE = re.compile(
+    r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$"
+)
+
+
 
 def device():
     if torch.backends.mps.is_available():
@@ -323,10 +328,6 @@ def load_ownstack_lora_predictor(ckpt_path: Path):
             ids.append(nxt)
         return ids
 
-    RE = re.compile(
-        r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$"
-    )
-
     def predict(item: dict, source_id: str) -> ItemPred:
         t0 = time.perf_counter()
         content = item["convo"][0]["content"]
@@ -491,10 +492,6 @@ def load_pythia_predictor(adapter_dir: Path):
     base = AutoModelForCausalLM.from_pretrained(MODEL, torch_dtype=torch.float32)
     model = PeftModel.from_pretrained(base, str(adapter_dir))
     model.to(dev).eval()
-    RE = re.compile(
-        r"^CC: (.+?) \| DUR: (.+?) \| SEV: (.+?) \| MED: (.+?) \| ALG: (.+?)$"
-    )
-
     @torch.no_grad()
     def predict(item: dict, source_id: str) -> ItemPred:
         t0 = time.perf_counter()
