@@ -377,3 +377,43 @@ Second protocol on branch `research/memory-saturation-factorial` (draft [PR #199
 - Seen after the fact, so a hypothesis: effective slot count tracks late acquisition across seeds and doses. Exploratory seed 3001 has 526 effective slots at M = 0 against 212–313 for the five confirmatory seeds, which is why the one-seed reset figure of 86.1% was high.
 - Correction to a figure quoted in several summaries: "two queries with the same relation share 0.60 of their 8 slots" in `memory_saturation.py` is a count of 0.6 slots (0.076 of the 8), not 60%. Pairwise overlap is small; the concentration is in the effective slot count.
 - Limits: arbitrary facts that an exact lookup table solves, so this cannot show what random replacement costs a learner that generalises through its addresses (`cab_s.py` is the place to test that); thresholds set after the factorial; mixed addresses at M > 0 are a manipulation of concentration, not an isolation of it; not evidence about a language model.
+
+---
+
+## 2026-11-22 — Rule-world generalisation cost, other sessions' gates, and coordination (additive)
+
+Recorded 2026-11-22 by the session that owns `research/memory-saturation-factorial`. Everything above is unchanged. No decision ID is assigned here.
+
+### Spreading memory reads costs generalisation when addresses carry structure
+
+Third protocol on draft [PR #199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199): protocol `0764fb6` committed before any confirmatory run, results `6333bcf`. `cab.py`'s fixed-address memory builds its addresses from frozen random entity vectors, so it cannot generalise in `cab_s.py`'s rule world at all, and a test there would have been empty. The probe gives the addresses the hidden type (prototype plus noise). The type is given, not learned. Seeds 4101–4105; Adam reset each phase in every arm.
+
+| Arm | Acquisition | Inference on unseen relations | Corrections applied |
+|---|---|---|---|
+| typed, M = 0 | 0.836 | 0.737 | 0.034 |
+| typed, M = 4 | 0.858 | 0.496 | 0.085 |
+| typed, M = 6 | 0.959 | 0.246 | 0.244 |
+| typed, M = 8 | 1.000 | 0.042 | 0.481 |
+| random, M = 0 | 0.622 | 0.106 | 0.196 |
+
+- H1–H3 held. H4, the question the test existed for, **failed** on all five seeds: no dose keeps acquisition at least 0.95 with at least 80% of inference. The best was M = 6, which keeps a third.
+- The earlier arbitrary-fact result ("spreading half of each query's reads restores acquisition") is **not a free remedy** once addresses carry structure. For a fixed-address memory, shared addresses generalise but block corrections (0.03 applied); private ones acquire and correct but do not generalise.
+- Raised, not answered: whether separating a shared generalising read from a private exact read, with a learned choice between them, keeps both. `INVESTIGATION.md`, Question 8 (write-time routing), is the existing work on that choice.
+
+### Gates reported by another session (nano-lm-d5), recorded here at its request
+
+Not rerun by this session; figures are as that session reported them.
+
+| Gate | Pull request | Reported result |
+|---|---|---|
+| G07 forward transfer, pilot | [#198](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/198) | Multi-task or sequential fitting gave no transfer to new combinations of known primitives for dense, loop or menu learners: 2.8–4.4% against 4.3% chance, three seeds. The positive control passed. |
+| G07 follow-up | [#200](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/200) | Few-shot adaptation training recovered trained families from 2–8 examples at 72–100%, but new combinations stayed at chance (4.4–6.4%). Disproven for these two training signals; training on held-out combinations remains open. |
+| G00 local-work inventory | [#197](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/197) | 386 commits on 76 local branches were on no origin branch. All were bundled to the external drive and are being mirrored to a private archive repository. |
+
+### Coordination among the Claude sessions on this machine (2026-11-22)
+
+- `research/ontogenesis-phase1`, `INVESTIGATION.md`, `tpu/`, corpus v2 and the benchmark harness belong to one session, which will also reconcile this file's conflict with `research/ontogenesis-phase1`, keeping every section word for word.
+- G00, G06 (in progress) and G07 belong to a second session, on its own branches.
+- The memory and addressing line (G03 family) belongs to a third session, on `research/memory-saturation-factorial`.
+- All three only add new files on their own branches and append to this file. At most two local CPU jobs per session; heavy local runs go one at a time.
+- The `architecture/` package and the V3–V5 sections on this branch were not written by any of these sessions. They are likely from an external assistant that edits this branch on a schedule, which cannot see this coordination. Nothing above its sections has been changed by these sessions.
