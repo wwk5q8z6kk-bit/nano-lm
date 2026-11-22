@@ -1,0 +1,121 @@
+{
+ "predictions": {
+  "Y1": {
+   "held": true,
+   "detect": [
+    0.8634,
+    0.9346,
+    0.8096
+   ],
+   "seen2": [
+    0.4754,
+    0.5757,
+    0.6963
+   ]
+  },
+  "Y2": {
+   "held": true,
+   "detect": [
+    0.8431,
+    0.9333,
+    0.8354
+   ]
+  },
+  "Y3": {
+   "held": true,
+   "infer_stable": [
+    0.9389,
+    0.9349,
+    0.9623
+   ],
+   "exception_kept": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "noise_resisted": [
+    0.9726,
+    0.9635,
+    0.9775
+   ],
+   "seen2_infer_stable": [
+    0.9525,
+    0.9557,
+    0.9674
+   ]
+  },
+  "Y4": {
+   "held": true,
+   "oracle_dec": [
+    0.9158,
+    0.9703,
+    0.8995
+   ],
+   "detect": [
+    0.8634,
+    0.9346,
+    0.8096
+   ]
+  },
+  "Y5": {
+   "held": false,
+   "missed": [
+    3,
+    2,
+    2
+   ]
+  }
+ },
+ "table": {
+  "seen2": {
+   "acquire_now": 1.0,
+   "infer_stable": 0.9585,
+   "revise_next5": 0.7414,
+   "revise_next10": 0.7745,
+   "revise_old": 0.5825,
+   "exception_kept": 1.0,
+   "noise_resisted": 0.9772,
+   "store_size": 363.3333
+  },
+  "detect": {
+   "acquire_now": 0.999,
+   "infer_stable": 0.9454,
+   "revise_next5": 0.8706,
+   "revise_next10": 0.9002,
+   "revise_old": 0.8692,
+   "exception_kept": 1.0,
+   "noise_resisted": 0.9712,
+   "store_size": 363.3333,
+   "flags": [
+    65,
+    88,
+    41
+   ],
+   "false_alarms": [
+    44,
+    70,
+    29
+   ],
+   "missed": [
+    3,
+    2,
+    2
+   ],
+   "delay_mean": [
+    2.56,
+    1.0,
+    2.2
+   ]
+  },
+  "oracle_dec": {
+   "acquire_now": 1.0,
+   "infer_stable": 0.9945,
+   "revise_next5": 0.9387,
+   "revise_next10": 0.9296,
+   "revise_old": 0.9285,
+   "exception_kept": 1.0,
+   "noise_resisted": 0.994,
+   "store_size": 373.3333
+  }
+ }
+}
