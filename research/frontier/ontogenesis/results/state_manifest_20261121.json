@@ -1,0 +1,831 @@
+{
+ "generated_utc": "2026-11-22T01:15Z",
+ "origin_master": "3e36bf803a477f885a47614ca7f9d02429f85de4",
+ "bundle": {
+  "file": "nano-lm-all-local-refs.bundle",
+  "sha256": "523440306a4880b2a2695895658f77580eb2c6eb1754ddeb13e09c6d647981a6",
+  "bytes": 1682829871,
+  "heads": 134,
+  "git_bundle_verify": "complete history",
+  "local_branches": 113
+ },
+ "totals": {
+  "worktrees": 22,
+  "uncommitted_files": 85,
+  "uncommitted_bytes": 1322183,
+  "local_branches": 112,
+  "local_branches_with_local_only_commits": 76,
+  "unique_local_only_commits": 386,
+  "worktrees_with_local_only_commits": 13
+ },
+ "worktrees": [
+  {
+   "worktree": "<repo>",
+   "branch": "codex/p1-h7-scribing-path",
+   "tip": "aeb4ffed72b6c0514eb6bfbe7e72b02422199555",
+   "tip_date": "2026-11-19T20:07:40-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 5,
+   "behind_master": 136,
+   "ahead_master": 5,
+   "dirty": []
+  },
+  {
+   "worktree": "<openresearch>/chat_01175017-6d0b-43ed-85d3-6710d1e5d62a",
+   "branch": "work/frontier-focus",
+   "tip": "becd28c01f4f95934ef1b5771f11f2f2c9bf727c",
+   "tip_date": "2026-11-19T07:26:38-05:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/work/frontier-focus"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 168,
+   "ahead_master": 50,
+   "dirty": []
+  },
+  {
+   "worktree": "<openresearch>/chat_21a46e30-6ab7-4d30-a5be-6f432795fe7c",
+   "branch": "work/frontier-opus",
+   "tip": "a35cb4967ad7a8c2db197900a910b8bc908d4ac6",
+   "tip_date": "2026-11-19T07:58:08-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 38,
+   "behind_master": 168,
+   "ahead_master": 54,
+   "dirty": []
+  },
+  {
+   "worktree": "<openresearch>/chat_2e45d4b3-7367-4db8-a43d-16df9a70914f",
+   "branch": "work/question-before-architecture",
+   "tip": "6cc1f74e191bfa245200f12dfa752b7db564861f",
+   "tip_date": "2026-11-19T07:27:42-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 5,
+   "behind_master": 168,
+   "ahead_master": 54,
+   "dirty": []
+  },
+  {
+   "worktree": "<openresearch>/chat_6976f6c7-bb29-48da-9a3b-f70b237eeb3b",
+   "branch": "frontier/v1_2-emitter",
+   "tip": "b9155bc5772b86c2c3ece8792d629d15f29ab7c5",
+   "tip_date": "2026-11-20T10:43:16-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 34,
+   "behind_master": 151,
+   "ahead_master": 35,
+   "dirty": []
+  },
+  {
+   "worktree": "<openresearch>/chat_81a40cb0-f1e0-4342-a90f-6ce53a818345",
+   "branch": "HEAD",
+   "tip": "dc3b31027d466edf473511ecf27bf73bc0feb53e",
+   "tip_date": "2026-08-24T12:31:55-04:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/frontier/p1-qwen-prompt-v0",
+    "origin/orx/e-delimit-arm-a-free-form-replication-on-the-del",
+    "origin/orx/e-delimit-arm-b-menu-the-discriminator"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 168,
+   "ahead_master": 1,
+   "dirty": []
+  },
+  {
+   "worktree": "<openresearch>/chat_91365bcb-394b-43e1-97c8-d8c75676367d",
+   "branch": "HEAD",
+   "tip": "a43944afe225e57e48fefec97fe842f6260350ca",
+   "tip_date": "2026-11-19T08:20:36-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 32,
+   "behind_master": 151,
+   "ahead_master": 33,
+   "dirty": []
+  },
+  {
+   "worktree": "<openresearch>/chat_a2d145c2-5ea6-46b9-8dba-b8e8044d28a2",
+   "branch": "HEAD",
+   "tip": "dc3b31027d466edf473511ecf27bf73bc0feb53e",
+   "tip_date": "2026-08-24T12:31:55-04:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/frontier/p1-qwen-prompt-v0",
+    "origin/orx/e-delimit-arm-a-free-form-replication-on-the-del",
+    "origin/orx/e-delimit-arm-b-menu-the-discriminator"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 168,
+   "ahead_master": 1,
+   "dirty": [
+    {
+     "status": " M",
+     "path": "docs/README.md",
+     "bytes": 3448,
+     "sha256": "4de4c6ebe1aa03a63d0de8acde1e7251e4e68f162a856b6a0a8a2e7a82a1c881"
+    },
+    {
+     "status": " M",
+     "path": "docs/SYSTEM_ARCHITECTURE.md",
+     "bytes": 7776,
+     "sha256": "7c4de8a5f32c34d8fc9968c3fa0f84c0156fd06f044e06087d1430e04ec43217"
+    },
+    {
+     "status": " M",
+     "path": "docs/domains/medical/README.md",
+     "bytes": 1220,
+     "sha256": "83951c409bf70cd811d5b816cc2fb1886b553d259830fb6e5246f0f0472e966d"
+    },
+    {
+     "status": " M",
+     "path": "docs/domains/medical/SUMMARIZATION_AND_CHARTING.md",
+     "bytes": 3407,
+     "sha256": "1d9be0cb51de09aac3c4d633cd8ee7c9d77e9288a3a6f9106b57aaa6b1c6a80b"
+    },
+    {
+     "status": " M",
+     "path": "scripts/check_docs_integrity.py",
+     "bytes": 9781,
+     "sha256": "b1ea3611263226944cc6c7f46b98949c3dca5ada572b7716a17a0f745fffe233"
+    },
+    {
+     "status": "??",
+     "path": "docs/domains/medical/STANDARDS_AND_INTEROP.md",
+     "bytes": 14657,
+     "sha256": "f9f3a15e1e8c998d618155f80632b5a16c75baa2c1bd3c3c2fce28c97e06e506"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/foundation-mech",
+   "branch": "research/x03-x05-mechanism-lab",
+   "tip": "519430b6409a2288992625fb3592653170523620",
+   "tip_date": "2026-11-19T20:50:33-05:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/research/x03-x05-mechanism-lab"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 151,
+   "ahead_master": 2,
+   "dirty": []
+  },
+  {
+   "worktree": "<repo>/.worktrees/memory-boundary-v2",
+   "branch": "research/memory-boundary-v2",
+   "tip": "e5c12fc9e51e24d2b87d4030de8eca8e6cccf136",
+   "tip_date": "2026-11-18T16:31:37-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 3,
+   "behind_master": 151,
+   "ahead_master": 3,
+   "dirty": []
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm",
+   "branch": "nanolm/foundation-v1",
+   "tip": "5f98cff94354299ed0049c78b40a6f75db8681de",
+   "tip_date": "2026-11-17T14:16:07-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 2,
+   "behind_master": 151,
+   "ahead_master": 2,
+   "dirty": []
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-discovery",
+   "branch": "nanolm/architecture-invention-v1",
+   "tip": "1e6848b92a1fe77cb9530b67fa36dc48f3eccdec",
+   "tip_date": "2026-11-18T15:26:40-05:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/nanolm/architecture-invention-v1"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 151,
+   "ahead_master": 2,
+   "dirty": []
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-holonomy",
+   "branch": "nanolm/holonomic-discovery-v1",
+   "tip": "205df113cb6d6c744d689d7a41281decbd7563c1",
+   "tip_date": "2026-11-19T10:18:33-05:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/nanolm/holonomic-discovery-v1"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 151,
+   "ahead_master": 5,
+   "dirty": [
+    {
+     "status": " M",
+     "path": "nanolm_holonomy/architecture.py",
+     "bytes": 46241,
+     "sha256": "bc0f16bb08693229d8bfdcc6a5484afae29d6d12fa0adece9b77e8d2e42af54e"
+    },
+    {
+     "status": " M",
+     "path": "nanolm_holonomy/compute_planner.py",
+     "bytes": 17904,
+     "sha256": "362757de4778047512c077c538af3a868eedd50151c50d58040569f3ea7e0142"
+    },
+    {
+     "status": " M",
+     "path": "nanolm_holonomy/omega_system.py",
+     "bytes": 35522,
+     "sha256": "0db09091c44262ec9bbe4c30e6a9e64b6f7b54af9a6d6deeebcfd7c21365c336"
+    },
+    {
+     "status": "??",
+     "path": "artifacts/nanolm_fp_v3/exp_fp1_microcosm.json",
+     "bytes": 11895,
+     "sha256": "cd813e52c941654d6fd6a2bbdee9d9516bfd3800783243f1231e241cfb820b3f"
+    },
+    {
+     "status": "??",
+     "path": "artifacts/nanolm_fp_v3/preflight_plan.json",
+     "bytes": 17487,
+     "sha256": "4639c623b26a4efe388257b7d9789d8535e310f088360a23397804ee3dc0f108"
+    },
+    {
+     "status": "??",
+     "path": "nanolm_holonomy/cycle4_first_principles.py",
+     "bytes": 51195,
+     "sha256": "df0452b1c63ea6c83590b01a4041cec1b2499326352c62d9184142527cbc0bee"
+    },
+    {
+     "status": "??",
+     "path": "nanolm_holonomy/first_principles.py",
+     "bytes": 44603,
+     "sha256": "a3171a78dfb6b5b1dc50009416fcd64dbd9ae1408d83bae1965d725b0186d76a"
+    },
+    {
+     "status": "??",
+     "path": "nanolm_holonomy/fp_benchmark.py",
+     "bytes": 27769,
+     "sha256": "07796eac206175c0ac97608fbaf2b399163f8f094a3c6687400fc6456a59b39e"
+    },
+    {
+     "status": "??",
+     "path": "nanolm_holonomy/tests/test_first_principles.py",
+     "bytes": 10626,
+     "sha256": "927f274d3666bacec03897d41fc0dae642dbb6bb08a27a8ec0b734a16f3728be"
+    },
+    {
+     "status": "??",
+     "path": "scripts/run_fp_v3_kaggle.py",
+     "bytes": 8875,
+     "sha256": "4e0bbea7d64518c364270b803df6dc5c2a490e19c474b71e2a248172cce49131"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-lab",
+   "branch": "nanolm/discovery-lab-v1",
+   "tip": "c8478d04189a26cdb65056edd9bffa895bc569e3",
+   "tip_date": "2026-11-18T09:19:47-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 12,
+   "behind_master": 151,
+   "ahead_master": 12,
+   "dirty": [
+    {
+     "status": " M",
+     "path": "lab/arch/analyze.py",
+     "bytes": 6068,
+     "sha256": "313e7857a60f7ddbe8326dba10029b2133052d01dd5e7061bc9aabc02af35f24"
+    },
+    {
+     "status": " M",
+     "path": "lab/arch/train_arch04.py",
+     "bytes": 9558,
+     "sha256": "14cc54d1bdf142d785042aa57ea7080234abb4f1d2351b6d6989d289a53f39af"
+    },
+    {
+     "status": " M",
+     "path": "lab/arch/train_nextgen.py",
+     "bytes": 10906,
+     "sha256": "36336f380db57ad435c42c461284e81dbfd6280dcb8f9b2e0dbcd6939273cdf7"
+    },
+    {
+     "status": " M",
+     "path": "lab/cognition/models.py",
+     "bytes": 20253,
+     "sha256": "4503b562e82208b8ecfc78505edec7e7f0aa2437f1c56375df3cb52161d4e772"
+    },
+    {
+     "status": " M",
+     "path": "lab/cognition/swe_env.py",
+     "bytes": 11658,
+     "sha256": "63399d0425fe69a1220b7acc3dee2472cb388a2660732f703d21c3afe5c765b3"
+    },
+    {
+     "status": " M",
+     "path": "lab/cognition/test_cognition.py",
+     "bytes": 3160,
+     "sha256": "1773a3249db566d655c4bdf2d7b2a8eb12927d52a5274ba5ed97d1e0d7c44705"
+    },
+    {
+     "status": " M",
+     "path": "lab/cognition/train_cog01.py",
+     "bytes": 17563,
+     "sha256": "19438ef91913a29d5933265d52070616a2f65bd03fdd3d0dcc270175b5d8b27a"
+    },
+    {
+     "status": " M",
+     "path": "lab/cognition/train_cog02.py",
+     "bytes": 5391,
+     "sha256": "3917e50e4307a2dd224df4b063e5068b883ffcba36c534bcef2af614d40a5d8a"
+    },
+    {
+     "status": " M",
+     "path": "lab/system/controller.py",
+     "bytes": 27049,
+     "sha256": "84c1795485eb32a5d5bebaf85d0b4f2cba2b662fa4e063acbcebe4642ec19282"
+    },
+    {
+     "status": " M",
+     "path": "lab/system/memory_engine.py",
+     "bytes": 7816,
+     "sha256": "2d564aa31dc86df29aea6359729cace04e3839ef9770400896126b8f11149a61"
+    },
+    {
+     "status": " M",
+     "path": "lab/system/test_phase4.py",
+     "bytes": 9575,
+     "sha256": "ac19fccedc9d4ca1be3d45dffd6db3ea148af441db92883c7921f484e2736dd7"
+    },
+    {
+     "status": " M",
+     "path": "lab/trackb/phase3_innovation.py",
+     "bytes": 57254,
+     "sha256": "d8744e08aece58b68d8d993b0de0eb565ca7af7db41807ea970ad8f676994790"
+    },
+    {
+     "status": "??",
+     "path": "lab/arch/scale03_pod.sh",
+     "bytes": 3677,
+     "sha256": "418c85b12be476ad8e215df87d492228bc686664517f211b55470ab5e5ab3fe8"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/gpt_oss_120b_v5/competitions_1_2_v5.json",
+     "bytes": 1686,
+     "sha256": "6b00d49aa25122d9c4f90c540531a634e1f2757cb8556cb529ec9f76da7b468b"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/gpt_oss_120b_v5/run.log",
+     "bytes": 51816,
+     "sha256": "3d47bbc6c63e8585d171938e7583d9527dd8722eea8a04dfa5364b4da5302dfc"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b8_3b_v5/competitions_1_2_v5.json",
+     "bytes": 1704,
+     "sha256": "db65157443c53cce67f48579af839f04e39a2565c47a5801bf307e9d7e987502"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b8_3b_v5/run.log",
+     "bytes": 26699,
+     "sha256": "de7ca1769d0f7e126ce298c189e1a175c12181597097c26325634724e0277920"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/code.log",
+     "bytes": 2955,
+     "sha256": "253e97b8146693291b3370b810d897bdd6d8670f65518b0468759743f07d3a8c"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/code/__workspace__models__nanolm_b9_2b/results_2026-11-18T16-54-30.944457.json",
+     "bytes": 15388,
+     "sha256": "736f38f64398cac2e1e239ec85ca1c14fc6fa6401b4d2deeed745ae987fa1a19"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/instr.log",
+     "bytes": 3038,
+     "sha256": "2d833788e7842315525e5adbca214fc628fb5349a2925ced4ded0f1f5a4608da"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/instr/__workspace__models__nanolm_b9_2b/results_2026-11-18T16-53-18.266602.json",
+     "bytes": 16067,
+     "sha256": "36809017d964b789a1b079f937f23725d526ee3fd63d894b1e1d98b84340eee3"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/math.log",
+     "bytes": 3148,
+     "sha256": "c76ac1a7ab45d71eab8090a4bdf331c12e20a8844d05b1bf35ea0aa0c516d3d9"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/math/__workspace__models__nanolm_b9_2b/results_2026-11-18T16-52-15.355586.json",
+     "bytes": 22319,
+     "sha256": "85c095e121387e27b81bb631ca20dd8ce69cefbdc7dc146eaaa503accb4af880"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/nanolm_training_manifest.json",
+     "bytes": 654,
+     "sha256": "41b130ad278ba92a919e73ef4d92d10ee3d56c55d37ea331b9a55a8fae2a9435"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/p8_t0.log",
+     "bytes": 21349,
+     "sha256": "ca8e49a3078aecea64fb0a98edd8dd7c5d60277dbe5ca2aa7eb42b0f9d83d4cc"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/p8_t1.log",
+     "bytes": 24049,
+     "sha256": "8a857312d72bb2d734dc72c2ea5e52809d7ba51ddc44df9ebbda318b87559365"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/pillars8_think0.json",
+     "bytes": 17670,
+     "sha256": "a96406cd8708d00070e2b3c07a2f74439b9a24dafb4eecef219dbfa7940481f9"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b/pillars8_think1.json",
+     "bytes": 17242,
+     "sha256": "b3715704fbcb832546fda646dbc0be6c0a55fc4dccf2f7c825e924c3ded6f9c4"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b_v5/competitions_1_2_v5.json",
+     "bytes": 1700,
+     "sha256": "9c017534b1591401953c8a4d5622cc7de79242d9f37834037873d5bef0e0a8cd"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/nanolm_b9_2b_v5/run.log",
+     "bytes": 24598,
+     "sha256": "1921ada8b73a7f9772f9fa6dfd510c3a69b1ada5c3441de5e80fb60c32525f85"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/phase6_master.log",
+     "bytes": 1596,
+     "sha256": "1e4330e915fee6c6d83865b5de3976b1acd79caf044f402d3bb2e7ab0c09f024"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/qwen3_1p7b_v5/competitions_1_2_v5.json",
+     "bytes": 1685,
+     "sha256": "46217e60f4abffa5f66e7441c5f9410ece2c4a5df29dc36605fe14bd421efbb6"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/qwen3_1p7b_v5/run.log",
+     "bytes": 27788,
+     "sha256": "4b6b17863b7db93e9e2b96871364374c80733ed6d6cbc5d2be9fd2fbb4871ab9"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/qwen3_32b_v5/competitions_1_2_v5.json",
+     "bytes": 1684,
+     "sha256": "ef97c090ad5b8de29733c6bf697edc3d3668270c6062596cdbd64170d48d9434"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/qwen3_32b_v5/run.log",
+     "bytes": 36333,
+     "sha256": "e1ef685076669281fb8b846c5b3421c0026e16e6ee0d7ddee5df2444f0efb855"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/qwen3_8b_v5/competitions_1_2_v5.json",
+     "bytes": 1682,
+     "sha256": "5f8b00e7509114a9dd802e518b0a4137a6acf44b044fec7ad796d69de4d17f23"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/qwen3_8b_v5/run.log",
+     "bytes": 30728,
+     "sha256": "f2b136ffafea6f23cc9c0be6638c541bdb5085e9c58ad43c6b445feae872489d"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/smollm3_3b_v5/competitions_1_2_v5.json",
+     "bytes": 1693,
+     "sha256": "48cd774fb7d7ac9dbdaf1aabfcd453cfd768b94c55f2745e1248cbdb0c757d4c"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/smollm3_3b_v5/run.log",
+     "bytes": 28445,
+     "sha256": "2b69bd0109b91f4a46cbdb0c4310a3db670b4796da82b6e82710ad7e85561ca7"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/step1_b9_2b.log",
+     "bytes": 4502,
+     "sha256": "bfd3fc3935ce27aadb0276728a286df7c44742198d715b901fe8f1779b5553d5"
+    },
+    {
+     "status": "??",
+     "path": "lab/baselines/results/phase6/step2_b8_3b.log",
+     "bytes": 3932,
+     "sha256": "809319b5ab6ececd500441216939bfe1d97558697dedcb819200776fefbfc6ab"
+    },
+    {
+     "status": "??",
+     "path": "lab/reports/lab_cog_04_hidden_hop_results.json",
+     "bytes": 20032,
+     "sha256": "cac5b2aed0f761720797ae1375225e180ec5712ded2fe5700754aa2417cd366e"
+    },
+    {
+     "status": "??",
+     "path": "lab/trackb/launch_phase6_pod.sh",
+     "bytes": 2750,
+     "sha256": "481818d15b5e3c56ba67f44bd58f6b279eede16e200a432a50e72292d8c84f6a"
+    },
+    {
+     "status": "??",
+     "path": "lab/trackb/run_phase6_h200.sh",
+     "bytes": 4310,
+     "sha256": "62bb17bcedd2e7486fe923e131418a18847075a88c66280f790fe20281667678"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-master-cycle1",
+   "branch": "research/nanolm-master-cycle1",
+   "tip": "6d069d4eed7001e4920b7cffefd55ea9f3b3d670",
+   "tip_date": "2026-11-19T19:59:33-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 2,
+   "behind_master": 151,
+   "ahead_master": 2,
+   "dirty": [
+    {
+     "status": "??",
+     "path": "artifacts/cycle3/HYBRID-COPY-UNIFIED-01.json",
+     "bytes": 13139,
+     "sha256": "5030464070dee2400a4c0f3172f7dc52f9ac75426a79af69c10e788f25ddc4b3"
+    },
+    {
+     "status": "??",
+     "path": "artifacts/cycle3/NANOSCRIBE-P1-SYNTHESIS-01.json",
+     "bytes": 31875,
+     "sha256": "ae0e8a1e27ba49624da1cf34534bcec86446675c54ef123f93dd9579eac0576b"
+    },
+    {
+     "status": "??",
+     "path": "artifacts/cycle3/PBA-03.json",
+     "bytes": 19947,
+     "sha256": "e2ffe42070ee9fda12e7434e5633c9e8007637af514b77eace52438af97f6200"
+    },
+    {
+     "status": "??",
+     "path": "artifacts/cycle3/TOOL-VOC-ROUTING-01.json",
+     "bytes": 15444,
+     "sha256": "44150f3032e23ca2f2bb579208197c5258180049dd28c3f8cb3cf17091e160c0"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/__init__.py",
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/exp_hybrid_copy_unified_01.py",
+     "bytes": 14769,
+     "sha256": "1a88dc019f50bc82c51ad3ea3944428110b731bd8e04a6edef3481991a2dca11"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/exp_nanoscribe_p1_synthesis_01.py",
+     "bytes": 28064,
+     "sha256": "f519b8a04b48ed16bb8fb9a84707a603e267d3e3830e6b86279c32389dda47f7"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/exp_pba_03_energy_binding.py",
+     "bytes": 15749,
+     "sha256": "d31f8cc9fa0e961a5d30aacca8b56b70ad01ae32a97eca5f068dc20b73f704a8"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/exp_tool_voc_routing_01.py",
+     "bytes": 19009,
+     "sha256": "ce2dbce5ec555d97e278b72cd11d7f79c9accd26c13277074b09681829bc02bb"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/tests/__init__.py",
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/tests/test_cycle3_verification.py",
+     "bytes": 4453,
+     "sha256": "7bf8132c26fb85f5a993bb22307f256e8738e0bd0e656a65a58b77c3f73ebb77"
+    },
+    {
+     "status": "??",
+     "path": "research/cycle3/verify_cycle3.py",
+     "bytes": 15994,
+     "sha256": "bda2a674a6149b2ec8827c416189204ad523d1d9abcedd8db667a89096a3a3de"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-paradigm",
+   "branch": "nanolm/autonomous-discovery-v1",
+   "tip": "3925748c9c6821675281a9a62e90c17757a3ed28",
+   "tip_date": "2026-11-18T13:21:49-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 5,
+   "behind_master": 151,
+   "ahead_master": 5,
+   "dirty": [
+    {
+     "status": " M",
+     "path": "MATHEMATICAL_FOUNDATIONS.md",
+     "bytes": 17501,
+     "sha256": "bbb5b61bcc85e5244a9ddabb6f563397a208ce36b83fdece46509e05175a4f38"
+    },
+    {
+     "status": " M",
+     "path": "nanolm/paradigm/householder_scan.py",
+     "bytes": 13964,
+     "sha256": "cbbfcc4cbeacf0c1395c68ea698c8e521f6c7aa68e0483d113b1563dca54d3a9"
+    },
+    {
+     "status": " M",
+     "path": "nanolm/paradigm/models.py",
+     "bytes": 39655,
+     "sha256": "3043673c55a3c701f77e2efc5abb9f2f019fc8e3690d15b0ab5a49a11f317342"
+    },
+    {
+     "status": " M",
+     "path": "nanolm/tests/test_paradigm_discovery.py",
+     "bytes": 10984,
+     "sha256": "bc267a10ffd4a0036a4f414a10ff1a74928dafd0540b2e95c696a11ef943c86e"
+    },
+    {
+     "status": " M",
+     "path": "scripts/nanolm/kaggle_paradigm_launcher.py",
+     "bytes": 5384,
+     "sha256": "cb477af397723fd4fd123bdd5c8d3ae42cf332798fcfa034c3b979edf8600d8b"
+    },
+    {
+     "status": "??",
+     "path": "scripts/nanolm/kaggle_ern_125m_cycle4_runner.py",
+     "bytes": 27475,
+     "sha256": "3840b85b90674f0e451686ef4142dcecf5e95dbbfa18295dd8bfa2157e7afbcf"
+    },
+    {
+     "status": "??",
+     "path": "scripts/nanolm/run_cycle4_gen5_validation.py",
+     "bytes": 9474,
+     "sha256": "b4c1361f1c2e808ccc577886371150d064b4b99c946b4e077f992459f7cf4f16"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-posttrain",
+   "branch": "nanolm/posttrain-v1",
+   "tip": "813cfabffa22ca6b5883ab2b4a7a425e4ca9057a",
+   "tip_date": "2026-11-17T14:17:11-05:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/nanolm/holonomic-discovery-v1",
+    "origin/nanolm/posttrain-v1"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 151,
+   "ahead_master": 2,
+   "dirty": [
+    {
+     "status": " M",
+     "path": "nanolm_posttrain/architecture.py",
+     "bytes": 13341,
+     "sha256": "b5a8d369086e6d1ae0576629ac644194e28031d6038763939f28b0f1370701ac"
+    },
+    {
+     "status": " M",
+     "path": "nanolm_posttrain/eval_suite.py",
+     "bytes": 41784,
+     "sha256": "4de089822927bc56b4df42911db85d22ea3d130c998712b0b19136688052b8b7"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-unified-loop",
+   "branch": "research/unified-discovery-loop-v1",
+   "tip": "d178771125351e8be6dc02d076ac1950f0ef6803",
+   "tip_date": "2026-11-19T18:09:23-05:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/research/u10-real-corpus-transfer"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 136,
+   "ahead_master": 21,
+   "dirty": []
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-v3",
+   "branch": "nanolm/arch-evolution-v3",
+   "tip": "10e141081475afa6ef76b26f9350c8c5caf00635",
+   "tip_date": "2026-11-19T16:48:11-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 17,
+   "behind_master": 151,
+   "ahead_master": 17,
+   "dirty": []
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-v4-fp",
+   "branch": "research/v4-first-principles",
+   "tip": "acc9b7e896c3b8189d29761d8401e6833c222a28",
+   "tip_date": "2026-10-26T09:23:57-04:00",
+   "on_remote": true,
+   "remote_refs": [
+    "origin/HEAD -> origin/master",
+    "origin/add-test-decompose-5801201712511507456",
+    "origin/add-test-select-15559761814421946100"
+   ],
+   "unpushed_commits": 0,
+   "behind_master": 151,
+   "ahead_master": 0,
+   "dirty": [
+    {
+     "status": "??",
+     "path": "research/v4_fp/PREREGISTRATION_FP01_FP02.md",
+     "bytes": 8109,
+     "sha256": "286de2712b1c668d165199993bd94e46de61633e133e72d3adf63cd26970aaba"
+    },
+    {
+     "status": "??",
+     "path": "research/v4_fp/results/v4_mathematical_smoke_results.json",
+     "bytes": 1374,
+     "sha256": "eda5d88b717efb7455f89cac70d33fc35c1967273df2ea0179aaf10254bb06d4"
+    },
+    {
+     "status": "??",
+     "path": "research/v4_fp/test_v4_first_principles_smoke.py",
+     "bytes": 15429,
+     "sha256": "dc8a5cc7796271b342402b98f54a4d5b3618034de2afd5a13f735bf8470dfee8"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/nanolm-v5-ds",
+   "branch": "research/v5-distributed-systems",
+   "tip": "5af199e48bd336d8e1200ddcaf6866216999077e",
+   "tip_date": "2026-11-19T11:41:23-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 3,
+   "behind_master": 151,
+   "ahead_master": 3,
+   "dirty": [
+    {
+     "status": "??",
+     "path": "experiments/v5_ds/test_b_causal_godel_lm.py",
+     "bytes": 17690,
+     "sha256": "02d843c6c393f4aa62ab34bc71e0aef03811f277edc255c07ae4a3c0f42d1d49"
+    }
+   ]
+  },
+  {
+   "worktree": "<repo>/.worktrees/v3-exact-recall",
+   "branch": "research/v3-exact-recall",
+   "tip": "679e9c675ffe2eaaf77a89853f56a6f03b766510",
+   "tip_date": "2026-11-19T16:39:59-05:00",
+   "on_remote": false,
+   "remote_refs": [],
+   "unpushed_commits": 14,
+   "behind_master": 151,
+   "ahead_master": 14,
+   "dirty": []
+  }
+ ],
+ "note": "per-worktree unpushed_commits overlap between branches; unique_local_only_commits is the de-duplicated total over all local branches"
+}

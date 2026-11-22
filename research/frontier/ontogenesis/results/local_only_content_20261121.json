@@ -1,0 +1,766 @@
+{
+ "generated_utc": "2026-11-22T01:40Z",
+ "method": "per local branch: commits not reachable from any origin ref; patch_equivalent = git patch-id --stable match against all non-merge origin commits; for paths touched by those commits, the blob at the branch tip compared with origin/master at the same path and with every object reachable from origin",
+ "branches": [
+  {
+   "branch": "backup/cleanup-20261029/nano-lm",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 2398,
+   "identical_in_origin_master": 2388,
+   "blob_exists_on_origin": 2397,
+   "only_local_files": 1,
+   "last": "2026-10-29"
+  },
+  {
+   "branch": "codex/cycle3-evidence-recovery",
+   "local_only_commits": 4,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 55,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 13,
+   "only_local_files": 42,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "codex/p1-h7-scribing-path",
+   "local_only_commits": 5,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 295,
+   "identical_in_origin_master": 1,
+   "blob_exists_on_origin": 1,
+   "only_local_files": 294,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "cursor/span-port-route-b-182e",
+   "local_only_commits": 172,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 412,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 8,
+   "only_local_files": 404,
+   "last": "2026-08-13"
+  },
+  {
+   "branch": "frontier-mandate-reset",
+   "local_only_commits": 19,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 68,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 62,
+   "only_local_files": 6,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "frontier/active-v1",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 935,
+   "identical_in_origin_master": 104,
+   "blob_exists_on_origin": 475,
+   "only_local_files": 460,
+   "last": "2026-08-22"
+  },
+  {
+   "branch": "frontier/f1a-codex-adapter",
+   "local_only_commits": 28,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 83,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 64,
+   "only_local_files": 19,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "frontier/nanoscribe-core-v1",
+   "local_only_commits": 15,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1004,
+   "identical_in_origin_master": 104,
+   "blob_exists_on_origin": 475,
+   "only_local_files": 529,
+   "last": "2026-10-17"
+  },
+  {
+   "branch": "frontier/p1-acceleration-campaign-v0",
+   "local_only_commits": 1,
+   "patch_equivalent": 1,
+   "paths_touched_present_at_tip": 10,
+   "identical_in_origin_master": 6,
+   "blob_exists_on_origin": 10,
+   "only_local_files": 0,
+   "last": "2026-08-22"
+  },
+  {
+   "branch": "frontier/v1_2-emitter",
+   "local_only_commits": 34,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 95,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 65,
+   "only_local_files": 30,
+   "last": "2026-11-20"
+  },
+  {
+   "branch": "keep/frontier-f1a-master-20261119",
+   "local_only_commits": 28,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 83,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 64,
+   "only_local_files": 19,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "keep/frontier-reset-master-20261119",
+   "local_only_commits": 19,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 68,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 62,
+   "only_local_files": 6,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "keep/frontier-v1_2-master-20261119",
+   "local_only_commits": 34,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 95,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 65,
+   "only_local_files": 30,
+   "last": "2026-11-20"
+  },
+  {
+   "branch": "master",
+   "local_only_commits": 34,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 95,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 65,
+   "only_local_files": 30,
+   "last": "2026-11-20"
+  },
+  {
+   "branch": "nanolm/arch-evolution-v3",
+   "local_only_commits": 17,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 336,
+   "identical_in_origin_master": 1,
+   "blob_exists_on_origin": 7,
+   "only_local_files": 329,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "nanolm/autonomous-discovery-v1",
+   "local_only_commits": 5,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 70,
+   "identical_in_origin_master": 1,
+   "blob_exists_on_origin": 1,
+   "only_local_files": 69,
+   "last": "2026-11-18"
+  },
+  {
+   "branch": "nanolm/discovery-lab-v1",
+   "local_only_commits": 12,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 457,
+   "identical_in_origin_master": 1,
+   "blob_exists_on_origin": 9,
+   "only_local_files": 448,
+   "last": "2026-11-18"
+  },
+  {
+   "branch": "nanolm/foundation-v1",
+   "local_only_commits": 2,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 48,
+   "identical_in_origin_master": 1,
+   "blob_exists_on_origin": 1,
+   "only_local_files": 47,
+   "last": "2026-11-17"
+  },
+  {
+   "branch": "orx/c1-c2-off-leakage-free-measurement",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/c1-off-prompt-names-no-gold-value",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/c2-off-no-parser-quote-fallback",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/c2on-qsoff-c1off-re-measure-on-corrected-prompt",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/c2on-qsoff-c1on-re-measure-on-corrected-prompt-s",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/c2on-qson-c1off-re-measure-on-corrected-prompt-s",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/c2on-qson-c1on-re-measure-on-corrected-prompt-su",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 1,
+   "only_local_files": 0,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/calib-soff-voff-control-reproduces-g2-l000",
+   "local_only_commits": 15,
+   "patch_equivalent": 1,
+   "paths_touched_present_at_tip": 32,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 28,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/calib-soff-von-verbatim-check-only",
+   "local_only_commits": 15,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 32,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 28,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/calib-son-voff-sufficiency-check-only",
+   "local_only_commits": 15,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 32,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 28,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/calib-son-von-both-clauses",
+   "local_only_commits": 15,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 32,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 28,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/confirm-d-shortest-span-clause-36-instances",
+   "local_only_commits": 24,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 49,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 5,
+   "only_local_files": 44,
+   "last": "2026-09-24"
+  },
+  {
+   "branch": "orx/confirm-dv-shortest-span-plus-verbatim-36-instan",
+   "local_only_commits": 29,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 58,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 13,
+   "only_local_files": 45,
+   "last": "2026-09-24"
+  },
+  {
+   "branch": "orx/confirm-p0-no-clause-36-instances",
+   "local_only_commits": 27,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 54,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 9,
+   "only_local_files": 45,
+   "last": "2026-09-24"
+  },
+  {
+   "branch": "orx/confirm-p1-placebo-control-36-instances",
+   "local_only_commits": 23,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 49,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 5,
+   "only_local_files": 44,
+   "last": "2026-09-24"
+  },
+  {
+   "branch": "orx/confirm-s-sufficiency-clause-36-instances",
+   "local_only_commits": 29,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 58,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 13,
+   "only_local_files": 45,
+   "last": "2026-09-24"
+  },
+  {
+   "branch": "orx/confirm-v-verbatim-clause-36-instances",
+   "local_only_commits": 27,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 54,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 9,
+   "only_local_files": 45,
+   "last": "2026-09-24"
+  },
+  {
+   "branch": "orx/cross-regime-selection-probe-stage-p-statistic-o",
+   "local_only_commits": 9,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 20,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 20,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "orx/delimit-d-shortest-span-clause-alone",
+   "local_only_commits": 22,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 43,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 39,
+   "last": "2026-08-31"
+  },
+  {
+   "branch": "orx/delimit-dv-shortest-span-plus-verbatim",
+   "local_only_commits": 22,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 43,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 39,
+   "last": "2026-08-31"
+  },
+  {
+   "branch": "orx/e-delimit-arm-a-free-form-quote-control",
+   "local_only_commits": 2,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 11,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 3,
+   "only_local_files": 8,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/e-delimit-arm-b-numbered-span-menu-discriminator",
+   "local_only_commits": 3,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 11,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 3,
+   "only_local_files": 8,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/e-delimit-arm-c-character-offsets-diagnostic",
+   "local_only_commits": 3,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 11,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 3,
+   "only_local_files": 8,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/external-mts-opus-d-shortest-span-clause",
+   "local_only_commits": 37,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 81,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 14,
+   "only_local_files": 67,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "orx/external-mts-opus-p1-placebo-control-43-items",
+   "local_only_commits": 36,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 81,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 14,
+   "only_local_files": 67,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "orx/external-mts-opus-p1-retest-noise-floor",
+   "local_only_commits": 36,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 81,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 14,
+   "only_local_files": 67,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "orx/fix-cell-dependent-test",
+   "local_only_commits": 1,
+   "patch_equivalent": 1,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 1,
+   "only_local_files": 0,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/frontier-opus-5-5-p1-placebo-control-triaxial",
+   "local_only_commits": 30,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 64,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 15,
+   "only_local_files": 49,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "orx/frontier-opus-d-shortest-span-clause",
+   "local_only_commits": 31,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 64,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 15,
+   "only_local_files": 49,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "orx/frontier-opus-p0-no-clause",
+   "local_only_commits": 31,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 64,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 15,
+   "only_local_files": 49,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "orx/frontier-opus-p1-retest-noise-floor",
+   "local_only_commits": 30,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 64,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 15,
+   "only_local_files": 49,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "orx/l010-q-surface-off-c1-off-c2-on",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/l100-q-surface-off-c1-on-c2-off",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/l110-q-surface-off-c1-on-c2-on",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 1,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/parrot-manipulation-check",
+   "local_only_commits": 1,
+   "patch_equivalent": 1,
+   "paths_touched_present_at_tip": 1,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 1,
+   "only_local_files": 0,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "orx/placebo-p1-1-length-matched-non-instructing-clau",
+   "local_only_commits": 18,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 38,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 34,
+   "last": "2026-08-28"
+  },
+  {
+   "branch": "orx/placebo-p1-1-length-matched-non-instructing-clause",
+   "local_only_commits": 18,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 38,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 34,
+   "last": "2026-08-28"
+  },
+  {
+   "branch": "orx/placebo-p2-2-length-matched-non-instructing-clau",
+   "local_only_commits": 18,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 38,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 34,
+   "last": "2026-08-28"
+  },
+  {
+   "branch": "orx/placebo-p2-2-length-matched-non-instructing-clause",
+   "local_only_commits": 18,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 38,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 4,
+   "only_local_files": 34,
+   "last": "2026-08-28"
+  },
+  {
+   "branch": "recovery/nanolm-cycle4-first-principles-20261119",
+   "local_only_commits": 2,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 11,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 11,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "recovery/nanolm-cycle4-source-value-20261119",
+   "local_only_commits": 3,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 11,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 11,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "recovery/nanolm-posttrain-kv-cache-20261119",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 2,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 2,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "recovery/omega-peer-test-import-20261119",
+   "local_only_commits": 4,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 285,
+   "identical_in_origin_master": 1,
+   "blob_exists_on_origin": 1,
+   "only_local_files": 284,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "rescue/local-master-benchmarks-20261012",
+   "local_only_commits": 16,
+   "patch_equivalent": 16,
+   "paths_touched_present_at_tip": 61,
+   "identical_in_origin_master": 58,
+   "blob_exists_on_origin": 61,
+   "only_local_files": 0,
+   "last": "2026-09-13"
+  },
+  {
+   "branch": "rescue/p4-cuad-pilot-wip",
+   "local_only_commits": 174,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 428,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 8,
+   "only_local_files": 420,
+   "last": "2026-10-17"
+  },
+  {
+   "branch": "research/memory-boundary-v2",
+   "local_only_commits": 3,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 26,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 2,
+   "only_local_files": 24,
+   "last": "2026-11-18"
+  },
+  {
+   "branch": "research/memory-saturation-factorial",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 2,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 2,
+   "last": "2026-11-21"
+  },
+  {
+   "branch": "research/nanolm-master-cycle1",
+   "local_only_commits": 2,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 40,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 10,
+   "only_local_files": 30,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "research/v3-exact-recall",
+   "local_only_commits": 14,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 36,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 3,
+   "only_local_files": 33,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "research/v5-distributed-systems",
+   "local_only_commits": 3,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 20,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 20,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "swe-eval-identity",
+   "local_only_commits": 11,
+   "patch_equivalent": 11,
+   "paths_touched_present_at_tip": 27,
+   "identical_in_origin_master": 24,
+   "blob_exists_on_origin": 27,
+   "only_local_files": 0,
+   "last": "2026-09-13"
+  },
+  {
+   "branch": "wip/pre-freeze-snapshot-20260731-dirty",
+   "local_only_commits": 1,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 74,
+   "identical_in_origin_master": 43,
+   "blob_exists_on_origin": 49,
+   "only_local_files": 25,
+   "last": "2026-07-31"
+  },
+  {
+   "branch": "work/e-delimit",
+   "local_only_commits": 1,
+   "patch_equivalent": 1,
+   "paths_touched_present_at_tip": 11,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 11,
+   "only_local_files": 0,
+   "last": "2026-08-25"
+  },
+  {
+   "branch": "work/edelimit-instrument",
+   "local_only_commits": 6,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 14,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 3,
+   "only_local_files": 11,
+   "last": "2026-08-26"
+  },
+  {
+   "branch": "work/frontier-opus",
+   "local_only_commits": 38,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 87,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 14,
+   "only_local_files": 73,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "work/leakage-power-analysis",
+   "local_only_commits": 19,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 26,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 26,
+   "last": "2026-11-19"
+  },
+  {
+   "branch": "work/p1-triaxial-session",
+   "local_only_commits": 29,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 61,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 16,
+   "only_local_files": 45,
+   "last": "2026-09-24"
+  },
+  {
+   "branch": "work/question-before-architecture",
+   "local_only_commits": 5,
+   "patch_equivalent": 0,
+   "paths_touched_present_at_tip": 6,
+   "identical_in_origin_master": 0,
+   "blob_exists_on_origin": 0,
+   "only_local_files": 6,
+   "last": "2026-11-19"
+  }
+ ]
+}
