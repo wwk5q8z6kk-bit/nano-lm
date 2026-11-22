@@ -1,0 +1,38 @@
+[
+ {
+  "arm": "owm_all_m96",
+  "seed": 8001,
+  "acquire_now": 1.0,
+  "corrected_now": 1.0,
+  "rule_old_corrected": 1.0,
+  "rule_old_clean": 1.0,
+  "corrected_old": 1.0,
+  "infer_late": 0.7831,
+  "room_end": 0.0034,
+  "in_store": 0
+ },
+ {
+  "arm": "owm_all_m96",
+  "seed": 8002,
+  "acquire_now": 1.0,
+  "corrected_now": 1.0,
+  "rule_old_corrected": 1.0,
+  "rule_old_clean": 1.0,
+  "corrected_old": 1.0,
+  "infer_late": 0.8347,
+  "room_end": 0.0033,
+  "in_store": 0
+ },
+ {
+  "arm": "owm_all_m96",
+  "seed": 8003,
+  "acquire_now": 1.0,
+  "corrected_now": 1.0,
+  "rule_old_corrected": 1.0,
+  "rule_old_clean": 1.0,
+  "corrected_old": 1.0,
+  "infer_late": 0.8044,
+  "room_end": 0.0034,
+  "in_store": 0
+ }
+]
