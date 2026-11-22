@@ -1,6 +1,6 @@
 # ONTOGENESIS research ledger
 
-The one authoritative status list. Updated 2026-11-20. Status values: Established (published elsewhere), Derived (mathematics checked here), Demonstrated (measured here under a committed protocol), Pilot (measured, not confirmatory), Unverified, Disproven, Abandoned, Open.
+The one authoritative status list. Updated 2026-11-21 (see the dated section at the end; it overrides earlier rows where they conflict). Status values: Established (published elsewhere), Derived (mathematics checked here), Demonstrated (measured here under a committed protocol), Pilot (measured, not confirmatory), Unverified, Disproven, Abandoned, Open.
 
 ## Measured in this repository
 
@@ -130,6 +130,95 @@ PLASTICITY v0, 200 successive tasks of 256 facts, three seeds, predictions writt
 
 - P1 (a plain dense network loses its ability to learn): **Demonstrated at pilot scale**, all three seeds.
 - P2 (a sparse key-value memory keeps its speed and retains more): **Disproven** in this implementation. It was slower from the start, lost plasticity, and retained nothing.
+- A standard remedy (normalisation plus weight decay) keeps learning speed almost flat. It is the strongest simpler alternative for any plasticity claim.
+- No arm retains earlier tasks. Plasticity and retention are separate problems here.
+
+
+## Update 2026-11-21
+
+Full write-ups with registered predictions: `INVESTIGATION.md`. Decision note: `theory/RESEARCH-DECISION-20261121.md`.
+
+### Measured today
+
+| Item | Status | Evidence |
+|---|---|---|
+| Looped learns two-step chains in 3 of 5 seeds, dense in 1 of 5, at 26,000 steps; dense does make the jump | Demonstrated (registered verdict: mixed) | `results/loop2/` |
+| The first acquisition benchmark is passed by a lookup table | Derived | `INVESTIGATION.md` Question 6 |
+| In a rule-governed world a gradient learner keeps 99.6% of old regular facts with no replay | Demonstrated, toy | `results/forgetting_split/` |
+| Corrections, not exceptions, cause the loss of old regular facts | Demonstrated, toy | same |
+| Oracle routing raises inference 78.6% to 89.2%; this is label-noise removal | Demonstrated, toy | `results/routing/` |
+| A write-time detector without an oracle recovers a third of that gain and costs 4 points on clean entities | Demonstrated, toy; registered bar not met | `results/routing_loo/` |
+| Fixed-address memory stops acquiring because of concentrated addresses together with carried-over optimiser state; a reset restores 86%, hashing 100% | Pilot (one seed, large effects) | `results/memory_saturation/` |
+| A harmless address-only edit exists for 99.8% of corrections | Demonstrated, toy | `results/correction_interference/` |
+| Correction damage is caused by missing constraints: not by capacity, write size, the optimiser, or lack of general replay | Demonstrated, toy | same, `margins-*`, `optimizer-*` |
+| A correction written into the model decays under later training whatever its margin; only the exact store keeps it | Demonstrated, toy | same |
+| Exact 4-gram store added after training: 0.058 bits per byte better for a 14M model trained on 33M tokens | Pilot (one seed) | `results/lm/store-pilot.json` |
+| Training the model through that store: 0.14 worse than adding it afterwards | **Unsettled** (2026-11-22): the joint arms' gate could not drop the store's weight below 0.25; see `INVESTIGATION.md`, corrections 2026-11-22 | same |
+| The same store adds 0.004 bits per byte to the same model once trained on 800M tokens | Pilot (one checkpoint) | `results/lm/store-exchange-S.json` |
+| JAX model for TPU matches the PyTorch reference to 2e-6 | Verified | `tpu/parity_check.py` |
+| Dense baseline, 14.3M parameters, one pass of 800M tokens: 1.144 bits per byte | Provisional (one seed; first-version sampler oversampled the first 37% of the corpus by about 12%; fixed-sampler rerun queued) | bucket `runs/ladder-v5e/` |
+| Exact in-context cache adds under 0.01 bits per byte on every domain to the trained 40M model (code 0.006) | Registered rule read: explicit-copy line closed at this scale | `results/lm/cache-exchange-M.json` |
+| The n-gram store adds 0.004 to the trained 14M model and −0.001 to the 40M one | Pilot (one checkpoint each) | `results/lm/store-exchange-*.json` |
+
+### Status changes
+
+| Idea or claim | New status | Reason |
+|---|---|---|
+| DEMOS | Disproven (learning-speed claim) | tuned dense reached 99.8% |
+| KEYSTORE with learned keys | Disproven at toy scale | stayed at guessing |
+| Nested dense-loop architecture | Open; registered test running | published family; adds no function class at equal depth |
+| "Exceptions damage regular knowledge" | Disproven | two controls |
+| "Route by regularity" as an architectural principle | Not adopted | needs an oracle; fails on text when trained jointly |
+| "Fixed addresses trade retention for acquisition" | Disproven as stated | optimiser reset removes most of the trade |
+| "Never forgetting equals order-independence"; "pick two" trilemma | Withdrawn | not theorems as stated; the second is published in a narrower form |
+| n-gram store as a core component | Close unless the 101M checkpoint shows a gain of 0.01 or more | rule registered in the decision note |
+| Exact in-context copy mechanism (M21 line) | Closed at this scale and context | registered rule read on the 40M checkpoint, 2026-11-22 |
+
+### Compute facts
+
+- Cloud TPU v6e: no on-demand capacity for single chips in any permitted zone on 2026-11-22 UTC; a four-chip node was obtained in asia-northeast1-b. v5e (4 chips per zone allowed) obtained in us-west1-c.
+- Measured training speed per chip, 101M-parameter model: v5e 130k tokens per second, v6e 230k. At list prices the v5e is the better value at these sizes.
+- Global cloud CPU quota is 12 cores; GPU quota is still 0.
+- The laptop cannot host more than light jobs: twice today training runs pushed it to 40 GB of swap.
+
+## Operations, 2026-11-22 (UTC)
+
+**Corpus v2 built.** 10.0B tokens, `gs://nanolm-lab-eu-0478806098/corpus/v2/`, train file sha256 prefix df0e0a2f894a4945.
+- Shares: web 6.2B, textbook 1.3B, maths 1.3B, code 1.2B.
+- Documents: 6.55M, 1.87M, 0.93M and 0.65M respectively.
+- Same pinned sources, filter, tokenizer and interleaving as v1. The held-out sets are v1's, unchanged; the builder reproduced them and v1's first 20.6M training tokens exactly before building.
+- The 13-gram held-out overlap filter removed 172,563 code and 111,804 maths documents, mostly shared boilerplate. It is the same rule v1 used.
+- Built in 77 minutes on 16 spare cores of machine A.
+
+**Deletion safety.** Each machine has four independent ways to be deleted:
+1. the controller's own end-of-work delete;
+2. a persistent systemd timer that sends the delete request first and retries until the API confirms;
+3. a Cloud Scheduler delete in the project (rehearsed with a read-only call: HTTP 200);
+4. a laptop watcher.
+
+Deadlines:
+- Machine A (v5e-4, us-west1-c): 11:06 systemd, 11:08 Scheduler.
+- Machine B (v6e-4, asia-northeast1-b): moved to 12:30 systemd, 12:32 Scheduler, 12:40 watcher, so that the 40M recipe grid and Question 12 can run.
+
+**Hand-overs.**
+- The batch-1 controller on machine A survived the first hand-over, because the hand-over killed its launch wrapper. It would have deleted the machine when the CPU runs ended, under a later batch. It was removed by pid.
+- On machine B I first removed the wrong shell: the log-push loop instead of the time-limit shell, because both had `sleep` children. I checked again and removed the right one, after the new deadline was confirmed. No cost or data effect.
+- Machine B now runs a queue (`tpu/job_queue.sh`): work is added as scripts in `~/queue/`, and the machine deletes itself when the queue is empty.
+
+**Spend estimate for this cycle** (list prices $1.20 per v5e chip-hour and $3.24 per v6e chip-hour; actual billing not yet read):
+
+| Machine | Expected hours | Expected cost | Hours to deadline | Cost to deadline |
+|---|---|---|---|---|
+| A, v5e-4 | about 9.5 | about $46 | 10.1 | $49 |
+| B, v6e-4 | about 10.5 | about $136 | 11.1 | $144 |
+| **Total** | | **about $180** | | **about $195** |
+
+Kaggle is free. No RunPod spend.
+
+## Sections added on research/first-principles-architecture-ledger-20261121 (PR #195)
+
+Reconciled 2026-11-22: the two branches appended at the same point. Both are kept verbatim: the sections above are from research/ontogenesis-phase1, those below from PR #195, in their original order. Where a row below conflicts with a later dated row above, or the reverse, the later date governs, as the header says.
+
 - A standard remedy (normalisation plus weight decay) keeps learning speed almost flat. It is the strongest simpler alternative for any plasticity claim.
 - No arm retains earlier tasks. Plasticity and retention are separate problems here.
 

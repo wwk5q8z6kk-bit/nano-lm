@@ -468,3 +468,401 @@ A difference counts only if it exceeds twice the difference between the two base
 **Predictions.** 14M gains 0.01 to 0.03 ("partial"). 40M gains under 0.015. Teacher-only training is no better than α 0.5.
 **Controls.** The teacher, evaluated inside the student run, must reproduce its own reported score to 0.001. The second-version baseline at 14M shows what the sampling fix changed: I expect it within 0.005 of the first-version result (1.1441).
 **Not tested.** Distillation with a different temperature, a larger teacher, or more training tokens.
+
+## Corrections and status changes, 2026-11-22 (UTC)
+
+### The store pilot's S2/S3 verdict is confounded; status changed from "failed" to "unsettled"
+
+Found by the literature-verification workflow and confirmed by reading `lm_store.py:112-116`. [Verified: mechanism. Inferred: size of its effect.]
+
+In the arms trained through the store, the gate table started at zero (mixing weight 0.5). It was trained by the model's own AdamW optimiser: learning rate 1e-3, 200 warm-up steps, then cosine decay to 10% over 2,000 steps. Adam moves a parameter by at most about the learning rate per step, and the schedule sums to about 1.1. So the gate logit could move at most about ±1.1. **Wherever the store had a match, it kept between 0.25 and 0.75 of the mixture, even where it was wrong.** At a position where the store gives the true token probability 0, the mixture can reach at most 0.75 even if the core is certain, which costs at least 0.42 bits there. The after-training arms fitted the same table with Adam at learning rate 0.05, with nothing holding the weight in.
+
+So the joint arms carried a handicap the post-hoc arms did not have, in addition to the same-document leakage recorded before the run. This alone could produce a loss of the size observed (0.14). S2 and S3 are therefore **not evidence** that training through a store hurts. The S1 and S4 results (post-hoc arms) are unaffected.
+
+A valid re-test needs both a leave-document-out store and a free gate: a separate gate learning rate, or a gate initialised closed. It is low priority. The n-gram store adds at most 0.004 bits per byte to models trained on 800M tokens (below), and the registered rule for this line is read on the 101M checkpoint.
+
+### All first-version TPU baseline scores carry a sampling skew; status "provisional"
+
+Found by the independent code review of `tpu/train_jax.py`. [Verified by reading the code; the effect on scores is unmeasured.]
+
+In the first version, crop starts came from `jax.random.randint` over about 8e8 positions. Without 64-bit mode in JAX 0.6.2 that draw is not uniform. The first 294,969,861 start positions each had 6 chances in the draw, the rest 5. So 41.2% of crops began in the first 36.9% of the training file: that region was sampled about 12% more often than the rest. The domains are interleaved in 64k-token blocks, so the domain mix is unaffected. The model still saw an uneven sample of documents.
+
+This affects every run in the bucket under `runs/ladder-v5e/`, `runs/ladder-v5e-2/` and `runs/ladder-v6e/`, including the 14M result (1.1441) and the 40M result (1.0481), and the checkpoints used by the store-exchange and cache tests. Comparisons inside that set are like-for-like, because every run shares the skew. Comparisons with runs that sample uniformly are not.
+
+Fixed in the second version of the script (commit `96c1863`). Crops are now drawn on the host with numpy, as in the PyTorch harness, and run names end in `-hs`. The effect is measured directly by Question 10's baselines: 14M seeds 1000 and 1001 and 40M seed 1000, with the fixed sampler, the same seeds and the same recipe. Until that reading, no first-version score should be cited as settled.
+
+### In-context cache test on the 40M checkpoint: registered rule read
+
+`tpu/cache_exchange.py`, rule registered in its header before any run. Raw files: `results/lm/cache-exchange-S.json`, `results/lm/cache-exchange-M.json`. [Observed: one checkpoint each, first-version sampler.]
+
+| Model | Web | Textbook | Mathematics | Code | Mix | Same-window tokens the cache could copy |
+|---|---|---|---|---|---|---|
+| 14M | 0.0023 | −0.0005 | 0.0068 | 0.0114 | 0.0036 | web 13%, textbook 9%, maths 33%, code 45% |
+| 40M | 0.0012 | −0.0003 | 0.0036 | 0.0059 | 0.0018 | same windows |
+
+Gain in bits per byte from mixing an exact causal cache over the same 512-token window into the trained model. Controls: causality check passed; a cache filled from a different window gives 0.0000; the model alone reproduces the training run's own scores to 0.0001.
+
+**By the registered rule:** under 0.01 on every domain at 40M, so the explicit-copy line is closed at this scale and context length. Up to 45% of code tokens repeat something earlier in the window. The trained model already predicts those tokens about as well as an exact cache does, and the gain halves from 14M to 40M.
+
+Limits. The cache sees only the model's own 512-token window, so this says nothing about copying from beyond the context. These are first-version checkpoints, but a sampling skew of this size cannot plausibly move a gain of 0.006 past 0.01.
+
+M21's 0.36-bits-per-token advantage on copyable code tokens was measured against a 5M model trained for minutes. It does not survive against dense models trained on 800M tokens.
+
+### Question 10: amendment before any run (2026-11-22, 03:15 UTC; the batch had not started)
+
+The independent review found two weaknesses in the registration above. Both are corrected before any run:
+
+1. **Micro-batch confound.** The 14M baselines were set to 2 micro-batches and the distilled arms to 4. Accumulation gives the same update in exact arithmetic but not in floating point, and the review measured unexplained offsets of 0.002 to 0.006 between runs that differed in micro-batch count and chip. Now every arm uses 4 micro-batches on the same chip type (v5e).
+2. **Noise rule.** "Twice the difference between two baseline seeds" passes a null effect about 30% of the time. Now there are three 14M baseline seeds (1000, 1001, 1002). A difference counts only if it exceeds t(0.975, 2 df) · s · √(1 + 1/3) ≈ 4.97 s, where s is the standard deviation of the three baseline seeds. The decision thresholds (0.03 major lever, under 0.01 capacity-limited) are unchanged.
+
+Every result file now records the chip type and a hash of the training script. The sampling-fix check compares the mean of the three 14M seeds with the single first-version run (1.1441). It is informative only: one first-version seed. Job file: `tpu/job_kd.sh` as of this commit.
+
+## Question 11. Is our dense recipe close to the best available at 14M, and does Muon beat AdamW here? (registered 2026-11-22, 03:45 UTC, before any run)
+
+**Why.** Every mechanism claim will be judged against the dense baseline. The independent review and the literature workflow both found that it is a default recipe, not a tuned one:
+- one learning rate at 14M;
+- decay applied to the normalisation gains;
+- a 10% floor on the learning rate;
+- AdamW only.
+
+Published results say recipe effects are larger than architecture effects at this scale. The first-version ladder has since finished. At 40M, 101M and 211M the higher rate (1e-3) beat 5e-4 at the end of training by 0.005 to 0.007, so the best rate sits at the top edge of the tested grid. At 14M, rates of 1e-3, 2e-3 and 3e-3 are within 0.002 of each other in partial curves.
+
+**Design.** 14M model, one pass of the 800M-token corpus, second-version script, v5e chips, 4 micro-batches, seed 1000. Job `tpu/job_recipe.sh`; list and selection `tpu/recipe_select.py`.
+- *Phase A* (20 runs):
+  - AdamW at learning rate {1e-3, 2e-3, 4e-3} × weight decay {0.1, 0.5} × final rate floor {10%, 1%}. The default cell (1e-3, 0.1, 10%) is not rerun: it is Question 10's three-seed baseline, from the same script, chip and micro-batch setting.
+  - The default cell with decay on matrices and embedding only.
+  - Muon on the blocks' matrices, with AdamW on the embedding and gains (optax 0.2.9, consistent-RMS scaling 0.2, so AdamW's rate and decay carry over): rate {1e-3, 2e-3, 4e-3} × decay {0.1, 0.5} at floor 1%, plus Muon at the default cell.
+  - The default cell with 2 micro-batches (micro-batch control).
+- *Phase B*, chosen mechanically by `recipe_select.py` from phase A's seed-1000 results:
+  - seeds 1001 and 1002 for the best AdamW cell (none if it is the default cell) and for the best Muon cell;
+  - both winners at 40M, learning rate fixed at 1e-3, to test whether the rest of the recipe transfers.
+
+**Predictions.**
+- P1: the 1% floor beats 10% in at least 5 of the 6 matched AdamW pairs, by 0.003 to 0.010.
+- P2: decay 0.5 against 0.1 shows no consistent sign, mean |difference| under 0.005.
+- P3: the best AdamW rate is 2e-3.
+- P4: the best Muon cell beats the best AdamW cell by 0.01 to 0.03 bits per byte.
+- P5: decaying matrices only changes the result by under 0.003.
+- P6: 2 against 4 micro-batches differ by no more than one seed standard deviation.
+
+**Rules, fixed now.** s is the standard deviation of the three default-cell seeds.
+- A single-seed cell differs from the default only if |Δ| > 4.97 s, a t-test with 2 degrees of freedom (Question 10's rule).
+- A setting replaces the default for every later dense run if its three-seed mean beats the default's three-seed mean by more than 2.27 s_p (two-sample t, 4 degrees of freedom, 95%).
+- Muon replaces AdamW only if its three-seed mean beats the best AdamW cell's three-seed mean by the same margin, **and** at 40M it beats AdamW with the same settings, with the same sign and at least half the 14M gain.
+- Results are reported at equal tokens. Throughput per arm is reported beside them, and a gain is also stated at equal wall-clock, read from the curve, wherever an arm's step time differs by more than 5%.
+
+**Not tested.** Other schedules (warm-up, stable, decay), batch size, longer training, other model sizes beyond the 40M transfer check.
+
+### Question 11, 40M extension (registered 2026-11-22, 03:40 UTC, before any run)
+
+The second TPU machine (v6e) would otherwise delete itself at about 04:15, so it runs the same grid at 40M. Job `tpu/job_recipe_m.sh`, list `recipe_select.py gridm`, 22 runs. Settings: 2 micro-batches, seed 1000, its own default cell at seeds 1000, 1001 and 1002; AdamW and Muon cells as at 14M. Its deadline moves from 07:33 to 08:30 UTC, adding at most about $13.
+
+This grid is compared only within itself (one chip type, one micro-batch setting), with the same rules as at 14M. s is the standard deviation of its own three default-cell seeds. The phase B check of the 14M winners at 40M runs on the v5e with 4 micro-batches, and is read separately.
+
+Added prediction:
+- P7: at 40M the best rate is no higher than at 14M, for each optimiser.
+- P1 to P5 are predicted to hold at 40M as stated for 14M.
+
+## Evaluation harness for later models (2026-11-22)
+
+Bits per byte cannot be compared with published small models, so the scale-up runs will also be scored on standard zero-shot benchmarks. Formats follow lm-evaluation-harness conventions.
+- `tpu/eval_prep.py` downloads and tokenises the benchmarks once (HellaSwag, ARC-Easy, ARC-Challenge, PIQA, WinoGrande, OpenBookQA, LAMBADA; full standard sets, 30,328 examples).
+- `tpu/eval_score.py` scores a checkpoint with JAX. Every context starts with the end-of-document token, as every document did in training.
+- `tpu/eval_contam.py` measures verbatim overlap with the training corpus.
+
+**Harness checks on the 14M model** (seed 1000, first-version sampler, 1,000 examples per task). [Observed]
+
+| Condition | HellaSwag acc / acc_norm | ARC-Easy acc / acc_norm |
+|---|---|---|
+| Trained model | 0.317 / 0.364 | 0.402 / 0.388 |
+| Untrained model, same harness (must be at chance) | 0.268 / 0.267 | 0.253 / 0.252 |
+| Trained model, continuations scored without their context | 0.288 / 0.276 | 0.301 / 0.319 |
+
+Standard error is about 0.015 at n = 1,000. The harness gives chance with an untrained model. Part of the trained score is a preference for the more fluent ending, which the no-context row measures. The remainder (+0.03 to +0.10) is use of the context. These figures are **not** comparable with published numbers until a public checkpoint has been scored through this same harness. Benchmark scores will always be reported beside both controls.
+
+**Contamination of the 800M-token training corpus** (13-token windows of context plus correct answer; `results/lm/eval-contamination-v1.json`). [Observed]
+- Examples sharing any window with the training text: HellaSwag 0.37%, ARC-Easy 0.42%, ARC-Challenge 0.43%, PIQA 0.44%, WinoGrande 0%, OpenBookQA 0%, LAMBADA 0.14%.
+- A planted 20-token copy is found exactly, so the check works.
+- Verbatim contamination is negligible. Paraphrased or same-source overlap (for example WikiHow pages behind HellaSwag) is not measured by this check.
+
+## Store test with the corrected estimator (decision note, section 10)
+
+`tpu/store_ldo.py`; raw files `results/lm/store-ldo-{S,M,L}.json`. Same store (48M tokens, 6% of the corpus), same fitting windows, same evaluation crops. [Observed: one checkpoint per size, first-version sampler]
+
+| Model | Gain, leave-document-out fit (corrected) | Gain, leave-position-out fit (as registered) | Control that can fail (must be negative) | Model alone vs its training run |
+|---|---|---|---|---|
+| 14M | 0.0096 (web 0.0074, textbook 0.0087, maths 0.0164, code 0.0142) | 0.0044 | −0.0119, passed | 0.0001 |
+| 40M | 0.0037 (web 0.0029, textbook 0.0030, maths 0.0067, code 0.0054) | −0.0014 | −0.0054, passed | 0.0001 |
+| 101M | 0.0017 (web 0.0013, textbook 0.0012, maths 0.0031, code 0.0028) | −0.0032 | −0.0028, passed | 0.0001 |
+
+The review was right. The registered estimator understated the store by more than half at 14M, and turned positive gains negative at 40M and 101M.
+
+Reliability check at 101M (the store's mean probability of the true token, gate cells 1 to 8):
+- leave-position-out on training text: 0.17 to 0.36;
+- leave-document-out: 0.15 to 0.22;
+- held-out text: 0.17 to 0.24.
+
+Leave-position-out over-trusts the store by a factor of 1.3 to 1.6. Leave-document-out is about 10% pessimistic, so the corrected gains are slight underestimates.
+
+**Registered rule, read on the 101M checkpoint (scope as amended before the run): 0.0017 < 0.01, so this store is closed as a complement.** The gain falls about 2.5-fold for each 2.5-fold increase in parameters (0.0096 → 0.0037 → 0.0017). The exchange rate is poor: 1.02 GB of counts buys 0.0017, while going from 101M to 211M parameters (about 0.2 GB more weights in bfloat16) buys 0.034. Whether a store over the full training corpus helps remains **open**: published corpus-scale stores do, and this store held 6% of the corpus. That test is not scheduled; its expected value is low on this trend.
+
+## Question 12. How much does fresh data improve a fixed-size model, and what is the best model one machine-session buys? (registered 2026-11-22, 04:30 UTC, before any run)
+
+**Why.** The first-version ladder trained every size on the same 0.8B tokens. The 211M model saw under 4 tokens per parameter and still beat 101M, so the larger models were limited by training length. Corpus v2 (10B tokens, same sources and recipe) is built. Whether more unique text beats more passes was untested; the review asked for this test.
+
+**Design.** v6e machine, queued after the 40M grid. One run spans all four chips (`--dp 4`, verified on simulated devices to match single-chip losses to rounding). Default recipe: AdamW 1e-3, decay 0.1, floor 10%, batch 64 × 512, seed 1000. The tuned recipe is not available yet, so this measures data at a fixed recipe. Job `tpu/job_scale1.sh`.
+1. Throughput: one 211M run for 300 steps on 1, 2 and 4 chips at 16 sequences per chip, and on 4 chips at batch 256. Reports scaling efficiency and memory. Engineering only.
+2. Runs on corpus v2, in this order: 211M on 4.2B tokens (20 per parameter); 101M on 2.0B; 101M on 0.8B (the same budget as the first ladder).
+3. Every finished model is scored on the benchmark harness, with the no-context control. Contamination of corpus v2 is measured separately (running).
+
+The sampler draws crops uniformly with replacement, as in every earlier run, so a budget of D tokens covers about 1 − e^(−D/corpus) of the corpus. For 0.8B tokens on the 0.8B-token corpus v1 that was about 63%.
+
+**Predictions.**
+- P1: 101M at 2.0B beats 101M at 0.8B (both corpus v2) by 0.025 to 0.045 bits per byte.
+- P2: 211M at 4.2B tokens reaches a mix of 0.90 or lower (first ladder at 0.8B: 0.952).
+- P3: four chips give at least 80% of four times the single-chip throughput at 16 sequences per chip.
+- P4: on HellaSwag and ARC-Easy, 211M-4.2B > 101M-2.0B > 101M-0.8B, each above its no-context control.
+- P5: 101M at 0.8B on corpus v2 lands within ±0.01 of the first ladder's 101M (0.9857), which used the first-version sampler on corpus v1.
+
+**Use of the result.**
+- The 211M-4.2B model becomes the reference "best model so far" and a teacher candidate.
+- The gain per added token at 101M and 211M sets the size and token plan for the next scale.
+- None of this is a mechanism claim.
+
+**Cost.** About 4 hours of a four-chip v6e (about $52 at $3.24 per chip-hour). Machine B's deadline moves to 12:30 UTC.
+
+### Question 9: statements withdrawn after the independent review (2026-11-22)
+
+The full list is in `theory/RESEARCH-DECISION-20261121.md`, section 10. In short:
+- "The smallest edit is the worst" is false: gradient descent on the address alone did less damage (14.3%) than the smallest edit (35.3%).
+- The 100% for same-entity rehearsal is accuracy on the rehearsed facts themselves. The corrected entity's unshown answers were never scored in any gradient arm.
+- The "20+ phases later" columns mislabel 47% to 49% of the scored facts.
+- The computed-edit ranges mixed arms and hid a trade-off between neighbour retention and correction durability.
+- The optimiser control did not test the write that did the damage, so "the optimiser is not the cause" is **not established**.
+- All findings of this question are published in substance.
+
+Two cheap checks are queued:
+- score every other answer of each corrected entity before and after the write, in every arm;
+- repeat the damaging write itself, changing one thing at a time.
+
+### Question 9, review checks (registered 2026-11-22, 05:05 UTC, before any run of `correction_entity.py`)
+
+Same world, model, seeds and arms as `correction_interference.py`, which is unchanged. Two additions:
+1. Every corrected entity's answers on all eight relations are read just before and just after its phase's write.
+2. A new arm, `single_rowscale`: `single` with one change. Before each phase's training, the corrected rows' Adam state is set to that of recently trained rows: first moment 0, second moment the median of the previous phase's new entities.
+
+**Predictions.**
+- E0: `single` reproduces its recorded `collateral_now` and `corrected_now` exactly. Same code path and random draws; the added reads use no randomness.
+- E1: in `single`, the unshown answers are damaged about as much as the other shown ones: kept_unshown within 0.10 of kept_shown.
+- E2: in `entity_replay`, the rehearsed shown facts are kept (≥ 0.97) but the unshown answers are not fully kept (kept_unshown ≤ 0.90). Rehearsal protects what it rehearses, not the whole entity.
+- E3: `constrained` keeps at least 0.97 of all seven other answers. The edit constrains every relation; only the phase's other training adds drift.
+- E4: `store` (drift only) keeps at least 0.97 of all seven.
+- E5: `single_rowscale` against `single`:
+  - kept_all7 higher by 0.15 or more: stale optimiser state is a main cause of this write's damage;
+  - within 0.05: it is not.
+
+## Results of 22 November (all registered before their runs)
+
+All files are under `results/kd/`, `results/recipe/` (14M on v5e; `m-v6e/` for 40M), `results/scale1/` and `results/nested/`. Every TPU run used the second-version script (uniform host sampling). [Observed]
+
+### Question 10: distillation
+
+The teacher, the 101M model, reproduced its own score inside the student runs exactly (0.9857). Baselines: 14M, three seeds, 1.1460, 1.1450, 1.1444, so s = 0.0008 and the noise guard is 4.97 s = 0.004.
+
+| Arm | Mix | Gain over baseline | Wall-clock |
+|---|---|---|---|
+| 14M baseline (mean of 3) | 1.1451 | — | 0.42 h |
+| 14M, α 0.5 | 1.1273 | **0.018** | 1.13 h |
+| 14M, teacher only (α 0) | 1.1264 | 0.019 | 1.07 h |
+| 40M baseline | 1.0466 | — | 1.00 h |
+| 40M, α 0.5 | 1.0252 | **0.021** | 1.55 h |
+
+**Rule: a gain between 0.01 and 0.03 is "partial".** The training signal is a real lever at equal tokens, but not a major one.
+- Predictions held: 14M gain between 0.01 and 0.03; teacher-only no better than α 0.5.
+- Prediction failed: the 40M gain (0.021) was larger, not smaller.
+- Sampling-fix check: the 14M second-version mean is 1.1451 against the first version's 1.1441, so the skew moved the score by about 0.001.
+- Caveat: distillation cost 1.5 to 2.6 times the wall-clock here, because the teacher runs at every step. At equal compute it has not been shown to beat a longer plain run.
+
+### Question 11: recipe
+
+At 14M, s = 0.0008 (default cell, three seeds). At 40M on v6e, s = 0.0012 (1.0464, 1.0485, 1.0486).
+
+**Learning-rate floor.** P1: direction held, size underpredicted. A 1% floor beat 10% in **6 of 6** matched pairs at 14M, by 0.004 to 0.031 (mean 0.017), and in 6 of 6 at 40M, by 0.006 to 0.046.
+
+**Decay 0.5.** P2 failed. It is worse than 0.1 in every cell at both sizes, by 0.04 to 0.075.
+
+**Best rate.** P3 failed: the best rate is 4e-3, the top of the grid, for both optimisers at both sizes. **The optimum is not bracketed**; 8e-3 is untested.
+
+**Decay mask and micro-batches.** P5 and P6 held: decaying matrices only changes the result by −0.002, and 2 against 4 micro-batches by +0.0003.
+
+**Phase B** (chosen mechanically): best AdamW cell (4e-3, decay 0.1, floor 1%) and best Muon cell (the same settings).
+
+| 14M, three seeds | Mix |
+|---|---|
+| Default AdamW (1e-3, 10% floor) | 1.1451 |
+| AdamW 4e-3, 1% floor | 1.1278 (1.1267, 1.1285, 1.1281) |
+| Muon 4e-3, 1% floor | **1.1192** (1.1193, 1.1183, 1.1199) |
+
+Muon against the best AdamW: **0.0086**. The criterion was 2.27 s_p = 0.002, so it holds. P4 predicted 0.01 to 0.03, so the size is slightly under.
+
+At 40M (v5e, 4 micro-batches, rate 1e-3, 1% floor), Muon beat AdamW by **0.0125**: same sign and more than half the 14M gain. **By the registered rules, Muon (consistent-RMS 0.2) with decay 0.1 and a 1% floor replaces the default.**
+
+The 40M grid on v6e agrees:
+- best AdamW 1.0312 (4e-3, 1%);
+- best Muon **1.0203** (4e-3, 1%);
+- default 1.0478 (mean of 3).
+
+Total recipe gain at 40M: **0.0275 bits per byte**. That is about 45% of what going from 40M to 101M parameters bought on the first ladder (0.062).
+
+Muon's step cost: 1% slower at 14M and 1.4% slower at 40M, so the equal-wall-clock gain is about the same.
+
+### Question 12: corpus v2, four chips per run
+
+| Run (default recipe, corpus v2) | Mix | Web | Code | Hours (4 × v6e) |
+|---|---|---|---|---|
+| 101M, 0.8B tokens | 0.9775 | 1.0450 | 0.7892 | 0.39 |
+| 101M, 2.0B tokens | 0.9399 | 1.0118 | 0.7448 | 0.71 |
+| **211M, 4.2B tokens** | **0.8763** | 0.9534 | 0.6770 | 2.59 |
+
+- P1 held: 101M improves by 0.038 from 0.8B to 2.0B tokens.
+- P2 held: 211M reaches 0.876; the first ladder had 0.952 at 0.8B tokens.
+- P5 held: 101M at 0.8B on v2 is within 0.01 of v1 (0.9775 against 0.9857).
+- P3 held: four chips run at 483.6k tokens per second against 4 × 132.8k, **91% efficiency**. Each chip used only 2.7 GB of its 32 GB; batch 256 was barely faster (494.8k).
+
+**Benchmarks, full standard sets.** Our harness adds an end-of-document prefix; calibration against Pythia-160M is running.
+
+| Task | 101M-0.8B | 101M-2.0B | 211M-4.2B | 211M, no context | Pythia-160M, 300B tokens (EleutherAI official, lm-eval) |
+|---|---|---|---|---|---|
+| ARC-Easy acc | 0.468 | 0.477 | **0.522** | 0.314 | 0.435 |
+| ARC-Challenge acc_norm | 0.236 | 0.255 | 0.257 | 0.271 | 0.233 |
+| PIQA acc | 0.603 | 0.625 | **0.648** | 0.606 | 0.627 |
+| WinoGrande acc | 0.530 | 0.515 | 0.511 | 0.496 | 0.531 |
+| LAMBADA acc (perplexity) | 0.237 (142) | 0.257 (104) | **0.326 (49)** | 0 | 0.328 (38) |
+| HellaSwag acc_norm | 0.294 | 0.308 | 0.346 | 0.292 | — |
+| OpenBookQA acc_norm | 0.276 | 0.278 | 0.302 | 0.278 | — |
+
+P4 held for HellaSwag and ARC-Easy: the order is 211M > 101M-2.0B > 101M-0.8B, each above its no-context control. On ARC-Challenge and WinoGrande nothing is clearly above chance or above the control.
+
+The 211M model on 4.2B tokens roughly matches Pythia-160M trained on 300B tokens: ahead on ARC-Easy and PIQA, level on LAMBADA accuracy, behind on WinoGrande and LAMBADA perplexity. That comparison holds only if the calibration run confirms our formats.
+
+**Corpus v2 contamination** (13-token windows). Examples sharing any window: HellaSwag 2.1% (1.3% touching the answer), ARC-Easy 1.5%, ARC-Challenge 1.8%, PIQA 1.25%, WinoGrande 0, OpenBookQA 0, LAMBADA 0.2%. Low, but about five times v1's.
+
+### Nested dense-loop protocol (`PROTOCOL-NESTED.md` and its deviation record)
+
+Two-step chains learned (≥ 90% at any evaluation), out of 5 seeds, all arms on the same CPU machine:
+
+| Arm | Weights reused? | Applications | Learned | First 90% (steps) |
+|---|---|---|---|---|
+| dense 4×1 | no | 4 | 1 | 21k |
+| looped 1×4 | yes | 4 | 2 | 8k, 16k |
+| 2×2 | yes | 4 | **4** | 6k to 17k |
+| 4×2 | yes | 8 | **4** | 9k to 16k |
+| 8×1 | no | 8 | **0** | — |
+| 1×8 | yes | 8 | **4** | 7k to 14k |
+| 4×1, width 40 | no | 4 | 0 | — |
+
+Registered laptop-GPU arms: dense 1/5, looped 3/5.
+
+**Rules.** R1 (4×2 ≥ 4 and 8×1 ≤ 1) holds in **both** evaluations. R2 holds device-consistently (2×2 4 against looped 2) but not as registered (2×2 4 against GPU looped 3). R3 and R4 fail in both. Because the two evaluations disagree, the result is **device-sensitive**, and by the deviation record's clause no rule is formally declared met. Device sensitivity is visible directly: looped seed 21 learned at 8k on CPU and 21k on GPU, and seed 23 learned only on GPU.
+
+**What stands descriptively.**
+- Arms that reuse weights learned in 14 of 20 runs; arms that do not, in 1 of 15.
+- More compute without reuse (8×1) did not help, and neither did matching the looped model's size (width 40).
+
+**Caveats.**
+- All arms share one learning rate (1e-3). The closest published study reports untied models failing at 1e-3 but succeeding at 3e-4, so this may be tolerance of a single learning rate rather than an effect of reuse. The per-arm learning-rate sweep is the needed control.
+- Extra loops at test time do not buy three-step chains: three-step accuracy stays 0.29 to 0.44 and often falls with more loops.
+
+**Cost of the cycle** (list prices; billing not yet read): machine A, v5e-4, 00:57 to 08:53, about $38; machine B, v6e-4, 01:25 to 11:15, about $127. **Total about $165.** Both machines deleted themselves on the normal path, and Cloud Scheduler later received 404.
+
+### Question 9, review checks: results
+
+`correction_entity.py`, seeds 8001 to 8003. Files: `results/correction_interference/entity-*.json`. [Observed]
+
+| Arm | Other shown facts kept | Unshown (rule-implied) answers kept | All seven kept | Correction right after | Correction 20+ phases later |
+|---|---|---|---|---|---|
+| single (as recorded) | 0.658 | 0.426 | 0.492 | 1.000 | 0.662 |
+| single, stale optimiser state rescaled | 0.768 | 0.523 | 0.593 | 1.000 | 0.645 |
+| entity_replay | 0.987 | **0.682** | **0.768** | 1.000 | 0.623 |
+| random_replay | 0.670 | 0.448 | 0.511 | 1.000 | 0.670 |
+| frozen_address | 0.909 | 0.834 | 0.855 | 1.000 | 0.121 |
+| constrained edit | 0.983 | 0.966 | **0.971** | 0.998 | 0.215 |
+| store (model untouched) | 0.999 | 0.976 | 0.982 | (store holds it) | (store holds it) |
+
+**Verdicts.**
+- E0 held: `single` reproduced its recorded numbers exactly.
+- E1 **failed**: the unshown answers are damaged more than the shown ones (0.43 against 0.66 kept).
+- E2 held: same-entity rehearsal keeps what it rehearses (0.99) but only 68% of the entity's unshown answers. **The earlier "100%" for rehearsal was a property of the rehearsed facts, not of the entity.**
+- E3 held narrowly: the constrained edit keeps 97.1% of all seven, the only write into the model that protects the whole entity.
+- E4 held: the store keeps 98.2%.
+- E5 in between: rescaling the stale optimiser state raises whole-entity retention by 0.10. Stale state contributes but is not established as the main cause.
+
+Corrected summary: protecting the whole entity at write time needs constraints on all of its answers. The model's own current answers supply them (computed edit, 97%); rehearsing the facts one happens to have stored does not (77%). Durability is a separate problem that no in-model write here solves (at most 67% of corrections survive). This summary is still published in substance.
+
+### Harness calibration against a public model (2026-11-22)
+
+`tpu/eval_score_hf.py` scored Pythia-160M through our prompt texts, with lm-evaluation-harness encoding and no prefix. Compared with EleutherAI's official zero-shot file for the same checkpoint (`results/lm/pythia-160m-step143000-zero-shot.json`):
+
+| Task | Ours | Official | Difference in standard errors |
+|---|---|---|---|
+| ARC-Easy acc / norm | 0.436 / 0.401 | 0.435 / 0.397 | 0.1 / 0.4 |
+| ARC-Challenge acc / norm | 0.195 / 0.235 | 0.188 / 0.233 | 0.6 / 0.1 |
+| PIQA acc / norm | 0.623 / 0.621 | 0.627 / 0.616 | 0.4 / 0.4 |
+| WinoGrande acc | 0.513 | 0.531 | 1.3 |
+| LAMBADA acc (perplexity) | 0.354 (37.3) | 0.328 (38.1) | **4.0** (perplexity agrees) |
+
+**Our formats reproduce the official harness on ARC, PIQA and WinoGrande.** LAMBADA accuracy reads about 0.025 high, probably a text-normalisation difference in the target word; LAMBADA accuracy is therefore not compared with published numbers, but perplexity is.
+
+With that, Question 12's comparison stands for ARC, PIQA and WinoGrande. One known difference remains: our own models get an end-of-document prefix and Pythia does not.
+
+The 211M model trained on 4.2B tokens of corpus v2:
+- is ahead of Pythia-160M (300B tokens) on ARC-Easy (0.522 against 0.435) and PIQA (0.648 against 0.627);
+- is level on ARC-Challenge;
+- is behind on WinoGrande (0.511 against 0.531) and on LAMBADA perplexity (49 against 38).
+
+## Question 13. The next scale: a 386M dense model on corpus v2 with the adopted recipe (registered 2026-11-22, 15:10 UTC, before any run; owner approved, about $100)
+
+**Why.** Question 11 adopted Muon (consistent-RMS 0.2), decay 0.1 and a 1% floor. Question 12 showed that fresh tokens still pay at 101M and 211M. This run tests whether the gains hold together at the largest size the credit buys, and gives the best model so far.
+
+**Design.** v5e-4 machine (the v5e gave about 1.5 times more training per dollar than the v6e at 101M), one run across four chips, batch 64 × 512, seed 1000, corpus v2. Job `tpu/job_scale2.sh`; controller `tpu/vm_run.sh`.
+1. **Rate check at 101M**, 0.8B tokens, Muon, 1% floor: rates 2e-3, 4e-3 and 8e-3. The largest-model rate is chosen mechanically: the best of the three, capped at 4e-3, because no rate above 4e-3 has been tested at any size beyond 101M.
+2. **386M model** (`XXL`: width 1280, 20 layers, 386,062,080 parameters) on 7.7B tokens (20 per parameter). If it diverges, it is rerun once at half the rate.
+3. Benchmarks on the finished model, with the no-context control. Bits per byte on the same held-out sets as every run.
+
+**Predictions.**
+- Q1: the best 101M rate is 4e-3. The 101M Muon run at 0.8B tokens beats Question 12's default-recipe 101M at 0.8B (0.9775) by at least 0.02.
+- Q2: the 386M model reaches a held-out mix between 0.79 and 0.83 (211M at 4.2B tokens, old recipe: 0.876).
+- Q3: on our calibrated harness, it beats our 211M model on ARC-Easy and PIQA. Against Pythia-410M (300B tokens; official: ARC-Easy 0.521, PIQA 0.668, WinoGrande 0.537, LAMBADA perplexity 10.8), it is within 0.03 on ARC-Easy and PIQA and worse on LAMBADA perplexity.
+
+**Cost bound.** About 19 to 20 hours of a v5e-4 at $4.80 per hour, about $90 to $95. Deadline 2026-11-23 12:00 UTC (on-machine timer; Cloud Scheduler at 12:02; laptop watcher at 12:10). Worst case about $101.
+
+**Question 13, operational note (15:20 UTC).** Measured: four v5e chips give 439k tokens per second at 101M, so each rate check takes about 30 minutes. Scaled to 386M, the main run takes about 18.6 hours and would finish about 20 minutes before the 12:00 deadline. All three deadlines were therefore moved two hours later: on-machine 14:00, Cloud Scheduler 14:02, laptop watcher 14:10 on 23 November. The bound rises to about $111, with about $95 expected. Nothing in the design changed.
+
+**Question 9 summary, amended (2026-11-22).** "Durability is a separate problem that no in-model write here solves" is **superseded**, by G06 (session d5, draft PR #202, `NULLSPACE-DURABILITY-20261122.md`; predictions committed before its runs).
+- Its unprotected arm reproduces this branch's `constrained` arm exactly, seed by seed.
+- Projecting later decoder updates away from old entities' address directions (OWM, published 2019) keeps computed-edit corrections at 98.5% after 20+ phases, against 21.5% without.
+- The price is the rule: new entities' unshown relations are inferred at 56–66% instead of 99.7%.
+- Rehearsing the corrections alone keeps them (97.4%) but drops the corrected entities' other old facts to 40%.
+
+Corrected summary: in this model, durable in-model corrections and rule inference for new entities trade off through the shared decoder. Each method found so far buys one at the cost of the other; only the external store has both. [Reported by PR #202 and checked against its committed files; not re-run here.]
+
+**Question 9 summary, amended again (2026-11-22): G06b supersedes the line above.** Session d5, PR #202, `NULLSPACE-LOCAL-20261122.md`; predictions in `5adc2b0` and scorer in `b916aba`, both before the runs. Result files checked here.
+
+Protecting every old entity during later training gives a monotone trade-off. With protection strength α = 1, 10 and 100:
+- corrections still right 20+ phases later: 98.5%, 91.1%, 52.5%;
+- rule inference for new entities: 66%, 91%, 99.6%.
+
+Protection **limited to what was corrected** keeps both:
+- the corrected relation only, width 24: corrections 93.9%, inference 99.3%;
+- the corrected entities only, width 96: corrections 99.6%, their other answers 100%, inference 99.1%. The unprotected model at the same width keeps 21.6% of corrections.
+
+The G06 cost came from protecting all old entities, not from protection as such. **Corrected summary: durability and rule use separate when protection is limited to the corrected outputs.**
+
+Limits:
+- bilinear readout, so the projectors are exact;
+- one world, three seeds;
+- the mechanism is published in substance (OWM / null-space editing family).
+
+Whether it survives a nonlinear model is untested.
+
+**Question 12, caveat on the Pythia comparison (2026-11-22).** Beating Pythia-160M on ARC-Easy and PIQA is a low bar. Pythia was trained in 2023 on the Pile. Our corpus comes from education-filtered sources (FineWeb-Edu, Cosmopedia, FineMath), which are known to lift exactly these benchmarks. The win mostly shows good text and a sound recipe, not competitiveness with current small models. Modern references trained on similar text, SmolLM2-135M and SmolLM2-360M (Apache-2.0), are being scored through the same calibrated harness. Question 13's model will be compared with them, not with Pythia.
