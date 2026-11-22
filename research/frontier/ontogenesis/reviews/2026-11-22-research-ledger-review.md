@@ -45,3 +45,11 @@
 - Independent training runs, cloud object bytes, operating machine processes, energy meters and actual invoices were **not** accessed. JSONs and source paths were read from GitHub and compared with prose; the experiments were not rerun. No PHI, owner-private data, paid compute, branch merge, or protocol mutation occurred.
 
 **Next review gate:** inspect a new GitHub commit/immutable result before changing these conclusions. If no new result exists, leave the append-only ledger unchanged.
+
+## Post-cutoff new research-branch commit — source-only Q13 proposal
+
+While this review was being prepared, the research branch advanced from the explicitly inspected cutoff `e8e4a8633ec7a43332d20ad3ef77db8e1602d277` to [`12316003862ff4117c26583a65ea808e1ff1e2a8`](https://github.com/wwk5q8z6kk-bit/nano-lm/commit/12316003862ff4117c26583a65ea808e1ff1e2a8). The five changed paths are `INVESTIGATION.md`, `tpu/job_scale2.sh`, `tpu/vm_run.sh`, `tpu/train_jax.py`, and `results/lm/pythia-410m-step143000-zero-shot.json`, all under `research/frontier/ontogenesis/`.
+
+**What is new:** `INVESTIGATION.md` Q13 records a proposed 101M Muon learning-rate check at 0.002/0.004/0.008, followed by a **386,062,080-parameter** dense model at **7.7B** corpus-v2 tokens on four v5e chips, with task benchmarks and no-context controls. The stated ceiling is about **$101 at list prices**, and the source says the owner approved this future run. These are **source-reported planning and claimed authorization**, not an authorization independently verified here. `job_scale2.sh` and `vm_run.sh` are launch/controller code, not proof of execution; the added Pythia-410M JSON is a public reference benchmark, **not a Nano 386M outcome**. No new Q13 completed run or 386M trained checkpoint was verified at this cutoff. Do not start or approve any paid compute from this review.
+
+**Preserve the preregistered predictions Q1–Q3** and the current 211M observations. The cheapest next checks are read-only script/manifest sanity and output-identity readiness; after any separately authorized run, examine immutable training/checkpoint/evaluation receipts, actual billing and the prespecified seed, learning-rate and score rules before treating Q13 as completed. Keep any later result in its own dated addendum rather than backdating it into V5.
