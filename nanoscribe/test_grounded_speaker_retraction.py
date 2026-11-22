@@ -55,6 +55,162 @@ def test_later_identified_speaker_preserves_patient_evidence_and_remains_uncover
     assert aside in uncovered
 
 
+@pytest.mark.parametrize("aside", [
+    "Unknown: The jacket is by the chair.",
+    "uNkNoWn:  We found the parking pass. Could you please leave the pass at the desk?",
+    "The umbrella is upstairs.",
+    "Unknown: The main entrance closes at noon. Our taxi is by the side door.",
+    "Unknown: Where could we collect the visitor passes?",
+])
+def test_unidentified_logistics_preserves_patient_evidence_and_remains_uncovered(aside):
+    uncovered = check(f"Patient: I took naproxen.\r\n{aside}", MED, "naproxen", licensed=True)
+    assert aside in uncovered
+
+
+@pytest.mark.parametrize("aside", [
+    "Unknown: The umbrella is upstairs. The answers marked Patient were mine.",
+    "Unknown: I found the bag. But the drug name was wrong.",
+    "Unknown: The parking pass is here, actually I took ibuprofen.",
+    "Unknown: Sorry, I was mistaken. My coat is by the desk.",
+    "Office: My coat is by the desk.",
+])
+def test_logistics_cannot_mask_an_unidentified_correction_or_unrecognized_label(aside):
+    check(f"Patient: I took naproxen.\n{aside}", MED, "naproxen", licensed=False)
+
+
+def test_unidentified_aside_preserves_a_later_patient_retraction():
+    check("Patient: I took naproxen.\nUnknown: The parking pass is here.\nPatient: Actually I was wrong.",
+          MED, "naproxen", licensed=False)
+
+
+@pytest.mark.parametrize("aside,doubt,licensed", [
+    ("The umbrella is upstairs.", "I'm not sure whether I took it.", False),
+    ("Where is the garage?", "I'm not sure whether I took naproxen.", False),
+    ("Where is the garage?", "I'm not sure about that.", True),
+    ("The umbrella is upstairs.", "I am not sure about that. The umbrella is downstairs.", True),
+    ("The umbrella is upstairs.", "I'm not sure whether I took loratadine.", True),
+])
+def test_logistical_asides_preserve_the_scope_of_patient_doubt(aside, doubt, licensed):
+    check(f"Patient: I took naproxen.\nUnknown: {aside}\nPatient: {doubt}", MED, "naproxen", licensed=licensed)
+
+
+@pytest.mark.parametrize("field,first,second", [
+    (MED, "I took naproxen.", "I haven't taken anything."),
+    (ALG, "No known allergies.", "I am allergic to nickel."),
+    (SEV, "My neck pain is 3/10.", "My neck pain is 7/10."),
+])
+def test_subsequent_explicit_patient_evidence_still_exposes_the_conflict(field, first, second):
+    def choices(aside):
+        report = f"Patient: {first}\n{aside}Patient: {second}"
+        source = transcript_source(NanoInput("speaker-boundary", report))
+        return set(build_grounded_english_menu(source, field, set()))
+
+    baseline = choices("")
+    assert any(label.lstrip().startswith("CONTRADICTED[") for label in baseline)
+    assert choices("Unknown: The main entrance is closed.\n") == baseline
+
+
+@pytest.mark.parametrize("question,answer,field,quote,state", [
+    ("What medication did you take?", "Naproxen.", MED, "Naproxen", REPORTED),
+    ("What medication did you take?", "I haven't taken anything.", MED, "I haven't taken anything.", DENIED),
+    ("How severe is your pain?", "7/10.", SEV, "7/10", REPORTED),
+    ("How severe is your pain?", "It is mild.", SEV, "mild", REPORTED),
+    ("When did it start?", "Monday.", DUR, "Monday", REPORTED),
+    ("How long has it hurt?", "I have a headache. Four days.", DUR, "Four days", REPORTED),
+])
+def test_unidentified_logistics_cannot_supply_the_question_for_a_patient_answer(question, answer, field, quote, state):
+    check(f"Doctor: {question}\nUnknown: Where is the garage?\nPatient: {answer}",
+          field, quote, state=state, licensed=False)
+
+
+@pytest.mark.parametrize("field,answer,quote", [
+    (SEV, "My foot pain is 7/10.", "7/10"),
+    (SEV, "Currently my neck pain is 2/10.", "2/10"),
+    (SEV, "My headache feels severe.", "severe"),
+    (DUR, "My headache has been constant for three days.", "three days"),
+    (DUR, "I have had a headache for three days.", "three days"),
+    (MED, "I took naproxen.", "naproxen"),
+])
+def test_field_specific_patient_statement_after_a_logistical_question(field, answer, quote):
+    check(f"Unknown: Where is the garage?\nPatient: {answer}", field, quote, licensed=True)
+
+
+@pytest.mark.parametrize("answer,field,quote,licensed", [
+    ("Monday for the pass, but my headache has lasted four days.", DUR, "Monday", False),
+    ("Monday for the pass, but my headache has lasted four days.", DUR, "four days", True),
+    ("My headache has lasted four days, but the pass expires Monday.", DUR, "Monday", False),
+    ("I took the bag with my aspirin in it.", MED, "bag", False),
+    ("I took the bag with my aspirin in it.", MED, "aspirin", False),
+    ("I took aspirin from the bag.", MED, "aspirin", True),
+])
+def test_patient_measurement_or_substance_belongs_to_the_cited_object(answer, field, quote, licensed):
+    report = f"Unknown: Can you bring the bag?\nPatient: {answer}"
+    check(report, field, quote, licensed=licensed, after=report.index("Patient:"))
+
+
+@pytest.mark.parametrize("field,answer,quote", [
+    (DUR, "It started six days ago.", "six days"),
+    (SEV, "It is mild.", "mild"),
+])
+def test_plain_other_statement_preserves_previous_scalar_context(field, answer, quote):
+    check(f"Patient: I have a headache.\nOther: The umbrella is upstairs.\nPatient: {answer}",
+          field, quote, licensed=True)
+
+
+@pytest.mark.parametrize("answer,field,eligible", [
+    ("I am not sure.", CC, False),
+    ("I am not sure.", ALG, False),
+    ("I am not sure where the umbrella is.", CC, False),
+    ("I am not sure where the garage is.", MED, False),
+    ("I am not sure whether I took the bus with aspirin in my bag.", MED, False),
+    ("I am not sure whether I am allergic to nickel.", ALG, True),
+    ("I am not sure whether I took naproxen.", MED, True),
+    ("I am not sure how long my headache has lasted.", DUR, True),
+    ("I cannot remember when my wrist pain started.", DUR, True),
+    ("I am not sure how severe my headache is.", SEV, True),
+    ("I cannot tell how bad the rash is.", SEV, True),
+    ("I am unsure of the duration of my headache.", DUR, True),
+    ("I cannot tell how long the parking pass lasts with my headache.", DUR, False),
+    ("I am unsure how bad the delay is for my headache.", SEV, False),
+    ("I am not sure how severe my headache is.", DUR, False),
+    ("I cannot remember when my wrist pain started.", SEV, False),
+    ("I cannot remember how long ago my headaches began.", DUR, True),
+    ("I cannot tell how bad my cramps are.", SEV, True),
+    ("I am not sure when the ringing started.", DUR, True),
+    ("I am unsure how severe the shortness of breath is.", SEV, True),
+    ("I cannot remember the onset of my palpitations.", DUR, True),
+    ("I am unsure how bad my headache diary is.", SEV, False),
+    ("I am unsure how long the cough drops lasted.", DUR, False),
+    ("I am unsure how severe her headaches are.", SEV, False),
+    ("I am unsure how long my sister's headaches lasted.", DUR, False),
+    ("I am unsure how long ago my parking pass expired.", DUR, False),
+    ("I am not sure whether my sister is allergic to nickel.", ALG, False),
+    ("I am not sure whether Jordan is allergic to nickel.", ALG, False),
+    ("I am unsure if he has allergies.", ALG, False),
+    ("She is unsure whether I took naproxen.", MED, False),
+    ("My sister is unsure how severe my headache is.", SEV, False),
+    ("Jordan cannot remember when my wrist pain began.", DUR, False),
+    ("The leaflet asks whether I am allergic to nickel.", ALG, False),
+    ("Honestly, I am unsure if I have drug allergies.", ALG, True),
+    ("I am unsure about my allergy to nickel.", ALG, True),
+    ("Not sure whether I took naproxen.", MED, True),
+])
+@pytest.mark.parametrize("aside", ["Unknown: Where is the garage?", "Unknown: The umbrella is upstairs."])
+def test_uncertainty_after_logistics_requires_a_clinical_target(answer, field, eligible, aside):
+    report = f"{aside}\nPatient: {answer}"
+    request = NanoInput("logistics-uncertainty", report)
+    source = transcript_source(request)
+    candidate = f":U[{answer}]"
+    index = FIELD_ORDER.index(field)
+    assert (candidate in grounded_candidate_choices(report, field, set())) == eligible
+    assert (f" UNCERTAIN[{answer}]" in build_grounded_english_menu(source, field, set())) == eligible
+    raw = "|".join(label + (candidate if idx == index else ":M")
+                   for idx, label in enumerate(("CC", "DUR", "SEV", "MED", "ALG")))
+    result, diagnostics = compact_solver(lambda _: raw, binder="grounded").infer_grounded(request)
+    assert diagnostics["fields"][index]["verified"] is eligible
+    assert bool(result.fields[index].evidence) == eligible
+
+
 @pytest.mark.parametrize("later,licensed", [
     ("Mother: I was mistaken about naproxen.", True),
     ("  pArTnEr  :  Actually I took ibuprofen instead.", True),
@@ -252,3 +408,92 @@ def test_other_aside_mentioning_a_relative_keeps_an_independent_patient_report()
 def test_neutral_aside_mentioning_time_preserves_patient_correction_adjacency():
     check("Patient: No known allergies.\nNurse: We paid for parking last month.\nPatient: Actually I was wrong.",
           ALG, "No known allergies.", state=DENIED, licensed=False)
+
+
+@pytest.mark.parametrize("disclaimer, licensed", [
+    ("That is my usual routine. I pay for parking every morning.", True),
+    ("Naproxen is just my usual routine.", False),
+    ("That medication is just my usual routine.", False),
+])
+def test_routine_disclaimer_needs_a_medication_referent_across_an_aside(disclaimer, licensed):
+    check(f"Patient: I took naproxen.\nOther: I paid for the parking.\nPatient: {disclaimer}",
+          MED, "naproxen", licensed=licensed)
+
+
+@pytest.mark.parametrize("answer,quote,licensed", [
+    ("I took 10 mg of rimegepant.", "rimegepant", True),
+    ("I took rimegepant for my headache.", "rimegepant", True),
+    ("I took the bus, but I took rimegepant for my pain.", "rimegepant", True),
+    ("I took the bag holding 10 mg of rimegepant.", "rimegepant", False),
+    ("I took the bag holding 10 mg of rimegepant.", "the bag", False),
+    ("I took the bag with rimegepant in it.", "rimegepant", False),
+    ("I took the bag with aspirin in it.", "aspirin", False),
+    ("I took aspirin from the bag.", "aspirin", True),
+    ("I took my parking pass and I took 10 mg of rimegepant.", "parking pass", False),
+    ("I took my parking pass and I took 10 mg of rimegepant.", "rimegepant", True),
+    ("I plan to take 10 mg of rimegepant.", "rimegepant", False),
+    ("I took the bus then I took aspirin.", "aspirin", True),
+    ("After I took the bus I took 10 mg of rimegepant.", "rimegepant", True),
+    ("I took the bus before I took aspirin.", "aspirin", True),
+    ("I took aspirin before I took the bus.", "aspirin", True),
+    ("I took aspirin before I took the bag holding naproxen.", "naproxen", False),
+    ("I took the bag with naproxen in it before I took aspirin.", "naproxen", False),
+])
+def test_medication_after_logistics_uses_its_own_treatment_event(answer, quote, licensed):
+    report = f"Other: Where is the garage?\nPatient: {answer}"
+    check(report, MED, quote, licensed=licensed)
+
+
+@pytest.mark.parametrize("intervening,followup,licensed", [
+    ("Unknown: The umbrella is upstairs.", "My headache has resolved.", False),
+    ("Other: Where is the garage?", "The headache has gone away.", False),
+    ("Other: Where is the garage?", "It is upstairs. My headache has gone away.", False),
+    ("Other: The umbrella is upstairs.\nUnknown: The lobby door is closed.", "My headache has stopped.", False),
+    ("Other: Where is the garage?", "It is gone.", True),
+    ("Other: Where is the garage?", "My rash has resolved.", True),
+    ("Other: Where is the garage?", "My headache has not resolved.", True),
+    ("Other: Where is the garage?", "My headache has gone away but it has returned.", True),
+    ("Doctor: Did the rash clear up?", "It is gone.", True),
+    ("Other: Where is the garage?", "My headache has resolved. I still have chest pain.", False),
+])
+def test_named_resolution_across_logistics(intervening, followup, licensed):
+    report = f"Patient: I have a headache.\n{intervening}\nPatient: {followup}"
+    check(report, CC, "headache", licensed=licensed)
+    if "chest pain" in followup:
+        check(report, CC, "chest pain", licensed=True)
+
+
+@pytest.mark.parametrize("field,answer,excerpt,eligible", [
+    (MED, "I am not sure whether I took naproxen.", "I am not sure whether I took naproxen", True),
+    (MED, "To be honest, I am not sure whether I took naproxen.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen, to be honest.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen because I felt well.", "not sure whether I took naproxen because I felt", False),
+    (MED, "I am not sure whether I took naproxen because I felt well.", "not sure whether I took naproxen because I felt well", True),
+    (ALG, "I am unsure if I have drug allergies because I feel well.", "unsure if I have drug allergies because I feel", False),
+    (MED, "I am not sure whether I took naproxen, honestly.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen. My bus is late.", "not sure whether I took naproxen", True),
+    (MED, "I am not sure whether I took naproxen.", "I am not sure", False),
+    (MED, "I am not sure whether I took naproxen.", "I took naproxen", False),
+    (MED, "I am not sure whether I took naproxen.", "I am not sure whether I took naprox", False),
+    (MED, "I am not sure whether I took naproxen after lunch.", "not sure whether I took naproxen", False),
+    (ALG, "To be honest, I am unsure if I have drug allergies.", "unsure if I have drug allergies", True),
+    (ALG, "I am unsure if I have drug allergies.", "drug allergies", False),
+    (DUR, "Honestly, I cannot remember when my wrist pain began.", "cannot remember when my wrist pain began", True),
+    (SEV, "Honestly, I am unsure how severe my headache is.", "unsure how severe my headache is", True),
+    (SEV, "I am unsure how long the delay is. My headache is severe.", "I am unsure how long the delay is", False),
+    (SEV, "My sister is unsure how severe my headache is.", "unsure how severe my headache is", False),
+    (ALG, "I am unsure whether I have allergies.", "whether I have allergies", False),
+    (SEV, "The leaflet asks whether my headache is severe.", "whether my headache is severe", False),
+    (DUR, "My headache lasted either two or three days.", "either two", False),
+    (MED, "I am not sure whether I took naproxen or aspirin.", "not sure whether I took naproxen", False),
+    (MED, "I am not sure whether I took naproxen.", "I am not sure whether I took naproxen||naproxen", False),
+])
+def test_uncertain_excerpt_retains_hedge_and_clinical_target(field, answer, excerpt, eligible):
+    text = "Other: Where is the garage?\nPatient: " + answer
+    request = NanoInput("uncertain-excerpt", text)
+    index = FIELD_ORDER.index(field)
+    raw = "|".join(label + (f":U[{excerpt}]" if idx == index else ":M")
+                   for idx, label in enumerate(("CC", "DUR", "SEV", "MED", "ALG")))
+    extraction, trace = compact_solver(lambda _: raw, binder="grounded").infer_grounded(request)
+    assert trace["fields"][index]["verified"] is eligible
+    assert [span.text for span in extraction.fields[index].evidence] == ([excerpt] if eligible else [])
