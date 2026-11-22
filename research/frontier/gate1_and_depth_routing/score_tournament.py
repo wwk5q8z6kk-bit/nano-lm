@@ -1,7 +1,9 @@
 """Deterministic scorer for the pre-registered H-13 / H-10 vs Dense+Muon tournament.
 
-Reads per-seed Kaggle output JSON files (`seed_1000.json`, `seed_1001.json`, `seed_1002.json`),
-verifies identical evaluation crop reproduction, computes:
+Reads per-seed Kaggle output JSON files (`seed_1000.json`, `seed_1001.json`, `seed_1002.json`)
+only once `completed` is true and every arm's last curve step equals the planned step count
+(`recipe.steps`, otherwise the pre-registered `3000`). In-progress checkpoints are ignored.
+Verifies identical evaluation crop reproduction, computes:
   1. Equal-token 3-seed means, SDs, paired differences, and two-sided paired t-statistics (df=2);
   2. Equal-wall-clock interpolated mix BPB for each candidate at `dense`'s final elapsed seconds
      on the same physical GPU within each seed;
@@ -16,6 +18,7 @@ import sys
 from pathlib import Path
 
 T_CRIT_DF2_95 = 4.302652729911275  # two-sided 95% t critical value for df=2
+REGISTERED_STEPS = 3000  # pre-registered step count; recipe.steps overrides when the runner recorded one
 
 
 def interp_bpb_at_time(curve: list[dict], target_sec: float, key: str = "mix") -> float:
@@ -57,6 +60,28 @@ def paired_stats(diffs: list[float]) -> dict:
     }
 
 
+def planned_steps(seed_doc: dict) -> int:
+    recipe = seed_doc.get("recipe") or {}
+    if "steps" in recipe:
+        return int(recipe["steps"])
+    return REGISTERED_STEPS
+
+
+def seed_run_is_final(seed_doc: dict) -> bool:
+    """True only for a finished seed, not a mid-eval rewrite of `seed_*.json`."""
+    if seed_doc.get("completed") is not True:
+        return False
+    arms = seed_doc.get("arms") or {}
+    if not arms:
+        return False
+    planned = planned_steps(seed_doc)
+    for arm_doc in arms.values():
+        curve = arm_doc.get("curve") or []
+        if not curve or int(curve[-1].get("step", -1)) != planned:
+            return False
+    return True
+
+
 def score_files(paths: list[Path]) -> dict:
     by_seed: dict[int, dict] = {}
     for p in sorted(paths):
@@ -64,9 +89,11 @@ def score_files(paths: list[Path]) -> dict:
         sd = int(d["seed"])
         by_seed[sd] = d
 
-    seeds = sorted(by_seed.keys())
-    if not seeds:
+    if not by_seed:
         raise SystemExit("No seed result files found")
+    seeds = sorted(s for s in by_seed if seed_run_is_final(by_seed[s]))
+    if not seeds:
+        raise SystemExit("No completed seed result files found")
 
     arms = ["dense", "value_res", "block_attnres", "coda_refine", "dense10"]
     arm_summary = {}
@@ -138,9 +165,9 @@ def score_files(paths: list[Path]) -> dict:
         vr_tok = comparisons["value_res_vs_dense"]["equal_tokens_gain"]
         vr_time = comparisons["value_res_vs_dense"]["equal_wallclock_gain"]
 
-        if ba_tok["mean"] >= 0.004 and ba_time["mean"] >= 0.004 and ba_tok["sig_95"] and ba_vr["mean"] >= 0.002:
+        if ba_tok["mean"] >= 0.004 and ba_time["mean"] >= 0.004 and ba_tok["sig_95"] and ba_time["sig_95"] and ba_vr["mean"] >= 0.002:
             d1 = "ADOPT_BLOCK_ATTNRES"
-        elif vr_tok["mean"] >= 0.004 and vr_time["mean"] >= 0.004 and vr_tok["sig_95"] and ba_vr["mean"] < 0.002:
+        elif vr_tok["mean"] >= 0.004 and vr_time["mean"] >= 0.004 and vr_tok["sig_95"] and vr_time["sig_95"] and ba_vr["mean"] < 0.002:
             d1 = "ADOPT_VALUE_RES_REJECT_BLOCK_ATTNRES"
         else:
             d1 = "CLOSE_DEPTH_ROUTING_AT_14M"

@@ -162,6 +162,7 @@ np.savez("{tmp_npz}.out.npz", emb=np.asarray(params["emb"]), w2d=np.asarray(para
                 noise = idx * 0.0002
                 payload = {
                     "seed": sd,
+                    "completed": True,
                     "gpu": "TestGPU",
                     "arm_order": list(ARM_SPECS),
                     "arms": {
@@ -179,6 +180,101 @@ np.savez("{tmp_npz}.out.npz", emb=np.asarray(params["emb"]), w2d=np.asarray(para
             self.assertEqual(res["verdicts"]["D1_depth_routing"], "ADOPT_BLOCK_ATTNRES")
             # coda_refine takes 250s vs 200s dense, so at 200s its interpolated mix is ~1.203 (> 1.19 dense) -> sparse gated only!
             self.assertEqual(res["verdicts"]["D2_coda_refinement"], "ADVANCE_CODA_TO_SPARSE_GATED_40M")
+
+    def test_d1_requires_wallclock_significance_and_finished_runs(self):
+        import json, tempfile
+
+        def row(step, train_sec, mix):
+            return {
+                "step": step, "train_sec": train_sec, "web": mix, "textbook": mix,
+                "math": mix, "code": mix, "mix": mix, "tokens_per_second": 1000,
+            }
+
+        def finished(mix, train_sec=100.0, early=None):
+            curve = []
+            if early is not None:
+                curve.append(row(1500, early[0], early[1]))
+            curve.append(row(3000, train_sec, mix))
+            return {"params": 1, "curve": curve}
+
+        def write(td, sd, arms, completed=True):
+            payload = {
+                "seed": sd,
+                "gpu": "TestGPU",
+                "recipe": {"steps": 3000},
+                "arm_order": list(ARM_SPECS),
+                "arms": arms,
+            }
+            if completed is not None:
+                payload["completed"] = completed
+            path = Path(td) / f"seed_{sd}.json"
+            path.write_text(json.dumps(payload))
+            return path
+
+        # Equal-token gain is a clean 0.009, but equal-wall-clock gain only clears 0.004 in the mean.
+        time_gains = (0.020, 0.000, -0.002)
+        with tempfile.TemporaryDirectory() as td:
+            paths = []
+            for idx, sd in enumerate((1000, 1001, 1002)):
+                arms = {name: finished(1.20) for name in ARM_SPECS}
+                arms["block_attnres"] = finished(1.191, train_sec=200.0, early=(100.0, 1.20 - time_gains[idx]))
+                arms["value_res"] = finished(1.194)
+                paths.append(write(td, sd, arms))
+            res = score_files(paths)
+            wall = res["comparisons"]["block_attnres_vs_dense"]["equal_wallclock_gain"]
+            self.assertGreaterEqual(wall["mean"], 0.004)
+            self.assertFalse(wall["sig_95"])
+            self.assertEqual(res["verdicts"]["D1_depth_routing"], "CLOSE_DEPTH_ROUTING_AT_14M")
+
+        # Value-residual fallback uses the same paired-t gate at equal wall-clock.
+        with tempfile.TemporaryDirectory() as td:
+            paths = []
+            for idx, sd in enumerate((1000, 1001, 1002)):
+                arms = {name: finished(1.20) for name in ARM_SPECS}
+                arms["value_res"] = finished(1.191, train_sec=200.0, early=(100.0, 1.20 - time_gains[idx]))
+                arms["block_attnres"] = finished(1.190)
+                paths.append(write(td, sd, arms))
+            res = score_files(paths)
+            wall = res["comparisons"]["value_res_vs_dense"]["equal_wallclock_gain"]
+            self.assertGreaterEqual(wall["mean"], 0.004)
+            self.assertFalse(wall["sig_95"])
+            self.assertLess(res["comparisons"]["block_attnres_vs_value_res"]["equal_tokens_gain"]["mean"], 0.002)
+            self.assertEqual(res["verdicts"]["D1_depth_routing"], "CLOSE_DEPTH_ROUTING_AT_14M")
+
+        # A crashed checkpoint must not be paired with finished 3000-step arms.
+        # Seeds 1000/1001 gain 0.0035. The step-1500 checkpoint gains 0.0055, which
+        # would pull the 3-seed mean over 0.004 and past |t| > 4.303 if treated as final.
+        with tempfile.TemporaryDirectory() as td:
+            paths = []
+            for sd, gain in ((1000, 0.0035), (1001, 0.0035)):
+                arms = {name: finished(1.20) for name in ARM_SPECS}
+                arms["block_attnres"] = finished(1.20 - gain)
+                arms["value_res"] = finished(1.20 - gain + 0.003)
+                paths.append(write(td, sd, arms))
+            partial_arms = {name: finished(1.20) for name in ARM_SPECS}
+            partial_arms["block_attnres"] = {"params": 1, "curve": [row(1500, 100.0, 1.20 - 0.0055)]}
+            partial_arms["value_res"] = finished(1.20 - 0.0055 + 0.003)
+            paths.append(write(td, 1002, partial_arms, completed=None))
+            res = score_files(paths)
+            self.assertEqual(res["seeds"], [1000, 1001])
+            self.assertEqual(res["verdicts"]["D1_depth_routing"], "CLOSE_DEPTH_ROUTING_AT_14M")
+
+            # completed=true does not excuse a curve that never reached the planned step.
+            paths[-1] = write(td, 1002, partial_arms, completed=True)
+            res = score_files(paths)
+            self.assertEqual(res["seeds"], [1000, 1001])
+            self.assertEqual(res["verdicts"]["D1_depth_routing"], "CLOSE_DEPTH_ROUTING_AT_14M")
+
+        # Full curves are still a checkpoint until the runner sets completed.
+        with tempfile.TemporaryDirectory() as td:
+            paths = []
+            for sd in (1000, 1001, 1002):
+                arms = {name: finished(1.20) for name in ARM_SPECS}
+                arms["block_attnres"] = finished(1.191)
+                arms["value_res"] = finished(1.194)
+                paths.append(write(td, sd, arms, completed=None))
+            with self.assertRaises(SystemExit):
+                score_files(paths)
 
     def test_kaggle_tournament_end_to_end_smoke(self):
         import json, os, tempfile
