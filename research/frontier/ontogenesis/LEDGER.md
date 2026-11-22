@@ -268,3 +268,46 @@ Recorded at 2026-11-22T01:50:45Z. V3 is preserved above. Current architecture ad
 The new pilot result is upstream evidence reanalysed here. Local native learning is limited to synthetic engineering fixtures; no corpus-scale/GPU/TPU training, paid compute, held-out benchmark, architecture selection or merge was performed by this update. G03b still requires a separately frozen scientific protocol, fresh seeds, native data, unrelated-quality/new-learning guardrails and total cost accounting. Existing source protocols were not revised retrospectively.
 
 Full current decisions, alternatives and next gates are in [architecture ledger02](architecture/02_DECISION_LEDGER.md); actual verification and limitations are in [validation06](architecture/06_VALIDATION_AND_UNRESOLVED_WORK.md).
+
+---
+
+## 2026-11-21 — Address × optimiser factorial result and reference check (additive)
+
+Recorded 2026-11-22T02:15Z by a separate reviewing session. Everything above is unchanged. No decision ID is assigned here; the maintainers of the decision register should assign one if they adopt these rows.
+
+### D-008 follow-up: the multi-seed factorial has been run
+
+Protocol committed before any confirmatory run (`b82d0f0`), results in `767857e`, both on branch `research/memory-saturation-factorial`, draft [PR #199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199) into `research/ontogenesis-phase1`. Five fresh seeds (3101–3105). Late new-fact accuracy, phases 46–60:
+
+| Cell | Range over seeds | Mean | Status |
+|---|---|---|---|
+| Original addresses, Adam state carried | 0.019–0.029 | 0.024 | Demonstrated: the collapse replicates (F1 held) |
+| Hashed addresses, Adam state carried | 1.000 | 1.000 | Demonstrated (F2 held) |
+| Original addresses, Adam reset each phase | 0.547–0.694 | 0.635 | F3 (at least 0.70) **failed** on all five seeds |
+| Hashed addresses, Adam reset each phase | 1.000 | 1.000 | F4 held: no acquisition effect under hashing |
+| Original addresses, Adam with β2 = 0.9 | 0.334–0.482 | 0.419 | F5 partial by its registered rule; nothing claimed |
+| Original addresses, plain gradient descent | 0.495–0.648 | 0.585 | F6 (at least 0.70) **failed** on all five seeds |
+
+- This narrows D-008. The one-seed figure "optimiser reset 86.1%" was above every fresh seed. Carried Adam state accounts for about two thirds of the collapse, not nearly all of it.
+- Concentrated addresses limit acquisition on their own: with no optimiser state at all, the original addresses reach 0.585 while every hashed arm reaches 1.000.
+- The second-moment hypothesis recorded in `INVESTIGATION.md`, Question 7, is not supported as the whole mechanism and is not refuted.
+- "With the optimiser reset, the same fixed addresses acquire 86% and retain 83%" does not hold on fresh seeds: 55–69% acquired, 50–66% retained.
+- Not predicted, so an observation only: resetting Adam raised late retention under hashed addresses from 0.892 to 0.997 on every seed.
+- Limits: a value table trained on arbitrary facts, which an exact lookup table solves; the 0.70 thresholds were set after seeing the one-seed figure; the driver was killed once and three unfinished runs with no output were restarted; timings are unusable. Details in `RESULTS-MEMSAT-FACTORIAL.md` on that branch.
+
+### Reference check of the 2026-11-21 master blueprint (R01–R44)
+
+A separate agent looked up all 44 references of the blueprint at primary sources on 2026-11-21. All 44 were located; none was found fabricated or contradicted, and every headline figure that could be checked matched. This is an existence-and-headline check through a page-extraction tool. It is not a methods audit, and it does not replace the source-specific inspection in `architecture/08_LITERATURE_AUDIT.md`. Corrections to carry:
+
+| Reference | Correction or weaker confirmation |
+|---|---|
+| Qwen3.5-4B-Base model card | Layer layout and 248,320 padded vocabulary confirmed. The card's file information shows 5B parameters beside the "4B" label; do not use it as a sub-4B reference point without counting. |
+| Kimi Linear | "Up to 6×" is decoding throughput at 1M context specifically. |
+| CopyGen (copy-constrained decoding) | Listed as a preprint; its arXiv entry says NeurIPS 2026. |
+| MEMIT, TRACE, OpenAI SWE-bench Verified post | Minor title errors: hyphenation, truncated title, browser-tab title used instead of the page headline. |
+| SmolLM3 | The source gives 11T, 11.1T and 11.2T in different places. |
+| Byteification (Nature), Loss of plasticity (Nature), DNC (Nature), TokenPowerBench (AAAI), Sealevel | Publisher page could not be opened; confirmation rests on Crossref, arXiv or a search result. "Continual backprop" for the Nature 2024 paper was not read from a source. |
+
+### Checks of this package rerun independently at `176ece7`
+
+Mathematical examples 12/12, NumPy checks 5/5, forward reference 13/13 and the package validator (PASS, 27 events) reproduced on a separate machine. The 35-case package regression suite was not rerun there. Nothing at `0c0a369` (V4) has been rerun independently.
