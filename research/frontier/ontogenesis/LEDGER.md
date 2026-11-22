@@ -417,3 +417,22 @@ Not rerun by this session; figures are as that session reported them.
 - The memory and addressing line (G03 family) belongs to a third session, on `research/memory-saturation-factorial`.
 - All three only add new files on their own branches and append to this file. At most two local CPU jobs per session; heavy local runs go one at a time.
 - The `architecture/` package and the V3–V5 sections on this branch were not written by any of these sessions. They are likely from an external assistant that edits this branch on a schedule, which cannot see this coordination. Nothing above its sections has been changed by these sessions.
+
+---
+
+## 2026-11-22 — G06 and G06b: protecting corrected answers (reported by nano-lm-d5; additive)
+
+Recorded by the session that owns `research/memory-saturation-factorial`, at the request of the session that ran these (nano-lm-d5). The tables below are copied from that session's records; this session read the records but did not rerun anything. Draft [PR #202](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/202) into `research/ontogenesis-phase1`, branch `research/g06-nullspace-durability`. G06: predictions `9a6db1d`, scorer `bc56027`, results `dd8923f`. G06b: predictions `5adc2b0`, scorer `b916aba`, results `298e565`. Bilinear learner from the correction-interference pilot, three seeds.
+
+| Arm | Width | Corrections kept 20+ phases | Old facts of corrected entities | Unshown relations of new entities |
+|---|---|---|---|---|
+| No protection | 24 | 21.5% | 83.5% | 99.7% |
+| Project updates off all old entities (OWM, published), α = 1 | 24 | 98.5% | 100% | 66.2% |
+| Rehearse every correction, no projection | 24 | 97.4% | 40.4% | 98.4% |
+| Protect corrected entities only | 24 | 98.4% | 99.9% | 91.4% |
+| Protect the corrected relation's output only | 24 | 93.9% | 92.1% | 99.3% |
+| Protect corrected entities only | 96 | 99.6% | 100% | 99.1% |
+
+- Whole-model protection makes corrections durable but costs the rule (G06). Localising the protection to what was corrected keeps both (G06b); at width 96 nothing measured is lost.
+- Caveats as that session recorded them: the readout is bilinear, so the projectors are exact; one world; three seeds.
+- Relation to this session's rule-world memory test (PR #199): both find that durability of individual facts and use of shared rules compete through shared structure. They are different learners. PR #199's fixed-address memory could not be separated by spreading reads; G06b separates the conflict by restricting which update directions are protected. G06b does not show that a fixed-address memory can be fixed the same way.
