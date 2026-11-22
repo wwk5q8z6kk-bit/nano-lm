@@ -39,6 +39,7 @@ SIZES = {
     "M": dict(d=512, layers=8, ffn=1408, heads=8, kv=4),      # ~42M, the Kaggle baseline model
     "L": dict(d=768, layers=12, ffn=2048, heads=12, kv=4),    # ~101M
     "XL": dict(d=1024, layers=16, ffn=2752, heads=16, kv=4),  # ~211M
+    "XXL": dict(d=1280, layers=20, ffn=3456, heads=20, kv=4), # ~386M
 }
 
 

@@ -819,3 +819,19 @@ The 211M model trained on 4.2B tokens of corpus v2:
 - is ahead of Pythia-160M (300B tokens) on ARC-Easy (0.522 against 0.435) and PIQA (0.648 against 0.627);
 - is level on ARC-Challenge;
 - is behind on WinoGrande (0.511 against 0.531) and on LAMBADA perplexity (49 against 38).
+
+## Question 13. The next scale: a 386M dense model on corpus v2 with the adopted recipe (registered 2026-11-22, 15:10 UTC, before any run; owner approved, about $100)
+
+**Why.** Question 11 adopted Muon (consistent-RMS 0.2), decay 0.1 and a 1% floor. Question 12 showed that fresh tokens still pay at 101M and 211M. This run tests whether the gains hold together at the largest size the credit buys, and gives the best model so far.
+
+**Design.** v5e-4 machine (the v5e gave about 1.5 times more training per dollar than the v6e at 101M), one run across four chips, batch 64 × 512, seed 1000, corpus v2. Job `tpu/job_scale2.sh`; controller `tpu/vm_run.sh`.
+1. **Rate check at 101M**, 0.8B tokens, Muon, 1% floor: rates 2e-3, 4e-3 and 8e-3. The largest-model rate is chosen mechanically: the best of the three, capped at 4e-3, because no rate above 4e-3 has been tested at any size beyond 101M.
+2. **386M model** (`XXL`: width 1280, 20 layers, 386,062,080 parameters) on 7.7B tokens (20 per parameter). If it diverges, it is rerun once at half the rate.
+3. Benchmarks on the finished model, with the no-context control. Bits per byte on the same held-out sets as every run.
+
+**Predictions.**
+- Q1: the best 101M rate is 4e-3. The 101M Muon run at 0.8B tokens beats Question 12's default-recipe 101M at 0.8B (0.9775) by at least 0.02.
+- Q2: the 386M model reaches a held-out mix between 0.79 and 0.83 (211M at 4.2B tokens, old recipe: 0.876).
+- Q3: on our calibrated harness, it beats our 211M model on ARC-Easy and PIQA. Against Pythia-410M (300B tokens; official: ARC-Easy 0.521, PIQA 0.668, WinoGrande 0.537, LAMBADA perplexity 10.8), it is within 0.03 on ARC-Easy and PIQA and worse on LAMBADA perplexity.
+
+**Cost bound.** About 19 to 20 hours of a v5e-4 at $4.80 per hour, about $90 to $95. Deadline 2026-11-23 12:00 UTC (on-machine timer; Cloud Scheduler at 12:02; laptop watcher at 12:10). Worst case about $101.
