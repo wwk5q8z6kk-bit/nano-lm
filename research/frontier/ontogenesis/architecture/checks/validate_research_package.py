@@ -12,7 +12,7 @@ DOCS=("README.md","01_ARCHITECTURE_AND_THEOREMS.md","02_DECISION_LEDGER.md",
       "03_EXPERIMENTS_AND_EXECUTION.md","04_EVIDENCE_AND_REFERENCES.md",
       "05_GAP_CLOSURE_AND_FORMAL_REVIEW.md","06_VALIDATION_AND_UNRESOLVED_WORK.md")
 REQUIRED=DOCS+("ledger_events.jsonl","ledger_event.schema.json","architecture_scheme.mmd")
-LINK=re.compile(r'!?\\[[^\\]]*\\]\\(([^)]+)\\)')
+LINK=re.compile(r'!?\[[^\]]*\]\(([^)]+)\)')
 ALLOWED={"proposed","reviewed","mathematically_checked","preregistered",
          "exploratory","confirmed","rejected","superseded","integrated"}
 ETYPE={"mathematical","repository","peer_reviewed","preprint","hypothesis","engineering"}
@@ -30,7 +30,7 @@ def validate():
             if not (ROOT/target).exists():issues.append(name+" broken link "+target)
     ledger=(ROOT/"02_DECISION_LEDGER.md").read_text(encoding="utf8")
     a=ledger.split("## A. One-page decision register",1)[1].split("## B. Contradiction",1)[0]
-    old_ids=re.findall(r'^\\| (D-\\d{3}) \\|',a,flags=re.M)
+    old_ids=re.findall(r'^\| (D-\d{3}) \|',a,flags=re.M)
     if old_ids!=[f"D-{i:03d}" for i in range(1,24)]:
         issues.append("Decision rows D-001 through D-023 not contiguous and unique")
     seen_dec=set();seen_events=set()
@@ -56,7 +56,7 @@ def validate():
     if seen_dec!=set(f"D-{i:03d}" for i in range(24,34)):
         issues.append("machine events must contain D-024 through D-033")
     for d in seen_dec:
-        if not re.search(r'^\\| '+re.escape(d)+r' \\|',ledger,re.M):
+        if not re.search(r'^\| '+re.escape(d)+r' \|',ledger,re.M):
             issues.append(f"missing human ledger {d}")
     return {"status":"PASS" if not issues else "FAIL","errors":issues,
             "events_checked":len(seen_events),"documents_checked":len(DOCS),

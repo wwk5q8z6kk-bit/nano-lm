@@ -175,3 +175,18 @@ PLASTICITY v0, 200 successive tasks of 256 facts, three seeds, predictions writt
 **Current explicit open gaps:** no learned state-migration result on actual language models; no proven positive forward transfer; no confirmed model-level Pareto gain; no authoritative inventory of owner-local uncommitted worktrees; no verified TPU/GPU price for scale; no blanket rights to restricted data. Historical comparison in D-005 is **bits per token**, not “BPB/token”; calibrated wall time drifted in [PR #194](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/194). Preserve the paper's and repo's actual domains/metrics.
 
 **Maintenance policy:** new evidence is an append-only event with ID, code/data checkpoint and protocol SHA, independent unit/seeds, time/resource accounting, reviewer, contradicting alternatives and next gate. Avoid daily prose churn when nothing changed. This branch remains a draft PR; no registered results modified or paid run authorized.
+
+## Addendum — store pilot result and validator repair (2026-11-21, late)
+
+Additive. Nothing above is changed.
+
+| Item | Status | Evidence |
+|---|---|---|
+| Adding an exact n-gram store after training helps: 0.058 bits per byte on the mix at 8 blocks, every domain (S1) | Pilot (one seed) | `INVESTIGATION.md`, "Language-model store pilot: result", commit `e9ba4f3` on `research/ontogenesis-phase1`; raw file `results/lm/store-pilot.json` there |
+| Training the core with the store beats adding it afterwards (S2) | Disproven in this implementation: 0.14 worse than post-hoc, 0.085 worse than no store | same |
+| Four blocks trained with the store match eight blocks alone (S3) | Disproven: 1.581 against 1.497 | same |
+| The store costs 1.02 GB against about 57 MB of weights | Observed | same; any gain is an augmented-system gain |
+
+- The pre-recorded caveat stands: same-document leakage in training biases this test against the joint arms. A leave-document-out store is the control that would separate the caveat from the claim. Until it is run, "routing memorisable content away from the core during training carries over to text" is **not supported**, not refuted.
+- The pilot is complete with a negative primary result. The architecture package in this branch was written before commit `e9ba4f3` and does not mention it; the 2026-11-21 blueprint's evidence table lists it as having no final result, which is now out of date.
+- `architecture/checks/validate_research_package.py` as first committed returned FAIL: its three patterns were escaped twice inside raw strings, so the link check matched none of the package's 114 links and the decision-row check could not match. With the patterns corrected it returns PASS, and it fails as intended on a planted broken link, a duplicated event and a missing human-ledger row. The earlier "PASS" for link and package integrity was not reproducible from the committed file. CI does not run this validator.
