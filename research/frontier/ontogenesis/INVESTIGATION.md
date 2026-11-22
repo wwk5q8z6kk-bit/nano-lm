@@ -593,9 +593,18 @@ Standard error is about 0.015 at n = 1,000. The harness gives chance with an unt
 |---|---|---|---|---|
 | 14M | 0.0096 (web 0.0074, textbook 0.0087, maths 0.0164, code 0.0142) | 0.0044 | −0.0119, passed | 0.0001 |
 | 40M | 0.0037 (web 0.0029, textbook 0.0030, maths 0.0067, code 0.0054) | −0.0014 | −0.0054, passed | 0.0001 |
-| 101M | running | | | |
+| 101M | 0.0017 (web 0.0013, textbook 0.0012, maths 0.0031, code 0.0028) | −0.0032 | −0.0028, passed | 0.0001 |
 
-The review was right: the registered estimator understated the store by more than half at 14M, and turned a positive gain negative at 40M.
+The review was right. The registered estimator understated the store by more than half at 14M, and turned positive gains negative at 40M and 101M.
+
+Reliability check at 101M (the store's mean probability of the true token, gate cells 1 to 8):
+- leave-position-out on training text: 0.17 to 0.36;
+- leave-document-out: 0.15 to 0.22;
+- held-out text: 0.17 to 0.24.
+
+Leave-position-out over-trusts the store by a factor of 1.3 to 1.6. Leave-document-out is about 10% pessimistic, so the corrected gains are slight underestimates.
+
+**Registered rule, read on the 101M checkpoint (scope as amended before the run): 0.0017 < 0.01, so this store is closed as a complement.** The gain falls about 2.5-fold for each 2.5-fold increase in parameters (0.0096 → 0.0037 → 0.0017). The exchange rate is poor: 1.02 GB of counts buys 0.0017, while going from 101M to 211M parameters (about 0.2 GB more weights in bfloat16) buys 0.034. Whether a store over the full training corpus helps remains **open**: published corpus-scale stores do, and this store held 6% of the corpus. That test is not scheduled; its expected value is low on this trend.
 
 ## Question 12. How much does fresh data improve a fixed-size model, and what is the best model one machine-session buys? (registered 2026-11-22, 04:30 UTC, before any run)
 

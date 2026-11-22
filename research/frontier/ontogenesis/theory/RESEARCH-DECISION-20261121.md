@@ -241,3 +241,7 @@ As written, deletion was a single unchecked request sent after an upload with no
 2. a Cloud Scheduler job in the project that sends the delete request from Google's side at the deadline (rehearsed with a read-only call: HTTP 200).
 
 Deadlines: machine A 11:06 / 11:08 UTC. Machine B was 07:33 / 07:35 UTC, then moved to 12:30 / 12:32 (laptop watcher 12:40) once the 40M recipe grid and Question 12 were queued on it. With the extension, the bound for this cycle is about $195 at list prices, and the expected cost about $180 (LEDGER, Operations 2026-11-22).
+
+### Section 6: outcome (2026-11-22, 05:00 UTC)
+
+Corrected estimator (leave-document-out fit, control that can fail). Gain in bits per byte: 14M 0.0096, 40M 0.0037, **101M 0.0017**. The registered estimator gave 0.0044, −0.0014 and −0.0032. Every control passed. By the rule as amended before the 101M run, this store (4-gram counts over 6% of the corpus) is closed as a complement. A full-corpus store is untested and stays open, at low priority. Files: `results/lm/store-ldo-{S,M,L}.json`; details in `INVESTIGATION.md`.
