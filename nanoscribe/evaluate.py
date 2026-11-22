@@ -152,9 +152,9 @@ def char_keys(spans: Iterable[EvidenceSpan]) -> frozenset[tuple[str, int]]:
     return frozenset(keys)
 
 
-def span_character_f1(gold: Iterable[EvidenceSpan], pred: Iterable[EvidenceSpan]) -> float:
-    gold_keys = char_keys(gold)
-    pred_keys = char_keys(pred)
+def span_character_f1(
+    gold_keys: frozenset[tuple[str, int]], pred_keys: frozenset[tuple[str, int]]
+) -> float:
     if not gold_keys or not pred_keys:
         return 0.0
     inter = len(gold_keys & pred_keys)
@@ -211,7 +211,9 @@ def _prediction_complete(pred: PredictedAtom) -> bool:
     )
 
 
-def _resolve_pred_spans(gold: EncounterRecord, pred: PredictedAtom) -> tuple[EvidenceSpan, ...] | None:
+def _resolve_pred_spans(
+    gold: EncounterRecord, pred: PredictedAtom
+) -> tuple[EvidenceSpan, ...] | None:
     if pred.spans:
         if any(not isinstance(span, EvidenceSpan) for span in pred.spans):
             return None
@@ -247,7 +249,9 @@ def _transport_status(gold: EncounterRecord, span: EvidenceSpan) -> str:
     return "ok"
 
 
-def _mechanical_support(raw_value: str, spans: Sequence[EvidenceSpan]) -> SupportRelation | None:
+def _mechanical_support(
+    raw_value: str, spans: Sequence[EvidenceSpan]
+) -> SupportRelation | None:
     if any(raw_value in span.text for span in spans):
         return SupportRelation.DIRECT_EXACT
     grounded = normalize_value(raw_value)
@@ -296,7 +300,9 @@ def _probe_construction(
     spans: Sequence[EvidenceSpan],
 ) -> EncounterError | None:
     if not _prediction_complete(pred):
-        return EncounterError("type_error", "predicted atom is missing required ClinicalAtom fields")
+        return EncounterError(
+            "type_error", "predicted atom is missing required ClinicalAtom fields"
+        )
     evidence_ids = pred.evidence_ids or tuple(span.evidence_id for span in spans)
     try:
         atom = ClinicalAtom(
@@ -377,7 +383,9 @@ def evaluate(
     pred: PredictedEncounter,
     *,
     source_for_quotes=None,
-    verifier_results: Mapping[str, SupportRelation] | Sequence[VerifierResult] | None = None,
+    verifier_results: (
+        Mapping[str, SupportRelation] | Sequence[VerifierResult] | None
+    ) = None,
 ) -> EvalReport:
     source = source_for_quotes or (gold.sources[0] if gold.sources else None)
     presented = list(gold.atoms)
@@ -430,27 +438,35 @@ def evaluate(
             if predicted.malformed:
                 malformed += 1
                 critical_error += 1
-                item = AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True)
+                item = AtomEval(
+                    atom_id=atom.atom_id, malformed=True, critical_error=True
+                )
                 results.append(item)
                 continue
             if predicted.abstained:
                 unnecessary_abstention += 1
                 omission += 1
-                results.append(AtomEval(atom_id=atom.atom_id, abstained=True, omitted=True))
+                results.append(
+                    AtomEval(atom_id=atom.atom_id, abstained=True, omitted=True)
+                )
                 continue
 
             spans = _resolve_pred_spans(gold, predicted)
             if spans is None:
                 malformed += 1
                 critical_error += 1
-                results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
+                results.append(
+                    AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True)
+                )
                 continue
 
             statuses = [_transport_status(gold, span) for span in spans]
             transport_critical = False
             if any(status == "unknown_source" for status in statuses):
                 critical_error += 1
-                item = AtomEval(atom_id=item.atom_id, critical_error=True, malformed=True)
+                item = AtomEval(
+                    atom_id=item.atom_id, critical_error=True, malformed=True
+                )
                 transport_critical = True
             if any(status == "invalid_span" for status in statuses):
                 invalid_span += 1
@@ -471,7 +487,7 @@ def evaluate(
             pred_sources = {span.source_id for span in spans}
             gold_keys = char_keys(gold_spans)
             pred_keys = char_keys(spans)
-            f1 = span_character_f1(gold_spans, spans)
+            f1 = span_character_f1(gold_keys, pred_keys)
             f1s.append(f1)
             exact = bool(gold_keys) and gold_keys == pred_keys
             mention_wrong = False
@@ -521,11 +537,15 @@ def evaluate(
         except EncounterError:
             critical_error += 1
             malformed += 1
-            results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
+            results.append(
+                AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True)
+            )
         except (TypeError, ValueError, AttributeError):
             critical_error += 1
             malformed += 1
-            results.append(AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True))
+            results.append(
+                AtomEval(atom_id=atom.atom_id, malformed=True, critical_error=True)
+            )
 
     seen_extra: set[str] = set()
     for predicted in pred.atoms:
@@ -543,7 +563,9 @@ def evaluate(
                 gold, predicted, verifier.get(predicted.atom_id)
             )
         except (EncounterError, TypeError, ValueError, AttributeError):
-            extra = AtomEval(atom_id=predicted.atom_id, malformed=True, critical_error=True)
+            extra = AtomEval(
+                atom_id=predicted.atom_id, malformed=True, critical_error=True
+            )
         results.append(extra)
         if extra.spurious_atom:
             spurious_atom += 1
@@ -557,7 +579,10 @@ def evaluate(
     for item in gold.unresolved:
         predicted = None
         for candidate in pred.atoms:
-            if candidate.atom_id in {item.unresolved_id, item.topic} and item.unresolved_id not in duplicates:
+            if (
+                candidate.atom_id in {item.unresolved_id, item.topic}
+                and item.unresolved_id not in duplicates
+            ):
                 predicted = candidate
                 break
         if predicted is not None and predicted.abstained:
@@ -578,7 +603,9 @@ def evaluate(
         assertion_state_correct=assertion_state_correct,
         support_direct_exact=support_counts[SupportRelation.DIRECT_EXACT],
         support_normalized=support_counts[SupportRelation.NORMALIZED],
-        support_semantically_supported=support_counts[SupportRelation.SEMANTICALLY_SUPPORTED],
+        support_semantically_supported=support_counts[
+            SupportRelation.SEMANTICALLY_SUPPORTED
+        ],
         support_unsupported=support_counts[SupportRelation.UNSUPPORTED],
         support_contradicted=support_counts[SupportRelation.CONTRADICTED],
         support_review_required=support_counts[SupportRelation.REVIEW_REQUIRED],
