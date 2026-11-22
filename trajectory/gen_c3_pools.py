@@ -20,17 +20,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 tok = Tokenizer.from_file(os.path.join(HERE, "..", "sft", "tokenizer.json"))
 
 # ---------------- D80-arm training OUTPUT token STREAM (sequence, in-context) -----
-V2 = open(os.path.join(HERE, "..", "scribe", "build_scribe_data_v2.py")).read()
-ns = {}
-exec(compile(V2.split("def ")[0].replace("from tokenizers import Tokenizer", ""), "v2p", "exec"), ns)
-MED_TRAIN = ns["MED_TRAIN"]
-ALG_LINE = 'ALG_TRAIN = ["penicillin", "peanuts", "pollen", "latex", "shellfish"]'
-assert ALG_LINE in V2, "v2 source anchor moved — re-verify"
-src = V2.replace(ALG_LINE, "ALG_TRAIN = " + repr(list(ALG_TRAIN_80)))
-prefix = src.split("tok = Tokenizer.from_file")[0].replace("from tokenizers import Tokenizer", "")
-ns2 = {}
-exec(compile(prefix, "v2[d80]", "exec"), ns2)
-CONVOS = ns2["convos"]
+sys.path.insert(0, os.path.join(HERE, "..", "scribe"))
+import build_scribe_data_v2
+MED_TRAIN = build_scribe_data_v2.MED_TRAIN
+CONVOS = build_scribe_data_v2.generate_convos(12000, alg_train_override=list(ALG_TRAIN_80))
 assert len(CONVOS) == 12000
 
 OUT_SEQ = []
@@ -141,7 +134,7 @@ me my this there here now far only just some most many say tell go got had am if
 yes okay well hello hi about ago around out up off from since where which who quite
 pretty nearly almost maybe roughly none nothing anything haven't i'd i'm i've it's
 what's there's won't you're""".split())
-TPL_LISTS = {k: v for k, v in ns.items() if isinstance(v, list) and v
+TPL_LISTS = {k: v for k, v in vars(build_scribe_data_v2).items() if isinstance(v, list) and v
              and all(isinstance(x, str) for x in v)
              and (k.startswith("D_") or k.startswith("P_") or k == "DISTRACT")}
 TMPL_WORDS = set()
