@@ -8,7 +8,9 @@ from tokenizers import Tokenizer
 
 random.seed(23)
 
-exec(open("build_scribe_data_v2.py").read().split("N_TRAIN = 12000")[0].split("import numpy")[1].split("\n", 1)[1])  # noqa — reuse v2 vocab/template definitions
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from build_scribe_data_v2 import CC_TRAIN, CC_COMP, MED_TRAIN, ALG_TRAIN, SEV, D_OPEN, P_CC, P_CC_DUR, D_DUR, P_DUR, D_SEV, P_SEV, D_MED, P_MED_YES, P_MED_NO, D_ALG, P_ALG_YES, P_ALG_NO, ACK, DISTRACT, sample_tuple, render_dialogue, summary_of
 
 ONSET = ["fl", "tr", "gr", "sp", "bl", "cr", "dr", "pl", "sn", "th", "qu", "br"]
 MID = ["um", "ar", "ol", "ex", "in", "ov", "ub", "am", "er", "ix"]
