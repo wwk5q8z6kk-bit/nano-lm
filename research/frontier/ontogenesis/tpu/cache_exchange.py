@@ -24,6 +24,13 @@ Registered before any run of this file:
                                      finds more than the exact cache.
   Controls: weight forced to zero must reproduce the checkpoint's reported bits per byte; a cache built
   from a different window (the next crop in the batch) must give no gain.
+
+Correction after the first run on the 14M checkpoint: that run reported a gain of 0.62 bits per byte with
+every token "copyable". Both are impossible. Cause: the evaluation path passed two separately built copies
+of the window, and the function chose its mode by object identity, so it filled the cache from the whole
+window, future tokens included. The result is void and was never used. The mode is now an explicit
+argument, and the script refuses to run unless a causality check passes (replacing tokens after a position
+must not change the cache's output up to that position). The measurement and the decision rule are unchanged.
 """
 from __future__ import annotations
 import argparse, json, math, time
@@ -36,18 +43,18 @@ from store_exchange import load_params
 ORDERS, BUCKETS = (3, 2, 1), 8
 
 
-def cache_probs(ctx, tgt_tokens):
-    """ctx: the window that feeds the cache [T+1]; tgt_tokens: the window whose next tokens are scored [T+1].
-    Normally the same window. Returns, for each position t in 0..T-1, the cache's probability of tgt[t+1]
-    given the last tokens of tgt[..t] matched against earlier positions of ctx, and the cell index (0 = no match)."""
+def cache_probs(tgt_tokens, foreign=None):
+    """tgt_tokens: the window whose next tokens are scored [T+1].
+    foreign=None (the real cache): at position t the cache holds only what came before t in this same window.
+    foreign=<another window> (control): the cache is filled from that other window and never updated.
+    Returns, for each position t in 0..T-1, the cache's probability of tgt[t+1] and the cell index (0 = no match)."""
     T = len(tgt_tokens) - 1; s = np.zeros(T, np.float32); g = np.zeros(T, np.int64)
     seen = [dict() for _ in ORDERS]                                   # key -> [total, {follower: count}]
-    own = ctx is tgt_tokens
-    if not own:                                                       # foreign cache: fill it completely first, never update
-        for t in range(len(ctx) - 1):
+    if foreign is not None:
+        for t in range(len(foreign) - 1):
             for oi, n in enumerate(ORDERS):
                 if t >= n - 1:
-                    e = seen[oi].setdefault(tuple(ctx[t - n + 1:t + 1]), [0, {}]); e[0] += 1; e[1][ctx[t + 1]] = e[1].get(ctx[t + 1], 0) + 1
+                    e = seen[oi].setdefault(tuple(foreign[t - n + 1:t + 1]), [0, {}]); e[0] += 1; e[1][foreign[t + 1]] = e[1].get(foreign[t + 1], 0) + 1
     for t in range(T):
         y = tgt_tokens[t + 1]
         for oi, n in enumerate(ORDERS):
@@ -55,11 +62,21 @@ def cache_probs(ctx, tgt_tokens):
                 e = seen[oi].get(tuple(tgt_tokens[t - n + 1:t + 1]))
                 if e is not None:
                     s[t] = e[1].get(y, 0) / e[0]; g[t] = 1 + oi * BUCKETS + min(int(math.log2(e[0])), BUCKETS - 1); break
-        if own:
+        if foreign is None:                                           # only now may this position's own answer enter the cache
             for oi, n in enumerate(ORDERS):
                 if t >= n - 1:
                     e = seen[oi].setdefault(tuple(tgt_tokens[t - n + 1:t + 1]), [0, {}]); e[0] += 1; e[1][y] = e[1].get(y, 0) + 1
     return s, g
+
+
+def causality_check(window, rng, trials=8):
+    """The cache's output up to position t must not change when tokens after t+1 are replaced."""
+    s0, g0 = cache_probs(window)
+    for _ in range(trials):
+        t = int(rng.integers(8, len(window) - 8)); w = list(window); w[t + 2:] = [int(x) for x in rng.integers(0, 32768, len(w) - t - 2)]
+        s1, g1 = cache_probs(w)
+        if not (np.array_equal(s0[:t + 1], s1[:t + 1]) and np.array_equal(g0[:t + 1], g1[:t + 1])): return False
+    return True
 
 
 def fit_table(lp, s, g):
@@ -88,15 +105,17 @@ if __name__ == "__main__":
         ix = rng.integers(0, len(full) - T - 1, 32); X = np.stack([np.asarray(full[i:i + T + 1]) for i in ix]).astype(np.int32)
         LP.append(np.asarray(lp_fn(params, X)).ravel())
         for b in range(len(X)):
-            row = X[b].tolist(); s, g = cache_probs(row, row); S.append(s); G.append(g)
-            s, g = cache_probs(X[(b + 1) % len(X)].tolist(), row); S2.append(s); G2.append(g)
+            row = X[b].tolist(); s, g = cache_probs(row); S.append(s); G.append(g)
+            s, g = cache_probs(row, foreign=X[(b + 1) % len(X)].tolist()); S2.append(s); G2.append(g)
     LP = np.concatenate(LP); lam = fit_table(LP, np.concatenate(S), np.concatenate(G)); lam_f = fit_table(LP, np.concatenate(S2), np.concatenate(G2))
     out = {"size": a.size, "ckpt": a.ckpt, "fit_tokens": int(len(LP)), "table": [round(float(x), 3) for x in lam]}; rows = {}; share = {}
+    out["causality_check_passed"] = bool(all(causality_check(np.asarray(full[i:i + T + 1]).astype(np.int32).tolist(), np.random.default_rng(99 + i)) for i in (0, 1000003, 500000007)))
+    assert out["causality_check_passed"], "cache sees the future"
     for dom in ("web", "textbook", "math", "code"):
         d = np.fromfile(f"{a.data}/val_{dom}.bin", dtype=np.uint16).astype(np.int32); r0 = np.random.default_rng(0); base, mix, foreign, hit = [], [], [], []
         for _ in range(20):
             ix = r0.integers(0, len(d) - T - 1, 16); X = np.stack([d[i:i + T + 1] for i in ix]); lp = np.asarray(lp_fn(params, X))
-            sg = [cache_probs(X[b].tolist(), X[b].tolist()) for b in range(16)]; sf = [cache_probs(X[(b + 1) % 16].tolist(), X[b].tolist()) for b in range(16)]
+            sg = [cache_probs(X[b].tolist()) for b in range(16)]; sf = [cache_probs(X[b].tolist(), foreign=X[(b + 1) % 16].tolist()) for b in range(16)]
             s = np.stack([x[0] for x in sg]); g = np.stack([x[1] for x in sg]); s2 = np.stack([x[0] for x in sf]); g2 = np.stack([x[1] for x in sf])
             base.append(-lp.mean()); mix.append(nll(lp, s, g, lam).mean()); foreign.append(nll(lp, s2, g2, lam_f).mean()); hit.append(float((s > 0).mean()))
         bpt = manifest["domains"][dom]["val"]["bytes_per_token"]; bits = lambda x: float(np.mean(x)) / math.log(2) / bpt
