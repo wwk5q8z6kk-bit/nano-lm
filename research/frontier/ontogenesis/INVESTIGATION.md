@@ -890,3 +890,22 @@ Whether it survives a nonlinear model is untested.
 Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on research/g06-nullspace-durability, originals kept; checked here against the files): width 24, corrections kept 98.4% → 98.8%, inference 91.4% → 91.2%; width 96, corrections 99.6% → 99.9%, inference 99.1% → 98.9%. The bias ran against the arm, as expected; no conclusion changes.
 
 **Question 12, caveat on the Pythia comparison (2026-11-22).** Beating Pythia-160M on ARC-Easy and PIQA is a low bar. Pythia was trained in 2023 on the Pile. Our corpus comes from education-filtered sources (FineWeb-Edu, Cosmopedia, FineMath), which are known to lift exactly these benchmarks. The win mostly shows good text and a sound recipe, not competitiveness with current small models. Modern references trained on similar text, SmolLM2-135M and SmolLM2-360M (Apache-2.0), are being scored through the same calibrated harness. Question 13's model will be compared with them, not with Pythia.
+
+**Question 12, modern references scored (2026-11-22, 17:40 UTC).** Same harness, same formatted items, each model with its own tokenizer, full validation and test sets. Cells give accuracy / length-normalised accuracy.
+
+| Task | Ours, 211M, 4.2B tokens | SmolLM2-135M | SmolLM2-360M |
+|---|---|---|---|
+| HellaSwag | 0.308 / 0.346 | 0.355 / 0.432 | 0.432 / 0.564 |
+| ARC-Easy | 0.521 / 0.466 | 0.644 / 0.597 | 0.704 / 0.695 |
+| ARC-Challenge | 0.226 / 0.257 | 0.281 / 0.294 | 0.365 / 0.387 |
+| PIQA | 0.648 / 0.629 | 0.684 / 0.687 | 0.721 / 0.720 |
+| WinoGrande | 0.511 | 0.530 | 0.590 |
+| OpenBookQA | 0.184 / 0.302 | 0.218 / 0.332 | 0.246 / 0.374 |
+| LAMBADA accuracy | 0.326 | 0.429 | 0.538 |
+| LAMBADA perplexity | 49.01 | 19.26 | 9.44 |
+
+- Our 211M model is behind SmolLM2-135M on every task, by 0.02 (WinoGrande) to 0.13 (ARC-Easy, normalised); LAMBADA perplexity is 49 against 19. SmolLM2-135M has 0.6 times our parameters and about 500 times our tokens (2T against 4.2B).
+- Where SmolLM2's model card gives numbers from its own evaluation, ours are close: HellaSwag about 42 and 54.5, PIQA about 68 and 72. This is a second check on the harness, from memory of the card, not re-read.
+- This is the bar for Question 13. At 7.7B tokens the 386M model is not expected to reach SmolLM2-135M. The useful comparison is our tokens-to-score curve against theirs. Matching a 2T-token model at about 1/250 of the tokens is not a claim we can make.
+- Raw results: `results/lm/eval-reference-SmolLM2-135M.json` and `-360M.json`. The first attempt ran out of laptop memory at batch 32; the rerun used batch 8, with the scorer unchanged.
+
