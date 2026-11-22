@@ -621,3 +621,17 @@ The sampler draws crops uniformly with replacement, as in every earlier run, so 
 - None of this is a mechanism claim.
 
 **Cost.** About 4 hours of a four-chip v6e (about $52 at $3.24 per chip-hour). Machine B's deadline moves to 12:30 UTC.
+
+### Question 9: statements withdrawn after the independent review (2026-11-22)
+
+The full list is in `theory/RESEARCH-DECISION-20261121.md`, section 10. In short:
+- "The smallest edit is the worst" is false: gradient descent on the address alone did less damage (14.3%) than the smallest edit (35.3%).
+- The 100% for same-entity rehearsal is accuracy on the rehearsed facts themselves. The corrected entity's unshown answers were never scored in any gradient arm.
+- The "20+ phases later" columns mislabel 47% to 49% of the scored facts.
+- The computed-edit ranges mixed arms and hid a trade-off between neighbour retention and correction durability.
+- The optimiser control did not test the write that did the damage, so "the optimiser is not the cause" is **not established**.
+- All findings of this question are published in substance.
+
+Two cheap checks are queued:
+- score every other answer of each corrected entity before and after the write, in every arm;
+- repeat the damaging write itself, changing one thing at a time.
