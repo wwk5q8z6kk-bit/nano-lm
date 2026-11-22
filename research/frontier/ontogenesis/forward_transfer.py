@@ -58,6 +58,18 @@ Predictions, written before any run of this file:
 Known limits, stated before the run. Every family is a two-step composition, which favours the loop
 arm by construction. Replay arms see more examples per step at equal step counts. The arms differ in
 parameter count (printed with the results). One synthetic world; nothing here is a language-model result.
+
+Deviation 1, recorded before any registered run (registration commit bef6608). A mechanics check on
+seed 1, which is not a registered seed, showed that the menu arm as registered could not fit its own
+training stream: 29% of stream answers correct after 24 families with replay, and 33-36% when trained
+on all 24 jointly, at every learning rate and step count tried. Dense and loop fitted 100%. An arm that
+cannot learn the stream cannot serve as a ceiling. Cause: one shared set of 8 probability tables forces
+the optimiser to discover that step-one and step-two tables coincide, and mixing probabilities blurs
+the tables before the weights sharpen. Changed, using stream fit on seed 1 as the only criterion:
+separate table sets for the two steps, mixing of logits instead of probabilities, stream task vectors
+for the menu arms initialised at random (scale 0.5) and learning rate 0.02. Stream fit on seed 1 is
+then 90%. No probe result was read for any arm during these checks, and no prediction is changed.
+The menu arms' probe task vectors still start at zero.
 """
 from __future__ import annotations
 import copy, json, sys, time
@@ -102,15 +114,14 @@ class Loop(nn.Module):
 
 
 class Menu(nn.Module):
-    """Returns log-probabilities. Each table is a soft function on the inputs; a task mixes tables for step one and step two."""
+    """Returns log-probabilities. A task mixes the logits of 8 step-one tables and of 8 step-two tables (see Deviation 1)."""
     def __init__(s, m=D_TASK // 2):
-        super().__init__(); s.tables = nn.Parameter(torch.randn(m, P, P) * 0.1)
+        super().__init__(); s.first = nn.Parameter(torch.randn(m, P, P) * 0.1); s.second = nn.Parameter(torch.randn(m, P, P) * 0.1)
     def forward(s, x, t):
-        T = s.tables.softmax(-1); m = T.shape[0]
-        w1, w2 = t[:, :m].softmax(-1), t[:, m:].softmax(-1)
-        p1 = torch.einsum("bm,mbv->bv", w1, T[:, x])                      # distribution after step one
-        p2 = torch.einsum("bm,bu,muv->bv", w2, p1, T)                     # distribution after step two
-        return (p2 + 1e-9).log()
+        m = s.first.shape[0]; w1, w2 = t[:, :m], t[:, m:]
+        p1 = torch.einsum("bm,mbv->bv", w1, s.first[:, x]).softmax(-1)      # distribution after step one
+        step2 = torch.einsum("bm,muv->buv", w2, s.second).softmax(-1)       # this task's step-two table
+        return (torch.einsum("bu,buv->bv", p1, step2) + 1e-9).log()
 
 
 MAKE = {"dense": Dense, "loop": Loop, "menu": Menu}
@@ -147,7 +158,8 @@ def run(arm, seed):
         for kind, fams in (("novel_comp", comp), ("novel_prim", new)): row.update(probe(Dense(), fams, kind, target, support, ("full",)))
         return {"arm": arm, "seed": seed, "params": sum(p.numel() for p in Dense().parameters()), "by_experience": {"0": row}, "seconds": round(time.time() - t0, 1)}
     kind_of_model, replay = arm.split("_")[0], arm.endswith("_replay")
-    model = MAKE[kind_of_model](); vecs = nn.Parameter(torch.zeros(STREAM, D_TASK)); by, stream_acc = {}, None
+    model = MAKE[kind_of_model](); by = {}
+    vecs = nn.Parameter(torch.randn(STREAM, D_TASK) * 0.5 if kind_of_model == "menu" else torch.zeros(STREAM, D_TASK))
     for n in range(STREAM + 1):
         if n in CHECKPOINTS:
             row = {}
