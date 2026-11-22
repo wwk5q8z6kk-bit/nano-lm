@@ -15,7 +15,8 @@ Unwritten private slots stay at zero, so an unseen (entity, relation) is answere
   shared_only    control: the typed path alone (memory_rule_sharing.py typed M = 0), so a learning-rate
                  change can be separated from the effect of the second path
 
-usage: memory_rule_dual.py ARM SEED OUT.json [LR]     ARM in {dual_pool, dual_separate, shared_only}; LR defaults to 1e-3
+usage: memory_rule_dual.py ARM SEED OUT.json [LR] [STEPS]
+  ARM in {dual_pool, dual_separate, shared_only}; LR defaults to 1e-3; STEPS (per phase) defaults to 200
 """
 import json, sys, time
 import numpy as np, torch, torch.nn.functional as F
@@ -25,7 +26,7 @@ from memory_rule_sharing import addresses, SLOTS, PHASES, NEW, FIX, STEPS, LR
 torch.set_num_threads(2)
 
 
-def run(arm, seed, lr=LR):
+def run(arm, seed, lr=LR, steps=STEPS):
     rng, truth, shown = world(seed, PHASES, NEW, FIX)
     n = PHASES * NEW
     i1, w1, _, eff1 = addresses("typed", 0, seed, n)
@@ -52,7 +53,7 @@ def run(arm, seed, lr=LR):
         qe, qr = np.concatenate([se, fe]), np.concatenate([sr, fr])
         q, y = key(qe, qr), torch.from_numpy(truth[qe, qr])
         opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)   # reset each phase, as in every earlier arm
-        for _ in range(STEPS):
+        for _ in range(steps):
             loss = F.cross_entropy(read(q), y); opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
         with torch.no_grad():
             row = {"phase": ph, "acquire": acc(se, sr)}
@@ -62,7 +63,7 @@ def run(arm, seed, lr=LR):
                 ue, ur = np.nonzero(~shown[:ph * NEW]); row["infer_old"] = acc(ue, ur)
         log.append(row)
     late = log[-(PHASES // 4):]; mean = lambda kk: round(float(np.nanmean([x.get(kk, np.nan) for x in late])), 4)
-    return {"arm": arm, "seed": seed, "lr": lr, "effective_slots_shared": eff1, "effective_slots_private": eff2,
+    return {"arm": arm, "seed": seed, "lr": lr, "steps": steps, "effective_slots_shared": eff1, "effective_slots_private": eff2,
             "value_table_floats": sum(p.numel() for p in params),
             "late": {k: mean(k) for k in ("acquire", "infer_new", "infer_old", "retain", "correct")}, "log": log}
 
@@ -70,7 +71,8 @@ def run(arm, seed, lr=LR):
 if __name__ == "__main__":
     arm, seed, out = sys.argv[1], int(sys.argv[2]), sys.argv[3]
     lr = float(sys.argv[4]) if len(sys.argv) > 4 else LR
-    f = open(out, "x"); t = time.time(); res = run(arm, seed, lr)
+    steps = int(sys.argv[5]) if len(sys.argv) > 5 else STEPS
+    f = open(out, "x"); t = time.time(); res = run(arm, seed, lr, steps)
     res["seconds"] = round(time.time() - t, 1); res["torch"] = torch.__version__
     json.dump(res, f); f.close()
     print(json.dumps({k: v for k, v in res.items() if k != "log"}), flush=True)
