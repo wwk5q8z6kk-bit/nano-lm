@@ -1,0 +1,16 @@
+# Deviation record for `PROTOCOL-NESTED.md` (written before any nested result exists)
+
+Date: 2026-11-21. The registered protocol text is unchanged. This file records how its execution differs from what was first started, and why.
+
+**What happened.** The first execution ran four training processes on the laptop's GPU alongside eight other jobs. Each process grew to 6–7.5 GB and was still growing; with the other jobs the machine filled its 40 GB of swap and the internal disk fell to 17 GB free. I stopped the four processes. They were on their first seed; no result file had been written and no nested result had been observed.
+
+**What changes.** The protocol is executed on a cloud machine using CPU, one thread per run, instead of the laptop GPU. Same code (the listed source files are unchanged since the protocol commit `a627e87`), same arguments, same seeds 21–25, same PyTorch (2.11.0) and NumPy (2.5.1) versions.
+
+**What this can affect.** The task generator and the initial weights are identical, because they come from seeded CPU generators. Floating-point results of training differ between devices, and on this task the outcome of a run is a sudden jump whose timing is sensitive to such differences. So an individual seed may jump on one device and not on the other. The registered arms `dense` and `looped` were to be reused from `PROTOCOL-LOOP2.md`, which ran on the laptop GPU.
+
+**Control added.** `dense` and `looped` are re-run on the cloud CPU for the same seeds. The registered decision rules will be evaluated twice and both reported:
+1. as registered: new arms against the reused laptop-GPU `dense` and `looped`;
+2. device-consistent: all seven arms from the cloud CPU.
+If the two evaluations disagree, the result is reported as device-sensitive and no rule is declared met.
+
+**What does not change.** Arms, seeds, step budget, optimiser settings, the definition of "learned", the decision rules R1–R4, and the statement that a one-seed difference is not a finding.
