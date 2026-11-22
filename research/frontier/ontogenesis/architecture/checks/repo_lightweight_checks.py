@@ -61,8 +61,59 @@ def check_bounded_logprob():
 
 def check_nonzero_second_order_drift():
     h=.13
-    # f(theta0,theta1)=theta0+theta1**2/2; J(0,0)=[1,0]
-    assert 0<.5*h*h<=h*h/2+1e-14
+    # Evaluate the function and its actual Taylor remainder, not an identity.
+    def f(theta):
+        return theta[0] + theta[1]**2 / 2
+    theta=(0.0,0.0)
+    delta=(0.0,h)
+    jacobian=(1.0,theta[1])
+    linear_change=sum(j*d for j,d in zip(jacobian,delta))
+    moved=tuple(t+d for t,d in zip(theta,delta))
+    actual_change=f(moved)-f(theta)
+    remainder=actual_change-linear_change
+    lipschitz_jacobian=1.0
+    bound=lipschitz_jacobian*sum(d*d for d in delta)/2
+    assert linear_change == 0.0
+    assert 0.0 < actual_change and 0.0 < remainder <= bound+1e-14
+
+
+def check_actual_optimizer_displacement():
+    # Orthogonality of a raw gradient can be lost under diagonal preconditioning.
+    jacobian=(1.0,1.0)
+    projected_gradient=(1.0,-1.0)
+    preconditioner=(1.0,2.0)
+    dot=lambda x,y: sum(a*b for a,b in zip(x,y))
+    assert dot(jacobian,projected_gradient) == 0.0
+    actual_step=tuple(-p*g for p,g in zip(preconditioner,projected_gradient))
+    assert dot(jacobian,actual_step) != 0.0
+    correction=dot(jacobian,actual_step)/dot(jacobian,jacobian)
+    protected_step=tuple(s-correction*j for s,j in zip(actual_step,jacobian))
+    assert dot(jacobian,protected_step) == 0.0
+
+
+def check_basis_change_compatibility():
+    # An arbitrary invertible basis change does not commute with normalization.
+    def rmsnorm(z):
+        scale=math.sqrt(sum(v*v for v in z)/len(z))
+        return tuple(v/scale for v in z)
+    z=(1.0,1.0)
+    az=(2.0*z[0],z[1])
+    norm_z=rmsnorm(z)
+    a_norm_z=(2.0*norm_z[0],norm_z[1])
+    assert rmsnorm(az) != a_norm_z
+    nonconstant=(1.0,3.0)
+    norm_nonconstant=rmsnorm(nonconstant)
+    swapped=(nonconstant[1],nonconstant[0])
+    assert rmsnorm(swapped) == (norm_nonconstant[1],norm_nonconstant[0])
+    # Queries transform contragrediently; applying A to both is insufficient.
+    query=(1.0,3.0)
+    key=(4.0,2.0)
+    dot=lambda x,y: sum(a*b for a,b in zip(x,y))
+    new_key=(2.0*key[0],key[1])
+    new_query=(query[0]/2.0,query[1])
+    wrong_query=(2.0*query[0],query[1])
+    assert dot(new_query,new_key) == dot(query,key)
+    assert dot(wrong_query,new_key) != dot(query,key)
 
 def check_myopic_can_fail():
     assert -.2<0<-.2+1.
@@ -74,11 +125,23 @@ def check_bitemporal_visibility():
         return max(eligible,key=lambda e:(e[1],e[2],e[3]))[0] if eligible else None
     assert get(2,2)=="old" and get(2,6)=="corrected"
 
+
+def check_backdated_event_changes_single_time_history():
+    original=[("old",1,"a")]
+    backdated=("corrected",1,"b")
+    def as_of(events,time):
+        eligible=[e for e in events if e[1]<=time]
+        return max(eligible,key=lambda e:(e[1],e[2]))[0] if eligible else None
+    assert as_of(original,2)=="old"
+    assert as_of(original+[backdated],2)=="corrected"
+
 def main():
     checks = [check_versioned,check_transport,check_first_order_nullspace,
               check_storage,check_compute_gate,check_bounded_logprob,
               check_nonzero_second_order_drift,check_myopic_can_fail,
-              check_bitemporal_visibility]
+              check_bitemporal_visibility,check_actual_optimizer_displacement,
+              check_basis_change_compatibility,
+              check_backdated_event_changes_single_time_history]
     passed = []
     for fn in checks:
         fn()

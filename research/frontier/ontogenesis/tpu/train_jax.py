@@ -13,7 +13,7 @@ harness (numpy default_rng(0), 20 batches of 16 per domain) and reports bits per
 Compute is bfloat16 with float32 normalisation statistics, attention softmax and logits.
 """
 from __future__ import annotations
-import argparse, json, math, os, subprocess, time
+import argparse, copy, json, math, os, queue, subprocess, threading, time
 import numpy as np
 import jax, jax.numpy as jnp, optax
 
@@ -131,19 +131,29 @@ def push(path, gcs):
         subprocess.run(["gcloud", "storage", "cp", path, gcs.rstrip("/") + "/" + os.path.basename(path)], capture_output=True)
 
 
-if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--size", default="S"); ap.add_argument("--data", required=True); ap.add_argument("--out", default=".")
-    ap.add_argument("--gcs", default=""); ap.add_argument("--tag", default="")
-    ap.add_argument("--lr", type=float, default=1e-3); ap.add_argument("--warmup", type=int, default=500)
-    ap.add_argument("--bs", type=int, default=64); ap.add_argument("--seq", type=int, default=512); ap.add_argument("--micro", type=int, default=1)
-    ap.add_argument("--seed", type=int, default=1000); ap.add_argument("--chunk", type=int, default=50); ap.add_argument("--eval-every", type=int, default=2000)
-    ap.add_argument("--train-tokens", type=float, default=0, help="token budget; 0 = one pass over the corpus")
-    ap.add_argument("--max-train-tokens", type=int, default=0, help="load only this many corpus tokens (smoke tests)")
-    ap.add_argument("--f32", action="store_true"); ap.add_argument("--save", action="store_true")
-    a = ap.parse_args()
+def pull(path, gcs):
+    if gcs and not os.path.exists(path):
+        subprocess.run(["gcloud", "storage", "cp", gcs.rstrip("/") + "/" + os.path.basename(path), path], capture_output=True)
+    return os.path.exists(path)
+
+
+def save_tree(path, tree, **extra):
+    leaves = jax.tree_util.tree_leaves(tree)
+    tmp = path + ".tmp.npz"
+    np.savez(tmp, **{f"leaf_{i}": np.asarray(x) for i, x in enumerate(leaves)}, **extra); os.replace(tmp, path)
+
+
+def load_tree(path, like):
+    z = np.load(path, allow_pickle=False); leaves, treedef = jax.tree_util.tree_flatten(like)
+    return jax.tree_util.tree_unflatten(treedef, [jnp.asarray(z[f"leaf_{i}"], dtype=x.dtype) for i, x in enumerate(leaves)]), z
+
+
+def run(a):
+    """One training run on one device. Resumable: state is saved at every evaluation and reloaded if present."""
+    dev = jax.devices()[a.device]
     c = SIZES[a.size]; dt = jnp.float32 if a.f32 else jnp.bfloat16
     name = f"dense-{a.size}-lr{a.lr:g}-s{a.seed}" + (f"-{a.tag}" if a.tag else "")
+    say = lambda d: print(json.dumps({"run": name, **d}), flush=True)
     manifest = json.load(open(f"{a.data}/manifest.json"))
     train = np.fromfile(f"{a.data}/train.bin", dtype=np.uint16, count=a.max_train_tokens or -1)
     vals = {dom: np.fromfile(f"{a.data}/val_{dom}.bin", dtype=np.uint16) for dom in ("web", "textbook", "math", "code")}
@@ -151,31 +161,76 @@ if __name__ == "__main__":
     steps = budget // (a.bs * a.seq) // a.chunk * a.chunk
     sched = lambda n: a.lr * jnp.minimum(1.0, (n + 1) / a.warmup) * (0.1 + 0.9 * 0.5 * (1 + jnp.cos(jnp.pi * jnp.minimum(1.0, (n + 1) / steps))))
     opt = optax.chain(optax.clip_by_global_norm(1.0), optax.adamw(sched, b1=0.9, b2=0.95, eps=1e-8, weight_decay=0.1))
-    params = init(jax.random.PRNGKey(a.seed), c); st = opt.init(params); key = jax.random.PRNGKey(a.seed + 1)
-    data = jnp.asarray(train)
-    chunk = make_chunk(c, opt, a.bs, a.seq, a.micro, a.chunk, dt)
-    ev = jax.jit(lambda p, tok: loss_fn(p, tok, c, dt))
-    head = {"name": name, "params": count(params), "cfg": c, "lr": a.lr, "warmup": a.warmup, "bs": a.bs, "seq": a.seq, "micro": a.micro, "seed": a.seed,
-            "steps": steps, "train_tokens": steps * a.bs * a.seq, "corpus_tokens": int(len(train)), "dtype": str(dt.__name__ if hasattr(dt, "__name__") else dt),
-            "jax": jax.__version__, "devices": [str(x) for x in jax.devices()]}
-    print(json.dumps(head), flush=True)
-    os.makedirs(a.out, exist_ok=True); res_path = f"{a.out}/{name}.json"; curve = []; t_train = 0.0; t0 = time.time(); done = 0; compile_s = None
-    while done < steps:
-        t = time.time(); params, st, key, ls = chunk(params, st, key, data); ls = np.asarray(ls); dtc = time.time() - t
-        if compile_s is None: compile_s = round(dtc, 1)          # first chunk includes compilation; excluded from throughput
-        else: t_train += dtc
-        done += a.chunk
-        if not np.isfinite(ls).all(): print(json.dumps({"error": "non-finite loss", "step": done}), flush=True); break
-        if done % 500 == 0: print(json.dumps({"step": done, "loss": round(float(ls.mean()), 4), "tok_s": round((done - a.chunk) * a.bs * a.seq / max(t_train, 1e-9))}), flush=True)
-        if done % a.eval_every == 0 or done == steps:
-            row = {"step": done, "tokens": done * a.bs * a.seq, "hours": round((time.time() - t0) / 3600, 4), "train_loss": round(float(ls.mean()), 4),
-                   "tokens_per_second": round((done - a.chunk) * a.bs * a.seq / max(t_train, 1e-9)), **evaluate(ev, params, vals, manifest, a.seq)}
-            try: row["device_gb_in_use"] = round(jax.devices()[0].memory_stats()["bytes_in_use"] / 2 ** 30, 2)
-            except Exception: pass
-            curve.append(row); print(json.dumps(row), flush=True)
-            json.dump({**head, "compile_seconds": compile_s, "curve": curve}, open(res_path, "w")); push(res_path, a.gcs)
-    if a.save:
-        flat = {"emb": np.asarray(params["emb"]), "nf": np.asarray(params["nf"])}
-        for i, b in enumerate(params["blocks"]): flat.update({f"b{i}.{k}": np.asarray(v) for k, v in b.items()})
-        np.savez(f"{a.out}/{name}.npz", **flat); push(f"{a.out}/{name}.npz", a.gcs)
-    print(json.dumps({"finished": name, "wall_hours": round((time.time() - t0) / 3600, 3)}), flush=True)
+    os.makedirs(a.out, exist_ok=True); res_path = f"{a.out}/{name}.json"; ck_path = f"{a.out}/{name}.state.npz"
+    with jax.default_device(dev):
+        params = init(jax.random.PRNGKey(a.seed), c); st = opt.init(params); key = jax.random.PRNGKey(a.seed + 1)
+        done, curve, t_train, compile_s, prior_hours = 0, [], 0.0, None, 0.0
+        if a.resume and pull(ck_path, a.gcs) and pull(res_path, a.gcs):
+            (params, st, key), z = load_tree(ck_path, (params, st, key)); done = int(z["done"])
+            old = json.load(open(res_path)); curve = old["curve"]; prior_hours = curve[-1]["hours"] if curve else 0.0
+            say({"resumed_at_step": done})
+        params, st, key, data = (jax.device_put(x, dev) for x in (params, st, key, jnp.asarray(train)))
+        chunk = make_chunk(c, opt, a.bs, a.seq, a.micro, a.chunk, dt)
+        ev = jax.jit(lambda p, tok: loss_fn(p, tok, c, dt))
+        head = {"name": name, "params": count(params), "cfg": c, "lr": a.lr, "warmup": a.warmup, "bs": a.bs, "seq": a.seq, "micro": a.micro, "seed": a.seed,
+                "steps": steps, "train_tokens": steps * a.bs * a.seq, "corpus_tokens": int(len(train)), "dtype": "float32" if a.f32 else "bfloat16",
+                "jax": jax.__version__, "device": str(dev), "n_devices": len(jax.devices())}
+        say(head)
+        t0 = time.time(); start = done; timed = 0
+        while done < steps:
+            t = time.time(); params, st, key, ls = chunk(params, st, key, data); ls = np.asarray(ls); dtc = time.time() - t
+            if compile_s is None: compile_s = round(dtc, 1)      # the first chunk includes compilation; excluded from throughput
+            else: t_train += dtc; timed += a.chunk
+            done += a.chunk
+            if not np.isfinite(ls).all(): say({"error": "non-finite loss", "step": done}); return 2
+            tps = round(timed * a.bs * a.seq / max(t_train, 1e-9))
+            if done % 500 == 0: say({"step": done, "loss": round(float(ls.mean()), 4), "tok_s": tps})
+            if done % a.eval_every == 0 or done == steps:
+                row = {"step": done, "tokens": done * a.bs * a.seq, "hours": round(prior_hours + (time.time() - t0) / 3600, 4), "train_loss": round(float(ls.mean()), 4),
+                       "tokens_per_second": tps, **evaluate(ev, params, vals, manifest, a.seq)}
+                try: row["device_gb_in_use"] = round(dev.memory_stats()["bytes_in_use"] / 2 ** 30, 2)
+                except Exception: pass
+                curve.append(row); say(row)
+                json.dump({**head, "compile_seconds": compile_s, "curve": curve, "finished": done == steps}, open(res_path, "w")); push(res_path, a.gcs)
+                if a.resume and done < steps: save_tree(ck_path, (params, st, key), done=done); push(ck_path, a.gcs)
+        if a.save:
+            flat = {"emb": np.asarray(params["emb"]), "nf": np.asarray(params["nf"])}
+            for i, b in enumerate(params["blocks"]): flat.update({f"b{i}.{k}": np.asarray(v) for k, v in b.items()})
+            np.savez(f"{a.out}/{name}.npz", **flat); push(f"{a.out}/{name}.npz", a.gcs)
+        say({"finished": True, "wall_hours": round((time.time() - t0) / 3600, 3), "steps_this_session": done - start})
+    return 0
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--size", default="S"); ap.add_argument("--data", required=True); ap.add_argument("--out", default=".")
+    ap.add_argument("--gcs", default=""); ap.add_argument("--tag", default=""); ap.add_argument("--device", type=int, default=0)
+    ap.add_argument("--lr", type=float, default=1e-3); ap.add_argument("--warmup", type=int, default=500)
+    ap.add_argument("--bs", type=int, default=64); ap.add_argument("--seq", type=int, default=512); ap.add_argument("--micro", type=int, default=1)
+    ap.add_argument("--seed", type=int, default=1000); ap.add_argument("--chunk", type=int, default=50); ap.add_argument("--eval-every", type=int, default=2000)
+    ap.add_argument("--train-tokens", type=float, default=0, help="token budget; 0 = one pass over the corpus")
+    ap.add_argument("--max-train-tokens", type=int, default=0, help="load only this many corpus tokens (smoke tests)")
+    ap.add_argument("--f32", action="store_true"); ap.add_argument("--save", action="store_true"); ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS]];..."')
+    a = ap.parse_args()
+    if not a.multi: raise SystemExit(run(a))
+    jobs = queue.Queue()
+    for spec in a.multi.split(";"):
+        f = spec.split(":"); b = copy.copy(a); b.size, b.lr, b.micro = f[0], float(f[1]), int(f[2])
+        if len(f) > 3 and f[3]: b.tag = f[3]
+        if len(f) > 4 and f[4]: b.train_tokens = float(f[4])
+        jobs.put(b)
+    codes = []
+    def worker(k):
+        while True:
+            try: b = jobs.get_nowait()
+            except queue.Empty: return
+            b.device = k
+            try: codes.append(run(b))
+            except Exception as e:                                # one failed run must not stop the others
+                print(json.dumps({"run_failed": f"{b.size}:{b.lr}:{b.micro}", "device": k, "error": str(e)[:400]}), flush=True); codes.append(1)
+    th = [threading.Thread(target=worker, args=(k,)) for k in range(min(len(jax.devices()), jobs.qsize()))]
+    for t in th: t.start()
+    for t in th: t.join()
+    print(json.dumps({"all_runs_done": True, "exit_codes": codes}), flush=True)
+    raise SystemExit(0 if all(x == 0 for x in codes) else 1)

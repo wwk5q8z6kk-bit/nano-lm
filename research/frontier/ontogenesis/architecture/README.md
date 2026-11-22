@@ -1,75 +1,123 @@
-# Nano LM — Unified Architecture, Theory, Evidence and Decision Ledger (V2)
+# Nano LM — Architecture, Theory and Decision Ledger V3
 
-**Snapshot:** November 21, 2026. **Status:** reviewed mathematical candidate and empirical research program; not a selected architecture or approved scale run. **Native scientific objective:** one competitively capable Nano LM language/code/reasoning model that delivers greater verified quality per training resource, inference joule, memory traffic and cost. Novelty is useful only if it produces a verified advantage. **Existing canonical ledger:** `research/frontier/ontogenesis/LEDGER.md`; this package is a *reviewable supplement* and must not erase its history.
+**Review date:** November 21, 2026 (America/New_York). **Status:** research architecture with an executable forward reference, corrected proofs, current evidence and a maintainable decision history. Nano LM remains the project; APS remains an unselected research hypothesis.
 
-## High-level outcome of the review
+## What changed and why it matters
 
-| Question | Decision / latest evidence | What remains unresolved |
+This revision makes the architecture concrete enough to inspect and execute at tiny scale. It also catches a new experimental-control defect, incorporates results that were missing from V2, and repairs the ledger so it can record later decisions without erasing earlier ones. It establishes no new language-model quality win.
+
+| Area | V3 outcome | Evidence or artifact |
 |---|---|---|
-| Which neural architecture wins? | None. Dense D0 is reference; published hybrid H1, loop R1, APS hypothesis A1 and unexpected X0 compete | Held-out native-language/compute comparison |
-| What is the strongest actual anomaly? | In a **one-seed toy** memory pilot, uniform hashing gave 99.9% late acquisition, optimizer reset 86.1%, versus 3.4% original | Address × optimizer causal factorial, diverse streams, real text |
-| What caused earlier regular-fact loss? | **Corrections** reduced old regular fact retention to ~91%; exception-only ~99.6–99.7% | Adam history versus missing entity replay; transfer to real LMs |
-| What did the non-oracle write router achieve? | Three-seed toy inference 81.4% vs baseline 77.6%; oracle 88.9% | Rule change versus exception/label noise; forward transfer |
-| What do mathematical propositions guarantee? | Known invertible representation conjugacy, bounded approximate logits, local first-order protection, exact independent storage lower bound, deterministic versioning, myopic compute threshold | No proof these mechanisms can be efficiently **learned** or beat dense/hybrid |
-| What was fixed in v2? | 18 gap-closure items, corrected theorem scope, one source table, machine event ledger, reusable read-only checks | Confirmatory model experiments and broader paper/implementation audits |
+| Full architecture | Explicit tensors, causal masks, logical-depth KV caches, RMSNorm/RoPE, tied output, loss and reset rules | [Implementation contract 07](07_IMPLEMENTATION_CONTRACT.md), [NumPy reference](prototype/native_reference.py) |
+| Theory | Functional versus parameter equivalence; actual optimizer displacement; bitemporal history; finite candidate claims and budgeted stopping | [Architecture and proofs 01](01_ARCHITECTURE_AND_THEOREMS.md) |
+| Current experiments | Completed store and correction pilots incorporated at immutable repository revisions | [Evidence refresh 09](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md), [source manifest](evidence/source_manifest.json) |
+| Newly detected control defect | Random replay changes future correction draws in 38 of 39 correction phases for each of three seeds | [Reanalysis output](results/repository_reanalysis_v3.json), [independent review](reviews/reanalysis_independent_review.md) |
+| Decision history | 46 stable human decision IDs; 27 machine events covering 23 decisions; older 23 human decisions preserved without invented metadata | [Decision ledger 02](02_DECISION_LEDGER.md), [event log](ledger_events.jsonl) |
+| Literature | 36 primary-source identities and narrow claim boundaries audited; supervision/plugin dependencies explicit | [Audit 08](08_LITERATURE_AUDIT.md) |
+| Verification | Executed mathematical examples, corruption tests, causal-reference checks and source diagnostics with recorded scope | [Validation report 06](06_VALIDATION_AND_UNRESOLVED_WORK.md) |
+| Next research step | G03b: correct locality and durability comparison on identical event manifests; G02 factorial remains independent | [Execution plan 03](03_EXPERIMENTS_AND_EXECUTION.md) |
 
-## Files (read in order)
+## Architecture at a glance
 
-| File | Contains | Status |
-|---|---|---|
-| [01 Architecture and Theorems](01_ARCHITECTURE_AND_THEOREMS.md) | Candidate causal model, mathematical derivations, counterexamples, Mermaid scheme, safe interpretation | Corrected, **candidate** |
-| [02 Decision Ledger](02_DECISION_LEDGER.md) | D-001–D-033, evidence/status tables, reversals, reasons and review rules | Append-only supplement |
-| [03 Experiments and Execution](03_EXPERIMENTS_AND_EXECUTION.md) | G00–G17 experiment matrix, G02 causal design, G05 transport, training/budget gates, manifest template | Proposed, no new GPU run |
-| [04 Evidence and References](04_EVIDENCE_AND_REFERENCES.md) | Repository provenance, literature references with checked identity/scope and uncertainties | Metadata/abstract check, not replication |
-| [05 V2 Gap Closure and Formal Review](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md) | F-01–F-18 corrections, proof revisions, exact interface, prior-art contrasts, open blockers | **V2 interpretive authority** |
-| [Machine ledger events](ledger_events.jsonl) | Immutable events D-024–D-033 with rationales, alternatives and next gates | Machine-validated supplement |
-| [Event schema](ledger_event.schema.json) | Required fields and legal evidence/status values | JSON Schema draft 2020-12 |
-| [Package checks](checks/validate_research_package.py) | Ledger and Markdown-link verification | Read-only check |
-| [Formal examples](checks/formal_sanity.py) | 5 deterministic tests of *conditional* properties, optional `--out` | Read-only default |
-| [Stdlib properties and counterexamples](checks/repo_lightweight_checks.py) | No external dependencies, extra bounded-logit/nonlinear/multi-step checks | Read-only default |
-| [Transport synthetic pilot](checks/transport_anchor_pilot.py) | Constructed 16D five-seed rank-identifiability demonstration, `--out` opt-in | Toy only, not LM |
-| [Existing results](results/) | Historical check JSON and five-seed synthetic output, plus v2 validation outputs | Preserve historical measurements |
-| [Figures](figures/) | Prior one-seed address diagnostic; five-seed synthetic anchor chart | Descriptive only |
-| [V2 verification and open-work report](06_VALIDATION_AND_UNRESOLVED_WORK.md) | Check results, failed paths, what remains experimental and unverified | Reviewable, not a model-performance proof |
-| [Editable architecture diagram](architecture_scheme.mmd) | Mermaid, competing components and explicit augmented boundary | Candidate, not final model |
-
-## Evidence-to-design diagram
+The reference has one causal learned core and one next-token head. Dense and shared-block configurations implement the same interface. Sharing parameters leaves separate activation caches at every executed depth. Optional transport and adaptive-compute experiments must preserve this causal interface and carry their own costs.
 
 ```mermaid
 flowchart TD
-  E[Authenticated repository evidence] --> C[Competing causal explanations]
-  P[Primary literature and independent critic] --> C
-  C --> M[Mathematical proposition with stated assumptions]
-  M --> T[Small pre-registered discriminating test]
-  T --> D{Wins vs tuned simpler baseline at matched cost?}
-  D -->|No or inconclusive| L[Append decision and preserve failure]
-  D -->|Yes| N[Native LM/code and power replication]
-  N --> G{Advantage survives integration?}
-  G -->|No| L
-  G -->|Yes| A[One Nano LM model candidate]
-  A --> L
-  L --> C
+    P["Observed prefix and request ID"] --> C["Checkpoint and cache-version checks"]
+    C --> B["Causal dense or shared-block core"]
+    K["One KV cache per logical depth"] <--> B
+    B --> N["Final normalization"]
+    N --> H["Tied native next-token head"]
+    N -. "separate diagnostic" .-> T["Compatible boundary transport"]
+    T -. "coherent inverse readout" .-> H
+    H --> Y["Next-token distribution"]
+    Y --> E["Held-out quality and total cost"]
+    E --> L["Evidence and decision history"]
+    L -. "reviewed training experiment" .-> B
 ```
 
-## Numerical evidence reproduced as a table
+The arrows from research decisions do not imply online weight updates. Weights remain fixed in the default inference contract. An exact external store belongs in a separately measured augmented-system arm.
 
-The following values are **from the existing repo's one-seed** `INVESTIGATION.md` Question 7, not from new runs or a generalizable language model.
+### Exact illustrative parameter inventory
 
-| Task phases | Original addresses | Uniform hash | Adam-state reset | Original, LR×10 |
+For vocabulary 32,768, width 256, four attention heads and SwiGLU hidden width 768, the count is
+
+\[
+P=Vd+U(4d^2+3df+2d)+d,
+\]
+
+where `U` is the number of **unique** blocks. Logical execution depth is a separate quantity.
+
+| Configuration | Unique blocks | Logical depth | Parameters | Logical KV caches |
 |---|---:|---:|---:|---:|
-| 1–15 | 88.1% | 100.0% | 99.3% | 99.9% |
-| 16–30 | 28.9% | 100.0% | 96.4% | 94.9% |
-| 31–45 | 6.9% | 100.0% | 91.2% | 76.6% |
-| 46–60 | 3.4% | 99.9% | 86.1% | 59.9% |
+| Dense reference |8|8|15,208,704|8|
+| Four shared blocks executed twice |4|8|11,798,784|8|
 
-![Historical one-seed memory pilot](figures/memory_acquisition_controls.svg)
+These are exact counts for the new proposed configuration, not a recovered trained checkpoint. The existing store pilot used a different 14.3M configuration. The new NumPy implementation runs at tiny dimensions to check semantics. Shared weights save parameter storage here; they do not halve executed layers, attention work or KV storage. This is a same-logical-depth comparison, not a same-parameter comparison.
 
-A separate **constructed** 16-dimensional linear teacher and orthogonal hidden-basis shift yielded five-seed average class agreement 21.0% without correction; pseudoinverse estimated from 4, 8, 12, 16 independent paired anchors yielded 46.8%, 59.8%, 73.4%, 100%. A known inverse also reached 100%. This shows general linear-map identification under the construction, **not** efficient learned LM memory, retention or self-improvement.
+## Most consequential empirical update
 
-![Five-seed constructed rank diagnostic](figures/transport_anchor_cost.svg)
+The existing three-seed bilinear-model study separates local edit behavior from later retention:
 
-## Reproduction and safety
+| Arm | Correction right immediately | Neighbouring fact accuracy immediately | Old correction accuracy at final evaluation |
+|---|---:|---:|---:|
+| Single-fact write |100.00%|64.70%|66.20%|
+| Same-entity replay |100.00%|100.00%|62.28%|
+| Computed address edit |99.84%|98.03%|21.47%|
 
-Run the checks from an extracted copy using `python checks/repo_lightweight_checks.py`, `python checks/formal_sanity.py`, `python checks/transport_anchor_pilot.py`, and `python checks/validate_research_package.py`. By default they only print and **do not write** to packaged result paths. To save new data, pass `--out /path/to/new-file.json`; output already present is never overwritten by default. No new GPU/TPU training or external paid service was authorized or executed for this revision.
+The table is a reanalysis of existing results. Its columns use different cohorts, so subtracting them does not produce a paired forgetting rate. The old random-replay arm has an additional stream-pairing defect. Details, seed ranges, solver limitations and the revised event-level protocol are in 09.
 
-**Precedence:** raw source experiments and preregistered protocols > later documented independent corrections > 05 formal/caveat review > 01 candidate design and 02 supplemental ledger > older narrative summaries. If a new experiment contradicts this package, append a superseding decision rather than rewriting original evidence.
+![Immediate locality and later correction accuracy](figures/correction_locality_durability.svg)
+
+The language-model store pilot is also complete: post-hoc mixing improved weighted BPB by 0.0581, while joint training was 0.1435 BPB worse than post-hoc mixing. The store consumed 1,022,224,980 bytes. This is a one-seed system observation; crowded-machine wall times are unusable for efficiency claims. A document-excluded training control remains necessary before rejecting the broad routing principle.
+
+## Reading map
+
+| Need | File |
+|---|---|
+| Mathematical model, assumptions, proof and counterexample | [01_ARCHITECTURE_AND_THEOREMS.md](01_ARCHITECTURE_AND_THEOREMS.md) |
+| Decisions, reasons, alternatives, current status and history | [02_DECISION_LEDGER.md](02_DECISION_LEDGER.md) |
+| Ordered research plan, G00–G17 and G03b successor | [03_EXPERIMENTS_AND_EXECUTION.md](03_EXPERIMENTS_AND_EXECUTION.md) |
+| Repository evidence and bibliography | [04_EVIDENCE_AND_REFERENCES.md](04_EVIDENCE_AND_REFERENCES.md) |
+| V2 findings F-01–F-18 and V3 repairs F-19–F-30 | [05_GAP_CLOSURE_AND_FORMAL_REVIEW.md](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md) |
+| Actual checks, risks, reproducibility and remaining work | [06_VALIDATION_AND_UNRESOLVED_WORK.md](06_VALIDATION_AND_UNRESOLVED_WORK.md) |
+| Concrete forward architecture, tensors, memory and cost | [07_IMPLEMENTATION_CONTRACT.md](07_IMPLEMENTATION_CONTRACT.md) |
+| 36-source inspection register and methodological boundaries | [08_LITERATURE_AUDIT.md](08_LITERATURE_AUDIT.md) |
+| New results, reanalysis, RNG/solver/cohort findings | [09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md) |
+| Historical records and new event semantics | [ledger_events.jsonl](ledger_events.jsonl), [schema](ledger_event.schema.json), [legacy pin](ledger_history.json) |
+| Independent audit notes | [Formal review](reviews/formal_audit.md), [ledger review](reviews/ledger_audit.md), [reanalysis review](reviews/reanalysis_independent_review.md), [reference-code review](reviews/native_reference_review.md) |
+
+## Reproduction
+
+Use Python 3 with NumPy and the dependencies in [checks/requirements-checks.txt](checks/requirements-checks.txt). Matplotlib is needed only to regenerate the optional chart. The forward reference and mathematical checks are unoptimized CPU diagnostics. Run from this directory:
+
+```bash
+python3 -B checks/repo_lightweight_checks.py
+python3 -B checks/formal_sanity.py
+python3 -B checks/transport_anchor_pilot.py
+python3 -B checks/test_research_package.py
+python3 -B prototype/test_native_reference.py
+python3 -B analysis/reconcile_repository_evidence.py
+python3 -B checks/validate_research_package.py
+```
+
+To verify a ledger update against the complete prior history, add `--baseline-ledger /absolute/path/to/previous-ledger.jsonl` to the validator. The permanent legacy pin protects the original ten events; full-history comparison requires the previous Git version as input. Default checks print results. Where offered, `--out NEW_PATH.json` uses exclusive creation and refuses an existing file.
+
+[Historical numerical results](results/formal_sanity_20261121.json) and the [original transport result](results/transport_anchor_pilot_v0.json) are preserved. The newly recorded receipts in 06 identify their executed code and scope. The earlier V2 package-level PASS claim was not reproducible from its initial committed validator; the historical defect and the repaired checks are disclosed in 06.
+
+## Remaining gates
+
+| Gap | What would actually close it |
+|---|---|
+| Correct gradients and training implementation | Autodiff/reference agreement, optimizer/checkpoint tests and a finite native training run |
+| Useful learned representation migration | Old/new learning benefit on evolving native features, above freezing/replay after every migration cost |
+| Durable correction | Same-event horizon curves, no future-label leakage, proper supersession and independent fresh seeds |
+| Positive forward transfer | Held-out task-family learning curves beyond context/retrieval advantages and equal-experience controls |
+| Efficient language model | Same-byte held-out quality, valid isolated timing, full memory and measured energy |
+| Scale readiness | Data rights/checkpoint identities, measured kernels/throughput and experiment-scoped resource authorization |
+
+The updated package closes concrete specification, logic, evidence-tracking and diagnostic defects. These remaining questions require training or external evidence. The existing research PR remains the review destination; model selection and promotion depend on those results.
+
+### Integration cutoff
+
+A final source refresh at `8d3b03e08a5c14d2e9ab330ac8d5006e87e61613` adds a registered correction-margin follow-up and revised nested-protocol device plan. No result from either is included at that cutoff. See [09, late source refresh](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md#7-late-source-refresh-and-fixed-integration-cutoff). The completed-pilot reanalysis remains pinned to `2ef9ce5…`.

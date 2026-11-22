@@ -1,7 +1,9 @@
 """Nano LM research: constructed representation-transport anchor diagnostic.
 This synthetic linear numerical check DOES NOT train a language model.
 Run: python checks/transport_anchor_pilot.py
-Output: results/transport_anchor_pilot_v0.json
+Output is printed by default. Use --out NEW.json for exclusive file creation.
+The estimator fits an unrestricted inverse by least squares; it does not exploit
+the teacher's orthogonality or prove an anchor lower bound for structured maps.
 """
 from __future__ import annotations
 import json

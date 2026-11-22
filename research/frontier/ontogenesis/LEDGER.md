@@ -190,3 +190,58 @@ Additive. Nothing above is changed.
 - The pre-recorded caveat stands: same-document leakage in training biases this test against the joint arms. A leave-document-out store is the control that would separate the caveat from the claim. Until it is run, "routing memorisable content away from the core during training carries over to text" is **not supported**, not refuted.
 - The pilot is complete with a negative primary result. The architecture package in this branch was written before commit `e9ba4f3` and does not mention it; the 2026-11-21 blueprint's evidence table lists it as having no final result, which is now out of date.
 - `architecture/checks/validate_research_package.py` as first committed returned FAIL: its three patterns were escaped twice inside raw strings, so the link check matched none of the package's 114 links and the decision-row check could not match. With the patterns corrected it returns PASS, and it fails as intended on a planted broken link, a duplicated event and a missing human-ledger row. The earlier "PASS" for link and package integrity was not reproducible from the committed file. CI does not run this validator.
+
+
+## Review supplement V3 — executable architecture, corrected evidence and maintainable history (2026-11-21)
+
+**Date:** November 21, 2026, America/New_York. This is an additive review: every preceding byte of this ledger is preserved. Principal completed-result evidence is pinned to research commit **2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0**. The integration cutoff is **8d3b03e08a5c14d2e9ab330ac8d5006e87e61613**, which adds protocols and operational updates, not a newly verified result. The [V3 package](architecture/README.md) keeps Nano LM's native-model objective and leaves the final backbone unselected.
+
+### Decisions, reasons and scope
+
+| Decision area | Change and reason | Outcome / scope |
+|---|---|---|
+| Executable architecture | Specify tensors, causal masks, tied output, logical-depth caches, loss and reset behavior; diagrams alone were insufficient | Tiny untrained dense/shared-block reference in [07](architecture/07_IMPLEMENTATION_CONTRACT.md) |
+| Formal transport | Distinguish functional conjugacy from an allowed model parameterization; normalization, RoPE and embedding ties impose compatibility conditions | Conditional proofs and counterexamples in [01](architecture/01_ARCHITECTURE_AND_THEOREMS.md) |
+| Constrained updates | Protect against the complete optimizer displacement; raw-gradient projection can be undone by preconditioning or decay | Local anchor bound, residual and acquisition requirements; no universal no-forgetting theorem |
+| Historical records | Add valid-time and immutable recorded-time cutoffs; backdated events can change single-time reconstructions | Declared augmented-store consistency, not truth or native knowledge |
+| Empirical status | Incorporate completed store and correction pilots instead of leaving them queued as unrun | Existing evidence reanalysed in [09](architecture/09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md) |
+| Experimental controls | Repair common-generator coupling, solver-status interpretation and changing durability cohorts | G03b successor specification; original results and protocols unchanged |
+| Decision maintenance | Separate stable decisions from successive events and validate previous-history prefixes | Extensible [event log](architecture/ledger_events.jsonl) with explicit revisions |
+| Literature | Inspect primary identities, supervision and plugin dependencies; narrow claims to inspected evidence | [36-source audit](architecture/08_LITERATURE_AUDIT.md), without treating citations as local replications |
+| Latest upstream changes | Record correction-margin predictions and final nested-device deviation separately from measurements | D-046; protocol/source update only |
+
+### Completed evidence now incorporated
+
+The **one-seed language-model store pilot** reports weighted BPB of 1.4972 for eight blocks alone, 1.4391 with a post-hoc store, and 1.5826 after joint training. The post-hoc system improves by 0.0581 BPB, while joint training is 0.1435 worse than post-hoc mixing. The store occupies **1,022,224,980 bytes**. Preserve the original failed S2/S3 outcomes: a same-document training-exposure caveat motivates a new document-excluded control; it does not turn a failure into success. Crowded-machine timings cannot establish an efficiency advantage. This is augmented-system evidence, distinct from the earlier M21 **bits-per-token** comparison.
+
+The **three-seed correction pilot**, seeds 8001–8003, shows why immediate locality and durable retention require different endpoints. Correction-only writes achieved 100% immediate correction accuracy but 64.70% accuracy on measured neighbouring facts. Same-entity replay achieved 100% on both immediate measures, yet its late correction accuracy was 62.28%. Computed address edits achieved 99.84% immediate correction accuracy and 98.03% immediate neighbour accuracy, with 21.47% late correction accuracy. These are synthetic bilinear-model results, not native-language-model measurements. Immediate and late aggregates use different cohorts; subtracting them is not a paired forgetting curve.
+
+New source diagnostics found that random replay consumes the generator also used for future corrections: **38 of 39 correction phases differ in each audited seed**. This invalidates treating that arm's seed-matched scores as the same-event paired comparison. It does not alter the matched single-write/same-entity-replay streams, erase descriptive results, or quantify the bias. The solver helper also collapses different non-success statuses into one failure; it does not certify representational impossibility. The successor requires immutable common event manifests, independent replay generators, actual constraint residuals, deployed-precision checks and per-edit survival cohorts. Raw source/result copies and hashes remain under [evidence](architecture/evidence/source_manifest.json).
+
+### Architecture and proof implications
+
+The illustrative dense configuration has **15,208,704** learned scalars; four shared blocks executed at eight logical depths have **11,798,784**. Both require eight logical KV caches. These are exact proposed-configuration counts, not recovered trained checkpoints or a parameter-matched quality comparison. Sharing weights does not halve executed depth, cache storage or training cost.
+
+The formal revision also makes input reinjection optional, defines causal CE before adding auxiliary losses, and separates checkpoint prediction equivalence from optimizer-dynamics equivalence. Finite-sequence drift bounds require a prefix-wise premise. Historical-query invariance requires fixed policy/view and recorded cutoffs. Adaptive stopping requires consistent cost units and a budgeted decision model. One candidate's failure cannot falsify the existential APS ambition; promotion uses a finite preregistered candidate claim with resource and regression guardrails.
+
+### Actual validation and decision history
+
+| Executed check | Result | Supported scope |
+|---|---:|---|
+| Tiny native forward reference | **13/13 passed** | Causal/full-prefix/incremental agreement, reset/cache ownership, inventories and input contracts |
+| Mathematical examples | **12/12 passed** | Explicit examples and counterexamples |
+| Original NumPy suite | **5/5 passed** | Small algebraic checks |
+| Package regression suite | **35/35 passed** | Valid extensions accepted and corrupt records rejected |
+| Synthetic transport diagnostic | **Five seeds reproduced** | Existing 16-dimensional linear-anchor example |
+
+The [validation report](architecture/06_VALIDATION_AND_UNRESOLVED_WORK.md) and [final receipt](architecture/results/validation_v3_final.json) identify commands, hashes and limitations. Independent review found and repaired stale-cache identity, unsigned-loss and fractional-byte defects after the initial 12-case forward pass. Passing tests did not validate all training, every configuration, remote CI or deployment efficiency.
+
+The final register contains **46 human decision IDs**, **27 machine events**, and **23 machine-covered decisions**. The original 23 human rows and ten machine events remain unchanged; missing historical timestamps or reviewers were not invented. Revisions use unique event IDs and explicit previous-event pointers. Schema validity checks record structure and continuity, not scientific truth or authorization.
+
+### Latest cutoff and next gates
+
+At the integration cutoff, [correction_margins.py](architecture/evidence/upstream/correction_margins.py.txt) adds prerecorded M1–M4 predictions comparing minimal edits and preservation/margin choices. No new margin result was verified. The [nested deviation record](architecture/evidence/upstream/PROTOCOL-NESTED-DEVIATION.md.txt) now reports a final cloud-host CPU execution plan after another laptop-GPU stop. It calls for dense/looped controls on the same CPU and both registered and device-consistent evaluations; disagreement means device-sensitive, with no rule declared met. This review did not verify a live job or completed nested result.
+
+Next: reconcile new upstream receipts before declaring completion; recover the native baseline's code/tokenizer/data/checkpoint lineage; implement G03b's common-stream, same-edit durability protocol; complete G02's address-by-optimizer controls; then bridge a supported mechanism into native text/code evaluation against tuned dense and targeted replay. Whole-document exclusion precedes broader store-training conclusions. Learned transport, positive forward transfer and scaling remain conditional on fresh evidence and complete costs. The [execution plan](architecture/03_EXPERIMENTS_AND_EXECUTION.md) records dependencies and stopping rules.
+
+Publication belongs in existing draft [PR #195](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/195), without merge. No protected experiment, frozen result, original ledger entry or spending authorization is changed. Future maintenance appends evidence and reasons when they materially change a decision.

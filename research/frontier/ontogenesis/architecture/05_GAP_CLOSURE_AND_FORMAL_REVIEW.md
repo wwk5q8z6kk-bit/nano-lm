@@ -1,5 +1,7 @@
 # 05 — Independent gap closure, theory audit, and implementation contracts (v2)
 
+**V3 precedence notice:** This document retains the 18-item V2 review and now includes follow-up repairs. Current theorem statements are in [01](01_ARCHITECTURE_AND_THEOREMS.md), executable tensor/cache details in [07](07_IMPLEMENTATION_CONTRACT.md), source inspection depths in [08](08_LITERATURE_AUDIT.md), and new repository evidence in [09](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md). A repair to wording or a diagnostic is not closure of an empirical learning claim.
+
 **Status:** research review and corrigenda, 2026-11-21. **Not a proof of superior intelligence, not an adoption of APS or another model family.** The native Nano LM model remains the target; dense, hybrid, recurrent, adaptive predictive-state and other yet-undiscovered substrates remain competitors. Scope: reviewable, reversible design and local deterministic tests. No paid training or owner-device inspection.
 
 ## Executive findings and resolutions
@@ -42,7 +44,7 @@ The final artifact should have a single trained parametric prediction system, ev
 | X0 | Any competing mathematical operator discovered later | Implementation-defined | Does an unexpected simpler substrate beat all of these? | New registered branch, same harness |
 | S0 | D0/H1/R1/A1 plus indexed/versioned external records | Fully counted store, indexes, queries | Does a whole-system intervention win despite memory/IO? | Separate augmented scoreboard |
 
-Never test a hybrid by giving it unfused reference kernels while the dense arm uses optimized kernels and then call the difference architectural. Both *math-equivalent reference* and *deployment-optimized* comparisons are needed. The Qwen3.5 3:1 layout is prior art, not a mandated ratio; an ICML 2026 expressiveness result concerns a specific sequential-composition setting rather than proving every hybrid inferior. [P01, P02]
+Never test a hybrid by giving it unfused reference kernels while the dense arm uses optimized kernels and then call the difference architectural. Both *math-equivalent reference* and *deployment-optimized* comparisons are needed. The Qwen3.5 3:1 layout is prior art, not a mandated ratio; an ICML 2026 expressiveness result concerns a specific sequential-composition setting rather than proving every hybrid inferior. [P-01/P-24, P-04]
 
 ### 1.2 Explicit causal interface
 
@@ -57,7 +59,7 @@ Define encoder/backbone state `h_t = H_{θ_n}(x_{≤t},s_{t-1})`, optional worki
 
 Readout: `p(x_{t+1}|x_{≤t}) = softmax(W_out z_{t,K_t}+b)`. Write to streaming state only after the current step has finished using its permitted input; distinct documents/requests reset state unless an explicit authorized persistent-state protocol says otherwise. Causal source copying may point only to an already-visible, permitted input span and must account for pointer/copy-head inference costs. **There is no inference-time `θ` update in the default model benchmark.** If test-time training is evaluated, its writes are explicitly counted and training/evaluation boundaries are redefined.
 
-`K_t=0` is a mandatory ablation, not necessarily a useful model. A controller selecting integer `K_t` is discrete; choose one documented gradient/supervision/REINFORCE/relaxation route if and only if fixed-depth controls earn it. Do not assume the additional loop sees current or future answer tokens. Log token-level stopping decisions and whether extra steps helped or harmed.
+`K_t=0` is a mandatory ablation for an optional refinement module, with a complete nonzero-depth core still present. It is not permission to remove all causal computation. A controller selecting integer `K_t` is discrete; choose one documented gradient/supervision/REINFORCE/relaxation route if and only if fixed-depth controls earn it. Do not assume the additional loop sees current or future answer tokens. Log token-level stopping decisions and whether extra steps helped or harmed.
 
 ### 1.3 State, safety and synchronization invariants
 
@@ -69,7 +71,7 @@ Readout: `p(x_{t+1}|x_{≤t}) = softmax(W_out z_{t,K_t}+b)`. Write to streaming 
 | Optional exact record `L` | Separate augmented system; explicit provenance/permissions | Bitemporal event/version index with retractions | Stale corrections, untrusted or permission-denied retrieval |
 | Updated representation map `T_n` | Only in candidate A1; versioned alongside every dependent state/readout | Mapping, inverse/approximation and failure rollback | Unreachable memories and silent prediction drift |
 
-Tensor shapes, per-layer cache layouts, positional encodings and the exact algorithm must come from each **implemented** configuration, not from this abstract schematic. Report memory-state bytes even if `P` is unchanged.
+The abstract interface is instantiated by the forward-only NumPy dense/shared-block reference in [07](07_IMPLEMENTATION_CONTRACT.md). It specifies tensor shapes, RMSNorm/RoPE behavior, per-logical-depth caches and exact counts. A shared parameter block does not imply a shared activation cache. Native training and optimized kernels remain unimplemented in this reference.
 
 ```mermaid
 flowchart TD
@@ -113,11 +115,11 @@ Let old anchor logits be `f:R^P→R^m`, `J=∂f/∂θ`, and `Δθ∈ker(J)`. A l
  \le \tfrac L2\|\Delta\theta\|_2^2.
 \]
 
-If a numerically approximate projection leaves residual `r=JΔθ≠0`, use `||r||_2 + (L/2)||Δθ||²`. These are **anchor-output bounds only**. They do not establish old-task accuracy or fairness on unseen old inputs. In high dimensions exact null-space projections require costly Jacobian operations; damping changes the guarantee. If the new-task gradient lies wholly in the constrained subspace, the permissible update can be zero, preventing learning. Compare with replay, distillation, low-rank edits, optimizer resets and a no-projection control. [P04]
+Here Δθ means the complete realized parameter displacement after optimizer preconditioning, momentum, weight decay, clipping and any auxiliary writes. Projecting only the raw gradient does not enforce this condition. If a numerically approximate projection leaves residual `r=JΔθ≠0`, use `||r||_2 + (L/2)||Δθ||²`. These are **anchor-output bounds only**. They do not establish old-task accuracy or fairness on unseen old inputs. In high dimensions exact null-space projections require costly Jacobian operations; damping changes the guarantee. If the new-task gradient lies wholly in the constrained subspace, the permissible update can be zero, preventing learning. Compare with replay, distillation, low-rank edits, optimizer resets and a no-projection control. The direct gradient-space precedent is OGD [P-27 in08]; AlphaEdit [P-36 in08] protects a fixed-key layer under an exact-nullspace assumption. The activation-space reference [P-25 below] has a distinct scope.
 
 ### 2.3 Independent fact storage: limit and exception
 
-For `n` arbitrary independent symbols from an alphabet of size `V`, an exact injective encoding needs at least `ceil(n log2 V)` bits, absent additional side information; otherwise by the pigeonhole principle two inputs would collide. This counts **all** information-bearing parameters, auxiliary memory, external stores, indexes and shared priors where they encode those facts. The bound does not prohibit efficient compression for structured distributions, prediction-based coding, amortized procedures, or approximate task-conditional retrieval (rate–distortion tradeoff). It is not a universal lower bound on how many neural parameters are needed for a named benchmark.
+For `n` arbitrary independent symbols from an alphabet of size `V`, an exact injective fixed-length encoding needs at least `ceil(n log2 V)` bits, absent additional side information; otherwise by the pigeonhole principle two inputs would collide. This counts **all** information-bearing parameters, auxiliary memory, external stores, indexes and shared priors where they encode those facts. The bound does not prohibit efficient compression for structured distributions, prediction-based coding, amortized procedures, or approximate task-conditional retrieval (rate–distortion tradeoff). It is not a universal lower bound on how many neural parameters are needed for a named benchmark.
 
 ### 2.4 Bitemporal events: index correctness does not prove factual truth
 
@@ -131,18 +133,18 @@ Given a known single-step utility increment `ΔU(s)` and cost `ΔC(s)` with conv
  V(s,b)=\max\big\{U_{stop}(s),\ \max_{a\in A_{continue},\;c_a\le b}\big[-\lambda c_a+\mathbb E[V(S',b-c_a)\mid s,a]\big]\big\}.
 \]
 
-Neither identity gives a learned model oracle access to `ΔU` or the transition distribution. A usable controller must estimate them using **causal** information, be validated on held-out difficulty strata, detect when additional computation worsens answers, and count every controller and branch cost. Regret relative to a hindsight oracle must be described explicitly as an **oracle benchmark, not a deployable baseline**.
+Costs must include controller overhead in consistent utility units; the Bellman equation assumes sufficient Markov state, known action transitions for an optimal-policy claim, and a finite horizon or strictly positive budget consumption. Neither identity gives a learned model oracle access to `ΔU` or the transition distribution. A usable controller must estimate them using **causal** information, be validated on held-out difficulty strata, detect when additional computation worsens answers, and count every controller and branch cost. Regret relative to a hindsight oracle must be described explicitly as an **oracle benchmark, not a deployable baseline**.
 
 ## 3. Causal experimental priorities and controls
 
 ### 3.1 The actual diagnostic program has a simpler hypothesis to beat
 
-The existing repo's one-seed memory-saturation study found late acquisition of 3.4% with original addressing, 99.9% with uniform hashing, 86.1% after Adam-state reset, and 59.9% with 10× LR. Address concentration and optimizer history interact; no new learned memory principle has yet outperformed the simplest baseline. In `forgetting_split.py`, exceptions alone left old regular facts around 99.6–99.7%, whereas corrections alone reduced them to ~91%. The leave-one-out non-oracle write-time router produced unseen-relation inference 81.4% versus baseline 77.6% and oracle 88.9%, with seed variation. These observations are **toy-task results with stated limitations** and should direct the next controlled experiments, not justify a large-scale APS design.
+The existing repo's one-seed memory-saturation study found late acquisition of 3.4% with original addressing, 99.9% with uniform hashing, 86.1% after Adam-state reset, and 59.9% with 10× LR. Address concentration and optimizer history are competing or interacting explanations; the factorial interaction is not yet measured; no new learned memory principle has yet outperformed the simplest baseline. In `forgetting_split.py`, exceptions alone left old regular facts around 99.6–99.7%, whereas corrections alone reduced them to ~91%. The leave-one-out non-oracle write-time router produced unseen-relation inference 81.4% versus baseline 77.6% and oracle 88.9%, with seed variation. These observations are **toy-task results with stated limitations** and should direct the next controlled experiments, not justify a large-scale APS design.
 
 | Priority | Discriminating experiment | Strongest necessary control | Primary decision | Do not conclude |
 |---|---|---|---|---|
 | 1 | Address(learned/frozen/hash) × optimizer(Adam carry/reset/β2/SGD), paired streams | Best tuned hash + reset combination, same budget | Which factor causes acquired-fact collapse? | Theoretical memory impossibility from one seed |
-| 2 | Same-entity correction with/without full-entity replay and optimizer reset | Tuned AdamW + same-entity replay and an exact map | Does projection/migration add anything to corrections? | Any general forgetting law from single-fact updates |
+| 2 | G03b successor: paired correction durability after the completed same-entity replay pilot | Tuned AdamW + same-entity replay and an exact map | Does projection/migration add anything to corrections? | Any general forgetting law from single-fact updates |
 | 3 | Rule changed vs one-off exception vs label noise | No oracle, prequential LOO/change-point detector, same inputs | Can structure be learned without future labels? | Detector learned if it sees ground truth |
 | 4 | Unknown learned transport under evolving features | Frozen, full replay, correct known `T` ceiling, low-cost estimation, projection | Gain in both old/new behavior per resource? | Synthetic inversion = continual learning |
 | 5 | Cross-episode operation reuse | Meta-trained Transformer, explicit program library, ICL permitted/denied conditions | Does ability persist across episodes and transfer? | Wider context alone = self-organization |
@@ -161,17 +163,17 @@ The rough `6ND` dense-LM training-FLOP proxy is useful for budgeting only; recur
 ## 4. Source traceability and limits
 
 - **Repository evidence:** [Nano LM PR #194](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/194), [INVESTIGATION.md](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/research/ontogenesis-phase1/research/frontier/ontogenesis/INVESTIGATION.md), [DISCOVERY-CYCLE-1](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/research/ontogenesis-phase1/research/frontier/ontogenesis/theory/DISCOVERY-CYCLE-1-20261121.md), and [canonical ledger](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/research/ontogenesis-phase1/research/frontier/ontogenesis/LEDGER.md). Distinguish branch snapshot from latest master and from unavailable owner-local worktrees.
-- **[P01]** [Qwen3.5 model-family implementation notes](https://huggingface.co/docs/transformers/model_doc/qwen3_5) — 3:1 hybrid used in a published architecture; official model card is the proper source for 4B configuration details.
-- **[P02]** [Ye et al., ICML 2026](https://proceedings.mlr.press/v306/ye26h.html) — theoretical separation for a specified sequential-composition task, not a blanket hybrid impossibility.
-- **[P03]** [Kim, Kim & Sohn, ICML 2025](https://proceedings.mlr.press/v267/kim25p.html) — metrics and analysis of representation shift; **does not prove** the proposed Nano transport works.
-- **[P04]** [Anthes et al., Lifelong Learning Agents 2025](https://proceedings.mlr.press/v274/anthes25a.html) — activation task-relevant subspaces; relevant direct prior art for change outside readout range.
-- **[P05]** [Lyle et al., 2025](https://proceedings.mlr.press/v274/lyle25a.html) — combination of layer normalization and weight decay can preserve plasticity in their conditions, does not guarantee retention.
-- **[P06]** [Zhang et al., 2025](https://proceedings.mlr.press/v274/zhang25a.html) — separates stability, plasticity and cross-task consolidation; informs formal transfer tests.
-- **[P07]** [Memory Layers at Scale, ICML 2025](https://proceedings.mlr.press/v267/berges25a.html) — reported capacity-per-FLOP trade-offs with extra parameters; model-size accounting remains necessary.
-- **[P08]** [LOTUS, 2026](https://arxiv.org/abs/2606.31779) — intermediate-supervised latent loops; compare its actual training objective, not merely weight tying.
-- **[P09]** [CopyGen, 2026](https://arxiv.org/abs/2610.28393) — copying boundary controls and post-hoc integration as strong alternatives.
-- **[P10]** [Nested Learning, NeurIPS 2025](https://proceedings.neurips.cc/paper_files/paper/2025/hash/4309616aaed8e848009bc4a7ef73b493-Abstract-Conference.html) — multilevel optimization hypothesis and comparator, not evidence that Nano LMS already implements it.
-- **[P11]** [Dohare et al., Nature 2024](https://www.nature.com/articles/s41586-024-07711-7) — sustained plasticity problem; different experimental setting.
+- **[P-01/P-24]** [Qwen3.5 model-family implementation notes](https://huggingface.co/docs/transformers/model_doc/qwen3_5) — 3:1 hybrid used in a published architecture; official model card is the proper source for 4B configuration details.
+- **[P-04]** [Ye et al., ICML 2026](https://proceedings.mlr.press/v306/ye26h.html) — theoretical separation for a specified sequential-composition task, not a blanket hybrid impossibility.
+- **[P-12]** [Kim, Kim & Sohn, ICML 2025](https://proceedings.mlr.press/v267/kim25p.html) — metrics and analysis of representation shift; **does not prove** the proposed Nano transport works.
+- **[P-25]** [Anthes et al., Lifelong Learning Agents 2025](https://proceedings.mlr.press/v274/anthes25a.html) — activation task-relevant subspaces; relevant direct prior art for change outside readout range.
+- **[P-14]** [Lyle et al., 2025](https://proceedings.mlr.press/v274/lyle25a.html) — combination of layer normalization and weight decay can preserve plasticity in their conditions, does not guarantee retention.
+- **[P-26]** [Zhang et al., 2025](https://proceedings.mlr.press/v274/zhang25a.html) — separates stability, plasticity and cross-task consolidation; informs formal transfer tests.
+- **[P-09]** [Memory Layers at Scale, ICML 2025](https://proceedings.mlr.press/v267/berges25a.html) — reported capacity-per-FLOP trade-offs with extra parameters; model-size accounting remains necessary.
+- **[P-05]** [LOTUS, 2026](https://arxiv.org/abs/2606.31779) — intermediate-supervised latent loops; compare its actual training objective, not merely weight tying.
+- **[P-08]** [CopyGen, 2026](https://arxiv.org/abs/2610.28393) — copying boundary controls and post-hoc integration as strong alternatives.
+- **[P-11]** [Nested Learning, NeurIPS 2025](https://proceedings.neurips.cc/paper_files/paper/2025/hash/4309616aaed8e848009bc4a7ef73b493-Abstract-Conference.html) — multilevel optimization hypothesis and comparator, not evidence that Nano LMS already implements it.
+- **[P-13]** [Dohare et al., Nature 2024](https://www.nature.com/articles/s41586-024-07711-7) — sustained plasticity problem; different experimental setting.
 
 **Verification level:** the above external references were checked against primary abstracts/model documentation during this review. The full methods, available implementation commits, benchmark splits and licensing of every paper/code release have **not** all been independently re-executed. No new Nano LM native model was trained in this task.
 
@@ -183,3 +185,21 @@ The rough `6ND` dense-LM training-FLOP proxy is useful for budgeting only; recur
 4. The current source text and code pilot results remain highly heterogeneous: some are one seed, many are synthetic, and some historical descriptions have already been superseded. Promotion needs truly independent confirmation.
 5. Training a 2B–4B-class native foundation model competitive with major models requires validated data, measured hardware and substantial funding, not an extrapolation from short pilots or free compute.
 6. New research avenues—including alternative learning objectives, non-neural computation, compiler/runtime techniques, self-organizing operator libraries, and entirely new representations—remain eligible. **Nothing in APS is a mandatory future module.**
+
+
+## 6. V3 closure register
+
+| Item | Concrete repair | Verification / remaining boundary |
+|---|---|---|
+| F-19 | Restrict transport to a coherent architecture boundary and specify normalization/RoPE/tied-weight compatibility | Algebra and counterexamples in01; learned migration still unproved |
+| F-20 | Project the complete optimizer displacement; state approximate and damped residual bounds | Deterministic optimizer counterexample; no billion-parameter implementation |
+| F-21 | Replace single-time historical invariance with fixed recorded-time cutoff and immutable receipts | Backdated-event counterexample; domain authority remains a policy |
+| F-22 | Replace existential falsification language with candidate/protocol-specific rejection | Finite registered comparison needed; one candidate cannot disprove all architectures |
+| F-23 | Make decision events extensible with revision pointers and validated provenance | Full schema, prefix preservation and corruption tests; labels do not grant authority |
+| F-24 | Replace tautological curvature test with executed function/Jacobian/remainder | Mutation check rejects linear replacement |
+| F-25 | Add executable forward contract, causal caches and exact parameter inventories | Tiny NumPy inference tests; no trained 15M checkpoint |
+| F-26 | Incorporate completed store and correction studies at pinned commits | Arithmetic reanalysis and source copies; no training rerun |
+| F-27 | Detect random-replay coupling of future correction events | Source draw-order diagnostic and independent instrumentation; corrected training still needed |
+| F-28 | Distinguish solver failure, local infeasibility, prediction preservation and temporal cohorts | New reporting contract; historical missing trajectories cannot be recovered from averages |
+| F-29 | Audit 36 primary sources and account for teacher/plugin/parameter dependencies | Identity and stated-method scope; independent paper replication remains open |
+| F-30 | Use reproducible result receipts and file hashes for checks | Final report 06 records actual runs; remote CI must be checked separately |

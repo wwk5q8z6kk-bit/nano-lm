@@ -194,6 +194,7 @@ ROOT = next(p for p in glob.glob("/kaggle/input/**/manifest.json", recursive=Tru
 OUT = "/kaggle/working"
 D, LAYERS, FFN, HEADS, KV = int(os.environ.get("NL_D", 512)), int(os.environ.get("NL_LAYERS", 8)), int(os.environ.get("NL_FFN", 1408)), 8, 4
 SEQ, BS, LR, WARM, SEED = 512, 64, 1e-3, 500, 1000
+MICRO = int(os.environ.get("NL_MICRO", 2))
 MAX_HOURS = float(os.environ.get("NL_HOURS", 10.5))
 
 
@@ -231,14 +232,17 @@ if __name__ == "__main__":
         lr = LR * min(1.0, step / WARM) * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * step / steps)))
         for g in opt.param_groups: g["lr"] = lr
         x, y = get(data, BS, rng, dev)
-        with torch.autocast("cuda", dtype=torch.float16): loss = model(x, y)
-        opt.zero_grad(set_to_none=True); scaler.scale(loss).backward(); scaler.unscale_(opt)
+        opt.zero_grad(set_to_none=True); loss = 0.0
+        for xm, ym in zip(x.chunk(MICRO), y.chunk(MICRO)):      # same update as one batch of BS, in MICRO smaller passes (fits a 16 GB GPU)
+            with torch.autocast("cuda", dtype=torch.float16): lm = model(xm, ym) / MICRO
+            scaler.scale(lm).backward(); loss += float(lm)
+        scaler.unscale_(opt)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); scaler.step(opt); scaler.update()
         hours = (time.time() - t0) / 3600
         if step % 2000 == 0 or step == steps or hours > MAX_HOURS:
-            row = {"step": step, "tokens": step * BS * SEQ, "hours": round(hours, 3), "train_loss": round(float(loss), 4),
+            row = {"step": step, "tokens": step * BS * SEQ, "hours": round(hours, 3), "train_loss": round(loss, 4),
                    "tokens_per_second": round(step * BS * SEQ / (time.time() - t0)), "peak_gpu_gb": round(torch.cuda.max_memory_allocated() / 2 ** 30, 2), **evaluate(model, manifest, dev)}
             curve.append(row); print(json.dumps(row), flush=True)
-            json.dump({"params": params, "cfg": {"d": D, "layers": LAYERS, "ffn": FFN, "seq": SEQ, "bs": BS, "lr": LR, "seed": SEED}, "gpu": torch.cuda.get_device_name(0), "curve": curve}, open(f"{OUT}/result.json", "w"))
+            json.dump({"params": params, "cfg": {"d": D, "layers": LAYERS, "ffn": FFN, "seq": SEQ, "bs": BS, "micro": MICRO, "lr": LR, "seed": SEED}, "gpu": torch.cuda.get_device_name(0), "curve": curve}, open(f"{OUT}/result.json", "w"))
             torch.save(model.state_dict(), f"{OUT}/model.pt")
             if hours > MAX_HOURS: print("stopped at time limit", flush=True); break

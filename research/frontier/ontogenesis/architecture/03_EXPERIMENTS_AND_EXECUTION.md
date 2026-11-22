@@ -1,5 +1,9 @@
 # 03 — Preregisterable experiment program, engineering implementation and scale gates
 
+> **V3 current execution notice — 2026-11-21.** The completed store pilot and three-seed correction study are now incorporated in [09 Evidence refresh](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md). G03 has an existing pilot; its successor is G03b with common event streams and paired durability cohorts. [07 Implementation contract](07_IMPLEMENTATION_CONTRACT.md) supplies a concrete causal reference. This file is an updated research plan, not a preregistration receipt or evidence that a new training job ran. Earlier frozen protocols remain unchanged.
+
+A later source refresh at `8d3b03e…` adds the independently registered margin follow-up. Its rules remain intact; the G03b measurement repairs are complementary and separately labeled. No completed margin result is available at this cutoff; see [09](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md#7-late-source-refresh-and-fixed-integration-cutoff).
+
 **Status:** research designs, not executed GPU/TPU model-training experiments. Do not retrospectively add them to existing frozen protocols. All local and paid experiments require the live repository rules, data rights, code revision, and resources to be verified. **No paid compute authorized by this document.**
 
 > **V2 protocol notice:** The 18 existing gate IDs G00–G17 are **candidate experiments**, not simultaneously authorized jobs. The formal proof audit and cost controls in [05](05_GAP_CLOSURE_AND_FORMAL_REVIEW.md) modify their interpretation without altering any previously preregistered protocol. Choose the first decisive cause test before proliferating new branches.
@@ -8,8 +12,8 @@
 
 | Stage | Purpose | Concrete output | Advance condition |
 |---|---|---|---|
-| S0 evidence repair | Authenticate canonical research, reconcile branches, local worktrees, and registered runs | Signed/hashed status manifest, corrected decision ledger | No unresolved provenance-critical claim for selected hypothesis |
-| S1 pure mathematical checks | Test conditional propositions and counterexamples with tiny code | Five deterministic checks and counterexamples | Algebra and scope survive independent review |
+| S0 evidence repair | Authenticate canonical research, reconcile branches, local worktrees, and registered runs | Hash-linked status manifest, corrected decision ledger | No unresolved provenance-critical claim for selected hypothesis |
+| S1 pure mathematical checks | Test conditional propositions and counterexamples with tiny code | Scoped proofs, executed numerical examples and counterexamples | Algebra and scope survive independent review |
 | S2 cheap causal experiments | Distinguish optimizer, addressing, replay, and revision causes | Multi-seed factorized design | One mechanism shows gain against simplest strong alternative |
 | S3 concept discovery | Detect learned procedures, knowledge migration and positive transfer | Cross-episode held-out families | Statistical evidence of transfer, beyond storage/ICL |
 | S4 native language | Native dense versus candidate on same text/code with matched bytes and time | 15M–50M checkpoints, open BPB/latency/energy | No regression; demonstrable target benefit |
@@ -42,8 +46,8 @@ flowchart TD
 |---|---|---|---|---|---|
 | G00 | Repo-state truth | Master + `research/ontogenesis-phase1`, result manifests, uncommitted inventory | Evidence complete and current | Do not infer job completion from docs; cannot access user's laptop locally | Read-only, now |
 | G01 | Re-run formal examples | Versioned ledger, invertible transport, nullspace, storage, compute rule | Identical deterministic expected output | Numerical checks ≠ proof of LM competence | CPU, done |
-| G02 | Addressing × optimizer factorial | Learned/frozen/hash addresses × Adam reset/β2/SGD | Final quarter acquisition plus old retention | Must match fresh data and per-arm tuning; one seed insufficient | CPU/Apple GPU, no execution here |
-| G03 | Correction edit cause | One-fact Adam, Adam reset, full-entity replay, regularized/projected update | Current correction accurate; old other facts retained | Old facts may be stored for replay; count bytes; distinct seeds | Local |
+| G02 | Addressing × optimizer factorial | Original frozen/hash addresses × Adam carry/reset/lower β2; learned-address/SGD follow-ups separate | Final-quarter acquisition; retention and stale-answer guardrails | Must match fresh data and per-arm tuning; one seed insufficient | CPU/Apple GPU, no execution here |
+| G03 / G03b | Correction locality and durability | Existing six-arm pilot; successor compares candidate with same-entity replay on identical event manifests | Horizon-20 accuracy on the same surviving edits; immediate success and unrelated-fact guardrails | Original random replay changes future event draws; old/current cohorts differ; see 09 | G03 recorded; G03b proposed |
 | G04 | Rule-change detection | Oracle, leave-one-out router, calibrated change-point, no router | Rule changes vs exceptions discriminated; false alarms | Genuine change and noise share early evidence; no future-label access | Local |
 | G05 | Representation migration | Frozen index, exact T oracle, learned T, rebuild, replay | Old/new accuracy *and* total rekey+decode cost | Oracle mapping is upper bound, not deployable | CPU then small LM |
 | G06 | Nullspace update tradeoff | Unconstrained SGD/AdamW, GEM/OGD-style, same-entity replay | Old logit drift vs new target learning | Projection may eliminate all usable update direction | Tiny NN, local |
@@ -63,18 +67,22 @@ flowchart TD
 
 **Background source:** `INVESTIGATION.md`, Question 7. Original learned/fixed address run used only ~526 effective slots; in one seed late-phase acquisition was 3.4%. Uniform hashing reported 99.9%, Adam reset 86.1%, and 10× learning rate 59.9%. The experiment does not prove a new memory mechanism; it suggests a tractable optimizer×address interaction.
 
-**Preregistration proposal** (must be committed *before* implementation changes): 3 address arms (original frozen/learned addressing; uniform hash; approximately balanced learned keys) crossed with 3 optimizer arms (baseline Adam; per-phase Adam moment reset; altered β2 with same first-moment rule). Keep data stream, model width, slot count, $k$, number of train steps, batch sequence and phase order fixed within each seed. Tune learning rates on distinct development seeds only; final confirmation on at least five new seeds, or justify sample size from observed effect. Do not mutate running earlier protocols.
+**Revised factorial proposal:** the core is **2 address policies × 3 optimizer histories = 6 arms**. Address policies are original frozen addresses and fixed uniform-hash addresses. Optimizer histories are carried Adam moments, moment reset at phase boundaries, and a prespecified lower-β2 Adam variant with the first-moment rule unchanged. Balanced/learned addresses and SGD are separately labelled follow-ups, not silently added levels of this core experiment. Resetting both moments does not identify a second-moment mechanism alone; an m-only/v-only reset diagnostic is needed if that mechanism is claimed.
 
-**Primary endpoint:** mean new-fact acquisition across phases 46–60. **Co-primary safety endpoint:** old-fact retention on phases 46–60 and stale-answer rate after corrections. **Mechanistic measures:** occupancy entropy, $K_{eff}=1/\sum_j q_j^2$, per-slot Adam second moments, gradient norms, actual write/read collisions, step-size quantiles, and per-phase wall time.
+The world, all new facts and all updates are precomputed into an immutable manifest per seed, independent of arm-specific random draws. Optimizer and replay generators are separate. Match model width, slot count, read cardinality, training steps and data exposures; log any change in address representation, not only occupancy. Tune each arm on separate development seeds with the same search budget. Fresh evaluation seeds and sample size are fixed only after a variance-informed design; the original one-seed result cannot establish adequate power.
 
-**Distinct predictions:** if only congestion matters, hash helps but resetting moments should not dramatically help at unchanged addresses; if optimizer history contributes, reset or faster β2 forgetting helps at fixed addresses; if interaction matters, the factorial interaction (hash×reset) is not explained by independent main effects. Report each factor and the interaction with uncertainty; call one-seed results exploratory.
+**Primary endpoint:** per-seed mean new-fact acquisition across phases 46–60. **Guardrails:** retention of eligible old facts and stale-answer rate after genuine revisions, each with explicit counts and target-version policy. These guardrails are not a second unannounced primary endpoint. Report the paired acquisition difference at each optimizer level and the address×optimizer interaction, with seed-level uncertainty. A large gain with an unacceptable retention loss does not pass the joint engineering decision.
+
+**Mechanistic measures:** occupancy entropy, effective number of slots `1 / sum(q_j²)`, per-slot first/second moments, actual update magnitudes, read/write collision counts, gradients, objective curves and measured time. These measures distinguish candidate explanations; they do not automatically identify causality. Hashing changes more than occupancy. All attempts, failed runs, tuning work and data-processing cost enter the resource report.
+
+**Distinct predictions:** reset benefits at fixed addresses support an optimizer-history contribution; address effects remaining after optimizer repair support an additional addressing contribution. The interaction is estimated rather than assumed. If a simple fix removes the anomaly, retire the stronger memory-capacity explanation for this regime. Native language effects remain a separate gate.
 
 ## C. Representation transport protocol (G05)
 
 Construct tasks where identities and relations persist while the encoder basis changes. Control the transformation in one diagnostic condition (known orthogonal matrix) and make it unknown in the real learning condition. Compare:
 
 1. **Frozen encoder:** good stability, possibly poor adaptation.
-2. **Full replay/rebuild:** upper bound with high migration cost.
+2. **Full replay/rebuild:** high-information comparator with measured migration cost and achieved quality; no performance upper bound is assumed.
 3. **Known transport:** sanity ceiling; exact outputs provably preserved given a correct map.
 4. **Estimated transport:** fitted from a tiny anchor set with no future-task labels.
 5. **Learned state rewrite:** end-to-end trainable migration, tested against a plain model with the same extra parameters.
@@ -95,7 +103,9 @@ Train on compositions of simple *hidden* functions $f_i$ in a finite domain, wit
 
 **Compare:** (i) optimized Transformer with learning-to-learn curriculum; (ii) equal-size looped/shared network; (iii) typed small program/interpreter; (iv) stateful candidate with learned operations; (v) model with a finite fixed menu; (vi) a trivial memorizer. Evaluate **learning speed on successive new task families**, not just instantaneous in-context accuracy. Test heterogeneous sequences where later operations differ from earlier ones; otherwise a tied loop is favored by construction.
 
-**Preregister positive forward transfer:** $N_j(q)$ = number of fresh examples needed to reach accuracy $q$ on unseen family $j$. Transfer exists only if the slope of $N_j(q)$ decreases over disjoint successive tasks relative to an equally experienced control, without collapsing retained performance and after accounting for additional memory. The success rule must be calibrated using a development study; do not invent a numeric threshold without pilot variance.
+**Operationalize transfer without an unnecessary monotonicity requirement.** For unseen family `j`, measure zero-shot performance before any examples, the full learning curve, and `N_j(q)`—fresh examples needed to reach a fixed target. A positive paired difference `N_control,j(q) − N_candidate,j(q)` establishes relative sample efficiency at that target, conditional on the declared control and resource budget. Attribute the improvement to forward transfer only when a history intervention establishes a benefit from prior learning: compare the same learner under related-task history and an equal-budget control history, with initialization, adaptation protocol and evaluation families matched. A cross-architecture advantage alone does not identify that historical-learning effect. Improvement need not become steeper on every successive task. Pre-adaptation forward transfer and learning-curve acceleration are distinct outcomes; report both rather than calling every improvement the same metric. The original forward-transfer framework is discussed in [GEM](https://proceedings.nips.cc/paper_files/paper/2017/hash/f87522788a2be2d171666752f97ddebb-Abstract.html).
+
+Runs that never reach the target are right-censored, not assigned a fictitious crossing time. Include a bounded-horizon learning-curve area and the probability of attaining the target. Split whole task families, remove demonstrations from context, and preserve separate counters for slow-weight learning and allowed persistent state. Paired family/seed uncertainty and old-task guardrails are required. A decreasing learning-curve slope across episodes can be an additional hypothesis, but is not the definition of all positive forward transfer.
 
 ## E. Native language-model replication (G10–G16)
 
@@ -115,7 +125,7 @@ A win only on a synthetic memorization task cannot promote a foundation architec
 
 ## F. Compute and parameter feasibility
 
-A common approximation for dense LM training is $F_{train}\approx 6ND$ FLOPs for $N$ parameters and $D$ training tokens. This is a *rough compute accounting proxy*, not measured throughput or a universal law across recurrent/sparse methods.
+A common approximation for dense LM training is $F_{train}\approx 6ND$ FLOPs for $N$ parameters and $D$ training tokens. This is a *rough compute accounting proxy*, not measured throughput or a universal law across recurrent/sparse methods. In a shared-block model, unique parameter count is not the number of applied block parameters: charge every logical block execution. The exact candidate inventories and forward-operation terms are in [07](07_IMPLEMENTATION_CONTRACT.md#3-parameter-and-cache-inventory).
 
 | Scenario | Parameters N | Training tokens D | Dense proxy 6ND | Implication |
 |---|---:|---:|---:|---|
@@ -143,7 +153,7 @@ A common approximation for dense LM training is $F_{train}\approx 6ND$ FLOPs for
 | Research ledger | Stable decision/event/result IDs and supersession links | All new proposals and contradictory findings filed |
 | Integration | One model config and diffable deterministic checkpoints | Cross-task no-regression gate before promoting mechanisms |
 
-## H. Fifteen-day (not a promised wall-clock schedule) execution queue
+## H. Dependency-ordered execution queue
 
 This is a dependency order, **not** a promise to deliver days later or evidence that any job is running.
 
@@ -152,8 +162,8 @@ This is a dependency order, **not** a promise to deliver days later or evidence 
 | 0 | Preserve the existing registered nested/routing/LM pilots and identify owner of V4 untracked files | Pending owner-side reconciliation | Worktree/status manifest |
 | 1 | Merge or link new theory+decision snapshot into canonical ledger through review | Draft docs in current package | Human or delegated review, then merge if desired |
 | 2 | Run deterministic sanity checks | **Completed here, 5/5** | Math reviewer confirms assumptions and counterexamples |
-| 3 | Run G02 addressing×optimizer and G03 correction controls | Planned, no training executed | Multi-seed causal factor separation |
-| 4 | Decide whether G05 transport has information gain over replay | Planned | A discriminating toy-to-real bridge with cost |
+| 3 | Reconcile completed G03; implement G03b and G02 shared-stream protocols | G03 existing pilot reviewed; successors not run | Immutable exogenous streams, solver receipts and same-event horizons |
+| 4 | Evaluate G05 transport beyond a known inverse | Boundary contract and synthetic diagnostic available; learned LM migration open | Adaptation and retention measured jointly with migration cost |
 | 5 | Decide whether G07 procedure test excludes ICL | Planned | Cross-episode retrieval control |
 | 6 | Audit 800M corpus and modern baseline recipe | Planned | Data license/dedup and checkpoint identity |
 | 7 | Execute 15M equal-time native language tournament | Planned, *only on authorized environment* | Fresh held-out language/coding differences |
@@ -168,15 +178,18 @@ This is a dependency order, **not** a promise to deliver days later or evidence 
 
 **Authorized writes:** New documents, code and local CPU checks are in scope. Destructive branch operations, blanket merges, local worktree cleanup, PHI, private owner data, and materially costly compute are not. Prior experiments and raw result files remain frozen.
 
-## J. V2 executable protocol contract and stopping logic
+## J. Versioned protocol contract and stopping logic
 
-The next action is **G02 (address × optimizer)** followed by **G03 (correction × replay)**, unless the canonical ledger already contains newer completed evidence. Do not overwrite running protocols or edit raw results. The exact baseline/cost of each arm must be measured before any conclusion; a toy success cannot authorize 125M training.
+The next training action is **G03b protocol repair and locality/durability controls**, alongside the independent **G02 address×optimizer core**. The completed G03 pilot and the store result are preserved and reviewed in09. Do not overwrite running protocols or edit raw results. The exact baseline/cost of each arm must be measured before any conclusion; a toy success cannot authorize 125M training.
 
 **Pre-registration template (fill and commit before confirmatory runs):**
 
 ```yaml
 experiment_id: G02-<unique revision>
-branch_sha: <exact SHA>
+branch_sha: <exact source SHA>
+world_event_manifest_sha256: <identical across paired arms>
+rng_streams: <world / corrections / replay / optimizer / evaluation>
+metric_denominators: <event, key, document or family; never implicit>
 research_question: <one causal contrast>
 status: proposed              # proposed | preregistered | exploratory | confirmatory | completed
 seed_rule: <fixed deterministic seed derivation; development and final seeds separate>
