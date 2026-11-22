@@ -47,7 +47,7 @@ def build_world(seed, phases=rc.PHASES):
     return rng, rule, typ, shown, exc, changes, rule_at
 
 
-def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_on=True):
+def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_on=True, narrow=False, narrow_w=0.02, share=None):
     """p_slots, private_steps, changes_on: exploration settings added after the registered run (THREEWAY-COST);
     their defaults reproduce the registered behaviour exactly."""
     NEW = rc.NEW; n = phases * NEW
@@ -72,12 +72,30 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
         lg = read(key(e, r)); p = lg.softmax(-1); top = p.max(-1)
         return top.indices.numpy(), top.values.numpy()
 
-    def fit(facts, params, steps):
+    # narrow revision (exploration setting, THREEWAY-NARROW): a shared slot may be revised for (type z, relation r)
+    # only if no query of any other (type, relation) pair reads it with weight above narrow_w
+    pair_of_query = torch.as_tensor(typ).repeat_interleave(R) * R + torch.arange(R).repeat(n)
+    def allowed_slots(z, r):
+        if share is not None:                                            # soft: the changed pair carries at least `share` of the slot's read weight
+            own_q = (pair_of_query == z * R + r)[:, None].expand_as(i1)
+            tot = torch.zeros(SLOTS).index_add_(0, i1.flatten(), w1.flatten())
+            mine = torch.zeros(SLOTS).index_add_(0, i1[own_q], w1[own_q])
+            return (mine > 0) & (mine >= share * tot)
+        heavy = w1 > narrow_w
+        own = (pair_of_query == z * R + r)[:, None].expand_as(i1) & heavy
+        other = (pair_of_query != z * R + r)[:, None].expand_as(i1) & heavy
+        mask = torch.zeros(SLOTS, dtype=torch.bool); mask[i1[own]] = True
+        blocked = torch.zeros(SLOTS, dtype=torch.bool); blocked[i1[other]] = True
+        return mask & ~blocked
+
+    def fit(facts, params, steps, row_mask=None):
         if not facts: return
         a = np.array(facts); q = key(a[:, 0], a[:, 1]); y = torch.as_tensor(a[:, 2])
         opt = torch.optim.AdamW(params, lr=LR, weight_decay=0.0)
         for _ in range(steps):
-            loss = F.cross_entropy(read(q), y); opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
+            loss = F.cross_entropy(read(q), y); opt.zero_grad(set_to_none=True); loss.backward()
+            if row_mask is not None: T1.grad.mul_(row_mask[:, None].float())
+            opt.step()
         for p_ in (T1, T2): p_.grad = None
 
     born = np.repeat(np.arange(phases), NEW); noisy = {}; log = []; flags = []; n_private = 0
@@ -167,7 +185,12 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
                     if shown[e, r] and truth_at(int(born[e]), e, r) == v: private.append((e, r, v))
         fit(joint, [T1, T2], JOINT_STEPS)
         fit(private, [T2], private_steps); n_private += len(private)
-        fit(revision, [T1], rev_steps)
+        if narrow and revision:
+            rmask = torch.zeros(SLOTS, dtype=torch.bool)
+            for zz, rr_ in {(int(typ[e]), int(r_)) for e, r_, _ in revision}: rmask |= allowed_slots(zz, rr_)
+            fit(revision, [T1], rev_steps, row_mask=rmask)
+        else:
+            fit(revision, [T1], rev_steps)
         nf = np.array(new_facts); log.append({"phase": ph, "acquire_now": float((predict(nf[:, 0], nf[:, 1])[0] == nf[:, 2]).mean())})
 
     last = phases - 1
