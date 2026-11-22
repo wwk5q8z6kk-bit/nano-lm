@@ -99,3 +99,80 @@ def test_constrained_nested_citations_match_free_grounded_fields_and_exclude_exa
     assert " REPORTED[four days]" in menu(FieldName.DURATION, reserved)
     claims = draft(source, {"CC": "S[Severe headache]", "SEV": "S[Severe]", "DUR": "S[four days]"})
     assert all(claims[field]["state"] == "supported" for field in ("chief_complaint", "severity", "duration"))
+
+
+@pytest.mark.parametrize("question,reply,value,supported", [
+    ("How long have you lived at the new address?", "For eight months.", "eight months", False),
+    ("When was your last appointment?", "five weeks ago", "five weeks ago", False),
+    ("When did you last have your prescription renewed?", "last Friday", "last Friday", False),
+    ("What date was the scan for your headache?", "Last Tuesday.", "Last Tuesday", False),
+    ("When did you move to this address after the headache began?", "Two months ago.", "Two months ago", False),
+    ("When was your last appointment?", "It was three weeks ago.", "three weeks ago", False),
+    ("When did you renew the prescription for your cough?", "Yesterday.", "Yesterday", False),
+    ("How long have you lived at the new address?", "My headache began two days ago.", "two days ago", True),
+    ("When was your last appointment?", "My cough has lasted three weeks.", "three weeks", True),
+    ("How long have you been living in pain?", "For three weeks.", "three weeks", True),
+    ("How long have you been living in a constant state of pain?", "Two months.", "Two months", True),
+    ("When did your procedure-related lower back pain begin?", "Two days ago.", "Two days ago", True),
+    ("How long was your procedure-associated severe right shoulder pain present?", "Two days ago.", "Two days ago", True),
+    ("When did your last procedure hurt?", "Two days ago.", "Two days ago", True),
+    ("When was your visit painful?", "Two days ago.", "Two days ago", True),
+    ("When was your last visit that was painful?", "Two days ago.", "Two days ago", False),
+    ("When was your procedure for lower back pain?", "Two days ago.", "Two days ago", False),
+    ("When was your test after the pain started?", "Two days ago.", "Two days ago", False),
+    ("When was your last scan? How long has that been?", "Two days ago.", "Two days ago", False),
+    ("When was the appointment? What date was that on?", "Two days ago.", "Two days ago", False),
+    ("When did the pain start? What date was that on?", "Two days ago.", "Two days ago", True),
+    ("When was your scan? How long has the pain been present?", "Two days ago.", "Two days ago", True),
+    ("How long did you live in the apartment with that cough?", "For three weeks.", "three weeks", False),
+    ("How long ago did you move into your current house?", "Last Friday.", "Last Friday", False),
+    ("How many weeks ago did you renew your prescription?", "Two weeks ago.", "Two weeks ago", False),
+    ("How long ago was your last scan?", "Last Monday.", "Last Monday", False),
+    ("How many days ago did the pain start after your move?", "Two days ago.", "Two days ago", True),
+    ("When was your last appointment? Actually, when did the headache start?", "Three weeks ago.", "Three weeks ago", True),
+    ("When did the pain start? Sorry, when was your last visit?", "Last Friday.", "Last Friday", False),
+    ("When was your last appointment, I mean when did the pain start?", "Yesterday.", "Yesterday", True),
+    ("When was your scan after you noticed when the pain started?", "Two weeks ago.", "Two weeks ago", False),
+    ("When did you move into your current house?", "Last Friday.", "Last Friday", False),
+    ("When did the pain start after your appointment?", "Two days ago.", "Two days ago", True),
+    ("How long have you had a headache at your new address?", "Three weeks.", "Three weeks", True),
+    ("What date did you notice the rash after your scan?", "Last Tuesday.", "Last Tuesday", True),
+])
+def test_duration_uses_the_event_the_question_dates(question, reply, value, supported):
+    transcript = f"Doctor: {question}\nPatient: {reply}"
+    source = transcript_source(NanoInput("duration-owner", transcript))
+    choices = grounded_candidate_choices(transcript, FieldName.DURATION, set())
+    menu = build_grounded_english_menu(source, FieldName.DURATION, set())
+    assert (f":S[{value}]" in choices) is supported
+    assert (f" REPORTED[{value}]" in menu) is supported
+    claim = draft(transcript, {"DUR": f"S[{value}]"})["duration"]
+    assert (claim["state"] == "supported") is supported
+
+
+@pytest.mark.parametrize("prior,question,reply,value,supported", [
+    ("I have a headache.", "When was your last appointment?", "I first felt it three weeks ago.", "three weeks ago", True),
+    ("I have a headache.", "When was your last scan?", "I noticed it last Friday.", "last Friday", True),
+    ("I booked an appointment.", "When was your last appointment?", "I noticed it last Friday.", "last Friday", False),
+    ("I have a headache.", "When was your last appointment?", "It was three weeks ago.", "three weeks ago", False),
+    ("I have a headache.", "How long was your last procedure-related headache?", "Three days.", "Three days", True),
+    ("I have a rash.", "How long was your last scan-related rash?", "Two weeks.", "Two weeks", True),
+    ("I have a headache.", "When did you start the medication? How long ago?", "Three weeks ago.", "Three weeks ago", False),
+    ("I have a headache.", "When was your last visit? What date?", "Last Friday.", "Last Friday", False),
+    ("I have a headache.", "When did the pain start? What time?", "Yesterday.", "Yesterday", True),
+    ("I have a headache.", "When was your last appointment? How long ago was that?", "Three days ago.", "Three days ago", False),
+    ("I have a headache.", "When did you start your medication? When exactly did that happen?", "Yesterday.", "Yesterday", False),
+    ("I have a headache.", "When did the pain begin? What date was that?", "Yesterday.", "Yesterday", True),
+    ("I have a rash.", "When was your last scan? When did that rash appear?", "Last Friday.", "Last Friday", True),
+    ("I have a headache.", "When was your last appointment originally planned?", "Last Friday.", "Last Friday", False),
+    ("I have a headache.", "When was your last visit again?", "Yesterday.", "Yesterday", False),
+    ("I have a headache.", "How long did your scan typically last?", "Two hours.", "Two hours", False),
+    ("My head hurts.", "How long did your scan headache last?", "Two hours.", "Two hours", True),
+    ("I have a headache.", "How long did your procedure-induced headache last?", "Two hours.", "Two hours", True),
+    ("I have a headache.", "How long did your procedure-related paperwork take?", "Two hours.", "Two hours", False),
+    ("I have a headache.", "How long did your procedure-related neck pain last?", "Two hours.", "Two hours", True),
+])
+def test_duration_resolves_patient_onset_and_clinician_restatements(prior, question, reply, value, supported):
+    transcript = f"Patient: {prior}\nDoctor: {question}\nPatient: {reply}"
+    source = transcript_source(NanoInput("duration-referent", transcript))
+    assert (f" REPORTED[{value}]" in build_grounded_english_menu(source, FieldName.DURATION, set())) is supported
+    assert (draft(transcript, {"DUR": f"S[{value}]"})["duration"]["state"] == "supported") is supported
