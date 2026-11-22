@@ -10,7 +10,7 @@ summed; joint training 200 steps at 1e-3 (AdamW, as memory_rule_routing.py); pri
 
 usage: threeway.py ARM [SEED ...]
 ARM in none, private, private_t02, change_only, threeway, threeway_t02, threeway_rev200, threeway_privfirst,
-       threeway_random, oracle
+       threeway_random, oracle, oracle_x16, oracle_nochange, threeway_x16
 """
 from __future__ import annotations
 import json, sys
@@ -51,6 +51,8 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
     """p_slots, private_steps, changes_on: exploration settings added after the registered run (THREEWAY-COST);
     their defaults reproduce the registered behaviour exactly."""
     NEW = rc.NEW; n = phases * NEW
+    if arm in ("oracle_x16", "threeway_x16"): p_slots = SLOTS * 16          # 262,144; cost study's 16x private table
+    if arm == "oracle_nochange": changes_on = False                          # cost study: world without rule changes
     p_slots = p_slots or SLOTS; private_steps = PRIVATE_STEPS if private_steps is None else private_steps
     tau = 0.2 if arm in ("private_t02", "threeway_t02") else 0.1
     rev_steps = 200 if arm == "threeway_rev200" else PRIVATE_STEPS
@@ -131,7 +133,7 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
         elif arm in ("private", "private_t02"):
             facts = new_facts + [(e, r, v) for e, r, v, _ in old_obs]
             flagged = set(gate(facts)); private = list(flagged); joint = [f for f in facts if f not in flagged]
-        elif arm == "oracle":
+        elif arm in ("oracle", "oracle_x16", "oracle_nochange"):
             private = [f for f in new_facts if exc[f[0], f[1]] >= 0] + [(e, r, v) for e, r, v, k in old_obs if k == "exception"]
             joint = [f for f in new_facts if exc[f[0], f[1]] < 0]
             for p, z, r, v in changes:
@@ -205,7 +207,10 @@ def run(arm, seed, phases=rc.PHASES, p_slots=None, private_steps=None, changes_o
 
 
 if __name__ == "__main__":
-    arm = sys.argv[1]; seeds = [int(s) for s in sys.argv[2:]] or [7301, 7302, 7303, 7304, 7305]
+    arm = sys.argv[1]
+    reg, cost = [7301, 7302, 7303, 7304, 7305], [7401, 7402, 7403, 7404, 7405]
+    seeds = [int(s) for s in sys.argv[2:]] or (cost if arm in ("oracle_x16", "oracle_nochange", "threeway_x16") else reg)
     rows = [run(arm, s) for s in seeds]
     for x in rows: print(json.dumps(x), flush=True)
-    if seeds == [7301, 7302, 7303, 7304, 7305]: json.dump(rows, open(f"results/threeway/{arm}.json", "w"), indent=1)
+    if seeds == cost: json.dump(rows, open(f"results/threeway_cost/{arm}.json", "w"), indent=1)
+    elif seeds == reg: json.dump(rows, open(f"results/threeway/{arm}.json", "w"), indent=1)
