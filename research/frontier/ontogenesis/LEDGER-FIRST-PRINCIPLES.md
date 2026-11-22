@@ -476,3 +476,21 @@ Branch `research/memory-saturation-factorial` (PR [#199](https://github.com/wwk5
 - **Demonstrated in this synthetic memory:** revisable grouping, not replay, carries most of the generalisation. It takes inference from 0.30 to 0.70 with no replay, and full replay adds a further 0.07.
 - Distilling the memory's own old predictions into moved entities' new addresses was slightly worse than dropping them, on every seed. The old prediction carries the old group's rule into the new group's shared slots. This argues against online value transport for a rule-carrying memory of this kind. Its cost for individual facts (exceptions, corrections) was not measured separately.
 - Limits: one transport method; label matching is part of the method; creation-time facts only; synthetic world; value table. Not evidence about a language model.
+
+---
+
+## 2026-11-22 — Narrow shared revisions cut the three-way router's cost (nano-lm-d5's study)
+
+Run and recorded by nano-lm-d5 on `research/g04-rule-change` (PR [#204](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/204)): registration `cf11f8e` (16:35), results `42520d6` (18:52), record `THREEWAY-NARROW-20261122.md`. Seeds 7501–7505. A rule revision may write only slots where the changed (type, relation) carries at least the given share of the read weight. Figures copied from that record, not rerun here.
+
+| Arm | Stable rule | Old entities revised | Exceptions kept | Noise resisted |
+|---|---|---|---|---|
+| No routing | 83.0% | 20% | 37% | 92% |
+| Oracle, normal revision | 68.7% | 99.7% | 99.9% | 90% |
+| Oracle, share ≥ 0.2 | 76.7% | 92.5% | 99.9% | 95% |
+| Three-way, normal revision | 72.5% | 81.5% | 85% | 91% |
+| Three-way, share ≥ 0.2 + private table ×16 | 80.3% | 76.7% | 94% | 94% |
+
+- N1, N2, N3 and N5 held on 5 of 5 seeds. N4 held on its mean but on only 3 of 5 seeds, below the usual 4-of-5 rule.
+- With both fixes the router's stable-rule cost falls from about 10 points to under 3, while revising 77% of old entities and keeping 94% of exceptions. Narrowing also raised exceptions kept, from 85% to 95%.
+- Remaining limit, recorded by that session: typed addresses. A joint test of the router on EM-regrouped addresses is the next step. nano-lm-d5 will run it on its branch, using this line's clustering functions.
