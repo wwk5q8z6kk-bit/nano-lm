@@ -45,11 +45,14 @@ def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
     for e in range(n):
         for r in np.flatnonzero(shown[e]):
             if rng.random() < rc.P_EXC: exc[e, r] = (rule[typ[e], r] + 1 + rng.integers(V - 1)) % V
-    changes = []
+    changes, used = [], set()
     for p in rc.CHANGE_AT:
         if p >= phases: continue
         pairs = set()
-        while len(pairs) < rc.N_CHANGE: pairs.add((int(rng.integers(Z)), int(rng.integers(R))))
+        while len(pairs) < rc.N_CHANGE:
+            pair = (int(rng.integers(Z)), int(rng.integers(R)))
+            if pair not in used: pairs.add(pair)                # a later phase must not redraw it: its v would stop being the truth
+        used |= pairs
         for z, r in sorted(pairs): changes.append((p, z, r, int((rule[z, r] + 1 + rng.integers(V - 1)) % V)))
     rule_at = np.repeat(rule[None], phases, 0).copy()
     for p, z, r, v in changes: rule_at[p:, z, r] = v
@@ -63,7 +66,7 @@ def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
 
     def all_preds(upto):
         ee = np.repeat(np.arange(upto), R); rr = np.tile(np.arange(R), upto)
-        return pred(ee, rr).reshape(upto, R)
+        return L.predict(ee, rr).reshape(upto, R)               # model answers, not the override store
 
     for ph in range(phases):
         ents = np.arange(ph * NEW, (ph + 1) * NEW)
@@ -115,6 +118,7 @@ def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
                                   "change_phase": true[0][0] if true else None})
                     targets = [(int(o), r, v) for o in olds] + [(int(o), int(x), int(P[o, x])) for o in olds for x in others]
                     L.fit(targets, frozen=torch.tensor(sorted(int(o) for o in olds), dtype=torch.long))
+                    P = all_preds((ph + 1) * NEW)                        # later candidates in this phase see the write
         nf = np.array(new_facts); log.append({"phase": ph, "acquire_now": float((pred(nf[:, 0], nf[:, 1]) == nf[:, 2]).mean())})
 
     last = phases - 1

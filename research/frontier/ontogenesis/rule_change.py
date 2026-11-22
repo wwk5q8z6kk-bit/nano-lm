@@ -83,11 +83,14 @@ def run(arm, seed, phases=PHASES, m=24):
     for e in range(n):
         for r in np.flatnonzero(shown[e]):
             if rng.random() < P_EXC: exc[e, r] = (rule[typ[e], r] + 1 + rng.integers(V - 1)) % V
-    changes = []                                                 # (phase, z, r, new value)
+    changes, used = [], set()                                   # (phase, z, r, new value); each pair once
     for p in CHANGE_AT:
         if p >= phases: continue
         pairs = set()
-        while len(pairs) < N_CHANGE: pairs.add((int(rng.integers(Z)), int(rng.integers(R))))
+        while len(pairs) < N_CHANGE:
+            pair = (int(rng.integers(Z)), int(rng.integers(R)))
+            if pair not in used: pairs.add(pair)                # a later phase must not redraw it: its v would stop being the truth
+        used |= pairs
         for z, r in sorted(pairs): changes.append((p, z, r, int((rule[z, r] + 1 + rng.integers(V - 1)) % V)))
     rule_at = np.repeat(rule[None], phases, 0).copy()             # rule in force at each phase
     for p, z, r, v in changes: rule_at[p:, z, r] = v
