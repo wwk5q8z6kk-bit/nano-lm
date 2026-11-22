@@ -1,8 +1,8 @@
 """G04, second study: a label-free rule-change detector. Can it close the gap to the ceiling of the first study?
 
-NOT YET RUN AND NOT YET REGISTERED. Predictions are added after a mechanics check on development seed 1,
-and before any run on registered seeds 7201-7203 (new seeds: the first study's seeds are not reused,
-because its results are known).
+Predictions Y1-Y5 are at the end of this docstring, written after a development check on seed 1 and before
+any run on the registered seeds 7201-7203 (new seeds: the first study's seeds are not reused, because its
+results are known).
 
 Background (RULE-CHANGE-20261122.md). In a world where rules change, a seen-twice policy keeps exceptions
 (100%) and resists noise (96%) without labels, but revises changed rules no better than a plain learner
@@ -24,6 +24,25 @@ Measures and world: exactly as rule_change.py. Arms: seen2 (the first study's la
 new seeds), detect (seen2 plus the detector), oracle_dec (the ceiling, rerun on the new seeds).
 Reported in addition: false_alarms (candidates that match no true change), missed (true changes never
 flagged), and delay (phases from a change to its first flag).
+
+Development check (seed 1 only; selection by revision, so the setting is tuned, declared here):
+  Q, SIG_AGREE = 2, 6: 32 flags, 16 false, 1 missed, revise_old 0.84
+  Q, SIG_AGREE = 2, 5: 51 flags, 34 false, 0 missed, revise_old 0.94   <- chosen
+  Q, SIG_AGREE = 3, 6: 19 flags, 4 false, 2 missed, revise_old 0.84, delay 4.7 phases
+  In all three, exceptions 1.00, noise 0.97-0.99, stable inference 0.955-0.958: false alarms did not
+  visibly cost anything on seed 1. Whether they do on new seeds is predicted below (Y3).
+
+Predictions (seeds 7201-7203):
+  Y1 the detector revises old entities: revise_old at least 0.80, and at least 0.25 above seen2.
+  Y2 and new ones: revise_next5 at least 0.85.
+  Y3 its false alarms are harmless here: infer_stable within 0.02 of seen2, exception_kept at least 0.97,
+     noise_resisted at least 0.93.
+  Y4 it comes within 0.10 of the ceiling (oracle_dec, which uses the hidden types) on revise_old.
+  Y5 it rarely misses a change: missed at most 1 of the 12 changes per seed, on average.
+  Reading. Y1, Y2 and Y4 holding: a label-free signal (agreement among new entities that the model groups
+  together, against the group's older members) is enough to detect rule changes and write them into the
+  shared rule, and G04's open part is largely closed in this world. Y3 failing: the detector's false
+  alarms cost the rule, and the threshold needs a calibrated trade-off, not a single setting.
 """
 from __future__ import annotations
 import json, sys
@@ -31,7 +50,7 @@ import numpy as np, torch
 import rule_change as rc
 from cab_s import Z, R, V, K
 
-Q, SIG_AGREE = None, None          # fixed by the mechanics check
+Q, SIG_AGREE = 2, 5                # fixed by the development check (see docstring)
 
 
 def run(arm, seed, q=None, sig_agree=None, phases=rc.PHASES, m=24):
