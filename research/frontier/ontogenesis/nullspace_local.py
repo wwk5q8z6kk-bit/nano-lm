@@ -90,7 +90,7 @@ def run(arm, seed, phases=40, new=64, fix=16):
         old = np.arange(ph * new)
         if mode == "owm_all": L.set_protected([old] * R)
         elif mode == "owm_ent":
-            ce_rows = np.flatnonzero(corrected[:ph * new].any(1) & (when[:ph * new].max(1) < ph)); L.set_protected([ce_rows] * R)
+            ce_rows = np.flatnonzero((corrected[:ph * new] & (when[:ph * new] < ph)).any(1)); L.set_protected([ce_rows] * R)
         elif mode == "owm_rel":
             L.set_protected([np.flatnonzero(corrected[:ph * new, r] & (when[:ph * new, r] < ph)) for r in range(R)])
         else: L.set_protected(None)
