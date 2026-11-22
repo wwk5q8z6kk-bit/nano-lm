@@ -1,6 +1,6 @@
 # ONTOGENESIS research ledger
 
-The one authoritative status list. Updated 2026-11-20. Status values: Established (published elsewhere), Derived (mathematics checked here), Demonstrated (measured here under a committed protocol), Pilot (measured, not confirmatory), Unverified, Disproven, Abandoned, Open.
+The one authoritative status list. Updated 2026-11-21 (see the dated section at the end; it overrides earlier rows where they conflict). Status values: Established (published elsewhere), Derived (mathematics checked here), Demonstrated (measured here under a committed protocol), Pilot (measured, not confirmatory), Unverified, Disproven, Abandoned, Open.
 
 ## Measured in this repository
 
@@ -132,3 +132,48 @@ PLASTICITY v0, 200 successive tasks of 256 facts, three seeds, predictions writt
 - P2 (a sparse key-value memory keeps its speed and retains more): **Disproven** in this implementation. It was slower from the start, lost plasticity, and retained nothing.
 - A standard remedy (normalisation plus weight decay) keeps learning speed almost flat. It is the strongest simpler alternative for any plasticity claim.
 - No arm retains earlier tasks. Plasticity and retention are separate problems here.
+
+
+## Update 2026-11-21
+
+Full write-ups with registered predictions: `INVESTIGATION.md`. Decision note: `theory/RESEARCH-DECISION-20261121.md`.
+
+### Measured today
+
+| Item | Status | Evidence |
+|---|---|---|
+| Looped learns two-step chains in 3 of 5 seeds, dense in 1 of 5, at 26,000 steps; dense does make the jump | Demonstrated (registered verdict: mixed) | `results/loop2/` |
+| The first acquisition benchmark is passed by a lookup table | Derived | `INVESTIGATION.md` Question 6 |
+| In a rule-governed world a gradient learner keeps 99.6% of old regular facts with no replay | Demonstrated, toy | `results/forgetting_split/` |
+| Corrections, not exceptions, cause the loss of old regular facts | Demonstrated, toy | same |
+| Oracle routing raises inference 78.6% to 89.2%; this is label-noise removal | Demonstrated, toy | `results/routing/` |
+| A write-time detector without an oracle recovers a third of that gain and costs 4 points on clean entities | Demonstrated, toy; registered bar not met | `results/routing_loo/` |
+| Fixed-address memory stops acquiring because of concentrated addresses together with carried-over optimiser state; a reset restores 86%, hashing 100% | Pilot (one seed, large effects) | `results/memory_saturation/` |
+| A harmless address-only edit exists for 99.8% of corrections | Demonstrated, toy | `results/correction_interference/` |
+| Correction damage is caused by missing constraints: not by capacity, write size, the optimiser, or lack of general replay | Demonstrated, toy | same, `margins-*`, `optimizer-*` |
+| A correction written into the model decays under later training whatever its margin; only the exact store keeps it | Demonstrated, toy | same |
+| Exact 4-gram store added after training: 0.058 bits per byte better for a 14M model trained on 33M tokens | Pilot (one seed) | `results/lm/store-pilot.json` |
+| Training the model through that store: 0.14 worse than adding it afterwards | Pilot (one seed; biased against by a recorded design flaw) | same |
+| The same store adds 0.004 bits per byte to the same model once trained on 800M tokens | Pilot (one checkpoint) | `results/lm/store-exchange-S.json` |
+| JAX model for TPU matches the PyTorch reference to 2e-6 | Verified | `tpu/parity_check.py` |
+| Dense baseline, 14.3M parameters, one pass of 800M tokens: 1.144 bits per byte | Demonstrated (one seed) | bucket `runs/ladder-v5e/` |
+
+### Status changes
+
+| Idea or claim | New status | Reason |
+|---|---|---|
+| DEMOS | Disproven (learning-speed claim) | tuned dense reached 99.8% |
+| KEYSTORE with learned keys | Disproven at toy scale | stayed at guessing |
+| Nested dense-loop architecture | Open; registered test running | published family; adds no function class at equal depth |
+| "Exceptions damage regular knowledge" | Disproven | two controls |
+| "Route by regularity" as an architectural principle | Not adopted | needs an oracle; fails on text when trained jointly |
+| "Fixed addresses trade retention for acquisition" | Disproven as stated | optimiser reset removes most of the trade |
+| "Never forgetting equals order-independence"; "pick two" trilemma | Withdrawn | not theorems as stated; the second is published in a narrower form |
+| n-gram store as a core component | Close unless the 101M checkpoint shows a gain of 0.01 or more | rule registered in the decision note |
+
+### Compute facts
+
+- Cloud TPU v6e: no on-demand capacity for single chips in any permitted zone on 2026-11-22 UTC; a four-chip node was obtained in asia-northeast1-b. v5e (4 chips per zone allowed) obtained in us-west1-c.
+- Measured training speed per chip, 101M-parameter model: v5e 130k tokens per second, v6e 230k. At list prices the v5e is the better value at these sizes.
+- Global cloud CPU quota is 12 cores; GPU quota is still 0.
+- The laptop cannot host more than light jobs: twice today training runs pushed it to 40 GB of swap.
