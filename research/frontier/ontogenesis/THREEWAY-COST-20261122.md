@@ -45,3 +45,15 @@ Reduce the shared-revision collateral without losing revision:
 - typed addresses with less overlap between rules.
 
 The study's outcome is the trade-off curve between revision and stable-rule cost.
+
+## Pooled over all ten seeds (7301–7305 and 7401–7405), at the ontogenesis session's request
+
+Same code and settings in both sets. Each cell shows the mean, with the minimum and maximum over the 10 seeds in brackets.
+
+| Arm | Old entities revised | New entities, 1–5 phases | Exceptions kept | Noise resisted | Stable rule |
+|---|---|---|---|---|---|
+| none | 17% [11%–27%] | 31% [19%–44%] | 35% [29%–42%] | 92% [90%–95%] | 82% [81%–85%] |
+| oracle | 98% [91%–100%] | 96% [87%–99%] | 100% [100%–100%] | 89% [85%–92%] | 68% [64%–72%] |
+| threeway | 78% [58%–91%] | 79% [65%–91%] | 89% [84%–92%] | 91% [88%–95%] | 72% [70%–75%] |
+
+The router's revision of old entities ranges widely across seeds, so its headline figure should be read with that range, not as a single number.
