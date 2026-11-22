@@ -13,8 +13,7 @@ from __future__ import annotations
 import argparse, json, math, time
 import numpy as np
 import jax, jax.numpy as jnp
-from train_jax import SIZES, forward, init
-from store_exchange import load_params
+from train_jax import SIZES, forward, init, load_params
 
 T = 512
 EOS = 1                     # every context starts with the end-of-document token, as every document did in training

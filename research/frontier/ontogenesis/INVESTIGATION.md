@@ -596,3 +596,28 @@ Standard error is about 0.015 at n = 1,000. The harness gives chance with an unt
 | 101M | running | | | |
 
 The review was right: the registered estimator understated the store by more than half at 14M, and turned a positive gain negative at 40M.
+
+## Question 12. How much does fresh data improve a fixed-size model, and what is the best model one machine-session buys? (registered 2026-11-22, 04:30 UTC, before any run)
+
+**Why.** The first-version ladder trained every size on the same 0.8B tokens. The 211M model saw under 4 tokens per parameter and still beat 101M, so the larger models were limited by training length. Corpus v2 (10B tokens, same sources and recipe) is built. Whether more unique text beats more passes was untested; the review asked for this test.
+
+**Design.** v6e machine, queued after the 40M grid. One run spans all four chips (`--dp 4`, verified on simulated devices to match single-chip losses to rounding). Default recipe: AdamW 1e-3, decay 0.1, floor 10%, batch 64 × 512, seed 1000. The tuned recipe is not available yet, so this measures data at a fixed recipe. Job `tpu/job_scale1.sh`.
+1. Throughput: one 211M run for 300 steps on 1, 2 and 4 chips at 16 sequences per chip, and on 4 chips at batch 256. Reports scaling efficiency and memory. Engineering only.
+2. Runs on corpus v2, in this order: 211M on 4.2B tokens (20 per parameter); 101M on 2.0B; 101M on 0.8B (the same budget as the first ladder).
+3. Every finished model is scored on the benchmark harness, with the no-context control. Contamination of corpus v2 is measured separately (running).
+
+The sampler draws crops uniformly with replacement, as in every earlier run, so a budget of D tokens covers about 1 − e^(−D/corpus) of the corpus. For 0.8B tokens on the 0.8B-token corpus v1 that was about 63%.
+
+**Predictions.**
+- P1: 101M at 2.0B beats 101M at 0.8B (both corpus v2) by 0.025 to 0.045 bits per byte.
+- P2: 211M at 4.2B tokens reaches a mix of 0.90 or lower (first ladder at 0.8B: 0.952).
+- P3: four chips give at least 80% of four times the single-chip throughput at 16 sequences per chip.
+- P4: on HellaSwag and ARC-Easy, 211M-4.2B > 101M-2.0B > 101M-0.8B, each above its no-context control.
+- P5: 101M at 0.8B on corpus v2 lands within ±0.01 of the first ladder's 101M (0.9857), which used the first-version sampler on corpus v1.
+
+**Use of the result.**
+- The 211M-4.2B model becomes the reference "best model so far" and a teacher candidate.
+- The gain per added token at 101M and 211M sets the size and token plan for the next scale.
+- None of this is a mechanism claim.
+
+**Cost.** About 4 hours of a four-chip v6e (about $52 at $3.24 per chip-hour). Machine B's deadline moves to 12:30 UTC.

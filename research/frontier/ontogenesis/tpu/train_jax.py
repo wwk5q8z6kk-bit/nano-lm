@@ -301,7 +301,8 @@ def run(a):
                 try: row["device_gb_in_use"] = round(dev.memory_stats()["bytes_in_use"] / 2 ** 30, 2)
                 except Exception: pass
                 curve.append(row); say(row)
-                if a.resume and done < steps:                   # state first, then the curve that points at it
+                ce = a.ckpt_every or a.eval_every
+                if a.resume and done < steps and done // ce > prev // ce:   # state first, then the curve that points at it
                     save_tree(ck_path, (params, st), done=done, rng_state=json.dumps(rng.bit_generator.state)); push(ck_path, a.gcs)
                 write({"finished": False})
         ok = True
@@ -329,6 +330,7 @@ if __name__ == "__main__":
     ap.add_argument("--wd", type=float, default=0.1); ap.add_argument("--wd-on", default="all", choices=("all", "matrices"))
     ap.add_argument("--lr-floor", type=float, default=0.1, help="cosine schedule ends at this fraction of the peak rate")
     ap.add_argument("--opt", default="adamw", choices=("adamw", "muon"))
+    ap.add_argument("--ckpt-every", type=int, default=0, help="save resumable state every this many steps (0: at every evaluation)")
     ap.add_argument("--dp", type=int, default=1, help="train this one run on this many devices (not with --multi)")
     ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED[:ALPHA[:key=value...]]]]];..." '
                     '(ALPHA "none" = no teacher; keys wd, wdon, floor)')
