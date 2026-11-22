@@ -17,7 +17,7 @@ from nanoscribe.adapt import (
     candidate_from_span_port_line,
 )
 from nanoscribe.encounter import AtomType, Experiencer, Speaker, TemporalState
-from nanoscribe.qwen_inference import DEFAULT_QWEN_MODEL, generate_span_port_lines, resolve_weights_path
+from nanoscribe.qwen_inference import generate_span_port_lines, resolve_weights_path
 
 
 @dataclass(frozen=True, slots=True)
