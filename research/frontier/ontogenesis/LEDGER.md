@@ -559,3 +559,22 @@ Recorded by the session that owns `research/memory-saturation-factorial` (draft 
 - With the previous section, this closes the line on the typed fixed-address memory in this world. Shared slots carry generalisation and resist corrections. Corrections need a larger relative budget. Written into shared slots they cost later generalisation; written into private slots they mostly do not.
 - **Status: demonstrated in this synthetic memory only.** The edit label is given to the learner, and the private table is per-fact storage (an augmented-memory result, not native model knowledge). Type information is given, not learned. Not evidence about a language model.
 - **Open, not started:** whether a learner can make this choice itself without the edit label. `INVESTIGATION.md`, Question 8, is the existing evidence there: a detector with no oracle recovered about a third of the oracle's gain.
+
+---
+
+## 2026-11-22 — Label-free routing to private slots (additive)
+
+Recorded by the session that owns `research/memory-saturation-factorial` (draft [PR #199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199)). Protocol `6da758f` committed before any held-out run; results `d5e5bab`. Conditions agreed with nano-lm-ad (owner of `INVESTIGATION.md`, Question 8). Seeds 4101–4105.
+
+| Arm | Corrections | Inference, new entities | Acquisition | False positives (regular facts routed) |
+|---|---|---|---|---|
+| No routing | 0.037 | 0.736 | 0.892 | — |
+| Detector, τ = 0.1 | 0.810 | 0.701 | 0.968 | 0.089 |
+| Random, count-matched | 0.194 | 0.703 | 0.911 | 0.189 |
+| Detector, τ = 0.2 | 0.499 | 0.728 | 0.920 | 0.010 |
+| Labelled ceiling (given labels) | 0.891 | 0.714 | 0.887 | — |
+
+- R1 and R2 held (5/5). R3 **failed on its inference clause**: the detector beats random by 0.38–0.64 on corrections on every seed, but its inference equals random's (±0.008). The later inference cost depends on how many facts go private, not which ones. R4 held at τ = 0.1 and failed narrowly at τ = 0.2 (3/5, mean 0.010).
+- A confidence-gated disagreement detector, with no edit label, recovers most of the labelled result in this memory: 0.81 against 0.89 corrections at the same inference.
+- **Development seed only:** an ungated disagreement detector cannot start from an empty memory. Everything is flagged in phase 0, the shared path never learns the rule, and inference stays at chance (0.048). Q8's leave-one-out detector avoids this by judging each fact against the entity's other facts.
+- Limits: stationary world (in a world with rule changes this router would hold on to the old rule; see nano-lm-d5's G04, PR #204); τ chosen on one development seed; type information given; the private table is per-fact storage. Not evidence about a language model.
