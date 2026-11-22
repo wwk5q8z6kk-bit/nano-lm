@@ -905,9 +905,10 @@ _COMPLAINT_LEAD_RE = re.compile(
 # A nominal symptom name can refer to a potential episode or a value copied
 # from a document. Its reporting frame alone cannot establish current symptoms.
 # "May" after a calendar preposition, or before a day, year or the end of the
-# clause, is the month and dates a present episode. "next May" stays future.
+# clause, is the month and dates a present episode. "next May" stays future,
+# and "this may" stays modal: it is far more often a hedge than a date.
 _MODAL_MAY = (
-    r"(?<!\bin\s)(?<!\bsince\s)(?<!\bof\s)(?<!\bfrom\s)(?<!\blast\s)(?<!\bthis\s)"
+    r"(?<!\bin\s)(?<!\bsince\s)(?<!\bof\s)(?<!\bfrom\s)(?<!\blast\s)"
     r"(?<!\bearly\s)(?<!\blate\s)(?<!\bbefore\s)(?<!\bafter\s)(?<!\buntil\s)(?<!\bduring\s)"
     r"may(?!\s*(?:\d|[,.;:!?)]|$))"
 )

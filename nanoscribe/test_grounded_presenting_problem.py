@@ -63,6 +63,7 @@ from nanoscribe.scribe import scribe
     ("Patient: My main problem is a rash that began in May.", "rash that began in May", True),
     ("Doctor: What brings you in?\nPatient: The main problem is a headache that may start in May.", "headache", False),
     ("Doctor: What brings you in?\nPatient: The main problem is a rash expected next May.", "rash", False),
+    ("Doctor: What brings you in?\nPatient: The main problem is a headache that this may trigger.", "headache", False),
 ])
 def test_presenting_problem_owns_the_current_symptom(text, quote, valid):
     field = FieldName.CHIEF_COMPLAINT
