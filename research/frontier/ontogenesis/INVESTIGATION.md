@@ -516,3 +516,39 @@ The independent review found two weaknesses in the registration above. Both are 
 2. **Noise rule.** "Twice the difference between two baseline seeds" passes a null effect about 30% of the time. Now there are three 14M baseline seeds (1000, 1001, 1002). A difference counts only if it exceeds t(0.975, 2 df) · s · √(1 + 1/3) ≈ 4.97 s, where s is the standard deviation of the three baseline seeds. The decision thresholds (0.03 major lever, under 0.01 capacity-limited) are unchanged.
 
 Every result file now records the chip type and a hash of the training script. The sampling-fix check compares the mean of the three 14M seeds with the single first-version run (1.1441). It is informative only: one first-version seed. Job file: `tpu/job_kd.sh` as of this commit.
+
+## Question 11. Is our dense recipe close to the best available at 14M, and does Muon beat AdamW here? (registered 2026-11-22, 03:45 UTC, before any run)
+
+**Why.** Every mechanism claim will be judged against the dense baseline. The independent review and the literature workflow both found that it is a default recipe, not a tuned one:
+- one learning rate at 14M;
+- decay applied to the normalisation gains;
+- a 10% floor on the learning rate;
+- AdamW only.
+
+Published results say recipe effects are larger than architecture effects at this scale. The first-version ladder has since finished. At 40M, 101M and 211M the higher rate (1e-3) beat 5e-4 at the end of training by 0.005 to 0.007, so the best rate sits at the top edge of the tested grid. At 14M, rates of 1e-3, 2e-3 and 3e-3 are within 0.002 of each other in partial curves.
+
+**Design.** 14M model, one pass of the 800M-token corpus, second-version script, v5e chips, 4 micro-batches, seed 1000. Job `tpu/job_recipe.sh`; list and selection `tpu/recipe_select.py`.
+- *Phase A* (20 runs):
+  - AdamW at learning rate {1e-3, 2e-3, 4e-3} × weight decay {0.1, 0.5} × final rate floor {10%, 1%}. The default cell (1e-3, 0.1, 10%) is not rerun: it is Question 10's three-seed baseline, from the same script, chip and micro-batch setting.
+  - The default cell with decay on matrices and embedding only.
+  - Muon on the blocks' matrices, with AdamW on the embedding and gains (optax 0.2.9, consistent-RMS scaling 0.2, so AdamW's rate and decay carry over): rate {1e-3, 2e-3, 4e-3} × decay {0.1, 0.5} at floor 1%, plus Muon at the default cell.
+  - The default cell with 2 micro-batches (micro-batch control).
+- *Phase B*, chosen mechanically by `recipe_select.py` from phase A's seed-1000 results:
+  - seeds 1001 and 1002 for the best AdamW cell (none if it is the default cell) and for the best Muon cell;
+  - both winners at 40M, learning rate fixed at 1e-3, to test whether the rest of the recipe transfers.
+
+**Predictions.**
+- P1: the 1% floor beats 10% in at least 5 of the 6 matched AdamW pairs, by 0.003 to 0.010.
+- P2: decay 0.5 against 0.1 shows no consistent sign, mean |difference| under 0.005.
+- P3: the best AdamW rate is 2e-3.
+- P4: the best Muon cell beats the best AdamW cell by 0.01 to 0.03 bits per byte.
+- P5: decaying matrices only changes the result by under 0.003.
+- P6: 2 against 4 micro-batches differ by no more than one seed standard deviation.
+
+**Rules, fixed now.** s is the standard deviation of the three default-cell seeds.
+- A single-seed cell differs from the default only if |Δ| > 4.97 s, a t-test with 2 degrees of freedom (Question 10's rule).
+- A setting replaces the default for every later dense run if its three-seed mean beats the default's three-seed mean by more than 2.27 s_p (two-sample t, 4 degrees of freedom, 95%).
+- Muon replaces AdamW only if its three-seed mean beats the best AdamW cell's three-seed mean by the same margin, **and** at 40M it beats AdamW with the same settings, with the same sign and at least half the 14M gain.
+- Results are reported at equal tokens. Throughput per arm is reported beside them, and a gain is also stated at equal wall-clock, read from the curve, wherever an arm's step time differs by more than 5%.
+
+**Not tested.** Other schedules (warm-up, stable, decay), batch size, longer training, other model sizes beyond the 40M transfer check.

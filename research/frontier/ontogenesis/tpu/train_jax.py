@@ -21,7 +21,9 @@ memory. Also new: uploads and downloads are checked and retried, a resumed run m
 two jobs may not share a name, and a diverged run is recorded as such. The model code is unchanged.
 
 Additions on 2026-11-22 (defaults reproduce the earlier behaviour exactly): --wd, --wd-on matrices (no decay on
-one-dimensional gains), --lr-floor; every result file records the chip type and a hash of this file.
+one-dimensional gains), --lr-floor, --opt muon (Muon on the blocks' matrices with consistent-RMS scaling 0.2, so the
+AdamW learning rate and decay carry over; AdamW (0.9, 0.95) on the embedding and gains); every result file records
+the chip type and a hash of this file.
 """
 from __future__ import annotations
 import argparse, copy, hashlib, json, math, os, queue, subprocess, threading, time
@@ -204,6 +206,7 @@ def run_name(a):
     if a.f32: n += "-f32"
     if a.wd != 0.1: n += f"-wd{a.wd:g}"
     if a.wd_on != "all": n += "-wdmat"
+    if a.opt != "adamw": n += f"-{a.opt}"
     if a.lr_floor != 0.1: n += f"-fl{a.lr_floor:g}"
     if kd: n += f"-kd{a.teacher_size}a{a.kd_alpha:g}"
     return n + "-hs" + (f"-{a.tag}" if a.tag else "")       # hs: crops sampled uniformly on the host (second version of this script)
@@ -225,7 +228,13 @@ def run(a):
     if steps <= 0: raise SystemExit("token budget is smaller than one chunk of steps")
     sched = lambda n: a.lr * jnp.minimum(1.0, (n + 1) / a.warmup) * (a.lr_floor + (1 - a.lr_floor) * 0.5 * (1 + jnp.cos(jnp.pi * jnp.minimum(1.0, (n + 1) / steps))))
     mask = (lambda p: jax.tree_util.tree_map(lambda x: x.ndim >= 2, p)) if a.wd_on == "matrices" else None
-    opt = optax.chain(optax.clip_by_global_norm(1.0), optax.adamw(sched, b1=0.9, b2=0.95, eps=1e-8, weight_decay=a.wd, mask=mask))
+    if a.opt == "muon":
+        if a.wd_on != "all": raise SystemExit("--opt muon supports --wd-on all only")
+        dims = lambda p: {"emb": None, "nf": None, "blocks": [{k: (optax.contrib.MuonDimensionNumbers() if getattr(v, "ndim", 0) == 2 else None) for k, v in b.items()} for b in p["blocks"]]}
+        tx = optax.contrib.muon(sched, weight_decay=a.wd, adam_b1=0.9, adam_b2=0.95, adam_weight_decay=a.wd, consistent_rms=0.2, muon_weight_dimension_numbers=dims)
+    else:
+        tx = optax.adamw(sched, b1=0.9, b2=0.95, eps=1e-8, weight_decay=a.wd, mask=mask)
+    opt = optax.chain(optax.clip_by_global_norm(1.0), tx)
     os.makedirs(a.out, exist_ok=True); res_path = f"{a.out}/{name}.json"; ck_path = f"{a.out}/{name}.state.npz"
     if a.gcs:                                                  # fail before any paid step if the bucket cannot be written
         mark = f"{a.out}/{name}.started"; open(mark, "w").write(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
@@ -233,9 +242,9 @@ def run(a):
     head = {"name": name, "cfg": c, "lr": a.lr, "warmup": a.warmup, "bs": a.bs, "seq": a.seq, "micro": a.micro, "seed": a.seed,
             "steps": steps, "train_tokens": steps * a.bs * a.seq, "corpus_tokens": int(len(train)), "dtype": "float32" if a.f32 else "bfloat16",
             "sampler": "uniform crops drawn on the host with numpy default_rng(seed + 1)", "jax": jax.__version__, "device": str(dev), "device_kind": dev.device_kind, "code_sha256": CODE_SHA, "n_devices": len(jax.devices()),
-            "wd": a.wd, "wd_on": a.wd_on, "lr_floor": a.lr_floor,
+            "wd": a.wd, "wd_on": a.wd_on, "lr_floor": a.lr_floor, "opt": a.opt,
             "objective": (f"distillation from {os.path.basename(a.teacher)}, alpha {kd[1]}" if kd else "cross-entropy")}
-    ident = ("cfg", "lr", "warmup", "bs", "seq", "seed", "steps", "corpus_tokens", "dtype", "sampler", "objective", "wd", "wd_on", "lr_floor")
+    ident = ("cfg", "lr", "warmup", "bs", "seq", "seed", "steps", "corpus_tokens", "dtype", "sampler", "objective", "wd", "wd_on", "lr_floor", "opt")
     rng = np.random.default_rng(a.seed + 1)
     with jax.default_device(dev):
         params = init(jax.random.PRNGKey(a.seed), c); st = opt.init(params)
@@ -305,6 +314,7 @@ if __name__ == "__main__":
     ap.add_argument("--kd-alpha", type=float, default=None, help="weight of the data loss; 1 - alpha goes to matching the teacher")
     ap.add_argument("--wd", type=float, default=0.1); ap.add_argument("--wd-on", default="all", choices=("all", "matrices"))
     ap.add_argument("--lr-floor", type=float, default=0.1, help="cosine schedule ends at this fraction of the peak rate")
+    ap.add_argument("--opt", default="adamw", choices=("adamw", "muon"))
     ap.add_argument("--multi", default="", help='several runs, one per device at a time: "SIZE:LR:MICRO[:TAG[:TOKENS[:SEED[:ALPHA[:key=value...]]]]];..." '
                     '(ALPHA "none" = no teacher; keys wd, wdon, floor)')
     a = ap.parse_args()
@@ -321,6 +331,7 @@ if __name__ == "__main__":
             if k == "wd": b.wd = float(v)
             elif k == "wdon": b.wd_on = v
             elif k == "floor": b.lr_floor = float(v)
+            elif k == "opt": b.opt = v
             else: raise SystemExit(f"unknown job setting {k}")
         jobs.put(b)
     names = [run_name(b) for b in list(jobs.queue)]
