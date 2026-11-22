@@ -1,0 +1,38 @@
+[
+ {
+  "arm": "seen2",
+  "seed": 7101,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9431,
+  "revise_next5": 0.7163,
+  "revise_next10": 0.7651,
+  "revise_old": 0.5192,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9604,
+  "store_size": 392
+ },
+ {
+  "arm": "seen2",
+  "seed": 7102,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9382,
+  "revise_next5": 0.7595,
+  "revise_next10": 0.7353,
+  "revise_old": 0.5461,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9513,
+  "store_size": 380
+ },
+ {
+  "arm": "seen2",
+  "seed": 7103,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9485,
+  "revise_next5": 0.7586,
+  "revise_next10": 0.8429,
+  "revise_old": 0.4948,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9548,
+  "store_size": 386
+ }
+]

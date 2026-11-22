@@ -1,0 +1,38 @@
+[
+ {
+  "arm": "oracle_dec",
+  "seed": 7101,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9772,
+  "revise_next5": 0.9929,
+  "revise_next10": 0.9799,
+  "revise_old": 0.9606,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.9868,
+  "store_size": 405
+ },
+ {
+  "arm": "oracle_dec",
+  "seed": 7102,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9952,
+  "revise_next5": 0.9937,
+  "revise_next10": 1.0,
+  "revise_old": 0.9772,
+  "exception_kept": 1.0,
+  "noise_resisted": 1.0,
+  "store_size": 395
+ },
+ {
+  "arm": "oracle_dec",
+  "seed": 7103,
+  "acquire_now": 1.0,
+  "infer_stable": 0.9966,
+  "revise_next5": 1.0,
+  "revise_next10": 1.0,
+  "revise_old": 0.9627,
+  "exception_kept": 1.0,
+  "noise_resisted": 0.991,
+  "store_size": 397
+ }
+]
