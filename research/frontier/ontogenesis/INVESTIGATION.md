@@ -372,3 +372,37 @@ The store is 1.02 GB for 48M tokens of text, against about 57 MB of weights for 
 **Not registered, but visible in the table.** Four blocks with the store added after training (1.475) beat eight blocks without it (1.497). So the capacity claim behind S3 holds for the post-hoc store, which is the published inference-time effect, and fails for joint training. One seed, and the margin (0.023) is above the 0.01 noise floor I set but not by much.
 
 **Cost.** Any gain here is a system-level gain bought with 1.02 GB of exact storage. Per stored byte that is a poor exchange: doubling the blocks costs about 12 MB and buys 0.039; the store costs 1,022 MB and buys 0.058. Wall-clock times are unusable (the machine was swapping).
+
+## Question 9. How should a correction be written, and does a harmless write exist? (2026-11-21)
+
+`correction_interference.py`, predictions K1–K6 committed in `0443ef6` before any registered run. Seeds 8001–8003. World with corrections only (no exceptions). Raw files: `results/correction_interference/`. Model alone unless stated. [Observed]
+
+| How the correction is written | Correction right, at once | Entity's other facts, at once | Same-type facts for that relation | Old regular facts on corrected entities, at the end | Old regular facts on other entities | Correction still right 20+ phases later | Inference on unseen relations |
+|---|---|---|---|---|---|---|---|
+| Trained alone among that entity's facts | 100% | 64.7% | 95.7% | 59.6% | 99.9% | 66.2% | 98.0% |
+| Trained with the entity's other shown facts | 100% | 100% | 99.7% | 99.5% | 99.9% | 62.3% | 98.6% |
+| Trained with as many facts from other entities | 100% | 66.6% | 96.5% | 68.8% | 100% | 67.0% | 97.9% |
+| Trained with the entity's address frozen | 100% | 84.9% | 56.7% | 54.7% | 60.9% | 12.1% | 66.7% |
+| Not trained; kept in an exact store | 2.7% (100% with the store) | 99.9% | 99.9% | 99.5% | 99.9% | 2.8% (100% with the store) | 99.9% |
+| Not trained; computed edit of the address only | 99.8% | 98.0% | 98.2% | 83.5% | 99.9% | 21.5% | 99.7% |
+
+The linear programme found an address-only edit that changes none of the entity's other seven answers for **99.84%** of corrections (all but one of 624 in each seed).
+
+**Against the registered predictions.**
+- K1 (training the correction alone reproduces the damage): held. A third of the entity's other facts break at the moment of writing.
+- K2 (a harmless address-only edit exists for at least 80% of corrections): held, 99.84%. The model can represent the corrected state. The damage is not a capacity limit.
+- K3 (the computed edit: harmless at once, correction taken, and old facts on those entities at 95% or more at the end): the first two parts held (98.0%, 99.8%); **the third failed** (83.5%).
+- K4 (rehearsing the entity's own facts protects it; equal-sized replay of other entities' facts does not): held. 100% against 66.6%.
+- K5 (freezing the address protects the entity, but the write fails or the rule is damaged): **the first part failed.** The entity was not protected (84.9%), because the decoder absorbed the correction by bending the rule for the whole type. The second part held, severely: same-type facts fell to 56.7%, uncorrected entities' old facts to 60.9%, inference to 66.7%.
+- K6 (a correction written into the model decays under later training): held in every arm that writes into the model: 100% to 62–67% for gradient writes, 99.8% to 21.5% for the computed edit.
+
+**What this establishes, in this world and model.**
+1. **The collateral damage of a correction is caused by the write rule, not by the representation.** A state exists in which the correction holds and nothing else of that entity changes, in 99.8% of cases. Training on the one fact does not reach it.
+2. **What is missing is the entity's own facts, specifically.** Adding them removes the damage completely. Adding the same number of facts from other entities removes none of it. So this is not "replay helps" in general; it is a missing constraint on one address.
+3. **Where the correction is written matters more than how hard.** Forced into the shared decoder (address frozen), one correction per 13 new entities destroys the rule for everyone.
+4. **There are two separate problems, and they have different fixes.** Writing without damage is solved by same-entity rehearsal or by a computed edit. Keeping an off-rule fact alive is not solved by either: later training on rule-following data pulls it back in every arm. Only the exact store held corrections.
+5. **A minimal edit is fragile.** The computed edit satisfies its constraints with the smallest margins that work, so later drift undoes both the correction (21.5%) and some neighbours (83.5%). Larger margins, or re-solving the edit when the decoder has moved, are untested.
+
+**Rejected explanations.** "The model cannot hold exceptions without separate storage" (rejected for the moment of writing by K2; not rejected for durability). "Any replay protects" (rejected by the random-replay arm). "Protect the address and let the decoder learn the exception" (rejected by the frozen-address arm).
+
+**Limits.** One world, one bilinear model, Adam only. The store arm's perfect retention is by construction. Correction locality, damage to a subject's other facts, and memory-based editing with a scope decision are established topics in model editing [Published, verification in progress]; this is a clean reproduction and decomposition in our own harness, not a discovery.
