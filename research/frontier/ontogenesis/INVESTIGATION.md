@@ -835,3 +835,5 @@ The 211M model trained on 4.2B tokens of corpus v2:
 - Q3: on our calibrated harness, it beats our 211M model on ARC-Easy and PIQA. Against Pythia-410M (300B tokens; official: ARC-Easy 0.521, PIQA 0.668, WinoGrande 0.537, LAMBADA perplexity 10.8), it is within 0.03 on ARC-Easy and PIQA and worse on LAMBADA perplexity.
 
 **Cost bound.** About 19 to 20 hours of a v5e-4 at $4.80 per hour, about $90 to $95. Deadline 2026-11-23 12:00 UTC (on-machine timer; Cloud Scheduler at 12:02; laptop watcher at 12:10). Worst case about $101.
+
+**Question 13, operational note (15:20 UTC).** Measured: four v5e chips give 439k tokens per second at 101M, so each rate check takes about 30 minutes. Scaled to 386M, the main run takes about 18.6 hours and would finish about 20 minutes before the 12:00 deadline. All three deadlines were therefore moved two hours later: on-machine 14:00, Cloud Scheduler 14:02, laptop watcher 14:10 on 23 November. The bound rises to about $111, with about $95 expected. Nothing in the design changed.
