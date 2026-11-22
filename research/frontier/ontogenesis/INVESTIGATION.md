@@ -798,3 +798,24 @@ Registered laptop-GPU arms: dense 1/5, looped 3/5.
 - E5 in between: rescaling the stale optimiser state raises whole-entity retention by 0.10. Stale state contributes but is not established as the main cause.
 
 Corrected summary: protecting the whole entity at write time needs constraints on all of its answers. The model's own current answers supply them (computed edit, 97%); rehearsing the facts one happens to have stored does not (77%). Durability is a separate problem that no in-model write here solves (at most 67% of corrections survive). This summary is still published in substance.
+
+### Harness calibration against a public model (2026-11-22)
+
+`tpu/eval_score_hf.py` scored Pythia-160M through our prompt texts, with lm-evaluation-harness encoding and no prefix. Compared with EleutherAI's official zero-shot file for the same checkpoint (`results/lm/pythia-160m-step143000-zero-shot.json`):
+
+| Task | Ours | Official | Difference in standard errors |
+|---|---|---|---|
+| ARC-Easy acc / norm | 0.436 / 0.401 | 0.435 / 0.397 | 0.1 / 0.4 |
+| ARC-Challenge acc / norm | 0.195 / 0.235 | 0.188 / 0.233 | 0.6 / 0.1 |
+| PIQA acc / norm | 0.623 / 0.621 | 0.627 / 0.616 | 0.4 / 0.4 |
+| WinoGrande acc | 0.513 | 0.531 | 1.3 |
+| LAMBADA acc (perplexity) | 0.354 (37.3) | 0.328 (38.1) | **4.0** (perplexity agrees) |
+
+**Our formats reproduce the official harness on ARC, PIQA and WinoGrande.** LAMBADA accuracy reads about 0.025 high, probably a text-normalisation difference in the target word; LAMBADA accuracy is therefore not compared with published numbers, but perplexity is.
+
+With that, Question 12's comparison stands for ARC, PIQA and WinoGrande. One known difference remains: our own models get an end-of-document prefix and Pythia does not.
+
+The 211M model trained on 4.2B tokens of corpus v2:
+- is ahead of Pythia-160M (300B tokens) on ARC-Easy (0.522 against 0.435) and PIQA (0.648 against 0.627);
+- is level on ARC-Challenge;
+- is behind on WinoGrande (0.511 against 0.531) and on LAMBADA perplexity (49 against 38).
