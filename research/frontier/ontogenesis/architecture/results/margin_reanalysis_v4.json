@@ -1,0 +1,1282 @@
+{
+  "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+  "scope": "Committed rounded-summary arithmetic, exogenous stream reconstruction and a constructed LP example. No neural training or recovered model predictions.",
+  "source_hashes": {
+    "cab_s.py": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b",
+    "correction_margins.py": "ffc4eb6fdfdf209d23c2cfe19a491645de7d2fb749a74c83b4859867ae98f0d8"
+  },
+  "numpy_version": "2.3.5",
+  "constants": {
+    "Z": 16,
+    "R": 8,
+    "V": 32,
+    "K": 3,
+    "phases": 40,
+    "new_entities_per_phase": 64,
+    "corrections_per_noninitial_phase": 16
+  },
+  "arms": {
+    "half_m1": {
+      "seed_count": 3,
+      "source_sha256": "1da9008689f57d13b16342b39fbec4b70c7bcd0f083580f959040832361f9564",
+      "metrics": {
+        "feasible": {
+          "mean": 0.9983999999999998,
+          "min": 0.9984,
+          "max": 0.9984
+        },
+        "edit_l1": {
+          "mean": 21.776333333333337,
+          "min": 18.483,
+          "max": 27.949
+        },
+        "corrected_now": {
+          "mean": 0.9983999999999998,
+          "min": 0.9984,
+          "max": 0.9984
+        },
+        "collateral_now": {
+          "mean": 0.9802666666666666,
+          "min": 0.9801,
+          "max": 0.9805
+        },
+        "rule_old_corrected": {
+          "mean": 0.8344999999999999,
+          "min": 0.8158,
+          "max": 0.8465
+        },
+        "corrected_old": {
+          "mean": 0.2147,
+          "min": 0.1815,
+          "max": 0.2383
+        }
+      }
+    },
+    "half_m3": {
+      "seed_count": 3,
+      "source_sha256": "6b14ba351e2263d3b79a687b23a028a520284043a05a7f59e69542aa5305fa71",
+      "metrics": {
+        "feasible": {
+          "mean": 0.9989333333333333,
+          "min": 0.9984,
+          "max": 1.0
+        },
+        "edit_l1": {
+          "mean": 55.50333333333333,
+          "min": 51.6,
+          "max": 61.047
+        },
+        "corrected_now": {
+          "mean": 0.9989333333333333,
+          "min": 0.9984,
+          "max": 1.0
+        },
+        "collateral_now": {
+          "mean": 0.9727333333333333,
+          "min": 0.9708,
+          "max": 0.9747
+        },
+        "rule_old_corrected": {
+          "mean": 0.7865666666666667,
+          "min": 0.777,
+          "max": 0.798
+        },
+        "corrected_old": {
+          "mean": 0.3112,
+          "min": 0.2926,
+          "max": 0.3285
+        }
+      }
+    },
+    "half_m6": {
+      "seed_count": 3,
+      "source_sha256": "5d6e65584e5011a16737d514106cc5ccc1031655a72d1861630ef7809e4e115d",
+      "metrics": {
+        "feasible": {
+          "mean": 0.9989333333333333,
+          "min": 0.9984,
+          "max": 1.0
+        },
+        "edit_l1": {
+          "mean": 109.99733333333332,
+          "min": 103.299,
+          "max": 118.355
+        },
+        "corrected_now": {
+          "mean": 0.9989333333333333,
+          "min": 0.9984,
+          "max": 1.0
+        },
+        "collateral_now": {
+          "mean": 0.9691,
+          "min": 0.9672,
+          "max": 0.971
+        },
+        "rule_old_corrected": {
+          "mean": 0.7566666666666667,
+          "min": 0.7503,
+          "max": 0.766
+        },
+        "corrected_old": {
+          "mean": 0.3515,
+          "min": 0.3419,
+          "max": 0.3682
+        }
+      }
+    },
+    "keep_m3": {
+      "seed_count": 3,
+      "source_sha256": "4796e5f636d055d21f1f41c0c29fa552e528fb40049f6ee9b3342febf89a4166",
+      "metrics": {
+        "feasible": {
+          "mean": 0.9983999999999998,
+          "min": 0.9968,
+          "max": 1.0
+        },
+        "edit_l1": {
+          "mean": 62.41166666666667,
+          "min": 59.221,
+          "max": 68.077
+        },
+        "corrected_now": {
+          "mean": 0.9983999999999998,
+          "min": 0.9968,
+          "max": 1.0
+        },
+        "collateral_now": {
+          "mean": 0.9853333333333333,
+          "min": 0.9818,
+          "max": 0.9872
+        },
+        "rule_old_corrected": {
+          "mean": 0.8965333333333333,
+          "min": 0.8905,
+          "max": 0.9041
+        },
+        "corrected_old": {
+          "mean": 0.2136,
+          "min": 0.1963,
+          "max": 0.2243
+        }
+      }
+    },
+    "none_m1": {
+      "seed_count": 3,
+      "source_sha256": "055c14b2109181d3bd9fe3d50f60a41cdc769c42243694ce3f80c7123b2505b7",
+      "metrics": {
+        "feasible": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "edit_l1": {
+          "mean": 12.662333333333331,
+          "min": 12.536,
+          "max": 12.785
+        },
+        "corrected_now": {
+          "mean": 0.9952,
+          "min": 0.992,
+          "max": 0.9968
+        },
+        "collateral_now": {
+          "mean": 0.3532,
+          "min": 0.3461,
+          "max": 0.3609
+        },
+        "rule_old_corrected": {
+          "mean": 0.3421,
+          "min": 0.3391,
+          "max": 0.344
+        },
+        "corrected_old": {
+          "mean": 0.23796666666666666,
+          "min": 0.2259,
+          "max": 0.2527
+        }
+      }
+    }
+  },
+  "half_m1_matches_prior_four_common_rounded_metrics_and_success_flags": true,
+  "reproduction_match_scope": "Rounded summaries only, not weights, trajectories, residuals or independent fresh seeds.",
+  "exogenous_event_diagnostics": [
+    {
+      "seed": 8001,
+      "correction_events": 624,
+      "correction_phases": 39,
+      "phases_with_same_entity_multi_relation_writes": 2,
+      "nonterminal_same_entity_write_events": 2,
+      "same_value_assignment_events": 16,
+      "repeat_key_correction_events": 37,
+      "unique_corrected_keys": 587,
+      "final_old_correction_denominator": 272,
+      "final_old_regular_corrected_entity_denominator": 749,
+      "phase_end_error_counts_consistent_with_rounded_none_m1": [
+        2
+      ],
+      "stream_sha256": "51e14adb0d79b0508a20b4752493391f5b54b6e5886297fb925f018e426fec3f",
+      "collision_details": [
+        {
+          "phase": 1,
+          "repeated_entities": {
+            "30": 2
+          },
+          "nonterminal_event_indices": [
+            1
+          ],
+          "events": [
+            [
+              35,
+              7,
+              22
+            ],
+            [
+              30,
+              0,
+              2
+            ],
+            [
+              41,
+              5,
+              23
+            ],
+            [
+              54,
+              2,
+              5
+            ],
+            [
+              51,
+              6,
+              9
+            ],
+            [
+              30,
+              5,
+              1
+            ],
+            [
+              47,
+              5,
+              10
+            ],
+            [
+              17,
+              7,
+              20
+            ],
+            [
+              16,
+              2,
+              12
+            ],
+            [
+              22,
+              2,
+              26
+            ],
+            [
+              3,
+              5,
+              6
+            ],
+            [
+              57,
+              4,
+              4
+            ],
+            [
+              37,
+              2,
+              14
+            ],
+            [
+              52,
+              2,
+              1
+            ],
+            [
+              31,
+              1,
+              16
+            ],
+            [
+              19,
+              7,
+              1
+            ]
+          ]
+        },
+        {
+          "phase": 29,
+          "repeated_entities": {
+            "1015": 2
+          },
+          "nonterminal_event_indices": [
+            3
+          ],
+          "events": [
+            [
+              37,
+              0,
+              24
+            ],
+            [
+              1794,
+              2,
+              10
+            ],
+            [
+              1103,
+              4,
+              2
+            ],
+            [
+              1015,
+              4,
+              11
+            ],
+            [
+              766,
+              7,
+              27
+            ],
+            [
+              1574,
+              5,
+              0
+            ],
+            [
+              499,
+              0,
+              2
+            ],
+            [
+              100,
+              3,
+              27
+            ],
+            [
+              954,
+              2,
+              14
+            ],
+            [
+              264,
+              6,
+              9
+            ],
+            [
+              1336,
+              5,
+              11
+            ],
+            [
+              969,
+              6,
+              12
+            ],
+            [
+              543,
+              3,
+              28
+            ],
+            [
+              1015,
+              0,
+              5
+            ],
+            [
+              514,
+              6,
+              15
+            ],
+            [
+              653,
+              3,
+              24
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 8002,
+      "correction_events": 624,
+      "correction_phases": 39,
+      "phases_with_same_entity_multi_relation_writes": 4,
+      "nonterminal_same_entity_write_events": 4,
+      "same_value_assignment_events": 18,
+      "repeat_key_correction_events": 35,
+      "unique_corrected_keys": 589,
+      "final_old_correction_denominator": 277,
+      "final_old_regular_corrected_entity_denominator": 782,
+      "phase_end_error_counts_consistent_with_rounded_none_m1": [
+        2
+      ],
+      "stream_sha256": "01bd4a8ede0c7eb481f1ddcdeb86e65577f03d158262e1b1dc068328969f6c09",
+      "collision_details": [
+        {
+          "phase": 3,
+          "repeated_entities": {
+            "29": 2
+          },
+          "nonterminal_event_indices": [
+            0
+          ],
+          "events": [
+            [
+              29,
+              2,
+              31
+            ],
+            [
+              17,
+              2,
+              25
+            ],
+            [
+              11,
+              0,
+              18
+            ],
+            [
+              62,
+              3,
+              18
+            ],
+            [
+              102,
+              4,
+              28
+            ],
+            [
+              172,
+              1,
+              12
+            ],
+            [
+              29,
+              6,
+              1
+            ],
+            [
+              86,
+              2,
+              13
+            ],
+            [
+              16,
+              3,
+              24
+            ],
+            [
+              33,
+              0,
+              25
+            ],
+            [
+              82,
+              7,
+              10
+            ],
+            [
+              188,
+              6,
+              30
+            ],
+            [
+              170,
+              4,
+              2
+            ],
+            [
+              186,
+              2,
+              5
+            ],
+            [
+              74,
+              5,
+              9
+            ],
+            [
+              144,
+              5,
+              4
+            ]
+          ]
+        },
+        {
+          "phase": 7,
+          "repeated_entities": {
+            "357": 2
+          },
+          "nonterminal_event_indices": [
+            3
+          ],
+          "events": [
+            [
+              442,
+              7,
+              26
+            ],
+            [
+              407,
+              2,
+              5
+            ],
+            [
+              91,
+              5,
+              22
+            ],
+            [
+              357,
+              0,
+              19
+            ],
+            [
+              437,
+              3,
+              12
+            ],
+            [
+              227,
+              5,
+              12
+            ],
+            [
+              189,
+              4,
+              31
+            ],
+            [
+              220,
+              5,
+              29
+            ],
+            [
+              49,
+              2,
+              30
+            ],
+            [
+              158,
+              6,
+              29
+            ],
+            [
+              152,
+              1,
+              6
+            ],
+            [
+              233,
+              0,
+              20
+            ],
+            [
+              140,
+              2,
+              23
+            ],
+            [
+              393,
+              0,
+              17
+            ],
+            [
+              357,
+              7,
+              13
+            ],
+            [
+              394,
+              1,
+              22
+            ]
+          ]
+        },
+        {
+          "phase": 8,
+          "repeated_entities": {
+            "399": 2
+          },
+          "nonterminal_event_indices": [
+            0
+          ],
+          "events": [
+            [
+              399,
+              0,
+              4
+            ],
+            [
+              68,
+              2,
+              28
+            ],
+            [
+              291,
+              4,
+              5
+            ],
+            [
+              391,
+              3,
+              28
+            ],
+            [
+              371,
+              6,
+              16
+            ],
+            [
+              43,
+              2,
+              15
+            ],
+            [
+              134,
+              4,
+              27
+            ],
+            [
+              278,
+              4,
+              13
+            ],
+            [
+              458,
+              3,
+              28
+            ],
+            [
+              414,
+              3,
+              24
+            ],
+            [
+              51,
+              6,
+              21
+            ],
+            [
+              399,
+              5,
+              29
+            ],
+            [
+              270,
+              4,
+              19
+            ],
+            [
+              375,
+              3,
+              6
+            ],
+            [
+              437,
+              1,
+              26
+            ],
+            [
+              83,
+              5,
+              24
+            ]
+          ]
+        },
+        {
+          "phase": 28,
+          "repeated_entities": {
+            "246": 2
+          },
+          "nonterminal_event_indices": [
+            0
+          ],
+          "events": [
+            [
+              246,
+              4,
+              11
+            ],
+            [
+              700,
+              7,
+              17
+            ],
+            [
+              1696,
+              7,
+              31
+            ],
+            [
+              1753,
+              0,
+              2
+            ],
+            [
+              1759,
+              5,
+              19
+            ],
+            [
+              246,
+              3,
+              19
+            ],
+            [
+              1567,
+              3,
+              0
+            ],
+            [
+              720,
+              7,
+              26
+            ],
+            [
+              974,
+              6,
+              5
+            ],
+            [
+              1558,
+              7,
+              31
+            ],
+            [
+              1395,
+              0,
+              14
+            ],
+            [
+              1328,
+              3,
+              7
+            ],
+            [
+              40,
+              2,
+              30
+            ],
+            [
+              744,
+              6,
+              31
+            ],
+            [
+              129,
+              6,
+              21
+            ],
+            [
+              553,
+              5,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 8003,
+      "correction_events": 624,
+      "correction_phases": 39,
+      "phases_with_same_entity_multi_relation_writes": 5,
+      "nonterminal_same_entity_write_events": 6,
+      "same_value_assignment_events": 19,
+      "repeat_key_correction_events": 41,
+      "unique_corrected_keys": 583,
+      "final_old_correction_denominator": 270,
+      "final_old_regular_corrected_entity_denominator": 743,
+      "phase_end_error_counts_consistent_with_rounded_none_m1": [
+        5
+      ],
+      "stream_sha256": "79017d914379abe6e29f5c88b1bfa1616714c9d07bb4ece0fc93908e456068a8",
+      "collision_details": [
+        {
+          "phase": 1,
+          "repeated_entities": {
+            "28": 2,
+            "26": 2
+          },
+          "nonterminal_event_indices": [
+            1,
+            6
+          ],
+          "events": [
+            [
+              35,
+              6,
+              21
+            ],
+            [
+              28,
+              1,
+              8
+            ],
+            [
+              36,
+              1,
+              17
+            ],
+            [
+              38,
+              7,
+              7
+            ],
+            [
+              54,
+              4,
+              26
+            ],
+            [
+              55,
+              1,
+              4
+            ],
+            [
+              26,
+              0,
+              21
+            ],
+            [
+              17,
+              5,
+              9
+            ],
+            [
+              28,
+              4,
+              3
+            ],
+            [
+              2,
+              3,
+              11
+            ],
+            [
+              34,
+              2,
+              7
+            ],
+            [
+              21,
+              2,
+              4
+            ],
+            [
+              4,
+              7,
+              15
+            ],
+            [
+              26,
+              7,
+              10
+            ],
+            [
+              22,
+              7,
+              19
+            ],
+            [
+              57,
+              5,
+              22
+            ]
+          ]
+        },
+        {
+          "phase": 2,
+          "repeated_entities": {
+            "75": 2
+          },
+          "nonterminal_event_indices": [
+            4
+          ],
+          "events": [
+            [
+              54,
+              5,
+              23
+            ],
+            [
+              63,
+              4,
+              18
+            ],
+            [
+              103,
+              6,
+              27
+            ],
+            [
+              42,
+              3,
+              4
+            ],
+            [
+              75,
+              3,
+              31
+            ],
+            [
+              15,
+              1,
+              7
+            ],
+            [
+              58,
+              5,
+              27
+            ],
+            [
+              69,
+              5,
+              18
+            ],
+            [
+              91,
+              5,
+              1
+            ],
+            [
+              79,
+              1,
+              3
+            ],
+            [
+              75,
+              6,
+              15
+            ],
+            [
+              8,
+              2,
+              9
+            ],
+            [
+              124,
+              4,
+              11
+            ],
+            [
+              59,
+              5,
+              13
+            ],
+            [
+              114,
+              5,
+              11
+            ],
+            [
+              84,
+              7,
+              10
+            ]
+          ]
+        },
+        {
+          "phase": 10,
+          "repeated_entities": {
+            "94": 2
+          },
+          "nonterminal_event_indices": [
+            3
+          ],
+          "events": [
+            [
+              478,
+              4,
+              22
+            ],
+            [
+              318,
+              5,
+              2
+            ],
+            [
+              181,
+              3,
+              27
+            ],
+            [
+              94,
+              7,
+              16
+            ],
+            [
+              88,
+              0,
+              19
+            ],
+            [
+              490,
+              1,
+              9
+            ],
+            [
+              117,
+              7,
+              29
+            ],
+            [
+              354,
+              0,
+              22
+            ],
+            [
+              382,
+              1,
+              20
+            ],
+            [
+              94,
+              3,
+              16
+            ],
+            [
+              15,
+              2,
+              11
+            ],
+            [
+              522,
+              5,
+              23
+            ],
+            [
+              31,
+              5,
+              11
+            ],
+            [
+              243,
+              4,
+              15
+            ],
+            [
+              286,
+              6,
+              19
+            ],
+            [
+              252,
+              7,
+              30
+            ]
+          ]
+        },
+        {
+          "phase": 13,
+          "repeated_entities": {
+            "78": 2
+          },
+          "nonterminal_event_indices": [
+            9
+          ],
+          "events": [
+            [
+              169,
+              0,
+              26
+            ],
+            [
+              5,
+              6,
+              0
+            ],
+            [
+              678,
+              0,
+              15
+            ],
+            [
+              414,
+              1,
+              9
+            ],
+            [
+              36,
+              2,
+              0
+            ],
+            [
+              749,
+              5,
+              15
+            ],
+            [
+              107,
+              0,
+              13
+            ],
+            [
+              64,
+              3,
+              29
+            ],
+            [
+              423,
+              1,
+              27
+            ],
+            [
+              78,
+              6,
+              0
+            ],
+            [
+              689,
+              0,
+              23
+            ],
+            [
+              12,
+              3,
+              18
+            ],
+            [
+              264,
+              3,
+              16
+            ],
+            [
+              54,
+              4,
+              14
+            ],
+            [
+              78,
+              7,
+              1
+            ],
+            [
+              27,
+              3,
+              31
+            ]
+          ]
+        },
+        {
+          "phase": 37,
+          "repeated_entities": {
+            "2236": 2
+          },
+          "nonterminal_event_indices": [
+            4
+          ],
+          "events": [
+            [
+              349,
+              2,
+              11
+            ],
+            [
+              1346,
+              2,
+              29
+            ],
+            [
+              2285,
+              7,
+              7
+            ],
+            [
+              847,
+              7,
+              29
+            ],
+            [
+              2236,
+              6,
+              9
+            ],
+            [
+              2236,
+              5,
+              30
+            ],
+            [
+              2028,
+              1,
+              12
+            ],
+            [
+              1891,
+              6,
+              19
+            ],
+            [
+              1813,
+              6,
+              20
+            ],
+            [
+              706,
+              6,
+              31
+            ],
+            [
+              1160,
+              5,
+              17
+            ],
+            [
+              174,
+              6,
+              5
+            ],
+            [
+              353,
+              6,
+              6
+            ],
+            [
+              1204,
+              0,
+              0
+            ],
+            [
+              371,
+              0,
+              31
+            ],
+            [
+              2273,
+              3,
+              16
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "within_phase_counterexample": {
+    "scope": "Constructed example using the extracted minimum-L1 edit function; does not identify historical error causes.",
+    "first_solver_success": true,
+    "second_solver_success": true,
+    "state_after_first_write": [
+      1.0,
+      0.0
+    ],
+    "state_after_second_write": [
+      -0.5,
+      0.0
+    ],
+    "first_target_correct_after_first_write": true,
+    "first_target_correct_after_second_write": false,
+    "second_target_correct_after_second_write": true,
+    "jointly_feasible_state": [
+      1.0,
+      3.0
+    ]
+  },
+  "causal_limit": "Collision counts can accommodate the observed phase-end errors but cannot establish which historical errors were caused by collisions or numerical residuals."
+}

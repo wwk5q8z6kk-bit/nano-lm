@@ -1,5 +1,7 @@
 # 04 — Evidence register, primary references, boundaries and open verification work
 
+**V4 register update.** The current source register has 40 primary identities; P-37–P-40 and their reading-depth limits appear at the end. Completed margin results are reviewed in [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md). Pilot fields previously described as immediate are phase-end observations; use the exact endpoint definitions in 11.
+
 **Cutoff:** 2026-11-21. This register distinguishes: **[N]** Nano LM repositories and uploaded work; **[P]** published/official literature; **[H]** newly stated hypotheses; **[M]** elementary mathematical propositions and numerical checks. Primary-source identities and the narrow claims summarized below were rechecked on 2026-11-21. Inspection depth varies by source: abstract, official documentation, model card, author repository, selected methods text, or primary search/PDF excerpt. The [independent source audit](08_LITERATURE_AUDIT.md) records the evidence depth, retrieval limits, reference aliases and corrections for 36 sources. No literature result was independently reproduced. Most full methods and appendices, implementations, and data/model licenses remain unaudited.
 
 ## 1. Repository and historical data provenance
@@ -129,3 +131,17 @@ The following additions close bibliography and comparison-design gaps. They do n
 
 **Novelty boundary.** Linear conjugacy, fixed-key nullspace identities, gradient projection, recurrent depth and learned halting all have established mathematical or algorithmic precedents. Any Nano contribution must lie in a specified implementation, a new proved result with explicit assumptions, or a measured improvement over the appropriate controls.
 
+
+
+## V4 component-method references P-37–P-40
+
+These four additions document the exact training components now implemented. They add attribution and review boundaries; they do not validate model quality. The current register has 40 identities; the original 36-source audit remains a historical artifact.
+
+| ID | Primary reference | Inspection depth and supported scope | Nano limitation |
+|---|---|---|---|
+| P-37 | Ilya Loshchilov and Frank Hutter (2019), [Decoupled Weight Decay Regularization](https://arxiv.org/html/1711.05101v3) | primary abstract and method. Decouples weight decay from loss-gradient moments in Adam-like adaptive optimization. | Implementation precedent, not proof of a good Nano training recipe or universal retention; initial preprint2017, v3Jan2019. |
+| P-38 | Biao Zhang and Rico Sennrich (2019), [Root Mean Square Layer Normalization](https://arxiv.org/abs/1910.07467v1) | primary abstract. Introduces RMS-based normalization without LayerNorm recentering. | Nano epsilon, gain, dtype and derivative conventions are specified and checked locally; paper speed claims are not transplanted. |
+| P-39 | Jianlin Su et al. (2021), [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864v5) | primary abstract. Uses position-dependent rotations to introduce relative-position dependence in attention. | Initial2021 preprint; retrieved v5Nov2023. It does not validate this implementation or context-length generalization. |
+| P-40 | Noam Shazeer (2020), [GLU Variants Improve Transformer](https://arxiv.org/abs/2002.05202v1) | primary abstract. Studies gated feed-forward variants in Transformers; direct precedent for the SwiGLU component family. | Author-reported benchmark gains do not show a Nano architecture advantage; local gradients are checked independently. |
+
+Current machine index: [literature_audit_v4.json](results/literature_audit_v4.json). The earlier audit remains unchanged.

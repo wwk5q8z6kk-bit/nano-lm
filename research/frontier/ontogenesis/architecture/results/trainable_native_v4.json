@@ -1,0 +1,162 @@
+{
+  "suite": "Nano LM explicit-backward training contracts",
+  "scope": "Synthetic engineering checks only; no held-out language evaluation, architecture win or performance claim.",
+  "numpy_version": "2.3.5",
+  "passed": 17,
+  "total": 17,
+  "checks": [
+    {
+      "check": "exact_initial_forward_unique_2",
+      "passed": true,
+      "max_abs_logit_difference": 0.0
+    },
+    {
+      "check": "directional_finite_differences_unique_2",
+      "tensors_checked": [
+        "embedding",
+        "block_0.q",
+        "block_0.k",
+        "block_0.v",
+        "block_0.o",
+        "block_0.gate",
+        "block_0.up",
+        "block_0.down",
+        "block_0.norm_attention",
+        "block_0.norm_ffn",
+        "block_1.q",
+        "block_1.k",
+        "block_1.v",
+        "block_1.o",
+        "block_1.gate",
+        "block_1.up",
+        "block_1.down",
+        "block_1.norm_attention",
+        "block_1.norm_ffn",
+        "final_norm"
+      ],
+      "directions": 40,
+      "maximum_absolute_error": 6.803216656692257e-09,
+      "passed": true
+    },
+    {
+      "check": "exact_initial_forward_unique_1",
+      "passed": true,
+      "max_abs_logit_difference": 0.0
+    },
+    {
+      "check": "directional_finite_differences_unique_1",
+      "tensors_checked": [
+        "embedding",
+        "block_0.q",
+        "block_0.k",
+        "block_0.v",
+        "block_0.o",
+        "block_0.gate",
+        "block_0.up",
+        "block_0.down",
+        "block_0.norm_attention",
+        "block_0.norm_ffn",
+        "final_norm"
+      ],
+      "directions": 22,
+      "maximum_absolute_error": 3.097984715982882e-10,
+      "passed": true
+    },
+    {
+      "check": "shared_gradient_equals_sum_of_untied_logical_uses",
+      "passed": true
+    },
+    {
+      "check": "masked_suffix_cannot_change_scored_loss_or_gradient",
+      "passed": true
+    },
+    {
+      "check": "document_rows_have_independent_attention",
+      "passed": true
+    },
+    {
+      "check": "adamw_first_step_and_full_displacement_known_answer",
+      "passed": true
+    },
+    {
+      "check": "invalid_gradient_or_update_receipt_leaves_all_state_unchanged",
+      "rejections": [
+        "nonfinite gradient",
+        "finite-array displacement norm overflow"
+      ],
+      "passed": true
+    },
+    {
+      "check": "parameter_storage_cannot_overlap_between_or_within_tensors",
+      "alias_forms": [
+        "same array",
+        "transpose",
+        "contiguous overlapping slices",
+        "embedding row",
+        "zero stride",
+        "overlapping nonzero strides"
+      ],
+      "operations_rejected_without_state_mutation": 42,
+      "valid_fortran_contiguous_storage_accepted": true,
+      "passed": true
+    },
+    {
+      "check": "snapshots_are_independent_and_old_caches_rejected_by_new_weights",
+      "passed": true
+    },
+    {
+      "check": "checkpoint_resume_equals_uninterrupted_parameter_and_adam_trajectory",
+      "optimizer_steps": 5,
+      "passed": true
+    },
+    {
+      "check": "checkpoint_and_receipt_exclusive_output_preserves_existing_file",
+      "passed": true
+    },
+    {
+      "check": "malformed_or_tampered_pickle_free_checkpoints_rejected",
+      "corruptions_rejected": 6,
+      "passed": true
+    },
+    {
+      "check": "invalid_document_mask_context_and_optimizer_contracts_rejected",
+      "cases": 8,
+      "passed": true
+    },
+    {
+      "check": "model_configuration_is_fixed_during_training",
+      "passed": true
+    },
+    {
+      "check": "both_parameterizations_learn_the_synthetic_training_fixture",
+      "scope": "Synthetic cyclic-token learning smoke, not language quality, generalization, cost comparison or architecture selection.",
+      "arms": [
+        {
+          "unique_layers": 2,
+          "logical_layers": 2,
+          "steps": 60,
+          "parameters": 1384,
+          "training_targets_per_step": 32,
+          "initial_training_ce_nats": 2.0864399263381044,
+          "final_training_ce_nats": 0.0042511373624705764,
+          "last_actual_displacement_l2": 0.06465679358304291,
+          "final_model_sha256": "deb90c3b31a9f140f580ac7ddc80739600e44c6a687aad2c558d8c0eb13bd03b",
+          "optimizer_state_sha256": "b1f8762c77738d7eb38ab155ec6d77b9cd4f6ea8d85f8f51a463c332b97a267d"
+        },
+        {
+          "unique_layers": 1,
+          "logical_layers": 2,
+          "steps": 60,
+          "parameters": 728,
+          "training_targets_per_step": 32,
+          "initial_training_ce_nats": 2.088623968078893,
+          "final_training_ce_nats": 0.008329945395017866,
+          "last_actual_displacement_l2": 0.058716345249879856,
+          "final_model_sha256": "e4429f0b5fa31ccd45e5bb67e8c50a5da5c4b73fea68890ab558f3082d60c57e",
+          "optimizer_state_sha256": "af482725d4602fbcf180f3583ac86392dcc37f60d50aa915fd784012260c7780"
+        }
+      ],
+      "passed": true
+    }
+  ]
+}

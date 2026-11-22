@@ -1,5 +1,7 @@
 # 07 — Executable native-model contract and resource accounting
 
+**V4 companion.** This chapter continues to describe the unchanged immutable forward reference. A separate trainable implementation, analytical derivatives, AdamW, checkpoint/resume and tiny learning fixtures now exist in [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md). “Forward-only” below applies to the original module, not the entire current package.
+
 **Status:** a small forward-only correctness reference and a specified illustrative configuration. The reference uses random weights and NumPy; it has no optimizer, corpus, training run, learned migration or measured language-model result. **The Nano LM architecture remains unselected.** This contract makes a dense/recurrent comparison implementable and gives later mechanisms a precise interface.
 
 ## Executive summary

@@ -172,3 +172,17 @@ For the Nano correction experiment, separate three outcomes: whether a correctio
 
 Machine-readable companion: [literature audit index](results/literature_audit_20261121.json). The retrieval reference identifiers are session provenance, while the URLs and version suffixes identify the public sources. The audit index does not contain source-page snapshots.
 
+
+
+## V4 component-method references P-37–P-40
+
+These four additions document the exact training components now implemented. They add attribution and review boundaries; they do not validate model quality. The current register has 40 identities; the original 36-source audit remains a historical artifact.
+
+| ID | Primary reference | Inspection depth and supported scope | Nano limitation |
+|---|---|---|---|
+| P-37 | Ilya Loshchilov and Frank Hutter (2019), [Decoupled Weight Decay Regularization](https://arxiv.org/html/1711.05101v3) | primary abstract and method. Decouples weight decay from loss-gradient moments in Adam-like adaptive optimization. | Implementation precedent, not proof of a good Nano training recipe or universal retention; initial preprint2017, v3Jan2019. |
+| P-38 | Biao Zhang and Rico Sennrich (2019), [Root Mean Square Layer Normalization](https://arxiv.org/abs/1910.07467v1) | primary abstract. Introduces RMS-based normalization without LayerNorm recentering. | Nano epsilon, gain, dtype and derivative conventions are specified and checked locally; paper speed claims are not transplanted. |
+| P-39 | Jianlin Su et al. (2021), [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864v5) | primary abstract. Uses position-dependent rotations to introduce relative-position dependence in attention. | Initial2021 preprint; retrieved v5Nov2023. It does not validate this implementation or context-length generalization. |
+| P-40 | Noam Shazeer (2020), [GLU Variants Improve Transformer](https://arxiv.org/abs/2002.05202v1) | primary abstract. Studies gated feed-forward variants in Transformers; direct precedent for the SwiGLU component family. | Author-reported benchmark gains do not show a Nano architecture advantage; local gradients are checked independently. |
+
+Current machine index: [literature_audit_v4.json](results/literature_audit_v4.json). The earlier audit remains unchanged.

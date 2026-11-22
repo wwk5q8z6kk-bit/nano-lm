@@ -1,5 +1,7 @@
 # 01 — Nano LM candidate architecture, falsifiable hypotheses and mathematical propositions
 
+**V4 implementation and theory update.** [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md) now implements tiny native training, optimizer/checkpoint semantics and causal correction measurement. [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md) incorporates the completed margin pilot and proves a conditional cumulative-drift result. Earlier architecture hypotheses remain unselected; engineering learning fixtures do not establish general-purpose competence.
+
 **Research status:** reviewed candidate specification, not an adopted architecture; 2026-11-21. **Repository name unchanged:** Nano LM.  
 **Scientific aim:** one native-trained model, multiple controlled research alternatives, maximum verified language/code/reasoning competence for constrained compute, power, memory and data.  
 **Theorem scope:** the proofs in this document establish properties of particular algorithms *under stated assumptions*. They neither prove that the proposed neural model can learn those algorithms nor that it will exceed a dense Transformer.

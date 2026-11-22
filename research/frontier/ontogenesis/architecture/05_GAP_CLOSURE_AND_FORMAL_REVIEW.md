@@ -1,5 +1,7 @@
 # 05 — Independent gap closure, theory audit, and implementation contracts (v2)
 
+**V4 precedence.** The new F-31–F-39 register at the end records additional closures. Current training/measurement contracts are in [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md); completed margin evidence and cumulative-drift proofs are in [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md). V2/V3 findings below retain their original review scope.
+
 **V3 precedence notice:** This document retains the 18-item V2 review and now includes follow-up repairs. Current theorem statements are in [01](01_ARCHITECTURE_AND_THEOREMS.md), executable tensor/cache details in [07](07_IMPLEMENTATION_CONTRACT.md), source inspection depths in [08](08_LITERATURE_AUDIT.md), and new repository evidence in [09](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md). A repair to wording or a diagnostic is not closure of an empirical learning claim.
 
 **Status:** research review and corrigenda, 2026-11-21. **Not a proof of superior intelligence, not an adoption of APS or another model family.** The native Nano LM model remains the target; dense, hybrid, recurrent, adaptive predictive-state and other yet-undiscovered substrates remain competitors. Scope: reviewable, reversible design and local deterministic tests. No paid training or owner-device inspection.
@@ -203,3 +205,20 @@ The rough `6ND` dense-LM training-FLOP proxy is useful for budgeting only; recur
 | F-28 | Distinguish solver failure, local infeasibility, prediction preservation and temporal cohorts | New reporting contract; historical missing trajectories cannot be recovered from averages |
 | F-29 | Audit 36 primary sources and account for teacher/plugin/parameter dependencies | Identity and stated-method scope; independent paper replication remains open |
 | F-30 | Use reproducible result receipts and file hashes for checks | Final report 06 records actual runs; remote CI must be checked separately |
+
+
+## V4 gap register: F-31–F-39
+
+| ID | Gap | Resolution and evidence | Closure boundary |
+|---|---|---|---|
+| F-31 | Margin follow-up listed as pending | Five immutable result files reanalysed at9d88a2c; M1–M4 evaluated | Completed upstream pilot; no original model rerun here |
+| F-32 | Solver success treated as individual acquisition | Per-write and phase-end endpoints separated; constructed LP counterexample | Historical cause of the100%/99.52% gap remains unknown |
+| F-33 | Revisions and same-value assignments alter cohorts invisibly | Immutable event instrument, two explicit censor policies, no-op strata and missingness | A real experiment must use the interface correctly |
+| F-34 | Executable core had no gradients or optimizer | Analytical native training, shared/tied accumulation, AdamW and exact resume | Tiny fixtures, not corpus quality |
+| F-35 | Update receipts could become false under exceptional state | Pre-commit norm validation and rejection of overlapping tensor storage | Checked sequential reference API, not concurrent/crash atomicity |
+| F-36 | LP status and requested increments overstated deployed validity | Source provenance, original-threshold residuals and actual-logit checks | Float64 diagnostic, not interval certification |
+| F-37 | Large initial margin interpreted as future protection | Joint address/readout decomposition and cumulative sufficient bound | Needs bounded actual drift; no necessity or universal retention claim |
+| F-38 | New implementation components lacked direct attribution | AdamW, RMSNorm, RoPE and GLU primary sources added, reading depth explicit | No external empirical replication |
+| F-39 | Training and measurement could remain disconnected specifications | Tiny native bridge with actual updates/predictions and event/state/exposure receipts | Fixed engineering fixture; scientific G03b benchmark remains open |
+
+These closures repair definitions, executable mechanics, evidence and mathematical scope. Native language quality, learned representation migration, forward transfer, compute/energy advantages and universal continual learning are not closed. Their acceptance artifacts are named in [03](03_EXPERIMENTS_AND_EXECUTION.md), [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md) and [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md).

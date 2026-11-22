@@ -1,5 +1,7 @@
 # 03 — Preregisterable experiment program, engineering implementation and scale gates
 
+**V4 current execution notice.** The margin pilot previously pending at 8d3b03e is complete at 9d88a2c; see [11](11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md) for M1–M4 outcomes. Tiny native training and the event instrument are implemented in [10](10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md). Fixed-fixture integration is engineering evidence, while a fresh-seed native G03b comparison and corpus-scale training remain unexecuted here. The following V3 notices are retained as dated history.
+
 > **V3 current execution notice — 2026-11-21.** The completed store pilot and three-seed correction study are now incorporated in [09 Evidence refresh](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md). G03 has an existing pilot; its successor is G03b with common event streams and paired durability cohorts. [07 Implementation contract](07_IMPLEMENTATION_CONTRACT.md) supplies a concrete causal reference. This file is an updated research plan, not a preregistration receipt or evidence that a new training job ran. Earlier frozen protocols remain unchanged.
 
 A later source refresh at `8d3b03e…` adds the independently registered margin follow-up. Its rules remain intact; the G03b measurement repairs are complementary and separately labeled. No completed margin result is available at this cutoff; see [09](09_EVIDENCE_REFRESH_AND_PROTOCOL_REPAIRS.md#7-late-source-refresh-and-fixed-integration-cutoff).
@@ -213,3 +215,21 @@ output_dir: <immutable artifact destination>
 **Negative-transfer budget:** For an auxiliary loss or state memory, track the clean general-language and code BPB difference by domain, not just an aggregate. If it regresses outside the targeted task, rollback the integration candidate and preserve the result. Extra compute is acceptable only if verified task value pays for it under an explicit workload/resource contract.
 
 **Scaling:** The 2B–4B ambition is a *conditional* destination; it is not an approved 4B model config or a promise to train frontier quality on the current credit pool. Instantiated parameter counts, data rights, measured throughput, device-specific kernels and an authorization receipt precede any nontrivial paid run.
+
+
+## V4 execution order after implemented engineering foundations
+
+| Order | Work item | Current state | Acceptance evidence still needed |
+|---|---|---|---|
+| 1 | Native forward and backward mechanics | Implemented; local fixtures executed | Scale-specific kernels and external implementation parity remain separate |
+| 2 | Independent world/replay streams and exact event cohorts | Implemented and independently reviewed | Apply to each actual research arm without leaking coordinator state |
+| 3 | Native update/predict integration | Tiny fixed-fixture wiring is part of V4 | Frozen native-data protocol with arm/checkpoint/dataset identity |
+| 4 | G03b causal mechanism comparison | No new scientific comparison executed here | Fresh seeds, fixed paired manifests, per-write acquisition, phase-end survival, horizons, semantic strata, missingness and broad-quality guardrails |
+| 5 | G05/G06 representation/step protection | Conditional theory and diagnostics | Learned maps or actual-step constraints beat frozen/replay controls after costs |
+| 6 | G02/G10–G16 architecture and scaling comparisons | Competing hypotheses remain open | Equal-experience and cost-aware held-out results with valid timing |
+
+The completed margin pilot is evidence about its registered finite arms. M2 and M3 fail their compound success thresholds. Do not expand its margin grid after inspecting results and call the new selection confirmatory. A successor needs a separate protocol, including the capped-half definition, successful-write L1 denominator and precise acquisition timing.
+
+G03b must count prefill, backward/optimizer work, replay exposures, retained state, preprocessing, constraint construction, inference, monitoring and evaluation. Use per-seed paired contrasts as the statistical unit; repeated keys and events within a seed are correlated. Prespecify a primary endpoint/horizon and guardrails, then report the other horizons descriptively or adjust multiplicity. Three pilot seeds do not determine adequate confirmatory power; estimate variability independently before setting the final seed count. Time- and token-matched comparisons answer different questions and should be named explicitly.
+
+For native evaluation, define tokenizer/byte accounting, clean document splits, revised fact templates and paraphrase splits before training. Keep unrelated held-out language/code quality, new-fact acquisition, retention and forward-transfer curves separate. A fixed training fixture supplies none of these held-out outcomes. The existing experiment authorization rules continue to govern real corpus and hardware runs; this plan does not initiate them.

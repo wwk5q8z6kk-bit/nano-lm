@@ -1,6 +1,6 @@
 {
   "source_commit": "2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0",
-  "scope": "Ten frozen completed-evidence/source copies at the original snapshot, plus two pending-protocol copies at the final integration cutoff; no retraining results.",
+  "scope": "Preserved frozen source copies from V3 plus nine files at the V4 completed-margin-pilot cutoff. Each entry states its own source commit; no upstream training rerun.",
   "files": [
     {
       "source_path": "research/frontier/ontogenesis/correction_interference.py",
@@ -109,7 +109,89 @@
       "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/8d3b03e08a5c14d2e9ab330ac8d5006e87e61613/research/frontier/ontogenesis/correction_margins.py",
       "sha256": "ffc4eb6fdfdf209d23c2cfe19a491645de7d2fb749a74c83b4859867ae98f0d8",
       "bytes": 5721
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/INVESTIGATION.md",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "a515cf06826e8c870a1a613125b867d6b94d8014",
+      "sha256": "cb22a2ad5bf3b563d26a5b33fba8d6f7444fe2bd00a544044c399b22eb939a9f",
+      "bytes": 46661,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/INVESTIGATION.md.txt",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/INVESTIGATION.md"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/correction_margins.py",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "4e14e8f25a22fa743dd6ffcc51a812df11ecad16",
+      "sha256": "ffc4eb6fdfdf209d23c2cfe19a491645de7d2fb749a74c83b4859867ae98f0d8",
+      "bytes": 5721,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/correction_margins.py",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/correction_margins.py"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-half-m1.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "2521f0c73a1030cce4576106eb4ad6e8c04388da",
+      "sha256": "1da9008689f57d13b16342b39fbec4b70c7bcd0f083580f959040832361f9564",
+      "bytes": 537,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m1.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-half-m1.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-half-m3.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "e0eb016eacff27c9a2784427e935db9295e883d8",
+      "sha256": "6b14ba351e2263d3b79a687b23a028a520284043a05a7f59e69542aa5305fa71",
+      "bytes": 527,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m3.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-half-m3.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-half-m6.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "e1472743f870865e962a72f7df27630a567206e3",
+      "sha256": "5d6e65584e5011a16737d514106cc5ccc1031655a72d1861630ef7809e4e115d",
+      "bytes": 532,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-half-m6.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-half-m6.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-keep-m3.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "4285b969152367f49225d0b89ff3fe39e5eaeb79",
+      "sha256": "4796e5f636d055d21f1f41c0c29fa552e528fb40049f6ee9b3342febf89a4166",
+      "bytes": 529,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-keep-m3.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-keep-m3.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/results/correction_interference/margins-none-m1.json",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "1e264103d19c04a7237212ab47d311a9943d4da8",
+      "sha256": "055c14b2109181d3bd9fe3d50f60a41cdc769c42243694ce3f80c7123b2505b7",
+      "bytes": 526,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/results/correction_interference/margins-none-m1.json",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/results/correction_interference/margins-none-m1.json"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/cab_s.py",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "11568dc425474425925ae1daaa3b9adbcd4f6a95",
+      "sha256": "e8ae8ed8f6cd31a9c951d7f8b82169d4080ea0b6fb3912e0eb148c236c0d183b",
+      "bytes": 10343,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/cab_s.py",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/cab_s.py"
+    },
+    {
+      "source_path": "research/frontier/ontogenesis/correction_interference.py",
+      "source_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad",
+      "git_blob_sha": "cb8386a62380499fc94ffa22bf990049acb1419e",
+      "sha256": "4e0251740d3d8636ca342540a4e0f1c862efc66a3a2376166485011aff99cae7",
+      "bytes": 10251,
+      "local_path": "evidence/upstream_v4/research/frontier/ontogenesis/correction_interference.py",
+      "url": "https://github.com/wwk5q8z6kk-bit/nano-lm/blob/9d88a2c20233f42b4a49c4430264b20f842895ad/research/frontier/ontogenesis/correction_interference.py"
     }
   ],
-  "integration_cutoff_commit": "8d3b03e08a5c14d2e9ab330ac8d5006e87e61613"
+  "integration_cutoff_commit": "8d3b03e08a5c14d2e9ab330ac8d5006e87e61613",
+  "v4_integration_cutoff_commit": "9d88a2c20233f42b4a49c4430264b20f842895ad"
 }

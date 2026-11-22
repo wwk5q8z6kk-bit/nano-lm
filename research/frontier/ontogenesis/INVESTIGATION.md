@@ -406,3 +406,26 @@ The linear programme found an address-only edit that changes none of the entity'
 **Rejected explanations.** "The model cannot hold exceptions without separate storage" (rejected for the moment of writing by K2; not rejected for durability). "Any replay protects" (rejected by the random-replay arm). "Protect the address and let the decoder learn the exception" (rejected by the frozen-address arm).
 
 **Limits.** One world, one bilinear model, Adam only. The store arm's perfect retention is by construction. Correction locality, damage to a subject's other facts, and memory-based editing with a scope decision are established topics in model editing [Published, verification in progress]; this is a clean reproduction and decomposition in our own harness, not a discovery.
+
+### Question 9, follow-up: is it the size of the write, or missing constraints? (2026-11-21)
+
+`correction_margins.py`, predictions M1–M4 committed in `8d3b03e`. Same three seeds and streams as the arms above. All arms write the correction by a computed edit of the entity's address only. Raw files: `results/correction_interference/margins-*.json`. [Observed]
+
+| Edit | Size of the edit (L1) | Entity's other facts, at once | Old regular facts on corrected entities, at the end | Correction still right 20+ phases later |
+|---|---|---|---|---|
+| Smallest edit that installs the correction, no other constraint | 12.7 | 35.3% | 34.2% | 23.8% |
+| Constrained, margin 1 (the registered arm; reproduced exactly) | 21.8 | 98.0% | 83.4% | 21.5% |
+| Constrained, margin 3 | 55.5 | 97.3% | 78.7% | 31.1% |
+| Constrained, margin 6 | 110.0 | 96.9% | 75.7% | 35.1% |
+| Constrained, margin 3, other relations keep 90% of their margin | 62.4 | 98.5% | 89.7% | 21.4% |
+
+For comparison, from the table above: trained alone 64.7% / 59.6% / 66.2%; trained with the entity's other facts 100% / 99.5% / 62.3%.
+
+- M1 (the smallest write still damages): held, and more strongly than predicted. **The smallest possible write is the most damaging of all** (35.3%), worse than gradient training on the fact alone (64.7%). The reading "the write is just too big; a minimal write would be harmless" is refuted. What protects the entity's other answers is constraints, not smallness.
+- M2 (a larger margin makes the correction last, reaching 60% at margin 6): direction held (21.5% → 31.1% → 35.1%), **size failed**. Larger margins also make the entity's other facts more fragile (83.4% → 75.7%).
+- M3 (keeping the neighbours' margins holds them at 93% or more): **failed**, 89.7%. It helps (from 78.7% at the same margin) but does not solve it.
+- M4 (no margin makes a written correction permanent): held. The best computed edit keeps 35%; gradient training kept 62–67%; only the exact store keeps 100%.
+
+**Two conclusions that now have direct evidence in this world.**
+1. *At the moment of writing*, harm comes from absent constraints. Supplying them, either as the entity's own facts or as the model's own current answers, removes it. Making the write smaller does not.
+2. *Afterwards*, anything the later data does not re-assert is eroded, whatever the margin. A constraint has to be present at every later update that can disturb it, not only at the moment of writing.

@@ -245,3 +245,26 @@ At the integration cutoff, [correction_margins.py](architecture/evidence/upstrea
 Next: reconcile new upstream receipts before declaring completion; recover the native baseline's code/tokenizer/data/checkpoint lineage; implement G03b's common-stream, same-edit durability protocol; complete G02's address-by-optimizer controls; then bridge a supported mechanism into native text/code evaluation against tuned dense and targeted replay. Whole-document exclusion precedes broader store-training conclusions. Learned transport, positive forward transfer and scaling remain conditional on fresh evidence and complete costs. The [execution plan](architecture/03_EXPERIMENTS_AND_EXECUTION.md) records dependencies and stopping rules.
 
 Publication belongs in existing draft [PR #195](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/195), without merge. No protected experiment, frozen result, original ledger entry or spending authorization is changed. Future maintenance appends evidence and reasons when they materially change a decision.
+
+
+---
+
+## 2026-11-21 — V4 native training, controlled-update integration and margin evidence
+
+Recorded at 2026-11-22T01:50:45Z. V3 is preserved above. Current architecture additions are [training/measurement10](architecture/10_TRAINING_AND_CONTROLLED_UPDATE_CONTRACT.md) and [margin evidence/theory11](architecture/11_MARGIN_RESULTS_AND_DURABILITY_THEORY.md). Research cutoff:9d88a2c20233f42b4a49c4430264b20f842895ad. Existing research PR195 remains the draft, unmerged review destination.
+
+| Outcome | Evidence and interpretation |
+|---|---|
+| Margin protocol completed | Five committed arms × three reused seeds; M1 and finite M4 hold, M2/M3 compound targets fail. Source/results remain byte-preserved. |
+| Acquisition timing repaired | Source corrected_now is phase end; per-write and later-write interference were unobserved historically. New event instrument separates them and records same-value revisions. |
+| Native training implemented | Dense/shared analytical gradients, AdamW, immutable snapshots and checkpoint/resume;17 behavioral groups and62 finite-difference directions. |
+| Actual-state receipt defects fixed | Overlapping tensor storage and overflowing diagnostic norms now fail before mutation; layout and crash-atomicity boundaries explicit. |
+| Event measurement implemented |26 behavioral tests and24,000 independent oracle cohort rows across320 synthetic histories. |
+| Native integration executed | Eight fixed events,16 real updates,16 scored target exposures; actual native outputs and complete event/state/horizon receipts; no efficacy threshold. |
+| Conditional durability theorem | Joint address/readout/interacting drift plus telescoping sufficient budget;9 numerical test cases. No universal no-forgetting claim. |
+| Decision maintenance | D-046 revision plusD-047–D-054;54 human IDs,36 machine events covering31 decisions; full prior27-event machine log and canonical ledger prefix preserved. |
+| Attribution |40 primary identities, with component-method sources and source-specific inspection depth. |
+
+The new pilot result is upstream evidence reanalysed here. Local native learning is limited to synthetic engineering fixtures; no corpus-scale/GPU/TPU training, paid compute, held-out benchmark, architecture selection or merge was performed by this update. G03b still requires a separately frozen scientific protocol, fresh seeds, native data, unrelated-quality/new-learning guardrails and total cost accounting. Existing source protocols were not revised retrospectively.
+
+Full current decisions, alternatives and next gates are in [architecture ledger02](architecture/02_DECISION_LEDGER.md); actual verification and limitations are in [validation06](architecture/06_VALIDATION_AND_UNRESOLVED_WORK.md).

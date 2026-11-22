@@ -1,29 +1,119 @@
-# 06 — V3 validation, readiness and unresolved work
+# 06 — V4 validation, readiness and unresolved work
 
-**Review date:** 2026-11-21, America/New_York. **Scope:** corrected architecture specification, conditional mathematical arguments, source reanalysis, a tiny untrained forward reference, and maintainable research records. This release adds no neural training run, architecture victory, physical energy measurement or paid compute.
+**Review date:** November 21, 2026, America/New_York. **Scope:** architecture and conditional proofs, frozen-source reanalysis, tiny native training and correction integration, independent measurement review, and append-only research records. Local synthetic training is now executed. No corpus-scale training, new held-out language benchmark, device efficiency result or paid compute is part of this release.
 
-**Readiness:** ready for scientific and implementation review. The forward reference establishes a small executable contract; a trainable native baseline, controlled learning experiments and model-scale claims remain separate gates. APS remains an unselected hypothesis within Nano LM.
+**Readiness:** the tiny implementation and measurement interfaces are ready for scientific and engineering review. They do not establish an effective general-purpose continual learner or select an architecture. APS remains an unselected Nano LM hypothesis.
 
-## 1. Final validation summary
+## 1. Current validation and receipts
 
-The behavioral-suite receipt is `results/validation_v3_final.json`; the later document/ledger/source integration check is `results/integration_validation_v3.json`. Executable check and prototype hashes are unchanged between them. It records actual runtime versions, commands, outputs, source hashes, evidence-copy verification and before/after package hashes. Independent notes under `reviews/` describe earlier audit points; this report and the final receipt supersede their snapshot counts.
+The combined V4 runner is [analysis/validate_release_v4.py](analysis/validate_release_v4.py). Its final receipt is saved as validation_v4_final.json in the [results directory](results/), recording commands, actual runtime versions, semantic outcomes, source hashes, before/after immutability, frozen-source identities and full V3-history comparisons. No receipt is a remote-CI or scientific-authenticity certificate.
 
-| Check | Final result | Supported conclusion | Limit |
+| Check | Executed outcome | What it establishes | Boundary |
 |---|---|---|---|
-| Mathematical examples, `checks/repo_lightweight_checks.py` | **12/12 passed** | Deterministic examples for coherent transport, actual optimizer displacement, nonlinear remainder, versioning and compute-policy counterexamples | Examples do not constitute formal verification or a neural result |
-| Original NumPy suite, `checks/formal_sanity.py` | **5/5 passed** | Small algebraic numerical checks execute on the retrieved live source | No claim that every theorem assumption holds in a trained model |
-| Package regressions, `checks/test_research_package.py` | **35/35 passed** | Valid extensions are accepted; corrupt histories, malformed inputs, forbidden overwrites and a deliberately broken curvature check are rejected | Does not authenticate remote evidence, authorship or scientific truth |
-| Forward reference, `prototype/test_native_reference.py` | **13/13 passed** | Dense/shared-block token flow, logical caches, causal/reset behavior, exact inventories and input contracts work in tested tiny configurations | Forward-only NumPy float64; no gradients, optimizer, training or serving performance |
-| Transport-anchor diagnostic | **Five seeds reproduced the stored summary** | A constructed 16-dimensional linear identification example is reproducible | Known rotations and full-span anchors do not establish learned LM migration |
-| Event and document validation | **PASS: 27 events, 23 machine-covered decisions, 14 Markdown files, ten evidence-hash checks** | Schema, revision pointers, local links/headings and the pinned historical prefix are consistent | Ten artifact-reference checks do not mean ten independent scientific studies |
-| Full previous-ledger comparison | **PASS against the exact PR #195 ledger at `3f9ef1a…`** | The complete prior 7,421-byte, ten-event log is an unchanged prefix | Future releases must supply the entire then-current prior log again |
-| Frozen source copies | **Twelve files match SHA-256 and Git blob identities** | Ten completed-evidence/source copies match `2ef9ce5…`; two late protocol copies match `8d3b03e…` | A matching source file does not independently reproduce original training |
-| Reanalysis and control-flow diagnostics | **Stored result reproduced** | Six-arm summaries recomputed; random-stream coupling and solver-status conflation demonstrated | No new model optimization; historical solver failures cannot be classified retrospectively |
-| Default-script write behavior | **Package paths and bytes unchanged before/after** | Default checks and reanalysis do not overwrite packaged evidence | Direct filesystem comparison, not an inference from permission bits |
+| Existing package regressions |35/35|Extensible ledger/schema, corrupt fixtures, links, no-overwrite and numerical-check regressions|Structural validity does not authenticate claims|
+| Existing mathematical examples |12/12|Transport, realized-step, remainder, temporal and stopping counterexamples|Finite examples, not proof automation|
+| Original NumPy examples |5/5|Small numerical identities rerun|No neural result|
+| Original forward reference |13/13|Tiny dense/shared causal and cache contracts|Unoptimized float64 reference|
+| Native training |17/17 groups;62 finite-difference directions over31 named tensors|Analytical backward, shared/tied accumulation, actual AdamW displacement, snapshots and tested resume|Synthetic training data only|
+| Correction instrument |26/26|Event identity, causal views, revision policy, missingness and deployed-value checks|Requires correct integration and actual experiment data|
+| Independent cohort oracle |24,000 rows across320 histories|Separate forward scan agrees on both censor policies and historical cutoffs|Synthetic instrument verification|
+| Bilinear durability suite |9/9|Joint-drift identities, finite telescoping, counterexamples and failure paths|Float64 diagnostics, not interval certificates|
+| Native bridge |9/9|Real updates and predictions are wired into event/state/horizon receipts|No accuracy threshold or efficacy comparison|
+| Independent native replay |16 updates,16 event-boundary states,176 displacement arrays,23 predictions|Direct loss and original-forward comparisons reproduce the bridge|Same tested runtime; no performance claim|
+| Transport-anchor diagnostic |Five stored seeds reproduced|Preserved toy linear identification summary|Known rotations/full anchors do not establish learned LM migration|
+| Source reanalyses |Existing and new stored summaries reproduced|Arithmetic, event reconstruction and constructed LP example|No original model training replay|
+| Frozen evidence |21 source/protocol/result copies match source hashes and Git blob identities|12 V3 copies preserved plus9 new V4 copies|Matching files do not recover unrecorded runtime metadata|
+| History |Full27-event V3 machine log and complete V3 canonical ledger preserved as byte prefixes|Nine new events revise D-046 and add D-047–D-054|Human review still decides evidence meaning|
+| Default commands |Package files unchanged before/after execution|Checks do not overwrite evidence|Output creation is separately explicit|
 
-Tested environment: Python 3.12.14, NumPy 2.3.5 and jsonschema 4.26.0. Exact versions are in the receipt. Local diagnostic runtimes are not benchmarks of an owner's device, GPU/TPU, compiler or inference stack. Plot generation additionally uses Matplotlib, separately from validation dependencies.
+The current event register has **54 human IDs and36 machine events covering31 decisions**. The original ten-event pin is still retained. The old D-001–D-023 human records were not backfilled with fictitious machine timestamps. All V3 result files are compared byte-for-byte with the frozen V3 baseline.
 
-## 2. Corrections to the validation record
+The recorded runtime is Python3.12.14, NumPy2.3.5, SciPy1.17.0 and jsonschema4.26.0; the final receipt records actual versions. Local diagnostic duration is not a hardware benchmark. Optional charts require Matplotlib and were visually inspected separately.
+
+### New executed receipts
+
+| Artifact | Scope |
+|---|---|
+| [trainable_native_v4.json](results/trainable_native_v4.json) |17 groups and the dense/shared60-step cyclic-token fixtures|
+| [correction_protocol_v4.json](results/correction_protocol_v4.json) |26 measurement/numerical-contract cases|
+| [native_correction_smoke_v4.json](results/native_correction_smoke_v4.json) |Eight events,16 actual updates and16 scored target exposures; real logits/state identities and all denominators|
+| [margin_reanalysis_v4.json](results/margin_reanalysis_v4.json) |Five committed arms, source identities, conditional stream reconstruction and actual-source LP example|
+| [margin_durability_v4.json](results/margin_durability_v4.json) |Constructed drift counterexamples and sufficient-bound diagnostics|
+| [trainable_independent_verification_v4.json](results/trainable_independent_verification_v4.json) |Independent48 storage-overlap atomic rejections and the declared F-order precision boundary|
+| [literature_audit_v4.json](results/literature_audit_v4.json) |40 primary identities; source-specific inspection depth, no empirical replication|
+
+The native bridge's untuned fixture records one of five assignments correct immediately after its own write. That20% is retained in the receipt rather than filtered away. Its acceptance criterion is correct execution and accounting, not successful correction. The separate cyclic-token fixture reports training CE reduction; neither fixture is a held-out or durability result.
+
+## 2. V4 defects actually reproduced and repaired
+
+| Issue | Consequence before repair | Resolution and reviewed limit |
+|---|---|---|
+| Very large finite update with overflowing diagnostic norm | Potential state mutation before receipt failure | Validate finite candidate and receipt values before all commits |
+| Named parameters share memory | Sequential writes invalidate actual-displacement receipts and resume semantics | Pairwise disjoint storage |
+| One strided parameter overlaps itself | Pairwise tests alone miss invalid storage | C- or F-contiguous arrays required; noncontiguous layouts rejected |
+| Solver and phase-end accuracy treated as the same endpoint | Historical errors could be attributed to the wrong stage | Separate per-write, remaining-phase and subsequent-learning observations |
+| Same-value assignments reset revision age | Apparent cohort changes can be confused with semantic learning | Every assignment retained; explicit revision/value-change censor policy |
+| Large initial margin treated as a guarantee | Future decoder/address drift remains unconstrained | Conditional cumulative-drift proof, counterexamples and inconclusive-bound status |
+
+The independent reviewer tested48 atomic rejections; the published behavioral suite contains42 related rejection cases. Those are different scopes, not conflicting counts. The default C-order resume fixture matches bitwise in the recorded runtime. F-order reload can change several diagnostic norm values by a few ulps; cross-layout/cross-environment universal bitwise equality is not claimed. Checkpoint writes are exclusive but not crash-atomic.
+
+Independent records: [training review](reviews/trainable_native_review.md), [measurement review](reviews/correction_protocol_review.md), [native bridge review](reviews/native_correction_smoke_review.md), [source review](reviews/margin_evidence_review.md), and [theorem review](reviews/margin_durability_review.md).
+
+## 3. Reproduction
+
+Run from the architecture directory with [declared dependencies](checks/requirements-checks.txt). Default checks print results without writing inside the package. The combined runner invokes all relevant old/new suites and independent oracles.
+
+```bash
+python3 -B analysis/validate_release_v4.py \
+  --baseline-ledger /absolute/path/to/V3/ledger_events.jsonl \
+  --baseline-package /absolute/path/to/V3/architecture \
+  --baseline-canonical /absolute/path/to/V3/LEDGER.md \
+  --out /new/path/validation.json
+```
+
+Full-history preservation needs the actual previous artifacts. Omitting a baseline records NOT_CHECKED for that comparison; the permanent original-ten-event pin alone does not establish preservation of the whole V3 log. Existing output files are refused.
+
+For focused reproduction:
+
+```bash
+python3 -B prototype/test_trainable_native.py
+python3 -B experiments/test_correction_protocol.py
+python3 -B checks/review_correction_oracle.py
+python3 -B checks/test_margin_durability.py
+python3 -B experiments/test_native_correction_smoke.py
+python3 -B checks/review_native_bridge_replay.py
+python3 -B analysis/reconcile_margin_results.py \
+  --source-dir evidence/upstream_v4/research/frontier/ontogenesis \
+  --prior-results evidence/upstream/results/correction_interference/constrained.json
+```
+
+The V3 runner and V3 result receipts remain preserved as historical artifacts. They describe the earlier forward-only package and do not replace this V4 validation scope. Tests use temporary files for corrupt/checkpoint fixtures. Mathematical proofs are inspected arguments; numerical checks do not turn them into machine-verified proofs.
+
+## 4. What remains open
+
+| Area | Implemented or resolved | Evidence still required |
+|---|---|---|
+| Native core | Forward/backward, shared/tied gradients, AdamW, snapshots and checkpoints | Identified tokenizer/data/checkpoint baseline and clean held-out evaluation|
+| Controlled corrections | Complete event instrument and tiny native bridge | Scientific G03b comparison with fresh seeds, fixed budgets and guardrails|
+| Retention theory | Finite-horizon sufficient bound with assumptions and counterexamples | Useful native drift/curvature estimates and a beneficial control mechanism|
+| Representation migration | Coherent-transform conditions and toy diagnostics | Non-oracle map fitting, all-state migration and net benefit over replay/freezing|
+| Transfer | Distinct acquisition/retention/forward-transfer endpoints | Fresh task families and learning curves beyond context/exposure advantages|
+| Efficiency | Logical compute, unique weights and state costs distinguished | Isolated measured runtime, memory, energy and full preprocessing/update cost|
+| Literature |40 identities and inspection depth explicit | Selected implementation/proof replications, complete license/data audits|
+| Scale and deployment | Proposed gates and resource accounting | Valid data/model lineage, measured kernels and a concrete scoped experiment|
+
+The next substantive research step is to freeze a native-data protocol using the implemented instrument, with same manifests, explicit primary horizon, per-seed contrasts, cost accounting and unrelated-quality/new-learning guardrails. A mechanism that preserves old facts by blocking useful new learning has not met the goal. Scale decisions follow that evidence.
+
+## 5. Publication and preserved source boundary
+
+The update belongs in existing draft [PR195](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/195). Prior published architecture head:176ece70b17caffd71e2f0f522bb9462ce5f76a8. Current fixed research cutoff:9d88a2c20233f42b4a49c4430264b20f842895ad. Preserve all research-base files outside the architecture directory and the append-only canonical ledger. Publication requires a successful branch update and independent readback of Git objects; the export's publication receipt records the new commit to avoid self-reference here.
+
+This continuation did not run full-repository CI, inspect owner-local worktrees or live processes, launch paid resources or merge the PR. The new margin results exist at the inspected cutoff; newly committed TPU controller changes do not supply completed nested/native results. Old raw source interpretations are retained and corrected in the review, not rewritten as if the original authors had recorded the later qualification.
+
+## 6. Historical V2/V3 validation corrections retained
+
+The following earlier correction record remains relevant. Its “initial” and “final” counts refer to the V3 forward-reference review. The complete earlier chapter is available at the [immutable V3 commit](https://github.com/wwk5q8z6kk-bit/nano-lm/blob/176ece70b17caffd71e2f0f522bb9462ce5f76a8/research/frontier/ontogenesis/architecture/06_VALIDATION_AND_UNRESOLVED_WORK.md).
+
 
 ### Earlier package and live branch were different artifacts
 
@@ -45,64 +135,3 @@ Checksum verification deliberately scans parameter bytes on calls in this tiny r
 
 The final dense and shared-block tests agree between full-prefix and incremental evaluation to maximum absolute logit errors of approximately `6.14e-16` and `1.42e-15`, respectively. This is agreement for these configurations, not a universal error bound.
 
-### Ledger validation now supports actual maintenance
-
-The earlier validator conflated a decision with an event and assumed a fixed set of ten decisions. New records can introduce IDs or revise a decision through a unique event ID and a pointer to its latest previous event. Full JSON Schema validation includes UTC calendar checks, duplicate-key rejection, local evidence hashes and structured failures for missing or malformed inputs.
-
-The register has **46 human decision IDs**, with **27 events covering 23 decisions** in the machine log. D-001–D-023 remain historical human rows without invented timestamps or provenance. D-026, D-032, D-044 and D-045 have follow-up events. D-044's final event corrects a broad `peer_reviewed` label to an engineering review of mixed primary evidence; preprints and author repositories retain their publication status. D-045 records the final prototype repairs; D-046 records the late protocol refresh without declaring a result.
-
-Schema validity cannot establish that an author exists, a theorem is correct, an experiment was authorized or a source supports its stated claim. Literature audit, numerical review and repository inspection supply distinct evidence.
-
-## 3. Reproduce the checks
-
-From the architecture directory, install the declared dependencies in an appropriate environment and run:
-
-```bash
-python3 -B checks/test_research_package.py
-python3 -B checks/repo_lightweight_checks.py
-python3 -B checks/formal_sanity.py
-python3 -B checks/transport_anchor_pilot.py
-python3 -B prototype/test_native_reference.py
-python3 -B analysis/reconcile_repository_evidence.py
-python3 -B checks/validate_research_package.py --baseline-ledger /absolute/path/to/previous-ledger.jsonl
-```
-
-The combined receipt runner is `analysis/validate_release.py`. It is read-only by default and accepts `--baseline-ledger` for the entire prior committed event file. Optional `--baseline-package` verifies two preserved numerical artifacts against an independently recovered prior package. Use `--out /new/path.json` only for a **new** receipt; existing files are rejected.
-
-```bash
-python3 -B analysis/validate_release.py --baseline-ledger /absolute/path/to/previous-ledger.jsonl --out /new/path/validation.json
-```
-
-Without `--baseline-ledger`, a fresh run reports full-history comparison as `NOT_CHECKED`; the permanent legacy-prefix pin is still checked. Omitting that argument cannot provide the same full-history evidence as this release's recorded run. The suite uses temporary corrupt fixtures and independent mutation checks; it does not modify canonical evidence.
-
-## 4. What has been closed, and what has not
-
-| Area | Closed within this revision | Still open | Required next evidence |
-|---|---|---|---|
-| Architecture specification | Token shift, masks, reset/state ownership, logical depth, parameter counts and forward interfaces explicit | Training dynamics, precision, fused execution and useful scale | Reproducible native training baseline and held-out bytes |
-| Mathematical scope | Functional conjugacy, finite-step remainder, fixed-bit storage, bitemporal cutoff and finite-budget conditions clarified | Whether learned transformations satisfy those assumptions efficiently | Non-oracle fitting, full dependent-state migration and cost measurements |
-| Correction research | Completed pilot incorporated; locality/durability and cohort definitions separated | Causal advantage of proposed mechanisms | G03b common event manifests, paired edit survival, targeted replay and true residuals |
-| Optimizer mechanism | Raw-gradient projection error identified; complete realized displacement specified | Address congestion versus optimizer-history mechanisms at useful scale | G02 address-policy × optimizer-history factorial with matched acquisition/retention |
-| Store augmentation | Recorded BPB and 1,022,224,980-byte store accounted for | Generality, training exposure controls and system efficiency | Whole-document exclusion, fresh seeds and isolated runtime |
-| Transfer and procedures | Transfer, retention, plasticity and sample efficiency distinguished | Reusable operations beyond supplied demonstrations | Same-learner prior-history controls and fresh-family generalization |
-| Literature | 36 primary-source identities and narrow claims audited with explicit reading depth | Replications, all proofs/methods, full data and model-license audits | Version-pinned comparators and exact dependency inventory |
-| Decision history | Extensible events, explicit revisions, legacy hashes and prior-log comparison | Authenticity and scientific soundness cannot be inferred from JSON | Human review of each event and source |
-| Efficiency and scale | Unique parameters separated from logical compute and runtime state | Joules, throughput, cost, scaling fit and strict total-parameter goal | Instrumented equal-device trials and separately authorized resources |
-
-## 5. Execution order and stopping gates
-
-1. **Recover and reproduce the native baseline.** Pin code, tokenizer, data manifests, split lineage, optimizer state and evaluation. The untrained NumPy model is not a replacement for that work.
-2. **Run the repaired small mechanism tests when their protocol is frozen.** G02 isolates address/optimizer interactions; G03b isolates editing, replay, drift and survival of the same correction versions. These protocols are specified, not already preregistered or executed.
-3. **Bridge a supported mechanism into a trainable native model.** Compare against tuned dense and targeted replay using equal data, measured compute, retention and acquisition guardrails.
-4. **Test transport, shared computation and adaptive depth separately.** Retain fixed logical depth until a causal cache design for variable depth is implemented. Count migrations, controllers, plugins, targets and memory.
-5. **Scale after evidence and resource gates are met.** A smaller parameter inventory or one successful edit does not justify a larger run. This continuation grants no new paid-compute authorization.
-
-Stop or redesign an arm when acquisition/retention guardrails fail, a control reveals leakage or unfair exposure, state migration breaks its prediction tolerance, or measured cost removes the claimed advantage. Archive the result and append a reasoned ledger event; do not erase the failed hypothesis.
-
-## 6. Publication and remaining access limits
-
-The revision belongs in draft [PR #195](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/195), targeted at `research/ontogenesis-phase1`. Completed-pilot reanalysis is pinned to `2ef9ce5827cb8ea1fb6c8946df32fbcf5e06dec0`; the final integration base is `8d3b03e08a5c14d2e9ab330ac8d5006e87e61613`; prior architecture history is `3f9ef1a1b5643acda9ee4cc2a780d4fdcbf4bce8`. Carry that research base into the review branch while preserving its experiment files and raw results. Publication is established only by a successful write and subsequent read of the resulting Git objects. The delivery receipt records the result separately, avoiding a future self-referential commit hash in this document.
-
-The full repository test suite and remote CI were not run as part of these local checks. Owner-local worktrees, uncommitted changes, live processes and hardware state were not inspected. Dataset rights, private inputs, current quotas and prices were not independently audited here. The latest inspected nested-protocol note at 8d3b03e supersedes the earlier withdrawal: it again specifies cloud host CPUs after a stopped laptop-GPU attempt, with device-consistent control reruns. This is a source-reported plan, not a verified runtime outcome. The new margin protocol and nested protocol supply no completed result at the fixed integration cutoff.
-
-**Current scientific conclusion:** the documents, implementation contract and diagnostic evidence are more precise and testable. There is still no proof or experiment establishing a winning Nano LM backbone, native lifelong learning, frontier capability below four billion total parameters, or a deployment-scale cost advantage.
