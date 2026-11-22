@@ -4,7 +4,7 @@
 # Usage (Kaggle notebook, GPU on):  !pip -q install datasets tokenizers
 #                                   !python kaggle_scale_test.py
 # Resume-safe: checkpoints every 1000 steps; rerun the same cell to continue.
-import json, math, os, random, re, time, urllib.request
+import hashlib, json, math, os, random, re, time, urllib.request
 import numpy as np
 import torch, torch.nn as nn, torch.nn.functional as F
 
@@ -16,11 +16,18 @@ assert _cap >= (7, 0), (f"{torch.cuda.get_device_name()} has CUDA capability {_c
                         f"needs >=7.0 (P100 is 6.0 and unsupported). Switch Accelerator to GPU T4 x2.")
 print(f"GPU: {torch.cuda.get_device_name()} (capability {_cap})", flush=True)
 
-RAW = "https://raw.githubusercontent.com/wwk5q8z6kk-bit/nano-lm/master"
-for path, url in [("tokenizer.json", f"{RAW}/sft/tokenizer.json"),
-                  ("scribe_eval.json", f"{RAW}/scribe/scribe_eval.json")]:
+RAW = "https://raw.githubusercontent.com/wwk5q8z6kk-bit/nano-lm/b2fd9daaf0ceeb49b4e002efd010dc8ff601c7c5"
+for path, url, expected_hash in [
+    ("tokenizer.json", f"{RAW}/sft/tokenizer.json", "bae49648bfcc4904c50e2f006ee184bd26e74454ee170663e30a8e71640ce3c9"),
+    ("scribe_eval.json", f"{RAW}/scribe/scribe_eval.json", "9b8a966f964dc845ba1a48ec074254d0c2d03fb7a849f1d511080ccf7ab1d840")
+]:
     if not os.path.exists(path):
         urllib.request.urlretrieve(url, path); print("fetched", path, flush=True)
+    with open(path, "rb") as f:
+        actual_hash = hashlib.sha256(f.read()).hexdigest()
+    if actual_hash != expected_hash:
+        os.remove(path)
+        raise ValueError(f"Security Error: Hash mismatch for {path}. Expected {expected_hash}, got {actual_hash}")
 
 from tokenizers import Tokenizer
 tok = Tokenizer.from_file("tokenizer.json")
