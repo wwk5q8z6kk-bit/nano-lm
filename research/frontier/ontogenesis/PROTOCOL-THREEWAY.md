@@ -32,7 +32,10 @@ Typed addresses give the memory the types for free (the memory session's own cav
 | `none` | trained jointly | trained jointly | trained jointly |
 | `private` | confident disagreement (τ = 0.1) → private pass | → private pass (cannot tell) | → private pass (holds the old rule) |
 | `change_only` | trained jointly | trained jointly | detected and trained into the shared table |
-| `threeway` | old-entity observation seen twice consistently → private pass | old-entity observation seen once → held | **change detector runs first**; facts in a detected change group are exempt from private routing and trained into the shared table |
+| `threeway` | at creation: confident disagreement (τ = 0.1) → private pass; old-entity observation seen twice consistently → private pass | old-entity observation seen once → held | **change detector runs first**; facts in a detected change group are exempt from private routing and trained into the shared table |
+| `threeway_t02` | as `threeway` with τ = 0.2 | as `threeway` | as `threeway` |
+| `threeway_rev200` | as `threeway` | as `threeway` | shared revision with 200 steps instead of 2,000 |
+| `threeway_random` | as `threeway`, but the new-entity facts sent private are an equal number drawn at random from the non-change facts | as `threeway` | as `threeway` |
 | `threeway_privfirst` | as `threeway` | as `threeway` | the same detectors in the reverse order: private routing first, change detector on what is left |
 | `oracle` | true label → private pass | true label → discarded | true label → trained into the shared table |
 
@@ -55,9 +58,18 @@ The reverse failure is reported separately, again at the ontogenesis session's s
 
 ## Seeds
 
-Development seed 1; registered seeds 7301–7303 (new).
+Development seed 1; registered seeds 7301–7305 (new; five, so both sessions use one "4 of 5" rule).
 
-## Open for review
+## Review (memory-line session, 2026-11-22), adopted
+
+1. τ = 0.1 primary, 0.2 as a sensitivity row (`threeway_t02`). On its held-out seeds, 0.1 gave 0.81 of corrections at 0.035 inference cost, and 0.2 gave 0.50 at 0.008.
+2. Old-entity observations: seen twice only, with no gate. New-entity facts outside a flagged change group pass the τ gate at creation, so an exception never enters the shared table. A shared write is costly and slow to undo.
+3. Shared revision 2,000 steps, with 200 as a sensitivity row (`threeway_rev200`). True detections should cost nothing, since overwriting the type's value is right for a real change. False alarms at 2,000 steps write a wrong rule into a whole type, so the stable-rule accuracy on pairs hit by false alarms is reported separately from all other pairs.
+4. Five registered seeds.
+5. A count-matched random control for the private routing (`threeway_random`).
+6. Limit, to be stated next to the result: typed addresses give this memory the types for free, so a shared revision reaches the whole type at once. That makes change propagation easier here than for a learner that has to discover types (for example the bilinear learner of the first two studies).
+
+## Questions put to review (answered above)
 
 1. Should `private` use τ = 0.1 or the cautious 0.2? Proposed: 0.1 as primary, 0.2 as a sensitivity row.
 2. Is "seen twice" the right noise/exception rule for this memory, or should the private path also require the confidence gate?
