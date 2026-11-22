@@ -42,3 +42,12 @@ Development seed 4100 only, not confirmed on held-out seeds. With no confidence 
 - τ was chosen on one development seed, among six values.
 - Type information is given; value tables, frozen addresses, synthetic world. The private table is per-fact storage, so this is an augmented-memory result. Not evidence about a language model.
 - All twenty-five runs finished on the first attempt. Another session's two short runs overlapped the first few; only accuracy is measured, so this does not affect the results.
+
+## Post-hoc diagnostic: what the confidence gate selects (development seed 4100, added after the results)
+
+Measured after the held-out results were committed (`d5e5bab`), on the development seed only, with the `none` arm's memory, before each phase's training. The question came from nano-lm-d5 while calibrating its change detector.
+
+- The memory's top softmax probability stays close to chance (1/32 = 0.031) for a long time and grows with phase: median 0.034 at phase 1, 0.050 at phase 10, 0.078 at phase 20, 0.169 at phase 39. Right and wrong answers overlap almost completely (phase 39 medians 0.169 and 0.131).
+- In phases 30–39, corrections are the confident ones: median 0.216, and 95% are at or above 0.1. Regular new facts have median 0.131 (68% at or above 0.1); exceptions have median 0.117 (60%).
+
+**Reading.** The gate works because a correction contradicts a value the memory has already stored with confidence. It is closer to "this contradicts something stored" than to a general surprise detector, which fits the detector routing 0.91 of corrections but only 0.70 of exceptions. Because the scale grows with training, τ also acts as a phase-dependent warm-up, so the same τ would flag more in a longer run. Neither point changes the registered results. Both narrow what they show: this is evidence for detecting contradictions of stored facts, not for detecting exceptions or rule changes in general.
