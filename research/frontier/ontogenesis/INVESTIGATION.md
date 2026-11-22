@@ -562,3 +562,37 @@ This grid is compared only within itself (one chip type, one micro-batch setting
 Added prediction:
 - P7: at 40M the best rate is no higher than at 14M, for each optimiser.
 - P1 to P5 are predicted to hold at 40M as stated for 14M.
+
+## Evaluation harness for later models (2026-11-22)
+
+Bits per byte cannot be compared with published small models, so the scale-up runs will also be scored on standard zero-shot benchmarks. Formats follow lm-evaluation-harness conventions.
+- `tpu/eval_prep.py` downloads and tokenises the benchmarks once (HellaSwag, ARC-Easy, ARC-Challenge, PIQA, WinoGrande, OpenBookQA, LAMBADA; full standard sets, 30,328 examples).
+- `tpu/eval_score.py` scores a checkpoint with JAX. Every context starts with the end-of-document token, as every document did in training.
+- `tpu/eval_contam.py` measures verbatim overlap with the training corpus.
+
+**Harness checks on the 14M model** (seed 1000, first-version sampler, 1,000 examples per task). [Observed]
+
+| Condition | HellaSwag acc / acc_norm | ARC-Easy acc / acc_norm |
+|---|---|---|
+| Trained model | 0.317 / 0.364 | 0.402 / 0.388 |
+| Untrained model, same harness (must be at chance) | 0.268 / 0.267 | 0.253 / 0.252 |
+| Trained model, continuations scored without their context | 0.288 / 0.276 | 0.301 / 0.319 |
+
+Standard error is about 0.015 at n = 1,000. The harness gives chance with an untrained model. Part of the trained score is a preference for the more fluent ending, which the no-context row measures. The remainder (+0.03 to +0.10) is use of the context. These figures are **not** comparable with published numbers until a public checkpoint has been scored through this same harness. Benchmark scores will always be reported beside both controls.
+
+**Contamination of the 800M-token training corpus** (13-token windows of context plus correct answer; `results/lm/eval-contamination-v1.json`). [Observed]
+- Examples sharing any window with the training text: HellaSwag 0.37%, ARC-Easy 0.42%, ARC-Challenge 0.43%, PIQA 0.44%, WinoGrande 0%, OpenBookQA 0%, LAMBADA 0.14%.
+- A planted 20-token copy is found exactly, so the check works.
+- Verbatim contamination is negligible. Paraphrased or same-source overlap (for example WikiHow pages behind HellaSwag) is not measured by this check.
+
+## Store test with the corrected estimator (decision note, section 10)
+
+`tpu/store_ldo.py`; raw files `results/lm/store-ldo-{S,M,L}.json`. Same store (48M tokens, 6% of the corpus), same fitting windows, same evaluation crops. [Observed: one checkpoint per size, first-version sampler]
+
+| Model | Gain, leave-document-out fit (corrected) | Gain, leave-position-out fit (as registered) | Control that can fail (must be negative) | Model alone vs its training run |
+|---|---|---|---|---|
+| 14M | 0.0096 (web 0.0074, textbook 0.0087, maths 0.0164, code 0.0142) | 0.0044 | −0.0119, passed | 0.0001 |
+| 40M | 0.0037 (web 0.0029, textbook 0.0030, maths 0.0067, code 0.0054) | −0.0014 | −0.0054, passed | 0.0001 |
+| 101M | running | | | |
+
+The review was right: the registered estimator understated the store by more than half at 14M, and turned a positive gain negative at 40M.
