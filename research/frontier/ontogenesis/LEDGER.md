@@ -586,3 +586,7 @@ Recorded by the session that owns `research/memory-saturation-factorial` (draft 
 - A confidence-gated disagreement detector, with no edit label, recovers most of the labelled result in this memory: 0.81 against 0.89 corrections at the same inference.
 - **Development seed only:** an ungated disagreement detector cannot start from an empty memory. Everything is flagged in phase 0, the shared path never learns the rule, and inference stays at chance (0.048). Q8's leave-one-out detector avoids this by judging each fact against the entity's other facts.
 - Limits: stationary world (in a world with rule changes this router would hold on to the old rule; see nano-lm-d5's G04, PR #204); τ chosen on one development seed; type information given; the private table is per-fact storage. Not evidence about a language model.
+
+---
+
+The memory-line session's later entries continue in [LEDGER-FIRST-PRINCIPLES.md](LEDGER-FIRST-PRINCIPLES.md) (from 2026-11-22), so that this file is appended from one direction only.
