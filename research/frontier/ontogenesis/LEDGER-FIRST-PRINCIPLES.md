@@ -439,3 +439,21 @@ Branch `research/memory-saturation-factorial` (PR [#199](https://github.com/wwk5
 - **Consequence for every typed-memory result in this line, including the joint three-way studies:** the given types overstate inference, by about a factor of three here, for a learner that must discover them.
 - Development seed only: a greedy online clustering of entities into types collapsed (3–6 clusters, purity 0.15–0.24). With frozen addresses an early wrong grouping cannot be revised. Revisable, learned addresses are the next problem (KEYSTORE in `LEDGER.md`; its earlier straight-through pilot failed).
 - Limits: one simple code, not tuned; 3 of 8 relations shown per entity; synthetic world. Not evidence about a language model.
+
+---
+
+## 2026-11-22 — Revisable addresses: discovered types recover the given-type generalisation
+
+Branch `research/memory-saturation-factorial` (PR [#199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199)): protocol `95d3c37` committed before any confirmatory run, results `09706ff`. Seeds 4101–4105. Every 5 phases the memory re-clusters all entities by EM over their facts shown at creation (no labels), rebuilds the addresses and retrains on an exact store of every current fact.
+
+| Arm | Inference, new entities | Acquisition | Purity |
+|---|---|---|---|
+| Given types, same re-index (control) | 0.783 | 0.900 | 1.000 |
+| EM, 32 clusters | 0.767 | 0.901 | 0.977–0.983 |
+| EM, 16 clusters (the true number) | 0.724 | 0.877 | 0.857–0.981 |
+| Derived codes, frozen | 0.302 | 0.893 | — |
+
+- Q2 and Q3 held. Q1 and Q4 did not: with exactly 16 clusters EM sometimes merges two types and inference suffers.
+- **Demonstrated in this synthetic memory:** the two-thirds gap left by frozen data-derived codes was a limit of freezing, not of the information in the data. Revisable addresses with discovered types recover almost all of it, provided the clustering is allowed more clusters than types. Over-splitting is cheap here; merging is costly.
+- **Cost:** a full re-index replays the exact store (34,560 facts over 40 phases). Recovering this without full replay, by moving stored values to new addresses, is the open question (the blueprint's Family A).
+- Limits: clustering sees creation-time facts only; synthetic world; value table. Not evidence about a language model.
