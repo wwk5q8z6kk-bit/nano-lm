@@ -29,6 +29,7 @@ from nanoscribe.scribe import scribe
     ("Doctor: What brings you in?\nPatient: The main problem is pain in my knee that hurts with movement.", "pain in my knee that hurts with movement", True),
     ("Doctor: What brings you in?\nPatient: The main problem is pain that could start tomorrow.", "pain", False),
     ("Doctor: What brings you in?\nPatient: The main problem is pain that is expected next year.", "pain", False),
+    ("Doctor: What brings you in?\nPatient: The main problem is pain that starts next May.", "pain", False),
     ("Doctor: What brings you in?\nPatient: The main problem is pain that will develop after surgery.", "pain", False),
     ("Doctor: What brings you in?\nPatient: The main problem is a rash that will appear after the procedure.", "rash", False),
     ("Doctor: What brings you in?\nPatient: The main problem is nausea that is going to start after the infusion.", "nausea", False),

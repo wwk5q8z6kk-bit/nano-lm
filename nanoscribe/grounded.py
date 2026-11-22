@@ -912,7 +912,7 @@ _MODAL_MAY = (
     r"may(?!\s*(?:\d|[,.;:!?)]|$))"
 )
 _PRESENTING_REFERENCE_RE = re.compile(
-    rf"\b(?:{_MODAL_MAY}|might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year)|"
+    rf"\b(?:{_MODAL_MAY}|might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year|may)|"
     r"(?:will|(?:am|is|are)\s+going\s+to)\s+(?:(?:first|only|soon|probably|likely)\s+)*"
     r"(?:develop|start|begin|appear|arise|occur|emerge|experience|get|have|feel|set\s+in|come\s+on)|"
     r"(?:from|in|on)\s+(?:an?|the|my|this|that|our|your)\s+(?:form|chart|leaflet|worksheet|report|example))\b", re.I,
