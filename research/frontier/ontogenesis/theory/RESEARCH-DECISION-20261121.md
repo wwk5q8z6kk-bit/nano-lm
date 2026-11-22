@@ -20,7 +20,7 @@ Labels: [Observed] measured here · [Derived] follows from stated assumptions ·
 | Routing without an oracle | `routing_loo.py` | Finished | Recovers a third of the inference gain; registered bar (half) not met | `results/routing_loo/` |
 | Fixed-address memory saturation | `memory_saturation.py` | Finished, one seed | 3 of 4 held; the failed one shows optimiser state is a main cause | `results/memory_saturation/` |
 | Writing a correction | `correction_interference.py`, `correction_margins.py` | Finished | See section 3 | `results/correction_interference/` |
-| Optimiser control for corrections | `correction_optimizer.py` | **Running** | None yet | — |
+| Optimiser control for corrections | `correction_optimizer.py` | Finished | Prediction held: no gradient-only write avoids the damage | `results/correction_interference/optimizer-*.json` |
 | Text model with an exact store | `lm_store.py` | Finished, one seed | Post-hoc store helps (0.058 bits per byte); training with the store hurts (0.14 worse); registered claim failed | `results/lm/store-pilot.json` |
 | Dense against looped on text | `lm_compare.py` | Finished, one seed | Looped slightly worse, as predicted | `results/lm/` |
 | Dense baseline, PyTorch, 40M parameters, full corpus | `kaggle/baseline_dense/` | **Running** on Kaggle | None yet | Kaggle notebook output |
@@ -79,7 +79,7 @@ The information for 2 and 3 can only come from three places: carried explicitly 
 | Capacity: no state holds both old and new | No harmless edit exists | [Contradicted] 99.84% feasible |
 | Step size or path: a gentler write would be harmless | The smallest write keeps the other facts | [Contradicted] 35.3% |
 | Missing constraints | The entity's own facts protect; other entities' facts do not; the learner's own answers protect at once | [Observed] 100% against 66.6%; 98.0% |
-| Optimiser artefact (Adam's per-coordinate steps, stale moments, too many steps) | Plain gradient descent stopped at first fit keeps the other facts | [Unknown] control running; note that optimiser state **was** a main cause in the memory-saturation result |
+| Optimiser artefact (Adam's per-coordinate steps, stale moments, too many steps) | Plain gradient descent stopped at first fit keeps the other facts | [Contradicted] it keeps 14%; fresh Adam 40% to 63%. Optimiser state **was** a main cause in the memory-saturation result, so the two failures have different causes |
 | Drift under later training, separate from the write | Decay continues after a harmless write; margins slow it little; a store is immune | [Observed] |
 
 ### Counterexample to the weakest assumption

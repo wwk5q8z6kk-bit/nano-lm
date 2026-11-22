@@ -9,7 +9,14 @@ frozen); report bits per byte with and without the store. The store is the pilot
 the same 48 evenly spaced 1M-token chunks of the training file.
 
 Controls: mixing weight forced to zero must reproduce the checkpoint's own reported bits per byte;
-a store whose values are shuffled across positions must give no gain.
+a store that cannot know anything about the position must give no gain.
+
+Correction to the second control, made after the first run on the 14M checkpoint: as first written it
+shuffled the store's probability-of-the-true-token across positions. That is not a probability model
+(the number then belongs to a different position's token), and it produced an impossible "gain" of 0.175.
+It is replaced by a valid control: the store is consulted with the context of a position 100,003 tokens
+away, so its distribution is a proper one but carries no information about this position. The primary
+measurement and the decision rule are unchanged.
 """
 from __future__ import annotations
 import argparse, json, math, time
@@ -53,6 +60,18 @@ class Store:                                     # identical to lm_store.py
             done |= use
         return s, g
 
+    def lookup_shifted(self, tok, shift=100003):
+        """Probability the store gives the true token when shown the context of a distant position (no information)."""
+        s = np.zeros(len(tok), np.float32); g = np.zeros(len(tok), np.int64); done = np.zeros(len(tok), bool)
+        for oi, n in enumerate(ORDERS):
+            pu, pc, cu, cc = self.t[n]; ck = np.roll(ctx_key(tok, n), -shift); ok = ck >= 0
+            cx = self._get(cu, cc, ck); cxy = self._get(pu, pc, (np.maximum(ck, 0) << BITS) | tok.astype(np.int64))
+            use = ok & ~done & (cx >= 1)
+            s[use] = cxy[use] / cx[use]
+            g[use] = 1 + oi * BUCKETS + np.minimum(np.log2(cx[use]).astype(np.int64), BUCKETS - 1)
+            done |= use
+        return s, g
+
 
 def load_params(path):
     z = np.load(path); n = 1 + max(int(k[1:].split(".")[0]) for k in z.files if k.startswith("b"))
@@ -83,35 +102,36 @@ if __name__ == "__main__":
     manifest = json.load(open(f"{a.data}/manifest.json")); t0 = time.time()
     full = np.memmap(f"{a.data}/train.bin", dtype=np.uint16, mode="r"); span = 1_000_000
     tok = np.concatenate([np.asarray(full[i:i + span]) for i in np.linspace(0, len(full) - span, 48).astype(np.int64)]).astype(np.int32)
-    store = Store(tok); s_tr, g_tr = store.lookup(tok, 1)
+    store = Store(tok); s_tr, g_tr = store.lookup(tok, 1); s_sh, g_sh = store.lookup_shifted(tok)
     params = load_params(a.ckpt)
     lp_fn = jax.jit(lambda p, x: jnp.take_along_axis(jax.nn.log_softmax(forward(p, x[:, :-1], c, dt), -1), x[:, 1:, None], -1)[..., 0])
-    rng = np.random.default_rng(12345); LP, S, G = [], [], []                       # training text for fitting the table
+    rng = np.random.default_rng(12345); LP, S, G, S2, G2 = [], [], [], [], []       # training text for fitting the table
     for _ in range(a.fit_batches):
         ix = rng.integers(0, len(tok) - T - 1, 32)
         LP.append(np.asarray(lp_fn(params, np.stack([tok[i:i + T + 1] for i in ix]))).ravel())
         S.append(np.stack([s_tr[i + 1:i + T + 1] for i in ix]).ravel()); G.append(np.stack([g_tr[i + 1:i + T + 1] for i in ix]).ravel())
+        S2.append(np.stack([s_sh[i + 1:i + T + 1] for i in ix]).ravel()); G2.append(np.stack([g_sh[i + 1:i + T + 1] for i in ix]).ravel())
     LP, S, G = np.concatenate(LP), np.concatenate(S), np.concatenate(G)
     lam = fit_table(LP, S, G)
-    perm = np.random.default_rng(7).permutation(len(S)); lam_shuf = fit_table(LP, S[perm], G[perm])
+    lam_shuf = fit_table(LP, np.concatenate(S2), np.concatenate(G2))
     out = {"size": a.size, "ckpt": a.ckpt, "store_bytes": int(store.bytes), "fit_tokens": int(len(LP)), "table": [round(float(x), 3) for x in lam]}
     rows = {}
     for dom in ("web", "textbook", "math", "code"):
-        d = np.fromfile(f"{a.data}/val_{dom}.bin", dtype=np.uint16).astype(np.int32); sv, gv = store.lookup(d, 0)
-        r0 = np.random.default_rng(0); lp, ss, gg = [], [], []
+        d = np.fromfile(f"{a.data}/val_{dom}.bin", dtype=np.uint16).astype(np.int32); sv, gv = store.lookup(d, 0); sv2, gv2 = store.lookup_shifted(d)
+        r0 = np.random.default_rng(0); lp, ss, gg, ss2, gg2 = [], [], [], [], []
         for _ in range(20):
             ix = r0.integers(0, len(d) - T - 1, 16)
             lp.append(np.asarray(lp_fn(params, np.stack([d[i:i + T + 1] for i in ix]))))          # [16, T], kept per batch
             ss.append(np.stack([sv[i + 1:i + T + 1] for i in ix])); gg.append(np.stack([gv[i + 1:i + T + 1] for i in ix]))
+            ss2.append(np.stack([sv2[i + 1:i + T + 1] for i in ix])); gg2.append(np.stack([gv2[i + 1:i + T + 1] for i in ix]))
         bpt = manifest["domains"][dom]["val"]["bytes_per_token"]; bits = lambda x: float(x) / math.log(2) / bpt
         base = np.mean([-(b.mean()) for b in lp])                                                  # mean of per-batch means, as train_jax does
         mix = np.mean([nll(b, x, y, lam).mean() for b, x, y in zip(lp, ss, gg)])
-        sp = np.random.default_rng(8).permutation(lp[0].size)
-        shuf = np.mean([nll(b, x.ravel()[sp].reshape(x.shape), y.ravel()[sp].reshape(y.shape), lam_shuf).mean() for b, x, y in zip(lp, ss, gg)])
-        rows[dom] = {"model": round(bits(base), 4), "with_store": round(bits(mix), 4), "shuffled_store": round(bits(shuf), 4)}
-    w = manifest["mix"]; rows["mix"] = {k: round(sum(w[d] * rows[d][k] for d in w), 4) for k in ("model", "with_store", "shuffled_store")}
+        shuf = np.mean([nll(b, x, y, lam_shuf).mean() for b, x, y in zip(lp, ss2, gg2)])
+        rows[dom] = {"model": round(bits(base), 4), "with_store": round(bits(mix), 4), "uninformed_store": round(bits(shuf), 4)}
+    w = manifest["mix"]; rows["mix"] = {k: round(sum(w[d] * rows[d][k] for d in w), 4) for k in ("model", "with_store", "uninformed_store")}
     out["bits_per_byte"] = rows; out["gain"] = {d: round(rows[d]["model"] - rows[d]["with_store"], 4) for d in rows}
-    out["shuffled_gain_mix"] = round(rows["mix"]["model"] - rows["mix"]["shuffled_store"], 4)
+    out["uninformed_store_gain_mix"] = round(rows["mix"]["model"] - rows["mix"]["uninformed_store"], 4); out["uninformed_table_max"] = round(float(lam_shuf.max()), 3)
     if a.reported:
         rep = json.load(open(a.reported))["curve"][-1]; out["reported_by_training_run"] = {d: rep[d] for d in rows}
         out["max_abs_difference_from_reported"] = round(max(abs(rep[d] - rows[d]["model"]) for d in rows), 4)

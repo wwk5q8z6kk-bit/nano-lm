@@ -429,3 +429,19 @@ For comparison, from the table above: trained alone 64.7% / 59.6% / 66.2%; train
 **Two conclusions that now have direct evidence in this world.**
 1. *At the moment of writing*, harm comes from absent constraints. Supplying them, either as the entity's own facts or as the model's own current answers, removes it. Making the write smaller does not.
 2. *Afterwards*, anything the later data does not re-assert is eroded, whatever the margin. A constraint has to be present at every later update that can disturb it, not only at the moment of writing.
+
+### Question 9, second follow-up: is it the optimiser? (2026-11-21)
+
+`correction_optimizer.py`, prediction O1 committed in `27cc27c`. Same three seeds. The correction is written by gradient steps on the entity's address only (decoder frozen), using only the corrected fact. [Observed]
+
+| Write | Steps taken | Correction right, at once | Entity's other facts, at once | Old regular facts on corrected entities, at the end |
+|---|---|---|---|---|
+| Plain gradient descent, stopped at a 1-logit lead | about 750 | 99.4% | 14.3% | 12.0% |
+| Adam with fresh state, stopped at a 1-logit lead | about 4,180 | 99.0% | 39.8% | 39.1% |
+| Adam with fresh state, 200 steps | 200 | 47.9% | 62.5% | 60.9% |
+
+- O1 (every gradient-only write damages the entity's other facts, 85% or less): held for all three. None came near 95%.
+- **The optimiser is not the cause of the correction damage.** Plain gradient descent stopped the moment the correction takes is the most destructive write we have measured. Fresh optimiser state does not help. Fewer steps help only by not completing the write.
+- This differs from the memory-saturation result (Question 7), where carried-over optimiser state was a main cause. The two failures look alike and have different causes.
+
+**Explanations of the correction damage, final status in this world.** Capacity: rejected (a harmless state exists for 99.8%). Size of the write: rejected (the smallest write keeps 35%). Optimiser: rejected (14% to 63%). Replay in general: rejected (other entities' facts keep 67%). Missing constraints on the written address: supported (the entity's own facts 100%; the model's own current answers 98%).
