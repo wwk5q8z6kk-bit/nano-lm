@@ -1,10 +1,11 @@
 # Shared nano model (Recipe ① spec) + generation, used by SFT-gate, DPO, GRPO.
 import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
+from pathlib import Path
 from tokenizers import Tokenizer
 
 dev = "mps" if torch.backends.mps.is_available() else "cpu"
 V, d, L, H, KV, hd, ff, S = 4098, 192, 6, 6, 2, 32, 512, 512
-tok = Tokenizer.from_file("tokenizer.json")
+tok = Tokenizer.from_file(str(Path(__file__).with_name("tokenizer.json")))
 IMS, IME = tok.token_to_id("<|im_start|>"), tok.token_to_id("<|im_end|>")
 
 def rope(q, k):
