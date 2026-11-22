@@ -33,7 +33,10 @@ Typed addresses give the memory the types for free (the memory session's own cav
 | `private` | confident disagreement (τ = 0.1) → private pass | → private pass (cannot tell) | → private pass (holds the old rule) |
 | `change_only` | trained jointly | trained jointly | detected and trained into the shared table |
 | `threeway` | old-entity observation seen twice consistently → private pass | old-entity observation seen once → held | **change detector runs first**; facts in a detected change group are exempt from private routing and trained into the shared table |
+| `threeway_privfirst` | as `threeway` | as `threeway` | the same detectors in the reverse order: private routing first, change detector on what is left |
 | `oracle` | true label → private pass | true label → discarded | true label → trained into the shared table |
+
+`threeway_privfirst` was added at the ontogenesis session's suggestion. Running the change detector first designs the interference away, so without the reversed order the study would never measure it. The registered comparison is "change-first beats private-first on old-entity revision by at least X"; X is set after the development check.
 
 Order inside `threeway`, following the memory session's pitfall 2:
 1. Run the change detector on the phase's new facts.
@@ -47,6 +50,8 @@ Change detector, adapted to this memory: the signature is the memory's own answe
 ## Measures
 
 As `rule_change.py`: acquisition, stable inference, revision of new entities (1–5 and 6–10 phases after a change), revision of old entities, exceptions kept, noise resisted. Also: facts routed private, false change alarms, missed changes.
+
+The reverse failure is reported separately, again at the ontogenesis session's suggestion: genuine exceptions whose entity falls inside a falsely flagged change group. The exemption could send them into the shared revision instead of private storage. Measure: exceptions in falsely flagged groups, and the fraction of them kept.
 
 ## Seeds
 
