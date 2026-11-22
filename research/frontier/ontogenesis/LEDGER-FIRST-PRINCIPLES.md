@@ -457,3 +457,22 @@ Branch `research/memory-saturation-factorial` (PR [#199](https://github.com/wwk5
 - **Demonstrated in this synthetic memory:** the two-thirds gap left by frozen data-derived codes was a limit of freezing, not of the information in the data. Revisable addresses with discovered types recover almost all of it, provided the clustering is allowed more clusters than types. Over-splitting is cheap here; merging is costly.
 - **Cost:** a full re-index replays the exact store (34,560 facts over 40 phases). Recovering this without full replay, by moving stored values to new addresses, is the open question (the blueprint's Family A).
 - Limits: clustering sees creation-time facts only; synthetic world; value table. Not evidence about a language model.
+
+---
+
+## 2026-11-22 — Revisable addresses without full replay
+
+Branch `research/memory-saturation-factorial` (PR [#199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199)): protocol `0bf6daf` committed before any confirmatory run, results `ab782b6`. Seeds 4101–4105. Re-cluster every 5 phases with labels matched across re-clusters; the value table is never reset and no exact store of values is kept.
+
+| Arm | Inference, new entities | Data replayed or transported |
+|---|---|---|
+| Re-cluster, full re-index (previous entry) | 0.767 | 34,560 facts replayed |
+| Given types, no re-index | 0.737 | none |
+| Re-cluster, drop moved entities' values | 0.699 | none |
+| Re-cluster, transport own predictions | 0.683 | about 1,450 keys distilled |
+| Derived codes, frozen | 0.302 | none |
+
+- T2–T4 held. T1 did not: with no replay, re-clustering falls 0.038 below given types on average (gaps 0.015–0.067).
+- **Demonstrated in this synthetic memory:** revisable grouping, not replay, carries most of the generalisation. It takes inference from 0.30 to 0.70 with no replay, and full replay adds a further 0.07.
+- Distilling the memory's own old predictions into moved entities' new addresses was slightly worse than dropping them, on every seed. The old prediction carries the old group's rule into the new group's shared slots. This argues against online value transport for a rule-carrying memory of this kind. Its cost for individual facts (exceptions, corrections) was not measured separately.
+- Limits: one transport method; label matching is part of the method; creation-time facts only; synthetic world; value table. Not evidence about a language model.
