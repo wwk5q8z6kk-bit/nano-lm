@@ -1,0 +1,48 @@
+{
+ "size": "L",
+ "ckpt": "/home/mac/out6/dense-L-lr0.001-s1000-tok2e+09-dp4-hs-v2.npz",
+ "control": "none",
+ "tasks": {
+  "hellaswag": {
+   "acc": 0.2855,
+   "n": 10042,
+   "chance": 0.25,
+   "acc_norm": 0.3078
+  },
+  "arc_easy": {
+   "acc": 0.4769,
+   "n": 2376,
+   "chance": 0.25,
+   "acc_norm": 0.4276
+  },
+  "arc_challenge": {
+   "acc": 0.2073,
+   "n": 1172,
+   "chance": 0.25,
+   "acc_norm": 0.2551
+  },
+  "piqa": {
+   "acc": 0.6246,
+   "n": 1838,
+   "chance": 0.5,
+   "acc_norm": 0.6094
+  },
+  "winogrande": {
+   "acc": 0.5154,
+   "n": 1267,
+   "chance": 0.5
+  },
+  "openbookqa": {
+   "acc": 0.17,
+   "n": 500,
+   "chance": 0.25,
+   "acc_norm": 0.278
+  },
+  "lambada": {
+   "acc": 0.2567,
+   "ppl": 104.02,
+   "n": 5153
+  }
+ },
+ "seconds": 53
+}

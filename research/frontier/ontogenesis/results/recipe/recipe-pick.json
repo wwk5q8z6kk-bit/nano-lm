@@ -1,0 +1,347 @@
+{
+ "rows": [
+  {
+   "name": "dense-S-lr0.001-s1000-fl0.01-hs",
+   "cell": [
+    "adamw",
+    0.001,
+    0.1,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1414,
+   "tok_s": 638872,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.001-s1000-muon-fl0.01-hs",
+   "cell": [
+    "muon",
+    0.001,
+    0.1,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1289,
+   "tok_s": 632200,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.001-s1000-muon-hs",
+   "cell": [
+    "muon",
+    0.001,
+    0.1,
+    0.1,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1339,
+   "tok_s": 632202,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.001-s1000-wd0.5-fl0.01-hs",
+   "cell": [
+    "adamw",
+    0.001,
+    0.5,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1952,
+   "tok_s": 638834,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.001-s1000-wd0.5-hs",
+   "cell": [
+    "adamw",
+    0.001,
+    0.5,
+    0.1,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.2074,
+   "tok_s": 638818,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.001-s1000-wd0.5-muon-fl0.01-hs",
+   "cell": [
+    "muon",
+    0.001,
+    0.5,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1833,
+   "tok_s": 632006,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.001-s1000-wdmat-hs",
+   "cell": [
+    "adamw",
+    0.001,
+    0.1,
+    0.1,
+    "matrices"
+   ],
+   "seed": 1000,
+   "mix": 1.1428,
+   "tok_s": 638892,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.002-s1000-fl0.01-hs",
+   "cell": [
+    "adamw",
+    0.002,
+    0.1,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.131,
+   "tok_s": 638877,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.002-s1000-hs",
+   "cell": [
+    "adamw",
+    0.002,
+    0.1,
+    0.1,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1412,
+   "tok_s": 638611,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.002-s1000-muon-fl0.01-hs",
+   "cell": [
+    "muon",
+    0.002,
+    0.1,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1259,
+   "tok_s": 632326,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.002-s1000-wd0.5-fl0.01-hs",
+   "cell": [
+    "adamw",
+    0.002,
+    0.5,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1866,
+   "tok_s": 638911,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.002-s1000-wd0.5-hs",
+   "cell": [
+    "adamw",
+    0.002,
+    0.5,
+    0.1,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.2094,
+   "tok_s": 638719,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.002-s1000-wd0.5-muon-fl0.01-hs",
+   "cell": [
+    "muon",
+    0.002,
+    0.5,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1795,
+   "tok_s": 632344,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.004-s1000-fl0.01-hs",
+   "cell": [
+    "adamw",
+    0.004,
+    0.1,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1267,
+   "tok_s": 638741,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.004-s1000-hs",
+   "cell": [
+    "adamw",
+    0.004,
+    0.1,
+    0.1,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.148,
+   "tok_s": 638887,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.004-s1000-muon-fl0.01-hs",
+   "cell": [
+    "muon",
+    0.004,
+    0.1,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1193,
+   "tok_s": 632371,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.004-s1000-wd0.5-fl0.01-hs",
+   "cell": [
+    "adamw",
+    0.004,
+    0.5,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1918,
+   "tok_s": 638893,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.004-s1000-wd0.5-hs",
+   "cell": [
+    "adamw",
+    0.004,
+    0.5,
+    0.1,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.2231,
+   "tok_s": 638787,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.004-s1000-wd0.5-muon-fl0.01-hs",
+   "cell": [
+    "muon",
+    0.004,
+    0.5,
+    0.01,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.1812,
+   "tok_s": 632220,
+   "dir": "/home/mac/out4"
+  },
+  {
+   "name": "dense-S-lr0.001-s1000-hs",
+   "cell": [
+    "adamw",
+    0.001,
+    0.1,
+    0.1,
+    "all"
+   ],
+   "seed": 1000,
+   "mix": 1.146,
+   "tok_s": 638501,
+   "dir": "/home/mac/out3"
+  },
+  {
+   "name": "dense-S-lr0.001-s1001-hs",
+   "cell": [
+    "adamw",
+    0.001,
+    0.1,
+    0.1,
+    "all"
+   ],
+   "seed": 1001,
+   "mix": 1.145,
+   "tok_s": 638372,
+   "dir": "/home/mac/out3"
+  },
+  {
+   "name": "dense-S-lr0.001-s1002-hs",
+   "cell": [
+    "adamw",
+    0.001,
+    0.1,
+    0.1,
+    "all"
+   ],
+   "seed": 1002,
+   "mix": 1.1444,
+   "tok_s": 638691,
+   "dir": "/home/mac/out3"
+  }
+ ],
+ "best_adamw": {
+  "name": "dense-S-lr0.004-s1000-fl0.01-hs",
+  "cell": [
+   "adamw",
+   0.004,
+   0.1,
+   0.01,
+   "all"
+  ],
+  "seed": 1000,
+  "mix": 1.1267,
+  "tok_s": 638741,
+  "dir": "/home/mac/out4"
+ },
+ "best_muon": {
+  "name": "dense-S-lr0.004-s1000-muon-fl0.01-hs",
+  "cell": [
+   "muon",
+   0.004,
+   0.1,
+   0.01,
+   "all"
+  ],
+  "seed": 1000,
+  "mix": 1.1193,
+  "tok_s": 632371,
+  "dir": "/home/mac/out4"
+ },
+ "center": [
+  "adamw",
+  0.001,
+  0.1,
+  0.1,
+  "all"
+ ]
+}

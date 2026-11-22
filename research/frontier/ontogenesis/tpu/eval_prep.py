@@ -52,9 +52,11 @@ def tasks(limit):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--tokenizer", required=True); ap.add_argument("--out", required=True); ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--text-out", default="", help="also save the formatted texts (for scoring public models with their own tokenizers)")
     a = ap.parse_args(); tk = Tokenizer.from_file(a.tokenizer); enc = lambda s: tk.encode(s, add_special_tokens=False).ids
-    res = {}
+    res = {}; texts = {}
     for name, items in tasks(a.limit).items():
+        texts[name] = [{"ctxs": c, "cont": k, "gold": g} if name == "winogrande" else {"ctx": c, "conts": k, "gold": g} for c, k, g in items]
         rows = []
         for ctx, conts, gold in items:
             if name == "winogrande":        # two prefixes, one shared continuation
@@ -63,3 +65,4 @@ if __name__ == "__main__":
                 rows.append({"ctx": enc(ctx), "conts": [enc(c) for c in conts], "cont_chars": [len(c) for c in conts], "gold": gold})
         res[name] = rows; print(name, len(rows))
     json.dump(res, open(a.out, "w"))
+    if a.text_out: json.dump(texts, open(a.text_out, "w"))

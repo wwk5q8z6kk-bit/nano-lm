@@ -660,3 +660,117 @@ Same world, model, seeds and arms as `correction_interference.py`, which is unch
 - E5: `single_rowscale` against `single`:
   - kept_all7 higher by 0.15 or more: stale optimiser state is a main cause of this write's damage;
   - within 0.05: it is not.
+
+## Results of 22 November (all registered before their runs)
+
+All files are under `results/kd/`, `results/recipe/` (14M on v5e; `m-v6e/` for 40M), `results/scale1/` and `results/nested/`. Every TPU run used the second-version script (uniform host sampling). [Observed]
+
+### Question 10: distillation
+
+The teacher, the 101M model, reproduced its own score inside the student runs exactly (0.9857). Baselines: 14M, three seeds, 1.1460, 1.1450, 1.1444, so s = 0.0008 and the noise guard is 4.97 s = 0.004.
+
+| Arm | Mix | Gain over baseline | Wall-clock |
+|---|---|---|---|
+| 14M baseline (mean of 3) | 1.1451 | — | 0.42 h |
+| 14M, α 0.5 | 1.1273 | **0.018** | 1.13 h |
+| 14M, teacher only (α 0) | 1.1264 | 0.019 | 1.07 h |
+| 40M baseline | 1.0466 | — | 1.00 h |
+| 40M, α 0.5 | 1.0252 | **0.021** | 1.55 h |
+
+**Rule: a gain between 0.01 and 0.03 is "partial".** The training signal is a real lever at equal tokens, but not a major one.
+- Predictions held: 14M gain between 0.01 and 0.03; teacher-only no better than α 0.5.
+- Prediction failed: the 40M gain (0.021) was larger, not smaller.
+- Sampling-fix check: the 14M second-version mean is 1.1451 against the first version's 1.1441, so the skew moved the score by about 0.001.
+- Caveat: distillation cost 1.5 to 2.6 times the wall-clock here, because the teacher runs at every step. At equal compute it has not been shown to beat a longer plain run.
+
+### Question 11: recipe
+
+At 14M, s = 0.0008 (default cell, three seeds). At 40M on v6e, s = 0.0012 (1.0464, 1.0485, 1.0486).
+
+**Learning-rate floor.** P1: direction held, size underpredicted. A 1% floor beat 10% in **6 of 6** matched pairs at 14M, by 0.004 to 0.031 (mean 0.017), and in 6 of 6 at 40M, by 0.006 to 0.046.
+
+**Decay 0.5.** P2 failed. It is worse than 0.1 in every cell at both sizes, by 0.04 to 0.075.
+
+**Best rate.** P3 failed: the best rate is 4e-3, the top of the grid, for both optimisers at both sizes. **The optimum is not bracketed**; 8e-3 is untested.
+
+**Decay mask and micro-batches.** P5 and P6 held: decaying matrices only changes the result by −0.002, and 2 against 4 micro-batches by +0.0003.
+
+**Phase B** (chosen mechanically): best AdamW cell (4e-3, decay 0.1, floor 1%) and best Muon cell (the same settings).
+
+| 14M, three seeds | Mix |
+|---|---|
+| Default AdamW (1e-3, 10% floor) | 1.1451 |
+| AdamW 4e-3, 1% floor | 1.1278 (1.1267, 1.1285, 1.1281) |
+| Muon 4e-3, 1% floor | **1.1192** (1.1193, 1.1183, 1.1199) |
+
+Muon against the best AdamW: **0.0086**. The criterion was 2.27 s_p = 0.002, so it holds. P4 predicted 0.01 to 0.03, so the size is slightly under.
+
+At 40M (v5e, 4 micro-batches, rate 1e-3, 1% floor), Muon beat AdamW by **0.0125**: same sign and more than half the 14M gain. **By the registered rules, Muon (consistent-RMS 0.2) with decay 0.1 and a 1% floor replaces the default.**
+
+The 40M grid on v6e agrees:
+- best AdamW 1.0312 (4e-3, 1%);
+- best Muon **1.0203** (4e-3, 1%);
+- default 1.0478 (mean of 3).
+
+Total recipe gain at 40M: **0.0275 bits per byte**. That is about 45% of what going from 40M to 101M parameters bought on the first ladder (0.062).
+
+Muon's step cost: 1% slower at 14M and 1.4% slower at 40M, so the equal-wall-clock gain is about the same.
+
+### Question 12: corpus v2, four chips per run
+
+| Run (default recipe, corpus v2) | Mix | Web | Code | Hours (4 × v6e) |
+|---|---|---|---|---|
+| 101M, 0.8B tokens | 0.9775 | 1.0450 | 0.7892 | 0.39 |
+| 101M, 2.0B tokens | 0.9399 | 1.0118 | 0.7448 | 0.71 |
+| **211M, 4.2B tokens** | **0.8763** | 0.9534 | 0.6770 | 2.59 |
+
+- P1 held: 101M improves by 0.038 from 0.8B to 2.0B tokens.
+- P2 held: 211M reaches 0.876; the first ladder had 0.952 at 0.8B tokens.
+- P5 held: 101M at 0.8B on v2 is within 0.01 of v1 (0.9775 against 0.9857).
+- P3 held: four chips run at 483.6k tokens per second against 4 × 132.8k, **91% efficiency**. Each chip used only 2.7 GB of its 32 GB; batch 256 was barely faster (494.8k).
+
+**Benchmarks, full standard sets.** Our harness adds an end-of-document prefix; calibration against Pythia-160M is running.
+
+| Task | 101M-0.8B | 101M-2.0B | 211M-4.2B | 211M, no context | Pythia-160M, 300B tokens (EleutherAI official, lm-eval) |
+|---|---|---|---|---|---|
+| ARC-Easy acc | 0.468 | 0.477 | **0.522** | 0.314 | 0.435 |
+| ARC-Challenge acc_norm | 0.236 | 0.255 | 0.257 | 0.271 | 0.233 |
+| PIQA acc | 0.603 | 0.625 | **0.648** | 0.606 | 0.627 |
+| WinoGrande acc | 0.530 | 0.515 | 0.511 | 0.496 | 0.531 |
+| LAMBADA acc (perplexity) | 0.237 (142) | 0.257 (104) | **0.326 (49)** | 0 | 0.328 (38) |
+| HellaSwag acc_norm | 0.294 | 0.308 | 0.346 | 0.292 | — |
+| OpenBookQA acc_norm | 0.276 | 0.278 | 0.302 | 0.278 | — |
+
+P4 held for HellaSwag and ARC-Easy: the order is 211M > 101M-2.0B > 101M-0.8B, each above its no-context control. On ARC-Challenge and WinoGrande nothing is clearly above chance or above the control.
+
+The 211M model on 4.2B tokens roughly matches Pythia-160M trained on 300B tokens: ahead on ARC-Easy and PIQA, level on LAMBADA accuracy, behind on WinoGrande and LAMBADA perplexity. That comparison holds only if the calibration run confirms our formats.
+
+**Corpus v2 contamination** (13-token windows). Examples sharing any window: HellaSwag 2.1% (1.3% touching the answer), ARC-Easy 1.5%, ARC-Challenge 1.8%, PIQA 1.25%, WinoGrande 0, OpenBookQA 0, LAMBADA 0.2%. Low, but about five times v1's.
+
+### Nested dense-loop protocol (`PROTOCOL-NESTED.md` and its deviation record)
+
+Two-step chains learned (≥ 90% at any evaluation), out of 5 seeds, all arms on the same CPU machine:
+
+| Arm | Weights reused? | Applications | Learned | First 90% (steps) |
+|---|---|---|---|---|
+| dense 4×1 | no | 4 | 1 | 21k |
+| looped 1×4 | yes | 4 | 2 | 8k, 16k |
+| 2×2 | yes | 4 | **4** | 6k to 17k |
+| 4×2 | yes | 8 | **4** | 9k to 16k |
+| 8×1 | no | 8 | **0** | — |
+| 1×8 | yes | 8 | **4** | 7k to 14k |
+| 4×1, width 40 | no | 4 | 0 | — |
+
+Registered laptop-GPU arms: dense 1/5, looped 3/5.
+
+**Rules.** R1 (4×2 ≥ 4 and 8×1 ≤ 1) holds in **both** evaluations. R2 holds device-consistently (2×2 4 against looped 2) but not as registered (2×2 4 against GPU looped 3). R3 and R4 fail in both. Because the two evaluations disagree, the result is **device-sensitive**, and by the deviation record's clause no rule is formally declared met. Device sensitivity is visible directly: looped seed 21 learned at 8k on CPU and 21k on GPU, and seed 23 learned only on GPU.
+
+**What stands descriptively.**
+- Arms that reuse weights learned in 14 of 20 runs; arms that do not, in 1 of 15.
+- More compute without reuse (8×1) did not help, and neither did matching the looped model's size (width 40).
+
+**Caveats.**
+- All arms share one learning rate (1e-3). The closest published study reports untied models failing at 1e-3 but succeeding at 3e-4, so this may be tolerance of a single learning rate rather than an effect of reuse. The per-arm learning-rate sweep is the needed control.
+- Extra loops at test time do not buy three-step chains: three-step accuracy stays 0.29 to 0.44 and often falls with more loops.
+
+**Cost of the cycle** (list prices; billing not yet read): machine A, v5e-4, 00:57 to 08:53, about $38; machine B, v6e-4, 01:25 to 11:15, about $127. **Total about $165.** Both machines deleted themselves on the normal path, and Cloud Scheduler later received 404.
