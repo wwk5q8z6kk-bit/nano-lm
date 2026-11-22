@@ -9,7 +9,7 @@
 #   - induction probe at BOTH raw-pretrain AND post-SFT checkpoints (C1: full-FT destroys copy).
 #   - probe on NOVEL tokens AND novel surface form (generality; else probe-pass is the game).
 #   - co-primary readout: teacher-forced held-value first-token top-1 (P2 baseline 21% vs 92%).
-import os, sys, json, math, time, random, io, subprocess, urllib.request
+import os, sys, json, math, time, random, io, subprocess, urllib.request, functools
 def _ensure(pkg, imp=None):
     try: __import__(imp or pkg)
     except ImportError: subprocess.run([sys.executable,"-m","pip","install","-q",pkg], check=True)
@@ -67,6 +67,7 @@ class GPT(nn.Module):
         for b in s.blocks: h = b(h)
         return F.linear(s.nf(h), s.emb.weight)
 
+@functools.lru_cache(maxsize=None)
 def fetch(path, binary=False):
     """local file if present (smoke), else RAW github."""
     for p in (path, os.path.basename(path)):
