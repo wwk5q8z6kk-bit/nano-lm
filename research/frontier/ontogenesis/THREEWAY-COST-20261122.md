@@ -57,3 +57,9 @@ Same code and settings in both sets. Each cell shows the mean, with the minimum 
 | threeway | 78% [58%–91%] | 79% [65%–91%] | 89% [84%–92%] | 91% [88%–95%] | 72% [70%–75%] |
 
 The router's revision of old entities ranges widely across seeds, so its headline figure should be read with that range, not as a single number.
+
+## Added caveat (2026-11-22): typed addresses overstate inference
+
+The memory-line session tested data-derived addresses: entity vectors built from the facts shown at creation, not from the given types (5 seeds; protocol 25acd5d, results f22c020 on research/memory-saturation-factorial). Inference recovers only 0.27–0.34 of the gap between typed and random addresses: 0.30, against 0.74 typed and 0.11 random. Acquisition and retention are better. Greedy online type clustering collapsed on its development seed, because frozen addresses cannot revise an early wrong grouping.
+
+The three-way studies here use typed addresses. Their inference and stable-rule figures, and the ease of propagating a rule change to a whole type, therefore hold for a memory given the types. For a learner that must discover them they are likely substantially lower. The comparisons between arms are within one learner and are not affected in direction, but their absolute levels should not be carried over.
