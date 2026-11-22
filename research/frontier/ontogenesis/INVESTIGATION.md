@@ -644,3 +644,19 @@ The full list is in `theory/RESEARCH-DECISION-20261121.md`, section 10. In short
 Two cheap checks are queued:
 - score every other answer of each corrected entity before and after the write, in every arm;
 - repeat the damaging write itself, changing one thing at a time.
+
+### Question 9, review checks (registered 2026-11-22, 05:05 UTC, before any run of `correction_entity.py`)
+
+Same world, model, seeds and arms as `correction_interference.py`, which is unchanged. Two additions:
+1. Every corrected entity's answers on all eight relations are read just before and just after its phase's write.
+2. A new arm, `single_rowscale`: `single` with one change. Before each phase's training, the corrected rows' Adam state is set to that of recently trained rows: first moment 0, second moment the median of the previous phase's new entities.
+
+**Predictions.**
+- E0: `single` reproduces its recorded `collateral_now` and `corrected_now` exactly. Same code path and random draws; the added reads use no randomness.
+- E1: in `single`, the unshown answers are damaged about as much as the other shown ones: kept_unshown within 0.10 of kept_shown.
+- E2: in `entity_replay`, the rehearsed shown facts are kept (≥ 0.97) but the unshown answers are not fully kept (kept_unshown ≤ 0.90). Rehearsal protects what it rehearses, not the whole entity.
+- E3: `constrained` keeps at least 0.97 of all seven other answers. The edit constrains every relation; only the phase's other training adds drift.
+- E4: `store` (drift only) keeps at least 0.97 of all seven.
+- E5: `single_rowscale` against `single`:
+  - kept_all7 higher by 0.15 or more: stale optimiser state is a main cause of this write's damage;
+  - within 0.05: it is not.
