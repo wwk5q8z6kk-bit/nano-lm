@@ -214,3 +214,20 @@ Deadlines:
 | **Total** | | **about $180** | | **about $195** |
 
 Kaggle is free. No RunPod spend.
+
+---
+
+## Proposed evidence reconciliation — 2026-11-22 (review-only, not yet adopted)
+
+Read the [dated source-pinned review](reviews/2026-11-22-research-ledger-review.md) before promoting a status. This section only appends to earlier decisions: the review documents reasons, competing explanations, primary sources, limitations and cheapest tests. Source cutoff: research branch `e8e4a8633ec7a43332d20ad3ef77db8e1602d277`; separate PR #199 `b292420c1491535ccde4de16e868ec9317780bb1`; draft PR #195 `15f5e5e9dd980acf5909dbd74f137d7c41cffca8` (diverged, unmerged). GitHub result files were read; checkpoints, running machines, paid bills and underlying corpora were not independently inspected.
+
+| Earlier status/claim | Proposed dated refinement | Evidence and next cheapest decisive check |
+|---|---|---|
+| 101M n-gram store gate pending; general store idea open | **101M test now reported:** leave-document-out fitted 4-gram store gain +0.0017 BPB, below the amended 0.01 criterion. Close only this 48M-token/6%-corpus store configuration as a useful complement; full-corpus memory remains untested. | `results/lm/store-ldo-L.json`, `theory/RESEARCH-DECISION-20261121.md` §10. Audit same-prefix NLL/byte identities and true full-system cost before any new scale. |
+| Nested dense-loop protocol running | **Reported completed, device-sensitive:** CPU 2x2 and 4x2 each 4/5 learned vs untied 8x1 0/5; CPU/GPU comparisons disagree, so **no R1–R4 rule formally met** under the deviation protocol. | `PROTOCOL-NESTED-DEVIATION.md`, `results/nested-summary.json`. Independently tune each arm's learning rate on the same device. |
+| Dense recipe at 14M/40M default; corpus-size bottleneck uncertain | **Recipe rather than architecture effect:** 14M default AdamW 1.1451 BPB, tuned AdamW 1.1278, Muon 1.1192; 40M v6e best Muon 1.0203. 101M 2B-token mix 0.9399 and 211M 4.2B-token mix 0.8763 are *single-seed reported* results. | `results/recipe/recipe-pick.json`, `results/scale1/`, `INVESTIGATION.md` Q11–Q12. Bracket LR above 0.004 and compare independent tuned same-device equal-time controls. |
+| Same-entity replay protects other known facts | **Not all inferred answers:** `entity_replay` retains 0.987 shown but only 0.682 unshown relation answers; constrained edit retains 0.971 across all seven other answers immediately, without proving durability. Old '20+ phases' cohort label was partially wrong. | `correction_entity.py`, `results/correction_interference/entity-*.json`. Record all same-entity pre/post answers and revision-aware longer horizons under isolated optimizer changes. |
+| Benchmarks and data provenance under review | **Newly reported:** 10B-token corpus v2, 211M zero-shot scores, and partial Pythia calibration. LAMBADA accuracy deviates ~4 SE; Nano and public baseline use different prefix conventions; contamination overlap remains nonzero. Do **not** claim controlled superiority. | `results/lm/eval-calibration-pythia160m.json`, `results/lm/eval-contamination-v2.json`, `results/scale1/*.bench.json`. Align prompt prefixes, isolate overlap and publish full hashes/rights. |
+| Address concentration explanation narrowed by factorial | Separate dose-response [draft PR #199](https://github.com/wwk5q8z6kk-bit/nano-lm/pull/199): randomizing 4 of 8 read slots raises late acquisition to 0.984 after optimizer resets; registered G3 graded prediction fails. This is arbitrary-table evidence, not native language capacity. | `PROTOCOL-MEMSAT-SHARING.md`, `RESULTS-MEMSAT-SHARING.md` on PR branch. Match addressing semantics and generalization before claiming unique mechanism. |
+
+**No adoption or merge authorized by this review.** Preserve the previously reported V5 negative/mixed replay endpoint, the invalidated historical cache number, registered failure verdicts, and all original raw results; new evidence must use a new receipt and an explicitly reviewed decision event.
