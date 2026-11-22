@@ -46,6 +46,14 @@ def build_world(seed, phases=rc.PHASES):
     return rng, rule, typ, shown, exc, changes, rule_at
 
 
+def change_hit(changes, ph, z, r, v):
+    """Phase of the latest change of (z, r) at or before ph if v is still that value, else None."""
+    hit = [(p, v_) for p, z_, r_, v_ in changes if p <= ph and z_ == z and r_ == r]
+    if not hit: return None
+    p, v_ = max(hit)
+    return p if v_ == v else None
+
+
 def run(arm, seed, phases=rc.PHASES):
     NEW = rc.NEW; n = phases * NEW
     tau = 0.2 if arm in ("private_t02", "threeway_t02") else 0.1
@@ -78,7 +86,7 @@ def run(arm, seed, phases=rc.PHASES):
     fa_pairs = set()                                                     # (type, relation) hit by a false alarm
 
     def detect(facts, ph):
-        """Group-agreement change detector on the given new-entity facts. Returns flags as (r, v, members, olds, true)."""
+        """Group-agreement change detector on the given new-entity facts. Returns (r, v, members, olds, true, z, P, change_phase)."""
         if not facts or ph < WARMUP: return []
         upto = (ph + 1) * NEW; ee = np.repeat(np.arange(upto), R); rr = np.tile(np.arange(R), upto)
         P, C = predict(ee, rr); P = P.reshape(upto, R); C = C.reshape(upto, R) >= CONF; out = []; done = set()
@@ -98,8 +106,9 @@ def run(arm, seed, phases=rc.PHASES):
                 if len(olds) < 3 or np.mean(P[olds, r] == v) >= 0.5: continue
                 done.add((r, v, tuple(sig)))
                 z_major = int(np.bincount(typ[olds], minlength=Z).argmax())
-                true = any(p <= ph and z == z_major and r_ == r and v_ == v for p, z, r_, v_ in changes)
-                out.append((r, v, members, olds, true, z_major, P))
+                change_phase = change_hit(changes, ph, z_major, r, v)
+                true = change_phase is not None
+                out.append((r, v, members, olds, true, z_major, P, change_phase))
         return out
 
     for ph in range(phases):
@@ -138,8 +147,8 @@ def run(arm, seed, phases=rc.PHASES):
             else:
                 found = detect(new_facts, ph)
             exempt = {(e, r) for r, v, members, *_ in found for e in members}
-            for r, v, members, olds, true, z_major, P in found:
-                flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "true_change": true})
+            for r, v, members, olds, true, z_major, P, change_phase in found:
+                flags.append({"phase": ph, "r": r, "v": v, "z": z_major, "true_change": true, "change_phase": change_phase})
                 others = [x for x in range(R) if x != r]
                 cap = olds if len(olds) <= MAX_OLDS else sel.choice(olds, MAX_OLDS, replace=False)
                 revision += [(int(o), r, v) for o in cap]
@@ -184,12 +193,13 @@ def run(arm, seed, phases=rc.PHASES):
     ee, er = np.nonzero((exc >= 0) & (born[:, None] <= last - 10)); out["exception_kept"] = round(acc(ee, er), 4)
     nk = [(e, r) for (e, r), p in noisy.items() if p <= last - 10]
     out["noise_resisted"] = round(acc(np.array([a for a, _ in nk]), np.array([b for _, b in nk])), 4)
-    found = {(f["z"], f["r"]) for f in flags if f["true_change"]}
+    found = {(f["change_phase"], f["z"], f["r"]) for f in flags if f["true_change"]}
     out.update({"routed_private": n_private, "flags": len(flags), "false_alarms": sum(1 for f in flags if not f["true_change"]),
-                "missed": sum(1 for p, z, r, v in changes if (z, r) not in found)})
+                "missed": sum(1 for p, z, r, v in changes if (p, z, r) not in found)})
     eg = sorted(set(exc_in_false_group))
     out["exceptions_in_false_groups"] = len(eg)
-    out["exceptions_in_false_groups_kept"] = round(acc(np.array([a for a, _ in eg]), np.array([b for _, b in eg])), 4) if eg else None
+    scored = [(a, b) for a, b in eg if born[a] <= last - 10]             # same age cut as exception_kept
+    out["exceptions_in_false_groups_kept"] = round(acc(np.array([a for a, _ in scored]), np.array([b for _, b in scored])), 4) if scored else None
     return out
 
 
