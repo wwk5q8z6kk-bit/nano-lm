@@ -373,6 +373,27 @@ The store is 1.02 GB for 48M tokens of text, against about 57 MB of weights for 
 
 **Cost.** Any gain here is a system-level gain bought with 1.02 GB of exact storage. Per stored byte that is a poor exchange: doubling the blocks costs about 12 MB and buys 0.039; the store costs 1,022 MB and buys 0.058. Wall-clock times are unusable (the machine was swapping).
 
+**Question 8, follow-up from another session (2026-11-22; checked here against the raw files, not re-run).** A label-free detector in a different setting: the first-principles session's typed fixed-address memory, `cab_s` rule world. Branch research/memory-saturation-factorial (draft PR #199): `PROTOCOL-MEMRULE-ROUTING.md` (6da758f, before any held-out run), `RESULTS-MEMRULE-ROUTING.md` (d5e5bab), raw files `results/memory_rule_routing/`. Seeds 4101–4105; the means below were recomputed here from the raw files and match.
+
+The detector flags a fact when the memory's answer disagrees and the memory is confident (top probability at least τ). Flagged facts go to private slots with a larger budget.
+
+| Arm | Corrections | Inference, new entities | False positives (regular facts flagged) |
+|---|---|---|---|
+| No routing | 0.037 | 0.736 | — |
+| Detector, τ = 0.1 | 0.810 | 0.701 | 0.089 |
+| Random, same fraction routed | 0.194 | 0.703 | 0.189 |
+| Detector, τ = 0.2 | 0.499 | 0.728 | 0.010 |
+| Labelled ceiling | 0.891 | 0.714 | — |
+
+- **Registered rules, read by their authors:** R1 and R2 held. R3 failed on its inference clause: the detector beats random by about 0.6 on corrections, but its inference equals random's. R4 held at τ = 0.1 and failed narrowly at τ = 0.2.
+- **What this changes here.** This question's leave-one-out detector recovered about a third of the oracle gain. In the other session's memory, a confidence-gated detector recovers most of the labelled result (0.81 against 0.89) at the same inference. The question "does routing need an oracle" therefore has a setting-dependent answer. Corrections can be found without labels when the memory is confident about the rule.
+- **Development-seed finding, not confirmed on held-out seeds.** With no confidence gate, an empty memory disagrees with everything, so everything goes private and inference falls to chance (0.048). Leave-one-out avoids this because it judges a fact against the entity's other facts.
+- **Limits:**
+  - stationary world: G04 (PR #204) shows that a router of this kind would keep an old rule after a real rule change;
+  - τ chosen on one development seed, and those development runs were not saved as files;
+  - private slots are per-fact storage, so this is an augmented-memory result, not native model knowledge;
+  - not evidence about language models.
+
 ## Question 9. How should a correction be written, and does a harmless write exist? (2026-11-21)
 
 `correction_interference.py`, predictions K1–K6 committed in `0443ef6` before any registered run. Seeds 8001–8003. World with corrections only (no exceptions). Raw files: `results/correction_interference/`. Model alone unless stated. [Observed]
