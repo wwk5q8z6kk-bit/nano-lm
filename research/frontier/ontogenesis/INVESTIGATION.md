@@ -774,3 +774,27 @@ Registered laptop-GPU arms: dense 1/5, looped 3/5.
 - Extra loops at test time do not buy three-step chains: three-step accuracy stays 0.29 to 0.44 and often falls with more loops.
 
 **Cost of the cycle** (list prices; billing not yet read): machine A, v5e-4, 00:57 to 08:53, about $38; machine B, v6e-4, 01:25 to 11:15, about $127. **Total about $165.** Both machines deleted themselves on the normal path, and Cloud Scheduler later received 404.
+
+### Question 9, review checks: results
+
+`correction_entity.py`, seeds 8001 to 8003. Files: `results/correction_interference/entity-*.json`. [Observed]
+
+| Arm | Other shown facts kept | Unshown (rule-implied) answers kept | All seven kept | Correction right after | Correction 20+ phases later |
+|---|---|---|---|---|---|
+| single (as recorded) | 0.658 | 0.426 | 0.492 | 1.000 | 0.662 |
+| single, stale optimiser state rescaled | 0.768 | 0.523 | 0.593 | 1.000 | 0.645 |
+| entity_replay | 0.987 | **0.682** | **0.768** | 1.000 | 0.623 |
+| random_replay | 0.670 | 0.448 | 0.511 | 1.000 | 0.670 |
+| frozen_address | 0.909 | 0.834 | 0.855 | 1.000 | 0.121 |
+| constrained edit | 0.983 | 0.966 | **0.971** | 0.998 | 0.215 |
+| store (model untouched) | 0.999 | 0.976 | 0.982 | (store holds it) | (store holds it) |
+
+**Verdicts.**
+- E0 held: `single` reproduced its recorded numbers exactly.
+- E1 **failed**: the unshown answers are damaged more than the shown ones (0.43 against 0.66 kept).
+- E2 held: same-entity rehearsal keeps what it rehearses (0.99) but only 68% of the entity's unshown answers. **The earlier "100%" for rehearsal was a property of the rehearsed facts, not of the entity.**
+- E3 held narrowly: the constrained edit keeps 97.1% of all seven, the only write into the model that protects the whole entity.
+- E4 held: the store keeps 98.2%.
+- E5 in between: rescaling the stale optimiser state raises whole-entity retention by 0.10. Stale state contributes but is not established as the main cause.
+
+Corrected summary: protecting the whole entity at write time needs constraints on all of its answers. The model's own current answers supply them (computed edit, 97%); rehearsing the facts one happens to have stored does not (77%). Durability is a separate problem that no in-model write here solves (at most 67% of corrections survive). This summary is still published in substance.
