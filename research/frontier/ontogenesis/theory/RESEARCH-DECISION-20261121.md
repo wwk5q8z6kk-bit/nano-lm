@@ -240,4 +240,4 @@ As written, deletion was a single unchecked request sent after an upload with no
 1. a persistent systemd timer, which survives the death of any controller and a reboot, sends the delete request first and retries until the API confirms;
 2. a Cloud Scheduler job in the project that sends the delete request from Google's side at the deadline (rehearsed with a read-only call: HTTP 200).
 
-Deadlines: machine A 11:06 / 11:08 UTC, machine B 07:33 / 07:35 UTC, 22 November. Worst case for this cycle is now bounded at about $125 to $140 (v5e-4 for 10 hours plus v6e-4 for 6 hours at list prices). The expected cost is about $80 to $90: machine A stays until the CPU runs finish, around 09:45 UTC, and trains a further two batches meanwhile.
+Deadlines: machine A 11:06 / 11:08 UTC. Machine B was 07:33 / 07:35 UTC, then moved to 12:30 / 12:32 (laptop watcher 12:40) once the 40M recipe grid and Question 12 were queued on it. With the extension, the bound for this cycle is about $195 at list prices, and the expected cost about $180 (LEDGER, Operations 2026-11-22).
