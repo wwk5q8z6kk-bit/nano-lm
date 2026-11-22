@@ -53,3 +53,14 @@ Bilinear model, one synthetic world, three seeds, one write rule (computed addre
 1. **A nonlinear readout:** the same arms with a two-layer decoder, protecting with gradient projection (OGD) rather than an exact projector.
 2. **The cost of the guard:** a projector per relation is m × m per relation, recomputed each phase. Measure time and memory against simply storing corrections (the external store, which has both properties trivially).
 3. **Many more corrections:** raise from 16 per phase until the localised guard crowds out room, to find where the separation breaks.
+
+## Correction, 2026-11-22: protection bug in "corrected entities only"
+
+Found by Cursor Bugbot on PR #202 and confirmed by the ontogenesis session. In `owm_ent`, an entity that already carried a correction and was corrected again was dropped from the protected set for that phase's training, so its earlier corrections were unshielded for 200 steps. That biased the arm against itself. Fixed in `nullspace_local.py` (entities corrected in any earlier phase stay protected), and the two affected arms were rerun on the same seeds. The original files are kept unchanged; the reruns are in `results/nullspace_local/fixed_owm_ent/`.
+
+| Arm | Width | Corrections 20+ phases later, original → fixed | Old facts on corrected entities | Unshown relations of new entities |
+|---|---|---|---|---|
+| Corrected entities only | 24 | 98.4% → 98.8% | 99.9% → 100% | 91.4% → 91.2% |
+| Corrected entities only | 96 | 99.6% → 99.9% | 100% → 100% | 99.1% → 98.9% |
+
+No conclusion changes. L2 still fails in the favourable direction (91.2%, prediction ≤ 0.80); the other predictions do not involve this arm. The table above this section reports the original run; read the fixed values for this arm.

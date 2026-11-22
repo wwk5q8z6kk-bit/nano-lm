@@ -79,6 +79,7 @@ def run(arm, seed, phases=40, new=64, fix=16):
     for e in range(n): shown[e, rng.choice(R, K, replace=False)] = True
     corrected = np.zeros((n, R), bool); when = np.full((n, R), -1)
     L = LocalProjected(n, m, seed, mode, alpha); store = {}; log = []
+    corrected_before = np.zeros(n, bool)       # entity received a correction in an EARLIER phase (fix, see below)
     acc = lambda e, r: float((L.predict(e, r) == truth[e, r]).mean()) if len(e) else float("nan")
     for ph in range(phases):
         ents = np.arange(ph * new, (ph + 1) * new)
@@ -90,7 +91,10 @@ def run(arm, seed, phases=40, new=64, fix=16):
         old = np.arange(ph * new)
         if mode == "owm_all": L.set_protected([old] * R)
         elif mode == "owm_ent":
-            ce_rows = np.flatnonzero(corrected[:ph * new].any(1) & (when[:ph * new].max(1) < ph)); L.set_protected([ce_rows] * R)
+            # Fixed 2026-11-22 (Bugbot on PR #202, confirmed by the ontogenesis session): the original test
+            # `corrected.any(1) & (when.max(1) < ph)` dropped an entity re-corrected in this phase from
+            # protection for the whole fit, unshielding its earlier corrections.
+            ce_rows = np.flatnonzero(corrected_before[:ph * new]); L.set_protected([ce_rows] * R)
         elif mode == "owm_rel":
             L.set_protected([np.flatnonzero(corrected[:ph * new, r] & (when[:ph * new, r] < ph)) for r in range(R)])
         else: L.set_protected(None)
@@ -104,7 +108,7 @@ def run(arm, seed, phases=40, new=64, fix=16):
                 with torch.no_grad(): L.u[e] += torch.tensor(d, dtype=torch.float32)
             else: store[(e, r)] = y
         if corr:
-            c = np.array(corr); row["corrected_now"] = acc(c[:, 0], c[:, 1])
+            c = np.array(corr); row["corrected_now"] = acc(c[:, 0], c[:, 1]); corrected_before[c[:, 0]] = True
         log.append(row)
     e, r = np.nonzero(shown); ok = L.predict(e, r) == truth[e, r]
     age = (phases - 1) - np.repeat(np.arange(phases), new)[e]; isreg = ~corrected[e, r]; hit = corrected.any(1)[e]
@@ -118,7 +122,8 @@ def run(arm, seed, phases=40, new=64, fix=16):
 
 
 if __name__ == "__main__":
-    arm = sys.argv[1]; seeds = [int(s) for s in sys.argv[2:]] or [8001, 8002, 8003]
+    arm = sys.argv[1]; seeds = [int(s) for s in sys.argv[2:] if s.isdigit()] or [8001, 8002, 8003]
     rows = [run(arm, s) for s in seeds]
     for x in rows: print(json.dumps(x), flush=True)
-    if seeds == [8001, 8002, 8003]: json.dump(rows, open(f"results/nullspace_local/{arm}.json", "w"), indent=1)
+    out = sys.argv[2] if len(sys.argv) > 2 and not sys.argv[2].isdigit() else "results/nullspace_local"
+    if seeds == [8001, 8002, 8003]: json.dump(rows, open(f"{out}/{arm}.json", "w"), indent=1)
