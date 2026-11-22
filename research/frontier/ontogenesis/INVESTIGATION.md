@@ -837,3 +837,11 @@ The 211M model trained on 4.2B tokens of corpus v2:
 **Cost bound.** About 19 to 20 hours of a v5e-4 at $4.80 per hour, about $90 to $95. Deadline 2026-11-23 12:00 UTC (on-machine timer; Cloud Scheduler at 12:02; laptop watcher at 12:10). Worst case about $101.
 
 **Question 13, operational note (15:20 UTC).** Measured: four v5e chips give 439k tokens per second at 101M, so each rate check takes about 30 minutes. Scaled to 386M, the main run takes about 18.6 hours and would finish about 20 minutes before the 12:00 deadline. All three deadlines were therefore moved two hours later: on-machine 14:00, Cloud Scheduler 14:02, laptop watcher 14:10 on 23 November. The bound rises to about $111, with about $95 expected. Nothing in the design changed.
+
+**Question 9 summary, amended (2026-11-22).** "Durability is a separate problem that no in-model write here solves" is **superseded**, by G06 (session d5, draft PR #202, `NULLSPACE-DURABILITY-20261122.md`; predictions committed before its runs).
+- Its unprotected arm reproduces this branch's `constrained` arm exactly, seed by seed.
+- Projecting later decoder updates away from old entities' address directions (OWM, published 2019) keeps computed-edit corrections at 98.5% after 20+ phases, against 21.5% without.
+- The price is the rule: new entities' unshown relations are inferred at 56–66% instead of 99.7%.
+- Rehearsing the corrections alone keeps them (97.4%) but drops the corrected entities' other old facts to 40%.
+
+Corrected summary: in this model, durable in-model corrections and rule inference for new entities trade off through the shared decoder. Each method found so far buys one at the cost of the other; only the external store has both. [Reported by PR #202 and checked against its committed files; not re-run here.]
