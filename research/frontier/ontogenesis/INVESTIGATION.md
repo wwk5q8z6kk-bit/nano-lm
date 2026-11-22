@@ -864,3 +864,5 @@ Limits:
 - the mechanism is published in substance (OWM / null-space editing family).
 
 Whether it survives a nonlinear model is untested.
+
+**Question 12, caveat on the Pythia comparison (2026-11-22).** Beating Pythia-160M on ARC-Easy and PIQA is a low bar. Pythia was trained in 2023 on the Pile. Our corpus comes from education-filtered sources (FineWeb-Edu, Cosmopedia, FineMath), which are known to lift exactly these benchmarks. The win mostly shows good text and a sound recipe, not competitiveness with current small models. Modern references trained on similar text, SmolLM2-135M and SmolLM2-360M (Apache-2.0), are being scored through the same calibrated harness. Question 13's model will be compared with them, not with Pythia.
