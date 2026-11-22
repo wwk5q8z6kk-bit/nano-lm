@@ -539,7 +539,7 @@ def run_pipeline(
     gold: EncounterRecord | None = None,
 ):
     """End-to-end smoke: candidates → PredictedEncounter → optional PR2 eval."""
-    from nanoscribe.evaluate import EvalReport, evaluate
+    from nanoscribe.evaluate import evaluate
 
     predicted = adapt(model_input, batch, selector=selector)
     report = evaluate(gold, predicted) if gold is not None else None
