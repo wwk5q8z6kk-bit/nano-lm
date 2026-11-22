@@ -845,3 +845,22 @@ The 211M model trained on 4.2B tokens of corpus v2:
 - Rehearsing the corrections alone keeps them (97.4%) but drops the corrected entities' other old facts to 40%.
 
 Corrected summary: in this model, durable in-model corrections and rule inference for new entities trade off through the shared decoder. Each method found so far buys one at the cost of the other; only the external store has both. [Reported by PR #202 and checked against its committed files; not re-run here.]
+
+**Question 9 summary, amended again (2026-11-22): G06b supersedes the line above.** Session d5, PR #202, `NULLSPACE-LOCAL-20261122.md`; predictions in `5adc2b0` and scorer in `b916aba`, both before the runs. Result files checked here.
+
+Protecting every old entity during later training gives a monotone trade-off. With protection strength α = 1, 10 and 100:
+- corrections still right 20+ phases later: 98.5%, 91.1%, 52.5%;
+- rule inference for new entities: 66%, 91%, 99.6%.
+
+Protection **limited to what was corrected** keeps both:
+- the corrected relation only, width 24: corrections 93.9%, inference 99.3%;
+- the corrected entities only, width 96: corrections 99.6%, their other answers 100%, inference 99.1%. The unprotected model at the same width keeps 21.6% of corrections.
+
+The G06 cost came from protecting all old entities, not from protection as such. **Corrected summary: durability and rule use separate when protection is limited to the corrected outputs.**
+
+Limits:
+- bilinear readout, so the projectors are exact;
+- one world, three seeds;
+- the mechanism is published in substance (OWM / null-space editing family).
+
+Whether it survives a nonlinear model is untested.
