@@ -30,7 +30,7 @@ Squash merges did not carry this work to `origin`: for 69 of the 76 branches, fi
 
 ## What was preserved
 
-Nothing was pushed to this public repository. After the owner's go-ahead ("do all necessary"), the local branches were pushed to a separate **private** repository, `nano-lm-archive`, after a secrets scan of the local-only history found only hashes, names, run labels and one test-fixture dummy. That covers commits and code, not the git-ignored checkpoints below, which GitHub cannot hold. Local copies were also made on the external volume, in one dated directory:
+Nothing was pushed to this public repository. After the owner's go-ahead ("do all necessary"), the local branches were pushed to a separate **private** repository, `nano-lm-archive`, after a secrets scan of the local-only history found only hashes, names, run labels and one test-fixture dummy. That covers commits and code, not the git-ignored checkpoints below, which GitHub cannot hold. Final state of that mirror, checked ref by ref against the local repository on 2026-11-22: all 117 local branches match, plus all 20 tags and all 14 stash entries (under `preserved/stash-20261121/`). GitHub rejected the harness's own checkpoint and Codex snapshot refs (26 refs, an internal ref-rule error), so those stay only in the second bundle on the external volume. Local copies were also made on the external volume, in one dated directory:
 
 | Copy | Contents | Check |
 |---|---|---|
