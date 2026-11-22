@@ -838,6 +838,27 @@ The 211M model trained on 4.2B tokens of corpus v2:
 
 **Question 13, operational note (15:20 UTC).** Measured: four v5e chips give 439k tokens per second at 101M, so each rate check takes about 30 minutes. Scaled to 386M, the main run takes about 18.6 hours and would finish about 20 minutes before the 12:00 deadline. All three deadlines were therefore moved two hours later: on-machine 14:00, Cloud Scheduler 14:02, laptop watcher 14:10 on 23 November. The bound rises to about $111, with about $95 expected. Nothing in the design changed.
 
+**Question 13, step 1 result and Q1 (2026-11-22, 17:00 UTC).** 101M, Muon, 1% floor, 0.8B tokens, one seed; held-out mix:
+
+| Rate | Mix |
+|---|---|
+| 2e-3 | 0.9540 |
+| 4e-3 | 0.9544 |
+| 8e-3 | 0.9577 |
+
+- **Q1, first part (best rate is 4e-3): failed, narrowly.** 2e-3 is lower by 0.0004, well inside one-seed noise; read as registered. The three rates are within 0.004 of each other, so the rate is flat across 2e-3–8e-3 at this size.
+- **Q1, second part (beats 0.9775 by at least 0.02): held.** Gain 0.0235.
+- The registered rule chooses 2e-3 for the 386M model.
+
+**Question 13, operational failure and relaunch (2026-11-22, 17:20 UTC).** The 386M run failed about a minute after starting, before its first checkpoint.
+- Two defects in `tpu/job_scale2.sh`:
+  - The glob that implements the rate rule did not match the result files' names. It fell back to 2e-3, which by luck is also the rule's answer.
+  - The script retried only on divergence (exit 2). It treated the failure as success, benchmarked nothing, and the machine deleted itself as designed, taking the job log with it.
+- The error text is therefore lost. Most likely cause: device memory. An estimate for 16 sequences of 512 per chip without activation recomputation comes to about 24 GB, against 16 GB per v5e chip.
+- Relaunch: `tpu/job_scale2b.sh` on a new v5e-4. Same rate, tokens, batch, seed and recipe. It tries the batch in 1 pass first (which records the actual error), then in 2, 4 or 8 passes with gradients averaged; this is the same update, and the number of passes is not part of the run's identity. Any failure now counts as a failure, and the job log goes to the bucket every 3 minutes. `job_scale2.sh` is kept unchanged as the record of what ran.
+- Cost: the first machine ran about 2 hours (about $10); the relaunch needs about 20 hours (about $96–100). Total about $106–110, inside the $111 bound above.
+- New deadlines: on-machine 2026-11-23 16:00 UTC, Cloud Scheduler 16:02, laptop watcher 16:10.
+
 **Question 9 summary, amended (2026-11-22).** "Durability is a separate problem that no in-model write here solves" is **superseded**, by G06 (session d5, draft PR #202, `NULLSPACE-DURABILITY-20261122.md`; predictions committed before its runs).
 - Its unprotected arm reproduces this branch's `constrained` arm exactly, seed by seed.
 - Projecting later decoder updates away from old entities' address directions (OWM, published 2019) keeps computed-edit corrections at 98.5% after 20+ phases, against 21.5% without.
