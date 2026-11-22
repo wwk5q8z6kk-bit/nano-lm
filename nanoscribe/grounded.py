@@ -899,13 +899,20 @@ _COMPLAINT_LEAD_RE = re.compile(
     r"i\s+(?:(?:also|still|now|sometimes|often)\s+)?(?:have|had|get|got|feel|felt|noticed|developed|experience|came\s+in\s+(?:because\s+of|for|with))|"
     r"i(?:'m|\s+am)\s+(?:here\s+(?:because\s+of|about|for)|having|feeling|experiencing|dealing\s+with|"
     r"(?:on\s+my\s+period|menstruating)\s+with)|i(?:'m|\s+am)(?=\s+on\s+edge\b)|"
-    r"my\s+(?:main\s+)?(?:complaint|symptom)\s+is|"
-    r"(?P<presenter>my|the)\s+(?:main|primary|presenting|current)\s+(?:problem|concern|symptom|complaint)\s+is)\s+)?", re.I,
+    r"(?P<presenter>my|the)\s+(?:main|primary|presenting|current)\s+(?:problem|concern|symptom|complaint)\s+is|"
+    r"(?P<owner>my)\s+(?:complaint|symptom)\s+is)\s+)?", re.I,
 )
 # A nominal symptom name can refer to a potential episode or a value copied
 # from a document. Its reporting frame alone cannot establish current symptoms.
+# "May" after a calendar preposition, or before a day, year or the end of the
+# clause, is the month and dates a present episode. "next May" stays future.
+_MODAL_MAY = (
+    r"(?<!\bin\s)(?<!\bsince\s)(?<!\bof\s)(?<!\bfrom\s)(?<!\blast\s)(?<!\bthis\s)"
+    r"(?<!\bearly\s)(?<!\blate\s)(?<!\bbefore\s)(?<!\bafter\s)(?<!\buntil\s)(?<!\bduring\s)"
+    r"may(?!\s*(?:\d|[,.;:!?)]|$))"
+)
 _PRESENTING_REFERENCE_RE = re.compile(
-    r"\b(?:may|might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year)|"
+    rf"\b(?:{_MODAL_MAY}|might|could|would|expected\s+to|likely\s+to|tomorrow|next\s+(?:week|month|year)|"
     r"(?:will|(?:am|is|are)\s+going\s+to)\s+(?:(?:first|only|soon|probably|likely)\s+)*"
     r"(?:develop|start|begin|appear|arise|occur|emerge|experience|get|have|feel|set\s+in|come\s+on)|"
     r"(?:from|in|on)\s+(?:an?|the|my|this|that|our|your)\s+(?:form|chart|leaflet|worksheet|report|example))\b", re.I,
@@ -1040,10 +1047,11 @@ def _complaint_evidence(source: Source, idx: int, report: Turn, span: CandidateS
     head = _COMPLAINT_HEAD_RE.match(text, lead.end())
     previous = _preceding_clinician_turn(source, idx)
     requested = question_field(previous.text) if previous else None
-    if lead["presenter"]:
+    presenter = lead["presenter"] or lead["owner"]
+    if presenter:
         # An impersonal description inherits its owner only from a direct
         # presenting-symptom question. An explicit "my" names its own source.
-        if lead["presenter"].casefold() == "the" and requested is not FieldName.CHIEF_COMPLAINT:
+        if presenter.casefold() == "the" and requested is not FieldName.CHIEF_COMPLAINT:
             turn = source.turns[idx]
             prefix = turn.text[:report.start - turn.start].rstrip(" .!?;")
             if not re.fullmatch(_PRESENTING_CORRECTION, prefix, re.I):
