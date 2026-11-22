@@ -38,7 +38,7 @@ Nothing was pushed, because the repository is public and publishing unreviewed b
 | `nano-lm-all-refs-incl-stash-checkpoints.bundle` | the same plus the stash tip, harness checkpoint refs and Codex snapshot refs, which hold 493 further commits (1.68 GB) | `git bundle verify`: complete history |
 | `stashes/` | all 14 stash entries as binary patches, with an index of their commit ids | exported with untracked files; not re-applied as a test |
 | `uncommitted/` | the 85 uncommitted and untracked files, by worktree | each copy re-hashed against its source, 85 of 85 match |
-| `ignored-local-data/` | git-ignored checkpoints and run output | see "Ignored local data" below |
+| `ignored-local-data/` | git-ignored checkpoints and run output (about 13 GB) | complete; see "Ignored local data" below |
 
 A bundle proves commits and refs only. The uncommitted files are safe as copies, not as history: their owners still need to commit them.
 
@@ -96,17 +96,17 @@ The one load reading taken (01:00 UTC) was 235 on this machine, so wall-clock fi
 
 ## Ignored local data
 
-Git-ignored files that are not caches or virtual environments total about 13 GB across the main checkout and the worktrees. They are model checkpoints and run output, and no bundle can carry them.
+Git-ignored files that are not caches or virtual environments total about 13 GB across the main checkout and the worktrees. They are model checkpoints and run output, and no bundle can carry them. Caches, virtual environments and tool state directories were left out on purpose.
 
-| Path | Size | Copy status at the time of this commit |
+| Path | Size | Copy status |
 |---|---|---|
 | `nanolm` worktree, `artifacts/nanolm_v1/` | 5.0 GB | copied, `verify-copy` passed |
 | `nanolm` worktree, `artifacts/nanolm_v2_cloud/` | 0.96 GB | copied, `verify-copy` passed |
 | `nanolm-discovery` worktree, `artifacts/nanolm_omega_v1/checkpoints/` | 80 MB | copied, `verify-copy` passed |
-| `nanolm-v3` worktree, `artifacts/nanolm_v3/runs/` (three `final.pt`, 125M and 350M) | 3.1 GB | copy in progress |
-| `v3-exact-recall` worktree, `artifacts/exact_recall/logs/` | small | queued |
-| main checkout, `checkpoints/` | 3.0 GB | queued |
-| main checkout, ignored paths under `artifacts/` (H4–H7, P4, campaign corpora, run-ops downloads) and smaller items elsewhere | about 0.9 GB | not yet copied |
+| `nanolm-v3` worktree, `artifacts/nanolm_v3/runs/` (three `final.pt`, 125M and 350M) | 3.1 GB | copied, `verify-copy` passed |
+| `v3-exact-recall` worktree, `artifacts/exact_recall/logs/` | small | copied, `verify-copy` passed |
+| main checkout, `checkpoints/` | 3.0 GB | copied, `verify-copy` passed |
+| main checkout, ignored paths under `artifacts/` (H4–H7, P4, campaign corpora, run-ops downloads) and smaller items elsewhere | 1.15 GB in 5,985 files | copied; each file re-hashed against its source, all match |
 
 ## What remains for G00
 
