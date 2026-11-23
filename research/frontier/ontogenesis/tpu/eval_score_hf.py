@@ -18,8 +18,9 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--model", required=True); ap.add_argument("--texts", required=True); ap.add_argument("--only", default="")
 ap.add_argument("--limit", type=int, default=0); ap.add_argument("--device", default="cpu"); ap.add_argument("--batch", type=int, default=32); ap.add_argument("--out", default="")
 ap.add_argument("--control", default="", choices=("", "nocontext"))
+ap.add_argument("--revision", default=None, help="model revision, e.g. a Pythia training checkpoint such as step4000")
 a = ap.parse_args(); t0 = time.time()
-tok = AutoTokenizer.from_pretrained(a.model); model = AutoModelForCausalLM.from_pretrained(a.model, torch_dtype=torch.float32).to(a.device).eval()
+tok = AutoTokenizer.from_pretrained(a.model, revision=a.revision); model = AutoModelForCausalLM.from_pretrained(a.model, revision=a.revision, torch_dtype=torch.float32).to(a.device).eval()
 data = json.load(open(a.texts))
 if a.only: data = {k: v for k, v in data.items() if k in a.only.split(",")}
 if a.limit: data = {k: v[:a.limit] for k, v in data.items()}
@@ -55,5 +56,5 @@ for task, rows in data.items():
         if task != "winogrande": accn.append(int(np.argmax(sc / np.array([S[(task, e, j)][2] for j in range(k)]))) == r["gold"])
     res[task] = {"acc": round(float(np.mean(acc)), 4), "n": len(rows)}
     if accn: res[task]["acc_norm"] = round(float(np.mean(accn)), 4)
-out = {"model": a.model, "control": a.control or "none", "tasks": res, "seconds": round(time.time() - t0)}; print(json.dumps(out))
+out = {"model": a.model, "revision": a.revision, "control": a.control or "none", "tasks": res, "seconds": round(time.time() - t0)}; print(json.dumps(out))
 if a.out: json.dump(out, open(a.out, "w"), indent=1)

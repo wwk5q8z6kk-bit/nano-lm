@@ -1052,3 +1052,19 @@ Rerun with the fix (session d5, `results/nullspace_local/fixed_owm_ent/` on rese
 - **Decision, as registered: keep heads of 64 and standard attention.** The rule required W1 and W2 both to hold, and W1 failed by a wide margin. W2 and W3 were therefore not measured, and the study is not rerun: they cannot change the decision.
 - Reading: the attention kernel is not where most of the step time goes at this size and sequence length (512). The remaining inefficiency is elsewhere, for example the 32,768-token output layer, the matrix multiplications themselves, or data-parallel communication. The benchmark gave about 36% of peak and 86% data-parallel efficiency.
 - Operations lesson: every spot machine needs a supervisor. Later spot jobs run under `tpu/spot_supervisor.sh` or an equivalent.
+
+## Owner decision and reassessment (2026-11-23)
+
+**Decision (owner, 23 November):** the project builds its own foundation model and its own core architecture. It does not adopt another organisation's pretrained model as the base. Recorded in the reassessment page (private artifact) after three independent reviews, which had recommended building on an open model instead.
+
+**Findings the decision rests on** (detail in the sections above):
+- The 386M model trails SmolLM2-135M because of training compute: about 1.8e19 FLOPs against about 1.6e21 (SmolLM2's token count from memory). Only ARC-Easy, HellaSwag and LAMBADA differ by more than about 3 standard errors.
+- The recipe is not broken. The 386M beats fully trained Pythia-410M on ARC-Easy and PIQA. It also beats Pythia-410M's 8.4B-token checkpoint on every task (ARC-Easy 0.596 against 0.428). That checkpoint is still at full learning rate, so it is a floor only. The fair reference, Cerebras-GPT at 20 tokens per parameter, is being scored.
+- No benchmark example exceeds the 512-token window (longest 259 tokens), so truncation does not affect any score.
+- Logit distillation into our 32k vocabulary from teachers with other vocabularies is dropped. Open models may still write training text that our model learns from, since that is independent of the tokenizer.
+
+**Next experiments, each to be registered before it runs (cost estimates):**
+- A: continue the 386M for 1–2B tokens, then decay the rate on high-quality data ($10–25).
+- B: recurrent depth against dense at 101M, equal compute, 3 seeds, with a reasoning probe on real text ($15–30).
+- C: generated reasoning-heavy text against FineWeb-Edu at 101M ($30–60).
+- D: a generative reasoning evaluation (free).
